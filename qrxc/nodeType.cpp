@@ -160,7 +160,7 @@ bool NodeType::initLinePorts(QDomElement const &portsElement)
 	return true;
 }
 
-bool NodeType::initLabel(Label *label, QDomElement const &element, int const &count)
+bool NodeType::initLabel(Label *label, QDomElement const &element, const int &count)
 {
 	return label->init(element, count, true, mWidth, mHeight);
 }
@@ -181,7 +181,7 @@ void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
 
-	QString const className = NameNormalizer::normalize(qualifiedName());
+	const QString className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
 
 	out() << "\tclass " << className << " : public qReal::ElementImpl\n\t{\n"
@@ -232,7 +232,7 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n";
 
-	out() << "\t\t qReal::ElementImpl *clone() { return NULL; }\n";
+	out() << "\t\t qReal::ElementImpl *clone() { return nullptr; }\n";
 
 	out() << "\t\t~" << className << "() {}\n\n"
 	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
@@ -361,7 +361,7 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 
 	if (!portTypes.empty()) {
 		out() << "\t\tresult ";
-		foreach (QString const &type, portTypes) {
+		foreach (const QString &type, portTypes) {
 			out() << "<< \"" << type << "\"";
 		}
 		out() << ";\n";

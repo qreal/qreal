@@ -78,7 +78,7 @@ void Model::deserialize(QDomDocument const &xml)
 
 	QMutableListIterator<RobotModel *> iterator(mRobotModels);
 
-	bool const oneRobot = robotsList.at(0).toElement().elementsByTagName("robot").size() == 1
+	const bool oneRobot = robotsList.at(0).toElement().elementsByTagName("robot").size() == 1
 			&& mRobotModels.size() == 1;
 
 	while(iterator.hasNext()) {
@@ -117,7 +117,7 @@ void Model::deserialize(QDomDocument const &xml)
 	}
 }
 
-void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const &pos)
+void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF &pos)
 {
 	RobotModel *robot = new RobotModel(robotModel, mSettings, this);
 	robot->setPosition(pos);
@@ -139,7 +139,7 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const 
 
 void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
 {
-	int const index = findModel(robotModel);
+	const int index = findModel(robotModel);
 
 	if (index == -1) {
 		return;
@@ -154,13 +154,13 @@ void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotM
 void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
 		, twoDModel::robotModel::TwoDRobotModel &newModel)
 {
-	int const index = findModel(oldModel);
+	const int index = findModel(oldModel);
 
 	if (index == -1) {
 		return;
 	}
 
-	QPointF const pos = mRobotModels.at(index)->position();
+	const QPointF pos = mRobotModels.at(index)->position();
 	removeRobotModel(oldModel);
 	addRobotModel(newModel, pos);
 }

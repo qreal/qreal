@@ -29,7 +29,7 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 }
 
 void BluetoothRobotCommunicationThread::send(QObject *addressee
-		, QByteArray const &buffer, unsigned const responseSize)
+		, const QByteArray &buffer, unsigned const responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
@@ -38,7 +38,7 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 
 	send(buffer);
 	if (buffer.size() >= 3 && buffer[2] == enums::errorCode::success) {
-		QByteArray const result = receive(responseSize);
+		const QByteArray result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
 		emit response(addressee, QByteArray());
@@ -52,7 +52,7 @@ void BluetoothRobotCommunicationThread::connect()
 		QThread::msleep(1000);  // Give port some time to close
 	}
 
-	QString const portName = qReal::SettingsManager::value("NxtBluetoothPortName").toString();
+	const QString portName = qReal::SettingsManager::value("NxtBluetoothPortName").toString();
 	mPort = new QextSerialPort(portName, QextSerialPort::Polling);
 	mPort->setBaudRate(BAUD9600);
 	mPort->setFlowControl(FLOW_OFF);
@@ -74,7 +74,7 @@ void BluetoothRobotCommunicationThread::connect()
 	command[3] = 0x88;
 
 	send(command);
-	QByteArray const response = receive(getFirmwareVersionResponseSize);
+	const QByteArray response = receive(getFirmwareVersionResponseSize);
 
 	emit connected(response != QByteArray(), QString());
 
@@ -103,14 +103,14 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 	Q_UNUSED(allow)
 }
 
-void BluetoothRobotCommunicationThread::send(QByteArray const &buffer
+void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
 		, unsigned const responseSize, QByteArray &outputBuffer)
 {
 	send(buffer);
 	outputBuffer = receive(responseSize);
 }
 
-void BluetoothRobotCommunicationThread::send(QByteArray const &buffer) const
+void BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
 {
 	utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::send", "Sending:");
 	for (int i = 0; i < buffer.size(); ++i) {
@@ -123,7 +123,7 @@ void BluetoothRobotCommunicationThread::send(QByteArray const &buffer) const
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 {
-	QByteArray const result = mPort->read(size);
+	const QByteArray result = mPort->read(size);
 
 	utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive", "Received:");
 	for (int i = 0; i < result.size(); ++i) {
@@ -149,7 +149,7 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 
 	send(command);
 
-	QByteArray const response = receive(keepAliveResponseSize);
+	const QByteArray response = receive(keepAliveResponseSize);
 
 	if (response == QByteArray()) {
 		emit disconnected();

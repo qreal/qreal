@@ -55,7 +55,7 @@ QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 void ToolPluginManager::loadDefaultSettings()
 {
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
-		for (QString const &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
+		for (const QString &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
 			SettingsManager::loadDefaultSettings(defaultSettingsFile);
 		}
 	}
@@ -100,7 +100,7 @@ void ToolPluginManager::updateSettings()
 	emit mSystemEvents->settingsUpdated();
 }
 
-void ToolPluginManager::activeTabChanged(Id const & rootElementId)
+void ToolPluginManager::activeTabChanged(const Id & rootElementId)
 {
 	emit mSystemEvents->activeTabChanged(rootElementId);
 }

@@ -18,8 +18,8 @@ class SonarSensorItem : public SensorItem
 public:
 	SonarSensorItem(model::WorldModel const &worldModel
 			, model::SensorsConfiguration &configuration
-			, interpreterBase::robotModel::PortInfo const &port
-			, QString const &pathToImage
+			, const interpreterBase::robotModel::PortInfo &port
+			, const QString &pathToImage
 			, QRect const &imageSize
 			);
 

@@ -50,10 +50,10 @@ void ModelExplorer::changeEditorActionsSet(QList<QAction *> const &actions)
 
 void ModelExplorer::commitData(QWidget *editor)
 {
-	Id const id = static_cast<AbstractModel *>(model())->idByIndex(currentIndex());
-	QString const oldName = model()->data(currentIndex()).toString();
+	const Id id = static_cast<AbstractModel *>(model())->idByIndex(currentIndex());
+	const QString oldName = model()->data(currentIndex()).toString();
 	QTreeView::commitData(editor);
-	QString const newName = model()->data(currentIndex()).toString();
+	const QString newName = model()->data(currentIndex()).toString();
 	if (oldName != newName) {
 		mController->execute(new commands::RenameCommand(*mModel, id, oldName, newName, mExploser));
 	}

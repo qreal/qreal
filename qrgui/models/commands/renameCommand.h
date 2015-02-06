@@ -13,12 +13,12 @@ class QRGUI_MODELS_EXPORT RenameCommand : public AbstractCommand
 public:
 	/// This overload gets old name automatically using models api
 	RenameCommand(details::ModelsAssistInterface &model
-			, Id const &id, QString const &newName
+			, const Id &id, const QString &newName
 			, models::Exploser const * const exploser = nullptr);
 
 	/// This overload alows to specify old name manually
 	RenameCommand(details::ModelsAssistInterface &model
-			, Id const &id, QString const &oldName, QString const &newName
+			, const Id &id, const QString &oldName, const QString &newName
 			, models::Exploser const * const exploser = nullptr);
 
 protected:
@@ -28,12 +28,12 @@ protected:
 private:
 	void initExplosions(models::Exploser const * const exploser);
 
-	bool rename(QString const &name);
+	bool rename(const QString &name);
 
 	details::ModelsAssistInterface &mModel;
-	Id const mId;
-	QString const mOldName;
-	QString const mNewName;
+	const Id mId;
+	const QString mOldName;
+	const QString mNewName;
 };
 
 }

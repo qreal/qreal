@@ -6,13 +6,13 @@
 using namespace qReal;
 using namespace interpretation;
 
-int const blocksCountTillProcessingEvents = 100;
+const int blocksCountTillProcessingEvents = 100;
 
 Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, Id const &initialNodeType
+		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
-		, Id const &initialNode)
+		, const Id &initialNode)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -27,8 +27,8 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 
 Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, Id const &initialNodeType
-		, Id const &diagramToInterpret
+		, const Id &initialNodeType
+		, const Id &diagramToInterpret
 		, BlocksTableInterface &blocksTable)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
@@ -72,16 +72,16 @@ void Thread::interpret()
 	}
 }
 
-void Thread::nextBlock(Id const &blockId)
+void Thread::nextBlock(const Id &blockId)
 {
 	turnOff(mCurrentBlock);
 	BlockInterface *const block = blockId == Id() ? nullptr : mBlocksTable.block(blockId);
 	turnOn(block);
 }
 
-void Thread::stepInto(Id const &diagram)
+void Thread::stepInto(const Id &diagram)
 {
-	Id const initialNode = findStartingElement(diagram);
+	const Id initialNode = findStartingElement(diagram);
 	BlockInterface * const block = mBlocksTable.block(initialNode);
 
 	if (initialNode.isNull() || !block) {
@@ -114,17 +114,17 @@ void Thread::failure()
 	emit stopped();
 }
 
-void Thread::error(QString const &message, Id const &source)
+void Thread::error(const QString &message, const Id &source)
 {
 	mInterpretersInterface.errorReporter()->addError(message, source);
 	failure();
 }
 
-Id Thread::findStartingElement(Id const &diagram) const
+Id Thread::findStartingElement(const Id &diagram) const
 {
-	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
+	const IdList children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 
-	for (Id const &child : children) {
+	for (const Id &child : children) {
 		if (child.type() == mInitialNodeType) {
 			return child;
 		}

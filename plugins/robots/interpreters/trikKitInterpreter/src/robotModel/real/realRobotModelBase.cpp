@@ -31,7 +31,7 @@
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
 
-RealRobotModelBase::RealRobotModelBase(QString const &kitId, QString const &robotId)
+RealRobotModelBase::RealRobotModelBase(const QString &kitId, const QString &robotId)
 	: TrikRobotModelBase(kitId, robotId)
 	, mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
 {
@@ -66,7 +66,7 @@ void RealRobotModelBase::setErrorReporter(qReal::ErrorReporterInterface *errorRe
 	mRobotCommunicator->setErrorReporter(errorReporter);
 }
 
-robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *RealRobotModelBase::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port, *mRobotCommunicator);

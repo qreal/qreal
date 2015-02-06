@@ -8,7 +8,7 @@ using namespace utils;
 
 Ev3InputDevice::Ev3InputDevice(
 		utils::robotCommunication::RobotCommunicator &robotCommunicator
-		, interpreterBase::robotModel::PortInfo const &port
+		, const interpreterBase::robotModel::PortInfo &port
 		, SensorTypeEnum lowLevelSensorType
 		, INPUT_DEVICE_SUBCODE sensorMode)
 	: mRobotCommunicator(robotCommunicator)

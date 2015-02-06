@@ -2,8 +2,8 @@
 
 using namespace nxtKitInterpreter::robotModel::twoD::parts;
 
-TwoDSpeaker::TwoDSpeaker(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+TwoDSpeaker::TwoDSpeaker(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::NxtSpeaker(info, port)
 	, mEngine(engine)

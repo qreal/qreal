@@ -156,7 +156,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 
-		// TODO: It is impossible for elem to be NULL here.
+		// TODO: It is impossible for elem to be nullptr here.
 		if (elem) {
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
@@ -169,7 +169,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			if (item(parent)) {
 				elem->setParentItem(item(parent));
 				QModelIndex next = current.sibling(current.row() + 1, 0);
-				if(next.isValid() && item(next) != NULL) {
+				if(next.isValid() && item(next) != nullptr) {
 					elem->stackBefore(item(next));
 				}
 			} else {
@@ -290,14 +290,14 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 	}
 
 	Element *newParent = item(destinationParent);
-	if (newParent == NULL) {
+	if (newParent == nullptr) {
 		// no parent element on the scene, so it should be root element
-		movedElement->setParentItem(NULL);
+		movedElement->setParentItem(nullptr);
 		return;
 	}
 
 	movedElement->setParentItem(newParent);
-	if (sibling != NULL) {
+	if (sibling != nullptr) {
 		movedElement->stackBefore(sibling);
 	}
 }
@@ -314,7 +314,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 	Q_ASSERT(movedElementIndex.isValid());
 	Element *movedElement = item(movedElementIndex);
 
-	if (movedElement == NULL) {
+	if (movedElement == nullptr) {
 		// no element on the scene, forget about it
 		return;
 	}
@@ -364,17 +364,17 @@ void EditorViewMViface::clearItems()
 	mItems.clear();
 }
 
-Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
+Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
 	foreach (IndexElementPair const &pair, mItems) {
 		if (pair.first == index) {
 			return pair.second;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
-void EditorViewMViface::setItem(QPersistentModelIndex const &index, Element *item)
+void EditorViewMViface::setItem(const QPersistentModelIndex &index, Element *item)
 {
 	IndexElementPair pair(index, item);
 	if (!mItems.contains(pair)) {
@@ -382,7 +382,7 @@ void EditorViewMViface::setItem(QPersistentModelIndex const &index, Element *ite
 	}
 }
 
-void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
+void EditorViewMViface::removeItem(const QPersistentModelIndex &index)
 {
 	foreach (IndexElementPair const &pair, mItems) {
 		if (pair.first == index) {
@@ -411,9 +411,9 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex const curr = topLeft.sibling(row, 0);
-		Id const logicalId = curr.data(roles::idRole).value<Id>();
-		IdList const graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
-		foreach (Id const &graphicalId, graphicalIds) {
+		const Id logicalId = curr.data(roles::idRole).value<Id>();
+		const IdList graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
+		foreach (const Id &graphicalId, graphicalIds) {
 			QModelIndex const graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
 			Element *graphicalItem = item(graphicalIndex);
 			if (graphicalItem) {

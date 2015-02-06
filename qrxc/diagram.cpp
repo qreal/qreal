@@ -11,7 +11,7 @@
 
 #include <QtCore/QDebug>
 
-Diagram::Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor)
+Diagram::Diagram(const QString &name, const QString &nodeName, const QString &displayedName, Editor *editor)
 	: mDiagramName(name)
 	, mDiagramNodeName(nodeName)
 	, mDiagramDisplayedName(displayedName)
@@ -170,7 +170,7 @@ bool Diagram::resolve()
 {
 	foreach (ImportSpecification import, mImports) {
 		Type *importedType = mEditor->findType(import.name);
-		if (importedType == NULL) {
+		if (importedType == nullptr) {
 			qDebug() << "ERROR: imported type" << import.name << "not found, skipping";
 			continue;
 		}

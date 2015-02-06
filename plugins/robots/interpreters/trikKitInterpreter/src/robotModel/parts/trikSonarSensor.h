@@ -12,8 +12,8 @@ class TrikSonarSensor : public interpreterBase::robotModel::robotParts::RangeSen
 	Q_CLASSINFO("friendlyName", tr("Sonic Sensor"))
 
 public:
-	TrikSonarSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikSonarSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 };
 
 }

@@ -20,8 +20,8 @@ class COMMON_TWO_D_MODEL_EXPORT TouchSensor : public interpreterBase::robotModel
 	Q_OBJECT
 
 public:
-	TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	TouchSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	void read() override;

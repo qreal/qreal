@@ -13,7 +13,7 @@ namespace Ui {
 	class watchListWindow;
 }
 
-int const watchWindowRefreshInterval = 500;
+const int watchWindowRefreshInterval = 500;
 
 namespace utils {
 
@@ -26,7 +26,7 @@ public:
 	/// Constructor.
 	/// @param parser - debugger interface to a text language interpreter from which to take variable values.
 	/// @param parent - parent of a window as in Qt widget parent/child relations.
-	explicit WatchListWindow(qrtext::DebuggerInterface const &interpreter, QWidget *parent = 0);
+	explicit WatchListWindow(const qrtext::DebuggerInterface &interpreter, QWidget *parent = 0);
 
 	/// Constructor left for backwards compatibility with old parser which is still used in visual interpreter.
 	/// @param parser - text language parser/interpreter from which to take variable values.
@@ -36,7 +36,7 @@ public:
 	~WatchListWindow() override;
 
 	/// Do not show variables with given names.
-	void hideVariables(QStringList const &variableNames);
+	void hideVariables(const QStringList &variableNames);
 
 
 private slots:
@@ -44,12 +44,12 @@ private slots:
 
 private:
 	WatchListWindow(utils::ExpressionsParser const * const parser
-			, qrtext::DebuggerInterface const * const newParser
+			, const qrtext::DebuggerInterface * const newParser
 			, QWidget *parent);
 
 	Ui::watchListWindow *mUi;
 	QTimer mTimer;
-	qrtext::DebuggerInterface const * const mNewParser;  // Does not have ownership.
+	const qrtext::DebuggerInterface * const mNewParser;  // Does not have ownership.
 	utils::ExpressionsParser const * const mParser;  // Does not have ownership.
 	QSet<QString> mHiddenVariables;
 };

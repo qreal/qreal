@@ -6,8 +6,8 @@
 
 using namespace interpreterCore;
 
-static qReal::Id const robotDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-static qReal::Id const subprogramDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+static const qReal::Id robotDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+static const qReal::Id subprogramDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelManager &robotModelManager)
 	: mKitPluginManager(kitPluginManager)
@@ -103,11 +103,11 @@ QAction &ActionsManager::robotSettingsAction()
 void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model)
 {
 	mConnectToRobotAction.setVisible(model.needsConnection());
-	QString const currentKitId = kitIdOf(model);
-	QString const switchActionName = "switchTo" + currentKitId + model.name();
+	const QString currentKitId = kitIdOf(model);
+	const QString switchActionName = "switchTo" + currentKitId + model.name();
 
 	/// @todo: this stupid visibility management may show actions with custom avalability logic.
-	for (QString const &kitId : mKitPluginManager.kitIds()) {
+	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (qReal::ActionInfo const &actionInfo
 				: mRobotModelActions.values(kitId) + mGeneratorActionsInfo.values(kitId))
 		{
@@ -121,9 +121,9 @@ void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModel
 	}
 }
 
-void ActionsManager::onActiveTabChanged(qReal::Id const &activeTabId)
+void ActionsManager::onActiveTabChanged(const qReal::Id &activeTabId)
 {
-	bool const isDiagramTab = !activeTabId.isNull();
+	const bool isDiagramTab = !activeTabId.isNull();
 	mRunAction.setEnabled(isDiagramTab);
 	mStopRobotAction.setEnabled(isDiagramTab);
 }
@@ -137,7 +137,7 @@ void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)
 
 QString ActionsManager::kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const
 {
-	for (QString const &kitId : mKitPluginManager.kitIds()) {
+	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 			if (kit->robotModels().contains(&model)) {
 				return kitId;
@@ -151,8 +151,8 @@ QString ActionsManager::kitIdOf(interpreterBase::robotModel::RobotModelInterface
 
 void ActionsManager::updateEnabledActions()
 {
-	qReal::Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	const qReal::Id &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
+	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 
 	for (QAction * const action : mActions) {
 		action->setEnabled(enabled);
@@ -164,7 +164,7 @@ void ActionsManager::initKitPluginActions()
 	QSignalMapper * const robotModelMapper = new QSignalMapper(this);
 	connect(robotModelMapper, SIGNAL(mapped(QObject*)), this, SLOT(onRobotModelActionChecked(QObject*)));
 
-	for (QString const &kitId : mKitPluginManager.kitIds()) {
+	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (interpreterBase::KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
 			mPluginActionInfos << kitPlugin->customActions();
 			for (interpreterBase::robotModel::RobotModelInterface * const robotModel : kitPlugin->robotModels()) {
@@ -173,7 +173,7 @@ void ActionsManager::initKitPluginActions()
 					continue;
 				}
 
-				QString const &text = tr("Switch to ") + robotModel->friendlyName();
+				const QString &text = tr("Switch to ") + robotModel->friendlyName();
 				QAction * const fastSelectionAction = new QAction(icon, text, nullptr);
 				robotModelMapper->setMapping(fastSelectionAction, robotModel);
 				connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));

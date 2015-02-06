@@ -3,17 +3,17 @@
 using namespace qReal;
 using namespace utils;
 
-DeepFirstSearcher::DeepFirstSearcher(qrRepo::LogicalRepoApi const &repo)
+DeepFirstSearcher::DeepFirstSearcher(const qrRepo::LogicalRepoApi &repo)
 	: mRepo(repo)
 {
 }
 
-void DeepFirstSearcher::startSearch(Id const &firstId, VisitorInterface *visitor)
+void DeepFirstSearcher::startSearch(const Id &firstId, VisitorInterface *visitor)
 {
 	startSearch(firstId, QList<VisitorInterface *>() << visitor);
 }
 
-void DeepFirstSearcher::startSearch(Id const &firstId, QList<VisitorInterface *> const &visitors)
+void DeepFirstSearcher::startSearch(const Id &firstId, QList<VisitorInterface *> const &visitors)
 {
 	foreach (VisitorInterface * const visitor, visitors) {
 		visitor->beforeSearch();
@@ -33,15 +33,15 @@ void DeepFirstSearcher::terminateSearch()
 	mSearchTerminated = true;
 }
 
-void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visitors)
+void DeepFirstSearcher::dfs(const Id &id, QList<VisitorInterface *> const &visitors)
 {
 	mVisitedNodes << id;
 
-	IdList const outgoingLinks = mRepo.outgoingLinks(id);
+	const IdList outgoingLinks = mRepo.outgoingLinks(id);
 	QList<LinkInfo> linkInfos;
 
-	for (Id const &link : outgoingLinks) {
-		Id const connectedNode = mRepo.otherEntityFromLink(link, id);
+	for (const Id &link : outgoingLinks) {
+		const Id connectedNode = mRepo.otherEntityFromLink(link, id);
 		LinkInfo info;
 		info.linkId = link;
 		info.target = connectedNode;

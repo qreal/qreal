@@ -9,8 +9,8 @@
 using namespace trikKitInterpreter;
 using namespace qReal;
 
-Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	: mRealRobotModelV6(kitId(), "trikKitRobot") // todo: somewhere generate robotId for each robot
@@ -52,7 +52,7 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 {
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](QString const &modelName) { mCurrentlySelectedModelName = modelName; });
+			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
@@ -69,7 +69,7 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 	};
 	updateQuickPreferences();
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
-	connect(quickPreferences, &QLineEdit::textChanged, [](QString const &text) {
+	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});
 	mIpAdressQuickConfigurer = quickPreferences;
@@ -96,7 +96,7 @@ QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlug
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
-		interpreterBase::robotModel::RobotModelInterface const *model)
+		const interpreterBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model);
 	mOwnsBlocksFactory = false;
@@ -114,7 +114,7 @@ QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settin
 	return {mAdditionalPreferences, mFSharpAdditionalPreferences};
 }
 
-QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model)
+QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const interpreterBase::robotModel::RobotModelInterface &model)
 {
 	if (model.name().toLower().contains("twod")) {
 		return nullptr;
@@ -145,7 +145,7 @@ QString TrikKitInterpreterPlugin::defaultSettingsFile() const
 }
 
 QIcon TrikKitInterpreterPlugin::iconForFastSelector(
-		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
 {
 	/// @todo: draw icons for v6
 	return &robotModel == &mRealRobotModelV6
@@ -160,9 +160,9 @@ interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devices
 	return &mTwoDModelV6->devicesConfigurationProvider();
 }
 
-void TrikKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)
+void TrikKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
-	bool const v6Enabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModelV6.name();
+	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	const bool v6Enabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModelV6.name();
 	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setVisible(v6Enabled);
 }

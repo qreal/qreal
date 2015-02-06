@@ -8,8 +8,8 @@ UmlPortHandler::UmlPortHandler(NodeElement * const node)
 {
 }
 
-void UmlPortHandler::handleMoveEvent(bool const leftPressed
-		, QPointF &pos, QPointF const &scenePos
+void UmlPortHandler::handleMoveEvent(const bool leftPressed
+		, QPointF &pos, const QPointF &scenePos
 		, NodeElement *&parentNode)
 {
 	if (!mNode || !leftPressed) {
@@ -27,11 +27,11 @@ void UmlPortHandler::handleMoveEvent(bool const leftPressed
 	if (actionItem && ((actionItem == parentNode) || (!parentNode))) {
 		posInItem = actionItem->mapFromScene(scenePos);
 
-		bool const checkLowerBorder = actionItemBorderChecker.checkLowerBorder(posInItem);
-		bool const checkUpperBorder = actionItemBorderChecker.checkUpperBorder(posInItem);
-		bool const checkRightBorder = actionItemBorderChecker.checkRightBorder(posInItem);
-		bool const checkLeftBorder = actionItemBorderChecker.checkLeftBorder(posInItem);
-		bool const checkBorders = checkLowerBorder || checkUpperBorder
+		const bool checkLowerBorder = actionItemBorderChecker.checkLowerBorder(posInItem);
+		const bool checkUpperBorder = actionItemBorderChecker.checkUpperBorder(posInItem);
+		const bool checkRightBorder = actionItemBorderChecker.checkRightBorder(posInItem);
+		const bool checkLeftBorder = actionItemBorderChecker.checkLeftBorder(posInItem);
+		const bool checkBorders = checkLowerBorder || checkUpperBorder
 			|| checkRightBorder || checkLeftBorder;
 
 		if (checkBorders) {
@@ -53,7 +53,7 @@ void UmlPortHandler::handleMoveEvent(bool const leftPressed
 
 void UmlPortHandler::handleHorizontalBorders(
 		const NodeElement * const tmpNode, const NodeElement * const parentNode
-		, QPointF const &pos, QPointF const &posInItem) const
+		, const QPointF &pos, const QPointF &posInItem) const
 {
 	QPointF newPos = pos;
 	BorderChecker const parentNodeBorderChecker(parentNode);

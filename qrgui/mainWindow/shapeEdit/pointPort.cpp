@@ -107,12 +107,12 @@ void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QRectF itemBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 	QDomElement pointPort = document.createElement("pointPort");
-	int const x = static_cast<int>(scenePos().x() + itemBoundingRect.x() + mRadius - topLeftPicture.x());
-	int const y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius - topLeftPicture.y());
+	const int x = static_cast<int>(scenePos().x() + itemBoundingRect.x() + mRadius - topLeftPicture.x());
+	const int y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius - topLeftPicture.y());
 	pointPort.setAttribute("y", setSingleScaleForDoc(4, x, y));
 	pointPort.setAttribute("x", setSingleScaleForDoc(0, x, y));
 	pointPort.setAttribute("type", mType);
@@ -120,7 +120,7 @@ QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &
 	return QPair<QDomElement, Item::DomElementTypes>(pointPort, mDomElementType);
 }
 
-void PointPort::setType(QString const &type)
+void PointPort::setType(const QString &type)
 {
 	mType = type;
 }

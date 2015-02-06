@@ -25,22 +25,22 @@ class ModelsAssistApi
 {
 public:
 	ModelsAssistApi(details::modelsImplementation::AbstractModel &model
-			, EditorManagerInterface const &editorManagerInterface);
-	EditorManagerInterface const &editorManagerInterface() const;
-	Id createElement(Id const &parent, Id const &id, Id const &logicalId
-			, bool isFromLogicalModel, QString const &name, QPointF const &position);
+			, const EditorManagerInterface &editorManagerInterface);
+	const EditorManagerInterface &editorManagerInterface() const;
+	Id createElement(const Id &parent, const Id &id, const Id &logicalId
+			, bool isFromLogicalModel, const QString &name, const QPointF &position);
 
 	/// Stacks item element before sibling (they should have the same parent)
-	void stackBefore(Id const &element, Id const &sibling);
+	void stackBefore(const Id &element, const Id &sibling);
 
-	void setTo(Id const &elem, Id const &newValue);
-	Id to(Id const &elem) const;
+	void setTo(const Id &elem, const Id &newValue);
+	Id to(const Id &elem) const;
 
 
-	void setFrom(Id const &elem, Id const &newValue);
-	Id from(Id const &elem) const;
+	void setFrom(const Id &elem, const Id &newValue);
+	Id from(const Id &elem) const;
 
-	QModelIndex indexById(Id const &id) const;
+	QModelIndex indexById(const Id &id) const;
 	Id idByIndex(QModelIndex const &index) const;
 	QPersistentModelIndex rootIndex() const;
 	Id rootId() const;
@@ -49,9 +49,9 @@ public:
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
 
-	void setProperty(Id const &elem, QVariant const &newValue, int const role);
-	QVariant property(Id const &elem, int const role) const;
-	int roleIndexByName(Id const &elem, QString const &roleName) const;
+	void setProperty(const Id &elem, const QVariant &newValue, const int role);
+	QVariant property(const Id &elem, const int role) const;
+	int roleIndexByName(const Id &elem, const QString &roleName) const;
 
 private:
 
@@ -59,7 +59,7 @@ private:
 	ModelsAssistApi& operator =(ModelsAssistApi const &);
 
 	details::modelsImplementation::AbstractModel &mModel;
-	EditorManagerInterface const &mEditorManagerInterface;
+	const EditorManagerInterface &mEditorManagerInterface;
 };
 }
 }

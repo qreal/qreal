@@ -211,8 +211,8 @@ void NullMainWindow::openFirstDiagram()
 		return;
 	}
 
-	Id const rootId = mGraphicalModel->rootId();
-	IdList const rootIds = mGraphicalModel->children(rootId);
+	const Id rootId = mGraphicalModel->rootId();
+	const IdList rootIds = mGraphicalModel->children(rootId);
 	if (rootIds.count() == 0) {
 		return;
 	}

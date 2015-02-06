@@ -75,8 +75,8 @@ void Label::generateCodeForConstructor(OutFile &out)
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
-	QString const scalingX = mX.isScalable() ? "true" : "false";
-	QString const scalingY = mY.isScalable() ? "true" : "false";
+	const QString scalingX = mX.isScalable() ? "true" : "false";
+	const QString scalingY = mY.isScalable() ? "true" : "false";
 	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
 	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
 
@@ -85,7 +85,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 		<< "			titles.append(" + titleName() + ");\n";
 }
 
-QStringList Label::getListOfStr(QString const &strToParse) const
+QStringList Label::getListOfStr(const QString &strToParse) const
 {
 	return strToParse.split("##");
 }
@@ -109,7 +109,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		}
 	} else {
 		int counter = 1;
-		foreach (QString const &listElement, list) {
+		foreach (const QString &listElement, list) {
 			QString field;
 			if (counter % 2 == 0) {
 				if (listElement == "name") {

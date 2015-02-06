@@ -6,7 +6,7 @@
 
 using namespace qReal::gui;
 
-RenameDialog::RenameDialog(QString const &initialText, QWidget *parent)
+RenameDialog::RenameDialog(const QString &initialText, QWidget *parent)
 	: QDialog(parent), mInitialName(initialText)
 {
 	setWindowTitle(QCoreApplication::translate("qReal::gui::RenameDialog", "Enter new name"));
@@ -33,11 +33,11 @@ QString RenameDialog::name() const
 	return mTextBox->text();
 }
 
-QString RenameDialog::selectNewName(QString const &currentName, QWidget *parent)
+QString RenameDialog::selectNewName(const QString &currentName, QWidget *parent)
 {
 	RenameDialog *dialog = new RenameDialog(currentName, parent);
 	dialog->exec();
-	QString const result = dialog->name();
+	const QString result = dialog->name();
 	if (!parent) {
 		delete dialog;
 	}

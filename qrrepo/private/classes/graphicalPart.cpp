@@ -15,7 +15,7 @@ GraphicalPart::GraphicalPart(QDomElement const &element)
 	ValuesSerializer::deserializeNamedVariantsMap(mProperties, element);
 }
 
-QVariant GraphicalPart::property(QString const &name) const
+QVariant GraphicalPart::property(const QString &name) const
 {
 	if (!mProperties.contains(name)) {
 		throw Exception("Trying to get non-existing graphical part property " + name);
@@ -24,7 +24,7 @@ QVariant GraphicalPart::property(QString const &name) const
 	return mProperties[name];
 }
 
-void GraphicalPart::setProperty(QString const &name, const QVariant &value)
+void GraphicalPart::setProperty(const QString &name, const QVariant &value)
 {
 	mProperties.insert(name, value);
 }

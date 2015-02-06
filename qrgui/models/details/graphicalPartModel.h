@@ -41,7 +41,7 @@ public:
 	virtual QVariant data(QModelIndex const &index, int role) const;
 
 	// Override.
-	virtual bool setData(QModelIndex const &index, QVariant const &value, int role);
+	virtual bool setData(QModelIndex const &index, const QVariant &value, int role);
 
 	// Override.
 	virtual int rowCount(QModelIndex const &parent = QModelIndex()) const;
@@ -63,10 +63,10 @@ public:
 	///        but not nesessarily in a model.
 	/// @param index - index of a part, which uniquely identifies it in an element.
 	/// @returns model index of newly added part.
-	QModelIndex addGraphicalPart(Id const &element, int index);
+	QModelIndex addGraphicalPart(const Id &element, int index);
 
 	/// Returns index by given id of an element and index of a part within it.
-	QModelIndex findIndex(Id const &element, int index) const;
+	QModelIndex findIndex(const Id &element, int index) const;
 
 	/// Deletes model contents and reloads it from repo.
 	void reinit();
@@ -76,9 +76,9 @@ public slots:
 
 private:
 	void clear();
-	void load(Id const &parent = Id::rootId());
-	void loadElement(Id const &id);
-	QModelIndex addGraphicalPart(Id const &element, int index, bool addToRepo);
+	void load(const Id &parent = Id::rootId());
+	void loadElement(const Id &id);
+	QModelIndex addGraphicalPart(const Id &element, int index, bool addToRepo);
 
 	qrRepo::GraphicalRepoApi &mRepoApi;
 	QList<QList<modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.

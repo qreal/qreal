@@ -9,9 +9,9 @@ namespace simple {
 class DrawEllipseGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DrawEllipseGenerator(qrRepo::RepoApi const &repo
+	DrawEllipseGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

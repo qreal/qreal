@@ -36,7 +36,7 @@ public:
 	/// Notifies plugins about change of currently open tab. If last tab is closed or current
 	/// tab is not diagram at all (text editor, for example), rootElementId is Id()
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
-	void activeTabChanged(Id const & rootElementId);
+	void activeTabChanged(const Id & rootElementId);
 
 private:
 	QList<HotKeyActionInfo> hotKeyActions() const;

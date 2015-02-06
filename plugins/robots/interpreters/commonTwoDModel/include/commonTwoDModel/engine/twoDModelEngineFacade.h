@@ -49,7 +49,7 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
-	QString const mRobotModelName;
+	const QString mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 
 	QScopedPointer<model::Model> mModel;

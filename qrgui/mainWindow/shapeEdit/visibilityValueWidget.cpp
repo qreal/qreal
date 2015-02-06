@@ -19,7 +19,7 @@ void VisibilityValueWidget::setPropertyInfo(VisibilityConditionsDialog::Property
 	addValues(info.values);
 }
 
-void VisibilityValueWidget::setValue(QString const &value)
+void VisibilityValueWidget::setValue(const QString &value)
 {
 	if (QComboBox *comboBox = dynamic_cast<QComboBox *>(mWidget)) {
 		comboBox->setCurrentIndex(comboBox->findText(value));
@@ -67,7 +67,7 @@ void VisibilityValueWidget::makeWidget(VisibilityConditionsDialog::Type type)
 	mWidget->show();
 }
 
-void VisibilityValueWidget::addValues(QStringList const &values)
+void VisibilityValueWidget::addValues(const QStringList &values)
 {
 	if (QComboBox *widget = dynamic_cast<QComboBox *>(mWidget)) {
 		widget->clear();

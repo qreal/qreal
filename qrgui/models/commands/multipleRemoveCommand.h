@@ -34,9 +34,9 @@ public:
 protected:
 	void addEdgesToBeDeleted(IdList &itemsToDelete);
 
-	virtual commands::AbstractCommand *logicalDeleteCommand(Id const &index);
-	virtual commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
-	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
+	virtual commands::AbstractCommand *logicalDeleteCommand(const Id &index);
+	virtual commands::AbstractCommand *graphicalDeleteCommand(const Id &index);
+	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, const Id &logicalId);
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;

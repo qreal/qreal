@@ -3,9 +3,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-BreakGenerator::BreakGenerator(qrRepo::RepoApi const &repo
+BreakGenerator::BreakGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "break.t", QList<Binding *>(), parent)
 {

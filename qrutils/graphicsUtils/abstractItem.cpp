@@ -151,7 +151,7 @@ void AbstractItem::setX2andY2(qreal x, qreal y)
 	update();
 }
 
-void AbstractItem::setCoordinates(QRectF const &pos)
+void AbstractItem::setCoordinates(const QRectF &pos)
 {
 	mX1 = pos.left();
 	mY1 = pos.top();
@@ -239,7 +239,7 @@ void AbstractItem::reverseOldResizingItem(QPointF begin, QPointF end)
 	}
 }
 
-void AbstractItem::setPenStyle(QString const &text)
+void AbstractItem::setPenStyle(const QString &text)
 {
 	if (text == "Solid")
 		mPen.setStyle(Qt::SolidLine);
@@ -260,12 +260,12 @@ void AbstractItem::setPenWidth(int width)
 	mPen.setWidth(width);
 }
 
-void AbstractItem::setPenColor(QString const &text)
+void AbstractItem::setPenColor(const QString &text)
 {
 	mPen.setColor(QColor(text));
 }
 
-void AbstractItem::setBrushStyle(QString const &text)
+void AbstractItem::setBrushStyle(const QString &text)
 {
 	if (text == "Solid") {
 		mBrush.setStyle(Qt::SolidPattern);
@@ -274,32 +274,32 @@ void AbstractItem::setBrushStyle(QString const &text)
 	}
 }
 
-void AbstractItem::setBrushColor(QString const &text)
+void AbstractItem::setBrushColor(const QString &text)
 {
 	mBrush.setColor(QColor(text));
 }
 
-void AbstractItem::setPen(QString const &penStyle, int width, QString const &penColor)
+void AbstractItem::setPen(const QString &penStyle, int width, const QString &penColor)
 {
 	setPenStyle(penStyle);
 	setPenWidth(width);
 	setPenColor(penColor);
 }
 
-void AbstractItem::setBrush(QString const &brushStyle, QString const &brushColor)
+void AbstractItem::setBrush(const QString &brushStyle, const QString &brushColor)
 {
 	setBrushStyle(brushStyle);
 	setBrushColor(brushColor);
 }
 
-void AbstractItem::setPenBrush(QString const &penStyle, int width, QString const &penColor
-		, QString const &brushStyle, QString const &brushColor)
+void AbstractItem::setPenBrush(const QString &penStyle, int width, const QString &penColor
+		, const QString &brushStyle, const QString &brushColor)
 {
 	setPen(penStyle, width, penColor);
 	setBrush(brushStyle, brushColor);
 }
 
-void AbstractItem::setXandY(QDomElement& dom, QRectF const &rect)
+void AbstractItem::setXandY(QDomElement& dom, const QRectF &rect)
 {
 	dom.setAttribute("y1", rect.top());
 	dom.setAttribute("x1", rect.left());
@@ -307,7 +307,7 @@ void AbstractItem::setXandY(QDomElement& dom, QRectF const &rect)
 	dom.setAttribute("x2", rect.right());
 }
 
-QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, QString const &domName)
+QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString &domName)
 {
 	QDomElement dom = document.createElement(domName);
 	dom.setAttribute("fill", mBrush.color().name());
@@ -352,7 +352,7 @@ QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, QString const
 	return dom;
 }
 
-QRectF AbstractItem::sceneBoundingRectCoord(QPoint const &topLeftPicture)
+QRectF AbstractItem::sceneBoundingRectCoord(const QPoint &topLeftPicture)
 {
 	QRectF itemBoundingRect = calcNecessaryBoundingRect();
 	qreal const x1 = scenePos().x() + itemBoundingRect.x() - topLeftPicture.x();

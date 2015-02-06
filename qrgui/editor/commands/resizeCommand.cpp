@@ -2,18 +2,18 @@
 
 using namespace qReal::commands;
 
-ResizeCommand::ResizeCommand(EditorViewScene const *scene, Id const &id)
+ResizeCommand::ResizeCommand(EditorViewScene const *scene, const Id &id)
 	: NodeElementCommand(scene, id)
 {
 }
 
-ResizeCommand::ResizeCommand(EditorView const *view, Id const &id)
+ResizeCommand::ResizeCommand(EditorView const *view, const Id &id)
 	: NodeElementCommand(&view->editorViewScene(), id)
 {
 }
 
-ResizeCommand::ResizeCommand(EditorViewScene const *scene, Id const &id
-		, QRectF const &oldGeometry, QRectF const &newGeometry)
+ResizeCommand::ResizeCommand(EditorViewScene const *scene, const Id &id
+		, const QRectF &oldGeometry, const QRectF &newGeometry)
 	: NodeElementCommand(scene, id)
 {
 	mOldGeometrySnapshot.insert(id, oldGeometry);
@@ -24,8 +24,8 @@ ResizeCommand::ResizeCommand(EditorViewScene const *scene, Id const &id
 }
 
 ResizeCommand *ResizeCommand::create(NodeElement const * const element
-		, QRectF const &newContents, QPointF const &newPos
-		, QRectF const &oldContents, QPointF const &oldPos)
+		, const QRectF &newContents, const QPointF &newPos
+		, const QRectF &oldContents, const QPointF &oldPos)
 {
 	QRectF newContentsAndPos = newContents;
 	newContentsAndPos.moveTo(newPos);
@@ -61,7 +61,7 @@ bool ResizeCommand::restoreState()
 
 void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 {
-	foreach (Id const &id, snapshot.keys()) {
+	foreach (const Id &id, snapshot.keys()) {
 		NodeElement *element = nodeById(id);
 		if (!element->parentItem()) {
 			resizeTree(snapshot, id);
@@ -77,7 +77,7 @@ void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 	}
 }
 
-void ResizeCommand::resizeTree(QMap<Id, QRectF> const &snapshot, Id const &root)
+void ResizeCommand::resizeTree(QMap<Id, QRectF> const &snapshot, const Id &root)
 {
 	NodeElement *element = nodeById(root);
 	foreach (NodeElement *child, element->childNodes()) {
@@ -88,7 +88,7 @@ void ResizeCommand::resizeTree(QMap<Id, QRectF> const &snapshot, Id const &root)
 	resize(element, snapshot[root]);
 }
 
-void ResizeCommand::resize(NodeElement * const element, QRectF const &geometry)
+void ResizeCommand::resize(NodeElement * const element, const QRectF &geometry)
 {
 	if (element && geometryOf(element) != geometry) {
 		ResizeHandler handler(element);
@@ -189,7 +189,7 @@ void ResizeCommand::stopEdgeTracking()
 
 QRectF ResizeCommand::geometryOf(NodeElement const *element) const
 {
-	QRectF const geom = element->contentsRect();
+	const QRectF geom = element->contentsRect();
 	return geom.translated(element->pos() - geom.topLeft());
 }
 

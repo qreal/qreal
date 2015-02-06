@@ -19,7 +19,7 @@ class QRGUI_TEXT_EDITOR_EXPORT QScintillaTextEdit : public QsciScintilla
 
 public:
 	QScintillaTextEdit();
-	QScintillaTextEdit(QPersistentModelIndex const &index, int const &role);
+	QScintillaTextEdit(const QPersistentModelIndex &index, const int &role);
 
 	/// Destructor which runs after closing the tab with text editor. Allows to save written text.
 	~QScintillaTextEdit();
@@ -33,7 +33,7 @@ public:
 
 signals:
 	/// Emitted in destructor to save written text to according model element
-	void textSaved(QString const &text, QPersistentModelIndex const &index, int const &role);
+	void textSaved(const QString &text, const QPersistentModelIndex &index, const int &role);
 
 	void textWasModified(text::QScintillaTextEdit *code);
 
@@ -45,8 +45,8 @@ private:
 	/// Configures some settings such as autoindentation and margin properties, brackets highlighting, etc
 	void setDefaultSettings();
 
-	QPersistentModelIndex const mIndex;
-	int const mRole;
+	const QPersistentModelIndex mIndex;
+	const int mRole;
 	LanguageInfo mLanguage;
 };
 

@@ -2,37 +2,37 @@
 
 using namespace generatorBase::lua;
 
-int const otherNode = 100;
-int const functionCall = 99;
+const int otherNode = 100;
+const int functionCall = 99;
 
-int const logicalNot = 10;
-int const bitwiseNot = 10;
-int const unaryPlus = 10;
-int const unaryNegation = 10;
+const int logicalNot = 10;
+const int bitwiseNot = 10;
+const int unaryPlus = 10;
+const int unaryNegation = 10;
 
-int const multiplication = 9;
-int const division = 9;
-int const modulo = 9;
+const int multiplication = 9;
+const int division = 9;
+const int modulo = 9;
 
-int const addition = 8;
-int const subtraction = 8;
+const int addition = 8;
+const int subtraction = 8;
 
-int const bitwiseLeftShift = 7;
-int const bitwiseRightShift = 7;
+const int bitwiseLeftShift = 7;
+const int bitwiseRightShift = 7;
 
-int const lessThan = 6;
-int const lessOrEqual = 6;
-int const greaterThan = 6;
-int const greaterOrEqual = 6;
+const int lessThan = 6;
+const int lessOrEqual = 6;
+const int greaterThan = 6;
+const int greaterOrEqual = 6;
 
-int const equality = 5;
-int const inequality = 5;
+const int equality = 5;
+const int inequality = 5;
 
-int const bitwiseAnd = 4;
-int const bitwiseXor = 3;
-int const bitwiseOr = 2;
-int const logicalAnd = 1;
-int const logicalOr = 0;
+const int bitwiseAnd = 4;
+const int bitwiseXor = 3;
+const int bitwiseOr = 2;
+const int logicalAnd = 1;
+const int logicalOr = 0;
 
 int PrecedenceConverter::precedence(qrtext::core::ast::Node const &node)
 {
@@ -58,7 +58,7 @@ void PrecedenceConverter::returnAssociativity(qrtext::core::Associativity associ
 	mLastRequestAssociativity = associativity;
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::UnaryMinus const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::UnaryMinus &)
 {
 	returnPrecedence(unaryNegation);
 }
@@ -68,25 +68,25 @@ void PrecedenceConverter::visit(qrtext::lua::ast::Not const &)
 	returnPrecedence(logicalNot);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::BitwiseNegation const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::BitwiseNegation &)
 {
 	returnPrecedence(bitwiseNot);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::LogicalAnd const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::LogicalAnd &)
 {
 	returnPrecedence(logicalAnd);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::LogicalOr const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::LogicalOr &)
 {
 	returnPrecedence(logicalOr);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Addition const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Addition &)
 {
 	returnPrecedence(addition);
 	returnAssociativity(qrtext::core::Associativity::left);

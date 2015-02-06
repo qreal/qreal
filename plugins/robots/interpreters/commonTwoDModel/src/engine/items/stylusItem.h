@@ -30,14 +30,14 @@ public:
 	void drawFieldForResizeItem(QPainter* painter) override;
 	void drawScalingRects(QPainter* painter);
 
-	void setPenStyle(QString const &text) override;
+	void setPenStyle(const QString &text) override;
 	void setPenWidth(int width) override;
-	void setPenColor(QString const &text) override;
-	void setBrushStyle(QString const &text) override;
-	void setBrushColor(QString const &text) override;
+	void setPenColor(const QString &text) override;
+	void setBrushStyle(const QString &text) override;
+	void setBrushColor(const QString &text) override;
 
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
-	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) override;
+	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
 	void deserialize(QDomElement const &element) override;
 
 private:

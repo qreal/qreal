@@ -14,8 +14,8 @@
 using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
-		: mEdge(NULL)
-		, mMaster(NULL)
+		: mEdge(nullptr)
+		, mMaster(nullptr)
 		, mColor(Qt::blue)
 		, mPressed(false)
 {
@@ -92,7 +92,7 @@ void EmbeddedLinker::initTitle()
 {
 	// TODO: It is not Label, it is simply some text on a scene. Refactor this.
 	// Temporarily commented out.
-//	EditorManagerInterface const &editorManagerInterface
+//	const EditorManagerInterface &editorManagerInterface
 //			= dynamic_cast<EditorViewScene *>(scene())->mainWindow()->editorManager();
 
 //	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor()
@@ -141,7 +141,7 @@ bool EmbeddedLinker::isDirected() const
 void EmbeddedLinker::takePosition(int index, int maxIndex)
 {
 	qreal const pi = 3.141592;
-	QRectF const bounding = mMaster->boundingRect();
+	const QRectF bounding = mMaster->boundingRect();
 
 	qreal const top = bounding.topLeft().y();
 	qreal const left = bounding.topLeft().x();
@@ -211,7 +211,7 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event)
 	mPressed = true;
 	if (event->button() == Qt::LeftButton) {
-		mEdge = NULL;
+		mEdge = nullptr;
 	}
 }
 
@@ -224,12 +224,12 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (!scene) {
 			return;
 		}
-		QString const type = "qrm:/" + mMaster->id().editor() + "/" +
+		const QString type = "qrm:/" + mMaster->id().editor() + "/" +
 							 mMaster->id().diagram() + "/" + mEdgeType.element();
 		if (scene->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			mInitialClickPoint = event->scenePos();
-			Id const edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
+			const Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
 			mCreateEdgeCommand->redo();
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
@@ -237,7 +237,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (mEdge) {
 			mMaster->setZValue(1);
 			mEdge->setSrc(mMaster);
-			mEdge->setDst(NULL);
+			mEdge->setDst(nullptr);
 			mEdge->highlight();
 			mEdge->tuneForLinker();
 		}
@@ -254,12 +254,12 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (!mPressed && scene && mEdge) {
 		mEdge->hide();
-		QPointF const &eScenePos = event->scenePos();
+		const QPointF &eScenePos = event->scenePos();
 		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos, QTransform()));
 		mEdge->show();
 		int result = 0;
 
-		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
+		commands::CreateElementCommand *createElementFromMenuCommand = nullptr;
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {
@@ -291,14 +291,14 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement *target = dynamic_cast<NodeElement*>(scene->lastCreatedFromLinker());
 
 		if (result == -1) {
-			mEdge = NULL;
+			mEdge = nullptr;
 		} else if ((result == 1) && target) {
 			mEdge->setDst(target);
 			target->storeGeometry();
 		}
 
 		if (result != -1) {
-			QPointF const position = mMaster->closestPortPoint(mInitialClickPoint, mEdge->fromPortTypes());
+			const QPointF position = mMaster->closestPortPoint(mInitialClickPoint, mEdge->fromPortTypes());
 			mEdge->setSrc(mMaster);
 			mEdge->setPos(position);
 			mEdge->placeStartTo(QPointF());
@@ -323,6 +323,6 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 	mPressed = false;
-	mEdge = NULL;
+	mEdge = nullptr;
 }
 

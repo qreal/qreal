@@ -114,8 +114,8 @@ void D2ModelWidget::initWidget()
 	mUi->penWidthSpinBox->setValue(mWidth);
 	mUi->penColorComboBox->setColor(QColor("black"));
 
-	QStringList const colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
-	QStringList const translatedColorList = { tr("Black"), tr("Blue"), tr("Green"), tr("Yellow"), tr("Red") };
+	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
+	const QStringList translatedColorList = { tr("Black"), tr("Blue"), tr("Green"), tr("Yellow"), tr("Red") };
 
 	mUi->penColorComboBox->setColorList(colorList, translatedColorList);
 	mUi->penColorComboBox->setColor(QColor("black"));
@@ -395,7 +395,7 @@ void D2ModelWidget::saveWorldModel()
 void D2ModelWidget::loadWorldModel()
 {
 	// Loads world and robot models simultaneously.
-	QString const loadFileName = QRealFileDialog::getOpenFileName("Open2DModelWidget", this
+	const QString loadFileName = QRealFileDialog::getOpenFileName("Open2DModelWidget", this
 			, tr("Loading world and robot model"), ".", tr("2D model saves (*.xml)"));
 	if (loadFileName.isEmpty()) {
 		return;
@@ -405,12 +405,12 @@ void D2ModelWidget::loadWorldModel()
 	loadXml(save);
 }
 
-void D2ModelWidget::reinitSensor(RobotItem *robotItem, PortInfo const &port)
+void D2ModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
 {
 	robotItem->removeSensor(port);
 	RobotModel &robotModel = robotItem->robotModel();
 
-	DeviceInfo const &device = robotModel.configuration().type(port);
+	const DeviceInfo &device = robotModel.configuration().type(port);
 	if (device.isNull() || (
 			/// @todo: Add supported by 2D model sensors here
 			!device.isA<TouchSensor>()
@@ -469,7 +469,7 @@ void D2ModelWidget::changePenWidth(int width)
 
 void D2ModelWidget::changePenColor(int textIndex)
 {
-	QString const text = mUi->penColorComboBox->colorByIndex(textIndex).name();
+	const QString text = mUi->penColorComboBox->colorByIndex(textIndex).name();
 	mScene->setPenColorItems(text);
 	for (AbstractItem * const item : selectedColorItems()) {
 		item->setPenColor(text);
@@ -568,7 +568,7 @@ engine::TwoDModelDisplayWidget *D2ModelWidget::display()
 	return mDisplay;
 }
 
-void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible)
+void D2ModelWidget::setSensorVisible(const interpreterBase::robotModel::PortInfo &port, bool isVisible)
 {
 	RobotModel *robotModel = mModel.robotModels()[0];
 
@@ -584,7 +584,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit widgetClosed();
 }
 
-SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
+SensorItem *D2ModelWidget::sensorItem(const interpreterBase::robotModel::PortInfo &port)
 {
 	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
 }
@@ -640,7 +640,7 @@ void D2ModelWidget::setDisplayVisibility(bool visible)
 {
 	mDisplayIsVisible = visible;
 	mDisplay->setVisible(visible);
-	QString const direction = visible ? "right" : "left";
+	const QString direction = visible ? "right" : "left";
 	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
 	SettingsManager::setValue("2d_displayVisible", visible);
 }
@@ -719,8 +719,8 @@ void D2ModelWidget::syncCursorButtons()
 	}
 }
 
-void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device, Reason reason)
+void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(device)
@@ -761,8 +761,8 @@ void D2ModelWidget::updateWheelComboBoxes()
 		return;
 	}
 
-	PortInfo const leftWheelOldPort = mUi->leftWheelComboBox->currentData().value<PortInfo>();
-	PortInfo const rightWheelOldPort = mUi->rightWheelComboBox->currentData().value<PortInfo>();
+	const PortInfo leftWheelOldPort = mUi->leftWheelComboBox->currentData().value<PortInfo>();
+	const PortInfo rightWheelOldPort = mUi->rightWheelComboBox->currentData().value<PortInfo>();
 
 	mUi->leftWheelComboBox->clear();
 	mUi->rightWheelComboBox->clear();
@@ -771,17 +771,17 @@ void D2ModelWidget::updateWheelComboBoxes()
 	mUi->leftWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 	mUi->rightWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 
-	for (PortInfo const &port : mSelectedRobotItem->robotModel().info().availablePorts()) {
-		for (DeviceInfo const &device : mSelectedRobotItem->robotModel().info().allowedDevices(port)) {
+	for (const PortInfo &port : mSelectedRobotItem->robotModel().info().availablePorts()) {
+		for (const DeviceInfo &device : mSelectedRobotItem->robotModel().info().allowedDevices(port)) {
 			if (device.isA<Motor>()) {
-				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
+				const QString item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
 				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
 				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
 			}
 		}
 	}
 
-	auto setSelectedPort = [](QComboBox * const comboBox, PortInfo const &port) {
+	auto setSelectedPort = [](QComboBox * const comboBox, const PortInfo &port) {
 		for (int i = 0; i < comboBox->count(); ++i) {
 			if (comboBox->itemData(i).value<PortInfo>() == port) {
 				comboBox->setCurrentIndex(i);
@@ -832,9 +832,9 @@ void D2ModelWidget::onRobotListChange(RobotItem *robotItem)
 
 	if (robotItem) {
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded
-				, [this, robotItem](PortInfo const &port) { reinitSensor(robotItem, port); });
+				, [this, robotItem](const PortInfo &port) { reinitSensor(robotItem, port); });
 
-		auto checkAndSaveToRepo = [this](PortInfo const &port, bool isLoaded) {
+		auto checkAndSaveToRepo = [this](const PortInfo &port, bool isLoaded) {
 			Q_UNUSED(port);
 			if (!isLoaded) {
 				saveToRepo();

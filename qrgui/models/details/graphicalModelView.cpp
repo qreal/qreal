@@ -15,19 +15,19 @@ GraphicalModelView::GraphicalModelView(LogicalModel * const model)
 
 void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int end)
 {
-	QPersistentModelIndex const parentIndex = parent.sibling(parent.row(), 0);
+	const QPersistentModelIndex parentIndex = parent.sibling(parent.row(), 0);
 	Id parentLogicalId = parentIndex.data(roles::logicalIdRole).value<Id>();
 
 	for (int row = start; row <= end; ++row) {
-		QPersistentModelIndex const current = model()->index(row, 0, parent);
-		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
+		const QPersistentModelIndex current = model()->index(row, 0, parent);
+		const Id logicalId = current.data(roles::logicalIdRole).value<Id>();
 		if (parentLogicalId.isNull() || parentLogicalId.editor() != "MetaEditor"
 				|| logicalId.editor() != "MetaEditor")
 		{
 			parentLogicalId = Id::rootId();
 		}
 
-		QString const name = current.data(Qt::DisplayRole).toString();
+		const QString name = current.data(Qt::DisplayRole).toString();
 		if (logicalId.isNull()) {
 			// No logical Id for this item, so logical model shouldn't care
 			// about it.
@@ -51,12 +51,12 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex current = topLeft.sibling(row, 0);
 
-		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
+		const Id logicalId = current.data(roles::logicalIdRole).value<Id>();
 		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString());
 	}
 
-	Id const parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
-	Id const childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
+	const Id parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
+	const Id childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
 	if (parentLogicalId.editor() == "MetaEditor" && childLogicalId.editor() == "MetaEditor"
 			&& parentLogicalId != childLogicalId)
 	{

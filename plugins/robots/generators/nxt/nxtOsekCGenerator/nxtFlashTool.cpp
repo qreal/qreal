@@ -101,9 +101,9 @@ bool NxtFlashTool::askToRun(QWidget *parent)
 
 void NxtFlashTool::readNxtFlashData()
 {
-	QStringList const output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
+	const QStringList output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
 
-	foreach (QString const &error, output) {
+	foreach (const QString &error, output) {
 		if (error == "NXT not found. Is it properly plugged in via USB?") {
 			mErrorReporter->addError(tr("NXT not found. Check USB connection and make sure the robot is ON"));
 		} else if (error == "NXT found, but not running in reset mode.") {
@@ -153,8 +153,8 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 
 void NxtFlashTool::readNxtUploadData()
 {
-	QStringList const output = QString(mUploadProcess.readAll()).split("\n", QString::SkipEmptyParts);
-	QString const error = mUploadProcess.readAllStandardError();
+	const QStringList output = QString(mUploadProcess.readAll()).split("\n", QString::SkipEmptyParts);
+	const QString error = mUploadProcess.readAllStandardError();
 	QLOG_INFO() << "NXT flash tool:" << output;
 	if (!error.isEmpty()) {
 		QLOG_ERROR() << "NXT flash tool: error:" << error;
@@ -164,7 +164,7 @@ void NxtFlashTool::readNxtUploadData()
 	   to determine in which state we are (to show appropriate error if something goes wrong)
 	*/
 
-	foreach (QString const &error, output) {
+	foreach (const QString &error, output) {
 		if (error.contains("Removing ")) {
 			mUploadState = clean;
 		} else if (error.contains("Compiling ")) {

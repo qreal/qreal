@@ -4,7 +4,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 SimpleIfInsideCycleRule::SimpleIfInsideCycleRule(SemanticTree *tree
-		, Id const &id, LinkInfo const &next)
+		, const Id &id, LinkInfo const &next)
 	: SimpleVisitedRuleBase(tree, id, next)
 {
 }
@@ -26,8 +26,8 @@ bool SimpleIfInsideCycleRule::apply()
 	ZoneNode * const otherZone = parentIf->thenZone() == thisZone
 			? parentIf->elseZone() : parentIf->thenZone();
 
-	QLinkedList<SemanticNode *> const detachedThisBranch = thisZone->removeStartingFrom(NULL);
-	QLinkedList<SemanticNode *> const detachedOtherBranch = otherZone->removeStartingFrom(NULL);
+	QLinkedList<SemanticNode *> const detachedThisBranch = thisZone->removeStartingFrom(nullptr);
+	QLinkedList<SemanticNode *> const detachedOtherBranch = otherZone->removeStartingFrom(nullptr);
 
 	parentIf->appendSiblings(detachedThisBranch);
 	parentLoop->appendSiblings(detachedOtherBranch);

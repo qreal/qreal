@@ -22,13 +22,13 @@
 using namespace qReal;
 using namespace gui;
 
-int const gestureTipSize = 30;
+const int gestureTipSize = 30;
 
 DraggableElement::DraggableElement(
 		MainWindow &mainWindow
 		, PaletteElement const &data
 		, bool iconsOnly
-		, EditorManagerInterface const &editorManagerProxy
+		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
 		)
 	: QWidget(parent)
@@ -39,7 +39,7 @@ DraggableElement::DraggableElement(
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);
 
-	int const size = iconsOnly ? 50 : 30;
+	const int size = iconsOnly ? 50 : 30;
 	mLabel = new QLabel(this);
 	mLabel->setPixmap(mData.icon().pixmap(size - 2, size - 2));
 	layout->addWidget(mLabel);
@@ -55,7 +55,7 @@ DraggableElement::DraggableElement(
 
 	QString description = mData.description();
 	if (!description.isEmpty()) {
-		QString const rawGesture = mEditorManagerProxy.mouseGesture(data.id());
+		const QString rawGesture = mEditorManagerProxy.mouseGesture(data.id());
 		if (!rawGesture.isEmpty()) {
 			QSize const size(gestureTipSize, gestureTipSize);
 			gestures::GesturePainter painter(rawGesture, Qt::white, Qt::blue, gestureTipSize);
@@ -63,7 +63,7 @@ DraggableElement::DraggableElement(
 			QByteArray byteArray;
 			QBuffer buffer(&byteArray);
 			gesture.save(&buffer, "PNG");
-			QString const gestureDescription = tr("Mouse gesture");
+			const QString gestureDescription = tr("Mouse gesture");
 			description += QString("<br><table><tr><td valign='middle'>%1:&nbsp;&nbsp;&nbsp;</td>"\
 					"<td><img src=\"data:image/png;base64,%2\"/></td></tr></table>")
 							.arg(gestureDescription, QString(byteArray.toBase64()));
@@ -121,8 +121,8 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 void DraggableElement::changeAppearancePaletteActionTriggered()
 {
 	QAction const * const action = static_cast<QAction *>(sender());
-	Id const id = action->data().value<Id>();
-	QString const propertyValue = mEditorManagerProxy.shape(id);
+	const Id id = action->data().value<Id>();
+	const QString propertyValue = mEditorManagerProxy.shape(id);
 	mMainWindow.openShapeEditor(id, propertyValue, &mEditorManagerProxy, false);
 }
 
@@ -157,8 +157,8 @@ void DraggableElement::deleteElement()
 	mEditorManagerProxy.deleteElement(mDeletedElementId);
 	/// @todo: Maybe we do not need to remove elements if we can restore them?
 	/// We can make elements grayscaled by disabling corresponding element in palette.
-	IdList const logicalIdList = mMainWindow.models().logicalRepoApi().logicalElements(mDeletedElementId.type());
-	for (Id const &logicalId : logicalIdList) {
+	const IdList logicalIdList = mMainWindow.models().logicalRepoApi().logicalElements(mDeletedElementId.type());
+	for (const Id &logicalId : logicalIdList) {
 		QModelIndex const index = mMainWindow.models().logicalModelAssistApi().indexById(logicalId);
 		mMainWindow.models().logicalModel()->removeRow(index.row(), index.parent());
 	}
@@ -193,10 +193,10 @@ void DraggableElement::checkElementForRootDiagramNode()
 void DraggableElement::checkElementForChildren()
 {
 	mIsRootDiagramNode = false;
-	IdList const children = mEditorManagerProxy.children(mDeletedElementId);
+	const IdList children = mEditorManagerProxy.children(mDeletedElementId);
 	if (!children.isEmpty()) {
 		QString childrenNames;
-		foreach (Id const child, children) {
+		foreach (const Id child, children) {
 			childrenNames += " " + mEditorManagerProxy.friendlyName(child) + ",";
 		}
 		if (!childrenNames.isEmpty()) {
@@ -243,7 +243,7 @@ bool DraggableElement::event(QEvent *event)
 		return QWidget::event(event);
 	}
 
-	QPoint const pos(touchEvent->touchPoints()[0].pos().toPoint());
+	const QPoint pos(touchEvent->touchPoints()[0].pos().toPoint());
 
 	switch(event->type()) {
 	case QEvent::TouchBegin: {

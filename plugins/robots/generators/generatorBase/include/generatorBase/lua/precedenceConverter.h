@@ -17,12 +17,12 @@ private:
 	void returnPrecedence(int precedence);
 	void returnAssociativity(qrtext::core::Associativity associativity);
 
-	void visit(qrtext::lua::ast::UnaryMinus const &node) override;
+	void visit(const qrtext::lua::ast::UnaryMinus &node) override;
 	void visit(qrtext::lua::ast::Not const &node) override;
-	void visit(qrtext::lua::ast::BitwiseNegation const &node) override;
-	void visit(qrtext::lua::ast::LogicalAnd const &node) override;
-	void visit(qrtext::lua::ast::LogicalOr const &node) override;
-	void visit(qrtext::lua::ast::Addition const &node) override;
+	void visit(const qrtext::lua::ast::BitwiseNegation &node) override;
+	void visit(const qrtext::lua::ast::LogicalAnd &node) override;
+	void visit(const qrtext::lua::ast::LogicalOr &node) override;
+	void visit(const qrtext::lua::ast::Addition &node) override;
 	void visit(qrtext::lua::ast::Subtraction const &node) override;
 	void visit(qrtext::lua::ast::Multiplication const &node) override;
 	void visit(qrtext::lua::ast::Division const &node) override;

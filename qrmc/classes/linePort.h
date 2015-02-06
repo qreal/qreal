@@ -26,6 +26,6 @@ namespace qrmc {
 		int mHeight;
 
 		void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
-		QString generate(QString const &lineTemplate, bool isScaled) const;
+		QString generate(const QString &lineTemplate, bool isScaled) const;
 	};
 }

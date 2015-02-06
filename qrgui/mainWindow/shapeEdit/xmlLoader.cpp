@@ -32,14 +32,14 @@ void XmlLoader::initListScalePoint()
 	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::bottomRightY, QColor(Qt::black)));
 }
 
-void XmlLoader::readString(QString const &text)
+void XmlLoader::readString(const QString &text)
 {
 	mReadFile = false;
 	mDocument.setContent(text);
 	readDocument();
 }
 
-void XmlLoader::readFile(QString const &fileName)
+void XmlLoader::readFile(const QString &fileName)
 {
 	mReadFile = true;
 	mDocument = utils::xmlUtils::loadDocument(fileName);
@@ -295,7 +295,7 @@ QPointF XmlLoader::readXandY(QDomElement const &docItem)
 void XmlLoader::readLine(QDomElement const &line)
 {
 	QPair<QPointF, QPointF> rect = readLineOfXandY(line);
-	Line* item = new Line(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
+	Line* item = new Line(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), nullptr);
 	item->readPenBrush(line);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(line));
@@ -306,7 +306,7 @@ void XmlLoader::readLine(QDomElement const &line)
 void XmlLoader::readEllipse(QDomElement const &ellipse)
 {
 	QRectF rect = readRectOfXandY(ellipse);
-	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(ellipse));
@@ -319,7 +319,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 	QRectF rect = readRectOfXandY(arch);
 	int spanAngle = arch.attribute("spanAngle", "0").toInt();
 	int startAngle = arch.attribute("startAngle", "0").toInt();
-	Arch* item = new Arch(rect, startAngle, spanAngle, NULL);
+	Arch* item = new Arch(rect, startAngle, spanAngle, nullptr);
 	item->setVisibilityCondition(readVisibility(arch));
 	mScene->addItem(item);
 	mScene->setZValue(item);
@@ -328,7 +328,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 void XmlLoader::readRectangle(QDomElement const &rectangle)
 {
 	QRectF rect = readRectOfXandY(rectangle);
-	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(rectangle));
@@ -340,9 +340,9 @@ void XmlLoader::readImage(QDomElement const &image)
 {
 	QRectF rect = readRectOfXandY(image);
 	QString fileName = image.attribute("name", "error");
-	QString const workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
-	QString const fullFileName = workingDirName + "/" + fileName;
-	Image* item = new Image(fullFileName, rect.left(), rect.top(), NULL);
+	const QString workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
+	const QString fullFileName = workingDirName + "/" + fileName;
+	Image* item = new Image(fullFileName, rect.left(), rect.top(), nullptr);
 	item->setX2andY2(rect.right(), rect.bottom());
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(image));
@@ -354,12 +354,12 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 {
 	QDomNodeList stylusAttributes = stylus.childNodes();
 
-	Stylus* stylusItem = new Stylus(0, 0, NULL);
+	Stylus* stylusItem = new Stylus(0, 0, nullptr);
 	for (int i = 0; i < stylusAttributes.length(); ++i) {
 		QDomElement type = stylusAttributes.at(i).toElement();
 		if (type.tagName() == "line") {
 			QRectF rect = readRectOfXandY(type);
-			Line* item = new Line(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+			Line* item = new Line(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
 			item->readPenBrush(type);
 			item->setVisibilityCondition(readVisibility(type));
 			stylusItem->addLineInList(item);
@@ -570,7 +570,7 @@ void XmlLoader::readText(QDomElement const &text)
 void XmlLoader::readLabel(QDomElement const &label)
 {
 	QPointF point = readXandY(label);
-	Text* item = NULL;
+	Text* item = nullptr;
 	if (label.hasAttribute("text")) {
 		item = new Text(static_cast<int>(point.x()), static_cast<int>(point.y()), label.attribute("text", ""));
 		item->setIsDynamicText(false);
@@ -605,7 +605,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 	}
 
 	QPair<QPointF, QPointF> rect = readLinePortOfXandY(start, end);
-	LinePort* item = new LinePort(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
+	LinePort* item = new LinePort(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), nullptr);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(linePort));
 	item->setType(linePort.attribute("type", "NonTyped"));
@@ -616,7 +616,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 void XmlLoader::readPointPort(QDomElement const &pointPort)
 {
 	QPointF point = readXandY(pointPort);
-	PointPort* item = new PointPort(point.x(), point.y(), NULL);
+	PointPort* item = new PointPort(point.x(), point.y(), nullptr);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(pointPort));
 	item->setType(pointPort.attribute("type", "NonTyped"));

@@ -13,7 +13,7 @@ public:
 	~VisibilityValueWidget();
 
 	void setPropertyInfo(VisibilityConditionsDialog::PropertyInfo const &info);
-	void setValue(QString const &value);
+	void setValue(const QString &value);
 	QString value() const;
 signals:
 
@@ -21,7 +21,7 @@ public slots:
 
 private:
 	void makeWidget(VisibilityConditionsDialog::Type type);
-	void addValues(QStringList const &values);
+	void addValues(const QStringList &values);
 
 	QWidget *mWidget;
 };

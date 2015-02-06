@@ -1,6 +1,6 @@
 #include "statPoint.h"
 
-StatPoint::StatPoint(QPointF const &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)
+StatPoint::StatPoint(const QPointF &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)
 	: PortInterface(impl), mPoint(point), mPropX(propX), mPropY(propY), mInitWidth(initWidth), mInitHeight(initHeight)
 {}
 
@@ -9,7 +9,7 @@ StatPoint::operator QPointF () const
 	return mPoint;
 }
 
-void StatPoint::operator= (QPointF const &p)
+void StatPoint::operator= (const QPointF &p)
 {
 	mPoint = p;
 	mPropX = false;
@@ -18,7 +18,7 @@ void StatPoint::operator= (QPointF const &p)
 	mInitWidth = 1;
 }
 
-void StatPoint::paint(QPainter *painter, QRectF const &contents) const
+void StatPoint::paint(QPainter *painter, const QRectF &contents) const
 {
 	qreal const x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
 	qreal const y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
@@ -41,7 +41,7 @@ void StatPoint::paint(QPainter *painter, QRectF const &contents) const
 	painter->restore();
 }
 
-QPointF StatPoint::transformForContents(QRectF const &contents) const
+QPointF StatPoint::transformForContents(const QRectF &contents) const
 {
 	qreal const x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
 	qreal const y = mPoint.y() * (mPropY ? mInitHeight : contents.height());

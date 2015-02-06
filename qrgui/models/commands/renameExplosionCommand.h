@@ -16,7 +16,7 @@ public:
 	RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi const * const graphicalApi
 		, models::Exploser &exploser
-		, Id const &target);
+		, const Id &target);
 
 	virtual ~RenameExplosionCommand();
 

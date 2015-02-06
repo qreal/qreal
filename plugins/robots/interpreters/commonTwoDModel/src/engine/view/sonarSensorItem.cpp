@@ -5,8 +5,8 @@ using namespace interpreterBase::robotModel;
 
 SonarSensorItem::SonarSensorItem(model::WorldModel const &worldModel
 		, model::SensorsConfiguration &configuration
-		, PortInfo const &port
-		, QString const &pathToImage
+		, const PortInfo &port
+		, const QString &pathToImage
 		, QRect const &imageSize
 		)
 	: SensorItem(configuration, port, pathToImage, imageSize)

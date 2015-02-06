@@ -21,7 +21,7 @@ class RobotItem : public QObject, public graphicsUtils::RotateItem
 	Q_OBJECT
 
 public:
-	RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel, QObject *parent = 0);
+	RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel, QObject *parent = 0);
 
 	QRectF rect() const override;
 	void setSelected(bool isSelected) override;
@@ -43,10 +43,10 @@ public:
 	/// Returns a mapping of ports to connected configured sensors.
 	QMap<interpreterBase::robotModel::PortInfo, SensorItem *> const &sensors() const;
 
-	void addSensor(interpreterBase::robotModel::PortInfo const &port, SensorItem *sensor);
-	void removeSensor(interpreterBase::robotModel::PortInfo const &port);
-	void updateSensorPosition(interpreterBase::robotModel::PortInfo const &port);
-	void updateSensorRotation(interpreterBase::robotModel::PortInfo const &port);
+	void addSensor(const interpreterBase::robotModel::PortInfo &port, SensorItem *sensor);
+	void removeSensor(const interpreterBase::robotModel::PortInfo &port);
+	void updateSensorPosition(const interpreterBase::robotModel::PortInfo &port);
+	void updateSensorRotation(const interpreterBase::robotModel::PortInfo &port);
 
 	void setNeededBeep(bool isNeededBeep);
 
@@ -54,12 +54,12 @@ public:
 	model::RobotModel &robotModel();
 
 protected:
-	QVariant itemChange(GraphicsItemChange change, QVariant const &value);
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 signals:
 	void mousePressed();
 	void changedPosition(RobotItem *robotItem);
-	void drawTrace(QPen const &pen, QPointF const &from, QPointF const &to);
+	void drawTrace(QPen const &pen, const QPointF &from, const QPointF &to);
 
 private:
 	class BeepItem : public QGraphicsItem
@@ -70,14 +70,14 @@ private:
 
 	private:
 		void drawBeep(QPainter *painter);
-		void drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius);
+		void drawBeepArcs(QPainter *painter, const QPointF &center, qreal radius);
 	};
 
 	/// Same as QGraphicsItem::setPos(). Needed as slot for connection.
-	void setPos(QPointF const &newPos);
+	void setPos(const QPointF &newPos);
 	/// Same as QGraphicsItem::setRotation(). Needed as slot for connection.
 	void setRotation(qreal rotation) override;
-	void ride(QPointF const &newPos, qreal rotation);
+	void ride(const QPointF &newPos, qreal rotation);
 
 	void onLanded();
 

@@ -9,9 +9,9 @@ namespace simple {
 class SmileGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	SmileGenerator(qrRepo::RepoApi const &repo
+	SmileGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

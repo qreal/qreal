@@ -11,47 +11,47 @@ class GraphicalRepoApi : public CommonRepoApi
 public:
 	virtual ~GraphicalRepoApi() {}
 
-	virtual qReal::Id copy(qReal::Id const &src) = 0;
+	virtual qReal::Id copy(const qReal::Id &src) = 0;
 
-	virtual void addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child) = 0;
+	virtual void addChild(const qReal::Id &id, const qReal::Id &logicalId, const qReal::Id &child) = 0;
 
-	virtual qreal fromPort(qReal::Id const &id) const = 0;
-	virtual void setFromPort(qReal::Id const &id, qreal fromPort) = 0;
+	virtual qreal fromPort(const qReal::Id &id) const = 0;
+	virtual void setFromPort(const qReal::Id &id, qreal fromPort) = 0;
 
-	virtual qreal toPort(qReal::Id const &id) const = 0;
-	virtual void setToPort(qReal::Id const &id, qreal toPort) = 0;
+	virtual qreal toPort(const qReal::Id &id) const = 0;
+	virtual void setToPort(const qReal::Id &id, qreal toPort) = 0;
 
-	virtual QVariant position(qReal::Id const &id) const = 0;
-	virtual QVariant configuration(qReal::Id const &id) const = 0;
+	virtual QVariant position(const qReal::Id &id) const = 0;
+	virtual QVariant configuration(const qReal::Id &id) const = 0;
 
-	virtual void setPosition(qReal::Id const &id, QVariant const &position) = 0;
-	virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) = 0;
+	virtual void setPosition(const qReal::Id &id, const QVariant &position) = 0;
+	virtual void setConfiguration(const qReal::Id &id, const QVariant &configuration) = 0;
 
 	virtual qReal::IdList graphicalElements() const = 0;
-	virtual qReal::IdList graphicalElements(qReal::Id const &type) const = 0;
+	virtual qReal::IdList graphicalElements(const qReal::Id &type) const = 0;
 
-	virtual bool isGraphicalElement(qReal::Id const &id) const = 0;
-	virtual qReal::Id logicalId(qReal::Id const &id) const = 0;
+	virtual bool isGraphicalElement(const qReal::Id &id) const = 0;
+	virtual qReal::Id logicalId(const qReal::Id &id) const = 0;
 
-	virtual qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const = 0;
-	virtual void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction) = 0;
-	virtual void removeTemporaryRemovedLinks(qReal::Id const &id) = 0;
+	virtual qReal::IdList temporaryRemovedLinksAt(const qReal::Id &id, const QString &direction) const = 0;
+	virtual void setTemporaryRemovedLinks(const qReal::Id &id, const qReal::IdList &value, const QString &direction) = 0;
+	virtual void removeTemporaryRemovedLinks(const qReal::Id &id) = 0;
 
-	virtual void copyProperties(qReal::Id const &dest, qReal::Id const &src) = 0;
-	virtual QMap<QString, QVariant> properties(qReal::Id const &id) = 0;
-	virtual void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties) = 0;
+	virtual void copyProperties(const qReal::Id &dest, const qReal::Id &src) = 0;
+	virtual QMap<QString, QVariant> properties(const qReal::Id &id) = 0;
+	virtual void setProperties(const qReal::Id &id, QMap<QString, QVariant> const &properties) = 0;
 
-	virtual void createGraphicalPart(qReal::Id const &id, int partIndex) = 0;
+	virtual void createGraphicalPart(const qReal::Id &id, int partIndex) = 0;
 
-	virtual QList<int> graphicalParts(qReal::Id const &id) const = 0;
+	virtual QList<int> graphicalParts(const qReal::Id &id) const = 0;
 
-	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const = 0;
+	virtual QVariant graphicalPartProperty(const qReal::Id &id, int partIndex, const QString &propertyName) const = 0;
 
 	virtual void setGraphicalPartProperty(
-			qReal::Id const &id
+			const qReal::Id &id
 			, int partIndex
-			, QString const &propertyName
-			, QVariant const &value
+			, const QString &propertyName
+			, const QVariant &value
 			) = 0;
 };
 

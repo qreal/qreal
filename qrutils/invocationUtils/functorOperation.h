@@ -20,7 +20,7 @@ namespace invocation
 /// You just call setInvocationTarget(...) with the function specification
 /// and enumerate arguments. Args count must be less or equal 5
 /// @code
-///		void SomeClass::doOperation(int intArg, QString const &stringArg)
+///		void SomeClass::doOperation(int intArg, const QString &stringArg)
 ///		{
 ///		}
 ///		FunctorOperation<void> *operation = new FunctorOperation<void>(30000);
@@ -33,7 +33,7 @@ namespace invocation
 /// with the function specifications and enumerate all args except the first one.
 /// Args count must be less or equal 5 ('progress' arg + 4 args)
 /// @code
-///		void SomeClass::doOperation(Progress *progress, int intArg, QString const &stringArg)
+///		void SomeClass::doOperation(Progress *progress, int intArg, const QString &stringArg)
 ///		{ // here you can use 'progress' parameter for progress providing
 ///		}
 ///		FunctorOperation<void> *operation = new FunctorOperation<void>(30000);

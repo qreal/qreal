@@ -14,12 +14,12 @@ class ROBOTS_GENERATOR_EXPORT DynamicPathConverter : public TemplateParametrized
 public:
 	/// @param pathFromRoot A path from templates root containing placeholder for data
 	/// (for example colors/@@PATH@@.t)
-	DynamicPathConverter(QString const &pathToTemplates, QString const &pathFromRoot);
+	DynamicPathConverter(const QString &pathToTemplates, const QString &pathFromRoot);
 
-	QString convert(QString const &data) const override;
+	QString convert(const QString &data) const override;
 
 private:
-	QString const mPathFromRoot;
+	const QString mPathFromRoot;
 };
 
 }

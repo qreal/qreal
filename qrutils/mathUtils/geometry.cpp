@@ -2,7 +2,7 @@
 
 using namespace mathUtils;
 
-bool Geometry::eq(QPointF const &point1, QPointF const &point2, qreal eps)
+bool Geometry::eq(const QPointF &point1, const QPointF &point2, qreal eps)
 {
 	return Math::eq(point1.x(), point2.x(), eps) && Math::eq(point1.y(), point2.y(), eps);
 }
@@ -24,7 +24,7 @@ QVector2D Geometry::projection(QVector2D const &projected, QVector2D const &targ
 	return normalizedTarget * scalarProduct(normalizedTarget, projected);
 }
 
-QPointF Geometry::normalPoint(QLineF const &line, QPointF const &point)
+QPointF Geometry::normalPoint(QLineF const &line, const QPointF &point)
 {
 	qreal const x1 = line.p1().x();
 	qreal const y1 = line.p1().y();
@@ -44,22 +44,22 @@ QPointF Geometry::normalPoint(QLineF const &line, QPointF const &point)
 	return QPointF(x, y);
 }
 
-QLineF Geometry::normalLine(QLineF const &line, QPointF const &point)
+QLineF Geometry::normalLine(QLineF const &line, const QPointF &point)
 {
 	return QLineF(point, normalPoint(line, point));
 }
 
-qreal Geometry::distance(QLineF const &line, QPointF const &point)
+qreal Geometry::distance(QLineF const &line, const QPointF &point)
 {
 	return normalLine(line, point).length();
 }
 
-qreal Geometry::distance(QPointF const &point1, QPointF const &point2)
+qreal Geometry::distance(const QPointF &point1, const QPointF &point2)
 {
 	return sqrt(Math::sqr(point1.x() - point2.x()) + Math::sqr(point1.y() - point2.y()));
 }
 
-bool Geometry::intersects(QLineF const &line, QPainterPath const &path)
+bool Geometry::intersects(QLineF const &line, const QPainterPath &path)
 {
 	QPainterPath linePath(line.p1());
 	linePath.lineTo(line.p2());
@@ -76,17 +76,17 @@ QVector2D Geometry::directionVectorRad(qreal angleInRadians)
 	return QVector2D(cos(angleInRadians), sin(angleInRadians));
 }
 
-qreal Geometry::tangentLineAt(QPainterPath const &path, QPointF const &point)
+qreal Geometry::tangentLineAt(const QPainterPath &path, const QPointF &point)
 {
 	qreal const percentage = percentageAt(path, point);
 	return path.angleAtPercent(percentage);
 }
 
-qreal Geometry::percentageAt(QPainterPath const &path, QPointF const &point)
+qreal Geometry::percentageAt(const QPainterPath &path, const QPointF &point)
 {
 	// Approximating percentage iteratively. First iterating by delta=1 percent increment, searching for
 	// the closest point on path. Then repeating with found closest percentage value but with delta=0.1 and so on
-	int const approximationLevel = 4;
+	const int approximationLevel = 4;
 	qreal result = 0.5;
 	qreal delta = 0.01;
 
@@ -95,7 +95,7 @@ qreal Geometry::percentageAt(QPainterPath const &path, QPointF const &point)
 		qreal minimalDistance = 10e10;
 		for (int i = -50; i <= 50; ++i) {
 			qreal const percentage = result + delta * i;
-			QPointF const pointAtPercentage = percentage >= 0 && percentage <= 1
+			const QPointF pointAtPercentage = percentage >= 0 && percentage <= 1
 					? path.pointAtPercent(percentage)
 					: QPointF(10e5, 10e5);
 			qreal const distanceAtPercentage = distance(pointAtPercentage, point);
@@ -112,7 +112,7 @@ qreal Geometry::percentageAt(QPainterPath const &path, QPointF const &point)
 	return result;
 }
 
-QList<QPointF> Geometry::pathToPoints(QPainterPath const &path)
+QList<QPointF> Geometry::pathToPoints(const QPainterPath &path)
 {
 	qreal const polygonIsPointCondition = 0.001;
 
@@ -134,22 +134,22 @@ qreal Geometry::square(QPolygonF const &polygon)
 {
 	qreal result = 0;
 	for (int i = 0; i < polygon.size(); ++i) {
-		QPointF const p1 = i ? polygon[i-1] : polygon.back();
-		QPointF const p2 = polygon[i];
+		const QPointF p1 = i ? polygon[i-1] : polygon.back();
+		const QPointF p2 = polygon[i];
 		result += (p1.x() - p2.x()) * (p1.y() + p2.y());
 	}
 
 	return fabs(result) / 2;
 }
 
-QLineF Geometry::veryLongLine(QPointF const &pointOnLine, QVector2D const &directionVector)
+QLineF Geometry::veryLongLine(const QPointF &pointOnLine, QVector2D const &directionVector)
 {
 	qreal const halfLength = 10000;
 	return QLineF(pointOnLine + halfLength * directionVector.toPointF()
 			, pointOnLine - halfLength * directionVector.toPointF());
 }
 
-QList<QPointF> Geometry::intersection(QLineF const &line, QPainterPath const &path, qreal eps)
+QList<QPointF> Geometry::intersection(QLineF const &line, const QPainterPath &path, qreal eps)
 {
 	QList<QPointF> result;
 	QPointF startPoint;
@@ -179,11 +179,11 @@ QList<QPointF> Geometry::intersection(QLineF const &line, QPainterPath const &pa
 	return result;
 }
 
-QPointF Geometry::closestPointTo(QList<QPointF> const &points, QPointF const &point)
+QPointF Geometry::closestPointTo(QList<QPointF> const &points, const QPointF &point)
 {
 	qreal minDistance = 10e10;
 	QPointF closestPoint;
-	foreach (QPointF const &currentPoint, points) {
+	foreach (const QPointF &currentPoint, points) {
 		qreal const currentDistance = distance(currentPoint, point);
 		if (currentDistance < minDistance) {
 			closestPoint = currentPoint;
@@ -194,7 +194,7 @@ QPointF Geometry::closestPointTo(QList<QPointF> const &points, QPointF const &po
 	return closestPoint;
 }
 
-bool Geometry::belongs(QPointF const &point, QLineF const &segment, qreal eps)
+bool Geometry::belongs(const QPointF &point, QLineF const &segment, qreal eps)
 {
 	if (!Math::between(segment.x1(), segment.x2(), point.x(), eps)
 			|| !Math::between(segment.y1(), segment.y2(), point.y(), eps))
@@ -213,7 +213,7 @@ bool Geometry::belongs(QPointF const &point, QLineF const &segment, qreal eps)
 	return Math::eq(QLineF(segment.p1(), point).angle(), QLineF(point, segment.p2()).angle(), eps);
 }
 
-bool Geometry::belongs(QPointF const &point, QPainterPath const &path, qreal eps)
+bool Geometry::belongs(const QPointF &point, const QPainterPath &path, qreal eps)
 {
 	QPointF startPoint;
 	QPointF endPoint;
@@ -238,9 +238,9 @@ bool Geometry::belongs(QPointF const &point, QPainterPath const &path, qreal eps
 	return false;
 }
 
-bool Geometry::belongs(QLineF const &line, QPainterPath const &path, qreal eps)
+bool Geometry::belongs(QLineF const &line, const QPainterPath &path, qreal eps)
 {
-	int const pointsToCheck = 5;
+	const int pointsToCheck = 5;
 	QVector2D const shift = QVector2D(line.p2() - line.p1()) / (pointsToCheck - 1);
 	for (int i = 0; i < pointsToCheck; ++i) {
 		if (!belongs(line.p1() + i * shift.toPointF(), path), eps) {

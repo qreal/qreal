@@ -2,7 +2,7 @@
 
 using namespace interpreterBase::robotModel::robotParts;
 
-Button::Button(DeviceInfo const &info, PortInfo const &port)
+Button::Button(const DeviceInfo &info, const PortInfo &port)
 	: ScalarSensor(info, port)
 {
 }

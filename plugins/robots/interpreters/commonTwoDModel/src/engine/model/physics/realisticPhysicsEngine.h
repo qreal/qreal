@@ -17,21 +17,21 @@ public:
 
 	void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 			, bool engine1Break, bool engine2Break
-			, QPointF const &rotationCenter, qreal robotAngle
-			, QPainterPath const &robotBoundingPath) override;
+			, const QPointF &rotationCenter, qreal robotAngle
+			, const QPainterPath &robotBoundingPath) override;
 
 private:
 	/// Counts and returns traction force vector taking into consideration engines speed and placement
 	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode
-			, QPointF const &rotationCenter, QVector2D const &direction);
+			, const QPointF &rotationCenter, QVector2D const &direction);
 
 	/// Applies all forces currently acting on robot
 	void recalculateVelocity(qreal timeInterval);
 	void applyRotationalFrictionForce(qreal timeInterval, QVector2D const &direction);
 
 	/// Calculates forces and force moments acting on the robot from the walls
-	void findCollision(QPainterPath const &robotBoundingRegion
-			, QPainterPath const &wallBoundingRegion, QPointF const &rotationCenter);
+	void findCollision(const QPainterPath &robotBoundingRegion
+			, const QPainterPath &wallBoundingRegion, const QPointF &rotationCenter);
 
 	QVector2D mTractionForce;
 	QVector2D mReactionForce;

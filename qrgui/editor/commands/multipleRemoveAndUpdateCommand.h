@@ -16,7 +16,7 @@ public:
 	MultipleRemoveAndUpdateCommand(EditorViewScene &scene, models::Models const &models);
 
 private:
-	AbstractCommand *graphicalDeleteCommand(Id const &id) override;
+	AbstractCommand *graphicalDeleteCommand(const Id &id) override;
 
 	EditorViewScene &mScene;
 };

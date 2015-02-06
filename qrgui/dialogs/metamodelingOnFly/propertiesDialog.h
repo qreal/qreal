@@ -22,9 +22,9 @@ public:
 	/// Constructor.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of current metamodel element in which we need to change properties.
-	PropertiesDialog(EditorManagerInterface const &interpreterEditorManager
+	PropertiesDialog(const EditorManagerInterface &interpreterEditorManager
 			, qrRepo::LogicalRepoApi &logicalRepoApi
-			, Id const &id
+			, const Id &id
 			, QWidget *parent = 0);
 
 	/// Destructor.
@@ -38,14 +38,14 @@ private slots:
 	void updatePropertiesNamesList();
 
 private:
-	QStringList getPropertiesDisplayedNamesList(QStringList const &propertiesNames);
-	void change(QString const &text);
-	bool checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
-	void findElementsOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
-	void disableParentProperties(QStringList const propertiesDisplayedNames);
+	QStringList getPropertiesDisplayedNamesList(const QStringList &propertiesNames);
+	void change(const QString &text);
+	bool checkElementOnDiagram(const qrRepo::LogicalRepoApi &api, Id &id);
+	void findElementsOnDiagram(const qrRepo::LogicalRepoApi &api, Id &id);
+	void disableParentProperties(const QStringList propertiesDisplayedNames);
 
 	Ui::PropertiesDialog *mUi;  // Has ownership.
-	EditorManagerInterface const &mInterpreterEditorManager;
+	const EditorManagerInterface &mInterpreterEditorManager;
 	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	Id mId;
 	QStringList mPropertiesNames;

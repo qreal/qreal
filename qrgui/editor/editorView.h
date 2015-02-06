@@ -16,7 +16,7 @@ public:
 	EditorView(models::Models const &models
 			, Controller &controller
 			, SceneCustomizer const &customizer
-			, Id const &rootId
+			, const Id &rootId
 			, QWidget *parent = 0);
 
 	EditorViewMViface const &mvIface() const;

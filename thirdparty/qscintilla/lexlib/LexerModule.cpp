@@ -60,7 +60,7 @@ LexerModule::LexerModule(int language_,
 }
 
 int LexerModule::GetNumWordLists() const {
-	if (wordListDescriptions == NULL) {
+	if (wordListDescriptions == nullptr) {
 		return -1;
 	} else {
 		int numWordLists = 0;

@@ -6,11 +6,11 @@ InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene
 		, models::LogicalModelAssistApi &logicalAssistApi
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::Exploser &exploser
-		, Id const &firstElem
-		, Id const &lastElem
-		, Id const &parent
-		, QPointF const &scenePos
-		, QPointF const &shift
+		, const Id &firstElem
+		, const Id &lastElem
+		, const Id &parent
+		, const QPointF &scenePos
+		, const QPointF &shift
 		, bool isFromLogicalModel
 		, CreateElementCommand *createCommand)
 	: AbstractCommand()
@@ -107,10 +107,10 @@ bool InsertIntoEdgeCommand::restoreState()
 	return true;
 }
 
-void InsertIntoEdgeCommand::initCommand(CreateElementCommand *&command, Id const &type)
+void InsertIntoEdgeCommand::initCommand(CreateElementCommand *&command, const Id &type)
 {
 	if (!command) {
-		QString const name = mLogicalAssistApi.editorManagerInterface().friendlyName(type);
+		const QString name = mLogicalAssistApi.editorManagerInterface().friendlyName(type);
 		command = new CreateElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mExploser, mScene.rootItemId()
 				, mParentId, Id(type, QUuid::createUuid().toString()), mIsLogical, name, mPos);
 	}

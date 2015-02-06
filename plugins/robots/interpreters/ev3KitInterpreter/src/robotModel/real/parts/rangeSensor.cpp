@@ -6,8 +6,8 @@ unsigned const rangeSensorResponseSize = 9;
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-RangeSensor::RangeSensor(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+RangeSensor::RangeSensor(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: robotParts::RangeSensor(info, port)
 	, mImplementation(robotCommunicator, port, REFLECTION, READY_RAW)
@@ -17,15 +17,15 @@ RangeSensor::RangeSensor(interpreterBase::robotModel::DeviceInfo const &info
 
 void RangeSensor::read()
 {
-	int const size = 21;
+	const int size = 21;
 	QByteArray command(size, 0);
 	command[0] = size - 2;
 	command[1] = size >> 8;
 	command[2] = 4;
 	command[3] = 0;
 	command[4] = DIRECT_COMMAND_REPLY;
-	int const globalVariablesCount = 4;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 4;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opINPUT_DEVICE;

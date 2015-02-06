@@ -5,7 +5,7 @@
 class PortType : public NonGraphicType
 {
 public:
-	virtual bool init(QDomElement const &element, QString const &context);
+	virtual bool init(QDomElement const &element, const QString &context);
 	virtual Type *clone() const;
 
 	virtual void generateCode(utils::OutFile &out);

@@ -18,11 +18,11 @@ public :
 	void drawFieldForResizeItem(QPainter* painter);
 	void drawScalingRects(QPainter* painter);
 
-	void setPenStyle(QList<AbstractItem *> listLine, QString const &text);
+	void setPenStyle(QList<AbstractItem *> listLine, const QString &text);
 	void setPenWidth(QList<AbstractItem *> listLine, int width);
-	void setPenColor(QList<AbstractItem *> listLine, QString const &text);
-	void setBrushStyle(QList<AbstractItem *> listLine, QString const &text);
-	void setBrushColor(QList<AbstractItem *> listLine, QString const &text);
+	void setPenColor(QList<AbstractItem *> listLine, const QString &text);
+	void setBrushStyle(QList<AbstractItem *> listLine, const QString &text);
+	void setBrushColor(QList<AbstractItem *> listLine, const QString &text);
 
 	void resizeItem(QGraphicsSceneMouseEvent *event);
 private:

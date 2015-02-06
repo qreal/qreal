@@ -12,12 +12,12 @@ public:
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
 			, models::Exploser const &exploser
-			, Id const &logicalParent
-			, Id const &graphicalParent
-			, Id const &id
+			, const Id &logicalParent
+			, const Id &graphicalParent
+			, const Id &id
 			, bool isFromLogicalModel
-			, QString const &name
-			, QPointF const &position);
+			, const QString &name
+			, const QPointF &position);
 
 	Id create();
 	void remove();
@@ -28,7 +28,7 @@ public:
 
 	/// @todo: Bad method, required only for linkers. Get rid of it.
 	/// Modifies command setting new creation position.
-	void setNewPosition(QPointF const &position);
+	void setNewPosition(const QPointF &position);
 
 private:
 	void refreshAllPalettes();
@@ -36,11 +36,11 @@ private:
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser const &mExploser;
-	Id const mLogicalParent;
-	Id const mGraphicalParent;
+	const Id mLogicalParent;
+	const Id mGraphicalParent;
 	Id mId;
-	bool const mIsFromLogicalModel;
-	QString const mName;
+	const bool mIsFromLogicalModel;
+	const QString mName;
 	QPointF mPosition;
 	QMap<QString, QVariant> mLogicalPropertiesSnapshot;
 	QMap<QString, QVariant> mGraphicalPropertiesSnapshot;

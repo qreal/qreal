@@ -2,7 +2,7 @@
 
 using namespace qReal::gui;
 
-Error::Error(QString const &message, Severity const &severity, qReal::Id const &position)
+Error::Error(const QString &message, Severity const &severity, const qReal::Id &position)
 		: mMessage(message), mTimestamp(QTime::currentTime()), mSeverity(severity), mPosition(position)
 {
 }

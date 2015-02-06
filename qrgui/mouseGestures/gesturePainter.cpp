@@ -4,12 +4,12 @@
 
 using namespace qReal::gestures;
 
-int const minBorder = -1000;
-int const thickness = 2;
+const int minBorder = -1000;
+const int thickness = 2;
 /// Difference between painter's and pixmap's coordinates.
 qreal const frame = 10;
 
-GesturePainter::GesturePainter(QString const &gesture
+GesturePainter::GesturePainter(const QString &gesture
 		, QColor const &backgroungColor
 		, QColor const &gestureColor
 		, qreal size)
@@ -38,7 +38,7 @@ void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mod
 			return;
 		}
 
-		for (QPointF const &currentPoint : path) {
+		for (const QPointF &currentPoint : path) {
 			maxSizeX = qMax(maxSizeX, currentPoint.x());
 			maxSizeY = qMax(maxSizeY, currentPoint.y());
 		}
@@ -51,7 +51,7 @@ void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mod
 	}
 
 	qreal const sizeFactor = mSize ? mSize / (qMax(maxSizeX, maxSizeY) + frame) : 1;
-	QPoint const indent = QPoint((mSize - maxSizeX * sizeFactor) / 2, (mSize - maxSizeY * sizeFactor) / 2);
+	const QPoint indent = QPoint((mSize - maxSizeX * sizeFactor) / 2, (mSize - maxSizeY * sizeFactor) / 2);
 
 	painter->save();
 	painter->setBrush(mBackgroundColor);
@@ -63,7 +63,7 @@ void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mod
 	painter->setPen(pen);
 	for (PointVector const &path : mGesture) {
 		QPointF previousPoint = path[0];
-		for (QPointF const &currentPoint : path) {
+		for (const QPointF &currentPoint : path) {
 			painter->drawLine(indent + sizeFactor * previousPoint, indent + sizeFactor * currentPoint);
 			previousPoint = currentPoint;
 		}

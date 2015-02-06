@@ -379,12 +379,12 @@ int ScintillaBase::AutoCompleteGetCurrentText(char *buffer) {
 		int item = ac.GetSelection();
 		if (item != -1) {
 			const std::string selected = ac.GetValue(item);
-			if (buffer != NULL)
+			if (buffer != nullptr)
 				strcpy(buffer, selected.c_str());
 			return static_cast<int>(selected.length());
 		}
 	}
-	if (buffer != NULL)
+	if (buffer != nullptr)
 		*buffer = '\0';
 	return 0;
 }
@@ -537,7 +537,7 @@ void LexState::SetLexer(uptr_t wParam) {
 	} else {
 		const LexerModule *lex = Catalogue::Find(lexLanguage);
 		if (!lex)
-			lex = Catalogue::Find(SCLEX_NULL);
+			lex = Catalogue::Find(SCLEX_nullptr);
 		SetLexerModule(lex);
 	}
 }
@@ -545,7 +545,7 @@ void LexState::SetLexer(uptr_t wParam) {
 void LexState::SetLexerLanguage(const char *languageName) {
 	const LexerModule *lex = Catalogue::Find(languageName);
 	if (!lex)
-		lex = Catalogue::Find(SCLEX_NULL);
+		lex = Catalogue::Find(SCLEX_nullptr);
 	if (lex)
 		lexLanguage = lex->GetLanguage();
 	SetLexerModule(lex);

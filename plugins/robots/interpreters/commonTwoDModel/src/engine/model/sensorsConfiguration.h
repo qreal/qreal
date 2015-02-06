@@ -15,17 +15,17 @@ class SensorsConfiguration : public QObject, public interpreterBase::DevicesConf
 	Q_OBJECT
 
 public:
-	SensorsConfiguration(QString const &robotModelName);
+	SensorsConfiguration(const QString &robotModelName);
 
-	void setPosition(interpreterBase::robotModel::PortInfo const &port, QPointF const &position);
-	QPointF position(interpreterBase::robotModel::PortInfo const &port) const;
+	void setPosition(const interpreterBase::robotModel::PortInfo &port, const QPointF &position);
+	QPointF position(const interpreterBase::robotModel::PortInfo &port) const;
 
-	void setDirection(interpreterBase::robotModel::PortInfo const &port, qreal direction);
-	qreal direction(interpreterBase::robotModel::PortInfo const &port) const;
+	void setDirection(const interpreterBase::robotModel::PortInfo &port, qreal direction);
+	qreal direction(const interpreterBase::robotModel::PortInfo &port) const;
 
-	interpreterBase::robotModel::DeviceInfo type(interpreterBase::robotModel::PortInfo const &port) const;
+	interpreterBase::robotModel::DeviceInfo type(const interpreterBase::robotModel::PortInfo &port) const;
 
-	void clearSensor(interpreterBase::robotModel::PortInfo const &port);
+	void clearSensor(const interpreterBase::robotModel::PortInfo &port);
 
 	void serialize(QDomElement &robot, QDomDocument &document) const;
 	void deserialize(QDomElement const &element);
@@ -34,30 +34,30 @@ signals:
 	/// Emitted when new device is added to configuration.
 	/// @param port - port where new device is added.
 	/// @param isLoading - true, if we are loading configuration now, so shall not save this device in a diagram.
-	void deviceAdded(interpreterBase::robotModel::PortInfo const &port, bool isLoading);
+	void deviceAdded(const interpreterBase::robotModel::PortInfo &port, bool isLoading);
 
 	/// Emitted when a device is removed from configuration.
 	/// @param port - port from where device is removed.
 	/// @param isLoading - true, if we are loading configuration now, so shall not attempt to save changes in a diagram.
-	void deviceRemoved(interpreterBase::robotModel::PortInfo const &port, bool isLoading);
+	void deviceRemoved(const interpreterBase::robotModel::PortInfo &port, bool isLoading);
 
-	void positionChanged(interpreterBase::robotModel::PortInfo const &port);
-	void rotationChanged(interpreterBase::robotModel::PortInfo const &port);
+	void positionChanged(const interpreterBase::robotModel::PortInfo &port);
+	void rotationChanged(const interpreterBase::robotModel::PortInfo &port);
 
 private:
 	struct SensorInfo
 	{
 		SensorInfo();
-		SensorInfo(QPointF const &position, qreal direction);
+		SensorInfo(const QPointF &position, qreal direction);
 
 		QPointF position;
 		qreal direction;
 		bool isNull;
 	};
 
-	void onDeviceConfigurationChanged(QString const &robotModel
-			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &device
+	void onDeviceConfigurationChanged(const QString &robotModel
+			, const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &device
 			, Reason reason) override;
 
 	QPointF defaultPosition() const;

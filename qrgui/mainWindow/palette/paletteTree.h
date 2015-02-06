@@ -41,13 +41,13 @@ public:
 	/** Delete chosen editor.
 	  @param id Editor id.
 	*/
-	void deleteEditor(Id const &id);
+	void deleteEditor(const Id &id);
 	QComboBox* comboBox() const;
 	QList<QString> editorsNames() const;
 	Id currentEditor() const;
 
 	/// Set item with such id as active in ComboBox.
-	void setComboBox(Id const &id);
+	void setComboBox(const Id &id);
 	void setIconsView(bool iconsView);
 	bool iconsView() const;
 	void setItemsCountInARow(int count);
@@ -71,17 +71,17 @@ public:
 	void initMainWindow(MainWindow *mainWindow);
 	void installEventFilter(QObject *obj);
 
-	void setElementVisible(Id const &metatype, bool visible);
+	void setElementVisible(const Id &metatype, bool visible);
 
 	void setVisibleForAllElements(bool visible);
 
-	void setElementEnabled(Id const &metatype, bool enabled);
+	void setElementEnabled(const Id &metatype, bool enabled);
 
 	void setEnabledForAllElements(bool enabled);
 
 	/// Sets user palettes headers and descriptions.
-	void customizeExplosionTitles(QString const &userGroupTitle
-			, QString const &userGroupDescription);
+	void customizeExplosionTitles(const QString &userGroupTitle
+			, const QString &userGroupDescription);
 
 signals:
 	void paletteParametersChanged();
@@ -97,7 +97,7 @@ public slots:
 	void collapse();
 
 	void setActiveEditor(int index);
-	void setActiveEditor(Id const &id);
+	void setActiveEditor(const Id &id);
 
 	/// Recreate PaletteTree.
 	void recreateTrees();

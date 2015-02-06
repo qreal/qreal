@@ -18,7 +18,7 @@ void LogicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex curr = topLeft.sibling(row, 0);
 
-		Id const logicalId = curr.data(roles::idRole).value<Id>();
+		const Id logicalId = curr.data(roles::idRole).value<Id>();
 		static_cast<GraphicalModel *>(mModel)->updateElements(logicalId, curr.data(Qt::DisplayRole).toString());
 	}
 }
@@ -28,7 +28,7 @@ void LogicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start
 	for (int row = start; row <= end; ++row) {
 		QModelIndex current = model()->index(row, 0, parent);
 		if (current.isValid()) {
-			Id const logicalId = current.data(roles::idRole).value<Id>();
+			const Id logicalId = current.data(roles::idRole).value<Id>();
 			GraphicalModel *gModel = dynamic_cast<GraphicalModel *>(mModel);
 			QList<QPersistentModelIndex> indexes = gModel->indexesWithLogicalId(logicalId);
 			foreach (QPersistentModelIndex index, indexes) {

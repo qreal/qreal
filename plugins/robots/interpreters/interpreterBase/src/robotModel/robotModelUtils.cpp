@@ -6,9 +6,9 @@
 
 using namespace interpreterBase::robotModel;
 
-PortInfo RobotModelUtils::findPort(RobotModelInterface const &robotModel, QString const &name, Direction direction)
+PortInfo RobotModelUtils::findPort(RobotModelInterface const &robotModel, const QString &name, Direction direction)
 {
-	for (interpreterBase::robotModel::PortInfo const &portInfo : robotModel.availablePorts()) {
+	for (const interpreterBase::robotModel::PortInfo &portInfo : robotModel.availablePorts()) {
 		if ((portInfo.name() == name || portInfo.nameAliases().contains(name)) && portInfo.direction() == direction) {
 			return portInfo;
 		}
@@ -17,7 +17,7 @@ PortInfo RobotModelUtils::findPort(RobotModelInterface const &robotModel, QStrin
 	return PortInfo();
 }
 
-QMap<QString, QMap<PortInfo, DeviceInfo> > RobotModelUtils::deserialize(QString const &configuration)
+QMap<QString, QMap<PortInfo, DeviceInfo> > RobotModelUtils::deserialize(const QString &configuration)
 {
 	QMap<QString, QMap<PortInfo, DeviceInfo>> result;
 
@@ -27,12 +27,12 @@ QMap<QString, QMap<PortInfo, DeviceInfo> > RobotModelUtils::deserialize(QString 
 	for (QDomElement robotModelElement = rootElement.firstChildElement(); !robotModelElement.isNull()
 			; robotModelElement = robotModelElement.nextSiblingElement())
 	{
-		QString const robotModel = robotModelElement.attribute("name");
+		const QString robotModel = robotModelElement.attribute("name");
 		for (QDomElement configurationElement = robotModelElement.firstChildElement(); !configurationElement.isNull()
 				; configurationElement = configurationElement.nextSiblingElement())
 		{
-			PortInfo const port = PortInfo::fromString(configurationElement.attribute("port"));
-			DeviceInfo const device = DeviceInfo::fromString(configurationElement.attribute("device"));
+			const PortInfo port = PortInfo::fromString(configurationElement.attribute("port"));
+			const DeviceInfo device = DeviceInfo::fromString(configurationElement.attribute("device"));
 			if (port.isValid()) {
 				result[robotModel][port] = device;
 			}
@@ -48,9 +48,9 @@ RobotModelInterface *RobotModelUtils::selectedRobotModelFor(QList<KitPluginInter
 		return nullptr;
 	}
 
-	QString const kitId = kits[0]->kitId();
-	QString const key = "SelectedModelFor" + kitId;
-	QString const previouslySelectedRobotModel = qReal::SettingsManager::value(key).toString();
+	const QString kitId = kits[0]->kitId();
+	const QString key = "SelectedModelFor" + kitId;
+	const QString previouslySelectedRobotModel = qReal::SettingsManager::value(key).toString();
 
 	if (!previouslySelectedRobotModel.isEmpty()) {
 		// Searching for previously selected robot model in the kit.

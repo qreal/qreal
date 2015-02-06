@@ -20,7 +20,7 @@ bool LinePort::init(QDomElement const &element, int width, int height)
 	return true;
 }
 
-void LinePort::generateCode(OutFile &out, QStringList const &portTypes)
+void LinePort::generateCode(OutFile &out, const QStringList &portTypes)
 {
 	QString line = QString("QLineF(%1, %2, %3, %4)").arg(mStartX.value()).arg(mStartY.value())
 			.arg(mEndX.value()).arg(mEndY.value());

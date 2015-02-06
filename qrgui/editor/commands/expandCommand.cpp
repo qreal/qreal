@@ -5,7 +5,7 @@ namespace commands {
 
 ExpandCommand::ExpandCommand(NodeElement const *node)
 	: NodeElementCommand(dynamic_cast<EditorViewScene *>(node->scene()), node->id())
-	, mResizeCommand(NULL)
+	, mResizeCommand(nullptr)
 {
 }
 

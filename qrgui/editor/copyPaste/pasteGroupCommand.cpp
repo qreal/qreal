@@ -36,8 +36,8 @@ void PasteGroupCommand::prepareCommands()
 		return;
 	}
 
-	QPointF const originalPos = nodesData.isEmpty() ? edgesData[0].pos : nodesData[0].pos;
-	QPointF const offset = mScene->getMousePos() - originalPos;
+	const QPointF originalPos = nodesData.isEmpty() ? edgesData[0].pos : nodesData[0].pos;
+	const QPointF offset = mScene->getMousePos() - originalPos;
 
 	mCopiedIds = preparePasteNodesCommands(nodesData, offset);
 
@@ -47,7 +47,7 @@ void PasteGroupCommand::prepareCommands()
 }
 
 QHash<Id, Id> *PasteGroupCommand::preparePasteNodesCommands(QList<NodeData> &nodesData
-		, QPointF const &offset)
+		, const QPointF &offset)
 {
 	QHash<Id, Id> *copiedIds = new QHash<Id, Id>();
 
@@ -62,7 +62,7 @@ QHash<Id, Id> *PasteGroupCommand::preparePasteNodesCommands(QList<NodeData> &nod
 	return copiedIds;
 }
 
-void PasteGroupCommand::preparePasteEdgeCommand(EdgeData const &edgeData, QPointF const &offset)
+void PasteGroupCommand::preparePasteEdgeCommand(EdgeData const &edgeData, const QPointF &offset)
 {
 	PasteEdgeCommand *pasteCommand = new PasteEdgeCommand(mScene
 			, edgeData, offset, mIsGraphicalCopy, mCopiedIds);

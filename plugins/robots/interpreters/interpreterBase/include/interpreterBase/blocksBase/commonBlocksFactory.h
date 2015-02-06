@@ -19,7 +19,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT CommonBlocksFactory : public BlocksFactoryI
 public:
 	CommonBlocksFactory();
 
-	qReal::interpretation::BlockInterface *block(qReal::Id const &element) override;
+	qReal::interpretation::BlockInterface *block(const qReal::Id &element) override;
 
 	void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
@@ -33,12 +33,12 @@ public:
 	qReal::IdList blocksToDisable() const override;
 
 protected:
-	static qReal::Id id(QString const &metatype);
-	static bool elementMetatypeIs(qReal::Id const &element, QString const &metatype);
+	static qReal::Id id(const QString &metatype);
+	static bool elementMetatypeIs(const qReal::Id &element, const QString &metatype);
 
 	/// Implementation must instantiate a concrete block object by the given id. Future preparation
 	/// is performed in parent code.
-	virtual qReal::interpretation::Block *produceBlock(qReal::Id const &element) = 0;
+	virtual qReal::interpretation::Block *produceBlock(const qReal::Id &element) = 0;
 
 	/// @todo: there is no such thing as protected fields. One can not trust its descendants.
 	interpreterBase::robotModel::RobotModelManagerInterface *mRobotModelManager;  // Does not have ownership.

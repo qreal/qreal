@@ -47,7 +47,7 @@ void QRealEllipse::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* o
 }
 
 QPair<QDomElement, Item::DomElementTypes> QRealEllipse::generateItem(QDomDocument &document
-		, QPoint const &topLeftPicture)
+		, const QPoint &topLeftPicture)
 {
 	QDomElement ellipse = setPenBrushToDoc(document, "ellipse");
 	setXandY(ellipse, sceneBoundingRectCoord(topLeftPicture));

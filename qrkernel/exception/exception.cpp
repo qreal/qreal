@@ -4,7 +4,7 @@
 
 using namespace qReal;
 
-Exception::Exception(QString const &message)
+Exception::Exception(const QString &message)
 		: mMessage(message)
 {
 	qDebug() << "QReal exception: " << message;

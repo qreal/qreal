@@ -19,8 +19,8 @@ public:
 	virtual ~GesturesManager() {}
 	virtual void initIdealGestures(QMap<QString, PathVector> const &objects) = 0;
 	virtual void setKey(const PathVector &path) = 0;
-	virtual qreal getMaxDistance(QString const &object) = 0;
-	virtual qreal getDistance(QString const &object) = 0;
+	virtual qreal getMaxDistance(const QString &object) = 0;
+	virtual qreal getDistance(const QString &object) = 0;
 	virtual bool isMultistroke() = 0;
 };
 
@@ -32,7 +32,7 @@ public:
 
 	virtual ~GesturesRecognizer() {}
 
-	qreal getDistance(QString const &item)
+	qreal getDistance(const QString &item)
 	{
 		TKey key = mGestures[item];
 		return getDistance(mKey, key);
@@ -40,7 +40,7 @@ public:
 
 	void initIdealGestures(QMap<QString, PathVector> const &objects)
 	{
-		for (QString const &object : objects.keys()) {
+		for (const QString &object : objects.keys()) {
 			TKey key = getKey(objects[object]);
 			mGestures.insert(object, key);
 		}
@@ -51,7 +51,7 @@ public:
 		mKey = getKey(path);
 	}
 
-	virtual qreal getMaxDistance(QString const &object) = 0;
+	virtual qreal getMaxDistance(const QString &object) = 0;
 
 protected:
 	TKey mKey;

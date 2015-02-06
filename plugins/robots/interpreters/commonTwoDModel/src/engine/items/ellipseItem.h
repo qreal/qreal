@@ -17,13 +17,13 @@ class EllipseItem : public QObject, public ColorFieldItem
 	Q_OBJECT
 
 public:
-	EllipseItem(QPointF const &begin, QPointF const &end);
+	EllipseItem(const QPointF &begin, const QPointF &end);
 
 	QRectF boundingRect() const override;
 	QRectF calcNecessaryBoundingRect() const override;
 	void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget = 0) override;
 
-	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) override;
+	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
 	void deserialize(QDomElement const &element) override;
 
 private:

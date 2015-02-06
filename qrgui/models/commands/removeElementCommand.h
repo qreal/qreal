@@ -13,12 +13,12 @@ public:
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
 			, models::Exploser const &exploser
-			, Id const &logicalParent
-			, Id const &graphicalParent
-			, Id const &id
+			, const Id &logicalParent
+			, const Id &graphicalParent
+			, const Id &id
 			, bool isFromLogicalModel
-			, QString const &name
-			, QPointF const &position);
+			, const QString &name
+			, const QPointF &position);
 
 	virtual bool equals(AbstractCommand const &other) const;
 

@@ -10,9 +10,9 @@ public:
 	LinePort(LinePort const &other);
 	virtual Item* clone();
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
 
-	void setType(QString const &type);
+	void setType(const QString &type);
 	QString getType() const;
 
 private:

@@ -85,7 +85,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	for (int i = 0, rows = mModel->rowCount(index); i < rows; ++i) {
 		QModelIndex const &valueCell = mModel->index(i, 1);
 		QString name = mModel->data(mModel->index(i, 0)).toString();
-		QVariant const &value = mModel->data(valueCell);
+		const QVariant &value = mModel->data(valueCell);
 
 		int type = QVariant::String;
 		QString typeName = mModel->typeName(valueCell).toLower();
@@ -107,7 +107,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			}
 		}
 
-		QtProperty *item = NULL;
+		QtProperty *item = nullptr;
 		if (isButton) {
 			item = mButtonManager->addProperty(name);
 		} else {
@@ -123,7 +123,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 				vItem->setAttribute("enumNames", friendlyNames);
 				vItem->setAttribute("enumEditable", mModel->enumEditable(valueCell));
-				int const idx = enumPropertyIndexOf(valueCell, value.toString());
+				const int idx = enumPropertyIndexOf(valueCell, value.toString());
 				if (mModel->enumEditable(valueCell)) {
 					vItem->setValue(idx < 0 ? value.toString() : values[idx].second);
 				} else {
@@ -168,23 +168,23 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 	QString propertyValue = index.data(Qt::DisplayRole).toString();
 	int role = mModel->roleByIndex(index.row());
 
-	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
+	const QPersistentModelIndex actualIndex = mModel->modelIndex(index.row());
 
 	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
 		emit shapeEditorRequested(actualIndex, role, propertyValue, false);
 	} else {
-		QString const typeName = mModel->typeName(index).toLower();
+		const QString typeName = mModel->typeName(index).toLower();
 		if (typeName == "code") {
 			emit textEditorRequested(actualIndex, role, propertyValue);
 		} else if (typeName == "directorypath") {
-			QString const startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
-			QString const location = utils::QRealFileDialog::getExistingDirectory("OpenDirectoryForPropertyEditor"
+			const QString startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
+			const QString location = utils::QRealFileDialog::getExistingDirectory("OpenDirectoryForPropertyEditor"
 					, this, tr("Specify directory:"), startPath);
 			mModel->setData(index, location);
 		} else if (typeName == "filepath") {
-			QString const startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
-			QString const location = utils::QRealFileDialog::getOpenFileName("OpenFileForPropertyEditor"
+			const QString startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
+			const QString location = utils::QRealFileDialog::getOpenFileName("OpenFileForPropertyEditor"
 					, this, tr("Select file:"), startPath);
 			mModel->setData(index, location);
 		} else {
@@ -213,7 +213,7 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 				}
 			}
 		} else {
-			int const intValue = value.toInt();
+			const int intValue = value.toInt();
 			if (intValue >= 0 && intValue < values.length()) {
 				value = values.at(intValue).first;
 			}
@@ -221,7 +221,7 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	}
 
 	value = QVariant(value.toString());
-	QVariant const oldValue = mModel->data(index);
+	const QVariant oldValue = mModel->data(index);
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal
@@ -238,7 +238,7 @@ void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVa
 	mChangingPropertyValue = old;
 }
 
-int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, QString const &value)
+int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, const QString &value)
 {
 	QList<QPair<QString, QString>> const values = mModel->enumValues(index);
 	for (int index = 0; index < values.count(); ++index) {

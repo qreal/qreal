@@ -21,31 +21,31 @@ namespace qrmc {
 	class Editor
 	{
 	public:
-		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 		~Editor();
 		MetaCompiler *metaCompiler();
 		qReal::Id id();
 
 		bool isLoaded();
 		bool load();
-		void generate(QString const &headerTemplate, QString const &sourceTemplate,
-					  QString const &nodeTemplate, QString const &edgeTemplate,
-					  QString const &elementsHeaderTemplate, QString const &resourceTemplate,
-					  QString const &projectTemplate, QMap<QString, QString> const &utils);
+		void generate(const QString &headerTemplate, const QString &sourceTemplate,
+					  const QString &nodeTemplate, const QString &edgeTemplate,
+					  const QString &elementsHeaderTemplate, const QString &resourceTemplate,
+					  const QString &projectTemplate, QMap<QString, QString> const &utils);
 
-		Type *findType(QString const &name);
+		Type *findType(const QString &name);
 		QSet<EnumType*> getAllEnumTypes();
-		Diagram *findDiagram(QString const &name);
+		Diagram *findDiagram(const QString &name);
 		QMap<QString, Diagram*> diagrams();
 
 		QString name();
 
 	private:
-		bool generatePluginHeader(QString const &headerTemplate);
+		bool generatePluginHeader(const QString &headerTemplate);
 		bool generatePluginSource();
 		bool generateElementsClasses();
-		bool generateResourceFile(QString const &resourceTemplate);
-		bool generateProjectFile(QString const &projectTemplate);
+		bool generateResourceFile(const QString &resourceTemplate);
+		bool generateProjectFile(const QString &projectTemplate);
 
 		void generateDiagramsMap();
 		void generateDiagramNodeNamesMap();
@@ -92,7 +92,7 @@ namespace qrmc {
 		class PropertyDisplayedNamesGenerator;
 		class ParentsMapGenerator;
 		class PossibleEdgesGenerator;
-		void generatePluginMethod(QString const &tag, MethodGenerator const &generator);
+		void generatePluginMethod(const QString &tag, MethodGenerator const &generator);
 	};
 
 }

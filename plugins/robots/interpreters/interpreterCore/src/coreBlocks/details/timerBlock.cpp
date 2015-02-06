@@ -19,7 +19,7 @@ TimerBlock::~TimerBlock()
 
 void TimerBlock::run()
 {
-	int const interval = eval<int>("Delay");
+	const int interval = eval<int>("Delay");
 	if (!errorsOccured()) {
 		utils::Tracer::debug(utils::Tracer::blocks, "TimerBlock::run", "interval=" + QString(interval));
 

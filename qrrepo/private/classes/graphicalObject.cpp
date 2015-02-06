@@ -6,7 +6,7 @@
 using namespace qrRepo::details;
 using namespace qReal;
 
-GraphicalObject::GraphicalObject(qReal::Id const &id, Id const &parent, qReal::Id const &logicalId)
+GraphicalObject::GraphicalObject(const qReal::Id &id, const Id &parent, const qReal::Id &logicalId)
 	: Object(id)
 	, mLogicalId(logicalId)
 {
@@ -26,7 +26,7 @@ GraphicalObject::GraphicalObject(QDomElement const &element)
 		for (QDomElement part = graphicalParts.firstChildElement(); !part.isNull(); part = part.nextSiblingElement()) {
 			GraphicalPart * const deserializedPart = new GraphicalPart(part);
 
-			QString const indexString = part.attribute("index");
+			const QString indexString = part.attribute("index");
 			if (indexString.isEmpty()) {
 				throw Exception("No \"index\" attribute in graphical part");
 			}
@@ -75,7 +75,7 @@ QList<int> GraphicalObject::graphicalParts() const
 	return mGraphicalParts.keys();
 }
 
-QVariant GraphicalObject::graphicalPartProperty(int index, QString const &name) const
+QVariant GraphicalObject::graphicalPartProperty(int index, const QString &name) const
 {
 	if (!mGraphicalParts.contains(index)) {
 		throw Exception("Tryng to get property of non-existing graphical part");
@@ -84,7 +84,7 @@ QVariant GraphicalObject::graphicalPartProperty(int index, QString const &name) 
 	return mGraphicalParts[index]->property(name);
 }
 
-void GraphicalObject::setGraphicalPartProperty(int index, QString const &name, QVariant const &value)
+void GraphicalObject::setGraphicalPartProperty(int index, const QString &name, const QVariant &value)
 {
 	if (!mGraphicalParts.contains(index)) {
 		throw Exception("Tryng to set property of non-existing graphical part");

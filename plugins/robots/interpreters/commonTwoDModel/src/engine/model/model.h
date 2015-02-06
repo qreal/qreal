@@ -36,7 +36,7 @@ public:
 	/// Add new robot model
 	/// @param robotModel Model to be added
 	/// @param pos Initial positon of robot model
-	void addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const &pos = QPointF());
+	void addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF &pos = QPointF());
 
 	/// Remove robot model
 	/// @param robotMode Model to be removed

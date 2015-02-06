@@ -46,7 +46,7 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &languageToolbox
 			, QAction &connectToRobotAction
 			);
@@ -61,7 +61,7 @@ public slots:
 
 private slots:
 	void threadStopped();
-	void newThread(qReal::Id const &startBlockId);
+	void newThread(const qReal::Id &startBlockId);
 
 	void connectedSlot(bool success, const QString &errorString);
 	void devicesConfiguredSlot();
@@ -78,7 +78,7 @@ private:
 
 	void addThread(qReal::interpretation::Thread * const thread);
 
-	void reportError(QString const &message);
+	void reportError(const QString &message);
 
 	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
@@ -87,7 +87,7 @@ private:
 	InterpreterState mState;
 	quint64 mInterpretationStartedTimestamp;
 	QList<qReal::interpretation::Thread *> mThreads;  // Has ownership
-	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 
 	/// Action responsible for the connection to the robot

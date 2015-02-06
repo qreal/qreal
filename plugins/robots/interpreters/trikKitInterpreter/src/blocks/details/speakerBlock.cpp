@@ -10,7 +10,7 @@ SpeakerBlock::SpeakerBlock(RobotModelInterface &robotModel)
 
 void SpeakerBlock::doJob(robotModel::parts::TrikSpeaker &speaker)
 {
-	QString const toSpeak = stringProperty("FileName");
+	const QString toSpeak = stringProperty("FileName");
 	speaker.play(toSpeak);
 
 	emit done(mNextBlockId);

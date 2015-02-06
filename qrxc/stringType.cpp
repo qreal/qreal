@@ -4,7 +4,7 @@
 
 #include <qrutils/outFile.h>
 
-bool StringType::init(QDomElement const &element, QString const &context)
+bool StringType::init(QDomElement const &element, const QString &context)
 {
 	if (NonGraphicType::init(element, context)) {
 		mRegularExpression = element.firstChildElement("regularExpression").text();

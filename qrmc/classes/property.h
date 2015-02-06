@@ -8,7 +8,7 @@ namespace qrmc {
 	class Property
 	{
 	public:
-		Property(qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		Property(qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 
 		bool init();
 		QString name() const;
@@ -20,9 +20,9 @@ namespace qrmc {
 		bool isReferenceProperty() const;
 		void print() const;
 
-		QString generatePropertyLine(QString const &lineTemplate) const;
-		QString generateDefaultsLine(QString const &lineTemplate) const;
-		QString generateDisplayedNameLine(QString const &lineTemplate) const;
+		QString generatePropertyLine(const QString &lineTemplate) const;
+		QString generateDefaultsLine(const QString &lineTemplate) const;
+		QString generateDisplayedNameLine(const QString &lineTemplate) const;
 
 	private:
 		qrRepo::LogicalRepoApi *mApi;

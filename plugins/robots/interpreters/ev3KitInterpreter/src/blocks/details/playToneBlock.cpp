@@ -17,9 +17,9 @@ int PlayToneBlock::duration()
 
 void PlayToneBlock::doJob(ev3KitInterpreter::robotModel::parts::Ev3Speaker &speaker)
 {
-	int const frequencyValue = eval<int>("Frequency");
-	int const durationValue = duration();
-	int const volumeValue = eval<int>("Volume");
+	const int frequencyValue = eval<int>("Frequency");
+	const int durationValue = duration();
+	const int volumeValue = eval<int>("Volume");
 	if (!errorsOccured()) {
 		speaker.playTone(volumeValue, frequencyValue, durationValue);
 	}

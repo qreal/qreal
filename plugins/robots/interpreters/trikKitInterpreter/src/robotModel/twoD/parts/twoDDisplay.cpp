@@ -4,10 +4,10 @@ using namespace trikKitInterpreter::robotModel::twoD::parts;
 using namespace interpreterBase::robotModel;
 
 /// @todo: This constant adjusts screen coordinates shift. It must be 0.
-int const yDisplayShift = 8;
+const int yDisplayShift = 8;
 
-Display::Display(DeviceInfo const &info
-		, PortInfo const &port
+Display::Display(const DeviceInfo &info
+		, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikDisplay(info, port)
 	, mEngine(engine)
@@ -70,7 +70,7 @@ void Display::setBackground(QColor const &color)
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::printText(int x, int y, QString const &text)
+void Display::printText(int x, int y, const QString &text)
 {
 	mLabels[qMakePair(x, y + yDisplayShift)] = {text, mCurrentPenColor};
 	mEngine.display()->repaintDisplay();

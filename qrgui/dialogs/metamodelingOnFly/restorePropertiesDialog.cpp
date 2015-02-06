@@ -4,7 +4,7 @@
 using namespace qReal;
 
 RestorePropertiesDialog::RestorePropertiesDialog(QWidget *parent
-		, EditorManagerInterface const &interpreterEditorManager)
+		, const EditorManagerInterface &interpreterEditorManager)
 	: QDialog(parent)
 	, mUi(new Ui::RestorePropertiesDialog)
 	, mInterpreterEditorManager(interpreterEditorManager)
@@ -30,8 +30,8 @@ RestorePropertiesDialog::~RestorePropertiesDialog()
 	delete mUi;
 }
 
-void RestorePropertiesDialog::fillSameNamePropertiesTW(IdList const &propertiesWithTheSameNameList
-		, QString const &propertyName)
+void RestorePropertiesDialog::fillSameNamePropertiesTW(const IdList &propertiesWithTheSameNameList
+		, const QString &propertyName)
 {
 	mPropertiesWithTheSameNameList = propertiesWithTheSameNameList;
 	for (int i = 0; i < mPropertiesWithTheSameNameList.count(); i++) {

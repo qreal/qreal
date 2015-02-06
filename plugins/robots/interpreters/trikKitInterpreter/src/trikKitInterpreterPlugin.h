@@ -38,13 +38,13 @@ public:
 	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-			interpreterBase::robotModel::RobotModelInterface const *model) override;
+			const interpreterBase::robotModel::RobotModelInterface *model) override;
 
 	// Transfers ownership.
 	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
-	QWidget *quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model) override;
+	QWidget *quickPreferencesFor(const interpreterBase::robotModel::RobotModelInterface &model) override;
 	QString defaultSettingsFile() const override;
-	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
+	QIcon iconForFastSelector(const interpreterBase::robotModel::RobotModelInterface &robotModel) const override;
 	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 	QList<qReal::ActionInfo> customActions() override;
@@ -53,7 +53,7 @@ public:
 
 private slots:
 	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
-	void onActiveTabChanged(qReal::Id const &rootElementId);
+	void onActiveTabChanged(const qReal::Id &rootElementId);
 
 private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;

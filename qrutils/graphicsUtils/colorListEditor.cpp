@@ -7,7 +7,7 @@ ColorListEditor::ColorListEditor(QWidget *widget)
 {
 }
 
-void ColorListEditor::setColorList(QStringList const &colorList, QStringList const &translatedColorList)
+void ColorListEditor::setColorList(const QStringList &colorList, const QStringList &translatedColorList)
 {
 	mColorList = colorList;
 	mTranslatedColorList = (translatedColorList == QStringList()) ? colorList : translatedColorList;

@@ -32,18 +32,18 @@ protected:
 	bool virtual checkRuleMatching();
 
 	/// Finds first element in specified elements and starts checking process
-	bool checkRuleMatching(IdList const &elements);
+	bool checkRuleMatching(const IdList &elements);
 
 	/// Checks rule matching recursively accordingly to given initial data
 	bool checkRuleMatchingRecursively();
 
 	/// Checks can given node in model be added to match as corresponding node
 	/// to given node in rule at curren step
-	bool checkNodeForAddingToMatch(Id const &nodeInModel, Id const &nodeInRule);
+	bool checkNodeForAddingToMatch(const Id &nodeInModel, const Id &nodeInRule);
 
 	/// Checks if node in model has all links to the current matched subgraph
 	/// as node in rule has
-	bool checkExistingLinks(Id const &nodeInModel, Id const &nodeInRule,
+	bool checkExistingLinks(const Id &nodeInModel, const Id &nodeInRule,
 			QHash<Id, Id> *linksToAddInMatch);
 
 	/// Performs a rollback in match algo, removes last added node to the current
@@ -51,24 +51,24 @@ protected:
 	void rollback();
 
 	/// Get link from node in rule which leads outside current matched graph
-	Id outsideLink(Id const &nodeInRule) const;
+	Id outsideLink(const Id &nodeInRule) const;
 
 	/// Get second link end
-	Id linkEndInModel(Id const &linkInModel, Id const &nodeInModel) const;
-	Id linkEndInRule(Id const &linkInRule, Id const &nodeInRule) const;
+	Id linkEndInModel(const Id &linkInModel, const Id &nodeInModel) const;
+	Id linkEndInRule(const Id &linkInRule, const Id &nodeInRule) const;
 
 	/// Returns link id in model which has one of its ends given node in model
 	/// and correspond to link in rule and its ends and
 	/// returns root id if it can not be found
-	Id properLink(Id const &nodeInModel, Id const &linkInRule,
-			Id const &linkEndInR) const;
+	Id properLink(const Id &nodeInModel, const Id &linkInRule,
+			const Id &linkEndInR) const;
 
 	/// Get all links from given node in model which can correspond
 	/// given link in rule
-	IdList properLinks(Id const &nodeInModel, Id const &linkInRule) const;
+	IdList properLinks(const Id &nodeInModel, const Id &linkInRule) const;
 
 	/// Get all links from given node in rule to current matched subgraph
-	IdList linksToMatchedSubgraph(Id const &nodeInRule) const;
+	IdList linksToMatchedSubgraph(const Id &nodeInRule) const;
 
 	/// Get all elements from active diagram
 	IdList elementsFromActiveDiagram() const;
@@ -83,38 +83,38 @@ protected:
 	void resetRuleSyntaxCheck();
 
 	/// Functions for working with properties of elements on model
-	QVariant property(Id const &id, QString const &propertyName) const;
-	virtual QMapIterator<QString, QVariant> propertiesIterator(Id const &id) const;
-	bool hasProperty(Id const &id, QString const &propertyName) const;
-	void setProperty(Id const &id, QString const &propertyName,
-			QVariant const &value) const;
-	QHash<QString, QVariant> properties(Id const &id) const;
+	QVariant property(const Id &id, const QString &propertyName) const;
+	virtual QMapIterator<QString, QVariant> propertiesIterator(const Id &id) const;
+	bool hasProperty(const Id &id, const QString &propertyName) const;
+	void setProperty(const Id &id, const QString &propertyName,
+			const QVariant &value) const;
+	QHash<QString, QVariant> properties(const Id &id) const;
 
 	/// Functions for test elements for equality
-	virtual bool compareLinks(Id const &first, Id const &second) const;
-	virtual bool compareElements(Id const &first, Id const &second) const;
-	virtual bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
+	virtual bool compareLinks(const Id &first, const Id &second) const;
+	virtual bool compareElements(const Id &first, const Id &second) const;
+	virtual bool compareElementTypesAndProperties(const Id &first, const Id &second) const;
 
-	bool isEdgeInModel(Id const &element) const;
-	bool isEdgeInRule(Id const &element) const;
+	bool isEdgeInModel(const Id &element) const;
+	bool isEdgeInRule(const Id &element) const;
 
 	/// Logical repo api methods for more quick access
-	Id toInModel(Id const &id) const;
-	Id fromInModel(Id const &id) const;
-	IdList linksInModel(Id const &id) const;
-	virtual Id toInRule(Id const &id) const;
-	virtual Id fromInRule(Id const &id) const;
-	virtual IdList linksInRule(Id const &id) const;
+	Id toInModel(const Id &id) const;
+	Id fromInModel(const Id &id) const;
+	IdList linksInModel(const Id &id) const;
+	virtual Id toInRule(const Id &id) const;
+	virtual Id fromInRule(const Id &id) const;
+	virtual IdList linksInRule(const Id &id) const;
 
-	IdList outgoingLinks(Id const &id) const;
-	IdList incomingLinks(Id const &id) const;
-	IdList children(Id const &id) const;
+	IdList outgoingLinks(const Id &id) const;
+	IdList incomingLinks(const Id &id) const;
+	IdList children(const Id &id) const;
 
 	/// Reports message to the main system
-	virtual void report(QString const &message, bool isError) const;
+	virtual void report(const QString &message, bool isError) const;
 
 	/// Hold highlight for some time in ms
-	void pause(int const &time);
+	void pause(const int &time);
 
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	LogicalModelAssistInterface &mLogicalModelApi;

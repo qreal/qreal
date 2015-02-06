@@ -2,7 +2,7 @@
 
 using namespace qrRepo::details;
 
-LogicalObject::LogicalObject(qReal::Id const &id)
+LogicalObject::LogicalObject(const qReal::Id &id)
 	: Object(id)
 {
 }

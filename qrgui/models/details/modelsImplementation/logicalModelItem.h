@@ -11,7 +11,7 @@ namespace modelsImplementation {
 class LogicalModelItem : public AbstractModelItem
 {
 public:
-	LogicalModelItem(Id const &id, LogicalModelItem *parent);
+	LogicalModelItem(const Id &id, LogicalModelItem *parent);
 };
 
 }

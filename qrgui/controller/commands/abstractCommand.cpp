@@ -154,7 +154,7 @@ qReal::Id AbstractCommand::diagramBinded() const
 	return mDiagramBinded;
 }
 
-void AbstractCommand::bindToDiagram(qReal::Id const &diagramId)
+void AbstractCommand::bindToDiagram(const qReal::Id &diagramId)
 {
 	mDiagramBinded = diagramId;
 }

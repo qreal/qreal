@@ -9,7 +9,7 @@ namespace semantics {
 class LoopBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	LoopBlockRuleBase(SemanticTree *tree, qReal::Id const &id
+	LoopBlockRuleBase(SemanticTree *tree, const qReal::Id &id
 			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
 
 protected:

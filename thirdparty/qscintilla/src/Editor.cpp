@@ -2083,7 +2083,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 		return;
 
 	PLATFORM_ASSERT(line < pdoc->LinesTotal());
-	PLATFORM_ASSERT(ll->chars != NULL);
+	PLATFORM_ASSERT(ll->chars != nullptr);
 	int posLineStart = pdoc->LineStart(line);
 	int posLineEnd = pdoc->LineStart(line + 1);
 	// If the line is very long, limit the treatment to a length that should fit in the viewport
@@ -6190,7 +6190,7 @@ void Editor::DwellEnd(bool mouseMoved) {
 }
 
 void Editor::MouseLeave() {
-	SetHotSpotRange(NULL);
+	SetHotSpotRange(nullptr);
 	if (!HaveMouseCapture()) {
 		ptMouseLast = Point(-1,-1);
 		DwellEnd(true);
@@ -6500,7 +6500,7 @@ void Editor::ButtonMove(Point pt) {
 		EnsureCaretVisible(false, false, true);
 
 		if (hsStart != -1 && !PositionIsHotspot(movePos.Position()))
-			SetHotSpotRange(NULL);
+			SetHotSpotRange(nullptr);
 
 		if (hotSpotClickPos != INVALID_POSITION && PositionFromLocation(pt,true,false) != hotSpotClickPos) {
 			if (inDragDrop == ddNone) {
@@ -6513,7 +6513,7 @@ void Editor::ButtonMove(Point pt) {
 		if (vs.fixedColumnWidth > 0) {	// There is a margin
 			if (PointInSelMargin(pt)) {
 				DisplayCursor(GetMarginCursor(pt));
-				SetHotSpotRange(NULL);
+				SetHotSpotRange(nullptr);
 				return; 	// No need to test for selection
 			}
 		}
@@ -6525,7 +6525,7 @@ void Editor::ButtonMove(Point pt) {
 			SetHotSpotRange(&pt);
 		} else {
 			DisplayCursor(Window::cursorText);
-			SetHotSpotRange(NULL);
+			SetHotSpotRange(nullptr);
 		}
 	}
 }
@@ -6550,7 +6550,7 @@ void Editor::ButtonUp(Point pt, unsigned int curTime, bool ctrl) {
 			DisplayCursor(GetMarginCursor(pt));
 		} else {
 			DisplayCursor(Window::cursorText);
-			SetHotSpotRange(NULL);
+			SetHotSpotRange(nullptr);
 		}
 		ptMouseLast = pt;
 		SetMouseCapture(false);
@@ -6796,7 +6796,7 @@ void Editor::SetDocPointer(Document *document) {
 	//Platform::DebugPrintf("** %x setdoc to %x\n", pdoc, document);
 	pdoc->RemoveWatcher(this, 0);
 	pdoc->Release();
-	if (document == NULL) {
+	if (document == nullptr) {
 		pdoc = new Document();
 	} else {
 		pdoc = document;
@@ -7087,7 +7087,7 @@ void Editor::StyleSetMessage(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 		break;
 	case SCI_STYLESETCHARACTERSET:
 		vs.styles[wParam].characterSet = lParam;
-		pdoc->SetCaseFolder(NULL);
+		pdoc->SetCaseFolder(nullptr);
 		break;
 	case SCI_STYLESETVISIBLE:
 		vs.styles[wParam].visible = lParam != 0;
@@ -8518,7 +8518,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 
 	case SCI_CLEARCMDKEY:
 		kmap.AssignCmdKey(Platform::LowShortFromLong(wParam),
-		        Platform::HighShortFromLong(wParam), SCI_NULL);
+		        Platform::HighShortFromLong(wParam), SCI_nullptr);
 		break;
 
 	case SCI_CLEARALLCMDKEYS:

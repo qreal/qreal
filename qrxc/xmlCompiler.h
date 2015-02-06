@@ -16,10 +16,10 @@ class XmlCompiler
 public:
 	XmlCompiler();
 	~XmlCompiler();
-	bool compile(QString const &inputXmlFileName, QString const &sourcesRootFolder);
-	Editor *loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName);
-	Diagram *getDiagram(QString const &diagramName);
-	void addResource(QString const &resourceName);
+	bool compile(const QString &inputXmlFileName, const QString &sourcesRootFolder);
+	Editor *loadXmlFile(QDir const &currentDir, const QString &inputXmlFileName);
+	Diagram *getDiagram(const QString &diagramName);
+	void addResource(const QString &resourceName);
 
 private:
 	void generateCode();
@@ -63,7 +63,7 @@ private:
 	class PossibleEdgesGenerator;
 	class EnumValuesGenerator;
 
-	void generateListMethod(utils::OutFile &out, QString const &signature, ListMethodGenerator const &generator);
+	void generateListMethod(utils::OutFile &out, const QString &signature, ListMethodGenerator const &generator);
 
 	QMap<QString, Editor *> mEditors;
 	QString mPluginName;

@@ -18,19 +18,19 @@ public:
 	virtual bool apply() = 0;
 
 protected:
-	SemanticTransformationRule(SemanticTree *tree, qReal::Id const &id);
+	SemanticTransformationRule(SemanticTree *tree, const qReal::Id &id);
 	virtual ~SemanticTransformationRule();
 
 	LoopNode *makeLoopStartingFrom(NonZoneNode *node);
 
 	/// Returns true if semantic node for the given id was already created.
-	bool alreadyCreated(qReal::Id const &id);
+	bool alreadyCreated(const qReal::Id &id);
 
 	/// Returns true if semantic node for the link dst node was already created.
 	bool alreadyCreated(LinkInfo const &link);
 
 	SemanticTree *mTree;  // Does not take ownership
-	qReal::Id const mId;
+	const qReal::Id mId;
 };
 
 }

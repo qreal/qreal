@@ -6,19 +6,19 @@
 #include <QtGui/QTextCursor>
 
 Text::Text(bool isDynamic)
-	: Item(NULL), mIsDynamicText(isDynamic)
+	: Item(nullptr), mIsDynamicText(isDynamic)
 {
 	mDomElementType = labelType;
 }
 
-Text::Text(int x, int y, QString const &text, bool isDynamic)
-	: Item(NULL), mIsDynamicText(isDynamic)
+Text::Text(int x, int y, const QString &text, bool isDynamic)
+	: Item(nullptr), mIsDynamicText(isDynamic)
 {
 	mDomElementType = labelType;
 	init(x, y, text);
 }
 
-void Text::init(int x, int y, QString const &text)
+void Text::init(int x, int y, const QString &text)
 {
 	mNeedScalingRect = false;
 	mText.setPlainText(text);
@@ -142,11 +142,11 @@ void Text::changeScalingPointState(qreal x, qreal y)
 	calcForChangeScalingState(QPointF(x, y), QPointF(x1, y1), QPointF(x2, y2), correction);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement text = document.createElement("label");
-	int const x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
-	int const y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
+	const int x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
+	const int y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x", setSingleScaleForDoc(0, x1, y1));
 	text.setAttribute(mIsDynamicText ? "textBinded" : "text", mText.toPlainText());

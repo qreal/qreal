@@ -40,7 +40,7 @@ int TrikDisplayWidget::displayHeight() const
 	return mUi->display->height();
 }
 
-bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
+bool TrikDisplayWidget::buttonIsDown(const QString &buttonPort) const
 {
 	if (buttonPort == "LeftButtonPort") {
 		return mUi->buttonLeft->isDown();

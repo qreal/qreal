@@ -9,9 +9,9 @@ namespace simple {
 class WaitForColorBlockGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	WaitForColorBlockGenerator(qrRepo::RepoApi const &repo
+	WaitForColorBlockGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

@@ -14,15 +14,15 @@ VersionsConverterManager::VersionsConverterManager(MainWindow &mainWindow)
 bool VersionsConverterManager::validateCurrentProject()
 {
 	QSet<QString> editorsToCheck;
-	IdList const allElements = mMainWindow.models().logicalModelAssistApi().children(Id::rootId());
-	for (Id const &element : allElements) {
+	const IdList allElements = mMainWindow.models().logicalModelAssistApi().children(Id::rootId());
+	for (const Id &element : allElements) {
 		editorsToCheck << element.editor();
 	}
 
 	QMap<Id, Version> const savedVersions = mMainWindow.models().logicalModelAssistApi().editorVersions();
 	QMultiMap<QString, ProjectConverter> const converters = mMainWindow.toolManager().projectConverters();
 
-	for (QString const &editor : editorsToCheck) {
+	for (const QString &editor : editorsToCheck) {
 		Version const currentVersion = mMainWindow.editorManager().version(Id(editor));
 		Version const savedVersion = savedVersions[Id(editor)];
 
@@ -98,7 +98,7 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 
 void VersionsConverterManager::displayCannotConvertError()
 {
-	QString const errorMessage = QObject::tr("The attempt to automaticly convert this project "\
+	const QString errorMessage = QObject::tr("The attempt to automaticly convert this project "\
 			"to the current enviroment version failed and thus save file can`t be opened. ");
 
 	showError(errorMessage);
@@ -106,26 +106,26 @@ void VersionsConverterManager::displayCannotConvertError()
 
 void VersionsConverterManager::displayTooOldSaveError(Version const &saveVersion)
 {
-	bool const showVersionDetails = saveVersion.isValid();
-	QString const reason = showVersionDetails
+	const bool showVersionDetails = saveVersion.isValid();
+	const QString reason = showVersionDetails
 			? QObject::tr("This project was created by version %1 of the editor.").arg(saveVersion.toString())
 			: QObject::tr("This project was created by too old version of the editor.");
 
-	QString const errorMessage = reason + QObject::tr(" It is now considered outdated and cannot be opened.");
+	const QString errorMessage = reason + QObject::tr(" It is now considered outdated and cannot be opened.");
 
 	showError(errorMessage);
 }
 
 void VersionsConverterManager::displayTooOldEnviromentError(Version const &saveVersion)
 {
-	QString const errorMessage = QObject::tr("The save you are trying to open is made by version %1 of editor, "\
+	const QString errorMessage = QObject::tr("The save you are trying to open is made by version %1 of editor, "\
 			"whitch is newer than currently installed enviroment. "\
 			"Update your version before opening this save.").arg(saveVersion.toString());
 
 	showError(errorMessage);
 }
 
-void VersionsConverterManager::showError(QString const &errorMessage)
+void VersionsConverterManager::showError(const QString &errorMessage)
 {
 	QMessageBox::information(&mMainWindow, QObject::tr("Can`t open project file"), errorMessage);
 }

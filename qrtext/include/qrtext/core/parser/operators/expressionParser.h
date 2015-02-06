@@ -64,7 +64,7 @@ private:
 		while (mPrecedenceTable->binaryOperators().contains(tokenStream.next().token())
 				&& mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary) >= currentPrecedence)
 		{
-			int const newPrecedence = mPrecedenceTable->associativity(tokenStream.next().token()) == Associativity::left
+			const int newPrecedence = mPrecedenceTable->associativity(tokenStream.next().token()) == Associativity::left
 					? 1 + mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary)
 					: mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary)
 					;
@@ -98,7 +98,7 @@ private:
 	}
 
 	QSharedPointer<PrecedenceTable<TokenType>> mPrecedenceTable;
-	int const mStartPrecedence;
+	const int mStartPrecedence;
 
 	ParserRef<TokenType> const mPrimary;
 	ParserRef<TokenType> const mBinOp;

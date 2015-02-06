@@ -6,7 +6,7 @@
 using namespace qReal;
 
 PropertyEditorModel::PropertyEditorModel(
-		qReal::EditorManagerInterface const &editorManagerInterface
+		const qReal::EditorManagerInterface &editorManagerInterface
 		, QObject *parent
 		)
 	: QAbstractTableModel(parent)
@@ -61,8 +61,8 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 
 	if (role == Qt::ToolTipRole) {
 		if (index.column() == 0) {
-			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-			QString const description = mEditorManagerInterface.propertyDescription(id, mFields[index.row()].fieldName);
+			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+			const QString description = mEditorManagerInterface.propertyDescription(id, mFields[index.row()].fieldName);
 			if (!description.isEmpty()) {
 				return "<body>" + description;
 			} else {
@@ -80,8 +80,8 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	}
 
 	if (index.column() == 0) {
-		Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-		QString const displayedName = mEditorManagerInterface.propertyDisplayedName(id, mFields[index.row()].fieldName);
+		const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		const QString displayedName = mEditorManagerInterface.propertyDisplayedName(id, mFields[index.row()].fieldName);
 		return displayedName.isEmpty() ? mFields[index.row()].fieldName : displayedName;
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
@@ -95,7 +95,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 		case logicalIdPseudoattribute:
 			return mTargetLogicalObject.data(roles::idRole).value<Id>().id();
 		case metatypePseudoattribute: {
-			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
 			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
 		}
 		case namePseudoattribute: {
@@ -109,7 +109,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	}
 }
 
-bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &value, int role)
+bool PropertyEditorModel::setData(QModelIndex const &index, const QVariant &value, int role)
 {
 	bool modelChanged = true;
 
@@ -155,7 +155,7 @@ bool PropertyEditorModel::enumEditable(QModelIndex const &index) const
 		return false;
 	}
 
-	Id const id = attrClass == logicalAttribute
+	const Id id = attrClass == logicalAttribute
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
@@ -174,7 +174,7 @@ QList<QPair<QString, QString>> PropertyEditorModel::enumValues(QModelIndex const
 		return {};
 	}
 
-	Id const id = attrClass == logicalAttribute
+	const Id id = attrClass == logicalAttribute
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
@@ -224,10 +224,10 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 		return;
 	}
 
-	Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
+	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
 
 	if (logicalModelIndex != QModelIndex()) {
-		QStringList const logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
+		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
 			mFields << Field(property, logicalAttribute, role);
@@ -293,7 +293,7 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 	return mEditorManagerInterface.typeName(id, mFields[index.row()].fieldName);
 }
 
-bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &propertyName)
+bool PropertyEditorModel::isReference(QModelIndex const &index, const QString &propertyName)
 {
 	Id id = idByIndex(index);
 	if (id.isNull()) {

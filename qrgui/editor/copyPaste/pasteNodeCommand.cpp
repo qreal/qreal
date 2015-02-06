@@ -6,7 +6,7 @@ using namespace qReal::commands;
 
 PasteNodeCommand::PasteNodeCommand(EditorViewScene *scene
 		, NodeData const &data
-		, QPointF const &offset
+		, const QPointF &offset
 		, bool isGraphicalCopy
 		, QHash<Id, Id> *copiedIds)
 	: PasteCommand(scene, offset, isGraphicalCopy, copiedIds)
@@ -21,7 +21,7 @@ Id PasteNodeCommand::pasteNewInstance()
 	// TODO: create node/edge data hierarchy and move it into PasteCommand
 	Id resultId = mResult;
 	if (!mCreateCommand && explosionTargetExists()) {
-		Id const typeId = mNodeData.id.type();
+		const Id typeId = mNodeData.id.type();
 		resultId = mScene->createElement(typeId.toString(), newPos(), true, &mCreateCommand, false
 				, vectorFromContainer(), mNodeData.explosion.toString());
 		if (mCreateCommand) {
@@ -66,7 +66,7 @@ void PasteNodeCommand::restoreElement()
 		return;
 	}
 
-	Id const logicalId = mScene->models().graphicalModelAssistApi().logicalId(mCreateCommand->result());
+	const Id logicalId = mScene->models().graphicalModelAssistApi().logicalId(mCreateCommand->result());
 	mScene->models().graphicalModelAssistApi().setProperties(logicalId, mNodeData.logicalProperties);
 	mScene->models().graphicalModelAssistApi().setProperties(mResult, mNodeData.graphicalProperties);
 	mScene->models().graphicalModelAssistApi().setPosition(mResult, newGraphicalPos());

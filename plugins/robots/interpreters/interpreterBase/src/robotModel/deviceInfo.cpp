@@ -15,8 +15,8 @@ DeviceInfo::DeviceInfo()
 {
 }
 
-DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &name
-		, QString const &friendlyName, Direction direction)
+DeviceInfo::DeviceInfo(QMetaObject const *deviceType, const QString &name
+		, const QString &friendlyName, Direction direction)
 	: mDeviceType(deviceType)
 	, mName(name)
 	, mFriendlyName(friendlyName)
@@ -24,7 +24,7 @@ DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &name
 {
 }
 
-bool DeviceInfo::isA(DeviceInfo const &parent) const
+bool DeviceInfo::isA(const DeviceInfo &parent) const
 {
 	if (parent.isNull()) {
 		return isNull();
@@ -65,7 +65,7 @@ QString DeviceInfo::toString() const
 	return QString(mDeviceType ? mDeviceType->className() : QString());
 }
 
-DeviceInfo DeviceInfo::fromString(QString const &string)
+DeviceInfo DeviceInfo::fromString(const QString &string)
 {
 	if (string.isEmpty()) {
 		return DeviceInfo();
@@ -78,7 +78,7 @@ DeviceInfo DeviceInfo::fromString(QString const &string)
 	return mCreatedInfos[string];
 }
 
-QString DeviceInfo::property(QMetaObject const * const metaObject, QString const &name)
+QString DeviceInfo::property(QMetaObject const * const metaObject, const QString &name)
 {
 	if (!metaObject) {
 		return QString();

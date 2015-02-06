@@ -25,7 +25,7 @@ Object::Object(QDomElement const &element)
 
 	mParent = ValuesSerializer::deserializeId(element.attribute("parent", ""));
 
-	foreach (Id const &child, ValuesSerializer::deserializeIdList(element, "children")) {
+	foreach (const Id &child, ValuesSerializer::deserializeIdList(element, "children")) {
 		mChildren.append(child);
 	}
 
@@ -42,9 +42,9 @@ Object::~Object()
 {
 }
 
-void Object::replaceProperties(QString const value, QString const &newValue)
+void Object::replaceProperties(const QString value, const QString &newValue)
 {
-	foreach (QVariant const &val, mProperties.values()) {
+	foreach (const QVariant &val, mProperties.values()) {
 		if (val.toString().contains(value)) {
 			mProperties[mProperties.key(val)] = newValue;
 		}
@@ -58,7 +58,7 @@ Object *Object::clone(QHash<Id, Object*> &objHash) const
 
 	result->mParent = mParent;
 
-	foreach (Id const &childId, mChildren) {
+	foreach (const Id &childId, mChildren) {
 		Object * const child = objHash[childId]->clone(objHash);
 		child->setParent(mId);
 		result->addChild(child->id());
@@ -126,7 +126,7 @@ Id Object::parent() const
 	return mParent;
 }
 
-void Object::setProperty(QString const &name, const QVariant &value)
+void Object::setProperty(const QString &name, const QVariant &value)
 {
 	if (value == QVariant()) {
 		qDebug() << "Empty QVariant set as a property for " << id().toString();
@@ -142,7 +142,7 @@ void Object::setProperties(QMap<QString, QVariant> const &properties)
 	mProperties = properties;
 }
 
-QVariant Object::property(QString const &name) const
+QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {
 		return mProperties[name];
@@ -154,14 +154,14 @@ QVariant Object::property(QString const &name) const
 	}
 }
 
-void Object::setBackReference(qReal::Id const &reference)
+void Object::setBackReference(const qReal::Id &reference)
 {
 	IdList references = mProperties["backReferences"].value<IdList>();
 	references << reference;
 	mProperties.insert("backReferences", qReal::IdListHelper::toVariant(references));
 }
 
-void Object::removeBackReference(qReal::Id const &reference)
+void Object::removeBackReference(const qReal::Id &reference)
 {
 	if (!mProperties.contains("backReferences")) {
 		throw Exception("Object " + mId.toString() + ": removing nonexsistent reference " + reference.toString());
@@ -176,12 +176,12 @@ void Object::removeBackReference(qReal::Id const &reference)
 	mProperties.insert("backReferences", qReal::IdListHelper::toVariant(references));
 }
 
-void Object::setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue)
+void Object::setTemporaryRemovedLinks(const QString &direction, const qReal::IdList &listValue)
 {
 	mTemporaryRemovedLinks.insert(direction, listValue);
 }
 
-IdList Object::temporaryRemovedLinksAt(QString const &direction) const
+IdList Object::temporaryRemovedLinksAt(const QString &direction) const
 {
 	return mTemporaryRemovedLinks.value(direction);
 }
@@ -191,7 +191,7 @@ IdList Object::temporaryRemovedLinks() const
 	return temporaryRemovedLinksAt("to") << temporaryRemovedLinksAt("from") << temporaryRemovedLinksAt(QString());
 }
 
-void Object::removeTemporaryRemovedLinksAt(QString const &direction)
+void Object::removeTemporaryRemovedLinksAt(const QString &direction)
 {
 	if (mTemporaryRemovedLinks.contains(direction)) {
 		mProperties.remove(direction);
@@ -205,7 +205,7 @@ void Object::removeTemporaryRemovedLinks()
 	removeTemporaryRemovedLinksAt(QString());
 }
 
-bool Object::hasProperty(QString const &name, bool sensitivity, bool regExpression) const
+bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpression) const
 {
 	QStringList properties = mProperties.keys();
 	Qt::CaseSensitivity caseSensitivity;
@@ -224,7 +224,7 @@ bool Object::hasProperty(QString const &name, bool sensitivity, bool regExpressi
 	}
 }
 
-void Object::removeProperty(QString const &name)
+void Object::removeProperty(const QString &name)
 {
 	if (mProperties.contains(name)) {
 		mProperties.remove(name);

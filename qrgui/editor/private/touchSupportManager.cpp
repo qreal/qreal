@@ -34,8 +34,8 @@ bool TouchSupportManager::isGestureRunning() const
 bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 {
 	QEvent::Type const eventType = event->type();
-	bool const isMouseAction = QEvent::MouseButtonPress == eventType || QEvent::MouseButtonRelease == eventType;
-	bool const isMouseEvent = isMouseAction || QEvent::MouseMove == eventType;
+	const bool isMouseAction = QEvent::MouseButtonPress == eventType || QEvent::MouseButtonRelease == eventType;
+	const bool isMouseEvent = isMouseAction || QEvent::MouseMove == eventType;
 
 	if (!isMouseEvent && event->type() != QEvent::Gesture) {
 		return false;
@@ -80,7 +80,7 @@ void TouchSupportManager::grabTapAndHold()
 	mEditorView->grabGesture(Qt::TapAndHoldGesture);
 }
 
-void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos
+void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, const QPointF &pos
 		, Qt::MouseButtons buttons)
 {
 	QMouseEvent *mouseEvent = new QMouseEvent(event, pos, mButton, buttons, Qt::NoModifier);
@@ -111,7 +111,7 @@ void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 
 void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
 {
-	QPointF const position(mEditorView->viewport()->mapFromGlobal(gesture->position().toPoint()));
+	const QPointF position(mEditorView->viewport()->mapFromGlobal(gesture->position().toPoint()));
 
 	mButton = Qt::LeftButton;
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonPress, position, Qt::LeftButton);
@@ -122,7 +122,7 @@ void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonRelease, position, Qt::NoButton);
 }
 
-bool TouchSupportManager::isElementUnder(QPointF const &pos)
+bool TouchSupportManager::isElementUnder(const QPointF &pos)
 {
 	for (QGraphicsItem * const item : mEditorView->items(pos.toPoint())) {
 		if (dynamic_cast<Element *>(item)) {
@@ -183,11 +183,11 @@ bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 
 void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 {
-	QPointF const touchPoint = event->touchPoints()[0].pos();
+	const QPointF touchPoint = event->touchPoints()[0].pos();
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
 		mEditorView->scene()->clearSelection();
-		bool const elementUnder = isElementUnder(event->touchPoints()[0].pos());
+		const bool elementUnder = isElementUnder(event->touchPoints()[0].pos());
 		moveCursor(event);
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
 			// Double tap occured. We don`t want to show context menu after double tap so disabling

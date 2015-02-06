@@ -3,9 +3,9 @@
 using namespace generatorBase::semantics;
 
 SwitchInitializationRule::SwitchInitializationRule(SemanticTree *tree
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QList<SemanticTransformationRule::LinkInfo> const &branches
-		, qrRepo::RepoApi const &repo)
+		, const qrRepo::RepoApi &repo)
 	: SemanticTransformationRule(tree, id)
 	, mBranches(branches)
 	, mRepo(repo)
@@ -18,7 +18,7 @@ bool SwitchInitializationRule::apply()
 	QSet<qReal::Id> visitedBranches;
 	bool result = true;
 	for (LinkInfo const &branch : mBranches) {
-		QString const value = mRepo.property(branch.linkId, "Guard").toString();
+		const QString value = mRepo.property(branch.linkId, "Guard").toString();
 		if (branch.targetVisited) {
 			// We can`t return immediately cause we`ll get inconsistent semantic tree and it will cause segfaults.
 			result = false;

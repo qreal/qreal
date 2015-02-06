@@ -28,7 +28,7 @@ NxtOsekCGeneratorPlugin::~NxtOsekCGeneratorPlugin()
 	delete mFlashTool;
 }
 
-QString NxtOsekCGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString NxtOsekCGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString("nxt-tools/%1/%1.c").arg(projectName);
 }
@@ -43,9 +43,9 @@ QString NxtOsekCGeneratorPlugin::generatorName() const
 	return "nxtOsekC";
 }
 
-bool NxtOsekCGeneratorPlugin::canGenerateTo(QString const &project)
+bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 {
-	QString const cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
+	const QString cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
 	QFileInfo const cFile(cFilePath);
 	QFileInfo const makeFile(cFile.absolutePath() + "/makefile");
 	if (!cFile.exists() || !makeFile.exists()) {
@@ -53,13 +53,13 @@ bool NxtOsekCGeneratorPlugin::canGenerateTo(QString const &project)
 	}
 
 	// If c file has much later timestamp then it was edited by user - restrincting generation to this file.
-	int const timestampMaxDifference = 100;
+	const int timestampMaxDifference = 100;
 	return (cFile.lastModified().toMSecsSinceEpoch()
 			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference);
 }
 
 void NxtOsekCGeneratorPlugin::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);

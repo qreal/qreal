@@ -9,7 +9,7 @@ namespace semantics {
 class IfBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	IfBlockRuleBase(SemanticTree *tree, qReal::Id const &id
+	IfBlockRuleBase(SemanticTree *tree, const qReal::Id &id
 			, LinkInfo const &thenLink, LinkInfo const &elseLink);
 
 protected:

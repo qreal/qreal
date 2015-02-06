@@ -4,7 +4,7 @@ using namespace qReal::interpretation::blocks;
 
 void ForkBlock::run()
 {
-	foreach (Id const &blockId, mThreadStartBlocks) {
+	foreach (const Id &blockId, mThreadStartBlocks) {
 		emit newThread(blockId);
 	}
 
@@ -13,10 +13,10 @@ void ForkBlock::run()
 
 bool ForkBlock::initNextBlocks()
 {
-	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
+	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
-	foreach (Id const &linkId, links) {
-		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
+	foreach (const Id &linkId, links) {
+		const Id targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId.isNull()) {
 			error(tr("Outgoing link is not connected"));
 			return false;

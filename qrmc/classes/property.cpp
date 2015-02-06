@@ -5,7 +5,7 @@
 
 using namespace qrmc;
 
-Property::Property(qrRepo::LogicalRepoApi *api, qReal::Id const &id) : mApi(api), mId(id)
+Property::Property(qrRepo::LogicalRepoApi *api, const qReal::Id &id) : mApi(api), mId(id)
 {
 
 }
@@ -24,16 +24,16 @@ bool Property::init()
 		qDebug() << "ERROR: empty type of property found";
 		return false;
 	} else {
-		qReal::IdList const listOfEnums = mApi->elementsByType("MetaEntityEnum");
-		foreach (qReal::Id const enumElement, listOfEnums) {
-			QString const nameOfEnumElement = mApi->name(enumElement);
+		const qReal::IdList listOfEnums = mApi->elementsByType("MetaEntityEnum");
+		foreach (const qReal::Id enumElement, listOfEnums) {
+			const QString nameOfEnumElement = mApi->name(enumElement);
 			if (nameOfEnumElement == mType) {
 				mIsEnum = true;
 			}
 		}
-		qReal::IdList const listOfNodes = mApi->elementsByType("MetaEntityNode");
-		foreach (qReal::Id const nodeElement, listOfNodes) {
-			QString const nameOfNodeElement = mApi->name(nodeElement);
+		const qReal::IdList listOfNodes = mApi->elementsByType("MetaEntityNode");
+		foreach (const qReal::Id nodeElement, listOfNodes) {
+			const QString nameOfNodeElement = mApi->name(nodeElement);
 			if (nameOfNodeElement == mType) {
 				mIsReference = true;
 			}
@@ -107,14 +107,14 @@ void Property::print() const
 			<< "\t" << mDisplayedName;
 }
 
-QString Property::generatePropertyLine(QString const &lineTemplate) const
+QString Property::generatePropertyLine(const QString &lineTemplate) const
 {
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyTypeTag, mType);
 	return result;
 }
 
-QString Property::generateDefaultsLine(QString const &lineTemplate) const
+QString Property::generateDefaultsLine(const QString &lineTemplate) const
 {
 	if (mDefaultValue.isEmpty())
 		return "";
@@ -123,7 +123,7 @@ QString Property::generateDefaultsLine(QString const &lineTemplate) const
 	return result;
 }
 
-QString Property::generateDisplayedNameLine(QString const &lineTemplate) const
+QString Property::generateDisplayedNameLine(const QString &lineTemplate) const
 {
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyDisplayedNameTag, mDisplayedName);

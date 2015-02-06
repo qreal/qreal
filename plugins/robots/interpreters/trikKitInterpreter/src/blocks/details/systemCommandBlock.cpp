@@ -10,7 +10,7 @@ SystemCommandBlock::SystemCommandBlock(RobotModelInterface &robotModel)
 
 void SystemCommandBlock::doJob(robotModel::parts::TrikShell &shell)
 {
-	QString const command = stringProperty("Command").replace("\"", "\\\"");
+	const QString command = stringProperty("Command").replace("\"", "\\\"");
 	shell.runCommand(command);
 
 	emit done(mNextBlockId);

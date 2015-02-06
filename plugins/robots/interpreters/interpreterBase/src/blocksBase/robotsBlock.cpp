@@ -9,7 +9,7 @@ RobotsBlock::RobotsBlock()
 {
 }
 
-void RobotsBlock::init(Id const &graphicalId
+void RobotsBlock::init(const Id &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
@@ -20,7 +20,7 @@ void RobotsBlock::init(Id const &graphicalId
 	mRobotModelManager = &robotModelManager;
 }
 
-void RobotsBlock::init(qReal::Id const &graphicalId
+void RobotsBlock::init(const qReal::Id &graphicalId
 		, qReal::GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::LogicalModelAssistInterface const &logicalModelApi
 		, qReal::ErrorReporterInterface * const errorReporter

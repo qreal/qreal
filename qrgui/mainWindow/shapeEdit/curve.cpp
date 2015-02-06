@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
+Curve::Curve(const QPointF &start, const QPointF &end, const QPointF &c1)
 		: Path(QPainterPath(start))
 {
 	mPen.setColor(Qt::gray);
@@ -144,7 +144,7 @@ void  Curve::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement curve = setPenBrushToDoc(document, "curve");
 

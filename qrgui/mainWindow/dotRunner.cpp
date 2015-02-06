@@ -3,13 +3,13 @@
 using namespace qReal;
 
 DotRunner::DotRunner(
-		Id const &diagramId
+		const Id &diagramId
 		, models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
-		, EditorManagerInterface const &editorManagerProxy
-		, QString const &absolutePathToDotFiles
+		, const EditorManagerInterface &editorManagerProxy
+		, const QString &absolutePathToDotFiles
 		)
-		: QObject(NULL)
+		: QObject(nullptr)
 		, mDiagramId(diagramId)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
@@ -25,7 +25,7 @@ void DotRunner::readFromProcess()
 	mData = mProcess.readAllStandardOutput();
 }
 
-bool DotRunner::run(QString const &algorithm)
+bool DotRunner::run(const QString &algorithm)
 {
 	mAlgorithm = algorithm;
 	QFile data(mAbsolutePathToDotFiles + "/graph.dot");
@@ -35,7 +35,7 @@ bool DotRunner::run(QString const &algorithm)
 		if (!mAlgorithm.isEmpty()) {
 			outFile << QString("rankdir=%1; \n").arg(mAlgorithm);
 		}
-		IdList const childrenId = mGraphicalModelApi.children(mDiagramId);
+		const IdList childrenId = mGraphicalModelApi.children(mDiagramId);
 		int index = 1;
 		foreach (Id id, childrenId) {
 			if (mEditorManagerInterface.isGraphicalElementNode(id)) {
@@ -47,7 +47,7 @@ bool DotRunner::run(QString const &algorithm)
 		data.close();
 
 		mProcess.setWorkingDirectory(mAbsolutePathToDotFiles);
-		QString const dotPath = SettingsManager::value("pathToDot").toString();
+		const QString dotPath = SettingsManager::value("pathToDot").toString();
 		mProcess.start(dotPath + " graph.dot");
 		if (!mProcess.waitForFinished()) {
 			data.remove();
@@ -67,7 +67,7 @@ void DotRunner::writeGraphToDotFile(QTextStream &outFile, const Id &id)
 		outFile << nameOfElement(id) << ";\n";
 	}
 	foreach (Id linkId, outgoingLinks) {
-		Id const elementId = mGraphicalModelApi.graphicalRepoApi().otherEntityFromLink(linkId, id);
+		const Id elementId = mGraphicalModelApi.graphicalRepoApi().otherEntityFromLink(linkId, id);
 		if (mEditorManagerInterface.isGraphicalElementNode(elementId)) {
 			outFile << nameOfElement(id) << " -> " << nameOfElement(elementId) << ";\n";
 		}
@@ -76,7 +76,7 @@ void DotRunner::writeGraphToDotFile(QTextStream &outFile, const Id &id)
 
 void DotRunner::buildSubgraph(QTextStream &out, const Id &id, int &index)
 {
-	IdList const childrenId = mGraphicalModelApi.children(id);
+	const IdList childrenId = mGraphicalModelApi.children(id);
 	if (childrenId.isEmpty()) {
 		return;
 	}
@@ -89,7 +89,7 @@ void DotRunner::buildSubgraph(QTextStream &out, const Id &id, int &index)
 	out << "}\n";
 }
 
-QString DotRunner::nameOfElement(Id const &id)
+QString DotRunner::nameOfElement(const Id &id)
 {
 	QString idToString = id.toString();
 	idToString.chop(1);
@@ -108,21 +108,21 @@ void DotRunner::parseDOTCoordinates()
 	QStringList list = data.split("\n", QString::SkipEmptyParts);
 	QRegExp regexp("\\s*(\\w+)\\s\\[pos=\"(\\d+\\,\\d+)\"\\,\\swidth=\"(\\d+\\.\\d+)\",\\sheight=\"(\\d+\\.\\d+)\"\\]" );
 
-	foreach (QString const &string, list) {
+	foreach (const QString &string, list) {
 		if (string.indexOf(regexp) == -1) {
 			continue;
 		}
-		Id const id = mElementNamesForDOT[regexp.capturedTexts().at(1)];
-		QStringList const qpointFCoordinates = regexp.capturedTexts().at(2).split(",", QString::SkipEmptyParts);
+		const Id id = mElementNamesForDOT[regexp.capturedTexts().at(1)];
+		const QStringList qpointFCoordinates = regexp.capturedTexts().at(2).split(",", QString::SkipEmptyParts);
 		if (qpointFCoordinates.count() < 2) {
 			continue;
 		}
-		QPointF const pointF = QPointF(qpointFCoordinates.at(0).toDouble(), qpointFCoordinates.at(1).toDouble());
+		const QPointF pointF = QPointF(qpointFCoordinates.at(0).toDouble(), qpointFCoordinates.at(1).toDouble());
 		QPair<qreal, qreal> const pair = qMakePair(regexp.capturedTexts().at(3).toDouble()
 				, regexp.capturedTexts().at(4).toDouble());
 		mDOTCoordinatesOfElements.insert(id, qMakePair(pointF, pair));
 	}
-	foreach (Id const &id, mDOTCoordinatesOfElements.keys()) {
+	foreach (const Id &id, mDOTCoordinatesOfElements.keys()) {
 		QPolygon const configuration = mGraphicalModelApi.configuration(id);
 		int width = 0;
 		int height = 0;

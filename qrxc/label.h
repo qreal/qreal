@@ -33,7 +33,7 @@ private:
 	QString titleName() const;
 
 	/// Split the string into substrings wherever "##" occurs and return the list of those strings.
-	QStringList getListOfStr(QString const &strToParse) const;
+	QStringList getListOfStr(const QString &strToParse) const;
 
 	utils::ScalableCoordinate mX;
 	utils::ScalableCoordinate mY;

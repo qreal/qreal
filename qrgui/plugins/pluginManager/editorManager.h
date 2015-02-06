@@ -116,7 +116,7 @@ public:
 	void saveMetamodel(const QString &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;
 
-	IdList elementsWithTheSameName(const Id &diagram, const QString &name, QString const type) const override;
+	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const override;
 	IdList propertiesWithTheSameName(const Id &id
 			, const QString &propertyCurrentName, const QString &propertyNewName) const override;
 

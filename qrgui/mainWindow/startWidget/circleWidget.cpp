@@ -7,17 +7,17 @@
 
 using namespace qReal;
 
-CircleWidget::CircleWidget(QSize const &size, QString const &icon, QWidget *parent)
+CircleWidget::CircleWidget(QSize const &size, const QString &icon, QWidget *parent)
 	: QWidget(parent)
 {
 	QSize const iconSize = size - QSize(25, 25);
 
 	QPixmap const pixmap(icon);
-	int const targetHeight = iconSize.height();
-	int const targetWidth = iconSize.width();
+	const int targetHeight = iconSize.height();
+	const int targetWidth = iconSize.width();
 
-	int const pictureHeight = pixmap.height();
-	int const pictureWidth = pixmap.width();
+	const int pictureHeight = pixmap.height();
+	const int pictureWidth = pixmap.width();
 
 	// Take picture aspect into account
 	// TODO: move it into shared place and reuse in SdfIconEngineV2

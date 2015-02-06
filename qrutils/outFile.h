@@ -10,7 +10,7 @@ namespace utils {
 class QRUTILS_EXPORT OutFile
 {
 public:
-	explicit OutFile(QString const &fileName);
+	explicit OutFile(const QString &fileName);
 	~OutFile();
 	QTextStream &operator()();
 

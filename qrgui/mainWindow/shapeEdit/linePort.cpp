@@ -34,7 +34,7 @@ Item* LinePort::clone()
 	return item;
 }
 
-QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement linePort = document.createElement("linePort");
 
@@ -60,7 +60,7 @@ QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &d
 	return QPair<QDomElement, Item::DomElementTypes>(linePort, mDomElementType);
 }
 
-void LinePort::setType(QString const &type)
+void LinePort::setType(const QString &type)
 {
 	mType = type;
 }

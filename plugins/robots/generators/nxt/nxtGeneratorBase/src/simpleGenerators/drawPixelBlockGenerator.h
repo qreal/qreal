@@ -9,9 +9,9 @@ namespace simple {
 class DrawPixelBlockGenerator : public DrawBlockGenerator
 {
 public:
-	DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
+	DrawPixelBlockGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 
 protected:

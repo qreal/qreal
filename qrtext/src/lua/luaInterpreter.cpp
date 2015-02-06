@@ -212,7 +212,7 @@ QVariant LuaInterpreter::value(const QString &identifier) const
 	return mIdentifierValues.value(identifier);
 }
 
-void LuaInterpreter::setVariableValue(const QString &name, QVariant const &value)
+void LuaInterpreter::setVariableValue(const QString &name, const QVariant &value)
 {
 	QString valueString = value.toString();
 	if (!valueString.isEmpty()
@@ -241,7 +241,7 @@ QVariant LuaInterpreter::interpretUnaryOperator(const QSharedPointer<core::ast::
 	if (root->is<ast::UnaryMinus>()) {
 		return -interpret(operand, semanticAnalyzer).toFloat();
 	} else if (root->is<ast::Not>()) {
-		QVariant const operandResult = interpret(operand, semanticAnalyzer);
+		const QVariant operandResult = interpret(operand, semanticAnalyzer);
 		/// @todo Code 'nil' more adequately.
 		if (operandResult.isNull()) {
 			return true;

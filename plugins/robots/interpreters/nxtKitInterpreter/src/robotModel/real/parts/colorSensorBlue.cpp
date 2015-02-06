@@ -2,8 +2,8 @@
 
 using namespace nxtKitInterpreter::robotModel::real::parts;
 
-ColorSensorBlue::ColorSensorBlue(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+ColorSensorBlue::ColorSensorBlue(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::ColorSensorBlue(info, port)
 	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORBLUE)

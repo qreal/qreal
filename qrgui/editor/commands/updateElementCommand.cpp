@@ -2,12 +2,12 @@
 
 using namespace qReal::commands;
 
-UpdateElementCommand::UpdateElementCommand(EditorViewScene const *scene, Id const &id)
+UpdateElementCommand::UpdateElementCommand(EditorViewScene const *scene, const Id &id)
 	: ElementCommand(scene, id)
 {
 }
 
-UpdateElementCommand::UpdateElementCommand(EditorView const *view, Id const &id)
+UpdateElementCommand::UpdateElementCommand(EditorView const *view, const Id &id)
 	: ElementCommand(&view->editorViewScene(), id)
 {
 }

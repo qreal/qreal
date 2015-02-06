@@ -67,7 +67,7 @@ void RobotModel::clear()
 }
 
 RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned int degrees
-		, PortInfo const &port, bool isUsed)
+		, const PortInfo &port, bool isUsed)
 {
 	Motor *motor = new Motor();
 	motor->radius = radius;
@@ -103,7 +103,7 @@ void RobotModel::playSound(int timeInMs)
 	mBeepTime = qMax(mBeepTime, timeInMs);
 }
 
-void RobotModel::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
+void RobotModel::setNewMotor(int speed, uint degrees, const PortInfo &port, bool breakMode)
 {
 	mMotors[port]->speed = mathUtils::Math::truncateToInterval(-100, 100, speed);
 	mMotors[port]->degrees = degrees;
@@ -119,7 +119,7 @@ void RobotModel::setNewMotor(int speed, uint degrees, PortInfo const &port, bool
 void RobotModel::countMotorTurnover()
 {
 	for (Motor * const motor : mMotors) {
-		PortInfo const port = mMotors.key(motor);
+		const PortInfo port = mMotors.key(motor);
 		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
 		mTurnoverEngines[mMotorToEncoderPortMap[port]] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit)
@@ -131,12 +131,12 @@ void RobotModel::countMotorTurnover()
 	}
 }
 
-int RobotModel::readEncoder(PortInfo const &port) const
+int RobotModel::readEncoder(const PortInfo &port) const
 {
 	return mTurnoverEngines[port];
 }
 
-void RobotModel::resetEncoder(PortInfo const &port)
+void RobotModel::resetEncoder(const PortInfo &port)
 {
 	mTurnoverEngines[port] = 0;
 }
@@ -179,18 +179,18 @@ QPointF RobotModel::rotationCenter() const
 QPainterPath RobotModel::robotBoundingPath() const
 {
 	QPainterPath path;
-	QRectF const boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
+	const QRectF boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
 	path.addRect(boundingRect);
 
-	QPointF const realRotatePoint = QPointF(boundingRect.width() / 2, boundingRect.height() / 2);
-	QPointF const translationToZero = -realRotatePoint - boundingRect.topLeft();
-	QPointF const finalTranslation = mPos + realRotatePoint + boundingRect.topLeft();
+	const QPointF realRotatePoint = QPointF(boundingRect.width() / 2, boundingRect.height() / 2);
+	const QPointF translationToZero = -realRotatePoint - boundingRect.topLeft();
+	const QPointF finalTranslation = mPos + realRotatePoint + boundingRect.topLeft();
 	QTransform const transform = QTransform().translate(finalTranslation.x(), finalTranslation.y())
 			.rotate(mAngle).translate(translationToZero.x(), translationToZero.y());
 
-	for (PortInfo const &port : mRobotModel.configurablePorts()){
+	for (const PortInfo &port : mRobotModel.configurablePorts()){
 		if (!mSensorsConfiguration.type(port).isNull()) {
-			QPointF const sensorPos = mSensorsConfiguration.position(port);
+			const QPointF sensorPos = mSensorsConfiguration.position(port);
 			QPainterPath tempSensorPath;
 			tempSensorPath.addRect(sensorRect(port, sensorPos));
 			QTransform const transformSensor = QTransform()
@@ -204,7 +204,7 @@ QPainterPath RobotModel::robotBoundingPath() const
 	return transform.map(path);
 }
 
-QRectF RobotModel::sensorRect(PortInfo const &port, QPointF const sensorPos) const
+QRectF RobotModel::sensorRect(const PortInfo &port, const QPointF sensorPos) const
 {
 	if (!mSensorsConfiguration.type(port).isNull()) {
 		QSizeF const size = mRobotModel.sensorImageRect(mSensorsConfiguration.type(port)).size();
@@ -249,7 +249,7 @@ void RobotModel::recalculateParams()
 	};
 
 	auto calculateMotorOutput = [&](WheelEnum wheel) {
-		PortInfo const &port = mWheelsToMotorPortsMap.value(wheel, PortInfo());
+		const PortInfo &port = mWheelsToMotorPortsMap.value(wheel, PortInfo());
 		if (!port.isValid() || port.name() == "None") {
 			return EngineOutput{0, true};
 		}
@@ -292,7 +292,7 @@ QPointF RobotModel::position() const
 	return mPos;
 }
 
-void RobotModel::setPosition(QPointF const &newPos)
+void RobotModel::setPosition(const QPointF &newPos)
 {
 	if (newPos != mPos) {
 		mPos = newPos;
@@ -330,8 +330,8 @@ QDomElement RobotModel::serialize(QDomDocument &target) const
 
 void RobotModel::deserialize(QDomElement const &robotElement)
 {
-	QString const positionStr = robotElement.attribute("position", "0:0");
-	QStringList const splittedStr = positionStr.split(":");
+	const QString positionStr = robotElement.attribute("position", "0:0");
+	const QStringList splittedStr = positionStr.split(":");
 	qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
 	qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
 	onRobotReturnedOnGround();
@@ -350,7 +350,7 @@ void RobotModel::onRobotReturnedOnGround()
 	mIsOnTheGround = true;
 }
 
-void RobotModel::setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port)
+void RobotModel::setMotorPortOnWheel(WheelEnum wheel, const interpreterBase::robotModel::PortInfo &port)
 {
 	mWheelsToMotorPortsMap[wheel] = port;
 }
@@ -367,7 +367,7 @@ void RobotModel::resetPhysics(WorldModel const &worldModel, Timeline const &time
 	delete oldEngine;
 }
 
-int RobotModel::varySpeed(int const speed) const
+int RobotModel::varySpeed(const int speed) const
 {
 	qreal const ran = mathUtils::Math::gaussianNoise(varySpeedDispersion);
 	return mathUtils::Math::truncateToInterval(-100, 100, round(speed * (1 + ran)));

@@ -9,7 +9,7 @@ TextPicture::TextPicture()
 	mIsDynamicText = false;
 }
 
-TextPicture::TextPicture(int x, int y, QString const &text)
+TextPicture::TextPicture(int x, int y, const QString &text)
 	: Text()
 {
 	mDomElementType = pictureType;
@@ -97,12 +97,12 @@ QString TextPicture::name() const
 	return mText.toPlainText();
 }
 
-void TextPicture::setPoint(QPoint const &point)
+void TextPicture::setPoint(const QPoint &point)
 {
 	setPos(point);
 }
 
-void TextPicture::setTextName(QString const &name)
+void TextPicture::setTextName(const QString &name)
 {
 	mText.setPlainText(name);
 }
@@ -117,7 +117,7 @@ void TextPicture::setFontPixelSize(int size)
 	mFont.setPixelSize(size);
 }
 
-void TextPicture::setFontColor(QString const &text)
+void TextPicture::setFontColor(const QString &text)
 {
 	mPen.setColor(QColor(text));
 }
@@ -179,7 +179,7 @@ void TextPicture::readFont(QDomElement const &docItem)
 	}
 }
 
-QDomElement TextPicture::setFontToDoc(QDomDocument &document, QString const &domName)
+QDomElement TextPicture::setFontToDoc(QDomDocument &document, const QString &domName)
 {
 	QDomElement dom = document.createElement(domName);
 	dom.setAttribute("font-fill", mPen.color().name());
@@ -193,11 +193,11 @@ QDomElement TextPicture::setFontToDoc(QDomDocument &document, QString const &dom
 }
 
 QPair<QDomElement, Item::DomElementTypes> TextPicture::generateItem(QDomDocument &document
-		, QPoint const &topLeftPicture)
+		, const QPoint &topLeftPicture)
 {
 	QDomElement text = setFontToDoc(document, "text");
-	int const x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
-	int const y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
+	const int x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
+	const int y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y1", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x1", setSingleScaleForDoc(0, x1, y1));
 

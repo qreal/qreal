@@ -3,7 +3,7 @@
 using namespace qReal::commands;
 
 PasteCommand::PasteCommand(EditorViewScene *scene
-		, QPointF const &offset
+		, const QPointF &offset
 		, bool isGraphicalCopy
 		, QHash<Id, Id> *copiedIds)
 	: mScene(scene)

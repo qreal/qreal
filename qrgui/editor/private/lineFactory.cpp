@@ -51,7 +51,7 @@ QString LineFactory::shapeToString(linkShape::LinkShape const shapeType)
 	}
 }
 
-linkShape::LinkShape LineFactory::stringToShape(QString const &string)
+linkShape::LinkShape LineFactory::stringToShape(const QString &string)
 {
 	if (string == "broken") {
 		return linkShape::broken;

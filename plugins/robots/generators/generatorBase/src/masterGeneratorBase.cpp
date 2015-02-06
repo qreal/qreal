@@ -16,12 +16,12 @@
 using namespace generatorBase;
 using namespace qReal;
 
-MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
+MasterGeneratorBase::MasterGeneratorBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const utils::ParserErrorReporter &parserErrorReporter
-		, Id const &diagramId)
+		, const Id &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
@@ -49,7 +49,7 @@ void MasterGeneratorBase::initialize()
 			, mErrorReporter, *mCustomizer, mDiagram, this);
 }
 
-QString MasterGeneratorBase::generate(QString const &indentString)
+QString MasterGeneratorBase::generate(const QString &indentString)
 {
 	if (mDiagram.isNull()) {
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
@@ -72,7 +72,7 @@ QString MasterGeneratorBase::generate(QString const &indentString)
 	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
 	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
-		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator
+		const bool subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator
 				, indentString);
 		if (!subprogramsResult) {
 			if (supportsGotoGeneration()) {
@@ -93,7 +93,7 @@ QString MasterGeneratorBase::generate(QString const &indentString)
 		semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 		if (gotoMainControlFlow) {
 			mainCode = gotoMainControlFlow->toString(1, indentString);
-			bool const gotoSubprogramsResult = mCustomizer->factory()
+			const bool gotoSubprogramsResult = mCustomizer->factory()
 					->subprograms()->generate(mGotoControlFlowGenerator, indentString);
 			if (!gotoSubprogramsResult) {
 				mainCode = QString();
@@ -102,7 +102,7 @@ QString MasterGeneratorBase::generate(QString const &indentString)
 	}
 
 	if (mainCode.isEmpty()) {
-		QString const errorMessage = supportsGotoGeneration()
+		const QString errorMessage = supportsGotoGeneration()
 				? tr("This diagram cannot be even generated into the code with 'goto'"\
 						"statements. Please contact the developers (WTF did you do?)")
 				: tr("This diagram cannot be generated into the structured code.");
@@ -128,7 +128,7 @@ QString MasterGeneratorBase::generate(QString const &indentString)
 
 	processGeneratedCode(resultCode);
 
-	QString const pathToOutput = targetPath();
+	const QString pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
 
 	afterGeneration();
@@ -154,7 +154,7 @@ void MasterGeneratorBase::afterGeneration()
 {
 }
 
-void MasterGeneratorBase::outputCode(QString const &path, QString const &code)
+void MasterGeneratorBase::outputCode(const QString &path, const QString &code)
 {
 	// File must be removed to leave created and modified timestamps equal.
 	QFile::remove(path);

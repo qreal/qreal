@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-WaitForMotionGenerator::WaitForMotionGenerator(qrRepo::RepoApi const &repo
+WaitForMotionGenerator::WaitForMotionGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/motion.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())

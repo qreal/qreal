@@ -15,7 +15,7 @@ public:
 	};
 
 public:
-	Number(QVariant const &value, Type type);
+	Number(const QVariant &value, Type type);
 	Number();
 	virtual ~Number();
 
@@ -23,7 +23,7 @@ public:
 	void setType(Type type);
 
 	virtual QVariant value() const;
-	void setValue(QVariant const &value);
+	void setValue(const QVariant &value);
 
 	QString toString() const;
 

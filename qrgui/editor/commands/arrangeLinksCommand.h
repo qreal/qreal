@@ -9,8 +9,8 @@ namespace commands {
 class ArrangeLinksCommand : public ElementCommand
 {
 public:
-	ArrangeLinksCommand(EditorViewScene const *scene, Id const &id, bool needAdjusting = false);
-	ArrangeLinksCommand(EditorView const *view, Id const &id, bool needAdjusting = false);
+	ArrangeLinksCommand(EditorViewScene const *scene, const Id &id, bool needAdjusting = false);
+	ArrangeLinksCommand(EditorView const *view, const Id &id, bool needAdjusting = false);
 	virtual ~ArrangeLinksCommand();
 
 protected:

@@ -24,7 +24,7 @@ public:
 	static QString shapeToString(linkShape::LinkShape const shapeType);
 
 	/// @return LinkShape represented by string; return linkShape::unset if string is incorrect
-	static linkShape::LinkShape stringToShape(QString const &string);
+	static linkShape::LinkShape stringToShape(const QString &string);
 
 private slots:
 	void setSquareLine() const;

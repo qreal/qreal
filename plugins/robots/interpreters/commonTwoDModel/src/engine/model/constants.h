@@ -9,7 +9,7 @@ qreal const lowPrecision = 0.00001;
 
 qreal const robotWidth = 50;
 qreal const robotHeight = 50;
-QPointF const rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
+const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 QSize const displaySize(200, 300);
 qreal const beepWavesSize = 120;
 
@@ -17,14 +17,14 @@ qreal const robotWheelDiameterInPx = 16;
 qreal const robotWheelDiameterInCm = 5.6;
 qreal const pixelsInCm = robotWheelDiameterInPx / robotWheelDiameterInCm;
 
-uint const black   = 0xFF000000;
-uint const white   = 0xFFFFFFFF;
-uint const red     = 0xFFFF0000;
-uint const green   = 0xFF008000;
-uint const blue    = 0xFF0000FF;
-uint const yellow  = 0xFFFFFF00;
-uint const cyan    = 0xFF00FFFF;
-uint const magenta = 0xFFFF00FF;
+const uint black   = 0xFF000000;
+const uint white   = 0xFFFFFFFF;
+const uint red     = 0xFFFF0000;
+const uint green   = 0xFF008000;
+const uint blue    = 0xFF0000FF;
+const uint yellow  = 0xFFFFFF00;
+const uint cyan    = 0xFF00FFFF;
+const uint magenta = 0xFFFF00FF;
 
 qreal const spoilColorDispersion = 2.0;
 qreal const spoilLightDispersion = 1.0;
@@ -41,8 +41,8 @@ qreal const rotationalFrictionFactor = 1500;
 qreal const angularVelocityFrictionFactor = 200;
 
 qreal const onePercentAngularVelocity = 0.0055;
-int const maxLightSensorValur = 1023;
-int const touchSensorPressedSignal = 1;
-int const touchSensorNotPressedSignal = 0;
+const int maxLightSensorValur = 1023;
+const int touchSensorPressedSignal = 1;
+const int touchSensorNotPressedSignal = 0;
 
 }

@@ -34,7 +34,7 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	mDrift = drift > mMaster->horizontalRadius() ? drift / 2 : drift;
 	mResizeDrift = drift > mMaster->horizontalRadius() ? resizeDrift / 2 : resizeDrift;
 
-	QRectF const rect = mMaster->rect();
+	const QRectF rect = mMaster->rect();
 
 	mMaster->setFlag(ItemClipsToShape, false);
 	setParentItem(mMaster);
@@ -59,8 +59,8 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	qreal const checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
 	qreal const x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
 	qreal const y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
-	QPointF const first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
-	QPointF const second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
+	const QPointF first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
+	const QPointF second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
 
 	mLineImpl.drawItem(painter, mX1, mY1, mX2, mY2);
 	mLineImpl.drawItem(painter, mX2, mY2, first.x(), first.y());
@@ -93,8 +93,8 @@ QRectF Rotater::boundingRect() const
 
 void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
-	QPointF const masterCenter(mMaster->mapToScene(mMaster->rect().center()));
-	QPointF const zeroRotationVector(mLength, 0);
+	const QPointF masterCenter(mMaster->mapToScene(mMaster->rect().center()));
+	const QPointF zeroRotationVector(mLength, 0);
 
 	qreal const mouseX = event->scenePos().x() - masterCenter.x();
 	qreal const mouseY = event->scenePos().y() - masterCenter.y();
@@ -113,7 +113,7 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal const translation = translationX * translationX + translationY * translationY;
 
 	qreal const sin = vectorProduct / (mouseVectorLength * mLength);
-	bool const cosIsNegative = mouseVectorLength * mouseVectorLength + mLength * mLength < translation;
+	const bool cosIsNegative = mouseVectorLength * mouseVectorLength + mLength * mLength < translation;
 
 	qreal const angleInWrongQuarter = asin(sin);
 	qreal const angle = cosIsNegative ? M_PI - angleInWrongQuarter : angleInWrongQuarter;

@@ -15,8 +15,8 @@ class PatternParser
 public:
 	PatternParser();
 
-	void loadXml(QString const &xml);
-	void parseGroups(EditorManager *editorManager, QString const &editor, const QString &diagram);
+	void loadXml(const QString &xml);
+	void parseGroups(EditorManager *editorManager, const QString &editor, const QString &diagram);
 	QList<Pattern> patterns() const;
 
 private:

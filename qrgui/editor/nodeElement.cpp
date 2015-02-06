@@ -31,7 +31,7 @@ using namespace qReal;
 using namespace qReal::commands;
 
 NodeElement::NodeElement(ElementImpl *impl
-		, Id const &id
+		, const Id &id
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::LogicalModelAssistApi &logicalAssistApi
 		, models::Exploser &exploser
@@ -114,7 +114,7 @@ NodeElement::~NodeElement()
 
 void NodeElement::initPortsVisibility()
 {
-	foreach (QString const &portType, mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())) {
+	foreach (const QString &portType, mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())) {
 		mPortsVisibility.insert(portType, false);
 	}
 }
@@ -125,7 +125,7 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 	return copyHandler.clone(toCursorPos, searchForParents);
 }
 
-NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
+NodeElement* NodeElement::copyAndPlaceOnDiagram(const QPointF &offset)
 {
 	NodeElement* copy = clone(false, false);
 	QPointF pos = copy->scenePos();
@@ -149,7 +149,7 @@ void NodeElement::invalidateImagesZoomCache(qreal zoomFactor)
 	mRenderer.invalidateSvgCache(zoomFactor);
 }
 
-void NodeElement::setName(QString const &value, bool withUndoRedo)
+void NodeElement::setName(const QString &value, bool withUndoRedo)
 {
 	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
 	if (withUndoRedo) {
@@ -161,7 +161,7 @@ void NodeElement::setName(QString const &value, bool withUndoRedo)
 	}
 }
 
-void NodeElement::setGeometry(QRectF const &geom)
+void NodeElement::setGeometry(const QRectF &geom)
 {
 	prepareGeometryChange();
 	setPos(geom.topLeft());
@@ -173,7 +173,7 @@ void NodeElement::setGeometry(QRectF const &geom)
 	adjustLinks();
 }
 
-void NodeElement::setPos(QPointF const &pos)
+void NodeElement::setPos(const QPointF &pos)
 {
 	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
 		setPos(QPointF());
@@ -352,7 +352,7 @@ void NodeElement::alignToGrid()
 	}
 }
 
-void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
+void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos) {
 	// in case of unresizable item use switch
 	// Determing parent using corner position, not mouse coordinates
 	QPointF newParentInnerPoint = mouseScenePos;
@@ -650,14 +650,14 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (QString const &elementName, mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
+	foreach (const QString &elementName, mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
 			, id().diagram())) {
 		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
 					.possibleEdges(id().editor(), elementName);
 			foreach (StringPossibleEdge const &pEdge, list) {
-				QStringList const portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
+				const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 				if (portTypes.contains(pEdge.first.first)
 						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
 				{
@@ -706,7 +706,7 @@ void NodeElement::initEmbeddedLinkers()
 	// }
 }
 
-void NodeElement::setVisibleEmbeddedLinkers(bool const show)
+void NodeElement::setVisibleEmbeddedLinkers(const bool show)
 {
 	if (show) {
 		setZValue(250);
@@ -725,7 +725,7 @@ void NodeElement::setVisibleEmbeddedLinkers(bool const show)
 	}
 }
 
-QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &value)
+QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	bool isItemAddedOrDeleted = false;
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
@@ -801,7 +801,7 @@ void NodeElement::updateData()
 	update();
 }
 
-QPointF const NodeElement::portPos(qreal id) const
+const QPointF NodeElement::portPos(qreal id) const
 {
 	return mPortHandler->portPos(id);
 }
@@ -816,21 +816,21 @@ int NodeElement::numberOfPorts() const
 	return mPortHandler->numberOfPorts();
 }
 
-qreal NodeElement::portId(QPointF const &location, QStringList const &types) const
+qreal NodeElement::portId(const QPointF &location, const QStringList &types) const
 {
 	return mPortHandler->portId(location, types);
 }
 
-QPointF NodeElement::closestPortPoint(QPointF const &location, QStringList const &types) const
+QPointF NodeElement::closestPortPoint(const QPointF &location, const QStringList &types) const
 {
 	return mapToScene(mPortHandler->nearestPort(location, types));
 }
 
-void NodeElement::setPortsVisible(QStringList const &types)
+void NodeElement::setPortsVisible(const QStringList &types)
 {
 	prepareGeometryChange();
 
-	foreach (QString const &portType, mPortsVisibility.keys()) {
+	foreach (const QString &portType, mPortsVisibility.keys()) {
 		mPortsVisibility[portType] = types.contains(portType);
 	}
 }
@@ -902,7 +902,7 @@ void NodeElement::drawPorts(QPainter *painter, bool mouseOver)
 	painter->save();
 	painter->setOpacity(0.7);
 
-	QStringList const portTypes = mouseOver ? mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())
+	const QStringList portTypes = mouseOver ? mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())
 			: mPortsVisibility.keys(true);
 	mPortHandler->drawPorts(painter, mContents, portTypes);
 
@@ -1089,7 +1089,7 @@ void NodeElement::updateChildrenOrder()
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	if (evScene) {
-		foreach (QString const &id, ids) {
+		foreach (const QString &id, ids) {
 			if (!evScene->getNodeById(Id::loadFromString(id))) {
 				ids.removeAll(id);
 			}
@@ -1117,7 +1117,7 @@ QSet<ElementPair> NodeElement::elementsForPossibleEdge(StringPossibleEdge const 
 	QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 
 	QSet<ElementPair> result;
-	foreach (QString const &element, elements) {
+	foreach (const QString &element, elements) {
 		QStringList otherPortTypes
 				= mGraphicalAssistApi.editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
 		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
@@ -1146,7 +1146,7 @@ void NodeElement::checkConnectionsToPort() // it is strange method
 	mPortHandler->checkConnectionsToPort();
 }
 
-void NodeElement::select(bool const singleSelected)
+void NodeElement::select(const bool singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
@@ -1154,7 +1154,7 @@ void NodeElement::select(bool const singleSelected)
 	Element::select(singleSelected);
 }
 
-void NodeElement::setSelectionState(bool const selected)
+void NodeElement::setSelectionState(const bool selected)
 {
 	Element::setSelectionState(selected);
 }
@@ -1186,12 +1186,12 @@ void NodeElement::resize()
 	resize(mContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents)
+void NodeElement::resize(const QRectF &newContents)
 {
 	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent)
+void NodeElement::resize(const QRectF &newContents, const QPointF &newPos, bool needResizeParent)
 {
 	ResizeHandler handler(this);
 	handler.resize(newContents, newPos, needResizeParent);
@@ -1267,16 +1267,16 @@ void NodeElement::updateNodeEdges()
 	}
 }
 
-AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF const &position) const
+AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPointF &position) const
 {
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	Element *oldParentElem = dynamic_cast<Element *>(parentItem());
-	Id const oldParent = oldParentElem ? oldParentElem->id() : evScene->rootItemId();
+	const Id oldParent = oldParentElem ? oldParentElem->id() : evScene->rootItemId();
 	if (oldParent == newParent) {
 		return nullptr;
 	}
-	QPointF const oldPos = mResizeCommand ? mResizeCommand->geometryBeforeDrag().topLeft() : mPos;
-	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
+	const QPointF oldPos = mResizeCommand ? mResizeCommand->geometryBeforeDrag().topLeft() : mPos;
+	const QPointF oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	// Without pre-translating into new position parent gets wrong child coords
 	// when redo happens and resizes when he doesn`t need it.
 	// So we mush pre-translate child into new scene position first, but when
@@ -1297,7 +1297,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	return result;
 }
 
-void NodeElement::updateShape(QString const &shape) const
+void NodeElement::updateShape(const QString &shape) const
 {
 	mElementImpl->updateRendererContent(shape);
 }
@@ -1306,7 +1306,7 @@ IdList NodeElement::sortedChildren() const
 {
 	IdList result;
 	if (mGraphicalAssistApi.properties(mId).contains("childrenOrder")) {
-		foreach (QString const &id, mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder")
+		foreach (const QString &id, mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder")
 				.toStringList()) {
 			result << Id::loadFromString(id);
 		}
@@ -1325,8 +1325,8 @@ void NodeElement::initRenderedDiagram()
 		return;
 	}
 
-	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
-	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
+	const Id diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	const Id graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
 	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);

@@ -19,8 +19,8 @@ SimplePhysicsEngine::SimplePhysicsEngine(WorldModel const &worldModel)
 
 void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 		, bool engine1Break, bool engine2Break
-		, QPointF const &rotationCenter, qreal robotAngle
-		, QPainterPath const &robotBoundingPath)
+		, const QPointF &rotationCenter, qreal robotAngle
+		, const QPainterPath &robotBoundingPath)
 {
 	Q_UNUSED(engine1Break)
 	Q_UNUSED(engine2Break)

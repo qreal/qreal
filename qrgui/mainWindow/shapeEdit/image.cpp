@@ -63,7 +63,7 @@ void Image::setItemZValue(int zValue)
 	setZValue(zValue);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement image = document.createElement("image");
 	setXandY(image, sceneBoundingRectCoord(topLeftPicture));

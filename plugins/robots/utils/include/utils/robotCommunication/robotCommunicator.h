@@ -19,8 +19,8 @@ public:
 	explicit RobotCommunicator(QObject *parent = 0);
 	~RobotCommunicator();
 
-	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
-	void send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer);
+	void send(QObject *addressee, const QByteArray &buffer, unsigned const responseSize);
+	void send(const QByteArray &buffer, unsigned const responseSize, QByteArray &outputBuffer);
 	void connect();
 	void disconnect();
 
@@ -30,10 +30,10 @@ public:
 	void checkConsistency();
 
 signals:
-	void errorOccured(QString const &message);
-	void connected(bool success, QString const &errorString);
+	void errorOccured(const QString &message);
+	void connected(bool success, const QString &errorString);
 	void disconnected();
-	void response(QObject *addressee, QByteArray const &buffer);
+	void response(QObject *addressee, const QByteArray &buffer);
 
 private:
 	QThread mRobotCommunicationThread;

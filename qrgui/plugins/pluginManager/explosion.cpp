@@ -2,7 +2,7 @@
 
 using namespace qReal;
 
-Explosion::Explosion(Id const &source, Id const &target
+Explosion::Explosion(const Id &source, const Id &target
 		, bool isReusable, bool requiresImmediateLinkage)
 	: mSource(source), mTarget(target), mReusable(isReusable)
 	, mRequiresImmediateLinkage(requiresImmediateLinkage)

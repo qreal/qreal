@@ -68,7 +68,7 @@ private:
 	bool removeFile(const QString &fileName);
 
 	// if option AutosaveInterval in not specified
-	static uint const defaultInterval = 600;
+	static const uint defaultInterval = 600;
 
 	ProjectManager &mProjectManager;
 	QTimer mTimer;

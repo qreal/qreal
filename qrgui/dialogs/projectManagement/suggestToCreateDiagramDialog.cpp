@@ -6,7 +6,7 @@
 
 using namespace qReal;
 
-SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(EditorManagerInterface const &editorManager
+SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(const EditorManagerInterface &editorManager
 		, QWidget *parent, bool isClosable)
 	: ManagedClosableDialog(parent, isClosable)
 {

@@ -18,7 +18,7 @@ public:
 
 	/// Initializes this block with external components that may be used during the intepretetation process.
 	/// @todo Not good.
-	void init(qReal::Id const &graphicalId
+	void init(const qReal::Id &graphicalId
 			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
@@ -36,7 +36,7 @@ protected:
 
 private:
 	// Just to make it private
-	void init(qReal::Id const &graphicalId
+	void init(const qReal::Id &graphicalId
 			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter

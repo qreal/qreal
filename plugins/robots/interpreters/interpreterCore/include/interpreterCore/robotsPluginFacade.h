@@ -34,7 +34,7 @@ public:
 	~RobotsPluginFacade() override;
 
 	/// Inits all sybsytems of robots plugin infrastructure that somehow depend from engine`s parts.
-	void init(qReal::PluginConfigurator const &configurer);
+	void init(const qReal::PluginConfigurator &configurer);
 
 	/// Returns a pointer to settings page for robots plugin.
 	qReal::gui::PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
@@ -56,15 +56,15 @@ private:
 	void connectInterpreterToActions();
 
 	/// @returns true, if kit selection successful, false when no kit plugins are loaded.
-	bool selectKit(qReal::PluginConfigurator const &configurer);
+	bool selectKit(const qReal::PluginConfigurator &configurer);
 
 	void initSensorWidgets();
 
-	void initKitPlugins(qReal::PluginConfigurator const &configurer);
+	void initKitPlugins(const qReal::PluginConfigurator &configurer);
 
-	void initFactoriesFor(QString const &kitId
-			, interpreterBase::robotModel::RobotModelInterface const *model
-			, qReal::PluginConfigurator const &configurer);
+	void initFactoriesFor(const QString &kitId
+			, const interpreterBase::robotModel::RobotModelInterface *model
+			, const qReal::PluginConfigurator &configurer);
 
 	void connectEventsForKitPlugin();
 

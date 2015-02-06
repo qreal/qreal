@@ -5,7 +5,7 @@
 
 using namespace utils;
 
-WatchListWindow::WatchListWindow(qrtext::DebuggerInterface const &interpreter, QWidget *parent)
+WatchListWindow::WatchListWindow(const qrtext::DebuggerInterface &interpreter, QWidget *parent)
 	: WatchListWindow(nullptr, &interpreter, parent)
 {
 }
@@ -16,7 +16,7 @@ WatchListWindow::WatchListWindow(utils::ExpressionsParser const *parser, QWidget
 }
 
 WatchListWindow::WatchListWindow(utils::ExpressionsParser const * const parser
-		, qrtext::DebuggerInterface const * const newParser
+		, const qrtext::DebuggerInterface * const newParser
 		, QWidget *parent)
 	: QDockWidget(parent)
 	, mUi(new Ui::watchListWindow)
@@ -39,19 +39,19 @@ void WatchListWindow::updateVariables()
 	int row = 0;
 
 	std::function<QStringList()> identifiers;
-	std::function<QString(QString const &)> value;
+	std::function<QString(const QString &)> value;
 
 	if (!mNewParser) {
 		identifiers = [this] () { return mParser->variables().keys(); };
-		value = [this] (QString const &name) { return mParser->variables().value(name)->toString(); };
+		value = [this] (const QString &name) { return mParser->variables().value(name)->toString(); };
 	} else {
 		identifiers = [this] () { return mNewParser->identifiers(); };
-		value = [this] (QString const &name) { return mNewParser->value<QString>(name); };
+		value = [this] (const QString &name) { return mNewParser->value<QString>(name); };
 	}
 
 	QStringList sortedIdentifiers = identifiers();
 	qSort(sortedIdentifiers);
-	for (QString const &identifier : sortedIdentifiers) {
+	for (const QString &identifier : sortedIdentifiers) {
 		if (mHiddenVariables.contains(identifier)) {
 			continue;
 		}
@@ -75,9 +75,9 @@ void WatchListWindow::updateVariables()
 	}
 }
 
-void WatchListWindow::hideVariables(QStringList const &variableNames)
+void WatchListWindow::hideVariables(const QStringList &variableNames)
 {
-	for (QString const &variableName : variableNames) {
+	for (const QString &variableName : variableNames) {
 		mHiddenVariables.insert(variableName);
 	}
 }

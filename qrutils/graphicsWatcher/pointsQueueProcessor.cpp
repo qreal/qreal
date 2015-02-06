@@ -70,8 +70,8 @@ void PointsQueueProcessor::makeShiftLeft(qreal const step)
 
 qreal PointsQueueProcessor::absoluteValueToPoint(qreal const value) const
 {
-	int const verticalBounds = 10;
-	int const invertCoordSys = -1;
+	const int verticalBounds = 10;
+	const int invertCoordSys = -1;
 	return ((value - mMinCurrent) / (mMaxCurrent - mMinCurrent) * mGraphHeight + verticalBounds) * invertCoordSys;
 }
 
@@ -128,7 +128,7 @@ void PointsQueueProcessor::checkPeaks()
 	recalcPointsQueue(oldMin, oldMax, mGraphHeight);
 }
 
-QPointF PointsQueueProcessor::pointOfVerticalIntersection(QPointF const &position) const
+QPointF PointsQueueProcessor::pointOfVerticalIntersection(const QPointF &position) const
 {
 	if (mPointsQueue.isEmpty())
 		return QPointF(0, 0);

@@ -17,10 +17,10 @@ using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace interpreterBase::robotModel;
 
-int const selectionDrift = 7;
+const int selectionDrift = 7;
 
 SensorItem::SensorItem(model::SensorsConfiguration &configuration
-		, PortInfo const &port, QString const &pathToImage, QRect const &imageRect)
+		, const PortInfo &port, const QString &pathToImage, QRect const &imageRect)
 	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
@@ -45,7 +45,7 @@ SensorItem::SensorItem(model::SensorsConfiguration &configuration
 	mPortItem->hide();
 }
 
-void SensorItem::setRotatePoint(QPointF const &rotatePoint)
+void SensorItem::setRotatePoint(const QPointF &rotatePoint)
 {
 	mRotatePoint = rotatePoint;
 }
@@ -103,7 +103,7 @@ void SensorItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 QString SensorItem::name() const
 {
-	DeviceInfo const sensor = mConfiguration.type(mPort);
+	const DeviceInfo sensor = mConfiguration.type(mPort);
 	if (sensor.isA<robotParts::TouchSensor>()) {
 		return "touch";
 	} else if (sensor.isA<robotParts::ColorSensorFull>()
@@ -128,7 +128,7 @@ QString SensorItem::name() const
 
 QRectF SensorItem::imageRect() const
 {
-	DeviceInfo const sensor = mConfiguration.type(mPort);
+	const DeviceInfo sensor = mConfiguration.type(mPort);
 	if (sensor.isA<robotParts::TouchSensor>()) {
 		return QRectF(-12, -5, 25, 10);
 	} else if (sensor.isA<robotParts::ColorSensor>()
@@ -200,7 +200,7 @@ QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value
 	return AbstractItem::itemChange(change, value);
 }
 
-SensorItem::PortItem::PortItem(PortInfo const &port)
+SensorItem::PortItem::PortItem(const PortInfo &port)
 	: mPort(port)
 	, mFont("Times", 10, QFont::Normal, true)
 	, mBoundingRect(QFontMetrics(mFont).boundingRect(port.name()))

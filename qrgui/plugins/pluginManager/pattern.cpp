@@ -8,12 +8,12 @@
 
 using namespace qReal;
 
-GroupNode::GroupNode(QString const &type, QString const &id, QPointF const &position, QString const &parent)
+GroupNode::GroupNode(const QString &type, const QString &id, const QPointF &position, const QString &parent)
 	: type(type), id(id), position(position), parent(parent)
 {
 }
 
-GroupEdge::GroupEdge(QString const &type, QString const &from, QString const &to)
+GroupEdge::GroupEdge(const QString &type, const QString &from, const QString &to)
 	: type(type), from(from), to(to)
 {
 }
@@ -22,14 +22,14 @@ Pattern::Pattern()
 {
 }
 
-Pattern::Pattern(QString const &editor, QString const &diagram, QString const &name
-		, QString const &inNode, QString const &outNode, QString const &rootNode)
+Pattern::Pattern(const QString &editor, const QString &diagram, const QString &name
+		, const QString &inNode, const QString &outNode, const QString &rootNode)
 	: mEditor(editor), mDiagram(diagram), mGroupName(name)
 	, mInNode(inNode), mOutNode(outNode), mRootNode(rootNode)
 {
 }
 
-void Pattern::setEditor(QString const &editor)
+void Pattern::setEditor(const QString &editor)
 {
 	mEditor = editor;
 }
@@ -39,7 +39,7 @@ QString Pattern::editor() const
 	return mEditor;
 }
 
-void Pattern::setDiagram(QString const &diagram)
+void Pattern::setDiagram(const QString &diagram)
 {
 	mDiagram = diagram;
 }
@@ -49,7 +49,7 @@ QString Pattern::diagram() const
 	return mDiagram;
 }
 
-void Pattern::setName(QString const &name)
+void Pattern::setName(const QString &name)
 {
 	mGroupName = name;
 }
@@ -59,13 +59,13 @@ QString Pattern::name() const
 	return mGroupName;
 }
 
-void Pattern::addNode(QString const &type, QString const &id, QPointF const &pos, QString const &parent)
+void Pattern::addNode(const QString &type, const QString &id, const QPointF &pos, const QString &parent)
 {
 	GroupNode newNode(type, id, pos, parent);
 	mNodes.append(newNode);
 }
 
-void Pattern::addEdge(QString const &type, QString const &from, QString const &to)
+void Pattern::addEdge(const QString &type, const QString &from, const QString &to)
 {
 	GroupEdge newEdge(type, from, to);
 	mEdges.append(newEdge);
@@ -81,12 +81,12 @@ QList<GroupEdge> Pattern::edges() const
 	return mEdges;
 }
 
-void Pattern::setInNode(QString const &id)
+void Pattern::setInNode(const QString &id)
 {
 	mInNode = id;
 }
 
-void Pattern::setOutNode(QString const &id)
+void Pattern::setOutNode(const QString &id)
 {
 	mOutNode = id;
 }
@@ -107,7 +107,7 @@ QString Pattern::rootType() const
 	return QString();
 }
 
-void Pattern::setRootNode(QString const &rootId)
+void Pattern::setRootNode(const QString &rootId)
 {
 	mRootNode = rootId;
 }
@@ -129,7 +129,7 @@ void Pattern::countSize(EditorManager *editorManager)
 	qreal minX = 0;
 	qreal maxX = 0;
 	for (GroupNode const &node : mNodes) {
-		Id const element(mEditor, mDiagram, node.type, "");
+		const Id element(mEditor, mDiagram, node.type, "");
 		QSize const size = editorManager->iconSize(element);
 		if (minY > node.position.y()) {
 			minY = node.position.y();

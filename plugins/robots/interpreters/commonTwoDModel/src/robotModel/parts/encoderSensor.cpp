@@ -5,8 +5,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-EncoderSensor::EncoderSensor(DeviceInfo const &info
-		, PortInfo const &port
+EncoderSensor::EncoderSensor(const DeviceInfo &info
+		, const PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: robotParts::EncoderSensor(info, port)
 	, mEngine(engine)

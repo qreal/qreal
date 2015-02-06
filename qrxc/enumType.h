@@ -9,7 +9,7 @@ namespace utils {
 class EnumType : public NonGraphicType
 {
 public:
-	virtual bool init(QDomElement const &element, QString const &context);
+	virtual bool init(QDomElement const &element, const QString &context);
 	virtual Type* clone() const;
 	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst);
 	virtual void generatePropertyTypes(utils::OutFile &out);

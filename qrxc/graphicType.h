@@ -20,7 +20,7 @@ class GraphicType : public Type
 public:
 	GraphicType(Diagram *diagram);
 	virtual ~GraphicType();
-	virtual bool init(QDomElement const &element, QString const &context);
+	virtual bool init(QDomElement const &element, const QString &context);
 	virtual bool resolve();
 	virtual void generateNameMapping(utils::OutFile &out);
 	virtual void generateDescriptionMapping(utils::OutFile &out);
@@ -41,7 +41,7 @@ public:
 	virtual bool copyPictures(GraphicType *parent) = 0;
 
 	QString description() const;
-	void setDescription(QString const &description);
+	void setDescription(const QString &description);
 
 protected:
 	/// @todo Remove this sh~.
@@ -59,7 +59,7 @@ protected:
 	};
 
 	struct GeneralizationProperties {
-		GeneralizationProperties(QString const &name, QString const &overrides);
+		GeneralizationProperties(const QString &name, const QString &overrides);
 		QString name;
 		bool overridePorts = false;
 		bool overrideLabels = false;
@@ -82,7 +82,7 @@ protected:
 	bool mCreateChildrenFromMenu;
 	QString mAbstract;
 	void copyFields(GraphicType *type) const;
-	QString resourceName(QString const &resourceType) const;
+	QString resourceName(const QString &resourceType) const;
 	virtual bool isResolving() const;
 
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
@@ -108,23 +108,23 @@ private:
 	bool initCreateChildrenFromMenu();
 	bool initPossibleEdges();
 	bool initExplosions();
-	bool initTypeList(QString const &listName, QString const &listElementName
+	bool initTypeList(const QString &listName, const QString &listElementName
 		, QStringList &resultingList) const;
 
-	bool initFieldList(QString const &listName, QString const &listElementName
-		, QStringList &resultingList, QString const &fieldName, bool const isNeedToNormalizeAtt) const;
+	bool initFieldList(const QString &listName, const QString &listElementName
+		, QStringList &resultingList, const QString &fieldName, const bool isNeedToNormalizeAtt) const;
 
 	virtual bool initGraphics() = 0;
 	virtual bool initAssociations() = 0;
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;
-	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
+	virtual bool initLabel(Label *label, QDomElement const &element, const int &count) = 0;
 
 	bool addProperty(Property *property);
 	bool addPort(Port *port);
-	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
+	bool generateListForElement(utils::OutFile &out, bool isNotFirst, const QStringList &list) const;
 
-	QVector<int> toIntVector(QString const &s, bool * isOk) const;
+	QVector<int> toIntVector(const QString &s, bool * isOk) const;
 
 	QString mDescription;
 };

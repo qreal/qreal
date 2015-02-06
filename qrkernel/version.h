@@ -41,7 +41,7 @@ public:
 
 	/// Constructs new Version instance from a given string.
 	/// Version() is returned when input string could not be parsed.
-	static Version fromString(QString const &version);
+	static Version fromString(const QString &version);
 
 	/// Constructs invalid version instance.
 	Version();
@@ -75,7 +75,7 @@ public:
 	QString toString() const;
 
 private:
-	static Stage parseStage(QString const &stage, bool &ok);
+	static Stage parseStage(const QString &stage, bool &ok);
 	QString suffixString() const;
 
 	int mMajor;

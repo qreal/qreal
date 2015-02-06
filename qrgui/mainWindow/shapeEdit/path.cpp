@@ -2,7 +2,7 @@
 
 #include <QtCore/QTextStream>
 
-Path::Path(QPainterPath const &path) : Item(NULL)
+Path::Path(const QPainterPath &path) : Item(nullptr)
 {
 	mNeedScalingRect = false;
 	mPath = path;
@@ -59,7 +59,7 @@ void Path::drawScalingRects(QPainter* painter)
 	Q_UNUSED(painter);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Path::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Path::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 
 	QDomElement path = setPenBrushToDoc(document, "path");

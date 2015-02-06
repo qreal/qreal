@@ -4,9 +4,9 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-int const maxLightValue = 1023;
+const int maxLightValue = 1023;
 
-LightSensor::LightSensor(DeviceInfo const &info, PortInfo const &port
+LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::LightSensor(info, port)
 	, mImplementation(robotCommunicator, port
@@ -46,10 +46,10 @@ void LightSensor::doConfiguration()
 	mImplementation.configure();
 }
 
-void LightSensor::sensorSpecificProcessResponse(QByteArray const &reading)
+void LightSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	mImplementation.setState(NxtInputDevice::idle);
-	int const sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
+	const int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 	utils::Tracer::debug(utils::Tracer::sensors
 			, "BluetoothLightSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
 	emit newData(sensorValue * 100 / maxLightValue);

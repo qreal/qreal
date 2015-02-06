@@ -15,11 +15,11 @@ public:
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
 	ZoneNode *mZone;  // Takes ownership
-	qReal::Id const mInitialBlock;
+	const qReal::Id mInitialBlock;
 };
 
 }

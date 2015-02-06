@@ -9,7 +9,7 @@ using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
 
-Repository::Repository(QString const &workingFile)
+Repository::Repository(const QString &workingFile)
 		: mWorkingFile(workingFile)
 		, mSerializer(workingFile)
 {
@@ -30,7 +30,7 @@ Repository::~Repository()
 	qDeleteAll(mObjects);
 }
 
-IdList Repository::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
+IdList Repository::findElementsByName(const QString &name, bool sensitivity, bool regExpression) const
 {
 	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
@@ -56,7 +56,7 @@ IdList Repository::findElementsByName(QString const &name, bool sensitivity, boo
 	return result;
 }
 
-qReal::IdList Repository::elementsByProperty(QString const &property, bool sensitivity
+qReal::IdList Repository::elementsByProperty(const QString &property, bool sensitivity
 		, bool regExpression) const
 {
 	IdList result;
@@ -71,7 +71,7 @@ qReal::IdList Repository::elementsByProperty(QString const &property, bool sensi
 	return result;
 }
 
-qReal::IdList Repository::elementsByPropertyContent(QString const &propertyValue, bool sensitivity
+qReal::IdList Repository::elementsByPropertyContent(const QString &propertyValue, bool sensitivity
 		, bool regExpression) const
 {
 	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
@@ -101,14 +101,14 @@ qReal::IdList Repository::elementsByPropertyContent(QString const &propertyValue
 	return result;
 }
 
-void Repository::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
+void Repository::replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue)
 {
-	foreach (qReal::Id const &currentId, toReplace) {
+	foreach (const qReal::Id &currentId, toReplace) {
 		mObjects[currentId]->replaceProperties(value, newValue);
 	}
 }
 
-IdList Repository::children(Id const &id) const
+IdList Repository::children(const Id &id) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->children();
@@ -117,7 +117,7 @@ IdList Repository::children(Id const &id) const
 	}
 }
 
-Id Repository::parent(Id const &id) const
+Id Repository::parent(const Id &id) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->parent();
@@ -126,13 +126,13 @@ Id Repository::parent(Id const &id) const
 	}
 }
 
-Id Repository::cloneObject(qReal::Id const &id)
+Id Repository::cloneObject(const qReal::Id &id)
 {
 	Object const * const result = mObjects[id]->clone(mObjects);
 	return result->id();
 }
 
-void Repository::setParent(Id const &id, Id const &parent)
+void Repository::setParent(const Id &id, const Id &parent)
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
@@ -152,7 +152,7 @@ void Repository::addChild(const Id &id, const Id &child)
 	addChild(id, child, Id());
 }
 
-void Repository::addChild(const Id &id, const Id &child, Id const &logicalId)
+void Repository::addChild(const Id &id, const Id &child, const Id &logicalId)
 {
 	if (mObjects.contains(id)) {
 		if (!mObjects[id]->children().contains(child))
@@ -175,7 +175,7 @@ void Repository::addChild(const Id &id, const Id &child, Id const &logicalId)
 	}
 }
 
-void Repository::stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling) {
+void Repository::stackBefore(const qReal::Id &id, const qReal::Id &child, const qReal::Id &sibling) {
 	if(!mObjects.contains(id)) {
 		throw Exception("Repository: Moving child " + child.toString() + " of nonexistent object " + id.toString());
 	}
@@ -194,7 +194,7 @@ void Repository::stackBefore(qReal::Id const &id, qReal::Id const &child, qReal:
 void Repository::removeParent(const Id &id)
 {
 	if (mObjects.contains(id)) {
-		Id const parent = mObjects[id]->parent();
+		const Id parent = mObjects[id]->parent();
 		if (mObjects.contains(parent)) {
 			mObjects[id]->setParent(Id());
 			mObjects[parent]->removeChild(id);
@@ -219,7 +219,7 @@ void Repository::removeChild(const Id &id, const Id &child)
 	}
 }
 
-void Repository::setProperty(const Id &id, QString const &name, const QVariant &value ) const
+void Repository::setProperty(const Id &id, const QString &name, const QVariant &value ) const
 {
 	if (mObjects.contains(id)) {
 		// see Object::property() for details
@@ -237,17 +237,17 @@ void Repository::copyProperties(const Id &dest, const Id &src)
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 
-QMap<QString, QVariant> Repository::properties(Id const &id)
+QMap<QString, QVariant> Repository::properties(const Id &id)
 {
 	return mObjects[id]->properties();
 }
 
-void Repository::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
+void Repository::setProperties(const Id &id, QMap<QString, QVariant> const &properties)
 {
 	mObjects[id]->setProperties(properties);
 }
 
-QVariant Repository::property( const Id &id, QString const &name ) const
+QVariant Repository::property( const Id &id, const QString &name ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(name);
@@ -256,7 +256,7 @@ QVariant Repository::property( const Id &id, QString const &name ) const
 	}
 }
 
-void Repository::removeProperty( const Id &id, QString const &name )
+void Repository::removeProperty( const Id &id, const QString &name )
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->removeProperty(name);
@@ -265,7 +265,7 @@ void Repository::removeProperty( const Id &id, QString const &name )
 	}
 }
 
-bool Repository::hasProperty(const Id &id, QString const &name, bool sensitivity, bool regExpression) const
+bool Repository::hasProperty(const Id &id, const QString &name, bool sensitivity, bool regExpression) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name, sensitivity, regExpression);
@@ -274,7 +274,7 @@ bool Repository::hasProperty(const Id &id, QString const &name, bool sensitivity
 	}
 }
 
-void Repository::setBackReference(Id const &id, Id const &reference) const
+void Repository::setBackReference(const Id &id, const Id &reference) const
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(reference)) {
@@ -288,7 +288,7 @@ void Repository::setBackReference(Id const &id, Id const &reference) const
 	}
 }
 
-void Repository::removeBackReference(Id const &id, Id const &reference) const
+void Repository::removeBackReference(const Id &id, const Id &reference) const
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(reference)) {
@@ -302,7 +302,7 @@ void Repository::removeBackReference(Id const &id, Id const &reference) const
 	}
 }
 
-void Repository::setTemporaryRemovedLinks(Id const &id, QString const &direction, qReal::IdList const &linkIdList)
+void Repository::setTemporaryRemovedLinks(const Id &id, const QString &direction, const qReal::IdList &linkIdList)
 {
 	if (mObjects.contains(id)) {
 		mObjects[id]->setTemporaryRemovedLinks(direction, linkIdList);
@@ -311,7 +311,7 @@ void Repository::setTemporaryRemovedLinks(Id const &id, QString const &direction
 	}
 }
 
-IdList Repository::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
+IdList Repository::temporaryRemovedLinksAt(const Id &id, const QString &direction) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->temporaryRemovedLinksAt(direction);
@@ -320,7 +320,7 @@ IdList Repository::temporaryRemovedLinksAt(Id const &id, QString const &directio
 	}
 }
 
-IdList Repository::temporaryRemovedLinks(Id const &id) const
+IdList Repository::temporaryRemovedLinks(const Id &id) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->temporaryRemovedLinks();
@@ -329,7 +329,7 @@ IdList Repository::temporaryRemovedLinks(Id const &id) const
 	}
 }
 
-void Repository::removeTemporaryRemovedLinks(Id const &id)
+void Repository::removeTemporaryRemovedLinks(const Id &id)
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->removeTemporaryRemovedLinks();
@@ -344,7 +344,7 @@ void Repository::loadFromDisk()
 	addChildrenToRootObject();
 }
 
-void Repository::importFromDisk(QString const &importedFile)
+void Repository::importFromDisk(const QString &importedFile)
 {
 	mSerializer.setWorkingFile(importedFile);
 	loadFromDisk();
@@ -367,7 +367,7 @@ IdList Repository::idsOfAllChildrenOf(Id id) const
 	result.clear();
 	result.append(id);
 	IdList list = mObjects[id]->children();
-	foreach(Id const &childId, list)
+	foreach(const Id &childId, list)
 		result.append(idsOfAllChildrenOf(childId));
 	return result;
 }
@@ -376,7 +376,7 @@ QList<Object*> Repository::allChildrenOf(Id id) const
 {
 	QList<Object*> result;
 	result.append(mObjects[id]);
-	foreach(Id const &childId, mObjects[id]->children())
+	foreach(const Id &childId, mObjects[id]->children())
 		result.append(allChildrenOf(childId));
 	return result;
 }
@@ -388,7 +388,7 @@ QList<Object*> Repository::allChildrenOfWithLogicalId(Id id) const
 
 	// along with each ID we also add its logical ID.
 
-	foreach(Id const &childId, mObjects[id]->children())
+	foreach(const Id &childId, mObjects[id]->children())
 		result << allChildrenOf(childId)
 				<< allChildrenOf(logicalId(childId));
 	return result;
@@ -396,7 +396,7 @@ QList<Object*> Repository::allChildrenOfWithLogicalId(Id id) const
 
 bool Repository::exist(const Id &id) const
 {
-	return (mObjects[id] != NULL);
+	return (mObjects[id] != nullptr);
 }
 
 void Repository::saveAll() const
@@ -404,20 +404,20 @@ void Repository::saveAll() const
 	mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
 }
 
-void Repository::save(IdList const &list) const
+void Repository::save(const IdList &list) const
 {
 	QList<Object*> toSave;
-	for (Id const &id : list) {
+	for (const Id &id : list) {
 		toSave.append(allChildrenOf(id));
 	}
 
 	mSerializer.saveToDisk(toSave, mMetaInfo);
 }
 
-void Repository::saveWithLogicalId(qReal::IdList const &list) const
+void Repository::saveWithLogicalId(const qReal::IdList &list) const
 {
 	QList<Object*> toSave;
-	for (Id const &id : list) {
+	for (const Id &id : list) {
 		toSave << allChildrenOfWithLogicalId(id);
 	}
 
@@ -426,12 +426,12 @@ void Repository::saveWithLogicalId(qReal::IdList const &list) const
 
 void Repository::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 {
-	QString const currentWorkingFile = mWorkingFile;
-	for (QString const &savePath : diagramIds.keys()) {
-		qReal::IdList const diagrams = diagramIds[savePath];
+	const QString currentWorkingFile = mWorkingFile;
+	for (const QString &savePath : diagramIds.keys()) {
+		const qReal::IdList diagrams = diagramIds[savePath];
 		setWorkingFile(savePath);
 		qReal::IdList elementsToSave;
-		for (qReal::Id const &id : diagrams) {
+		for (const qReal::Id &id : diagrams) {
 			elementsToSave += idsOfAllChildrenOf(id);
 			// id is a graphical ID for this diagram
 			// we have to add logical diagram ID
@@ -445,9 +445,9 @@ void Repository::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 	setWorkingFile(currentWorkingFile);
 }
 
-void Repository::remove(IdList const &list) const
+void Repository::remove(const IdList &list) const
 {
-	foreach(Id const &id, list) {
+	foreach(const Id &id, list) {
 		qDebug() << id.toString();
 		mSerializer.removeFromDisk(id);
 	}
@@ -463,13 +463,13 @@ void Repository::remove(const qReal::Id &id)
 	}
 }
 
-void Repository::setWorkingFile(QString const &workingFile)
+void Repository::setWorkingFile(const QString &workingFile)
 {
 	mSerializer.setWorkingFile(workingFile);
 	mWorkingFile = workingFile;
 }
 
-void Repository::exportToXml(QString const &targetFile) const
+void Repository::exportToXml(const QString &targetFile) const
 {
 	SingleXmlSerializer::exportToXml(targetFile, mObjects);
 }
@@ -506,7 +506,7 @@ void Repository::exterminate()
 	printDebug();
 }
 
-void Repository::open(QString const &saveFile)
+void Repository::open(const QString &saveFile)
 {
 	mObjects.clear();
 	init();
@@ -519,12 +519,12 @@ qReal::IdList Repository::elements() const
 	return mObjects.keys();
 }
 
-bool Repository::isLogicalId(qReal::Id const &elem) const
+bool Repository::isLogicalId(const qReal::Id &elem) const
 {
 	return mObjects[elem]->isLogicalObject();
 }
 
-qReal::Id Repository::logicalId(qReal::Id const &elem) const
+qReal::Id Repository::logicalId(const qReal::Id &elem) const
 {
 	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[elem]);
 	if (!graphicalObject) {
@@ -534,12 +534,12 @@ qReal::Id Repository::logicalId(qReal::Id const &elem) const
 	return graphicalObject->logicalId();
 }
 
-QMapIterator<QString, QVariant> Repository::propertiesIterator(qReal::Id const &id) const
+QMapIterator<QString, QVariant> Repository::propertiesIterator(const qReal::Id &id) const
 {
 	return mObjects[id]->propertiesIterator();
 }
 
-void Repository::createGraphicalPart(qReal::Id const &id, int partIndex)
+void Repository::createGraphicalPart(const qReal::Id &id, int partIndex)
 {
 	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
 	if (!graphicalObject) {
@@ -549,7 +549,7 @@ void Repository::createGraphicalPart(qReal::Id const &id, int partIndex)
 	graphicalObject->createGraphicalPart(partIndex);
 }
 
-QList<int> Repository::graphicalParts(qReal::Id const &id) const
+QList<int> Repository::graphicalParts(const qReal::Id &id) const
 {
 	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
 	if (!graphicalObject) {
@@ -559,7 +559,7 @@ QList<int> Repository::graphicalParts(qReal::Id const &id) const
 	return graphicalObject->graphicalParts();
 }
 
-QVariant Repository::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const
+QVariant Repository::graphicalPartProperty(const qReal::Id &id, int partIndex, const QString &propertyName) const
 {
 	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
 	if (!graphicalObject) {
@@ -570,10 +570,10 @@ QVariant Repository::graphicalPartProperty(qReal::Id const &id, int partIndex, Q
 }
 
 void Repository::setGraphicalPartProperty(
-		qReal::Id const &id
+		const qReal::Id &id
 		, int partIndex
-		, QString const &propertyName
-		, QVariant const &value
+		, const QString &propertyName
+		, const QVariant &value
 		)
 {
 	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
@@ -589,12 +589,12 @@ QStringList Repository::metaInformationKeys() const
 	return mMetaInfo.keys();
 }
 
-QVariant Repository::metaInformation(QString const &key) const
+QVariant Repository::metaInformation(const QString &key) const
 {
 	return mMetaInfo[key];
 }
 
-void Repository::setMetaInformation(QString const &key, QVariant const &info)
+void Repository::setMetaInformation(const QString &key, const QVariant &info)
 {
 	mMetaInfo[key] = info;
 }

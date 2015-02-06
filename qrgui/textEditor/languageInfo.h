@@ -59,10 +59,10 @@ public:
 	/// Tries to find appropriate language by the given file extension;
 	/// Returns default textFileInfo(@arg extension) if no such lanugage was found.
 	/// The search is performed first in user-defined lannguages, then in other known ones.
-	static LanguageInfo pickByExtension(QString const &extension);
+	static LanguageInfo pickByExtension(const QString &extension);
 
 	/// Returns editor settings when it edits information on an unknown language.
-	static LanguageInfo textFileInfo(QString const &extension, QStringList const &additionalTokens = QStringList())
+	static LanguageInfo textFileInfo(const QString &extension, const QStringList &additionalTokens = QStringList())
 	{
 		return LanguageInfo{extension                                        /* extension */
 				, QObject::tr("Text File")                                   /* extension description */
@@ -74,7 +74,7 @@ public:
 	}
 
 	/// Returns the information about the c language.
-	static LanguageInfo c(QStringList const &additionalTokens = QStringList())
+	static LanguageInfo c(const QStringList &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"c"                                              /* extension */
 				, QObject::tr("C Language Source File")                      /* extension description */
@@ -86,7 +86,7 @@ public:
 	}
 
 	/// The information about the russian algorithmic language.
-	static LanguageInfo russianC(QStringList const &additionalTokens = QStringList())
+	static LanguageInfo russianC(const QStringList &additionalTokens = QStringList())
 	{
 		return LanguageInfo{QString::fromUtf8("си")                          /* extension */
 				, QObject::tr("Russian Algorithmic Language Source File")    /* extension description */
@@ -99,7 +99,7 @@ public:
 	}
 
 	/// The information about the python language.
-	static LanguageInfo python(QStringList const &additionalTokens = QStringList())
+	static LanguageInfo python(const QStringList &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"py"                                             /* extension */
 				, QObject::tr("Python Source File")                          /* extension description */
@@ -111,7 +111,7 @@ public:
 	}
 
 	/// The information about the qt-script language.
-	static LanguageInfo qtScript(QStringList const &additionalTokens = QStringList())
+	static LanguageInfo qtScript(const QStringList &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"qts"                                            /* extension */
 				, QObject::tr("QtScript Language Source File")               /* extension description */
@@ -123,7 +123,7 @@ public:
 	}
 
 	/// The information about the F# language.
-	static LanguageInfo fSharp(QStringList const &additionalTokens = QStringList())
+	static LanguageInfo fSharp(const QStringList &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"fs"                                             /* extension */
 				, QObject::tr("F# Language Source File")                     /* extension description */

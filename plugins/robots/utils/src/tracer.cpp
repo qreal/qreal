@@ -8,7 +8,7 @@ using namespace utils;
 
 Tracer *Tracer::mInstance = nullptr;
 
-QString const logFileName = QString("QRealRobots.log");
+const QString logFileName = QString("QRealRobots.log");
 
 void Tracer::enableCategory(TracerEnum category)
 {
@@ -35,7 +35,7 @@ void Tracer::setTarget(TraceTarget target)
 	instance()->mTarget = target;
 }
 
-void Tracer::debug(TracerEnum category, QString const &methodName, QString const &message)
+void Tracer::debug(TracerEnum category, const QString &methodName, const QString &message)
 {
 	instance()->debugImpl(category, methodName, message);
 }
@@ -75,7 +75,7 @@ void Tracer::disableAllImpl()
 	mCategories.fill(false);
 }
 
-void Tracer::debugImpl(TracerEnum const &category, QString const &methodName, QString const &message)
+void Tracer::debugImpl(TracerEnum const &category, const QString &methodName, const QString &message)
 {
 	if (mCategories[category]) {
 		switch (mTarget) {

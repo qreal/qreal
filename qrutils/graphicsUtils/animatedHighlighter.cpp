@@ -16,7 +16,7 @@ void AnimatedHighlighter::highlight(QGraphicsItem * const item)
 	animation->setEndValue(0.0);
 	qreal const oldOpacity = item->opacity();
 	QObject::connect(animation, &QVariantAnimation::valueChanged
-			, [item](QVariant const &value) { item->setOpacity(value.toReal()); });
+			, [item](const QVariant &value) { item->setOpacity(value.toReal()); });
 	QObject::connect(animation, &QVariantAnimation::finished
 			, [item, oldOpacity]() { item->setOpacity(oldOpacity); });
 	animation->start(QAbstractAnimation::DeleteWhenStopped);

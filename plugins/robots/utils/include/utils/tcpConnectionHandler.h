@@ -19,13 +19,13 @@ public:
 
 	void disconnect();
 
-	void send(QString const &data);
+	void send(const QString &data);
 
 public slots:
 	void onIncomingData();
 
 signals:
-	void messageReceived(QString const &message);
+	void messageReceived(const QString &message);
 
 private:
 	QTcpSocket mSocket;

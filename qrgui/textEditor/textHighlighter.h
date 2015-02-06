@@ -9,7 +9,7 @@ class TextHighlighter : public QSyntaxHighlighter
 {
 public:
 	TextHighlighter(QTextDocument *document);
-	void highlightBlock(QString const &text);
+	void highlightBlock(const QString &text);
 
 private:
 	struct HighlightingRule

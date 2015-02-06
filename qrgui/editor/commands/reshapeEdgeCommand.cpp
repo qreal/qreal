@@ -7,7 +7,7 @@ ReshapeEdgeCommand::ReshapeEdgeCommand(EdgeElement const *edge)
 {
 }
 
-ReshapeEdgeCommand::ReshapeEdgeCommand(EditorViewScene const *scene, Id const &id)
+ReshapeEdgeCommand::ReshapeEdgeCommand(EditorViewScene const *scene, const Id &id)
 	: EdgeElementCommand(scene, id)
 {
 }
@@ -74,7 +74,7 @@ void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst
 }
 
 void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
-		, Id const &src, Id const &dst, QPointF const &pos, qreal const &fromPort, qreal const &toPort)
+		, const Id &src, const Id &dst, const QPointF &pos, qreal const &fromPort, qreal const &toPort)
 {
 	if (!mEdge) {
 		return;

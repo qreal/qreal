@@ -5,7 +5,7 @@
 using namespace qReal::commands;
 
 RenameCommand::RenameCommand(details::ModelsAssistInterface &model
-		, Id const &id, QString const &newName
+		, const Id &id, const QString &newName
 		, models::Exploser const * const exploser)
 	: mModel(model)
 	, mId(id)
@@ -16,7 +16,7 @@ RenameCommand::RenameCommand(details::ModelsAssistInterface &model
 }
 
 RenameCommand::RenameCommand(details::ModelsAssistInterface &model
-		, Id const &id, QString const &oldName, QString const &newName
+		, const Id &id, const QString &oldName, const QString &newName
 		, models::Exploser const * const exploser)
 	: mModel(model)
 	, mId(id)
@@ -43,11 +43,11 @@ void RenameCommand::initExplosions(models::Exploser const * const exploser)
 	}
 
 	GraphicalModelAssistInterface *graphicalModel = dynamic_cast<GraphicalModelAssistInterface *>(&mModel);
-	Id const logicalId = graphicalModel ? graphicalModel->logicalId(mId) : mId;
+	const Id logicalId = graphicalModel ? graphicalModel->logicalId(mId) : mId;
 	addPostAction(exploser->renameCommands(logicalId, mNewName));
 }
 
-bool RenameCommand::rename(QString const &name)
+bool RenameCommand::rename(const QString &name)
 {
 	mModel.setName(mId, name);
 	return true;

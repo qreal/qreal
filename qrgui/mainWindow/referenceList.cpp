@@ -3,8 +3,8 @@
 
 #include "mainWindow/mainWindow.h"
 
-ReferenceList::ReferenceList(qReal::MainWindow *mainWindow, QPersistentModelIndex const &index
-		, QString const &refType, QStringList const &currentValue, int role, QWidget *parent)
+ReferenceList::ReferenceList(qReal::MainWindow *mainWindow, const QPersistentModelIndex &index
+		, const QString &refType, const QStringList &currentValue, int role, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::ReferenceList)
 	, mIndex(index)
@@ -24,7 +24,7 @@ ReferenceList::~ReferenceList()
 	delete mUi;
 }
 
-void ReferenceList::loadList(QString const &refType)
+void ReferenceList::loadList(const QString &refType)
 {
 	const qrRepo::LogicalRepoApi *repoApi = &(mWindow->models().logicalRepoApi());
 	// there will be no need in this when models are synchronized
@@ -37,7 +37,7 @@ void ReferenceList::loadList(QString const &refType)
 	}
 }
 
-void ReferenceList::addItem(qReal::Id const &element)
+void ReferenceList::addItem(const qReal::Id &element)
 {
 	QString name = mWindow->models().logicalRepoApi().name(element);
 
@@ -45,7 +45,7 @@ void ReferenceList::addItem(qReal::Id const &element)
 	item->setData(Qt::UserRole, element.toString());
 }
 
-void ReferenceList::highlightCurrentValue(QStringList const &currentValue)
+void ReferenceList::highlightCurrentValue(const QStringList &currentValue)
 {
 	for (int i = 0; i < mUi->listWidget->count(); i++) {
 		QListWidgetItem* currItem = mUi->listWidget->item(i);

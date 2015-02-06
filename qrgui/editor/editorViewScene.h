@@ -29,7 +29,7 @@ public:
 			, Controller &controller
 			/// @todo: move scene customizer properties to metamodel
 			, SceneCustomizer const &customizer
-			, Id const &rootId
+			, const Id &rootId
 			, QObject *parent = 0);
 
 	void clearScene();
@@ -37,30 +37,30 @@ public:
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
 			, bool canBeConnected, commands::CreateElementCommand **elementCommand = 0);
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
-	virtual qReal::Id createElement(QString const &
-			, QPointF const &scenePos
+	virtual qReal::Id createElement(const QString &
+			, const QPointF &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
 			, bool executeImmediately = true
-			, QPointF const &shiftToParent = QPointF()
-			, QString const &explosionTargetUuid = QString());
+			, const QPointF &shiftToParent = QPointF()
+			, const QString &explosionTargetUuid = QString());
 
-	virtual void createElement(QMimeData const *mimeData, QPointF const &scenePos
+	virtual void createElement(QMimeData const *mimeData, const QPointF &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommandPointer = 0
 			, bool executeImmediately = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual Element *getElem(qReal::Id const &id) const;
-	Element *findElemAt(QPointF const &position) const;
-	NodeElement *findNodeAt(QPointF const &position) const;
+	virtual Element *getElem(const qReal::Id &id) const;
+	Element *findElemAt(const QPointF &position) const;
+	NodeElement *findNodeAt(const QPointF &position) const;
 
 	virtual qReal::Id rootItemId() const;
 	/// @todo: remove theese getters
 	models::Models const &models() const;
 	Controller &controller() const;
-	EditorManagerInterface const &editorManager() const;
+	const EditorManagerInterface &editorManager() const;
 	SceneCustomizer const &customizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
@@ -73,15 +73,15 @@ public:
 	qreal realIndexGrid();
 	void setRealIndexGrid(qreal newIndexGrid);
 
-	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
+	bool canBeContainedBy(const qReal::Id &container, const qReal::Id &candidate) const;
 
 	Element *lastCreatedFromLinker() const;
 
 	/// Removes items selected by user with undo possibility.
 	void deleteSelectedItems();
 
-	void highlight(qReal::Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
-	void dehighlight(qReal::Id const &graphicalId);
+	void highlight(const qReal::Id &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
+	void dehighlight(const qReal::Id &graphicalId);
 	void dehighlight();
 
 	/// Draws pixmap on scene's foreground (doesn't take ownership!)
@@ -93,15 +93,15 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void createSingleElement(Id const &id, QString const &name
-			, bool isNode, QPointF const &position
-			, Id const &parentId, bool isFromLogicalModel
-			, Id const &explosionTarget = Id()
-			, commands::CreateElementCommand **createCommandPointer = NULL
+	void createSingleElement(const Id &id, const QString &name
+			, bool isNode, const QPointF &position
+			, const Id &parentId, bool isFromLogicalModel
+			, const Id &explosionTarget = Id()
+			, commands::CreateElementCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 
-	EdgeElement *edgeForInsertion(QPointF const &scenePos);
-	void resolveOverlaps(NodeElement* node, QPointF const &scenePos, QPointF const &shift
+	EdgeElement *edgeForInsertion(const QPointF &scenePos);
+	void resolveOverlaps(NodeElement* node, const QPointF &scenePos, const QPointF &shift
 			, QMap<qReal::Id, QPointF> &shifting) const;
 	void returnElementsToOldPositions(QMap<Id, QPointF> const &shifting) const;
 
@@ -110,8 +110,8 @@ public:
 	void reConnectLink(EdgeElement * edgeElem);
 	void arrangeNodeLinks(NodeElement* node) const;
 
-	NodeElement* getNodeById(qReal::Id const &itemId) const;
-	EdgeElement* getEdgeById(qReal::Id const &itemId) const;
+	NodeElement* getNodeById(const qReal::Id &itemId) const;
+	EdgeElement* getEdgeById(const qReal::Id &itemId) const;
 
 	void itemSelectUpdate();
 
@@ -151,16 +151,16 @@ signals:
 	void zoomOut();
 
 	/// Emitted when user requested to switch to some element (for example doubled-clicked element with explosion).
-	void goTo(Id const &id);
+	void goTo(const Id &id);
 
 	/// Emitted when palette contents could change and thus must be reread.
 	void refreshPalette();
 
 	/// Emitted when user requested to change some element`s graphical representation.
-	void openShapeEditor(Id const &id
-		, QString const &propertyValue
+	void openShapeEditor(const Id &id
+		, const QString &propertyValue
 		/// @todo: whan passing it by reference the build on travis fails
-		, EditorManagerInterface const *editorManagerProxy
+		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts);
 
 protected:
@@ -180,11 +180,11 @@ protected:
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
-	virtual void drawForeground(QPainter *painter, QRectF const &rect);
-	virtual void drawBackground(QPainter *painter, QRectF const &rect);
+	virtual void drawForeground(QPainter *painter, const QRectF &rect);
+	virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
 private slots:
-	void createEdge(QString const &id);
+	void createEdge(const QString &id);
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
@@ -203,10 +203,10 @@ private:
 	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene
 	/// (to keep ability of scene rect to grow automatically)
 	void initCorners();
-	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
+	void setCorners(const QPointF &topLeft, const QPointF &bottomRight);
 
 	void initializeActions();
-	void initContextMenu(Element *e, QPointF const &pos);
+	void initContextMenu(Element *e, const QPointF &pos);
 	bool isEmptyClipboard();
 
 	void disableActions(Element *focusElement);
@@ -219,10 +219,10 @@ private:
 	QPointF offsetByDirection(int direction);
 
 	models::Models const &mModels;
-	EditorManagerInterface const &mEditorManager;
+	const EditorManagerInterface &mEditorManager;
 	Controller &mController;
 	SceneCustomizer const &mCustomizer;
-	Id const mRootId;
+	const Id mRootId;
 
 	Id mLastCreatedFromLinker;
 	commands::CreateElementCommand *mLastCreatedFromLinkerCommand;

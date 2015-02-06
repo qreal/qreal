@@ -26,7 +26,7 @@ public:
 
 private slots:
 	void onProjectOpened();
-	void switchTo(QString const &kitId);
+	void switchTo(const QString &kitId);
 
 	QMap<QString, int> countKitSpecificBlocks() const;
 	QMap<qReal::Id, QString> kitSpecificBlocks() const;

@@ -18,7 +18,7 @@ public:
 	/// @param mustAdd Specifies if this command should create or remove explosions.
 	ExplosionCommand(models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi const * const graphicalApi
-			, Id const &source, Id const &target, bool mustAdd);
+			, const Id &source, const Id &target, bool mustAdd);
 
 	virtual ~ExplosionCommand();
 
@@ -33,7 +33,7 @@ private:
 	models::GraphicalModelAssistApi const * const mGraphicalApi;  // Doesn't take ownership.
 	Id mSource;
 	Id mTarget;
-	bool const mMustAdd;
+	const bool mMustAdd;
 };
 
 }

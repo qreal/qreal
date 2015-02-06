@@ -47,7 +47,7 @@ void QRealRectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem*
 }
 
 QPair<QDomElement, Item::DomElementTypes> QRealRectangle::generateItem(QDomDocument &document
-		, QPoint const &topLeftPicture)
+		, const QPoint &topLeftPicture)
 {
 	QDomElement rectangle = setPenBrushToDoc(document, "rectangle");
 	setXandY(rectangle, sceneBoundingRectCoord(topLeftPicture));

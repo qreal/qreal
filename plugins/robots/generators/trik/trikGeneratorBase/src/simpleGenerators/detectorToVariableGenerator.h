@@ -9,9 +9,9 @@ namespace simple {
 class DetectorToVariableGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DetectorToVariableGenerator(qrRepo::RepoApi const &repo
+	DetectorToVariableGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

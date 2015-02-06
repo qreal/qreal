@@ -5,11 +5,11 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-ReservedVariablesConverter::ReservedVariablesConverter(QString const &pathToTemplates
+ReservedVariablesConverter::ReservedVariablesConverter(const QString &pathToTemplates
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelInterface const &robotModel
+		, const interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
-		, simple::Binding::ConverterInterface const *inputPortConverter
+		, const simple::Binding::ConverterInterface *inputPortConverter
 		, parts::DeviceVariables const &deviceVariables)
 	: TemplateParametrizedConverter(pathToTemplates)
 	, mErrorReporter(errorReporter)
@@ -25,10 +25,10 @@ ReservedVariablesConverter::~ReservedVariablesConverter()
 	delete mInputConverter;
 }
 
-QString ReservedVariablesConverter::convert(QString const &variable) const
+QString ReservedVariablesConverter::convert(const QString &variable) const
 {
-	for (interpreterBase::robotModel::PortInfo const &port : mRobotModel.availablePorts()) {
-		QString const reservedVariable = port.reservedVariable();
+	for (const interpreterBase::robotModel::PortInfo &port : mRobotModel.availablePorts()) {
+		const QString reservedVariable = port.reservedVariable();
 		if (!reservedVariable.isEmpty() && variable == reservedVariable) {
 			return deviceExpression(port);
 		}
@@ -37,16 +37,16 @@ QString ReservedVariablesConverter::convert(QString const &variable) const
 	return variable;
 }
 
-QString ReservedVariablesConverter::deviceExpression(interpreterBase::robotModel::PortInfo const &port) const
+QString ReservedVariablesConverter::deviceExpression(const interpreterBase::robotModel::PortInfo &port) const
 {
-	interpreterBase::robotModel::DeviceInfo const device = mDevices[port];
+	const interpreterBase::robotModel::DeviceInfo device = mDevices[port];
 	if (device.isNull()) {
 		mErrorReporter.addError(QObject::tr("Device on port %1 is not configured."\
 				" Please select it on the left-side panel.").arg(port.name()));
 		return QObject::tr("/* ERROR: SELECT DEVICE TYPE */");
 	}
 
-	QString const templatePath = mDeviceVariables.variableTemplatePath(device, port);
+	const QString templatePath = mDeviceVariables.variableTemplatePath(device, port);
 
 	// Converter must take a string like "1" or "2" (and etc) and return correct value
 	return readTemplate(templatePath).replace("@@PORT@@", mInputConverter->convert(port.name()));

@@ -6,7 +6,7 @@
 
 using namespace utils;
 
-Number::Number(QVariant const &value, Type type)
+Number::Number(const QVariant &value, Type type)
 	: mValue(value)
 	, mType(type)
 {
@@ -37,7 +37,7 @@ QVariant Number::value() const
 	return mValue;
 }
 
-void Number::setValue(QVariant const &value)
+void Number::setValue(const QVariant &value)
 {
 	mValue = value;
 }

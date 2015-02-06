@@ -3,7 +3,7 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-LineSensor::LineSensor(DeviceInfo const &info, PortInfo const &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+LineSensor::LineSensor(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikLineSensor(info, port), mRobotCommunicator(tcpRobotCommunicator)
 {
 }

@@ -16,8 +16,8 @@ class TouchSensor : public interpreterBase::robotModel::robotParts::TouchSensor
 	Q_OBJECT
 
 public:
-	TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	TouchSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

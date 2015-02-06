@@ -39,7 +39,7 @@ using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::blocksBase::common;
 
-qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
+qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &element)
 {
 	if (elementMetatypeIs(element, "TrikPlayTone")) {
 		return new SpeakerBlock(mRobotModelManager->model());

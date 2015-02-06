@@ -22,7 +22,7 @@ void StatLine::operator= (QLineF const &l)
 	mInitWidth = 1;
 }
 
-void StatLine::paint(QPainter *painter, QRectF const &contents) const
+void StatLine::paint(QPainter *painter, const QRectF &contents) const
 {
 	qreal const x1 = mLine.x1() * (mPropX1 ? mInitWidth : contents.width());
 	qreal const y1 = mLine.y1() * (mPropY1 ? mInitHeight : contents.height());
@@ -48,7 +48,7 @@ void StatLine::paint(QPainter *painter, QRectF const &contents) const
 	painter->restore();
 }
 
-QLineF StatLine::transformForContents(QRectF const &contents) const
+QLineF StatLine::transformForContents(const QRectF &contents) const
 {
 	qreal const x1 = mLine.x1() * (mPropX1 ? mInitWidth : contents.width());
 	qreal const y1 = mLine.y1() * (mPropY1 ? mInitHeight : contents.height());

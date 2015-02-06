@@ -5,7 +5,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-ForkRule::ForkRule(SemanticTree *tree, Id const &id, QList<LinkInfo> const &threads, parts::Threads &threadsStorage)
+ForkRule::ForkRule(SemanticTree *tree, const Id &id, QList<LinkInfo> const &threads, parts::Threads &threadsStorage)
 	: SemanticTransformationRule(tree, id)
 	, mThreads(threads)
 	, mThreadsStorage(threadsStorage)

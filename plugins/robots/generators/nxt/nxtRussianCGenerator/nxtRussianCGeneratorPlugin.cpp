@@ -12,7 +12,7 @@ NxtRussianCGeneratorPlugin::NxtRussianCGeneratorPlugin()
 {
 }
 
-QString NxtRussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString NxtRussianCGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString::fromUtf8("russianC/%1/%1.си").arg(projectName);
 }

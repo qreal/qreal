@@ -23,10 +23,10 @@ public:
 	void restoreSettings();
 
 private slots:
-	void doubleClicked(int const row, int const column);
-	void activateShortcutLineEdit(int const row, int const column);
+	void doubleClicked(const int row, const int column);
+	void activateShortcutLineEdit(const int row, const int column);
 	void newModifiers(Qt::KeyboardModifiers modifiers);
-	void newKey(int const key);
+	void newKey(const int key);
 	void resetShortcuts();
 	void resetAllShortcuts();
 

@@ -15,7 +15,7 @@ MixedGesturesManager::MixedGesturesManager()
 
 MixedGesturesManager::~MixedGesturesManager()
 {
-	for (QString const &object : mGestures.keys()) {
+	for (const QString &object : mGestures.keys()) {
 		delete mGestures[object].first;
 		delete mGestures[object].second;
 		mGestures.remove(object);
@@ -23,7 +23,7 @@ MixedGesturesManager::~MixedGesturesManager()
 }
 
 
-qreal MixedGesturesManager::getMaxDistance(QString const &)
+qreal MixedGesturesManager::getMaxDistance(const QString &)
 {
 	return 30;
 }

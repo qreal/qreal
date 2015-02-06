@@ -28,11 +28,11 @@ ShapeEdit::ShapeEdit(QWidget *parent)
 
 ShapeEdit::ShapeEdit(
 	qReal::models::details::LogicalModel *model
-	, QPersistentModelIndex const &index
+	, const QPersistentModelIndex &index
 	, const int &role
 	, bool useTypedPorts
 	)
-	: QWidget(NULL)
+	: QWidget(nullptr)
 	, mUi(new Ui::ShapeEdit)
 	, mModel(model)
 	, mIndex(index)
@@ -45,14 +45,14 @@ ShapeEdit::ShapeEdit(
 }
 
 ShapeEdit::ShapeEdit(
-	Id const &id
-	, EditorManagerInterface const &editorManager
+	const Id &id
+	, const EditorManagerInterface &editorManager
 	, qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	, MainWindow *mainWindow
 	, EditorView *editorView
 	, bool useTypedPorts
 	)
-	: QWidget(NULL)
+	: QWidget(nullptr)
 	, mUi(new Ui::ShapeEdit)
 	, mRole(0)
 	, mId(id)
@@ -105,24 +105,24 @@ void ShapeEdit::init()
 	connect(mUi->stylusButton, SIGNAL(clicked(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->addImageButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
 
-	connect(mUi->penStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenStyle(QString const &)));
+	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
-	connect(mUi->penColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenColor(QString const &)));
-	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &))
-			, mScene, SLOT(changeBrushStyle(QString const &)));
-	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &))
-			, mScene, SLOT(changeBrushColor(QString const &)));
+	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenColor(const QString &)));
+	connect(mUi->brushStyleComboBox, SIGNAL(activated(const QString &))
+			, mScene, SLOT(changeBrushStyle(const QString &)));
+	connect(mUi->brushColorComboBox, SIGNAL(activated(const QString &))
+			, mScene, SLOT(changeBrushColor(const QString &)));
 
 	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&))
 			, mScene, SLOT(changeFontFamily(const QFont&)));
 	connect(mUi->textPixelSizeSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changeFontPixelSize(int)));
-	connect(mUi->textColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeFontColor(QString const &)));
+	connect(mUi->textColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeFontColor(const QString &)));
 	connect(mUi->textEditField, SIGNAL(textChanged()), this, SLOT(changeTextName()));
 	connect(mUi->italicCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontItalic(bool)));
 	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
 	connect(mUi->underlineCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontUnderline(bool)));
 
-	connect(mUi->portsComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePortsType(QString const &)));
+	connect(mUi->portsComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePortsType(const QString &)));
 
 	connect(mUi->visibilityConditionsButton, SIGNAL(clicked()), this, SLOT(visibilityButtonClicked()));
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
@@ -140,10 +140,10 @@ void ShapeEdit::init()
 			, this, SLOT(setItemPalette(QPen const&, QBrush const&)));
 	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
-	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &))
-			, this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, const QString &))
+			, this, SLOT(setItemFontPalette(QPen const&, QFont const&, const QString &)));
 	connect(mScene, SIGNAL(noSelectedPortItems()), this, SLOT(setNoPortType()));
-	connect(mScene, SIGNAL(existSelectedPortItems(QString const &)), this, SLOT(setPortType(QString const &)));
+	connect(mScene, SIGNAL(existSelectedPortItems(const QString &)), this, SLOT(setPortType(const QString &)));
 }
 
 void ShapeEdit::resetHighlightAllButtons()
@@ -254,7 +254,7 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 	foreach (QGraphicsItem *graphicsItem, list) {
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL) {
+		if (item != nullptr) {
 			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateDom(mDocument, mTopLeftPicture);
 			QDomElement domItem = genItem.first;
 			Item::DomElementTypes domType = genItem.second;
@@ -296,7 +296,7 @@ void ShapeEdit::generateDom()
 	}
 }
 
-void ShapeEdit::exportToXml(QString const &fileName)
+void ShapeEdit::exportToXml(const QString &fileName)
 {
 	OutFile file(fileName);
 	generateDom();
@@ -323,7 +323,7 @@ void ShapeEdit::save()
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 	} else {
 		mEditorManager->updateShape(mId, mDocument.toString(4));
-		foreach (Id const graphicalElement, mGraphicalElements) {
+		foreach (const Id graphicalElement, mGraphicalElements) {
 			mEditorManager->updateShape(graphicalElement, mDocument.toString(4));
 			for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
 				NodeElement * const element = dynamic_cast<NodeElement *>(item);
@@ -373,7 +373,7 @@ void ShapeEdit::open()
 	loader.readFile(fileName);
 }
 
-void ShapeEdit::load(QString const &text)
+void ShapeEdit::load(const QString &text)
 {
 	if (text.isEmpty()) {
 		return;
@@ -482,12 +482,12 @@ void ShapeEdit::setValueUnderlineCheckBox(bool check)
 	mUi->underlineCheckBox->setChecked(check);
 }
 
-void ShapeEdit::setValueTextNameLineEdit(QString const &name)
+void ShapeEdit::setValueTextNameLineEdit(const QString &name)
 {
 	mUi->textEditField->setPlainText(name);
 }
 
-void ShapeEdit::setItemFontPalette(QPen const &penItem, QFont const &fontItem, QString const &name)
+void ShapeEdit::setItemFontPalette(QPen const &penItem, QFont const &fontItem, const QString &name)
 {
 	mUi->fontToolBox->setEnabled(true);
 	setValueTextFamilyFontComboBox(fontItem);
@@ -510,7 +510,7 @@ void ShapeEdit::setNoPortType()
 	mUi->portsComboBox->setCurrentText("NonTyped");
 }
 
-void ShapeEdit::setPortType(QString const &type)
+void ShapeEdit::setPortType(const QString &type)
 {
 	mUi->portsComboBox->setCurrentText(type);
 }
@@ -621,7 +621,7 @@ QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties
 	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
 	qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
 
-	foreach (qReal::Id const &child, repoApi->children(mModel->idByIndex(mIndex))) {
+	foreach (const qReal::Id &child, repoApi->children(mModel->idByIndex(mIndex))) {
 		if (child.element() != "MetaEntity_Attribute") {
 			continue;
 		}
@@ -635,14 +635,14 @@ QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties
 		} else if (type == "string") {
 			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::String, QStringList()));
 		} else {
-			foreach (qReal::Id const &enumElement, enums) {
+			foreach (const qReal::Id &enumElement, enums) {
 				if (!repoApi->isLogicalElement(enumElement)) {
 					continue;
 				}
 
 				if (repoApi->name(enumElement) == type) {
 					QStringList enumValues;
-					foreach (qReal::Id const &value, repoApi->children(enumElement)) {
+					foreach (const qReal::Id &value, repoApi->children(enumElement)) {
 						enumValues << repoApi->stringProperty(value, "valueName");
 					}
 
@@ -662,7 +662,7 @@ QStringList ShapeEdit::getPortTypes() const
 	if (mUseTypedPorts) {
 		qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
 		if (repoApi) {
-			foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
+			foreach (const qReal::Id &port, repoApi->elementsByType("MetaEntityPort")) {
 				if (repoApi->isLogicalElement(port)) {
 					result << repoApi->name(port);
 				}

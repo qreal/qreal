@@ -20,11 +20,11 @@ public:
 	explicit GraphicalPart(QDomElement const &element);
 
 	/// Returns value of a property with given name or throws an exception if there is no such property in this part.
-	QVariant property(QString const &name) const;
+	QVariant property(const QString &name) const;
 
 	/// Sets the value of given property. If a property already exists, its value will be overwritten,
 	/// otherwise new property will be created with given value.
-	void setProperty(QString const &name, const QVariant &value);
+	void setProperty(const QString &name, const QVariant &value);
 
 	/// Creates deep copy of object.
 	GraphicalPart *clone() const;

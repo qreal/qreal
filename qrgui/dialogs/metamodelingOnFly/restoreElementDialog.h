@@ -22,8 +22,8 @@ public:
 	/// @param interpreterEditorManager Editor manager.
 	/// @param elementsWithTheSameNameList IdList of elements with the same name.
 	RestoreElementDialog(QWidget *parent
-			, EditorManagerInterface const &interpreterEditorManager
-			, IdList const &elementsWithTheSameNameList);
+			, const EditorManagerInterface &interpreterEditorManager
+			, const IdList &elementsWithTheSameNameList);
 
 	/// Destructor.
 	~RestoreElementDialog();
@@ -40,11 +40,11 @@ private slots:
 
 private:
 	Ui::RestoreElementDialog *mUi; // Has ownership
-	EditorManagerInterface const &mInterpreterEditorManager;
+	const EditorManagerInterface &mInterpreterEditorManager;
 	IdList mElementsWithTheSameNameList;
 
 	void fillSameNameElementsTreeView();
 	// Object has ownership over list elements.
-	QList<QStandardItem *> prepareRow(QString const &first, QString const &second, QString const &third);
+	QList<QStandardItem *> prepareRow(const QString &first, const QString &second, const QString &third);
 };
 }

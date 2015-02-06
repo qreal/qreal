@@ -21,28 +21,28 @@ class LuaPrinter : public qrtext::lua::LuaAstVisitorInterface
 {
 public:
 	/// Takes ownership on converters.
-	LuaPrinter(QString const &pathToTemplates
+	LuaPrinter(const QString &pathToTemplates
 			, qrtext::LanguageToolboxInterface const &textLanguage
 			, PrecedenceConverterInterface &precedeceTable
-			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
+			, const simple::Binding::ConverterInterface *reservedVariablesConverter);
 
 	~LuaPrinter();
 
 	/// Prints the given AST to the code using a set of templates placed in the given in the constructor directory.
-	virtual QString print(QSharedPointer<qrtext::lua::ast::Node> const &node);
+	virtual QString print(const QSharedPointer<qrtext::lua::ast::Node> &node);
 
 	/// Prints the given AST to the code on the target language and casts it to string.
-	virtual QString castToString(QSharedPointer<qrtext::lua::ast::Node> const &node);
+	virtual QString castToString(const QSharedPointer<qrtext::lua::ast::Node> &node);
 
 private:
-	void visit(qrtext::lua::ast::Number const &node) override;
-	void visit(qrtext::lua::ast::UnaryMinus const &node) override;
+	void visit(const qrtext::lua::ast::Number &node) override;
+	void visit(const qrtext::lua::ast::UnaryMinus &node) override;
 	void visit(qrtext::lua::ast::Not const &node) override;
-	void visit(qrtext::lua::ast::BitwiseNegation const &node) override;
-	void visit(qrtext::lua::ast::Length const &node) override;
-	void visit(qrtext::lua::ast::LogicalAnd const &node) override;
-	void visit(qrtext::lua::ast::LogicalOr const &node) override;
-	void visit(qrtext::lua::ast::Addition const &node) override;
+	void visit(const qrtext::lua::ast::BitwiseNegation &node) override;
+	void visit(const qrtext::lua::ast::Length &node) override;
+	void visit(const qrtext::lua::ast::LogicalAnd &node) override;
+	void visit(const qrtext::lua::ast::LogicalOr &node) override;
+	void visit(const qrtext::lua::ast::Addition &node) override;
 	void visit(qrtext::lua::ast::Subtraction const &node) override;
 	void visit(qrtext::lua::ast::Multiplication const &node) override;
 	void visit(qrtext::lua::ast::Division const &node) override;
@@ -80,26 +80,26 @@ private:
 	/// The default implementation returns true if the parent operation has greater precedence or
 	/// equal precedence and child is situated on the opposite side to operator`s associativity.
 	/// May be redefined by printers to concrete language.
-	virtual bool needBrackets(qrtext::lua::ast::Node const &parent
-			, qrtext::lua::ast::Node const &child
+	virtual bool needBrackets(const qrtext::lua::ast::Node &parent
+			, const qrtext::lua::ast::Node &child
 			, qrtext::core::Associativity childAssociativity = qrtext::core::Associativity::right) const;
 
-	void processUnary(qrtext::core::ast::UnaryOperator const &node, QString const &templateFileName);
-	void processBinary(qrtext::core::ast::BinaryOperator const &node, QString const &templateFileName);
-	void processTemplate(qrtext::lua::ast::Node const &node, QString const &templateFileName
+	void processUnary(qrtext::core::ast::UnaryOperator const &node, const QString &templateFileName);
+	void processBinary(qrtext::core::ast::BinaryOperator const &node, const QString &templateFileName);
+	void processTemplate(const qrtext::lua::ast::Node &node, const QString &templateFileName
 			, QMap<QString, QSharedPointer<qrtext::lua::ast::Node>> const &bindings);
 
-	void pushResult(qrtext::lua::ast::Node const &node, QString const &generatedCode);
-	QString popResult(qrtext::lua::ast::Node const &node, bool wrapIntoBrackets = false);
-	QStringList popResults(QList<QSharedPointer<qrtext::lua::ast::Node>> const &nodes);
+	void pushResult(const qrtext::lua::ast::Node &node, const QString &generatedCode);
+	QString popResult(const qrtext::lua::ast::Node &node, bool wrapIntoBrackets = false);
+	QStringList popResults(const QList<QSharedPointer<qrtext::lua::ast::Node>> &nodes);
 
-	bool printWithoutPop(QSharedPointer<qrtext::lua::ast::Node> const &node);
-	QString toString(QSharedPointer<qrtext::lua::ast::Node> const &node);
+	bool printWithoutPop(const QSharedPointer<qrtext::lua::ast::Node> &node);
+	QString toString(const QSharedPointer<qrtext::lua::ast::Node> &node);
 
 	qrtext::LanguageToolboxInterface const &mTextLanguage;
-	QMap<qrtext::lua::ast::Node const *, QString> mGeneratedCode;
+	QMap<const qrtext::lua::ast::Node *, QString> mGeneratedCode;
 	PrecedenceConverterInterface &mPrecedenceTable;
-	simple::Binding::ConverterInterface const *mReservedVariablesConverter;  // Takes ownership
+	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership
 	ReservedFunctionsConverter mReservedFunctionsConverter;
 };
 

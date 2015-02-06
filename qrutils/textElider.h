@@ -17,10 +17,10 @@ public:
 
 signals:
 	/// Emitted after each time after text recalculation
-	void textChanged(QString const &text);
+	void textChanged(const QString &text);
 
 public slots:
-	void setText(QString const &text);
+	void setText(const QString &text);
 
 private:
 	QWidget *mWidget;  // Doesn`t take ownership

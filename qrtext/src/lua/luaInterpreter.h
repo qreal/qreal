@@ -41,7 +41,7 @@ public:
 	QVariant value(const QString &identifier) const;
 
 	/// Sets a value of identifier with given name to given value.
-	void setVariableValue(const QString &name, QVariant const &value);
+	void setVariableValue(const QString &name, const QVariant &value);
 
 	/// Clear all execution state, except added intrinsic functions.
 	void clear();

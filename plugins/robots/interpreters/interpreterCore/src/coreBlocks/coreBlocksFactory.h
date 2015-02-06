@@ -10,7 +10,7 @@ namespace coreBlocks {
 class CoreBlocksFactory : public interpreterBase::blocksBase::CommonBlocksFactory
 {
 public:
-	qReal::interpretation::Block *produceBlock(qReal::Id const &element) override;
+	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
 
 	qReal::IdList providedBlocks() const override;
 	qReal::IdList blocksToDisable() const override;

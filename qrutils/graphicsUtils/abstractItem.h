@@ -50,14 +50,14 @@ public:
 	void setBrush(const QBrush& brush);
 	void setPen(const QPen& pen);
 
-	virtual void setPenStyle(QString const &text);
+	virtual void setPenStyle(const QString &text);
 	virtual void setPenWidth(int width);
-	virtual void setPenColor(QString const &text);
-	virtual void setBrushStyle(QString const &text);
-	virtual void setBrushColor(QString const &text);
-	virtual void setBrush(QString const &brushStyle, QString const &brushColor);
-	virtual void setPen(QString const &penStyle, int width, QString const &penColor);
-	virtual void setPenBrush(QString const &penStyle, int width, QString const &penColor, QString const &brushStyle, QString const &brushColor);
+	virtual void setPenColor(const QString &text);
+	virtual void setBrushStyle(const QString &text);
+	virtual void setBrushColor(const QString &text);
+	virtual void setBrush(const QString &brushStyle, const QString &brushColor);
+	virtual void setPen(const QString &penStyle, int width, const QString &penColor);
+	virtual void setPenBrush(const QString &penStyle, int width, const QString &penColor, const QString &brushStyle, const QString &brushColor);
 
 	QPointF getX1andY1(void);
 	QPointF getX2andY2(void);
@@ -66,7 +66,7 @@ public:
 	void setX1andY2(qreal x, qreal y);
 	void setX2andY1(qreal x, qreal y);
 	void setX2andY2(qreal x, qreal y);
-	void setCoordinates(QRectF const &pos);
+	void setCoordinates(const QRectF &pos);
 
 	virtual void reshapeRectWithShift();
 	virtual void changeDragState(qreal x, qreal y);
@@ -77,9 +77,9 @@ public:
 	void reverseOldResizingItem(QPointF begin, QPointF end);
 
 	//for save to xml
-	virtual void setXandY(QDomElement& dom, QRectF const &rect);
-	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
-	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
+	virtual void setXandY(QDomElement& dom, const QRectF &rect);
+	QDomElement setPenBrushToDoc(QDomDocument &document, const QString &domName);
+	virtual QRectF sceneBoundingRectCoord(const QPoint &topLeftPicture);
 	void readPenBrush(QDomElement const &docItem);
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

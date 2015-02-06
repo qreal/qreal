@@ -3,13 +3,13 @@
 using namespace qReal::commands;
 
 ArrangeLinksCommand::ArrangeLinksCommand(EditorViewScene const *scene
-		, Id const &id, bool needAdjusting)
+		, const Id &id, bool needAdjusting)
 	: ElementCommand(scene, id), mNeedAdjusting(needAdjusting)
 {
 }
 
 ArrangeLinksCommand::ArrangeLinksCommand(EditorView const *view
-		, Id const &id, bool needAdjusting)
+		, const Id &id, bool needAdjusting)
 	: ElementCommand(&view->editorViewScene(), id), mNeedAdjusting(needAdjusting)
 {
 }

@@ -30,29 +30,29 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget 
 {
 }
 
-void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
+void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &port, bool breakMode)
 {
 	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
 }
 
-int TwoDModelEngineApi::readEncoder(PortInfo const &port) const
+int TwoDModelEngineApi::readEncoder(const PortInfo &port) const
 {
 	return mModel.robotModels()[0]->readEncoder(port);
 }
 
-void TwoDModelEngineApi::resetEncoder(PortInfo const &port)
+void TwoDModelEngineApi::resetEncoder(const PortInfo &port)
 {
 	mModel.robotModels()[0]->resetEncoder(port);
 }
 
-int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
+int TwoDModelEngineApi::readTouchSensor(const PortInfo &port) const
 {
 	if (!mModel.robotModels()[0]->configuration().type(port).isA<robotParts::TouchSensor>()) {
 		return touchSensorNotPressedSignal;
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
-	QPointF const position(neededPosDir.first);
+	const QPointF position(neededPosDir.first);
 	qreal const rotation = neededPosDir.second / 180 * mathUtils::pi;
 	QSizeF const size = mModel.robotModels()[0]->sensorRect(port, position).size();
 
@@ -60,36 +60,36 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 	qreal const touchRegionRadius = size.height() / 2;
 	qreal const stickCenter = size.width() / 2 - touchRegionRadius;
 	// (0,0) in sensor coordinates is sensor`s center
-	QPointF const ellipseCenter = QPointF(stickCenter * cos(rotation), stickCenter * sin(rotation));
+	const QPointF ellipseCenter = QPointF(stickCenter * cos(rotation), stickCenter * sin(rotation));
 	sensorPath.addEllipse(position + ellipseCenter, touchRegionRadius, touchRegionRadius);
 
-	bool const pressed = mModel.worldModel().checkCollision(sensorPath);
+	const bool pressed = mModel.worldModel().checkCollision(sensorPath);
 	return pressed ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
-int TwoDModelEngineApi::readSonarSensor(PortInfo const &port) const
+int TwoDModelEngineApi::readSonarSensor(const PortInfo &port) const
 {
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
-	int const res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
+	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
 	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
 }
 
-int TwoDModelEngineApi::spoilSonarReading(int const distance) const
+int TwoDModelEngineApi::spoilSonarReading(const int distance) const
 {
 	qreal const ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
 	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));
 }
 
-int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
+int TwoDModelEngineApi::readColorSensor(const PortInfo &port) const
 {
 	QImage const image = printColorSensor(port);
 	QHash<uint, int> countsColor;
 
-	uint const *data = reinterpret_cast<uint const *>(image.bits());
-	int const n = image.byteCount() / 4;
+	const uint *data = reinterpret_cast<const uint *>(image.bits());
+	const int n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
-		uint const color = mModel.settings().realisticSensors() ? spoilColor(data[i]) : data[i];
+		const uint color = mModel.settings().realisticSensors() ? spoilColor(data[i]) : data[i];
 		++countsColor[color];
 	}
 
@@ -109,14 +109,14 @@ int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
 	return 0;
 }
 
-uint TwoDModelEngineApi::spoilColor(uint const color) const
+uint TwoDModelEngineApi::spoilColor(const uint color) const
 {
 	qreal const noise = mathUtils::Math::gaussianNoise(spoilColorDispersion);
 
 	int r = round(((color >> 16) & 0xFF) + noise);
 	int g = round(((color >> 8) & 0xFF) + noise);
 	int b = round(((color >> 0) & 0xFF) + noise);
-	int const a = (color >> 24) & 0xFF;
+	const int a = (color >> 24) & 0xFF;
 
 	r = mathUtils::Math::truncateToInterval(0, 255, r);
 	g = mathUtils::Math::truncateToInterval(0, 255, g);
@@ -125,17 +125,17 @@ uint TwoDModelEngineApi::spoilColor(uint const color) const
 	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
-QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
+QImage TwoDModelEngineApi::printColorSensor(const PortInfo &port) const
 {
-	DeviceInfo const device = mModel.robotModels()[0]->configuration().type(port);
+	const DeviceInfo device = mModel.robotModels()[0]->configuration().type(port);
 	if (device.isNull()) {
 		return QImage();
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
-	QPointF const position = neededPosDir.first;
+	const QPointF position = neededPosDir.first;
 	qreal const width = mModel.robotModels()[0]->info().sensorImageRect(device).width() / 2.0;
-	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
+	const QRectF scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
@@ -148,9 +148,9 @@ QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 
 	QGraphicsItem * const sensorItem = mView.sensorItem(port);
 	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
-	bool const wasSelected = sensorItem->isSelected();
-	bool const rotaterWasVisible = robot->rotater()->isVisible();
-	bool const rotaterWasSelected = robot->rotater()->isSelected();
+	const bool wasSelected = sensorItem->isSelected();
+	const bool rotaterWasVisible = robot->rotater()->isVisible();
+	const bool rotaterWasSelected = robot->rotater()->isSelected();
 	mView.setSensorVisible(port, false);
 	robot->rotater()->setVisible(false);
 
@@ -178,7 +178,7 @@ int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor)
 		}
 	}
 
-	uint const maxColor = countsColor.key(maxValue);
+	const uint maxColor = countsColor.key(maxValue);
 	switch (maxColor) {
 	case (black):
 		return 1;
@@ -213,11 +213,11 @@ int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor,
 	QHashIterator<uint, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-		uint const color = i.key();
+		const uint color = i.key();
 		if (color != white) {
-			int const b = (color >> 0) & 0xFF;
-			int const g = (color >> 8) & 0xFF;
-			int const r = (color >> 16) & 0xFF;
+			const int b = (color >> 0) & 0xFF;
+			const int g = (color >> 8) & 0xFF;
+			const int r = (color >> 16) & 0xFF;
 			qreal const k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
 			allWhite += static_cast<qreal>(i.value()) * k;
 		}
@@ -226,7 +226,7 @@ int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor,
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-int TwoDModelEngineApi::readLightSensor(PortInfo const &port) const
+int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 {
 	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
@@ -237,16 +237,16 @@ int TwoDModelEngineApi::readLightSensor(PortInfo const &port) const
 	}
 
 	uint sum = 0;
-	uint const *data = reinterpret_cast<uint const *>(image.bits());
-	int const n = image.byteCount() / 4;
+	const uint *data = reinterpret_cast<const uint *>(image.bits());
+	const int n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
-		int const color = mModel.settings().realisticSensors() ? spoilLight(data[i]) : data[i];
-		int const b = (color >> 0) & 0xFF;
-		int const g = (color >> 8) & 0xFF;
-		int const r = (color >> 16) & 0xFF;
+		const int color = mModel.settings().realisticSensors() ? spoilLight(data[i]) : data[i];
+		const int b = (color >> 0) & 0xFF;
+		const int g = (color >> 8) & 0xFF;
+		const int r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
-		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+		const int brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
 		sum += 4 * brightness; // 4 = max sensor value / max brightness value
 	}
@@ -279,7 +279,7 @@ engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
 	return mView.display();
 }
 
-uint TwoDModelEngineApi::spoilLight(uint const color) const
+uint TwoDModelEngineApi::spoilLight(const uint color) const
 {
 	qreal const noise = mathUtils::Math::gaussianNoise(spoilLightDispersion);
 
@@ -292,10 +292,10 @@ uint TwoDModelEngineApi::spoilLight(uint const color) const
 	return color;
 }
 
-QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo const &port) const
+QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
 {
 	view::SensorItem const *sensor = mView.sensorItem(port);
-	QPointF const position = sensor ? sensor->scenePos() : QPointF();
+	const QPointF position = sensor ? sensor->scenePos() : QPointF();
 	qreal const direction = sensor ? sensor->rotation() + mModel.robotModels()[0]->rotation() : 0;
 	return { position, direction };
 }

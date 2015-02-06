@@ -8,10 +8,10 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
+IntPropertyConverter::IntPropertyConverter(const QString &pathToTemplates
 		, lua::LuaProcessor &luaTranslator
-		, qReal::Id const &id
-		, QString const &propertyName
+		, const qReal::Id &id
+		, const QString &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter
 		, simple::Binding::ConverterInterface *typeConverter)
 	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
@@ -25,9 +25,9 @@ IntPropertyConverter::~IntPropertyConverter()
 	delete mTypeConverter;
 }
 
-QString IntPropertyConverter::convert(QString const &data) const
+QString IntPropertyConverter::convert(const QString &data) const
 {
-	QString const preparedCode = CodeConverterBase::convert(data);
+	const QString preparedCode = CodeConverterBase::convert(data);
 	if (preparedCode.isEmpty()) {
 		return "0";
 	}
@@ -39,7 +39,7 @@ QString IntPropertyConverter::convert(QString const &data) const
 	}
 
 	QString castTemplate = readTemplate("types/cast.t");
-	QString const intType = mTypeConverter->convert("int");
+	const QString intType = mTypeConverter->convert("int");
 	castTemplate.replace("@@TYPE@@", intType);
 	castTemplate.replace("@@EXPRESSION@@", preparedCode);
 	return castTemplate;

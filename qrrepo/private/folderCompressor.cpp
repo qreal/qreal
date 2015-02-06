@@ -1,6 +1,6 @@
 #include "folderCompressor.h"
 
-bool FolderCompressor::compressFolder(QString const &sourceFolder, QString const &destinationFile)
+bool FolderCompressor::compressFolder(const QString &sourceFolder, const QString &destinationFile)
 {
 	if (!QDir(sourceFolder).exists()) {
 		return false;
@@ -13,13 +13,13 @@ bool FolderCompressor::compressFolder(QString const &sourceFolder, QString const
 
 	QDataStream dataStream(&file);
 
-	bool const result = compress(sourceFolder, "", dataStream);
+	const bool result = compress(sourceFolder, "", dataStream);
 	file.close();
 
 	return result;
 }
 
-bool FolderCompressor::compress(QString const &sourceFolder, QString const &prefix, QDataStream &dataStream)
+bool FolderCompressor::compress(const QString &sourceFolder, const QString &prefix, QDataStream &dataStream)
 {
 	QDir dir(sourceFolder);
 	if (!dir.exists()) {
@@ -58,7 +58,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	return true;
 }
 
-bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const &destinationFolder)
+bool FolderCompressor::decompressFolder(const QString &sourceFile, const QString &destinationFolder)
 {
 	if (!QFile(sourceFile).exists()) { // mFile not found, to handle later
 		return false;

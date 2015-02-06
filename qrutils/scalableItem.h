@@ -9,7 +9,7 @@ namespace utils {
 class QRUTILS_EXPORT ScalableItem
 {
 public:
-	static ScalableCoordinate initCoordinate(QString const &coordinate, int maxValue);
+	static ScalableCoordinate initCoordinate(const QString &coordinate, int maxValue);
 protected:
 	virtual ~ScalableItem() {}
 };

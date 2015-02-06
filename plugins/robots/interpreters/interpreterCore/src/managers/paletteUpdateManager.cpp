@@ -17,11 +17,11 @@ void PaletteUpdateManager::updatePalette(robotModel::RobotModelInterface &curren
 	mPaletteProvider.setEnabledForAllElementsInPalette(false);
 	mPaletteProvider.setVisibleForAllElementsInPalette(false);
 
-	for (qReal::Id const &id : mFactoryManager.visibleBlocks(currentModel)) {
+	for (const qReal::Id &id : mFactoryManager.visibleBlocks(currentModel)) {
 		mPaletteProvider.setElementInPaletteVisible(id, true);
 	}
 
-	for (qReal::Id const &id : mFactoryManager.enabledBlocks(currentModel)) {
+	for (const qReal::Id &id : mFactoryManager.enabledBlocks(currentModel)) {
 		mPaletteProvider.setElementInPaletteEnabled(id, true);
 	}
 

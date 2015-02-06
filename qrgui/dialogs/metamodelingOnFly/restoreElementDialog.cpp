@@ -6,8 +6,8 @@
 using namespace qReal;
 
 RestoreElementDialog::RestoreElementDialog(QWidget *parent
-		, EditorManagerInterface const &interpreterEditorManager
-		, IdList const &elementsWithTheSameNameList)
+		, const EditorManagerInterface &interpreterEditorManager
+		, const IdList &elementsWithTheSameNameList)
 	: QDialog(parent)
 	, mUi(new Ui::RestoreElementDialog)
 	, mInterpreterEditorManager(interpreterEditorManager)
@@ -61,8 +61,8 @@ void RestoreElementDialog::fillSameNameElementsTreeView()
 	mUi->sameNameElementsTreeView->expandAll();
 }
 
-QList<QStandardItem *> RestoreElementDialog::prepareRow(QString const &first, QString const &second
-		, QString const &third)
+QList<QStandardItem *> RestoreElementDialog::prepareRow(const QString &first, const QString &second
+		, const QString &third)
 {
 	 QList<QStandardItem *> rowItems;
 	 rowItems << new QStandardItem(first);
@@ -77,8 +77,8 @@ void RestoreElementDialog::restoreButtonClicked()
 		return;
 	}
 
-	int const selectedRow = mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().first().row();
-	Id const node = mElementsWithTheSameNameList[selectedRow];
+	const int selectedRow = mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().first().row();
+	const Id node = mElementsWithTheSameNameList[selectedRow];
 	if (mInterpreterEditorManager.getIsHidden(node) == "true") {
 		mInterpreterEditorManager.resetIsHidden(node);
 		emit jobDone();

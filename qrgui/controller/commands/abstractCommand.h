@@ -53,7 +53,7 @@ public:
 
 	/// Binds this command to the tab associated with the specified root diagram
 	/// @see diagramBinded()
-	void bindToDiagram(Id const &diagramId);
+	void bindToDiagram(const Id &diagramId);
 
 	/// Returns time of this command creation in ms since epoch
 	uint timestamp() const;

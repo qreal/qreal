@@ -24,40 +24,40 @@ public:
 
 	/// Compiles and loads to QReal new semantics editor plugin
 	void loadPlugin(
-			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that editor)
-			, QString const &metamodelName  ///< Metamodel name as set in metamodel
-			, QString const &pathToQmake  ///< qmake command
-			, QString const &pathToMake  ///< make command
-			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
-			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
+			const QString &directoryName  ///< Directory where editor was generated (containing .pro file of that editor)
+			, const QString &metamodelName  ///< Metamodel name as set in metamodel
+			, const QString &pathToQmake  ///< qmake command
+			, const QString &pathToMake  ///< make command
+			, const QString &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
+			, const QString &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
 	);
 	
 	/// Generate .pro file of new editor plugin
 	void generateProFile(
 			QDomDocument metamodel, ///< Metamodel is needed to fix 'include' .xml paths
-			QString const &baseMetamodelPath, QString const &qrealSourceFilesPath,
-			QString const &newMetamodelName,
-			QString const &newEditorPath, QString const &relativeNewEditorPath
+			const QString &baseMetamodelPath, const QString &qrealSourceFilesPath,
+			const QString &newMetamodelName,
+			const QString &newEditorPath, const QString &relativeNewEditorPath
 	);
 	
 	/// Returns dom document which contains metamodel
-	QDomDocument loadMetamodelFromFile(QString const &metamodelPath);
+	QDomDocument loadMetamodelFromFile(const QString &metamodelPath);
 	
 	/// Returns dom document which contains all elements (do not forget to have
 	/// one root element)
-	QDomDocument loadElementsFromString(QString const &elementsXml);
+	QDomDocument loadElementsFromString(const QString &elementsXml);
 	
 	/// Saves converted metamodel in .xml file to specified path
-	void saveMetamodelInFile(QDomDocument const &metamodel, QString const &metamodelPath);
+	void saveMetamodelInFile(QDomDocument const &metamodel, const QString &metamodelPath);
 	
 	/// Inserts elements in <diagram></diagram> specified sublevel with creating
 	/// this sublevel if it doesn't exist. For example graphicTypes and nonGraphicTypes.
 	void insertElementsInDiagramSublevel(QDomDocument metamodel,
-			QString const &sublevelName, QDomNodeList elements);
+			const QString &sublevelName, QDomNodeList elements);
 	
 	/// Inserts one element
 	void insertElementInDiagramSublevel(QDomDocument metamodel,
-			QString const &sublevelName, QDomElement const &element);
+			const QString &sublevelName, QDomElement const &element);
 	
 	/// Appends all childrens to parent
 	void appendElements(QDomNode parent, QDomNodeList children);
@@ -68,9 +68,9 @@ public:
 	/// Appends types to specified child of element for creating container or smth
 	void appendTypesToElement(
 			QDomDocument parentDomDocument, ///< Used for creating new elements
-			QDomElement parent, QString const &childName,
-			QString const &prefix, ///< Prefix of the whole name of element type like metamodel name
-			QStringList const &elementTypes ///< Element types w/o prefix
+			QDomElement parent, const QString &childName,
+			const QString &prefix, ///< Prefix of the whole name of element type like metamodel name
+			const QStringList &elementTypes ///< Element types w/o prefix
 	);
 	
 	QDomElement diagramElement(QDomDocument const &metamodel) const;
@@ -78,7 +78,7 @@ public:
 private:
 	
 	/// Merge absolute path of file with relative from it
-	QString mergePaths(QString const &begin, QString const &end) const;
+	QString mergePaths(const QString &begin, const QString &end) const;
 	
 	qReal::ErrorReporterInterface *mErrorReporter;
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;

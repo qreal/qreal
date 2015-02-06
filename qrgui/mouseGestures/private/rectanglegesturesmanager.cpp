@@ -14,7 +14,7 @@ RectangleGesturesManager::~RectangleGesturesManager()
 	qDeleteAll(mGestures);
 }
 
-qreal RectangleGesturesManager::getMaxDistance(QString const &)
+qreal RectangleGesturesManager::getMaxDistance(const QString &)
 {
 	return 1000;
 }

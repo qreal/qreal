@@ -26,8 +26,8 @@ RealisticPhysicsEngine::RealisticPhysicsEngine(WorldModel const &worldModel, Tim
 
 void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 		, bool engine1Break, bool engine2Break
-		, QPointF const &rotationCenter, qreal robotAngle
-		, QPainterPath const &robotBoundingPath)
+		, const QPointF &rotationCenter, qreal robotAngle
+		, const QPainterPath &robotBoundingPath)
 {
 	QVector2D const direction = Geometry::directionVector(robotAngle);
 
@@ -49,7 +49,7 @@ void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1,
 }
 
 void RealisticPhysicsEngine::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode
-		, QPointF const &rotationCenter, QVector2D const &direction)
+		, const QPointF &rotationCenter, QVector2D const &direction)
 {
 	if (Math::eq(speed1, 0) && Math::eq(speed2, 0)) {
 		qreal const realFrictionFactor = breakMode
@@ -65,8 +65,8 @@ void RealisticPhysicsEngine::countTractionForceAndItsMoment(qreal speed1, qreal 
 	qreal const dx = direction.x() * (robotWidth / 2);
 	qreal const dy = direction.y() * (robotHeight / 2);
 
-	QPointF const engine1Point = QPointF(x + dx + dy, y + dy - dx);
-	QPointF const engine2Point = QPointF(x + dx - dy, y + dy + dx);
+	const QPointF engine1Point = QPointF(x + dx + dy, y + dy - dx);
+	const QPointF engine2Point = QPointF(x + dx - dy, y + dy + dx);
 
 	QVector2D const traction1Force = direction * speed1;
 	QVector2D const traction2Force = direction * speed2;
@@ -131,14 +131,14 @@ void RealisticPhysicsEngine::applyRotationalFrictionForce(qreal timeInterval, QV
 	}
 }
 
-void RealisticPhysicsEngine::findCollision(QPainterPath const &robotBoundingRegion
-		, QPainterPath const &wallBoundingRegion, QPointF const &rotationCenter)
+void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegion
+		, const QPainterPath &wallBoundingRegion, const QPointF &rotationCenter)
 {
 	if (!wallBoundingRegion.intersects(robotBoundingRegion)) {
 		return;
 	}
 
-	QPainterPath const intersectionRegion = robotBoundingRegion.intersected(wallBoundingRegion).simplified();
+	const QPainterPath intersectionRegion = robotBoundingRegion.intersected(wallBoundingRegion).simplified();
 	QPointF startPoint;
 	QPointF endPoint;
 	qreal const lengthAtom = 1;
@@ -171,16 +171,16 @@ void RealisticPhysicsEngine::findCollision(QPainterPath const &robotBoundingRegi
 		QVector2D const atomicVector = QVector2D(endPoint - startPoint).normalized() * lengthAtom;
 
 		qreal const length = Geometry::distance(startPoint, endPoint);
-		int const fragmentsCount = ceil(length / lengthAtom);
+		const int fragmentsCount = ceil(length / lengthAtom);
 
 		// If current line is too long then dividing it into small segments
 		for (int j = 0; j <= fragmentsCount; ++j) {
 
 			// Chosing points closer to center. In case of ideal 90 degrees angle between the wall and
 			// the robot`s velocity vector resulting rotation moment must be 0
-			int const transitionSign = (fragmentsCount + j) % 2 ? -1 : 1;
-			int const middleIndex = fragmentsCount / 2 + transitionSign * ((j + 1) / 2);
-			QPointF const currentSegmentationPoint = j == fragmentsCount
+			const int transitionSign = (fragmentsCount + j) % 2 ? -1 : 1;
+			const int middleIndex = fragmentsCount / 2 + transitionSign * ((j + 1) / 2);
+			const QPointF currentSegmentationPoint = j == fragmentsCount
 					? endPoint
 					: startPoint + middleIndex * atomicVector.toPointF();
 
@@ -192,13 +192,13 @@ void RealisticPhysicsEngine::findCollision(QPainterPath const &robotBoundingRegi
 			// For each point on that segments calculating reaction force vector acting from that point
 			QList<QPointF> const intersectionsWithRobot = Geometry::intersection(normalLine, robotBoundingRegion, lowPrecision);
 			QList<QPointF> intersectionsWithRobotAndWall;
-			foreach (QPointF const &point, intersectionsWithRobot) {
+			foreach (const QPointF &point, intersectionsWithRobot) {
 				if (Geometry::belongs(point, intersectionRegion, lowPrecision)) {
 					intersectionsWithRobotAndWall << point;
 				}
 			}
 
-			QPointF const currentMostFarPointOnRobot =
+			const QPointF currentMostFarPointOnRobot =
 					Geometry::closestPointTo(intersectionsWithRobotAndWall, currentSegmentationPoint);
 			QVector2D const currentReactionForce = QVector2D(currentSegmentationPoint - currentMostFarPointOnRobot);
 			QVector2D const currentProjection = Geometry::projection(currentReactionForce, mVelocity);

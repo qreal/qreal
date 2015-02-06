@@ -9,13 +9,13 @@
 
 using namespace qReal;
 
-int const zoomAnimationInterval = 20;
-int const zoomAnimationTimes = 4;
+const int zoomAnimationInterval = 20;
+const int zoomAnimationTimes = 4;
 
 EditorView::EditorView(models::Models const &models
 		, Controller &controller
 		, SceneCustomizer const &customizer
-		, Id const &rootId
+		, const Id &rootId
 		, QWidget *parent)
 	: QGraphicsView(parent)
 	, mScene(models, controller, customizer, rootId, this)
@@ -29,7 +29,7 @@ EditorView::EditorView(models::Models const &models
 	connect(&mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(&mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 	connect(&mScene, &EditorViewScene::sceneRectChanged, this
-			, static_cast<void (EditorView::*)(QRectF const &)>(&EditorView::setSceneRect));
+			, static_cast<void (EditorView::*)(const QRectF &)>(&EditorView::setSceneRect));
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setResizeAnchor(QGraphicsView::AnchorUnderMouse);

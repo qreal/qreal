@@ -34,12 +34,12 @@ class ROBOTS_GENERATOR_EXPORT MasterGeneratorBase : public QObject, public Templ
 	Q_OBJECT
 
 public:
-	MasterGeneratorBase(qrRepo::RepoApi const &repo
+	MasterGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const utils::ParserErrorReporter &parserErrorReporter
-			, qReal::Id const &diagramId);
+			, const qReal::Id &diagramId);
 
 	void setProjectDir(QFileInfo const &fileInfo);
 
@@ -49,7 +49,7 @@ public:
 
 	/// Starts code generation process. Returns path to file with generated code
 	/// if it was successfull and an empty string otherwise.
-	virtual QString generate(QString const &indentString);
+	virtual QString generate(const QString &indentString);
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer() = 0;
@@ -68,11 +68,11 @@ protected:
 	virtual void processGeneratedCode(QString &generatedCode);
 	virtual void afterGeneration();
 
-	void outputCode(QString const &path, QString const &code);
+	void outputCode(const QString &path, const QString &code);
 
-	qrRepo::RepoApi const &mRepo;
+	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
-	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	qrtext::LanguageToolboxInterface &mTextLanguage;
 	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;

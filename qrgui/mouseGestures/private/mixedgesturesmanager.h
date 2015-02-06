@@ -12,7 +12,7 @@ public:
 	MixedGesturesManager();
 	~MixedGesturesManager();
 
-	qreal getMaxDistance(QString const &);
+	qreal getMaxDistance(const QString &);
 	bool isMultistroke();
 	qreal getDistance(QPair<qreal *, qreal *> const &key1, QPair<qreal *, qreal *> const &key2);
 	QPair<qreal *, qreal *> getKey(PathVector const &path);

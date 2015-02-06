@@ -86,9 +86,9 @@ private:
 
 	QRegion visualRegionForSelection(const QItemSelection &selection ) const;
 
-	Element *item(QPersistentModelIndex const &index) const;
-	void setItem(QPersistentModelIndex const &index, Element *item);
-	void removeItem(QPersistentModelIndex const &index);
+	Element *item(const QPersistentModelIndex &index) const;
+	void setItem(const QPersistentModelIndex &index, Element *item);
+	void removeItem(const QPersistentModelIndex &index);
 
 	void clearItems();
 };

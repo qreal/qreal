@@ -18,7 +18,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT CommonRobotModel : public RobotModelInterfa
 	Q_OBJECT
 
 public:
-	CommonRobotModel(QString const &kitId, QString const &robotId);
+	CommonRobotModel(const QString &kitId, const QString &robotId);
 	~CommonRobotModel() override;
 
 	QString robotId() const;
@@ -47,9 +47,9 @@ public:
 
 	QList<PortInfo> configurablePorts() const override;
 
-	QList<DeviceInfo> allowedDevices(PortInfo const &port) const final;
+	QList<DeviceInfo> allowedDevices(const PortInfo &port) const final;
 
-	void configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo) final;
+	void configureDevice(const PortInfo &port, const DeviceInfo &deviceInfo) final;
 
 	void applyConfiguration() final;
 
@@ -70,7 +70,7 @@ public slots:
 
 protected:
 	/// Adds to a model list of devices that can be connected to given port.
-	void addAllowedConnection(PortInfo const &port, QList<DeviceInfo> const &devices);
+	void addAllowedConnection(const PortInfo &port, QList<DeviceInfo> const &devices);
 
 	/// Configuration that can be changed by descendants to register their devices.
 	ConfigurationInterface &mutableConfiguration();
@@ -89,7 +89,7 @@ private:
 	/// itself by allowedDevices() method. Implementation must not take ownership on created devices, it will be taken
 	/// automaticly later.
 	/// @todo: see what`s with ownership
-	virtual robotParts::Device *createDevice(PortInfo const &port, DeviceInfo const &deviceInfo);
+	virtual robotParts::Device *createDevice(const PortInfo &port, const DeviceInfo &deviceInfo);
 
 	/// Shows which types of devices can be connected to which ports.
 	/// @todo Add a notion of direction.
@@ -108,8 +108,8 @@ private:
 	utils::RealTimeline mTimeline;
 
 	/// Id of a kit in which model is defined.
-	QString const mKitId;
-	QString const mRobotId;
+	const QString mKitId;
+	const QString mRobotId;
 };
 
 }

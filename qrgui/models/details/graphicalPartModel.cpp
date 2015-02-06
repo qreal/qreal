@@ -42,7 +42,7 @@ QVariant GraphicalPartModel::data(QModelIndex const &index, int role) const
 	}
 }
 
-bool GraphicalPartModel::setData(QModelIndex const &index, QVariant const &value, int role)
+bool GraphicalPartModel::setData(QModelIndex const &index, const QVariant &value, int role)
 {
 	if (!index.isValid() || !index.internalPointer()) {
 		return false;
@@ -87,7 +87,7 @@ QModelIndex GraphicalPartModel::index(int row, int column, QModelIndex const &pa
 	}
 
 	if (!parent.isValid()) {
-		return createIndex(row, column, static_cast<void *>(NULL));
+		return createIndex(row, column, static_cast<void *>(nullptr));
 	}
 
 	QModelIndex const grandParent = parent.parent();
@@ -109,8 +109,8 @@ QModelIndex GraphicalPartModel::parent(QModelIndex const &index) const
 	}
 
 	GraphicalPartModelItem const * const item = static_cast<GraphicalPartModelItem const *>(index.internalPointer());
-	int const row = mIdPositions[item->id()];
-	return createIndex(row, 0, static_cast<void *>(NULL));
+	const int row = mIdPositions[item->id()];
+	return createIndex(row, 0, static_cast<void *>(nullptr));
 }
 
 bool GraphicalPartModel::removeRows(int row, int count, QModelIndex const &parent)
@@ -142,19 +142,19 @@ bool GraphicalPartModel::removeRows(int row, int count, QModelIndex const &paren
 	return true;
 }
 
-QModelIndex GraphicalPartModel::addGraphicalPart(Id const &element, int index)
+QModelIndex GraphicalPartModel::addGraphicalPart(const Id &element, int index)
 {
 	return addGraphicalPart(element, index, true);
 }
 
-QModelIndex GraphicalPartModel::findIndex(Id const &element, int index) const
+QModelIndex GraphicalPartModel::findIndex(const Id &element, int index) const
 {
 	if (!mIdPositions.contains(element)) {
 		return QModelIndex();
 	}
 
-	int const parentRow = mIdPositions.value(element);
-	QModelIndex const parent = createIndex(parentRow, 0, static_cast<void *>(NULL));
+	const int parentRow = mIdPositions.value(element);
+	QModelIndex const parent = createIndex(parentRow, 0, static_cast<void *>(nullptr));
 	int partRow = 0;
 	foreach (modelsImplementation::GraphicalPartModelItem const * const item, mItems[parentRow]) {
 		if (item->index() == index) {
@@ -176,7 +176,7 @@ void GraphicalPartModel::rowsAboutToBeRemovedInGraphicalModel(QModelIndex const 
 	for (int row = start; row <= end; ++row) {
 		QModelIndex const current = mGraphicalModel.index(row, 0, parent);
 		if (current.isValid()) {
-			Id const graphicalId = current.data(roles::idRole).value<Id>();
+			const Id graphicalId = current.data(roles::idRole).value<Id>();
 			if (!mIdPositions.contains(graphicalId)) {
 				return;
 			}
@@ -194,26 +194,26 @@ void GraphicalPartModel::clear()
 	}
 }
 
-void GraphicalPartModel::load(Id const &parent)
+void GraphicalPartModel::load(const Id &parent)
 {
 	loadElement(parent);
-	foreach (Id const &child, mRepoApi.children(parent)) {
+	foreach (const Id &child, mRepoApi.children(parent)) {
 		if (mRepoApi.isGraphicalElement(child)) {
 			load(child);
 		}
 	}
 }
 
-void GraphicalPartModel::loadElement(Id const &id)
+void GraphicalPartModel::loadElement(const Id &id)
 {
 	foreach (int partIndex, mRepoApi.graphicalParts(id)) {
 		addGraphicalPart(id, partIndex, false);
 	}
 }
 
-QModelIndex GraphicalPartModel::addGraphicalPart(Id const &element, int index, bool addToRepo)
+QModelIndex GraphicalPartModel::addGraphicalPart(const Id &element, int index, bool addToRepo)
 {
-	int const parentRow = mIdPositions.contains(element) ? mIdPositions[element] : mItems.size();
+	const int parentRow = mIdPositions.contains(element) ? mIdPositions[element] : mItems.size();
 	if (!mIdPositions.contains(element)) {
 		beginInsertRows(QModelIndex(), parentRow, parentRow);
 		mIdPositions.insert(element, parentRow);
@@ -222,7 +222,7 @@ QModelIndex GraphicalPartModel::addGraphicalPart(Id const &element, int index, b
 	}
 
 	QModelIndex const parentIndex = this->index(parentRow, 0, QModelIndex());
-	int const row = mItems[parentRow].size();
+	const int row = mItems[parentRow].size();
 
 	beginInsertRows(parentIndex, row, row);
 	mItems[parentRow].append(new modelsImplementation::GraphicalPartModelItem(element, index));

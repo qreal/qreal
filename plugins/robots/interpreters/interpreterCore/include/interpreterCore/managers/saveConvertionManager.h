@@ -22,7 +22,7 @@ private:
 	/// Returns a converter that apppends quotes to text blocks (like PrintText or TrikSay).
 	static qReal::ProjectConverter from300Beta2to300rc1Converter();
 
-	static bool isRobotsDiagram(qReal::Id const &diagram);
+	static bool isRobotsDiagram(const qReal::Id &diagram);
 	static qReal::IdList elementsOfRobotsDiagrams(qReal::LogicalModelAssistInterface const &logicalApi);
 	static QString editor();
 };

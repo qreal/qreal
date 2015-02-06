@@ -30,7 +30,7 @@ QVariant LuaToolbox::interpret(QSharedPointer<Node> const &root)
 	return result;
 }
 
-void LuaToolbox::interpret(qReal::Id const &id, const QString &propertyName, const QString &code)
+void LuaToolbox::interpret(const qReal::Id &id, const QString &propertyName, const QString &code)
 {
 	interpret<int>(id, propertyName, code);
 }
@@ -40,7 +40,7 @@ void LuaToolbox::interpret(const QString &code)
 	interpret<int>(qReal::Id(), "", code);
 }
 
-QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, const QString &propertyName
+QSharedPointer<Node> const &LuaToolbox::parse(const qReal::Id &id, const QString &propertyName
 		, const QString &code)
 {
 	mErrors.clear();
@@ -74,7 +74,7 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, const QString
 	return mAstRoots[id][propertyName];
 }
 
-QSharedPointer<Node> LuaToolbox::ast(qReal::Id const &id, const QString &propertyName) const
+QSharedPointer<Node> LuaToolbox::ast(const qReal::Id &id, const QString &propertyName) const
 {
 	return mAstRoots[id][propertyName];
 }
@@ -119,12 +119,12 @@ QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> LuaToolbox::v
 	return mAnalyzer->variableTypes();
 }
 
-QStringList const &LuaToolbox::specialIdentifiers() const
+const QStringList &LuaToolbox::specialIdentifiers() const
 {
 	return mSpecialIdentifiers;
 }
 
-QStringList const &LuaToolbox::specialConstants() const
+const QStringList &LuaToolbox::specialConstants() const
 {
 	return mSpecialConstants;
 }
@@ -149,7 +149,7 @@ QVariant LuaToolbox::value(const QString &identifier) const
 	return mInterpreter->value(identifier);
 }
 
-void LuaToolbox::setVariableValue(const QString &name, const QString &initCode, QVariant const &value)
+void LuaToolbox::setVariableValue(const QString &name, const QString &initCode, const QVariant &value)
 {
 	if (!mInterpreter->identifiers().contains(name)) {
 		parse(qReal::Id(), "", initCode);

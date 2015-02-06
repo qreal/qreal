@@ -15,7 +15,7 @@
 
 using namespace qReal;
 
-int const maxLogSize = 10 * 1024 * 1024;  // 10 MB
+const int maxLogSize = 10 * 1024 * 1024;  // 10 MB
 
 void clearConfig()
 {
@@ -23,7 +23,7 @@ void clearConfig()
 	SettingsManager::instance()->saveData();
 }
 
-void loadTranslators(QString const &locale)
+void loadTranslators(const QString &locale)
 {
 	QDir translationsDirectory(QApplication::applicationDirPath() + "/translations/" + locale);
 	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
@@ -43,8 +43,8 @@ void setDefaultLocale(bool localizationDisabled)
 		return;
 	}
 
-	QString const localeInSettings = SettingsManager::value("systemLocale").toString();
-	QString const locale = localeInSettings.isEmpty() ? QLocale().name().left(2) : localeInSettings;
+	const QString localeInSettings = SettingsManager::value("systemLocale").toString();
+	const QString locale = localeInSettings.isEmpty() ? QLocale().name().left(2) : localeInSettings;
 	if (!locale.isEmpty()) {
 		QLocale::setDefault(QLocale(locale));
 		loadTranslators(locale);
@@ -79,13 +79,13 @@ int main(int argc, char *argv[])
 			clearConfig();
 			return 0;
 		} else {
-			int const setIndex = app.arguments().indexOf("--config");
+			const int setIndex = app.arguments().indexOf("--config");
 			if (setIndex > -1) {
-				QString const settingsFileName = app.arguments().at(setIndex + 1);
+				const QString settingsFileName = app.arguments().at(setIndex + 1);
 				SettingsManager::instance()->loadSettings(settingsFileName);
 			}
 
-			for (QString const &argument : app.arguments()) {
+			for (const QString &argument : app.arguments()) {
 				if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
 					fileToOpen = argument;
 					break;

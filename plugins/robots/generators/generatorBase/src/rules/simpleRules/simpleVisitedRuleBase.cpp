@@ -3,7 +3,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SimpleVisitedRuleBase::SimpleVisitedRuleBase(SemanticTree *tree, Id const &id
+SimpleVisitedRuleBase::SimpleVisitedRuleBase(SemanticTree *tree, const Id &id
 		, LinkInfo const &next)
 	: SimpleBlockRuleBase(tree, id, next)
 {

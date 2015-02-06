@@ -12,7 +12,7 @@ class ReshapeEdgeCommand : public EdgeElementCommand, public TrackingEntity
 {
 public:
 	ReshapeEdgeCommand(EdgeElement const *edge);
-	ReshapeEdgeCommand(EditorViewScene const *scene, Id const &id);
+	ReshapeEdgeCommand(EditorViewScene const *scene, const Id &id);
 	virtual ~ReshapeEdgeCommand() {}
 
 	virtual void startTracking();
@@ -26,8 +26,8 @@ protected:
 
 private:
 	void saveConfiguration(QPolygonF &target, Id &src, Id &dst, QPointF &pos, qreal &fromPort, qreal &toPort);
-	void applyConfiguration(QPolygonF const &configuration, Id const &src
-			, Id const &dst, QPointF const &pos, qreal const &fromPort, qreal const &toPort);
+	void applyConfiguration(QPolygonF const &configuration, const Id &src
+			, const Id &dst, const QPointF &pos, qreal const &fromPort, qreal const &toPort);
 
 	QPolygonF mOldConfiguration;
 	QPolygonF mNewConfiguration;

@@ -27,7 +27,7 @@ private:
 	void displayCannotConvertError();
 	void displayTooOldSaveError(Version const &saveVersion);
 
-	void showError(QString const &errorMessage);
+	void showError(const QString &errorMessage);
 
 	MainWindow &mMainWindow;
 };

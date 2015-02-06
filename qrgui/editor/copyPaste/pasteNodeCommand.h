@@ -13,7 +13,7 @@ class PasteNodeCommand : public PasteCommand
 public:
 	PasteNodeCommand(EditorViewScene *scene
 			, NodeData const &data
-			, QPointF const &offset
+			, const QPointF &offset
 			, bool isGraphicalCopy
 			, QHash<Id, Id> *copiedIds);
 	virtual ~PasteNodeCommand() {}

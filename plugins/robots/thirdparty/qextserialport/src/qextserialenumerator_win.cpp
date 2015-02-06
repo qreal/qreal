@@ -133,10 +133,10 @@ static QString getRegKeyValue(HKEY key, LPCTSTR property)
 {
     DWORD size = 0;
     DWORD type;
-    ::RegQueryValueEx(key, property, NULL, NULL, NULL, &size);
+    ::RegQueryValueEx(key, property, nullptr, nullptr, nullptr, &size);
     BYTE *buff = new BYTE[size];
     QString result;
-    if (::RegQueryValueEx(key, property, NULL, &type, buff, &size) == ERROR_SUCCESS)
+    if (::RegQueryValueEx(key, property, nullptr, &type, buff, &size) == ERROR_SUCCESS)
         result = TCHARToQString(buff);
     ::RegCloseKey(key);
     delete [] buff;
@@ -157,9 +157,9 @@ static QString getRegKeyValue(HKEY key, LPCTSTR property)
 static QString getDeviceProperty(HDEVINFO devInfo, PSP_DEVINFO_DATA devData, DWORD property)
 {
     DWORD buffSize = 0;
-    ::SetupDiGetDeviceRegistryProperty(devInfo, devData, property, NULL, NULL, 0, &buffSize);
+    ::SetupDiGetDeviceRegistryProperty(devInfo, devData, property, nullptr, nullptr, 0, &buffSize);
     BYTE *buff = new BYTE[buffSize];
-    ::SetupDiGetDeviceRegistryProperty(devInfo, devData, property, NULL, buff, buffSize, NULL);
+    ::SetupDiGetDeviceRegistryProperty(devInfo, devData, property, nullptr, buff, buffSize, nullptr);
     QString result = TCHARToQString(buff);
     delete [] buff;
     return result;
@@ -194,7 +194,7 @@ static bool getDeviceDetailsWin(QextPortInfo *portInfo, HDEVINFO devInfo, PSP_DE
 static void enumerateDevicesWin(const GUID &guid, QList<QextPortInfo> *infoList)
 {
     HDEVINFO devInfo;
-    if ((devInfo = ::SetupDiGetClassDevs(&guid, NULL, NULL, DIGCF_PRESENT)) != INVALID_HANDLE_VALUE) {
+    if ((devInfo = ::SetupDiGetClassDevs(&guid, nullptr, nullptr, DIGCF_PRESENT)) != INVALID_HANDLE_VALUE) {
         SP_DEVINFO_DATA devInfoData;
         devInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
         for(int i = 0; ::SetupDiEnumDeviceInfo(devInfo, i, &devInfoData); i++) {
@@ -256,7 +256,7 @@ bool QextSerialEnumeratorPrivate::setUpNotifications_sys(bool setup)
     dbh.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
     // dbh.dbcc_classguid = GUID_DEVCLASS_PORTS; //Ignored in such case
     DWORD flags = DEVICE_NOTIFY_WINDOW_HANDLE|DEVICE_NOTIFY_ALL_INTERFACE_CLASSES;
-    if (::RegisterDeviceNotification((HWND)notificationWidget->winId(), &dbh, flags) == NULL) {
+    if (::RegisterDeviceNotification((HWND)notificationWidget->winId(), &dbh, flags) == nullptr) {
         QESP_WARNING() << "RegisterDeviceNotification failed:" << GetLastError();
         return false;
     }
@@ -293,7 +293,7 @@ bool QextSerialEnumeratorPrivate::matchAndDispatchChangedDevice(const QString &d
     bool rv = false;
     DWORD dwFlag = (DBT_DEVICEARRIVAL == wParam) ? DIGCF_PRESENT : DIGCF_ALLCLASSES;
     HDEVINFO devInfo;
-    if ((devInfo = SetupDiGetClassDevs(&guid,NULL,NULL,dwFlag)) != INVALID_HANDLE_VALUE) {
+    if ((devInfo = SetupDiGetClassDevs(&guid,nullptr,nullptr,dwFlag)) != INVALID_HANDLE_VALUE) {
         SP_DEVINFO_DATA spDevInfoData;
         spDevInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
         for(int i=0; SetupDiEnumDeviceInfo(devInfo, i, &spDevInfoData); i++) {

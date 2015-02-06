@@ -34,7 +34,7 @@ const int standartReductCoeff = 3;
 
 EdgeElement::EdgeElement(
 		ElementImpl *impl
-		, Id const &id
+		, const Id &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
@@ -256,7 +256,7 @@ QPainterPath EdgeElement::shape() const
 
 	path = ps.createStroke(path);
 
-	foreach (QPointF const &point, mLine) {
+	foreach (const QPointF &point, mLine) {
 		path.addRect(QRectF(point - QPointF(stripeWidth / 2, stripeWidth / 2)
 				, QSizeF(stripeWidth, stripeWidth)).adjusted(1, 1, -1, -1));
 	}
@@ -436,7 +436,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 	mIsLoop = true;
 }
 
-QPointF EdgeElement::boundingRectIndent(QPointF const &point, EdgeElement::NodeSide direction)
+QPointF EdgeElement::boundingRectIndent(const QPointF &point, EdgeElement::NodeSide direction)
 {
 	QPointF newPoint;
 	QRectF bounds = mSrc->boundingRect();
@@ -509,7 +509,7 @@ bool EdgeElement::initPossibleEdges()
 
 		QStringList fromElements;
 		QStringList toElements;
-		foreach (QString const &element, elements) {
+		foreach (const QString &element, elements) {
 			if (mGraphicalAssistApi.editorManagerInterface().portTypes(Id(editor, diagram, element))
 					.contains(pEdge.first.first)) {
 				fromElements << element;
@@ -520,8 +520,8 @@ bool EdgeElement::initPossibleEdges()
 			}
 		}
 
-		foreach (QString const &fromElement, fromElements) {
-			foreach (QString const &toElement, toElements) {
+		foreach (const QString &fromElement, fromElements) {
+			foreach (const QString &toElement, toElements) {
 				QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, fromElement),	Id(editor, diagram, toElement));
 				PossibleEdge possibleEdge(nodes, edge);
 				mPossibleEdges.push_back(possibleEdge);
@@ -605,11 +605,11 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 // NOTE: using don`t forget about possible nodeElement`s overlaps (different Z-value)
 // connecting to the innermost node at the point
-NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
+NodeElement *EdgeElement::getNodeAt(const QPointF &position, bool isStart)
 {
 	QPainterPath circlePath;
-	int const searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
-	QPointF const positionInSceneCoordinates = mapToScene(position);
+	const int searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
+	const QPointF positionInSceneCoordinates = mapToScene(position);
 	circlePath.addEllipse(positionInSceneCoordinates, searchAreaRadius, searchAreaRadius);
 	QList<QGraphicsItem*> const items = scene()->items(circlePath);
 
@@ -620,7 +620,7 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	for (QGraphicsItem * const item : items) {
 		NodeElement * const currentNode = dynamic_cast<NodeElement *>(item);
 		if (currentNode) {
-			QPointF const nearestPortPoint = currentNode->closestPortPoint(positionInSceneCoordinates
+			const QPointF nearestPortPoint = currentNode->closestPortPoint(positionInSceneCoordinates
 					, isStart ? fromPortTypes() : toPortTypes());
 			qreal const currentDistance = mathUtils::Geometry::distance(positionInSceneCoordinates, nearestPortPoint);
 			if (currentDistance < minimalDistance) {
@@ -651,7 +651,7 @@ NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, No
 	return nullptr;
 }
 
-QList<ContextMenuAction*> EdgeElement::contextMenuActions(QPointF const &pos)
+QList<ContextMenuAction*> EdgeElement::contextMenuActions(const QPointF &pos)
 {
 	QList<ContextMenuAction*> result;
 
@@ -685,7 +685,7 @@ bool EdgeElement::canConnect(NodeElement const * const node, bool from) const
 
 void EdgeElement::reverse()
 {
-	int const length = mLine.size();
+	const int length = mLine.size();
 	for (int i = 0; i < length / 2; ++i) {
 		qSwap(mLine[i], mLine[length - 1 - i]);
 	}
@@ -747,7 +747,7 @@ void EdgeElement::breakPointUnpressed()
 	mBreakPointPressed = false;
 }
 
-void EdgeElement::breakPointHandler(QPointF const &pos)
+void EdgeElement::breakPointHandler(const QPointF &pos)
 {
 	mBreakPointPressed = true;
 	if (mLine.startsWith(pos.toPoint())) {
@@ -774,7 +774,7 @@ EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart) const
 	}
 
 	QPointF pos = node->portPos(isStart ? mPortFrom : mPortTo);
-	QRectF const bounds = node->contentsRect();
+	const QRectF bounds = node->contentsRect();
 
 	// divide bounding rectangle with it's diagonals, then determine in which part the port lies
 	bool isTop = pos.y() < bounds.height() / bounds.width() * pos.x();
@@ -932,12 +932,12 @@ QStringList EdgeElement::toPortTypes() const
 	return mElementImpl->toPortTypes();
 }
 
-void EdgeElement::placeStartTo(QPointF const &place)
+void EdgeElement::placeStartTo(const QPointF &place)
 {
 	mLine[0] = place;
 }
 
-void EdgeElement::placeEndTo(QPointF const &place)
+void EdgeElement::placeEndTo(const QPointF &place)
 {
 	prepareGeometryChange();
 	mLine[mLine.size() - 1] = place;
@@ -1010,7 +1010,7 @@ EdgeData& EdgeElement::data()
 	mData.shapeType = mShapeType;
 
 	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
-	for (QString const &property : properties.keys()) {
+	for (const QString &property : properties.keys()) {
 		if (property != "from" && property != "to") {
 			mData.logicalProperties[property] = properties[property];
 		}
@@ -1019,7 +1019,7 @@ EdgeData& EdgeElement::data()
 	return mData;
 }
 
-QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &value)
+QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch (change) {
 	case ItemPositionHasChanged:
@@ -1100,7 +1100,7 @@ void EdgeElement::setPos(qreal x, qreal y)
 	setPos(QPointF(x, y));
 }
 
-void EdgeElement::setPos(QPointF const &pos)
+void EdgeElement::setPos(const QPointF &pos)
 {
 	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
 		Element::setPos(QPointF());

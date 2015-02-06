@@ -14,7 +14,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor);
+		Diagram(const qReal::Id &id, qrRepo::LogicalRepoApi *api, Editor *editor);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -25,25 +25,25 @@ namespace qrmc {
 		QString nodeName() const;
 		QString displayedName() const;
 
-		QString generateNamesMap(QString const &lineTemplate) const;
-		QString generateMouseGesturesMap(QString const &lineTemplate) const;
-		QString generatePropertiesMap(QString const &lineTemplate) const;
-		QString generatePropertyDefaultsMap(QString const &lineTemplate) const;
-		QString generatePropertyDisplayedNamesMap(QString const &lineTemplate) const;
-		QString generateParentsMap(QString const &lineTemplate) const;
-		QString generateContainers(QString const &lineTemplate) const;
-		QString generateReferenceProperties(QString const &lineTemplate) const;
-		QString generateConnections(QString const &lineTemplate) const;
-		QString generateUsages(QString const &lineTemplate) const;
-		QString generateFactory(QString const &lineTemplate) const;
-		QString generateIsNodeOrEdge(QString const &lineTemplate) const;
-		QString generateEnums(QString const &lineTemplate) const;
-		QString generatePossibleEdges(QString const &lineTemplate) const;
+		QString generateNamesMap(const QString &lineTemplate) const;
+		QString generateMouseGesturesMap(const QString &lineTemplate) const;
+		QString generatePropertiesMap(const QString &lineTemplate) const;
+		QString generatePropertyDefaultsMap(const QString &lineTemplate) const;
+		QString generatePropertyDisplayedNamesMap(const QString &lineTemplate) const;
+		QString generateParentsMap(const QString &lineTemplate) const;
+		QString generateContainers(const QString &lineTemplate) const;
+		QString generateReferenceProperties(const QString &lineTemplate) const;
+		QString generateConnections(const QString &lineTemplate) const;
+		QString generateUsages(const QString &lineTemplate) const;
+		QString generateFactory(const QString &lineTemplate) const;
+		QString generateIsNodeOrEdge(const QString &lineTemplate) const;
+		QString generateEnums(const QString &lineTemplate) const;
+		QString generatePossibleEdges(const QString &lineTemplate) const;
 
-		QString generateNodeClasses(QString const &nodeTemplate) const;
-		QString generateEdgeClasses(QString const &edgeTemplate) const;
+		QString generateNodeClasses(const QString &nodeTemplate) const;
+		QString generateEdgeClasses(const QString &edgeTemplate) const;
 
-		QString generateResourceFile(QString const &resourceTemplate) const;
+		QString generateResourceFile(const QString &resourceTemplate) const;
 
 		void print();
 
@@ -71,7 +71,7 @@ namespace qrmc {
 		class IsNodeOrEdgeGenerator;
 		class EnumsGenerator;
 		class PossibleEdgesGenerator;
-		QString generateListMethod(QString const &lineTemplate, ListMethodGenerator const &generator) const;
+		QString generateListMethod(const QString &lineTemplate, ListMethodGenerator const &generator) const;
 
 		class MapMethodGenerator;
 		class NamesGenerator;
@@ -83,6 +83,6 @@ namespace qrmc {
 		class NodesGenerator;
 		class EdgesGenerator;
 		class ResourceGenerator;
-		QString generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const;
+		QString generateMapMethod(const QString& lineTemplate, MapMethodGenerator const &generator) const;
 	};
 }

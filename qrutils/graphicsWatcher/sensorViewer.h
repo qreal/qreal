@@ -22,7 +22,7 @@ public:
 	~SensorViewer();
 
 	/// @note All intervals in ms
-	void configureUserOptions(int const &fpsDelay, int const &autoScaleDelay, int const &textInfoUpdateDelay);
+	void configureUserOptions(const int &fpsDelay, const int &autoScaleDelay, const int &textInfoUpdateDelay);
 
 	void resizeEvent(QResizeEvent *event = 0);
 
@@ -66,9 +66,9 @@ private:
 	/// Update interval of current value
 	int mUpdateTextInfoInterval;
 	/// Shift in pixels each frame
-	static int const stepSize = 2;
+	static const int stepSize = 2;
 	/// Zoom coefficent
-	static int const zoomRate = 2;
+	static const int zoomRate = 2;
 
 	int mScaleCoefficient;
 	int mAutoScaleTimer;

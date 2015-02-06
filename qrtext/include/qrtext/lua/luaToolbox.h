@@ -39,7 +39,7 @@ public:
 
 	~LuaToolbox() override;
 
-	void interpret(qReal::Id const &id, const QString &propertyName, const QString &code) override;
+	void interpret(const qReal::Id &id, const QString &propertyName, const QString &code) override;
 
 	void interpret(const QString &code) override;
 
@@ -47,7 +47,7 @@ public:
 	/// Reintroduce this method in a namespace of this class, since otherwise C++ lookup will not find it without full
 	/// qualification.
 	template<typename T>
-	T interpret(qReal::Id const &id, const QString &propertyName, const QString &code)
+	T interpret(const qReal::Id &id, const QString &propertyName, const QString &code)
 	{
 		return LanguageToolboxInterface::interpret<T>(id, propertyName, code);
 	}
@@ -61,11 +61,11 @@ public:
 		return LanguageToolboxInterface::interpret<T>(code);
 	}
 
-	const QSharedPointer<core::ast::Node> &parse(qReal::Id const &id
+	const QSharedPointer<core::ast::Node> &parse(const qReal::Id &id
 			, const QString &propertyName
 			, const QString &code) override;
 
-	QSharedPointer<core::ast::Node> ast(qReal::Id const &id, const QString &propertyName) const override;
+	QSharedPointer<core::ast::Node> ast(const qReal::Id &id, const QString &propertyName) const override;
 
 	QSharedPointer<core::types::TypeExpression> type(const QSharedPointer<core::ast::Node> &expression) const override;
 
@@ -80,9 +80,9 @@ public:
 
 	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const override;
 
-	QStringList const &specialIdentifiers() const override;
+	const QStringList &specialIdentifiers() const override;
 
-	QStringList const &specialConstants() const override;
+	const QStringList &specialConstants() const override;
 
 	/// Reintroduced method from DebuggerInterface, returns value of identifier with given name.
 	template<typename T>
@@ -111,7 +111,7 @@ private:
 	QVariant interpret(const QSharedPointer<core::ast::Node> &root) override;
 	QVariant value(const QString &identifier) const override;
 
-	void setVariableValue(const QString &name, const QString &initCode, QVariant const &value) override;
+	void setVariableValue(const QString &name, const QString &initCode, const QVariant &value) override;
 
 	void reportErrors();
 

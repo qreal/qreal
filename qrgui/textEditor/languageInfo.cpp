@@ -17,7 +17,7 @@ void Languages::registerLanguage(LanguageInfo const &language)
 	mUserDefinedLanguages << language;
 }
 
-LanguageInfo Languages::pickByExtension(QString const &extension)
+LanguageInfo Languages::pickByExtension(const QString &extension)
 {
 	for (LanguageInfo const &language : knownLanguages()) {
 		if (language.extension == extension) {

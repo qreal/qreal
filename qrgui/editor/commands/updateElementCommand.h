@@ -8,8 +8,8 @@ namespace commands {
 class UpdateElementCommand : public ElementCommand
 {
 public:
-	UpdateElementCommand(EditorViewScene const *scene, Id const &id);
-	UpdateElementCommand(EditorView const *view, Id const &id);
+	UpdateElementCommand(EditorViewScene const *scene, const Id &id);
+	UpdateElementCommand(EditorView const *view, const Id &id);
 	virtual ~UpdateElementCommand();
 
 	virtual bool equals(AbstractCommand const &other) const;

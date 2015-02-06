@@ -11,7 +11,7 @@ class Editor;
 class Diagram
 {
 public:
-	Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor);
+	Diagram(const QString &name, const QString &nodeName, const QString &displayedName, Editor *editor);
 	~Diagram();
 	bool init(QDomElement const &diagramElement);
 	bool resolve();

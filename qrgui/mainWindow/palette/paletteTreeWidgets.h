@@ -38,13 +38,13 @@ public:
 	int maxItemsCountInARow() const;
 
 	/// Saves expanded groups into settings
-	void saveConfiguration(QString const &title) const;
+	void saveConfiguration(const QString &title) const;
 
-	void setElementVisible(Id const &metatype, bool visible);
+	void setElementVisible(const Id &metatype, bool visible);
 
 	void setVisibleForAllElements(bool visible);
 
-	void setElementEnabled(Id const &metatype, bool enabled);
+	void setElementEnabled(const Id &metatype, bool enabled);
 
 	void setEnabledForAllElements(bool enabled);
 
@@ -52,8 +52,8 @@ public:
 	void refreshUserPalette();
 
 	/// Sets user palette header and description.
-	void customizeExplosionTitles(QString const &userGroupTitle
-			, QString const &userGroupDescription);
+	void customizeExplosionTitles(const QString &userGroupTitle
+			, const QString &userGroupDescription);
 
 private:
 	void initWidgets();
@@ -62,7 +62,7 @@ private:
 	void initUserTree();
 
 	/// Saves expanded groups into settings
-	void saveConfiguration(PaletteTreeWidget const *tree, QString const &title) const;
+	void saveConfiguration(PaletteTreeWidget const *tree, const QString &title) const;
 
 	EditorManagerInterface *mEditorManager; // Does not take ownership
 	PaletteTree *mParentPalette; // Does not take ownership

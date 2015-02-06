@@ -20,7 +20,7 @@ Key KeyBuilder::getKey(PathVector const &mousePath, int heightSize, int widthSiz
 	qreal right = mousePath.at(0).at(0).x();
 	qreal left = mousePath.at(0).at(0).x();
 	for (PointVector const &path : mousePath) {
-		for (QPointF const &pnt : path) {
+		for (const QPointF &pnt : path) {
 			lower = qMax(lower, pnt.y());
 			upper = qMin(upper, pnt.y());
 			right = qMax(right, pnt.x());
@@ -36,7 +36,7 @@ Key KeyBuilder::getKey(PathVector const &mousePath, int heightSize, int widthSiz
 		SquarePos previous(minPoint, minPoint);
 		SquarePos last;
 
-		for (QPointF const &point : path) {
+		for (const QPointF &point : path) {
 			if ((lower - upper) * maxRelation  < right - left) {
 				last.first = (point.x() - left) * widthSize / (right - left);
 				last.second = 0;
@@ -82,8 +82,8 @@ void KeyBuilder::rasterizeSegment(SquarePos const &pos1, SquarePos const &pos2, 
 	int y = pos1.second;
 	int deltaX = abs(pos2.first - x);
 	int deltaY = abs(pos2.second - y);
-	int const signX = mathUtils::Math::sign(pos2.first - x);
-	int const signY = mathUtils::Math::sign(pos2.second - y);
+	const int signX = mathUtils::Math::sign(pos2.first - x);
+	const int signY = mathUtils::Math::sign(pos2.second - y);
 	bool isChanged = false;
 
 	if (deltaY > deltaX) {

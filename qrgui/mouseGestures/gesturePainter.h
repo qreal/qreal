@@ -14,7 +14,7 @@ namespace gestures {
 class QRGUI_MOUSE_GESTURES_EXPORT GesturePainter : public QIconEngine
 {
 public:
-	GesturePainter(QString const &gesture
+	GesturePainter(const QString &gesture
 			, QColor const &backgroungColor
 			, QColor const &gestureColor
 			, qreal size);

@@ -15,10 +15,10 @@ public:
 	explicit ExpressionsParser(qReal::ErrorReporterInterface *errorReporter);
 	virtual ~ExpressionsParser();
 
-	Number *parseExpression(QString const &stream, int &pos);
-	void parseProcess(QString const &stream, int& pos, qReal::Id const &curId);
-	bool parseConditionHelper(QString const &stream, int &pos);
-	bool parseCondition(QString const &stream, int& pos, qReal::Id const &curId);
+	Number *parseExpression(const QString &stream, int &pos);
+	void parseProcess(const QString &stream, int& pos, const qReal::Id &curId);
+	bool parseConditionHelper(const QString &stream, int &pos);
+	bool parseCondition(const QString &stream, int& pos, const qReal::Id &curId);
 	qReal::ErrorReporterInterface& getErrors();
 	bool hasErrors() const;
 	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
@@ -60,37 +60,37 @@ protected:
 	bool isDelimiter(QChar const &c) const;
 	bool isAssignment(QChar const &c) const;
 
-	bool isHtmlBrTag(QString const &stream, int &pos) const;
+	bool isHtmlBrTag(const QString &stream, int &pos) const;
 
-	QString parseIdentifier(QString const &stream, int &pos);
-	Number *parseNumber(QString const &stream, int &pos);
-	void skip(QString const &stream, int &pos) const;
+	QString parseIdentifier(const QString &stream, int &pos);
+	Number *parseNumber(const QString &stream, int &pos);
+	void skip(const QString &stream, int &pos) const;
 
-	Number *parseTerm(QString const &stream, int &pos);
-	Number *parseMult(QString const &stream, int&pos);
+	Number *parseTerm(const QString &stream, int &pos);
+	Number *parseMult(const QString &stream, int&pos);
 
-	virtual void parseVarPart(QString const &stream, int &pos);
-	void parseCommand(QString const &stream, int &pos);
+	virtual void parseVarPart(const QString &stream, int &pos);
+	void parseCommand(const QString &stream, int &pos);
 
-	bool parseSingleComprasion(QString const &stream, int &pos);
-	bool parseConjunction(QString const &stream, int &pos);
-	bool parseDisjunction(QString const &stream, int &pos);
+	bool parseSingleComprasion(const QString &stream, int &pos);
+	bool parseConjunction(const QString &stream, int &pos);
+	bool parseDisjunction(const QString &stream, int &pos);
 
-	void error(ParseErrorType const &type, QString const &pos = "", QString const &expected = "", QString const &got = "");
-	bool isEndOfStream(QString const &stream, int &pos);
-	bool checkForLetter(QString const &stream, int &pos);
-	bool checkForDigit(QString const &stream, int &pos);
-	bool checkForOpeningBracket(QString const &stream, int &pos);
-	bool checkForClosingBracket(QString const &stream, int &pos);
-	bool checkForColon(QString const &stream, int &pos);
-	bool isEmpty(QString const &stream, int &pos) const;
-	bool checkForEqual(QString const &stream, int pos);
+	void error(ParseErrorType const &type, const QString &pos = "", const QString &expected = "", const QString &got = "");
+	bool isEndOfStream(const QString &stream, int &pos);
+	bool checkForLetter(const QString &stream, int &pos);
+	bool checkForDigit(const QString &stream, int &pos);
+	bool checkForOpeningBracket(const QString &stream, int &pos);
+	bool checkForClosingBracket(const QString &stream, int &pos);
+	bool checkForColon(const QString &stream, int &pos);
+	bool isEmpty(const QString &stream, int &pos) const;
+	bool checkForEqual(const QString &stream, int pos);
 
-	virtual bool checkForUsingReservedVariables(QString const &nameOfVariable);
-	virtual void checkForVariable(QString const &nameOfVariable, int &index);
+	virtual bool checkForUsingReservedVariables(const QString &nameOfVariable);
+	virtual void checkForVariable(const QString &nameOfVariable, int &index);
 
-	bool isFunction(QString const &variable);
-	Number *applyFunction(QString const &variable, Number *value);
+	bool isFunction(const QString &variable);
+	Number *applyFunction(const QString &variable, Number *value);
 
 	QMap<QString, Number *> mVariables;  // Takes ownership
 	bool mHasParseErrors;

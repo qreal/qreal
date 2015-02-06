@@ -43,18 +43,18 @@ public:
 	void stopRobot();
 	void playSound(int timeInMs);
 
-	void setNewMotor(int speed, uint degrees, interpreterBase::robotModel::PortInfo const &port, bool breakMode);
+	void setNewMotor(int speed, uint degrees, const interpreterBase::robotModel::PortInfo &port, bool breakMode);
 
 	SensorsConfiguration &configuration();
 
 	/// Returns a reference to external robot description.
 	robotModel::TwoDRobotModel &info();
 
-	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
-	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
+	int readEncoder(const interpreterBase::robotModel::PortInfo &port) const;
+	void resetEncoder(const interpreterBase::robotModel::PortInfo &port);
 
 	QPointF position() const;
-	void setPosition(QPointF const &newPos);
+	void setPosition(const QPointF &newPos);
 
 	qreal rotation() const;
 	void setRotation(qreal angle);
@@ -68,9 +68,9 @@ public:
 	void onRobotLiftedFromGround();
 	void onRobotReturnedOnGround();
 
-	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port);
+	void setMotorPortOnWheel(WheelEnum wheel, const interpreterBase::robotModel::PortInfo &port);
 
-	QRectF sensorRect(interpreterBase::robotModel::PortInfo const &port, QPointF const sensorPos) const;
+	QRectF sensorRect(const interpreterBase::robotModel::PortInfo &port, const QPointF sensorPos) const;
 
 	/// Returns the color of the trace that robot should draw. Transparent color may also be returned
 	/// (then it is highly recommended not to draw trace at all in preformance thoughts).
@@ -92,11 +92,11 @@ public slots:
 	void nextFragment();
 
 signals:
-	void positionChanged(QPointF const &newPosition);
+	void positionChanged(const QPointF &newPosition);
 	void rotationChanged(qreal newRotation);
 
 	/// Emitted when robot rided himself (moved on motors force, not dragged by cursor or smth) from one point to other.
-	void robotRided(QPointF const &newPosition, qreal const newRotation);
+	void robotRided(const QPointF &newPosition, qreal const newRotation);
 
 	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.
 	void playingSoundChanged(bool playing);
@@ -118,7 +118,7 @@ private:
 	QPainterPath robotBoundingPath() const;
 
 	Motor *initMotor(int radius, int speed, long unsigned int degrees
-			, interpreterBase::robotModel::PortInfo const &port, bool isUsed);
+			, const interpreterBase::robotModel::PortInfo &port, bool isUsed);
 
 	void countNewForces();
 	void countBeep();
@@ -129,7 +129,7 @@ private:
 
 	void nextStep();
 
-	int varySpeed(int const speed) const;
+	int varySpeed(const int speed) const;
 
 	/// Simulated robot motors.
 	/// Has ownership.

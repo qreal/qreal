@@ -52,7 +52,7 @@ qreal Math::gaussianNoise(qreal variance)
 	qreal const mu = 0.5;
 	qreal const var = 0.083; // 1/12
 
-	int const approximationLevel = qReal::SettingsManager::value("approximationLevel", 12).toInt();
+	const int approximationLevel = qReal::SettingsManager::value("approximationLevel", 12).toInt();
 
 	qreal result = 0.0;
 	for (int i = 0; i < approximationLevel; ++i) {

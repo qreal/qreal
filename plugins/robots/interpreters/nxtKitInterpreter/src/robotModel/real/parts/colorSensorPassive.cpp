@@ -2,8 +2,8 @@
 
 using namespace nxtKitInterpreter::robotModel::real::parts;
 
-ColorSensorPassive::ColorSensorPassive(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+ColorSensorPassive::ColorSensorPassive(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::ColorSensorPassive(info, port)
 	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORNONE)

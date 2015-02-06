@@ -10,7 +10,7 @@ namespace semantics {
 class IfWithBothUnvisitedRule : public IfBlockRuleBase
 {
 public:
-	IfWithBothUnvisitedRule(SemanticTree *tree, qReal::Id const &id
+	IfWithBothUnvisitedRule(SemanticTree *tree, const qReal::Id &id
 			, LinkInfo const &thenLink, LinkInfo const &elseLink);
 
 	virtual bool apply();

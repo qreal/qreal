@@ -23,8 +23,8 @@ class COMMON_TWO_D_MODEL_EXPORT Marker : public interpreterBase::robotModel::rob
 	Q_CLASSINFO("friendlyName", tr("Marker"))
 
 public:
-	Marker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Marker(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	/// Moves the marker of the 2D model robot down to the floor.

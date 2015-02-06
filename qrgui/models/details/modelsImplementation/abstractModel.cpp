@@ -71,7 +71,7 @@ QModelIndex AbstractModel::parent(const QModelIndex &index) const
 	if (index.isValid()) {
 		AbstractModelItem *item = static_cast<AbstractModelItem *>(index.internalPointer());
 		AbstractModelItem *parentItem = item->parent();
-		if (parentItem == mRootItem || parentItem == NULL) {
+		if (parentItem == mRootItem || parentItem == nullptr) {
 			return QModelIndex();
 		} else {
 			return createIndex(parentItem->row(), 0, parentItem);
@@ -100,7 +100,7 @@ QModelIndex AbstractModel::index(AbstractModelItem const * const item) const
 	return result;
 }
 
-QString AbstractModel::findPropertyName(Id const &id, int const role) const
+QString AbstractModel::findPropertyName(const Id &id, const int role) const
 {
 	// In case of a property described in element itself (in metamodel),
 	// role is simply an index of a property in a list of properties.
@@ -122,12 +122,12 @@ QStringList AbstractModel::mimeTypes() const
 	return types;
 }
 
-EditorManagerInterface const &AbstractModel::editorManagerInterface() const
+const EditorManagerInterface &AbstractModel::editorManagerInterface() const
 {
 	return mEditorManagerInterface;
 }
 
-QModelIndex AbstractModel::indexById(Id const &id) const
+QModelIndex AbstractModel::indexById(const Id &id) const
 {
 	if (mModelItems.keys().contains(id)) {
 		return index(mModelItems.find(id).value());
@@ -190,7 +190,7 @@ void AbstractModel::reinit()
 	cleanupTree(mRootItem);
 	mModelItems.clear();
 	delete mRootItem;
-	mRootItem = createModelItem(Id::rootId(), NULL);
+	mRootItem = createModelItem(Id::rootId(), nullptr);
 	beginResetModel();
 	endResetModel();
 	init();

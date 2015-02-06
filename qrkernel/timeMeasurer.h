@@ -13,7 +13,7 @@ class QRKERNEL_EXPORT TimeMeasurer
 public:
 	/// Constructor.
 	/// @param methodName A name of a method or part of program to be measured.
-	explicit TimeMeasurer(QString const &methodName);
+	explicit TimeMeasurer(const QString &methodName);
 
 	/// Destructor. Calling it indicates end of measured interval.
 	~TimeMeasurer();

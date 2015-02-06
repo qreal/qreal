@@ -22,7 +22,7 @@
 using namespace nxtKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-NxtRobotModelBase::NxtRobotModelBase(QString const &kitId, QString const &robotId)
+NxtRobotModelBase::NxtRobotModelBase(const QString &kitId, const QString &robotId)
 	: CommonRobotModel(kitId, robotId)
 {
 	QList<DeviceInfo> const inputPortConnections = {

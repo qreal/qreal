@@ -11,8 +11,8 @@ class TrikDisplay : public interpreterBase::robotModel::robotParts::Display
 	Q_OBJECT
 
 public:
-	TrikDisplay(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikDisplay(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
 	/// Show happy or sad smile.
 	/// @param sad - if sad is true, then show sad smile.

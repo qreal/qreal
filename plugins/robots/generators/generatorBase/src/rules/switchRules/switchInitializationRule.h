@@ -10,17 +10,17 @@ class SwitchInitializationRule : public SemanticTransformationRule
 {
 public:
 	SwitchInitializationRule(SemanticTree *tree
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QList<LinkInfo> const &branches
-			, qrRepo::RepoApi const &repo);
+			, const qrRepo::RepoApi &repo);
 
 	bool apply() override;
 
-	void addBranch(QVariant const &value, qReal::Id const &id);
+	void addBranch(const QVariant &value, const qReal::Id &id);
 
 private:
 	QList<LinkInfo> const mBranches;
-	qrRepo::RepoApi const &mRepo;
+	const qrRepo::RepoApi &mRepo;
 };
 
 }

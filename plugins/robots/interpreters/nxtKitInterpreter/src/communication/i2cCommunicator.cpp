@@ -15,8 +15,8 @@ I2CCommunicator::I2CCommunicator(utils::robotCommunication::RobotCommunicator &r
 }
 
 void I2CCommunicator::sendI2C(QObject *addressee
-		, QByteArray const &buffer, int const responseSize
-		, interpreterBase::robotModel::PortInfo const &port)
+		, const QByteArray &buffer, const int responseSize
+		, const interpreterBase::robotModel::PortInfo &port)
 {
 	utils::Tracer::debug(utils::Tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
 
@@ -67,11 +67,11 @@ void I2CCommunicator::sendI2C(QObject *addressee
 	}
 }
 
-bool I2CCommunicator::waitForI2CBytes(int bytes, interpreterBase::robotModel::PortInfo const &port)
+bool I2CCommunicator::waitForI2CBytes(int bytes, const interpreterBase::robotModel::PortInfo &port)
 {
 	time_t const startTime = clock();
 	do {
-		int const bytesReady = i2cBytesReady(port);
+		const int bytesReady = i2cBytesReady(port);
 		QThread::msleep(10);
 		if (clock() - startTime > i2cTimeout) {
 			return false;
@@ -82,7 +82,7 @@ bool I2CCommunicator::waitForI2CBytes(int bytes, interpreterBase::robotModel::Po
 	} while (true);
 }
 
-int I2CCommunicator::i2cBytesReady(interpreterBase::robotModel::PortInfo const &port)
+int I2CCommunicator::i2cBytesReady(const interpreterBase::robotModel::PortInfo &port)
 {
 	QByteArray command(5, 0);
 	command[0] = 0x03;
@@ -103,7 +103,7 @@ int I2CCommunicator::i2cBytesReady(interpreterBase::robotModel::PortInfo const &
 	}
 }
 
-char I2CCommunicator::toNxtInputPort(interpreterBase::robotModel::PortInfo const &port)
+char I2CCommunicator::toNxtInputPort(const interpreterBase::robotModel::PortInfo &port)
 {
 	return static_cast<char>(port.name().toInt() - 1);
 }

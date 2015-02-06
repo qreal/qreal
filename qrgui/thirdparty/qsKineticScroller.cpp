@@ -35,7 +35,7 @@
 #include <QtCore/QDebug>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QPanGesture>
-#include <cstddef> // for NULL
+#include <cstddef> // for nullptr
 
 // A number of mouse moves are ignored after a press to differentiate
 // it from a press & drag.
@@ -53,7 +53,7 @@ class QsKineticScrollerImpl
 {
 public:
    QsKineticScrollerImpl()
-	  : scrollArea(NULL)
+	  : scrollArea(nullptr)
 	  , isPressed(false)
 	  , isMoving(false)
 	  , lastMouseYPos(0)

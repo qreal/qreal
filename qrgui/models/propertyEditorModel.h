@@ -15,7 +15,7 @@ class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(qReal::EditorManagerInterface const &editorManagerInterface, QObject *parent = 0);
+	explicit PropertyEditorModel(const qReal::EditorManagerInterface &editorManagerInterface, QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
@@ -40,7 +40,7 @@ public:
 	// Methods for use in delegate, allow to determine where in actual models to put data
 	QModelIndex modelIndex(int row) const;
 	int roleByIndex(int row) const;
-	bool isReference(QModelIndex const &index, QString const &propertyName);
+	bool isReference(QModelIndex const &index, const QString &propertyName);
 
 	const QModelIndex& logicalModelIndex() const;
 	const QModelIndex& graphicalModelIndex() const;
@@ -88,7 +88,7 @@ private:
 
 	QList<Field> mFields;
 
-	qReal::EditorManagerInterface const &mEditorManagerInterface;
+	const qReal::EditorManagerInterface &mEditorManagerInterface;
 
 	bool isValid() const;
 };

@@ -50,7 +50,7 @@ bool ProjectManager::suggestToOpenExisting()
 		return false;
 	}
 
-	QString const fileName = openFileName(tr("Open existing project"));
+	const QString fileName = openFileName(tr("Open existing project"));
 	if (fileName.isEmpty()) {
 		return false;
 	}
@@ -65,7 +65,7 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 
 bool ProjectManager::open(const QString &fileName)
 {
-	QString const dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
+	const QString dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
 			|| (fileName.startsWith("\"") && fileName.endsWith("\""))
 					? fileName.mid(1, fileName.length() - 2)
 					: fileName;
@@ -100,7 +100,7 @@ bool ProjectManager::openProject(const QString &fileName)
 	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
-	bool const someProjectWasOpened = mSomeProjectOpened;
+	const bool someProjectWasOpened = mSomeProjectOpened;
 	if (mSomeProjectOpened) {
 		close();
 	}
@@ -146,7 +146,7 @@ bool ProjectManager::import(const QString &fileName)
 		return false;
 	}
 
-	QString const currentSaveFilePath = saveFilePath();
+	const QString currentSaveFilePath = saveFilePath();
 	if (!open(fileName)) {
 		return open(currentSaveFilePath);
 	}
@@ -190,11 +190,11 @@ QString ProjectManager::missingPluginNames() const
 void ProjectManager::checkNeededPluginsRecursive(const details::ModelsAssistInterface &api
 		, const Id &id, QStringList &result) const
 {
-	EditorManagerInterface const &editorManager = mModels.logicalModelAssistApi().editorManagerInterface();
+	const EditorManagerInterface &editorManager = mModels.logicalModelAssistApi().editorManagerInterface();
 	const IdList loadedEditors = editorManager.editors();
 	const Id currentEditor = Id(id.editor());
 	if (id != Id::rootId() && !loadedEditors.contains(currentEditor)) {
-		QString const missingEditor = id.editor();
+		const QString missingEditor = id.editor();
 		if (!result.contains(missingEditor)) {
 			result.append(missingEditor);
 		}
@@ -217,7 +217,7 @@ bool ProjectManager::checkForUnknownElements()
 	for (const Id &element : allElements) {
 		const bool isElementKnown = mModels.logicalModelAssistApi().editorManagerInterface().hasElement(element.type());
 		if (!isElementKnown) {
-			QString const errorMessage = tr("This project contains unknown element %1 and thus can`t be opened. "\
+			const QString errorMessage = tr("This project contains unknown element %1 and thus can`t be opened. "\
 					"Probably it was created by old or incorrectly working version of QReal.").arg(element.toString());
 			showMessage(tr("Can`t open project file"), errorMessage);
 			return false;
@@ -299,7 +299,7 @@ bool ProjectManager::suggestToSaveAs()
 
 bool ProjectManager::saveAs(const QString &fileName)
 {
-	QString const workingFileName = fileName;
+	const QString workingFileName = fileName;
 	if (workingFileName.isEmpty()) {
 		return false;
 	}

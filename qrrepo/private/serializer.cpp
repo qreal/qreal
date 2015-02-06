@@ -20,7 +20,7 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
-Serializer::Serializer(QString const& saveDirName)
+Serializer::Serializer(const QString& saveDirName)
 	: mWorkingDir(SettingsManager::value("temp").toString())
 	, mWorkingFile(saveDirName)
 {
@@ -32,13 +32,13 @@ void Serializer::clearWorkingDir() const
 	clearDir(mWorkingDir);
 }
 
-void Serializer::removeFromDisk(Id const &id) const
+void Serializer::removeFromDisk(const Id &id) const
 {
 	QDir dir;
 	dir.remove(pathToElement(id));
 }
 
-void Serializer::setWorkingFile(QString const &workingFile)
+void Serializer::setWorkingFile(const QString &workingFile)
 {
 	mWorkingFile = workingFile;
 }
@@ -50,7 +50,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		, "may be Repository of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
 	foreach (Object const * const object, objects) {
-		QString const filePath = createDirectory(object->id(), object->isLogicalObject());
+		const QString filePath = createDirectory(object->id(), object->isLogicalObject());
 
 		QDomDocument doc;
 		QDomElement root = object->serialize(doc);
@@ -73,7 +73,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		previousSave.remove();
 	}
 
-	QString const filePath = fileInfo.absolutePath() + "/" + fileName + ".qrs";
+	const QString filePath = fileInfo.absolutePath() + "/" + fileName + ".qrs";
 	FolderCompressor::compressFolder(compressDir.absolutePath(), filePath);
 
 	// Hiding autosaved files
@@ -95,7 +95,7 @@ void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QStr
 	loadMetaInfo(metaInfo);
 }
 
-void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash)
+void Serializer::loadFromDisk(const QString &currentPath, QHash<qReal::Id, Object*> &objectsHash)
 {
 	QDir dir(currentPath + "/tree");
 	if (dir.cd("logical")) {
@@ -109,7 +109,7 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Objec
 void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
 {
 	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-		QString const path = fileInfo.filePath();
+		const QString path = fileInfo.filePath();
 		if (fileInfo.isDir()) {
 			loadModel(path, objectsHash);
 		} else if (fileInfo.isFile()) {
@@ -133,7 +133,7 @@ void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
 	QDomDocument document;
 	QDomElement root = document.createElement("metaInformation");
 	document.appendChild(root);
-	for (QString const &key : metaInfo.keys()) {
+	for (const QString &key : metaInfo.keys()) {
 		QDomElement element = document.createElement("info");
 		element.setAttribute("key", key);
 		element.setAttribute("type", metaInfo[key].typeName());
@@ -141,7 +141,7 @@ void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
 		root.appendChild(element);
 	}
 
-	QString const filePath = mWorkingDir + "/metaInfo.xml";
+	const QString filePath = mWorkingDir + "/metaInfo.xml";
 	OutFile out(filePath);
 	out() << document.toString(4);
 }
@@ -150,7 +150,7 @@ void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
 {
 	metaInfo.clear();
 
-	QString const filePath = mWorkingDir + "/metaInfo.xml";
+	const QString filePath = mWorkingDir + "/metaInfo.xml";
 	if (!QFile::exists(filePath)) {
 		return;
 	}
@@ -165,7 +165,7 @@ void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
 	}
 }
 
-void Serializer::clearDir(QString const &path)
+void Serializer::clearDir(const QString &path)
 {
 	if (path.isEmpty()) {
 		return;
@@ -186,7 +186,7 @@ void Serializer::clearDir(QString const &path)
 	}
 }
 
-QString Serializer::pathToElement(Id const &id) const
+QString Serializer::pathToElement(const Id &id) const
 {
 	QString dirName = mWorkingDir;
 
@@ -199,12 +199,12 @@ QString Serializer::pathToElement(Id const &id) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(Id const &id, bool logical) const
+QString Serializer::createDirectory(const Id &id, bool logical) const
 {
 	QString dirName = mWorkingDir + "/tree";
 	dirName += logical ? "/logical" : "/graphical";
 
-	QStringList const partsList = id.toString().split('/');
+	const QStringList partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >= 1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
 		dirName += "/" + partsList[i];
@@ -217,7 +217,7 @@ QString Serializer::createDirectory(Id const &id, bool logical) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-void Serializer::decompressFile(QString const &fileName)
+void Serializer::decompressFile(const QString &fileName)
 {
 	FolderCompressor::decompressFolder(fileName, mWorkingDir);
 }

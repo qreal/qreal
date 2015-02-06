@@ -8,7 +8,7 @@
 class Curve : public Path
 {
 public:
-	Curve(QPointF const &start, QPointF const &end, QPointF const &c1);
+	Curve(const QPointF &start, const QPointF &end, const QPointF &c1);
 	Curve(Curve const &other);
 	virtual Item* clone();
 	void  setCXandCY(qreal x, qreal y);
@@ -23,7 +23,7 @@ public:
 	virtual void changeDragState(qreal x, qreal y);
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
 
 private:
 	QPointF mC1;

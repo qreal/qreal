@@ -2,11 +2,11 @@
 
 using namespace trik;
 
-TrikGeneratorCustomizer::TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
+TrikGeneratorCustomizer::TrikGeneratorCustomizer(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, QString const &generatorName)
+		, const QString &generatorName)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
 {
 }

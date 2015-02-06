@@ -12,7 +12,7 @@ using namespace qReal;
 qreal const disabledEffectStrength = 0.9;
 
 Element::Element(ElementImpl *elementImpl
-		, Id const &id
+		, const Id &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
@@ -61,12 +61,12 @@ QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 	return QList<ContextMenuAction*>();
 }
 
-QString Element::logicalProperty(QString const &roleName) const
+QString Element::logicalProperty(const QString &roleName) const
 {
 	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
 }
 
-void Element::setLogicalProperty(QString const &roleName, QString const &value, bool withUndoRedo)
+void Element::setLogicalProperty(const QString &roleName, const QString &value, bool withUndoRedo)
 {
 	commands::AbstractCommand *command = new commands::ChangePropertyCommand(&mLogicalAssistApi
 			, roleName, logicalId(), value);
@@ -127,7 +127,7 @@ bool Element::createChildrenFromMenu() const
 
 void Element::updateEnabledState()
 {
-	bool const enabled = mLogicalAssistApi.editorManagerInterface().elements(
+	const bool enabled = mLogicalAssistApi.editorManagerInterface().elements(
 			Id(mId.editor(), mId.diagram())).contains(mId.type());
 
 	mEnabled = enabled;

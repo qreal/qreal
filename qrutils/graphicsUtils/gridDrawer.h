@@ -10,7 +10,7 @@ class QRUTILS_EXPORT GridDrawer
 {
 public:
 	GridDrawer();
-	void drawGrid(QPainter *painter, QRectF const &rect, int const indexGrid);
+	void drawGrid(QPainter *painter, const QRectF &rect, const int indexGrid);
 };
 
 }

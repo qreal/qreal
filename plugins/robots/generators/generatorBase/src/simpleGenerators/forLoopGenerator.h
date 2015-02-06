@@ -9,9 +9,9 @@ namespace simple {
 class ForLoopGenerator : public BindingGenerator
 {
 public:
-	ForLoopGenerator(qrRepo::RepoApi const &repo
+	ForLoopGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

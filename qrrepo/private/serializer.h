@@ -16,28 +16,28 @@ namespace details {
 class Serializer
 {
 public:
-	Serializer(QString const &saveDirName);
+	Serializer(const QString &saveDirName);
 
 	void clearWorkingDir() const;
-	void setWorkingFile(QString const &workingFile);
+	void setWorkingFile(const QString &workingFile);
 
-	void removeFromDisk(qReal::Id const &id) const;
+	void removeFromDisk(const qReal::Id &id) const;
 	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
-	void decompressFile(QString const &fileName);
+	void decompressFile(const QString &fileName);
 
 private:
-	static void clearDir(QString const &path);
+	static void clearDir(const QString &path);
 
-	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object *> &objectsHash);
+	void loadFromDisk(const QString &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(QDir const &dir, QHash<qReal::Id, Object *> &objectsHash);
 
 	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
 	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;
 
-	QString pathToElement(qReal::Id const &id) const;
-	QString createDirectory(qReal::Id const &id, bool logical) const;
+	QString pathToElement(const qReal::Id &id) const;
+	QString createDirectory(const qReal::Id &id, bool logical) const;
 
 	QString mWorkingDir;
 	QString mWorkingFile;

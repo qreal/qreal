@@ -14,7 +14,7 @@ class WallItem : public LineItem
 	Q_OBJECT
 
 public:
-	WallItem(QPointF const &begin, QPointF const &end);
+	WallItem(const QPointF &begin, const QPointF &end);
 
 	QPointF begin();
 	QPointF end();
@@ -29,7 +29,7 @@ public:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) override;
+	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
 	void deserializePenBrush(QDomElement const &element);
 
 	void onOverlappedWithRobot(bool overlapped = true);
@@ -37,7 +37,7 @@ public:
 	QPainterPath path() const;
 
 signals:
-	void wallDragged(WallItem *item, QPainterPath const &shape, QRectF const &oldPos);
+	void wallDragged(WallItem *item, const QPainterPath &shape, const QRectF &oldPos);
 
 protected:
 	void setPrivateData();

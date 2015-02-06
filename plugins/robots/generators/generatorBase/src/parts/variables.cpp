@@ -12,8 +12,8 @@ using namespace generatorBase;
 using namespace parts;
 using namespace qReal;
 
-Variables::Variables(QString const &pathToTemplates
-		, interpreterBase::robotModel::RobotModelInterface const &robotModel
+Variables::Variables(const QString &pathToTemplates
+		, const interpreterBase::robotModel::RobotModelInterface &robotModel
 		, qrtext::LanguageToolboxInterface &luaToolbox)
 	: TemplateParametrizedEntity(pathToTemplates)
 	, mRobotModel(robotModel)
@@ -24,15 +24,15 @@ Variables::Variables(QString const &pathToTemplates
 QString Variables::generateVariableString() const
 {
 	QString result;
-	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> const variables = mLuaToolbox.variableTypes();
-	QStringList const reservedNames = mLuaToolbox.specialIdentifiers();
+	const QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> variables = mLuaToolbox.variableTypes();
+	const QStringList reservedNames = mLuaToolbox.specialIdentifiers();
 
-	for (QString const &constantName : mLuaToolbox.specialConstants()) {
+	for (const QString &constantName : mLuaToolbox.specialConstants()) {
 		result += QString(constantDeclaration(variables[constantName])).replace("@@NAME@@", constantName)
 				.replace("@@VALUE@@", mLuaToolbox.value<QString>(constantName));
 	}
 
-	for (QString const &curVariable : variables.keys()) {
+	for (const QString &curVariable : variables.keys()) {
 		if (reservedNames.contains(curVariable)) {
 			continue;
 		}
@@ -45,7 +45,7 @@ QString Variables::generateVariableString() const
 	return result;
 }
 
-QString Variables::typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const
+QString Variables::typeExpression(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const
 {
 	if (type->is<qrtext::lua::types::Integer>()) {
 		return readTemplate("types/int.t");
@@ -64,23 +64,23 @@ QString Variables::typeExpression(QSharedPointer<qrtext::core::types::TypeExpres
 	return readTemplate("types/int.t");
 }
 
-QString Variables::constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const
+QString Variables::constantDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const
 {
 	return readTemplate("variables/constantDeclaration.t").replace("@@TYPE@@", typeExpression(type));
 }
 
-QString Variables::variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const
+QString Variables::variableDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const
 {
 	return readTemplate("variables/variableDeclaration.t").replace("@@TYPE@@", typeExpression(type));
 }
 
-QSharedPointer<qrtext::core::types::TypeExpression> Variables::expressionType(QString const &expression) const
+QSharedPointer<qrtext::core::types::TypeExpression> Variables::expressionType(const QString &expression) const
 {
-	QSharedPointer<qrtext::core::ast::Node> const &ast = mLuaToolbox.parse(Id(), QString(), expression);
+	const QSharedPointer<qrtext::core::ast::Node> &ast = mLuaToolbox.parse(Id(), QString(), expression);
 	return mLuaToolbox.type(ast);
 }
 
-void Variables::appendManualDeclaration(QString const &variables)
+void Variables::appendManualDeclaration(const QString &variables)
 {
 	if (!mManualDeclarations.contains(variables) && !variables.isEmpty()) {
 		mManualDeclarations << variables;

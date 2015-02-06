@@ -7,7 +7,7 @@ using namespace utils;
 
 NxtInputDevice::NxtInputDevice(
 		utils::robotCommunication::RobotCommunicator &robotCommunicator
-		, interpreterBase::robotModel::PortInfo const &port
+		, const interpreterBase::robotModel::PortInfo &port
 		, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, enums::sensorMode::SensorModeEnum const &sensorMode)
 	: mRobotCommunicator(robotCommunicator)
@@ -22,14 +22,14 @@ NxtInputDevice::NxtInputDevice(
 			, this, &NxtInputDevice::readingDone);
 }
 
-void NxtInputDevice::readingDone(QObject *addressee, QByteArray const &reading)
+void NxtInputDevice::readingDone(QObject *addressee, const QByteArray &reading)
 {
 	if (addressee == this) {
 		processResponse(reading);
 	}
 }
 
-void NxtInputDevice::processResponse(QByteArray const &reading)
+void NxtInputDevice::processResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
 		mState = idle;
@@ -80,7 +80,7 @@ void NxtInputDevice::configure()
 	send(command, 5);
 }
 
-void NxtInputDevice::send(QByteArray const &buffer, unsigned const responseSize)
+void NxtInputDevice::send(const QByteArray &buffer, unsigned const responseSize)
 {
 	mRobotCommunicator.send(this, buffer, responseSize);
 }

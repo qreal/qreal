@@ -17,13 +17,13 @@ Exploser::Exploser(LogicalModelAssistApi &api)
 {
 }
 
-QMultiMap<Id, Id> Exploser::explosions(Id const &diagram) const
+QMultiMap<Id, Id> Exploser::explosions(const Id &diagram) const
 {
 	QMultiMap<Id, Id> result;
 
-	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
+	const IdList childTypes = mApi.editorManagerInterface().elements(diagram);
 
-	for (Id const &child : childTypes) {
+	for (const Id &child : childTypes) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
 
 		for (Explosion const &explosion : explosions) {
@@ -31,7 +31,7 @@ QMultiMap<Id, Id> Exploser::explosions(Id const &diagram) const
 				continue;
 			}
 
-			Id const targetNodeOrGroup = explosion.target();
+			const Id targetNodeOrGroup = explosion.target();
 			Id target;
 			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
 				target = targetNodeOrGroup;
@@ -40,8 +40,8 @@ QMultiMap<Id, Id> Exploser::explosions(Id const &diagram) const
 				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
 			}
 
-			IdList const allTargets = mApi.logicalRepoApi().logicalElements(target.type());
-			for (Id const &targetInstance : allTargets) {
+			const IdList allTargets = mApi.logicalRepoApi().logicalElements(target.type());
+			for (const Id &targetInstance : allTargets) {
 				result.insertMulti(child, targetInstance);
 			}
 		}
@@ -50,12 +50,12 @@ QMultiMap<Id, Id> Exploser::explosions(Id const &diagram) const
 	return result;
 }
 
-IdList Exploser::elementsWithHardDependencyFrom(Id const &id) const
+IdList Exploser::elementsWithHardDependencyFrom(const Id &id) const
 {
 	IdList result;
-	Id const targetType = id.type();
-	IdList const incomingExplosions = mApi.logicalRepoApi().incomingExplosions(id);
-	foreach (Id const &incoming, incomingExplosions) {
+	const Id targetType = id.type();
+	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(id);
+	foreach (const Id &incoming, incomingExplosions) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
 		foreach (Explosion const &explosion, explosions) {
 			if (explosion.target() == targetType && explosion.requiresImmediateLinkage()) {
@@ -67,16 +67,16 @@ IdList Exploser::elementsWithHardDependencyFrom(Id const &id) const
 	return result;
 }
 
-void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const command)
+void Exploser::handleRemoveCommand(const Id &logicalId, AbstractCommand * const command)
 {
-	Id const outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
+	const Id outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
 	if (!outgoing.isNull()) {
 		command->addPreAction(new ExplosionCommand(mApi, nullptr, logicalId, outgoing, false));
 	}
 
-	Id const targetType = logicalId.type();
-	IdList const incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
-	foreach (Id const &incoming, incomingExplosions) {
+	const Id targetType = logicalId.type();
+	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
+	foreach (const Id &incoming, incomingExplosions) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
 		foreach (Explosion const &explosion, explosions) {
 			if (explosion.target() == targetType && !explosion.requiresImmediateLinkage()) {
@@ -86,13 +86,13 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 	}
 }
 
-AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &source
-		, Id const &targetType, GraphicalModelAssistApi &graphicalApi)
+AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(const Id &source
+		, const Id &targetType, GraphicalModelAssistApi &graphicalApi)
 {
 	AbstractCommand *result = nullptr;
 	Id newElementId;
 	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element())) {
-		QString const friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
+		const QString friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
 		newElementId = Id(targetType, QUuid::createUuid().toString());
 		result = new CreateElementCommand(mApi, graphicalApi, *this, Id::rootId()
 				, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
@@ -108,16 +108,16 @@ AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &s
 	return result;
 }
 
-IdList Exploser::explosionsHierarchy(Id const &oneOfIds) const
+IdList Exploser::explosionsHierarchy(const Id &oneOfIds) const
 {
 	// Infinite cycle may happen here in case of cyclic explosions
-	Id const root = explosionsRoot(oneOfIds);
+	const Id root = explosionsRoot(oneOfIds);
 	IdList hierarchy;
 	explosionsHierarchyPrivate(root, hierarchy);
 	return hierarchy;
 }
 
-Id Exploser::immediateExplosionTarget(Id const &id)
+Id Exploser::immediateExplosionTarget(const Id &id)
 {
 	QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(id.type());
 	if (explosions.size() == 1 && explosions[0].requiresImmediateLinkage()) {
@@ -126,7 +126,7 @@ Id Exploser::immediateExplosionTarget(Id const &id)
 	return Id();
 }
 
-AbstractCommand *Exploser::addExplosionCommand(Id const &source, Id const &target
+AbstractCommand *Exploser::addExplosionCommand(const Id &source, const Id &target
 		, GraphicalModelAssistApi * const graphicalApi)
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, graphicalApi, source, target, true);
@@ -134,19 +134,19 @@ AbstractCommand *Exploser::addExplosionCommand(Id const &source, Id const &targe
 	return result;
 }
 
-AbstractCommand *Exploser::removeExplosionCommand(Id const &source, Id const &target)
+AbstractCommand *Exploser::removeExplosionCommand(const Id &source, const Id &target)
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, nullptr, source, target, false);
 	connectCommand(result);
 	return result;
 }
 
-AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &newNames) const
+AbstractCommand *Exploser::renameCommands(const Id &oneOfIds, const QString &newNames) const
 {
 	DoNothingCommand *result = new DoNothingCommand;
 
-	IdList const idsToRename = explosionsHierarchy(oneOfIds);
-	foreach (Id const &id, idsToRename) {
+	const IdList idsToRename = explosionsHierarchy(oneOfIds);
+	foreach (const Id &id, idsToRename) {
 		result->addPostAction(new RenameCommand(mApi, id, newNames));
 	}
 
@@ -157,11 +157,11 @@ AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &new
 	return result;
 }
 
-void Exploser::explosionsHierarchyPrivate(Id const &currentId, IdList &targetIds) const
+void Exploser::explosionsHierarchyPrivate(const Id &currentId, IdList &targetIds) const
 {
 	targetIds << currentId;
-	IdList const incomingExplosions = mApi.logicalRepoApi().incomingExplosions(currentId);
-	foreach (Id const incoming, incomingExplosions) {
+	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(currentId);
+	foreach (const Id incoming, incomingExplosions) {
 		explosionsHierarchyPrivate(incoming, targetIds);
 	}
 }
@@ -174,7 +174,7 @@ void Exploser::connectCommand(AbstractCommand const *command) const
 	connect(command, &AbstractCommand::redoComplete, this, &Exploser::explosionsSetCouldChange, Qt::QueuedConnection);
 }
 
-Id Exploser::explosionsRoot(Id const &id) const
+Id Exploser::explosionsRoot(const Id &id) const
 {
 	Id currentId = id, previousId;
 	do {

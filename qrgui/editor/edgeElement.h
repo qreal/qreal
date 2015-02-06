@@ -40,7 +40,7 @@ public:
 	};
 
 	EdgeElement(ElementImpl *impl
-			, Id const &id
+			, const Id &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
 
@@ -95,8 +95,8 @@ public:
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
 
-	void placeStartTo(QPointF const &place);
-	void placeEndTo(QPointF const &place);
+	void placeStartTo(const QPointF &place);
+	void placeEndTo(const QPointF &place);
 	void moveConnection(NodeElement *node, qreal const portId);
 
 	/// Resort edges connected to linear ports of adjacent nodes
@@ -104,13 +104,13 @@ public:
 
 	virtual void connectToPort();
 
-	virtual QList<ContextMenuAction*> contextMenuActions(QPointF const &pos);
+	virtual QList<ContextMenuAction*> contextMenuActions(const QPointF &pos);
 
 	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);
 
-	void breakPointHandler(QPointF const &pos);
+	void breakPointHandler(const QPointF &pos);
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
 
@@ -136,7 +136,7 @@ public:
 	void connectLoopEdge(NodeElement *newMaster);
 
 	/// @return Node at position that is more appropriate for the link to connect to.
-	NodeElement *getNodeAt(QPointF const &position, bool isStart);
+	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 
 	/// Determine on which side of a node (top, bottom, right or left) the link's end is placed
 	NodeSide defineNodePortSide(bool isStart) const;
@@ -148,13 +148,13 @@ public:
 	void setPos(qreal x, qreal y);
 
 	/// Proxies QGraphicsItem`s setPos filtering out NaNs
-	void setPos(QPointF const &pos);
+	void setPos(const QPointF &pos);
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
+	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 	virtual void drawStartArrow(QPainter *painter) const;
 	virtual void drawEndArrow(QPainter *painter) const;
@@ -175,7 +175,7 @@ private:
 	void searchNextPort();
 
 	/// Create indent of bounding rect, depending on the rect size.
-	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+	QPointF boundingRectIndent(const QPointF &point, NodeSide direction);
 
 	/// Returns true, if the sides adjacent.
 	bool isNeighbor(NodeSide const &startSide, NodeSide const &endSide) const;

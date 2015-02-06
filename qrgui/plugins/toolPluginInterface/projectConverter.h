@@ -28,7 +28,7 @@ public:
 	typedef std::function<ConvertionResult(GraphicalModelAssistInterface const &
 			, LogicalModelAssistInterface &)> Converter;
 
-	ProjectConverter(QString const &editor
+	ProjectConverter(const QString &editor
 			, Version const &fromVersion
 			, Version const &toVersion
 			, Converter const &converter)

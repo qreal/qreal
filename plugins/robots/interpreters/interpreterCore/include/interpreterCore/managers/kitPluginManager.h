@@ -18,7 +18,7 @@ class KitPluginManager
 public:
 	/// Constructor.
 	/// @param pluginDirectory - directory where we need to search for plugins.
-	explicit KitPluginManager(QString const &pluginDirectory);
+	explicit KitPluginManager(const QString &pluginDirectory);
 
 	~KitPluginManager();
 
@@ -27,10 +27,10 @@ public:
 
 	/// Returns a list of kits that have given id. Note that multiple kits can have one id, in that case their
 	/// functionality is merged (needed to support language extensions like support for segway).
-	QList<interpreterBase::KitPluginInterface *> kitsById(QString const &kitId) const;
+	QList<interpreterBase::KitPluginInterface *> kitsById(const QString &kitId) const;
 
 	/// Returns a list of generators associated with given kit id.
-	QList<generatorBase::GeneratorKitPluginInterface *> generatorsById(QString const &kitId) const;
+	QList<generatorBase::GeneratorKitPluginInterface *> generatorsById(const QString &kitId) const;
 
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
 	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;

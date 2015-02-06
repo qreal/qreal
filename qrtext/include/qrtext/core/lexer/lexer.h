@@ -93,9 +93,9 @@ public:
 						}
 
 						if (match.hasMatch()) {
-							int const relativeLastNewLineOffset = match.capturedEnd() - 1;
-							int const absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
-							int const absoluteTokenEnd = bestMatch.match.capturedEnd() - 1;
+							const int relativeLastNewLineOffset = match.capturedEnd() - 1;
+							const int absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
+							const int absoluteTokenEnd = bestMatch.match.capturedEnd() - 1;
 							tokenEndColumn = absoluteTokenEnd - absoluteLastNewLineOffset - 1;
 						} else {
 							tokenEndColumn += bestMatch.match.capturedLength() - 1;
@@ -192,7 +192,7 @@ private:
 		return TokenType::identifier;
 	}
 
-	CandidateMatch findBestMatch(const QString &input, int const absolutePosition) const
+	CandidateMatch findBestMatch(const QString &input, const int absolutePosition) const
 	{
 		TokenType candidate = TokenType::whitespace;
 		QRegularExpressionMatch bestMatch;

@@ -12,8 +12,8 @@ public:
 	operator QLineF () const;
 	void operator= (QLineF const &l);
 
-	virtual void paint(QPainter *painter, QRectF const &contents) const;
-	QLineF transformForContents(QRectF const &contents) const;
+	virtual void paint(QPainter *painter, const QRectF &contents) const;
+	QLineF transformForContents(const QRectF &contents) const;
 
 private:
 	QLineF mLine;

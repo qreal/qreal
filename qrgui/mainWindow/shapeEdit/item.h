@@ -47,7 +47,7 @@ public:
 	virtual void setItemZValue(int zValue);
 	int itemZValue();
 	static int sign(int x);
-	static qreal length(QPointF const &point1, QPointF const &point2);
+	static qreal length(const QPointF &point1, const QPointF &point2);
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
@@ -59,7 +59,7 @@ public:
 	void setListScalePoint(QList<QPair<ScalingPointState, QColor> > list);
 
 	void initListScalePoint();
-	void calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2, int correction);
+	void calcForChangeScalingState(const QPointF&pos, const QPointF& point1, const QPointF& point2, int correction);
 	virtual void changeScalingPointState(qreal x, qreal y);
 	ScalingPointState getScalingPointState() const;
 	QColor changeScaleColor(QPair<Item::ScalingPointState, QColor> point);
@@ -68,14 +68,14 @@ public:
 	//for save to xml
 	QString setScaleForDoc(int i, QRect const &rect);
 	QString setSingleScaleForDoc(int i, int x, int y);
-	virtual void setXandY(QDomElement& dom, QRectF const &rect);
+	virtual void setXandY(QDomElement& dom, const QRectF &rect);
 
-	QPair<QDomElement, Item::DomElementTypes> generateDom(QDomDocument &document, QPoint const &topLeftPicture);
+	QPair<QDomElement, Item::DomElementTypes> generateDom(QDomDocument &document, const QPoint &topLeftPicture);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
-			, QPoint const &topLeftPicture) = 0;
+			, const QPoint &topLeftPicture) = 0;
 
 	void setVisibilityCondition(VisibilityCondition const &condition);
-	void setVisibilityCondition(QString const &property, QString const &sign, QString const &value);
+	void setVisibilityCondition(const QString &property, const QString &sign, const QString &value);
 	VisibilityCondition visibilityCondition() const;
 
 protected:

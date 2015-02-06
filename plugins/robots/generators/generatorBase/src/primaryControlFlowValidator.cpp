@@ -6,10 +6,10 @@ using namespace qReal;
 /// @todo: Unify code with interpreter
 
 PrimaryControlFlowValidator::PrimaryControlFlowValidator(
-		qrRepo::RepoApi const &repo
+		const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
-		, Id const &diagramId
+		, const Id &diagramId
 		, QObject *parent)
 	: QObject(parent)
 	, RobotsDiagramVisitor(repo, customizer)
@@ -42,17 +42,17 @@ qReal::Id PrimaryControlFlowValidator::initialNode() const
 	return mInitialNode;
 }
 
-QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::ifBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::ifBranchesFor(const qReal::Id &id) const
 {
 	return mIfBranches[id];
 }
 
-QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::loopBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::loopBranchesFor(const qReal::Id &id) const
 {
 	return mLoopBranches[id];
 }
 
-void PrimaryControlFlowValidator::visitRegular(Id const &id
+void PrimaryControlFlowValidator::visitRegular(const Id &id
 		, QList<LinkInfo> const &links)
 {
 	if (links.size() != 1) {
@@ -62,7 +62,7 @@ void PrimaryControlFlowValidator::visitRegular(Id const &id
 	}
 }
 
-void PrimaryControlFlowValidator::visitFinal(Id const &id
+void PrimaryControlFlowValidator::visitFinal(const Id &id
 		, QList<LinkInfo> const &links)
 {
 	if (!links.isEmpty()) {
@@ -70,7 +70,7 @@ void PrimaryControlFlowValidator::visitFinal(Id const &id
 	}
 }
 
-void PrimaryControlFlowValidator::visitConditional(Id const &id
+void PrimaryControlFlowValidator::visitConditional(const Id &id
 		, QList<LinkInfo> const &links)
 {
 	if (links.size() != 2) {
@@ -132,7 +132,7 @@ void PrimaryControlFlowValidator::visitConditional(Id const &id
 	mIfBranches[id] = branches;
 }
 
-void PrimaryControlFlowValidator::visitLoop(Id const &id
+void PrimaryControlFlowValidator::visitLoop(const Id &id
 		, QList<LinkInfo> const &links)
 {
 	if (links.size() != 2) {
@@ -174,7 +174,7 @@ void PrimaryControlFlowValidator::visitLoop(Id const &id
 	mLoopBranches[id] = qMakePair(*iterationLink, *nonMarkedBlock);
 }
 
-void PrimaryControlFlowValidator::visitSwitch(Id const &id
+void PrimaryControlFlowValidator::visitSwitch(const Id &id
 		, QList<LinkInfo> const &links)
 {
 	QSet<QString> branches;
@@ -188,7 +188,7 @@ void PrimaryControlFlowValidator::visitSwitch(Id const &id
 	for (LinkInfo const &link : links) {
 		checkForConnected(link);
 
-		QString const condition = mRepo.property(link.linkId, "Guard").toString();
+		const QString condition = mRepo.property(link.linkId, "Guard").toString();
 		if (condition.isEmpty()) {
 			if (defaultBranchFound) {
 				error(QObject::tr("There must be exactly one link without marker on it (default branch)"), id);
@@ -211,7 +211,7 @@ void PrimaryControlFlowValidator::visitSwitch(Id const &id
 	}
 }
 
-void PrimaryControlFlowValidator::visitFork(Id const &id, QList<LinkInfo> &links)
+void PrimaryControlFlowValidator::visitFork(const Id &id, QList<LinkInfo> &links)
 {
 	if (links.size() < 2) {
 		error(QObject::tr("Fork block must have at least TWO outgoing links"), id);
@@ -223,14 +223,14 @@ void PrimaryControlFlowValidator::visitFork(Id const &id, QList<LinkInfo> &links
 	}
 }
 
-void PrimaryControlFlowValidator::visitUnknown(Id const &id
+void PrimaryControlFlowValidator::visitUnknown(const Id &id
 		, QList<LinkInfo> const &links)
 {
 	Q_UNUSED(links)
 	error(QObject::tr("Unknown block type"), id);
 }
 
-void PrimaryControlFlowValidator::error(QString const &message, qReal::Id const &id)
+void PrimaryControlFlowValidator::error(const QString &message, const qReal::Id &id)
 {
 	mErrorReporter.addError(message, id);
 
@@ -250,8 +250,8 @@ bool PrimaryControlFlowValidator::checkForConnected(LinkInfo const &link)
 
 void PrimaryControlFlowValidator::findInitialNode()
 {
-	qReal::IdList const diagramNodes(mRepo.children(mDiagram));
-	for (qReal::Id const &diagramNode : diagramNodes) {
+	const qReal::IdList diagramNodes(mRepo.children(mDiagram));
+	for (const qReal::Id &diagramNode : diagramNodes) {
 		if (mCustomizer.isInitialNode(diagramNode)) {
 			mInitialNode = mRepo.logicalId(diagramNode);
 			return;

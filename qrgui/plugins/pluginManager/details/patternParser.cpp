@@ -15,14 +15,14 @@ PatternParser::PatternParser()
 {
 }
 
-void PatternParser::loadXml(QString const &xml)
+void PatternParser::loadXml(const QString &xml)
 {
 	mXml = xml;
 	mXml.replace("\\\"", "\"");
 	mXml.replace("\\n", "\n");
 }
 
-void PatternParser::parseGroups(EditorManager *editorManager, QString const &editor, QString const &diagram)
+void PatternParser::parseGroups(EditorManager *editorManager, const QString &editor, const QString &diagram)
 {
 	QDomDocument doc;
 	if (mXml.isNull()){
@@ -77,8 +77,8 @@ void PatternParser::parseNode(QDomElement const &node, Pattern &pattern)
 {
 	qreal const x = node.attribute("xPosition").toFloat();
 	qreal const y = node.attribute("yPosition").toFloat();
-	QString const parent = node.attribute("parent");
-	QPointF const pos = QPointF(x, y);
+	const QString parent = node.attribute("parent");
+	const QPointF pos = QPointF(x, y);
 	pattern.addNode(node.attribute("type"), node.attribute("name"), pos, parent);
 }
 

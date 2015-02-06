@@ -27,16 +27,16 @@ public:
 	WorldModel();
 
 	/// Measures the distance between robot and wall
-	int sonarReading(QPointF const &position, qreal direction) const;
+	int sonarReading(const QPointF &position, qreal direction) const;
 
 	/// Returns area which is seen by sonar sensor.
-	QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255) const;
+	QPainterPath sonarScanningRegion(const QPointF &position, qreal direction, int range = 255) const;
 
 	/// Returns area which is seen by sonar sensor with zero rotation.
-	QPainterPath sonarScanningRegion(QPointF const &position, int range = 255) const;
+	QPainterPath sonarScanningRegion(const QPointF &position, int range = 255) const;
 
 	/// Checks if the given path intersects some wall.
-	bool checkCollision(QPainterPath const &path) const;
+	bool checkCollision(const QPainterPath &path) const;
 
 	/// Returns a list of walls in the world model.
 	QList<items::WallItem *> const &walls() const;
@@ -54,13 +54,13 @@ public:
 	void clear();
 
 	/// Appends one more segment of the given to the robot`s trace.
-	void appendRobotTrace(QPen const &pen, QPointF const &begin, QPointF const &end);
+	void appendRobotTrace(QPen const &pen, const QPointF &begin, const QPointF &end);
 
 	/// Removes all the segments from the current robot`s trace.
 	void clearRobotTrace();
 
 	/// Saves world to XML.
-	QDomElement serialize(QDomDocument &document, QPointF const &topLeftPicture) const;
+	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
 
 signals:
@@ -81,8 +81,8 @@ signals:
 
 private:
 	/// Returns true if ray intersects some wall.
-	bool checkSonarDistance(int const distance, QPointF const &position
-			, qreal const direction, QPainterPath const &wallPath) const;
+	bool checkSonarDistance(const int distance, const QPointF &position
+			, qreal const direction, const QPainterPath &wallPath) const;
 	QPainterPath buildWallPath() const;
 
 	QList<items::WallItem *> mWalls;

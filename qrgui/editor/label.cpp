@@ -8,8 +8,8 @@
 
 using namespace qReal;
 
-Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
-		, int index, qreal x, qreal y, QString const &text, qreal rotation)
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
+		, int index, qreal x, qreal y, const QString &text, qreal rotation)
 	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
 	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
@@ -21,8 +21,8 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elem
 	init();
 }
 
-Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
-		, int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
+		, int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation)
 	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
 	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
@@ -84,14 +84,14 @@ Qt::Orientation Label::orientation()
 	return Qt::Horizontal;
 }
 
-void Label::setText(QString const &text)
+void Label::setText(const QString &text)
 {
 	setPlainText(text);
 }
 
-void Label::setTextFromRepo(QString const &text)
+void Label::setTextFromRepo(const QString &text)
 {
-	QString const friendlyText = mEnumValues.isEmpty()
+	const QString friendlyText = mEnumValues.isEmpty()
 			? text
 			: mEnumValues.contains(text) ? mEnumValues[text] : enumText(text);
 	if (friendlyText != toPlainText()) {
@@ -106,7 +106,7 @@ void Label::setParentSelected(bool isSelected)
 	mParentIsSelected = isSelected;
 }
 
-void Label::setParentContents(QRectF const &contents)
+void Label::setParentContents(const QRectF &contents)
 {
 	mParentContents = contents;
 	scaleCoordinates(contents);
@@ -117,7 +117,7 @@ void Label::setShouldCenter(bool shouldCenter)
 	mWasMoved = !shouldCenter;
 }
 
-void Label::scaleCoordinates(QRectF const &contents)
+void Label::scaleCoordinates(const QRectF &contents)
 {
 	if (mWasMoved) {
 		return;
@@ -139,26 +139,26 @@ void Label::setTextInteractionFlags(Qt::TextInteractionFlags flags)
 	QGraphicsTextItem::setTextInteractionFlags(flags);
 }
 
-void Label::setHtml(QString const &html)
+void Label::setHtml(const QString &html)
 {
 	QGraphicsTextItem::setHtml(html);
 }
 
-void Label::setPlainText(QString const &text)
+void Label::setPlainText(const QString &text)
 {
 	QGraphicsTextItem::setPlainText(text);
 }
 
 void Label::updateData(bool withUndoRedo)
 {
-	QString const value = toPlainText();
+	const QString value = toPlainText();
 	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
 	if (mBinding == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mBinding, value, withUndoRedo);
 	} else {
-		QString const repoValue = mEnumValues.values().contains(value)
+		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)
 				: enumText(value);
 		parent->setLogicalProperty(mBinding, repoValue, withUndoRedo);
@@ -229,13 +229,13 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	setSelected(true);
 }
 
-void Label::init(QRectF const &contents)
+void Label::init(const QRectF &contents)
 {
 	mContents = contents;
 	mParentContents = contents;
 
 	if (mGraphicalModelAssistApi.hasLabel(mId, mIndex)) {
-		QPointF const currentPos = mGraphicalModelAssistApi.labelPosition(mId, mIndex);
+		const QPointF currentPos = mGraphicalModelAssistApi.labelPosition(mId, mIndex);
 		mPoint.setX(currentPos.x() / mContents.width());
 		mPoint.setY(currentPos.y() / mContents.height());
 		setPos(currentPos);
@@ -296,7 +296,7 @@ void Label::focusOutEvent(QFocusEvent *event)
 
 void Label::keyPressEvent(QKeyEvent *event)
 {
-	int const keyEvent = event->key();
+	const int keyEvent = event->key();
 	if (keyEvent == Qt::Key_Escape) {
 		// Restore previous text and loose focus
 		setText(mOldText);
@@ -308,7 +308,7 @@ void Label::keyPressEvent(QKeyEvent *event)
 		// Line feed
 		QTextCursor cursor = textCursor();
 		QString currentText = toPlainText();
-		int const oldPos = cursor.position();
+		const int oldPos = cursor.position();
 		currentText.insert(oldPos, "\n");
 		setText(currentText);
 		cursor.movePosition(QTextCursor::Start);
@@ -381,12 +381,12 @@ void Label::clearMoveFlag()
 
 QRectF Label::labelMovingRect() const
 {
-	int const distance = SettingsManager::value("LabelsDistance").toInt();
+	const int distance = SettingsManager::value("LabelsDistance").toInt();
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
 }
 
-QString Label::enumText(QString const &enumValue) const
+QString Label::enumText(const QString &enumValue) const
 {
 	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mBinding)
 			? enumValue

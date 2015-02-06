@@ -16,14 +16,14 @@ class TrikShell : public interpreterBase::robotModel::robotParts::Device
 
 public:
 	/// Constructor, takes device type info and port on which this motor is configured.
-	TrikShell(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikShell(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
 	/// Run current command in the trik
-	virtual void runCommand(QString const &command) = 0;
+	virtual void runCommand(const QString &command) = 0;
 
 	/// Force trik say the text
-	virtual void say(QString const &text) = 0;
+	virtual void say(const QString &text) = 0;
 };
 
 }

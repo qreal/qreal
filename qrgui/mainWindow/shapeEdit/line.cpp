@@ -236,7 +236,7 @@ void Line::setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QStri
 	dom.setAttribute("x2", pair.second.first);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	qreal const x1 = scenePos().x() + line().x1() - topLeftPicture.x();
 	qreal const y1 = scenePos().y() + line().y1() - topLeftPicture.y();

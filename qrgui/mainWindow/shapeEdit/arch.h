@@ -17,13 +17,13 @@ public:
 	void setSpanAngle(int span);
 
 	virtual QRectF boundingRect() const;
-	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
+	virtual QRectF sceneBoundingRectCoord(const QPoint &topLeftPicture);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
 
 private:
 	int mStartAngle;

@@ -19,7 +19,7 @@ void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory, Ro
 	}
 }
 
-qReal::interpretation::BlockInterface *BlocksFactoryManager::block(qReal::Id const &element
+qReal::interpretation::BlockInterface *BlocksFactoryManager::block(const qReal::Id &element
 		, RobotModelInterface const &robotModel)
 {
 	qReal::interpretation::BlockInterface *emptyBlock = nullptr;
@@ -58,7 +58,7 @@ QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(RobotModelInterface const &r
 {
 	QSet<qReal::Id> result;
 
-	QString const kitId = robotModel.kitId();
+	const QString kitId = robotModel.kitId();
 
 	for (RobotModelInterface const *robotModel : mFactories.keys()) {
 		if (robotModel && robotModel->kitId() == kitId) {

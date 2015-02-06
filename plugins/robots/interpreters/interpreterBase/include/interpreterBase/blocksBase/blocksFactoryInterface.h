@@ -21,7 +21,7 @@ public:
 
 	/// Creates a new block by given id.
 	/// Transfers block ownership to caller.
-	virtual qReal::interpretation::BlockInterface *block(qReal::Id const &element) = 0;
+	virtual qReal::interpretation::BlockInterface *block(const qReal::Id &element) = 0;
 
 	/// Returns a list of blocks that can be instantiated by this factory.
 	virtual qReal::IdList providedBlocks() const = 0;

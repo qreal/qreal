@@ -11,7 +11,7 @@ class RectangleGesturesManager : public GesturesRecognizer<qreal *>
 public:
 	RectangleGesturesManager();
 	~RectangleGesturesManager();
-	qreal getMaxDistance(QString const &);
+	qreal getMaxDistance(const QString &);
 	bool isMultistroke();
 	qreal getDistance(qreal * const &key1, qreal * const &key2);
 	qreal *getKey(PathVector const & path);

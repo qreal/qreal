@@ -11,7 +11,7 @@ namespace semantics {
 class LoopWithNextVisitedRule : public LoopBlockRuleBase
 {
 public:
-	LoopWithNextVisitedRule(SemanticTree *tree, qReal::Id const &id
+	LoopWithNextVisitedRule(SemanticTree *tree, const qReal::Id &id
 			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
 
 	virtual bool apply();

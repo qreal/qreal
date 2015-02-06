@@ -6,7 +6,7 @@ using namespace qReal;
 /// @todo: Unify this rule with if?
 
 MergedSwitchBranchesRule::MergedSwitchBranchesRule(SemanticTree *tree
-		, Id const &id, LinkInfo const &next)
+		, const Id &id, LinkInfo const &next)
 	: SimpleVisitedRuleBase(tree, id, next)
 {
 }

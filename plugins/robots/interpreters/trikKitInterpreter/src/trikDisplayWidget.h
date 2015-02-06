@@ -27,7 +27,7 @@ public:
 	int displayWidth() const override;
 	int displayHeight() const override;
 
-	bool buttonIsDown(QString const &buttonId) const override;
+	bool buttonIsDown(const QString &buttonId) const override;
 	/// sets LED widget's color on 2D model display.
 	void setLedColor(QColor const &color);
 

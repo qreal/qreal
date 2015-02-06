@@ -15,7 +15,7 @@ class QRUTILS_EXPORT QRealDialog : public QDialog
 public:
 	/// @param id The name of this dialog. Used for storing dialog`s parameters
 	///in settings so should be unique.
-	explicit QRealDialog(QString const &id, QWidget *parent = 0);
+	explicit QRealDialog(const QString &id, QWidget *parent = 0);
 
 protected:
 	virtual void showEvent(QShowEvent *);
@@ -34,7 +34,7 @@ protected:
 	virtual QString sizeKey() const;
 
 private:
-	QString const mId;
+	const QString mId;
 };
 
 }

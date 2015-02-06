@@ -21,8 +21,8 @@ class COMMON_TWO_D_MODEL_EXPORT RangeSensor : public interpreterBase::robotModel
 	Q_OBJECT
 
 public:
-	RangeSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	RangeSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	void read() override;

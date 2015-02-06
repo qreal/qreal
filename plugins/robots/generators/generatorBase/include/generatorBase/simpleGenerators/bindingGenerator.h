@@ -11,10 +11,10 @@ namespace simple {
 class ROBOTS_GENERATOR_EXPORT BindingGenerator : public AbstractSimpleGenerator
 {
 public:
-	BindingGenerator(qrRepo::RepoApi const &repo
+	BindingGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
-			, QString const &pathToTemplate
+			, const qReal::Id &id
+			, const QString &pathToTemplate
 			, QList<Binding *> const &bindings
 			, QObject *parent = 0);
 
@@ -23,7 +23,7 @@ public:
 	virtual QString generate();
 
 private:
-	QString const mPathToTemplate;
+	const QString mPathToTemplate;
 	QList<Binding *> const mBindings;  // Takes ownership
 };
 

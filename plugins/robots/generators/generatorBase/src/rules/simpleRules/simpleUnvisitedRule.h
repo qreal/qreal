@@ -10,7 +10,7 @@ namespace semantics {
 class SimpleUnvisitedRule : public SimpleBlockRuleBase
 {
 public:
-	SimpleUnvisitedRule(SemanticTree *tree, qReal::Id const &id, LinkInfo const &next);
+	SimpleUnvisitedRule(SemanticTree *tree, const qReal::Id &id, LinkInfo const &next);
 
 	virtual bool apply();
 };

@@ -19,28 +19,28 @@ public:
 
 	/// Enables the motor on the given port assigning the given power to it with the given break mode.
 	virtual void setNewMotor(int speed, uint degrees
-			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) = 0;
+			, const interpreterBase::robotModel::PortInfo &port, bool breakMode) = 0;
 
 	/// Returns the encoder value on the given port.
-	virtual int readEncoder(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readEncoder(const interpreterBase::robotModel::PortInfo &port) const = 0;
 
 	/// Nullifies the encoder value on the given port.
-	virtual void resetEncoder(interpreterBase::robotModel::PortInfo const &port) = 0;
+	virtual void resetEncoder(const interpreterBase::robotModel::PortInfo &port) = 0;
 
 	/// Returns the collision sensor`s value on the given port.
 	/// @returns 1 if collision is detected and 0 otherwise.
-	virtual int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readTouchSensor(const interpreterBase::robotModel::PortInfo &port) const = 0;
 
 	/// Returns the distance value scanned by the range sensor.
 	/// @returns The distance in cm till the closest object in the scan field of 255 if no such.
-	virtual int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readSonarSensor(const interpreterBase::robotModel::PortInfo &port) const = 0;
 
 	/// Returns the configured color sensor`s value on the given port.
 	/// It  may be the percent of some color under the sensor or the dominating color enum value.
-	virtual int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readColorSensor(const interpreterBase::robotModel::PortInfo &port) const = 0;
 
 	/// Returns the average brightness of the picture under the light sensor on the given port.
-	virtual int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readLightSensor(const interpreterBase::robotModel::PortInfo &port) const = 0;
 
 	/// Draws sound waves during the given amount of time thus showing that the robot plays some sound.
 	virtual void playSound(int timeInMs) = 0;

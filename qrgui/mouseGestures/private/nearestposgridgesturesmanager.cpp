@@ -13,7 +13,7 @@ NearestPosGridGesturesManager::~NearestPosGridGesturesManager()
 	qDeleteAll(mGestures);
 }
 
-qreal NearestPosGridGesturesManager::getMaxDistance(QString const &)
+qreal NearestPosGridGesturesManager::getMaxDistance(const QString &)
 {
 	return 1000;
 }

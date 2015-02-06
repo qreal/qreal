@@ -18,7 +18,7 @@ SdfRenderer::SdfRenderer()
 	mWorkingDirName = SettingsManager::value("workingDir").toString();
 }
 
-SdfRenderer::SdfRenderer(QString const path)
+SdfRenderer::SdfRenderer(const QString path)
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 	if (!load(path))
@@ -32,7 +32,7 @@ SdfRenderer::~SdfRenderer()
 {
 }
 
-bool SdfRenderer::load(QString const &filename)
+bool SdfRenderer::load(const QString &filename)
 {
 	QFile file(filename);
 
@@ -281,13 +281,13 @@ void SdfRenderer::polygon(QDomElement &element)
 {
 	parsestyle(element);
 	// FIXME: init points array here
-	QPoint *points = NULL;
+	QPoint *points = nullptr;
 	int n = element.attribute("n").toInt();
 	if (!element.isNull())
 	{
 		points = getpoints(element, n);
 	}
-	if (points != NULL)
+	if (points != nullptr)
 	{
 		painter->drawConvexPolygon(points, n);
 		delete[] points;
@@ -302,7 +302,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float const x2 = x2_def(element);
 	float const y2 = y2_def(element);
 
-	QString const fileName = SettingsManager::value("pathToImages").toString() + "/"
+	const QString fileName = SettingsManager::value("pathToImages").toString() + "/"
 			+ element.attribute("name", "default");
 
 	QRect const rect(x1, y1, x2 - x1, y2 - y1);
@@ -764,7 +764,7 @@ void SdfRenderer::noScale()
 }
 
 void SdfRenderer::ImagesCache::drawImage(
-		QString const &fileName
+		const QString &fileName
 		, QPainter &painter
 		, QRect const &rect)
 {
@@ -789,13 +789,13 @@ void SdfRenderer::ImagesCache::drawImage(
 		painter.drawPixmap(rect, mPrerenderedSvgs.value(fileName));
 	} else {
 		// Cache miss - finding best file to load and loading it.
-		QString const actualFileName = fileName.startsWith("./")
+		const QString actualFileName = fileName.startsWith("./")
 				? QApplication::applicationDirPath() + "/" + fileName
 				: fileName;
 
 		QFileInfo const actualFile = selectBestImageFile(actualFileName);
 
-		QByteArray const rawImage = loadPixmap(actualFile);
+		const QByteArray rawImage = loadPixmap(actualFile);
 		if (actualFile.suffix() == "svg") {
 			QSharedPointer<QSvgRenderer> renderer(new QSvgRenderer(rawImage));
 			mFileNameSvgRendererMap.insert(fileName, renderer);
@@ -810,7 +810,7 @@ void SdfRenderer::ImagesCache::drawImage(
 	}
 }
 
-QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
+QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(const QString &filePath)
 {
 	QFileInfo const originalFileInfo(filePath);
 	QFileInfo const svgVersion(originalFileInfo.path() + originalFileInfo.completeBaseName() + "svg");
@@ -854,7 +854,7 @@ void SdfRenderer::ImagesCache::invalidateSvgCache(double zoomFactor)
 }
 
 
-SdfIconEngineV2::SdfIconEngineV2(QString const &file)
+SdfIconEngineV2::SdfIconEngineV2(const QString &file)
 {
 	mRenderer.load(file);
 	mRenderer.noScale();
@@ -905,12 +905,12 @@ QSize SdfIconEngineV2::preferedSize() const
 }
 
 
-QIcon SdfIconLoader::iconOf(QString const &fileName)
+QIcon SdfIconLoader::iconOf(const QString &fileName)
 {
 	return loadPixmap(fileName);
 }
 
-QSize SdfIconLoader::preferedSizeOf(QString const &fileName)
+QSize SdfIconLoader::preferedSizeOf(const QString &fileName)
 {
 	loadPixmap(fileName);
 	return instance()->mPreferedSizes[fileName];
@@ -930,7 +930,7 @@ SdfIconLoader::~SdfIconLoader()
 {
 }
 
-QIcon SdfIconLoader::loadPixmap(QString const &fileName)
+QIcon SdfIconLoader::loadPixmap(const QString &fileName)
 {
 	if (!instance()->mLoadedIcons.contains(fileName)) {
 		SdfIconEngineV2 * const engine = new SdfIconEngineV2(fileName);

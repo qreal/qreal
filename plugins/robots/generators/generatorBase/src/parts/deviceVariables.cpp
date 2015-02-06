@@ -8,8 +8,8 @@ DeviceVariables::~DeviceVariables()
 {
 }
 
-QString DeviceVariables::variableTemplatePath(interpreterBase::robotModel::DeviceInfo const &device
-		, interpreterBase::robotModel::PortInfo const &port) const
+QString DeviceVariables::variableTemplatePath(const interpreterBase::robotModel::DeviceInfo &device
+		, const interpreterBase::robotModel::PortInfo &port) const
 {
 	/// @todo Remove buttons from here.
 	return QString("sensors/%1.t").arg(

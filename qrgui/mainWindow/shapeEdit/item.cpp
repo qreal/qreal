@@ -47,7 +47,7 @@ int Item::sign(int x)
 	return x > 0 ? 1 : -1;
 }
 
-qreal Item::length(QPointF const &point1, QPointF const &point2)
+qreal Item::length(const QPointF &point1, const QPointF &point2)
 {
 	return sqrt(pow((point1.x() - point2.x()), 2) + pow((point1.y() - point2.y()), 2));
 }
@@ -106,7 +106,7 @@ void Item::setNoneDragState()
 	mDragState = None;
 }
 
-void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2
+void Item::calcForChangeScalingState(const QPointF&pos, const QPointF& point1, const QPointF& point2
 		, int correction)
 {
 	qreal x = pos.x();
@@ -254,7 +254,7 @@ QString Item::setSingleScaleForDoc(int i, int x, int y)
 	return text;
 }
 
-void Item::setXandY(QDomElement& dom, QRectF const &rect)
+void Item::setXandY(QDomElement& dom, const QRectF &rect)
 {
 	dom.setAttribute("y1", setScaleForDoc(4, rect.toRect()));
 	dom.setAttribute("x1", setScaleForDoc(0, rect.toRect()));
@@ -267,7 +267,7 @@ void Item::setVisibilityCondition(VisibilityCondition const &condition)
 	mVisibilityCondition = condition;
 }
 
-void Item::setVisibilityCondition(QString const &property, QString const &sign, QString const &value)
+void Item::setVisibilityCondition(const QString &property, const QString &sign, const QString &value)
 {
 	mVisibilityCondition.property = property;
 	mVisibilityCondition.sign = sign;

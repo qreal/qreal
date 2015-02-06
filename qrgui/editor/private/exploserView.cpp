@@ -28,16 +28,16 @@ ExploserView::ExploserView(models::Models const &models
 
 void ExploserView::createAddExplosionMenu(Element const * const element
 		, QMenu &contextMenu, QList<Explosion> const &explosions
-		, Id const &alreadyConnectedElement) const
+		, const Id &alreadyConnectedElement) const
 {
 	bool hasAnyActions = false;
-	QString const menuName = alreadyConnectedElement.isNull()
+	const QString menuName = alreadyConnectedElement.isNull()
 			? mCustomizer.addExplosionMenuName()
 			: mCustomizer.changeExplosionMenuName();
 	QMenu *addExplosionMenu = new QMenu(menuName);
 
 	for (Explosion const &explosion : explosions) {
-		for (Id const &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
+		for (const Id &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
 			if (alreadyConnectedElement == elementId) {
 				continue;
 			}
@@ -55,9 +55,9 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 	}
 
 	for (Explosion const &explosion : explosions) {
-		Id const diagramType = mLogicalApi.editorManagerInterface().findElementByType(explosion.target().element());
-		QString const name = mLogicalApi.editorManagerInterface().friendlyName(diagramType);
-		QString const editorName = mLogicalApi.editorManagerInterface().friendlyName(Id(diagramType.editor()));
+		const Id diagramType = mLogicalApi.editorManagerInterface().findElementByType(explosion.target().element());
+		const QString name = mLogicalApi.editorManagerInterface().friendlyName(diagramType);
+		const QString editorName = mLogicalApi.editorManagerInterface().friendlyName(Id(diagramType.editor()));
 		QAction *action = addExplosionMenu->addAction(tr("New ") + editorName + "/" + name);
 		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), SLOT(addExplosionActionTriggered()));
@@ -73,7 +73,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 }
 
 void ExploserView::createRemoveExplosionMenu(Element const * const element, QMenu &contextMenu
-		, Id const &outgoingConnection) const
+		, const Id &outgoingConnection) const
 {
 	if (outgoingConnection.isNull()) {
 		return;
@@ -85,7 +85,7 @@ void ExploserView::createRemoveExplosionMenu(Element const * const element, QMen
 }
 
 void ExploserView::createExpandAction(Element const * const element, QMenu &contextMenu
-		, Id const &alreadyConnectedElement) const
+		, const Id &alreadyConnectedElement) const
 {
 	if (alreadyConnectedElement.isNull()) {
 		return;
@@ -139,13 +139,13 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * 
 			, mLogicalApi.logicalRepoApi().outgoingExplosion(element->logicalId()));
 }
 
-void ExploserView::handleDoubleClick(Id const &id)
+void ExploserView::handleDoubleClick(const Id &id)
 {
 	Id outgoingLink = mLogicalApi.logicalRepoApi().outgoingExplosion(id);
 	if (outgoingLink.isNull()) {
 		QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(id);
 		if (!explosions.isEmpty()) {
-			Id const diagramType = mLogicalApi.editorManagerInterface()
+			const Id diagramType = mLogicalApi.editorManagerInterface()
 					.findElementByType(explosions[0].target().element());
 			commands::AbstractCommand *createCommand =
 					mExploser.createElementWithIncomingExplosionCommand(
@@ -158,7 +158,7 @@ void ExploserView::handleDoubleClick(Id const &id)
 }
 
 void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *createCommand
-		, Id const &source, Id const &target)
+		, const Id &source, const Id &target)
 {
 	if (target != Id()) {
 		createCommand->addPostAction(mExploser.addExplosionCommand(source, target, &mGraphicalApi));
@@ -177,8 +177,8 @@ void ExploserView::addExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> const connection = action->data().toList();
-	Id const source = connection[0].value<Id>();
-	Id const destination = connection[1].value<Id>();
+	const Id source = connection[0].value<Id>();
+	const Id destination = connection[1].value<Id>();
 	if (action->text().startsWith(tr("New "))) {
 		mController.execute(mExploser.createElementWithIncomingExplosionCommand(
 				source, destination, mGraphicalApi));
@@ -196,22 +196,22 @@ void ExploserView::removeExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> const connection = action->data().toList();
-	Id const source = connection[0].value<Id>();
-	Id const destination = connection[1].value<Id>();
+	const Id source = connection[0].value<Id>();
+	const Id destination = connection[1].value<Id>();
 	mController.execute(mExploser.removeExplosionCommand(source, destination));
 }
 
 void ExploserView::expandExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
-	Id const elem = action->data().value<Id>();
+	const Id elem = action->data().value<Id>();
 	emit expandElement(elem);
 }
 
 void ExploserView::changePropertiesActionTriggered()
 {
 	QAction const * const action = static_cast<QAction const *>(sender());
-	Id const id = action->data().value<Id>();
+	const Id id = action->data().value<Id>();
 	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
 			mLogicalApi.editorManagerInterface()
 			, mLogicalApi.mutableLogicalRepoApi()
@@ -224,15 +224,15 @@ void ExploserView::changePropertiesActionTriggered()
 void ExploserView::changeAppearanceActionTriggered()
 {
 	QAction const * const action = static_cast<QAction const *>(sender());
-	Id const id = action->data().value<Id>();
-	QString const propertyValue = mLogicalApi.editorManagerInterface().shape(id);
+	const Id id = action->data().value<Id>();
+	const QString propertyValue = mLogicalApi.editorManagerInterface().shape(id);
 	emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
 }
 
 void ExploserView::addElementToPaletteActionTriggered()
 {
 	QAction const * const action = static_cast<QAction const *>(sender());
-	Id const id = action->data().value<Id>();
+	const Id id = action->data().value<Id>();
 	mLogicalApi.editorManagerInterface().resetIsHidden(id);
 	emit refreshPalette();
 }

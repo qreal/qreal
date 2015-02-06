@@ -1910,19 +1910,19 @@ public:
 
     /// This feature was not included into the original Qt Property Browser Framework.
     /// It was added specially for QReal needs.
-    void slotPropertyChanged(QtProperty *property, QString const &value);
+    void slotPropertyChanged(QtProperty *property, const QString &value);
     void slotPropertyChanged(QtProperty *property, int value);
     void slotEnumNamesChanged(QtProperty *property, const QStringList &);
     void slotEnumIconsChanged(QtProperty *property, const QMap<int, QIcon> &);
     /// This feature was not included into the original Qt Property Browser Framework.
     /// It was added specially for QReal needs.
-    void slotSetValue(QString const &value);
+    void slotSetValue(const QString &value);
     void slotSetValue(int value);
 };
 
 /// This feature was not included into the original Qt Property Browser Framework.
 /// It was added specially for QReal needs.
-void QtEnumEditorFactoryPrivate::slotPropertyChanged(QtProperty *property, QString const &value)
+void QtEnumEditorFactoryPrivate::slotPropertyChanged(QtProperty *property, const QString &value)
 {
     if (!m_createdEditors.contains(property))
         return;
@@ -2016,7 +2016,7 @@ void QtEnumEditorFactoryPrivate::slotSetValue(int value)
 
 /// This feature was not included into the original Qt Property Browser Framework.
 /// It was added specially for QReal needs.
-void QtEnumEditorFactoryPrivate::slotSetValue(QString const &value)
+void QtEnumEditorFactoryPrivate::slotSetValue(const QString &value)
 {
     QObject *object = q_ptr->sender();
     const  QMap<QComboBox *, QtProperty *>::ConstIterator ecend = m_editorToProperty.constEnd();

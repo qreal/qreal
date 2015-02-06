@@ -8,14 +8,14 @@ struct SensorsGraph::TrackObject {
 	QString inParserName;
 	QString displayName;
 
-	TrackObject(int const &id, QString const &internalName, QString const &externalName)
+	TrackObject(const int &id, const QString &internalName, const QString &externalName)
 		: index(id)
 		, inParserName(internalName)
 		, displayName(externalName)
 	{
 	}
 
-	TrackObject(int const &id)
+	TrackObject(const int &id)
 		: index(id)
 		, inParserName("")
 		, displayName("")
@@ -28,7 +28,7 @@ struct SensorsGraph::TrackObject {
 	}
 };
 
-SensorsGraph::SensorsGraph(qrtext::DebuggerInterface const &parser, QWidget *parent)
+SensorsGraph::SensorsGraph(const qrtext::DebuggerInterface &parser, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::SensorsGraph)
 	, mParser(parser)
@@ -56,7 +56,7 @@ void SensorsGraph::setStartStopButtonsVisible(bool visible)
 	mStopButton.setVisible(visible);
 }
 
-void SensorsGraph::addTrackingObject(int const index, QString const &inParserName, QString const &displayName)
+void SensorsGraph::addTrackingObject(const int index, const QString &inParserName, const QString &displayName)
 {
 	TrackObject newObject(index, inParserName, displayName);
 	if (mWatchList.contains(newObject)) {
@@ -168,7 +168,7 @@ void SensorsGraph::watchListChanged()
 	}
 }
 
-void SensorsGraph::sensorsInput(int const slotIndex, qreal const value)
+void SensorsGraph::sensorsInput(const int slotIndex, qreal const value)
 {
 	if (mCurrentSlot == slotIndex) {
 		mPlotFrame->setNextValue(value);
@@ -192,10 +192,10 @@ void SensorsGraph::startJob()
 
 void SensorsGraph::updateValues()
 {
-	int const notExists = -1;
+	const int notExists = -1;
 
 	TrackObject currentObject(mCurrentSlot);
-	int const index = mWatchList.indexOf(currentObject);
+	const int index = mWatchList.indexOf(currentObject);
 	if (index != notExists) {
 		double number = mParser.value<double>(mWatchList.at(index).inParserName);
 		if (number) {
@@ -216,8 +216,8 @@ void SensorsGraph::resetAll()
 	mPlotFrame->zoomOut();
 }
 
-void SensorsGraph::configureUpdateIntervals(int const &readSensorsInterval, int const &autoScaleInterval
-		, int const &textUpdaterInterval)
+void SensorsGraph::configureUpdateIntervals(const int &readSensorsInterval, const int &autoScaleInterval
+		, const int &textUpdaterInterval)
 {
 	mPlotFrame->configureUserOptions(readSensorsInterval, autoScaleInterval, textUpdaterInterval);
 }

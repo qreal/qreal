@@ -4,7 +4,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 LoopWithIterationVisitedRule::LoopWithIterationVisitedRule(SemanticTree *tree
-		, Id const &id, LinkInfo const &iterationLink, LinkInfo const &nextLink)
+		, const Id &id, LinkInfo const &iterationLink, LinkInfo const &nextLink)
 	: LoopBlockRuleBase(tree, id, iterationLink, nextLink)
 {
 }

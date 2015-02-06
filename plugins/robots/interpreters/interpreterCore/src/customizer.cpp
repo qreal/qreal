@@ -67,7 +67,7 @@ void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWa
 	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
 }
 
-QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const
+QDockWidget *Customizer::produceDockWidget(const QString &title, QWidget *content) const
 {
 	QDockWidget *dock = new QDockWidget(title);
 	dock->setWidget(content);

@@ -14,7 +14,7 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void setItemZValue(int zValue);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
 private:
 	QGraphicsPixmapItem* mPixmapItem;
 	QImage mImage;

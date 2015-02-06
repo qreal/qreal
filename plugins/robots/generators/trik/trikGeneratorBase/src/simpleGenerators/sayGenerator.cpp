@@ -5,9 +5,9 @@
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-SayGenerator::SayGenerator(qrRepo::RepoApi const &repo
+SayGenerator::SayGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "say.t"

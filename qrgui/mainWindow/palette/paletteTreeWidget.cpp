@@ -10,10 +10,10 @@
 using namespace qReal;
 using namespace gui;
 
-EditorManagerInterface const *PaletteTreeWidget::mEditorManager = nullptr;
+const EditorManagerInterface *PaletteTreeWidget::mEditorManager = nullptr;
 
 PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindow
-		, EditorManagerInterface const &editorManagerProxy, bool editable)
+		, const EditorManagerInterface &editorManagerProxy, bool editable)
 	: mMainWindow(mainWindow)
 	, mPaletteTree(palette)
 	, mEditable(editable)
@@ -24,7 +24,7 @@ PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindo
 void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups
 		, QMap<QString, QString> const &descriptions
 		, bool hideIfEmpty
-		, QString const &diagramFriendlyName
+		, const QString &diagramFriendlyName
 		, bool sort)
 {
 	if (groups.isEmpty() && hideIfEmpty) {
@@ -192,7 +192,7 @@ void PaletteTreeWidget::collapseChildren(QTreeWidgetItem *item)
 	item->treeWidget()->collapseItem(item);
 }
 
-bool PaletteTreeWidget::idLessThan(Id const &s1, Id const &s2)
+bool PaletteTreeWidget::idLessThan(const Id &s1, const Id &s2)
 {
 	return mEditorManager->friendlyName(s1).toLower() < mEditorManager->friendlyName(s2).toLower();
 }
@@ -202,7 +202,7 @@ bool PaletteTreeWidget::paletteElementLessThan(PaletteElement const &s1, Palette
 	return idLessThan(s1.id(), s2.id());
 }
 
-void PaletteTreeWidget::setElementVisible(Id const &metatype, bool visible)
+void PaletteTreeWidget::setElementVisible(const Id &metatype, bool visible)
 {
 	if (mPaletteItems.contains(metatype)) {
 		mPaletteItems[metatype]->setHidden(!visible);
@@ -211,12 +211,12 @@ void PaletteTreeWidget::setElementVisible(Id const &metatype, bool visible)
 
 void PaletteTreeWidget::setVisibleForAllElements(bool visible)
 {
-	for (Id const &element : mPaletteElements.keys()) {
+	for (const Id &element : mPaletteElements.keys()) {
 		setElementVisible(element, visible);
 	}
 }
 
-void PaletteTreeWidget::setElementEnabled(Id const &metatype, bool enabled)
+void PaletteTreeWidget::setElementEnabled(const Id &metatype, bool enabled)
 {
 	if (mPaletteElements.contains(metatype)) {
 		mPaletteElements[metatype]->setEnabled(enabled);

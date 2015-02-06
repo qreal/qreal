@@ -4,14 +4,14 @@
 
 using namespace qReal;
 
-SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(EditorManagerInterface const &editorManager
+SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(const EditorManagerInterface &editorManager
 		, QWidget *parent)
 	: ListWidget(parent)
 	, mEditorManager(editorManager)
 {
-	for (Id const &editor : mEditorManager.editors()) {
-		Id const editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
-		for (Id const &diagram : mEditorManager.diagrams(editorTmpId)) {
+	for (const Id &editor : mEditorManager.editors()) {
+		const Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
+		for (const Id &diagram : mEditorManager.diagrams(editorTmpId)) {
 			addItem(editor, diagram);
 		}
 	}
@@ -19,10 +19,10 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(EditorManagerInterfac
 	highlightFirstItem();
 }
 
-void SuggestToCreateDiagramWidget::addItem(Id const &editor, Id const &diagram)
+void SuggestToCreateDiagramWidget::addItem(const Id &editor, const Id &diagram)
 {
-	QString const diagramName = mEditorManager.diagramName(editor.editor(), diagram.diagram());
-	QString const diagramNodeName = mEditorManager.diagramNodeName(editor.editor(), diagram.diagram());
+	const QString diagramName = mEditorManager.diagramName(editor.editor(), diagram.diagram());
+	const QString diagramNodeName = mEditorManager.diagramNodeName(editor.editor(), diagram.diagram());
 
 	if (diagramNodeName.isEmpty()) {
 		return;
