@@ -2,7 +2,7 @@
 
 #include <QtCore/QSharedPointer>
 
-#include "src/interpreter/details/blocksTable.h"
+#include "interpreterCore/interpreter/details/blocksTable.h"
 #include "support/dummyBlocksFactory.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
@@ -24,6 +24,7 @@ void BlocksTableTest::SetUp()
 					return blocksFactory->block(id);
 			} )
 			);
+
 	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(

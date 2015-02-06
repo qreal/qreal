@@ -1,4 +1,4 @@
-#include "d2ModelWidget.h"
+#include "commonTwoDModel/engine/view/d2ModelWidget.h"
 #include "ui_d2Form.h"
 
 #include <QtCore/qmath.h>
@@ -20,6 +20,9 @@
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
+
+#include "src/engine/view/d2ModelScene.h"
+#include "src/engine/view/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/ellipseItem.h"
@@ -46,6 +49,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
+	, mAutoOpen(true)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -65,7 +69,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &D2ModelScene::robotListChanged, this, &D2ModelWidget::onRobotListChange);
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
-	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
+	connect(&mModel.timeline(), &Timeline::tick, this, &D2ModelWidget::incrementTimelineCounter);
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		mUi->runButton->setVisible(false);
 		mUi->stopButton->setVisible(true);
@@ -320,6 +324,12 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 void D2ModelWidget::close()
 {
 	setVisible(false);
+}
+
+void D2ModelWidget::setBackgroundMode(bool enabled)
+{
+	mAutoOpen = !enabled;
+	mModel.timeline().setImmediateMode(enabled);
 }
 
 void D2ModelWidget::changeEvent(QEvent *e)
@@ -724,6 +734,10 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 
 void D2ModelWidget::bringToFront()
 {
+	if (!mAutoOpen) {
+		return;
+	}
+
 	if (isHidden()) {
 		show();
 	}
@@ -874,6 +888,11 @@ void D2ModelWidget::unsetSelectedRobotItem()
 	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
 
 	mUi->displayFrame->setEnabled(false);
+}
+
+void D2ModelWidget::incrementTimelineCounter()
+{
+	mUi->timelineBox->stepBy(1);
 }
 
 D2ModelWidget::RobotState::RobotState()

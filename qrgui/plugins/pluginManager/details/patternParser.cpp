@@ -71,7 +71,6 @@ void PatternParser::parseGroup(QDomElement const &group)
 
 	pattern.countSize(mEditorManager);
 	mPatterns += pattern;
-
 }
 
 void PatternParser::parseNode(QDomElement const &node, Pattern &pattern)

@@ -12,9 +12,9 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
-#include <plugins/editorPluginInterface/editorInterface.h>
-#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
+#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 
 #include "pluginsManagerDeclSpec.h"
 
@@ -62,8 +62,6 @@ public:
 	QString defaultPropertyValue(Id const &id, QString name) const override;
 	QStringList propertiesWithDefaultValues(Id const &id) const override;
 
-	IdList checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
-			, GraphicalModelAssistInterface const &graphicalApi) const override;
 	bool hasElement(Id const &element) const override;
 
 	Id findElementByType(QString const &type) const override;

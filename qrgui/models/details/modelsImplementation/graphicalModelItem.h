@@ -1,6 +1,6 @@
 #pragma once
 
-#include "models/details/modelsImplementation/abstractModelItem.h"
+#include "qrgui/models/details/modelsImplementation/abstractModelItem.h"
 
 namespace qReal {
 namespace models {

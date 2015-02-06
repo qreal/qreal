@@ -10,6 +10,10 @@
 #include "robotsGeneratorDeclSpec.h"
 #include "masterGeneratorBase.h"
 
+namespace utils {
+class ParserErrorReporter;
+}
+
 namespace generatorBase {
 
 class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public GeneratorKitPluginInterface
@@ -19,6 +23,7 @@ class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public
 
 public:
 	RobotsGeneratorPluginBase();
+	~RobotsGeneratorPluginBase() override;
 
 	void init(qReal::PluginConfigurator const &configurator
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
@@ -76,6 +81,8 @@ protected:
 	qReal::SystemEvents *mSystemEvents; // Does not have ownership
 	qReal::TextManagerInterface *mTextManager;
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;
+
+	QScopedPointer<utils::ParserErrorReporter> mParserErrorReporter;
 };
 
 }

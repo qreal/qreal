@@ -1,4 +1,4 @@
-#include "kitPluginManager.h"
+#include "interpreterCore/managers/kitPluginManager.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QCoreApplication>

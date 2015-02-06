@@ -64,6 +64,7 @@ generatorBase::MasterGeneratorBase *TrikFSharpGeneratorPlugin::masterGenerator()
 {
 	return new TrikFSharpMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()

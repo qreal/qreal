@@ -67,6 +67,7 @@ defineTest(copyToDestdir) {
 		win32:DDIR ~= s,/,\,g
 
 		isEmpty(NOW) {
+			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux/.
 			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE*
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {

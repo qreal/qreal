@@ -1,4 +1,4 @@
-#include "interpreter.h"
+#include "interpreterCore/interpreter/interpreter.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtWidgets/QAction>

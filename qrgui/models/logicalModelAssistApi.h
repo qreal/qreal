@@ -2,10 +2,10 @@
 
 #include <qrkernel/ids.h>
 
-#include "models/modelsDeclSpec.h"
-#include "models/details/logicalModel.h"
-#include "models/details/modelsAssistApi.h"
-#include "plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "qrgui/models/modelsDeclSpec.h"
+#include "qrgui/models/details/logicalModel.h"
+#include "qrgui/models/details/modelsAssistApi.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 
 namespace qReal {
 
@@ -22,7 +22,7 @@ public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface);
 	virtual ~LogicalModelAssistApi();
 
-	EditorManagerInterface const &editorManagerInterface() const;
+	const EditorManagerInterface &editorManagerInterface() const override;
 
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const override;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() override;

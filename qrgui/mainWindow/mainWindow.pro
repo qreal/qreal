@@ -8,7 +8,7 @@ QT += widgets printsupport xml svg
 
 links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor qrgui-controller qrgui-dialogs qrgui-preferences-dialog \
 		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager  \
-		qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
+		qrgui-facade qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
 )
 
 includes(qrgui)
@@ -25,7 +25,6 @@ HEADERS += \
 	$$PWD/errorReporter.h \
 	$$PWD/error.h \
 	$$PWD/errorListWidget.h \
-	$$PWD/mainWindowInterpretersInterface.h \
 	$$PWD/findManager.h \
 	$$PWD/dotRunner.h \
 	$$PWD/splashScreen.h \
@@ -34,9 +33,7 @@ HEADERS += \
 	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
-	$$PWD/projectManager/autosaver.h \
-	$$PWD/projectManager/projectManagementInterface.h \
-	$$PWD/projectManager/projectManager.h \
+	$$PWD/projectManager/projectManagerWrapper.h \
 	$$PWD/projectManager/versionsConverterManager.h \
 	$$PWD/palette/paletteTree.h \
 	$$PWD/palette/paletteTreeWidget.h \
@@ -61,8 +58,7 @@ SOURCES += \
 	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
-	$$PWD/projectManager/autosaver.cpp \
-	$$PWD/projectManager/projectManager.cpp \
+	$$PWD/projectManager/projectManagerWrapper.cpp \
 	$$PWD/projectManager/versionsConverterManager.cpp \
 	$$PWD/palette/paletteTree.cpp \
 	$$PWD/palette/paletteTreeWidget.cpp \

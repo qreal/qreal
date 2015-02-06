@@ -20,7 +20,7 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 
 PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWindow
 		, EditorManagerInterface &editorManagerProxy
-		, Id const &editor, Id const &diagram)
+		, const Id &editor, const Id &diagram)
 	: QSplitter(Qt::Vertical)
 	, mParentPalette(&parent)
 	, mMainWindow(mainWindow)
@@ -86,7 +86,7 @@ void PaletteTreeWidgets::initEditorTree()
 void PaletteTreeWidgets::initUserTree()
 {
 	refreshUserPalette();
-	connect(&mMainWindow->models()->exploser(), &models::Exploser::explosionsSetCouldChange
+	connect(&mMainWindow->models().exploser(), &models::Exploser::explosionsSetCouldChange
 			, this, &PaletteTreeWidgets::refreshUserPalette);
 }
 
@@ -223,11 +223,11 @@ void PaletteTreeWidgets::refreshUserPalette()
 	QMap<QString, QString> descriptions = { { mUserGroupTitle, mUserGroupDescription } };
 	QList<gui::PaletteElement> groupElements;
 
-	QMultiMap<Id, Id> const types = mMainWindow->models()->exploser().explosions(mDiagram);
+	QMultiMap<Id, Id> const types = mMainWindow->models().exploser().explosions(mDiagram);
 	for (Id const &source : types.uniqueKeys()) {
 		for (Id const &target : types.values(source)) {
 			groupElements << gui::PaletteElement(source
-					, mMainWindow->models()->logicalRepoApi().name(target)
+					, mMainWindow->models().logicalRepoApi().name(target)
 					, QString(), mEditorManager->icon(source)
 					, mEditorManager->iconSize(source)
 					, target);

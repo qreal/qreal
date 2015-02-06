@@ -1,6 +1,6 @@
 #pragma once
 
-#include <../interpreterCore/src/managers/blocksFactoryManagerInterface.h>
+#include <interpreterCore/managers/blocksFactoryManagerInterface.h>
 
 #include <gmock/gmock.h>
 

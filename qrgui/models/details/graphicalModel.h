@@ -2,11 +2,11 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 #include "modelsImplementation/graphicalModelItem.h"
 #include "modelsImplementation/abstractModel.h"
 #include "logicalModelView.h"
-#include "models/graphicalModelAssistApi.h"
+#include "qrgui/models/graphicalModelAssistApi.h"
 
 namespace qReal {
 

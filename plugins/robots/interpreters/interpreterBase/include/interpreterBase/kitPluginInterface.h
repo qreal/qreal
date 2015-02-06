@@ -8,7 +8,7 @@
 #include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
-#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/devicesConfigurationProvider.h>

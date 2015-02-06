@@ -1,14 +1,13 @@
 include(../../../global.pri)
 
 TEMPLATE = lib
-CONFIG += plugin 
+CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/
 
 links(qrkernel qslog qrgui-preferences-dialog)
 
 INCLUDEPATH += \
-	$$PWD/../../../ \
 	$$PWD/../../../qrgui/ \
 
 QT += widgets xml

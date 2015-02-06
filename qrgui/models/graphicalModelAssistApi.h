@@ -4,11 +4,11 @@
 
 #include <qrkernel/ids.h>
 
-#include "models/modelsDeclSpec.h"
-#include "models/details/graphicalModel.h"
-#include "models/details/graphicalPartModel.h"
-#include "models/details/modelsAssistApi.h"
-#include "plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
+#include "qrgui/models/modelsDeclSpec.h"
+#include "qrgui/models/details/graphicalModel.h"
+#include "qrgui/models/details/graphicalPartModel.h"
+#include "qrgui/models/details/modelsAssistApi.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
 namespace qReal {
 
@@ -33,8 +33,7 @@ public:
 
 	void setModel(details::GraphicalModel * const graphicalModel);
 
-	/// Interface for accessing metamodel information.
-	EditorManagerInterface const &editorManagerInterface() const;
+	const EditorManagerInterface &editorManagerInterface() const override;
 
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const override;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const override;

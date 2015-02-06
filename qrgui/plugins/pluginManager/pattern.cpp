@@ -44,7 +44,7 @@ void Pattern::setDiagram(QString const &diagram)
 	mDiagram = diagram;
 }
 
-QString Pattern::diagram()
+QString Pattern::diagram() const
 {
 	return mDiagram;
 }

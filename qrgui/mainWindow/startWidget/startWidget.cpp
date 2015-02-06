@@ -291,8 +291,8 @@ void StartWidget::openInterpretedDiagram()
 
 		foreach (QString const &interpreterIdString, interpreterDiagramsList) {
 			// TODO: ???
-			mMainWindow->models()->repoControlApi().exterminate();
-			mMainWindow->models()->reinit();
+			mMainWindow->models().repoControlApi().exterminate();
+			mMainWindow->models().reinit();
 			mMainWindow->loadPlugins();
 			mMainWindow->createDiagram(interpreterIdString);
 		}
@@ -318,8 +318,8 @@ void StartWidget::createInterpretedDiagram()
 	if (ok) {
 		QPair<Id, Id> editorAndDiagram = editorManagerProxy.createEditorAndDiagram(name);
 		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
-		mMainWindow->models()->repoControlApi().exterminate();
-		mMainWindow->models()->reinit();
+		mMainWindow->models().repoControlApi().exterminate();
+		mMainWindow->models().reinit();
 		mMainWindow->loadPlugins();
 		mMainWindow->initInterpretedPlugins();
 	} else {

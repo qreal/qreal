@@ -28,7 +28,7 @@ public:
 	DraggableElement(MainWindow &mainWindow
 		, PaletteElement const &paletteElement
 		, bool iconsOnly
-		, EditorManagerInterface &editorManagerProxy
+		, EditorManagerInterface const &editorManagerProxy
 		, QWidget *parent = nullptr
 		);
 
@@ -83,7 +83,7 @@ private:
 
 	PaletteElement const mData;
 	QLabel *mLabel;
-	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
+	EditorManagerInterface const &mEditorManagerProxy;  // Does not have ownership.
 	MainWindow &mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;

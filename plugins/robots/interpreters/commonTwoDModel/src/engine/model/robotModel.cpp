@@ -165,7 +165,7 @@ void RobotModel::countBeep()
 {
 	if (mBeepTime > 0) {
 		emit playingSoundChanged(true);
-		mBeepTime -= Timeline::frameLength;
+		mBeepTime -= Timeline::timeInterval;
 	} else {
 		emit playingSoundChanged(false);
 	}
@@ -275,6 +275,7 @@ void RobotModel::recalculateParams()
 
 	nextStep();
 	countMotorTurnover();
+	countBeep();
 }
 
 void RobotModel::nextFragment()
@@ -283,7 +284,6 @@ void RobotModel::nextFragment()
 		return;
 	}
 
-	countBeep();
 	emit robotRided(mPos, mAngle);
 }
 

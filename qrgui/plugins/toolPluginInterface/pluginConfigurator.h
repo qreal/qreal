@@ -2,13 +2,13 @@
 
 #include <qrrepo/repoControlInterface.h>
 
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "qrgui/mainWindow/mainWindowInterpretersInterface.h"
-#include "qrgui/mainWindow/projectManager/projectManagementInterface.h"
-#include "qrgui/editor/sceneCustomizationInterface.h"
-#include "qrgui/textEditor/textManagerInterface.h"
-#include "qrgui/plugins/toolPluginInterface/systemEvents.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/editor/sceneCustomizationInterface.h>
+#include <qrgui/textEditor/textManagerInterface.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 
 namespace qReal {
 

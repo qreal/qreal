@@ -14,7 +14,7 @@ namespace text {
 class QScintillaTextEdit;
 }
 
-class TextManagerInterface : public QObject
+class QRGUI_TEXT_EDITOR_EXPORT TextManagerInterface : public QObject
 {
 	Q_OBJECT
 
@@ -23,7 +23,7 @@ public:
 
 	virtual bool openFile(QString const &filePath, QString const &genName, text::LanguageInfo const &language) = 0;
 	virtual bool closeFile(QString const &filePath) = 0;
-	virtual	void changeFilePath(QString const &from, QString const &to) = 0;
+	virtual void changeFilePath(QString const &from, QString const &to) = 0;
 	virtual bool bindCode(Id const &diagram, QString const &filePath) = 0;
 	virtual bool unbindCode(QString const &filePath) = 0;
 	virtual bool unbindCode(text::QScintillaTextEdit *code) = 0;
@@ -43,9 +43,6 @@ public:
 
 signals:
 	void textChanged(bool changed);
-
-private slots:
-	virtual void setModified(text::QScintillaTextEdit *code, bool modified = true) = 0;
 };
 
 }

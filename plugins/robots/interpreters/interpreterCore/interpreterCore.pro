@@ -7,6 +7,4 @@ CONFIG += plugin
 
 copyToDestdir($$PWD/icons/splashscreen.png)
 
-DESTDIR = $$DESTDIR/plugins/tools/
-
 include(interpreterCore.pri)

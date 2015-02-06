@@ -84,7 +84,7 @@ void PaletteTree::setActiveEditor(Id const &id)
 	setActiveEditor(mCategories.value(id, 0));
 }
 
-void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, Id const &editor, Id const &diagram)
+void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, const Id &editor, const Id &diagram)
 {
 	mEditorManager = &editorManagerProxy;
 	mEditorsNames.push_back(mEditorManager->friendlyName(diagram));
@@ -93,8 +93,7 @@ void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, 
 
 	mComboBox->addItem(mEditorManager->friendlyName(diagram));
 
-	PaletteTreeWidgets *editorTree = new PaletteTreeWidgets(*this, mMainWindow
-			, *mEditorManager, editor, diagram);
+	PaletteTreeWidgets *editorTree = new PaletteTreeWidgets(*this, mMainWindow, *mEditorManager, editor, diagram);
 	editorTree->hide();
 
 	mEditorsTrees.push_back(editorTree);

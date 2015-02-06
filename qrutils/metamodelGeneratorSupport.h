@@ -5,7 +5,7 @@
 #include <QtXml/QDomDocument>
 
 #include <qrgui/mainWindow/errorReporter.h>
-#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
 namespace utils {
 

@@ -6,12 +6,13 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "models/modelsDeclSpec.h"
-#include "models/details/modelsAssistApi.h"
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "models/details/modelsImplementation/abstractModelItem.h"
-#include "plugins/toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
-#include "models/details/modelsImplementation/modelIndexesInterface.h"
+#include "qrgui/models/details/modelsAssistApi.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/models/details/modelsImplementation/abstractModelItem.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include "qrgui/models/details/modelsImplementation/modelIndexesInterface.h"
+
+#include "qrgui/models/modelsDeclSpec.h"
 
 namespace qReal {
 namespace models {

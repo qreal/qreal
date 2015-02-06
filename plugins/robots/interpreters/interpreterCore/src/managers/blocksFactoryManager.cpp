@@ -1,4 +1,4 @@
-#include "blocksFactoryManager.h"
+#include "interpreterCore/managers/blocksFactoryManager.h"
 
 #include <qrutils/interpreter/blocks/emptyBlock.h>
 

@@ -12,7 +12,7 @@ Timeline::Timeline(QObject *parent)
 	, mIsStarted(false)
 {
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
-	mTimer.setInterval(realTimeInterval);
+	mTimer.setInterval(defaultRealTimeInterval);
 }
 
 void Timeline::start()
@@ -46,7 +46,7 @@ void Timeline::onTimer()
 			mCyclesCount = 0;
 			int const msFromFrameStart = static_cast<int>(QDateTime::currentMSecsSinceEpoch()
 					- mFrameStartTimestamp);
-			int const pauseBeforeFrameEnd = frameLength - msFromFrameStart;
+			int const pauseBeforeFrameEnd = mFrameLength - msFromFrameStart;
 			if (pauseBeforeFrameEnd > 0) {
 				QTimer::singleShot(pauseBeforeFrameEnd - 1, this, SLOT(gotoNextFrame()));
 			} else {
@@ -79,6 +79,13 @@ quint64 Timeline::timestamp() const
 utils::AbstractTimer *Timeline::produceTimer()
 {
 	return new ModelTimer(this);
+}
+
+void Timeline::setImmediateMode(bool immediateMode)
+{
+	mTimer.setInterval(immediateMode ? 0 : defaultRealTimeInterval);
+	setSpeedFactor(immediateMode ? immediateSpeedFactor : normalSpeedFactor);
+	mFrameLength = immediateMode ? 0 : defaultFrameLength;
 }
 
 void Timeline::setSpeedFactor(int factor)

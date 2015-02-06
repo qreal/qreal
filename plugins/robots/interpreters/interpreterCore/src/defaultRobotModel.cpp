@@ -1,4 +1,4 @@
-#include "defaultRobotModel.h"
+#include "interpreterCore/defaultRobotModel.h"
 
 using namespace interpreterCore;
 

@@ -6,7 +6,7 @@
 #include <qrutils/qRealFileDialog.h>
 
 #include <plugins/toolPluginInterface/systemEvents.h>
-#include <mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
 #include "textManager.h"
 #include "qscintillaTextEdit.h"
@@ -17,7 +17,6 @@ using namespace text;
 TextManager::TextManager(SystemEvents &systemEvents, gui::MainWindowInterpretersInterface &mainWindow)
 	: mMainWindow(mainWindow)
 	, mSystemEvents(systemEvents)
-
 {
 	connect(&mSystemEvents, &SystemEvents::codeTabClosed, this, &TextManager::onTabClosed);
 }
