@@ -24,7 +24,7 @@ RobotCommunicator::~RobotCommunicator()
 	delete mRobotCommunicationThreadObject;
 }
 
-void RobotCommunicator::send(QObject *addressee, const QByteArray &buffer, unsigned const responseSize)
+void RobotCommunicator::send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize)
 {
 	mRobotCommunicationThreadObject->send(addressee, buffer, responseSize);
 }

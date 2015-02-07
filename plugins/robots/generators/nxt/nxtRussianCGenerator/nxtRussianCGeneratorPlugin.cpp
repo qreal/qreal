@@ -57,7 +57,7 @@ generatorBase::MasterGeneratorBase *NxtRussianCGeneratorPlugin::masterGenerator(
 			, generatorName());
 }
 
-void NxtRussianCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+void NxtRussianCGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	Q_UNUSED(newFileInfo);
 }

@@ -10,11 +10,11 @@ class LoopBlockRuleBase : public SemanticTransformationRule
 {
 public:
 	LoopBlockRuleBase(SemanticTree *tree, const qReal::Id &id
-			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
+			, const LinkInfo &iterationLink, const LinkInfo &nextLink);
 
 protected:
-	LinkInfo const &mIterationLink;
-	LinkInfo const &mNextLink;
+	const LinkInfo &mIterationLink;
+	const LinkInfo &mNextLink;
 };
 
 }

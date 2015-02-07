@@ -55,7 +55,7 @@ public:
 	Id from(const Id &elem) const override;
 
 	QModelIndex indexById(const Id &id) const override;
-	Id idByIndex(QModelIndex const &index) const override;
+	Id idByIndex(const QModelIndex &index) const override;
 	QPersistentModelIndex rootIndex() const override;
 	Id rootId() const override;
 
@@ -73,8 +73,8 @@ signals:
 	void elementAdded(const Id &id);
 
 private:
-	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
-	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also
+	LogicalModelAssistApi(const LogicalModelAssistApi &);  // Copying is forbidden
+	LogicalModelAssistApi& operator =(const LogicalModelAssistApi &); // Assignment is forbidden too
 
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;

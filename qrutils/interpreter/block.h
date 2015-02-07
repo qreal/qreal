@@ -32,8 +32,8 @@ public:
 	/// Initializes this block with external components that may be used during the intepretetation process.
 	/// @todo Not good.
 	void init(const qReal::Id &graphicalId
-			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
+			, const qReal::GraphicalModelAssistInterface &graphicalModelApi
+			, const qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
@@ -129,8 +129,8 @@ protected:
 	/// @todo: there is no such things as protected fields. State of a class shall not be directly available to
 	/// descendants.
 	qReal::Id mNextBlockId;
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership.
-	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Doesn't have ownership.
+	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Doesn't have ownership.
+	const qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Doesn't have ownership.
 
 	qReal::Id mGraphicalId;
 

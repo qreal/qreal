@@ -25,10 +25,10 @@ class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	EditorViewScene(models::Models const &models
+	EditorViewScene(const models::Models &models
 			, Controller &controller
 			/// @todo: move scene customizer properties to metamodel
-			, SceneCustomizer const &customizer
+			, const SceneCustomizer &customizer
 			, const Id &rootId
 			, QObject *parent = 0);
 
@@ -45,7 +45,7 @@ public:
 			, const QPointF &shiftToParent = QPointF()
 			, const QString &explosionTargetUuid = QString());
 
-	virtual void createElement(QMimeData const *mimeData, const QPointF &scenePos
+	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommandPointer = 0
 			, bool executeImmediately = true);
@@ -58,10 +58,10 @@ public:
 
 	virtual qReal::Id rootItemId() const;
 	/// @todo: remove theese getters
-	models::Models const &models() const;
+	const models::Models &models() const;
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
-	SceneCustomizer const &customizer() const;
+	const SceneCustomizer &customizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
 	/// Transfers owneship.
@@ -80,7 +80,7 @@ public:
 	/// Removes items selected by user with undo possibility.
 	void deleteSelectedItems();
 
-	void highlight(const qReal::Id &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
+	void highlight(const qReal::Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
 	void dehighlight(const qReal::Id &graphicalId);
 	void dehighlight();
 
@@ -196,7 +196,7 @@ private slots:
 private:
 	void deleteElements(IdList &idsToDelete);
 
-	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
+	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
 	void drawGesture();
 	void createEdgeMenu(QList<QString> const &ids);
 
@@ -218,10 +218,10 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
-	models::Models const &mModels;
+	const models::Models &mModels;
 	const EditorManagerInterface &mEditorManager;
 	Controller &mController;
-	SceneCustomizer const &mCustomizer;
+	const SceneCustomizer &mCustomizer;
 	const Id mRootId;
 
 	Id mLastCreatedFromLinker;

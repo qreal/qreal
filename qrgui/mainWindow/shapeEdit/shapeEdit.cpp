@@ -47,7 +47,7 @@ ShapeEdit::ShapeEdit(
 ShapeEdit::ShapeEdit(
 	const Id &id
 	, const EditorManagerInterface &editorManager
-	, qrRepo::GraphicalRepoApi const &graphicalRepoApi
+	, const qrRepo::GraphicalRepoApi &graphicalRepoApi
 	, MainWindow *mainWindow
 	, EditorView *editorView
 	, bool useTypedPorts
@@ -136,12 +136,12 @@ void ShapeEdit::init()
 	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
-	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &))
-			, this, SLOT(setItemPalette(QPen const&, QBrush const&)));
+	connect(mScene, SIGNAL(existSelectedItems(const QPen &, const QBrush &))
+			, this, SLOT(setItemPalette(const QPen&, const QBrush&)));
 	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
-	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, const QString &))
-			, this, SLOT(setItemFontPalette(QPen const&, QFont const&, const QString &)));
+	connect(mScene, SIGNAL(existSelectedTextPictureItems(const QPen &, const QFont &, const QString &))
+			, this, SLOT(setItemFontPalette(const QPen&, const QFont&, const QString &)));
 	connect(mScene, SIGNAL(noSelectedPortItems()), this, SLOT(setNoPortType()));
 	connect(mScene, SIGNAL(existSelectedPortItems(const QString &)), this, SLOT(setPortType(const QString &)));
 }
@@ -413,7 +413,7 @@ void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
 	}
 }
 
-void ShapeEdit::setValuePenColorComboBox(QColor const &penColor)
+void ShapeEdit::setValuePenColorComboBox(const QColor &penColor)
 {
 	mUi->penColorComboBox->setColor(penColor);
 }
@@ -437,7 +437,7 @@ void ShapeEdit::setValueBrushColorComboBox(QColor brushColor)
 	mUi->brushColorComboBox->setColor(brushColor);
 }
 
-void ShapeEdit::setItemPalette(QPen const &penItem, QBrush const &brushItem)
+void ShapeEdit::setItemPalette(const QPen &penItem, const QBrush &brushItem)
 {
 	setValuePenStyleComboBox(penItem.style());
 	setValuePenWidthSpinBox(penItem.width());
@@ -452,7 +452,7 @@ void ShapeEdit::setNoPalette()
 	initPalette();
 }
 
-void ShapeEdit::setValueTextFamilyFontComboBox(QFont const &fontItem)
+void ShapeEdit::setValueTextFamilyFontComboBox(const QFont &fontItem)
 {
 	mUi->textFamilyFontComboBox->setCurrentFont(fontItem);
 }
@@ -462,7 +462,7 @@ void ShapeEdit::setValueTextPixelSizeSpinBox(int size)
 	mUi->textPixelSizeSpinBox->setValue(size);
 }
 
-void ShapeEdit::setValueTextColorComboBox(QColor const &penColor)
+void ShapeEdit::setValueTextColorComboBox(const QColor &penColor)
 {
 	mUi->textColorComboBox->setColor(penColor);
 }
@@ -487,7 +487,7 @@ void ShapeEdit::setValueTextNameLineEdit(const QString &name)
 	mUi->textEditField->setPlainText(name);
 }
 
-void ShapeEdit::setItemFontPalette(QPen const &penItem, QFont const &fontItem, const QString &name)
+void ShapeEdit::setItemFontPalette(const QPen &penItem, const QFont &fontItem, const QString &name)
 {
 	mUi->fontToolBox->setEnabled(true);
 	setValueTextFamilyFontComboBox(fontItem);

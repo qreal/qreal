@@ -58,7 +58,7 @@ QModelIndex ModelsAssistApi::indexById(const Id &id) const
 	return mModel.indexById(id);
 }
 
-Id ModelsAssistApi::idByIndex(QModelIndex const &index) const
+Id ModelsAssistApi::idByIndex(const QModelIndex &index) const
 {
 	return mModel.idByIndex(index);
 }

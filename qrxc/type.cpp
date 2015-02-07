@@ -15,7 +15,7 @@ Type::~Type()
 			delete property;
 }
 
-bool Type::init(QDomElement const &element, const QString &context)
+bool Type::init(const QDomElement &element, const QString &context)
 {
 	mName = element.attribute("name");
 	mContext = context;

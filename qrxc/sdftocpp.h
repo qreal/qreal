@@ -71,7 +71,7 @@ class SdfIconEngineV2: public QIconEngine
 {
 public:
 	SdfIconEngineV2(const QString &file);
-	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
+	virtual void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state);
 private:
 	SdfRenderer mRenderer;
 };

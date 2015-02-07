@@ -95,7 +95,7 @@ public:
 	virtual ConnectionState connectionState() const = 0;
 
 	/// Returns current device configuration which is used to list all configured devices and use them.
-	virtual ConfigurationInterface const &configuration() const = 0;
+	virtual const ConfigurationInterface &configuration() const = 0;
 
 	/// Lists all available ports for that model.
 	virtual QList<PortInfo> availablePorts() const = 0;

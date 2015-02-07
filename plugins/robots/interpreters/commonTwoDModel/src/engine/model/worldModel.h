@@ -54,14 +54,14 @@ public:
 	void clear();
 
 	/// Appends one more segment of the given to the robot`s trace.
-	void appendRobotTrace(QPen const &pen, const QPointF &begin, const QPointF &end);
+	void appendRobotTrace(const QPen &pen, const QPointF &begin, const QPointF &end);
 
 	/// Removes all the segments from the current robot`s trace.
 	void clearRobotTrace();
 
 	/// Saves world to XML.
 	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const;
-	void deserialize(QDomElement const &element);
+	void deserialize(const QDomElement &element);
 
 signals:
 	/// Emitted each time when model is appended with some new wall.
@@ -82,7 +82,7 @@ signals:
 private:
 	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(const int distance, const QPointF &position
-			, qreal const direction, const QPainterPath &wallPath) const;
+			, const qreal direction, const QPainterPath &wallPath) const;
 	QPainterPath buildWallPath() const;
 
 	QList<items::WallItem *> mWalls;

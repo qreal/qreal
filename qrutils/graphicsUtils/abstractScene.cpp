@@ -167,7 +167,7 @@ void AbstractScene::setEmptyPenBrushItems()
 	mBrushColorItems = "white";
 }
 
-void AbstractScene::setPenBrushItems(QPen const &pen, QBrush const &brush)
+void AbstractScene::setPenBrushItems(const QPen &pen, const QBrush &brush)
 {
 	mPenStyleItems = convertPenToString(pen);
 	mPenWidthItems = pen.width();
@@ -176,7 +176,7 @@ void AbstractScene::setPenBrushItems(QPen const &pen, QBrush const &brush)
 	mBrushColorItems = brush.color().name();
 }
 
-QString AbstractScene::convertPenToString(QPen const &pen)
+QString AbstractScene::convertPenToString(const QPen &pen)
 {
 	QString penStyle;
 	switch (pen.style()) {
@@ -204,7 +204,7 @@ QString AbstractScene::convertPenToString(QPen const &pen)
 	return penStyle;
 }
 
-QString AbstractScene::convertBrushToString(QBrush const &brush)
+QString AbstractScene::convertBrushToString(const QBrush &brush)
 {
 	switch (brush.style()) {
 	case Qt::NoBrush:

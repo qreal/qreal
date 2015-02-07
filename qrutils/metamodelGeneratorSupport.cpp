@@ -30,7 +30,7 @@ QDomDocument MetamodelGeneratorSupport::loadMetamodelFromFile(const QString &met
 	return xmlUtils::loadDocument(metamodelPath);
 }
 
-void MetamodelGeneratorSupport::saveMetamodelInFile(QDomDocument const &metamodel,
+void MetamodelGeneratorSupport::saveMetamodelInFile(const QDomDocument &metamodel,
 		const QString &metamodelPath)
 {
 	const int slashIndex = metamodelPath.lastIndexOf("/");
@@ -66,7 +66,7 @@ void MetamodelGeneratorSupport::loadPlugin(const QString &directoryName
 
 	QApplication::processEvents();
 
-	QRect const screenRect = qApp->desktop()->availableGeometry();
+	const QRect screenRect = qApp->desktop()->availableGeometry();
 	progress->move(screenRect.width() / 2 - progressBarWidth / 2,
 			screenRect.height() / 2 - progressBarHeight / 2);
 	progress->setFixedWidth(progressBarWidth);
@@ -111,7 +111,7 @@ void MetamodelGeneratorSupport::loadPlugin(const QString &directoryName
 	delete progress;
 }
 
-QDomElement MetamodelGeneratorSupport::diagramElement(QDomDocument const &metamodel) const
+QDomElement MetamodelGeneratorSupport::diagramElement(const QDomDocument &metamodel) const
 {
 	return metamodel.elementsByTagName("diagram").at(0).toElement();
 }
@@ -132,7 +132,7 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 }
 
 void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument metamodel,
-		const QString &sublevelName, QDomElement const &element)
+		const QString &sublevelName, const QDomElement &element)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
 
@@ -161,7 +161,7 @@ QDomDocument MetamodelGeneratorSupport::loadElementsFromString(const QString &el
 	return elements;
 }
 
-QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDocument const &metamodel,
+QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(const QDomDocument &metamodel,
 		bool isDisplayedName) const
 {
 	QDomElement diagram = diagramElement(metamodel);

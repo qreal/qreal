@@ -17,7 +17,7 @@ public:
 
 	/// Deserializing constructor.
 	/// @param element - root of XML DOM subtree with serialized graphical part.
-	explicit GraphicalPart(QDomElement const &element);
+	explicit GraphicalPart(const QDomElement &element);
 
 	/// Returns value of a property with given name or throws an exception if there is no such property in this part.
 	QVariant property(const QString &name) const;

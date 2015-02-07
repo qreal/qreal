@@ -9,8 +9,8 @@ namespace commands {
 class EdgeElementCommand : public ElementCommand
 {
 public:
-	EdgeElementCommand(EditorViewScene const *scene, const Id &id);
-	EdgeElementCommand(EditorView const *view, const Id &id);
+	EdgeElementCommand(const EditorViewScene *scene, const Id &id);
+	EdgeElementCommand(const EditorView *view, const Id &id);
 	virtual ~EdgeElementCommand();
 
 protected:

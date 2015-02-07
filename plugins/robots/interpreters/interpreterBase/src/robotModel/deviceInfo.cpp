@@ -15,7 +15,7 @@ DeviceInfo::DeviceInfo()
 {
 }
 
-DeviceInfo::DeviceInfo(QMetaObject const *deviceType, const QString &name
+DeviceInfo::DeviceInfo(const QMetaObject *deviceType, const QString &name
 		, const QString &friendlyName, Direction direction)
 	: mDeviceType(deviceType)
 	, mName(name)
@@ -30,7 +30,7 @@ bool DeviceInfo::isA(const DeviceInfo &parent) const
 		return isNull();
 	}
 
-	QMetaObject const *currentParent = mDeviceType;
+	const QMetaObject *currentParent = mDeviceType;
 	while (currentParent && QString(parent.mDeviceType->className()) != QString(currentParent->className())) {
 		currentParent = currentParent->superClass();
 	}
@@ -78,7 +78,7 @@ DeviceInfo DeviceInfo::fromString(const QString &string)
 	return mCreatedInfos[string];
 }
 
-QString DeviceInfo::property(QMetaObject const * const metaObject, const QString &name)
+QString DeviceInfo::property(const QMetaObject * const metaObject, const QString &name)
 {
 	if (!metaObject) {
 		return QString();
@@ -87,7 +87,7 @@ QString DeviceInfo::property(QMetaObject const * const metaObject, const QString
 	// Superclass infos are have less indeces so iterating backwards for meeting device`s
 	// friendly name earlier than its parent`s one.
 	for (int i = metaObject->classInfoCount() - 1; i >= 0; --i) {
-		QMetaClassInfo const classInfo = metaObject->classInfo(i);
+		const QMetaClassInfo classInfo = metaObject->classInfo(i);
 		if (QString(classInfo.name()) == name) {
 			return QString(classInfo.value());
 		}

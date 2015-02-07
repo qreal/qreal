@@ -10,7 +10,7 @@ namespace qReal {
 class GraphicalModelAssistInterface : public details::ModelsAssistInterface
 {
 public:
-	virtual qrRepo::GraphicalRepoApi const &graphicalRepoApi() const = 0;
+	virtual const qrRepo::GraphicalRepoApi &graphicalRepoApi() const = 0;
 	virtual qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const = 0;
 	virtual Id createElement(const Id &parent, const Id &type) = 0;
 	virtual Id createElement(const Id &parent, const Id &id, bool isFromLogicalModel
@@ -26,16 +26,16 @@ public:
 	virtual IdList temporaryRemovedLinksNone(const Id &elem) const = 0;
 	virtual void removeTemporaryRemovedLinks(const Id &elem) = 0;
 
-	virtual void setConfiguration(const Id &elem, QPolygon const &newValue) = 0;
+	virtual void setConfiguration(const Id &elem, const QPolygon &newValue) = 0;
 	virtual QPolygon configuration(const Id &elem) const = 0;
 
 	virtual void setPosition(const Id &elem, const QPointF &newValue) = 0;
 	virtual QPointF position(const Id &elem) const = 0;
 
-	virtual void setToPort(const Id &elem, qreal const &newValue) = 0;
+	virtual void setToPort(const Id &elem, const qreal &newValue) = 0;
 	virtual qreal toPort(const Id &elem) const = 0;
 
-	virtual void setFromPort(const Id &elem, qreal const &newValue) = 0;
+	virtual void setFromPort(const Id &elem, const qreal &newValue) = 0;
 	virtual qreal fromPort(const Id &elem) const = 0;
 
 	virtual void setToolTip(const Id &elem, const QString &newValue) = 0;

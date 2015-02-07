@@ -12,7 +12,7 @@ Marker::Marker(const interpreterBase::robotModel::DeviceInfo &info
 {
 }
 
-void Marker::down(QColor const &color)
+void Marker::down(const QColor &color)
 {
 	mEngine.markerDown(color);
 }

@@ -2,7 +2,7 @@
 
 using namespace qReal::commands;
 
-SelectElementCommand::SelectElementCommand(EditorViewScene const *scene
+SelectElementCommand::SelectElementCommand(const EditorViewScene *scene
 		, const Id &id, bool shouldSelect, bool forceValueChange)
 	: ElementCommand(scene, id)
 	, mNewState(shouldSelect)
@@ -10,7 +10,7 @@ SelectElementCommand::SelectElementCommand(EditorViewScene const *scene
 {
 }
 
-SelectElementCommand::SelectElementCommand(EditorView const *view
+SelectElementCommand::SelectElementCommand(const EditorView *view
 		, const Id &id, bool shouldSelect, bool forceValueChange)
 	: ElementCommand(&view->editorViewScene(), id)
 	, mNewState(shouldSelect)

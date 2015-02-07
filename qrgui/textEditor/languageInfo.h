@@ -54,7 +54,7 @@ public:
 	/// Appends the given information about programming language into a list of known.
 	/// When in future the system will open text files with the extension specified in
 	/// @arg language it will automaticly apply editor settings specified there.
-	static void registerLanguage(LanguageInfo const &language);
+	static void registerLanguage(const LanguageInfo &language);
 
 	/// Tries to find appropriate language by the given file extension;
 	/// Returns default textFileInfo(@arg extension) if no such lanugage was found.

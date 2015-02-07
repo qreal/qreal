@@ -15,7 +15,7 @@ class TokenParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes token to parse and lambda function to execute if token is parsed successfully.
-	explicit TokenParser(TokenType token, SemanticAction const &semanticAction)
+	explicit TokenParser(TokenType token, const SemanticAction &semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}

@@ -22,7 +22,7 @@ void UmlPortHandler::handleMoveEvent(const bool leftPressed
 
 	QGraphicsItem* const item = mNode->scene()->items(scenePos).value(1);
 	NodeElement* const actionItem = dynamic_cast<NodeElement * const>(item);
-	BorderChecker const actionItemBorderChecker(actionItem);
+	const BorderChecker actionItemBorderChecker(actionItem);
 	QPointF posInItem = QPointF(0, 0);
 	if (actionItem && ((actionItem == parentNode) || (!parentNode))) {
 		posInItem = actionItem->mapFromScene(scenePos);
@@ -56,7 +56,7 @@ void UmlPortHandler::handleHorizontalBorders(
 		, const QPointF &pos, const QPointF &posInItem) const
 {
 	QPointF newPos = pos;
-	BorderChecker const parentNodeBorderChecker(parentNode);
+	const BorderChecker parentNodeBorderChecker(parentNode);
 	if (mBelongsToHorizontalBorders) {
 		// tmpNode->borderValues()[0] == xHor of tmpNode. (mXHor field of BorderChecker(tmpNode))
 		if (parentNodeBorderChecker.checkNoBorderY(posInItem, tmpNode->borderValues()[0])) {

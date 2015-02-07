@@ -33,30 +33,30 @@ public:
 	/// Constructor.
 	/// @param repoApi - reference to repository API.
 	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
-			, modelsImplementation::ModelIndexesInterface const &graphicalModel);
+			, const modelsImplementation::ModelIndexesInterface &graphicalModel);
 
 	virtual ~GraphicalPartModel();
 
 	// Override.
-	virtual QVariant data(QModelIndex const &index, int role) const;
+	virtual QVariant data(const QModelIndex &index, int role) const;
 
 	// Override.
-	virtual bool setData(QModelIndex const &index, const QVariant &value, int role);
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 
 	// Override.
-	virtual int rowCount(QModelIndex const &parent = QModelIndex()) const;
+	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// Override.
-	virtual int columnCount(QModelIndex const &parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// Override.
-	virtual QModelIndex index(int row, int column, QModelIndex const &parent = QModelIndex()) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
 	// Override.
-	virtual QModelIndex parent(QModelIndex const &index) const;
+	virtual QModelIndex parent(const QModelIndex &index) const;
 
 	// Override.
-	virtual bool removeRows(int row, int count, QModelIndex const &parent = QModelIndex());
+	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
 	/// Adds new graphical part to model and repository.
 	/// @param element - id of an element to which a part shall be added. It shall already exist in repository,
@@ -72,7 +72,7 @@ public:
 	void reinit();
 
 public slots:
-	virtual void rowsAboutToBeRemovedInGraphicalModel(QModelIndex const &parent, int start, int end);
+	virtual void rowsAboutToBeRemovedInGraphicalModel(const QModelIndex &parent, int start, int end);
 
 private:
 	void clear();
@@ -85,7 +85,7 @@ private:
 
 	/// Maps id to an index of this id in mItems list.
 	QHash<Id, int> mIdPositions;
-	modelsImplementation::ModelIndexesInterface const &mGraphicalModel;
+	const modelsImplementation::ModelIndexesInterface &mGraphicalModel;
 };
 
 }

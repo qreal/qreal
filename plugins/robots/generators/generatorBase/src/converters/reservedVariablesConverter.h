@@ -20,7 +20,7 @@ public:
 			, const interpreterBase::robotModel::RobotModelInterface &robotModel
 			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 			, const simple::Binding::ConverterInterface *inputPortConverter
-			, parts::DeviceVariables const &deviceVariables);
+			, const parts::DeviceVariables &deviceVariables);
 
 	~ReservedVariablesConverter() override;
 
@@ -33,7 +33,7 @@ protected:
 	const interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const mDevices;
 	const simple::Binding::ConverterInterface *mInputConverter;  // Takes ownership
-	parts::DeviceVariables const &mDeviceVariables;
+	const parts::DeviceVariables &mDeviceVariables;
 };
 
 }

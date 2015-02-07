@@ -8,7 +8,7 @@ using namespace interpretation;
 
 const int blocksCountTillProcessingEvents = 100;
 
-Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
+Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
@@ -25,7 +25,7 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 	initTimer();
 }
 
-Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
+Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, const Id &diagramToInterpret
@@ -45,7 +45,7 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 
 Thread::~Thread()
 {
-	for (BlockInterface const * const block : mStack) {
+	for (const BlockInterface * const block : mStack) {
 		if (block) {
 			mInterpretersInterface.dehighlight(block->id());
 		}

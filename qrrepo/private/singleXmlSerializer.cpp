@@ -34,7 +34,7 @@ void SingleXmlSerializer::exportDiagram(const Id &diagramId, QDomDocument &doc, 
 {
 	QDomElement diagram = doc.createElement("diagram");
 
-	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[diagramId]);
+	const GraphicalObject * const graphicalObject = dynamic_cast<const GraphicalObject *>(objects[diagramId]);
 	if (graphicalObject) {
 		diagram.setAttribute("logical_id", graphicalObject->logicalId().toString());
 	}
@@ -60,7 +60,7 @@ void SingleXmlSerializer::exportElement(const Id &id, QDomDocument &doc, QDomEle
 	element.setAttribute("name", objects[id]->properties()["name"].toString());
 	element.setAttribute("graphical_id", id.toString());
 
-	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[id]);
+	const GraphicalObject * const graphicalObject = dynamic_cast<const GraphicalObject *>(objects[id]);
 	if (graphicalObject) {
 		element.setAttribute("logical_id", graphicalObject->logicalId().toString());
 	}
@@ -93,9 +93,9 @@ void SingleXmlSerializer::exportProperties(const Id&id, QDomDocument &doc, QDomE
 {
 	QDomElement props = doc.createElement("properties");
 
-	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[id]);
-	LogicalObject const * const logicalObject
-			= dynamic_cast<LogicalObject const *>(objects[graphicalObject->logicalId()]);
+	const GraphicalObject * const graphicalObject = dynamic_cast<const GraphicalObject *>(objects[id]);
+	const LogicalObject * const logicalObject
+			= dynamic_cast<const LogicalObject *>(objects[graphicalObject->logicalId()]);
 
 	QMap<QString, QVariant> properties;
 

@@ -74,7 +74,7 @@ Property * Property::clone()
 	return result;
 }
 
-bool Property::operator == (Property const &other) const
+bool Property::operator == (const Property &other) const
 {
 	return other.mName == mName
 		&& other.mType == mType
@@ -85,7 +85,7 @@ bool Property::operator == (Property const &other) const
 		;
 }
 
-bool Property::operator != (Property const &other) const
+bool Property::operator != (const Property &other) const
 {
 	return !(other == *this);
 }

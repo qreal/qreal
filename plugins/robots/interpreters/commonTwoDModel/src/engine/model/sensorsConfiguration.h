@@ -28,7 +28,7 @@ public:
 	void clearSensor(const interpreterBase::robotModel::PortInfo &port);
 
 	void serialize(QDomElement &robot, QDomDocument &document) const;
-	void deserialize(QDomElement const &element);
+	void deserialize(const QDomElement &element);
 
 signals:
 	/// Emitted when new device is added to configuration.

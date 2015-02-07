@@ -63,7 +63,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 	int forestallingLeft = sizeOfForestalling[0];
 
 	qreal curChildY = forestallingTop;
-	qreal const maxChildWidthValue = maxChildWidth();
+	const qreal maxChildWidthValue = maxChildWidth();
 
 	QList<NodeElement *> children = sortedChildrenList();
 	foreach (QGraphicsItem * const childItem, children) {
@@ -80,7 +80,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 			continue;
 		}
 
-		qreal const necessaryWidth =
+		const qreal necessaryWidth =
 				mElementImpl->maximizesChildren()
 				? maxChildWidthValue
 				: curItem->contentsRect().width();
@@ -103,7 +103,7 @@ void ResizeHandler::resizeParent() const
 {
 	NodeElement * const parItem = dynamic_cast<NodeElement* const>(mTargetNode->parentItem());
 	if (parItem) {
-		ResizeHandler const handler(parItem);
+		const ResizeHandler handler(parItem);
 		handler.resize(parItem->contentsRect(), parItem->pos());
 	}
 }

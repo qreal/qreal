@@ -71,7 +71,7 @@ void EditPropertiesDialog::acceptPropertyModifications()
 
 		mInterpreterEditorManager.addProperty(mId, mPropertyName);
 		// set property default value for elements on diagram
-		for (auto const &elementOnDiagram: mElementsOnDiagram) {
+		for (const auto &elementOnDiagram: mElementsOnDiagram) {
 			mApi.setProperty(elementOnDiagram, mPropertyName, mUi->defaultValueEdit->text());
 		}
 

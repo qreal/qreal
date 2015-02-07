@@ -7,10 +7,10 @@ using namespace interpreterCore;
 using namespace interpreterBase;
 using namespace robotModel;
 
-KitAutoSwitcher::KitAutoSwitcher(qReal::ProjectManagementInterface const &projectManager
-		, qReal::LogicalModelAssistInterface const &logicalModel
-		, BlocksFactoryManagerInterface const &factoryManager
-		, KitPluginManager const &kitPluginManager
+KitAutoSwitcher::KitAutoSwitcher(const qReal::ProjectManagementInterface &projectManager
+		, const qReal::LogicalModelAssistInterface &logicalModel
+		, const BlocksFactoryManagerInterface &factoryManager
+		, const KitPluginManager &kitPluginManager
 		, RobotModelManager &robotModelManager
 		, QObject *parent)
 	: QObject(parent)
@@ -69,7 +69,7 @@ QMap<qReal::Id, QString> KitAutoSwitcher::kitSpecificBlocks() const
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		QSet<qReal::Id> specificBlocks;
 		for (KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-			for (RobotModelInterface const *robotModel : kit->robotModels()) {
+			for (const RobotModelInterface *robotModel : kit->robotModels()) {
 				specificBlocks += mFactoryManager.enabledBlocks(*robotModel);
 			}
 		}

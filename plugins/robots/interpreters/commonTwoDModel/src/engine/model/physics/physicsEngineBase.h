@@ -16,7 +16,7 @@ namespace physics {
 class PhysicsEngineBase
 {
 public:
-	explicit PhysicsEngineBase(WorldModel const &worldModel);
+	explicit PhysicsEngineBase(const WorldModel &worldModel);
 	virtual ~PhysicsEngineBase();
 
 	/// Returns robot transition vector for the time interval given in the last recalculateParams() call
@@ -32,7 +32,7 @@ public:
 			, const QPainterPath &robotBoundingPath) = 0;
 
 protected:
-	WorldModel const &mWorldModel;
+	const WorldModel &mWorldModel;
 	QVector2D mPositionShift;
 	qreal mRotation;
 };

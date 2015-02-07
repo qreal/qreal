@@ -12,7 +12,7 @@ class PasteNodeCommand : public PasteCommand
 {
 public:
 	PasteNodeCommand(EditorViewScene *scene
-			, NodeData const &data
+			, const NodeData &data
 			, const QPointF &offset
 			, bool isGraphicalCopy
 			, QHash<Id, Id> *copiedIds);
@@ -34,7 +34,7 @@ private:
 
 	QPointF vectorFromContainer() const;
 
-	NodeData const mNodeData;
+	const NodeData mNodeData;
 	CreateElementCommand *mCreateCommand;
 };
 

@@ -25,10 +25,10 @@ void GesturesWidget::draw(const QString &paths)
 {
 	const int frame = 10;
 	const int gestureAreaSize = qMin(mUi->gesturePixmap->width(), mUi->gesturePixmap->size().height()) - frame;
-	QSize const size(gestureAreaSize, gestureAreaSize);
+	const QSize size(gestureAreaSize, gestureAreaSize);
 
 	GesturePainter painter(paths, Qt::white, Qt::blue, gestureAreaSize);
-	QPixmap const gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+	const QPixmap gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
 
 	mUi->gesturePixmap->setPixmap(gestureIcon.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

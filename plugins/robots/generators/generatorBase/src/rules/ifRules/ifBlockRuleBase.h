@@ -10,11 +10,11 @@ class IfBlockRuleBase : public SemanticTransformationRule
 {
 public:
 	IfBlockRuleBase(SemanticTree *tree, const qReal::Id &id
-			, LinkInfo const &thenLink, LinkInfo const &elseLink);
+			, const LinkInfo &thenLink, const LinkInfo &elseLink);
 
 protected:
-	LinkInfo const &mThenLink;
-	LinkInfo const &mElseLink;
+	const LinkInfo &mThenLink;
+	const LinkInfo &mElseLink;
 };
 
 }

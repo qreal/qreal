@@ -98,7 +98,7 @@ QString Pattern::rootNode() const
 
 QString Pattern::rootType() const
 {
-	for (GroupNode const &node : mNodes) {
+	for (const GroupNode &node : mNodes) {
 		if (node.id == mRootNode) {
 			return node.type;
 		}
@@ -128,9 +128,9 @@ void Pattern::countSize(EditorManager *editorManager)
 	qreal maxY = 0;
 	qreal minX = 0;
 	qreal maxX = 0;
-	for (GroupNode const &node : mNodes) {
+	for (const GroupNode &node : mNodes) {
 		const Id element(mEditor, mDiagram, node.type, "");
-		QSize const size = editorManager->iconSize(element);
+		const QSize size = editorManager->iconSize(element);
 		if (minY > node.position.y()) {
 			minY = node.position.y();
 		}

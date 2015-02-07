@@ -41,11 +41,11 @@ XmlCompiler::~XmlCompiler()
 
 bool XmlCompiler::compile(const QString &inputXmlFileName, const QString &sourcesRootFolder)
 {
-	QFileInfo const inputXmlFileInfo(inputXmlFileName);
+	const QFileInfo inputXmlFileInfo(inputXmlFileName);
 	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
 	mSourcesRootFolder = sourcesRootFolder;
-	QDir const startingDir = inputXmlFileInfo.dir();
+	const QDir startingDir = inputXmlFileInfo.dir();
 	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName())) {
 		return false;
 	}
@@ -56,7 +56,7 @@ bool XmlCompiler::compile(const QString &inputXmlFileName, const QString &source
 	return true;
 }
 
-Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, const QString &inputXmlFileName)
+Editor* XmlCompiler::loadXmlFile(const QDir &currentDir, const QString &inputXmlFileName)
 {
 	QFileInfo fileInfo(inputXmlFileName);
 	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);
@@ -402,7 +402,7 @@ void XmlCompiler::generateShallPaletteBeSorted(utils::OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initShallPaletteBeSortedMap()\n{\n";
 
-	for (Diagram const * const diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+	for (const Diagram * const diagram : mEditors[mCurrentEditor]->diagrams().values()) {
 		const QString diagramName = NameNormalizer::normalize(diagram->name());
 		out() << "\tmShallPaletteBeSortedMap[QString::fromUtf8(\""
 			<< diagramName << "\")] = " << (diagram->shallPaletteBeSorted() ? "true" : "false") << ";\n";
@@ -628,7 +628,7 @@ void XmlCompiler::generateIsParentOfRequest(OutFile &out)
 		<< "\tif (mParentsMap[childDiagram][childElement].contains(qMakePair(parentDiagram, parentElement)))\n"
 		<< "\t\treturn true;\n"
 		<< "\ttypedef QPair<QString, QString> StringPair;\n"
-		<< "\tforeach (StringPair const &pair, mParentsMap[childDiagram][childElement])\n"
+		<< "\tfor (const StringPair &pair : mParentsMap[childDiagram][childElement])\n"
 		<< "\t\tif (isParentOf(parentDiagram, parentElement, pair.first, pair.second))\n"
 		<< "\t\t\treturn true;\n"
 		<< "\treturn false;\n"
@@ -660,13 +660,13 @@ void XmlCompiler::generateGetParentsOfRequest(OutFile &out)
 // ListMethodGenerator, объекты-действия - PropertiesGenerator и т.д.
 // Примечание: на С++ это выглядит уродски, на C# вообще лишнего кода бы не было.
 // Даже в Java с анонимными классами это бы выглядело лучше.
-class XmlCompiler::ListMethodGenerator 
+class XmlCompiler::ListMethodGenerator
 {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
 };
 
-class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator 
+class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -674,7 +674,7 @@ public:
 	}
 };
 
-class XmlCompiler::PortsGenerator: public XmlCompiler::ListMethodGenerator 
+class XmlCompiler::PortsGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -682,7 +682,7 @@ public:
 	}
 };
 
-class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator 
+class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -690,7 +690,7 @@ public:
 	}
 };
 
-class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator 
+class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -698,7 +698,7 @@ public:
 	}
 };
 
-class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator 
+class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -706,7 +706,7 @@ public:
 	}
 };
 
-class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator 
+class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -714,7 +714,7 @@ public:
 	}
 };
 
-void XmlCompiler::generateListMethod(OutFile &out, const QString &signature, ListMethodGenerator const &generator)
+void XmlCompiler::generateListMethod(OutFile &out, const QString &signature, const ListMethodGenerator &generator)
 {
 	out() << "QStringList " << mPluginName << "Plugin::" << signature << " const\n"
 		<< "{\n"
@@ -846,7 +846,7 @@ void XmlCompiler::generateEditableEnums(OutFile &out)
 	out() << "bool " << mPluginName << "Plugin::isEnumEditable(const QString &name) const\n{\n";
 
 	QStringList editableEnums;
-	for (EnumType const *type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
+	for (const EnumType *type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
 		if (type->isEditable()) {
 			editableEnums << "\"" + type->name() + "\"";
 		}

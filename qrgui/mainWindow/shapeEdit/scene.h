@@ -54,9 +54,9 @@ public:
 
 signals:
 	void noSelectedItems();
-	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
+	void existSelectedItems(const QPen &penItem, const QBrush &brushItem);
 	void noSelectedTextPictureItems();
-	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, const QString &name);
+	void existSelectedTextPictureItems(const QPen &penItem, const QFont &fontItem, const QString &name);
 	void noSelectedPortItems();
 	void existSelectedPortItems(const QString &type);
 	void resetHighlightAllButtons();

@@ -69,7 +69,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 					? fileName.mid(1, fileName.length() - 2)
 					: fileName;
 
-	QFileInfo const fileInfo(dequotedFileName);
+	const QFileInfo fileInfo(dequotedFileName);
 
 	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
@@ -88,7 +88,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 QString ProjectManagerWrapper::textFileFilters() const
 {
 	QStringList result;
-	for (text::LanguageInfo const &language : text::Languages::knownLanguages()) {
+	for (const text::LanguageInfo &language : text::Languages::knownLanguages()) {
 		result << QString("%1 (*.%2)").arg(language.extensionDescription, language.extension);
 	}
 

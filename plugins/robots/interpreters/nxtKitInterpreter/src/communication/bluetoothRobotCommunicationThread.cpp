@@ -11,8 +11,8 @@
 
 #include "commandConstants.h"
 
-unsigned const keepAliveResponseSize = 9;
-unsigned const getFirmwareVersionResponseSize = 9;
+const unsigned keepAliveResponseSize = 9;
+const unsigned getFirmwareVersionResponseSize = 9;
 
 using namespace nxtKitInterpreter::communication;
 
@@ -29,7 +29,7 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 }
 
 void BluetoothRobotCommunicationThread::send(QObject *addressee
-		, const QByteArray &buffer, unsigned const responseSize)
+		, const QByteArray &buffer, const unsigned responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
@@ -104,7 +104,7 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 }
 
 void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
-		, unsigned const responseSize, QByteArray &outputBuffer)
+		, const unsigned responseSize, QByteArray &outputBuffer)
 {
 	send(buffer);
 	outputBuffer = receive(responseSize);

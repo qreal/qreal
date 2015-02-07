@@ -63,7 +63,7 @@ bool TrikDisplayWidget::buttonIsDown(const QString &buttonPort) const
 	return false;
 }
 
-void TrikDisplayWidget::setLedColor(QColor const &color)
+void TrikDisplayWidget::setLedColor(const QColor &color)
 {
 	QPalette backgroundPalette(palette());
 	backgroundPalette.setColor(QPalette::Background, color);

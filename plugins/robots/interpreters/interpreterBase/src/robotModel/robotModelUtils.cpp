@@ -6,7 +6,7 @@
 
 using namespace interpreterBase::robotModel;
 
-PortInfo RobotModelUtils::findPort(RobotModelInterface const &robotModel, const QString &name, Direction direction)
+PortInfo RobotModelUtils::findPort(const RobotModelInterface &robotModel, const QString &name, Direction direction)
 {
 	for (const interpreterBase::robotModel::PortInfo &portInfo : robotModel.availablePorts()) {
 		if ((portInfo.name() == name || portInfo.nameAliases().contains(name)) && portInfo.direction() == direction) {
@@ -23,7 +23,7 @@ QMap<QString, QMap<PortInfo, DeviceInfo> > RobotModelUtils::deserialize(const QS
 
 	QDomDocument parsedConfiguration;
 	parsedConfiguration.setContent(configuration);
-	QDomElement const rootElement = parsedConfiguration.documentElement();
+	const QDomElement rootElement = parsedConfiguration.documentElement();
 	for (QDomElement robotModelElement = rootElement.firstChildElement(); !robotModelElement.isNull()
 			; robotModelElement = robotModelElement.nextSiblingElement())
 	{

@@ -3,11 +3,11 @@
 using namespace twoDModel::view;
 using namespace interpreterBase::robotModel;
 
-SonarSensorItem::SonarSensorItem(model::WorldModel const &worldModel
+SonarSensorItem::SonarSensorItem(const model::WorldModel &worldModel
 		, model::SensorsConfiguration &configuration
 		, const PortInfo &port
 		, const QString &pathToImage
-		, QRect const &imageSize
+		, const QRect &imageSize
 		)
 	: SensorItem(configuration, port, pathToImage, imageSize)
 	, mWorldModel(worldModel)
@@ -16,7 +16,7 @@ SonarSensorItem::SonarSensorItem(model::WorldModel const &worldModel
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 }
 
-void SonarSensorItem::drawItem(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
+void SonarSensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
 	Q_UNUSED(style)
 	Q_UNUSED(widget)
@@ -39,7 +39,7 @@ void SonarSensorItem::drawExtractionForItem(QPainter *painter)
 	SensorItem::drawExtractionForItem(painter);
 
 	painter->save();
-	QPen const pen = QPen(Qt::black);
+	const QPen pen = QPen(Qt::black);
 	painter->setPen(pen);
 	painter->setOpacity(0.7);
 	painter->setRenderHints(painter->renderHints() | QPainter::Antialiasing);

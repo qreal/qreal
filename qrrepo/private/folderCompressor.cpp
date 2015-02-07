@@ -31,7 +31,7 @@ bool FolderCompressor::compress(const QString &sourceFolder, const QString &pref
 	QFileInfoList foldersList = dir.entryInfoList();
 
 	// 2 - For each folder in list: call the same function with folders' paths
-	foreach (QFileInfo const &folder, foldersList) {
+	foreach (const QFileInfo &folder, foldersList) {
 		QString folderName = folder.fileName();
 		QString folderPath = dir.absolutePath() + "/" + folderName;
 		QString newPrefix = prefix + "/" + folderName;
@@ -43,7 +43,7 @@ bool FolderCompressor::compress(const QString &sourceFolder, const QString &pref
 	QFileInfoList filesList = dir.entryInfoList();
 
 	// 4- For each mFile in list: add mFile path and compressed binary data
-	foreach (QFileInfo const &fileInfo, filesList) {
+	foreach (const QFileInfo &fileInfo, filesList) {
 		QFile file(dir.absolutePath() + "/" + fileInfo.fileName());
 		if (!file.open(QIODevice::ReadOnly)) { // couldn't open file
 			return false;

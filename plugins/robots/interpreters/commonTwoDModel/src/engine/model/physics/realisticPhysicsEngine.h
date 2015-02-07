@@ -13,7 +13,7 @@ namespace physics {
 class RealisticPhysicsEngine : public PhysicsEngineBase
 {
 public:
-	explicit RealisticPhysicsEngine(WorldModel const &worldModel, Timeline const &timeline);
+	explicit RealisticPhysicsEngine(const WorldModel &worldModel, const Timeline &timeline);
 
 	void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 			, bool engine1Break, bool engine2Break
@@ -23,11 +23,11 @@ public:
 private:
 	/// Counts and returns traction force vector taking into consideration engines speed and placement
 	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode
-			, const QPointF &rotationCenter, QVector2D const &direction);
+			, const QPointF &rotationCenter, const QVector2D &direction);
 
 	/// Applies all forces currently acting on robot
 	void recalculateVelocity(qreal timeInterval);
-	void applyRotationalFrictionForce(qreal timeInterval, QVector2D const &direction);
+	void applyRotationalFrictionForce(qreal timeInterval, const QVector2D &direction);
 
 	/// Calculates forces and force moments acting on the robot from the walls
 	void findCollision(const QPainterPath &robotBoundingRegion

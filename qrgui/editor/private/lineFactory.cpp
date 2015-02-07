@@ -11,7 +11,7 @@ LineFactory::LineFactory(EdgeElement *edge)
 {
 }
 
-LineHandler * LineFactory::createHandler(linkShape::LinkShape const type) const
+LineHandler * LineFactory::createHandler(const linkShape::LinkShape type) const
 {
 	switch(type) {
 	case linkShape::broken:
@@ -39,7 +39,7 @@ QMenu * LineFactory::shapeTypeMenu() const
 	return menu;
 }
 
-QString LineFactory::shapeToString(linkShape::LinkShape const shapeType)
+QString LineFactory::shapeToString(const linkShape::LinkShape shapeType)
 {
 	switch (shapeType) {
 	case linkShape::broken:

@@ -46,7 +46,7 @@ int WorldModel::sonarReading(const QPointF &position, qreal direction) const
 }
 
 bool WorldModel::checkSonarDistance(const int distance, const QPointF &position
-		, qreal const direction, const QPainterPath &wallPath) const
+		, const qreal direction, const QPainterPath &wallPath) const
 {
 	const QPainterPath rayPath = sonarScanningRegion(position, direction, distance);
 	return rayPath.intersects(wallPath);
@@ -59,15 +59,15 @@ QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, int range)
 
 QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, qreal direction, int range) const
 {
-	qreal const rayWidthDegrees = 10.0;
-	qreal const rangeInPixels = range * pixelsInCm;
+	const qreal rayWidthDegrees = 10.0;
+	const qreal rangeInPixels = range * pixelsInCm;
 
 	QPainterPath rayPath;
 	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
 			, 2 * rangeInPixels, 2 * rangeInPixels)
 			, -direction - rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
-	QTransform const sensorPositionTransform = QTransform().translate(position.x(), position.y());
+	const QTransform sensorPositionTransform = QTransform().translate(position.x(), position.y());
 	return sensorPositionTransform.map(rayPath);
 }
 
@@ -151,7 +151,7 @@ void WorldModel::clear()
 	clearRobotTrace();
 }
 
-void WorldModel::appendRobotTrace(QPen const &pen, const QPointF &begin, const QPointF &end)
+void WorldModel::appendRobotTrace(const QPen &pen, const QPointF &begin, const QPointF &end)
 {
 	if (pen.color() == QColor(Qt::transparent)) {
 		return;
@@ -225,7 +225,7 @@ QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeft
 	return result;
 }
 
-void WorldModel::deserialize(QDomElement const &element)
+void WorldModel::deserialize(const QDomElement &element)
 {
 	if (element.isNull()) {
 		/// @todo Report error

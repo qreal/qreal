@@ -37,7 +37,7 @@ void HotKeyManager::deleteCommand(const QString &id)
 	instance().deleteCommandPrivate(id);
 }
 
-bool HotKeyManager::setShortcut(const QString &id, QKeySequence const &keyseq)
+bool HotKeyManager::setShortcut(const QString &id, const QKeySequence &keyseq)
 {
 	return instance().registerShortcut(id, keyseq);
 }
@@ -71,14 +71,14 @@ void HotKeyManager::registerCommand(const QString &id, QAction *command)
 {
 	QList<QKeySequence> const shortcuts = command->shortcuts();
 
-	foreach (QKeySequence const &shortcut, shortcuts) {
+	foreach (const QKeySequence &shortcut, shortcuts) {
 		instance().registerShortcut(id, shortcut.toString());
 	}
 
 	mCommands[id] = command;
 }
 
-bool HotKeyManager::registerShortcut(const QString &id, QKeySequence const &keyseq)
+bool HotKeyManager::registerShortcut(const QString &id, const QKeySequence &keyseq)
 {
 	if (mCommands.contains(id)) {
 		const QString shortcut = keyseq.toString();

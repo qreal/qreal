@@ -45,7 +45,7 @@ QList<semantics::SemanticTree *> Threads::threads() const
 QStringList Threads::threadNames() const
 {
 	QStringList result;
-	for (semantics::SemanticTree const *thread : threads()) {
+	for (const semantics::SemanticTree *thread : threads()) {
 		result << name(thread);
 	}
 
@@ -79,7 +79,7 @@ QString Threads::generateImplementations(const QString &indentString) const
 
 	const QString implementationsHeader = readTemplate("threads/implementationsSectionHeader.t");
 	QStringList implementations;
-	for (semantics::SemanticTree const *thread : threads) {
+	for (const semantics::SemanticTree *thread : threads) {
 		const QString code = thread->toString(1, indentString);
 		implementations << QString(implementation).replace("@@NAME@@", name(thread)).replace("@@BODY@@", code);
 	}
@@ -87,7 +87,7 @@ QString Threads::generateImplementations(const QString &indentString) const
 	return implementationsHeader + implementations.join("\n");
 }
 
-QString Threads::name(semantics::SemanticTree const *tree) const
+QString Threads::name(const semantics::SemanticTree *tree) const
 {
 	return utils::NameNormalizer::normalizeStrongly(tree->initialBlock().id(), false);
 }

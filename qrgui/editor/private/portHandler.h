@@ -81,7 +81,7 @@ private:
 	/// 	N - port Id
 	/// 	N + 1 - next port!
 	/// 0.9999 is a number that is really close to 1.
-	static qreal const mMaximumFractionPartValue;
+	static const qreal mMaximumFractionPartValue;
 
 	/// Connects temporary removed links.
 	/// Used in model manipulating.
@@ -140,7 +140,7 @@ private:
 
 	/// Transforms point port for current node size.
 	/// @param port Port that will be actually dealt with.
-	QLineF transformPortForNodeSize(StatLine const * const port) const;
+	QLineF transformPortForNodeSize(const StatLine * const port) const;
 
 	/// Transforms line port for current node size.
 	/// @param port Port that will be actually dealt with.

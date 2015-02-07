@@ -23,7 +23,7 @@ public:
 			, SensorTypeEnum lowLevelSensorType
 			, INPUT_DEVICE_SUBCODE sensorMode);
 
-	void send(QByteArray command, unsigned const responseSize, QByteArray reading);
+	void send(QByteArray command, const unsigned responseSize, QByteArray reading);
 
 	/// Returns a value of port that can be used as corresponding byte in request packages.
 	char lowLevelPort() const;

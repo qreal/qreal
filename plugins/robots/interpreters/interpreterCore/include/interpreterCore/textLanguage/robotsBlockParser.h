@@ -19,7 +19,7 @@ public:
 	/// @param robotModelManager - provides information about robot model.
 	/// @param timeComputer - method to get time elapsed since start of interpretation, used in predefined variable.
 	RobotsBlockParser(const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, utils::ComputableNumber::IntComputer const &timeComputer);
+			, const utils::ComputableNumber::IntComputer &timeComputer);
 
 	/// Returns a list of predefined variables that should be hidden from user (sensor and port variables, basically).
 	const QStringList &hiddenVariables() const;
@@ -33,7 +33,7 @@ private:
 	void addIntrinsicFuctions();
 
 	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
-	utils::ComputableNumber::IntComputer const mTimeComputer;
+	const utils::ComputableNumber::IntComputer mTimeComputer;
 	QStringList mHiddenVariables;
 };
 

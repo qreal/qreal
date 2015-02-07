@@ -130,7 +130,7 @@ public:
 private:
 	EditorInterface *editorInterface(const QString &editor) const;
 
-	bool isParentOf(EditorInterface const *plugin, const QString &childDiagram, const QString &child
+	bool isParentOf(const EditorInterface *plugin, const QString &childDiagram, const QString &child
 			, const QString &parentDiagram, const QString &parent) const;
 
 	QStringList mPluginsLoaded;

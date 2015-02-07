@@ -4,7 +4,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 IfWithBothUnvisitedRule::IfWithBothUnvisitedRule(SemanticTree *tree, const Id &id
-		, LinkInfo const &thenLink, LinkInfo const &elseLink)
+		, const LinkInfo &thenLink, const LinkInfo &elseLink)
 	: IfBlockRuleBase(tree, id, thenLink, elseLink)
 {
 }

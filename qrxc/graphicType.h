@@ -20,7 +20,7 @@ class GraphicType : public Type
 public:
 	GraphicType(Diagram *diagram);
 	virtual ~GraphicType();
-	virtual bool init(QDomElement const &element, const QString &context);
+	virtual bool init(const QDomElement &element, const QString &context);
 	virtual bool resolve();
 	virtual void generateNameMapping(utils::OutFile &out);
 	virtual void generateDescriptionMapping(utils::OutFile &out);
@@ -118,7 +118,7 @@ private:
 	virtual bool initAssociations() = 0;
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;
-	virtual bool initLabel(Label *label, QDomElement const &element, const int &count) = 0;
+	virtual bool initLabel(Label *label, const QDomElement &element, const int &count) = 0;
 
 	bool addProperty(Property *property);
 	bool addPort(Port *port);

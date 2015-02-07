@@ -7,7 +7,7 @@
 using namespace qReal::commands;
 
 PasteEdgeCommand::PasteEdgeCommand(EditorViewScene *scene
-		, EdgeData const &data
+		, const EdgeData &data
 		, const QPointF &offset
 		, bool isGraphicalCopy
 		, QHash<qReal::Id, qReal::Id> *copiedIds)

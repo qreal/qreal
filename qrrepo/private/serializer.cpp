@@ -49,7 +49,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		, "Serializer::saveToDisk(...)"
 		, "may be Repository of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
-	foreach (Object const * const object, objects) {
+	foreach (const Object * const object, objects) {
 		const QString filePath = createDirectory(object->id(), object->isLogicalObject());
 
 		QDomDocument doc;
@@ -106,15 +106,15 @@ void Serializer::loadFromDisk(const QString &currentPath, QHash<qReal::Id, Objec
 	}
 }
 
-void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
+void Serializer::loadModel(const QDir &dir, QHash<qReal::Id, Object*> &objectsHash)
 {
-	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+	foreach (const QFileInfo &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		const QString path = fileInfo.filePath();
 		if (fileInfo.isDir()) {
 			loadModel(path, objectsHash);
 		} else if (fileInfo.isFile()) {
 			QDomDocument doc = xmlUtils::loadDocument(path);
-			QDomElement const element = doc.documentElement();
+			const QDomElement element = doc.documentElement();
 
 			// To ensure backwards compatibility. Replace this by separate tag names when save updating mechanism
 			// will be implemented.
@@ -155,7 +155,7 @@ void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
 		return;
 	}
 
-	QDomDocument const document = xmlUtils::loadDocument(filePath);
+	const QDomDocument document = xmlUtils::loadDocument(filePath);
 	for (QDomElement child = document.documentElement().firstChildElement("info")
 			; !child.isNull()
 			; child = child.nextSiblingElement("info"))
@@ -176,7 +176,7 @@ void Serializer::clearDir(const QString &path)
 		return;
 	}
 
-	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+	foreach (const QFileInfo &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
 			clearDir(fileInfo.filePath());
 			dir.rmdir(fileInfo.fileName());

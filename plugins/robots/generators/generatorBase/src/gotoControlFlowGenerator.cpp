@@ -31,7 +31,7 @@ void GotoControlFlowGenerator::beforeSearch()
 {
 }
 
-void GotoControlFlowGenerator::visitRegular(const Id &id, QList<LinkInfo> const &links)
+void GotoControlFlowGenerator::visitRegular(const Id &id, const QList<LinkInfo> &links)
 {
 	ControlFlowGeneratorBase::visitRegular(id, links);
 	SimpleNode * const thisNode = static_cast<SimpleNode *>(mSemanticTree->findNodeFor(id));
@@ -46,13 +46,13 @@ void GotoControlFlowGenerator::visitRegular(const Id &id, QList<LinkInfo> const 
 	thisNode->insertSiblingAfterThis(nextNode);
 }
 
-void GotoControlFlowGenerator::visitConditional(const Id &id, QList<LinkInfo> const &links)
+void GotoControlFlowGenerator::visitConditional(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
 	QPair<LinkInfo, LinkInfo> const branches(ifBranchesFor(id));
-	LinkInfo const thenLink = branches.first;
-	LinkInfo const elseLink = branches.second;
+	const LinkInfo thenLink = branches.first;
+	const LinkInfo elseLink = branches.second;
 
 	IfNode * const thisNode = static_cast<IfNode *>(mSemanticTree->findNodeFor(id));
 	thisNode->thenZone()->appendChild(produceGotoNode(thenLink.target));
@@ -62,13 +62,13 @@ void GotoControlFlowGenerator::visitConditional(const Id &id, QList<LinkInfo> co
 	produceNextNodeIfNeeded(elseLink, thisNode);
 }
 
-void GotoControlFlowGenerator::visitLoop(const Id &id, QList<LinkInfo> const &links)
+void GotoControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
 	QPair<LinkInfo, LinkInfo> const branches(loopBranchesFor(id));
-	LinkInfo const iterationLink = branches.first;
-	LinkInfo const nextLink = branches.second;
+	const LinkInfo iterationLink = branches.first;
+	const LinkInfo nextLink = branches.second;
 
 	LoopNode * const thisNode = static_cast<LoopNode *>(mSemanticTree->findNodeFor(id));
 	thisNode->bodyZone()->appendChild(produceGotoNode(iterationLink.target));
@@ -78,10 +78,10 @@ void GotoControlFlowGenerator::visitLoop(const Id &id, QList<LinkInfo> const &li
 	produceNextNodeIfNeeded(nextLink, thisNode);
 }
 
-void GotoControlFlowGenerator::visitSwitch(const Id &id, QList<LinkInfo> const &links)
+void GotoControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &links)
 {
 	SwitchNode * const thisNode = static_cast<SwitchNode *>(mSemanticTree->findNodeFor(id));
-	for (LinkInfo const &branch : links) {
+	for (const LinkInfo &branch : links) {
 		const QString value = mRepo.property(branch.linkId, "Guard").toString();
 		thisNode->addBranch(value, produceGotoNode(branch.target));
 		produceNextNodeIfNeeded(branch, thisNode);
@@ -101,7 +101,7 @@ SemanticNode *GotoControlFlowGenerator::produceGotoNode(const qReal::Id &id)
 	return result;
 }
 
-void GotoControlFlowGenerator::produceNextNodeIfNeeded(LinkInfo const &info, NonZoneNode * const parent)
+void GotoControlFlowGenerator::produceNextNodeIfNeeded(const LinkInfo &info, NonZoneNode * const parent)
 {
 	if (!mSemanticTree->findNodeFor(info.target)) {
 		SemanticNode * const nextNode = mSemanticTree->produceNodeFor(info.target);

@@ -12,7 +12,7 @@ class Text : public Item
 public:
 	Text(bool isDynamic = false);
 	Text(int x, int y, const QString &text = "text", bool isDynamic = false);
-	Text(Text const &other);
+	Text(const Text &other);
 	virtual Item* clone();
 	void init(int x, int y, const QString &text);
 	bool isDynamicText();

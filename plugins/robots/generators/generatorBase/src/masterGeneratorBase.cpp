@@ -31,7 +31,7 @@ MasterGeneratorBase::MasterGeneratorBase(const qrRepo::RepoApi &repo
 {
 }
 
-void MasterGeneratorBase::setProjectDir(QFileInfo const &fileInfo)
+void MasterGeneratorBase::setProjectDir(const QFileInfo &fileInfo)
 {
 	mProjectName = fileInfo.baseName();
 	mProjectDir = fileInfo.absolutePath();
@@ -69,7 +69,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	}
 
 	QString mainCode;
-	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
+	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();
 	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
 		const bool subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator
@@ -90,7 +90,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	if (mainCode.isEmpty() && supportsGotoGeneration()) {
 		mErrorReporter.addInformation(tr("This diagram cannot be generated into the structured code."\
 				" Generating it into the code with 'goto' statements."));
-		semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
+		const semantics::SemanticTree *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 		if (gotoMainControlFlow) {
 			mainCode = gotoMainControlFlow->toString(1, indentString);
 			const bool gotoSubprogramsResult = mCustomizer->factory()

@@ -31,7 +31,7 @@ private:
 	static void clearDir(const QString &path);
 
 	void loadFromDisk(const QString &currentPath, QHash<qReal::Id, Object *> &objectsHash);
-	void loadModel(QDir const &dir, QHash<qReal::Id, Object *> &objectsHash);
+	void loadModel(const QDir &dir, QHash<qReal::Id, Object *> &objectsHash);
 
 	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
 	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;

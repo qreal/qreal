@@ -25,9 +25,9 @@ bool Editor::isLoaded()
 	return mLoadingComplete;
 }
 
-bool Editor::load(QDir const &currentDir)
+bool Editor::load(const QDir &currentDir)
 {
-	QDomElement const metamodel = mXmlDomDocument.firstChildElement("metamodel");
+	const QDomElement metamodel = mXmlDomDocument.firstChildElement("metamodel");
 	if (metamodel.isNull())
 	{
 		qDebug() << "ERROR: metamodel tag not found";
@@ -70,7 +70,7 @@ bool Editor::load(QDir const &currentDir)
 		QString nodeName = diagramElement.attribute("nodeName", "");
 		QString diagramDisplayedName = diagramElement.attribute("displayedName", diagramName);
 
-		Diagram const *existingDiagram = mXmlCompiler->getDiagram(diagramName);
+		const Diagram *existingDiagram = mXmlCompiler->getDiagram(diagramName);
 		if (existingDiagram)
 		{
 			qDebug() << "ERROR: diagram" << diagramName << "is already loaded";
@@ -148,15 +148,15 @@ QStringList Editor::getAllPortNames() const
 {
 	QStringList result;
 
-	foreach (Diagram const * const diagram, mDiagrams.values()) {
-		foreach (Type const * const type, diagram->types()) {
-			if (dynamic_cast<PortType const * const>(type)) {
+	foreach (const Diagram * const diagram, mDiagrams.values()) {
+		foreach (const Type * const type, diagram->types()) {
+			if (dynamic_cast<const PortType * const>(type)) {
 				result << type->name();
 			}
 		}
 	}
 
-	foreach (Editor const * const editor, mIncludes) {
+	foreach (const Editor * const editor, mIncludes) {
 		result += editor->getAllPortNames();
 	}
 

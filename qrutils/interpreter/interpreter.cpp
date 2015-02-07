@@ -11,7 +11,7 @@ using namespace interpretation;
 
 const int maxThreadsCount = 100;
 
-Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, BlocksTableInterface &blocksTable

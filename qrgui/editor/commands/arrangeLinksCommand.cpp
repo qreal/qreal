@@ -2,13 +2,13 @@
 
 using namespace qReal::commands;
 
-ArrangeLinksCommand::ArrangeLinksCommand(EditorViewScene const *scene
+ArrangeLinksCommand::ArrangeLinksCommand(const EditorViewScene *scene
 		, const Id &id, bool needAdjusting)
 	: ElementCommand(scene, id), mNeedAdjusting(needAdjusting)
 {
 }
 
-ArrangeLinksCommand::ArrangeLinksCommand(EditorView const *view
+ArrangeLinksCommand::ArrangeLinksCommand(const EditorView *view
 		, const Id &id, bool needAdjusting)
 	: ElementCommand(&view->editorViewScene(), id), mNeedAdjusting(needAdjusting)
 {

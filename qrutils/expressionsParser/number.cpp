@@ -47,7 +47,7 @@ QString Number::toString() const
 	return value().toString();
 }
 
-void Number::operator+=(Number const &add)
+void Number::operator+=(const Number &add)
 {
 	if (mType == intType && add.type() == intType) {
 		mValue = mValue.toInt() + add.value().toInt();
@@ -57,7 +57,7 @@ void Number::operator+=(Number const &add)
 	}
 }
 
-void Number::operator-=(Number const &sub)
+void Number::operator-=(const Number &sub)
 {
 	if (mType == intType && sub.type() == intType) {
 		mValue = mValue.toInt() - sub.value().toInt();
@@ -67,7 +67,7 @@ void Number::operator-=(Number const &sub)
 	}
 }
 
-void Number::operator*=(Number const &mult)
+void Number::operator*=(const Number &mult)
 {
 	if (mType == intType && mult.type() == intType) {
 		mValue = mValue.toInt() * mult.value().toInt();
@@ -77,7 +77,7 @@ void Number::operator*=(Number const &mult)
 	}
 }
 
-void Number::operator/=(Number const &div)
+void Number::operator/=(const Number &div)
 {
 	if (mType == intType && div.type() == intType) {
 		if (div.value().toInt() == 0) {
@@ -105,14 +105,14 @@ Number Number::operator-()
 	return *this;
 }
 
-bool Number::operator<(Number const &arg)
+bool Number::operator<(const Number &arg)
 {
 	return mValue.toDouble() < arg.value().toDouble();
 }
 
-bool Number::operator==(Number const &arg)
+bool Number::operator==(const Number &arg)
 {
-	Number::Type const argType = arg.type();
+	const Number::Type argType = arg.type();
 	if (mType == Number::intType && argType == Number::intType) {
 		return mValue.toInt() == arg.value().toInt();
 	} else if (mType == Number::intType && argType == Number::doubleType) {
@@ -124,22 +124,22 @@ bool Number::operator==(Number const &arg)
 	}
 }
 
-bool Number::operator>(Number const &arg)
+bool Number::operator>(const Number &arg)
 {
 	return !((*this)<arg || (*this)==arg);
 }
 
-bool Number::operator<=(Number const &arg)
+bool Number::operator<=(const Number &arg)
 {
 	return (*this)<arg || (*this)==arg;
 }
 
-bool Number::operator>=(Number const &arg)
+bool Number::operator>=(const Number &arg)
 {
 	return !((*this)<arg);
 }
 
-bool Number::operator!=(Number const &arg)
+bool Number::operator!=(const Number &arg)
 {
 	return !((*this)==arg);
 }

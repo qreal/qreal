@@ -7,7 +7,7 @@
 
 using namespace nxtKitInterpreter::communication;
 
-unsigned const lsGetStatusResponseSize = 6;
+const unsigned lsGetStatusResponseSize = 6;
 
 I2CCommunicator::I2CCommunicator(utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: mRobotCommunicator(robotCommunicator)

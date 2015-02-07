@@ -38,11 +38,11 @@ void SceneGridHandler::delUnusedLines()
 void SceneGridHandler::drawLineY(qreal pointY, const QRectF &sceneRect)
 {
 	pointY -= sceneRect.y();
-	QLineF const newLine(0, pointY, sceneRect.width(), pointY);
+	const QLineF newLine(0, pointY, sceneRect.width(), pointY);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QLineF const &line, mLines) {
+	foreach (const QLineF &line, mLines) {
 		if (qAbs(line.y1() - newLine.y1()) < indistinguishabilitySpace
 				&& line.y2() == line.y1())
 		{
@@ -56,11 +56,11 @@ void SceneGridHandler::drawLineY(qreal pointY, const QRectF &sceneRect)
 void SceneGridHandler::drawLineX(qreal pointX, const QRectF &sceneRect)
 {
 	pointX -= sceneRect.x();
-	QLineF const newLine(pointX, 0, pointX, sceneRect.height());
+	const QLineF newLine(pointX, 0, pointX, sceneRect.height());
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QLineF const &line, mLines) {
+	foreach (const QLineF &line, mLines) {
 		if (qAbs(line.x1() - newLine.x1()) < indistinguishabilitySpace
 				&& line.x2() == line.x1())
 		{
@@ -253,16 +253,16 @@ void SceneGridHandler::drawGuides()
 		const QPointF point = item->scenePos();
 		const QRectF contents = item->contentsRect();
 
-		qreal const pointX1 = point.x() + contents.x() - spacing;
-		qreal const pointY1  = point.y() + contents.y() - spacing;
-		qreal const pointX2 = pointX1  + contents.width() + 2 * spacing;
-		qreal const pointY2  = pointY1 + contents.height() + 2 * spacing;
+		const qreal pointX1 = point.x() + contents.x() - spacing;
+		const qreal pointY1  = point.y() + contents.y() - spacing;
+		const qreal pointX2 = pointX1  + contents.width() + 2 * spacing;
+		const qreal pointY2  = pointY1 + contents.height() + 2 * spacing;
 
 		if (pointX1 != myX1 || pointY1 != myY1) {
-			qreal const deltaY1 = qAbs(pointY1 - myY1);
-			qreal const deltaY2 = qAbs(pointY2 - myY2);
-			qreal const deltaX1 = qAbs(pointX1 - myX1);
-			qreal const deltaX2 = qAbs(pointX2 - myX2);
+			const qreal deltaY1 = qAbs(pointY1 - myY1);
+			const qreal deltaY2 = qAbs(pointY2 - myY2);
+			const qreal deltaX1 = qAbs(pointX1 - myX1);
+			const qreal deltaX2 = qAbs(pointX2 - myX2);
 
 			buildLineY(deltaY1, pointY1, 0, myY1, myY2, sceneRect);
 			buildLineY(deltaY2, pointY2, contentsRect.height(), myY1, myY2, sceneRect);

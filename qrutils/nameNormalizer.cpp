@@ -20,7 +20,7 @@ QString NameNormalizer::normalize(const QString &name, bool isUpperFirst)
 QString NameNormalizer::normalizeStrongly(const QString &name, bool upperFirst)
 {
 	QString filteredName;
-	foreach (QChar const &character, name) {
+	foreach (const QChar &character, name) {
 		if ((filteredName.isEmpty() && (character.isLetter() || character == '_')) ||
 				(!filteredName.isEmpty() && (character.isLetterOrNumber()
 						|| character == ' ' || character == '_')))
@@ -80,7 +80,7 @@ QString NameNormalizer::russianTranslit(const QString &russianString)
 	}
 
 	QString result;
-	foreach (QChar const &letter, russianString) {
+	foreach (const QChar &letter, russianString) {
 		result += russianLetters.contains(letter)
 				? translitions[russianLetters.indexOf(letter)] : letter;
 	}

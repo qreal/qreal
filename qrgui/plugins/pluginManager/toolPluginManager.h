@@ -28,7 +28,7 @@ public:
 	ToolPluginManager();
 	~ToolPluginManager();
 
-	void init(PluginConfigurator const &configurator);
+	void init(const PluginConfigurator &configurator);
 	void updateSettings();
 	QList<ActionInfo> actions() const;
 	QList<QPair<QString, gui::PreferencesPage *> > preferencesPages() const;

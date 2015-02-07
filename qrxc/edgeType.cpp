@@ -200,7 +200,7 @@ bool EdgeType::initPortTypes()
 	return true;
 }
 
-void EdgeType::initPortTypes(QDomElement const &portsElement, QStringList &ports)
+void EdgeType::initPortTypes(const QDomElement &portsElement, QStringList &ports)
 {
 	ports << "NonTyped";
 	if (portsElement.isNull()) {
@@ -217,7 +217,7 @@ void EdgeType::initPortTypes(QDomElement const &portsElement, QStringList &ports
 	ports.removeDuplicates();
 }
 
-bool EdgeType::initLabel(Label *label, QDomElement const &element, const int &count)
+bool EdgeType::initLabel(Label *label, const QDomElement &element, const int &count)
 {
 	return label->init(element, count, false, mWidth, mHeight);
 }
@@ -255,7 +255,7 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out() << "\t\tvoid init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,\n"
+	out() << "\t\tvoid init(QRectF &, const PortFactoryInterface &, QList<PortInterface *> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}\n\n"
 	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";

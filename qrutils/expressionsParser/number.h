@@ -27,17 +27,17 @@ public:
 
 	QString toString() const;
 
-	void operator+=(Number const &add);
-	void operator-=(Number const &sub);
-	void operator*=(Number const &mult);
-	void operator/=(Number const &div);
+	void operator+=(const Number &add);
+	void operator-=(const Number &sub);
+	void operator*=(const Number &mult);
+	void operator/=(const Number &div);
 	Number operator-();
-	bool operator<(Number const &arg);
-	bool operator>(Number const &arg);
-	bool operator==(Number const &arg);
-	bool operator<=(Number const &arg);
-	bool operator>=(Number const &arg);
-	bool operator!=(Number const &arg);
+	bool operator<(const Number &arg);
+	bool operator>(const Number &arg);
+	bool operator==(const Number &arg);
+	bool operator<=(const Number &arg);
+	bool operator>=(const Number &arg);
+	bool operator!=(const Number &arg);
 
 protected:
 	QVariant mValue;

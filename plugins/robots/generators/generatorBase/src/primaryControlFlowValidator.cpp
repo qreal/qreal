@@ -53,7 +53,7 @@ QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::loopBranchesFor(const qRe
 }
 
 void PrimaryControlFlowValidator::visitRegular(const Id &id
-		, QList<LinkInfo> const &links)
+		, const QList<LinkInfo> &links)
 {
 	if (links.size() != 1) {
 		error(QObject::tr("This element must have exactly ONE outgoing link"), id);
@@ -63,7 +63,7 @@ void PrimaryControlFlowValidator::visitRegular(const Id &id
 }
 
 void PrimaryControlFlowValidator::visitFinal(const Id &id
-		, QList<LinkInfo> const &links)
+		, const QList<LinkInfo> &links)
 {
 	if (!links.isEmpty()) {
 		error(QObject::tr("Final node must not have outgoing links"), id);
@@ -71,7 +71,7 @@ void PrimaryControlFlowValidator::visitFinal(const Id &id
 }
 
 void PrimaryControlFlowValidator::visitConditional(const Id &id
-		, QList<LinkInfo> const &links)
+		, const QList<LinkInfo> &links)
 {
 	if (links.size() != 2) {
 		error(QObject::tr("If block must have exactly TWO outgoing links"), id);
@@ -79,11 +79,11 @@ void PrimaryControlFlowValidator::visitConditional(const Id &id
 	}
 
 	// In correct case exactly 2 of this 3 would be non-null
-	LinkInfo const *trueLink = nullptr;
-	LinkInfo const *falseLink = nullptr;
-	LinkInfo const *nonMarkedLink = nullptr;
+	const LinkInfo *trueLink = nullptr;
+	const LinkInfo *falseLink = nullptr;
+	const LinkInfo *nonMarkedLink = nullptr;
 
-	for (LinkInfo const &link : links) {
+	for (const LinkInfo &link : links) {
 		checkForConnected(link);
 
 		switch (guardOf(link.linkId)) {
@@ -133,7 +133,7 @@ void PrimaryControlFlowValidator::visitConditional(const Id &id
 }
 
 void PrimaryControlFlowValidator::visitLoop(const Id &id
-		, QList<LinkInfo> const &links)
+		, const QList<LinkInfo> &links)
 {
 	if (links.size() != 2) {
 		error(QObject::tr("Loop block must have exactly TWO outgoing links"), id);
@@ -141,10 +141,10 @@ void PrimaryControlFlowValidator::visitLoop(const Id &id
 	}
 
 	// In correct case must be non-null and different
-	LinkInfo const *iterationLink = nullptr;
-	LinkInfo const *nonMarkedBlock = nullptr;
+	const LinkInfo *iterationLink = nullptr;
+	const LinkInfo *nonMarkedBlock = nullptr;
 
-	for (LinkInfo const &link : links) {
+	for (const LinkInfo &link : links) {
 		checkForConnected(link);
 
 		switch (guardOf(link.linkId)) {
@@ -175,7 +175,7 @@ void PrimaryControlFlowValidator::visitLoop(const Id &id
 }
 
 void PrimaryControlFlowValidator::visitSwitch(const Id &id
-		, QList<LinkInfo> const &links)
+		, const QList<LinkInfo> &links)
 {
 	QSet<QString> branches;
 	bool defaultBranchFound = false;
@@ -185,7 +185,7 @@ void PrimaryControlFlowValidator::visitSwitch(const Id &id
 		return;
 	}
 
-	for (LinkInfo const &link : links) {
+	for (const LinkInfo &link : links) {
 		checkForConnected(link);
 
 		const QString condition = mRepo.property(link.linkId, "Guard").toString();
@@ -218,13 +218,13 @@ void PrimaryControlFlowValidator::visitFork(const Id &id, QList<LinkInfo> &links
 		return;
 	}
 
-	for (LinkInfo const &link : links) {
+	for (const LinkInfo &link : links) {
 		checkForConnected(link);
 	}
 }
 
 void PrimaryControlFlowValidator::visitUnknown(const Id &id
-		, QList<LinkInfo> const &links)
+		, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 	error(QObject::tr("Unknown block type"), id);
@@ -238,7 +238,7 @@ void PrimaryControlFlowValidator::error(const QString &message, const qReal::Id 
 	mErrorsOccured = true;
 }
 
-bool PrimaryControlFlowValidator::checkForConnected(LinkInfo const &link)
+bool PrimaryControlFlowValidator::checkForConnected(const LinkInfo &link)
 {
 	if (!link.connected) {
 		error(QObject::tr("Outgoing link is not connected"), link.linkId);

@@ -41,7 +41,7 @@ public:
 	Id from(const Id &elem) const;
 
 	QModelIndex indexById(const Id &id) const;
-	Id idByIndex(QModelIndex const &index) const;
+	Id idByIndex(const QModelIndex &index) const;
 	QPersistentModelIndex rootIndex() const;
 	Id rootId() const;
 
@@ -55,8 +55,8 @@ public:
 
 private:
 
-	ModelsAssistApi(ModelsAssistApi const &);
-	ModelsAssistApi& operator =(ModelsAssistApi const &);
+	ModelsAssistApi(const ModelsAssistApi &);
+	ModelsAssistApi& operator =(const ModelsAssistApi &);
 
 	details::modelsImplementation::AbstractModel &mModel;
 	const EditorManagerInterface &mEditorManagerInterface;

@@ -41,7 +41,7 @@ public:
 	QString generateImplementations(const QString &indentString) const;
 
 private:
-	QString name(semantics::SemanticTree const *tree) const;
+	QString name(const semantics::SemanticTree *tree) const;
 
 	QSet<qReal::Id> mUnprocessedThreads;
 	QMap<qReal::Id, semantics::SemanticTree *> mProcessedThreads;

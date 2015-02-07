@@ -199,7 +199,7 @@ void PaletteTree::saveConfiguration()
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	int diagramIndex = 0;
-	foreach (PaletteTreeWidgets const *editorTree, mEditorsTrees) {
+	foreach (const PaletteTreeWidgets *editorTree, mEditorsTrees) {
 		editorTree->saveConfiguration(mComboBox->itemText(diagramIndex));
 		diagramIndex++;
 	}

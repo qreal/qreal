@@ -43,8 +43,8 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 	}
 }
 
-void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, SystemEvents const &systemEvents
+void TrikKitInterpreterPlugin::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+		, const SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface

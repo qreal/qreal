@@ -1,7 +1,7 @@
 #include "touchSensor.h"
 #include <QDebug>
 
-unsigned const touchSensorResponseSize = 9;
+const unsigned touchSensorResponseSize = 9;
 
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;

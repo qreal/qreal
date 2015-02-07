@@ -70,7 +70,7 @@ bool ProjectManager::open(const QString &fileName)
 					? fileName.mid(1, fileName.length() - 2)
 					: fileName;
 
-	QFileInfo const fileInfo(dequotedFileName);
+	const QFileInfo fileInfo(dequotedFileName);
 
 	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
@@ -90,7 +90,7 @@ bool ProjectManager::openProject(const QString &fileName)
 	// file may become incompatible with the application. This will lead to
 	// a fail on the next start.
 	// 2. autosavePauser was first starts a timer of Autosaver
-	Autosaver::Pauser const autosavePauser(mAutosaver);
+	const Autosaver::Pauser autosavePauser(mAutosaver);
 	Q_UNUSED(autosavePauser)
 
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {

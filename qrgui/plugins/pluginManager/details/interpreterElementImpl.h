@@ -48,7 +48,7 @@ class InterpreterElementImpl : public ElementImpl
 {
 public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, const Id &metaId);
-	void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+	void init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports
 			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
 			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0);
 	void init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels);
@@ -91,9 +91,9 @@ public:
 	void updateRendererContent(const QString &shape);
 
 private:
-	void initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+	void initPointPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
 			, const int &width, const int &height);
-	void initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+	void initLinePorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
 			, const int &width, const int &height);
 	void initLabels(const int &width, const int &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
 	QVector<int> getSizeOfContainerProperty(const QString &property) const;

@@ -9,10 +9,10 @@ namespace semantics {
 class SimpleBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	SimpleBlockRuleBase(SemanticTree *tree, const qReal::Id &id, LinkInfo const &next);
+	SimpleBlockRuleBase(SemanticTree *tree, const qReal::Id &id, const LinkInfo &next);
 
 protected:
-	LinkInfo const &mNextLink;
+	const LinkInfo &mNextLink;
 };
 
 }

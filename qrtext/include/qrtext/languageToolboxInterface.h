@@ -22,7 +22,7 @@ public:
 	template<typename T>
 	T interpret(const qReal::Id &id, const QString &propertyName, const QString &code)
 	{
-		auto const &root = parse(id, propertyName, code);
+		const auto &root = parse(id, propertyName, code);
 		if (errors().isEmpty()) {
 			return interpret(root).value<T>();
 		} else {
@@ -66,7 +66,7 @@ public:
 	virtual void addIntrinsicFunction(const QString &name
 			, core::types::TypeExpression * const returnType
 			, const QList<core::types::TypeExpression *> &parameterTypes
-			, std::function<QVariant(QList<QVariant> const &)> const &semantic) = 0;
+			, std::function<QVariant(const QList<QVariant> &)> const &semantic) = 0;
 
 	/// Returns a mapping of variable identifiers to their types.
 	virtual QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const = 0;

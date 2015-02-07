@@ -26,15 +26,15 @@ public:
 	NxtInputDevice(
 			utils::robotCommunication::RobotCommunicator &robotCommunicator
 			, const interpreterBase::robotModel::PortInfo &port
-			, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
-			, enums::sensorMode::SensorModeEnum const &sensorMode);
+			, const enums::lowLevelSensorType::SensorTypeEnum &lowLevelSensorType
+			, const enums::sensorMode::SensorModeEnum &sensorMode);
 
 	/// Sends configuration buffer into the real device. When configuration is done configured() singal is emitted.
 	void configure();
 
 	/// Sends given buffer to a real device.
 	/// @param responseSize An expected size of the responce buffer.
-	void send(const QByteArray &buffer, unsigned const responseSize);
+	void send(const QByteArray &buffer, const unsigned responseSize);
 
 	/// Returns a state of the communication with the device.
 	State state() const;

@@ -15,11 +15,11 @@ class QRGUI_MOUSE_GESTURES_EXPORT GesturePainter : public QIconEngine
 {
 public:
 	GesturePainter(const QString &gesture
-			, QColor const &backgroungColor
-			, QColor const &gestureColor
+			, const QColor &backgroungColor
+			, const QColor &gestureColor
 			, qreal size);
 
-	void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state) override;
+	void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state) override;
 	QIconEngine *clone() const override;
 
 private:

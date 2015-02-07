@@ -21,7 +21,7 @@ class QRGUI_TEXT_EDITOR_EXPORT TextManagerInterface : public QObject
 public:
 	virtual ~TextManagerInterface() {}
 
-	virtual bool openFile(const QString &filePath, const QString &genName, text::LanguageInfo const &language) = 0;
+	virtual bool openFile(const QString &filePath, const QString &genName, const text::LanguageInfo &language) = 0;
 	virtual bool closeFile(const QString &filePath) = 0;
 	virtual void changeFilePath(const QString &from, const QString &to) = 0;
 	virtual bool bindCode(const Id &diagram, const QString &filePath) = 0;
@@ -35,9 +35,9 @@ public:
 	virtual bool isDefaultPath(const QString &path) const = 0;
 	virtual bool isModified(const QString &path) const = 0;
 	virtual bool isModifiedEver(const QString &path) const = 0;
-	virtual void showInTextEditor(QFileInfo const &fileInfo
-			, const QString &genName, text::LanguageInfo const &language) = 0;
-	virtual void showInTextEditor(QFileInfo const &fileInfo, text::LanguageInfo const &language) = 0;
+	virtual void showInTextEditor(const QFileInfo &fileInfo
+			, const QString &genName, const text::LanguageInfo &language) = 0;
+	virtual void showInTextEditor(const QFileInfo &fileInfo, const text::LanguageInfo &language) = 0;
 	virtual bool saveText(bool saveAs) = 0;
 	virtual QString generatorName(const QString &filepath) const  = 0;
 

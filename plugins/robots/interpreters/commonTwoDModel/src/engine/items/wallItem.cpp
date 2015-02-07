@@ -86,8 +86,8 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		const QPointF pos = event->scenePos();
-		qreal const deltaX = (mX1 - mX2);
-		qreal const deltaY = (mY1 - mY2);
+		const qreal deltaX = (mX1 - mX2);
+		const qreal deltaY = (mY1 - mY2);
 		mX1 = pos.x() - mOldX1;
 		mY1 = pos.y() - mOldY1;
 
@@ -140,7 +140,7 @@ QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPic
 	return wallNode;
 }
 
-void WallItem::deserializePenBrush(QDomElement const &element)
+void WallItem::deserializePenBrush(const QDomElement &element)
 {
 	Q_UNUSED(element)
 	setPrivateData();

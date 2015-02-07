@@ -53,10 +53,10 @@ bool SdfRenderer::load(const QString &filename)
 	return true;
 }
 
-bool SdfRenderer::load(QDomDocument const &document)
+bool SdfRenderer::load(const QDomDocument &document)
 {
 	doc = document;
-	QDomElement const docElem = doc.firstChildElement("picture");
+	const QDomElement docElem = doc.firstChildElement("picture");
 	first_size_x = docElem.attribute("sizex").toInt();
 	first_size_y = docElem.attribute("sizey").toInt();
 
@@ -143,7 +143,7 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
 	this->painter = 0;
 }
 
-bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) const
+bool SdfRenderer::checkShowConditions(const QDomElement &element, bool isIcon) const
 {
 	QDomNodeList showConditions = element.elementsByTagName("showIf");
 	// a hack, need to be removed when there is another version of icons
@@ -161,7 +161,7 @@ bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) c
 	return true;
 }
 
-bool SdfRenderer::checkCondition(QDomElement const &condition) const
+bool SdfRenderer::checkCondition(const QDomElement &condition) const
 {
 	QString sign = condition.attribute("sign");
 	QString realValue = mElementRepo->logicalProperty(condition.attribute("property"));
@@ -305,7 +305,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	const QString fileName = SettingsManager::value("pathToImages").toString() + "/"
 			+ element.attribute("name", "default");
 
-	QRect const rect(x1, y1, x2 - x1, y2 - y1);
+	const QRect rect(x1, y1, x2 - x1, y2 - y1);
 
 	mImagesCache.drawImage(fileName, *painter, rect);
 }
@@ -766,7 +766,7 @@ void SdfRenderer::noScale()
 void SdfRenderer::ImagesCache::drawImage(
 		const QString &fileName
 		, QPainter &painter
-		, QRect const &rect)
+		, const QRect &rect)
 {
 	auto savePrerenderedSvg = [this, &rect, &fileName] (QSvgRenderer &renderer) {
 		QTransform scale;
@@ -793,7 +793,7 @@ void SdfRenderer::ImagesCache::drawImage(
 				? QApplication::applicationDirPath() + "/" + fileName
 				: fileName;
 
-		QFileInfo const actualFile = selectBestImageFile(actualFileName);
+		const QFileInfo actualFile = selectBestImageFile(actualFileName);
 
 		const QByteArray rawImage = loadPixmap(actualFile);
 		if (actualFile.suffix() == "svg") {
@@ -812,14 +812,14 @@ void SdfRenderer::ImagesCache::drawImage(
 
 QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(const QString &filePath)
 {
-	QFileInfo const originalFileInfo(filePath);
-	QFileInfo const svgVersion(originalFileInfo.path() + originalFileInfo.completeBaseName() + "svg");
+	const QFileInfo originalFileInfo(filePath);
+	const QFileInfo svgVersion(originalFileInfo.path() + originalFileInfo.completeBaseName() + "svg");
 
 	if (svgVersion.exists()) {
 		return svgVersion;
 	}
 
-	QFileInfo const fileInfo(filePath);
+	const QFileInfo fileInfo(filePath);
 	if (fileInfo.exists() && fileInfo.isFile()) {
 		return fileInfo;
 	}
@@ -837,7 +837,7 @@ QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(const QString &filePath)
 	return QFileInfo(":/pluginManager/images/default.svg");
 }
 
-QByteArray SdfRenderer::ImagesCache::loadPixmap(QFileInfo const &fileInfo)
+QByteArray SdfRenderer::ImagesCache::loadPixmap(const QFileInfo &fileInfo)
 {
 	QFile file(fileInfo.absoluteFilePath());
 	if (!file.open(QIODevice::ReadOnly)) {
@@ -861,13 +861,13 @@ SdfIconEngineV2::SdfIconEngineV2(const QString &file)
 	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
-SdfIconEngineV2::SdfIconEngineV2(QDomDocument const &document)
+SdfIconEngineV2::SdfIconEngineV2(const QDomDocument &document)
 {
 	mRenderer.load(document);
 	mRenderer.noScale();
 }
 
-void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state)
+void SdfIconEngineV2::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
 	Q_UNUSED(state)

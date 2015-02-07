@@ -61,10 +61,10 @@ void AbstractItem::drawExtractionForItem(QPainter* painter)
 void AbstractItem::drawFieldForResizeItem(QPainter* painter)
 {
 	QRectF itemBoundingRect = calcNecessaryBoundingRect();
-	qreal const x1 = itemBoundingRect.left();
-	qreal const x2 = itemBoundingRect.right();
-	qreal const y1 = itemBoundingRect.top();
-	qreal const y2 = itemBoundingRect.bottom();
+	const qreal x1 = itemBoundingRect.left();
+	const qreal x2 = itemBoundingRect.right();
+	const qreal y1 = itemBoundingRect.top();
+	const qreal y2 = itemBoundingRect.bottom();
 
 	setPenBrushDriftRect(painter);
 	painter->drawRect(x1, y1, resizeDrift, resizeDrift);
@@ -73,7 +73,7 @@ void AbstractItem::drawFieldForResizeItem(QPainter* painter)
 	painter->drawRect(x2 - resizeDrift, y1, resizeDrift, resizeDrift);
 }
 
-void AbstractItem::setPenBrushForExtraxtion(QPainter *painter, QStyleOptionGraphicsItem const *option)
+void AbstractItem::setPenBrushForExtraxtion(QPainter *painter, const QStyleOptionGraphicsItem *option)
 {
 	Q_UNUSED(option);
 	QPen pen(Qt::red);
@@ -103,12 +103,12 @@ QBrush AbstractItem::brush() const
 	return mBrush;
 }
 
-void AbstractItem::setBrush(QBrush const &brush)
+void AbstractItem::setBrush(const QBrush &brush)
 {
 	mBrush = brush;
 }
 
-void AbstractItem::setPen(QPen const &pen)
+void AbstractItem::setPen(const QPen &pen)
 {
 	mPen = pen;
 }
@@ -162,7 +162,7 @@ void AbstractItem::setCoordinates(const QRectF &pos)
 
 void AbstractItem::reshapeRectWithShift()
 {
-	qreal const size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));
+	const qreal size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));
 	if(mX2 > mX1) {
 		if (mY2 > mY1) {
 			setX2andY2(mX1 + size, mY1 + size);
@@ -200,8 +200,8 @@ AbstractItem::DragState AbstractItem::getDragState() const
 
 void AbstractItem::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
-	qreal const x = mapFromScene(event->scenePos()).x();
-	qreal const y = mapFromScene(event->scenePos()).y();
+	const qreal x = mapFromScene(event->scenePos()).x();
+	const qreal y = mapFromScene(event->scenePos()).y();
 	if (mDragState != None) {
 		setFlag(QGraphicsItem::ItemIsMovable, false);
 	}
@@ -355,12 +355,12 @@ QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString
 QRectF AbstractItem::sceneBoundingRectCoord(const QPoint &topLeftPicture)
 {
 	QRectF itemBoundingRect = calcNecessaryBoundingRect();
-	qreal const x1 = scenePos().x() + itemBoundingRect.x() - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + itemBoundingRect.y() - topLeftPicture.y();
+	const qreal x1 = scenePos().x() + itemBoundingRect.x() - topLeftPicture.x();
+	const qreal y1 = scenePos().y() + itemBoundingRect.y() - topLeftPicture.y();
 	return QRectF(x1, y1, itemBoundingRect.width(), itemBoundingRect.height());
 }
 
-void AbstractItem::readPenBrush(QDomElement const &docItem)
+void AbstractItem::readPenBrush(const QDomElement &docItem)
 {
 	QString brushStyle = docItem.attribute("fill-style", "");
 	if (brushStyle == "solid") {

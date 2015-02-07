@@ -5,7 +5,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 SimpleUnvisitedRule::SimpleUnvisitedRule(SemanticTree *tree, const Id &id
-		, LinkInfo const &next)
+		, const LinkInfo &next)
 	: SimpleBlockRuleBase(tree, id, next)
 {
 }

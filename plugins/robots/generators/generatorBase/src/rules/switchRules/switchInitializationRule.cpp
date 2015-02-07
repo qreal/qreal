@@ -17,7 +17,7 @@ bool SwitchInitializationRule::apply()
 	SwitchNode * const switchNode = static_cast<SwitchNode *>(mTree->findNodeFor(mId));
 	QSet<qReal::Id> visitedBranches;
 	bool result = true;
-	for (LinkInfo const &branch : mBranches) {
+	for (const LinkInfo &branch : mBranches) {
 		const QString value = mRepo.property(branch.linkId, "Guard").toString();
 		if (branch.targetVisited) {
 			// We can`t return immediately cause we`ll get inconsistent semantic tree and it will cause segfaults.

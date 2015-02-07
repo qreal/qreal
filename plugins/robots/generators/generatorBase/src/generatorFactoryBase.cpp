@@ -67,7 +67,7 @@ using namespace interpreterBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
-		, RobotModelManagerInterface const &robotModelManager
+		, const RobotModelManagerInterface &robotModelManager
 		, lua::LuaProcessor &luaProcessor)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)

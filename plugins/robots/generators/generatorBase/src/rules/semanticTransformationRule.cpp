@@ -31,7 +31,7 @@ bool SemanticTransformationRule::alreadyCreated(const qReal::Id &id)
 	return mTree->findNodeFor(id) != nullptr;
 }
 
-bool SemanticTransformationRule::alreadyCreated(SemanticTransformationRule::LinkInfo const &link)
+bool SemanticTransformationRule::alreadyCreated(const SemanticTransformationRule::LinkInfo &link)
 {
 	return alreadyCreated(link.target);
 }

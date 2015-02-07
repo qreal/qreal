@@ -10,7 +10,7 @@ using namespace interpreterCore::interpreter::details;
 using namespace qReal;
 using namespace interpreterBase::robotModel;
 
-Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalModelApi
+Autoconfigurer::Autoconfigurer(const GraphicalModelAssistInterface &graphicalModelApi
 		, BlocksTable &blocksTable
 		, qReal::ErrorReporterInterface &errorReporter)
 	: mGraphicalModelApi(graphicalModelApi)

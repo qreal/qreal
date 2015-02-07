@@ -17,7 +17,7 @@ EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
 	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors"))
 {
-	auto const pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
+	const auto pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
 
 	for (EditorInterface * const iEditor : pluginsList) {
 		const QString pluginName = mPluginManager.fileName(iEditor);
@@ -275,7 +275,7 @@ IdList EditorManager::containedTypes(const Id &id) const
 	typedef QPair<QString, QString> StringPair;
 	QList<StringPair> const parents = mPluginIface[id.editor()]->getParentsOf(id.diagram(), id.element());
 
-	foreach (StringPair const &pair, parents) {
+	foreach (const StringPair &pair, parents) {
 		result.append(containedTypes(Id(id.editor(), pair.first, pair.second)));
 	}
 
@@ -364,7 +364,7 @@ bool EditorManager::isDiagramNode(const Id &id) const
 
 bool EditorManager::isParentOf(const Id &child, const Id &parent) const // child — EnginesForware, parent — AbstractNode
 {
-	EditorInterface const *plugin = mPluginIface[child.editor()];
+	const EditorInterface *plugin = mPluginIface[child.editor()];
 	if (!plugin) {
 		return false;
 	}
@@ -379,7 +379,7 @@ bool EditorManager::isParentOf(const Id &child, const Id &parent) const // child
 	return isParentOf(plugin, child.diagram(), child.element(), parentDiagram, parentElement);
 }
 
-bool EditorManager::isParentOf(EditorInterface const *plugin, const QString &childDiagram
+bool EditorManager::isParentOf(const EditorInterface *plugin, const QString &childDiagram
 		, const QString &child, const QString &parentDiagram, const QString &parent) const
 {
 	if (child == parent && childDiagram == parentDiagram) {
@@ -390,7 +390,7 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, const QString &chi
 	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
 
 	bool res = false;
-	foreach (StringPair const &pair, list) {
+	foreach (const StringPair &pair, list) {
 		if (pair.second == parent && pair.first == parentDiagram) {
 			return true;
 		}
@@ -402,7 +402,7 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, const QString &chi
 
 QStringList EditorManager::allChildrenTypesOf(const Id &parent) const
 {
-	EditorInterface const *plugin = mPluginIface[parent.editor()];
+	const EditorInterface *plugin = mPluginIface[parent.editor()];
 	if (!plugin) {
 		return QStringList();
 	}
@@ -420,11 +420,11 @@ QStringList EditorManager::allChildrenTypesOf(const Id &parent) const
 QList<Explosion> EditorManager::explosions(const Id &source) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
-	EditorInterface const *plugin = mPluginIface[source.editor()];
+	const EditorInterface *plugin = mPluginIface[source.editor()];
 	QList<Explosion> result;
 	QList<EditorInterface::ExplosionData> const rawExplosions =
 			plugin->explosions(source.diagram(), source.element());
-	foreach (EditorInterface::ExplosionData const &rawExplosion, rawExplosions) {
+	foreach (const EditorInterface::ExplosionData &rawExplosion, rawExplosions) {
 		const Id target(source.editor(), rawExplosion.targetDiagram, rawExplosion.targetElement, "");
 		result << Explosion(source, target, rawExplosion.isReusable, rawExplosion.requiresImmediateLinkage);
 	}

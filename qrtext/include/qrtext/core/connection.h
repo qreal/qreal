@@ -51,18 +51,18 @@ private:
 	QString mPropertyName;
 };
 
-inline bool operator ==(Connection const &a, Connection const &b)
+inline bool operator ==(const Connection &a, const Connection &b)
 {
 	return a.absolutePosition() == b.absolutePosition() && a.line() == b.line() && a.column() == b.column();
 }
 
-inline bool operator <(Connection const &a, Connection const &b)
+inline bool operator <(const Connection &a, const Connection &b)
 {
 	return a.absolutePosition() < b.absolutePosition();
 }
 
 /// Output operator for gtest.
-inline ::std::ostream& operator<<(::std::ostream& os, Connection const &connection)
+inline ::std::ostream& operator<<(::std::ostream& os, const Connection &connection)
 {
 	return os << "(" << connection.absolutePosition() <<", " << connection.line() << ", " << connection.column() << ")";
 }

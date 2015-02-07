@@ -26,7 +26,7 @@ const EditorManagerInterface &GraphicalModelAssistApi::editorManagerInterface() 
 	return mModelsAssistApi.editorManagerInterface();
 }
 
-qrRepo::GraphicalRepoApi const &GraphicalModelAssistApi::graphicalRepoApi() const
+const qrRepo::GraphicalRepoApi &GraphicalModelAssistApi::graphicalRepoApi() const
 {
 	return mGraphicalModel.api();
 }
@@ -105,7 +105,7 @@ void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
 	mModelsAssistApi.stackBefore(element, sibling);
 }
 
-void GraphicalModelAssistApi::setConfiguration(const Id &elem, QPolygon const &newValue)
+void GraphicalModelAssistApi::setConfiguration(const Id &elem, const QPolygon &newValue)
 {
 	mModelsAssistApi.setProperty(elem, QVariant(newValue), roles::configurationRole);
 }
@@ -125,7 +125,7 @@ QPointF GraphicalModelAssistApi::position(const Id &elem) const
 	return mModelsAssistApi.property(elem, roles::positionRole).value<QPointF>();
 }
 
-void GraphicalModelAssistApi::setToPort(const Id &elem, qreal const &newValue)
+void GraphicalModelAssistApi::setToPort(const Id &elem, const qreal &newValue)
 {
 	mModelsAssistApi.setProperty(elem, QVariant(newValue), roles::toPortRole);
 }
@@ -135,7 +135,7 @@ qreal GraphicalModelAssistApi::toPort(const Id &elem) const
 	return mModelsAssistApi.property(elem, roles::toPortRole).value<qreal>();
 }
 
-void GraphicalModelAssistApi::setFromPort(const Id &elem, qreal const &newValue)
+void GraphicalModelAssistApi::setFromPort(const Id &elem, const qreal &newValue)
 {
 	mModelsAssistApi.setProperty(elem, QVariant(newValue), roles::fromPortRole);
 }
@@ -215,7 +215,7 @@ QModelIndex GraphicalModelAssistApi::indexById(const Id &id) const
 	return mModelsAssistApi.indexById(id);
 }
 
-Id GraphicalModelAssistApi::idByIndex(QModelIndex const &index) const
+Id GraphicalModelAssistApi::idByIndex(const QModelIndex &index) const
 {
 	return mModelsAssistApi.idByIndex(index);
 }
@@ -262,10 +262,10 @@ void GraphicalModelAssistApi::createLabel(
 		const Id &graphicalId
 		, int index
 		, const QPointF &position
-		, QSizeF const &size
+		, const QSizeF &size
 		)
 {
-	QModelIndex const modelIndex = mGraphicalPartModel.addGraphicalPart(graphicalId, index);
+	const QModelIndex modelIndex = mGraphicalPartModel.addGraphicalPart(graphicalId, index);
 	mGraphicalPartModel.setData(modelIndex, position, GraphicalPartModel::positionRole);
 
 	QPolygonF configuration;
@@ -275,13 +275,13 @@ void GraphicalModelAssistApi::createLabel(
 
 void GraphicalModelAssistApi::setLabelPosition(const Id &graphicalId, int index, const QPointF &position)
 {
-	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
+	const QModelIndex modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
 	mGraphicalPartModel.setData(modelIndex, position, GraphicalPartModel::positionRole);
 }
 
 void GraphicalModelAssistApi::setLabelSize(const Id &graphicalId, int index, const QSizeF &size)
 {
-	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
+	const QModelIndex modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
 
 	QPolygonF configuration;
 	configuration.append(QPointF(size.width(), size.height()));
@@ -290,13 +290,13 @@ void GraphicalModelAssistApi::setLabelSize(const Id &graphicalId, int index, con
 
 QPointF GraphicalModelAssistApi::labelPosition(const Id &graphicalId, int index) const
 {
-	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
+	const QModelIndex modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
 	return modelIndex.data(GraphicalPartModel::positionRole).toPointF();
 }
 
 QSizeF GraphicalModelAssistApi::labelSize(const Id &graphicalId, int index) const
 {
-	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
-	QPolygonF const configuration = modelIndex.data(GraphicalPartModel::configurationRole).value<QPolygonF>();
+	const QModelIndex modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
+	const QPolygonF configuration = modelIndex.data(GraphicalPartModel::configurationRole).value<QPolygonF>();
 	return QSizeF(configuration.at(0).x(), configuration.at(0).y());
 }

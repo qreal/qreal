@@ -17,10 +17,10 @@ using namespace interpreterBase::robotModel;
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 const int maxThreadsCount = 100;
 
-Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, qReal::ProjectManagementInterface const &projectManager
+		, const qReal::ProjectManagementInterface &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &languageToolbox

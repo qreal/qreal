@@ -385,7 +385,7 @@ void D2ModelWidget::saveWorldModel()
 		saveFileName += ".xml";
 	}
 
-	QDomDocument const save = generateXml();
+	const QDomDocument save = generateXml();
 
 	utils::OutFile saveFile(saveFileName);
 	saveFile() << "<?xml version='1.0' encoding='utf-8'?>\n";
@@ -401,7 +401,7 @@ void D2ModelWidget::loadWorldModel()
 		return;
 	}
 
-	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
+	const QDomDocument save = utils::xmlUtils::loadDocument(loadFileName);
 	loadXml(save);
 }
 
@@ -480,12 +480,12 @@ void D2ModelWidget::changePenColor(int textIndex)
 
 void D2ModelWidget::changePalette()
 {
-	QList<QGraphicsItem *> const listSelectedItems = mScene->selectedItems();
+	const QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
 	if (!listSelectedItems.isEmpty()) {
 		AbstractItem *item = dynamic_cast<AbstractItem *>(listSelectedItems.back());
 		if (isColorItem(item)) {
-			QPen const penItem = item->pen();
-			QBrush const brushItem = item->brush();
+			const QPen penItem = item->pen();
+			const QBrush brushItem = item->brush();
 			setItemPalette(penItem, brushItem);
 			mScene->setPenBrushItems(penItem, brushItem);
 		}
@@ -500,7 +500,7 @@ void D2ModelWidget::onSelectionChange()
 		return;
 	}
 
-	QList<QGraphicsItem *> const listSelectedItems = mScene->selectedItems();
+	const QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
 	RobotItem *robotItem = nullptr;
 	bool oneRobotItem = false;
 
@@ -537,7 +537,7 @@ void D2ModelWidget::onSelectionChange()
 	}
 }
 
-void D2ModelWidget::setValuePenColorComboBox(QColor const &penColor)
+void D2ModelWidget::setValuePenColorComboBox(const QColor &penColor)
 {
 	mUi->penColorComboBox->setColor(penColor);
 }
@@ -547,7 +547,7 @@ void D2ModelWidget::setValuePenWidthSpinBox(int width)
 	mUi->penWidthSpinBox->setValue(width);
 }
 
-void D2ModelWidget::setItemPalette(QPen const &penItem, QBrush const &brushItem)
+void D2ModelWidget::setItemPalette(const QPen &penItem, const QBrush &brushItem)
 {
 	Q_UNUSED(brushItem)
 	mUi->penColorComboBox->blockSignals(true);
@@ -599,7 +599,7 @@ QDomDocument D2ModelWidget::generateXml() const
 	return mModel.serialize();
 }
 
-void D2ModelWidget::loadXml(QDomDocument const &worldModel)
+void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 {
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);

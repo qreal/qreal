@@ -174,10 +174,10 @@ UndoStack *Controller::selectActiveStack(bool forUndo)
 	const int shift = forUndo ? -1 : 0;
 	const int diagramIndex = mActiveStack ? mActiveStack->index() + shift : -1;
 	const int globalIndex = mGlobalStack->index() + shift;
-	AbstractCommand const *diagramCommand = diagramIndex < 0 ? nullptr
-			: dynamic_cast<AbstractCommand const *>(mActiveStack->command(diagramIndex));
-	AbstractCommand const *globalCommand = globalIndex < 0 ? nullptr
-			: dynamic_cast<AbstractCommand const *>(mGlobalStack->command(globalIndex));
+	const AbstractCommand *diagramCommand = diagramIndex < 0 ? nullptr
+			: dynamic_cast<const AbstractCommand *>(mActiveStack->command(diagramIndex));
+	const AbstractCommand *globalCommand = globalIndex < 0 ? nullptr
+			: dynamic_cast<const AbstractCommand *>(mGlobalStack->command(globalIndex));
 	if (!diagramCommand && !globalCommand) {
 		return nullptr;
 	}
@@ -197,7 +197,7 @@ void Controller::setActiveStack(UndoStack *stack)
 	mActiveStack = stack;
 }
 
-void Controller::connectStack(UndoStack const *stack)
+void Controller::connectStack(const UndoStack *stack)
 {
 	connect(stack, SIGNAL(cleanChanged(bool)), this, SLOT(resetModifiedState()));
 	connect(stack, SIGNAL(canRedoChanged(bool)), this, SLOT(resetCanRedoState()));

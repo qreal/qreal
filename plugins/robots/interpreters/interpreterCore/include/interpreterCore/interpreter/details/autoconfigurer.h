@@ -21,7 +21,7 @@ public:
 	/// @param graphicalModelApi - contains information about diagram.
 	/// @param blocksTable - contains "code-behind" objects for blocks.
 	/// @param errorReporter - error reporter to report errors to.
-	Autoconfigurer(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+	Autoconfigurer(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, BlocksTable &blocksTable
 			, qReal::ErrorReporterInterface &errorReporter);
 
@@ -31,7 +31,7 @@ public:
 	bool configure(QList<qReal::Id> const &diagrams, const QString &robotModelName);
 
 private:
-	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	BlocksTable &mBlocksTable;
 	qReal::ErrorReporterInterface &mErrorReporter;
 };

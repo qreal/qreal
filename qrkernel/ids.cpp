@@ -51,7 +51,7 @@ Id::Id(const Id &base, const QString &additional)
 		, mElement(base.mElement)
 		, mId(base.mId)
 {
-	unsigned const baseSize = base.idSize();
+	const unsigned baseSize = base.idSize();
 	switch (baseSize) {
 	case 0:
 		mEditor = additional;

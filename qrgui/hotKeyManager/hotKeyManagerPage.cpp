@@ -216,7 +216,7 @@ void PreferencesHotKeyManagerPage::newKey(const int key)
 	}
 }
 
-void PreferencesHotKeyManagerPage::setTextColor(QColor const &color)
+void PreferencesHotKeyManagerPage::setTextColor(const QColor &color)
 {
 	mCurrentItem->setTextColor(color);
 	QPalette palette;

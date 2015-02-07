@@ -194,7 +194,7 @@ void RobotsSettingsPage::onKitRadioButtonToggled(bool checked)
 void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * const kitButton)
 {
 	const QString kitId = kitButton->objectName();
-	robotModel::RobotModelInterface const *robotModel
+	const robotModel::RobotModelInterface *robotModel
 			= robotModel::RobotModelUtils::selectedRobotModelFor(mKitPluginManager.kitsById(kitId));
 	if (!robotModel) {
 		return;

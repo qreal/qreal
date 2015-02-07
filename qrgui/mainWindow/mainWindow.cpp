@@ -315,7 +315,7 @@ void MainWindow::loadPlugins()
 void MainWindow::clearSelectionOnTabs()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
+		const EditorView * const tab = dynamic_cast<const EditorView *>(mUi->tabs->widget(i));
 		if (tab != nullptr) {
 			tab->scene()->clearSelection();
 		}
@@ -368,9 +368,9 @@ void MainWindow::selectItemOrDiagram(const Id &graphicalId)
 	activateItemOrDiagram(graphicalId, true);
 }
 
-void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool setSelected)
+void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool setSelected)
 {
-	QModelIndex const parent = idx.parent();
+	const QModelIndex parent = idx.parent();
 	const int numTab = getTabIndex(idx);
 
 	if (numTab != -1) {
@@ -388,7 +388,7 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool setSelected)
 			getCurrentTab()->mutableMvIface().setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
-			EditorViewScene const *scene = static_cast<EditorViewScene const *>(getCurrentTab()->scene());
+			const EditorViewScene *scene = static_cast<const EditorViewScene *>(getCurrentTab()->scene());
 			Element * const e = scene->getElem(idx.data(roles::idRole).value<Id>());
 			if (e) {
 				if (setSelected) {
@@ -453,7 +453,7 @@ void MainWindow::sceneSelectionChanged()
 		singleSelected->select(true);
 		setIndexesOfPropertyEditor(singleSelected->id());
 
-		QModelIndex const index = models().graphicalModelAssistApi().indexById(singleSelected->id());
+		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected->id());
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
 		}
@@ -611,7 +611,7 @@ QMap<QString, gui::PreferencesPage *> MainWindow::preferencesPages() const
 void MainWindow::closeStartTab()
 {
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
-		StartWidget const * widget = dynamic_cast<StartWidget *>(mUi->tabs->widget(i));
+		const StartWidget * widget = dynamic_cast<StartWidget *>(mUi->tabs->widget(i));
 		if (widget) {
 			mUi->tabs->removeTab(i);
 		}
@@ -623,9 +623,9 @@ void MainWindow::closeDiagramTab(const Id &id)
 	const IdList graphicalIds = models().graphicalRepoApi().graphicalElements(id.type());
 	if (!graphicalIds.isEmpty()) {
 		// TODO: Why only for first graphical element?
-		QModelIndex const index = models().graphicalModelAssistApi().indexById(graphicalIds[0]);
+		const QModelIndex index = models().graphicalModelAssistApi().indexById(graphicalIds[0]);
 		for (int i = 0; i < mUi->tabs->count(); i++) {
-			EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
+			const EditorView * const tab = dynamic_cast<const EditorView *>(mUi->tabs->widget(i));
 			if (tab != nullptr && tab->mvIface().rootIndex() == index) {
 				mUi->tabs->removeTab(i);
 			}
@@ -635,7 +635,7 @@ void MainWindow::closeDiagramTab(const Id &id)
 
 void MainWindow::deleteFromLogicalExplorer()
 {
-	QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
+	const QModelIndex index = mUi->logicalModelExplorer->currentIndex();
 	if (index.isValid()) {
 		/// @todo: rewrite it with just MultipleRemoveCommand.
 		MultipleRemoveCommand factory(models());
@@ -948,12 +948,12 @@ void MainWindow::centerOn(const Id &id)
 	}
 }
 
-void MainWindow::propertyEditorScrollTo(QModelIndex const &index)
+void MainWindow::propertyEditorScrollTo(const QModelIndex &index)
 {
 	mUi->propertyEditor->scrollTo(index);
 }
 
-void MainWindow::graphicalModelExplorerClicked(QModelIndex const &index)
+void MainWindow::graphicalModelExplorerClicked(const QModelIndex &index)
 {
 	const Id id = models().graphicalModelAssistApi().idByIndex(index);
 	setIndexesOfPropertyEditor(id);
@@ -961,7 +961,7 @@ void MainWindow::graphicalModelExplorerClicked(QModelIndex const &index)
 	centerOn(id);
 }
 
-void MainWindow::logicalModelExplorerClicked(QModelIndex const &index)
+void MainWindow::logicalModelExplorerClicked(const QModelIndex &index)
 {
 	const Id logicalId = models().logicalModelAssistApi().idByIndex(index);
 	IdList graphicalIds = models().graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
@@ -970,7 +970,7 @@ void MainWindow::logicalModelExplorerClicked(QModelIndex const &index)
 		// In the future it may be needed to make this more intellectual, like
 		// selecting the representation in current tab.
 		const Id graphicalId = graphicalIds.first();
-		QModelIndex const graphicalIndex = models().graphicalModelAssistApi().indexById(graphicalId);
+		const QModelIndex graphicalIndex = models().graphicalModelAssistApi().indexById(graphicalId);
 		graphicalModelExplorerClicked(graphicalIndex);
 	} else {
 		setIndexesOfPropertyEditor(logicalId);
@@ -982,7 +982,7 @@ void MainWindow::logicalModelExplorerClicked(QModelIndex const &index)
 	}
 }
 
-void MainWindow::openNewTab(QModelIndex const &arg)
+void MainWindow::openNewTab(const QModelIndex &arg)
 {
 	QModelIndex index = arg;
 	while (index.parent() != QModelIndex()) {
@@ -1043,7 +1043,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 		return;
 	}
 
-	QModelIndex const index = rootIndex;
+	const QModelIndex index = rootIndex;
 
 	tab->mutableMvIface().configure(models().graphicalModelAssistApi()
 			, models().logicalModelAssistApi(), models().exploser());
@@ -1064,7 +1064,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	connect(models().graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, &tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(tab, &EditorView::rootElementRemoved, this
-			, static_cast<bool (MainWindow::*)(QModelIndex const &)>(&MainWindow::closeTab));
+			, static_cast<bool (MainWindow::*)(const QModelIndex &)>(&MainWindow::closeTab));
 	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](const Id &id) { activateItemOrDiagram(id); });
 	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadPlugins);
 	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
@@ -1204,7 +1204,7 @@ void MainWindow::updateTabName(const Id &id)
 	}
 }
 
-bool MainWindow::closeTab(QModelIndex const &graphicsIndex)
+bool MainWindow::closeTab(const QModelIndex &graphicsIndex)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
@@ -1290,7 +1290,7 @@ void MainWindow::setShowAlignment(bool isChecked)
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
-			QList<QGraphicsItem *> const list = tab->scene()->items();
+			const QList<QGraphicsItem *> list = tab->scene()->items();
 			foreach (QGraphicsItem * const item, list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
@@ -1306,7 +1306,7 @@ void MainWindow::setSwitchGrid(bool isChecked)
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView  const *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
-			QList<QGraphicsItem *> const list = tab->scene()->items();
+			const QList<QGraphicsItem *> list = tab->scene()->items();
 			foreach (QGraphicsItem *const item, list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
@@ -1322,7 +1322,7 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView *const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
-			QList<QGraphicsItem *> const list = tab->scene()->items();
+			const QList<QGraphicsItem *> list = tab->scene()->items();
 			foreach (QGraphicsItem * const item, list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
@@ -1370,10 +1370,10 @@ void MainWindow::createDiagram(const QString &idString)
 		return;
 	}
 
-	QModelIndex const index = models().graphicalModelAssistApi().indexById(created);
+	const QModelIndex index = models().graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
 	const Id logicalIdCreated = models().graphicalModelAssistApi().logicalId(created);
-	QModelIndex const logicalIndex = models().logicalModelAssistApi().indexById(logicalIdCreated);
+	const QModelIndex logicalIndex = models().logicalModelAssistApi().indexById(logicalIdCreated);
 	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
 
 	openNewTab(index);
@@ -1421,18 +1421,18 @@ void MainWindow::setIndexesOfPropertyEditor(const Id &id)
 {
 	if (models().graphicalModelAssistApi().isGraphicalId(id)) {
 		const Id logicalId = models().graphicalModelAssistApi().logicalId(id);
-		QModelIndex const logicalIndex = models().logicalModelAssistApi().indexById(logicalId);
-		QModelIndex const graphicalIndex = models().graphicalModelAssistApi().indexById(id);
+		const QModelIndex logicalIndex = models().logicalModelAssistApi().indexById(logicalId);
+		const QModelIndex graphicalIndex = models().graphicalModelAssistApi().indexById(id);
 		mPropertyModel.setModelIndexes(logicalIndex, graphicalIndex);
 	} else if (models().logicalModelAssistApi().isLogicalId(id)) {
-		QModelIndex const logicalIndex = models().logicalModelAssistApi().indexById(id);
+		const QModelIndex logicalIndex = models().logicalModelAssistApi().indexById(id);
 		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
 	} else {
 		mPropertyModel.clearModelIndexes();
 	}
 }
 
-void MainWindow::highlight(const Id &graphicalId, bool exclusive, QColor const &color)
+void MainWindow::highlight(const Id &graphicalId, bool exclusive, const QColor &color)
 {
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
 		EditorView * const view = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
@@ -1440,7 +1440,7 @@ void MainWindow::highlight(const Id &graphicalId, bool exclusive, QColor const &
 			continue;
 		}
 		EditorViewScene * const scene = dynamic_cast<EditorViewScene *>(view->scene());
-		Element const * const element = scene->getElem(graphicalId);
+		const Element * const element = scene->getElem(graphicalId);
 		if (element) {
 			scene->highlight(graphicalId, exclusive, color);
 			view->ensureElementVisible(element, 0, 0);
@@ -1620,7 +1620,7 @@ void MainWindow::initPluginsAndStartWidget()
 	}
 }
 
-void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu)
+void MainWindow::addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMenu)
 {
 	if (actionOrMenu.isAction()) {
 		target->addAction(actionOrMenu.action());
@@ -1631,7 +1631,7 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 
 void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 {
-	for (ActionInfo const &action : actions) {
+	for (const ActionInfo &action : actions) {
 		if (action.isAction()) {
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
 			if (toolbar) {
@@ -1640,7 +1640,7 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 		}
 	}
 
-	for (ActionInfo const &action : actions) {
+	for (const ActionInfo &action : actions) {
 		const QString menuName = "menu" + QString(action.menuName()[0].toUpper()) + action.menuName().mid(1);
 		QMenu * const menu = findChild<QMenu *>(menuName);
 		if (menu) {
@@ -1658,7 +1658,7 @@ void MainWindow::initToolPlugins()
 	QList<ActionInfo> const actions = mToolManager.actions();
 	traverseListOfActions(actions);
 
-	for (HotKeyActionInfo const &actionInfo : mToolManager.hotKeyActions()) {
+	for (const HotKeyActionInfo &actionInfo : mToolManager.hotKeyActions()) {
 		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
 	}
 
@@ -1672,7 +1672,7 @@ void MainWindow::initToolPlugins()
 
 	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager.preferencesPages();
 	typedef QPair<QString, PreferencesPage *> PageDescriptor;
-	foreach (PageDescriptor const page, preferencesPages) {
+	foreach (const PageDescriptor page, preferencesPages) {
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
@@ -1692,7 +1692,7 @@ void MainWindow::initInterpretedPlugins()
 	traverseListOfActions(actions);
 }
 
-void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
+void MainWindow::showErrors(const gui::ErrorReporter * const errorReporter)
 {
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 }
@@ -1774,9 +1774,9 @@ void MainWindow::initExplorers()
 
 	connect(&models().graphicalModelAssistApi(), SIGNAL(nameChanged(const Id &))
 			, this, SLOT(updateTabName(const Id &)));
-	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &))
+	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(const QModelIndex &))
 			, this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
-	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &))
+	connect(mUi->logicalModelExplorer, SIGNAL(clicked(const QModelIndex &))
 			, this, SLOT(logicalModelExplorerClicked(QModelIndex)));
 }
 

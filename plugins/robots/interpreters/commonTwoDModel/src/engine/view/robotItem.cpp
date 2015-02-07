@@ -219,7 +219,7 @@ RobotModel &RobotItem::robotModel()
 	return mRobotModel;
 }
 
-void RobotItem::BeepItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
+void RobotItem::BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 		, QWidget *widget)
 {
 	Q_UNUSED(option)
@@ -249,7 +249,7 @@ void RobotItem::BeepItem::drawBeepArcs(QPainter *painter, const QPointF &center,
 	pen.setColor(Qt::red);
 	pen.setWidth(3);
 	painter->setPen(pen);
-	qreal const diameter = radius + radius;
+	const qreal diameter = radius + radius;
 	QRectF rect(center.x() - radius, center.y() - radius, diameter, diameter);
 	painter->drawArc(rect, 45 * 16, 90 * 16);
 	painter->drawArc(rect, 225 * 16, 90 * 16);

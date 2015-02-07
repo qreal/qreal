@@ -13,8 +13,8 @@ BorderChecker::BorderChecker(const NodeElement* const node)
 
 bool BorderChecker::checkLowerBorder(const QPointF &point) const
 {
-	qreal const checkingPointX = point.x();
-	qreal const checkingPointY = point.y();
+	const qreal checkingPointX = point.x();
+	const qreal checkingPointY = point.y();
 	const QRectF rc = mNode->boundingRect();
 	return (checkingPointX >= rc.x() + mXHor) && (checkingPointX <= rc.x() + rc.width() - mXHor)
 			&& (checkingPointY >= rc.y() + rc.height() - mYHor)
@@ -23,8 +23,8 @@ bool BorderChecker::checkLowerBorder(const QPointF &point) const
 
 bool BorderChecker::checkUpperBorder(const QPointF &point) const
 {
-	qreal const checkingPointX = point.x();
-	qreal const checkingPointY = point.y();
+	const qreal checkingPointX = point.x();
+	const qreal checkingPointY = point.y();
 	const QRectF rc = mNode->boundingRect();
 	return (checkingPointX >= rc.x() + mXHor) && (checkingPointX <= rc.x() + rc.width() - mXHor)
 			&& (checkingPointY >= rc.y() - mYHor)
@@ -33,8 +33,8 @@ bool BorderChecker::checkUpperBorder(const QPointF &point) const
 
 bool BorderChecker::checkLeftBorder(const QPointF &point) const
 {
-	qreal const checkingPointX = point.x();
-	qreal const checkingPointY = point.y();
+	const qreal checkingPointX = point.x();
+	const qreal checkingPointY = point.y();
 	const QRectF rc = mNode->boundingRect();
 	return (checkingPointX >= rc.x() - mXVert) && (checkingPointX <= rc.x() + mXVert)
 			&& (checkingPointY >= rc.y() + mYVert)
@@ -43,8 +43,8 @@ bool BorderChecker::checkLeftBorder(const QPointF &point) const
 
 bool BorderChecker::checkRightBorder(const QPointF &point) const
 {
-	qreal const checkingPointX = point.x();
-	qreal const checkingPointY = point.y();
+	const qreal checkingPointX = point.x();
+	const qreal checkingPointY = point.y();
 	const QRectF rc = mNode->boundingRect();
 	return (checkingPointX >= rc.x() + rc.width() - mXVert) && (checkingPointX <= rc.x() + rc.width() + mXVert)
 			&& (checkingPointY >= rc.y() + mYVert)
@@ -53,14 +53,14 @@ bool BorderChecker::checkRightBorder(const QPointF &point) const
 
 bool BorderChecker::checkNoBorderX(const QPointF &point, qreal y) const
 {
-	qreal const checkingPointY = point.y();
+	const qreal checkingPointY = point.y();
 	const QRectF rc = mNode->boundingRect();
 	return (checkingPointY >= rc.y() + y) && (checkingPointY <= rc.y() + rc.height() - y);
 }
 
 bool BorderChecker::checkNoBorderY(const QPointF &point, qreal x) const
 {
-	qreal const checkingPointX = point.x();
+	const qreal checkingPointX = point.x();
 	const QRectF rc = mNode->boundingRect();
 	return (checkingPointX >= rc.x() + x) && (checkingPointX <= rc.x() + rc.width() - x);
 }

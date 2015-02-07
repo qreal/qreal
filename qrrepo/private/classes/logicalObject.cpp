@@ -7,7 +7,7 @@ LogicalObject::LogicalObject(const qReal::Id &id)
 {
 }
 
-LogicalObject::LogicalObject(QDomElement const &element)
+LogicalObject::LogicalObject(const QDomElement &element)
 	: Object(element)
 {
 }

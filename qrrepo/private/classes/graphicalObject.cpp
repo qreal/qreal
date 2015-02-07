@@ -13,7 +13,7 @@ GraphicalObject::GraphicalObject(const qReal::Id &id, const Id &parent, const qR
 	mParent = parent;
 }
 
-GraphicalObject::GraphicalObject(QDomElement const &element)
+GraphicalObject::GraphicalObject(const QDomElement &element)
 	: Object(element)
 {
 	mLogicalId = Id::loadFromString(element.attribute("logicalId"));
@@ -21,7 +21,7 @@ GraphicalObject::GraphicalObject(QDomElement const &element)
 		throw Exception("Logical id not found for graphical object");
 	}
 
-	QDomElement const graphicalParts = element.firstChildElement("graphicalParts");
+	const QDomElement graphicalParts = element.firstChildElement("graphicalParts");
 	if (!graphicalParts.isNull()) {
 		for (QDomElement part = graphicalParts.firstChildElement(); !part.isNull(); part = part.nextSiblingElement()) {
 			GraphicalPart * const deserializedPart = new GraphicalPart(part);
@@ -53,7 +53,7 @@ QDomElement GraphicalObject::serialize(QDomDocument &document) const
 			i != mGraphicalParts.constEnd();
 			++i)
 	{
-		QDomElement const graphicalPart = i.value()->serialize(i.key(), document);
+		const QDomElement graphicalPart = i.value()->serialize(i.key(), document);
 		graphicalParts.appendChild(graphicalPart);
 	}
 

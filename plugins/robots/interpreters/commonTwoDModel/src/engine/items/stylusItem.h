@@ -25,7 +25,7 @@ public:
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
 
-	void drawItem(QPainter* painter, QStyleOptionGraphicsItem const *option, QWidget *widget = 0) override;
+	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void drawExtractionForItem(QPainter* painter) override;
 	void drawFieldForResizeItem(QPainter* painter) override;
 	void drawScalingRects(QPainter* painter);
@@ -38,7 +38,7 @@ public:
 
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
-	void deserialize(QDomElement const &element) override;
+	void deserialize(const QDomElement &element) override;
 
 private:
 	void recalculateProperties();

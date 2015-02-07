@@ -13,9 +13,9 @@
 using namespace qReal;
 using namespace view::details;
 
-ExploserView::ExploserView(models::Models const &models
+ExploserView::ExploserView(const models::Models &models
 		, Controller &controller
-		, SceneCustomizer const &customizer
+		, const SceneCustomizer &customizer
 		, QObject *parent)
 	: QObject(parent)
 	, mLogicalApi(models.logicalModelAssistApi())
@@ -26,7 +26,7 @@ ExploserView::ExploserView(models::Models const &models
 {
 }
 
-void ExploserView::createAddExplosionMenu(Element const * const element
+void ExploserView::createAddExplosionMenu(const Element * const element
 		, QMenu &contextMenu, QList<Explosion> const &explosions
 		, const Id &alreadyConnectedElement) const
 {
@@ -36,7 +36,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 			: mCustomizer.changeExplosionMenuName();
 	QMenu *addExplosionMenu = new QMenu(menuName);
 
-	for (Explosion const &explosion : explosions) {
+	for (const Explosion &explosion : explosions) {
 		for (const Id &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
 			if (alreadyConnectedElement == elementId) {
 				continue;
@@ -54,7 +54,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 		addExplosionMenu->addSeparator();
 	}
 
-	for (Explosion const &explosion : explosions) {
+	for (const Explosion &explosion : explosions) {
 		const Id diagramType = mLogicalApi.editorManagerInterface().findElementByType(explosion.target().element());
 		const QString name = mLogicalApi.editorManagerInterface().friendlyName(diagramType);
 		const QString editorName = mLogicalApi.editorManagerInterface().friendlyName(Id(diagramType.editor()));
@@ -72,7 +72,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 	}
 }
 
-void ExploserView::createRemoveExplosionMenu(Element const * const element, QMenu &contextMenu
+void ExploserView::createRemoveExplosionMenu(const Element * const element, QMenu &contextMenu
 		, const Id &outgoingConnection) const
 {
 	if (outgoingConnection.isNull()) {
@@ -84,14 +84,14 @@ void ExploserView::createRemoveExplosionMenu(Element const * const element, QMen
 	action->setData(QVariantList() << element->logicalId().toVariant() << outgoingConnection.toVariant());
 }
 
-void ExploserView::createExpandAction(Element const * const element, QMenu &contextMenu
+void ExploserView::createExpandAction(const Element * const element, QMenu &contextMenu
 		, const Id &alreadyConnectedElement) const
 {
 	if (alreadyConnectedElement.isNull()) {
 		return;
 	}
 
-	NodeElement const * const node = dynamic_cast<NodeElement const * const>(element);
+	const NodeElement * const node = dynamic_cast<const NodeElement * const>(element);
 	if (!node) {
 		return;
 	}
@@ -104,7 +104,7 @@ void ExploserView::createExpandAction(Element const * const element, QMenu &cont
 	expandAction->setData(element->id().toVariant());
 }
 
-void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
+void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * const element) const
 {
 	if (mLogicalApi.editorManagerInterface().isInterpretationMode()) {
 		contextMenu.addSeparator();
@@ -164,7 +164,7 @@ void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *create
 		createCommand->addPostAction(mExploser.addExplosionCommand(source, target, &mGraphicalApi));
 	} else {
 		QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(source);
-		for (Explosion const &explosion : explosions) {
+		for (const Explosion &explosion : explosions) {
 			if (explosion.source().type() == source.type() && explosion.requiresImmediateLinkage()) {
 				createCommand->addPostAction(mExploser.createElementWithIncomingExplosionCommand(
 						source, explosion.target(), mGraphicalApi));
@@ -176,7 +176,7 @@ void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *create
 void ExploserView::addExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
-	QList<QVariant> const connection = action->data().toList();
+	const QList<QVariant> connection = action->data().toList();
 	const Id source = connection[0].value<Id>();
 	const Id destination = connection[1].value<Id>();
 	if (action->text().startsWith(tr("New "))) {
@@ -195,7 +195,7 @@ void ExploserView::goToActionTriggered()
 void ExploserView::removeExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
-	QList<QVariant> const connection = action->data().toList();
+	const QList<QVariant> connection = action->data().toList();
 	const Id source = connection[0].value<Id>();
 	const Id destination = connection[1].value<Id>();
 	mController.execute(mExploser.removeExplosionCommand(source, destination));
@@ -210,7 +210,7 @@ void ExploserView::expandExplosionActionTriggered()
 
 void ExploserView::changePropertiesActionTriggered()
 {
-	QAction const * const action = static_cast<QAction const *>(sender());
+	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
 	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
 			mLogicalApi.editorManagerInterface()
@@ -223,7 +223,7 @@ void ExploserView::changePropertiesActionTriggered()
 
 void ExploserView::changeAppearanceActionTriggered()
 {
-	QAction const * const action = static_cast<QAction const *>(sender());
+	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
 	const QString propertyValue = mLogicalApi.editorManagerInterface().shape(id);
 	emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
@@ -231,7 +231,7 @@ void ExploserView::changeAppearanceActionTriggered()
 
 void ExploserView::addElementToPaletteActionTriggered()
 {
-	QAction const * const action = static_cast<QAction const *>(sender());
+	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
 	mLogicalApi.editorManagerInterface().resetIsHidden(id);
 	emit refreshPalette();

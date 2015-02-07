@@ -11,7 +11,7 @@ namespace qReal {
 class Styles
 {
 public:
-	explicit Styles(Fonts const &fonts)
+	explicit Styles(const Fonts &fonts)
 		: mFonts(fonts)
 	{
 	}
@@ -135,7 +135,7 @@ protected:
 		// return QApplication::applicationDirPath() + "/../qrgui/brandManager" + choppedString;
 	}
 
-	Fonts const &mFonts;
+	const Fonts &mFonts;
 };
 
 }

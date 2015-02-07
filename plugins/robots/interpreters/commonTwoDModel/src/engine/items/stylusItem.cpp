@@ -100,7 +100,7 @@ QDomElement StylusItem::serialize(QDomDocument &document, const QPoint &topLeftP
 		return stylusNode;
 }
 
-void StylusItem::deserialize(QDomElement const &element)
+void StylusItem::deserialize(const QDomElement &element)
 {
 	mAbstractListLine.clear();
 	recalculateProperties();

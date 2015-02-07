@@ -34,8 +34,8 @@ qReal::interpretation::BlockInterface *CommonBlocksFactory::block(const qReal::I
 	return newBlock;
 }
 
-void CommonBlocksFactory::configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
-		, qReal::LogicalModelAssistInterface const &logicalModelApi
+void CommonBlocksFactory::configure(const qReal::GraphicalModelAssistInterface &graphicalModelApi
+		, const qReal::LogicalModelAssistInterface &logicalModelApi
 		, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qReal::ErrorReporterInterface &errorReporter
 		, qrtext::LanguageToolboxInterface &textLanguageToolbox)

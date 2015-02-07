@@ -10,7 +10,7 @@ ReservedVariablesConverter::ReservedVariablesConverter(const QString &pathToTemp
 		, const interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, const simple::Binding::ConverterInterface *inputPortConverter
-		, parts::DeviceVariables const &deviceVariables)
+		, const parts::DeviceVariables &deviceVariables)
 	: TemplateParametrizedConverter(pathToTemplates)
 	, mErrorReporter(errorReporter)
 	, mRobotModel(robotModel)

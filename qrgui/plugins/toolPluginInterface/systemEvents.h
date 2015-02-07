@@ -18,10 +18,10 @@ signals:
 	void closedMainWindow();
 	void activeTabChanged(const Id &rootElementId);
 	void settingsUpdated();
-	void codePathChanged(const qReal::Id &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
-	void newCodeAppeared(const qReal::Id &diagram, QFileInfo const &fileInfo);
+	void codePathChanged(const qReal::Id &diagram, const QFileInfo &oldFileInfo, const QFileInfo &newFileInfo);
+	void newCodeAppeared(const qReal::Id &diagram, const QFileInfo &fileInfo);
 	void diagramClosed(const qReal::Id &diagram);
-	void codeTabClosed(QFileInfo const &fileInfo);
+	void codeTabClosed(const QFileInfo &fileInfo);
 
 	/// Emitted each time when new element was added into the logical model.
 	void logicalElementAdded(const Id &id);

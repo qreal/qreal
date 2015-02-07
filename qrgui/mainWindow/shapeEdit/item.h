@@ -38,8 +38,8 @@ public:
 		QString sign;
 		QString value;
 
-		bool operator==(VisibilityCondition const &other) const;
-		bool operator!=(VisibilityCondition const &other) const;
+		bool operator==(const VisibilityCondition &other) const;
+		bool operator!=(const VisibilityCondition &other) const;
 	};
 
 	Item(graphicsUtils::AbstractItem* parent = 0);
@@ -66,7 +66,7 @@ public:
 	void setScalingPointColor();
 
 	//for save to xml
-	QString setScaleForDoc(int i, QRect const &rect);
+	QString setScaleForDoc(int i, const QRect &rect);
 	QString setSingleScaleForDoc(int i, int x, int y);
 	virtual void setXandY(QDomElement& dom, const QRectF &rect);
 
@@ -74,7 +74,7 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture) = 0;
 
-	void setVisibilityCondition(VisibilityCondition const &condition);
+	void setVisibilityCondition(const VisibilityCondition &condition);
 	void setVisibilityCondition(const QString &property, const QString &sign, const QString &value);
 	VisibilityCondition visibilityCondition() const;
 

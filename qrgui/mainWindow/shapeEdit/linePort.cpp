@@ -12,7 +12,7 @@ LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
 	mY2 = y2;
 }
 
-LinePort::LinePort(LinePort const &other)
+LinePort::LinePort(const LinePort &other)
 	:Line(other)
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -38,10 +38,10 @@ QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &d
 {
 	QDomElement linePort = document.createElement("linePort");
 
-	qreal const x1 = scenePos().x() + line().x1() - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + line().y1() - topLeftPicture.y();
-	qreal const x2 = scenePos().x() + line().x2() - topLeftPicture.x();
-	qreal const y2 = scenePos().y() + line().y2() - topLeftPicture.y();
+	const qreal x1 = scenePos().x() + line().x1() - topLeftPicture.x();
+	const qreal y1 = scenePos().y() + line().y1() - topLeftPicture.y();
+	const qreal x2 = scenePos().x() + line().x2() - topLeftPicture.x();
+	const qreal y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
 	QPair<QPair<QString, QString>, QPair<QString, QString> > res = setXandYBefore(QRectF(x1, y1
 			, x2 - x1, y2 - y1).normalized().toRect());

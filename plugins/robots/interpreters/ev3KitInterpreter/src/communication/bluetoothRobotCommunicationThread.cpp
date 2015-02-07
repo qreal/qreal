@@ -11,7 +11,7 @@
 
 #include "commandConstants.h"
 
-unsigned const keepAliveResponseSize = 5;
+const unsigned keepAliveResponseSize = 5;
 
 using namespace ev3KitInterpreter::communication;
 
@@ -28,7 +28,7 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 }
 
 void BluetoothRobotCommunicationThread::send(QObject *addressee
-		, const QByteArray &buffer, unsigned const responseSize)
+		, const QByteArray &buffer, const unsigned responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
@@ -97,7 +97,7 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 }
 
 void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
-		, unsigned const responseSize, QByteArray &outputBuffer)
+		, const unsigned responseSize, QByteArray &outputBuffer)
 {
 	send(buffer);
 	outputBuffer = receive(responseSize);

@@ -22,7 +22,7 @@ public:
 
 	/// Deserializing constructor.
 	/// @param element - root of XML DOM subtree with serialized object.
-	explicit Object(QDomElement const &element);
+	explicit Object(const QDomElement &element);
 
 	virtual ~Object();
 
@@ -53,7 +53,7 @@ public:
 	void removeBackReference(const qReal::Id &reference);
 
 	void setProperties(QMap<QString, QVariant> const &properties);
-	void copyPropertiesFrom(Object const &src);
+	void copyPropertiesFrom(const Object &src);
 	// TODO: omg
 	QMap<QString, QVariant> properties() const;
 	QMapIterator<QString, QVariant> propertiesIterator() const;

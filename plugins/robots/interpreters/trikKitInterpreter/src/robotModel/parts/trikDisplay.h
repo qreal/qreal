@@ -19,7 +19,7 @@ public:
 	virtual void drawSmile(bool sad) = 0;
 
 	/// @todo: color enum here?
-	virtual void setBackground(QColor const &color) = 0;
+	virtual void setBackground(const QColor &color) = 0;
 
 	/// Draw ellipse.
 	/// @param x - x coordinate.
@@ -42,7 +42,7 @@ public:
 
 	/// Set painter color.
 	/// @param color - color of painter.
-	virtual void setPainterColor(QColor const &color) = 0;
+	virtual void setPainterColor(const QColor &color) = 0;
 };
 
 }

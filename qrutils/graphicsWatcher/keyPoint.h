@@ -11,14 +11,14 @@ namespace sensorsGraph {
 class KeyPoint : public QGraphicsItem
 {
 public:
-	explicit KeyPoint(QColor const color);
+	explicit KeyPoint(const QColor color);
 
 	QRectF boundingRect() const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 private:
 	QRectF mVisualArea;
-	QColor const mColor;
+	const QColor mColor;
 };
 
 }

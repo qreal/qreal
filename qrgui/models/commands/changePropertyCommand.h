@@ -22,7 +22,7 @@ public:
 	/// properties via property editor proxy model
 	ChangePropertyCommand(
 		PropertyEditorModel * const model /* Doesn`t take ownership */
-		, QModelIndex const &index
+		, const QModelIndex &index
 		, const QVariant &oldValue
 		, const QVariant &newValue
 		, int role = Qt::EditRole);

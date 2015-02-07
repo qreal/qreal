@@ -22,8 +22,8 @@ public:
 	NxtKitInterpreterPlugin();
 	~NxtKitInterpreterPlugin() override;
 
-	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEvents const &systemEvents
+	void init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+			, const qReal::SystemEvents &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface

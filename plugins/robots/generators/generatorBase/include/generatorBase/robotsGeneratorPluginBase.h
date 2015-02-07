@@ -35,22 +35,22 @@ protected slots:
 	virtual bool generateCode(bool openTab = true);
 
 	/// Changes path to code source file and regenerate necessary extra files.
-	void regenerateCode(const qReal::Id &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
+	void regenerateCode(const qReal::Id &diagram, const QFileInfo &oldFileInfo, const QFileInfo &newFileInfo);
 
 	/// Adds new path to another code source file for chosen diagram
-	void addNewCode(const qReal::Id &diagram, QFileInfo const &fileInfo);
+	void addNewCode(const qReal::Id &diagram, const QFileInfo &fileInfo);
 
 	/// Remove diagram with paths to code source files.
 	void removeDiagram(const qReal::Id &diagram);
 
-	void removeCode(QFileInfo const &fileInfo);
+	void removeCode(const QFileInfo &fileInfo);
 
 protected:
 	/// Override must return a link to concrete master generator instance for
 	/// developped plugin. Caller takes ownership so override may forget about it.
 	virtual MasterGeneratorBase *masterGenerator() = 0;
 
-	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
+	virtual void regenerateExtraFiles(const QFileInfo &newFileInfo) = 0;
 	QFileInfo srcPath();
 	virtual QString defaultFilePath(const QString &project) const;
 	QFileInfo generateCodeForProcessing();

@@ -131,7 +131,7 @@ QModelIndex LogicalModelAssistApi::indexById(const Id &id) const
 	return mModelsAssistApi.indexById(id);
 }
 
-Id LogicalModelAssistApi::idByIndex(QModelIndex const &index) const
+Id LogicalModelAssistApi::idByIndex(const QModelIndex &index) const
 {
 	return mModelsAssistApi.idByIndex(index);
 }

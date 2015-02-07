@@ -123,8 +123,8 @@ void Label::scaleCoordinates(const QRectF &contents)
 		return;
 	}
 
-	qreal const x = mPoint.x() * (!mScalingX ? mContents.width() : contents.width());
-	qreal const y = mPoint.y() * (!mScalingX ? mContents.height() : contents.height());
+	const qreal x = mPoint.x() * (!mScalingX ? mContents.width() : contents.width());
+	const qreal y = mPoint.y() * (!mScalingX ? mContents.height() : contents.height());
 
 	setPos(x, y);
 }
@@ -240,8 +240,8 @@ void Label::init(const QRectF &contents)
 		mPoint.setY(currentPos.y() / mContents.height());
 		setPos(currentPos);
 	} else {
-		qreal const x = mPoint.x() * mContents.width();
-		qreal const y = mPoint.y() * mContents.height();
+		const qreal x = mPoint.x() * mContents.width();
+		const qreal y = mPoint.y() * mContents.height();
 		setPos(x, y);
 		mGraphicalModelAssistApi.createLabel(mId, mIndex, QPointF(x, y), this->boundingRect().size());
 	}
@@ -253,7 +253,7 @@ void Label::setScaling(bool scalingX, bool scalingY)
 	mScalingY = scalingY;
 }
 
-void Label::setBackground(QColor const &background)
+void Label::setBackground(const QColor &background)
 {
 	mBackground = background;
 }

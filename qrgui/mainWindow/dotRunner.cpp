@@ -4,8 +4,8 @@ using namespace qReal;
 
 DotRunner::DotRunner(
 		const Id &diagramId
-		, models::GraphicalModelAssistApi const &graphicalModelApi
-		, models::LogicalModelAssistApi const &logicalModelApi
+		, const models::GraphicalModelAssistApi &graphicalModelApi
+		, const models::LogicalModelAssistApi &logicalModelApi
 		, const EditorManagerInterface &editorManagerProxy
 		, const QString &absolutePathToDotFiles
 		)
@@ -123,7 +123,7 @@ void DotRunner::parseDOTCoordinates()
 		mDOTCoordinatesOfElements.insert(id, qMakePair(pointF, pair));
 	}
 	foreach (const Id &id, mDOTCoordinatesOfElements.keys()) {
-		QPolygon const configuration = mGraphicalModelApi.configuration(id);
+		const QPolygon configuration = mGraphicalModelApi.configuration(id);
 		int width = 0;
 		int height = 0;
 		if (!configuration.isEmpty()) {

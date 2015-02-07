@@ -7,7 +7,7 @@
 using namespace qReal::commands;
 
 RenameExplosionCommand::RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
-		, models::GraphicalModelAssistApi const * const graphicalApi
+		, const models::GraphicalModelAssistApi * const graphicalApi
 		, models::Exploser &exploser
 		, const Id &target)
 	: mLogicalApi(logicalApi)

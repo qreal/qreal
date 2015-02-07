@@ -21,7 +21,7 @@ protected:
 private:
 	void prepareCommands();
 	QHash<Id, Id> *preparePasteNodesCommands(QList<NodeData> &nodesData, const QPointF &offset);
-	void preparePasteEdgeCommand(EdgeData const &edgeData, const QPointF &offset);
+	void preparePasteEdgeCommand(const EdgeData &edgeData, const QPointF &offset);
 
 	void pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData) const;
 

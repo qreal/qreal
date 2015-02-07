@@ -20,7 +20,7 @@ int Images::displayHeight() const
 	return 64;
 }
 
-void Images::registerBmpFile(const QString &name, QImage const &image)
+void Images::registerBmpFile(const QString &name, const QImage &image)
 {
 	mBmpFiles[name] = image;
 }

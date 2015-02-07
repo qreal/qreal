@@ -22,7 +22,7 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDRobotModel : public interpreterBase::robotMo
 	Q_OBJECT
 
 public:
-	explicit TwoDRobotModel(RobotModelInterface const &realModel);
+	explicit TwoDRobotModel(const RobotModelInterface &realModel);
 	TwoDRobotModel(const QString &robotId);
 
 	QString name() const override;

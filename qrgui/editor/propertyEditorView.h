@@ -67,7 +67,7 @@ protected slots:
 
 private:
 	/** @brief returns index of value in list of possible values for index  */
-	int enumPropertyIndexOf(QModelIndex const &, const QString &);
+	int enumPropertyIndexOf(const QModelIndex &, const QString &);
 	void setPropertyValue(QtVariantProperty *property, const QVariant &value);
 
 	bool mChangingPropertyValue;

@@ -21,7 +21,7 @@ public:
 	~Label() override;
 
 	void init(const QRectF &contents);
-	void setBackground(QColor const &background);
+	void setBackground(const QColor &background);
 	void setScaling(bool scalingX, bool scalingY);
 
 	bool isHard() const;

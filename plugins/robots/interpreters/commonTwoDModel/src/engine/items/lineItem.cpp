@@ -85,8 +85,8 @@ void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void LineItem::calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid)
 {
-	qreal const x = mapFromScene(event->scenePos()).x();
-	qreal const y = mapFromScene(event->scenePos()).y();
+	const qreal x = mapFromScene(event->scenePos()).x();
+	const qreal y = mapFromScene(event->scenePos()).y();
 	if (mDragState != None) {
 		setFlag(QGraphicsItem::ItemIsMovable, false);
 	}
@@ -208,7 +208,7 @@ QDomElement LineItem::serialize(QDomDocument &document, const QPoint &topLeftPic
 	return lineNode;
 }
 
-void LineItem::deserialize(QDomElement const &element)
+void LineItem::deserialize(const QDomElement &element)
 {
 	const QString beginStr = element.attribute("begin", "0:0");
 	QStringList splittedStr = beginStr.split(":");
@@ -230,7 +230,7 @@ void LineItem::deserialize(QDomElement const &element)
 	deserializePenBrush(element);
 }
 
-void LineItem::deserializePenBrush(QDomElement const &element)
+void LineItem::deserializePenBrush(const QDomElement &element)
 {
 	readPenBrush(element);
 }

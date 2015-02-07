@@ -20,13 +20,13 @@ void StatPoint::operator= (const QPointF &p)
 
 void StatPoint::paint(QPainter *painter, const QRectF &contents) const
 {
-	qreal const x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
-	qreal const y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
+	const qreal x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
+	const qreal y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
 
 	QLineF pointToDraw(x - 0.1, y - 0.1, x + 0.1, y + 0.1);
 
-	QColor const portColor("#465945");
-	QColor const highlightColor("#c3dcc4");
+	const QColor portColor("#465945");
+	const QColor highlightColor("#c3dcc4");
 
 	painter->save();
 	QPen pen = painter->pen();
@@ -43,8 +43,8 @@ void StatPoint::paint(QPainter *painter, const QRectF &contents) const
 
 QPointF StatPoint::transformForContents(const QRectF &contents) const
 {
-	qreal const x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
-	qreal const y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
+	const qreal x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
+	const qreal y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
 
 	return QPointF(x, y);
 }

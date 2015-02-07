@@ -89,7 +89,7 @@ void MouseMovementManager::recountCentre()
 	}
 
 	int count = 0;
-	for (PointVector const &path : mPath) {
+	for (const PointVector &path : mPath) {
 		count += path.size();
 	}
 
@@ -161,7 +161,7 @@ MouseMovementManager::GestureResult MouseMovementManager::result()
 
 	for (const QString &key: gestures.keys()) {
 		minDist = qMin(minDist, mGesturesManager->getMaxDistance(key));
-		qreal const dist = mGesturesManager->getDistance(key);
+		const qreal dist = mGesturesManager->getDistance(key);
 		if (dist < minDist) {
 			minDist = dist;
 			result.setType(key == deletionGestureKey ? deleteGesture : createElementGesture);

@@ -11,7 +11,7 @@ public:
 	CreateRemoveCommandImplementation(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser const &exploser
+			, const models::Exploser &exploser
 			, const Id &logicalParent
 			, const Id &graphicalParent
 			, const Id &id
@@ -24,7 +24,7 @@ public:
 
 	Id id() const;
 
-	bool equals(CreateRemoveCommandImplementation const &other) const;
+	bool equals(const CreateRemoveCommandImplementation &other) const;
 
 	/// @todo: Bad method, required only for linkers. Get rid of it.
 	/// Modifies command setting new creation position.
@@ -35,7 +35,7 @@ private:
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
-	models::Exploser const &mExploser;
+	const models::Exploser &mExploser;
 	const Id mLogicalParent;
 	const Id mGraphicalParent;
 	Id mId;
@@ -47,8 +47,8 @@ private:
 	Id mOldLogicalId;
 };
 
-inline bool operator==(CreateRemoveCommandImplementation const &i1
-		, CreateRemoveCommandImplementation const &i2)
+inline bool operator==(const CreateRemoveCommandImplementation &i1
+		, const CreateRemoveCommandImplementation &i2)
 {
 	return i1.equals(i2);
 }

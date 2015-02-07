@@ -30,7 +30,7 @@ LanguageInfo QScintillaTextEdit::currentLanguage() const
 	return mLanguage;
 }
 
-void QScintillaTextEdit::setCurrentLanguage(LanguageInfo const &language)
+void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 {
 	setLexer(0);
 

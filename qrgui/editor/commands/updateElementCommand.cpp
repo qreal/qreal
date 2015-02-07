@@ -2,12 +2,12 @@
 
 using namespace qReal::commands;
 
-UpdateElementCommand::UpdateElementCommand(EditorViewScene const *scene, const Id &id)
+UpdateElementCommand::UpdateElementCommand(const EditorViewScene *scene, const Id &id)
 	: ElementCommand(scene, id)
 {
 }
 
-UpdateElementCommand::UpdateElementCommand(EditorView const *view, const Id &id)
+UpdateElementCommand::UpdateElementCommand(const EditorView *view, const Id &id)
 	: ElementCommand(&view->editorViewScene(), id)
 {
 }
@@ -41,9 +41,9 @@ bool UpdateElementCommand::update()
 	return false;
 }
 
-bool UpdateElementCommand::equals(AbstractCommand const &other) const
+bool UpdateElementCommand::equals(const AbstractCommand &other) const
 {
-	UpdateElementCommand const *updateCommand = dynamic_cast<UpdateElementCommand const *>(&other);
+	const UpdateElementCommand *updateCommand = dynamic_cast<const UpdateElementCommand *>(&other);
 	if (updateCommand) {
 		return scene() == updateCommand->scene() && elementId() == updateCommand->elementId();
 	}

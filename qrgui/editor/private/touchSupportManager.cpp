@@ -33,7 +33,7 @@ bool TouchSupportManager::isGestureRunning() const
 
 bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 {
-	QEvent::Type const eventType = event->type();
+	const QEvent::Type eventType = event->type();
 	const bool isMouseAction = QEvent::MouseButtonPress == eventType || QEvent::MouseButtonRelease == eventType;
 	const bool isMouseEvent = isMouseAction || QEvent::MouseMove == eventType;
 
@@ -231,7 +231,7 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 
 		// If user`s touch begin and end events points distinguish not more than this distance then the element
 		// under this point will be selected.
-		qreal const maxDistance = 10;
+		const qreal maxDistance = 10;
 		if (isElementUnder(touchPoint)
 				&& mathUtils::Geometry::distance(mLastTouchBeginPoint, touchPoint) < maxDistance) {
 			// Selecting the element under the finger

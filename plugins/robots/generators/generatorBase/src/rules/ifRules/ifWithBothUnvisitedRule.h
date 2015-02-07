@@ -11,7 +11,7 @@ class IfWithBothUnvisitedRule : public IfBlockRuleBase
 {
 public:
 	IfWithBothUnvisitedRule(SemanticTree *tree, const qReal::Id &id
-			, LinkInfo const &thenLink, LinkInfo const &elseLink);
+			, const LinkInfo &thenLink, const LinkInfo &elseLink);
 
 	virtual bool apply();
 };

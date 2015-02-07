@@ -17,7 +17,7 @@ PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl(
 	mDomElementType = portType;
 }
 
-PointPort::PointPort(PointPort const &other)
+PointPort::PointPort(const PointPort &other)
 	:Item(), mPointImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;

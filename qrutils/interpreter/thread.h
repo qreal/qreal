@@ -27,7 +27,7 @@ public:
 	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	/// @param initialNode - node that shall be executed first in this thread.
-	Thread(qReal::GraphicalModelAssistInterface const *graphicalModelApi
+	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, BlocksTableInterface &blocksTable
@@ -39,7 +39,7 @@ public:
 	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
 	/// @param diagramToInterpret - diagram, whose initial node shall be executed in a new thread.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
-	Thread(qReal::GraphicalModelAssistInterface const *graphicalModelApi
+	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, const Id &diagramToInterpret
@@ -76,7 +76,7 @@ private:
 	void turnOn(BlockInterface * const block);
 	void turnOff(BlockInterface * const block);
 
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership
+	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Doesn't have ownership
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	const Id mInitialNodeType;
 	BlocksTableInterface &mBlocksTable;

@@ -11,7 +11,7 @@ namespace semantics {
 class SimpleIfInsideCycleRule : public SimpleVisitedRuleBase
 {
 public:
-	SimpleIfInsideCycleRule(SemanticTree *tree, const qReal::Id &id, LinkInfo const &next);
+	SimpleIfInsideCycleRule(SemanticTree *tree, const qReal::Id &id, const LinkInfo &next);
 
 	virtual bool apply();
 };

@@ -19,8 +19,8 @@ public:
 	explicit RobotCommunicator(QObject *parent = 0);
 	~RobotCommunicator();
 
-	void send(QObject *addressee, const QByteArray &buffer, unsigned const responseSize);
-	void send(const QByteArray &buffer, unsigned const responseSize, QByteArray &outputBuffer);
+	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
+	void send(const QByteArray &buffer, const unsigned responseSize, QByteArray &outputBuffer);
 	void connect();
 	void disconnect();
 

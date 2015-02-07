@@ -31,7 +31,7 @@ public:
 	{
 		QPair<QObject *, QString> resultOfLoading = mPluginManagerLoader.pluginLoadedByName(pluginName);
 
-		QObject const *loadedPlugin = resultOfLoading.first;
+		const QObject *loadedPlugin = resultOfLoading.first;
 		const QString errorMessage = resultOfLoading.second;
 
 		return qMakePair(qobject_cast<InterfaceType *>(loadedPlugin), errorMessage);
@@ -56,7 +56,7 @@ private:
 	{
 		QList<InterfaceType *> interfacesList;
 
-		for (QObject const *currentInterface : interfacesToWrap) {
+		for (const QObject *currentInterface : interfacesToWrap) {
 			InterfaceType *castedInterface = qobject_cast<InterfaceType *>(currentInterface);
 			if (castedInterface) {
 				interfacesList.append(castedInterface);

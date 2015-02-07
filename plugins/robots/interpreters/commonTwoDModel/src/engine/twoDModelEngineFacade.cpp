@@ -28,11 +28,11 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 {
 }
 
-void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, qReal::SystemEvents const &systemEvents
+void TwoDModelEngineFacade::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+		, const qReal::SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
-		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+		, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel] (const qReal::Id &id)
@@ -84,7 +84,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
 
 	connect(mModel.data(), &model::Model::modelChanged, [this, &graphicalModel, &logicalModel
-			, &interpreterControl, &interpretersInterface] (QDomDocument const &xml) {
+			, &interpreterControl, &interpretersInterface] (const QDomDocument &xml) {
 				const qReal::Id logicalId = graphicalModel.logicalId(interpretersInterface.activeDiagram());
 				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
 					logicalModel.setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");

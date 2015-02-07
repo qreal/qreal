@@ -30,7 +30,7 @@ public:
 
 	void playSound(int timeInMs) override;
 
-	void markerDown(QColor const &color) override;
+	void markerDown(const QColor &color) override;
 	void markerUp() override;
 
 	utils::TimelineInterface &modelTimeline() override;

@@ -21,7 +21,7 @@ class TokenPatterns
 {
 public:
 	/// Define pattern for given token to given regular expression with given display name.
-	void defineToken(TokenType tokenType, QRegularExpression const &regExp, const QString &userFriendlyName)
+	void defineToken(TokenType tokenType, const QRegularExpression &regExp, const QString &userFriendlyName)
 	{
 		mPatterns.insert(tokenType, regExp);
 		mUserFriendlyNames.insert(tokenType, userFriendlyName);

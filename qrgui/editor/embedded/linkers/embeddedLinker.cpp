@@ -140,17 +140,17 @@ bool EmbeddedLinker::isDirected() const
 
 void EmbeddedLinker::takePosition(int index, int maxIndex)
 {
-	qreal const pi = 3.141592;
+	const qreal pi = 3.141592;
 	const QRectF bounding = mMaster->boundingRect();
 
-	qreal const top = bounding.topLeft().y();
-	qreal const left = bounding.topLeft().x();
-	qreal const right = bounding.bottomRight().x();
-	qreal const bottom = bounding.bottomRight().y();
-	qreal const height = bottom - top;
-	qreal const width = right - left;
+	const qreal top = bounding.topLeft().y();
+	const qreal left = bounding.topLeft().x();
+	const qreal right = bounding.bottomRight().x();
+	const qreal bottom = bounding.bottomRight().y();
+	const qreal height = bottom - top;
+	const qreal width = right - left;
 
-	qreal const angle = 2 * pi * index / maxIndex;
+	const qreal angle = 2 * pi * index / maxIndex;
 
 	int rW = width;
 	int rH = height;
@@ -166,8 +166,8 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 	}
 
 	// TODO: customize start angle
-	qreal const px = left + width / 2 + rW * cos(angle) / 2;
-	qreal const py = bottom - height / 2 + rH * sin(angle) / 2;
+	const qreal px = left + width / 2 + rW * cos(angle) / 2;
+	const qreal py = bottom - height / 2 + rH * sin(angle) / 2;
 
 	// if linker covers master node:
 
@@ -264,7 +264,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {
 			bool canBeConnected = false;
-			foreach(PossibleEdge const &pEdge, mEdge->src()->getPossibleEdges()) {
+			foreach(const PossibleEdge &pEdge, mEdge->src()->getPossibleEdges()) {
 				if (pEdge.first.second.element() == under->id().element()) {
 					canBeConnected = true;
 					break;

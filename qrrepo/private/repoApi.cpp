@@ -504,7 +504,7 @@ IdList RepoApi::graphicalElements(const Id &type) const
 
 IdList RepoApi::elementsByType(const QString &type, bool sensitivity, bool regExpression) const
 {
-	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
+	const Qt::CaseSensitivity caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
 	QRegExp *regExp = new QRegExp(type,caseSensitivity);
 

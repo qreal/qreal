@@ -19,7 +19,7 @@ Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	mRect = rect;
 }
 
-Arch::Arch(Arch const &other)
+Arch::Arch(const Arch &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -108,8 +108,8 @@ void Arch::resizeItem(QGraphicsSceneMouseEvent *event)
 
 QRectF Arch::sceneBoundingRectCoord(const QPoint &topLeftPicture)
 {
-	qreal const x1 = scenePos().x() + mRect.x() - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + mRect.y() - topLeftPicture.y();
+	const qreal x1 = scenePos().x() + mRect.x() - topLeftPicture.x();
+	const qreal y1 = scenePos().y() + mRect.y() - topLeftPicture.y();
 	return QRectF(x1, y1, mRect.width(), mRect.height());
 }
 

@@ -19,8 +19,8 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 
 NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 		, SystemEvents &events
-		, ProjectManagementInterface const &projectManager
-		, GraphicalModelAssistInterface const &graphicalModel)
+		, const ProjectManagementInterface &projectManager
+		, const GraphicalModelAssistInterface &graphicalModel)
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(&graphicalModel)

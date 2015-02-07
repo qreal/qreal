@@ -23,7 +23,7 @@ public:
 	TextManager(SystemEvents &systemEvents, gui::MainWindowInterpretersInterface &mainWindow);
 
 	/// Reads code source file and create new QScintillaTextEdit associated with this file (rather with filepath)
-	bool openFile(const QString &filePath, const QString &genName, LanguageInfo const &language);
+	bool openFile(const QString &filePath, const QString &genName, const LanguageInfo &language);
 
 	/// Remove all info about filePath (including QScintillaTextEdit associated with it)
 	bool closeFile(const QString &filePath);
@@ -48,11 +48,11 @@ public:
 	/// Opens new tab with file created by some generator in text editor and shows a text in it
 	/// @param fileInfo A filepath to file with text
 	/// @param genName A name of generator which created this file
-	void showInTextEditor(QFileInfo const &fileInfo, const QString &genName, LanguageInfo const &language);
+	void showInTextEditor(const QFileInfo &fileInfo, const QString &genName, const LanguageInfo &language);
 
 	/// Opens new tab with file
 	/// @param fileInfo A filepath to file with text
-	void showInTextEditor(QFileInfo const &fileInfo, LanguageInfo const &language);
+	void showInTextEditor(const QFileInfo &fileInfo, const LanguageInfo &language);
 
 	/// Saves text from tab to another or same file
 	/// @param saveAs Defines what to do: save to the same file or in another
@@ -62,7 +62,7 @@ public:
 
 private slots:
 	void setModified(text::QScintillaTextEdit *code, bool modified = true);
-	void onTabClosed(QFileInfo const &file);
+	void onTabClosed(const QFileInfo &file);
 
 private:
 	QMap<QString, text::QScintillaTextEdit *> mText;

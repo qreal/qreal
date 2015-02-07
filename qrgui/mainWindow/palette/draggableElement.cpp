@@ -26,7 +26,7 @@ const int gestureTipSize = 30;
 
 DraggableElement::DraggableElement(
 		MainWindow &mainWindow
-		, PaletteElement const &data
+		, const PaletteElement &data
 		, bool iconsOnly
 		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
@@ -57,9 +57,9 @@ DraggableElement::DraggableElement(
 	if (!description.isEmpty()) {
 		const QString rawGesture = mEditorManagerProxy.mouseGesture(data.id());
 		if (!rawGesture.isEmpty()) {
-			QSize const size(gestureTipSize, gestureTipSize);
+			const QSize size(gestureTipSize, gestureTipSize);
 			gestures::GesturePainter painter(rawGesture, Qt::white, Qt::blue, gestureTipSize);
-			QPixmap const gesture = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+			const QPixmap gesture = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
 			QByteArray byteArray;
 			QBuffer buffer(&byteArray);
 			gesture.save(&buffer, "PNG");
@@ -120,7 +120,7 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 
 void DraggableElement::changeAppearancePaletteActionTriggered()
 {
-	QAction const * const action = static_cast<QAction *>(sender());
+	const QAction * const action = static_cast<QAction *>(sender());
 	const Id id = action->data().value<Id>();
 	const QString propertyValue = mEditorManagerProxy.shape(id);
 	mMainWindow.openShapeEditor(id, propertyValue, &mEditorManagerProxy, false);
@@ -159,7 +159,7 @@ void DraggableElement::deleteElement()
 	/// We can make elements grayscaled by disabling corresponding element in palette.
 	const IdList logicalIdList = mMainWindow.models().logicalRepoApi().logicalElements(mDeletedElementId.type());
 	for (const Id &logicalId : logicalIdList) {
-		QModelIndex const index = mMainWindow.models().logicalModelAssistApi().indexById(logicalId);
+		const QModelIndex index = mMainWindow.models().logicalModelAssistApi().indexById(logicalId);
 		mMainWindow.models().logicalModel()->removeRow(index.row(), index.parent());
 	}
 
@@ -317,7 +317,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 
-		QPixmap const pixmap = icon().pixmap(mData.preferredSize());
+		const QPixmap pixmap = icon().pixmap(mData.preferredSize());
 
 		if (!pixmap.isNull()) {
 			drag->setPixmap(pixmap);

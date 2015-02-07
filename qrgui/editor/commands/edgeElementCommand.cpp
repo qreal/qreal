@@ -2,12 +2,12 @@
 
 using namespace qReal::commands;
 
-EdgeElementCommand::EdgeElementCommand(EditorViewScene const *scene, const Id &id)
+EdgeElementCommand::EdgeElementCommand(const EditorViewScene *scene, const Id &id)
 	: ElementCommand(scene, id)
 {
 }
 
-EdgeElementCommand::EdgeElementCommand(EditorView const *view, const Id &id)
+EdgeElementCommand::EdgeElementCommand(const EditorView *view, const Id &id)
 	: ElementCommand(&view->editorViewScene(), id)
 {
 }

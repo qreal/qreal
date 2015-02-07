@@ -25,7 +25,7 @@ BaseGraphTransformationUnit::~BaseGraphTransformationUnit()
 
 IdList BaseGraphTransformationUnit::elementsFromActiveDiagram() const
 {
-	unsigned const validIdSize = 4;
+	const unsigned validIdSize = 4;
 	const Id activeDiagram = mInterpretersInterface.activeDiagram();
 	if (activeDiagram.idSize() < validIdSize) {
 		mInterpretersInterface.errorReporter()->addError(tr("no current diagram"));

@@ -13,7 +13,7 @@ const QString timeVariableName = QObject::tr("time");
 
 RobotsBlockParser::RobotsBlockParser(
 		const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-		, utils::ComputableNumber::IntComputer const &timeComputer)
+		, const utils::ComputableNumber::IntComputer &timeComputer)
 	: qrtext::lua::LuaToolbox()
 	, mRobotModelManager(robotModelManager)
 	, mTimeComputer(timeComputer)
@@ -69,46 +69,46 @@ void RobotsBlockParser::clear()
 
 void RobotsBlockParser::addIntrinsicFuctions()
 {
-	auto const add0aryFunction = [this] (const QString &name
+	const auto add0aryFunction = [this] (const QString &name
 			, qrtext::core::types::TypeExpression * const returnType
 			, std::function<QVariant()> const &function)
 	{
 		addIntrinsicFunction(name, returnType
 				, {}
-				, [function] (QList<QVariant> const &params) {
+				, [function] (const QList<QVariant> &params) {
 						Q_UNUSED(params);
 						return function();
 				});
 	};
 
-	auto const add1aryFunction = [this] (const QString &name
+	const auto add1aryFunction = [this] (const QString &name
 			, qrtext::core::types::TypeExpression * const returnType
 			, qrtext::core::types::TypeExpression * const argumentType
 			, std::function<QVariant(QVariant)> const &function)
 	{
 		addIntrinsicFunction(name, returnType
 				, {argumentType}
-				, [function] (QList<QVariant> const &params) {
+				, [function] (const QList<QVariant> &params) {
 						Q_ASSERT(!params.isEmpty());
 						return function(params.first());
 				});
 	};
 
-	auto const addFloatFunction = [this, add1aryFunction] (const QString &name
+	const auto addFloatFunction = [this, add1aryFunction] (const QString &name
 			, std::function<double(double)> const &function)
 	{
 		add1aryFunction(name, new types::Float, new types::Float
 				, [function](const QVariant &arg) { return function(arg.toDouble()); });
 	};
 
-	auto const addIntegerFunction = [this, add1aryFunction] (const QString &name
+	const auto addIntegerFunction = [this, add1aryFunction] (const QString &name
 			, std::function<double(double)> const &function)
 	{
 		add1aryFunction(name, new types::Integer, new types::Integer
 				, [function](const QVariant &arg) { return function(arg.toInt()); });
 	};
 
-	auto const addFloatToIntegerFunction = [this, add1aryFunction] (const QString &name
+	const auto addFloatToIntegerFunction = [this, add1aryFunction] (const QString &name
 			, std::function<int(double)> const &function)
 	{
 		add1aryFunction(name, new types::Integer(), new types::Float()

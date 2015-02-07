@@ -46,7 +46,7 @@ public:
 		}
 	}
 
-	void setKey(PathVector const &path)
+	void setKey(const PathVector &path)
 	{
 		mKey = getKey(path);
 	}
@@ -55,8 +55,8 @@ public:
 
 protected:
 	TKey mKey;
-	virtual qreal getDistance(TKey const &key1, TKey const &key2) = 0;
-	virtual TKey getKey(PathVector const &path) = 0;
+	virtual qreal getDistance(const TKey &key1, const TKey &key2) = 0;
+	virtual TKey getKey(const PathVector &path) = 0;
 	QMap<QString, TKey> mGestures;
 	//maybe to do several lists for multistroke gestures
 };

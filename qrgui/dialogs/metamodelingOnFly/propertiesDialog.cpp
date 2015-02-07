@@ -130,7 +130,7 @@ void PropertiesDialog::findElementsOnDiagram(const qrRepo::LogicalRepoApi &api, 
 	}
 
 	IdList logicalElements = api.logicalElements(id);
-	for (auto const &logicalElement: logicalElements) {
+	for (const auto &logicalElement: logicalElements) {
 		if (!mElementsOnDiagram->contains(logicalElement)) {
 			mElementsOnDiagram->append(logicalElement);
 		}

@@ -17,7 +17,7 @@ public:
 	/// Inits interpreted plugins.
 	/// @param configurator - information about model
 	/// @param metamodelRepoApi - information about metamodel
-	void init(PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
+	void init(const PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
 
 	/// Returns list of actions of all plugins.
 	QList<ActionInfo> actions() const;

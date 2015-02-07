@@ -20,8 +20,8 @@ class DotRunner : public QObject
 public:
 	explicit DotRunner(
 			const Id &diagramId
-			, models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi
+			, const models::GraphicalModelAssistApi &graphicalModelApi
+			, const models::LogicalModelAssistApi &logicalModelApi
 			, const EditorManagerInterface &editorManagerProxy
 			, const QString &absolutePathToDotFiles
 			);
@@ -40,8 +40,8 @@ private:
 	QProcess mProcess;
 	QByteArray mData;
 	Id mDiagramId;
-	models::GraphicalModelAssistApi const &mGraphicalModelApi;
-	models::LogicalModelAssistApi const &mLogicalModelApi;
+	const models::GraphicalModelAssistApi &mGraphicalModelApi;
+	const models::LogicalModelAssistApi &mLogicalModelApi;
 	const qReal::EditorManagerInterface &mEditorManagerInterface;
 	QHash <QString, Id> mElementNamesForDOT;
 	QHash <Id, QPair<QPointF, QPair<qreal, qreal> > > mDOTCoordinatesOfElements;

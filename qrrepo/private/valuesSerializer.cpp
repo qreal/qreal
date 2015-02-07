@@ -8,7 +8,7 @@
 using namespace qReal;
 using namespace qrRepo::details;
 
-IdList ValuesSerializer::deserializeIdList(QDomElement const &elem, const QString &name)
+IdList ValuesSerializer::deserializeIdList(const QDomElement &elem, const QString &name)
 {
 	QDomNodeList list = elem.elementsByTagName(name);
 	if (list.count() != 1) {
@@ -124,7 +124,7 @@ QString ValuesSerializer::serializeQPointF(const QPointF &p)
 	return QString::number(p.x()) + ", " + QString::number(p.y());
 }
 
-QString ValuesSerializer::serializeQPolygonF(QPolygonF const &p)
+QString ValuesSerializer::serializeQPolygonF(const QPolygonF &p)
 {
 	QString result("");
 	foreach (const QPointF &point, p) {
@@ -168,7 +168,7 @@ QDomElement ValuesSerializer::serializeNamedVariantsMap(const QString &tagName, 
 	return result;
 }
 
-void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map, QDomElement const &element)
+void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map, const QDomElement &element)
 {
 	for (QDomElement property = element.firstChildElement();
 			!property.isNull();

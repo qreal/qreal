@@ -35,7 +35,7 @@ CreateGroupCommand::CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 	bool somethingChangedThisIteration = true;
 	while (!toCreate.isEmpty() && somethingChangedThisIteration) {
 		somethingChangedThisIteration = false;
-		for (GroupNode const &node : toCreate) {
+		for (const GroupNode &node : toCreate) {
 			if (!node.parent.isEmpty() && !consideredNodes.contains(node.parent)) {
 				continue;
 			}
@@ -61,7 +61,7 @@ CreateGroupCommand::CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 	}
 	// TODO: display here error if toCreate still non-empty
 
-	for (GroupEdge const &edge : mPattern.edges()) {
+	for (const GroupEdge &edge : mPattern.edges()) {
 		const Id element(id.editor(), id.diagram(), edge.type, QUuid::createUuid().toString());
 		CreateElementCommand *createEdgeCommand = new CreateElementCommand(
 					logicalApi, graphicalApi, exploser, logicalParent, graphicalParent, element, isFromLogicalModel
@@ -76,14 +76,14 @@ bool CreateGroupCommand::execute()
 	// Elements themselves were already created in pre-actions
 	QMap<QString, Id> nodes;
 	for (const QString &idInGroup : mNodeCommands.keys()) {
-		CreateElementCommand const *createNodeCommand = mNodeCommands[idInGroup];
+		const CreateElementCommand *createNodeCommand = mNodeCommands[idInGroup];
 		const Id newElemId = createNodeCommand->result();
 		nodes.insert(idInGroup, newElemId);
 	}
 
 	for (int i = 0; i < mEdgeCommands.count(); ++i) {
-		CreateElementCommand const *createEdgeCommand = mEdgeCommands[i];
-		GroupEdge const groupEdge = mPattern.edges()[i];
+		const CreateElementCommand *createEdgeCommand = mEdgeCommands[i];
+		const GroupEdge groupEdge = mPattern.edges()[i];
 		const Id newEdgeId = createEdgeCommand->result();
 		mGraphicalApi.setFrom(newEdgeId, nodes.value(groupEdge.from));
 		mGraphicalApi.setTo(newEdgeId, nodes.value(groupEdge.to));

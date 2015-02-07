@@ -10,7 +10,7 @@ namespace physics {
 class SimplePhysicsEngine : public PhysicsEngineBase
 {
 public:
-	explicit SimplePhysicsEngine(WorldModel const &worldModel);
+	explicit SimplePhysicsEngine(const WorldModel &worldModel);
 
 	void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 			, bool engine1Break, bool engine2Break

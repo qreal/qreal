@@ -12,7 +12,7 @@ class Stylus : public Item
 public:
 	QList<Line *> mListLine;
 	Stylus(qreal x1, qreal y1, Item* parent);
-	Stylus(Stylus const &other);
+	Stylus(const Stylus &other);
 	virtual Item* clone();
 	void addLine(qreal x2, qreal y2);
 	void addLineInList(Line *line);

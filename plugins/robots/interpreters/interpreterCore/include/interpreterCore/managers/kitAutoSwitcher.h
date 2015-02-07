@@ -17,10 +17,10 @@ class KitAutoSwitcher : public QObject
 	Q_OBJECT
 
 public:
-	KitAutoSwitcher(qReal::ProjectManagementInterface const &projectManager
-			, qReal::LogicalModelAssistInterface const &logicalModel
-			, BlocksFactoryManagerInterface const &factoryManager
-			, KitPluginManager const &kitPluginManager
+	KitAutoSwitcher(const qReal::ProjectManagementInterface &projectManager
+			, const qReal::LogicalModelAssistInterface &logicalModel
+			, const BlocksFactoryManagerInterface &factoryManager
+			, const KitPluginManager &kitPluginManager
 			, RobotModelManager &robotModelManager
 			, QObject *parent = nullptr);
 
@@ -32,9 +32,9 @@ private slots:
 	QMap<qReal::Id, QString> kitSpecificBlocks() const;
 
 private:
-	qReal::LogicalModelAssistInterface const &mLogicalModel;
-	BlocksFactoryManagerInterface const &mFactoryManager;
-	KitPluginManager const &mKitPluginManager;
+	const qReal::LogicalModelAssistInterface &mLogicalModel;
+	const BlocksFactoryManagerInterface &mFactoryManager;
+	const KitPluginManager &mKitPluginManager;
 	RobotModelManager &mRobotModelManager;
 };
 

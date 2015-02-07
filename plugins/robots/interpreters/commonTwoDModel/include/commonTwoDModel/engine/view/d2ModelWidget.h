@@ -60,7 +60,7 @@ public:
 	SensorItem *sensorItem(const interpreterBase::robotModel::PortInfo &port);
 	void setSensorVisible(const interpreterBase::robotModel::PortInfo &port, bool isVisible);
 
-	void loadXml(QDomDocument const &worldModel);
+	void loadXml(const QDomDocument &worldModel);
 
 signals:
 	/// Emitted each time when user closes 2D model window.
@@ -162,9 +162,9 @@ private:
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(RobotItem *robotItem, const interpreterBase::robotModel::PortInfo &port);
 
-	void setValuePenColorComboBox(QColor const &penColor);
+	void setValuePenColorComboBox(const QColor &penColor);
 	void setValuePenWidthSpinBox(int width);
-	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
+	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
 
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);

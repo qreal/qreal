@@ -46,8 +46,8 @@ QString NxtOsekCGeneratorPlugin::generatorName() const
 bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 {
 	const QString cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
-	QFileInfo const cFile(cFilePath);
-	QFileInfo const makeFile(cFile.absolutePath() + "/makefile");
+	const QFileInfo cFile(cFilePath);
+	const QFileInfo makeFile(cFile.absolutePath() + "/makefile");
 	if (!cFile.exists() || !makeFile.exists()) {
 		return true;
 	}
@@ -58,7 +58,7 @@ bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference);
 }
 
-void NxtOsekCGeneratorPlugin::init(PluginConfigurator const &configurator
+void NxtOsekCGeneratorPlugin::init(const PluginConfigurator &configurator
 		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
@@ -109,7 +109,7 @@ void NxtOsekCGeneratorPlugin::onUploadingComplete(bool success)
 		return;
 	}
 
-	NxtFlashTool::RunPolicy const runPolicy = static_cast<NxtFlashTool::RunPolicy>(
+	const NxtFlashTool::RunPolicy runPolicy = static_cast<NxtFlashTool::RunPolicy>(
 			SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 
 	switch (runPolicy) {
@@ -143,7 +143,7 @@ generatorBase::MasterGeneratorBase *NxtOsekCGeneratorPlugin::masterGenerator()
 	return mMasterGenerator;
 }
 
-void NxtOsekCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+void NxtOsekCGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	mMasterGenerator->initialize();
 	mMasterGenerator->setProjectDir(newFileInfo);
@@ -165,7 +165,7 @@ void NxtOsekCGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		QFileInfo const fileInfo = generateCodeForProcessing();
+		const QFileInfo fileInfo = generateCodeForProcessing();
 
 		if (fileInfo != QFileInfo()) {
 			mFlashTool->uploadProgram(fileInfo);

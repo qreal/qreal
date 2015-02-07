@@ -4,7 +4,7 @@
 
 using namespace utils;
 
-bool PointPort::init(QDomElement const &element, int width, int height)
+bool PointPort::init(const QDomElement &element, int width, int height)
 {
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);

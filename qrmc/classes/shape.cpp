@@ -52,7 +52,7 @@ void Shape::init(const QString &shape)
 	initPorts(graphics);
 }
 
-void Shape::initLabels(QDomElement const &graphics)
+void Shape::initLabels(const QDomElement &graphics)
 {
 	int count = 1;
 	for (QDomElement element = graphics.firstChildElement("labels").firstChildElement("label");
@@ -71,7 +71,7 @@ void Shape::initLabels(QDomElement const &graphics)
 
 }
 
-void Shape::initPorts(QDomElement const &graphics)
+void Shape::initPorts(const QDomElement &graphics)
 {
 	QDomElement portsElement = graphics.firstChildElement("ports");
 	if (portsElement.isNull()) {
@@ -83,7 +83,7 @@ void Shape::initPorts(QDomElement const &graphics)
 	return;
 }
 
-void Shape::initPointPorts(QDomElement const &portsElement)
+void Shape::initPointPorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 		!portElement.isNull();
@@ -99,7 +99,7 @@ void Shape::initPointPorts(QDomElement const &portsElement)
 	return;
 }
 
-void Shape::initLinePorts(QDomElement const &portsElement)
+void Shape::initLinePorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 		!portElement.isNull();

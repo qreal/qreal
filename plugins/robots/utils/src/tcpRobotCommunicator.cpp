@@ -42,7 +42,7 @@ bool TcpRobotCommunicator::uploadProgram(const QString &programName)
 	QString fileContents;
 	try {
 		fileContents = utils::InFile::readAll(programName);
-	} catch (qReal::Exception const &) {
+	} catch (const qReal::Exception &) {
 		return false;
 	}
 

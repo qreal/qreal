@@ -12,7 +12,7 @@ public:
 	RemoveElementCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser const &exploser
+			, const models::Exploser &exploser
 			, const Id &logicalParent
 			, const Id &graphicalParent
 			, const Id &id
@@ -20,7 +20,7 @@ public:
 			, const QString &name
 			, const QPointF &position);
 
-	virtual bool equals(AbstractCommand const &other) const;
+	virtual bool equals(const AbstractCommand &other) const;
 
 	Id elementId() const;
 

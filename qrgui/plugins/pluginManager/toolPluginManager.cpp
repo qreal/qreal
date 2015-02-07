@@ -22,7 +22,7 @@ ToolPluginManager::~ToolPluginManager()
 {
 }
 
-void ToolPluginManager::init(PluginConfigurator const &configurator)
+void ToolPluginManager::init(const PluginConfigurator &configurator)
 {
 	QLOG_INFO() << "Initializing tool plugins...";
 	mSystemEvents = &configurator.systemEvents();
@@ -77,7 +77,7 @@ QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() cons
 {
 	QMultiMap<QString, ProjectConverter> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
-		for (ProjectConverter const &converter : toolPlugin->projectConverters()) {
+		for (const ProjectConverter &converter : toolPlugin->projectConverters()) {
 			result.insertMulti(converter.editor(), converter);
 		}
 	}

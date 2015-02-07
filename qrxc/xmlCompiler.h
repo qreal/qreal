@@ -17,7 +17,7 @@ public:
 	XmlCompiler();
 	~XmlCompiler();
 	bool compile(const QString &inputXmlFileName, const QString &sourcesRootFolder);
-	Editor *loadXmlFile(QDir const &currentDir, const QString &inputXmlFileName);
+	Editor *loadXmlFile(const QDir &currentDir, const QString &inputXmlFileName);
 	Diagram *getDiagram(const QString &diagramName);
 	void addResource(const QString &resourceName);
 
@@ -63,7 +63,7 @@ private:
 	class PossibleEdgesGenerator;
 	class EnumValuesGenerator;
 
-	void generateListMethod(utils::OutFile &out, const QString &signature, ListMethodGenerator const &generator);
+	void generateListMethod(utils::OutFile &out, const QString &signature, const ListMethodGenerator &generator);
 
 	QMap<QString, Editor *> mEditors;
 	QString mPluginName;

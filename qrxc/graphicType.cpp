@@ -82,7 +82,7 @@ void GraphicType::copyLabels(GraphicType *parent)
 	}
 }
 
-bool GraphicType::init(QDomElement const &element, const QString &context)
+bool GraphicType::init(const QDomElement &element, const QString &context)
 {
 	mElement = element;
 	if (Type::init(element, context)) {
@@ -123,7 +123,7 @@ bool GraphicType::initParents()
 
 		const QString overrides = parentElement.attribute("overrides");
 
-		for (auto const &parent : mParents) {
+		for (const auto &parent : mParents) {
 			if (parent.name == parentName) {
 				qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
 				return false;
@@ -138,7 +138,7 @@ bool GraphicType::initParents()
 
 bool GraphicType::initProperties()
 {
-	QDomElement const propertiesElement = mLogic.firstChildElement("properties");
+	const QDomElement propertiesElement = mLogic.firstChildElement("properties");
 	if (propertiesElement.isNull()) {
 		return true;
 	}
@@ -314,7 +314,7 @@ bool GraphicType::initPossibleEdges()
 
 bool GraphicType::initExplosions()
 {
-	QDomElement const explodesTo = mLogic.firstChildElement("explodesTo");
+	const QDomElement explodesTo = mLogic.firstChildElement("explodesTo");
 	if (explodesTo.isNull()) {
 		return true;
 	}
@@ -384,7 +384,7 @@ bool GraphicType::resolve()
 
 	/// @todo Ensure that parents are not duplicated.
 
-	for (GeneralizationProperties const &generalization : mParents) {
+	for (const GeneralizationProperties &generalization : mParents) {
 		// Предки ищутся в "родном" контексте типа, так что если он был импортирован, ссылки не должны поломаться.
 		const QString qualifiedParentName = generalization.name.contains("::")
 				? generalization.name
@@ -495,7 +495,7 @@ void GraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 	if (mVisible) {
 		const QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		const QString normalizedName = NameNormalizer::normalize(qualifiedName());
-		foreach (Property const *p, mProperties) {
+		foreach (const Property *p, mProperties) {
 			if (!p->description().isEmpty()) {
 				const QString propertyName = p->name();
 				const QString propertyDescription = p->description();
@@ -512,7 +512,7 @@ void GraphicType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)
 	if (mVisible) {
 		const QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		const QString normalizedName = NameNormalizer::normalize(qualifiedName());
-		foreach (Property const *p, mProperties) {
+		foreach (const Property *p, mProperties) {
 			if (!p->displayedName().isEmpty()) {
 				const QString propertyName = p->name();
 				const QString propertyDisplayedName = p->displayedName();
@@ -645,7 +645,7 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 	}
 
 	const QString name = NameNormalizer::normalize(qualifiedName());
-	for (Property const *property : mProperties) {
+	for (const Property *property : mProperties) {
 		if (!property->defaultValue().isEmpty()) {
 			const QString stringConstructor = property->type() == "string" ? "tr" : "QString::fromUtf8";
 			out() << QString("\tmPropertyDefault[\"%1\"][\"%2\"] = %3(\"%4\");\n").arg(name
@@ -725,7 +725,7 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 	const QString diagramName = NameNormalizer::normalize(mDiagram->name());
 	const QString normalizedName = NameNormalizer::normalize(qualifiedName());
 	out() << "\tmParentsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]\n";
-	for (GeneralizationProperties const &parent : mParents) {
+	for (const GeneralizationProperties &parent : mParents) {
 		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\""
 				<< NameNormalizer::normalize(parent.name) << "\"))\n";
 	}

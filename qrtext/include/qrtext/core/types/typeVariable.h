@@ -20,7 +20,7 @@ public:
 	TypeVariable();
 
 	/// Creates already resolved variable that can contain only one type, but it can become empty later.
-	TypeVariable(QSharedPointer<types::TypeExpression> const &singleType);
+	TypeVariable(const QSharedPointer<types::TypeExpression> &singleType);
 
 	/// Returns true if a variable can be of only one type (so its type is known).
 	bool isResolved() const;
@@ -32,18 +32,18 @@ public:
 	QSharedPointer<types::TypeExpression> finalType() const;
 
 	/// Constrains a variable with possible types of other variable, with respect of given generalizations table.
-	void constrain(QSharedPointer<TypeVariable> const &other, GeneralizationsTableInterface const &generalizationsTable);
+	void constrain(const QSharedPointer<TypeVariable> &other, const GeneralizationsTableInterface &generalizationsTable);
 
 	/// Constrains a variable with a list of possible types, with respect of given generalizations table. Follows the
 	/// same rules as other overload of constrain().
-	void constrain(QList<QSharedPointer<TypeExpression>> const &types
-			, GeneralizationsTableInterface const &generalizationsTable);
+	void constrain(const QList<QSharedPointer<TypeExpression>> &types
+			, const GeneralizationsTableInterface &generalizationsTable);
 
 	/// Constrains an assignment with respect of given generalizations table.
 	/// If a variable can not contain any of other variable's types, then it will be generalized to less general type
 	/// that can. For example, in "a<int> = 0.5<float>;" identifier "a" will be generalized to type "float".
-	void constrainAssignment(QSharedPointer<TypeVariable> const &other
-			, GeneralizationsTableInterface const &generalizationsTable
+	void constrainAssignment(const QSharedPointer<TypeVariable> &other
+			, const GeneralizationsTableInterface &generalizationsTable
 			, bool *wasCoercion);
 
 	QString toString() const override;

@@ -18,8 +18,8 @@ public:
 	PaletteElement(const Id &id
 			, const QString &name
 			, const QString &description
-			, QIcon const &icon
-			, QSize const &preferredSize
+			, const QIcon &icon
+			, const QSize &preferredSize
 			, const Id &explosionTarget);
 
 	/// Stores editor manager-derived parameters of given elements

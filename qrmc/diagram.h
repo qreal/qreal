@@ -71,7 +71,7 @@ namespace qrmc {
 		class IsNodeOrEdgeGenerator;
 		class EnumsGenerator;
 		class PossibleEdgesGenerator;
-		QString generateListMethod(const QString &lineTemplate, ListMethodGenerator const &generator) const;
+		QString generateListMethod(const QString &lineTemplate, const ListMethodGenerator &generator) const;
 
 		class MapMethodGenerator;
 		class NamesGenerator;
@@ -83,6 +83,6 @@ namespace qrmc {
 		class NodesGenerator;
 		class EdgesGenerator;
 		class ResourceGenerator;
-		QString generateMapMethod(const QString& lineTemplate, MapMethodGenerator const &generator) const;
+		QString generateMapMethod(const QString& lineTemplate, const MapMethodGenerator &generator) const;
 	};
 }

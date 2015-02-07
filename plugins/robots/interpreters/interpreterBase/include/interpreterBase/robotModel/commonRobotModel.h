@@ -41,7 +41,7 @@ public:
 
 	ConnectionState connectionState() const final;
 
-	ConfigurationInterface const &configuration() const final;
+	const ConfigurationInterface &configuration() const final;
 
 	QList<PortInfo> availablePorts() const final;
 

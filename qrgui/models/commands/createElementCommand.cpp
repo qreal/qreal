@@ -5,7 +5,7 @@ using namespace qReal::commands;
 CreateElementCommand::CreateElementCommand(
 		models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
-		, models::Exploser const &exploser
+		, const models::Exploser &exploser
 		, const Id &logicalParent
 		, const Id &graphicalParent
 		, const Id &id

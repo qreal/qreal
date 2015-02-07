@@ -13,7 +13,7 @@ class Diagram
 public:
 	Diagram(const QString &name, const QString &nodeName, const QString &displayedName, Editor *editor);
 	~Diagram();
-	bool init(QDomElement const &diagramElement);
+	bool init(const QDomElement &diagramElement);
 	bool resolve();
 	Editor *editor() const;
 	Type *findType(QString name);
@@ -44,7 +44,7 @@ private:
 	QList<ImportSpecification> mImports;
 	bool mShallPaletteBeSorted;
 
-	bool initGraphicTypes(QDomElement const &graphicTypesElement);
-	bool initNonGraphicTypes(QDomElement const &nonGraphicTypesElement);
-	void initPalette(QDomElement const &paletteElement);
+	bool initGraphicTypes(const QDomElement &graphicTypesElement);
+	bool initNonGraphicTypes(const QDomElement &nonGraphicTypesElement);
+	void initPalette(const QDomElement &paletteElement);
 };

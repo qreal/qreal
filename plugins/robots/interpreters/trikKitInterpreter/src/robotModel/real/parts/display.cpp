@@ -22,7 +22,7 @@ void Display::drawSmile(bool sad)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::setBackground(QColor const &color)
+void Display::setBackground(const QColor &color)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/setBackground.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
@@ -47,7 +47,7 @@ void Display::printText(int x, int y, const QString &text)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::setPainterColor(QColor const &color)
+void Display::setPainterColor(const QColor &color)
 {
 	Q_UNUSED(color)
 }

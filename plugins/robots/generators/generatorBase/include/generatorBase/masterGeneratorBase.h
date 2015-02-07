@@ -41,7 +41,7 @@ public:
 			, const utils::ParserErrorReporter &parserErrorReporter
 			, const qReal::Id &diagramId);
 
-	void setProjectDir(QFileInfo const &fileInfo);
+	void setProjectDir(const QFileInfo &fileInfo);
 
 	/// @warning This method mustn`t be called from constructor. Otherwise
 	/// there will be segfault due to pure virtual method call in constructor

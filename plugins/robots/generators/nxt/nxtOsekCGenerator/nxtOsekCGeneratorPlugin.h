@@ -30,7 +30,7 @@ public:
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
-	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
+	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 	QString defaultFilePath(const QString &projectName) const override;
 	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;

@@ -14,7 +14,7 @@ void AnimatedHighlighter::highlight(QGraphicsItem * const item)
 	animation->setDuration(500);
 	animation->setStartValue(1.0);
 	animation->setEndValue(0.0);
-	qreal const oldOpacity = item->opacity();
+	const qreal oldOpacity = item->opacity();
 	QObject::connect(animation, &QVariantAnimation::valueChanged
 			, [item](const QVariant &value) { item->setOpacity(value.toReal()); });
 	QObject::connect(animation, &QVariantAnimation::finished

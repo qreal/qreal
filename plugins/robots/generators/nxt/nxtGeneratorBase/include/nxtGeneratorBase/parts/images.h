@@ -42,7 +42,7 @@ public:
 	int bmpFilesCount() const;
 
 	/// Adds given imageto the resulting BMP set
-	void registerBmpFile(const QString &name, QImage const &image);
+	void registerBmpFile(const QString &name, const QImage &image);
 
 private:
 	QMap<QString, QImage> mBmpFiles;

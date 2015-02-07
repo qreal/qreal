@@ -21,10 +21,10 @@ public:
 
 	QRectF boundingRect() const override;
 	QRectF calcNecessaryBoundingRect() const override;
-	void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget = 0) override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
-	void deserialize(QDomElement const &element) override;
+	void deserialize(const QDomElement &element) override;
 
 private:
 	void setPrivateData();

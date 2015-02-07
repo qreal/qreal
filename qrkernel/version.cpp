@@ -43,7 +43,7 @@ Version Version::fromString(const QString &version)
 	QString letterSuffix;
 	QString numberSuffix;
 	bool iteratingFirstPart = true;
-	for (QChar const ch : suffix) {
+	for (const QChar ch : suffix) {
 		if (!ch.isLetter() && iteratingFirstPart) {
 			iteratingFirstPart = false;
 		}
@@ -59,7 +59,7 @@ Version Version::fromString(const QString &version)
 		numberSuffix = "0";
 	}
 
-	Stage const stage = parseStage(letterSuffix, currentIsOk);
+	const Stage stage = parseStage(letterSuffix, currentIsOk);
 	success &= currentIsOk;
 	const int stageNumber = numberSuffix.toInt(&currentIsOk);
 	success &= currentIsOk;

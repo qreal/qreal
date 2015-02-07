@@ -48,7 +48,7 @@ public:
 	QDomDocument loadElementsFromString(const QString &elementsXml);
 	
 	/// Saves converted metamodel in .xml file to specified path
-	void saveMetamodelInFile(QDomDocument const &metamodel, const QString &metamodelPath);
+	void saveMetamodelInFile(const QDomDocument &metamodel, const QString &metamodelPath);
 	
 	/// Inserts elements in <diagram></diagram> specified sublevel with creating
 	/// this sublevel if it doesn't exist. For example graphicTypes and nonGraphicTypes.
@@ -57,12 +57,12 @@ public:
 	
 	/// Inserts one element
 	void insertElementInDiagramSublevel(QDomDocument metamodel,
-			const QString &sublevelName, QDomElement const &element);
+			const QString &sublevelName, const QDomElement &element);
 	
 	/// Appends all childrens to parent
 	void appendElements(QDomNode parent, QDomNodeList children);
 	
-	QStringList collectAllGraphicTypesInMetamodel(QDomDocument const &metamodel,
+	QStringList collectAllGraphicTypesInMetamodel(const QDomDocument &metamodel,
 			bool isDisplayedName) const;
 	
 	/// Appends types to specified child of element for creating container or smth
@@ -73,7 +73,7 @@ public:
 			const QStringList &elementTypes ///< Element types w/o prefix
 	);
 	
-	QDomElement diagramElement(QDomDocument const &metamodel) const;
+	QDomElement diagramElement(const QDomDocument &metamodel) const;
 	
 private:
 	

@@ -21,7 +21,7 @@ TextManager::TextManager(SystemEvents &systemEvents, gui::MainWindowInterpreters
 	connect(&mSystemEvents, &SystemEvents::codeTabClosed, this, &TextManager::onTabClosed);
 }
 
-bool TextManager::openFile(const QString &filePath, const QString &generatorName, text::LanguageInfo const &language)
+bool TextManager::openFile(const QString &filePath, const QString &generatorName, const text::LanguageInfo &language)
 {
 	QFile file(filePath);
 	QTextStream *inStream = nullptr;
@@ -160,13 +160,13 @@ void TextManager::setModified(text::QScintillaTextEdit *code, bool modified)
 	emit textChanged(modified && code->isUndoAvailable());
 }
 
-void TextManager::onTabClosed(QFileInfo const &file)
+void TextManager::onTabClosed(const QFileInfo &file)
 {
 	closeFile(file.absoluteFilePath());
 }
 
-void TextManager::showInTextEditor(QFileInfo const &fileInfo
-		, const QString &genName, text::LanguageInfo const &language)
+void TextManager::showInTextEditor(const QFileInfo &fileInfo
+		, const QString &genName, const text::LanguageInfo &language)
 {
 	/// @todo: Uncomment it
 	// Q_ASSERT(!fileInfo.baseName().isEmpty());
@@ -188,7 +188,7 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo
 	}
 }
 
-void TextManager::showInTextEditor(QFileInfo const &fileInfo, text::LanguageInfo const &language)
+void TextManager::showInTextEditor(const QFileInfo &fileInfo, const text::LanguageInfo &language)
 {
 	Q_ASSERT(!fileInfo.baseName().isEmpty());
 

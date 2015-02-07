@@ -19,7 +19,7 @@ void RobotModelManager::setModel(RobotModelInterface * const robotModel)
 {
 	if (mRobotModel != robotModel) {
 		disconnect(mRobotModel, nullptr, this, nullptr);
-		auto const actualModel = robotModel ? robotModel : &mDefaultRobotModel;
+		const auto actualModel = robotModel ? robotModel : &mDefaultRobotModel;
 		/// @todo implement hierarchical structure in settings manager
 		/// @todo if some settings key is modified here do not forget to modify
 		/// it in UsbRobotCommunicationThread::checkConsistency

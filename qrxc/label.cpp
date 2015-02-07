@@ -6,7 +6,7 @@
 
 using namespace utils;
 
-bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
+bool Label::init(const QDomElement &element, int index, bool nodeLabel, int width, int height)
 {
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);

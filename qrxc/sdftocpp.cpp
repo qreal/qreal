@@ -584,6 +584,6 @@ SdfIconEngineV2::SdfIconEngineV2(const QString &file)
 	mRenderer.noScale();
 }
 
-void SdfIconEngineV2::paint(QPainter* /*painter*/, QRect const &/*rect*/, QIcon::Mode /*mode*/, QIcon::State /*state*/)
+void SdfIconEngineV2::paint(QPainter* /*painter*/, const QRect &/*rect*/, QIcon::Mode /*mode*/, QIcon::State /*state*/)
 {
 }

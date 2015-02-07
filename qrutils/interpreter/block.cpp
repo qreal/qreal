@@ -18,8 +18,8 @@ Block::Block()
 }
 
 void Block::init(const Id &graphicalId
-		, GraphicalModelAssistInterface const &graphicalModelApi
-		, LogicalModelAssistInterface const &logicalModelApi
+		, const GraphicalModelAssistInterface &graphicalModelApi
+		, const LogicalModelAssistInterface &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
 		, qrtext::LanguageToolboxInterface &textLanguageToolbox)
 {

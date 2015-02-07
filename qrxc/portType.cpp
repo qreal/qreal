@@ -2,7 +2,7 @@
 
 #include <qrutils/outFile.h>
 
-bool PortType::init(QDomElement const &element, const QString &context)
+bool PortType::init(const QDomElement &element, const QString &context)
 {
 	return NonGraphicType::init(element, context);
 }

@@ -157,8 +157,8 @@ public:
 	void setMetaInformation(const QString &key, const QVariant &info) override;
 
 private:
-	RepoApi(RepoApi const &other);  // Copying is not allowed.
-	RepoApi& operator =(RepoApi const &);  // Assigning is not allowed.
+	RepoApi(const RepoApi &other);  // Copying is not allowed.
+	RepoApi& operator =(const RepoApi &);  // Assigning is not allowed.
 
 	void addToIdList(const qReal::Id &target, const QString &listName, const qReal::Id &data, const QString &direction = QString());
 	void removeFromList(const qReal::Id &target, const QString &listName, const qReal::Id &data, const QString &direction = QString());

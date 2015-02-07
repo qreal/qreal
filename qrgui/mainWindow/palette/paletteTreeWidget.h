@@ -61,7 +61,7 @@ private:
 	/// Adds item type to some editor's tree.
 	/// @param data Palette element properties (such as title and icon)
 	/// @param parent Parent of item's group.
-	void addItemType(PaletteElement const &data, QTreeWidgetItem *parent);
+	void addItemType(const PaletteElement &data, QTreeWidgetItem *parent);
 
 	/// Recursive procedure that collapses node with his children.
 	/// @param item Node which will be collapsed with all his children.
@@ -78,7 +78,7 @@ private:
 	static bool idLessThan(const Id &s1, const Id &s2);
 
 	/// Same as idLessThan (compares ids of given operands)
-	static bool paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2);
+	static bool paletteElementLessThan(const PaletteElement &s1, const PaletteElement &s2);
 
 	/// Made static to be used inside idLessThan()
 	static const EditorManagerInterface *mEditorManager;  // Does not take ownership

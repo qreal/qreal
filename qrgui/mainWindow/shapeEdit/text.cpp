@@ -30,7 +30,7 @@ void Text::init(int x, int y, const QString &text)
 	mY1 = y;
 }
 
-Text::Text(Text const &other)
+Text::Text(const Text &other)
 	:Item()
 {
 	mIsDynamicText = other.mIsDynamicText;

@@ -25,13 +25,13 @@ public:
 		, SaveInvalid
 	};
 
-	typedef std::function<ConvertionResult(GraphicalModelAssistInterface const &
+	typedef std::function<ConvertionResult(const GraphicalModelAssistInterface &
 			, LogicalModelAssistInterface &)> Converter;
 
 	ProjectConverter(const QString &editor
-			, Version const &fromVersion
-			, Version const &toVersion
-			, Converter const &converter)
+			, const Version &fromVersion
+			, const Version &toVersion
+			, const Converter &converter)
 		: mEditor(editor)
 		, mFromVersion(fromVersion)
 		, mToVersion(toVersion)
@@ -60,7 +60,7 @@ public:
 	/// Performs conversion process and returns the success or the fail reason of this operation.
 	/// If operation was unsuccessful then the whole save is not accepted by the system
 	/// and corresponding error message will be shown.
-	ConvertionResult convert(GraphicalModelAssistInterface const &graphicalApi
+	ConvertionResult convert(const GraphicalModelAssistInterface &graphicalApi
 			, LogicalModelAssistInterface &logicalApi)
 	{
 		return mConverter(graphicalApi, logicalApi);

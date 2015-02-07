@@ -31,7 +31,7 @@ public:
 
 	/// Creates configuration widgets for all robot models in a list and prepares them to be shown when
 	/// selectRobotModel() is called.
-	void loadRobotModels(QList<robotModel::RobotModelInterface *> const &models);
+	void loadRobotModels(const QList<robotModel::RobotModelInterface *> &models);
 
 	/// Reinits current widget for the given robot model.
 	void selectRobotModel(robotModel::RobotModelInterface &robotModel);
@@ -52,7 +52,7 @@ private:
 
 	QLayout *initPort(const QString &robotModel
 			, const robotModel::PortInfo &port
-			, QList<robotModel::DeviceInfo> const &sensors);
+			, const QList<robotModel::DeviceInfo> &sensors);
 
 	void hideAllConfigurers();
 
@@ -68,7 +68,7 @@ private:
 			, const robotModel::PortInfo &port2) const;
 
 	robotModel::DeviceInfo convertibleDevice(
-			robotModel::RobotModelInterface const *robotModel
+			const robotModel::RobotModelInterface *robotModel
 			, const robotModel::PortInfo &port
 			, const robotModel::DeviceInfo &device) const;
 

@@ -8,8 +8,8 @@ using namespace utils;
 NxtInputDevice::NxtInputDevice(
 		utils::robotCommunication::RobotCommunicator &robotCommunicator
 		, const interpreterBase::robotModel::PortInfo &port
-		, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
-		, enums::sensorMode::SensorModeEnum const &sensorMode)
+		, const enums::lowLevelSensorType::SensorTypeEnum &lowLevelSensorType
+		, const enums::sensorMode::SensorModeEnum &sensorMode)
 	: mRobotCommunicator(robotCommunicator)
 	, mLowLevelPort(port.name().at(0).toLatin1() - '1')
 	, mLowLevelSensorType(lowLevelSensorType)
@@ -80,7 +80,7 @@ void NxtInputDevice::configure()
 	send(command, 5);
 }
 
-void NxtInputDevice::send(const QByteArray &buffer, unsigned const responseSize)
+void NxtInputDevice::send(const QByteArray &buffer, const unsigned responseSize)
 {
 	mRobotCommunicator.send(this, buffer, responseSize);
 }

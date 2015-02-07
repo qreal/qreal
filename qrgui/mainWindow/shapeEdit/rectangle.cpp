@@ -13,7 +13,7 @@ QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* par
 	mY2 = y2;
 }
 
-QRealRectangle::QRealRectangle(QRealRectangle const &other)
+QRealRectangle::QRealRectangle(const QRealRectangle &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;

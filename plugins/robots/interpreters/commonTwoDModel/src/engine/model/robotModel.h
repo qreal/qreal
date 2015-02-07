@@ -33,7 +33,7 @@ public:
 	};
 
 	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
-			, Settings const &settings, QObject *parent = 0);
+			, const Settings &settings, QObject *parent = 0);
 
 	~RobotModel();
 
@@ -79,14 +79,14 @@ public:
 	/// Moves the marker of the 2D model robot down to the floor.
 	/// The robot will draw its trace on the floor after that.
 	/// If the marker of another color is already drawing at the moment it will be replaced.
-	void markerDown(QColor const &color);
+	void markerDown(const QColor &color);
 
 	/// Lifts the marker of the 2D model robot up.
 	/// The robot stops drawing its trace on the floor after that.
 	void markerUp();
 
 public slots:
-	void resetPhysics(WorldModel const &worldModel, Timeline const &timeline);
+	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
 
 	void recalculateParams();
 	void nextFragment();
@@ -96,7 +96,7 @@ signals:
 	void rotationChanged(qreal newRotation);
 
 	/// Emitted when robot rided himself (moved on motors force, not dragged by cursor or smth) from one point to other.
-	void robotRided(const QPointF &newPosition, qreal const newRotation);
+	void robotRided(const QPointF &newPosition, const qreal newRotation);
 
 	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.
 	void playingSoundChanged(bool playing);
@@ -140,7 +140,7 @@ private:
 	QHash<WheelEnum, interpreterBase::robotModel::PortInfo> mWheelsToMotorPortsMap;
 	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
 
-	Settings const &mSettings;
+	const Settings &mSettings;
 	twoDModel::robotModel::TwoDRobotModel &mRobotModel;
 	SensorsConfiguration mSensorsConfiguration;
 

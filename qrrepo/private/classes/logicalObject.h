@@ -15,7 +15,7 @@ public:
 
 	/// Deserializing constructor.
 	/// @param element - root of XML DOM subtree with serialized object.
-	explicit LogicalObject(QDomElement const &element);
+	explicit LogicalObject(const QDomElement &element);
 
 	// Override.
 	virtual bool isLogicalObject() const;

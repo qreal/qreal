@@ -54,7 +54,7 @@ void NxtFlashTool::flashRobot()
 	mErrorReporter->addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
 }
 
-void NxtFlashTool::runProgram(QFileInfo const &fileInfo)
+void NxtFlashTool::runProgram(const QFileInfo &fileInfo)
 {
 	mSource = fileInfo;
 	mRunProcess.setEnvironment(QProcess::systemEnvironment());
@@ -114,7 +114,7 @@ void NxtFlashTool::readNxtFlashData()
 	}
 }
 
-void NxtFlashTool::uploadProgram(QFileInfo const &fileInfo)
+void NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 {
 	if (mIsUploading) {
 		mErrorReporter->addInformation(tr("Uploading is already running"));

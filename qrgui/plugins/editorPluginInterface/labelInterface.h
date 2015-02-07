@@ -11,7 +11,7 @@ class LabelInterface
 {
 public:
 	/// Sets label background.
-	virtual void setBackground(QColor const &background) = 0;
+	virtual void setBackground(const QColor &background) = 0;
 
 	/// Sets label scalability.
 	/// @param scalingX If true, label can be resized by X axis.

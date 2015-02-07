@@ -33,7 +33,7 @@ public:
 	virtual Id from(const Id &elem) const = 0;
 
 	virtual QModelIndex indexById(const Id &id) const = 0;
-	virtual Id idByIndex(QModelIndex const &index) const = 0;
+	virtual Id idByIndex(const QModelIndex &index) const = 0;
 	virtual QPersistentModelIndex rootIndex() const = 0;
 	virtual Id rootId() const = 0;
 

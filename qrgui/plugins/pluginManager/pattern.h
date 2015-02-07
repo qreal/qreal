@@ -77,7 +77,7 @@ private:
 	QPointF mSize;
 };
 
-inline bool operator==(GroupNode const &node1, GroupNode const &node2)
+inline bool operator==(const GroupNode &node1, const GroupNode &node2)
 {
 	return node1.type == node2.type
 			&& node1.id == node2.id

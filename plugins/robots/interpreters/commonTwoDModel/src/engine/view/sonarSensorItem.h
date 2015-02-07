@@ -16,14 +16,14 @@ class SonarSensorItem : public SensorItem
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	SonarSensorItem(model::WorldModel const &worldModel
+	SonarSensorItem(const model::WorldModel &worldModel
 			, model::SensorsConfiguration &configuration
 			, const interpreterBase::robotModel::PortInfo &port
 			, const QString &pathToImage
-			, QRect const &imageSize
+			, const QRect &imageSize
 			);
 
-	virtual void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget);
+	virtual void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget);
 	virtual void drawExtractionForItem(QPainter *painter);
 	virtual QRectF boundingRect() const;
 	QPainterPath shape() const;
@@ -34,8 +34,8 @@ private:
 	/// Returns scanning region of a sensor as painter path, in relative to sensor coordinates.
 	QPainterPath scanningRegion() const;
 
-	model::WorldModel const &mWorldModel;
-	QImage const mIcon;
+	const model::WorldModel &mWorldModel;
+	const QImage mIcon;
 };
 
 }

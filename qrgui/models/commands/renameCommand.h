@@ -14,19 +14,19 @@ public:
 	/// This overload gets old name automatically using models api
 	RenameCommand(details::ModelsAssistInterface &model
 			, const Id &id, const QString &newName
-			, models::Exploser const * const exploser = nullptr);
+			, const models::Exploser * const exploser = nullptr);
 
 	/// This overload alows to specify old name manually
 	RenameCommand(details::ModelsAssistInterface &model
 			, const Id &id, const QString &oldName, const QString &newName
-			, models::Exploser const * const exploser = nullptr);
+			, const models::Exploser * const exploser = nullptr);
 
 protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
 private:
-	void initExplosions(models::Exploser const * const exploser);
+	void initExplosions(const models::Exploser * const exploser);
 
 	bool rename(const QString &name);
 

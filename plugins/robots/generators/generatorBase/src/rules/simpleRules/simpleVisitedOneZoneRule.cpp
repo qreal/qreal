@@ -6,7 +6,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 SimpleVisitedOneZoneRule::SimpleVisitedOneZoneRule(SemanticTree *tree, const Id &id
-		, LinkInfo const &next)
+		, const LinkInfo &next)
 	: SimpleVisitedRuleBase(tree, id, next)
 {
 }

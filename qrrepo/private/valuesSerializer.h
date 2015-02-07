@@ -22,7 +22,7 @@ public:
 	static QString serializeQPointF(const QPointF &p);
 
 	/// Serializes given QPolygonF to string.
-	static QString serializeQPolygonF(QPolygonF const &p);
+	static QString serializeQPolygonF(const QPolygonF &p);
 
 	/// Serializes given IdList to a XML subtree.
 	/// @param tagName - name of a root of resulting XML subtree.
@@ -40,7 +40,7 @@ public:
 	/// Deserializes IdList from XML subtree.
 	/// @param elem - XML subtree which contains a list being deserialized, so this parameter shall be a parent to
 	///        a root of a list.
-	static qReal::IdList deserializeIdList(QDomElement const &elem, const QString &name);
+	static qReal::IdList deserializeIdList(const QDomElement &elem, const QString &name);
 
 	/// Loads Id from a string with correct processing of empty strings.
 	/// @returns Id(), if a string is empty, or loaded id. Throws exception, if id can not be loaded.
@@ -57,7 +57,7 @@ public:
 	/// Deserializes map from QString to QVariant from XML subtree. Used to deserialize property maps.
 	/// @param map - a map to put deserialized values to.
 	/// @param element - XML DOM subtree to deserialize.
-	static void deserializeNamedVariantsMap(QMap<QString, QVariant> &map, QDomElement const &element);
+	static void deserializeNamedVariantsMap(QMap<QString, QVariant> &map, const QDomElement &element);
 
 private:
 	/// Creating is prohibited, utility class instances can not be created.

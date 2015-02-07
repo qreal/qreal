@@ -34,9 +34,9 @@ public:
 	void alignTheWall(int indexGrid);
 
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
-	void deserialize(QDomElement const &element) override;
+	void deserialize(const QDomElement &element) override;
 
-	void deserializePenBrush(QDomElement const &element);
+	void deserializePenBrush(const QDomElement &element);
 	void setSerializeName(const QString &name);
 
 protected:

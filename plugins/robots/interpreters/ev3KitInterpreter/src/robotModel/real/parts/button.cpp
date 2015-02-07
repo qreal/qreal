@@ -1,6 +1,6 @@
 #include "button.h"
 
-unsigned const buttonResponseSize = 6;
+const unsigned buttonResponseSize = 6;
 
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;

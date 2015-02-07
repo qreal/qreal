@@ -28,7 +28,7 @@ void loadTranslators(const QString &locale)
 	QDir translationsDirectory(QApplication::applicationDirPath() + "/translations/" + locale);
 	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
 	while (directories.hasNext()) {
-		for (QFileInfo const &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
+		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
 			QTranslator *translator = new QTranslator(qApp);
 			translator->load(translatorFile.absoluteFilePath());
 			QApplication::installTranslator(translator);
@@ -53,7 +53,7 @@ void setDefaultLocale(bool localizationDisabled)
 
 void initLogging()
 {
-	QDir const logsDir(QApplication::applicationDirPath() + "/logs");
+	const QDir logsDir(QApplication::applicationDirPath() + "/logs");
 	if (logsDir.mkpath(logsDir.absolutePath())) {
 		Logger::addLogTarget(logsDir.filePath("qreal.log"), maxLogSize, 2, QsLogging::DebugLevel);
 		Logger::addLogTarget(logsDir.filePath("actions.log"), maxLogSize, 2, QsLogging::TraceLevel);

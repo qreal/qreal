@@ -9,7 +9,7 @@ class Arch : public Item
 {
 public:
 	Arch(QRectF rect, int startAngle, int spanAngle, Item* parent);
-	Arch(Arch const &other);
+	Arch(const Arch &other);
 	virtual Item* clone();
 	int startAngle() const;
 	int spanAngle() const;

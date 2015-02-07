@@ -55,12 +55,12 @@ Tracer *Tracer::instance()
 	return mInstance;
 }
 
-void Tracer::enableCategoryImpl(TracerEnum const &category)
+void Tracer::enableCategoryImpl(const TracerEnum &category)
 {
 	mCategories[category] = true;
 }
 
-void Tracer::disableCategoryImpl(TracerEnum const &category)
+void Tracer::disableCategoryImpl(const TracerEnum &category)
 {
 	mCategories[category] = false;
 }
@@ -75,7 +75,7 @@ void Tracer::disableAllImpl()
 	mCategories.fill(false);
 }
 
-void Tracer::debugImpl(TracerEnum const &category, const QString &methodName, const QString &message)
+void Tracer::debugImpl(const TracerEnum &category, const QString &methodName, const QString &message)
 {
 	if (mCategories[category]) {
 		switch (mTarget) {

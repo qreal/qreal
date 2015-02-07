@@ -11,7 +11,7 @@ LogicalModelView::LogicalModelView(GraphicalModel * const model)
 {
 }
 
-void LogicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+void LogicalModelView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
 		, QVector<int> const &roles)
 {
 	Q_UNUSED(roles)
@@ -23,7 +23,7 @@ void LogicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const
 	}
 }
 
-void LogicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)
+void LogicalModelView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex current = model()->index(row, 0, parent);

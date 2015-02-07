@@ -41,12 +41,12 @@ private:
 	Tracer();
 	static Tracer *instance();
 
-	void enableCategoryImpl(TracerEnum const &category);
-	void disableCategoryImpl(TracerEnum const &category);
+	void enableCategoryImpl(const TracerEnum &category);
+	void disableCategoryImpl(const TracerEnum &category);
 	void enableAllImpl();
 	void disableAllImpl();
 
-	void debugImpl(TracerEnum const &category, const QString &methodName, const QString &message);
+	void debugImpl(const TracerEnum &category, const QString &methodName, const QString &message);
 };
 
 }

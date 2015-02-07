@@ -27,7 +27,7 @@ protected:
 	bool alreadyCreated(const qReal::Id &id);
 
 	/// Returns true if semantic node for the link dst node was already created.
-	bool alreadyCreated(LinkInfo const &link);
+	bool alreadyCreated(const LinkInfo &link);
 
 	SemanticTree *mTree;  // Does not take ownership
 	const qReal::Id mId;

@@ -200,7 +200,7 @@ void Item::setListScalePoint(QList<QPair<ScalingPointState, QColor> > list)
 	mListScalePoint = list;
 }
 
-QString Item::setScaleForDoc(int i, QRect const &rect)
+QString Item::setScaleForDoc(int i, const QRect &rect)
 {
 	QString text;
 
@@ -262,7 +262,7 @@ void Item::setXandY(QDomElement& dom, const QRectF &rect)
 	dom.setAttribute("x2", setScaleForDoc(3, rect.toRect()));
 }
 
-void Item::setVisibilityCondition(VisibilityCondition const &condition)
+void Item::setVisibilityCondition(const VisibilityCondition &condition)
 {
 	mVisibilityCondition = condition;
 }
@@ -294,13 +294,13 @@ QPair<QDomElement, Item::DomElementTypes> Item::generateDom(QDomDocument &docume
 	return result;
 }
 
-bool Item::VisibilityCondition::operator==(Item::VisibilityCondition const &other) const
+bool Item::VisibilityCondition::operator==(const Item::VisibilityCondition &other) const
 {
 	return this->property == other.property && this->sign == other.sign
 			&& this->value == other.value;
 }
 
-bool Item::VisibilityCondition::operator!=(Item::VisibilityCondition const &other) const
+bool Item::VisibilityCondition::operator!=(const Item::VisibilityCondition &other) const
 {
 	return !(*this == other);
 }

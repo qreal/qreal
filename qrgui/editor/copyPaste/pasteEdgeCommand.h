@@ -12,7 +12,7 @@ class PasteEdgeCommand : public PasteCommand
 {
 public:
 	PasteEdgeCommand(EditorViewScene *scene
-			, EdgeData const &data
+			, const EdgeData &data
 			, const QPointF &offset
 			, bool isGraphicalCopy
 			, QHash<qReal::Id, qReal::Id> *copiedIds);
@@ -24,7 +24,7 @@ protected:
 	virtual void restoreElement();
 
 private:
-	EdgeData const mEdgeData;
+	const EdgeData mEdgeData;
 	CreateElementCommand *mCreateCommand;
 };
 

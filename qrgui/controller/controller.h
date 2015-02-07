@@ -77,8 +77,8 @@ private:
 	UndoStack *selectActiveStack(bool forUndo);
 
 	void setActiveStack(UndoStack *stack);
-	void connectStack(UndoStack const *stack);
-	void disconnectStack(UndoStack const *stack);
+	void connectStack(const UndoStack *stack);
+	void disconnectStack(const UndoStack *stack);
 
 	void execute(commands::AbstractCommand *command, UndoStack *stack);
 

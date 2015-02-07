@@ -19,7 +19,7 @@ TextPicture::TextPicture(int x, int y, const QString &text)
 	init(x, y, text);
 }
 
-TextPicture::TextPicture(TextPicture const &other)
+TextPicture::TextPicture(const TextPicture &other)
 	: Text()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -137,7 +137,7 @@ void TextPicture::setFontUnderline(bool isChecked)
 	mFont.setUnderline(isChecked);
 }
 
-void TextPicture::readFont(QDomElement const &docItem)
+void TextPicture::readFont(const QDomElement &docItem)
 {
 	QDomElement dom = docItem;
 	if(!dom.isNull()) {

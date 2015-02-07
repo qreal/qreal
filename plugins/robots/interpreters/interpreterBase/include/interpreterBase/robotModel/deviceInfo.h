@@ -27,10 +27,10 @@ public:
 		// Without Q_OBJECT macro incorrect metaObject will be passed and it will lead
 		// to invalid isA() method work.
 		static_assert(HasQObjectMacro<T>::Value, "No Q_OBJECT macro in the class that is passed into a template");
-		QMetaObject const *metaObject = &T::staticMetaObject;
+		const QMetaObject *metaObject = &T::staticMetaObject;
 		const QString name = property(metaObject, "name");
 		const QString friendlyName = property(metaObject, "friendlyName");
-		Direction const direction = property(metaObject, "direction").toLower() == "input" ? input : output;
+		const Direction direction = property(metaObject, "direction").toLower() == "input" ? input : output;
 		DeviceInfo result(metaObject, name, friendlyName, direction);
 		mCreatedInfos[QString(metaObject->className())] = result;
 		return result;
@@ -86,13 +86,13 @@ private:
 	friend bool operator ==(const DeviceInfo &device1, const DeviceInfo &device2);
 	friend bool operator !=(const DeviceInfo &device1, const DeviceInfo &device2);
 
-	DeviceInfo(QMetaObject const *deviceType, const QString &name, const QString &friendlyName, Direction direction);
+	DeviceInfo(const QMetaObject *deviceType, const QString &name, const QString &friendlyName, Direction direction);
 
-	static QString property(QMetaObject const * const metaObject, const QString &name);
+	static QString property(const QMetaObject * const metaObject, const QString &name);
 
 	static QMap<QString, DeviceInfo> mCreatedInfos;
 
-	QMetaObject const *mDeviceType;
+	const QMetaObject *mDeviceType;
 	QString mName;
 	QString mFriendlyName;
 	Direction mDirection;

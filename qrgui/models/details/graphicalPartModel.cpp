@@ -7,7 +7,7 @@ using namespace qReal::models::details;
 using namespace qReal::models::details::modelsImplementation;
 
 GraphicalPartModel::GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
-		, modelsImplementation::ModelIndexesInterface const &graphicalModel)
+		, const modelsImplementation::ModelIndexesInterface &graphicalModel)
 	: mRepoApi(repoApi)
 	, mGraphicalModel(graphicalModel)
 {
@@ -29,9 +29,9 @@ void GraphicalPartModel::reinit()
 	blockSignals(false);
 }
 
-QVariant GraphicalPartModel::data(QModelIndex const &index, int role) const
+QVariant GraphicalPartModel::data(const QModelIndex &index, int role) const
 {
-	GraphicalPartModelItem const * const item = static_cast<GraphicalPartModelItem const *>(index.internalPointer());
+	const GraphicalPartModelItem * const item = static_cast<const GraphicalPartModelItem *>(index.internalPointer());
 	switch (role) {
 	case positionRole:
 		return mRepoApi.graphicalPartProperty(item->id(), item->index(), "position");
@@ -42,13 +42,13 @@ QVariant GraphicalPartModel::data(QModelIndex const &index, int role) const
 	}
 }
 
-bool GraphicalPartModel::setData(QModelIndex const &index, const QVariant &value, int role)
+bool GraphicalPartModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (!index.isValid() || !index.internalPointer()) {
 		return false;
 	}
 
-	GraphicalPartModelItem const * const item = static_cast<GraphicalPartModelItem const *>(index.internalPointer());
+	const GraphicalPartModelItem * const item = static_cast<const GraphicalPartModelItem *>(index.internalPointer());
 	switch (role) {
 	case positionRole:
 		mRepoApi.setGraphicalPartProperty(item->id(), item->index(), "position", value);
@@ -80,7 +80,7 @@ int GraphicalPartModel::columnCount(const QModelIndex &parent) const
 	return 1;
 }
 
-QModelIndex GraphicalPartModel::index(int row, int column, QModelIndex const &parent) const
+QModelIndex GraphicalPartModel::index(int row, int column, const QModelIndex &parent) const
 {
 	if (column >= columnCount(parent) || row >= rowCount(parent)) {
 		return QModelIndex();
@@ -90,7 +90,7 @@ QModelIndex GraphicalPartModel::index(int row, int column, QModelIndex const &pa
 		return createIndex(row, column, static_cast<void *>(nullptr));
 	}
 
-	QModelIndex const grandParent = parent.parent();
+	const QModelIndex grandParent = parent.parent();
 	if (grandParent.isValid()) {
 		return QModelIndex();
 	}
@@ -98,7 +98,7 @@ QModelIndex GraphicalPartModel::index(int row, int column, QModelIndex const &pa
 	return createIndex(row, column, mItems[parent.row()].at(row));
 }
 
-QModelIndex GraphicalPartModel::parent(QModelIndex const &index) const
+QModelIndex GraphicalPartModel::parent(const QModelIndex &index) const
 {
 	if (!index.isValid()) {
 		return QModelIndex();
@@ -108,12 +108,12 @@ QModelIndex GraphicalPartModel::parent(QModelIndex const &index) const
 		return QModelIndex();
 	}
 
-	GraphicalPartModelItem const * const item = static_cast<GraphicalPartModelItem const *>(index.internalPointer());
+	const GraphicalPartModelItem * const item = static_cast<const GraphicalPartModelItem *>(index.internalPointer());
 	const int row = mIdPositions[item->id()];
 	return createIndex(row, 0, static_cast<void *>(nullptr));
 }
 
-bool GraphicalPartModel::removeRows(int row, int count, QModelIndex const &parent)
+bool GraphicalPartModel::removeRows(int row, int count, const QModelIndex &parent)
 {
 	if (parent.isValid()) {
 		// We shall not be able to remove one part now, only element as a whole.
@@ -154,9 +154,9 @@ QModelIndex GraphicalPartModel::findIndex(const Id &element, int index) const
 	}
 
 	const int parentRow = mIdPositions.value(element);
-	QModelIndex const parent = createIndex(parentRow, 0, static_cast<void *>(nullptr));
+	const QModelIndex parent = createIndex(parentRow, 0, static_cast<void *>(nullptr));
 	int partRow = 0;
-	foreach (modelsImplementation::GraphicalPartModelItem const * const item, mItems[parentRow]) {
+	foreach (const modelsImplementation::GraphicalPartModelItem * const item, mItems[parentRow]) {
 		if (item->index() == index) {
 			break;
 		}
@@ -171,10 +171,10 @@ QModelIndex GraphicalPartModel::findIndex(const Id &element, int index) const
 	return this->index(partRow, 0, parent);
 }
 
-void GraphicalPartModel::rowsAboutToBeRemovedInGraphicalModel(QModelIndex const &parent, int start, int end)
+void GraphicalPartModel::rowsAboutToBeRemovedInGraphicalModel(const QModelIndex &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
-		QModelIndex const current = mGraphicalModel.index(row, 0, parent);
+		const QModelIndex current = mGraphicalModel.index(row, 0, parent);
 		if (current.isValid()) {
 			const Id graphicalId = current.data(roles::idRole).value<Id>();
 			if (!mIdPositions.contains(graphicalId)) {
@@ -189,7 +189,7 @@ void GraphicalPartModel::rowsAboutToBeRemovedInGraphicalModel(QModelIndex const 
 void GraphicalPartModel::clear()
 {
 	typedef QList<modelsImplementation::GraphicalPartModelItem *> GraphicalPartModelItemList;
-	foreach (GraphicalPartModelItemList const &list, mItems) {
+	foreach (const GraphicalPartModelItemList &list, mItems) {
 		qDeleteAll(list);
 	}
 }
@@ -221,7 +221,7 @@ QModelIndex GraphicalPartModel::addGraphicalPart(const Id &element, int index, b
 		endInsertRows();
 	}
 
-	QModelIndex const parentIndex = this->index(parentRow, 0, QModelIndex());
+	const QModelIndex parentIndex = this->index(parentRow, 0, QModelIndex());
 	const int row = mItems[parentRow].size();
 
 	beginInsertRows(parentIndex, row, row);

@@ -28,7 +28,7 @@ public:
 	/// @param blocksTable - an entity that will produce logic of the block by its id.
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
 	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
-	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+	Interpreter(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, BlocksTableInterface &blocksTable
@@ -62,7 +62,7 @@ private:
 
 	void reportError(const QString &message);
 
-	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 

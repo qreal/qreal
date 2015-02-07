@@ -41,7 +41,7 @@ void PasteGroupCommand::prepareCommands()
 
 	mCopiedIds = preparePasteNodesCommands(nodesData, offset);
 
-	foreach (EdgeData const &data, edgesData) {
+	foreach (const EdgeData &data, edgesData) {
 		preparePasteEdgeCommand(data, offset);
 	}
 }
@@ -52,7 +52,7 @@ QHash<Id, Id> *PasteGroupCommand::preparePasteNodesCommands(QList<NodeData> &nod
 	QHash<Id, Id> *copiedIds = new QHash<Id, Id>();
 
 	while (!nodesData.isEmpty()) {
-		NodeData const &nextToPaste = nodesData[0];
+		const NodeData &nextToPaste = nodesData[0];
 		PasteNodeCommand *pasteCommand = new PasteNodeCommand(mScene
 				, nextToPaste, offset, mIsGraphicalCopy, copiedIds);
 		addPreAction(pasteCommand);
@@ -62,7 +62,7 @@ QHash<Id, Id> *PasteGroupCommand::preparePasteNodesCommands(QList<NodeData> &nod
 	return copiedIds;
 }
 
-void PasteGroupCommand::preparePasteEdgeCommand(EdgeData const &edgeData, const QPointF &offset)
+void PasteGroupCommand::preparePasteEdgeCommand(const EdgeData &edgeData, const QPointF &offset)
 {
 	PasteEdgeCommand *pasteCommand = new PasteEdgeCommand(mScene
 			, edgeData, offset, mIsGraphicalCopy, mCopiedIds);
@@ -83,8 +83,8 @@ bool PasteGroupCommand::restoreState()
 
 void PasteGroupCommand::pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData) const
 {
-	QClipboard const *clipboard = QApplication::clipboard();
-	QMimeData const *mimeData = clipboard->mimeData();
+	const QClipboard *clipboard = QApplication::clipboard();
+	const QMimeData *mimeData = clipboard->mimeData();
 
 	QByteArray data = mimeData->data("application/x-real-uml-model-data");
 	QDataStream stream(&data, QIODevice::ReadOnly);

@@ -10,7 +10,7 @@ namespace semantics {
 class SimpleVisitedOneZoneRule : public SimpleVisitedRuleBase
 {
 public:
-	SimpleVisitedOneZoneRule(SemanticTree *tree, const qReal::Id &id, LinkInfo const &next);
+	SimpleVisitedOneZoneRule(SemanticTree *tree, const qReal::Id &id, const LinkInfo &next);
 
 	virtual bool apply();
 };

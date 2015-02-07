@@ -17,7 +17,7 @@ public:
 	~BluetoothRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, unsigned const responseSize);
+	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
 	void connect();
 	void reconnect();
 	void disconnect();
@@ -30,7 +30,7 @@ private slots:
 	void checkForConnection();
 
 private:
-	void send(const QByteArray &buffer, unsigned const responseSize
+	void send(const QByteArray &buffer, const unsigned responseSize
 			, QByteArray &outputBuffer);
 	void send(const QByteArray &buffer) const;
 	void keepAlive();

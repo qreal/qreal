@@ -16,17 +16,17 @@ class ResizeCommand : public NodeElementCommand, public TrackingEntity
 {
 public:
 	/// Creating new instance of command in tracking-based style
-	ResizeCommand(EditorViewScene const *scene, const Id &id);
+	ResizeCommand(const EditorViewScene *scene, const Id &id);
 
 	/// Creating new instance of command in tracking-based style
-	ResizeCommand(EditorView const *view, const Id &id);
+	ResizeCommand(const EditorView *view, const Id &id);
 
 	/// Creating new instance of command in usial style
-	ResizeCommand(EditorViewScene const *scene, const Id &id
+	ResizeCommand(const EditorViewScene *scene, const Id &id
 			, const QRectF &oldGeometry, const QRectF &newGeometry);
 	virtual ~ResizeCommand() {}
 
-	static ResizeCommand *create(NodeElement const * const element, const QRectF &newContents
+	static ResizeCommand *create(const NodeElement * const element, const QRectF &newContents
 			, const QPointF &newPos, const QRectF &oldContents, const QPointF &oldPos);
 
 	virtual void startTracking();
@@ -50,16 +50,16 @@ private:
 	void makeHierarchySnapshot(NodeElement *node, QMap<Id, QRectF> &target);
 
 	/// Performs geometries snapshot for specified item`s children
-	void makeChildrenSnapshot(NodeElement const *element, QMap<Id, QRectF> &target);
+	void makeChildrenSnapshot(const NodeElement *element, QMap<Id, QRectF> &target);
 
-	void addEdges(NodeElement const *node);
+	void addEdges(const NodeElement *node);
 	void startEdgeTracking();
 	void stopEdgeTracking();
 
 	void resizeHierarchy(QMap<Id, QRectF> const &snapshot);
 	void resizeTree(QMap<Id, QRectF> const &snapshot, const Id &root);
 
-	QRectF geometryOf(NodeElement const *element) const;
+	QRectF geometryOf(const NodeElement *element) const;
 
 	QMap<Id, QRectF> mOldGeometrySnapshot;
 	QMap<Id, QRectF> mNewGeometrySnapshot;

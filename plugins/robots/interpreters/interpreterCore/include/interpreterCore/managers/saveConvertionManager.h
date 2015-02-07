@@ -23,7 +23,7 @@ private:
 	static qReal::ProjectConverter from300Beta2to300rc1Converter();
 
 	static bool isRobotsDiagram(const qReal::Id &diagram);
-	static qReal::IdList elementsOfRobotsDiagrams(qReal::LogicalModelAssistInterface const &logicalApi);
+	static qReal::IdList elementsOfRobotsDiagrams(const qReal::LogicalModelAssistInterface &logicalApi);
 	static QString editor();
 };
 

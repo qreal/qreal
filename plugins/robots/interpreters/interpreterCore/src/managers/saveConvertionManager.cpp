@@ -19,7 +19,7 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 ProjectConverter SaveConvertionManager::before300Alpha1Converter()
 {
 	return ProjectConverter(editor(), Version(), Version::fromString("3.0.0-a1")
-			, [=](GraphicalModelAssistInterface const &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		Q_UNUSED(graphicalApi)
 		Q_UNUSED(logicalApi)
@@ -73,7 +73,7 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 
 
 	return ProjectConverter(editor(), Version::fromString("3.0.0-a4"), Version::fromString("3.0.0-a5")
-			, [=](GraphicalModelAssistInterface const &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		Q_UNUSED(graphicalApi)
 		bool modificationsMade = false;
@@ -110,7 +110,7 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 ProjectConverter SaveConvertionManager::from300Beta2to300rc1Converter()
 {
 	return ProjectConverter(editor(), Version::fromString("3.0.0-b2"), Version::fromString("3.0.0-rc1")
-			, [=](GraphicalModelAssistInterface const &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		Q_UNUSED(graphicalApi)
 		bool modificationsMade = false;
@@ -137,7 +137,7 @@ bool SaveConvertionManager::isRobotsDiagram(const Id &diagram)
 	return diagram.editor() == editor() && robotsDiagrams.contains(diagram.diagram());
 }
 
-IdList SaveConvertionManager::elementsOfRobotsDiagrams(LogicalModelAssistInterface const &logicalApi)
+IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistInterface &logicalApi)
 {
 	IdList result;
 	for (const Id &diagramId : logicalApi.children(Id::rootId())) {

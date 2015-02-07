@@ -16,7 +16,7 @@ Object::Object(const Id &id)
 {
 }
 
-Object::Object(QDomElement const &element)
+Object::Object(const QDomElement &element)
 	: mId(Id::loadFromString(element.attribute("id", "")))
 {
 	if (mId.isNull()) {

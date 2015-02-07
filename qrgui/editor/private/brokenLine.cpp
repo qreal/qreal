@@ -86,7 +86,7 @@ void BrokenLine::removeSmallTriangles(QPolygonF &line) const
 	}
 }
 
-bool BrokenLine::tooSmallTriangle(QPolygonF const &line, int i) const
+bool BrokenLine::tooSmallTriangle(const QPolygonF &line, int i) const
 {
 	QPainterPath line1(line[i]);
 	line1.lineTo(line[i + 1]);

@@ -56,7 +56,7 @@ QString Variables::typeExpression(const QSharedPointer<qrtext::core::types::Type
 	} else if (type->is<qrtext::lua::types::String>()) {
 		return readTemplate("types/string.t");
 	} else if (type->is<qrtext::lua::types::Table>()) {
-		auto const elementType = qrtext::as<qrtext::lua::types::Table>(type)->elementType();
+		const auto elementType = qrtext::as<qrtext::lua::types::Table>(type)->elementType();
 		return readTemplate("types/array.t").replace("@@ELEMENT_TYPE@@", typeExpression(elementType));
 	}
 

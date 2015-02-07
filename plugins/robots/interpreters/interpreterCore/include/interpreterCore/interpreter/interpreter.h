@@ -41,10 +41,10 @@ public:
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
 	/// @param connectToRobotAction - reference to action that connects to robot, interpreter manages its state
 	///        depending on success or failure of its own connection attempts.
-	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+	Interpreter(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, qReal::ProjectManagementInterface const &projectManager
+			, const qReal::ProjectManagementInterface &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &languageToolbox
@@ -80,7 +80,7 @@ private:
 
 	void reportError(const QString &message);
 
-	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 

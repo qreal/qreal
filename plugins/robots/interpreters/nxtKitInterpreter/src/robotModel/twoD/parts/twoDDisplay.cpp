@@ -57,8 +57,8 @@ void Display::clearScreen()
 void Display::paint(QPainter *painter)
 {
 	/// @todo ZOMG.
-	qreal const pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
-	qreal const pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
+	const qreal pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
+	const qreal pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
 
 	QPen pen;
 	QFont font;
@@ -74,15 +74,15 @@ void Display::paint(QPainter *painter)
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
 
-	foreach (QLine const &line, mLines) {
+	foreach (const QLine &line, mLines) {
 		painter->drawLine(line.x1() * pixWidth, line.y1() * pixHeight, line.x2() * pixWidth, line.y2() * pixHeight);
 	}
 
-	foreach (QRect const &circle, mCircles) {
+	foreach (const QRect &circle, mCircles) {
 		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
 	}
 
-	foreach (QRect const &rect, mRects) {
+	foreach (const QRect &rect, mRects) {
 		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
 	}
 

@@ -108,7 +108,7 @@ void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModel
 
 	/// @todo: this stupid visibility management may show actions with custom avalability logic.
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
-		for (qReal::ActionInfo const &actionInfo
+		for (const qReal::ActionInfo &actionInfo
 				: mRobotModelActions.values(kitId) + mGeneratorActionsInfo.values(kitId))
 		{
 			if (actionInfo.isAction()) {
@@ -130,7 +130,7 @@ void ActionsManager::onActiveTabChanged(const qReal::Id &activeTabId)
 
 void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)
 {
-	auto const robotModel = dynamic_cast<interpreterBase::robotModel::RobotModelInterface *>(robotModelObject);
+	const auto robotModel = dynamic_cast<interpreterBase::robotModel::RobotModelInterface *>(robotModelObject);
 	mRobotModelManager.setModel(robotModel);
 	onRobotModelChanged(*robotModel);
 }
@@ -168,7 +168,7 @@ void ActionsManager::initKitPluginActions()
 		for (interpreterBase::KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
 			mPluginActionInfos << kitPlugin->customActions();
 			for (interpreterBase::robotModel::RobotModelInterface * const robotModel : kitPlugin->robotModels()) {
-				QIcon const &icon = kitPlugin->iconForFastSelector(*robotModel);
+				const QIcon &icon = kitPlugin->iconForFastSelector(*robotModel);
 				if (icon.isNull()) {
 					continue;
 				}
@@ -179,7 +179,7 @@ void ActionsManager::initKitPluginActions()
 				connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
 				fastSelectionAction->setCheckable(true);
 				fastSelectionAction->setObjectName("switchTo" + kitId + robotModel->name());
-				qReal::ActionInfo const actionInfo(fastSelectionAction, "interpreters", "tools");
+				const qReal::ActionInfo actionInfo(fastSelectionAction, "interpreters", "tools");
 				mRobotModelActions.insertMulti(kitId, actionInfo);
 			}
 
@@ -188,7 +188,7 @@ void ActionsManager::initKitPluginActions()
 
 		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
 			// generator->actions() must be called once so storing it into the field.
-			for (qReal::ActionInfo const &action : generator->actions()) {
+			for (const qReal::ActionInfo &action : generator->actions()) {
 				mGeneratorActionsInfo.insertMulti(kitId, action);
 			}
 

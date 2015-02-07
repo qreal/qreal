@@ -62,7 +62,7 @@ private:
 	void initUserTree();
 
 	/// Saves expanded groups into settings
-	void saveConfiguration(PaletteTreeWidget const *tree, const QString &title) const;
+	void saveConfiguration(const PaletteTreeWidget *tree, const QString &title) const;
 
 	EditorManagerInterface *mEditorManager; // Does not take ownership
 	PaletteTree *mParentPalette; // Does not take ownership

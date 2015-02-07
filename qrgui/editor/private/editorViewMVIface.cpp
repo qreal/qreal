@@ -120,7 +120,7 @@ Id EditorViewMViface::rootId() const
 	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
 
-void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
+void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
 		mScene->setEnabled(true);
@@ -271,8 +271,8 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
-void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-		, QModelIndex const &destinationParent, int destinationRow)
+void EditorViewMViface::rowsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+		, const QModelIndex &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceEnd);
 	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved
@@ -302,8 +302,8 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 	}
 }
 
-void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-		, QModelIndex const &destinationParent, int destinationRow)
+void EditorViewMViface::rowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+		, const QModelIndex &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceParent);
 	Q_UNUSED(sourceStart);
@@ -325,7 +325,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		QModelIndex const curr = topLeft.sibling(row, 0);
+		const QModelIndex curr = topLeft.sibling(row, 0);
 		Element *element = item(curr);
 		if (element) {
 			element->updateData();
@@ -351,7 +351,7 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 void EditorViewMViface::clearItems()
 {
 	QList<QGraphicsItem *> toRemove;
-	foreach (IndexElementPair const &pair, mItems) {
+	foreach (const IndexElementPair &pair, mItems) {
 		if (!pair.second->parentItem()) {
 			toRemove.append(pair.second);
 		}
@@ -366,7 +366,7 @@ void EditorViewMViface::clearItems()
 
 Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
-	foreach (IndexElementPair const &pair, mItems) {
+	foreach (const IndexElementPair &pair, mItems) {
 		if (pair.first == index) {
 			return pair.second;
 		}
@@ -384,7 +384,7 @@ void EditorViewMViface::setItem(const QPersistentModelIndex &index, Element *ite
 
 void EditorViewMViface::removeItem(const QPersistentModelIndex &index)
 {
-	foreach (IndexElementPair const &pair, mItems) {
+	foreach (const IndexElementPair &pair, mItems) {
 		if (pair.first == index) {
 			mItems.remove(pair);
 		}
@@ -410,11 +410,11 @@ void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)
 void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		QModelIndex const curr = topLeft.sibling(row, 0);
+		const QModelIndex curr = topLeft.sibling(row, 0);
 		const Id logicalId = curr.data(roles::idRole).value<Id>();
 		const IdList graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
 		foreach (const Id &graphicalId, graphicalIds) {
-			QModelIndex const graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
+			const QModelIndex graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
 			Element *graphicalItem = item(graphicalIndex);
 			if (graphicalItem) {
 				graphicalItem->updateData();
@@ -425,7 +425,7 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 
 void EditorViewMViface::invalidateImagesZoomCache(qreal zoomFactor)
 {
-	for (IndexElementPair const & item : mItems) {
+	for (const IndexElementPair & item : mItems) {
 		auto node = dynamic_cast<NodeElement *>(item.second);
 		if (node) {
 			node->invalidateImagesZoomCache(zoomFactor);

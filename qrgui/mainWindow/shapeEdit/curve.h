@@ -9,7 +9,7 @@ class Curve : public Path
 {
 public:
 	Curve(const QPointF &start, const QPointF &end, const QPointF &c1);
-	Curve(Curve const &other);
+	Curve(const Curve &other);
 	virtual Item* clone();
 	void  setCXandCY(qreal x, qreal y);
 	QRectF searchMaxMinCoord() const;

@@ -12,7 +12,7 @@ class IfWithOneVisitedRule : public IfBlockRuleBase
 {
 public:
 	IfWithOneVisitedRule(SemanticTree *tree, const qReal::Id &id
-			, LinkInfo const &thenLink, LinkInfo const &elseLink);
+			, const LinkInfo &thenLink, const LinkInfo &elseLink);
 
 	virtual bool apply();
 };

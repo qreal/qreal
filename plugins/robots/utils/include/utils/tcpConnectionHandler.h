@@ -13,7 +13,7 @@ class ROBOTS_UTILS_EXPORT TcpConnectionHandler : public QObject
 public:
 	explicit TcpConnectionHandler(int port);
 
-	bool connect(QHostAddress const &serverAddress);
+	bool connect(const QHostAddress &serverAddress);
 
 	bool isConnected();
 

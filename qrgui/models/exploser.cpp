@@ -26,7 +26,7 @@ QMultiMap<Id, Id> Exploser::explosions(const Id &diagram) const
 	for (const Id &child : childTypes) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
 
-		for (Explosion const &explosion : explosions) {
+		for (const Explosion &explosion : explosions) {
 			if (!explosion.isReusable()) {
 				continue;
 			}
@@ -36,7 +36,7 @@ QMultiMap<Id, Id> Exploser::explosions(const Id &diagram) const
 			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
 				target = targetNodeOrGroup;
 			} else {
-				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
+				const Pattern pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
 				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
 			}
 
@@ -57,7 +57,7 @@ IdList Exploser::elementsWithHardDependencyFrom(const Id &id) const
 	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(id);
 	foreach (const Id &incoming, incomingExplosions) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
-		foreach (Explosion const &explosion, explosions) {
+		foreach (const Explosion &explosion, explosions) {
 			if (explosion.target() == targetType && explosion.requiresImmediateLinkage()) {
 				result << incoming;
 			}
@@ -78,7 +78,7 @@ void Exploser::handleRemoveCommand(const Id &logicalId, AbstractCommand * const 
 	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
 	foreach (const Id &incoming, incomingExplosions) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
-		foreach (Explosion const &explosion, explosions) {
+		foreach (const Explosion &explosion, explosions) {
 			if (explosion.target() == targetType && !explosion.requiresImmediateLinkage()) {
 				command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
 			}
@@ -166,7 +166,7 @@ void Exploser::explosionsHierarchyPrivate(const Id &currentId, IdList &targetIds
 	}
 }
 
-void Exploser::connectCommand(AbstractCommand const *command) const
+void Exploser::connectCommand(const AbstractCommand *command) const
 {
 	// Do not remove Qt::QueuedConnection flag.
 	// Immediate refreshing may cause segfault because of deleting drag source.

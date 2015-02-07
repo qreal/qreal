@@ -45,15 +45,15 @@ public:
 private:
 	void findInitialNode();
 	void error(const QString &message, const qReal::Id &id);
-	bool checkForConnected(LinkInfo const &link);
+	bool checkForConnected(const LinkInfo &link);
 
-	void visitRegular(const qReal::Id &id, QList<LinkInfo> const &links) override;
-	void visitFinal(const qReal::Id &id, QList<LinkInfo> const &links) override;
-	void visitConditional(const qReal::Id &id, QList<LinkInfo> const &links) override;
-	void visitLoop(const qReal::Id &id, QList<LinkInfo> const &links) override;
-	void visitSwitch(const qReal::Id &id, QList<LinkInfo> const &links) override;
+	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitFinal(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
-	void visitUnknown(const qReal::Id &id, QList<LinkInfo> const &links) override;
+	void visitUnknown(const qReal::Id &id, const QList<LinkInfo> &links) override;
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;

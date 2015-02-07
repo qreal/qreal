@@ -19,7 +19,7 @@ Image::Image(QString fileName, qreal x, qreal y, Item* parent)
 	mY2 = y + pixmap->height();
 }
 
-Image::Image(Image const &other)
+Image::Image(const Image &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;

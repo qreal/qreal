@@ -115,15 +115,15 @@ void SensorViewer::exportHistory()
 		OutFile out(fileName);
 		out() << "time" << ";" << "value" << "\n";
 		for (int i = 0; i < mPointsDataProcessor->pointsBase().size(); ++i) {
-			qreal const plotValue = mPointsDataProcessor->pointsBase()[i].y();
+			const qreal plotValue = mPointsDataProcessor->pointsBase()[i].y();
 			out() << i << ";" << mPointsDataProcessor->pointToAbsoluteValue(plotValue) << "\n";
 		}
-	} catch (qReal::Exception const &exception) {
+	} catch (const qReal::Exception &exception) {
 		QLOG_ERROR() << "An error occured during exporting sensor values to" << fileName << ":" << exception.message();
 	}
 }
 
-void SensorViewer::setNextValue(qreal const newValue)
+void SensorViewer::setNextValue(const qreal newValue)
 {
 	mPointsDataProcessor->addNewValue(newValue);
 }
@@ -144,7 +144,7 @@ void SensorViewer::drawNextFrame()
 		delete curLine;
 	}
 
-	QPen const regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+	const QPen regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 	for (int i = 0; i < mPointsDataProcessor->pointsBase().size() - 1; i++) {
 		QLineF quantOfGraph(mPointsDataProcessor->pointsBase()[i]
 				, mPointsDataProcessor->pointsBase()[i + 1]);

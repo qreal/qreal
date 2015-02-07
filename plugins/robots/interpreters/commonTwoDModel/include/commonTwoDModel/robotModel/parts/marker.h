@@ -30,7 +30,7 @@ public:
 	/// Moves the marker of the 2D model robot down to the floor.
 	/// The robot will draw its trace on the floor after that.
 	/// If the marker of another color is already drawing at the moment it will be replaced.
-	void down(QColor const &color);
+	void down(const QColor &color);
 
 	/// Lifts the marker of the 2D model robot up.
 	/// The robot stops drawing its trace on the floor after that.

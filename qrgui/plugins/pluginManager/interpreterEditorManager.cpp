@@ -319,7 +319,7 @@ public:
 };
 
 QStringList InterpreterEditorManager::propertiesFromParents(const Id &id
-		, const QString &propertyName, CheckPropertyForParent const &checker) const
+		, const QString &propertyName, const CheckPropertyForParent &checker) const
 {
 	QStringList result;
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
@@ -687,7 +687,7 @@ QStringList InterpreterEditorManager::elements(const QString &editor, const QStr
 	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(editor, diagram);
 	const qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
 	const Id diag = repoAndDiagramPair.second;
-	for (auto const &element: repo->children(diag)) {
+	for (const auto &element: repo->children(diag)) {
 		result.append(repo->name(element));
 	}
 
@@ -792,7 +792,7 @@ IdList InterpreterEditorManager::elementsWithTheSameName(
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
 	const Id diag = repoAndDiagramPair.second;
 
-	for (auto const &element: repo->children(diag)) {
+	for (const auto &element: repo->children(diag)) {
 		if (repo->stringProperty(element, "displayedName") == name && element.element() == type
 				&& repo->isLogicalElement(element)) {
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, element);

@@ -68,7 +68,7 @@ qrRepo::LogicalRepoApi &Models::mutableLogicalRepoApi() const
 	return mLogicalModel->mutableApi();
 }
 
-qrRepo::GraphicalRepoApi const &Models::graphicalRepoApi() const
+const qrRepo::GraphicalRepoApi &Models::graphicalRepoApi() const
 {
 	return mGraphicalModel->api();
 }

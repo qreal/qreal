@@ -56,7 +56,7 @@ bool D2ModelScene::oneRobot() const
 
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 {
-	for (items::WallItem const *wall : mModel.worldModel().walls()) {
+	for (const items::WallItem *wall : mModel.worldModel().walls()) {
 		if (wall->realShape().intersects(robotItem->realBoundingRect())) {
 			robotItem->recoverDragStartPosition();
 			return;

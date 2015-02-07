@@ -34,14 +34,14 @@ const int bitwiseOr = 2;
 const int logicalAnd = 1;
 const int logicalOr = 0;
 
-int PrecedenceConverter::precedence(qrtext::core::ast::Node const &node)
+int PrecedenceConverter::precedence(const qrtext::core::ast::Node &node)
 {
 	mLastRequestPresedence = otherNode;
 	node.accept(*this);
 	return mLastRequestPresedence;
 }
 
-qrtext::core::Associativity PrecedenceConverter::associativity(qrtext::core::ast::Node const &node)
+qrtext::core::Associativity PrecedenceConverter::associativity(const qrtext::core::ast::Node &node)
 {
 	mLastRequestAssociativity = qrtext::core::Associativity::right;
 	node.accept(*this);
@@ -63,7 +63,7 @@ void PrecedenceConverter::visit(const qrtext::lua::ast::UnaryMinus &)
 	returnPrecedence(unaryNegation);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Not const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Not &)
 {
 	returnPrecedence(logicalNot);
 }
@@ -92,109 +92,109 @@ void PrecedenceConverter::visit(const qrtext::lua::ast::Addition &)
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Subtraction const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Subtraction &)
 {
 	returnPrecedence(subtraction);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Multiplication const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Multiplication &)
 {
 	returnPrecedence(multiplication);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Division const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Division &)
 {
 	returnPrecedence(division);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::IntegerDivision const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::IntegerDivision &)
 {
 	returnPrecedence(division);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Modulo const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Modulo &)
 {
 	returnPrecedence(modulo);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Exponentiation const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Exponentiation &)
 {
 	returnPrecedence(functionCall);
 	returnAssociativity(qrtext::core::Associativity::right);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::BitwiseAnd const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::BitwiseAnd &)
 {
 	returnPrecedence(bitwiseAnd);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::BitwiseOr const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::BitwiseOr &)
 {
 	returnPrecedence(bitwiseOr);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::BitwiseXor const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::BitwiseXor &)
 {
 	returnPrecedence(bitwiseXor);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::BitwiseLeftShift const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::BitwiseLeftShift &)
 {
 	returnPrecedence(bitwiseLeftShift);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::BitwiseRightShift const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::BitwiseRightShift &)
 {
 	returnPrecedence(bitwiseRightShift);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Concatenation const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Concatenation &)
 {
 	returnPrecedence(addition);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Equality const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Equality &)
 {
 	returnPrecedence(equality);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::LessThan const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::LessThan &)
 {
 	returnPrecedence(lessThan);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::LessOrEqual const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::LessOrEqual &)
 {
 	returnPrecedence(lessOrEqual);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::Inequality const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::Inequality &)
 {
 	returnPrecedence(inequality);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::GreaterThan const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::GreaterThan &)
 {
 	returnPrecedence(greaterThan);
 	returnAssociativity(qrtext::core::Associativity::left);
 }
 
-void PrecedenceConverter::visit(qrtext::lua::ast::GreaterOrEqual const &)
+void PrecedenceConverter::visit(const qrtext::lua::ast::GreaterOrEqual &)
 {
 	returnPrecedence(greaterOrEqual);
 	returnAssociativity(qrtext::core::Associativity::left);

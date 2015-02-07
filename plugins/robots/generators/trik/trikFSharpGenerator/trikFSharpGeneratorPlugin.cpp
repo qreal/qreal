@@ -89,7 +89,7 @@ QString TrikFSharpGeneratorPlugin::generatorName() const
 bool TrikFSharpGeneratorPlugin::uploadProgram()
 {
 	QProcess compileProcess;
-	QFileInfo const fileInfo = generateCodeForProcessing();
+	const QFileInfo fileInfo = generateCodeForProcessing();
 
 	const QString pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
 

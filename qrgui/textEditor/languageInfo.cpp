@@ -12,14 +12,14 @@ QList<LanguageInfo> Languages::knownLanguages()
 	});
 }
 
-void Languages::registerLanguage(LanguageInfo const &language)
+void Languages::registerLanguage(const LanguageInfo &language)
 {
 	mUserDefinedLanguages << language;
 }
 
 LanguageInfo Languages::pickByExtension(const QString &extension)
 {
-	for (LanguageInfo const &language : knownLanguages()) {
+	for (const LanguageInfo &language : knownLanguages()) {
 		if (language.extension == extension) {
 			return language;
 		}

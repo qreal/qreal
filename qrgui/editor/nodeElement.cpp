@@ -245,7 +245,7 @@ void NodeElement::arrangeLinks()
 
 void NodeElement::storeGeometry()
 {
-	QPolygon const contents(mContents.toAlignedRect()); // saving correct current contents
+	const QPolygon contents(mContents.toAlignedRect()); // saving correct current contents
 
 	if ((pos() != mGraphicalAssistApi.position(id()))) { // check if it's been changed
 		mGraphicalAssistApi.setPosition(id(), pos());
@@ -496,7 +496,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		if (event->modifiers() & Qt::ShiftModifier) {
-			qreal const size = qMax(newContents.width(), newContents.height());
+			const qreal size = qMax(newContents.width(), newContents.height());
 			newContents.setWidth(size);
 			newContents.setHeight(size);
 		}
@@ -656,7 +656,7 @@ bool NodeElement::initPossibleEdges()
 		if (ne == -1) {
 			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
 					.possibleEdges(id().editor(), elementName);
-			foreach (StringPossibleEdge const &pEdge, list) {
+			foreach (const StringPossibleEdge &pEdge, list) {
 				const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 				if (portTypes.contains(pEdge.first.first)
 						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
@@ -667,7 +667,7 @@ bool NodeElement::initPossibleEdges()
 						continue;
 					}
 
-					foreach (ElementPair const &elementPair, elementPairs) {
+					foreach (const ElementPair &elementPair, elementPairs) {
 						mPossibleEdges.insert(qMakePair(elementPair, edge));
 					}
 
@@ -686,7 +686,7 @@ void NodeElement::initEmbeddedLinkers()
 		return;
 	}
 	QSet<qReal::Id> usedEdges;
-	foreach (PossibleEdgeType const &type, mPossibleEdgeTypes) {
+	foreach (const PossibleEdgeType &type, mPossibleEdgeTypes) {
 		if (usedEdges.contains(type.second)) {
 			continue;
 		}
@@ -835,7 +835,7 @@ void NodeElement::setPortsVisible(const QStringList &types)
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
+void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *)
 {
 	mElementImpl->paint(painter, mContents);
 	paint(painter, style);
@@ -853,7 +853,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option)
+void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
@@ -1111,7 +1111,7 @@ QList<qreal> NodeElement::borderValues() const
 	return mElementImpl->border();
 }
 
-QSet<ElementPair> NodeElement::elementsForPossibleEdge(StringPossibleEdge const &edge)
+QSet<ElementPair> NodeElement::elementsForPossibleEdge(const StringPossibleEdge &edge)
 {
 	QStringList elements = mGraphicalAssistApi.editorManagerInterface().elements(id().editor(), id().diagram());
 	QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
@@ -1356,7 +1356,7 @@ void NodeElement::initRenderedDiagram()
 
 QRectF NodeElement::diagramRenderingRect() const
 {
-	NodeElement const *initial = new NodeElement(
+	const NodeElement *initial = new NodeElement(
 			mLogicalAssistApi.editorManagerInterface().elementImpl(id())
 			, id().sameTypeId()
 			, mGraphicalAssistApi
@@ -1364,8 +1364,8 @@ QRectF NodeElement::diagramRenderingRect() const
 			, mExploser
 			);
 
-	qreal const xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
-	qreal const yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
+	const qreal xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
+	const qreal yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
 
 	delete initial;
 

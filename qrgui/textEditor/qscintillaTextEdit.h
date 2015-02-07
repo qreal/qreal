@@ -29,7 +29,7 @@ public:
 
 	/// Applies language editor settings to current editor instance.
 	/// Takes ownership on passed language.
-	void setCurrentLanguage(LanguageInfo const &language);
+	void setCurrentLanguage(const LanguageInfo &language);
 
 signals:
 	/// Emitted in destructor to save written text to according model element

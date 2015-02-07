@@ -1,7 +1,7 @@
 #include "rangeSensor.h"
 #include <QDebug>
 
-unsigned const rangeSensorResponseSize = 9;
+const unsigned rangeSensorResponseSize = 9;
 
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;

@@ -80,7 +80,7 @@ public:
 
 protected:
 	/// Assigns given type to given expression.
-	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);
+	void assign(QSharedPointer<ast::Node> const &expression, const QSharedPointer<types::TypeExpression> &type);
 
 	/// Constrains given expression (passed as "node" parameter) to a given set of types, on behalf of given operation.
 	/// Operation is used for error connection purposes only.
@@ -104,10 +104,10 @@ protected:
 	void addDeclaration(const QString &identifierName, QSharedPointer<ast::Node> const &declaration);
 
 	/// Provides Any type constant to descendants.
-	QSharedPointer<types::TypeExpression> const &any();
+	const QSharedPointer<types::TypeExpression> &any();
 
 	/// Provides generalizations table for descendants.
-	GeneralizationsTableInterface const &generalizationsTable() const;
+	const GeneralizationsTableInterface &generalizationsTable() const;
 
 	/// Provides acces to type variable for given expression to descendants. Note that type() will return resolved type.
 	QSharedPointer<types::TypeVariable> typeVariable(QSharedPointer<ast::Node> const &expression) const;

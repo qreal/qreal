@@ -35,7 +35,7 @@ public:
 	ShapeEdit(qReal::models::details::LogicalModel *model, const QPersistentModelIndex &index, const int &role
 		, bool useTypedPorts);
 	ShapeEdit(const Id &id, const EditorManagerInterface &editorManagerProxy
-		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
+		, const qrRepo::GraphicalRepoApi &graphicalRepoApi, MainWindow *mainWindow
 		, EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
 
@@ -72,9 +72,9 @@ private slots:
 	void open();
 	void addImage(bool checked);
 	void setNoPalette();
-	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
+	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
 	void setNoFontPalette();
-	void setItemFontPalette(QPen const &penItem, QFont const &fontItem, const QString &name);
+	void setItemFontPalette(const QPen &penItem, const QFont &fontItem, const QString &name);
 	void setNoPortType();
 	void setPortType(const QString &type);
 	void changeTextName();
@@ -108,14 +108,14 @@ private:
 	void setHighlightOneButton(QAbstractButton *oneButton);
 
 	void setValuePenStyleComboBox(Qt::PenStyle penStyle);
-	void setValuePenColorComboBox(QColor const &penColor);
+	void setValuePenColorComboBox(const QColor &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setValueBrushStyleComboBox(Qt::BrushStyle brushStyle);
 	void setValueBrushColorComboBox(QColor brushColor);
 
-	void setValueTextFamilyFontComboBox(QFont const &fontItem);
+	void setValueTextFamilyFontComboBox(const QFont &fontItem);
 	void setValueTextPixelSizeSpinBox(int size);
-	void setValueTextColorComboBox(QColor const &penColor);
+	void setValueTextColorComboBox(const QColor &penColor);
 	void setValueItalicCheckBox(bool check);
 	void setValueBoldCheckBox(bool check);
 	void setValueUnderlineCheckBox(bool check);

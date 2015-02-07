@@ -83,7 +83,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	mPropertyEditor->setFactoryForManager(mVariantManager, mVariantFactory);
 
 	for (int i = 0, rows = mModel->rowCount(index); i < rows; ++i) {
-		QModelIndex const &valueCell = mModel->index(i, 1);
+		const QModelIndex &valueCell = mModel->index(i, 1);
 		QString name = mModel->data(mModel->index(i, 0)).toString();
 		const QVariant &value = mModel->data(valueCell);
 
@@ -146,7 +146,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 {
 	for (int i = 0, rows = mModel->rowCount(QModelIndex()); i < rows; ++i) {
-		QModelIndex const &valueIndex = mModel->index(i, 1);
+		const QModelIndex &valueIndex = mModel->index(i, 1);
 		QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 		QVariant value = valueIndex.data();
 		if (property) {
@@ -163,7 +163,7 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 void PropertyEditorView::buttonClicked(QtProperty *property)
 {
 	int row = mPropertyEditor->properties().indexOf(property);
-	QModelIndex const &index = mModel->index(row, 1);
+	const QModelIndex &index = mModel->index(row, 1);
 	QString name = mModel->data(mModel->index(row, 0)).toString();
 	QString propertyValue = index.data(Qt::DisplayRole).toString();
 	int role = mModel->roleByIndex(index.row());
@@ -202,12 +202,12 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(prop);
 	int propertyType = property->propertyType();
 	int row = mPropertyEditor->properties().indexOf(property);
-	QModelIndex const &index = mModel->index(row, 1);
+	const QModelIndex &index = mModel->index(row, 1);
 
 	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
 		QList<QPair<QString, QString>> const values = mModel->enumValues(index);
 		if (mModel->enumEditable(index)) {
-			for (auto const &keyValue : values) {
+			for (const auto &keyValue : values) {
 				if (keyValue.second == value) {
 					value = keyValue.first;
 				}
@@ -238,7 +238,7 @@ void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVa
 	mChangingPropertyValue = old;
 }
 
-int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, const QString &value)
+int PropertyEditorView::enumPropertyIndexOf(const QModelIndex &index, const QString &value)
 {
 	QList<QPair<QString, QString>> const values = mModel->enumValues(index);
 	for (int index = 0; index < values.count(); ++index) {

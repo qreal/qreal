@@ -21,8 +21,8 @@ public:
 
 	qReal::interpretation::BlockInterface *block(const qReal::Id &element) override;
 
-	void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
+	void configure(const qReal::GraphicalModelAssistInterface &graphicalModelApi
+			, const qReal::LogicalModelAssistInterface &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
@@ -42,8 +42,8 @@ protected:
 
 	/// @todo: there is no such thing as protected fields. One can not trust its descendants.
 	interpreterBase::robotModel::RobotModelManagerInterface *mRobotModelManager;  // Does not have ownership.
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership.
-	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership.
+	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Does not have ownership.
+	const qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Does not have ownership.
 	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
 	qrtext::LanguageToolboxInterface *mParser;  // Does not have ownership.
 };

@@ -34,14 +34,14 @@ public:
 			, const QPointF &position);
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
-	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, const QPointF &position);
+	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
 	void changeParent(const Id &parentId, const Id &childId);
 	const qrRepo::LogicalRepoApi &api() const;
 	qrRepo::LogicalRepoApi &mutableApi() const;
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
-	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
+	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling);
 
 private:
 	virtual void init();
@@ -54,7 +54,7 @@ private:
 			, modelsImplementation::AbstractModelItem *parentItem) const;
 	void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem
 			, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
-	QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
+	QString pathToItem(const modelsImplementation::AbstractModelItem * const item) const;
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
 			, details::modelsImplementation::AbstractModelItem *child);
 

@@ -32,7 +32,7 @@ protected:
 	const Id mId;
 	const bool mIsFromLogicalModel;
 	const QPointF mPosition;
-	Pattern const mPattern;
+	const Pattern mPattern;
 	QMap<QString, CreateElementCommand *> mNodeCommands;
 	QList<CreateElementCommand *> mEdgeCommands;
 	Id mRootId;

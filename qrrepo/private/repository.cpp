@@ -32,9 +32,9 @@ Repository::~Repository()
 
 IdList Repository::findElementsByName(const QString &name, bool sensitivity, bool regExpression) const
 {
-	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
+	const Qt::CaseSensitivity caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
-	QRegExp const regExp(name, caseSensitivity);
+	const QRegExp regExp(name, caseSensitivity);
 	IdList result;
 
 	if (regExpression){
@@ -74,9 +74,9 @@ qReal::IdList Repository::elementsByProperty(const QString &property, bool sensi
 qReal::IdList Repository::elementsByPropertyContent(const QString &propertyValue, bool sensitivity
 		, bool regExpression) const
 {
-	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
+	const Qt::CaseSensitivity caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
-	QRegExp const regExp(propertyValue, caseSensitivity);
+	const QRegExp regExp(propertyValue, caseSensitivity);
 	IdList result;
 
 	foreach (Object * const element, mObjects.values()) {
@@ -128,7 +128,7 @@ Id Repository::parent(const Id &id) const
 
 Id Repository::cloneObject(const qReal::Id &id)
 {
-	Object const * const result = mObjects[id]->clone(mObjects);
+	const Object * const result = mObjects[id]->clone(mObjects);
 	return result->id();
 }
 
@@ -526,7 +526,7 @@ bool Repository::isLogicalId(const qReal::Id &elem) const
 
 qReal::Id Repository::logicalId(const qReal::Id &elem) const
 {
-	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[elem]);
+	const GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[elem]);
 	if (!graphicalObject) {
 		throw Exception("Trying to get logical id from non-graphical object");
 	}

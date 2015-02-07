@@ -33,7 +33,7 @@ public:
 
 	QRectF boundingRect() const override;
 	QRectF calcNecessaryBoundingRect() const override;
-	void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget = 0) override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void drawExtractionForItem(QPainter *painter) override;
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
@@ -59,13 +59,13 @@ protected:
 signals:
 	void mousePressed();
 	void changedPosition(RobotItem *robotItem);
-	void drawTrace(QPen const &pen, const QPointF &from, const QPointF &to);
+	void drawTrace(const QPen &pen, const QPointF &from, const QPointF &to);
 
 private:
 	class BeepItem : public QGraphicsItem
 	{
 	protected:
-		void paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget);
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 		QRectF boundingRect() const;
 
 	private:

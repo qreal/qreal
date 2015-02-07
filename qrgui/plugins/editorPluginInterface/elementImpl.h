@@ -41,7 +41,7 @@ class ElementImpl
 {
 public:
 	virtual ~ElementImpl() {}
-	virtual void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+	virtual void init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports
 			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
 			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0) = 0;
 	virtual void init(LabelFactoryInterface &factory

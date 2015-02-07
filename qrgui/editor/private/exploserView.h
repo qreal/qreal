@@ -33,13 +33,13 @@ class ExploserView : public QObject
 	Q_OBJECT
 
 public:
-	explicit ExploserView(models::Models const &models
+	explicit ExploserView(const models::Models &models
 			, Controller &controller
-			, SceneCustomizer const &customizer
+			, const SceneCustomizer &customizer
 			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
-	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
+	void createConnectionSubmenus(QMenu &contextMenu, const Element * const element) const;
 
 	/// Activates binded with explosion element or creates default explosed element
 	void handleDoubleClick(const Id &id);
@@ -76,21 +76,21 @@ private slots:
 	void addElementToPaletteActionTriggered();
 
 private:
-	void createAddExplosionMenu(Element const * const element
+	void createAddExplosionMenu(const Element * const element
 			, QMenu &contextMenu, QList<Explosion> const &explosions
 			, const qReal::Id &alreadyConnectedElement) const;
 
-	void createRemoveExplosionMenu(Element const * const element
+	void createRemoveExplosionMenu(const Element * const element
 			, QMenu &contextMenu, const qReal::Id &outgoingConnection) const;
 
-	void createExpandAction(Element const * const element
+	void createExpandAction(const Element * const element
 			, QMenu &contextMenu, const qReal::Id &alreadyConnectedElement) const;
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
 	Controller &mController;
-	SceneCustomizer const &mCustomizer;
+	const SceneCustomizer &mCustomizer;
 };
 
 }

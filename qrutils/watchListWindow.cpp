@@ -10,12 +10,12 @@ WatchListWindow::WatchListWindow(const qrtext::DebuggerInterface &interpreter, Q
 {
 }
 
-WatchListWindow::WatchListWindow(utils::ExpressionsParser const *parser, QWidget *parent)
+WatchListWindow::WatchListWindow(const utils::ExpressionsParser *parser, QWidget *parent)
 	: WatchListWindow(parser, nullptr, parent)
 {
 }
 
-WatchListWindow::WatchListWindow(utils::ExpressionsParser const * const parser
+WatchListWindow::WatchListWindow(const utils::ExpressionsParser * const parser
 		, const qrtext::DebuggerInterface * const newParser
 		, QWidget *parent)
 	: QDockWidget(parent)

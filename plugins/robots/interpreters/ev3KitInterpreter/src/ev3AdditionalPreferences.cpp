@@ -39,7 +39,7 @@ void Ev3AdditionalPreferences::restoreSettings()
 	mUi->comPortComboBox->clear();
 
 	for (const QextPortInfo &info : ports) {
-		QRegExp const portNameRegexp("COM\\d+", Qt::CaseInsensitive);
+		const QRegExp portNameRegexp("COM\\d+", Qt::CaseInsensitive);
 		if (portNameRegexp.indexIn(info.portName) != -1) {
 			const QString portName = portNameRegexp.cap();
 			mUi->comPortComboBox->addItem(portName);

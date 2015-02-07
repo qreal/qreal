@@ -11,7 +11,7 @@ class LoopWithBothUnvisitedRule : public LoopBlockRuleBase
 {
 public:
 	LoopWithBothUnvisitedRule(SemanticTree *tree, const qReal::Id &id
-			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
+			, const LinkInfo &iterationLink, const LinkInfo &nextLink);
 
 	virtual bool apply();
 };

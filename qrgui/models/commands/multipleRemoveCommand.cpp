@@ -6,7 +6,7 @@
 
 using namespace qReal::commands;
 
-MultipleRemoveCommand::MultipleRemoveCommand(models::Models const &models)
+MultipleRemoveCommand::MultipleRemoveCommand(const models::Models &models)
 	: mLogicalApi(models.logicalModelAssistApi())
 	, mGraphicalApi(models.graphicalModelAssistApi())
 	, mExploser(models.exploser())
@@ -73,13 +73,13 @@ void MultipleRemoveCommand::addEdgesToBeDeleted(IdList &itemsToDelete)
 	}
 }
 
-AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(QModelIndex const &index)
+AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(const QModelIndex &index)
 {
 	const Id id = mLogicalApi.idByIndex(index);
 	return logicalDeleteCommand(id);
 }
 
-AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(QModelIndex const &index)
+AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(const QModelIndex &index)
 {
 	const Id id = mGraphicalApi.idByIndex(index);
 	return graphicalDeleteCommand(id);

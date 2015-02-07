@@ -35,7 +35,7 @@ public:
 
 	const EditorManagerInterface &editorManagerInterface() const override;
 
-	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const override;
+	const qrRepo::GraphicalRepoApi &graphicalRepoApi() const override;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const override;
 	Id createElement(const Id &parent, const Id &type) override;
 	Id createElement(const Id &parent, const Id &id, bool isFromLogicalModel, const QString &name
@@ -55,16 +55,16 @@ public:
 	IdList temporaryRemovedLinksNone(const Id &elem) const override;
 	void removeTemporaryRemovedLinks(const Id &elem) override;
 
-	void setConfiguration(const Id &elem, QPolygon const &newValue);
+	void setConfiguration(const Id &elem, const QPolygon &newValue);
 	QPolygon configuration(const Id &elem) const override;
 
 	void setPosition(const Id &elem, const QPointF &newValue) override;
 	QPointF position(const Id &elem) const override;
 
-	void setToPort(const Id &elem, qreal const &newValue);
+	void setToPort(const Id &elem, const qreal &newValue);
 	qreal toPort(const Id &elem) const override;
 
-	void setFromPort(const Id &elem, qreal const &newValue);
+	void setFromPort(const Id &elem, const qreal &newValue);
 	qreal fromPort(const Id &elem) const override;
 
 	void setName(const Id &elem, const QString &newValue) override;
@@ -85,7 +85,7 @@ public:
 	Id from(const Id &elem) const override;
 
 	QModelIndex indexById(const Id &id) const override;
-	Id idByIndex(QModelIndex const &index) const override;
+	Id idByIndex(const QModelIndex &index) const override;
 	QPersistentModelIndex rootIndex() const override;
 	Id rootId() const override;
 
@@ -105,7 +105,7 @@ public:
 	/// @param index - index of a part, which uniquely identifies label in an element.
 	/// @param position - initial position of a label in coordinates of an element.
 	/// @param size - initial size of a label.
-	void createLabel(const Id &graphicalId, int index, const QPointF &position, QSizeF const &size);
+	void createLabel(const Id &graphicalId, int index, const QPointF &position, const QSizeF &size);
 
 	/// Sets label position.
 	/// @param graphicalId - id of an element to which label belongs.
@@ -117,7 +117,7 @@ public:
 	/// @param graphicalId - id of an element to which label belongs.
 	/// @param index - index of a part, which uniquely identifies label in an element.
 	/// @param size - size of a label.
-	void setLabelSize(const Id &graphicalId, int index, QSizeF const &size);
+	void setLabelSize(const Id &graphicalId, int index, const QSizeF &size);
 
 	/// Returns label position.
 	/// @param graphicalId - id of an element to which label belongs.
@@ -137,8 +137,8 @@ signals:
 	void elementAdded(const Id &id);
 
 private:
-	GraphicalModelAssistApi(GraphicalModelAssistApi const &);
-	GraphicalModelAssistApi& operator =(GraphicalModelAssistApi const &);
+	GraphicalModelAssistApi(const GraphicalModelAssistApi &);
+	GraphicalModelAssistApi& operator =(const GraphicalModelAssistApi &);
 
 	details::GraphicalModel &mGraphicalModel;
 	details::ModelsAssistApi mModelsAssistApi;

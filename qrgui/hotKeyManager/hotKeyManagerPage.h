@@ -36,7 +36,7 @@ protected:
 private:
 	void loadHotKeys();
 	void initTable();
-	void setTextColor(QColor const &color);
+	void setTextColor(const QColor &color);
 
 	Ui::hotKeyManagerPage *mUi;
 

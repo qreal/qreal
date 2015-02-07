@@ -60,7 +60,7 @@ public:
 	/// @param zoomFactor - current zoom factor to render images.
 	void invalidateImagesZoomCache(qreal zoomFactor);
 
-	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
+	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w);
 
 	QRectF boundingRect() const;
 	/// Current value of mContents
@@ -226,7 +226,7 @@ private:
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void delUnusedLines();
-	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
+	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();
 
@@ -239,7 +239,7 @@ private:
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
-	void paint(QPainter *p, QStyleOptionGraphicsItem const *opt);
+	void paint(QPainter *p, const QStyleOptionGraphicsItem *opt);
 	void drawPorts(QPainter *painter, bool mouseOver);
 
 	/**

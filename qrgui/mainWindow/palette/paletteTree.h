@@ -117,7 +117,7 @@ private:
 
 private:
 	/// Forbids to make copies of the object.
-	explicit PaletteTree(PaletteTree const &paletteTree);
+	explicit PaletteTree(const PaletteTree &paletteTree);
 
 	virtual void resizeEvent(QResizeEvent *);
 

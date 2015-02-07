@@ -12,7 +12,7 @@ TcpConnectionHandler::TcpConnectionHandler(int port)
 	QObject::connect(&mSocket, SIGNAL(readyRead()), this, SLOT(onIncomingData()), Qt::DirectConnection);
 }
 
-bool TcpConnectionHandler::connect(QHostAddress const &serverAddress)
+bool TcpConnectionHandler::connect(const QHostAddress &serverAddress)
 {
 	if (mSocket.state() == QTcpSocket::ConnectedState || mSocket.state() == QTcpSocket::ConnectingState) {
 		return true;

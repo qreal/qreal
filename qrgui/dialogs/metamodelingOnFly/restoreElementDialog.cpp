@@ -29,7 +29,7 @@ void RestoreElementDialog::fillSameNameElementsTreeView()
 	QStandardItemModel *standardModel = new QStandardItemModel();
 
 	QStandardItem *item = standardModel->invisibleRootItem();
-	for (auto const &element: mElementsWithTheSameNameList) {
+	for (const auto &element: mElementsWithTheSameNameList) {
 		QString state = tr("Existed");
 		if (mInterpreterEditorManager.getIsHidden(element) == "true") {
 			state = tr("Deleted");

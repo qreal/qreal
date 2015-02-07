@@ -2,17 +2,17 @@
 
 using namespace qReal::commands;
 
-ResizeCommand::ResizeCommand(EditorViewScene const *scene, const Id &id)
+ResizeCommand::ResizeCommand(const EditorViewScene *scene, const Id &id)
 	: NodeElementCommand(scene, id)
 {
 }
 
-ResizeCommand::ResizeCommand(EditorView const *view, const Id &id)
+ResizeCommand::ResizeCommand(const EditorView *view, const Id &id)
 	: NodeElementCommand(&view->editorViewScene(), id)
 {
 }
 
-ResizeCommand::ResizeCommand(EditorViewScene const *scene, const Id &id
+ResizeCommand::ResizeCommand(const EditorViewScene *scene, const Id &id
 		, const QRectF &oldGeometry, const QRectF &newGeometry)
 	: NodeElementCommand(scene, id)
 {
@@ -23,7 +23,7 @@ ResizeCommand::ResizeCommand(EditorViewScene const *scene, const Id &id
 	TrackingEntity::stopTracking();
 }
 
-ResizeCommand *ResizeCommand::create(NodeElement const * const element
+ResizeCommand *ResizeCommand::create(const NodeElement * const element
 		, const QRectF &newContents, const QPointF &newPos
 		, const QRectF &oldContents, const QPointF &oldPos)
 {
@@ -123,7 +123,7 @@ void ResizeCommand::makeCommonSnapshot(QMap<Id, QRectF> &target)
 {
 	/// This must be invoked even if we start element dragging when it isn`t selected
 	makeHierarchySnapshot(mNode, target);
-	QList<QGraphicsItem *> const selectedItems = mNode->scene()->selectedItems();
+	const QList<QGraphicsItem *> selectedItems = mNode->scene()->selectedItems();
 	foreach (QGraphicsItem *const item, selectedItems) {
 		NodeElement * const node = dynamic_cast<NodeElement *>(item);
 		if (node && node != mNode) {
@@ -151,19 +151,19 @@ void ResizeCommand::makeHierarchySnapshot(NodeElement *node, QMap<Id, QRectF> &t
 	}
 }
 
-void ResizeCommand::makeChildrenSnapshot(NodeElement const *element, QMap<Id, QRectF> &target)
+void ResizeCommand::makeChildrenSnapshot(const NodeElement *element, QMap<Id, QRectF> &target)
 {
 	target.insert(element->id(), geometryOf(element));
 	addEdges(element);
-	foreach (QGraphicsItem const * const childItem, element->childItems()) {
-		NodeElement const * const child = dynamic_cast<NodeElement const * const>(childItem);
+	foreach (const QGraphicsItem * const childItem, element->childItems()) {
+		const NodeElement * const child = dynamic_cast<const NodeElement * const>(childItem);
 		if (child) {
 			makeChildrenSnapshot(child, target);
 		}
 	}
 }
 
-void ResizeCommand::addEdges(NodeElement const *node)
+void ResizeCommand::addEdges(const NodeElement *node)
 {
 	foreach (EdgeElement * const edge, node->getEdges()) {
 		mEdges.insert(edge);
@@ -187,7 +187,7 @@ void ResizeCommand::stopEdgeTracking()
 	}
 }
 
-QRectF ResizeCommand::geometryOf(NodeElement const *element) const
+QRectF ResizeCommand::geometryOf(const NodeElement *element) const
 {
 	const QRectF geom = element->contentsRect();
 	return geom.translated(element->pos() - geom.topLeft());

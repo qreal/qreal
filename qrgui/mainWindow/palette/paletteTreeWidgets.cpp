@@ -90,7 +90,7 @@ void PaletteTreeWidgets::initUserTree()
 			, this, &PaletteTreeWidgets::refreshUserPalette);
 }
 
-void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget *tree)
+void PaletteTreeWidgets::addTopItemType(const PaletteElement &data, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(*mMainWindow, data
@@ -165,10 +165,10 @@ void PaletteTreeWidgets::saveConfiguration(const QString &title) const
 	saveConfiguration(mUserTree, title);
 }
 
-void PaletteTreeWidgets::saveConfiguration(PaletteTreeWidget const *tree, const QString &title) const
+void PaletteTreeWidgets::saveConfiguration(const PaletteTreeWidget *tree, const QString &title) const
 {
 	for (int j = 0; j < tree->topLevelItemCount(); j++) {
-		QTreeWidgetItem const *topItem = tree->topLevelItem(j);
+		const QTreeWidgetItem *topItem = tree->topLevelItem(j);
 		if (topItem) {
 			SettingsManager::setValue(title, topItem->isExpanded());
 		}

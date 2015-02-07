@@ -80,7 +80,7 @@ QPainterPath CurveLine::shape() const
 	return bezierCurve(mEdge->line());
 }
 
-QPainterPath CurveLine::bezierCurve(QPolygonF const &line) const
+QPainterPath CurveLine::bezierCurve(const QPolygonF &line) const
 {
 	QPainterPath curve(line[0]);
 	curve.cubicTo(line[1], line[line.count() - 2], line[line.count() - 1]);

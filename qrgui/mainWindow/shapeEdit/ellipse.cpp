@@ -13,7 +13,7 @@ QRealEllipse::QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mY2 = y2;
 }
 
-QRealEllipse::QRealEllipse(QRealEllipse const &other)
+QRealEllipse::QRealEllipse(const QRealEllipse &other)
 	 : Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;

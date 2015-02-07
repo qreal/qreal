@@ -79,7 +79,7 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 
 	for (const PortInfo &port: mSensorsInfo.keys()) {
 		const DeviceInfo device = currentConfiguration(mRobotModelName, port);
-		SensorInfo const sensor = mSensorsInfo.value(port);
+		const SensorInfo sensor = mSensorsInfo.value(port);
 		QDomElement sensorElem = document.createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
 		sensorElem.setAttribute("port", port.toString());
@@ -94,7 +94,7 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 	robot.appendChild(sensorsElem);
 }
 
-void SensorsConfiguration::deserialize(QDomElement const &element)
+void SensorsConfiguration::deserialize(const QDomElement &element)
 {
 	if (element.isNull()) {
 		/// @todo Report error
@@ -105,7 +105,7 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 	QDomNodeList sensors = element.elementsByTagName("sensor");
 	for (int i = 0; i < sensors.count(); ++i) {
-		QDomElement const sensorNode = sensors.at(i).toElement();
+		const QDomElement sensorNode = sensors.at(i).toElement();
 
 		const PortInfo port = PortInfo::fromString(sensorNode.attribute("port"));
 
@@ -113,11 +113,11 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 		const QString positionStr = sensorNode.attribute("position", "0:0");
 		const QStringList splittedStr = positionStr.split(":");
-		qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
-		qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
+		const qreal x = static_cast<qreal>(splittedStr[0].toDouble());
+		const qreal y = static_cast<qreal>(splittedStr[1].toDouble());
 		const QPointF position = QPoint(x, y);
 
-		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
+		const qreal direction = sensorNode.attribute("direction", "0").toDouble();
 
 		deviceConfigurationChanged(mRobotModelName, port, DeviceInfo(), Reason::loading);
 		deviceConfigurationChanged(mRobotModelName, port, type, Reason::loading);

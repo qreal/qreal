@@ -6,7 +6,7 @@
 
 #include "nameNormalizer.h"
 
-bool EnumType::init(QDomElement const &element, const QString &context)
+bool EnumType::init(const QDomElement &element, const QString &context)
 {
 	if (!NonGraphicType::init(element, context)) {
 		return false;

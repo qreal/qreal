@@ -44,7 +44,7 @@ Type* NodeType::clone() const
 
 bool NodeType::copyPictures(GraphicType *parent)
 {
-	NodeType const * const nodeParent = dynamic_cast<NodeType*>(parent);
+	const NodeType * const nodeParent = dynamic_cast<NodeType*>(parent);
 	if (nodeParent != nullptr) {
 		if (mSdfDomElement.isNull()) {
 			/// @todo Support this.
@@ -128,7 +128,7 @@ bool NodeType::initPorts()
 	return true;
 }
 
-bool NodeType::initPointPorts(QDomElement const &portsElement)
+bool NodeType::initPointPorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 			!portElement.isNull();
@@ -144,7 +144,7 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 	return true;
 }
 
-bool NodeType::initLinePorts(QDomElement const &portsElement)
+bool NodeType::initLinePorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 			!portElement.isNull();
@@ -160,7 +160,7 @@ bool NodeType::initLinePorts(QDomElement const &portsElement)
 	return true;
 }
 
-bool NodeType::initLabel(Label *label, QDomElement const &element, const int &count)
+bool NodeType::initLabel(Label *label, const QDomElement &element, const int &count)
 {
 	return label->init(element, count, true, mWidth, mHeight);
 }
@@ -169,7 +169,7 @@ bool NodeType::initBooleanProperties()
 {
 	mIsResizeable = true;
 
-	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
+	const QDomElement element2 = mGraphics.firstChildElement("nonResizeable");
 	if (!element2.isNull()) {
 		mIsResizeable = false;
 	}
@@ -198,7 +198,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out () << "\t\tvoid init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}\n\n"
-	<< "\t\tvoid init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports\n"
+	<< "\t\tvoid init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports\n"
 	<< "\t\t\t\t\t\t\t, qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles\n"
 	<< "\t\t\t\t\t\t\t, qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)\n\t\t{\n";
 

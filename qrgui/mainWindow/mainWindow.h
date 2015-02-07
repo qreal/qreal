@@ -80,7 +80,7 @@ public:
 
 	QModelIndex rootIndex() const;
 
-	virtual void highlight(const Id &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
+	virtual void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
 	virtual void dehighlight(const Id &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
@@ -102,7 +102,7 @@ public:
 	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
-	//virtual void showInTextEditor(QFileInfo const &fileInfo);
+	//virtual void showInTextEditor(const QFileInfo &fileInfo);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
@@ -164,15 +164,15 @@ signals:
 	void rootDiagramChanged();
 
 public slots:
-	void propertyEditorScrollTo(QModelIndex const &index);
+	void propertyEditorScrollTo(const QModelIndex &index);
 
 	virtual void activateItemOrDiagram(const Id &id, bool setSelected = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool setSelected = true);
+	void activateItemOrDiagram(const QModelIndex &idx, bool setSelected = true);
 	virtual void selectItem(const Id &id);
 	virtual void selectItemOrDiagram(const Id &graphicalId);
 
 	void selectItemWithError(const Id &id);
-	void showErrors(gui::ErrorReporter const * const errorReporter);
+	void showErrors(const gui::ErrorReporter * const errorReporter);
 
 	void changePaletteRepresentation();
 	void closeStartTab();
@@ -228,7 +228,7 @@ private slots:
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
 	/// @return true if one of the tabs was closed
-	bool closeTab(QModelIndex const &graphicsIndex);
+	bool closeTab(const QModelIndex &graphicsIndex);
 
 	void showPreferencesDialog();
 
@@ -301,7 +301,7 @@ private:
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
-	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
+	void addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMenu);
 
 	/// Traverses list of actions and adds buttons to toolbar.
 	/// @param actions - list of actions to traverse

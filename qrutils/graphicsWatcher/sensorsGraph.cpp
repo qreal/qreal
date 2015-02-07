@@ -22,7 +22,7 @@ struct SensorsGraph::TrackObject {
 	{
 	}
 
-	bool operator ==(TrackObject const &other) const
+	bool operator ==(const TrackObject &other) const
 	{
 		return index == other.index;
 	}
@@ -84,10 +84,10 @@ void SensorsGraph::clearTrackingObjects()
 void SensorsGraph::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
-	qreal const verticalCoefficent = 0.8;
-	qreal const horizontalCoefficent = 0.8;
-	qreal const plotWidth = size().width() * horizontalCoefficent;
-	qreal const plotHeight = size().height() * verticalCoefficent;
+	const qreal verticalCoefficent = 0.8;
+	const qreal horizontalCoefficent = 0.8;
+	const qreal plotWidth = size().width() * horizontalCoefficent;
+	const qreal plotHeight = size().height() * verticalCoefficent;
 
 	mPlotFrame->setSceneRect(-plotWidth, -plotHeight, plotWidth, plotHeight);
 	mPlotFrame->setFixedSize(plotWidth, plotHeight);
@@ -116,7 +116,7 @@ void SensorsGraph::initGui()
 
 void SensorsGraph::setupToolElements()
 {
-	QSize const iconSize(20, 20);
+	const QSize iconSize(20, 20);
 
 	mStopButton.setIcon(QPixmap(":/graphicsWatcher/icons/stop_btn.png"));
 	mStopButton.setIconSize(iconSize);
@@ -163,12 +163,12 @@ void SensorsGraph::watchListChanged()
 		return;
 	}
 
-	foreach (TrackObject const &item, mWatchList) {
+	foreach (const TrackObject &item, mWatchList) {
 		mSlotComboBox.addItem(tr(item.displayName.toUtf8()), item.index);
 	}
 }
 
-void SensorsGraph::sensorsInput(const int slotIndex, qreal const value)
+void SensorsGraph::sensorsInput(const int slotIndex, const qreal value)
 {
 	if (mCurrentSlot == slotIndex) {
 		mPlotFrame->setNextValue(value);

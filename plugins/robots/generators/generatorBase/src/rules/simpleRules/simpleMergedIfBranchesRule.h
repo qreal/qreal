@@ -11,7 +11,7 @@ namespace semantics {
 class SimpleMergedIfBranchesRule : public SimpleVisitedRuleBase
 {
 public:
-	SimpleMergedIfBranchesRule(SemanticTree *tree, const qReal::Id &id, LinkInfo const &next);
+	SimpleMergedIfBranchesRule(SemanticTree *tree, const qReal::Id &id, const LinkInfo &next);
 
 	virtual bool apply();
 };

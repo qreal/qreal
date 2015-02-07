@@ -45,8 +45,8 @@ public:
 	/// control flow generators (fatal errors occured).
 	bool errorsOccured() const;
 
-	void visitRegular(const qReal::Id &id, QList<LinkInfo> const &links) override;
-	void visitFinal(const qReal::Id &id, QList<LinkInfo> const &links) override;
+	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitFinal(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
 
 protected:

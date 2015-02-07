@@ -1,6 +1,6 @@
 #include "lightSensor.h"
 
-unsigned const lightSensorResponseSize = 9;
+const unsigned lightSensorResponseSize = 9;
 
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;

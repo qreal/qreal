@@ -8,7 +8,7 @@ namespace gestures {
 class Sorting
 {
 public:
-	static Key sortPicture(Key const &unsortedKey)
+	static Key sortPicture(const Key &unsortedKey)
 	{
 		Key key = unsortedKey;
 		const int size = key.size();

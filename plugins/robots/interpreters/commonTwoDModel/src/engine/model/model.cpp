@@ -49,10 +49,10 @@ QDomDocument Model::serialize() const
 	return save;
 }
 
-void Model::deserialize(QDomDocument const &xml)
+void Model::deserialize(const QDomDocument &xml)
 {
-	QDomNodeList const worldList = xml.elementsByTagName("world");
-	QDomNodeList const robotsList = xml.elementsByTagName("robots");
+	const QDomNodeList worldList = xml.elementsByTagName("world");
+	const QDomNodeList robotsList = xml.elementsByTagName("robots");
 
 	if (worldList.count() != 1) {
 		/// @todo Report error
@@ -63,7 +63,7 @@ void Model::deserialize(QDomDocument const &xml)
 
 	if (robotsList.count() != 1) {
 		// need for backward compatibility with old format
-		QDomNodeList const robotList = xml.elementsByTagName("robot");
+		const QDomNodeList robotList = xml.elementsByTagName("robot");
 
 		if (robotList.count() != 1) {
 			/// @todo Report error
@@ -137,7 +137,7 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF 
 	emit robotAdded(robot);
 }
 
-void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
+void Model::removeRobotModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
 {
 	const int index = findModel(robotModel);
 
@@ -151,7 +151,7 @@ void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotM
 	delete robot;
 }
 
-void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
+void Model::replaceRobotModel(const twoDModel::robotModel::TwoDRobotModel &oldModel
 		, twoDModel::robotModel::TwoDRobotModel &newModel)
 {
 	const int index = findModel(oldModel);
@@ -165,7 +165,7 @@ void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldMo
 	addRobotModel(newModel, pos);
 }
 
-int Model::findModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
+int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
 {
 	for (int i = 0; i < mRobotModels.count(); i++) {
 		if (mRobotModels.at(i)->info().robotId() == robotModel.robotId()) {

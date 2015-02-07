@@ -49,7 +49,7 @@ public:
 	static const int textUpdateDefault = 500;
 
 public slots:
-	void sensorsInput(const int slotIndex, qreal const value);
+	void sensorsInput(const int slotIndex, const qreal value);
 	void setCurrentSensor(const int newSlotIndex);
 	void startJob();
 	void stopJob();

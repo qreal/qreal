@@ -16,7 +16,7 @@ public:
 	Type(bool isResolved, Diagram *diagram);
 	virtual ~Type();
 	virtual Type* clone() const = 0;
-	virtual bool init(QDomElement const &element, const QString &context);
+	virtual bool init(const QDomElement &element, const QString &context);
 	virtual bool resolve() = 0;
 	virtual bool isResolving() const;
 	bool isResolved() const;

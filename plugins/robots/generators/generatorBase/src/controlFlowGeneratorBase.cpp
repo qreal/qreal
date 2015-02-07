@@ -95,7 +95,7 @@ bool ControlFlowGeneratorBase::errorsOccured() const
 	return mErrorsOccured;
 }
 
-void ControlFlowGeneratorBase::visitRegular(const Id &id, QList<LinkInfo> const &links)
+void ControlFlowGeneratorBase::visitRegular(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 	if (mCustomizer.isSubprogramCall(id)) {
@@ -128,7 +128,7 @@ GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const
 	return mCustomizer;
 }
 
-void ControlFlowGeneratorBase::visitFinal(const Id &id, QList<LinkInfo> const &links)
+void ControlFlowGeneratorBase::visitFinal(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(id)
 	Q_UNUSED(links)
@@ -137,10 +137,10 @@ void ControlFlowGeneratorBase::visitFinal(const Id &id, QList<LinkInfo> const &l
 void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 {
 	// n-ary fork creates (n-1) new threads and one thread is the old one.
-	LinkInfo const currentThread = links.first();
+	const LinkInfo currentThread = links.first();
 	// In case of current thread fork block behaviours like nop-block.
 	visitRegular(id, { currentThread });
-	QList<LinkInfo> const newThreads = links.mid(1);
+	const QList<LinkInfo> newThreads = links.mid(1);
 	semantics::ForkRule rule(mSemanticTree, id, newThreads, mCustomizer.factory()->threads());
 	rule.apply();
 

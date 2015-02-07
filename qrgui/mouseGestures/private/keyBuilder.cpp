@@ -8,7 +8,7 @@ static const int minPoint = -1000;
 
 using namespace qReal::gestures;
 
-Key KeyBuilder::getKey(PathVector const &mousePath, int heightSize, int widthSize)
+Key KeyBuilder::getKey(const PathVector &mousePath, int heightSize, int widthSize)
 {
 	Key key;
 	if (mousePath.isEmpty()) {
@@ -19,7 +19,7 @@ Key KeyBuilder::getKey(PathVector const &mousePath, int heightSize, int widthSiz
 	qreal upper = mousePath.at(0).at(0).y();
 	qreal right = mousePath.at(0).at(0).x();
 	qreal left = mousePath.at(0).at(0).x();
-	for (PointVector const &path : mousePath) {
+	for (const PointVector &path : mousePath) {
 		for (const QPointF &pnt : path) {
 			lower = qMax(lower, pnt.y());
 			upper = qMin(upper, pnt.y());
@@ -32,7 +32,7 @@ Key KeyBuilder::getKey(PathVector const &mousePath, int heightSize, int widthSiz
 		return key;
 	}
 
-	for (PointVector const &path : mousePath) {
+	for (const PointVector &path : mousePath) {
 		SquarePos previous(minPoint, minPoint);
 		SquarePos last;
 
@@ -67,7 +67,7 @@ Key KeyBuilder::getKey(PathVector const &mousePath, int heightSize, int widthSiz
 	return key;
 }
 
-void KeyBuilder::rasterizeSegment(SquarePos const &pos1, SquarePos const &pos2, Key *segment)
+void KeyBuilder::rasterizeSegment(const SquarePos &pos1, const SquarePos &pos2, Key *segment)
 {
 	if (!segment->isEmpty() && pos1 == segment->at(0)) {
 		segment->pop_back();

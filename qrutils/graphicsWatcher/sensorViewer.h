@@ -27,7 +27,7 @@ public:
 	void resizeEvent(QResizeEvent *event = 0);
 
 public slots:
-	void setNextValue(qreal const newValue);
+	void setNextValue(const qreal newValue);
 	void startJob();
 	void stopJob();
 	void clear();

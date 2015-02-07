@@ -69,7 +69,7 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 	}
 }
 
-void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem *parent)
+void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(mMainWindow, data
@@ -85,7 +85,7 @@ void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem 
 void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWidgetItem *parent)
 {
 	if (mPaletteTree.itemsCountInARow() == 1 || !mPaletteTree.iconsView()) {
-		foreach (PaletteElement const &element, items) {
+		foreach (const PaletteElement &element, items) {
 			addItemType(element, parent);
 		}
 
@@ -197,7 +197,7 @@ bool PaletteTreeWidget::idLessThan(const Id &s1, const Id &s2)
 	return mEditorManager->friendlyName(s1).toLower() < mEditorManager->friendlyName(s2).toLower();
 }
 
-bool PaletteTreeWidget::paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2)
+bool PaletteTreeWidget::paletteElementLessThan(const PaletteElement &s1, const PaletteElement &s2)
 {
 	return idLessThan(s1.id(), s2.id());
 }

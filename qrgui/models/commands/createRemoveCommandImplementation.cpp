@@ -11,7 +11,7 @@ using namespace commands;
 CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 		models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
-		, models::Exploser const &exploser
+		, const models::Exploser &exploser
 		, const Id &logicalParent
 		, const Id &graphicalParent
 		, const Id &id
@@ -90,7 +90,7 @@ void CreateRemoveCommandImplementation::remove()
 	refreshAllPalettes();
 }
 
-bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation const &other) const
+bool CreateRemoveCommandImplementation::equals(const CreateRemoveCommandImplementation &other) const
 {
 	return mLogicalParent == other.mLogicalParent
 			&& mGraphicalParent == other.mGraphicalParent

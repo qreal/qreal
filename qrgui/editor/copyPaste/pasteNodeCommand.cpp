@@ -5,7 +5,7 @@
 using namespace qReal::commands;
 
 PasteNodeCommand::PasteNodeCommand(EditorViewScene *scene
-		, NodeData const &data
+		, const NodeData &data
 		, const QPointF &offset
 		, bool isGraphicalCopy
 		, QHash<Id, Id> *copiedIds)

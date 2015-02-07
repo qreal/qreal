@@ -93,7 +93,7 @@ private:
 
 	void refreshPalette(gui::PaletteTreeWidget * const tree, const Id &diagram);
 
-	void connectCommand(commands::AbstractCommand const *command) const;
+	void connectCommand(const commands::AbstractCommand *command) const;
 
 	models::LogicalModelAssistApi &mApi;
 };

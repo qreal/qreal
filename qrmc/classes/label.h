@@ -11,7 +11,7 @@ namespace qrmc {
 	public:
 		// Default copy constructor is ok.
 
-		bool init(QDomElement const &element, int index, bool nodeLabel, int width, int height);
+		bool init(const QDomElement &element, int index, bool nodeLabel, int width, int height);
 
 		QString generateInit(MetaCompiler *compiler, bool isNode) const;
 		QString generateUpdate(MetaCompiler *compiler) const;

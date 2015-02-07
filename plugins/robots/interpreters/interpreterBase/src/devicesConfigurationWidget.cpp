@@ -168,7 +168,7 @@ void DevicesConfigurationWidget::save()
 void DevicesConfigurationWidget::propagateChanges(const PortInfo &port, const DeviceInfo &sensor)
 {
 	for (const QString &robotModelId : mRobotModels.keys()) {
-		RobotModelInterface const *robotModel = mRobotModels[robotModelId];
+		const RobotModelInterface *robotModel = mRobotModels[robotModelId];
 		for (const PortInfo &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
@@ -192,7 +192,7 @@ bool DevicesConfigurationWidget::areConvertible(const PortInfo &port1, const Por
 			&& port1.direction() == port2.direction();
 }
 
-DeviceInfo DevicesConfigurationWidget::convertibleDevice(RobotModelInterface const *robotModel
+DeviceInfo DevicesConfigurationWidget::convertibleDevice(const RobotModelInterface *robotModel
 		, const PortInfo &port, const DeviceInfo &device) const
 {
 	QList<DeviceInfo> const convertibleBases = robotModel->convertibleBases();

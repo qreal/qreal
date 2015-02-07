@@ -29,11 +29,11 @@ public:
 	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	virtual QModelIndex parent(const QModelIndex &index) const;
-	virtual Qt::ItemFlags flags(QModelIndex const &index) const;
+	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual Qt::DropActions supportedDropActions() const;
 	virtual QStringList mimeTypes() const;
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const = 0;
-	bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
+	bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
 	virtual void addElementToModel(const Id &parent, const Id &id, const Id &logicalId
 			, const QString &name, const QPointF &position) = 0;
@@ -41,10 +41,10 @@ public:
 	const EditorManagerInterface &editorManagerInterface() const;
 
 	/// Stacks item element before sibling (they should have the same parent)
-	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling) = 0;
+	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling) = 0;
 
 	QModelIndex indexById(const Id &id) const;
-	Id idByIndex(QModelIndex const &index) const;
+	Id idByIndex(const QModelIndex &index) const;
 	Id rootId() const;
 
 	void reinit();
@@ -59,11 +59,11 @@ protected:
 	AbstractModelItem *mRootItem;
 
 	QString findPropertyName(const Id &id, const int role) const;
-	QModelIndex index(AbstractModelItem const * const item) const;
+	QModelIndex index(const AbstractModelItem * const item) const;
 
 	void cleanupTree(modelsImplementation::AbstractModelItem * item);
 
-	AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
+	AbstractModelItem * parentAbstractItem(const QModelIndex &parent) const;
 	void removeModelItems(details::modelsImplementation::AbstractModelItem *const root);
 
 private:

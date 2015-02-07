@@ -23,7 +23,7 @@ class SensorItem : public QObject, public graphicsUtils::RotateItem
 
 public:
 	SensorItem(model::SensorsConfiguration &configuration
-			, const interpreterBase::robotModel::PortInfo &port, const QString &pathToImage, QRect const &imageSize);
+			, const interpreterBase::robotModel::PortInfo &port, const QString &pathToImage, const QRect &imageSize);
 
 	void setRotation(qreal angle) override;
 	QRectF rect() const override;
@@ -56,12 +56,12 @@ protected:
 		QRectF boundingRect() const override;
 
 	protected:
-		void paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget) override;
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 	private:
 		const interpreterBase::robotModel::PortInfo mPort;
-		QFont const mFont;
-		QRect const mBoundingRect;
+		const QFont mFont;
+		const QRect mBoundingRect;
 	};
 
 	QRectF imageRect() const;
@@ -78,7 +78,7 @@ protected:
 
 	const QRectF mImageRect;
 	const QRectF mBoundingRect;
-	QImage const mImage;
+	const QImage mImage;
 	PortItem *mPortItem;  // Has ownership.
 };
 

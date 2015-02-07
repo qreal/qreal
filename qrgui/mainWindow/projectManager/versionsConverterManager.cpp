@@ -23,8 +23,8 @@ bool VersionsConverterManager::validateCurrentProject()
 	QMultiMap<QString, ProjectConverter> const converters = mMainWindow.toolManager().projectConverters();
 
 	for (const QString &editor : editorsToCheck) {
-		Version const currentVersion = mMainWindow.editorManager().version(Id(editor));
-		Version const savedVersion = savedVersions[Id(editor)];
+		const Version currentVersion = mMainWindow.editorManager().version(Id(editor));
+		const Version savedVersion = savedVersions[Id(editor)];
 
 		if (currentVersion == savedVersion) {
 			continue;
@@ -43,14 +43,14 @@ bool VersionsConverterManager::validateCurrentProject()
 	return true;
 }
 
-bool VersionsConverterManager::convertProject(Version const &enviromentVersion
-		, Version const &saveVersion
+bool VersionsConverterManager::convertProject(const Version &enviromentVersion
+		, const Version &saveVersion
 		, QList<ProjectConverter> const &converters)
 {
 	// Stage I: Sorting converters by versions
 	QList<ProjectConverter> sortedConverters = converters;
 	qSort(sortedConverters.begin(), sortedConverters.end()
-		, [=](ProjectConverter const &converter1, ProjectConverter const &converter2)
+		, [=](const ProjectConverter &converter1, const ProjectConverter &converter2)
 	{
 		return converter1.fromVersion() < converter2.fromVersion();
 	});
@@ -68,7 +68,7 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 	// Stage III: Sequentially applying converters
 	for (ProjectConverter &converter : sortedConverters) {
 		if (converter.fromVersion() >= saveVersion && converter.toVersion() <= enviromentVersion) {
-			ProjectConverter::ConvertionResult const result = converter.convert(
+			const ProjectConverter::ConvertionResult result = converter.convert(
 					mMainWindow.models().graphicalModelAssistApi()
 					, mMainWindow.models().logicalModelAssistApi());
 			switch (result) {
@@ -104,7 +104,7 @@ void VersionsConverterManager::displayCannotConvertError()
 	showError(errorMessage);
 }
 
-void VersionsConverterManager::displayTooOldSaveError(Version const &saveVersion)
+void VersionsConverterManager::displayTooOldSaveError(const Version &saveVersion)
 {
 	const bool showVersionDetails = saveVersion.isValid();
 	const QString reason = showVersionDetails
@@ -116,7 +116,7 @@ void VersionsConverterManager::displayTooOldSaveError(Version const &saveVersion
 	showError(errorMessage);
 }
 
-void VersionsConverterManager::displayTooOldEnviromentError(Version const &saveVersion)
+void VersionsConverterManager::displayTooOldEnviromentError(const Version &saveVersion)
 {
 	const QString errorMessage = QObject::tr("The save you are trying to open is made by version %1 of editor, "\
 			"whitch is newer than currently installed enviroment. "\

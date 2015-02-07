@@ -74,7 +74,7 @@ public:
 	void addIntrinsicFunction(const QString &name
 			, core::types::TypeExpression * const returnType
 			, const QList<core::types::TypeExpression *> &parameterTypes
-			, std::function<QVariant(QList<QVariant> const &)> const &semantic) override;
+			, std::function<QVariant(const QList<QVariant> &)> const &semantic) override;
 
 	QStringList identifiers() const override;
 

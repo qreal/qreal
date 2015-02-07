@@ -2,7 +2,7 @@
 
 using namespace qReal::commands;
 
-ElementCommand::ElementCommand(EditorViewScene const *scene, const Id &id)
+ElementCommand::ElementCommand(const EditorViewScene *scene, const Id &id)
 	: mElement(nullptr), mScene(scene), mId(id), mSceneWasRemoved(false)
 {
 	reinitElement();
@@ -13,7 +13,7 @@ ElementCommand::~ElementCommand()
 {
 }
 
-EditorViewScene const *ElementCommand::scene() const
+const EditorViewScene *ElementCommand::scene() const
 {
 	return mScene;
 }
@@ -23,7 +23,7 @@ Id ElementCommand::elementId() const
 	return mId;
 }
 
-void ElementCommand::setScene(EditorViewScene const *scene)
+void ElementCommand::setScene(const EditorViewScene *scene)
 {
 	mScene = scene;
 	reinitElement();

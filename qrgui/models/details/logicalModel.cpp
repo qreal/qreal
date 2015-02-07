@@ -105,7 +105,7 @@ void LogicalModel::updateElements(const Id &logicalId, const QString &name)
 	emit dataChanged(indexById(logicalId), indexById(logicalId));
 }
 
-QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
+QMimeData* LogicalModel::mimeData(const QModelIndexList &indexes) const
 {
 	QByteArray data;
 	bool isFromLogicalModel = true;
@@ -132,7 +132,7 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 	return mimeData;
 }
 
-QString LogicalModel::pathToItem(AbstractModelItem const *item) const
+QString LogicalModel::pathToItem(const AbstractModelItem *item) const
 {
 	if (item != mRootItem) {
 		QString path;
@@ -248,7 +248,7 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 	return false;
 }
 
-void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, const QPointF &position)
+void LogicalModel::changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position)
 {
 	Q_UNUSED(position)
 	if (!parent.isValid() || element.parent() == parent) {
@@ -311,7 +311,7 @@ LogicalModelAssistApi &LogicalModel::logicalModelAssistApi() const
 	return *mLogicalAssistApi;
 }
 
-bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
+bool LogicalModel::removeRows(int row, int count, const QModelIndex &parent)
 {
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
 	if (parentItem->children().size() < row + count) {

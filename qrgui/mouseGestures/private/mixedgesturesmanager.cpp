@@ -41,7 +41,7 @@ qreal MixedGesturesManager::getDistance(QPair<qreal *,qreal *> const &key1, QPai
 	return dist1 * weight1 + dist2 * weight2;
 }
 
-QPair<qreal *, qreal *> MixedGesturesManager::getKey(PathVector const &path)
+QPair<qreal *, qreal *> MixedGesturesManager::getKey(const PathVector &path)
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;
@@ -55,7 +55,7 @@ MixedClassifier::MixedClassifier(QPair<qreal *, qreal *> const &key)
 	mKey = key;
 }
 
-MixedClassifier::MixedClassifier(PathVector const &path)
+MixedClassifier::MixedClassifier(const PathVector &path)
 {
 	MixedGesturesManager gManager;
 	mKey = gManager.getKey(path);
@@ -71,7 +71,7 @@ MixedClassifier::~MixedClassifier()
 	delete mKey.second;
 }
 
-qreal MixedClassifier::getDistance(MixedClassifier const &classifier)
+qreal MixedClassifier::getDistance(const MixedClassifier &classifier)
 {
 	QPair<qreal *, qreal *> key = classifier.key();
 	MixedGesturesManager gManager;

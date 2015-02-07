@@ -53,7 +53,7 @@ QDomElement EllipseItem::serialize(QDomDocument &document, const QPoint &topLeft
 	return ellipseNode;
 }
 
-void EllipseItem::deserialize(QDomElement const &element)
+void EllipseItem::deserialize(const QDomElement &element)
 {
 	const QString beginStr = element.attribute("begin", "0:0");
 	QStringList splittedStr = beginStr.split(":");

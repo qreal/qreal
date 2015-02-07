@@ -29,7 +29,7 @@ public:
 	QString version() const;
 
 	bool isLoaded();
-	bool load(QDir const &currentDir);
+	bool load(const QDir &currentDir);
 
 	Type *findType(const QString &name);
 

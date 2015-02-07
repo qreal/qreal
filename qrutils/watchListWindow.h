@@ -31,7 +31,7 @@ public:
 	/// Constructor left for backwards compatibility with old parser which is still used in visual interpreter.
 	/// @param parser - text language parser/interpreter from which to take variable values.
 	/// @param parent - parent of a window as in Qt widget parent/child relations.
-	explicit WatchListWindow(utils::ExpressionsParser const *parser, QWidget *parent = 0);
+	explicit WatchListWindow(const utils::ExpressionsParser *parser, QWidget *parent = 0);
 
 	~WatchListWindow() override;
 
@@ -43,14 +43,14 @@ private slots:
 	void updateVariables();
 
 private:
-	WatchListWindow(utils::ExpressionsParser const * const parser
+	WatchListWindow(const utils::ExpressionsParser * const parser
 			, const qrtext::DebuggerInterface * const newParser
 			, QWidget *parent);
 
 	Ui::watchListWindow *mUi;
 	QTimer mTimer;
 	const qrtext::DebuggerInterface * const mNewParser;  // Does not have ownership.
-	utils::ExpressionsParser const * const mParser;  // Does not have ownership.
+	const utils::ExpressionsParser * const mParser;  // Does not have ownership.
 	QSet<QString> mHiddenVariables;
 };
 

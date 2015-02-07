@@ -22,14 +22,14 @@ void InterpreterElementImpl::initLabels(const int &width, const int &height, Lab
 			!element.isNull();
 			element = element.nextSiblingElement("label"))
 	{
-		ScalableCoordinate const x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
-		ScalableCoordinate const y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
+		const ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
+		const ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
 		const QString center = element.attribute("center", "false");
 		const QString text = element.attribute("text");
 		const QString textBinded = element.attribute("textBinded");
 		const QString readOnly = element.attribute("readOnly", "false");
 		const QString background = element.attribute("background", "transparent");
-		qreal const rotation = element.attribute("rotation", "0").toDouble();
+		const qreal rotation = element.attribute("rotation", "0").toDouble();
 		if (text.isEmpty() && textBinded.isEmpty()) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
@@ -53,10 +53,10 @@ void InterpreterElementImpl::initLabels(const int &width, const int &height, Lab
 	}
 }
 
-void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+void InterpreterElementImpl::initPointPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
 		, const int &width, const int &height)
 {
-	QDomNodeList const pointPortsList
+	const QDomNodeList pointPortsList
 			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
 		QDomElement portElement = pointPortsList.at(i).toElement();
@@ -82,10 +82,10 @@ void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory,
 	}
 }
 
-void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+void InterpreterElementImpl::initLinePorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
 		, const int &width, const int &height)
 {
-	QDomNodeList const linePortsList
+	const QDomNodeList linePortsList
 			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 
 	for (int i = 0; i < linePortsList.size(); i++) {
@@ -130,7 +130,7 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 }
 
 void InterpreterElementImpl::inheritProperties(QList<QDomElement> &elements, const Id &id
-		, QList<PortInterface *> &ports, PortFactoryInterface const &portFactory, SdfRendererInterface *renderer
+		, QList<PortInterface *> &ports, const PortFactoryInterface &portFactory, SdfRendererInterface *renderer
 		, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const
 {
 	bool overridePictures = false;
@@ -195,7 +195,7 @@ void InterpreterElementImpl::inheritProperties(QList<QDomElement> &elements, con
 	}
 }
 
-void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &portFactory
+void InterpreterElementImpl::init(QRectF &contents, const PortFactoryInterface &portFactory
 		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
 		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
 {
@@ -327,7 +327,7 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 	}
 
 	if (mId.element() == "MetaEntityNode") {
-		foreach (NodeLabel const &nodeLabel, mNodeLabels) {
+		foreach (const NodeLabel &nodeLabel, mNodeLabels) {
 			if (nodeLabel.textBinded.isEmpty()) {
 				// Static label
 				Q_UNUSED(repo);
@@ -389,7 +389,7 @@ int InterpreterElementImpl::getPenWidth() const
 		return 0;
 	}
 
-	QDomElement const lineWidthElement = mGraphics.firstChildElement("lineWidth");
+	const QDomElement lineWidthElement = mGraphics.firstChildElement("lineWidth");
 	if (lineWidthElement.isNull()) {
 		return 1;
 	}
@@ -433,7 +433,7 @@ void InterpreterElementImpl::drawArrow(QPainter *painter, const QString &type) c
 		style = "filled_arrow";
 	}
 
-	QBrush const oldBrush = painter->brush();
+	const QBrush oldBrush = painter->brush();
 	QBrush brush;
 	brush.setStyle(Qt::SolidPattern);
 
@@ -480,7 +480,7 @@ bool InterpreterElementImpl::isDividable() const
 
 bool InterpreterElementImpl::hasContainerProperty(const QString &property) const
 {
-	QDomElement const propertiesElement =
+	const QDomElement propertiesElement =
 			mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 
 	if (propertiesElement.hasChildNodes()) {
@@ -505,7 +505,7 @@ bool InterpreterElementImpl::isSortingContainer() const
 QVector<int> InterpreterElementImpl::getSizeOfContainerProperty(const QString &property) const
 {
 	QVector<int> size(4, 0);
-	QDomElement const propertiesElement =
+	const QDomElement propertiesElement =
 			mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {

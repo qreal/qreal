@@ -39,8 +39,8 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 	}
 }
 
-void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, SystemEvents const &systemEvents
+void NxtKitInterpreterPlugin::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+		, const SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, gui::MainWindowInterpretersInterface &interpretersInterface

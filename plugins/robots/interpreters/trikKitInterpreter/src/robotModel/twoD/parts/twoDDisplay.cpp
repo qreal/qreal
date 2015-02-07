@@ -18,7 +18,7 @@ Display::Display(const DeviceInfo &info
 	mEngine.display()->setPainter(this);
 }
 
-void Display::setPainterColor(QColor const &color)
+void Display::setPainterColor(const QColor &color)
 {
 	mCurrentPenColor = color;
 }
@@ -64,7 +64,7 @@ void Display::drawSmile(bool sad)
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::setBackground(QColor const &color)
+void Display::setBackground(const QColor &color)
 {
 	mBackground = color;
 	mEngine.display()->repaintDisplay();
@@ -95,7 +95,7 @@ void Display::clearScreen()
 
 void Display::paint(QPainter *painter)
 {
-	QRect const displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
+	const QRect displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
 	painter->save();
 	painter->setPen(mBackground);
 	painter->setBrush(mBackground);

@@ -17,7 +17,7 @@ public:
 	virtual void adjust();
 
 	/// @return criteria for sorting square links on a linear port
-	virtual EdgeArrangeCriteria arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+	virtual EdgeArrangeCriteria arrangeCriteria(const NodeElement *node, const QLineF &portLine) const;
 
 	/// @return list of context menu actions available for square link at position pos
 	virtual QList<ContextMenuAction *> extraActions(const QPointF &pos);
@@ -45,7 +45,7 @@ protected:
 	void deleteShortSegments();
 
 	/// Helper function for linear ports arranging
-	QPointF portArrangePoint(NodeElement const *node) const;
+	QPointF portArrangePoint(const NodeElement *node) const;
 
 	/// Ensure that both end segments are strict
 	void adjustEndSegments();
@@ -65,7 +65,7 @@ protected:
 	bool isSquareLine() const;
 
 	/// Determine whether given line intersects given node
-	bool intersects(QLineF const &line, NodeElement *node) const;
+	bool intersects(const QLineF &line, NodeElement *node) const;
 
 	/// Make the link square, ensure it doesn't intersect adjacent nodes
 	void squarize();

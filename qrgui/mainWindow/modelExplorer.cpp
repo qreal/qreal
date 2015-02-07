@@ -32,7 +32,7 @@ void ModelExplorer::setAssistApi(details::ModelsAssistInterface * const model)
 	mModel = model;
 }
 
-void ModelExplorer::setExploser(models::Exploser const &exploser)
+void ModelExplorer::setExploser(const models::Exploser &exploser)
 {
 	mExploser = &exploser;
 }

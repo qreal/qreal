@@ -4,7 +4,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 SimpleIfInsideCycleRule::SimpleIfInsideCycleRule(SemanticTree *tree
-		, const Id &id, LinkInfo const &next)
+		, const Id &id, const LinkInfo &next)
 	: SimpleVisitedRuleBase(tree, id, next)
 {
 }

@@ -4,7 +4,7 @@ using namespace interpreterCore;
 using namespace interpreterBase;
 
 PaletteUpdateManager::PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider
-		, BlocksFactoryManagerInterface const &factoryManager, QObject *parent)
+		, const BlocksFactoryManagerInterface &factoryManager, QObject *parent)
 	: QObject(parent)
 	, mPaletteProvider(paletteProvider)
 	, mFactoryManager(factoryManager)

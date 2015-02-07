@@ -330,8 +330,8 @@ void ExpressionsParser::parseCommand(const QString &stream, int &pos)
 		Number *n = parseExpression(stream, pos);
 		if (!hasErrors()) {
 			const bool containsVariable = mVariables.keys().contains(variable);
-			Number::Type const t1 = containsVariable ? mVariables[variable]->type() : Number::intType;
-			Number::Type const t2 = n->type();
+			const Number::Type t1 = containsVariable ? mVariables[variable]->type() : Number::intType;
+			const Number::Type t2 = n->type();
 			if (!containsVariable || t1 == t2) {
 				mVariables[variable] = n;
 			} else {
@@ -624,7 +624,7 @@ bool ExpressionsParser::isEmpty(const QString &stream, int &pos) const
 	return pos == stream.length();
 }
 
-void ExpressionsParser::error(ParseErrorType const &type, const QString &pos
+void ExpressionsParser::error(const ParseErrorType &type, const QString &pos
 		, const QString &expected, const QString &got)
 {
 	switch (type) {

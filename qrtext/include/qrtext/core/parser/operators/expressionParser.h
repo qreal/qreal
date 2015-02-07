@@ -18,8 +18,8 @@ public:
 	/// Constructor for general case, takes precedence table, parser for primary expression and parser for binary
 	/// operator.
 	ExpressionParser(QSharedPointer<PrecedenceTable<TokenType>> const &precedenceTable
-			, ParserRef<TokenType> const &primary
-			, ParserRef<TokenType> const &binOp)
+			, const ParserRef<TokenType> &primary
+			, const ParserRef<TokenType> &binOp)
 		: mPrecedenceTable(precedenceTable)
 		, mStartPrecedence(0)
 		, mPrimary(primary)
@@ -100,8 +100,8 @@ private:
 	QSharedPointer<PrecedenceTable<TokenType>> mPrecedenceTable;
 	const int mStartPrecedence;
 
-	ParserRef<TokenType> const mPrimary;
-	ParserRef<TokenType> const mBinOp;
+	const ParserRef<TokenType> mPrimary;
+	const ParserRef<TokenType> mBinOp;
 };
 
 }

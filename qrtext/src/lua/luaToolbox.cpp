@@ -25,7 +25,7 @@ LuaToolbox::~LuaToolbox()
 
 QVariant LuaToolbox::interpret(QSharedPointer<Node> const &root)
 {
-	auto const result = mInterpreter->interpret(root, *mAnalyzer);
+	const auto result = mInterpreter->interpret(root, *mAnalyzer);
 	reportErrors();
 	return result;
 }
@@ -92,7 +92,7 @@ QList<Error> const &LuaToolbox::errors() const
 void LuaToolbox::addIntrinsicFunction(const QString &name
 		, core::types::TypeExpression * const returnType
 		, QList<core::types::TypeExpression *> const &parameterTypes
-		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
+		, std::function<QVariant(const QList<QVariant> &)> const &semantic)
 {
 	QList<QSharedPointer<core::types::TypeExpression>> wrappedParameterTypes;
 	for (core::types::TypeExpression * const type : parameterTypes) {
@@ -168,7 +168,7 @@ void LuaToolbox::clear()
 
 void LuaToolbox::reportErrors()
 {
-	for (qrtext::core::Error const &error : mErrors) {
+	for (const qrtext::core::Error &error : mErrors) {
 		if (error.severity() == Severity::internalError) {
 			QLOG_ERROR() << QString("Parser internal error at %1:%2 when parsing %3:%4: %5")
 					.arg(error.connection().line())

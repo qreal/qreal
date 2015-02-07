@@ -63,10 +63,10 @@ private:
 	* Some kind of tabulation for ports.
 	* TODO: understand that it actually is.
 	*/
-	qreal const mXHor;
-	qreal const mYHor;
-	qreal const mXVert;
-	qreal const mYVert;
+	const qreal mXHor;
+	const qreal mYHor;
+	const qreal mXVert;
+	const qreal mYVert;
 };
 
 }

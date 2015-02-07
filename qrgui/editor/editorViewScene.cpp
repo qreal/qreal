@@ -25,9 +25,9 @@ using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
 
-EditorViewScene::EditorViewScene(models::Models const &models
+EditorViewScene::EditorViewScene(const models::Models &models
 		, Controller &controller
-		, SceneCustomizer const &customizer
+		, const SceneCustomizer &customizer
 		, const Id &rootId
 		, QObject *parent)
 	: QGraphicsScene(parent)
@@ -156,7 +156,7 @@ Element *EditorViewScene::getElem(const qReal::Id &id) const
 
 void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-	QMimeData const *mimeData = event->mimeData();
+	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->hasFormat("application/x-real-uml-data")) {
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
@@ -303,7 +303,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QStringList targets;
 	const QStringList groups = mEditorManager.paletteGroups(node->id(), node->id());
 
-	foreach (PossibleEdge const &pEdge, edge->getPossibleEdges()) {
+	foreach (const PossibleEdge &pEdge, edge->getPossibleEdges()) {
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
 		if (mEditorManager.isParentOf(node->id(), pEdge.first.first)) {
@@ -415,7 +415,7 @@ qReal::Id EditorViewScene::createElement(const QString &str
 	return objectId;
 }
 
-void EditorViewScene::createElement(QMimeData const *mimeData, const QPointF &scenePos , bool searchForParents
+void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &scenePos , bool searchForParents
 		, CreateElementCommand **createCommandPointer, bool executeImmediately)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
@@ -456,7 +456,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, const QPointF &sc
 	} else {
 		Element *newParent = nullptr;
 
-		ElementImpl const * const impl = mEditorManager.elementImpl(id);
+		const ElementImpl * const impl = mEditorManager.elementImpl(id);
 		const bool isNode = impl->isNode();
 		delete impl;
 
@@ -529,7 +529,7 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 	mExploser.handleCreationWithExplosion(createCommand, id, explosionTarget);
 	if (executeImmediately) {
 		if (isNode) {
-			QSize const size = mEditorManager.iconSize(id);
+			const QSize size = mEditorManager.iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
 					*this, mModels.logicalModelAssistApi(), mModels.graphicalModelAssistApi(), mModels.exploser()
 					, Id(), Id(), parentId, position, QPointF(size.width(), size.height())
@@ -653,7 +653,7 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 	QList<NodeElement *> list;
 
 	if (node) {
-		QPolygonF const bounds = node->mapToScene(node->boundingRect());
+		const QPolygonF bounds = node->mapToScene(node->boundingRect());
 		QList<QGraphicsItem *> overlapping = items(bounds);
 		foreach (QGraphicsItem * const item, overlapping) {
 			NodeElement * const closeNode = dynamic_cast<NodeElement *>(item);
@@ -690,8 +690,8 @@ void EditorViewScene::deleteSelectedItems()
 {
 	QList<QGraphicsItem *> itemsToDelete = selectedItems();
 	IdList idsToDelete;
-	for (QGraphicsItem const *item : itemsToDelete) {
-		Element const *element = dynamic_cast<Element const *>(item);
+	for (const QGraphicsItem *item : itemsToDelete) {
+		const Element *element = dynamic_cast<const Element *>(item);
 		if (element) {
 			idsToDelete << element->id();
 		}
@@ -973,14 +973,14 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	gestures::MouseMovementManager::GestureResult const result = mMouseMovementManager.result();
+	const gestures::MouseMovementManager::GestureResult result = mMouseMovementManager.result();
 	switch (result.type()) {
 	case gestures::MouseMovementManager::invalidGesture:
 		break;
 	case gestures::MouseMovementManager::createElementGesture: {
 		// Creating element with its center in the center of gesture (see #1086)
 		const Id id = result.elementType();
-		QSize const elementSize = mEditorManager.iconSize(id);
+		const QSize elementSize = mEditorManager.iconSize(id);
 		const QPointF gestureCenter = mMouseMovementManager.pos();
 		const QPointF elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
 		createElement(id.toString(), gestureCenter - elementCenter);
@@ -1023,7 +1023,7 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 {
 	QList<PossibleEdge> edges = parent->getPossibleEdges();
 	QList<QString> allLinks;
-	foreach (PossibleEdge const &possibleEdge, edges) {
+	foreach (const PossibleEdge &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
 				&& possibleEdge.first.second.diagram() == child.id().diagram()
 				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
@@ -1125,7 +1125,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	Element *element = findElemAt(event->scenePos());
 
 	if (mShouldReparentItems) {
-		QList<QGraphicsItem *> const list = selectedItems();
+		const QList<QGraphicsItem *> list = selectedItems();
 		foreach(QGraphicsItem * const item, list) {
 			NodeElement * const nodeItem = dynamic_cast<NodeElement *>(item);
 			if (nodeItem) {
@@ -1260,7 +1260,7 @@ qReal::Id EditorViewScene::rootItemId() const
 	return mRootId;
 }
 
-models::Models const &EditorViewScene::models() const
+const models::Models &EditorViewScene::models() const
 {
 	return mModels;
 }
@@ -1275,7 +1275,7 @@ const EditorManagerInterface &EditorViewScene::editorManager() const
 	return mEditorManager;
 }
 
-SceneCustomizer const &EditorViewScene::customizer() const
+const SceneCustomizer &EditorViewScene::customizer() const
 {
 	return mCustomizer;
 }
@@ -1340,7 +1340,7 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 	}
 }
 
-void EditorViewScene::highlight(const Id &graphicalId, bool exclusive, QColor const &color)
+void EditorViewScene::highlight(const Id &graphicalId, bool exclusive, const QColor &color)
 {
 	if (exclusive) {
 		foreach (Element *element, mHighlightedElements) {
@@ -1445,7 +1445,7 @@ void EditorViewScene::updateEdgeElements()
 	foreach (QGraphicsItem *item, items()) {
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
-			enums::linkShape::LinkShape const shape
+			const enums::linkShape::LinkShape shape
 					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
 
 			element->changeShapeType(shape);

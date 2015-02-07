@@ -11,7 +11,7 @@
 
 using namespace nxtKitInterpreter::communication;
 
-unsigned const packetHeaderSize = 3;
+const unsigned packetHeaderSize = 3;
 
 UsbRobotCommunicationThread::UsbRobotCommunicationThread()
 	: mActive(false)
@@ -72,7 +72,7 @@ void UsbRobotCommunicationThread::connect()
 }
 
 void UsbRobotCommunicationThread::send(QObject *addressee
-		, const QByteArray &buffer, unsigned const responseSize)
+		, const QByteArray &buffer, const unsigned responseSize)
 {
 	QByteArray outputBuffer;
 	outputBuffer.resize(responseSize);
@@ -85,7 +85,7 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 }
 
 void UsbRobotCommunicationThread::send(const QByteArray &buffer
-		, unsigned const responseSize, QByteArray &outputBuffer)
+		, const unsigned responseSize, QByteArray &outputBuffer)
 {
 	utils::Tracer::debug(utils::Tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
 
@@ -98,7 +98,7 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer
 	if (!isResponseNeeded(buffer)) {
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), nullptr, 0, status);
 	} else {
-		unsigned const temporaryOutputBufferSize = 200;
+		const unsigned temporaryOutputBufferSize = 200;
 		char *outputBufferPtr2 = new char[temporaryOutputBufferSize];
 		for (unsigned i = 0; i < temporaryOutputBufferSize; i++) {
 			outputBufferPtr2[i] = 0;

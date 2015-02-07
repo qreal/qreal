@@ -2,12 +2,12 @@
 
 using namespace qReal::commands;
 
-ReshapeEdgeCommand::ReshapeEdgeCommand(EdgeElement const *edge)
+ReshapeEdgeCommand::ReshapeEdgeCommand(const EdgeElement *edge)
 	: EdgeElementCommand(dynamic_cast<EditorViewScene *>(edge->scene()), edge->id())
 {
 }
 
-ReshapeEdgeCommand::ReshapeEdgeCommand(EditorViewScene const *scene, const Id &id)
+ReshapeEdgeCommand::ReshapeEdgeCommand(const EditorViewScene *scene, const Id &id)
 	: EdgeElementCommand(scene, id)
 {
 }
@@ -73,8 +73,8 @@ void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst
 	}
 }
 
-void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
-		, const Id &src, const Id &dst, const QPointF &pos, qreal const &fromPort, qreal const &toPort)
+void ReshapeEdgeCommand::applyConfiguration(const QPolygonF &configuration
+		, const Id &src, const Id &dst, const QPointF &pos, const qreal &fromPort, const qreal &toPort)
 {
 	if (!mEdge) {
 		return;

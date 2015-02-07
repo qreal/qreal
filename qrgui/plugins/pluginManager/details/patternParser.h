@@ -20,9 +20,9 @@ public:
 	QList<Pattern> patterns() const;
 
 private:
-	void parseGroup(QDomElement const &group);
-	void parseNode(QDomElement const &node, Pattern &pattern);
-	void parseEdge(QDomElement const &edge, Pattern &pattern);
+	void parseGroup(const QDomElement &group);
+	void parseNode(const QDomElement &node, Pattern &pattern);
+	void parseEdge(const QDomElement &edge, Pattern &pattern);
 
 	QString mXml;
 	QString mEditor;

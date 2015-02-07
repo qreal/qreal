@@ -26,7 +26,7 @@ public:
 	const qrRepo::LogicalRepoApi &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;
 
-	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
+	const qrRepo::GraphicalRepoApi &graphicalRepoApi() const;
 
 	Exploser &exploser() const;
 

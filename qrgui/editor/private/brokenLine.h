@@ -50,7 +50,7 @@ protected:
 	void removeSmallTriangles(QPolygonF &line) const;
 
 	/// Determine whether points of line at positions i - i+2 look like one line rather than two
-	bool tooSmallTriangle(QPolygonF const &line, int i) const;
+	bool tooSmallTriangle(const QPolygonF &line, int i) const;
 
 	/// @return true if pos is close enough to non-end point
 	bool delPointActionIsPossible(const QPointF &pos) const;

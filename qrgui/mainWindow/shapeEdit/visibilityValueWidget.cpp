@@ -12,7 +12,7 @@ VisibilityValueWidget::~VisibilityValueWidget()
 	delete mWidget;
 }
 
-void VisibilityValueWidget::setPropertyInfo(VisibilityConditionsDialog::PropertyInfo const &info)
+void VisibilityValueWidget::setPropertyInfo(const VisibilityConditionsDialog::PropertyInfo &info)
 {
 	delete mWidget;
 	makeWidget(info.type);

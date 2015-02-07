@@ -4,7 +4,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 IfWithOneVisitedRule::IfWithOneVisitedRule(SemanticTree *tree, const Id &id
-		, LinkInfo const &thenLink, LinkInfo const &elseLink)
+		, const LinkInfo &thenLink, const LinkInfo &elseLink)
 	: IfBlockRuleBase(tree, id, thenLink, elseLink)
 {
 }
@@ -25,8 +25,8 @@ bool IfWithOneVisitedRule::apply()
 		return false;
 	}
 
-	LinkInfo const &visitedLink = alreadyCreated(mThenLink) ? mThenLink : mElseLink;
-	LinkInfo const &unvisitedLink = alreadyCreated(mThenLink) ? mElseLink : mThenLink;
+	const LinkInfo &visitedLink = alreadyCreated(mThenLink) ? mThenLink : mElseLink;
+	const LinkInfo &unvisitedLink = alreadyCreated(mThenLink) ? mElseLink : mThenLink;
 
 	IfNode * const thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
 	SemanticNode *newNode = mTree->produceNodeFor(unvisitedLink.target);

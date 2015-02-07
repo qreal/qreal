@@ -26,7 +26,7 @@ public:
 	  */
 	AbstractGenerator(const QString &templateDirPath
 			, const QString &outputDirPath
-			, qReal::LogicalModelAssistInterface const &logicalModel
+			, const qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 

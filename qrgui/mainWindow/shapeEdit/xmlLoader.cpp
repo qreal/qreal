@@ -48,14 +48,14 @@ void XmlLoader::readFile(const QString &fileName)
 
 void XmlLoader::readDocument()
 {
-	QDomNodeList const graphics = mDocument.elementsByTagName("graphics");
+	const QDomNodeList graphics = mDocument.elementsByTagName("graphics");
 	for (int i = 0; i < graphics.length(); ++i) {
 		QDomElement graphic = graphics.at(i).toElement();
 		readGraphics(graphic);
 	}
 }
 
-void XmlLoader::readGraphics(QDomElement const &graphic)
+void XmlLoader::readGraphics(const QDomElement &graphic)
 {
 	QDomNodeList graphicAttributes = graphic.childNodes();
 
@@ -92,7 +92,7 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 	}
 }
 
-void XmlLoader::readPicture(QDomElement const &picture)
+void XmlLoader::readPicture(const QDomElement &picture)
 {
 	QDomNodeList pictureAttributes = picture.childNodes();
 
@@ -122,7 +122,7 @@ void XmlLoader::readPicture(QDomElement const &picture)
 	}
 }
 
-void XmlLoader::readLabels(QDomElement const &label)
+void XmlLoader::readLabels(const QDomElement &label)
 {
 	QDomNodeList labelAttributes = label.childNodes();
 
@@ -136,7 +136,7 @@ void XmlLoader::readLabels(QDomElement const &label)
 	}
 }
 
-void XmlLoader::readPorts(QDomElement const &port)
+void XmlLoader::readPorts(const QDomElement &port)
 {
 	QDomNodeList portAttributes = port.childNodes();
 
@@ -152,7 +152,7 @@ void XmlLoader::readPorts(QDomElement const &port)
 	}
 }
 
-QPair<QString, bool> XmlLoader::readScaleCoord(QString point, QDomElement const &docItem)
+QPair<QString, bool> XmlLoader::readScaleCoord(QString point, const QDomElement &docItem)
 {
 	QString text = docItem.attribute(point, "0");
 	if (text.endsWith("a")) {
@@ -188,7 +188,7 @@ void XmlLoader::checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> po
 	}
 }
 
-QRectF XmlLoader::readRectOfXandY(QDomElement const &docItem)
+QRectF XmlLoader::readRectOfXandY(const QDomElement &docItem)
 {
 	initListScalePoint();
 	QPair<QString, bool> pointX1 = readScaleCoord("x1", docItem);
@@ -259,7 +259,7 @@ QPair<QPointF, QPointF> XmlLoader::calcLineOfXandY(QPair<QString, bool> pointX1,
 	return QPair<QPointF, QPointF>(QPointF(x1, y1), QPointF(x2, y2));
 }
 
-QPair<QPointF, QPointF> XmlLoader::readLineOfXandY(QDomElement const &docItem)
+QPair<QPointF, QPointF> XmlLoader::readLineOfXandY(const QDomElement &docItem)
 {
 	initListScalePoint();
 	QPair<QString, bool> pointX1 = readScaleCoord("x1", docItem);
@@ -269,7 +269,7 @@ QPair<QPointF, QPointF> XmlLoader::readLineOfXandY(QDomElement const &docItem)
 	return calcLineOfXandY(pointX1, pointX2, pointY1, pointY2);
 }
 
-QPair<QPointF, QPointF> XmlLoader::readLinePortOfXandY(QDomElement const &start, QDomElement const &end)
+QPair<QPointF, QPointF> XmlLoader::readLinePortOfXandY(const QDomElement &start, const QDomElement &end)
 {
 	initListScalePoint();
 	QPair<QString, bool> pointX1 = readScaleCoord("startx", start);
@@ -279,7 +279,7 @@ QPair<QPointF, QPointF> XmlLoader::readLinePortOfXandY(QDomElement const &start,
 	return calcLineOfXandY(pointX1, pointX2, pointY1, pointY2);
 }
 
-QPointF XmlLoader::readXandY(QDomElement const &docItem)
+QPointF XmlLoader::readXandY(const QDomElement &docItem)
 {
 	initListScalePoint();
 	QPair<QString, bool> pointX = readScaleCoord("x", docItem);
@@ -292,7 +292,7 @@ QPointF XmlLoader::readXandY(QDomElement const &docItem)
 	return QPointF(x, y);
 }
 
-void XmlLoader::readLine(QDomElement const &line)
+void XmlLoader::readLine(const QDomElement &line)
 {
 	QPair<QPointF, QPointF> rect = readLineOfXandY(line);
 	Line* item = new Line(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), nullptr);
@@ -303,7 +303,7 @@ void XmlLoader::readLine(QDomElement const &line)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readEllipse(QDomElement const &ellipse)
+void XmlLoader::readEllipse(const QDomElement &ellipse)
 {
 	QRectF rect = readRectOfXandY(ellipse);
 	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
@@ -314,7 +314,7 @@ void XmlLoader::readEllipse(QDomElement const &ellipse)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readArch(QDomElement const &arch)
+void XmlLoader::readArch(const QDomElement &arch)
 {
 	QRectF rect = readRectOfXandY(arch);
 	int spanAngle = arch.attribute("spanAngle", "0").toInt();
@@ -325,7 +325,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readRectangle(QDomElement const &rectangle)
+void XmlLoader::readRectangle(const QDomElement &rectangle)
 {
 	QRectF rect = readRectOfXandY(rectangle);
 	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
@@ -336,7 +336,7 @@ void XmlLoader::readRectangle(QDomElement const &rectangle)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readImage(QDomElement const &image)
+void XmlLoader::readImage(const QDomElement &image)
 {
 	QRectF rect = readRectOfXandY(image);
 	QString fileName = image.attribute("name", "error");
@@ -350,7 +350,7 @@ void XmlLoader::readImage(QDomElement const &image)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readStylus(QDomElement const &stylus)
+void XmlLoader::readStylus(const QDomElement &stylus)
 {
 	QDomNodeList stylusAttributes = stylus.childNodes();
 
@@ -381,7 +381,7 @@ bool XmlLoader::isNotLCMZ(QString str, int i)
 		&& (str[i] != 'Z');
 }
 
-void XmlLoader::readPath(QDomElement const &element)
+void XmlLoader::readPath(const QDomElement &element)
 {
 	QString tempStr;
 	QPointF endPoint;
@@ -521,7 +521,7 @@ void XmlLoader::readPath(QDomElement const &element)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readCurve(QDomElement const &curve)
+void XmlLoader::readCurve(const QDomElement &curve)
 {
 	QDomNodeList curveAttributes = curve.childNodes();
 	qreal x1 = 0;
@@ -553,7 +553,7 @@ void XmlLoader::readCurve(QDomElement const &curve)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readText(QDomElement const &text)
+void XmlLoader::readText(const QDomElement &text)
 {
 	QRectF point = readRectOfXandY(text);
 	qreal x = point.left();
@@ -567,7 +567,7 @@ void XmlLoader::readText(QDomElement const &text)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readLabel(QDomElement const &label)
+void XmlLoader::readLabel(const QDomElement &label)
 {
 	QPointF point = readXandY(label);
 	Text* item = nullptr;
@@ -587,7 +587,7 @@ void XmlLoader::readLabel(QDomElement const &label)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readLinePort(QDomElement const &linePort)
+void XmlLoader::readLinePort(const QDomElement &linePort)
 {
 	QDomNodeList linePortAttributes = linePort.childNodes();
 	QDomElement start;
@@ -613,7 +613,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 	mScene->setZValue(item);
 }
 
-void XmlLoader::readPointPort(QDomElement const &pointPort)
+void XmlLoader::readPointPort(const QDomElement &pointPort)
 {
 	QPointF point = readXandY(pointPort);
 	PointPort* item = new PointPort(point.x(), point.y(), nullptr);
@@ -625,7 +625,7 @@ void XmlLoader::readPointPort(QDomElement const &pointPort)
 	mScene->setZValue(item);
 }
 
-Item::VisibilityCondition XmlLoader::readVisibility(QDomElement const &item)
+Item::VisibilityCondition XmlLoader::readVisibility(const QDomElement &item)
 {
 	QDomElement visibility = item.elementsByTagName("showIf").item(0).toElement();
 	if (visibility.isNull()) {

@@ -12,7 +12,7 @@ public:
 	explicit VisibilityValueWidget(QWidget *parent = 0);
 	~VisibilityValueWidget();
 
-	void setPropertyInfo(VisibilityConditionsDialog::PropertyInfo const &info);
+	void setPropertyInfo(const VisibilityConditionsDialog::PropertyInfo &info);
 	void setValue(const QString &value);
 	QString value() const;
 signals:

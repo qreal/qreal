@@ -27,7 +27,7 @@ QString TemplateParametrizedEntity::readTemplate(const QString &pathFromRoot) co
 
 	try {
 		result = utils::InFile::readAll(fullPath);
-	} catch (qReal::Exception const &exception) {
+	} catch (const qReal::Exception &exception) {
 		// Without this try-catch program would be failing every time when
 		// someone forgets or missprints tamplate name or unknown block with
 		// common generation rule will ty to read template
@@ -48,7 +48,7 @@ QString TemplateParametrizedEntity::readTemplateIfExists(const QString &pathFrom
 
 	try {
 		result = utils::InFile::readAll(fullPath);
-	} catch (qReal::Exception const &) {
+	} catch (const qReal::Exception &) {
 		// Without this try-catch program would be failing every time when
 		// someone forgets or missprints tamplate name or unknown block with
 		// common generation rule will ty to read template

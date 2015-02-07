@@ -230,7 +230,7 @@ void GraphicalModel::setNewName(const Id &id, const QString newValue)
 	emit nameChanged(id);
 }
 
-void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, const QPointF &position)
+void GraphicalModel::changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position)
 {
 	if (!parent.isValid() || element.parent() == parent) {
 		return;
@@ -279,7 +279,7 @@ void GraphicalModel::stackBefore(const QModelIndex &element, const QModelIndex &
 	}
 }
 
-qrRepo::GraphicalRepoApi const &GraphicalModel::api() const
+const qrRepo::GraphicalRepoApi &GraphicalModel::api() const
 {
 	return mApi;
 }
@@ -294,7 +294,7 @@ GraphicalModelAssistApi &GraphicalModel::graphicalModelAssistApi() const
 	return *mGraphicalAssistApi;
 }
 
-bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
+bool GraphicalModel::removeRows(int row, int count, const QModelIndex &parent)
 {
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
 	if (parentItem->children().size() < row + count) {

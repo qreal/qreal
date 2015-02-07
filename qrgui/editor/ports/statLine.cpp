@@ -11,7 +11,7 @@ StatLine::operator QLineF () const
 	return mLine;
 }
 
-void StatLine::operator= (QLineF const &l)
+void StatLine::operator= (const QLineF &l)
 {
 	mLine = l;
 	mPropX1 = false;
@@ -24,16 +24,16 @@ void StatLine::operator= (QLineF const &l)
 
 void StatLine::paint(QPainter *painter, const QRectF &contents) const
 {
-	qreal const x1 = mLine.x1() * (mPropX1 ? mInitWidth : contents.width());
-	qreal const y1 = mLine.y1() * (mPropY1 ? mInitHeight : contents.height());
+	const qreal x1 = mLine.x1() * (mPropX1 ? mInitWidth : contents.width());
+	const qreal y1 = mLine.y1() * (mPropY1 ? mInitHeight : contents.height());
 
-	qreal const x2 = mLine.x2() * (mPropX2 ? mInitWidth : contents.width());
-	qreal const y2 = mLine.y2() * (mPropY2 ? mInitHeight : contents.height());
+	const qreal x2 = mLine.x2() * (mPropX2 ? mInitWidth : contents.width());
+	const qreal y2 = mLine.y2() * (mPropY2 ? mInitHeight : contents.height());
 
 	QLineF lineToDraw(x1, y1, x2, y2);
 
-	QColor const portColor("#465945");
-	QColor const highlightColor("#c3dcc4");
+	const QColor portColor("#465945");
+	const QColor highlightColor("#c3dcc4");
 
 	painter->save();
 	QPen pen = painter->pen();
@@ -50,11 +50,11 @@ void StatLine::paint(QPainter *painter, const QRectF &contents) const
 
 QLineF StatLine::transformForContents(const QRectF &contents) const
 {
-	qreal const x1 = mLine.x1() * (mPropX1 ? mInitWidth : contents.width());
-	qreal const y1 = mLine.y1() * (mPropY1 ? mInitHeight : contents.height());
+	const qreal x1 = mLine.x1() * (mPropX1 ? mInitWidth : contents.width());
+	const qreal y1 = mLine.y1() * (mPropY1 ? mInitHeight : contents.height());
 
-	qreal const x2 = mLine.x2() * (mPropX2 ? mInitWidth : contents.width());
-	qreal const y2 = mLine.y2() * (mPropY2 ? mInitHeight : contents.height());
+	const qreal x2 = mLine.x2() * (mPropX2 ? mInitWidth : contents.width());
+	const qreal y2 = mLine.y2() * (mPropY2 ? mInitHeight : contents.height());
 
 	return QLineF(x1, y1, x2, y2);
 }

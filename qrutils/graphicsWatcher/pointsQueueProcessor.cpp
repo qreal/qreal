@@ -15,10 +15,10 @@ PointsQueueProcessor::~PointsQueueProcessor()
 	mPointsQueue.clear();
 }
 
-void PointsQueueProcessor::addNewValue(qreal const newValue)
+void PointsQueueProcessor::addNewValue(const qreal newValue)
 {
-	qreal const oldMax = mMaxCurrent;
-	qreal const oldMin = mMinCurrent;
+	const qreal oldMax = mMaxCurrent;
+	const qreal oldMin = mMinCurrent;
 	if (newValue > mMaxCurrent) {
 		mMaxCurrent = newValue;
 	}
@@ -36,7 +36,7 @@ void PointsQueueProcessor::addNewValue(qreal const newValue)
 	mPointsQueue.append(QPointF(0, absoluteValueToPoint(newValue)));
 }
 
-void PointsQueueProcessor::recalcPointsQueue(qreal const oldMin, qreal const oldMax, qreal const oldViewHeight)
+void PointsQueueProcessor::recalcPointsQueue(const qreal oldMin, const qreal oldMax, const qreal oldViewHeight)
 {
 	qreal currentValue = 0;
 	for (int i = 0; i < mPointsQueue.size(); i++) {
@@ -51,13 +51,13 @@ void PointsQueueProcessor::filterLastValues()
 		return;
 	}
 
-	qreal const filterPixelDiff = 2;
+	const qreal filterPixelDiff = 2;
 	if (qAbs(mPointsQueue.at(mPointsQueue.size() - 2).y() - mPointsQueue.last().y()) < filterPixelDiff) {
 		mPointsQueue.removeLast();
 	}
 }
 
-void PointsQueueProcessor::makeShiftLeft(qreal const step)
+void PointsQueueProcessor::makeShiftLeft(const qreal step)
 {
 	mPointsQueue.append(latestPosition());
 	for (int i = 0; i < mPointsQueue.size(); i++) {
@@ -68,7 +68,7 @@ void PointsQueueProcessor::makeShiftLeft(qreal const step)
 	}
 }
 
-qreal PointsQueueProcessor::absoluteValueToPoint(qreal const value) const
+qreal PointsQueueProcessor::absoluteValueToPoint(const qreal value) const
 {
 	const int verticalBounds = 10;
 	const int invertCoordSys = -1;
@@ -80,8 +80,8 @@ qreal PointsQueueProcessor::pointToAbsoluteValue(const qreal yValue) const
 	return pointToAbsoluteValue(yValue, mMinCurrent, mMaxCurrent, mGraphHeight);
 }
 
-qreal PointsQueueProcessor::pointToAbsoluteValue(qreal const yValue, qreal const minValue
-		, qreal const maxValue, qreal const graphHeight) const
+qreal PointsQueueProcessor::pointToAbsoluteValue(const qreal yValue, const qreal minValue
+		, const qreal maxValue, const qreal graphHeight) const
 {
 	return (((maxValue - minValue) * (-yValue - 10)) / graphHeight) + minValue;
 }
@@ -103,15 +103,15 @@ qreal PointsQueueProcessor::latestValue() const
 	return pointToAbsoluteValue(mNextToDraw.y(), mMinCurrent, mMaxCurrent, mGraphHeight);
 }
 
-QList<QPointF> const &PointsQueueProcessor::pointsBase() const
+const QList<QPointF> &PointsQueueProcessor::pointsBase() const
 {
 	return mPointsQueue;
 }
 
 void PointsQueueProcessor::checkPeaks()
 {
-	qreal const oldMin = mMinCurrent;
-	qreal const oldMax = mMaxCurrent;
+	const qreal oldMin = mMinCurrent;
+	const qreal oldMax = mMaxCurrent;
 
 	mMaxCurrent = std::numeric_limits<qreal>::min();
 	mMinCurrent = std::numeric_limits<qreal>::max();
@@ -132,8 +132,8 @@ QPointF PointsQueueProcessor::pointOfVerticalIntersection(const QPointF &positio
 {
 	if (mPointsQueue.isEmpty())
 		return QPointF(0, 0);
-	qreal const accuracyCoefficient = 2; // accuracy = diameter * accCoefficient
-	qreal const diameter = (mPointsQueue.last().x() - mPointsQueue.first().x()) / mPointsQueue.size();
+	const qreal accuracyCoefficient = 2; // accuracy = diameter * accCoefficient
+	const qreal diameter = (mPointsQueue.last().x() - mPointsQueue.first().x()) / mPointsQueue.size();
 
 	QPointF result;
 	int leftBound = 0;
@@ -157,9 +157,9 @@ QPointF PointsQueueProcessor::pointOfVerticalIntersection(const QPointF &positio
 	return result;
 }
 
-void PointsQueueProcessor::setViewParams(qreal const viewPortHeight, qreal const leftLimit)
+void PointsQueueProcessor::setViewParams(const qreal viewPortHeight, const qreal leftLimit)
 {
-	qreal const oldViewHeight = mGraphHeight;
+	const qreal oldViewHeight = mGraphHeight;
 	mGraphHeight = viewPortHeight;
 	recalcPointsQueue(mMinCurrent, mMaxCurrent, oldViewHeight);
 	mLeftLimit = leftLimit;

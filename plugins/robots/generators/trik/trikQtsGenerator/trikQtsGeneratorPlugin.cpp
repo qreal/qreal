@@ -107,7 +107,7 @@ QString TrikQtsGeneratorPlugin::generatorName() const
 
 bool TrikQtsGeneratorPlugin::uploadProgram()
 {
-	QFileInfo const fileInfo = generateCodeForProcessing();
+	const QFileInfo fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
 		const bool result = mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
@@ -125,7 +125,7 @@ bool TrikQtsGeneratorPlugin::uploadProgram()
 void TrikQtsGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
-		QFileInfo const fileInfo = generateCodeForProcessing();
+		const QFileInfo fileInfo = generateCodeForProcessing();
 		mCommunicator->runProgram(fileInfo.fileName());
 	} else {
 		qDebug() << "Program upload failed, aborting";

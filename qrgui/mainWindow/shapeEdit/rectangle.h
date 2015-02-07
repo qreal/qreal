@@ -10,7 +10,7 @@ class QRealRectangle : public Item
 {
 public:
 	QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
-	QRealRectangle(QRealRectangle const &other);
+	QRealRectangle(const QRealRectangle &other);
 	virtual Item* clone();
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);

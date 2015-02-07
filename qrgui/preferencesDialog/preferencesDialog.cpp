@@ -109,7 +109,7 @@ void PreferencesDialog::cancel()
 	close();
 }
 
-void PreferencesDialog::chooseTab(QModelIndex const &index)
+void PreferencesDialog::chooseTab(const QModelIndex &index)
 {
 	mUi->listWidget->setCurrentRow(index.row());
 	mUi->pageContentWidget->setCurrentIndex(index.row() + 1);

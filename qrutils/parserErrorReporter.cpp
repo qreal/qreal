@@ -18,7 +18,7 @@ ParserErrorReporter::ParserErrorReporter(const qrtext::LanguageToolboxInterface 
 
 void ParserErrorReporter::reportErrors(const qReal::Id &id, const QString &property) const
 {
-	for (qrtext::core::Error const &error : mParser.errors()) {
+	for (const qrtext::core::Error &error : mParser.errors()) {
 		const QString errorMessage = QString("'%1', %2:%3 %4")
 				.arg(mEditorManagerInterface.propertyDisplayedName(id, property))
 				.arg(error.connection().line() + 1)

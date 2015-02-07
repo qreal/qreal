@@ -49,8 +49,8 @@ int Math::truncateToInterval(int border1, int border2, int value)
 
 qreal Math::gaussianNoise(qreal variance)
 {
-	qreal const mu = 0.5;
-	qreal const var = 0.083; // 1/12
+	const qreal mu = 0.5;
+	const qreal var = 0.083; // 1/12
 
 	const int approximationLevel = qReal::SettingsManager::value("approximationLevel", 12).toInt();
 

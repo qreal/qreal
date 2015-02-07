@@ -102,7 +102,7 @@ void CommonRobotModel::onDisconnected()
 	mState = disconnectedState;
 }
 
-ConfigurationInterface const &CommonRobotModel::configuration() const
+const ConfigurationInterface &CommonRobotModel::configuration() const
 {
 	return mConfiguration;
 }

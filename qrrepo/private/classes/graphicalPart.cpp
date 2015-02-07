@@ -10,7 +10,7 @@ GraphicalPart::GraphicalPart()
 {
 }
 
-GraphicalPart::GraphicalPart(QDomElement const &element)
+GraphicalPart::GraphicalPart(const QDomElement &element)
 {
 	ValuesSerializer::deserializeNamedVariantsMap(mProperties, element);
 }

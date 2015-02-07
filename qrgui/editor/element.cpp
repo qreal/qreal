@@ -9,7 +9,7 @@
 
 using namespace qReal;
 
-qreal const disabledEffectStrength = 0.9;
+const qreal disabledEffectStrength = 0.9;
 
 Element::Element(ElementImpl *elementImpl
 		, const Id &id
@@ -145,7 +145,7 @@ void Element::updateEnabledState()
 
 void Element::setHideNonHardLabels(bool hide)
 {
-	for (Label const * const label : mLabels) {
+	for (const Label * const label : mLabels) {
 		if (label->isSelected()) {
 			return;
 		}

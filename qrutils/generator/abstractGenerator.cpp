@@ -9,7 +9,7 @@ using namespace utils;
 
 AbstractGenerator::AbstractGenerator(const QString &templateDirPath
 		, const QString &outputDirPath
-		, qReal::LogicalModelAssistInterface const &logicalModel
+		, const qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		)
 		: mApi(logicalModel.logicalRepoApi())
@@ -26,7 +26,7 @@ AbstractGenerator::~AbstractGenerator()
 
 QDir AbstractGenerator::getDir(const QString &path)
 {
-	QDir const result(path);
+	const QDir result(path);
 	if (!result.exists()) {
 		qDebug() << "cannot find directory " << path;
 		return QDir();
@@ -37,7 +37,7 @@ QDir AbstractGenerator::getDir(const QString &path)
 
 bool AbstractGenerator::loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate)
 {
-	QDir const dir = getDir(mTemplateDirPath);
+	const QDir dir = getDir(mTemplateDirPath);
 	if (dir == QDir()) {
 		return false;
 	}
@@ -58,7 +58,7 @@ bool AbstractGenerator::loadTemplateFromFile(const QString &templateFileName, QS
 
 bool AbstractGenerator::loadUtilsFromFile()
 {
-	QDir const dir = getDir(mTemplateDirPath);
+	const QDir dir = getDir(mTemplateDirPath);
 	if (dir == QDir()) {
 		return false;
 	}
@@ -92,7 +92,7 @@ bool AbstractGenerator::loadUtilsFromFile()
 
 bool AbstractGenerator::loadUtilsFromDir()
 {
-	QDir const dir = getDir(mTemplateDirPath + "/utils");
+	const QDir dir = getDir(mTemplateDirPath + "/utils");
 	if (dir == QDir()) {
 		return false;
 	}

@@ -20,7 +20,7 @@ using namespace interpreterBase::robotModel;
 const int selectionDrift = 7;
 
 SensorItem::SensorItem(model::SensorsConfiguration &configuration
-		, const PortInfo &port, const QString &pathToImage, QRect const &imageRect)
+		, const PortInfo &port, const QString &pathToImage, const QRect &imageRect)
 	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
@@ -70,7 +70,7 @@ void SensorItem::drawExtractionForItem(QPainter *painter)
 	}
 
 	painter->save();
-	QPen const pen = QPen(Qt::black);
+	const QPen pen = QPen(Qt::black);
 	painter->setPen(pen);
 	painter->setOpacity(0.7);
 	painter->setRenderHints(painter->renderHints() | QPainter::Antialiasing);
@@ -207,7 +207,7 @@ SensorItem::PortItem::PortItem(const PortInfo &port)
 {
 }
 
-void SensorItem::PortItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget)
+void SensorItem::PortItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)

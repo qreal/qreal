@@ -80,7 +80,7 @@ public:
 	virtual void setXandY(QDomElement& dom, const QRectF &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, const QString &domName);
 	virtual QRectF sceneBoundingRectCoord(const QPoint &topLeftPicture);
-	void readPenBrush(QDomElement const &docItem);
+	void readPenBrush(const QDomElement &docItem);
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 

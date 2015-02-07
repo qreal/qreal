@@ -21,7 +21,7 @@ public:
 
 	/// Deserializing constructor.
 	/// @param element - root of XML DOM subtree with serialized object.
-	explicit GraphicalObject(QDomElement const &element);
+	explicit GraphicalObject(const QDomElement &element);
 
 	virtual ~GraphicalObject();
 

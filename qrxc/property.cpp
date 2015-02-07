@@ -2,7 +2,7 @@
 
 #include <QtCore/QDebug>
 
-bool Property::init(QDomElement const &element)
+bool Property::init(const QDomElement &element)
 {
 	mIsEnum = false;
 	mIsReference = false;
@@ -34,7 +34,7 @@ bool Property::init(QDomElement const &element)
 	return true;
 }
 
-bool Property::initReferenceType(QString typeName, QDomElement const &element)
+bool Property::initReferenceType(QString typeName, const QDomElement &element)
 {
 	mType = element.firstChildElement(typeName).attribute("type");
 	if (mType.isEmpty()) {
@@ -87,7 +87,7 @@ Property * Property::clone()
 	return result;
 }
 
-bool Property::operator == (Property const &other) const
+bool Property::operator == (const Property &other) const
 {
 	return other.mName == mName
 		&& other.mDisplayedName == mDisplayedName
@@ -99,7 +99,7 @@ bool Property::operator == (Property const &other) const
 		;
 }
 
-bool Property::operator != (Property const &other) const
+bool Property::operator != (const Property &other) const
 {
 	return !(other == *this);
 }

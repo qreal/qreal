@@ -4,7 +4,7 @@
 
 using namespace utils;
 
-bool LinePort::init(QDomElement const &element, int width, int height)
+bool LinePort::init(const QDomElement &element, int width, int height)
 {
 	QDomElement portStartElement = element.firstChildElement("start");
 	QDomElement portEndElement = element.firstChildElement("end");

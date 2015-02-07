@@ -31,8 +31,8 @@ public:
 	virtual qReal::IdList blocksToDisable() const = 0;
 
 	/// Initializes this factory with external compoments. Those components are used for correct blocks initialization.
-	virtual void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
+	virtual void configure(const qReal::GraphicalModelAssistInterface &graphicalModelApi
+			, const qReal::LogicalModelAssistInterface &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox

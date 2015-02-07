@@ -7,7 +7,7 @@ class TextPicture : public Text
 public:
 	TextPicture();
 	TextPicture(int x, int y, const QString &text = "text");
-	TextPicture(TextPicture const &other);
+	TextPicture(const TextPicture &other);
 	virtual Item* clone();
 	void setTextName(const QString &name);
 	void setFontFamily(const QFont& font);
@@ -25,7 +25,7 @@ public:
 
 	QDomElement setFontToDoc(QDomDocument &document, const QString &domName);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
-	void readFont(QDomElement const &docItem);
+	void readFont(const QDomElement &docItem);
 
 private:
 	QFont mFont;

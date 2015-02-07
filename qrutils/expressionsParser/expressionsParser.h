@@ -45,20 +45,20 @@ protected:
 	};
 
 protected:
-	virtual bool isLetter(QChar const &c) const;
+	virtual bool isLetter(const QChar &c) const;
 
-	bool isDigit(QChar const &c) const;
-	bool isSign(QChar const &c) const;
-	bool isExp(QChar const &c) const;
-	bool isPoint(QChar const &c) const;
-	bool isRoundBracket(QChar const &c) const;
-	bool isDisjunction(QChar const &c) const;
-	bool isConjunction(QChar const &c) const;
-	bool isComparison(QChar const &c) const;
-	bool isArithmeticalMinusOrPlus(QChar const &c) const;
-	bool isMultiplicationOrDivision(QChar const &c) const;
-	bool isDelimiter(QChar const &c) const;
-	bool isAssignment(QChar const &c) const;
+	bool isDigit(const QChar &c) const;
+	bool isSign(const QChar &c) const;
+	bool isExp(const QChar &c) const;
+	bool isPoint(const QChar &c) const;
+	bool isRoundBracket(const QChar &c) const;
+	bool isDisjunction(const QChar &c) const;
+	bool isConjunction(const QChar &c) const;
+	bool isComparison(const QChar &c) const;
+	bool isArithmeticalMinusOrPlus(const QChar &c) const;
+	bool isMultiplicationOrDivision(const QChar &c) const;
+	bool isDelimiter(const QChar &c) const;
+	bool isAssignment(const QChar &c) const;
 
 	bool isHtmlBrTag(const QString &stream, int &pos) const;
 
@@ -76,7 +76,7 @@ protected:
 	bool parseConjunction(const QString &stream, int &pos);
 	bool parseDisjunction(const QString &stream, int &pos);
 
-	void error(ParseErrorType const &type, const QString &pos = "", const QString &expected = "", const QString &got = "");
+	void error(const ParseErrorType &type, const QString &pos = "", const QString &expected = "", const QString &got = "");
 	bool isEndOfStream(const QString &stream, int &pos);
 	bool checkForLetter(const QString &stream, int &pos);
 	bool checkForDigit(const QString &stream, int &pos);

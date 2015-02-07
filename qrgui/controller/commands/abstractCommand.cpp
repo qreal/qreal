@@ -127,7 +127,7 @@ bool AbstractCommand::hierarchyContains(AbstractCommand * const command) const
 }
 
 bool AbstractCommand::contains(QList<AbstractCommand *> const &list
-		, AbstractCommand const *command) const
+		, const AbstractCommand *command) const
 {
 	foreach (AbstractCommand * const otherCommand, list) {
 		if (*otherCommand == *command && otherCommand != command) {
@@ -137,7 +137,7 @@ bool AbstractCommand::contains(QList<AbstractCommand *> const &list
 	return false;
 }
 
-bool AbstractCommand::equals(AbstractCommand const &other) const
+bool AbstractCommand::equals(const AbstractCommand &other) const
 {
 	Q_UNUSED(other)
 	return &other == this;

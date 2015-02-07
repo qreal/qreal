@@ -114,7 +114,7 @@ void EdgeElement::initLineHandler()
 	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
 }
 
-void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
+void EdgeElement::changeShapeType(const linkShape::LinkShape shapeType)
 {
 	mShapeType = shapeType;
 	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
@@ -133,7 +133,7 @@ QPolygonF EdgeElement::line() const
 	return mLine;
 }
 
-void EdgeElement::setLine(QPolygonF const &line)
+void EdgeElement::setLine(const QPolygonF &line)
 {
 	prepareGeometryChange();
 	mLine = line;
@@ -152,21 +152,21 @@ qreal EdgeElement::toPort() const
 	return mPortTo;
 }
 
-void EdgeElement::setFromPort(qreal const fromPort)
+void EdgeElement::setFromPort(const qreal fromPort)
 {
 	mPortFrom = fromPort;
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi.setFromPort(id(), mPortFrom);
 }
 
-void EdgeElement::setToPort(qreal const toPort)
+void EdgeElement::setToPort(const qreal toPort)
 {
 	mPortTo = toPort;
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi.setToPort(id(), mPortTo);
 }
 
-void EdgeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget*)
+void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	if (SettingsManager::value("PaintOldEdgeMode").toBool() && mHandler->isReshapeStarted()) {
 		paintEdge(painter, option, true);
@@ -175,12 +175,12 @@ void EdgeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 	paintEdge(painter, option, false);
 }
 
-void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *option, bool drawSavedLine) const
+void EdgeElement::paintEdge(QPainter *painter, const QStyleOptionGraphicsItem *option, bool drawSavedLine) const
 {
 	painter->save();
 
 	if (drawSavedLine) {
-		QColor const color = QColor(SettingsManager::value("oldLineColor").toString());
+		const QColor color = QColor(SettingsManager::value("oldLineColor").toString());
 		setEdgePainter(painter, edgePen(painter, color, Qt::DashDotLine, mPenWidth), 0.5);
 	} else {
 		setEdgePainter(painter, edgePen(painter, mColor, mPenStyle, mPenWidth), painter->opacity());
@@ -205,7 +205,7 @@ void EdgeElement::drawArrows(QPainter *painter, bool savedLine) const
 	painter->save();
 
 	if (savedLine) {
-		QColor const color = QColor(SettingsManager::value("oldLineColor").toString());
+		const QColor color = QColor(SettingsManager::value("oldLineColor").toString());
 		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
 	} else {
 		setEdgePainter(painter, edgePen(painter, mColor, style, 3), painter->opacity());
@@ -403,8 +403,8 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 
 	QPolygonF newLine;
 
-	NodeSide const startSide = defineNodePortSide(true);
-	NodeSide const endSide = defineNodePortSide(false);
+	const NodeSide startSide = defineNodePortSide(true);
+	const NodeSide endSide = defineNodePortSide(false);
 
 	QPointF secondPoint = boundingRectIndent(mLine.first(), startSide);
 	QPointF penultPoint = boundingRectIndent(mLine.last(), endSide);
@@ -622,7 +622,7 @@ NodeElement *EdgeElement::getNodeAt(const QPointF &position, bool isStart)
 		if (currentNode) {
 			const QPointF nearestPortPoint = currentNode->closestPortPoint(positionInSceneCoordinates
 					, isStart ? fromPortTypes() : toPortTypes());
-			qreal const currentDistance = mathUtils::Geometry::distance(positionInSceneCoordinates, nearestPortPoint);
+			const qreal currentDistance = mathUtils::Geometry::distance(positionInSceneCoordinates, nearestPortPoint);
 			if (currentDistance < minimalDistance) {
 				minimalDistance = currentDistance;
 				closestNode = currentNode;
@@ -633,7 +633,7 @@ NodeElement *EdgeElement::getNodeAt(const QPointF &position, bool isStart)
 	return closestNode;
 }
 
-NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, NodeElement * const element) const
+NodeElement *EdgeElement::innermostChild(const QList<QGraphicsItem *> &items, NodeElement * const element) const
 {
 	foreach (NodeElement *child, element->childNodes()) {
 		if (items.contains(child)) {
@@ -675,7 +675,7 @@ bool EdgeElement::reverseActionIsPossible() const
 	return !(mSrc && !canConnect(mSrc, false)) && !(mDst && !canConnect(mDst, true));
 }
 
-bool EdgeElement::canConnect(NodeElement const * const node, bool from) const
+bool EdgeElement::canConnect(const NodeElement * const node, bool from) const
 {
 	QSet<QString> nodePortTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(node->id().type()).toSet();
 	QSet<QString> edgePortTypes = from ? mElementImpl->fromPortTypes().toSet() : mElementImpl->toPortTypes().toSet();
@@ -768,7 +768,7 @@ QList<PossibleEdge> EdgeElement::getPossibleEdges()
 
 EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart) const
 {
-	NodeElement const * const node = isStart ? mSrc : mDst;
+	const NodeElement * const node = isStart ? mSrc : mDst;
 	if (!node) {
 		return isStart ? right : top;
 	}
@@ -809,17 +809,17 @@ NodeElement *EdgeElement::dst() const
 	return mDst;
 }
 
-bool EdgeElement::isSrc(NodeElement const *node) const
+bool EdgeElement::isSrc(const NodeElement *node) const
 {
 	return (mSrc == node);
 }
 
-bool EdgeElement::isDst(NodeElement const *node) const
+bool EdgeElement::isDst(const NodeElement *node) const
 {
 	return (mDst == node);
 }
 
-QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
+QPair<qreal, qreal> EdgeElement::portIdOn(const NodeElement *node) const
 {
 	if (mIsLoop && node == mSrc) {
 		return qMakePair(mPortFrom, mPortTo);
@@ -833,12 +833,12 @@ QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
 	return qMakePair(-1.0, -1.0);
 }
 
-EdgeArrangeCriteria EdgeElement::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
+EdgeArrangeCriteria EdgeElement::arrangeCriteria(const NodeElement *node, const QLineF &portLine) const
 {
 	return mHandler->arrangeCriteria(node, portLine);
 }
 
-NodeElement * EdgeElement::otherSide(NodeElement const *node) const
+NodeElement * EdgeElement::otherSide(const NodeElement *node) const
 {
 	if (node == mSrc) {
 		return mDst;
@@ -907,7 +907,7 @@ void EdgeElement::updateData()
 	highlight((mSrc && mDst) ? mPenColor : Qt::red);
 }
 
-void EdgeElement::removeLink(NodeElement const *from)
+void EdgeElement::removeLink(const NodeElement *from)
 {
 	if (mSrc == from) {
 		mSrc = nullptr;
@@ -950,7 +950,7 @@ void EdgeElement::placeEndTo(const QPointF &place)
 	updateLongestPart();
 }
 
-void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
+void EdgeElement::moveConnection(NodeElement *node, const qreal portId) {
 	//expected that the id will change only fractional part
 	if ((!mIsLoop || ((int) mPortFrom == (int) portId)) && (node == mSrc)) {
 		setFromPort(portId);
@@ -988,7 +988,7 @@ void EdgeElement::setColorRect(bool bl) // method is empty
 	Q_UNUSED(bl);
 }
 
-void EdgeElement::highlight(QColor const color)
+void EdgeElement::highlight(const QColor color)
 {
 	mColor = color;
 	update();

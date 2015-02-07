@@ -13,7 +13,7 @@ namespace semantics {
 class MergedSwitchBranchesRule : public SimpleVisitedRuleBase
 {
 public:
-	MergedSwitchBranchesRule(SemanticTree *tree, const qReal::Id &id, LinkInfo const &next);
+	MergedSwitchBranchesRule(SemanticTree *tree, const qReal::Id &id, const LinkInfo &next);
 
 	bool apply() override;
 };

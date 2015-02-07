@@ -160,7 +160,7 @@ private:
 	QPair<qrRepo::RepoApi*, Id> repoAndDiagram(const QString &editor, const QString &diagram) const;
 	QPair<Id, Id> editorAndDiagram(const qrRepo::RepoApi * const repo, const Id &element) const;
 	QStringList propertiesFromParents(const Id &id, const QString &propertyName
-			, CheckPropertyForParent const &checker) const;
+			, const CheckPropertyForParent &checker) const;
 	QString valueOfProperty(const Id &id, const QString &propertyName, const QString &value) const;
 	void deletePropertyInElement(qrRepo::RepoApi *repo, const Id &diagram, const QString &propDisplayedName) const;
 };

@@ -9,7 +9,7 @@ Path::Path(const QPainterPath &path) : Item(nullptr)
 	mDomElementType = Item::pictureType;
 }
 
-Path::Path(Path const &other)
+Path::Path(const Path &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;

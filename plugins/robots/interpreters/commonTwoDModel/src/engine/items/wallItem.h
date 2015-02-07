@@ -23,14 +23,14 @@ public:
 
 	/// Draws selection rect around sensorBoundingBox
 	void drawExtractionForItem(QPainter *painter) override;
-	void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget) override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
-	void deserializePenBrush(QDomElement const &element);
+	void deserializePenBrush(const QDomElement &element);
 
 	void onOverlappedWithRobot(bool overlapped = true);
 

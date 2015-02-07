@@ -11,7 +11,7 @@ QString TrikGeneratorPluginBase::kitId() const
 	return "trikKit";
 }
 
-void TrikGeneratorPluginBase::regenerateExtraFiles(QFileInfo const &newFileInfo)
+void TrikGeneratorPluginBase::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	Q_UNUSED(newFileInfo);
 }

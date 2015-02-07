@@ -36,14 +36,14 @@ public:
 			, const QPointF &position);
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
-	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, const QPointF &position);
-	qrRepo::GraphicalRepoApi const &api() const;
+	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
+	const qrRepo::GraphicalRepoApi &api() const;
 	qrRepo::GraphicalRepoApi &mutableApi() const;
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	QList<QPersistentModelIndex> indexesWithLogicalId(const Id &logicalId) const;
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
-	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
+	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling);
 
 signals:
 	void nameChanged(const Id &id);

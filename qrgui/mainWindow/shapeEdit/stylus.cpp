@@ -11,7 +11,7 @@ Stylus::Stylus(qreal x1, qreal y1, Item* parent) : Item(parent), mStylusImpl()
 	mDomElementType = pictureType;
 }
 
-Stylus::Stylus(Stylus const &other)
+Stylus::Stylus(const Stylus &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;

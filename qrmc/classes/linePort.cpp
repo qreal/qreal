@@ -6,7 +6,7 @@
 
 using namespace qrmc;
 
-bool LinePort::init(QDomElement const &element, int width, int height)
+bool LinePort::init(const QDomElement &element, int width, int height)
 {
 	mWidth = width;
 	mHeight = height;

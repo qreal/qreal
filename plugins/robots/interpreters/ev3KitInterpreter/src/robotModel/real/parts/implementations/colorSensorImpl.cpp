@@ -1,6 +1,6 @@
 #include "colorSensorImpl.h"
 
-unsigned const colorSensorResponseSize = 9;
+const unsigned colorSensorResponseSize = 9;
 
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;

@@ -17,7 +17,7 @@ public:
 
 	/// Returns the object that can be used for disconnection;
 	/// if no such object was provided explicitly for this listener nullptr is returned.
-	virtual QObject const *object() const = 0;
+	virtual const QObject *object() const = 0;
 };
 
 /// Useful class that calls the given slot with no parameters
@@ -37,7 +37,7 @@ public:
 		(mSender->*mSlot)();
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return mSender;
 	}
@@ -62,7 +62,7 @@ public:
 		mLambda();
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return nullptr;
 	}
@@ -87,7 +87,7 @@ public:
 		(mSender->*mSlot)(value.value<Type>());
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return mSender;
 	}
@@ -112,7 +112,7 @@ public:
 		mLambda(value.value<Type>());
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return nullptr;
 	}

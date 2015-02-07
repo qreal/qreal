@@ -15,7 +15,7 @@ ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * con
 
 ChangePropertyCommand::ChangePropertyCommand(
 		PropertyEditorModel * const model
-		, QModelIndex const &index
+		, const QModelIndex &index
 		, const QVariant &oldValue
 		, const QVariant &newValue
 		, int role)

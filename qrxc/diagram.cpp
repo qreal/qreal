@@ -25,7 +25,7 @@ Diagram::~Diagram()
 	qDeleteAll(mTypes);
 }
 
-bool Diagram::init(QDomElement const &diagramElement)
+bool Diagram::init(const QDomElement &diagramElement)
 {
 	for (QDomElement element = diagramElement.firstChildElement();
 		!element.isNull();
@@ -49,7 +49,7 @@ bool Diagram::init(QDomElement const &diagramElement)
 	return true;
 }
 
-bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
+bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 {
 	for (QDomElement element = graphicTypesElement.firstChildElement();
 		!element.isNull();
@@ -88,7 +88,7 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 	return true;
 }
 
-bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
+bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 {
 	for (QDomElement element = nonGraphicTypesElement.firstChildElement();
 		!element.isNull();
@@ -142,7 +142,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 	return true;
 }
 
-void Diagram::initPalette(QDomElement const &paletteElement)
+void Diagram::initPalette(const QDomElement &paletteElement)
 {
 	mShallPaletteBeSorted = paletteElement.attribute("sorted", "true") == "true";
 

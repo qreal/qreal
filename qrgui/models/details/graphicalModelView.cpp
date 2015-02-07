@@ -13,7 +13,7 @@ GraphicalModelView::GraphicalModelView(LogicalModel * const model)
 {
 }
 
-void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int end)
+void GraphicalModelView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	const QPersistentModelIndex parentIndex = parent.sibling(parent.row(), 0);
 	Id parentLogicalId = parentIndex.data(roles::logicalIdRole).value<Id>();
@@ -44,7 +44,7 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 	}
 }
 
-void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+void GraphicalModelView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
 		, QVector<int> const &roles)
 {
 	Q_UNUSED(roles)
@@ -64,7 +64,7 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 	}
 }
 
-void GraphicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)
+void GraphicalModelView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
 	Q_UNUSED(parent);
 	Q_UNUSED(start);
