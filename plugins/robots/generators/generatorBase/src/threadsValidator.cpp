@@ -53,6 +53,19 @@ void ThreadsValidator::visitConditional(const qReal::Id &id, const QList<LinkInf
 void ThreadsValidator::visitLoop(const qReal::Id &id, const QList<LinkInfo> &links)
 {
 	visitGeneral(id, links);
+
+	if (mSecondStage) {
+		for (const LinkInfo &link : links) {
+			if (guardOf(link.linkId) != iterationGuard || !link.connected) {
+				continue;
+			}
+
+			mVisitedBlocks.clear();
+			if (foundForks(link.target)) {
+				error(QObject::tr("Creation and joining of threads in a loop is forbidden"), id);
+			}
+		}
+	}
 }
 
 void ThreadsValidator::visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links)
@@ -106,10 +119,6 @@ void ThreadsValidator::visitGeneral(const qReal::Id &id, const QList<LinkInfo> &
 
 void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 {
-	if (mSecondStage) {
-		return;
-	}
-
 	for (const qReal::Id &link : mRepo.incomingLinks(id)) {
 		if (mBlockThreads[mRepo.otherEntityFromLink(link, id)] == "@@unknown@@") {
 			error(QObject::tr("Trying to join a thread with an unknown id. Possible causes: "
@@ -127,6 +136,12 @@ void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 	if (mBlockThreads[id].isEmpty()) {
 		error(QObject::tr("Guard property of a link outgoing from a join must contain an id "
 						  "of one of joined threads"), links[0].linkId);
+		return;
+	}
+
+	mVisitedBlocks.clear();
+	if (achiavable(id, id)) {
+		error(QObject::tr("Joining threads in a loop is forbidden"), id);
 		return;
 	}
 
@@ -259,6 +274,23 @@ bool ThreadsValidator::achiavable(const qReal::Id &id, const qReal::Id &source)
 	for (const qReal::Id &link : mRepo.outgoingLinks(source)) {
 		const qReal::Id nextBlock = mRepo.otherEntityFromLink(link, source);
 		if ((nextBlock == id) || (!mVisitedBlocks.contains(nextBlock) && achiavable(id, nextBlock))) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool ThreadsValidator::foundForks(const qReal::Id &id)
+{
+	if (id.element() == "Fork" || id.element() == "Join") {
+		return true;
+	}
+
+	mVisitedBlocks << id;
+	for (const qReal::Id &link : mRepo.outgoingLinks(id)) {
+		const qReal::Id nextBlock = mRepo.otherEntityFromLink(link, id);
+		if (!mVisitedBlocks.contains(nextBlock) && foundForks(nextBlock)) {
 			return true;
 		}
 	}
