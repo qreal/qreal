@@ -1,13 +1,13 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/block.h>
+#include <interpreterBase/blocksBase/robotsBlock.h>
 
 namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
 /// A base for all blocks that wait for sensor or button or something other.
-class ROBOTS_INTERPRETER_BASE_EXPORT WaitBlock : public Block
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitBlock : public RobotsBlock
 {
 	Q_OBJECT
 
@@ -37,7 +37,7 @@ protected:
 
 	/// Implementation must return the port of the the device used in the block.
 	/// Default implementation works with the port specified in the 'Port' property of the block.
-	virtual QString port() const;
+	virtual QString port();
 
 	/// Implementation must return the type of the waited device or DeviceInfo() if no such one.
 	virtual robotModel::DeviceInfo device() const = 0;

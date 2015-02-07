@@ -94,7 +94,7 @@ template<typename TargetType, typename SourceType>
 inline QList<QSharedPointer<TargetType>> as(QList<QSharedPointer<SourceType>> const &list)
 {
 	QList<QSharedPointer<TargetType>> result;
-	for (auto item : list) {
+	for (const auto &item : list) {
 		result << as<TargetType>(item);
 	}
 

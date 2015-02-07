@@ -1,6 +1,5 @@
 #include "trikBlocksFactory.h"
 
-#include <interpreterBase/blocksBase/common/emptyBlock.h>
 #include <interpreterBase/blocksBase/common/enginesStopBlock.h>
 #include <interpreterBase/blocksBase/common/clearEncoderBlock.h>
 
@@ -11,6 +10,7 @@
 #include <interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <interpreterBase/blocksBase/common/waitForButtonBlock.h>
 
+#include <qrutils/interpreter/blocks/emptyBlock.h>
 #include "details/smileBlock.h"
 #include "details/drawPixelBlock.h"
 #include "details/drawLineBlock.h"
@@ -29,11 +29,17 @@
 #include "details/sayBlock.h"
 #include "details/systemCommandBlock.h"
 
+#include "details/waitGamepadButtonBlock.h"
+#include "details/waitGamepadConnectBlock.h"
+#include "details/waitGamepadDisconnectBlock.h"
+#include "details/waitGamepadWheelBlock.h"
+#include "details/waitPadPressBlock.h"
+
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::blocksBase::common;
 
-interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
+qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
 {
 	if (elementMetatypeIs(element, "TrikPlayTone")) {
 		return new SpeakerBlock(mRobotModelManager->model());
@@ -61,15 +67,15 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikSystem")) {
 		return new SystemCommandBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikSendMessage")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitForMessage")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 
 	} else if (elementMetatypeIs(element, "TrikLed")) {
 		return new LedBlock(mRobotModelManager->model());
@@ -123,6 +129,17 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new SmileBlock(mRobotModelManager->model(), true);
 	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
 		return new SetBackgroundBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadButton")) {
+		return new WaitGamepadButtonBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitPadPress")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadWheel")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadDisconnect")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadConnect")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
 	}
 
 	return nullptr;
@@ -191,6 +208,14 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikSetBackground")
 			;
 
+	result
+			<< id("TrikWaitGamepadButton")
+			<< id("TrikWaitPadPress")
+			<< id("TrikWaitGamepadWheel")
+			<< id("TrikWaitGamepadDisconnect")
+			<< id("TrikWaitGamepadConnect")
+			;
+
 	return result;
 }
 
@@ -211,6 +236,11 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikWaitForMotion")
 				<< id("TrikSendMessage")
 				<< id("TrikWaitForMessage")
+				<< id("TrikWaitGamepadButton")
+				<< id("TrikWaitPadPress")
+				<< id("TrikWaitGamepadWheel")
+				<< id("TrikWaitGamepadDisconnect")
+				<< id("TrikWaitGamepadConnect")
 				;
 	}
 

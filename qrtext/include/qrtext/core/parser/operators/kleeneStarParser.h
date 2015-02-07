@@ -4,6 +4,7 @@
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryList.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 
 namespace qrtext {
 namespace core {
@@ -26,8 +27,8 @@ public:
 		auto temporaryList = QSharedPointer<TemporaryList>(new TemporaryList());
 		while (!tokenStream.isEnd() && mParser->first().contains(tokenStream.next().token())) {
 			QSharedPointer<ast::Node> result = mParser->parse(tokenStream, parserContext);
-			if (!result) {
-				break;
+			if (result->is<TemporaryErrorNode>()) {
+				return result;
 			}
 
 			if (!result->is<TemporaryDiscardableNode>()) {

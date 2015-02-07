@@ -16,7 +16,7 @@ void WaitForMotionBlock::responseSlot(int reading)
 	}
 }
 
-QString WaitForMotionBlock::port() const
+QString WaitForMotionBlock::port()
 {
 	return "F1";
 }

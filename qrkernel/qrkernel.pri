@@ -18,6 +18,7 @@ HEADERS += \
 	$$PWD/timeMeasurer.h \
 	$$PWD/version.h \
 	$$PWD/logging.h \
+	$$PWD/platformInfo.h \
 	$$PWD/private/listeners.h \
 
 SOURCES += \
@@ -28,6 +29,7 @@ SOURCES += \
 	$$PWD/timeMeasurer.cpp \
 	$$PWD/version.cpp \
 	$$PWD/logging.cpp \
+	$$PWD/platformInfo.cpp \
 
 RESOURCES += \
 	$$PWD/qrkernel.qrc \

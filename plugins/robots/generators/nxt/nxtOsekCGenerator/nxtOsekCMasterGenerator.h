@@ -10,6 +10,7 @@ class NxtOsekCMasterGenerator : public NxtMasterGeneratorBase
 public:
 	NxtOsekCMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
+			, const utils::ParserErrorReporter &parserErrorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, qReal::Id const &diagramId

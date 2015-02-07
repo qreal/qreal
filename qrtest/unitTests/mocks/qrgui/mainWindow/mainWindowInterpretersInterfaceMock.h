@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
 #include <gmock/gmock.h>
 

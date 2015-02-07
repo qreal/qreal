@@ -1,6 +1,6 @@
 #include "interpreterBase/blocksBase/common/waitForColorSensorBlockBase.h"
 
-#include "interpreterBase/robotModel/robotParts/colorSensor.h"
+#include "interpreterBase/robotModel/robotParts/colorSensorPassive.h"
 
 using namespace interpreterBase;
 using namespace blocksBase::common;
@@ -13,5 +13,5 @@ WaitForColorSensorBlockBase::WaitForColorSensorBlockBase(interpreterBase::robotM
 
 DeviceInfo WaitForColorSensorBlockBase::device() const
 {
-	return DeviceInfo::create<robotParts::ColorSensor>();
+	return DeviceInfo::create<robotParts::ColorSensorPassive>();
 }

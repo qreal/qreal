@@ -19,52 +19,50 @@
         <translation>Автоматизация</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="74"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="91"/>
         <source>Delay after gesture</source>
         <translation>Задержка после жеста</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="81"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="98"/>
         <source>msec</source>
         <translation>мсек</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="98"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="131"/>
         <source>sec</source>
         <translation>сек</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="105"/>
         <source>Usability testing mode</source>
-        <translation>Режӥм юзабилити-тестирования</translation>
+        <translation type="vanished">Режӥм юзабилити-тестирования</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="128"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="74"/>
         <source>Autosave</source>
         <translation>Автосохранение</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="138"/>
         <source>Collect ergonomic values</source>
-        <translation>Собирать эргономические показатели системы</translation>
+        <translation type="vanished">Собирать эргономические показатели системы</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="148"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="84"/>
         <source>Palette tab switching</source>
         <translation>Переключение табов в палитре</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="158"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="141"/>
         <source>Touch</source>
         <translation>Тач</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="174"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="157"/>
         <source>Touch Mode</source>
         <translation>Режим работы на тач-экране</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="104"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="84"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Системный язык&gt;</translation>
     </message>

@@ -4,6 +4,7 @@
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryPair.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 
 namespace qrtext {
 namespace core {
@@ -26,26 +27,28 @@ public:
 	{
 		if (tokenStream.isEnd()) {
 			parserContext.reportError(QObject::tr("Unexpected end of input"));
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		if (mParser1->first().contains(tokenStream.next().token())) {
-			QSharedPointer<ast::Node> parser1Result = mParser1->parse(tokenStream, parserContext);
-			QSharedPointer<ast::Node> parser2Result = mParser2->parse(tokenStream, parserContext);
+			const QSharedPointer<ast::Node> parser1Result = mParser1->parse(tokenStream, parserContext);
+			const QSharedPointer<ast::Node> parser2Result = mParser2->parse(tokenStream, parserContext);
 
-			if (parser1Result && parser1Result->is<TemporaryDiscardableNode>()
-					&& parser2Result && parser2Result->is<TemporaryDiscardableNode>())
-			{
-				auto result = wrap(new TemporaryDiscardableNode());
+			if (parser1Result->is<TemporaryErrorNode>() || parser2Result->is<TemporaryErrorNode>()) {
+				return wrap(new TemporaryErrorNode());
+			}
+
+			if (parser1Result->is<TemporaryDiscardableNode>() && parser2Result->is<TemporaryDiscardableNode>()) {
+				const auto result = wrap(new TemporaryDiscardableNode());
 				result->connect(parser1Result);
 				result->connect(parser2Result);
 				return result;
-			} else if (parser1Result && parser1Result->is<TemporaryDiscardableNode>()) {
+			} else if (parser1Result->is<TemporaryDiscardableNode>()) {
 				return parser2Result;
-			} else if (parser2Result && parser2Result->is<TemporaryDiscardableNode>()) {
+			} else if (parser2Result->is<TemporaryDiscardableNode>()) {
 				return parser1Result;
 			} else {
-				auto result = wrap(new TemporaryPair(parser1Result, parser2Result));
+				const auto result = wrap(new TemporaryPair(parser1Result, parser2Result));
 				result->connect(parser1Result);
 				result->connect(parser2Result);
 				return result;
@@ -53,7 +56,7 @@ public:
 		}
 
 		parserContext.reportError(QObject::tr("Unexpected token"));
-		return wrap(nullptr);
+		return wrap(new TemporaryErrorNode());
 	}
 
 	QSet<TokenType> first() const override

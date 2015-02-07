@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
 	mainWindow \
+	systemFacade \
 	models \
 	editor \
 	controller \
@@ -25,7 +26,7 @@ interpretedPluginInterface.file = $$PWD/plugins/interpretedPluginInterface/inter
 constraintsPluginInterface.file = $$PWD/plugins/constraintsPluginInterface/constraintsPluginInterface.pro
 
 mainWindow.depends = \
-	models \
+	systemFacade \
 	editor \
 	controller \
 	dialogs \
@@ -34,9 +35,13 @@ mainWindow.depends = \
 	mouseGestures \
 	hotKeyManager \
 	brandManager \
+	thirdparty \
+
+systemFacade.depends = \
+	models \
+	textEditor \
 	pluginManager \
 	toolPluginInterface \
-	thirdparty \
 
 models.depends = \
 	pluginManager \

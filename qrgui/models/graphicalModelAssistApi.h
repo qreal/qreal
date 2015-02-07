@@ -33,8 +33,7 @@ public:
 
 	void setModel(details::GraphicalModel * const graphicalModel);
 
-	/// Interface for accessing metamodel information.
-	EditorManagerInterface const &editorManagerInterface() const;
+	const EditorManagerInterface &editorManagerInterface() const override;
 
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const override;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const override;
@@ -133,6 +132,9 @@ public:
 
 signals:
 	void nameChanged(Id const &id);
+
+	/// Emitted each time when new element was added into the graphical model.
+	void elementAdded(Id const &id);
 
 private:
 	GraphicalModelAssistApi(GraphicalModelAssistApi const &);

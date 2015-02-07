@@ -4,8 +4,6 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-int const sleepInterval = 10;
-
 WaitForInfraredSensorGenerator::WaitForInfraredSensorGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id

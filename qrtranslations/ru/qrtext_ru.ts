@@ -22,19 +22,19 @@
         <translation type="vanished">Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="25"/>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="28"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="26"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="29"/>
         <source>Unexpected end of input</source>
         <translation>Неожиданный конец текста</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="31"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="32"/>
         <source>Parser can not decide which alternative to use on </source>
         <translation>Синтаксический анализатор не может решить, какую альтернативу использовать в продукции </translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="42"/>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="55"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="43"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="58"/>
         <location filename="../../qrtext/include/qrtext/core/parser/parser.h" line="40"/>
         <source>Unexpected token</source>
         <translation>Неожиданная лексема</translation>
@@ -49,9 +49,8 @@
         <translation>Несоответствие типов</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="55"/>
         <source>Can not deduce type, this expression can be of any type</source>
-        <translation>Не могу вывести тип, это выражение может быть любого типа</translation>
+        <translation type="vanished">Не могу вывести тип, это выражение может быть любого типа</translation>
     </message>
     <message>
         <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="57"/>
@@ -59,7 +58,7 @@
         <translation>Не могу вывести тип, это выражение может быть следующих типов: %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="130"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="150"/>
         <source>Type mismatch.</source>
         <translation>Несоответствие типов.</translation>
     </message>
@@ -87,53 +86,83 @@
         <translation>Деление на 0</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaParser.cpp" line="139"/>
+        <location filename="../../qrtext/src/lua/luaParser.cpp" line="143"/>
+        <source>node in &apos;stat&apos; semantic action is of unexpected type</source>
+        <translation>Узел в семантическом действии &apos;stat&apos; неизвестного типа</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaParser.cpp" line="150"/>
         <source>Number of variables in assignment shall be equal to the number of assigned values</source>
         <translation>Количество переменных в выражении присваивания должно совпадать с количеством присваиваемых значений</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaParser.cpp" line="151"/>
+        <location filename="../../qrtext/src/lua/luaParser.cpp" line="162"/>
         <source>Assignment to function call is impossible</source>
         <translation>Присваивание вызову функции невозможно</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="124"/>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="131"/>
+        <location filename="../../qrtext/src/lua/luaParser.cpp" line="281"/>
+        <source>In &apos;args&apos; semantic action node is of incorrect type</source>
+        <translation>Узел в семантическом действии &apos;args&apos; неправильного типа</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaParser.cpp" line="300"/>
+        <source>In &apos;table constructor&apos; semantic action fieldList is of incorrect type</source>
+        <translation>Узел в семантическом действии &apos;table constructor&apos; неправильного типа</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaParser.cpp" line="343"/>
+        <source>In &apos;field&apos; semantic action node is of incorrect type</source>
+        <translation>Узел в семантическом действии &apos;field&apos; неправильного типа</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="144"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="132"/>
         <source>This construction is not supported by semantic analysis</source>
         <translation>Конструкция не поддерживается семантическим анализатором</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="213"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="214"/>
         <source>Incorrect assignment, only variables and tables can be assigned to.</source>
         <translation>Неправильное присваивание, присваивать можно только переменным и таблицам.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="227"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="228"/>
         <source>Left and right operand have mismatched types.</source>
         <translation>Левый и правый операнд имеют несовпадающие типы.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="240"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="241"/>
         <source>Indirect function calls are not supported</source>
         <translation>Непрямые вызовы функций не поддержаны</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="248"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="249"/>
         <source>Unknown function</source>
         <translation>Неизвестная функция</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="260"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="261"/>
         <source>Too many parameters, %1 expected</source>
         <translation>Слишком много параметров, ожидается %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="263"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="264"/>
         <source>Not enough parameters, %1 expected</source>
         <translation>Недостаточно параметров, ожидалось %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/expressionParser.h" line="84"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="284"/>
+        <source>Undeclared identifier: %1</source>
+        <translation>Неизвестная переменная: %1</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/expressionParser.h" line="80"/>
+        <source>Binary operator in expression is of the wrong type</source>
+        <translation>Бинарный оператор в выражении неправильного типа</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/expressionParser.h" line="88"/>
         <source>Right operand required</source>
         <translation>Правый операнд не найден</translation>
     </message>
@@ -212,6 +241,16 @@
         <location filename="../../qrtext/include/qrtext/lua/types/table.h" line="30"/>
         <source>table[%1]</source>
         <translation>массив[%1]</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/simpleParser.h" line="37"/>
+        <source>Semantic action incorrectly discarded node in SimpleParser</source>
+        <translation>Семантическое действие не по делу выкинуло узел в SimpleParser</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/tokenParser.h" line="38"/>
+        <source>Semantic action incorrectly discarded node in TokenParser</source>
+        <translation>Семантическое действие не по делу выкинуло узел в TokenParser</translation>
     </message>
 </context>
 </TS>

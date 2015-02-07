@@ -10,11 +10,13 @@ using namespace qReal;
 
 LuaProcessor::LuaProcessor(qReal::ErrorReporterInterface &errorReporter
 		, qrtext::LanguageToolboxInterface &textLanguage
+		, const utils::ParserErrorReporter &parserErrorReporter
 		, QObject *parent)
 	: QObject(parent)
 	, TemplateParametrizedEntity()
 	, mErrorReporter(errorReporter)
 	, mTextLanguage(textLanguage)
+	, mParserErrorReporter(parserErrorReporter)
 {
 }
 
@@ -45,28 +47,7 @@ QSharedPointer<qrtext::core::ast::Node> LuaProcessor::parse(QString const &data
 {
 	QSharedPointer<qrtext::core::ast::Node> const tree = mTextLanguage.parse(id, propertyName, data);
 	if (!mTextLanguage.errors().isEmpty()) {
-		/// @todo: move this code to some common place
-		for (qrtext::core::Error const &error : mTextLanguage.errors()) {
-			QString const errorMessage = QString("%1:%2 %3")
-					.arg(error.connection().line())
-					.arg(error.connection().column())
-					.arg(error.errorMessage());
-
-			switch (error.severity()) {
-			case qrtext::core::Severity::error:
-				mErrorReporter.addError(errorMessage, id);
-				break;
-			case qrtext::core::Severity::critical:
-				mErrorReporter.addCritical(errorMessage, id);
-				break;
-			case qrtext::core::Severity::warning:
-				mErrorReporter.addWarning(errorMessage, id);
-				break;
-			default:
-				break;
-			}
-		}
-
+		mParserErrorReporter.reportErrors(id, propertyName);
 		return qrtext::wrap(nullptr);
 	}
 

@@ -16,10 +16,10 @@ class LuaInterpreterTest : public testing::Test
 protected:
 	void SetUp() override;
 
-	QSharedPointer<qrtext::core::ast::Node> parseAndAnalyze(QString const &code);
+	QSharedPointer<qrtext::core::ast::Node> parseAndAnalyze(const QString &code);
 
 	template<typename T>
-	T interpret(QString const &code) {
+	T interpret(const QString &code) {
 		auto const ast = parseAndAnalyze(code);
 		if (mErrors.isEmpty()) {
 			return mInterpreter->interpret(ast, *mAnalyzer).value<T>();

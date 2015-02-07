@@ -135,6 +135,7 @@ generatorBase::MasterGeneratorBase *NxtOsekCGeneratorPlugin::masterGenerator()
 {
 	mMasterGenerator = new NxtOsekCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()

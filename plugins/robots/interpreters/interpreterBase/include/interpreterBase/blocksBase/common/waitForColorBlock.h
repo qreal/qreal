@@ -17,6 +17,9 @@ public:
 
 protected slots:
 	void responseSlot(int reading) override;
+
+private:
+	robotModel::DeviceInfo device() const override;
 };
 
 }

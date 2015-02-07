@@ -18,7 +18,7 @@ class PaletteTreeWidget : public QTreeWidget
 
 public:
 	PaletteTreeWidget(PaletteTree &parent, MainWindow &mainWindow
-			, EditorManagerInterface &editorManagerProxy
+			, EditorManagerInterface const &editorManagerProxy
 			, bool editable);
 
 	void addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups
@@ -81,7 +81,7 @@ private:
 	static bool paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2);
 
 	/// Made static to be used inside idLessThan()
-	static EditorManagerInterface *mEditorManager;  // Does not take ownership
+	static EditorManagerInterface const *mEditorManager;  // Does not take ownership
 	MainWindow &mMainWindow;
 	PaletteTree &mPaletteTree;
 	bool mEditable;

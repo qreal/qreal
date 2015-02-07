@@ -8,11 +8,11 @@
 
 #include <qrkernel/ids.h>
 
-#include "plugins/editorPluginInterface/labelInterface.h"
-#include "plugins/editorPluginInterface/labelFactoryInterface.h"
-#include "plugins/editorPluginInterface/elementRepoInterface.h"
-#include "plugins/editorPluginInterface/sdfRendererInterface.h"
-#include "plugins/editorPluginInterface/portHelpers.h"
+#include "qrgui/plugins/editorPluginInterface/labelInterface.h"
+#include "qrgui/plugins/editorPluginInterface/labelFactoryInterface.h"
+#include "qrgui/plugins/editorPluginInterface/elementRepoInterface.h"
+#include "qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
+#include "qrgui/plugins/editorPluginInterface/portHelpers.h"
 
 namespace enums {
 namespace linkShape {

@@ -6,8 +6,8 @@
 #include <qrgui/preferencesDialog/preferencesPage.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include "managers/kitPluginManager.h"
-#include "managers/robotModelManager.h"
+#include "interpreterCore/managers/kitPluginManager.h"
+#include "interpreterCore/managers/robotModelManager.h"
 
 namespace Ui {
 class PreferencesRobotSettingsPage;

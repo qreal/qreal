@@ -10,8 +10,6 @@
 
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
-#include <qrrepo/graphicalRepoApi.h>
-#include <qrrepo/logicalRepoApi.h>
 #include <qrrepo/repoApi.h>
 
 #include <plugins/editorPluginInterface/editorInterface.h>
@@ -66,8 +64,6 @@ public:
 	QString defaultPropertyValue(Id const &id, QString name) const override;
 	QStringList propertiesWithDefaultValues(Id const &id) const override;
 
-	IdList checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
-			, GraphicalModelAssistInterface const &graphicalApi) const override;
 	bool hasElement(Id const &element) const override;
 
 	Id findElementByType(QString const &type) const override;

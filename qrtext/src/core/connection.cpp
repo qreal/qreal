@@ -35,7 +35,7 @@ qReal::Id const &Connection::id() const
 	return mId;
 }
 
-QString const &Connection::propertyName() const
+const QString &Connection::propertyName() const
 {
 	return mPropertyName;
 }

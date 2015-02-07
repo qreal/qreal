@@ -51,7 +51,7 @@ LuaInterpreter::LuaInterpreter(QList<core::Error> &errors)
 {
 }
 
-QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
+QVariant LuaInterpreter::interpret(const QSharedPointer<core::ast::Node> &root
 		, core::SemanticAnalyzer const &semanticAnalyzer)
 {
 	Q_UNUSED(semanticAnalyzer);
@@ -114,7 +114,7 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		} else if (variable->is<ast::IndexingExpression>()) {
 			operateOnIndexingExpression(variable
 					, semanticAnalyzer
-					, [this, &value, &semanticAnalyzer] (QString const &name, QStringList &table, int index) {
+					, [this, &value, &semanticAnalyzer] (const QString &name, QStringList &table, int index) {
 						table[index] = interpret(value, semanticAnalyzer).toString();
 						mIdentifierValues.insert(name, table);
 						return QVariant();
@@ -142,7 +142,7 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 	} else if (root->is<ast::IndexingExpression>()) {
 		return operateOnIndexingExpression(root
 				, semanticAnalyzer
-				, [] (QString const &name, QStringList &table, int index) {
+				, [] (const QString &name, QStringList &table, int index) {
 					Q_UNUSED(name)
 					return table[index];
 				});
@@ -166,7 +166,7 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 
 QVariant LuaInterpreter::operateOnIndexingExpression(const QSharedPointer<core::ast::Node> &indexingExpression
 		, core::SemanticAnalyzer const &semanticAnalyzer
-		, std::function<QVariant(QString const &, QStringList &, int)> const &action)
+		, std::function<QVariant(const QString &, QStringList &, int)> const &action)
 {
 	if (as<ast::IndexingExpression>(indexingExpression)->table()->is<ast::Identifier>()) {
 		auto name = as<ast::Identifier>(as<ast::IndexingExpression>(indexingExpression)->table())->name();
@@ -196,7 +196,7 @@ QVariant LuaInterpreter::operateOnIndexingExpression(const QSharedPointer<core::
 	return QVariant();
 }
 
-void LuaInterpreter::addIntrinsicFunction(QString const &name
+void LuaInterpreter::addIntrinsicFunction(const QString &name
 		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
 {
 	mIntrinsicFunctions.insert(name, semantic);
@@ -207,12 +207,12 @@ QStringList LuaInterpreter::identifiers() const
 	return mIdentifierValues.keys();
 }
 
-QVariant LuaInterpreter::value(QString const &identifier) const
+QVariant LuaInterpreter::value(const QString &identifier) const
 {
 	return mIdentifierValues.value(identifier);
 }
 
-void LuaInterpreter::setVariableValue(QString const &name, QVariant const &value)
+void LuaInterpreter::setVariableValue(const QString &name, QVariant const &value)
 {
 	QString valueString = value.toString();
 	if (!valueString.isEmpty()
@@ -234,7 +234,7 @@ void LuaInterpreter::clear()
 	mIdentifierValues.clear();
 }
 
-QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
+QVariant LuaInterpreter::interpretUnaryOperator(const QSharedPointer<core::ast::Node> &root
 		, core::SemanticAnalyzer const &semanticAnalyzer)
 {
 	auto operand = as<ast::UnaryOperator>(root)->operand();
@@ -261,7 +261,7 @@ QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> 
 	return QVariant();
 }
 
-QVariant LuaInterpreter::interpretBinaryOperator(QSharedPointer<core::ast::Node> const &root
+QVariant LuaInterpreter::interpretBinaryOperator(const QSharedPointer<core::ast::Node> &root
 		, core::SemanticAnalyzer const &semanticAnalyzer)
 {
 	auto leftOperand = as<ast::BinaryOperator>(root)->leftOperand();

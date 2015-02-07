@@ -7,7 +7,7 @@
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/interpreterControlInterface.h>

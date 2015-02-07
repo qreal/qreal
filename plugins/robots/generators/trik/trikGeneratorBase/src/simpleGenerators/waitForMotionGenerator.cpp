@@ -4,8 +4,6 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-int const sleepInterval = 10;
-
 WaitForMotionGenerator::WaitForMotionGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id

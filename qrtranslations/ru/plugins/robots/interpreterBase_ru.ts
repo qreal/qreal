@@ -30,24 +30,20 @@
 <context>
     <name>interpreterBase::blocksBase::Block</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="39"/>
         <source>Control flow break detected, stopping</source>
-        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="46"/>
         <source>Too many outgoing links</source>
-        <translation>Слишком много исходящих связей</translation>
+        <translation type="vanished">Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="51"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="58"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>

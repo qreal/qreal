@@ -13,7 +13,7 @@ class LuaToolboxTest : public testing::Test
 protected:
 	void SetUp() override;
 
-	QSharedPointer<qrtext::core::ast::Node> parse(QString const &code);
+	QSharedPointer<qrtext::core::ast::Node> parse(const QString &code);
 
 	QScopedPointer<qrtext::lua::LuaToolbox> mToolbox;
 };

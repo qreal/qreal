@@ -8,6 +8,9 @@
 #include <qrkernel/ids.h>
 
 namespace qReal {
+
+class EditorManagerInterface;
+
 namespace details {
 
 class ModelsAssistInterface
@@ -39,6 +42,9 @@ public:
 	virtual int childrenOfDiagram(const Id &parent) const = 0;
 
 	virtual void removeElement(Id const &id) = 0;
+
+	/// Returns reference to Editor Manager object providing information about language metamodel.
+	virtual const EditorManagerInterface &editorManagerInterface() const = 0;
 };
 
 }

@@ -8,17 +8,17 @@ using namespace models::details;
 
 LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 		, EditorManagerInterface const &editorManagerInterface)
-		: mModelsAssistApi(logicalModel, editorManagerInterface)
-		, mLogicalModel(logicalModel)
-		, mEditorManager(editorManagerInterface)
+	: mModelsAssistApi(logicalModel, editorManagerInterface)
+	, mLogicalModel(logicalModel)
+	, mEditorManager(editorManagerInterface)
 {
 	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));
 	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));
 	QObject::connect(&mLogicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
 	QObject::connect(&mLogicalModel, SIGNAL(addedElementToModel(Id)), this, SLOT(addedElementToModelSlot(Id)));
 	QObject::connect(&mLogicalModel, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));
+	connect(&logicalModel, &LogicalModel::elementAdded, this, &LogicalModelAssistApi::elementAdded);
 }
-
 LogicalModelAssistApi::~LogicalModelAssistApi()
 {
 }

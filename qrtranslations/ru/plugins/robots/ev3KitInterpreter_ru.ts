@@ -75,9 +75,8 @@
 <context>
     <name>ev3KitInterpreter::blocks::details::SpeakerBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/blocks/details/speakerBlock.cpp" line="31"/>
         <source>Speaker is not configured (WTF?)</source>
-        <translation>Динамик не сконфигурирован</translation>
+        <translation type="vanished">Динамик не сконфигурирован</translation>
     </message>
 </context>
 <context>
@@ -91,7 +90,7 @@
 <context>
     <name>ev3KitInterpreter::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/realRobotModel.cpp" line="35"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/realRobotModel.cpp" line="36"/>
         <source>Real Robot EV3</source>
         <translation>Реальный робот</translation>
     </message>

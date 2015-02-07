@@ -10,6 +10,7 @@ class NxtRussianCMasterGenerator : public NxtMasterGeneratorBase
 public:
 	NxtRussianCMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
+			, const utils::ParserErrorReporter &parserErrorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, qReal::Id const &diagramId

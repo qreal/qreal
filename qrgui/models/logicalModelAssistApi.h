@@ -17,11 +17,12 @@ namespace models {
 class QRGUI_MODELS_EXPORT LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistInterface
 {
 	Q_OBJECT
+
 public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface);
 	virtual ~LogicalModelAssistApi();
 
-	EditorManagerInterface const &editorManagerInterface() const;
+	const EditorManagerInterface &editorManagerInterface() const override;
 
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const override;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() override;
@@ -78,6 +79,9 @@ signals:
 	void parentChanged(IdList const &elements);
 	void nameChanged(Id const &element);
 	void addedElementToModel(Id const &element);
+
+	/// Emitted each time when new element was added into the logical model.
+	void elementAdded(Id const &id);
 
 private:
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden

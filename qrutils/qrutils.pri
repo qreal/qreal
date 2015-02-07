@@ -37,6 +37,7 @@ HEADERS += \
 	$$PWD/qRealFileDialog.h \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
+	$$PWD/parserErrorReporter.h \
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
@@ -54,6 +55,7 @@ SOURCES += \
 	$$PWD/qRealFileDialog.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
+	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \
@@ -74,12 +76,11 @@ include($$PWD/invocationUtils/invocationUtils.pri)
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)
 
-# UXInfo Utils
-include($$PWD/uxInfo/uxInfo.pri)
-
 # Real-time plot
 include($$PWD/graphicsWatcher/sensorsGraph.pri)
 
 #Plugin managers
 include($$PWD/pluginManagers/pluginManagers.pri)
 
+# Tools for interpreting behavioral diagrams
+include($$PWD/interpreter/interpreter.pri)

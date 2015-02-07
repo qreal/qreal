@@ -483,7 +483,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Дисплей</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="38"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="39"/>
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
         <translation>Конфигурация сенсоров противоречива. Проверьте, что в указанные в программе используются два разных сенсора на одном порту</translation>
     </message>
@@ -719,7 +719,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="100"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="94"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -727,114 +727,95 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::coreBlocks::details::CommentBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/commentBlock.cpp" line="14"/>
         <source>The comment block with incoming links detected!</source>
-        <translation>Блок &quot;Комментарий&quot; не может иметь входящих связей!</translation>
+        <translation type="vanished">Блок &quot;Комментарий&quot; не может иметь входящих связей!</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::ForkBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/forkBlock.cpp" line="22"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/forkBlock.cpp" line="34"/>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
-        <translation>Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
+        <translation type="vanished">Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/forkBlock.cpp" line="39"/>
         <source>There must be at least two outgoing links</source>
-        <translation>Должно быть как минимум две исходящие связи</translation>
+        <translation type="vanished">Должно быть как минимум две исходящие связи</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::IfBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="23"/>
         <source>There must be exactly TWO links outgoing from if block</source>
-        <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
+        <translation type="vanished">От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="30"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="39"/>
         <source>Two links marked with &apos;true&apos; found</source>
-        <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
+        <translation type="vanished">Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="46"/>
         <source>Two links marked with &apos;false&apos; found</source>
-        <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
+        <translation type="vanished">Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="53"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
-        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+        <translation type="vanished">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::LoopBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="30"/>
         <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
-        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
+        <translation type="vanished">Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="35"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="44"/>
         <source>Two links marked as &quot;iteration&quot; found</source>
-        <translation>Найдено две связи, помеченные как &quot;итерация&quot;</translation>
+        <translation type="vanished">Найдено две связи, помеченные как &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="64"/>
         <source>There must be a non-marked outgoing link</source>
-        <translation>Должна быть непомеченная исходящая связь</translation>
+        <translation type="vanished">Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::SubprogramBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/subprogramBlock.cpp" line="22"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
-        <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
+        <translation type="vanished">Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::SwitchBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="23"/>
         <source>There must be at list TWO links outgoing from switch block</source>
-        <translation>От блока выбора должно отходить минимум ДВЕ связи</translation>
+        <translation type="vanished">От блока выбора должно отходить минимум ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="30"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="39"/>
         <source>There must be exactly one link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="44"/>
         <source>Duplicate case branch: &apos;%1&apos;</source>
-        <translation>Найдено более одной ветки &apos;%1&apos;</translation>
+        <translation type="vanished">Найдено более одной ветки &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="53"/>
         <source>There must be a link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
     </message>
 </context>
 <context>
@@ -882,7 +863,7 @@ p, li { white-space: pre-wrap; }
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="69"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="144"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="142"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
@@ -892,17 +873,17 @@ p, li { white-space: pre-wrap; }
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="123"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="121"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="129"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="127"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="190"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -910,14 +891,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::details::Thread</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/thread.cpp" line="85"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
-        <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
+        <translation type="vanished">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/thread.cpp" line="90"/>
         <source>Stack overflow</source>
-        <translation>Переполнение стека</translation>
+        <translation type="vanished">Переполнение стека</translation>
     </message>
 </context>
 <context>

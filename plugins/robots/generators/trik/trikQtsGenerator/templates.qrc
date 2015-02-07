@@ -90,6 +90,20 @@
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
+        <file>templates/gamepad/gamepadButton.t</file>
+        <file>templates/gamepad/gamepadConnectionIndicator.t</file>
+        <file>templates/gamepad/gamepadPad.t</file>
+        <file>templates/gamepad/gamepadPadPressSensor.t</file>
+        <file>templates/gamepad/gamepadWheel.t</file>
+        <file>templates/ports/GamepadButton1Port.t</file>
+        <file>templates/ports/GamepadButton2Port.t</file>
+        <file>templates/ports/GamepadButton3Port.t</file>
+        <file>templates/ports/GamepadButton4Port.t</file>
+        <file>templates/ports/GamepadButton5Port.t</file>
+        <file>templates/ports/GamepadPad1PosPort.t</file>
+        <file>templates/ports/GamepadPad1PressedPort.t</file>
+        <file>templates/ports/GamepadPad2PosPort.t</file>
+        <file>templates/ports/GamepadPad2PressedPort.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
@@ -106,10 +120,15 @@
         <file>templates/functions/sqrt.t</file>
         <file>templates/functions/time.t</file>
         <file>templates/wait/encoder.t</file>
+        <file>templates/wait/gamepadButton.t</file>
+        <file>templates/wait/gamepadConnect.t</file>
+        <file>templates/wait/gamepadDisconnect.t</file>
+        <file>templates/wait/gamepadWheel.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
         <file>templates/wait/infrared.t</file>
         <file>templates/wait/motion.t</file>
+        <file>templates/wait/padPress.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>

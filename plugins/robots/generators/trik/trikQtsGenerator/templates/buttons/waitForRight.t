@@ -1,3 +1,3 @@
 while (!brick.keys().wasPressed(KeysEnum.Right)) {
-	brick.wait(100);
+	script.wait(100);
 }

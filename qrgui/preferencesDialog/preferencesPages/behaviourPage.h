@@ -27,6 +27,5 @@ private:
 	void initLanguages();
 
 	Ui::PreferencesBehaviourPage *mUi;
-	bool mUsabilityTestingMode;
 	QString mOldLanguage;
 };

@@ -30,18 +30,18 @@ QVariant LuaToolbox::interpret(QSharedPointer<Node> const &root)
 	return result;
 }
 
-void LuaToolbox::interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
+void LuaToolbox::interpret(qReal::Id const &id, const QString &propertyName, const QString &code)
 {
 	interpret<int>(id, propertyName, code);
 }
 
-void LuaToolbox::interpret(QString const &code)
+void LuaToolbox::interpret(const QString &code)
 {
 	interpret<int>(qReal::Id(), "", code);
 }
 
-QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const &propertyName
-		, QString const &code)
+QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, const QString &propertyName
+		, const QString &code)
 {
 	mErrors.clear();
 
@@ -74,7 +74,7 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 	return mAstRoots[id][propertyName];
 }
 
-QSharedPointer<Node> LuaToolbox::ast(qReal::Id const &id, QString const &propertyName) const
+QSharedPointer<Node> LuaToolbox::ast(qReal::Id const &id, const QString &propertyName) const
 {
 	return mAstRoots[id][propertyName];
 }
@@ -89,7 +89,7 @@ QList<Error> const &LuaToolbox::errors() const
 	return mErrors;
 }
 
-void LuaToolbox::addIntrinsicFunction(QString const &name
+void LuaToolbox::addIntrinsicFunction(const QString &name
 		, core::types::TypeExpression * const returnType
 		, QList<core::types::TypeExpression *> const &parameterTypes
 		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
@@ -129,7 +129,7 @@ QStringList const &LuaToolbox::specialConstants() const
 	return mSpecialConstants;
 }
 
-void LuaToolbox::markAsSpecialConstant(QString const &identifier)
+void LuaToolbox::markAsSpecialConstant(const QString &identifier)
 {
 	markAsSpecial(identifier);
 	if (!mSpecialConstants.contains(identifier)) {
@@ -137,19 +137,19 @@ void LuaToolbox::markAsSpecialConstant(QString const &identifier)
 	}
 }
 
-void LuaToolbox::markAsSpecial(QString const &identifier)
+void LuaToolbox::markAsSpecial(const QString &identifier)
 {
 	if (!mSpecialIdentifiers.contains(identifier)) {
 		mSpecialIdentifiers << identifier;
 	}
 }
 
-QVariant LuaToolbox::value(QString const &identifier) const
+QVariant LuaToolbox::value(const QString &identifier) const
 {
 	return mInterpreter->value(identifier);
 }
 
-void LuaToolbox::setVariableValue(QString const &name, QString const &initCode, QVariant const &value)
+void LuaToolbox::setVariableValue(const QString &name, const QString &initCode, QVariant const &value)
 {
 	if (!mInterpreter->identifiers().contains(name)) {
 		parse(qReal::Id(), "", initCode);

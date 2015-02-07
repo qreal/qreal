@@ -1,11 +1,6 @@
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QList>
 #include <QtWidgets/QDockWidget>
-
-#include <qrkernel/ids.h>
-#include <qrkernel/definitions.h>
 
 #include "mainWindow/error.h"
 #include "mainWindow/errorListWidget.h"
@@ -20,16 +15,26 @@ class ErrorReporter : public QObject, public ErrorReporterInterface
 
 public:
 	ErrorReporter();
-	ErrorReporter(ErrorListWidget* const errorListWidget, QDockWidget* const errorList);
+	ErrorReporter(ErrorListWidget * const errorListWidget, QDockWidget * const errorList);
 
-	virtual void addInformation(QString const &message, Id const &position = Id::rootId());
-	virtual void addWarning(QString const &message, Id const &position = Id::rootId());
-	virtual void addError(QString const &message, Id const &position = Id::rootId());
-	virtual void addCritical(QString const &message, Id const &position = Id::rootId());
+	virtual void addInformation(const QString &message, const Id &position = Id::rootId());
+	virtual void addWarning(const QString &message, const Id &position = Id::rootId());
+	virtual void addError(const QString &message, const Id &position = Id::rootId());
+	virtual void addCritical(const QString &message, const Id &position = Id::rootId());
 	virtual bool wereErrors();
 
-	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
+	bool showErrors(ErrorListWidget * const errorListWidget, QDockWidget * const errorList) const;
 	void updateVisibility(bool isVisible);
+
+signals:
+	/// Emitted when new message with level 'Info' added to error reporter.
+	void informationAdded(const QString &message, const Id &position);
+	/// Emitted when new message with level 'Warning' added to error reporter.
+	void warningAdded(const QString &message, const Id &position);
+	/// Emitted when new message with level 'Error' added to error reporter.
+	void errorAdded(const QString &message, const Id &position);
+	/// Emitted when new message with level 'Critical' added to error reporter.
+	void criticalAdded(const QString &message, const Id &position);
 
 	void addUniqueError(QString const &message, Error::Severity const &severity = Error::error
 						, Id const &position = Id::rootId());
@@ -37,18 +42,17 @@ public:
 						, Id const &position = Id::rootId());
 	void delAllErrorOfElement(Id const &position);
 
-public slots:
-	virtual void clear();
+public slots:	virtual void clear();
 	virtual void clearErrors();
 
 private:
-	static QString severityMessage(Error const &error);
-	void showError(Error const &error, ErrorListWidget* const errorListWidget) const;
+	static QString severityMessage(const Error &error);
+	void showError(const Error &error, ErrorListWidget * const errorListWidget) const;
 
 	QList<Error> mErrors;
 
-	ErrorListWidget* const mErrorListWidget;  // Doesn't have ownership
-	QDockWidget* const mErrorList;  // Doesn't have ownership
+	ErrorListWidget * const mErrorListWidget;  // Doesn't have ownership
+	QDockWidget * const mErrorList;  // Doesn't have ownership
 
 	/// Should error window be shown or not
 	bool mIsVisible;

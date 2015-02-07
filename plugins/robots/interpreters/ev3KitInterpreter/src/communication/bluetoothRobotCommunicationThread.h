@@ -1,6 +1,6 @@
 #pragma once
 
-#include "robotCommunicationThreadBase.h"
+#include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
 class QextSerialPort;
 class QTimer;
@@ -8,7 +8,7 @@ class QTimer;
 namespace ev3KitInterpreter {
 namespace communication {
 
-class BluetoothRobotCommunicationThread : public RobotCommunicationThreadBase
+class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
 {
 	Q_OBJECT
 
