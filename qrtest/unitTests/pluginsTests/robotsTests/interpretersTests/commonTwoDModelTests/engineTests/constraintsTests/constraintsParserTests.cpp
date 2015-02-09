@@ -450,13 +450,14 @@ TEST_F(ConstraintsParserTests, communicationTest)
 			"			<success/>"
 			"		</trigger>"\
 			"	</event>"\
-			"	<event id=\"Increment 2\" settedUpInitially=\"true\">"\
+			"	<event id=\"Increment 2\" settedUpInitially=\"true\" dropsOnFire=\"false\">"\
 			"		<condition>"\
 			"			<timer timeout=\"1\"/>"
 			"		</condition>"\
 			"		<triggers>"\
 			"			<addToVariable name=\"counter\" value=\"2\" />"
 			"			<setUp id=\"Decrement 1\" />"
+			"			<drop id=\"Increment 2\" />"
 			"		</triggers>"\
 			"	</event>"\
 			"	<event id=\"Decrement 1\" settedUpInitially=\"true\">"\
