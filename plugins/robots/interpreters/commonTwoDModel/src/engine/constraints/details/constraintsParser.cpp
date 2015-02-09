@@ -10,12 +10,13 @@ using namespace twoDModel::constraints::details;
 ConstraintsParser::ConstraintsParser(Events &events
 		, Variables &variables
 		, const Objects &objects
-		, const utils::TimelineInterface &timeline)
+		, const utils::TimelineInterface &timeline
+		, StatusReporter &status)
 	: mEvents(events)
 	, mVariables(variables)
 	, mObjects(objects)
 	, mTimeline(timeline)
-	, mTriggers(mEvents, mVariables)
+	, mTriggers(mEvents, mVariables, status)
 	, mConditions(mEvents, mVariables, mObjects)
 	, mValues(mVariables, mObjects)
 {

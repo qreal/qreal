@@ -10,6 +10,18 @@ namespace details {
 
 class Event;
 
+/// A helper object for reporting constraints violation or passing.
+class StatusReporter : public QObject
+{
+	Q_OBJECT
+signals:
+	/// Emitted when <success> tag triggered.
+	void success();
+
+	/// Emitted when <fail> tag triggered.
+	void fail(const QString &message);
+};
+
 enum class Glue
 {
 	And = 0

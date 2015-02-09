@@ -4,9 +4,10 @@
 
 using namespace twoDModel::constraints::details;
 
-TriggersFactory::TriggersFactory(Events &events, Variables &variables)
+TriggersFactory::TriggersFactory(Events &events, Variables &variables, StatusReporter &status)
 	: mEvents(events)
 	, mVariables(variables)
+	, mStatus(status)
 {
 }
 
@@ -15,15 +16,14 @@ Trigger TriggersFactory::doNothing() const
 	return [](){};
 }
 
-#include <QDebug>
 Trigger TriggersFactory::fail(const QString &message) const
 {
-	return [message]() { qDebug() << "Хаха, лох," << message; };
+	return [this, message]() { emit mStatus.fail(message); };
 }
 
 Trigger TriggersFactory::success() const
 {
-	return []() { qDebug() << "Норм посан, прошел все, уважение"; };
+	return [this]() { emit mStatus.success(); };
 }
 
 Trigger TriggersFactory::combined(const QList<Trigger> &triggers) const

@@ -11,15 +11,35 @@ namespace twoDModel {
 namespace constraints {
 namespace details {
 
+/// @brief Parser for 2D model constraints language.
+///
+/// Program on 2D model constraints language is an XML-based description of allowed robot`s behaviour in the concrete
+/// world model. It is simply a number of events that trigger some actions, set up and drop each other.
+/// Each event is an entity consisting of two parts: condition and trigger. Condition is a boolean description of the
+/// moment when the event must be fired. Triggers are the actions that must be invoked then. By default the event will
+/// be dropped (i.e. its listening will be stopped by system) when it is fired. "dropsOnFire" attribute may be used to
+/// disable it. The id may be assigned to event for setting it up or dropping it mannually in other event triggers.
+/// Each program must have (and only one) timelimit constraint.
+/// Constraints can also be used in programs. Tag "constraint" is simply a event with fail trigger and condition
+/// that is a negation of specified one. Constraint tags must have "failMessage" attribute therefore and its child
+/// tag is always a condition.
+/// Full list of possible conditions and triggers will not be specified here because it is supposed to be oftenly
+/// extended. You can find it out looking into private methods signatures.
 class ConstraintsParser
 {
 public:
 	ConstraintsParser(Events &events
 		, Variables &variables
 		, const Objects &objects
-		, const utils::TimelineInterface &timeline);
+		, const utils::TimelineInterface &timeline
+		, StatusReporter &status);
 
+	/// Parses the given program, initializes events map given in constructor.
+	/// Returns true if parsing process completed successfully. Otherwise returns false. The errors list in that case
+	/// can be obtained via errors() method.
 	bool parse(const QString &constrtaintsXml);
+
+	/// Returns a list of parser errors occured during the last parsing process.
 	QStringList errors() const;
 
 private:

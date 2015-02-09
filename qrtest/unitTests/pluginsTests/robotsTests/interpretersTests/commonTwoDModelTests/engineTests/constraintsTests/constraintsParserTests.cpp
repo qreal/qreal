@@ -9,7 +9,7 @@ using namespace qrTest::robotsTests::commonTwoDModelTests;
 using namespace twoDModel::constraints::details;
 
 ConstraintsParserTests::ConstraintsParserTests()
-	: mParser(mEvents, mVariables, mObjects, mTimeline)
+	: mParser(mEvents, mVariables, mObjects, mTimeline, mStatus)
 {
 }
 

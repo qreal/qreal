@@ -25,6 +25,7 @@ protected:
 	twoDModel::constraints::details::Objects mObjects;
 	TestObject mTestObject;
 	TestTimeline mTimeline;
+	twoDModel::constraints::details::StatusReporter mStatus;
 	twoDModel::constraints::details::ConstraintsParser mParser;
 };
 
