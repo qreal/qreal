@@ -14,7 +14,7 @@ namespace details {
 class ValuesFactory
 {
 public:
-	ValuesFactory(Variables &variables, const Objects &objects);
+	ValuesFactory(Variables &variables, const Objects &objects, StatusReporter &status);
 
 	/// Produces functor that always returns QVariant().
 	Value invalidValue() const;
@@ -41,8 +41,11 @@ public:
 	Value timestamp(const utils::TimelineInterface &timeline) const;
 
 private:
+	void reportError(const QString &message);
+
 	Variables &mVariables;
 	const Objects &mObjects;
+	StatusReporter &mStatus;
 };
 
 }

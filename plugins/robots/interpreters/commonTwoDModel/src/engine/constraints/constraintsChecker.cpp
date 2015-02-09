@@ -14,6 +14,7 @@ ConstraintsChecker::ConstraintsChecker(const utils::TimelineInterface &timeline
 {
 	connect(&mStatus, &details::StatusReporter::success, this, &ConstraintsChecker::success);
 	connect(&mStatus, &details::StatusReporter::fail, this, &ConstraintsChecker::fail);
+	connect(&mStatus, &details::StatusReporter::checkerError, this, &ConstraintsChecker::checkerError);
 }
 
 ConstraintsChecker::~ConstraintsChecker()

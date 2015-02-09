@@ -4,10 +4,14 @@
 
 using namespace twoDModel::constraints::details;
 
-ConditionsFactory::ConditionsFactory(Events &events, Variables &variables, const Objects &objects)
+ConditionsFactory::ConditionsFactory(Events &events
+		, const Variables &variables
+		, const Objects &objects
+		, StatusReporter &status)
 	: mEvents(events)
 	, mVariables(variables)
 	, mObjects(objects)
+	, mStatus(status)
 {
 }
 
@@ -71,6 +75,8 @@ Condition ConditionsFactory::notLess(const Value &leftValue, const Value &rightV
 Condition ConditionsFactory::inside(const QString &objectId, const QString &regionId) const
 {
 	/// @todo:
+	Q_UNUSED(objectId)
+	Q_UNUSED(regionId)
 	return []() { return true; };
 }
 
@@ -78,7 +84,7 @@ Condition ConditionsFactory::settedUp(const QString &eventId) const
 {
 	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
-			/// @todo: Display error!
+			reportError(QObject::tr("No such event: %1"));
 			return false;
 		}
 
@@ -90,7 +96,7 @@ Condition ConditionsFactory::dropped(const QString &eventId) const
 {
 	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
-			/// @todo: Display error!
+			reportError(QObject::tr("No such event: %1"));
 			return true;
 		}
 
@@ -118,4 +124,9 @@ Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const V
 
 		return timeElapsed;
 	};
+}
+
+void ConditionsFactory::reportError(const QString &message)
+{
+	emit mStatus.checkerError(message);
 }

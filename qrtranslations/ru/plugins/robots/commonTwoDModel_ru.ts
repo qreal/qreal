@@ -9,213 +9,213 @@
         <translation>Двумерная модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="44"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="609"/>
         <source>Multiselection mode</source>
         <translation>Режим выделения</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="70"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="693"/>
         <source>Camera following robot</source>
         <translation>Следовать за роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="142"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="125"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="154"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="137"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="166"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="149"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="188"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="171"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="219"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="202"/>
         <source>Pencil (P)</source>
         <translation>Карандаш (P)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="235"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="218"/>
         <source>P</source>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="257"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="240"/>
         <source>Line (L)</source>
         <translation>Линия (L)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="273"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="256"/>
         <source>L</source>
         <translation>L</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="311"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="294"/>
         <source>Clear</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="346"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="329"/>
         <source>None (N)</source>
         <translation>Курсор (N)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="362"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="345"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="384"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="367"/>
         <source>Ellipse (E)</source>
         <translation>Эллипс (E)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="400"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="383"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="422"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="405"/>
         <source>Wall (W)</source>
         <translation>Стена (W)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="438"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="421"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="448"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="431"/>
         <source>Clear floor</source>
         <translation>Очистить пол от следов робота</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="463"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="446"/>
         <source>Ports</source>
         <translation>Порты</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="494"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="477"/>
         <source>Motors</source>
         <translation>Моторы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="500"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="483"/>
         <source>Left wheel:</source>
         <translation>Левое колесо:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="510"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="493"/>
         <source>Right wheel:</source>
         <translation>Правое колесо:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="523"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="506"/>
         <source>Ports configuration</source>
         <translation>Порты</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="536"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="519"/>
         <source>Model settings</source>
         <translation>Настройки модели</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="542"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="525"/>
         <source>Speed</source>
         <oldsource>Set speed</oldsource>
         <translation>Скорость</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="555"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="538"/>
         <source>Low</source>
         <translation>Низкая</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="560"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="543"/>
         <source>Medium</source>
         <translation>Средняя</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="565"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="548"/>
         <source>High</source>
         <translation>Высокая</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="576"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="559"/>
         <source>Physics</source>
         <translation>Физика</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="582"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="565"/>
         <source>Realistic physics</source>
         <translation>Реалистичная физика</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="589"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="572"/>
         <source>Realistic sensors</source>
         <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="596"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="579"/>
         <source>Realistic engines</source>
         <translation>Реалистичные моторы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="786"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="56"/>
         <source>Save World Model (Ctrl+S)</source>
         <translation>Сохранить модель мира (Ctrl+S)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="802"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="72"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="632"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="670"/>
         <source>Load World Model (Ctrl+O)</source>
         <translation>Загрузить модель мира (Ctrl+O)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="648"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="686"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="661"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="725"/>
         <source>Hand dragging mode</source>
         <translation>Режим таскания сцены</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="693"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="769"/>
         <source>Stop program (Esc)</source>
         <translation>Остановить программу (Esc)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="725"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="807"/>
         <source>Run program (Enter)</source>
         <translation>Запустить программу (Enter)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="757"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="647"/>
         <source>Return a robot to initial position</source>
         <translation>Вернуть робота в исходное положение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="909"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="927"/>
         <source>Time in 2D model</source>
         <translation>Время в 2D модели</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="918"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="936"/>
         <source> sec.</source>
         <translation> сек.</translation>
     </message>
@@ -233,6 +233,116 @@
         <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/twoDModelEngineFacade.cpp" line="12"/>
         <source>2d model</source>
         <translation>2D модель</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="47"/>
+        <source>Root element must be &quot;constraints&quot; tag</source>
+        <translation>Корневой элемент должен быть тэгом &quot;constraints&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="71"/>
+        <source>There must be a &quot;timelimit&quot; constraint.</source>
+        <translation>Должен иметься тэг &quot;timelimit&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="76"/>
+        <source>There must be only one &quot;timelimit&quot; tag.</source>
+        <translation>Тэг &quot;timelimit&quot; может быть только один.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="121"/>
+        <source>Event tag must have &quot;condition&quot; or &quot;conditions&quot; child tag. &quot;%1&quot; found instead.</source>
+        <translation>Тег &quot;event&quot; должен иметь дочерний тэг &quot;condition&quot; или &quot;conditions&quot;. Вместо этого найдено &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="127"/>
+        <source>Event tag must have &quot;trigger&quot; or &quot;triggers&quot; child tag. &quot;%1&quot; found instead.</source>
+        <translation>Тег &quot;event&quot; должен иметь дочерний тэг &quot;trigger&quot; или &quot;triggers&quot;. Вместо этого найдено &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="197"/>
+        <source>Program worked for too long time</source>
+        <translation>Программа работала слишком долго</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="234"/>
+        <source>&quot;Glue&quot; attribute must have value &quot;and&quot; or &quot;or&quot;.</source>
+        <translation>Аттрибут &quot;glue&quot; должен иметь значение &quot;and&quot; или &quot;or&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="285"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="425"/>
+        <source>Unknown tag &quot;%1&quot;.</source>
+        <translation>Неизвестный тэг &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="508"/>
+        <source>Unknown value &quot;%1&quot;.</source>
+        <translation>Неизвестное значение &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="580"/>
+        <source>Invalid integer value &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; - не целое число</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="594"/>
+        <source>Invalid floating point value &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; - не число</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="607"/>
+        <source>Invalid boolean value &quot;%1&quot; (expected &quot;true&quot; or &quot;false&quot;)</source>
+        <translation>&quot;%1&quot; - не логическое значение (ожидалось &quot;true&quot; или &quot;false&quot;)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="640"/>
+        <source>Duplicate id: &quot;%1&quot;</source>
+        <translation>Переобъявление события &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="650"/>
+        <source>%1 tag must have exactly %2 child tag(s)</source>
+        <translation>У тэга &quot;%1&quot; должно быть ровно %2 дочерних(ий) тэг(а)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="660"/>
+        <source>%1 tag must have at least %2 child tag(s)</source>
+        <translation>У тэга &quot;%1&quot; должно быть как минимум %2 дочерних(ий) тэг(а)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="670"/>
+        <source>&quot;%1&quot; tag must have &quot;%2&quot; attribute.</source>
+        <translation>У тэга &quot;%1&quot; должен быть аттрибут &quot;%2&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="680"/>
+        <source>Expected &quot;%1&quot; tag, got &quot;%2&quot;.</source>
+        <translation>Ожидался тэг &quot;%1&quot;, найден - &quot;%2&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="694"/>
+        <source>Attribute &quot;%1&quot; of the tag &quot;%2&quot; must not be empty.</source>
+        <translation>Атрибут &quot;%1&quot; тэга &quot;%2&quot; не может быть пустым.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="87"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="99"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/triggersFactory.cpp" line="72"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/triggersFactory.cpp" line="84"/>
+        <source>No such event: %1</source>
+        <translation>Нет такого события: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/valuesFactory.cpp" line="54"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/valuesFactory.cpp" line="67"/>
+        <source>No such object: %1</source>
+        <translation>Нет такого объекта: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/valuesFactory.cpp" line="78"/>
+        <source>Object &quot;%1&quot; has no property &quot;%1&quot;</source>
+        <translation>У объекта &quot;%1&quot; нет свойства &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -298,6 +408,14 @@
     </message>
 </context>
 <context>
+    <name>twoDModel::constraints::ConstraintsChecker</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/constraintsChecker.cpp" line="55"/>
+        <source>Error while parsing constraints: %1</source>
+        <translation>Ошибка чтения ограничений: %1</translation>
+    </message>
+</context>
+<context>
     <name>twoDModel::robotModel::TwoDRobotModel</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/robotModel/twoDRobotModel.cpp" line="57"/>
@@ -357,74 +475,74 @@
 <context>
     <name>twoDModel::view::D2ModelWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="114"/>
         <source>Black</source>
         <translation>Черный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="114"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="114"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="114"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="114"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="143"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="152"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="144"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="153"/>
         <source>Do you really want to clear scene?</source>
         <translation>Вы действительно хотите очистить сцену?</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="146"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="155"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="147"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="156"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="360"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="369"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="360"/>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="380"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="369"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="389"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="380"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="389"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="748"/>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="749"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="757"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="758"/>
         <source>No wheel</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="754"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="763"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>

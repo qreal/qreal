@@ -12,7 +12,7 @@ namespace details {
 class ConditionsFactory
 {
 public:
-	ConditionsFactory(Events &events, Variables &variables, const Objects &objects);
+	ConditionsFactory(Events &events, const Variables &variables, const Objects &objects, StatusReporter &status);
 
 	/// Produces new condition instance that always returnes @arg value.
 	Condition constant(bool value) const;
@@ -60,9 +60,12 @@ public:
 	Condition timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event) const;
 
 private:
+	void reportError(const QString &message);
+
 	Events &mEvents;
-	Variables &mVariables;
+	const Variables &mVariables;
 	const Objects &mObjects;
+	StatusReporter &mStatus;
 };
 
 }

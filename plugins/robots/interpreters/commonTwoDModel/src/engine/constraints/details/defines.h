@@ -14,14 +14,19 @@ class Event;
 class StatusReporter : public QObject
 {
 	Q_OBJECT
+
 signals:
 	/// Emitted when <success> tag triggered.
 	void success();
 
 	/// Emitted when <fail> tag triggered.
 	void fail(const QString &message);
+
+	/// Emitted when checker program written incorrectly with the reason as parameter.
+	void checkerError(const QString &message);
 };
 
+/// Represents logical operations that can be used for concatenating conditions.
 enum class Glue
 {
 	And = 0

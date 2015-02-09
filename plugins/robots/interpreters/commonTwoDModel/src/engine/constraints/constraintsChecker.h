@@ -20,6 +20,7 @@ namespace constraints {
 /// first must be parsed using parseConstraints() method and then checkConstraints() method may be called
 /// any number of times (each timeline tick for example). If some constraints violated fail() signal will be emitted.
 /// If checker thinks that robot`s behaviour is correct and the goal is reached success() signal will be emitted.
+/// Also always checkerError() can be emitted if checker program contains runtime errors.
 class ConstraintsChecker : public QObject
 {
 	Q_OBJECT
@@ -46,6 +47,9 @@ signals:
 	/// Emitted when robot violates some restriction.
 	/// @param message The reason why checker thinks robot failed that may be reported to user.
 	void fail(const QString &message);
+
+	/// Emitted when checker program written incorrectly with the reason as parameter.
+	void checkerError(const QString &message);
 
 private:
 	void reportParserError(const QString &message);

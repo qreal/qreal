@@ -42,6 +42,8 @@ public:
 	Trigger dropEvent(const QString &id) const;
 
 private:
+	void reportError(const QString &message);
+
 	Events &mEvents;
 	Variables &mVariables;
 	StatusReporter &mStatus;

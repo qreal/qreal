@@ -6,9 +6,10 @@ using namespace twoDModel::constraints::details;
 
 const QString typeOfNull = "undefined";
 
-ValuesFactory::ValuesFactory(Variables &variables, const Objects &objects)
+ValuesFactory::ValuesFactory(Variables &variables, const Objects &objects, StatusReporter &status)
 	: mVariables(variables)
 	, mObjects(objects)
+	, mStatus(status)
 {
 }
 
@@ -16,7 +17,6 @@ Value ValuesFactory::invalidValue() const
 {
 	return []() { return QVariant(); };
 }
-
 
 Value ValuesFactory::intValue(int value) const
 {
@@ -37,7 +37,9 @@ Value ValuesFactory::variableValue(const QString &name) const
 {
 	return [this, name]() {
 		if (!mVariables.contains(name)) {
-			/// @todo: Show error;
+			// We do not mind the situation when trying to read non-declared varible
+			// because really can`t manage the order in which Qt will call event checking,
+			// so some variables (for example counters) can be checked before setted.
 			return QVariant();
 		}
 
@@ -49,7 +51,7 @@ Value ValuesFactory::typeOf(const QString &objectId) const
 {
 	return [this, objectId]() {
 		if (!mObjects.contains(objectId)) {
-			/// @todo: Show error;
+			reportError(QObject::tr("No such object: %1"));
 			return typeOfNull;
 		}
 
@@ -62,7 +64,7 @@ Value ValuesFactory::objectState(const QString &objectId, const QString &propert
 {
 	return [this, objectId, property]() {
 		if (!mObjects.contains(objectId)) {
-			/// @todo: Show error;
+			reportError(QObject::tr("No such object: %1"));
 			return QVariant();
 		}
 
@@ -73,7 +75,7 @@ Value ValuesFactory::objectState(const QString &objectId, const QString &propert
 
 		const int index = object->metaObject()->indexOfProperty(qPrintable(property));
 		if (index < 0) {
-			/// @todo: Show error;
+			reportError(QObject::tr("Object \"%1\" has no property \"%1\""));
 			return QVariant();
 		}
 
@@ -84,4 +86,9 @@ Value ValuesFactory::objectState(const QString &objectId, const QString &propert
 Value ValuesFactory::timestamp(const utils::TimelineInterface &timeline) const
 {
 	return [&timeline]() { return timeline.timestamp(); };
+}
+
+void ValuesFactory::reportError(const QString &message)
+{
+	emit mStatus.checkerError(message);
 }

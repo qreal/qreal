@@ -43,8 +43,12 @@ Trigger TriggersFactory::setVariable(const QString &name, const QVariant &value)
 Trigger TriggersFactory::addToVariable(const QString &name, const QVariant &value) const
 {
 	return [this, name, value]() {
+		if (!mVariables.contains(name)) {
+			mVariables[name] = QVariant();
+		}
+
 		QVariant sum;
-		/// @todo: We may calculate of string and int, for example!
+		/// @todo: We may add int to string, for example!
 		switch (value.type()) {
 		case QVariant::Int:
 			sum = mVariables[name].toInt() + value.toInt();
@@ -65,7 +69,8 @@ Trigger TriggersFactory::setUpEvent(const QString &id) const
 {
 	return [this, id]() {
 		if (!mEvents.contains(id)) {
-			/// @todo: Show error;
+			reportError(QObject::tr("No such event: %1"));
+			return;
 		}
 
 		mEvents[id]->setUp();
@@ -76,9 +81,15 @@ Trigger TriggersFactory::dropEvent(const QString &id) const
 {
 	return [this, id]() {
 		if (!mEvents.contains(id)) {
-			/// @todo: Show error;
+			reportError(QObject::tr("No such event: %1"));
+			return;
 		}
 
 		mEvents[id]->drop();
 	};
+}
+
+void TriggersFactory::reportError(const QString &message)
+{
+	emit mStatus.checkerError(message);
 }
