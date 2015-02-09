@@ -171,7 +171,8 @@ QVariant LuaInterpreter::operateOnIndexingExpression(const QSharedPointer<core::
 	if (as<ast::IndexingExpression>(indexingExpression)->table()->is<ast::Identifier>()) {
 		auto name = as<ast::Identifier>(as<ast::IndexingExpression>(indexingExpression)->table())->name();
 		if (semanticAnalyzer.type(as<ast::IndexingExpression>(indexingExpression)->indexer())->is<types::Number>()) {
-			auto index = interpret(as<ast::IndexingExpression>(indexingExpression)->indexer(), semanticAnalyzer).toInt();
+			auto index = interpret(as<ast::IndexingExpression>(indexingExpression)->indexer(), semanticAnalyzer)
+					.toInt();
 
 			auto table = mIdentifierValues.value(name).value<QStringList>();
 			if (table.size() <= index) {

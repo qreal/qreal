@@ -6,7 +6,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qrRepo {
 namespace details {

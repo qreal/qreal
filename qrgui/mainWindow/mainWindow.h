@@ -95,8 +95,9 @@ public:
 			, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, const QPersistentModelIndex &index
 			, const int &role);
-	void openReferenceList(const QPersistentModelIndex &index, const QString &referenceType, const QString &propertyValue
-			, int role);
+	void openReferenceList(const QPersistentModelIndex &index, const QString &referenceType
+			, const QString &propertyValue, int role);
+
 	virtual void openSettingsDialog(const QString &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);

@@ -1,6 +1,6 @@
 #include "valuesSerializer.h"
 
-#include "../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
 
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
@@ -146,7 +146,8 @@ QDomElement ValuesSerializer::serializeIdList(const QString &tagName, const IdLi
 	return result;
 }
 
-QDomElement ValuesSerializer::serializeNamedVariantsMap(const QString &tagName, QMap<QString, QVariant> const &map, QDomDocument &document)
+QDomElement ValuesSerializer::serializeNamedVariantsMap(const QString &tagName, QMap<QString, QVariant> const &map
+		, QDomDocument &document)
 {
 	QDomElement result = document.createElement(tagName);
 

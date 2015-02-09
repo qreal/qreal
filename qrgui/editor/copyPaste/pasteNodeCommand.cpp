@@ -71,7 +71,8 @@ void PasteNodeCommand::restoreElement()
 	mScene->models().graphicalModelAssistApi().setProperties(mResult, mNodeData.graphicalProperties);
 	mScene->models().graphicalModelAssistApi().setPosition(mResult, newGraphicalPos());
 	if (mCopiedIds->contains(mNodeData.parentId)) {
-		mScene->models().graphicalModelAssistApi().changeParent(mResult, mCopiedIds->value(mNodeData.parentId), newPos());
+		mScene->models().graphicalModelAssistApi().changeParent(mResult
+				, mCopiedIds->value(mNodeData.parentId), newPos());
 	}
 
 	NodeElement *element = mScene->getNodeById(mResult);

@@ -589,7 +589,8 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mElementMouseGesturesMap[diagram][element];\n"
 		<< "}\n\n"
 
-		<< "QList<qReal::EditorInterface::ExplosionData>" << mPluginName << "Plugin::explosions(const QString &diagram, "
+		<< "QList<qReal::EditorInterface::ExplosionData>" << mPluginName 
+				<< "Plugin::explosions(const QString &diagram, "
 		<< "const QString &element) const \n{\n"
 		<< "\treturn mExplosionsMap[diagram][element];\n"
 		<< "}\n\n";
@@ -825,7 +826,8 @@ void XmlCompiler::generateGroupsXML(OutFile &out)
 
 void XmlCompiler::generateEnumValues(OutFile &out)
 {
-	out() << "QList<QPair<QString, QString>> " << mPluginName << "Plugin::getEnumValues(const QString &name) const \n{\n";
+	out() << "QList<QPair<QString, QString>> " << mPluginName 
+			<< "Plugin::getEnumValues(const QString &name) const \n{\n";
 
 	EnumValuesGenerator generator;
 	bool isNotFirst = false;

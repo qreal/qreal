@@ -41,8 +41,8 @@ IdList RepoApi::findElementsByName(const QString &name, bool sensitivity, bool r
 	return mRepository.findElementsByName(name, sensitivity, regExpression);
 }
 
-qReal::IdList RepoApi::elementsByPropertyContent(const QString &propertyContent, bool sensitivity,
-		bool regExpression) const
+qReal::IdList RepoApi::elementsByPropertyContent(const QString &propertyContent, bool sensitivity
+		, bool regExpression) const
 {
 	return mRepository.elementsByPropertyContent(propertyContent, sensitivity, regExpression);
 }

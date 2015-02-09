@@ -1,6 +1,7 @@
-﻿#pragma once
+#pragma once
 
-#include "../qrkernel/roles.h"
+#include <qrkernel/roles.h>
+
 #include "commonRepoApi.h"
 
 namespace qrRepo {
@@ -34,7 +35,9 @@ public:
 	virtual qReal::Id logicalId(const qReal::Id &id) const = 0;
 
 	virtual qReal::IdList temporaryRemovedLinksAt(const qReal::Id &id, const QString &direction) const = 0;
-	virtual void setTemporaryRemovedLinks(const qReal::Id &id, const qReal::IdList &value, const QString &direction) = 0;
+	virtual void setTemporaryRemovedLinks(const qReal::Id &id, const qReal::IdList &value
+			, const QString &direction) = 0;
+
 	virtual void removeTemporaryRemovedLinks(const qReal::Id &id) = 0;
 
 	virtual void copyProperties(const qReal::Id &dest, const qReal::Id &src) = 0;

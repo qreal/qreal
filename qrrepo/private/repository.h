@@ -2,8 +2,9 @@
 
 #include <QtCore/QHash>
 
-#include "../../qrkernel/definitions.h"
-#include "../../qrkernel/ids.h"
+#include <qrkernel/definitions.h>
+#include <qrkernel/ids.h>
+
 #include "classes/graphicalObject.h"
 #include "classes/logicalObject.h"
 #include "qrRepoGlobal.h"

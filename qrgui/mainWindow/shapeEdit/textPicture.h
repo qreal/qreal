@@ -24,7 +24,9 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 
 	QDomElement setFontToDoc(QDomDocument &document, const QString &domName);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
+
 	void readFont(const QDomElement &docItem);
 
 private:

@@ -23,7 +23,8 @@ public:
 	virtual void drawScalingRects(QPainter* painter);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 private:
 	int mStartAngle;

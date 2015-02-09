@@ -2,7 +2,7 @@
 
 #include <QtCore/QDebug>
 
-#include "../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
 #include "singleXmlSerializer.h"
 
 using namespace qReal;
@@ -140,7 +140,8 @@ void Repository::setParent(const Id &id, const Id &parent)
 			if (!mObjects[parent]->children().contains(id))
 				mObjects[parent]->addChild(id);
 		} else {
-			throw Exception("Repository: Adding nonexistent parent " + parent.toString() + " to  object " + id.toString());
+			throw Exception("Repository: Adding nonexistent parent " + parent.toString()
+					+ " to  object " + id.toString());
 		}
 	} else {
 		throw Exception("Repository: Adding parent " + parent.toString() + " to nonexistent object " + id.toString());
@@ -199,7 +200,8 @@ void Repository::removeParent(const Id &id)
 			mObjects[id]->setParent(Id());
 			mObjects[parent]->removeChild(id);
 		} else {
-			throw Exception("Repository: Removing nonexistent parent " + parent.toString() + " from object " + id.toString());
+			throw Exception("Repository: Removing nonexistent parent " + parent.toString()
+					+ " from object " + id.toString());
 		}
 	} else {
 		throw Exception("Repository: Removing parent from nonexistent object " + id.toString());
@@ -212,7 +214,8 @@ void Repository::removeChild(const Id &id, const Id &child)
 		if (mObjects.contains(child)) {
 			mObjects[id]->removeChild(child);
 		} else {
-			throw Exception("Repository: removing nonexistent child " + child.toString() + " from object " + id.toString());
+			throw Exception("Repository: removing nonexistent child " + child.toString()
+					+ " from object " + id.toString());
 		}
 	} else {
 		throw Exception("Repository: removing child " + child.toString() + " from nonexistent object " + id.toString());
@@ -270,7 +273,8 @@ bool Repository::hasProperty(const Id &id, const QString &name, bool sensitivity
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name, sensitivity, regExpression);
 	} else {
-		throw Exception("Repository: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
+		throw Exception("Repository: Checking the existence of a property '" + name
+				+ "' of nonexistent object " + id.toString());
 	}
 }
 

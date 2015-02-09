@@ -475,7 +475,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 			if (newParent && dynamic_cast<NodeElement*>(newParent)) {
 				if (!canBeContainedBy(newParent->id(), id)) {
 					QString text;
-					text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
+					text += "Element of type \"" + id.element() + "\" can not be a child of \""
+							+ newParent->id().element() + "\"";
+
 					QMessageBox::critical(0, "Error!", text);
 					return;
 				}

@@ -5,7 +5,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-#include "../../qrkernel/roles.h"
+#include <qrkernel/roles.h>
+
 #include "classes/object.h"
 #include "valuesSerializer.h"
 

@@ -24,7 +24,8 @@ public:
 
 	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(const QRect &rect);
 	void setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 private:
 	graphicsUtils::LineImpl mLineImpl;

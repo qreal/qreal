@@ -4,7 +4,8 @@
 #include <QtCore/QDir>
 
 /// Utility to compress and decompress folder uzing qCompress function.
-class FolderCompressor {
+class FolderCompressor
+{
 public:
 	/// A recursive function that scans all files inside the source folder
 	/// and serializes all files in a row of file names and compressed

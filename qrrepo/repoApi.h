@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtCore/QSet>
 
@@ -160,8 +160,11 @@ private:
 	RepoApi(const RepoApi &other);  // Copying is not allowed.
 	RepoApi& operator =(const RepoApi &);  // Assigning is not allowed.
 
-	void addToIdList(const qReal::Id &target, const QString &listName, const qReal::Id &data, const QString &direction = QString());
-	void removeFromList(const qReal::Id &target, const QString &listName, const qReal::Id &data, const QString &direction = QString());
+	void addToIdList(const qReal::Id &target, const QString &listName, const qReal::Id &data
+			, const QString &direction = QString());
+
+	void removeFromList(const qReal::Id &target, const QString &listName, const qReal::Id &data
+			, const QString &direction = QString());
 
 	qReal::IdList links(const qReal::Id &id, const QString &direction) const;
 	void removeLinkEnds(const QString &endName, const qReal::Id &id);

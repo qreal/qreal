@@ -32,7 +32,8 @@ public:
 	QSharedPointer<types::TypeExpression> finalType() const;
 
 	/// Constrains a variable with possible types of other variable, with respect of given generalizations table.
-	void constrain(const QSharedPointer<TypeVariable> &other, const GeneralizationsTableInterface &generalizationsTable);
+	void constrain(const QSharedPointer<TypeVariable> &other
+			, const GeneralizationsTableInterface &generalizationsTable);
 
 	/// Constrains a variable with a list of possible types, with respect of given generalizations table. Follows the
 	/// same rules as other overload of constrain().

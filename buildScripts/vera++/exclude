@@ -1,13 +1,9 @@
 buildScripts
 installer
-qrrepo
-qrutils
-plugins
-qrtest
-bin
 docs
 umlDocumentation
-qrmc
 thirdparty
-.moc
-.ui
+plugins
+qrtest
+qrutils
+qrmc

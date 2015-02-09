@@ -1,7 +1,8 @@
 #include "graphicalObject.h"
 
-#include "../../../qrkernel/exception/exception.h"
-#include "../valuesSerializer.h"
+#include <qrkernel/exception/exception.h>
+
+#include "qrrepo/private/valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;

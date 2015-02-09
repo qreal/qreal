@@ -37,8 +37,8 @@ public:
 	explicit Lexer(TokenPatterns<TokenType> const &patterns, QList<Error> &errors)
 		: mPatterns(patterns), mErrors(errors)
 	{
-		// Doing syntax check of lexeme regexps and searching for whitespace and newline definitions, they will be needed
-		// later for error recovery.
+		// Doing syntax check of lexeme regexps and searching for whitespace and newline definitions, they will be
+		// needed later for error recovery.
 		for (const TokenType tokenType : mPatterns.allPatterns()) {
 			const QRegularExpression &regExp = mPatterns.tokenPattern(tokenType);
 			if (!regExp.isValid()) {

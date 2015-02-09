@@ -1,6 +1,7 @@
 #include "singleXmlSerializer.h"
 
-#include "../../qrutils/outFile.h"
+#include <qrutils/outFile.h>
+
 #include "classes/logicalObject.h"
 #include "classes/graphicalObject.h"
 #include "valuesSerializer.h"
@@ -30,7 +31,8 @@ void SingleXmlSerializer::exportToXml(const QString &targetFile, QHash<qReal::Id
 	doc.save(out(), 4);
 }
 
-void SingleXmlSerializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void SingleXmlSerializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomElement &root
+		, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement diagram = doc.createElement("diagram");
 
@@ -54,7 +56,8 @@ void SingleXmlSerializer::exportDiagram(const Id &diagramId, QDomDocument &doc, 
 	root.appendChild(diagram);
 }
 
-void SingleXmlSerializer::exportElement(const Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void SingleXmlSerializer::exportElement(const Id &id, QDomDocument &doc, QDomElement &root
+		, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement element = doc.createElement("element");
 	element.setAttribute("name", objects[id]->properties()["name"].toString());
@@ -71,7 +74,8 @@ void SingleXmlSerializer::exportElement(const Id &id, QDomDocument &doc, QDomEle
 	root.appendChild(element);
 }
 
-void SingleXmlSerializer::exportChildren(const Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void SingleXmlSerializer::exportChildren(const Id &id, QDomDocument &doc, QDomElement &root
+		, QHash<qReal::Id, Object*> const &objects)
 {
 	Object *object = objects[id];
 	int size = object->children().size();
@@ -89,7 +93,8 @@ void SingleXmlSerializer::exportChildren(const Id &id, QDomDocument &doc, QDomEl
 	root.appendChild(children);
 }
 
-void SingleXmlSerializer::exportProperties(const Id&id, QDomDocument &doc, QDomElement &root, QHash<Id, Object *> const &objects)
+void SingleXmlSerializer::exportProperties(const Id&id, QDomDocument &doc, QDomElement &root
+		, QHash<Id, Object *> const &objects)
 {
 	QDomElement props = doc.createElement("properties");
 

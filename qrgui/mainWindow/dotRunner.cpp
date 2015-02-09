@@ -106,7 +106,7 @@ void DotRunner::parseDOTCoordinates()
 {
 	QString data = QString(mData);
 	QStringList list = data.split("\n", QString::SkipEmptyParts);
-	QRegExp regexp("\\s*(\\w+)\\s\\[pos=\"(\\d+\\,\\d+)\"\\,\\swidth=\"(\\d+\\.\\d+)\",\\sheight=\"(\\d+\\.\\d+)\"\\]" );
+	QRegExp regexp("\\s*(\\w+)\\s\\[pos=\"(\\d+\\,\\d+)\"\\,\\swidth=\"(\\d+\\.\\d+)\",\\sheight=\"(\\d+\\.\\d+)\"\\]");
 
 	foreach (const QString &string, list) {
 		if (string.indexOf(regexp) == -1) {

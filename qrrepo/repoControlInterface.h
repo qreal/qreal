@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../qrkernel/roles.h"
+#include <qrkernel/roles.h>
 
 namespace qrRepo {
 
@@ -22,7 +22,8 @@ public:
 
 	/// virtual, for returning IdList of elements that have input property content
 	/// @param name - string that should be contained by names of elements that have input property content
-	virtual qReal::IdList elementsByPropertyContent(const QString &propertyContent, bool sensitivity, bool regExp) const = 0;
+	virtual qReal::IdList elementsByPropertyContent(const QString &propertyContent, bool sensitivity
+			, bool regExp) const = 0;
 
 	/// virtual, for import *.qrs file into current project
 	/// @param importedFile - file to be imported

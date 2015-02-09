@@ -2,11 +2,12 @@
 
 #include <QtCore/QDebug>
 
-#include "../../../qrkernel/exception/exception.h"
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/ids.h>
+
 #include "logicalObject.h"
 #include "graphicalObject.h"
-#include "../valuesSerializer.h"
+#include "qrrepo/private/valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;

@@ -164,7 +164,8 @@ void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 
 	if (src && reconnectSrc) {
 		const int targetLinePoint = firstOutsidePoint(true);
-		const qreal newFrom = src->portId(mEdge->mapToItem(src, mEdge->line()[targetLinePoint]), mEdge->fromPortTypes());
+		const qreal newFrom = src->portId(mEdge->mapToItem(src, mEdge->line()[targetLinePoint])
+				, mEdge->fromPortTypes());
 		mEdge->setFromPort(newFrom);
 	}
 
@@ -312,7 +313,10 @@ bool LineHandler::checkPort(const QPointF &pos, bool isStart) const
 		return true;
 	}
 
-	const qreal port = node->portId(mEdge->mapToItem(node, pos), isStart ? mEdge->fromPortTypes() : mEdge->toPortTypes());
+	const qreal port = node->portId(mEdge->mapToItem(node, pos), isStart
+			? mEdge->fromPortTypes()
+			: mEdge->toPortTypes());
+
 	if (port < 0) {
 		return true;
 	}

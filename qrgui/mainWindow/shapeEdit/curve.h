@@ -23,7 +23,8 @@ public:
 	virtual void changeDragState(qreal x, qreal y);
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 private:
 	QPointF mC1;

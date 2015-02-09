@@ -28,7 +28,8 @@ public:
 	virtual void setPenColor(const QString &text);
 	virtual void setBrushStyle(const QString &text);
 	virtual void setBrushColor(const QString &text);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 private:
 	qreal mTmpX1;

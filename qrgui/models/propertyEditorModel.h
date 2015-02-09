@@ -27,7 +27,9 @@ public:
 
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-	void setSourceModels(QAbstractItemModel * const logicalSourceModel, QAbstractItemModel * const graphicalSourceModel);
+	void setSourceModels(QAbstractItemModel * const logicalSourceModel
+				, QAbstractItemModel * const graphicalSourceModel);
+
 	void setModelIndexes(const QModelIndex &logicalModelIndex, const QModelIndex &graphicalModelIndex);
 	void clearModelIndexes();
 

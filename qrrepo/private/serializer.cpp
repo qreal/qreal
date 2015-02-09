@@ -5,11 +5,11 @@
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
 
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrkernel/exception/exception.h"
-#include "../../qrutils/outFile.h"
-#include "../../qrutils/xmlUtils.h"
-#include "../../qrutils/fileSystemUtils.h"
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
+#include <qrutils/outFile.h>
+#include <qrutils/xmlUtils.h>
+#include <qrutils/fileSystemUtils.h>
 
 #include "folderCompressor.h"
 #include "classes/logicalObject.h"

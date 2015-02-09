@@ -27,7 +27,8 @@ public:
 	QGraphicsTextItem const& getText();
 	virtual void setItemZValue(int zValue);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, const QPoint &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 protected:
 	int mX1;
