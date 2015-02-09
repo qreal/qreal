@@ -26,14 +26,10 @@ isEmpty(QREAL_EDITOR_PATH) {
 	error(Please set QREAL_EDITOR_PATH variable in a .pro file of your editor as a path to that editor .xml file relative to plugins/)
 }
 
-# QMake generates debug and release makefiles and executes this step for debug and release configurations even when exact configuration is specified
-# Since there is no point to build debug and release versions of qrxc, we simply skip this step if no qrxc exists.
-exists($$QRXC) {
-	if (equals(QMAKE_CXX, "g++")) {
-		QMAKE_LFLAGS += -Wl,-E
-	}
-
-	include(extraCompilers.pri)
-
-	include(editorsSdk.pri)
+if (equals(QMAKE_CXX, "g++")) {
+	QMAKE_LFLAGS += -Wl,-E
 }
+
+include(extraCompilers.pri)
+
+include(editorsSdk.pri)
