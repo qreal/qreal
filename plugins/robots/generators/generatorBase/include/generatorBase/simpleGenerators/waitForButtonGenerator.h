@@ -13,7 +13,6 @@ public:
 	WaitForButtonGenerator(qrRepo::RepoApi const &repo
 			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
-			, QString const &buttonTemplate
 			, QObject *parent);
 };
 

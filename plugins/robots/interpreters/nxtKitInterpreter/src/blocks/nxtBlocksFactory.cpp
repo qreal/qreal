@@ -61,14 +61,8 @@ qReal::interpretation::Block *NxtBlocksFactory::produceBlock(qReal::Id const &el
 	} else if (elementMetatypeIs(element, "NxtWaitForSound")) {
 		return new WaitForSoundSensorBlock(mRobotModelManager->model());
 
-	} else if (elementMetatypeIs(element, "NxtWaitForEnter")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "EnterButtonPort");
-	} else if (elementMetatypeIs(element, "NxtWaitForEscape")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "EscapeButtonPort");
-	} else if (elementMetatypeIs(element, "NxtWaitForLeft")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "LeftButtonPort");
-	} else if (elementMetatypeIs(element, "NxtWaitForRight")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "RightButtonPort");
+	} else if (elementMetatypeIs(element, "NxtWaitForButton")) {
+		return new WaitForButtonBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtDrawPixel")) {
 		return new DrawPixelBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtDrawLine")) {
@@ -99,10 +93,7 @@ qReal::IdList NxtBlocksFactory::providedBlocks() const
 		, id("NxtWaitForEncoder")
 		, id("NxtWaitForLight")
 		, id("NxtWaitForSound")
-		, id("NxtWaitForEnter")
-		, id("NxtWaitForEscape")
-		, id("NxtWaitForLeft")
-		, id("NxtWaitForRight")
+		, id("NxtWaitForButton")
 
 		, id("NxtDrawPixel")
 		, id("NxtDrawLine")

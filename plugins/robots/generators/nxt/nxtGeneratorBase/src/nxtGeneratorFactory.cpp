@@ -38,14 +38,8 @@ generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGener
 		, generatorBase::GeneratorCustomizer &customizer)
 {
 	QString const elementType = id.element();
-	if (elementType == "NxtWaitForEnter") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
-	} else if (elementType == "NxtWaitForEscape") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEscape.t", this);
-	} else if (elementType == "NxtWaitForLeft") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
-	} else if (elementType == "NxtWaitForRight") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
+	if (elementType == "NxtWaitForButton") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "ClearScreen") {
 		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("DrawPixel")) {
