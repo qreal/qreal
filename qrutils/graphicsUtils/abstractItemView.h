@@ -3,7 +3,7 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtGui/QKeyEvent>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace graphicsUtils
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 #include <QtXml/QDomDocument>
 

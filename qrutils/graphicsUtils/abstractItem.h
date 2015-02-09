@@ -8,7 +8,7 @@
 #include <QtCore/QPair>
 #include <QtCore/QList>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 const int drift = 15;
 const int resizeDrift = 10;

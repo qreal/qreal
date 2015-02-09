@@ -6,7 +6,7 @@
 #include <QtCore/QTimer>
 
 #include "progress.h"
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace invocation
 {

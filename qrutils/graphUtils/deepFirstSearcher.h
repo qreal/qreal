@@ -2,7 +2,7 @@
 
 #include <QtCore/QSet>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 #include <qrrepo/logicalRepoApi.h>
 
 namespace utils {

@@ -565,7 +565,8 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mDiagramNodeNameMap[diagram];\n"
 		<< "}\n\n"
 
-		<< "QString " << mPluginName << "Plugin::elementName(const QString &diagram, const QString &element) const\n{\n"
+		<< "QString " << mPluginName
+				<< "Plugin::elementName(const QString &diagram, const QString &element) const\n{\n"
 		<< "\treturn mElementsNameMap[diagram][element];\n"
 		<< "}\n\n"
 
@@ -579,7 +580,8 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mPropertiesDescriptionMap[diagram][element][property];\n"
 		<< "}\n\n"
 
-		<< "QString " << mPluginName << "Plugin::propertyDisplayedName(const QString &diagram, const QString &element, "
+		<< "QString " << mPluginName
+				<< "Plugin::propertyDisplayedName(const QString &diagram, const QString &element, "
 		<< "const QString &property) const\n{\n"
 		<< "\treturn mPropertiesDisplayedNamesMap[diagram][element][property];\n"
 		<< "}\n\n"
@@ -589,7 +591,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mElementMouseGesturesMap[diagram][element];\n"
 		<< "}\n\n"
 
-		<< "QList<qReal::EditorInterface::ExplosionData>" << mPluginName 
+		<< "QList<qReal::EditorInterface::ExplosionData>" << mPluginName
 				<< "Plugin::explosions(const QString &diagram, "
 		<< "const QString &element) const \n{\n"
 		<< "\treturn mExplosionsMap[diagram][element];\n"
@@ -826,7 +828,7 @@ void XmlCompiler::generateGroupsXML(OutFile &out)
 
 void XmlCompiler::generateEnumValues(OutFile &out)
 {
-	out() << "QList<QPair<QString, QString>> " << mPluginName 
+	out() << "QList<QPair<QString, QString>> " << mPluginName
 			<< "Plugin::getEnumValues(const QString &name) const \n{\n";
 
 	EnumValuesGenerator generator;

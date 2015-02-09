@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 

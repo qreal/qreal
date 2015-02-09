@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "scalableCoordinate.h"
-#include "utilsDeclSpec.h"
+#include "qrutils/scalableCoordinate.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 

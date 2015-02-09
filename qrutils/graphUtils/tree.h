@@ -2,7 +2,7 @@
 
 #include <QtCore/QList>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace qReal
 {

@@ -4,7 +4,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QTextStream>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 

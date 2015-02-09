@@ -2,7 +2,7 @@
 
 #include <QtXml/QDomDocument>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 
