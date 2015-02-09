@@ -1,4 +1,4 @@
-﻿#include "sensorViewer.h"
+#include "sensorViewer.h"
 
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
@@ -200,8 +200,8 @@ void SensorViewer::drawBackground(QPainter *painter, const QRectF &rect)
 
 void SensorViewer::mouseMoveEvent(QMouseEvent *event)
 {
-	const QPointF pivot = mPointsDataProcessor->pointOfVerticalIntersection(mapToScene(event->pos().x(),
-			event->pos().y()));
+	const QPointF pivot = mPointsDataProcessor->pointOfVerticalIntersection(mapToScene(event->pos().x()
+			, event->pos().y()));
 	qreal valueUnderCursor = mPointsDataProcessor->pointToAbsoluteValue(pivot.y());
 
 	mMarker->setPos(pivot);

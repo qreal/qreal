@@ -2,7 +2,7 @@
 #include <QtCore/QDebug>
 
 #include "abstractGenerator.h"
-#include "../nameNormalizer.h"
+#include "nameNormalizer.h"
 
 using namespace qReal;
 using namespace utils;

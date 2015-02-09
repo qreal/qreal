@@ -3,7 +3,7 @@
 #include <QtWidgets/QWidget>
 
 #include "painterInterface.h"
-#include "../utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 
 namespace graphicsUtils
 {

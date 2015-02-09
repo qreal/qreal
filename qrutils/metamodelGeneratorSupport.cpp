@@ -9,15 +9,15 @@
 #include "xmlUtils.h"
 #include "outFile.h"
 
-#include "../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 using namespace utils;
 
-MetamodelGeneratorSupport::MetamodelGeneratorSupport(ErrorReporterInterface *errorReporter,
-		qReal::gui::MainWindowInterpretersInterface *mainWindowInterface)
-		: mErrorReporter(errorReporter)
-		, mMainWindowInterface(mainWindowInterface)
+MetamodelGeneratorSupport::MetamodelGeneratorSupport(ErrorReporterInterface *errorReporter
+		, qReal::gui::MainWindowInterpretersInterface *mainWindowInterface)
+	: mErrorReporter(errorReporter)
+	, mMainWindowInterface(mainWindowInterface)
 {
 }
 
@@ -30,8 +30,8 @@ QDomDocument MetamodelGeneratorSupport::loadMetamodelFromFile(const QString &met
 	return xmlUtils::loadDocument(metamodelPath);
 }
 
-void MetamodelGeneratorSupport::saveMetamodelInFile(const QDomDocument &metamodel,
-		const QString &metamodelPath)
+void MetamodelGeneratorSupport::saveMetamodelInFile(const QDomDocument &metamodel
+		, const QString &metamodelPath)
 {
 	const int slashIndex = metamodelPath.lastIndexOf("/");
 	if (slashIndex > -1) {
@@ -67,8 +67,8 @@ void MetamodelGeneratorSupport::loadPlugin(const QString &directoryName
 	QApplication::processEvents();
 
 	const QRect screenRect = qApp->desktop()->availableGeometry();
-	progress->move(screenRect.width() / 2 - progressBarWidth / 2,
-			screenRect.height() / 2 - progressBarHeight / 2);
+	progress->move(screenRect.width() / 2 - progressBarWidth / 2
+			, screenRect.height() / 2 - progressBarHeight / 2);
 	progress->setFixedWidth(progressBarWidth);
 	progress->setFixedHeight(progressBarHeight);
 	progress->setRange(0, 100);
@@ -116,8 +116,8 @@ QDomElement MetamodelGeneratorSupport::diagramElement(const QDomDocument &metamo
 	return metamodel.elementsByTagName("diagram").at(0).toElement();
 }
 
-void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument metamodel,
-		const QString &sublevelName, QDomNodeList elements)
+void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument metamodel
+		, const QString &sublevelName, QDomNodeList elements)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
 
@@ -131,8 +131,8 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 	}
 }
 
-void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument metamodel,
-		const QString &sublevelName, const QDomElement &element)
+void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument metamodel
+		, const QString &sublevelName, const QDomElement &element)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
 
@@ -161,8 +161,8 @@ QDomDocument MetamodelGeneratorSupport::loadElementsFromString(const QString &el
 	return elements;
 }
 
-QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(const QDomDocument &metamodel,
-		bool isDisplayedName) const
+QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(const QDomDocument &metamodel
+		, bool isDisplayedName) const
 {
 	QDomElement diagram = diagramElement(metamodel);
 	QDomNodeList graphicTypes = diagram.elementsByTagName("graphicTypes");
@@ -181,9 +181,9 @@ QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(const Q
 }
 
 void MetamodelGeneratorSupport::appendTypesToElement(
-		QDomDocument parentDomDocument, QDomElement parent,
-		const QString &childName, const QString &prefix,
-		const QStringList &elementTypes)
+		QDomDocument parentDomDocument, QDomElement parent
+		, const QString &childName, const QString &prefix
+		, const QStringList &elementTypes)
 {
 	foreach (const QString &elementType, elementTypes) {
 		QDomElement child = parentDomDocument.createElement(childName);
@@ -192,10 +192,10 @@ void MetamodelGeneratorSupport::appendTypesToElement(
 	}
 }
 
-void MetamodelGeneratorSupport::generateProFile(QDomDocument metamodel,
-		const QString &baseMetamodelPath, const QString &qrealSourceFilesPath,
-		const QString &newMetamodelName,
-		const QString &newEditorPath, const QString &relativeNewEditorPath)
+void MetamodelGeneratorSupport::generateProFile(QDomDocument metamodel
+		, const QString &baseMetamodelPath, const QString &qrealSourceFilesPath
+		, const QString &newMetamodelName
+		, const QString &newEditorPath, const QString &relativeNewEditorPath)
 {
 	QDir().mkpath(newEditorPath);
 
@@ -208,8 +208,8 @@ void MetamodelGeneratorSupport::generateProFile(QDomDocument metamodel,
 		for (int i = 0; i < include.length(); i++) {
 			const QString includePath = ".." +
 					mergePaths(
-							baseMetamodelPath.mid(0, baseMetamodelPath.lastIndexOf("/")),
-							include.at(i).toElement().text()
+							baseMetamodelPath.mid(0, baseMetamodelPath.lastIndexOf("/"))
+							, include.at(i).toElement().text()
 					).mid(qrealSourceFilesPath.length() + 8);
 
 			include.at(i).toElement().childNodes().at(0).toText().setNodeValue(includePath);

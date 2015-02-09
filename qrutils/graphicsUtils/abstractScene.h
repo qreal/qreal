@@ -4,7 +4,7 @@
 
 #include "abstractItemView.h"
 #include "abstractItem.h"
-#include "../utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 
 namespace graphicsUtils
 {

@@ -10,8 +10,8 @@ class QRUTILS_EXPORT Number
 {
 public:
 	enum Type {
-		doubleType = 0,
-		intType
+		doubleType = 0
+		, intType
 	};
 
 public:

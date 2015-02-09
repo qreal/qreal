@@ -8,7 +8,8 @@ RectangleImpl::RectangleImpl()
 
 QRectF RectangleImpl::boundingRect(qreal x1, qreal y1, qreal x2, qreal y2, const int scalingDrift) const
 {
-	return QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 - y1)).adjusted(-scalingDrift, -scalingDrift, scalingDrift, scalingDrift);
+	return QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 - y1)).adjusted(-scalingDrift, -scalingDrift
+			, scalingDrift, scalingDrift);
 }
 
 QPainterPath RectangleImpl::shape(qreal x1, qreal y1, qreal x2, qreal y2, const int drift) const
@@ -50,7 +51,8 @@ void RectangleImpl::drawEllipseItem(QPainter *painter, qreal x1, qreal y1, qreal
 	painter->drawEllipse(calcRect(x1, y1, x2, y2));
 }
 
-void RectangleImpl::drawImageItemWithMirrored(QPainter *painter, qreal x1, qreal y1, qreal x2, qreal y2, const QImage &myImage)
+void RectangleImpl::drawImageItemWithMirrored(QPainter *painter, qreal x1, qreal y1, qreal x2, qreal y2
+		, const QImage &myImage)
 {
 	QImage image(myImage);
 	if(x2 > x1) {

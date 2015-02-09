@@ -16,7 +16,8 @@ class QRUTILS_EXPORT PluginManagerImplementation
 {
 public:
 	/// @param applicationDirPath - path to qrgui.exe
-	/// @param additionalPart - path to folder with plugins, usually "bin/plugins", for robots can be folder inside plugins folder
+	/// @param additionalPart - path to folder with plugins, usually "bin/plugins", for robots can be folder inside
+	///        plugins folder
 	PluginManagerImplementation(
 			const QString &applicationDirPath
 			, const QString &additionalPart = "plugins"

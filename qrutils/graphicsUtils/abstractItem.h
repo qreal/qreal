@@ -8,7 +8,7 @@
 #include <QtCore/QPair>
 #include <QtCore/QList>
 
-#include "../utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 
 const int drift = 15;
 const int resizeDrift = 10;
@@ -22,12 +22,12 @@ class QRUTILS_EXPORT AbstractItem : public QGraphicsItem
 {
 public:
 	enum DragState {
-		None,
-		TopLeft,
-		TopRight,
-		BottomLeft,
-		BottomRight,
-		Ctrl
+		None
+		, TopLeft
+		, TopRight
+		, BottomLeft
+		, BottomRight
+		, Ctrl
 	};
 
 	AbstractItem(QGraphicsItem* parent = 0);
@@ -57,7 +57,8 @@ public:
 	virtual void setBrushColor(const QString &text);
 	virtual void setBrush(const QString &brushStyle, const QString &brushColor);
 	virtual void setPen(const QString &penStyle, int width, const QString &penColor);
-	virtual void setPenBrush(const QString &penStyle, int width, const QString &penColor, const QString &brushStyle, const QString &brushColor);
+	virtual void setPenBrush(const QString &penStyle, int width, const QString &penColor, const QString &brushStyle
+			, const QString &brushColor);
 
 	QPointF getX1andY1(void);
 	QPointF getX2andY2(void);

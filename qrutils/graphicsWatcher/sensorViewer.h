@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtWidgets/QGraphicsView>
 #include <QtCore/QTimer>

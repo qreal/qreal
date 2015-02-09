@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QGraphicsItem>
 
-#include "../utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 #include "abstractItem.h"
 
 namespace graphicsUtils

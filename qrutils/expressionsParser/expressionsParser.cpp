@@ -250,8 +250,8 @@ Number *ExpressionsParser::parseTerm(const QString &stream, int &pos)
 				error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
 			}
 		} else {
-			error(unexpectedSymbol, QString::number(pos+1),
-				  "\'digit\' or \'letter\' or \'bracket\' or \'sign\'", QString(stream.at(pos)));
+			error(unexpectedSymbol, QString::number(pos + 1)
+					, "\'digit\' or \'letter\' or \'bracket\' or \'sign\'", QString(stream.at(pos)));
 		}
 		break;
 	}
@@ -425,8 +425,8 @@ bool ExpressionsParser::parseSingleComprasion(const QString &stream, int &pos)
 		break;
 	}
 
-	error(unexpectedSymbol, QString::number(pos+1), "=\',\'!\',\'>\',\'<",
-		  QString(stream.at(pos)));
+	error(unexpectedSymbol, QString::number(pos + 1), "=\',\'!\',\'>\',\'<"
+			, QString(stream.at(pos)));
 	return false;
 }
 
@@ -470,8 +470,8 @@ bool ExpressionsParser::parseDisjunction(const QString &stream, int &pos)
 		if (isDigit(stream.at(pos)) || isLetter(stream.at(pos))) {
 			res = parseSingleComprasion(stream, pos);
 		} else {
-			error(unexpectedSymbol, QString::number(pos+1),
-				  "\'digit\' or \'letter\' or \'sign\'", QString(stream.at(pos)));
+			error(unexpectedSymbol, QString::number(pos + 1)
+				, "\'digit\' or \'letter\' or \'sign\'", QString(stream.at(pos)));
 		}
 		break;
 	}
@@ -630,14 +630,17 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos
 	switch (type) {
 	case unexpectedEndOfStream:
 		mHasParseErrors = true;
-		mErrorReporter->addCritical(QObject::tr("Unexpected end of stream at %1. Mb you forget \';\'?").arg(pos), mCurrentId);
+		mErrorReporter->addCritical(QObject::tr("Unexpected end of stream at %1. Mb you forget \';\'?").arg(pos)
+				, mCurrentId);
 		break;
 	case unexpectedSymbol:
 		mHasParseErrors = true;
-		mErrorReporter->addCritical(QObject::tr("Unexpected symbol at %1 : expected %2, got %3").arg(pos, expected, got), mCurrentId);
+		mErrorReporter->addCritical(QObject::tr("Unexpected symbol at %1 : expected %2, got %3").arg(pos, expected, got)
+				, mCurrentId);
 		break;
 	case typesMismatch:
-		mErrorReporter->addWarning(QObject::tr("Types mismatch at %1: %2 = %3. Possible loss of data").arg(pos, expected, got), mCurrentId);
+		mErrorReporter->addWarning(QObject::tr("Types mismatch at %1: %2 = %3. Possible loss of data")
+				.arg(pos, expected, got), mCurrentId);
 		break;
 	case unknownIdentifier:
 		mHasParseErrors = true;
@@ -659,7 +662,8 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos
 		mErrorReporter->addCritical(QObject::tr("No value of expression"), mCurrentId);
 		break;
 	case incorrectVariableDeclaration:
-		mErrorReporter->addWarning(QObject::tr("Incorrect variable declaration: use function block for it"), mCurrentId);
+		mErrorReporter->addWarning(QObject::tr("Incorrect variable declaration: use function block for it")
+				, mCurrentId);
 		break;
 	case unexpectedSymbolAfterTheEndOfExpression:
 		mHasParseErrors = true;

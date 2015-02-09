@@ -1,7 +1,8 @@
 #pragma once
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
-#include "../utilsDeclSpec.h"
+
+#include "utilsDeclSpec.h"
 
 namespace graphicsUtils
 {

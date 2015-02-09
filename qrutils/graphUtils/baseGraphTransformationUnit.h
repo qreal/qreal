@@ -43,8 +43,8 @@ protected:
 
 	/// Checks if node in model has all links to the current matched subgraph
 	/// as node in rule has
-	bool checkExistingLinks(const Id &nodeInModel, const Id &nodeInRule,
-			QHash<Id, Id> *linksToAddInMatch);
+	bool checkExistingLinks(const Id &nodeInModel, const Id &nodeInRule
+			, QHash<Id, Id> *linksToAddInMatch);
 
 	/// Performs a rollback in match algo, removes last added node to the current
 	/// matched subgraph.
@@ -60,8 +60,8 @@ protected:
 	/// Returns link id in model which has one of its ends given node in model
 	/// and correspond to link in rule and its ends and
 	/// returns root id if it can not be found
-	Id properLink(const Id &nodeInModel, const Id &linkInRule,
-			const Id &linkEndInR) const;
+	Id properLink(const Id &nodeInModel, const Id &linkInRule
+			, const Id &linkEndInR) const;
 
 	/// Get all links from given node in model which can correspond
 	/// given link in rule
@@ -86,8 +86,8 @@ protected:
 	QVariant property(const Id &id, const QString &propertyName) const;
 	virtual QMapIterator<QString, QVariant> propertiesIterator(const Id &id) const;
 	bool hasProperty(const Id &id, const QString &propertyName) const;
-	void setProperty(const Id &id, const QString &propertyName,
-			const QVariant &value) const;
+	void setProperty(const Id &id, const QString &propertyName
+			, const QVariant &value) const;
 	QHash<QString, QVariant> properties(const Id &id) const;
 
 	/// Functions for test elements for equality

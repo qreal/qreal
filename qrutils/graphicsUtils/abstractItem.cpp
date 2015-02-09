@@ -180,13 +180,21 @@ void AbstractItem::reshapeRectWithShift()
 
 void AbstractItem::changeDragState(qreal x, qreal y)
 {
-	if (QRectF(mapToScene(mX1, mY1), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
+	if (QRectF(mapToScene(mX1, mY1), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift
+			, resizeDrift).contains(QPointF(x, y)))
+	{
 		mDragState = TopLeft;
-	} else if (QRectF(mapToScene(mX2, mY2), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
+	} else if (QRectF(mapToScene(mX2, mY2), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift
+			, resizeDrift).contains(QPointF(x, y)))
+	{
 		mDragState = BottomRight;
-	} else if (QRectF(mapToScene(mX2, mY1), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
+	} else if (QRectF(mapToScene(mX2, mY1), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift
+			, resizeDrift).contains(QPointF(x, y)))
+	{
 		mDragState = TopRight;
-	} else if (QRectF(mapToScene(mX1, mY2), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
+	} else if (QRectF(mapToScene(mX1, mY2), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift
+			, resizeDrift).contains(QPointF(x, y)))
+	{
 		mDragState = BottomLeft;
 	} else {
 		mDragState = None;

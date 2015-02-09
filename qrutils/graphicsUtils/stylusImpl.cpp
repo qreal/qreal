@@ -42,7 +42,8 @@ QRectF StylusImpl::boundingRect(QList<AbstractItem *> listLine) const
 	return searchMaxMinCoord(listLine);
 }
 
-void StylusImpl::drawItem(QList<AbstractItem *> listLine, QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void StylusImpl::drawItem(QList<AbstractItem *> listLine, QPainter* painter, const QStyleOptionGraphicsItem* option
+		, QWidget* widget)
 {
 	foreach (AbstractItem *line, listLine) {
 		painter->setPen(line->pen());

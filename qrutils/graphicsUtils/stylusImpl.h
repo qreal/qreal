@@ -1,7 +1,9 @@
 #pragma once
+
 #include <QtGui/QPainter>
+
 #include "abstractItem.h"
-#include "../utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 
 namespace graphicsUtils
 {
@@ -13,7 +15,9 @@ public :
 	QRectF boundingRect(QList<AbstractItem *> listLine) const;
 	QPainterPath shape(QList<AbstractItem *> listLine) const;
 
-	void drawItem(QList<AbstractItem *> listLine, QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	void drawItem(QList<AbstractItem *> listLine, QPainter* painter, const QStyleOptionGraphicsItem* option
+			, QWidget* widget = 0);
+
 	void drawExtractionForItem(QList<AbstractItem *> listLine, QPainter* painter);
 	void drawFieldForResizeItem(QPainter* painter);
 	void drawScalingRects(QPainter* painter);

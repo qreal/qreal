@@ -38,7 +38,7 @@ invocation::InvocationState LongOperation::invocationResult() const
 
 void LongOperation::invoceSync(QThread::Priority priority)
 {
-  // TODO: start timer in another thread to get timeouts work
+	// TODO: start timer in another thread to get timeouts work
 	startInvocation(priority);
 	mThread->wait();
 }

@@ -29,19 +29,19 @@ public:
 
 protected:
 	enum ParseErrorType {
-		unexpectedEndOfStream,
-		unexpectedSymbol,
-		typesMismatch,
-		unknownIdentifier,
-		emptyProcess,
-		emptyCondition,
-		usingReservedVariable,
-		noExpression,
-		incorrectVariableDeclaration,
-		unexpectedSymbolAfterTheEndOfExpression,
-		unknownElementProperty,
-		unknownElementName,
-		divisionByZero
+		unexpectedEndOfStream
+		, unexpectedSymbol
+		, typesMismatch
+		, unknownIdentifier
+		, emptyProcess
+		, emptyCondition
+		, usingReservedVariable
+		, noExpression
+		, incorrectVariableDeclaration
+		, unexpectedSymbolAfterTheEndOfExpression
+		, unknownElementProperty
+		, unknownElementName
+		, divisionByZero
 	};
 
 protected:
@@ -76,7 +76,9 @@ protected:
 	bool parseConjunction(const QString &stream, int &pos);
 	bool parseDisjunction(const QString &stream, int &pos);
 
-	void error(const ParseErrorType &type, const QString &pos = "", const QString &expected = "", const QString &got = "");
+	void error(const ParseErrorType &type, const QString &pos = "", const QString &expected = ""
+			, const QString &got = "");
+
 	bool isEndOfStream(const QString &stream, int &pos);
 	bool checkForLetter(const QString &stream, int &pos);
 	bool checkForDigit(const QString &stream, int &pos);

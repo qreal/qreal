@@ -2,7 +2,7 @@
 
 #include <QtGui/QPainter>
 
-#include "../utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 
 namespace graphicsUtils {
 

@@ -55,7 +55,9 @@ bool BaseGraphTransformationUnit::checkRuleMatching(const IdList &elements)
 
 	const Id startElem = startElement();
 	if (startElem == Id::rootId()) {
-		report(tr("Rule '") + property(mRuleToFind, "ruleName").toString() + tr("' has not any appropriate nodes"), true);
+		report(tr("Rule '") + property(mRuleToFind, "ruleName").toString()
+				+ tr("' has not any appropriate nodes"), true);
+
 		mHasRuleSyntaxErr = true;
 		return false;
 	}
@@ -172,8 +174,8 @@ bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(const Id &nodeInMode
 	return res;
 }
 
-bool BaseGraphTransformationUnit::checkExistingLinks(const Id &nodeInModel,
-		const Id &nodeInRule, QHash<Id, Id> *linksToAddInMatch)
+bool BaseGraphTransformationUnit::checkExistingLinks(const Id &nodeInModel
+		, const Id &nodeInRule, QHash<Id, Id> *linksToAddInMatch)
 {
 	const IdList linksInRuleElement = linksInRule(nodeInRule);
 

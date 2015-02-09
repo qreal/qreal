@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 
 namespace invocation
 {
