@@ -201,6 +201,7 @@ qreal LineItem::alignedCoordinate(qreal coord, int coef, const int indexGrid) co
 QDomElement LineItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
+	AbstractItem::serialize(lineNode);
 	lineNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
 			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
 	lineNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
@@ -210,6 +211,7 @@ QDomElement LineItem::serialize(QDomDocument &document, const QPoint &topLeftPic
 
 void LineItem::deserialize(const QDomElement &element)
 {
+	AbstractItem::deserialize(element);
 	const QString beginStr = element.attribute("begin", "0:0");
 	QStringList splittedStr = beginStr.split(":");
 	int x = splittedStr[0].toInt();

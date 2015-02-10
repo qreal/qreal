@@ -46,6 +46,7 @@ void EllipseItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 QDomElement EllipseItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement ellipseNode = setPenBrushToDoc(document, "ellipse");
+	AbstractItem::serialize(ellipseNode);
 	ellipseNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
 			 + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
 	ellipseNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
@@ -55,6 +56,7 @@ QDomElement EllipseItem::serialize(QDomDocument &document, const QPoint &topLeft
 
 void EllipseItem::deserialize(const QDomElement &element)
 {
+	AbstractItem::deserialize(element);
 	const QString beginStr = element.attribute("begin", "0:0");
 	QStringList splittedStr = beginStr.split(":");
 	int x = splittedStr[0].toInt();
