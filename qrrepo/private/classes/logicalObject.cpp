@@ -2,12 +2,12 @@
 
 using namespace qrRepo::details;
 
-LogicalObject::LogicalObject(qReal::Id const &id)
+LogicalObject::LogicalObject(const qReal::Id &id)
 	: Object(id)
 {
 }
 
-LogicalObject::LogicalObject(QDomElement const &element)
+LogicalObject::LogicalObject(const QDomElement &element)
 	: Object(element)
 {
 }

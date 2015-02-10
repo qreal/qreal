@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-TimerGenerator::TimerGenerator(qrRepo::RepoApi const &repo
+TimerGenerator::TimerGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/timer.t", QList<Binding *>()
 			<< Binding::createConverting("@@DELAY@@", "Delay", customizer.factory()->intPropertyConverter(id, "Delay"))

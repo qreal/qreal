@@ -3,7 +3,7 @@
 using namespace trikKitInterpreter::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-TrikLed::TrikLed(DeviceInfo const &info, PortInfo const &port)
+TrikLed::TrikLed(const DeviceInfo &info, const PortInfo &port)
 	: interpreterBase::robotModel::robotParts::Device(info, port)
 {
 }

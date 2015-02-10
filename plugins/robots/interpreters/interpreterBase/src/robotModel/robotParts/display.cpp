@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-Display::Display(DeviceInfo const &info, PortInfo const &port)
+Display::Display(const DeviceInfo &info, const PortInfo &port)
 	: Device(info, port)
 {
 }

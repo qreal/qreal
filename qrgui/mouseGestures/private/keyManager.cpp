@@ -3,7 +3,7 @@
 #include <QtCore/QPointF>
 #include <QtCore/QString>
 
-static QString const strBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const QString strBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 using namespace qReal::gestures;
 
@@ -20,7 +20,7 @@ QString KeyManager::getKey(QList<QPoint> const &path)
 	if ((mLowerBound - mUpperBound) / iSize > unidimensionalLimit
 			|| (mRightBound - mLeftBound) / iSize > unidimensionalLimit
 	) {
-		for (QPoint const &point : path) {
+		for (const QPoint &point : path) {
 			if((mLowerBound - mUpperBound) / iSize < unidimensionalLimit) {
 				pntPath.setX((point.x() - mLeftBound) * iSize / (mRightBound - mLeftBound));
 				pntPath.setY(0);
@@ -50,7 +50,7 @@ void KeyManager::analysePoints(QList<QPoint> const &path)
 		mUpperBound = path[0].y();
 		mLowerBound = path[0].y();
 	}
-	for (QPoint const &pnt : path) {
+	for (const QPoint &pnt : path) {
 		if (pnt.x() < mLeftBound)
 			mLeftBound = pnt.x();
 		if (pnt.x() > mRightBound)

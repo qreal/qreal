@@ -17,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT ColorSensorBlue : public ColorSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	ColorSensorBlue(DeviceInfo const &info, PortInfo const &port);
+	ColorSensorBlue(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

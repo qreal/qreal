@@ -3,7 +3,7 @@
 
 using namespace utils;
 
-QString InFile::readAll(QString const &fileName)
+QString InFile::readAll(const QString &fileName)
 {
 	QFile file(fileName);
 	file.open(QIODevice::ReadOnly | QIODevice::Text);

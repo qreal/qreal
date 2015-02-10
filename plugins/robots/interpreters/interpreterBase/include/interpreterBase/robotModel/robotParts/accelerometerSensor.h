@@ -17,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT AccelerometerSensor : public ScalarSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	AccelerometerSensor(DeviceInfo const &info, PortInfo const &port);
+	AccelerometerSensor(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

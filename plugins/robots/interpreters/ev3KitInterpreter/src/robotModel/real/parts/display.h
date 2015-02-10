@@ -15,8 +15,8 @@ class Display : public robotModel::parts::Ev3Display
 	Q_OBJECT
 
 public:
-	Display(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Display(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void drawPixel(int x, int y) override;
@@ -26,7 +26,7 @@ public:
 
 	void drawCircle(int x, int y, int radius, bool filled) override;
 
-	void printText(int x, int y, QString const &text) override;
+	void printText(int x, int y, const QString &text) override;
 	void clearScreen() override;
 
 private:

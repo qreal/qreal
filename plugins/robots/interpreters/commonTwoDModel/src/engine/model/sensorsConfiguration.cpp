@@ -9,13 +9,13 @@
 using namespace twoDModel::model;
 using namespace interpreterBase::robotModel;
 
-SensorsConfiguration::SensorsConfiguration(QString const &robotModelName)
+SensorsConfiguration::SensorsConfiguration(const QString &robotModelName)
 	: mRobotModelName(robotModelName)
 {
 }
 
-void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device, Reason reason)
+void SensorsConfiguration::onDeviceConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
 	if (robotModel != mRobotModelName) {
 		// Ignoring external events
@@ -41,12 +41,12 @@ QPointF SensorsConfiguration::defaultPosition() const
 	return QPointF(robotWidth * 3 / 2, robotHeight / 2);
 }
 
-QPointF SensorsConfiguration::position(PortInfo const &port) const
+QPointF SensorsConfiguration::position(const PortInfo &port) const
 {
 	return mSensorsInfo[port].position;
 }
 
-void SensorsConfiguration::setPosition(PortInfo const &port, QPointF const &position)
+void SensorsConfiguration::setPosition(const PortInfo &port, const QPointF &position)
 {
 	if (!mathUtils::Geometry::eq(mSensorsInfo[port].position, position)) {
 		mSensorsInfo[port].position = position;
@@ -54,12 +54,12 @@ void SensorsConfiguration::setPosition(PortInfo const &port, QPointF const &posi
 	}
 }
 
-qreal SensorsConfiguration::direction(PortInfo const &port) const
+qreal SensorsConfiguration::direction(const PortInfo &port) const
 {
 	return mSensorsInfo[port].direction;
 }
 
-void SensorsConfiguration::setDirection(PortInfo const &port, qreal direction)
+void SensorsConfiguration::setDirection(const PortInfo &port, qreal direction)
 {
 	if (!mathUtils::Math::eq(mSensorsInfo[port].direction, direction)) {
 		mSensorsInfo[port].direction = direction;
@@ -67,7 +67,7 @@ void SensorsConfiguration::setDirection(PortInfo const &port, qreal direction)
 	}
 }
 
-DeviceInfo SensorsConfiguration::type(PortInfo const &port) const
+DeviceInfo SensorsConfiguration::type(const PortInfo &port) const
 {
 	return currentConfiguration(mRobotModelName, port);
 }
@@ -77,9 +77,9 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 	QDomElement sensorsElem = document.createElement("sensors");
 	robot.appendChild(sensorsElem);
 
-	for (PortInfo const &port: mSensorsInfo.keys()) {
-		DeviceInfo const device = currentConfiguration(mRobotModelName, port);
-		SensorInfo const sensor = mSensorsInfo.value(port);
+	for (const PortInfo &port: mSensorsInfo.keys()) {
+		const DeviceInfo device = currentConfiguration(mRobotModelName, port);
+		const SensorInfo sensor = mSensorsInfo.value(port);
 		QDomElement sensorElem = document.createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
 		sensorElem.setAttribute("port", port.toString());
@@ -94,7 +94,7 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 	robot.appendChild(sensorsElem);
 }
 
-void SensorsConfiguration::deserialize(QDomElement const &element)
+void SensorsConfiguration::deserialize(const QDomElement &element)
 {
 	if (element.isNull()) {
 		/// @todo Report error
@@ -105,19 +105,19 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 	QDomNodeList sensors = element.elementsByTagName("sensor");
 	for (int i = 0; i < sensors.count(); ++i) {
-		QDomElement const sensorNode = sensors.at(i).toElement();
+		const QDomElement sensorNode = sensors.at(i).toElement();
 
-		PortInfo const port = PortInfo::fromString(sensorNode.attribute("port"));
+		const PortInfo port = PortInfo::fromString(sensorNode.attribute("port"));
 
-		DeviceInfo const type = DeviceInfo::fromString(sensorNode.attribute("type"));
+		const DeviceInfo type = DeviceInfo::fromString(sensorNode.attribute("type"));
 
-		QString const positionStr = sensorNode.attribute("position", "0:0");
-		QStringList const splittedStr = positionStr.split(":");
-		qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
-		qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
-		QPointF const position = QPoint(x, y);
+		const QString positionStr = sensorNode.attribute("position", "0:0");
+		const QStringList splittedStr = positionStr.split(":");
+		const qreal x = static_cast<qreal>(splittedStr[0].toDouble());
+		const qreal y = static_cast<qreal>(splittedStr[1].toDouble());
+		const QPointF position = QPoint(x, y);
 
-		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
+		const qreal direction = sensorNode.attribute("direction", "0").toDouble();
 
 		deviceConfigurationChanged(mRobotModelName, port, DeviceInfo(), Reason::loading);
 		deviceConfigurationChanged(mRobotModelName, port, type, Reason::loading);
@@ -132,7 +132,7 @@ SensorsConfiguration::SensorInfo::SensorInfo()
 {
 }
 
-SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position, qreal direction)
+SensorsConfiguration::SensorInfo::SensorInfo(const QPointF &position, qreal direction)
 	: position(position)
 	, direction(direction)
 	, isNull(false)

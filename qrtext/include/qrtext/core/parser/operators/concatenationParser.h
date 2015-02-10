@@ -17,7 +17,7 @@ class ConcatenationParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parsers to concatenate.
-	ConcatenationParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
+	ConcatenationParser(const ParserRef<TokenType> &parser1, const ParserRef<TokenType> &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}

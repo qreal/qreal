@@ -4,6 +4,8 @@ DESTDIR = $$PWD/../../bin
 
 TARGET = qrgui-thirdparty
 
+CONFIG += c++11
+
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc

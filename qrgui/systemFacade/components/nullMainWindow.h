@@ -19,7 +19,7 @@ class QRGUI_SYSTEM_FACADE_EXPORT NullMainWindow : public QObject
 public:
 	NullMainWindow(ErrorReporterInterface &errorReporter, SystemEvents &events);
 	NullMainWindow(ErrorReporterInterface &errorReporter, SystemEvents &events
-			, ProjectManagementInterface const &projectManager, GraphicalModelAssistInterface const &graphicalModel);
+			, const ProjectManagementInterface &projectManager, const GraphicalModelAssistInterface &graphicalModel);
 	~NullMainWindow();
 
 	void selectItem(const Id &graphicalId) override;
@@ -94,7 +94,7 @@ private:
 
 	ErrorReporterInterface &mErrorReporter;
 	SystemEvents &mEvents;
-	GraphicalModelAssistInterface const *mGraphicalModel;
+	const GraphicalModelAssistInterface *mGraphicalModel;
 	Id mActiveId;
 	QDockWidget *mLogicalModelDock;  // Takes ownership
 	QDockWidget *mGraphicalModelDock;  // Takes ownership

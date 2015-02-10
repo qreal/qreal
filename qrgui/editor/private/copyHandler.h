@@ -37,7 +37,7 @@ private:
 	 * @param destination Node to that childrens of source will be copied.
 	 * @param source Node that children will be copied.
 	 */
-	void copyChildren(NodeElement const &destination, NodeElement const &source) const;
+	void copyChildren(const NodeElement &destination, const NodeElement &source) const;
 
 	/**
 	 * TODO: make realization
@@ -45,14 +45,14 @@ private:
 	 * @param destination Node to that edges will be copied from source.
 	 * @param source Node that edges will be copied.
 	 */
-	void copyEdges(NodeElement const &destination, NodeElement const &source) const;
+	void copyEdges(const NodeElement &destination, const NodeElement &source) const;
 
 	/**
 	 * Copies properties of source to destination using GraphicalModelAssistApi.
 	 * @param destination Node to that properties will be copied from source.
 	 * @param source Node that properties will be copied.
 	 */
-	void copyProperties(NodeElement const &destination, NodeElement const &source) const;
+	void copyProperties(const NodeElement &destination, const NodeElement &source) const;
 
 	/// Node that is actually dealt with.
 	NodeElement &mNode;

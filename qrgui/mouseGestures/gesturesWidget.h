@@ -23,7 +23,7 @@ public:
 	explicit GesturesWidget(QWidget *parent = 0);
 	~GesturesWidget();
 
-	void draw(QString const &paths);
+	void draw(const QString &paths);
 	Id currentElement() const;
 	void setElements(QList<QPair<QString, Id> > const &elements);
 

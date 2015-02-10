@@ -15,7 +15,7 @@ public:
 
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator Object that contains all needed information for a plugin, like refs to models.
-	virtual void init(PluginConfigurator const &configurator)
+	virtual void init(const PluginConfigurator &configurator)
 	{
 		Q_UNUSED(configurator);
 	}

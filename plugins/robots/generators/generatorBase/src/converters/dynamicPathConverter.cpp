@@ -2,13 +2,13 @@
 
 using namespace generatorBase::converters;
 
-DynamicPathConverter::DynamicPathConverter(QString const &pathToTemplates, QString const &pathFromRoot)
+DynamicPathConverter::DynamicPathConverter(const QString &pathToTemplates, const QString &pathFromRoot)
 	: TemplateParametrizedConverter(pathToTemplates)
 	, mPathFromRoot(pathFromRoot)
 {
 }
 
-QString DynamicPathConverter::convert(QString const &data) const
+QString DynamicPathConverter::convert(const QString &data) const
 {
 	QString mutablePath = mPathFromRoot;
 	return readTemplate(mutablePath.replace("@@DATA@@", data));

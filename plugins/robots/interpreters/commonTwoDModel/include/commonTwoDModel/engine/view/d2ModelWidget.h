@@ -57,16 +57,16 @@ public:
 	D2ModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
-	SensorItem *sensorItem(interpreterBase::robotModel::PortInfo const &port);
-	void setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible);
+	SensorItem *sensorItem(const interpreterBase::robotModel::PortInfo &port);
+	void setSensorVisible(const interpreterBase::robotModel::PortInfo &port, bool isVisible);
 
-	void loadXml(QDomDocument const &worldModel);
+	void loadXml(const QDomDocument &worldModel);
 
 signals:
 	/// Emitted each time when user closes 2D model window.
 	void widgetClosed();
 
-	void robotWasIntersectedByWall(bool isNeedStop, QPointF const &oldPos);
+	void robotWasIntersectedByWall(bool isNeedStop, const QPointF &oldPos);
 
 	/// Emitted when such features as motor or sensor noise were
 	///enabled or disabled by user
@@ -84,8 +84,8 @@ protected:
 	void keyPressEvent(QKeyEvent *event) override;
 	void closeEvent(QCloseEvent *event) override;
 
-	void onDeviceConfigurationChanged(QString const &robotModel
-			, interpreterBase::robotModel::PortInfo const &port
+	void onDeviceConfigurationChanged(const QString &robotModel
+			, const interpreterBase::robotModel::PortInfo &port
 			, const interpreterBase::robotModel::DeviceInfo &device
 			, Reason reason) override;
 
@@ -160,11 +160,11 @@ private:
 	QPushButton *currentPortButton();
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(RobotItem *robotItem, interpreterBase::robotModel::PortInfo const &port);
+	void reinitSensor(RobotItem *robotItem, const interpreterBase::robotModel::PortInfo &port);
 
-	void setValuePenColorComboBox(QColor const &penColor);
+	void setValuePenColorComboBox(const QColor &penColor);
 	void setValuePenWidthSpinBox(int width);
-	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
+	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
 
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);

@@ -9,9 +9,9 @@ namespace simple {
 class WaitForAccelerometerBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForAccelerometerBlockGenerator(qrRepo::RepoApi const &repo
+	WaitForAccelerometerBlockGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

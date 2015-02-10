@@ -23,14 +23,14 @@ class COMMON_TWO_D_MODEL_EXPORT Marker : public interpreterBase::robotModel::rob
 	Q_CLASSINFO("friendlyName", tr("Marker"))
 
 public:
-	Marker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Marker(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	/// Moves the marker of the 2D model robot down to the floor.
 	/// The robot will draw its trace on the floor after that.
 	/// If the marker of another color is already drawing at the moment it will be replaced.
-	void down(QColor const &color);
+	void down(const QColor &color);
 
 	/// Lifts the marker of the 2D model robot up.
 	/// The robot stops drawing its trace on the floor after that.

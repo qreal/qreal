@@ -95,7 +95,7 @@ public:
 	virtual ConnectionState connectionState() const = 0;
 
 	/// Returns current device configuration which is used to list all configured devices and use them.
-	virtual ConfigurationInterface const &configuration() const = 0;
+	virtual const ConfigurationInterface &configuration() const = 0;
 
 	/// Lists all available ports for that model.
 	virtual QList<PortInfo> availablePorts() const = 0;
@@ -109,11 +109,11 @@ public:
 	virtual QList<PortInfo> configurablePorts() const = 0;
 
 	/// Returns a list of devices that are allowed to be connected on a given port.
-	virtual QList<DeviceInfo> allowedDevices(PortInfo const &port) const = 0;
+	virtual QList<DeviceInfo> allowedDevices(const PortInfo &port) const = 0;
 
 	/// Adds a device on a given port to pending configuration. Configuration is actualized by applyConfiguration()
 	/// call. If deviceInfo is empty, clears configuration on that port. If there is no such port, does nothing.
-	virtual void configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo) = 0;
+	virtual void configureDevice(const PortInfo &port, const DeviceInfo &deviceInfo) = 0;
 
 	/// Uploads current configuration on a robot (as soon as it becomes connected). Emits allDevicesConfigured() when
 	/// done (note that if some device does not respond, it may not emit this signal). Can emit immediately or after
@@ -154,7 +154,7 @@ signals:
 	/// immediately after connectToRobot() call.
 	/// @param success - true, if connected successfully.
 	/// @param errorString - if connection failed, contains string to show to user.
-	void connected(bool success, QString const &errorString);
+	void connected(bool success, const QString &errorString);
 
 	/// Emitted when robot is disconnected. Not emitted when connection attempt fails.
 	void disconnected();

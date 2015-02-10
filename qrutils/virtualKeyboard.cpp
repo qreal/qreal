@@ -22,13 +22,13 @@ void VirtualKeyboard::show()
 
 void VirtualKeyboard::showWindows8Keyboard()
 {
-	QString const programFilesPath(qgetenv("PROGRAMFILES").replace("\\", "/"));
-	QString const tabTipPath = QString("%1/Common Files/microsoft shared/ink/TabTip.exe").arg(programFilesPath);
+	const QString programFilesPath(qgetenv("PROGRAMFILES").replace("\\", "/"));
+	const QString tabTipPath = QString("%1/Common Files/microsoft shared/ink/TabTip.exe").arg(programFilesPath);
 	if (QFileInfo(tabTipPath).exists()) {
 		QDesktopServices::openUrl(QUrl("file:///" + tabTipPath));
 	} else {
-		QString const windowsDirectoryPath(qgetenv("WINDIR").replace("\\", "/"));
-		QString const oskPath = QString("%1/system32/osk.exe").arg(windowsDirectoryPath);
+		const QString windowsDirectoryPath(qgetenv("WINDIR").replace("\\", "/"));
+		const QString oskPath = QString("%1/system32/osk.exe").arg(windowsDirectoryPath);
 		if (QFileInfo(oskPath).exists()) {
 			QDesktopServices::openUrl(QUrl("file:///" + oskPath));
 		}

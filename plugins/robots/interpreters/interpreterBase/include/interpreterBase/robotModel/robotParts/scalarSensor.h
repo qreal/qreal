@@ -15,7 +15,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT ScalarSensor : public AbstractSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	ScalarSensor(DeviceInfo const &info, PortInfo const &port);
+	ScalarSensor(const DeviceInfo &info, const PortInfo &port);
 
 signals:
 	/// Emitted when new data is ready. Note that concrete sensors may work in "pull" and in "push" mode. In "pull"

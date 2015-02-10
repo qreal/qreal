@@ -15,7 +15,7 @@
 using namespace ev3KitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotId)
+Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotId)
 	: CommonRobotModel(kitId, robotId)
 {
 	QList<DeviceInfo> const inputPortConnections = {

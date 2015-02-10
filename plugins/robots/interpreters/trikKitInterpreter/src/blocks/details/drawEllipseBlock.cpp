@@ -12,10 +12,10 @@ DrawEllipseBlock::DrawEllipseBlock(interpreterBase::robotModel::RobotModelInterf
 void DrawEllipseBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
 	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
-	int const x = eval<int>("XCoordinateEllipse");
-	int const y = eval<int>("YCoordinateEllipse");
-	int const width = eval<int>("WidthEllipse");
-	int const height = eval<int>("HeightEllipse");
+	const int x = eval<int>("XCoordinateEllipse");
+	const int y = eval<int>("YCoordinateEllipse");
+	const int width = eval<int>("WidthEllipse");
+	const int height = eval<int>("HeightEllipse");
 	if (!errorsOccured()) {
 		trikDisplay->drawEllipse(x, y, width, height);
 		emit done(mNextBlockId);

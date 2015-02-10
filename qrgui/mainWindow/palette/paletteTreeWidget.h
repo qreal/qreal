@@ -18,13 +18,13 @@ class PaletteTreeWidget : public QTreeWidget
 
 public:
 	PaletteTreeWidget(PaletteTree &parent, MainWindow &mainWindow
-			, EditorManagerInterface const &editorManagerProxy
+			, const EditorManagerInterface &editorManagerProxy
 			, bool editable);
 
 	void addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups
 			, QMap<QString, QString> const &descriptions
 			, bool hideIfEmpty
-			, QString const &diagramFriendlyName
+			, const QString &diagramFriendlyName
 			, bool sort);
 
 	/// Collapses all nodes of all current trees.
@@ -38,11 +38,11 @@ public:
 
 	void editItem(QTreeWidgetItem * const item);
 
-	void setElementVisible(Id const &metatype, bool visible);
+	void setElementVisible(const Id &metatype, bool visible);
 
 	void setVisibleForAllElements(bool visible);
 
-	void setElementEnabled(Id const &metatype, bool enabled);
+	void setElementEnabled(const Id &metatype, bool enabled);
 
 	void setEnabledForAllElements(bool enabled);
 
@@ -61,7 +61,7 @@ private:
 	/// Adds item type to some editor's tree.
 	/// @param data Palette element properties (such as title and icon)
 	/// @param parent Parent of item's group.
-	void addItemType(PaletteElement const &data, QTreeWidgetItem *parent);
+	void addItemType(const PaletteElement &data, QTreeWidgetItem *parent);
 
 	/// Recursive procedure that collapses node with his children.
 	/// @param item Node which will be collapsed with all his children.
@@ -75,13 +75,13 @@ private:
 	/// Needs EditorManager instance to work,
 	/// but qSort() prohibits it to be a member of an object.
 	/// So making it static does the trick.
-	static bool idLessThan(Id const &s1, Id const &s2);
+	static bool idLessThan(const Id &s1, const Id &s2);
 
 	/// Same as idLessThan (compares ids of given operands)
-	static bool paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2);
+	static bool paletteElementLessThan(const PaletteElement &s1, const PaletteElement &s2);
 
 	/// Made static to be used inside idLessThan()
-	static EditorManagerInterface const *mEditorManager;  // Does not take ownership
+	static const EditorManagerInterface *mEditorManager;  // Does not take ownership
 	MainWindow &mMainWindow;
 	PaletteTree &mPaletteTree;
 	bool mEditable;

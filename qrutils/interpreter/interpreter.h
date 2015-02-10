@@ -28,12 +28,12 @@ public:
 	/// @param blocksTable - an entity that will produce logic of the block by its id.
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
 	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
-	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+	Interpreter(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, BlocksTableInterface &blocksTable
 			, qrtext::LanguageToolboxInterface &languageToolbox
-			, Id const &initialNodeType);
+			, const Id &initialNodeType);
 
 	~Interpreter();
 
@@ -50,7 +50,7 @@ signals:
 
 private slots:
 	void threadStopped();
-	void newThread(qReal::Id const &startBlockId);
+	void newThread(const qReal::Id &startBlockId);
 
 private:
 	enum InterpreterState {
@@ -60,9 +60,9 @@ private:
 
 	void addThread(Thread * const thread);
 
-	void reportError(QString const &message);
+	void reportError(const QString &message);
 
-	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
@@ -73,7 +73,7 @@ private:
 	/// Reference to a parser to be able to clear parser state when starting interpretation.
 	qrtext::LanguageToolboxInterface &mLanguageToolbox;
 
-	Id const mInitialNodeType;
+	const Id mInitialNodeType;
 };
 
 }

@@ -9,9 +9,9 @@ namespace simple {
 class GotoSimpleGenerator : public BindingGenerator
 {
 public:
-	GotoSimpleGenerator(qrRepo::RepoApi const &repo
+	GotoSimpleGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

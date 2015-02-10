@@ -51,7 +51,7 @@ void QRealApplication::logMouse(QWidget * const target, QMouseEvent * const even
 	}
 
 	QWidget * const window = target->window();
-	QPoint const pos = target->mapTo(window, event->pos());
+	const QPoint pos = target->mapTo(window, event->pos());
 	QLOG_TRACE() << "Mouse"
 			<< (event->type() == QEvent::MouseButtonPress ? "press" : "release")
 			<< "in" << pos << "with" << event->button() << "target"
@@ -65,7 +65,7 @@ void QRealApplication::logWheel(QWidget * const target, QWheelEvent * const even
 	}
 
 	QWidget * const window = target->window();
-	QPoint const pos = target->mapTo(window, event->pos());
+	const QPoint pos = target->mapTo(window, event->pos());
 	QLOG_TRACE() << "Wheel with delta"
 			<< event->angleDelta()
 			<< "in" << pos << "target"
@@ -86,7 +86,7 @@ void QRealApplication::logDrop(QWidget * const target, QDropEvent * const event)
 	}
 
 	QWidget * const window = target->window();
-	QPoint const pos = target->mapTo(window, event->pos());
+	const QPoint pos = target->mapTo(window, event->pos());
 	QLOG_TRACE() << "Drop in"
 			<< "in" << pos << "with target"
 			<< window->windowTitle() << window->size();

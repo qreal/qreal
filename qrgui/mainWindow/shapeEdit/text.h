@@ -11,10 +11,10 @@ class Text : public Item
 {
 public:
 	Text(bool isDynamic = false);
-	Text(int x, int y, QString const &text = "text", bool isDynamic = false);
-	Text(Text const &other);
+	Text(int x, int y, const QString &text = "text", bool isDynamic = false);
+	Text(const Text &other);
 	virtual Item* clone();
-	void init(int x, int y, QString const &text);
+	void init(int x, int y, const QString &text);
 	bool isDynamicText();
 	virtual void setIsDynamicText(bool isDynamic);
 	virtual QRectF boundingRect() const;
@@ -27,7 +27,8 @@ public:
 	QGraphicsTextItem const& getText();
 	virtual void setItemZValue(int zValue);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 protected:
 	int mX1;

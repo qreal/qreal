@@ -9,14 +9,14 @@ namespace qrmc {
 	class EnumType : public NonGraphicType
 	{
 	public:
-		EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 
-		virtual bool init(QString const &context);
+		virtual bool init(const QString &context);
 		virtual Type* clone() const;
 
 		void print();
 
-		virtual QString generateEnums(QString const &lineTemplate) const;
+		virtual QString generateEnums(const QString &lineTemplate) const;
 
 	private:
 

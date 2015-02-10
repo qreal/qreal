@@ -5,7 +5,7 @@
 using namespace utils;
 using namespace qReal;
 
-QRealDialog::QRealDialog(QString const &id, QWidget *parent)
+QRealDialog::QRealDialog(const QString &id, QWidget *parent)
 	: QDialog(parent)
 	, mId(id)
 {

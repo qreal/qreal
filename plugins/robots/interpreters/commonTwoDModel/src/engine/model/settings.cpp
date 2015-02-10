@@ -26,7 +26,7 @@ bool Settings::realisticMotors() const
 
 void Settings::rereadNoiseSettings()
 {
-	bool const oldPhysics = mRealisticPhysics;
+	const bool oldPhysics = mRealisticPhysics;
 	mRealisticPhysics = qReal::SettingsManager::value("2DModelRealisticPhysics").toBool();
 	if (oldPhysics != mRealisticPhysics) {
 		emit physicsChanged(mRealisticPhysics);

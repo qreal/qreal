@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QPointF>
@@ -17,10 +17,10 @@ class PointsQueueProcessor
 public:
 	/// @param viewPortHeight takes amplitude for graphics without top and bottom bounds
 	/// @param leftLimit takes sceneRect.left() for deleting out_to_date points
-	PointsQueueProcessor(qreal const viewPortHeight, qreal const leftLimit);
+	PointsQueueProcessor(const qreal viewPortHeight, const qreal leftLimit);
 	~PointsQueueProcessor();
 
-	void addNewValue(qreal const newValue);
+	void addNewValue(const qreal newValue);
 	void clearData();
 
 	/// Shifts left points queue to animate plot
@@ -34,31 +34,31 @@ public:
 	void checkPeaks();
 
 	/// @return QPointF intersection point of (func y = X) and mainplot
-	QPointF pointOfVerticalIntersection(QPointF const &position) const;
+	QPointF pointOfVerticalIntersection(const QPointF &position) const;
 
-	void setViewParams(qreal const viewPortHeight, qreal const leftLimit);
+	void setViewParams(const qreal viewPortHeight, const qreal leftLimit);
 
 	/// get new position for KeyPoint
 	QPointF latestPosition() const;
 	qreal latestValue() const;
 
 	/// get points data to draw a plot
-	QList<QPointF> const &pointsBase() const;
+	const QList<QPointF> &pointsBase() const;
 
 	qreal minLimit() const;
 	qreal maxLimit() const;
 
-	qreal absoluteValueToPoint(qreal const value) const;
+	qreal absoluteValueToPoint(const qreal value) const;
 
-	qreal pointToAbsoluteValue(qreal const yValue) const;
+	qreal pointToAbsoluteValue(const qreal yValue) const;
 
 protected:
-	void recalcPointsQueue(qreal const oldMin, qreal const oldMax, qreal const oldViewHeight);
+	void recalcPointsQueue(const qreal oldMin, const qreal oldMax, const qreal oldViewHeight);
 	/// Removes last values if they have no difference
 	void filterLastValues();
 
-	qreal pointToAbsoluteValue(qreal const yValue, qreal const minValue
-			, qreal const maxValue, qreal const graphHeight) const;
+	qreal pointToAbsoluteValue(const qreal yValue, const qreal minValue
+			, const qreal maxValue, const qreal graphHeight) const;
 
 	QList<QPointF> mPointsQueue;
 	qreal mMinCurrent;

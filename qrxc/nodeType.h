@@ -38,8 +38,8 @@ private:
 	void generateSdf() const;
 
 	bool initPorts();
-	bool initPointPorts(QDomElement const &portsElement);
-	bool initLinePorts(QDomElement const &portsElement);
-	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
+	bool initPointPorts(const QDomElement &portsElement);
+	bool initLinePorts(const QDomElement &portsElement);
+	virtual bool initLabel(Label *label, const QDomElement &element, const int &count);
 	bool initBooleanProperties();
 };

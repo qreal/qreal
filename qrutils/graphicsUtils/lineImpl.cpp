@@ -8,10 +8,12 @@ LineImpl::LineImpl()
 
 QRectF LineImpl::boundingRect(qreal x1, qreal y1, qreal x2, qreal y2, qreal penWidth, const int drift) const
 {
-	return (QRectF(qMin(x1, x2) - penWidth, qMin(y1, y2) - penWidth, abs(x2 - x1) + penWidth, abs(y2 - y1) + penWidth).adjusted(-drift, -drift, drift, drift));
+	return (QRectF(qMin(x1, x2) - penWidth, qMin(y1, y2) - penWidth, abs(x2 - x1) + penWidth, abs(y2 - y1) + penWidth)
+			.adjusted(-drift, -drift, drift, drift));
 }
 
-QRectF LineImpl::realBoundingRectWithoutScene(qreal x1, qreal y1, qreal x2, qreal y2, qreal penWidth, const int drift) const
+QRectF LineImpl::realBoundingRectWithoutScene(qreal x1, qreal y1, qreal x2, qreal y2, qreal penWidth
+		, const int drift) const
 {
 	return boundingRect(x1, y1, x2, y2, penWidth, drift).adjusted(drift + penWidth, drift + penWidth, -drift, -drift);
 }
@@ -58,7 +60,8 @@ QPainterPath LineImpl::shape(const int drift, qreal x1, qreal y1, qreal x2, qrea
 	return path;
 }
 
-QPair<qreal, qreal> LineImpl::reshapeRectWithShiftForLine(qreal x1, qreal y1, qreal x2, qreal y2, qreal differenceX, qreal differenceY, qreal size)
+QPair<qreal, qreal> LineImpl::reshapeRectWithShiftForLine(qreal x1, qreal y1, qreal x2, qreal y2, qreal differenceX
+		, qreal differenceY, qreal size)
 {
 	if (differenceX > differenceY) {
 		if(x2 > x1)

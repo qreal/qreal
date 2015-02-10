@@ -2,13 +2,13 @@
 
 using namespace nxt::russianC;
 
-NxtRussianCMasterGenerator::NxtRussianCMasterGenerator(qrRepo::RepoApi const &repo
+NxtRussianCMasterGenerator::NxtRussianCMasterGenerator(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const utils::ParserErrorReporter &parserErrorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
 	: NxtMasterGeneratorBase(repo, errorReporter, parserErrorReporter
 			, robotModelManager, textLanguage, diagramId, generatorName)
 {

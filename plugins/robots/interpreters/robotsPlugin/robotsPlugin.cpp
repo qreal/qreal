@@ -8,7 +8,7 @@
 using namespace qReal;
 using namespace robotsPlugin;
 
-static int const gridWidth = 25; // Half of element size
+static const int gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
@@ -16,7 +16,7 @@ RobotsPlugin::RobotsPlugin()
 	mRobotsPluginFacade.reset(new interpreterCore::RobotsPluginFacade);
 }
 
-void RobotsPlugin::init(PluginConfigurator const &configurator)
+void RobotsPlugin::init(const PluginConfigurator &configurator)
 {
 	mRobotsPluginFacade->init(configurator);
 	SettingsManager::setValue("IndexGrid", gridWidth);

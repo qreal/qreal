@@ -5,8 +5,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-Display::Display(DeviceInfo const &info
-		, PortInfo const &port
+Display::Display(const DeviceInfo &info
+		, const PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: robotParts::Display(info, port)
 	, mEngine(engine)

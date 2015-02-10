@@ -3,7 +3,7 @@
 using namespace nxtKitInterpreter::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-NxtDisplay::NxtDisplay(DeviceInfo const &info, PortInfo const &port)
+NxtDisplay::NxtDisplay(const DeviceInfo &info, const PortInfo &port)
 	: interpreterBase::robotModel::robotParts::Display(info, port)
 {
 }

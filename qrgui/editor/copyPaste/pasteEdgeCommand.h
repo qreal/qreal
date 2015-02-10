@@ -12,8 +12,8 @@ class PasteEdgeCommand : public PasteCommand
 {
 public:
 	PasteEdgeCommand(EditorViewScene *scene
-			, EdgeData const &data
-			, QPointF const &offset
+			, const EdgeData &data
+			, const QPointF &offset
 			, bool isGraphicalCopy
 			, QHash<qReal::Id, qReal::Id> *copiedIds);
 	virtual ~PasteEdgeCommand() {}
@@ -24,7 +24,7 @@ protected:
 	virtual void restoreElement();
 
 private:
-	EdgeData const mEdgeData;
+	const EdgeData mEdgeData;
 	CreateElementCommand *mCreateCommand;
 };
 

@@ -15,8 +15,8 @@ class ColorSensorBlue : public interpreterBase::robotModel::robotParts::ColorSen
 	Q_OBJECT
 
 public:
-	ColorSensorBlue(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	ColorSensorBlue(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

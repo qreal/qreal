@@ -3,7 +3,7 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Button::Button(DeviceInfo const &info, PortInfo const &port)
+Button::Button(const DeviceInfo &info, const PortInfo &port)
 	: robotParts::Button(info, port)
 {
 }

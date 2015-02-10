@@ -14,8 +14,8 @@ class LineSensor : public robotModel::parts::TrikLineSensor
 	Q_OBJECT
 
 public:
-	LineSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	LineSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void init() override;

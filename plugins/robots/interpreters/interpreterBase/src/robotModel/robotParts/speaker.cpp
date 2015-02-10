@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-Speaker::Speaker(DeviceInfo const &info, PortInfo const &port)
+Speaker::Speaker(const DeviceInfo &info, const PortInfo &port)
 	: Device(info, port)
 {
 }

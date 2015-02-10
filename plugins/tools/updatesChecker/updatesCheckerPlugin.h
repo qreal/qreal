@@ -16,7 +16,7 @@ public:
 
 	QList<qReal::ActionInfo> actions() override;
 
-	void init(qReal::PluginConfigurator const &configurator) override;
+	void init(const qReal::PluginConfigurator &configurator) override;
 
 	QStringList defaultSettingsFiles() override;
 

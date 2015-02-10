@@ -5,7 +5,7 @@ using namespace qReal::commands;
 
 Controller::Controller()
 	: mGlobalStack(new UndoStack)
-	, mActiveStack(NULL)
+	, mActiveStack(nullptr)
 	, mModifiedState(false)
 	, mCanRedoState(true)
 	, mCanUndoState(true)
@@ -36,12 +36,12 @@ bool Controller::canRedo() const
 	return mCanRedoState;
 }
 
-void Controller::setActiveDiagram(Id const &diagramId)
+void Controller::setActiveDiagram(const Id &diagramId)
 {
 	if (diagramId != Id()) {
 		setActiveStack(mDiagramStacks[diagramId.toString()]);
 	} else {
-		setActiveStack(NULL);
+		setActiveStack(nullptr);
 	}
 	resetAll();
 }
@@ -51,7 +51,7 @@ void Controller::execute(commands::AbstractCommand *command)
 	execute(command, mActiveStack);
 }
 
-void Controller::execute(commands::AbstractCommand *command, Id const &diagramid)
+void Controller::execute(commands::AbstractCommand *command, const Id &diagramid)
 {
 	execute(command, mDiagramStacks[diagramid.toString()]);
 }
@@ -68,7 +68,7 @@ void Controller::execute(commands::AbstractCommand *command, UndoStack *stack)
 	}
 }
 
-void Controller::diagramOpened(Id const &diagramId)
+void Controller::diagramOpened(const Id &diagramId)
 {
 	if (diagramId.isNull()) {
 		return;
@@ -79,14 +79,14 @@ void Controller::diagramOpened(Id const &diagramId)
 	resetAll();
 }
 
-void Controller::diagramClosed(Id const &diagramId)
+void Controller::diagramClosed(const Id &diagramId)
 {
 	if (diagramId.isNull() || !mDiagramStacks.keys().contains(diagramId.toString())) {
 		return;
 	}
 
 	if (mActiveStack == mDiagramStacks[diagramId.toString()]) {
-		mActiveStack = NULL;
+		mActiveStack = nullptr;
 	}
 
 	delete mDiagramStacks[diagramId.toString()];
@@ -112,7 +112,7 @@ void Controller::resetModifiedState()
 
 void Controller::resetCanUndoState()
 {
-	bool const canUndo = (mActiveStack && mActiveStack->canUndo()) || mGlobalStack->canUndo();
+	const bool canUndo = (mActiveStack && mActiveStack->canUndo()) || mGlobalStack->canUndo();
 	if (canUndo != mCanUndoState) {
 		mCanUndoState = canUndo;
 		emit canUndoChanged(mCanUndoState);
@@ -121,7 +121,7 @@ void Controller::resetCanUndoState()
 
 void Controller::resetCanRedoState()
 {
-	bool const canRedo = (mActiveStack && mActiveStack->canRedo()) || mGlobalStack->canRedo();
+	const bool canRedo = (mActiveStack && mActiveStack->canRedo()) || mGlobalStack->canRedo();
 	if (canRedo != mCanRedoState) {
 		mCanRedoState = canRedo;
 		emit canRedoChanged(mCanRedoState);
@@ -171,15 +171,15 @@ void Controller::undo()
 
 UndoStack *Controller::selectActiveStack(bool forUndo)
 {
-	int const shift = forUndo ? -1 : 0;
-	int const diagramIndex = mActiveStack ? mActiveStack->index() + shift : -1;
-	int const globalIndex = mGlobalStack->index() + shift;
-	AbstractCommand const *diagramCommand = diagramIndex < 0 ? NULL
-			: dynamic_cast<AbstractCommand const *>(mActiveStack->command(diagramIndex));
-	AbstractCommand const *globalCommand = globalIndex < 0 ? NULL
-			: dynamic_cast<AbstractCommand const *>(mGlobalStack->command(globalIndex));
+	const int shift = forUndo ? -1 : 0;
+	const int diagramIndex = mActiveStack ? mActiveStack->index() + shift : -1;
+	const int globalIndex = mGlobalStack->index() + shift;
+	const AbstractCommand *diagramCommand = diagramIndex < 0 ? nullptr
+			: dynamic_cast<const AbstractCommand *>(mActiveStack->command(diagramIndex));
+	const AbstractCommand *globalCommand = globalIndex < 0 ? nullptr
+			: dynamic_cast<const AbstractCommand *>(mGlobalStack->command(globalIndex));
 	if (!diagramCommand && !globalCommand) {
-		return NULL;
+		return nullptr;
 	}
 	if (!diagramCommand) {
 		return mGlobalStack;
@@ -187,8 +187,8 @@ UndoStack *Controller::selectActiveStack(bool forUndo)
 	if (!globalCommand) {
 		return mActiveStack;
 	}
-	uint const diagramTimestamp = diagramCommand->timestamp();
-	uint const globalTimestamp = globalCommand->timestamp();
+	const uint diagramTimestamp = diagramCommand->timestamp();
+	const uint globalTimestamp = globalCommand->timestamp();
 	return forUndo == (diagramTimestamp < globalTimestamp) ? mGlobalStack : mActiveStack;
 }
 
@@ -197,7 +197,7 @@ void Controller::setActiveStack(UndoStack *stack)
 	mActiveStack = stack;
 }
 
-void Controller::connectStack(UndoStack const *stack)
+void Controller::connectStack(const UndoStack *stack)
 {
 	connect(stack, SIGNAL(cleanChanged(bool)), this, SLOT(resetModifiedState()));
 	connect(stack, SIGNAL(canRedoChanged(bool)), this, SLOT(resetCanRedoState()));

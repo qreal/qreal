@@ -31,7 +31,7 @@ public:
 
 	void setDirected(const bool directed);
 	void setMaster(NodeElement* const master);
-	void setEdgeType(qReal::Id const & edgeType);
+	void setEdgeType(const qReal::Id & edgeType);
 
 	void takePosition(int index, int maxIndex);
 

@@ -3,21 +3,21 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-EnumConverterBase::EnumConverterBase(QString const &pathToTemplatesDir
+EnumConverterBase::EnumConverterBase(const QString &pathToTemplatesDir
 		, QMap<QString, QString> const &valuesToTemplatePaths)
 	: TemplateParametrizedConverter(pathToTemplatesDir)
 	, mValuesToTemplates(valuesToTemplatePaths)
 {
 }
 
-void EnumConverterBase::addMapping(QString const &enumValue, QString const &templatePath)
+void EnumConverterBase::addMapping(const QString &enumValue, const QString &templatePath)
 {
 	mValuesToTemplates[enumValue] = templatePath;
 }
 
-QString EnumConverterBase::convert(QString const &data) const
+QString EnumConverterBase::convert(const QString &data) const
 {
-	foreach (QString const &value, mValuesToTemplates.keys()) {
+	foreach (const QString &value, mValuesToTemplates.keys()) {
 		if (value == data) {
 			return readTemplate(mValuesToTemplates[value]);
 		}

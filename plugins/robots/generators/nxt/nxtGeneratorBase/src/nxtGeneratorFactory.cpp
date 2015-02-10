@@ -14,11 +14,11 @@ using namespace nxt;
 using namespace nxt::simple;
 using namespace generatorBase::simple;
 
-NxtGeneratorFactory::NxtGeneratorFactory(qrRepo::RepoApi const &repo
+NxtGeneratorFactory::NxtGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, QString const &generatorName)
+		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
 	, mImages(pathToTemplates())
@@ -34,10 +34,10 @@ parts::Images &NxtGeneratorFactory::images()
 	return mImages;
 }
 
-generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGenerator(qReal::Id const &id
+generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGenerator(const qReal::Id &id
 		, generatorBase::GeneratorCustomizer &customizer)
 {
-	QString const elementType = id.element();
+	const QString elementType = id.element();
 	if (elementType == "NxtWaitForButton") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "ClearScreen") {

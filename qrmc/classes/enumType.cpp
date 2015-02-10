@@ -8,7 +8,7 @@ EnumType::EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::I
 {
 }
 
-bool EnumType::init(QString const &context)
+bool EnumType::init(const QString &context)
 {
 	Type::init(context);
 	IdList children = mApi->children(mId);
@@ -25,7 +25,7 @@ bool EnumType::init(QString const &context)
 
 Type* EnumType::clone() const
 {
-	EnumType *result = new EnumType(NULL, mApi, mId);
+	EnumType *result = new EnumType(nullptr, mApi, mId);
 	Type::copyFields(result);
 	result->mValues = mValues;
 	return result;
@@ -36,7 +36,7 @@ void EnumType::print()
 	qDebug() << "enum type" << mName;
 }
 
-QString EnumType::generateEnums(QString const &lineTemplate) const
+QString EnumType::generateEnums(const QString &lineTemplate) const
 {
 	QString enums;
 	QString line = lineTemplate;

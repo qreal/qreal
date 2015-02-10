@@ -38,15 +38,15 @@ public:
 
 signals:
 	/// Emitted when user wants to edits 'Shape' property.
-	void shapeEditorRequested(QPersistentModelIndex const &index, int role
-		, QString const &propertyValue, bool useTypedPorts);
+	void shapeEditorRequested(const QPersistentModelIndex &index, int role
+		, const QString &propertyValue, bool useTypedPorts);
 
 	/// Emitted when user wants to enter a code into a property.
-	void textEditorRequested(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
+	void textEditorRequested(const QPersistentModelIndex &index, const int role, const QString &propertyValue);
 
 	/// Emitted when user wants to edit some reference property.
-	void referenceListRequested(QPersistentModelIndex const &index, QString const &referenceType
-			, QString const &propertyValue, int role);
+	void referenceListRequested(const QPersistentModelIndex &index, const QString &referenceType
+			, const QString &propertyValue, int role);
 
 public slots:
 
@@ -67,8 +67,8 @@ protected slots:
 
 private:
 	/** @brief returns index of value in list of possible values for index  */
-	int enumPropertyIndexOf(QModelIndex const &, QString const &);
-	void setPropertyValue(QtVariantProperty *property, QVariant const &value);
+	int enumPropertyIndexOf(const QModelIndex &, const QString &);
+	void setPropertyValue(QtVariantProperty *property, const QVariant &value);
 
 	bool mChangingPropertyValue;
 	PropertyEditorModel *mModel;

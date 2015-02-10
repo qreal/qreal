@@ -29,7 +29,7 @@ using namespace nxtKitInterpreter::blocks;
 using namespace details;
 using namespace interpreterBase::blocksBase::common;
 
-qReal::interpretation::Block *NxtBlocksFactory::produceBlock(qReal::Id const &element)
+qReal::interpretation::Block *NxtBlocksFactory::produceBlock(const qReal::Id &element)
 {
 	if (elementMetatypeIs(element, "NxtBeep")) {
 		return new BeepBlock(mRobotModelManager->model());

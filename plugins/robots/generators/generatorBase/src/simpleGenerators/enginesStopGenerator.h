@@ -9,9 +9,9 @@ namespace simple {
 class EnginesStopGenerator : public BindingGenerator
 {
 public:
-	EnginesStopGenerator(qrRepo::RepoApi const &repo
+	EnginesStopGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

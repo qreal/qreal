@@ -16,7 +16,7 @@ public:
 	/// @param y - y coordinate of a label in coordinate system of a shape.
 	/// @param text - static textual contents of a label, not connected to repository and can not be edited.
 	/// @param rotation - sets rotation of a label.
-	virtual LabelInterface *createLabel(int index, qreal x, qreal y, QString const &text, qreal rotation) = 0;
+	virtual LabelInterface *createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation) = 0;
 
 	/// Creates dynamic label with given binding string, coordinates and rotation.
 	/// @param index - index of a label in parent element, uniquely identifies it.
@@ -28,7 +28,7 @@ public:
 	/// @param readOnly - if true, user will not be allowed to modify label's value, if false, user can edit
 	///        contents of a label, and modify underlying value in repository.
 	/// @param rotation - sets rotation of a label.
-	virtual LabelInterface *createLabel(int index, qreal x, qreal y, QString const &binding, bool readOnly
+	virtual LabelInterface *createLabel(int index, qreal x, qreal y, const QString &binding, bool readOnly
 			, qreal rotation) = 0;
 };
 

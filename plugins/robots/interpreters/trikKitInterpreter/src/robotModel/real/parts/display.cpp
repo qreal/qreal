@@ -7,7 +7,7 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Display::Display(DeviceInfo const &info, PortInfo const &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+Display::Display(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikDisplay(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
@@ -15,17 +15,17 @@ Display::Display(DeviceInfo const &info, PortInfo const &port, utils::TcpRobotCo
 
 void Display::drawSmile(bool sad)
 {
-	QString const pathToCommand = sad ? ":/trikQts/templates/drawing/sadSmile.t"
+	const QString pathToCommand = sad ? ":/trikQts/templates/drawing/sadSmile.t"
 			: ":/trikQts/templates/drawing/smile.t";
 
-	QString const directCommand = utils::InFile::readAll(pathToCommand);
+	const QString directCommand = utils::InFile::readAll(pathToCommand);
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::setBackground(QColor const &color)
+void Display::setBackground(const QColor &color)
 {
-	QString const pathToCommand = ":/trikQts/templates/drawing/setBackground.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand)
+	const QString pathToCommand = ":/trikQts/templates/drawing/setBackground.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COLOR@@", color.name());
 
 	mRobotCommunicator.runDirectCommand(directCommand);
@@ -33,21 +33,21 @@ void Display::setBackground(QColor const &color)
 
 void Display::clearScreen()
 {
-	QString const pathToCommand = ":/trikQts/templates/drawing/clearScreen.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand);
+	const QString pathToCommand = ":/trikQts/templates/drawing/clearScreen.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand);
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::printText(int x, int y, QString const &text)
+void Display::printText(int x, int y, const QString &text)
 {
-	QString const pathToCommand = ":/trikQts/templates/drawing/printText.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
+	const QString pathToCommand = ":/trikQts/templates/drawing/printText.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
 			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "brick.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::setPainterColor(QColor const &color)
+void Display::setPainterColor(const QColor &color)
 {
 	Q_UNUSED(color)
 }

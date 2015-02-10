@@ -11,8 +11,8 @@ namespace commands
 class ReshapeEdgeCommand : public EdgeElementCommand, public TrackingEntity
 {
 public:
-	ReshapeEdgeCommand(EdgeElement const *edge);
-	ReshapeEdgeCommand(EditorViewScene const *scene, Id const &id);
+	ReshapeEdgeCommand(const EdgeElement *edge);
+	ReshapeEdgeCommand(const EditorViewScene *scene, const Id &id);
 	virtual ~ReshapeEdgeCommand() {}
 
 	virtual void startTracking();
@@ -26,8 +26,8 @@ protected:
 
 private:
 	void saveConfiguration(QPolygonF &target, Id &src, Id &dst, QPointF &pos, qreal &fromPort, qreal &toPort);
-	void applyConfiguration(QPolygonF const &configuration, Id const &src
-			, Id const &dst, QPointF const &pos, qreal const &fromPort, qreal const &toPort);
+	void applyConfiguration(const QPolygonF &configuration, const Id &src
+			, const Id &dst, const QPointF &pos, const qreal &fromPort, const qreal &toPort);
 
 	QPolygonF mOldConfiguration;
 	QPolygonF mNewConfiguration;

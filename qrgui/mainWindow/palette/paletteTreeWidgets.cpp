@@ -51,7 +51,7 @@ void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree)
 void PaletteTreeWidgets::initEditorTree()
 {
 	IdList elements = mEditorManager->elements(mDiagram) + mEditorManager->groups(mDiagram);
-	bool const sort = mEditorManager->shallPaletteBeSorted(mEditor, mDiagram);
+	const bool sort = mEditorManager->shallPaletteBeSorted(mEditor, mDiagram);
 	if (sort) {
 		PaletteTreeWidget::sortByFriendlyName(elements);
 	}
@@ -59,11 +59,11 @@ void PaletteTreeWidgets::initEditorTree()
 	if (!mEditorManager->paletteGroups(mEditor, mDiagram).empty()) {
 		QList<QPair<QString, QList<PaletteElement>>> groups;
 		QMap<QString, QString> descriptions;
-		for (QString const &group : mEditorManager->paletteGroups(mEditor, mDiagram)) {
-			QStringList const paletteGroup = mEditorManager->paletteGroupList(mEditor, mDiagram, group);
+		for (const QString &group : mEditorManager->paletteGroups(mEditor, mDiagram)) {
+			const QStringList paletteGroup = mEditorManager->paletteGroupList(mEditor, mDiagram, group);
 			QList<PaletteElement> groupElements;
-			for (QString const &name : paletteGroup) {
-				for (Id const &element : elements) {
+			for (const QString &name : paletteGroup) {
+				for (const Id &element : elements) {
 					if (element.element() == name) {
 						groupElements << PaletteElement(*mEditorManager, element);
 						break;
@@ -77,7 +77,7 @@ void PaletteTreeWidgets::initEditorTree()
 
 		mEditorTree->addGroups(groups, descriptions, false, mEditorManager->friendlyName(mDiagram), sort);
 	} else {
-		for (Id const &element : elements) {
+		for (const Id &element : elements) {
 			addTopItemType(PaletteElement(*mEditorManager, element), mEditorTree);
 		}
 	}
@@ -90,7 +90,7 @@ void PaletteTreeWidgets::initUserTree()
 			, this, &PaletteTreeWidgets::refreshUserPalette);
 }
 
-void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget *tree)
+void PaletteTreeWidgets::addTopItemType(const PaletteElement &data, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(*mMainWindow, data
@@ -159,23 +159,23 @@ void PaletteTreeWidgets::collapse()
 	mUserTree->collapse();
 }
 
-void PaletteTreeWidgets::saveConfiguration(QString const &title) const
+void PaletteTreeWidgets::saveConfiguration(const QString &title) const
 {
 	saveConfiguration(mEditorTree, title);
 	saveConfiguration(mUserTree, title);
 }
 
-void PaletteTreeWidgets::saveConfiguration(PaletteTreeWidget const *tree, QString const &title) const
+void PaletteTreeWidgets::saveConfiguration(const PaletteTreeWidget *tree, const QString &title) const
 {
 	for (int j = 0; j < tree->topLevelItemCount(); j++) {
-		QTreeWidgetItem const *topItem = tree->topLevelItem(j);
+		const QTreeWidgetItem *topItem = tree->topLevelItem(j);
 		if (topItem) {
 			SettingsManager::setValue(title, topItem->isExpanded());
 		}
 	}
 }
 
-void PaletteTreeWidgets::setElementVisible(Id const &metatype, bool visible)
+void PaletteTreeWidgets::setElementVisible(const Id &metatype, bool visible)
 {
 	if (mPaletteElements.contains(metatype)) {
 		mPaletteElements[metatype]->setVisible(visible);
@@ -193,7 +193,7 @@ void PaletteTreeWidgets::setVisibleForAllElements(bool visible)
 	mEditorTree->setVisibleForAllElements(visible);
 }
 
-void PaletteTreeWidgets::setElementEnabled(Id const &metatype, bool enabled)
+void PaletteTreeWidgets::setElementEnabled(const Id &metatype, bool enabled)
 {
 	if (mPaletteElements.contains(metatype)) {
 		mPaletteElements[metatype]->setEnabled(enabled);
@@ -211,7 +211,7 @@ void PaletteTreeWidgets::setEnabledForAllElements(bool enabled)
 	mEditorTree->setEnabledForAllElements(enabled);
 }
 
-void PaletteTreeWidgets::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
+void PaletteTreeWidgets::customizeExplosionTitles(const QString &userGroupTitle, const QString &userGroupDescription)
 {
 	mUserGroupTitle = userGroupTitle;
 	mUserGroupDescription = userGroupDescription;
@@ -224,8 +224,8 @@ void PaletteTreeWidgets::refreshUserPalette()
 	QList<gui::PaletteElement> groupElements;
 
 	QMultiMap<Id, Id> const types = mMainWindow->models().exploser().explosions(mDiagram);
-	for (Id const &source : types.uniqueKeys()) {
-		for (Id const &target : types.values(source)) {
+	for (const Id &source : types.uniqueKeys()) {
+		for (const Id &target : types.values(source)) {
 			groupElements << gui::PaletteElement(source
 					, mMainWindow->models().logicalRepoApi().name(target)
 					, QString(), mEditorManager->icon(source)

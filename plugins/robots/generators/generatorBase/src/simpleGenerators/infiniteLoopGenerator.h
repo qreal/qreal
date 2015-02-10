@@ -9,9 +9,9 @@ namespace simple {
 class InfiniteLoopGenerator : public BindingGenerator
 {
 public:
-	InfiniteLoopGenerator(qrRepo::RepoApi const &repo
+	InfiniteLoopGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

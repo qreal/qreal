@@ -53,9 +53,9 @@ QString PortInfo::toString() const
 			, mNameAliases.join("$$$"), mReservedVariable);
 }
 
-PortInfo PortInfo::fromString(QString const &string)
+PortInfo PortInfo::fromString(const QString &string)
 {
-	QStringList const parts = string.split("###");
+	const QStringList parts = string.split("###");
 	if (parts.count() != 4) {
 		// Q_ASSERT?
 		return PortInfo();

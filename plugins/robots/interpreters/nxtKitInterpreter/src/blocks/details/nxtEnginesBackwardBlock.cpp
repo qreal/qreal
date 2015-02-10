@@ -12,13 +12,13 @@ NxtEnginesBackwardBlock::NxtEnginesBackwardBlock(interpreterBase::robotModel::Ro
 
 void NxtEnginesBackwardBlock::run()
 {
-	int const power = -eval<int>("Power");
+	const int power = -eval<int>("Power");
 
 	if (errorsOccured()) {
 		return;
 	}
 
-	bool const breakMode = stringProperty("Mode") != "float";
+	const bool breakMode = stringProperty("Mode") != "float";
 
 	for (NxtMotor * const motor : parsePorts<NxtMotor>()) {
 		motor->on(power, breakMode);

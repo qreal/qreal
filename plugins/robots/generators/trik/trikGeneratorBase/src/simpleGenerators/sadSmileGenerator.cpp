@@ -5,9 +5,9 @@
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-SadSmileGenerator::SadSmileGenerator(qrRepo::RepoApi const &repo
+SadSmileGenerator::SadSmileGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "drawing/sadSmile.t"

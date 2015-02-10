@@ -13,15 +13,15 @@ class EncoderSensor : public interpreterBase::robotModel::robotParts::EncoderSen
 	Q_OBJECT
 
 public:
-	EncoderSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	EncoderSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;
 	void nullify() override;
 
 private slots:
-	void readingDone(QObject *addressee, QByteArray const &reading);
+	void readingDone(QObject *addressee, const QByteArray &reading);
 
 private:
 	enum State {
@@ -29,7 +29,7 @@ private:
 		, pending
 	};
 
-	void sensorSpecificProcessResponse(QByteArray const &reading);
+	void sensorSpecificProcessResponse(const QByteArray &reading);
 
 	char lowLevelPort() const;
 

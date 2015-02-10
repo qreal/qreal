@@ -3,9 +3,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-NullGenerator::NullGenerator(qrRepo::RepoApi const &repo
+NullGenerator::NullGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: AbstractSimpleGenerator(repo, customizer, id, parent)
 {

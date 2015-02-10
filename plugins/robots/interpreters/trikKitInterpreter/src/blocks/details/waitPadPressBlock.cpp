@@ -18,7 +18,7 @@ void WaitPadPressBlock::responseSlot(int reading)
 
 QString WaitPadPressBlock::port()
 {
-	int const result = eval<int>("Pad");
+	const int result = eval<int>("Pad");
 	switch (result) {
 	case 1:
 		return "GamepadPad1PressedPort";

@@ -9,9 +9,9 @@ namespace lua {
 class ReservedFunctionsConverter : public TemplateParametrizedEntity
 {
 public:
-	explicit ReservedFunctionsConverter(QString const &pathToTemplates);
+	explicit ReservedFunctionsConverter(const QString &pathToTemplates);
 
-	QString convert(QString const &name, QStringList const &args) const;
+	QString convert(const QString &name, const QStringList &args) const;
 };
 
 }

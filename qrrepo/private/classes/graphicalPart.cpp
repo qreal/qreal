@@ -1,7 +1,8 @@
 #include "graphicalPart.h"
 
-#include "../../../qrkernel/exception/exception.h"
-#include "../valuesSerializer.h"
+#include <qrkernel/exception/exception.h>
+
+#include "qrrepo/private/valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;
@@ -10,12 +11,12 @@ GraphicalPart::GraphicalPart()
 {
 }
 
-GraphicalPart::GraphicalPart(QDomElement const &element)
+GraphicalPart::GraphicalPart(const QDomElement &element)
 {
 	ValuesSerializer::deserializeNamedVariantsMap(mProperties, element);
 }
 
-QVariant GraphicalPart::property(QString const &name) const
+QVariant GraphicalPart::property(const QString &name) const
 {
 	if (!mProperties.contains(name)) {
 		throw Exception("Trying to get non-existing graphical part property " + name);
@@ -24,7 +25,7 @@ QVariant GraphicalPart::property(QString const &name) const
 	return mProperties[name];
 }
 
-void GraphicalPart::setProperty(QString const &name, const QVariant &value)
+void GraphicalPart::setProperty(const QString &name, const QVariant &value)
 {
 	mProperties.insert(name, value);
 }

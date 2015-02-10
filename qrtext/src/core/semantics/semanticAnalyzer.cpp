@@ -107,13 +107,13 @@ void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
 	}
 
 	if (!mIdentifierDeclarations.values().contains(root)) {
-		auto const expression = root.dynamicCast<ast::Expression>();
+		const auto expression = root.dynamicCast<ast::Expression>();
 		if (expression) {
 			mTypes.remove(expression);
 		}
 	}
 
-	for (auto const &child : root->children()) {
+	for (const auto &child : root->children()) {
 		if (!child.isNull()) {
 			forget(child);
 		}
@@ -121,7 +121,7 @@ void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
 }
 
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
-		, QSharedPointer<types::TypeExpression> const &type)
+		, const QSharedPointer<types::TypeExpression> &type)
 {
 	if (!type->is<types::TypeVariable>()) {
 		mTypes.insert(as<ast::Expression>(expression)
@@ -171,12 +171,12 @@ void SemanticAnalyzer::addDeclaration(const QString &identifierName, QSharedPoin
 	mIdentifierDeclarations.insert(identifierName, declaration);
 }
 
-QSharedPointer<types::TypeExpression> const &SemanticAnalyzer::any()
+const QSharedPointer<types::TypeExpression> &SemanticAnalyzer::any()
 {
 	return mAny;
 }
 
-GeneralizationsTableInterface const &SemanticAnalyzer::generalizationsTable() const
+const GeneralizationsTableInterface &SemanticAnalyzer::generalizationsTable() const
 {
 	return *mGeneralizationsTable;
 }

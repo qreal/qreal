@@ -14,11 +14,11 @@ class TrikLed : public interpreterBase::robotModel::robotParts::Device
 	Q_CLASSINFO("direction", "output")
 
 public:
-	TrikLed(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikLed(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
 	/// @todo: led color enum here
-	virtual void setColor(QString const &color) = 0;
+	virtual void setColor(const QString &color) = 0;
 };
 
 }

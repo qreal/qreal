@@ -3,7 +3,7 @@
 using namespace nxtKitInterpreter::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-NxtMotor::NxtMotor(DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port)
+NxtMotor::NxtMotor(const DeviceInfo &info, const interpreterBase::robotModel::PortInfo &port)
 	: interpreterBase::robotModel::robotParts::Motor(info, port)
 {
 }

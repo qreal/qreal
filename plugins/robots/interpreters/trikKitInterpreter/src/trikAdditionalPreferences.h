@@ -13,7 +13,7 @@ class TrikAdditionalPreferences : public interpreterBase::AdditionalPreferences
 	Q_OBJECT
 
 public:
-	explicit TrikAdditionalPreferences(QStringList const &realRobotNames, QWidget *parent = 0);
+	explicit TrikAdditionalPreferences(const QStringList &realRobotNames, QWidget *parent = 0);
 	~TrikAdditionalPreferences();
 
 	void save() override;
@@ -25,7 +25,7 @@ signals:
 
 private:
 	Ui::TrikAdditionalPreferences *mUi;
-	QStringList const mRealRobotNames;
+	const QStringList mRealRobotNames;
 };
 
 }

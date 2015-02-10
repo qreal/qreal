@@ -67,11 +67,11 @@ public:
 	Id explosion;
 };
 
-QDataStream &operator<< (QDataStream &out, NodeData const &data);
+QDataStream &operator<< (QDataStream &out, const NodeData &data);
 QDataStream &operator>> (QDataStream &in, NodeData &data);
 
-QDataStream &operator<< (QDataStream &out, EdgeData const &data);
+QDataStream &operator<< (QDataStream &out, const EdgeData &data);
 QDataStream &operator>> (QDataStream &in, EdgeData &data);
 
-bool operator== (NodeData const &first, NodeData const &second);
-bool operator== (EdgeData const &first, EdgeData const &second);
+bool operator== (const NodeData &first, const NodeData &second);
+bool operator== (const EdgeData &first, const EdgeData &second);

@@ -7,9 +7,9 @@ using namespace trik::simple;
 using namespace trik::converters;
 using namespace generatorBase::simple;
 
-LedGenerator::LedGenerator(qrRepo::RepoApi const &repo
+LedGenerator::LedGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "led.t"

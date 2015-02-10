@@ -3,12 +3,12 @@
 using namespace qReal;
 using namespace gui;
 
-PaletteElement::PaletteElement(Id const &id
-		, QString const &name
-		, QString const &description
-		, QIcon const &icon
-		, QSize const &preferredSize
-		, Id const &explosionTarget)
+PaletteElement::PaletteElement(const Id &id
+		, const QString &name
+		, const QString &description
+		, const QIcon &icon
+		, const QSize &preferredSize
+		, const Id &explosionTarget)
 	: mId(id)
 	, mName(name)
 	, mDescription(description)
@@ -18,7 +18,7 @@ PaletteElement::PaletteElement(Id const &id
 {
 }
 
-PaletteElement::PaletteElement(EditorManagerInterface const &manager, Id const &element)
+PaletteElement::PaletteElement(const EditorManagerInterface &manager, const Id &element)
 	: mId(element)
 	, mName(manager.friendlyName(element))
 	, mDescription(manager.description(element))

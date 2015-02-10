@@ -3,7 +3,7 @@
 using namespace qReal;
 using namespace models;
 
-Models::Models(QString const &workingCopy, EditorManagerInterface const &editorManager)
+Models::Models(const QString &workingCopy, const EditorManagerInterface &editorManager)
 {
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
 	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager);
@@ -58,7 +58,7 @@ qrRepo::RepoControlInterface &Models::repoControlApi() const
 	return *mRepoApi;
 }
 
-qrRepo::LogicalRepoApi const &Models::logicalRepoApi() const
+const qrRepo::LogicalRepoApi &Models::logicalRepoApi() const
 {
 	return mLogicalModel->api();
 }
@@ -68,7 +68,7 @@ qrRepo::LogicalRepoApi &Models::mutableLogicalRepoApi() const
 	return mLogicalModel->mutableApi();
 }
 
-qrRepo::GraphicalRepoApi const &Models::graphicalRepoApi() const
+const qrRepo::GraphicalRepoApi &Models::graphicalRepoApi() const
 {
 	return mGraphicalModel->api();
 }

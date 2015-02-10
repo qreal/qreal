@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -25,7 +25,7 @@ class QRUTILS_EXPORT SensorsGraph : public QWidget
 	Q_OBJECT
 
 public:
-	explicit SensorsGraph(qrtext::DebuggerInterface const &parser, QWidget *parent = 0);
+	explicit SensorsGraph(const qrtext::DebuggerInterface &parser, QWidget *parent = 0);
 	~SensorsGraph();
 
 	/// Hides or shows start and stop buttons.
@@ -35,8 +35,8 @@ public:
 	/// @param index is like slot number
 	/// @param inParserName how to find value in expressionsParser
 	/// @param displayName will be shown in ComboBox
-	void addTrackingObject(int const index, QString const &inParserName, QString const &displayName);
-	void removeTracking(int const index);
+	void addTrackingObject(const int index, const QString &inParserName, const QString &displayName);
+	void removeTracking(const int index);
 
 	/// Removes all tracking objects
 	void clearTrackingObjects();
@@ -44,13 +44,13 @@ public:
 	/// paintEvent makes resize operations
 	void paintEvent(QPaintEvent *event = 0);
 
-	static int const readSensorDefaultInterval = 50;
-	static int const autoscalingDefault = 3000;
-	static int const textUpdateDefault = 500;
+	static const int readSensorDefaultInterval = 50;
+	static const int autoscalingDefault = 3000;
+	static const int textUpdateDefault = 500;
 
 public slots:
-	void sensorsInput(int const slotIndex, qreal const value);
-	void setCurrentSensor(int const newSlotIndex);
+	void sensorsInput(const int slotIndex, const qreal value);
+	void setCurrentSensor(const int newSlotIndex);
 	void startJob();
 	void stopJob();
 	void resetAll();
@@ -60,9 +60,9 @@ public slots:
 	/// @arg autoScaleDelay is interval on ms for autoscaling the plot
 	/// @arg textInfoUpdateDelay is interval in ms for info
 	void configureUpdateIntervals(
-			int const &readSensorsInterval
-			, int const &autoScaleInterval
-			, int const &textUpdaterInterval
+			const int &readSensorsInterval
+			, const int &autoScaleInterval
+			, const int &textUpdaterInterval
 	);
 
 protected:
@@ -86,12 +86,12 @@ private:
 	QToolButton mSaveButton;
 	QComboBox mSlotComboBox;
 	QTimer mUpdateTimer;
-	qrtext::DebuggerInterface const &mParser;
+	const qrtext::DebuggerInterface &mParser;
 	struct TrackObject;
 	QList<TrackObject> mWatchList;
 
 	/// update sensors value interval in ms
-	int const mUpdateInterval;
+	const int mUpdateInterval;
 	int mCurrentSlot;
 };
 

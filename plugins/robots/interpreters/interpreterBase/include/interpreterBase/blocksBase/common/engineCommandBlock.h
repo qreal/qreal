@@ -31,9 +31,9 @@ protected:
 	QList<MotorType *> parsePorts(ReportErrors reportErrors = ReportErrors::report)
 	{
 		QList<MotorType *> result;
-		QStringList const ports = eval<QStringList>("Ports", reportErrors);
+		const QStringList ports = eval<QStringList>("Ports", reportErrors);
 
-		for (QString const &port : ports) {
+		for (const QString &port : ports) {
 			MotorType * const motor = robotModel::RobotModelUtils::findDevice<MotorType>(mRobotModel, port.trimmed());
 			if (motor) {
 				result << motor;

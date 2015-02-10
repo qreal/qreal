@@ -443,10 +443,10 @@ static void FoldPyDoc(unsigned int startPos, int length, int /*initStyle - unuse
 	// at least one line in all cases)
 	int spaceFlags = 0;
 	int lineCurrent = styler.GetLine(startPos);
-	int indentCurrent = styler.IndentAmount(lineCurrent, &spaceFlags, NULL);
+	int indentCurrent = styler.IndentAmount(lineCurrent, &spaceFlags, nullptr);
 	while (lineCurrent > 0) {
 		lineCurrent--;
-		indentCurrent = styler.IndentAmount(lineCurrent, &spaceFlags, NULL);
+		indentCurrent = styler.IndentAmount(lineCurrent, &spaceFlags, nullptr);
 		if (!(indentCurrent & SC_FOLDLEVELWHITEFLAG) &&
 		        (!IsCommentLine(lineCurrent, styler)) &&
 		        (!IsQuoteLine(lineCurrent, styler)))
@@ -473,7 +473,7 @@ static void FoldPyDoc(unsigned int startPos, int length, int /*initStyle - unuse
 		int quote = false;
 		if (lineNext <= docLines) {
 			// Information about next line is only available if not at end of document
-			indentNext = styler.IndentAmount(lineNext, &spaceFlags, NULL);
+			indentNext = styler.IndentAmount(lineNext, &spaceFlags, nullptr);
 			int lookAtPos = (styler.LineStart(lineNext) == styler.Length()) ? styler.Length() - 1 : styler.LineStart(lineNext);
 			int style = styler.StyleAt(lookAtPos) & 31;
 			quote = foldQuotes && ((style == SCE_P_TRIPLE) || (style == SCE_P_TRIPLEDOUBLE));
@@ -506,7 +506,7 @@ static void FoldPyDoc(unsigned int startPos, int length, int /*initStyle - unuse
 		         (lineNext <= docLines && IsCommentLine(lineNext, styler)))) {
 
 			lineNext++;
-			indentNext = styler.IndentAmount(lineNext, &spaceFlags, NULL);
+			indentNext = styler.IndentAmount(lineNext, &spaceFlags, nullptr);
 		}
 
 		const int levelAfterComments = indentNext & SC_FOLDLEVELNUMBERMASK;
@@ -521,7 +521,7 @@ static void FoldPyDoc(unsigned int startPos, int length, int /*initStyle - unuse
 		int skipLevel = levelAfterComments;
 
 		while (--skipLine > lineCurrent) {
-			int skipLineIndent = styler.IndentAmount(skipLine, &spaceFlags, NULL);
+			int skipLineIndent = styler.IndentAmount(skipLine, &spaceFlags, nullptr);
 
 			if (foldCompact) {
 				if ((skipLineIndent & SC_FOLDLEVELNUMBERMASK) > levelAfterComments)

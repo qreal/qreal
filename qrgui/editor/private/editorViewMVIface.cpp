@@ -120,7 +120,7 @@ Id EditorViewMViface::rootId() const
 	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
 
-void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
+void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
 		mScene->setEnabled(true);
@@ -156,7 +156,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 
-		// TODO: It is impossible for elem to be NULL here.
+		// TODO: It is impossible for elem to be nullptr here.
 		if (elem) {
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
@@ -169,7 +169,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			if (item(parent)) {
 				elem->setParentItem(item(parent));
 				QModelIndex next = current.sibling(current.row() + 1, 0);
-				if(next.isValid() && item(next) != NULL) {
+				if(next.isValid() && item(next) != nullptr) {
 					elem->stackBefore(item(next));
 				}
 			} else {
@@ -271,8 +271,8 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
-void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-		, QModelIndex const &destinationParent, int destinationRow)
+void EditorViewMViface::rowsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+		, const QModelIndex &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceEnd);
 	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved
@@ -290,20 +290,20 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 	}
 
 	Element *newParent = item(destinationParent);
-	if (newParent == NULL) {
+	if (newParent == nullptr) {
 		// no parent element on the scene, so it should be root element
-		movedElement->setParentItem(NULL);
+		movedElement->setParentItem(nullptr);
 		return;
 	}
 
 	movedElement->setParentItem(newParent);
-	if (sibling != NULL) {
+	if (sibling != nullptr) {
 		movedElement->stackBefore(sibling);
 	}
 }
 
-void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-		, QModelIndex const &destinationParent, int destinationRow)
+void EditorViewMViface::rowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+		, const QModelIndex &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceParent);
 	Q_UNUSED(sourceStart);
@@ -314,7 +314,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 	Q_ASSERT(movedElementIndex.isValid());
 	Element *movedElement = item(movedElementIndex);
 
-	if (movedElement == NULL) {
+	if (movedElement == nullptr) {
 		// no element on the scene, forget about it
 		return;
 	}
@@ -325,7 +325,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		QModelIndex const curr = topLeft.sibling(row, 0);
+		const QModelIndex curr = topLeft.sibling(row, 0);
 		Element *element = item(curr);
 		if (element) {
 			element->updateData();
@@ -351,7 +351,7 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 void EditorViewMViface::clearItems()
 {
 	QList<QGraphicsItem *> toRemove;
-	foreach (IndexElementPair const &pair, mItems) {
+	foreach (const IndexElementPair &pair, mItems) {
 		if (!pair.second->parentItem()) {
 			toRemove.append(pair.second);
 		}
@@ -364,17 +364,17 @@ void EditorViewMViface::clearItems()
 	mItems.clear();
 }
 
-Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
+Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
-	foreach (IndexElementPair const &pair, mItems) {
+	foreach (const IndexElementPair &pair, mItems) {
 		if (pair.first == index) {
 			return pair.second;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
-void EditorViewMViface::setItem(QPersistentModelIndex const &index, Element *item)
+void EditorViewMViface::setItem(const QPersistentModelIndex &index, Element *item)
 {
 	IndexElementPair pair(index, item);
 	if (!mItems.contains(pair)) {
@@ -382,9 +382,9 @@ void EditorViewMViface::setItem(QPersistentModelIndex const &index, Element *ite
 	}
 }
 
-void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
+void EditorViewMViface::removeItem(const QPersistentModelIndex &index)
 {
-	foreach (IndexElementPair const &pair, mItems) {
+	foreach (const IndexElementPair &pair, mItems) {
 		if (pair.first == index) {
 			mItems.remove(pair);
 		}
@@ -410,11 +410,11 @@ void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)
 void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		QModelIndex const curr = topLeft.sibling(row, 0);
-		Id const logicalId = curr.data(roles::idRole).value<Id>();
-		IdList const graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
-		foreach (Id const &graphicalId, graphicalIds) {
-			QModelIndex const graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
+		const QModelIndex curr = topLeft.sibling(row, 0);
+		const Id logicalId = curr.data(roles::idRole).value<Id>();
+		const IdList graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
+		foreach (const Id &graphicalId, graphicalIds) {
+			const QModelIndex graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
 			Element *graphicalItem = item(graphicalIndex);
 			if (graphicalItem) {
 				graphicalItem->updateData();
@@ -425,7 +425,7 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 
 void EditorViewMViface::invalidateImagesZoomCache(qreal zoomFactor)
 {
-	for (IndexElementPair const & item : mItems) {
+	for (const IndexElementPair & item : mItems) {
 		auto node = dynamic_cast<NodeElement *>(item.second);
 		if (node) {
 			node->invalidateImagesZoomCache(zoomFactor);

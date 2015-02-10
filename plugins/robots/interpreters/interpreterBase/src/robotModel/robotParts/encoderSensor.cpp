@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-EncoderSensor::EncoderSensor(DeviceInfo const &info, PortInfo const &port)
+EncoderSensor::EncoderSensor(const DeviceInfo &info, const PortInfo &port)
 	: ScalarSensor(info, port)
 {
 }

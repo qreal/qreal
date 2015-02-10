@@ -117,7 +117,7 @@ public:
 	virtual QList<QString> getPatternNames() const = 0;
 	virtual QSize iconSize(const Id &id) const = 0;
 
-	virtual IdList elementsWithTheSameName(const Id &diagram, const QString &name, QString const type) const = 0;
+	virtual IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const = 0;
 	virtual IdList propertiesWithTheSameName(const Id &id, const QString &propCurrentName
 			, const QString &propNewName) const = 0;
 

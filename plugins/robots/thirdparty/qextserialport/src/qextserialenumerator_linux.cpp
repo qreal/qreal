@@ -39,9 +39,9 @@
 void QextSerialEnumeratorPrivate::platformSpecificInit()
 {
 #ifndef QESP_NO_UDEV
-    monitor = NULL;
+    monitor = nullptr;
     notifierFd = -1;
-    notifier = NULL;
+    notifier = nullptr;
 
     udev = udev_new();
     if (!udev)
@@ -177,7 +177,7 @@ bool QextSerialEnumeratorPrivate::setUpNotifications_sys(bool setup)
 
     // Look for tty devices from udev.
     monitor = udev_monitor_new_from_netlink(udev, "udev");
-    udev_monitor_filter_add_match_subsystem_devtype(monitor, "tty", NULL);
+    udev_monitor_filter_add_match_subsystem_devtype(monitor, "tty", nullptr);
     udev_monitor_enable_receiving(monitor);
     notifierFd = udev_monitor_get_fd(monitor);
     notifier = new QSocketNotifier(notifierFd, QSocketNotifier::Read);

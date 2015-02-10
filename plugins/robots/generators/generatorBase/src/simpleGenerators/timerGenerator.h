@@ -9,9 +9,9 @@ namespace simple {
 class TimerGenerator : public BindingGenerator
 {
 public:
-	TimerGenerator(qrRepo::RepoApi const &repo
+	TimerGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

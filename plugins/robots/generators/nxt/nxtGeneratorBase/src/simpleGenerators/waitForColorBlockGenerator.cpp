@@ -5,9 +5,9 @@
 using namespace nxt::simple;
 using namespace generatorBase::simple;
 
-WaitForColorBlockGenerator::WaitForColorBlockGenerator(qrRepo::RepoApi const &repo
+WaitForColorBlockGenerator::WaitForColorBlockGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/color.t", {
 			Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())

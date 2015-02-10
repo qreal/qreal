@@ -9,14 +9,14 @@
 using namespace qReal;
 using namespace interpretation;
 
-int const maxThreadsCount = 100;
+const int maxThreadsCount = 100;
 
-Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, BlocksTableInterface &blocksTable
 		, qrtext::LanguageToolboxInterface &languageToolbox
-		, Id const &initialNodeType)
+		, const Id &initialNodeType)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
@@ -46,7 +46,7 @@ void Interpreter::startInterpretation()
 
 	mState = interpreting;
 
-	Id const currentDiagramId = mInterpretersInterface.activeDiagram();
+	const Id currentDiagramId = mInterpretersInterface.activeDiagram();
 
 	qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
 			, mInterpretersInterface, mInitialNodeType, currentDiagramId, mBlocksTable);
@@ -76,7 +76,7 @@ void Interpreter::threadStopped()
 	}
 }
 
-void Interpreter::newThread(Id const &startBlockId)
+void Interpreter::newThread(const Id &startBlockId)
 {
 	Thread * const thread = new Thread(&mGraphicalModelApi, mInterpretersInterface
 			, mInitialNodeType, mBlocksTable, startBlockId);
@@ -101,7 +101,7 @@ void Interpreter::addThread(Thread * const thread)
 	}
 }
 
-void Interpreter::reportError(QString const &message)
+void Interpreter::reportError(const QString &message)
 {
 	mInterpretersInterface.errorReporter()->addError(message);
 }

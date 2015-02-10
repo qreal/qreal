@@ -9,9 +9,9 @@ namespace simple {
 class WaitForInfraredSensorGenerator : public BindingGenerator
 {
 public:
-	WaitForInfraredSensorGenerator(qrRepo::RepoApi const &repo
+	WaitForInfraredSensorGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

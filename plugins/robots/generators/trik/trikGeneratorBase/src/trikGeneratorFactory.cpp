@@ -38,11 +38,11 @@ using namespace trik::simple;
 using namespace generatorBase;
 using namespace generatorBase::simple;
 
-TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
+TrikGeneratorFactory::TrikGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, lua::LuaProcessor &luaProcessor
-		, QString const &generatorName)
+		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
 {
@@ -52,10 +52,10 @@ TrikGeneratorFactory::~TrikGeneratorFactory()
 {
 }
 
-AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &id
+AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &id
 		, GeneratorCustomizer &customizer)
 {
-	QString const elementType = id.element();
+	const QString elementType = id.element();
 	if (elementType.contains("EnginesForward")
 			|| elementType.contains("EnginesBackward")
 			|| elementType.contains("AngularServo"))

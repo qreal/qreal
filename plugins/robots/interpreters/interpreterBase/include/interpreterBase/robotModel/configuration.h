@@ -24,9 +24,9 @@ public:
 
 	QList<robotParts::Device *> devices() const override;
 
-	robotParts::Device *device(PortInfo const &port) const override;
+	robotParts::Device *device(const PortInfo &port) const override;
 
-	void clearDevice(PortInfo const &port) override;
+	void clearDevice(const PortInfo &port) override;
 
 signals:
 	/// Emitted when all pending devices are configured (or failed to configure).

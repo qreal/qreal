@@ -4,9 +4,9 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-int const soundMaxValue = 1023;
+const int soundMaxValue = 1023;
 
-SoundSensor::SoundSensor(DeviceInfo const &info, PortInfo const &port
+SoundSensor::SoundSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::SoundSensor(info, port)
 	, mImplementation(robotCommunicator, port, enums::lowLevelSensorType::SOUND_DBA, enums::sensorMode::RAWMODE)
@@ -43,13 +43,13 @@ void SoundSensor::doConfiguration()
 	mImplementation.configure();
 }
 
-void SoundSensor::sensorSpecificProcessResponse(QByteArray const &reading)
+void SoundSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
 		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSoundSensorImplementation::sensorSpecificProcessResponse"
 				, "Something is wrong, response is empty");
 	} else {
-		int const sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
+		const int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mImplementation.setState(NxtInputDevice::idle);
 		emit newData(sensorValue * 100 / soundMaxValue);
 	}

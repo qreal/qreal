@@ -9,7 +9,7 @@ class Line : public Item
 	Q_INTERFACES(AbstractItem)
 public:
 	Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
-	Line(Line const &other);
+	Line(const Line &other);
 	virtual Item* clone();
 	QLineF line() const;
 	QPainterPath shape() const;
@@ -22,9 +22,10 @@ public:
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
 
-	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(QRect const &rect);
+	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(const QRect &rect);
 	void setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 private:
 	graphicsUtils::LineImpl mLineImpl;

@@ -26,8 +26,8 @@ TrikQtsGeneratorPlugin::~TrikQtsGeneratorPlugin()
 	delete mCommunicator;
 }
 
-void TrikQtsGeneratorPlugin::init(qReal::PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+void TrikQtsGeneratorPlugin::init(const qReal::PluginConfigurator &configurator
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
@@ -90,7 +90,7 @@ generatorBase::MasterGeneratorBase *TrikQtsGeneratorPlugin::masterGenerator()
 			, generatorName());
 }
 
-QString TrikQtsGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString TrikQtsGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString("trik/%1/%1.qts").arg(projectName);
 }
@@ -107,10 +107,10 @@ QString TrikQtsGeneratorPlugin::generatorName() const
 
 bool TrikQtsGeneratorPlugin::uploadProgram()
 {
-	QFileInfo const fileInfo = generateCodeForProcessing();
+	const QFileInfo fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-		bool const result = mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
+		const bool result = mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
 			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 		}
@@ -125,7 +125,7 @@ bool TrikQtsGeneratorPlugin::uploadProgram()
 void TrikQtsGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
-		QFileInfo const fileInfo = generateCodeForProcessing();
+		const QFileInfo fileInfo = generateCodeForProcessing();
 		mCommunicator->runProgram(fileInfo.fileName());
 	} else {
 		qDebug() << "Program upload failed, aborting";

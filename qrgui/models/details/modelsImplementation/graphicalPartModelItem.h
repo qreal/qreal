@@ -10,13 +10,13 @@ namespace modelsImplementation {
 class GraphicalPartModelItem
 {
 public:
-	GraphicalPartModelItem(Id const &id, int index);
+	GraphicalPartModelItem(const Id &id, int index);
 	Id id() const;
 	int index() const;
 
 private:
-	Id const mId;
-	int const mIndex;
+	const Id mId;
+	const int mIndex;
 };
 
 }

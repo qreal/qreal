@@ -10,7 +10,7 @@ class Ev3RobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 	Q_OBJECT
 
 public:
-	Ev3RobotModelBase(QString const &kitId, QString const &robotId);
+	Ev3RobotModelBase(const QString &kitId, const QString &robotId);
 
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 

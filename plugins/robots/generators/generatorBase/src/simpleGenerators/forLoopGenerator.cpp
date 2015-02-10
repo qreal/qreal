@@ -4,11 +4,11 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-QString const iteratorName = "__iter__";
+const QString iteratorName = "__iter__";
 
-ForLoopGenerator::ForLoopGenerator(qrRepo::RepoApi const &repo
+ForLoopGenerator::ForLoopGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "conditional/for.t", QList<Binding *>()
 			<< Binding::createStaticConverting("@@ITERATOR_TYPE@@", "int", customizer.factory()->typeConverter())

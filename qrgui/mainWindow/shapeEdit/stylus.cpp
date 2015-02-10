@@ -11,7 +11,7 @@ Stylus::Stylus(qreal x1, qreal y1, Item* parent) : Item(parent), mStylusImpl()
 	mDomElementType = pictureType;
 }
 
-Stylus::Stylus(Stylus const &other)
+Stylus::Stylus(const Stylus &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -42,7 +42,7 @@ void Stylus::addLine(qreal x2, qreal y2)
 {
 	mX2 = x2;
 	mY2 = y2;
-	Line *line = new Line(mTmpX1, mTmpY1, mX2, mY2, NULL);
+	Line *line = new Line(mTmpX1, mTmpY1, mX2, mY2, nullptr);
 	line->setPen(mPen);
 	line->setBrush(mBrush);
 	mAbstractListLine.push_back(dynamic_cast<AbstractItem *>(line));
@@ -90,7 +90,7 @@ void Stylus::drawScalingRects(QPainter* painter)
 	mStylusImpl.drawScalingRects(painter);
 }
 
-void Stylus::setPenStyle(QString const &text)
+void Stylus::setPenStyle(const QString &text)
 {
 	Item::setPenStyle(text);
 	mStylusImpl.setPenStyle(mAbstractListLine, text);
@@ -102,25 +102,25 @@ void Stylus::setPenWidth(int width)
 	mStylusImpl.setPenWidth(mAbstractListLine, width);
 }
 
-void Stylus::setPenColor(QString const &text)
+void Stylus::setPenColor(const QString &text)
 {
 	Item::setPenColor(text);
 	mStylusImpl.setPenColor(mAbstractListLine, text);
 }
 
-void Stylus::setBrushStyle(QString const &text)
+void Stylus::setBrushStyle(const QString &text)
 {
 	Item::setBrushStyle(text);
 	mStylusImpl.setBrushStyle(mAbstractListLine, text);
 }
 
-void Stylus::setBrushColor(QString const &text)
+void Stylus::setBrushColor(const QString &text)
 {
 	Item::setBrushColor(text);
 	mStylusImpl.setBrushColor(mAbstractListLine, text);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement stylus = document.createElement("stylus");
 	foreach (AbstractItem *aItem, mAbstractListLine) {

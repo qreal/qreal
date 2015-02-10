@@ -48,12 +48,12 @@ QString Type::nativeContext() const
 	return mNativeContext;
 }
 
-void Type::setContext(QString const &newContext)
+void Type::setContext(const QString &newContext)
 {
 	mContext = newContext;
 }
 
-void Type::setName(QString const &name)
+void Type::setName(const QString &name)
 {
 	mName = name;
 }
@@ -63,7 +63,7 @@ QString Type::displayedName() const
 	return mDisplayedName;
 }
 
-void Type::setDisplayedName(QString const &displayedName)
+void Type::setDisplayedName(const QString &displayedName)
 {
 	mDisplayedName = displayedName;
 }
@@ -96,7 +96,7 @@ void Type::copyFields(Type *type) const
 	type->mDiagram = mDiagram;
 }
 
-bool Type::init(QString const &context)
+bool Type::init(const QString &context)
 {
 	mName = mApi->name(mId);
 	mDisplayedName = mApi->stringProperty(mId, "displayedName");
@@ -114,7 +114,7 @@ bool Type::init(QString const &context)
 	return true;
 }
 
-QString Type::generateNames(QString const &lineTemplate) const
+QString Type::generateNames(const QString &lineTemplate) const
 {
 	if (displayedName().isEmpty() || !isGraphicalType())
 		return "";
@@ -123,7 +123,7 @@ QString Type::generateNames(QString const &lineTemplate) const
 	return result;
 }
 
-QString Type::generateMouseGestures(QString const &lineTemplate) const
+QString Type::generateMouseGestures(const QString &lineTemplate) const
 {
 	if (mPath.isEmpty())
 		return "";
@@ -132,7 +132,7 @@ QString Type::generateMouseGestures(QString const &lineTemplate) const
 	return result;
 }
 
-QString Type::generateFactory(QString const &lineTemplate) const
+QString Type::generateFactory(const QString &lineTemplate) const
 {
 	if (!isGraphicalType())
 		return "";

@@ -51,7 +51,7 @@ private:
 	/// Non-generic variant of setVariableValue(), sets value as QVariant. Also requires textual code for initialization
 	/// of a variable if it is not known to an interpreter. This code will be parsed and interpreted before value will
 	/// be set.
-	virtual void setVariableValue(const QString &name, const QString &initCode, QVariant const &value) = 0;
+	virtual void setVariableValue(const QString &name, const QString &initCode, const QVariant &value) = 0;
 };
 
 }

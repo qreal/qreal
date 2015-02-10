@@ -8,7 +8,7 @@ namespace commands {
 class FoldCommand : public NodeElementCommand
 {
 public:
-	FoldCommand(NodeElement const *element);
+	FoldCommand(const NodeElement *element);
 	virtual ~FoldCommand() {}
 
 protected:

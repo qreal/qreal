@@ -12,6 +12,6 @@ public:
 	bool event(QEvent *event);
 	
 signals:
-	void newKey(int const key);
+	void newKey(const int key);
 	void newModifiers(Qt::KeyboardModifiers modifiers);
 };

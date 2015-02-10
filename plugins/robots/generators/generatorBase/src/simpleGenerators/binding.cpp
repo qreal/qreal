@@ -11,63 +11,63 @@ Binding::MultiConverterInterface::~MultiConverterInterface()
 {
 }
 
-QString Binding::EmptyConverter::convert(QString const &data) const
+QString Binding::EmptyConverter::convert(const QString &data) const
 {
 	return data;
 }
 
-Binding *Binding::createStatic(QString const &label, QString const &value)
+Binding *Binding::createStatic(const QString &label, const QString &value)
 {
 	return new Binding(label, value, false);
 }
 
-Binding *Binding::createStaticConverting(QString const &label, QString const &value
-		, ConverterInterface const *converter)
+Binding *Binding::createStaticConverting(const QString &label, const QString &value
+		, const ConverterInterface *converter)
 {
 	return new Binding(label, value, false, converter);
 }
 
-Binding *Binding::createDirect(QString const &label, QString const &property)
+Binding *Binding::createDirect(const QString &label, const QString &property)
 {
 	return new Binding(label, property, true);
 }
 
-Binding *Binding::createConverting(QString const &label, QString const &property
-		, ConverterInterface const *converter)
+Binding *Binding::createConverting(const QString &label, const QString &property
+		, const ConverterInterface *converter)
 {
 	return new Binding(label, property, true, converter);
 }
 
-Binding *Binding::createMultiTarget(QString const &label, QString const &property
-		, MultiConverterInterface const *converter)
+Binding *Binding::createMultiTarget(const QString &label, const QString &property
+		, const MultiConverterInterface *converter)
 {
 	return new Binding(label, property, converter);
 }
 
-Binding::Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo)
+Binding::Binding(const QString &label, const QString &propertyOrValue, bool takeFromRepo)
 	: mLabel(label)
 	, mProperty(takeFromRepo ? propertyOrValue : "")
 	, mValue(takeFromRepo ? "" : propertyOrValue)
 	, mConverter(new EmptyConverter)
-	, mMultiConverter(NULL)
+	, mMultiConverter(nullptr)
 {
 }
 
-Binding::Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo
-		, ConverterInterface const *converter)
+Binding::Binding(const QString &label, const QString &propertyOrValue, bool takeFromRepo
+		, const ConverterInterface *converter)
 	: mLabel(label)
 	, mProperty(takeFromRepo ? propertyOrValue : "")
 	, mValue(takeFromRepo ? "" : propertyOrValue)
 	, mConverter(converter)
-	, mMultiConverter(NULL)
+	, mMultiConverter(nullptr)
 {
 }
 
-Binding::Binding(QString const &label, QString const &property
-		, MultiConverterInterface const *converter)
+Binding::Binding(const QString &label, const QString &property
+		, const MultiConverterInterface *converter)
 	: mLabel(label)
 	, mProperty(property)
-	, mConverter(NULL)
+	, mConverter(nullptr)
 	, mMultiConverter(converter)
 {
 }
@@ -77,10 +77,10 @@ Binding::~Binding()
 	delete mConverter;
 }
 
-void Binding::apply(qrRepo::RepoApi const &repo
-		, Id const &id, QString &data)
+void Binding::apply(const qrRepo::RepoApi &repo
+		, const Id &id, QString &data)
 {
-	QString const property = mProperty.isEmpty()
+	const QString property = mProperty.isEmpty()
 			? mValue
 			: mProperty == "name"
 					? repo.name(id)
@@ -93,11 +93,11 @@ void Binding::apply(qrRepo::RepoApi const &repo
 	}
 }
 
-void Binding::applyMulti(QString const &property, QString &data)
+void Binding::applyMulti(const QString &property, QString &data)
 {
 	QString result;
-	QStringList const parts = mMultiConverter->convert(property);
-	foreach (QString const &part, parts) {
+	const QStringList parts = mMultiConverter->convert(property);
+	foreach (const QString &part, parts) {
 		QString dataCopy = data;
 		dataCopy.replace(mLabel, part);
 		result += dataCopy;

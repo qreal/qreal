@@ -9,7 +9,7 @@ InterpretedPluginsLoader::InterpretedPluginsLoader()
 
 void InterpretedPluginsLoader::init(
 		EditorManagerInterface *editorManager
-		, PluginConfigurator const &configurator)
+		, const PluginConfigurator &configurator)
 {
 	mInterpreterEditorManager = static_cast<InterpreterEditorManager *>(editorManager);
 	mEditorRepoApi = mInterpreterEditorManager->listOfMetamodels();

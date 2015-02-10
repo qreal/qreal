@@ -13,13 +13,13 @@ class Shell : public robotModel::parts::TrikShell
 	Q_OBJECT
 
 public:
-	Shell(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Shell(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
-	void runCommand(QString const &command) override;
+	void runCommand(const QString &command) override;
 
-	void say(QString const &text) override;
+	void say(const QString &text) override;
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;
