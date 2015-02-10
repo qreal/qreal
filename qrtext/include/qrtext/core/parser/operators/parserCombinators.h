@@ -23,35 +23,35 @@ namespace core {
 
 /// Operator to build concatenation rules. A ::= B C is described as ParserRef a = b & c;
 template<typename TokenType>
-inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, ParserRef<TokenType> const &b)
+inline ParserRef<TokenType> operator & (const ParserRef<TokenType> &a, const ParserRef<TokenType> &b)
 {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(a, b));
 }
 
 /// Operator to build alternative rules. A ::= B | C is described as ParserRef a = b | c;
 template<typename TokenType>
-inline ParserRef<TokenType> operator | (ParserRef<TokenType> const &a, ParserRef<TokenType> const &b)
+inline ParserRef<TokenType> operator | (const ParserRef<TokenType> &a, const ParserRef<TokenType> &b)
 {
 	return ParserRef<TokenType>(new AlternativeParser<TokenType>(a, b));
 }
 
 /// Operator to build optional rules. A ::= B? is described as ParserRef a = ~b;
 template<typename TokenType>
-inline ParserRef<TokenType> operator ~ (ParserRef<TokenType> const &a)
+inline ParserRef<TokenType> operator ~ (const ParserRef<TokenType> &a)
 {
 	return ParserRef<TokenType>(new OptionalParser<TokenType>(a));
 }
 
 /// Operator to build Kleene star rules. A ::= B* is described as ParserRef a = *b;
 template<typename TokenType>
-inline ParserRef<TokenType> operator * (ParserRef<TokenType> const &a)
+inline ParserRef<TokenType> operator * (const ParserRef<TokenType> &a)
 {
 	return ParserRef<TokenType>(new KleeneStarParser<TokenType>(a));
 }
 
 /// Operator to attach semantic rule to a token. A ::= t { ... } is described as ParserRef a = t >> []() { ... };
 template<typename TokenType, typename SemanticAction>
-inline ParserRef<TokenType> operator >>(TokenType token, SemanticAction const &semanticAction)
+inline ParserRef<TokenType> operator >>(TokenType token, const SemanticAction &semanticAction)
 {
 	typedef typename std::conditional<function_traits<SemanticAction>::arity == 0
 			, SimpleParser<TokenType, SemanticAction>
@@ -63,14 +63,14 @@ inline ParserRef<TokenType> operator >>(TokenType token, SemanticAction const &s
 
 /// Operator to attach semantic rule to a parser. A ::= B { ... } is described as ParserRef a = b >> []() { ... };
 template<typename TokenType, typename Transformation>
-inline ParserRef<TokenType> operator >>(ParserRef<TokenType> const &parser, Transformation const &transformation)
+inline ParserRef<TokenType> operator >>(const ParserRef<TokenType> &parser, const Transformation &transformation)
 {
 	return ParserRef<TokenType>(new TransformingParser<TokenType, Transformation>(parser, transformation));
 }
 
 /// Syntactic sugar operator for concatenation of tokens with parsers.
 template<typename TokenType>
-inline ParserRef<TokenType> operator & (TokenType const &token, ParserRef<TokenType> const &b)
+inline ParserRef<TokenType> operator & (const TokenType &token, const ParserRef<TokenType> &b)
 {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(token >>
 			[] (Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }, b));
@@ -78,7 +78,7 @@ inline ParserRef<TokenType> operator & (TokenType const &token, ParserRef<TokenT
 
 /// Syntactic sugar operator for concatenation of parsers with tokens.
 template<typename TokenType>
-inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, TokenType const &token)
+inline ParserRef<TokenType> operator & (const ParserRef<TokenType> &a, const TokenType &token)
 {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(a, token >>
 			[] (Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }));
@@ -86,7 +86,7 @@ inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, TokenType
 
 /// Syntactic sugar operator for concatenation of tokens and tokens.
 template<typename TokenType>
-inline ParserRef<TokenType> operator & (TokenType const &token1, TokenType const &token2)
+inline ParserRef<TokenType> operator & (const TokenType &token1, const TokenType &token2)
 {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(
 			token1 >> [] (Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }
@@ -98,7 +98,7 @@ inline ParserRef<TokenType> operator & (TokenType const &token1, TokenType const
 /// represented as ParserRef a = -TokenType::openingBracket & b & -TokenType::closingBracket, in this example
 /// parser A will directly return value of B. Connections will be lost.
 template<typename TokenType>
-inline ParserRef<TokenType> operator - (TokenType const &token)
+inline ParserRef<TokenType> operator - (const TokenType &token)
 {
 	return token >> [] () { return new TemporaryDiscardableNode(); };
 }
@@ -106,7 +106,7 @@ inline ParserRef<TokenType> operator - (TokenType const &token)
 /// Operator to discard a result of parser, used to ignore entire subtree. Connections from ignored subtree
 /// will be lost.
 template<typename TokenType>
-inline ParserRef<TokenType> operator - (ParserRef<TokenType> const &parser)
+inline ParserRef<TokenType> operator - (const ParserRef<TokenType> &parser)
 {
 	return parser >> [] (QSharedPointer<ast::Node> node) {
 			if (node->is<TemporaryErrorNode>()) {

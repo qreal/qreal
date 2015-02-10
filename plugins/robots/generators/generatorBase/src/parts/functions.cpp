@@ -3,7 +3,7 @@
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Functions::Functions(QString const &pathToTemplates)
+Functions::Functions(const QString &pathToTemplates)
 	: InitTerminateCodeGenerator(pathToTemplates)
 {
 }
@@ -18,7 +18,7 @@ QString Functions::initCode()
 	return mFunctions.join('\n');
 }
 
-void Functions::registerFunctionInInitialization(QString const &body)
+void Functions::registerFunctionInInitialization(const QString &body)
 {
 	mFunctions << body;
 }

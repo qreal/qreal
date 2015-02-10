@@ -12,14 +12,14 @@ TcpConnectionHandler::TcpConnectionHandler(int port)
 	QObject::connect(&mSocket, SIGNAL(readyRead()), this, SLOT(onIncomingData()), Qt::DirectConnection);
 }
 
-bool TcpConnectionHandler::connect(QHostAddress const &serverAddress)
+bool TcpConnectionHandler::connect(const QHostAddress &serverAddress)
 {
 	if (mSocket.state() == QTcpSocket::ConnectedState || mSocket.state() == QTcpSocket::ConnectingState) {
 		return true;
 	}
 
 	mSocket.connectToHost(serverAddress, static_cast<quint16>(mPort));
-	bool const result = mSocket.waitForConnected(3000);
+	const bool result = mSocket.waitForConnected(3000);
 	if (!result) {
 		QLOG_ERROR() << mSocket.errorString();
 	}
@@ -43,7 +43,7 @@ void TcpConnectionHandler::disconnect()
 	}
 }
 
-void TcpConnectionHandler::send(QString const &data)
+void TcpConnectionHandler::send(const QString &data)
 {
 	QByteArray dataByteArray = data.toUtf8();
 	dataByteArray = QByteArray::number(dataByteArray.size()) + ':' + dataByteArray;
@@ -59,20 +59,20 @@ void TcpConnectionHandler::onIncomingData()
 		return;
 	}
 
-	QByteArray const &data = mSocket.readAll();
+	const QByteArray &data = mSocket.readAll();
 	mBuffer.append(data);
 
 	while (!mBuffer.isEmpty()) {
 		if (mExpectedBytes == 0) {
 			// Determining the length of a message.
-			int const delimiterIndex = mBuffer.indexOf(':');
+			const int delimiterIndex = mBuffer.indexOf(':');
 			if (delimiterIndex == -1) {
 				// We did not receive full message length yet.
 				return;
 			} else {
-				QByteArray const length = mBuffer.left(delimiterIndex);
+				const QByteArray length = mBuffer.left(delimiterIndex);
 				mBuffer = mBuffer.mid(delimiterIndex + 1);
-				bool ok;
+				bool ok = false;
 				mExpectedBytes = length.toInt(&ok);
 				if (!ok) {
 					QLOG_ERROR() << "Malformed message, can not determine message length from this:" << length;
@@ -81,7 +81,7 @@ void TcpConnectionHandler::onIncomingData()
 			}
 		} else {
 			if (mBuffer.size() >= mExpectedBytes) {
-				QByteArray const message = mBuffer.left(mExpectedBytes);
+				const QByteArray message = mBuffer.left(mExpectedBytes);
 				mBuffer = mBuffer.mid(mExpectedBytes);
 
 				emit messageReceived(message);

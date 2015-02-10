@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
+Curve::Curve(const QPointF &start, const QPointF &end, const QPointF &c1)
 		: Path(QPainterPath(start))
 {
 	mPen.setColor(Qt::gray);
@@ -18,7 +18,7 @@ Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	mBoundingRect = boundingRect();
 }
 
-Curve::Curve(Curve const &other)
+Curve::Curve(const Curve &other)
 		: Path(QPainterPath())
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -144,16 +144,16 @@ void  Curve::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement curve = setPenBrushToDoc(document, "curve");
 
-	qreal const x1 = scenePos().x() + mX1 - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + mY1- topLeftPicture.y();
-	qreal const x2 = scenePos().x() + mX2 - topLeftPicture.x();
-	qreal const y2 = scenePos().y() + mY2 - topLeftPicture.y();
-	qreal const x3 = scenePos().x() + mC1.x() - topLeftPicture.x();
-	qreal const y3 = scenePos().y() + mC1.y() - topLeftPicture.y();
+	const qreal x1 = scenePos().x() + mX1 - topLeftPicture.x();
+	const qreal y1 = scenePos().y() + mY1- topLeftPicture.y();
+	const qreal x2 = scenePos().x() + mX2 - topLeftPicture.x();
+	const qreal y2 = scenePos().y() + mY2 - topLeftPicture.y();
+	const qreal x3 = scenePos().x() + mC1.x() - topLeftPicture.x();
+	const qreal y3 = scenePos().y() + mC1.y() - topLeftPicture.y();
 
 	QDomElement start  = document.createElement("start");
 	curve.appendChild(start);

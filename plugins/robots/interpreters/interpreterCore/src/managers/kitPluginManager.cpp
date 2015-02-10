@@ -8,7 +8,7 @@
 using namespace interpreterCore;
 using namespace qReal;
 
-KitPluginManager::KitPluginManager(QString const &pluginDirectory)
+KitPluginManager::KitPluginManager(const QString &pluginDirectory)
 	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
 	, mPluginManager(PluginManager(QCoreApplication::applicationDirPath(), pluginDirectory))
 {
@@ -25,7 +25,7 @@ QList<QString> KitPluginManager::kitIds() const
 	return mPluginInterfaces.keys();
 }
 
-QList<interpreterBase::KitPluginInterface *> KitPluginManager::kitsById(QString const &kitId) const
+QList<interpreterBase::KitPluginInterface *> KitPluginManager::kitsById(const QString &kitId) const
 {
 	if (!mPluginInterfaces.contains(kitId)) {
 		throw qReal::Exception("Requesting non-existing kit plugin");
@@ -34,7 +34,7 @@ QList<interpreterBase::KitPluginInterface *> KitPluginManager::kitsById(QString 
 	return mPluginInterfaces.values(kitId);
 }
 
-QList<generatorBase::GeneratorKitPluginInterface *> KitPluginManager::generatorsById(QString const &kitId) const
+QList<generatorBase::GeneratorKitPluginInterface *> KitPluginManager::generatorsById(const QString &kitId) const
 {
 	// There can be no generators for the given kit id, so we do not filter out non-existing case here.
 	return mGenerators.values(kitId);

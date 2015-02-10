@@ -3,7 +3,7 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Display::Display(DeviceInfo const &info, PortInfo const &port)
+Display::Display(const DeviceInfo &info, const PortInfo &port)
 	: robotModel::parts::NxtDisplay(info, port)
 {
 }
@@ -37,7 +37,7 @@ void Display::drawCircle(int x, int y, int radius)
 	Q_UNUSED(radius)
 }
 
-void Display::printText(int x, int y, QString const &text)
+void Display::printText(int x, int y, const QString &text)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)

@@ -44,9 +44,9 @@ void Timeline::onTimer()
 		if (mCyclesCount >= mSpeedFactor) {
 			mTimer.stop();
 			mCyclesCount = 0;
-			int const msFromFrameStart = static_cast<int>(QDateTime::currentMSecsSinceEpoch()
+			const int msFromFrameStart = static_cast<int>(QDateTime::currentMSecsSinceEpoch()
 					- mFrameStartTimestamp);
-			int const pauseBeforeFrameEnd = mFrameLength - msFromFrameStart;
+			const int pauseBeforeFrameEnd = mFrameLength - msFromFrameStart;
 			if (pauseBeforeFrameEnd > 0) {
 				QTimer::singleShot(pauseBeforeFrameEnd - 1, this, SLOT(gotoNextFrame()));
 			} else {

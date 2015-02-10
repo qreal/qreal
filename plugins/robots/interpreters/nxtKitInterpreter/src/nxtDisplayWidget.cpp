@@ -21,7 +21,7 @@ NxtDisplayWidget::~NxtDisplayWidget()
 	delete mUi;
 }
 
-bool NxtDisplayWidget::buttonIsDown(QString const &buttonPort) const
+bool NxtDisplayWidget::buttonIsDown(const QString &buttonPort) const
 {
 	if (buttonPort == "LeftButtonPort") {
 		return mUi->leftButton->isDown();

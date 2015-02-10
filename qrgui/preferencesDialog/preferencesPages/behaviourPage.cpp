@@ -39,7 +39,7 @@ void PreferencesBehaviourPage::changeEvent(QEvent *e)
 
 void PreferencesBehaviourPage::save()
 {
-	QString const language = mUi->languageComboBox->itemData(mUi->languageComboBox->currentIndex()).toString();
+	const QString language = mUi->languageComboBox->itemData(mUi->languageComboBox->currentIndex()).toString();
 	SettingsManager::setValue("systemLocale", language);
 	if (mOldLanguage != language) {
 		setRestartFlag();
@@ -54,7 +54,7 @@ void PreferencesBehaviourPage::save()
 
 void PreferencesBehaviourPage::restoreSettings()
 {
-	QString const locale = SettingsManager::value("systemLocale").toString();
+	const QString locale = SettingsManager::value("systemLocale").toString();
 	mOldLanguage = locale;
 	for (int index = 0; index < mUi->languageComboBox->count(); ++index) {
 		if (locale == mUi->languageComboBox->itemData(index).toString()) {
@@ -69,7 +69,7 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
-	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
+	const int editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
 	mUi->paletteTabCheckBox->setVisible(editorsLoadedCount != 1);
 }
 
@@ -84,10 +84,10 @@ void PreferencesBehaviourPage::initLanguages()
 	mUi->languageComboBox->addItem(tr("<System Language>"));
 	mUi->languageComboBox->addItem("English", "en");
 	QDir translationsDir(QApplication::applicationDirPath() + "/translations");
-	for (QString const &locale: translationsDir.entryList(QDir::Dirs)) {
-		QString const language = QLocale(locale).nativeLanguageName();
+	for (const QString &locale: translationsDir.entryList(QDir::Dirs)) {
+		const QString language = QLocale(locale).nativeLanguageName();
 		if (!language.isEmpty()) {
-			QString const capitalizedLanguage = language[0].toUpper() + language.mid(1);
+			const QString capitalizedLanguage = language[0].toUpper() + language.mid(1);
 			mUi->languageComboBox->addItem(capitalizedLanguage, locale);
 		}
 	}

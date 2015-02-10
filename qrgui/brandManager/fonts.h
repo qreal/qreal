@@ -49,7 +49,7 @@ private:
 		if (SettingsManager::value("CustomFont").toBool()) {
 			mTitlesFont.fromString(SettingsManager::value("CurrentFont").toString());
 		} else {
-			int const fontId = QFontDatabase::addApplicationFont(defaultSceneLabelsFont());
+			const int fontId = QFontDatabase::addApplicationFont(defaultSceneLabelsFont());
 			if (fontId != -1) {
 				mTitlesFont.fromString(QFontDatabase::applicationFontFamilies(fontId).at(0) + ",11,-1,5,50,0,0,0,0,0");
 			}

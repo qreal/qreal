@@ -11,8 +11,8 @@ class FunctionBlockConverter : public CodeConverterBase
 {
 public:
 	FunctionBlockConverter(lua::LuaProcessor &luaTranslator
-			, qReal::Id const &id
-			, QString const &propertyName
+			, const qReal::Id &id
+			, const QString &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 };
 

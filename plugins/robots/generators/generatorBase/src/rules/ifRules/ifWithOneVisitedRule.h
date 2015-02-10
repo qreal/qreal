@@ -11,8 +11,8 @@ namespace semantics {
 class IfWithOneVisitedRule : public IfBlockRuleBase
 {
 public:
-	IfWithOneVisitedRule(SemanticTree *tree, qReal::Id const &id
-			, LinkInfo const &thenLink, LinkInfo const &elseLink);
+	IfWithOneVisitedRule(SemanticTree *tree, const qReal::Id &id
+			, const LinkInfo &thenLink, const LinkInfo &elseLink);
 
 	virtual bool apply();
 };

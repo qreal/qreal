@@ -27,7 +27,7 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 {
 }
 
-robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Display>()) {
 		return new parts::Display(deviceInfo, port, *engine());
@@ -64,7 +64,7 @@ twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget
 	return new NxtDisplayWidget(parent);
 }
 
-QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+QRect TwoDRobotModel::sensorImageRect(const interpreterBase::robotModel::DeviceInfo &deviceType) const
 {
 	if (deviceType.isA<robotParts::TouchSensor>()) {
 		return QRect(-12, -5, 25, 10);

@@ -10,11 +10,11 @@ class StringPropertyConverter : public converters::CodeConverterBase
 {
 public:
 	StringPropertyConverter(lua::LuaProcessor &luaTranslator
-			, qReal::Id const &id
-			, QString const &propertyName
+			, const qReal::Id &id
+			, const QString &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 
-	QString convert(QString const &expression) const override;
+	QString convert(const QString &expression) const override;
 };
 
 }

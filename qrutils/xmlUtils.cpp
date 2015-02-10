@@ -5,7 +5,7 @@
 
 using namespace utils;
 
-QDomDocument xmlUtils::loadDocument(QString const& fileName)
+QDomDocument xmlUtils::loadDocument(const QString& fileName)
 {
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly)) {

@@ -37,9 +37,9 @@ private:
 	virtual bool initGraphics();
 	virtual bool initDividability();
 	virtual bool initPortTypes();
-	void initPortTypes(QDomElement const &portsElement, QStringList &ports);
+	void initPortTypes(const QDomElement &portsElement, QStringList &ports);
 	void generateGraphics() const;
-	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
-	void generatePorts(utils::OutFile &out, QStringList const &portTypes);
-	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
+	void generateEdgeStyle(const QString &styleString, utils::OutFile &out);
+	void generatePorts(utils::OutFile &out, const QStringList &portTypes);
+	virtual bool initLabel(Label *label, const QDomElement &element, const int &count);
 };

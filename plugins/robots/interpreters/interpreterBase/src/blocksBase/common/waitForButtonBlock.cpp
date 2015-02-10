@@ -6,7 +6,7 @@
 using namespace interpreterBase::blocksBase::common;
 using namespace interpreterBase::robotModel;
 
-WaitForButtonBlock::WaitForButtonBlock(RobotModelInterface &robotModel, QString const &portName)
+WaitForButtonBlock::WaitForButtonBlock(RobotModelInterface &robotModel, const QString &portName)
 	: WaitBlock(robotModel)
 	, mPort(portName)
 {

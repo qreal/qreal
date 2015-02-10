@@ -39,17 +39,17 @@ private:
 	QList<QGraphicsItem *> getAdjancedNodes() const;
 
 	/** @brief drawing a horizontal line */
-	void drawLineY(qreal pointY, QRectF const &sceneRect);
+	void drawLineY(qreal pointY, const QRectF &sceneRect);
 	/** @brief drawing a vertical line */
-	void drawLineX(qreal pointX, QRectF const &sceneRect);
+	void drawLineX(qreal pointX, const QRectF &sceneRect);
 
 	bool makeJumpX(qreal deltaX, qreal pointX);
 	bool makeJumpY(qreal deltaY, qreal pointY);
 
 	void buildLineX(qreal deltaX, qreal pointX, qreal correctionX
-			, qreal &myX1, qreal &myX2, QRectF const &sceneRect);
+			, qreal &myX1, qreal &myX2, const QRectF &sceneRect);
 	void buildLineY(qreal deltaY, qreal pointY, qreal correctionY
-			, qreal &myY1, qreal &myY2, QRectF const &sceneRect);
+			, qreal &myY1, qreal &myY2, const QRectF &sceneRect);
 
 	/// move element vertically according to the grid; coef - index of cell in the grid
 	void makeGridMovingX(qreal myX, int coef, int indexGrid);
@@ -76,13 +76,13 @@ private:
 	QPen mGuidesPen;
 
 	/** @brief radius of guides appearing */
-	static int const radius = 20;
+	static const int radius = 20;
 	/** @brief minimum distance to approach to jump to the guide */
-	static int const radiusJump = 10;
+	static const int radiusJump = 10;
 	/** @brief spacing between element and guide */
-	static int const spacing = 0;
+	static const int spacing = 0;
 	/** @brief guides that have distance equal or less will be represented by only one of them */
-	static int const indistinguishabilitySpace = 10;
+	static const int indistinguishabilitySpace = 10;
 };
 
 }

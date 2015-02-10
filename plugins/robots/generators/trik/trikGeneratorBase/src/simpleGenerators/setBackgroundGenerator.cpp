@@ -7,9 +7,9 @@ using namespace trik::simple;
 using namespace trik::converters;
 using namespace generatorBase::simple;
 
-SetBackgroundGenerator::SetBackgroundGenerator(qrRepo::RepoApi const &repo
+SetBackgroundGenerator::SetBackgroundGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "drawing/setBackground.t"

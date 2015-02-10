@@ -16,8 +16,8 @@ class Motor : public nxtKitInterpreter::robotModel::parts::NxtMotor
 	Q_OBJECT
 
 public:
-	Motor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Motor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void on(int speed, bool breakMode = true) override;

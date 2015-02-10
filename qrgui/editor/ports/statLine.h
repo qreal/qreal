@@ -6,14 +6,14 @@
 class StatLine : public PortInterface
 {
 public:
-	StatLine(QLineF const &line, bool propX1, bool propY1, bool propX2, bool propY2, int initWidth, int initHeight
+	StatLine(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2, int initWidth, int initHeight
 			, PortImpl *impl);
 
 	operator QLineF () const;
-	void operator= (QLineF const &l);
+	void operator= (const QLineF &l);
 
-	virtual void paint(QPainter *painter, QRectF const &contents) const;
-	QLineF transformForContents(QRectF const &contents) const;
+	virtual void paint(QPainter *painter, const QRectF &contents) const;
+	QLineF transformForContents(const QRectF &contents) const;
 
 private:
 	QLineF mLine;

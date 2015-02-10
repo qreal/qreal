@@ -14,7 +14,7 @@ public:
 
 	/// Returns true if the given button is pressed in 2D model.
 	/// @todo Supposes polling, which is not very good for buttons.
-	virtual bool buttonIsDown(QString const &buttonPort) const = 0;
+	virtual bool buttonIsDown(const QString &buttonPort) const = 0;
 
 	/// Updates picture on the display. Must be called each time when somethig
 	/// is beeing changed on the display.

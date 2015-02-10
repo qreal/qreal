@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	QString const inputXmlFileName = args[1];
-	QString const root = args[2];
+	const QString inputXmlFileName = args[1];
+	const QString root = args[2];
 
 	XmlCompiler xmlCompiler;
 	if (!xmlCompiler.compile(inputXmlFileName, root))

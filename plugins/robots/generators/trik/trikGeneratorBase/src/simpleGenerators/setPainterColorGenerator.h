@@ -9,9 +9,9 @@ namespace simple {
 class SetPainterColorGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	SetPainterColorGenerator(qrRepo::RepoApi const &repo
+	SetPainterColorGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

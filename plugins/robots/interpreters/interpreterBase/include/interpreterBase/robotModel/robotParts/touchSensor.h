@@ -17,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT TouchSensor : public ScalarSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	TouchSensor(DeviceInfo const &info, PortInfo const &port);
+	TouchSensor(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

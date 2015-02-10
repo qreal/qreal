@@ -12,7 +12,7 @@ static const int realUpdateInterval = 200;
 using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
-SensorVariablesUpdater::SensorVariablesUpdater(RobotModelManagerInterface const &robotModelManager
+SensorVariablesUpdater::SensorVariablesUpdater(const RobotModelManagerInterface &robotModelManager
 		, qrtext::DebuggerInterface &textLanguageToolbox
 		)
 	: mRobotModelManager(robotModelManager)

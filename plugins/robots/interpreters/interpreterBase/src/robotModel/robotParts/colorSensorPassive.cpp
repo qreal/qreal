@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-ColorSensorPassive::ColorSensorPassive(DeviceInfo const &info, PortInfo const &port)
+ColorSensorPassive::ColorSensorPassive(const DeviceInfo &info, const PortInfo &port)
 	: ColorSensor(info, port)
 {
 }

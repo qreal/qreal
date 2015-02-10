@@ -10,7 +10,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-Diagram::Diagram(qReal::Id const &id,  qrRepo::LogicalRepoApi *api, Editor *editor)
+Diagram::Diagram(const qReal::Id &id,  qrRepo::LogicalRepoApi *api, Editor *editor)
 	: mId(id), mApi(api), mEditor(editor)
 {
 	mDiagramName = mApi->name(id);
@@ -75,7 +75,7 @@ bool Diagram::resolve()
 {
 	foreach (ImportSpecification import, mImports) {
 		Type *importedType = mEditor->findType(import.name);
-		if (importedType == NULL) {
+		if (importedType == nullptr) {
 			qDebug() << "ERROR: imported type" << import.name << "not found, skipping";
 			continue;
 		}
@@ -138,73 +138,73 @@ void Diagram::print()
 
 class Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const = 0;
+	virtual QString generate(Type *type, const QString &lineTemplate) const = 0;
 };
 
 class Diagram::NamesGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateNames(lineTemplate);
 	}
 };
 
 class Diagram::MouseGesturesGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateMouseGestures(lineTemplate);
 	}
 };
 
 class Diagram::PropertyNamesGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateProperties(lineTemplate);
 	}
 };
 
 class Diagram::PropertyDefaultsGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generatePropertyDefaults(lineTemplate);
 	}
 };
 
 class Diagram::PropertyDisplayedNamesGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generatePropertyDisplayedNames(lineTemplate);
 	}
 };
 
 class Diagram::ParentsMapGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateParents(lineTemplate);
 	}
 };
 
 class Diagram::NodesGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateNodeClass(lineTemplate);
 	}
 };
 
 class Diagram::EdgesGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateEdgeClass(lineTemplate);
 	}
 };
 
 class Diagram::ResourceGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateResourceLine(lineTemplate);
 	}
 };
 
-QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const
+QString Diagram::generateMapMethod(const QString& lineTemplate, const MapMethodGenerator &generator) const
 {
 	QString result;
 	foreach(Type* type, mTypes) {
@@ -215,133 +215,133 @@ QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerat
 	return result;
 }
 
-QString Diagram::generateNamesMap(QString const& lineTemplate) const
+QString Diagram::generateNamesMap(const QString& lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, NamesGenerator());
 }
 
-QString Diagram::generateMouseGesturesMap(QString const &lineTemplate) const
+QString Diagram::generateMouseGesturesMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, MouseGesturesGenerator());
 }
 
-QString Diagram::generatePropertiesMap(QString const &lineTemplate) const
+QString Diagram::generatePropertiesMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, PropertyNamesGenerator());
 }
 
-QString Diagram::generatePropertyDefaultsMap(QString const &lineTemplate) const
+QString Diagram::generatePropertyDefaultsMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, PropertyDefaultsGenerator());
 }
 
-QString Diagram::generatePropertyDisplayedNamesMap(QString const &lineTemplate) const
+QString Diagram::generatePropertyDisplayedNamesMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, PropertyDisplayedNamesGenerator());
 }
 
-QString Diagram::generateParentsMap(QString const &lineTemplate) const
+QString Diagram::generateParentsMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, ParentsMapGenerator());
 }
 
 class Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const = 0;
+	virtual QString generate(Type *type, const QString &lineTemplate) const = 0;
 };
 
 class Diagram::UsagesGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateUsages(lineTemplate);
 	}
 };
 
 class Diagram::ContainersGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateContainers(lineTemplate);
 	}
 };
 
 class Diagram::ReferencePropertiesGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateReferenceProperties(lineTemplate);
 	}
 };
 
 class Diagram::ConnectionsGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateConnections(lineTemplate);
 	}
 };
 
 class Diagram::FactoryGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateFactory(lineTemplate);
 	}
 };
 
 class Diagram::IsNodeOrEdgeGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateIsNodeOrEdge(lineTemplate);
 	}
 };
 
 class Diagram::EnumsGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateEnums(lineTemplate);
 	}
 };
 
 class Diagram::PossibleEdgesGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generatePossibleEdges(lineTemplate);
 	}
 };
 
-QString Diagram::generateUsages(QString const &lineTemplate) const
+QString Diagram::generateUsages(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, UsagesGenerator());
 }
 
-QString Diagram::generateConnections(QString const &lineTemplate) const
+QString Diagram::generateConnections(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, ConnectionsGenerator());
 }
 
-QString Diagram::generateReferenceProperties(QString const &lineTemplate) const
+QString Diagram::generateReferenceProperties(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, ReferencePropertiesGenerator());
 }
 
-QString Diagram::generateContainers(QString const &lineTemplate) const
+QString Diagram::generateContainers(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, ContainersGenerator());
 }
 
-QString Diagram::generateFactory(QString const &lineTemplate) const
+QString Diagram::generateFactory(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, FactoryGenerator());
 }
 
-QString Diagram::generateIsNodeOrEdge(QString const &lineTemplate) const
+QString Diagram::generateIsNodeOrEdge(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, IsNodeOrEdgeGenerator());
 }
 
-QString Diagram::generatePossibleEdges(QString const &lineTemplate) const
+QString Diagram::generatePossibleEdges(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, PossibleEdgesGenerator());
 }
 
-QString Diagram::generateListMethod(QString const &lineTemplate, ListMethodGenerator const &generator) const
+QString Diagram::generateListMethod(const QString &lineTemplate, const ListMethodGenerator &generator) const
 {
 	QString result;
 	bool isFirstLine = true;
@@ -359,7 +359,7 @@ QString Diagram::generateListMethod(QString const &lineTemplate, ListMethodGener
 	return result;
 }
 
-QString Diagram::generateEnums(QString const &lineTemplate) const
+QString Diagram::generateEnums(const QString &lineTemplate) const
 {
 	EnumsGenerator generator;
 	QString result;
@@ -377,17 +377,17 @@ QString Diagram::generateEnums(QString const &lineTemplate) const
 	return result;
 }
 
-QString Diagram::generateNodeClasses(QString const &nodeTemplate) const
+QString Diagram::generateNodeClasses(const QString &nodeTemplate) const
 {
 	return generateMapMethod(nodeTemplate, NodesGenerator());
 }
 
-QString Diagram::generateEdgeClasses(QString const &edgeTemplate) const
+QString Diagram::generateEdgeClasses(const QString &edgeTemplate) const
 {
 	return generateMapMethod(edgeTemplate, EdgesGenerator());
 }
 
-QString Diagram::generateResourceFile(QString const &resourceTemplate) const
+QString Diagram::generateResourceFile(const QString &resourceTemplate) const
 {
 	return generateMapMethod(resourceTemplate, ResourceGenerator());
 }

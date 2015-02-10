@@ -1,15 +1,15 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "scalableCoordinate.h"
-#include "utilsDeclSpec.h"
+#include "qrutils/scalableCoordinate.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 
 class QRUTILS_EXPORT ScalableItem
 {
 public:
-	static ScalableCoordinate initCoordinate(QString const &coordinate, int maxValue);
+	static ScalableCoordinate initCoordinate(const QString &coordinate, int maxValue);
 protected:
 	virtual ~ScalableItem() {}
 };

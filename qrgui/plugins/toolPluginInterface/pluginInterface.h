@@ -38,7 +38,7 @@ public:
 		return {};
 	}
 
-	/// Returns preferences page along with its name if plugin has any, NULL otherwise.
+	/// Returns preferences page along with its name if plugin has any, nullptr otherwise.
 	/// Ownership is passed to the caller.
 	virtual QPair<QString, gui::PreferencesPage *> preferencesPage()
 	{

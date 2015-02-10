@@ -7,21 +7,21 @@
 
 using namespace qReal;
 
-CircleWidget::CircleWidget(QSize const &size, QString const &icon, QWidget *parent)
+CircleWidget::CircleWidget(const QSize &size, const QString &icon, QWidget *parent)
 	: QWidget(parent)
 {
-	QSize const iconSize = size - QSize(25, 25);
+	const QSize iconSize = size - QSize(25, 25);
 
-	QPixmap const pixmap(icon);
-	int const targetHeight = iconSize.height();
-	int const targetWidth = iconSize.width();
+	const QPixmap pixmap(icon);
+	const int targetHeight = iconSize.height();
+	const int targetWidth = iconSize.width();
 
-	int const pictureHeight = pixmap.height();
-	int const pictureWidth = pixmap.width();
+	const int pictureHeight = pixmap.height();
+	const int pictureWidth = pixmap.width();
 
 	// Take picture aspect into account
 	// TODO: move it into shared place and reuse in SdfIconEngineV2
-	QRect const iconRect(QPoint(), iconSize);
+	const QRect iconRect(QPoint(), iconSize);
 	QRect resultingRect = iconRect;
 	if (targetHeight * pictureWidth < pictureHeight * targetWidth) {
 		resultingRect.setLeft(iconRect.left()
@@ -56,10 +56,10 @@ void CircleWidget::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 
-	QColor const backgroundColor = Qt::white;
+	const QColor backgroundColor = Qt::white;
 	QPen borderPen(property("enabled").toBool() ? palette().foreground().color() : backgroundColor);
 	borderPen.setWidth(3);
-	QBrush const backgroundBrush(backgroundColor);
+	const QBrush backgroundBrush(backgroundColor);
 	painter.setBrush(backgroundBrush);
 	painter.setPen(borderPen);
 	painter.drawEllipse(QRect(QPoint(2, 2), size() - QSize(4, 4)));

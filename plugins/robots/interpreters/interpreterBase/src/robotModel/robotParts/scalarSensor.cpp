@@ -2,7 +2,7 @@
 
 using namespace interpreterBase::robotModel::robotParts;
 
-ScalarSensor::ScalarSensor(DeviceInfo const &info, PortInfo const &port)
+ScalarSensor::ScalarSensor(const DeviceInfo &info, const PortInfo &port)
 	: AbstractSensor(info, port)
 {
 }

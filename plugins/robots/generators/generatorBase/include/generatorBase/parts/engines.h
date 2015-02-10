@@ -13,9 +13,9 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Engines : public InitTerminateCodeGenerator
 {
 public:
-	Engines(QString const &pathToTemplates
-			, simple::Binding::ConverterInterface const *outputPortConverter
-			, simple::Binding::MultiConverterInterface const *outputPortsConverter);
+	Engines(const QString &pathToTemplates
+			, const simple::Binding::ConverterInterface *outputPortConverter
+			, const simple::Binding::MultiConverterInterface *outputPortsConverter);
 	virtual ~Engines();
 
 	virtual void reinit();
@@ -23,18 +23,18 @@ public:
 	virtual QString terminateCode();
 
 	/// Marks given output port used in resulting program. Adds init/termnate code for it.
-	void registerUsageOnPort(QString const &outputPort);
+	void registerUsageOnPort(const QString &outputPort);
 
 	/// Marks given output ports used in resulting program. Adds init/termnate code for them.
 	/// Output ports are splitted with system engines multiconverter.
-	void registerUsageOnPorts(QString const &outputPorts);
+	void registerUsageOnPorts(const QString &outputPorts);
 
 private:
-	QString readEngineTemplate(QString const &pathToTemplate);
+	QString readEngineTemplate(const QString &pathToTemplate);
 
 	QSet<QString> mUsedPorts;
-	simple::Binding::ConverterInterface const *mOutputPortConverter;  // Takes ownership
-	simple::Binding::MultiConverterInterface const *mOutputPortsConverter;  // Takes ownership
+	const simple::Binding::ConverterInterface *mOutputPortConverter;  // Takes ownership
+	const simple::Binding::MultiConverterInterface *mOutputPortsConverter;  // Takes ownership
 };
 
 }

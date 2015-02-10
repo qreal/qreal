@@ -30,7 +30,7 @@ void Progress::setValue(int value)
 	if (value < mMinimum || value > mMaximum) {
 		return;
 	}
-	bool const changed = value != mValue;
+	const bool changed = value != mValue;
 	mValue = value;
 	if (changed) {
 		emit valueChanged(value);
@@ -42,7 +42,7 @@ void Progress::setMinimum(int minimum)
 	if (minimum > maximum()) {
 		return;
 	}
-	bool const changed = minimum != mMinimum;
+	const bool changed = minimum != mMinimum;
 	mMinimum = minimum;
 	if (changed) {
 		emit minimumChanged(minimum);
@@ -54,7 +54,7 @@ void Progress::setMaximum(int maximum)
 	if (maximum < minimum()) {
 		return;
 	}
-	bool const changed = maximum != mMaximum;
+	const bool changed = maximum != mMaximum;
 	mMaximum = maximum;
 	if (changed) {
 		emit maximumChanged(maximum);

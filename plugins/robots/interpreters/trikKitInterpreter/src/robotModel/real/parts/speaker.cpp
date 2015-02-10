@@ -5,17 +5,17 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Speaker::Speaker(DeviceInfo const &info, PortInfo const &port
+Speaker::Speaker(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikSpeaker(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
-void Speaker::play(QString const &filePath)
+void Speaker::play(const QString &filePath)
 {
-	QString const pathToCommand = ":/trikQts/templates/playTone.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand)
+	const QString pathToCommand = ":/trikQts/templates/playTone.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@FILENAME@@", filePath) + "brick.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);

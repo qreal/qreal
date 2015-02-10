@@ -13,7 +13,7 @@ class EditorManager;
 class GroupNode
 {
 public:
-	GroupNode(QString const &type, QString const &id, QPointF const &position, QString const &parent);
+	GroupNode(const QString &type, const QString &id, const QPointF &position, const QString &parent);
 
 	QString type;
 	QString id;
@@ -24,7 +24,7 @@ public:
 class GroupEdge
 {
 public:
-	GroupEdge(QString const &type, QString const &from, QString const &to);
+	GroupEdge(const QString &type, const QString &from, const QString &to);
 
 	QString type;
 	QString from;
@@ -35,32 +35,32 @@ class QRGUI_PLUGINS_MANAGER_EXPORT Pattern
 {
 public:
 	Pattern();
-	Pattern(QString const &editor, QString const &diagram, QString const &name
-			, QString const &inNode, QString const &outNode, QString const &rootNode);
+	Pattern(const QString &editor, const QString &diagram, const QString &name
+			, const QString &inNode, const QString &outNode, const QString &rootNode);
 
-	void setName(QString const &name);
+	void setName(const QString &name);
 	QString name() const;
 
-	void setEditor(QString const &editor);
+	void setEditor(const QString &editor);
 	QString editor() const;
 
-	void setDiagram(QString const &diagram);
+	void setDiagram(const QString &diagram);
 	QString diagram() const;
 
-	void addNode(QString const &type, QString const &id, QPointF const &pos, QString const &parent);
-	void addEdge(QString const &type, QString const &from, QString const &to);
+	void addNode(const QString &type, const QString &id, const QPointF &pos, const QString &parent);
+	void addEdge(const QString &type, const QString &from, const QString &to);
 
 	QList<GroupNode> nodes() const;
 	QList<GroupEdge> edges() const;
 
 	QString inNode() const;
 	QString outNode() const;
-	void setInNode(QString const &id);
-	void setOutNode(QString const &id);
+	void setInNode(const QString &id);
+	void setOutNode(const QString &id);
 
 	QString rootNode() const;
 	QString rootType() const;
-	void setRootNode(QString const &rootId);
+	void setRootNode(const QString &rootId);
 
 	QPointF size() const;
 	void countSize(EditorManager *editorManager);
@@ -77,7 +77,7 @@ private:
 	QPointF mSize;
 };
 
-inline bool operator==(GroupNode const &node1, GroupNode const &node2)
+inline bool operator==(const GroupNode &node1, const GroupNode &node2)
 {
 	return node1.type == node2.type
 			&& node1.id == node2.id

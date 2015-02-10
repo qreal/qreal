@@ -17,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT RangeSensor : public ScalarSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	RangeSensor(DeviceInfo const &info, PortInfo const &port);
+	RangeSensor(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

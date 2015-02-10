@@ -5,13 +5,13 @@ using namespace qReal::commands;
 CreateElementCommand::CreateElementCommand(
 		models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
-		, models::Exploser const &exploser
-		, Id const &logicalParent
-		, Id const &graphicalParent
-		, Id const &id
+		, const models::Exploser &exploser
+		, const Id &logicalParent
+		, const Id &graphicalParent
+		, const Id &id
 		, bool isFromLogicalModel
-		, QString const &name
-		, QPointF const &position)
+		, const QString &name
+		, const QPointF &position)
 	: mImpl(logicalApi, graphicalApi, exploser, logicalParent
 			, graphicalParent, id, isFromLogicalModel, name, position)
 {
@@ -22,7 +22,7 @@ qReal::Id CreateElementCommand::result() const
 	return mResult;
 }
 
-void CreateElementCommand::setNewPosition(QPointF const &position)
+void CreateElementCommand::setNewPosition(const QPointF &position)
 {
 	mImpl.setNewPosition(position);
 }

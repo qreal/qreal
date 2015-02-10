@@ -12,17 +12,17 @@ namespace converters {
 class BoolPropertyConverter : public CodeConverterBase, public TemplateParametrizedEntity
 {
 public:
-	BoolPropertyConverter(QString const &pathToTemplates
+	BoolPropertyConverter(const QString &pathToTemplates
 			, lua::LuaProcessor &luaTranslator
-			, qReal::Id const &id
-			, QString const &propertyName
+			, const qReal::Id &id
+			, const QString &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter
 			, bool needInverting);
 
-	QString convert(QString const &data) const override;
+	QString convert(const QString &data) const override;
 
 private:
-	QString invert(QString const &expression) const;
+	QString invert(const QString &expression) const;
 
 	bool mNeedInverting;
 };

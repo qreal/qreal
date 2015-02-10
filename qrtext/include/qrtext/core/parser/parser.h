@@ -35,7 +35,7 @@ public:
 	{
 		mTokenStream.reset(new TokenStream<TokenType>(tokens, tokenUserFriendlyNames, mErrors));
 		mContext.reset(new ParserContext<TokenType>(mErrors, *mTokenStream));
-		auto const ast = mGrammar->parse(*mTokenStream, *mContext);
+		const auto ast = mGrammar->parse(*mTokenStream, *mContext);
 		if (!mTokenStream->isEnd()) {
 			mContext->reportError(QObject::tr("Unexpected token"));
 		}

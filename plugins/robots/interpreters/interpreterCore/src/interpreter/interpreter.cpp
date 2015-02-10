@@ -14,15 +14,15 @@ using namespace qReal;
 using namespace interpreterCore::interpreter;
 using namespace interpreterBase::robotModel;
 
-Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
-int const maxThreadsCount = 100;
+const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
+const int maxThreadsCount = 100;
 
-Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, qReal::ProjectManagementInterface const &projectManager
+		, const qReal::ProjectManagementInterface &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &languageToolbox
 		, QAction &connectToRobotAction
 		)
@@ -88,9 +88,9 @@ void Interpreter::interpret()
 
 	/// @todo Temporarily loading initial configuration from a network of SensorConfigurationProviders.
 	///       To be done more adequately.
-	QString const modelName = mRobotModelManager.model().robotId();
-	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
-		DeviceInfo const deviceInfo = currentConfiguration(modelName, port);
+	const QString modelName = mRobotModelManager.model().robotId();
+	for (const PortInfo &port : mRobotModelManager.model().configurablePorts()) {
+		const DeviceInfo deviceInfo = currentConfiguration(modelName, port);
 		mRobotModelManager.model().configureDevice(port, deviceInfo);
 	}
 
@@ -115,7 +115,7 @@ int Interpreter::timeElapsed() const
 			: 0;
 }
 
-void Interpreter::connectedSlot(bool success, QString const &errorString)
+void Interpreter::connectedSlot(bool success, const QString &errorString)
 {
 	if (success) {
 		if (mRobotModelManager.model().needsConnection()) {
@@ -154,7 +154,7 @@ void Interpreter::devicesConfiguredSlot()
 		utils::Tracer::debug(utils::Tracer::initialization
 				, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
 
-		Id const &currentDiagramId = mInterpretersInterface.activeDiagram();
+		const Id &currentDiagramId = mInterpretersInterface.activeDiagram();
 
 		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
 				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable);
@@ -177,7 +177,7 @@ void Interpreter::threadStopped()
 	}
 }
 
-void Interpreter::newThread(Id const &startBlockId)
+void Interpreter::newThread(const Id &startBlockId)
 {
 	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
 			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId);
@@ -226,7 +226,7 @@ void Interpreter::disconnectSlot()
 	stopRobot();
 }
 
-void Interpreter::reportError(QString const &message)
+void Interpreter::reportError(const QString &message)
 {
 	mInterpretersInterface.errorReporter()->addError(message);
 }

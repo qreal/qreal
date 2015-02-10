@@ -11,10 +11,10 @@
 
 using namespace utils;
 
-static uint const controlPort = 8888;
-static uint const telemetryPort = 9000;
+static const uint controlPort = 8888;
+static const uint telemetryPort = 9000;
 
-TcpRobotCommunicator::TcpRobotCommunicator(QString const &serverIpSettingsKey)
+TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	: mErrorReporter(nullptr)
 	, mControlConnection(controlPort)
 	, mTelemetryConnection(telemetryPort)
@@ -33,7 +33,7 @@ TcpRobotCommunicator::~TcpRobotCommunicator()
 	disconnect();
 }
 
-bool TcpRobotCommunicator::uploadProgram(QString const &programName)
+bool TcpRobotCommunicator::uploadProgram(const QString &programName)
 {
 	if (programName.isEmpty()) {
 		return false;
@@ -42,7 +42,7 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 	QString fileContents;
 	try {
 		fileContents = utils::InFile::readAll(programName);
-	} catch (qReal::Exception const &) {
+	} catch (const qReal::Exception &) {
 		return false;
 	}
 
@@ -51,14 +51,14 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 		return false;
 	}
 
-	QString const &fileNameOnARobot = QFileInfo(programName).fileName();
+	const QString &fileNameOnARobot = QFileInfo(programName).fileName();
 
 	mControlConnection.send("file:" + fileNameOnARobot + ":" + fileContents);
 
 	return true;
 }
 
-bool TcpRobotCommunicator::runProgram(QString const &programName)
+bool TcpRobotCommunicator::runProgram(const QString &programName)
 {
 	connect();
 	if (!mControlConnection.isConnected()) {
@@ -70,13 +70,13 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	return true;
 }
 
-bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand, bool asScript)
+bool TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool asScript)
 {
 	if (!mControlConnection.isConnected()) {
 		return false;
 	}
 
-	QString const command = asScript ? "directScript" : "direct";
+	const QString command = asScript ? "directScript" : "direct";
 	mControlConnection.send(command + ":" + directCommand);
 
 	return true;
@@ -93,7 +93,7 @@ bool TcpRobotCommunicator::stopRobot()
 	return true;
 }
 
-void TcpRobotCommunicator::requestData(QString const &sensor)
+void TcpRobotCommunicator::requestData(const QString &sensor)
 {
 	if (!mTelemetryConnection.isConnected()) {
 		return;
@@ -107,15 +107,15 @@ void TcpRobotCommunicator::setErrorReporter(qReal::ErrorReporterInterface *error
 	mErrorReporter = errorReporter;
 }
 
-void TcpRobotCommunicator::processControlMessage(QString const &message)
+void TcpRobotCommunicator::processControlMessage(const QString &message)
 {
-	QString const errorMarker("error: ");
-	QString const infoMarker("info: ");
-	QString const versionMarker("version: ");
+	const QString errorMarker("error: ");
+	const QString infoMarker("info: ");
+	const QString versionMarker("version: ");
 
 	if (message.startsWith(versionMarker) && mErrorReporter) {
 		mVersionTimer.stop();
-		QString const currentVersion = message.mid(versionMarker.length());
+		const QString currentVersion = message.mid(versionMarker.length());
 		if (currentVersion != requiredVersion) {
 			mErrorReporter->addError(tr("Current TRIK runtime version is not equal to version required by TRIKStudio"));
 		}
@@ -128,9 +128,9 @@ void TcpRobotCommunicator::processControlMessage(QString const &message)
 	}
 }
 
-void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
+void TcpRobotCommunicator::processTelemetryMessage(const QString &message)
 {
-	QString const sensorMarker("sensor:");
+	const QString sensorMarker("sensor:");
 
 	if (message.startsWith(sensorMarker)) {
 		QString data(message);
@@ -141,7 +141,7 @@ void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
 			portAndValue[1].remove(portAndValue[1].length() - 1, 1);
 			QStringList stringValues = portAndValue[1].split(",");
 			QVector<int> values;
-			for (QString const &value : stringValues) {
+			for (const QString &value : stringValues) {
 				values.push_back(value.toInt());
 			}
 
@@ -168,7 +168,7 @@ void TcpRobotCommunicator::versionRequest()
 
 void TcpRobotCommunicator::connect()
 {
-	QString const server = qReal::SettingsManager::value(mServerIpSettingsKey).toString();
+	const QString server = qReal::SettingsManager::value(mServerIpSettingsKey).toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
 		QLOG_ERROR() << "Unable to resolve host.";
@@ -184,7 +184,7 @@ void TcpRobotCommunicator::connect()
 	}
 
 	mCurrentIP = server;
-	bool const result = mControlConnection.connect(hostAddress) && mTelemetryConnection.connect(hostAddress);
+	const bool result = mControlConnection.connect(hostAddress) && mTelemetryConnection.connect(hostAddress);
 	versionRequest();
 	emit connected(result, QString());
 }

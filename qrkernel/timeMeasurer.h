@@ -13,7 +13,7 @@ class QRKERNEL_EXPORT TimeMeasurer
 public:
 	/// Constructor.
 	/// @param methodName A name of a method or part of program to be measured.
-	explicit TimeMeasurer(QString const &methodName);
+	explicit TimeMeasurer(const QString &methodName);
 
 	/// Destructor. Calling it indicates end of measured interval.
 	~TimeMeasurer();
@@ -33,4 +33,4 @@ private:
 }
 
 /// Macro to conveniently log time it takes to exit current block.
-#define LOG_TIME qReal::TimeMeasurer const measurer(Q_FUNC_INFO); measurer.doNothing();
+#define LOG_TIME const qReal::TimeMeasurer measurer(Q_FUNC_INFO); measurer.doNothing();

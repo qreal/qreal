@@ -21,13 +21,13 @@ public:
 	/// @param blocksFactoryManager - a factory manager that is used to create new blocks when needed.
 	/// @param robotModelManager - has a reference to current robot model.
 	BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager);
 
 private:
-	qReal::interpretation::BlockInterface *produceBlock(qReal::Id const &element) override;
+	qReal::interpretation::BlockInterface *produceBlock(const qReal::Id &element) override;
 
 	BlocksFactoryManagerInterface &mBlocksFactoryManager;
-	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 };
 
 }

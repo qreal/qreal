@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-LightSensor::LightSensor(DeviceInfo const &info, PortInfo const &port)
+LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port)
 	: ScalarSensor(info, port)
 {
 }

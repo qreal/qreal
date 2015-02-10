@@ -17,7 +17,7 @@ public:
 	QString kitId() const override;
 
 protected:
-	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
+	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 };
 
 }

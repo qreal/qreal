@@ -12,10 +12,10 @@ class TrikSpeaker : public interpreterBase::robotModel::robotParts::Speaker
 	Q_OBJECT
 
 public:
-	TrikSpeaker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikSpeaker(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
-	virtual void play(QString const &filePath) = 0;
+	virtual void play(const QString &filePath) = 0;
 };
 
 }

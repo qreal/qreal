@@ -40,7 +40,7 @@ int TrikDisplayWidget::displayHeight() const
 	return mUi->display->height();
 }
 
-bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
+bool TrikDisplayWidget::buttonIsDown(const QString &buttonPort) const
 {
 	if (buttonPort == "LeftButtonPort") {
 		return mUi->buttonLeft->isDown();
@@ -63,7 +63,7 @@ bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 	return false;
 }
 
-void TrikDisplayWidget::setLedColor(QColor const &color)
+void TrikDisplayWidget::setLedColor(const QColor &color)
 {
 	QPalette backgroundPalette(palette());
 	backgroundPalette.setColor(QPalette::Background, color);

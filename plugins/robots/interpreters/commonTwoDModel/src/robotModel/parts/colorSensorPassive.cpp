@@ -5,8 +5,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-ColorSensorPassive::ColorSensorPassive(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+ColorSensorPassive::ColorSensorPassive(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: interpreterBase::robotModel::robotParts::ColorSensorPassive(info, port)
 	, mEngine(engine)

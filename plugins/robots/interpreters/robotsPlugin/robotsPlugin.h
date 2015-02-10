@@ -21,7 +21,7 @@ public:
 	/// Constructor. Creates plugin in uninitialized state, "init" shall be called before plugin can do anything useful.
 	RobotsPlugin();
 
-	void init(qReal::PluginConfigurator const &configurator) override;
+	void init(const qReal::PluginConfigurator &configurator) override;
 	qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.
 	QPair<QString, qReal::gui::PreferencesPage *> preferencesPage() override;  // Transfers ownership.
 	QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.

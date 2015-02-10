@@ -26,7 +26,7 @@ public:
 	/// Constructor.
 	/// @param robotModelManager - has reference to current robot model.
 	/// @param parser - contains sensor variables and is needed here to update them.
-	SensorVariablesUpdater(interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	SensorVariablesUpdater(const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::DebuggerInterface &textLanguageToolbox
 			);
 
@@ -47,18 +47,18 @@ private slots:
 private:
 	int updateInterval() const;
 
-	void updateScalarSensorVariables(interpreterBase::robotModel::PortInfo const &sensorPortInfo, int reading);
-	void updateScalarSensorVariable(QString const &variable, int reading);
+	void updateScalarSensorVariables(const interpreterBase::robotModel::PortInfo &sensorPortInfo, int reading);
+	void updateScalarSensorVariable(const QString &variable, int reading);
 
-	void updateVectorSensorVariables(interpreterBase::robotModel::PortInfo const &sensorPortInfo
+	void updateVectorSensorVariables(const interpreterBase::robotModel::PortInfo &sensorPortInfo
 			, const QVector<int> &reading);
 
-	void updateVectorSensorVariable(QString const &variable, const QVector<int> &reading);
+	void updateVectorSensorVariable(const QString &variable, const QVector<int> &reading);
 
 	void resetVariables();
 
 	QScopedPointer<utils::AbstractTimer> mUpdateTimer;
-	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	qrtext::DebuggerInterface &mParser;
 };
 

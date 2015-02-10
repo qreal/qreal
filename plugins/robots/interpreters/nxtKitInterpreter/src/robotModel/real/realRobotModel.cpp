@@ -26,7 +26,7 @@ using namespace nxtKitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
-RealRobotModel::RealRobotModel(QString const &kitId, QString const &robotId)
+RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 	: NxtRobotModelBase(kitId, robotId)
 	, mRobotCommunicator(new RobotCommunicator(this))
 {
@@ -52,7 +52,7 @@ bool RealRobotModel::needsConnection() const
 
 void RealRobotModel::rereadSettings()
 {
-	QString const valueOfCommunication = qReal::SettingsManager::value("NxtValueOfCommunication").toString();
+	const QString valueOfCommunication = qReal::SettingsManager::value("NxtValueOfCommunication").toString();
 	if (valueOfCommunication == mLastCommunicationValue) {
 		return;
 	}
@@ -83,7 +83,7 @@ void RealRobotModel::checkConnection()
 	mRobotCommunicator->checkConsistency();
 }
 
-robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port);

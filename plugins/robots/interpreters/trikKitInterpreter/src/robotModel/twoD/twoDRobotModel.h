@@ -18,14 +18,14 @@ public:
 	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
 	twoDModel::engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const override;
 	QString sensorImagePath(const interpreterBase::robotModel::DeviceInfo &deviceType) const override;
-	QRect sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const;
+	QRect sensorImageRect(const interpreterBase::robotModel::DeviceInfo &deviceType) const;
 
-	void setWheelPorts(QString const &leftWheelPort, QString const &rightWheelPort);
+	void setWheelPorts(const QString &leftWheelPort, const QString &rightWheelPort);
 
 private:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
-			interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &deviceInfo
+			const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &deviceInfo
 			) override;
 
 	void onInterpretationStarted() override;

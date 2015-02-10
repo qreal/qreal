@@ -9,9 +9,9 @@ namespace simple {
 class WaitForEncoderBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForEncoderBlockGenerator(qrRepo::RepoApi const &repo
+	WaitForEncoderBlockGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

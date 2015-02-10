@@ -27,7 +27,7 @@
 using namespace Scintilla;
 #endif
 
-LexerManager *LexerManager::theInstance = NULL;
+LexerManager *LexerManager::theInstance = nullptr;
 
 //------------------------------------------
 //
@@ -48,8 +48,8 @@ void ExternalLexerModule::SetExternal(GetLexerFactoryFunction fFactory, int inde
 
 LexerLibrary::LexerLibrary(const char *ModuleName) {
 	// Initialise some members...
-	first = NULL;
-	last = NULL;
+	first = nullptr;
+	last = nullptr;
 
 	// Load the DLL
 	lib = DynamicLibrary::Load(ModuleName);
@@ -74,14 +74,14 @@ LexerLibrary::LexerLibrary(const char *ModuleName) {
 
 			for (int i = 0; i < nl; i++) {
 				GetLexerName(i, lexname, 100);
-				lex = new ExternalLexerModule(SCLEX_AUTOMATIC, NULL, lexname, NULL);
+				lex = new ExternalLexerModule(SCLEX_AUTOMATIC, nullptr, lexname, nullptr);
 				Catalogue::AddLexerModule(lex);
 
 				// Create a LexerMinder so we don't leak the ExternalLexerModule...
 				lm = new LexerMinder;
 				lm->self = lex;
-				lm->next = NULL;
-				if (first != NULL) {
+				lm->next = nullptr;
+				if (first != nullptr) {
 					last->next = lm;
 					last = lm;
 				} else {
@@ -95,7 +95,7 @@ LexerLibrary::LexerLibrary(const char *ModuleName) {
 			}
 		}
 	}
-	next = NULL;
+	next = nullptr;
 }
 
 LexerLibrary::~LexerLibrary() {
@@ -107,15 +107,15 @@ void LexerLibrary::Release() {
 	LexerMinder *lm;
 	LexerMinder *lmNext;
 	lm = first;
-	while (NULL != lm) {
+	while (nullptr != lm) {
 		lmNext = lm->next;
 		delete lm->self;
 		delete lm;
 		lm = lmNext;
 	}
 
-	first = NULL;
-	last = NULL;
+	first = nullptr;
+	last = nullptr;
 }
 
 //------------------------------------------
@@ -134,13 +134,13 @@ LexerManager *LexerManager::GetInstance() {
 /// Delete any LexerManager instance...
 void LexerManager::DeleteInstance() {
 	delete theInstance;
-	theInstance = NULL;
+	theInstance = nullptr;
 }
 
 /// protected constructor - this is a singleton...
 LexerManager::LexerManager() {
-	first = NULL;
-	last = NULL;
+	first = nullptr;
+	last = nullptr;
 }
 
 LexerManager::~LexerManager() {
@@ -157,7 +157,7 @@ void LexerManager::LoadLexerLibrary(const char *module) {
 			return;
 	}
 	LexerLibrary *lib = new LexerLibrary(module);
-	if (NULL != first) {
+	if (nullptr != first) {
 		last->next = lib;
 		last = lib;
 	} else {
@@ -167,7 +167,7 @@ void LexerManager::LoadLexerLibrary(const char *module) {
 }
 
 void LexerManager::Clear() {
-	if (NULL != first) {
+	if (nullptr != first) {
 		LexerLibrary *cur = first;
 		LexerLibrary *next;
 		while (cur) {
@@ -175,8 +175,8 @@ void LexerManager::Clear() {
 			delete cur;
 			cur = next;
 		}
-		first = NULL;
-		last = NULL;
+		first = nullptr;
+		last = nullptr;
 	}
 }
 

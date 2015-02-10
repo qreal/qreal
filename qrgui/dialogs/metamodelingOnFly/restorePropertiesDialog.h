@@ -21,7 +21,7 @@ public:
 	/// Constructor.
 	/// @param parent Parent widget, who is responsible for deletion of this dialog.
 	/// @param editorManagerProxy Editor manager.
-	explicit RestorePropertiesDialog(QWidget *parent, EditorManagerInterface const &editorManagerProxy);
+	explicit RestorePropertiesDialog(QWidget *parent, const EditorManagerInterface &editorManagerProxy);
 
 	/// Destructor.
 	~RestorePropertiesDialog();
@@ -29,7 +29,7 @@ public:
 	/// Filling the same name properties table widget.
 	/// @param propertiesWithTheSameNameList IdList of elements with the same name.
 	/// @param propertyName name of property.
-	void fillSameNamePropertiesTW(IdList const &propertiesWithTheSameNameList, QString  const &propertyName);
+	void fillSameNamePropertiesTW(const IdList &propertiesWithTheSameNameList, QString  const &propertyName);
 
 signals:
 	void createNewChosen();
@@ -40,7 +40,7 @@ private slots:
 
 private:
 	Ui::RestorePropertiesDialog *mUi;
-	EditorManagerInterface const &mInterpreterEditorManager;
+	const EditorManagerInterface &mInterpreterEditorManager;
 	IdList mPropertiesWithTheSameNameList;
 };
 }

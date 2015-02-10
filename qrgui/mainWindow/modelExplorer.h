@@ -19,7 +19,7 @@ public:
 
 	void setController(Controller * const controller);
 	void setAssistApi(details::ModelsAssistInterface * const model);
-	void setExploser(models::Exploser const &exploser);
+	void setExploser(const models::Exploser &exploser);
 
 	/// Replaces current set of editor actions  with new one.
 	/// Editor actions will be shown on context menu and their shortcuts will be triggered
@@ -42,7 +42,7 @@ private:
 
 	Controller *mController; // Doesn`t take ownership
 	details::ModelsAssistInterface *mModel; // Doesn`t take ownership
-	models::Exploser const *mExploser; // Doesn`t take ownership
+	const models::Exploser *mExploser; // Doesn`t take ownership
 	QAction mDeleteAction;
 	QAction mDeleteActionSeparator;
 };

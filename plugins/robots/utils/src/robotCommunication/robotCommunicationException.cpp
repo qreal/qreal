@@ -2,7 +2,7 @@
 
 using namespace utils::robotCommunication;
 
-RobotCommunicationException::RobotCommunicationException(QString const &message)
+RobotCommunicationException::RobotCommunicationException(const QString &message)
 	: qReal::Exception(message)
 {
 }

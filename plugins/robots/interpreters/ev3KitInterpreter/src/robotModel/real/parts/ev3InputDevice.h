@@ -19,11 +19,11 @@ class Ev3InputDevice : public QObject
 public:
 
 	Ev3InputDevice(utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, interpreterBase::robotModel::PortInfo const &port
+			, const interpreterBase::robotModel::PortInfo &port
 			, SensorTypeEnum lowLevelSensorType
 			, INPUT_DEVICE_SUBCODE sensorMode);
 
-	void send(QByteArray command, unsigned const responseSize, QByteArray reading);
+	void send(QByteArray command, const unsigned responseSize, QByteArray reading);
 
 	/// Returns a value of port that can be used as corresponding byte in request packages.
 	char lowLevelPort() const;

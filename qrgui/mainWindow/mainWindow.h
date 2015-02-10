@@ -80,29 +80,30 @@ public:
 
 	QModelIndex rootIndex() const;
 
-	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
-	virtual void dehighlight(Id const &graphicalId);
+	virtual void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
+	virtual void dehighlight(const Id &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram() const;
-	void openShapeEditor(QPersistentModelIndex const &index, int role, const QString &propertyValue
+	void openShapeEditor(const QPersistentModelIndex &index, int role, const QString &propertyValue
 		, bool useTypedPorts);
-	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, const QString &propertyValue);
-	void openShapeEditor(Id const &id
+	void openQscintillaTextEditor(const QPersistentModelIndex &index, const int role, const QString &propertyValue);
+	void openShapeEditor(const Id &id
 			, const QString &propertyValue
 			/// @todo: whan passing it by reference the build on travis fails
-			, EditorManagerInterface const *editorManagerProxy
+			, const EditorManagerInterface *editorManagerProxy
 			, bool useTypedPorts);
-	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, QPersistentModelIndex const &index
-			, int const &role);
-	void openReferenceList(QPersistentModelIndex const &index, const QString &referenceType, const QString &propertyValue
-			, int role);
+	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, const QPersistentModelIndex &index
+			, const int &role);
+	void openReferenceList(const QPersistentModelIndex &index, const QString &referenceType
+			, const QString &propertyValue, int role);
+
 	virtual void openSettingsDialog(const QString &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
-	//virtual void showInTextEditor(QFileInfo const &fileInfo);
+	//virtual void showInTextEditor(const QFileInfo &fileInfo);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
@@ -115,7 +116,7 @@ public:
 	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
-	virtual void deleteElementFromDiagram(Id const &id);
+	virtual void deleteElementFromDiagram(const Id &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
 	virtual QWidget *currentTab();
@@ -126,7 +127,7 @@ public:
 
 	/// Closes tab having given id as root id. If there is no such tab, does nothing.
 	/// @param id Id of a diagram (root element) that we want to close.
-	void closeDiagramTab(Id const &id);
+	void closeDiagramTab(const Id &id);
 
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
 	ProxyEditorManager &editorManagerProxy();
@@ -154,9 +155,9 @@ public:
 	void setTabText(QWidget *tab, const QString &text) override;
 
 	void beginPaletteModification() override;
-	void setElementInPaletteVisible(Id const &metatype, bool visible) override;
+	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
 	void setVisibleForAllElementsInPalette(bool visible) override;
-	void setElementInPaletteEnabled(Id const &metatype, bool enabled) override;
+	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
 	void setEnabledForAllElementsInPalette(bool enabled) override;
 	void endPaletteModification() override;
 
@@ -164,15 +165,15 @@ signals:
 	void rootDiagramChanged();
 
 public slots:
-	void propertyEditorScrollTo(QModelIndex const &index);
+	void propertyEditorScrollTo(const QModelIndex &index);
 
-	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool setSelected = true);
-	virtual void selectItem(Id const &id);
-	virtual void selectItemOrDiagram(Id const &graphicalId);
+	virtual void activateItemOrDiagram(const Id &id, bool setSelected = true);
+	void activateItemOrDiagram(const QModelIndex &idx, bool setSelected = true);
+	virtual void selectItem(const Id &id);
+	virtual void selectItemOrDiagram(const Id &graphicalId);
 
-	void selectItemWithError(Id const &id);
-	void showErrors(gui::ErrorReporter const * const errorReporter);
+	void selectItemWithError(const Id &id);
+	void showErrors(const gui::ErrorReporter * const errorReporter);
 
 	void changePaletteRepresentation();
 	void closeStartTab();
@@ -204,7 +205,7 @@ private slots:
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
-	void updateTabName(Id const &id);
+	void updateTabName(const Id &id);
 
 	void showAbout();
 	void showHelp();
@@ -228,7 +229,7 @@ private slots:
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
 	/// @return true if one of the tabs was closed
-	bool closeTab(QModelIndex const &graphicsIndex);
+	bool closeTab(const QModelIndex &graphicsIndex);
 
 	void showPreferencesDialog();
 
@@ -237,7 +238,7 @@ private slots:
 	void connectSystemEvents();
 	void initActionsFromSettings();
 
-	void centerOn(Id const &id);
+	void centerOn(const Id &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
@@ -252,8 +253,8 @@ private slots:
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
 
-	void setData(const QString &data, QPersistentModelIndex const &index, int const &role);
-	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
+	void setData(const QString &data, const QPersistentModelIndex &index, const int &role);
+	void setReference(const QStringList &data, const QPersistentModelIndex &index, const int &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();
@@ -284,7 +285,7 @@ private:
 	QString getOpenFileName(const QString &dialogWindowTitle);
 	QString getWorkingFile(const QString &dialogWindowTitle, bool save);
 
-	void selectItemInLogicalModel(Id const &id);
+	void selectItemInLogicalModel(const Id &id);
 	void switchToTab(int index);
 	int getTabIndex(const QModelIndex &index);
 
@@ -301,18 +302,18 @@ private:
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
-	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
+	void addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMenu);
 
 	/// Traverses list of actions and adds buttons to toolbar.
 	/// @param actions - list of actions to traverse
 	void traverseListOfActions(QList<ActionInfo> const &actions);
 
-	void setIndexesOfPropertyEditor(Id const &id);
+	void setIndexesOfPropertyEditor(const Id &id);
 
-	void setBackReference(QPersistentModelIndex const &index, const QString &data);
-	void removeOldBackReference(QPersistentModelIndex const &index, int const role);
+	void setBackReference(const QPersistentModelIndex &index, const QString &data);
+	void removeOldBackReference(const QPersistentModelIndex &index, const int role);
 
-	void removeReferences(Id const &id);
+	void removeReferences(const Id &id);
 
 	/// Check if we need to hide widget in fullscreen mode or not. If we do, hide it
 	/// @param dockWidget QDockWidget to hide

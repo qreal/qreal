@@ -9,9 +9,9 @@ namespace simple {
 class InitCameraGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	InitCameraGenerator(qrRepo::RepoApi const &repo
+	InitCameraGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

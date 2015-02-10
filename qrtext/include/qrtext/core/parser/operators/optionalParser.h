@@ -14,7 +14,7 @@ class OptionalParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parser for optional part.
-	OptionalParser(ParserRef<TokenType> const &parser)
+	OptionalParser(const ParserRef<TokenType> &parser)
 		: mParser(parser)
 	{
 	}

@@ -6,13 +6,13 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
+SimpleNode::SimpleNode(const Id &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
 	, mSyntheticBinding(noSytheticBinding)
 {
 }
 
-QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
+QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	switch (mSyntheticBinding) {
 	case breakNode:

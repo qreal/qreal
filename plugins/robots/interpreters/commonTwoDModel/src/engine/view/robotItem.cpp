@@ -7,10 +7,10 @@ using namespace graphicsUtils;
 using namespace twoDModel::model;
 using namespace interpreterBase::robotModel::robotParts;
 
-int const border = 0;
-int const defaultTraceWidth = 6;
+const int border = 0;
+const int defaultTraceWidth = 6;
 
-RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel, QObject *parent)
+RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel, QObject *parent)
 	: QObject(parent)
 	, RotateItem()
 	, mImage(QImage(robotImageFileName))
@@ -105,7 +105,7 @@ QMap<interpreterBase::robotModel::PortInfo, SensorItem *> const &RobotItem::sens
 	return mSensors;
 }
 
-void RobotItem::setPos(QPointF const &newPos)
+void RobotItem::setPos(const QPointF &newPos)
 {
 	QGraphicsItem::setPos(newPos);
 }
@@ -115,19 +115,19 @@ void RobotItem::setRotation(qreal rotation)
 	QGraphicsItem::setRotation(rotation);
 }
 
-void RobotItem::ride(QPointF const &newPos, qreal rotation)
+void RobotItem::ride(const QPointF &newPos, qreal rotation)
 {
-	QPointF const oldMarker = mapToScene(mMarkerPoint);
+	const QPointF oldMarker = mapToScene(mMarkerPoint);
 	setPos(newPos);
 	setRotation(rotation);
-	QPointF const newMarker = mapToScene(mMarkerPoint);
+	const QPointF newMarker = mapToScene(mMarkerPoint);
 	QPen pen;
 	pen.setColor(mRobotModel.markerColor());
 	pen.setWidth(mPen.width());
 	emit drawTrace(pen, oldMarker, newMarker);
 }
 
-void RobotItem::addSensor(interpreterBase::robotModel::PortInfo const &port, SensorItem *sensor)
+void RobotItem::addSensor(const interpreterBase::robotModel::PortInfo &port, SensorItem *sensor)
 {
 	mSensors[port] = sensor;
 	sensor->setParentItem(this);
@@ -141,7 +141,7 @@ void RobotItem::addSensor(interpreterBase::robotModel::PortInfo const &port, Sen
 	sensor->setRotation(mRobotModel.configuration().direction(port));
 }
 
-void RobotItem::removeSensor(interpreterBase::robotModel::PortInfo const &port)
+void RobotItem::removeSensor(const interpreterBase::robotModel::PortInfo &port)
 {
 	if (!mSensors.contains(port) || !mSensors.value(port)) {
 		return;
@@ -152,14 +152,14 @@ void RobotItem::removeSensor(interpreterBase::robotModel::PortInfo const &port)
 	mSensors[port] = nullptr;
 }
 
-void RobotItem::updateSensorPosition(interpreterBase::robotModel::PortInfo const &port)
+void RobotItem::updateSensorPosition(const interpreterBase::robotModel::PortInfo &port)
 {
 	if (mSensors[port]) {
 		mSensors[port]->setPos(mRobotModel.configuration().position(port));
 	}
 }
 
-void RobotItem::updateSensorRotation(interpreterBase::robotModel::PortInfo const &port)
+void RobotItem::updateSensorRotation(const interpreterBase::robotModel::PortInfo &port)
 {
 	if (mSensors[port]) {
 		mSensors[port]->setRotation(mRobotModel.configuration().direction(port));
@@ -196,7 +196,7 @@ void RobotItem::setNeededBeep(bool isNeededBeep)
 	mBeepItem->setVisible(isNeededBeep);
 }
 
-QVariant RobotItem::itemChange(GraphicsItemChange change, QVariant const &value)
+QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionHasChanged) {
 		mRobotModel.setPosition(pos());
@@ -219,7 +219,7 @@ RobotModel &RobotItem::robotModel()
 	return mRobotModel;
 }
 
-void RobotItem::BeepItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
+void RobotItem::BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 		, QWidget *widget)
 {
 	Q_UNUSED(option)
@@ -235,21 +235,21 @@ QRectF RobotItem::BeepItem::boundingRect() const
 
 void RobotItem::BeepItem::drawBeep(QPainter *painter)
 {
-	QPointF const center(beepWavesSize / 2, beepWavesSize / 2);
+	const QPointF center(beepWavesSize / 2, beepWavesSize / 2);
 
 	drawBeepArcs(painter, center, 40);
 	drawBeepArcs(painter, center, 50);
 	drawBeepArcs(painter, center, 60);
 }
 
-void RobotItem::BeepItem::drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius)
+void RobotItem::BeepItem::drawBeepArcs(QPainter *painter, const QPointF &center, qreal radius)
 {
 	painter->save();
 	QPen pen;
 	pen.setColor(Qt::red);
 	pen.setWidth(3);
 	painter->setPen(pen);
-	qreal const diameter = radius + radius;
+	const qreal diameter = radius + radius;
 	QRectF rect(center.x() - radius, center.y() - radius, diameter, diameter);
 	painter->drawArc(rect, 45 * 16, 90 * 16);
 	painter->drawArc(rect, 225 * 16, 90 * 16);

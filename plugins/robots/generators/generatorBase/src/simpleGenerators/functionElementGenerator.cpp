@@ -6,9 +6,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-FunctionElementGenerator::FunctionElementGenerator(qrRepo::RepoApi const &repo
+FunctionElementGenerator::FunctionElementGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "function.t", QList<Binding *>()
 			<< Binding::createConverting("@@BODY@@", "Body", customizer.factory()->functionBlockConverter(id, "Body"))
@@ -19,7 +19,7 @@ FunctionElementGenerator::FunctionElementGenerator(qrRepo::RepoApi const &repo
 
 QString FunctionElementGenerator::generate()
 {
-	QString const body = BindingGenerator::generate();
+	const QString body = BindingGenerator::generate();
 	if (mGenerateToInit) {
 		mCustomizer.factory()->functions()->registerFunctionInInitialization(body);
 		return QString();

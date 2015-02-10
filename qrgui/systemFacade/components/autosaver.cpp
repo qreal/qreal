@@ -66,12 +66,12 @@ QString Autosaver::autosaveFilePath(const QString &currentFilePath) const
 		return tempFilePath();
 	}
 
-	QFileInfo const currentProject(currentFilePath);
-	QString const autosaveDirectory = currentProject.absoluteDir().exists()
+	const QFileInfo currentProject(currentFilePath);
+	const QString autosaveDirectory = currentProject.absoluteDir().exists()
 			? currentProject.absolutePath()
 			: QApplication::applicationDirPath();
-	QString const currentFileName = currentProject.fileName();
-	QString const autosaveFile = currentFileName.startsWith("~")
+	const QString currentFileName = currentProject.fileName();
+	const QString autosaveFile = currentFileName.startsWith("~")
 			? currentFileName : "~" + currentFileName;
 	return autosaveDirectory + "/" + autosaveFile;
 }
@@ -120,8 +120,8 @@ void Autosaver::saveTemp()
 
 bool Autosaver::checkAutoSavedVersion(const QString &originalProjectPath)
 {
-	QString const autosave = autosaveFilePath(originalProjectPath);
-	QFileInfo const autosaveInfo(autosave);
+	const QString autosave = autosaveFilePath(originalProjectPath);
+	const QFileInfo autosaveInfo(autosave);
 	if (!autosaveInfo.exists() || autosave == originalProjectPath) {
 		return false;
 	}
@@ -135,7 +135,7 @@ bool Autosaver::checkAutoSavedVersion(const QString &originalProjectPath)
 
 bool Autosaver::checkTempFile()
 {
-	QFileInfo const tempFileInfo(tempFilePath());
+	const QFileInfo tempFileInfo(tempFilePath());
 	if (!tempFileInfo.exists()) {
 		return false;
 	}

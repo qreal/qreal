@@ -25,7 +25,7 @@ public:
 
 	/// Returns the object that may be used by the interpreter to invoke the block with the given id.
 	/// If met for the first time it will be produced from scratch, otherwise existing instance will be returned.
-	BlockInterface *block(qReal::Id const &element) override;
+	BlockInterface *block(const qReal::Id &element) override;
 
 	/// Clears blocks table.
 	void clear() override;
@@ -36,7 +36,7 @@ public:
 
 private:
 	/// Must be overridded to produce the logical instance of the block itself.
-	virtual BlockInterface *produceBlock(qReal::Id const &element) = 0;
+	virtual BlockInterface *produceBlock(const qReal::Id &element) = 0;
 
 	QHash<qReal::Id, BlockInterface *> mBlocks;  // Has ownership
 };

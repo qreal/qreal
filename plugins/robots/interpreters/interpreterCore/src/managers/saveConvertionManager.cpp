@@ -19,7 +19,7 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 ProjectConverter SaveConvertionManager::before300Alpha1Converter()
 {
 	return ProjectConverter(editor(), Version(), Version::fromString("3.0.0-a1")
-			, [=](GraphicalModelAssistInterface const &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		Q_UNUSED(graphicalApi)
 		Q_UNUSED(logicalApi)
@@ -73,23 +73,23 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 
 
 	return ProjectConverter(editor(), Version::fromString("3.0.0-a4"), Version::fromString("3.0.0-a5")
-			, [=](GraphicalModelAssistInterface const &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		Q_UNUSED(graphicalApi)
 		bool modificationsMade = false;
 
-		for (Id const &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
-			Id const block = graphicalApi.logicalId(graphicalBlock);
+		for (const Id &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
+			const Id block = graphicalApi.logicalId(graphicalBlock);
 			if (!block.element().startsWith("Trik")) {
 				continue;
 			}
 
 			QMapIterator<QString, QVariant> iterator = logicalApi.logicalRepoApi().propertiesIterator(block);
 			for (iterator.next(); iterator.hasNext(); iterator.next()) {
-				QString const name = iterator.key();
+				const QString name = iterator.key();
 				QString value = iterator.value().toString();
 				bool replacementOccured = false;
-				for (QString const &toReplace : replacementRules.keys()) {
+				for (const QString &toReplace : replacementRules.keys()) {
 					if (value.contains(toReplace)) {
 						replacementOccured = true;
 						modificationsMade = true;
@@ -110,16 +110,16 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 ProjectConverter SaveConvertionManager::from300Beta2to300rc1Converter()
 {
 	return ProjectConverter(editor(), Version::fromString("3.0.0-b2"), Version::fromString("3.0.0-rc1")
-			, [=](GraphicalModelAssistInterface const &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		Q_UNUSED(graphicalApi)
 		bool modificationsMade = false;
 
-		for (Id const &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
-			Id const block = graphicalApi.logicalId(graphicalBlock);
+		for (const Id &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
+			const Id block = graphicalApi.logicalId(graphicalBlock);
 			if (block.element() == "TrikSay" || block.element() == "PrintText") {
-				QString const propertyName = block.element() == "TrikSay" ? "Text" : "PrintText";
-				QString const oldValue = logicalApi.logicalRepoApi().property(block, propertyName).toString();
+				const QString propertyName = block.element() == "TrikSay" ? "Text" : "PrintText";
+				const QString oldValue = logicalApi.logicalRepoApi().property(block, propertyName).toString();
 				if (!oldValue.startsWith("\"")) {
 					modificationsMade = true;
 					logicalApi.mutableLogicalRepoApi().setProperty(block, propertyName, "\"" + oldValue + "\"");
@@ -131,16 +131,16 @@ ProjectConverter SaveConvertionManager::from300Beta2to300rc1Converter()
 	});
 }
 
-bool SaveConvertionManager::isRobotsDiagram(Id const &diagram)
+bool SaveConvertionManager::isRobotsDiagram(const Id &diagram)
 {
-	QStringList const robotsDiagrams = { "RobotsDiagram", "SubprogramDiagram" };
+	const QStringList robotsDiagrams = { "RobotsDiagram", "SubprogramDiagram" };
 	return diagram.editor() == editor() && robotsDiagrams.contains(diagram.diagram());
 }
 
-IdList SaveConvertionManager::elementsOfRobotsDiagrams(LogicalModelAssistInterface const &logicalApi)
+IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistInterface &logicalApi)
 {
 	IdList result;
-	for (Id const &diagramId : logicalApi.children(Id::rootId())) {
+	for (const Id &diagramId : logicalApi.children(Id::rootId())) {
 		if (isRobotsDiagram(diagramId)) {
 			result += logicalApi.children(diagramId);
 		}

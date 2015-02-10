@@ -32,7 +32,7 @@ private slots:
 	void readAnswer();
 
 private:
-	void executeUpdater(QString const &mode);
+	void executeUpdater(const QString &mode);
 
 	QProcess *mUpdaterProcess;  // Takes ownership
 };

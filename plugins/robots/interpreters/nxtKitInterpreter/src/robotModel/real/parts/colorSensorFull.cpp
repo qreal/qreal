@@ -2,8 +2,8 @@
 
 using namespace nxtKitInterpreter::robotModel::real::parts;
 
-ColorSensorFull::ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+ColorSensorFull::ColorSensorFull(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::ColorSensorFull(info, port)
 	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORFULL)

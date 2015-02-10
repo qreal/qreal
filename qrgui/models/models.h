@@ -12,7 +12,7 @@ namespace models {
 class QRGUI_MODELS_EXPORT Models
 {
 public:
-	Models(QString const &workingCopy, EditorManagerInterface const &editorManager);
+	Models(const QString &workingCopy, const EditorManagerInterface &editorManager);
 	~Models();
 
 	QAbstractItemModel *graphicalModel() const;
@@ -23,10 +23,10 @@ public:
 
 	qrRepo::RepoControlInterface &repoControlApi() const;
 
-	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
+	const qrRepo::LogicalRepoApi &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;
 
-	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
+	const qrRepo::GraphicalRepoApi &graphicalRepoApi() const;
 
 	Exploser &exploser() const;
 

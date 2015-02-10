@@ -1,6 +1,6 @@
 #include "serializationData.h"
 
-QDataStream &operator<< (QDataStream &out, NodeData const &data)
+QDataStream &operator<< (QDataStream &out, const NodeData &data)
 {
 	out << data.id << data.logicalId << data.parentId << data.pos << data.contents
 			<< data.graphicalProperties << data.logicalProperties << data.explosion;
@@ -14,7 +14,7 @@ QDataStream &operator>> (QDataStream &in, NodeData &data)
 	return in;
 }
 
-QDataStream &operator<< (QDataStream &out, EdgeData const &data)
+QDataStream &operator<< (QDataStream &out, const EdgeData &data)
 {
 	out << data.id << data.logicalId << data.srcId << data.dstId
 			<< data.portFrom << data.portTo
@@ -32,7 +32,7 @@ QDataStream &operator>> (QDataStream &in, EdgeData &data)
 	return in;
 }
 
-bool operator== (NodeData const &first, NodeData const &second)
+bool operator== (const NodeData &first, const NodeData &second)
 {
 	return first.id == second.id
 			&& first.parentId == second.parentId
@@ -44,7 +44,7 @@ bool operator== (NodeData const &first, NodeData const &second)
 			&& first.explosion == second.explosion;
 }
 
-bool operator== (EdgeData const &first, EdgeData const &second)
+bool operator== (const EdgeData &first, const EdgeData &second)
 {
 	return first.id == second.id && first.logicalId == second.logicalId
 			&& first.srcId == second.srcId && first.dstId == second.dstId

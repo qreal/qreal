@@ -64,12 +64,12 @@ bool ProjectManagerWrapper::askQuestion(const QString &title, const QString &que
 
 bool ProjectManagerWrapper::open(const QString &fileName)
 {
-	QString const dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
+	const QString dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
 			|| (fileName.startsWith("\"") && fileName.endsWith("\""))
 					? fileName.mid(1, fileName.length() - 2)
 					: fileName;
 
-	QFileInfo const fileInfo(dequotedFileName);
+	const QFileInfo fileInfo(dequotedFileName);
 
 	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
@@ -88,7 +88,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 QString ProjectManagerWrapper::textFileFilters() const
 {
 	QStringList result;
-	for (text::LanguageInfo const &language : text::Languages::knownLanguages()) {
+	for (const text::LanguageInfo &language : text::Languages::knownLanguages()) {
 		result << QString("%1 (*.%2)").arg(language.extensionDescription, language.extension);
 	}
 
@@ -135,15 +135,15 @@ void ProjectManagerWrapper::refreshApplicationStateAfterSaveOrOpen()
 
 void ProjectManagerWrapper::refreshWindowTitleAccordingToSaveFile()
 {
-	QString const windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
-	QString const saveFile = mAutosaver.isTempFile(mSaveFilePath) ? tr("Unsaved project") : mSaveFilePath;
+	const QString windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
+	const QString saveFile = mAutosaver.isTempFile(mSaveFilePath) ? tr("Unsaved project") : mSaveFilePath;
 	mMainWindow->setWindowTitle(windowTitle + " " + saveFile);
 	refreshTitleModifiedSuffix();
 }
 
 void ProjectManagerWrapper::refreshTitleModifiedSuffix()
 {
-	QString const modifiedSuffix = tr(" [modified]");
+	const QString modifiedSuffix = tr(" [modified]");
 	if (mUnsavedIndicator && !mMainWindow->windowTitle().endsWith(modifiedSuffix)) {
 		mMainWindow->setWindowTitle(mMainWindow->windowTitle() + modifiedSuffix);
 	}
@@ -161,9 +161,9 @@ bool ProjectManagerWrapper::openNewWithDiagram()
 
 void ProjectManagerWrapper::suggestToCreateDiagram(bool isClosable)
 {
-	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
+	const Id theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
 	if (theOnlyDiagram != Id()) {
-		Id const editor = mMainWindow->editorManager().editors()[0];
+		const Id editor = mMainWindow->editorManager().editors()[0];
 		mMainWindow->createDiagram(mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram));
 	} else {
 		SuggestToCreateDiagramDialog suggestDialog(mMainWindow->editorManager(), mMainWindow, isClosable);
@@ -223,7 +223,7 @@ bool ProjectManagerWrapper::suggestToSaveAs()
 	}
 
 	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
-		QString const newMetamodelFileName = saveFileName(tr("Select file to save current metamodel to"));
+		const QString newMetamodelFileName = saveFileName(tr("Select file to save current metamodel to"));
 		if (newMetamodelFileName.isEmpty()) {
 			return false;
 		}
@@ -240,7 +240,7 @@ QString ProjectManagerWrapper::openFileName(const QString &dialogWindowTitle) co
 			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
 			: pathToExamples;
 	QString filter = tr("QReal Save File (*.qrs)") + ";;";
-	QString const extensions = textFileFilters();
+	const QString extensions = textFileFilters();
 
 	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files (*.*)");
 

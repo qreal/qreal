@@ -9,9 +9,9 @@ namespace simple {
 class BeepGenerator : public BindingGenerator
 {
 public:
-	BeepGenerator(qrRepo::RepoApi const &repo
+	BeepGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

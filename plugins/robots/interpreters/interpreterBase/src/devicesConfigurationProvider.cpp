@@ -3,7 +3,7 @@
 using namespace interpreterBase;
 using namespace robotModel;
 
-DevicesConfigurationProvider::DevicesConfigurationProvider(QString const &name)
+DevicesConfigurationProvider::DevicesConfigurationProvider(const QString &name)
 	: mName(name)
 {
 }
@@ -42,8 +42,8 @@ void DevicesConfigurationProvider::disconnectDevicesConfigurationProvider()
 	}
 }
 
-void DevicesConfigurationProvider::deviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device, Reason reason)
+void DevicesConfigurationProvider::deviceConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
 	if (mCurrentConfiguration[robotModel][port] != device) {
 		mCurrentConfiguration[robotModel][port] = device;
@@ -58,8 +58,8 @@ void DevicesConfigurationProvider::deviceConfigurationChanged(QString const &rob
 	}
 }
 
-void DevicesConfigurationProvider::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
+void DevicesConfigurationProvider::onDeviceConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port);
@@ -69,8 +69,8 @@ void DevicesConfigurationProvider::onDeviceConfigurationChanged(QString const &r
 
 void DevicesConfigurationProvider::clearConfiguration(Reason reason)
 {
-	for (QString const &robotModel : mCurrentConfiguration.keys()) {
-		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
+	for (const QString &robotModel : mCurrentConfiguration.keys()) {
+		for (const PortInfo &port : mCurrentConfiguration[robotModel].keys()) {
 			deviceConfigurationChanged(robotModel, port, DeviceInfo(), reason);
 		}
 	}
@@ -81,7 +81,7 @@ QStringList DevicesConfigurationProvider::configuredModels() const
 	return mCurrentConfiguration.keys();
 }
 
-QList<robotModel::PortInfo> DevicesConfigurationProvider::configuredPorts(QString const &modelName) const
+QList<robotModel::PortInfo> DevicesConfigurationProvider::configuredPorts(const QString &modelName) const
 {
 	if (!mCurrentConfiguration.contains(modelName)) {
 		return {};
@@ -90,8 +90,8 @@ QList<robotModel::PortInfo> DevicesConfigurationProvider::configuredPorts(QStrin
 	return mCurrentConfiguration[modelName].keys();
 }
 
-robotModel::DeviceInfo DevicesConfigurationProvider::currentConfiguration(QString const &modelName
-		, robotModel::PortInfo const &port) const
+robotModel::DeviceInfo DevicesConfigurationProvider::currentConfiguration(const QString &modelName
+		, const robotModel::PortInfo &port) const
 {
 	if (!mCurrentConfiguration.contains(modelName) || !mCurrentConfiguration[modelName].contains(port)) {
 		return robotModel::DeviceInfo();

@@ -19,8 +19,8 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 
 NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 		, SystemEvents &events
-		, ProjectManagementInterface const &projectManager
-		, GraphicalModelAssistInterface const &graphicalModel)
+		, const ProjectManagementInterface &projectManager
+		, const GraphicalModelAssistInterface &graphicalModel)
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(&graphicalModel)
@@ -211,8 +211,8 @@ void NullMainWindow::openFirstDiagram()
 		return;
 	}
 
-	Id const rootId = mGraphicalModel->rootId();
-	IdList const rootIds = mGraphicalModel->children(rootId);
+	const Id rootId = mGraphicalModel->rootId();
+	const IdList rootIds = mGraphicalModel->children(rootId);
 	if (rootIds.count() == 0) {
 		return;
 	}

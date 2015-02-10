@@ -15,8 +15,8 @@ class TrikColorSensor : public interpreterBase::robotModel::robotParts::VectorSe
 	Q_CLASSINFO("friendlyName", tr("Color Sensor"))
 
 public:
-	TrikColorSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikColorSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
 	/// Turns camera on and prepares a sensor.
 	virtual void init() = 0;

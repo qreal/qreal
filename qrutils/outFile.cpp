@@ -4,7 +4,7 @@
 
 using namespace utils;
 
-OutFile::OutFile(QString const &fileName)
+OutFile::OutFile(const QString &fileName)
 {
 	mFile.setFileName(fileName);
 	mFile.open(QIODevice::WriteOnly | QIODevice::Text);

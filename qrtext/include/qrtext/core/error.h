@@ -37,10 +37,10 @@ public:
 	/// @param errorMessage - textual description of an error.
 	/// @param errorType - what component (lexer/parser/so on) reported error.
 	/// @param severity - severity of an error.
-	Error(Connection const &connection, const QString &errorMessage, ErrorType errorType, Severity severity);
+	Error(const Connection &connection, const QString &errorMessage, ErrorType errorType, Severity severity);
 
 	/// Returns point in code where an error was detected.
-	Connection const &connection() const;
+	const Connection &connection() const;
 
 	/// Returns textual description of an error.
 	const QString &errorMessage() const;

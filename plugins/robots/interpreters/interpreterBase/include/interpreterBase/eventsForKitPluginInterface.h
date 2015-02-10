@@ -19,7 +19,7 @@ signals:
 	void interpretationStopped();
 
 	/// Robot model is changed in settings (or selected in a toolbar).
-	void robotModelChanged(QString const &newModelName);
+	void robotModelChanged(const QString &newModelName);
 };
 
 }

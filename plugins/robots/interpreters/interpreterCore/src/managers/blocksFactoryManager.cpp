@@ -12,15 +12,15 @@ BlocksFactoryManager::~BlocksFactoryManager()
 	qDeleteAll(mFactories.values().toSet());
 }
 
-void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory, RobotModelInterface const *robotModel)
+void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory, const RobotModelInterface *robotModel)
 {
 	if (!mFactories.values(robotModel).contains(factory)) {
 		mFactories.insertMulti(robotModel, factory);
 	}
 }
 
-qReal::interpretation::BlockInterface *BlocksFactoryManager::block(qReal::Id const &element
-		, RobotModelInterface const &robotModel)
+qReal::interpretation::BlockInterface *BlocksFactoryManager::block(const qReal::Id &element
+		, const RobotModelInterface &robotModel)
 {
 	qReal::interpretation::BlockInterface *emptyBlock = nullptr;
 
@@ -37,32 +37,32 @@ qReal::interpretation::BlockInterface *BlocksFactoryManager::block(qReal::Id con
 	return emptyBlock;
 }
 
-QSet<qReal::Id> BlocksFactoryManager::enabledBlocks(RobotModelInterface const &robotModel) const
+QSet<qReal::Id> BlocksFactoryManager::enabledBlocks(const RobotModelInterface &robotModel) const
 {
 	QSet<qReal::Id> result;
 
-	for (blocksBase::BlocksFactoryInterface const *factory : factoriesFor(robotModel)) {
+	for (const blocksBase::BlocksFactoryInterface *factory : factoriesFor(robotModel)) {
 		result += factory->providedBlocks().toSet();
 	}
 
 	// The order is important for avoiding collisions cases
 	// (we cannot just move this loop body into the previous one)
-	for (blocksBase::BlocksFactoryInterface const *factory : factoriesFor(robotModel)) {
+	for (const blocksBase::BlocksFactoryInterface *factory : factoriesFor(robotModel)) {
 		result -= factory->blocksToDisable().toSet();
 	}
 
 	return result;
 }
 
-QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(RobotModelInterface const &robotModel) const
+QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(const RobotModelInterface &robotModel) const
 {
 	QSet<qReal::Id> result;
 
-	QString const kitId = robotModel.kitId();
+	const QString kitId = robotModel.kitId();
 
-	for (RobotModelInterface const *robotModel : mFactories.keys()) {
+	for (const RobotModelInterface *robotModel : mFactories.keys()) {
 		if (robotModel && robotModel->kitId() == kitId) {
-			for (BlocksFactoryInterface const * factory : factoriesFor(*robotModel)) {
+			for (const BlocksFactoryInterface * factory : factoriesFor(*robotModel)) {
 				result += factory->providedBlocks().toSet();
 			}
 		}
@@ -74,14 +74,14 @@ QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(RobotModelInterface const &r
 QSet<qReal::Id> BlocksFactoryManager::commonBlocks() const
 {
 	QSet<qReal::Id> result;
-	for (BlocksFactoryInterface const *factory : mFactories.values(nullptr)) {
+	for (const BlocksFactoryInterface *factory : mFactories.values(nullptr)) {
 		result += factory->providedBlocks().toSet();
 	}
 
 	return result;
 }
 
-QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(RobotModelInterface const &robotModel) const
+QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(const RobotModelInterface &robotModel) const
 {
 	return mFactories.values(nullptr) + mFactories.values(&robotModel);
 }

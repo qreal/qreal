@@ -14,7 +14,7 @@ CommonBlocksFactory::CommonBlocksFactory()
 {
 }
 
-qReal::interpretation::BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
+qReal::interpretation::BlockInterface *CommonBlocksFactory::block(const qReal::Id &element)
 {
 	qReal::interpretation::Block *newBlock = blocksToDisable().contains(element.type())
 			? new qReal::interpretation::blocks::EmptyBlock
@@ -34,8 +34,8 @@ qReal::interpretation::BlockInterface *CommonBlocksFactory::block(qReal::Id cons
 	return newBlock;
 }
 
-void CommonBlocksFactory::configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
-		, qReal::LogicalModelAssistInterface const &logicalModelApi
+void CommonBlocksFactory::configure(const qReal::GraphicalModelAssistInterface &graphicalModelApi
+		, const qReal::LogicalModelAssistInterface &logicalModelApi
 		, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qReal::ErrorReporterInterface &errorReporter
 		, qrtext::LanguageToolboxInterface &textLanguageToolbox)
@@ -52,12 +52,12 @@ qReal::IdList CommonBlocksFactory::blocksToDisable() const
 	return {};
 }
 
-qReal::Id CommonBlocksFactory::id(QString const &metatype)
+qReal::Id CommonBlocksFactory::id(const QString &metatype)
 {
 	return qReal::Id("RobotsMetamodel", "RobotsDiagram", metatype);
 }
 
-bool CommonBlocksFactory::elementMetatypeIs(qReal::Id const &element, QString const &metatype)
+bool CommonBlocksFactory::elementMetatypeIs(const qReal::Id &element, const QString &metatype)
 {
 	return element.type() == id(metatype);
 }

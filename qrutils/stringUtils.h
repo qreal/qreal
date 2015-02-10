@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 
@@ -12,10 +12,10 @@ class QRUTILS_EXPORT StringUtils
 public:
 	/// Splits string into a set of lines and prepends each line with
 	/// the given @arg indentString repeated @arg indent times.
-	static QString addIndent(QString const &code, int indent, QString const &indentString/* = "\t"*/);
+	static QString addIndent(const QString &code, int indent, const QString &indentString/* = "\t"*/);
 
 	/// Wraps the given string into double quotes and returns the result.
-	static QString wrap(QString const &string);
+	static QString wrap(const QString &string);
 };
 
 }

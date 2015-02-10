@@ -33,18 +33,18 @@ public:
 	/// Converts the given Lua code into the target language and substitues all
 	/// reserved variables and functions code.
 	/// Takes ownership on @arg reservedVariablesConverter.
-	QString translate(QString const &luaCode
-			, qReal::Id const &id
-			, QString const &propertyName
-			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
+	QString translate(const QString &luaCode
+			, const qReal::Id &id
+			, const QString &propertyName
+			, const simple::Binding::ConverterInterface *reservedVariablesConverter);
 
 	/// Converts the given Lua code into the target language, substitues all
 	/// reserved variables and functions code and casts the result to string.
 	/// Takes ownership on @arg reservedVariablesConverter.
-	QString castToString(QString const &luaCode
-			, qReal::Id const &id
-			, QString const &propertyName
-			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
+	QString castToString(const QString &luaCode
+			, const qReal::Id &id
+			, const QString &propertyName
+			, const simple::Binding::ConverterInterface *reservedVariablesConverter);
 
 	/// Returns facade object for manipulating text language.
 	qrtext::LanguageToolboxInterface &toolbox() const;
@@ -58,9 +58,9 @@ protected:
 	qrtext::LanguageToolboxInterface &mTextLanguage;
 
 private:
-	QSharedPointer<qrtext::core::ast::Node> parse(QString const &data
-			, qReal::Id const &id
-			, QString const &propertyName) const;
+	QSharedPointer<qrtext::core::ast::Node> parse(const QString &data
+			, const qReal::Id &id
+			, const QString &propertyName) const;
 
 	PrecedenceConverter mPrecedenceConverter;
 

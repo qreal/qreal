@@ -9,10 +9,10 @@ namespace gestures {
 class KeyBuilder
 {
 public:
-	static Key getKey(PathVector const &mousePath, int heightSize, int widthSize);
+	static Key getKey(const PathVector &mousePath, int heightSize, int widthSize);
 
 private:
-	static void rasterizeSegment(SquarePos const &pos1, SquarePos const &pos2, Key *segment);
+	static void rasterizeSegment(const SquarePos &pos1, const SquarePos &pos2, Key *segment);
 };
 
 }

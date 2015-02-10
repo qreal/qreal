@@ -3,8 +3,8 @@
 using namespace qReal::commands;
 
 ExplosionCommand::ExplosionCommand(models::LogicalModelAssistApi &logicalApi
-		, models::GraphicalModelAssistApi const * const graphicalApi
-		, Id const &source, Id const &target, bool mustAdd)
+		, const models::GraphicalModelAssistApi * const graphicalApi
+		, const Id &source, const Id &target, bool mustAdd)
 	: mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)
 	, mSource(source)

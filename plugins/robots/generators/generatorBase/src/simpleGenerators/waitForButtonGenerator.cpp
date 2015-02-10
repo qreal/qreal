@@ -4,10 +4,10 @@
 
 using namespace generatorBase::simple;
 
-WaitForButtonGenerator::WaitForButtonGenerator(qrRepo::RepoApi const &repo
+WaitForButtonGenerator::WaitForButtonGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
-		, QString const &buttonTemplate
+		, const qReal::Id &id
+		, const QString &buttonTemplate
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, buttonTemplate, {}, parent)
 {

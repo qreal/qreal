@@ -9,7 +9,7 @@ using namespace graphicsUtils;
 AbstractScene::AbstractScene(AbstractView *view, QObject *parent)
 		: QGraphicsScene(parent)
 		, mView(view)
-		, mGraphicsItem(NULL)
+		, mGraphicsItem(nullptr)
 		, mX1(0)
 		, mX2(0)
 		, mY1(0)
@@ -18,7 +18,7 @@ AbstractScene::AbstractScene(AbstractView *view, QObject *parent)
 		, mSizeEmptyRectY(0)
 		, mPenWidthItems(0)
 		, mFirstPenWidth(0)
-		, mEmptyRect(NULL)
+		, mEmptyRect(nullptr)
 {
 }
 
@@ -34,7 +34,7 @@ void AbstractScene::setEmptyRect(int x, int y, int w, int h)
 
 QRect AbstractScene::realItemsBoundingRect() const
 {
-	QRectF const rect = itemsBoundingRect();
+	const QRectF rect = itemsBoundingRect();
 	int maxX = static_cast<int>(rect.left());
 	int maxY = static_cast<int>(rect.top());
 	int minY = static_cast<int>(rect.bottom());
@@ -44,7 +44,7 @@ QRect AbstractScene::realItemsBoundingRect() const
 	foreach (QGraphicsItem *graphicsItem, list) {
 		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
 		if (item) {
-			QRectF const itemRect = item->realBoundingRect();
+			const QRectF itemRect = item->realBoundingRect();
 			maxX = qMax(static_cast<int>(itemRect.right()), maxX);
 			maxY = qMax(static_cast<int>(itemRect.bottom()), maxY);
 			minX = qMin(static_cast<int>(itemRect.left()), minX);
@@ -149,7 +149,7 @@ void AbstractScene::forMoveResize(QGraphicsSceneMouseEvent *event)
 void AbstractScene::forReleaseResize(QGraphicsSceneMouseEvent * event )
 {
 	reshapeItem(event);
-	mGraphicsItem = NULL;
+	mGraphicsItem = nullptr;
 	update();
 }
 
@@ -167,7 +167,7 @@ void AbstractScene::setEmptyPenBrushItems()
 	mBrushColorItems = "white";
 }
 
-void AbstractScene::setPenBrushItems(QPen const &pen, QBrush const &brush)
+void AbstractScene::setPenBrushItems(const QPen &pen, const QBrush &brush)
 {
 	mPenStyleItems = convertPenToString(pen);
 	mPenWidthItems = pen.width();
@@ -176,7 +176,7 @@ void AbstractScene::setPenBrushItems(QPen const &pen, QBrush const &brush)
 	mBrushColorItems = brush.color().name();
 }
 
-QString AbstractScene::convertPenToString(QPen const &pen)
+QString AbstractScene::convertPenToString(const QPen &pen)
 {
 	QString penStyle;
 	switch (pen.style()) {
@@ -204,7 +204,7 @@ QString AbstractScene::convertPenToString(QPen const &pen)
 	return penStyle;
 }
 
-QString AbstractScene::convertBrushToString(QBrush const &brush)
+QString AbstractScene::convertBrushToString(const QBrush &brush)
 {
 	switch (brush.style()) {
 	case Qt::NoBrush:
@@ -241,7 +241,7 @@ QString AbstractScene::brushColorItems()
 	return mBrushColorItems;
 }
 
-void AbstractScene::setPenStyleItems(QString const &text)
+void AbstractScene::setPenStyleItems(const QString &text)
 {
 	mPenStyleItems = text;
 }
@@ -251,17 +251,17 @@ void AbstractScene::setPenWidthItems(int width)
 	mPenWidthItems = width;
 }
 
-void AbstractScene::setPenColorItems(QString const &text)
+void AbstractScene::setPenColorItems(const QString &text)
 {
 	mPenColorItems = text;
 }
 
-void AbstractScene::setBrushStyleItems(QString const &text)
+void AbstractScene::setBrushStyleItems(const QString &text)
 {
 	mBrushStyleItems = text;
 }
 
-void AbstractScene::setBrushColorItems(QString const &text)
+void AbstractScene::setBrushColorItems(const QString &text)
 {
 	mBrushColorItems = text;
 }

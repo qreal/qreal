@@ -12,7 +12,7 @@ class ROBOTS_GENERATOR_EXPORT TemplateParametrizedMultiConverter : public simple
 		, public TemplateParametrizedEntity
 {
 public:
-	explicit TemplateParametrizedMultiConverter(QString const &pathToTemplates);
+	explicit TemplateParametrizedMultiConverter(const QString &pathToTemplates);
 	virtual ~TemplateParametrizedMultiConverter();
 };
 

@@ -15,7 +15,7 @@ ErrorListWidget::ErrorListWidget(QWidget *parent)
 
 void ErrorListWidget::highlightElement(QListWidgetItem* const item)
 {
-	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
+	const qReal::Id id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
 	if (item->isSelected()) {
 		mMainWindow->selectItemWithError(id);
 	}
@@ -38,7 +38,7 @@ void ErrorListWidget::initContextMenu()
 	connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 }
 
-void ErrorListWidget::showContextMenu(QPoint const &pos)
+void ErrorListWidget::showContextMenu(const QPoint &pos)
 {
 	mContextMenu->exec(mapToGlobal(pos));
 }
@@ -46,7 +46,7 @@ void ErrorListWidget::showContextMenu(QPoint const &pos)
 void ErrorListWidget::copyCurrentItem()
 {
 	QListWidgetItem *item = currentItem();
-	QLabel *label = item ? dynamic_cast<QLabel *>(itemWidget(item)) : NULL;
+	QLabel *label = item ? dynamic_cast<QLabel *>(itemWidget(item)) : nullptr;
 	if (label) {
 		// Extracting a plain text
 		QTextDocument document;

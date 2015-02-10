@@ -12,16 +12,16 @@ class QRTEXT_EXPORT Range
 {
 public:
 	/// Constructor that takes start and end coordinates of a range.
-	Range(Connection const &start, Connection const &end);
+	Range(const Connection &start, const Connection &end);
 
 	/// Constructor of an invalid range object.
 	Range();
 
 	/// Returns start coordinate of a range.
-	Connection const &start() const;
+	const Connection &start() const;
 
 	/// Returns end coordinate of a range.
-	Connection const &end() const;
+	const Connection &end() const;
 
 private:
 	Connection mStart;

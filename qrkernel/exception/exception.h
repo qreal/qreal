@@ -13,14 +13,14 @@ class QRKERNEL_EXPORT Exception
 public:
 	/// Constructor.
 	/// @param message Error message.
-	explicit Exception(QString const &message);
+	explicit Exception(const QString &message);
 
 	/// Get error message.
 	QString message() const;
 
 private:
 	/// Error message.
-	QString const mMessage;
+	const QString mMessage;
 };
 
 }
