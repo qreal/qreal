@@ -34,7 +34,7 @@ defineReplace(qextLibraryName) {
 TEMPLATE=lib
 include(src/qextserialport.pri)
 
-CONFIG += warn_off
+CONFIG += warn_off c++11
 
 #create_prl is needed, otherwise, MinGW can't found libqextserialport1.a
 CONFIG += create_prl

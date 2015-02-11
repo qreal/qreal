@@ -4,7 +4,7 @@
     <DisplayName xml:lang="ru_ru">@ProductName@</DisplayName>
     <Description>QReal metacase tool engine</Description>
     <Description xml:lang="ru_ru">Ядро системы визуального метамоделирования QReal</Description>
-    <Version>3.0.0-4</Version>
+    <Version>3.0.1</Version>
     <ReleaseDate>2015-01-16</ReleaseDate>
     <Script>installscript.qs</Script>
     <Licenses>

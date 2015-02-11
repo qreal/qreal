@@ -71,14 +71,14 @@ Component.prototype.createOperations = function()
 		if (installer.value("os") == "win") {
 			var timeoutBatch = "ping 127.0.0.1 -n 4 > nul";
 			component.addOperation("Execute", "cmd", "/c", timeoutBatch);
-			var joinBatch = "for /l %N in () do (tasklist | find \"cscript\" >null && ping 127.0.0.1 -n 2 >null || exit 0) ";
+			var joinBatch = "for /l %N in () do (tasklist | find \"cscript\" >nul && ping 127.0.0.1 -n 2 >nul || exit 0) ";
 			component.addOperation("Execute", "cmd", "/c", joinBatch);
 		}
 	}
 	component.createOperations();
 	component.addOperation("CreateShortcut"
 			, "@TargetDir@/" + installer.executableName + installer.execExtension
-			, "@StartMenuDir@/@ProductName@" + installer.linkExtension);
+			, "@StartMenuDir@/@ProductName@ @Version@" + installer.linkExtension);
 	component.addOperation("CreateShortcut"
 			, "@TargetDir@/" + installer.maintenanceName
 			, "@StartMenuDir@/Uninstall @ProductName@" + installer.linkExtension);

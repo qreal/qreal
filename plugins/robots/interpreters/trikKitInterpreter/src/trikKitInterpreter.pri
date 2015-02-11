@@ -13,6 +13,7 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
 		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
 		-lrobots-utils -lrobots-interpreter-base -lrobots-common-2d-model -lqextserialport \
+		-lqslog \
 
 HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \

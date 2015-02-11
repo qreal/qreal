@@ -23,6 +23,7 @@ cp    $BIN_DIR/qrgui-preferences-dialog.dll                         $PWD/../data
 cp    $BIN_DIR/qrgui-text-editor.dll                                $PWD/../data
 cp    $BIN_DIR/qrgui-thirdparty.dll                                 $PWD/../data
 cp    $BIN_DIR/qrgui-tool-plugin-interface.dll                      $PWD/../data
+cp    $BIN_DIR/qrgui-facade.dll                                     $PWD/../data
 cp    $BIN_DIR/qrgui.exe                                            $PWD/../data/$PRODUCT.exe
 cp    $BIN_DIR/plugins/tools/updatesChecker.dll                     $PWD/../data/plugins/tools/
 
@@ -33,9 +34,11 @@ cp    $QT_DIR/bin/Qt5PrintSupport.dll                               $PWD/../data
 cp    $QT_DIR/bin/Qt5Svg.dll                                        $PWD/../data
 cp    $QT_DIR/bin/Qt5Widgets.dll                                    $PWD/../data
 cp    $QT_DIR/bin/Qt5Xml.dll                                        $PWD/../data
-cp    $QT_DIR/bin/icudt52.dll                                       $PWD/../data
-cp    $QT_DIR/bin/icuin52.dll                                       $PWD/../data
-cp    $QT_DIR/bin/icuuc52.dll                                       $PWD/../data
+
+cp    $QT_DIR/bin/icudt5*.dll                                       $PWD/../data   
+cp    $QT_DIR/bin/icuin5*.dll                                       $PWD/../data
+cp    $QT_DIR/bin/icuuc5*.dll                                       $PWD/../data
+
 cp    $QT_DIR/bin/libgcc_s_dw2-1.dll                                $PWD/../data
 cp    $QT_DIR/bin/libwinpthread-1.dll                               $PWD/../data
 cp    $QT_DIR/bin/libstdc++-6.dll                                   $PWD/../data
