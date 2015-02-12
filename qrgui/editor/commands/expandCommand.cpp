@@ -3,9 +3,9 @@
 namespace qReal {
 namespace commands {
 
-ExpandCommand::ExpandCommand(NodeElement const *node)
+ExpandCommand::ExpandCommand(const NodeElement *node)
 	: NodeElementCommand(dynamic_cast<EditorViewScene *>(node->scene()), node->id())
-	, mResizeCommand(NULL)
+	, mResizeCommand(nullptr)
 {
 }
 

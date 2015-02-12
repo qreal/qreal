@@ -4,7 +4,7 @@ using namespace interpreterCore;
 using namespace utils;
 using namespace interpreterBase::robotModel;
 
-GraphicsWatcherManager::GraphicsWatcherManager(qrtext::DebuggerInterface const &parser, QObject *parent)
+GraphicsWatcherManager::GraphicsWatcherManager(const qrtext::DebuggerInterface &parser, QObject *parent)
 	: QObject(parent)
 	, mWatcher(new sensorsGraph::SensorsGraph(parser))
 {
@@ -26,8 +26,8 @@ void GraphicsWatcherManager::forceStop()
 	mWatcher->stopJob();
 }
 
-void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
+void GraphicsWatcherManager::onDeviceConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
@@ -36,14 +36,14 @@ void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotMo
 	updateSensorsList(robotModel);
 }
 
-void GraphicsWatcherManager::updateSensorsList(QString const &currentRobotModel)
+void GraphicsWatcherManager::updateSensorsList(const QString &currentRobotModel)
 {
 	mWatcher->clearTrackingObjects();
 	int index = 0;
-	for (PortInfo const &port : configuredPorts(currentRobotModel)) {
-		DeviceInfo const device = currentConfiguration(currentRobotModel, port);
+	for (const PortInfo &port : configuredPorts(currentRobotModel)) {
+		const DeviceInfo device = currentConfiguration(currentRobotModel, port);
 		/// @todo It must depend on port, port must return its variable
-		QString const variableName = port.reservedVariable();
+		const QString variableName = port.reservedVariable();
 		if (!device.isNull() && !variableName.isEmpty()) {
 			mWatcher->addTrackingObject(index, variableName, QString("%1: %2").arg(port.name(), device.friendlyName()));
 			++index;

@@ -2,6 +2,7 @@
 #include "ui_trikDisplayWidget.h"
 
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 
 using namespace trikKitInterpreter;
 
@@ -39,28 +40,30 @@ int TrikDisplayWidget::displayHeight() const
 	return mUi->display->height();
 }
 
-bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
+bool TrikDisplayWidget::buttonIsDown(const QString &buttonPort) const
 {
-	if (buttonPort == "LeftButtonPort") {
+	if (buttonPort == "Left") {
 		return mUi->buttonLeft->isDown();
-	} else if (buttonPort == "RightButtonPort") {
+	} else if (buttonPort == "Right") {
 		return mUi->buttonRight->isDown();
-	} else if (buttonPort == "UpButtonPort") {
+	} else if (buttonPort == "Up") {
 		return mUi->buttonUp->isDown();
-	} else if (buttonPort == "DownButtonPort") {
+	} else if (buttonPort == "Down") {
 		return mUi->buttonDown->isDown();
-	} else if (buttonPort == "EnterButtonPort") {
+	} else if (buttonPort == "Enter") {
 		return mUi->buttonEnter->isDown();
-	} else if (buttonPort == "EscapeButtonPort") {
+	} else if (buttonPort == "Esc") {
 		return mUi->buttonEscape->isDown();
-	} else if (buttonPort == "PowerButtonPort") {
+	} else if (buttonPort == "Power") {
 		return mUi->buttonPower->isDown();
 	}
 
-	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
+	QLOG_WARN() << "Button on port" << buttonPort << "is not supported by 2d model";
+
+	return false;
 }
 
-void TrikDisplayWidget::setLedColor(QColor const &color)
+void TrikDisplayWidget::setLedColor(const QColor &color)
 {
 	QPalette backgroundPalette(palette());
 	backgroundPalette.setColor(QPalette::Background, color);

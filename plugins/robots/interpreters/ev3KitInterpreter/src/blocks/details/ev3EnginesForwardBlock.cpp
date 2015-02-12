@@ -12,7 +12,7 @@ Ev3EnginesForwardBlock::Ev3EnginesForwardBlock(interpreterBase::robotModel::Robo
 
 void Ev3EnginesForwardBlock::run()
 {
-	int const power = eval<int>("Power");
+	const int power = eval<int>("Power");
 
 	if (errorsOccured()) {
 		return;

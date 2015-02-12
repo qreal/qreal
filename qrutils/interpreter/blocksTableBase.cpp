@@ -14,7 +14,7 @@ BlocksTableBase::~BlocksTableBase()
 	qDeleteAll(mBlocks);
 }
 
-BlockInterface *BlocksTableBase::block(Id const &element)
+BlockInterface *BlocksTableBase::block(const Id &element)
 {
 	if (mBlocks.contains(element)) {
 		return mBlocks[element];

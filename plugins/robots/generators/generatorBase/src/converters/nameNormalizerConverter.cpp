@@ -5,7 +5,7 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-QString NameNormalizerConverter::convert(QString const &data) const
+QString NameNormalizerConverter::convert(const QString &data) const
 {
 	return utils::NameNormalizer::normalizeStrongly(data, false);
 }

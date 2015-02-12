@@ -2,9 +2,10 @@ QT += widgets
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
 		robots-utils robots-interpreter-base robots-common-2d-model qextserialport \
+		qslog \
 		)
 
-includes(plugins/robots/interpreters/interpreterBase plugins/robots/interpreters/commonTwoDModel plugins/robots/utils qrtext plugins/robots/interpreters/nxtKitInterpreter/src)
+includes(plugins/robots/interpreters/interpreterBase plugins/robots/interpreters/commonTwoDModel plugins/robots/utils qrtext plugins/robots/interpreters/nxtKitInterpreter/src) \
 
 HEADERS += \
 	$$PWD/commandConstants.h \

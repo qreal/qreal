@@ -79,7 +79,7 @@ void PaletteTree::setActiveEditor(int index)
 	}
 }
 
-void PaletteTree::setActiveEditor(Id const &id)
+void PaletteTree::setActiveEditor(const Id &id)
 {
 	setActiveEditor(mCategories.value(id, 0));
 }
@@ -113,7 +113,7 @@ void PaletteTree::initDone()
 	mTree->resizeIcons();
 }
 
-void PaletteTree::setComboBox(Id const &id)
+void PaletteTree::setComboBox(const Id &id)
 {
 	mComboBox->setCurrentIndex(mCategories.value(id, -1));
 }
@@ -128,12 +128,12 @@ QList<QString> PaletteTree::editorsNames() const
 	return mEditorsNames;
 }
 
-void PaletteTree::deleteEditor(Id const &id)
+void PaletteTree::deleteEditor(const Id &id)
 {
 	if (mCategories.contains(id)) {
 		PaletteTreeWidgets *tree = mEditorsTrees[mCategories[id]];
 		if (mTree == tree) {
-			mTree = NULL;
+			mTree = nullptr;
 		}
 
 		mComboBox->removeItem(mCategories[id]);
@@ -199,7 +199,7 @@ void PaletteTree::saveConfiguration()
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	int diagramIndex = 0;
-	foreach (PaletteTreeWidgets const *editorTree, mEditorsTrees) {
+	foreach (const PaletteTreeWidgets *editorTree, mEditorsTrees) {
 		editorTree->saveConfiguration(mComboBox->itemText(diagramIndex));
 		diagramIndex++;
 	}
@@ -219,8 +219,8 @@ void PaletteTree::setIconsView(bool iconsView)
 
 void PaletteTree::loadEditors(EditorManagerInterface &editorManagerProxy)
 {
-	foreach (Id const &editor, editorManagerProxy.editors()) {
-		foreach (Id const &diagram, editorManagerProxy.diagrams(editor)) {
+	foreach (const Id &editor, editorManagerProxy.editors()) {
+		foreach (const Id &diagram, editorManagerProxy.diagrams(editor)) {
 			addEditorElements(editorManagerProxy, editor, diagram);
 		}
 	}
@@ -246,7 +246,7 @@ void PaletteTree::resizeEvent(QResizeEvent *)
 
 int PaletteTree::maxItemsCountInARow() const
 {
-	int const max = mTree->maxItemsCountInARow();
+	const int max = mTree->maxItemsCountInARow();
 	return max ? max : mItemsCountInARow;
 }
 
@@ -268,7 +268,7 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 	mEditorManager = editorManagerProxy;
 	mItemsCountInARow = itemsCount;
 	if (mEditorManager) {
-		// TODO: Can it really be NULL?
+		// TODO: Can it really be nullptr?
 		loadEditors(*mEditorManager);
 	}
 
@@ -309,7 +309,7 @@ void PaletteTree::installEventFilter(QObject *obj)
 	comboBox()->installEventFilter(obj);
 }
 
-void PaletteTree::setElementVisible(Id const &metatype, bool visible)
+void PaletteTree::setElementVisible(const Id &metatype, bool visible)
 {
 	mTree->setElementVisible(metatype, visible);
 }
@@ -319,7 +319,7 @@ void PaletteTree::setVisibleForAllElements(bool visible)
 	mTree->setVisibleForAllElements(visible);
 }
 
-void PaletteTree::setElementEnabled(Id const &metatype, bool enabled)
+void PaletteTree::setElementEnabled(const Id &metatype, bool enabled)
 {
 	mTree->setElementEnabled(metatype, enabled);
 }
@@ -336,7 +336,7 @@ void PaletteTree::refreshUserPalettes()
 	}
 }
 
-void PaletteTree::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
+void PaletteTree::customizeExplosionTitles(const QString &userGroupTitle, const QString &userGroupDescription)
 {
 	for (PaletteTreeWidgets * const tree : mEditorsTrees) {
 		tree->customizeExplosionTitles(userGroupTitle, userGroupDescription);

@@ -5,7 +5,7 @@
 
 using namespace qrmc;
 
-bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
+bool Label::init(const QDomElement &element, int index, bool nodeLabel, int width, int height)
 {
 	initCoordinate(mX, element.attribute("x", "0"), width);
 	initCoordinate(mY, element.attribute("y", "0"), height);
@@ -67,7 +67,7 @@ QString Label::generateUpdate(MetaCompiler *compiler) const
 			.replace(labelIndexTag, QString::number(mIndex));
 }
 
-QStringList Label::getListOfStr(QString const &strToParse) const
+QStringList Label::getListOfStr(const QString &strToParse) const
 {
 	return strToParse.split("##");
 }
@@ -85,7 +85,7 @@ QString Label::generateCodeForUpdateData() const
 		}
 	} else {
 		int counter = 1;
-		foreach (QString const &listElement, list) {
+		foreach (const QString &listElement, list) {
 			QString field;
 			if (counter % 2 == 0) {
 				if (listElement == "name") {

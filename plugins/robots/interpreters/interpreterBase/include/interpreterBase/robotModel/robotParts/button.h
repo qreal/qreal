@@ -16,7 +16,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Button : public ScalarSensor
 
 public:
 	/// Constructor, takes device type info and predefined port on which this button is configured.
-	Button(DeviceInfo const &info, PortInfo const &port);
+	Button(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

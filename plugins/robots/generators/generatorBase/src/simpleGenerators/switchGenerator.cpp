@@ -4,11 +4,11 @@
 
 using namespace generatorBase::simple;
 
-SwitchGenerator::SwitchGenerator(qrRepo::RepoApi const &repo
+SwitchGenerator::SwitchGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, qReal::Id const &id
-		, QString const &part
-		, QStringList const &values
+		, const qReal::Id &id
+		, const QString &part
+		, const QStringList &values
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, QString("switch/%1.t").arg(part), {
 			Binding::createConverting("@@EXPRESSION@@", "Expression"

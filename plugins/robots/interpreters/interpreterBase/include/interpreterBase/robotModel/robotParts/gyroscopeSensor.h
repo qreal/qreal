@@ -16,7 +16,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT GyroscopeSensor : public ScalarSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	GyroscopeSensor(DeviceInfo const &info, PortInfo const &port);
+	GyroscopeSensor(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

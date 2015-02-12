@@ -9,9 +9,9 @@ namespace simple {
 class LedGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	LedGenerator(qrRepo::RepoApi const &repo
+	LedGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

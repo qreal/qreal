@@ -6,7 +6,7 @@ using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase;
 using namespace robotModel;
 
-Motor::Motor(DeviceInfo const &info, PortInfo const &port, engine::TwoDModelEngineInterface &engine)
+Motor::Motor(const DeviceInfo &info, const PortInfo &port, engine::TwoDModelEngineInterface &engine)
 	: interpreterBase::robotModel::robotParts::Motor(info, port)
 	, mEngine(engine)
 {

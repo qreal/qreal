@@ -22,28 +22,28 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
-	Variables(QString const &pathToTemplates
-			, interpreterBase::robotModel::RobotModelInterface const &robotModel
+	Variables(const QString &pathToTemplates
+			, const interpreterBase::robotModel::RobotModelInterface &robotModel
 			, qrtext::LanguageToolboxInterface &luaToolbox);
 
 	/// Returns global variables declarations string
 	QString generateVariableString() const;
 
 	/// Returns given expression type using inner type inference algorithm
-	QSharedPointer<qrtext::core::types::TypeExpression> expressionType(QString const &expression) const;
+	QSharedPointer<qrtext::core::types::TypeExpression> expressionType(const QString &expression) const;
 
 	/// Adds given string to variables declaration section.
 	/// This method can be called multiple times with the same string but it
 	/// will be deduplicated.
-	void appendManualDeclaration(QString const &variables);
+	void appendManualDeclaration(const QString &variables);
 
 protected:
-	QString typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	QString constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	QString variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	QString typeExpression(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
+	QString constantDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
+	QString variableDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
 
 private:
-	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
+	const interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 	qrtext::LanguageToolboxInterface &mLuaToolbox;
 	QStringList mManualDeclarations;
 };

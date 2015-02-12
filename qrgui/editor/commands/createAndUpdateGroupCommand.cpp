@@ -9,11 +9,11 @@ CreateAndUpdateGroupCommand::CreateAndUpdateGroupCommand(EditorViewScene &scene
 		, models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
 		, models::Exploser &exploser
-		, Id const &logicalParent
-		, Id const &graphicalParent
-		, Id const &id
+		, const Id &logicalParent
+		, const Id &graphicalParent
+		, const Id &id
 		, bool isFromLogicalModel
-		, QPointF const &position)
+		, const QPointF &position)
 	: CreateGroupCommand(logicalApi, graphicalApi, exploser, logicalParent
 			, graphicalParent, id, isFromLogicalModel, position)
 	, mScene(scene)

@@ -33,11 +33,11 @@ public:
 
 	/// Performs 2D model`s initialization with the given system components.
 	/// @todo: Separate twoD model engine from the enviroment (get rid of parameters)
-	virtual void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEvents const &systemEvents
+	virtual void init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+			, const qReal::SystemEvents &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+			, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:
@@ -52,7 +52,7 @@ signals:
 	void runButtonPressed();
 
 	/// Emitted each time when user requests interpretation stop from 2D model window.
-	void stopButtonPressed();	
+	void stopButtonPressed();
 };
 
 }

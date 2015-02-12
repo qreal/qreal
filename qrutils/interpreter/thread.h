@@ -27,11 +27,11 @@ public:
 	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	/// @param initialNode - node that shall be executed first in this thread.
-	Thread(qReal::GraphicalModelAssistInterface const *graphicalModelApi
+	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, Id const &initialNodeType
+			, const Id &initialNodeType
 			, BlocksTableInterface &blocksTable
-			, Id const &initialNode);
+			, const Id &initialNode);
 
 	/// Creates new instance of thread starting from initial node of specified diagram.
 	/// @param graphicalModelApi - graphical model, contains diagram.
@@ -39,10 +39,10 @@ public:
 	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
 	/// @param diagramToInterpret - diagram, whose initial node shall be executed in a new thread.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
-	Thread(qReal::GraphicalModelAssistInterface const *graphicalModelApi
+	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, Id const &initialNodeType
-			, Id const &diagramToInterpret
+			, const Id &initialNodeType
+			, const Id &diagramToInterpret
 			, BlocksTableInterface &blocksTable);
 
 	~Thread() override;
@@ -55,12 +55,12 @@ signals:
 	void stopped();
 
 	/// Emitted when one of the blocks interpreted by this thread requested new thread.
-	void newThread(qReal::Id const &startBlockId);
+	void newThread(const qReal::Id &startBlockId);
 
 private slots:
-	void nextBlock(qReal::Id const &blockId);
+	void nextBlock(const qReal::Id &blockId);
 
-	void stepInto(qReal::Id const &diagram);
+	void stepInto(const qReal::Id &diagram);
 	void finishedSteppingInto();
 
 	void failure();
@@ -70,19 +70,19 @@ private slots:
 private:
 	void initTimer();
 
-	qReal::Id findStartingElement(qReal::Id const &diagram) const;
-	void error(QString const &message, qReal::Id const &source = qReal::Id());
+	qReal::Id findStartingElement(const qReal::Id &diagram) const;
+	void error(const QString &message, const qReal::Id &source = qReal::Id());
 
 	void turnOn(BlockInterface * const block);
 	void turnOff(BlockInterface * const block);
 
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership
+	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Doesn't have ownership
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
-	Id const mInitialNodeType;
+	const Id mInitialNodeType;
 	BlocksTableInterface &mBlocksTable;
 	BlockInterface *mCurrentBlock;  // Doesn't have ownership
 	QStack<BlockInterface *> mStack;  // Doesn't have ownership
-	qReal::Id const mInitialDiagram;
+	const qReal::Id mInitialDiagram;
 	int mBlocksSincePreviousEventsProcessing;
 	QTimer *mProcessEventsTimer;  // Has ownership
 	QSignalMapper *mProcessEventsMapper;  // Has ownership

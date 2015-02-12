@@ -1,4 +1,4 @@
-﻿#include "sensorViewer.h"
+#include "sensorViewer.h"
 
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
@@ -87,7 +87,7 @@ void SensorViewer::clear()
 
 	foreach (QGraphicsItem *item, mScene->items()) {
 		QGraphicsLineItem *curLine = qgraphicsitem_cast<QGraphicsLineItem *>(item);
-		if (curLine == NULL) {
+		if (curLine == nullptr) {
 			continue;
 		}
 
@@ -115,15 +115,15 @@ void SensorViewer::exportHistory()
 		OutFile out(fileName);
 		out() << "time" << ";" << "value" << "\n";
 		for (int i = 0; i < mPointsDataProcessor->pointsBase().size(); ++i) {
-			qreal const plotValue = mPointsDataProcessor->pointsBase()[i].y();
+			const qreal plotValue = mPointsDataProcessor->pointsBase()[i].y();
 			out() << i << ";" << mPointsDataProcessor->pointToAbsoluteValue(plotValue) << "\n";
 		}
-	} catch (qReal::Exception const &exception) {
+	} catch (const qReal::Exception &exception) {
 		QLOG_ERROR() << "An error occured during exporting sensor values to" << fileName << ":" << exception.message();
 	}
 }
 
-void SensorViewer::setNextValue(qreal const newValue)
+void SensorViewer::setNextValue(const qreal newValue)
 {
 	mPointsDataProcessor->addNewValue(newValue);
 }
@@ -137,14 +137,14 @@ void SensorViewer::drawNextFrame()
 
 	foreach (QGraphicsItem *item, mScene->items()) {
 		QGraphicsLineItem *curLine = qgraphicsitem_cast<QGraphicsLineItem *>(item);
-		if (curLine == NULL) {
+		if (curLine == nullptr) {
 			continue;
 		}
 
 		delete curLine;
 	}
 
-	QPen const regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+	const QPen regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 	for (int i = 0; i < mPointsDataProcessor->pointsBase().size() - 1; i++) {
 		QLineF quantOfGraph(mPointsDataProcessor->pointsBase()[i]
 				, mPointsDataProcessor->pointsBase()[i + 1]);
@@ -168,7 +168,7 @@ void SensorViewer::visualTimerEvent()
 
 void SensorViewer::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	int const digAfterDot = 1;
+	const int digAfterDot = 1;
 	QRectF sceneRect = this->sceneRect();
 
 	// Fill section
@@ -200,8 +200,8 @@ void SensorViewer::drawBackground(QPainter *painter, const QRectF &rect)
 
 void SensorViewer::mouseMoveEvent(QMouseEvent *event)
 {
-	QPointF const pivot = mPointsDataProcessor->pointOfVerticalIntersection(mapToScene(event->pos().x(),
-			event->pos().y()));
+	const QPointF pivot = mPointsDataProcessor->pointOfVerticalIntersection(mapToScene(event->pos().x()
+			, event->pos().y()));
 	qreal valueUnderCursor = mPointsDataProcessor->pointToAbsoluteValue(pivot.y());
 
 	mMarker->setPos(pivot);
@@ -226,7 +226,7 @@ void SensorViewer::mouseDoubleClickEvent(QMouseEvent *event)
 
 void SensorViewer::zoomIn()
 {
-	int const maxZoomDegree = 5;
+	const int maxZoomDegree = 5;
 	if (mScaleCoefficient > maxZoomDegree) {
 		return;
 	}
@@ -239,7 +239,7 @@ void SensorViewer::zoomIn()
 
 void SensorViewer::zoomOut()
 {
-	int const noZoom = 0;
+	const int noZoom = 0;
 	if (mScaleCoefficient == noZoom) {
 		return;
 	}
@@ -261,9 +261,9 @@ void SensorViewer::onSensorChange()
 	}
 }
 
-void SensorViewer::configureUserOptions(int const &fpsDelay, int const &autoScaleDelay, int const &textInfoUpdateDelay)
+void SensorViewer::configureUserOptions(const int &fpsDelay, const int &autoScaleDelay, const int &textInfoUpdateDelay)
 {
-	int const maxFpsInterval = 100;
+	const int maxFpsInterval = 100;
 	mFpsInterval = (fpsDelay < maxFpsInterval) ? fpsDelay : maxFpsInterval;
 	mAutoScaleInterval = autoScaleDelay;
 	mUpdateTextInfoInterval = textInfoUpdateDelay;

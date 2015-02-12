@@ -19,30 +19,30 @@ class DotRunner : public QObject
 	Q_OBJECT
 public:
 	explicit DotRunner(
-			Id const &diagramId
-			, models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi
-			, EditorManagerInterface const &editorManagerProxy
-			, QString const &absolutePathToDotFiles
+			const Id &diagramId
+			, const models::GraphicalModelAssistApi &graphicalModelApi
+			, const models::LogicalModelAssistApi &logicalModelApi
+			, const EditorManagerInterface &editorManagerProxy
+			, const QString &absolutePathToDotFiles
 			);
 
-	bool run(QString const &algorithm);
+	bool run(const QString &algorithm);
 
 public slots:
 	void readFromProcess();
 
 private:
-	QString nameOfElement(Id const &id);
+	QString nameOfElement(const Id &id);
 	void parseDOTCoordinates();
-	void buildSubgraph(QTextStream &out, Id const &id, int &index);
-	void writeGraphToDotFile(QTextStream &outFile, Id const &id);
+	void buildSubgraph(QTextStream &out, const Id &id, int &index);
+	void writeGraphToDotFile(QTextStream &outFile, const Id &id);
 
 	QProcess mProcess;
 	QByteArray mData;
 	Id mDiagramId;
-	models::GraphicalModelAssistApi const &mGraphicalModelApi;
-	models::LogicalModelAssistApi const &mLogicalModelApi;
-	qReal::EditorManagerInterface const &mEditorManagerInterface;
+	const models::GraphicalModelAssistApi &mGraphicalModelApi;
+	const models::LogicalModelAssistApi &mLogicalModelApi;
+	const qReal::EditorManagerInterface &mEditorManagerInterface;
 	QHash <QString, Id> mElementNamesForDOT;
 	QHash <Id, QPair<QPointF, QPair<qreal, qreal> > > mDOTCoordinatesOfElements;
 	QString mAlgorithm;

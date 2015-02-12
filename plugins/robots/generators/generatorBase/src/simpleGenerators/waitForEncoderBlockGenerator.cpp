@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-WaitForEncoderBlockGenerator::WaitForEncoderBlockGenerator(qrRepo::RepoApi const &repo
+WaitForEncoderBlockGenerator::WaitForEncoderBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/encoder.t",
 			{ Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())

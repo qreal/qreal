@@ -31,7 +31,7 @@ public:
 
 	/// Creates configuration widgets for all robot models in a list and prepares them to be shown when
 	/// selectRobotModel() is called.
-	void loadRobotModels(QList<robotModel::RobotModelInterface *> const &models);
+	void loadRobotModels(const QList<robotModel::RobotModelInterface *> &models);
 
 	/// Reinits current widget for the given robot model.
 	void selectRobotModel(robotModel::RobotModelInterface &robotModel);
@@ -50,27 +50,27 @@ public slots:
 private:
 	QWidget *configurerForRobotModel(robotModel::RobotModelInterface &robotModel);
 
-	QLayout *initPort(QString const &robotModel
-			, robotModel::PortInfo const &port
-			, QList<robotModel::DeviceInfo> const &sensors);
+	QLayout *initPort(const QString &robotModel
+			, const robotModel::PortInfo &port
+			, const QList<robotModel::DeviceInfo> &sensors);
 
 	void hideAllConfigurers();
 
-	void onDeviceConfigurationChanged(QString const &robotModel
-			, robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &sensor
+	void onDeviceConfigurationChanged(const QString &robotModel
+			, const robotModel::PortInfo &port
+			, const robotModel::DeviceInfo &sensor
 			, Reason reason) override;
 
-	void propagateChanges(robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &sensor);
+	void propagateChanges(const robotModel::PortInfo &port
+			, const robotModel::DeviceInfo &sensor);
 
-	bool areConvertible(robotModel::PortInfo const &port1
-			, robotModel::PortInfo const &port2) const;
+	bool areConvertible(const robotModel::PortInfo &port1
+			, const robotModel::PortInfo &port2) const;
 
 	robotModel::DeviceInfo convertibleDevice(
-			robotModel::RobotModelInterface const *robotModel
-			, robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &device) const;
+			const robotModel::RobotModelInterface *robotModel
+			, const robotModel::PortInfo &port
+			, const robotModel::DeviceInfo &device) const;
 
 	bool mAutosaveMode;
 	bool mCompactMode;

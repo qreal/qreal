@@ -20,17 +20,17 @@ BrandManager &BrandManager::instance()
 	return instance;
 }
 
-void BrandManager::configure(ToolPluginManager const *toolPluginManager)
+void BrandManager::configure(const ToolPluginManager *toolPluginManager)
 {
 	instance().mCustomizer = toolPluginManager->customizer();
 }
 
-Fonts const *BrandManager::fonts()
+const Fonts *BrandManager::fonts()
 {
 	return instance().mFonts;
 }
 
-Styles const *BrandManager::styles()
+const Styles *BrandManager::styles()
 {
 	return instance().mStyles;
 }

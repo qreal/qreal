@@ -10,7 +10,7 @@ TextElider::TextElider(QWidget *widget, Qt::TextElideMode mode)
 	connect(this, SIGNAL(textChanged(QString)), mWidget, SLOT(setText(QString)));
 }
 
-void TextElider::setText(QString const &text)
+void TextElider::setText(const QString &text)
 {
 	if (mWidget) {
 		int width = 0;
@@ -22,7 +22,7 @@ void TextElider::setText(QString const &text)
 			width = mWidget->sizeHint().width() - left - right;
 		}
 
-		QString const &elidedText = mWidget->fontMetrics().elidedText(text, mMode, width);
+		const QString &elidedText = mWidget->fontMetrics().elidedText(text, mMode, width);
 		emit textChanged(elidedText);
 	}
 }

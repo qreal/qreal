@@ -14,8 +14,8 @@ class ObjectSensor : public robotModel::parts::TrikObjectSensor
 	Q_OBJECT
 
 public:
-	ObjectSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	ObjectSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
 	void init() override;
 	void detect() override;

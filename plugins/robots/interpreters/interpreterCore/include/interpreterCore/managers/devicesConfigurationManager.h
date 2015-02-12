@@ -35,20 +35,20 @@ public:
 			);
 
 private:
-	void onDeviceConfigurationChanged(QString const &robotModel
-			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &sensor
+	void onDeviceConfigurationChanged(const QString &robotModel
+			, const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &sensor
 			, Reason reason) override;
 
 	/// Reacts to changing of editor tab.
 	/// @param graphicalRootId - id of a root diagram of newly selected tab.
-	void onActiveTabChanged(qReal::Id const &graphicalRootId);
+	void onActiveTabChanged(const qReal::Id &graphicalRootId);
 
 	/// Serializes current sensors configuration into inner string representation.
 	QString save() const;
 
 	/// Parses given sensors configuration serialized by save() method and broadcasts it to all connected providers.
-	void load(QString const &configuration);
+	void load(const QString &configuration);
 
 	qReal::GraphicalModelAssistInterface &mGraphicalModelAssistInterface;
 	qReal::LogicalModelAssistInterface &mLogicalModelAssistInterface;

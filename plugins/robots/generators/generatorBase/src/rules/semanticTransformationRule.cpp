@@ -3,7 +3,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SemanticTransformationRule::SemanticTransformationRule(SemanticTree *tree, Id const &id)
+SemanticTransformationRule::SemanticTransformationRule(SemanticTree *tree, const Id &id)
 	: mTree(tree)
 	, mId(id)
 {
@@ -26,12 +26,12 @@ LoopNode *SemanticTransformationRule::makeLoopStartingFrom(NonZoneNode *node)
 	return endlessLoop;
 }
 
-bool SemanticTransformationRule::alreadyCreated(qReal::Id const &id)
+bool SemanticTransformationRule::alreadyCreated(const qReal::Id &id)
 {
 	return mTree->findNodeFor(id) != nullptr;
 }
 
-bool SemanticTransformationRule::alreadyCreated(SemanticTransformationRule::LinkInfo const &link)
+bool SemanticTransformationRule::alreadyCreated(const SemanticTransformationRule::LinkInfo &link)
 {
 	return alreadyCreated(link.target);
 }

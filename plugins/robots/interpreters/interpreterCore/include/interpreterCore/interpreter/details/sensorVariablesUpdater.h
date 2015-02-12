@@ -2,6 +2,7 @@
 
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
+#include <QtCore/QScopedPointer>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
@@ -25,9 +26,11 @@ public:
 	/// Constructor.
 	/// @param robotModelManager - has reference to current robot model.
 	/// @param parser - contains sensor variables and is needed here to update them.
-	SensorVariablesUpdater(interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	SensorVariablesUpdater(const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::DebuggerInterface &textLanguageToolbox
 			);
+
+	~SensorVariablesUpdater();
 
 	/// Starts background polling process.
 	void run();
@@ -38,16 +41,24 @@ public:
 private slots:
 	void onTimerTimeout();
 	void onScalarSensorResponse(int reading);
+	void onVectorSensorResponse(const QVector<int> &reading);
 	void onFailure();
 
 private:
 	int updateInterval() const;
-	void updateScalarSensorVariables(interpreterBase::robotModel::PortInfo const &sensorPortInfo, int reading);
-	void updateScalarSensorVariable(QString const &variable, int reading);
+
+	void updateScalarSensorVariables(const interpreterBase::robotModel::PortInfo &sensorPortInfo, int reading);
+	void updateScalarSensorVariable(const QString &variable, int reading);
+
+	void updateVectorSensorVariables(const interpreterBase::robotModel::PortInfo &sensorPortInfo
+			, const QVector<int> &reading);
+
+	void updateVectorSensorVariable(const QString &variable, const QVector<int> &reading);
+
 	void resetVariables();
 
-	utils::AbstractTimer *mUpdateTimer;
-	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	QScopedPointer<utils::AbstractTimer> mUpdateTimer;
+	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	qrtext::DebuggerInterface &mParser;
 };
 

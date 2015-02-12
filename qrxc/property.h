@@ -5,7 +5,7 @@
 class Property
 {
 public:
-	bool init(QDomElement const &element);
+	bool init(const QDomElement &element);
 	QString name() const;
 	QString displayedName() const;
 	QString type() const;
@@ -13,8 +13,8 @@ public:
 	QString description() const;
 	bool isReferenceProperty() const;
 	Property *clone();
-	bool operator == (Property const &other) const;
-	bool operator != (Property const &other) const;
+	bool operator == (const Property &other) const;
+	bool operator != (const Property &other) const;
 	void dump() const;
 
 private:
@@ -26,5 +26,5 @@ private:
 	QString mDescription;
 	QString mDefaultValue;
 
-	bool initReferenceType(QString typeName, QDomElement const &element);
+	bool initReferenceType(QString typeName, const QDomElement &element);
 };

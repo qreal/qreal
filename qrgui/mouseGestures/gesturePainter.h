@@ -14,12 +14,12 @@ namespace gestures {
 class QRGUI_MOUSE_GESTURES_EXPORT GesturePainter : public QIconEngine
 {
 public:
-	GesturePainter(QString const &gesture
-			, QColor const &backgroungColor
-			, QColor const &gestureColor
+	GesturePainter(const QString &gesture
+			, const QColor &backgroungColor
+			, const QColor &gestureColor
 			, qreal size);
 
-	void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state) override;
+	void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state) override;
 	QIconEngine *clone() const override;
 
 private:

@@ -6,10 +6,10 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
+EnginesGenerator::EnginesGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
-		, QString const &engineType
+		, const Id &id
+		, const QString &engineType
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, engineType.contains("EnginesBackward")

@@ -16,7 +16,7 @@ class KleeneStarParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parser for which to build Kleene closure.
-	KleeneStarParser(ParserRef<TokenType> const &parser)
+	KleeneStarParser(const ParserRef<TokenType> &parser)
 		: mParser(parser)
 	{
 	}

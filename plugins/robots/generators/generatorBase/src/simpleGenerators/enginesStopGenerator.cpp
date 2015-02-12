@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-EnginesStopGenerator::EnginesStopGenerator(qrRepo::RepoApi const &repo
+EnginesStopGenerator::EnginesStopGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "engines/stop.t", QList<Binding *>()
 			<< Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())

@@ -5,9 +5,9 @@
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-SendMessageGenerator::SendMessageGenerator(qrRepo::RepoApi const &repo
+SendMessageGenerator::SendMessageGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "messages/sendMessage.t"

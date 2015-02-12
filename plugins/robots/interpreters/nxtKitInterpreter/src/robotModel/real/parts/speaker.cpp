@@ -4,7 +4,7 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Speaker::Speaker(DeviceInfo const &info, PortInfo const &port
+Speaker::Speaker(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: robotModel::parts::NxtSpeaker(info, port)
 	, mRobotCommunicator(robotCommunicator)

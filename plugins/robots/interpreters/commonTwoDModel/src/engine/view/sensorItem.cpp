@@ -17,10 +17,10 @@ using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace interpreterBase::robotModel;
 
-int const selectionDrift = 7;
+const int selectionDrift = 7;
 
 SensorItem::SensorItem(model::SensorsConfiguration &configuration
-		, PortInfo const &port, QString const &pathToImage, QRect const &imageRect)
+		, const PortInfo &port, const QString &pathToImage, const QRect &imageRect)
 	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
@@ -45,7 +45,7 @@ SensorItem::SensorItem(model::SensorsConfiguration &configuration
 	mPortItem->hide();
 }
 
-void SensorItem::setRotatePoint(QPointF const &rotatePoint)
+void SensorItem::setRotatePoint(const QPointF &rotatePoint)
 {
 	mRotatePoint = rotatePoint;
 }
@@ -70,7 +70,7 @@ void SensorItem::drawExtractionForItem(QPainter *painter)
 	}
 
 	painter->save();
-	QPen const pen = QPen(Qt::black);
+	const QPen pen = QPen(Qt::black);
 	painter->setPen(pen);
 	painter->setOpacity(0.7);
 	painter->setRenderHints(painter->renderHints() | QPainter::Antialiasing);
@@ -103,7 +103,7 @@ void SensorItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 QString SensorItem::name() const
 {
-	DeviceInfo const sensor = mConfiguration.type(mPort);
+	const DeviceInfo sensor = mConfiguration.type(mPort);
 	if (sensor.isA<robotParts::TouchSensor>()) {
 		return "touch";
 	} else if (sensor.isA<robotParts::ColorSensorFull>()
@@ -128,7 +128,7 @@ QString SensorItem::name() const
 
 QRectF SensorItem::imageRect() const
 {
-	DeviceInfo const sensor = mConfiguration.type(mPort);
+	const DeviceInfo sensor = mConfiguration.type(mPort);
 	if (sensor.isA<robotParts::TouchSensor>()) {
 		return QRectF(-12, -5, 25, 10);
 	} else if (sensor.isA<robotParts::ColorSensor>()
@@ -200,14 +200,19 @@ QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value
 	return AbstractItem::itemChange(change, value);
 }
 
-SensorItem::PortItem::PortItem(PortInfo const &port)
+void SensorItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QGraphicsItem::contextMenuEvent(event);
+}
+
+SensorItem::PortItem::PortItem(const PortInfo &port)
 	: mPort(port)
 	, mFont("Times", 10, QFont::Normal, true)
 	, mBoundingRect(QFontMetrics(mFont).boundingRect(port.name()))
 {
 }
 
-void SensorItem::PortItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget)
+void SensorItem::PortItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)

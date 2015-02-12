@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-WaitForSoundBlockGenerator::WaitForSoundBlockGenerator(qrRepo::RepoApi const &repo
+WaitForSoundBlockGenerator::WaitForSoundBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/sound.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())

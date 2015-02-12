@@ -31,7 +31,7 @@ public:
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in member case. The slot must be parameterless.
 	template <typename Func>
-	static void listen(QString const &key
+	static void listen(const QString &key
 			, typename QtPrivate::QEnableIf<
 					QtPrivate::FunctionPointer<Func>::ArgumentCount <= 0
 					, typename QtPrivate::FunctionPointer<Func>::Object *>::Type sender, Func signal)
@@ -45,7 +45,7 @@ public:
 	/// QObject::connect() function in member case. The slot must accept one parameter of the arbitary type
 	/// to which modified settings value will be casted by qvariant_cast.
 	template <typename Func>
-	static void listen(QString const &key
+	static void listen(const QString &key
 			, typename QtPrivate::QEnableIf<
 					QtPrivate::FunctionPointer<Func>::ArgumentCount == 1
 					, typename QtPrivate::FunctionPointer<Func>::Object *>::Type sender, Func signal)
@@ -58,7 +58,7 @@ public:
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in lambda case. The lambda must be parameterless.
-	static void listen(QString const &key, std::function<void()> const &lambda)
+	static void listen(const QString &key, std::function<void()> const &lambda)
 	{
 		instance().mListeners.insertMulti(key, new LambdaListener0(lambda));
 	}
@@ -68,7 +68,7 @@ public:
 	/// to which modified settings value will be casted by qvariant_cast.
 	template <typename Func, typename Type
 			= typename QtPrivate::FunctionPointer<decltype(&Func::operator())>::Arguments::Car>
-	static void listen(QString const &key, Func lambda)
+	static void listen(const QString &key, Func lambda)
 	{
 		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda));
 	}
@@ -78,10 +78,10 @@ public slots:
 	static void disconnect(QObject *listener);
 
 	/// Stops listening the given key for the given listener.
-	static void disconnect(QString const &key, QObject *listener);
+	static void disconnect(const QString &key, QObject *listener);
 
 private slots:
-	void onSettingsChanged(QString const &name, QVariant const &oldValue, QVariant const &newValue);
+	void onSettingsChanged(const QString &name, const QVariant &oldValue, const QVariant &newValue);
 
 private:
 	SettingsListener();

@@ -16,11 +16,11 @@ public:
 			, models::LogicalModelAssistApi &logicalAssistApi
 			, models::GraphicalModelAssistApi &graphicalAssistApi
 			, models::Exploser &exploser
-			, Id const &firstElem
-			, Id const &lastElem
-			, Id const &parent
-			, QPointF const &scenePos
-			, QPointF const &shift
+			, const Id &firstElem
+			, const Id &lastElem
+			, const Id &parent
+			, const QPointF &scenePos
+			, const QPointF &shift
 			, bool isFromLogicalModel
 			, CreateElementCommand *createCommand = 0);
 
@@ -31,7 +31,7 @@ protected:
 	virtual bool restoreState();
 
 private:
-	void initCommand(CreateElementCommand *&command, Id const &type);
+	void initCommand(CreateElementCommand *&command, const Id &type);
 	void makeLink(CreateElementCommand *command, NodeElement *src, NodeElement *dst);
 
 	EditorViewScene &mScene;

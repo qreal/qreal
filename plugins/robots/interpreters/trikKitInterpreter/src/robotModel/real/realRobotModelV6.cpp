@@ -6,7 +6,7 @@
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
 
-RealRobotModelV6::RealRobotModelV6(QString const &kitId, QString const &robotId)
+RealRobotModelV6::RealRobotModelV6(const QString &kitId, const QString &robotId)
 	: RealRobotModelBase(kitId, robotId)
 {
 }

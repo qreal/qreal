@@ -2,7 +2,7 @@
 
 using namespace utils;
 
-ScalableCoordinate ScalableItem::initCoordinate(QString const &coordinate, int maxValue)
+ScalableCoordinate ScalableItem::initCoordinate(const QString &coordinate, int maxValue)
 {
 	ScalableCoordinate field;
 	QString coord = coordinate;

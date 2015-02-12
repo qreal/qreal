@@ -9,20 +9,20 @@ RobotsBlock::RobotsBlock()
 {
 }
 
-void RobotsBlock::init(Id const &graphicalId
-		, GraphicalModelAssistInterface const &graphicalModelApi
-		, LogicalModelAssistInterface const &logicalModelApi
+void RobotsBlock::init(const Id &graphicalId
+		, const GraphicalModelAssistInterface &graphicalModelApi
+		, const LogicalModelAssistInterface &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
-		, robotModel::RobotModelManagerInterface const &robotModelManager
+		, const robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguageToolbox)
 {
 	init(graphicalId, graphicalModelApi, logicalModelApi, errorReporter, textLanguageToolbox);
 	mRobotModelManager = &robotModelManager;
 }
 
-void RobotsBlock::init(qReal::Id const &graphicalId
-		, qReal::GraphicalModelAssistInterface const &graphicalModelApi
-		, qReal::LogicalModelAssistInterface const &logicalModelApi
+void RobotsBlock::init(const qReal::Id &graphicalId
+		, const qReal::GraphicalModelAssistInterface &graphicalModelApi
+		, const qReal::LogicalModelAssistInterface &logicalModelApi
 		, qReal::ErrorReporterInterface * const errorReporter
 		, qrtext::LanguageToolboxInterface &textLanguageToolbox
 		)

@@ -8,7 +8,7 @@ namespace qReal {
 class HotKeyActionInfo
 {
 public:
-	HotKeyActionInfo(QString const &id, QString const &label, QAction * const action)
+	HotKeyActionInfo(const QString &id, const QString &label, QAction * const action)
 		: mAction(action)
 		, mId(id)
 		, mLabel(label)

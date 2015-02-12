@@ -4,10 +4,10 @@
 
 using namespace qReal::gestures;
 
-int LevenshteinDistance::getLevenshteinDistance(QString const &key1, QString const &key2)
+int LevenshteinDistance::getLevenshteinDistance(const QString &key1, const QString &key2)
 {
-	int const m = key1.size();
-	int const n = key2.size();
+	const int m = key1.size();
+	const int n = key2.size();
 
 	if (m == 0)
 		return n;
@@ -33,9 +33,9 @@ int LevenshteinDistance::getLevenshteinDistance(QString const &key1, QString con
 	for (int i = 1; i <= m; ++i) {
 		for(int j = 1; j <= n; ++j) {
 			cost = (key1[i - 1] == key2[j - 1]) ? 0 : 1;
-			int const aboveCell = matrix[i - 1][j];
-			int const leftCell = matrix[i][j - 1];
-			int const diagonalCell = matrix[i - 1][j - 1];
+			const int aboveCell = matrix[i - 1][j];
+			const int leftCell = matrix[i][j - 1];
+			const int diagonalCell = matrix[i - 1][j - 1];
 			matrix[i][j] = std::min(std::min(aboveCell + 1, leftCell + 1), diagonalCell + cost);
 		}
 	}

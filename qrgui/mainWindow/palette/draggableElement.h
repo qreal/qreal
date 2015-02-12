@@ -26,9 +26,9 @@ class DraggableElement : public QWidget
 
 public:
 	DraggableElement(MainWindow &mainWindow
-		, PaletteElement const &paletteElement
+		, const PaletteElement &paletteElement
 		, bool iconsOnly
-		, EditorManagerInterface const &editorManagerProxy
+		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent = nullptr
 		);
 
@@ -81,9 +81,9 @@ private:
 	void checkElementForChildren();
 	void hackTouchDrag();
 
-	PaletteElement const mData;
+	const PaletteElement mData;
 	QLabel *mLabel;
-	EditorManagerInterface const &mEditorManagerProxy;  // Does not have ownership.
+	const EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
 	MainWindow &mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;

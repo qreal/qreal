@@ -26,7 +26,7 @@ RobotsPluginFacade::~RobotsPluginFacade()
 	delete mInterpreter;
 }
 
-void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
+void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 {
 	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
 
@@ -117,9 +117,9 @@ ActionsManager &RobotsPluginFacade::actionsManager()
 QStringList RobotsPluginFacade::defaultSettingsFiles() const
 {
 	QStringList result = { ":/interpreterCoreDefaultSettings.ini" };
-	for (QString const &kitId : mKitPluginManager.kitIds()) {
+	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-			QString const defaultSettings = kit->defaultSettingsFile();
+			const QString defaultSettings = kit->defaultSettingsFile();
 			if (!defaultSettings.isEmpty()) {
 				result << defaultSettings;
 			}
@@ -158,11 +158,11 @@ void RobotsPluginFacade::connectInterpreterToActions()
 			);
 }
 
-bool RobotsPluginFacade::selectKit(qReal::PluginConfigurator const &configurer)
+bool RobotsPluginFacade::selectKit(const qReal::PluginConfigurator &configurer)
 {
 	/// @todo reinit it each time when robot model changes
 	/// @todo: do we need this method?
-	QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
+	const QString selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
 		qReal::SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
@@ -215,15 +215,15 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
 }
 
-void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configurer)
+void RobotsPluginFacade::initKitPlugins(const qReal::PluginConfigurator &configurer)
 {
 	/// @todo: Check that this code works when different kit is selected
-	for (QString const &kitId : mKitPluginManager.kitIds()) {
+	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 			kit->init(mEventsForKitPlugin, configurer.systemEvents(), configurer.graphicalModelApi()
 					, configurer.logicalModelApi(), configurer.mainWindowInterpretersInterface(), *mInterpreter);
 
-			for (interpreterBase::robotModel::RobotModelInterface const *model : kit->robotModels()) {
+			for (const interpreterBase::robotModel::RobotModelInterface *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);
 				connect(&mEventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
 						, model, &interpreterBase::robotModel::RobotModelInterface::onInterpretationStarted);
@@ -238,9 +238,9 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 	}
 }
 
-void RobotsPluginFacade::initFactoriesFor(QString const &kitId
-		, interpreterBase::robotModel::RobotModelInterface const *model
-		, qReal::PluginConfigurator const &configurer)
+void RobotsPluginFacade::initFactoriesFor(const QString &kitId
+		, const interpreterBase::robotModel::RobotModelInterface *model
+		, const qReal::PluginConfigurator &configurer)
 {
 	// Pulling each robot model to each kit plugin with same ids. We need it for supporting
 	// plugin-based blocks set extension for concrete roobt model.

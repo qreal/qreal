@@ -28,7 +28,7 @@ public:
 
 private:
 	/// Minimum size of node
-	static int const mMinSize = 10;
+	static const int mMinSize = 10;
 
 	/**
 	 * Sorts child items in case node has
@@ -78,7 +78,7 @@ private:
 	 * or more left than (sizeOfForestalling, sizeOfForestalling).
 	 * @param shift Child shift.
 	 */
-	void moveChildren(QPointF const &shift) const;
+	void moveChildren(const QPointF &shift) const;
 
 	/**
 	 * Returns bounding rectangle for childItem.
@@ -86,7 +86,7 @@ private:
 	 * @param contents It will be used for place holder bounding calculating.
 	 * @return Bounding rectangle for childItem.
 	 */
-	QRectF childBoundingRect(const QGraphicsItem * const childItem, QRectF const &contents) const;
+	QRectF childBoundingRect(const QGraphicsItem * const childItem, const QRectF &contents) const;
 
 	/**
 	 * Expands contents according to child configuration.

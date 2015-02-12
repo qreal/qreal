@@ -11,7 +11,7 @@ class NearestPosGridGesturesManager : public GesturesRecognizer<qreal *>
 public:
 	NearestPosGridGesturesManager();
 	~NearestPosGridGesturesManager();
-	qreal getMaxDistance(QString const &);
+	qreal getMaxDistance(const QString &);
 	bool isMultistroke();
 	qreal getDistance(qreal * const & key1, qreal * const &key2);
 
@@ -21,7 +21,7 @@ public:
 		return getDistance(mKey, key);
 	}
 
-	qreal *getKey(PathVector const &path);
+	qreal *getKey(const PathVector &path);
 };
 
 }

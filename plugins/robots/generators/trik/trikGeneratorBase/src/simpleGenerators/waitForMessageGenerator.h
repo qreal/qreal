@@ -9,9 +9,9 @@ namespace simple {
 class WaitForMessageGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	WaitForMessageGenerator(qrRepo::RepoApi const &repo
+	WaitForMessageGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

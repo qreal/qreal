@@ -15,10 +15,10 @@ public:
 	explicit ColorListEditor(QWidget *widget = 0);
 
 public:
-	void setColorList(QStringList const &colorList, QStringList const &translatedColorList = QStringList());
+	void setColorList(const QStringList &colorList, const QStringList &translatedColorList = QStringList());
 	QColor color() const;
 	QColor colorByIndex(int index) const;
-	void setColor(QColor const &color);
+	void setColor(const QColor &color);
 
 private:
 	void populateList();

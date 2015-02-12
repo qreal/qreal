@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-IfElementGenerator::IfElementGenerator(qrRepo::RepoApi const &repo
+IfElementGenerator::IfElementGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, bool elseIsEmpty
 		, bool needInverting
 		, QObject *parent)

@@ -9,9 +9,9 @@ namespace simple {
 class InitialNodeGenerator : public BindingGenerator
 {
 public:
-	InitialNodeGenerator(qrRepo::RepoApi const &repo
+	InitialNodeGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

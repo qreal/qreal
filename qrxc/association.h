@@ -5,7 +5,7 @@
 class Association
 {
 public:
-	bool init(QDomElement const &element);
+	bool init(const QDomElement &element);
 	// Default copy constructor ok.
 	Association* clone() const;
 

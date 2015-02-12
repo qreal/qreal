@@ -6,7 +6,7 @@ using namespace robotModel;
 using namespace utils;
 using namespace robotCommunication;
 
-Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator &robotCommunicator)
+Motor::Motor(const DeviceInfo &info, const PortInfo &port, RobotCommunicator &robotCommunicator)
 	: Ev3Motor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
@@ -20,8 +20,8 @@ void Motor::on(int speed)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opOUTPUT_POWER;
@@ -48,8 +48,8 @@ void Motor::off()
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opOUTPUT_STOP;

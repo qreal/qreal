@@ -4,9 +4,9 @@
 
 using namespace trik::simple;
 
-DetectGenerator::DetectGenerator(qrRepo::RepoApi const &repo
+DetectGenerator::DetectGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "videosensors/detect" + repo.property(id, "Mode").toString() + ".t"

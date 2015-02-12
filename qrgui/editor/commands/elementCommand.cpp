@@ -2,8 +2,8 @@
 
 using namespace qReal::commands;
 
-ElementCommand::ElementCommand(EditorViewScene const *scene, Id const &id)
-	: mElement(NULL), mScene(scene), mId(id), mSceneWasRemoved(false)
+ElementCommand::ElementCommand(const EditorViewScene *scene, const Id &id)
+	: mElement(nullptr), mScene(scene), mId(id), mSceneWasRemoved(false)
 {
 	reinitElement();
 	connect(mScene, SIGNAL(destroyed()), SLOT(onSceneWasRemoved()));
@@ -13,7 +13,7 @@ ElementCommand::~ElementCommand()
 {
 }
 
-EditorViewScene const *ElementCommand::scene() const
+const EditorViewScene *ElementCommand::scene() const
 {
 	return mScene;
 }
@@ -23,13 +23,13 @@ Id ElementCommand::elementId() const
 	return mId;
 }
 
-void ElementCommand::setScene(EditorViewScene const *scene)
+void ElementCommand::setScene(const EditorViewScene *scene)
 {
 	mScene = scene;
 	reinitElement();
 }
 
-void ElementCommand::setId(Id const &id)
+void ElementCommand::setId(const Id &id)
 {
 	mId = id;
 	reinitElement();
@@ -38,12 +38,12 @@ void ElementCommand::setId(Id const &id)
 bool ElementCommand::reinitElement()
 {
 	mElement = elementById(mId);
-	return mElement != NULL;
+	return mElement != nullptr;
 }
 
-Element *ElementCommand::elementById(Id const &id)
+Element *ElementCommand::elementById(const Id &id)
 {
-	return mScene ? mScene->getElem(id) : NULL;
+	return mScene ? mScene->getElem(id) : nullptr;
 }
 
 void ElementCommand::onSceneWasRemoved()

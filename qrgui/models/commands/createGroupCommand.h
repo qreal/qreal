@@ -12,11 +12,11 @@ public:
 	CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
 			, models::Exploser &exploser
-			, Id const &logicalParent
-			, Id const &graphicalParent
-			, Id const &id
+			, const Id &logicalParent
+			, const Id &graphicalParent
+			, const Id &id
 			, bool isFromLogicalModel
-			, QPointF const &position);
+			, const QPointF &position);
 
 	Id rootId() const;
 
@@ -27,12 +27,12 @@ protected:
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
-	Id const mLogicalParent;
-	Id const mGraphicalParent;
-	Id const mId;
-	bool const mIsFromLogicalModel;
-	QPointF const mPosition;
-	Pattern const mPattern;
+	const Id mLogicalParent;
+	const Id mGraphicalParent;
+	const Id mId;
+	const bool mIsFromLogicalModel;
+	const QPointF mPosition;
+	const Pattern mPattern;
 	QMap<QString, CreateElementCommand *> mNodeCommands;
 	QList<CreateElementCommand *> mEdgeCommands;
 	Id mRootId;

@@ -17,7 +17,7 @@ public:
 	/// @param factoryManager - provides information about currently enabled blocks.
 	/// @param parent - parent of this object in terms of Qt memory management system.
 	PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider
-			, BlocksFactoryManagerInterface const &factoryManager
+			, const BlocksFactoryManagerInterface &factoryManager
 			, QObject *parent = 0);
 
 public slots:
@@ -26,7 +26,7 @@ public slots:
 
 private:
 	qReal::gui::MainWindowInterpretersInterface &mPaletteProvider;
-	BlocksFactoryManagerInterface const &mFactoryManager;
+	const BlocksFactoryManagerInterface &mFactoryManager;
 };
 
 }

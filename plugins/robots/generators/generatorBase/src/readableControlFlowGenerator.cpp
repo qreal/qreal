@@ -20,10 +20,10 @@ using namespace qReal;
 using namespace semantics;
 
 ReadableControlFlowGenerator::ReadableControlFlowGenerator(
-		qrRepo::RepoApi const &repo
+		const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
-		, Id const &diagramId
+		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, diagramId, parent, isThisDiagramMain)
@@ -31,7 +31,7 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 {
 }
 
-ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagramId, bool cloneForNewDiagram)
+ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(const Id &diagramId, bool cloneForNewDiagram)
 {
 	ReadableControlFlowGenerator * const copy = new ReadableControlFlowGenerator(mRepo
 			, mErrorReporter, mCustomizer, diagramId, parent(), false);
@@ -68,8 +68,8 @@ void ReadableControlFlowGenerator::beforeSearch()
 {
 }
 
-void ReadableControlFlowGenerator::visitRegular(Id const &id
-		, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitRegular(const Id &id
+		, const QList<LinkInfo> &links)
 {
 	ControlFlowGeneratorBase::visitRegular(id, links);
 	SimpleUnvisitedRule unvisitedRule(mSemanticTree, id, links[0]);
@@ -88,8 +88,8 @@ void ReadableControlFlowGenerator::visitRegular(Id const &id
 	applyFirstPossible(id, rules, !mTravelingForSecondTime);
 }
 
-void ReadableControlFlowGenerator::visitConditional(Id const &id
-		, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitConditional(const Id &id
+		, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
@@ -107,8 +107,8 @@ void ReadableControlFlowGenerator::visitConditional(Id const &id
 	applyFirstPossible(id, { &oneVisitedRule, &bothUnvisitedRule }, false);
 }
 
-void ReadableControlFlowGenerator::visitLoop(Id const &id
-		, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitLoop(const Id &id
+		, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
@@ -128,7 +128,7 @@ void ReadableControlFlowGenerator::visitLoop(Id const &id
 	applyFirstPossible(id, { &bothUnvisitedRule, &iterationVisitedRule, &nextVisitedRule }, false);
 }
 
-void ReadableControlFlowGenerator::visitSwitch(Id const &id, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &links)
 {
 	SwitchInitializationRule buildingRule(mSemanticTree, id, links, mRepo);
 	applyFirstPossible(id, { &buildingRule }, false);
@@ -143,7 +143,7 @@ bool ReadableControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
 	return mCantBeGeneratedIntoStructuredCode;
 }
 
-bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
+bool ReadableControlFlowGenerator::applyFirstPossible(const Id &currentId
 		, QList<SemanticTransformationRule *> const &rules
 		, bool thereWillBeMoreRules)
 {

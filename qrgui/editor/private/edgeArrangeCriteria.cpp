@@ -7,7 +7,7 @@ EdgeArrangeCriteria::EdgeArrangeCriteria(int edgeType, qreal yOffset, qreal xOff
 {
 }
 
-bool EdgeArrangeCriteria::operator<(EdgeArrangeCriteria const &other) const
+bool EdgeArrangeCriteria::operator<(const EdgeArrangeCriteria &other) const
 {
 	QPair<int, QPair<qreal, qreal> > first = qMakePair(mEdgeType, qMakePair(mYOffset, mXOffset));
 	QPair<int, QPair<qreal, qreal> > second = qMakePair(other.mEdgeType, qMakePair(other.mYOffset, other.mXOffset));

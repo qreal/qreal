@@ -16,8 +16,8 @@ public:
 	virtual ~DeviceVariables();
 
 	/// Allows to customize path to device expression template based on device info and port info.
-	virtual QString variableTemplatePath(interpreterBase::robotModel::DeviceInfo const &device
-			, interpreterBase::robotModel::PortInfo const &port) const;
+	virtual QString variableTemplatePath(const interpreterBase::robotModel::DeviceInfo &device
+			, const interpreterBase::robotModel::PortInfo &port) const;
 };
 
 }

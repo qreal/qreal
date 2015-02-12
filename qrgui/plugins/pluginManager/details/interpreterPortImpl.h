@@ -5,7 +5,7 @@
 class InterpreterPortImpl : public PortImpl
 {
 public:
-	InterpreterPortImpl(QString const &type);
+	InterpreterPortImpl(const QString &type);
 	virtual QString type() const;
 
 private:

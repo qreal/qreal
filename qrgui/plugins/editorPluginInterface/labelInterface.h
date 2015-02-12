@@ -13,7 +13,7 @@ public:
 	virtual ~LabelInterface() {}
 
 	/// Sets label background.
-	virtual void setBackground(QColor const &background) = 0;
+	virtual void setBackground(const QColor &background) = 0;
 
 	/// Sets label scalability.
 	/// @param scalingX If true, label can be resized by X axis.
@@ -26,7 +26,7 @@ public:
 
 	/// The root of all evil. Method that gets information about label contents and configuration from repository.
 	/// @param text Contains current value of the property and its configuration.
-	virtual void setTextFromRepo(QString const& text) = 0;
+	virtual void setTextFromRepo(const QString& text) = 0;
 
 	/// Allows to set graphics item flags for current label.
 	virtual void setFlags(QGraphicsItem::GraphicsItemFlags flags) = 0;
@@ -36,10 +36,10 @@ public:
 
 	/// Sets HTML-formatted text for this label.
 	/// @deprecated Use plain text instead.
-	virtual void setHtml(QString const &html) = 0;
+	virtual void setHtml(const QString &html) = 0;
 
 	/// Sets unformatted text as the contents of this label.
-	virtual void setPlainText(QString const &text) = 0;
+	virtual void setPlainText(const QString &text) = 0;
 };
 
 }

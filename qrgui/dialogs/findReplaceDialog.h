@@ -22,7 +22,7 @@ class QRGUI_DIALOGS_EXPORT FindReplaceDialog : public utils::QRealDialog
 
 public:
 	/// constructor
-	explicit FindReplaceDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent = NULL);
+	explicit FindReplaceDialog(const qrRepo::LogicalRepoApi &logicalRepoApi, QWidget *parent = nullptr);
 
 	/// Loads found data to.
 	/// @param foundData - found data.
@@ -39,7 +39,7 @@ signals:
 
 	/// Signal of found item chosen.
 	/// @param id - id of chosen element.
-	void chosenElement(qReal::Id const &id);
+	void chosenElement(const qReal::Id &id);
 
 	/// Signal of replace button clicked.
 	/// @param searchData - data for search & replace.
@@ -64,7 +64,7 @@ private:
 	QList<QCheckBox*> mCheckBoxes;
 
 	/// Repository's interface.
-	qrRepo::LogicalRepoApi const &mCommonApi;
+	const qrRepo::LogicalRepoApi &mCommonApi;
 
 	/// Dialods ui.
 	Ui::FindReplaceDialog *mUi;

@@ -23,8 +23,8 @@ class COMMON_TWO_D_MODEL_EXPORT ColorSensorFull : public interpreterBase::robotM
 	Q_CLASSINFO("friendlyName", tr("Color sensor (full)"))
 
 public:
-	ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	ColorSensorFull(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	void read();

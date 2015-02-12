@@ -12,10 +12,10 @@ DrawRectBlock::DrawRectBlock(interpreterBase::robotModel::RobotModelInterface &r
 void DrawRectBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
 	auto nxtDisplay = static_cast<robotModel::parts::NxtDisplay *>(&display);
-	int const x = eval<int>("XCoordinateRect");
-	int const y = eval<int>("YCoordinateRect");
-	int const width = eval<int>("WidthRect");
-	int const height = eval<int>("HeightRect");
+	const int x = eval<int>("XCoordinateRect");
+	const int y = eval<int>("YCoordinateRect");
+	const int width = eval<int>("WidthRect");
+	const int height = eval<int>("HeightRect");
 	if (!errorsOccured()) {
 		nxtDisplay->drawRect(x, y, width, height);
 		emit done(mNextBlockId);

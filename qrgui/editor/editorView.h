@@ -13,30 +13,30 @@ class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView
 	Q_OBJECT
 
 public:
-	EditorView(models::Models const &models
+	EditorView(const models::Models &models
 			, Controller &controller
-			, SceneCustomizer const &customizer
-			, Id const &rootId
+			, const SceneCustomizer &customizer
+			, const Id &rootId
 			, QWidget *parent = 0);
 
-	EditorViewMViface const &mvIface() const;
+	const EditorViewMViface &mvIface() const;
 	EditorViewMViface &mutableMvIface();
-	EditorViewScene const &editorViewScene() const;
+	const EditorViewScene &editorViewScene() const;
 	EditorViewScene &mutableScene();
 
 	void setDrawSceneGrid(bool show);
-	void ensureElementVisible(Element const * const element);
-	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
+	void ensureElementVisible(const Element * const element);
+	void ensureElementVisible(const Element * const element, int xMargin, int yMargin);
 
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
-	void rootElementRemoved(QModelIndex const &rootGraphicsIndex);
+	void rootElementRemoved(const QModelIndex &rootGraphicsIndex);
 
 public slots:
 	void toggleAntialiasing(bool);
 	void zoomIn();
 	void zoomOut();
-	void zoom(qreal const zoomFactor);
+	void zoom(const qreal zoomFactor);
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);

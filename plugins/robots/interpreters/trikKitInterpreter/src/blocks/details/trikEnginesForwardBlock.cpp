@@ -12,7 +12,7 @@ TrikEnginesForwardBlock::TrikEnginesForwardBlock(interpreterBase::robotModel::Ro
 
 void TrikEnginesForwardBlock::run()
 {
-	auto const result = eval<int>("Power");
+	const auto result = eval<int>("Power");
 	if (!errorsOccured()) {
 		for (Motor * const motor : parsePorts<Motor>()) {
 			motor->on(result);

@@ -17,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Speaker : public Device
 
 public:
 	/// Constructor, takes device type info and port on which this device is configured.
-	Speaker(DeviceInfo const &info, PortInfo const &port);
+	Speaker(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

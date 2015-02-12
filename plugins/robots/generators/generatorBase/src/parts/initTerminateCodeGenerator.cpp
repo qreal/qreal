@@ -2,7 +2,7 @@
 
 using namespace generatorBase::parts;
 
-InitTerminateCodeGenerator::InitTerminateCodeGenerator(QString const &pathToTemplates)
+InitTerminateCodeGenerator::InitTerminateCodeGenerator(const QString &pathToTemplates)
 	: TemplateParametrizedEntity(pathToTemplates)
 {
 }

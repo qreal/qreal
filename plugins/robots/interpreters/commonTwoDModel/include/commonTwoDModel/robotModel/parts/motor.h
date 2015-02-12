@@ -22,8 +22,8 @@ class COMMON_TWO_D_MODEL_EXPORT Motor : public interpreterBase::robotModel::robo
 	Q_OBJECT
 
 public:
-	Motor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Motor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine
 			);
 

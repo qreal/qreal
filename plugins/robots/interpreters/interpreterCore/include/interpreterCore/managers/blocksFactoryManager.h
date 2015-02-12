@@ -16,14 +16,14 @@ public:
 	~BlocksFactoryManager() override;
 
 	void addFactory(interpreterBase::blocksBase::BlocksFactoryInterface * const factory
-			, interpreterBase::robotModel::RobotModelInterface const *robotModel = nullptr) override;
+			, const interpreterBase::robotModel::RobotModelInterface *robotModel = nullptr) override;
 
-	qReal::interpretation::BlockInterface *block(qReal::Id const &element
-			, interpreterBase::robotModel::RobotModelInterface const &robotModel) override;
+	qReal::interpretation::BlockInterface *block(const qReal::Id &element
+			, const interpreterBase::robotModel::RobotModelInterface &robotModel) override;
 
-	QSet<qReal::Id> enabledBlocks(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
+	QSet<qReal::Id> enabledBlocks(const interpreterBase::robotModel::RobotModelInterface &robotModel) const override;
 
-	QSet<qReal::Id> visibleBlocks(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
+	QSet<qReal::Id> visibleBlocks(const interpreterBase::robotModel::RobotModelInterface &robotModel) const override;
 
 	QSet<qReal::Id> commonBlocks() const override;
 
@@ -31,12 +31,12 @@ private:
 	/// Provides a list of factories that can create blocks for given robot model (common factory that creates blocks
 	/// for all models, and model-specific factories).
 	QList<interpreterBase::blocksBase::BlocksFactoryInterface *> factoriesFor(
-			interpreterBase::robotModel::RobotModelInterface const &robotModel) const;
+			const interpreterBase::robotModel::RobotModelInterface &robotModel) const;
 
 	/// Maps robot model to a set of block factories that can provide blocks for it.
 	// Has ownership over factories.
 	// Does not have ownership over robot models.
-	QMap<interpreterBase::robotModel::RobotModelInterface const *
+	QMap<const interpreterBase::robotModel::RobotModelInterface *
 			, interpreterBase::blocksBase::BlocksFactoryInterface *> mFactories;
 
 };

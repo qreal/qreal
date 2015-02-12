@@ -13,7 +13,7 @@ class NxtAdditionalPreferences : public interpreterBase::AdditionalPreferences
 	Q_OBJECT
 
 public:
-	explicit NxtAdditionalPreferences(QString const &realRobotName, QWidget *parent = 0);
+	explicit NxtAdditionalPreferences(const QString &realRobotName, QWidget *parent = 0);
 	~NxtAdditionalPreferences();
 
 	void save() override;
@@ -31,7 +31,7 @@ private:
 	QString selectedPortName() const;
 
 	Ui::NxtAdditionalPreferences *mUi;
-	QString const mRealRobotName;
+	const QString mRealRobotName;
 };
 
 }

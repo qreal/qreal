@@ -9,7 +9,7 @@ namespace commands {
 class ExpandCommand : public NodeElementCommand
 {
 public:
-	ExpandCommand(NodeElement const *node);
+	ExpandCommand(const NodeElement *node);
 	virtual ~ExpandCommand();
 
 protected:

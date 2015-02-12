@@ -15,16 +15,16 @@ public:
 	LineFactory(EdgeElement *edge);
 
 	/// Create LineHandler according to link type
-	LineHandler *createHandler(linkShape::LinkShape const type) const;
+	LineHandler *createHandler(const linkShape::LinkShape type) const;
 
 	/// Create menu for choosing shape type
 	QMenu *shapeTypeMenu() const;
 
 	/// @return String representation of shapeType
-	static QString shapeToString(linkShape::LinkShape const shapeType);
+	static QString shapeToString(const linkShape::LinkShape shapeType);
 
 	/// @return LinkShape represented by string; return linkShape::unset if string is incorrect
-	static linkShape::LinkShape stringToShape(QString const &string);
+	static linkShape::LinkShape stringToShape(const QString &string);
 
 private slots:
 	void setSquareLine() const;

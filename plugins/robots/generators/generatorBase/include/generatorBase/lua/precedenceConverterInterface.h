@@ -18,10 +18,10 @@ public:
 
 	/// Returns a precedence of the operator represented by the given AST node.
 	/// Bigger precedence numbers correspond to higher precedence.
-	virtual int precedence(qrtext::core::ast::Node const &node) = 0;
+	virtual int precedence(const qrtext::core::ast::Node &node) = 0;
 
 	/// Returns the associativity of the binary operator represented by the given AST node.
-	virtual qrtext::core::Associativity associativity(qrtext::core::ast::Node const &node) = 0;
+	virtual qrtext::core::Associativity associativity(const qrtext::core::ast::Node &node) = 0;
 };
 
 }

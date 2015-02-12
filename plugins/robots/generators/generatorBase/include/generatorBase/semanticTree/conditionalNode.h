@@ -9,7 +9,7 @@ namespace semantics {
 class ConditionalNode : public NonZoneNode
 {
 public:
-	explicit ConditionalNode(qReal::Id const &idBinded, QObject *parent = 0);
+	explicit ConditionalNode(const qReal::Id &idBinded, QObject *parent = 0);
 
 	/// Remembers that binded condition must be inverted in the resulting code.
 	/// Calling this method even number of times leaves condition without changes.

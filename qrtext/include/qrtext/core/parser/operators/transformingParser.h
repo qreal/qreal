@@ -19,7 +19,7 @@ class TransformingParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parser and semantic action to execute on a result of a parser.
-	TransformingParser(ParserRef<TokenType> const &parser, Transformation const &transformation)
+	TransformingParser(const ParserRef<TokenType> &parser, const Transformation &transformation)
 		: mTransformation(transformation), mParser(parser)
 	{
 	}

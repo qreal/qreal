@@ -5,7 +5,7 @@
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
-GraphicalModelItem::GraphicalModelItem(Id const &id, Id const &logicalId, GraphicalModelItem *parent)
+GraphicalModelItem::GraphicalModelItem(const Id &id, const Id &logicalId, GraphicalModelItem *parent)
 	: AbstractModelItem(id, parent), mLogicalId(logicalId)
 {
 }

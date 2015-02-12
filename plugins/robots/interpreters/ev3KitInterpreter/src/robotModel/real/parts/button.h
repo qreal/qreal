@@ -15,13 +15,13 @@ class Button : public interpreterBase::robotModel::robotParts::Button
 	Q_OBJECT
 
 public:
-	Button(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Button(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;
 private:
-	char parsePort(QString portName);
+	char parsePort(const QString &portName);
 
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };

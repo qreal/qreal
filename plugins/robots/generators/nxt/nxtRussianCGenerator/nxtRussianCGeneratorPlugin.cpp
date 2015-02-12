@@ -12,7 +12,7 @@ NxtRussianCGeneratorPlugin::NxtRussianCGeneratorPlugin()
 {
 }
 
-QString NxtRussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString NxtRussianCGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString::fromUtf8("russianC/%1/%1.си").arg(projectName);
 }
@@ -57,7 +57,7 @@ generatorBase::MasterGeneratorBase *NxtRussianCGeneratorPlugin::masterGenerator(
 			, generatorName());
 }
 
-void NxtRussianCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+void NxtRussianCGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	Q_UNUSED(newFileInfo);
 }

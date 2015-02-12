@@ -18,7 +18,7 @@ namespace parts {
 class ROBOTS_NXT_GENERATOR_BASE_EXPORT Images : public generatorBase::TemplateParametrizedEntity
 {
 public:
-	explicit Images(QString const &pathToTemplates);
+	explicit Images(const QString &pathToTemplates);
 
 	/// Returns target robot display width in pixels
 	int displayWidth() const;
@@ -42,7 +42,7 @@ public:
 	int bmpFilesCount() const;
 
 	/// Adds given imageto the resulting BMP set
-	void registerBmpFile(QString const &name, QImage const &image);
+	void registerBmpFile(const QString &name, const QImage &image);
 
 private:
 	QMap<QString, QImage> mBmpFiles;

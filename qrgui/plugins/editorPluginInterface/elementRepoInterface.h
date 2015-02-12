@@ -12,7 +12,7 @@ class ElementRepoInterface
 {
 public:
 	virtual ~ElementRepoInterface() {}
-	virtual QString logicalProperty(QString const &roleName) const = 0;
+	virtual QString logicalProperty(const QString &roleName) const = 0;
 	virtual qReal::Id id() const = 0;
 	virtual QString name() const = 0;
 };

@@ -18,7 +18,7 @@ public:
 	public:
 		virtual ~ConverterInterface();
 
-		virtual QString convert(QString const &data) const = 0;
+		virtual QString convert(const QString &data) const = 0;
 	};
 
 	/// Can be overloaded for creating the converter that splits given string
@@ -28,59 +28,59 @@ public:
 	public:
 		virtual ~MultiConverterInterface();
 
-		virtual QStringList convert(QString const &data) const = 0;
+		virtual QStringList convert(const QString &data) const = 0;
 	};
 
 	/// Doesn`t process input string returning itself
 	class ROBOTS_GENERATOR_EXPORT EmptyConverter : public ConverterInterface
 	{
 	public:
-		virtual QString convert(QString const &data) const;
+		virtual QString convert(const QString &data) const;
 	};
 
 	/// Creates new instance of binding that simply replaces given label with a given value
-	static Binding *createStatic(QString const &label, QString const &value);
+	static Binding *createStatic(const QString &label, const QString &value);
 
 	/// Creates new instance of binding to static string with a given converter
-	static Binding *createStaticConverting(QString const &label, QString const &value
-			, ConverterInterface const *converter);
+	static Binding *createStaticConverting(const QString &label, const QString &value
+			, const ConverterInterface *converter);
 
 	/// Creates new instance of binding without converting data form repo before applying
-	static Binding *createDirect(QString const &label, QString const &property);
+	static Binding *createDirect(const QString &label, const QString &property);
 
 	/// Creates new instance of binding to a repo property with a given converter
-	static Binding *createConverting(QString const &label, QString const &property
-			, ConverterInterface const *converter);
+	static Binding *createConverting(const QString &label, const QString &property
+			, const ConverterInterface *converter);
 
 	/// Creates new instance of binding that multiplies given data and substitutes
 	/// into each converted by multiconverter property part
-	static Binding *createMultiTarget(QString const &label, QString const &property
-			, MultiConverterInterface const *converter);
+	static Binding *createMultiTarget(const QString &label, const QString &property
+			, const MultiConverterInterface *converter);
 
 	~Binding();
 
 	/// Replaces all occurences of specified in constructor label with
 	/// specified property value from repo with pre-converting it using
 	/// specified converter.
-	void apply(qrRepo::RepoApi const &repoApi
-			, qReal::Id const &id, QString &data);
+	void apply(const qrRepo::RepoApi &repoApi
+			, const qReal::Id &id, QString &data);
 
 private:
-	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo);
+	Binding(const QString &label, const QString &propertyOrValue, bool takeFromRepo);
 
-	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo
-			, ConverterInterface const *converter);
+	Binding(const QString &label, const QString &propertyOrValue, bool takeFromRepo
+			, const ConverterInterface *converter);
 
-	Binding(QString const &label, QString const &property
-			, MultiConverterInterface const *converter);
+	Binding(const QString &label, const QString &property
+			, const MultiConverterInterface *converter);
 
-	void applyMulti(QString const &property, QString &data);
+	void applyMulti(const QString &property, QString &data);
 
-	QString const mLabel;
-	QString const mProperty;
-	QString const mValue;
-	ConverterInterface const *mConverter; // Takes ownership
-	MultiConverterInterface const *mMultiConverter; // Takes ownership
+	const QString mLabel;
+	const QString mProperty;
+	const QString mValue;
+	const ConverterInterface *mConverter; // Takes ownership
+	const MultiConverterInterface *mMultiConverter; // Takes ownership
 };
 
 }

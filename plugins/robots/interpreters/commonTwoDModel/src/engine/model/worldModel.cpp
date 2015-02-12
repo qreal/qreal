@@ -21,13 +21,13 @@ WorldModel::WorldModel()
 {
 }
 
-int WorldModel::sonarReading(QPointF const &position, qreal direction) const
+int WorldModel::sonarReading(const QPointF &position, qreal direction) const
 {
 	int maxSonarRangeCms = 255;
 	int minSonarRangeCms = 0;
 	int currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2;
 
-	QPainterPath const wallPath = buildWallPath();
+	const QPainterPath wallPath = buildWallPath();
 	if (!checkSonarDistance(maxSonarRangeCms, position, direction, wallPath)) {
 		return maxSonarRangeCms;
 	}
@@ -45,33 +45,33 @@ int WorldModel::sonarReading(QPointF const &position, qreal direction) const
 	return currentRangeInCm;
 }
 
-bool WorldModel::checkSonarDistance(int const distance, QPointF const &position
-		, qreal const direction, QPainterPath const &wallPath) const
+bool WorldModel::checkSonarDistance(const int distance, const QPointF &position
+		, const qreal direction, const QPainterPath &wallPath) const
 {
-	QPainterPath const rayPath = sonarScanningRegion(position, direction, distance);
+	const QPainterPath rayPath = sonarScanningRegion(position, direction, distance);
 	return rayPath.intersects(wallPath);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, int range) const
+QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, int range) const
 {
 	return sonarScanningRegion(position, 0, range);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal direction, int range) const
+QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, qreal direction, int range) const
 {
-	qreal const rayWidthDegrees = 10.0;
-	qreal const rangeInPixels = range * pixelsInCm;
+	const qreal rayWidthDegrees = 10.0;
+	const qreal rangeInPixels = range * pixelsInCm;
 
 	QPainterPath rayPath;
 	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
 			, 2 * rangeInPixels, 2 * rangeInPixels)
 			, -direction - rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
-	QTransform const sensorPositionTransform = QTransform().translate(position.x(), position.y());
+	const QTransform sensorPositionTransform = QTransform().translate(position.x(), position.y());
 	return sensorPositionTransform.map(rayPath);
 }
 
-bool WorldModel::checkCollision(QPainterPath const &path) const
+bool WorldModel::checkCollision(const QPainterPath &path) const
 {
 #ifdef D2_MODEL_FRAMES_DEBUG
 	delete debugPath;
@@ -151,7 +151,7 @@ void WorldModel::clear()
 	clearRobotTrace();
 }
 
-void WorldModel::appendRobotTrace(QPen const &pen, QPointF const &begin, QPointF const &end)
+void WorldModel::appendRobotTrace(const QPen &pen, const QPointF &begin, const QPointF &end)
 {
 	if (pen.color() == QColor(Qt::transparent)) {
 		return;
@@ -191,7 +191,7 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeftPicture) const
+QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
 {
 	QDomElement result = document.createElement("world");
 
@@ -225,7 +225,7 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeft
 	return result;
 }
 
-void WorldModel::deserialize(QDomElement const &element)
+void WorldModel::deserialize(const QDomElement &element)
 {
 	if (element.isNull()) {
 		/// @todo Report error
@@ -238,8 +238,8 @@ void WorldModel::deserialize(QDomElement const &element)
 			traceNode = traceNode.nextSiblingElement("trace")) {
 		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull();
 				segmentNode = segmentNode.nextSiblingElement("segment")) {
-			QPointF const from(segmentNode.attribute("x1").toDouble(), segmentNode.attribute("y1").toDouble());
-			QPointF const to(segmentNode.attribute("x2").toDouble(), segmentNode.attribute("y2").toDouble());
+			const QPointF from(segmentNode.attribute("x1").toDouble(), segmentNode.attribute("y1").toDouble());
+			const QPointF to(segmentNode.attribute("x2").toDouble(), segmentNode.attribute("y2").toDouble());
 			QPen pen;
 			pen.setColor(QColor(segmentNode.attribute("color")));
 			pen.setWidth(segmentNode.attribute("width").toInt());

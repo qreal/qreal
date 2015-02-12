@@ -19,7 +19,7 @@ Image::Image(QString fileName, qreal x, qreal y, Item* parent)
 	mY2 = y + pixmap->height();
 }
 
-Image::Image(Image const &other)
+Image::Image(const Image &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -63,7 +63,7 @@ void Image::setItemZValue(int zValue)
 	setZValue(zValue);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement image = document.createElement("image");
 	setXandY(image, sceneBoundingRectCoord(topLeftPicture));

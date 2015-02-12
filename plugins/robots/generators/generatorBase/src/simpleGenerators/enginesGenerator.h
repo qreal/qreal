@@ -9,10 +9,10 @@ namespace simple {
 class EnginesGenerator : public BindingGenerator
 {
 public:
-	EnginesGenerator(qrRepo::RepoApi const &repo
+	EnginesGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
-			, QString const &engineType
+			, const qReal::Id &id
+			, const QString &engineType
 			, QObject *parent);
 };
 

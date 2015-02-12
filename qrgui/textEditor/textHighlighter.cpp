@@ -13,7 +13,7 @@ TextHighlighter::TextHighlighter(QTextDocument *document): QSyntaxHighlighter(do
 	keywordPatterns << "\\bconst\\b" << "\\bdouble\\b" << "\\bint\\b" << "\\bvoid\\b"
 					<< "\\bwhile\\b" << "\\bif\\b" << "\\belse\\b"
 					<< "\\breturn\\b" << "\\bcontinue\\b" << "\\bbreak\\b"  ;
-	foreach (QString const &pattern, keywordPatterns) {
+	foreach (const QString &pattern, keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mKeywordFormat;
 		mHighlightingRules.append(rule);
@@ -51,7 +51,7 @@ TextHighlighter::TextHighlighter(QTextDocument *document): QSyntaxHighlighter(do
 	mCommentEndExpression = QRegExp("\\*/");
 }
 
-void TextHighlighter::highlightBlock(QString const &text)
+void TextHighlighter::highlightBlock(const QString &text)
 {
 	foreach (const HighlightingRule &rule, mHighlightingRules) {
 		QRegExp expression(rule.pattern);

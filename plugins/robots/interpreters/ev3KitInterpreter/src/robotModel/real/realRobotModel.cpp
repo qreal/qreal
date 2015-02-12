@@ -18,7 +18,7 @@ using namespace ev3KitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
-RealRobotModel::RealRobotModel(QString const &kitId, QString const &robotId)
+RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 	: Ev3RobotModelBase(kitId, robotId)
 	, mRobotCommunicator(new RobotCommunicator(this))
 {
@@ -43,7 +43,7 @@ bool RealRobotModel::needsConnection() const
 
 void RealRobotModel::rereadSettings()
 {
-	QString const valueOfCommunication = qReal::SettingsManager::value("Ev3ValueOfCommunication").toString();
+	const QString valueOfCommunication = qReal::SettingsManager::value("Ev3ValueOfCommunication").toString();
 	if (valueOfCommunication == mLastCommunicationValue) {
 		return;
 	}
@@ -69,7 +69,7 @@ void RealRobotModel::disconnectFromRobot()
 	mRobotCommunicator->disconnect();
 }
 
-robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(speakerInfo())) {
 		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);

@@ -2,7 +2,7 @@
 
 using namespace trik::converters;
 
-LedColorConverter::LedColorConverter(QString const &pathToTemplates)
+LedColorConverter::LedColorConverter(const QString &pathToTemplates)
 	: DynamicPathConverter(pathToTemplates, "ledColors/@@DATA@@.t")
 {
 }

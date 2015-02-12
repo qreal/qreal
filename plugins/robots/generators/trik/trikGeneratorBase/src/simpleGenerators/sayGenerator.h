@@ -9,9 +9,9 @@ namespace simple {
 class SayGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	SayGenerator(qrRepo::RepoApi const &repo
+	SayGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

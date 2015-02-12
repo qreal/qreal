@@ -24,7 +24,7 @@ signals:
 private slots:
 	void highlightElement(QListWidgetItem * const item);
 	void copyCurrentItem();
-	void showContextMenu(QPoint const &pos);
+	void showContextMenu(const QPoint &pos);
 
 private:
 

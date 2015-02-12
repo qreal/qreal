@@ -13,8 +13,8 @@ class ServoMotor : public robotModel::parts::TrikServoMotor
 	Q_OBJECT
 
 public:
-	ServoMotor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	ServoMotor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void on(int speed) override;

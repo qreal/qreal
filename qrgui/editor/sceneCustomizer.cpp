@@ -50,22 +50,22 @@ QString SceneCustomizer::collapseExplosionActionText() const
 	return mCollapseExplosionActionText;
 }
 
-void SceneCustomizer::setAddExplosionMenuName(QString const &text)
+void SceneCustomizer::setAddExplosionMenuName(const QString &text)
 {
 	mAddExplosionMenuName = text;
 }
 
-void SceneCustomizer::setChangeExplosionMenuName(QString const &text)
+void SceneCustomizer::setChangeExplosionMenuName(const QString &text)
 {
 	mChangeExplosionMenuName = text;
 }
 
-void SceneCustomizer::setDeleteExplosionMenuName(QString const &text)
+void SceneCustomizer::setDeleteExplosionMenuName(const QString &text)
 {
 	mDeleteExplosionMenuName = text;
 }
 
-void SceneCustomizer::setGoToConnectedMenuName(QString const &text)
+void SceneCustomizer::setGoToConnectedMenuName(const QString &text)
 {
 	mGoToConnectedMenuName = text;
 }
@@ -75,12 +75,12 @@ void SceneCustomizer::setShowExpandConnectionAction(bool show)
 	mShowExpandConnectionAction = show;
 }
 
-void SceneCustomizer::setExpandExplosionActionText(QString const &text)
+void SceneCustomizer::setExpandExplosionActionText(const QString &text)
 {
 	mExpandExplosionActionText = text;
 }
 
-void SceneCustomizer::setCollapseExplosionActionText(QString const &text)
+void SceneCustomizer::setCollapseExplosionActionText(const QString &text)
 {
 	mCollapseExplosionActionText = text;
 }

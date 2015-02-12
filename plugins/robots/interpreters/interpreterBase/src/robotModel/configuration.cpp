@@ -38,7 +38,7 @@ void Configuration::configureDevice(robotParts::Device * const device)
 	mConfigurationInProgress.remove(device->port());
 }
 
-robotParts::Device *Configuration::device(PortInfo const &port) const
+robotParts::Device *Configuration::device(const PortInfo &port) const
 {
 	return mConfiguredDevices.value(port, nullptr);
 }
@@ -48,7 +48,7 @@ QList<robotParts::Device *> Configuration::devices() const
 	return mConfiguredDevices.values();
 }
 
-void Configuration::clearDevice(PortInfo const &port)
+void Configuration::clearDevice(const PortInfo &port)
 {
 	if (mConfiguredDevices.contains(port)) {
 		delete mConfiguredDevices.value(port);

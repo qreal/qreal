@@ -4,7 +4,7 @@
 
 using namespace qReal;
 
-QString const SplashScreen::pixmapFilePath = ":/mainWindow/images/kroki3.PNG";
+const QString SplashScreen::pixmapFilePath = ":/mainWindow/images/kroki3.PNG";
 const Qt::WindowFlags SplashScreen::windowFlags = Qt::SplashScreen | Qt::WindowStaysOnTopHint;
 
 SplashScreen::SplashScreen(bool isVisible)

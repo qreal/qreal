@@ -2,7 +2,7 @@
 
 using namespace interpreterBase::robotModel::robotParts;
 
-VectorSensor::VectorSensor(DeviceInfo const &info, PortInfo const &port)
+VectorSensor::VectorSensor(const DeviceInfo &info, const PortInfo &port)
 	: AbstractSensor(info, port)
 {
 }

@@ -35,7 +35,7 @@
 #include <QtCore/QDebug>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QPanGesture>
-#include <cstddef> // for NULL
+#include <cstddef> // for nullptr
 
 // A number of mouse moves are ignored after a press to differentiate
 // it from a press & drag.
@@ -53,7 +53,7 @@ class QsKineticScrollerImpl
 {
 public:
    QsKineticScrollerImpl()
-	  : scrollArea(NULL)
+	  : scrollArea(nullptr)
 	  , isPressed(false)
 	  , isMoving(false)
 	  , lastMouseYPos(0)
@@ -258,9 +258,9 @@ void QsKineticScroller::onKineticTimerElapsed()
 
 void QsKineticScroller::computeFriction()
 {
-	qreal const vlen = qSqrt(qPow(d->velocityX, 2) + qPow(d->velocityY, 2));
+	const qreal vlen = qSqrt(qPow(d->velocityX, 2) + qPow(d->velocityY, 2));
 	qreal angle = 0;
-	qreal const pi = 3.1415926535;
+	const qreal pi = 3.1415926535;
 
 	if (d->velocityX == 0) {
 		angle = pi / 2;
@@ -274,7 +274,7 @@ void QsKineticScroller::computeFriction()
 	d->frictionX = qAbs(qRound(qCos(angle)));
 	d->frictionY = qAbs(qRound(qSin(angle)));
 
-	qreal const flen = qSqrt(qPow(d->frictionX, 2) + qPow(d->frictionY, 2));
+	const qreal flen = qSqrt(qPow(d->frictionX, 2) + qPow(d->frictionY, 2));
 
 	d->frictionX = gFriction * d->frictionX / flen;
 	d->frictionY = gFriction * d->frictionY / flen;

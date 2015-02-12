@@ -25,15 +25,15 @@ public:
 
 	void setFailedStatus() override;
 
-	qReal::Id const id() const override;
+	const qReal::Id id() const override;
 
 	void finishedSteppingInto() override;
 
 	/// Initializes this block with external components that may be used during the intepretetation process.
 	/// @todo Not good.
-	void init(qReal::Id const &graphicalId
-			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
+	void init(const qReal::Id &graphicalId
+			, const qReal::GraphicalModelAssistInterface &graphicalModelApi
+			, const qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
@@ -52,48 +52,48 @@ protected:
 	Block();
 
 	/// Returns a property of current block with given name as QVariant.
-	QVariant property(QString const &propertyName) const;
+	QVariant property(const QString &propertyName) const;
 
 	/// Returns a property of current block with given name as QString.
-	QString stringProperty(QString const &propertyName) const;
+	QString stringProperty(const QString &propertyName) const;
 
 	/// Returns a property of current block with given name as int, or 0 if it can't be converted to int.
-	int intProperty(QString const &propertyName) const;
+	int intProperty(const QString &propertyName) const;
 
 	/// Returns a property of current block with given name as bool, or "false" if it can't be converted to bool.
-	bool boolProperty(QString const &propertyName) const;
+	bool boolProperty(const QString &propertyName) const;
 
 	/// Returns a property with given name of block with given id as QVariant.
-	QVariant property(qReal::Id const &id, QString const &propertyName) const;
+	QVariant property(const qReal::Id &id, const QString &propertyName) const;
 
 	/// Returns a property with given name of block with given id as QString.
-	QString stringProperty(qReal::Id const &id, QString const &propertyName) const;
+	QString stringProperty(const qReal::Id &id, const QString &propertyName) const;
 
 	/// Returns a property with given name of block with given id as int, or 0 if it can't be converted to int.
-	int intProperty(qReal::Id const &id, QString const &propertyName) const;
+	int intProperty(const qReal::Id &id, const QString &propertyName) const;
 
 	/// Returns a property with given name of block with given id as bool, or "false" if it can't be converted to bool.
-	bool boolProperty(qReal::Id const &id, QString const &propertyName) const;
+	bool boolProperty(const qReal::Id &id, const QString &propertyName) const;
 
 	/// Returns a property of current block with given name as color.
-	QColor propertyToColor(QString const &property) const;
+	QColor propertyToColor(const QString &property) const;
 
 	/// Reports error and emits "failure" signal.
-	void error(QString const &message);
+	void error(const QString &message);
 
 	/// Reports warning.
-	void warning(QString const &message);
+	void warning(const QString &message);
 
 	/// Evaluates contents of a given property using text language interpreter and returns result.
 	template<typename T>
-	T eval(QString const &propertyName, ReportErrors reportErrors = ReportErrors::report)
+	T eval(const QString &propertyName, ReportErrors reportErrors = ReportErrors::report)
 	{
 		return evalCode<T>(stringProperty(propertyName), propertyName, reportErrors);
 	}
 
 	/// Evaluates given code using text language interpreter and returns result.
 	template<typename T>
-	T evalCode(QString const &code, ReportErrors reportErrors = ReportErrors::report)
+	T evalCode(const QString &code, ReportErrors reportErrors = ReportErrors::report)
 	{
 		return evalCode<T>(code, "", reportErrors);
 	}
@@ -102,7 +102,7 @@ protected:
 	/// @param code - code to evaluate.
 	/// @param propertyName - name of corresponding property, used for connection.
 	template<typename T>
-	T evalCode(QString const &code, QString const &propertyName, ReportErrors reportErrors = ReportErrors::report)
+	T evalCode(const QString &code, const QString &propertyName, ReportErrors reportErrors = ReportErrors::report)
 	{
 		T result = mParser->interpret<T>(mGraphicalId, propertyName, code);
 		if (!mParser->errors().isEmpty() && reportErrors == ReportErrors::report) {
@@ -118,10 +118,10 @@ protected:
 	}
 
 	/// Evaluates given code using text language interpreter.
-	void evalCode(QString const &code);
+	void evalCode(const QString &code);
 
 	/// Evaluates contents of a given property using text language interpreter.
-	void eval(QString const &propertyName);
+	void eval(const QString &propertyName);
 
 	/// Returns true, if there were parser/interpreter errors on last eval() call.
 	bool errorsOccured() const;
@@ -129,8 +129,8 @@ protected:
 	/// @todo: there is no such things as protected fields. State of a class shall not be directly available to
 	/// descendants.
 	qReal::Id mNextBlockId;
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership.
-	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Doesn't have ownership.
+	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Doesn't have ownership.
+	const qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Doesn't have ownership.
 
 	qReal::Id mGraphicalId;
 

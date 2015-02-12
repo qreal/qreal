@@ -12,7 +12,7 @@ public:
 	MixedGesturesManager();
 	~MixedGesturesManager();
 
-	qreal getMaxDistance(QString const &);
+	qreal getMaxDistance(const QString &);
 	bool isMultistroke();
 
 	qreal getDistance(QString const &item) override
@@ -22,18 +22,18 @@ public:
 	}
 
 	qreal getDistance(QPair<qreal *, qreal *> const &key1, QPair<qreal *, qreal *> const &key2);
-	QPair<qreal *, qreal *> getKey(PathVector const &path);
+	QPair<qreal *, qreal *> getKey(const PathVector &path);
 };
 
 class MixedClassifier
 {
 public:
 	MixedClassifier();
-	explicit MixedClassifier(PathVector const &path);
+	explicit MixedClassifier(const PathVector &path);
 	~MixedClassifier();
 
-	qreal getDistance(MixedClassifier const &classifier);
-	MixedClassifier getPoint(MixedClassifier const &centre, qreal centreWeight);
+	qreal getDistance(const MixedClassifier &classifier);
+	MixedClassifier getPoint(const MixedClassifier &centre, qreal centreWeight);
 	QPair<qreal *, qreal *> key() const;
 
 private:

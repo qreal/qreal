@@ -10,12 +10,12 @@ class QRUTILS_EXPORT Number
 {
 public:
 	enum Type {
-		doubleType = 0,
-		intType
+		doubleType = 0
+		, intType
 	};
 
 public:
-	Number(QVariant const &value, Type type);
+	Number(const QVariant &value, Type type);
 	Number();
 	virtual ~Number();
 
@@ -23,21 +23,21 @@ public:
 	void setType(Type type);
 
 	virtual QVariant value() const;
-	void setValue(QVariant const &value);
+	void setValue(const QVariant &value);
 
 	QString toString() const;
 
-	void operator+=(Number const &add);
-	void operator-=(Number const &sub);
-	void operator*=(Number const &mult);
-	void operator/=(Number const &div);
+	void operator+=(const Number &add);
+	void operator-=(const Number &sub);
+	void operator*=(const Number &mult);
+	void operator/=(const Number &div);
 	Number operator-();
-	bool operator<(Number const &arg);
-	bool operator>(Number const &arg);
-	bool operator==(Number const &arg);
-	bool operator<=(Number const &arg);
-	bool operator>=(Number const &arg);
-	bool operator!=(Number const &arg);
+	bool operator<(const Number &arg);
+	bool operator>(const Number &arg);
+	bool operator==(const Number &arg);
+	bool operator<=(const Number &arg);
+	bool operator>=(const Number &arg);
+	bool operator!=(const Number &arg);
 
 protected:
 	QVariant mValue;

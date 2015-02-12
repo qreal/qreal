@@ -9,15 +9,15 @@ namespace simple {
 class FunctionElementGenerator : public BindingGenerator
 {
 public:
-	FunctionElementGenerator(qrRepo::RepoApi const &repo
+	FunctionElementGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent = 0);
 
 	QString generate() override;
 
 private:
-	bool const mGenerateToInit;
+	const bool mGenerateToInit;
 };
 
 }

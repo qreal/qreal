@@ -22,7 +22,7 @@
 
 using namespace interpreterCore::coreBlocks;
 
-qReal::interpretation::Block *CoreBlocksFactory::produceBlock(qReal::Id const &element)
+qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &element)
 {
 	if (elementMetatypeIs(element, "InitialNode")) {
 		return new qReal::interpretation::blocks::InitialBlock();

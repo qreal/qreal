@@ -9,10 +9,10 @@ namespace simple {
 class TrikEnginesGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	TrikEnginesGenerator(qrRepo::RepoApi const &repo
+	TrikEnginesGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
-			, QString const &engineType
+			, const qReal::Id &id
+			, const QString &engineType
 			, QObject *parent);
 };
 

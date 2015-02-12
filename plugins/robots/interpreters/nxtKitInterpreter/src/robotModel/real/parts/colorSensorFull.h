@@ -15,8 +15,8 @@ class ColorSensorFull : public interpreterBase::robotModel::robotParts::ColorSen
 	Q_OBJECT
 
 public:
-	ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	ColorSensorFull(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

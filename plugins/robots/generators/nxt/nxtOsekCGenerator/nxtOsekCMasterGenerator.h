@@ -8,13 +8,13 @@ namespace osekC {
 class NxtOsekCMasterGenerator : public NxtMasterGeneratorBase
 {
 public:
-	NxtOsekCMasterGenerator(qrRepo::RepoApi const &repo
+	NxtOsekCMasterGenerator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const utils::ParserErrorReporter &parserErrorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId
-			, QString const &generatorName);
+			, const qReal::Id &diagramId
+			, const QString &generatorName);
 
 	void generateOilAndMakeFiles();
 
@@ -25,9 +25,9 @@ protected:
 	void afterGeneration() override;
 
 private:
-	void generateOilFile(QString const &projectName, QString const &projectDir);
-	QString generateOilTask(QString const &taskName);
-	void generateMakeFile(QString const &projectName, QString const &projectDir);
+	void generateOilFile(const QString &projectName, const QString &projectDir);
+	QString generateOilTask(const QString &taskName);
+	void generateMakeFile(const QString &projectName, const QString &projectDir);
 };
 
 }

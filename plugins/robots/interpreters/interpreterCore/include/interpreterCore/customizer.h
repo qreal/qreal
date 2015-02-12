@@ -33,7 +33,7 @@ public:
 
 private:
 	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
-	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;
+	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
 
 	qReal::gui::MainWindowDockInterface *mDockInterface;
 };

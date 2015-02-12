@@ -19,7 +19,7 @@ public:
 	explicit SplashScreen(bool isVisible = true);
 	void setProgress(int progress);
 
-	static QString const pixmapFilePath;
+	static const QString pixmapFilePath;
 	static const Qt::WindowFlags windowFlags;
 
 private:

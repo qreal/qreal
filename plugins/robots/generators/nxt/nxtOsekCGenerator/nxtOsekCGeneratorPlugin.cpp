@@ -28,7 +28,7 @@ NxtOsekCGeneratorPlugin::~NxtOsekCGeneratorPlugin()
 	delete mFlashTool;
 }
 
-QString NxtOsekCGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString NxtOsekCGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString("nxt-tools/%1/%1.c").arg(projectName);
 }
@@ -43,23 +43,23 @@ QString NxtOsekCGeneratorPlugin::generatorName() const
 	return "nxtOsekC";
 }
 
-bool NxtOsekCGeneratorPlugin::canGenerateTo(QString const &project)
+bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 {
-	QString const cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
-	QFileInfo const cFile(cFilePath);
-	QFileInfo const makeFile(cFile.absolutePath() + "/makefile");
+	const QString cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
+	const QFileInfo cFile(cFilePath);
+	const QFileInfo makeFile(cFile.absolutePath() + "/makefile");
 	if (!cFile.exists() || !makeFile.exists()) {
 		return true;
 	}
 
 	// If c file has much later timestamp then it was edited by user - restrincting generation to this file.
-	int const timestampMaxDifference = 100;
+	const int timestampMaxDifference = 100;
 	return (cFile.lastModified().toMSecsSinceEpoch()
 			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference);
 }
 
-void NxtOsekCGeneratorPlugin::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+void NxtOsekCGeneratorPlugin::init(const PluginConfigurator &configurator
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
@@ -109,7 +109,7 @@ void NxtOsekCGeneratorPlugin::onUploadingComplete(bool success)
 		return;
 	}
 
-	NxtFlashTool::RunPolicy const runPolicy = static_cast<NxtFlashTool::RunPolicy>(
+	const NxtFlashTool::RunPolicy runPolicy = static_cast<NxtFlashTool::RunPolicy>(
 			SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 
 	switch (runPolicy) {
@@ -143,7 +143,7 @@ generatorBase::MasterGeneratorBase *NxtOsekCGeneratorPlugin::masterGenerator()
 	return mMasterGenerator;
 }
 
-void NxtOsekCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+void NxtOsekCGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	mMasterGenerator->initialize();
 	mMasterGenerator->setProjectDir(newFileInfo);
@@ -165,7 +165,7 @@ void NxtOsekCGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		QFileInfo const fileInfo = generateCodeForProcessing();
+		const QFileInfo fileInfo = generateCodeForProcessing();
 
 		if (fileInfo != QFileInfo()) {
 			mFlashTool->uploadProgram(fileInfo);

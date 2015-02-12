@@ -10,19 +10,19 @@ namespace trik {
 class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikMasterGeneratorBase : public generatorBase::MasterGeneratorBase
 {
 public:
-	TrikMasterGeneratorBase(qrRepo::RepoApi const &repo
+	TrikMasterGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const utils::ParserErrorReporter &parserErrorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId
-			, QString const &generatorName);
+			, const qReal::Id &diagramId
+			, const QString &generatorName);
 
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 
 private:
-	QString const mGeneratorName;
+	const QString mGeneratorName;
 };
 
 }
