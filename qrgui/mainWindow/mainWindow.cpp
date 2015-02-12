@@ -229,6 +229,8 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
+	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() { mUi->menuPanels->addActions(createPopupMenu()->actions()); });
+
 	setDefaultShortcuts();
 }
 
