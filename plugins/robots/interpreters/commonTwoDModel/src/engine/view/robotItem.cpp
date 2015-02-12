@@ -209,6 +209,11 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 	return AbstractItem::itemChange(change, value);
 }
 
+void RobotItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QGraphicsItem::contextMenuEvent(event);
+}
+
 void RobotItem::recoverDragStartPosition()
 {
 	mRobotModel.setPosition(mDragStart);
