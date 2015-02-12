@@ -63,12 +63,12 @@
 <context>
     <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="69"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="73"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="109"/>
         <source>Show 2d model</source>
         <translation>Открыть 2D модель</translation>
     </message>
@@ -118,7 +118,7 @@
 <context>
     <name>nxtKitInterpreter::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="44"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="45"/>
         <source>Real Robot</source>
         <translation>Реальный робот</translation>
     </message>

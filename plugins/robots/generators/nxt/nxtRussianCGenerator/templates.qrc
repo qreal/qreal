@@ -20,6 +20,10 @@
         <file>templates/ports/2.t</file>
         <file>templates/ports/3.t</file>
         <file>templates/ports/4.t</file>
+        <file>templates/ports/Escape.t</file>
+        <file>templates/ports/Enter.t</file>
+        <file>templates/ports/Left.t</file>
+        <file>templates/ports/Right.t</file>
         <file>templates/engines/backward.t</file>
         <file>templates/engines/forward.t</file>
         <file>templates/engines/stop.t</file>
@@ -89,6 +93,7 @@
         <file>templates/wait/sonar.t</file>
         <file>templates/wait/sound.t</file>
         <file>templates/wait/touch.t</file>
+        <file>templates/wait/button.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>
@@ -134,10 +139,6 @@
         <file>templates/drawing/clearUsedScreen.t</file>
         <file>templates/drawing/drawBitmap.t</file>
         <file>templates/drawing/variablesDeclaration.t</file>
-        <file>templates/buttons/waitForEnter.t</file>
-        <file>templates/buttons/waitForEscape.t</file>
-        <file>templates/buttons/waitForLeft.t</file>
-        <file>templates/buttons/waitForRight.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
         <file>templates/luaPrinting/addition.t</file>

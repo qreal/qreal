@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Lego NXT Support</DisplayName>
+    <DisplayName xml:lang="ru_ru">Поддержка Lego NXT</DisplayName>
+    <Description>Install it for working with Lego NXT in Trik Studio</Description>
+    <Description xml:lang="ru_ru">Установите это для работы с конструктором Lego NXT</Description>
+    <Version>3.0.1</Version>
+    <ReleaseDate>2015-01-16</ReleaseDate>
+    <Licenses>
+        <License name="QextSerialPort Component License" file="QextSerialPort-license.txt" />
+    </Licenses>
+    <SortingPriority>9</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

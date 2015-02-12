@@ -97,18 +97,8 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &e
 	} else if (elementMetatypeIs(element, "TrikWaitForEncoder")) {
 		return new WaitForEncoderBlock(mRobotModelManager->model());
 
-	} else if (elementMetatypeIs(element, "TrikWaitForEnter")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "EnterButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForLeft")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "LeftButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForRight")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "RightButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForDown")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "DownButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForUp")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "UpButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "PowerButtonPort");
+	} else if (elementMetatypeIs(element, "TrikWaitForButton")) {
+		return new WaitForButtonBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSetPainterColor")) {
 		return new SetPainterColorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSetPainterWidth")) {
@@ -187,12 +177,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWaitForAccelerometer")
 			<< id("TrikWaitForMotion")
 			<< id("TrikWaitForEncoder")
-			<< id("TrikWaitForEnter")
-			<< id("TrikWaitForLeft")
-			<< id("TrikWaitForRight")
-			<< id("TrikWaitForDown")
-			<< id("TrikWaitForUp")
-			<< id("TrikWaitForPower")
+			<< id("TrikWaitForButton")
 			;
 
 	result

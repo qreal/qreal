@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -254,24 +254,10 @@
 					<td>Ждать, пока громкость, считанная микрофоном на заданном порту, не будет выше или ниже заданного значения.</td>
 				</tr>
 				<tr>
-					<td>Ждать нажатия кнопки "Ввод"</td>
-					<td><center><img src="pics/nxt/waitEnter.png" alt="Ждать нажатия кнопки Ввод"></center></td>
-					<td>Ждать, пока не будет нажата кнопка "Ввод" (оранжевая) на корпусе робота.</td>
-				</tr>
-				<tr>
-					<td>Ждать нажатия кнопки "Отмена"</td>
-					<td><center><img src="pics/nxt/waitEscape.png" alt="Ждать нажатия кнопки Отмена"></center></td>
-					<td>Ждать, пока не будет нажата кнопка "Отмена" (серая) на корпусе робота.</td>
-				</tr>
-				<tr>
-					<td>Ждать нажатия кнопки "Влево"</td>
-					<td><center><img src="pics/nxt/waitLeft.png" alt="Ждать нажатия кнопки Влево"></center></td>
-					<td>Ждать, пока не будет нажата кнопка "Влево" на корпусе робота.</td>
-				</tr>
-				<tr>
-					<td>Ждать нажатия кнопки "Вправо"</td>
-					<td><center><img src="pics/nxt/waitRight.png" alt="Ждать нажатия кнопки Вправо"></center></td>
-					<td>Ждать, пока не будет нажата кнопка "Вправо" на корпусе робота.</td>
+					<td>Ждать нажатия кнопки</td>
+					<td><center><img src="pics/nxt/waitForButton.png" alt="Ждать нажатия кнопки"></center></td>
+					<td>Ждать, пока не будет нажата указанная кнопка на корпусе робота. Обратите внимание, в режиме генерации
+							в C доступны только кнопки 'Ввод' и 'Вправо'!</td>
 				</tr>
 			</table>
 
@@ -335,9 +321,10 @@
 					<td>Показания экодера на порту A, B или C соответственно.</td>
 				</tr>
 				<tr>
-					<td>enterButton, escapeButton, leftButton, rightButton</td>
+					<td>buttonEnter, buttonEscape, buttonLeft, buttonRight</td>
 					<td>Состояние кнопок на корпусе робота: кнопки "Ввод", "Отмена", "Влево", "Вправо" соответственно.
-							0 соответствует ненажатой кнопке, 1 – нажатой.</td>
+							0 соответствует ненажатой кнопке, 1 – нажатой. Обратите внимание, в режиме генерации
+							в C доступны только кнопки 'Enter' и 'Right'!</td>
 				</tr>
 				<tr>
 					<td>sensor1, sensor2, sensor3, sensor4</td>
