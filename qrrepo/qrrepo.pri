@@ -1,13 +1,4 @@
-DEFINES += QRREPO_LIBRARY
-
-CONFIG += c++11
-
-QT += xml
-
-LIBS += -L$$PWD/../bin/ -lqrkernel -lqrutils
-
-INCLUDEPATH += \
-	$$PWD/.. \
+links(qrkernel qrutils)
 
 HEADERS += \
 	$$PWD/private/repository.h \
@@ -40,3 +31,7 @@ HEADERS += \
 	$$PWD/logicalRepoApi.h \
 	$$PWD/repoControlInterface.h \
 	$$PWD/commonRepoApi.h \
+
+DEFINES += QRREPO_LIBRARY
+
+QT += xml

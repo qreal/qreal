@@ -1,13 +1,13 @@
 include (qreal.pri)
 
-plugins.file = plugins/robots.pro
+plugins.file = $$PWD/plugins/robots.pro
 
 SUBDIRS += \
 	gmock \
 	robotsTests \
 
-gmock.file = qrtest/thirdparty/gmock-1.6.0/gmock.pro
-robotsTests.file = qrtest/unitTests/pluginsTests/robotsTests/robotsTests.pro
+gmock.file = $$PWD/qrtest/thirdparty/gmock-1.6.0/gmock.pro
+robotsTests.subdir = $$PWD/qrtest/unitTests/pluginsTests/robotsTests
 
 robotsTests.depends = \
 	qrxc \

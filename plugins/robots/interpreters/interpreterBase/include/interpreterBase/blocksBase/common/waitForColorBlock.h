@@ -1,6 +1,6 @@
 #pragma once
 
-#include "waitForColorSensorBlockBase.h"
+#include <interpreterBase/blocksBase/common/waitForColorSensorBlockBase.h>
 
 namespace interpreterBase {
 namespace blocksBase {

@@ -16,6 +16,7 @@ namespace details {
 class ModelsAssistInterface
 {
 public:
+	virtual ~ModelsAssistInterface() {}
 	virtual Id createElement(const Id &parent, const Id &type) = 0;
 	virtual Id createElement(const Id &parent, const Id &id
 		, bool isFromLogicalModel, const QString &name

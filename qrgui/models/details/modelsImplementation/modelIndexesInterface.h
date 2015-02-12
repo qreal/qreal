@@ -10,6 +10,7 @@ namespace modelsImplementation {
 class ModelIndexesInterface
 {
 public:
+	virtual ~ModelIndexesInterface() {}
 	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const = 0;
 };
 

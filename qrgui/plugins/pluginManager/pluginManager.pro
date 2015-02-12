@@ -1,24 +1,14 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../../bin
-
 TARGET = qrgui-plugin-manager
+
+include(../../../global.pri)
+
+TEMPLATE = lib
 
 QT += xml svg
 
-LIBS += -L$$PWD/../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lqrgui-tool-plugin-interface
+links(qrkernel qslog qrutils qrrepo qrgui-tool-plugin-interface)
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../../ \
-	$$PWD/../../../ \
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+includes(qrgui)
 
 DEFINES += QRGUI_PLUGINS_MANAGER_LIBRARY
 
