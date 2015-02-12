@@ -1,18 +1,18 @@
+include(../../../global.pri)
+
 QT += xml widgets
 
 TEMPLATE = lib
-CONFIG += plugin c++11
+CONFIG += plugin
 
-DESTDIR = ../../../bin/plugins/tools/
-MOC_DIR = .moc
-RCC_DIR = .moc
+DESTDIR = $$DESTDIR/plugins/tools/
 
 INCLUDEPATH += \
 	$$PWD/../../.. \
 	$$PWD/../../../qrgui/ \
 	$$PWD/../../../qrtext/include/ \
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog -lqrgui-tool-plugin-interface -lqrtext
+links(qrkernel qrutils qrgui-preferences-dialog qrgui-tool-plugin-interface qrtext)
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/deploymentInterpreter_ru.ts
 

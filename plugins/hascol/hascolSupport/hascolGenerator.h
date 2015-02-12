@@ -2,10 +2,10 @@
 
 #include <QtCore/QString>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrutils/outFile.h"
-#include "../../../qrrepo/logicalRepoApi.h"
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <qrkernel/ids.h>
+#include <qrutils/outFile.h>
+#include <qrrepo/logicalRepoApi.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace hascol {
 

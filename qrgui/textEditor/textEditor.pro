@@ -1,19 +1,12 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-text-editor
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqscintilla2 -lqrgui-tool-plugin-interface
+include(../../global.pri)
+
+TEMPLATE = lib
+
+links(qrkernel qrutils qscintilla2 qrgui-tool-plugin-interface)
 
 QT += widgets
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
 
 DEFINES += QRGUI_TEXT_EDITOR_LIBRARY
 

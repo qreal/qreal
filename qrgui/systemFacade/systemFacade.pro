@@ -1,25 +1,12 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-facade
+
+include(../../global.pri)
+
+TEMPLATE = lib
 
 QT += widgets
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrgui-models -lqrgui-plugin-manager -lqrgui-text-editor \
-		-lqrgui-tool-plugin-interface \
-
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+links(qrkernel qslog qrgui-models qrgui-plugin-manager qrgui-text-editor qrgui-tool-plugin-interface)
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_system_facade_ru.ts
 

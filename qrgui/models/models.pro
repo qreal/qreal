@@ -1,24 +1,13 @@
 TEMPLATE = lib
 
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-models
+
+include(../../global.pri)
 
 QT += widgets
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrrepo -lqrgui-plugin-manager -lqrgui-controller
-
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+links(qrkernel qrrepo qrgui-plugin-manager qrgui-controller)
+includes(qrgui)
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_models_ru.ts
 

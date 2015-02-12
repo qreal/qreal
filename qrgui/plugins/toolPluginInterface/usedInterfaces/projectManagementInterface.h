@@ -2,6 +2,7 @@
 
 #include <QtCore/QObject>
 
+#include "qrgui/systemFacade/components/autosaver.h"
 #include "qrgui/plugins/toolPluginInterface/toolPluginInterfaceDeclSpec.h"
 
 namespace qReal {

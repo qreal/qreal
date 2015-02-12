@@ -1,8 +1,5 @@
-DESTDIR = ../bin
-
 TEMPLATE = lib
 
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
+include(../global.pri)
 
 include(qrrepo.pri)

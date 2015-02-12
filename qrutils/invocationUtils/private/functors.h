@@ -27,6 +27,7 @@ template <>
 class Functor<void>
 {
 public:
+	virtual ~Functor<void>() {}
 	virtual void runFunctor() = 0;
 };
 

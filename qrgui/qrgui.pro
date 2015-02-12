@@ -18,10 +18,10 @@ SUBDIRS += \
 	interpretedPluginInterface \
 	thirdparty \
 
-pluginManager.file = $$PWD/plugins/pluginManager/pluginManager.pro
-editorPluginInterface.file = $$PWD/plugins/editorPluginInterface/editorPluginInterface.pro
-toolPluginInterface.file = $$PWD/plugins/toolPluginInterface/toolPluginInterface.pro
-interpretedPluginInterface.file = $$PWD/plugins/interpretedPluginInterface/interpretedPluginInterface.pro
+pluginManager.subdir = $$PWD/plugins/pluginManager
+editorPluginInterface.subdir = $$PWD/plugins/editorPluginInterface
+toolPluginInterface.subdir = $$PWD/plugins/toolPluginInterface
+interpretedPluginInterface.subdir = $$PWD/plugins/interpretedPluginInterface
 
 mainWindow.depends = \
 	systemFacade \
