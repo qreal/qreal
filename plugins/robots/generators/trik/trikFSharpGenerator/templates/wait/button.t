@@ -1,7 +1,7 @@
 
 button.ToObservable()
     |> Observable.subscribe(function
-        | ButtonEventCode.Left, true ->
+        | ButtonEventCode.@@BUTTON@@, true ->
             exit.Set() |> ignore
 )
 

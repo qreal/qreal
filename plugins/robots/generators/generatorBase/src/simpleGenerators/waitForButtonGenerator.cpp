@@ -7,8 +7,9 @@ using namespace generatorBase::simple;
 WaitForButtonGenerator::WaitForButtonGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
-		, const QString &buttonTemplate
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, buttonTemplate, {}, parent)
+	: BindingGenerator(repo, customizer, id, "wait/button.t"
+			, {Binding::createConverting("@@BUTTON@@", "Button", customizer.factory()->portNameConverter())}
+			, parent)
 {
 }
