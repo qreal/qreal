@@ -75,3 +75,10 @@ void EllipseItem::deserialize(const QDomElement &element)
 	mY2 = end.y();
 	readPenBrush(element);
 }
+
+QPainterPath EllipseItem::shape() const
+{
+	QPainterPath result;
+	result.addEllipse(boundingRect());
+	return result;
+}
