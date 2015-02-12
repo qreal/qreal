@@ -99,18 +99,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 		return new InitCameraGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikDetectorToVariable") {
 		return new DetectorToVariableGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikWaitForEnter") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
-	} else if (elementType == "TrikWaitForLeft") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
-	} else if (elementType == "TrikWaitForRight") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
-	} else if (elementType == "TrikWaitForUp") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForUp.t", this);
-	} else if (elementType == "TrikWaitForDown") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
-	} else if (elementType == "TrikWaitForPower") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
+	} else if (elementType == "TrikWaitForButton") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForMotion") {
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {

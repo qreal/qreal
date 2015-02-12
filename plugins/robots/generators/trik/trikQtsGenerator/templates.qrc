@@ -60,7 +60,7 @@
         <file>templates/types/array.t</file>
         <file>templates/types/cast.t</file>
         <file>templates/sensors/Enter.t</file>
-        <file>templates/sensors/Power.t</file>
+        <file>templates/sensors/Esc.t</file>
         <file>templates/sensors/Left.t</file>
         <file>templates/sensors/Right.t</file>
         <file>templates/sensors/Up.t</file>
@@ -129,6 +129,7 @@
         <file>templates/wait/infrared.t</file>
         <file>templates/wait/motion.t</file>
         <file>templates/wait/padPress.t</file>
+        <file>templates/wait/button.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>
@@ -151,12 +152,6 @@
         <file>templates/drawing/drawArc.t</file>
         <file>templates/drawing/setPainterWidth.t</file>
         <file>templates/drawing/setPainterColor.t</file>
-        <file>templates/buttons/waitForEnter.t</file>
-        <file>templates/buttons/waitForUp.t</file>
-        <file>templates/buttons/waitForDown.t</file>
-        <file>templates/buttons/waitForLeft.t</file>
-        <file>templates/buttons/waitForRight.t</file>
-        <file>templates/buttons/waitForPower.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
         <file>templates/engines/backward.t</file>

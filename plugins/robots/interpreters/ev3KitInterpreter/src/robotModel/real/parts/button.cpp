@@ -40,19 +40,19 @@ void Button::read()
 	}
 }
 
-char Button::parsePort(QString portName)
+char Button::parsePort(const QString &portName)
 {
-	if (portName == "UpButtonPort") {
+	if (portName == "Up") {
 		return 0x01;
-	} else if (portName == "EnterButtonPort") {
+	} else if (portName == "Enter") {
 		return 0x02;
-	} else if (portName == "DownButtonPort") {
+	} else if (portName == "Down") {
 		return 0x03;
-	} else if (portName == "RightButtonPort") {
+	} else if (portName == "Right") {
 		return 0x04;
-	} else if (portName == "LeftButtonPort") {
+	} else if (portName == "Left") {
 		return 0x05;
-	} else if (portName == "BackButtonPort") {
+	} else if (portName == "Back") {
 		return 0x06;
 	}
 

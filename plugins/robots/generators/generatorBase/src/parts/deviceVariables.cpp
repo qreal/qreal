@@ -14,6 +14,6 @@ QString DeviceVariables::variableTemplatePath(const interpreterBase::robotModel:
 	/// @todo Remove buttons from here.
 	return QString("sensors/%1.t").arg(
 			device.isA<interpreterBase::robotModel::robotParts::Button>()
-					? port.name().split("ButtonPort", QString::SkipEmptyParts)[0]
+					? port.name()
 					: device.name());
 }

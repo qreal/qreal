@@ -40,13 +40,12 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
 
-	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("UpButtonPort", input, {}, "upButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("DownButtonPort", input, {}, "downButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("EscapeButtonPort", input, {}, "escapeButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("PowerButtonPort", input, {}, "powerButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Left", input, {}, "buttonLeft"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Right", input, {}, "buttonRight"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Up", input, {}, "buttonUp"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Down", input, {}, "buttonDown"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Enter", input, {}, "buttonEnter"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Esc", input, {}, "buttonEsc"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("C1", output, { "JC1" }), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("C2", output, { "JC2" }), { servoMotorInfo() });
