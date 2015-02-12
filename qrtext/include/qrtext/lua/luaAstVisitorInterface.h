@@ -55,7 +55,7 @@ class IndexingExpression;
 class LuaAstVisitorInterface : public core::AstVisitorInterface
 {
 public:
-	virtual ~LuaAstVisitorInterface() {}
+	~LuaAstVisitorInterface() override {}
 
 	virtual void visit(const ast::Number &node)              { Q_UNUSED(node); }
 	virtual void visit(const ast::UnaryMinus &node)          { Q_UNUSED(node); }
@@ -97,6 +97,12 @@ public:
 	virtual void visit(const ast::Assignment &node)          { Q_UNUSED(node); }
 	virtual void visit(const ast::Block &node)               { Q_UNUSED(node); }
 	virtual void visit(const ast::IndexingExpression &node)  { Q_UNUSED(node); }
+
+	void visit(core::ast::Node const &node) override           { Q_UNUSED(node); }
+	void visit(core::ast::Expression const &node) override     { Q_UNUSED(node); }
+	void visit(core::ast::BinaryOperator const &node) override { Q_UNUSED(node); }
+	void visit(core::ast::UnaryOperator const &node) override  { Q_UNUSED(node); }
+
 };
 
 }

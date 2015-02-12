@@ -2,7 +2,7 @@
 
 #include <qrgui/preferencesDialog/preferencesPage.h>
 
-#include "robotModel/robotModelInterface.h"
+#include "interpreterBase/robotModel/robotModelInterface.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {

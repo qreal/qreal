@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 
 #include "customizer.h"
 #include "generator.h"
@@ -17,6 +17,7 @@ class UbiqGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "ubiq.UbiqGeneratorPlugin")
 
 public:
 	UbiqGeneratorPlugin();

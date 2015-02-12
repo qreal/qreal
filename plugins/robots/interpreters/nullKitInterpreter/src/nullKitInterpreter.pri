@@ -1,13 +1,7 @@
 QT += widgets
 
-INCLUDEPATH += \
-	$$PWD/../../interpreterBase/include \
-	$$PWD/../../../utils/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui/ \
-	$$PWD/../../../../../qrtext/include \
-
-LIBS += -L$$PWD/../../../../../bin -lqrtext -lrobots-interpreter-base
+links(qrtext robots-interpreter-base)
+includes(plugins/robots/interpreters/interpreterBase plugins/robots/utils qrtext)
 
 HEADERS += \
 	$$PWD/nullKitInterpreterPlugin.h \

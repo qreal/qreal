@@ -666,6 +666,7 @@ void XmlCompiler::generateGetParentsOfRequest(OutFile &out)
 class XmlCompiler::ListMethodGenerator
 {
 public:
+	virtual ~ListMethodGenerator() {}
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
 };
 

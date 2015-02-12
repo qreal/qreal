@@ -1,24 +1,13 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-mouse-gestures
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils
+include(../../global.pri)
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
+TEMPLATE = lib
+
+links(qrkernel qrutils)
+includes(qrgui)
 
 QT += widgets
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
 
 DEFINES += QRGUI_MOUSE_GESTURES_LIBRARY
 

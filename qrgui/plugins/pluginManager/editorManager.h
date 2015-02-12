@@ -9,12 +9,12 @@
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
 #include <qrutils/pluginManagers/pluginManager.h>
+#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
 
-#include <plugins/editorPluginInterface/editorInterface.h>
-#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/pluginManager/pattern.h"
-#include "plugins/pluginManager/details/patternParser.h"
+#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/pluginManager/pattern.h"
+#include "qrgui/plugins/pluginManager/details/patternParser.h"
 
 #include "pluginsManagerDeclSpec.h"
 

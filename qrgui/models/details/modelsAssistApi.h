@@ -7,7 +7,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 

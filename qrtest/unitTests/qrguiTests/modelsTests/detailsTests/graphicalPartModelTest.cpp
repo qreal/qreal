@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QApplication>
 
-#include <../qrrepo/repoApi.h>
+#include <qrrepo/repoApi.h>
 
-#include "../helpers/graphicalPartViewMock.h"
+#include "../../helpers/graphicalPartViewMock.h"
 
 using namespace qrguiTests;
 using namespace qReal;

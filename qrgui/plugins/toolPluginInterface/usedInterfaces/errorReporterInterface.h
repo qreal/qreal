@@ -8,6 +8,7 @@ namespace qReal {
 class ErrorReporterInterface
 {
 public:
+	virtual ~ErrorReporterInterface() {}
 	virtual void addInformation(const QString &message, const Id &position = Id::rootId()) = 0;
 	virtual void addWarning(const QString &message, const Id &position = Id::rootId()) = 0;
 	virtual void addError(const QString &message, const Id &position = Id::rootId()) = 0;

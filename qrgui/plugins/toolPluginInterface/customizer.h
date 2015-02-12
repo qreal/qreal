@@ -11,6 +11,8 @@ namespace qReal {
 class Customizer
 {
 public:
+	virtual ~Customizer() {}
+
 	/// Tells if we should show the button of opening the interpreted diagram or not
 	virtual bool showInterpeterButton() const
 	{

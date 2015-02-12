@@ -1,8 +1,12 @@
 TEMPLATE = subdirs
 
+include(../global.pri)
+
+
 win32 {
-	system(cmd /C "xcopy *.qm ..\\bin\\translations\\ /s /e /y")
+	DESTDIR ~= s,/,\,g
+	system(cmd /C "xcopy *.qm $$DESTDIR\\translations\\ /s /e /y")
 }
 else {
-	system(mkdir -p ../bin/translations/; find ./ -name *.qm -exec cp --parents {} ../bin/translations \;)
+	system(mkdir -p $$DESTDIR/translations/; find ./ -name *.qm -exec cp --parents {} $$DESTDIR/translations \;)
 }

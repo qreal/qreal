@@ -1,9 +1,7 @@
-TEMPLATE = lib
-CONFIG += plugin c++11
-DESTDIR = ../../../bin/plugins/
+include(../../../global.pri)
 
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
+TEMPLATE = lib
+CONFIG += plugin 
+DESTDIR = $$DESTDIR/plugins/tools
 
 include(visualDebugSupport.pri)

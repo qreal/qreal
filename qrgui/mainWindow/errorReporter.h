@@ -2,9 +2,12 @@
 
 #include <QtWidgets/QDockWidget>
 
-#include "mainWindow/error.h"
-#include "mainWindow/errorListWidget.h"
-#include "plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/definitions.h>
+
+#include "qrgui/mainWindow/error.h"
+#include "qrgui/mainWindow/errorListWidget.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {
@@ -29,10 +32,13 @@ public:
 signals:
 	/// Emitted when new message with level 'Info' added to error reporter.
 	void informationAdded(const QString &message, const Id &position);
+
 	/// Emitted when new message with level 'Warning' added to error reporter.
 	void warningAdded(const QString &message, const Id &position);
+
 	/// Emitted when new message with level 'Error' added to error reporter.
 	void errorAdded(const QString &message, const Id &position);
+
 	/// Emitted when new message with level 'Critical' added to error reporter.
 	void criticalAdded(const QString &message, const Id &position);
 

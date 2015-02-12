@@ -1,21 +1,13 @@
+include(../../../global.pri)
+
 QT += xml widgets
 
 TEMPLATE = lib
-CONFIG += plugin c++11
+CONFIG += plugin
 
-DESTDIR = ../../../bin/plugins/tools/
-MOC_DIR = .moc
-RCC_DIR = .moc
+DESTDIR = $$DESTDIR/tools/
 
-INCLUDEPATH += \
-	$$PWD/../../.. \
-	$$PWD/../../../qrgui/ \
-
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrmc -lqrgui-preferences-dialog
-
-TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/metaEditorSupport_ru.ts
-
-RESOURCES = metaEditorSupport.qrc
+links(qrkernel qrutils qrmc qrgui-preferences-dialog)
 
 HEADERS += \
 	metaEditorSupportPlugin.h \
@@ -32,3 +24,6 @@ SOURCES += \
 FORMS += \
 	compilerPage.ui \
 
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/metaEditorSupport_ru.ts
+
+RESOURCES = metaEditorSupport.qrc
