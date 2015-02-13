@@ -42,7 +42,7 @@ void Display::printText(int x, int y, QString const &text)
 {
 	QString const pathToCommand = ":/trikQts/templates/drawing/printText.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
-			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "brick.run();";
+			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

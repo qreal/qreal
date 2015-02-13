@@ -16,7 +16,7 @@ void Speaker::play(QString const &filePath)
 {
 	QString const pathToCommand = ":/trikQts/templates/playTone.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@FILENAME@@", filePath) + "brick.run();";
+			.replace("@@FILENAME@@", filePath) + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

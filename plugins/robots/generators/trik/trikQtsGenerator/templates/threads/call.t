@@ -1,1 +1,1 @@
-Threading.start("@@THREAD_ID@@", "TASK_@@NAME@@");
+Threading.startThread("@@THREAD_ID@@", "TASK_@@NAME@@");
