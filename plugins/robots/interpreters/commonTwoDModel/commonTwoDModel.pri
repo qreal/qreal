@@ -2,15 +2,9 @@ QT += widgets xml
 
 DEFINES += COMMON_TWO_D_MODEL_LIBRARY
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/../../utils/include/ \
-	$$PWD/../interpreterBase/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrtext/include/ \
-
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lqrgui-tool-plugin-interface \
-		-lrobots-utils -lrobots-interpreter-base \
+links(qrkernel qrutils qrgui-tool-plugin-interface robots-utils robots-interpreter-base)
+includes(plugins/robots/interpreters/interpreterBase)
+includes(plugins/robots/utils qrtext)
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/commonTwoDModel_ru.ts
 
@@ -21,6 +15,7 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/engine/twoDModelDisplayWidget.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
+	$$PWD/include/commonTwoDModel/engine/view/d2ModelWidget.h \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/button.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorBlue.h \
@@ -44,7 +39,6 @@ HEADERS += \
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
-	$$PWD/src/engine/view/d2ModelWidget.h \
 	$$PWD/src/engine/view/d2ModelScene.h \
 	$$PWD/src/engine/view/robotItem.h \
 	$$PWD/src/engine/view/sensorItem.h \

@@ -3,7 +3,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-ConditionalNode::ConditionalNode(Id const &idBinded, QObject *parent)
+ConditionalNode::ConditionalNode(const Id &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
 	, mAddNotToCondition(false)
 {

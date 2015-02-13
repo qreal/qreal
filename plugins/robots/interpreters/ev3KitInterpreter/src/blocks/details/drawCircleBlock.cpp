@@ -12,10 +12,10 @@ DrawCircleBlock::DrawCircleBlock(interpreterBase::robotModel::RobotModelInterfac
 void DrawCircleBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
 	auto ev3Display = static_cast<robotModel::parts::Ev3Display *>(&display);
-	int const x = eval<int>("XCoordinateCircle");
-	int const y = eval<int>("YCoordinateCircle");
-	int const radius = eval<int>("CircleRadius");
-	bool const filled = boolProperty("Filled");
+	const int x = eval<int>("XCoordinateCircle");
+	const int y = eval<int>("YCoordinateCircle");
+	const int radius = eval<int>("CircleRadius");
+	const bool filled = boolProperty("Filled");
 	if (!errorsOccured()) {
 		ev3Display->drawCircle(x, y, radius, filled);
 		emit done(mNextBlockId);

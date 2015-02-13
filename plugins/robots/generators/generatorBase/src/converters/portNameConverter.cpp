@@ -3,17 +3,17 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-PortNameConverter::PortNameConverter(QString const &pathToTemplates
+PortNameConverter::PortNameConverter(const QString &pathToTemplates
 		, QList<interpreterBase::robotModel::PortInfo> const &ports)
 	: TemplateParametrizedConverter(pathToTemplates)
 	, mPorts(ports)
 {
 }
 
-QString PortNameConverter::convert(QString const &portNameOrAlias) const
+QString PortNameConverter::convert(const QString &portNameOrAlias) const
 {
 	QString portName;
-	for (interpreterBase::robotModel::PortInfo const &port : mPorts) {
+	for (const interpreterBase::robotModel::PortInfo &port : mPorts) {
 		if (port.name() == portNameOrAlias || port.nameAliases().contains(portNameOrAlias)) {
 			portName = port.name();
 			if (port.name() == portNameOrAlias) {
@@ -28,6 +28,6 @@ QString PortNameConverter::convert(QString const &portNameOrAlias) const
 		return QString();
 	}
 
-	QString const portTemplate = QString("ports/%1.t").arg(portName);
+	const QString portTemplate = QString("ports/%1.t").arg(portName);
 	return readTemplateIfExists(portTemplate, portName);
 }

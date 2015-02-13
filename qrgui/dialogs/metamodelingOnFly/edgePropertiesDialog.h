@@ -21,8 +21,8 @@ public:
 	/// Constructor.
 	/// @param diagram Id of a diagram to which we will add new edge.
 	/// @param editorManagerProxy Editor manager.
-	explicit EdgePropertiesDialog(Id const &diagram
-			, EditorManagerInterface const &editorManagerProxy
+	explicit EdgePropertiesDialog(const Id &diagram
+			, const EditorManagerInterface &editorManagerProxy
 			, QWidget *parent = 0);
 
 	/// Destructor.
@@ -38,9 +38,9 @@ private slots:
 
 private:
 	Ui::EdgePropertiesDialog *mUi;
-	Id const mDiagram;
+	const Id mDiagram;
 	QString mEdgeName;
-	EditorManagerInterface const &mEditorManagerProxy;
+	const EditorManagerInterface &mEditorManagerProxy;
 	RestoreElementDialog *mRestoreElementDialog;  // Doesn`t take ownership
 };
 

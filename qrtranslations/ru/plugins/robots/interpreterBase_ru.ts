@@ -63,40 +63,44 @@
 <context>
     <name>interpreterBase::blocksBase::common::WaitForButtonBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForButtonBlock.cpp" line="21"/>
         <source>Button on port %1 is not configured (WTF?)</source>
-        <translation>Кнопка на порту %1 не сконфигурирована (што?)</translation>
+        <translation type="vanished">Кнопка на порту %1 не сконфигурирована (што?)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForButtonBlock.cpp" line="22"/>
+        <source>Incorrect button port %1</source>
+        <translation>Неправильная кнопка %1</translation>
     </message>
 </context>
 <context>
     <name>interpreterBase::blocksBase::common::WaitForColorBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="16"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="18"/>
         <source>Black</source>
         <translation>Черный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="18"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="20"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="20"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="22"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="22"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="24"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="24"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="26"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="26"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForColorBlock.cpp" line="28"/>
         <source>White</source>
         <translation>Белый</translation>
     </message>

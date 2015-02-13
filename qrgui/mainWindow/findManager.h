@@ -2,11 +2,9 @@
 
 #include <QtCore/QObject>
 
-#include "mainWindow/mainWindowInterpretersInterface.h"
-#include "models/logicalModelAssistApi.h"
-#include "dialogs/findReplaceDialog.h"
-
-class MainWindowInterpretersInterface;
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/models/logicalModelAssistApi.h>
+#include <qrgui/dialogs/findReplaceDialog.h>
 
 /// Class that manages operations of find & replace.
 class FindManager : public QObject
@@ -22,11 +20,11 @@ public:
 public slots:
 	/// handler for find dialog 'button find' pressed
 	/// @param searchData - data was input to find
-	void handleFindDialog(QStringList const &searchData);
+	void handleFindDialog(const QStringList &searchData);
 
 	/// handler for refs dialog reference chosen
 	/// @param id - id of element that was chosen to show and highlight
-	void handleRefsDialog(qReal::Id const &id);
+	void handleRefsDialog(const qReal::Id &id);
 
 	/// handler for find & replace dialog 'button replace' pressed
 	/// @param searchData - data was input to find & replace
@@ -40,7 +38,7 @@ private:
 
 	/// Finds items by input name and search modes - searchData
 	/// @param searchData - name and search modes
-	QMap<QString, QString> findItems(QStringList const &searchData);
+	QMap<QString, QString> findItems(const QStringList &searchData);
 
 	qrRepo::RepoControlInterface &mControlApi;
 

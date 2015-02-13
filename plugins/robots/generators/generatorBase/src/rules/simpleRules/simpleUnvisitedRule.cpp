@@ -4,8 +4,8 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SimpleUnvisitedRule::SimpleUnvisitedRule(SemanticTree *tree, Id const &id
-		, LinkInfo const &next)
+SimpleUnvisitedRule::SimpleUnvisitedRule(SemanticTree *tree, const Id &id
+		, const LinkInfo &next)
 	: SimpleBlockRuleBase(tree, id, next)
 {
 }

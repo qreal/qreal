@@ -4,11 +4,11 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "models/details/modelsImplementation/logicalModelItem.h"
-#include "models/details/modelsImplementation/abstractModel.h"
-#include "models/details/graphicalModelView.h"
-#include "models/logicalModelAssistApi.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/models/details/modelsImplementation/logicalModelItem.h"
+#include "qrgui/models/details/modelsImplementation/abstractModel.h"
+#include "qrgui/models/details/graphicalModelView.h"
+#include "qrgui/models/logicalModelAssistApi.h"
 
 namespace qReal {
 
@@ -24,37 +24,37 @@ class QRGUI_MODELS_EXPORT LogicalModel : public modelsImplementation::AbstractMo
 	Q_OBJECT
 
 public:
-	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface);
+	LogicalModel(qrRepo::LogicalRepoApi *repoApi, const EditorManagerInterface &editorManagerInterface);
 	virtual ~LogicalModel();
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
-	void updateElements(Id const &logicalId, QString const &name);
+	void updateElements(const Id &logicalId, const QString &name);
 	virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-	void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name
-			, QPointF const &position);
+	void addElementToModel(const Id &parent, const Id &id,const Id &logicalId, const QString &name
+			, const QPointF &position);
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
-	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
-	void changeParent(Id const &parentId, Id const &childId);
-	qrRepo::LogicalRepoApi const &api() const;
+	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
+	void changeParent(const Id &parentId, const Id &childId);
+	const qrRepo::LogicalRepoApi &api() const;
 	qrRepo::LogicalRepoApi &mutableApi() const;
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
-	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
+	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling);
 
 private:
 	virtual void init();
 	void loadSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
 	modelsImplementation::LogicalModelItem *loadElement(modelsImplementation::LogicalModelItem *parentItem
-			, Id const &id);
-	void addInsufficientProperties(Id const &id, QString const &name = QString());
+			, const Id &id);
+	void addInsufficientProperties(const Id &id, const QString &name = QString());
 
-	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id
+	virtual modelsImplementation::AbstractModelItem *createModelItem(const Id &id
 			, modelsImplementation::AbstractModelItem *parentItem) const;
 	void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem
-			, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
-	QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
+			, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
+	QString pathToItem(const modelsImplementation::AbstractModelItem * const item) const;
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
 			, details::modelsImplementation::AbstractModelItem *child);
 

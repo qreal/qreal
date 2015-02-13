@@ -35,7 +35,7 @@ public:
 	{
 	public:
 		GestureResult();
-		explicit GestureResult(GestureResultType type, Id const &id = Id());
+		explicit GestureResult(GestureResultType type, const Id &id = Id());
 
 		/// Returns the resulting type of the gesture.
 		GestureResultType type() const;
@@ -47,25 +47,25 @@ public:
 		void setType(GestureResultType type);
 
 		/// Sets the type of the element requested by the gesture.
-		void setElementType(Id const &id);
+		void setElementType(const Id &id);
 
 	private:
 		GestureResultType mType;
 		Id mId;
 	};
 
-	MouseMovementManager(Id const &diagram, EditorManagerInterface const &editorManagerInterface);
+	MouseMovementManager(const Id &diagram, const EditorManagerInterface &editorManagerInterface);
 
 	/// Creates and returns the widget that shows available for this manager mouse gestures.
 	/// Transfers ownership.
 	QWidget *producePainter() const;
 
 	void initializeGestures();
-	void mousePress(QPointF const &point);
-	void mouseMove(QPointF const &point);
+	void mousePress(const QPointF &point);
+	void mouseMove(const QPointF &point);
 	void clear();
 	GestureResult result();
-	static PathVector stringToPath(QString const &str);
+	static PathVector stringToPath(const QString &str);
 	QPointF pos();
 	QPointF firstPoint();
 	QPointF lastPoint();
@@ -75,12 +75,12 @@ public:
 	bool pathIsEmpty();
 
 private:
-	static QPoint parsePoint(QString const &str);
+	static QPoint parsePoint(const QString &str);
 	void recountCentre();
 	void drawIdealPath();
 
-	Id const mDiagram;
-	EditorManagerInterface const &mEditorManagerInterface;
+	const Id mDiagram;
+	const EditorManagerInterface &mEditorManagerInterface;
 	PathVector mPath;
 	QPointF mCenter;
 	QSet<Id> mInitializedGestures;

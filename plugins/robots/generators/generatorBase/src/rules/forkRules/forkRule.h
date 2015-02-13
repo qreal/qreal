@@ -9,14 +9,14 @@ namespace semantics {
 class ForkRule : public SemanticTransformationRule
 {
 public:
-	ForkRule(SemanticTree *tree, qReal::Id const &id, const QList<LinkInfo> &threads
+	ForkRule(SemanticTree *tree, const qReal::Id &id, const QList<LinkInfo> &threads
 			, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage);
 
 	bool apply() override;
 
 private:
-	QList<LinkInfo> const mThreads;
-	QHash<qReal::Id, QString> const mThreadIds;
+	const QList<LinkInfo> mThreads;
+	const QHash<qReal::Id, QString> mThreadIds;
 	parts::Threads &mThreadsStorage;
 };
 

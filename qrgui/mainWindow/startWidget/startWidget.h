@@ -4,7 +4,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 
-#include "mainWindow/projectManager/projectManager.h"
+#include "mainWindow/projectManager/projectManagerWrapper.h"
 
 namespace qReal {
 
@@ -23,12 +23,12 @@ public:
 
 	/// Shows or hides interpreter buttons. Also this method can change layout of the
 	/// buttons on start tab.
-	void setVisibleForInterpreterButton(bool const visible);
+	void setVisibleForInterpreterButton(const bool visible);
 
 private slots:
-	void openRecentProject(QString const &fileName);
+	void openRecentProject(const QString &fileName);
 	void openExistingProject();
-	void createProjectWithDiagram(QString const &idString);
+	void createProjectWithDiagram(const QString &idString);
 	void openInterpretedDiagram();
 	void createInterpretedDiagram();
 
@@ -38,9 +38,9 @@ private:
 	QWidget *createRecentProjectsWidget();
 	QWidget *createProjectsManagementWidget();
 
-	QLayout *createRecentProjectsList(QString const &recentProjects);
+	QLayout *createRecentProjectsList(const QString &recentProjects);
 	QWidget *createPluginsList();
-	QWidget *createPluginButton(Id const &editor, Id const &diagram, QWidget * const bindedImage);
+	QWidget *createPluginButton(const Id &editor, const Id &diagram, QWidget * const bindedImage);
 
 	void centralizeButton(QPushButton * const styledButton);
 

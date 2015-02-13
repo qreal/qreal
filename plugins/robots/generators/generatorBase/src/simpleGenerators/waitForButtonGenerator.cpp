@@ -4,11 +4,12 @@
 
 using namespace generatorBase::simple;
 
-WaitForButtonGenerator::WaitForButtonGenerator(qrRepo::RepoApi const &repo
+WaitForButtonGenerator::WaitForButtonGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
-		, QString const &buttonTemplate
+		, const qReal::Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, buttonTemplate, {}, parent)
+	: BindingGenerator(repo, customizer, id, "wait/button.t"
+			, {Binding::createConverting("@@BUTTON@@", "Button", customizer.factory()->portNameConverter())}
+			, parent)
 {
 }

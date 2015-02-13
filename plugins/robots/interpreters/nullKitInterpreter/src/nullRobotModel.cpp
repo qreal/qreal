@@ -2,7 +2,7 @@
 
 using namespace nullKitInterpreter;
 
-NullRobotModel::NullRobotModel(QString const &kitId)
+NullRobotModel::NullRobotModel(const QString &kitId)
 	: interpreterBase::robotModel::CommonRobotModel(kitId, "")
 {
 }

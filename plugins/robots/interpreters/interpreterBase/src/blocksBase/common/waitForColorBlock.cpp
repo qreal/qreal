@@ -12,7 +12,7 @@ WaitForColorBlock::WaitForColorBlock(interpreterBase::robotModel::RobotModelInte
 
 void WaitForColorBlock::responseSlot(int reading)
 {
-	QString const targetColor = stringProperty("Color");
+	const QString targetColor = stringProperty("Color");
 	QString color;
 	switch (reading) {
 	case 1: color = tr("Black");

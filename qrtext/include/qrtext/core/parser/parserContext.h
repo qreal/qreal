@@ -47,7 +47,7 @@ public:
 	}
 
 private:
-	void report(Connection const &connection, const QString &message, Severity severity)
+	void report(const Connection &connection, const QString &message, Severity severity)
 	{
 		mErrors << Error(connection, message, ErrorType::syntaxError, severity);
 	}

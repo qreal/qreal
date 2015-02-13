@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-PlayToneGenerator::PlayToneGenerator(qrRepo::RepoApi const &repo
+PlayToneGenerator::PlayToneGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "playTone.t", QList<Binding *>()
 			<< Binding::createConverting("@@FREQUENCY@@", "Frequency"

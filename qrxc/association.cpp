@@ -2,7 +2,7 @@
 
 #include <QtCore/QDebug>
 
-bool Association::init(QDomElement const &element)
+bool Association::init(const QDomElement &element)
 {
 	mBeginName = element.attribute("beginName");
 	mEndName = element.attribute("endName");

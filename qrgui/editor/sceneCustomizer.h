@@ -20,13 +20,13 @@ public:
 	QString expandExplosionActionText() const override;
 	QString collapseExplosionActionText() const override;
 
-	void setAddExplosionMenuName(QString const &text) override;
-	void setChangeExplosionMenuName(QString const &text) override;
-	void setDeleteExplosionMenuName(QString const &text) override;
-	void setGoToConnectedMenuName(QString const &text) override;
+	void setAddExplosionMenuName(const QString &text) override;
+	void setChangeExplosionMenuName(const QString &text) override;
+	void setDeleteExplosionMenuName(const QString &text) override;
+	void setGoToConnectedMenuName(const QString &text) override;
 	void setShowExpandConnectionAction(bool show) override;
-	void setExpandExplosionActionText(QString const &text) override;
-	void setCollapseExplosionActionText(QString const &text) override;
+	void setExpandExplosionActionText(const QString &text) override;
+	void setCollapseExplosionActionText(const QString &text) override;
 
 private:
 	QString mAddExplosionMenuName;

@@ -15,7 +15,7 @@ Type::~Type()
 			delete property;
 }
 
-bool Type::init(QDomElement const &element, QString const &context)
+bool Type::init(const QDomElement &element, const QString &context)
 {
 	mName = element.attribute("name");
 	mContext = context;
@@ -59,12 +59,12 @@ QString Type::nativeContext() const
 	return mNativeContext;
 }
 
-void Type::setContext(QString const &newContext)
+void Type::setContext(const QString &newContext)
 {
 	mContext = newContext;
 }
 
-void Type::setName(QString const &name)
+void Type::setName(const QString &name)
 {
 	mName = name;
 }
@@ -74,7 +74,7 @@ QString Type::displayedName() const
 	return mDisplayedName;
 }
 
-void Type::setDisplayedName(QString const &displayedName)
+void Type::setDisplayedName(const QString &displayedName)
 {
 	mDisplayedName = displayedName;
 }

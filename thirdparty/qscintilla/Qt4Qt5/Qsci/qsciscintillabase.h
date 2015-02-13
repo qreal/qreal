@@ -741,7 +741,7 @@ public:
         SCI_SETREADONLY = 2171,
 
         //!
-        SCI_NULL = 2172,
+        SCI_nullptr = 2172,
 
         //!
         SCI_CANPASTE = 2173,
@@ -2665,7 +2665,7 @@ public:
         SCLEX_CONTAINER = 0,
 
         //! Select the null lexer that does no syntax styling.
-        SCLEX_NULL = 1,
+        SCLEX_nullptr = 1,
 
         //! Select the Python lexer.
         SCLEX_PYTHON = 2,

@@ -17,12 +17,12 @@ public:
 	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const override;
 	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
 	twoDModel::engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const override;
-	QRect sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const;
+	QRect sensorImageRect(const interpreterBase::robotModel::DeviceInfo &deviceType) const;
 
 protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
-			interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &deviceInfo
+			const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &deviceInfo
 			) override;
 };
 

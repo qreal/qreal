@@ -19,7 +19,7 @@ Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent):Item(parent), m
 	mY2 = y2;
 }
 
-Line::Line(Line const &other):Item(), mLineImpl()
+Line::Line(const Line &other):Item(), mLineImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -190,7 +190,7 @@ void Line::reshapeRectWithShift()
 	}
 }
 
-QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(QRect const &rect)
+QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(const QRect &rect)
 {
 	QString x1;
 	QString y1;
@@ -236,12 +236,12 @@ void Line::setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QStri
 	dom.setAttribute("x2", pair.second.first);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
-	qreal const x1 = scenePos().x() + line().x1() - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + line().y1() - topLeftPicture.y();
-	qreal const x2 = scenePos().x() + line().x2() - topLeftPicture.x();
-	qreal const y2 = scenePos().y() + line().y2() - topLeftPicture.y();
+	const qreal x1 = scenePos().x() + line().x1() - topLeftPicture.x();
+	const qreal y1 = scenePos().y() + line().y1() - topLeftPicture.y();
+	const qreal x2 = scenePos().x() + line().x2() - topLeftPicture.x();
+	const qreal y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
 	QDomElement line = setPenBrushToDoc(document, "line");
 	setXandY(line, setXandYBefore(QRectF(x1, y1, x2 - x1 + 1, y2 - y1 + 1).normalized().toRect()));

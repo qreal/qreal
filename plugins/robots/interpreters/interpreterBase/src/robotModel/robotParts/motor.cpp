@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-Motor::Motor(DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port)
+Motor::Motor(const DeviceInfo &info, const interpreterBase::robotModel::PortInfo &port)
 	: Device(info, port)
 {
 }

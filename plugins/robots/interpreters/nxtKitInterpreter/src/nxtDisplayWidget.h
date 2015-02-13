@@ -24,7 +24,7 @@ public:
 
 	void setPainter(graphicsUtils::PainterInterface *painter) override;
 
-	bool buttonIsDown(QString const &buttonId) const override;
+	bool buttonIsDown(const QString &buttonId) const override;
 
 	void repaintDisplay();
 	int displayWidth() const;

@@ -88,7 +88,7 @@ void StylusItem::setBrushColor(const QString& text)
 	mStylusImpl.setBrushColor(mAbstractListLine, text);
 }
 
-QDomElement StylusItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
+QDomElement StylusItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 		QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
 		foreach (AbstractItem *abstractItem, mAbstractListLine) {
@@ -100,7 +100,7 @@ QDomElement StylusItem::serialize(QDomDocument &document, QPoint const &topLeftP
 		return stylusNode;
 }
 
-void StylusItem::deserialize(QDomElement const &element)
+void StylusItem::deserialize(const QDomElement &element)
 {
 	mAbstractListLine.clear();
 	recalculateProperties();

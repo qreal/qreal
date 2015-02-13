@@ -13,7 +13,7 @@ NearestPosGridGesturesManager::~NearestPosGridGesturesManager()
 	qDeleteAll(mGestures);
 }
 
-qreal NearestPosGridGesturesManager::getMaxDistance(QString const &)
+qreal NearestPosGridGesturesManager::getMaxDistance(const QString &)
 {
 	return 1000;
 }
@@ -35,7 +35,7 @@ qreal NearestPosGridGesturesManager::getDistance(qreal * const &key1, qreal * co
 	return norm + sum / (gridSize * gridSize);
 }
 
-qreal *NearestPosGridGesturesManager::getKey(PathVector const &path)
+qreal *NearestPosGridGesturesManager::getKey(const PathVector &path)
 {
 	Key key = KeyBuilder::getKey(path, gridSize, gridSize);
 	qreal * finalKey = new qreal[gridSize * gridSize]; // deal with this too
@@ -50,7 +50,7 @@ qreal *NearestPosGridGesturesManager::getKey(PathVector const &path)
 	for (int i = 0; i < gridSize; ++i) {
 		for (int j = 0; j < gridSize; ++j) {
 			qreal dist = qAbs(key.at(0).first - i) + qAbs(key.at(0).second - j);
-			for (SquarePos const &pos : key) {
+			for (const SquarePos &pos : key) {
 				dist = qMin(dist, qAbs(pos.first - i) + qAbs(pos.second - j));
 			}
 

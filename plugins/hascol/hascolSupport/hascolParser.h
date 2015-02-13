@@ -3,9 +3,9 @@
 #include <QtCore/QString>
 #include <QtXml/QDomElement>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrrepo/logicalRepoApi.h>
 
 namespace hascol {
 

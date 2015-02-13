@@ -1,12 +1,12 @@
 #include "contextMenuAction.h"
 
-ContextMenuAction::ContextMenuAction(QString const &text, QObject *parent)
+ContextMenuAction::ContextMenuAction(const QString &text, QObject *parent)
 	: QAction(text, parent)
 {
 	connect(this, SIGNAL(triggered()), SLOT(trigger()));
 }
 
-void ContextMenuAction::setEventPos(QPointF const &pos)
+void ContextMenuAction::setEventPos(const QPointF &pos)
 {
 	mEventPos = pos;
 }

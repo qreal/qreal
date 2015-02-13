@@ -4,15 +4,15 @@
 
 using namespace twoDModel::robotModel::parts;
 
-Marker::Marker(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+Marker::Marker(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: Device(info, port)
 	, mEngine(engine)
 {
 }
 
-void Marker::down(QColor const &color)
+void Marker::down(const QColor &color)
 {
 	mEngine.markerDown(color);
 }

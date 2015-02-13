@@ -3,7 +3,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-NonZoneNode::NonZoneNode(Id const &idBinded, QObject *parent)
+NonZoneNode::NonZoneNode(const Id &idBinded, QObject *parent)
 	: SemanticNode(idBinded, parent)
 {
 }

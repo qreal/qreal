@@ -4,7 +4,7 @@
 
 #include <qrutils/outFile.h>
 
-bool NumericType::init(QDomElement const &element, QString const &context)
+bool NumericType::init(const QDomElement &element, const QString &context)
 {
 	if (NonGraphicType::init(element, context)) {
 		QString baseTypeName = element.firstChildElement("base_type").text();

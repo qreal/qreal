@@ -7,7 +7,9 @@
 using namespace qrmc;
 
 void myMessageOutput(QtMsgType type, QMessageLogContext const &context, QString const &msg)
- {
+{
+	Q_UNUSED(context)
+
 	QByteArray localMsg = msg.toLocal8Bit();
 	switch (type) {
 		case QtDebugMsg:

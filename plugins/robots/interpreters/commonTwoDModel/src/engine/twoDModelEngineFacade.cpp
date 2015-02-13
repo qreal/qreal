@@ -1,7 +1,7 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
+#include "commonTwoDModel/engine/view/d2ModelWidget.h"
 #include "model/model.h"
-#include "view/d2ModelWidget.h"
 #include "twoDModelEngineApi.h"
 
 using namespace twoDModel::engine;
@@ -28,18 +28,18 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 {
 }
 
-void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, qReal::SystemEvents const &systemEvents
+void TwoDModelEngineFacade::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+		, const qReal::SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
-		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+		, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
-	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel] (qReal::Id const &id)
+	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel] (const qReal::Id &id)
 	{
 		mView->setEnabled(!id.isNull());
-		qReal::Id const logicalId = graphicalModel.logicalId(id);
-		QString const xml = logicalId.isNull()
+		const qReal::Id logicalId = graphicalModel.logicalId(id);
+		const QString xml = logicalId.isNull()
 				? QString()
 				: logicalModel.propertyByRoleName(logicalId, "worldModel").toString();
 		QDomDocument worldModel;
@@ -84,8 +84,8 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
 
 	connect(mModel.data(), &model::Model::modelChanged, [this, &graphicalModel, &logicalModel
-			, &interpreterControl, &interpretersInterface] (QDomDocument const &xml) {
-				qReal::Id const logicalId = graphicalModel.logicalId(interpretersInterface.activeDiagram());
+			, &interpreterControl, &interpretersInterface] (const QDomDocument &xml) {
+				const qReal::Id logicalId = graphicalModel.logicalId(interpretersInterface.activeDiagram());
 				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
 					logicalModel.setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");
 				}
@@ -95,8 +95,8 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
-			, [this, connectTwoDModel, disconnectTwoDModel](QString const &modelName) {
-				bool const isCurrentModel = modelName == mRobotModelName;
+			, [this, connectTwoDModel, disconnectTwoDModel](const QString &modelName) {
+				const bool isCurrentModel = modelName == mRobotModelName;
 				showTwoDModelWidgetActionInfo().action()->setVisible(isCurrentModel);
 				if (isCurrentModel) {
 					connectTwoDModel();

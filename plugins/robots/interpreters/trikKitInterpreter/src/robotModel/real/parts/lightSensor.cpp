@@ -4,9 +4,9 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-int const maxLightValue = 1023;
+const int maxLightValue = 1023;
 
-LightSensor::LightSensor(DeviceInfo const &info, PortInfo const &port
+LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: interpreterBase::robotModel::robotParts::LightSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
@@ -20,7 +20,7 @@ void LightSensor::read()
 	mRobotCommunicator.requestData(port().name());
 }
 
-void LightSensor::onIncomingData(QString const &portName, int value)
+void LightSensor::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
 		emit newData(value);

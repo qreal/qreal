@@ -9,16 +9,16 @@ namespace simple {
 class ForkCallGenerator : public AbstractSimpleGenerator
 {
 public:
-	ForkCallGenerator(qrRepo::RepoApi const &repo
+	ForkCallGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, qReal::Id const &id
-		, QMap<qReal::Id, QString> const &threads
+		, const qReal::Id &id
+		, const QMap<qReal::Id, QString> &threads
 		, QObject *parent = 0);
 
 	QString generate() override;
 
 private:
-	QMap<qReal::Id, QString> const mThreads;
+	const QMap<qReal::Id, QString> mThreads;
 };
 
 }

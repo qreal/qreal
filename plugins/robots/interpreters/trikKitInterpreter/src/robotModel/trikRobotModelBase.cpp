@@ -20,11 +20,16 @@
 #include "parts/trikObjectSensor.h"
 #include "parts/trikLed.h"
 #include "parts/trikShell.h"
+#include "parts/trikGamepadButton.h"
+#include "parts/trikGamepadConnectionIndicator.h"
+#include "parts/trikGamepadPad.h"
+#include "parts/trikGamepadPadPressSensor.h"
+#include "parts/trikGamepadWheel.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robotId)
+TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robotId)
 	: CommonRobotModel(kitId, robotId)
 {
 	QList<DeviceInfo> const analogPortConnections = {
@@ -35,13 +40,12 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robo
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
 
-	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("UpButtonPort", input, {}, "upButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("DownButtonPort", input, {}, "downButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("EscapeButtonPort", input, {}, "escapeButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("PowerButtonPort", input, {}, "powerButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Left", input, {}, "buttonLeft"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Right", input, {}, "buttonRight"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Up", input, {}, "buttonUp"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Down", input, {}, "buttonDown"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Enter", input, {}, "buttonEnter"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Esc", input, {}, "buttonEsc"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("C1", output, { "JC1" }), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("C2", output, { "JC2" }), { servoMotorInfo() });
@@ -96,6 +100,27 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robo
 	addAllowedConnection(PortInfo("ColorSensorBPort", input, {}, "colorSensorB"), { colorSensorInfo() });
 
 	addAllowedConnection(PortInfo("ShellPort", output), { shellInfo() });
+
+	addAllowedConnection(PortInfo("GamepadPad1PosPort", input, {}, "gamepadPad1"
+			, PortInfo::ReservedVariableType::vector), { gamepadPadInfo() });
+	addAllowedConnection(PortInfo("GamepadPad2PosPort", input, {}, "gamepadPad2"
+			, PortInfo::ReservedVariableType::vector), { gamepadPadInfo() });
+
+	addAllowedConnection(PortInfo("GamepadPad1PressedPort", input, {}, "gamepadPad1Pressed")
+			, { gamepadPadPressSensorInfo() });
+	addAllowedConnection(PortInfo("GamepadPad2PressedPort", input, {}, "gamepadPad2Pressed")
+			, { gamepadPadPressSensorInfo() });
+
+	addAllowedConnection(PortInfo("GamepadWheelPort", input, {}, "gamepadWheel"), { gamepadWheelInfo() });
+
+	addAllowedConnection(PortInfo("GamepadButton1Port", input, {}, "gamepadButton1"), { gamepadButtonInfo() });
+	addAllowedConnection(PortInfo("GamepadButton2Port", input, {}, "gamepadButton2"), { gamepadButtonInfo() });
+	addAllowedConnection(PortInfo("GamepadButton3Port", input, {}, "gamepadButton3"), { gamepadButtonInfo() });
+	addAllowedConnection(PortInfo("GamepadButton4Port", input, {}, "gamepadButton4"), { gamepadButtonInfo() });
+	addAllowedConnection(PortInfo("GamepadButton5Port", input, {}, "gamepadButton5"), { gamepadButtonInfo() });
+
+	addAllowedConnection(PortInfo("GamepadConnectionIndicatorPort", input, {}, "gamepadConnected")
+			, { gamepadConnectionIndicatorInfo() });
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
@@ -199,3 +224,27 @@ DeviceInfo TrikRobotModelBase::shellInfo() const
 	return DeviceInfo::create<parts::TrikShell>();
 }
 
+DeviceInfo TrikRobotModelBase::gamepadButtonInfo() const
+{
+	return DeviceInfo::create<parts::TrikGamepadButton>();
+}
+
+DeviceInfo TrikRobotModelBase::gamepadPadInfo() const
+{
+	return DeviceInfo::create<parts::TrikGamepadPad>();
+}
+
+DeviceInfo TrikRobotModelBase::gamepadPadPressSensorInfo() const
+{
+	return DeviceInfo::create<parts::TrikGamepadPadPressSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::gamepadWheelInfo() const
+{
+	return DeviceInfo::create<parts::TrikGamepadWheel>();
+}
+
+DeviceInfo TrikRobotModelBase::gamepadConnectionIndicatorInfo() const
+{
+	return DeviceInfo::create<parts::TrikGamepadConnectionIndicator>();
+}

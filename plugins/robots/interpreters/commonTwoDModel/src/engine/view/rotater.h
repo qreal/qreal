@@ -23,7 +23,7 @@ public:
 
 	QRectF boundingRect() const;
 
-	void drawItem(QPainter* painter, QStyleOptionGraphicsItem const *option, QWidget* widget = 0) override;
+	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem *option, QWidget* widget = 0) override;
 	void drawExtractionForItem(QPainter* painter) override;
 	void drawFieldForResizeItem(QPainter* painter) override;
 	void setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option) override;
@@ -36,6 +36,7 @@ private:
 	void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
 	int mLength;
 	int mDrift;

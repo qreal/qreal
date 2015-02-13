@@ -19,7 +19,7 @@ public:
 		, gotoNode
 	};
 
-	explicit SimpleNode(qReal::Id const &idBinded, QObject *parent = 0);
+	explicit SimpleNode(const qReal::Id &idBinded, QObject *parent = 0);
 
 	/// Binds this block to given artificial construction instead of binding to id.
 	void bindToSyntheticConstruction(SyntheticBlockType type);
@@ -27,7 +27,7 @@ public:
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
 	SyntheticBlockType mSyntheticBinding;

@@ -10,17 +10,17 @@ namespace nxt {
 class ROBOTS_NXT_GENERATOR_BASE_EXPORT NxtGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
-	NxtGeneratorFactory(qrRepo::RepoApi const &repo
+	NxtGeneratorFactory(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, QString const &generatorName);
+			, const QString &generatorName);
 	~NxtGeneratorFactory() override;
 
 	/// Returns an entity processing everything about BMP images that will be embedded into an executable.
 	parts::Images &images();
 
-	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
+	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
 	QString pathToTemplates() const override;
@@ -29,7 +29,7 @@ public:
 	generatorBase::simple::Binding::ConverterInterface *colorConverter() const;
 
 private:
-	QString const mGeneratorName;
+	const QString mGeneratorName;
 	parts::Images mImages;
 };
 

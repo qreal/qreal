@@ -3,10 +3,10 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-BoolPropertyConverter::BoolPropertyConverter(QString const &pathToTemplates
+BoolPropertyConverter::BoolPropertyConverter(const QString &pathToTemplates
 		, lua::LuaProcessor &luaTranslator
-		, qReal::Id const &id
-		, QString const &propertyName
+		, const qReal::Id &id
+		, const QString &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter
 		, bool needInverting)
 	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
@@ -15,13 +15,13 @@ BoolPropertyConverter::BoolPropertyConverter(QString const &pathToTemplates
 {
 }
 
-QString BoolPropertyConverter::convert(QString const &data) const
+QString BoolPropertyConverter::convert(const QString &data) const
 {
-	QString const preparedCode = CodeConverterBase::convert(data);
+	const QString preparedCode = CodeConverterBase::convert(data);
 	return mNeedInverting ? invert(preparedCode) : preparedCode;
 }
 
-QString BoolPropertyConverter::invert(QString const &expression) const
+QString BoolPropertyConverter::invert(const QString &expression) const
 {
 	QString invertTemplate = readTemplate("conditional/negation.t");
 	invertTemplate.replace("@@CONDITION@@", expression);

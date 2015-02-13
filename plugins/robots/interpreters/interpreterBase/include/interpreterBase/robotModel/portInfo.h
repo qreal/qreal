@@ -14,17 +14,23 @@ namespace robotModel {
 class ROBOTS_INTERPRETER_BASE_EXPORT PortInfo
 {
 public:
+	enum class ReservedVariableType {
+		scalar
+		, vector
+	};
+
 	/// Deserializes PortInfo instance from the string obtained by toString() method.
-	static PortInfo fromString(QString const &string);
+	static PortInfo fromString(const QString &string);
 
 	/// Constructs invalid PortInfo instance.
 	PortInfo();
 
 	/// Constructs new PortInfo instance. If name is empty then the port is considered to be invalid.
 	/// Ports with same names but different directions are considered to be different.
-	explicit PortInfo(QString const &name, Direction direction
-			, QStringList const &nameAliases = QStringList()
-			, QString const &reservedVariableName = QString());
+	explicit PortInfo(const QString &name, Direction direction
+			, const QStringList &nameAliases = QStringList()
+			, const QString &reservedVariableName = QString()
+			, ReservedVariableType reservedVariableType = ReservedVariableType::scalar);
 
 	/// Returns true if this PortInfo is non-empty (i.e. really describes some port)
 	bool isValid() const;
@@ -44,6 +50,8 @@ public:
 	/// devices values on this port).
 	QString reservedVariable() const;
 
+	ReservedVariableType reservedVariableType() const;
+
 	/// Serializes this PortInfo instance into the inner string representation.
 	QString toString() const;
 
@@ -52,25 +60,26 @@ private:
 	Direction mDirection;
 	QStringList mNameAliases;
 	QString mReservedVariable;
+	ReservedVariableType mReservedVariableType;
 };
 
-inline bool operator ==(PortInfo const &left, PortInfo const &right)
+inline bool operator ==(const PortInfo &left, const PortInfo &right)
 {
 	return left.name() == right.name()
 			&& left.direction() == right.direction();
 }
 
-inline bool operator !=(PortInfo const &left, PortInfo const &right)
+inline bool operator !=(const PortInfo &left, const PortInfo &right)
 {
 	return !(left == right);
 }
 
-inline uint qHash(PortInfo const &key)
+inline uint qHash(const PortInfo &key)
 {
 	return qHash(key.name()) ^ qHash(QString(key.direction() == input ? "input" : "output"));
 }
 
-inline bool operator <(PortInfo const &left, PortInfo const &right)
+inline bool operator <(const PortInfo &left, const PortInfo &right)
 {
 	if (left.name() == right.name()) {
 		return left.direction() == input && right.direction() == output;

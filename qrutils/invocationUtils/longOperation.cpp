@@ -3,11 +3,11 @@
 using namespace invocation;
 
 LongOperation::LongOperation(int timeout)
-	: mThread(NULL)
+	: mThread(nullptr)
 	, mIsOperationWithProgress(false)
 	, mProgress(new Progress)
 	, mTimeout(timeout)
-	, mTimer(NULL)
+	, mTimer(nullptr)
 {
 }
 
@@ -23,7 +23,7 @@ bool LongOperation::hasProgress() const
 
 invocation::Progress *LongOperation::progress() const
 {
-	return (mIsOperationWithProgress) ? mProgress : NULL;
+	return (mIsOperationWithProgress) ? mProgress : nullptr;
 }
 
 bool LongOperation::isRunning() const
@@ -38,7 +38,7 @@ invocation::InvocationState LongOperation::invocationResult() const
 
 void LongOperation::invoceSync(QThread::Priority priority)
 {
-  // TODO: start timer in another thread to get timeouts work
+	// TODO: start timer in another thread to get timeouts work
 	startInvocation(priority);
 	mThread->wait();
 }

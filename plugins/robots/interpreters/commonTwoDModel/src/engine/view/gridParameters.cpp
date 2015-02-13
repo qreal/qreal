@@ -31,8 +31,8 @@ GridParameters::GridParameters(QWidget *parent)
 	connect(mShowGridCheckBox, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(mCellSize, SIGNAL(valueChanged(int)), this, SLOT(setCellSize(int)));
 
-	bool const showGrid = qReal::SettingsManager::value("2dShowGrid").toBool();
-	int const gridSize = qReal::SettingsManager::value("2dGridCellSize").toInt();
+	const bool showGrid = qReal::SettingsManager::value("2dShowGrid").toBool();
+	const int gridSize = qReal::SettingsManager::value("2dGridCellSize").toInt();
 	mShowGridCheckBox->setChecked(showGrid);
 	mCellSize->setValue(gridSize);
 

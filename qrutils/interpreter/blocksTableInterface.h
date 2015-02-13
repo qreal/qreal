@@ -13,7 +13,7 @@ public:
 	virtual ~BlocksTableInterface() {}
 
 	/// Returns object that implement logic of block by given id.
-	virtual BlockInterface *block(qReal::Id const &element) = 0;
+	virtual BlockInterface *block(const qReal::Id &element) = 0;
 
 	/// Clears blocks table.
 	virtual void clear() = 0;

@@ -28,13 +28,13 @@ public:
 	}
 
 	/// Copy constructor.
-	ParserRef(ParserRef<TokenType> const &other) {
+	ParserRef(const ParserRef<TokenType> &other) {
 		mRef = other.mRef;
 	}
 
 	/// Assignment operator that assigns parsers themselves, not "external" pointers. Note that it has different
 	/// semantics with copy constructor, so be cautious.
-	ParserRef &operator =(ParserRef<TokenType> const &other) {
+	ParserRef &operator =(const ParserRef<TokenType> &other) {
 		*mRef = *(other.mRef);
 		return *this;
 	}

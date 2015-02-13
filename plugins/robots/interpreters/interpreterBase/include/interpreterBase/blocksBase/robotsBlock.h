@@ -18,11 +18,11 @@ public:
 
 	/// Initializes this block with external components that may be used during the intepretetation process.
 	/// @todo Not good.
-	void init(qReal::Id const &graphicalId
-			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
+	void init(const qReal::Id &graphicalId
+			, const qReal::GraphicalModelAssistInterface &graphicalModelApi
+			, const qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
-			, robotModel::RobotModelManagerInterface const &robotModelManager
+			, const robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
 
@@ -32,13 +32,13 @@ protected:
 	/// Reference to a robot model which is used by this block.
 	robotModel::RobotModelInterface &model();
 
-	robotModel::RobotModelManagerInterface const *mRobotModelManager;  // Doesn't have ownership.
+	const robotModel::RobotModelManagerInterface *mRobotModelManager;  // Doesn't have ownership.
 
 private:
 	// Just to make it private
-	void init(qReal::Id const &graphicalId
-			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
+	void init(const qReal::Id &graphicalId
+			, const qReal::GraphicalModelAssistInterface &graphicalModelApi
+			, const qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);

@@ -13,11 +13,11 @@ public:
 	virtual ~AbstractListener() {}
 
 	/// Fires event that some entity listens for with @arg value as parameter (if needed).
-	virtual void fireEvent(QVariant const &value) = 0;
+	virtual void fireEvent(const QVariant &value) = 0;
 
 	/// Returns the object that can be used for disconnection;
 	/// if no such object was provided explicitly for this listener nullptr is returned.
-	virtual QObject const *object() const = 0;
+	virtual const QObject *object() const = 0;
 };
 
 /// Useful class that calls the given slot with no parameters
@@ -31,13 +31,13 @@ public:
 	{
 	}
 
-	void fireEvent(QVariant const &value) override
+	void fireEvent(const QVariant &value) override
 	{
 		Q_UNUSED(value)
 		(mSender->*mSlot)();
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return mSender;
 	}
@@ -56,13 +56,13 @@ public:
 	{
 	}
 
-	void fireEvent(QVariant const &value) override
+	void fireEvent(const QVariant &value) override
 	{
 		Q_UNUSED(value)
 		mLambda();
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return nullptr;
 	}
@@ -82,12 +82,12 @@ public:
 	{
 	}
 
-	void fireEvent(QVariant const &value) override
+	void fireEvent(const QVariant &value) override
 	{
 		(mSender->*mSlot)(value.value<Type>());
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return mSender;
 	}
@@ -107,12 +107,12 @@ public:
 	{
 	}
 
-	void fireEvent(QVariant const &value) override
+	void fireEvent(const QVariant &value) override
 	{
 		mLambda(value.value<Type>());
 	}
 
-	QObject const *object() const override
+	const QObject *object() const override
 	{
 		return nullptr;
 	}

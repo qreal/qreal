@@ -10,7 +10,7 @@ namespace parts {
 class InitTerminateCodeGenerator : public TemplateParametrizedEntity
 {
 public:
-	explicit InitTerminateCodeGenerator(QString const &pathToTemplates);
+	explicit InitTerminateCodeGenerator(const QString &pathToTemplates);
 	virtual ~InitTerminateCodeGenerator();
 
 	/// Called each time before new generation process.

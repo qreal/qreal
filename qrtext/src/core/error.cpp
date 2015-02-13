@@ -2,13 +2,13 @@
 
 using namespace qrtext::core;
 
-Error::Error(Connection const &connection, const QString &errorMessage
+Error::Error(const Connection &connection, const QString &errorMessage
 		, ErrorType errorType, Severity severity)
 	: mConnection(connection), mErrorMessage(errorMessage), mErrorType(errorType), mSeverity(severity)
 {
 }
 
-Connection const &Error::connection() const
+const Connection &Error::connection() const
 {
 	return mConnection;
 }

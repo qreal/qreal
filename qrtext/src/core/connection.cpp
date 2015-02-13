@@ -30,7 +30,7 @@ int Connection::column() const
 	return mColumn;
 }
 
-qReal::Id const &Connection::id() const
+const qReal::Id &Connection::id() const
 {
 	return mId;
 }

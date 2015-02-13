@@ -2,14 +2,14 @@
 # Usage: build-installer.sh <path-to-qt> <path-to-qt-ifw> <product-name> [<additional builder args>]
 # Path to Qt and Qt Installer Framework must be to bin folder (for example ~/Qt/5.3/gcc_64/bin or ~/Qt/QtIFW-1.5.0/bin/).
 # This script will build the installer using the config in './config/$3-config.xml',
-# and all components in 'packages/qreal-base' and 'packages/$3'. 'qrgui' will be renamed to $3.
+# and all components in 'packages/qreal-base' and 'packages/$3'. 'qreal' will be renamed to $3.
 # If QREAL_BUILD_TAG is nonempty then the version will be built using dependencies tagged with its value.
 
 set -o nounset
 set -o errexit
 
 export INSTALLER_ROOT=$PWD/
-export BIN_DIR=$PWD/../bin
+export BIN_DIR=$PWD/../bin/release/
 export QT_DIR=$1/../
 export QTIFW_DIR=$2
 export PRODUCT=$3 

@@ -10,6 +10,10 @@
 #include "robotsGeneratorDeclSpec.h"
 #include "masterGeneratorBase.h"
 
+namespace utils {
+class ParserErrorReporter;
+}
+
 namespace generatorBase {
 
 class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public GeneratorKitPluginInterface
@@ -19,9 +23,10 @@ class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public
 
 public:
 	RobotsGeneratorPluginBase();
+	~RobotsGeneratorPluginBase() override;
 
-	void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	void init(const qReal::PluginConfigurator &configurator
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage) override;
 
 protected slots:
@@ -30,24 +35,24 @@ protected slots:
 	virtual bool generateCode(bool openTab = true);
 
 	/// Changes path to code source file and regenerate necessary extra files.
-	void regenerateCode(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
+	void regenerateCode(const qReal::Id &diagram, const QFileInfo &oldFileInfo, const QFileInfo &newFileInfo);
 
 	/// Adds new path to another code source file for chosen diagram
-	void addNewCode(qReal::Id const &diagram, QFileInfo const &fileInfo);
+	void addNewCode(const qReal::Id &diagram, const QFileInfo &fileInfo);
 
 	/// Remove diagram with paths to code source files.
-	void removeDiagram(qReal::Id const &diagram);
+	void removeDiagram(const qReal::Id &diagram);
 
-	void removeCode(QFileInfo const &fileInfo);
+	void removeCode(const QFileInfo &fileInfo);
 
 protected:
 	/// Override must return a link to concrete master generator instance for
 	/// developped plugin. Caller takes ownership so override may forget about it.
 	virtual MasterGeneratorBase *masterGenerator() = 0;
 
-	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
+	virtual void regenerateExtraFiles(const QFileInfo &newFileInfo) = 0;
 	QFileInfo srcPath();
-	virtual QString defaultFilePath(QString const &project) const;
+	virtual QString defaultFilePath(const QString &project) const;
 	QFileInfo generateCodeForProcessing();
 	QString generatorName() const override;
 
@@ -58,7 +63,7 @@ protected:
 	/// Returns default name for generated file.
 	virtual QString defaultProjectName() const;
 
-	virtual bool canGenerateTo(QString const &project);
+	virtual bool canGenerateTo(const QString &project);
 
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
@@ -67,15 +72,17 @@ protected:
 	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
 
 	/// Control interface of the repository
-	qrRepo::RepoApi const *mRepo;  // Does not have ownership
+	const qrRepo::RepoApi *mRepo;  // Does not have ownership
 
-	interpreterBase::robotModel::RobotModelManagerInterface const *mRobotModelManager;
+	const interpreterBase::robotModel::RobotModelManagerInterface *mRobotModelManager;
 	qrtext::LanguageToolboxInterface *mTextLanguage;  // Does not have ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 	qReal::SystemEvents *mSystemEvents; // Does not have ownership
 	qReal::TextManagerInterface *mTextManager;
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;
+
+	QScopedPointer<utils::ParserErrorReporter> mParserErrorReporter;
 };
 
 }

@@ -12,14 +12,14 @@ class SemanticTree;
 class ForkNode : public NonZoneNode
 {
 public:
-	explicit ForkNode(qReal::Id const &idBinded, QObject *parent = 0);
+	explicit ForkNode(const qReal::Id &idBinded, QObject *parent = 0);
 
 	/// Adds one more thread to this fork block.
-	void appendThread(qReal::Id const &thread, const QString &threadId);
+	void appendThread(const qReal::Id &thread, const QString &threadId);
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
 	QMap<qReal::Id, QString> mThreads;

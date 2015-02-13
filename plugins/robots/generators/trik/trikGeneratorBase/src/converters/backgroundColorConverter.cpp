@@ -2,7 +2,7 @@
 
 using namespace trik::converters;
 
-BackgroundColorConverter::BackgroundColorConverter(QString const &pathToTemplates)
+BackgroundColorConverter::BackgroundColorConverter(const QString &pathToTemplates)
 	: generatorBase::converters::DynamicPathConverter(pathToTemplates, "backgroundColors/@@DATA@@.t")
 {
 }

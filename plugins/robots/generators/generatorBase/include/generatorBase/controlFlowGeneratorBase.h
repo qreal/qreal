@@ -16,10 +16,10 @@ public:
 	/// @param isThisDiagramMain 'true' if this generator generates code for main diagram
 	/// (main diagram is the one which was active when user requested generation)
 	ControlFlowGeneratorBase(
-			qrRepo::RepoApi const &repo
+			const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &diagramId
+			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 	virtual ~ControlFlowGeneratorBase();
@@ -32,22 +32,22 @@ public:
 	/// parent. Implementation must pay attention to isThisDiagramMain parameter
 	/// (it should be always false in copied objects).
 	/// Ownership on the cloned generators is taken by this generator`s parent.
-	virtual ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId, bool cloneForNewDiagram) = 0;
+	virtual ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) = 0;
 
 	/// Generates control flow object representation (SemanticTree) and returns
-	/// a pointer to it if generation process was successfull or NULL otherwise.
+	/// a pointer to it if generation process was successfull or nullptr otherwise.
 	/// Takes ownership on result.
 	/// @param initialNode The starting block of the traversal. If empty then initial node
 	/// of the diagram given in constructor will be used.
-	semantics::SemanticTree *generate(qReal::Id const &initialNode = qReal::Id(), const QString &threadId = "main");
+	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
 
 	/// Returns true if some generation errors occured and the generation process can`t be proceeded with other
 	/// control flow generators (fatal errors occured).
 	bool errorsOccured() const;
 
-	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
+	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitFinal(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
 	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 
 protected:
@@ -56,24 +56,24 @@ protected:
 
 	bool generateForks();
 
-	void error(QString const &message, qReal::Id const &id = qReal::Id(), bool critical = true);
+	void error(const QString &message, const qReal::Id &id = qReal::Id(), bool critical = true);
 
-	enums::semantics::Semantics semanticsOf(qReal::Id const &id) const;
+	enums::semantics::Semantics semanticsOf(const qReal::Id &id) const;
 	qReal::Id initialNode() const;
-	QPair<LinkInfo, LinkInfo> ifBranchesFor(qReal::Id const &id) const;
-	QPair<LinkInfo, LinkInfo> loopBranchesFor(qReal::Id const &id) const;
+	QPair<LinkInfo, LinkInfo> ifBranchesFor(const qReal::Id &id) const;
+	QPair<LinkInfo, LinkInfo> loopBranchesFor(const qReal::Id &id) const;
 
 	GeneratorCustomizer &customizer() const;
 
 	semantics::SemanticTree *mSemanticTree;  // Takes ownership
-	qrRepo::RepoApi const &mRepo;
+	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
 	QString mThreadId;
 	bool mErrorsOccured;
-	bool const mIsMainGenerator;
+	const bool mIsMainGenerator;
 
-	qReal::Id const mDiagram;
+	const qReal::Id mDiagram;
 	PrimaryControlFlowValidator *mValidator;  // Takes owneship via Qt parentship system
 };
 

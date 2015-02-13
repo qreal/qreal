@@ -16,26 +16,26 @@ class QRGUI_TOOL_PLUGIN_INTERFACE_EXPORT SystemEvents : public QObject
 
 signals:
 	void closedMainWindow();
-	void activeTabChanged(Id const &rootElementId);
+	void activeTabChanged(const Id &rootElementId);
 	void settingsUpdated();
-	void codePathChanged(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
-	void newCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo);
-	void diagramClosed(qReal::Id const &diagram);
-	void codeTabClosed(QFileInfo const &fileInfo);
+	void codePathChanged(const qReal::Id &diagram, const QFileInfo &oldFileInfo, const QFileInfo &newFileInfo);
+	void newCodeAppeared(const qReal::Id &diagram, const QFileInfo &fileInfo);
+	void diagramClosed(const qReal::Id &diagram);
+	void codeTabClosed(const QFileInfo &fileInfo);
 
 	/// Emitted each time when new element was added into the logical model.
-	void logicalElementAdded(Id const &id);
+	void logicalElementAdded(const Id &id);
 	/// Emitted each time when new element was added into the graphical model.
-	void graphicalElementAdded(Id const &id);
+	void graphicalElementAdded(const Id &id);
 
 	/// Emitted when new message with level 'Info' added to error reporter.
-	void informationAdded(QString const &message, Id const &position);
+	void informationAdded(const QString &message, const Id &position);
 	/// Emitted when new message with level 'Warning' added to error reporter.
-	void warningAdded(QString const &message, Id const &position);
+	void warningAdded(const QString &message, const Id &position);
 	/// Emitted when new message with level 'Error' added to error reporter.
-	void errorAdded(QString const &message, Id const &position);
+	void errorAdded(const QString &message, const Id &position);
 	/// Emitted when new message with level 'Critical' added to error reporter.
-	void criticalAdded(QString const &message, Id const &position);
+	void criticalAdded(const QString &message, const Id &position);
 
 	/// This event may be subscribed to obtain all low-level user actions, timer events and everything about
 	/// application`s event propagation subsystem. This is very powerful and dangerous tool, use it with care,

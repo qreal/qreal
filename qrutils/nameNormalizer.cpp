@@ -5,7 +5,7 @@
 
 using namespace utils;
 
-QString NameNormalizer::normalize(QString const &name, bool isUpperFirst)
+QString NameNormalizer::normalize(const QString &name, bool isUpperFirst)
 {
 	QString result = name;
 	result = result.simplified().replace(" ", "_");
@@ -17,10 +17,10 @@ QString NameNormalizer::normalize(QString const &name, bool isUpperFirst)
 	return result;
 }
 
-QString NameNormalizer::normalizeStrongly(QString const &name, bool upperFirst)
+QString NameNormalizer::normalizeStrongly(const QString &name, bool upperFirst)
 {
 	QString filteredName;
-	foreach (QChar const &character, name) {
+	foreach (const QChar &character, name) {
 		if ((filteredName.isEmpty() && (character.isLetter() || character == '_')) ||
 				(!filteredName.isEmpty() && (character.isLetterOrNumber()
 						|| character == ' ' || character == '_')))
@@ -36,38 +36,38 @@ QString NameNormalizer::normalizeStrongly(QString const &name, bool upperFirst)
 	return russianTranslit(normalize(filteredName, upperFirst));
 }
 
-QString NameNormalizer::upperFirst(QString const &string)
+QString NameNormalizer::upperFirst(const QString &string)
 {
 	if (string.isEmpty()) {
 		return "";
 	}
-	QStringList const tokens = string.split(" ");
+	const QStringList tokens = string.split(" ");
 	QStringList upperedTokens;
-	foreach (QString const &token, tokens) {
+	foreach (const QString &token, tokens) {
 		upperedTokens.append(token.at(0).toUpper() + token.mid(1));
 	}
 	return upperedTokens.join("_");
 }
 
-QString NameNormalizer::lowerFirst(QString const &string)
+QString NameNormalizer::lowerFirst(const QString &string)
 {
 	if (string.isEmpty()) {
 		return "";
 	}
-	QStringList const tokens = string.split(" ");
+	const QStringList tokens = string.split(" ");
 	QStringList loweredTokens;
-	foreach (QString const &token, tokens) {
+	foreach (const QString &token, tokens) {
 		loweredTokens.append(token.at(0).toLower() + token.mid(1));
 	}
 	return loweredTokens.join("_");
 }
 
-QString NameNormalizer::russianTranslit(QString const &russianString)
+QString NameNormalizer::russianTranslit(const QString &russianString)
 {
-	QString const lowerRussianLetters[] = { "а", "б", "в", "г", "д", "е", "ё", "ж", "з"
+	const QString lowerRussianLetters[] = { "а", "б", "в", "г", "д", "е", "ё", "ж", "з"
 			, "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф"
 			, "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я" };
-	QString const lowerTranslitions[] = { "a", "b", "v", "g", "d", "e", "yo", "zh", "z"
+	const QString lowerTranslitions[] = { "a", "b", "v", "g", "d", "e", "yo", "zh", "z"
 			, "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f"
 			, "h", "c", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya" };
 
@@ -80,7 +80,7 @@ QString NameNormalizer::russianTranslit(QString const &russianString)
 	}
 
 	QString result;
-	foreach (QChar const &letter, russianString) {
+	foreach (const QChar &letter, russianString) {
 		result += russianLetters.contains(letter)
 				? translitions[russianLetters.indexOf(letter)] : letter;
 	}

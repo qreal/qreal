@@ -13,15 +13,15 @@ class SoundSensor : public interpreterBase::robotModel::robotParts::SoundSensor
 	Q_OBJECT
 
 public:
-	SoundSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	SoundSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;
 	void doConfiguration() override;
 
 private slots:
-	void sensorSpecificProcessResponse(QByteArray const &reading);
+	void sensorSpecificProcessResponse(const QByteArray &reading);
 
 private:
 	NxtInputDevice mImplementation;

@@ -1,6 +1,6 @@
 #include "interpreterPortImpl.h"
 
-InterpreterPortImpl::InterpreterPortImpl(QString const &type)
+InterpreterPortImpl::InterpreterPortImpl(const QString &type)
 	: mType(type)
 {}
 

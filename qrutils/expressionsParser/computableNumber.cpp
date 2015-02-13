@@ -6,7 +6,7 @@ ComputableNumber::ComputableNumber()
 {
 }
 
-ComputableNumber::ComputableNumber(IntComputer const &intComputer)
+ComputableNumber::ComputableNumber(const IntComputer &intComputer)
 	: Number(0, intType)
 	, mComputer(intComputer)
 {

@@ -16,15 +16,15 @@ class Display : public robotModel::parts::TrikDisplay, public graphicsUtils::Pai
 	Q_OBJECT
 
 public:
-	Display(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Display(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void drawSmile(bool sad) override;
-	void setBackground(QColor const &color) override;
-	void printText(int x, int y, QString const &text) override;
+	void setBackground(const QColor &color) override;
+	void printText(int x, int y, const QString &text) override;
 	void clearScreen() override;
-	void setPainterColor(QColor const &color) override;
+	void setPainterColor(const QColor &color) override;
 	void setPainterWidth(int penWidth) override;
 	void drawPixel(int x, int y) override;
 	void drawLine(int x1, int y1, int x2, int y2) override;

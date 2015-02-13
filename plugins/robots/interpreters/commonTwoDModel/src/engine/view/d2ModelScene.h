@@ -111,7 +111,7 @@ private:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
-	void drawBackground(QPainter *painter, QRectF const &rect) override;
+	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
 
 	void forPressResize(QGraphicsSceneMouseEvent *event) override;
@@ -126,7 +126,7 @@ private:
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
-	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos);
+	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
 
 	model::Model &mModel;
 

@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-WhileLoopGenerator::WhileLoopGenerator(qrRepo::RepoApi const &repo
+WhileLoopGenerator::WhileLoopGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, bool doWhileForm
 		, bool needInverting
 		, QObject *parent)

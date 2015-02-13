@@ -31,25 +31,25 @@ public:
 	Settings &settings();
 
 	QDomDocument serialize() const;
-	void deserialize(QDomDocument const &xml);
+	void deserialize(const QDomDocument &xml);
 
 	/// Add new robot model
 	/// @param robotModel Model to be added
 	/// @param pos Initial positon of robot model
-	void addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const &pos = QPointF());
+	void addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF &pos = QPointF());
 
 	/// Remove robot model
 	/// @param robotMode Model to be removed
-	void removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
+	void removeRobotModel(const twoDModel::robotModel::TwoDRobotModel &robotModel);
 
 	/// Delete old model and add new model with the same coordinates that old model
-	void replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
+	void replaceRobotModel(const twoDModel::robotModel::TwoDRobotModel &oldModel
 			, robotModel::TwoDRobotModel &newModel);
 
 signals:
 	/// Emitted each time when some user actions lead to world model modifications
 	/// @param xml World model description in xml format
-	void modelChanged(QDomDocument const &xml);
+	void modelChanged(const QDomDocument &xml);
 
 	/// Emitted after new robot model added
 	/// @param robotModel Pointer to robot model which was removed
@@ -60,7 +60,7 @@ signals:
 	void robotRemoved(RobotModel *robotModel);
 
 private:
-	int findModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
+	int findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel);
 
 	Settings mSettings;
 	WorldModel mWorldModel;

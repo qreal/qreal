@@ -16,8 +16,8 @@ class RangeSensor : public interpreterBase::robotModel::robotParts::RangeSensor
 	Q_OBJECT
 
 public:
-	RangeSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	RangeSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

@@ -12,9 +12,9 @@ PrintTextBlock::PrintTextBlock(interpreterBase::robotModel::RobotModelInterface 
 
 void PrintTextBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
-	int const x = eval<int>("XCoordinateText");
-	int const y = eval<int>("YCoordinateText");
-	QString const result = eval<QString>("PrintText");
+	const int x = eval<int>("XCoordinateText");
+	const int y = eval<int>("YCoordinateText");
+	const QString result = eval<QString>("PrintText");
 	if (!errorsOccured()) {
 		display.printText(x, y, result);
 		emit done(mNextBlockId);

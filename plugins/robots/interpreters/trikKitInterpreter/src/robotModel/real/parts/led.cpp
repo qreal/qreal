@@ -5,17 +5,17 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Led::Led(DeviceInfo const &info, PortInfo const &port
+Led::Led(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikLed(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
-void Led::setColor(QString const &color)
+void Led::setColor(const QString &color)
 {
-	QString const pathToCommand = ":/trikQts/templates/led.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand)
+	const QString pathToCommand = ":/trikQts/templates/led.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COLOR@@", color) + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);

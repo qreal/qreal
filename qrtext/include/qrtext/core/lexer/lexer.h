@@ -37,10 +37,10 @@ public:
 	explicit Lexer(TokenPatterns<TokenType> const &patterns, QList<Error> &errors)
 		: mPatterns(patterns), mErrors(errors)
 	{
-		// Doing syntax check of lexeme regexps and searching for whitespace and newline definitions, they will be needed
-		// later for error recovery.
-		for (TokenType const tokenType : mPatterns.allPatterns()) {
-			QRegularExpression const &regExp = mPatterns.tokenPattern(tokenType);
+		// Doing syntax check of lexeme regexps and searching for whitespace and newline definitions, they will be
+		// needed later for error recovery.
+		for (const TokenType tokenType : mPatterns.allPatterns()) {
+			const QRegularExpression &regExp = mPatterns.tokenPattern(tokenType);
 			if (!regExp.isValid()) {
 				qDebug() << "Invalid regexp: " + regExp.pattern();
 				mErrors << Error(Connection(), QObject::tr("Invalid regexp: ") + regExp.pattern()
@@ -93,9 +93,9 @@ public:
 						}
 
 						if (match.hasMatch()) {
-							int const relativeLastNewLineOffset = match.capturedEnd() - 1;
-							int const absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
-							int const absoluteTokenEnd = bestMatch.match.capturedEnd() - 1;
+							const int relativeLastNewLineOffset = match.capturedEnd() - 1;
+							const int absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
+							const int absoluteTokenEnd = bestMatch.match.capturedEnd() - 1;
 							tokenEndColumn = absoluteTokenEnd - absoluteLastNewLineOffset - 1;
 						} else {
 							tokenEndColumn += bestMatch.match.capturedLength() - 1;
@@ -104,7 +104,7 @@ public:
 						tokenEndColumn += bestMatch.match.capturedLength() - 1;
 					}
 
-					Range const range(Connection(bestMatch.match.capturedStart(), line, column)
+					const Range range(Connection(bestMatch.match.capturedStart(), line, column)
 							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
 					if (bestMatch.candidate == TokenType::identifier) {
@@ -117,7 +117,7 @@ public:
 							, bestMatch.match.captured());
 				} else if (bestMatch.candidate == TokenType::comment) {
 					tokenEndColumn += bestMatch.match.capturedLength() - 1;
-					Range const range(Connection(bestMatch.match.capturedStart(), line, column)
+					const Range range(Connection(bestMatch.match.capturedStart(), line, column)
 							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
 					mComments << Token<TokenType>(bestMatch.candidate
@@ -138,7 +138,7 @@ public:
 
 				absolutePosition += bestMatch.match.capturedLength();
 			} else {
-				auto const errorConnection = Connection(absolutePosition, line, column);
+				const auto errorConnection = Connection(absolutePosition, line, column);
 				QString skippedSymbols;
 
 				// Panic mode: syncing on nearest whitespace or newline token.
@@ -183,7 +183,7 @@ private:
 
 	TokenType checkForKeyword(const QString &identifier) const
 	{
-		for (TokenType const keyword : mPatterns.allKeywords()) {
+		for (const TokenType keyword : mPatterns.allKeywords()) {
 			if (mPatterns.keywordPattern(keyword) == identifier) {
 				return keyword;
 			}
@@ -192,15 +192,15 @@ private:
 		return TokenType::identifier;
 	}
 
-	CandidateMatch findBestMatch(const QString &input, int const absolutePosition) const
+	CandidateMatch findBestMatch(const QString &input, const int absolutePosition) const
 	{
 		TokenType candidate = TokenType::whitespace;
 		QRegularExpressionMatch bestMatch;
 
-		for (TokenType const token : mPatterns.allPatterns()) {
-			QRegularExpression const &regExp = mPatterns.tokenPattern(token);
+		for (const TokenType token : mPatterns.allPatterns()) {
+			const QRegularExpression &regExp = mPatterns.tokenPattern(token);
 
-			QRegularExpressionMatch const &match = regExp.match(
+			const QRegularExpressionMatch &match = regExp.match(
 					input
 					, absolutePosition
 					, QRegularExpression::NormalMatch

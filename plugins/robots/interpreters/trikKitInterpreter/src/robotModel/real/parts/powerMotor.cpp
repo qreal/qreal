@@ -5,7 +5,7 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-PowerMotor::PowerMotor(DeviceInfo const &info, PortInfo const &port
+PowerMotor::PowerMotor(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikPowerMotor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
@@ -14,8 +14,8 @@ PowerMotor::PowerMotor(DeviceInfo const &info, PortInfo const &port
 
 void PowerMotor::on(int speed)
 {
-	QString const pathToCommand = ":/trikQts/templates/engines/forward.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand)
+	const QString pathToCommand = ":/trikQts/templates/engines/forward.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@PORT@@", "\"" + port().name() + "\"")
 			.replace("@@POWER@@", QString::number(speed)) + "script.run();";
 

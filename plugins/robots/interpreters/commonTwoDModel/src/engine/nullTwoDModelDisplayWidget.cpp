@@ -16,7 +16,7 @@ void NullTwoDModelDisplayWidget::setPainter(graphicsUtils::PainterInterface *pai
 	TwoDModelDisplayWidget::setPainter(painter);
 }
 
-bool NullTwoDModelDisplayWidget::buttonIsDown(QString const &buttonId) const
+bool NullTwoDModelDisplayWidget::buttonIsDown(const QString &buttonId) const
 {
 	Q_UNUSED(buttonId)
 	return false;

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtCore/QSet>
 
@@ -16,155 +16,158 @@ namespace qrRepo {
 class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 {
 public:
-	explicit RepoApi(QString const &workingDirectory, bool ignoreAutosave = false);
+	explicit RepoApi(const QString &workingDirectory, bool ignoreAutosave = false);
 	// Default destructor ok.
 
 	/// Replacing property values that contains input value with new value.
 	/// @param toReplace Id list that contains ids of elements that properties should be replaced.
 	/// @param value Input value that should be contained by any property of each element.
 	/// @param newValue String representation of value with what property values should be replaced.
-	void replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue) override;
+	void replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue) override;
 
-	qReal::Id copy(qReal::Id const &src) override;
+	qReal::Id copy(const qReal::Id &src) override;
 
-	QString name(qReal::Id const &id) const override;
-	void setName(qReal::Id const &id, QString const &name) override;
+	QString name(const qReal::Id &id) const override;
+	void setName(const qReal::Id &id, const QString &name) override;
 
 	/// Returning IdList of elements that names contains input string.
 	/// @param name String that should be contained by names of elements that Id's are in the output list.
-	qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const override;
+	qReal::IdList findElementsByName(const QString &name, bool sensitivity, bool regExpression) const override;
 
 	/// Returning IdList of elements that have input property.
 	/// @param name String that should be contained by names of elements that have input property.
-	qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const override;
+	qReal::IdList elementsByProperty(const QString &property, bool sensitivity, bool regExpression) const override;
 
 	/// returning IdList of elements that have input property content
 	/// @param name - string that should be contained by names of elements that have input property content
-	qReal::IdList elementsByPropertyContent(QString const &propertyContent
+	qReal::IdList elementsByPropertyContent(const QString &propertyContent
 			, bool sensitivity, bool regExpression) const override;
 
-	qReal::IdList children(qReal::Id const &id) const override;
-	void addChild(qReal::Id const &id, qReal::Id const &child) override;
-	void addChild(qReal::Id const &id, qReal::Id const &child, qReal::Id const &logicalId) override;
-	void removeChild(qReal::Id const &id, qReal::Id const &child) override;
-	void removeChildren(qReal::Id const &id) override;
+	qReal::IdList children(const qReal::Id &id) const override;
+	void addChild(const qReal::Id &id, const qReal::Id &child) override;
+	void addChild(const qReal::Id &id, const qReal::Id &child, const qReal::Id &logicalId) override;
+	void removeChild(const qReal::Id &id, const qReal::Id &child) override;
+	void removeChildren(const qReal::Id &id) override;
 
 	void printDebug();
 
-	void removeElement(qReal::Id const &id) override;
+	void removeElement(const qReal::Id &id) override;
 
-	qReal::Id parent(qReal::Id const &id) const override;
-	void setParent(qReal::Id const &id, qReal::Id const &parent) override;
+	qReal::Id parent(const qReal::Id &id) const override;
+	void setParent(const qReal::Id &id, const qReal::Id &parent) override;
 
-	virtual void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling) override;
+	virtual void stackBefore(const qReal::Id &id, const qReal::Id &child, const qReal::Id &sibling) override;
 
-	qReal::IdList outgoingLinks(qReal::Id const &id) const override;
-	qReal::IdList incomingLinks(qReal::Id const &id) const override;
-	qReal::IdList links(qReal::Id const &id) const override;
+	qReal::IdList outgoingLinks(const qReal::Id &id) const override;
+	qReal::IdList incomingLinks(const qReal::Id &id) const override;
+	qReal::IdList links(const qReal::Id &id) const override;
 
-	qReal::Id outgoingExplosion(qReal::Id const &id) const override;
-	qReal::IdList incomingExplosions(qReal::Id const &id) const override;
-	void addExplosion(qReal::Id const &source, qReal::Id const &destination) override;
-	void removeExplosion(qReal::Id const &source, qReal::Id const &destination) override;
+	qReal::Id outgoingExplosion(const qReal::Id &id) const override;
+	qReal::IdList incomingExplosions(const qReal::Id &id) const override;
+	void addExplosion(const qReal::Id &source, const qReal::Id &destination) override;
+	void removeExplosion(const qReal::Id &source, const qReal::Id &destination) override;
 
-	qReal::IdList connectedElements(qReal::Id const &id) const;
-	qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
-	qReal::IdList incomingConnectedElements(qReal::Id const &id) const;
+	qReal::IdList connectedElements(const qReal::Id &id) const;
+	qReal::IdList outgoingConnectedElements(const qReal::Id &id) const;
+	qReal::IdList incomingConnectedElements(const qReal::Id &id) const;
 
-	QVariant property(qReal::Id const &id, QString const &propertyName) const override;
-	QString stringProperty(qReal::Id const &id, QString const &propertyName) const override;
-	void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) override;
-	void removeProperty(qReal::Id const &id, QString const &propertyName) override;
+	QVariant property(const qReal::Id &id, const QString &propertyName) const override;
+	QString stringProperty(const qReal::Id &id, const QString &propertyName) const override;
+	void setProperty(const qReal::Id &id, const QString &propertyName, const QVariant &value) override;
+	void removeProperty(const qReal::Id &id, const QString &propertyName) override;
 	void copyProperties(const qReal::Id &dest, const qReal::Id &src) override;
-	QMap<QString, QVariant> properties(qReal::Id const &id) override;
-	void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties) override;
-	bool hasProperty(qReal::Id const &id, QString const &propertyName) const override;
-	QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const override;
+	QMap<QString, QVariant> properties(const qReal::Id &id) override;
+	void setProperties(const qReal::Id &id, QMap<QString, QVariant> const &properties) override;
+	bool hasProperty(const qReal::Id &id, const QString &propertyName) const override;
+	QMapIterator<QString, QVariant> propertiesIterator(const qReal::Id &id) const override;
 
-	void setBackReference(qReal::Id const &id, qReal::Id const &reference) const override;
-	void removeBackReference(qReal::Id const &id, qReal::Id const &reference) const override;
+	void setBackReference(const qReal::Id &id, const qReal::Id &reference) const override;
+	void removeBackReference(const qReal::Id &id, const qReal::Id &reference) const override;
 
-	qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const override;
-	void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction) override;
-	void removeTemporaryRemovedLinks(qReal::Id const &id) override;
+	qReal::IdList temporaryRemovedLinksAt(const qReal::Id &id, const QString &direction) const override;
+	void setTemporaryRemovedLinks(const qReal::Id &id, const qReal::IdList &value, const QString &direction) override;
+	void removeTemporaryRemovedLinks(const qReal::Id &id) override;
 
-	qReal::Id from(qReal::Id const &id) const override;
-	void setFrom(qReal::Id const &id, qReal::Id const &from) override;
+	qReal::Id from(const qReal::Id &id) const override;
+	void setFrom(const qReal::Id &id, const qReal::Id &from) override;
 
-	qReal::Id to(qReal::Id const &id) const override;
-	void setTo(qReal::Id const &id, qReal::Id const &to) override;
+	qReal::Id to(const qReal::Id &id) const override;
+	void setTo(const qReal::Id &id, const qReal::Id &to) override;
 
-	qreal fromPort(qReal::Id const &id) const override;
-	void setFromPort(qReal::Id const &id, qreal fromPort) override;
+	qreal fromPort(const qReal::Id &id) const override;
+	void setFromPort(const qReal::Id &id, qreal fromPort) override;
 
-	qreal toPort(qReal::Id const &id) const override;
-	void setToPort(qReal::Id const &id, qreal toPort) override;
+	qreal toPort(const qReal::Id &id) const override;
+	void setToPort(const qReal::Id &id, qreal toPort) override;
 
-	QVariant position(qReal::Id const &id) const override;
-	QVariant configuration(qReal::Id const &id) const override;
+	QVariant position(const qReal::Id &id) const override;
+	QVariant configuration(const qReal::Id &id) const override;
 
-	void setPosition(qReal::Id const &id, QVariant const &position) override;
-	void setConfiguration(qReal::Id const &id, QVariant const &configuration) override;
+	void setPosition(const qReal::Id &id, const QVariant &position) override;
+	void setConfiguration(const qReal::Id &id, const QVariant &configuration) override;
 
-	qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const override;
+	qReal::Id otherEntityFromLink(const qReal::Id &linkId, const qReal::Id &firstNode) const override;
 
-	bool isLogicalElement(qReal::Id const &id) const override;
-	bool isGraphicalElement(qReal::Id const &id) const override;
+	bool isLogicalElement(const qReal::Id &id) const override;
+	bool isGraphicalElement(const qReal::Id &id) const override;
 
 	void exterminate() override;
 
 	/// RepoApi's wrapper for Repository.importFromDisk
 	/// @param importedFile - file to be imported
-	void importFromDisk(QString const &importedFile) override;
+	void importFromDisk(const QString &importedFile) override;
 	void saveAll() const override;
-	void save(qReal::IdList const &list) const override;
-	void saveTo(QString const &workingFile) override;
+	void save(const qReal::IdList &list) const override;
+	void saveTo(const QString &workingFile) override;
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) override;
-	void open(QString const &saveFile) override;
-	void exportToXml(QString const &targetFile) const override;
+	void open(const QString &saveFile) override;
+	void exportToXml(const QString &targetFile) const override;
 
 	QString workingFile() const override;
 
 	// "Global" methods for querying the whole model.
 	// Returns all elements with .element() == type.element()
 	qReal::IdList graphicalElements() const override;
-	qReal::IdList graphicalElements(qReal::Id const &type) const override;
-	qReal::IdList logicalElements(qReal::Id const &type) const override;
+	qReal::IdList graphicalElements(const qReal::Id &type) const override;
+	qReal::IdList logicalElements(const qReal::Id &type) const override;
 
-	qReal::Id logicalId(qReal::Id const &id) const override;
+	qReal::Id logicalId(const qReal::Id &id) const override;
 
 	/// Returns all elements with .element() == type
-	qReal::IdList elementsByType(QString const &type, bool sensitivity = false, bool regExpression = false) const;
+	qReal::IdList elementsByType(const QString &type, bool sensitivity = false, bool regExpression = false) const;
 	int elementsCount() const;
 
-	bool exist(qReal::Id const &id) const override;
+	bool exist(const qReal::Id &id) const override;
 
-	void createGraphicalPart(qReal::Id const &id, int partIndex) override;
+	void createGraphicalPart(const qReal::Id &id, int partIndex) override;
 
-	QList<int> graphicalParts(qReal::Id const &id) const override;
+	QList<int> graphicalParts(const qReal::Id &id) const override;
 
-	QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const override;
+	QVariant graphicalPartProperty(const qReal::Id &id, int partIndex, const QString &propertyName) const override;
 
 	void setGraphicalPartProperty(
-			qReal::Id const &id
+			const qReal::Id &id
 			, int partIndex
-			, QString const &propertyName
-			, QVariant const &value
+			, const QString &propertyName
+			, const QVariant &value
 			) override;
 
 	QStringList metaInformationKeys() const override;
-	QVariant metaInformation(QString const &key) const override;
-	void setMetaInformation(QString const &key, QVariant const &info) override;
+	QVariant metaInformation(const QString &key) const override;
+	void setMetaInformation(const QString &key, const QVariant &info) override;
 
 private:
-	RepoApi(RepoApi const &other);  // Copying is not allowed.
-	RepoApi& operator =(RepoApi const &);  // Assigning is not allowed.
+	RepoApi(const RepoApi &other);  // Copying is not allowed.
+	RepoApi& operator =(const RepoApi &);  // Assigning is not allowed.
 
-	void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
-	void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
+	void addToIdList(const qReal::Id &target, const QString &listName, const qReal::Id &data
+			, const QString &direction = QString());
 
-	qReal::IdList links(qReal::Id const &id, QString const &direction) const;
-	void removeLinkEnds(QString const &endName, qReal::Id const &id);
+	void removeFromList(const qReal::Id &target, const QString &listName, const qReal::Id &data
+			, const QString &direction = QString());
+
+	qReal::IdList links(const qReal::Id &id, const QString &direction) const;
+	void removeLinkEnds(const QString &endName, const qReal::Id &id);
 
 	details::Repository mRepository;
 	bool mIgnoreAutosave;

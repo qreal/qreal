@@ -3,9 +3,9 @@
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Engines::Engines(QString const &pathToTemplates
-		, simple::Binding::ConverterInterface const *outputPortConverter
-		, simple::Binding::MultiConverterInterface const *outputPortsConverter)
+Engines::Engines(const QString &pathToTemplates
+		, const simple::Binding::ConverterInterface *outputPortConverter
+		, const simple::Binding::MultiConverterInterface *outputPortsConverter)
 	: InitTerminateCodeGenerator(pathToTemplates)
 	, mOutputPortConverter(outputPortConverter)
 	, mOutputPortsConverter(outputPortsConverter)
@@ -33,24 +33,24 @@ QString Engines::terminateCode()
 	return readEngineTemplate("termination/motor.t");
 }
 
-QString Engines::readEngineTemplate(QString const &pathToTemplate)
+QString Engines::readEngineTemplate(const QString &pathToTemplate)
 {
 	QStringList result;
-	foreach (QString const &port, mUsedPorts) {
+	foreach (const QString &port, mUsedPorts) {
 		result << readTemplateIfExists(pathToTemplate).replace("@@PORT@@", port);
 	}
 
 	return result.join('\n');
 }
 
-void Engines::registerUsageOnPort(QString const &outputPort)
+void Engines::registerUsageOnPort(const QString &outputPort)
 {
 	mUsedPorts << mOutputPortConverter->convert(outputPort);
 }
 
-void Engines::registerUsageOnPorts(QString const &outputPorts)
+void Engines::registerUsageOnPorts(const QString &outputPorts)
 {
-	foreach (QString const &port, mOutputPortsConverter->convert(outputPorts)) {
+	foreach (const QString &port, mOutputPortsConverter->convert(outputPorts)) {
 		mUsedPorts << port;
 	}
 }

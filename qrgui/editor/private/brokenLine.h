@@ -16,26 +16,26 @@ public:
 	virtual void alignToGrid();
 
 	/// @return List of context menu actions that may be done on a link at the point pos
-	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
+	virtual QList<ContextMenuAction *> extraActions(const QPointF &pos);
 
 protected slots:
 	/// Delete non-end point at position pos (given in link's coordinates), if any
-	void deletePoint(QPointF const &pos);
+	void deletePoint(const QPointF &pos);
 
 	/// Delete non-end segment at position pos (given in link's coordinates), if any
-	void deleteSegment(QPointF const &pos);
+	void deleteSegment(const QPointF &pos);
 
 protected:
 	/// Move point to position pos (given in link's coordinates)
 	/// Point is determined earlier (when mouse button is pressed)
 	/// If there is no point make the one then move it
-	virtual void handleEdgeMove(QPointF const &pos);
+	virtual void handleEdgeMove(const QPointF &pos);
 
 	/// Add a new point at position pos, if there is a link's segment containing pos
-	int addPoint(QPointF const &pos);
+	int addPoint(const QPointF &pos);
 
 	/// Align point to the nearest grid corner
-	QPointF alignedPoint(QPointF const &point) const;
+	QPointF alignedPoint(const QPointF &point) const;
 
 	/// Remove unneeded points, lines and loops (if the link intersects itself)
 	virtual void improveAppearance();
@@ -50,13 +50,13 @@ protected:
 	void removeSmallTriangles(QPolygonF &line) const;
 
 	/// Determine whether points of line at positions i - i+2 look like one line rather than two
-	bool tooSmallTriangle(QPolygonF const &line, int i) const;
+	bool tooSmallTriangle(const QPolygonF &line, int i) const;
 
 	/// @return true if pos is close enough to non-end point
-	bool delPointActionIsPossible(QPointF const &pos) const;
+	bool delPointActionIsPossible(const QPointF &pos) const;
 
 	/// @return true if pos is close enough to non-end segment
-	bool delSegmentActionIsPossible(QPointF const &pos);
+	bool delSegmentActionIsPossible(const QPointF &pos);
 
 	/// @return true if link consists of more than 2 points
 	bool minimizeActionIsPossible() const;

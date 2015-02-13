@@ -19,7 +19,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public Device
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	AbstractSensor(DeviceInfo const &info, PortInfo const &port);
+	AbstractSensor(const DeviceInfo &info, const PortInfo &port);
 
 	/// Ask sensor to provide new readings. Returns immediately. When reading is done, sensor emits "newData" signal
 	/// with reading as a parameter.

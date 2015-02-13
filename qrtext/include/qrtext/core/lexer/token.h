@@ -17,7 +17,7 @@ public:
 	/// @param tokenType - token type.
 	/// @param range - token location in source code.
 	/// @param lexeme - string representation of a token.
-	Token(TokenType tokenType, Range const &range, const QString &lexeme)
+	Token(TokenType tokenType, const Range &range, const QString &lexeme)
 		: mToken(tokenType), mRange(range), mLexeme(lexeme)
 	{
 	}
@@ -29,7 +29,7 @@ public:
 	}
 
 	/// Returns location of the token.
-	Range const &range() const
+	const Range &range() const
 	{
 		return mRange;
 	}

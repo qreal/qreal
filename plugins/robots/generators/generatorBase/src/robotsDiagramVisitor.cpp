@@ -3,7 +3,7 @@
 using namespace generatorBase;
 using namespace qReal;
 
-RobotsDiagramVisitor::RobotsDiagramVisitor(qrRepo::RepoApi const &repo
+RobotsDiagramVisitor::RobotsDiagramVisitor(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer)
 	: mRepo(repo)
 	, mCustomizer(customizer)
@@ -15,7 +15,7 @@ RobotsDiagramVisitor::~RobotsDiagramVisitor()
 {
 }
 
-void RobotsDiagramVisitor::startSearch(qReal::Id const &startingBlock)
+void RobotsDiagramVisitor::startSearch(const qReal::Id &startingBlock)
 {
 	mDfser.startSearch(startingBlock, this);
 }
@@ -25,9 +25,9 @@ void RobotsDiagramVisitor::terminateSearch()
 	mDfser.terminateSearch();
 }
 
-RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(qReal::Id const &linkId) const
+RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(const qReal::Id &linkId) const
 {
-	QString const guardProperty = mRepo.property(linkId, "Guard").toString().toLower();
+	const QString guardProperty = mRepo.property(linkId, "Guard").toString().toLower();
 	if (guardProperty == "true") {
 		return trueGuard;
 	} else if (guardProperty == "false") {
@@ -42,13 +42,13 @@ RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(qReal::Id const &l
 }
 
 // It can be stayed without overloading now
-void RobotsDiagramVisitor::visitUnknown(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+void RobotsDiagramVisitor::visitUnknown(const qReal::Id &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	Q_UNUSED(id)
 	Q_UNUSED(links)
 }
 
-void RobotsDiagramVisitor::visit(qReal::Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
+void RobotsDiagramVisitor::visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
 {
 	switch (mCustomizer.semanticsOf(nodeId)) {
 	case enums::semantics::regularBlock:

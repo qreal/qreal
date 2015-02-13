@@ -9,9 +9,9 @@ namespace simple {
 class CommentElementGenerator : public BindingGenerator
 {
 public:
-	CommentElementGenerator(qrRepo::RepoApi const &repo
+	CommentElementGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 
 };

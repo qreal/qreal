@@ -10,7 +10,7 @@
 
 #include "math.h"
 
-#include "../../../qrutils/xmlUtils.h"
+#include <qrutils/xmlUtils.h>
 
 using namespace qReal;
 using namespace hascol;

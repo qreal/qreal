@@ -11,10 +11,10 @@ using namespace generatorBase;
 using namespace qReal;
 
 ControlFlowGeneratorBase::ControlFlowGeneratorBase(
-		qrRepo::RepoApi const &repo
+		const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
-		, Id const &diagramId
+		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
 	: QObject(parent)
@@ -37,7 +37,7 @@ bool ControlFlowGeneratorBase::preGenerationCheck()
 	return mValidator->validate(mThreadId);
 }
 
-semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &initialNode, const QString &threadId)
+semantics::SemanticTree *ControlFlowGeneratorBase::generate(const qReal::Id &initialNode, const QString &threadId)
 {
 	mThreadId = threadId;
 
@@ -48,7 +48,7 @@ semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &ini
 		return nullptr;
 	}
 
-	qReal::Id const realInitialNode = initialNode.isNull() ? this->initialNode() : initialNode;
+	const qReal::Id realInitialNode = initialNode.isNull() ? this->initialNode() : initialNode;
 	mSemanticTree = new semantics::SemanticTree(customizer(), realInitialNode, mIsMainGenerator, this);
 	mCustomizer.factory()->threads().threadProcessed(realInitialNode, *mSemanticTree);
 	mErrorsOccured = false;
@@ -73,7 +73,7 @@ void ControlFlowGeneratorBase::performGeneration()
 bool ControlFlowGeneratorBase::generateForks()
 {
 	while (mCustomizer.factory()->threads().hasUnprocessedThreads()) {
-		Id const thread = mCustomizer.factory()->threads().nextUnprocessedThread();
+		const Id thread = mCustomizer.factory()->threads().nextUnprocessedThread();
 		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread, false);
 		if (!threadGenerator->generate(thread, mCustomizer.factory()->threads().threadId(thread))) {
 			return false;
@@ -83,7 +83,7 @@ bool ControlFlowGeneratorBase::generateForks()
 	return true;
 }
 
-void ControlFlowGeneratorBase::error(QString const &message, Id const &id, bool critical)
+void ControlFlowGeneratorBase::error(const QString &message, const Id &id, bool critical)
 {
 	mErrorsOccured = true;
 	if (critical) {
@@ -99,7 +99,7 @@ bool ControlFlowGeneratorBase::errorsOccured() const
 	return mErrorsOccured;
 }
 
-void ControlFlowGeneratorBase::visitRegular(Id const &id, QList<LinkInfo> const &links)
+void ControlFlowGeneratorBase::visitRegular(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 	if (mCustomizer.isSubprogramCall(id)) {
@@ -107,7 +107,7 @@ void ControlFlowGeneratorBase::visitRegular(Id const &id, QList<LinkInfo> const 
 	}
 }
 
-enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id const &id) const
+enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(const qReal::Id &id) const
 {
 	return mCustomizer.semanticsOf(id.type());
 }
@@ -117,12 +117,12 @@ qReal::Id ControlFlowGeneratorBase::initialNode() const
 	return mValidator->initialNode();
 }
 
-QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::ifBranchesFor(const qReal::Id &id) const
 {
 	return mValidator->ifBranchesFor(id);
 }
 
-QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(const qReal::Id &id) const
 {
 	return mValidator->loopBranchesFor(id);
 }
@@ -132,13 +132,13 @@ GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const
 	return mCustomizer;
 }
 
-void ControlFlowGeneratorBase::visitFinal(Id const &id, QList<LinkInfo> const &links)
+void ControlFlowGeneratorBase::visitFinal(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(id)
 	Q_UNUSED(links)
 }
 
-void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> &links)
+void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 {
 	LinkInfo currentThread;
 	QList<LinkInfo> newThreads;

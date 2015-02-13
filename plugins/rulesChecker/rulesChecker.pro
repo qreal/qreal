@@ -1,11 +1,12 @@
+include(../../global.pri)
+
 QT += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
-CONFIG += c++11
-DESTDIR = ../../bin/plugins/
+DESTDIR = $$DESTDIR/plugins/tools
 
-LIBS += -L../../bin -lqrkernel -lqrutils
+links(qrkernel qrutils)
 
 INCLUDEPATH += \
 	../../ \

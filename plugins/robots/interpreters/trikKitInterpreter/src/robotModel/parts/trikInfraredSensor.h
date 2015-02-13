@@ -13,8 +13,8 @@ class TrikInfraredSensor : public interpreterBase::robotModel::robotParts::Range
 	Q_CLASSINFO("friendlyName", tr("Infrared Sensor"))
 
 public:
-	TrikInfraredSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikInfraredSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 };
 
 }

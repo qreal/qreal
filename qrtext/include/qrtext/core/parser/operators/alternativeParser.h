@@ -14,7 +14,7 @@ class AlternativeParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parsers for two alternatives.
-	AlternativeParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
+	AlternativeParser(const ParserRef<TokenType> &parser1, const ParserRef<TokenType> &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}

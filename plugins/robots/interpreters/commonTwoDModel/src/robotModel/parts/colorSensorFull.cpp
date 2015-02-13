@@ -5,8 +5,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-ColorSensorFull::ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+ColorSensorFull::ColorSensorFull(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: interpreterBase::robotModel::robotParts::ColorSensorFull(info, port)
 	, mEngine(engine)

@@ -20,37 +20,37 @@ void GeneratorCustomizer::initialize()
 	factory()->initialize();
 }
 
-bool GeneratorCustomizer::isInitialNode(qReal::Id const &block) const
+bool GeneratorCustomizer::isInitialNode(const qReal::Id &block) const
 {
 	return block.type() == mDefaultInitialBlockType;
 }
 
-bool GeneratorCustomizer::isFinalNode(Id const &block) const
+bool GeneratorCustomizer::isFinalNode(const Id &block) const
 {
 	return block.type() == mDefaultFinalBlockType;
 }
 
-bool GeneratorCustomizer::isSubprogramCall(Id const &block) const
+bool GeneratorCustomizer::isSubprogramCall(const Id &block) const
 {
 	return block.type() == mDefaultSubprogramCallBlockType;
 }
 
-bool GeneratorCustomizer::isConditional(Id const &block) const
+bool GeneratorCustomizer::isConditional(const Id &block) const
 {
 	return block.type() == mDefaultConditionalBlockType;
 }
 
-bool GeneratorCustomizer::isLoop(Id const &block) const
+bool GeneratorCustomizer::isLoop(const Id &block) const
 {
 	return block.type() == mDefaultLoopBlockType;
 }
 
-bool GeneratorCustomizer::isSwitch(Id const &block) const
+bool GeneratorCustomizer::isSwitch(const Id &block) const
 {
 	return block.type() == mDefaultSwitchBlockType;
 }
 
-bool GeneratorCustomizer::isFork(Id const &block) const
+bool GeneratorCustomizer::isFork(const Id &block) const
 {
 	return block.type() == mDefaultForkBlockType;
 }
@@ -60,7 +60,7 @@ bool GeneratorCustomizer::isJoin(const Id &block) const
 	return block.type() == mDefaultJoinBlockType;
 }
 
-enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) const
+enums::semantics::Semantics GeneratorCustomizer::semanticsOf(const Id &block) const
 {
 	if (isConditional(block)) {
 		return enums::semantics::conditionalBlock;

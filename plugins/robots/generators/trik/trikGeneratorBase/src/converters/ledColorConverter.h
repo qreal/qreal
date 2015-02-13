@@ -9,7 +9,7 @@ namespace converters {
 class LedColorConverter : public generatorBase::converters::DynamicPathConverter
 {
 public:
-	explicit LedColorConverter(QString const &pathToTemplates);
+	explicit LedColorConverter(const QString &pathToTemplates);
 };
 
 }

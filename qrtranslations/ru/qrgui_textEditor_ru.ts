@@ -38,12 +38,12 @@
 <context>
     <name>qReal::text::TextManager</name>
     <message>
-        <location filename="../../qrgui/textEditor/textManager.cpp" line="224"/>
+        <location filename="../../qrgui/textEditor/textManager.cpp" line="223"/>
         <source>All files (*)</source>
         <translation>Все файлы (*)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/textEditor/textManager.cpp" line="230"/>
+        <location filename="../../qrgui/textEditor/textManager.cpp" line="229"/>
         <source>Save generated code</source>
         <translation>Сохранение кода</translation>
     </message>

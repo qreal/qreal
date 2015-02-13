@@ -17,8 +17,8 @@ int PlayToneBlock::duration()
 
 void PlayToneBlock::doJob(nxtKitInterpreter::robotModel::parts::NxtSpeaker &speaker)
 {
-	int const frequencyValue = eval<int>("Frequency");
-	int const durationValue = duration();
+	const int frequencyValue = eval<int>("Frequency");
+	const int durationValue = duration();
 	if (!errorsOccured()) {
 		speaker.playTone(frequencyValue, durationValue);
 	}

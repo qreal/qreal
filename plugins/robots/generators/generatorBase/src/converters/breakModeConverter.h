@@ -11,7 +11,7 @@ namespace converters {
 class BreakModeConverter : public EnumConverterBase
 {
 public:
-	explicit BreakModeConverter(QString const &pathToTemplates);
+	explicit BreakModeConverter(const QString &pathToTemplates);
 };
 
 }

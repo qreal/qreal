@@ -3,7 +3,7 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-TemplateParametrizedConverter::TemplateParametrizedConverter(QString const &pathToTemplates)
+TemplateParametrizedConverter::TemplateParametrizedConverter(const QString &pathToTemplates)
 	: TemplateParametrizedEntity(pathToTemplates)
 {
 }

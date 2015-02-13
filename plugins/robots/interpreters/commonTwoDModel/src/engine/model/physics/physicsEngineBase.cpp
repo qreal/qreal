@@ -4,7 +4,7 @@
 
 using namespace twoDModel::model::physics;
 
-PhysicsEngineBase::PhysicsEngineBase(WorldModel const &worldModel)
+PhysicsEngineBase::PhysicsEngineBase(const WorldModel &worldModel)
 	: mWorldModel(worldModel)
 {
 }

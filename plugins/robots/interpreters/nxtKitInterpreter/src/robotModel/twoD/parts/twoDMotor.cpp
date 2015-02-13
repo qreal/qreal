@@ -2,8 +2,8 @@
 
 using namespace nxtKitInterpreter::robotModel::twoD::parts;
 
-TwoDMotor::TwoDMotor(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+TwoDMotor::TwoDMotor(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: NxtMotor(info, port)
 	, mEngine(engine)

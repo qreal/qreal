@@ -24,12 +24,12 @@ bool LoopBlock::initNextBlocks()
 	bool iterationFound = false;
 	bool nextFound = false;
 
-	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
+	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
-	QString const iterationNotFoundError = tr("There must be an outgoing link with"\
+	const QString iterationNotFoundError = tr("There must be an outgoing link with"\
 			" property <b>Guard</b> set as <b>iteration</b>. See help, chapter <i>Programming</i>");
-	foreach (Id const &linkId, links) {
-		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
+	foreach (const Id &linkId, links) {
+		const Id targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId.isNull()) {
 			error(tr("Outgoing link is not connected"));
 			return false;

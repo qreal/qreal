@@ -1,6 +1,6 @@
 #include "qrtext/lua/luaToolbox.h"
 
-#include <qslog/QsLog.h>
+#include <QsLog.h>
 
 #include "qrtext/src/lua/luaLexer.h"
 #include "qrtext/src/lua/luaParser.h"
@@ -25,12 +25,12 @@ LuaToolbox::~LuaToolbox()
 
 QVariant LuaToolbox::interpret(QSharedPointer<Node> const &root)
 {
-	auto const result = mInterpreter->interpret(root, *mAnalyzer);
+	const auto result = mInterpreter->interpret(root, *mAnalyzer);
 	reportErrors();
 	return result;
 }
 
-void LuaToolbox::interpret(qReal::Id const &id, const QString &propertyName, const QString &code)
+void LuaToolbox::interpret(const qReal::Id &id, const QString &propertyName, const QString &code)
 {
 	interpret<int>(id, propertyName, code);
 }
@@ -40,7 +40,7 @@ void LuaToolbox::interpret(const QString &code)
 	interpret<int>(qReal::Id(), "", code);
 }
 
-QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, const QString &propertyName
+QSharedPointer<Node> const &LuaToolbox::parse(const qReal::Id &id, const QString &propertyName
 		, const QString &code)
 {
 	mErrors.clear();
@@ -74,7 +74,7 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, const QString
 	return mAstRoots[id][propertyName];
 }
 
-QSharedPointer<Node> LuaToolbox::ast(qReal::Id const &id, const QString &propertyName) const
+QSharedPointer<Node> LuaToolbox::ast(const qReal::Id &id, const QString &propertyName) const
 {
 	return mAstRoots[id][propertyName];
 }
@@ -92,7 +92,7 @@ QList<Error> const &LuaToolbox::errors() const
 void LuaToolbox::addIntrinsicFunction(const QString &name
 		, core::types::TypeExpression * const returnType
 		, QList<core::types::TypeExpression *> const &parameterTypes
-		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
+		, std::function<QVariant(const QList<QVariant> &)> const &semantic)
 {
 	QList<QSharedPointer<core::types::TypeExpression>> wrappedParameterTypes;
 	for (core::types::TypeExpression * const type : parameterTypes) {
@@ -119,12 +119,12 @@ QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> LuaToolbox::v
 	return mAnalyzer->variableTypes();
 }
 
-QStringList const &LuaToolbox::specialIdentifiers() const
+const QStringList &LuaToolbox::specialIdentifiers() const
 {
 	return mSpecialIdentifiers;
 }
 
-QStringList const &LuaToolbox::specialConstants() const
+const QStringList &LuaToolbox::specialConstants() const
 {
 	return mSpecialConstants;
 }
@@ -149,7 +149,7 @@ QVariant LuaToolbox::value(const QString &identifier) const
 	return mInterpreter->value(identifier);
 }
 
-void LuaToolbox::setVariableValue(const QString &name, const QString &initCode, QVariant const &value)
+void LuaToolbox::setVariableValue(const QString &name, const QString &initCode, const QVariant &value)
 {
 	if (!mInterpreter->identifiers().contains(name)) {
 		parse(qReal::Id(), "", initCode);
@@ -168,7 +168,7 @@ void LuaToolbox::clear()
 
 void LuaToolbox::reportErrors()
 {
-	for (qrtext::core::Error const &error : mErrors) {
+	for (const qrtext::core::Error &error : mErrors) {
 		if (error.severity() == Severity::internalError) {
 			QLOG_ERROR() << QString("Parser internal error at %1:%2 when parsing %3:%4: %5")
 					.arg(error.connection().line())

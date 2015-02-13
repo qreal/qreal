@@ -5,8 +5,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-Gyroscope::Gyroscope(DeviceInfo const &info
-		, PortInfo const &port
+Gyroscope::Gyroscope(const DeviceInfo &info
+		, const PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: robotParts::GyroscopeSensor(info, port)
 	, mEngine(engine)

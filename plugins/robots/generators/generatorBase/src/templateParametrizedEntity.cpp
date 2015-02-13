@@ -11,7 +11,7 @@ TemplateParametrizedEntity::TemplateParametrizedEntity()
 {
 }
 
-TemplateParametrizedEntity::TemplateParametrizedEntity(QString const &pathToTemplates)
+TemplateParametrizedEntity::TemplateParametrizedEntity(const QString &pathToTemplates)
 	: mPathToRoot(pathToTemplates)
 {
 }
@@ -20,14 +20,14 @@ TemplateParametrizedEntity::~TemplateParametrizedEntity()
 {
 }
 
-QString TemplateParametrizedEntity::readTemplate(QString const &pathFromRoot) const
+QString TemplateParametrizedEntity::readTemplate(const QString &pathFromRoot) const
 {
-	QString const fullPath = mPathToRoot + '/' + pathFromRoot;
+	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
 	QString result;
 
 	try {
 		result = utils::InFile::readAll(fullPath);
-	} catch (qReal::Exception const &exception) {
+	} catch (const qReal::Exception &exception) {
 		// Without this try-catch program would be failing every time when
 		// someone forgets or missprints tamplate name or unknown block with
 		// common generation rule will ty to read template
@@ -37,9 +37,9 @@ QString TemplateParametrizedEntity::readTemplate(QString const &pathFromRoot) co
 	return result;
 }
 
-QString TemplateParametrizedEntity::readTemplateIfExists(QString const &pathFromRoot, QString const &fallback) const
+QString TemplateParametrizedEntity::readTemplateIfExists(const QString &pathFromRoot, const QString &fallback) const
 {
-	QString const fullPath = mPathToRoot + '/' + pathFromRoot;
+	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
 	if (!QFile(fullPath).exists()) {
 		return fallback;
 	}
@@ -48,7 +48,7 @@ QString TemplateParametrizedEntity::readTemplateIfExists(QString const &pathFrom
 
 	try {
 		result = utils::InFile::readAll(fullPath);
-	} catch (qReal::Exception const &) {
+	} catch (const qReal::Exception &) {
 		// Without this try-catch program would be failing every time when
 		// someone forgets or missprints tamplate name or unknown block with
 		// common generation rule will ty to read template
@@ -62,7 +62,7 @@ QString TemplateParametrizedEntity::pathToRoot() const
 	return mPathToRoot;
 }
 
-void TemplateParametrizedEntity::setPathToTemplates(QString const &pathTemplates)
+void TemplateParametrizedEntity::setPathToTemplates(const QString &pathTemplates)
 {
 	mPathToRoot = pathTemplates;
 }

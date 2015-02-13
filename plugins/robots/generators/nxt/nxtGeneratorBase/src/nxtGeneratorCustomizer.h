@@ -9,11 +9,11 @@ namespace nxt {
 class NxtGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
-	NxtGeneratorCustomizer(qrRepo::RepoApi const &repo
+	NxtGeneratorCustomizer(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, QString const &generatorName);
+			, const QString &generatorName);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 

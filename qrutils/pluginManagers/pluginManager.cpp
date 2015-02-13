@@ -3,13 +3,13 @@
 using namespace qReal;
 
 PluginManager::PluginManager(
-		QString const &applicationDirPath
-		, QString const &additionalPart)
+		const QString &applicationDirPath
+		, const QString &additionalPart)
 	: mPluginManagerLoader(details::PluginManagerImplementation(applicationDirPath, additionalPart))
 {
 }
 
-QString PluginManager::unloadPlugin(QString const &pluginName)
+QString PluginManager::unloadPlugin(const QString &pluginName)
 {
 	return mPluginManagerLoader.unloadPlugin(pluginName);
 }

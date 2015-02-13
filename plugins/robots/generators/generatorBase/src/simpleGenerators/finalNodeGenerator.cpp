@@ -3,9 +3,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-FinalNodeGenerator::FinalNodeGenerator(qrRepo::RepoApi const &repo
+FinalNodeGenerator::FinalNodeGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, bool inMainDiagram
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id

@@ -215,11 +215,11 @@ void XPM::Init(const char *const *linesForm) {
 	height = 1;
 	width = 1;
 	nColours = 1;
-	data = NULL;
+	data = nullptr;
 	codeTransparent = ' ';
-	codes = NULL;
-	colours = NULL;
-	lines = NULL;
+	codes = nullptr;
+	colours = nullptr;
+	lines = nullptr;
 	if (!linesForm)
 		return;
 
@@ -523,7 +523,7 @@ RGBAImage *RGBAImageSet::Get(int ident) {
 	if (it != images.end()) {
 		return it->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 /// Give the largest height of the set.

@@ -11,11 +11,19 @@ namespace details {
 class SingleXmlSerializer
 {
 public:
-	static void exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects);
-	static void exportDiagram(qReal::Id const &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
-	static void exportElement(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
-	static void exportChildren(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
-	static void exportProperties(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportToXml(const QString &targetFile, QHash<qReal::Id, Object*> const &objects);
+
+	static void exportDiagram(const qReal::Id &diagramId, QDomDocument &doc, QDomElement &root
+			, QHash<qReal::Id, Object*> const &objects);
+
+	static void exportElement(const qReal::Id &id, QDomDocument &doc, QDomElement &root
+			, QHash<qReal::Id, Object*> const &objects);
+
+	static void exportChildren(const qReal::Id &id, QDomDocument &doc, QDomElement &root
+			, QHash<qReal::Id, Object*> const &objects);
+
+	static void exportProperties(const qReal::Id &id, QDomDocument &doc, QDomElement &root
+			, QHash<qReal::Id, Object*> const &objects);
 
 private:
 	/// Creating is prohibited, utility class instances can not be created.

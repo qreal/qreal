@@ -3,7 +3,7 @@
 using namespace trikKitInterpreter::robotModel::twoD::parts;
 using namespace interpreterBase::robotModel;
 
-ColorSensor::ColorSensor(DeviceInfo const &info, PortInfo const &port)
+ColorSensor::ColorSensor(const DeviceInfo &info, const PortInfo &port)
 	: robotModel::parts::TrikColorSensor(info, port)
 {
 }

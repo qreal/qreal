@@ -19,10 +19,10 @@ class AstVisitorInterface
 public:
 	virtual ~AstVisitorInterface() {}
 
-	virtual void visit(ast::Node const &node)           { Q_UNUSED(node); }
-	virtual void visit(ast::Expression const &node)     { Q_UNUSED(node); }
-	virtual void visit(ast::BinaryOperator const &node) { Q_UNUSED(node); }
-	virtual void visit(ast::UnaryOperator const &node)  { Q_UNUSED(node); }
+	virtual void visit(const ast::Node &node)           { Q_UNUSED(node); }
+	virtual void visit(const ast::Expression &node)     { Q_UNUSED(node); }
+	virtual void visit(const ast::BinaryOperator &node) { Q_UNUSED(node); }
+	virtual void visit(const ast::UnaryOperator &node)  { Q_UNUSED(node); }
 };
 
 }

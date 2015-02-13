@@ -8,10 +8,10 @@ namespace gestures {
 class Sorting
 {
 public:
-	static Key sortPicture(Key const &unsortedKey)
+	static Key sortPicture(const Key &unsortedKey)
 	{
 		Key key = unsortedKey;
-		int const size = key.size();
+		const int size = key.size();
 		for (int i = 0; i < size - 1; i++) {
 			for (int j = 0; j < size - i - 1; j++) {
 				if (key.at(j).first > key.at(j + 1).first

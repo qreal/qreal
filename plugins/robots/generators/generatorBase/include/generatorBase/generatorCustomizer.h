@@ -28,17 +28,19 @@ enum Semantics {
 class ROBOTS_GENERATOR_EXPORT GeneratorCustomizer
 {
 public:
+	virtual ~GeneratorCustomizer() {}
+
 	/// Implementation must tell if block with given id has initial node semantics
-	virtual bool isInitialNode(qReal::Id const &block) const;
+	virtual bool isInitialNode(const qReal::Id &block) const;
 
 	/// Implementation must tell if block with given id has final node semantics
-	virtual bool isFinalNode(qReal::Id const &block) const;
+	virtual bool isFinalNode(const qReal::Id &block) const;
 
 	/// Implementation must tell if block with given id calls some new routine
-	virtual bool isSubprogramCall(qReal::Id const &block) const;
+	virtual bool isSubprogramCall(const qReal::Id &block) const;
 
 	/// Returns semantics type of the given block
-	enums::semantics::Semantics semanticsOf(qReal::Id const &block) const;
+	enums::semantics::Semantics semanticsOf(const qReal::Id &block) const;
 
 	/// Initializes everything that couldn`t be initialized in constructor
 	/// (for example, everything about pure virtual methods)
@@ -52,28 +54,28 @@ protected:
 	GeneratorCustomizer();
 
 	/// Implementation must tell if block with given id has if-block semantics
-	virtual bool isConditional(qReal::Id const &block) const;
+	virtual bool isConditional(const qReal::Id &block) const;
 
 	/// Implementation must tell if block with given id has loop semantics
-	virtual bool isLoop(qReal::Id const &block) const;
+	virtual bool isLoop(const qReal::Id &block) const;
 
 	/// Implementation must tell if block with given id has switch semantics
-	virtual bool isSwitch(qReal::Id const &block) const;
+	virtual bool isSwitch(const qReal::Id &block) const;
 
 	/// Implementation must tell if block with given id has fork semantics
-	virtual bool isFork(qReal::Id const &block) const;
+	virtual bool isFork(const qReal::Id &block) const;
 
 	virtual bool isJoin(const qReal::Id &block) const;
 
 private:
-	qReal::Id const mDefaultInitialBlockType;
-	qReal::Id const mDefaultFinalBlockType;
-	qReal::Id const mDefaultConditionalBlockType;
-	qReal::Id const mDefaultLoopBlockType;
-	qReal::Id const mDefaultSwitchBlockType;
-	qReal::Id const mDefaultForkBlockType;
-	qReal::Id const mDefaultJoinBlockType;
-	qReal::Id const mDefaultSubprogramCallBlockType;
+	const qReal::Id mDefaultInitialBlockType;
+	const qReal::Id mDefaultFinalBlockType;
+	const qReal::Id mDefaultConditionalBlockType;
+	const qReal::Id mDefaultLoopBlockType;
+	const qReal::Id mDefaultSwitchBlockType;
+	const qReal::Id mDefaultForkBlockType;
+	const qReal::Id mDefaultJoinBlockType;
+	const qReal::Id mDefaultSubprogramCallBlockType;
 };
 
 }

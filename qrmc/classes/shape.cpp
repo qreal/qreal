@@ -12,7 +12,7 @@
 
 using namespace qrmc;
 
-Shape::Shape(QString const &shape) : mNode(NULL)
+Shape::Shape(const QString &shape) : mNode(nullptr)
 {
 	init(shape)	;
 }
@@ -26,7 +26,7 @@ void Shape::setNode(GraphicType *node)
 	mNode = node;
 }
 
-void Shape::init(QString const &shape)
+void Shape::init(const QString &shape)
 {
 	if (shape.isEmpty())
 		return;
@@ -52,7 +52,7 @@ void Shape::init(QString const &shape)
 	initPorts(graphics);
 }
 
-void Shape::initLabels(QDomElement const &graphics)
+void Shape::initLabels(const QDomElement &graphics)
 {
 	int count = 1;
 	for (QDomElement element = graphics.firstChildElement("labels").firstChildElement("label");
@@ -71,7 +71,7 @@ void Shape::initLabels(QDomElement const &graphics)
 
 }
 
-void Shape::initPorts(QDomElement const &graphics)
+void Shape::initPorts(const QDomElement &graphics)
 {
 	QDomElement portsElement = graphics.firstChildElement("ports");
 	if (portsElement.isNull()) {
@@ -83,7 +83,7 @@ void Shape::initPorts(QDomElement const &graphics)
 	return;
 }
 
-void Shape::initPointPorts(QDomElement const &portsElement)
+void Shape::initPointPorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 		!portElement.isNull();
@@ -99,7 +99,7 @@ void Shape::initPointPorts(QDomElement const &portsElement)
 	return;
 }
 
-void Shape::initLinePorts(QDomElement const &portsElement)
+void Shape::initLinePorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 		!portElement.isNull();
@@ -201,7 +201,7 @@ void Shape::generateSdf() const
 	QDir dir;
 	changeDir(dir);
 
-	QString const fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
+	const QString fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
@@ -243,7 +243,7 @@ bool Shape::hasPicture() const
 	return !mPicture.isEmpty();
 }
 
-QString Shape::generateResourceLine(QString const &resourceTemplate) const
+QString Shape::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString result;
 
