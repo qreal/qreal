@@ -156,7 +156,28 @@ SceneAPI *ScriptAPI::sceneAPI()
 
 void ScriptAPI::scroll(QScrollArea *area, QWidget *widget)
 {
-	area->ensureWidgetVisible(widget, 0, 0);
+	qDebug()<<area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos());
+	qDebug()<<widget->parentWidget()->mapToGlobal(widget->pos());
+	qDebug()<<area->verticalScrollBar()->singleStep();
+	qDebug()<<area->verticalScrollBar()->maximum();
+	qDebug()<<area->verticalScrollBar()->minimum();
+
+	mVirtualCursor->moveTo(area->verticalScrollBar(), 1000);
+	int const xcoord = area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos()).x();
+	int const ycoord = widget->parentWidget()->mapToGlobal(widget->pos()).y();
+
+	QPoint target = mMainWindow->mapFromGlobal(QPoint(xcoord, ycoord));
+
+	QPropertyAnimation *anim = new QPropertyAnimation(area->verticalScrollBar(), "value");
+	anim->setDuration(2000);
+	anim->setStartValue(area->verticalScrollBar()->value());
+	anim->setEndValue(widget->pos().y());
+
+	connect (anim, &QPropertyAnimation::finished, this, &ScriptAPI::breakWaiting);
+
+	anim->start();
+	mVirtualCursor->moveToPoint(target.x(), target.y(), 2000);
+	anim->deleteLater();
 }
 
 QScriptValue ScriptAPI::ui()

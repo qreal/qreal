@@ -21,7 +21,7 @@ public:
 	/// Constructor.
 	/// @param diagram Id of a diagram to which we will add new node.
 	/// @param editorManagerProxy Editor manager.
-	explicit AddNodeDialog(Id const &diagram, EditorManagerInterface const &editorManagerProxy, QWidget *parent = 0);
+	explicit AddNodeDialog(const Id &diagram, const EditorManagerInterface &editorManagerProxy, QWidget *parent = 0);
 
 	/// Destructor.
 	~AddNodeDialog();
@@ -36,9 +36,9 @@ private slots:
 
 private:
 	Ui::AddNodeDialog *mUi;
-	Id const mDiagram;
+	const Id mDiagram;
 	QString mNodeName;
-	EditorManagerInterface const &mEditorManagerProxy;
+	const EditorManagerInterface &mEditorManagerProxy;
 	RestoreElementDialog *mRestoreElementDialog;  // Doesn`t have ownership
 };
 

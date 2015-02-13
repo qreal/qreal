@@ -5,8 +5,8 @@
 class NameNormalizer
 {
 public:
-	static QString normalize(QString const &name);
+	static QString normalize(const QString &name);
 
 private:
-	static QString upperFirst(QString const &string);
+	static QString upperFirst(const QString &string);
 };

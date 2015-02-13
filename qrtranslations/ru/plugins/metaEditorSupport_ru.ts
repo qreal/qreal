@@ -45,7 +45,7 @@
         <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="45"/>
         <source>no directory to generated code or path to QReal Source Files</source>
         <oldsource>no directory to generated code or relative path to QReal Source Files</oldsource>
-        <translation type="unfinished">не указана папка для сгенерированного редактора или относительный путь до исходных файлов QReal</translation>
+        <translation>не указана папка для сгенерированного редактора или относительный путь до исходных файлов QReal</translation>
     </message>
     <message>
         <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="107"/>
@@ -53,30 +53,40 @@
         <translation>Неверное имя файла</translation>
     </message>
     <message>
-        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="262"/>
+        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="265"/>
         <source>not filled name/importedFrom</source>
         <translation>Не заполнено имя</translation>
     </message>
     <message>
-        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="344"/>
+        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="347"/>
         <source>Incorrect label type</source>
         <translation>Некорректый тип записи</translation>
     </message>
     <message>
-        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="669"/>
+        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="672"/>
         <source>not filled %1
 </source>
         <translation>Не заполнено поле %1</translation>
     </message>
     <message>
-        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="684"/>
+        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="687"/>
         <source>wrong %1 for possible edge: must be port type
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Неверный элемент %1 для возможной связи: должен быть тип порта</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="711"/>
+        <source>Root node for diagram %1 (which is %2) shall not be abstract (i.e. have &apos;shape&apos; property)</source>
+        <translation>Корневой узел для диаграммы %1 (здесь он %2) не может быть абстрактным (то есть должен иметь свойство &apos;shape&apos;)</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="720"/>
+        <source>Root node for diagram %1 (which is %2) shall exist</source>
+        <translation>Корневой узел для диаграммы %1 (здесь он %2) должен существовать</translation>
     </message>
     <message>
         <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="87"/>
-        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="677"/>
+        <location filename="../../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp" line="680"/>
         <source>wrong name
 </source>
         <translation>Неверное имя</translation>
@@ -102,7 +112,7 @@
     <message>
         <location filename="../../../plugins/metaEditor/metaEditorSupport/metaEditorSupportPlugin.cpp" line="45"/>
         <source>Generate editor (qrmc)</source>
-        <translation type="unfinished">Генерировать редактор (QRMC)</translation>
+        <translation>Генерировать редактор (QRMC)</translation>
     </message>
     <message>
         <source>Parse editor xml</source>
@@ -168,12 +178,12 @@
     <message>
         <location filename="../../../plugins/metaEditor/metaEditorSupport/metaEditorSupportPlugin.cpp" line="286"/>
         <source>cannot qmake new editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Не могу выполнить qmake для нового редактора</translation>
     </message>
     <message>
         <location filename="../../../plugins/metaEditor/metaEditorSupport/metaEditorSupportPlugin.cpp" line="288"/>
         <source>cannot make new editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Не могу выполнить make для нового редактора</translation>
     </message>
     <message>
         <source>cannot unload plugin</source>

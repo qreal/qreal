@@ -30,23 +30,23 @@ public:
 	static void disableAll();
 	static void setTarget(TraceTarget target);
 
-	static void debug(TracerEnum category, QString const &methodName, QString const &message);
+	static void debug(TracerEnum category, const QString &methodName, const QString &message);
 
 private:
 	static Tracer *mInstance;
 	QVector<bool> mCategories;
 	TraceTarget mTarget;
-	QString const mLogPath;
+	const QString mLogPath;
 
 	Tracer();
 	static Tracer *instance();
 
-	void enableCategoryImpl(TracerEnum const &category);
-	void disableCategoryImpl(TracerEnum const &category);
+	void enableCategoryImpl(const TracerEnum &category);
+	void disableCategoryImpl(const TracerEnum &category);
 	void enableAllImpl();
 	void disableAllImpl();
 
-	void debugImpl(TracerEnum const &category, QString const &methodName, QString const &message);
+	void debugImpl(const TracerEnum &category, const QString &methodName, const QString &message);
 };
 
 }

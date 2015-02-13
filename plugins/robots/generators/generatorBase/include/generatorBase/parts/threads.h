@@ -12,15 +12,15 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Threads : public TemplateParametrizedEntity
 {
 public:
-	explicit Threads(QString const &pathToTemplates);
+	explicit Threads(const QString &pathToTemplates);
 
 	/// Must be called each time when generator gets into the block with the
 	/// fork semantics for every block that start new thread.
 	/// @param id The initial node of the thread
-	void registerThread(qReal::Id const &id);
+	void registerThread(const qReal::Id &id);
 
 	/// Must be called each time when semantic tree for some thread was built.
-	void threadProcessed(qReal::Id const &id, semantics::SemanticTree &tree);
+	void threadProcessed(const qReal::Id &id, semantics::SemanticTree &tree);
 
 	/// Returns true if not every registered semantic trees of treads was built.
 	bool hasUnprocessedThreads() const;
@@ -38,10 +38,10 @@ public:
 	QString generateDeclarations() const;
 
 	/// Generates and returns the code of the section with threads code.
-	QString generateImplementations() const;
+	QString generateImplementations(const QString &indentString) const;
 
 private:
-	QString name(semantics::SemanticTree const *tree) const;
+	QString name(const semantics::SemanticTree *tree) const;
 
 	QSet<qReal::Id> mUnprocessedThreads;
 	QMap<qReal::Id, semantics::SemanticTree *> mProcessedThreads;

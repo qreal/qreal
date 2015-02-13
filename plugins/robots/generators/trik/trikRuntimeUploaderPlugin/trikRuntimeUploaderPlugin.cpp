@@ -25,30 +25,31 @@ QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
 void TrikRuntimeUploaderPlugin::uploadRuntime()
 {
 	QProcess scpProcess;
-	QString const openConnection = QString("\"open scp://root@%1\"")
+	const QString openConnection = QString("\"open scp://root@%1\"")
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString());
 
-	QString const killTrikGui = "\"call killall trikGui\"";
-	QString const removePermissions = "\"call chmod a-x trik/trik*\"";
-	QString const restorePermissions = "\"call chmod a+x trik/trik*\"";
-	QString const restartTrikGui = "\"call cd trik\" \"call ./trikGui -qws &\"";
+	const QString killTrikGui = "\"call killall trikGui\"";
+	const QString createTrikDirectory = "\"call mkdir -p /home/root/trik\"";
+	const QString removePermissions = "\"call chmod a-x trik/trik*\"";
+	const QString restorePermissions = "\"call chmod a+x trik/trik*\"";
+	const QString restartTrikGui = "\"call /bin/sh -c '/etc/trik/trikGui.sh &'\"";
 
-	QString const moveCommand = " \"synchronize remote trikRuntime /home/root/trik\"";
+	const QString moveCommand = " \"synchronize remote trikRuntime /home/root/trik\"";
 
-	QString const rawWinscpPath = qReal::SettingsManager::value("WinScpPath").toString();
-	QString const winscpPath = rawWinscpPath.startsWith("./")
+	const QString rawWinscpPath = qReal::SettingsManager::value("WinScpPath").toString();
+	const QString winscpPath = rawWinscpPath.startsWith("./")
 			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
 			: rawWinscpPath;
 
-	QString const command = QString("\"%1\" /command %2 %3 %4 %5 %6 %7")
+	const QString command = QString("\"%1\" /command %2 %3 %4 %5 %6 %7 %8")
 			.arg(winscpPath)
 			.arg(openConnection)
+			.arg(createTrikDirectory)
 			.arg(removePermissions)
 			.arg(killTrikGui)
 			.arg(moveCommand)
 			.arg(restorePermissions)
 			.arg(restartTrikGui);
-
 
 	if (!scpProcess.startDetached(command + " \"exit\" ")) {
 		mMainWindowInterface->errorReporter()->addError(
@@ -64,4 +65,9 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 generatorBase::MasterGeneratorBase *TrikRuntimeUploaderPlugin::masterGenerator()
 {
 	return nullptr;
+}
+
+qReal::text::LanguageInfo TrikRuntimeUploaderPlugin::language() const
+{
+	return qReal::text::Languages::textFileInfo("*.txt");
 }

@@ -2,18 +2,19 @@
 
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
 namespace qrtext {
 namespace core {
 
 /// Elementary parser for parsing optional parts in form of A = B?. Returns result of a parser if optional part is
-/// present or nullptr if not.
+/// present or TemporaryDiscardableNode if not.
 template<typename TokenType>
 class OptionalParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parser for optional part.
-	OptionalParser(ParserRef<TokenType> const &parser)
+	OptionalParser(const ParserRef<TokenType> &parser)
 		: mParser(parser)
 	{
 	}
@@ -25,7 +26,7 @@ public:
 			return mParser->parse(tokenStream, parserContext);
 		}
 
-		return wrap(nullptr);
+		return wrap(new TemporaryDiscardableNode());
 	}
 
 	QSet<TokenType> first() const override

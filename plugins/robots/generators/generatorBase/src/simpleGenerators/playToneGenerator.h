@@ -9,9 +9,9 @@ namespace simple {
 class PlayToneGenerator : public BindingGenerator
 {
 public:
-	PlayToneGenerator(qrRepo::RepoApi const &repo
+	PlayToneGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

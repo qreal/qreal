@@ -10,41 +10,41 @@ namespace qReal {
 class GraphicalModelAssistInterface : public details::ModelsAssistInterface
 {
 public:
-	virtual qrRepo::GraphicalRepoApi const &graphicalRepoApi() const = 0;
+	virtual const qrRepo::GraphicalRepoApi &graphicalRepoApi() const = 0;
 	virtual qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const = 0;
-	virtual Id createElement(Id const &parent, Id const &type) = 0;
-	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel
-		, QString const &name, QPointF const &position
-		, Id const &preferedLogicalId = Id()) = 0;
-	virtual Id copyElement(Id const &source) = 0;
-	virtual IdList children(Id const &element) const = 0;
-	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position) = 0;
-	virtual void copyProperties(Id const &dest, Id const &src) = 0;
-	virtual QMap<QString, QVariant> properties(Id const &id) = 0;
-	virtual IdList temporaryRemovedLinksFrom(Id const &elem) const = 0;
-	virtual IdList temporaryRemovedLinksTo(Id const &elem) const = 0;
-	virtual IdList temporaryRemovedLinksNone(Id const &elem) const = 0;
-	virtual void removeTemporaryRemovedLinks(Id const &elem) = 0;
+	virtual Id createElement(const Id &parent, const Id &type) = 0;
+	virtual Id createElement(const Id &parent, const Id &id, bool isFromLogicalModel
+		, const QString &name, const QPointF &position
+		, const Id &preferedLogicalId = Id()) = 0;
+	virtual Id copyElement(const Id &source) = 0;
+	virtual IdList children(const Id &element) const = 0;
+	virtual void changeParent(const Id &element, const Id &parent, const QPointF &position) = 0;
+	virtual void copyProperties(const Id &dest, const Id &src) = 0;
+	virtual QMap<QString, QVariant> properties(const Id &id) = 0;
+	virtual IdList temporaryRemovedLinksFrom(const Id &elem) const = 0;
+	virtual IdList temporaryRemovedLinksTo(const Id &elem) const = 0;
+	virtual IdList temporaryRemovedLinksNone(const Id &elem) const = 0;
+	virtual void removeTemporaryRemovedLinks(const Id &elem) = 0;
 
-	virtual void setConfiguration(Id const &elem, QPolygon const &newValue) = 0;
-	virtual QPolygon configuration(Id const &elem) const = 0;
+	virtual void setConfiguration(const Id &elem, const QPolygon &newValue) = 0;
+	virtual QPolygon configuration(const Id &elem) const = 0;
 
-	virtual void setPosition(Id const &elem, QPointF const &newValue) = 0;
-	virtual QPointF position(Id const &elem) const = 0;
+	virtual void setPosition(const Id &elem, const QPointF &newValue) = 0;
+	virtual QPointF position(const Id &elem) const = 0;
 
-	virtual void setToPort(Id const &elem, qreal const &newValue) = 0;
-	virtual qreal toPort(Id const &elem) const = 0;
+	virtual void setToPort(const Id &elem, const qreal &newValue) = 0;
+	virtual qreal toPort(const Id &elem) const = 0;
 
-	virtual void setFromPort(Id const &elem, qreal const &newValue) = 0;
-	virtual qreal fromPort(Id const &elem) const = 0;
+	virtual void setFromPort(const Id &elem, const qreal &newValue) = 0;
+	virtual qreal fromPort(const Id &elem) const = 0;
 
-	virtual void setToolTip(Id const &elem, QString const &newValue) = 0;
-	virtual QString toolTip(Id const &elem) const = 0;
+	virtual void setToolTip(const Id &elem, const QString &newValue) = 0;
+	virtual QString toolTip(const Id &elem) const = 0;
 
-	virtual Id logicalId(Id const &elem) const = 0;
-	virtual IdList graphicalIdsByLogicalId(Id const &logicalId) const = 0;
+	virtual Id logicalId(const Id &elem) const = 0;
+	virtual IdList graphicalIdsByLogicalId(const Id &logicalId) const = 0;
 
-	virtual bool isGraphicalId(Id const &id) const = 0;
+	virtual bool isGraphicalId(const Id &id) const = 0;
 };
 
 }

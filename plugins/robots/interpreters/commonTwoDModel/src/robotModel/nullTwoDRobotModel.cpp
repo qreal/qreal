@@ -2,7 +2,7 @@
 
 using namespace twoDModel::robotModel;
 
-NullTwoDRobotModel::NullTwoDRobotModel(QString const &robotId)
+NullTwoDRobotModel::NullTwoDRobotModel(const QString &robotId)
 	: TwoDRobotModel(robotId)
 {
 }

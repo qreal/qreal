@@ -29,7 +29,10 @@ public:
 	/// Moves virtual cursor to target with type for duration ms.
 	Q_INVOKABLE void moveTo(QWidget const *target, int duration);
 
-	/// Moves virtual cursor to target coordinated with type for duration ms.
+	/// Moves virtual cursor to target point in parent coordinate system for duration ms.
+	Q_INVOKABLE void moveToPoint(int const x, int const y, int const duration);
+
+	/// Moves virtual cursor to center of target rectangle for duration ms.
 	Q_INVOKABLE void moveToRect(QRect const &target, int duration);
 
 	/// Moves virtual cursor to pos on scene with type for duration ms.

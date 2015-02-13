@@ -2,11 +2,15 @@
 
 #include <QtGui/QSyntaxHighlighter>
 
+namespace qReal {
+namespace text {
+
 class TextHighlighter : public QSyntaxHighlighter
 {
-	public:
-		TextHighlighter(QTextDocument *document);
-		void highlightBlock(QString const &text);
+public:
+	TextHighlighter(QTextDocument *document);
+	void highlightBlock(const QString &text);
+
 private:
 	struct HighlightingRule
 	{
@@ -26,3 +30,6 @@ private:
 	QTextCharFormat mFunctionFormat;
 	QTextCharFormat mFigitsFormat;
 };
+
+}
+}

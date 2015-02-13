@@ -1,4 +1,4 @@
-while (!brick.mailbox().hasMessages()) {
-	brick.wait(100);
+while (!mailbox.hasMessages()) {
+	script.wait(100);
 }
-@@VARIABLE@@ = brick.mailbox().receive();
+@@VARIABLE@@ = mailbox.receive();

@@ -373,8 +373,6 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setConnections(attribute, nodeId);
 		else if (attribute.tagName() == "usages")
 			setUsages(attribute, nodeId);
-		else if (attribute.tagName() == "pin")
-			setPin(nodeId);
 		else if (attribute.tagName() == "action")
 			setAction(nodeId);
 		else if (attribute.tagName() == "bonusContextMenuFields")
@@ -563,11 +561,6 @@ void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId
 		if (possibleEdge.tagName() == "possibleEdge")
 			initPossibleEdge(possibleEdge, elementId);
 	}
-}
-
-void XmlParser::setPin(const Id &elementId)
-{
-	mApi.setProperty(elementId, "isPin", "true");
 }
 
 void XmlParser::setAction(const Id &elementId)

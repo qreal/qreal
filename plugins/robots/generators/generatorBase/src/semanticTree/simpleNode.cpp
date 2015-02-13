@@ -6,27 +6,27 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
+SimpleNode::SimpleNode(const Id &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
 	, mSyntheticBinding(noSytheticBinding)
 {
 }
 
-QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	switch (mSyntheticBinding) {
 	case breakNode:
 		return utils::StringUtils::addIndent(customizer.factory()->breakGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	case continueNode:
 		return utils::StringUtils::addIndent(customizer.factory()->continueGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	case gotoNode:
 		return utils::StringUtils::addIndent(customizer.factory()->gotoSimpleGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	default:
 		return utils::StringUtils::addIndent(customizer.factory()->simpleGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	}
 }
 

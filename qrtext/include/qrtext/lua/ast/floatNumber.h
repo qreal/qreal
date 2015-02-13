@@ -10,7 +10,7 @@ namespace ast {
 class QRTEXT_EXPORT FloatNumber : public Number
 {
 public:
-	FloatNumber(QString const &stringRepresentation)
+	FloatNumber(const QString &stringRepresentation)
 		: Number(stringRepresentation)
 	{
 	}

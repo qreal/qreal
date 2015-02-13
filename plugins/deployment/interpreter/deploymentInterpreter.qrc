@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="/">
+		<file>images/stop_deployment.png</file>
+		<file>images/run_deployment.png</file>
+	</qresource>
+</RCC>

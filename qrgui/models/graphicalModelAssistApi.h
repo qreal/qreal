@@ -4,11 +4,11 @@
 
 #include <qrkernel/ids.h>
 
-#include "models/modelsDeclSpec.h"
-#include "models/details/graphicalModel.h"
-#include "models/details/graphicalPartModel.h"
-#include "models/details/modelsAssistApi.h"
-#include "plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
+#include "qrgui/models/modelsDeclSpec.h"
+#include "qrgui/models/details/graphicalModel.h"
+#include "qrgui/models/details/graphicalPartModel.h"
+#include "qrgui/models/details/modelsAssistApi.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
 namespace qReal {
 
@@ -28,65 +28,64 @@ public:
 	GraphicalModelAssistApi(
 			details::GraphicalModel &graphicalModel
 			, details::GraphicalPartModel &graphicalPartModel
-			, EditorManagerInterface const &editorManagerInterface
+			, const EditorManagerInterface &editorManagerInterface
 			);
 
 	void setModel(details::GraphicalModel * const graphicalModel);
 
-	/// Interface for accessing metamodel information.
-	EditorManagerInterface const &editorManagerInterface() const;
+	const EditorManagerInterface &editorManagerInterface() const override;
 
-	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const override;
+	const qrRepo::GraphicalRepoApi &graphicalRepoApi() const override;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const override;
-	Id createElement(Id const &parent, Id const &type) override;
-	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name
-			, QPointF const &position, Id const &preferedLogicalId = Id()) override;
-	Id copyElement(Id const &source) override;
-	IdList children(Id const &element) const override;
-	void changeParent(Id const &element, Id const &parent, QPointF const &position) override;
+	Id createElement(const Id &parent, const Id &type) override;
+	Id createElement(const Id &parent, const Id &id, bool isFromLogicalModel, const QString &name
+			, const QPointF &position, const Id &preferedLogicalId = Id()) override;
+	Id copyElement(const Id &source) override;
+	IdList children(const Id &element) const override;
+	void changeParent(const Id &element, const Id &parent, const QPointF &position) override;
 
-	void copyProperties(Id const &dest, Id const &src) override;
-	QMap<QString, QVariant> properties(Id const &id) override;
-	void setProperties(Id const &id, QMap<QString, QVariant> const &properties);
+	void copyProperties(const Id &dest, const Id &src) override;
+	QMap<QString, QVariant> properties(const Id &id) override;
+	void setProperties(const Id &id, QMap<QString, QVariant> const &properties);
 
-	void stackBefore(Id const &element, Id const &sibling);
+	void stackBefore(const Id &element, const Id &sibling);
 
-	IdList temporaryRemovedLinksFrom(Id const &elem) const override;
-	IdList temporaryRemovedLinksTo(Id const &elem) const override;
-	IdList temporaryRemovedLinksNone(Id const &elem) const override;
-	void removeTemporaryRemovedLinks(Id const &elem) override;
+	IdList temporaryRemovedLinksFrom(const Id &elem) const override;
+	IdList temporaryRemovedLinksTo(const Id &elem) const override;
+	IdList temporaryRemovedLinksNone(const Id &elem) const override;
+	void removeTemporaryRemovedLinks(const Id &elem) override;
 
-	void setConfiguration(Id const &elem, QPolygon const &newValue);
-	QPolygon configuration(Id const &elem) const override;
+	void setConfiguration(const Id &elem, const QPolygon &newValue);
+	QPolygon configuration(const Id &elem) const override;
 
-	void setPosition(Id const &elem, QPointF const &newValue) override;
-	QPointF position(Id const &elem) const override;
+	void setPosition(const Id &elem, const QPointF &newValue) override;
+	QPointF position(const Id &elem) const override;
 
-	void setToPort(Id const &elem, qreal const &newValue);
-	qreal toPort(Id const &elem) const override;
+	void setToPort(const Id &elem, const qreal &newValue);
+	qreal toPort(const Id &elem) const override;
 
-	void setFromPort(Id const &elem, qreal const &newValue);
-	qreal fromPort(Id const &elem) const override;
+	void setFromPort(const Id &elem, const qreal &newValue);
+	qreal fromPort(const Id &elem) const override;
 
-	void setName(Id const &elem, QString const &newValue) override;
-	QString name(Id const &elem) const override;
+	void setName(const Id &elem, const QString &newValue) override;
+	QString name(const Id &elem) const override;
 
-	void setToolTip(Id const &elem, QString const &newValue) override;
-	QString toolTip(Id const &elem) const override;
+	void setToolTip(const Id &elem, const QString &newValue) override;
+	QString toolTip(const Id &elem) const override;
 
-	Id logicalId(Id const &elem) const override;
-	IdList graphicalIdsByLogicalId(Id const &logicalId) const override;
+	Id logicalId(const Id &elem) const override;
+	IdList graphicalIdsByLogicalId(const Id &logicalId) const override;
 
-	bool isGraphicalId(Id const &id) const override;
+	bool isGraphicalId(const Id &id) const override;
 
-	void setTo(Id const &elem, Id const &newValue) override;
-	Id to(Id const &elem) const override;
+	void setTo(const Id &elem, const Id &newValue) override;
+	Id to(const Id &elem) const override;
 
-	void setFrom(Id const &elem, Id const &newValue) override;
-	Id from(Id const &elem) const override;
+	void setFrom(const Id &elem, const Id &newValue) override;
+	Id from(const Id &elem) const override;
 
-	QModelIndex indexById(Id const &id) const override;
-	Id idByIndex(QModelIndex const &index) const override;
+	QModelIndex indexById(const Id &id) const override;
+	Id idByIndex(const QModelIndex &index) const override;
 	QPersistentModelIndex rootIndex() const override;
 	Id rootId() const override;
 
@@ -94,49 +93,52 @@ public:
 	int childrenOfRootDiagram() const override;
 	int childrenOfDiagram(const Id &parent) const override;
 
-	void removeElement(Id const &graphicalId) override;
+	void removeElement(const Id &graphicalId) override;
 
 	/// Returns true, if a label already exists in repository.
 	/// @param graphicalId - id of an element.
 	/// @param index - index of a part, which uniquely identifies label in an element.
-	bool hasLabel(Id const &graphicalId, int index);
+	bool hasLabel(const Id &graphicalId, int index);
 
 	/// Creates model representation of text label on element.
 	/// @param graphicalId - id of an element on which a label shall be created. It shall already be in repository.
 	/// @param index - index of a part, which uniquely identifies label in an element.
 	/// @param position - initial position of a label in coordinates of an element.
 	/// @param size - initial size of a label.
-	void createLabel(Id const &graphicalId, int index, QPointF const &position, QSizeF const &size);
+	void createLabel(const Id &graphicalId, int index, const QPointF &position, const QSizeF &size);
 
 	/// Sets label position.
 	/// @param graphicalId - id of an element to which label belongs.
 	/// @param index - index of a part, which uniquely identifies label in an element.
 	/// @param position - position of a label in coordinates of an element.
-	void setLabelPosition(Id const &graphicalId, int index, QPointF const &position);
+	void setLabelPosition(const Id &graphicalId, int index, const QPointF &position);
 
 	/// Sets label size.
 	/// @param graphicalId - id of an element to which label belongs.
 	/// @param index - index of a part, which uniquely identifies label in an element.
 	/// @param size - size of a label.
-	void setLabelSize(Id const &graphicalId, int index, QSizeF const &size);
+	void setLabelSize(const Id &graphicalId, int index, const QSizeF &size);
 
 	/// Returns label position.
 	/// @param graphicalId - id of an element to which label belongs.
 	/// @param index - index of a part, which uniquely identifies label in an element.
 	/// @returns label position in coordinates of an element.
-	QPointF labelPosition(Id const &graphicalId, int index) const;
+	QPointF labelPosition(const Id &graphicalId, int index) const;
 
 	/// Returns label size.
 	/// @param graphicalId - id of an element to which label belongs.
 	/// @param index - index of a part, which uniquely identifies label in an element.
-	QSizeF labelSize(Id const &graphicalId, int index) const;
+	QSizeF labelSize(const Id &graphicalId, int index) const;
 
 signals:
-	void nameChanged(Id const &id);
+	void nameChanged(const Id &id);
+
+	/// Emitted each time when new element was added into the graphical model.
+	void elementAdded(const Id &id);
 
 private:
-	GraphicalModelAssistApi(GraphicalModelAssistApi const &);
-	GraphicalModelAssistApi& operator =(GraphicalModelAssistApi const &);
+	GraphicalModelAssistApi(const GraphicalModelAssistApi &);
+	GraphicalModelAssistApi& operator =(const GraphicalModelAssistApi &);
 
 	details::GraphicalModel &mGraphicalModel;
 	details::ModelsAssistApi mModelsAssistApi;

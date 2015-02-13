@@ -64,25 +64,21 @@ generatorBase::MasterGeneratorBase *TrikFSharpGeneratorPlugin::masterGenerator()
 {
 	return new TrikFSharpMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()
 			, generatorName());
 }
 
-QString TrikFSharpGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString TrikFSharpGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString("trik/%1/%1.fs").arg(projectName);
 }
 
-QString TrikFSharpGeneratorPlugin::extension() const
+text::LanguageInfo TrikFSharpGeneratorPlugin::language() const
 {
-	return "fs";
-}
-
-QString TrikFSharpGeneratorPlugin::extensionDescription() const
-{
-	return tr("FSharp Source File");
+	return qReal::text::Languages::fSharp({ "robot" });
 }
 
 QString TrikFSharpGeneratorPlugin::generatorName() const
@@ -93,9 +89,9 @@ QString TrikFSharpGeneratorPlugin::generatorName() const
 bool TrikFSharpGeneratorPlugin::uploadProgram()
 {
 	QProcess compileProcess;
-	QFileInfo const fileInfo = generateCodeForProcessing();
+	const QFileInfo fileInfo = generateCodeForProcessing();
 
-	QString const pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
+	const QString pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
 
 	if (qReal::SettingsManager::value("FSharpPath").toString().isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
@@ -105,7 +101,7 @@ bool TrikFSharpGeneratorPlugin::uploadProgram()
 		return false;
 	}
 
-	QString const compileCommand = QString("\"%1\" \"%2\" %3")
+	const QString compileCommand = QString("\"%1\" \"%2\" %3")
 			.arg(qReal::SettingsManager::value("FSharpPath").toString())
 			.arg(fileInfo.absoluteFilePath())
 			.arg(pathToTheTrikCore);
@@ -128,7 +124,7 @@ bool TrikFSharpGeneratorPlugin::uploadProgram()
 		return false;
 	}
 
-	QString const moveCommand = QString(
+	const QString moveCommand = QString(
 			"\"%1\" /command  \"open scp://root@%2\" \"put %3 /home/root/trik/FSharp/Environment/\"")
 			.arg(qReal::SettingsManager::value("WinScpPath").toString())
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())

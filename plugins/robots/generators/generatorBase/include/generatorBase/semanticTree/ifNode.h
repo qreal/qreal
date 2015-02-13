@@ -9,7 +9,7 @@ namespace semantics {
 class IfNode : public ConditionalNode
 {
 public:
-	explicit IfNode(qReal::Id const &idBinded, QObject *parent = 0);
+	explicit IfNode(const qReal::Id &idBinded, QObject *parent = 0);
 
 	ZoneNode *thenZone();
 	ZoneNode *elseZone();
@@ -19,7 +19,7 @@ public:
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
 	ZoneNode *mThenZone;  // Takes ownership

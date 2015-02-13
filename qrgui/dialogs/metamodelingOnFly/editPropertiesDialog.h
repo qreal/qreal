@@ -23,9 +23,9 @@ public:
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of an element for which we edit properties.
 	/// @param parent Parent widget, who is responsible for deletion of this dialog.
-	EditPropertiesDialog(EditorManagerInterface const &interpreterEditorManager
+	EditPropertiesDialog(const EditorManagerInterface &interpreterEditorManager
 			, qrRepo::LogicalRepoApi &api
-			, Id const &id
+			, const Id &id
 			, QWidget *parent = 0);
 
 	/// Destructor.
@@ -36,8 +36,8 @@ public:
 	/// @param propertyName Name of a property which we edit.
 	/// @param propertyDisplayedName Displayed name of this property.
 	/// @param elementsOnDiagram logical elements on the diagram.
-	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName
-				, QString const &propertyDisplayedName, qReal::IdList *elementsOnDiagram);
+	void changeProperty(QListWidgetItem *propertyItem, const QString &propertyName
+				, const QString &propertyDisplayedName, qReal::IdList *elementsOnDiagram);
 private slots:
 	void okButtonClicked();
 	void messageBoxCancel();
@@ -54,7 +54,7 @@ private:
 	void initDefaultValues();
 
 	Ui::EditPropertiesDialog *mUi;
-	EditorManagerInterface const &mInterpreterEditorManager;
+	const EditorManagerInterface &mInterpreterEditorManager;
 	RestorePropertiesDialog *mRestorePropertiesDialog;
 	Id mId;
 	QString mPropertyName;

@@ -5,5 +5,5 @@
 class ExternBrowser
 {
 public:
-	void openPage(QString const &url);
+	void openPage(const QString &url);
 };

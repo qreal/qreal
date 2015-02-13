@@ -23,15 +23,14 @@ public:
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
-	void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	void init(const qReal::PluginConfigurator &configurator
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage) override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
-	QString defaultFilePath(QString const &projectName) const override;
-	QString extension() const override;
-	QString extensionDescription() const override;
+	QString defaultFilePath(const QString &projectName) const override;
+	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
 
 private slots:

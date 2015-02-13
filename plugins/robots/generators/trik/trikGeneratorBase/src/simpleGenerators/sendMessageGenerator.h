@@ -9,9 +9,9 @@ namespace simple {
 class SendMessageGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	SendMessageGenerator(qrRepo::RepoApi const &repo
+	SendMessageGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

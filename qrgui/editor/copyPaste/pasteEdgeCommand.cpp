@@ -7,8 +7,8 @@
 using namespace qReal::commands;
 
 PasteEdgeCommand::PasteEdgeCommand(EditorViewScene *scene
-		, EdgeData const &data
-		, QPointF const &offset
+		, const EdgeData &data
+		, const QPointF &offset
 		, bool isGraphicalCopy
 		, QHash<qReal::Id, qReal::Id> *copiedIds)
 	: PasteCommand(scene, offset, isGraphicalCopy, copiedIds)
@@ -23,7 +23,7 @@ Id PasteEdgeCommand::pasteNewInstance()
 	// TODO: create node/edge data hierarchy and move it into PasteCommand
 	Id resultId = mResult;
 	if (!mCreateCommand) {
-		Id const typeId = mEdgeData.id.type();
+		const Id typeId = mEdgeData.id.type();
 		resultId = mScene->createElement(typeId.toString(), mEdgeData.pos + mOffset, true, &mCreateCommand, false);
 		if (mCreateCommand) {
 			mCreateCommand->redo();
@@ -75,12 +75,12 @@ void PasteEdgeCommand::restoreElement()
 		return;
 	}
 
-	Id const edgeId = mResult;
+	const Id edgeId = mResult;
 
-	Id const newSrcId = mCopiedIds->value(mEdgeData.srcId);
-	Id const newDstId = mCopiedIds->value(mEdgeData.dstId);
+	const Id newSrcId = mCopiedIds->value(mEdgeData.srcId);
+	const Id newDstId = mCopiedIds->value(mEdgeData.dstId);
 
-	Id const logicalId = mScene->models().graphicalModelAssistApi().logicalId(mCreateCommand->result());
+	const Id logicalId = mScene->models().graphicalModelAssistApi().logicalId(mCreateCommand->result());
 	mScene->models().graphicalModelAssistApi().setProperties(logicalId, mEdgeData.logicalProperties);
 
 	mScene->models().graphicalModelAssistApi().setPosition(edgeId, mEdgeData.pos + mOffset);

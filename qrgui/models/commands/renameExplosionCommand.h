@@ -14,9 +14,9 @@ class QRGUI_MODELS_EXPORT RenameExplosionCommand : public AbstractCommand
 
 public:
 	RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
-		, models::GraphicalModelAssistApi const * const graphicalApi
+		, const models::GraphicalModelAssistApi * const graphicalApi
 		, models::Exploser &exploser
-		, Id const &target);
+		, const Id &target);
 
 	virtual ~RenameExplosionCommand();
 
@@ -33,7 +33,7 @@ private:
 	QTreeWidgetItem *paletteItem() const;
 
 	models::LogicalModelAssistApi &mLogicalApi;
-	models::GraphicalModelAssistApi const *mGraphicalApi;
+	const models::GraphicalModelAssistApi *mGraphicalApi;
 	models::Exploser &mExploser;
 	Id mTarget;
 	QString mOldName;

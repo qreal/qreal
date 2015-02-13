@@ -15,7 +15,7 @@ InterpretedPluginManager::~InterpretedPluginManager()
 {
 }
 
-void InterpretedPluginManager::init(PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi)
+void InterpretedPluginManager::init(const PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi)
 {
 	for (InterpretedPluginInterface * const interpretedPlugin : mPlugins) {
 		interpretedPlugin->init(configurator, metamodelRepoApi);

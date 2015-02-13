@@ -28,10 +28,10 @@ protected:
 	void setBezierPoints();
 
 	/// Create Bezier curve based on the line
-	QPainterPath bezierCurve(QPolygonF const &line) const;
+	QPainterPath bezierCurve(const QPolygonF &line) const;
 
 	/// If user is dragging a point then move it. Otherwise, do nothing
-	virtual void handleEdgeMove(QPointF const &pos);
+	virtual void handleEdgeMove(const QPointF &pos);
 
 	/// Draw ordinary port or special curve control point
 	virtual void drawPort(QPainter *painter, int portNumber);

@@ -2,7 +2,7 @@
 
 using namespace qReal;
 
-void Logger::addLogTarget(QString const &path, int maxSize, int maxOldLogsCount, QsLogging::Level level)
+void Logger::addLogTarget(const QString &path, int maxSize, int maxOldLogsCount, QsLogging::Level level)
 {
 	QsLogging::DestinationPtr destination(QsLogging::DestinationFactory::MakeFileDestination(path
 			, QsLogging::EnableLogRotation

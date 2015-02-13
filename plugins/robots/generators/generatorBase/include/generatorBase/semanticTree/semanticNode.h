@@ -17,7 +17,7 @@ public:
 	qReal::Id id() const;
 
 	/// Binds this node to a given block
-	void bindTo(qReal::Id const &id);
+	void bindTo(const qReal::Id &id);
 
 	/// Attaches this node to given parent
 	void setParentNode(SemanticNode *parent);
@@ -26,18 +26,18 @@ public:
 	void addLabel();
 
 	/// Generates code for this semantic node
-	QString toString(GeneratorCustomizer &customizer, int indent) const;
+	QString toString(GeneratorCustomizer &customizer, int indent, const QString &indentString) const;
 
 	/// Performs deep (recursive) search in children subhierarchy and returns
-	/// a node with specified id binded if such was found or NULL otherwise.
-	SemanticNode *findNodeFor(qReal::Id const &id);
+	/// a node with specified id binded if such was found or nullptr otherwise.
+	SemanticNode *findNodeFor(const qReal::Id &id);
 
 protected:
-	explicit SemanticNode(qReal::Id const &idBinded = qReal::Id(), QObject *parent = 0);
+	explicit SemanticNode(const qReal::Id &idBinded = qReal::Id(), QObject *parent = 0);
 
 	virtual QLinkedList<SemanticNode *> children() const = 0;
 
-	virtual QString toStringImpl(GeneratorCustomizer &customizer, int indent) const = 0;
+	virtual QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const = 0;
 
 	qReal::Id mId;
 	SemanticNode *mParentNode;

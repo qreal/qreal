@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-WaitForLightBlockGenerator::WaitForLightBlockGenerator(qrRepo::RepoApi const &repo
+WaitForLightBlockGenerator::WaitForLightBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/light.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())

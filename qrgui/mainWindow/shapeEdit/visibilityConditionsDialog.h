@@ -21,7 +21,7 @@ public:
 		QStringList values;
 
 		PropertyInfo() {}
-		PropertyInfo(Type t, QStringList const &v);
+		PropertyInfo(Type t, const QStringList &v);
 	};
 
 	explicit VisibilityConditionsDialog(QMap<QString, PropertyInfo> const &enumValues
@@ -29,7 +29,7 @@ public:
 	~VisibilityConditionsDialog();
 
 private slots:
-	void changeProperty(QString const &propertyName);
+	void changeProperty(const QString &propertyName);
 	void okClicked();
 
 private:

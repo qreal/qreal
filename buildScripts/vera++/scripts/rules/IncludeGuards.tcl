@@ -6,7 +6,7 @@ proc checkGuards { fileName } {
   set lineCount 1 
   set guardFound 0
   foreach line [getAllLines $fileName] {
-    if {[regexp {^[\t ]*#pragma once[\t\r\n ]*} $line] } {
+    if {[regexp {^#pragma once} $line] } {
       set guardFound 1 
     }
     if {[regexp {^[\t ]*#ifn?def .*} $line] } {
@@ -19,7 +19,7 @@ proc checkGuards { fileName } {
     incr lineCount
   }
   if {![expr $guardFound]} {
-    report $fileName 1 "No include guard in header file"
+    report $fileName 1 "No include guard in header file or there is BOM"
   }
 }
 

@@ -15,11 +15,12 @@ class Timeline : public QObject, public utils::TimelineInterface
 public:
 	static const int timeInterval = 10; // one cycle length
 	static const int fps = 28; // frames per second
-	static const int frameLength = 1000 / fps;
+	static const int defaultFrameLength = 1000 / fps;
 
 	static const int slowSpeedFactor = 2;
 	static const int normalSpeedFactor = 5;
 	static const int fastSpeedFactor = 10;
+	static const int immediateSpeedFactor = 100000000;
 
 	explicit Timeline(QObject *parent = 0);
 
@@ -28,6 +29,10 @@ public:
 	quint64 timestamp() const override;
 
 	utils::AbstractTimer *produceTimer() override;
+
+	/// If @arg immediateMode is true then timeline will emit ticks without delay.
+	/// Thus the immediate process modeling may be performed in background.
+	void setImmediateMode(bool immediateMode);
 
 public slots:
 	void start();
@@ -48,7 +53,7 @@ private slots:
 	void gotoNextFrame();
 
 private:
-	static const int realTimeInterval = 6;
+	static const int defaultRealTimeInterval = 0;
 	static const int ticksPerCycle = 3;
 
 	QTimer mTimer;
@@ -57,6 +62,7 @@ private:
 	qint64 mFrameStartTimestamp;
 	bool mIsStarted;
 	quint64 mTimestamp;
+	int mFrameLength = defaultFrameLength;
 };
 
 }

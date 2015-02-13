@@ -1,4 +1,4 @@
-#include "customizer.h"
+#include "interpreterCore/customizer.h"
 
 #include <QtWidgets/QApplication>
 
@@ -8,7 +8,7 @@ using namespace interpreterCore;
 
 QString Customizer::windowTitle() const
 {
-	return QObject::tr("Trik Studio") + " " + productVersion();
+	return QObject::tr("TRIK Studio") + " " + productVersion();
 }
 
 QIcon Customizer::applicationIcon() const
@@ -24,7 +24,7 @@ QImage Customizer::applicationLogo() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.0.0 rc1";
+	return "3.0.1";
 }
 
 QString Customizer::aboutText() const
@@ -67,7 +67,7 @@ void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWa
 	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
 }
 
-QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const
+QDockWidget *Customizer::produceDockWidget(const QString &title, QWidget *content) const
 {
 	QDockWidget *dock = new QDockWidget(title);
 	dock->setWidget(content);

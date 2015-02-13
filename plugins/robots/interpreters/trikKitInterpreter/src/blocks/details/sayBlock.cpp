@@ -10,8 +10,9 @@ SayBlock::SayBlock(RobotModelInterface &robotModel)
 
 void SayBlock::doJob(robotModel::parts::TrikShell &shell)
 {
-	QString const text = stringProperty("Text");
-	shell.say(text);
-
-	emit done(mNextBlockId);
+	const QString text = eval<QString>("Text");
+	if (!errorsOccured()) {
+		shell.say(text);
+		emit done(mNextBlockId);
+	}
 }

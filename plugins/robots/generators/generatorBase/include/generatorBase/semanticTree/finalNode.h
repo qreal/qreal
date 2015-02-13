@@ -13,14 +13,14 @@ public:
 	/// It is important to differentiate theese cases because generated code for
 	/// the main diagram final block may differ from subprograms one
 	/// (for example, terminating task vs 'return')
-	FinalNode(qReal::Id const &idBinded, bool inMainDigram, QObject *parent = 0);
+	FinalNode(const qReal::Id &idBinded, bool inMainDigram, QObject *parent = 0);
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
-	bool const mInMainDiagram;
+	const bool mInMainDiagram;
 };
 
 }

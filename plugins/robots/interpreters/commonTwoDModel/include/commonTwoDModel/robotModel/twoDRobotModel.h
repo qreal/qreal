@@ -23,8 +23,8 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDRobotModel : public interpreterBase::robotMo
 	Q_OBJECT
 
 public:
-	explicit TwoDRobotModel(RobotModelInterface const &realModel);
-	TwoDRobotModel(QString const &robotId);
+	explicit TwoDRobotModel(const RobotModelInterface &realModel);
+	TwoDRobotModel(const QString &robotId);
 
 	QString name() const override;
 	QString friendlyName() const override;
@@ -51,7 +51,7 @@ public:
 	virtual engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const = 0;
 
 	/// Provides path to sensor image by given device type or empty string if default sensor image shall be used.
-	virtual QString sensorImagePath(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+	virtual QString sensorImagePath(const interpreterBase::robotModel::DeviceInfo &deviceType) const
 	{
 		Q_UNUSED(deviceType)
 
@@ -59,7 +59,7 @@ public:
 	}
 
 	/// Provides sensor image bounding rectangle by given device type or empty rectangle if default image size be used.
-	virtual QRect sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+	virtual QRect sensorImageRect(const interpreterBase::robotModel::DeviceInfo &deviceType) const
 	{
 		Q_UNUSED(deviceType)
 
@@ -70,14 +70,14 @@ public:
 
 protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
-			interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &deviceInfo
+			const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &deviceInfo
 			) override;
 
 	virtual interpreterBase::robotModel::DeviceInfo markerInfo() const;
 
 private:
-	interpreterBase::robotModel::RobotModelInterface const *mRealModel;
+	const interpreterBase::robotModel::RobotModelInterface *mRealModel;
 	engine::TwoDModelEngineInterface *mEngine = nullptr;  // Does not have ownership.
 };
 

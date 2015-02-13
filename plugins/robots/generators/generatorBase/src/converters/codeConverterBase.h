@@ -19,17 +19,17 @@ class CodeConverterBase : public simple::Binding::ConverterInterface
 public:
 	/// Takes ownership on @arg reservedVariablesConverter.
 	CodeConverterBase(lua::LuaProcessor &luaTranslator
-			, qReal::Id const &id
-			, QString const &propertyName
+			, const qReal::Id &id
+			, const QString &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 
-	QString convert(QString const &luaCode) const override;
+	QString convert(const QString &luaCode) const override;
 
 protected:
 	lua::LuaProcessor &mLuaTranslator;
-	qReal::Id const mId;
-	QString const mPropertyName;
-	simple::Binding::ConverterInterface const *mReservedVariablesConverter;  // LuaProcessor will take ownership;
+	const qReal::Id mId;
+	const QString mPropertyName;
+	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // LuaProcessor will take ownership;
 };
 
 }

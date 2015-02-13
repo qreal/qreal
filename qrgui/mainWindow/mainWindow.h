@@ -10,29 +10,28 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "mainWindowInterpretersInterface.h"
-#include "mainWindowDockInterface.h"
 #include "findManager.h"
 #include "referenceList.h"
-#include "projectManager/projectManager.h"
+#include "projectManager/projectManagerWrapper.h"
 #include "tabWidget.h"
-#include "filterObject.h"
 #include "startWidget/startWidget.h"
 
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/pluginManager/editorManager.h"
-#include "plugins/pluginManager/interpreterEditorManager.h"
-#include "plugins/pluginManager/proxyEditorManager.h"
-#include "plugins/pluginManager/toolPluginManager.h"
-#include "plugins/pluginManager/interpretedPluginsLoader.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
 
-#include "editor/propertyEditorView.h"
-#include "models/propertyEditorModel.h"
-#include "controller/controller.h"
-#include "plugins/toolPluginInterface/systemEvents.h"
+#include <qrgui/systemFacade/systemFacade.h>
+#include <qrgui/editor/propertyEditorView.h>
+#include <qrgui/models/propertyEditorModel.h>
+#include <qrgui/controller/controller.h>
 
-#include "preferencesDialog/preferencesDialog.h"
-#include "dialogs/findReplaceDialog.h"
+#include <qrgui/preferencesDialog/preferencesDialog.h>
+#include <qrgui/dialogs/findReplaceDialog.h>
 
 class QGraphicsView;
 
@@ -46,7 +45,6 @@ namespace qReal {
 
 class EditorView;
 class SceneCustomizer;
-class TextManager;
 
 namespace models {
 class Models;
@@ -57,6 +55,10 @@ class ErrorReporter;
 class PaletteTree;
 }
 
+namespace text {
+class TextManager;
+}
+
 class MainWindow : public QMainWindow
 		, public qReal::gui::MainWindowInterpretersInterface
 		, public qReal::gui::MainWindowDockInterface
@@ -64,13 +66,13 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow(QString const &fileToOpen = QString());
+	MainWindow(const QString &fileToOpen = QString());
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
-	models::Models *models() const;
+	models::Models &models();
 	Controller *controller() const;
 	PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
@@ -80,53 +82,54 @@ public:
 
 	QModelIndex rootIndex() const;
 
-	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
-	virtual void dehighlight(Id const &graphicalId);
+	virtual void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
+	virtual void dehighlight(const Id &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram() const;
-	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
+	void openShapeEditor(const QPersistentModelIndex &index, int role, const QString &propertyValue
 		, bool useTypedPorts);
-	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
-	void openShapeEditor(Id const &id
-			, QString const &propertyValue
+	void openQscintillaTextEditor(const QPersistentModelIndex &index, const int role, const QString &propertyValue);
+	void openShapeEditor(const Id &id
+			, const QString &propertyValue
 			/// @todo: whan passing it by reference the build on travis fails
-			, EditorManagerInterface const *editorManagerProxy
+			, const EditorManagerInterface *editorManagerProxy
 			, bool useTypedPorts);
-	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
-			, int const &role);
-	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
-			, int role);
-	virtual void openSettingsDialog(QString const &tab);
+	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, const QPersistentModelIndex &index
+			, const int &role);
+	void openReferenceList(const QPersistentModelIndex &index, const QString &referenceType
+			, const QString &propertyValue, int role);
+
+	virtual void openSettingsDialog(const QString &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
-	//virtual void showInTextEditor(QFileInfo const &fileInfo);
+	//virtual void showInTextEditor(const QFileInfo &fileInfo);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
 
-	virtual bool unloadPlugin(QString const &pluginName);
-	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
-	virtual bool pluginLoaded(QString const &pluginName);
+	virtual bool unloadPlugin(const QString &pluginName);
+	virtual bool loadPlugin(const QString &fileName, const QString &pluginName);
+	virtual bool pluginLoaded(const QString &pluginName);
 
-	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
-	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);
+	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
+	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
-	virtual void deleteElementFromDiagram(Id const &id);
+	virtual void deleteElementFromDiagram(const Id &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
 	virtual QWidget *currentTab();
-	virtual void openTab(QWidget *tab, QString const &title);
+	virtual void openTab(QWidget *tab, const QString &title);
 	virtual void closeTab(QWidget *tab);
 
 	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
 
 	/// Closes tab having given id as root id. If there is no such tab, does nothing.
 	/// @param id Id of a diagram (root element) that we want to close.
-	void closeDiagramTab(Id const &id);
+	void closeDiagramTab(const Id &id);
 
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
 	ProxyEditorManager &editorManagerProxy();
@@ -151,12 +154,12 @@ public:
 	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
 
-	void setTabText(QWidget *tab, QString const &text) override;
+	void setTabText(QWidget *tab, const QString &text) override;
 
 	void beginPaletteModification() override;
-	void setElementInPaletteVisible(Id const &metatype, bool visible) override;
+	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
 	void setVisibleForAllElementsInPalette(bool visible) override;
-	void setElementInPaletteEnabled(Id const &metatype, bool enabled) override;
+	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
 	void setEnabledForAllElementsInPalette(bool enabled) override;
 	void endPaletteModification() override;
 
@@ -164,23 +167,23 @@ signals:
 	void rootDiagramChanged();
 
 public slots:
-	void propertyEditorScrollTo(QModelIndex const &index);
+	void propertyEditorScrollTo(const QModelIndex &index);
 
-	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool setSelected = true);
-	virtual void selectItem(Id const &id);
-	virtual void selectItemOrDiagram(Id const &graphicalId);
+	virtual void activateItemOrDiagram(const Id &id, bool setSelected = true);
+	void activateItemOrDiagram(const QModelIndex &idx, bool setSelected = true);
+	virtual void selectItem(const Id &id);
+	virtual void selectItemOrDiagram(const Id &graphicalId);
 
-	void selectItemWithError(Id const &id);
-	void showErrors(gui::ErrorReporter const * const errorReporter);
+	void selectItemWithError(const Id &id);
+	void showErrors(const gui::ErrorReporter * const errorReporter);
 
 	void changePaletteRepresentation();
 	void closeStartTab();
 	void closeAllTabs();
-	void refreshRecentProjectsList(QString const &fileName);
-	void createDiagram(QString const &idString);
+	void refreshRecentProjectsList(const QString &fileName);
+	void createDiagram(const QString &idString);
 	/// Creates project with specified root diagram
-	bool createProject(QString const &diagramIdString);
+	bool createProject(const QString &diagramIdString);
 
 	void openFirstDiagram();
 	void changeWindowTitle();
@@ -204,7 +207,7 @@ private slots:
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
-	void updateTabName(Id const &id);
+	void updateTabName(const Id &id);
 
 	void showAbout();
 	void showHelp();
@@ -228,16 +231,16 @@ private slots:
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
 	/// @return true if one of the tabs was closed
-	bool closeTab(QModelIndex const &graphicsIndex);
+	bool closeTab(const QModelIndex &graphicsIndex);
 
 	void showPreferencesDialog();
 
 	void initSettingsManager();
 	void connectActions();
+	void connectSystemEvents();
 	void initActionsFromSettings();
-	void connectActionsForUXInfo();
 
-	void centerOn(Id const &id);
+	void centerOn(const Id &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
@@ -252,16 +255,12 @@ private slots:
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
 
-	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
+	void setData(const QString &data, const QPersistentModelIndex &index, const int &role);
+	void setReference(const QStringList &data, const QPersistentModelIndex &index, const int &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();
 	void setTextChanged(bool changed);
-
-	void setUsabilityMode(bool mode);
-	void startUsabilityTest();
-	void finishUsabilityTest();
 
 private:
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -284,11 +283,11 @@ private:
 	void deleteFromLogicalExplorer();
 	void deleteFromGraphicalExplorer();
 
-	QString getSaveFileName(QString const &dialogWindowTitle);
-	QString getOpenFileName(QString const &dialogWindowTitle);
-	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
+	QString getSaveFileName(const QString &dialogWindowTitle);
+	QString getOpenFileName(const QString &dialogWindowTitle);
+	QString getWorkingFile(const QString &dialogWindowTitle, bool save);
 
-	void selectItemInLogicalModel(Id const &id);
+	void selectItemInLogicalModel(const Id &id);
 	void switchToTab(int index);
 	int getTabIndex(const QModelIndex &index);
 
@@ -305,34 +304,34 @@ private:
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
-	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
+	void addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMenu);
 
 	/// Traverses list of actions and adds buttons to toolbar.
 	/// @param actions - list of actions to traverse
 	void traverseListOfActions(QList<ActionInfo> const &actions);
 
-	void setIndexesOfPropertyEditor(Id const &id);
+	void setIndexesOfPropertyEditor(const Id &id);
 
-	void setBackReference(QPersistentModelIndex const &index, QString const &data);
-	void removeOldBackReference(QPersistentModelIndex const &index, int const role);
+	void setBackReference(const QPersistentModelIndex &index, const QString &data);
+	void removeOldBackReference(const QPersistentModelIndex &index, const int role);
 
-	void removeReferences(Id const &id);
+	void removeReferences(const Id &id);
 
 	/// Check if we need to hide widget in fullscreen mode or not. If we do, hide it
 	/// @param dockWidget QDockWidget to hide
 	/// @param name Widget's name in internal map
-	void hideDockWidget(QDockWidget *dockWidget, QString const &name);
+	void hideDockWidget(QDockWidget *dockWidget, const QString &name);
 
 	/// Check if we need to show widget in fullscreen mode or not. If we do, show it
 	/// @param dockWidget QDockWidget to show
 	/// @param name Widget's name in internal map
-	void showDockWidget(QDockWidget *dockWidget, QString const &name);
+	void showDockWidget(QDockWidget *dockWidget, const QString &name);
 
 	/// Find edges that connect items from itemsToDelete and should be deleted with them
 	/// @param itemsToDelete selected items that should be deleted
 	void addEdgesToBeDeleted(IdList &itemsToDelete);
 
-	QString getNextDirName(QString const &name);
+	QString getNextDirName(const QString &name);
 
 	void initMiniMap();
 	void initToolManager();
@@ -344,9 +343,10 @@ private:
 	void initScriptAPI();
 	void initActionWidgetsNames();
 
-	void setVersion(QString const &version);
+	void setVersion(const QString &version);
 
 	Ui::MainWindowUi *mUi;
+	SystemFacade mFacade;
 
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;
@@ -354,14 +354,11 @@ private:
 	/// mFindDialog - Dialog for searching elements.
 	FindReplaceDialog *mFindReplaceDialog;
 
-	models::Models *mModels;
 	Controller *mController;
-	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	InterpretedPluginsLoader mInterpretedPluginLoader;
 	PropertyEditorModel mPropertyModel;
-	SystemEvents *mSystemEvents;
-	TextManager *mTextManager;
+	text::TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
 
@@ -384,20 +381,15 @@ private:
 	QMenu *mRecentProjectsMenu;
 
 	FindManager *mFindHelper;
-	ProjectManager *mProjectManager;
+	ProjectManagerWrapper *mProjectManager;
 	StartWidget *mStartWidget;
 
-	FilterObject *mFilterObject; // Has ownership
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
-
-	QToolBar *mUsabilityTestingToolbar; // Has ownership
-	QAction *mStartTest; // Has ownership
-	QAction *mFinishTest; // Has ownership
 
 	gui::ScriptAPI mScriptAPI;
 };

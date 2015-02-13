@@ -4,6 +4,6 @@
 
 namespace utils {
 
-QString const requiredVersion = "3.0.0-b2";
+const QString requiredVersion = "3.0.0-rc2";
 
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:#333333}
+    .fil1 {fill:white}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_303247440">
+   <path class="fil0" d="M4357 1805l-548 309c-388,218 -526,714 -308,1102l2558 4544c4,7 8,13 12,19l-1948 1097c-232,131 -315,428 -185,660l622 1105 102 -57c8,21 18,41 29,61l1478 2624c127,226 417,307 643,180l5739 -3231c226,-127 307,-417 180,-643l-1478 -2624c-11,-20 -24,-39 -37,-56l122 -69 -567 -1008c-161,-286 -527,-388 -813,-227l-1890 1064c-3,-7 -7,-13 -10,-20l-2536 -4505c-230,-409 -754,-556 -1163,-325z"/>
+   <ellipse class="fil1" transform="matrix(-1.11036 0.625152 0.625152 1.11036 4698.18 3006.46)" rx="247" ry="459"/>
+   <rect class="fil1" transform="matrix(-1.11036 0.625152 0.625152 1.11036 10807.3 7658.31)" width="106" height="2328" rx="53" ry="53"/>
+   <rect class="fil1" transform="matrix(-2.59078 1.45865 0.625152 1.11036 9984.7 8121.44)" width="106" height="2328" rx="19" ry="19"/>
+   <rect class="fil1" transform="matrix(-1.11036 0.625152 0.625152 1.11036 8966.25 8694.85)" width="106" height="2328" rx="44" ry="44"/>
+   <rect class="fil1" transform="matrix(0.740418 -0.416867 0.625152 1.11036 7986.95 9246.2)" width="106" height="2328" rx="53" ry="53"/>
+   <rect class="fil1" transform="matrix(-2.22076 1.25032 0.625152 1.11036 7066.46 9764.46)" width="106" height="2328" rx="35" ry="35"/>
+   <rect class="fil1" transform="matrix(-1.48051 0.833549 0.625152 1.11036 5734.63 10514.3)" width="106" height="2328" rx="53" ry="53"/>
+  </g>
+ </g>
+</svg>

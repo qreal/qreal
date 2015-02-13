@@ -2,6 +2,8 @@
 
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryToken.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
 namespace qrtext {
 namespace core {
@@ -13,7 +15,7 @@ class TokenParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes token to parse and lambda function to execute if token is parsed successfully.
-	explicit TokenParser(TokenType token, SemanticAction const &semanticAction)
+	explicit TokenParser(TokenType token, const SemanticAction &semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}
@@ -25,12 +27,17 @@ public:
 
 		Token<TokenType> const token = tokenStream.next();
 		if (!tokenStream.expect(mToken)) {
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		auto node = wrap(mSemanticAction(token));
 		if (node) {
 			node->connect(token);
+		} else {
+			parserContext.reportInternalError(
+					QObject::tr("Semantic action incorrectly discarded node in TokenParser"));
+
+			return wrap(new TemporaryDiscardableNode());
 		}
 
 		return node;

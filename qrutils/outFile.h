@@ -3,14 +3,14 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 
 class QRUTILS_EXPORT OutFile
 {
 public:
-	explicit OutFile(QString const &fileName);
+	explicit OutFile(const QString &fileName);
 	~OutFile();
 	QTextStream &operator()();
 

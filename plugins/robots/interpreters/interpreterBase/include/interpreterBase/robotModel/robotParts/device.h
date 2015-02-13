@@ -26,13 +26,13 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Device : public QObject
 public:
 	/// Constructor.
 	/// @param port - port on which this device shall be configured.
-	Device(DeviceInfo const &info, PortInfo const &port);
+	Device(const DeviceInfo &info, const PortInfo &port);
 
 	/// Returns port on which this device is or shall be configured.
-	PortInfo const &port() const;
+	const PortInfo &port() const;
 
 	/// Returns device type for non-abstract (physical) device.
-	virtual DeviceInfo const &deviceInfo() const;
+	virtual const DeviceInfo &deviceInfo() const;
 
 	/// Returns true if device is ready for work (i.e. configured).
 	bool ready() const;
@@ -61,8 +61,8 @@ private slots:
 	void configurationTimerTimeoutSlot();
 
 private:
-	DeviceInfo const mInfo;
-	PortInfo const mPort;
+	const DeviceInfo mInfo;
+	const PortInfo mPort;
 	QTimer mConfigurationTimeoutTimer;
 };
 

@@ -68,11 +68,12 @@ QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 	return result;
 }
 
-QString ZoneNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString ZoneNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	QString result;
-	foreach (SemanticNode const * const child, mChildren) {
-		result += utils::StringUtils::addIndent(child->toString(customizer, 0).trimmed(), indent) + "\n";
+	for (const SemanticNode * const child : mChildren) {
+		result += utils::StringUtils::addIndent(child->toString(customizer, 0, indentString).trimmed()
+				, indent, indentString) + "\n";
 	}
 
 	result.chop(1);

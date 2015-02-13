@@ -19,10 +19,9 @@ public:
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
-	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
-	QString defaultFilePath(QString const &projectName) const override;
-	QString extension() const override;
-	QString extensionDescription() const override;
+	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
+	QString defaultFilePath(const QString &projectName) const override;
+	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
 
 private:

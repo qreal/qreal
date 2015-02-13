@@ -6,26 +6,28 @@ class TextPicture : public Text
 {
 public:
 	TextPicture();
-	TextPicture(int x, int y, QString const &text = "text");
-	TextPicture(TextPicture const &other);
+	TextPicture(int x, int y, const QString &text = "text");
+	TextPicture(const TextPicture &other);
 	virtual Item* clone();
-	void setTextName(QString const &name);
+	void setTextName(const QString &name);
 	void setFontFamily(const QFont& font);
 	void setFontPixelSize(int size);
-	void setFontColor(QString const &text);
+	void setFontColor(const QString &text);
 	void setFontItalic(bool isChecked);
 	void setFontBold(bool isChecked);
 	void setFontUnderline(bool isChecked);
-	void setPoint(QPoint const &point);
+	void setPoint(const QPoint &point);
 	QFont font() const;
 	QString name() const;
 	virtual void setIsDynamicText(bool isDynamic);
 	void drawForPictureText(QPainter* painter, QRectF rect);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 
-	QDomElement setFontToDoc(QDomDocument &document, QString const &domName);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
-	void readFont(QDomElement const &docItem);
+	QDomElement setFontToDoc(QDomDocument &document, const QString &domName);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
+
+	void readFont(const QDomElement &docItem);
 
 private:
 	QFont mFont;

@@ -6,10 +6,10 @@
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
+TrikEnginesGenerator::TrikEnginesGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
-		, QString const &engineType
+		, const qReal::Id &id
+		, const QString &engineType
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, engineType.contains("EnginesBackward") ? "engines/backward.t" : "engines/forward.t"

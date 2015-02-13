@@ -74,9 +74,13 @@ public:
 	/// Clears the state of semantic analyzer, forgetting known identifiers and expression types.
 	virtual void clear();
 
+	/// Forgets types of an expression and all subexpressions, used when corresponding text is reparsed. Does not forget
+	/// types of identifiers declared there.
+	void forget(QSharedPointer<ast::Node> const &root);
+
 protected:
 	/// Assigns given type to given expression.
-	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);
+	void assign(QSharedPointer<ast::Node> const &expression, const QSharedPointer<types::TypeExpression> &type);
 
 	/// Constrains given expression (passed as "node" parameter) to a given set of types, on behalf of given operation.
 	/// Operation is used for error connection purposes only.
@@ -88,22 +92,22 @@ protected:
 	void unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs);
 
 	/// Reports given semantic error on a given node.
-	void reportError(QSharedPointer<ast::Node> const &node, QString const &errorMessage);
+	void reportError(QSharedPointer<ast::Node> const &node, const QString &errorMessage);
 
 	/// Returns true, if given identifier was declared (or seen before).
-	bool hasDeclaration(QString const &identifierName) const;
+	bool hasDeclaration(const QString &identifierName) const;
 
 	/// Returns expression where given identifier was declared or encountered first.
-	QSharedPointer<ast::Node> declaration(QString const &identifierName) const;
+	QSharedPointer<ast::Node> declaration(const QString &identifierName) const;
 
 	/// Adds declaration of a given identifier to identifiers table.
-	void addDeclaration(QString const &identifierName, QSharedPointer<ast::Node> const &declaration);
+	void addDeclaration(const QString &identifierName, QSharedPointer<ast::Node> const &declaration);
 
 	/// Provides Any type constant to descendants.
-	QSharedPointer<types::TypeExpression> const &any();
+	const QSharedPointer<types::TypeExpression> &any();
 
 	/// Provides generalizations table for descendants.
-	GeneralizationsTableInterface const &generalizationsTable() const;
+	const GeneralizationsTableInterface &generalizationsTable() const;
 
 	/// Provides acces to type variable for given expression to descendants. Note that type() will return resolved type.
 	QSharedPointer<types::TypeVariable> typeVariable(QSharedPointer<ast::Node> const &expression) const;

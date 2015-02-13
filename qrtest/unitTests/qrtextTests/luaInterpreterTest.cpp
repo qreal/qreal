@@ -18,7 +18,7 @@ void LuaInterpreterTest::SetUp()
 	mInterpreter.reset(new LuaInterpreter(mErrors));
 }
 
-QSharedPointer<qrtext::core::ast::Node> LuaInterpreterTest::parseAndAnalyze(QString const &code)
+QSharedPointer<qrtext::core::ast::Node> LuaInterpreterTest::parseAndAnalyze(const QString &code)
 {
 	return mAnalyzer->analyze(mParser->parse(mLexer->tokenize(code), mLexer->userFriendlyTokenNames()));
 }

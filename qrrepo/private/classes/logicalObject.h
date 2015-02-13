@@ -11,11 +11,11 @@ class LogicalObject : public Object
 public:
 	/// Constructor.
 	/// @param id - id of a new object.
-	explicit LogicalObject(qReal::Id const &id);
+	explicit LogicalObject(const qReal::Id &id);
 
 	/// Deserializing constructor.
 	/// @param element - root of XML DOM subtree with serialized object.
-	explicit LogicalObject(QDomElement const &element);
+	explicit LogicalObject(const QDomElement &element);
 
 	// Override.
 	virtual bool isLogicalObject() const;

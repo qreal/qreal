@@ -17,7 +17,7 @@ class NullTwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 	Q_OBJECT
 
 public:
-	NullTwoDRobotModel(QString const &robotId);
+	NullTwoDRobotModel(const QString &robotId);
 
 	QString name() const override;
 	QString friendlyName() const override;

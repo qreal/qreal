@@ -17,8 +17,8 @@
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Sensors::Sensors(QString const &pathToTemplates
-		, simple::Binding::ConverterInterface const *inputPortConverter)
+Sensors::Sensors(const QString &pathToTemplates
+		, const simple::Binding::ConverterInterface *inputPortConverter)
 	: InitTerminateCodeGenerator(pathToTemplates)
 	, mInputPortConverter(inputPortConverter)
 {
@@ -29,12 +29,12 @@ Sensors::~Sensors()
 	delete mInputPortConverter;
 }
 
-QString Sensors::code(QString const &directory
-		, interpreterBase::robotModel::PortInfo const &port
-		, interpreterBase::robotModel::DeviceInfo const &device)
+QString Sensors::code(const QString &directory
+		, const interpreterBase::robotModel::PortInfo &port
+		, const interpreterBase::robotModel::DeviceInfo &device)
 {
-	QString const portString = mInputPortConverter->convert(port.name());
-	QString const templatePath = QString("%1/%2.t").arg(directory, device.name());
+	const QString portString = mInputPortConverter->convert(port.name());
+	const QString templatePath = QString("%1/%2.t").arg(directory, device.name());
 	return readTemplateIfExists(templatePath).replace("@@PORT@@", portString);
 }
 
@@ -45,17 +45,17 @@ void Sensors::reinit(QMap<interpreterBase::robotModel::PortInfo
 	mTerminateCode.clear();
 	mIsrHooksCode.clear();
 
-	for (interpreterBase::robotModel::PortInfo const &port : devices.keys()) {
+	for (const interpreterBase::robotModel::PortInfo &port : devices.keys()) {
 		reinitPort(port, devices[port]);
 	}
 }
 
-void Sensors::reinitPort(interpreterBase::robotModel::PortInfo const &port
-		, interpreterBase::robotModel::DeviceInfo const &device)
+void Sensors::reinitPort(const interpreterBase::robotModel::PortInfo &port
+		, const interpreterBase::robotModel::DeviceInfo &device)
 {
 	mInitCode << code("initialization", port, device);
 	mTerminateCode << code("termination", port, device);
-	QString const isrHooksCode = code("isrHooks", port, device);
+	const QString isrHooksCode = code("isrHooks", port, device);
 	if (!mIsrHooksCode.contains(isrHooksCode)) {
 		mIsrHooksCode << isrHooksCode;
 	}

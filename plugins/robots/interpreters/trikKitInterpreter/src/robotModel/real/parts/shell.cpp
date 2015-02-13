@@ -4,27 +4,26 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Shell::Shell(DeviceInfo const &info, PortInfo const &port
+Shell::Shell(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikShell(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
-void Shell::say(QString const &text)
+void Shell::say(const QString &text)
 {
-	QString const pathToCommand = ":/trikQts/templates/say.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@TEXT@@", text) + "brick.run();";
+	const QString pathToCommand = ":/trikQts/templates/say.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@TEXT@@", "\"" + text + "\"") + "brick.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-
-void Shell::runCommand(QString const &command)
+void Shell::runCommand(const QString &command)
 {
-	QString const pathToCommand = ":/trikQts/templates/system.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand)
+	const QString pathToCommand = ":/trikQts/templates/system.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COMMAND@@", command) + "brick.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);

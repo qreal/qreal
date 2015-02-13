@@ -37,7 +37,7 @@ class QRGUI_EDITOR_EXPORT NodeElement : public Element
 
 public:
 	explicit NodeElement(ElementImpl *impl
-			, Id const &id
+			, const Id &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi &logicalAssistApi
 			, qReal::models::Exploser &exploser
@@ -60,7 +60,7 @@ public:
 	/// @param zoomFactor - current zoom factor to render images.
 	void invalidateImagesZoomCache(qreal zoomFactor);
 
-	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
+	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w);
 
 	QRectF boundingRect() const;
 	/// Current value of mContents
@@ -69,8 +69,8 @@ public:
 	QRectF foldedContentsRect() const;
 
 	virtual void updateData();
-	void setGeometry(QRectF const &geom);
-	void setPos(QPointF const &pos);
+	void setGeometry(const QRectF &geom);
+	void setPos(const QPointF &pos);
 	void setPos(qreal x, qreal y);
 
 	/// Aligning the element to grid
@@ -79,14 +79,14 @@ public:
 	bool isContainer() const;
 
 	void storeGeometry();
-	virtual void setName(QString const &name, bool withUndoRedo = false);
-	//void shift(QPointF const &pos, EdgeElement* called);
+	virtual void setName(const QString &name, bool withUndoRedo = false);
+	//void shift(const QPointF &pos, EdgeElement* called);
 
 	/// Returns port position relative to the top left corner of NodeElement
 	/// (position of NodeElement).
 	/// @param id Id that position is returned by this method.
 	/// @return Port position relative to the top left corner of NodeElement.
-	QPointF const portPos(qreal id) const;
+	const QPointF portPos(qreal id) const;
 
 	/// Returns a total number of line and point ports on element.
 	int numberOfPorts() const;
@@ -94,11 +94,11 @@ public:
 	/// Returns port ID in terms of described in 'Useful information' in PortHandler class.
 	/// @param location For this point port will be seen. Location is assumed to be in LOCAL NodeElement coordinates!
 	/// @return Port ID in terms of described in 'Useful information' in PortHandler class.
-	qreal portId(QPointF const &location, QStringList const &types) const;
+	qreal portId(const QPointF &location, const QStringList &types) const;
 
 	/// Returns a closest to the given point point on the port (line or point) on this element.
 	/// Location is assumed to be in SCENE coordinates! The result is in scene coordinates too.
-	QPointF closestPortPoint(QPointF const &location, QStringList const &types) const;
+	QPointF closestPortPoint(const QPointF &location, const QStringList &types) const;
 
 	/// @return List of edges connected to the node
 	QList<EdgeElement *> getEdges() const;
@@ -115,14 +115,11 @@ public:
 	QList<PossibleEdge> getPossibleEdges();
 
 	/// Make ports of specified types visible, hide other ports
-	void setPortsVisible(QStringList const &types);
-
-	bool isPort() const;
-	bool canHavePorts();
+	void setPortsVisible(const QStringList &types);
 
 	QList<qreal> borderValues() const;
 
-	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
+	//void resizeChild(const QRectF &newContents, const QRectF &oldContents);
 
 	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 	void switchAlignment(bool isSwitchedOn);
@@ -145,7 +142,7 @@ public:
 
 	/**
 	* @brief Returns element that follows placeholder
-	* @return element or NULL
+	* @return element or nullptr
 	*/
 	Element *getPlaceholderNextElement();
 
@@ -158,8 +155,8 @@ public:
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
 
-	void setVisibleEmbeddedLinkers(bool const show);
-	void updateShape(QString const &shape) const;
+	void setVisibleEmbeddedLinkers(const bool show);
+	void updateShape(const QString &shape) const;
 
 	void changeFoldState();
 
@@ -185,10 +182,10 @@ public:
 	IdList sortedChildren() const;
 
 public slots:
-	virtual void select(bool const singleSelected);
-	virtual void setSelectionState(bool const selected);
+	virtual void select(const bool singleSelected);
+	virtual void setSelectionState(const bool selected);
 	void switchGrid(bool isChecked);
-	NodeElement *copyAndPlaceOnDiagram(QPointF const &offset);
+	NodeElement *copyAndPlaceOnDiagram(const QPointF &offset);
 
 private slots:
 	void updateNodeEdges();
@@ -216,20 +213,20 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent = true);
+	void resize(const QRectF &newContents, const QPointF &newPos, bool needResizeParent = true);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
 	 * newPos equals to current position of node.
 	 * @param newContents Recommendation for new shape of node.
 	 */
-	void resize(QRectF const &newContents);
+	void resize(const QRectF &newContents);
 
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void delUnusedLines();
-	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
+	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();
 
@@ -242,15 +239,15 @@ private:
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
-	void paint(QPainter *p, QStyleOptionGraphicsItem const *opt);
+	void paint(QPainter *p, const QStyleOptionGraphicsItem *opt);
 	void drawPorts(QPainter *painter, bool mouseOver);
 
 	/**
 	 * Recalculates mHighlightedNode according to current mouse scene position.
 	 * @param mouseScenePos Current mouse scene position.
 	 */
-	void recalculateHighlightedNode(QPointF const &mouseScenePos);
-	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
+	void recalculateHighlightedNode(const QPointF &mouseScenePos);
+	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 	void setLinksVisible(bool);
 
@@ -263,7 +260,7 @@ private:
 
 	QRectF diagramRenderingRect() const;
 
-	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
+	commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 
 	models::Exploser &mExploser;
 

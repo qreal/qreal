@@ -6,12 +6,14 @@ PortInfo::PortInfo()
 {
 }
 
-PortInfo::PortInfo(QString const &name, Direction direction
-		, QStringList const &nameAliases, QString const &reservedVariableName)
+PortInfo::PortInfo(const QString &name, Direction direction
+		, const QStringList &nameAliases, const QString &reservedVariableName
+		, ReservedVariableType reservedVariableType)
 	: mName(name)
 	, mDirection(direction)
 	, mNameAliases(nameAliases)
 	, mReservedVariable(reservedVariableName)
+	, mReservedVariableType(reservedVariableType)
 {
 }
 
@@ -40,15 +42,20 @@ QString PortInfo::reservedVariable() const
 	return mReservedVariable;
 }
 
+PortInfo::ReservedVariableType PortInfo::reservedVariableType() const
+{
+	return mReservedVariableType;
+}
+
 QString PortInfo::toString() const
 {
 	return QString("%1###%2###%3###%4").arg(mName, mDirection == input ? "input" : "output"
 			, mNameAliases.join("$$$"), mReservedVariable);
 }
 
-PortInfo PortInfo::fromString(QString const &string)
+PortInfo PortInfo::fromString(const QString &string)
 {
-	QStringList const parts = string.split("###");
+	const QStringList parts = string.split("###");
 	if (parts.count() != 4) {
 		// Q_ASSERT?
 		return PortInfo();

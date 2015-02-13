@@ -19,15 +19,15 @@ public:
 	bool validateCurrentProject();
 
 private:
-	bool convertProject(Version const &enviromentVersion
-			, Version const &saveVersion
+	bool convertProject(const Version &enviromentVersion
+			, const Version &saveVersion
 			, QList<ProjectConverter> const &converters);
 
-	void displayTooOldEnviromentError(Version const &saveVersion);
+	void displayTooOldEnviromentError(const Version &saveVersion);
 	void displayCannotConvertError();
-	void displayTooOldSaveError(Version const &saveVersion);
+	void displayTooOldSaveError(const Version &saveVersion);
 
-	void showError(QString const &errorMessage);
+	void showError(const QString &errorMessage);
 
 	MainWindow &mMainWindow;
 };

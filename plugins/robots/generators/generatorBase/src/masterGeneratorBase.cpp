@@ -16,20 +16,22 @@
 using namespace generatorBase;
 using namespace qReal;
 
-MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
+MasterGeneratorBase::MasterGeneratorBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, Id const &diagramId)
+		, const utils::ParserErrorReporter &parserErrorReporter
+		, const Id &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
 	, mTextLanguage(textLanguage)
 	, mDiagram(diagramId)
+	, mParserErrorReporter(parserErrorReporter)
 {
 }
 
-void MasterGeneratorBase::setProjectDir(QFileInfo const &fileInfo)
+void MasterGeneratorBase::setProjectDir(const QFileInfo &fileInfo)
 {
 	mProjectName = fileInfo.baseName();
 	mProjectDir = fileInfo.absolutePath();
@@ -47,7 +49,7 @@ void MasterGeneratorBase::initialize()
 			, mErrorReporter, *mCustomizer, mDiagram, this);
 }
 
-QString MasterGeneratorBase::generate()
+QString MasterGeneratorBase::generate(const QString &indentString)
 {
 	if (mDiagram.isNull()) {
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
@@ -67,10 +69,11 @@ QString MasterGeneratorBase::generate()
 	}
 
 	QString mainCode;
-	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
+	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();
 	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
-		mainCode = mainControlFlow->toString(1);
-		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
+		mainCode = mainControlFlow->toString(1, indentString);
+		const bool subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator
+				, indentString);
 		if (!subprogramsResult) {
 			if (supportsGotoGeneration()) {
 				mainCode = QString();
@@ -87,11 +90,11 @@ QString MasterGeneratorBase::generate()
 	if (mainCode.isEmpty() && supportsGotoGeneration()) {
 		mErrorReporter.addInformation(tr("This diagram cannot be generated into the structured code."\
 				" Generating it into the code with 'goto' statements."));
-		semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
+		const semantics::SemanticTree *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 		if (gotoMainControlFlow) {
-			mainCode = gotoMainControlFlow->toString(1);
-			bool const gotoSubprogramsResult = mCustomizer->factory()
-					->subprograms()->generate(mGotoControlFlowGenerator);
+			mainCode = gotoMainControlFlow->toString(1, indentString);
+			const bool gotoSubprogramsResult = mCustomizer->factory()
+					->subprograms()->generate(mGotoControlFlowGenerator, indentString);
 			if (!gotoSubprogramsResult) {
 				mainCode = QString();
 			}
@@ -99,7 +102,7 @@ QString MasterGeneratorBase::generate()
 	}
 
 	if (mainCode.isEmpty()) {
-		QString const errorMessage = supportsGotoGeneration()
+		const QString errorMessage = supportsGotoGeneration()
 				? tr("This diagram cannot be even generated into the code with 'goto'"\
 						"statements. Please contact the developers (WTF did you do?)")
 				: tr("This diagram cannot be generated into the structured code.");
@@ -111,21 +114,21 @@ QString MasterGeneratorBase::generate()
 	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
 	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
 	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
-	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations());
+	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations(indentString));
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->initCode(), 1));
+			mCustomizer->factory()->initCode(), 1, indentString));
 	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->terminateCode(), 1));
+			mCustomizer->factory()->terminateCode(), 1, indentString));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->isrHooksCode(), 1));
+			mCustomizer->factory()->isrHooksCode(), 1, indentString));
 	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
 	processGeneratedCode(resultCode);
 
-	QString const pathToOutput = targetPath();
+	const QString pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
 
 	afterGeneration();
@@ -135,7 +138,7 @@ QString MasterGeneratorBase::generate()
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
 {
-	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, this);
+	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, mParserErrorReporter, this);
 }
 
 void MasterGeneratorBase::beforeGeneration()
@@ -151,7 +154,7 @@ void MasterGeneratorBase::afterGeneration()
 {
 }
 
-void MasterGeneratorBase::outputCode(QString const &path, QString const &code)
+void MasterGeneratorBase::outputCode(const QString &path, const QString &code)
 {
 	// File must be removed to leave created and modified timestamps equal.
 	QFile::remove(path);

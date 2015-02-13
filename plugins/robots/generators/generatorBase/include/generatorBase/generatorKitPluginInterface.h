@@ -3,6 +3,7 @@
 #include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/textEditor/languageInfo.h>
 #include <qrtext/languageToolboxInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
@@ -13,13 +14,6 @@ class GeneratorKitPluginInterface
 {
 public:
 	virtual ~GeneratorKitPluginInterface() {}
-
-	/// Returns the extension of generated files.
-	virtual QString extension() const = 0;
-
-	/// Returns the extension description (filter for the extension).
-	/// Uses for update filter field in save/open dialog after kit change.
-	virtual QString extensionDescription() const = 0;
 
 	/// Internal id of a generator, must be unique.
 	virtual QString generatorName() const = 0;
@@ -39,8 +33,8 @@ public:
 
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator Object that contains all needed information for a plugin, like refs to models.
-	virtual void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	virtual void init(const qReal::PluginConfigurator &configurator
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage)
 	{
 		Q_UNUSED(configurator);

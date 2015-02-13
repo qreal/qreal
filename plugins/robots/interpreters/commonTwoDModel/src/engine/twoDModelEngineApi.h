@@ -21,20 +21,20 @@ public:
 	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view);
 
 	void setNewMotor(int speed, uint degrees
-			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
+			, const interpreterBase::robotModel::PortInfo &port, bool breakMode) override;
 
-	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const override;
-	void resetEncoder(interpreterBase::robotModel::PortInfo const &port) override;
+	int readEncoder(const interpreterBase::robotModel::PortInfo &port) const override;
+	void resetEncoder(const interpreterBase::robotModel::PortInfo &port) override;
 
 	/// @todo: move this logic into sensors adding here some more low-level logic instead.
-	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-	int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
+	int readTouchSensor(const interpreterBase::robotModel::PortInfo &port) const override;
+	int readSonarSensor(const interpreterBase::robotModel::PortInfo &port) const override;
+	int readColorSensor(const interpreterBase::robotModel::PortInfo &port) const override;
+	int readLightSensor(const interpreterBase::robotModel::PortInfo &port) const override;
 
 	void playSound(int timeInMs) override;
 
-	void markerDown(QColor const &color) override;
+	void markerDown(const QColor &color) override;
 	void markerUp() override;
 
 	utils::TimelineInterface &modelTimeline() override;
@@ -42,16 +42,16 @@ public:
 	engine::TwoDModelGuiFacade *guiFacade() const override;
 
 private:
-	QPair<QPointF, qreal> countPositionAndDirection(interpreterBase::robotModel::PortInfo const &port) const;
+	QPair<QPointF, qreal> countPositionAndDirection(const interpreterBase::robotModel::PortInfo &port) const;
 
-	QImage printColorSensor(interpreterBase::robotModel::PortInfo const &port) const;
+	QImage printColorSensor(const interpreterBase::robotModel::PortInfo &port) const;
 	int readColorFullSensor(QHash<uint, int> const &countsColor) const;
 	int readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const;
 	int readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const;
 
-	uint spoilColor(uint const color) const;
-	uint spoilLight(uint const color) const;
-	int spoilSonarReading(int const distance) const;
+	uint spoilColor(const uint color) const;
+	uint spoilLight(const uint color) const;
+	int spoilSonarReading(const int distance) const;
 
 	model::Model &mModel;
 	view::D2ModelWidget &mView;

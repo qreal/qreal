@@ -5,7 +5,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-IfNode::IfNode(Id const &idBinded, QObject *parent)
+IfNode::IfNode(const Id &idBinded, QObject *parent)
 	: ConditionalNode(idBinded, parent)
 	, mThenZone(new ZoneNode(this))
 	, mElseZone(new ZoneNode(this))
@@ -30,22 +30,22 @@ void IfNode::transformToSimple()
 	mIsSimple = true;
 }
 
-QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	if (mIsSimple) {
-		return mThenZone->toString(customizer, indent);
+		return mThenZone->toString(customizer, indent, indentString);
 	}
 
 	if (mThenZone->isEmpty() && mElseZone->isEmpty()) {
 		return QString();
 	}
 
-	bool const elseIsEmpty = mElseZone->isEmpty();
+	const bool elseIsEmpty = mElseZone->isEmpty();
 	QString result = utils::StringUtils::addIndent(customizer.factory()->
-			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition)->generate(), indent);
+			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition)->generate(), indent, indentString);
 
-	QString const thenBlock = mThenZone->toString(customizer, indent + 1);
-	QString const elseBlock = mElseZone->toString(customizer, indent + 1);
+	const QString thenBlock = mThenZone->toString(customizer, indent + 1, indentString);
+	const QString elseBlock = mElseZone->toString(customizer, indent + 1, indentString);
 
 	result.replace("@@THEN_BODY@@", thenBlock);
 	result.replace("@@ELSE_BODY@@", elseBlock);

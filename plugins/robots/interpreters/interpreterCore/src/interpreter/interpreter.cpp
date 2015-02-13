@@ -1,4 +1,4 @@
-#include "interpreter.h"
+#include "interpreterCore/interpreter/interpreter.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtWidgets/QAction>
@@ -14,14 +14,15 @@ using namespace qReal;
 using namespace interpreterCore::interpreter;
 using namespace interpreterBase::robotModel;
 
-int const maxThreadsCount = 100;
+const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
+const int maxThreadsCount = 100;
 
-Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, qReal::ProjectManagementInterface const &projectManager
+		, const qReal::ProjectManagementInterface &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &languageToolbox
 		, QAction &connectToRobotAction
 		)
@@ -87,9 +88,9 @@ void Interpreter::interpret()
 
 	/// @todo Temporarily loading initial configuration from a network of SensorConfigurationProviders.
 	///       To be done more adequately.
-	QString const modelName = mRobotModelManager.model().robotId();
-	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
-		DeviceInfo const deviceInfo = currentConfiguration(modelName, port);
+	const QString modelName = mRobotModelManager.model().robotId();
+	for (const PortInfo &port : mRobotModelManager.model().configurablePorts()) {
+		const DeviceInfo deviceInfo = currentConfiguration(modelName, port);
 		mRobotModelManager.model().configureDevice(port, deviceInfo);
 	}
 
@@ -114,10 +115,8 @@ int Interpreter::timeElapsed() const
 			: 0;
 }
 
-void Interpreter::connectedSlot(bool success, QString const &errorString)
+void Interpreter::connectedSlot(bool success, const QString &errorString)
 {
-	qDebug() << "Interpreter::connectedSlot";
-
 	if (success) {
 		if (mRobotModelManager.model().needsConnection()) {
 			mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
@@ -155,10 +154,10 @@ void Interpreter::devicesConfiguredSlot()
 		utils::Tracer::debug(utils::Tracer::initialization
 				, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
 
-		Id const &currentDiagramId = mInterpretersInterface.activeDiagram();
+		const Id &currentDiagramId = mInterpretersInterface.activeDiagram();
 
-		details::Thread * const initialThread = new details::Thread(&mGraphicalModelApi
-				, mInterpretersInterface, currentDiagramId, *mBlocksTable);
+		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
+				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable);
 
 		emit started();
 
@@ -168,7 +167,7 @@ void Interpreter::devicesConfiguredSlot()
 
 void Interpreter::threadStopped()
 {
-	details::Thread * const thread = static_cast<details::Thread *>(sender());
+	qReal::interpretation::Thread * const thread = static_cast<qReal::interpretation::Thread *>(sender());
 
 	mThreads.removeAll(thread);
 	delete thread;
@@ -178,15 +177,15 @@ void Interpreter::threadStopped()
 	}
 }
 
-void Interpreter::newThread(Id const &startBlockId)
+void Interpreter::newThread(const Id &startBlockId)
 {
-	details::Thread * const thread = new details::Thread(&mGraphicalModelApi
-			, mInterpretersInterface, *mBlocksTable, startBlockId);
+	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
+			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId);
 
 	addThread(thread);
 }
 
-void Interpreter::addThread(details::Thread * const thread)
+void Interpreter::addThread(qReal::interpretation::Thread * const thread)
 {
 	if (mThreads.count() >= maxThreadsCount) {
 		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
@@ -196,7 +195,7 @@ void Interpreter::addThread(details::Thread * const thread)
 	mThreads.append(thread);
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
-	connect(thread, &details::Thread::newThread, this, &Interpreter::newThread);
+	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {
@@ -227,7 +226,7 @@ void Interpreter::disconnectSlot()
 	stopRobot();
 }
 
-void Interpreter::reportError(QString const &message)
+void Interpreter::reportError(const QString &message)
 {
 	mInterpretersInterface.errorReporter()->addError(message);
 }

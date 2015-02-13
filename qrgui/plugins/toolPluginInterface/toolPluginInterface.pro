@@ -1,19 +1,15 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../../bin
-
 TARGET = qrgui-tool-plugin-interface
 
-LIBS += -L$$PWD/../../../bin -lqrkernel
+include(../../../global.pri)
+
+TEMPLATE = lib
+
+links(qrkernel)
+includes(qrgui)
 
 DEFINES += QRGUI_TOOL_PLUGIN_INTERFACE_LIBRARY
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/qrgui_toolPluginInterface_ru.ts
-
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../../ \
-	$$PWD/../../../ \
 
 HEADERS += \
 	$$PWD/toolPluginInterfaceDeclSpec.h \
@@ -25,6 +21,9 @@ HEADERS += \
 	$$PWD/usedInterfaces/details/modelsAssistInterface.h \
 	$$PWD/usedInterfaces/graphicalModelAssistInterface.h \
 	$$PWD/usedInterfaces/logicalModelAssistInterface.h \
+	$$PWD/usedInterfaces/projectManagementInterface.h \
+	$$PWD/usedInterfaces/mainWindowInterpretersInterface.h \
+	$$PWD/usedInterfaces/mainWindowDockInterface.h \
 	$$PWD/projectConverter.h \
 	$$PWD/hotKeyActionInfo.h \
 	$$PWD/systemEvents.h \

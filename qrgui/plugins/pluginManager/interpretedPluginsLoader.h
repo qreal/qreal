@@ -1,7 +1,7 @@
 #pragma once
 
-#include "plugins/toolPluginInterface/pluginConfigurator.h"
-#include "interpreterEditorManager.h"
+#include <plugins/toolPluginInterface/pluginConfigurator.h>
+#include "plugins/pluginManager/interpreterEditorManager.h"
 
 #include "pluginsManagerDeclSpec.h"
 
@@ -17,7 +17,7 @@ public:
 	/// @param editorManager - list of metamodels
 	/// @param configurator - information about models
 	void init(EditorManagerInterface *editorManager
-			, PluginConfigurator const &configurator
+			, const PluginConfigurator &configurator
 			);
 
 	/// Returns list of actions for all plugins.

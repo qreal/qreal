@@ -10,10 +10,9 @@ namespace simple {
 class ROBOTS_GENERATOR_EXPORT WaitForButtonGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	WaitForButtonGenerator(qrRepo::RepoApi const &repo
+	WaitForButtonGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
-			, QString const &buttonTemplate
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

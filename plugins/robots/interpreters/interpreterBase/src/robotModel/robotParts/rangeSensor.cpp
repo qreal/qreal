@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-RangeSensor::RangeSensor(DeviceInfo const &info, PortInfo const &port)
+RangeSensor::RangeSensor(const DeviceInfo &info, const PortInfo &port)
 	: ScalarSensor(info, port)
 {
 }

@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-VariableInitGenerator::VariableInitGenerator(qrRepo::RepoApi const &repo
+VariableInitGenerator::VariableInitGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "function.t"
 			, { Binding::createStaticConverting("@@BODY@@"

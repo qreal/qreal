@@ -1,25 +1,4 @@
-TEMPLATE = app
-QT += xml gui
-CONFIG += console
-CONFIG += c++11
-
-macx {
-	CONFIG -= app_bundle
-}
-
-MOC_DIR = .moc
-OBJECTS_DIR = .obj
-
-LIBS += -L../bin -lqrutils
-
-INCLUDEPATH += \
-	$$PWD/..
-
-DESTDIR += ../bin
-
-!macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin"
-}
+include(../global.pri)
 
 HEADERS += association.h \
 	diagram.h \
@@ -63,3 +42,9 @@ SOURCES += association.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
 	portType.cpp
+
+TEMPLATE = app
+QT += xml gui
+CONFIG += console
+
+links(qrutils)

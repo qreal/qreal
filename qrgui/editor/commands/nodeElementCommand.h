@@ -9,14 +9,14 @@ namespace commands {
 class NodeElementCommand : public ElementCommand
 {
 public:
-	NodeElementCommand(EditorViewScene const *scene, Id const &id);
-	NodeElementCommand(EditorView const *view, Id const &id);
+	NodeElementCommand(const EditorViewScene *scene, const Id &id);
+	NodeElementCommand(const EditorView *view, const Id &id);
 	virtual ~NodeElementCommand();
 
 protected:
 	virtual bool reinitElement();
 
-	NodeElement *nodeById(Id const &id);
+	NodeElement *nodeById(const Id &id);
 
 	NodeElement *mNode;
 };

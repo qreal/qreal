@@ -1,6 +1,6 @@
 #pragma once
 
-#include "robotCommunicationThreadBase.h"
+#include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
 class QextSerialPort;
 class QTimer;
@@ -8,7 +8,7 @@ class QTimer;
 namespace nxtKitInterpreter {
 namespace communication {
 
-class BluetoothRobotCommunicationThread : public RobotCommunicationThreadBase
+class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
 {
 	Q_OBJECT
 
@@ -17,7 +17,7 @@ public:
 	~BluetoothRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
+	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
 	void connect();
 	void reconnect();
 	void disconnect();
@@ -30,9 +30,9 @@ private slots:
 	void checkForConnection();
 
 private:
-	void send(QByteArray const &buffer, unsigned const responseSize
+	void send(const QByteArray &buffer, const unsigned responseSize
 			, QByteArray &outputBuffer);
-	void send(QByteArray const &buffer) const;
+	void send(const QByteArray &buffer) const;
 	QByteArray receive(int size) const;
 
 	QextSerialPort *mPort;

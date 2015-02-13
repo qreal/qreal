@@ -21,8 +21,8 @@ class COMMON_TWO_D_MODEL_EXPORT EncoderSensor : public interpreterBase::robotMod
 	Q_OBJECT
 
 public:
-	EncoderSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	EncoderSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	void read() override;

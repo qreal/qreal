@@ -26,6 +26,11 @@
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
+#include "simpleGenerators/waitGamepadButtonGenerator.h"
+#include "simpleGenerators/waitGamepadConnectGenerator.h"
+#include "simpleGenerators/waitGamepadDisconnectGenerator.h"
+#include "simpleGenerators/waitGamepadWheelGenerator.h"
+#include "simpleGenerators/waitPadPressGenerator.h"
 #include "parts/trikDeviceVariables.h"
 
 using namespace trik;
@@ -33,11 +38,11 @@ using namespace trik::simple;
 using namespace generatorBase;
 using namespace generatorBase::simple;
 
-TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
+TrikGeneratorFactory::TrikGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, lua::LuaProcessor &luaProcessor
-		, QString const &generatorName)
+		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
 {
@@ -47,10 +52,10 @@ TrikGeneratorFactory::~TrikGeneratorFactory()
 {
 }
 
-AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &id
+AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &id
 		, GeneratorCustomizer &customizer)
 {
-	QString const elementType = id.element();
+	const QString elementType = id.element();
 	if (elementType.contains("EnginesForward")
 			|| elementType.contains("EnginesBackward")
 			|| elementType.contains("AngularServo"))
@@ -94,22 +99,22 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new InitCameraGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikDetectorToVariable") {
 		return new DetectorToVariableGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikWaitForEnter") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
-	} else if (elementType == "TrikWaitForLeft") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
-	} else if (elementType == "TrikWaitForRight") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
-	} else if (elementType == "TrikWaitForUp") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForUp.t", this);
-	} else if (elementType == "TrikWaitForDown") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
-	} else if (elementType == "TrikWaitForPower") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
+	} else if (elementType == "TrikWaitForButton") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForMotion") {
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {
 		return new WaitForInfraredSensorGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadButton") {
+		return new WaitGamepadButtonGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitPadPress") {
+		return new WaitPadPressGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadWheel") {
+		return new WaitGamepadWheelGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadConnect") {
+		return new WaitGamepadConnectGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadDisconnect") {
+		return new WaitGamepadDisconnectGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);

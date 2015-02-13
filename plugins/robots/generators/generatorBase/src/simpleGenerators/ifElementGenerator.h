@@ -9,9 +9,9 @@ namespace simple {
 class IfElementGenerator : public BindingGenerator
 {
 public:
-	IfElementGenerator(qrRepo::RepoApi const &repo
+	IfElementGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, bool elseIsEmpty
 		, bool needInverting
 		, QObject *parent = 0);

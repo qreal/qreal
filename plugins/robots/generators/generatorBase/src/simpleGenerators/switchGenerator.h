@@ -9,11 +9,11 @@ namespace simple {
 class SwitchGenerator : public BindingGenerator
 {
 public:
-	SwitchGenerator(qrRepo::RepoApi const &repo
+	SwitchGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
-			, QString const &part
-			, QStringList const &values
+			, const qReal::Id &id
+			, const QString &part
+			, const QStringList &values
 			, QObject *parent = 0);
 };
 

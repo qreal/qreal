@@ -11,7 +11,7 @@ class NullRobotModel : public interpreterBase::robotModel::CommonRobotModel
 	Q_OBJECT
 
 public:
-	explicit NullRobotModel(QString const &kitId);
+	explicit NullRobotModel(const QString &kitId);
 
 	QString name() const override;
 	QString friendlyName() const override;

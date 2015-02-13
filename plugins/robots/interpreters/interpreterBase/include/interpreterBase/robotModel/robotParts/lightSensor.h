@@ -16,7 +16,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT LightSensor : public ScalarSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	LightSensor(DeviceInfo const &info, PortInfo const &port);
+	LightSensor(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

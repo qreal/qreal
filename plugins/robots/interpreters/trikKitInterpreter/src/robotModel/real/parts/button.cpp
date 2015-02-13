@@ -3,7 +3,7 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Button::Button(DeviceInfo const &info, PortInfo const &port
+Button::Button(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotParts::Button(info, port), mRobotCommunicator(tcpRobotCommunicator)
 {
@@ -16,7 +16,7 @@ void Button::read()
 	mRobotCommunicator.requestData("button:" + port().name());
 }
 
-void Button::onIncomingData(QString const &portName, int value)
+void Button::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
 		emit newData(value);

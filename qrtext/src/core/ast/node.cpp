@@ -3,9 +3,20 @@
 using namespace qrtext::core;
 using namespace qrtext::core::ast;
 
-Connection const Node::noConnection = Connection();
+const Connection Node::noConnection = Connection();
+int Node::mNodesCount = 0;
 
-Connection const &Node::start() const
+Node::Node()
+{
+	++mNodesCount;
+}
+
+Node::~Node()
+{
+	--mNodesCount;
+}
+
+const Connection &Node::start() const
 {
 	if (mRanges.isEmpty()) {
 		return noConnection;
@@ -14,7 +25,7 @@ Connection const &Node::start() const
 	}
 }
 
-Connection const &Node::end() const
+const Connection &Node::end() const
 {
 	if (mRanges.isEmpty()) {
 		return noConnection;
@@ -43,7 +54,7 @@ void Node::connect(QList<Range> const &ranges)
 
 void Node::acceptRecursively(AstVisitorInterface &visitor) const
 {
-	for (auto const &node : children()) {
+	for (const auto &node : children()) {
 		if (node.data()) {
 			node->acceptRecursively(visitor);
 		}

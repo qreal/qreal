@@ -17,10 +17,10 @@ typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 class PrimaryControlFlowValidator : public QObject, public RobotsDiagramVisitor
 {
 public:
-	PrimaryControlFlowValidator(qrRepo::RepoApi const &repo
+	PrimaryControlFlowValidator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &diagramId
+			, const qReal::Id &diagramId
 			, QObject *parent = 0);
 
 	/// Validates diagram with id specified in constructor. Returns 'true' if
@@ -34,31 +34,31 @@ public:
 	/// Returns branches of the given block with if semantics. First value in the
 	/// resulting pair is the first block of 'then' branch, second - 'else'. The
 	/// result is ready only after validation process was successfully finished.
-	QPair<LinkInfo, LinkInfo> ifBranchesFor(qReal::Id const &id) const;
+	QPair<LinkInfo, LinkInfo> ifBranchesFor(const qReal::Id &id) const;
 
 	/// Returns branches of the given block with loop semantics. First value in the
 	/// resulting pair is the first block of 'iteration' branch, second - of the
 	/// non-marked one. The result is ready only after validation process was
 	/// successfully finished.
-	QPair<LinkInfo, LinkInfo> loopBranchesFor(qReal::Id const &id) const;
+	QPair<LinkInfo, LinkInfo> loopBranchesFor(const qReal::Id &id) const;
 
 private:
 	void findInitialNode();
-	void error(QString const &message, qReal::Id const &id);
-	bool checkForConnected(LinkInfo const &link);
+	void error(const QString &message, const qReal::Id &id);
+	bool checkForConnected(const LinkInfo &link);
 
-	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
-	void visitUnknown(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitFinal(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
+	void visitUnknown(const qReal::Id &id, const QList<LinkInfo> &links) override;
 
-	qrRepo::RepoApi const &mRepo;
+	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
-	qReal::Id const mDiagram;
+	const qReal::Id mDiagram;
 	bool mErrorsOccured;
 
 	qReal::Id mInitialNode;

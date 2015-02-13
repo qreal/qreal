@@ -33,7 +33,7 @@ QSharedPointer<ast::Node> SemanticAnalyzer::analyze(QSharedPointer<ast::Node> co
 
 void SemanticAnalyzer::collect(QSharedPointer<ast::Node> const &node)
 {
-	for (auto child : node->children()) {
+	for (const auto &child : node->children()) {
 		if (!child.isNull()) {
 			collect(child);
 		}
@@ -52,9 +52,9 @@ void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
 				reportError(expression, QObject::tr("Type mismatch"));
 			} else if (!typeVariable->isResolved()) {
 				if (typeVariable->finalType() == mAny) {
-					reportError(expression, QObject::tr("Can not deduce type, this expression can be of any type"));
+					// Do nothing, error shall already be reported as unknown identifier.
 				} else {
-					QString const error = QObject::tr("Can not deduce type, expression can be of following types: %1")
+					const QString error = QObject::tr("Can not deduce type, expression can be of following types: %1")
 							.arg(typeVariable->toString());
 					reportError(expression, error);
 				}
@@ -87,7 +87,7 @@ QStringList SemanticAnalyzer::identifiers() const
 QMap<QString, QSharedPointer<types::TypeExpression> > SemanticAnalyzer::variableTypes() const
 {
 	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result;
-	for (QString const &identifier : mIdentifierDeclarations.keys()) {
+	for (const QString &identifier : mIdentifierDeclarations.keys()) {
 		result[identifier] = type(mIdentifierDeclarations[identifier]);
 	}
 
@@ -100,8 +100,28 @@ void SemanticAnalyzer::clear()
 	mIdentifierDeclarations.clear();
 }
 
+void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
+{
+	if (!root) {
+		return;
+	}
+
+	if (!mIdentifierDeclarations.values().contains(root)) {
+		const auto expression = root.dynamicCast<ast::Expression>();
+		if (expression) {
+			mTypes.remove(expression);
+		}
+	}
+
+	for (const auto &child : root->children()) {
+		if (!child.isNull()) {
+			forget(child);
+		}
+	}
+}
+
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
-		, QSharedPointer<types::TypeExpression> const &type)
+		, const QSharedPointer<types::TypeExpression> &type)
 {
 	if (!type->is<types::TypeVariable>()) {
 		mTypes.insert(as<ast::Expression>(expression)
@@ -131,32 +151,32 @@ void SemanticAnalyzer::constrain(QSharedPointer<ast::Node> const &operation
 	}
 }
 
-void SemanticAnalyzer::reportError(QSharedPointer<ast::Node> const &node, QString const &errorMessage)
+void SemanticAnalyzer::reportError(QSharedPointer<ast::Node> const &node, const QString &errorMessage)
 {
 	mErrors << Error(node->start(), errorMessage, ErrorType::semanticError, Severity::error);
 }
 
-bool SemanticAnalyzer::hasDeclaration(QString const &identifierName) const
+bool SemanticAnalyzer::hasDeclaration(const QString &identifierName) const
 {
 	return mIdentifierDeclarations.contains(identifierName);
 }
 
-QSharedPointer<ast::Node> SemanticAnalyzer::declaration(QString const &identifierName) const
+QSharedPointer<ast::Node> SemanticAnalyzer::declaration(const QString &identifierName) const
 {
 	return mIdentifierDeclarations.value(identifierName);
 }
 
-void SemanticAnalyzer::addDeclaration(QString const &identifierName, QSharedPointer<ast::Node> const &declaration)
+void SemanticAnalyzer::addDeclaration(const QString &identifierName, QSharedPointer<ast::Node> const &declaration)
 {
 	mIdentifierDeclarations.insert(identifierName, declaration);
 }
 
-QSharedPointer<types::TypeExpression> const &SemanticAnalyzer::any()
+const QSharedPointer<types::TypeExpression> &SemanticAnalyzer::any()
 {
 	return mAny;
 }
 
-GeneralizationsTableInterface const &SemanticAnalyzer::generalizationsTable() const
+const GeneralizationsTableInterface &SemanticAnalyzer::generalizationsTable() const
 {
 	return *mGeneralizationsTable;
 }

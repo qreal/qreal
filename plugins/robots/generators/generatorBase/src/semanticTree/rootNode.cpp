@@ -19,9 +19,9 @@ Id RootNode::initialBlock() const
 	return mInitialBlock;
 }
 
-QString RootNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString RootNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
-	return mZone->toString(customizer, indent);
+	return mZone->toString(customizer, indent, indentString);
 }
 
 QLinkedList<SemanticNode *> RootNode::children() const

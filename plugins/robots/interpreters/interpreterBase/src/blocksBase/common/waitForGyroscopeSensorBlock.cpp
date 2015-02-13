@@ -13,7 +13,7 @@ WaitForGyroscopeSensorBlock::WaitForGyroscopeSensorBlock(interpreterBase::robotM
 
 void WaitForGyroscopeSensorBlock::responseSlot(int reading)
 {
-	int const result = eval<int>("Degrees");
+	const int result = eval<int>("Degrees");
 	if (!errorsOccured()) {
 		processResponce(reading, result);
 	}

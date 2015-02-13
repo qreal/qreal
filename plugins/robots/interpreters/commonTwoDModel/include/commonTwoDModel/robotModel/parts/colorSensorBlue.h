@@ -22,8 +22,8 @@ class COMMON_TWO_D_MODEL_EXPORT ColorSensorBlue : public interpreterBase::robotM
 	Q_CLASSINFO("friendlyName", tr("Color sensor (blue)"))
 
 public:
-	ColorSensorBlue(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	ColorSensorBlue(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	void read();

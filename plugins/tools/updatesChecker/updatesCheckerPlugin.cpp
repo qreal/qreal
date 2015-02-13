@@ -13,20 +13,20 @@
 using namespace updatesChecker;
 
 UpdatesCheckerPlugin::UpdatesCheckerPlugin()
-	: mSeparator(nullptr)
-	, mCheckForUpdatesAction(tr("Check for updates"), nullptr)
+	: mSeparator(new QAction(nullptr))
+	, mCheckForUpdatesAction(new QAction(tr("Check for updates"), nullptr))
 {
-	mSeparator.setSeparator(true);
-	connect(&mCheckForUpdatesAction, &QAction::triggered, this, &UpdatesCheckerPlugin::checkForUpdates);
+	mSeparator->setSeparator(true);
+	connect(mCheckForUpdatesAction, &QAction::triggered, this, &UpdatesCheckerPlugin::checkForUpdates);
 }
 
 QList<qReal::ActionInfo> UpdatesCheckerPlugin::actions()
 {
-	return { qReal::ActionInfo(&mSeparator, "", "help")
-		, qReal::ActionInfo(&mCheckForUpdatesAction, "", "help") };
+	return { qReal::ActionInfo(mSeparator, "", "help")
+		, qReal::ActionInfo(mCheckForUpdatesAction, "", "help") };
 }
 
-void UpdatesCheckerPlugin::init(qReal::PluginConfigurator const &configurator)
+void UpdatesCheckerPlugin::init(const qReal::PluginConfigurator &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mMainWindowWidget = configurator.mainWindowInterpretersInterface().windowWidget();

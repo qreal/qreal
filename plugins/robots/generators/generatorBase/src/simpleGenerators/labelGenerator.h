@@ -9,9 +9,9 @@ namespace simple {
 class LabelGenerator : public BindingGenerator
 {
 public:
-	LabelGenerator(qrRepo::RepoApi const &repo
+	LabelGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

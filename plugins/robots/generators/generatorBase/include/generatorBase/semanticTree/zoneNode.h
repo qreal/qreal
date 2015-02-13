@@ -33,7 +33,7 @@ public:
 	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
-	/// Returns parent semantic node. The result is never NULL.
+	/// Returns parent semantic node. The result is never nullptr.
 	SemanticNode *parentNode();
 
 	/// Returns an immediate child folowing after the given node or nullptr if no such node
@@ -42,7 +42,7 @@ public:
 
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
 	QLinkedList<SemanticNode *> mChildren;

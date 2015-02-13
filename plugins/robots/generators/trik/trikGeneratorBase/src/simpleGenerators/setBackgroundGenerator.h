@@ -9,9 +9,9 @@ namespace simple {
 class SetBackgroundGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	SetBackgroundGenerator(qrRepo::RepoApi const &repo
+	SetBackgroundGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

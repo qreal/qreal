@@ -27,17 +27,17 @@ public:
 		// Without Q_OBJECT macro incorrect metaObject will be passed and it will lead
 		// to invalid isA() method work.
 		static_assert(HasQObjectMacro<T>::Value, "No Q_OBJECT macro in the class that is passed into a template");
-		QMetaObject const *metaObject = &T::staticMetaObject;
-		QString const name = property(metaObject, "name");
-		QString const friendlyName = property(metaObject, "friendlyName");
-		Direction const direction = property(metaObject, "direction").toLower() == "input" ? input : output;
+		const QMetaObject *metaObject = &T::staticMetaObject;
+		const QString name = property(metaObject, "name");
+		const QString friendlyName = property(metaObject, "friendlyName");
+		const Direction direction = property(metaObject, "direction").toLower() == "input" ? input : output;
 		DeviceInfo result(metaObject, name, friendlyName, direction);
 		mCreatedInfos[QString(metaObject->className())] = result;
 		return result;
 	}
 
 	/// Deserializes inner string representation obtained by toString().
-	static DeviceInfo fromString(QString const &string);
+	static DeviceInfo fromString(const QString &string);
 
 	/// Constructs invalid DeviceInfo instance.
 	DeviceInfo();
@@ -46,7 +46,7 @@ public:
 	QString toString() const;
 
 	/// Returns if the device corresponding to 'this' inherits a 'parent' one or they are the devices of the same type.
-	bool isA(DeviceInfo const &parent) const;
+	bool isA(const DeviceInfo &parent) const;
 
 	/// Template shorthand notation for inheritance check.
 	template<typename T>
@@ -83,22 +83,22 @@ private:
 		enum { Value = sizeof(returnIntIfHasQObjectMacro(&Object::qt_metacall)) == sizeof(int) };
 	};
 
-	friend bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2);
-	friend bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2);
+	friend bool operator ==(const DeviceInfo &device1, const DeviceInfo &device2);
+	friend bool operator !=(const DeviceInfo &device1, const DeviceInfo &device2);
 
-	DeviceInfo(QMetaObject const *deviceType, QString const &name, QString const &friendlyName, Direction direction);
+	DeviceInfo(const QMetaObject *deviceType, const QString &name, const QString &friendlyName, Direction direction);
 
-	static QString property(QMetaObject const * const metaObject, QString const &name);
+	static QString property(const QMetaObject * const metaObject, const QString &name);
 
 	static QMap<QString, DeviceInfo> mCreatedInfos;
 
-	QMetaObject const *mDeviceType;
+	const QMetaObject *mDeviceType;
 	QString mName;
 	QString mFriendlyName;
 	Direction mDirection;
 };
 
-inline bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2)
+inline bool operator ==(const DeviceInfo &device1, const DeviceInfo &device2)
 {
 	if (!device1.mDeviceType || !device2.mDeviceType) {
 		return device1.mDeviceType == device2.mDeviceType;
@@ -107,7 +107,7 @@ inline bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2)
 	return QString(device1.mDeviceType->className()) == QString(device2.mDeviceType->className());
 }
 
-inline bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2)
+inline bool operator !=(const DeviceInfo &device1, const DeviceInfo &device2)
 {
 	return !(device1 == device2);
 }

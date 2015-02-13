@@ -13,7 +13,7 @@ class ModelTimer : public utils::AbstractTimer
 	Q_OBJECT
 
 public:
-	explicit ModelTimer(Timeline const *timeline /* Doesn`t take ownership */);
+	explicit ModelTimer(const Timeline *timeline /* Doesn`t take ownership */);
 
 	void start(int ms) override;
 	void stop() override;
@@ -22,7 +22,7 @@ private slots:
 	void onTick();
 
 private:
-	Timeline const *mTimeline;
+	const Timeline *mTimeline;
 	int mTimeToWait;
 	bool mListening;
 	int mTimePast;

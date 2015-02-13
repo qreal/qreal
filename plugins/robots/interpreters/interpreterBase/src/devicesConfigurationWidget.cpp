@@ -30,7 +30,7 @@ DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool aut
 void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
 {
 	for (RobotModelInterface * const model : models) {
-		QString const name = model->robotId();
+		const QString name = model->robotId();
 		mRobotModels[name] = model;
 		QWidget * const configurer = configurerForRobotModel(*model);
 		mRobotModelConfigurers[name] = configurer;
@@ -39,7 +39,7 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
-	QString const robotModelId = robotModel.robotId();
+	const QString robotModelId = robotModel.robotId();
 	mCurrentModel = robotModelId;
 	takeWidget();
 	if (mRobotModels.contains(robotModelId)) {
@@ -69,17 +69,17 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	result->setPalette(palette);
 	QVBoxLayout * const layout = new QVBoxLayout(result);
 	QList<PortInfo> const configurablePorts = robotModel.configurablePorts();
-	for (PortInfo const &port : configurablePorts) {
+	for (const PortInfo &port : configurablePorts) {
 		layout->addLayout(initPort(robotModel.robotId(), port, robotModel.allowedDevices(port)));
 	}
 
 	return result;
 }
 
-QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
-		, PortInfo const &port, QList<DeviceInfo> const &sensors)
+QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
+		, const PortInfo &port, QList<DeviceInfo> const &sensors)
 {
-	QString const labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
+	const QString labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
 	QLabel * const portLabel = new QLabel(labelText.arg(port.name()), this);
 	QComboBox * const comboBox = new QComboBox(this);
 	comboBox->setObjectName("Port " + port.name() + " DeviceConfig");
@@ -87,7 +87,7 @@ QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 	comboBox->setProperty("port", QVariant::fromValue(port));
 	mConfigurers << comboBox;
 	comboBox->addItem(tr("Unused"), QVariant::fromValue(DeviceInfo()));
-	for (DeviceInfo const &sensor : sensors) {
+	for (const DeviceInfo &sensor : sensors) {
 		comboBox->addItem(sensor.friendlyName(), QVariant::fromValue(sensor));
 	}
 
@@ -105,8 +105,8 @@ QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 }
 
 
-void DevicesConfigurationWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
+void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
@@ -125,8 +125,8 @@ void DevicesConfigurationWidget::refresh()
 {
 	mRefreshing = true;
 	for (QComboBox * const box : mConfigurers) {
-		PortInfo const port = box->property("port").value<PortInfo>();
-		DeviceInfo const device = currentConfiguration(mCurrentModel, port);
+		const PortInfo port = box->property("port").value<PortInfo>();
+		const DeviceInfo device = currentConfiguration(mCurrentModel, port);
 		if (device.isNull()) {
 			box->setCurrentIndex(0);
 		} else {
@@ -155,9 +155,9 @@ void DevicesConfigurationWidget::save()
 			continue;
 		}
 
-		QString const robotModel = box->property("robotModel").toString();
-		PortInfo const port = box->property("port").value<PortInfo>();
-		DeviceInfo const device = box->itemData(box->currentIndex()).value<DeviceInfo>();
+		const QString robotModel = box->property("robotModel").toString();
+		const PortInfo port = box->property("port").value<PortInfo>();
+		const DeviceInfo device = box->itemData(box->currentIndex()).value<DeviceInfo>();
 		if (currentConfiguration(robotModel, port) != device) {
 			propagateChanges(port, device);
 		}
@@ -166,16 +166,16 @@ void DevicesConfigurationWidget::save()
 	mSaving = false;
 }
 
-void DevicesConfigurationWidget::propagateChanges(PortInfo const &port, DeviceInfo const &sensor)
+void DevicesConfigurationWidget::propagateChanges(const PortInfo &port, const DeviceInfo &sensor)
 {
-	for (QString const &robotModelId : mRobotModels.keys()) {
-		RobotModelInterface const *robotModel = mRobotModels[robotModelId];
-		for (PortInfo const &otherPort : robotModel->configurablePorts()) {
+	for (const QString &robotModelId : mRobotModels.keys()) {
+		const RobotModelInterface *robotModel = mRobotModels[robotModelId];
+		for (const PortInfo &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
 					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo(), Reason::userAction);
 				} else {
-					DeviceInfo const otherDevice = convertibleDevice(robotModel, otherPort, sensor);
+					const DeviceInfo otherDevice = convertibleDevice(robotModel, otherPort, sensor);
 					if (!otherDevice.isNull()) {
 						deviceConfigurationChanged(robotModelId, otherPort, otherDevice, Reason::userAction);
 					}
@@ -185,7 +185,7 @@ void DevicesConfigurationWidget::propagateChanges(PortInfo const &port, DeviceIn
 	}
 }
 
-bool DevicesConfigurationWidget::areConvertible(PortInfo const &port1, PortInfo const &port2) const
+bool DevicesConfigurationWidget::areConvertible(const PortInfo &port1, const PortInfo &port2) const
 {
 	return (port1.name() == port2.name()
 			|| port1.nameAliases().contains(port2.name())
@@ -193,12 +193,12 @@ bool DevicesConfigurationWidget::areConvertible(PortInfo const &port1, PortInfo 
 			&& port1.direction() == port2.direction();
 }
 
-DeviceInfo DevicesConfigurationWidget::convertibleDevice(RobotModelInterface const *robotModel
-		, PortInfo const &port, DeviceInfo const &device) const
+DeviceInfo DevicesConfigurationWidget::convertibleDevice(const RobotModelInterface *robotModel
+		, const PortInfo &port, const DeviceInfo &device) const
 {
 	QList<DeviceInfo> const convertibleBases = robotModel->convertibleBases();
-	for (DeviceInfo const &allowedDevice : robotModel->allowedDevices(port)) {
-		for (DeviceInfo const &convertibleBase : convertibleBases) {
+	for (const DeviceInfo &allowedDevice : robotModel->allowedDevices(port)) {
+		for (const DeviceInfo &convertibleBase : convertibleBases) {
 			if (device.isA(convertibleBase) && allowedDevice.isA(convertibleBase)) {
 				return allowedDevice;
 			}

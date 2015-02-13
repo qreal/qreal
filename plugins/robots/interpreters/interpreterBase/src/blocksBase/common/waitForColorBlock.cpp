@@ -1,5 +1,7 @@
 #include "interpreterBase/blocksBase/common/waitForColorBlock.h"
 
+#include "interpreterBase/robotModel/robotParts/colorSensorFull.h"
+
 using namespace interpreterBase;
 using namespace blocksBase::common;
 
@@ -10,7 +12,7 @@ WaitForColorBlock::WaitForColorBlock(interpreterBase::robotModel::RobotModelInte
 
 void WaitForColorBlock::responseSlot(int reading)
 {
-	QString const targetColor = stringProperty("Color");
+	const QString targetColor = stringProperty("Color");
 	QString color;
 	switch (reading) {
 	case 1: color = tr("Black");
@@ -32,4 +34,9 @@ void WaitForColorBlock::responseSlot(int reading)
 	if (targetColor == color) {
 		stop();
 	}
+}
+
+robotModel::DeviceInfo WaitForColorBlock::device() const
+{
+	return robotModel::DeviceInfo::create<robotModel::robotParts::ColorSensorFull>();
 }

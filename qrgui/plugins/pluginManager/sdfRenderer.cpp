@@ -18,7 +18,7 @@ SdfRenderer::SdfRenderer()
 	mWorkingDirName = SettingsManager::value("workingDir").toString();
 }
 
-SdfRenderer::SdfRenderer(QString const path)
+SdfRenderer::SdfRenderer(const QString path)
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 	if (!load(path))
@@ -32,7 +32,7 @@ SdfRenderer::~SdfRenderer()
 {
 }
 
-bool SdfRenderer::load(QString const &filename)
+bool SdfRenderer::load(const QString &filename)
 {
 	QFile file(filename);
 
@@ -53,10 +53,10 @@ bool SdfRenderer::load(QString const &filename)
 	return true;
 }
 
-bool SdfRenderer::load(QDomDocument const &document)
+bool SdfRenderer::load(const QDomDocument &document)
 {
 	doc = document;
-	QDomElement const docElem = doc.firstChildElement("picture");
+	const QDomElement docElem = doc.firstChildElement("picture");
 	first_size_x = docElem.attribute("sizex").toInt();
 	first_size_y = docElem.attribute("sizey").toInt();
 
@@ -143,7 +143,7 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
 	this->painter = 0;
 }
 
-bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) const
+bool SdfRenderer::checkShowConditions(const QDomElement &element, bool isIcon) const
 {
 	QDomNodeList showConditions = element.elementsByTagName("showIf");
 	// a hack, need to be removed when there is another version of icons
@@ -161,7 +161,7 @@ bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) c
 	return true;
 }
 
-bool SdfRenderer::checkCondition(QDomElement const &condition) const
+bool SdfRenderer::checkCondition(const QDomElement &condition) const
 {
 	QString sign = condition.attribute("sign");
 	QString realValue = mElementRepo->logicalProperty(condition.attribute("property"));
@@ -281,13 +281,13 @@ void SdfRenderer::polygon(QDomElement &element)
 {
 	parsestyle(element);
 	// FIXME: init points array here
-	QPoint *points = NULL;
+	QPoint *points = nullptr;
 	int n = element.attribute("n").toInt();
 	if (!element.isNull())
 	{
 		points = getpoints(element, n);
 	}
-	if (points != NULL)
+	if (points != nullptr)
 	{
 		painter->drawConvexPolygon(points, n);
 		delete[] points;
@@ -302,10 +302,10 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float const x2 = x2_def(element);
 	float const y2 = y2_def(element);
 
-	QString const fileName = SettingsManager::value("pathToImages").toString() + "/"
+	const QString fileName = SettingsManager::value("pathToImages").toString() + "/"
 			+ element.attribute("name", "default");
 
-	QRect const rect(x1, y1, x2 - x1, y2 - y1);
+	const QRect rect(x1, y1, x2 - x1, y2 - y1);
 
 	mImagesCache.drawImage(fileName, *painter, rect);
 }
@@ -764,9 +764,9 @@ void SdfRenderer::noScale()
 }
 
 void SdfRenderer::ImagesCache::drawImage(
-		QString const &fileName
+		const QString &fileName
 		, QPainter &painter
-		, QRect const &rect)
+		, const QRect &rect)
 {
 	auto savePrerenderedSvg = [this, &rect, &fileName] (QSvgRenderer &renderer) {
 		QTransform scale;
@@ -789,13 +789,13 @@ void SdfRenderer::ImagesCache::drawImage(
 		painter.drawPixmap(rect, mPrerenderedSvgs.value(fileName));
 	} else {
 		// Cache miss - finding best file to load and loading it.
-		QString const actualFileName = fileName.startsWith("./")
+		const QString actualFileName = fileName.startsWith("./")
 				? QApplication::applicationDirPath() + "/" + fileName
 				: fileName;
 
-		QFileInfo const actualFile = selectBestImageFile(actualFileName);
+		const QFileInfo actualFile = selectBestImageFile(actualFileName);
 
-		QByteArray const rawImage = loadPixmap(actualFile);
+		const QByteArray rawImage = loadPixmap(actualFile);
 		if (actualFile.suffix() == "svg") {
 			QSharedPointer<QSvgRenderer> renderer(new QSvgRenderer(rawImage));
 			mFileNameSvgRendererMap.insert(fileName, renderer);
@@ -810,16 +810,16 @@ void SdfRenderer::ImagesCache::drawImage(
 	}
 }
 
-QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
+QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(const QString &filePath)
 {
-	QFileInfo const originalFileInfo(filePath);
-	QFileInfo const svgVersion(originalFileInfo.path() + originalFileInfo.completeBaseName() + "svg");
+	const QFileInfo originalFileInfo(filePath);
+	const QFileInfo svgVersion(originalFileInfo.path() + originalFileInfo.completeBaseName() + "svg");
 
 	if (svgVersion.exists()) {
 		return svgVersion;
 	}
 
-	QFileInfo const fileInfo(filePath);
+	const QFileInfo fileInfo(filePath);
 	if (fileInfo.exists() && fileInfo.isFile()) {
 		return fileInfo;
 	}
@@ -837,7 +837,7 @@ QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
 	return QFileInfo(":/pluginManager/images/default.svg");
 }
 
-QByteArray SdfRenderer::ImagesCache::loadPixmap(QFileInfo const &fileInfo)
+QByteArray SdfRenderer::ImagesCache::loadPixmap(const QFileInfo &fileInfo)
 {
 	QFile file(fileInfo.absoluteFilePath());
 	if (!file.open(QIODevice::ReadOnly)) {
@@ -854,20 +854,20 @@ void SdfRenderer::ImagesCache::invalidateSvgCache(double zoomFactor)
 }
 
 
-SdfIconEngineV2::SdfIconEngineV2(QString const &file)
+SdfIconEngineV2::SdfIconEngineV2(const QString &file)
 {
 	mRenderer.load(file);
 	mRenderer.noScale();
 	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
-SdfIconEngineV2::SdfIconEngineV2(QDomDocument const &document)
+SdfIconEngineV2::SdfIconEngineV2(const QDomDocument &document)
 {
 	mRenderer.load(document);
 	mRenderer.noScale();
 }
 
-void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state)
+void SdfIconEngineV2::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
 	Q_UNUSED(state)
@@ -905,12 +905,12 @@ QSize SdfIconEngineV2::preferedSize() const
 }
 
 
-QIcon SdfIconLoader::iconOf(QString const &fileName)
+QIcon SdfIconLoader::iconOf(const QString &fileName)
 {
 	return loadPixmap(fileName);
 }
 
-QSize SdfIconLoader::preferedSizeOf(QString const &fileName)
+QSize SdfIconLoader::preferedSizeOf(const QString &fileName)
 {
 	loadPixmap(fileName);
 	return instance()->mPreferedSizes[fileName];
@@ -930,7 +930,7 @@ SdfIconLoader::~SdfIconLoader()
 {
 }
 
-QIcon SdfIconLoader::loadPixmap(QString const &fileName)
+QIcon SdfIconLoader::loadPixmap(const QString &fileName)
 {
 	if (!instance()->mLoadedIcons.contains(fileName)) {
 		SdfIconEngineV2 * const engine = new SdfIconEngineV2(fileName);

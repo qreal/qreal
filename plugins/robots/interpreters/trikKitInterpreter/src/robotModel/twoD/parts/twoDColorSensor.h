@@ -14,8 +14,8 @@ class ColorSensor : public robotModel::parts::TrikColorSensor
 	Q_OBJECT
 
 public:
-	ColorSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	ColorSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
 	void init() override;
 	void read() override;

@@ -12,7 +12,7 @@ class AbstractModelItem
 public:
 	typedef QList<AbstractModelItem*> PointerList;
 
-	AbstractModelItem(Id const &id, AbstractModelItem *parent);
+	AbstractModelItem(const Id &id, AbstractModelItem *parent);
 	Id id() const;
 	AbstractModelItem *parent() const;
 	PointerList children() const;

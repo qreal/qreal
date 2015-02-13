@@ -8,9 +8,9 @@ env:
   - CONFIG=release PROJECT=qrealRobots     VERA=false TESTS=true
   - CONFIG=debug   PROJECT=qrealBP         VERA=false TESTS=true
   - CONFIG=release PROJECT=qrealBP         VERA=false TESTS=true
-  - CONFIG=debug   PROJECT=qrealTest       VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests && ./qrtext_unittests"
+  - CONFIG=debug   PROJECT=qrealTest       VERA=false TESTS="./exampleTests-d && ./qrgui_unittests-d && ./qrrepo_unittests-d && ./qrutils_unittests-d && ./visualDebugSupport_unittests-d && ./qrtext_unittests-d"
   - CONFIG=release PROJECT=qrealTest       VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests && ./qrtext_unittests"
-  - CONFIG=debug   PROJECT=qrealRobotsTest VERA=false TESTS="./robots_interpreterBase_unittests && ./robots_interpreterCore_unittests"
+  - CONFIG=debug   PROJECT=qrealRobotsTest VERA=false TESTS="./robots_interpreterBase_unittests-d && ./robots_interpreterCore_unittests-d"
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
@@ -37,7 +37,7 @@ script:
   - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
   - qmake $PROJECT.pro CONFIG+=$CONFIG
   - make -j2
-  - cd ./bin
+  - cd ./bin/$CONFIG
   - ls -A
   - sh -c "$TESTS"
 

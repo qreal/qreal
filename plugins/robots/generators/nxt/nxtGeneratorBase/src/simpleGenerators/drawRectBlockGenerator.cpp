@@ -2,9 +2,9 @@
 
 using namespace nxt::simple;
 
-DrawRectBlockGenerator::DrawRectBlockGenerator(qrRepo::RepoApi const &repo
+DrawRectBlockGenerator::DrawRectBlockGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: DrawBlockGenerator(repo, customizer, id, parent)
 {
@@ -12,10 +12,10 @@ DrawRectBlockGenerator::DrawRectBlockGenerator(qrRepo::RepoApi const &repo
 
 void DrawRectBlockGenerator::drawBmp(QPainter *painter)
 {
-	int const x = mRepo.property(mId, "XCoordinateRect").toInt();
-	int const y = mRepo.property(mId, "YCoordinateRect").toInt();
-	int const width = mRepo.property(mId, "WidthRect").toInt();
-	int const height = mRepo.property(mId, "HeightRect").toInt();
+	const int x = mRepo.property(mId, "XCoordinateRect").toInt();
+	const int y = mRepo.property(mId, "YCoordinateRect").toInt();
+	const int width = mRepo.property(mId, "WidthRect").toInt();
+	const int height = mRepo.property(mId, "HeightRect").toInt();
 
 	painter->drawRect(x, y, width, height);
 }

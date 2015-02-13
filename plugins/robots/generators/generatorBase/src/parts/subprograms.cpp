@@ -5,10 +5,10 @@
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Subprograms::Subprograms(qrRepo::RepoApi const &repo
+Subprograms::Subprograms(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
-		, QString const &pathToTemplates
-		, simple::Binding::ConverterInterface const *nameNormalizer)
+		, const QString &pathToTemplates
+		, const simple::Binding::ConverterInterface *nameNormalizer)
 	: TemplateParametrizedEntity(pathToTemplates)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
@@ -31,20 +31,20 @@ QString Subprograms::implementations() const
 	return mImplementationsCode.join('\n');
 }
 
-void Subprograms::appendManualSubprogram(QString const &name, QString const &body)
+void Subprograms::appendManualSubprogram(const QString &name, const QString &body)
 {
 	mManualDeclarations[name] = body;
 }
 
-void Subprograms::usageFound(Id const &logicalId)
+void Subprograms::usageFound(const Id &logicalId)
 {
-	Id const diagram = mRepo.outgoingExplosion(logicalId);
+	const Id diagram = mRepo.outgoingExplosion(logicalId);
 	if (diagram != Id() && !mDiscoveredSubprograms.contains(diagram)) {
 		mDiscoveredSubprograms[diagram] = false;
 	}
 }
 
-bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
+bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator, const QString &indentString)
 {
 	QMap<Id, QString> declarations;
 	QMap<Id, QString> implementations;
@@ -53,14 +53,14 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
 	while (toGen != Id()) {
 		mDiscoveredSubprograms[toGen] = true;
 
-		Id const graphicalDiagramId = graphicalId(toGen);
+		const Id graphicalDiagramId = graphicalId(toGen);
 		if (graphicalDiagramId.isNull()) {
 			mErrorReporter.addError(QObject::tr("Graphical diagram instance not found"));
 			return false;
 		}
 
-		QString const rawIdentifier = mRepo.name(toGen);
-		QString const identifier = mNameNormalizer->convert(rawIdentifier);
+		const QString rawIdentifier = mRepo.name(toGen);
+		const QString identifier = mNameNormalizer->convert(rawIdentifier);
 		if (!checkIdentifier(identifier, rawIdentifier)) {
 			return false;
 		}
@@ -71,9 +71,9 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
 			return false;
 		}
 
-		implementations[toGen] = controlFlow->toString(1);
+		implementations[toGen] = controlFlow->toString(1, indentString);
 
-		QString const forwardDeclaration = readSubprogramTemplate(toGen, "subprograms/forwardDeclaration.t");
+		const QString forwardDeclaration = readSubprogramTemplate(toGen, "subprograms/forwardDeclaration.t");
 		declarations[toGen] = forwardDeclaration;
 
 		toGen = firstToGenerate();
@@ -91,7 +91,7 @@ void Subprograms::obtainCode(QMap<Id, QString> const &declarations
 		mForwardDeclarationsCode << readTemplate("subprograms/declarationsSectionHeader.t");
 	}
 
-	for (Id const &id : declarations.keys()) {
+	for (const Id &id : declarations.keys()) {
 		mForwardDeclarationsCode << declarations[id];
 	}
 
@@ -99,8 +99,8 @@ void Subprograms::obtainCode(QMap<Id, QString> const &declarations
 		mImplementationsCode << readTemplate("subprograms/implementationsSectionHeader.t");
 	}
 
-	for (Id const &id : implementations.keys()) {
-		QString const signature = readSubprogramTemplate(id, "subprograms/implementation.t");
+	for (const Id &id : implementations.keys()) {
+		const QString signature = readSubprogramTemplate(id, "subprograms/implementation.t");
 		QString subprogramCode = signature;
 		subprogramCode.replace("@@BODY@@", implementations[id]);
 		mImplementationsCode << subprogramCode;
@@ -114,16 +114,16 @@ QString Subprograms::generateManualDeclarations() const
 	return QStringList(mManualDeclarations.values()).join("\n\n");
 }
 
-QString Subprograms::readSubprogramTemplate(Id const &id, QString const &pathToTemplate)
+QString Subprograms::readSubprogramTemplate(const Id &id, const QString &pathToTemplate)
 {
-	QString const rawName = mRepo.name(id);
+	const QString rawName = mRepo.name(id);
 	return readTemplate(pathToTemplate).replace("@@NAME@@", mNameNormalizer->convert(rawName));
 }
 
-Id Subprograms::graphicalId(Id const &logicalId) const
+Id Subprograms::graphicalId(const Id &logicalId) const
 {
-	IdList const graphicalIds = mRepo.graphicalElements(logicalId.type());
-	foreach (Id const &id, graphicalIds) {
+	const IdList graphicalIds = mRepo.graphicalElements(logicalId.type());
+	foreach (const Id &id, graphicalIds) {
 		if (mRepo.logicalId(id) == logicalId) {
 			return id;
 		}
@@ -132,7 +132,7 @@ Id Subprograms::graphicalId(Id const &logicalId) const
 	return Id();
 }
 
-bool Subprograms::checkIdentifier(QString const &identifier, QString const &rawName)
+bool Subprograms::checkIdentifier(const QString &identifier, const QString &rawName)
 {
 	if (identifier.isEmpty()) {
 		mErrorReporter.addError(QObject::tr(
@@ -152,7 +152,7 @@ bool Subprograms::checkIdentifier(QString const &identifier, QString const &rawN
 
 Id Subprograms::firstToGenerate() const
 {
-	foreach (Id const &id, mDiscoveredSubprograms.keys()) {
+	foreach (const Id &id, mDiscoveredSubprograms.keys()) {
 		if (!mDiscoveredSubprograms[id]) {
 			return id;
 		}

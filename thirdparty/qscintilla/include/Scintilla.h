@@ -383,7 +383,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_SCROLLCARET 2169
 #define SCI_REPLACESEL 2170
 #define SCI_SETREADONLY 2171
-#define SCI_NULL 2172
+#define SCI_nullptr 2172
 #define SCI_CANPASTE 2173
 #define SCI_CANUNDO 2174
 #define SCI_EMPTYUNDOBUFFER 2175

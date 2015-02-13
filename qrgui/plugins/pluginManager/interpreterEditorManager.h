@@ -10,14 +10,12 @@
 
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
-#include <qrrepo/graphicalRepoApi.h>
-#include <qrrepo/logicalRepoApi.h>
 #include <qrrepo/repoApi.h>
 
-#include "plugins/editorPluginInterface/editorInterface.h"
+#include <plugins/editorPluginInterface/editorInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-
-#include "interpretedPluginManager.h"
+#include "plugins/pluginManager/interpretedPluginManager.h"
 
 #include "pluginsManagerDeclSpec.h"
 
@@ -30,118 +28,116 @@ class QRGUI_PLUGINS_MANAGER_EXPORT InterpreterEditorManager : public QObject, pu
 	Q_OBJECT
 
 public:
-	explicit InterpreterEditorManager(QString const &fileName, QObject *parent = NULL);
+	explicit InterpreterEditorManager(const QString &fileName, QObject *parent = nullptr);
 	~InterpreterEditorManager();
 
 	IdList editors() const override;
-	IdList diagrams(Id const &editor) const override;
-	IdList elements(Id const &diagram) const override;
-	Version version(Id const &editor) const override;
+	IdList diagrams(const Id &editor) const override;
+	IdList elements(const Id &diagram) const override;
+	Version version(const Id &editor) const override;
 
-	QString loadPlugin(QString const &pluginName) override;
-	QString unloadPlugin(QString const &pluginName) override;
+	QString loadPlugin(const QString &pluginName) override;
+	QString unloadPlugin(const QString &pluginName) override;
 
-	QString mouseGesture(Id const &id) const override;
-	QString friendlyName(Id const &id) const override;
-	QString description(Id const &id) const override;
-	QString propertyDescription(Id const &id, QString const &propertyName) const override;
-	QString propertyDisplayedName(Id const &id, QString const &propertyName) const override;
-	QIcon icon(Id const &id) const override;
-	ElementImpl* elementImpl(Id const &id) const override;
+	QString mouseGesture(const Id &id) const override;
+	QString friendlyName(const Id &id) const override;
+	QString description(const Id &id) const override;
+	QString propertyDescription(const Id &id, const QString &propertyName) const override;
+	QString propertyDisplayedName(const Id &id, const QString &propertyName) const override;
+	QIcon icon(const Id &id) const override;
+	ElementImpl* elementImpl(const Id &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
-	bool isEnumEditable(Id const &id, QString const &name) const override;
-	QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const override;
-	QString typeName(Id const &id, const QString &name) const override;
-	QStringList allChildrenTypesOf(Id const &parent) const override;
+	bool isEnumEditable(const Id &id, const QString &name) const override;
+	QList<QPair<QString, QString>> enumValues(const Id &id, const QString &name) const override;
+	QString typeName(const Id &id, const QString &name) const override;
+	QStringList allChildrenTypesOf(const Id &parent) const override;
 
-	QList<Explosion> explosions(Id const &source) const override;
+	QList<Explosion> explosions(const Id &source) const override;
 
-	bool isEditor(Id const &id) const override;
-	bool isDiagram(Id const &id) const override;
-	bool isElement(Id const &id) const override;
+	bool isEditor(const Id &id) const override;
+	bool isDiagram(const Id &id) const override;
+	bool isElement(const Id &id) const override;
 
-	QStringList propertyNames(Id const &id) const override;
-	QStringList portTypes(Id const &id) const override;
-	QString defaultPropertyValue(Id const &id, QString name) const override;
-	QStringList propertiesWithDefaultValues(Id const &id) const override;
+	QStringList propertyNames(const Id &id) const override;
+	QStringList portTypes(const Id &id) const override;
+	QString defaultPropertyValue(const Id &id, QString name) const override;
+	QStringList propertiesWithDefaultValues(const Id &id) const override;
 
-	IdList checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
-			, GraphicalModelAssistInterface const &graphicalApi) const override;
-	bool hasElement(Id const &element) const override;
+	bool hasElement(const Id &element) const override;
 
-	Id findElementByType(QString const &type) const override;
+	Id findElementByType(const QString &type) const override;
 	QList<ListenerInterface *> listeners() const override;
 
-	bool isDiagramNode(Id const &id) const override;
+	bool isDiagramNode(const Id &id) const override;
 
-	bool isParentOf(Id const &child, Id const &parent) const override;
+	bool isParentOf(const Id &child, const Id &parent) const override;
 	bool isGraphicalElementNode(const Id &id) const override;
 
 	/// Returns diagram id if only one diagram loaded or Id() otherwise
 	Id theOnlyDiagram() const override;
-	QString diagramNodeNameString(Id const &editor, Id const &diagram) const override;
+	QString diagramNodeNameString(const Id &editor, const Id &diagram) const override;
 
-	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &elementName) const override;
-	QStringList elements(QString const &editor, QString const &diagram) const override;
-	int isNodeOrEdge(QString const &editor, QString const &element) const override;
-	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
-			, QString const &childDiagram, QString const &childElement) const override;
-	QString diagramName(QString const &editor, QString const &diagram) const override;
-	QString diagramNodeName(QString const &editor, QString const &diagram) const override;
+	QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &elementName) const override;
+	QStringList elements(const QString &editor, const QString &diagram) const override;
+	int isNodeOrEdge(const QString &editor, const QString &element) const override;
+	bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
+			, const QString &childDiagram, const QString &childElement) const override;
+	QString diagramName(const QString &editor, const QString &diagram) const override;
+	QString diagramNodeName(const QString &editor, const QString &diagram) const override;
 	bool isInterpretationMode() const override;
 
-	bool isParentProperty(Id const &id, QString const &propertyName) const override;
-	void deleteProperty(QString const &propertyName) const override;
-	void addProperty(Id const &id, QString const &propDisplayedName) const override;
-	void updateProperties(Id const &id, QString const &property, QString const &propertyType
-			, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const override;
-	QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const override;
-	IdList children(Id const &parent) const override;
-	QString shape(Id const &id) const override;
-	void updateShape(Id const &id, QString const &graphics) const override;
-	virtual void resetIsHidden(Id const &id) const;
-	virtual QString getIsHidden(Id const &id) const;
-	void deleteElement(Id const &id) const override;
-	bool isRootDiagramNode(Id const &id) const override;
-	void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
+	bool isParentProperty(const Id &id, const QString &propertyName) const override;
+	void deleteProperty(const QString &propertyName) const override;
+	void addProperty(const Id &id, const QString &propDisplayedName) const override;
+	void updateProperties(const Id &id, const QString &property, const QString &propertyType
+			, const QString &propertyDefaultValue, const QString &propertyDisplayedName) const override;
+	QString propertyNameByDisplayedName(const Id &id, const QString &displayedPropertyName) const override;
+	IdList children(const Id &parent) const override;
+	QString shape(const Id &id) const override;
+	void updateShape(const Id &id, const QString &graphics) const override;
+	virtual void resetIsHidden(const Id &id) const;
+	virtual QString getIsHidden(const Id &id) const;
+	void deleteElement(const Id &id) const override;
+	bool isRootDiagramNode(const Id &id) const override;
+	void addNodeElement(const Id &diagram, const QString &name, const QString &displayedName
 			, bool isRootDiagramNode) const override;
 	void addEdgeElement(
-			Id const &diagram
-			, QString const &name
-			, QString const &displayedName
-			, QString const &labelText
-			, QString const &labelType
-			, QString const &lineType
-			, QString const &beginType
-			, QString const &endType
+			const Id &diagram
+			, const QString &name
+			, const QString &displayedName
+			, const QString &labelText
+			, const QString &labelType
+			, const QString &lineType
+			, const QString &beginType
+			, const QString &endType
 			) const override;
 
-	QPair<Id, Id> createEditorAndDiagram(QString const &name) const override;
-	void saveMetamodel(QString const &newMetamodelFileName) override;
+	QPair<Id, Id> createEditorAndDiagram(const QString &name) const override;
+	void saveMetamodel(const QString &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;
-	QStringList paletteGroups(Id const &editor, Id const &diagram) const override;
-	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const override;
-	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const override;
-	bool shallPaletteBeSorted(Id const &editor, Id const &diagram) const override;
-	QStringList referenceProperties(Id const &id) const override;
-	IdList groups(Id const &diagram) override;
-	Pattern getPatternByName (QString const &str) const override;
+	QStringList paletteGroups(const Id &editor, const Id &diagram) const override;
+	QStringList paletteGroupList(const Id &editor,const Id &diagram, const QString &group) const override;
+	QString paletteGroupDescription(const Id &editor, const Id &diagram, const QString &group) const override;
+	bool shallPaletteBeSorted(const Id &editor, const Id &diagram) const override;
+	QStringList referenceProperties(const Id &id) const override;
+	IdList groups(const Id &diagram) override;
+	Pattern getPatternByName (const QString &str) const override;
 	QList<QString> getPatternNames() const override;
-	QSize iconSize(Id const &id) const override;
+	QSize iconSize(const Id &id) const override;
 
-	IdList elementsWithTheSameName(Id const &diagram, QString const &name, QString const type) const override;
+	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const override;
 	IdList propertiesWithTheSameName(
-			Id const &id
-			, QString const &propCurrentName
-			, QString const &propNewName) const override;
+			const Id &id
+			, const QString &propCurrentName
+			, const QString &propNewName) const override;
 
-	QStringList getPropertiesInformation(Id const &id) const override;
-	QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const override;
-	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
-	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
+	QStringList getPropertiesInformation(const Id &id) const override;
+	QStringList getSameNamePropertyParams(const Id &propertyId, const QString &propertyName) const override;
+	void restoreRemovedProperty(const Id &propertyId, const QString &previousName) const override;
+	void restoreRenamedProperty(const Id &propertyId, const QString &previousName) const override;
 
-	void setElementEnabled(Id const &type, bool enabled) override;
+	void setElementEnabled(const Id &type, bool enabled) override;
 
 	/// Returns list of metamodels for interpreted plugins.
 	QMap<QString, qrRepo::RepoApi*> listOfMetamodels() const;
@@ -155,18 +151,18 @@ private:
 	QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;  // Has ownership.
 	QString mMetamodelFile;
 
-	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
-	Id element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
-	Id diagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;
-	void setStandartConfigurations(qrRepo::RepoApi *repo, Id const &id, Id const &parent, const QString &name) const;
-	QPair<qrRepo::RepoApi*, Id> repoAndMetaId(Id const &id) const;
-	QPair<qrRepo::RepoApi*, Id> repoAndElement(QString const &editor, QString const &element) const;
-	QPair<qrRepo::RepoApi*, Id> repoAndDiagram(QString const &editor, QString const &diagram) const;
-	QPair<Id, Id> editorAndDiagram(qrRepo::RepoApi const * const repo, Id const &element) const;
-	QStringList propertiesFromParents(Id const &id, QString const &propertyName
-			, CheckPropertyForParent const &checker) const;
-	QString valueOfProperty(Id const &id, QString const &propertyName, QString const &value) const;
-	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &diagram, QString const &propDisplayedName) const;
+	void setProperty(qrRepo::RepoApi* repo, const Id &id, const QString &property, const QVariant &propertyValue) const;
+	Id element(const Id &id, const qrRepo::RepoApi * const repo, const Id &diagram) const;
+	Id diagramOrElement(const Id &id, const qrRepo::RepoApi * const repo, const Id &editor) const;
+	void setStandartConfigurations(qrRepo::RepoApi *repo, const Id &id, const Id &parent, const QString &name) const;
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId(const Id &id) const;
+	QPair<qrRepo::RepoApi*, Id> repoAndElement(const QString &editor, const QString &element) const;
+	QPair<qrRepo::RepoApi*, Id> repoAndDiagram(const QString &editor, const QString &diagram) const;
+	QPair<Id, Id> editorAndDiagram(const qrRepo::RepoApi * const repo, const Id &element) const;
+	QStringList propertiesFromParents(const Id &id, const QString &propertyName
+			, const CheckPropertyForParent &checker) const;
+	QString valueOfProperty(const Id &id, const QString &propertyName, const QString &value) const;
+	void deletePropertyInElement(qrRepo::RepoApi *repo, const Id &diagram, const QString &propDisplayedName) const;
 };
 
 }

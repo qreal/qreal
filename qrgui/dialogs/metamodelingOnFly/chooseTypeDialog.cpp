@@ -9,8 +9,8 @@
 using namespace qReal;
 using namespace gui;
 
-ChooseTypeDialog::ChooseTypeDialog(Id const &diagram
-		, EditorManagerInterface const &editorManagerProxy
+ChooseTypeDialog::ChooseTypeDialog(const Id &diagram
+		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::ChooseTypeDialog)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "waitForColorSensorBlockBase.h"
+#include <interpreterBase/blocksBase/common/waitForColorSensorBlockBase.h>
 
 namespace interpreterBase {
 namespace blocksBase {
@@ -17,6 +17,9 @@ public:
 
 protected slots:
 	void responseSlot(int reading) override;
+
+private:
+	robotModel::DeviceInfo device() const override;
 };
 
 }

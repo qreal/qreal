@@ -14,7 +14,7 @@ class ColorSensorImpl : public QObject
 	Q_OBJECT
 
 public:
-	ColorSensorImpl(interpreterBase::robotModel::PortInfo const &port
+	ColorSensorImpl(const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator
 			, enums::lowLevelSensorType::SensorTypeEnum lowLevelType);
 
@@ -27,7 +27,7 @@ signals:
 	void failure();
 
 private slots:
-	void sensorSpecificProcessResponse(QByteArray const &reading);
+	void sensorSpecificProcessResponse(const QByteArray &reading);
 
 private:
 	NxtInputDevice mImplementation;

@@ -16,8 +16,6 @@ using namespace utils;
 
 NodeType::NodeType(Diagram *diagram)
 		: GraphicType(diagram)
-		, mIsPin(false)
-		, mIsHavePin(false)
 		, mIsResizeable(true)
 {
 }
@@ -40,15 +38,13 @@ Type* NodeType::clone() const
 
 	result->mSdfDomElement = mSdfDomElement;
 	result->mPortsDomElement = mPortsDomElement;
-	result->mIsPin = mIsPin;
-	result->mIsHavePin = mIsHavePin;
 	result->mIsResizeable = mIsResizeable;
 	return result;
 }
 
 bool NodeType::copyPictures(GraphicType *parent)
 {
-	NodeType const * const nodeParent = dynamic_cast<NodeType*>(parent);
+	const NodeType * const nodeParent = dynamic_cast<NodeType*>(parent);
 	if (nodeParent != nullptr) {
 		if (mSdfDomElement.isNull()) {
 			/// @todo Support this.
@@ -132,7 +128,7 @@ bool NodeType::initPorts()
 	return true;
 }
 
-bool NodeType::initPointPorts(QDomElement const &portsElement)
+bool NodeType::initPointPorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 			!portElement.isNull();
@@ -148,7 +144,7 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 	return true;
 }
 
-bool NodeType::initLinePorts(QDomElement const &portsElement)
+bool NodeType::initLinePorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 			!portElement.isNull();
@@ -164,28 +160,16 @@ bool NodeType::initLinePorts(QDomElement const &portsElement)
 	return true;
 }
 
-bool NodeType::initLabel(Label *label, QDomElement const &element, int const &count)
+bool NodeType::initLabel(Label *label, const QDomElement &element, const int &count)
 {
 	return label->init(element, count, true, mWidth, mHeight);
 }
 
 bool NodeType::initBooleanProperties()
 {
-	mIsPin = false;
-	mIsHavePin = false;
 	mIsResizeable = true;
 
-	QDomElement const element = mLogic.firstChildElement("pin");
-	if (!element.isNull()) {
-		mIsPin = true;
-	}
-
-	QDomElement const element1 = mLogic.firstChildElement("action");
-	if (!element1.isNull()) {
-		mIsHavePin = true;
-	}
-
-	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
+	const QDomElement element2 = mGraphics.firstChildElement("nonResizeable");
 	if (!element2.isNull()) {
 		mIsResizeable = false;
 	}
@@ -197,7 +181,7 @@ void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
 
-	QString const className = NameNormalizer::normalize(qualifiedName());
+	const QString className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
 
 	out() << "\tclass " << className << " : public qReal::ElementImpl\n\t{\n"
@@ -214,7 +198,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out () << "\t\tvoid init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}\n\n"
-	<< "\t\tvoid init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports\n"
+	<< "\t\tvoid init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports\n"
 	<< "\t\t\t\t\t\t\t, qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles\n"
 	<< "\t\t\t\t\t\t\t, qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)\n\t\t{\n";
 
@@ -248,7 +232,7 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n";
 
-	out() << "\t\t qReal::ElementImpl *clone() { return NULL; }\n";
+	out() << "\t\t qReal::ElementImpl *clone() { return nullptr; }\n";
 
 	out() << "\t\t~" << className << "() {}\n\n"
 	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
@@ -329,26 +313,12 @@ void NodeType::generateCode(OutFile &out)
 
 	<< "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n\t\t\treturn enums::linkShape::square;\n\t\t}\n\n"
 
-	<< "\t\tbool isPort() const\n\t\t{\n"
-	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
-
-	<< "\t\tbool hasPin() const\n\t\t{\n"
-	<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
-
 	<< "\t\tbool createChildrenFromMenu() const\n\t\t{\n"
 	<< (mCreateChildrenFromMenu ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n";
 
 	out() << "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n";
-
-	if (mIsHavePin) {
-		out() << "\t\t\tlist << 30 << 15 << 15 << 25;\n";
-	} else {
-		out() << "\t\t\tlist << 0 << 0 << 0 << 0;\n";
-	}
 
 	out() << "\t\t\treturn list;\n"
 	<< "\t\t}\n\n";
@@ -391,7 +361,7 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 
 	if (!portTypes.empty()) {
 		out() << "\t\tresult ";
-		foreach (QString const &type, portTypes) {
+		foreach (const QString &type, portTypes) {
 			out() << "<< \"" << type << "\"";
 		}
 		out() << ";\n";

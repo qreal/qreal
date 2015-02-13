@@ -5,9 +5,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-LabelGenerator::LabelGenerator(qrRepo::RepoApi const &repo
+LabelGenerator::LabelGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "label.t"
 			, { Binding::createStaticConverting("@@ID@@", id.id()

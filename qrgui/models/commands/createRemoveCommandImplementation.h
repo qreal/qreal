@@ -11,44 +11,44 @@ public:
 	CreateRemoveCommandImplementation(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser const &exploser
-			, Id const &logicalParent
-			, Id const &graphicalParent
-			, Id const &id
+			, const models::Exploser &exploser
+			, const Id &logicalParent
+			, const Id &graphicalParent
+			, const Id &id
 			, bool isFromLogicalModel
-			, QString const &name
-			, QPointF const &position);
+			, const QString &name
+			, const QPointF &position);
 
 	Id create();
 	void remove();
 
 	Id id() const;
 
-	bool equals(CreateRemoveCommandImplementation const &other) const;
+	bool equals(const CreateRemoveCommandImplementation &other) const;
 
 	/// @todo: Bad method, required only for linkers. Get rid of it.
 	/// Modifies command setting new creation position.
-	void setNewPosition(QPointF const &position);
+	void setNewPosition(const QPointF &position);
 
 private:
 	void refreshAllPalettes();
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
-	models::Exploser const &mExploser;
-	Id const mLogicalParent;
-	Id const mGraphicalParent;
+	const models::Exploser &mExploser;
+	const Id mLogicalParent;
+	const Id mGraphicalParent;
 	Id mId;
-	bool const mIsFromLogicalModel;
-	QString const mName;
+	const bool mIsFromLogicalModel;
+	const QString mName;
 	QPointF mPosition;
 	QMap<QString, QVariant> mLogicalPropertiesSnapshot;
 	QMap<QString, QVariant> mGraphicalPropertiesSnapshot;
 	Id mOldLogicalId;
 };
 
-inline bool operator==(CreateRemoveCommandImplementation const &i1
-		, CreateRemoveCommandImplementation const &i2)
+inline bool operator==(const CreateRemoveCommandImplementation &i1
+		, const CreateRemoveCommandImplementation &i2)
 {
 	return i1.equals(i2);
 }

@@ -9,17 +9,17 @@ namespace fSharp {
 class TrikFSharpMasterGenerator : public TrikMasterGeneratorBase
 {
 public:
-	TrikFSharpMasterGenerator(qrRepo::RepoApi const &repo
+	TrikFSharpMasterGenerator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const utils::ParserErrorReporter &parserErrorReporter
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId
-			, QString const &generatorName);
+			, const qReal::Id &diagramId
+			, const QString &generatorName);
 
 protected:
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
-	void processGeneratedCode(QString &code) override;
 };
 
 }

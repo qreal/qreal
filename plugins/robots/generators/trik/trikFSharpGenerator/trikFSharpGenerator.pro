@@ -1,19 +1,17 @@
-QT += widgets network
+TARGET = robots-trik-f-sharp-generator
 
-CONFIG += c++11
+include(../../../../../global.pri)
+
+QT += widgets network
 
 TEMPLATE = lib
 CONFIG += plugin
 
-DESTDIR = $$PWD/../../../../../bin/plugins/tools/kitPlugins/
-TARGET = robots-trik-f-sharp-generator
+copyToDestdir($$PWD/lib/Trik.Core.dll)
 
-MOC_DIR = .moc
-RCC_DIR = .moc
-OBJECTS_DIR = .obj
+DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
-		-lrobots-generator-base -lrobots-trik-generator-base -lrobots-utils \
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base robots-utils)
 
 INCLUDEPATH += \
 	$$PWD/../trikGeneratorBase/include/ \
@@ -23,20 +21,6 @@ INCLUDEPATH += \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui \
 	$$PWD/../../../../../qrtext/include \
-
-win32 {
-	QMAKE_POST_LINK = "cmd /C "copy lib\\Trik.Core.dll ..\\..\\..\\..\\..\\bin /y""
-}
-else {
-	QMAKE_POST_LINK = "cp lib/Trik.Core.dll ../../../../../bin"
-}
-
-# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-!macx {
-	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../../../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
-}
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpGenerator_ru.ts
 

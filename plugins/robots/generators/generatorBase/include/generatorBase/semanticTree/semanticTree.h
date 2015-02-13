@@ -19,7 +19,7 @@ namespace semantics {
 class SemanticTree : public QObject
 {
 public:
-	SemanticTree(GeneratorCustomizer &customizer, qReal::Id const &initialBlock
+	SemanticTree(GeneratorCustomizer &customizer, const qReal::Id &initialBlock
 			, bool isMainTree, QObject *parent = 0);
 
 	/// Returns an id of the initial node in this semantic tree. Semantic trees are
@@ -28,37 +28,37 @@ public:
 
 	/// Generates code by this tree. Target language is defined with customizer
 	/// that was passed into constructor.
-	QString toString(int indent) const;
+	QString toString(int indent, const QString &indentString) const;
 
 	/// Produces new instance of semantic node binded to specified block
 	/// autodetecting block`s semantics
-	SemanticNode *produceNodeFor(qReal::Id const &id);
+	SemanticNode *produceNodeFor(const qReal::Id &id);
 
 	/// Produces new instance of simple node binded to specified block
-	SimpleNode *produceSimple(qReal::Id const &id = qReal::Id());
+	SimpleNode *produceSimple(const qReal::Id &id = qReal::Id());
 
 	/// Produces new instance of if node binded to specified block
-	IfNode *produceConditional(qReal::Id const &id = qReal::Id());
+	IfNode *produceConditional(const qReal::Id &id = qReal::Id());
 
 	/// Produces new instance of loop node binded to specified block
-	LoopNode *produceLoop(qReal::Id const &id = qReal::Id());
+	LoopNode *produceLoop(const qReal::Id &id = qReal::Id());
 
 	/// Produces new instance of fork node binded to specified block
-	ForkNode *produceFork(qReal::Id const &id = qReal::Id());
+	ForkNode *produceFork(const qReal::Id &id = qReal::Id());
 
 	/// Produces new instance of switch node binded to specified block
-	SwitchNode *produceSwitch(qReal::Id const &id = qReal::Id());
+	SwitchNode *produceSwitch(const qReal::Id &id = qReal::Id());
 
 	/// Produces new instance of final node binded to specified block
-	FinalNode *produceFinal(qReal::Id const &id = qReal::Id());
+	FinalNode *produceFinal(const qReal::Id &id = qReal::Id());
 
 	/// Performs deep (recursive) search in this tree and returns
-	/// a node with specified id binded if such was found or NULL otherwise.
-	NonZoneNode *findNodeFor(qReal::Id const &id);
+	/// a node with specified id binded if such was found or nullptr otherwise.
+	NonZoneNode *findNodeFor(const qReal::Id &id);
 
 private:
 	GeneratorCustomizer &mCustomizer;
-	bool const mIsMainTree;
+	const bool mIsMainTree;
 	RootNode *mRoot;  // Takes ownership
 };
 

@@ -1,19 +1,12 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-text-editor
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqscintilla2 -lqrgui-tool-plugin-interface
+include(../../global.pri)
+
+TEMPLATE = lib
+
+links(qrkernel qrutils qscintilla2 qrgui-tool-plugin-interface)
 
 QT += widgets
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
 
 DEFINES += QRGUI_TEXT_EDITOR_LIBRARY
 
@@ -23,6 +16,7 @@ INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../ \
 	$$PWD/../../ \
+	$$PWD/../../thirdparty/qscintilla/Qt4Qt5 \
 
 HEADERS += \
 	$$PWD/textEditorDeclSpec.h \
@@ -31,9 +25,11 @@ HEADERS += \
 	$$PWD/textManager.h \
 	$$PWD/textManagerInterface.h \
 	$$PWD/qscintillaTextEdit.h \
+	$$PWD/languageInfo.h \
 
 SOURCES += \
 	$$PWD/textHighlighter.cpp \
 	$$PWD/sqlHighlighter.cpp \
 	$$PWD/textManager.cpp \
 	$$PWD/qscintillaTextEdit.cpp \
+	$$PWD/languageInfo.cpp \

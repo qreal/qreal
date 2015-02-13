@@ -37,7 +37,7 @@ void LuaParserTest::SetUp()
 
 TEST_F(LuaParserTest, sanityCheck)
 {
-	QString const stream = "123";
+	const QString stream = "123";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	auto number = result.dynamicCast<ast::Number>();
@@ -47,7 +47,7 @@ TEST_F(LuaParserTest, sanityCheck)
 
 TEST_F(LuaParserTest, unaryOp)
 {
-	QString const stream = "-123";
+	const QString stream = "-123";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::UnaryOperator> unaryOp = result.dynamicCast<ast::UnaryOperator>();
@@ -59,7 +59,7 @@ TEST_F(LuaParserTest, unaryOp)
 
 TEST_F(LuaParserTest, connections)
 {
-	QString const stream = "-123";
+	const QString stream = "-123";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::UnaryOperator> unaryOp = result.dynamicCast<ast::UnaryOperator>();
@@ -73,7 +73,7 @@ TEST_F(LuaParserTest, connections)
 
 TEST_F(LuaParserTest, binaryOp)
 {
-	QString const stream = "1+2";
+	const QString stream = "1+2";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();
@@ -137,7 +137,7 @@ TEST_F(LuaParserTest, associativity)
 
 TEST_F(LuaParserTest, precedence)
 {
-	QString const stream = "1 * 2 + 3 * 4 + 5 * 6";
+	const QString stream = "1 * 2 + 3 * 4 + 5 * 6";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
@@ -211,7 +211,7 @@ TEST_F(LuaParserTest, tableConstructor)
 
 TEST_F(LuaParserTest, identifier)
 {
-	QString const stream = "f";
+	const QString stream = "f";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	auto identifier = result.dynamicCast<ast::Identifier>();
@@ -418,7 +418,7 @@ TEST_F(LuaParserTest, logicalOperators)
 
 TEST_F(LuaParserTest, concatenation)
 {
-	QString const stream = "'1' .. '2'";
+	const QString stream = "'1' .. '2'";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();

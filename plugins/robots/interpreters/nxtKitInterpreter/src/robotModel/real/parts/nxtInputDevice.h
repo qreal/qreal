@@ -25,16 +25,16 @@ public:
 
 	NxtInputDevice(
 			utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, interpreterBase::robotModel::PortInfo const &port
-			, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
-			, enums::sensorMode::SensorModeEnum const &sensorMode);
+			, const interpreterBase::robotModel::PortInfo &port
+			, const enums::lowLevelSensorType::SensorTypeEnum &lowLevelSensorType
+			, const enums::sensorMode::SensorModeEnum &sensorMode);
 
 	/// Sends configuration buffer into the real device. When configuration is done configured() singal is emitted.
 	void configure();
 
 	/// Sends given buffer to a real device.
 	/// @param responseSize An expected size of the responce buffer.
-	void send(QByteArray const &buffer, unsigned const responseSize);
+	void send(const QByteArray &buffer, const unsigned responseSize);
 
 	/// Returns a state of the communication with the device.
 	State state() const;
@@ -50,16 +50,16 @@ public:
 
 signals:
 	/// Emitted when responce buffer has unknown data and must be processed by the concrete device.
-	void sensorSpecificProcessResponse(QByteArray const &reading);
+	void sensorSpecificProcessResponse(const QByteArray &reading);
 
 	/// Emitted when the configuration process is done.
 	void configured(bool success);
 
 private slots:
-	void readingDone(QObject *addressee, QByteArray const &reading);
+	void readingDone(QObject *addressee, const QByteArray &reading);
 
 private:
-	void processResponse(QByteArray const &reading);
+	void processResponse(const QByteArray &reading);
 
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 	char mLowLevelPort;

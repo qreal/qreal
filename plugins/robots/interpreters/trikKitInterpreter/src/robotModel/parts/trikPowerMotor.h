@@ -13,8 +13,8 @@ class TrikPowerMotor : public interpreterBase::robotModel::robotParts::Motor
 	Q_CLASSINFO("friendlyName", tr("Power Motor"))
 
 public:
-	TrikPowerMotor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikPowerMotor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 };
 
 }

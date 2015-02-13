@@ -7,9 +7,9 @@
 
 using namespace qReal;
 
-EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface const &interpreterEditorManager
+EditPropertiesDialog::EditPropertiesDialog(const EditorManagerInterface &interpreterEditorManager
 		, qrRepo::LogicalRepoApi &api
-		, Id const &id
+		, const Id &id
 		, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::EditPropertiesDialog)
@@ -51,7 +51,7 @@ void EditPropertiesDialog::updateProperties()
 			, mUi->displayedNameEdit->text()
 			);
 
-	if (mPropertyItem != NULL) {
+	if (mPropertyItem != nullptr) {
 		mPropertyItem->setText(mInterpreterEditorManager.propertyDisplayedName(mId, mPropertyName));
 	}
 
@@ -61,7 +61,7 @@ void EditPropertiesDialog::updateProperties()
 void EditPropertiesDialog::acceptPropertyModifications()
 {
 	if (mPropertyName.isEmpty()) {
-		IdList const sameNameProperties = mInterpreterEditorManager.propertiesWithTheSameName(mId, ""
+		const IdList sameNameProperties = mInterpreterEditorManager.propertiesWithTheSameName(mId, ""
 				, mUi->displayedNameEdit->text());
 		if (sameNameProperties.isEmpty()) {
 			mPropertyName = mUi->displayedNameEdit->text();
@@ -71,7 +71,7 @@ void EditPropertiesDialog::acceptPropertyModifications()
 
 		mInterpreterEditorManager.addProperty(mId, mPropertyName);
 		// set property default value for elements on diagram
-		for (auto const &elementOnDiagram: mElementsOnDiagram) {
+		for (const auto &elementOnDiagram: mElementsOnDiagram) {
 			mApi.setProperty(elementOnDiagram, mPropertyName, mUi->defaultValueEdit->text());
 		}
 
@@ -104,7 +104,7 @@ void EditPropertiesDialog::okButtonClicked()
 	if (mUi->attributeTypeEdit->text().isEmpty() || mUi->displayedNameEdit->text().isEmpty()) {
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
-		IdList const propertiesWithTheSameNameList = mInterpreterEditorManager.propertiesWithTheSameName(mId
+		const IdList propertiesWithTheSameNameList = mInterpreterEditorManager.propertiesWithTheSameName(mId
 				, mPropertyName, mUi->displayedNameEdit->text());
 		if (!propertiesWithTheSameNameList.isEmpty()) {
 			hide();
@@ -126,8 +126,8 @@ void EditPropertiesDialog::okButtonClicked()
 
 void EditPropertiesDialog::changeProperty(
 		QListWidgetItem *propertyItem
-		, QString const &propertyName
-		, QString const &propertyDisplayedName
+		, const QString &propertyName
+		, const QString &propertyDisplayedName
 		, qReal::IdList *elementsOnDiagram
 		)
 {

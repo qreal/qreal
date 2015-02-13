@@ -40,11 +40,11 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *event);
 	void resizeEvent(QResizeEvent *event);
 
-	void drawForeground(QPainter *painter, QRectF const &rect);
+	void drawForeground(QPainter *painter, const QRectF &rect);
 	/// painting out the areas which aren't to be painted on the minimap (not in the scene rect)
-	void drawNonExistentAreas(QPainter *painter, QRectF const &rect);
+	void drawNonExistentAreas(QPainter *painter, const QRectF &rect);
 	/// @return list of areas visible on the minimap but not included in the scene rectangle
-	QList<QRectF> getNonExistentAreas(QRectF const &rect);
+	QList<QRectF> getNonExistentAreas(const QRectF &rect);
 
 private:
 	void setCurrentScene();

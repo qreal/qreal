@@ -2,7 +2,7 @@
 
 using namespace interpreterBase::robotModel::robotParts;
 
-AbstractSensor::AbstractSensor(DeviceInfo const &info, PortInfo const &port)
+AbstractSensor::AbstractSensor(const DeviceInfo &info, const PortInfo &port)
 	: Device(info, port)
 {
 }

@@ -5,10 +5,10 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-BindingGenerator::BindingGenerator(qrRepo::RepoApi const &repo
+BindingGenerator::BindingGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
-		, QString const &pathToTemplate
+		, const Id &id
+		, const QString &pathToTemplate
 		, QList<Binding *> const &bindings
 		, QObject *parent)
 	: AbstractSimpleGenerator(repo, customizer, id, parent)

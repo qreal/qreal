@@ -10,14 +10,14 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
-		, EditorManagerInterface const &editorManagerInterface
+		, const EditorManagerInterface &editorManagerInterface
 		)
 	: AbstractModel(editorManagerInterface)
 	, mLogicalModelView(this)
 	, mApi(*repoApi)
-	, mGraphicalAssistApi(NULL)
+	, mGraphicalAssistApi(nullptr)
 {
-	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
+	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), nullptr);
 	init();
 }
 
@@ -51,14 +51,14 @@ void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 	/// have this property.
 	/// Nodes need to be loaded before adges due to bugs in scene which connects edges to incorrect nodes or does
 	/// not connect edges at all. Proper fix for that shall possibly be in scene instead of this place.
-	foreach (Id const &childId, mApi.children(parent->id())) {
+	foreach (const Id &childId, mApi.children(parent->id())) {
 		if (mApi.isGraphicalElement(childId) && !mApi.hasProperty(childId, "from")) {
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
 		}
 	}
 
-	foreach (Id const &childId, mApi.children(parent->id())) {
+	foreach (const Id &childId, mApi.children(parent->id())) {
 		if (mApi.isGraphicalElement(childId) && mApi.hasProperty(childId, "from")) {
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
@@ -66,12 +66,12 @@ void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 	}
 }
 
-GraphicalModelItem *GraphicalModel::loadElement(GraphicalModelItem *parentItem, Id const &id)
+GraphicalModelItem *GraphicalModel::loadElement(GraphicalModelItem *parentItem, const Id &id)
 {
 	int newRow = parentItem->children().size();
 
 	beginInsertRows(index(parentItem), newRow, newRow);
-	Id const logicalId = mApi.logicalId(id);
+	const Id logicalId = mApi.logicalId(id);
 	GraphicalModelItem *item = new GraphicalModelItem(id, logicalId, parentItem);
 	parentItem->addChild(item);
 	mModelItems.insert(id, item);
@@ -85,13 +85,13 @@ void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)
 	mLogicalModelView.setModel(logicalModel);
 }
 
-AbstractModelItem *GraphicalModel::createModelItem(Id const &id, AbstractModelItem *parentItem) const
+AbstractModelItem *GraphicalModel::createModelItem(const Id &id, AbstractModelItem *parentItem) const
 {
 	return new GraphicalModelItem(id, Id(id.type(), QUuid::createUuid().toString())
 								  , static_cast<GraphicalModelItem *>(parentItem));
 }
 
-void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
+void GraphicalModel::updateElements(const Id &logicalId, const QString &name)
 {
 	foreach (AbstractModelItem *item,  mModelItems.values()) {
 		GraphicalModelItem *graphicalItem = static_cast<GraphicalModelItem *>(item);
@@ -103,12 +103,12 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 }
 
 void GraphicalModel::addElementToModel(const Id &parent, const Id &id
-		, const Id &logicalId, QString const &name, const QPointF &position)
+		, const Id &logicalId, const QString &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
 
-	GraphicalModelItem *newGraphicalModelItem = NULL;
+	GraphicalModelItem *newGraphicalModelItem = nullptr;
 	Id actualLogicalId = logicalId;
 	if (logicalId == Id::rootId() || logicalId.isNull()) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
@@ -120,13 +120,14 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 	}
 
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
+	emit elementAdded(id);
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId
 		, modelsImplementation::AbstractModelItem *parentItem, modelsImplementation::AbstractModelItem *item
-		, QString const &name, const QPointF &position)
+		, const QString &name, const QPointF &position)
 {
-	int const newRow = parentItem->children().size();
+	const int newRow = parentItem->children().size();
 
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
@@ -223,13 +224,13 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 	return false;
 }
 
-void GraphicalModel::setNewName(Id const &id, QString const newValue)
+void GraphicalModel::setNewName(const Id &id, const QString newValue)
 {
 	mApi.setName(id, newValue);
 	emit nameChanged(id);
 }
 
-void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
+void GraphicalModel::changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position)
 {
 	if (!parent.isValid() || element.parent() == parent) {
 		return;
@@ -278,7 +279,7 @@ void GraphicalModel::stackBefore(const QModelIndex &element, const QModelIndex &
 	}
 }
 
-qrRepo::GraphicalRepoApi const &GraphicalModel::api() const
+const qrRepo::GraphicalRepoApi &GraphicalModel::api() const
 {
 	return mApi;
 }
@@ -293,7 +294,7 @@ GraphicalModelAssistApi &GraphicalModel::graphicalModelAssistApi() const
 	return *mGraphicalAssistApi;
 }
 
-bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
+bool GraphicalModel::removeRows(int row, int count, const QModelIndex &parent)
 {
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
 	if (parentItem->children().size() < row + count) {
@@ -327,7 +328,7 @@ void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::Abstr
 	mApi.removeElement(child->id());
 }
 
-QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(Id const &logicalId) const
+QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(const Id &logicalId) const
 {
 	QList<QPersistentModelIndex> indexes;
 	foreach (AbstractModelItem *item, mModelItems.values()) {

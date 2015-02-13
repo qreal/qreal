@@ -24,13 +24,13 @@ public:
 	 * Handles NodeElement behaviour (sets its position and parent).
 	 * @param leftPressed Shows is left mouse button pressed of not.
 	 */
-	void handleMoveEvent(bool const leftPressed
-			, QPointF &pos, QPointF const &scenePos
+	void handleMoveEvent(const bool leftPressed
+			, QPointF &pos, const QPointF &scenePos
 			, NodeElement *&parentNode);
 
 private:
 	void handleHorizontalBorders(const NodeElement * const tmpNode, const NodeElement * const parentNode
-			, QPointF const &pos, QPointF const &posInItem) const;
+			, const QPointF &pos, const QPointF &posInItem) const;
 	// whatever it means
 	// TODO: rename
 

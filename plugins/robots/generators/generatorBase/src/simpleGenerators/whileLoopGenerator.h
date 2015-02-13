@@ -9,9 +9,9 @@ namespace simple {
 class WhileLoopGenerator : public BindingGenerator
 {
 public:
-	WhileLoopGenerator(qrRepo::RepoApi const &repo
+	WhileLoopGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, bool doWhileForm
 			, bool needInverting
 			, QObject *parent = 0);

@@ -33,10 +33,10 @@ public:
 
 	/// Returns configured device on a given port or nullptr if no device is configured there.
 	/// Does not transfer ownership.
-	virtual robotParts::Device *device(PortInfo const &port) const = 0;
+	virtual robotParts::Device *device(const PortInfo &port) const = 0;
 
 	/// Removes device on a given port from configuration.
-	virtual void clearDevice(PortInfo const &port) = 0;
+	virtual void clearDevice(const PortInfo &port) = 0;
 };
 
 }

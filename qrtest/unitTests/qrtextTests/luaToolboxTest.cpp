@@ -27,7 +27,7 @@ TEST_F(LuaToolboxTest, easyTableInitializationSyntax)
 {
 	qReal::Id const testId = qReal::Id("1", "2", "3", "test");
 	QStringList result = mToolbox->interpret<QStringList>(testId, "test", "'M1', 'M2', 'M3'");
-	EXPECT_EQ(3, result.size());
+	ASSERT_EQ(3, result.size());
 	EXPECT_TRUE(mToolbox->errors().isEmpty());
 
 	EXPECT_EQ("M1", result[0]);
@@ -74,4 +74,41 @@ TEST_F(LuaToolboxTest, concatenation)
 	auto result = mToolbox->interpret<QString>("s");
 	ASSERT_TRUE(mToolbox->errors().isEmpty());
 	EXPECT_EQ("a = 1", result);
+}
+
+TEST_F(LuaToolboxTest, memory)
+{
+	ASSERT_EQ(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox->interpret<int>("sensorA1 = 30; M4 = 'M4'; M3 = 'M3'");
+
+	mToolbox->interpret<int>("S=sensorA1; Sold=S;");
+	mToolbox->interpret<int>("u=2.5*(S-sensorA1)+5*(Sold-sensorA1); Sold=sensorA1;");
+	mToolbox->interpret<int>("M4");
+	mToolbox->interpret<int>("50-u");
+	mToolbox->interpret<int>("M3");
+	mToolbox->interpret<int>("50+u");
+	mToolbox->interpret<int>("30");
+
+	EXPECT_NE(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox.reset(new LuaToolbox());
+
+	EXPECT_EQ(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox->interpret<int>(qReal::Id("1", "2", "3", "test"), "test", "123");
+
+	EXPECT_NE(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox.reset();
+
+	EXPECT_EQ(0, qrtext::core::ast::Node::nodesCount());
+}
+
+TEST_F(LuaToolboxTest, integerDivision)
+{
+	mToolbox->interpret<int>("s = 5 // 2");
+	auto result = mToolbox->interpret<int>("s");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(2, result);
 }

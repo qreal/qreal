@@ -3,9 +3,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-InitialNodeGenerator::InitialNodeGenerator(qrRepo::RepoApi const &repo
+InitialNodeGenerator::InitialNodeGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "initialNode.t", QList<Binding *>(), parent)
 {

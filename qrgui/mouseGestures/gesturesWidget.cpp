@@ -5,7 +5,7 @@
 
 using namespace qReal::gestures;
 
-int const pointsAtSegment = 5;
+const int pointsAtSegment = 5;
 
 GesturesWidget::GesturesWidget(QWidget *parent)
 	: QWidget(parent)
@@ -21,14 +21,14 @@ GesturesWidget::~GesturesWidget()
 	delete mUi;
 }
 
-void GesturesWidget::draw(QString const &paths)
+void GesturesWidget::draw(const QString &paths)
 {
-	int const frame = 10;
-	int const gestureAreaSize = qMin(mUi->gesturePixmap->width(), mUi->gesturePixmap->size().height()) - frame;
-	QSize const size(gestureAreaSize, gestureAreaSize);
+	const int frame = 10;
+	const int gestureAreaSize = qMin(mUi->gesturePixmap->width(), mUi->gesturePixmap->size().height()) - frame;
+	const QSize size(gestureAreaSize, gestureAreaSize);
 
 	GesturePainter painter(paths, Qt::white, Qt::blue, gestureAreaSize);
-	QPixmap const gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+	const QPixmap gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
 
 	mUi->gesturePixmap->setPixmap(gestureIcon.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

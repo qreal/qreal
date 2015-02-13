@@ -71,6 +71,19 @@ void VirtualCursor::moveToRect(QRect const &target, int duration)
 	mScriptAPI->wait(-1);
 }
 
+void VirtualCursor::moveToPoint(int const x, int const y, int const duration)
+{
+	mCursorMoveAnimation->setDuration(duration);
+	mCursorMoveAnimation->setStartValue(QRect(mapToParent(QPoint()).x(), mapToParent(QPoint()).y(), 0, 0));
+	mCursorMoveAnimation->setEndValue(QRect(x, y, 0, 0));
+
+	connect (mCursorMoveAnimation, &QPropertyAnimation::finished, mScriptAPI, &ScriptAPI::breakWaiting);
+
+	mCursorMoveAnimation->start();
+
+	mScriptAPI->wait(-1);
+}
+
 void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, int ySceneCoord)
 {
 	if (target) {

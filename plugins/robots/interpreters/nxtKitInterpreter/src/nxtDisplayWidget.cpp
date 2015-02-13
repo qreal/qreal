@@ -4,6 +4,7 @@
 
 #include <qrutils/graphicsUtils/painterInterface.h>
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 
 using namespace nxtKitInterpreter;
 using namespace graphicsUtils;
@@ -21,19 +22,21 @@ NxtDisplayWidget::~NxtDisplayWidget()
 	delete mUi;
 }
 
-bool NxtDisplayWidget::buttonIsDown(QString const &buttonPort) const
+bool NxtDisplayWidget::buttonIsDown(const QString &buttonPort) const
 {
-	if (buttonPort == "LeftButtonPort") {
+	if (buttonPort == "Left") {
 		return mUi->leftButton->isDown();
-	} else if (buttonPort == "RightButtonPort") {
+	} else if (buttonPort == "Right") {
 		return mUi->rightButton->isDown();
-	} else if (buttonPort == "EnterButtonPort") {
+	} else if (buttonPort == "Enter") {
 		return mUi->centralButton->isDown();
-	} else if (buttonPort == "EscapeButtonPort") {
+	} else if (buttonPort == "Escape") {
 		return mUi->bottomButton->isDown();
 	}
 
-	throw qReal::Exception("Incorrect button id in NxtDisplayWidget::buttonIsDown");
+	QLOG_WARN() << "Button on port" << buttonPort << "is not supported by 2d model";
+
+	return false;
 }
 
 void NxtDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)

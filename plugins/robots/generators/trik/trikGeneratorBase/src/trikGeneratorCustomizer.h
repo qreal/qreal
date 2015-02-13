@@ -9,11 +9,11 @@ namespace trik {
 class TrikGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
-	TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
+	TrikGeneratorCustomizer(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, QString const &generatorName);
+			, const QString &generatorName);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 

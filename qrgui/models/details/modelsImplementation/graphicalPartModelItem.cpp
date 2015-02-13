@@ -3,7 +3,7 @@
 using namespace qReal;
 using namespace qReal::models::details::modelsImplementation;
 
-GraphicalPartModelItem::GraphicalPartModelItem(Id const &id, int index)
+GraphicalPartModelItem::GraphicalPartModelItem(const Id &id, int index)
 	:mId(id), mIndex(index)
 {
 }

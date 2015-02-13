@@ -9,9 +9,9 @@ namespace simple {
 class BreakGenerator : public BindingGenerator
 {
 public:
-	BreakGenerator(qrRepo::RepoApi const &repo
+	BreakGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

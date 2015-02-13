@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/block.h>
+#include <interpreterBase/blocksBase/robotsBlock.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
@@ -10,7 +10,7 @@ namespace blocksBase {
 namespace common {
 
 /// A base for all blocks that work with motors.
-class ROBOTS_INTERPRETER_BASE_EXPORT EngineCommandBlock : public Block
+class ROBOTS_INTERPRETER_BASE_EXPORT EngineCommandBlock : public RobotsBlock
 {
 	Q_OBJECT
 
@@ -31,9 +31,9 @@ protected:
 	QList<MotorType *> parsePorts(ReportErrors reportErrors = ReportErrors::report)
 	{
 		QList<MotorType *> result;
-		QStringList const ports = eval<QStringList>("Ports", reportErrors);
+		const QStringList ports = eval<QStringList>("Ports", reportErrors);
 
-		for (QString const &port : ports) {
+		for (const QString &port : ports) {
 			MotorType * const motor = robotModel::RobotModelUtils::findDevice<MotorType>(mRobotModel, port.trimmed());
 			if (motor) {
 				result << motor;

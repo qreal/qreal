@@ -2,12 +2,15 @@
 
 #include <QtGui/QSyntaxHighlighter>
 
+namespace qReal {
+namespace text {
+
 /// Syntax Highlighter for sql code.
 class SQLHighlighter : public QSyntaxHighlighter
 {
 public:
 	SQLHighlighter(QTextDocument *document);
-	void highlightBlock(QString const &text);
+	void highlightBlock(const QString &text);
 
 private:
 	struct HighlightingRule
@@ -28,3 +31,6 @@ private:
 	QTextCharFormat mSignFormat;
 	QTextCharFormat mSomeStringFormat;
 };
+
+}
+}

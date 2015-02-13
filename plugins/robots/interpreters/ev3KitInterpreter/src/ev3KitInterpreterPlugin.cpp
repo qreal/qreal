@@ -5,8 +5,8 @@
 using namespace ev3KitInterpreter;
 using namespace qReal;
 
-Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
 		: mRealRobotModel(kitId(), "ev3robot") // todo: somewhere generate robotId for each robot
@@ -35,7 +35,7 @@ QList<interpreterBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugi
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
-		interpreterBase::robotModel::RobotModelInterface const *model)
+		const interpreterBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model)
 	return mBlocksFactory;
@@ -57,7 +57,7 @@ QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
 }
 
 QIcon Ev3KitInterpreterPlugin::iconForFastSelector(
-		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
 	return QIcon();

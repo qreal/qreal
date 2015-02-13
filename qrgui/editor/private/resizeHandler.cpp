@@ -63,14 +63,14 @@ void ResizeHandler::sortChildrenIfNeeded() const
 	int forestallingLeft = sizeOfForestalling[0];
 
 	qreal curChildY = forestallingTop;
-	qreal const maxChildWidthValue = maxChildWidth();
+	const qreal maxChildWidthValue = maxChildWidth();
 
 	QList<NodeElement *> children = sortedChildrenList();
 	foreach (QGraphicsItem * const childItem, children) {
 		QGraphicsRectItem * const placeholder = mTargetNode->placeholder();
 
-		if(placeholder != NULL && childItem == placeholder) {
-			QRectF const rect(forestallingLeft, curChildY, maxChildWidthValue, placeholder->rect().height());
+		if(placeholder != nullptr && childItem == placeholder) {
+			const QRectF rect(forestallingLeft, curChildY, maxChildWidthValue, placeholder->rect().height());
 			placeholder->setRect(rect);
 			curChildY += placeholder->rect().height();
 		}
@@ -80,11 +80,11 @@ void ResizeHandler::sortChildrenIfNeeded() const
 			continue;
 		}
 
-		qreal const necessaryWidth =
+		const qreal necessaryWidth =
 				mElementImpl->maximizesChildren()
 				? maxChildWidthValue
 				: curItem->contentsRect().width();
-		QRectF const rect(forestallingLeft, curChildY, necessaryWidth, curItem->contentsRect().height());
+		const QRectF rect(forestallingLeft, curChildY, necessaryWidth, curItem->contentsRect().height());
 
 		curItem->setGeometry(rect);
 		curItem->storeGeometry();
@@ -103,7 +103,7 @@ void ResizeHandler::resizeParent() const
 {
 	NodeElement * const parItem = dynamic_cast<NodeElement* const>(mTargetNode->parentItem());
 	if (parItem) {
-		ResizeHandler const handler(parItem);
+		const ResizeHandler handler(parItem);
 		handler.resize(parItem->contentsRect(), parItem->pos());
 	}
 }
@@ -122,7 +122,7 @@ void ResizeHandler::normalizeSize(QRectF &newContents) const
 void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newPos) const
 {
 	// Vector of minimum negative XY child deflection from top left corner.
-	QPointF const childDeflectionVector = childDeflection();
+	const QPointF childDeflectionVector = childDeflection();
 
 	moveChildren(-childDeflectionVector);
 	newPos += childDeflectionVector;
@@ -140,7 +140,7 @@ QPointF ResizeHandler::childDeflection() const
 
 	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
-		if (!curItem || curItem->isPort()) {
+		if (!curItem) {
 			continue;
 		}
 
@@ -155,13 +155,13 @@ void ResizeHandler::printChildPos() const
 {
 	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
-		if (!curItem || curItem->isPort()) {
+		if (!curItem) {
 			continue;
 		}
 	}
 }
 
-void ResizeHandler::moveChildren(QPointF const &shift) const
+void ResizeHandler::moveChildren(const QPointF &shift) const
 {
 	QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 	qreal forestallingTop = sizeOfForestalling[1];
@@ -169,7 +169,7 @@ void ResizeHandler::moveChildren(QPointF const &shift) const
 
 	foreach (QGraphicsItem * const childItem, mTargetNode->childItems()) {
 		NodeElement * const curItem = dynamic_cast<NodeElement * const>(childItem);
-		if (!curItem || curItem->isPort()) {
+		if (!curItem) {
 			continue;
 		}
 
@@ -208,7 +208,7 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 	}
 }
 
-QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, QRectF const &contents) const
+QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, const QRectF &contents) const
 {
 	QRectF boundingRect;
 
@@ -223,7 +223,7 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, Q
 	}
 
 	const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
-	if (curItem && !curItem->isPort()) {
+	if (curItem) {
 		boundingRect = curItem->contentsRect();
 	}
 
@@ -236,7 +236,7 @@ QList<NodeElement *> ResizeHandler::sortedChildrenList() const
 
 	IdList childrenIds = mTargetNode->sortedChildren();
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mTargetNode->scene());
-	foreach (Id const &id, childrenIds) {
+	foreach (const Id &id, childrenIds) {
 		NodeElement *child = evScene->getNodeById(id);
 		if (child) {
 			result << child;

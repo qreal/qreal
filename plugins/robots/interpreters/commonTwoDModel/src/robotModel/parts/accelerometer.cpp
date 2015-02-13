@@ -5,8 +5,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-Accelerometer::Accelerometer(DeviceInfo const &info
-		, PortInfo const &port
+Accelerometer::Accelerometer(const DeviceInfo &info
+		, const PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: robotParts::AccelerometerSensor(info, port)
 	, mEngine(engine)

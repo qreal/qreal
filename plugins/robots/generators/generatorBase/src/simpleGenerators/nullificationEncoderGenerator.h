@@ -9,9 +9,9 @@ namespace simple {
 class NullificationEncoderGenerator: public BindingGenerator
 {
 public:
-	NullificationEncoderGenerator(qrRepo::RepoApi const &repo
+	NullificationEncoderGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

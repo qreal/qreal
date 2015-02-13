@@ -15,7 +15,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT DevicesConfigurationProvider
 public:
 	/// Constructor.
 	/// @param name - name of an instance of provider, which can be used in debug output.
-	explicit DevicesConfigurationProvider(QString const &name = QString());
+	explicit DevicesConfigurationProvider(const QString &name = QString());
 
 	virtual ~DevicesConfigurationProvider();
 
@@ -47,16 +47,16 @@ protected:
 	/// @param device - new type of a device on a given port.
 	/// @param reason - reason for configuration change. It allows different reactions to, for example, changes during
 	///        save loading and to changes made by user or autoconfigurer.
-	void deviceConfigurationChanged(QString const &robotModel
-			, robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &device
+	void deviceConfigurationChanged(const QString &robotModel
+			, const robotModel::PortInfo &port
+			, const robotModel::DeviceInfo &device
 			, Reason reason);
 
 	/// Must be implemented in descendants to react to device configuration changes and refresh their internal data.
 	/// Symmetric to deviceConfigurationChanged. Default implementation does nothing.
-	virtual void onDeviceConfigurationChanged(QString const &robotModel
-			, robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &device
+	virtual void onDeviceConfigurationChanged(const QString &robotModel
+			, const robotModel::PortInfo &port
+			, const robotModel::DeviceInfo &device
 			, Reason reason);
 
 	/// Sets null devices to each known port of each known robot model.
@@ -68,11 +68,11 @@ protected:
 	/// Returns a list of ports with configured devices for given model.
 	/// @todo Not sure that it is needed, we can ask model instead. Anyway, there are non-configurable ports and other
 	///       stuff that only model knows.
-	QList<robotModel::PortInfo> configuredPorts(QString const &modelName) const;
+	QList<robotModel::PortInfo> configuredPorts(const QString &modelName) const;
 
 	/// Returns device configured on a given port in given model, or null device, if device on that port
 	/// is not configured.
-	robotModel::DeviceInfo currentConfiguration(QString const &modelName, robotModel::PortInfo const &port) const;
+	robotModel::DeviceInfo currentConfiguration(const QString &modelName, const robotModel::PortInfo &port) const;
 
 private:
 	void disconnectDevicesConfigurationProvider(DevicesConfigurationProvider * const provider);

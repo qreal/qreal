@@ -12,15 +12,15 @@ using namespace twoDModel::model;
 using namespace physics;
 using namespace mathUtils;
 
-SimplePhysicsEngine::SimplePhysicsEngine(WorldModel const &worldModel)
+SimplePhysicsEngine::SimplePhysicsEngine(const WorldModel &worldModel)
 	: PhysicsEngineBase(worldModel)
 {
 }
 
 void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 		, bool engine1Break, bool engine2Break
-		, QPointF const &rotationCenter, qreal robotAngle
-		, QPainterPath const &robotBoundingPath)
+		, const QPointF &rotationCenter, qreal robotAngle
+		, const QPainterPath &robotBoundingPath)
 {
 	Q_UNUSED(engine1Break)
 	Q_UNUSED(engine2Break)
@@ -35,11 +35,11 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 	mPositionShift = QVector2D();
 	mRotation = 0.0;
 
-	qreal const averageSpeed = (speed1 + speed2) / 2;
+	const qreal averageSpeed = (speed1 + speed2) / 2;
 
 	if (!Math::eq(speed1, speed2)) {
-		qreal const radius = speed1 * robotHeight / (speed1 - speed2);
-		qreal const averageRadius = radius - robotHeight / 2;
+		const qreal radius = speed1 * robotHeight / (speed1 - speed2);
+		const qreal averageRadius = radius - robotHeight / 2;
 		qreal angularSpeed = 0;
 		qreal actualRadius = 0;
 		if (Math::eq(speed1, -speed2)) {
@@ -49,8 +49,8 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 			angularSpeed = averageSpeed / averageRadius;
 			actualRadius = averageRadius;
 		}
-		qreal const gammaRadians = timeInterval * angularSpeed;
-		qreal const gammaDegrees = gammaRadians * 180 / pi;
+		const qreal gammaRadians = timeInterval * angularSpeed;
+		const qreal gammaDegrees = gammaRadians * 180 / pi;
 
 		QTransform map;
 		map.rotate(robotAngle);

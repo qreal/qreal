@@ -18,13 +18,15 @@ namespace ast {
 class QRTEXT_EXPORT Node
 {
 public:
-	virtual ~Node() {}
+	Node();
+
+	virtual ~Node();
 
 	/// Returns start of a node.
-	Connection const &start() const;
+	const Connection &start() const;
 
 	/// Returns end of a node.
-	Connection const &end() const;
+	const Connection &end() const;
 
 	/// Returns list of all ranges associated with a node (ranges of its own lexemes and its sons, excluding comments).
 	QList<Range> const &ranges() const;
@@ -43,7 +45,7 @@ public:
 	template<typename NodeType>
 	bool is() const
 	{
-		return dynamic_cast<NodeType const * const>(this) != nullptr;
+		return dynamic_cast<const NodeType * const>(this) != nullptr;
 	}
 
 	/// Returns all children of a node as a list. Shall be redefined in all descendants who have children, as it is used
@@ -61,6 +63,10 @@ public:
 	/// See 'visitor' design pattern (http://www.oodesign.com/visitor-pattern.html).
 	virtual void accept(AstVisitorInterface &visitor) const;
 
+	static int nodesCount() {
+		return mNodesCount;
+	}
+
 private:
 	void connect(QList<Range> const &ranges);
 
@@ -68,7 +74,9 @@ private:
 	QList<Range> mRanges;
 
 	/// Static object denoting absent connection (for example, for generated nodes).
-	static Connection const noConnection;
+	static const Connection noConnection;
+
+	static int mNodesCount;
 };
 
 }
@@ -86,7 +94,7 @@ template<typename TargetType, typename SourceType>
 inline QList<QSharedPointer<TargetType>> as(QList<QSharedPointer<SourceType>> const &list)
 {
 	QList<QSharedPointer<TargetType>> result;
-	for (auto item : list) {
+	for (const auto &item : list) {
 		result << as<TargetType>(item);
 	}
 

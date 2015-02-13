@@ -9,12 +9,12 @@ namespace ast {
 class QRTEXT_EXPORT Identifier : public Expression
 {
 public:
-	Identifier(QString const &name)
+	Identifier(const QString &name)
 		: mName(name)
 	{
 	}
 
-	QString const &name() const {
+	const QString &name() const {
 		return mName;
 	}
 

@@ -3,9 +3,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-InfiniteLoopGenerator::InfiniteLoopGenerator(qrRepo::RepoApi const &repo
+InfiniteLoopGenerator::InfiniteLoopGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "conditional/infinite.t", QList<Binding *>(), parent)
 {

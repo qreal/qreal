@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtWidgets/QGraphicsView>
 #include <QtCore/QTimer>
@@ -22,12 +22,12 @@ public:
 	~SensorViewer();
 
 	/// @note All intervals in ms
-	void configureUserOptions(int const &fpsDelay, int const &autoScaleDelay, int const &textInfoUpdateDelay);
+	void configureUserOptions(const int &fpsDelay, const int &autoScaleDelay, const int &textInfoUpdateDelay);
 
 	void resizeEvent(QResizeEvent *event = 0);
 
 public slots:
-	void setNextValue(qreal const newValue);
+	void setNextValue(const qreal newValue);
 	void startJob();
 	void stopJob();
 	void clear();
@@ -66,9 +66,9 @@ private:
 	/// Update interval of current value
 	int mUpdateTextInfoInterval;
 	/// Shift in pixels each frame
-	static int const stepSize = 2;
+	static const int stepSize = 2;
 	/// Zoom coefficent
-	static int const zoomRate = 2;
+	static const int zoomRate = 2;
 
 	int mScaleCoefficient;
 	int mAutoScaleTimer;

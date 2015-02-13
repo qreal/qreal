@@ -7,8 +7,8 @@
 using namespace nxtKitInterpreter;
 using namespace qReal;
 
-Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mRealRobotModel(kitId(), "nxtKitRobot") // todo: somewhere generate robotId for each robot
@@ -39,21 +39,21 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 	}
 }
 
-void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, SystemEvents const &systemEvents
+void NxtKitInterpreterPlugin::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+		, const SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](QString const &modelName) { mCurrentlySelectedModelName = modelName; });
+			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
 			, this, &NxtKitInterpreterPlugin::onActiveTabChanged);
 
 	connect(&mRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
-			, [&interpretersInterface](QString const &message) {
+			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
 	mRealRobotModel.checkConnection();
@@ -79,7 +79,7 @@ QList<interpreterBase::robotModel::RobotModelInterface *> NxtKitInterpreterPlugi
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::blocksFactoryFor(
-		interpreterBase::robotModel::RobotModelInterface const *model)
+		const interpreterBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model);
 	mOwnsBlocksFactory = false;
@@ -104,7 +104,7 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 
 QList<HotKeyActionInfo> NxtKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));	
+	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setObjectName("show2dModel");
 
 	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForNxt", tr("Show 2d model")
@@ -119,7 +119,7 @@ QString NxtKitInterpreterPlugin::defaultSettingsFile() const
 }
 
 QIcon NxtKitInterpreterPlugin::iconForFastSelector(
-		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
 {
 	return &robotModel == &mRealRobotModel
 			? QIcon(":/icons/switch-real-nxt.svg")
@@ -131,7 +131,7 @@ interpreterBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devices
 	return &mTwoDModel->devicesConfigurationProvider();
 }
 
-void NxtKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)
+void NxtKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
 {
 	bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 	enabled &= mCurrentlySelectedModelName == mTwoDRobotModel.name();

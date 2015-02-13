@@ -1,16 +1,13 @@
 TARGET = qrgui_unittests
 
-CONFIG += c++11
+include(../common.pri)
 
-LIBS += -L $$PWD/../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
-		-lqrgui-models -lqrgui-controller -lqrgui-plugin-manager -lqrgui-tool-plugin-interface
+links(qrkernel qslog qrutils qrrepo qrgui-models qrgui-controller qrgui-plugin-manager qrgui-tool-plugin-interface)
 
 INCLUDEPATH += \
 	# A little hack to make .ui files happy. They include other files by relative path based on qrgui/.ui \
 	$$PWD/../../../qrgui/icons \
 	$$PWD/../../../qrgui/ \
-
-include(../common.pri)
 
 include(modelsTests/modelsTests.pri)
 

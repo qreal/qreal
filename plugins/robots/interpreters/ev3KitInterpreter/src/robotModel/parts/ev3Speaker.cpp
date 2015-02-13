@@ -4,7 +4,7 @@
 using namespace ev3KitInterpreter::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-Ev3Speaker::Ev3Speaker(DeviceInfo const &info, PortInfo const &port)
+Ev3Speaker::Ev3Speaker(const DeviceInfo &info, const PortInfo &port)
 	: interpreterBase::robotModel::robotParts::Speaker(info, port)
 {
 }

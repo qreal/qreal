@@ -1,13 +1,12 @@
-QT += xml
+include(../../../global.pri)
+
+QT += xml widgets
 
 TEMPLATE = lib
 CONFIG += plugin
-CONFIG += c++11
-DESTDIR = ../../../bin/plugins/
-MOC_DIR = .moc
-RCC_DIR = .moc
+DESTDIR = $$DESTDIR/plugins/tools
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
+links(qrkernel qrutils)
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/hascolSupport_ru.ts
 

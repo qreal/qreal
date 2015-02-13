@@ -41,7 +41,7 @@ public:
 
 	/// Constructs new Version instance from a given string.
 	/// Version() is returned when input string could not be parsed.
-	static Version fromString(QString const &version);
+	static Version fromString(const QString &version);
 
 	/// Constructs invalid version instance.
 	Version();
@@ -75,7 +75,7 @@ public:
 	QString toString() const;
 
 private:
-	static Stage parseStage(QString const &stage, bool &ok);
+	static Stage parseStage(const QString &stage, bool &ok);
 	QString suffixString() const;
 
 	int mMajor;
@@ -86,7 +86,7 @@ private:
 };
 
 /// Versions equality operator. Versions are equal when all their parts are equal.
-inline bool operator==(Version const &v1, Version const &v2)
+inline bool operator==(const Version &v1, const Version &v2)
 {
 	return v1.major() == v2.major()
 			&& v1.minor() == v2.minor()
@@ -96,13 +96,13 @@ inline bool operator==(Version const &v1, Version const &v2)
 }
 
 /// Version inequality operator.
-inline bool operator!=(Version const &v1, Version const &v2)
+inline bool operator!=(const Version &v1, const Version &v2)
 {
 	return !(v1 == v2);
 }
 
 /// Less comparison operator for Version class
-inline bool operator<(Version const &v1, Version const &v2)
+inline bool operator<(const Version &v1, const Version &v2)
 {
 	return v1.major() != v2.major() ? v1.major() < v2.major()
 			: v1.minor() != v2.minor() ? v1.minor() < v2.minor()
@@ -112,31 +112,31 @@ inline bool operator<(Version const &v1, Version const &v2)
 }
 
 /// Greater comparison operator for Version class
-inline bool operator>(Version const &v1, Version const &v2)
+inline bool operator>(const Version &v1, const Version &v2)
 {
 	return !(v1 == v2) && !(v1 < v2);
 }
 
 /// Less or equal comparison operator for Version class
-inline bool operator<=(Version const &v1, Version const &v2)
+inline bool operator<=(const Version &v1, const Version &v2)
 {
 	return v1 == v2 || v1 < v2;
 }
 
 /// Greater or equal comparison operator for Version class
-inline bool operator>=(Version const &v1, Version const &v2)
+inline bool operator>=(const Version &v1, const Version &v2)
 {
 	return !(v1 < v2);
 }
 
 /// Version hash function for using it in QHash.
-inline uint qHash(Version const &key)
+inline uint qHash(const Version &key)
 {
 	return qHash(key.toString());
 }
 
 /// Operator for printing Version into QDebug.
-inline QDebug operator<<(QDebug &dbg, Version const &version)
+inline QDebug operator<<(QDebug &dbg, const Version &version)
 {
 	dbg << version.toString();
 	return dbg.space();
@@ -146,5 +146,5 @@ inline QDebug operator<<(QDebug &dbg, Version const &version)
 
 Q_DECLARE_METATYPE(qReal::Version)
 
-QRKERNEL_EXPORT QDataStream& operator<< (QDataStream &out, qReal::Version const &version);
+QRKERNEL_EXPORT QDataStream& operator<< (QDataStream &out, const qReal::Version &version);
 QRKERNEL_EXPORT QDataStream& operator>> (QDataStream &in, qReal::Version &version);

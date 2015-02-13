@@ -3,7 +3,7 @@
 PushButtonPropertyManager::PushButtonPropertyManager(QObject *parent)
 	: QtAbstractPropertyManager(parent)
 {
-	d_ptr = NULL;
+	d_ptr = nullptr;
 }
 
 PushButtonPropertyManager::~PushButtonPropertyManager()
@@ -30,7 +30,7 @@ QIcon PushButtonPropertyManager::valueIcon(const QtProperty *) const
 PushButtonFactory::PushButtonFactory(QObject *parent)
 	: QtAbstractEditorFactory<PushButtonPropertyManager>(parent)
 {
-	d_ptr = NULL; // new PushButtonFactoryPrivate();
+	d_ptr = nullptr; // new PushButtonFactoryPrivate();
 }
 
 PushButtonFactory::~PushButtonFactory()
@@ -44,7 +44,7 @@ void PushButtonFactory::connectPropertyManager(PushButtonPropertyManager *)
 QWidget *PushButtonFactory::createEditor(PushButtonPropertyManager *manager, QtProperty *property, QWidget *)
 {
 	emit manager->buttonClicked(property);
-	return NULL;
+	return nullptr;
 }
 
 void PushButtonFactory::disconnectPropertyManager(PushButtonPropertyManager *)

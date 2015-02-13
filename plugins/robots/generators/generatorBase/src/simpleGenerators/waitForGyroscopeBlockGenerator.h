@@ -9,9 +9,9 @@ namespace simple {
 class WaitForGyroscopeBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForGyroscopeBlockGenerator(qrRepo::RepoApi const &repo
+	WaitForGyroscopeBlockGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

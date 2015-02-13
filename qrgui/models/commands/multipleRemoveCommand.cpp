@@ -6,10 +6,14 @@
 
 using namespace qReal::commands;
 
-MultipleRemoveCommand::MultipleRemoveCommand(models::Models const &models, IdList &itemsToDelete)
+MultipleRemoveCommand::MultipleRemoveCommand(const models::Models &models)
 	: mLogicalApi(models.logicalModelAssistApi())
 	, mGraphicalApi(models.graphicalModelAssistApi())
 	, mExploser(models.exploser())
+{
+}
+
+void MultipleRemoveCommand::setItemsToDelete(IdList &itemsToDelete)
 {
 	IdList itemsToUpdate;
 
@@ -17,20 +21,20 @@ MultipleRemoveCommand::MultipleRemoveCommand(models::Models const &models, IdLis
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 	while (!itemsToDelete.isEmpty()) {
-		Id const currentItem = itemsToDelete.at(0);
-		IdList const children = mGraphicalApi.children(currentItem);
-		foreach (Id const &child, children) {
+		const Id currentItem = itemsToDelete.at(0);
+		const IdList children = mGraphicalApi.children(currentItem);
+		foreach (const Id &child, children) {
 			itemsToDelete.removeAll(child);
 			// Child remove commands will be added in currentItem delete command
 		}
 
-		bool const isEdge = !mLogicalApi.editorManagerInterface().isGraphicalElementNode(currentItem);
+		const bool isEdge = !mLogicalApi.editorManagerInterface().isGraphicalElementNode(currentItem);
 		if (isEdge) {
-			Id const src = mGraphicalApi.from(currentItem);
+			const Id src = mGraphicalApi.from(currentItem);
 			if (src != Id() && !itemsToUpdate.contains(src)) {
 				itemsToUpdate.append(src);
 			}
-			Id const dst = mGraphicalApi.to(currentItem);
+			const Id dst = mGraphicalApi.to(currentItem);
 			if (dst != Id() && !itemsToUpdate.contains(dst)) {
 				itemsToUpdate.append(dst);
 			}
@@ -51,16 +55,16 @@ void MultipleRemoveCommand::addEdgesToBeDeleted(IdList &itemsToDelete)
 	IdList elementsToDelete = itemsToDelete;
 	int i = 0;
 	while (i < elementsToDelete.count()) {
-		Id const currentElement = elementsToDelete.at(i);
-		IdList const children = mGraphicalApi.children(currentElement);
+		const Id currentElement = elementsToDelete.at(i);
+		const IdList children = mGraphicalApi.children(currentElement);
 		elementsToDelete.append(children);
 		i++;
 	}
 
-	for (Id const &currentElement : elementsToDelete) {
-		IdList const linksOfCurrentElement = mLogicalApi.logicalRepoApi().links(currentElement);
-		for (Id const &link : linksOfCurrentElement) {
-			Id const otherEntityOfCurrentLink
+	for (const Id &currentElement : elementsToDelete) {
+		const IdList linksOfCurrentElement = mLogicalApi.logicalRepoApi().links(currentElement);
+		for (const Id &link : linksOfCurrentElement) {
+			const Id otherEntityOfCurrentLink
 					= mLogicalApi.logicalRepoApi().otherEntityFromLink(link, currentElement);
 			if (otherEntityOfCurrentLink == Id::rootId() || elementsToDelete.contains(otherEntityOfCurrentLink)) {
 				itemsToDelete.append(link);
@@ -69,22 +73,22 @@ void MultipleRemoveCommand::addEdgesToBeDeleted(IdList &itemsToDelete)
 	}
 }
 
-AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(QModelIndex const &index)
+AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(const QModelIndex &index)
 {
-	Id const id = mLogicalApi.idByIndex(index);
+	const Id id = mLogicalApi.idByIndex(index);
 	return logicalDeleteCommand(id);
 }
 
-AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(QModelIndex const &index)
+AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(const QModelIndex &index)
 {
-	Id const id = mGraphicalApi.idByIndex(index);
+	const Id id = mGraphicalApi.idByIndex(index);
 	return graphicalDeleteCommand(id);
 }
 
-AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(Id const &id)
+AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(const Id &id)
 {
 	// Logical deletion is equal to all its graphical parts deletion
-	IdList const graphicalIds = mGraphicalApi.graphicalIdsByLogicalId(id);
+	const IdList graphicalIds = mGraphicalApi.graphicalIdsByLogicalId(id);
 
 	if (graphicalIds.isEmpty()) {
 		return new RemoveElementCommand(
@@ -101,7 +105,7 @@ AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(Id const &id)
 	}
 
 	DoNothingCommand *result = new DoNothingCommand;
-	for (Id const &graphicalId : graphicalIds) {
+	for (const Id &graphicalId : graphicalIds) {
 		result->addPreAction(graphicalDeleteCommand(graphicalId));
 	}
 
@@ -113,9 +117,9 @@ AbstractCommand *MultipleRemoveCommand::logicalDeleteCommand(Id const &id)
 	return result;
 }
 
-AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(Id const &id)
+AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(const Id &id)
 {
-	Id const logicalId = mGraphicalApi.logicalId(id);
+	const Id logicalId = mGraphicalApi.logicalId(id);
 	AbstractCommand *result = new RemoveElementCommand(
 				mLogicalApi
 				, mGraphicalApi
@@ -128,8 +132,8 @@ AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(Id const &id)
 				, mGraphicalApi.position(id)
 				);
 
-	IdList const children = mGraphicalApi.children(id);
-	for (Id const &child : children) {
+	const IdList children = mGraphicalApi.children(id);
+	for (const Id &child : children) {
 		if (mLogicalApi.editorManagerInterface().isGraphicalElementNode(child)) {
 			result->addPreAction(graphicalDeleteCommand(child));
 		} else {
@@ -145,10 +149,10 @@ AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(Id const &id)
 	return result;
 }
 
-void MultipleRemoveCommand::appendExplosionsCommands(AbstractCommand *parentCommand, Id const &logicalId)
+void MultipleRemoveCommand::appendExplosionsCommands(AbstractCommand *parentCommand, const Id &logicalId)
 {
-	IdList const toDelete = mExploser.elementsWithHardDependencyFrom(logicalId);
-	for (Id const &logicalChild : toDelete) {
+	const IdList toDelete = mExploser.elementsWithHardDependencyFrom(logicalId);
+	for (const Id &logicalChild : toDelete) {
 		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
 	}
 

@@ -13,11 +13,11 @@ class Speaker : public robotModel::parts::TrikSpeaker
 	Q_OBJECT
 
 public:
-	Speaker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Speaker(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
-	void play(QString const &filePath) override;
+	void play(const QString &filePath) override;
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;

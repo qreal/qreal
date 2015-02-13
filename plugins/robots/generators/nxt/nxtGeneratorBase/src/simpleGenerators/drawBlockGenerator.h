@@ -12,9 +12,9 @@ namespace simple {
 class DrawBlockGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DrawBlockGenerator(qrRepo::RepoApi const &repo
+	DrawBlockGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 
 	virtual QString generate();

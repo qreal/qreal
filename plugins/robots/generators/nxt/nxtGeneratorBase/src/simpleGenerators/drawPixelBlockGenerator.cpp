@@ -2,9 +2,9 @@
 
 using namespace nxt::simple;
 
-DrawPixelBlockGenerator::DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
+DrawPixelBlockGenerator::DrawPixelBlockGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: DrawBlockGenerator(repo, customizer, id, parent)
 {
@@ -12,8 +12,8 @@ DrawPixelBlockGenerator::DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
 
 void DrawPixelBlockGenerator::drawBmp(QPainter *painter)
 {
-	int const x = mRepo.property(mId, "XCoordinatePix").toInt();
-	int const y = mRepo.property(mId, "YCoordinatePix").toInt();
+	const int x = mRepo.property(mId, "XCoordinatePix").toInt();
+	const int y = mRepo.property(mId, "YCoordinatePix").toInt();
 
 	painter->drawPoint(x, y);
 }

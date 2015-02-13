@@ -9,7 +9,7 @@ namespace converters {
 class EnginePortsConverter : public RegexpMultiConverter
 {
 public:
-	EnginePortsConverter(simple::Binding::ConverterInterface const *oneEngineConverter);
+	EnginePortsConverter(const simple::Binding::ConverterInterface *oneEngineConverter);
 };
 
 }

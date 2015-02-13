@@ -6,7 +6,7 @@
 
 using namespace qReal;
 
-bool FileSystemUtils::makeHidden(QString const &filePath)
+bool FileSystemUtils::makeHidden(const QString &filePath)
 {
 #if defined(Q_OS_WIN)
 	return SetFileAttributesW(filePath.toStdWString().c_str(), FILE_ATTRIBUTE_HIDDEN);

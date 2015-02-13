@@ -8,11 +8,11 @@
 
 #include <qrkernel/ids.h>
 
-#include "plugins/editorPluginInterface/labelInterface.h"
-#include "plugins/editorPluginInterface/labelFactoryInterface.h"
-#include "plugins/editorPluginInterface/elementRepoInterface.h"
-#include "plugins/editorPluginInterface/sdfRendererInterface.h"
-#include "plugins/editorPluginInterface/portHelpers.h"
+#include "qrgui/plugins/editorPluginInterface/labelInterface.h"
+#include "qrgui/plugins/editorPluginInterface/labelFactoryInterface.h"
+#include "qrgui/plugins/editorPluginInterface/elementRepoInterface.h"
+#include "qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
+#include "qrgui/plugins/editorPluginInterface/portHelpers.h"
 
 namespace enums {
 namespace linkShape {
@@ -41,7 +41,7 @@ class ElementImpl
 {
 public:
 	virtual ~ElementImpl() {}
-	virtual void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+	virtual void init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports
 			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
 			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0) = 0;
 	virtual void init(LabelFactoryInterface &factory
@@ -71,9 +71,6 @@ public:
 
 	virtual enums::linkShape::LinkShape shapeType() const = 0;
 
-	virtual bool isPort() const = 0;
-	virtual bool hasPin() const = 0;
-
 	virtual bool createChildrenFromMenu() const = 0;
 
 	virtual QList<qreal> border() const = 0;
@@ -81,7 +78,7 @@ public:
 	virtual QStringList bonusContextMenuFields() const = 0;
 
 	/// Update shape of an element. Does nothing in case of generated editors, used by metamodel interpreter.
-	virtual void updateRendererContent(QString const &shape)
+	virtual void updateRendererContent(const QString &shape)
 	{
 		Q_UNUSED(shape);
 	}

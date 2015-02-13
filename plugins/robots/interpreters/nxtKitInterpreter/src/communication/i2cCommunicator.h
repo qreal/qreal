@@ -14,17 +14,17 @@ class I2CCommunicator
 public:
 	explicit I2CCommunicator(utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-	void sendI2C(QObject *addressee, QByteArray const &buffer
-			, int const responseSize
-			, interpreterBase::robotModel::PortInfo const &port);
+	void sendI2C(QObject *addressee, const QByteArray &buffer
+			, const int responseSize
+			, const interpreterBase::robotModel::PortInfo &port);
 
 private:
-	static int const i2cTimeout = 5000;
+	static const int i2cTimeout = 5000;
 
-	bool waitForI2CBytes(int bytes, interpreterBase::robotModel::PortInfo const &port);
-	int i2cBytesReady(interpreterBase::robotModel::PortInfo const &port);
+	bool waitForI2CBytes(int bytes, const interpreterBase::robotModel::PortInfo &port);
+	int i2cBytesReady(const interpreterBase::robotModel::PortInfo &port);
 
-	char toNxtInputPort(interpreterBase::robotModel::PortInfo const &port);
+	char toNxtInputPort(const interpreterBase::robotModel::PortInfo &port);
 
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };

@@ -1,6 +1,10 @@
 #include "sqlHighlighter.h"
 
-SQLHighlighter::SQLHighlighter(QTextDocument *document): QSyntaxHighlighter(document)
+using namespace qReal;
+using namespace text;
+
+SQLHighlighter::SQLHighlighter(QTextDocument *document)
+	: QSyntaxHighlighter(document)
 {
 	HighlightingRule rule;
 
@@ -8,7 +12,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document): QSyntaxHighlighter(docu
 	QStringList signPatterns;
 	signPatterns << "," << ">" << "<" << "-" << "\\*" << "\\+"
 				 << "\\." << "=" << "\\(" << "\\)";
-	foreach (QString const &pattern, signPatterns) {
+	foreach (const QString &pattern, signPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mSignFormat;
 		mHighlightingRules.append(rule);
@@ -20,7 +24,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document): QSyntaxHighlighter(docu
 	keywordPatterns << "\\bSELECT\\b" << "\\bFROM\\b" << "\\bWHERE\\b" << "\\bORDER BY\\b"
 					<< "\\bCOUNT\\b" << "\\bAS\\b" << "\\bJOIN\\b" << "\\bON\\b"
 					<< "\\bGROUP BY\\b" << "\\bHAVING\\b" << "\\bNATURAL JOIN\\b"  ;
-	foreach (QString const &pattern, keywordPatterns) {
+	foreach (const QString &pattern, keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mKeywordFormat;
 		mHighlightingRules.append(rule);
@@ -52,7 +56,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document): QSyntaxHighlighter(docu
 	mCommentEndExpression = QRegExp("\\}");
 }
 
-void SQLHighlighter::highlightBlock(QString const &text)
+void SQLHighlighter::highlightBlock(const QString &text)
 {
 	foreach (const HighlightingRule &rule, mHighlightingRules) {
 		QRegExp expression(rule.pattern);

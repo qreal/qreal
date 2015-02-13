@@ -2,7 +2,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "pluginsManagerDeclSpec.h"
+#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
@@ -12,7 +12,7 @@ namespace qReal {
 class QRGUI_PLUGINS_MANAGER_EXPORT Explosion
 {
 public:
-	Explosion(Id const &source, Id const &target, bool isReusable, bool requiresImmediateLinkage);
+	Explosion(const Id &source, const Id &target, bool isReusable, bool requiresImmediateLinkage);
 
 	/// The type of the source element
 	Id source() const;

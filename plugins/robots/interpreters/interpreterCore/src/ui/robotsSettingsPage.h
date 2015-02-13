@@ -6,8 +6,8 @@
 #include <qrgui/preferencesDialog/preferencesPage.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include "managers/kitPluginManager.h"
-#include "managers/robotModelManager.h"
+#include "interpreterCore/managers/kitPluginManager.h"
+#include "interpreterCore/managers/robotModelManager.h"
 
 namespace Ui {
 class PreferencesRobotSettingsPage;
@@ -52,9 +52,9 @@ private slots:
 private:
 	void initializeAdditionalWidgets();
 	void initializeKitRadioButtons();
-	QButtonGroup *initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton);
+	QButtonGroup *initializeRobotModelsButtons(const QString &kitId, QRadioButton * const kitButton);
 
-	void showAdditionalPreferences(QString const &kitId);
+	void showAdditionalPreferences(const QString &kitId);
 	void showRadioButtonGroup(QWidget * const container
 			, QButtonGroup * const radioButtons
 			, QWidget * const emptyCaseWidget = nullptr);

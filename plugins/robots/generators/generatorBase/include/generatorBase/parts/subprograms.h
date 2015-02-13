@@ -23,19 +23,19 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Subprograms : public TemplateParametrizedEntity
 {
 public:
-	Subprograms(qrRepo::RepoApi const &repo
+	Subprograms(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, QString const &pathToTemplates
-			, simple::Binding::ConverterInterface const *nameNormalizer);
+			, const QString &pathToTemplates
+			, const simple::Binding::ConverterInterface *nameNormalizer);
 
 	~Subprograms() override;
 
 	/// Must be called each time when visitor has found subprogram call
 	/// @param logicalId Logical id of the block which calls subprogram
-	void usageFound(qReal::Id const &logicalId);
+	void usageFound(const qReal::Id &logicalId);
 
 	/// Starts subprograms code generation process
-	bool generate(ControlFlowGeneratorBase *mainGenerator);
+	bool generate(ControlFlowGeneratorBase *mainGenerator, const QString &indentString);
 
 	/// Returns the subprograms forward declarations code. If generation was unsuccessfull returns an empty string.
 	QString forwardDeclarations() const;
@@ -43,10 +43,10 @@ public:
 	/// Returns the subprograms code. If generation was unsuccessfull returns an empty string.
 	QString implementations() const;
 
-	void appendManualSubprogram(QString const &name, QString const &body);
+	void appendManualSubprogram(const QString &name, const QString &body);
 
 private:
-	bool checkIdentifier(QString const &identifier, QString const &rawName);
+	bool checkIdentifier(const QString &identifier, const QString &rawName);
 
 	void obtainCode(QMap<qReal::Id, QString> const &declarations
 			, QMap<qReal::Id, QString> const &implementations);
@@ -54,15 +54,15 @@ private:
 	QString generateManualDeclarations() const;
 
 	// TODO: this must be obtained via models or smth
-	qReal::Id graphicalId(qReal::Id const &logicalId) const;
+	qReal::Id graphicalId(const qReal::Id &logicalId) const;
 
 	qReal::Id firstToGenerate() const;
 
-	QString readSubprogramTemplate(qReal::Id const &id, QString const &pathToTemplate);
+	QString readSubprogramTemplate(const qReal::Id &id, const QString &pathToTemplate);
 
-	qrRepo::RepoApi const &mRepo;
+	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
-	simple::Binding::ConverterInterface const *mNameNormalizer;  // Takes ownership
+	const simple::Binding::ConverterInterface *mNameNormalizer;  // Takes ownership
 
 	/// Stores all found by generator diagrams with subprograms implementation.
 	/// Bool value means if key diagram was already processed and generated into

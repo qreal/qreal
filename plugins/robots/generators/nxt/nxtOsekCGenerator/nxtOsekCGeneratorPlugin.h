@@ -22,20 +22,19 @@ public:
 	NxtOsekCGeneratorPlugin();
 	~NxtOsekCGeneratorPlugin() override;
 
-	void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	void init(const qReal::PluginConfigurator &configurator
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage) override;
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
-	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
-	QString defaultFilePath(QString const &projectName) const override;
-	QString extension() const override;
-	QString extensionDescription() const override;
+	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
+	QString defaultFilePath(const QString &projectName) const override;
+	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
-	bool canGenerateTo(QString const &project) override;
+	bool canGenerateTo(const QString &project) override;
 
 private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.

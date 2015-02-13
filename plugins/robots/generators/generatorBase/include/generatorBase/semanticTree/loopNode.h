@@ -9,7 +9,7 @@ namespace semantics {
 class LoopNode : public ConditionalNode
 {
 public:
-	explicit LoopNode(qReal::Id const &idBinded, QObject *parent = 0);
+	explicit LoopNode(const qReal::Id &idBinded, QObject *parent = 0);
 
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 
@@ -20,7 +20,7 @@ public:
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
 	ZoneNode *mBodyZone;  // Takes ownership

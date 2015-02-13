@@ -1,6 +1,6 @@
 include (qreal.pri)
 
-plugins.file = plugins/robots.pro
+plugins.file = $$PWD/plugins/robots.pro
 
 RESOURCES += \
-    qrgui/mainwindow/qrgui.qrc
+	qrgui/mainwindow/qrgui.qrc
