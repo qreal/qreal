@@ -112,5 +112,7 @@ qReal::IdList NxtBlocksFactory::blocksToDisable() const
 				;
 	}
 
+	result << id("Join");
+
 	return result;
 }

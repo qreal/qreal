@@ -224,8 +224,14 @@ void PrimaryControlFlowValidator::visitUnknown(const Id &id, const QList<LinkInf
 
 void PrimaryControlFlowValidator::visitFork(const Id &id, QList<LinkInfo> &links)
 {
-	Q_UNUSED(id)
-	Q_UNUSED(links)
+	if (links.size() < 2) {
+		error(QObject::tr("Fork block must have at least TWO outgoing links"), id);
+		return;
+	}
+
+	for (const LinkInfo &link : links) {
+		checkForConnected(link);
+	}
 }
 
 void PrimaryControlFlowValidator::visitJoin(const Id &id, QList<LinkInfo> &links)

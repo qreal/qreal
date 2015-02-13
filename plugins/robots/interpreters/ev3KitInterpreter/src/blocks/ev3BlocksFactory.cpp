@@ -111,5 +111,7 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 				;
 	}
 
+	result << id("Join");
+
 	return result;
 }

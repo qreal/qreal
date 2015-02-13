@@ -140,22 +140,20 @@ void ControlFlowGeneratorBase::visitFinal(const Id &id, const QList<LinkInfo> &l
 
 void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 {
-	LinkInfo currentThread;
-	QList<LinkInfo> newThreads;
+	LinkInfo currentThread = links.first();
 	QHash<Id, QString> threadIds;
 
 	for (const LinkInfo &thread : links) {
 		QString threadId = mRepo.stringProperty(thread.linkId, "Guard");
+		threadIds[thread.linkId] = threadId;
 		if (threadId == mThreadId) {
 			currentThread = thread;
-		} else {
-			threadIds[thread.linkId] = threadId;
-			newThreads << thread;
 		}
 	}
 
 	visitRegular(id, { currentThread });
-	semantics::ForkRule rule(mSemanticTree, id, newThreads, threadIds, mCustomizer.factory()->threads());
+	links.removeAll(currentThread);
+	semantics::ForkRule rule(mSemanticTree, id, links, threadIds, mCustomizer.factory()->threads());
 	rule.apply();
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.
