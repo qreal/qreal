@@ -9,6 +9,7 @@
 #include "generatorCustomizer.h"
 #include "controlFlowGeneratorBase.h"
 #include "templateParametrizedEntity.h"
+#include "primaryControlFlowValidator.h"
 
 namespace utils {
 class ParserErrorReporter;
@@ -57,6 +58,8 @@ protected:
 	/// Default implementation takes ownership via QObject parentship system.
 	virtual lua::LuaProcessor *createLuaProcessor();
 
+	virtual PrimaryControlFlowValidator *createValidator();
+
 	/// Implementation must return a path to a file where all generated code
 	/// will be written. Called on the last stage of the generation process
 	/// so concrete generators have time to 'prepare' this path
@@ -76,6 +79,7 @@ protected:
 	qrtext::LanguageToolboxInterface &mTextLanguage;
 	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;
+	PrimaryControlFlowValidator *mValidator;
 	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
 	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership
 	QString mProjectName;

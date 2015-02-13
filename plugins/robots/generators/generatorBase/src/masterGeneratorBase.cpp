@@ -43,10 +43,12 @@ void MasterGeneratorBase::initialize()
 	mCustomizer->factory()->initialize();
 	setPathToTemplates(mCustomizer->factory()->pathToTemplates());
 
+	mValidator = createValidator();
+
 	mReadableControlFlowGenerator = new ReadableControlFlowGenerator(mRepo
-			, mErrorReporter, *mCustomizer, mDiagram, this);
+			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 	mGotoControlFlowGenerator = new GotoControlFlowGenerator(mRepo
-			, mErrorReporter, *mCustomizer, mDiagram, this);
+			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 }
 
 QString MasterGeneratorBase::generate(const QString &indentString)
@@ -139,6 +141,11 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
 {
 	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, mParserErrorReporter, this);
+}
+
+PrimaryControlFlowValidator *MasterGeneratorBase::createValidator()
+{
+	return new PrimaryControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
 }
 
 void MasterGeneratorBase::beforeGeneration()

@@ -10,10 +10,10 @@
 using namespace generatorBase;
 using namespace qReal;
 
-ControlFlowGeneratorBase::ControlFlowGeneratorBase(
-		const qrRepo::RepoApi &repo
+ControlFlowGeneratorBase::ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
+		, PrimaryControlFlowValidator &validator
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
@@ -24,7 +24,7 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 	, mCustomizer(customizer)
 	, mIsMainGenerator(isThisDiagramMain)
 	, mDiagram(diagramId)
-	, mValidator(new PrimaryControlFlowValidator(repo, errorReporter, customizer, diagramId, this))
+	, mValidator(validator)
 {
 }
 
@@ -34,7 +34,7 @@ ControlFlowGeneratorBase::~ControlFlowGeneratorBase()
 
 bool ControlFlowGeneratorBase::preGenerationCheck()
 {
-	return mValidator->validate(mThreadId);
+	return mValidator.validate(mDiagram, mThreadId);
 }
 
 semantics::SemanticTree *ControlFlowGeneratorBase::generate(const qReal::Id &initialNode, const QString &threadId)
@@ -114,17 +114,17 @@ enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(const qReal::I
 
 qReal::Id ControlFlowGeneratorBase::initialNode() const
 {
-	return mValidator->initialNode();
+	return mValidator.initialNode();
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::ifBranchesFor(const qReal::Id &id) const
 {
-	return mValidator->ifBranchesFor(id);
+	return mValidator.ifBranchesFor(id);
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(const qReal::Id &id) const
 {
-	return mValidator->loopBranchesFor(id);
+	return mValidator.loopBranchesFor(id);
 }
 
 GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const

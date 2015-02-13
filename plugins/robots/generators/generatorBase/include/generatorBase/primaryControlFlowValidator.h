@@ -20,12 +20,13 @@ public:
 	PrimaryControlFlowValidator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, const qReal::Id &diagramId
 			, QObject *parent = 0);
 
 	/// Validates diagram with id specified in constructor. Returns 'true' if
 	/// diagram is correct, 'false' otherwise
-	bool validate(const QString &threadId);
+	virtual bool validate(const qReal::Id &diagramId, const QString &threadId);
+
+	virtual PrimaryControlFlowValidator *clone();
 
 	/// Returns id of the only node with initial semantics on diagram. The result
 	/// is ready only after validation process was successfully finished.
@@ -42,7 +43,7 @@ public:
 	/// successfully finished.
 	QPair<LinkInfo, LinkInfo> loopBranchesFor(const qReal::Id &id) const;
 
-private:
+protected:
 	void findInitialNode();
 	void error(const QString &message, const qReal::Id &id);
 	bool checkForConnected(const LinkInfo &link);
@@ -59,7 +60,7 @@ private:
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
-	const qReal::Id mDiagram;
+	qReal::Id mDiagram;
 	bool mErrorsOccured;
 
 	qReal::Id mInitialNode;

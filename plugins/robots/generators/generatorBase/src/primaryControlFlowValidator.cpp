@@ -1,47 +1,45 @@
 #include "generatorBase/primaryControlFlowValidator.h"
 
-#include "src/threadsValidator.h"
-
 using namespace generatorBase;
 using namespace qReal;
 
 /// @todo: Unify code with interpreter
 
-PrimaryControlFlowValidator::PrimaryControlFlowValidator(
-		const qrRepo::RepoApi &repo
+PrimaryControlFlowValidator::PrimaryControlFlowValidator(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
-		, const Id &diagramId
 		, QObject *parent)
 	: QObject(parent)
 	, RobotsDiagramVisitor(repo, customizer)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
-	, mDiagram(diagramId)
 {
 }
 
-bool PrimaryControlFlowValidator::validate(const QString &threadId)
+bool PrimaryControlFlowValidator::validate(const qReal::Id &diagramId, const QString &threadId)
 {
+	Q_UNUSED(threadId)
+
 	mIfBranches.clear();
 	mLoopBranches.clear();
 
+	mDiagram = diagramId;
 	findInitialNode();
 	if (mInitialNode.isNull()) {
 		error(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"), mDiagram);
 		return false;
 	}
 
-	ThreadsValidator threadsValidator(mRepo, mCustomizer, mErrorReporter);
-	if (threadsValidator.validate(mInitialNode, threadId)) {
-		mErrorsOccured = false;
-		startSearch(mInitialNode);
-	} else {
-		mErrorsOccured = true;
-	}
+	mErrorsOccured = false;
+	startSearch(mInitialNode);
 
 	return !mErrorsOccured;
+}
+
+PrimaryControlFlowValidator *PrimaryControlFlowValidator::clone()
+{
+	return new PrimaryControlFlowValidator(mRepo, mErrorReporter, mCustomizer, parent());
 }
 
 qReal::Id PrimaryControlFlowValidator::initialNode() const
