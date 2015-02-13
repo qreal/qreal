@@ -63,12 +63,19 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <widget class="QMenu" name="menuPanels">
+     <property name="title">
+      <string>Panels</string>
+     </property>
+    </widget>
     <addaction name="actionFullscreen"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="separator"/>
     <addaction name="actionShowSplash"/>
+    <addaction name="separator"/>
+    <addaction name="menuPanels"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
