@@ -30,7 +30,6 @@ private:
 	void visitForkFirstStage(const qReal::Id &id, QList<LinkInfo> &links);
 	void visitForkSecondStage(const qReal::Id &id, QList<LinkInfo> &links);
 	bool achiavable(const qReal::Id &id, const qReal::Id &source);
-	bool foundForks(const qReal::Id &id);
 
 	void unknownThread(const QList<LinkInfo> &links);
 	void error(const QString &message, const qReal::Id &id);
