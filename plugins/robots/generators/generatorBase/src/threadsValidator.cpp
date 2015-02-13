@@ -11,7 +11,7 @@ ThreadsValidator::ThreadsValidator(const qrRepo::RepoApi &repo
 {
 }
 
-bool ThreadsValidator::validate(const qReal::Id &startNode, const QString threadId)
+bool ThreadsValidator::validate(const qReal::Id &startNode, const QString &threadId)
 {
 	mBlockThreads.clear();
 	mNoErrors = true;
@@ -92,8 +92,12 @@ void ThreadsValidator::visitGeneral(const qReal::Id &id, const QList<LinkInfo> &
 	QSet<QString> incomingThreads;
 	for (const qReal::Id &link : mRepo.incomingLinks(id)) {
 		const qReal::Id previousBlock = mRepo.otherEntityFromLink(link, id);
-		if (mBlockThreads.contains(previousBlock) && mBlockThreads[previousBlock] != "@@notSet@@") {
-			incomingThreads.insert(mBlockThreads[previousBlock]);
+		if (mBlockThreads.contains(previousBlock)) {
+			if (previousBlock.element() == "Fork") {
+				incomingThreads.insert(mRepo.stringProperty(link, "Guard"));
+			} else {
+				incomingThreads.insert(mBlockThreads[previousBlock]);
+			}
 		}
 	}
 
@@ -106,7 +110,7 @@ void ThreadsValidator::visitGeneral(const qReal::Id &id, const QList<LinkInfo> &
 		checkForConnected(link);
 
 		const qReal::Id nextBlock = link.target;
-		if (!mBlockThreads.contains(nextBlock) || mBlockThreads[nextBlock] == "@@notSet@@") {
+		if (!mBlockThreads.contains(nextBlock)) {
 			mSomethingChanged = true;
 			mBlockThreads[nextBlock] = mBlockThreads[id];
 		} else if (mBlockThreads[nextBlock] != mBlockThreads[id] && mBlockThreads[nextBlock] != "@@unknown@@"
@@ -148,8 +152,7 @@ void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 	checkForConnected(links[0]);
 	const qReal::Id nextBlock = links[0].target;
 
-	if (mBlockThreads.contains(nextBlock) && mBlockThreads[nextBlock] != "@@notSet@@"
-			&& mBlockThreads[nextBlock] != mBlockThreads[id]) {
+	if (mBlockThreads.contains(nextBlock) && mBlockThreads[nextBlock] != mBlockThreads[id]) {
 		unknownThread(links);
 		return;
 	}
@@ -157,7 +160,7 @@ void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 	bool allThreadsDetermined = true;
 	for (const qReal::Id &incomingLink : mRepo.incomingLinks(id)) {
 		const qReal::Id &comingFrom = mRepo.otherEntityFromLink(incomingLink, id);
-		if (!mBlockThreads.contains(comingFrom) || mBlockThreads[comingFrom] == "@@notSet@@") {
+		if (!mBlockThreads.contains(comingFrom)) {
 			allThreadsDetermined = false;
 			break;
 		}
@@ -236,13 +239,13 @@ void ThreadsValidator::visitForkFirstStage(const qReal::Id &id, QList<LinkInfo> 
 
 		if (mBlockThreads.contains(link.target) && mBlockThreads[link.target] != threadId) {
 			mBlockThreads[link.target] = "@@unknown@@";
-		} else if (!mBlockThreads.contains(link.target) || mBlockThreads[link.target] == "@@notSet@@") {
+		} else if (!mBlockThreads.contains(link.target)) {
 			mSomethingChanged = true;
 			mBlockThreads[link.target] = threadId;
 		}
 	}
 
-	if (!outgoingThreads.contains(mBlockThreads[id]) && mBlockThreads[id] != "@@notSet@@") {
+	if (!outgoingThreads.contains(mBlockThreads[id])) {
 		error(QObject::tr("Fork block must have a link marked with an id of a thread from which the fork is called, "
 				"'%1' in this case").arg(mBlockThreads[id]), id);
 	}

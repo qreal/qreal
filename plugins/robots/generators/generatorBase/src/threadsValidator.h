@@ -13,7 +13,7 @@ public:
 			, GeneratorCustomizer &customizer
 			, qReal::ErrorReporterInterface &errorReporter);
 
-	bool validate(const qReal::Id &startNode, const QString threadId);
+	bool validate(const qReal::Id &startNode, const QString &threadId);
 
 private:
 
