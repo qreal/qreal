@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>Kernel components</DisplayName>
     <DisplayName xml:lang="ru_ru">Компоненты ядра</DisplayName>
-    <Description>Trik Studio engine, must be installed</Description>
-    <Description xml:lang="ru_ru">Ядро системы Trik Studio, обязательно к установке</Description>
+    <Description>TRIK Studio engine, must be installed</Description>
+    <Description xml:lang="ru_ru">Ядро системы TRIK Studio, обязательно к установке</Description>
     <Version>3.0.1</Version>
     <ReleaseDate>2015-01-16</ReleaseDate>
     <Licenses/>

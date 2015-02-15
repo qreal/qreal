@@ -3,7 +3,7 @@
     <Name>TRIK Studio</Name>
     <Version>3.0.1</Version>
     <Title>TRIK Studio</Title>
-    <Publisher>SPbSU</Publisher>
+    <Publisher>CyberTech Labs Ltd.</Publisher>
     <ProductUrl>http://robots.qreal.ru</ProductUrl>
 
     <InstallerWindowIcon>../images/trik-studio.ico</InstallerWindowIcon>
