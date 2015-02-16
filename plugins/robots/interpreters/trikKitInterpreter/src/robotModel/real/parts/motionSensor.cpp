@@ -17,7 +17,7 @@ MotionSensor::MotionSensor(const DeviceInfo &info, const PortInfo &port
 void MotionSensor::read()
 {
 	const QString pathToCommand = ":/trikQts/templates/wait/motion.t";
-	const QString directCommand = utils::InFile::readAll(pathToCommand) + "brick.run()";
+	const QString directCommand = utils::InFile::readAll(pathToCommand) + "script.run()";
 	mRobotCommunicator.runDirectCommand(directCommand);
 
 	mRobotCommunicator.requestData(port().name());
