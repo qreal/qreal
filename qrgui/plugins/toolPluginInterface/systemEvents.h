@@ -10,7 +10,7 @@
 
 namespace qReal {
 
-class SystemEvents : public QObject
+class QRGUI_TOOL_PLUGIN_INTERFACE_EXPORT SystemEvents : public QObject
 {
 	Q_OBJECT
 
