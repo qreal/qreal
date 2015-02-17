@@ -12,9 +12,9 @@
 #include "gui/remoteDialog.h"
 #include "gui/resetDialog.h"
 #include "gui/statusDialog.h"
-#include "gui/logDialog.h"
-#include "gui/remoteListDialog.h"
+#include "gui/simpleOutputDialog.h"
 #include "gui/diffBetweenDialog.h"
+#include "gui/branchNameDialog.h"
 #include "transparentMode.h"
 
 namespace git {
@@ -49,6 +49,11 @@ public slots:
 	void versionsClicked();
 	void diffClicked();
 	void diffBetweenClicked();
+	void deleteBranch();
+	void checkoutBranch();
+	void createBranch();
+	void getBranchesList();
+	void mergeBranch();
 
 private slots:
 	void onInitComplete(bool const success);
@@ -58,6 +63,9 @@ private slots:
 	void onPushComplete(bool const success);
 	void onPullComplete(bool const success);
 	void onResetComplete(bool const success);
+	void onCheckoutBranch(bool const success);
+	void onCreateBranchComplete(bool const success);
+	void onDeleteBranchComplete(bool const success);
 	void onStatusComplete(QString answer, bool const success);
 	void onLogComplete(QString answer, bool const success);
 	void onRemoteListComplete(QString answer, bool const success);

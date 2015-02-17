@@ -142,7 +142,7 @@ void ExternalClientPluginBase::onOperationComplete(invocation::LongOperation *op
 	result = result && functor->result();
 
 	const QVariant tag = mRunningOperationsCallbacksMap[operation];
-	emit operationIsFinished(tag);
+	emit operationIsFinished(tag, result);
 }
 
 

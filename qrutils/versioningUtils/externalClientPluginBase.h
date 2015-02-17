@@ -98,7 +98,7 @@ signals:
 	/// The easiest way to invoke @see onErrorOccured() in on thread
 	void errorOccured(QString const &message);
 	/// Signal for notification plagins about end of operation
-	void operationIsFinished(QVariant const &tag);
+	void operationIsFinished(QVariant const &tag, bool result);
 
 private slots:
 	void onOperationComplete(invocation::LongOperation *operation);

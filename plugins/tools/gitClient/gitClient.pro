@@ -30,11 +30,11 @@ HEADERS += \
     gui/remoteDialog.h \
     gui/pullDialog.h \
     gui/resetDialog.h \
-    gui/logDialog.h \
     gui/statusDialog.h \
-	gui/remoteListDialog.h \
     gui/changeVersionWidget.h \
-    gui/diffBetweenDialog.h
+    gui/diffBetweenDialog.h \
+    gui/branchNameDialog.h \
+    gui/simpleOutputDialog.h
 
 SOURCES += \
     gitPlugin.cpp \
@@ -47,11 +47,11 @@ SOURCES += \
     gui/remoteDialog.cpp \
     gui/pullDialog.cpp \
     gui/resetDialog.cpp \
-    gui/logDialog.cpp \
     gui/statusDialog.cpp \
-	gui/remoteListDialog.cpp \
     gui/changeVersionWidget.cpp \
-    gui/diffBetweenDialog.cpp
+    gui/diffBetweenDialog.cpp \
+    gui/branchNameDialog.cpp \
+    gui/simpleOutputDialog.cpp
 
 
 FORMS += \

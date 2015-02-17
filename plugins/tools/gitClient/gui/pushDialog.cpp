@@ -9,7 +9,7 @@ using namespace git::ui;
 PushDialog::PushDialog(QWidget *parent)
 	: QDialog(parent)
 {
-	mUrlLabel = new QLabel(tr("Choose remote: "));
+	QLabel *urlLabel = new QLabel(tr("Choose remote: "));
 	mUrlComboBox = createComboBox(qReal::SettingsManager::value("gitRemoteName", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
@@ -23,7 +23,7 @@ PushDialog::PushDialog(QWidget *parent)
 	connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 
 	QGridLayout *mainLayout = new QGridLayout;
-	mainLayout->addWidget(mUrlLabel, 0, 0);
+	mainLayout->addWidget(urlLabel, 0, 0);
 	mainLayout->addWidget(mUrlComboBox, 0, 1, 1, 2);
 	mainLayout->addLayout(buttonsLayout,2, 0, 1, 3);
 	setLayout(mainLayout);

@@ -19,8 +19,6 @@ public:
 
 private:
 	QComboBox *mUrlComboBox;
-	QLabel *mUrlLabel;
-	QDir mCurrentDir;
 
 	QPushButton *createButton(const QString &text, const char *member);
 	QComboBox *createComboBox(const QString &text = QString());

@@ -19,7 +19,7 @@ GitPlugin::GitPlugin()
 	qReal::SettingsManager::instance()->setValue("gitTempDir", mTempDir);
 	setPathToClient(pathToGit());
 
-	connect(this, SIGNAL(operationIsFinished(QVariant)), SLOT(doAfterOperationIsFinished(QVariant)));
+	connect(this, SIGNAL(operationIsFinished(QVariant, bool)), SLOT(doAfterOperationIsFinished(QVariant, bool)));
 }
 
 GitPlugin::~GitPlugin()
@@ -146,6 +146,35 @@ QString GitPlugin::tempFolder() const
 void GitPlugin::checkClientInstalling()
 {
 	emit clientInstalled(friendlyName(), clientExist());
+}
+
+void GitPlugin::deleteBranch(const QString &branchName)
+{
+	emit deleteBranchComplete(invokeOperation(QStringList() << "branch" << "-D" << branchName));
+}
+
+void GitPlugin::startCheckoutBranch(const QString &branchName, const QString &targetFolder)
+{
+	const Tag tagStruct("checkoutBranch");
+	QVariant tagVariant;
+	tagVariant.setValue(tagStruct);
+	invokeOperationAsync(QStringList() << "checkout" << branchName, tagVariant, true, targetFolder);
+}
+
+void GitPlugin::createBranch(const QString &branchName)
+{
+	emit createBranchComplete(invokeOperation(QStringList() << "branch" << branchName));
+}
+
+QString GitPlugin::getBranchesList()
+{
+	invokeOperation(QStringList() << "branch" << "-l");
+	return standartOutput();
+}
+
+void GitPlugin::startMergeBranch(const QString &targetBranchName)
+{
+	Q_UNUSED(targetBranchName)
 }
 
 QString GitPlugin::friendlyName()
@@ -437,7 +466,7 @@ bool GitPlugin::doClean(QString const &targetProject)
 
 QString GitPlugin::doStatus(QString const &targetProject)
 {
-	int result = invokeOperation(QStringList() << "status",true, QString(), true, true, targetProject);
+	int result = invokeOperation(QStringList() << "status", true, QString(), true, true, targetProject);
 	QString answer = standartOutput();
 	emit statusComplete(answer, result);
 	return answer;
@@ -468,17 +497,19 @@ QString GitPlugin::doRemoteList()
 	return answer;
 }
 
-void GitPlugin::doAfterOperationIsFinished(QVariant const &tag)
+void GitPlugin::doAfterOperationIsFinished(QVariant const &tag, bool result)
 {
 	Tag tagStruct = tag.value<Tag>();
 	if (tagStruct.operation == "clone"){
-		onCloneComplete(true, tagStruct.boolTag);
+		onCloneComplete(result, tagStruct.boolTag);
 	} else if (tagStruct.operation == "push"){
-		onPushComplete(true);
+		onPushComplete(result);
 	} else if (tagStruct.operation == "pull"){
-		onPullComplete(true);
+		onPullComplete(result);
 	} else if (tagStruct.operation == "reset"){
-		onResetComplete(true, tagStruct.boolTag);
+		onResetComplete(result, tagStruct.boolTag);
+	} else if (tagStruct.operation == "checkoutBranch"){
+		onCheckoutComplete(result);
 	}
 }
 
@@ -529,6 +560,13 @@ void GitPlugin::onResetComplete(const bool result, const bool quiet)
 		emit operationComplete("reset", result);
 	}
 	emit workingCopyUpdated(result);
+}
+
+void GitPlugin::onCheckoutComplete(const bool result)
+{
+	processWorkingCopy();
+	emit pullComplete(result);
+	emit operationComplete("checkout", result);
 }
 
 void GitPlugin::showDiff(QString oldHash, QString newHash, const QString &targetProject, QWidget *widget

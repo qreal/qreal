@@ -71,9 +71,17 @@ public slots:
 	QString doStatus(const QString &targetProject = QString());
 	QString doLog(QString const &format = QString(), bool const &quiet = false, bool const &showDialog = false);
 	QString doRemoteList();
-	void doAfterOperationIsFinished(QVariant const &tag);
+	void doAfterOperationIsFinished(QVariant const &tag, bool result);
 	void checkClientInstalling();
 
+	//For branches
+	void deleteBranch(QString const &branchName);
+	void startCheckoutBranch(QString const &branchName, QString const &targetFolder = QString());
+	void createBranch(QString const &branchName);
+	QString getBranchesList();
+	void startMergeBranch(QString const &targetBranchName);
+
+	//Difference between commits
 	void showDiff(QString const &targetProject, QWidget *widget, bool const &compactMode = true);
 	void showDiff(QString oldHash, QString newHash
 				  , QString const &targetProject, QWidget *widget, const bool &compactMode = true);
@@ -94,6 +102,9 @@ signals:
 	void resetComplete(bool const success);
 	void cleanComplete(bool const success);
 	void addComplete(bool const success);
+	void checkoutComplete(bool const success);
+	void deleteBranchComplete(bool const success);
+	void createBranchComplete(bool const success);
 	void removeComplete(bool const success);
 	void statusComplete(QString const &answer, bool const success);
 	void logComplete(QString const &answer, bool const success);
@@ -111,6 +122,7 @@ private:
 	void onPushComplete(bool const result);
 	void onPullComplete(bool const result);
 	void onResetComplete(bool const result, const bool quiet);
+	void onCheckoutComplete(bool const result);
 
 	QString &getFilePath(QString &adress);
 	QString getUsername();

@@ -20,6 +20,9 @@ ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	connect(mPlugin, SIGNAL(pushComplete(bool)), this, SLOT(onPushComplete(bool)));
 	connect(mPlugin, SIGNAL(pullComplete(bool)), this, SLOT(onPullComplete(bool)));
 	connect(mPlugin, SIGNAL(resetComplete(bool)), this, SLOT(onResetComplete(bool)));
+	connect(mPlugin, SIGNAL(checkoutComplete(bool)), this, SLOT(onCheckoutComplete(bool)));
+	connect(mPlugin, SIGNAL(createBranchComplete(bool)), this, SLOT(onCreateBranchComplete(bool)));
+	connect(mPlugin, SIGNAL(deleteBranchComplete(bool)), this, SLOT(onDeleteBranchComplete(bool)));
 	connect(mPlugin, SIGNAL(statusComplete(QString,bool)), this, SLOT(onStatusComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(logComplete(QString,bool)), this, SLOT(onLogComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(remoteListComplete(QString,bool)), this, SLOT(onRemoteListComplete(QString,bool)));
@@ -70,7 +73,7 @@ void ViewInteraction::initActions()
 	versionsAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
 	connect(versionsAction, SIGNAL(triggered()), this, SLOT(versionsClicked()));
 
-	QMenu *diffMenu = new QMenu(tr("Visual diff"));
+	QMenu *diffMenu = new QMenu(tr("Visual diff..."));
 	gitMenu->addMenu(diffMenu);
 
 	QAction *diffAction = diffMenu->addAction(tr("Diff"));
@@ -78,6 +81,24 @@ void ViewInteraction::initActions()
 
 	QAction *diffBetweenAction = diffMenu->addAction(tr("Diff between..."));
 	connect(diffBetweenAction, SIGNAL(triggered()), this, SLOT(diffBetweenClicked()));
+
+	QMenu *branchMenu = new QMenu(tr("Branches..."));
+	gitMenu->addMenu(branchMenu);
+
+	QAction *createBranchAction = branchMenu->addAction(tr("Create branch"));
+	connect(createBranchAction, SIGNAL(triggered()), this, SLOT(createBranch()));
+
+	QAction *checkoutBranchAction = branchMenu->addAction(tr("checkout branch"));
+	connect(checkoutBranchAction, SIGNAL(triggered()), this, SLOT(checkoutBranch()));
+
+	QAction *deleteBranchAction = branchMenu->addAction(tr("delete branch"));
+	connect(deleteBranchAction, SIGNAL(triggered()), this, SLOT(deleteBranch()));
+
+	QAction *getBranchesListAction = branchMenu->addAction(tr("get Branches List"));
+	connect(getBranchesListAction, SIGNAL(triggered()), this, SLOT(getBranchesList()));
+
+	QAction *mergeBranchAction = branchMenu->addAction(tr("merge branch"));
+	connect(mergeBranchAction, SIGNAL(triggered()), this, SLOT(mergeBranch()));
 
 	mMenu << qReal::ActionInfo(gitMenu, "tools") << qReal::ActionInfo(versionsAction, "tools", "tools");
 }
@@ -263,6 +284,27 @@ void ViewInteraction::onResetComplete(const bool success)
 	}
 }
 
+void ViewInteraction::onCheckoutBranch(const bool success)
+{
+	if (success) {
+		showMessage(tr("Checkout branch successfully."));
+	}
+}
+
+void ViewInteraction::onCreateBranchComplete(const bool success)
+{
+	if (success) {
+		showMessage(tr("Create branch successfully."));
+	}
+}
+
+void ViewInteraction::onDeleteBranchComplete(const bool success)
+{
+	if (success) {
+		showMessage(tr("Delete branch successfully."));
+	}
+}
+
 void ViewInteraction::onStatusComplete(QString answer, const bool success)
 {
 	if (!success)
@@ -278,7 +320,7 @@ void ViewInteraction::onStatusComplete(QString answer, const bool success)
 void ViewInteraction::onLogComplete(QString answer, const bool success)
 {
 	Q_UNUSED(success)
-	ui::LogDialog *dialog = new ui::LogDialog(mMainWindowIface->windowWidget());
+	ui::SimpleOutputDialog *dialog = new ui::SimpleOutputDialog(tr("Log dialog"), mMainWindowIface->windowWidget());
 
 	if (answer.isEmpty()) {
 		dialog->message("You have no commits.");
@@ -296,7 +338,7 @@ void ViewInteraction::onRemoteListComplete(QString answer, const bool success)
 		return;
 	}
 
-	ui::RemoteListDialog *dialog = new ui::RemoteListDialog(mMainWindowIface->windowWidget());
+	ui::SimpleOutputDialog *dialog = new ui::SimpleOutputDialog(tr("Remote list dialog"), mMainWindowIface->windowWidget());
 	dialog->message(answer);
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
@@ -332,6 +374,55 @@ void ViewInteraction::diffBetweenClicked()
 		mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, false);
 	}
 	mMainWindowIface->windowWidget()->setEnabled(true);
+}
+
+void ViewInteraction::deleteBranch()
+{
+	ui::BranchNameDialog *dialog = new BranchNameDialog(tr("Delete branch dialog"), mMainWindowIface->windowWidget());
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+
+	mPlugin->deleteBranch(dialog->getBranchName());
+}
+
+void ViewInteraction::checkoutBranch()
+{
+	ui::BranchNameDialog *dialog = new BranchNameDialog(tr("Checkout branch dialog"), mMainWindowIface->windowWidget());
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+
+	mPlugin->startCheckoutBranch(dialog->getBranchName());
+}
+
+void ViewInteraction::createBranch()
+{
+	ui::BranchNameDialog *dialog = new BranchNameDialog(tr("Create branch dialog"), mMainWindowIface->windowWidget());
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+
+	mPlugin->createBranch(dialog->getBranchName());
+}
+
+void ViewInteraction::getBranchesList()
+{
+	ui::SimpleOutputDialog *dialog = new ui::SimpleOutputDialog(tr("Branch list dialog"), mMainWindowIface->windowWidget());
+	dialog->message(mPlugin->getBranchesList());
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+}
+
+void ViewInteraction::mergeBranch()
+{
+	ui::BranchNameDialog *dialog = new BranchNameDialog(tr("Merge branch dialog"), mMainWindowIface->windowWidget());
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+
+	mPlugin->startMergeBranch(dialog->getBranchName());
 }
 
 void ViewInteraction::modeChanged(bool compactMode)
