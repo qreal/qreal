@@ -9,6 +9,9 @@ api.hints().addHint("Сперва создадим новую диаграмму
 api.cursor().moveTo(newDiagram, 1000);
 api.cursor().leftButtonPress(newDiagram);
 api.cursor().leftButtonRelease(newDiagram, 400);
+var sensors = api.ui().widget("QComboBox", "Port D1 DeviceConfig");
+var s = api.ui().widget("QScrollArea", "");
+api.scroll(s, sensors);
 initNodes = api.scene().nodeList("RobotsDiagram", "InitialNode");
 var init = initNodes[0];
 var mainScene = api.ui().sceneViewport();
@@ -45,8 +48,6 @@ api.scene().drawLink(timer, engF, 1000);
 api.hints().addHint("Добавим роботу сенсор расстояния...", 2000, mainWindow);
 var sensors = api.ui().widget("QComboBox", "Port D1 DeviceConfig");
 var s = api.ui().widget("QScrollArea", "");
-api.cursor().moveTo(s, 2000);
-api.scroll(s, sensors);
 api.cursor().moveTo(sensors, 1000);
 api.cursor().leftButtonPress(sensors);
 api.cursor().leftButtonRelease(sensors, 50);

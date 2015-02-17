@@ -154,29 +154,27 @@ SceneAPI *ScriptAPI::sceneAPI()
 	return mSceneAPI;
 }
 
-void ScriptAPI::scroll(QScrollArea *area, QWidget *widget)
+void ScriptAPI::scroll(QScrollArea *area, QWidget *widget, int const duration)
 {
-	qDebug()<<area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos());
-	qDebug()<<widget->parentWidget()->mapToGlobal(widget->pos());
-	qDebug()<<area->verticalScrollBar()->singleStep();
-	qDebug()<<area->verticalScrollBar()->maximum();
-	qDebug()<<area->verticalScrollBar()->minimum();
-
-	mVirtualCursor->moveTo(area->verticalScrollBar(), 1000);
 	int const xcoord = area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos()).x();
-	int const ycoord = widget->parentWidget()->mapToGlobal(widget->pos()).y();
+	int ycoord = area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos()).y();
 
-	QPoint target = mMainWindow->mapFromGlobal(QPoint(xcoord, ycoord));
+	mVirtualCursor->moveToPoint(xcoord, ycoord, duration/2);
+
+	int const diff = area->verticalScrollBar()->height() - area->verticalScrollBar()->pageStep() + widget->pos().y() * area->verticalScrollBar()->maximum() / widget->parentWidget()->height();
+	ycoord = ycoord + diff * area->verticalScrollBar()->height() / area->verticalScrollBar()->maximum();
+
+	QPoint target = mVirtualCursor->parentWidget()->mapFromGlobal(QPoint(xcoord, ycoord));
 
 	QPropertyAnimation *anim = new QPropertyAnimation(area->verticalScrollBar(), "value");
-	anim->setDuration(2000);
-	anim->setStartValue(area->verticalScrollBar()->value());
-	anim->setEndValue(widget->pos().y());
+	anim->setDuration(duration/2);
+	anim->setStartValue(0);
+	anim->setEndValue(diff);
 
 	connect (anim, &QPropertyAnimation::finished, this, &ScriptAPI::breakWaiting);
 
 	anim->start();
-	mVirtualCursor->moveToPoint(target.x(), target.y(), 2000);
+	mVirtualCursor->moveToPoint(target.x(), target.y(), duration/2);
 	anim->deleteLater();
 }
 
