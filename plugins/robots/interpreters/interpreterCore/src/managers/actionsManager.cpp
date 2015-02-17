@@ -204,5 +204,4 @@ void ActionsManager::giveObjectNames()
 	mStopRobotAction.setObjectName("stopRobot");
 	mConnectToRobotAction.setObjectName("connectToRobot");
 	mRobotSettingsAction.setObjectName("robotSettings");
-	mTitlesAction.setObjectName("titles");
 }

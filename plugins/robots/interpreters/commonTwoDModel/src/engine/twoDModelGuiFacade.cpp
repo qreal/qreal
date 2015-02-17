@@ -2,13 +2,14 @@
 #include <QtWidgets/QComboBox>
 
 #include <qrutils/widgetFinder.h>
-#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
-#include "view/d2ModelWidget.h"
+#include <commonTwoDModel/engine/twoDModelGuiFacade.h>
+#include <commonTwoDModel/engine/view/d2ModelWidget.h>
+
+#include "src/engine/view/d2ModelScene.h"
 
 using namespace twoDModel::engine;
-using namespace twoDModel::view;
 
-TwoDModelGuiFacade::TwoDModelGuiFacade(D2ModelWidget &view)
+TwoDModelGuiFacade::TwoDModelGuiFacade(view::D2ModelWidget &view)
 	: mD2ModelWidget(view)
 {
 }

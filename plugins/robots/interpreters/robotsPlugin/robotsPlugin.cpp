@@ -52,7 +52,7 @@ QStringList RobotsPlugin::defaultSettingsFiles()
 	return mRobotsPluginFacade->defaultSettingsFiles();
 }
 
-twoDModel::engine::TwoDModelGuiFacade *RobotsPlugin::guiScriptFacade()
+QObject *RobotsPlugin::guiScriptFacade()
 {
 	return mRobotsPluginFacade.data()->guiScriptFacade();
 }

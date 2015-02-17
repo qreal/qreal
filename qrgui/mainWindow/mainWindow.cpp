@@ -1947,7 +1947,7 @@ void MainWindow::initScriptAPI()
 	connect(evalAction, &QAction::triggered, &mScriptAPI, &ScriptAPI::evaluate, Qt::DirectConnection);
 	addAction(evalAction);
 
-	connect(mSystemEvents, &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
+	//connect(mSystemEvents, &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
 	mScriptAPI.moveToThread(scriptAPIthread);
 	scriptAPIthread->start();
 }

@@ -6,9 +6,6 @@
 
 #include <interpreterCore/robotsPluginFacade.h>
 
-#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
-#include "managers/actionsManager.h"
-
 namespace robotsPlugin {
 
 /// Provides entry points to robots plugin. Responsible for implementation of ToolPluginInterface and for
@@ -31,7 +28,7 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::ProjectConverter> projectConverters() override;
 	QStringList defaultSettingsFiles() override;
-	twoDModel::engine::TwoDModelGuiFacade *guiScriptFacade() override;
+	QObject *guiScriptFacade() override;
 
 private:
 	/// Main window interface object, used to call GUI functionality.

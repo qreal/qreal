@@ -16,8 +16,6 @@
 #include "interpreterCore/managers/blocksFactoryManager.h"
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
-#include "ui/robotsSettingsPage.h"
-#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 
 namespace interpreterCore {
 
@@ -52,7 +50,8 @@ public:
 	QStringList defaultSettingsFiles() const;
 
 	///Returns 2d model gui script facade
-	twoDModel::engine::TwoDModelGuiFacade *guiScriptFacade();
+	QObject *guiScriptFacade();
+
 	/// Returns diagram interpter`s management interface.
 	interpreter::InterpreterInterface &interpreter() const;
 

@@ -8,6 +8,9 @@
 #include "interpreterCore/managers/paletteUpdateManager.h"
 #include "interpreterCore/managers/kitAutoSwitcher.h"
 
+#include "commonTwoDModel/robotModel/twoDRobotModel.h"
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
@@ -292,7 +295,7 @@ void RobotsPluginFacade::sync()
 	mRobotModelManager.sync();
 }
 
-twoDModel::engine::TwoDModelGuiFacade *RobotsPluginFacade::guiScriptFacade()
+QObject *RobotsPluginFacade::guiScriptFacade()
 {
 	if (auto robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(&mRobotModelManager.model())) {
 		return robotModel->engine()->guiFacade();
