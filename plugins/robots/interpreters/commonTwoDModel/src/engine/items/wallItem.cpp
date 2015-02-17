@@ -133,6 +133,7 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement wallNode = document.createElement(mSerializeName);
+	AbstractItem::serialize(wallNode);
 	wallNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
 			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
 	wallNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())

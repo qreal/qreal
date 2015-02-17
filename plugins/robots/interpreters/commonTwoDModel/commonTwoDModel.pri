@@ -68,6 +68,10 @@ HEADERS += \
 	$$PWD/src/engine/items/lineItem.h \
 	$$PWD/src/engine/items/colorFieldItem.h \
 	$$PWD/src/engine/items/ellipseItem.h \
+	$$PWD/src/engine/items/regions/regionItem.h \
+	$$PWD/src/engine/items/regions/ellipseRegion.h \
+	$$PWD/src/engine/items/regions/rectangularRegion.h \
+	$$PWD/src/engine/items/regions/boundRegion.h \
 
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
@@ -101,6 +105,10 @@ SOURCES += \
 	$$PWD/src/engine/constraints/details/conditionsFactory.cpp \
 	$$PWD/src/engine/constraints/details/triggersFactory.cpp \
 	$$PWD/src/engine/constraints/details/valuesFactory.cpp \
+	$$PWD/src/engine/items/regions/regionItem.cpp \
+	$$PWD/src/engine/items/regions/ellipseRegion.cpp \
+	$$PWD/src/engine/items/regions/rectangularRegion.cpp \
+	$$PWD/src/engine/items/regions/boundRegion.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/button.cpp \
 	$$PWD/src/robotModel/parts/colorSensorBlue.cpp \
