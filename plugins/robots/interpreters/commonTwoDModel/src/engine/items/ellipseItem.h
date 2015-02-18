@@ -26,6 +26,8 @@ public:
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
 	void deserialize(const QDomElement &element) override;
 
+	QPainterPath shape() const override;
+
 private:
 	void setPrivateData();
 

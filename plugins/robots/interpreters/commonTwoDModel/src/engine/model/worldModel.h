@@ -15,6 +15,7 @@ namespace twoDModel {
 namespace items {
 class WallItem;
 class ColorFieldItem;
+class RegionItem;
 }
 
 namespace model {
@@ -63,6 +64,9 @@ public:
 	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const;
 	void deserialize(const QDomElement &element);
 
+	/// Searches on the scene item with the given id. Returns nullptr if not found.
+	QGraphicsItem *findId(const QString &id);
+
 signals:
 	/// Emitted each time when model is appended with some new wall.
 	void wallAdded(items::WallItem *item);
@@ -88,6 +92,7 @@ private:
 	QList<items::WallItem *> mWalls;
 	QList<items::ColorFieldItem *> mColorFields;
 	QList<QGraphicsLineItem *> mRobotTrace;
+	QList<items::RegionItem *> mRegions;
 };
 
 }
