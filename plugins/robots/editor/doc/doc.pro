@@ -18,16 +18,3 @@ OTHER_FILES += \
 	doc/help/style.css \
 	doc/help/trik.html \
 	doc/help/version.js \
-
-#win32 {
-#	DESTDIR ~= s,/,\,g
-#	system("cmd /C "xcopy html $$DESTDIR\\help\\ /s /e /q /y /i &&"\
-#			" copy changelog.txt $$DESTDIR /y"\
-#			"\
-#	)
-#} else {
-#	system(" mkdir $$DESTDIR/help/;"\
-#			" cp -r ../doc/html/* $$DESTDIR/help/ &&"\
-#			" cp ../doc/changelog.txt $$DESTDIR"\
-#	)
-#}
