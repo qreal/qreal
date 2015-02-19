@@ -367,7 +367,7 @@ void DatabasesGenerator::generateSQL()
 
 		QString columnNameForRelationship = getProperty(relationship, "ColumnName").toString();
 		if (columnNameForRelationship.isEmpty()) {
-			mErrorReporter->addInformation(tr("Column name for one-to-one relationship with name '") + getProperty(relationship, "Name").toString()+ tr("' is`n specified. Column name was generated automatically."));
+			mErrorReporter->addInformation(tr("Column name for one-to-many relationship with name '") + getProperty(relationship, "Name").toString()+ tr("' is`n specified. Column name was generated automatically."));
 			columnNameForRelationship = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
 		}
 		extraAttributes[fromSet] += (",\r\n" + columnNameForRelationship + " " + getProperty(toPrimaryKey, "DataType").toString());
@@ -439,6 +439,16 @@ void DatabasesGenerator::generateSQL()
 			codeFile.write(getProperty(attribute, "Name").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(attribute, "DataType").toByteArray());
+			if (getProperty(attribute, "isPrimaryKey").toBool()) {
+				codeFile.write(" PRIMARY KEY");
+			} else {
+				if (getProperty(attribute, "isUnique").toBool()) {
+					codeFile.write(" UNIQUE");
+				}
+				if (getProperty(attribute, "isNotNull").toBool()) {
+					codeFile.write(" NOT NULL");
+				}
+			}
 		}
 		codeFile.write(extraAttributes[i].toUtf8());
 		i++;
