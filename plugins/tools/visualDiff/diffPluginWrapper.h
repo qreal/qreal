@@ -2,7 +2,11 @@
 
 #include <QtCore/QObject>
 
-#include "diffPluginInterface.h"
+#include "qrgui/versioning/diffPluginInterface.h"
+#include "qrutils/versioningUtils/briefVersioningInterface.h"
+#include "qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+
 #include "model/modelLoader.h"
 
 namespace versioning
@@ -11,14 +15,21 @@ namespace versioning
 class DiffPluginWrapper : public QObject, public qReal::DiffPluginInterface
 {
 	Q_OBJECT
+	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.versioning.diff")
 
 public:
-	DiffPluginWrapper(qReal::ProjectManagementInterface *projectManager
-			, qReal::ErrorReporterInterface *errorReporter
-			, qrRepo::WorkingCopyManagementInterface *workingCopyManager
-			, qReal::BriefVersioningInterface *vcs
-			, QWidget *parent
-			, qReal::EditorManagerInterface *manager);
+	DiffPluginWrapper();
+
+	virtual qReal::Customizer* customizationInterface();
+	virtual void updateSettings();
+	virtual QList<qReal::ActionInfo> actions();
+	virtual void init(qReal::PluginConfigurator const &configurator);
+	virtual QPair<QString, qReal::gui::PreferencesPage *> preferencesPage();
+
+	void configure(qReal::ProjectManagementInterface *projectManager, qReal::ErrorReporterInterface *errorReporter
+							   , qrRepo::WorkingCopyManagementInterface *workingCopyManager, qReal::BriefVersioningInterface *vcs
+							   , QWidget *parent, qReal::EditorManagerInterface *manager);
 
 public slots:
 	void showDiff(QString const &targetProject, QWidget *parentWidget, bool const &compactMode = false);

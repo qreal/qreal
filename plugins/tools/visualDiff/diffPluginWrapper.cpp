@@ -1,25 +1,53 @@
 #include <QtWidgets/QTabWidget>
 
 #include "diffPluginWrapper.h"
-#include "view/diffWindow.h"
+#include "plugins/tools/visualDiff/model/diffModel.h"
+#include "plugins/tools/visualDiff/view/diffWindow.h"
+
 
 using namespace versioning;
+using namespace qReal;
 
-DiffPluginWrapper::DiffPluginWrapper(qReal::ProjectManagementInterface *projectManager
-		, qReal::ErrorReporterInterface *errorReporter
-		, qrRepo::WorkingCopyManagementInterface *workingCopyManager
-		, BriefVersioningInterface *vcs
-		, QWidget *parent
-		, EditorManagerInterface *manager)
-	: mWorkingCopyManager(workingCopyManager)
-	, mVcs(vcs), mMainWindow(parent), mEditorManager(manager)
-	, mErrorReporter(errorReporter)
-	, mProjectManager(projectManager)
-	, mLoader(new details::ModelLoader(mVcs, mErrorReporter
-			, mEditorManager, mWorkingCopyManager))
+DiffPluginWrapper::DiffPluginWrapper()
 {
-	connect(mLoader, SIGNAL(modelLoaded(DiffModel*))
-			, this, SLOT(onModelLoaded(DiffModel*)));
+}
+
+Customizer *DiffPluginWrapper::customizationInterface()
+{
+	return NULL;
+}
+
+void DiffPluginWrapper::updateSettings()
+{
+}
+
+QList<ActionInfo> DiffPluginWrapper::actions()
+{
+	return QList<qReal::ActionInfo>();
+}
+
+void DiffPluginWrapper::init(const PluginConfigurator &configurator)
+{
+	Q_UNUSED(configurator)
+}
+
+QPair<QString, gui::PreferencesPage *> DiffPluginWrapper::preferencesPage()
+{
+	return QPair<QString, gui::PreferencesPage *>(); //потом сюда впили настройку цветов.
+}
+
+void DiffPluginWrapper::configure(ProjectManagementInterface *projectManager, ErrorReporterInterface *errorReporter
+								  , qrRepo::WorkingCopyManagementInterface *workingCopyManager
+								  , BriefVersioningInterface *vcs, QWidget *parent, EditorManagerInterface *manager)
+{
+	mWorkingCopyManager = workingCopyManager;
+	mVcs = vcs;
+	mMainWindow = parent;
+	mEditorManager = manager;
+	mErrorReporter = errorReporter;
+	mProjectManager = projectManager;
+	mLoader = new details::ModelLoader(mVcs, mErrorReporter, mEditorManager, mWorkingCopyManager);
+	connect(mLoader, SIGNAL(modelLoaded(DiffModel*)), this, SLOT(onModelLoaded(DiffModel*)));
 }
 
 void DiffPluginWrapper::showDiff(const QString &targetProject, QWidget *parentWidget, const bool &compactMode)

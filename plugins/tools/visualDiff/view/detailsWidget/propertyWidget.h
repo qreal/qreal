@@ -6,8 +6,8 @@
 #include <QtWidgets/QGridLayout>
 
 #include "idWidget.h"
-#include "../../model/commonDifference.h"
-#include "../../model/diffModel.h"
+#include "model/commonDifference.h"
+#include "model/diffModel.h"
 
 namespace versioning
 {

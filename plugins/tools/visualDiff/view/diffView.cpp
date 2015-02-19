@@ -1,5 +1,5 @@
 #include "diffView.h"
-#include "../model/elementType.h"
+#include "model/elementType.h"
 
 using namespace versioning;
 using namespace versioning::details;

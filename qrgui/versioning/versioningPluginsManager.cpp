@@ -1,16 +1,13 @@
 #include "versioningPluginsManager.h"
 #include "qrgui/mainWindow/mainWindow.h"
-#include "visualDiff/diffPluginWrapper.h"
 #include "qrutils/fileSystemUtils.h"
 #include <QtWidgets/QApplication>
-#include <QDebug>
 
 using namespace qReal;
 
 QString const tempFolderName = "tempVCS";
 
-VersioningPluginsManager::VersioningPluginsManager(/*ToolPluginManager const &pluginManager
-		,*/ qrRepo::RepoControlInterface *repoApi
+VersioningPluginsManager::VersioningPluginsManager(qrRepo::RepoControlInterface *repoApi
 		, ErrorReporterInterface *errorReporter
 		, ProjectManager *projectManager)
 	: mRepoApi(repoApi), mErrorReporter(errorReporter)
@@ -35,14 +32,13 @@ void VersioningPluginsManager::prepareWorkingCopy()
 void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
 		, EditorManagerInterface *editorManager, QWidget *parent)
 {
-	mDiffInterface = new versioning::DiffPluginWrapper(mProjectManager, mErrorReporter, mRepoApi, this, parent, editorManager);
 	while (iterator.hasNext()) {
 		ToolPluginInterface *toolPlugin = iterator.next();
 		VersioningPluginInterface *versioningPlugin =
 				dynamic_cast<VersioningPluginInterface *>(toolPlugin);
+		mDiffInterface = dynamic_cast<DiffPluginInterface *>(toolPlugin);
 		if (versioningPlugin) {
 			mPlugins.append(versioningPlugin);
-			versioningPlugin->setDiffViewerInterface(mDiffInterface);
 			if (!versioningPlugin->clientExist()) {
 				foreach(ActionInfo const &actionInfo, versioningPlugin->actions()) {
 					if (actionInfo.isAction()){
@@ -59,6 +55,12 @@ void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInter
 					, this, SLOT(onWorkingCopyUpdated(bool const)));
 			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
 					, this, SLOT(onChangesSubmitted(bool const)));
+		}
+	}
+	if (mDiffInterface){
+		mDiffInterface->configure(mProjectManager, mErrorReporter, mRepoApi, this, parent, editorManager);
+		foreach (VersioningPluginInterface *versioningPlugin, mPlugins) {
+			versioningPlugin->setDiffViewerInterface(mDiffInterface);
 		}
 	}
 }

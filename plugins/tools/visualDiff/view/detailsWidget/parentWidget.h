@@ -1,27 +1,26 @@
 #pragma once
 
-#include <QtCore/QList>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QGridLayout>
 
 #include "idWidget.h"
-#include "../../model/diffModel.h"
-#include "../../model/diffState.h"
+#include "model/diffModel.h"
+#include "model/diffState.h"
 
 namespace versioning
 {
 namespace details
 {
 
-class IdListWidget : public QWidget
+class ParentWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	IdListWidget(DiffModel *diffProvider, QWidget *parent = 0);
+	ParentWidget(DiffModel *diffProvider, QWidget *parent = 0);
 
-	void setIdList(qReal::IdList const &graphicalIdList);
+	void setId(qReal::Id const &graphicalId, qReal::Id const &logicalId);
 	void reset();
 
 signals:
@@ -33,15 +32,15 @@ private slots:
 	void onMouseLeavedIdWidget(qReal::Id const &id);
 
 private:
-	void clearIdWidgets();
-	void addIdWidget(int const index);
-
 	DiffModel *mDiffProvider;
-	qReal::IdList mGraphicalIdList;
-	qReal::IdList mLogicalIdList;
+	qReal::Id mGraphicalId;
+	qReal::Id mLogicalId;
 
 	QGridLayout *mLayout;
-	QList<IdWidget *> mIdWidgets;
+	QLabel *mOldParentLabel;
+	QLabel *mNewParentLabel;
+	IdWidget *mOldIdWidget;
+	IdWidget *mNewIdWidget;
 };
 
 }

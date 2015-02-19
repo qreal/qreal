@@ -4,7 +4,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QTabWidget>
 
-#include "../../model/diffModel.h"
+#include "model/diffModel.h"
 #include "idWidget.h"
 #include "parentWidget.h"
 #include "childrenWidget.h"

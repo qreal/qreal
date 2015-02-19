@@ -6,8 +6,8 @@
 
 #include "idListWidget.h"
 #include "idListDiffWidget.h"
-#include "../../model/diffModel.h"
-#include "../../model/diffState.h"
+#include "model/diffModel.h"
+#include "model/diffState.h"
 
 namespace versioning
 {

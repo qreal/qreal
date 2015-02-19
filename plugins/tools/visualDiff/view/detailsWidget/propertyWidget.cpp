@@ -1,6 +1,6 @@
 #include "propertyWidget.h"
 #include "../diffColorPreferencesDialog.h"
-#include "../../model/diffState.h"
+#include "model/diffState.h"
 
 using namespace versioning;
 using namespace versioning::details;

@@ -2,7 +2,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include "modelLoader.h"
-#include "../../../../qrutils/fileSystemUtils.h"
+#include "qrutils/fileSystemUtils.h"
 
 using namespace versioning;
 using namespace versioning::details;

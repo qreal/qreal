@@ -3,7 +3,7 @@
 #include "diffScene.h"
 #include "detailsWidget/diffDetailsWidget.h"
 #include <qrgui/editor/editorView.h>
-#include "../model/diffModel.h"
+#include "model/diffModel.h"
 #include <qrgui/models/models.h>
 #include <qrgui/editor/sceneCustomizer.h>
 #include <qrgui/controller/controller.h>

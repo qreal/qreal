@@ -23,6 +23,7 @@ SUBDIRS += \
 	$$PWD/tools/refactoring/refactoring.pro \
 #	$$PWD/tools/testInvocation/testInvocation.pro \
 	$$PWD/tools/gitClient/gitClient.pro \
+	$$PWD/tools/visualDiff/visualDiff.pro \
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils

@@ -6,7 +6,7 @@
 namespace versioning
 {
 
-class DiffModel
+class Q_DECL_EXPORT DiffModel
 {
 public:
 	DiffModel(qReal::models::Models *oldModel, qReal::models::Models *newModel);

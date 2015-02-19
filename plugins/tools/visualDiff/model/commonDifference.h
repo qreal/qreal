@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../models/models.h"
-#include "../../../../qrrepo/commonRepoApi.h"
+#include "qrgui/models/models.h"
+#include "qrrepo/commonRepoApi.h"
 #include "diffState.h"
 #include "modification.h"
 

@@ -7,14 +7,14 @@
 
 #include <qrgui/editor/sceneCustomizer.h>
 #include <qrgui/controller/controller.h>
-#include "../model/diffModel.h"
+#include "model/diffModel.h"
 #include "diffView.h"
 #include "detailsWidget/diffDetailsWidget.h"
 
 namespace versioning
 {
 
-class DiffWindow : public QWidget
+class Q_DECL_EXPORT DiffWindow : public QWidget
 {
 	Q_OBJECT
 

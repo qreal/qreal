@@ -11,8 +11,6 @@
 namespace qReal
 {
 
-class DiffPluginBase;
-
 class /*QRGUI_VERSIONING_PLUGINS_MANAGER_EXPORT*/ VersioningPluginsManager
 		: public BriefVersioningInterface
 		, public qrRepo::WorkingCopyInspectionInterface

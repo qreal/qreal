@@ -2,7 +2,7 @@
 
 #include "diffColorPreferencesDialog.h"
 #include "ui_diffColorPreferencesDialog.h"
-#include "../../../../qrkernel/settingsManager.h"
+#include "qrkernel/settingsManager.h"
 
 using namespace versioning::ui;
 

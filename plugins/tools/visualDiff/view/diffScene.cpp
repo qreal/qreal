@@ -3,8 +3,8 @@
 
 #include "diffScene.h"
 #include "diffColorPreferencesDialog.h"
-#include "../model/diffState.h"
-#include "../../../../qrkernel/settingsManager.h"
+#include "model/diffState.h"
+#include "qrkernel/settingsManager.h"
 
 
 using namespace versioning;

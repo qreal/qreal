@@ -1,7 +1,7 @@
 #include <QtWidgets/QScrollArea>
-#include <QScrollBar>
+#include <QtWidgets/QScrollBar>
 #include "diffDetailsWidget.h"
-#include "../../model/commonDifference.h"
+#include "model/commonDifference.h"
 
 using namespace versioning;
 using namespace versioning::details;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <qrgui/editor/editorViewScene.h>
-#include "../model/diffState.h"
+#include "model/diffState.h"
 
 namespace versioning
 {

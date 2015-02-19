@@ -1,5 +1,7 @@
 #pragma once
-#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include "qrutils/versioningUtils/briefVersioningInterface.h"
+#include "qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 
 namespace qReal
 {
@@ -24,6 +26,10 @@ public:
 	virtual void showDiff(QString oldRepoRevision , QString newRepoRevision
 			, QString const &targetProject, QWidget *parentWidget, bool const &compactMode = false) = 0;
 
+	/// For plugin, because plugin's configurator cannot give necessary objects
+	virtual void configure(ProjectManagementInterface *projectManager, ErrorReporterInterface *errorReporter
+						   , qrRepo::WorkingCopyManagementInterface *workingCopyManager, BriefVersioningInterface *vcs
+						   , QWidget *parent, EditorManagerInterface *manager) = 0;
 };
 
 }
