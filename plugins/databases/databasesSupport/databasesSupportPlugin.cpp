@@ -13,6 +13,7 @@ namespace databasesSupport {
 DatabasesSupportPlugin::DatabasesSupportPlugin()
 	: mPreferencesPage(new DatabasesPreferencesPage())
 	, mGenerateCodeAction(NULL)
+	, mCheckCorectnessAction(NULL)
 {
 }
 
