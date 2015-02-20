@@ -47,6 +47,9 @@ public:
 	/// Returns a reference to a 2D model`s settings storage.
 	Settings &settings();
 
+	/// Returns a pointer to an object that reports system errors.
+	qReal::ErrorReporterInterface *errorReporter();
+
 	QDomDocument serialize() const;
 	void deserialize(const QDomDocument &xml);
 
@@ -84,6 +87,7 @@ private:
 	Timeline mTimeline;
 	QScopedPointer<constraints::ConstraintsChecker> mChecker;
 	QList<RobotModel *> mRobotModels;
+	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn`t take ownership.
 };
 
 }

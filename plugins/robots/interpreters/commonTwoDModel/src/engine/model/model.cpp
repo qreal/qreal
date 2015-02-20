@@ -12,6 +12,7 @@ using namespace twoDModel::model;
 Model::Model(QObject *parent)
 	: QObject(parent)
 	, mChecker(nullptr)
+	, mErrorReporter(nullptr)
 {
 }
 
@@ -22,6 +23,7 @@ Model::~Model()
 void Model::init(qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
+	mErrorReporter = &errorReporter;
 	mChecker.reset(new constraints::ConstraintsChecker(errorReporter, *this));
 	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
 		errorReporter.addInformation(tr("The task is accomplished!"));
@@ -54,6 +56,11 @@ QList<RobotModel *> Model::robotModels() const
 Settings &Model::settings()
 {
 	return mSettings;
+}
+
+qReal::ErrorReporterInterface *Model::errorReporter()
+{
+	return mErrorReporter;
 }
 
 QDomDocument Model::serialize() const
