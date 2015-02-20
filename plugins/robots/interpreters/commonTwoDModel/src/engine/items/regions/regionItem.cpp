@@ -86,6 +86,7 @@ void RegionItem::serialize(QDomElement &element)
 		element.setAttribute("id", id());
 	}
 
+	element.setAttribute("type", regionType());
 	element.setAttribute("filled", filled() ? "true" : "false");
 
 	if (!text().isEmpty()) {

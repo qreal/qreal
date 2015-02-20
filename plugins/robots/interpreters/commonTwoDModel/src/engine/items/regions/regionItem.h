@@ -58,6 +58,8 @@ protected:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
+	virtual QString regionType() const = 0;
+
 	QPointF deserializePoint(const QDomElement &element, const QString &xAttribute, const QString &yAttribute);
 
 	QGraphicsTextItem *mTextItem;  // Takes ownership

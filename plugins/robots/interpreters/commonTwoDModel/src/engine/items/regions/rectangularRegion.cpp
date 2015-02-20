@@ -13,3 +13,8 @@ QPainterPath RectangularRegion::shape() const
 	result.addRect(QRectF(QPointF(), boundingRect().size()));
 	return result;
 }
+
+QString RectangularRegion::regionType() const
+{
+	return "rectangle";
+}

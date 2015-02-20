@@ -13,3 +13,8 @@ QPainterPath EllipseRegion::shape() const
 	result.addEllipse(QRectF(QPointF(), boundingRect().size()));
 	return result;
 }
+
+QString EllipseRegion::regionType() const
+{
+	return "ellipse";
+}
