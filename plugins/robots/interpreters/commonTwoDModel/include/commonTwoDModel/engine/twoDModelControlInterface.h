@@ -37,7 +37,7 @@ public:
 			, const qReal::SystemEvents &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
-			, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:

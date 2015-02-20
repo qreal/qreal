@@ -9,8 +9,10 @@ namespace twoDModel {
 namespace items {
 
 /// Represents some zone on the 2D model world, probably with some text like "Start zone".
-class RegionItem : public QGraphicsItem
+class RegionItem : public QGraphicsObject
 {
+	Q_OBJECT
+
 public:
 	explicit RegionItem(QGraphicsItem *parent = 0);
 

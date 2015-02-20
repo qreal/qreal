@@ -10,9 +10,8 @@ using namespace interpreterBase::robotModel::robotParts;
 const int border = 0;
 const int defaultTraceWidth = 6;
 
-RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel, QObject *parent)
-	: QObject(parent)
-	, RotateItem()
+RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel)
+	: RotateItem()
 	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
 	, mRotater(nullptr)

@@ -9,7 +9,7 @@ const QSizeF defaultSize = QSizeF(200, 200);
 using namespace twoDModel::items;
 
 RegionItem::RegionItem(QGraphicsItem *parent)
-	: QGraphicsItem(parent)
+	: QGraphicsObject(parent)
 	, mTextItem(new QGraphicsTextItem(this))
 	, mFilled(true)
 	, mColor(defaultColor)

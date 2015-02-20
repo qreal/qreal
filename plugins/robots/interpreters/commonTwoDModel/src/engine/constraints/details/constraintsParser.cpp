@@ -29,8 +29,6 @@ QStringList ConstraintsParser::errors() const
 
 bool ConstraintsParser::parse(const QString &constraintsXml)
 {
-	mErrors.clear();
-
 	if (constraintsXml.isEmpty()) {
 		return true;
 	}
@@ -49,7 +47,17 @@ bool ConstraintsParser::parse(const QString &constraintsXml)
 		return false;
 	}
 
-	return parseConstraints(document.documentElement());
+	return parse(document.documentElement());
+}
+
+bool ConstraintsParser::parse(const QDomElement &constraintsXml)
+{
+	mErrors.clear();
+	if (constraintsXml.isNull()) {
+		return true;
+	}
+
+	return parseConstraints(constraintsXml);
 }
 
 bool ConstraintsParser::parseConstraints(const QDomElement &constraints)

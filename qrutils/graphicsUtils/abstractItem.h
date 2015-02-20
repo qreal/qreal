@@ -18,7 +18,7 @@ const int scalingRect = 6;
 namespace graphicsUtils
 {
 
-class QRUTILS_EXPORT AbstractItem : public QGraphicsItem
+class QRUTILS_EXPORT AbstractItem : public QGraphicsObject
 {
 public:
 	enum DragState {

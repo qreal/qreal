@@ -39,6 +39,11 @@ public:
 	/// can be obtained via errors() method.
 	bool parse(const QString &constraintsXml);
 
+	/// Parses the given program, initializes events map given in constructor.
+	/// Returns true if parsing process completed successfully. Otherwise returns false. The errors list in that case
+	/// can be obtained via errors() method.
+	bool parse(const QDomElement &constraintsXml);
+
 	/// Returns a list of parser errors occured during the last parsing process.
 	QStringList errors() const;
 

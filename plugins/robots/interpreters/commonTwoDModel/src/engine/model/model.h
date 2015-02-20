@@ -6,7 +6,20 @@
 #include "settings.h"
 #include <commonTwoDModel/robotModel/twoDRobotModel.h>
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
+namespace interpreterBase {
+class InterpreterControlInterface;
+}
+
 namespace twoDModel {
+
+namespace constraints {
+class ConstraintsChecker;
+}
+
 namespace model {
 
 /// A main class managing model part of 2D emulator. Creates and maintains different parts
@@ -17,6 +30,10 @@ class Model : public QObject
 
 public:
 	explicit Model(QObject *parent = 0);
+	~Model();
+
+	void init(qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::InterpreterControlInterface &interpreterControl);
 
 	/// Returns a reference to a world map.
 	WorldModel &worldModel();
@@ -25,7 +42,7 @@ public:
 	Timeline &timeline();
 
 	/// Returns a list of existing robot models
-	QList<RobotModel *> robotModels();
+	QList<RobotModel *> robotModels() const;
 
 	/// Returns a reference to a 2D model`s settings storage.
 	Settings &settings();
@@ -65,6 +82,7 @@ private:
 	Settings mSettings;
 	WorldModel mWorldModel;
 	Timeline mTimeline;
+	QScopedPointer<constraints::ConstraintsChecker> mChecker;
 	QList<RobotModel *> mRobotModels;
 };
 

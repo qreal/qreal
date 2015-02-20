@@ -1,14 +1,39 @@
 #include "model.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <interpreterBase/interpreterControlInterface.h>
 
-#include "include/commonTwoDModel/robotModel/nullTwoDRobotModel.h"
+#include "commonTwoDModel/robotModel/nullTwoDRobotModel.h"
+#include "src/engine/constraints/constraintsChecker.h"
 
 using namespace twoDModel::model;
 
 Model::Model(QObject *parent)
 	: QObject(parent)
+	, mChecker(nullptr)
 {
+}
+
+Model::~Model()
+{
+}
+
+void Model::init(qReal::ErrorReporterInterface &errorReporter
+		, interpreterBase::InterpreterControlInterface &interpreterControl)
+{
+	mChecker.reset(new constraints::ConstraintsChecker(errorReporter, *this));
+	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
+		errorReporter.addInformation(tr("The task is accomplished!"));
+		interpreterControl.stopRobot();
+	});
+	connect(mChecker.data(), &constraints::ConstraintsChecker::fail, [&](const QString &message) {
+		errorReporter.addError(message);
+		interpreterControl.stopRobot();
+	});
+	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError, [&errorReporter](const QString &message) {
+		errorReporter.addCritical(tr("Error in checker: %1").arg(message));
+	});
 }
 
 WorldModel &Model::worldModel()
@@ -21,7 +46,7 @@ Timeline &Model::timeline()
 	return mTimeline;
 }
 
-QList<RobotModel *> Model::robotModels()
+QList<RobotModel *> Model::robotModels() const
 {
 	return mRobotModels;
 }
@@ -53,6 +78,7 @@ void Model::deserialize(const QDomDocument &xml)
 {
 	const QDomNodeList worldList = xml.elementsByTagName("world");
 	const QDomNodeList robotsList = xml.elementsByTagName("robots");
+	const QDomElement constraints = xml.firstChildElement("constraints");
 
 	if (worldList.count() != 1) {
 		/// @todo Report error
@@ -114,6 +140,11 @@ void Model::deserialize(const QDomDocument &xml)
 			addRobotModel(*robotModel);
 			mRobotModels.last()->deserialize(element);
 		}
+	}
+
+	if (mChecker) {
+		/// @todo: should we handle if it returned false?
+		mChecker->parseConstraints(constraints);
 	}
 }
 

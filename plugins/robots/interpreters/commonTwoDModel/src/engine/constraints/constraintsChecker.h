@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QSet>
+#include <QtXml/QDomElement>
 
 #include "details/defines.h"
 
@@ -8,11 +9,12 @@ namespace qReal {
 class ErrorReporterInterface;
 }
 
-namespace utils {
-class TimelineInterface;
+namespace twoDModel {
+
+namespace model {
+class Model;
 }
 
-namespace twoDModel {
 namespace constraints {
 
 /// Checks robot`s behaviour in 2D model world.
@@ -26,13 +28,15 @@ class ConstraintsChecker : public QObject
 	Q_OBJECT
 
 public:
-	ConstraintsChecker(const utils::TimelineInterface &timeline
-			, qReal::ErrorReporterInterface &errorReporter);
+	ConstraintsChecker(qReal::ErrorReporterInterface &errorReporter, model::Model &model);
 	~ConstraintsChecker();
 
 	/// Parses the given program on 2D model constraints language and returns the success of this operation.
 	/// All parser errors will be reported using errorReporter interface passed to constructor.
-	bool parseConstraints(const QString &constraintsXml);
+	bool parseConstraints(const QDomElement &constraintsXml);
+
+	/// Adds constraints xml as a child to a given element.
+	void serializeConstraints(QDomElement &parent) const;
 
 	/// Checks once all constraints active at the call moment. If all constraints are satisfied nothing happens.
 	/// If some constraint is violated fail() signal will be emitted. It may also happen that robot has fulfilled
@@ -59,15 +63,26 @@ private:
 	void setUpEvent();
 	void dropEvent();
 
-	const utils::TimelineInterface &mTimeline;
+	void bindToWorldModelObjects();
+	void bindToRobotObjects();
+	QString firstUnusedRobotId() const;
+
+	void programStarted();
+	void programFinished();
+
 	qReal::ErrorReporterInterface &mErrorReporter;
+	model::Model &mModel;
 	details::StatusReporter mStatus;
+	bool mSuccessTriggered;
+	bool mFailTriggered;
 
 	details::Events mEvents;
 	details::Variables mVariables;
 	details::Objects mObjects;
 
 	QSet<details::Event *> mActiveEvents;
+
+	QDomElement mCurrentXml;
 };
 
 }

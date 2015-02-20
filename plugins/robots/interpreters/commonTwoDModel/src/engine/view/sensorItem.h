@@ -17,7 +17,7 @@ namespace twoDModel {
 namespace view {
 
 /// Class that represents sensor in 2D model.
-class SensorItem : public QObject, public graphicsUtils::RotateItem
+class SensorItem : public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 

@@ -32,9 +32,11 @@ void TwoDModelEngineFacade::init(const interpreterBase::EventsForKitPluginInterf
 		, const qReal::SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
-		, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
+	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
+
 	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel] (const qReal::Id &id)
 	{
 		mView->setEnabled(!id.isNull());

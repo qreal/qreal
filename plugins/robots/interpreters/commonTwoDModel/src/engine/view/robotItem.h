@@ -16,12 +16,12 @@ namespace twoDModel {
 namespace view {
 
 /** @brief Class that represents a robot in 2D model */
-class RobotItem : public QObject, public graphicsUtils::RotateItem
+class RobotItem : public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 
 public:
-	RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel, QObject *parent = 0);
+	RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel);
 
 	QRectF rect() const override;
 	void setSelected(bool isSelected) override;
