@@ -18,7 +18,6 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 
 	virtual QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) = 0;
-	virtual void deserialize(const QDomElement &element) = 0;
 };
 
 }

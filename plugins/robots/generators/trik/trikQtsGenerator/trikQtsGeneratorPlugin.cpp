@@ -140,7 +140,7 @@ void TrikQtsGeneratorPlugin::stopRobot()
 
 	mCommunicator->runDirectCommand(
 			"script.system(\"killall aplay\"); \n"
-			"script.system(\"killall vlc\"); \n"
+			"script.system(\"killall vlc\");"
 			, true
 			);
 }

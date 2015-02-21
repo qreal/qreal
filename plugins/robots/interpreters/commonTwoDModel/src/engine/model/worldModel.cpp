@@ -8,6 +8,9 @@
 #include "src/engine/items/colorFieldItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
+#include "src/engine/items/regions/ellipseRegion.h"
+#include "src/engine/items/regions/rectangularRegion.h"
+#include "src/engine/items/regions/boundRegion.h"
 
 using namespace twoDModel;
 using namespace model;
@@ -148,6 +151,12 @@ void WorldModel::clear()
 		removeColorField(mColorFields.last());
 	}
 
+	while (!mRegions.isEmpty()) {
+		QGraphicsItem * const toRemove = mRegions.last();
+		mRegions.removeLast();
+		emit itemRemoved(toRemove);
+	}
+
 	clearRobotTrace();
 }
 
@@ -222,6 +231,14 @@ QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeft
 		colorFields.appendChild(colorFiedlNode);
 	}
 
+	QDomElement regions = document.createElement("regions");
+	result.appendChild(regions);
+	for (items::RegionItem * const region : mRegions) {
+		QDomElement regionElement = document.createElement("region");
+		region->serialize(regionElement);
+		regions.appendChild(regionElement);
+	}
+
 	return result;
 }
 
@@ -280,4 +297,56 @@ void WorldModel::deserialize(const QDomElement &element)
 			addColorField(stylusItem);
 		}
 	}
+
+	for (QDomElement regionNode = element.firstChildElement("regions").firstChildElement("region")
+			; !regionNode.isNull()
+			; regionNode = regionNode.nextSiblingElement("region"))
+	{
+		const QString type = regionNode.attribute("type", "ellipse").toLower();
+		items::RegionItem *item = nullptr;
+		if (type == "ellipse") {
+			item = new items::EllipseRegion;
+		} else if (type == "rectangle") {
+			item = new items::RectangularRegion;
+		} else if (type == "bound") {
+			const QString id = regionNode.attribute("boundItem");
+			QGraphicsItem const *boundItem = findId(id);
+			if (boundItem) {
+				item = new items::BoundRegion(*boundItem, id);
+			} /// @todo: else report error
+		}
+
+		if (item) {
+			item->deserialize(regionNode);
+			mRegions.append(item);
+			emit otherItemAdded(item);
+		}
+	}
+}
+
+QGraphicsItem *WorldModel::findId(const QString &id)
+{
+	if (id.isEmpty()) {
+		return nullptr;
+	}
+
+	for (items::WallItem * const wall : mWalls) {
+		if (wall->id() == id) {
+			return wall;
+		}
+	}
+
+	for (items::ColorFieldItem * const field : mColorFields) {
+		if (field->id() == id) {
+			return field;
+		}
+	}
+
+	for (items::RegionItem * const region : mRegions) {
+		if (region->id() == id) {
+			return region;
+		}
+	}
+
+	return nullptr;
 }
