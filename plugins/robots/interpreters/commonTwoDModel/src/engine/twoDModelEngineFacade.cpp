@@ -1,6 +1,7 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
 #include "commonTwoDModel/engine/view/d2ModelWidget.h"
+#include "src/engine/view/readOnly.h"
 #include "model/model.h"
 #include "twoDModelEngineApi.h"
 
@@ -106,6 +107,11 @@ void TwoDModelEngineFacade::init(const interpreterBase::EventsForKitPluginInterf
 				}
 			}
 			);
+
+	mView->setInteractivityFlags(view::ReadOnly::World | view::ReadOnly::RobotConfiguration
+			| view::ReadOnly::SimulationSettings | view::ReadOnly::Sensors);
+
+//	mView->setInteractivityFlags(view::ReadOnly::None);
 }
 
 qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()

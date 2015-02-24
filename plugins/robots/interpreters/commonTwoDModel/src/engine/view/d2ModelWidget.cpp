@@ -6,6 +6,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
@@ -23,6 +24,7 @@
 
 #include "src/engine/view/d2ModelScene.h"
 #include "src/engine/view/robotItem.h"
+#include "src/engine/view/readOnly.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/ellipseItem.h"
@@ -31,7 +33,7 @@
 #include "src/engine/model/constants.h"
 #include "src/engine/model/model.h"
 
-#include "include/commonTwoDModel/engine/nullTwoDModelDisplayWidget.h"
+#include "commonTwoDModel/engine/nullTwoDModelDisplayWidget.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -104,6 +106,10 @@ void D2ModelWidget::initWidget()
 
 	mUi->setupUi(this);
 
+	mToolsTabName = mUi->mainTabBar->tabText(0);
+	mPortsTabName = mUi->mainTabBar->tabText(1);
+	mModelSettingsTabName = mUi->mainTabBar->tabText(2);
+
 	mScene = new D2ModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
 	mUi->graphicsView->setScene(mScene);
@@ -162,6 +168,7 @@ void D2ModelWidget::connectUiButtons()
 			mScene->clearScene(false, Reason::userAction);
 		}
 	});
+
 	connect(mUi->clearFloorButton, &QAbstractButton::clicked, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
 			, mUi->clearFloorButton, &QAbstractButton::setVisible, Qt::QueuedConnection);
@@ -605,6 +612,81 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 	mModel.deserialize(worldModel);
 
 	saveInitialRobotBeforeRun();
+}
+
+void D2ModelWidget::setInteractivityFlags(int flags)
+{
+	const auto openTab = [this](QWidget * const tab) {
+		QList<const QWidget *> tabOrder{mUi->toolsTab, mUi->portsTab, mUi->modelSettingsTab};
+		QHash<const QWidget *, QString> tabs{
+				{mUi->toolsTab, mToolsTabName}
+				, {mUi->portsTab, mPortsTabName}
+				, {mUi->modelSettingsTab, mModelSettingsTabName}
+		};
+
+		if (!tabs.keys().contains(tab)) {
+			throw qReal::Exception("Trying to add unknown tab to tools palette in 2d model");
+		}
+
+		int tabsIndex = 0;
+
+		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
+			if (mUi->mainTabBar->widget(i) == tab) {
+				return;
+			} else {
+				while (tabsIndex < tabOrder.size() && mUi->mainTabBar->widget(i) != tabOrder[tabsIndex]) {
+					if (tabOrder[tabsIndex] == tab) {
+						mUi->mainTabBar->insertTab(i, tab, tabs[tab]);
+						return;
+					}
+
+					++tabsIndex;
+				}
+			}
+		}
+
+		mUi->mainTabBar->insertTab(mUi->mainTabBar->count(), tab, tabs[tab]);
+	};
+
+	const auto closeTab = [this](QWidget * const tab) {
+		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
+			if (mUi->mainTabBar->widget(i) == tab) {
+				mUi->mainTabBar->removeTab(i);
+				--i;
+			}
+		}
+	};
+
+	const auto setTabHidden = [this, &openTab, &closeTab](QWidget * const tab, const bool hidden) {
+		if (hidden) {
+			closeTab(tab);
+		} else {
+			openTab(tab);
+		}
+	};
+
+	const bool worldReadOnly = (flags & ReadOnly::World) != 0;
+
+	setTabHidden(mUi->toolsTab, worldReadOnly);
+
+	mUi->gridParametersBox->setVisible(!worldReadOnly);
+	mUi->saveWorldModelPushButton->setVisible(!worldReadOnly);
+	mUi->loadWorldModelPushButton->setVisible(!worldReadOnly);
+
+	const bool sensorsReadOnly = (flags & ReadOnly::Sensors) != 0;
+	const bool robotConfigurationReadOnly = (flags & ReadOnly::RobotConfiguration) != 0;
+
+	setTabHidden(mUi->portsTab, sensorsReadOnly && robotConfigurationReadOnly);
+
+	mCurrentConfigurer->setEnabled(!sensorsReadOnly);
+	mUi->leftWheelComboBox->setEnabled(!robotConfigurationReadOnly);
+	mUi->rightWheelComboBox->setEnabled(!robotConfigurationReadOnly);
+
+	const bool simulationSettingsReadOnly = (flags & ReadOnly::SimulationSettings) != 0;
+
+	setTabHidden(mUi->modelSettingsTab, simulationSettingsReadOnly);
+
+	mScene->setInteractivityFlags(flags);
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)

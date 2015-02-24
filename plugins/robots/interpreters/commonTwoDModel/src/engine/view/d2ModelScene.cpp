@@ -54,6 +54,16 @@ bool D2ModelScene::oneRobot() const
 	return mRobots.size() == 1;
 }
 
+void D2ModelScene::setInteractivityFlags(int flags)
+{
+//	mReadOnlyMode = readOnly;
+
+//	for (auto item : items) {
+//		auto abstractItem = dynamic_cast<graphicsUtils::AbstractItem *>(item);
+//		abstractItem->setEditable(!readOnly);
+//	}
+}
+
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 {
 	for (const items::WallItem *wall : mModel.worldModel().walls()) {
@@ -112,6 +122,10 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	}
 
 	emit mousePressed();
+
+	if (mReadOnlyMode) {
+		return;
+	}
 
 	auto initItem = [this, mouseEvent](QGraphicsItem *item) {
 		removeMoveFlag(mouseEvent, item);
@@ -172,6 +186,10 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		}
 	}
 
+	if (mReadOnlyMode) {
+		return;
+	}
+
 	bool needUpdate = true;
 	switch (mDrawingAction){
 	case wall:
@@ -211,6 +229,10 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				sensor->checkSelection();
 			}
 		}
+	}
+
+	if (mReadOnlyMode) {
+		return;
 	}
 
 	emit mouseReleased();
@@ -338,6 +360,10 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 void D2ModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
+		if (mReadOnlyMode) {
+			return;
+		}
+
 		for (QGraphicsItem * const item : selectedItems()) {
 			deleteItem(item);
 		}

@@ -34,10 +34,16 @@ public:
 	D2ModelScene(model::Model &model
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
+
 	~D2ModelScene() override;
 
 	/// Returns true if existing only one robot
 	bool oneRobot() const;
+
+	/// Forbid all interaction with specified categories of objects on scene, for "challenge" mode where student
+	/// shall provide program that makes robot do specific task in given unmodifyable world model.
+	/// Categories of items include world model (walls, lines, etc.), sensors, robot position.
+	void setInteractivityFlags(int flags);
 
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
@@ -143,6 +149,8 @@ private:
 	items::LineItem *mCurrentLine = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
+
+	bool mReadOnlyMode = false;
 };
 
 }

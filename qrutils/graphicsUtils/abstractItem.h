@@ -91,6 +91,9 @@ public:
 	/// Sets a unique identifier of an item.
 	void setId(const QString &id);
 
+	void setEditable(bool editable);
+	bool editable() const;
+
 protected:
 	virtual void serialize(QDomElement &element);
 	virtual void deserialize(const QDomElement &element);
@@ -107,6 +110,7 @@ protected:
 	qreal mY2;
 	QGraphicsView *mView;
 	QString mId;
+	bool mEditable;
 };
 
 }
