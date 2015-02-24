@@ -13,6 +13,9 @@
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/view/readOnly.h"
+
+#include <QtCore/QDebug>
 
 using namespace twoDModel;
 using namespace view;
@@ -33,12 +36,9 @@ D2ModelScene::D2ModelScene(model::Model &model
 	setItemIndexMethod(NoIndex);
 	setEmptyPenBrushItems();
 
-	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &QGraphicsScene::addItem);
-	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, [this](items::WallItem *wall) {
-		connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
-	});
-	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &QGraphicsScene::addItem);
-	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &QGraphicsScene::addItem);
+	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &D2ModelScene::onWallAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &D2ModelScene::onColorItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &D2ModelScene::onOtherItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [](QGraphicsItem *item) { delete item; });
 
 	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
@@ -56,12 +56,22 @@ bool D2ModelScene::oneRobot() const
 
 void D2ModelScene::setInteractivityFlags(int flags)
 {
-//	mReadOnlyMode = readOnly;
+	mWorldReadOnly = (flags & ReadOnly::World) != 0;
+	mRobotReadOnly = (flags & ReadOnly::RobotPosition) != 0;
+	mSensorsReadOnly = (flags & ReadOnly::Sensors) != 0;
 
-//	for (auto item : items) {
-//		auto abstractItem = dynamic_cast<graphicsUtils::AbstractItem *>(item);
-//		abstractItem->setEditable(!readOnly);
-//	}
+	for (auto item : items()) {
+		auto robotItem = dynamic_cast<RobotItem *>(item);
+		auto sensorItem = dynamic_cast<SensorItem *>(item);
+		auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
+		if (worldItem) {
+			worldItem->setEditable(!mWorldReadOnly);
+		} else if (robotItem) {
+			robotItem->setEditable(!mRobotReadOnly);
+		} else if (sensorItem) {
+			sensorItem->setEditable(!mSensorsReadOnly);
+		}
+	}
 }
 
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
@@ -81,6 +91,8 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
 	connect(robotItem, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
+
+	robotItem->setEditable(!mRobotReadOnly);
 
 	addItem(robotItem);
 
@@ -107,6 +119,24 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 	emit robotListChanged(nullptr);
 }
 
+void D2ModelScene::onWallAdded(items::WallItem *wall)
+{
+	addItem(wall);
+	connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
+	wall->setEditable(!mWorldReadOnly);
+}
+
+void D2ModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
+{
+	addItem(item);
+	item->setEditable(!mWorldReadOnly);
+}
+
+void D2ModelScene::onOtherItemAdded(QGraphicsItem *item)
+{
+	addItem(item);
+}
+
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	const QPointF position = mouseEvent->scenePos();
@@ -122,10 +152,6 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	}
 
 	emit mousePressed();
-
-	if (mReadOnlyMode) {
-		return;
-	}
 
 	auto initItem = [this, mouseEvent](QGraphicsItem *item) {
 		removeMoveFlag(mouseEvent, item);
@@ -186,10 +212,6 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		}
 	}
 
-	if (mReadOnlyMode) {
-		return;
-	}
-
 	bool needUpdate = true;
 	switch (mDrawingAction){
 	case wall:
@@ -229,10 +251,6 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				sensor->checkSelection();
 			}
 		}
-	}
-
-	if (mReadOnlyMode) {
-		return;
 	}
 
 	emit mouseReleased();
@@ -289,7 +307,7 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
-	if (mGraphicsItem) {
+	if (mGraphicsItem && mGraphicsItem->editable()) {
 		mGraphicsItem->changeDragState(mX1, mY1);
 		if (mGraphicsItem->getDragState() != AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
@@ -336,7 +354,7 @@ void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event)
 void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	if (mGraphicsItem) {
+	if (mGraphicsItem && mGraphicsItem->editable()) {
 		const QPointF oldBegin = mGraphicsItem->getX1andY1();
 		const QPointF oldEnd = mGraphicsItem->getX2andY2();
 		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
@@ -360,11 +378,18 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 void D2ModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
-		if (mReadOnlyMode) {
-			return;
-		}
-
 		for (QGraphicsItem * const item : selectedItems()) {
+			auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
+			auto robotItem = dynamic_cast<RobotItem *>(item);
+			auto sensorItem = dynamic_cast<SensorItem *>(item);
+			if (worldItem && mWorldReadOnly) {
+				return;
+			} else if (robotItem && mRobotReadOnly) {
+				return;
+			} else if (sensorItem && mSensorsReadOnly) {
+				return;
+			}
+
 			deleteItem(item);
 		}
 	} else {

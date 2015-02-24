@@ -441,6 +441,8 @@ void D2ModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
 					, robotModel.info().sensorImageRect(device)
 					);
 
+	sensor->setEditable(!mSensorsReadOnly);
+
 	robotItem->addSensor(port, sensor);
 }
 
@@ -685,6 +687,8 @@ void D2ModelWidget::setInteractivityFlags(int flags)
 	const bool simulationSettingsReadOnly = (flags & ReadOnly::SimulationSettings) != 0;
 
 	setTabHidden(mUi->modelSettingsTab, simulationSettingsReadOnly);
+
+	mSensorsReadOnly = sensorsReadOnly;
 
 	mScene->setInteractivityFlags(flags);
 }

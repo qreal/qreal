@@ -74,8 +74,11 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	emit mousePressed();
 	AbstractItem::mousePressEvent(event);
-	mRobotModel.onRobotLiftedFromGround();
-	mDragStart = mRobotModel.position();
+
+	if (editable()) {
+		mRobotModel.onRobotLiftedFromGround();
+		mDragStart = mRobotModel.position();
+	}
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -86,7 +89,9 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
-	onLanded();
+	if (editable()) {
+		onLanded();
+	}
 }
 
 void RobotItem::onLanded()

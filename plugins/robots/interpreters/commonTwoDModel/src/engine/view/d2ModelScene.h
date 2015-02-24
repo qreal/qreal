@@ -101,6 +101,15 @@ private slots:
 	/// @param robotModel Robot model which was removed
 	void onRobotRemove(model::RobotModel *robotModel);
 
+	/// Called after new wall is added to a world model.
+	void onWallAdded(items::WallItem *wall);
+
+	/// Called after new color field item is added to a world model.
+	void onColorItemAdded(graphicsUtils::AbstractItem *item);
+
+	/// Called after new other item is added to a world model.
+	void onOtherItemAdded(QGraphicsItem *item);
+
 private:
 	enum DrawingAction
 	{
@@ -150,7 +159,9 @@ private:
 	items::StylusItem *mCurrentStylus = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
 
-	bool mReadOnlyMode = false;
+	bool mWorldReadOnly = false;
+	bool mRobotReadOnly = false;
+	bool mSensorsReadOnly = false;
 };
 
 }

@@ -136,7 +136,9 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState == BottomRight) {
-		AbstractItem::resizeItem(event);
+		if (mMaster->editable()) {
+			AbstractItem::resizeItem(event);
+		}
 	}
 }
 
@@ -153,7 +155,10 @@ void Rotater::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void Rotater::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	if (mDragState == BottomRight) {
-		AbstractItem::resizeItem(event);
+		if (mMaster->editable()) {
+			AbstractItem::resizeItem(event);
+		}
+
 		mMaster->setSelected(true);
 	}
 }

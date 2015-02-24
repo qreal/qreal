@@ -230,6 +230,8 @@ private:
 	QString mToolsTabName;
 	QString mModelSettingsTabName;
 	QString mPortsTabName;
+
+	bool mSensorsReadOnly = false;
 };
 
 }

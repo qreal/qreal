@@ -109,9 +109,9 @@ void TwoDModelEngineFacade::init(const interpreterBase::EventsForKitPluginInterf
 			);
 
 	mView->setInteractivityFlags(view::ReadOnly::World | view::ReadOnly::RobotConfiguration
-			| view::ReadOnly::SimulationSettings | view::ReadOnly::Sensors);
+			| view::ReadOnly::SimulationSettings | view::ReadOnly::Sensors | view::ReadOnly::RobotPosition);
 
-//	mView->setInteractivityFlags(view::ReadOnly::None);
+	mView->setInteractivityFlags(view::ReadOnly::None);
 }
 
 qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()

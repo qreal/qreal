@@ -64,8 +64,8 @@ QPainterPath LineItem::shape() const
 void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (event->modifiers() & Qt::ShiftModifier) {
-		mX2=event->scenePos().x();
-		mY2=event->scenePos().y();
+		mX2 = event->scenePos().x();
+		mY2 = event->scenePos().y();
 		reshapeRectWithShift();
 	} else {
 		if (SettingsManager::value("2dShowGrid").toBool()

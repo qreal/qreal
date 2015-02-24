@@ -439,6 +439,7 @@ void AbstractItem::setId(const QString &id)
 void AbstractItem::setEditable(bool editable)
 {
 	mEditable = editable;
+	setFlag(QGraphicsItem::ItemIsMovable, editable);
 }
 
 bool AbstractItem::editable() const
