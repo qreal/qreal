@@ -77,6 +77,7 @@ QDomDocument Model::serialize() const
 	}
 
 	root.appendChild(robots);
+	mChecker->serializeConstraints(root);
 
 	return save;
 }
