@@ -81,6 +81,7 @@ private:
 			, model::RobotModel * const robot
 			, const interpreterBase::robotModel::PortInfo &port);
 	QString firstUnusedRobotId() const;
+	QString portName(const QString &robotId, const interpreterBase::robotModel::PortInfo &port) const;
 
 	void programStarted();
 	void programFinished();

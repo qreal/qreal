@@ -19,7 +19,7 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 {
 	connect(&mStatus, &details::StatusReporter::success, [this]() { mSuccessTriggered = true; });
 	connect(&mStatus, &details::StatusReporter::success, this, &ConstraintsChecker::success);
-	connect(&mStatus, &details::StatusReporter::success, [this]() { mFailTriggered = true; });
+	connect(&mStatus, &details::StatusReporter::fail, [this]() { mFailTriggered = true; });
 	connect(&mStatus, &details::StatusReporter::fail, this, &ConstraintsChecker::fail);
 	connect(&mStatus, &details::StatusReporter::checkerError, this, &ConstraintsChecker::checkerError);
 
@@ -154,14 +154,14 @@ void ConstraintsChecker::bindRobotObject(twoDModel::model::RobotModel * const ro
 	connect(&robot->configuration(), &model::SensorsConfiguration::deviceRemoved
 			, [=](const interpreterBase::robotModel::PortInfo &port, bool isLoading) {
 		Q_UNUSED(isLoading)
-		mObjects.remove(robotId + "." + port.name());
+		mObjects.remove(portName(robotId, port));
 	});
 }
 
 void ConstraintsChecker::bindDeviceObject(const QString &robotId
 		, model::RobotModel * const robot, const interpreterBase::robotModel::PortInfo &port)
 {
-	mObjects[robotId + "." + port.name()] = robot->info().configuration().device(port);
+	mObjects[portName(robotId, port)] = robot->info().configuration().device(port);
 }
 
 QString ConstraintsChecker::firstUnusedRobotId() const
@@ -172,6 +172,12 @@ QString ConstraintsChecker::firstUnusedRobotId() const
 	}
 
 	return "robot" + QString::number(id);
+}
+
+QString ConstraintsChecker::portName(const QString &robotId, const interpreterBase::robotModel::PortInfo &port) const
+{
+	return QString("%1.%2_%3").arg(robotId, port.name()
+			, port.direction() == interpreterBase::robotModel::input ? "in" : "out");
 }
 
 void ConstraintsChecker::programStarted()
