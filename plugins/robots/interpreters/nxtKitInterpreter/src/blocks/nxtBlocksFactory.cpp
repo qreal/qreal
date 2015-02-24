@@ -112,7 +112,7 @@ qReal::IdList NxtBlocksFactory::blocksToDisable() const
 				;
 	}
 
-	result << id("Join");
+	result << id("Join") << id("SendMessageThreads") << id("ReceiveMessageThreads");
 
 	return result;
 }

@@ -72,6 +72,8 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Loop")
 		, id("Fork")
 		, id("Join")
+		, id("SendMessageThreads")
+		, id("ReceiveMessageThreads")
 		, id("Subprogram")
 		, id("Function")
 		, id("VariableInit")

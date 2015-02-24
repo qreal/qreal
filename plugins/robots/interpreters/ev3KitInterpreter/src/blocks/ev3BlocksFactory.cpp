@@ -111,7 +111,7 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 				;
 	}
 
-	result << id("Join");
+	result << id("Join") << id("SendMessageThreads") << id("ReceiveMessageThreads");
 
 	return result;
 }

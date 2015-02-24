@@ -421,6 +421,57 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Send Message To Thread" name="SendMessageThreads" description="Sends a message to a specified thread.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<rectangle fill="#ffffff" stroke-width="1" fill-style="solid" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="none"/>
+						<line stroke="#000000" fill="#ffffff" stroke-width="2" stroke-style="solid" fill-style="none" x1="10" y1="25" x2="40" y2="25"/>
+						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="35" y1="22" x2="40" y2="25"/>
+						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="35" y1="28" x2="40" y2="25"/>
+					</picture>
+					<labels>
+						<label x="-50" y="60" text="Thread:"/>
+						<label x="30" y="60" textBinded="Thread" background="white"/>
+						<label x="-50" y="90" text="Message:"/>
+						<label x="30" y="90" textBinded="Message" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property name="Thread" displayedName="Thread" type="string"/>
+						<property name="Message" displayedName="Message" type="string"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Receive Message From Thread" name="ReceiveMessageThreads" description="Receive a message sent to a thread from which this block is called.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<rectangle fill="#ffffff" stroke-width="1" fill-style="solid" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="none"/>
+						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="40" y1="25" x2="10" y2="25"/>
+						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="15" y1="22" x2="10" y2="25"/>
+						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="15" y1="28" x2="10" y2="25"/>
+					</picture>
+					<labels>
+						<label x="-37" y="60" text="Variable:"/>
+						<label x="30" y="60" textBinded="Variable" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property name="Variable" displayedName="Variable" type="string"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Function" name="Function" path="58, 12 : 58, 172 :  | 58, 12 : 148, 12 :  | 12, 96 : 108, 96 : " description="Evaluates a value of the given expression. Also new variables can be defined in this block. See the 'Expressions Syntax' chapter in help for more information about 'Function' block syntax.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2628,6 +2679,8 @@
 				<element name="Subprogram"/>
 				<element name="Fork"/>
 				<element name="Join"/>
+				<element name="SendMessageThreads"/>
+				<element name="ReceiveMessageThreads"/>
 				<element name="VariableInit"/>
 				<element name="CommentBlock"/>
 			</group>
