@@ -10,7 +10,7 @@ RectangularRegion::RectangularRegion(QGraphicsItem *parent)
 QPainterPath RectangularRegion::shape() const
 {
 	QPainterPath result;
-	result.addRect(QRectF(QPointF(), boundingRect().size()));
+	result.addRect(boundingRect());
 	return result;
 }
 

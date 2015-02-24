@@ -143,16 +143,13 @@ Event *ConstraintsParser::parseEventTag(const QDomElement &element)
 
 	const Trigger trigger = parseTriggersAlternative(triggerTag);
 
-	Event * const result = new Event(id(element), mConditions.constant(true), trigger, dropsOnFire);
+	Event * const result = new Event(id(element), mConditions.constant(true), trigger, dropsOnFire, setUpInitially);
 
 	const Condition condition = conditionName == "condition"
 			? parseConditionTag(conditionTag, *result)
 			: parseConditionsTag(conditionTag, *result);
 
 	result->setCondition(condition);
-	if (setUpInitially) {
-		result->setUp();
-	}
 
 	return result;
 }
@@ -176,7 +173,7 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 	const QString checkOneAttribute = element.attribute("checkOnce", "false").toLower();
 	const bool checkOnce = checkOneAttribute == "true";
 
-	Event * const result = new Event(id(element), mConditions.constant(true), trigger);
+	Event * const result = new Event(id(element), mConditions.constant(true), trigger, true, true);
 
 	Condition condition = parseConditionsAlternative(element.firstChildElement(), *result);
 
@@ -187,7 +184,6 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 	}
 
 	result->setCondition(mConditions.negation(condition));
-	result->setUp();
 	return result;
 }
 
@@ -208,11 +204,11 @@ Event *ConstraintsParser::parseTimeLimitTag(const QDomElement &element)
 	Event * const event = new Event(id(element)
 			, mConditions.constant(true)
 			, mTriggers.fail(timeLimitMessage)
+			, true
 			, true);
 
 	const Condition condition = mConditions.timerCondition(value, true, timestamp, *event);
 	event->setCondition(condition);
-	event->setUp();
 
 	return event;
 }

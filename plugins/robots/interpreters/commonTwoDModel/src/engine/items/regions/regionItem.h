@@ -49,10 +49,17 @@ public:
 	/// Sets the size of an item on the scene.
 	void setSize(const QSizeF &size);
 
+	/// Returns true if the given point in scene coordinates is contained by this region.
+	bool containsPoint(const QPointF &point) const;
+
+	/// Returns true if the center of the bounding rect of the given item is contained by this region.
+	bool containsItem(QGraphicsItem *item) const;
+
 	QRectF boundingRect() const override;
 
 	virtual void serialize(QDomElement &element);
 	virtual void deserialize(const QDomElement &element);
+
 
 protected:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;

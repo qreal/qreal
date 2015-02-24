@@ -24,7 +24,8 @@ public:
 	Event(const QString &id
 		, const Condition &condition
 		, const Trigger &trigger
-		, bool dropsOnFire = true);
+		, bool dropsOnFire = true
+		, bool isSettedInitially = false);
 
 	/// Returns the unique identifier of this event that can be used for manual setting up or dropping this event.
 	QString id() const;
@@ -32,6 +33,9 @@ public:
 	/// Returns true if the event is setted up (i.e. listens for condition to be satisfied and then fires)
 	/// or false if it is dropped.
 	bool isAlive() const;
+
+	/// Returns true if the event is active from the start of the interpretation.
+	bool isAliveInitially() const;
 
 	/// Starts listening for the condition to be satisfied to fire the trigger then.
 	void setUp();
@@ -66,6 +70,7 @@ private:
 	Condition mCondition;
 	const Trigger mTrigger;
 	bool mDropsOnFire;
+	const bool mIsSettedInitially;
 };
 
 }

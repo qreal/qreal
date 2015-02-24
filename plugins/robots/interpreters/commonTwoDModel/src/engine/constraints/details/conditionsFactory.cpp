@@ -3,8 +3,11 @@
 #include <QtCore/QSharedPointer>
 
 #include "event.h"
+#include "src/engine/model/robotModel.h"
+#include "src/engine/items/regions/regionItem.h"
 
 using namespace twoDModel::constraints::details;
+using namespace interpreterBase;
 
 ConditionsFactory::ConditionsFactory(Events &events
 		, const Variables &variables
@@ -76,10 +79,55 @@ Condition ConditionsFactory::notLess(const Value &leftValue, const Value &rightV
 
 Condition ConditionsFactory::inside(const QString &objectId, const QString &regionId) const
 {
-	/// @todo:
-	Q_UNUSED(objectId)
-	Q_UNUSED(regionId)
-	return []() { return true; };
+	return [this, objectId, regionId]() {
+		if (!mObjects.contains(objectId)) {
+			reportError(QObject::tr("No such object: %1").arg(objectId));
+			return false;
+		}
+
+		if (!mObjects.contains(regionId)) {
+			reportError(QObject::tr("No such region: %1").arg(regionId));
+			return false;
+		}
+
+		QObject * const object = mObjects[objectId];
+		items::RegionItem * const region = dynamic_cast<items::RegionItem *>(mObjects[regionId]);
+
+		if (!region) {
+			reportError(QObject::tr("%1 is not a region").arg(regionId));
+			return false;
+		}
+
+		if (QGraphicsObject * const graphicsObject = dynamic_cast<QGraphicsObject *>(object)) {
+			return region->containsItem(graphicsObject);
+		}
+
+		if (model::RobotModel * const robotModel = dynamic_cast<model::RobotModel *>(object)) {
+			return region->containsPoint(robotModel->rotationCenter());
+		}
+
+		if (interpreterBase::robotModel::robotParts::Device * const device
+				= dynamic_cast<interpreterBase::robotModel::robotParts::Device *>(object)) {
+			const QStringList parts = objectId.split('.');
+			if (objectId.isEmpty()) {
+				return false;
+			}
+
+			const QString robotId = parts[0];
+			if (!mObjects.contains(robotId)) {
+				return false;
+			}
+
+			if (model::RobotModel * const robotModel = dynamic_cast<model::RobotModel *>(mObjects[robotId])) {
+				return region->containsPoint(robotModel->configuration().position(device->port()));
+			}
+
+			return false;
+		}
+
+		reportError(QObject::tr("%1 has incorrect type for mathing it with region").arg(objectId));
+		return false;
+	};
 }
 
 Condition ConditionsFactory::settedUp(const QString &eventId) const

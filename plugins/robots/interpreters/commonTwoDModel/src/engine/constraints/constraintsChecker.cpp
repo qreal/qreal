@@ -75,10 +75,13 @@ void ConstraintsChecker::prepareEvents()
 {
 	mActiveEvents.clear();
 	for (details::Event * const event : mEvents) {
-		connect(event, &details::Event::settedUp, this, &ConstraintsChecker::setUpEvent);
-		connect(event, &details::Event::dropped, this, &ConstraintsChecker::dropEvent);
-		if (event->isAlive()) {
+		connect(event, &details::Event::settedUp, this, &ConstraintsChecker::setUpEvent, Qt::UniqueConnection);
+		connect(event, &details::Event::dropped, this, &ConstraintsChecker::dropEvent, Qt::UniqueConnection);
+		if (event->isAliveInitially()) {
 			mActiveEvents << event;
+			event->setUp();
+		} else {
+			event->drop();
 		}
 	}
 }

@@ -10,7 +10,7 @@ EllipseRegion::EllipseRegion(QGraphicsItem *parent)
 QPainterPath EllipseRegion::shape() const
 {
 	QPainterPath result;
-	result.addEllipse(QRectF(QPointF(), boundingRect().size()));
+	result.addEllipse(boundingRect());
 	return result;
 }
 
