@@ -10,7 +10,7 @@ Ev3Motor::Ev3Motor(const DeviceInfo &info, const interpreterBase::robotModel::Po
 
 void Ev3Motor::on(int speed)
 {
-	Q_UNUSED(speed);
+	Motor::on(speed);
 }
 
 void Ev3Motor::stop()

@@ -14,6 +14,7 @@ Motor::Motor(const DeviceInfo &info, const PortInfo &port, RobotCommunicator &ro
 
 void Motor::on(int speed)
 {
+	Ev3Motor::on(speed);
 	QByteArray command(15, 0);
 	command[0] = 13;
 	command[1] = 0x00;

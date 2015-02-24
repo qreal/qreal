@@ -29,6 +29,7 @@ void Motor::on(int speed, bool breakMode)
 
 void Motor::on(int speed, long unsigned int degrees, bool breakMode)
 {
+	interpreterBase::robotModel::robotParts::Motor::on(speed);
 	mEngine.setNewMotor(speed, degrees, port(), breakMode);
 }
 
