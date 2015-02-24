@@ -98,8 +98,12 @@ qReal::IdList CoreBlocksFactory::blocksToDisable() const
 	if (!mRobotModelManager->model().name().contains("TwoD")) {
 		result
 				<< id("MarkerDown")
-				<< id("MarkerUp")
-				;
+				<< id("MarkerUp");
+	} else {
+		result
+				<< id("Join")
+				<< id("SendMessageThreads")
+				<< id("ReceiveMessageThreads");
 	}
 
 	return result;
