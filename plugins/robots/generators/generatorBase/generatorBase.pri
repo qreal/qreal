@@ -185,6 +185,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
+	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.h \
+	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.h \
 	$$PWD/src/lua/luaPrinter.h \
 	$$PWD/src/lua/reservedFunctionsConverter.h \
 
@@ -246,6 +248,8 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/labelGenerator.cpp \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/variableInitGenerator.cpp \
+	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.cpp \
+	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
 	$$PWD/src/lua/luaProcessor.cpp \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \
