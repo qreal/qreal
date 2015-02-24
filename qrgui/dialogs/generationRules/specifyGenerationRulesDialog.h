@@ -14,7 +14,7 @@ namespace qReal {
 namespace gui {
 
 /// Window where you can specify generation rules for interpreted diagram element.
-class SpecifyGenerationRulesDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT SpecifyGenerationRulesDialog : public QDialog
 {
 	Q_OBJECT
 
