@@ -27,10 +27,12 @@ TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpG
 HEADERS += \
 	$$PWD/trikFSharpGeneratorPlugin.h \
 	$$PWD/trikFSharpMasterGenerator.h \
+	$$PWD/trikFSharpControlFlowValidator.h
 
 SOURCES += \
 	$$PWD/trikFSharpGeneratorPlugin.cpp \
 	$$PWD/trikFSharpMasterGenerator.cpp \
+	$$PWD/trikFSharpControlFlowValidator.cpp
 
 RESOURCES = \
 	$$PWD/trikFSharpGenerator.qrc \

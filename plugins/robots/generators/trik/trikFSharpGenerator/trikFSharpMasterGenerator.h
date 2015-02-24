@@ -20,6 +20,8 @@ public:
 protected:
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
+
+	generatorBase::PrimaryControlFlowValidator *createValidator() override;
 };
 
 }
