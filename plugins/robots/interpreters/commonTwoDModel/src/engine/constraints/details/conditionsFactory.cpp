@@ -86,7 +86,7 @@ Condition ConditionsFactory::settedUp(const QString &eventId) const
 {
 	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
-			reportError(QObject::tr("No such event: %1"));
+			reportError(QObject::tr("No such event: %1").arg(eventId));
 			return false;
 		}
 
@@ -98,7 +98,7 @@ Condition ConditionsFactory::dropped(const QString &eventId) const
 {
 	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
-			reportError(QObject::tr("No such event: %1"));
+			reportError(QObject::tr("No such event: %1").arg(eventId));
 			return true;
 		}
 

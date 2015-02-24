@@ -9,13 +9,24 @@ namespace qReal {
 class ErrorReporterInterface;
 }
 
+namespace interpreterBase {
+namespace robotModel {
+class PortInfo;
+}
+}
+
 namespace twoDModel {
 
 namespace model {
 class Model;
+class RobotModel;
 }
 
 namespace constraints {
+
+namespace details {
+class ConstraintsParser;
+}
 
 /// Checks robot`s behaviour in 2D model world.
 /// The constraints are specified in terms of XML-based language. The program on that language
@@ -65,6 +76,10 @@ private:
 
 	void bindToWorldModelObjects();
 	void bindToRobotObjects();
+	void bindRobotObject(model::RobotModel * const robot);
+	void bindDeviceObject(const QString &robotId
+			, model::RobotModel * const robot
+			, const interpreterBase::robotModel::PortInfo &port);
 	QString firstUnusedRobotId() const;
 
 	void programStarted();
@@ -73,6 +88,8 @@ private:
 	qReal::ErrorReporterInterface &mErrorReporter;
 	model::Model &mModel;
 	details::StatusReporter mStatus;
+	QScopedPointer<details::ConstraintsParser> mParser;
+	bool mParsedSuccessfully;
 	bool mSuccessTriggered;
 	bool mFailTriggered;
 

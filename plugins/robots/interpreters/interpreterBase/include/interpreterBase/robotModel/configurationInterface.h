@@ -27,7 +27,7 @@ public:
 	/// Guaranteed to emit allDevicesConfigured() if all devices respond about their configuration status.
 	virtual void applyConfiguration() = 0;
 
-	/// Returns all configured devices with given port direction. Allows to enumerate configured devices.
+	/// Returns all configured devices. Allows to enumerate configured devices.
 	/// Does not transfer ownership of devices.
 	virtual QList<robotParts::Device *> devices() const = 0;
 

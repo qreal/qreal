@@ -13,8 +13,8 @@ EngineCommandBlock::EngineCommandBlock(RobotModelInterface &robotModel)
 QMap<PortInfo, DeviceInfo> EngineCommandBlock::usedDevices()
 {
 	QMap<PortInfo, DeviceInfo> result;
-	for (robotParts::Motor * const motor : parsePorts<robotParts::Motor>(ReportErrors::doNotReport)) {
-		result[motor->port()] = motor->deviceInfo();
+	for (const PortInfo &port : parsePorts(ReportErrors::doNotReport)) {
+		result[port] = DeviceInfo::create<robotParts::Motor>();
 	}
 
 	return result;
@@ -23,4 +23,19 @@ QMap<PortInfo, DeviceInfo> EngineCommandBlock::usedDevices()
 void EngineCommandBlock::timeout()
 {
 	emit done(mNextBlockId);
+}
+
+QList<PortInfo> EngineCommandBlock::parsePorts(ReportErrors reportErrors)
+{
+	QList<PortInfo> result;
+	const QStringList ports = eval<QStringList>("Ports", reportErrors);
+
+	for (const QString &port : ports) {
+		PortInfo const portInfo = robotModel::RobotModelUtils::findPort(mRobotModel, port.trimmed(), output);
+		if (portInfo.isValid()) {
+			result << portInfo;
+		}
+	}
+
+	return result;
 }

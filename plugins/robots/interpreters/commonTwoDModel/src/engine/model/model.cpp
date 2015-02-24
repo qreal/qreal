@@ -85,7 +85,7 @@ void Model::deserialize(const QDomDocument &xml)
 {
 	const QDomNodeList worldList = xml.elementsByTagName("world");
 	const QDomNodeList robotsList = xml.elementsByTagName("robots");
-	const QDomElement constraints = xml.firstChildElement("constraints");
+	const QDomElement constraints = xml.documentElement().firstChildElement("constraints");
 
 	if (worldList.count() != 1) {
 		/// @todo Report error
