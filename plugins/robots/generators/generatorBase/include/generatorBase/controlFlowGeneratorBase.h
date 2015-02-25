@@ -40,6 +40,7 @@ public:
 	/// Takes ownership on result.
 	/// @param initialNode The starting block of the traversal. If empty then initial node
 	/// of the diagram given in constructor will be used.
+	/// @param threadId The name of a thread that is to be generated.
 	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
 
 	/// Returns true if some generation errors occured and the generation process can`t be proceeded with other

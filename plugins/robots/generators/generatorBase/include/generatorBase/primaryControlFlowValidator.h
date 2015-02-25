@@ -22,10 +22,10 @@ public:
 			, GeneratorCustomizer &customizer
 			, QObject *parent = 0);
 
-	/// Validates diagram with id specified in constructor. Returns 'true' if
-	/// diagram is correct, 'false' otherwise
+	/// Validates given diagram assuming that execution of the diagram starts in a thread with given id.
 	virtual bool validate(const qReal::Id &diagramId, const QString &threadId);
 
+	/// Returns a pointer to a copy of the validator. The copy will be owned by the parent of the original validator.
 	virtual PrimaryControlFlowValidator *clone();
 
 	/// Returns id of the only node with initial semantics on diagram. The result

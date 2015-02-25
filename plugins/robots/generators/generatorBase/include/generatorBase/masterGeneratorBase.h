@@ -58,6 +58,7 @@ protected:
 	/// Default implementation takes ownership via QObject parentship system.
 	virtual lua::LuaProcessor *createLuaProcessor();
 
+	/// Default implementation takes ownership via QObject parentship system.
 	virtual PrimaryControlFlowValidator *createValidator();
 
 	/// Implementation must return a path to a file where all generated code

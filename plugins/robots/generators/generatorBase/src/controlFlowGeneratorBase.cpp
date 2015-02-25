@@ -143,6 +143,8 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 	LinkInfo currentThread = links.first();
 	QHash<Id, QString> threadIds;
 
+	// Determine which thread is the main by examining guards of outgoing links
+	// If there are no guards then a random thread will be chosen as main
 	for (const LinkInfo &thread : links) {
 		QString threadId = mRepo.stringProperty(thread.linkId, "Guard");
 		threadIds[thread.linkId] = threadId;

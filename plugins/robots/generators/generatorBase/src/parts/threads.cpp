@@ -60,10 +60,6 @@ QStringList Threads::threadNames() const
 
 void Threads::addJoin(const qReal::Id &id, const QString &threadId)
 {
-	if (!mJoins.contains(id)) {
-		mJoins[id] = QStringList();
-	}
-
 	mJoins[id] << threadId;
 }
 

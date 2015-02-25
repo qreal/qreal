@@ -5,6 +5,7 @@
 namespace generatorBase {
 namespace simple {
 
+/// Generates receiving a message sent to this thread by another one.
 class ReceiveMessageThreadsGenerator : public BindingGenerator
 {
 public:

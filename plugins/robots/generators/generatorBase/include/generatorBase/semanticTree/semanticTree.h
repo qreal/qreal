@@ -47,6 +47,7 @@ public:
 	/// Produces new instance of fork node binded to specified block
 	ForkNode *produceFork(const qReal::Id &id = qReal::Id());
 
+	/// Produces new instance of join node binded to specified block
 	JoinNode *produceJoin(qReal::Id const &id = qReal::Id());
 
 	/// Produces new instance of switch node binded to specified block

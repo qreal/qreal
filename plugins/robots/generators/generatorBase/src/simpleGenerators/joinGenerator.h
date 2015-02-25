@@ -5,6 +5,7 @@
 namespace generatorBase {
 namespace simple {
 
+/// Generates code that joins a number of threads into one, `main` thread.
 class JoinGenerator : public AbstractSimpleGenerator
 {
 public:

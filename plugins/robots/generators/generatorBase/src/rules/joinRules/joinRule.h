@@ -5,6 +5,8 @@
 namespace generatorBase {
 namespace semantics {
 
+/// Creates a join of threads in semantic tree. When called from one of joined threads it will finalize execution of
+/// that thread. When called from the main thread the execution will proceed after the join is complete.
 class JoinRule : public SemanticTransformationRule
 {
 public:

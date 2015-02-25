@@ -65,6 +65,7 @@ protected:
 	/// Implementation must tell if block with given id has fork semantics
 	virtual bool isFork(const qReal::Id &block) const;
 
+	/// Implementation must tell if block with given id has join semantics
 	virtual bool isJoin(const qReal::Id &block) const;
 
 private:
