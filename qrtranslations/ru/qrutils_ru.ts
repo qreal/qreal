@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>Block</name>
+    <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="40"/>
+        <source>Control flow break detected, stopping</source>
+        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="47"/>
+        <source>Too many outgoing links</source>
+        <translation>Слишком много исходящих связей</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="52"/>
+        <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
+        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
+        <source>Outgoing link is not connected</source>
+        <translation>Исходящая связь ни к чему не подключена</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="633"/>
@@ -9,67 +32,67 @@
         <translation>Неожиданный конец выражения в позиции %1. Может быть, Вы забыли &apos;;&apos;?</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="637"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="638"/>
         <source>Unexpected symbol at %1 : expected %2, got %3</source>
         <translation>Неожиданный символ в позиции %1 : ожидалось %2, получено %3</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="640"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="642"/>
         <source>Types mismatch at %1: %2 = %3. Possible loss of data</source>
         <translation>Несовпадение типов в позиции %1: %2 = %3. Возможна потеря данных</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="644"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="647"/>
         <source>Unknown identifier at %1 &apos; %2 &apos;</source>
         <translation>Неизвестный идентификатор в позиции %1: &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="647"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="650"/>
         <source>Empty process is unnecessary</source>
         <translation>Пустое выражение</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="651"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="654"/>
         <source>Condition can&apos;t be empty</source>
         <translation>Условие не может быть пустым</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="655"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="658"/>
         <source>Using reserved variable %1</source>
         <translation>Использование зарезервированного слова в качестве идентификатора (%1)</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="659"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="662"/>
         <source>No value of expression</source>
         <translation>Отсутствует значение выражения</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="662"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="665"/>
         <source>Incorrect variable declaration: use function block for it</source>
         <translation>Некорректное объявление пременной: используйте блок &quot;Функция&quot; для этого</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="666"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="670"/>
         <source>Unexpected symbol after the end of expression</source>
         <translation>Неожиданный символ за концом выражения</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="670"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="674"/>
         <source>Unknown element property used</source>
         <translation>Неизвестное свойство элемента</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="674"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="678"/>
         <source>Unknown element name used</source>
         <translation>Неизвестное имя элемента</translation>
     </message>
     <message>
-        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="678"/>
+        <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="682"/>
         <source>Integer division by zero</source>
         <translation>Целичисленное деление на ноль</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="423"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="451"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -91,17 +114,17 @@
     </message>
     <message>
         <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="58"/>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="104"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="106"/>
         <source>Rule &apos;</source>
         <translation>Правило &apos;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="58"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="59"/>
         <source>&apos; has not any appropriate nodes</source>
         <translation>&apos; не имеет подходящих узлов</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="104"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="106"/>
         <source>&apos; has unconnected link</source>
         <translation>&apos; содержит неподключенную связь</translation>
     </message>
@@ -109,24 +132,20 @@
 <context>
     <name>qReal::interpretation::Block</name>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="36"/>
         <source>Control flow break detected, stopping</source>
-        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="43"/>
         <source>Too many outgoing links</source>
-        <translation>Слишком много исходящих связей</translation>
+        <translation type="vanished">Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="48"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="55"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>
@@ -278,6 +297,14 @@
     <message>
         <source>There must be a link with empty &apos;Guard&apos; property (default branch).</source>
         <translation type="vanished">От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpretation::blocks::UnsupportedBlock</name>
+    <message>
+        <location filename="../../qrutils/interpreter/blocks/unsupportedBlock.cpp" line="7"/>
+        <source>Block of a type which is unsupported by an interpreter</source>
+        <translation>Блок типа, не поддерживаемого в интерпретаторе</translation>
     </message>
 </context>
 <context>

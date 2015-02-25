@@ -127,12 +127,12 @@
         <translation>Загрузить программу на устройство NXT</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="155"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="156"/>
         <source>flash.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="165"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="166"/>
         <source>upload.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт upload.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>

@@ -4,9 +4,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
         <source>%1 is not configured.</source>
-        <translation>%1 не сконфигурирован.</translation>
+        <translation type="vanished">%1 не сконфигурирован.</translation>
     </message>
 </context>
 <context>
@@ -194,9 +193,8 @@
 <context>
     <name>interpreterBase::robotModel::robotParts::Display</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/robotParts/display.h" line="15"/>
         <source>Display</source>
-        <translation>Дисплей</translation>
+        <translation type="vanished">Дисплей</translation>
     </message>
 </context>
 <context>

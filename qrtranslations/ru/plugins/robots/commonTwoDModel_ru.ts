@@ -235,93 +235,93 @@
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="47"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="48"/>
         <source>Root element must be &quot;constraints&quot; tag</source>
         <translation>Корневой элемент должен быть тэгом &quot;constraints&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="71"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="72"/>
         <source>There must be a &quot;timelimit&quot; constraint.</source>
         <translation>Должен иметься тэг &quot;timelimit&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="76"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="77"/>
         <source>There must be only one &quot;timelimit&quot; tag.</source>
         <translation>Тэг &quot;timelimit&quot; может быть только один.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="122"/>
         <source>Event tag must have &quot;condition&quot; or &quot;conditions&quot; child tag. &quot;%1&quot; found instead.</source>
         <translation>Тег &quot;event&quot; должен иметь дочерний тэг &quot;condition&quot; или &quot;conditions&quot;. Вместо этого найдено &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="127"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="128"/>
         <source>Event tag must have &quot;trigger&quot; or &quot;triggers&quot; child tag. &quot;%1&quot; found instead.</source>
         <translation>Тег &quot;event&quot; должен иметь дочерний тэг &quot;trigger&quot; или &quot;triggers&quot;. Вместо этого найдено &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="197"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="198"/>
         <source>Program worked for too long time</source>
         <translation>Программа работала слишком долго</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="234"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="235"/>
         <source>&quot;Glue&quot; attribute must have value &quot;and&quot; or &quot;or&quot;.</source>
         <translation>Аттрибут &quot;glue&quot; должен иметь значение &quot;and&quot; или &quot;or&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="285"/>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="425"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="286"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="426"/>
         <source>Unknown tag &quot;%1&quot;.</source>
         <translation>Неизвестный тэг &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="508"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="509"/>
         <source>Unknown value &quot;%1&quot;.</source>
         <translation>Неизвестное значение &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="580"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="581"/>
         <source>Invalid integer value &quot;%1&quot;</source>
         <translation>&quot;%1&quot; - не целое число</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="594"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="595"/>
         <source>Invalid floating point value &quot;%1&quot;</source>
         <translation>&quot;%1&quot; - не число</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="607"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="608"/>
         <source>Invalid boolean value &quot;%1&quot; (expected &quot;true&quot; or &quot;false&quot;)</source>
         <translation>&quot;%1&quot; - не логическое значение (ожидалось &quot;true&quot; или &quot;false&quot;)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="640"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="641"/>
         <source>Duplicate id: &quot;%1&quot;</source>
         <translation>Переобъявление события &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="650"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="651"/>
         <source>%1 tag must have exactly %2 child tag(s)</source>
         <translation>У тэга &quot;%1&quot; должно быть ровно %2 дочерних(ий) тэг(а)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="660"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="661"/>
         <source>%1 tag must have at least %2 child tag(s)</source>
         <translation>У тэга &quot;%1&quot; должно быть как минимум %2 дочерних(ий) тэг(а)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="670"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="671"/>
         <source>&quot;%1&quot; tag must have &quot;%2&quot; attribute.</source>
         <translation>У тэга &quot;%1&quot; должен быть аттрибут &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="680"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="681"/>
         <source>Expected &quot;%1&quot; tag, got &quot;%2&quot;.</source>
         <translation>Ожидался тэг &quot;%1&quot;, найден - &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="694"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/constraints/details/constraintsParser.cpp" line="695"/>
         <source>Attribute &quot;%1&quot; of the tag &quot;%2&quot; must not be empty.</source>
         <translation>Атрибут &quot;%1&quot; тэга &quot;%2&quot; не может быть пустым.</translation>
     </message>
@@ -467,9 +467,8 @@
 <context>
     <name>twoDModel::robotModel::parts::Marker</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/include/commonTwoDModel/robotModel/parts/marker.h" line="23"/>
         <source>Marker</source>
-        <translation>Маркер</translation>
+        <translation type="vanished">Маркер</translation>
     </message>
 </context>
 <context>
