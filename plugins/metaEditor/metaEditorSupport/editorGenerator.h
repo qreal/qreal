@@ -18,7 +18,9 @@ public:
 	explicit EditorGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter);
 
 	QHash<qReal::Id, QPair<QString, QString> > getMetamodelList();
-	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource);
+	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId
+			, QString const &pathToFile
+			, QString const &pathToQrealRoot);
 
 private:
 	void serializeObjects(QDomElement &parent, qReal::Id const &idParent);
@@ -57,6 +59,8 @@ private:
 	static void generateTranslations(QString const &path, QString const &name, QString const &qrealRoot);
 
 	void checkRootNodeValid(qReal::Id const &diagram, QString const rootNode);
+
+	static QString newMethodForCalculatingEditorPath(QString const &pathToFile);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

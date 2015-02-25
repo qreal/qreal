@@ -20,9 +20,9 @@ SOURCES += \
 	$$PWD/abstractItemView.cpp \
 	$$PWD/rectangleImpl.cpp \
 	$$PWD/pointImpl.cpp \
-	$$PWD/colorListEditor.cpp \
 	$$PWD/stylusImpl.cpp \
 	$$PWD/rotateItem.cpp \
+	$$PWD/colorListEditor.cpp \
 	$$PWD/gridDrawer.cpp \
 	$$PWD/paintWidget.cpp \
 	$$PWD/animatedHighlighter.cpp \

@@ -5,7 +5,7 @@ CONFIG += c++11
 SUBDIRS = \
 	gmock \
 	unitTests \
-#	editorPluginTestingFramework \
+	editorPluginTestingFramework \
 
 unitTests.depends = gmock
 

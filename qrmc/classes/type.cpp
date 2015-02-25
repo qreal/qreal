@@ -13,9 +13,11 @@ Type::Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, const
 
 Type::~Type()
 {
-	foreach (Property *property, mProperties.values())
-		if (property)
+	foreach (Property *property, mProperties.values()) {
+		if (property) {
 			delete property;
+		}
+	}
 }
 
 bool Type::isResolved() const
@@ -100,8 +102,9 @@ bool Type::init(const QString &context)
 {
 	mName = mApi->name(mId);
 	mDisplayedName = mApi->stringProperty(mId, "displayedName");
-	if (mDisplayedName.isEmpty())
+	if (mDisplayedName.isEmpty()) {
 		mDisplayedName = mName;
+	}
 	mName = NameNormalizer::normalize(mName);
 	mContext = context;
 	mNativeContext = context;
@@ -109,15 +112,17 @@ bool Type::init(const QString &context)
 		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
-	if (mApi->hasProperty(mId, "path"))
+	if (mApi->hasProperty(mId, "path")) {
 		mPath = mApi->stringProperty(mId, "path");
+	}
 	return true;
 }
 
 QString Type::generateNames(const QString &lineTemplate) const
 {
-	if (displayedName().isEmpty() || !isGraphicalType())
+	if (displayedName().isEmpty() || !isGraphicalType()) {
 		return "";
+	}
 	QString result = lineTemplate;
 	result.replace(elementNameTag, name()).replace(elementDisplayedNameTag, displayedName()).replace(diagramNameTag, mContext);
 	return result;
@@ -125,8 +130,9 @@ QString Type::generateNames(const QString &lineTemplate) const
 
 QString Type::generateMouseGestures(const QString &lineTemplate) const
 {
-	if (mPath.isEmpty())
+	if (mPath.isEmpty()) {
 		return "";
+	}
 	QString result = lineTemplate;
 	result.replace(elementNameTag, name()).replace(gesturePathTag, mPath).replace(diagramNameTag, mContext);
 	return result;
@@ -134,8 +140,9 @@ QString Type::generateMouseGestures(const QString &lineTemplate) const
 
 QString Type::generateFactory(const QString &lineTemplate) const
 {
-	if (!isGraphicalType())
+	if (!isGraphicalType()) {
 		return "";
+	}
 	QString result = lineTemplate;
 	result.replace(elementNameTag, mName);
 	return result;

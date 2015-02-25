@@ -24,7 +24,7 @@ EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api, ErrorReporte
 {
 }
 
-QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
+QHash<qReal::Id, QPair<QString, QString>> EditorGenerator::getMetamodelList()
 {
 	IdList const metamodels = mApi.children(Id::rootId());
 	QHash<Id, QPair<QString, QString> > metamodelList;

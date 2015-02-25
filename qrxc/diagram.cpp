@@ -59,6 +59,7 @@ bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 			Type *nodeType = new NodeType(this);
 			if (!nodeType->init(element, mDiagramName)) {
 				delete nodeType;
+				qDebug() << "NODE THAT IS NOT PARSED:" << element.attribute("name");
 				qDebug() << "Can't parse node";
 				return false;
 			}

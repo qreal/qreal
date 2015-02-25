@@ -28,11 +28,18 @@ protected:
 private slots:
 	/// Slot for switching between OS presets
 	void changeSystem();
+	void setQRealSourcesLocation();
 
 private:
 	/// Helper function to init form fields after preset selection
 	void initCompilersSettings(QString const &pathToQmake,
 			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
+	void initQRealSourcesLocation();
+
+	void setCheckedConfigurationButtons(QString const &configuration);
+	void initConfigurationSettings(QString const &configuration);
+
+	QString configuration() const;
 
 	/// Ui object
 	Ui::PreferencesCompilerPage *mUi;  // Has ownership
