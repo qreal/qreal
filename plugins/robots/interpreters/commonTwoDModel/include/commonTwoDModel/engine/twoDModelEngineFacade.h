@@ -30,7 +30,7 @@ public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
 	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
 
-	~TwoDModelEngineFacade();
+	~TwoDModelEngineFacade() override;
 
 	void init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
 			, const qReal::SystemEvents &systemEvents
@@ -49,6 +49,8 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
+	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);
+
 	const QString mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 

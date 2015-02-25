@@ -46,6 +46,8 @@ void TwoDModelEngineFacade::init(const interpreterBase::EventsForKitPluginInterf
 		QDomDocument worldModel;
 		worldModel.setContent(xml);
 		mView->loadXml(worldModel);
+
+		loadReadOnlyFlags(logicalModel);
 	};
 
 	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
@@ -107,11 +109,6 @@ void TwoDModelEngineFacade::init(const interpreterBase::EventsForKitPluginInterf
 				}
 			}
 			);
-
-	mView->setInteractivityFlags(view::ReadOnly::World | view::ReadOnly::RobotConfiguration
-			| view::ReadOnly::SimulationSettings | view::ReadOnly::Sensors | view::ReadOnly::RobotPosition);
-
-	mView->setInteractivityFlags(view::ReadOnly::None);
 }
 
 qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
@@ -137,4 +134,23 @@ void TwoDModelEngineFacade::onStartInterpretation()
 void TwoDModelEngineFacade::onStopInterpretation()
 {
 	mModel->timeline().stop();
+}
+
+void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)
+{
+	int readOnlyFlags = view::ReadOnly::None;
+
+	const auto load = [&] (const QString &tag, view::ReadOnly::ReadOnlyEnum flag) {
+		if (logicalModel.logicalRepoApi().metaInformation(tag).toBool()) {
+			readOnlyFlags |= flag;
+		}
+	};
+
+	load("twoDModelWorldReadOnly", view::ReadOnly::World);
+	load("twoDModelSensorsReadOnly", view::ReadOnly::Sensors);
+	load("twoDModelRobotPositionReadOnly", view::ReadOnly::RobotPosition);
+	load("twoDModelRobotConfigurationReadOnly", view::ReadOnly::RobotConfiguration);
+	load("twoDModelSimulationSettingsReadOnly", view::ReadOnly::SimulationSettings);
+
+	mView->setInteractivityFlags(readOnlyFlags);
 }
