@@ -5,6 +5,7 @@
 namespace trik {
 namespace qts {
 
+/// Ensures that a diagram may be correctly generated into Qt Script code.
 class TrikQtsControlFlowValidator : public generatorBase::PrimaryControlFlowValidator
 {
 public:

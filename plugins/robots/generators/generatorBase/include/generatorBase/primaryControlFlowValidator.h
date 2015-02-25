@@ -11,8 +11,9 @@ namespace generatorBase {
 
 typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 
-/// Validates given diagram checking all nessesary for each generator conditions
-/// (like all links are connected correctly marked and so on). Also collects
+/// Base class for all validators of robot diagrams.
+/// Default implementation validates given diagram checking all nessesary for each generator conditions
+/// (like all links are connected correctly marked and so on). It also collects
 /// simplest info about diagram (like initial node id, if/then branches and so on).
 class PrimaryControlFlowValidator : public QObject, public RobotsDiagramVisitor
 {

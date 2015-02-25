@@ -5,6 +5,7 @@
 namespace trik {
 namespace fSharp {
 
+/// Ensures that a diagram may be correctly generated into F# code.
 class TrikFSharpControlFlowValidator : public generatorBase::PrimaryControlFlowValidator
 {
 public:

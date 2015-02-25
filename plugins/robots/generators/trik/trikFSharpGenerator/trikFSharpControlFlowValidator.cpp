@@ -22,10 +22,13 @@ void TrikFSharpControlFlowValidator::visitRegular(const qReal::Id &id, const QLi
 	if (id.element() == "SendMessageThreads" || id.element() == "ReceiveMessageThreads") {
 		error(tr("Block type is unsupported by F# generator"), id);
 	}
+
+	PrimaryControlFlowValidator::visitRegular(id, links);
 }
 
 void TrikFSharpControlFlowValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 	error(tr("Block type is unsupported by F# generator"), id);
+	PrimaryControlFlowValidator::visitJoin(id, links);
 }

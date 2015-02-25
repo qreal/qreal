@@ -6,6 +6,8 @@ typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 
 namespace generatorBase {
 
+/// Checks a given diagram for inconsistencies of using threads in Qt Script generator
+/// (like joining unnamed threads or creating threads in a loop).
 class ThreadsValidator : public RobotsDiagramVisitor
 {
 public:
