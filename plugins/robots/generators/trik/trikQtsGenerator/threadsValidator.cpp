@@ -157,7 +157,10 @@ void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 		bool mainThreadFound = false;
 		for (const qReal::Id &incomingLink : mRepo.incomingLinks(id)) {
 			const qReal::Id &comingFrom = mRepo.otherEntityFromLink(incomingLink, id);
-			if (mBlockThreads[comingFrom] == mBlockThreads[id]) {
+			const QString fromThreadId = (comingFrom.element() == "Fork"
+					? mRepo.stringProperty(incomingLink, "Guard")
+					: mBlockThreads[comingFrom]);
+			if (fromThreadId == mBlockThreads[id]) {
 				mainThreadFound = true;
 				break;
 			}
