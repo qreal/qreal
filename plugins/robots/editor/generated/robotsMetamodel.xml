@@ -409,7 +409,7 @@
 			<node displayedName="Join" name="Join" description="Joins a number of threads into one. 'Guard' property of the single outgoing link must contain an identifier of one of threads being joined. The specified thread would wait until the rest of them finish execution, and then proceed in a normal way.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<rectangle fill="#ffffff" stroke-width="1" fill-style="solid" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="none"/>
+						<image y1="0" name="images/joinBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels/>
 					<nonResizeable/>
@@ -424,10 +424,7 @@
 			<node displayedName="Send Message To Thread" name="SendMessageThreads" description="Sends a message to a specified thread.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<rectangle fill="#ffffff" stroke-width="1" fill-style="solid" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="none"/>
-						<line stroke="#000000" fill="#ffffff" stroke-width="2" stroke-style="solid" fill-style="none" x1="10" y1="25" x2="40" y2="25"/>
-						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="35" y1="22" x2="40" y2="25"/>
-						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="35" y1="28" x2="40" y2="25"/>
+						<image y1="0" name="images/sendMessageThreadsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-50" y="60" text="Thread:"/>
@@ -451,10 +448,7 @@
 			<node displayedName="Receive Message From Thread" name="ReceiveMessageThreads" description="Receive a message sent to a thread from which this block is called.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<rectangle fill="#ffffff" stroke-width="1" fill-style="solid" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="none"/>
-						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="40" y1="25" x2="10" y2="25"/>
-						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="15" y1="22" x2="10" y2="25"/>
-						<line stroke="#000000" fill="#ffffff" stroke-style="solid" fill-style="none" stroke-width="2" x1="15" y1="28" x2="10" y2="25"/>
+						<image y1="0" name="images/receiveMessageThreadsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-37" y="60" text="Variable:"/>
