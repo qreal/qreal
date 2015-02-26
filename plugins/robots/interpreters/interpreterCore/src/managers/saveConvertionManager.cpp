@@ -14,6 +14,7 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 		, from300Alpha4to300Alpha5Converter()
 		, from300Beta2to300rc1Converter()
 		, from300to301Converter()
+		, from301to302Converter()
 	};
 }
 
