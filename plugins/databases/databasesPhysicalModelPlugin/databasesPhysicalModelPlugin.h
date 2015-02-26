@@ -34,14 +34,24 @@ public slots:
 private:
 	//DatabasesPreferencesPage *mPreferencesPage;
 	//DatabasesCustomizer mCustomizer;
-	//DatabasesGenerator *mDatabasesGenerator;
-	const PluginConfigurator* mPluginConfigurator;
 	void initActions();
 
 	QAction *mGeneratePhysicalModelAction;
 	QMenu *mDatabasesMenu;
 	QList<qReal::ActionInfo> mActionInfos;
 
+	class ModelApiHelper
+	{
+	public:
+		ModelApiHelper(const PluginConfigurator configurator)
+			: logicalModelApi(configurator.logicalModelApi())
+			, graphicalModelApi(configurator.graphicalModelApi())
+		{
+		}
+		LogicalModelAssistInterface &logicalModelApi;
+		GraphicalModelAssistInterface &graphicalModelApi;
+	};
+	ModelApiHelper *mModelApi;
 };
 
 }
