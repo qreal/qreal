@@ -35,6 +35,7 @@ private:
 	//DatabasesPreferencesPage *mPreferencesPage;
 	//DatabasesCustomizer mCustomizer;
 	//DatabasesGenerator *mDatabasesGenerator;
+	const PluginConfigurator* mPluginConfigurator;
 	void initActions();
 
 	QAction *mGeneratePhysicalModelAction;

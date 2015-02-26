@@ -25,7 +25,7 @@ DatabasesPhysicalModelPlugin::~DatabasesPhysicalModelPlugin()
 
 void DatabasesPhysicalModelPlugin::init(PluginConfigurator const &configurator)
 {
-//	mDatabasesGenerator = new DatabasesGenerator(configurator);
+	mPluginConfigurator = &configurator;
 	initActions();
 }
 
@@ -59,7 +59,16 @@ void DatabasesPhysicalModelPlugin::initActions()
 
 void DatabasesPhysicalModelPlugin::generatePhysicalModel()
 {
-//	mDatabasesGenerator->checkCorrectness();
+	//QPointF scenePos = QPointF(371.0, 278.0);
+	Id id = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/DatabasesPhysicalNode"));
+	//qReal::Id id = qReal::Id::createElementId("DatabasesPhysicalModelMetamodel", "DatabasesPhysicalModelMetamodel", "DatabasesPhysicalNode");
+	//QString name = "DatabasesPhysicalNode";
+	mPluginConfigurator->logicalModelApi().createElement(Id::rootId(), id);
+	//Id created = mPluginConfigurator->logicalModelApi().createElement(Id::rootId(), id);
+	//mPluginConfigurator->graphicalModelApi().createElement(Id::rootId(), created, true, QString("smth"), QPointF(23.0, 23.0));
+	//mPluginConfigurator->logicalModelApi().createElement()
+	//mPluginConfigurator->graphicalModelApi().createElement(Id::rootId(), "DatabasesPhysicalNode");
+	//mPluginConfigurator->logicalModelApi().createElement(Id::rootId(), "DatabasesPhysicalNode");
 }
 
 }

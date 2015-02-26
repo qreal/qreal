@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<namespace>UML 2.0</namespace>
-	<diagram nodeName="DatabasesPhysicalNode" name="Databases" displayedName="Databases Physical Model">
+	<diagram nodeName="DatabasesPhysicalNode" name="DatabasesPhysicalModelMetamodel" displayedName="Databases Physical Model">
 		<nonGraphicTypes>
 			<port name="TableLeft"/>
 			<port name="TableVertical"/>
