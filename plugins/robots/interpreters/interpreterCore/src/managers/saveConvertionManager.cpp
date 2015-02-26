@@ -14,6 +14,7 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 		, from300Alpha4to300Alpha5Converter()
 		, from300Beta2to300rc1Converter()
 		, from300to301Converter()
+		, from301to302Converter()
 	};
 }
 
@@ -83,20 +84,8 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 ProjectConverter SaveConvertionManager::from300Beta2to300rc1Converter()
 {
 	return constructConverter("3.0.0-b2", "3.0.0-rc1"
-			, {
-				[] (const qReal::Id &block, qReal::LogicalModelAssistInterface &logicalApi) {
-					if (block.element() == "TrikSay" || block.element() == "PrintText") {
-						const QString propertyName = block.element() == "TrikSay" ? "Text" : "PrintText";
-						const QString oldValue = logicalApi.logicalRepoApi().property(block, propertyName).toString();
-						if (!oldValue.startsWith("\"")) {
-							logicalApi.mutableLogicalRepoApi().setProperty(block, propertyName, "\"" + oldValue + "\"");
-							return true;
-						}
-					}
-
-					return false;
-				}
-			});
+			, { quote("TrikSay", "Text"), quote("PrintText", "PrintText") }
+			);
 }
 
 qReal::ProjectConverter SaveConvertionManager::from300to301Converter()
@@ -142,6 +131,11 @@ qReal::ProjectConverter SaveConvertionManager::from300to301Converter()
 						})
 			}
 			);
+}
+
+qReal::ProjectConverter SaveConvertionManager::from301to302Converter()
+{
+	return constructConverter("3.0.1", "3.0.2", { quote("TrikSystem", "Command") } );
 }
 
 bool SaveConvertionManager::isRobotsDiagram(const Id &diagram)
@@ -226,6 +220,22 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)>
 		if (blocks.contains(block.element())) {
 			logicalApi.removeElement(block);
 			return true;
+		}
+
+		return false;
+	};
+}
+
+std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> SaveConvertionManager::quote(
+		const QString &blockType, const QString &property)
+{
+	return [blockType, property] (const qReal::Id &block, qReal::LogicalModelAssistInterface &logicalApi) {
+		if (block.element() == blockType) {
+			const QString oldValue = logicalApi.logicalRepoApi().property(block, property).toString();
+			if (!oldValue.startsWith("\"")) {
+				logicalApi.mutableLogicalRepoApi().setProperty(block, property, "\"" + oldValue + "\"");
+				return true;
+			}
 		}
 
 		return false;
