@@ -84,11 +84,6 @@ public:
 	void dehighlight(const qReal::Id &graphicalId);
 	void dehighlight();
 
-	/// Draws pixmap on scene's foreground (doesn't take ownership!)
-	void putOnForeground(QPixmap *pixmap);
-	/// Deletes pixmap from scene's foreground
-	void deleteFromForeground(QPixmap *pixmap);
-
 	QPointF getMousePos() const;
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
@@ -180,7 +175,6 @@ protected:
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
-	virtual void drawForeground(QPainter *painter, const QRectF &rect);
 	virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
 private slots:
@@ -240,8 +234,6 @@ private:
 	NodeElement *mHighlightNode;
 
 	QList<QGraphicsItem *> mGesture;
-	/// list of pixmaps to be drawn on scene's foreground
-	QList<QPixmap *> mForegroundPixmaps;
 
 	QList<QAction *> mEditorActions;
 
