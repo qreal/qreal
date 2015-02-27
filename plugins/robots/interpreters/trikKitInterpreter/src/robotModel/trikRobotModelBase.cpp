@@ -136,7 +136,9 @@ QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
 {
 	return { DeviceInfo::create<robotParts::LightSensor>()
 		, DeviceInfo::create<parts::TrikInfraredSensor>()
-		, DeviceInfo::create<parts::TrikSonarSensor>() };
+		, DeviceInfo::create<parts::TrikSonarSensor>()
+		, DeviceInfo::create<parts::TrikMotionSensor>()
+	};
 }
 
 DeviceInfo TrikRobotModelBase::displayInfo() const

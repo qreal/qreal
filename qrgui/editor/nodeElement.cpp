@@ -94,6 +94,8 @@ NodeElement::NodeElement(ElementImpl *impl
 
 NodeElement::~NodeElement()
 {
+	deleteGuides();
+
 	foreach (EdgeElement *edge, mEdgeList) {
 		edge->removeLink(this);
 	}
@@ -290,9 +292,9 @@ void NodeElement::switchGrid(bool isChecked)
 	}
 }
 
-void NodeElement::delUnusedLines()
+void NodeElement::deleteGuides()
 {
-	mGrid->delUnusedLines();
+	mGrid->deleteGuides();
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -515,7 +517,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		event->accept();
 		return;
 	}
-	delUnusedLines();
+	deleteGuides();
 
 	storeGeometry();
 
