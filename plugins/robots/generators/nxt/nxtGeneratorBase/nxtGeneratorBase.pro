@@ -7,17 +7,15 @@ QT += widgets
 TEMPLATE = lib
 CONFIG += plugin
 
+includes(plugins/robots/generators/nxt/nxtGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		qrtext \
+)
+
 links(qrkernel qslog qrutils qrrepo robots-generator-base)
 
 DEFINES += ROBOTS_NXT_GENERATOR_BASE_LIBRARY
-
-INCLUDEPATH += \
-	$$PWD/include \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtGeneratorBase_ru.ts
 

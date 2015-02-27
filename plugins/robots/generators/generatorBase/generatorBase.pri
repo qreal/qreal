@@ -1,14 +1,12 @@
 QT += widgets
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui \
-	$$PWD/../../../../qrutils \
-	$$PWD/../../interpreters/interpreterBase/include \
-	$$PWD/../../../../qrtext/include \
+includes(plugins/robots/generators/generatorBase \
+		qrutils \
+		qrtext \
+		plugins/robots/common/kitBase \
+)
 
-links(qrkernel qslog qrutils qrrepo qrtext robots-interpreter-base)
+links(qrkernel qslog qrutils qrrepo qrtext robots-kit-base)
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 

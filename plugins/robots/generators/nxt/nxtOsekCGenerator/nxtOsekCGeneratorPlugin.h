@@ -23,7 +23,7 @@ public:
 	~NxtOsekCGeneratorPlugin() override;
 
 	void init(const qReal::PluginConfigurator &configurator
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage) override;
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;

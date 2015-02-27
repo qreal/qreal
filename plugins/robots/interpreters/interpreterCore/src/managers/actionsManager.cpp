@@ -100,7 +100,7 @@ QAction &ActionsManager::robotSettingsAction()
 	return mRobotSettingsAction;
 }
 
-void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model)
+void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
 	mConnectToRobotAction.setVisible(model.needsConnection());
 	const QString currentKitId = kitIdOf(model);
@@ -130,15 +130,15 @@ void ActionsManager::onActiveTabChanged(const qReal::Id &activeTabId)
 
 void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)
 {
-	const auto robotModel = dynamic_cast<interpreterBase::robotModel::RobotModelInterface *>(robotModelObject);
+	const auto robotModel = dynamic_cast<kitBase::robotModel::RobotModelInterface *>(robotModelObject);
 	mRobotModelManager.setModel(robotModel);
 	onRobotModelChanged(*robotModel);
 }
 
-QString ActionsManager::kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const
+QString ActionsManager::kitIdOf(kitBase::robotModel::RobotModelInterface &model) const
 {
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
-		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 			if (kit->robotModels().contains(&model)) {
 				return kitId;
 			}
@@ -165,9 +165,9 @@ void ActionsManager::initKitPluginActions()
 	connect(robotModelMapper, SIGNAL(mapped(QObject*)), this, SLOT(onRobotModelActionChecked(QObject*)));
 
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
-		for (interpreterBase::KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+		for (kitBase::KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
 			mPluginActionInfos << kitPlugin->customActions();
-			for (interpreterBase::robotModel::RobotModelInterface * const robotModel : kitPlugin->robotModels()) {
+			for (kitBase::robotModel::RobotModelInterface * const robotModel : kitPlugin->robotModels()) {
 				const QIcon &icon = kitPlugin->iconForFastSelector(*robotModel);
 				if (icon.isNull()) {
 					continue;

@@ -26,7 +26,7 @@ public:
 	~RobotsGeneratorPluginBase() override;
 
 	void init(const qReal::PluginConfigurator &configurator
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage) override;
 
 protected slots:
@@ -74,7 +74,7 @@ protected:
 	/// Control interface of the repository
 	const qrRepo::RepoApi *mRepo;  // Does not have ownership
 
-	const interpreterBase::robotModel::RobotModelManagerInterface *mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface *mRobotModelManager;
 	qrtext::LanguageToolboxInterface *mTextLanguage;  // Does not have ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;

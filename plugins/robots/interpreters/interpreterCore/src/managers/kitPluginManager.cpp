@@ -25,7 +25,7 @@ QList<QString> KitPluginManager::kitIds() const
 	return mPluginInterfaces.keys();
 }
 
-QList<interpreterBase::KitPluginInterface *> KitPluginManager::kitsById(const QString &kitId) const
+QList<kitBase::KitPluginInterface *> KitPluginManager::kitsById(const QString &kitId) const
 {
 	if (!mPluginInterfaces.contains(kitId)) {
 		throw qReal::Exception("Requesting non-existing kit plugin");
@@ -40,10 +40,10 @@ QList<generatorBase::GeneratorKitPluginInterface *> KitPluginManager::generators
 	return mGenerators.values(kitId);
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotModels() const
+QList<kitBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotModels() const
 {
-	QList<interpreterBase::robotModel::RobotModelInterface *> result;
-	for (interpreterBase::KitPluginInterface * const kit : mPluginInterfaces) {
+	QList<kitBase::robotModel::RobotModelInterface *> result;
+	for (kitBase::KitPluginInterface * const kit : mPluginInterfaces) {
 		result += kit->robotModels();
 	}
 
@@ -52,10 +52,10 @@ QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allR
 
 void KitPluginManager::tryToLoadInterpreterPlugins()
 {
-	QList<interpreterBase::KitPluginInterface *> const loadedInterpreterPlugins =
-			mPluginManager.loadAllPlugins<interpreterBase::KitPluginInterface>();
+	QList<kitBase::KitPluginInterface *> const loadedInterpreterPlugins =
+			mPluginManager.loadAllPlugins<kitBase::KitPluginInterface>();
 
-	for (interpreterBase::KitPluginInterface * const kitPlugin : loadedInterpreterPlugins) {
+	for (kitBase::KitPluginInterface * const kitPlugin : loadedInterpreterPlugins) {
 		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
 	}
 }

@@ -27,7 +27,7 @@ TrikQtsGeneratorPlugin::~TrikQtsGeneratorPlugin()
 }
 
 void TrikQtsGeneratorPlugin::init(const qReal::PluginConfigurator &configurator
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);

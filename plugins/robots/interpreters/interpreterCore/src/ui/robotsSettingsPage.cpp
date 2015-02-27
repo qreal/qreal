@@ -6,13 +6,13 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
-#include <interpreterBase/additionalPreferences.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include <kitBase/additionalPreferences.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 #include "interpreterCore/managers/robotModelManager.h"
 
 using namespace interpreterCore::ui;
-using namespace interpreterBase;
+using namespace kitBase;
 using namespace qReal;
 
 RobotsSettingsPage::RobotsSettingsPage(

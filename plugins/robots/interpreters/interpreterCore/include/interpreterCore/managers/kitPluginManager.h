@@ -5,7 +5,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 
-#include <interpreterBase/kitPluginInterface.h>
+#include <kitBase/kitPluginInterface.h>
 #include <generatorBase/generatorKitPluginInterface.h>
 
 #include <qrutils/pluginManagers/pluginManager.h>
@@ -27,13 +27,13 @@ public:
 
 	/// Returns a list of kits that have given id. Note that multiple kits can have one id, in that case their
 	/// functionality is merged (needed to support language extensions like support for segway).
-	QList<interpreterBase::KitPluginInterface *> kitsById(const QString &kitId) const;
+	QList<kitBase::KitPluginInterface *> kitsById(const QString &kitId) const;
 
 	/// Returns a list of generators associated with given kit id.
 	QList<generatorBase::GeneratorKitPluginInterface *> generatorsById(const QString &kitId) const;
 
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
-	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;
+	QList<kitBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
 private:
 	void tryToLoadInterpreterPlugins();
@@ -41,7 +41,7 @@ private:
 
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.
-	QMap<QString, interpreterBase::KitPluginInterface *> mPluginInterfaces;  // Has ownership
+	QMap<QString, kitBase::KitPluginInterface *> mPluginInterfaces;  // Has ownership
 
 	/// Maps kit plugin name to corresponding loader.
 	QMap<QString, generatorBase::GeneratorKitPluginInterface *> mGenerators;  // Has ownership

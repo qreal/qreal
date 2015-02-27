@@ -9,7 +9,7 @@
 
 class QextSerialPort;
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace communication {
 
 class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface

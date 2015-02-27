@@ -5,7 +5,7 @@
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <qrgui/textEditor/languageInfo.h>
 #include <qrtext/languageToolboxInterface.h>
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
 
 namespace generatorBase {
 
@@ -34,7 +34,7 @@ public:
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator Object that contains all needed information for a plugin, like refs to models.
 	virtual void init(const qReal::PluginConfigurator &configurator
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage)
 	{
 		Q_UNUSED(configurator);

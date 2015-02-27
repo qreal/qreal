@@ -1,14 +1,14 @@
 #pragma once
 
-#include <interpreterBase/additionalPreferences.h>
+#include <kitBase/additionalPreferences.h>
 
 namespace Ui {
 class TrikFSharpAdditionalPreferences;
 }
 
-namespace trikKitInterpreter {
+namespace trik {
 
-class TrikFSharpAdditionalPreferences : public interpreterBase::AdditionalPreferences
+class TrikFSharpAdditionalPreferences : public kitBase::AdditionalPreferences
 {
 	Q_OBJECT
 

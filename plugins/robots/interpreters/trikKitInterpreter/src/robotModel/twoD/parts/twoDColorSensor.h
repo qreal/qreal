@@ -1,8 +1,8 @@
 #pragma once
 
-#include "robotModel/parts/trikColorSensor.h"
+#include <trikKit/robotModel/parts/trikColorSensor.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace twoD {
 namespace parts {
@@ -14,8 +14,8 @@ class ColorSensor : public robotModel::parts::TrikColorSensor
 	Q_OBJECT
 
 public:
-	ColorSensor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port);
+	ColorSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
 
 	void init() override;
 	void read() override;

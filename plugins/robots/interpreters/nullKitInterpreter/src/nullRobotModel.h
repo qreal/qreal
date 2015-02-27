@@ -1,12 +1,12 @@
 #pragma once
 
-#include <interpreterBase/robotModel/commonRobotModel.h>
+#include <kitBase/robotModel/commonRobotModel.h>
 
 namespace nullKitInterpreter {
 
 /// Robot model for robots whose robotId doesn't found among existing robot models in
 /// Model after deserialization
-class NullRobotModel : public interpreterBase::robotModel::CommonRobotModel
+class NullRobotModel : public kitBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT
 

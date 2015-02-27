@@ -104,7 +104,7 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 }
 
 void RobotsGeneratorPluginBase::init(const PluginConfigurator &configurator
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	mProjectManager = &configurator.projectManager();

@@ -2,50 +2,50 @@
 
 #include <QtCore/QScopedPointer>
 
-#include <interpreterBase/kitPluginInterface.h>
-#include <commonTwoDModel/engine/twoDModelControlInterface.h>
+#include <kitBase/kitPluginInterface.h>
+#include <twoDModel/engine/twoDModelControlInterface.h>
 
 #include "trikAdditionalPreferences.h"
 #include "trikFSharpAdditionalPreferences.h"
 
-#include "blocks/trikBlocksFactory.h"
+#include <trikKit/blocks/trikBlocksFactory.h>
 #include "robotModel/real/realRobotModelV6.h"
 #include "robotModel/twoD/twoDRobotModel.h"
 
-namespace trikKitInterpreter {
+namespace trik {
 
-class TrikKitInterpreterPlugin : public QObject, public interpreterBase::KitPluginInterface
+class TrikKitInterpreterPlugin : public QObject, public kitBase::KitPluginInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(interpreterBase::KitPluginInterface)
+	Q_INTERFACES(kitBase::KitPluginInterface)
 	Q_PLUGIN_METADATA(IID "nxtKitInterpreter.TrikKitInterpreterPlugin")
 
 public:
 	TrikKitInterpreterPlugin();
 	~TrikKitInterpreterPlugin() override;
 
-	void init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+	void init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 			, const qReal::SystemEvents &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
+			, kitBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;
 	QString friendlyKitName() const override;
 
-	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
-	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
+	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
+	kitBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
-	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-			const interpreterBase::robotModel::RobotModelInterface *model) override;
+	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
+			const kitBase::robotModel::RobotModelInterface *model) override;
 
 	// Transfers ownership.
-	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
-	QWidget *quickPreferencesFor(const interpreterBase::robotModel::RobotModelInterface &model) override;
+	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
+	QWidget *quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model) override;
 	QString defaultSettingsFile() const override;
-	QIcon iconForFastSelector(const interpreterBase::robotModel::RobotModelInterface &robotModel) const override;
-	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
+	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
+	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
@@ -71,7 +71,7 @@ private:
 	QWidget *mIpAdressQuickConfigurer = nullptr;  // Transfers ownership
 	bool mOwnsIpAdressQuickConfigurer = true;
 
-	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 };
 

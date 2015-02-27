@@ -3,8 +3,8 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 
-using namespace trikKitInterpreter::robotModel::real;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::real;
+using namespace kitBase::robotModel;
 
 RealRobotModelV6::RealRobotModelV6(const QString &kitId, const QString &robotId)
 	: RealRobotModelBase(kitId, robotId)

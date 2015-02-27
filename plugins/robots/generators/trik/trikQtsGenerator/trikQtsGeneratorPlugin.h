@@ -24,7 +24,7 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 	void init(const qReal::PluginConfigurator &configurator
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage) override;
 
 protected:

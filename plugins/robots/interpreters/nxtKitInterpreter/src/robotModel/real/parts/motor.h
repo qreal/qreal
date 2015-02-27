@@ -1,23 +1,23 @@
 #pragma once
 
-#include <interpreterBase/robotModel/portInfo.h>
+#include <kitBase/robotModel/portInfo.h>
 #include <utils/robotCommunication/robotCommunicator.h>
-#include "src/robotModel/parts/nxtMotor.h"
+#include <nxtKit/robotModel/parts/nxtMotor.h>
 
 #include "commandConstants.h"
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class Motor : public nxtKitInterpreter::robotModel::parts::NxtMotor
+class Motor : public nxt::robotModel::parts::NxtMotor
 {
 	Q_OBJECT
 
 public:
-	Motor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	Motor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void on(int speed, bool breakMode = true) override;

@@ -6,7 +6,7 @@
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
 
-using namespace nxtKitInterpreter;
+using namespace nxt;
 using namespace graphicsUtils;
 
 NxtDisplayWidget::NxtDisplayWidget(QWidget *parent)

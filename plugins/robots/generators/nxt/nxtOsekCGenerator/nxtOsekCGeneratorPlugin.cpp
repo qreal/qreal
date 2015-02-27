@@ -59,7 +59,7 @@ bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 }
 
 void NxtOsekCGeneratorPlugin::init(const PluginConfigurator &configurator
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);

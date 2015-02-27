@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QApplication>
 
-#include <commonTwoDModel/engine/twoDModelEngineFacade.h>
+#include <twoDModel/engine/twoDModelEngineFacade.h>
 
-using namespace nxtKitInterpreter;
+using namespace nxt;
 using namespace qReal;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
@@ -39,14 +39,14 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 	}
 }
 
-void NxtKitInterpreterPlugin::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+void NxtKitInterpreterPlugin::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 		, const SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, interpreterBase::InterpreterControlInterface &interpreterControl)
+		, kitBase::InterpreterControlInterface &interpreterControl)
 {
-	connect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+	connect(&eventsForKitPlugin, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
@@ -73,25 +73,25 @@ QString NxtKitInterpreterPlugin::friendlyKitName() const
 	return tr("Lego NXT");
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> NxtKitInterpreterPlugin::robotModels()
+QList<kitBase::robotModel::RobotModelInterface *> NxtKitInterpreterPlugin::robotModels()
 {
 	return {&mRealRobotModel, &mTwoDRobotModel};
 }
 
-interpreterBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::blocksFactoryFor(
-		const interpreterBase::robotModel::RobotModelInterface *model)
+kitBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model);
 	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
-interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defaultRobotModel()
+kitBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defaultRobotModel()
 {
 	return &mTwoDRobotModel;
 }
 
-QList<interpreterBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets()
+QList<kitBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
 	return {mAdditionalPreferences};
@@ -118,14 +118,14 @@ QString NxtKitInterpreterPlugin::defaultSettingsFile() const
 }
 
 QIcon NxtKitInterpreterPlugin::iconForFastSelector(
-		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	return &robotModel == &mRealRobotModel
 			? QIcon(":/icons/switch-real-nxt.svg")
 			: QIcon(":/icons/switch-2d.svg");
 }
 
-interpreterBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
+kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
 }

@@ -52,7 +52,7 @@ public:
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
-	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
+	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
 
 	/// Reacts to selection of a new tab on scene.
 	/// @param activeTabId - id of a root element of new active tab.
@@ -62,7 +62,7 @@ private slots:
 	void onRobotModelActionChecked(QObject *robotModelObject);
 
 private:
-	QString kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const;
+	QString kitIdOf(kitBase::robotModel::RobotModelInterface &model) const;
 
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
 	void updateEnabledActions();

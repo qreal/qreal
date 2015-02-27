@@ -2,7 +2,7 @@
 
 #include "realRobotModelBase.h"
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 

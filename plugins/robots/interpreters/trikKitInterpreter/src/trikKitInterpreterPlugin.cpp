@@ -3,10 +3,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-#include <commonTwoDModel/engine/twoDModelEngineFacade.h>
+#include <twoDModel/engine/twoDModelEngineFacade.h>
 #include <qrkernel/settingsManager.h>
 
-using namespace trikKitInterpreter;
+using namespace trik;
 using namespace qReal;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
@@ -43,15 +43,15 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 	}
 }
 
-void TrikKitInterpreterPlugin::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+void TrikKitInterpreterPlugin::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 		, const SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, interpreterBase::InterpreterControlInterface &interpreterControl)
+		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
@@ -90,31 +90,31 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 	return tr("TRIK");
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
+QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
 	return {&mRealRobotModelV6, &mTwoDRobotModelV6};
 }
 
-interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
-		const interpreterBase::robotModel::RobotModelInterface *model)
+kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model);
 	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
-interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
+kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
 {
 	return &mTwoDRobotModelV6;
 }
 
-QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
+QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
 	return {mAdditionalPreferences, mFSharpAdditionalPreferences};
 }
 
-QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const interpreterBase::robotModel::RobotModelInterface &model)
+QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
 {
 	if (model.name().toLower().contains("twod")) {
 		return nullptr;
@@ -145,7 +145,7 @@ QString TrikKitInterpreterPlugin::defaultSettingsFile() const
 }
 
 QIcon TrikKitInterpreterPlugin::iconForFastSelector(
-		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	/// @todo: draw icons for v6
 	return &robotModel == &mRealRobotModelV6
@@ -155,7 +155,7 @@ QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 					: QIcon();
 }
 
-interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
+kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModelV6->devicesConfigurationProvider();
 }

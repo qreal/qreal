@@ -2,7 +2,7 @@
 
 using namespace interpreterCore;
 using namespace utils;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 GraphicsWatcherManager::GraphicsWatcherManager(const qrtext::DebuggerInterface &parser, QObject *parent)
 	: QObject(parent)

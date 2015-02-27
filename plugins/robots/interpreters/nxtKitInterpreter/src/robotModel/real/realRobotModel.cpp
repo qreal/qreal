@@ -22,9 +22,9 @@
 #include "parts/soundSensor.h"
 #include "parts/gyroscopeSensor.h"
 
-using namespace nxtKitInterpreter::robotModel::real;
+using namespace nxt::robotModel::real;
 using namespace utils::robotCommunication;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 	: NxtRobotModelBase(kitId, robotId)

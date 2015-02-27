@@ -1,9 +1,9 @@
 #pragma once
 
-#include <robotModel/ev3RobotModelBase.h>
+#include <ev3Kit/robotModel/ev3RobotModelBase.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-namespace ev3KitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace real {
 
@@ -25,9 +25,9 @@ public slots:
 	void rereadSettings() override;
 
 private:
-	interpreterBase::robotModel::robotParts::Device *createDevice(
-			const interpreterBase::robotModel::PortInfo &port
-			, const interpreterBase::robotModel::DeviceInfo &deviceInfo) override;
+	kitBase::robotModel::robotParts::Device *createDevice(
+			const kitBase::robotModel::PortInfo &port
+			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;
 
 	// WARNING: This class must be disposed in the last turn so do not make it storing by value.
 	utils::robotCommunication::RobotCommunicator *mRobotCommunicator;  // Takes ownership

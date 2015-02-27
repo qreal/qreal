@@ -1,12 +1,12 @@
 #pragma once
 
-#include "interpreterBase/robotModel/commonRobotModel.h"
+#include "kitBase/robotModel/commonRobotModel.h"
 
 namespace interpreterCore {
 
 /// Default robot model that is used when no kit plugin with models is loaded.
 /// @todo: Replace it with nullKitInterpreter.
-class DefaultRobotModel : public interpreterBase::robotModel::CommonRobotModel
+class DefaultRobotModel : public kitBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT
 

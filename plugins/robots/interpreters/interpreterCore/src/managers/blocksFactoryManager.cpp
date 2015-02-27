@@ -3,7 +3,7 @@
 #include <qrutils/interpreter/blocks/emptyBlock.h>
 
 using namespace interpreterCore;
-using namespace interpreterBase;
+using namespace kitBase;
 using namespace blocksBase;
 using namespace robotModel;
 

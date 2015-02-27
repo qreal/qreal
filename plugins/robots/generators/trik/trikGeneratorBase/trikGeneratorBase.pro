@@ -7,17 +7,15 @@ QT += widgets
 TEMPLATE = lib
 CONFIG += plugin
 
+includes(plugins/robots/generators/trik/trikGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		qrtext \
+)
+
 links(qrkernel qslog qrutils qrrepo robots-generator-base robots-interpreter-base)
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
-
-INCLUDEPATH += \
-	$$PWD/include \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
 

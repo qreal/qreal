@@ -3,10 +3,10 @@
 #include <QtXml/QDomDocument>
 
 #include <qrkernel/settingsManager.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 using namespace interpreterCore;
-using namespace interpreterBase;
+using namespace kitBase;
 using namespace robotModel;
 using namespace qReal;
 

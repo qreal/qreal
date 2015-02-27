@@ -9,13 +9,12 @@ CONFIG += plugin
 
 QT += widgets
 
-INCLUDEPATH += \
-	$$PWD/../interpreterCore/include/ \
-	$$PWD/../interpreterBase/include/ \
-	$$PWD/../../generators/generatorBase/include/ \
-	$$PWD/../../utils/include/ \
-	$$PWD/../../../../qrgui/ \
-	$$PWD/../../../../qrtext/include \
+includes(plugins/robots/interpreters/interpreterCore \
+		plugins/robots/common/kitBase \
+		plugins/robots/generators/generatorBase/ \ # TODO: REMOVE!!!
+		plugins/robots/utils \
+		qrtext \
+)
 
 links(qrkernel qrgui-tool-plugin-interface robots-interpreter-core)
 
