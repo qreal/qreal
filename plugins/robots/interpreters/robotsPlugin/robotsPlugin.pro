@@ -11,7 +11,6 @@ QT += widgets
 
 includes(plugins/robots/interpreters/interpreterCore \
 		plugins/robots/common/kitBase \
-		plugins/robots/generators/generatorBase/ \ # TODO: REMOVE!!!
 		plugins/robots/utils \
 		qrtext \
 )

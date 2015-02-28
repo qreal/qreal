@@ -12,8 +12,7 @@ KitPluginManager::KitPluginManager(const QString &pluginDirectory)
 	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
 	, mPluginManager(PluginManager(QCoreApplication::applicationDirPath(), pluginDirectory))
 {
-	tryToLoadGeneratorPlugins();
-	tryToLoadInterpreterPlugins();
+	tryToLoadKitPlugins();
 }
 
 KitPluginManager::~KitPluginManager()
@@ -34,12 +33,6 @@ QList<kitBase::KitPluginInterface *> KitPluginManager::kitsById(const QString &k
 	return mPluginInterfaces.values(kitId);
 }
 
-QList<generatorBase::GeneratorKitPluginInterface *> KitPluginManager::generatorsById(const QString &kitId) const
-{
-	// There can be no generators for the given kit id, so we do not filter out non-existing case here.
-	return mGenerators.values(kitId);
-}
-
 QList<kitBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotModels() const
 {
 	QList<kitBase::robotModel::RobotModelInterface *> result;
@@ -50,22 +43,12 @@ QList<kitBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotMode
 	return result;
 }
 
-void KitPluginManager::tryToLoadInterpreterPlugins()
+void KitPluginManager::tryToLoadKitPlugins()
 {
 	QList<kitBase::KitPluginInterface *> const loadedInterpreterPlugins =
 			mPluginManager.loadAllPlugins<kitBase::KitPluginInterface>();
 
 	for (kitBase::KitPluginInterface * const kitPlugin : loadedInterpreterPlugins) {
 		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
-	}
-}
-
-void KitPluginManager::tryToLoadGeneratorPlugins()
-{
-	QList<generatorBase::GeneratorKitPluginInterface *> const loadedGeneratorPlugins =
-			mPluginManager.loadAllPlugins<generatorBase::GeneratorKitPluginInterface>();
-
-	for (generatorBase::GeneratorKitPluginInterface * const generatorPlugin : loadedGeneratorPlugins) {
-		mGenerators.insertMulti(generatorPlugin->kitId(), generatorPlugin);
 	}
 }

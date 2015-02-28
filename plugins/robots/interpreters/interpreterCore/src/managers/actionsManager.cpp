@@ -39,7 +39,6 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 	QList<qReal::ActionInfo> result;
 
 	result << mPluginActionInfos;
-	result << mGeneratorActionsInfo.values();
 
 	result
 			<< qReal::ActionInfo(&mConnectToRobotAction, "interpreters", "tools")
@@ -108,9 +107,7 @@ void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterfac
 
 	/// @todo: this stupid visibility management may show actions with custom avalability logic.
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
-		for (const qReal::ActionInfo &actionInfo
-				: mRobotModelActions.values(kitId) + mGeneratorActionsInfo.values(kitId))
-		{
+		for (const qReal::ActionInfo &actionInfo : mRobotModelActions.values(kitId)) {
 			if (actionInfo.isAction()) {
 				actionInfo.action()->setVisible(currentKitId == kitId);
 				actionInfo.action()->setChecked(actionInfo.action()->objectName() == switchActionName);
@@ -184,15 +181,6 @@ void ActionsManager::initKitPluginActions()
 			}
 
 			mPluginHotKeyActionInfos << kitPlugin->hotKeyActions();
-		}
-
-		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
-			// generator->actions() must be called once so storing it into the field.
-			for (const qReal::ActionInfo &action : generator->actions()) {
-				mGeneratorActionsInfo.insertMulti(kitId, action);
-			}
-
-			mPluginHotKeyActionInfos << generator->hotKeyActions();
 		}
 	}
 }

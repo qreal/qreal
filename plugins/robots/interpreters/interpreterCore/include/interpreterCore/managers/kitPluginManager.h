@@ -6,8 +6,6 @@
 #include <QtCore/QMap>
 
 #include <kitBase/kitPluginInterface.h>
-#include <generatorBase/generatorKitPluginInterface.h>
-
 #include <qrutils/pluginManagers/pluginManager.h>
 
 namespace interpreterCore {
@@ -29,22 +27,15 @@ public:
 	/// functionality is merged (needed to support language extensions like support for segway).
 	QList<kitBase::KitPluginInterface *> kitsById(const QString &kitId) const;
 
-	/// Returns a list of generators associated with given kit id.
-	QList<generatorBase::GeneratorKitPluginInterface *> generatorsById(const QString &kitId) const;
-
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
 	QList<kitBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
 private:
-	void tryToLoadInterpreterPlugins();
-	void tryToLoadGeneratorPlugins();
+	void tryToLoadKitPlugins();
 
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.
 	QMap<QString, kitBase::KitPluginInterface *> mPluginInterfaces;  // Has ownership
-
-	/// Maps kit plugin name to corresponding loader.
-	QMap<QString, generatorBase::GeneratorKitPluginInterface *> mGenerators;  // Has ownership
 
 	/// Directory from which plugins shall be loaded.
 	QDir mPluginsDir;

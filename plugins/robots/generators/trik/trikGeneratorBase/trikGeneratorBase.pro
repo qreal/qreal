@@ -13,7 +13,7 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo robots-generator-base robots-interpreter-base)
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base)
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
 

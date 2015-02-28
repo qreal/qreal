@@ -101,8 +101,6 @@ private:
 	/// Actions that are placed on the panel for quick switching between robot models.
 	QMap<QString, qReal::ActionInfo> mRobotModelActions;
 
-	QMap<QString, qReal::ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
-
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
 

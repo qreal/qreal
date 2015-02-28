@@ -2,13 +2,12 @@ QT += widgets
 
 includes(plugins/robots/common/trikKit \
 		plugins/robots/common/kitBase \
-		plugins/robots/common/twoDModel \
 		plugins/robots/utils \
 		qrtext \
 )
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-kit-base robots-2d-model qextserialport qslog \
+		robots-utils robots-kit-base qextserialport qslog \
 )
 
 HEADERS += \

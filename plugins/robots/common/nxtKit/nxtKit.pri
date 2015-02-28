@@ -8,9 +8,8 @@ includes(plugins/robots/common/nxtKit \
 )
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-kit-base robots-2d-model qextserialport \
-		qslog \
-		)
+		robots-utils robots-kit-base qextserialport qslog \
+)
 
 HEADERS += \
 	$$PWD/include/nxtKit/robotModel/nxtRobotModelBase.h \

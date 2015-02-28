@@ -231,10 +231,6 @@ void RobotsPluginFacade::initKitPlugins(const qReal::PluginConfigurator &configu
 
 			mDevicesConfigurationManager->connectDevicesConfigurationProvider(kit->devicesConfigurationProvider());
 		}
-
-		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
-			generator->init(configurer, mRobotModelManager, *mParser);
-		}
 	}
 }
 
