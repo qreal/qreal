@@ -225,7 +225,7 @@ private:
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
-	void delUnusedLines();
+	void deleteGuides();
 	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();

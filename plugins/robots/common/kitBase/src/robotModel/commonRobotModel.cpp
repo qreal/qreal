@@ -1,11 +1,10 @@
 #include "kitBase/robotModel/commonRobotModel.h"
 
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 #include <utils/realTimeline.h>
 
 #include "kitBase/robotModel/robotParts/motor.h"
-
-#include <QtCore/QDebug>
 
 using namespace kitBase::robotModel;
 
@@ -155,7 +154,7 @@ void CommonRobotModel::configureDevice(const PortInfo &port, const DeviceInfo &d
 	if (device) {
 		mConfiguration.configureDevice(device);
 	} else {
-		qDebug() << "Can not create device for " << deviceInfo.toString();
+		QLOG_WARN() << "Can not create device for" << deviceInfo.toString();
 	}
 	/// @todo Handle error
 }

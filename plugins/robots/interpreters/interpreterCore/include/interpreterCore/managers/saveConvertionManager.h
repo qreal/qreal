@@ -28,6 +28,9 @@ private:
 	/// Returns a converter that changes button sensor variables and button blocks.
 	static qReal::ProjectConverter from300to301Converter();
 
+	/// Returns a converter that adds quotes for "System" block.
+	static qReal::ProjectConverter from301to302Converter();
+
 	static bool isRobotsDiagram(const qReal::Id &diagram);
 	static qReal::IdList elementsOfRobotsDiagrams(const qReal::LogicalModelAssistInterface &logicalApi);
 	static QString editor();
@@ -54,6 +57,10 @@ private:
 	/// it is safer to delete it completely.
 	static std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> deleteBlocks(
 			const QStringList &blocks);
+
+	/// Helper method, constructs quoting filter. Puts '"' around value of given property of all blocks with given type.
+	static std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> quote(
+			const QString &blockType, const QString &property);
 };
 
 }

@@ -148,7 +148,6 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 		return new parts::Marker(deviceInfo, port, *mEngine);
 	}
 
-	qDebug() << "Unknown device " + deviceInfo.toString() + " requested on port " + port.name();
 	return nullptr;
 }
 
