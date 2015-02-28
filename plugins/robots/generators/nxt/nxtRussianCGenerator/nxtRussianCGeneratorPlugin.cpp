@@ -27,24 +27,24 @@ QString NxtRussianCGeneratorPlugin::generatorName() const
 	return "nxtRussianC";
 }
 
-QList<qReal::ActionInfo> NxtRussianCGeneratorPlugin::actions()
-{
-	mGenerateCodeAction->setText(tr("Generate to Russian C"));
-	mGenerateCodeAction->setIcon(QIcon(":/images/generateRussianCCode.svg"));
-	qReal::ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
-	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+//QList<qReal::ActionInfo> NxtRussianCGeneratorPlugin::actions()
+//{
+//	mGenerateCodeAction->setText(tr("Generate to Russian C"));
+//	mGenerateCodeAction->setIcon(QIcon(":/images/generateRussianCCode.svg"));
+//	qReal::ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+//	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-	return { generateCodeActionInfo };
-}
+//	return { generateCodeActionInfo };
+//}
 
-QList<qReal::HotKeyActionInfo> NxtRussianCGeneratorPlugin::hotKeyActions()
-{
-	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
-	qReal::HotKeyActionInfo generateActionInfo("Generator.GenerateNxtRussianC"
-			, tr("Generate Russian C Code"), mGenerateCodeAction);
+//QList<qReal::HotKeyActionInfo> NxtRussianCGeneratorPlugin::hotKeyActions()
+//{
+//	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
+//	qReal::HotKeyActionInfo generateActionInfo("Generator.GenerateNxtRussianC"
+//			, tr("Generate Russian C Code"), mGenerateCodeAction);
 
-	return { generateActionInfo };
-}
+//	return { generateActionInfo };
+//}
 
 generatorBase::MasterGeneratorBase *NxtRussianCGeneratorPlugin::masterGenerator()
 {

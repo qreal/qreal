@@ -24,12 +24,7 @@ public:
 	TrikKitInterpreterPlugin();
 	~TrikKitInterpreterPlugin() override;
 
-	void init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
-			, const qReal::SystemEvents &systemEvents
-			, qReal::GraphicalModelAssistInterface &graphicalModel
-			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, kitBase::InterpreterControlInterface &interpreterControl) override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 	QString kitId() const override;
 	QString friendlyKitName() const override;

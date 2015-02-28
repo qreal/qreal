@@ -22,11 +22,9 @@ public:
 	NxtOsekCGeneratorPlugin();
 	~NxtOsekCGeneratorPlugin() override;
 
-	void init(const qReal::PluginConfigurator &configurator
-			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage) override;
-	QList<qReal::ActionInfo> actions() override;
-	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
+//	QList<qReal::ActionInfo> actions() override;
+//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;

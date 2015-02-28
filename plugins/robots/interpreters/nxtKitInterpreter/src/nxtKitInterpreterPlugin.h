@@ -22,35 +22,23 @@ public:
 	NxtKitInterpreterPlugin();
 	~NxtKitInterpreterPlugin() override;
 
-	void init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
-			, const qReal::SystemEvents &systemEvents
-			, qReal::GraphicalModelAssistInterface &graphicalModel
-			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, kitBase::InterpreterControlInterface &interpreterControl) override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 	QString kitId() const override;
-
 	QString friendlyKitName() const override;
 
 	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
+	kitBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
 			const kitBase::robotModel::RobotModelInterface *model) override;
 
-	kitBase::robotModel::RobotModelInterface *defaultRobotModel() override;
-
-	// Transfers ownership.
-	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
-
-	QList<qReal::ActionInfo> customActions() override;
-
+	QList<qReal::ActionInfo> customActions() override;  // Transfers ownership of embedded QActions
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
-
 	QString defaultSettingsFile() const override;
 
+	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
-
 	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 private slots:

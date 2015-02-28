@@ -13,14 +13,14 @@ TrikRuntimeUploaderPlugin::TrikRuntimeUploaderPlugin()
 	connect(mAction, &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
 }
 
-QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
-{
-	QAction *separator = new QAction(this);
-	separator->setSeparator(true);
-	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
-	qReal::ActionInfo info(mAction, "generators", "tools");
-	return { info, separatorInfo };
-}
+//QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
+//{
+//	QAction *separator = new QAction(this);
+//	separator->setSeparator(true);
+//	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
+//	qReal::ActionInfo info(mAction, "generators", "tools");
+//	return { info, separatorInfo };
+//}
 
 void TrikRuntimeUploaderPlugin::uploadRuntime()
 {

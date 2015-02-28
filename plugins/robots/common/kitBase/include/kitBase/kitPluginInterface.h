@@ -10,11 +10,9 @@
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
+#include <kitBase/kitPluginConfigurator.h>
 #include <kitBase/additionalPreferences.h>
 #include <kitBase/devicesConfigurationProvider.h>
-#include <kitBase/eventsForKitPluginInterface.h>
-#include <kitBase/interpreterControlInterface.h>
-#include <kitBase/robotModel/robotModelInterface.h>
 #include <kitBase/blocksBase/blocksFactoryInterface.h>
 
 namespace kitBase {
@@ -26,24 +24,9 @@ public:
 	virtual ~KitPluginInterface() {}
 
 	/// Passes to kit plugin objects that allow it to communicate with engine.
-	/// @param eventsForKitPlugin - object with events raised in interpreter that plugin can use to perform custom
-	///        actions, for example, starting and stopping of interpretation.
-	/// @param systemEvents - object with events from qrgui, like tab switching.
-	/// @param interpreterControl - interface with methods that allow plugin to control interpreter, such as starting
-	///        and stopping it.
-	virtual void init(const EventsForKitPluginInterface &eventsForKitPlugin
-			, const qReal::SystemEvents &systemEvents
-			, qReal::GraphicalModelAssistInterface &graphicalModel
-			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, InterpreterControlInterface &interpreterControl)
+	virtual void init(const KitPluginConfigurator &configurator)
 	{
-		Q_UNUSED(eventsForKitPlugin)
-		Q_UNUSED(systemEvents)
-		Q_UNUSED(graphicalModel)
-		Q_UNUSED(logicalModel)
-		Q_UNUSED(interpretersInterface)
-		Q_UNUSED(interpreterControl)
+		Q_UNUSED(configurator)
 	}
 
 	/// An identifier of constructor kit. Kit plugins with same kitId are automaticly groupped

@@ -14,8 +14,8 @@ class NxtRussianCGeneratorPlugin : public NxtGeneratorPluginBase
 public:
 	NxtRussianCGeneratorPlugin();
 
-	QList<qReal::ActionInfo> actions() override;
-	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+//	QList<qReal::ActionInfo> actions() override;
+//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;

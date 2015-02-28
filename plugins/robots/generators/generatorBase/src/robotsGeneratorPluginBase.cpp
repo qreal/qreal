@@ -103,22 +103,20 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 	return fileInfo;
 }
 
-void RobotsGeneratorPluginBase::init(const PluginConfigurator &configurator
-		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-		, qrtext::LanguageToolboxInterface &textLanguage)
+void RobotsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	mProjectManager = &configurator.projectManager();
-	mSystemEvents = &configurator.systemEvents();
-	mTextManager = &configurator.textManager();
+	mProjectManager = &configurator.qRealConfigurator().projectManager();
+	mSystemEvents = &configurator.qRealConfigurator().systemEvents();
+	mTextManager = &configurator.qRealConfigurator().textManager();
 
-	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepo = dynamic_cast<const qrRepo::RepoApi *>(&configurator.logicalModelApi().logicalRepoApi());
-	mProjectManager = &configurator.projectManager();
-	mRobotModelManager = &robotModelManager;
-	mTextLanguage = &textLanguage;
+	mMainWindowInterface = &configurator.qRealConfigurator().mainWindowInterpretersInterface();
+	mRepo = dynamic_cast<const qrRepo::RepoApi *>(&configurator.qRealConfigurator().logicalModelApi().logicalRepoApi());
+	mProjectManager = &configurator.qRealConfigurator().projectManager();
+	mRobotModelManager = &configurator.robotModelManager();
+	mTextLanguage = &configurator.textLanguage();
 
-	mParserErrorReporter.reset(new ParserErrorReporter(textLanguage, *mMainWindowInterface->errorReporter()
-			, configurator.logicalModelApi().editorManagerInterface()));
+	mParserErrorReporter.reset(new ParserErrorReporter(*mTextLanguage, *mMainWindowInterface->errorReporter()
+			, configurator.qRealConfigurator().logicalModelApi().editorManagerInterface()));
 
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));

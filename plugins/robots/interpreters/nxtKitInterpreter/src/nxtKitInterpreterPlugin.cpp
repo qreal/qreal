@@ -39,27 +39,28 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 	}
 }
 
-void NxtKitInterpreterPlugin::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
-		, const SystemEvents &systemEvents
-		, qReal::GraphicalModelAssistInterface &graphicalModel
-		, qReal::LogicalModelAssistInterface &logicalModel
-		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, kitBase::InterpreterControlInterface &interpreterControl)
+void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	connect(&eventsForKitPlugin, &kitBase::EventsForKitPluginInterface::robotModelChanged
+	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
+	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, this, &NxtKitInterpreterPlugin::onActiveTabChanged);
 
+	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
 	connect(&mRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
 	mRealRobotModel.checkConnection();
 
-	mTwoDModel->init(eventsForKitPlugin, systemEvents, graphicalModel
-			, logicalModel, interpretersInterface, interpreterControl);
+	mTwoDModel->init(configurator.eventsForKitPlugin()
+			, configurator.qRealConfigurator().systemEvents()
+			, configurator.qRealConfigurator().graphicalModelApi()
+			, configurator.qRealConfigurator().logicalModelApi()
+			, interpretersInterface
+			, configurator.interpreterControl());
 
 }
 

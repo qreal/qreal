@@ -5,8 +5,8 @@
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <qrgui/textEditor/languageInfo.h>
 #include <qrrepo/repoApi.h>
+#include <kitBase/kitPluginInterface.h>
 
-#include "generatorKitPluginInterface.h"
 #include "robotsGeneratorDeclSpec.h"
 #include "masterGeneratorBase.h"
 
@@ -16,18 +16,16 @@ class ParserErrorReporter;
 
 namespace generatorBase {
 
-class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public GeneratorKitPluginInterface
+class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public kitBase::KitPluginInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(generatorBase::GeneratorKitPluginInterface)
+	Q_INTERFACES(kitBase::KitPluginInterface)
 
 public:
 	RobotsGeneratorPluginBase();
 	~RobotsGeneratorPluginBase() override;
 
-	void init(const qReal::PluginConfigurator &configurator
-			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage) override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 protected slots:
 	/// Calls code generator. Returns true if operation was successful.
@@ -54,7 +52,7 @@ protected:
 	QFileInfo srcPath();
 	virtual QString defaultFilePath(const QString &project) const;
 	QFileInfo generateCodeForProcessing();
-	QString generatorName() const override;
+	virtual QString generatorName() const;
 
 	/// Returns an information about the language code on which will be generated;
 	/// this information will be used by text editors when user will be edit the generated code.

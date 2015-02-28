@@ -12,7 +12,7 @@ class TrikRuntimeUploaderPlugin : public TrikGeneratorPluginBase
 public:
 	TrikRuntimeUploaderPlugin();
 
-	QList<qReal::ActionInfo> actions() override;
+//	QList<qReal::ActionInfo> actions() override;
 
 private slots:
 	void uploadRuntime();

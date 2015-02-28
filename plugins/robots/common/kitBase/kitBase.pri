@@ -58,6 +58,7 @@ SOURCES += \
 HEADERS += \
 	$$PWD/include/kitBase/kitBaseDeclSpec.h \
 	$$PWD/include/kitBase/kitPluginInterface.h \
+	$$PWD/include/kitBase/kitPluginConfigurator.h \
 	$$PWD/include/kitBase/additionalPreferences.h \
 	$$PWD/include/kitBase/devicesConfigurationProvider.h \
 	$$PWD/include/kitBase/devicesConfigurationWidget.h \

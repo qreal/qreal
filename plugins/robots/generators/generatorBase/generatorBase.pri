@@ -14,7 +14,6 @@ TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_
 
 HEADERS += \
 	$$PWD/include/generatorBase/robotsGeneratorDeclSpec.h \
-	$$PWD/include/generatorBase/generatorKitPluginInterface.h \
 	$$PWD/include/generatorBase/robotsGeneratorPluginBase.h \
 	$$PWD/include/generatorBase/masterGeneratorBase.h \
 	$$PWD/include/generatorBase/generatorCustomizer.h \

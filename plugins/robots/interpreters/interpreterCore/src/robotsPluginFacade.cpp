@@ -220,8 +220,8 @@ void RobotsPluginFacade::initKitPlugins(const qReal::PluginConfigurator &configu
 	/// @todo: Check that this code works when different kit is selected
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-			kit->init(mEventsForKitPlugin, configurer.systemEvents(), configurer.graphicalModelApi()
-					, configurer.logicalModelApi(), configurer.mainWindowInterpretersInterface(), *mInterpreter);
+			kit->init(kitBase::KitPluginConfigurator(configurer
+					, mRobotModelManager, *mParser, mEventsForKitPlugin, *mInterpreter));
 
 			for (const kitBase::robotModel::RobotModelInterface *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);

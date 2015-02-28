@@ -20,12 +20,10 @@ public:
 	TrikQtsGeneratorPlugin();
 	~TrikQtsGeneratorPlugin() override;
 
-	QList<qReal::ActionInfo> actions() override;
-	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+//	QList<qReal::ActionInfo> actions() override;
+//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
-	void init(const qReal::PluginConfigurator &configurator
-			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage) override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;

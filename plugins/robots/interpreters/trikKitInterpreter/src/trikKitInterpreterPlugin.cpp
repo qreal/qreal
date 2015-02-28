@@ -43,22 +43,24 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 	}
 }
 
-void TrikKitInterpreterPlugin::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
-		, const SystemEvents &systemEvents
-		, qReal::GraphicalModelAssistInterface &graphicalModel
-		, qReal::LogicalModelAssistInterface &logicalModel
-		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, kitBase::InterpreterControlInterface &interpreterControl)
+void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	connect(&eventsForKitPlugin
+	connect(&configurator.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
+	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel
-			, logicalModel, interpretersInterface, interpreterControl);
+	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
+
+	mTwoDModelV6->init(configurator.eventsForKitPlugin()
+			, configurator.qRealConfigurator().systemEvents()
+			, configurator.qRealConfigurator().graphicalModelApi()
+			, configurator.qRealConfigurator().logicalModelApi()
+			, interpretersInterface
+			, configurator.interpreterControl());
 
 	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
 

@@ -20,45 +20,45 @@ TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
 {
 }
 
-QList<ActionInfo> TrikFSharpGeneratorPlugin::actions()
-{
-	mGenerateCodeAction->setText(tr("Generate FSharp code"));
-	mGenerateCodeAction->setIcon(QIcon(":/fSharp/images/generateFsCode.svg"));
-	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
-	connect(mGenerateCodeAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::generateCode);
+//QList<ActionInfo> TrikFSharpGeneratorPlugin::actions()
+//{
+//	mGenerateCodeAction->setText(tr("Generate FSharp code"));
+//	mGenerateCodeAction->setIcon(QIcon(":/fSharp/images/generateFsCode.svg"));
+//	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+//	connect(mGenerateCodeAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::generateCode);
 
-	mUploadProgramAction->setText(tr("Upload program FSharp"));
-	mUploadProgramAction->setIcon(QIcon(":/fSharp/images/uploadProgram.svg"));
-	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
-	connect(mUploadProgramAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::uploadProgram);
+//	mUploadProgramAction->setText(tr("Upload program FSharp"));
+//	mUploadProgramAction->setIcon(QIcon(":/fSharp/images/uploadProgram.svg"));
+//	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
+//	connect(mUploadProgramAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::uploadProgram);
 
-	mRunProgramAction->setText(tr("Run program FSharp"));
-	mRunProgramAction->setIcon(QIcon(":/fSharp/images/uploadAndExecuteProgram.svg"));
-	ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
-	connect(mRunProgramAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::runProgram);
+//	mRunProgramAction->setText(tr("Run program FSharp"));
+//	mRunProgramAction->setIcon(QIcon(":/fSharp/images/uploadAndExecuteProgram.svg"));
+//	ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
+//	connect(mRunProgramAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::runProgram);
 
-	mStopRobotAction->setText(tr("Stop robot"));
-	mStopRobotAction->setIcon(QIcon(":/fSharp/images/stopRobot.svg"));
-	ActionInfo stopRobotActionInfo(mStopRobotAction, "generators", "tools");
-	connect(mStopRobotAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::stopRobot);
+//	mStopRobotAction->setText(tr("Stop robot"));
+//	mStopRobotAction->setIcon(QIcon(":/fSharp/images/stopRobot.svg"));
+//	ActionInfo stopRobotActionInfo(mStopRobotAction, "generators", "tools");
+//	connect(mStopRobotAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::stopRobot);
 
-	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
-}
+//	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
+//}
 
-QList<HotKeyActionInfo> TrikFSharpGeneratorPlugin::hotKeyActions()
-{
-	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_H));
-	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
-	mRunProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
-	mStopRobotAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F6));
+//QList<HotKeyActionInfo> TrikFSharpGeneratorPlugin::hotKeyActions()
+//{
+//	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_H));
+//	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
+//	mRunProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
+//	mStopRobotAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F6));
 
-	HotKeyActionInfo generateCodeInfo("Generator.GenerateFSharp", tr("Generate FSharp Code"), mGenerateCodeAction);
-	HotKeyActionInfo uploadProgramInfo("Generator.UploadFSharp", tr("Upload FSharp Program"), mUploadProgramAction);
-	HotKeyActionInfo runProgramInfo("Generator.RunFSharp", tr("Run FSharp Program"), mRunProgramAction);
-	HotKeyActionInfo stopRobotInfo("Generator.StopFSharp", tr("Stop FSharp Robot"), mStopRobotAction);
+//	HotKeyActionInfo generateCodeInfo("Generator.GenerateFSharp", tr("Generate FSharp Code"), mGenerateCodeAction);
+//	HotKeyActionInfo uploadProgramInfo("Generator.UploadFSharp", tr("Upload FSharp Program"), mUploadProgramAction);
+//	HotKeyActionInfo runProgramInfo("Generator.RunFSharp", tr("Run FSharp Program"), mRunProgramAction);
+//	HotKeyActionInfo stopRobotInfo("Generator.StopFSharp", tr("Stop FSharp Robot"), mStopRobotAction);
 
-	return {generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo};
-}
+//	return {generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo};
+//}
 
 generatorBase::MasterGeneratorBase *TrikFSharpGeneratorPlugin::masterGenerator()
 {
