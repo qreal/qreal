@@ -90,18 +90,21 @@ void StylusItem::setBrushColor(const QString& text)
 
 QDomElement StylusItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
-		QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
-		foreach (AbstractItem *abstractItem, mAbstractListLine) {
-				LineItem *line = dynamic_cast<LineItem *>(abstractItem);
-				line->setSerializeName("stylusLine");
-				QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
-				stylusNode.appendChild(item);
-		}
-		return stylusNode;
+	QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
+	AbstractItem::serialize(stylusNode);
+	for (AbstractItem *abstractItem : mAbstractListLine) {
+			LineItem *line = dynamic_cast<LineItem *>(abstractItem);
+			line->setSerializeName("stylusLine");
+			QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
+			stylusNode.appendChild(item);
+	}
+
+	return stylusNode;
 }
 
 void StylusItem::deserialize(const QDomElement &element)
 {
+	AbstractItem::deserialize(element);
 	mAbstractListLine.clear();
 	recalculateProperties();
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.0.1">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.0.2">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -304,7 +304,7 @@
 					</explodesTo>
 				</logic>
 			</node>
-			<node displayedName="Variable Initialization" name="VariableInit" description="Assignes a given value to a given variable.">
+			<node displayedName="Variable Initialization" name="VariableInit" description="Assigns a given value to a given variable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/variableInitBlock.png" x1="0" y2="50" x2="50"/>
@@ -1733,7 +1733,7 @@
 			<node displayedName="Wait Gamepad Button" name="TrikWaitGamepadButton" description="Waits for Android gamepad 'magic button' press. Buttons are identified by numbers from 1 to 5 (from left to right)">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitGamepadButtonBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-30" y="60" text="Wait gamepad button" background="white"/>
@@ -1757,7 +1757,7 @@
 			<node displayedName="Wait Pad Press" name="TrikWaitPadPress" description="Waits for Android gamepad pad press (left pad has number 1, right pad - number 2).">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitPadPressBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-20" y="60" text="Wait pad press" background="white"/>
@@ -1781,7 +1781,7 @@
 			<node displayedName="Wait for Gamepad Wheel" name="TrikWaitGamepadWheel" description="Waits till the value returned by gamepad wheel be greater or less than the given in the 'Angle' parameter value. Angle is measured from -100 (max left) to 100 (max right).">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitGamepadWheelBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-70" y="-30" text="Wait for Gamepad Wheel" hard="true"/>
@@ -1810,7 +1810,7 @@
 			<node displayedName="Wait for Gamepad Disconnect" name="TrikWaitGamepadDisconnect" description="Waits until Android gamepad is disconnected.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitGamepadDisconnectBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-70" y="-30" text="Wait for Gamepad Disconnect" hard="true"/>
@@ -1828,7 +1828,7 @@
 			<node displayedName="Wait for Gamepad Connect" name="TrikWaitGamepadConnect" description="Waits until Android gamepad is connected.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitGamepadConnectBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-70" y="-30" text="Wait for Gamepad Connect" hard="true"/>

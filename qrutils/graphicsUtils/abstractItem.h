@@ -85,7 +85,16 @@ public:
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
+	/// Returns a unique identifier of an item if it was assigned in the model.
+	QString id() const;
+
+	/// Sets a unique identifier of an item.
+	void setId(const QString &id);
+
 protected:
+	virtual void serialize(QDomElement &element);
+	virtual void deserialize(const QDomElement &element);
+
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 	DragState mDragState;
@@ -97,6 +106,7 @@ protected:
 	qreal mX2;
 	qreal mY2;
 	QGraphicsView *mView;
+	QString mId;
 };
 
 }

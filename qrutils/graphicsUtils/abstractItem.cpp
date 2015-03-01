@@ -425,6 +425,26 @@ void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
+QString AbstractItem::id() const
+{
+	return mId;
+}
+
+void AbstractItem::setId(const QString &id)
+{
+	mId = id;
+}
+
+void AbstractItem::serialize(QDomElement &element)
+{
+	element.setAttribute("id", id());
+}
+
+void AbstractItem::deserialize(const QDomElement &element)
+{
+	setId(element.attribute("id", id()));
+}
+
 void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu *menu = new QMenu();

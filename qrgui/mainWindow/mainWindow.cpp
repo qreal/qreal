@@ -66,8 +66,6 @@ using namespace qReal;
 using namespace qReal::commands;
 using namespace gui;
 
-const QString unsavedDir = "unsaved";
-
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
 	, mController(new Controller)
@@ -76,7 +74,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	, mRootIndex(QModelIndex())
 	, mErrorReporter(nullptr)
 	, mIsFullscreen(false)
-	, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 	, mPreferencesDialog(this)
 	, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 	, mRecentProjectsMapper(new QSignalMapper())
@@ -88,7 +85,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
-	initSettingsManager();
 	registerMetaTypes();
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setVisible(false);
@@ -231,6 +227,8 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
+	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() { mUi->menuPanels->addActions(createPopupMenu()->actions()); });
+
 	setDefaultShortcuts();
 }
 
@@ -271,7 +269,7 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
-	QDir().rmdir(mTempDir);
+	QDir().rmdir(SettingsManager::value("temp").toString());
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -790,15 +788,6 @@ void MainWindow::showPreferencesDialog()
 	}
 
 	mProjectManager->reinitAutosaver();
-}
-
-void MainWindow::initSettingsManager()
-{
-	SettingsManager::setValue("temp", mTempDir);
-	QDir dir(qApp->applicationDirPath());
-	if (!dir.cd(mTempDir)) {
-		QDir().mkdir(mTempDir);
-	}
 }
 
 void MainWindow::openSettingsDialog(const QString &tab)

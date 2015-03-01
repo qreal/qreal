@@ -14,7 +14,7 @@ public:
 	explicit SceneGridHandler(NodeElement *mNode);
 	~SceneGridHandler();
 
-	void delUnusedLines();
+	void deleteGuides();
 
 	/// aligning the coordinates of a point to grid
 	qreal makeGridAlignment(qreal coord);
@@ -64,9 +64,7 @@ private:
 
 	NodeElement *mNode;
 	/// Lines of guides
-	QVector<QLineF> mLines;
-	/// Pixmap of guides lines
-	QPixmap *mGuidesPixmap;
+	QList<QGraphicsLineItem *> mGuides;
 
 	bool mShowAlignment;
 	/** @brief if true, the object will be aligned to indexGrid */

@@ -235,7 +235,6 @@ private slots:
 
 	void showPreferencesDialog();
 
-	void initSettingsManager();
 	void connectActions();
 	void connectSystemEvents();
 	void initActionsFromSettings();

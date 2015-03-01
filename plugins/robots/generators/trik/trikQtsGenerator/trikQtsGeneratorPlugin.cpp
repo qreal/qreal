@@ -143,8 +143,8 @@ void TrikQtsGeneratorPlugin::stopRobot()
 	}
 
 	mCommunicator->runDirectCommand(
-			"brick.system(\"killall aplay\"); \n"
-			"brick.system(\"killall vlc\");"
+			"script.system(\"killall aplay\"); \n"
+			"script.system(\"killall vlc\");"
 			, true
 			);
 }
