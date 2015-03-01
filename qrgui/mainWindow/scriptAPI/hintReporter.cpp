@@ -19,7 +19,7 @@ HintReporter::HintReporter(QWidget *parent, QString const &message, int const li
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
 	setAutoFillBackground(false);
-	setStyleSheet("background-color: #ffffff; border: 1px solid; border-radius: 7px; border-color: #303030;"); // по вкусу
+	setStyleSheet("background-color: #ffffff; border: 1px solid; border-radius: 7px; border-color: #303030;");
 	setMinimumSize(300, 50);
 	move(parent->width() - this->width(), 0);
 	setWordWrap(true);

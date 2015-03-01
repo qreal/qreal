@@ -161,7 +161,11 @@ void ScriptAPI::scroll(QScrollArea *area, QWidget *widget, int const duration)
 
 	mVirtualCursor->moveToPoint(xcoord, ycoord, duration/2);
 
-	int const diff = area->verticalScrollBar()->height() - area->verticalScrollBar()->pageStep() + widget->pos().y() * area->verticalScrollBar()->maximum() / widget->parentWidget()->height();
+	int const diff = area->verticalScrollBar()->height()
+			- area->verticalScrollBar()->pageStep()
+			+ widget->pos().y()
+			* area->verticalScrollBar()->maximum()
+			/ widget->parentWidget()->height();
 	ycoord = ycoord + diff * area->verticalScrollBar()->height() / area->verticalScrollBar()->maximum();
 
 	QPoint target = mVirtualCursor->parentWidget()->mapFromGlobal(QPoint(xcoord, ycoord));
