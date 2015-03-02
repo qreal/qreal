@@ -12,6 +12,37 @@ NxtRussianCGeneratorPlugin::NxtRussianCGeneratorPlugin()
 {
 }
 
+QList<kitBase::robotModel::RobotModelInterface *> NxtRussianCGeneratorPlugin::robotModels()
+{
+	return {};
+}
+
+kitBase::blocksBase::BlocksFactoryInterface *NxtRussianCGeneratorPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
+{
+	return nullptr;
+}
+
+QList<kitBase::AdditionalPreferences *> NxtRussianCGeneratorPlugin::settingsWidgets()
+{
+	return {};
+}
+
+QList<qReal::ActionInfo> NxtRussianCGeneratorPlugin::customActions()
+{
+	return {};
+}
+
+QList<qReal::HotKeyActionInfo> NxtRussianCGeneratorPlugin::hotKeyActions()
+{
+	return {};
+}
+
+QIcon NxtRussianCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	return QIcon();
+}
+
 QString NxtRussianCGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString::fromUtf8("russianC/%1/%1.си").arg(projectName);

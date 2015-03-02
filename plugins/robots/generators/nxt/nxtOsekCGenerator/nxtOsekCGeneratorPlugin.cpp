@@ -66,6 +66,37 @@ void NxtOsekCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configu
 	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtOsekCGeneratorPlugin::onUploadingComplete);
 }
 
+QList<kitBase::robotModel::RobotModelInterface *> NxtOsekCGeneratorPlugin::robotModels()
+{
+	return {};
+}
+
+kitBase::blocksBase::BlocksFactoryInterface *NxtOsekCGeneratorPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
+{
+	return nullptr;
+}
+
+QList<kitBase::AdditionalPreferences *> NxtOsekCGeneratorPlugin::settingsWidgets()
+{
+	return {};
+}
+
+QList<ActionInfo> NxtOsekCGeneratorPlugin::customActions()
+{
+	return {};
+}
+
+QList<HotKeyActionInfo> NxtOsekCGeneratorPlugin::hotKeyActions()
+{
+	return {};
+}
+
+QIcon NxtOsekCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	return QIcon();
+}
+
 //QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()
 //{
 //	checkNxtTools();

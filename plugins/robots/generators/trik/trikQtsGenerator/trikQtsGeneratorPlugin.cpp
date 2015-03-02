@@ -33,6 +33,37 @@ void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configur
 	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
 }
 
+QList<kitBase::robotModel::RobotModelInterface *> TrikQtsGeneratorPlugin::robotModels()
+{
+	return {};
+}
+
+kitBase::blocksBase::BlocksFactoryInterface *TrikQtsGeneratorPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
+{
+	return nullptr;
+}
+
+QList<kitBase::AdditionalPreferences *> TrikQtsGeneratorPlugin::settingsWidgets()
+{
+	return {};
+}
+
+QList<ActionInfo> TrikQtsGeneratorPlugin::customActions()
+{
+	return {};
+}
+
+QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
+{
+	return {};
+}
+
+QIcon TrikQtsGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	return QIcon();
+}
+
 //QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
 //{
 //	QAction *separator = new QAction(this);

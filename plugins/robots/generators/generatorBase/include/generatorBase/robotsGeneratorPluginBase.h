@@ -27,6 +27,8 @@ public:
 
 	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
+	QString friendlyKitName() const override;
+
 protected slots:
 	/// Calls code generator. Returns true if operation was successful.
 	/// @param openTab If true after code generation a tab with generated code will be opened.

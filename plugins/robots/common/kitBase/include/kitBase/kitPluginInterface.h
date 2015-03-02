@@ -33,7 +33,8 @@ public:
 	/// together extending each other.
 	virtual QString kitId() const = 0;
 
-	/// String that will be displayed to users as the name of the kit.
+	/// String that will be displayed to users as the name of the kit. If more than one kit plugins with the same
+	/// id implemented in system friendly name can be specified only in one of them.
 	virtual QString friendlyKitName() const = 0;
 
 	/// Returns a list of robot models supported by this kit plugin.

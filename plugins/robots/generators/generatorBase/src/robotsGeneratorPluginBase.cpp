@@ -125,6 +125,12 @@ void RobotsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &confi
 	connect(mSystemEvents, SIGNAL(codeTabClosed(QFileInfo)), this, SLOT(removeCode(QFileInfo)));
 }
 
+QString RobotsGeneratorPluginBase::friendlyKitName() const
+{
+	// Kit friendly name is already defined in interpreter kit plugins.
+	return QString();
+}
+
 bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 {
 	mProjectManager->save();

@@ -20,6 +20,37 @@ TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
 {
 }
 
+QList<kitBase::robotModel::RobotModelInterface *> TrikFSharpGeneratorPlugin::robotModels()
+{
+	return {};
+}
+
+kitBase::blocksBase::BlocksFactoryInterface *TrikFSharpGeneratorPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
+{
+	return nullptr;
+}
+
+QList<kitBase::AdditionalPreferences *> TrikFSharpGeneratorPlugin::settingsWidgets()
+{
+	return {};
+}
+
+QList<ActionInfo> TrikFSharpGeneratorPlugin::customActions()
+{
+	return {};
+}
+
+QList<HotKeyActionInfo> TrikFSharpGeneratorPlugin::hotKeyActions()
+{
+	return {};
+}
+
+QIcon TrikFSharpGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	return QIcon();
+}
+
 //QList<ActionInfo> TrikFSharpGeneratorPlugin::actions()
 //{
 //	mGenerateCodeAction->setText(tr("Generate FSharp code"));

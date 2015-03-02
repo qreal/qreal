@@ -70,6 +70,9 @@ private:
 	/// Loads actions from kit plugins.
 	void initKitPluginActions();
 
+	/// Creates action with menu that lets switching between robot models.
+	QAction *produceMenuAction(const QString &kitId, QActionGroup * const subActions) const;
+
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
 	KitPluginManager &mKitPluginManager;
 

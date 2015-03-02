@@ -21,7 +21,7 @@ KitPluginManager::~KitPluginManager()
 
 QList<QString> KitPluginManager::kitIds() const
 {
-	return mPluginInterfaces.keys();
+	return mPluginInterfaces.uniqueKeys();
 }
 
 QList<kitBase::KitPluginInterface *> KitPluginManager::kitsById(const QString &kitId) const

@@ -7,7 +7,7 @@ QT += widgets
 TEMPLATE = lib
 CONFIG += plugin
 
-DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
+DESTDIR = $$DESTDIR/plugins/tools/
 
 includes(plugins/robots/generators/trik/trikGeneratorBase \
 		plugins/robots/generators/generatorBase \

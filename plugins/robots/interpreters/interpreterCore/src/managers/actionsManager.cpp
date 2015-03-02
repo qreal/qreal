@@ -162,7 +162,9 @@ void ActionsManager::initKitPluginActions()
 	connect(robotModelMapper, SIGNAL(mapped(QObject*)), this, SLOT(onRobotModelActionChecked(QObject*)));
 
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
-		for (kitBase::KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+		const QList<kitBase::KitPluginInterface *> kits = mKitPluginManager.kitsById(kitId);
+		QActionGroup * const group = new QActionGroup(this);
+		for (kitBase::KitPluginInterface * const kitPlugin : kits) {
 			mPluginActionInfos << kitPlugin->customActions();
 			for (kitBase::robotModel::RobotModelInterface * const robotModel : kitPlugin->robotModels()) {
 				const QIcon &icon = kitPlugin->iconForFastSelector(*robotModel);
@@ -174,13 +176,42 @@ void ActionsManager::initKitPluginActions()
 				QAction * const fastSelectionAction = new QAction(icon, text, nullptr);
 				robotModelMapper->setMapping(fastSelectionAction, robotModel);
 				connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
-				fastSelectionAction->setCheckable(true);
 				fastSelectionAction->setObjectName("switchTo" + kitId + robotModel->name());
-				const qReal::ActionInfo actionInfo(fastSelectionAction, "interpreters", "tools");
-				mRobotModelActions.insertMulti(kitId, actionInfo);
+				fastSelectionAction->setCheckable(true);
+				group->addAction(fastSelectionAction);
 			}
 
 			mPluginHotKeyActionInfos << kitPlugin->hotKeyActions();
 		}
+
+		if (!kits.isEmpty()) {
+			QAction * const action = produceMenuAction(kitId, group);
+			const qReal::ActionInfo actionInfo(action, "interpreters", "tools");
+			mRobotModelActions.insert(kitId, actionInfo);
+		}
 	}
+}
+
+QAction *ActionsManager::produceMenuAction(const QString &kitId, QActionGroup * const subActions) const
+{
+	QAction * const menuAction = new QAction(QIcon(), tr("Switch to"), nullptr);
+	menuAction->setMenu(new QMenu);
+	menuAction->menu()->addActions(subActions->actions());
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, [this, menuAction, kitId](kitBase::robotModel::RobotModelInterface &model) {
+		const QString actionName = "switchTo" + kitId + model.name();
+		for (QAction * const action : menuAction->menu()->actions()) {
+			if (action->objectName() == actionName) {
+				menuAction->setIcon(action->icon());
+				action->setChecked(true);
+				return;
+			}
+		}
+
+		menuAction->setIcon(QIcon());
+	});
+
+	connect(menuAction, &QAction::triggered, [=]() { menuAction->menu()->exec(QCursor::pos()); });
+
+	return menuAction;
 }
