@@ -44,7 +44,7 @@ MainClass::MainClass(
 	compilePlugin(mGeneratedCodeDir + pathToQrmcGeneratedCode);
 	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDir + pathToQrmcGeneratedPlugin);
 
-	InterpreterEditorManager interpreterEditorManager(fileName);
+	InterpreterEditorManager interpreterEditorManager(fileName, nullptr);
 	EditorManager qrxcEditorManager(nullptr);
 	// we cast qrxc plugin to Editor Manager
 

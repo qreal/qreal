@@ -50,7 +50,7 @@ QStringList ConvertingMethods::convertExplosionListIntoStringList(QList<Explosio
 }
 
 QString ConvertingMethods::transformateOutput(
-		QList<QPair<QString, QString> > const &output
+		QStringList const &output
 		, Id const &id
 		, QString const &name
 		)
@@ -62,12 +62,21 @@ QString ConvertingMethods::transformateOutput(
 		result.append(name + "-");
 	}
 
-	foreach (QString const &outputElement, output) {
+	for (auto &outputElement : output) {
 		result.append(outputElement + ",");
 	}
 
 	return result;
 }
+QString ConvertingMethods::transformateOutputOther(
+		QList<QPair<QString, QString>> const &output
+		, Id const &id
+		, QString const &name
+		)
+{
+	return "";
+}
+
 
 QSet<QString> ConvertingMethods::resultToCompare(QString const &method)
 {

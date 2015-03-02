@@ -23,8 +23,11 @@ RCC_DIR = .moc
 
 TRANSLATIONS = editorPluginTestingFramework_ru.ts
 
-LIBS += -L../../bin -lqrrepo -lqrkernel -lqrutils -lqrmc
-
+LIBS += -L../../bin -lqrrepo -lqrtext -lqrkernel -lqrutils -lqrmc -lqrgui-plugin-manager -lqrgui-editor -lqrgui-thirdparty -lqrgui-tool-plugin-interface \
+		 -lqscintilla2 	-lqrgui-models -lqrgui-controller -lqrgui-dialogs -lqrgui-preferences-dialog \
+			-lqrgui-text-editor -lqrgui-mouse-gestures -lqrgui-hotkey-manager -lqrgui-brand-manager  \
+			-lqrgui-facade -lqslog \
+                        
 HEADERS += \
 	mainClass.h \
 	qrmcLauncher.h \
@@ -77,6 +80,7 @@ SOURCES += \
 	methodsTesterForQrxcAndInterpreter.cpp \
 	configurationFileParser.cpp \
 	methodsCheckerForTravis.cpp
+
 
 win32 {
 	QMAKE_POST_LINK = "cmd /C "xcopy methodsToTest ..\\..\\bin /s /e /q /y /i &&"\

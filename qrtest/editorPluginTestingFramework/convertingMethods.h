@@ -22,10 +22,17 @@ public:
 
 	/// converter to string with special symbols to parse in html
 	static QString transformateOutput(
+			QStringList const &output
+			, qReal::Id const &id = qReal::Id::rootId()
+			, QString const &name = ""
+			);
+        /// converter to string with special symbols to parse in html   ololo
+	static QString transformateOutputOther(
 			QList<QPair<QString, QString>> const &output
 			, qReal::Id const &id = qReal::Id::rootId()
 			, QString const &name = ""
 			);
+
 
 	/// methods for parsing (common for htmlMaker and methodsCheckerForTravis)
 	/// parses result for one method - because results can be equal, but in different order

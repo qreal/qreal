@@ -42,12 +42,20 @@ public:
 protected:
 	virtual QStringList generateList(EditorInterface *editorInterface) const = 0;
 
-	virtual QList<QPair<QString, QString>> callMethod(
+	virtual QStringList callMethod(
 			EditorInterface *editorInterface
 			, QString const &diagram
 			, QString const &element = ""
 			, QString const &property = ""
 			) const = 0;
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const = 0;
+
 
 private:
 	EditorInterface *mEditorInterface;
@@ -60,7 +68,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForDiagrams : public MethodsTe
 
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			QString const additionalString = ConvertingMethods::transformateOutput(
-					callMethod(editorInterface, diagram), Id::rootId(), diagram);
+					callMethod(editorInterface, diagram, "", ""), Id::rootId(), diagram);
 			resultList.append(additionalString);
 			resultList.append("|");
 		}
@@ -77,7 +85,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForElements : public MethodsTe
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			foreach (QString const &element, editorInterface->elements(diagram)) {
 				QString const additionalString = ConvertingMethods::transformateOutput(
-						callMethod(editorInterface, diagram, element), Id::rootId(), element);
+						callMethod(editorInterface, diagram, element, ""), Id::rootId(), element);
 				resultList.append(additionalString);
 				resultList.append("|");
 			}
@@ -145,6 +153,16 @@ class MethodsTesterForQrxcAndQrmc::PropertiesWithDefaultValuesStringGenerator
 		return editorInterface->getPropertiesWithDefaultValues(element);
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new PropertiesWithDefaultValuesStringGenerator();
@@ -172,6 +190,17 @@ class MethodsTesterForQrxcAndQrmc::TypesContainedByStringGenerator
 		return editorInterface->getTypesContainedBy(element);
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new TypesContainedByStringGenerator();
@@ -187,6 +216,16 @@ class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 	virtual QString methodName() const
 	{
 		return "Get possible edges";
+	}
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual QStringList callMethod(
@@ -240,6 +279,16 @@ class MethodsTesterForQrxcAndQrmc::IsNodeOrEdgeStringGenerator
 		return ConvertingMethods::convertIntIntoStringList(editorInterface->isNodeOrEdge(element));
 	}
 
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+	}
+
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new IsNodeOrEdgeStringGenerator();
@@ -264,6 +313,17 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyNamesStringGenerator
 	{
 		Q_UNUSED(property);
 		return editorInterface->getPropertyNames(diagram, element);
+	}
+
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -292,6 +352,17 @@ class MethodsTesterForQrxcAndQrmc::GetReferencePropertiesStringGenerator
 		return editorInterface->getReferenceProperties(diagram, element);
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new GetReferencePropertiesStringGenerator();
@@ -318,6 +389,17 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyTypesStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->getPropertyType(element, property));
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new GetPropertyTypesStringGenerator();
@@ -342,6 +424,16 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyDefaultValueStringGenerator
 	{
 		Q_UNUSED(diagram);
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->getPropertyDefaultValue(element, property));
+	}
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -382,6 +474,17 @@ class MethodsTesterForQrxcAndQrmc::GetParentsOfStringGenerator
 		return result;
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new GetParentsOfStringGenerator();
@@ -408,6 +511,17 @@ class MethodsTesterForQrxcAndQrmc::DiagramNameStringGenerator
 		Q_UNUSED(element);
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramName(diagram));
+	}
+
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -438,6 +552,17 @@ class MethodsTesterForQrxcAndQrmc::DiagramNodeNameStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramNodeName(diagram));
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new DiagramNodeNameStringGenerator();
@@ -464,6 +589,16 @@ class MethodsTesterForQrxcAndQrmc::ElementNameStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementName(diagram, element));
 	}
 
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new ElementNameStringGenerator();
@@ -479,7 +614,7 @@ class MethodsTesterForQrxcAndQrmc::ElementMouseGestureStringGenerator
 		return "Element mouse gesture";
 	}
 
-	virtual QList<QPair<QString, QString>>  callMethod(
+	virtual QStringList callMethod(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -488,6 +623,16 @@ class MethodsTesterForQrxcAndQrmc::ElementMouseGestureStringGenerator
 	{
 		Q_UNUSED(property);
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementMouseGesture(diagram, element));
+	}
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -505,7 +650,7 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 		return "Element description";
 	}
 
-	virtual QList<QPair<QString, QString>> callMethod(
+	virtual QStringList callMethod(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -514,6 +659,16 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 	{
 		Q_UNUSED(property);
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementDescription(diagram, element));
+	}
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -541,6 +696,17 @@ class MethodsTesterForQrxcAndQrmc::PropertyDescriptionStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDescription(diagram, element, property));
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new PropertyDescriptionStringGenerator();
@@ -564,6 +730,17 @@ class MethodsTesterForQrxcAndQrmc::PropertyDisplayedNameStringGenerator
 			) const
 	{
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDisplayedName(diagram, element, property));
+	}
+
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -603,6 +780,17 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 		return result;
 	}
 
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new IsParentOfStringGenerator();
@@ -629,6 +817,16 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupListStringGenerator
 		return editorInterface->diagramPaletteGroupList(diagram, element);
 	}
 
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
+	}
+
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new DiagramPaletteGroupListStringGenerator();
@@ -642,6 +840,16 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 	virtual QString methodName() const
 	{
 		return "Diagram palette group description";
+	}
+
+	virtual QList<QPair<QString, QString>> callMethodOther(
+			EditorInterface *editorInterface
+			, QString const &diagram
+			, QString const &element = ""
+			, QString const &property = ""
+			) const
+	{
+
 	}
 
 	virtual QStringList callMethod(
