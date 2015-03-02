@@ -4,6 +4,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 
 using namespace trik;
 
@@ -11,6 +12,9 @@ TrikRuntimeUploaderPlugin::TrikRuntimeUploaderPlugin()
 	: mAction(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime"), nullptr))
 {
 	connect(mAction, &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
+	qReal::SettingsListener::listen("SelectedRobotKit", [this](const QString selectedKit) {
+		mAction->setVisible(selectedKit == "trikKit");
+	});
 }
 
 void TrikRuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurator)
