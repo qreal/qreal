@@ -8,24 +8,9 @@
 using namespace nxt::russianC;
 
 NxtRussianCGeneratorPlugin::NxtRussianCGeneratorPlugin()
-	: mGenerateCodeAction(new QAction(nullptr))
+	: NxtGeneratorPluginBase("NxtRussialCGeneratorRobotModel", tr("Code on Russian C"))
+	, mGenerateCodeAction(new QAction(nullptr))
 {
-}
-
-QList<kitBase::robotModel::RobotModelInterface *> NxtRussianCGeneratorPlugin::robotModels()
-{
-	return {};
-}
-
-kitBase::blocksBase::BlocksFactoryInterface *NxtRussianCGeneratorPlugin::blocksFactoryFor(
-		const kitBase::robotModel::RobotModelInterface *model)
-{
-	return nullptr;
-}
-
-QList<kitBase::AdditionalPreferences *> NxtRussianCGeneratorPlugin::settingsWidgets()
-{
-	return {};
 }
 
 QList<qReal::ActionInfo> NxtRussianCGeneratorPlugin::customActions()

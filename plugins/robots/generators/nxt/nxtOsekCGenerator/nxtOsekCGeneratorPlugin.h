@@ -24,12 +24,6 @@ public:
 
 	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
-	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
-	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-			const kitBase::robotModel::RobotModelInterface *model) override;
-
-	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
-
 	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;

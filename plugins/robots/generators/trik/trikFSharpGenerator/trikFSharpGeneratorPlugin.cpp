@@ -13,27 +13,12 @@ using namespace trik::fSharp;
 using namespace qReal;
 
 TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
-	: mGenerateCodeAction(new QAction(nullptr))
+	: TrikGeneratorPluginBase("TrikFSharpGeneratorRobotModel", tr("Code on F#"))
+	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
 {
-}
-
-QList<kitBase::robotModel::RobotModelInterface *> TrikFSharpGeneratorPlugin::robotModels()
-{
-	return {};
-}
-
-kitBase::blocksBase::BlocksFactoryInterface *TrikFSharpGeneratorPlugin::blocksFactoryFor(
-		const kitBase::robotModel::RobotModelInterface *model)
-{
-	return nullptr;
-}
-
-QList<kitBase::AdditionalPreferences *> TrikFSharpGeneratorPlugin::settingsWidgets()
-{
-	return {};
 }
 
 QList<ActionInfo> TrikFSharpGeneratorPlugin::customActions()

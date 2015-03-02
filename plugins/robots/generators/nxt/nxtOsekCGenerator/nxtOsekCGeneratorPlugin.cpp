@@ -13,7 +13,8 @@ using namespace qReal;
 using namespace gui;
 
 NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
-	: mGenerateCodeAction(new QAction(nullptr))
+	: NxtGeneratorPluginBase("NxtOsekCGeneratorRobotModel", tr("Code on NXT OSEK C"))
+	, mGenerateCodeAction(new QAction(nullptr))
 	, mFlashRobotAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mNxtToolsPresent(false)
@@ -64,22 +65,6 @@ void NxtOsekCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configu
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtOsekCGeneratorPlugin::onUploadingComplete);
-}
-
-QList<kitBase::robotModel::RobotModelInterface *> NxtOsekCGeneratorPlugin::robotModels()
-{
-	return {};
-}
-
-kitBase::blocksBase::BlocksFactoryInterface *NxtOsekCGeneratorPlugin::blocksFactoryFor(
-		const kitBase::robotModel::RobotModelInterface *model)
-{
-	return nullptr;
-}
-
-QList<kitBase::AdditionalPreferences *> NxtOsekCGeneratorPlugin::settingsWidgets()
-{
-	return {};
 }
 
 QList<ActionInfo> NxtOsekCGeneratorPlugin::customActions()

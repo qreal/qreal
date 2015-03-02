@@ -13,7 +13,8 @@ using namespace trik::qts;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
-	: mGenerateCodeAction(new QAction(nullptr))
+	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Code on JavaScript"))
+	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
@@ -31,22 +32,6 @@ void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configur
 	RobotsGeneratorPluginBase::init(configurator);
 	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
 	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
-}
-
-QList<kitBase::robotModel::RobotModelInterface *> TrikQtsGeneratorPlugin::robotModels()
-{
-	return {};
-}
-
-kitBase::blocksBase::BlocksFactoryInterface *TrikQtsGeneratorPlugin::blocksFactoryFor(
-		const kitBase::robotModel::RobotModelInterface *model)
-{
-	return nullptr;
-}
-
-QList<kitBase::AdditionalPreferences *> TrikQtsGeneratorPlugin::settingsWidgets()
-{
-	return {};
 }
 
 QList<ActionInfo> TrikQtsGeneratorPlugin::customActions()
