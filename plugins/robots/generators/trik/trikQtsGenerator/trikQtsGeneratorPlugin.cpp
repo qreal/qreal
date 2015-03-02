@@ -13,7 +13,7 @@ using namespace trik::qts;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
-	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Code on JavaScript"))
+	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Generation (QtScript)"))
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
@@ -46,7 +46,8 @@ QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
 
 QIcon TrikQtsGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
-	return QIcon();
+	Q_UNUSED(robotModel)
+	return QIcon(":/images/switch-to-trik-qts.svg");
 }
 
 //QList<ActionInfo> TrikQtsGeneratorPlugin::actions()

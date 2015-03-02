@@ -7,7 +7,8 @@
 #include <nxtKit/blocks/nxtBlocksFactory.h>
 
 #include "nxtAdditionalPreferences.h"
-#include "robotModel/real/realRobotModel.h"
+#include "robotModel/real/usbRealRobotModel.h"
+#include "robotModel/real/bluetoothRealRobotModel.h"
 #include "robotModel/twoD/twoDRobotModel.h"
 
 namespace nxt {
@@ -46,7 +47,8 @@ private slots:
 	void onActiveTabChanged(const qReal::Id &rootElementId);
 
 private:
-	robotModel::real::RealRobotModel mRealRobotModel;
+	robotModel::real::UsbRealRobotModel mUsbRealRobotModel;
+	robotModel::real::BluetoothRealRobotModel mBluetoothRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 
 	/// @todo Use shared pointers instead of this sh~.

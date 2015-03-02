@@ -4,5 +4,6 @@
         <file>images/stopRobot.svg</file>
         <file>images/uploadAndExecuteProgram.svg</file>
         <file>images/uploadProgram.svg</file>
+        <file>images/switch-to-trik-f-sharp.svg</file>
     </qresource>
 </RCC>

@@ -13,7 +13,7 @@ using namespace trik::fSharp;
 using namespace qReal;
 
 TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
-	: TrikGeneratorPluginBase("TrikFSharpGeneratorRobotModel", tr("Code on F#"))
+	: TrikGeneratorPluginBase("TrikFSharpGeneratorRobotModel", tr("Generation (F#)"))
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
@@ -33,7 +33,8 @@ QList<HotKeyActionInfo> TrikFSharpGeneratorPlugin::hotKeyActions()
 
 QIcon TrikFSharpGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
-	return QIcon();
+	Q_UNUSED(robotModel)
+	return QIcon(":/fSharp/images/switch-to-trik-f-sharp.svg");
 }
 
 //QList<ActionInfo> TrikFSharpGeneratorPlugin::actions()

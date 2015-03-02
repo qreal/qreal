@@ -51,7 +51,7 @@ QString TwoDRobotModel::name() const
 
 QString TwoDRobotModel::friendlyName() const
 {
-	QRegExp versionRegExp("\\(.*\\)");
+	QRegExp versionRegExp("\\(v.*\\)");
 	const int pos = versionRegExp.indexIn(mRealModel->friendlyName());
 	if (pos == -1) {
 		return tr("2D Model");

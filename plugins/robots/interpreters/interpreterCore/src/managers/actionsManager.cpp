@@ -172,7 +172,7 @@ void ActionsManager::initKitPluginActions()
 					continue;
 				}
 
-				const QString &text = tr("Switch to ") + robotModel->friendlyName();
+				const QString &text = robotModel->friendlyName();
 				QAction * const fastSelectionAction = new QAction(icon, text, nullptr);
 				robotModelMapper->setMapping(fastSelectionAction, robotModel);
 				connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));

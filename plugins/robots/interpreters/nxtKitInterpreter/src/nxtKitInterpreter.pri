@@ -18,6 +18,8 @@ HEADERS += \
 	$$PWD/nxtDisplayWidget.h \
 	$$PWD/nxtKitInterpreterPlugin.h \
 	$$PWD/robotModel/real/realRobotModel.h \
+	$$PWD/robotModel/real/usbRealRobotModel.h \
+	$$PWD/robotModel/real/bluetoothRealRobotModel.h \
 	$$PWD/robotModel/real/parts/nxtInputDevice.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
@@ -45,6 +47,8 @@ SOURCES += \
 	$$PWD/nxtDisplayWidget.cpp \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
+	$$PWD/robotModel/real/usbRealRobotModel.cpp \
+	$$PWD/robotModel/real/bluetoothRealRobotModel.cpp \
 	$$PWD/robotModel/real/parts/nxtInputDevice.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \

@@ -13,7 +13,7 @@ using namespace qReal;
 using namespace gui;
 
 NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
-	: NxtGeneratorPluginBase("NxtOsekCGeneratorRobotModel", tr("Code on NXT OSEK C"))
+	: NxtGeneratorPluginBase("NxtOsekCGeneratorRobotModel", tr("Generation (NXT OSEK C)"))
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mFlashRobotAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
@@ -79,7 +79,8 @@ QList<HotKeyActionInfo> NxtOsekCGeneratorPlugin::hotKeyActions()
 
 QIcon NxtOsekCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
-	return QIcon();
+	Q_UNUSED(robotModel)
+	return QIcon(":/nxt/images/switch-to-nxt-osek-c.svg");
 }
 
 //QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()

@@ -3,9 +3,6 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 
-#include "communication/bluetoothRobotCommunicationThread.h"
-#include "communication/usbRobotCommunicationThread.h"
-
 #include "parts/display.h"
 #include "parts/speaker.h"
 #include "parts/button.h"
@@ -26,46 +23,20 @@ using namespace nxt::robotModel::real;
 using namespace utils::robotCommunication;
 using namespace kitBase::robotModel;
 
-RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
+RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId
+		, utils::robotCommunication::RobotCommunicationThreadInterface *communicationThread)
 	: NxtRobotModelBase(kitId, robotId)
 	, mRobotCommunicator(new RobotCommunicator(this))
 {
 	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 	connect(mRobotCommunicator, &RobotCommunicator::errorOccured, this, &RealRobotModel::errorOccured);
-}
-
-QString RealRobotModel::name() const
-{
-	return "NxtRealRobotModel";
-}
-
-QString RealRobotModel::friendlyName() const
-{
-	return tr("Real Robot");
+	mRobotCommunicator->setRobotCommunicationThreadObject(communicationThread);
 }
 
 bool RealRobotModel::needsConnection() const
 {
 	return true;
-}
-
-void RealRobotModel::rereadSettings()
-{
-	const QString valueOfCommunication = qReal::SettingsManager::value("NxtValueOfCommunication").toString();
-	if (valueOfCommunication == mLastCommunicationValue) {
-		return;
-	}
-
-	mLastCommunicationValue = valueOfCommunication;
-	utils::robotCommunication::RobotCommunicationThreadInterface *communicator = nullptr;
-	if (valueOfCommunication == "bluetooth") {
-		communicator = new communication::BluetoothRobotCommunicationThread;
-	} else if (valueOfCommunication == "usb") {
-		communicator = new communication::UsbRobotCommunicationThread;
-	}
-
-	mRobotCommunicator->setRobotCommunicationThreadObject(communicator);
 }
 
 void RealRobotModel::connectToRobot()

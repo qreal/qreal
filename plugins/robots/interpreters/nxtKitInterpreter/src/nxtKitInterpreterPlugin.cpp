@@ -11,11 +11,12 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
-	: mRealRobotModel(kitId(), "nxtKitRobot") // todo: somewhere generate robotId for each robot
-	, mTwoDRobotModel(mRealRobotModel)
+	: mUsbRealRobotModel(kitId(), "nxtKitUsbRobot") // todo: somewhere generate robotId for each robot
+	, mBluetoothRealRobotModel(kitId(), "nxtKitBluetoothRobot")
+	, mTwoDRobotModel(mUsbRealRobotModel)
 	, mBlocksFactory(new blocks::NxtBlocksFactory)
 {
-	mAdditionalPreferences = new NxtAdditionalPreferences(mRealRobotModel.name());
+	mAdditionalPreferences = new NxtAdditionalPreferences(mBluetoothRealRobotModel.name());
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
@@ -23,7 +24,9 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	mTwoDModel.reset(modelEngine);
 
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
-			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+			, &mUsbRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
+			, &mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
@@ -49,11 +52,16 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
-	connect(&mRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
+	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
-	mRealRobotModel.checkConnection();
+	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addError(message);
+	});
+	mUsbRealRobotModel.checkConnection();
+	mBluetoothRealRobotModel.checkConnection();
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()
@@ -76,7 +84,7 @@ QString NxtKitInterpreterPlugin::friendlyKitName() const
 
 QList<kitBase::robotModel::RobotModelInterface *> NxtKitInterpreterPlugin::robotModels()
 {
-	return {&mRealRobotModel, &mTwoDRobotModel};
+	return {&mUsbRealRobotModel, &mBluetoothRealRobotModel, &mTwoDRobotModel};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::blocksFactoryFor(
@@ -121,9 +129,11 @@ QString NxtKitInterpreterPlugin::defaultSettingsFile() const
 QIcon NxtKitInterpreterPlugin::iconForFastSelector(
 		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
-	return &robotModel == &mRealRobotModel
-			? QIcon(":/icons/switch-real-nxt.svg")
-			: QIcon(":/icons/switch-2d.svg");
+	return &robotModel == &mUsbRealRobotModel
+			? QIcon(":/icons/switch-real-nxt-usb.svg")
+			: &robotModel == &mBluetoothRealRobotModel
+					? QIcon(":/icons/switch-real-nxt-bluetooth.svg")
+					: QIcon(":/icons/switch-2d.svg");
 }
 
 kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()

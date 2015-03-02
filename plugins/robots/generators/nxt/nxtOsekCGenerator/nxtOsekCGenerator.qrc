@@ -3,5 +3,6 @@
         <file>images/generateOsekCode.svg</file>
         <file>images/flashRobot.svg</file>
         <file>images/uploadProgram.svg</file>
+        <file>images/switch-to-nxt-osek-c.svg</file>
     </qresource>
 </RCC>

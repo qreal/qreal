@@ -8,7 +8,7 @@
 using namespace nxt::russianC;
 
 NxtRussianCGeneratorPlugin::NxtRussianCGeneratorPlugin()
-	: NxtGeneratorPluginBase("NxtRussialCGeneratorRobotModel", tr("Code on Russian C"))
+	: NxtGeneratorPluginBase("NxtRussialCGeneratorRobotModel", tr("Generation (Russian C)"))
 	, mGenerateCodeAction(new QAction(nullptr))
 {
 }
@@ -25,7 +25,8 @@ QList<qReal::HotKeyActionInfo> NxtRussianCGeneratorPlugin::hotKeyActions()
 
 QIcon NxtRussianCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
-	return QIcon();
+	Q_UNUSED(robotModel)
+	return QIcon(":/images/switch-to-nxt-russian-c.svg");
 }
 
 QString NxtRussianCGeneratorPlugin::defaultFilePath(const QString &projectName) const
