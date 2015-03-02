@@ -3,6 +3,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
+#include <QtCore/QCoreApplication>
 #include <QtGui/QPolygon>
 
 #include <qrkernel/settingsManager.h>
@@ -20,11 +21,19 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
+const QString unsavedDir = "unsaved";
+
 Serializer::Serializer(const QString& saveDirName)
-	: mWorkingDir(SettingsManager::value("temp").toString())
+	: mWorkingDir(QCoreApplication::applicationDirPath() + "/" + unsavedDir)
 	, mWorkingFile(saveDirName)
 {
 	clearWorkingDir();
+	/// @todo: throw away this legacy piece of sh.t
+	SettingsManager::setValue("temp", mWorkingDir);
+	QDir dir(QCoreApplication::applicationDirPath());
+	if (!dir.cd(mWorkingDir)) {
+		QDir().mkdir(mWorkingDir);
+	}
 }
 
 void Serializer::clearWorkingDir() const

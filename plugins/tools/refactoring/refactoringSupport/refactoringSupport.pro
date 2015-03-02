@@ -1,12 +1,12 @@
+include(../../../../global.pri)
+
 QT += xml
 
 TEMPLATE = lib
-CONFIG += plugin c++11
-DESTDIR = ../../../../bin/plugins/
-MOC_DIR = .moc
-RCC_DIR = .moc
+CONFIG += plugin 
+DESTDIR = $$DESTDIR/plugins/tools/
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lqrgui-preferences-dialog
+links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
 
 INCLUDEPATH += \
 	$$PWD/../../../.. \
@@ -36,9 +36,5 @@ FORMS += \
 	refactoringWindow.ui \
 	refactoringPreferencePage.ui \
 
-
-#RESOURCES += \
-#	refactoring.qrc
-
 RESOURCES += \
-    refactoring.qrc
+	refactoring.qrc

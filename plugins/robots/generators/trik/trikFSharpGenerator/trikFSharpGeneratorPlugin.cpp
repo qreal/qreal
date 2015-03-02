@@ -152,7 +152,7 @@ void TrikFSharpGeneratorPlugin::runProgram()
 	utils::TcpRobotCommunicator communicator("TrikTcpServer");
 
 	communicator.runDirectCommand(
-			"brick.system(\"mono FSharp/Environment/example0.exe\"); "
+			"script.system(\"mono FSharp/Environment/example0.exe\"); "
 	);
 }
 
@@ -165,8 +165,8 @@ void TrikFSharpGeneratorPlugin::stopRobot()
 	}
 
 	communicator.runDirectCommand(
-			"brick.system(\"killall mono\"); "
-			"brick.system(\"killall aplay\"); \n"
-			"brick.system(\"killall vlc\");"
+			"script.system(\"killall mono\"); "
+			"script.system(\"killall aplay\"); \n"
+			"script.system(\"killall vlc\");"
 	);
 }

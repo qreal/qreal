@@ -164,3 +164,8 @@ void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		AbstractItem::mouseReleaseEvent(event);
 	}
 }
+
+void Rotater::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QGraphicsItem::contextMenuEvent(event);
+}

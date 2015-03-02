@@ -1,18 +1,12 @@
 QT += widgets network
 
-INCLUDEPATH += \
-	$$PWD \
-	$$PWD/../../interpreterBase/include \
-	$$PWD/../../commonTwoDModel/include \
-	$$PWD/../../../utils/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui/ \
-	$$PWD/../../../../../qrtext/include \
+includes(plugins/robots/interpreters/interpreterBase plugins/robots/interpreters/commonTwoDModel plugins/robots/utils qrtext plugins/robots/interpreters/trikKitInterpreter/src)
 	$$PWD/../../../../../thirdparty/qslog \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
-		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
-		-lrobots-utils -lrobots-interpreter-base -lrobots-common-2d-model -lqextserialport \
+links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
+		robots-utils robots-interpreter-base robots-common-2d-model qextserialport \
+		qslog \
+		)
 
 HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \

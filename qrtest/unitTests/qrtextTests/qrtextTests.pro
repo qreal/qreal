@@ -1,12 +1,12 @@
 TARGET = qrtext_unittests
 
-CONFIG += c++11
-
 include(../common.pri)
 
 include(../../../qrtext/qrtext.pri)
 
-LIBS += -L../../../bin -lqslog
+links(qslog)
+
+INCLUDEPATH += ../../../qrtext/include
 
 HEADERS += \
 	luaInterpreterIncorrectInputTest.h \

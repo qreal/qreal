@@ -1,10 +1,10 @@
 #pragma once
 
-#include "models/details/graphicalModel.h"
-#include "models/details/logicalModel.h"
-#include "models/graphicalModelAssistApi.h"
-#include "models/logicalModelAssistApi.h"
-#include "models/exploser.h"
+#include "qrgui/models/details/graphicalModel.h"
+#include "qrgui/models/details/logicalModel.h"
+#include "qrgui/models/graphicalModelAssistApi.h"
+#include "qrgui/models/logicalModelAssistApi.h"
+#include "qrgui/models/exploser.h"
 
 namespace qReal {
 namespace models {

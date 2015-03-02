@@ -16,7 +16,7 @@ void Led::setColor(const QString &color)
 {
 	const QString pathToCommand = ":/trikQts/templates/led.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@COLOR@@", color) + "brick.run();";
+			.replace("@@COLOR@@", color) + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

@@ -15,7 +15,7 @@ void Shell::say(const QString &text)
 {
 	const QString pathToCommand = ":/trikQts/templates/say.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@TEXT@@", "\"" + text + "\"") + "brick.run();";
+			.replace("@@TEXT@@", "\"" + text + "\"") + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
@@ -24,7 +24,7 @@ void Shell::runCommand(const QString &command)
 {
 	const QString pathToCommand = ":/trikQts/templates/system.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@COMMAND@@", command) + "brick.run();";
+			.replace("@@COMMAND@@", command) + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

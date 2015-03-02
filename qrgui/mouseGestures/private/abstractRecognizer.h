@@ -30,9 +30,9 @@ class GesturesRecognizer : public GesturesManager
 public:
 	GesturesRecognizer(){}
 
-	virtual ~GesturesRecognizer() {}
+	~GesturesRecognizer() override {}
 
-	qreal getDistance(const QString &item)
+	qreal getDistance(const QString &item) override
 	{
 		TKey key = mGestures[item];
 		return getDistance(mKey, key);

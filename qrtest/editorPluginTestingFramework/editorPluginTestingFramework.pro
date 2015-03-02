@@ -1,3 +1,4 @@
+include(../../global.pri)
 QT += xml widgets svg
 
 CONFIG += console c++11
@@ -7,7 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../.. \
 	$$PWD/../../qrgui/ \
 
-DESTDIR = ../../bin
+DESTDIR = ../../bin/debug
 
 !macx {
 	CONFIG += rpath_libdirs
@@ -23,19 +24,16 @@ RCC_DIR = .moc
 
 TRANSLATIONS = editorPluginTestingFramework_ru.ts
 
-LIBS += -L../../bin -lqrrepo -lqrtext -lqrkernel -lqrutils -lqrmc -lqrgui-plugin-manager -lqrgui-editor -lqrgui-thirdparty -lqrgui-tool-plugin-interface \
-		 -lqscintilla2 	-lqrgui-models -lqrgui-controller -lqrgui-dialogs -lqrgui-preferences-dialog \
-			-lqrgui-text-editor -lqrgui-mouse-gestures -lqrgui-hotkey-manager -lqrgui-brand-manager  \
-			-lqrgui-facade -lqslog \
-                        
 HEADERS += \
 	mainClass.h \
 	qrmcLauncher.h \
 	pluginCompiler.h \
 	pluginLoader.h \
 	qrxcLauncher.h \
+        ../../qrgui/mainwindow/mainWindow.h \
 	../../qrgui/mainwindow/errorReporter.h \
 	../../qrgui/mainwindow/error.h \
+	../../qrgui/mainWindow/errorListWidget.h \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.h \
         ../../qrgui/plugins/pluginManager/interpreterEditorManager.h \
 	../../qrgui/plugins/pluginManager/sdfRenderer.h \
@@ -62,8 +60,10 @@ SOURCES += \
 	pluginCompiler.cpp \
 	pluginLoader.cpp \
 	qrxcLauncher.cpp \
+        ../../qrgui/mainwindow/mainWindow.cpp \
 	../../qrgui/mainwindow/errorReporter.cpp \
 	../../qrgui/mainwindow/error.cpp \
+	../../qrgui/mainWindow/errorListWidget.cpp \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
         ../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp \
 	../../qrgui/plugins/pluginManager/sdfRenderer.cpp \
@@ -81,11 +81,13 @@ SOURCES += \
 	configurationFileParser.cpp \
 	methodsCheckerForTravis.cpp
 
+links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qrgui-tool-plugin-interface qscintilla2 qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-facade qslog)                        
 
 win32 {
 	QMAKE_POST_LINK = "cmd /C "xcopy methodsToTest ..\\..\\bin /s /e /q /y /i &&"\
 						" copy configurationParameters.xml ..\\..\\bin /y &&"\
 						" copy travisConfigurationParameters.xml ..\\..\\bin /y""
+
 }
 else {
 	QMAKE_POST_LINK = " cp -r methodsToTest/* ../../bin/ &&"\

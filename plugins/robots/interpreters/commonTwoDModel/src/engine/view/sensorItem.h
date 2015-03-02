@@ -70,6 +70,8 @@ protected:
 
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+
 	model::SensorsConfiguration &mConfiguration;
 	const interpreterBase::robotModel::PortInfo mPort;
 	QPointF mRotatePoint;

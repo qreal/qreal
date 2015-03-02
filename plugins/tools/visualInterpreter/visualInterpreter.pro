@@ -1,15 +1,13 @@
+include(../../../global.pri)
+
 QT += xml script widgets
 
 TEMPLATE = lib
-CONFIG += plugin c++11
+CONFIG += plugin
 
-DESTDIR = ../../../bin/plugins/
+DESTDIR = $$DESTDIR/plugins/tools/
 
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
-
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog
+links(qrkernel qrutils qrgui-preferences-dialog)
 
 INCLUDEPATH += \
 	$$PWD/../../.. \

@@ -113,16 +113,19 @@ void TcpRobotCommunicator::processControlMessage(const QString &message)
 	const QString infoMarker("info: ");
 	const QString versionMarker("version: ");
 
+	const QString fromRobotString(tr("From robot: "));
+
 	if (message.startsWith(versionMarker) && mErrorReporter) {
 		mVersionTimer.stop();
 		const QString currentVersion = message.mid(versionMarker.length());
 		if (currentVersion != requiredVersion) {
-			mErrorReporter->addError(tr("Current TRIK runtime version is not equal to version required by TRIKStudio"));
+			mErrorReporter->addError(tr("TRIK runtime version is too old, please update it by pressing "
+					"'Upload Runtime' button on toolbar"));
 		}
 	} else if (message.startsWith(errorMarker) && mErrorReporter) {
-		mErrorReporter->addError(message.mid(errorMarker.length()));
+		mErrorReporter->addError(fromRobotString + message.mid(errorMarker.length()));
 	} else if (message.startsWith(infoMarker) && mErrorReporter) {
-		mErrorReporter->addInformation(message.mid(infoMarker.length()));
+		mErrorReporter->addInformation(fromRobotString + message.mid(infoMarker.length()));
 	} else {
 		QLOG_INFO() << "Incoming message of unknown type: " << message;
 	}

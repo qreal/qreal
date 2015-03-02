@@ -27,6 +27,8 @@ enum Semantics {
 class ROBOTS_GENERATOR_EXPORT GeneratorCustomizer
 {
 public:
+	virtual ~GeneratorCustomizer() {}
+
 	/// Implementation must tell if block with given id has initial node semantics
 	virtual bool isInitialNode(const qReal::Id &block) const;
 

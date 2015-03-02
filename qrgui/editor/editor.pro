@@ -1,27 +1,18 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-editor
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils \
-		-lqrgui-mouse-gestures -lqrgui-thirdparty -lqrgui-models \
-		-lqrgui-controller -lqrgui-plugin-manager -lqrgui-brand-manager \
-		-lqrgui-dialogs \
+include(../../global.pri)
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
+TEMPLATE = lib
+
+links(qrkernel qslog qrutils \
+		qrgui-mouse-gestures qrgui-thirdparty qrgui-models \
+		qrgui-controller qrgui-plugin-manager qrgui-brand-manager \
+		qrgui-dialogs \
+)
+
+includes(qrgui)
 
 QT += widgets
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
 
 DEFINES += QRGUI_EDITOR_LIBRARY
 

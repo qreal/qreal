@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../qrgui/toolPluginInterface/customizer.h"
+#include <qrgui/plugins/toolPluginInterface/customizer.h>
 
 namespace ubiq {
 namespace generator {

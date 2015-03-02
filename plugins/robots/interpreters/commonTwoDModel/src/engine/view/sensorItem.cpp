@@ -200,6 +200,11 @@ QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value
 	return AbstractItem::itemChange(change, value);
 }
 
+void SensorItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QGraphicsItem::contextMenuEvent(event);
+}
+
 SensorItem::PortItem::PortItem(const PortInfo &port)
 	: mPort(port)
 	, mFont("Times", 10, QFont::Normal, true)

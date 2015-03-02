@@ -1,28 +1,17 @@
+TARGET = qreal
+
+include(../../global.pri)
+
 TEMPLATE = app
-
-DESTDIR = $$PWD/../../bin
-
-TARGET = qrgui
 
 QT += widgets printsupport xml svg
 
-LIBS += -L$$PWD/../../bin \
-			-lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
-			-lqrgui-models -lqrgui-editor -lqrgui-controller -lqrgui-dialogs -lqrgui-preferences-dialog \
-			-lqrgui-text-editor -lqrgui-mouse-gestures -lqrgui-hotkey-manager -lqrgui-brand-manager  \
-			-lqrgui-facade -lqrgui-plugin-manager -lqrgui-tool-plugin-interface -lqrgui-thirdparty \
+links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor qrgui-controller qrgui-dialogs qrgui-preferences-dialog \
+		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager  \
+		qrgui-facade qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
+)
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+includes(qrgui)
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
 

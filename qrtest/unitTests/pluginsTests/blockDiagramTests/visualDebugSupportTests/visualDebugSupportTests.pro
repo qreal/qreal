@@ -1,7 +1,5 @@
 TARGET = visualDebugSupport_unittests
 
-LIBS += -L../../../../../bin -lqslog
-
 include(../../../common.pri)
 
 include(../../../../../plugins/blockDiagram/visualDebugSupport/visualDebugSupport.pri)

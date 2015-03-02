@@ -10,6 +10,8 @@ namespace qReal {
 class LabelFactoryInterface
 {
 public:
+	virtual ~LabelFactoryInterface() {}
+
 	/// Creates static label with given fixed text, coordinates and rotation.
 	/// @param index - index of a label in parent element, uniquely identifies it.
 	/// @param x - x coordinate of a label in coordinate system of a shape.

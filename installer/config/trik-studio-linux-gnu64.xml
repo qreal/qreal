@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>TRIK Studio</Name>
-    <Version>1.0.0</Version>
+    <Version>3.0.1</Version>
     <Title>TRIK Studio</Title>
-    <Publisher>SPbSU</Publisher>
-    <ProductUrl>http://robots.qreal.com</ProductUrl>
+    <Publisher>CyberTech Labs Ltd.</Publisher>
+    <ProductUrl>http://robots.qreal.ru</ProductUrl>
 
     <InstallerWindowIcon>../images/trik-studio.ico</InstallerWindowIcon>
     <InstallerApplicationIcon>../images/trik-studio.ico</InstallerApplicationIcon>

@@ -2,15 +2,15 @@
 include(QsLog.pri)
 
 TARGET = qslog
+
+include(../../global.pri)
+
 QT -= gui
 CONFIG -= console
 CONFIG -= app_bundle
 CONFIG += shared c++11
-TEMPLATE = lib
 
-DESTDIR = $$PWD/../../bin
-OBJECTS_DIR = $$PWD/.obj
-MOC_DIR = $$PWD/.moc
+TEMPLATE = lib
 
 win32 {
 	DEFINES += QSLOG_IS_SHARED_LIBRARY
@@ -18,7 +18,7 @@ win32 {
 
 unix:!macx {
 	# make install will install the shared object in the appropriate folders
-	headers.files = QsLog.h QsLogDest.h QsLogLevel.h
+	headers.files = $$PWD/QsLog.h $$PWD/QsLogDest.h $$PWD/QsLogLevel.h
 	headers.path = /usr/include/$(QMAKE_TARGET)
 
 	other_files.files = *.txt

@@ -1,7 +1,8 @@
-#include(../common.pri)
-
 greaterThan(QT_MAJOR_VERSION, 4): QT *= widgets
-INCLUDEPATH += $$PWD
+
+INCLUDEPATH += $$PWD \
+	$$MOC_DIR \
+
 DEPENDPATH += $$PWD
 
 qtpropertybrowser-uselib:!qtpropertybrowser-buildlib {

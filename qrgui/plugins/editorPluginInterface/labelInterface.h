@@ -10,6 +10,8 @@ namespace qReal {
 class LabelInterface
 {
 public:
+	virtual ~LabelInterface() {}
+
 	/// Sets label background.
 	virtual void setBackground(const QColor &background) = 0;
 

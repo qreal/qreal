@@ -54,7 +54,9 @@ public:
 	model::RobotModel &robotModel();
 
 protected:
-	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
 signals:
 	void mousePressed();

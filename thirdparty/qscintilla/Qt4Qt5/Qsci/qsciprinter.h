@@ -35,7 +35,8 @@ extern "C++" {
 #undef B0
 #endif
 
-#include <qprinter.h>
+//#include <qprinter.h>
+#include <QPrinter>
 
 #include "qsciglobal.h"
 #include "qsciscintilla.h"

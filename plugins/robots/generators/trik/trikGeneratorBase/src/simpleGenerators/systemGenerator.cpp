@@ -11,8 +11,9 @@ SystemGenerator::SystemGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, repo.property(id, "Code").toBool() ? "nativeCode.t" : "system.t"
-			, QList<Binding *>()
-					<< Binding::createDirect("@@COMMAND@@", "Command")
+			, { Binding::createConverting("@@COMMAND@@", "Command"
+					, customizer.factory()->stringPropertyConverter(id, "Command"))
+				}
 			, parent)
 {
 }

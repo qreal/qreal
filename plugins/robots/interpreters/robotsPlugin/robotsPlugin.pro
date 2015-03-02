@@ -1,28 +1,23 @@
-TEMPLATE = lib
-CONFIG += plugin
-CONFIG += c++11
-
-DESTDIR = ../../../../bin/plugins/tools/
 TARGET = robots-plugin
 
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
-UI_DIR = .ui
+include(../../../../global.pri)
+
+DESTDIR = $$DESTDIR/plugins/tools/
+
+TEMPLATE = lib
+CONFIG += plugin
 
 QT += widgets
 
 INCLUDEPATH += \
-	$$PWD/ \
 	$$PWD/../interpreterCore/include/ \
 	$$PWD/../interpreterBase/include/ \
 	$$PWD/../../generators/generatorBase/include/ \
 	$$PWD/../../utils/include/ \
-	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrgui-tool-plugin-interface -lrobots-interpreter-core
+links(qrkernel qrgui-tool-plugin-interface robots-interpreter-core)
 
 HEADERS += \
 	$$PWD/robotsPlugin.h \

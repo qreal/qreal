@@ -1,13 +1,7 @@
 QT += widgets xml
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/../../utils/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui/ \
-	$$PWD/../../../../qrtext/include/ \
-
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqslog -lqrutils -lqrtext -lqrgui-preferences-dialog -lrobots-utils
+links(qrkernel qslog qrutils qrtext qrgui-preferences-dialog robots-utils)
+includes(qrtext plugins/robots/utils)
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 

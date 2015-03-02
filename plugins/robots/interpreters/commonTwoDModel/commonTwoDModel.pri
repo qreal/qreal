@@ -2,15 +2,9 @@ QT += widgets xml
 
 DEFINES += COMMON_TWO_D_MODEL_LIBRARY
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/../../utils/include/ \
-	$$PWD/../interpreterBase/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrtext/include/ \
-
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lqrgui-tool-plugin-interface \
-		-lrobots-utils -lrobots-interpreter-base \
+links(qrkernel qrutils qrgui-tool-plugin-interface robots-utils robots-interpreter-base)
+includes(plugins/robots/interpreters/interpreterBase)
+includes(plugins/robots/utils qrtext)
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/commonTwoDModel_ru.ts
 
@@ -51,6 +45,13 @@ HEADERS += \
 	$$PWD/src/engine/view/rotater.h \
 	$$PWD/src/engine/view/sonarSensorItem.h \
 	$$PWD/src/engine/view/gridParameters.h \
+	$$PWD/src/engine/constraints/constraintsChecker.h \
+	$$PWD/src/engine/constraints/details/defines.h \
+	$$PWD/src/engine/constraints/details/constraintsParser.h \
+	$$PWD/src/engine/constraints/details/event.h \
+	$$PWD/src/engine/constraints/details/conditionsFactory.h \
+	$$PWD/src/engine/constraints/details/triggersFactory.h \
+	$$PWD/src/engine/constraints/details/valuesFactory.h \
 	$$PWD/src/engine/model/model.h \
 	$$PWD/src/engine/model/constants.h \
 	$$PWD/src/engine/model/settings.h \
@@ -67,6 +68,10 @@ HEADERS += \
 	$$PWD/src/engine/items/lineItem.h \
 	$$PWD/src/engine/items/colorFieldItem.h \
 	$$PWD/src/engine/items/ellipseItem.h \
+	$$PWD/src/engine/items/regions/regionItem.h \
+	$$PWD/src/engine/items/regions/ellipseRegion.h \
+	$$PWD/src/engine/items/regions/rectangularRegion.h \
+	$$PWD/src/engine/items/regions/boundRegion.h \
 
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
@@ -94,6 +99,16 @@ SOURCES += \
 	$$PWD/src/engine/items/lineItem.cpp \
 	$$PWD/src/engine/items/colorFieldItem.cpp \
 	$$PWD/src/engine/items/ellipseItem.cpp \
+	$$PWD/src/engine/constraints/constraintsChecker.cpp \
+	$$PWD/src/engine/constraints/details/constraintsParser.cpp \
+	$$PWD/src/engine/constraints/details/event.cpp \
+	$$PWD/src/engine/constraints/details/conditionsFactory.cpp \
+	$$PWD/src/engine/constraints/details/triggersFactory.cpp \
+	$$PWD/src/engine/constraints/details/valuesFactory.cpp \
+	$$PWD/src/engine/items/regions/regionItem.cpp \
+	$$PWD/src/engine/items/regions/ellipseRegion.cpp \
+	$$PWD/src/engine/items/regions/rectangularRegion.cpp \
+	$$PWD/src/engine/items/regions/boundRegion.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/button.cpp \
 	$$PWD/src/robotModel/parts/colorSensorBlue.cpp \

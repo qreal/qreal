@@ -4,11 +4,11 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "models/details/modelsImplementation/logicalModelItem.h"
-#include "models/details/modelsImplementation/abstractModel.h"
-#include "models/details/graphicalModelView.h"
-#include "models/logicalModelAssistApi.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/models/details/modelsImplementation/logicalModelItem.h"
+#include "qrgui/models/details/modelsImplementation/abstractModel.h"
+#include "qrgui/models/details/graphicalModelView.h"
+#include "qrgui/models/logicalModelAssistApi.h"
 
 namespace qReal {
 
