@@ -7,6 +7,7 @@
 #include "src/ui/robotsSettingsPage.h"
 #include "interpreterCore/managers/paletteUpdateManager.h"
 #include "interpreterCore/managers/kitAutoSwitcher.h"
+#include "src/managers/saveAsTaskManager.h"
 
 using namespace interpreterCore;
 
@@ -87,14 +88,20 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
 			, mBlocksFactoryManager, mKitPluginManager, mRobotModelManager, this);
 
+	mSaveAsTaskManager.reset(new SaveAsTaskManager(configurer.logicalModelApi(), configurer.repoControlInterface()));
+
 	connectInterpreterToActions();
 
 	connectEventsForKitPlugin();
 
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
+
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
+
+	connect(&mActionsManager.saveAsTaskAction(), &QAction::triggered
+			, [this] () { mSaveAsTaskManager->save(); });
 
 	sync();
 }

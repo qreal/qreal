@@ -1,7 +1,8 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
+#include <interpreterBase/readOnly.h>
+
 #include "commonTwoDModel/engine/view/d2ModelWidget.h"
-#include "src/engine/view/readOnly.h"
 #include "model/model.h"
 #include "twoDModelEngineApi.h"
 
@@ -138,19 +139,19 @@ void TwoDModelEngineFacade::onStopInterpretation()
 
 void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)
 {
-	int readOnlyFlags = view::ReadOnly::None;
+	int readOnlyFlags = interpreterBase::ReadOnly::None;
 
-	const auto load = [&] (const QString &tag, view::ReadOnly::ReadOnlyEnum flag) {
+	const auto load = [&] (const QString &tag, interpreterBase::ReadOnly::ReadOnlyEnum flag) {
 		if (logicalModel.logicalRepoApi().metaInformation(tag).toBool()) {
 			readOnlyFlags |= flag;
 		}
 	};
 
-	load("twoDModelWorldReadOnly", view::ReadOnly::World);
-	load("twoDModelSensorsReadOnly", view::ReadOnly::Sensors);
-	load("twoDModelRobotPositionReadOnly", view::ReadOnly::RobotPosition);
-	load("twoDModelRobotConfigurationReadOnly", view::ReadOnly::RobotConfiguration);
-	load("twoDModelSimulationSettingsReadOnly", view::ReadOnly::SimulationSettings);
+	load("twoDModelWorldReadOnly", interpreterBase::ReadOnly::World);
+	load("twoDModelSensorsReadOnly", interpreterBase::ReadOnly::Sensors);
+	load("twoDModelRobotPositionReadOnly", interpreterBase::ReadOnly::RobotPosition);
+	load("twoDModelRobotConfigurationReadOnly", interpreterBase::ReadOnly::RobotConfiguration);
+	load("twoDModelSimulationSettingsReadOnly", interpreterBase::ReadOnly::SimulationSettings);
 
 	mView->setInteractivityFlags(readOnlyFlags);
 }

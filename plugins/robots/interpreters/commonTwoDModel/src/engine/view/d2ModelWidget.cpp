@@ -17,6 +17,7 @@
 #include <interpreterBase/robotModel/robotParts/colorSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+#include <interpreterBase/readOnly.h>
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -24,7 +25,6 @@
 
 #include "src/engine/view/d2ModelScene.h"
 #include "src/engine/view/robotItem.h"
-#include "src/engine/view/readOnly.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/ellipseItem.h"

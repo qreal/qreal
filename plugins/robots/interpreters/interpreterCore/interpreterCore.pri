@@ -39,7 +39,9 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/printTextBlock.h \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
+	$$PWD/src/managers/saveAsTaskManager.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
+	$$PWD/src/ui/saveAsTaskDialog.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -55,15 +57,17 @@ SOURCES += \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
 	$$PWD/src/managers/actionsManager.cpp \
 	$$PWD/src/managers/blocksFactoryManager.cpp \
-	$$PWD/src/managers/graphicsWatcherManager.cpp \
-	$$PWD/src/managers/kitPluginManager.cpp \
-	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
-	$$PWD/src/managers/paletteUpdateManager.cpp \
-	$$PWD/src/managers/saveConvertionManager.cpp \
+	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \
+	$$PWD/src/managers/kitPluginManager.cpp \
+	$$PWD/src/managers/paletteUpdateManager.cpp \
+	$$PWD/src/managers/robotModelManager.cpp \
+	$$PWD/src/managers/saveAsTaskManager.cpp \
+	$$PWD/src/managers/saveConvertionManager.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
+	$$PWD/src/ui/saveAsTaskDialog.cpp \
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

@@ -6,6 +6,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <interpreterBase/readOnly.h>
 
 #include "robotItem.h"
 
@@ -13,7 +14,6 @@
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
-#include "src/engine/view/readOnly.h"
 
 #include <QtCore/QDebug>
 
@@ -56,9 +56,9 @@ bool D2ModelScene::oneRobot() const
 
 void D2ModelScene::setInteractivityFlags(int flags)
 {
-	mWorldReadOnly = (flags & ReadOnly::World) != 0;
-	mRobotReadOnly = (flags & ReadOnly::RobotPosition) != 0;
-	mSensorsReadOnly = (flags & ReadOnly::Sensors) != 0;
+	mWorldReadOnly = (flags & interpreterBase::ReadOnly::World) != 0;
+	mRobotReadOnly = (flags & interpreterBase::ReadOnly::RobotPosition) != 0;
+	mSensorsReadOnly = (flags & interpreterBase::ReadOnly::Sensors) != 0;
 
 	for (auto item : items()) {
 		auto robotItem = dynamic_cast<RobotItem *>(item);

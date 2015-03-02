@@ -16,6 +16,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mStopRobotAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr)
 	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
+	, mSaveAsTaskAction(QIcon(), QObject::tr("Save as task..."), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
@@ -31,6 +32,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 			<< &mRunAction
 			<< &mStopRobotAction
 			<< &mRobotSettingsAction
+			<< &mSaveAsTaskAction
 			;
 }
 
@@ -51,6 +53,7 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 
 	result << qReal::ActionInfo(&mSeparator2, "interpreters", "tools")
 			<< qReal::ActionInfo(&mRobotSettingsAction, "interpreters", "tools")
+			<< qReal::ActionInfo(&mSaveAsTaskAction, "", "tools")
 			;
 
 	return result;
@@ -98,6 +101,11 @@ void ActionsManager::init(qReal::gui::MainWindowInterpretersInterface *mainWindo
 QAction &ActionsManager::robotSettingsAction()
 {
 	return mRobotSettingsAction;
+}
+
+QAction &ActionsManager::saveAsTaskAction()
+{
+	return mSaveAsTaskAction;
 }
 
 void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model)

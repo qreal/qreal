@@ -41,7 +41,6 @@ HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
 	$$PWD/src/engine/view/d2ModelScene.h \
 	$$PWD/src/engine/view/gridParameters.h \
-	$$PWD/src/engine/view/readOnly.h \
 	$$PWD/src/engine/view/robotItem.h \
 	$$PWD/src/engine/view/rotater.h \
 	$$PWD/src/engine/view/sensorItem.h \

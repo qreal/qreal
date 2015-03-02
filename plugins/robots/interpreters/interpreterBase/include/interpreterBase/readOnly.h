@@ -1,7 +1,6 @@
 #pragma once
 
-namespace twoDModel {
-namespace view {
+namespace interpreterBase {
 
 /// Flags that determine allowed interaction of 2d model widget contents with user.
 /// Enum is "plain enum" because it is used as flags, enum class is not interpreted as int.
@@ -28,5 +27,27 @@ enum ReadOnlyEnum {
 };
 }
 
-}
+/// Convenience class that holds model read only flags and provides access to them.
+class ReadOnlyFlags {
+public:
+	/// Sets specified flag to a specified value.
+	void setFlag(ReadOnly::ReadOnlyEnum flag, bool enabled)
+	{
+		if (enabled) {
+			mFlags |= flag;
+		} else {
+			mFlags &= ~flag;
+		}
+	}
+
+	/// Returns value of given flag.
+	bool flag(ReadOnly::ReadOnlyEnum flag) const
+	{
+		return (mFlags & flag) != 0;
+	}
+
+private:
+	int mFlags = ReadOnly::None;
+};
+
 }
