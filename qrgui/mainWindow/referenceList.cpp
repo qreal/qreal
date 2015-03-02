@@ -1,5 +1,5 @@
 #include "referenceList.h"
-#include "ui_referenceList.h"
+#include <mainWindow/.build/debug/ui/ui_referenceList.h>
 
 #include "mainWindow/mainWindow.h"
 

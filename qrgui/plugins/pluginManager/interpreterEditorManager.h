@@ -9,6 +9,7 @@
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
+#pragma once
 #include <qrkernel/settingsManager.h>
 #include <qrrepo/repoApi.h>
 
