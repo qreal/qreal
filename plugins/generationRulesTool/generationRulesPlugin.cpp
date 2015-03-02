@@ -16,6 +16,8 @@
 #include "ast/program.h"
 #include "ast/text.h"
 
+#include "generator/commonGenerator.h"
+
 using namespace generationRules;
 
 GenerationRulesPlugin::GenerationRulesPlugin()
@@ -88,4 +90,7 @@ void GenerationRulesPlugin::generateCode()
 
 	auto programChildren = programRepresentation->children();
 	qDebug() << programChildren.size();
+
+	QString resultOfGeneration = generator::CommonGenerator::generatedResult(program, mMetamodelRepoApi);
+	qDebug() << resultOfGeneration;
 }
