@@ -1057,16 +1057,6 @@ void NodeElement::erasePlaceholder(bool redraw)
 	}
 }
 
-//bool NodeElement::isPort() const
-//{
-//	return mElementImpl->isPort();
-//}
-
-//bool NodeElement::canHavePorts()
-//{
-//	return mElementImpl->hasPin();
-//}
-
 void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
 	if (mIsFolded && isItemAddedOrDeleted && item) {

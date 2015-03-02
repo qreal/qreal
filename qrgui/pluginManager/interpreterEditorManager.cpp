@@ -1098,7 +1098,6 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	repo->setProperty(nodeId, "displayedName", displayedName);
 	repo->setProperty(nodeId, "shape", shape);
 	repo->setProperty(nodeId, "isResizeable", "true");
-//	repo->setProperty(nodeId, "isPin", "false");
 	repo->setProperty(nodeId, "isAction", "false");
 	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
 	repo->setProperty(nodeId, "createChildrenFromMenu", "false");
@@ -1163,7 +1162,6 @@ QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(QString const &na
 	repo->setProperty(nodeId, "shape", "");
 	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
 	repo->setProperty(nodeId, "isResizeable", "true");
-//	repo->setProperty(nodeId, "isPin", "false");
 	repo->setProperty(nodeId, "isAction", "false");
 	Id const containerLink("MetaEditor", "MetaEditor", "Container", QUuid::createUuid().toString());
 	setStandartConfigurations(repo, containerLink, Id::rootId(), "Container");

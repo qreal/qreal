@@ -500,16 +500,6 @@ enums::linkShape::LinkShape InterpreterElementImpl::shapeTypeByString(QString co
 	}
 }
 
-//bool InterpreterElementImpl::isPort() const
-//{
-//	return mEditorRepoApi->stringProperty(mId, "isPin") == "true";
-//}
-
-//bool InterpreterElementImpl::hasPin() const
-//{
-//	return mEditorRepoApi->stringProperty(mId, "isAction") == "true";
-//}
-
 bool InterpreterElementImpl::createChildrenFromMenu() const
 {
 	if (mEditorRepoApi->hasProperty(mId, "createChildrenFromMenu")) {

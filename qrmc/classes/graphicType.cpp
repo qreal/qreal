@@ -366,12 +366,3 @@ QString GraphicType::generatePossibleEdges(QString const &lineTemplate) const
 	return line;
 }
 
-//bool GraphicType::initCreateChildrenFromMenu()
-//{
-//	if (!mLogic.elementsByTagName("createChildrenFromMenu").isEmpty()) {
-//		mCreateChildrenFromMenu = true;
-//	}
-
-//	return true;
-//}
-

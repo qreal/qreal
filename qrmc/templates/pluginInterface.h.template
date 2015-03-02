@@ -49,13 +49,11 @@ public:
 
 	virtual int isNodeOrEdge(QString const &element) const; 
 
-//	virtual QIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const;
 	virtual qReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
 	virtual QString getPropertyType(QString const &element, QString const &property) const;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
 	virtual QStringList getReferenceProperties(QString const &/*diagram*/, QString const &element) const;
-//	virtual QStringList getEnumValues(QString name) const;
 
 	virtual QString editorName() const;
 	virtual QString diagramName(QString const &diagram) const;
@@ -65,20 +63,12 @@ public:
 
 	virtual QList<qReal::ListenerInterface*> listeners() const;
 
-
-
-
+//Are these right corrections?
 	QList<qReal::EditorInterface::ExplosionData> explosions(QString const &diagram, QString const &element) const override;
         QStringList getPortTypes(QString const &diagram, QString const &element) const override;
         QList<QPair<QString, QString>> getEnumValues(QString const &name) const override;
 	bool isEnumEditable(QString const &name) const override;
         QString getGroupsXML() const override;
-	bool shallPaletteBeSorted(QString const &diagram) const;	
-
-
-
-
-
 
 private:
 	QMap<QString, QIcon> iconMap;
@@ -95,10 +85,8 @@ private:
 	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;
 	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap;
 
-
+//?
 	QMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;
 	QMap<QString, bool> mShallPaletteBeSortedMap;
-
-
 };
 

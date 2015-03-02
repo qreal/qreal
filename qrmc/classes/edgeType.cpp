@@ -27,7 +27,6 @@ Type* EdgeType::clone() const
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
 	result->mFromPorts = mFromPorts;
-
 	return result;
 }
 
@@ -88,9 +87,7 @@ QString EdgeType::generateEdgeClass(QString const &classTemplate) const
 			.replace(updateDataTag, labelsUpdateLine)
 			.replace(labelDefinitionTag, labelsDefinitionLine)
 			.replace(lineTypeTag, lineType)
-
 			.replace(portsForFromPortTypesTag, portsForFromPortTypes)
-
 			.replace(elementNameTag, name())
 			.replace("\\n", "\n");
 	return edgeClass + endline;
