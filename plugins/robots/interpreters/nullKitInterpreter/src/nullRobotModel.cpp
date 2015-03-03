@@ -21,3 +21,8 @@ bool NullRobotModel::needsConnection() const
 {
 	return false;
 }
+
+int NullRobotModel::priority() const
+{
+	return 0;
+}

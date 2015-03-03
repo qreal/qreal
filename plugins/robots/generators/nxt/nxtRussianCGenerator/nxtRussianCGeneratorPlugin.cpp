@@ -8,7 +8,7 @@
 using namespace nxt::russianC;
 
 NxtRussianCGeneratorPlugin::NxtRussianCGeneratorPlugin()
-	: NxtGeneratorPluginBase("NxtRussialCGeneratorRobotModel", tr("Generation (Russian C)"))
+	: NxtGeneratorPluginBase("NxtRussialCGeneratorRobotModel", tr("Generation (Russian C)"), 7 /* Last order */)
 	, mGenerateCodeAction(new QAction(nullptr))
 {
 	mGenerateCodeAction->setText(tr("Generate to Russian C"));

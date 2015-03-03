@@ -5,10 +5,12 @@ using namespace trik::robotModel;
 TrikGeneratorRobotModel::TrikGeneratorRobotModel(const QString &kitId
 		, const QString &robotId
 		, const QString &name
-		, const QString &friendlyName)
+		, const QString &friendlyName
+		, int priority)
 	: TrikRobotModelBase(kitId, robotId)
 	, mName(name)
 	, mFriendlyName(friendlyName)
+	, mPriority(priority)
 {
 }
 
@@ -30,4 +32,9 @@ bool TrikGeneratorRobotModel::needsConnection() const
 bool TrikGeneratorRobotModel::interpretedModel() const
 {
 	return false;
+}
+
+int TrikGeneratorRobotModel::priority() const
+{
+	return mPriority;
 }

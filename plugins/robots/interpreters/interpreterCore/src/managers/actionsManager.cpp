@@ -3,6 +3,7 @@
 #include <QtCore/QSignalMapper>
 
 #include <qrkernel/settingsManager.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 using namespace interpreterCore;
 
@@ -166,28 +167,43 @@ void ActionsManager::initKitPluginActions()
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		const QList<kitBase::KitPluginInterface *> kits = mKitPluginManager.kitsById(kitId);
 		QActionGroup * const group = new QActionGroup(this);
+		QList<kitBase::robotModel::RobotModelInterface *> robotModels;
+		QMap<kitBase::robotModel::RobotModelInterface *, QIcon> fastSelectorIcons;
+		int topRecommendedModels = 0;
 		for (kitBase::KitPluginInterface * const kitPlugin : kits) {
+			topRecommendedModels = qMax(topRecommendedModels, kitPlugin->topRecommendedRobotModels());
 			mPluginActionInfos << kitPlugin->customActions();
+			mPluginHotKeyActionInfos << kitPlugin->hotKeyActions();
 			for (kitBase::robotModel::RobotModelInterface * const robotModel : kitPlugin->robotModels()) {
 				const QIcon &icon = kitPlugin->iconForFastSelector(*robotModel);
 				if (icon.isNull()) {
 					continue;
 				}
 
-				const QString &text = robotModel->friendlyName();
-				QAction * const fastSelectionAction = new QAction(icon, text, nullptr);
-				robotModelMapper->setMapping(fastSelectionAction, robotModel);
-				connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
-				fastSelectionAction->setObjectName("switchTo" + kitId + robotModel->name());
-				fastSelectionAction->setCheckable(true);
-				group->addAction(fastSelectionAction);
+				fastSelectorIcons[robotModel] = icon;
+				robotModels << robotModel;
 			}
+		}
 
-			mPluginHotKeyActionInfos << kitPlugin->hotKeyActions();
+		kitBase::robotModel::RobotModelUtils::sortRobotModels(robotModels);
+		for (kitBase::robotModel::RobotModelInterface * const robotModel : robotModels) {
+			const QString &text = robotModel->friendlyName();
+			QAction * const fastSelectionAction = new QAction(fastSelectorIcons[robotModel], text, nullptr);
+			robotModelMapper->setMapping(fastSelectionAction, robotModel);
+			connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
+			fastSelectionAction->setObjectName("switchTo" + kitId + robotModel->name());
+			fastSelectionAction->setCheckable(true);
+			group->addAction(fastSelectionAction);
 		}
 
 		if (!kits.isEmpty()) {
 			QAction * const action = produceMenuAction(kitId, group);
+			if (robotModels.count() > topRecommendedModels) {
+				QAction * const separator = new QAction(nullptr);
+				separator->setSeparator(true);
+				action->menu()->insertAction(action->menu()->actions()[topRecommendedModels], separator);
+			}
+
 			const qReal::ActionInfo actionInfo(action, "interpreters", "tools");
 			mRobotModelActions.insert(kitId, actionInfo);
 		}

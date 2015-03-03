@@ -15,6 +15,7 @@ public:
 	QString name() const override;
 	QString friendlyName() const override;
 	bool needsConnection() const override;
+	int priority() const override;
 };
 
 }

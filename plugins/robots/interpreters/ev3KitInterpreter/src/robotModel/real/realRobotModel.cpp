@@ -33,12 +33,17 @@ QString RealRobotModel::name() const
 
 QString RealRobotModel::friendlyName() const
 {
-	return tr("Real Robot EV3");
+	return tr("Interpretation (USB, Bluetooth)");
 }
 
 bool RealRobotModel::needsConnection() const
 {
 	return true;
+}
+
+int RealRobotModel::priority() const
+{
+	return 9;  /* After 2D model */
 }
 
 void RealRobotModel::rereadSettings()

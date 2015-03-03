@@ -83,7 +83,21 @@ public:
 	}
 
 	/// Returns an icon for toolbar action of fast robot model switching.
+	/// It is guaranteed that this method will be called with the robot model provided by this kit.
 	virtual QIcon iconForFastSelector(const robotModel::RobotModelInterface &robotModel) const = 0;
+
+	/// Returns an integer number that specifies the count of recommended robot models.
+	/// Robot models are sorted by their priorities ("importance" for user). Then robot models switching menu is
+	/// ordered due to this sorting. Then if the number of robot models provided by kit is too large some of most
+	/// important robot models can be highlighted from robot models set as recommended by TRIK Studio.
+	/// The number of such highlighted robot models is specified by this method.
+	/// Different kit plugins for the same kit id can return different values. The engine will select maximal of them
+	/// as the fact value.
+	/// Default implementation returns 2.
+	virtual int topRecommendedRobotModels() const
+	{
+		return 2;
+	}
 
 	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.
 	/// Can be a root of plugin-specific providers network. Null, if there is no need for sensors configuration.

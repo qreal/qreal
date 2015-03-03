@@ -31,6 +31,7 @@ public:
 	utils::TimelineInterface &timeline() override;
 	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<kitBase::robotModel::DeviceInfo> convertibleBases() const override;
+	int priority() const override;
 
 	/// Configures 2D model window`s engine for using it in 2D model devices emulators.
 	void setEngine(engine::TwoDModelEngineInterface &engine);

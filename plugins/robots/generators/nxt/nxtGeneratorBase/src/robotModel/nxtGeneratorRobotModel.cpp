@@ -5,10 +5,12 @@ using namespace nxt::robotModel;
 NxtGeneratorRobotModel::NxtGeneratorRobotModel(const QString &kitId
 		, const QString &robotId
 		, const QString &name
-		, const QString &friendlyName)
+		, const QString &friendlyName
+		, int priority)
 	: NxtRobotModelBase(kitId, robotId)
 	, mName(name)
 	, mFriendlyName(friendlyName)
+	, mPriority(priority)
 {
 }
 
@@ -30,4 +32,9 @@ bool NxtGeneratorRobotModel::needsConnection() const
 bool NxtGeneratorRobotModel::interpretedModel() const
 {
 	return false;
+}
+
+int NxtGeneratorRobotModel::priority() const
+{
+	return mPriority;
 }

@@ -20,7 +20,7 @@ class ROBOTS_NXT_GENERATOR_BASE_EXPORT NxtGeneratorPluginBase : public generator
 	Q_OBJECT
 
 public:
-	NxtGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName);
+	NxtGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName, int priority);
 	~NxtGeneratorPluginBase();
 
 	QString kitId() const override;

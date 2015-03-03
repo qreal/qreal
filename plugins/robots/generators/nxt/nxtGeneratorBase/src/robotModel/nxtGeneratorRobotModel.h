@@ -11,7 +11,7 @@ class NxtGeneratorRobotModel : public NxtRobotModelBase
 
 public:
 	NxtGeneratorRobotModel(const QString &kitId, const QString &robotId
-			, const QString &name, const QString &friendlyName);
+			, const QString &name, const QString &friendlyName, int priority);
 
 	QString name() const override;
 	QString friendlyName() const override;
@@ -19,9 +19,12 @@ public:
 	bool needsConnection() const override;
 	bool interpretedModel() const override;
 
+	int priority() const override;
+
 private:
 	const QString mName;
 	const QString mFriendlyName;
+	const int mPriority;
 };
 
 }

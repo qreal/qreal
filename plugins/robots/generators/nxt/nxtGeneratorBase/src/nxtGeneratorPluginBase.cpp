@@ -6,8 +6,9 @@
 
 using namespace nxt;
 
-NxtGeneratorPluginBase::NxtGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName)
-	: mRobotModel(new robotModel::NxtGeneratorRobotModel(kitId(), "nxtGeneratorRobot", robotName, robotFriendlyName))
+NxtGeneratorPluginBase::NxtGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName, int priority)
+	: mRobotModel(new robotModel::NxtGeneratorRobotModel(kitId()
+			, "nxtGeneratorRobot", robotName, robotFriendlyName, priority))
 	, mBlocksFactory(new blocks::NxtBlocksFactory)
 {
 }

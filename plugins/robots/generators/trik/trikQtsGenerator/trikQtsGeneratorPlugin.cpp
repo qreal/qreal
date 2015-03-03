@@ -13,7 +13,7 @@ using namespace trik::qts;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
-	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Generation (QtScript)"))
+	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Generation (QtScript)"), 9 /* After 2D model */)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))

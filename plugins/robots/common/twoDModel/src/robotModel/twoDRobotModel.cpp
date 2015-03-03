@@ -80,6 +80,11 @@ QList<DeviceInfo> TwoDRobotModel::convertibleBases() const
 	return mRealModel->convertibleBases();
 }
 
+int TwoDRobotModel::priority() const
+{
+	return 10;  // The highest priority in all kits.
+}
+
 twoDModel::engine::TwoDModelEngineInterface *TwoDRobotModel::engine()
 {
 	return mEngine;

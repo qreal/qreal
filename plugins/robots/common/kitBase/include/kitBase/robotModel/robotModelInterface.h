@@ -95,6 +95,11 @@ public:
 	/// toolbar when this robot model is selected by user.
 	virtual bool interpretedModel() const = 0;
 
+	/// Returns a number that specifies the "importance" of this robot model in comparison with others.
+	/// Robot models with higher priorities will buble up in list of robot models closer to the top.
+	/// Top robot models will get the label of recommended and will be separated from others.
+	virtual int priority() const = 0;
+
 	/// Returns current connection state.
 	virtual ConnectionState connectionState() const = 0;
 

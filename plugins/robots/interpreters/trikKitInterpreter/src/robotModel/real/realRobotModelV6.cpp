@@ -18,5 +18,10 @@ QString RealRobotModelV6::name() const
 
 QString RealRobotModelV6::friendlyName() const
 {
-	return tr("Real Robot (v6)");
+	return tr("Interpretation (Wi-Fi)");
+}
+
+int RealRobotModelV6::priority() const
+{
+	return 8;  // Right after qts generator
 }

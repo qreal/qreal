@@ -18,3 +18,8 @@ QString BluetoothRealRobotModel::friendlyName() const
 {
 	return tr("Interpretation (Bluetooth)");
 }
+
+int BluetoothRealRobotModel::priority() const
+{
+	return 7;  // Right after UsbRealRobotModel
+}

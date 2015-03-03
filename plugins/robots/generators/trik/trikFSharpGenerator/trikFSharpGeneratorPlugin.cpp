@@ -13,7 +13,7 @@ using namespace trik::fSharp;
 using namespace qReal;
 
 TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
-	: TrikGeneratorPluginBase("TrikFSharpGeneratorRobotModel", tr("Generation (F#)"))
+	: TrikGeneratorPluginBase("TrikFSharpGeneratorRobotModel", tr("Generation (F#)"), 7 /* Last order */)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))

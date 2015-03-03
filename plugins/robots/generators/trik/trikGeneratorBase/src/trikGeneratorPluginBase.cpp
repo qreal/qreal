@@ -6,8 +6,11 @@
 
 using namespace trik;
 
-TrikGeneratorPluginBase::TrikGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName)
-	: mRobotModel(new robotModel::TrikGeneratorRobotModel(kitId(), "trikGeneratorRobot", robotName, robotFriendlyName))
+TrikGeneratorPluginBase::TrikGeneratorPluginBase(const QString &robotName
+		, const QString &robotFriendlyName
+		, int priority)
+	: mRobotModel(new robotModel::TrikGeneratorRobotModel(kitId()
+			, "trikGeneratorRobot", robotName, robotFriendlyName, priority))
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {
 }

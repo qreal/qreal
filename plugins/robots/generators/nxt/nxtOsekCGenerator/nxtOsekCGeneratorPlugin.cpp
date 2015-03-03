@@ -13,7 +13,7 @@ using namespace qReal;
 using namespace gui;
 
 NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
-	: NxtGeneratorPluginBase("NxtOsekCGeneratorRobotModel", tr("Generation (NXT OSEK C)"))
+	: NxtGeneratorPluginBase("NxtOsekCGeneratorRobotModel", tr("Generation (NXT OSEK C)"), 9 /* After 2D model */)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mFlashRobotAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
@@ -63,12 +63,15 @@ void NxtOsekCGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::Ro
 {
 	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
 	checkNxtTools();
+	mUploadProgramAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
+	mFlashRobotAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
 }
 
 void NxtOsekCGeneratorPlugin::onCurrentDiagramChanged(const Id &id)
 {
 	RobotsGeneratorPluginBase::onCurrentDiagramChanged(id);
 	checkNxtTools();
+	mFlashRobotAction->setEnabled(true);
 }
 
 void NxtOsekCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
@@ -215,8 +218,4 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 		mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
 #endif
 	}
-
-	mUploadProgramAction->setVisible(mNxtToolsPresent);
-	mFlashRobotAction->setVisible(mNxtToolsPresent);
-	mFlashRobotAction->setEnabled(true);
 }

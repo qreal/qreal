@@ -39,6 +39,10 @@ public:
 	/// If no default robot model specified in kit then the first robot model is returned.
 	/// Finally if kit does not contain robot models at all nullptr is returned.
 	static RobotModelInterface *selectedRobotModelFor(QList<KitPluginInterface *> const &kits);
+
+	/// Sorts robot models in descending order of their priority.
+	/// @see RobotModelInterface::priority().
+	static void sortRobotModels(QList<RobotModelInterface *> &robotModels);
 };
 
 }

@@ -11,10 +11,15 @@ UsbRealRobotModel::UsbRealRobotModel(const QString &kitId, const QString &robotI
 
 QString UsbRealRobotModel::name() const
 {
-	return "NxtUsbRealRobotModel";
+	return "NxtUsbRealRobotModel";  // Right after NXT OSEK mode
 }
 
 QString UsbRealRobotModel::friendlyName() const
 {
 	return tr("Interpretation (USB)");
+}
+
+int UsbRealRobotModel::priority() const
+{
+	return 8;
 }

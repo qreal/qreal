@@ -20,7 +20,7 @@ class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikGeneratorPluginBase : public generat
 	Q_OBJECT
 
 public:
-	TrikGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName);
+	TrikGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName, int priority);
 	~TrikGeneratorPluginBase();
 
 	QString kitId() const override;
