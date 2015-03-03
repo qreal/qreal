@@ -264,7 +264,7 @@ void QsciScintilla::handleCharAdded(int ch)
     }
 
     // Handle call tips.
-    if (call_tips_style != CallTipsNone && !lex.isNull() && strchr("(),", ch) != NULL)
+    if (call_tips_style != CallTipsNone && !lex.isNull() && strchr("(),", ch) != nullptr)
         callTip();
 
     // Handle auto-indentation.
@@ -3622,7 +3622,7 @@ void QsciScintilla::autoCompleteFromDocument()
 // Check if a character can be in a word.
 bool QsciScintilla::isWordCharacter(char ch) const
 {
-    return (strchr(wchars, ch) != NULL);
+    return (strchr(wchars, ch) != nullptr);
 }
 
 

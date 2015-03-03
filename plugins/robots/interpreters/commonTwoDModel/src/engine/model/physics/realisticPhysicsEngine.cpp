@@ -12,7 +12,7 @@ using namespace twoDModel::model;
 using namespace physics;
 using namespace mathUtils;
 
-RealisticPhysicsEngine::RealisticPhysicsEngine(WorldModel const &worldModel, Timeline const &timeline)
+RealisticPhysicsEngine::RealisticPhysicsEngine(const WorldModel &worldModel, const Timeline &timeline)
 	: PhysicsEngineBase(worldModel)
 	, mForceMoment(0.0)
 	, mAngularVelocity(0.0)
@@ -26,10 +26,10 @@ RealisticPhysicsEngine::RealisticPhysicsEngine(WorldModel const &worldModel, Tim
 
 void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 		, bool engine1Break, bool engine2Break
-		, QPointF const &rotationCenter, qreal robotAngle
-		, QPainterPath const &robotBoundingPath)
+		, const QPointF &rotationCenter, qreal robotAngle
+		, const QPainterPath &robotBoundingPath)
 {
-	QVector2D const direction = Geometry::directionVector(robotAngle);
+	const QVector2D direction = Geometry::directionVector(robotAngle);
 
 	mReactionForce = QVector2D();
 	mWallsFrictionForce = QVector2D();
@@ -49,10 +49,10 @@ void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1,
 }
 
 void RealisticPhysicsEngine::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode
-		, QPointF const &rotationCenter, QVector2D const &direction)
+		, const QPointF &rotationCenter, const QVector2D &direction)
 {
 	if (Math::eq(speed1, 0) && Math::eq(speed2, 0)) {
-		qreal const realFrictionFactor = breakMode
+		const qreal realFrictionFactor = breakMode
 				? 5 // large value for practically immediate stop
 				: floorFrictionCoefficient;
 		mTractionForce = -realFrictionFactor * mVelocity;
@@ -60,32 +60,32 @@ void RealisticPhysicsEngine::countTractionForceAndItsMoment(qreal speed1, qreal 
 		return;
 	}
 
-	qreal const x = rotationCenter.x();
-	qreal const y = rotationCenter.y();
-	qreal const dx = direction.x() * (robotWidth / 2);
-	qreal const dy = direction.y() * (robotHeight / 2);
+	const qreal x = rotationCenter.x();
+	const qreal y = rotationCenter.y();
+	const qreal dx = direction.x() * (robotWidth / 2);
+	const qreal dy = direction.y() * (robotHeight / 2);
 
-	QPointF const engine1Point = QPointF(x + dx + dy, y + dy - dx);
-	QPointF const engine2Point = QPointF(x + dx - dy, y + dy + dx);
+	const QPointF engine1Point = QPointF(x + dx + dy, y + dy - dx);
+	const QPointF engine2Point = QPointF(x + dx - dy, y + dy + dx);
 
-	QVector2D const traction1Force = direction * speed1;
-	QVector2D const traction2Force = direction * speed2;
-	QVector2D const friction1Force = -direction * speed1 * floorFrictionCoefficient;
-	QVector2D const friction2Force = -direction * speed2 * floorFrictionCoefficient;
+	const QVector2D traction1Force = direction * speed1;
+	const QVector2D traction2Force = direction * speed2;
+	const QVector2D friction1Force = -direction * speed1 * floorFrictionCoefficient;
+	const QVector2D friction2Force = -direction * speed2 * floorFrictionCoefficient;
 
-	QVector2D const radiusVector1 = QVector2D(engine1Point - rotationCenter);
-	QVector2D const radiusVector2 = QVector2D(engine2Point - rotationCenter);
-	QVector2D const realTractionForce1 = Geometry::projection(traction1Force, radiusVector1);
-	QVector2D const realTractionForce2 = Geometry::projection(traction2Force, radiusVector2);
+	const QVector2D radiusVector1 = QVector2D(engine1Point - rotationCenter);
+	const QVector2D radiusVector2 = QVector2D(engine2Point - rotationCenter);
+	const QVector2D realTractionForce1 = Geometry::projection(traction1Force, radiusVector1);
+	const QVector2D realTractionForce2 = Geometry::projection(traction2Force, radiusVector2);
 
 	// Parallelogram rule
 	mTractionForce = realTractionForce1 + realTractionForce2;
 	mTractionForce -= floorFrictionCoefficient * mVelocity;
 
-	qreal const tractionForceMoment1 = Geometry::vectorProduct(traction1Force, radiusVector1);
-	qreal const tractionForceMoment2 = Geometry::vectorProduct(traction2Force, radiusVector2);
-	qreal const frictionForceMoment1 = Geometry::vectorProduct(friction1Force, radiusVector1);
-	qreal const frictionForceMoment2 = Geometry::vectorProduct(friction2Force, radiusVector2);
+	const qreal tractionForceMoment1 = Geometry::vectorProduct(traction1Force, radiusVector1);
+	const qreal tractionForceMoment2 = Geometry::vectorProduct(traction2Force, radiusVector2);
+	const qreal frictionForceMoment1 = Geometry::vectorProduct(friction1Force, radiusVector1);
+	const qreal frictionForceMoment2 = Geometry::vectorProduct(friction2Force, radiusVector2);
 	mForceMoment = -tractionForceMoment1 - tractionForceMoment2 - frictionForceMoment1 - frictionForceMoment2;
 
 	mTractionForce += mReactionForce + mWallsFrictionForce;
@@ -94,12 +94,12 @@ void RealisticPhysicsEngine::countTractionForceAndItsMoment(qreal speed1, qreal 
 
 void RealisticPhysicsEngine::recalculateVelocity(qreal timeInterval)
 {
-	qreal const realAngularVelocityFrictionFactor = fabs(mAngularVelocity * angularVelocityFrictionFactor);
+	const qreal realAngularVelocityFrictionFactor = fabs(mAngularVelocity * angularVelocityFrictionFactor);
 
 	mVelocity += mTractionForce / robotMass * timeInterval;
 	mAngularVelocity += mForceMoment / robotInertialMoment * timeInterval;
-	qreal const angularFriction = realAngularVelocityFrictionFactor / robotInertialMoment * timeInterval;
-	qreal const oldAngularVelocity = mAngularVelocity;
+	const qreal angularFriction = realAngularVelocityFrictionFactor / robotInertialMoment * timeInterval;
+	const qreal oldAngularVelocity = mAngularVelocity;
 
 	mAngularVelocity -= angularFriction * Math::sign(mAngularVelocity);
 
@@ -108,40 +108,40 @@ void RealisticPhysicsEngine::recalculateVelocity(qreal timeInterval)
 	}
 }
 
-void RealisticPhysicsEngine::applyRotationalFrictionForce(qreal timeInterval, QVector2D const &direction)
+void RealisticPhysicsEngine::applyRotationalFrictionForce(qreal timeInterval, const QVector2D &direction)
 {
 	QVector2D rotationalFrictionForce(-direction.y(), direction.x());
 	rotationalFrictionForce.normalize();
 
-	qreal const sinus = Geometry::vectorProduct(mVelocity.normalized(), rotationalFrictionForce);
+	const qreal sinus = Geometry::vectorProduct(mVelocity.normalized(), rotationalFrictionForce);
 	rotationalFrictionForce *= sinus * mVelocity.length() * rotationalFrictionFactor;
 
 	if (Geometry::scalarProduct(rotationalFrictionForce, mVelocity) > 0) {
 		rotationalFrictionForce = -rotationalFrictionForce;
 	}
 
-	QVector2D const newVelocity = mVelocity + rotationalFrictionForce / robotMass * timeInterval;
-	qreal const newProjection = Geometry::scalarProduct(newVelocity, rotationalFrictionForce);
+	const QVector2D newVelocity = mVelocity + rotationalFrictionForce / robotMass * timeInterval;
+	const qreal newProjection = Geometry::scalarProduct(newVelocity, rotationalFrictionForce);
 	if (newProjection > 0) {
-		qreal const oldProjection = -Geometry::scalarProduct(mVelocity, rotationalFrictionForce);
-		qreal const incrementFactor = oldProjection / (oldProjection + newProjection);
+		const qreal oldProjection = -Geometry::scalarProduct(mVelocity, rotationalFrictionForce);
+		const qreal incrementFactor = oldProjection / (oldProjection + newProjection);
 		mVelocity += rotationalFrictionForce / robotMass * timeInterval * incrementFactor;
 	} else {
 		mVelocity = newVelocity;
 	}
 }
 
-void RealisticPhysicsEngine::findCollision(QPainterPath const &robotBoundingRegion
-		, QPainterPath const &wallBoundingRegion, QPointF const &rotationCenter)
+void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegion
+		, const QPainterPath &wallBoundingRegion, const QPointF &rotationCenter)
 {
 	if (!wallBoundingRegion.intersects(robotBoundingRegion)) {
 		return;
 	}
 
-	QPainterPath const intersectionRegion = robotBoundingRegion.intersected(wallBoundingRegion).simplified();
+	const QPainterPath intersectionRegion = robotBoundingRegion.intersected(wallBoundingRegion).simplified();
 	QPointF startPoint;
 	QPointF endPoint;
-	qreal const lengthAtom = 1;
+	const qreal lengthAtom = 1;
 
 	qreal longestProjection = 0.0;
 	QPointF mostFarPointOnRobot;
@@ -150,7 +150,7 @@ void RealisticPhysicsEngine::findCollision(QPainterPath const &robotBoundingRegi
 	int contributorsCount = 0;
 
 	for (int i = 0; i < intersectionRegion.elementCount(); ++i) {
-		QPainterPath::Element const element = intersectionRegion.elementAt(i);
+		const QPainterPath::Element element = intersectionRegion.elementAt(i);
 
 		// Walking through the segments...
 		if (element.isMoveTo()) {
@@ -160,48 +160,48 @@ void RealisticPhysicsEngine::findCollision(QPainterPath const &robotBoundingRegi
 
 		startPoint = endPoint;
 		endPoint = QPointF(element.x, element.y);
-		QLineF const currentLine(startPoint, endPoint);
+		const QLineF currentLine(startPoint, endPoint);
 
 		// Checking that current segment belongs to the wall path, not the robot one
 		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPrecision), false) {
 			continue;
 		}
 
-		qreal const currentAngle = currentLine.angle();
-		QVector2D const atomicVector = QVector2D(endPoint - startPoint).normalized() * lengthAtom;
+		const qreal currentAngle = currentLine.angle();
+		const QVector2D atomicVector = QVector2D(endPoint - startPoint).normalized() * lengthAtom;
 
-		qreal const length = Geometry::distance(startPoint, endPoint);
-		int const fragmentsCount = ceil(length / lengthAtom);
+		const qreal length = Geometry::distance(startPoint, endPoint);
+		const int fragmentsCount = ceil(length / lengthAtom);
 
 		// If current line is too long then dividing it into small segments
 		for (int j = 0; j <= fragmentsCount; ++j) {
 
 			// Chosing points closer to center. In case of ideal 90 degrees angle between the wall and
 			// the robot`s velocity vector resulting rotation moment must be 0
-			int const transitionSign = (fragmentsCount + j) % 2 ? -1 : 1;
-			int const middleIndex = fragmentsCount / 2 + transitionSign * ((j + 1) / 2);
-			QPointF const currentSegmentationPoint = j == fragmentsCount
+			const int transitionSign = (fragmentsCount + j) % 2 ? -1 : 1;
+			const int middleIndex = fragmentsCount / 2 + transitionSign * ((j + 1) / 2);
+			const QPointF currentSegmentationPoint = j == fragmentsCount
 					? endPoint
 					: startPoint + middleIndex * atomicVector.toPointF();
 
-			qreal const orthogonalAngle = 90 - currentAngle;
-			QVector2D const orthogonalDirectionVector = Geometry::directionVector(orthogonalAngle);
+			const qreal orthogonalAngle = 90 - currentAngle;
+			const QVector2D orthogonalDirectionVector = Geometry::directionVector(orthogonalAngle);
 
-			QLineF const normalLine = Geometry::veryLongLine(currentSegmentationPoint, orthogonalDirectionVector);
+			const QLineF normalLine = Geometry::veryLongLine(currentSegmentationPoint, orthogonalDirectionVector);
 
 			// For each point on that segments calculating reaction force vector acting from that point
-			QList<QPointF> const intersectionsWithRobot = Geometry::intersection(normalLine, robotBoundingRegion, lowPrecision);
+			const QList<QPointF> intersectionsWithRobot = Geometry::intersection(normalLine, robotBoundingRegion, lowPrecision);
 			QList<QPointF> intersectionsWithRobotAndWall;
-			foreach (QPointF const &point, intersectionsWithRobot) {
+			foreach (const QPointF &point, intersectionsWithRobot) {
 				if (Geometry::belongs(point, intersectionRegion, lowPrecision)) {
 					intersectionsWithRobotAndWall << point;
 				}
 			}
 
-			QPointF const currentMostFarPointOnRobot =
+			const QPointF currentMostFarPointOnRobot =
 					Geometry::closestPointTo(intersectionsWithRobotAndWall, currentSegmentationPoint);
-			QVector2D const currentReactionForce = QVector2D(currentSegmentationPoint - currentMostFarPointOnRobot);
-			QVector2D const currentProjection = Geometry::projection(currentReactionForce, mVelocity);
+			const QVector2D currentReactionForce = QVector2D(currentSegmentationPoint - currentMostFarPointOnRobot);
+			const QVector2D currentProjection = Geometry::projection(currentReactionForce, mVelocity);
 
 			sumReaction += currentReactionForce;
 			++contributorsCount;
@@ -216,12 +216,12 @@ void RealisticPhysicsEngine::findCollision(QPainterPath const &robotBoundingRegi
 	}
 
 	// Reaction force is an average between all reaction forces from small wall parts
-	QVector2D const rawCurrentReactionForce = contributorsCount ? sumReaction / contributorsCount : QVector2D();
-	QVector2D const currentReactionForce = rawCurrentReactionForce / reactionForceStabilizationCoefficient;
-	QVector2D const frictionForceDirection = Geometry::directionVector(-longestVectorNormalSlope);
-	QVector2D const currentFrictionForce = wallFrictionCoefficient
+	const QVector2D rawCurrentReactionForce = contributorsCount ? sumReaction / contributorsCount : QVector2D();
+	const QVector2D currentReactionForce = rawCurrentReactionForce / reactionForceStabilizationCoefficient;
+	const QVector2D frictionForceDirection = Geometry::directionVector(-longestVectorNormalSlope);
+	const QVector2D currentFrictionForce = wallFrictionCoefficient
 			 * frictionForceDirection * currentReactionForce.length();
-	QVector2D const radiusVector(mostFarPointOnRobot - rotationCenter);
+	const QVector2D radiusVector(mostFarPointOnRobot - rotationCenter);
 
 	mReactionForce += currentReactionForce;
 	mWallsFrictionForce += currentFrictionForce;

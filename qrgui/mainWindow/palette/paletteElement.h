@@ -15,15 +15,15 @@ class PaletteElement
 {
 public:
 	/// Stores given parameters in self
-	PaletteElement(Id const &id
-			, QString const &name
-			, QString const &description
-			, QIcon const &icon
-			, QSize const &preferredSize
-			, Id const &explosionTarget);
+	PaletteElement(const Id &id
+			, const QString &name
+			, const QString &description
+			, const QIcon &icon
+			, const QSize &preferredSize
+			, const Id &explosionTarget);
 
 	/// Stores editor manager-derived parameters of given elements
-	PaletteElement(EditorManagerInterface const &manager, Id const &element);
+	PaletteElement(const EditorManagerInterface &manager, const Id &element);
 
 	Id id() const;
 	QString name() const;

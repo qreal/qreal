@@ -28,7 +28,7 @@ void LuaSemanticAnalyzerTest::SetUp()
 	mLexer.reset(new LuaLexer(mErrors));
 }
 
-QSharedPointer<qrtext::core::ast::Node> LuaSemanticAnalyzerTest::parse(QString const &code)
+QSharedPointer<qrtext::core::ast::Node> LuaSemanticAnalyzerTest::parse(const QString &code)
 {
 	return mParser->parse(mLexer->tokenize(code), mLexer->userFriendlyTokenNames());
 }
@@ -140,7 +140,7 @@ TEST_F(LuaSemanticAnalyzerTest, functionReturnType)
 
 TEST_F(LuaSemanticAnalyzerTest, functionParameters)
 {
-	auto tree = parse("a = f(b, c)");
+	auto tree = parse("b = 1; c = 'c'; a = f(b, c)");
 
 	mAnalyzer->addIntrinsicFunction("f", QSharedPointer<types::Function>(new types::Function(
 			QSharedPointer<core::types::TypeExpression>(new types::Float()),
@@ -152,7 +152,7 @@ TEST_F(LuaSemanticAnalyzerTest, functionParameters)
 
 	EXPECT_TRUE(mErrors.isEmpty());
 
-	auto assignment = as<ast::Assignment>(tree);
+	auto assignment = as<ast::Assignment>(as<ast::Block>(tree)->children()[2]);
 
 	auto f = as<ast::FunctionCall>(assignment->value());
 
@@ -270,3 +270,11 @@ TEST_F(LuaSemanticAnalyzerTest, complexByteOperationsExpression)
 	EXPECT_TRUE(mAnalyzer->type(a2)->is<types::Integer>());
 }
 
+TEST_F(LuaSemanticAnalyzerTest, unknownIdentifier)
+{
+	auto tree = parse("a = b");
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_EQ(1, mErrors.size());
+}

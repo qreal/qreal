@@ -4,7 +4,7 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-SonarSensor::SonarSensor(DeviceInfo const &info, PortInfo const &port
+SonarSensor::SonarSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 
 	: interpreterBase::robotModel::robotParts::RangeSensor(info, port)
@@ -41,7 +41,7 @@ void SonarSensor::doConfiguration()
 	mImplementation.configure();
 }
 
-void SonarSensor::sensorSpecificProcessResponse(QByteArray const &reading)
+void SonarSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
 		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse"
@@ -78,7 +78,7 @@ void SonarSensor::writeRegister(nxtKitInterpreter::enums::sonarRegisters::SonarR
 	sendCommand(command, 0);
 }
 
-void SonarSensor::sendCommand(QByteArray const &command, int responseSize)
+void SonarSensor::sendCommand(const QByteArray &command, int responseSize)
 {
 	mI2C.sendI2C(&mImplementation, command, responseSize, port());
 }

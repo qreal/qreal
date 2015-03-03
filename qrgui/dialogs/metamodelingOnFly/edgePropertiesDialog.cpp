@@ -8,8 +8,8 @@
 using namespace qReal;
 using namespace gui;
 
-EdgePropertiesDialog::EdgePropertiesDialog(Id const &diagram
-		, EditorManagerInterface const &editorManagerProxy
+EdgePropertiesDialog::EdgePropertiesDialog(const Id &diagram
+		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::EdgePropertiesDialog)
@@ -31,7 +31,7 @@ void EdgePropertiesDialog::okButtonClicked()
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
 		mEdgeName = mUi->nameEdit->text();
-		IdList const edgesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram
+		const IdList edgesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram
 				, mUi->nameEdit->text(), "MetaEntityEdge");
 		if (!edgesWithTheSameNameList.isEmpty()) {
 			mEdgeName = mUi->nameEdit->text() + "_" + edgesWithTheSameNameList.count();

@@ -13,7 +13,7 @@ WaitForSoundSensorBlock::WaitForSoundSensorBlock(interpreterBase::robotModel::Ro
 
 void WaitForSoundSensorBlock::responseSlot(int reading)
 {
-	int const result = eval<int>("Volume");
+	const int result = eval<int>("Volume");
 	if (!errorsOccured()) {
 		processResponce(reading, result);
 	}

@@ -9,19 +9,19 @@ namespace gui {
 class RenameDialog : public QDialog
 {
 public:
-	static QString selectNewName(QString const &currentName, QWidget *parent = 0);
+	static QString selectNewName(const QString &currentName, QWidget *parent = 0);
 
 private slots:
 	virtual void accept();
 	virtual void reject();
 
 private:
-	explicit RenameDialog(QString const &initialText = "", QWidget *parent = 0);
+	explicit RenameDialog(const QString &initialText = "", QWidget *parent = 0);
 	virtual ~RenameDialog();
 
 	QString name() const;
 
-	QString const mInitialName;
+	const QString mInitialName;
 	QLineEdit *mTextBox;
 };
 

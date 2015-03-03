@@ -17,7 +17,7 @@ public:
 	/// Inits interpreted plugins.
 	/// @param configurator - information about model
 	/// @param metamodelRepoApi - information about metamodel
-	void init(PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
+	void init(const PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
 
 	/// Returns list of actions of all plugins.
 	QList<ActionInfo> actions() const;
@@ -36,7 +36,7 @@ public:
 	/// Notifies plugins about change of currently open tab. If last tab is closed or current
 	/// tab is not diagram at all (text editor, for example), rootElementId is Id()
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
-	void activeTabChanged(Id const & rootElementId);
+	void activeTabChanged(const Id & rootElementId);
 
 private:
 	QList<HotKeyActionInfo> hotKeyActions() const;

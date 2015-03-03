@@ -16,10 +16,10 @@ namespace converters {
 class PortNameConverter : public TemplateParametrizedConverter
 {
 public:
-	PortNameConverter(QString const &pathToTemplates
+	PortNameConverter(const QString &pathToTemplates
 			, QList<interpreterBase::robotModel::PortInfo> const &ports);
 
-	QString convert(QString const &portNameOrAlias) const override;
+	QString convert(const QString &portNameOrAlias) const override;
 
 private:
 	QList<interpreterBase::robotModel::PortInfo> const mPorts;

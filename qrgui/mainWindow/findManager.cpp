@@ -13,7 +13,7 @@ FindManager::FindManager(qrRepo::RepoControlInterface &controlApi
 {
 }
 
-void FindManager::handleRefsDialog(qReal::Id const &id)
+void FindManager::handleRefsDialog(const qReal::Id &id)
 {
 	mMainWindow->selectItemOrDiagram(id);
 }
@@ -35,7 +35,7 @@ qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool se
 	}
 }
 
-QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
+QMap<QString, QString> FindManager::findItems(const QStringList &searchData)
 {
 	QMap<QString, QString> found;
 	bool sensitivity = searchData.contains(tr("case sensitivity"));
@@ -57,7 +57,7 @@ QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
 	return found;
 }
 
-void FindManager::handleFindDialog(QStringList const &searchData)
+void FindManager::handleFindDialog(const QStringList &searchData)
 {
 	mFindReplaceDialog->initIds(findItems(searchData));
 }

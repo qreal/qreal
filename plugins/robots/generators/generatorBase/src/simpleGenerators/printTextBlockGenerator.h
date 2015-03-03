@@ -9,9 +9,9 @@ namespace simple {
 class PrintTextBlockGenerator : public BindingGenerator
 {
 public:
-	PrintTextBlockGenerator(qrRepo::RepoApi const &repo
+	PrintTextBlockGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

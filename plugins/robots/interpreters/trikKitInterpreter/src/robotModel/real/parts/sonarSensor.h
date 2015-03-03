@@ -13,14 +13,14 @@ class SonarSensor : public robotModel::parts::TrikSonarSensor
 	Q_OBJECT
 
 public:
-	SonarSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	SonarSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
 
 public slots:
-	void onIncomingData(QString const &portName, int value);
+	void onIncomingData(const QString &portName, int value);
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;

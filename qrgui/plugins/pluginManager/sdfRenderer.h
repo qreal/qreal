@@ -30,12 +30,12 @@ class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public SdfRendererInterface
 
 public:
 	SdfRenderer();
-	explicit SdfRenderer(QString const path);
+	explicit SdfRenderer(const QString path);
 	~SdfRenderer();
 
-	bool load (QString const &filename);
-	bool load(QDomDocument const &document);
-	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);
+	bool load (const QString &filename);
+	bool load(const QDomDocument &document);
+	void render(QPainter *painter, const QRectF &bounds, bool isIcon = false);
 	void noScale();
 
 	int pictureWidth() { return first_size_x; }
@@ -56,7 +56,7 @@ private:
 		/// Draws image with given file name on given painter in given rectangle. Note that actual file, from which
 		/// an image will be loaded may be different from fileName, as described in selectBestImageFile.
 		/// @see selectBestImageFile
-		void drawImage(QString const &fileName, QPainter &painter, QRect const &rect);
+		void drawImage(const QString &fileName, QPainter &painter, const QRect &rect);
 
 		/// Clears prerendered svg cache.
 		void invalidateSvgCache(double zoomFactor);
@@ -69,10 +69,10 @@ private:
 		///   rules above.
 		/// - if everything above fails, system default image file, from qrgui/icons (or, when compiled,
 		///   from ":/icons/default.svg"), is used.
-		static QFileInfo selectBestImageFile(QString const &filePath);
+		static QFileInfo selectBestImageFile(const QString &filePath);
 
 		/// Loads pixmap from given file, returns empty QByteArray if file does not exist.
-		static QByteArray loadPixmap(QFileInfo const &fileInfo);
+		static QByteArray loadPixmap(const QFileInfo &fileInfo);
 
 		/// Maps file name to pre-loaded pixmap with image.
 		QHash<QString, QPixmap> mFileNamePixmapMap;
@@ -117,8 +117,8 @@ private:
 	bool mNeedScale;
 	ElementRepoInterface *mElementRepo;
 
-	bool checkShowConditions(QDomElement const &element, bool isIcon) const;
-	bool checkCondition(QDomElement const &condition) const;
+	bool checkShowConditions(const QDomElement &element, bool isIcon) const;
+	bool checkCondition(const QDomElement &condition) const;
 
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);
@@ -151,10 +151,10 @@ private:
 class SdfIconEngineV2 : public SdfIconEngineV2Interface
 {
 public:
-	explicit SdfIconEngineV2(QString const &file);
-	explicit SdfIconEngineV2(QDomDocument const &document);
+	explicit SdfIconEngineV2(const QString &file);
+	explicit SdfIconEngineV2(const QDomDocument &document);
 	QSize preferedSize() const;
-	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
+	virtual void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state);
 	virtual QIconEngine *clone() const;
 
 private:
@@ -167,14 +167,14 @@ class SdfIconLoader
 {
 public:
 	/// Returns a pixmap of element in specified sdf-file
-	static QIcon iconOf(QString const &fileName);
+	static QIcon iconOf(const QString &fileName);
 
 	/// Returns a size of the pixmap of element in specified sdf-file
-	static QSize preferedSizeOf(QString const &fileName);
+	static QSize preferedSizeOf(const QString &fileName);
 
 private:
 	static SdfIconLoader *instance();
-	static QIcon loadPixmap(QString const &fileName);
+	static QIcon loadPixmap(const QString &fileName);
 
 	SdfIconLoader();
 	~SdfIconLoader();

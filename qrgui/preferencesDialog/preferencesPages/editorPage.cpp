@@ -2,7 +2,7 @@
 #include "ui_editorPage.h"
 
 #include <qrkernel/settingsManager.h>
-#include <plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
 
 using namespace qReal;
 using namespace enums::linkShape;
@@ -135,7 +135,7 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
 	mUi->labelDistanceSlider->setValue(SettingsManager::value("LabelsDistance").toInt());
 
-	LinkShape const type = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
+	const LinkShape type = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 	mUi->lineMode->setCurrentIndex(type);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());

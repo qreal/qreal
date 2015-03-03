@@ -10,6 +10,8 @@ class AbstractTimer;
 class TimelineInterface
 {
 public:
+	virtual ~TimelineInterface() {}
+
 	/// Returns time in ms passed from some point (no matter what point).
 	virtual quint64 timestamp() const = 0;
 

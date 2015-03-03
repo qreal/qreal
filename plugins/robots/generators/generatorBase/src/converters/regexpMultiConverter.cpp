@@ -2,8 +2,8 @@
 
 using namespace generatorBase::converters;
 
-RegexpMultiConverter::RegexpMultiConverter(QString const &splitRegexp
-		, simple::Binding::ConverterInterface const * const converter)
+RegexpMultiConverter::RegexpMultiConverter(const QString &splitRegexp
+		, const simple::Binding::ConverterInterface * const converter)
 	: mSplitRegexp(splitRegexp)
 	, mSimpleConverter(converter)
 {
@@ -14,11 +14,11 @@ RegexpMultiConverter::~RegexpMultiConverter()
 	delete mSimpleConverter;
 }
 
-QStringList RegexpMultiConverter::convert(QString const &data) const
+QStringList RegexpMultiConverter::convert(const QString &data) const
 {
-	QStringList const parts = data.toUpper().split(QRegExp(mSplitRegexp), QString::SkipEmptyParts);
+	const QStringList parts = data.toUpper().split(QRegExp(mSplitRegexp), QString::SkipEmptyParts);
 	QStringList result;
-	for (QString const &part : parts) {
+	for (const QString &part : parts) {
 		result << mSimpleConverter->convert(part);
 	}
 

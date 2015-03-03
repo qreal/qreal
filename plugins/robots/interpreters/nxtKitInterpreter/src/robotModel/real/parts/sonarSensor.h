@@ -15,20 +15,20 @@ class SonarSensor : public interpreterBase::robotModel::robotParts::RangeSensor
 	Q_CLASSINFO("friendlyName", tr("Sonar sensor"))
 
 public:
-	SonarSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	SonarSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;
 	void doConfiguration() override;
 
 private slots:
-	void sensorSpecificProcessResponse(QByteArray const &reading);
+	void sensorSpecificProcessResponse(const QByteArray &reading);
 
 private:
 	void setMode(enums::sonarMode::SonarModeEnum mode);
 	void writeRegister(enums::sonarRegisters::SonarRegistersEnum reg, int value);
-	void sendCommand(QByteArray const &command, int responseSize);
+	void sendCommand(const QByteArray &command, int responseSize);
 
 	NxtInputDevice mImplementation;
 	communication::I2CCommunicator mI2C;

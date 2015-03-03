@@ -6,5 +6,5 @@ class ExternBrowser
 {
 public:
 	ExternBrowser();
-	bool openPage(QString const &url);
+	bool openPage(const QString &url);
 };

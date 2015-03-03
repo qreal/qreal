@@ -4,10 +4,11 @@ include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/interpreters/interpreterBase/interpreterBase.pri)
 
-LIBS += -L../../../../../../bin -lqslog
+links(qslog)
 
 INCLUDEPATH += \
 	../../../../../../plugins/robots/interpreters/interpreterBase \
+	../../../../../../plugins/robots/interpreters/interpreterBase/include \
 
 # Tests
 HEADERS += \

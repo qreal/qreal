@@ -8,8 +8,8 @@
 using namespace qReal;
 using namespace gui;
 
-AddNodeDialog::AddNodeDialog(Id const &diagram
-		, EditorManagerInterface const &editorManagerProxy
+AddNodeDialog::AddNodeDialog(const Id &diagram
+		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::AddNodeDialog)
@@ -31,7 +31,7 @@ void AddNodeDialog::okButtonClicked()
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
 		mNodeName = mUi->nameEdit->text();
-		IdList const nodesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram
+		const IdList nodesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram
 				, mUi->nameEdit->text(), "MetaEntityNode");
 		if (!nodesWithTheSameNameList.isEmpty()) {
 			mNodeName = mUi->nameEdit->text() + "_" + nodesWithTheSameNameList.count();

@@ -8,7 +8,7 @@
 
 using namespace qReal;
 
-StyledButton::StyledButton(QString const &text, QString const &icon
+StyledButton::StyledButton(const QString &text, const QString &icon
 		, QBoxLayout::Direction direction, QWidget *parent)
 	: QPushButton(parent)
 {

@@ -27,8 +27,8 @@ public:
 
 	void init();
 
-	void registerPage(QString const &pageName, PreferencesPage * const page);
-	void switchCurrentPage(QString const &pageName);
+	void registerPage(const QString &pageName, PreferencesPage * const page);
+	void switchCurrentPage(const QString &pageName);
 
 	/// Returns a list of registered preferences pages.
 	QList<PreferencesPage *> pages() const;

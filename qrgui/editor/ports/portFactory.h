@@ -6,8 +6,8 @@
 class PortFactory : public PortFactoryInterface
 {
 public:
-	virtual PortInterface *createPort(QPointF const &point, bool propX, bool propY, int initWidth, int initHeight
+	virtual PortInterface *createPort(const QPointF &point, bool propX, bool propY, int initWidth, int initHeight
 			, PortImpl *impl) const;
-	virtual PortInterface *createPort(QLineF const &line, bool propX1, bool propY1, bool propX2, bool propY2
+	virtual PortInterface *createPort(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2
 			, int initWidth, int initHeight, PortImpl *impl) const;
 };

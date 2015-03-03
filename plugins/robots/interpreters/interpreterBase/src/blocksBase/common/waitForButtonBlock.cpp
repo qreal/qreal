@@ -6,19 +6,20 @@
 using namespace interpreterBase::blocksBase::common;
 using namespace interpreterBase::robotModel;
 
-WaitForButtonBlock::WaitForButtonBlock(RobotModelInterface &robotModel, QString const &portName)
+WaitForButtonBlock::WaitForButtonBlock(robotModel::RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)
-	, mPort(portName)
 {
 }
 
 void WaitForButtonBlock::run()
 {
-	mButton = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, mPort);
+	const QString port = eval<QString>("Button");
+
+	mButton = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, port);
 
 	if (!mButton) {
 		mActiveWaitingTimer.stop();
-		error(tr("Button on port %1 is not configured (WTF?)").arg(mPort));
+		error(tr("Incorrect button port %1").arg(port));
 		return;
 	}
 

@@ -7,13 +7,15 @@
 
 using namespace nxt::osekC;
 
-NxtOsekCMasterGenerator::NxtOsekCMasterGenerator(qrRepo::RepoApi const &repo
+NxtOsekCMasterGenerator::NxtOsekCMasterGenerator(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const utils::ParserErrorReporter &parserErrorReporter
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
-	: NxtMasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId, generatorName)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
+	: NxtMasterGeneratorBase(repo, errorReporter, parserErrorReporter, robotModelManager, textLanguage, diagramId
+			, generatorName)
 {
 }
 
@@ -39,27 +41,27 @@ void NxtOsekCMasterGenerator::afterGeneration()
 	NxtMasterGeneratorBase::afterGeneration();
 }
 
-void NxtOsekCMasterGenerator::generateOilFile(QString const &projectName
-		, QString const &projectDir)
+void NxtOsekCMasterGenerator::generateOilFile(const QString &projectName
+		, const QString &projectDir)
 {
 	QStringList tasks;
-	for (QString const &task : mCustomizer->factory()->threads().threadNames()) {
+	for (const QString &task : mCustomizer->factory()->threads().threadNames()) {
 		tasks << generateOilTask(task);
 	}
 
-	QString const resultOil = readTemplate("oil.t").replace("@@TASKS@@", tasks.join("\n"));
+	const QString resultOil = readTemplate("oil.t").replace("@@TASKS@@", tasks.join("\n"));
 	outputCode(projectDir + "/" + projectName + ".oil", resultOil);
 }
 
-QString NxtOsekCMasterGenerator::generateOilTask(QString const &taskName)
+QString NxtOsekCMasterGenerator::generateOilTask(const QString &taskName)
 {
 	return utils::StringUtils::addIndent(readTemplate("oilTask.t").replace("@@NAME@@", taskName), 1, "\t");
 }
 
-void NxtOsekCMasterGenerator::generateMakeFile(QString const &projectName
-		, QString const &projectDir)
+void NxtOsekCMasterGenerator::generateMakeFile(const QString &projectName
+		, const QString &projectDir)
 {
-	QString const bmps = static_cast<NxtGeneratorFactory *>(mCustomizer->factory())->images()
+	const QString bmps = static_cast<NxtGeneratorFactory *>(mCustomizer->factory())->images()
 			.generateBmpFilesStringForMake().toUtf8();
 
 	QString makefileTemplate = readTemplate("makefile.t");

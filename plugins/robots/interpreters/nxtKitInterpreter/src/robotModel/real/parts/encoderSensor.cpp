@@ -6,7 +6,7 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-EncoderSensor::EncoderSensor(DeviceInfo const &info, PortInfo const &port
+EncoderSensor::EncoderSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::EncoderSensor(info, port)
 	, mRobotCommunicator(robotCommunicator)
@@ -44,7 +44,7 @@ void EncoderSensor::nullify()
 	mRobotCommunicator.send(this, command, 0);
 }
 
-void EncoderSensor::readingDone(QObject *addressee, QByteArray const &reading)
+void EncoderSensor::readingDone(QObject *addressee, const QByteArray &reading)
 {
 	if (addressee != this) {
 		return;
@@ -53,7 +53,7 @@ void EncoderSensor::readingDone(QObject *addressee, QByteArray const &reading)
 	sensorSpecificProcessResponse(reading);
 }
 
-void EncoderSensor::sensorSpecificProcessResponse(QByteArray const &reading)
+void EncoderSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	mState = idle;
 

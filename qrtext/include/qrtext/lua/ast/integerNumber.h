@@ -10,7 +10,7 @@ namespace ast {
 class QRTEXT_EXPORT IntegerNumber : public Number
 {
 public:
-	IntegerNumber(QString const &stringRepresentation)
+	IntegerNumber(const QString &stringRepresentation)
 		: Number(stringRepresentation)
 	{
 	}

@@ -6,8 +6,8 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 CodeConverterBase::CodeConverterBase(lua::LuaProcessor &luaTranslator
-		, qReal::Id const &id
-		, QString const &propertyName
+		, const qReal::Id &id
+		, const QString &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter)
 	: mLuaTranslator(luaTranslator)
 	, mId(id)
@@ -16,7 +16,7 @@ CodeConverterBase::CodeConverterBase(lua::LuaProcessor &luaTranslator
 {
 }
 
-QString CodeConverterBase::convert(QString const &luaCode) const
+QString CodeConverterBase::convert(const QString &luaCode) const
 {
 	return mLuaTranslator.translate(luaCode, mId, mPropertyName, mReservedVariablesConverter);
 }

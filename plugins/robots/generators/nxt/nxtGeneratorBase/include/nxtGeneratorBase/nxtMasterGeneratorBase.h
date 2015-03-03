@@ -10,12 +10,13 @@ namespace nxt {
 class ROBOTS_NXT_GENERATOR_BASE_EXPORT NxtMasterGeneratorBase : public generatorBase::MasterGeneratorBase
 {
 public:
-	NxtMasterGeneratorBase(qrRepo::RepoApi const &repo
+	NxtMasterGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const utils::ParserErrorReporter &parserErrorReporter
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId
-			, QString const &generatorName);
+			, const qReal::Id &diagramId
+			, const QString &generatorName);
 
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
@@ -24,9 +25,9 @@ protected:
 	void afterGeneration() override;
 
 private:
-	void saveImages(QString const &projectDir);
+	void saveImages(const QString &projectDir);
 
-	QString const mGeneratorName;
+	const QString mGeneratorName;
 };
 
 }

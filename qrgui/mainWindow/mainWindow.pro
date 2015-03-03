@@ -1,28 +1,17 @@
+TARGET = qreal
+
+include(../../global.pri)
+
 TEMPLATE = app
-
-DESTDIR = $$PWD/../../bin
-
-TARGET = qrgui
 
 QT += widgets printsupport xml svg
 
-LIBS += -L$$PWD/../../bin \
-			-lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
-			-lqrgui-models -lqrgui-editor -lqrgui-controller -lqrgui-dialogs -lqrgui-preferences-dialog \
-			-lqrgui-text-editor -lqrgui-mouse-gestures -lqrgui-hotkey-manager -lqrgui-brand-manager  \
-			-lqrgui-plugin-manager -lqrgui-tool-plugin-interface -lqrgui-thirdparty -lqrgui-dialogs \
+links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor qrgui-controller qrgui-dialogs qrgui-preferences-dialog \
+		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager  \
+		qrgui-facade qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
+)
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+includes(qrgui)
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
 
@@ -36,7 +25,6 @@ HEADERS += \
 	$$PWD/errorReporter.h \
 	$$PWD/error.h \
 	$$PWD/errorListWidget.h \
-	$$PWD/mainWindowInterpretersInterface.h \
 	$$PWD/findManager.h \
 	$$PWD/dotRunner.h \
 	$$PWD/splashScreen.h \
@@ -45,9 +33,7 @@ HEADERS += \
 	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
-	$$PWD/projectManager/autosaver.h \
-	$$PWD/projectManager/projectManagementInterface.h \
-	$$PWD/projectManager/projectManager.h \
+	$$PWD/projectManager/projectManagerWrapper.h \
 	$$PWD/projectManager/versionsConverterManager.h \
 	$$PWD/palette/paletteTree.h \
 	$$PWD/palette/paletteTreeWidget.h \
@@ -72,8 +58,7 @@ SOURCES += \
 	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
-	$$PWD/projectManager/autosaver.cpp \
-	$$PWD/projectManager/projectManager.cpp \
+	$$PWD/projectManager/projectManagerWrapper.cpp \
 	$$PWD/projectManager/versionsConverterManager.cpp \
 	$$PWD/palette/paletteTree.cpp \
 	$$PWD/palette/paletteTreeWidget.cpp \

@@ -5,9 +5,9 @@
 #include <QtCore/QString>
 #include <QtGui/QIcon>
 
-#include "plugins/editorPluginInterface/sdfRendererInterface.h"
-#include "plugins/editorPluginInterface/elementImpl.h"
-#include "plugins/editorPluginInterface/listenerInterface.h"
+#include "qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
+#include "qrgui/plugins/editorPluginInterface/elementImpl.h"
+#include "qrgui/plugins/editorPluginInterface/listenerInterface.h"
 
 namespace qReal {
 
@@ -19,7 +19,7 @@ public:
 	struct ExplosionData
 	{
 	public:
-		ExplosionData(QString targetDiagram, QString targetElement
+		ExplosionData(const QString &targetDiagram, const QString &targetElement
 				, bool isReusable, bool requiresImmediateLinkage)
 			: targetDiagram(targetDiagram)
 			, targetElement(targetElement)
@@ -39,46 +39,46 @@ public:
 	virtual QString version() const = 0;
 
 	virtual QStringList diagrams() const = 0;
-	virtual QStringList elements(QString const &diagram) const = 0;
+	virtual QStringList elements(const QString &diagram) const = 0;
 
-	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const = 0;
-	virtual QStringList getTypesContainedBy(QString const &element) const = 0;
-	virtual QList<ExplosionData> explosions(QString const &diagram, QString const &element) const = 0;
+	virtual QStringList getPropertiesWithDefaultValues(const QString &element) const = 0;
+	virtual QStringList getTypesContainedBy(const QString &element) const = 0;
+	virtual QList<ExplosionData> explosions(const QString &diagram, const QString &element) const = 0;
 	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > >
-			getPossibleEdges(QString const &element) const = 0;
+			getPossibleEdges(const QString &element) const = 0;
 
-	virtual int isNodeOrEdge(QString const &element) const = 0;
+	virtual int isNodeOrEdge(const QString &element) const = 0;
 
-	virtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const = 0;
-	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const = 0;
-	virtual QStringList getPortTypes(QString const &diagram, QString const &element) const = 0;
-	virtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const = 0;
-	virtual QString getPropertyType(QString const &element, QString const &name) const = 0;
-	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const = 0;
-	virtual QList<QPair<QString, QString>> getEnumValues(QString const &name) const = 0;
-	virtual bool isEnumEditable(QString const &name) const = 0;
+	virtual ElementImpl* getGraphicalObject(const QString &diagram, const QString &element) const = 0;
+	virtual QStringList getPropertyNames(const QString &diagram, const QString &element) const = 0;
+	virtual QStringList getPortTypes(const QString &diagram, const QString &element) const = 0;
+	virtual QStringList getReferenceProperties(const QString &diagram, const QString &element) const = 0;
+	virtual QString getPropertyType(const QString &element, const QString &name) const = 0;
+	virtual QString getPropertyDefaultValue(const QString &element, const QString &property) const = 0;
+	virtual QList<QPair<QString, QString>> getEnumValues(const QString &name) const = 0;
+	virtual bool isEnumEditable(const QString &name) const = 0;
 	virtual QString getGroupsXML() const = 0;
-	virtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const = 0;
+	virtual QList<QPair<QString, QString> > getParentsOf(const QString &diagram, const QString &element) const = 0;
 
 	virtual QString editorName() const = 0;
-	virtual QString diagramName(QString const &diagram) const = 0;
-	virtual QString diagramNodeName(QString const &diagram) const = 0;
-	virtual QString elementName(QString const &diagram, QString const &element) const = 0;
-	virtual QString elementMouseGesture(QString const &diagram, QString const &element) const = 0;
-	virtual QString elementDescription(QString const &diagram, QString const &element) const = 0;
-	virtual QString propertyDescription(QString const &diagram, QString const &element
-			, QString const &property) const = 0;
-	virtual QString propertyDisplayedName(QString const &diagram, QString const &element
-			, QString const &property) const = 0;
+	virtual QString diagramName(const QString &diagram) const = 0;
+	virtual QString diagramNodeName(const QString &diagram) const = 0;
+	virtual QString elementName(const QString &diagram, const QString &element) const = 0;
+	virtual QString elementMouseGesture(const QString &diagram, const QString &element) const = 0;
+	virtual QString elementDescription(const QString &diagram, const QString &element) const = 0;
+	virtual QString propertyDescription(const QString &diagram, const QString &element
+			, const QString &property) const = 0;
+	virtual QString propertyDisplayedName(const QString &diagram, const QString &element
+			, const QString &property) const = 0;
 	virtual QList<qReal::ListenerInterface*> listeners() const = 0;
 
-	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement
-			, QString const &childDiagram, QString const &childElement) const = 0;
+	virtual bool isParentOf(const QString &parentDiagram, const QString &parentElement
+			, const QString &childDiagram, const QString &childElement) const = 0;
 
-	virtual QStringList diagramPaletteGroups(QString const &diagram) const = 0;
-	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const = 0;
-	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const = 0;
-	virtual bool shallPaletteBeSorted(QString const &diagram) const = 0;
+	virtual QStringList diagramPaletteGroups(const QString &diagram) const = 0;
+	virtual QStringList diagramPaletteGroupList(const QString &diagram, const QString &group) const = 0;
+	virtual QString diagramPaletteGroupDescription(const QString &diagram, const QString &group) const = 0;
+	virtual bool shallPaletteBeSorted(const QString &diagram) const = 0;
 };
 
 }

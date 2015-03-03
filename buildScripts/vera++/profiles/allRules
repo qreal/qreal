@@ -7,4 +7,5 @@ set rules {
   NoSpacesAtTheStart
   NoRelativePathsInIncludes
   OpeningParethesisForClass
+  NullsForbidden
 }

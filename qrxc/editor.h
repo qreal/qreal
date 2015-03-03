@@ -29,17 +29,17 @@ public:
 	QString version() const;
 
 	bool isLoaded();
-	bool load(QDir const &currentDir);
+	bool load(const QDir &currentDir);
 
-	Type *findType(QString const &name);
+	Type *findType(const QString &name);
 
 	QSet<EnumType *> getAllEnumTypes();
 	QStringList getAllPortNames() const;
-	Diagram *findDiagram(QString const &name);
+	Diagram *findDiagram(const QString &name);
 	QMap<QString, Diagram*> diagrams();
 
 	void generateListenerIncludes(utils::OutFile &out) const;
-	void generateListenerFactory(utils::OutFile &out, QString const &pluginName) const;
+	void generateListenerFactory(utils::OutFile &out, const QString &pluginName) const;
 
 private:
 	XmlCompiler *mXmlCompiler;

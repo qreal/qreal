@@ -16,7 +16,7 @@ VisibilityConditionsDialog::VisibilityConditionsDialog(QMap<QString, PropertyInf
 
 	setWidgetValues();
 
-	connect(ui->propertyComboBox, SIGNAL(activated(QString const &)), this, SLOT(changeProperty(QString const &)));
+	connect(ui->propertyComboBox, SIGNAL(activated(const QString &)), this, SLOT(changeProperty(const QString &)));
 	connect(ui->buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(okClicked()));
 }
 
@@ -25,7 +25,7 @@ VisibilityConditionsDialog::~VisibilityConditionsDialog()
 	delete ui;
 }
 
-void VisibilityConditionsDialog::changeProperty(QString const &propertyName)
+void VisibilityConditionsDialog::changeProperty(const QString &propertyName)
 {
 	PropertyInfo propertyInfo = mProperties[propertyName];
 	ui->valueWidget->setPropertyInfo(propertyInfo);
@@ -78,6 +78,6 @@ bool VisibilityConditionsDialog::areValuesEqual() const
 	return true;
 }
 
-VisibilityConditionsDialog::PropertyInfo::PropertyInfo(VisibilityConditionsDialog::Type t, QStringList const &v)
+VisibilityConditionsDialog::PropertyInfo::PropertyInfo(VisibilityConditionsDialog::Type t, const QStringList &v)
 		: type(t), values(v)
 {}

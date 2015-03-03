@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
-#include "mainWindow/mainWindowDockInterface.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 
 namespace qReal {
 
@@ -11,6 +11,8 @@ namespace qReal {
 class Customizer
 {
 public:
+	virtual ~Customizer() {}
+
 	/// Tells if we should show the button of opening the interpreted diagram or not
 	virtual bool showInterpeterButton() const
 	{

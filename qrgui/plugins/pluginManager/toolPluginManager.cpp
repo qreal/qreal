@@ -22,7 +22,7 @@ ToolPluginManager::~ToolPluginManager()
 {
 }
 
-void ToolPluginManager::init(PluginConfigurator const &configurator)
+void ToolPluginManager::init(const PluginConfigurator &configurator)
 {
 	QLOG_INFO() << "Initializing tool plugins...";
 	mSystemEvents = &configurator.systemEvents();
@@ -55,7 +55,7 @@ QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 void ToolPluginManager::loadDefaultSettings()
 {
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
-		for (QString const &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
+		for (const QString &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
 			SettingsManager::loadDefaultSettings(defaultSettingsFile);
 		}
 	}
@@ -77,7 +77,7 @@ QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() cons
 {
 	QMultiMap<QString, ProjectConverter> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
-		for (ProjectConverter const &converter : toolPlugin->projectConverters()) {
+		for (const ProjectConverter &converter : toolPlugin->projectConverters()) {
 			result.insertMulti(converter.editor(), converter);
 		}
 	}
@@ -100,7 +100,7 @@ void ToolPluginManager::updateSettings()
 	emit mSystemEvents->settingsUpdated();
 }
 
-void ToolPluginManager::activeTabChanged(Id const & rootElementId)
+void ToolPluginManager::activeTabChanged(const Id & rootElementId)
 {
 	emit mSystemEvents->activeTabChanged(rootElementId);
 }

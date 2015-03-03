@@ -7,12 +7,13 @@ class LinePort : public Line
 {
 public:
 	LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent = 0);
-	LinePort(LinePort const &other);
+	LinePort(const LinePort &other);
 	virtual Item* clone();
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
-	void setType(QString const &type);
+	void setType(const QString &type);
 	QString getType() const;
 
 private:

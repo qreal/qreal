@@ -10,7 +10,7 @@ namespace converters {
 class TypeConverter : public DynamicPathConverter
 {
 public:
-	explicit TypeConverter(QString const &pathToTemplates);
+	explicit TypeConverter(const QString &pathToTemplates);
 };
 
 }

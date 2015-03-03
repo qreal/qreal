@@ -2,11 +2,11 @@
 
 using namespace nxt;
 
-NxtGeneratorCustomizer::NxtGeneratorCustomizer(qrRepo::RepoApi const &repo
+NxtGeneratorCustomizer::NxtGeneratorCustomizer(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, QString const &generatorName)
+		, const QString &generatorName)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
 {
 }

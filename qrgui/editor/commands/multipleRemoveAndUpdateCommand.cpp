@@ -7,13 +7,13 @@
 using namespace qReal::commands;
 
 MultipleRemoveAndUpdateCommand::MultipleRemoveAndUpdateCommand(EditorViewScene &scene
-		, models::Models const &models)
+		, const models::Models &models)
 	: MultipleRemoveCommand(models)
 	, mScene(scene)
 {
 }
 
-AbstractCommand *MultipleRemoveAndUpdateCommand::graphicalDeleteCommand(Id const &id)
+AbstractCommand *MultipleRemoveAndUpdateCommand::graphicalDeleteCommand(const Id &id)
 {
 	AbstractCommand *result = MultipleRemoveCommand::graphicalDeleteCommand(id);
 
@@ -26,8 +26,8 @@ AbstractCommand *MultipleRemoveAndUpdateCommand::graphicalDeleteCommand(Id const
 	updateCommand->setRedoEnabled(false);
 	result->addPreAction(updateCommand);
 
-	IdList const links = mGraphicalApi.graphicalRepoApi().links(id);
-	for (Id const &link : links) {
+	const IdList links = mGraphicalApi.graphicalRepoApi().links(id);
+	for (const Id &link : links) {
 		UpdateElementCommand *updateLinkCommand = new UpdateElementCommand(&mScene, link);
 		updateLinkCommand->setRedoEnabled(false);
 		result->addPreAction(updateLinkCommand);

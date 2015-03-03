@@ -23,8 +23,8 @@ public:
 
 public slots:
 	void flashRobot();
-	void uploadProgram(QFileInfo const &fileInfo);
-	void runProgram(QFileInfo const &fileInfo);
+	void uploadProgram(const QFileInfo &fileInfo);
+	void runProgram(const QFileInfo &fileInfo);
 	void runLastProgram();
 
 	void error(QProcess::ProcessError error);

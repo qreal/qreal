@@ -10,8 +10,8 @@ namespace semantics {
 class LoopWithBothUnvisitedRule : public LoopBlockRuleBase
 {
 public:
-	LoopWithBothUnvisitedRule(SemanticTree *tree, qReal::Id const &id
-			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
+	LoopWithBothUnvisitedRule(SemanticTree *tree, const qReal::Id &id
+			, const LinkInfo &iterationLink, const LinkInfo &nextLink);
 
 	virtual bool apply();
 };

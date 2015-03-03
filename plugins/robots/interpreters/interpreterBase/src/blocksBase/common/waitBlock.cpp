@@ -25,7 +25,7 @@ void WaitBlock::setFailedStatus()
 
 void WaitBlock::processResponce(int reading, int targetValue)
 {
-	QString const sign = stringProperty("Sign");
+	const QString sign = stringProperty("Sign");
 	if (sign == "equals" && reading == targetValue) {
 		stop();
 	} else if (sign == "greater" && reading > targetValue) {
@@ -58,8 +58,8 @@ void WaitBlock::stopActiveTimerInBlock()
 
 QMap<PortInfo, DeviceInfo> WaitBlock::usedDevices()
 {
-	DeviceInfo const deviceInfo = device();
-	PortInfo const portInfo = RobotModelUtils::findPort(mRobotModel, port(), deviceInfo.direction());
+	const DeviceInfo deviceInfo = device();
+	const PortInfo portInfo = RobotModelUtils::findPort(mRobotModel, port(), deviceInfo.direction());
 	QMap<PortInfo, DeviceInfo> result;
 	if (!deviceInfo.isNull() && portInfo.isValid()) {
 		result[portInfo] = deviceInfo;
@@ -68,7 +68,7 @@ QMap<PortInfo, DeviceInfo> WaitBlock::usedDevices()
 	return result;
 }
 
-QString WaitBlock::port() const
+QString WaitBlock::port()
 {
-	return stringProperty("Port");
+	return eval<QString>("Port");
 }

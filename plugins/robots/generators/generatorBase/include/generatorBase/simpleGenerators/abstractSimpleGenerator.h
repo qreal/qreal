@@ -15,9 +15,9 @@ namespace simple {
 class AbstractSimpleGenerator : public QObject, public TemplateParametrizedEntity
 {
 public:
-	AbstractSimpleGenerator(qrRepo::RepoApi const &repo
+	AbstractSimpleGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 
 	virtual ~AbstractSimpleGenerator();
@@ -26,10 +26,10 @@ public:
 	virtual QString generate() = 0;
 
 protected:
-	qrRepo::RepoApi const &mRepo;
+	const qrRepo::RepoApi &mRepo;
 	GeneratorCustomizer &mCustomizer;
 
-	qReal::Id const mId;
+	const qReal::Id mId;
 };
 
 }

@@ -2,7 +2,7 @@
 
 #include <qrutils/outFile.h>
 
-bool PortType::init(QDomElement const &element, QString const &context)
+bool PortType::init(const QDomElement &element, const QString &context)
 {
 	return NonGraphicType::init(element, context);
 }
@@ -16,7 +16,7 @@ Type * PortType::clone() const
 
 void PortType::generateCode(utils::OutFile &out)
 {
-	QString const name = Type::name();
+	const QString name = Type::name();
 
 	out() << "\tclass " << name << " : public PortImpl\n"
 	<< "\t{\n"

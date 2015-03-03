@@ -9,13 +9,13 @@ namespace qReal {
 class LabelFactory : public LabelFactoryInterface
 {
 public:
-	LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, Id const &elementId);
-	LabelInterface *createLabel(int index, qreal x, qreal y, QString const &text, qreal rotation);
-	LabelInterface *createLabel(int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
+	LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, const Id &elementId);
+	LabelInterface *createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation);
+	LabelInterface *createLabel(int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation);
 
 private:
 	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;
-	Id const mId;
+	const Id mId;
 };
 
 }

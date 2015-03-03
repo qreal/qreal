@@ -5,8 +5,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-TouchSensor::TouchSensor(DeviceInfo const &info
-		, PortInfo const &port
+TouchSensor::TouchSensor(const DeviceInfo &info
+		, const PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: robotParts::TouchSensor(info, port)
 	, mEngine(engine)

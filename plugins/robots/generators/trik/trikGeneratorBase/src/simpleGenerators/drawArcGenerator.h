@@ -9,9 +9,9 @@ namespace simple {
 class DrawArcGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DrawArcGenerator(qrRepo::RepoApi const &repo
+	DrawArcGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

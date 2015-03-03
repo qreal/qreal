@@ -1,15 +1,14 @@
 #include "interpreterBase/robotModel/commonRobotModel.h"
 
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 #include <utils/realTimeline.h>
 
 #include "interpreterBase/robotModel/robotParts/motor.h"
 
-#include <QtCore/QDebug>
-
 using namespace interpreterBase::robotModel;
 
-CommonRobotModel::CommonRobotModel(QString const &kitId, QString const &robotId)
+CommonRobotModel::CommonRobotModel(const QString &kitId, const QString &robotId)
 	: mState(disconnectedState)
 	, mConfigurationPostponed(false)
 	, mKitId(kitId)
@@ -76,8 +75,8 @@ ConfigurationInterface &CommonRobotModel::mutableConfiguration()
 void CommonRobotModel::configureKnownDevices()
 {
 	QSet<PortInfo> const nonConfigurablePorts = availablePorts().toSet() - configurablePorts().toSet();
-	for (PortInfo const &port : nonConfigurablePorts.toList()) {
-		for (DeviceInfo const &device : allowedDevices(port)) {
+	for (const PortInfo &port : nonConfigurablePorts.toList()) {
+		for (const DeviceInfo &device : allowedDevices(port)) {
 			configureDevice(port, device);
 		}
 	}
@@ -102,7 +101,7 @@ void CommonRobotModel::onDisconnected()
 	mState = disconnectedState;
 }
 
-ConfigurationInterface const &CommonRobotModel::configuration() const
+const ConfigurationInterface &CommonRobotModel::configuration() const
 {
 	return mConfiguration;
 }
@@ -118,7 +117,7 @@ QList<PortInfo> CommonRobotModel::configurablePorts() const
 {
 	QList<PortInfo> result;
 
-	for (PortInfo const &port : availablePorts()) {
+	for (const PortInfo &port : availablePorts()) {
 		QList<DeviceInfo> const devices = allowedDevices(port);
 		if (devices.empty()) {
 			/// @todo: Display error?
@@ -135,12 +134,12 @@ QList<PortInfo> CommonRobotModel::configurablePorts() const
 	return result;
 }
 
-QList<DeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
+QList<DeviceInfo> CommonRobotModel::allowedDevices(const PortInfo &port) const
 {
 	return mAllowedConnections[port];
 }
 
-void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+void CommonRobotModel::configureDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (!availablePorts().contains(port)) {
 		return;
@@ -155,7 +154,7 @@ void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &d
 	if (device) {
 		mConfiguration.configureDevice(device);
 	} else {
-		qDebug() << "Can not create device for " << deviceInfo.toString();
+		QLOG_WARN() << "Can not create device for" << deviceInfo.toString();
 	}
 	/// @todo Handle error
 }
@@ -187,13 +186,13 @@ void CommonRobotModel::onInterpretationStarted()
 {
 }
 
-void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<DeviceInfo> const &devices)
+void CommonRobotModel::addAllowedConnection(const PortInfo &port, QList<DeviceInfo> const &devices)
 {
 	mAllowedConnections[port].append(devices);
 }
 
 robotParts::Device * CommonRobotModel::createDevice(
-		PortInfo const &port, DeviceInfo const &deviceInfo)
+		const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	Q_UNUSED(port);
 	Q_UNUSED(deviceInfo);

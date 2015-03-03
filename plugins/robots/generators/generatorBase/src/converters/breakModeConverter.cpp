@@ -3,7 +3,7 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-BreakModeConverter::BreakModeConverter(QString const &pathToTemplates)
+BreakModeConverter::BreakModeConverter(const QString &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)
 {
 	addMapping("", "engines/breakMode/break.t");

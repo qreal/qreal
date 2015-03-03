@@ -9,12 +9,12 @@ namespace semantics {
 class LoopBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	LoopBlockRuleBase(SemanticTree *tree, qReal::Id const &id
-			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
+	LoopBlockRuleBase(SemanticTree *tree, const qReal::Id &id
+			, const LinkInfo &iterationLink, const LinkInfo &nextLink);
 
 protected:
-	LinkInfo const &mIterationLink;
-	LinkInfo const &mNextLink;
+	const LinkInfo &mIterationLink;
+	const LinkInfo &mNextLink;
 };
 
 }

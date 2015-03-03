@@ -17,22 +17,22 @@ class ROBOTS_GENERATOR_EXPORT ReadableControlFlowGenerator : public ControlFlowG
 
 public:
 	ReadableControlFlowGenerator(
-			qrRepo::RepoApi const &repo
+			const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &diagramId
+			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 
 	/// Implementation of clone operation for readable generator
-	ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId, bool cloneForNewDiagram) override;
+	ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) override;
 
 	void beforeSearch() override;
 
-	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
 
 	/// This method can be used for semantic tree debug printing after all
 	/// traversal stages.
@@ -48,7 +48,7 @@ private:
 	/// for the emulation of some priority for semantic rules.
 	void performGeneration() override;
 
-	bool applyFirstPossible(qReal::Id const &currentId
+	bool applyFirstPossible(const qReal::Id &currentId
 			, QList<semantics::SemanticTransformationRule *> const &rules
 			, bool thereWillBeMoreRules);
 

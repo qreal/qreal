@@ -16,7 +16,14 @@ void LuaParserIncorrectInputTest::SetUp()
 
 TEST_F(LuaParserIncorrectInputTest, incorrectLogicalOperators)
 {
-	QString stream = "true ||| false";
+	const QString &stream = "true ||| false";
+	mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
+	EXPECT_FALSE(mErrors.isEmpty());
+}
+
+TEST_F(LuaParserIncorrectInputTest, incorrectArraySlice)
+{
+	const QString &stream = "a[i, j]";
 	mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_FALSE(mErrors.isEmpty());
 }

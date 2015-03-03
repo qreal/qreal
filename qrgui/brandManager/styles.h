@@ -11,7 +11,7 @@ namespace qReal {
 class Styles
 {
 public:
-	explicit Styles(Fonts const &fonts)
+	explicit Styles(const Fonts &fonts)
 		: mFonts(fonts)
 	{
 	}
@@ -122,7 +122,7 @@ protected:
 
 	/// Returns either given url without modifications or transforms it into absolute disk location
 	/// for more convenient styles debugging (modifications do not need rebuilds then)
-	QString processUrl(QString const &resourceUrl) const
+	QString processUrl(const QString &resourceUrl) const
 	{
 		// TODO: uncomment one of the next scenarious
 
@@ -135,7 +135,7 @@ protected:
 		// return QApplication::applicationDirPath() + "/../qrgui/brandManager" + choppedString;
 	}
 
-	Fonts const &mFonts;
+	const Fonts &mFonts;
 };
 
 }

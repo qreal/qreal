@@ -26,7 +26,7 @@ QList<qReal::ActionInfo> UpdatesCheckerPlugin::actions()
 		, qReal::ActionInfo(mCheckForUpdatesAction, "", "help") };
 }
 
-void UpdatesCheckerPlugin::init(qReal::PluginConfigurator const &configurator)
+void UpdatesCheckerPlugin::init(const qReal::PluginConfigurator &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mMainWindowWidget = configurator.mainWindowInterpretersInterface().windowWidget();

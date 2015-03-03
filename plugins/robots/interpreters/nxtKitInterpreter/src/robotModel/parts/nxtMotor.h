@@ -14,7 +14,7 @@ class NxtMotor : public interpreterBase::robotModel::robotParts::Motor
 	Q_CLASSINFO("direction", "output")
 
 public:
-	NxtMotor(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+	NxtMotor(const interpreterBase::robotModel::DeviceInfo &info, const interpreterBase::robotModel::PortInfo &port);
 
 	void on(int speed) override;
 	void stop() override;

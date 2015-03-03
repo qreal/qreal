@@ -13,7 +13,7 @@ SdfRenderer::SdfRenderer()
 	toGen.setString(&toGenerator,QIODevice::ReadWrite);
 }
 
-SdfRenderer::SdfRenderer(QString const path)
+SdfRenderer::SdfRenderer(const QString path)
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 	if (!load(path))
@@ -40,7 +40,7 @@ SdfRenderer::SdfRenderer(const QDomNode &bla)
 	first_size_y = docElem.attribute("sizey").toInt();
 }
 
-bool SdfRenderer::load(QString const &filename)
+bool SdfRenderer::load(const QString &filename)
 {
 	QFile file(filename);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -249,13 +249,13 @@ void SdfRenderer::polygon(QDomElement &element)
 {
 	parsestyle(element);
 	// FIXME: init points array here
-	QPoint *points = NULL;
+	QPoint *points = nullptr;
 	int n = element.attribute("n").toInt();
 	if (!element.isNull())
 	{
 		points = getpoints(element, n);
 	}
-	if (points != NULL)
+	if (points != nullptr)
 	{
 //		painter->drawConvexPolygon(points, n);
 		delete[] points;
@@ -578,12 +578,12 @@ void SdfRenderer::noScale()
 }
 
 
-SdfIconEngineV2::SdfIconEngineV2(QString const &file)
+SdfIconEngineV2::SdfIconEngineV2(const QString &file)
 {
 	mRenderer.load(file);
 	mRenderer.noScale();
 }
 
-void SdfIconEngineV2::paint(QPainter* /*painter*/, QRect const &/*rect*/, QIcon::Mode /*mode*/, QIcon::State /*state*/)
+void SdfIconEngineV2::paint(QPainter* /*painter*/, const QRect &/*rect*/, QIcon::Mode /*mode*/, QIcon::State /*state*/)
 {
 }

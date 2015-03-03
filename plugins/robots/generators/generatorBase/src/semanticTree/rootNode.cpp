@@ -19,7 +19,7 @@ Id RootNode::initialBlock() const
 	return mInitialBlock;
 }
 
-QString RootNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
+QString RootNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	return mZone->toString(customizer, indent, indentString);
 }

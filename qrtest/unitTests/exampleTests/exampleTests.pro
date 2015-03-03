@@ -1,10 +1,6 @@
-TARGET = exampleTests
-
-CONFIG += c++11
-
 include(../common.pri)
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqslog
+links(qrkernel qrutils qslog)
 
 include(../../../plugins/blockDiagram/visualDebugSupport/visualDebugSupport.pri)
 

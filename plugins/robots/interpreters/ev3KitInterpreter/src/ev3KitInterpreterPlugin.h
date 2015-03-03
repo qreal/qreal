@@ -26,7 +26,7 @@ public:
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
 	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-			interpreterBase::robotModel::RobotModelInterface const *model) override;
+			const interpreterBase::robotModel::RobotModelInterface *model) override;
 
 	// Transfers ownership.
 	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
@@ -35,7 +35,7 @@ public:
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
-	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
+	QIcon iconForFastSelector(const interpreterBase::robotModel::RobotModelInterface &robotModel) const override;
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;

@@ -28,7 +28,7 @@ struct EdgeLabel {
 	QString labelType;
 	LabelInterface* title;
 
-	EdgeLabel(QString const &labelText_, QString const &labelType_, LabelInterface* title_)
+	EdgeLabel(const QString &labelText_, const QString &labelType_, LabelInterface* title_)
 		: labelText(labelText_), labelType(labelType_), title(title_)
 	{}
 };
@@ -38,7 +38,7 @@ struct NodeLabel {
 	QString center;
 	LabelInterface* title;
 
-	NodeLabel(QString const &textBinded_, QString const &center_, LabelInterface* title_)
+	NodeLabel(const QString &textBinded_, const QString &center_, LabelInterface* title_)
 		: textBinded(textBinded_), center(center_), title(title_)
 	{}
 };
@@ -47,8 +47,8 @@ struct NodeLabel {
 class InterpreterElementImpl : public ElementImpl
 {
 public:
-	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
-	void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+	InterpreterElementImpl(qrRepo::RepoApi *repo, const Id &metaId);
+	void init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports
 			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
 			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0);
 	void init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels);
@@ -69,7 +69,7 @@ public:
 			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const;
 
 	/*Container properties*/
-	bool hasContainerProperty(QString const &property) const;
+	bool hasContainerProperty(const QString &property) const;
 	bool isContainer() const;
 	bool isSortingContainer() const;
 	QVector<int> sizeOfForestalling() const;
@@ -88,20 +88,20 @@ public:
 	QList<qreal> border() const;
 
 	QStringList bonusContextMenuFields() const;
-	void updateRendererContent(QString const &shape);
+	void updateRendererContent(const QString &shape);
 
 private:
-	void initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
-			, int const &width, int const &height);
-	void initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
-			, int const &width, int const &height);
-	void initLabels(int const &width, int const &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
-	QVector<int> getSizeOfContainerProperty(QString const &property) const;
-	QStringList getListOfStr(QString const &labelText) const;
-	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
-	void drawArrow(QPainter *painter, QString const &type) const;
+	void initPointPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
+			, const int &width, const int &height);
+	void initLinePorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
+			, const int &width, const int &height);
+	void initLabels(const int &width, const int &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
+	QVector<int> getSizeOfContainerProperty(const QString &property) const;
+	QStringList getListOfStr(const QString &labelText) const;
+	QString getResultStr(const QStringList &list, ElementRepoInterface *repo) const;
+	void drawArrow(QPainter *painter, const QString &type) const;
 
-	enums::linkShape::LinkShape shapeTypeByString(QString const &type) const;
+	enums::linkShape::LinkShape shapeTypeByString(const QString &type) const;
 
 	qrRepo::RepoApi *mEditorRepoApi;  // Doesn't have ownership.
 	Id mId;

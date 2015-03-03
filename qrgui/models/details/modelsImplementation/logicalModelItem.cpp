@@ -5,7 +5,7 @@
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
-LogicalModelItem::LogicalModelItem(Id const &id, LogicalModelItem *parent)
+LogicalModelItem::LogicalModelItem(const Id &id, LogicalModelItem *parent)
 	: AbstractModelItem(id, parent)
 {
 }

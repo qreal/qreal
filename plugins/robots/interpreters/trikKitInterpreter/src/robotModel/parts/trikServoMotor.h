@@ -13,8 +13,8 @@ class TrikServoMotor : public interpreterBase::robotModel::robotParts::Motor
 	Q_CLASSINFO("friendlyName", tr("Servo Motor"))
 
 public:
-	TrikServoMotor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	TrikServoMotor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 };
 
 }

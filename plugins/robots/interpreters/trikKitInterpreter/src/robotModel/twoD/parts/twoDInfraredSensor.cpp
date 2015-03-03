@@ -6,10 +6,10 @@ using namespace trikKitInterpreter::robotModel::twoD::parts;
 
 /// The maximal distance that returned by IR sensor; when the object is closer
 /// IR sensor starts to return less values non-lineary.
-int const maxDistance = 93;
+const int maxDistance = 93;
 
-TwoDInfraredSensor::TwoDInfraredSensor(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+TwoDInfraredSensor::TwoDInfraredSensor(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: twoDModel::robotModel::parts::RangeSensor(info, port, engine)
 {
@@ -17,9 +17,9 @@ TwoDInfraredSensor::TwoDInfraredSensor(interpreterBase::robotModel::DeviceInfo c
 
 void TwoDInfraredSensor::read()
 {
-	int const sonarDistanceValue = mEngine.readSonarSensor(port());
-	int const linearDistance = 100 - (sonarDistanceValue < 100 ? sonarDistanceValue : 100);
-	int const spoiledDistance = linearDistance <= maxDistance
+	const int sonarDistanceValue = mEngine.readSonarSensor(port());
+	const int linearDistance = 100 - (sonarDistanceValue < 100 ? sonarDistanceValue : 100);
+	const int spoiledDistance = linearDistance <= maxDistance
 			? linearDistance
 			// On small distances IR sensor starts to work non-lineary
 			: 100 - (linearDistance - maxDistance) * 10;

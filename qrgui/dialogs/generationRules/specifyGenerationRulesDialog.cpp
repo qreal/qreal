@@ -5,7 +5,7 @@ using namespace qReal;
 using namespace gui;
 
 SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(MainWindow &mainWindow
-		, EditorManagerInterface &interpreterEditorManager
+		, const EditorManagerInterface &interpreterEditorManager
 		, Id const &id) :
 	QDialog(&mainWindow)
 	, mUi(new Ui::SpecifyGenerationRulesDialog)

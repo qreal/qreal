@@ -6,7 +6,7 @@
 #include <QtCore/QTimer>
 
 #include "progress.h"
-#include "../utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace invocation
 {
@@ -41,7 +41,7 @@ public:
 	/// Progress can be obtained using progress() method
 	bool hasProgress() const;
 	/// If operation provides its progress returns operation
-	/// progress wrapped in special class. Else returns NULL
+	/// progress wrapped in special class. Else returns nullptr
 	Progress *progress() const;
 
 	/// Starts operation in another thread and blocks

@@ -22,18 +22,18 @@ public:
 	/// Get value associated with given key from settings.
 	/// @param key Parameter name.
 	/// @returns Variant with parameter value.
-	static QVariant value(QString const &key);
+	static QVariant value(const QString &key);
 
 	/// Get value associated with given key from settings with given default value.
 	/// @param key Parameter name.
 	/// @param defaultValue Default value, used when parameter not found.
 	/// @returns Variant with parameter value.
-	static QVariant value(QString const &key, QVariant const &defaultValue);
+	static QVariant value(const QString &key, const QVariant &defaultValue);
 
 	/// Set value associated with given key.
 	/// @param key Parameter name.
 	/// @param value Parameter value.
-	static void setValue(QString const &key, QVariant const &value);
+	static void setValue(const QString &key, const QVariant &value);
 
 	/// Removes all entries in persistent external storage
 	static void clearSettings();
@@ -46,32 +46,32 @@ public:
 	void saveData();
 
 	/// Saves settings into selected file with name fileNameForExport.
-	void saveSettings(QString const &fileNameForExport);
+	void saveSettings(const QString &fileNameForExport);
 
 	/// Loads settings from persistent external storage into SettingsManager.
 	void load();
 
 	/// Merges settings from the given file in INI format.
-	void loadSettings(QString const &fileNameForImport);
+	void loadSettings(const QString &fileNameForImport);
 
 	/// Merges default settings from the given file in INI format.
-	static void loadDefaultSettings(QString const &filePath);
+	static void loadDefaultSettings(const QString &filePath);
 
 signals:
 	/// Emitted each time when settings with the given key were modified.
 	/// For connection instance() method can be useful.
-	void settingsChanged(QString const &name, QVariant const &oldValue, QVariant const &newValue);
+	void settingsChanged(const QString &name, const QVariant &oldValue, const QVariant &newValue);
 
 private:
 	/// Private constructor.
 	SettingsManager();
 	~SettingsManager();
 
-	void set(QString const &name, QVariant const &value);
-	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
+	void set(const QString &name, const QVariant &value);
+	QVariant get(const QString &key, const QVariant &defaultValue = QVariant()) const;
 
 	/// Merges settings from the given file in INI format into the given map.
-	void mergeSettings(QString const &fileNameForImport, QHash<QString, QVariant> &target);
+	void mergeSettings(const QString &fileNameForImport, QHash<QString, QVariant> &target);
 
 	void initDefaultValues();
 

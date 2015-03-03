@@ -13,13 +13,13 @@ namespace parts {
 class Functions : public InitTerminateCodeGenerator
 {
 public:
-	explicit Functions(QString const &pathToTemplates);
+	explicit Functions(const QString &pathToTemplates);
 
 	void reinit() override;
 	QString initCode() override;
 
 	/// Adds given function block body into resulting initialization code.
-	void registerFunctionInInitialization(QString const &body);
+	void registerFunctionInInitialization(const QString &body);
 
 private:
 	QStringList mFunctions;

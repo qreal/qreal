@@ -15,7 +15,7 @@
 using namespace ev3KitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotId)
+Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotId)
 	: CommonRobotModel(kitId, robotId)
 {
 	QList<DeviceInfo> const inputPortConnections = {
@@ -28,12 +28,12 @@ Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotI
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
 
-	addAllowedConnection(PortInfo("UpButtonPort", input, {}, "upButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("DownButtonPort", input, {}, "downButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("BackButtonPort", input, {}, "backButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Up", input, {}, "buttonUp"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Enter", input, {}, "buttonEnter"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Down", input, {}, "buttonDown"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Right", input, {}, "buttonRight"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Left", input, {}, "buttonLeft"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Back", input, {}, "buttonBack"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("A", output), { motorInfo() });
 	addAllowedConnection(PortInfo("B", output), { motorInfo() });

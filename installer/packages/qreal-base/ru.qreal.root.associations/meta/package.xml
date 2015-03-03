@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>File associations</DisplayName>
+    <DisplayName xml:lang="ru_ru">Ассоциациировать файлы</DisplayName>
+    <Description>Windows will open *.qrs-files with TRIK Studio by double-click on them</Description>
+    <Description xml:lang="ru_ru">Windows будет открывать файлы *.qrs в TRIK Studio по двойному щелчку на них</Description>
+    <Version>1.1.0</Version>
+    <ReleaseDate>2014-11-19</ReleaseDate>
+    <Script>installscript.qs</Script>
+    <SortingPriority>8</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

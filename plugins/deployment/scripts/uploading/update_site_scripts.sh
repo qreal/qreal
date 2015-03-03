@@ -6,7 +6,7 @@ set -o nounset
 set -o errexit
 
 function show_help {
-	echo "Usage: update_site_scripts.sh mode version path/to/private/key <names-to-urls-mapping-with-offline-windows-installer-first>"
+	echo "Usage: update_site_scripts.sh mode version path/to/private/key <key-url mapping with windows offline-online first, linux32 - second and linux64 - last>"
 	echo "Example: update_site_scripts.sh latest 3.0.0-rc2 TRIKStudio-3.0.0-rc2-offline-windows-installer https://docs.google.com/file/d/0B-NmiVtuyhyiWkgycTkzWXJ3TVk TRIKStudio-3.0.0-rc2-online-windows-installer https://docs.google.com/file/d/0B-NmiVtuyhyiMEU0WjR0MEp1YkU"
 	echo ""
 	echo "Clones http://github.com/qreal/tools, edits siteScripts folder contents an pushes back changes to the remote repository and then uploads to production site server."
@@ -35,6 +35,9 @@ REMOTE_SERVER=hosting_jzuken@neon.locum.ru:/home/hosting_jzuken/projects/qreal/h
 shift 3
 
 WINDOWS_OFFLINE_LINK=$2
+LINUX_32_OFFLINE_LINK=$6
+LINUX_64_OFFLINE_LINK=${10}
+
 
 rm -rf $TOOLS_DIR
 git clone git@github.com:qreal/tools.git $TOOLS_DIR
@@ -60,17 +63,19 @@ function replace_slashes { echo $1 | sed 's/\//\\\//g'; }
 function entry_to_find { echo "linksMap\\[\"$1\"\\] = `replace_slashes $2`;"; }
 function entry_to_replace { echo "linksMap[\"$1\"] = \"`replace_slashes \"$2\"`"; }
 function links_map_pattern { echo "s/`entry_to_find $1 '".*"'`/`entry_to_replace $1 \"$2\";`/g"; }
-function main_pattern { links_map_pattern $1 $WINDOWS_OFFLINE_LINK'";'; }
-function last_pattern { links_map_pattern experimental "$WINDOWS_OFFLINE_LINK\";`create_map $@`"; }
+function main_pattern { links_map_pattern $1 $2'";'; }
+function last_pattern { links_map_pattern linux-x64-experimental "$LINUX_64_OFFLINE_LINK\";`echo '\n';create_map $@`"; }
+function latest_pattern { main_pattern trikStudio-latest $WINDOWS_OFFLINE_LINK;main_pattern latest $WINDOWS_OFFLINE_LINK;main_pattern linux-x86-latest $LINUX_32_OFFLINE_LINK;main_pattern linux-x64-latest $LINUX_64_OFFLINE_LINK; }
+function experimental_pattern { main_pattern experimental $WINDOWS_OFFLINE_LINK;main_pattern linux-x86-experimental $LINUX_32_OFFLINE_LINK;last_pattern $@ ; }
 
 function href_pattern { echo "s/<a href='.*'>/<a href='`replace_slashes $WINDOWS_OFFLINE_LINK`'>/g"; }
 
 if [[ $MODE == "latest" ]]; then
 	echo "Replacing all latest links to $WINDOWS_OFFLINE_LINK..."
-	SED_PATTERN=`href_pattern;main_pattern trikStudio-latest;main_pattern latest;last_pattern $@`
+	SED_PATTERN=`href_pattern;latest_pattern;experimental_pattern $@`
 else
 	echo "Replacing only experimental link to $WINDOWS_OFFLINE_LINK..."
-	SED_PATTERN=`last_pattern $@`
+	SED_PATTERN=`experimental_pattern $@`
 fi
 
 sed -i "$SED_PATTERN" $DOWNLOADS_COUNTER

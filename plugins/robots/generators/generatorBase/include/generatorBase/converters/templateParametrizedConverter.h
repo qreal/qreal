@@ -12,7 +12,7 @@ class ROBOTS_GENERATOR_EXPORT TemplateParametrizedConverter : public simple::Bin
 		, public TemplateParametrizedEntity
 {
 public:
-	explicit TemplateParametrizedConverter(QString const &pathToTemplates);
+	explicit TemplateParametrizedConverter(const QString &pathToTemplates);
 };
 
 }

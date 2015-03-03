@@ -16,7 +16,7 @@ public:
 	Type(bool isResolved, Diagram *diagram);
 	virtual ~Type();
 	virtual Type* clone() const = 0;
-	virtual bool init(QDomElement const &element, QString const &context);
+	virtual bool init(const QDomElement &element, const QString &context);
 	virtual bool resolve() = 0;
 	virtual bool isResolving() const;
 	bool isResolved() const;
@@ -28,10 +28,10 @@ public:
 
 	QMap<QString, Property*> properties() const;
 
-	void setName(QString const &name);
+	void setName(const QString &name);
 	void setDiagram(Diagram *diagram);
-	void setContext(QString const &newContext);
-	void setDisplayedName(QString const &displayedName);
+	void setContext(const QString &newContext);
+	void setDisplayedName(const QString &displayedName);
 	virtual void generateCode(utils::OutFile &out) = 0;
 	virtual void generateNameMapping(utils::OutFile &out) = 0;
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;

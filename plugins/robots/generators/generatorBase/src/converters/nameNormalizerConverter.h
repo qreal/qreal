@@ -10,7 +10,7 @@ namespace converters {
 class NameNormalizerConverter : public simple::Binding::ConverterInterface
 {
 public:
-	QString convert(QString const &data) const override;
+	QString convert(const QString &data) const override;
 };
 
 }

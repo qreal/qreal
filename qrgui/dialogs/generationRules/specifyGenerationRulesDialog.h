@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include "plugins/pluginManager/interpreterEditorManager.h"
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
 #include "mainwindow/mainWindow.h"
 #include "dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
@@ -23,7 +23,7 @@ public:
 	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of metamodel element we are specifying generation rules for.
-	SpecifyGenerationRulesDialog(MainWindow &mainWindow, EditorManagerInterface &interpreterEditorManager, Id const &id);
+	SpecifyGenerationRulesDialog(MainWindow &mainWindow, const EditorManagerInterface &interpreterEditorManager, Id const &id);
 	~SpecifyGenerationRulesDialog();
 
 private slots:
@@ -39,7 +39,7 @@ private:
 	QStringList propertiesDisplayedNamesList(QStringList const &propertiesNames);
 
 	Ui::SpecifyGenerationRulesDialog *mUi;  // has ownership
-	EditorManagerInterface &mInterpreterEditorManager;
+	const EditorManagerInterface &mInterpreterEditorManager;
 	Id mId;
 	QStringList mPropertiesNames;
 };

@@ -11,13 +11,13 @@ using namespace commands;
 CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 		models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
-		, models::Exploser const &exploser
-		, Id const &logicalParent
-		, Id const &graphicalParent
-		, Id const &id
+		, const models::Exploser &exploser
+		, const Id &logicalParent
+		, const Id &graphicalParent
+		, const Id &id
 		, bool isFromLogicalModel
-		, QString const &name
-		, QPointF const &position)
+		, const QString &name
+		, const QPointF &position)
 	: mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)
 	, mExploser(exploser)
@@ -43,7 +43,7 @@ Id CreateRemoveCommandImplementation::create()
 		mGraphicalApi.setProperties(mId, mGraphicalPropertiesSnapshot);
 	}
 
-	Id const logicalId = mGraphicalApi.logicalId(mId);
+	const Id logicalId = mGraphicalApi.logicalId(mId);
 	if (mLogicalApi.logicalRepoApi().exist(logicalId)
 			&& !mLogicalPropertiesSnapshot.isEmpty()) {
 		mGraphicalApi.setProperties(logicalId, mLogicalPropertiesSnapshot);
@@ -67,7 +67,7 @@ void CreateRemoveCommandImplementation::remove()
 		mGraphicalApi.removeElement(mId);
 	} else {
 		mGraphicalPropertiesSnapshot = mGraphicalApi.properties(mId);
-		Id const logicalId = mGraphicalApi.logicalId(mId);
+		const Id logicalId = mGraphicalApi.logicalId(mId);
 		if (!mLogicalApi.logicalRepoApi().exist(logicalId)) {
 			mGraphicalApi.removeElement(mId);
 			refreshAllPalettes();
@@ -76,7 +76,7 @@ void CreateRemoveCommandImplementation::remove()
 
 		mOldLogicalId = logicalId;
 		mLogicalPropertiesSnapshot = mGraphicalApi.properties(logicalId);
-		IdList const graphicalIds = mGraphicalApi.graphicalIdsByLogicalId(logicalId);
+		const IdList graphicalIds = mGraphicalApi.graphicalIdsByLogicalId(logicalId);
 		mGraphicalApi.removeElement(mId);
 		// Checking that the only graphical part is our element itself
 		// (bijection between graphical and logical parts)
@@ -90,7 +90,7 @@ void CreateRemoveCommandImplementation::remove()
 	refreshAllPalettes();
 }
 
-bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation const &other) const
+bool CreateRemoveCommandImplementation::equals(const CreateRemoveCommandImplementation &other) const
 {
 	return mLogicalParent == other.mLogicalParent
 			&& mGraphicalParent == other.mGraphicalParent
@@ -101,7 +101,7 @@ bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation
 			;
 }
 
-void CreateRemoveCommandImplementation::setNewPosition(QPointF const &position)
+void CreateRemoveCommandImplementation::setNewPosition(const QPointF &position)
 {
 	mPosition = position;
 }

@@ -20,7 +20,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT ColorSensorPassive : public ColorSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	ColorSensorPassive(DeviceInfo const &info, PortInfo const &port);
+	ColorSensorPassive(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

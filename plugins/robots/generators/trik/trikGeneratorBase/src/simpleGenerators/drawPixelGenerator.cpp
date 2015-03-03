@@ -4,9 +4,9 @@
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-DrawPixelGenerator::DrawPixelGenerator(qrRepo::RepoApi const &repo
+DrawPixelGenerator::DrawPixelGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "drawing/drawPixel.t"
 			, {

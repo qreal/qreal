@@ -21,7 +21,6 @@ UXInfoPlugin::UXInfoPlugin()
 	mStartTimestamp = QDateTime::currentMSecsSinceEpoch();
 
 	qReal::SettingsListener::listen("usabilityTestingMode", mUsabilityTestingToolbar, &QWidget::setVisible);
-	mUsabilityTestingToolbar->setVisible(qReal::SettingsManager::value("usabilityTestingMode").toBool());
 
 	mStartTest->setEnabled(true);
 	mFinishTest->setEnabled(false);
@@ -69,6 +68,7 @@ void UXInfoPlugin::init(qReal::PluginConfigurator const &configurator)
 
 	QWidget * const windowWidget = configurator.mainWindowInterpretersInterface().windowWidget();
 	static_cast<QMainWindow *>(windowWidget)->addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
+	mUsabilityTestingToolbar->setVisible(qReal::SettingsManager::value("usabilityTestingMode").toBool());
 
 	for (QAction const *action : windowWidget->actions()) {
 		if (action->isCheckable()) {

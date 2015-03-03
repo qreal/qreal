@@ -6,8 +6,8 @@
 
 using namespace qReal::details;
 
-PluginManagerImplementation::PluginManagerImplementation(QString const &applicationDirPath
-		, QString const &additionalPart)
+PluginManagerImplementation::PluginManagerImplementation(const QString &applicationDirPath
+		, const QString &additionalPart)
 	: mPluginsDir(QDir(applicationDirPath))
 	, mApplicationDirectoryPath(applicationDirPath)
 	, mAdditionalPart(additionalPart)
@@ -26,13 +26,13 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 	}
 
 	QList<QString> splittedDir = mAdditionalPart.split('/');
-	for (QString const &partOfDirectory : splittedDir) {
+	for (const QString &partOfDirectory : splittedDir) {
 		mPluginsDir.cd(partOfDirectory);
 	}
 
 	QList<QObject *> listOfPlugins;
 
-	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
+	for (const QString &fileName : mPluginsDir.entryList(QDir::Files)) {
 		QPair<QObject *, QString> const pluginAndError =  pluginLoadedByName(fileName);
 		QObject * const pluginByName = pluginAndError.first;
 		if (pluginByName) {
@@ -47,7 +47,7 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 	return listOfPlugins;
 }
 
-QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QString const &pluginName)
+QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
 	loader->load();
@@ -58,7 +58,7 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QStrin
 		return qMakePair(plugin, QString());
 	}
 
-	QString const loaderError = loader->errorString();
+	const QString loaderError = loader->errorString();
 
 	// Unloading of plugins is currently (Qt 5.3) broken due to a bug in metatype system: calling Q_DECLARE_METATYPE
 	// from plugin registers some data from plugin address space in Qt metatype system, which is not being updated
@@ -84,7 +84,7 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QStrin
 	return qMakePair(nullptr, loaderError);
 }
 
-QString PluginManagerImplementation::unloadPlugin(QString const &pluginName)
+QString PluginManagerImplementation::unloadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = mLoaders[pluginName];
 
@@ -92,7 +92,7 @@ QString PluginManagerImplementation::unloadPlugin(QString const &pluginName)
 		mLoaders.remove(pluginName);
 
 		if (!loader->unload()) {
-			QString const error = loader->errorString();
+			const QString error = loader->errorString();
 			delete loader;
 			return error;
 		}

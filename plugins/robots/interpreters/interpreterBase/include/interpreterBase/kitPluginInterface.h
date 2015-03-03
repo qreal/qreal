@@ -8,7 +8,7 @@
 #include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
-#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
@@ -31,8 +31,8 @@ public:
 	/// @param systemEvents - object with events from qrgui, like tab switching.
 	/// @param interpreterControl - interface with methods that allow plugin to control interpreter, such as starting
 	///        and stopping it.
-	virtual void init(EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEvents const &systemEvents
+	virtual void init(const EventsForKitPluginInterface &eventsForKitPlugin
+			, const qReal::SystemEvents &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
@@ -58,7 +58,7 @@ public:
 
 	/// Returns a blocks factory for a given robot model. Nullptr can be returned and means that no factory is provided
 	/// by this plugin. Ownership must be transfered.
-	virtual blocksBase::BlocksFactoryInterface *blocksFactoryFor(robotModel::RobotModelInterface const *model) = 0;
+	virtual blocksBase::BlocksFactoryInterface *blocksFactoryFor(const robotModel::RobotModelInterface *model) = 0;
 
 	/// If overrided and returns some model as value that model will be used as default selected model for this kit
 	/// @todo is it possible that plugin does not provide default model? Maybe first model in robotModels() list will be
@@ -77,7 +77,7 @@ public:
 	/// Returns a widget that will be placed at devices configuration widget in the left-hand side dock.
 	/// The default implementation returns nullptr.
 	/// Transfers ownership.
-	virtual QWidget *quickPreferencesFor(robotModel::RobotModelInterface const &model)
+	virtual QWidget *quickPreferencesFor(const robotModel::RobotModelInterface &model)
 	{
 		Q_UNUSED(model)
 		return nullptr;
@@ -99,7 +99,7 @@ public:
 	}
 
 	/// Returns an icon for toolbar action of fast robot model switching.
-	virtual QIcon iconForFastSelector(robotModel::RobotModelInterface const &robotModel) const = 0;
+	virtual QIcon iconForFastSelector(const robotModel::RobotModelInterface &robotModel) const = 0;
 
 	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.
 	/// Can be a root of plugin-specific providers network. Null, if there is no need for sensors configuration.

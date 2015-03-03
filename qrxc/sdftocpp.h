@@ -16,11 +16,11 @@ class SdfRenderer : public QObject
 
 public:
 	SdfRenderer();
-	SdfRenderer(QString const path);
+	SdfRenderer(const QString path);
 	SdfRenderer(const QDomNode &bla);
 	~SdfRenderer();
 
-	bool load (QString const &filename);
+	bool load (const QString &filename);
 	QString render();
 	void noScale();
 
@@ -70,8 +70,8 @@ private:
 class SdfIconEngineV2: public QIconEngine
 {
 public:
-	SdfIconEngineV2(QString const &file);
-	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
+	SdfIconEngineV2(const QString &file);
+	virtual void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state);
 private:
 	SdfRenderer mRenderer;
 };

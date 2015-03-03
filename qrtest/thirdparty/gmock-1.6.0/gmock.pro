@@ -1,11 +1,8 @@
-TEMPLATE = lib
-DESTDIR = ../../../bin
-TARGET = gmock
-CONFIG += warn_off
+include(../../../global.pri)
 
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
+TEMPLATE = lib
+
+CONFIG += warn_off
 
 INCLUDEPATH += \
 	. \

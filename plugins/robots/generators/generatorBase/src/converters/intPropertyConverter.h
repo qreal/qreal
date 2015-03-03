@@ -13,19 +13,19 @@ namespace converters {
 class IntPropertyConverter : public CodeConverterBase, public TemplateParametrizedEntity
 {
 public:
-	IntPropertyConverter(QString const &pathToTemplates
+	IntPropertyConverter(const QString &pathToTemplates
 			, lua::LuaProcessor &luaTranslator
-			, qReal::Id const &id
-			, QString const &propertyName
+			, const qReal::Id &id
+			, const QString &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter
 			, simple::Binding::ConverterInterface *typeConverter);
 
 	~IntPropertyConverter() override;
 
-	QString convert(QString const &data) const override;
+	QString convert(const QString &data) const override;
 
 private:
-	simple::Binding::ConverterInterface const *mTypeConverter;  // Takes ownership
+	const simple::Binding::ConverterInterface *mTypeConverter;  // Takes ownership
 };
 
 }

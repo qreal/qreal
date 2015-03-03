@@ -11,29 +11,29 @@ class LogicalModelAssistInterface: public details::ModelsAssistInterface
 {
 public:
 	/// Returns reference to a constant logical repository.
-	virtual qrRepo::LogicalRepoApi const &logicalRepoApi() const = 0;
+	virtual const qrRepo::LogicalRepoApi &logicalRepoApi() const = 0;
 
 	/// Returns reference to a mutable logical repository.
 	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi() = 0;
 
-	virtual Id createElement(Id const &parent, Id const &type) = 0;
-	virtual Id createElement(Id const &parent, Id const &id
-			, bool isFromLogicalModel, QString const &name
-			, QPointF const &position, Id const &preferedLogicalId = Id()) = 0;
-	virtual IdList children(Id const &element) const = 0;
-	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
+	virtual Id createElement(const Id &parent, const Id &type) = 0;
+	virtual Id createElement(const Id &parent, const Id &id
+			, bool isFromLogicalModel, const QString &name
+			, const QPointF &position, const Id &preferedLogicalId = Id()) = 0;
+	virtual IdList children(const Id &element) const = 0;
+	virtual void changeParent(const Id &element, const Id &parent, const QPointF &position = QPointF()) = 0;
 
-	virtual void addExplosion(Id const &source, Id const &destination) = 0;
-	virtual void removeExplosion(Id const &source, Id const &destination) = 0;
+	virtual void addExplosion(const Id &source, const Id &destination) = 0;
+	virtual void removeExplosion(const Id &source, const Id &destination) = 0;
 
-	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName) = 0;
-	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const = 0;
+	virtual void setPropertyByRoleName(const Id &elem, const QVariant &newValue, const QString &roleName) = 0;
+	virtual QVariant propertyByRoleName(const Id &elem, const QString &roleName) const = 0;
 
-	virtual bool isLogicalId(Id const &id) const = 0;
+	virtual bool isLogicalId(const Id &id) const = 0;
 
-	virtual void removeReferencesTo(Id const &id) = 0;
-	virtual void removeReferencesFrom(Id const &id) = 0;
-	virtual void removeReference(Id const &id, Id const &reference) = 0;
+	virtual void removeReferencesTo(const Id &id) = 0;
+	virtual void removeReferencesFrom(const Id &id) = 0;
+	virtual void removeReference(const Id &id, const Id &reference) = 0;
 };
 
 }

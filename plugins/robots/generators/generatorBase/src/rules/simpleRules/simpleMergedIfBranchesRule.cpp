@@ -4,7 +4,7 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 SimpleMergedIfBranchesRule::SimpleMergedIfBranchesRule(SemanticTree *tree
-		, Id const &id, LinkInfo const &next)
+		, const Id &id, const LinkInfo &next)
 	: SimpleVisitedRuleBase(tree, id, next)
 {
 }

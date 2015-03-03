@@ -8,9 +8,11 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
-		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
-		-lrobots-utils -lrobots-interpreter-base -lqextserialport \
+links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
+		robots-utils robots-interpreter-base qextserialport \
+)
+
+includes(plugins/robots/interpreters/interpreterBase plugins/robots/utils qrtext)
 
 HEADERS += \
 	$$PWD/commandConstants.h \
@@ -42,7 +44,6 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
 
-
 SOURCES += \
 	$$PWD/ev3AdditionalPreferences.cpp \
 	$$PWD/ev3KitInterpreterPlugin.cpp \
@@ -71,7 +72,6 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
-
 
 FORMS += \
 	$$PWD/ev3AdditionalPreferences.ui \

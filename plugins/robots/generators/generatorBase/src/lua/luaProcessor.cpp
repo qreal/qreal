@@ -10,63 +10,44 @@ using namespace qReal;
 
 LuaProcessor::LuaProcessor(qReal::ErrorReporterInterface &errorReporter
 		, qrtext::LanguageToolboxInterface &textLanguage
+		, const utils::ParserErrorReporter &parserErrorReporter
 		, QObject *parent)
 	: QObject(parent)
 	, TemplateParametrizedEntity()
 	, mErrorReporter(errorReporter)
 	, mTextLanguage(textLanguage)
+	, mParserErrorReporter(parserErrorReporter)
 {
 }
 
-QString LuaProcessor::translate(QString const &data
-		, Id const &id
-		, QString const &propertyName
-		, simple::Binding::ConverterInterface const *reservedVariablesConverter)
+QString LuaProcessor::translate(const QString &data
+		, const Id &id
+		, const QString &propertyName
+		, const simple::Binding::ConverterInterface *reservedVariablesConverter)
 {
-	QSharedPointer<qrtext::core::ast::Node> const tree = parse(data, id, propertyName);
+	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
 	return lua::LuaPrinter(pathToRoot(), mTextLanguage
 			, precedenceConverter(), reservedVariablesConverter).print(tree);
 }
 
 
-QString LuaProcessor::castToString(QString const &data
-		, Id const &id
-		, QString const &propertyName
-		, simple::Binding::ConverterInterface const *reservedVariablesConverter)
+QString LuaProcessor::castToString(const QString &data
+		, const Id &id
+		, const QString &propertyName
+		, const simple::Binding::ConverterInterface *reservedVariablesConverter)
 {
-	QSharedPointer<qrtext::core::ast::Node> const tree = parse(data, id, propertyName);
+	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
 	return lua::LuaPrinter(pathToRoot(), mTextLanguage
 			, precedenceConverter(), reservedVariablesConverter).castToString(tree);
 }
 
-QSharedPointer<qrtext::core::ast::Node> LuaProcessor::parse(QString const &data
-		, qReal::Id const &id
-		, QString const &propertyName) const
+QSharedPointer<qrtext::core::ast::Node> LuaProcessor::parse(const QString &data
+		, const qReal::Id &id
+		, const QString &propertyName) const
 {
-	QSharedPointer<qrtext::core::ast::Node> const tree = mTextLanguage.parse(id, propertyName, data);
+	const QSharedPointer<qrtext::core::ast::Node> tree = mTextLanguage.parse(id, propertyName, data);
 	if (!mTextLanguage.errors().isEmpty()) {
-		/// @todo: move this code to some common place
-		for (qrtext::core::Error const &error : mTextLanguage.errors()) {
-			QString const errorMessage = QString("%1:%2 %3")
-					.arg(error.connection().line())
-					.arg(error.connection().column())
-					.arg(error.errorMessage());
-
-			switch (error.severity()) {
-			case qrtext::core::Severity::error:
-				mErrorReporter.addError(errorMessage, id);
-				break;
-			case qrtext::core::Severity::critical:
-				mErrorReporter.addCritical(errorMessage, id);
-				break;
-			case qrtext::core::Severity::warning:
-				mErrorReporter.addWarning(errorMessage, id);
-				break;
-			default:
-				break;
-			}
-		}
-
+		mParserErrorReporter.reportErrors(id, propertyName);
 		return qrtext::wrap(nullptr);
 	}
 

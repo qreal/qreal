@@ -55,7 +55,7 @@ QList<QextPortInfo> QextSerialEnumeratorPrivate::getPorts_sys()
 
     // first try to get any serialbsd devices, then try any USBCDC devices
     if (!(matchingDictionary = IOServiceMatching(kIOSerialBSDServiceValue))) {
-        QESP_WARNING("IOServiceMatching returned a NULL dictionary.");
+        QESP_WARNING("IOServiceMatching returned a nullptr dictionary.");
         return infoList;
     }
     CFDictionaryAddValue(matchingDictionary, CFSTR(kIOSerialBSDTypeKey), CFSTR(kIOSerialBSDAllTypes));
@@ -70,7 +70,7 @@ QList<QextPortInfo> QextSerialEnumeratorPrivate::getPorts_sys()
     serialPortIterator = 0;
 
     if (!(matchingDictionary = IOServiceNameMatching("AppleUSBCDC"))) {
-        QESP_WARNING("IOServiceNameMatching returned a NULL dictionary.");
+        QESP_WARNING("IOServiceNameMatching returned a nullptr dictionary.");
         return infoList;
     }
 
@@ -100,10 +100,10 @@ void QextSerialEnumeratorPrivate::iterateServicesOSX(io_object_t service, QList<
 bool QextSerialEnumeratorPrivate::getServiceDetailsOSX(io_object_t service, QextPortInfo *portInfo)
 {
     bool retval = true;
-    CFTypeRef bsdPathAsCFString = NULL;
-    CFTypeRef productNameAsCFString = NULL;
-    CFTypeRef vendorIdAsCFNumber = NULL;
-    CFTypeRef productIdAsCFNumber = NULL;
+    CFTypeRef bsdPathAsCFString = nullptr;
+    CFTypeRef productNameAsCFString = nullptr;
+    CFTypeRef vendorIdAsCFNumber = nullptr;
+    CFTypeRef productIdAsCFNumber = nullptr;
     // check the name of the modem's callout device
     bsdPathAsCFString = IORegistryEntryCreateCFProperty(service, CFSTR(kIOCalloutDeviceKey),
                                                         kCFAllocatorDefault, 0);
@@ -228,15 +228,15 @@ bool QextSerialEnumeratorPrivate::setUpNotifications_sys(bool /*setup*/)
     CFMutableDictionaryRef cdcClassesToMatch;
     io_iterator_t portIterator;
 
-    kernResult = IOMasterPort(MACH_PORT_NULL, &masterPort);
+    kernResult = IOMasterPort(MACH_PORT_nullptr, &masterPort);
     if (KERN_SUCCESS != kernResult) {
         qDebug() << "IOMasterPort returned:" << kernResult;
         return false;
     }
 
     classesToMatch = IOServiceMatching(kIOSerialBSDServiceValue);
-    if (classesToMatch == NULL)
-        qDebug("IOServiceMatching returned a NULL dictionary.");
+    if (classesToMatch == nullptr)
+        qDebug("IOServiceMatching returned a nullptr dictionary.");
     else
         CFDictionarySetValue(classesToMatch, CFSTR(kIOSerialBSDTypeKey), CFSTR(kIOSerialBSDAllTypes));
 
@@ -250,14 +250,14 @@ bool QextSerialEnumeratorPrivate::setUpNotifications_sys(bool /*setup*/)
     cdcClassesToMatch = (CFMutableDictionaryRef) CFRetain(cdcClassesToMatch);
 
     notificationPortRef = IONotificationPortCreate(masterPort);
-    if (notificationPortRef == NULL) {
-        qDebug("IONotificationPortCreate return a NULL IONotificationPortRef.");
+    if (notificationPortRef == nullptr) {
+        qDebug("IONotificationPortCreate return a nullptr IONotificationPortRef.");
         return false;
     }
 
     notificationRunLoopSource = IONotificationPortGetRunLoopSource(notificationPortRef);
-    if (notificationRunLoopSource == NULL) {
-        qDebug("IONotificationPortGetRunLoopSource returned NULL CFRunLoopSourceRef.");
+    if (notificationRunLoopSource == nullptr) {
+        qDebug("IONotificationPortGetRunLoopSource returned nullptr CFRunLoopSourceRef.");
         return false;
     }
 

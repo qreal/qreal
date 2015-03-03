@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QAbstractItemView>
 
-#include "models/details/modelsImplementation/abstractModel.h"
+#include "qrgui/models/details/modelsImplementation/abstractModel.h"
 
 namespace qReal {
 namespace models {
@@ -18,16 +18,16 @@ public:
 	virtual ~AbstractView();
 
 public slots:
-	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-			, QModelIndex const &destinationParent, int destinationRow);
-	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-			, QModelIndex const &destinationParent, int destinationRow);
+	void rowsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+			, const QModelIndex &destinationParent, int destinationRow);
+	void rowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+			, const QModelIndex &destinationParent, int destinationRow);
 
 protected slots:
-	virtual void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+	virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
 			, QVector<int> const &roles = QVector<int>());
-	virtual void rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end);
-	virtual void rowsInserted(QModelIndex const &parent, int start, int end);
+	virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+	virtual void rowsInserted(const QModelIndex &parent, int start, int end);
 
 protected:
 	AbstractModel * const mModel;

@@ -5,7 +5,7 @@
 #include <robotModel/trikRobotModelBase.h>
 #include <utils/tcpRobotCommunicator.h>
 
-#include <plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -16,7 +16,7 @@ class RealRobotModelBase : public TrikRobotModelBase
 	Q_OBJECT
 
 public:
-	RealRobotModelBase(QString const &kitId, QString const &robotId);
+	RealRobotModelBase(const QString &kitId, const QString &robotId);
 
 	bool needsConnection() const override;
 	void connectToRobot() override;
@@ -27,8 +27,8 @@ public:
 
 protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
-			interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
+			const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &deviceInfo) override;
 
 private:
 	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;

@@ -4,9 +4,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-AbstractSimpleGenerator::AbstractSimpleGenerator(qrRepo::RepoApi const &repo
+AbstractSimpleGenerator::AbstractSimpleGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: QObject(parent)
 	, TemplateParametrizedEntity(customizer.factory()->pathToTemplates())

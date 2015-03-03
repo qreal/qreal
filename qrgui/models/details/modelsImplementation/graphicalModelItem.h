@@ -1,6 +1,6 @@
 #pragma once
 
-#include "models/details/modelsImplementation/abstractModelItem.h"
+#include "qrgui/models/details/modelsImplementation/abstractModelItem.h"
 
 namespace qReal {
 namespace models {
@@ -10,11 +10,11 @@ namespace modelsImplementation {
 class GraphicalModelItem : public modelsImplementation::AbstractModelItem
 {
 public:
-	GraphicalModelItem(Id const &id, Id const &logicalId, GraphicalModelItem *parent);
+	GraphicalModelItem(const Id &id, const Id &logicalId, GraphicalModelItem *parent);
 	Id logicalId() const;
 
 private:
-	Id const mLogicalId;
+	const Id mLogicalId;
 };
 
 }

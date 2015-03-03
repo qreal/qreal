@@ -36,7 +36,7 @@ NodeElement *CopyHandler::clone(bool toCursorPos, bool searchForParents)
 	return result;
 }
 
-void CopyHandler::copyChildren(NodeElement const &destination, NodeElement const &source) const
+void CopyHandler::copyChildren(const NodeElement &destination, const NodeElement &source) const
 {
 	foreach (QGraphicsItem * const child, source.childItems()) {
 		NodeElement * const element = dynamic_cast<NodeElement *>(child);
@@ -45,17 +45,17 @@ void CopyHandler::copyChildren(NodeElement const &destination, NodeElement const
 		}
 
 		CopyHandler copyHandler(*element, mGraphicalAssistApi);
-		NodeElement const * const copyOfChild = copyHandler.clone();
+		const NodeElement * const copyOfChild = copyHandler.clone();
 		mGraphicalAssistApi.changeParent(copyOfChild->id(), destination.id(), element->pos());
 	}
 }
 
-void CopyHandler::copyProperties(NodeElement const &destination, NodeElement const &source) const
+void CopyHandler::copyProperties(const NodeElement &destination, const NodeElement &source) const
 {
 	mGraphicalAssistApi.copyProperties(destination.id(), source.id());
 }
 
-void CopyHandler::copyEdges(NodeElement const &destination, NodeElement const &source) const
+void CopyHandler::copyEdges(const NodeElement &destination, const NodeElement &source) const
 {
 	Q_UNUSED(source);
 	Q_UNUSED(destination);

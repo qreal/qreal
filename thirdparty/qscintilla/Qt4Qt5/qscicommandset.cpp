@@ -869,7 +869,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
     for (int k = 'A'; k <= 'Z'; ++k)
         qsci->SendScintilla(QsciScintillaBase::SCI_ASSIGNCMDKEY,
                 k + (QsciScintillaBase::SCMOD_CTRL << 16),
-                QsciScintillaBase::SCI_NULL);
+                QsciScintillaBase::SCI_nullptr);
 
     for (int i = 0; i < sizeof (cmd_table) / sizeof (cmd_table[0]); ++i)
         cmds.append(

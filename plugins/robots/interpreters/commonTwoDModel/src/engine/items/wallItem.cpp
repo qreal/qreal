@@ -11,9 +11,9 @@ using namespace twoDModel::items;
 using namespace qReal;
 using namespace graphicsUtils;
 
-int const wallWidth = 10;
+const int wallWidth = 10;
 
-WallItem::WallItem(QPointF const &begin, QPointF const &end)
+WallItem::WallItem(const QPointF &begin, const QPointF &end)
 	: LineItem(begin, end)
 	, mDragged(false)
 	, mImage(":/icons/2d_wall.png")
@@ -82,17 +82,17 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
-	QRectF const oldPos =  QRectF(QPointF(mX1, mY1), QPointF(mX2, mY2));
+	const QRectF oldPos =  QRectF(QPointF(mX1, mY1), QPointF(mX2, mY2));
 
 	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
-		QPointF const pos = event->scenePos();
-		qreal const deltaX = (mX1 - mX2);
-		qreal const deltaY = (mY1 - mY2);
+		const QPointF pos = event->scenePos();
+		const qreal deltaX = (mX1 - mX2);
+		const qreal deltaY = (mY1 - mY2);
 		mX1 = pos.x() - mOldX1;
 		mY1 = pos.y() - mOldY1;
 
 		if (SettingsManager::value("2dShowGrid").toBool()) {
-			int const indexGrid = SettingsManager::value("2dGridCellSize").toInt();
+			const int indexGrid = SettingsManager::value("2dGridCellSize").toInt();
 			reshapeBeginWithGrid(indexGrid);
 			mCellNumbX1 = mX1 / indexGrid;
 			mCellNumbY1 = mY1 / indexGrid;
@@ -130,9 +130,10 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = false;
 }
 
-QDomElement WallItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
+QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement wallNode = document.createElement(mSerializeName);
+	AbstractItem::serialize(wallNode);
 	wallNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
 			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
 	wallNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
@@ -140,7 +141,7 @@ QDomElement WallItem::serialize(QDomDocument &document, QPoint const &topLeftPic
 	return wallNode;
 }
 
-void WallItem::deserializePenBrush(QDomElement const &element)
+void WallItem::deserializePenBrush(const QDomElement &element)
 {
 	Q_UNUSED(element)
 	setPrivateData();

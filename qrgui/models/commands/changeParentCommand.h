@@ -13,16 +13,16 @@ public:
 	ChangeParentCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, bool isLogical, Id const &id, Id const &oldParent
-			, Id const newParent, QPointF const &oldPosition
-			, QPointF const &newPosition);
+			, bool isLogical, const Id &id, const Id &oldParent
+			, const Id newParent, const QPointF &oldPosition
+			, const QPointF &newPosition);
 
 protected:
 	bool execute();
 	bool restoreState();
 
 private:
-	void changeParent(Id const &parent, QPointF const &position);
+	void changeParent(const Id &parent, const QPointF &position);
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;

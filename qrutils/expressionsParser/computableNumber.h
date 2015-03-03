@@ -15,7 +15,7 @@ public:
 
 	ComputableNumber();
 
-	explicit ComputableNumber(IntComputer const &intComputer);
+	explicit ComputableNumber(const IntComputer &intComputer);
 
 	QVariant value() const override;
 

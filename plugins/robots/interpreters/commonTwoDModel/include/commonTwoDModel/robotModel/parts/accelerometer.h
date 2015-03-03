@@ -20,8 +20,8 @@ class COMMON_TWO_D_MODEL_EXPORT Accelerometer : public interpreterBase::robotMod
 	Q_OBJECT
 
 public:
-	Accelerometer(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Accelerometer(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, engine::TwoDModelEngineInterface &engine);
 
 	void read() override;

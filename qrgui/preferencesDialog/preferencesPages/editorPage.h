@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QFontDialog>
 
-#include "preferencesPage.h"
+#include "qrgui/preferencesDialog/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesEditorPage;
