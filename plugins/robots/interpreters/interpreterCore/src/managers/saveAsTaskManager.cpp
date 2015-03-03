@@ -30,8 +30,10 @@ void SaveAsTaskManager::save()
 	}
 
 	ReadOnlyFlags flags = dialog.readOnlyFlags();
+	QHash<ReadOnly::ReadOnlyEnum, bool> oldFlags;
 
-	const auto save = [this, &flags] (const QString &tag, ReadOnly::ReadOnlyEnum flag) {
+	const auto save = [this, &flags, &oldFlags] (const QString &tag, ReadOnly::ReadOnlyEnum flag) {
+		oldFlags.insert(flag, mLogicalModel.logicalRepoApi().metaInformation(tag).toBool());
 		mLogicalModel.mutableLogicalRepoApi().setMetaInformation(tag, flags.flag(flag));
 	};
 
@@ -47,21 +49,33 @@ void SaveAsTaskManager::save()
 			, "."
 			, QObject::tr("QReal Save File(*.qrs)"));
 
+	if (fileName.isEmpty()) {
+		return;
+	}
+
 	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
 		fileName += ".qrs";
 	}
 
 	const QString currentWorkingFile = mRepoControlApi.workingFile();
+
+	if (currentWorkingFile.isEmpty()) {
+		return;
+	}
+
 	mRepoControlApi.saveTo(fileName);
 
-	flags = {};
+	// Restore old flags.
+	for (ReadOnly::ReadOnlyEnum flag : oldFlags.keys()) {
+		flags.setFlag(flag, oldFlags[flag]);
+	}
 
-	/// @todo: not good, can accidentally remove flags from existing save.
 	save("twoDModelWorldReadOnly", ReadOnly::World);
 	save("twoDModelSensorsReadOnly", ReadOnly::Sensors);
 	save("twoDModelRobotPositionReadOnly", ReadOnly::RobotPosition);
 	save("twoDModelRobotConfigurationReadOnly", ReadOnly::RobotConfiguration);
 	save("twoDModelSimulationSettingsReadOnly", ReadOnly::SimulationSettings);
 
+	// Save model again to set its working directory to old value.
 	mRepoControlApi.saveTo(currentWorkingFile);
 }

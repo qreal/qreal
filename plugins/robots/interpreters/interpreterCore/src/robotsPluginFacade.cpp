@@ -29,6 +29,8 @@ RobotsPluginFacade::~RobotsPluginFacade()
 
 void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 {
+	mActionsManager.init(&configurer.mainWindowInterpretersInterface());
+
 	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
 
 	mDevicesConfigurationManager.reset(new DevicesConfigurationManager(

@@ -131,6 +131,7 @@ void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModel
 
 void ActionsManager::onActiveTabChanged(const qReal::Id &activeTabId)
 {
+	updateEnabledActions();
 	const bool isDiagramTab = !activeTabId.isNull();
 	mRunAction.setEnabled(isDiagramTab);
 	mStopRobotAction.setEnabled(isDiagramTab);
