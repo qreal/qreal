@@ -65,6 +65,14 @@ protected:
 
 	virtual bool canGenerateTo(const QString &project);
 
+	/// Can be overrided to show or hide concrete actions on toolbars.
+	/// Default implemetation shows or hides all customActions() only in case if plugin exports one robot model.
+	virtual void onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
+
+	/// Can be overrided to enable or disable concrete actions on toolbars.
+	/// Default implemetation enables all customActions() if current diagram is non-null and disables all else.
+	virtual void onCurrentDiagramChanged(const qReal::Id &id);
+
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 

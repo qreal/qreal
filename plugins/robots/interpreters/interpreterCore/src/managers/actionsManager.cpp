@@ -102,6 +102,8 @@ QAction &ActionsManager::robotSettingsAction()
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
 	mConnectToRobotAction.setVisible(model.needsConnection());
+	mRunAction.setVisible(model.interpretedModel());
+	mStopRobotAction.setVisible(false);
 	const QString currentKitId = kitIdOf(model);
 	const QString switchActionName = "switchTo" + currentKitId + model.name();
 

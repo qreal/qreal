@@ -26,3 +26,8 @@ bool NxtGeneratorRobotModel::needsConnection() const
 {
 	return false;
 }
+
+bool NxtGeneratorRobotModel::interpretedModel() const
+{
+	return false;
+}

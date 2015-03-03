@@ -200,10 +200,10 @@ void RobotsPluginFacade::initSensorWidgets()
 			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStop);
 	connect(mInterpreter, &interpreter::InterpreterInterface::started, mGraphicsWatcherManager, [=]() {
 		mActionsManager.runAction().setVisible(false);
-		mActionsManager.stopRobotAction().setVisible(true);
+		mActionsManager.stopRobotAction().setVisible(mRobotModelManager.model().interpretedModel());
 	});
 	connect(mInterpreter, &interpreter::InterpreterInterface::stopped, mGraphicsWatcherManager, [=]() {
-		mActionsManager.runAction().setVisible(true);
+		mActionsManager.runAction().setVisible(mRobotModelManager.model().interpretedModel());
 		mActionsManager.stopRobotAction().setVisible(false);
 	});
 

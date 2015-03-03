@@ -20,7 +20,7 @@ NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
 	, mNxtToolsPresent(false)
 	, mMasterGenerator(nullptr)
 {
-	checkNxtTools();
+	initActions();
 	initHotKeyActions();
 }
 
@@ -59,6 +59,18 @@ bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference);
 }
 
+void NxtOsekCGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
+	checkNxtTools();
+}
+
+void NxtOsekCGeneratorPlugin::onCurrentDiagramChanged(const Id &id)
+{
+	RobotsGeneratorPluginBase::onCurrentDiagramChanged(id);
+	checkNxtTools();
+}
+
 void NxtOsekCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	RobotsGeneratorPluginBase::init(configurator);
@@ -69,43 +81,37 @@ void NxtOsekCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configu
 
 QList<ActionInfo> NxtOsekCGeneratorPlugin::customActions()
 {
-	return {};
+	const ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+	const ActionInfo flashRobotActionInfo(mFlashRobotAction, "", "tools");
+	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "interpreters", "tools");
+	return { generateCodeActionInfo, flashRobotActionInfo, uploadProgramActionInfo };
 }
 
 QList<HotKeyActionInfo> NxtOsekCGeneratorPlugin::hotKeyActions()
 {
-	return {};
+	return mHotKeyActionInfos;
 }
 
 QIcon NxtOsekCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
-	return QIcon(":/nxt/images/switch-to-nxt-osek-c.svg");
+	return QIcon(":/nxt/osek/images/switch-to-nxt-osek-c.svg");
 }
 
-//QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()
-//{
-//	checkNxtTools();
+void NxtOsekCGeneratorPlugin::initActions()
+{
+	mGenerateCodeAction->setText(tr("Generate code"));
+	mGenerateCodeAction->setIcon(QIcon(":/nxt/osek/images/generateOsekCode.svg"));
+	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-//	mGenerateCodeAction->setText(tr("Generate code"));
-//	mGenerateCodeAction->setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
-//	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
-//	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	mFlashRobotAction->setText(tr("Flash robot"));
+	mFlashRobotAction->setIcon(QIcon(":/nxt/osek/images/flashRobot.svg"));
+	connect(mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
 
-//	mFlashRobotAction->setText(tr("Flash robot"));
-//	mFlashRobotAction->setIcon(QIcon(":/nxt/images/flashRobot.svg"));
-//	ActionInfo flashRobotActionInfo(mFlashRobotAction, "generators", "tools");
-//	connect(mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
-
-//	mUploadProgramAction->setText(tr("Upload program"));
-//	mUploadProgramAction->setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
-//	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
-//	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
-
-//	return mNxtToolsPresent
-//			? QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo << uploadProgramActionInfo
-//			: QList<ActionInfo>() << generateCodeActionInfo;
-//}
+	mUploadProgramAction->setText(tr("Upload program"));
+	mUploadProgramAction->setIcon(QIcon(":/nxt/osek/images/run.png"));
+	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+}
 
 void NxtOsekCGeneratorPlugin::initHotKeyActions()
 {
@@ -140,11 +146,6 @@ void NxtOsekCGeneratorPlugin::onUploadingComplete(bool success)
 		break;
 	}
 }
-
-//QList<HotKeyActionInfo> NxtOsekCGeneratorPlugin::hotKeyActions()
-//{
-//	return mHotKeyActionInfos;
-//}
 
 generatorBase::MasterGeneratorBase *NxtOsekCGeneratorPlugin::masterGenerator()
 {
@@ -217,4 +218,5 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 
 	mUploadProgramAction->setVisible(mNxtToolsPresent);
 	mFlashRobotAction->setVisible(mNxtToolsPresent);
+	mFlashRobotAction->setEnabled(true);
 }

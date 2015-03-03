@@ -46,6 +46,32 @@ bool RobotsGeneratorPluginBase::canGenerateTo(const QString &project)
 	return !fileInfo.exists() || difference < maxTimestampsDifference;
 }
 
+void RobotsGeneratorPluginBase::onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	if (robotModels().count() == 1) {
+		kitBase::robotModel::RobotModelInterface * const ourModel = robotModels()[0];;
+		for (const ActionInfo &action : customActions()) {
+			if (action.isAction()) {
+				action.action()->setVisible(ourModel == &model);
+			} else {
+				action.menu()->setVisible(ourModel == &model);
+			}
+		}
+	}
+}
+
+void RobotsGeneratorPluginBase::onCurrentDiagramChanged(const Id &id)
+{
+	for (const ActionInfo &action : customActions()) {
+		const bool enabled = !id.isNull();
+		if (action.isAction()) {
+			action.action()->setEnabled(enabled);
+		} else {
+			action.menu()->setEnabled(enabled);
+		}
+	}
+}
+
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	const Id &activeDiagram = mMainWindowInterface->activeDiagram();
@@ -123,6 +149,10 @@ void RobotsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &confi
 	connect(mSystemEvents, SIGNAL(newCodeAppeared(qReal::Id, QFileInfo)), this, SLOT(addNewCode(qReal::Id, QFileInfo)));
 	connect(mSystemEvents, SIGNAL(diagramClosed(qReal::Id)), this, SLOT(removeDiagram(qReal::Id)));
 	connect(mSystemEvents, SIGNAL(codeTabClosed(QFileInfo)), this, SLOT(removeCode(QFileInfo)));
+
+	connect(mRobotModelManager, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this, &RobotsGeneratorPluginBase::onCurrentRobotModelChanged);
+	connect(mSystemEvents, &SystemEvents::activeTabChanged, this, &RobotsGeneratorPluginBase::onCurrentDiagramChanged);
 }
 
 QString RobotsGeneratorPluginBase::friendlyKitName() const

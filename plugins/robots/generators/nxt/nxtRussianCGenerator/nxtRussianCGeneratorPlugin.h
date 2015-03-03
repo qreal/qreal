@@ -18,9 +18,6 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
-//	QList<qReal::ActionInfo> actions() override;
-//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
-
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;

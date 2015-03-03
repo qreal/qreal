@@ -20,9 +20,6 @@ public:
 	TrikQtsGeneratorPlugin();
 	~TrikQtsGeneratorPlugin() override;
 
-//	QList<qReal::ActionInfo> actions() override;
-//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
-
 	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 	QList<qReal::ActionInfo> customActions() override;

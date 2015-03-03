@@ -5,5 +5,7 @@
         <file>images/uploadAndExecuteProgram.svg</file>
         <file>images/uploadProgram.svg</file>
         <file>images/switch-to-trik-f-sharp.svg</file>
+        <file>images/run.png</file>
+        <file>images/stop.png</file>
     </qresource>
 </RCC>

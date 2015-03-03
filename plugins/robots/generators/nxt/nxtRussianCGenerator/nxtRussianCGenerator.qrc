@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/nxt/russianC">
         <file>images/generateRussianCCode.svg</file>
         <file>images/switch-to-nxt-russian-c.svg</file>
     </qresource>

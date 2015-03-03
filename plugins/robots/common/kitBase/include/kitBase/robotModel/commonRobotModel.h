@@ -39,6 +39,8 @@ public:
 	/// emits disconnected().
 	void disconnectFromRobot() override;
 
+	bool interpretedModel() const override;
+
 	ConnectionState connectionState() const final;
 
 	const ConfigurationInterface &configuration() const final;

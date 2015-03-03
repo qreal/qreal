@@ -62,6 +62,11 @@ void CommonRobotModel::disconnectFromRobot()
 	emit disconnected();
 }
 
+bool CommonRobotModel::interpretedModel() const
+{
+	return true;
+}
+
 CommonRobotModel::ConnectionState CommonRobotModel::connectionState() const
 {
 	return needsConnection() ? mState : connectedState;

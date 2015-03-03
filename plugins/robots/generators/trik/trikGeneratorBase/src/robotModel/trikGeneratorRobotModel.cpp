@@ -26,3 +26,8 @@ bool TrikGeneratorRobotModel::needsConnection() const
 {
 	return false;
 }
+
+bool TrikGeneratorRobotModel::interpretedModel() const
+{
+	return false;
+}

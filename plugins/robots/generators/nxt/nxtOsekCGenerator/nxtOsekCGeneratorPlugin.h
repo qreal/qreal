@@ -28,9 +28,6 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
-	//	QList<qReal::ActionInfo> actions() override;
-//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
-
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
@@ -38,6 +35,9 @@ protected:
 	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
 	bool canGenerateTo(const QString &project) override;
+
+	void onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model) override;
+	void onCurrentDiagramChanged(const qReal::Id &id) override;
 
 private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
@@ -55,6 +55,7 @@ private:
 	/// subfolder of QReal installation), and sets mNxtToolsPresent flag.
 	void checkNxtTools();
 
+	void initActions();
 	void initHotKeyActions();
 
 	/// Action that launches code generator

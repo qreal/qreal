@@ -25,7 +25,7 @@ void TrikRuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurat
 
 QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
 {
-	return { qReal::ActionInfo(mAction, "generators", "tools") };
+	return { qReal::ActionInfo(mAction, "", "tools") };
 }
 
 void TrikRuntimeUploaderPlugin::uploadRuntime()
