@@ -8,6 +8,6 @@ SUBDIRS = \
 	ev3Kit \
 
 twoDModel.depends = kitBase
-nxtKit.depends = kitBase
-trikKit.depends = kitBase
-ev3Kit.depends = kitBase
+nxtKit.depends = twoDModel
+trikKit.depends = twoDModel
+ev3Kit.depends = twoDModel

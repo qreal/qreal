@@ -15,7 +15,7 @@ includes(plugins/robots/generators/nxt/nxtGeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo robots-generator-base robots-nxt-kit)
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-nxt-kit robots-kit-base)
 
 DEFINES += ROBOTS_NXT_GENERATOR_BASE_LIBRARY
 
