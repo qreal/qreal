@@ -12,6 +12,8 @@ namespace details {
 /// on a computer.
 class WaitGamepadButtonBlock : public kitBase::blocksBase::common::WaitBlock
 {
+	Q_OBJECT
+
 public:
 	explicit WaitGamepadButtonBlock(kitBase::robotModel::RobotModelInterface &robotModel);
 

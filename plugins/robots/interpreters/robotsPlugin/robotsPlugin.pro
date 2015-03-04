@@ -22,3 +22,5 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/robotsPlugin.cpp \
+
+TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/robotsPlugin_ru.ts
