@@ -5,12 +5,12 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include <interpreterBase/robotModel/commonRobotModel.h>
+#include <kitBase/robotModel/commonRobotModel.h>
 #include <support/dummyDevice.h>
 
 namespace qrTest {
 namespace robotsTests {
-namespace interpreterBaseTests {
+namespace kitBaseTests {
 
 /// Tests for CommonRobotModel.
 class CommonRobotModelTest : public testing::Test
@@ -18,7 +18,7 @@ class CommonRobotModelTest : public testing::Test
 public:
 
 	/// Partially mocked robot model.
-	class CommonRobotModelDescendantMock : public interpreterBase::robotModel::CommonRobotModel
+	class CommonRobotModelDescendantMock : public kitBase::robotModel::CommonRobotModel
 	{
 	public:
 		/// Constructor.
@@ -29,15 +29,16 @@ public:
 		MOCK_CONST_METHOD0(name, QString());
 		MOCK_CONST_METHOD0(friendlyName, QString());
 		MOCK_CONST_METHOD0(needsConnection, bool());
+		MOCK_CONST_METHOD0(priority, int());
 
 		void connectToRobot() override;
 
-		MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::DeviceInfo>());
+		MOCK_CONST_METHOD0(convertibleBases, QList<kitBase::robotModel::DeviceInfo>());
 
 	private:
-		interpreterBase::robotModel::robotParts::Device * createDevice(
-				interpreterBase::robotModel::PortInfo const &port
-				, interpreterBase::robotModel::DeviceInfo const &deviceInfo
+		kitBase::robotModel::robotParts::Device * createDevice(
+				kitBase::robotModel::PortInfo const &port
+				, kitBase::robotModel::DeviceInfo const &deviceInfo
 				) override;
 
 		QTimer mConnectionTimer;

@@ -1,11 +1,11 @@
 #include "configurationTest.h"
 
-#include "interpreterBase/robotModel/configuration.h"
+#include <kitBase/robotModel/configuration.h>
 
 #include "support/dummyDevice.h"
 
-using namespace qrTest::robotsTests::interpreterBaseTests;
-using namespace interpreterBase::robotModel;
+using namespace qrTest::robotsTests::kitBaseTests;
+using namespace kitBase::robotModel;
 
 TEST_F(ConfigurationTest, configureTest)
 {

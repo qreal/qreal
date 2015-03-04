@@ -1,14 +1,14 @@
-TARGET = robots_interpreterBase_unittests
+TARGET = robots_kitBase_unittests
 
 include(../../../../common.pri)
 
-include(../../../../../../plugins/robots/interpreters/interpreterBase/interpreterBase.pri)
+include(../../../../../../plugins/robots/common/kitBase/kitBase.pri)
 
 links(qslog)
 
 INCLUDEPATH += \
-	../../../../../../plugins/robots/interpreters/interpreterBase \
-	../../../../../../plugins/robots/interpreters/interpreterBase/include \
+	../../../../../../plugins/robots/common/kitBase \
+	../../../../../../plugins/robots/common/kitBase/include \
 
 # Tests
 HEADERS += \

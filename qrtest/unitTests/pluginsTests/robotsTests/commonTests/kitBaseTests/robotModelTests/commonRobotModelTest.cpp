@@ -1,15 +1,15 @@
 #include "commonRobotModelTest.h"
 
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+#include <kitBase/robotModel/robotParts/touchSensor.h>
+#include <kitBase/robotModel/robotParts/rangeSensor.h>
 
 #include "utils/signalsTester.h"
 
 using namespace qrTest;
-using namespace qrTest::robotsTests::interpreterBaseTests;
+using namespace qrTest::robotsTests::kitBaseTests;
 
-using namespace interpreterBase;
-using namespace interpreterBase::robotModel;
+using namespace kitBase;
+using namespace kitBase::robotModel;
 
 using namespace ::testing;
 
@@ -34,7 +34,7 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	QObject::connect(&model, &CommonRobotModel::connected, [&] () {
 		model.configureDevice(PortInfo("1", input)
-				, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+				, DeviceInfo::create<kitBase::robotModel::robotParts::TouchSensor>());
 		model.applyConfiguration();
 	});
 	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured, [&] () { model.disconnectFromRobot(); });
@@ -63,7 +63,7 @@ TEST_F(CommonRobotModelTest, twoDLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
 	model.configureDevice(PortInfo("1", input)
-			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+			, DeviceInfo::create<kitBase::robotModel::robotParts::TouchSensor>());
 	model.applyConfiguration();
 
 	model.connectToRobot();
@@ -124,8 +124,8 @@ CommonRobotModelTest::CommonRobotModelDescendantMock::CommonRobotModelDescendant
 	, mImmediateConnection(immediateConnection)
 {
 	addAllowedConnection(PortInfo("1", input)
-			, { DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>()
-					, DeviceInfo::create<interpreterBase::robotModel::robotParts::RangeSensor>()});
+			, { DeviceInfo::create<kitBase::robotModel::robotParts::TouchSensor>()
+					, DeviceInfo::create<kitBase::robotModel::robotParts::RangeSensor>()});
 
 	if (!immediateConnection) {
 		mConnectionTimer.setInterval(100);

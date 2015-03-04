@@ -4,8 +4,8 @@
 
 /// @todo /src/managers
 #include <interpreterCore/managers/blocksFactoryManagerInterfaceMock.h>
-#include <interpreterBase/robotModel/robotModelInterfaceMock.h>
-#include <interpreterBase/robotModel/robotModelManagerInterfaceMock.h>
+#include <kitBase/robotModel/robotModelInterfaceMock.h>
+#include <kitBase/robotModel/robotModelManagerInterfaceMock.h>
 
 namespace qrTest {
 namespace robotsTests {

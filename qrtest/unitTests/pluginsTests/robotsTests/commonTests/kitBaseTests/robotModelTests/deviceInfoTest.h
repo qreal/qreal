@@ -4,9 +4,9 @@
 
 namespace qrTest {
 namespace robotsTests {
-namespace interpreterBaseTests {
+namespace kitBaseTests {
 
-class ConfigurationTest : public testing::Test
+class DeviceInfoTest : public testing::Test
 {
 };
 

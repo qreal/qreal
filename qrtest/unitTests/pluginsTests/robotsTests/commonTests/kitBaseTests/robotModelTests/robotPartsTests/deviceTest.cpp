@@ -2,10 +2,10 @@
 
 #include "support/dummyDevice.h"
 
-using namespace qrTest::robotsTests::interpreterBaseTests;
+using namespace qrTest::robotsTests::kitBaseTests;
 
-using namespace interpreterBase::robotModel;
-using namespace interpreterBase::robotModel::robotParts;
+using namespace kitBase::robotModel;
+using namespace kitBase::robotModel::robotParts;
 
 TEST_F(DeviceTest, portTest)
 {

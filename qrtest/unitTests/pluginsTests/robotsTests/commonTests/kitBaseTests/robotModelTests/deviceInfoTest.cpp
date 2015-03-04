@@ -1,12 +1,12 @@
 #include "deviceInfoTest.h"
 
-#include <interpreterBase/robotModel/deviceInfo.h>
-#include <interpreterBase/robotModel/robotParts/abstractSensor.h>
-#include <interpreterBase/robotModel/robotParts/motor.h>
+#include <kitBase/robotModel/deviceInfo.h>
+#include <kitBase/robotModel/robotParts/abstractSensor.h>
+#include <kitBase/robotModel/robotParts/motor.h>
 
-using namespace qrTest::robotsTests::interpreterBaseTests;
-using namespace interpreterBase::robotModel;
-using namespace interpreterBase::robotModel::robotParts;
+using namespace qrTest::robotsTests::kitBaseTests;
+using namespace kitBase::robotModel;
+using namespace kitBase::robotModel::robotParts;
 
 TEST_F(DeviceInfoTest, equalityTest)
 {
