@@ -74,7 +74,8 @@ private:
 
 	bool mAutosaveMode;
 	bool mCompactMode;
-	QString mCurrentModel;
+	QString mCurrentModelType;
+	QString mCurrentModelId;
 	QMap<QString, robotModel::RobotModelInterface *> mRobotModels;  // Does not have ownership.
 	QMap<QString, QWidget *> mRobotModelConfigurers;  // Has indirect ownership via Qt parent-child memory management.
 	QList<QComboBox *> mConfigurers;  // Has indirect ownership of comboboxes via Qt parent-child memory management.

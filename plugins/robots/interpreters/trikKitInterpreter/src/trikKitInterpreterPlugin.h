@@ -50,6 +50,8 @@ private slots:
 	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
 	void onActiveTabChanged(const qReal::Id &rootElementId);
 
+	QWidget *produceIpAddressConfigurer();  // Transfers ownership
+
 private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;
 	robotModel::real::RealRobotModelV6 mRealRobotModelV6;
@@ -62,9 +64,6 @@ private:
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
 	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences = nullptr;  //Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
-
-	QWidget *mIpAdressQuickConfigurer = nullptr;  // Transfers ownership
-	bool mOwnsIpAdressQuickConfigurer = true;
 
 	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;

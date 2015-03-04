@@ -30,7 +30,7 @@ DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool aut
 void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
 {
 	for (RobotModelInterface * const model : models) {
-		const QString name = model->robotId();
+		const QString name = model->name();
 		mRobotModels[name] = model;
 		QWidget * const configurer = configurerForRobotModel(*model);
 		mRobotModelConfigurers[name] = configurer;
@@ -39,11 +39,11 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
-	const QString robotModelId = robotModel.robotId();
-	mCurrentModel = robotModelId;
+	mCurrentModelType = robotModel.name();
+	mCurrentModelId = robotModel.robotId();
 	takeWidget();
-	if (mRobotModels.contains(robotModelId)) {
-		setWidget(mRobotModelConfigurers[robotModelId]);
+	if (mRobotModels.contains(mCurrentModelType)) {
+		setWidget(mRobotModelConfigurers[mCurrentModelType]);
 		refresh();
 	}
 }
@@ -54,8 +54,8 @@ void DevicesConfigurationWidget::prependCustomWidget(RobotModelInterface &robotM
 		return;
 	}
 
-	Q_ASSERT(mRobotModelConfigurers.contains(robotModel.robotId()));
-	QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(mRobotModelConfigurers[robotModel.robotId()]->layout());
+	Q_ASSERT(mRobotModelConfigurers.contains(robotModel.name()));
+	QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(mRobotModelConfigurers[robotModel.name()]->layout());
 	Q_ASSERT(layout);
 	layout->insertWidget(0, widget);
 }
@@ -70,7 +70,7 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	QVBoxLayout * const layout = new QVBoxLayout(result);
 	QList<PortInfo> const configurablePorts = robotModel.configurablePorts();
 	for (const PortInfo &port : configurablePorts) {
-		layout->addLayout(initPort(robotModel.robotId(), port, robotModel.allowedDevices(port)));
+		layout->addLayout(initPort(robotModel.name(), port, robotModel.allowedDevices(port)));
 	}
 
 	return result;
@@ -114,7 +114,7 @@ void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &rob
 
 	// This method can be called when we did not accomplish processing all combo boxes during saving.
 	// So ignoring such case.
-	if (!mSaving) {
+	if (!mSaving && robotModel == mCurrentModelId) {
 		refresh();
 	}
 }
@@ -125,7 +125,7 @@ void DevicesConfigurationWidget::refresh()
 	mRefreshing = true;
 	for (QComboBox * const box : mConfigurers) {
 		const PortInfo port = box->property("port").value<PortInfo>();
-		const DeviceInfo device = currentConfiguration(mCurrentModel, port);
+		const DeviceInfo device = currentConfiguration(mCurrentModelId, port);
 		if (device.isNull()) {
 			box->setCurrentIndex(0);
 		} else {
@@ -167,16 +167,16 @@ void DevicesConfigurationWidget::save()
 
 void DevicesConfigurationWidget::propagateChanges(const PortInfo &port, const DeviceInfo &sensor)
 {
-	for (const QString &robotModelId : mRobotModels.keys()) {
-		const RobotModelInterface *robotModel = mRobotModels[robotModelId];
+	for (const QString &robotModelType : mRobotModels.keys()) {
+		const RobotModelInterface *robotModel = mRobotModels[robotModelType];
 		for (const PortInfo &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
-					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo(), Reason::userAction);
+					deviceConfigurationChanged(robotModel->robotId(), otherPort, DeviceInfo(), Reason::userAction);
 				} else {
 					const DeviceInfo otherDevice = convertibleDevice(robotModel, otherPort, sensor);
 					if (!otherDevice.isNull()) {
-						deviceConfigurationChanged(robotModelId, otherPort, otherDevice, Reason::userAction);
+						deviceConfigurationChanged(robotModel->robotId(), otherPort, otherDevice, Reason::userAction);
 					}
 				}
 			}

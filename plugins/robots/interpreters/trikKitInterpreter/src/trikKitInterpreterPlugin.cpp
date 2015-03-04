@@ -37,10 +37,6 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 	if (mOwnsBlocksFactory) {
 		delete mBlocksFactory;
 	}
-
-	if (mOwnsIpAdressQuickConfigurer) {
-		delete mIpAdressQuickConfigurer;
-	}
 }
 
 void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
@@ -63,18 +59,6 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, configurator.interpreterControl());
 
 	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
-
-	QLineEdit * const quickPreferences = new QLineEdit;
-	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
-	auto updateQuickPreferences = [quickPreferences]() {
-		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
-	};
-	updateQuickPreferences();
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
-	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
-		qReal::SettingsManager::setValue("TrikTcpServer", text);
-	});
-	mIpAdressQuickConfigurer = quickPreferences;
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
@@ -118,12 +102,9 @@ QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidget
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
 {
-	if (model.name().toLower().contains("twod")) {
-		return nullptr;
-	} else {
-		mOwnsIpAdressQuickConfigurer = false;
-		return mIpAdressQuickConfigurer;
-	}
+	return model.name().toLower().contains("twod")
+			? nullptr
+			: produceIpAddressConfigurer();
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
@@ -167,4 +148,19 @@ void TrikKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
 	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 	const bool v6Enabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModelV6.name();
 	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setVisible(v6Enabled);
+}
+
+QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
+{
+	QLineEdit * const quickPreferences = new QLineEdit;
+	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
+	auto updateQuickPreferences = [quickPreferences]() {
+		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
+	};
+	updateQuickPreferences();
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
+		qReal::SettingsManager::setValue("TrikTcpServer", text);
+	});
+	return quickPreferences;
 }

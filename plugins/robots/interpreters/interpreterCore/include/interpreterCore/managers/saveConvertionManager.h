@@ -31,8 +31,9 @@ private:
 	/// Returns a converter that adds quotes for "System" block.
 	static qReal::ProjectConverter from301to302Converter();
 
-	/// Replaces "interpreterBase" to "kitBase", "commonTwoDModel" to "twoDModel" and
-	/// "*kitInterpreter" to "*" in devices names.
+	/// Replaces "interpreterBase" to "kitBase", "commonTwoDModel" to "twoDModel",
+	/// "*kitInterpreter" to "*" in devices names, replaces robot model names (in NXT case adds "Usb" to robot model,
+	/// in TRIK removes v6 from robot model name).
 	static qReal::ProjectConverter from302to310Converter();
 
 	static bool isRobotsDiagram(const qReal::Id &diagram);

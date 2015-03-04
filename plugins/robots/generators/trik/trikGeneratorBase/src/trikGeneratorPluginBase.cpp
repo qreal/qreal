@@ -10,7 +10,7 @@ TrikGeneratorPluginBase::TrikGeneratorPluginBase(const QString &robotName
 		, const QString &robotFriendlyName
 		, int priority)
 	: mRobotModel(new robotModel::TrikGeneratorRobotModel(kitId()
-			, "trikGeneratorRobot", robotName, robotFriendlyName, priority))
+			, "trikGeneratorRobotOf" + robotName, robotName, robotFriendlyName, priority))
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {
 }
