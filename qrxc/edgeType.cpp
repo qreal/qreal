@@ -290,9 +290,7 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n"
 	<< "\t\t\treturn enums::linkShape::" << mShapeType << ";\n\t\t}\n";
 
-	out() //<< "\t\tbool isPort() const { return false; }\n"
-//	<< "\t\tbool hasPin() const { return false; }\n"
-	<< "\t\tbool createChildrenFromMenu() const { return false; }\n"
+	out() << "\t\tbool createChildrenFromMenu() const { return false; }\n"
 	<< "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n"
 	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"

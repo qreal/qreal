@@ -8,11 +8,6 @@
                                  qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
 	                         qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
 
-
-		/*void init(QRectF &contents, QList<StatPoint> &pointPorts,
-				QList<StatLine> &linePorts, qReal::LabelFactoryInterface &factory,
-				QList<qReal::LabelFactoryInterface*> &titles, qReal::SdfRendererInterface *renderer,
-				SdfRendererInterface *portRenderer)    */
 		{
 @@NodeUnusedArgs@@
 			mRenderer = renderer;
@@ -36,11 +31,9 @@
 		}
 
 		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
-		
 
 		int getPenWidth() const { return 0; }
 		QColor getPenColor() const { return QColor(); }
-
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
@@ -113,15 +106,6 @@
 			return @@IsResizeable@@;
 		}
 
-	/*	int getPenWidth() const
-		{ 
-			return 0; 
-		}
-
-		QColor getPenColor() const 
-		{ 
-			return QColor(); 
-		}      */
 
 //temporary fixing		
 		QStringList fromPortTypes() const
@@ -148,7 +132,6 @@
 
 	private:
 		qReal::SdfRendererInterface *mRenderer;
-		//QStringList mBonusContextMenuFields;
 @@LabelDefinition@@
 	};
 

@@ -17,9 +17,7 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
-
 	mRotation = element.attribute("rotation", "0").toDouble();
-
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {

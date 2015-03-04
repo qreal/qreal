@@ -1,10 +1,6 @@
 	class @@ElementName@@ : public qReal::ElementImpl {
 	public:
-	/*	void init(QRectF &, QList<StatPoint> &, QList<StatLine> &,
-				qReal::LabelFactoryInterface &, QList<qReal::LabelFactoryInterface*> &,
-				SdfRendererInterface *, SdfRendererInterface *) {}
-	*/
-		void init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,
+			void init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,
 											qReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,
 											qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}		
 
@@ -23,16 +19,10 @@
 		int sizeOfChildrenForestalling() const { return 0; }
 		bool hasMovableChildren() const { return false; }
 		bool minimizesToChildren() const { return false; }
-	//	bool isClass() { return false; }
 		bool maximizesChildren() const { return false; }
 		bool isResizeable() const { return true; }
-	//	int getPenWidth() const { return 1; }
-	//	QColor getPenColor() const { return QColor(); }
 		bool isDividable() const { return false; }
-
-
 		qReal::ElementImpl *clone() { return NULL; }
-
 		bool createChildrenFromMenu() const { return false; }
 
 		QList<double> border () const
@@ -42,12 +32,10 @@
 			return list;
 		}
 		
-		
 		int getPenWidth() const { return 1; }
 
 //temporary fixing		
 		QColor getPenColor() const { return QColor(0,0,0); }
-
 		
 //temporary fixing
 		QStringList fromPortTypes() const
@@ -103,7 +91,4 @@
 		{
 @@UpdateData@@
 		}
-
-	private:
-//@@LabelDefinition@@
 	};

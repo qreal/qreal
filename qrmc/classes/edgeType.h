@@ -21,7 +21,6 @@ namespace qrmc {
 		virtual QString generateResourceLine(QString const &resourceTemplate) const;
 		QString generatePorts(QStringList const &portTypes) const;
 
-
 		void print();
 
 		void initLabels();
@@ -36,7 +35,6 @@ namespace qrmc {
 		QString mEndType;
 		QString mLineType;
 		QList<Label*> mLabels; // refactor after #349 is closed
-
 		QStringList mFromPorts;
 	};
 }

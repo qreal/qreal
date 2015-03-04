@@ -97,10 +97,8 @@ QString const startXScalabilityTag = "@@NodeLinePortStartXScalable@@";
 QString const startYScalabilityTag = "@@NodeLinePortStartYScalable@@";
 QString const endXScalabilityTag = "@@NodeLinePortEndXScalable@@";
 QString const endYScalabilityTag = "@@NodeLinePortEndYScalable@@";
-
 QString const labelRotationTag = "@@Rotation@@";
 QString const portsForFromPortTypesTag = "@@PortsForFromPortTypes@@";
-
 QString const labelXTag = "@@LabelX@@";
 QString const labelYTag = "@@LabelY@@";
 QString const labelNameTag = "@@LabelName@@";
@@ -117,8 +115,6 @@ QString const maximizeChildrenTag = "@@MaximizesChildren@@";
 QString const hasMovableChildrenTag = "@@HasMovableChildren@@";
 QString const forestallingSizeTag = "@@SizeOfForestalling@@";
 QString const childrenForestallingSizeTag = "@@SizeOfChildrenForestalling@@";
-//QString const isPortTag = "@@IsPort@@";
-//QString const hasPinTag = "@@HasPin@@";
 QString const lineSdfTag = "@@LineSdf@@";
 QString const lineTypeTag = "@@LineType@@";
 QString const isResizeable = "@@IsResizeable@@";

@@ -29,8 +29,5 @@ namespace qrmc {
 		QString loadBoolProperty(qReal::Id const &id, QString const &property) const;
 		QString loadIntProperty(qReal::Id const &id, QString const &property) const;
 		QString loadIntVectorProperty(qReal::Id const &id, QString const &property) const;
-
-//		bool mIsPin;
-//		bool mIsHavePin;
 	};
 }

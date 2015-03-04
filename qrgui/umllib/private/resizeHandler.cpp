@@ -140,7 +140,7 @@ QPointF ResizeHandler::childDeflection() const
 
 	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
-		if (!curItem/* || curItem->isPort()*/) {
+		if (!curItem) {
 			continue;
 		}
 
@@ -155,7 +155,7 @@ void ResizeHandler::printChildPos() const
 {
 	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
-		if (!curItem/* || curItem->isPort()*/) {
+		if (!curItem) {
 			continue;
 		}
 	}
@@ -169,7 +169,7 @@ void ResizeHandler::moveChildren(QPointF const &shift) const
 
 	foreach (QGraphicsItem * const childItem, mTargetNode->childItems()) {
 		NodeElement * const curItem = dynamic_cast<NodeElement * const>(childItem);
-		if (!curItem/* || curItem->isPort()*/) {
+		if (!curItem) {
 			continue;
 		}
 
@@ -223,7 +223,7 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, Q
 	}
 
 	const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
-	if (curItem /*&& !curItem->isPort()*/) {
+	if (curItem) {
 		boundingRect = curItem->contentsRect();
 	}
 

@@ -1,11 +1,7 @@
 #include "pluginInterface.h"
 #include "../../../qrgui/editorPluginInterface/elementImpl.h"
-
-
 #include "elements.h"
 
-
-//Q_EXPORT_PLUGIN2(qreal_editors, @@MetamodelName@@Plugin);
 
 @@MetamodelName@@Plugin::@@MetamodelName@@Plugin()
 {
@@ -111,11 +107,6 @@ QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(QString const &d
 	return paletteGroupsDescriptionMap[diagram][group];
 }
 
-//QIcon @@MetamodelName@@Plugin::getIcon(SdfIconEngineV2Interface *engine) const
-//{
-//	return QIcon(engine);
-//}
-
 QString @@MetamodelName@@Plugin::editorName() const
 {
 	 return "@@MetamodelName@@ Editor";
@@ -195,12 +186,6 @@ int @@MetamodelName@@Plugin::isNodeOrEdge(QString const &element) const
 @@IsNodeOrEdgeLine@@
 	return 0;
 }
-//QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
-//{
-//	QStringList result;
-//@@GetEnumValuesLine@@
-//	return result;
-//}
 
 QString @@MetamodelName@@Plugin::getPropertyType(QString const &element, QString const &property) const
 {

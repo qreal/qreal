@@ -50,7 +50,6 @@ private:
 	void setUsages(QDomElement const &element, qReal::Id const &elementId);
 	void setPossibleEdges(QDomElement const &element, qReal::Id const &elementId);
 	void setFields(QDomElement const &element, qReal::Id const &elementId);
-//	void setPin(qReal::Id const &elementId);
 	void setAction(qReal::Id const &elementId);
 	void setLineType(QDomElement const &tag, qReal::Id const &edgeId);
 	void initPossibleEdge(QDomElement const &possibleEdge, qReal::Id const &elementId);
