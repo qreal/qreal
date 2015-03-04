@@ -34,6 +34,7 @@ signals:
 public slots:
 	void checkCorrectness();
 	void generateCode();
+	void generatePhysicalModel();
 
 private:
 	DatabasesPreferencesPage *mPreferencesPage;
@@ -43,6 +44,7 @@ private:
 
 	QAction *mGenerateCodeAction;
 	QAction *mCheckCorectnessAction;
+	QAction *mGeneratePhysicalModelAction;
 	QMenu *mDatabasesMenu;
 	QList<qReal::ActionInfo> mActionInfos;
 

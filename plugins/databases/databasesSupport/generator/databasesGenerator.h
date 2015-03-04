@@ -21,6 +21,7 @@ public slots:
 	void checkCorrectness();
 	/// Generate code from block diagram and build it in executable file
 	void generateSQL();
+	void generatePhysicalModel();
 
 	//bool wereErrors();
 
@@ -56,9 +57,10 @@ private:
 	bool checkAttributes();
 	bool checkRelationships();
 
+
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
-	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
-	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	qReal::LogicalModelAssistInterface &mLogicalModelApi;
+	qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	//VisualDebugger::ErrorType mError;
 	Id mCurrentDiagram;
 	Id mCurrentId;
