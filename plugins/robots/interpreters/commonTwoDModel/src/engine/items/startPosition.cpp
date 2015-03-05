@@ -29,25 +29,35 @@ void StartPosition::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *
 	painter->restore();
 }
 
-void StartPosition::serialize(QDomElement &robotElement) const
+void StartPosition::serialize(QDomElement &robotElement, QDomDocument &target) const
 {
-	robotElement.setAttribute("startPosX", scenePos().x());
-	robotElement.setAttribute("startPosY", scenePos().y());
+	QDomElement startPositionElement = target.createElement("startPosition");
+	startPositionElement.setAttribute("startPosX", scenePos().x());
+	startPositionElement.setAttribute("startPosY", scenePos().y());
+	startPositionElement.setAttribute("direction", rotation());
+	robotElement.appendChild(startPositionElement);
 }
 
 void StartPosition::deserialize(const QDomElement &robotElement)
 {
-	const QStringList robotPositionParts = robotElement.attribute("position").split(":");
-	const QString robotX = robotPositionParts.count() != 2 ? "0" : robotPositionParts[0];
-	const QString robotY = robotPositionParts.count() != 2 ? "0" : robotPositionParts[1];
-	const QString startPositionX = robotElement.hasAttribute("startPosX")
-			? robotElement.attribute("startPosX")
-			: robotX;
-	const QString startPositionY = robotElement.hasAttribute("startPosY")
-			? robotElement.attribute("startPosY")
-			: robotY;
-	setX(startPositionX.toDouble());
-	setY(startPositionY.toDouble());
+	const QDomElement startPositionElement = robotElement.firstChildElement("startPosition");
+	if (startPositionElement.isNull()) {
+		const QStringList robotPositionParts = robotElement.attribute("position").split(":");
+		const QString robotX = robotPositionParts.count() != 2 ? "0" : robotPositionParts[0];
+		const QString robotY = robotPositionParts.count() != 2 ? "0" : robotPositionParts[1];
+		const QString startPositionX = robotElement.hasAttribute("startPosX")
+				? robotElement.attribute("startPosX")
+				: robotX;
+		const QString startPositionY = robotElement.hasAttribute("startPosY")
+				? robotElement.attribute("startPosY")
+				: robotY;
+		setX(startPositionX.toDouble());
+		setY(startPositionY.toDouble());
+	} else {
+		setX(startPositionElement.attribute("x").toDouble());
+		setX(startPositionElement.attribute("y").toDouble());
+		setRotation(startPositionElement.attribute("direction").toDouble());
+	}
 }
 
 void StartPosition::drawFieldForResizeItem(QPainter *painter)

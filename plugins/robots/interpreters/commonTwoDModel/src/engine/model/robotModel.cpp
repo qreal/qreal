@@ -327,7 +327,7 @@ QDomElement RobotModel::serialize(QDomDocument &target) const
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);
-	mStartPositionMarker->serialize(robot);
+	mStartPositionMarker->serialize(robot, target);
 	return robot;
 }
 
