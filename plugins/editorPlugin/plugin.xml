@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<namespace>UML 2.0</namespace>
+	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
+		<nonGraphicTypes>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<node name="MetamodelDiagram" displayedName="Metamodel Diagram" description="Корневой элемент метамодели языка. В его свойствах указываются необходимые для сборки параметры">
+				<graphics>
+					<picture sizex="30" sizey="30">
+						<ellipse fill="#ffffff" stroke-style="dot" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+						<ellipse fill="#000000" stroke-style="solid" stroke="#0000f0" y1="5" x1="5" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+						<text i="0" font-fill="#ffffff" y1="20" b="0" x1="9" font-name="Helvetica" u="0" font-size="15">M</text>
+					</picture>
+					<labels>
+						<label x="10" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="50"/>
+						<pointPort x="50" y="0"/>
+						<pointPort x="100" y="50"/>
+						<pointPort x="50" y="100"/>
+
+                                                 <linePort>
+							<start startx="0" starty="30"/>
+							<end endx="0" endy="50"/>
+						</linePort>
+
+						<linePort>
+							<start startx="100" starty="30"/>
+							<end endx="100" endy="70"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					
+					<properties>
+						<property type="bool" name="ololo"/>	
+					</properties>
+					<containers/>
+				</logic>
+			</node>
+			
+			<node name="PackageDiagram" displayedName="Package Diagram" abstract = "true"  description="Предназначен для описания связей между метамоделями. Также может быть корневым элементом метамодели">
+				<graphics>
+					<picture sizex="150" sizey="130">
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0a" x1="0a" y2="0a" stroke-width="1" x2="100a" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="0a" y2="0a" stroke-width="1" x2="0a" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="100a" y2="0a" stroke-width="1" x2="100a" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="0a" y2="30a" stroke-width="1" x2="150" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="0a" y2="130" stroke-width="1" x2="0" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="150" y2="130" stroke-width="1" x2="150" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="130" x1="0" y2="130" stroke-width="1" x2="150" fill-style="solid"/>
+					</picture>
+					<labels>
+						<label x="2" y="2" textBinded="name"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="35"/>
+							<end endx="0" endy="115"/>
+						</linePort>
+						<linePort>
+							<start startx="150" starty="35"/>
+							<end endx="150" endy="115"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="MetamodelDiagram"/>
+					</generalizations>   
+					<properties>
+						<property type="string" name="description"/>	
+					</properties>
+				</logic>
+			</node>
+                        <node name="BehavioralFeature" displayedName="Behavioral Feature">
+         			 <logic>
+           				 <generalizations>
+            		 			 <parent parentName="PackageDiagram" overrides="ports"/>
+          		 		</generalizations>
+          		  		<properties>
+          		   		 	<property type="Parameter" name="ownedParameter"/>
+           		  		 	<property type="Type" name="raisedException"/>
+           			 	</properties>
+        		 	 </logic>
+     			 </node>
+		</graphicTypes>
+                <palette>
+		  <group name="Elements">
+			  <element name="ConditionNode"/>
+			  <element name="BlockDiagramNode"/>
+			  <element name="ActionElement"/>
+			  <element name="InitialNode"/>
+			  <element name="ConditionControlFlow"/>
+			  <element name="ControlFlow"/>
+			  <element name="PackageDiagram1"/>
+		  </group>
+	  </palette>
+	</diagram>
+</metamodel>

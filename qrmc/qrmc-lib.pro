@@ -8,8 +8,13 @@
 #DEPENDPATH += . \
 #	templates
 
+<<<<<<< HEAD
 #INCLUDEPATH += \
 #	$$PWD/.. \                          
+=======
+INCLUDEPATH += \
+	$$PWD/.. \                          
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 
 #LIBS += -L../bin -lqrkernel -lqrrepo
 

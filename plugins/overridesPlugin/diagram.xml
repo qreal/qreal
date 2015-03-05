@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel version="1.0.0" xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram nodeName="Node1" displayedName="Редактор" name="MetaEditor">
+        <graphicTypes>
+            <node displayedName="узел1" name="Node1">
+                <graphics>
+                    <picture sizex="328" sizey="306">
+                        <ellipse fill="#ffffff" y1="0" y2="304" stroke="#000000" stroke-style="solid" fill-style="none" x1="0" x2="326" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label x="104" y="75" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node displayedName="узел2" name="Node2">
+                <graphics>
+                    <picture sizex="389" sizey="294">
+                        <rectangle fill="#ffffff" y1="0" y2="292" stroke="#000000" stroke-style="solid" fill-style="none" x1="0" x2="387" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label x="46" y="35" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <createChildrenFromMenu/>
+                    <explodesTo/>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+</metamodel>
