@@ -1,5 +1,6 @@
 #TEMPLATE = lib
 #QT += xml
+<<<<<<< HEAD
 #
 #CONFIG += c++11
 #
@@ -10,6 +11,23 @@
 #
 #INCLUDEPATH += \
 #	$$PWD/.. \                          
+=======
+
+#CONFIG += c++11
+
+#TARGET = qrmc
+
+#DEPENDPATH += . \
+#	templates
+
+<<<<<<< HEAD
+#INCLUDEPATH += \
+#	$$PWD/.. \                          
+=======
+INCLUDEPATH += \
+	$$PWD/.. \                          
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
+>>>>>>> 1ea90c5095a65415ed9737b91a129f4de4b4160c
 
 #LIBS += -L../bin -lqrkernel -lqrrepo
 
@@ -36,9 +54,12 @@
 
 #include (classes/classes.pri)
 #include (utils/utils.pri)
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 1ea90c5095a65415ed9737b91a129f4de4b4160c
 include (classes/classes.pri)
 include (utils/utils.pri)
 

@@ -5,9 +5,9 @@ QT += xml widgets
 TEMPLATE = lib
 CONFIG += plugin
 
-DESTDIR = $$DESTDIR/tools/
-
 links(qrkernel qrutils qrmc qrgui-preferences-dialog)
+
+DESTDIR = $$DESTDIR/plugins/tools/
 
 HEADERS += \
 	metaEditorSupportPlugin.h \

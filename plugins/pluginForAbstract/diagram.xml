@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/" version="1.0.0">
+    <namespace>UML 2.0</namespace>
+    <diagram nodeName="Node1" name="Editor" displayedName="ккккккккгг">
+        <graphicTypes>
+            <node name="Node1" displayedName="щщ">
+                <graphics>
+                    <picture sizex="255" sizey="208">
+                        <ellipse stroke="#000000" fill-style="none" y1="0" fill="#ffffff" y2="206" stroke-style="solid" x1="0" x2="253" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label x="86" y="35" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="Node2" abstract="true" displayedName="ппп">
+                <graphics>
+                    <picture sizex="226" sizey="111">
+                        <rectangle stroke="#000000" fill-style="none" y1="0" fill="#ffffff" y2="109" stroke-style="solid" x1="0" x2="224" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label x="24" y="14" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="Node3" abstract="false" displayedName="ррр">
+                <graphics>
+                    <picture sizex="139" sizey="154">
+                        <ellipse stroke="#000000" fill-style="none" y1="17" fill="#ffffff" y2="149" stroke-style="solid" x1="0" x2="137" stroke-width="0"/>
+                        <curve stroke="#000000" fill-style="none" fill="#ffffff" stroke-style="solid" stroke-width="0">
+                            <start startx="52" starty="15"/>
+                            <end endx="107" endy="138"/>
+                            <ctrl x="26" y="117"/>
+                        </curve>
+                    </picture>
+                    <labels>
+                        <label x="19" y="72" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+</metamodel>

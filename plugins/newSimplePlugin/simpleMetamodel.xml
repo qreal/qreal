@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel version="1.0.0" xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram nodeName="NewSimpleDiagram" displayedName="Новый простой редактор" name="SimpleEditor">
+        <graphicTypes>
+            <node displayedName="Новая простая диаграмма" name="SimpleDiagram">
+                <graphics>
+                    <picture sizex="343" sizey="253">
+                        <ellipse stroke-style="solid" stroke-width="0" stroke="#000000" fill-style="none" fill="#ffffff" y1="0" y2="248" x1="2" x2="341"/>
+                    </picture>
+                    <labels>
+                        <label textBinded="name" x="71" y="49"/>
+                    </labels>
+                    <ports>
+                        <pointPort type="NonTyped" x="161" y="3"/>
+                        <pointPort type="NonTyped" x="2" y="129"/>
+                        <pointPort type="NonTyped" x="340" y="125"/>
+                        <pointPort type="NonTyped" x="173" y="250"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node displayedName="Новый простой элемент" name="SimpleNode">
+                <graphics>
+                    <picture sizex="379" sizey="292">
+                        <rectangle stroke-style="solid" stroke-width="0" stroke="#000000" fill-style="none" fill="#ffffff" y1="0" y2="290" x1="0" x2="377"/>
+                    </picture>
+                    <labels>
+                        <label textBinded="name" x="37" y="21"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <edge displayedName="Простая связь" name="SimpleEdge">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="square"/>
+                </graphics>
+                <logic>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>

@@ -34,6 +34,7 @@
 #	main.cpp \
 
 #LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils
+<<<<<<< HEAD
 
 #OBJECTS_DIR = .obj
 #UI_DIR = .ui
@@ -46,6 +47,16 @@
 
 
 
+=======
+
+#OBJECTS_DIR = .obj
+#UI_DIR = .ui
+#MOC_DIR = .moc
+#RCC_DIR = .moc
+
+#include (classes/classes.pri)
+#include (utils/utils.pri)
+>>>>>>> 1ea90c5095a65415ed9737b91a129f4de4b4160c
 include(../global.pri)
 include (classes/classes.pri)
 include (utils/utils.pri)

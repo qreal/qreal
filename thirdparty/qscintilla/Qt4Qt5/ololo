@@ -1,0 +1,4 @@
+g++: error: superNewVersion/qreal/bin/debug: No such file or directory
+g++: error: superNewVersion\qreal\bin\debug\libqscintilla2-d.a: No such file or directory
+mingw32-make.EXE[1]: *** [..\..\..\bin\debug\qscintilla2-d.dll] Error 1
+mingw32-make.EXE: *** [debug] Error 2

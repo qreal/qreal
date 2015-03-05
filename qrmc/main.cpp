@@ -7,7 +7,11 @@
 using namespace qrmc;
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
+<<<<<<< HEAD
 {
+=======
+ {
+>>>>>>> 1ea90c5095a65415ed9737b91a129f4de4b4160c
 	Q_UNUSED(context)
 	const char *msg = message.toLatin1().data();
 	switch (type) {
