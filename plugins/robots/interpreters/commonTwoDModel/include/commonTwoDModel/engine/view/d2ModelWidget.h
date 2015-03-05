@@ -110,7 +110,6 @@ private slots:
 
 	void toggleDisplayVisibility();
 
-	void saveInitialRobotBeforeRun();
 	void setInitialRobotBeforeRun();
 
 private:
@@ -213,8 +212,6 @@ private:
 	bool mFollowRobot = false;
 
 	bool mFirstShow = true;
-
-	QMap<model::RobotModel *, RobotState> mInitialRobotsBeforeRun;
 
 	bool mDisplayIsVisible = false;
 

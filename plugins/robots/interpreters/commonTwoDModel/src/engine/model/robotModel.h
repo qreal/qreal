@@ -5,6 +5,8 @@
 #include "commonTwoDModel/robotModel/twoDRobotModel.h"
 #include "sensorsConfiguration.h"
 
+class QGraphicsItem;
+
 namespace twoDModel {
 
 namespace items {
@@ -92,7 +94,7 @@ public:
 
 	/// Returns the item whose scene position will determine robot`s start position.
 	/// Transfers ownership.
-	items::StartPosition *startPositionMarker() const;
+	QGraphicsItem *startPositionMarker() const;
 
 public slots:
 	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);

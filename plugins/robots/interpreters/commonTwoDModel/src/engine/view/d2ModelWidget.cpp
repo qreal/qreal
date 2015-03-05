@@ -285,24 +285,11 @@ void D2ModelWidget::init()
 	updateWheelComboBoxes();
 }
 
-void D2ModelWidget::saveInitialRobotBeforeRun()
-{
-	for (RobotModel *robotModel : mModel.robotModels()) {
-		RobotState state;
-		state.pos = robotModel->position();
-		state.rotation = robotModel->rotation();
-		mInitialRobotsBeforeRun.insert(robotModel, state);
-	}
-}
-
 void D2ModelWidget::setInitialRobotBeforeRun()
 {
-	QMapIterator<RobotModel *, RobotState> iterator(mInitialRobotsBeforeRun);
-
-	while (iterator.hasNext()) {
-		iterator.next();
-		iterator.key()->setPosition(iterator.value().pos);
-		iterator.key()->setRotation(iterator.value().rotation);
+	for (RobotModel * const model : mModel.robotModels()) {
+		model->setPosition(model->startPositionMarker()->scenePos());
+		model->setRotation(model->startPositionMarker()->rotation());
 	}
 }
 
@@ -602,8 +589,6 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 {
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
-
-	saveInitialRobotBeforeRun();
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)

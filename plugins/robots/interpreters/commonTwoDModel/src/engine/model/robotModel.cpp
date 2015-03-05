@@ -377,7 +377,7 @@ int RobotModel::varySpeed(const int speed) const
 	return mathUtils::Math::truncateToInterval(-100, 100, round(speed * (1 + ran)));
 }
 
-twoDModel::items::StartPosition *RobotModel::startPositionMarker() const
+QGraphicsItem *RobotModel::startPositionMarker() const
 {
 	return mStartPositionMarker;
 }

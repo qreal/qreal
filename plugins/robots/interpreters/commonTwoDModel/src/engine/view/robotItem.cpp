@@ -196,11 +196,6 @@ RobotModel &RobotItem::robotModel()
 	return mRobotModel;
 }
 
-void RobotItem::returnToStartPosition()
-{
-	mRobotModel.setPosition(mRobotModel.startPositionMarker()->scenePos());
-}
-
 void RobotItem::BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 		, QWidget *widget)
 {
