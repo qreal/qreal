@@ -10,7 +10,6 @@
 
 #include <interpreterBase/robotModel/portInfo.h>
 
-#include "rotater.h"
 #include "src/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
@@ -25,12 +24,6 @@ public:
 	SensorItem(model::SensorsConfiguration &configuration
 			, const interpreterBase::robotModel::PortInfo &port, const QString &pathToImage, const QRect &imageSize);
 
-	void setRotation(qreal angle) override;
-	QRectF rect() const override;
-	void setSelected(bool isSelected) override;
-	void setRotater(Rotater *rotater);
-	void checkSelection() override;
-
 	/// Draws selection rect around sensorBoundingBox
 	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) override;
 	void drawExtractionForItem(QPainter* painter) override;
@@ -44,8 +37,6 @@ public:
 
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-
-	void setRotatePoint(const QPointF &rotatePoint);
 
 protected:
 	class PortItem : public QGraphicsItem
@@ -74,9 +65,7 @@ protected:
 
 	model::SensorsConfiguration &mConfiguration;
 	const interpreterBase::robotModel::PortInfo mPort;
-	QPointF mRotatePoint;
 	graphicsUtils::PointImpl mPointImpl;
-	Rotater *mRotater;
 
 	const QRectF mImageRect;
 	const QRectF mBoundingRect;

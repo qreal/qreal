@@ -1,21 +1,32 @@
 #pragma once
 
-#include <QtWidgets/QGraphicsItem>
+#include "rotater.h"
 
-#include "qrutils/utilsDeclSpec.h"
-#include "abstractItem.h"
+namespace graphicsUtils {
 
-namespace graphicsUtils
-{
+class Rotater;
 
 class QRUTILS_EXPORT RotateItem : public AbstractItem
 {
 public:
-	virtual void setRotation(qreal angle) = 0;
-	virtual QRectF rect() const = 0;
-	qreal horizontalRadius() const;
-	virtual void setSelected(bool isSelected) = 0;
-	virtual void checkSelection() = 0;
+	explicit RotateItem(QGraphicsItem *parent = 0);
+
+	/// Can be overrided to determine rotater`s position: it will be placed to the center of rect`s right side.
+	virtual QRectF rect() const;
+
+	/// Can be overrided to show or hide rotaters.
+	virtual void checkSelection();
+
+	/// Returns a reference to a rotater graphics item.
+	Rotater &rotater();
+
+protected:
+	/// Must be called in subclass to initialize rotater position and so on.
+	/// Can`t be called here in constructor because it uses virtual methods.
+	void init();
+
+private:
+	Rotater mRotater;
 };
 
 }

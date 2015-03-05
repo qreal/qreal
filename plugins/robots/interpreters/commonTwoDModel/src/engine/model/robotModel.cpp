@@ -16,6 +16,7 @@
 #include "physics/realisticPhysicsEngine.h"
 
 #include "include/commonTwoDModel/robotModel/nullTwoDRobotModel.h"
+#include "src/engine/items/startPosition.h"
 
 using namespace twoDModel::model;
 using namespace physics;
@@ -35,6 +36,7 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
 	, mPhysicsEngine(nullptr)
+	, mStartPositionMarker(new items::StartPosition)
 {
 	reinit();
 }
@@ -325,6 +327,7 @@ QDomElement RobotModel::serialize(QDomDocument &target) const
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);
+	mStartPositionMarker->serialize(robot);
 	return robot;
 }
 
@@ -337,6 +340,7 @@ void RobotModel::deserialize(const QDomElement &robotElement)
 	onRobotReturnedOnGround();
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
+	mStartPositionMarker->deserialize(robotElement);
 	nextFragment();
 }
 
@@ -371,4 +375,9 @@ int RobotModel::varySpeed(const int speed) const
 {
 	const qreal ran = mathUtils::Math::gaussianNoise(varySpeedDispersion);
 	return mathUtils::Math::truncateToInterval(-100, 100, round(speed * (1 + ran)));
+}
+
+twoDModel::items::StartPosition *RobotModel::startPositionMarker() const
+{
+	return mStartPositionMarker;
 }

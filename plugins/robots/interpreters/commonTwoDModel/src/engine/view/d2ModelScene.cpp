@@ -13,6 +13,7 @@
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/startPosition.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -73,12 +74,7 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 	connect(robotItem, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
 
 	addItem(robotItem);
-
-	Rotater * const rotater = new Rotater();
-	rotater->setMasterItem(robotItem);
-	rotater->setVisible(false);
-
-	robotItem->setRotater(rotater);
+	addItem(robotItem->robotModel().startPositionMarker());
 
 	mRobots.insert(robotModel, robotItem);
 

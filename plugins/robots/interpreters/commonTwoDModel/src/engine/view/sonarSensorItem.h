@@ -23,10 +23,11 @@ public:
 			, const QRect &imageSize
 			);
 
-	virtual void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget);
-	virtual void drawExtractionForItem(QPainter *painter);
-	virtual QRectF boundingRect() const;
-	QPainterPath shape() const;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget) override;
+	void drawExtractionForItem(QPainter *painter) override;
+	QRectF boundingRect() const override;
+	QPainterPath shape() const override;
+	QRectF rect() const override;
 
 private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;

@@ -1,9 +1,5 @@
 #pragma once
 
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-#include <QtXml/QDomDocument>
-
 #include "lineItem.h"
 
 namespace twoDModel {

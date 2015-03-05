@@ -64,6 +64,11 @@ QPainterPath SonarSensorItem::shape() const
 	return result;
 }
 
+QRectF SonarSensorItem::rect() const
+{
+	return SensorItem::boundingRect();
+}
+
 void SonarSensorItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (!imageRect().contains(mouseEvent->pos())) {

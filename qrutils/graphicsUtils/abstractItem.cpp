@@ -7,8 +7,6 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-#include <QtCore/QDebug>
-
 using namespace graphicsUtils;
 
 AbstractItem::AbstractItem(QGraphicsItem* parent)

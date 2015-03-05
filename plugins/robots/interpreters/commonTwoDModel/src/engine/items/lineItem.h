@@ -1,10 +1,7 @@
 #pragma once
 
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-#include <QtXml/QDomDocument>
-
 #include <qrutils/graphicsUtils/lineImpl.h>
+
 #include "colorFieldItem.h"
 
 namespace twoDModel {

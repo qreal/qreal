@@ -1,14 +1,14 @@
 #include "rotater.h"
 
 #include <QtGui/QCursor>
-#include <QtWidgets/QStyleOptionGraphicsItem>
-#include <qmath.h>
 
 #include <qrutils/mathUtils/math.h>
+#include <qrutils/graphicsUtils/rotateItem.h>
 
-using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace mathUtils;
+
+const int rotaterLength = 30;
 
 Rotater::Rotater()
 	: AbstractItem()
@@ -30,11 +30,13 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 {
 	mMaster = masterItem;
 
-	mLength = 30; //mMaster->horizontalRadius();//asd
-	mDrift = drift > mMaster->horizontalRadius() ? drift / 2 : drift;
-	mResizeDrift = drift > mMaster->horizontalRadius() ? resizeDrift / 2 : resizeDrift;
-
 	const QRectF rect = mMaster->rect();
+	const qreal horizontalRadius = rect.width() / 2;
+
+	mLength = rotaterLength;
+	mDrift = drift > horizontalRadius ? drift / 2 : drift;
+	mResizeDrift = drift > horizontalRadius ? resizeDrift / 2 : resizeDrift;
+
 
 	mMaster->setFlag(ItemClipsToShape, false);
 	setParentItem(mMaster);

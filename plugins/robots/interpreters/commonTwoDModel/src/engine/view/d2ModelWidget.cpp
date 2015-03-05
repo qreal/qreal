@@ -19,7 +19,6 @@
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
-#include "rotater.h"
 
 #include "src/engine/view/d2ModelScene.h"
 #include "src/engine/view/robotItem.h"

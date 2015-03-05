@@ -1,15 +1,8 @@
 #pragma once
 
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-
-#include <qrutils/graphicsUtils/abstractItem.h>
 #include <qrutils/graphicsUtils/rectangleImpl.h>
-#include <qrutils/graphicsUtils/rotateItem.h>
 
 #include "sensorItem.h"
-#include "rotater.h"
-
 #include "src/engine/model/robotModel.h"
 
 namespace twoDModel {
@@ -22,14 +15,6 @@ class RobotItem : public QObject, public graphicsUtils::RotateItem
 
 public:
 	RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel, QObject *parent = 0);
-
-	QRectF rect() const override;
-	void setSelected(bool isSelected) override;
-	void checkSelection() override;
-
-	/// Returns robot`s rotater item.
-	Rotater *rotater() const;
-	void setRotater(Rotater *rotater);
 
 	QRectF boundingRect() const override;
 	QRectF calcNecessaryBoundingRect() const override;
@@ -52,6 +37,9 @@ public:
 
 	void recoverDragStartPosition();
 	model::RobotModel &robotModel();
+
+	/// Sets robot`s position to the start position marker.
+	void returnToStartPosition();
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -78,7 +66,7 @@ private:
 	/// Same as QGraphicsItem::setPos(). Needed as slot for connection.
 	void setPos(const QPointF &newPos);
 	/// Same as QGraphicsItem::setRotation(). Needed as slot for connection.
-	void setRotation(qreal rotation) override;
+	void setRotation(qreal rotation);
 	void ride(const QPointF &newPos, qreal rotation);
 
 	void onLanded();
@@ -91,7 +79,6 @@ private:
 	QMap<interpreterBase::robotModel::PortInfo, SensorItem *> mSensors;  // Does not have ownership
 
 	QPointF mDragStart;
-	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 	QPointF mMarkerPoint;
 

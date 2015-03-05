@@ -6,6 +6,11 @@
 #include "sensorsConfiguration.h"
 
 namespace twoDModel {
+
+namespace items {
+class StartPosition;
+}
+
 namespace model {
 
 class Settings;
@@ -85,6 +90,10 @@ public:
 	/// The robot stops drawing its trace on the floor after that.
 	void markerUp();
 
+	/// Returns the item whose scene position will determine robot`s start position.
+	/// Transfers ownership.
+	items::StartPosition *startPositionMarker() const;
+
 public slots:
 	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
 
@@ -152,6 +161,7 @@ private:
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
 
+	items::StartPosition *mStartPositionMarker;  // Transfers ownership to QGraphicsScene
 };
 
 }

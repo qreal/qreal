@@ -2,7 +2,28 @@
 
 using namespace graphicsUtils;
 
-qreal RotateItem::horizontalRadius() const
+RotateItem::RotateItem(QGraphicsItem *parent)
+	: AbstractItem(parent)
 {
-	return rect().width() / 2;
+}
+
+QRectF RotateItem::rect() const
+{
+	return boundingRect();
+}
+
+void RotateItem::checkSelection()
+{
+	mRotater.setVisible(isSelected());
+}
+
+Rotater &RotateItem::rotater()
+{
+	return mRotater;
+}
+
+void RotateItem::init()
+{
+	mRotater.setMasterItem(this);
+	mRotater.setVisible(false);
 }
