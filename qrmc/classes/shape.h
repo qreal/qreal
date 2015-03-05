@@ -14,21 +14,21 @@ namespace qrmc {
 	class Shape
 	{
 	public:
-		Shape(const QString &shape = "");
+		Shape(QString const &shape = "");
 		~Shape();
 
-		void init(const QString &shape);
+		void init(QString const &shape);
 		void setNode(GraphicType *node);
 
 		void generate(QString &classTemplate) const;
 
-		QString generateResourceLine(const QString &resourceTemplate) const;
+		QString generateResourceLine(QString const &resourceTemplate) const;
 
 	private:
-		void initLabels(const QDomElement &graphics);
-		void initPorts(const QDomElement &graphics);
-		void initPointPorts(const QDomElement &portsElement);
-		void initLinePorts(const QDomElement &portsElement);
+		void initLabels(QDomElement const &graphics);
+		void initPorts(QDomElement const &graphics);
+		void initPointPorts(QDomElement const &portsElement);
+		void initLinePorts(QDomElement const &portsElement);
 
 		void changeDir(QDir &dir) const;
 

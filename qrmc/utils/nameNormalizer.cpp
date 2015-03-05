@@ -3,7 +3,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
 
-QString NameNormalizer::normalize(const QString &name)
+QString NameNormalizer::normalize(QString const &name)
 {
 	QString result = name;
 	if (name.contains("::"))
@@ -18,7 +18,7 @@ QString NameNormalizer::normalize(const QString &name)
 	return result;
 }
 
-QString NameNormalizer::upperFirst(const QString &string)
+QString NameNormalizer::upperFirst(QString const &string)
 {
 	if (string.size() < 1)
 	{

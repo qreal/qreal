@@ -1,9 +1,7 @@
 #include "pluginInterface.h"
-
+#include "../../../qrgui/editorPluginInterface/elementImpl.h"
 #include "elements.h"
 
-
-Q_EXPORT_PLUGIN2(qreal_editors, @@MetamodelName@@Plugin)
 
 @@MetamodelName@@Plugin::@@MetamodelName@@Plugin()
 {
@@ -109,11 +107,6 @@ QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(QString const &d
 	return paletteGroupsDescriptionMap[diagram][group];
 }
 
-QIcon @@MetamodelName@@Plugin::getIcon(SdfIconEngineV2Interface *engine) const
-{
-	return QIcon(engine);
-}
-
 QString @@MetamodelName@@Plugin::editorName() const
 {
 	 return "@@MetamodelName@@ Editor";
@@ -139,7 +132,7 @@ QString @@MetamodelName@@Plugin::elementMouseGesture(QString const &diagram, QSt
 	return elementMouseGesturesMap[diagram][element];
 }
 
-ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const
+qReal::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const
 {
 @@GetGraphicalObjectLine@@
 
@@ -193,12 +186,6 @@ int @@MetamodelName@@Plugin::isNodeOrEdge(QString const &element) const
 @@IsNodeOrEdgeLine@@
 	return 0;
 }
-QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
-{
-	QStringList result;
-@@GetEnumValuesLine@@
-	return result;
-}
 
 QString @@MetamodelName@@Plugin::getPropertyType(QString const &element, QString const &property) const
 {
@@ -214,4 +201,40 @@ QList<qReal::ListenerInterface*> @@MetamodelName@@Plugin::listeners() const
 {
 	QList<qReal::ListenerInterface*> result;
 	return result;
+}
+
+QList<qReal::EditorInterface::ExplosionData>@@MetamodelName@@Plugin::explosions(QString const &diagram, QString const &element) const
+{
+	return mExplosionsMap[diagram][element];
+}
+
+QStringList @@MetamodelName@@Plugin::getPortTypes(QString const &/*diagram*/, QString const &element) const
+{
+	QStringList result;
+	if (element == "Node") {
+		result << "NonTyped";
+	}
+	return result;
+}
+
+QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(QString const &name) const 
+{
+	Q_UNUSED(name);
+	return {};
+}
+
+bool @@MetamodelName@@Plugin::isEnumEditable(QString const &name) const
+{
+	QStringList const editableEnums = {  };
+	return editableEnums.contains(name);
+}
+
+QString @@MetamodelName@@Plugin::getGroupsXML() const 
+{
+	return QString::fromUtf8("");
+}
+
+bool @@MetamodelName@@Plugin::shallPaletteBeSorted(QString const &diagram) const
+{
+	return mShallPaletteBeSortedMap[diagram];
 }

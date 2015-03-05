@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel version="1.0.0" xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="3" nodeName="Node" name="Editor">
+        <graphicTypes>
+            <node displayedName="1" name="Node">
+                <graphics>
+                    <picture sizex="538" sizey="473">
+                        <ellipse stroke-style="solid" stroke-width="0" y1="0" y2="471" fill-style="none" fill="#ffffff" x1="0" x2="532" stroke="#000000"/>
+                    </picture>
+                    <labels>
+                        <label textBinded="name" x="153" y="121"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="535" type="NonTyped" y="257"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <edge displayedName="2" name="Edge">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="square"/>
+                </graphics>
+                <logic>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>
