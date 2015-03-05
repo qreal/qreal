@@ -97,16 +97,6 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	const QPointF position = mouseEvent->scenePos();
 
-	for (RobotItem * const robotItem : mRobots.values()) {
-		robotItem->checkSelection();
-
-		for (SensorItem *sensor : robotItem->sensors().values()) {
-			if (sensor) {
-				sensor->checkSelection();
-			}
-		}
-	}
-
 	emit mousePressed();
 
 	auto initItem = [this, mouseEvent](QGraphicsItem *item) {
@@ -157,17 +147,6 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	if (mouseEvent->buttons() & Qt::LeftButton) {
-		for (RobotItem * const robotItem : mRobots.values()) {
-			robotItem->checkSelection();
-			for (SensorItem *sensor : robotItem->sensors().values()) {
-				if (sensor) {
-					sensor->checkSelection();
-				}
-			}
-		}
-	}
-
 	bool needUpdate = true;
 	switch (mDrawingAction){
 	case wall:
@@ -200,15 +179,6 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	for (RobotItem * const robotItem : mRobots.values()) {
-		robotItem->checkSelection();
-		for (SensorItem *sensor : robotItem->sensors().values()) {
-			if (sensor) {
-				sensor->checkSelection();
-			}
-		}
-	}
-
 	emit mouseReleased();
 
 	// After dragging item may be null. We mustn`t select it in that case.

@@ -178,7 +178,7 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 		mRobotModel.setRotation(rotation());
 	}
 
-	return AbstractItem::itemChange(change, value);
+	return RotateItem::itemChange(change, value);
 }
 
 void RobotItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)

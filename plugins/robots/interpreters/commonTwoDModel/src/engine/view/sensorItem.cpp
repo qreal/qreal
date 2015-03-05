@@ -166,7 +166,7 @@ QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value
 		mConfiguration.setDirection(mPort, rotation());
 	}
 
-	return AbstractItem::itemChange(change, value);
+	return RotateItem::itemChange(change, value);
 }
 
 void SensorItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)

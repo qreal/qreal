@@ -14,9 +14,6 @@ public:
 	/// Can be overrided to determine rotater`s position: it will be placed to the center of rect`s right side.
 	virtual QRectF rect() const;
 
-	/// Can be overrided to show or hide rotaters.
-	virtual void checkSelection();
-
 	/// Returns a reference to a rotater graphics item.
 	Rotater &rotater();
 
@@ -24,6 +21,10 @@ protected:
 	/// Must be called in subclass to initialize rotater position and so on.
 	/// Can`t be called here in constructor because it uses virtual methods.
 	void init();
+
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+	bool theOnlySelectedRotateItem(bool thisSelected) const;
+
 
 private:
 	Rotater mRotater;
