@@ -169,13 +169,7 @@ bool NodeType::initBooleanProperties()
 {
 	mIsResizeable = true;
 
-<<<<<<< HEAD
 	const QDomElement element2 = mGraphics.firstChildElement("nonResizeable");
-=======
-	QDomElement const element1 = mLogic.firstChildElement("action");
-
-	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
->>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 	if (!element2.isNull()) {
 		mIsResizeable = false;
 	}
@@ -319,13 +313,6 @@ void NodeType::generateCode(OutFile &out)
 
 	<< "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n\t\t\treturn enums::linkShape::square;\n\t\t}\n\n"
 
-<<<<<<< HEAD
-=======
-	<< "\t\t}\n\n"
-
-	<< "\t\t}\n\n"
-
->>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 	<< "\t\tbool createChildrenFromMenu() const\n\t\t{\n"
 	<< (mCreateChildrenFromMenu ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n";
@@ -333,11 +320,6 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n";
 
-<<<<<<< HEAD
-=======
-		out() << "\t\t\tlist << 0 << 0 << 0 << 0;\n";
-
->>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 	out() << "\t\t\treturn list;\n"
 	<< "\t\t}\n\n";
 
@@ -396,4 +378,4 @@ bool NodeType::copyPorts(NodeType* parent)
 	}
 
 	return !parent->mPorts.isEmpty();
-}
+} 

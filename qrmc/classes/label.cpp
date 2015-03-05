@@ -17,7 +17,6 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
-	mRotation = element.attribute("rotation", "0").toDouble();
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
@@ -51,8 +50,7 @@ QString Label::generateInit(MetaCompiler *compiler, bool isNode) const
 			.replace(yCoordIsScalable, scalingY)
 			.replace(labelReadonlyTag, mReadOnly)
 			.replace(labelIndexTag, QString::number(mIndex))
-			.replace(labelNameTag, "\"" + name + "\"")
-			.replace(labelRotationTag, QString::number(mRotation));
+			.replace(labelNameTag, "\"" + name + "\"");
 
 	return result;
 }

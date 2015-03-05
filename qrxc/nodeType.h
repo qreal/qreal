@@ -42,4 +42,4 @@ private:
 	bool initLinePorts(const QDomElement &portsElement);
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count);
 	bool initBooleanProperties();
-};
+};    
