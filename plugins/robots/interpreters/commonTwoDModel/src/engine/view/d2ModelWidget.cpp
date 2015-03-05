@@ -864,8 +864,6 @@ void D2ModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 	mUi->displayFrame->setEnabled(true);
 	setDisplayVisibility(mDisplayIsVisible);
 
-	connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
-
 	mUi->leftWheelComboBox->show();
 	mUi->rightWheelComboBox->show();
 }
