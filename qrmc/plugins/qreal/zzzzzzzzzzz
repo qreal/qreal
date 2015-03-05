@@ -1,0 +1,86 @@
+In file included from ..\..\..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include/QtCore/QtPlugin:1:0,
+                 from .moc\../../../../qrgui/editorPluginInterface/editorInterface.h:4,
+                 from .moc\../pluginInterface.h:9,
+                 from .moc\moc_pluginInterface.cpp:9:
+.moc\moc_pluginInterface.cpp: In function 'QObject* qt_plugin_instance()':
+.moc\moc_pluginInterface.cpp:151:22: error: cannot allocate an object of abstract type 'QrealPlugin'
+ QT_MOC_EXPORT_PLUGIN(QrealPlugin, QrealPlugin)
+                      ^
+..\..\..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include/QtCore/qplugin.h:114:33: note: in definition of macro 'Q_PLUGIN_INSTANCE'
+                 _instance = new IMPLEMENTATION; \
+                                 ^
+.moc\moc_pluginInterface.cpp:151:1: note: in expansion of macro 'QT_MOC_EXPORT_PLUGIN'
+ QT_MOC_EXPORT_PLUGIN(QrealPlugin, QrealPlugin)
+ ^
+In file included from .moc\moc_pluginInterface.cpp:9:0:
+.moc\../pluginInterface.h:11:7: note:   because the following virtual functions are pure within 'QrealPlugin':
+ class QrealPlugin : public QObject, public qReal::EditorInterface
+       ^
+In file included from .moc\../pluginInterface.h:9:0,
+                 from .moc\moc_pluginInterface.cpp:9:
+.moc\../../../../qrgui/editorPluginInterface/editorInterface.h:39:18: note: 	virtual QString qReal::EditorInterface::version() const
+  virtual QString version() const = 0;
+                  ^
+.moc\../../../../qrgui/editorPluginInterface/editorInterface.h:54:22: note: 	virtual QStringList qReal::EditorInterface::getPortTypes(const QString&, const QString&) const
+  virtual QStringList getPortTypes(QString const &diagram, QString const &element) const = 0;
+                      ^
+.moc\../../../../qrgui/editorPluginInterface/editorInterface.h:58:41: note: 	virtual QList<QPair<QString, QString> > qReal::EditorInterface::getEnumValues(const QString&) const
+  virtual QList<QPair<QString, QString>> getEnumValues(QString const &name) const = 0;
+                                         ^
+.moc\../../../../qrgui/editorPluginInterface/editorInterface.h:59:15: note: 	virtual bool qReal::EditorInterface::isEnumEditable(const QString&) const
+  virtual bool isEnumEditable(QString const &name) const = 0;
+               ^
+.moc\../../../../qrgui/editorPluginInterface/editorInterface.h:60:18: note: 	virtual QString qReal::EditorInterface::getGroupsXML() const
+  virtual QString getGroupsXML() const = 0;
+                  ^
+.moc\../../../../qrgui/editorPluginInterface/editorInterface.h:81:15: note: 	virtual bool qReal::EditorInterface::shallPaletteBeSorted(const QString&) const
+  virtual bool shallPaletteBeSorted(QString const &diagram) const = 0;
+               ^
+mingw32-make.EXE[1]: *** [.obj/moc_pluginInterface.o] Error 1
+mingw32-make.EXE[1]: *** Waiting for unfinished jobs....
+In file included from pluginInterface.cpp:5:0:
+elements.h:16:22: warning: unused parameter 'portFactory' [-Wunused-parameter]
+                 void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
+                      ^
+elements.h:16:22: warning: unused parameter 'ports' [-Wunused-parameter]
+elements.h:16:22: warning: unused parameter 'elementRepo' [-Wunused-parameter]
+In file included from ..\..\..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include/QtGui/qwindowdefs.h:45:0,
+                 from ..\..\..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include/QtWidgets/qwidget.h:45,
+                 from ..\..\..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include/QtWidgets/QWidget:1,
+                 from ../../../qrgui/editorPluginInterface/elementImpl.h:3,
+                 from pluginInterface.h:3,
+                 from pluginInterface.cpp:1:
+..\..\..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include/QtCore/qglobal.h:669:47: error: static assertion failed: Old plugin system used
+ #define Q_STATIC_ASSERT_X(Condition, Message) static_assert(bool(Condition), Message)
+                                               ^
+..\..\..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include/QtCore/qplugin.h:144:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+     Q_STATIC_ASSERT_X(false, "Old plugin system used")
+     ^
+pluginInterface.cpp:8:1: note: in expansion of macro 'Q_EXPORT_PLUGIN2'
+ Q_EXPORT_PLUGIN2(qreal_editors, QrealPlugin);
+ ^
+pluginInterface.cpp:118:28: error: 'QIcon QrealPlugin::getIcon' is not a static member of 'class QrealPlugin'
+ QIcon QrealPlugin::getIcon(SdfIconEngineV2Interface *engine) const
+                            ^
+pluginInterface.cpp:118:28: error: 'SdfIconEngineV2Interface' was not declared in this scope
+pluginInterface.cpp:118:28: note: suggested alternative:
+In file included from ../../../qrgui/editorPluginInterface/elementImpl.h:14:0,
+                 from pluginInterface.h:3,
+                 from pluginInterface.cpp:1:
+..\..\..\qrgui/editorPluginInterface/sdfRendererInterface.h:23:7: note:   'qReal::SdfIconEngineV2Interface'
+ class SdfIconEngineV2Interface : public QIconEngine
+       ^
+pluginInterface.cpp:118:54: error: 'engine' was not declared in this scope
+ QIcon QrealPlugin::getIcon(SdfIconEngineV2Interface *engine) const
+                                                      ^
+pluginInterface.cpp:118:62: error: expected ',' or ';' before 'const'
+ QIcon QrealPlugin::getIcon(SdfIconEngineV2Interface *engine) const
+                                                              ^
+pluginInterface.cpp:148:1: error: 'ElementImpl' does not name a type
+ ElementImpl* QrealPlugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const
+ ^
+pluginInterface.cpp:215:13: warning: unused parameter 'name' [-Wunused-parameter]
+ QStringList QrealPlugin::getEnumValues(QString name) const
+             ^
+mingw32-make.EXE[1]: *** [.obj/pluginInterface.o] Error 1
+mingw32-make.EXE: *** [debug] Error 2
