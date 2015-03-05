@@ -114,14 +114,14 @@ void MainClass::deleteOldBinaries(QString const &directory)
 		return;
 	}
 
-	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-		if (fileInfo.isDir()) {
-			deleteOldBinaries(fileInfo.filePath());
-			dir.rmdir(fileInfo.fileName());
-		} else {
-			dir.remove(fileInfo.fileName());
-		}
-	}
+//	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+//		if (fileInfo.isDir()) {
+//			deleteOldBinaries(fileInfo.filePath());
+//			dir.rmdir(fileInfo.fileName());
+//		} else {
+//			dir.remove(fileInfo.fileName());
+//		}
+//	}
 }
 
 void MainClass::copyTestMetamodel(QString const &fileName)

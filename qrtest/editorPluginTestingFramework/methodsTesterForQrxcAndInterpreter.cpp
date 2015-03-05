@@ -106,8 +106,8 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				foreach (Id const &element, editorManagerInterface->elements(diagram)) {
-					QString const additionalString = ConvertingMethods::transformateOutputOther(
-							callMethodOther(editorManagerInterface, editor, diagram, element), element);
+					QString const additionalString = ConvertingMethods::transformateOutput(
+							callMethod(editorManagerInterface, editor, diagram, element), element);
 					resultList.append(additionalString);
 					resultList.append("|");
 				}
@@ -1310,42 +1310,42 @@ void MethodsTesterForQrxcAndInterpreter::testMethods()
 
 	mGeneratedList.append(testMethodIfExistsInList(EditorsListGenerator(), "editors"));
 	mGeneratedList.append(testMethodIfExistsInList(DiagramsListGenerator(), "diagrams"));
-	mGeneratedList.append(testMethodIfExistsInList(ElementsListGeneratorWithIdParameter(), "elements(Id)"));
-	mGeneratedList.append(testMethodIfExistsInList(ElementsListGeneratorWithQStringParameters()
-			, "elements(QString, QString)"));
+//	mGeneratedList.append(testMethodIfExistsInList(ElementsListGeneratorWithIdParameter(), "elements(Id)"));
+//	mGeneratedList.append(testMethodIfExistsInList(ElementsListGeneratorWithQStringParameters()
+//			, "elements(QString, QString)"));
 
-	mGeneratedList.append(testMethodIfExistsInList(MouseGesturesListGenerator(), "mouseGestures"));
-	mGeneratedList.append(testMethodIfExistsInList(FriendlyNameListGenerator(), "friendlyName"));
-	mGeneratedList.append(testMethodIfExistsInList(DescriptionListGenerator(), "description"));
-	mGeneratedList.append(testMethodIfExistsInList(PropertyDescriptionListGenerator(), "propertyDescription"));
-	mGeneratedList.append(testMethodIfExistsInList(PropertyDisplayedNameListGenerator(), "propertyDisplayedName"));
+//	mGeneratedList.append(testMethodIfExistsInList(MouseGesturesListGenerator(), "mouseGestures"));
+//	mGeneratedList.append(testMethodIfExistsInList(FriendlyNameListGenerator(), "friendlyName"));
+//	mGeneratedList.append(testMethodIfExistsInList(DescriptionListGenerator(), "description"));
+//	mGeneratedList.append(testMethodIfExistsInList(PropertyDescriptionListGenerator(), "propertyDescription"));
+//	mGeneratedList.append(testMethodIfExistsInList(PropertyDisplayedNameListGenerator(), "propertyDisplayedName"));
 
-	mGeneratedList.append(testMethodIfExistsInList(ContainedTypesListGenerator(), "containedTypes"));
-	mGeneratedList.append(testMethodIfExistsInList(ExplosionsListGenerator(), "explosions"));
-	mGeneratedList.append(testMethodIfExistsInList(EnumValuesListGenerator(), "enumValues"));
-	mGeneratedList.append(testMethodIfExistsInList(TypeNameListGenerator(), "typeName"));
-	mGeneratedList.append(testMethodIfExistsInList(AllChildrenTypesOfListGenerator(), "allChildrenTypesOf"));
+//	mGeneratedList.append(testMethodIfExistsInList(ContainedTypesListGenerator(), "containedTypes"));
+//	mGeneratedList.append(testMethodIfExistsInList(ExplosionsListGenerator(), "explosions"));
+//	mGeneratedList.append(testMethodIfExistsInList(EnumValuesListGenerator(), "enumValues"));
+//	mGeneratedList.append(testMethodIfExistsInList(TypeNameListGenerator(), "typeName"));
+//	mGeneratedList.append(testMethodIfExistsInList(AllChildrenTypesOfListGenerator(), "allChildrenTypesOf"));
 
-	mGeneratedList.append(testMethodIfExistsInList(IsEditorListGenerator(), "isEditor"));
-	mGeneratedList.append(testMethodIfExistsInList(IsDiagramListGenerator(), "isDiagram"));
-	mGeneratedList.append(testMethodIfExistsInList(IsElementListGenerator(), "isElement"));
+//	mGeneratedList.append(testMethodIfExistsInList(IsEditorListGenerator(), "isEditor"));
+//	mGeneratedList.append(testMethodIfExistsInList(IsDiagramListGenerator(), "isDiagram"));
+//	mGeneratedList.append(testMethodIfExistsInList(IsElementListGenerator(), "isElement"));
 
-	mGeneratedList.append(testMethodIfExistsInList(PropertyNamesListGenerator(), "propertyNames"));
-	mGeneratedList.append(testMethodIfExistsInList(PortTypesListGenerator(), "portTypes"));
-	mGeneratedList.append(testMethodIfExistsInList(DefaultPropertyValuesListGenerator(), "defaultPropertyValues"));
-	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesListGenerator()
-			, "propertiesWithDefaultValues"));
+//	mGeneratedList.append(testMethodIfExistsInList(PropertyNamesListGenerator(), "propertyNames"));
+//	mGeneratedList.append(testMethodIfExistsInList(PortTypesListGenerator(), "portTypes"));
+//	mGeneratedList.append(testMethodIfExistsInList(DefaultPropertyValuesListGenerator(), "defaultPropertyValues"));
+//	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesListGenerator()
+//			, "propertiesWithDefaultValues"));
 
-	mGeneratedList.append(testMethodIfExistsInList(HasElementListGenerator(), "hasElement"));
-	mGeneratedList.append(testMethodIfExistsInList(FindElementByTypeListGenerator(), "findElementByType"));
-	mGeneratedList.append(testMethodIfExistsInList(IsGraphicalElementListGenerator(), "isGraphicalElement"));
+//	mGeneratedList.append(testMethodIfExistsInList(HasElementListGenerator(), "hasElement"));
+//	mGeneratedList.append(testMethodIfExistsInList(FindElementByTypeListGenerator(), "findElementByType"));
+//	mGeneratedList.append(testMethodIfExistsInList(IsGraphicalElementListGenerator(), "isGraphicalElement"));
 
-	mGeneratedList.append(testMethodIfExistsInList(IsNodeOrEdgeListGenerator(), "isNodeOrEdge"));
-	mGeneratedList.append(testMethodIfExistsInList(DiagramNameListGenerator(), "diagramName"));
-	mGeneratedList.append(testMethodIfExistsInList(DiagramNodeNameListGenerator(), "diagramNodeName"));
-	mGeneratedList.append(testMethodIfExistsInList(IsParentPropertyListGenerator(), "isParentProperty"));
-	mGeneratedList.append(testMethodIfExistsInList(ChildrenListGenerator(), "children"));
-	mGeneratedList.append(testMethodIfExistsInList(ShapeListGenerator(), "shape"));
+//	mGeneratedList.append(testMethodIfExistsInList(IsNodeOrEdgeListGenerator(), "isNodeOrEdge"));
+//	mGeneratedList.append(testMethodIfExistsInList(DiagramNameListGenerator(), "diagramName"));
+//	mGeneratedList.append(testMethodIfExistsInList(DiagramNodeNameListGenerator(), "diagramNodeName"));
+//	mGeneratedList.append(testMethodIfExistsInList(IsParentPropertyListGenerator(), "isParentProperty"));
+//	mGeneratedList.append(testMethodIfExistsInList(ChildrenListGenerator(), "children"));
+//	mGeneratedList.append(testMethodIfExistsInList(ShapeListGenerator(), "shape"));
 }
 
 

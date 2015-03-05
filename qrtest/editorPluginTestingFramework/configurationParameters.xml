@@ -6,5 +6,5 @@
 	<prefix></prefix>
 	<qrealRoot>../</qrealRoot>
 	<generateHtml>yes</generateHtml>
-	<generatedCodeDir>../qrtest/binaries</generatedCodeDir>
+	<generatedCodeDir>../debug/plugins/editors/</generatedCodeDir>
 </xml>

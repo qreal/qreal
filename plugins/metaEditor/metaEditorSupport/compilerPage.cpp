@@ -58,6 +58,10 @@ void PreferencesCompilerPage::initCompilersSettings(QString const &pathToQmake,
 	mUi->compilerSettingsWidget->setEnabled(false);
 }
 
+void PreferencesCompilerPage::setQRealSourcesLocation()
+{
+}
+
 void PreferencesCompilerPage::save()
 {
 	SettingsManager::setValue("windowsButton", mUi->windowsButton->isChecked());
