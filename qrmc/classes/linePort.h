@@ -9,7 +9,7 @@ namespace qrmc {
 	class LinePort : public Port
 	{
 	public:
-		virtual bool init(const QDomElement &element, int width, int height);
+		virtual bool init(QDomElement const &element, int width, int height);
 
 		virtual Port* clone() const;
 
@@ -26,6 +26,6 @@ namespace qrmc {
 		int mHeight;
 
 		void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
-		QString generate(const QString &lineTemplate, bool isScaled) const;
+		QString generate(QString const &lineTemplate, bool isScaled) const;
 	};
 }

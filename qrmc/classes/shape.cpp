@@ -12,7 +12,7 @@
 
 using namespace qrmc;
 
-Shape::Shape(const QString &shape) : mNode(nullptr)
+Shape::Shape(QString const &shape) : mNode(NULL)
 {
 	init(shape)	;
 }
@@ -26,7 +26,7 @@ void Shape::setNode(GraphicType *node)
 	mNode = node;
 }
 
-void Shape::init(const QString &shape)
+void Shape::init(QString const &shape)
 {
 	if (shape.isEmpty())
 		return;
@@ -52,7 +52,7 @@ void Shape::init(const QString &shape)
 	initPorts(graphics);
 }
 
-void Shape::initLabels(const QDomElement &graphics)
+void Shape::initLabels(QDomElement const &graphics)
 {
 	int count = 1;
 	for (QDomElement element = graphics.firstChildElement("labels").firstChildElement("label");
@@ -71,7 +71,7 @@ void Shape::initLabels(const QDomElement &graphics)
 
 }
 
-void Shape::initPorts(const QDomElement &graphics)
+void Shape::initPorts(QDomElement const &graphics)
 {
 	QDomElement portsElement = graphics.firstChildElement("ports");
 	if (portsElement.isNull()) {
@@ -83,7 +83,7 @@ void Shape::initPorts(const QDomElement &graphics)
 	return;
 }
 
-void Shape::initPointPorts(const QDomElement &portsElement)
+void Shape::initPointPorts(QDomElement const &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 		!portElement.isNull();
@@ -99,7 +99,7 @@ void Shape::initPointPorts(const QDomElement &portsElement)
 	return;
 }
 
-void Shape::initLinePorts(const QDomElement &portsElement)
+void Shape::initLinePorts(QDomElement const &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 		!portElement.isNull();
@@ -148,9 +148,6 @@ void Shape::generate(QString &classTemplate) const
 	QString unused;
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
-	}
-	if (!hasLinePorts()) {
-		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
 	}
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
@@ -201,7 +198,7 @@ void Shape::generateSdf() const
 	QDir dir;
 	changeDir(dir);
 
-	const QString fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
+	QString const fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
@@ -243,7 +240,7 @@ bool Shape::hasPicture() const
 	return !mPicture.isEmpty();
 }
 
-QString Shape::generateResourceLine(const QString &resourceTemplate) const
+QString Shape::generateResourceLine(QString const &resourceTemplate) const
 {
 	QString result;
 

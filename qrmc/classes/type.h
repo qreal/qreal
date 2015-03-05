@@ -15,11 +15,11 @@ namespace qrmc {
 	class Type
 	{
 	public:
-		Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
+		Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 		virtual ~Type();
 		virtual Type* clone() const = 0;
 		virtual bool resolve() = 0;
-		virtual bool init(const QString &context);
+		virtual bool init(QString const &context);
 		virtual bool isResolving() const;
 		virtual bool isGraphicalType() const = 0;
 		virtual bool isResolved() const;
@@ -36,29 +36,29 @@ namespace qrmc {
 
 		virtual QMap<QString, Property*> properties() const;
 
-		virtual void setName(const QString &name);
+		virtual void setName(QString const &name);
 		virtual void setDiagram(Diagram *diagram);
-		virtual void setContext(const QString &newContext);
-		virtual void setDisplayedName(const QString &displayedName);
+		virtual void setContext(QString const &newContext);
+		virtual void setDisplayedName(QString const &displayedName);
 
-		virtual QString generateNames(const QString &lineTemplate) const;
-		virtual QString generateMouseGestures(const QString &lineTemplate) const;
-		virtual QString generateProperties(const QString &lineTemplate) const = 0;
-		virtual QString generatePropertyDefaults(const QString &lineTemplate) const = 0;
-		virtual QString generatePropertyDisplayedNames(const QString &lineTemplate) const = 0;
-		virtual QString generateReferenceProperties(const QString &lineTemplate) const = 0;
-		virtual QString generateParents(const QString &lineTemplate) const = 0;
-		virtual QString generateContainers(const QString &lineTemplate) const = 0;
-		virtual QString generateConnections(const QString &lineTemplate) const = 0;
-		virtual QString generateUsages(const QString &lineTemplate) const = 0;
-		virtual QString generateFactory(const QString &lineTemplate) const;
-		virtual QString generateIsNodeOrEdge(const QString &lineTemplate) const = 0;
-		virtual QString generateEnums(const QString &lineTemplate) const = 0;
-		virtual QString generatePossibleEdges(const QString &lineTemplate) const = 0;
+		virtual QString generateNames(QString const &lineTemplate) const;
+		virtual QString generateMouseGestures(QString const &lineTemplate) const;
+		virtual QString generateProperties(QString const &lineTemplate) const = 0;
+		virtual QString generatePropertyDefaults(QString const &lineTemplate) const = 0;
+		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const = 0;
+		virtual QString generateReferenceProperties(QString const &lineTemplate) const = 0;
+		virtual QString generateParents(QString const &lineTemplate) const = 0;
+		virtual QString generateContainers(QString const &lineTemplate) const = 0;
+		virtual QString generateConnections(QString const &lineTemplate) const = 0;
+		virtual QString generateUsages(QString const &lineTemplate) const = 0;
+		virtual QString generateFactory(QString const &lineTemplate) const;
+		virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const = 0;
+		virtual QString generateEnums(QString const &lineTemplate) const = 0;
+		virtual QString generatePossibleEdges(QString const &lineTemplate) const = 0;
 
-		virtual QString generateNodeClass(const QString &classTemplate) = 0;
-		virtual QString generateEdgeClass(const QString &classTemplate) const = 0;
-		virtual QString generateResourceLine(const QString &classTemplate) const = 0;
+		virtual QString generateNodeClass(QString const &classTemplate) = 0;
+		virtual QString generateEdgeClass(QString const &classTemplate) const = 0;
+		virtual QString generateResourceLine(QString const &classTemplate) const = 0;
 
 	protected:
 		virtual void copyFields(Type *type) const;
