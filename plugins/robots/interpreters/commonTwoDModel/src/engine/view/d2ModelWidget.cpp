@@ -186,7 +186,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
 	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
 
-	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(setInitialRobotBeforeRun()));
+	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(returnToStartMarker()));
 	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
 
 	initRunStopButtons();
@@ -285,11 +285,10 @@ void D2ModelWidget::init()
 	updateWheelComboBoxes();
 }
 
-void D2ModelWidget::setInitialRobotBeforeRun()
+void D2ModelWidget::returnToStartMarker()
 {
 	for (RobotModel * const model : mModel.robotModels()) {
-		model->setPosition(model->startPositionMarker()->scenePos());
-		model->setRotation(model->startPositionMarker()->rotation());
+		mScene->robot(*model)->returnToStartPosition();
 	}
 }
 

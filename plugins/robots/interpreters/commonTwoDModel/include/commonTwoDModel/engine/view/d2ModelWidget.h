@@ -110,7 +110,7 @@ private slots:
 
 	void toggleDisplayVisibility();
 
-	void setInitialRobotBeforeRun();
+	void returnToStartMarker();
 
 private:
 	enum CursorType

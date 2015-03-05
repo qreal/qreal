@@ -196,6 +196,16 @@ RobotModel &RobotItem::robotModel()
 	return mRobotModel;
 }
 
+void RobotItem::returnToStartPosition()
+{
+	mRobotModel.setRotation(mRobotModel.startPositionMarker()->rotation());
+	// Here we want the center of the robot to be the position of the marker.
+	const QPointF shiftFromPicture = mapFromScene(pos());
+	const QPointF markerPos = mRobotModel.startPositionMarker()->scenePos();
+	const QPointF shiftToCenter = mapToScene(QPointF()) - mapToScene(boundingRect().center() - shiftFromPicture);
+	mRobotModel.setPosition(markerPos + shiftToCenter);
+}
+
 void RobotItem::BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 		, QWidget *widget)
 {

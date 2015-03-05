@@ -38,6 +38,9 @@ public:
 	void recoverDragStartPosition();
 	model::RobotModel &robotModel();
 
+	/// Sets robot`s position to the start position marker.
+	void returnToStartPosition();
+
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
