@@ -1,5 +1,5 @@
 #include "pluginInterface.h"
-
+#include "../../../qrgui/editorPluginInterface/elementImpl.h"
 #include "elements.h"
 
 
@@ -125,6 +125,7 @@ QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(QString const &d
 	return paletteGroupsDescriptionMap[diagram][group];
 }
 
+<<<<<<< HEAD
 bool TestMetamodelPlugin::shallPaletteBeSorted(QString const &diagram) const
 {
 	return mShallPaletteBeSortedMap[diagram];
@@ -135,6 +136,8 @@ QIcon @@MetamodelName@@Plugin::getIcon(qReal::SdfIconEngineV2Interface *engine) 
 	return QIcon(engine);
 }
 
+=======
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 QString @@MetamodelName@@Plugin::editorName() const
 {
 	 return "@@MetamodelName@@ Editor";
@@ -213,6 +216,7 @@ int @@MetamodelName@@Plugin::isNodeOrEdge(QString const &element) const
 @@IsNodeOrEdgeLine@@
 	return 0;
 }
+<<<<<<< HEAD
 
 QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
 {
@@ -220,6 +224,8 @@ QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
 @@GetEnumValuesLine@@
 	return result;
 }
+=======
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 
 QString @@MetamodelName@@Plugin::getGroupsXML() const 
 {
@@ -240,4 +246,40 @@ QList<qReal::ListenerInterface*> @@MetamodelName@@Plugin::listeners() const
 {
 	QList<qReal::ListenerInterface*> result;
 	return result;
+}
+
+QList<qReal::EditorInterface::ExplosionData>@@MetamodelName@@Plugin::explosions(QString const &diagram, QString const &element) const
+{
+	return mExplosionsMap[diagram][element];
+}
+
+QStringList @@MetamodelName@@Plugin::getPortTypes(QString const &/*diagram*/, QString const &element) const
+{
+	QStringList result;
+	if (element == "Node") {
+		result << "NonTyped";
+	}
+	return result;
+}
+
+QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(QString const &name) const 
+{
+	Q_UNUSED(name);
+	return {};
+}
+
+bool @@MetamodelName@@Plugin::isEnumEditable(QString const &name) const
+{
+	QStringList const editableEnums = {  };
+	return editableEnums.contains(name);
+}
+
+QString @@MetamodelName@@Plugin::getGroupsXML() const 
+{
+	return QString::fromUtf8("");
+}
+
+bool @@MetamodelName@@Plugin::shallPaletteBeSorted(QString const &diagram) const
+{
+	return mShallPaletteBeSortedMap[diagram];
 }

@@ -1,13 +1,13 @@
-	class @@ElementName@@ : public ElementImpl
+	class @@ElementName@@ : public qReal::ElementImpl
 	{
 	public:
 @@NodeConstructor@@
-		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}
 
-		void init(QRectF &contents, QList<StatPoint> &pointPorts,
-				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
-				SdfRendererInterface *portRenderer)
+                void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
+                                 qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
+	                         qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
+
 		{
 @@NodeUnusedArgs@@
 			mRenderer = renderer;
@@ -16,6 +16,11 @@
 @@NodeSetContents@@
 @@NodeInitPorts@@
 @@NodeInit@@
+
+//extremely temporary fixing
+		ports << portFactory.createPort(QPointF(0.994424, 0.54334), false, false, 538, 473, new NonTyped());
+                mRenderer->setElementRepo(elementRepo);
+
 		}
 
 		~@@ElementName@@() {}
@@ -27,10 +32,18 @@
 
 		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
+		int getPenWidth() const { return 0; }
+		QColor getPenColor() const { return QColor(); }
+
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
+<<<<<<< HEAD
 		
 		void updateData(ElementRepoInterface *repo) const
+=======
+
+		void updateData(qReal::ElementRepoInterface *repo) const
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 		{
 @@UpdateData@@
 		}
@@ -50,7 +63,7 @@
 			return @@IsSortContainer@@;
 		}
 
-		int sizeOfForestalling() const
+                QVector<int> sizeOfForestalling() const
 		{
 			return @@SizeOfForestalling@@;
 		}       
@@ -74,7 +87,17 @@
 		{
 			return @@MaximizesChildren@@;
 		}
+<<<<<<< HEAD
                 
+=======
+
+//temporary fixing
+		bool createChildrenFromMenu() const
+		{
+			return true;
+		}
+
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 		QList<double> border() const
 		{
 			QList<double> list;
@@ -92,14 +115,23 @@
 			return @@IsResizeable@@;
 		}
 
-		int getPenWidth() const
-		{ 
-			return 0; 
+
+//temporary fixing		
+		QStringList fromPortTypes() const
+		{
+			return QStringList("NonTyped");
 		}
 
-		QColor getPenColor() const 
-		{ 
-			return QColor(); 
+//temporary fixing
+		QStringList toPortTypes() const
+		{
+			return QStringList("NonTyped");
+		}
+
+//temporary fixing
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
 		}
 
 		bool isDividable() const
@@ -108,8 +140,7 @@
 		}
 
 	private:
-		SdfRendererInterface *mRenderer;
-		QStringList mBonusContextMenuFields;
+		qReal::SdfRendererInterface *mRenderer;
 @@LabelDefinition@@
 	};
 

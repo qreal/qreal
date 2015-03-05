@@ -15,10 +15,18 @@ namespace qrmc {
 
 		virtual bool isGraphicalType() const;
 
+<<<<<<< HEAD
 		virtual QString generateIsNodeOrEdge(const QString &lineTemplate) const;
 		virtual QString generateNodeClass(const QString &classTemplate);
 		virtual QString generateEdgeClass(const QString &classTemplate) const;
 		virtual QString generateResourceLine(const QString &resourceTemplate) const;
+=======
+		virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
+		virtual QString generateNodeClass(QString const &classTemplate);
+		virtual QString generateEdgeClass(QString const &classTemplate) const;
+		virtual QString generateResourceLine(QString const &resourceTemplate) const;
+		QString generatePorts(QStringList const &portTypes) const;
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 
 		void print();
 
@@ -34,5 +42,6 @@ namespace qrmc {
 		QString mEndType;
 		QString mLineType;
 		QList<Label*> mLabels; // refactor after #349 is closed
+		QStringList mFromPorts;
 	};
 }

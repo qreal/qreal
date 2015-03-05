@@ -132,7 +132,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 				.replace(minimizeToChildrenTag, "false")
 				.replace(maximizeChildrenTag, "false")
 				.replace(hasMovableChildrenTag, "true")
-				.replace(forestallingSizeTag, "0")
+				.replace(forestallingSizeTag, "QVector<int>()")
 				.replace(childrenForestallingSizeTag, "0");
 }
 

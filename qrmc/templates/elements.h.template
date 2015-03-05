@@ -2,6 +2,7 @@
 
 #include <QBrush>
 #include <QPainter>
+<<<<<<< HEAD
 
 #include "@@PathToSources@@qrgui/editorPluginInterface/elementImpl.h"
 #include "@@PathToSources@@qrgui/editorPluginInterface/labelFactoryInterface.h"
@@ -9,6 +10,16 @@
 #include "@@PathToSources@@qrgui/editorPluginInterface/elementRepoInterface.h"
 #include "@@PathToSources@@qrgui/editorPluginInterface/portHelpers.h"
 #include "@@PathToSources@@qrgui/umllib/element.h"
+=======
+                                                                     
+#include "../../../qrgui/editorPluginInterface/elementImpl.h"
+#include "../../../qrgui/editorPluginInterface/elementRepoInterface.h"
+#include "../../../qrgui/umllib/element.h"
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
+
+#include "../../../qrgui/editorPluginInterface/labelFactoryInterface.h"
+#include "../../../qrgui/editorPluginInterface/labelInterface.h"
+
 
 @@NodesList@@
 

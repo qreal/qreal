@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../qrgui/editorPluginInterface/elementImpl.h"
+#include "../../../qrgui/editorPluginInterface/sdfRendererInterface.h"
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
@@ -10,13 +12,20 @@ class @@MetamodelName@@Plugin : public QObject, public qReal::EditorInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::EditorInterface)
+<<<<<<< HEAD
 	Q_PLUGIN_METADATA(IID "@@MetamodelName@@")
+=======
+        Q_PLUGIN_METADATA(IID "RobotsMetamodel")
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 
 public:
 
 	@@MetamodelName@@Plugin();
 
 	virtual QString id() const { return "@@MetamodelName@@"; }
+
+//temporary fixing
+	QString version() const { return "1.0.0"; };
 
 	virtual QStringList diagrams() const;
 	virtual QStringList elements(QString const &diagram) const;
@@ -37,15 +46,21 @@ public:
 
 	virtual int isNodeOrEdge(QString const &element) const; 
 
+<<<<<<< HEAD
 	virtual QIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const;
+=======
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 	virtual qReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
 	virtual QString getPropertyType(QString const &element, QString const &property) const;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
 	virtual QStringList getPortTypes(QString const &diagram, QString const &element) const;
 	virtual QStringList getReferenceProperties(QString const &/*diagram*/, QString const &element) const;
+<<<<<<< HEAD
 	virtual QStringList getEnumValues(QString name) const;
 	virtual QString getGroupsXML() const;
+=======
+>>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 
 	virtual QString editorName() const;
 	virtual QString diagramName(QString const &diagram) const;
@@ -54,6 +69,13 @@ public:
 	virtual QString elementMouseGesture(QString const &digram, QString const &element) const;
 
 	virtual QList<qReal::ListenerInterface*> listeners() const;
+
+//Are these right corrections?
+	QList<qReal::EditorInterface::ExplosionData> explosions(QString const &diagram, QString const &element) const override;
+        QStringList getPortTypes(QString const &diagram, QString const &element) const override;
+        QList<QPair<QString, QString>> getEnumValues(QString const &name) const override;
+	bool isEnumEditable(QString const &name) const override;
+        QString getGroupsXML() const override;
 
 private:
 	virtual void initPlugin();
@@ -80,5 +102,9 @@ private:
 	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;
 	QMap<QString, bool> mShallPaletteBeSortedMap;
 	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap;
+
+//?
+	QMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;
+	QMap<QString, bool> mShallPaletteBeSortedMap;
 };
 

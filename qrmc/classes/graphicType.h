@@ -82,4 +82,6 @@ namespace qrmc {
 
 		bool mResolving;
 	};
+
+		bool initCreateChildrenFromMenu(); // Is it a right place for this?
 }
