@@ -16,14 +16,14 @@ namespace qrmc {
 	class MetaCompiler
 	{
 	public:
-		MetaCompiler(const QString &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
+		MetaCompiler(QString const &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
 		~MetaCompiler();
-		bool compile(const QString &metamodel = "");
-		Editor *loadMetaModel(const qReal::Id &id);
-		Diagram *getDiagram(const QString &diagramName);
-		void addResource(const QString &resourceName);
+		bool compile(QString const &metamodel = "");
+		Editor *loadMetaModel(qReal::Id const &id);
+		Diagram *getDiagram(QString const &diagramName);
+		void addResource(QString const &resourceName);
 
-		QString getTemplateUtils(const QString &tmpl) const;
+		QString getTemplateUtils(QString const &tmpl) const;
 
 	private:
 		qrRepo::LogicalRepoApi *mApi;
@@ -48,8 +48,8 @@ namespace qrmc {
 
 		QString mTargetMetamodel;
 
-		bool changeDir(const QString &path);
-		bool loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate);
+		bool changeDir(QString const &path);
+		bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
 		bool loadPluginHeaderTemplate();
 		bool loadPluginSourceTemplate();
 		bool loadTemplateUtils();

@@ -11,7 +11,7 @@ namespace qrmc {
 	public:
 		// Default copy constructor is ok.
 
-		bool init(const QDomElement &element, int index, bool nodeLabel, int width, int height);
+		bool init(QDomElement const &element, int index, bool nodeLabel, int width, int height);
 
 		QString generateInit(MetaCompiler *compiler, bool isNode) const;
 		QString generateUpdate(MetaCompiler *compiler) const;
@@ -20,7 +20,7 @@ namespace qrmc {
 	private:
 		void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
 		QString titleName() const;
-		QStringList getListOfStr(const QString &strToParse) const;
+		QStringList getListOfStr(QString const &strToParse) const;
 		QString generateCodeForUpdateData() const;
 
 		ScalableCoordinate mX;
@@ -33,5 +33,6 @@ namespace qrmc {
 		QString mCenter;
 		QString scalingX;
 		QString scalingY;
+		qreal mRotation;
 	};
 }

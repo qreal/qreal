@@ -5,7 +5,7 @@
 
 using namespace qrmc;
 
-bool Label::init(const QDomElement &element, int index, bool nodeLabel, int width, int height)
+bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
 {
 	initCoordinate(mX, element.attribute("x", "0"), width);
 	initCoordinate(mY, element.attribute("y", "0"), height);
@@ -17,6 +17,7 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
+	mRotation = element.attribute("rotation", "0").toDouble();
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
@@ -50,7 +51,8 @@ QString Label::generateInit(MetaCompiler *compiler, bool isNode) const
 			.replace(yCoordIsScalable, scalingY)
 			.replace(labelReadonlyTag, mReadOnly)
 			.replace(labelIndexTag, QString::number(mIndex))
-			.replace(labelNameTag, "\"" + name + "\"");
+			.replace(labelNameTag, "\"" + name + "\"")
+			.replace(labelRotationTag, QString::number(mRotation));
 
 	return result;
 }
@@ -67,7 +69,7 @@ QString Label::generateUpdate(MetaCompiler *compiler) const
 			.replace(labelIndexTag, QString::number(mIndex));
 }
 
-QStringList Label::getListOfStr(const QString &strToParse) const
+QStringList Label::getListOfStr(QString const &strToParse) const
 {
 	return strToParse.split("##");
 }
@@ -85,7 +87,7 @@ QString Label::generateCodeForUpdateData() const
 		}
 	} else {
 		int counter = 1;
-		foreach (const QString &listElement, list) {
+		foreach (QString const &listElement, list) {
 			QString field;
 			if (counter % 2 == 0) {
 				if (listElement == "name") {
