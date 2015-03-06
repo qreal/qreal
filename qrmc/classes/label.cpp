@@ -5,7 +5,7 @@
 
 using namespace qrmc;
 
-bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
+bool Label::init(const QDomElement &element, int index, bool nodeLabel, int width, int height)
 {
 	initCoordinate(mX, element.attribute("x", "0"), width);
 	initCoordinate(mY, element.attribute("y", "0"), height);

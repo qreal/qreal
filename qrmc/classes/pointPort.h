@@ -10,7 +10,7 @@ namespace qrmc {
 	class PointPort : public Port
 	{
 	public:
-		virtual bool init(QDomElement const &element, int width, int height);
+		virtual bool init(const QDomElement &element, int width, int height);
 		virtual Port* clone() const;
 
 		virtual QString generateSdf(MetaCompiler *compiler) const;

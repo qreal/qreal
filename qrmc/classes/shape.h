@@ -25,10 +25,10 @@ namespace qrmc {
 		QString generateResourceLine(const QString &resourceTemplate) const;
 
 	private:
-		void initLabels(QDomElement const &graphics);
-		void initPorts(QDomElement const &graphics);
-		void initPointPorts(QDomElement const &portsElement);
-		void initLinePorts(QDomElement const &portsElement);
+		void initLabels(const QDomElement &graphics);
+		void initPorts(const QDomElement &graphics);
+		void initPointPorts(const QDomElement &portsElement);
+		void initLinePorts(const QDomElement &portsElement);
 
 		void changeDir(QDir &dir) const;
 
