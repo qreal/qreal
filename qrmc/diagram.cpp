@@ -204,7 +204,7 @@ public:
 	}
 };
 
-QString Diagram::generateMapMethod(const QString& lineTemplate, MapMethodGenerator const &generator) const
+QString Diagram::generateMapMethod(const QString& lineTemplate, const MapMethodGenerator &generator) const
 {
 	QString result;
 	foreach(Type* type, mTypes) {
@@ -341,7 +341,7 @@ QString Diagram::generatePossibleEdges(const QString &lineTemplate) const
 	return generateListMethod(lineTemplate, PossibleEdgesGenerator());
 }
 
-QString Diagram::generateListMethod(const QString &lineTemplate, ListMethodGenerator const &generator) const
+QString Diagram::generateListMethod(const QString &lineTemplate, const ListMethodGenerator &generator) const
 {
 	QString result;
 	bool isFirstLine = true;

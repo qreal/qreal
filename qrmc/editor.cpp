@@ -78,7 +78,7 @@ bool Editor::load()
 
 		qDebug() << "\tchildren:" << mApi->children(diagramId).size();
 		QString diagramName = mApi->name(diagramId);
-		Diagram const *existingDiagram = mMetaCompiler->getDiagram(diagramName);
+		const Diagram *existingDiagram = mMetaCompiler->getDiagram(diagramName);
 		if (existingDiagram) {
 			qDebug() << "ERROR: diagram" << diagramName << "has been already loaded";
 			return false;
