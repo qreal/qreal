@@ -12,22 +12,22 @@ namespace qrmc {
 
 		virtual bool isGraphicalType() const;
 
-		virtual QString generateProperties(const QString &namesTemplate) const;
-		virtual QString generatePropertyDefaults(const QString &namesTemplate) const;
-		virtual QString generatePropertyDisplayedNames(const QString &lineTemplate) const;
-		virtual QString generateReferenceProperties(const QString &lineTemplate) const;
-		virtual QString generateParents(const QString &lineTemplate) const;
-		virtual QString generateContainers(const QString &lineTemplate) const;
-		virtual QString generateConnections(const QString &lineTemplate) const;
-		virtual QString generateUsages(const QString &lineTemplate) const;
-		virtual QString generateIsNodeOrEdge(const QString &lineTemplate) const;
-		virtual QString generatePossibleEdges(const QString &lineTemplate) const;
+		virtual QString generateProperties(QString const &namesTemplate) const;
+		virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
+		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const;
+		virtual QString generateReferenceProperties(QString const &lineTemplate) const;
+		virtual QString generateParents(QString const &lineTemplate) const;
+		virtual QString generateContainers(QString const &lineTemplate) const;
+		virtual QString generateConnections(QString const &lineTemplate) const;
+		virtual QString generateUsages(QString const &lineTemplate) const;
+		virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
+		virtual QString generatePossibleEdges(QString const &lineTemplate) const;
 
-		virtual QString generateNodeClass(const QString &classTemplate);
-		virtual QString generateEdgeClass(const QString &classTemplate) const;
-		virtual QString generateResourceLine(const QString &resourceTemplate) const;
+		virtual QString generateNodeClass(QString const &classTemplate);
+		virtual QString generateEdgeClass(QString const &classTemplate) const;
+		virtual QString generateResourceLine(QString const &resourceTemplate) const;
 
 	protected:
-		NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
+		NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 	};
 }

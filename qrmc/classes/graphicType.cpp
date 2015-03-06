@@ -27,7 +27,7 @@ GraphicType::~GraphicType()
 {
 }
 
-bool GraphicType::init(const QString &context)
+bool GraphicType::init(QString const &context)
 {
 	Type::init(context);
 
@@ -38,26 +38,26 @@ bool GraphicType::init(const QString &context)
 	if (mApi->hasProperty(mId, "RequestBody"))
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
-	const IdList outLinks = mApi->outgoingLinks(mId);
-	foreach (const Id outLink, outLinks) {
+	IdList const outLinks = mApi->outgoingLinks(mId);
+	foreach (Id const outLink, outLinks) {
 		if (outLink.element() == "Container") {
-			const Id elementId = mApi->to(outLink);
-			const QString typeName = mApi->name(elementId);
+			Id const elementId = mApi->to(outLink);
+			QString const typeName = mApi->name(elementId);
 			mContains << typeName.split(",", QString::SkipEmptyParts);
 		} else if (outLink.element() == "Inheritance") {
-			const Id elementId = mApi->to(outLink);
-			const QString childName = mApi->name(elementId);
+			Id const elementId = mApi->to(outLink);
+			QString const childName = mApi->name(elementId);
 			if (!mChildren.contains(childName)) {
 				mChildren << childName.split(",", QString::SkipEmptyParts);
 			}
 		}
 	}
 
-	const IdList inLinks = mApi->incomingLinks(mId);
-	foreach (const Id inLink, inLinks) {
+	IdList const inLinks = mApi->incomingLinks(mId);
+	foreach (Id const inLink, inLinks) {
 		if (inLink.element() == "Inheritance") {
-			const Id elementId = mApi->from(inLink);
-			const QString parentName = mApi->name(elementId);
+			Id const elementId = mApi->from(inLink);
+			QString const parentName = mApi->name(elementId);
 			if (!mParents.contains(parentName)) {
 				mParents << parentName.split(",", QString::SkipEmptyParts);
 			}
@@ -162,10 +162,10 @@ bool GraphicType::resolve()
 		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
-		if (parent == nullptr) {
+		if (parent == NULL) {
 			// didn't find in local context, try global
 			parent = mDiagram->findType(parentName);
-			if (parent == nullptr) {
+			if (parent == NULL) {
 				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
 				return false;
 			}
@@ -223,7 +223,7 @@ bool GraphicType::isGraphicalType() const
 	return mIsVisible;
 }
 
-QString GraphicType::generateProperties(const QString &lineTemplate) const
+QString GraphicType::generateProperties(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -244,7 +244,7 @@ QString GraphicType::generateProperties(const QString &lineTemplate) const
 	return propertiesString;
 }
 
-QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
+QString GraphicType::generatePropertyDefaults(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -257,7 +257,7 @@ QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 	return defaultsString;
 }
 
-QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate) const
+QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -271,13 +271,13 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 	return displayedNamesString;
 }
 
-QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
+QString GraphicType::generateReferenceProperties(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
 	QString referencePropertiesString = lineTemplate;
 	QString referencePropertiesList = "";
-	foreach (const Property *const property, mProperties) {
+	foreach (Property const *const property, mProperties) {
 		if (property->isReferenceProperty()) {
 			referencePropertiesList = referencePropertiesList + " << "  + "\"" + property->name() + "\"";
 		}
@@ -290,19 +290,19 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 	}
 }
 
-QString GraphicType::generateParents(const QString &lineTemplate) const
+QString GraphicType::generateParents(QString const &lineTemplate) const
 {
 	QString parentsMapString;
-	const QString diagramName = mContext + "::";
+	QString const diagramName = mContext + "::";
 	QString parentName = qualifiedName().remove(diagramName);
-	foreach (const QString child, mChildren) {
+	foreach (QString const child, mChildren) {
 		QString tmp = lineTemplate;
 		parentsMapString += tmp.replace(parentNameTag, parentName).replace(childNameTag, child).replace(diagramNameTag, mContext) + endline;
 	}
 	return parentsMapString;
 }
 
-QString GraphicType::generateContainers(const QString &lineTemplate) const
+QString GraphicType::generateContainers(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mContains.isEmpty())
 		return "";
@@ -316,7 +316,7 @@ QString GraphicType::generateContainers(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateConnections(const QString &lineTemplate) const
+QString GraphicType::generateConnections(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mConnections.isEmpty())
 		return "";
@@ -329,7 +329,7 @@ QString GraphicType::generateConnections(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateUsages(const QString &lineTemplate) const
+QString GraphicType::generateUsages(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mUsages.isEmpty())
 		return "";
@@ -342,19 +342,19 @@ QString GraphicType::generateUsages(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateEnums(const QString &lineTemplate) const
+QString GraphicType::generateEnums(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
 }
 
-QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
+QString GraphicType::generatePossibleEdges(QString const &lineTemplate) const
 {
 	if (mPossibleEdges.isEmpty())
 		return "";
 	QString edgesList;
 	QString line = lineTemplate;
-	const QString templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
+	QString const templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
 	QString directed = "false";
 	foreach(PossibleEdge edge, mPossibleEdges) {
 		if (edge.second.first)

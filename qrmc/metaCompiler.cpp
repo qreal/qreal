@@ -16,7 +16,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-MetaCompiler::MetaCompiler(const QString &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi) : mApi(mLogicalRepoApi)
+MetaCompiler::MetaCompiler(QString const &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi) : mApi(mLogicalRepoApi)
 {
 	mLocalDir = qrmcDir;
 	mApi->setName(Id::rootId(), Id::rootId().toString());
@@ -40,7 +40,7 @@ MetaCompiler::~MetaCompiler()
 	}
 }
 
-bool MetaCompiler::compile(const QString &targetMetamodel)
+bool MetaCompiler::compile(QString const &targetMetamodel)
 {
 	mTargetMetamodel = targetMetamodel;
 	IdList rootItems = mApi->children(Id::rootId());
@@ -65,7 +65,7 @@ bool MetaCompiler::compile(const QString &targetMetamodel)
 	return true;
 }
 
-bool MetaCompiler::changeDir(const QString &path)
+bool MetaCompiler::changeDir(QString const &path)
 {
 	if (!mDirectory.exists(path)) {
 		qDebug() << "cannot find directory " << path;
@@ -75,7 +75,7 @@ bool MetaCompiler::changeDir(const QString &path)
 	return true;
 }
 
-bool MetaCompiler::loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate)
+bool MetaCompiler::loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate)
 {
 	if (!changeDir(mLocalDir + "/" + templatesDir))
 		return false;
@@ -122,7 +122,7 @@ bool MetaCompiler::loadTemplateUtils()
 }
 
 
-Editor* MetaCompiler::loadMetaModel(const Id &metamodelId)
+Editor* MetaCompiler::loadMetaModel(Id const &metamodelId)
 {
 	qDebug() << "Loading metamodel started: " << mApi->name(metamodelId);
 	QString metamodelName = mApi->name(metamodelId);
@@ -134,28 +134,28 @@ Editor* MetaCompiler::loadMetaModel(const Id &metamodelId)
 			return editor;
 		} else {
 			qDebug() << "ERROR: cycle detected";
-			return nullptr;
+			return NULL;
 		}
 	} else {
 		Editor *editor = new Editor(this, mApi, metamodelId);
 		if (!editor->load()) {
 			qDebug() << "ERROR: Failed to load file";
 			delete editor;
-			return nullptr;
+			return NULL;
 		}
 		mEditors[metamodelName] = editor;
 		return editor;
 	}
 }
 
-Diagram *MetaCompiler::getDiagram(const QString &diagramName)
+Diagram *MetaCompiler::getDiagram(QString const &diagramName)
 {
 	foreach (Editor *editor, mEditors) {
 		Diagram *diagram = editor->findDiagram(diagramName);
 		if (diagram)
 			return diagram;
 	}
-	return nullptr;
+	return NULL;
 }
 
 void MetaCompiler::generateCode()
@@ -180,7 +180,7 @@ void MetaCompiler::generateCode()
 	}
 	dir.cd(generatedDir);
 
-	const QString fileName = dir.absoluteFilePath(pluginsProjectFileName);
+	QString const fileName = dir.absoluteFilePath(pluginsProjectFileName);
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
@@ -196,7 +196,7 @@ void MetaCompiler::generateCode()
 	return;
 }
 
-QString MetaCompiler::getTemplateUtils(const QString &tmpl) const
+QString MetaCompiler::getTemplateUtils(QString const &tmpl) const
 {
 	return mTemplateUtils[tmpl];
 }

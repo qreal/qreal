@@ -9,7 +9,7 @@ namespace qrmc {
 	{
 	public:
 		virtual ~Port() {};
-		virtual bool init(const QDomElement &element, int width, int height) = 0;
+		virtual bool init(QDomElement const &element, int width, int height) = 0;
 		virtual Port *clone() const = 0;
 
 		virtual QString generateSdf(MetaCompiler *compiler) const = 0;

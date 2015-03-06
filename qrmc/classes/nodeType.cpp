@@ -25,7 +25,7 @@ Type* NodeType::clone() const
 	return result;
 }
 
-bool NodeType::init(const QString &context)
+bool NodeType::init(QString const &context)
 {
 	GraphicType::init(context);
 	return true;
@@ -38,20 +38,20 @@ void NodeType::print()
 
 
 
-QString NodeType::generateIsNodeOrEdge(const QString &lineTemplate) const
+QString NodeType::generateIsNodeOrEdge(QString const &lineTemplate) const
 {
 	QString line = lineTemplate;
 	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "1");
 	return line;
 }
 
-QString NodeType::generateEdgeClass(const QString &classTemplate) const
+QString NodeType::generateEdgeClass(QString const &classTemplate) const
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString NodeType::generateNodeClass(const QString &classTemplate)
+QString NodeType::generateNodeClass(QString const &classTemplate)
 {
 	if (!mIsVisible)
 		return "";
@@ -80,7 +80,7 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 	return nodeClass;
 }
 
-QString NodeType::loadBoolProperty(const qReal::Id &id, const QString &property) const
+QString NodeType::loadBoolProperty(qReal::Id const &id, QString const &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -89,7 +89,7 @@ QString NodeType::loadBoolProperty(const qReal::Id &id, const QString &property)
 	return result;
 }
 
-QString NodeType::loadIntProperty(const qReal::Id &id, const QString &property) const
+QString NodeType::loadIntProperty(qReal::Id const &id, QString const &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -98,7 +98,7 @@ QString NodeType::loadIntProperty(const qReal::Id &id, const QString &property) 
 	return result;
 }
 
-QString NodeType::loadIntVectorProperty(const qReal::Id &id, const QString &property) const
+QString NodeType::loadIntVectorProperty(qReal::Id const &id, QString const &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -132,7 +132,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 				.replace(minimizeToChildrenTag, "false")
 				.replace(maximizeChildrenTag, "false")
 				.replace(hasMovableChildrenTag, "true")
-				.replace(forestallingSizeTag, "0")
+				.replace(forestallingSizeTag, "QVector<int>()")
 				.replace(childrenForestallingSizeTag, "0");
 }
 
@@ -154,7 +154,7 @@ void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *co
 			.replace(itemsList, compiler->getTemplateUtils(itemsValidList));
 }
 
-QString NodeType::generateResourceLine(const QString &resourceTemplate) const
+QString NodeType::generateResourceLine(QString const &resourceTemplate) const
 {
 	return mShape.generateResourceLine(resourceTemplate);
 }

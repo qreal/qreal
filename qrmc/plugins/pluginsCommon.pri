@@ -1,6 +1,6 @@
 TEMPLATE =  lib
 CONFIG += plugin
-DESTDIR = ../../../bin/plugins/
+DESTDIR = ../../../bin/plugins/editors
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
