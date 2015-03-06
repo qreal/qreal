@@ -95,7 +95,7 @@ QStringList @@MetamodelName@@Plugin::diagramPaletteGroups(const QString &diagram
 QStringList @@MetamodelName@@Plugin::diagramPaletteGroupList(const QString &diagram, const QString &group) const
 {
 	return paletteGroupsMap[diagram][group];
-} 
+}
 
 QStringList @@MetamodelName@@Plugin::getPropertiesWithDefaultValues(const QString &element) const
 {
@@ -217,7 +217,7 @@ QStringList @@MetamodelName@@Plugin::getPortTypes(const QString &/*diagram*/, co
 	return result;
 }
 
-QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(const QString &name) const 
+QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(const QString &name) const
 {
 	Q_UNUSED(name);
 	return {};
@@ -225,11 +225,11 @@ QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(const QStr
 
 bool @@MetamodelName@@Plugin::isEnumEditable(const QString &name) const
 {
-	QStringList const editableEnums = {  };
+	const QStringList editableEnums = {  };
 	return editableEnums.contains(name);
 }
 
-QString @@MetamodelName@@Plugin::getGroupsXML() const 
+QString @@MetamodelName@@Plugin::getGroupsXML() const
 {
 	return QString::fromUtf8("");
 }

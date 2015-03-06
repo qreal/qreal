@@ -224,7 +224,7 @@ QString EdgeType::generateResourceLine(const QString &resourceTemplate) const
 	return line.replace(fileNameTag, name() + "Class.sdf") + endline;
 }
 
-QString EdgeType::generatePorts(QStringList const &portTypes) const
+QString EdgeType::generatePorts(const QStringList &portTypes) const
 {
 	QString typeForReturning = "";
 	foreach (const QString &type, portTypes) {

@@ -2,7 +2,7 @@
 	public:
 		void init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,
 				qReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,
-				qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}		
+				qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}
 
 		void init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)
 		{
@@ -15,7 +15,7 @@
 		bool isNode() const { return false; }
 		bool isContainer() const { return false; }
 		bool isSortingContainer() const { return false; }
-                QVector<int> sizeOfForestalling() const { return QVector<int>(4, 0); }
+		QVector<int> sizeOfForestalling() const { return QVector<int>(4, 0); }
 		int sizeOfChildrenForestalling() const { return 0; }
 		bool hasMovableChildren() const { return false; }
 		bool minimizesToChildren() const { return false; }
@@ -31,12 +31,12 @@
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
-		
+
 		int getPenWidth() const { return 1; }
 
-//temporary fixing		
+//temporary fixing
 		QColor getPenColor() const { return QColor(0,0,0); }
-		
+
 //temporary fixing
 		QStringList fromPortTypes() const
 		{
@@ -45,7 +45,7 @@
 			return result;
 		}
 
-//temporary fixing 
+//temporary fixing
 		QStringList toPortTypes() const
 		{
 			QStringList result;
@@ -53,7 +53,7 @@
 			return result;
 		}
 
-//temporary fixing		
+//temporary fixing
 		enums::linkShape::LinkShape shapeType() const
 		{
 			return enums::linkShape::square;
@@ -65,12 +65,12 @@
 		}
 
 	protected:
-		virtual void drawStartArrow(QPainter * painter) const 
+		virtual void drawStartArrow(QPainter * painter) const
 		{
 			QBrush old = painter->brush();
 			QBrush brush;
 			brush.setStyle(Qt::SolidPattern);
-@@BeginArrowBrushColor@@			
+@@BeginArrowBrushColor@@
 			painter->setBrush(brush);
 @@BeginArrowCustomization@@
 			painter->setBrush(old);
@@ -81,7 +81,7 @@
 			QBrush old = painter->brush();
 			QBrush brush;
 			brush.setStyle(Qt::SolidPattern);
-@@EndArrowBrushColor@@			
+@@EndArrowBrushColor@@
 			painter->setBrush(brush);
 @@EndArrowCustomization@@
 			painter->setBrush(old);
