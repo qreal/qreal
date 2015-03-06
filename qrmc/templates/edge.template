@@ -1,8 +1,8 @@
 	class @@ElementName@@ : public qReal::ElementImpl {
 	public:
-			void init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,
-											qReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,
-											qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}		
+		void init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,
+				qReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,
+				qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}		
 
 		void init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)
 		{
@@ -46,7 +46,7 @@
 		}
 
 //temporary fixing 
-                QStringList toPortTypes() const
+		QStringList toPortTypes() const
 		{
 			QStringList result;
 			result << "NonTyped";
