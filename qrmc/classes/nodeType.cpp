@@ -25,7 +25,7 @@ Type* NodeType::clone() const
 	return result;
 }
 
-bool NodeType::init(QString const &context)
+bool NodeType::init(const QString &context)
 {
 	GraphicType::init(context);
 	return true;
@@ -38,20 +38,20 @@ void NodeType::print()
 
 
 
-QString NodeType::generateIsNodeOrEdge(QString const &lineTemplate) const
+QString NodeType::generateIsNodeOrEdge(const QString &lineTemplate) const
 {
 	QString line = lineTemplate;
 	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "1");
 	return line;
 }
 
-QString NodeType::generateEdgeClass(QString const &classTemplate) const
+QString NodeType::generateEdgeClass(const QString &classTemplate) const
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString NodeType::generateNodeClass(QString const &classTemplate)
+QString NodeType::generateNodeClass(const QString &classTemplate)
 {
 	if (!mIsVisible)
 		return "";
@@ -80,7 +80,7 @@ QString NodeType::generateNodeClass(QString const &classTemplate)
 	return nodeClass;
 }
 
-QString NodeType::loadBoolProperty(qReal::Id const &id, QString const &property) const
+QString NodeType::loadBoolProperty(qReal::Id const &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -89,7 +89,7 @@ QString NodeType::loadBoolProperty(qReal::Id const &id, QString const &property)
 	return result;
 }
 
-QString NodeType::loadIntProperty(qReal::Id const &id, QString const &property) const
+QString NodeType::loadIntProperty(qReal::Id const &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -98,7 +98,7 @@ QString NodeType::loadIntProperty(qReal::Id const &id, QString const &property) 
 	return result;
 }
 
-QString NodeType::loadIntVectorProperty(qReal::Id const &id, QString const &property) const
+QString NodeType::loadIntVectorProperty(qReal::Id const &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -154,7 +154,7 @@ void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *co
 			.replace(itemsList, compiler->getTemplateUtils(itemsValidList));
 }
 
-QString NodeType::generateResourceLine(QString const &resourceTemplate) const
+QString NodeType::generateResourceLine(const QString &resourceTemplate) const
 {
 	return mShape.generateResourceLine(resourceTemplate);
 }

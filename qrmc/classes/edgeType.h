@@ -15,10 +15,10 @@ namespace qrmc {
 
 		virtual bool isGraphicalType() const;
 
-		virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
-		virtual QString generateNodeClass(QString const &classTemplate);
-		virtual QString generateEdgeClass(QString const &classTemplate) const;
-		virtual QString generateResourceLine(QString const &resourceTemplate) const;
+		virtual QString generateIsNodeOrEdge(const QString &lineTemplate) const;
+		virtual QString generateNodeClass(const QString &classTemplate);
+		virtual QString generateEdgeClass(const QString &classTemplate) const;
+		virtual QString generateResourceLine(const QString &resourceTemplate) const;
 		QString generatePorts(QStringList const &portTypes) const;
 
 		void print();
@@ -28,8 +28,8 @@ namespace qrmc {
 
 		void generateSdf() const;
 		void generateArrows(QString &edgeClass) const;
-		void generateArrowEnd(QString &edgeClass, QString const &arrowEnd,
-							  QString const &customTag, QString const &brushTag) const;
+		void generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
+							  const QString &customTag, const QString &brushTag) const;
 
 		QString mBeginType;
 		QString mEndType;

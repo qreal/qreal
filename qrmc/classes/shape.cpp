@@ -12,7 +12,7 @@
 
 using namespace qrmc;
 
-Shape::Shape(QString const &shape) : mNode(NULL)
+Shape::Shape(const QString &shape) : mNode(nullptr)
 {
 	init(shape)	;
 }
@@ -26,7 +26,7 @@ void Shape::setNode(GraphicType *node)
 	mNode = node;
 }
 
-void Shape::init(QString const &shape)
+void Shape::init(const QString &shape)
 {
 	if (shape.isEmpty())
 		return;
@@ -198,7 +198,7 @@ void Shape::generateSdf() const
 	QDir dir;
 	changeDir(dir);
 
-	QString const fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
+	const QString fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
@@ -240,7 +240,7 @@ bool Shape::hasPicture() const
 	return !mPicture.isEmpty();
 }
 
-QString Shape::generateResourceLine(QString const &resourceTemplate) const
+QString Shape::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString result;
 

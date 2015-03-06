@@ -48,7 +48,7 @@ Port *LinePort::clone() const
 	return result;
 }
 
-QString LinePort::generate(QString const &lineTemplate, bool isScaled) const
+QString LinePort::generate(const QString &lineTemplate, bool isScaled) const
 {
 	QString result = lineTemplate;
 	result.replace(startXTag, mStartX.toString(isScaled)).replace(startYTag, mStartY.toString(isScaled))

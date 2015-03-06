@@ -27,7 +27,7 @@ GraphicType::~GraphicType()
 {
 }
 
-bool GraphicType::init(QString const &context)
+bool GraphicType::init(const QString &context)
 {
 	Type::init(context);
 
@@ -42,11 +42,11 @@ bool GraphicType::init(QString const &context)
 	foreach (Id const outLink, outLinks) {
 		if (outLink.element() == "Container") {
 			Id const elementId = mApi->to(outLink);
-			QString const typeName = mApi->name(elementId);
+			const QString typeName = mApi->name(elementId);
 			mContains << typeName.split(",", QString::SkipEmptyParts);
 		} else if (outLink.element() == "Inheritance") {
 			Id const elementId = mApi->to(outLink);
-			QString const childName = mApi->name(elementId);
+			const QString childName = mApi->name(elementId);
 			if (!mChildren.contains(childName)) {
 				mChildren << childName.split(",", QString::SkipEmptyParts);
 			}
@@ -57,7 +57,7 @@ bool GraphicType::init(QString const &context)
 	foreach (Id const inLink, inLinks) {
 		if (inLink.element() == "Inheritance") {
 			Id const elementId = mApi->from(inLink);
-			QString const parentName = mApi->name(elementId);
+			const QString parentName = mApi->name(elementId);
 			if (!mParents.contains(parentName)) {
 				mParents << parentName.split(",", QString::SkipEmptyParts);
 			}
@@ -162,10 +162,10 @@ bool GraphicType::resolve()
 		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
-		if (parent == NULL) {
+		if (parent == nullptr) {
 			// didn't find in local context, try global
 			parent = mDiagram->findType(parentName);
-			if (parent == NULL) {
+			if (parent == nullptr) {
 				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
 				return false;
 			}
@@ -223,7 +223,7 @@ bool GraphicType::isGraphicalType() const
 	return mIsVisible;
 }
 
-QString GraphicType::generateProperties(QString const &lineTemplate) const
+QString GraphicType::generateProperties(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -244,7 +244,7 @@ QString GraphicType::generateProperties(QString const &lineTemplate) const
 	return propertiesString;
 }
 
-QString GraphicType::generatePropertyDefaults(QString const &lineTemplate) const
+QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -257,7 +257,7 @@ QString GraphicType::generatePropertyDefaults(QString const &lineTemplate) const
 	return defaultsString;
 }
 
-QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
+QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -271,7 +271,7 @@ QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate)
 	return displayedNamesString;
 }
 
-QString GraphicType::generateReferenceProperties(QString const &lineTemplate) const
+QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -290,19 +290,19 @@ QString GraphicType::generateReferenceProperties(QString const &lineTemplate) co
 	}
 }
 
-QString GraphicType::generateParents(QString const &lineTemplate) const
+QString GraphicType::generateParents(const QString &lineTemplate) const
 {
 	QString parentsMapString;
-	QString const diagramName = mContext + "::";
+	const QString diagramName = mContext + "::";
 	QString parentName = qualifiedName().remove(diagramName);
-	foreach (QString const child, mChildren) {
+	foreach (const QString child, mChildren) {
 		QString tmp = lineTemplate;
 		parentsMapString += tmp.replace(parentNameTag, parentName).replace(childNameTag, child).replace(diagramNameTag, mContext) + endline;
 	}
 	return parentsMapString;
 }
 
-QString GraphicType::generateContainers(QString const &lineTemplate) const
+QString GraphicType::generateContainers(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mContains.isEmpty())
 		return "";
@@ -316,7 +316,7 @@ QString GraphicType::generateContainers(QString const &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateConnections(QString const &lineTemplate) const
+QString GraphicType::generateConnections(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mConnections.isEmpty())
 		return "";
@@ -329,7 +329,7 @@ QString GraphicType::generateConnections(QString const &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateUsages(QString const &lineTemplate) const
+QString GraphicType::generateUsages(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mUsages.isEmpty())
 		return "";
@@ -342,19 +342,19 @@ QString GraphicType::generateUsages(QString const &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateEnums(QString const &lineTemplate) const
+QString GraphicType::generateEnums(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
 }
 
-QString GraphicType::generatePossibleEdges(QString const &lineTemplate) const
+QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
 {
 	if (mPossibleEdges.isEmpty())
 		return "";
 	QString edgesList;
 	QString line = lineTemplate;
-	QString const templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
+	const QString templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
 	QString directed = "false";
 	foreach(PossibleEdge edge, mPossibleEdges) {
 		if (edge.second.first)

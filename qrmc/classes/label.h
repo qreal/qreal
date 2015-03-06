@@ -20,7 +20,7 @@ namespace qrmc {
 	private:
 		void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
 		QString titleName() const;
-		QStringList getListOfStr(QString const &strToParse) const;
+		QStringList getListOfStr(const QString &strToParse) const;
 		QString generateCodeForUpdateData() const;
 
 		ScalableCoordinate mX;

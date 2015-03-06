@@ -14,20 +14,20 @@ namespace qrmc {
 		virtual Type* clone() const;
 		virtual ~NodeType();
 
-		virtual bool init(QString const &context);
+		virtual bool init(const QString &context);
 
 		virtual void print();
 
-		virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
-		virtual QString generateNodeClass(QString const &classTemplate);
-		virtual QString generateEdgeClass(QString const &classTemplate) const;
-		virtual QString generateResourceLine(QString const &resourceTemplate) const;
+		virtual QString generateIsNodeOrEdge(const QString &lineTemplate) const;
+		virtual QString generateNodeClass(const QString &classTemplate);
+		virtual QString generateEdgeClass(const QString &classTemplate) const;
+		virtual QString generateResourceLine(const QString &resourceTemplate) const;
 
 	private:
 		void generateContainerStuff(QString &classTemplate) const;
 		void generateContextMenuItems(QString &classTemplate, MetaCompiler *compiler) const;
-		QString loadBoolProperty(qReal::Id const &id, QString const &property) const;
-		QString loadIntProperty(qReal::Id const &id, QString const &property) const;
-		QString loadIntVectorProperty(qReal::Id const &id, QString const &property) const;
+		QString loadBoolProperty(qReal::Id const &id, const QString &property) const;
+		QString loadIntProperty(qReal::Id const &id, const QString &property) const;
+		QString loadIntVectorProperty(qReal::Id const &id, const QString &property) const;
 	};
 }

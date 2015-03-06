@@ -26,14 +26,14 @@ bool Property::init()
 	} else {
 		qReal::IdList const listOfEnums = mApi->elementsByType("MetaEntityEnum");
 		foreach (qReal::Id const enumElement, listOfEnums) {
-			QString const nameOfEnumElement = mApi->name(enumElement);
+			const QString nameOfEnumElement = mApi->name(enumElement);
 			if (nameOfEnumElement == mType) {
 				mIsEnum = true;
 			}
 		}
 		qReal::IdList const listOfNodes = mApi->elementsByType("MetaEntityNode");
 		foreach (qReal::Id const nodeElement, listOfNodes) {
-			QString const nameOfNodeElement = mApi->name(nodeElement);
+			const QString nameOfNodeElement = mApi->name(nodeElement);
 			if (nameOfNodeElement == mType) {
 				mIsReference = true;
 			}
@@ -107,14 +107,14 @@ void Property::print() const
 			<< "\t" << mDisplayedName;
 }
 
-QString Property::generatePropertyLine(QString const &lineTemplate) const
+QString Property::generatePropertyLine(const QString &lineTemplate) const
 {
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyTypeTag, mType);
 	return result;
 }
 
-QString Property::generateDefaultsLine(QString const &lineTemplate) const
+QString Property::generateDefaultsLine(const QString &lineTemplate) const
 {
 	if (mDefaultValue.isEmpty())
 		return "";
@@ -123,7 +123,7 @@ QString Property::generateDefaultsLine(QString const &lineTemplate) const
 	return result;
 }
 
-QString Property::generateDisplayedNameLine(QString const &lineTemplate) const
+QString Property::generateDisplayedNameLine(const QString &lineTemplate) const
 {
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyDisplayedNameTag, mDisplayedName);

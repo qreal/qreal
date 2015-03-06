@@ -40,20 +40,20 @@ bool EdgeType::isGraphicalType() const
 	return !mLineType.isEmpty();
 }
 
-QString EdgeType::generateIsNodeOrEdge(QString const &lineTemplate) const
+QString EdgeType::generateIsNodeOrEdge(const QString &lineTemplate) const
 {
 	QString line = lineTemplate;
 	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "-1");
 	return line;
 }
 
-QString EdgeType::generateNodeClass(QString const &classTemplate)
+QString EdgeType::generateNodeClass(const QString &classTemplate)
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString EdgeType::generateEdgeClass(QString const &classTemplate) const
+QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 {
 	QString edgeClass = classTemplate;
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
@@ -110,8 +110,8 @@ void EdgeType::generateArrows(QString &edgeClass) const
 
 }
 
-void EdgeType::generateArrowEnd(QString &edgeClass, QString const &arrowEnd,
-								QString const &customTag, QString const &brushTag) const
+void EdgeType::generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
+								const QString &customTag, const QString &brushTag) const
 {
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
 	if (arrowEnd.isEmpty() || arrowEnd == "no_arrow") {
@@ -172,7 +172,7 @@ void EdgeType::generateSdf() const
 	}
 	dir.cd(shapesDir);
 
-	QString const fileName = dir.absoluteFilePath(name() + "Class.sdf");
+	const QString fileName = dir.absoluteFilePath(name() + "Class.sdf");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
@@ -218,7 +218,7 @@ void EdgeType::initLabels()
 
 }
 
-QString EdgeType::generateResourceLine(QString const &resourceTemplate) const
+QString EdgeType::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString line = resourceTemplate;
 	return line.replace(fileNameTag, name() + "Class.sdf") + endline;
@@ -227,7 +227,7 @@ QString EdgeType::generateResourceLine(QString const &resourceTemplate) const
 QString EdgeType::generatePorts(QStringList const &portTypes) const
 {
 	QString typeForReturning = "";
-	foreach (QString const &type, portTypes) {
+	foreach (const QString &type, portTypes) {
 		//out() << " << \"" << type << "\"";
 		typeForReturning += type;
 	}
