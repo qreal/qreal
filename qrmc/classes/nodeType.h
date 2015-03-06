@@ -10,7 +10,7 @@ namespace qrmc {
 	class NodeType : public GraphicType
 	{
 	public:
-		NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const id);
+		NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id id);
 		virtual Type* clone() const;
 		virtual ~NodeType();
 
@@ -26,8 +26,8 @@ namespace qrmc {
 	private:
 		void generateContainerStuff(QString &classTemplate) const;
 		void generateContextMenuItems(QString &classTemplate, MetaCompiler *compiler) const;
-		QString loadBoolProperty(qReal::Id const &id, const QString &property) const;
-		QString loadIntProperty(qReal::Id const &id, const QString &property) const;
-		QString loadIntVectorProperty(qReal::Id const &id, const QString &property) const;
+		QString loadBoolProperty(const qReal::Id &id, const QString &property) const;
+		QString loadIntProperty(const qReal::Id &id, const QString &property) const;
+		QString loadIntVectorProperty(const qReal::Id &id, const QString &property) const;
 	};
 }

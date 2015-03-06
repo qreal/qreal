@@ -8,7 +8,7 @@ namespace qrmc {
 	class Property
 	{
 	public:
-		Property(qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		Property(qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 
 		bool init();
 		QString name() const;

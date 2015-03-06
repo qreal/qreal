@@ -15,7 +15,7 @@ namespace qrmc {
 	class Type
 	{
 	public:
-		Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 		virtual ~Type();
 		virtual Type* clone() const = 0;
 		virtual bool resolve() = 0;

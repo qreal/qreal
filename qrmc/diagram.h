@@ -14,7 +14,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor);
+		Diagram(const qReal::Id &id, qrRepo::LogicalRepoApi *api, Editor *editor);
 		~Diagram();
 		bool init();
 		bool resolve();

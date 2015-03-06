@@ -19,7 +19,7 @@ namespace qrmc {
 		MetaCompiler(const QString &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
 		~MetaCompiler();
 		bool compile(const QString &metamodel = "");
-		Editor *loadMetaModel(qReal::Id const &id);
+		Editor *loadMetaModel(const qReal::Id &id);
 		Diagram *getDiagram(const QString &diagramName);
 		void addResource(const QString &resourceName);
 

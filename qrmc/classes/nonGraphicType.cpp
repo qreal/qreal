@@ -4,7 +4,7 @@
 
 using namespace qrmc;
 
-NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id)
+NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
 	: Type(true, diagram, api, id)
 {}
 

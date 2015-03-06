@@ -80,7 +80,7 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 	return nodeClass;
 }
 
-QString NodeType::loadBoolProperty(qReal::Id const &id, const QString &property) const
+QString NodeType::loadBoolProperty(const qReal::Id &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -89,7 +89,7 @@ QString NodeType::loadBoolProperty(qReal::Id const &id, const QString &property)
 	return result;
 }
 
-QString NodeType::loadIntProperty(qReal::Id const &id, const QString &property) const
+QString NodeType::loadIntProperty(const qReal::Id &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -98,7 +98,7 @@ QString NodeType::loadIntProperty(qReal::Id const &id, const QString &property) 
 	return result;
 }
 
-QString NodeType::loadIntVectorProperty(qReal::Id const &id, const QString &property) const
+QString NodeType::loadIntVectorProperty(const qReal::Id &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {

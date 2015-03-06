@@ -9,7 +9,7 @@ namespace qrmc {
 	class EdgeType : public GraphicType
 	{
 	public:
-		EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 		virtual Type* clone() const;
 		virtual ~EdgeType();
 
