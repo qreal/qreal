@@ -277,7 +277,7 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 		return "";
 	QString referencePropertiesString = lineTemplate;
 	QString referencePropertiesList = "";
-	foreach (Property const *const property, mProperties) {
+	foreach (const Property *const property, mProperties) {
 		if (property->isReferenceProperty()) {
 			referencePropertiesList = referencePropertiesList + " << "  + "\"" + property->name() + "\"";
 		}
