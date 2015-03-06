@@ -24,14 +24,14 @@ bool Property::init()
 		qDebug() << "ERROR: empty type of property found";
 		return false;
 	} else {
-		qReal::IdList const listOfEnums = mApi->elementsByType("MetaEntityEnum");
+		qReal::const IdList listOfEnums = mApi->elementsByType("MetaEntityEnum");
 		foreach (const qReal::Id enumElement, listOfEnums) {
 			const QString nameOfEnumElement = mApi->name(enumElement);
 			if (nameOfEnumElement == mType) {
 				mIsEnum = true;
 			}
 		}
-		qReal::IdList const listOfNodes = mApi->elementsByType("MetaEntityNode");
+		qReal::const IdList listOfNodes = mApi->elementsByType("MetaEntityNode");
 		foreach (const qReal::Id nodeElement, listOfNodes) {
 			const QString nameOfNodeElement = mApi->name(nodeElement);
 			if (nameOfNodeElement == mType) {

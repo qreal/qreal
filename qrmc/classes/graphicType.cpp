@@ -38,7 +38,7 @@ bool GraphicType::init(const QString &context)
 	if (mApi->hasProperty(mId, "RequestBody"))
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
-	IdList const outLinks = mApi->outgoingLinks(mId);
+	const IdList outLinks = mApi->outgoingLinks(mId);
 	foreach (const Id outLink, outLinks) {
 		if (outLink.element() == "Container") {
 			const Id elementId = mApi->to(outLink);
@@ -53,7 +53,7 @@ bool GraphicType::init(const QString &context)
 		}
 	}
 
-	IdList const inLinks = mApi->incomingLinks(mId);
+	const IdList inLinks = mApi->incomingLinks(mId);
 	foreach (const Id inLink, inLinks) {
 		if (inLink.element() == "Inheritance") {
 			const Id elementId = mApi->from(inLink);
