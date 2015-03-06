@@ -11,6 +11,9 @@ HEADERS += metaCompiler.h \
 	  ../qrrepo/repoApi.h \
 	  diagram.h \
 	  editor.h \              
+    templates/elements.h.template \
+    templates/pluginInterface.cpp.template \
+    templates/pluginInterface.h.template
 
 
 
@@ -25,3 +28,11 @@ CONFIG += c++11
 
 links(qrkernel)    
 links(qrrepo)      
+
+OTHER_FILES += \
+    templates/edge.template \
+    templates/node.template \
+    templates/plugin.qrc.template \
+    templates/plugins.pro.template \
+    templates/pro.template \
+    templates/utils.template
