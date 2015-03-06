@@ -39,13 +39,13 @@ bool GraphicType::init(const QString &context)
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
 	IdList const outLinks = mApi->outgoingLinks(mId);
-	foreach (Id const outLink, outLinks) {
+	foreach (const Id outLink, outLinks) {
 		if (outLink.element() == "Container") {
-			Id const elementId = mApi->to(outLink);
+			const Id elementId = mApi->to(outLink);
 			const QString typeName = mApi->name(elementId);
 			mContains << typeName.split(",", QString::SkipEmptyParts);
 		} else if (outLink.element() == "Inheritance") {
-			Id const elementId = mApi->to(outLink);
+			const Id elementId = mApi->to(outLink);
 			const QString childName = mApi->name(elementId);
 			if (!mChildren.contains(childName)) {
 				mChildren << childName.split(",", QString::SkipEmptyParts);
@@ -54,9 +54,9 @@ bool GraphicType::init(const QString &context)
 	}
 
 	IdList const inLinks = mApi->incomingLinks(mId);
-	foreach (Id const inLink, inLinks) {
+	foreach (const Id inLink, inLinks) {
 		if (inLink.element() == "Inheritance") {
-			Id const elementId = mApi->from(inLink);
+			const Id elementId = mApi->from(inLink);
 			const QString parentName = mApi->name(elementId);
 			if (!mParents.contains(parentName)) {
 				mParents << parentName.split(",", QString::SkipEmptyParts);

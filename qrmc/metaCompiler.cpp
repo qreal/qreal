@@ -122,7 +122,7 @@ bool MetaCompiler::loadTemplateUtils()
 }
 
 
-Editor* MetaCompiler::loadMetaModel(Id const &metamodelId)
+Editor* MetaCompiler::loadMetaModel(const Id &metamodelId)
 {
 	qDebug() << "Loading metamodel started: " << mApi->name(metamodelId);
 	QString metamodelName = mApi->name(metamodelId);
