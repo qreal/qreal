@@ -17,10 +17,12 @@ include(../../../../plugins/generationRulesTool/generationRulesTool.pri)
 TEMPLATE = app
 
 HEADERS += \
-	lexerTest.h
+	lexerTest.h \
+	parserTest.h
 
 SOURCES += \
-	lexerTest.cpp
+	lexerTest.cpp \
+	parserTest.cpp
 
 INCLUDEPATH += \
 	$$PWD/../../../../ \
