@@ -1,5 +1,5 @@
 QT += xml widgets
-TEMPLATE =  lib
+TEMPLATE = lib
 CONFIG += plugin
 
 include($$PWD/../../global.pri)
