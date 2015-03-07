@@ -1,5 +1,6 @@
 #include "pluginInterface.h"
-#include "../../../qrgui/editorPluginInterface/elementImpl.h"
+//#include "../../../qrgui/editorPluginInterface/elementImpl.h"
+#include "../../../qrgui/plugins/editorPluginInterface/elementImpl.h"
 #include "elements.h"
 
 
@@ -142,7 +143,13 @@ qReal::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(const QString &/
 
 QStringList @@MetamodelName@@Plugin::getPropertyNames(const QString &/*diagram*/, const QString &element) const
 {
-	return propertyTypes[element].keys();
+//	return propertyTypes[element].keys();
+//SUPER HARDCODE BEGINS
+	QStringList result;
+	if (element == "Ololo") {
+	}
+	return result;
+//SUPER HARDCODE ENDS
 }
 
 QStringList @@MetamodelName@@Plugin::getReferenceProperties(const QString &/*diagram*/, const QString &element) const

@@ -17,6 +17,7 @@ HEADERS += metaCompiler.h \
 
 
 
+
 SOURCES += metaCompiler.cpp \
 	diagram.cpp \
 	editor.cpp \
@@ -36,3 +37,11 @@ links(qrrepo)
 #    templates/plugins.pro.template \
 #    templates/pro.template \
 #    templates/utils.template
+
+OTHER_FILES += \
+	templates/edge.template \
+	templates/node.template \
+	templates/plugin.qrc.template \
+	templates/plugins.pro.template \
+	templates/pro.template \
+	templates/utils.template

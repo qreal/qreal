@@ -4,22 +4,26 @@
 @@NodeConstructor@@
 		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}
 
-                void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
-                                 qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
-	                         qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
+				void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
+								 qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
+							 qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
 
 		{
-@@NodeUnusedArgs@@
+//@@NodeUnusedArgs@@ //hardcode begins
+			Q_UNUSED(portFactory);
+			Q_UNUSED(ports);
+//hardcode ends
+
 			mRenderer = renderer;
 @@NodeLoadShapeRenderer@@
-@@NodeLoadPortsRenderer@@
+@@NodeLoadPortsRenderer@@ //SUPER HARDCODE (shape.cpp(162))
 @@NodeSetContents@@
 @@NodeInitPorts@@
 @@NodeInit@@
 
 //extremely temporary fixing
 		ports << portFactory.createPort(QPointF(0.994424, 0.54334), false, false, 538, 473, new NonTyped());
-                mRenderer->setElementRepo(elementRepo);
+				mRenderer->setElementRepo(elementRepo);
 
 		}
 
@@ -58,10 +62,10 @@
 			return @@IsSortContainer@@;
 		}
 
-                QVector<int> sizeOfForestalling() const
+				QVector<int> sizeOfForestalling() const
 		{
 			return @@SizeOfForestalling@@;
-		}       
+		}
 
 		int sizeOfChildrenForestalling() const
 		{
@@ -107,7 +111,7 @@
 		}
 
 
-//temporary fixing		
+//temporary fixing
 		QStringList fromPortTypes() const
 		{
 			return QStringList("NonTyped");
