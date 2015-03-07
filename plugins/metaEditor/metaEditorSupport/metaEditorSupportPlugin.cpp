@@ -97,7 +97,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 void MetaEditorSupportPlugin::generateEditorWithQrmc()
 {
-	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc", mLogicalRepoApi);
+	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../../qrmc", mLogicalRepoApi);
 
 	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
 
