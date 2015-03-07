@@ -1,6 +1,10 @@
+include(../../global.pri)
 TEMPLATE =  lib
 CONFIG += plugin
-DESTDIR = ../../../bin/plugins/editors
+
+#DESTDIR = ../../../bin/plugins/editors
+DESTDIR = ../../../bin/debug/plugins/editors
+
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj

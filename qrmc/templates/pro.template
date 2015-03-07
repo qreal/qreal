@@ -13,10 +13,10 @@ HEADERS += pluginInterface.h \
 
 #INCLUDEPATH += $$PWD/../../../qrgui/editorPluginInterface \
 INCLUDEPATH += $$PWD/../../../qrgui/plugins/editorPluginInterface \
-		$$PWD/../../../qrgui/plugins \ #fix inspired by need of plugins
-               $$PWD/../../../qrgui \
-               $$PWD/../../../qrkernel \
-               $$PWD/../../.. \
+		$$PWD/../../../qrgui/plugins \ 
+                $$PWD/../../../qrgui \
+                $$PWD/../../../qrkernel \
+                $$PWD/../../.. \
 
 RESOURCES += plugin.qrc
 
