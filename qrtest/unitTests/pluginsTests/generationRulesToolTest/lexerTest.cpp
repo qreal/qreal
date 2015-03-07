@@ -54,3 +54,4 @@ TEST_F(LexerTest, lexerTestForForeachExample) {
 	EXPECT_EQ(simpleParser::TokenTypes::newlineKeyword, lexerResult[20].token());
 	EXPECT_EQ(simpleParser::TokenTypes::text, lexerResult[21].token());
 }
+
