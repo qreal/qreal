@@ -4,6 +4,7 @@
 #include <QtCore/QString>
 
 #include <plugins/generationRulesTool/parser.h>
+#include <plugins/generationRulesTool/lexer.h>
 #include <gtest/gtest.h>
 
 namespace qrTest {
@@ -16,7 +17,10 @@ protected:
 	virtual void TearDown();
 
 	QScopedPointer<simpleParser::Parser> mParser;
-	QList<qrtext::core::Error> mErrors;
+	QScopedPointer<simpleParser::Lexer> mLexer;
+
+	QList<qrtext::core::Error> mParserErrors;
+	QList<qrtext::core::Error> mLexerErrors;
 };
 
 }
