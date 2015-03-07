@@ -1,7 +1,5 @@
 #include "lexerTest.h"
 
-#include <QtCore/QDebug>
-
 #include <plugins/generationRulesTool/tokenTypes.h>
 
 using namespace qrTest;
@@ -28,10 +26,6 @@ TEST_F(LexerTest, lexerTestForForeachExample) {
 	auto lexerResult = mLexer->tokenize(stream);
 
 	ASSERT_EQ(lexerResult.length(), 22);
-
-	for (qrtext::core::Token<simpleParser::TokenTypes> token : lexerResult) {
-		qDebug() << token.token();
-	}
 
 	EXPECT_EQ(simpleParser::TokenTypes::text, lexerResult[0].token());
 	EXPECT_EQ(simpleParser::TokenTypes::foreachKeyword, lexerResult[1].token());
