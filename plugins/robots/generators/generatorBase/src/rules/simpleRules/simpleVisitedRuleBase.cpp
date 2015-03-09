@@ -3,8 +3,8 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SimpleVisitedRuleBase::SimpleVisitedRuleBase(SemanticTree *tree, Id const &id
-		, LinkInfo const &next)
+SimpleVisitedRuleBase::SimpleVisitedRuleBase(SemanticTree *tree, const Id &id
+		, const LinkInfo &next)
 	: SimpleBlockRuleBase(tree, id, next)
 {
 }

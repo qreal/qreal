@@ -4,11 +4,11 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-int const sleepInterval = 10;
+const int sleepInterval = 10;
 
-WaitForSonarBlockGenerator::WaitForSonarBlockGenerator(qrRepo::RepoApi const &repo
+WaitForSonarBlockGenerator::WaitForSonarBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/sonar.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())

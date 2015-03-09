@@ -15,25 +15,25 @@ namespace converters {
 class ReservedVariablesConverter : public TemplateParametrizedConverter
 {
 public:
-	ReservedVariablesConverter(QString const &pathToTemplates
+	ReservedVariablesConverter(const QString &pathToTemplates
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelInterface const &robotModel
+			, const interpreterBase::robotModel::RobotModelInterface &robotModel
 			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
-			, simple::Binding::ConverterInterface const *inputPortConverter
-			, parts::DeviceVariables const &deviceVariables);
+			, const simple::Binding::ConverterInterface *inputPortConverter
+			, const parts::DeviceVariables &deviceVariables);
 
 	~ReservedVariablesConverter() override;
 
-	QString convert(QString const &variable) const override;
+	QString convert(const QString &variable) const override;
 
 protected:
-	virtual QString deviceExpression(interpreterBase::robotModel::PortInfo const &port) const;
+	virtual QString deviceExpression(const interpreterBase::robotModel::PortInfo &port) const;
 
 	qReal::ErrorReporterInterface &mErrorReporter;
-	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
+	const interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const mDevices;
-	simple::Binding::ConverterInterface const *mInputConverter;  // Takes ownership
-	parts::DeviceVariables const &mDeviceVariables;
+	const simple::Binding::ConverterInterface *mInputConverter;  // Takes ownership
+	const parts::DeviceVariables &mDeviceVariables;
 };
 
 }

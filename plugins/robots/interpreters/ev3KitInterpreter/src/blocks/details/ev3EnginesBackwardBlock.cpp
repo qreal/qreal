@@ -12,7 +12,7 @@ Ev3EnginesBackwardBlock::Ev3EnginesBackwardBlock(interpreterBase::robotModel::Ro
 
 void Ev3EnginesBackwardBlock::run()
 {
-	int const power = -eval<int>("Power");
+	const int power = -eval<int>("Power");
 
 	if (errorsOccured()) {
 		return;

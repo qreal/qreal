@@ -4,9 +4,9 @@ using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
 /// Timeout (in milliseconds) for sensor configuration.
-static int const configurationTimeout = 5000;
+static const int configurationTimeout = 5000;
 
-Device::Device(DeviceInfo const &info, PortInfo const &port)
+Device::Device(const DeviceInfo &info, const PortInfo &port)
 	: mInfo(info)
 	, mPort(port)
 {
@@ -15,12 +15,12 @@ Device::Device(DeviceInfo const &info, PortInfo const &port)
 	connect(&mConfigurationTimeoutTimer, &QTimer::timeout, this, &Device::configurationTimerTimeoutSlot);
 }
 
-PortInfo const &Device::port() const
+const PortInfo &Device::port() const
 {
 	return mPort;
 }
 
-DeviceInfo const &Device::deviceInfo() const
+const DeviceInfo &Device::deviceInfo() const
 {
 	return mInfo;
 }

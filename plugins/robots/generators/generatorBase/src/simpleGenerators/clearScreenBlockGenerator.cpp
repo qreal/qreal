@@ -5,9 +5,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-ClearScreenBlockGenerator::ClearScreenBlockGenerator(qrRepo::RepoApi const &repo
+ClearScreenBlockGenerator::ClearScreenBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "drawing/clearScreen.t", {}, parent)
 {

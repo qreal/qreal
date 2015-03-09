@@ -3,7 +3,7 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-InequalitySignConverter::InequalitySignConverter(QString const &pathToTemplates)
+InequalitySignConverter::InequalitySignConverter(const QString &pathToTemplates)
 	: DynamicPathConverter(pathToTemplates, "signs/@@DATA@@.t")
 {
 }

@@ -4,7 +4,7 @@
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Speaker::Speaker(DeviceInfo const &info, PortInfo const &port
+Speaker::Speaker(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 		: robotModel::parts::Ev3Speaker(info, port)
 		, mRobotCommunicator(robotCommunicator)
@@ -19,8 +19,8 @@ void Speaker::playTone(int volume, int frequency, int duration)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opSOUND;

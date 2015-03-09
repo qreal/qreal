@@ -9,7 +9,7 @@ namespace converters {
 class InequalitySignConverter : public DynamicPathConverter
 {
 public:
-	explicit InequalitySignConverter(QString const &pathToTemplates);
+	explicit InequalitySignConverter(const QString &pathToTemplates);
 };
 
 }

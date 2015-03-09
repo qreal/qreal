@@ -5,9 +5,9 @@
 
 using namespace nxt::simple;
 
-ClearScreenBlockGenerator::ClearScreenBlockGenerator(qrRepo::RepoApi const &repo
+ClearScreenBlockGenerator::ClearScreenBlockGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, static_cast<NxtGeneratorFactory *>(customizer.factory())->images().bmpFilesCount()

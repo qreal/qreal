@@ -93,6 +93,14 @@
     </message>
 </context>
 <context>
+    <name>trikKitInterpreter::blocks::details::WaitGamepadButtonBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/waitGamepadButtonBlock.cpp" line="26"/>
+        <source>Incorrect port for gamepad button %1</source>
+        <translation>Неверная кнопка Android-пульта %1</translation>
+    </message>
+</context>
+<context>
     <name>trikKitInterpreter::robotModel::parts::TrikCameraLineDetector</name>
     <message>
         <source>Camera Line Detector</source>
@@ -105,6 +113,46 @@
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikColorSensor.h" line="15"/>
         <source>Color Sensor</source>
         <translation>Сенсор цвета</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikGamepadButton</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadButton.h" line="14"/>
+        <source>Android Gamepad Button</source>
+        <translation>Кнопка Android-пульта</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikGamepadConnectionIndicator</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadConnectionIndicator.h" line="14"/>
+        <source>Android Gamepad Connection Indicator</source>
+        <translation>Индикатор подключения Android-пульта</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikGamepadPad</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadPad.h" line="15"/>
+        <source>Android Gamepad Pad</source>
+        <translation>Активная область Android-пульта</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikGamepadPadPressSensor</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadPadPressSensor.h" line="14"/>
+        <source>Android Gamepad Pad as Button</source>
+        <translation>Активная область Android-пульта как кнопка</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikGamepadWheel</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadWheel.h" line="15"/>
+        <source>Android Gamepad Wheel</source>
+        <translation>&quot;Руль&quot; Android-пульта</translation>
     </message>
 </context>
 <context>
@@ -175,7 +223,7 @@
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikShell.h" line="14"/>
         <source>Shell</source>
-        <translation type="unfinished">Командный интерпретатор</translation>
+        <translation>Командный интерпретатор</translation>
     </message>
 </context>
 <context>

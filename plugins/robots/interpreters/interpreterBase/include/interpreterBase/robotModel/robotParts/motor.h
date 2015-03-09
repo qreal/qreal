@@ -17,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Motor : public Device
 
 public:
 	/// Constructor, takes device type info and port on which this motor is configured.
-	Motor(DeviceInfo const &info, PortInfo const &port);
+	Motor(const DeviceInfo &info, const PortInfo &port);
 
 	/// Turn on a motor with given speed (commonly in range -100..100, but it may depend on concrete motor).
 	virtual void on(int speed);

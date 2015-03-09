@@ -5,9 +5,9 @@
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-PlayToneGenerator::PlayToneGenerator(qrRepo::RepoApi const &repo
+PlayToneGenerator::PlayToneGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "playTone.t"

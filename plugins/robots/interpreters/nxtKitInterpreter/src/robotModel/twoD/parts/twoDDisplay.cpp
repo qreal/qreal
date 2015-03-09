@@ -3,8 +3,8 @@
 using namespace nxtKitInterpreter::robotModel::twoD::parts;
 using namespace interpreterBase::robotModel;
 
-Display::Display(DeviceInfo const &info
-		, PortInfo const &port
+Display::Display(const DeviceInfo &info
+		, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::NxtDisplay(info, port)
 	, mEngine(engine)
@@ -36,7 +36,7 @@ void Display::drawCircle(int x, int y, int radius)
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::printText(int x, int y, QString const &text)
+void Display::printText(int x, int y, const QString &text)
 {
 	mStringPlaces << QPoint(x, y);
 	mStrings << text;
@@ -57,15 +57,15 @@ void Display::clearScreen()
 void Display::paint(QPainter *painter)
 {
 	/// @todo ZOMG.
-	qreal const pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
-	qreal const pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
+	const qreal pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
+	const qreal pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
 
 	QPen pen;
 	QFont font;
 	font.setPixelSize(pixHeight * textPixelHeight);
 
 	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
-	foreach (QPoint const &point, mPoints) {
+	foreach (const QPoint &point, mPoints) {
 		painter->drawRect(point.x() * pixWidth, point.y() * pixHeight, pixWidth, pixHeight);
 	}
 
@@ -74,23 +74,23 @@ void Display::paint(QPainter *painter)
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
 
-	foreach (QLine const &line, mLines) {
+	foreach (const QLine &line, mLines) {
 		painter->drawLine(line.x1() * pixWidth, line.y1() * pixHeight, line.x2() * pixWidth, line.y2() * pixHeight);
 	}
 
-	foreach (QRect const &circle, mCircles) {
+	foreach (const QRect &circle, mCircles) {
 		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
 	}
 
-	foreach (QRect const &rect, mRects) {
+	foreach (const QRect &rect, mRects) {
 		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
 	}
 
 	QListIterator<QString> strings(mStrings);
 	QListIterator<QPoint> strPlaces(mStringPlaces);
 	while (strings.hasNext() && strPlaces.hasNext()) {
-		QString const str = strings.next();
-		QPoint const place = strPlaces.next();
+		const QString str = strings.next();
+		const QPoint place = strPlaces.next();
 		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
 				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
 	}

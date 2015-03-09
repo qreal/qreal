@@ -3,10 +3,10 @@
 using namespace twoDModel::items;
 using namespace graphicsUtils;
 
-int const currentResizeDrift = resizeDrift;
-int const currentDrift = drift / 2;
+const int currentResizeDrift = resizeDrift;
+const int currentDrift = drift / 2;
 
-EllipseItem::EllipseItem(QPointF const &begin, QPointF const &end)
+EllipseItem::EllipseItem(const QPointF &begin, const QPointF &end)
 	: mEllipseImpl()
 {
 	mPen.setColor(Qt::black);
@@ -43,9 +43,10 @@ void EllipseItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	mEllipseImpl.drawEllipseItem(painter, mX1, mY1, mX2, mY2);
 }
 
-QDomElement EllipseItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
+QDomElement EllipseItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement ellipseNode = setPenBrushToDoc(document, "ellipse");
+	AbstractItem::serialize(ellipseNode);
 	ellipseNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
 			 + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
 	ellipseNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
@@ -53,23 +54,31 @@ QDomElement EllipseItem::serialize(QDomDocument &document, QPoint const &topLeft
 	return ellipseNode;
 }
 
-void EllipseItem::deserialize(QDomElement const &element)
+void EllipseItem::deserialize(const QDomElement &element)
 {
-	QString const beginStr = element.attribute("begin", "0:0");
+	AbstractItem::deserialize(element);
+	const QString beginStr = element.attribute("begin", "0:0");
 	QStringList splittedStr = beginStr.split(":");
 	int x = splittedStr[0].toInt();
 	int y = splittedStr[1].toInt();
-	QPointF const begin = QPointF(x, y);
+	const QPointF begin = QPointF(x, y);
 
-	QString const endStr = element.attribute("end", "0:0");
+	const QString endStr = element.attribute("end", "0:0");
 	splittedStr = endStr.split(":");
 	x = splittedStr[0].toInt();
 	y = splittedStr[1].toInt();
-	QPointF const end = QPointF(x, y);
+	const QPointF end = QPointF(x, y);
 
 	mX1 = begin.x();
 	mY1 = begin.y();
 	mX2 = end.x();
 	mY2 = end.y();
 	readPenBrush(element);
+}
+
+QPainterPath EllipseItem::shape() const
+{
+	QPainterPath result;
+	result.addEllipse(boundingRect());
+	return result;
 }

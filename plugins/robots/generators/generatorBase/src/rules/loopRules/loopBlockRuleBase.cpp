@@ -3,8 +3,8 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-LoopBlockRuleBase::LoopBlockRuleBase(SemanticTree *tree, Id const &id
-		, LinkInfo const &iterationLink, LinkInfo const &nextLink)
+LoopBlockRuleBase::LoopBlockRuleBase(SemanticTree *tree, const Id &id
+		, const LinkInfo &iterationLink, const LinkInfo &nextLink)
 	: SemanticTransformationRule(tree, id)
 	, mIterationLink(iterationLink)
 	, mNextLink(nextLink)

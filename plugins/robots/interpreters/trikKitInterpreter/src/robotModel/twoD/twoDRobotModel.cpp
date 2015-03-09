@@ -32,7 +32,7 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 {
 }
 
-robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Display>()) {
 		return new parts::Display(deviceInfo, port, *engine());
@@ -97,29 +97,33 @@ twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget
 	return new TrikDisplayWidget(parent);
 }
 
-QString TwoDRobotModel::sensorImagePath(DeviceInfo const &deviceType) const
+QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
 {
 	if (deviceType.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
 		return ":icons/twoDColorEmpty.svg";
+	} else if (deviceType.isA<robotModel::parts::TrikInfraredSensor>()) {
+		return ":icons/twoDIrRangeSensor.svg";
+	} else if (deviceType.isA<robotModel::parts::TrikSonarSensor>()) {
+		return ":icons/twoDUsRangeSensor.svg";
 	}
 
 	return QString();
 }
 
-void TwoDRobotModel::setWheelPorts(QString const &leftWheelPort, QString const &rightWheelPort)
+void TwoDRobotModel::setWheelPorts(const QString &leftWheelPort, const QString &rightWheelPort)
 {
 	mLeftWheelPort = leftWheelPort;
 	mRightWheelPort = rightWheelPort;
 }
 
-QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+QRect TwoDRobotModel::sensorImageRect(const interpreterBase::robotModel::DeviceInfo &deviceType) const
 {
 	if (deviceType.isA<robotParts::LightSensor>()) {
 		return QRect(-6, -6, 12, 12);
-	}
-
-	if (deviceType.isA<robotParts::RangeSensor>()) {
-		return QRect(-20, -10, 40, 20);;
+	} else if (deviceType.isA<robotModel::parts::TrikInfraredSensor>()) {
+		return QRect(-18, -18, 36, 36);
+	} else if (deviceType.isA<robotModel::parts::TrikSonarSensor>()) {
+		return QRect(-18, -18, 36, 36);
 	}
 
 	return QRect();

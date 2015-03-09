@@ -9,9 +9,9 @@ namespace simple {
 class NullGenerator : public AbstractSimpleGenerator
 {
 public:
-	NullGenerator(qrRepo::RepoApi const &repo
+	NullGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 
 	virtual QString generate();

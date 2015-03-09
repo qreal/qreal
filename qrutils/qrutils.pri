@@ -1,26 +1,3 @@
-QT += xml widgets
-
-CONFIG += c++11
-
-INCLUDEPATH += \
-	$$PWD \
-	$$PWD/.. \
-	$$PWD/../qrgui \
-	$$PWD/../qrtext/include \
-
-LIBS += -L$$PWD/../bin -lqrkernel -lqslog -lqrtext
-
-# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-!macx {
-	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
-}
-
-DEFINES += QRUTILS_LIBRARY
-
-RESOURCES = $$PWD/qrutils.qrc
-
 HEADERS += \
 	$$PWD/outFile.h \
 	$$PWD/utilsDeclSpec.h \
@@ -37,6 +14,7 @@ HEADERS += \
 	$$PWD/qRealFileDialog.h \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
+	$$PWD/parserErrorReporter.h \
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
@@ -54,10 +32,23 @@ SOURCES += \
 	$$PWD/qRealFileDialog.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
+	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui
+
+RESOURCES = $$PWD/qrutils.qrc
+
+TRANSLATIONS = $$PWD/../qrtranslations/ru/qrutils_ru.ts
+
+QT += xml widgets
+
+includes(qrtext)
+
+links(qrkernel qslog qrtext)
+
+DEFINES += QRUTILS_LIBRARY
 
 # Files for parsing of expressions on diagrams
 include($$PWD/expressionsParser/expressionsParser.pri)

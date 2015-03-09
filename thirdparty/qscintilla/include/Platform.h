@@ -460,7 +460,7 @@ class DynamicLibrary {
 public:
 	virtual ~DynamicLibrary() {}
 
-	/// @return Pointer to function "name", or NULL on failure.
+	/// @return Pointer to function "name", or nullptr on failure.
 	virtual Function FindFunction(const char *name) = 0;
 
 	/// @return true if the library was loaded successfully.

@@ -25,19 +25,19 @@
 using namespace twoDModel::robotModel;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+TwoDRobotModel::TwoDRobotModel(const RobotModelInterface &realModel)
 	: CommonRobotModel(realModel.kitId(), realModel.robotId())
 	, mRealModel(&realModel)
 	, mEngine(nullptr)
 {
-	for (PortInfo const &port : realModel.availablePorts()) {
+	for (const PortInfo &port : realModel.availablePorts()) {
 		addAllowedConnection(port, realModel.allowedDevices(port));
 	}
 
 	addAllowedConnection(PortInfo("MarkerPort", output), { markerInfo() });
 }
 
-TwoDRobotModel::TwoDRobotModel(QString const &robotId)
+TwoDRobotModel::TwoDRobotModel(const QString &robotId)
 	:CommonRobotModel("", robotId)
 	, mRealModel(nullptr)
 	, mEngine(nullptr)
@@ -52,7 +52,7 @@ QString TwoDRobotModel::name() const
 QString TwoDRobotModel::friendlyName() const
 {
 	QRegExp versionRegExp("\\(.*\\)");
-	int const pos = versionRegExp.indexIn(mRealModel->friendlyName());
+	const int pos = versionRegExp.indexIn(mRealModel->friendlyName());
 	if (pos == -1) {
 		return tr("2D Model");
 	}
@@ -90,7 +90,7 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 	mEngine = &engine;
 }
 
-robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Button>()) {
 		return new parts::Button(deviceInfo, port, *mEngine);
@@ -148,7 +148,6 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::Marker(deviceInfo, port, *mEngine);
 	}
 
-	qDebug() << "Unknown device " + deviceInfo.toString() + " requested on port " + port.name();
 	return nullptr;
 }
 

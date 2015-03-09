@@ -28,15 +28,15 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlI
 
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
+	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
 
 	~TwoDModelEngineFacade();
 
-	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEvents const &systemEvents
+	void init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+			, const qReal::SystemEvents &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+			, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
@@ -49,7 +49,7 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
-	QString const mRobotModelName;
+	const QString mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 
 	QScopedPointer<model::Model> mModel;

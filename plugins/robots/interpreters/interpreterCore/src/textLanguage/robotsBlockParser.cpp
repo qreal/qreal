@@ -1,4 +1,4 @@
-#include "robotsBlockParser.h"
+#include "interpreterCore/textLanguage/robotsBlockParser.h"
 
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
@@ -7,13 +7,13 @@ using namespace qReal;
 using namespace interpreterCore::textLanguage;
 using namespace qrtext::lua;
 
-QString const sensorVariablePerfix = QObject::tr("sensor");
-QString const encoderVariablePerfix = QObject::tr("encoder");
-QString const timeVariableName = QObject::tr("time");
+const QString sensorVariablePerfix = QObject::tr("sensor");
+const QString encoderVariablePerfix = QObject::tr("encoder");
+const QString timeVariableName = QObject::tr("time");
 
 RobotsBlockParser::RobotsBlockParser(
-		interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, utils::ComputableNumber::IntComputer const &timeComputer)
+		const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const utils::ComputableNumber::IntComputer &timeComputer)
 	: qrtext::lua::LuaToolbox()
 	, mRobotModelManager(robotModelManager)
 	, mTimeComputer(timeComputer)
@@ -28,32 +28,36 @@ RobotsBlockParser::RobotsBlockParser(
 
 void RobotsBlockParser::setReservedVariables()
 {
-	/// @todo Remove old reserved variables for old model.
 	qrtext::lua::LuaToolbox::clear();
 
 	setVariableValue("pi", 3.14159265);
 	markAsSpecialConstant("pi");
 
-	for (interpreterBase::robotModel::PortInfo const &port : mRobotModelManager.model().availablePorts()) {
+	for (const interpreterBase::robotModel::PortInfo &port : mRobotModelManager.model().availablePorts()) {
 		setVariableValue(port.name(), QString("'%1'").arg(port.name()));
 
 		markAsSpecial(port.name());
 		mHiddenVariables << port.name();
 
-		for (QString const &alias : port.nameAliases()) {
+		for (const QString &alias : port.nameAliases()) {
 			setVariableValue(alias, port.name());
 			markAsSpecial(alias);
 			mHiddenVariables << alias;
 		}
 
 		if (!port.reservedVariable().isEmpty()) {
-			setVariableValue(port.reservedVariable(), 0);
+			if (port.reservedVariableType() == interpreterBase::robotModel::PortInfo::ReservedVariableType::scalar) {
+				setVariableValue(port.reservedVariable(), 0);
+			} else {
+				setVectorVariableValue(port.reservedVariable(), QVector<int>());
+			}
+
 			markAsSpecial(port.reservedVariable());
 		}
 	}
 }
 
-QStringList const &RobotsBlockParser::hiddenVariables() const
+const QStringList &RobotsBlockParser::hiddenVariables() const
 {
 	return mHiddenVariables;
 }
@@ -65,50 +69,50 @@ void RobotsBlockParser::clear()
 
 void RobotsBlockParser::addIntrinsicFuctions()
 {
-	auto const add0aryFunction = [this] (QString const &name
+	const auto add0aryFunction = [this] (const QString &name
 			, qrtext::core::types::TypeExpression * const returnType
 			, std::function<QVariant()> const &function)
 	{
 		addIntrinsicFunction(name, returnType
 				, {}
-				, [function] (QList<QVariant> const &params) {
+				, [function] (const QList<QVariant> &params) {
 						Q_UNUSED(params);
 						return function();
 				});
 	};
 
-	auto const add1aryFunction = [this] (QString const &name
+	const auto add1aryFunction = [this] (const QString &name
 			, qrtext::core::types::TypeExpression * const returnType
 			, qrtext::core::types::TypeExpression * const argumentType
 			, std::function<QVariant(QVariant)> const &function)
 	{
 		addIntrinsicFunction(name, returnType
 				, {argumentType}
-				, [function] (QList<QVariant> const &params) {
+				, [function] (const QList<QVariant> &params) {
 						Q_ASSERT(!params.isEmpty());
 						return function(params.first());
 				});
 	};
 
-	auto const addFloatFunction = [this, add1aryFunction] (QString const &name
+	const auto addFloatFunction = [this, add1aryFunction] (const QString &name
 			, std::function<double(double)> const &function)
 	{
 		add1aryFunction(name, new types::Float, new types::Float
-				, [function](QVariant const &arg) { return function(arg.toDouble()); });
+				, [function](const QVariant &arg) { return function(arg.toDouble()); });
 	};
 
-	auto const addIntegerFunction = [this, add1aryFunction] (QString const &name
+	const auto addIntegerFunction = [this, add1aryFunction] (const QString &name
 			, std::function<double(double)> const &function)
 	{
 		add1aryFunction(name, new types::Integer, new types::Integer
-				, [function](QVariant const &arg) { return function(arg.toInt()); });
+				, [function](const QVariant &arg) { return function(arg.toInt()); });
 	};
 
-	auto const addFloatToIntegerFunction = [this, add1aryFunction] (QString const &name
+	const auto addFloatToIntegerFunction = [this, add1aryFunction] (const QString &name
 			, std::function<int(double)> const &function)
 	{
 		add1aryFunction(name, new types::Integer(), new types::Float()
-				, [function](QVariant const &arg) { return function(arg.toDouble()); });
+				, [function](const QVariant &arg) { return function(arg.toDouble()); });
 	};
 
 	add0aryFunction("time", new types::Integer(), [this]() { return mTimeComputer(); });

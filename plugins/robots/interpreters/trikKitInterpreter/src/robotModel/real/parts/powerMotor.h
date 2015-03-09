@@ -13,8 +13,8 @@ class PowerMotor : public robotModel::parts::TrikPowerMotor
 	Q_OBJECT
 
 public:
-	PowerMotor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	PowerMotor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void on(int speed) override;

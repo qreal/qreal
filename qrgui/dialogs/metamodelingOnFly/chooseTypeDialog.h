@@ -23,7 +23,7 @@ public:
 	/// Constructor.
 	/// @param diagram Id of a diagram to which we will add new node or edge.
 	/// @param editorManagerProxy Editor manager.
-	ChooseTypeDialog(Id const &diagram, EditorManagerInterface const &editorManagerProxy, QWidget *parent = 0);
+	ChooseTypeDialog(const Id &diagram, const EditorManagerInterface &editorManagerProxy, QWidget *parent = 0);
 
 	/// Destructor.
 	~ChooseTypeDialog();
@@ -37,8 +37,8 @@ private slots:
 
 private:
 	Ui::ChooseTypeDialog *mUi;
-	Id const mDiagram;
-	EditorManagerInterface const &mEditorManagerProxy;
+	const Id mDiagram;
+	const EditorManagerInterface &mEditorManagerProxy;
 };
 
 }

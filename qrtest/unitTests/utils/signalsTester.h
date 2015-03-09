@@ -38,7 +38,7 @@ public:
 	///        error messages.
 	template <typename Func>
 	void expectSignal(typename QtPrivate::FunctionPointer<Func>::Object *sender
-			, Func signal, QString const &signalName)
+			, Func signal, const QString &signalName)
 	{
 		details::FakeSender *fakeSender = new details::FakeSender();
 		connect(sender, signal, fakeSender, &details::FakeSender::receive);
@@ -52,7 +52,7 @@ public:
 	}
 
 	/// Returns true if given signal was expected and already emitted.
-	bool isSignalEmitted(QString const &signalName) const;
+	bool isSignalEmitted(const QString &signalName) const;
 
 	/// Returns true, if all expected signals were emitted.
 	bool allIsGood() const;
@@ -62,7 +62,7 @@ public:
 	void wait(int timeout);
 
 private slots:
-	void onSignal(QString const &signalName);
+	void onSignal(const QString &signalName);
 	void onTimeout();
 
 private:

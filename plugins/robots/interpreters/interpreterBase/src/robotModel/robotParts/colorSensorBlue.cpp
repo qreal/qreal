@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-ColorSensorBlue::ColorSensorBlue(DeviceInfo const &info, PortInfo const &port)
+ColorSensorBlue::ColorSensorBlue(const DeviceInfo &info, const PortInfo &port)
 	: ColorSensor(info, port)
 {
 }

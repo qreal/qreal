@@ -13,7 +13,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT WaitForSonarDistanceBlock : public WaitForS
 
 public:
 	/// Constructor, takes current robot model as parameter.
-	WaitForSonarDistanceBlock(robotModel::RobotModelInterface &robotModel, robotModel::DeviceInfo const &device);
+	WaitForSonarDistanceBlock(robotModel::RobotModelInterface &robotModel, const robotModel::DeviceInfo &device);
 
 protected slots:
 	void responseSlot(int reading) override;
@@ -22,7 +22,7 @@ protected:
 	interpreterBase::robotModel::DeviceInfo device() const override;
 
 private:
-	interpreterBase::robotModel::DeviceInfo const mDevice;
+	const interpreterBase::robotModel::DeviceInfo mDevice;
 };
 
 }

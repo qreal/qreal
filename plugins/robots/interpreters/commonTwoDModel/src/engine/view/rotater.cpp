@@ -34,7 +34,7 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	mDrift = drift > mMaster->horizontalRadius() ? drift / 2 : drift;
 	mResizeDrift = drift > mMaster->horizontalRadius() ? resizeDrift / 2 : resizeDrift;
 
-	QRectF const rect = mMaster->rect();
+	const QRectF rect = mMaster->rect();
 
 	mMaster->setFlag(ItemClipsToShape, false);
 	setParentItem(mMaster);
@@ -54,13 +54,13 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 
 	painter->setOpacity(0.5);
 	const int addLength = mLength / 3;
-	qreal const angle = addAngle;
+	const qreal angle = addAngle;
 	// Must be equal to mLength
-	qreal const checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
-	qreal const x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
-	qreal const y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
-	QPointF const first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
-	QPointF const second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
+	const qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
+	const qreal x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
+	const qreal y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
+	const QPointF first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
+	const QPointF second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
 
 	mLineImpl.drawItem(painter, mX1, mY1, mX2, mY2);
 	mLineImpl.drawItem(painter, mX2, mY2, first.x(), first.y());
@@ -93,32 +93,32 @@ QRectF Rotater::boundingRect() const
 
 void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
-	QPointF const masterCenter(mMaster->mapToScene(mMaster->rect().center()));
-	QPointF const zeroRotationVector(mLength, 0);
+	const QPointF masterCenter(mMaster->mapToScene(mMaster->rect().center()));
+	const QPointF zeroRotationVector(mLength, 0);
 
-	qreal const mouseX = event->scenePos().x() - masterCenter.x();
-	qreal const mouseY = event->scenePos().y() - masterCenter.y();
+	const qreal mouseX = event->scenePos().x() - masterCenter.x();
+	const qreal mouseY = event->scenePos().y() - masterCenter.y();
 
 	// Master rotation is signed angle between initial and mouse vector.
 	// Calculating it from theese vectors product and cosine theorem
-	qreal const vectorProduct = zeroRotationVector.x() * mouseY
+	const qreal vectorProduct = zeroRotationVector.x() * mouseY
 			- zeroRotationVector.y() * mouseX;
-	qreal const mouseVectorLength = sqrt(mouseX * mouseX + mouseY * mouseY);
+	const qreal mouseVectorLength = sqrt(mouseX * mouseX + mouseY * mouseY);
 	if (mouseVectorLength < EPS) {
 		return;
 	}
 
-	qreal const translationX = mouseX - zeroRotationVector.x();
-	qreal const translationY = mouseY - zeroRotationVector.y();
-	qreal const translation = translationX * translationX + translationY * translationY;
+	const qreal translationX = mouseX - zeroRotationVector.x();
+	const qreal translationY = mouseY - zeroRotationVector.y();
+	const qreal translation = translationX * translationX + translationY * translationY;
 
-	qreal const sin = vectorProduct / (mouseVectorLength * mLength);
-	bool const cosIsNegative = mouseVectorLength * mouseVectorLength + mLength * mLength < translation;
+	const qreal sin = vectorProduct / (mouseVectorLength * mLength);
+	const bool cosIsNegative = mouseVectorLength * mouseVectorLength + mLength * mLength < translation;
 
-	qreal const angleInWrongQuarter = asin(sin);
-	qreal const angle = cosIsNegative ? M_PI - angleInWrongQuarter : angleInWrongQuarter;
+	const qreal angleInWrongQuarter = asin(sin);
+	const qreal angle = cosIsNegative ? M_PI - angleInWrongQuarter : angleInWrongQuarter;
 
-	qreal const masterAngleCompensation = mMaster->parentItem()
+	const qreal masterAngleCompensation = mMaster->parentItem()
 			? mMaster->parentItem()->rotation()
 			: 0.0;
 
@@ -163,4 +163,9 @@ void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	if (mDragState == BottomRight) {
 		AbstractItem::mouseReleaseEvent(event);
 	}
+}
+
+void Rotater::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QGraphicsItem::contextMenuEvent(event);
 }

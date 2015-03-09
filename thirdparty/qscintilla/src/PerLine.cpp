@@ -168,12 +168,12 @@ int LineMarkers::LineFromHandle(int markerHandle) {
 }
 
 void LineMarkers::MergeMarkers(int pos) {
-	if (markers[pos + 1] != NULL) {
-		if (markers[pos] == NULL)
+	if (markers[pos + 1] != nullptr) {
+		if (markers[pos] == nullptr)
 			markers[pos] = new MarkerHandleSet;
 		markers[pos]->CombineWith(markers[pos + 1]);
 		delete markers[pos + 1];
-		markers[pos + 1] = NULL;
+		markers[pos + 1] = nullptr;
 	}
 }
 
@@ -223,12 +223,12 @@ bool LineMarkers::DeleteMark(int line, int markerNum, bool all) {
 		if (markerNum == -1) {
 			someChanges = true;
 			delete markers[line];
-			markers[line] = NULL;
+			markers[line] = nullptr;
 		} else {
 			someChanges = markers[line]->RemoveNumber(markerNum, all);
 			if (markers[line]->Length() == 0) {
 				delete markers[line];
-				markers[line] = NULL;
+				markers[line] = nullptr;
 			}
 		}
 	}
@@ -241,7 +241,7 @@ void LineMarkers::DeleteMarkFromHandle(int markerHandle) {
 		markers[line]->RemoveHandle(markerHandle);
 		if (markers[line]->Length() == 0) {
 			delete markers[line];
-			markers[line] = NULL;
+			markers[line] = nullptr;
 		}
 	}
 }

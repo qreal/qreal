@@ -3,7 +3,7 @@
 using namespace trikKitInterpreter::robotModel::twoD::parts;
 using namespace interpreterBase::robotModel;
 
-ObjectSensor::ObjectSensor(DeviceInfo const &info, PortInfo const &port)
+ObjectSensor::ObjectSensor(const DeviceInfo &info, const PortInfo &port)
 	: robotModel::parts::TrikObjectSensor(info, port)
 {
 }

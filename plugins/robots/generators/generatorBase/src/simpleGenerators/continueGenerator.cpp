@@ -3,9 +3,9 @@
 using namespace generatorBase::simple;
 using namespace qReal;
 
-ContinueGenerator::ContinueGenerator(qrRepo::RepoApi const &repo
+ContinueGenerator::ContinueGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "continue.t", QList<Binding *>(), parent)
 {

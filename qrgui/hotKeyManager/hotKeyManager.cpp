@@ -25,24 +25,24 @@ HotKeyManager& HotKeyManager::instance()
 	return instance;
 }
 
-void HotKeyManager::setCommand(QString const &id, QString const &label, QAction *command)
+void HotKeyManager::setCommand(const QString &id, const QString &label, QAction *command)
 {
 	command->setWhatsThis(label);
 	instance().registerCommand(id, command);
 }
 
-void HotKeyManager::deleteCommand(QString const &id)
+void HotKeyManager::deleteCommand(const QString &id)
 {
 	resetShortcuts(id);
 	instance().deleteCommandPrivate(id);
 }
 
-bool HotKeyManager::setShortcut(QString const &id, QKeySequence const &keyseq)
+bool HotKeyManager::setShortcut(const QString &id, const QKeySequence &keyseq)
 {
 	return instance().registerShortcut(id, keyseq);
 }
 
-void HotKeyManager::resetShortcuts(QString const &id)
+void HotKeyManager::resetShortcuts(const QString &id)
 {
 	instance().resetShortcutsPrivate(id);
 }
@@ -67,21 +67,21 @@ QHash<QString, QString> HotKeyManager::shortcuts()
 	return instance().shortcutsPrivate();
 }
 
-void HotKeyManager::registerCommand(QString const &id, QAction *command)
+void HotKeyManager::registerCommand(const QString &id, QAction *command)
 {
 	QList<QKeySequence> const shortcuts = command->shortcuts();
 
-	foreach (QKeySequence const &shortcut, shortcuts) {
+	foreach (const QKeySequence &shortcut, shortcuts) {
 		instance().registerShortcut(id, shortcut.toString());
 	}
 
 	mCommands[id] = command;
 }
 
-bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &keyseq)
+bool HotKeyManager::registerShortcut(const QString &id, const QKeySequence &keyseq)
 {
 	if (mCommands.contains(id)) {
-		QString const shortcut = keyseq.toString();
+		const QString shortcut = keyseq.toString();
 
 		if (!hasPrefixOf(shortcut)) {
 			addPrefixes(shortcut);
@@ -93,7 +93,7 @@ bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &keys
 	return false;
 }
 
-void HotKeyManager::registerShortcut(QString const &id, QString const &shortcut)
+void HotKeyManager::registerShortcut(const QString &id, const QString &shortcut)
 {
 	if (!hasPrefixOf(shortcut)) {
 		addPrefixes(shortcut);
@@ -101,19 +101,19 @@ void HotKeyManager::registerShortcut(QString const &id, QString const &shortcut)
 	}
 }
 
-void HotKeyManager::findShortcut(QString const &shortcut)
+void HotKeyManager::findShortcut(const QString &shortcut)
 {
 	if (mShortcuts.contains(shortcut) && mCommands[mShortcuts.value(shortcut)]->parentWidget()->isActiveWindow()) {
 		mCommands[mShortcuts.value(shortcut)]->trigger();
 	}
 }
 
-void HotKeyManager::resetShortcutsPrivate(QString const &id)
+void HotKeyManager::resetShortcutsPrivate(const QString &id)
 {
 	if (mCommands.contains(id)) {
-		QStringList const shortcuts = mShortcuts.keys(id);
+		const QStringList shortcuts = mShortcuts.keys(id);
 
-		foreach (QString const &shortcut, shortcuts) {
+		foreach (const QString &shortcut, shortcuts) {
 			deletePrefixes(shortcut);
 			mShortcuts.remove(shortcut);
 		}
@@ -145,7 +145,7 @@ void HotKeyManager::deleteShortcutPrivate(const QString &id, const QString &shor
 	mCommands[id]->setShortcuts(shortcuts);
 }
 
-void HotKeyManager::deleteCommandPrivate(QString const &id)
+void HotKeyManager::deleteCommandPrivate(const QString &id)
 {
 	if (mCommands.contains(id)) {
 		mCommands.remove(id);
@@ -162,13 +162,13 @@ QHash<QString, QString> HotKeyManager::shortcutsPrivate()
 	return mShortcuts;
 }
 
-bool HotKeyManager::hasPrefixOf(QString const &keyseq)
+bool HotKeyManager::hasPrefixOf(const QString &keyseq)
 {
 	if (!mPrefixes.contains(keyseq)) {
-		QStringList const seqlist = keyseq.split(", ");
+		const QStringList seqlist = keyseq.split(", ");
 		QString prefix;
 
-		foreach (QString const &seq, seqlist) {
+		foreach (const QString &seq, seqlist) {
 			prefix += seq;
 			if (mShortcuts.contains(prefix)) {
 				return true;
@@ -180,12 +180,12 @@ bool HotKeyManager::hasPrefixOf(QString const &keyseq)
 	return true;
 }
 
-void HotKeyManager::addPrefixes(QString const &keyseq)
+void HotKeyManager::addPrefixes(const QString &keyseq)
 {
-	QStringList const seqlist = keyseq.split(", ");
+	const QStringList seqlist = keyseq.split(", ");
 	QString prefix;
 
-	foreach (QString const &seq, seqlist) {
+	foreach (const QString &seq, seqlist) {
 		prefix += seq;
 		if (mPrefixes.contains(prefix)) {
 			++mPrefixes[prefix];
@@ -196,12 +196,12 @@ void HotKeyManager::addPrefixes(QString const &keyseq)
 	}
 }
 
-void HotKeyManager::deletePrefixes(QString const &keyseq)
+void HotKeyManager::deletePrefixes(const QString &keyseq)
 {
-	QStringList const seqlist = keyseq.split(", ");
+	const QStringList seqlist = keyseq.split(", ");
 	QString prefix;
 
-	foreach (QString const &seq, seqlist) {
+	foreach (const QString &seq, seqlist) {
 		prefix += seq;
 		--mPrefixes[prefix];
 		if (mPrefixes.value(prefix) == 0) {

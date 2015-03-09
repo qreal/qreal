@@ -9,7 +9,7 @@ ProgressDialog::ProgressDialog(QWidget *parent)
 	setBar(mProgressBar);
 	connect(this, SIGNAL(canceled()), this, SLOT(onCanceled()));
 
-	QString const text = tr("Please wait...");
+	const QString text = tr("Please wait...");
 	setLabelText(text);
 }
 

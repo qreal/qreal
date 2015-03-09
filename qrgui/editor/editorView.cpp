@@ -9,13 +9,13 @@
 
 using namespace qReal;
 
-int const zoomAnimationInterval = 20;
-int const zoomAnimationTimes = 4;
+const int zoomAnimationInterval = 20;
+const int zoomAnimationTimes = 4;
 
-EditorView::EditorView(models::Models const &models
+EditorView::EditorView(const models::Models &models
 		, Controller &controller
-		, SceneCustomizer const &customizer
-		, Id const &rootId
+		, const SceneCustomizer &customizer
+		, const Id &rootId
 		, QWidget *parent)
 	: QGraphicsView(parent)
 	, mScene(models, controller, customizer, rootId, this)
@@ -29,7 +29,7 @@ EditorView::EditorView(models::Models const &models
 	connect(&mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(&mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 	connect(&mScene, &EditorViewScene::sceneRectChanged, this
-			, static_cast<void (EditorView::*)(QRectF const &)>(&EditorView::setSceneRect));
+			, static_cast<void (EditorView::*)(const QRectF &)>(&EditorView::setSceneRect));
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
@@ -53,7 +53,7 @@ EditorView::EditorView(models::Models const &models
 	addActions(mScene.editorActions());
 }
 
-EditorViewMViface const &EditorView::mvIface() const
+const EditorViewMViface &EditorView::mvIface() const
 {
 	return mMVIface;
 }
@@ -76,7 +76,7 @@ void EditorView::focusInEvent(QFocusEvent *event)
 	mScene.setActionsEnabled(true);
 }
 
-EditorViewScene const &EditorView::editorViewScene() const
+const EditorViewScene &EditorView::editorViewScene() const
 {
 	return mScene;
 }
@@ -133,9 +133,9 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
 	if (mWheelPressed) {
 		if (mMouseOldPosition != QPointF()) {
-			qreal const scaleFactor = transform().m11();
-			qreal const dx = (event->localPos().x() - mMouseOldPosition.x()) / scaleFactor;
-			qreal const dy = (event->localPos().y() - mMouseOldPosition.y()) / scaleFactor;
+			const qreal scaleFactor = transform().m11();
+			const qreal dx = (event->localPos().x() - mMouseOldPosition.x()) / scaleFactor;
+			const qreal dy = (event->localPos().y() - mMouseOldPosition.y()) / scaleFactor;
 			viewport()->scroll(dx, dy);
 			scene()->update();
 		}
@@ -234,18 +234,18 @@ bool EditorView::viewportEvent(QEvent *event)
 	return QGraphicsView::viewportEvent(event);
 }
 
-void EditorView::ensureElementVisible(Element const * const element)
+void EditorView::ensureElementVisible(const Element * const element)
 {
 	if (element) {
-		qreal const widgetWidth = size().width();
-		qreal const widgetHeight = size().height();
-		qreal const elementWidth = element->boundingRect().width();
-		qreal const elementHeight = element->boundingRect().height();
+		const qreal widgetWidth = size().width();
+		const qreal widgetHeight = size().height();
+		const qreal elementWidth = element->boundingRect().width();
+		const qreal elementHeight = element->boundingRect().height();
 		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
 	}
 }
 
-void EditorView::ensureElementVisible(Element const * const element
+void EditorView::ensureElementVisible(const Element * const element
 		, int xMargin, int yMargin)
 {
 	if (element) {
@@ -255,13 +255,13 @@ void EditorView::ensureElementVisible(Element const * const element
 
 void EditorView::zoomInTime()
 {
-	qreal const zoomFactor = SettingsManager::value("zoomFactor").toReal();
+	const qreal zoomFactor = SettingsManager::value("zoomFactor").toReal();
 	zoom(zoomFactor);
 }
 
 void EditorView::zoomOutTime()
 {
-	qreal const zoomFactor = 1 / SettingsManager::value("zoomFactor").toReal();
+	const qreal zoomFactor = 1 / SettingsManager::value("zoomFactor").toReal();
 	zoom(zoomFactor);
 }
 
@@ -270,11 +270,11 @@ void EditorView::animFinished()
 	delete sender();
 }
 
-void EditorView::zoom(qreal const zoomFactor)
+void EditorView::zoom(const qreal zoomFactor)
 {
-	qreal const oldScale = transform().m11();
-	qreal const maxScale = SettingsManager::value("maxZoom").toReal();
-	qreal const minScale = SettingsManager::value("minZoom").toReal();
+	const qreal oldScale = transform().m11();
+	const qreal maxScale = SettingsManager::value("maxZoom").toReal();
+	const qreal minScale = SettingsManager::value("minZoom").toReal();
 	if ((zoomFactor > 1 && mathUtils::Math::geq(oldScale, maxScale)) ||
 			(zoomFactor < 1 && mathUtils::Math::leq(oldScale, minScale))) {
 		return;

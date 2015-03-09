@@ -10,7 +10,7 @@ using namespace twoDModel::items;
 using namespace qReal;
 using namespace graphicsUtils;
 
-LineItem::LineItem(QPointF const &begin, QPointF const &end, int cornerRadius)
+LineItem::LineItem(const QPointF &begin, const QPointF &end, int cornerRadius)
 	: mLineImpl()
 	, mCornerRadius(cornerRadius)
 	, mCellNumbX1(0)
@@ -85,8 +85,8 @@ void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void LineItem::calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid)
 {
-	qreal const x = mapFromScene(event->scenePos()).x();
-	qreal const y = mapFromScene(event->scenePos()).y();
+	const qreal x = mapFromScene(event->scenePos()).x();
+	const qreal y = mapFromScene(event->scenePos()).y();
 	if (mDragState != None) {
 		setFlag(QGraphicsItem::ItemIsMovable, false);
 	}
@@ -117,8 +117,8 @@ void LineItem::reshapeRectWithShift()
 
 void LineItem::resizeBeginWithGrid(int indexGrid)
 {
-	int const coefX = static_cast<int>(mX1) / indexGrid;
-	int const coefY = static_cast<int>(mY1) / indexGrid;
+	const int coefX = static_cast<int>(mX1) / indexGrid;
+	const int coefY = static_cast<int>(mY1) / indexGrid;
 
 	setX1andY1(alignedCoordinate(mX1, coefX, indexGrid), alignedCoordinate(mY1, coefY, indexGrid));
 
@@ -128,8 +128,8 @@ void LineItem::resizeBeginWithGrid(int indexGrid)
 
 void LineItem::reshapeEndWithGrid(int indexGrid)
 {
-	int const coefX = static_cast<int>(mX2) / indexGrid;
-	int const coefY = static_cast<int>(mY2) / indexGrid;
+	const int coefX = static_cast<int>(mX2) / indexGrid;
+	const int coefY = static_cast<int>(mY2) / indexGrid;
 
 	setX2andY2(alignedCoordinate(mX2, coefX, indexGrid), alignedCoordinate(mY2, coefY, indexGrid));
 
@@ -139,8 +139,8 @@ void LineItem::reshapeEndWithGrid(int indexGrid)
 
 void LineItem::reshapeBeginWithGrid(int indexGrid)
 {
-	int const coefX = static_cast<int> (mX1) / indexGrid;
-	int const coefY = static_cast<int> (mY1) / indexGrid;
+	const int coefX = static_cast<int> (mX1) / indexGrid;
+	const int coefY = static_cast<int> (mY1) / indexGrid;
 	setX1andY1(alignedCoordinate(mX1, coefX, indexGrid), alignedCoordinate(mY1, coefY, indexGrid));
 	mCellNumbX1 = mX1 / indexGrid;
 	mCellNumbY1 = mY1 / indexGrid;
@@ -185,9 +185,9 @@ void LineItem::setDraggedEnd(qreal x, qreal y)
 	setX2andY2(mX1 - x, mY1 - y);
 }
 
-qreal LineItem::alignedCoordinate(qreal coord, int coef, int const indexGrid) const
+qreal LineItem::alignedCoordinate(qreal coord, int coef, const int indexGrid) const
 {
-	int const coefSign = coef ? coef / qAbs(coef) : 0;
+	const int coefSign = coef ? coef / qAbs(coef) : 0;
 
 	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
 		return coef * indexGrid;
@@ -198,9 +198,10 @@ qreal LineItem::alignedCoordinate(qreal coord, int coef, int const indexGrid) co
 	return coord;
 }
 
-QDomElement LineItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
+QDomElement LineItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
+	AbstractItem::serialize(lineNode);
 	lineNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
 			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
 	lineNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
@@ -208,19 +209,20 @@ QDomElement LineItem::serialize(QDomDocument &document, QPoint const &topLeftPic
 	return lineNode;
 }
 
-void LineItem::deserialize(QDomElement const &element)
+void LineItem::deserialize(const QDomElement &element)
 {
-	QString const beginStr = element.attribute("begin", "0:0");
+	AbstractItem::deserialize(element);
+	const QString beginStr = element.attribute("begin", "0:0");
 	QStringList splittedStr = beginStr.split(":");
 	int x = splittedStr[0].toInt();
 	int y = splittedStr[1].toInt();
-	QPointF const begin = QPointF(x, y);
+	const QPointF begin = QPointF(x, y);
 
-	QString const endStr = element.attribute("end", "0:0");
+	const QString endStr = element.attribute("end", "0:0");
 	splittedStr = endStr.split(":");
 	x = splittedStr[0].toInt();
 	y = splittedStr[1].toInt();
-	QPointF const end = QPointF(x, y);
+	const QPointF end = QPointF(x, y);
 
 	mX1 = begin.x();
 	mY1 = begin.y();
@@ -230,12 +232,12 @@ void LineItem::deserialize(QDomElement const &element)
 	deserializePenBrush(element);
 }
 
-void LineItem::deserializePenBrush(QDomElement const &element)
+void LineItem::deserializePenBrush(const QDomElement &element)
 {
 	readPenBrush(element);
 }
 
-void LineItem::setSerializeName(QString const &name)
+void LineItem::setSerializeName(const QString &name)
 {
 	mSerializeName = name;
 }

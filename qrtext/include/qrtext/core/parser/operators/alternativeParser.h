@@ -2,6 +2,7 @@
 
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 
 namespace qrtext {
 namespace core {
@@ -13,7 +14,7 @@ class AlternativeParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parsers for two alternatives.
-	AlternativeParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
+	AlternativeParser(const ParserRef<TokenType> &parser1, const ParserRef<TokenType> &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}
@@ -23,7 +24,7 @@ public:
 	{
 		if (tokenStream.isEnd()) {
 			parserContext.reportError(QObject::tr("Unexpected end of input"));
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		if (!(mParser1->first().intersect(mParser2->first())).isEmpty()) {
@@ -40,7 +41,7 @@ public:
 		}
 
 		parserContext.reportError(QObject::tr("Unexpected token"));
-		return wrap(nullptr);
+		return wrap(new TemporaryErrorNode());
 	}
 
 	QSet<TokenType> first() const override

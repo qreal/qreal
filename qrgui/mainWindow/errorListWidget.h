@@ -4,7 +4,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "mainWindow/error.h"
+#include "qrgui/mainWindow/error.h"
 
 namespace qReal {
 	class MainWindow;
@@ -24,7 +24,7 @@ signals:
 private slots:
 	void highlightElement(QListWidgetItem * const item);
 	void copyCurrentItem();
-	void showContextMenu(QPoint const &pos);
+	void showContextMenu(const QPoint &pos);
 
 private:
 

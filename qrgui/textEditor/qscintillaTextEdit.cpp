@@ -13,7 +13,7 @@ QScintillaTextEdit::QScintillaTextEdit()
 	init();
 }
 
-QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index, int const &role)
+QScintillaTextEdit::QScintillaTextEdit(const QPersistentModelIndex &index, const int &role)
 	: mIndex(index)
 	, mRole(role)
 {
@@ -30,7 +30,7 @@ LanguageInfo QScintillaTextEdit::currentLanguage() const
 	return mLanguage;
 }
 
-void QScintillaTextEdit::setCurrentLanguage(LanguageInfo const &language)
+void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 {
 	setLexer(0);
 
@@ -41,7 +41,7 @@ void QScintillaTextEdit::setCurrentLanguage(LanguageInfo const &language)
 
 	if (mLanguage.lexer.data()) {
 		QsciAPIs * const api = new QsciAPIs(mLanguage.lexer.data());
-		for (QString const &additionalToken : mLanguage.additionalAutocompletionTokens) {
+		for (const QString &additionalToken : mLanguage.additionalAutocompletionTokens) {
 			api->add(additionalToken);
 		}
 

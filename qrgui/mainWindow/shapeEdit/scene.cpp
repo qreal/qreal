@@ -14,7 +14,7 @@ Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
 	, mItemType(none)
 	, mWaitMove(false)
 	, mCount(0)
-	, mSelectedTextPicture(NULL)
+	, mSelectedTextPicture(nullptr)
 {
 	mSizeEmptyRectX = sizeEmptyRectX;
 	mSizeEmptyRectY = sizeEmptyRectY;
@@ -138,7 +138,7 @@ QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 			return QPair<bool, Item *>(true, item);
 		}
 	}
-	return QPair<bool, Item *>(false, NULL);
+	return QPair<bool, Item *>(false, nullptr);
 }
 
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -153,12 +153,12 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			reshapeCurveFirst(event);
 		else if (mCount == 3)
 			reshapeCurveSecond(event);
-		removeMoveFlag(event, NULL);
+		removeMoveFlag(event, nullptr);
 		mCount++;
 		break;
 	case stylus :
 		setX1andY1(event);
-		mStylus = new Stylus(mX1, mY1, NULL);
+		mStylus = new Stylus(mX1, mY1, nullptr);
 		mStylus->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mStylus);
 		setZValue(mStylus);
@@ -167,7 +167,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case line :
 		setX1andY1(event);
-		mLine = new Line(mX1, mY1, mX1, mY1, NULL);
+		mLine = new Line(mX1, mY1, mX1, mY1, nullptr);
 		mLine->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mLine);
 		setZValue(mLine);
@@ -176,7 +176,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case ellipse :
 		setX1andY1(event);
-		mEllipse = new QRealEllipse(mX1, mY1, mX1, mY1, NULL);
+		mEllipse = new QRealEllipse(mX1, mY1, mX1, mY1, nullptr);
 		mEllipse->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mEllipse);
 		setZValue(mEllipse);
@@ -185,7 +185,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case rectangle :
 		setX1andY1(event);
-		mRectangle = new QRealRectangle(mX1, mY1, mX1, mY1, NULL);
+		mRectangle = new QRealRectangle(mX1, mY1, mX1, mY1, nullptr);
 		mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mRectangle);
 		setZValue(mRectangle);
@@ -212,14 +212,14 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case pointPort :
 		setX1andY1(event);
-		mPointPort = new PointPort(mX1, mY1, NULL);
+		mPointPort = new PointPort(mX1, mY1, nullptr);
 		mPointPort->setType(mPortType);
 		addItem(mPointPort);
 		setZValue(mPointPort);
 		break;
 	case linePort :
 		setX1andY1(event);
-		mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
+		mLinePort = new LinePort(mX1, mY1, mX1, mY1, nullptr);
 		mLinePort->setType(mPortType);
 		addItem(mLinePort);
 		setZValue(mLinePort);
@@ -228,14 +228,14 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case image :
 		setX1andY1(event);
-		mImage = new Image(mFileName, mX1, mY1, NULL);
+		mImage = new Image(mFileName, mX1, mY1, nullptr);
 		addItem(mImage);
 		setZValue(mImage);
 		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
 		mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos(), QTransform()));
-		if (mGraphicsItem != NULL) {
+		if (mGraphicsItem != nullptr) {
 			mGraphicsItem->changeDragState(mX1, mY1);
 			Item *graphicsItem = dynamic_cast<Item *>(mGraphicsItem);
 			graphicsItem->changeScalingPointState(mX1, mY1);
@@ -273,7 +273,7 @@ void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 		break;
 	case curve:
 		if (mCount == 2) {
-			if (mCurve != NULL)
+			if (mCurve != nullptr)
 				reshapeCurveFirst(event);
 		} else if (mCount == 3)
 			reshapeCurveSecond(event);
@@ -330,7 +330,7 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		emit resetHighlightAllButtons();
 		mItemType = none;
 		mCount = 0;
-		mCurve = NULL;
+		mCurve = nullptr;
 	}
 }
 
@@ -393,7 +393,7 @@ void Scene::drawCurve(bool checked)
 	if (checked) {
 		mItemType = curve;
 		mCount = 1;
-		mCurve = NULL;
+		mCurve = nullptr;
 	}
 }
 
@@ -447,7 +447,7 @@ void Scene::addNone(bool checked)
 	}
 }
 
-void Scene::addImage(QString const &fileName)
+void Scene::addImage(const QString &fileName)
 {
 	mItemType = image;
 	mFileName = fileName;
@@ -481,7 +481,7 @@ QList<Item *> Scene::selectedSceneItems()
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
 		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL)
+		if (item != nullptr)
 			resList.push_back(item);
 	}
 	qSort(resList.begin(), resList.end(), compareItems);
@@ -494,13 +494,13 @@ QList<TextPicture *> Scene::selectedTextPictureItems()
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
 		TextPicture* item = dynamic_cast<TextPicture*>(graphicsItem);
-		if (item != NULL)
+		if (item != nullptr)
 			resList.push_back(item);
 	}
 	return resList;
 }
 
-void Scene::changePenStyle(QString const &text)
+void Scene::changePenStyle(const QString &text)
 {
 	mPenStyleItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -516,7 +516,7 @@ void Scene::changePenWidth(int width)
 	update();
 }
 
-void Scene::changePenColor(QString const &text)
+void Scene::changePenColor(const QString &text)
 {
 	mPenColorItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -524,7 +524,7 @@ void Scene::changePenColor(QString const &text)
 	update();
 }
 
-void Scene::changeBrushStyle(QString const &text)
+void Scene::changeBrushStyle(const QString &text)
 {
 	mBrushStyleItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -532,7 +532,7 @@ void Scene::changeBrushStyle(QString const &text)
 	update();
 }
 
-void Scene::changeBrushColor(QString const &text)
+void Scene::changeBrushColor(const QString &text)
 {
 	mBrushColorItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -540,7 +540,7 @@ void Scene::changeBrushColor(QString const &text)
 	update();
 }
 
-void Scene::changePortsType(QString const &type)
+void Scene::changePortsType(const QString &type)
 {
 	mPortType = type;
 
@@ -569,7 +569,7 @@ void Scene::changePalette()
 		}
 		else {
 			Item* item = dynamic_cast<Item*>(mListSelectedItems.back());
-			if (item != NULL) {
+			if (item != nullptr) {
 				QPen penItem = item->pen();
 				QBrush brushItem = item->brush();
 				emit existSelectedItems(penItem, brushItem);
@@ -586,7 +586,7 @@ void Scene::changeFontPalette()
 		emit noSelectedTextPictureItems();
 	else {
 		TextPicture* item = dynamic_cast<TextPicture*>(mListSelectedTextPictureItems.back());
-		if (item != NULL) {
+		if (item != nullptr) {
 			QPen penItem = item->pen();
 			QFont fontItem = item->font();
 			emit existSelectedTextPictureItems(penItem, fontItem, item->name());
@@ -625,7 +625,7 @@ void Scene::changeFontPixelSize(int size)
 	update();
 }
 
-void Scene::changeFontColor(QString const &text)
+void Scene::changeFontColor(const QString &text)
 {
 	foreach (TextPicture *item, selectedTextPictureItems())
 		item->setFontColor(text);
@@ -653,7 +653,7 @@ void Scene::changeFontUnderline(bool isChecked)
 	update();
 }
 
-void Scene::changeTextName(QString const &name)
+void Scene::changeTextName(const QString &name)
 {
 	foreach (TextPicture *item, selectedTextPictureItems())
 		item->setTextName(name);

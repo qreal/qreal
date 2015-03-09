@@ -3,7 +3,7 @@
 using namespace qReal;
 
 ProgressBar::ProgressBar(QWidget *parent)
-	: QProgressBar(parent), mOperation(NULL)
+	: QProgressBar(parent), mOperation(nullptr)
 {
 	reset();
 }
@@ -15,7 +15,7 @@ invocation::LongOperation *ProgressBar::operation() const
 
 bool ProgressBar::isOperationConnected() const
 {
-	return mOperation != NULL;
+	return mOperation != nullptr;
 }
 
 void ProgressBar::reset()
@@ -87,7 +87,7 @@ void ProgressBar::onOperationComplete(invocation::InvocationState result)
 	default:
 		break;
 	}
-	mOperation = NULL;
+	mOperation = nullptr;
 }
 
 void ProgressBar::onOperationFinishedNormally()
@@ -100,7 +100,7 @@ void ProgressBar::onOperationFinishedNormally()
 
 void ProgressBar::onOperationCanceled()
 {
-	QString const format = (mOperation->hasProgress())
+	const QString format = (mOperation->hasProgress())
 			? tr("%p% - canceled")
 			: tr("canceled");
 	setTextVisible(true);

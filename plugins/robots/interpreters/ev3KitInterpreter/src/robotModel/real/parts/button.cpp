@@ -1,11 +1,11 @@
 #include "button.h"
 
-unsigned const buttonResponseSize = 6;
+const unsigned buttonResponseSize = 6;
 
 using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Button::Button(DeviceInfo const &info, PortInfo const &port
+Button::Button(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: robotParts::Button(info, port)
 	, mRobotCommunicator(robotCommunicator)
@@ -14,15 +14,15 @@ Button::Button(DeviceInfo const &info, PortInfo const &port
 
 void Button::read()
 {
-	int const size = 13;
+	const int size = 13;
 	QByteArray command(size, 0);
 	command[0] = size - 2;
 	command[1] = size >> 8;
 	command[2] = 4;
 	command[3] = 0;
 	command[4] = DIRECT_COMMAND_REPLY;
-	int const globalVariablesCount = 1;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 1;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_BUTTON;
@@ -40,19 +40,19 @@ void Button::read()
 	}
 }
 
-char Button::parsePort(QString portName)
+char Button::parsePort(const QString &portName)
 {
-	if (portName == "UpButtonPort") {
+	if (portName == "Up") {
 		return 0x01;
-	} else if (portName == "EnterButtonPort") {
+	} else if (portName == "Enter") {
 		return 0x02;
-	} else if (portName == "DownButtonPort") {
+	} else if (portName == "Down") {
 		return 0x03;
-	} else if (portName == "RightButtonPort") {
+	} else if (portName == "Right") {
 		return 0x04;
-	} else if (portName == "LeftButtonPort") {
+	} else if (portName == "Left") {
 		return 0x05;
-	} else if (portName == "BackButtonPort") {
+	} else if (portName == "Back") {
 		return 0x06;
 	}
 

@@ -6,8 +6,8 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-Button::Button(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
+Button::Button(const interpreterBase::robotModel::DeviceInfo &info
+		, const interpreterBase::robotModel::PortInfo &port
 		, engine::TwoDModelEngineInterface &engine)
 	: robotParts::Button(info, port)
 	, mEngine(engine)

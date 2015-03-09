@@ -20,13 +20,13 @@ protected:
 
 private:
 	void prepareCommands();
-	QHash<Id, Id> *preparePasteNodesCommands(QList<NodeData> &nodesData, QPointF const &offset);
-	void preparePasteEdgeCommand(EdgeData const &edgeData, QPointF const &offset);
+	QHash<Id, Id> *preparePasteNodesCommands(QList<NodeData> &nodesData, const QPointF &offset);
+	void preparePasteEdgeCommand(const EdgeData &edgeData, const QPointF &offset);
 
 	void pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData) const;
 
 	EditorViewScene *mScene;
-	bool const mIsGraphicalCopy;
+	const bool mIsGraphicalCopy;
 	QHash<Id, Id> *mCopiedIds;
 	bool mIsEmpty;
 };

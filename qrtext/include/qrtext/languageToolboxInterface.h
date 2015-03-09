@@ -20,9 +20,9 @@ public:
 
 	/// Interprets given code string using given id and property name for connection. Returns result of an expression.
 	template<typename T>
-	T interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
+	T interpret(const qReal::Id &id, const QString &propertyName, const QString &code)
 	{
-		auto const &root = parse(id, propertyName, code);
+		const auto &root = parse(id, propertyName, code);
 		if (errors().isEmpty()) {
 			return interpret(root).value<T>();
 		} else {
@@ -32,28 +32,28 @@ public:
 
 	/// Interprets given code string without connection. Returns result of an expression.
 	template<typename T>
-	T interpret(QString const &code)
+	T interpret(const QString &code)
 	{
 		return interpret<T>(qReal::Id(), "", code);
 	}
 
 	/// Interprets given code string using given id and property name for connection.
-	virtual void interpret(qReal::Id const &id, QString const &propertyName, QString const &code) = 0;
+	virtual void interpret(const qReal::Id &id, const QString &propertyName, const QString &code) = 0;
 
 	/// Interprets given code string without connection.
-	virtual void interpret(QString const &code) = 0;
+	virtual void interpret(const QString &code) = 0;
 
 	/// Parses given code string using given id and property name for connection, returns AST.
-	virtual QSharedPointer<core::ast::Node> const &parse(qReal::Id const &id
-			, QString const &propertyName
-			, QString const &code) = 0;
+	virtual const QSharedPointer<core::ast::Node> &parse(const qReal::Id &id
+			, const QString &propertyName
+			, const QString &code) = 0;
 
 	/// Returns previously parsed AST for given node and property, or null if no such AST was parsed before.
-	virtual QSharedPointer<core::ast::Node> ast(qReal::Id const &id, QString const &propertyName) const = 0;
+	virtual QSharedPointer<core::ast::Node> ast(const qReal::Id &id, const QString &propertyName) const = 0;
 
 	/// Returns type of given AST node.
 	virtual QSharedPointer<core::types::TypeExpression> type(
-			QSharedPointer<core::ast::Node> const &expression) const = 0;
+			const QSharedPointer<core::ast::Node> &expression) const = 0;
 
 	/// Returns list of errors that were reported during parsing or interpretation.
 	virtual QList<core::Error> const &errors() const = 0;
@@ -63,19 +63,19 @@ public:
 	/// @param returnType - function return type, as type expression. Takes ownership.
 	/// @param parameterTypes - a list of types of function parameters. Takes ownership.
 	/// @param semantic - a function that will be called by interpreter to actually get a result.
-	virtual void addIntrinsicFunction(QString const &name
+	virtual void addIntrinsicFunction(const QString &name
 			, core::types::TypeExpression * const returnType
 			, const QList<core::types::TypeExpression *> &parameterTypes
-			, std::function<QVariant(QList<QVariant> const &)> const &semantic) = 0;
+			, std::function<QVariant(const QList<QVariant> &)> const &semantic) = 0;
 
 	/// Returns a mapping of variable identifiers to their types.
 	virtual QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const = 0;
 
 	/// Returns a list of predefined identifiers that are reserved by the system.
-	virtual QStringList const &specialIdentifiers() const = 0;
+	virtual const QStringList &specialIdentifiers() const = 0;
 
 	/// Returns a list of predefined constants that are reserved by the system.
-	virtual QStringList const &specialConstants() const = 0;
+	virtual const QStringList &specialConstants() const = 0;
 
 	/// Clears the state of the parser making it forget types of all identifiers, other expressions and clear
 	/// all remembered information except caches.
@@ -83,7 +83,7 @@ public:
 
 private:
 	/// Interprets given AST. Returns result of an expression. Must be implemented for concrete language.
-	virtual QVariant interpret(QSharedPointer<core::ast::Node> const &root) = 0;
+	virtual QVariant interpret(const QSharedPointer<core::ast::Node> &root) = 0;
 };
 
 }

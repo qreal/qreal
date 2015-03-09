@@ -2,7 +2,7 @@
 
 using namespace qReal::commands;
 
-FoldCommand::FoldCommand(NodeElement const *element)
+FoldCommand::FoldCommand(const NodeElement *element)
 	: NodeElementCommand(dynamic_cast<EditorViewScene *>(element->scene()), element->id())
 {
 }

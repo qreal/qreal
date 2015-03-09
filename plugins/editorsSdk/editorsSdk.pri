@@ -1,7 +1,3 @@
-INCLUDEPATH += \
-	$$PWD/../.. \
-	$$PWD/../../qrgui \
-
 HEADERS		+= \
 	$$ROOT/qrkernel/ids.h \
 	$$ROOT/qrgui/plugins/editorPluginInterface/sdfRendererInterface.h \

@@ -3,13 +3,14 @@
 
 using namespace trik;
 
-TrikMasterGeneratorBase::TrikMasterGeneratorBase(qrRepo::RepoApi const &repo
+TrikMasterGeneratorBase::TrikMasterGeneratorBase(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const utils::ParserErrorReporter &parserErrorReporter
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
+	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, parserErrorReporter, diagramId)
 	, mGeneratorName(generatorName)
 {
 }

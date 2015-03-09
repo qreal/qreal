@@ -29,11 +29,17 @@
 #include "details/sayBlock.h"
 #include "details/systemCommandBlock.h"
 
+#include "details/waitGamepadButtonBlock.h"
+#include "details/waitGamepadConnectBlock.h"
+#include "details/waitGamepadDisconnectBlock.h"
+#include "details/waitGamepadWheelBlock.h"
+#include "details/waitPadPressBlock.h"
+
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::blocksBase::common;
 
-qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
+qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &element)
 {
 	if (elementMetatypeIs(element, "TrikPlayTone")) {
 		return new SpeakerBlock(mRobotModelManager->model());
@@ -91,18 +97,8 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &e
 	} else if (elementMetatypeIs(element, "TrikWaitForEncoder")) {
 		return new WaitForEncoderBlock(mRobotModelManager->model());
 
-	} else if (elementMetatypeIs(element, "TrikWaitForEnter")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "EnterButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForLeft")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "LeftButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForRight")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "RightButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForDown")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "DownButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForUp")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "UpButtonPort");
-	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "PowerButtonPort");
+	} else if (elementMetatypeIs(element, "TrikWaitForButton")) {
+		return new WaitForButtonBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSetPainterColor")) {
 		return new SetPainterColorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSetPainterWidth")) {
@@ -123,6 +119,17 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &e
 		return new SmileBlock(mRobotModelManager->model(), true);
 	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
 		return new SetBackgroundBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadButton")) {
+		return new WaitGamepadButtonBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitPadPress")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadWheel")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadDisconnect")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadConnect")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
 	}
 
 	return nullptr;
@@ -170,12 +177,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWaitForAccelerometer")
 			<< id("TrikWaitForMotion")
 			<< id("TrikWaitForEncoder")
-			<< id("TrikWaitForEnter")
-			<< id("TrikWaitForLeft")
-			<< id("TrikWaitForRight")
-			<< id("TrikWaitForDown")
-			<< id("TrikWaitForUp")
-			<< id("TrikWaitForPower")
+			<< id("TrikWaitForButton")
 			;
 
 	result
@@ -189,6 +191,14 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikSmile")
 			<< id("TrikSadSmile")
 			<< id("TrikSetBackground")
+			;
+
+	result
+			<< id("TrikWaitGamepadButton")
+			<< id("TrikWaitPadPress")
+			<< id("TrikWaitGamepadWheel")
+			<< id("TrikWaitGamepadDisconnect")
+			<< id("TrikWaitGamepadConnect")
 			;
 
 	return result;
@@ -211,6 +221,11 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikWaitForMotion")
 				<< id("TrikSendMessage")
 				<< id("TrikWaitForMessage")
+				<< id("TrikWaitGamepadButton")
+				<< id("TrikWaitPadPress")
+				<< id("TrikWaitGamepadWheel")
+				<< id("TrikWaitGamepadDisconnect")
+				<< id("TrikWaitGamepadConnect")
 				;
 	}
 

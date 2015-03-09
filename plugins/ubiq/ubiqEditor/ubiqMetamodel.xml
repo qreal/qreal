@@ -40,7 +40,7 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
-                            <forestalling size="5"/>
+                            <!-- <forestalling size="5"/> -->
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>
@@ -64,7 +64,7 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
-                            <forestalling size="5"/>
+                            <!-- <forestalling size="5"/> -->
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>
@@ -88,7 +88,7 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
-                            <forestalling size="5"/>
+                            <!-- <forestalling size="5"/> -->
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>
@@ -112,7 +112,7 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
-                            <forestalling size="5"/>
+                            <!-- <forestalling size="5"/> -->
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>
@@ -191,7 +191,7 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
-                            <forestalling size="5"/>
+                            <!-- <forestalling size="5"/> -->
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>
@@ -501,7 +501,7 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
-                            <forestalling size="25"/>
+                            <!-- <forestalling size="25"/> -->
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>
@@ -563,7 +563,7 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
-                            <forestalling size="25"/>
+                            <!-- <forestalling size="25"/> -->
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>

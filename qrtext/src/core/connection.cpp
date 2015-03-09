@@ -30,12 +30,12 @@ int Connection::column() const
 	return mColumn;
 }
 
-qReal::Id const &Connection::id() const
+const qReal::Id &Connection::id() const
 {
 	return mId;
 }
 
-QString const &Connection::propertyName() const
+const QString &Connection::propertyName() const
 {
 	return mPropertyName;
 }

@@ -28,8 +28,8 @@ class ReferenceList : public QDialog
 	Q_OBJECT
 
 public:
-	ReferenceList(qReal::MainWindow *mainWindow, QPersistentModelIndex const &index
-			, QString const &refType, QStringList const &currentValue, int role, QWidget *parent = 0);
+	ReferenceList(qReal::MainWindow *mainWindow, const QPersistentModelIndex &index
+			, const QString &refType, const QStringList &currentValue, int role, QWidget *parent = 0);
 	~ReferenceList();
 
 public slots:
@@ -37,17 +37,17 @@ public slots:
 
 signals:
 	/// emitted when OK pressed
-	void referenceSet(QStringList const &newValue, QPersistentModelIndex const &index, int role);
+	void referenceSet(const QStringList &newValue, const QPersistentModelIndex &index, int role);
 
 private slots:
 	void valueChanged();
 	void restoreSelected();
 
 private:
-	void loadList(QString const &refType);
-	void addItem(qReal::Id const &element);
+	void loadList(const QString &refType);
+	void addItem(const qReal::Id &element);
 
-	void highlightCurrentValue(QStringList const &currentValue);
+	void highlightCurrentValue(const QStringList &currentValue);
 	QStringList getNewValue() const;
 
 	void initConnections();

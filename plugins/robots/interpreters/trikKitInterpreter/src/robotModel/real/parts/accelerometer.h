@@ -13,14 +13,14 @@ class Accelerometer : public interpreterBase::robotModel::robotParts::Accelerome
 	Q_OBJECT
 
 public:
-	Accelerometer(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Accelerometer(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &robotCommunicator);
 
 	void read() override;
 
 public slots:
-	void onIncomingData(QString const &portName, int value);
+	void onIncomingData(const QString &portName, int value);
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;

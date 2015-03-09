@@ -17,7 +17,7 @@ ListWidget::ListWidget(QWidget *parent)
 			, this, SLOT(doubleClickHandler(QListWidgetItem*)));
 }
 
-void ListWidget::addItem(QString const &text, QString const &userData, QString const &toolTip)
+void ListWidget::addItem(const QString &text, const QString &userData, const QString &toolTip)
 {
 	QListWidgetItem *currentItem = new QListWidgetItem(text, mListWidget);
 	currentItem->setData(Qt::UserRole, userData);

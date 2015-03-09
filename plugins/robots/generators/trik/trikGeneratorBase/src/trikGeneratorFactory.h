@@ -8,15 +8,15 @@ namespace trik {
 class TrikGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
-	TrikGeneratorFactory(qrRepo::RepoApi const &repo
+	TrikGeneratorFactory(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, QString const &generatorName);
+			, const QString &generatorName);
 
 	~TrikGeneratorFactory() override;
 
-	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
+	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
 	QString pathToTemplates() const override;
@@ -24,7 +24,7 @@ public:
 	generatorBase::parts::DeviceVariables *deviceVariables() const override;
 
 private:
-	QString const mGeneratorName;
+	const QString mGeneratorName;
 };
 
 }

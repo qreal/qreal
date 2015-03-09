@@ -10,7 +10,7 @@ SignalsTester::SignalsTester(OrderEnum order)
 	: mInOrder(order)
 {
 	mTimer.setSingleShot(true);
-	connect(&mMapper, static_cast<void (QSignalMapper::*)(QString const &)>(&QSignalMapper::mapped)
+	connect(&mMapper, static_cast<void (QSignalMapper::*)(const QString &)>(&QSignalMapper::mapped)
 			, this, &SignalsTester::onSignal);
 
 	connect(&mTimer, &QTimer::timeout, this, &SignalsTester::onTimeout);
@@ -21,16 +21,16 @@ SignalsTester::~SignalsTester()
 	qDeleteAll(mSenders);
 }
 
-bool SignalsTester::isSignalEmitted(QString const &signalName) const
+bool SignalsTester::isSignalEmitted(const QString &signalName) const
 {
 	return mSignals.contains(signalName) && mSignals.value(signalName) > 0;
 }
 
-void SignalsTester::onSignal(QString const &signalName)
+void SignalsTester::onSignal(const QString &signalName)
 {
 	if (mSignals.contains(signalName)) {
 		if (mInOrder == inOrder) {
-			for (QString const &signal : mSignalsOrder) {
+			for (const QString &signal : mSignalsOrder) {
 				if (signal == signalName) {
 					break;
 				} else if (mSignals.value(signal) == 0) {

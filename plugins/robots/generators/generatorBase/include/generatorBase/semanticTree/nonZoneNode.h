@@ -9,7 +9,7 @@ namespace semantics {
 class NonZoneNode : public SemanticNode
 {
 public:
-	explicit NonZoneNode(qReal::Id const &idBinded, QObject *parent = 0);
+	explicit NonZoneNode(const qReal::Id &idBinded, QObject *parent = 0);
 
 	ZoneNode *parentZone() const;
 

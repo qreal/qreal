@@ -3,8 +3,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-#include "../../../qrkernel/roles.h"
-#include "../../../qrutils/outFile.h"
+#include <qrkernel/roles.h>
+#include <qrutils/outFile.h>
 
 using namespace qReal;
 using namespace hascol;

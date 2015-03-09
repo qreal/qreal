@@ -16,8 +16,8 @@ class LightSensor : public interpreterBase::robotModel::robotParts::LightSensor
 	Q_OBJECT
 
 public:
-	LightSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	LightSensor(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

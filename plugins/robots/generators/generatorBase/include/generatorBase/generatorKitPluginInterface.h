@@ -33,8 +33,8 @@ public:
 
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator Object that contains all needed information for a plugin, like refs to models.
-	virtual void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	virtual void init(const qReal::PluginConfigurator &configurator
+			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage)
 	{
 		Q_UNUSED(configurator);

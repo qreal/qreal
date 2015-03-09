@@ -34,9 +34,9 @@ class Scene : public graphicsUtils::AbstractScene
 public:
 	Scene(graphicsUtils::AbstractView *view, QObject *parent = 0);
 	QPoint centerEmpty();
-	void changeTextName(QString const &name);
+	void changeTextName(const QString &name);
 	void setZValue(Item* item);
-	void addImage(QString const &fileName);
+	void addImage(const QString &fileName);
 
 	void drawLine(bool checked);
 	void drawEllipse(bool checked);
@@ -54,20 +54,20 @@ public:
 
 signals:
 	void noSelectedItems();
-	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
+	void existSelectedItems(const QPen &penItem, const QBrush &brushItem);
 	void noSelectedTextPictureItems();
-	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void existSelectedTextPictureItems(const QPen &penItem, const QFont &fontItem, const QString &name);
 	void noSelectedPortItems();
-	void existSelectedPortItems(QString const &type);
+	void existSelectedPortItems(const QString &type);
 	void resetHighlightAllButtons();
 
 private slots:
-	void changePenStyle(QString const &text);
+	void changePenStyle(const QString &text);
 	void changePenWidth(int width);
-	void changePenColor(QString const &text);
-	void changeBrushStyle(QString const &text);
-	void changeBrushColor(QString const &text);
-	void changePortsType(QString const &type);
+	void changePenColor(const QString &text);
+	void changeBrushStyle(const QString &text);
+	void changeBrushColor(const QString &text);
+	void changePortsType(const QString &type);
 
 	void changePalette();
 	void changeFontPalette();
@@ -75,7 +75,7 @@ private slots:
 
 	void changeFontFamily(const QFont& font);
 	void changeFontPixelSize(int size);
-	void changeFontColor(QString const &text);
+	void changeFontColor(const QString &text);
 	void changeFontItalic(bool isChecked);
 	void changeFontBold(bool isChecked);
 	void changeFontUnderline(bool isChecked);

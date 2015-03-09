@@ -6,7 +6,7 @@
 
 using namespace qReal;
 
-SuggestToCreateProjectDialog::SuggestToCreateProjectDialog(EditorManagerInterface const &editorManager
+SuggestToCreateProjectDialog::SuggestToCreateProjectDialog(const EditorManagerInterface &editorManager
 		, QWidget *parent)
 	: QDialog(parent)
 {

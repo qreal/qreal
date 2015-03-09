@@ -16,7 +16,7 @@ defineTest(addExtraCompiler) {
 	return(true)
 }
 
-SDF_FILES = $$files(../$$QREAL_EDITOR_NAME$$quote(/generated/shapes/*.sdf))
+SDF_FILES = $$files($$PWD/../$$QREAL_EDITOR_NAME$$quote(/generated/shapes/*.sdf))
 
 for(sdfFile, SDF_FILES) {
 	FILE_NAME_LONG = $${sdfFile}

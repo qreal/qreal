@@ -1,4 +1,4 @@
-#include "blocksTable.h"
+#include "interpreterCore/interpreter/details/blocksTable.h"
 
 #include <qrkernel/exception/exception.h>
 
@@ -7,13 +7,13 @@ using namespace interpreterBase::blocksBase;
 using namespace interpreterCore::interpreter::details;
 
 BlocksTable::BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager)
 	: mBlocksFactoryManager(blocksFactoryManager)
 	, mRobotModelManager(robotModelManager)
 {
 }
 
-interpretation::BlockInterface *BlocksTable::produceBlock(Id const &element)
+interpretation::BlockInterface *BlocksTable::produceBlock(const Id &element)
 {
 	return mBlocksFactoryManager.block(element, mRobotModelManager.model());
 }

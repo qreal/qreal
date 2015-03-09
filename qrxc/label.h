@@ -20,7 +20,7 @@ public:
 	/// @param nodeLabel True, if this label is for node, false if it is for edge.
 	/// @param width Width of parent node or edge.
 	/// @param height Height of parent node or edge.
-	bool init(QDomElement const &element, int index, bool nodeLabel, int width, int height);
+	bool init(const QDomElement &element, int index, bool nodeLabel, int width, int height);
 
 	void generateCodeForConstructor(utils::OutFile &out);
 	void generateCodeForUpdateData(utils::OutFile &out);
@@ -33,7 +33,7 @@ private:
 	QString titleName() const;
 
 	/// Split the string into substrings wherever "##" occurs and return the list of those strings.
-	QStringList getListOfStr(QString const &strToParse) const;
+	QStringList getListOfStr(const QString &strToParse) const;
 
 	utils::ScalableCoordinate mX;
 	utils::ScalableCoordinate mY;

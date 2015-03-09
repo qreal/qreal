@@ -12,8 +12,8 @@ class NxtSpeaker : public interpreterBase::robotModel::robotParts::Speaker
 	Q_OBJECT
 
 public:
-	NxtSpeaker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+	NxtSpeaker(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port);
 
 	void beep(unsigned time);
 	virtual void playTone(unsigned freq, unsigned time) = 0;

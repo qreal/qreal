@@ -5,14 +5,14 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SwitchNode::SwitchNode(Id const &idBinded, QObject *parent)
+SwitchNode::SwitchNode(const Id &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
 	, mDefaultBranch(nullptr)
 	, mBranchesMerged(false)
 {
 }
 
-void SwitchNode::addBranch(QString const &value, SemanticNode * const node)
+void SwitchNode::addBranch(const QString &value, SemanticNode * const node)
 {
 	ZoneNode * const zone = new ZoneNode(this);
 	zone->setParentNode(this);
@@ -22,7 +22,7 @@ void SwitchNode::addBranch(QString const &value, SemanticNode * const node)
 	}
 }
 
-void SwitchNode::mergeBranch(QString const &value, NonZoneNode * const node)
+void SwitchNode::mergeBranch(const QString &value, NonZoneNode * const node)
 {
 	Q_ASSERT(node);
 	bind(value, node->parentZone());
@@ -38,7 +38,7 @@ void SwitchNode::setBranchesMergedFlag()
 	mBranchesMerged = true;
 }
 
-QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
+QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	QString result;
 	bool isHead = true;
@@ -66,7 +66,7 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QS
 	return result;
 }
 
-void SwitchNode::bind(QString const &value, ZoneNode *zone)
+void SwitchNode::bind(const QString &value, ZoneNode *zone)
 {
 	if (value.isEmpty()) {
 		mDefaultBranch = zone;
@@ -77,7 +77,7 @@ void SwitchNode::bind(QString const &value, ZoneNode *zone)
 
 QString SwitchNode::generatePart(generatorBase::GeneratorCustomizer &customizer
 		, int indent
-		, QString const &indentString
+		, const QString &indentString
 		, ZoneNode * const zone
 		, generatorBase::simple::AbstractSimpleGenerator *generator) const
 {

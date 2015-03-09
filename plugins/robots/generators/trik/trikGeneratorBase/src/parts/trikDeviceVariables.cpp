@@ -4,8 +4,8 @@
 
 using namespace trik::parts;
 
-QString TrikDeviceVariables::variableTemplatePath(interpreterBase::robotModel::DeviceInfo const &device
-		, interpreterBase::robotModel::PortInfo const &port) const
+QString TrikDeviceVariables::variableTemplatePath(const interpreterBase::robotModel::DeviceInfo &device
+		, const interpreterBase::robotModel::PortInfo &port) const
 {
 	if (device.name() == "trikLineSensor"
 			|| device.name() == "trikObjectSensor"
@@ -16,6 +16,8 @@ QString TrikDeviceVariables::variableTemplatePath(interpreterBase::robotModel::D
 		return "videosensors/" + templateName + ".t";
 	} else if (device.name() == "gyroscope" || device.name() == "accelerometer") {
 		return QString("%1/%2.t").arg(device.name(), port.reservedVariable());
+	} else if (device.name().startsWith("gamepad")) {
+		return QString("gamepad/%1.t").arg(device.name());
 	}
 
 	return generatorBase::parts::DeviceVariables::variableTemplatePath(device, port);

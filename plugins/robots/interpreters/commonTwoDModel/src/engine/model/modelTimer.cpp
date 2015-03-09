@@ -2,7 +2,7 @@
 
 using namespace twoDModel::model;
 
-ModelTimer::ModelTimer(Timeline const *timeline)
+ModelTimer::ModelTimer(const Timeline *timeline)
 	: mTimeline(timeline), mTimeToWait(0)
 	, mListening(false), mTimePast(0)
 {

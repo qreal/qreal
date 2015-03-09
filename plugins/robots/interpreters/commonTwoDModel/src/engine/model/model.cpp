@@ -49,10 +49,10 @@ QDomDocument Model::serialize() const
 	return save;
 }
 
-void Model::deserialize(QDomDocument const &xml)
+void Model::deserialize(const QDomDocument &xml)
 {
-	QDomNodeList const worldList = xml.elementsByTagName("world");
-	QDomNodeList const robotsList = xml.elementsByTagName("robots");
+	const QDomNodeList worldList = xml.elementsByTagName("world");
+	const QDomNodeList robotsList = xml.elementsByTagName("robots");
 
 	if (worldList.count() != 1) {
 		/// @todo Report error
@@ -63,7 +63,7 @@ void Model::deserialize(QDomDocument const &xml)
 
 	if (robotsList.count() != 1) {
 		// need for backward compatibility with old format
-		QDomNodeList const robotList = xml.elementsByTagName("robot");
+		const QDomNodeList robotList = xml.elementsByTagName("robot");
 
 		if (robotList.count() != 1) {
 			/// @todo Report error
@@ -78,7 +78,7 @@ void Model::deserialize(QDomDocument const &xml)
 
 	QMutableListIterator<RobotModel *> iterator(mRobotModels);
 
-	bool const oneRobot = robotsList.at(0).toElement().elementsByTagName("robot").size() == 1
+	const bool oneRobot = robotsList.at(0).toElement().elementsByTagName("robot").size() == 1
 			&& mRobotModels.size() == 1;
 
 	while(iterator.hasNext()) {
@@ -117,7 +117,7 @@ void Model::deserialize(QDomDocument const &xml)
 	}
 }
 
-void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const &pos)
+void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF &pos)
 {
 	RobotModel *robot = new RobotModel(robotModel, mSettings, this);
 	robot->setPosition(pos);
@@ -137,9 +137,9 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const 
 	emit robotAdded(robot);
 }
 
-void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
+void Model::removeRobotModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
 {
-	int const index = findModel(robotModel);
+	const int index = findModel(robotModel);
 
 	if (index == -1) {
 		return;
@@ -151,21 +151,21 @@ void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotM
 	delete robot;
 }
 
-void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
+void Model::replaceRobotModel(const twoDModel::robotModel::TwoDRobotModel &oldModel
 		, twoDModel::robotModel::TwoDRobotModel &newModel)
 {
-	int const index = findModel(oldModel);
+	const int index = findModel(oldModel);
 
 	if (index == -1) {
 		return;
 	}
 
-	QPointF const pos = mRobotModels.at(index)->position();
+	const QPointF pos = mRobotModels.at(index)->position();
 	removeRobotModel(oldModel);
 	addRobotModel(newModel, pos);
 }
 
-int Model::findModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
+int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
 {
 	for (int i = 0; i < mRobotModels.count(); i++) {
 		if (mRobotModels.at(i)->info().robotId() == robotModel.robotId()) {

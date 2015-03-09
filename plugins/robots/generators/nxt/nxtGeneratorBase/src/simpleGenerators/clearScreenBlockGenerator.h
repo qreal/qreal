@@ -9,9 +9,9 @@ namespace simple {
 class ClearScreenBlockGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	ClearScreenBlockGenerator(qrRepo::RepoApi const &repo
+	ClearScreenBlockGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 

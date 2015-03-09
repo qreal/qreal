@@ -40,7 +40,7 @@ public:
 	};
 
 	EdgeElement(ElementImpl *impl
-			, Id const &id
+			, const Id &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
 
@@ -50,7 +50,7 @@ public:
 
 	virtual QRectF boundingRect() const;
 	QPainterPath shape() const;
-	virtual void paint(QPainter* p, QStyleOptionGraphicsItem const *opt, QWidget* w);
+	virtual void paint(QPainter* p, const QStyleOptionGraphicsItem *opt, QWidget* w);
 
 	virtual bool initPossibleEdges();
 	virtual void initTitles();
@@ -68,58 +68,58 @@ public:
 
 	NodeElement *src() const;
 	NodeElement *dst() const;
-	bool isSrc(NodeElement const *node) const;
-	bool isDst(NodeElement const *node) const;
+	bool isSrc(const NodeElement *node) const;
+	bool isDst(const NodeElement *node) const;
 	void setSrc(NodeElement *node);
 	void setDst(NodeElement *node);
 
 	/// prepare edge to moving from the linker
 	void tuneForLinker();
 
-	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
+	QPair<qreal, qreal> portIdOn(const NodeElement *node) const;
 
 	/// @return numeric criteria for sorting links on linear ports
-	EdgeArrangeCriteria arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+	EdgeArrangeCriteria arrangeCriteria(const NodeElement *node, const QLineF &portLine) const;
 
-	NodeElement* otherSide(NodeElement const *node) const;
-	void removeLink(NodeElement const *from);
+	NodeElement* otherSide(const NodeElement *node) const;
+	void removeLink(const NodeElement *from);
 
 	QPolygonF line() const;
-	void setLine(QPolygonF const &line);
+	void setLine(const QPolygonF &line);
 
 	qreal fromPort() const;
 	qreal toPort() const;
-	void setFromPort(qreal const fromPort);
-	void setToPort(qreal const toPort);
+	void setFromPort(const qreal fromPort);
+	void setToPort(const qreal toPort);
 
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
 
-	void placeStartTo(QPointF const &place);
-	void placeEndTo(QPointF const &place);
-	void moveConnection(NodeElement *node, qreal const portId);
+	void placeStartTo(const QPointF &place);
+	void placeEndTo(const QPointF &place);
+	void moveConnection(NodeElement *node, const qreal portId);
 
 	/// Resort edges connected to linear ports of adjacent nodes
 	void arrangeLinearPorts();
 
 	virtual void connectToPort();
 
-	virtual QList<ContextMenuAction*> contextMenuActions(QPointF const &pos);
+	virtual QList<ContextMenuAction*> contextMenuActions(const QPointF &pos);
 
 	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);
 
-	void breakPointHandler(QPointF const &pos);
+	void breakPointHandler(const QPointF &pos);
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
 
-	void highlight(QColor const color = Qt::red);
+	void highlight(const QColor color = Qt::red);
 
 	EdgeData& data();
 
 	/// Change link type and redraw it
-	void changeShapeType(enums::linkShape::LinkShape const shapeType);
+	void changeShapeType(const enums::linkShape::LinkShape shapeType);
 
 	/// Save link position to the repo
 	void setGraphicApiPos();
@@ -136,7 +136,7 @@ public:
 	void connectLoopEdge(NodeElement *newMaster);
 
 	/// @return Node at position that is more appropriate for the link to connect to.
-	NodeElement *getNodeAt(QPointF const &position, bool isStart);
+	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 
 	/// Determine on which side of a node (top, bottom, right or left) the link's end is placed
 	NodeSide defineNodePortSide(bool isStart) const;
@@ -148,13 +148,13 @@ public:
 	void setPos(qreal x, qreal y);
 
 	/// Proxies QGraphicsItem`s setPos filtering out NaNs
-	void setPos(QPointF const &pos);
+	void setPos(const QPointF &pos);
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
+	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 	virtual void drawStartArrow(QPainter *painter) const;
 	virtual void drawEndArrow(QPainter *painter) const;
@@ -175,24 +175,24 @@ private:
 	void searchNextPort();
 
 	/// Create indent of bounding rect, depending on the rect size.
-	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+	QPointF boundingRectIndent(const QPointF &point, NodeSide direction);
 
 	/// Returns true, if the sides adjacent.
-	bool isNeighbor(NodeSide const &startSide, NodeSide const &endSide) const;
+	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const;
 
 	/// Returns the next clockwise side.
 	NodeSide rotateRight(NodeSide side) const;
 
-	void paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *option, bool drawSavedLine) const;
+	void paintEdge(QPainter *painter, const QStyleOptionGraphicsItem *option, bool drawSavedLine) const;
 	void drawArrows(QPainter *painter, bool savedLine) const;
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
-	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement * const element) const;
+	NodeElement *innermostChild(const QList<QGraphicsItem *> &items, NodeElement * const element) const;
 	void updateLongestPart();
 
 	bool reverseActionIsPossible() const;
-	bool canConnect(NodeElement const * const node, bool from) const;
+	bool canConnect(const NodeElement * const node, bool from) const;
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
 	QList<PossibleEdge> mPossibleEdges;

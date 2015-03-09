@@ -1,12 +1,12 @@
 TARGET = qrutils_unittests
 
-CONFIG += c++11
-
 include(../common.pri)
 
 include(../../../qrutils/qrutils.pri)
 
-LIBS += -L../../../bin -lqslog
+links(qslog)
+
+INCLUDEPATH += ../../../qrutils
 
 HEADERS += \
 	expressionsParser/expressionsParserTest.h \

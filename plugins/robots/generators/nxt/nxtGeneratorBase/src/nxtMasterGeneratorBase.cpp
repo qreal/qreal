@@ -5,13 +5,14 @@
 
 using namespace nxt;
 
-NxtMasterGeneratorBase::NxtMasterGeneratorBase(qrRepo::RepoApi const &repo
+NxtMasterGeneratorBase::NxtMasterGeneratorBase(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const utils::ParserErrorReporter &parserErrorReporter
+		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
+	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, parserErrorReporter, diagramId)
 	, mGeneratorName(generatorName)
 {
 }
@@ -36,10 +37,10 @@ void NxtMasterGeneratorBase::afterGeneration()
 	saveImages(mProjectDir);
 }
 
-void NxtMasterGeneratorBase::saveImages(QString const &projectDir)
+void NxtMasterGeneratorBase::saveImages(const QString &projectDir)
 {
 	QMap<QString, QImage> &images = static_cast<NxtGeneratorFactory *>(mCustomizer->factory())->images().bmpFiles();
-	for (QString const &fileName : images.keys()) {
+	for (const QString &fileName : images.keys()) {
 		images[fileName].save(projectDir + '/' + fileName + ".bmp", "BMP", -1);
 	}
 }

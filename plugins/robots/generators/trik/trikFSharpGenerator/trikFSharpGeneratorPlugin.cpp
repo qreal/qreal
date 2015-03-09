@@ -64,13 +64,14 @@ generatorBase::MasterGeneratorBase *TrikFSharpGeneratorPlugin::masterGenerator()
 {
 	return new TrikFSharpMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()
 			, generatorName());
 }
 
-QString TrikFSharpGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString TrikFSharpGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString("trik/%1/%1.fs").arg(projectName);
 }
@@ -88,9 +89,9 @@ QString TrikFSharpGeneratorPlugin::generatorName() const
 bool TrikFSharpGeneratorPlugin::uploadProgram()
 {
 	QProcess compileProcess;
-	QFileInfo const fileInfo = generateCodeForProcessing();
+	const QFileInfo fileInfo = generateCodeForProcessing();
 
-	QString const pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
+	const QString pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
 
 	if (qReal::SettingsManager::value("FSharpPath").toString().isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
@@ -100,7 +101,7 @@ bool TrikFSharpGeneratorPlugin::uploadProgram()
 		return false;
 	}
 
-	QString const compileCommand = QString("\"%1\" \"%2\" %3")
+	const QString compileCommand = QString("\"%1\" \"%2\" %3")
 			.arg(qReal::SettingsManager::value("FSharpPath").toString())
 			.arg(fileInfo.absoluteFilePath())
 			.arg(pathToTheTrikCore);
@@ -123,7 +124,7 @@ bool TrikFSharpGeneratorPlugin::uploadProgram()
 		return false;
 	}
 
-	QString const moveCommand = QString(
+	const QString moveCommand = QString(
 			"\"%1\" /command  \"open scp://root@%2\" \"put %3 /home/root/trik/FSharp/Environment/\"")
 			.arg(qReal::SettingsManager::value("WinScpPath").toString())
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
@@ -151,7 +152,7 @@ void TrikFSharpGeneratorPlugin::runProgram()
 	utils::TcpRobotCommunicator communicator("TrikTcpServer");
 
 	communicator.runDirectCommand(
-			"brick.system(\"mono FSharp/Environment/example0.exe\"); "
+			"script.system(\"mono FSharp/Environment/example0.exe\"); "
 	);
 }
 
@@ -164,8 +165,8 @@ void TrikFSharpGeneratorPlugin::stopRobot()
 	}
 
 	communicator.runDirectCommand(
-			"brick.system(\"killall mono\"); "
-			"brick.system(\"killall aplay\"); \n"
-			"brick.system(\"killall vlc\");"
+			"script.system(\"killall mono\"); "
+			"script.system(\"killall aplay\"); \n"
+			"script.system(\"killall vlc\");"
 	);
 }

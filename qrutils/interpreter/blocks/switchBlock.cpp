@@ -4,7 +4,7 @@ using namespace qReal::interpretation::blocks;
 
 void SwitchBlock::run()
 {
-	QString const expressionValue = eval<QString>("Expression");
+	const QString expressionValue = eval<QString>("Expression");
 	if (mBranches.contains(expressionValue)) {
 		emit done(mBranches[expressionValue]);
 	} else {
@@ -17,20 +17,20 @@ bool SwitchBlock::initNextBlocks()
 	mBranches.clear();
 	mDefaultBranch = Id();
 
-	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
+	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 	if (links.size() < 2) {
 		error(tr("There must be at list TWO links outgoing from switch block"));
 		return false;
 	}
 
-	for (Id const &linkId : links) {
-		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
+	for (const Id &linkId : links) {
+		const Id targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId.isNull() || targetBlockId == Id::rootId()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}
 
-		QString const condition = stringProperty(linkId, "Guard").toLower();
+		const QString condition = stringProperty(linkId, "Guard").toLower();
 		if (condition.isEmpty()) {
 			if (mDefaultBranch.isNull()) {
 				mDefaultBranch = targetBlockId;

@@ -25,7 +25,7 @@ void Updater::start()
 	executeUpdater("--updater");
 }
 
-void Updater::executeUpdater(QString const &mode)
+void Updater::executeUpdater(const QString &mode)
 {
 	mUpdaterProcess = new QProcess(this);
 	mUpdaterProcess->setWorkingDirectory(QCoreApplication::applicationDirPath());
@@ -40,7 +40,7 @@ void Updater::executeUpdater(QString const &mode)
 
 void Updater::readAnswer()
 {
-	QString const output = mUpdaterProcess->readAllStandardOutput();
+	const QString output = mUpdaterProcess->readAllStandardOutput();
 	// Checking that output is a valid XML
 	QDomDocument parser;
 	parser.setContent(output);

@@ -5,6 +5,7 @@
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 #include "qrtext/core/parser/utils/functionTraits.h"
 
 namespace qrtext {
@@ -18,7 +19,7 @@ class TransformingParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parser and semantic action to execute on a result of a parser.
-	TransformingParser(ParserRef<TokenType> const &parser, Transformation const &transformation)
+	TransformingParser(const ParserRef<TokenType> &parser, const Transformation &transformation)
 		: mTransformation(transformation), mParser(parser)
 	{
 	}
@@ -31,7 +32,11 @@ public:
 		typedef typename function_traits<DereferenceOperatorType>::result_type NodeReference;
 		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
-		auto parserResult = mParser->parse(tokenStream, parserContext);
+		QSharedPointer<ast::Node> parserResult = mParser->parse(tokenStream, parserContext);
+		if (parserResult->is<TemporaryErrorNode>()) {
+			return parserResult;
+		}
+
 		auto node = as<NodeType>(parserResult);
 		parserResult = as<ast::Node>(mTransformation(node));
 		if (!parserResult) {

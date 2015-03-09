@@ -7,7 +7,7 @@ using namespace blocksBase::common;
 using namespace robotModel;
 
 WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
-		, interpreterBase::robotModel::DeviceInfo const &device)
+		, const interpreterBase::robotModel::DeviceInfo &device)
 	: WaitForSensorBlock(robotModel)
 	, mDevice(device)
 {
@@ -15,7 +15,7 @@ WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(interpreterBase::robotModel
 
 void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
-	int const targetDistance = eval<int>("Distance");
+	const int targetDistance = eval<int>("Distance");
 	if (!errorsOccured()) {
 		processResponce(reading, targetDistance);
 	}

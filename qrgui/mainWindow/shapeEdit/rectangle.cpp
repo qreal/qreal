@@ -13,7 +13,7 @@ QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* par
 	mY2 = y2;
 }
 
-QRealRectangle::QRealRectangle(QRealRectangle const &other)
+QRealRectangle::QRealRectangle(const QRealRectangle &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -47,7 +47,7 @@ void QRealRectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem*
 }
 
 QPair<QDomElement, Item::DomElementTypes> QRealRectangle::generateItem(QDomDocument &document
-		, QPoint const &topLeftPicture)
+		, const QPoint &topLeftPicture)
 {
 	QDomElement rectangle = setPenBrushToDoc(document, "rectangle");
 	setXandY(rectangle, sceneBoundingRectCoord(topLeftPicture));

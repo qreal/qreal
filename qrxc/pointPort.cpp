@@ -4,7 +4,7 @@
 
 using namespace utils;
 
-bool PointPort::init(QDomElement const &element, int width, int height)
+bool PointPort::init(const QDomElement &element, int width, int height)
 {
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);
@@ -14,7 +14,7 @@ bool PointPort::init(QDomElement const &element, int width, int height)
 	return true;
 }
 
-void PointPort::generateCode(OutFile &out, QStringList const &portTypes)
+void PointPort::generateCode(OutFile &out, const QStringList &portTypes)
 {
 	if (!portTypes.contains(mType)) {
 		mType = "NonTyped";

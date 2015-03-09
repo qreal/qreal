@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 
 namespace hascol {
 

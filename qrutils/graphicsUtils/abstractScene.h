@@ -4,7 +4,7 @@
 
 #include "abstractItemView.h"
 #include "abstractItem.h"
-#include "../utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace graphicsUtils
 {
@@ -25,16 +25,16 @@ public:
 	virtual void forReleaseResize(QGraphicsSceneMouseEvent *event);
 
 	static bool compareItems(graphicsUtils::AbstractItem* first, graphicsUtils::AbstractItem* second);
-	QString convertPenToString(QPen const &pen);
-	QString convertBrushToString(QBrush const &brush);
-	void setPenBrushItems(QPen const &pen, QBrush const &brush);
+	QString convertPenToString(const QPen &pen);
+	QString convertBrushToString(const QBrush &brush);
+	void setPenBrushItems(const QPen &pen, const QBrush &brush);
 	void setEmptyPenBrushItems();
 
-	void setPenStyleItems(QString const &text);
+	void setPenStyleItems(const QString &text);
 	void setPenWidthItems(int width);
-	void setPenColorItems(QString const &text);
-	void setBrushStyleItems(QString const &text);
-	void setBrushColorItems(QString const &text);
+	void setPenColorItems(const QString &text);
+	void setBrushStyleItems(const QString &text);
+	void setBrushColorItems(const QString &text);
 
 protected:
 	void setEmptyRect(int x, int y, int w, int h);

@@ -12,7 +12,7 @@ class Stylus : public Item
 public:
 	QList<Line *> mListLine;
 	Stylus(qreal x1, qreal y1, Item* parent);
-	Stylus(Stylus const &other);
+	Stylus(const Stylus &other);
 	virtual Item* clone();
 	void addLine(qreal x2, qreal y2);
 	void addLineInList(Line *line);
@@ -23,12 +23,13 @@ public:
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
-	virtual void setPenStyle(QString const &text);
+	virtual void setPenStyle(const QString &text);
 	virtual void setPenWidth(int width);
-	virtual void setPenColor(QString const &text);
-	virtual void setBrushStyle(QString const &text);
-	virtual void setBrushColor(QString const &text);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual void setPenColor(const QString &text);
+	virtual void setBrushStyle(const QString &text);
+	virtual void setBrushColor(const QString &text);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
 private:
 	qreal mTmpX1;

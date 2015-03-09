@@ -22,8 +22,8 @@ public:
 
 	void run() override
 	{
-		robotModel::DeviceInfo const deviceInfo = robotModel::DeviceInfo::create<Device>();
-		QString const port = deviceInfo.name()[0].toUpper() + deviceInfo.name().mid(1) + "Port";
+		const robotModel::DeviceInfo deviceInfo = robotModel::DeviceInfo::create<Device>();
+		const QString port = deviceInfo.name()[0].toUpper() + deviceInfo.name().mid(1) + "Port";
 		Device * const device = robotModel::RobotModelUtils::findDevice<Device>(mRobotModel, port);
 		if (device) {
 			doJob(*device);

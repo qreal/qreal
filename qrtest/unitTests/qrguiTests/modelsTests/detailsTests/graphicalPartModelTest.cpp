@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QApplication>
 
-#include <../qrrepo/repoApi.h>
+#include <qrrepo/repoApi.h>
 
-#include "../helpers/graphicalPartViewMock.h"
+#include "../../helpers/graphicalPartViewMock.h"
 
 using namespace qrguiTests;
 using namespace qReal;
@@ -15,7 +15,7 @@ Id const graphicalElement("editor", "diagram", "element", "graphicalId");
 
 void GraphicalPartModelTest::SetUp()
 {
-	mRepoApi = new qrRepo::RepoApi("test.qrs");
+	mRepoApi = new qrRepo::RepoApi("qrrepo_test.qrs");
 	mRepoApi->addChild(Id::rootId(), element);
 	mRepoApi->addChild(Id::rootId(), graphicalElement, element);
 

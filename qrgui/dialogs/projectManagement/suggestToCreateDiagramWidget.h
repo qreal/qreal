@@ -16,13 +16,13 @@ class SuggestToCreateDiagramWidget : public ListWidget
 	Q_OBJECT
 
 public:
-	explicit SuggestToCreateDiagramWidget(EditorManagerInterface const &editorManager
+	explicit SuggestToCreateDiagramWidget(const EditorManagerInterface &editorManager
 			, QWidget *parent = 0);
 
 private:
-	void addItem(Id const &editor, Id const &diagram);
+	void addItem(const Id &editor, const Id &diagram);
 
-	EditorManagerInterface const &mEditorManager;
+	const EditorManagerInterface &mEditorManager;
 };
 
 }

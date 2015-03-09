@@ -17,9 +17,9 @@ Block::Block()
 	connect(this, &BlockInterface::done, this, &Block::finishedRunning);
 }
 
-void Block::init(Id const &graphicalId
-		, GraphicalModelAssistInterface const &graphicalModelApi
-		, LogicalModelAssistInterface const &logicalModelApi
+void Block::init(const Id &graphicalId
+		, const GraphicalModelAssistInterface &graphicalModelApi
+		, const LogicalModelAssistInterface &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
 		, qrtext::LanguageToolboxInterface &textLanguageToolbox)
 {
@@ -28,6 +28,10 @@ void Block::init(Id const &graphicalId
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = errorReporter;
 	mParser = &textLanguageToolbox;
+	if (mLogicalModelApi) {
+		mParserErrorReporter.reset(new utils::ParserErrorReporter(*mParser, *mErrorReporter
+				, mLogicalModelApi->editorManagerInterface()));
+	}
 }
 
 bool Block::initNextBlocks()
@@ -37,7 +41,7 @@ bool Block::initNextBlocks()
 		return false;
 	}
 
-	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
+	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	if (links.count() > 1) {
 		error(tr("Too many outgoing links"));
@@ -50,7 +54,7 @@ bool Block::initNextBlocks()
 	}
 
 	if (links.count() == 1) {
-		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
+		const Id nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
 		if (nextBlockId.isNull() || nextBlockId == Id::rootId()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
@@ -62,7 +66,7 @@ bool Block::initNextBlocks()
 	return true;
 }
 
-Id const Block::id() const
+const Id Block::id() const
 {
 	return mGraphicalId;
 }
@@ -90,70 +94,70 @@ void Block::finishedRunning()
 	mState = idle;
 }
 
-QVariant Block::property(QString const &propertyName) const
+QVariant Block::property(const QString &propertyName) const
 {
 	return property(id(), propertyName);
 }
 
-QString Block::stringProperty(QString const &propertyName) const
+QString Block::stringProperty(const QString &propertyName) const
 {
 	return stringProperty(id(), propertyName);
 }
 
-int Block::intProperty(QString const &propertyName) const
+int Block::intProperty(const QString &propertyName) const
 {
 	return intProperty(id(), propertyName);
 }
 
-bool Block::boolProperty(QString const &propertyName) const
+bool Block::boolProperty(const QString &propertyName) const
 {
 	return boolProperty(id(), propertyName);
 }
 
-QVariant Block::property(Id const &id, QString const &propertyName) const
+QVariant Block::property(const Id &id, const QString &propertyName) const
 {
-	Id const logicalId = mGraphicalModelApi->logicalId(id);
+	const Id logicalId = mGraphicalModelApi->logicalId(id);
 	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);
 }
 
-QString Block::stringProperty(Id const &id, QString const &propertyName) const
+QString Block::stringProperty(const Id &id, const QString &propertyName) const
 {
 	return property(id, propertyName).toString();
 }
 
-int Block::intProperty(Id const &id, QString const &propertyName) const
+int Block::intProperty(const Id &id, const QString &propertyName) const
 {
 	return property(id, propertyName).toInt();
 }
 
-bool Block::boolProperty(Id const &id, QString const &propertyName) const
+bool Block::boolProperty(const Id &id, const QString &propertyName) const
 {
 	return property(id, propertyName).toBool();
 }
 
-QColor Block::propertyToColor(QString const &property) const
+QColor Block::propertyToColor(const QString &property) const
 {
 	// Qt does not support dark-yellow string color (see QColor::colorNames())
 	return property == "darkYellow" ? QColor(Qt::darkYellow) : QColor(property);
 }
 
-void Block::error(QString const &message)
+void Block::error(const QString &message)
 {
 	mErrorReporter->addError(message, id());
 	emit failure();
 }
 
-void Block::warning(QString const &message)
+void Block::warning(const QString &message)
 {
 	mErrorReporter->addWarning(message, id());
 }
 
-void Block::evalCode(QString const &code)
+void Block::evalCode(const QString &code)
 {
 	evalCode<int>(code);
 }
 
-void Block::eval(QString const &propertyName)
+void Block::eval(const QString &propertyName)
 {
 	eval<int>(propertyName);
 }
@@ -165,28 +169,4 @@ bool Block::errorsOccured() const
 
 void Block::finishedSteppingInto()
 {
-}
-
-void Block::reportParserErrors()
-{
-	for (qrtext::core::Error const &error : mParser->errors()) {
-		QString const errorMessage = QString("%1:%2 %3")
-				.arg(error.connection().line())
-				.arg(error.connection().column())
-				.arg(error.errorMessage());
-
-		switch (error.severity()) {
-		case qrtext::core::Severity::critical:
-		case qrtext::core::Severity::error:
-			mErrorReporter->addError(errorMessage, id());
-
-			break;
-		case qrtext::core::Severity::warning:
-			mErrorReporter->addWarning(errorMessage, id());
-
-			break;
-		case qrtext::core::Severity::internalError:
-			break;
-		}
-	}
 }

@@ -12,13 +12,13 @@ class QRTEXT_EXPORT String : public Expression
 public:
 	/// Constructor.
 	/// @param string - value of a literal (without quotes).
-	String(QString const &string)
+	String(const QString &string)
 		: mString(string)
 	{
 	}
 
 	/// Returns value of a string (without quotes).
-	QString const &string() const {
+	const QString &string() const {
 		return mString;
 	}
 

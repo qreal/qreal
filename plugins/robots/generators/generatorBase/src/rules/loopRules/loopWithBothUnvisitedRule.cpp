@@ -3,8 +3,8 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-LoopWithBothUnvisitedRule::LoopWithBothUnvisitedRule(SemanticTree *tree, Id const &id
-		, LinkInfo const &iterationLink, LinkInfo const &nextLink)
+LoopWithBothUnvisitedRule::LoopWithBothUnvisitedRule(SemanticTree *tree, const Id &id
+		, const LinkInfo &iterationLink, const LinkInfo &nextLink)
 	: LoopBlockRuleBase(tree, id, iterationLink, nextLink)
 {
 }

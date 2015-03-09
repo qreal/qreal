@@ -12,13 +12,13 @@ class ElementCommand : public AbstractCommand
 	Q_OBJECT
 
 public:
-	ElementCommand(EditorViewScene const *scene, Id const &id);
+	ElementCommand(const EditorViewScene *scene, const Id &id);
 	virtual ~ElementCommand();
 
-	EditorViewScene const *scene() const;
+	const EditorViewScene *scene() const;
 	Id elementId() const;
-	void setScene(EditorViewScene const *scene);
-	void setId(Id const &id);
+	void setScene(const EditorViewScene *scene);
+	void setId(const Id &id);
 
 protected:
 	/// Called when our element instance possibly has changed
@@ -27,10 +27,10 @@ protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
-	Element *elementById(Id const &id);
+	Element *elementById(const Id &id);
 
 	Element *mElement;
-	EditorViewScene const *mScene;
+	const EditorViewScene *mScene;
 	Id mId;
 	bool mSceneWasRemoved;
 

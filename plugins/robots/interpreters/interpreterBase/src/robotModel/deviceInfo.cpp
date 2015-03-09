@@ -15,8 +15,8 @@ DeviceInfo::DeviceInfo()
 {
 }
 
-DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &name
-		, QString const &friendlyName, Direction direction)
+DeviceInfo::DeviceInfo(const QMetaObject *deviceType, const QString &name
+		, const QString &friendlyName, Direction direction)
 	: mDeviceType(deviceType)
 	, mName(name)
 	, mFriendlyName(friendlyName)
@@ -24,13 +24,13 @@ DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &name
 {
 }
 
-bool DeviceInfo::isA(DeviceInfo const &parent) const
+bool DeviceInfo::isA(const DeviceInfo &parent) const
 {
 	if (parent.isNull()) {
 		return isNull();
 	}
 
-	QMetaObject const *currentParent = mDeviceType;
+	const QMetaObject *currentParent = mDeviceType;
 	while (currentParent && QString(parent.mDeviceType->className()) != QString(currentParent->className())) {
 		currentParent = currentParent->superClass();
 	}
@@ -65,7 +65,7 @@ QString DeviceInfo::toString() const
 	return QString(mDeviceType ? mDeviceType->className() : QString());
 }
 
-DeviceInfo DeviceInfo::fromString(QString const &string)
+DeviceInfo DeviceInfo::fromString(const QString &string)
 {
 	if (string.isEmpty()) {
 		return DeviceInfo();
@@ -78,7 +78,7 @@ DeviceInfo DeviceInfo::fromString(QString const &string)
 	return mCreatedInfos[string];
 }
 
-QString DeviceInfo::property(QMetaObject const * const metaObject, QString const &name)
+QString DeviceInfo::property(const QMetaObject * const metaObject, const QString &name)
 {
 	if (!metaObject) {
 		return QString();
@@ -87,7 +87,7 @@ QString DeviceInfo::property(QMetaObject const * const metaObject, QString const
 	// Superclass infos are have less indeces so iterating backwards for meeting device`s
 	// friendly name earlier than its parent`s one.
 	for (int i = metaObject->classInfoCount() - 1; i >= 0; --i) {
-		QMetaClassInfo const classInfo = metaObject->classInfo(i);
+		const QMetaClassInfo classInfo = metaObject->classInfo(i);
 		if (QString(classInfo.name()) == name) {
 			return QString(classInfo.value());
 		}

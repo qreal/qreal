@@ -3,11 +3,11 @@
 using namespace qReal::commands;
 
 ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * const model
-		, QString const &property, Id const &id, QVariant const &newValue)
+		, const QString &property, const Id &id, const QVariant &newValue)
 	: mLogicalModel(model)
 	, mId(id)
 	, mPropertyName(property)
-	, mPropertyEditorModel(NULL)
+	, mPropertyEditorModel(nullptr)
 	, mOldValue(mLogicalModel->propertyByRoleName(mId, mPropertyName))
 	, mNewValue(newValue)
 {
@@ -15,11 +15,11 @@ ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * con
 
 ChangePropertyCommand::ChangePropertyCommand(
 		PropertyEditorModel * const model
-		, QModelIndex const &index
-		, QVariant const &oldValue
-		, QVariant const &newValue
+		, const QModelIndex &index
+		, const QVariant &oldValue
+		, const QVariant &newValue
 		, int role)
-	: mLogicalModel(NULL)
+	: mLogicalModel(nullptr)
 	, mPropertyEditorModel(model)
 	, mPropertyEditorIndex(index)
 	, mPropertyEditorRole(role)
@@ -38,7 +38,7 @@ bool ChangePropertyCommand::restoreState()
 	return setProperty(mOldValue);
 }
 
-bool ChangePropertyCommand::setProperty(QVariant const &value)
+bool ChangePropertyCommand::setProperty(const QVariant &value)
 {
 	if (mPropertyEditorModel) {
 		return mPropertyEditorModel->setData(mPropertyEditorIndex, value, mPropertyEditorRole);

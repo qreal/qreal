@@ -13,8 +13,8 @@ class Speaker : public robotModel::parts::Ev3Speaker
 	Q_OBJECT
 
 public:
-	Speaker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Speaker(const interpreterBase::robotModel::DeviceInfo &info
+			, const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	/// @param volume.Volume to play the tone (0-100).

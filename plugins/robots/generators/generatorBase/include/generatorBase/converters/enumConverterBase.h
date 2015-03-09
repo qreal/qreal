@@ -11,13 +11,13 @@ namespace converters {
 class ROBOTS_GENERATOR_EXPORT EnumConverterBase : public TemplateParametrizedConverter
 {
 public:
-	EnumConverterBase(QString const &pathToTemplatesDir
+	EnumConverterBase(const QString &pathToTemplatesDir
 			, QMap<QString, QString> const &valuesToTemplatePaths = QMap<QString, QString>());
 
-	QString convert(QString const &data) const override;
+	QString convert(const QString &data) const override;
 
 protected:
-	void addMapping(QString const &enumValue, QString const &templatePath);
+	void addMapping(const QString &enumValue, const QString &templatePath);
 
 private:
 	QMap<QString, QString> mValuesToTemplates;

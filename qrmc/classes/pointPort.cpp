@@ -4,7 +4,7 @@
 
 using namespace qrmc;
 
-bool PointPort::init(QDomElement const &element, int width, int height)
+bool PointPort::init(const QDomElement &element, int width, int height)
 {
 	mX = static_cast<qreal>(element.attribute("x").toInt()) / width;
 	mY = static_cast<qreal>(element.attribute("y").toInt()) / height;

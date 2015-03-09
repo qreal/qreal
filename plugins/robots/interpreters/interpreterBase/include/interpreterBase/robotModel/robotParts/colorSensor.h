@@ -19,7 +19,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT ColorSensor : public ScalarSensor
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
-	ColorSensor(DeviceInfo const &info, PortInfo const &port);
+	ColorSensor(const DeviceInfo &info, const PortInfo &port);
 };
 
 }

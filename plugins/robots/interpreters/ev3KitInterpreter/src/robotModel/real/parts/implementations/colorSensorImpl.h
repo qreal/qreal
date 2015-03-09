@@ -16,7 +16,7 @@ class ColorSensorImpl : public QObject
 	Q_OBJECT
 
 public:
-	ColorSensorImpl(interpreterBase::robotModel::PortInfo const &port
+	ColorSensorImpl(const interpreterBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator
 			, SensorTypeEnum lowLevelType);
 

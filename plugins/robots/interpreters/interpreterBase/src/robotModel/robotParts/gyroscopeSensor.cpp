@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-GyroscopeSensor::GyroscopeSensor(DeviceInfo const &info, PortInfo const &port)
+GyroscopeSensor::GyroscopeSensor(const DeviceInfo &info, const PortInfo &port)
 	: ScalarSensor(info, port)
 {
 }

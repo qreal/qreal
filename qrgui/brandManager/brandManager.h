@@ -15,32 +15,32 @@ public:
 	static BrandManager &instance();
 
 	/// Retrieves from plugins customization information
-	static void configure(ToolPluginManager const *toolPluginManager);
+	static void configure(const ToolPluginManager *toolPluginManager);
 
 	// TODO: Pluginize two following methods
 
 	/// Returns information about all fonts in system
-	static Fonts const *fonts();
+	static const Fonts *fonts();
 
 	/// Returns information about all json stylesheets in system
-	static Styles const *styles();
+	static const Styles *styles();
 
 	/// Returns application`s name and probably version
 	static QString applicationName();
 
 	/// Returns application`s logo image in wide format
-	static QImage const applicationLogo();
+	static const QImage applicationLogo();
 
 	/// Returns small application`s icon
-	static QIcon const applicationIcon();
+	static const QIcon applicationIcon();
 
 private:
 	BrandManager();
 	~BrandManager();
 
 	Customizer *mCustomizer;  // Doesn`t take ownership
-	Fonts const *mFonts;  // Takes ownership
-	Styles const *mStyles;  // Takes ownership
+	const Fonts *mFonts;  // Takes ownership
+	const Styles *mStyles;  // Takes ownership
 };
 
 }

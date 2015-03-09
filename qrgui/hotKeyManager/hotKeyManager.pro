@@ -1,24 +1,13 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-hotkey-manager
 
-LIBS += -L$$PWD/../../bin -lqrgui-preferences-dialog
+include(../../global.pri)
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
+TEMPLATE = lib
+
+links(qrgui-preferences-dialog)
+includes(qrgui)
 
 QT += widgets
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
 
 DEFINES += QRGUI_HOTKEY_MANAGER_LIBRARY
 

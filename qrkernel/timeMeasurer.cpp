@@ -4,7 +4,7 @@
 
 using namespace qReal;
 
-TimeMeasurer::TimeMeasurer(QString const &methodName)
+TimeMeasurer::TimeMeasurer(const QString &methodName)
 		: mStartTime(QDateTime::currentDateTime())
 		, mMethodName(methodName)
 {

@@ -5,7 +5,7 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-RangeSensor::RangeSensor(DeviceInfo const &info, PortInfo const &port, engine::TwoDModelEngineInterface &engine)
+RangeSensor::RangeSensor(const DeviceInfo &info, const PortInfo &port, engine::TwoDModelEngineInterface &engine)
 	: robotParts::RangeSensor(info, port)
 	, mEngine(engine)
 {

@@ -6,9 +6,9 @@ using namespace updatesChecker;
 
 bool UpdateVersionDialog::promptUpdate(QWidget *parent)
 {
-	QString const message = QObject::tr("New updates are available!");
-	QString const updateButtonText = QObject::tr("Update");
-	QString const laterButtonText = QObject::tr("Later");
+	const QString message = QObject::tr("New updates are available!");
+	const QString updateButtonText = QObject::tr("Update");
+	const QString laterButtonText = QObject::tr("Later");
 
 	return 0 == QMessageBox::information(parent, QObject::tr("Yeah!"), message
 			, updateButtonText, laterButtonText, 0, 1);

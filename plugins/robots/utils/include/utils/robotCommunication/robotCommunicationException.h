@@ -11,7 +11,7 @@ namespace robotCommunication {
 class ROBOTS_UTILS_EXPORT RobotCommunicationException : public qReal::Exception
 {
 public:
-	explicit RobotCommunicationException(QString const &message);
+	explicit RobotCommunicationException(const QString &message);
 };
 
 }

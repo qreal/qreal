@@ -13,25 +13,26 @@ namespace parts {
 class Sensors : public InitTerminateCodeGenerator
 {
 public:
-	Sensors(QString const &pathToTemplates, simple::Binding::ConverterInterface const *inputPortConverter);
+	Sensors(const QString &pathToTemplates, const simple::Binding::ConverterInterface *inputPortConverter);
 	virtual ~Sensors();
 
-	virtual void reinit(QMap<interpreterBase::robotModel::PortInfo
-			, interpreterBase::robotModel::DeviceInfo> const &devices);
+	virtual void reinit(const QMap<interpreterBase::robotModel::PortInfo
+			, interpreterBase::robotModel::DeviceInfo> &devices);
+
 	virtual QString initCode();
 	virtual QString terminateCode();
 	virtual QString isrHooksCode();
 
 protected:
-	void reinitPort(interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &device);
+	void reinitPort(const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &device);
 
-	virtual QString code(QString const &directory
-			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &device);
+	virtual QString code(const QString &directory
+			, const interpreterBase::robotModel::PortInfo &port
+			, const interpreterBase::robotModel::DeviceInfo &device);
 
 private:
-	simple::Binding::ConverterInterface const *mInputPortConverter;  // Takes ownership
+	const simple::Binding::ConverterInterface *mInputPortConverter;  // Takes ownership
 	QStringList mInitCode;
 	QStringList mTerminateCode;
 	QStringList mIsrHooksCode;

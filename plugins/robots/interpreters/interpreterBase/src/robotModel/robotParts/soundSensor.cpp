@@ -3,7 +3,7 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-SoundSensor::SoundSensor(DeviceInfo const &info, PortInfo const &port)
+SoundSensor::SoundSensor(const DeviceInfo &info, const PortInfo &port)
 	: ScalarSensor(info, port)
 {
 }

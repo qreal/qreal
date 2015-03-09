@@ -10,7 +10,7 @@ class SQLHighlighter : public QSyntaxHighlighter
 {
 public:
 	SQLHighlighter(QTextDocument *document);
-	void highlightBlock(QString const &text);
+	void highlightBlock(const QString &text);
 
 private:
 	struct HighlightingRule

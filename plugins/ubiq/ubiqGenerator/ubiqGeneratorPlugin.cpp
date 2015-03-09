@@ -1,7 +1,5 @@
 #include "ubiqGeneratorPlugin.h"
 
-Q_EXPORT_PLUGIN2(ubiqGeneratorPlugin, ubiq::generator::UbiqGeneratorPlugin)
-
 using namespace ubiq::generator;
 using namespace qReal;
 

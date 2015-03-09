@@ -14,14 +14,14 @@ using namespace qrtext::lua::details;
 using namespace qrtext::core::types;
 using namespace qrtext::lua::types;
 
-bool LuaGeneralizationsTable::isGeneralization(QSharedPointer<TypeExpression> const &specific
-		, QSharedPointer<TypeExpression> const &general) const
+bool LuaGeneralizationsTable::isGeneralization(const QSharedPointer<TypeExpression> &specific
+		, const QSharedPointer<TypeExpression> &general) const
 {
 	return (specific->is<Integer>() && general->is<Float>()) || isStructurallyEquivalent(specific, general);
 }
 
-bool LuaGeneralizationsTable::isStructurallyEquivalent(QSharedPointer<TypeExpression> const &type1
-		, QSharedPointer<TypeExpression> const &type2) const
+bool LuaGeneralizationsTable::isStructurallyEquivalent(const QSharedPointer<TypeExpression> &type1
+		, const QSharedPointer<TypeExpression> &type2) const
 {
 	if (type1->is<Any>() && type2->is<Any>()) {
 		return true;

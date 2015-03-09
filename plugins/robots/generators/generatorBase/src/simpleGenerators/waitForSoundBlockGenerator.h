@@ -9,9 +9,9 @@ namespace simple {
 class WaitForSoundBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForSoundBlockGenerator(qrRepo::RepoApi const &repo
+	WaitForSoundBlockGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent = 0);
 };
 
