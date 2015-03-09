@@ -15,7 +15,8 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(MainWindow &mainWindo
 	mUi->setupUi(this);
 
 	addPropertiesList();
-	connect(mUi->propertiesView, &QListWidget::itemDoubleClicked, this, &SpecifyGenerationRulesDialog::insertPropertyIntoCode);
+	connect(mUi->propertiesView, &QListWidget::itemDoubleClicked, this
+			&SpecifyGenerationRulesDialog::insertPropertyIntoCode);
 }
 
 SpecifyGenerationRulesDialog::~SpecifyGenerationRulesDialog()
