@@ -1,10 +1,10 @@
 #include "interpreterCore/managers/kitAutoSwitcher.h"
 
 #include <qrkernel/settingsManager.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 using namespace interpreterCore;
-using namespace interpreterBase;
+using namespace kitBase;
 using namespace robotModel;
 
 KitAutoSwitcher::KitAutoSwitcher(const qReal::ProjectManagementInterface &projectManager

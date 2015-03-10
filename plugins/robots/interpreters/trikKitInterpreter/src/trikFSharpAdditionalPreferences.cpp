@@ -3,7 +3,7 @@
 
 #include <qrkernel/settingsManager.h>
 
-using namespace trikKitInterpreter;
+using namespace trik;
 using namespace qReal;
 
 TrikFSharpAdditionalPreferences::TrikFSharpAdditionalPreferences(QWidget *parent)

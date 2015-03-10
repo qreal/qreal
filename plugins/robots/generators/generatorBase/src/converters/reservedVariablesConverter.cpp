@@ -7,8 +7,8 @@ using namespace qReal;
 
 ReservedVariablesConverter::ReservedVariablesConverter(const QString &pathToTemplates
 		, qReal::ErrorReporterInterface &errorReporter
-		, const interpreterBase::robotModel::RobotModelInterface &robotModel
-		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
+		, const kitBase::robotModel::RobotModelInterface &robotModel
+		, QMap<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> const &devices
 		, const simple::Binding::ConverterInterface *inputPortConverter
 		, const parts::DeviceVariables &deviceVariables)
 	: TemplateParametrizedConverter(pathToTemplates)
@@ -27,7 +27,7 @@ ReservedVariablesConverter::~ReservedVariablesConverter()
 
 QString ReservedVariablesConverter::convert(const QString &variable) const
 {
-	for (const interpreterBase::robotModel::PortInfo &port : mRobotModel.availablePorts()) {
+	for (const kitBase::robotModel::PortInfo &port : mRobotModel.availablePorts()) {
 		const QString reservedVariable = port.reservedVariable();
 		if (!reservedVariable.isEmpty() && variable == reservedVariable) {
 			return deviceExpression(port);
@@ -37,9 +37,9 @@ QString ReservedVariablesConverter::convert(const QString &variable) const
 	return variable;
 }
 
-QString ReservedVariablesConverter::deviceExpression(const interpreterBase::robotModel::PortInfo &port) const
+QString ReservedVariablesConverter::deviceExpression(const kitBase::robotModel::PortInfo &port) const
 {
-	const interpreterBase::robotModel::DeviceInfo device = mDevices[port];
+	const kitBase::robotModel::DeviceInfo device = mDevices[port];
 	if (device.isNull()) {
 		mErrorReporter.addError(QObject::tr("Device on port %1 is not configured."\
 				" Please select it on the left-side panel.").arg(port.name()));

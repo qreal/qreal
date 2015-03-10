@@ -3,11 +3,11 @@
 #include <qrkernel/exception/exception.h>
 
 using namespace qReal;
-using namespace interpreterBase::blocksBase;
+using namespace kitBase::blocksBase;
 using namespace interpreterCore::interpreter::details;
 
 BlocksTable::BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager)
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager)
 	: mBlocksFactoryManager(blocksFactoryManager)
 	, mRobotModelManager(robotModelManager)
 {

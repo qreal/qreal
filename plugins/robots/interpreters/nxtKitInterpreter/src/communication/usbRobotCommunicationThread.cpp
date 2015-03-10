@@ -9,7 +9,7 @@
 
 #include "commandConstants.h"
 
-using namespace nxtKitInterpreter::communication;
+using namespace nxt::communication;
 
 const unsigned packetHeaderSize = 3;
 

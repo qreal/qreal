@@ -19,19 +19,19 @@ QString NullKitInterpreterPlugin::friendlyKitName() const
 	return tr("Empty Kit");
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> NullKitInterpreterPlugin::robotModels()
+QList<kitBase::robotModel::RobotModelInterface *> NullKitInterpreterPlugin::robotModels()
 {
-	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
+	return QList<kitBase::robotModel::RobotModelInterface *>() << &mRobotModel;
 }
 
-interpreterBase::blocksBase::BlocksFactoryInterface *NullKitInterpreterPlugin::blocksFactoryFor(
-		const interpreterBase::robotModel::RobotModelInterface *model)
+kitBase::blocksBase::BlocksFactoryInterface *NullKitInterpreterPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model)
 	return nullptr;
 }
 
-QList<interpreterBase::AdditionalPreferences *> NullKitInterpreterPlugin::settingsWidgets()
+QList<kitBase::AdditionalPreferences *> NullKitInterpreterPlugin::settingsWidgets()
 {
 	return {nullptr};
 }
@@ -47,7 +47,7 @@ QList<qReal::HotKeyActionInfo> NullKitInterpreterPlugin::hotKeyActions()
 }
 
 QIcon NullKitInterpreterPlugin::iconForFastSelector(
-		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
 	return QIcon();

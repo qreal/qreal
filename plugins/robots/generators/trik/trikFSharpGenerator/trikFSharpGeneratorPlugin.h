@@ -15,8 +15,9 @@ class TrikFSharpGeneratorPlugin : public TrikGeneratorPluginBase
 public:
 	TrikFSharpGeneratorPlugin();
 
-	QList<qReal::ActionInfo> actions() override;
+	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;

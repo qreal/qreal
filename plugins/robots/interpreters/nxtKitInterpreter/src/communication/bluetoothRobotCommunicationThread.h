@@ -5,7 +5,7 @@
 class QextSerialPort;
 class QTimer;
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace communication {
 
 class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface

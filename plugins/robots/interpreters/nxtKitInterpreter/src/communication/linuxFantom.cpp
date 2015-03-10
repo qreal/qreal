@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-using namespace nxtKitInterpreter::communication;
+using namespace nxt::communication;
 
 bool Fantom::isAvailable()
 {

@@ -4,7 +4,7 @@
 <context>
     <name>nullKitInterpreter::NullKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullKitInterpreterPlugin.cpp" line="21"/>
+        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullKitInterpreterPlugin.cpp" line="19"/>
         <source>Empty Kit</source>
         <translation>Пустая модель</translation>
     </message>

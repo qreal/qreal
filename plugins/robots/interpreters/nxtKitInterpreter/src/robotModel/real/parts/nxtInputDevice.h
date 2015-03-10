@@ -1,11 +1,11 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/abstractSensor.h>
+#include <kitBase/robotModel/robotParts/abstractSensor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
 #include "commandConstants.h"
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -25,7 +25,7 @@ public:
 
 	NxtInputDevice(
 			utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, const interpreterBase::robotModel::PortInfo &port
+			, const kitBase::robotModel::PortInfo &port
 			, const enums::lowLevelSensorType::SensorTypeEnum &lowLevelSensorType
 			, const enums::sensorMode::SensorModeEnum &sensorMode);
 
