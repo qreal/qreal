@@ -16,21 +16,24 @@ using namespace simpleParser;
 
 QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 		, qrRepo::LogicalRepoApi *metamodelRepoApi
+		, qrRepo::RepoControlInterface *modelRepo
+		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, const qReal::Id elementId)
 {
 	QString result;
 
 	if (node->is<ast::Program>()) {
 		QSharedPointer<ast::Program> program = qrtext::as<ast::Program>(node);
-		result = GeneratorForProgramNode::generatedResult(program, metamodelRepoApi, elementId);
+		result = GeneratorForProgramNode::generatedResult(program, metamodelRepoApi, modelRepo, logicalModelInterface, elementId);
 	}
 	else if (node->is<ast::ComplexIdentifier>()) {
 		QSharedPointer<ast::ComplexIdentifier> complexIdentifier = qrtext::as<ast::ComplexIdentifier>(node);
-		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, metamodelRepoApi, elementId);
+		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, metamodelRepoApi
+				, modelRepo, logicalModelInterface, elementId);
 	}
 	else if (node->is<ast::Foreach>()) {
 		QSharedPointer<ast::Foreach> foreachNode = qrtext::as<ast::Foreach>(node);
-		result = GeneratorForForeachNode::generatedResult(foreachNode, metamodelRepoApi);
+		result = GeneratorForForeachNode::generatedResult(foreachNode, metamodelRepoApi, modelRepo, logicalModelInterface);
 	}
 	else if (node->is<ast::Newline>()) {
 		result = "\n";

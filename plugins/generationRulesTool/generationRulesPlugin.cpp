@@ -41,22 +41,20 @@ void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, 
 {
 	mRepo = &configurator.repoControlInterface();
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
+	mLogicalModelAssistInterface = &configurator.logicalModelApi();
+
 	mMetamodelRepoApi = &metamodelRepoApi;
 }
 
 void GenerationRulesPlugin::generateCode()
 {
-//	for (int i = 0; i < mMetamodelRepoApi->elementsCount(); ++i) {
-//		qDebug() << "element";
-//	}
-
 	QString stream = "'enum State {'\n"
 			"foreach (State) {\n"
-			"State.name ',' \n"
+			"State.Name ',' \n"
 			"newline \n"
 			"} \n"
-			"StartState.name ',' newline \n"
-			"EndState.name newline \n"
+			"StartState.Name ',' newline \n"
+			"EndState.Name newline \n"
 			"'}' \n";
 
 	// testing lexer
@@ -91,6 +89,6 @@ void GenerationRulesPlugin::generateCode()
 	auto programChildren = programRepresentation->children();
 	qDebug() << programChildren.size();
 
-	QString resultOfGeneration = generator::CommonGenerator::generatedResult(program, mMetamodelRepoApi);
+	QString resultOfGeneration = generator::CommonGenerator::generatedResult(program, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface);
 	//qDebug() << resultOfGeneration;
 }

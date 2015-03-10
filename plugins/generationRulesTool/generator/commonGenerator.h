@@ -15,6 +15,8 @@ class CommonGenerator
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Node> node
 			, qrRepo::LogicalRepoApi *metamodelRepoApi
+			, qrRepo::RepoControlInterface *modelRepo
+			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, const qReal::Id elementId = qReal::Id()
 			);
 };

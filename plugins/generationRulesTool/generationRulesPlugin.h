@@ -28,6 +28,8 @@ private:
 	/// To syncronize logical and graphical models with repository.
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Doesn't have ownership
 
+	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;
+
 	/// Metamodel repo api.
 	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
 };

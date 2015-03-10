@@ -15,6 +15,8 @@ class GeneratorForForeachNode
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Foreach> foreachNode
 			, qrRepo::LogicalRepoApi *metamodelRepoApi
+			, qrRepo::RepoControlInterface *modelRepo
+			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			);
 };
 
