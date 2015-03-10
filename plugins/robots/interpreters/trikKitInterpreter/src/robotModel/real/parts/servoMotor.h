@@ -1,9 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/trikServoMotor.h"
+#include <trikKit/robotModel/parts/trikServoMotor.h>
 #include <utils/tcpRobotCommunicator.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -13,8 +13,8 @@ class ServoMotor : public robotModel::parts::TrikServoMotor
 	Q_OBJECT
 
 public:
-	ServoMotor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	ServoMotor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void on(int speed) override;

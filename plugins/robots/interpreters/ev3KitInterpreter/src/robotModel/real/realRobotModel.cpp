@@ -3,7 +3,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 
-#include "communication/bluetoothRobotCommunicationThread.h"
+#include "src/communication/bluetoothRobotCommunicationThread.h"
 
 #include "parts/display.h"
 #include "parts/speaker.h"
@@ -14,9 +14,9 @@
 #include "parts/rangeSensor.h"
 #include "parts/colorSensorFull.h"
 
-using namespace ev3KitInterpreter::robotModel::real;
+using namespace ev3::robotModel::real;
 using namespace utils::robotCommunication;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 	: Ev3RobotModelBase(kitId, robotId)
@@ -33,12 +33,17 @@ QString RealRobotModel::name() const
 
 QString RealRobotModel::friendlyName() const
 {
-	return tr("Real Robot EV3");
+	return tr("Interpretation (USB, Bluetooth)");
 }
 
 bool RealRobotModel::needsConnection() const
 {
 	return true;
+}
+
+int RealRobotModel::priority() const
+{
+	return 9;  /* After 2D model */
 }
 
 void RealRobotModel::rereadSettings()

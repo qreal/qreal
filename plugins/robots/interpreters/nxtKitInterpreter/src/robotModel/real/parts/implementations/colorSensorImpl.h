@@ -1,10 +1,10 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/colorSensor.h>
+#include <kitBase/robotModel/robotParts/colorSensor.h>
 
 #include "src/robotModel/real/parts/nxtInputDevice.h"
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -14,7 +14,7 @@ class ColorSensorImpl : public QObject
 	Q_OBJECT
 
 public:
-	ColorSensorImpl(const interpreterBase::robotModel::PortInfo &port
+	ColorSensorImpl(const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator
 			, enums::lowLevelSensorType::SensorTypeEnum lowLevelType);
 

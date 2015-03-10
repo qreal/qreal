@@ -3,10 +3,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-#include <commonTwoDModel/engine/twoDModelEngineFacade.h>
+#include <twoDModel/engine/twoDModelEngineFacade.h>
 #include <qrkernel/settingsManager.h>
 
-using namespace trikKitInterpreter;
+using namespace trik;
 using namespace qReal;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
@@ -37,42 +37,28 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 	if (mOwnsBlocksFactory) {
 		delete mBlocksFactory;
 	}
-
-	if (mOwnsIpAdressQuickConfigurer) {
-		delete mIpAdressQuickConfigurer;
-	}
 }
 
-void TrikKitInterpreterPlugin::init(const interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
-		, const SystemEvents &systemEvents
-		, qReal::GraphicalModelAssistInterface &graphicalModel
-		, qReal::LogicalModelAssistInterface &logicalModel
-		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, interpreterBase::InterpreterControlInterface &interpreterControl)
+void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+	connect(&configurator.eventsForKitPlugin()
+			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
+	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel
-			, logicalModel, interpretersInterface, interpreterControl);
+	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
+
+	mTwoDModelV6->init(configurator.eventsForKitPlugin()
+			, configurator.qRealConfigurator().systemEvents()
+			, configurator.qRealConfigurator().graphicalModelApi()
+			, configurator.qRealConfigurator().logicalModelApi()
+			, interpretersInterface
+			, configurator.interpreterControl());
 
 	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
-
-	QLineEdit * const quickPreferences = new QLineEdit;
-	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
-	auto updateQuickPreferences = [quickPreferences]() {
-		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
-	};
-	updateQuickPreferences();
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
-	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
-		qReal::SettingsManager::setValue("TrikTcpServer", text);
-	});
-	mIpAdressQuickConfigurer = quickPreferences;
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
@@ -90,38 +76,35 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 	return tr("TRIK");
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
+QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
 	return {&mRealRobotModelV6, &mTwoDRobotModelV6};
 }
 
-interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
-		const interpreterBase::robotModel::RobotModelInterface *model)
+kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model);
 	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
-interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
+kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
 {
 	return &mTwoDRobotModelV6;
 }
 
-QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
+QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
 	return {mAdditionalPreferences, mFSharpAdditionalPreferences};
 }
 
-QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const interpreterBase::robotModel::RobotModelInterface &model)
+QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
 {
-	if (model.name().toLower().contains("twod")) {
-		return nullptr;
-	} else {
-		mOwnsIpAdressQuickConfigurer = false;
-		return mIpAdressQuickConfigurer;
-	}
+	return model.name().toLower().contains("twod")
+			? nullptr
+			: produceIpAddressConfigurer();
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
@@ -145,7 +128,7 @@ QString TrikKitInterpreterPlugin::defaultSettingsFile() const
 }
 
 QIcon TrikKitInterpreterPlugin::iconForFastSelector(
-		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	/// @todo: draw icons for v6
 	return &robotModel == &mRealRobotModelV6
@@ -155,7 +138,7 @@ QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 					: QIcon();
 }
 
-interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
+kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModelV6->devicesConfigurationProvider();
 }
@@ -165,4 +148,19 @@ void TrikKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
 	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 	const bool v6Enabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModelV6.name();
 	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setVisible(v6Enabled);
+}
+
+QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
+{
+	QLineEdit * const quickPreferences = new QLineEdit;
+	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
+	auto updateQuickPreferences = [quickPreferences]() {
+		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
+	};
+	updateQuickPreferences();
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
+		qReal::SettingsManager::setValue("TrikTcpServer", text);
+	});
+	return quickPreferences;
 }

@@ -14,8 +14,8 @@ class TwoDSpeaker : public robotModel::parts::NxtSpeaker
 	Q_OBJECT
 
 public:
-	TwoDSpeaker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	TwoDSpeaker(kitBase::robotModel::DeviceInfo const &info
+			, kitBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void playTone(unsigned freq, unsigned time) override;

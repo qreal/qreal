@@ -1,11 +1,11 @@
 #include "twoDSpeaker.h"
 
-using namespace trikKitInterpreter::robotModel::twoD::parts;
+using namespace trik::robotModel::twoD::parts;
 
 const int duration = 1000;
 
-TwoDSpeaker::TwoDSpeaker(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+TwoDSpeaker::TwoDSpeaker(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikSpeaker(info, port)
 	, mEngine(engine)

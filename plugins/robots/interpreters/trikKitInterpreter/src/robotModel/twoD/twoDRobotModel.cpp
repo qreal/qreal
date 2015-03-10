@@ -2,8 +2,8 @@
 
 #include <QtGui/QColor>
 
-#include <interpreterBase/robotModel/robotModelUtils.h>
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/lightSensor.h>
 
 #include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
@@ -13,17 +13,17 @@
 #include "robotModel/twoD/parts/twoDLineSensor.h"
 #include "robotModel/twoD/parts/twoDObjectSensor.h"
 #include "robotModel/twoD/parts/twoDColorSensor.h"
-#include "robotModel/parts/trikLineSensor.h"
-#include "robotModel/parts/trikObjectSensor.h"
-#include "robotModel/parts/trikColorSensor.h"
-#include "robotModel/parts/trikInfraredSensor.h"
-#include "robotModel/parts/trikSonarSensor.h"
+#include <trikKit/robotModel/parts/trikLineSensor.h>
+#include <trikKit/robotModel/parts/trikObjectSensor.h>
+#include <trikKit/robotModel/parts/trikColorSensor.h>
+#include <trikKit/robotModel/parts/trikInfraredSensor.h>
+#include <trikKit/robotModel/parts/trikSonarSensor.h>
 
 #include "trikDisplayWidget.h"
 
-using namespace trikKitInterpreter::robotModel;
-using namespace trikKitInterpreter::robotModel::twoD;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel;
+using namespace trik::robotModel::twoD;
+using namespace kitBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
@@ -99,7 +99,7 @@ twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget
 
 QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
 {
-	if (deviceType.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+	if (deviceType.isA<kitBase::robotModel::robotParts::LightSensor>()) {
 		return ":icons/twoDColorEmpty.svg";
 	} else if (deviceType.isA<robotModel::parts::TrikInfraredSensor>()) {
 		return ":icons/twoDIrRangeSensor.svg";
@@ -116,7 +116,7 @@ void TwoDRobotModel::setWheelPorts(const QString &leftWheelPort, const QString &
 	mRightWheelPort = rightWheelPort;
 }
 
-QRect TwoDRobotModel::sensorImageRect(const interpreterBase::robotModel::DeviceInfo &deviceType) const
+QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const
 {
 	if (deviceType.isA<robotParts::LightSensor>()) {
 		return QRect(-6, -6, 12, 12);

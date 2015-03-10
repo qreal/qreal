@@ -1,15 +1,15 @@
 #include "twoDInfraredSensor.h"
 
-#include <commonTwoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
 
-using namespace trikKitInterpreter::robotModel::twoD::parts;
+using namespace trik::robotModel::twoD::parts;
 
 /// The maximal distance that returned by IR sensor; when the object is closer
 /// IR sensor starts to return less values non-lineary.
 const int maxDistance = 93;
 
-TwoDInfraredSensor::TwoDInfraredSensor(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+TwoDInfraredSensor::TwoDInfraredSensor(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: twoDModel::robotModel::parts::RangeSensor(info, port, engine)
 {

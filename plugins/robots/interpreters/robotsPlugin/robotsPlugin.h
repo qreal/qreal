@@ -1,8 +1,6 @@
 #pragma once
 
 #include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
-#include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 
 #include <interpreterCore/robotsPluginFacade.h>
 

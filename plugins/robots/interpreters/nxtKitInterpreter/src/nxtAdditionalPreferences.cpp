@@ -4,7 +4,7 @@
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
 
-using namespace nxtKitInterpreter;
+using namespace nxt;
 using namespace qReal;
 
 NxtAdditionalPreferences::NxtAdditionalPreferences(const QString &realRobotName, QWidget *parent)
@@ -81,7 +81,7 @@ void NxtAdditionalPreferences::restoreSettings()
 	}
 }
 
-void NxtAdditionalPreferences::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface * const robotModel)
+void NxtAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
 	const bool isReal = robotModel->name() == mRealRobotName;
 	mUi->communicationTypeGroupBox->setVisible(isReal);

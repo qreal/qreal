@@ -1,13 +1,9 @@
 #pragma once
 
-#include <QtCore/QScopedPointer>
-
-#include <robotModel/trikRobotModelBase.h>
+#include <trikKit/robotModel/trikRobotModelBase.h>
 #include <utils/tcpRobotCommunicator.h>
 
-#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 
@@ -26,9 +22,9 @@ public:
 	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 
 protected:
-	interpreterBase::robotModel::robotParts::Device *createDevice(
-			const interpreterBase::robotModel::PortInfo &port
-			, const interpreterBase::robotModel::DeviceInfo &deviceInfo) override;
+	kitBase::robotModel::robotParts::Device *createDevice(
+			const kitBase::robotModel::PortInfo &port
+			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;
 
 private:
 	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;

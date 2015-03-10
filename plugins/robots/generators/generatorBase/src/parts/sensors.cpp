@@ -2,17 +2,17 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
-#include <interpreterBase/robotModel/robotParts/soundSensor.h>
-#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
-#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
+#include <kitBase/robotModel/robotParts/touchSensor.h>
+#include <kitBase/robotModel/robotParts/colorSensorFull.h>
+#include <kitBase/robotModel/robotParts/colorSensorRed.h>
+#include <kitBase/robotModel/robotParts/colorSensorGreen.h>
+#include <kitBase/robotModel/robotParts/colorSensorBlue.h>
+#include <kitBase/robotModel/robotParts/colorSensorPassive.h>
+#include <kitBase/robotModel/robotParts/rangeSensor.h>
+#include <kitBase/robotModel/robotParts/lightSensor.h>
+#include <kitBase/robotModel/robotParts/soundSensor.h>
+#include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
+#include <kitBase/robotModel/robotParts/encoderSensor.h>
 
 using namespace generatorBase::parts;
 using namespace qReal;
@@ -30,28 +30,28 @@ Sensors::~Sensors()
 }
 
 QString Sensors::code(const QString &directory
-		, const interpreterBase::robotModel::PortInfo &port
-		, const interpreterBase::robotModel::DeviceInfo &device)
+		, const kitBase::robotModel::PortInfo &port
+		, const kitBase::robotModel::DeviceInfo &device)
 {
 	const QString portString = mInputPortConverter->convert(port.name());
 	const QString templatePath = QString("%1/%2.t").arg(directory, device.name());
 	return readTemplateIfExists(templatePath).replace("@@PORT@@", portString);
 }
 
-void Sensors::reinit(QMap<interpreterBase::robotModel::PortInfo
-		, interpreterBase::robotModel::DeviceInfo> const &devices)
+void Sensors::reinit(QMap<kitBase::robotModel::PortInfo
+		, kitBase::robotModel::DeviceInfo> const &devices)
 {
 	mInitCode.clear();
 	mTerminateCode.clear();
 	mIsrHooksCode.clear();
 
-	for (const interpreterBase::robotModel::PortInfo &port : devices.keys()) {
+	for (const kitBase::robotModel::PortInfo &port : devices.keys()) {
 		reinitPort(port, devices[port]);
 	}
 }
 
-void Sensors::reinitPort(const interpreterBase::robotModel::PortInfo &port
-		, const interpreterBase::robotModel::DeviceInfo &device)
+void Sensors::reinitPort(const kitBase::robotModel::PortInfo &port
+		, const kitBase::robotModel::DeviceInfo &device)
 {
 	mInitCode << code("initialization", port, device);
 	mTerminateCode << code("termination", port, device);

@@ -1,11 +1,11 @@
 #include "colorSensorGreen.h"
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
+using namespace nxt::robotModel::real::parts;
 
-ColorSensorGreen::ColorSensorGreen(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+ColorSensorGreen::ColorSensorGreen(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::ColorSensorGreen(info, port)
+	: kitBase::robotModel::robotParts::ColorSensorGreen(info, port)
 	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORGREEN)
 {
 	connect(&mImpl, &ColorSensorImpl::newData, this, &ColorSensorGreen::newData);

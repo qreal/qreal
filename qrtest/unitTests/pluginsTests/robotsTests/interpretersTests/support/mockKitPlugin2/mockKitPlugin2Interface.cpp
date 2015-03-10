@@ -12,18 +12,18 @@ QString MockKitPlugin2Interface::friendlyKitName() const
 	return "Mock Kit Plugin 2";
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> MockKitPlugin2Interface::robotModels()
+QList<kitBase::robotModel::RobotModelInterface *> MockKitPlugin2Interface::robotModels()
 {
-	return QList<interpreterBase::robotModel::RobotModelInterface *>();
+	return QList<kitBase::robotModel::RobotModelInterface *>();
 }
 
-QList<interpreterBase::AdditionalPreferences *> MockKitPlugin2Interface::settingsWidgets()
+QList<kitBase::AdditionalPreferences *> MockKitPlugin2Interface::settingsWidgets()
 {
 	return {nullptr};
 }
 
-interpreterBase::blocksBase::BlocksFactoryInterface *MockKitPlugin2Interface::blocksFactoryFor(
-		interpreterBase::robotModel::RobotModelInterface const *model)
+kitBase::blocksBase::BlocksFactoryInterface *MockKitPlugin2Interface::blocksFactoryFor(
+		kitBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model)
 	return nullptr;
@@ -40,7 +40,7 @@ QList<qReal::HotKeyActionInfo> MockKitPlugin2Interface::hotKeyActions()
 }
 
 QIcon MockKitPlugin2Interface::iconForFastSelector(
-		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+		kitBase::robotModel::RobotModelInterface const &robotModel) const
 {
 	Q_UNUSED(robotModel)
 	return QIcon();

@@ -1,10 +1,9 @@
 #pragma once
 
+#include <trikKit/robotModel/parts/trikGamepadWheel.h>
 #include <utils/tcpRobotCommunicator.h>
 
-#include "robotModel/parts/trikGamepadWheel.h"
-
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -20,8 +19,8 @@ public:
 	/// @param port - port on which this device is configured.
 	/// @param tcpRobotCommunicator - communicator object that is used to send/receive data to/from telemetry
 	///        service on a robot.
-	GamepadWheel(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+	GamepadWheel(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;

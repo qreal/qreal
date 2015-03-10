@@ -1,9 +1,8 @@
 #include "led.h"
 #include <qrutils/inFile.h>
-#include <QtGui/QColor>
 
-using namespace trikKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 Led::Led(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)

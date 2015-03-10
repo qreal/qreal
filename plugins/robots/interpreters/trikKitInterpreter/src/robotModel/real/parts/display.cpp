@@ -4,8 +4,8 @@
 
 #include <qrutils/inFile.h>
 
-using namespace trikKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 Display::Display(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikDisplay(info, port)

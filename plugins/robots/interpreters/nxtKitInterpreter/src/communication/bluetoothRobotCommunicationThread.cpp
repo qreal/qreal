@@ -14,7 +14,7 @@
 const unsigned keepAliveResponseSize = 9;
 const unsigned getFirmwareVersionResponseSize = 9;
 
-using namespace nxtKitInterpreter::communication;
+using namespace nxt::communication;
 
 BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
 	: mPort(nullptr)

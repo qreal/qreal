@@ -13,7 +13,7 @@ using namespace parts;
 using namespace qReal;
 
 Variables::Variables(const QString &pathToTemplates
-		, const interpreterBase::robotModel::RobotModelInterface &robotModel
+		, const kitBase::robotModel::RobotModelInterface &robotModel
 		, qrtext::LanguageToolboxInterface &luaToolbox)
 	: TemplateParametrizedEntity(pathToTemplates)
 	, mRobotModel(robotModel)

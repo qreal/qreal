@@ -19,7 +19,7 @@ void BlocksTableTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
-			Invoke([=] (qReal::Id const &id, interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (qReal::Id const &id, kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->block(id);
 			} )
@@ -28,7 +28,7 @@ void BlocksTableTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(
-			Invoke([=] (interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->providedBlocks().toSet();
 			} )

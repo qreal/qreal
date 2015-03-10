@@ -22,7 +22,7 @@ public:
 
 public slots:
 	/// Called when selected robot model is changed, updates palette.
-	void updatePalette(interpreterBase::robotModel::RobotModelInterface &currentModel);
+	void updatePalette(kitBase::robotModel::RobotModelInterface &currentModel);
 
 private:
 	qReal::gui::MainWindowInterpretersInterface &mPaletteProvider;

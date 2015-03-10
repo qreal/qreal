@@ -1,8 +1,9 @@
 #include "twoDLed.h"
+
 #include "trikDisplayWidget.h"
 
-using namespace trikKitInterpreter::robotModel::twoD::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::twoD::parts;
+using namespace kitBase::robotModel;
 
 TwoDLed::TwoDLed(const DeviceInfo &info
 		, const PortInfo &port

@@ -2,12 +2,12 @@
 
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
+using namespace nxt::robotModel::real::parts;
 using namespace utils;
 
 NxtInputDevice::NxtInputDevice(
 		utils::robotCommunication::RobotCommunicator &robotCommunicator
-		, const interpreterBase::robotModel::PortInfo &port
+		, const kitBase::robotModel::PortInfo &port
 		, const enums::lowLevelSensorType::SensorTypeEnum &lowLevelSensorType
 		, const enums::sensorMode::SensorModeEnum &sensorMode)
 	: mRobotCommunicator(robotCommunicator)
