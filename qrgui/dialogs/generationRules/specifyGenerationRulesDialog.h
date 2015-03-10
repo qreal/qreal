@@ -24,7 +24,7 @@ public:
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of metamodel element we are specifying generation rules for.
 	SpecifyGenerationRulesDialog(MainWindow &mainWindow
-			, EditorManagerInterface &interpreterEditorManager
+			, const EditorManagerInterface &interpreterEditorManager
 			, Id const &id);
 	~SpecifyGenerationRulesDialog();
 
@@ -41,7 +41,7 @@ private:
 	QStringList propertiesDisplayedNamesList(QStringList const &propertiesNames);
 
 	Ui::SpecifyGenerationRulesDialog *mUi;  // has ownership
-	EditorManagerInterface &mInterpreterEditorManager;
+	const EditorManagerInterface &mInterpreterEditorManager;
 	Id mId;
 	QStringList mPropertiesNames;
 };

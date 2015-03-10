@@ -26,16 +26,16 @@ HEADERS = \
 	ast/newline.h \
 	ast/foreach.h \
 	ast/complexIdentifier.h \
-    generator/commonGenerator.h \
-    generator/generatorForProgramNode.h \
-    generator/generatorForForeachNode.h \
-    generator/generatorForComplexIdentifierNode.h
+	generator/commonGenerator.h \
+	generator/generatorForProgramNode.h \
+	generator/generatorForForeachNode.h \
+	generator/generatorForComplexIdentifierNode.h
 
 SOURCES = \
 	generationRulesPlugin.cpp \
 	lexer.cpp \
 	parser.cpp \
-    generator/commonGenerator.cpp \
-    generator/generatorForProgramNode.cpp \
-    generator/generatorForForeachNode.cpp \
-    generator/generatorForComplexIdentifierNode.cpp
+	generator/commonGenerator.cpp \
+	generator/generatorForProgramNode.cpp \
+	generator/generatorForForeachNode.cpp \
+	generator/generatorForComplexIdentifierNode.cpp
