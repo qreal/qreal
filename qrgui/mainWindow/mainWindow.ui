@@ -41,7 +41,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>23</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -55,7 +55,6 @@
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
     <addaction name="actionSave_diagram_as_a_picture"/>
-    <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -135,7 +134,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionPrint"/>
    <addaction name="actionNewProject"/>
    <addaction name="actionNew_Diagram"/>
    <addaction name="actionOpen"/>
@@ -421,7 +419,7 @@
   </widget>
   <widget class="QToolBar" name="generatorsToolbar">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Generators Toolbar</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -479,15 +477,6 @@
    </property>
    <property name="text">
     <string>OpenGL Renderer</string>
-   </property>
-  </action>
-  <action name="actionPrint">
-   <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/print.png</normaloff>:/mainWindow/images/print.png</iconset>
-   </property>
-   <property name="text">
-    <string>Print</string>
    </property>
   </action>
   <action name="actionMakeSvg">

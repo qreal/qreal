@@ -18,8 +18,6 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged
 			, [=](int value ) { SettingsManager::setValue("toolbarSize", value); });
 
-	mUi->colorComboBox->addItems(QColor::colorNames());
-
 	restoreSettings();
 }
 
@@ -55,8 +53,6 @@ void PreferencesMiscellaniousPage::save()
 
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
 	SettingsManager::setValue("recentProjectsLimit", mUi->recentProjectsLimitSpinBox->value());
-	SettingsManager::setValue("PaintOldEdgeMode", mUi->paintOldLineCheckBox->isChecked());
-	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
 
 	SettingsManager::setValue("toolbarSize", mUi->toolbarSizeSlider->value());
 }
@@ -65,12 +61,6 @@ void PreferencesMiscellaniousPage::restoreSettings()
 {
 	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
-
-	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
-
-	QString curColor = SettingsManager::value("oldLineColor").toString();
-	int curColorIndex = mUi->colorComboBox->findText(curColor);
-	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 
 	mUi->toolbarSizeSlider->setValue(SettingsManager::value("toolbarSize").toInt());
 

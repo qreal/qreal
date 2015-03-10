@@ -158,11 +158,11 @@ void MainWindow::connectActions()
 	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
-	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
-	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
+	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
+	mUi->actionNew_Diagram->setVisible(mToolManager.customizer()->enableNewDiagramAction());
 
 	connect(mUi->logicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromLogicalExplorer);
@@ -520,27 +520,6 @@ void MainWindow::setData(const QString &data, const QPersistentModelIndex &index
 	// not going to use this index anymore.
 	QAbstractItemModel * const model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, data, role);
-}
-
-void MainWindow::print()
-{
-	const bool isEditorTab = getCurrentTab() != nullptr;
-
-	if (isEditorTab) {
-		QPrinter printer(QPrinter::HighResolution);
-		QPrintDialog dialog(&printer, this);
-		if (dialog.exec() == QDialog::Accepted) {
-			QPainter painter(&printer);
-			getCurrentTab()->scene()->render(&painter);
-		}
-	} else {
-		QsciScintillaBase *textTab = static_cast<QsciScintillaBase *>(currentTab());
-		QsciPrinter printer(QPrinter::HighResolution);
-		QPrintDialog dialog(&printer, this);
-		if (dialog.exec() == QDialog::Accepted) {
-			printer.printRange(textTab);
-		}
-	}
 }
 
 void MainWindow::makeSvg()
@@ -1103,7 +1082,10 @@ void MainWindow::setDefaultShortcuts()
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
-	mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+	if (mToolManager.customizer()->enableNewDiagramAction()) {
+		mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+		HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
+	}
 
 	// TODO: bind Ctrl+P to print when it will be repaired
 	// TODO: bind Ctrl+F to find dialog when it will be repaired
@@ -1112,14 +1094,12 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("File.Save", tr("Save project"), mUi->actionSave);
 	HotKeyManager::setCommand("File.SaveAs", tr("Save project as"), mUi->actionSave_as);
 	HotKeyManager::setCommand("File.NewProject", tr("New project"), mUi->actionNewProject);
-	HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
 	HotKeyManager::setCommand("Editor.Undo", tr("Undo"), mUi->actionUndo);
 	HotKeyManager::setCommand("Editor.Redo", tr("Redo"), mUi->actionRedo);
 	HotKeyManager::setCommand("Editor.ZoomIn", tr("Zoom In"), mUi->actionZoom_In);
 	HotKeyManager::setCommand("Editor.ZoomOut", tr("Zoom Out"), mUi->actionZoom_Out);
 	HotKeyManager::setCommand("Editor.CloseCurrentTab", tr("Close current tab"), closeCurrentTabAction);
 	HotKeyManager::setCommand("Editor.CloseAllTabs", tr("Close all tabs"), closeAllTabsAction);
-	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
 	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
 }
@@ -1138,7 +1118,6 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionSave->setEnabled(!isDecorativeTab);
 	mUi->actionSave_as->setEnabled(!isDecorativeTab);
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
-	mUi->actionPrint->setEnabled(!isDecorativeTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
