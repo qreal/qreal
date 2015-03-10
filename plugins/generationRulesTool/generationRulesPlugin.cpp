@@ -92,5 +92,5 @@ void GenerationRulesPlugin::generateCode()
 	qDebug() << programChildren.size();
 
 	QString resultOfGeneration = generator::CommonGenerator::generatedResult(program, mMetamodelRepoApi);
-	qDebug() << resultOfGeneration;
+	//qDebug() << resultOfGeneration;
 }

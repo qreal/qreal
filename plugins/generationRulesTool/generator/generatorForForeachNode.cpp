@@ -18,4 +18,6 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> fo
 		QSharedPointer<ast::Program> programNode = qrtext::as<ast::Program>(foreachNode->program());
 		result += GeneratorForProgramNode::generatedResult(programNode, metamodelRepoApi, element);
 	}
+
+	return result;
 }

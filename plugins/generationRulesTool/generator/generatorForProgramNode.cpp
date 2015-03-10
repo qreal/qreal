@@ -14,7 +14,9 @@ QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> program
 
 	QList<QSharedPointer<Node>> statements = programNode->children();
 	for (QSharedPointer<Node> statement : statements) {
-		result += CommonGenerator::generatedResult(statement, metamodelRepoApi, elementId);
+		QString newResult = CommonGenerator::generatedResult(statement, metamodelRepoApi, elementId);
+		qDebug() << newResult;
+		result += newResult;//CommonGenerator::generatedResult(statement, metamodelRepoApi, elementId);
 		result += "\n";
 	}
 
