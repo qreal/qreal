@@ -10,7 +10,7 @@ INCLUDEPATH += \
 	$$PWD/../../qrtext \
 	$$PWD/../../qrtext/include \
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrtext
+links(qrkernel qslog qrtext)
 
 QT += widgets
 
