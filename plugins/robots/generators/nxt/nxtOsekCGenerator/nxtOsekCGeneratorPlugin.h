@@ -22,11 +22,11 @@ public:
 	NxtOsekCGeneratorPlugin();
 	~NxtOsekCGeneratorPlugin() override;
 
-	void init(const qReal::PluginConfigurator &configurator
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage) override;
-	QList<qReal::ActionInfo> actions() override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
+
+	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
@@ -35,6 +35,9 @@ protected:
 	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
 	bool canGenerateTo(const QString &project) override;
+
+	void onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model) override;
+	void onCurrentDiagramChanged(const qReal::Id &id) override;
 
 private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
@@ -52,6 +55,7 @@ private:
 	/// subfolder of QReal installation), and sets mNxtToolsPresent flag.
 	void checkNxtTools();
 
+	void initActions();
 	void initHotKeyActions();
 
 	/// Action that launches code generator

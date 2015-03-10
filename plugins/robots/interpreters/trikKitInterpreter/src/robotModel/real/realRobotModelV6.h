@@ -2,7 +2,7 @@
 
 #include "realRobotModelBase.h"
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 
@@ -15,6 +15,7 @@ public:
 
 	QString name() const override;
 	QString friendlyName() const override;
+	int priority() const override;
 };
 
 }

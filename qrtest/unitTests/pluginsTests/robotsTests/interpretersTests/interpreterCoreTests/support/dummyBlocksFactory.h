@@ -1,12 +1,12 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/commonBlocksFactory.h>
+#include <kitBase/blocksBase/commonBlocksFactory.h>
 
 namespace qrTest {
 namespace robotsTests {
 namespace interpreterCoreTests {
 
-class DummyBlockFactory : public interpreterBase::blocksBase::CommonBlocksFactory
+class DummyBlockFactory : public kitBase::blocksBase::CommonBlocksFactory
 {
 public:
 	qReal::interpretation::Block *produceBlock(qReal::Id const &element) override;

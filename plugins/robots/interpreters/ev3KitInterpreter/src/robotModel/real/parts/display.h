@@ -1,11 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/ev3Display.h"
+#include <ev3Kit/robotModel/parts/ev3Display.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-#include "commandConstants.h"
-
-namespace ev3KitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -15,8 +13,8 @@ class Display : public robotModel::parts::Ev3Display
 	Q_OBJECT
 
 public:
-	Display(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	Display(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void drawPixel(int x, int y) override;

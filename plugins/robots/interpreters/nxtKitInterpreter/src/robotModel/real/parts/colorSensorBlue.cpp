@@ -1,11 +1,11 @@
 #include "colorSensorBlue.h"
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
+using namespace nxt::robotModel::real::parts;
 
-ColorSensorBlue::ColorSensorBlue(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+ColorSensorBlue::ColorSensorBlue(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::ColorSensorBlue(info, port)
+	: kitBase::robotModel::robotParts::ColorSensorBlue(info, port)
 	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORBLUE)
 {
 	connect(&mImpl, &ColorSensorImpl::newData, this, &ColorSensorBlue::newData);

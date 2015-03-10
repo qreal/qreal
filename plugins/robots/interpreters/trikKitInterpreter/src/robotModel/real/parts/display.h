@@ -1,9 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/trikDisplay.h"
+#include <trikKit/robotModel/parts/trikDisplay.h>
 #include <utils/tcpRobotCommunicator.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -13,8 +13,8 @@ class Display : public robotModel::parts::TrikDisplay
 	Q_OBJECT
 
 public:
-	Display(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+	Display(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void drawSmile(bool sad) override;

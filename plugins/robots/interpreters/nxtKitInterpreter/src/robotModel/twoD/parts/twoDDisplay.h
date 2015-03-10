@@ -1,11 +1,11 @@
 #pragma once
 
-#include "robotModel/parts/nxtDisplay.h"
+#include <nxtKit/robotModel/parts/nxtDisplay.h>
 
-#include <commonTwoDModel/engine/twoDModelEngineInterface.h>
-#include <commonTwoDModel/engine/twoDModelDisplayInterface.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelDisplayInterface.h>
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace twoD {
 namespace parts {
@@ -21,8 +21,8 @@ class Display : public robotModel::parts::NxtDisplay, public graphicsUtils::Pain
 	Q_OBJECT
 
 public:
-	Display(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	Display(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void drawPixel(int x, int y) override;

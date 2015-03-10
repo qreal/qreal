@@ -1,9 +1,9 @@
 #include "twoDSpeaker.h"
 
-using namespace nxtKitInterpreter::robotModel::twoD::parts;
+using namespace nxt::robotModel::twoD::parts;
 
-TwoDSpeaker::TwoDSpeaker(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+TwoDSpeaker::TwoDSpeaker(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::NxtSpeaker(info, port)
 	, mEngine(engine)

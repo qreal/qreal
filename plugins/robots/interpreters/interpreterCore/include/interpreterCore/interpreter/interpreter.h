@@ -10,8 +10,8 @@
 #include <qrutils/interpreter/thread.h>
 #include <qrtext/languageToolboxInterface.h>
 
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
-#include <interpreterBase/devicesConfigurationProvider.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/devicesConfigurationProvider.h>
 
 #include "interpreterCore/interpreter/details/blocksTable.h"
 #include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
@@ -25,7 +25,7 @@ namespace interpreter {
 /// Interprets robot diagram by executing blocks and sending commands to robot model. Manages models, connection,
 /// threads, parser, can automatically configure robot by used blocks on diagram. It is the main class for
 /// all interpretation subsystem.
-class Interpreter : public InterpreterInterface, public interpreterBase::DevicesConfigurationProvider
+class Interpreter : public InterpreterInterface, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -46,7 +46,7 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const qReal::ProjectManagementInterface &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &languageToolbox
 			, QAction &connectToRobotAction
 			);
@@ -87,7 +87,7 @@ private:
 	InterpreterState mState;
 	quint64 mInterpretationStartedTimestamp;
 	QList<qReal::interpretation::Thread *> mThreads;  // Has ownership
-	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 
 	/// Action responsible for the connection to the robot

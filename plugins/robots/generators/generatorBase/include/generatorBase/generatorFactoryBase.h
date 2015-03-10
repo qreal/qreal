@@ -3,7 +3,7 @@
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
 
 #include "robotsGeneratorDeclSpec.h"
 
@@ -37,7 +37,7 @@ class ROBOTS_GENERATOR_EXPORT GeneratorFactoryBase : public QObject
 public:
 	GeneratorFactoryBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, lua::LuaProcessor &luaProcessor);
 
 	virtual ~GeneratorFactoryBase();
@@ -236,11 +236,11 @@ protected:
 	/// to override in concrete generators?
 
 	/// Returns sensors configuration for the given robot model.
-	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> currentConfiguration() const;
+	QMap<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> currentConfiguration() const;
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
-	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	lua::LuaProcessor &mLuaTranslator;
 	qReal::Id mDiagram;
 	parts::Variables *mVariables;

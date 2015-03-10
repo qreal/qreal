@@ -1,14 +1,14 @@
 #include "lightSensor.h"
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 const int maxLightValue = 1023;
 
 LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::LightSensor(info, port)
+	: kitBase::robotModel::robotParts::LightSensor(info, port)
 	, mImplementation(robotCommunicator, port
 			, enums::lowLevelSensorType::LIGHT_ACTIVE, enums::sensorMode::RAWMODE)
 {

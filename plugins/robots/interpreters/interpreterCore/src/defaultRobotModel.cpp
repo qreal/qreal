@@ -21,3 +21,8 @@ bool interpreterCore::DefaultRobotModel::needsConnection() const
 {
 	return false;
 }
+
+int DefaultRobotModel::priority() const
+{
+	return 0;
+}

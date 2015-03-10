@@ -1,7 +1,7 @@
 #include "display.h"
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 Display::Display(const DeviceInfo &info, const PortInfo &port)
 	: robotModel::parts::NxtDisplay(info, port)

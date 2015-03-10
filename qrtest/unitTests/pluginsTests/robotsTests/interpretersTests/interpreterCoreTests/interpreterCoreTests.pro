@@ -9,8 +9,8 @@ links(qrkernel qslog)
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/interpreters \
 	$$PWD/../../../../../../plugins/robots/interpreters/interpreterCore \
-	$$PWD/../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
-	$$PWD/../../../../mocks/plugins/robots/interpreters/interpreterBase/include \
+	$$PWD/../../../../../../plugins/robots/common/kitBase/include \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include \
 	$$PWD/../../../../mocks/plugins/robots/interpreters \
 
 # Tests
@@ -42,4 +42,4 @@ SOURCES += \
 	support/dummyBlocksFactory.cpp \
 	support/qrguiFacade.cpp \
 
-copyToDestdir(../support/testData/unittests)
+copyToDestdir(../support/testData/unittests, NOW)

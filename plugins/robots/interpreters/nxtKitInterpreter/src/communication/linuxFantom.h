@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace communication {
 
 /// Fantom driver is not available for Linux, so there is empty implementation.

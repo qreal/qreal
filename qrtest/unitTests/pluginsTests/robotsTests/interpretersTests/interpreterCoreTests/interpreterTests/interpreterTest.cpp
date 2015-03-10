@@ -23,7 +23,7 @@ void InterpreterTest::SetUp()
 	mFakeConnectToRobotAction.reset(new QAction(nullptr));
 
 	ON_CALL(mConfigurationInterfaceMock, devices()).WillByDefault(
-			Return(QList<interpreterBase::robotModel::robotParts::Device *>())
+			Return(QList<kitBase::robotModel::robotParts::Device *>())
 			);
 	EXPECT_CALL(mConfigurationInterfaceMock, devices()).Times(AtLeast(1));
 
@@ -54,10 +54,10 @@ void InterpreterTest::SetUp()
 			);
 	EXPECT_CALL(mModel, disconnectFromRobot()).Times(AtLeast(0));
 
-	ON_CALL(mModel, configurablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
+	ON_CALL(mModel, configurablePorts()).WillByDefault(Return(QList<kitBase::robotModel::PortInfo>()));
 	EXPECT_CALL(mModel, configurablePorts()).Times(AtLeast(0));
 
-	ON_CALL(mModel, availablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
+	ON_CALL(mModel, availablePorts()).WillByDefault(Return(QList<kitBase::robotModel::PortInfo>()));
 	EXPECT_CALL(mModel, availablePorts()).Times(AtLeast(0));
 
 	ON_CALL(mModel, applyConfiguration()).WillByDefault(
@@ -90,7 +90,7 @@ void InterpreterTest::SetUp()
 			);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
-			Invoke([=] (qReal::Id const &id, interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (qReal::Id const &id, kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->block(id);
 			} )
@@ -98,7 +98,7 @@ void InterpreterTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(
-			Invoke([=] (interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->providedBlocks().toSet();
 			} )
