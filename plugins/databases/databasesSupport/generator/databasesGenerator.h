@@ -22,6 +22,7 @@ public slots:
 	/// Generate code from block diagram and build it in executable file
 	void generateSQL();
 	void generatePhysicalModel();
+	void generateSQLCode();
 
 	//bool wereErrors();
 

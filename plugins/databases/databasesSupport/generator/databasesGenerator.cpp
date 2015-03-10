@@ -463,22 +463,6 @@ void DatabasesGenerator::generateSQL()
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }
 
-/*// logical id s
-Id createCopy(Id patternId, QString idLoader, Id parentId, bool patternIdIsLogical, bool parentIdIsLogical, bool resultIdIsLogical)
-{
-	Id id = Id::loadFromString(idLoader);
-
-	Id createdLogicalId = mLogicalModelApi.createElement(parentId, id);
-	QPointF coordinates;
-	if (patternIdIsLogical)
-		coordinates = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(patternId).first());
-	else
-		coordinates = mGraphicalModelApi.position(patternId);
-	Id createdGraphicalTableId = mGraphicalModelApi.createElement(createdGraphicalDiagramId, createdLogicalTableId, true, QString("Table"), tableCoordinates);
-
-
-}*/
-
 void DatabasesGenerator::generatePhysicalModel()
 {
 	mErrorReporter->clear();
@@ -734,5 +718,37 @@ void DatabasesGenerator::generatePhysicalModel()
 		delete[] match[i];
 	}
 	delete[] match;
+	mErrorReporter->addInformation(tr("Physical model was generated successfully"));
+}
+
+void DatabasesGenerator::generateSQLCode()
+{
+	mErrorReporter->clear();
+
+	codeFile.setFileName(mWorkDir + mCodeFileName);
+	int y = codeFile.open(QIODevice::WriteOnly);
+
+	IdList tableNodes = findNodes("Table");
+
+	foreach (Id const tableId, tableNodes) {
+			codeFile.write("CREATE TABLE ");
+			codeFile.write(getProperty(tableId, "Name").toByteArray());
+			codeFile.write("\r\n(");
+			IdList rowsSet = getChildren(tableId);
+
+			bool first = true;
+			foreach (Id const &rowId, rowsSet) {
+				if (!first) {
+					codeFile.write(",");
+				}
+				first = false;
+				codeFile.write("\r\n");
+				codeFile.write(getProperty(rowId, "Name").toByteArray());
+				codeFile.write(" ");
+				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+			}
+			codeFile.write("\r\n);\r\n\r\n");
+		}
+	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }

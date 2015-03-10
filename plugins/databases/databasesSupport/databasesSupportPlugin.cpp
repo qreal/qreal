@@ -78,7 +78,7 @@ void DatabasesSupportPlugin::checkCorrectness()
 
 void DatabasesSupportPlugin::generateCode()
 {
-	mDatabasesGenerator->generateSQL();
+	mDatabasesGenerator->generateSQLCode();
 }
 
 void DatabasesSupportPlugin::generatePhysicalModel()
