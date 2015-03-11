@@ -1625,6 +1625,16 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
 			if (toolbar) {
 				toolbar->addAction(action.action());
+				connect(action.action(), &QAction::changed, [toolbar]() {
+					for (QAction * const action : toolbar->actions()) {
+						if (action->isVisible()) {
+							toolbar->setVisible(true);
+							return;
+						}
+					}
+
+					toolbar->hide();
+				});
 			}
 		}
 	}
