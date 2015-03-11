@@ -13,7 +13,8 @@ using namespace trik::qts;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
-	: mGenerateCodeAction(new QAction(nullptr))
+	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Generation (QtScript)"), 9 /* After 2D model */)
+	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
@@ -26,42 +27,36 @@ TrikQtsGeneratorPlugin::~TrikQtsGeneratorPlugin()
 	delete mCommunicator;
 }
 
-void TrikQtsGeneratorPlugin::init(const qReal::PluginConfigurator &configurator
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-		, qrtext::LanguageToolboxInterface &textLanguage)
+void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
+	RobotsGeneratorPluginBase::init(configurator);
 	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
-	mCommunicator->setErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter());
+	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
 }
 
-QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
+QList<ActionInfo> TrikQtsGeneratorPlugin::customActions()
 {
-	QAction *separator = new QAction(this);
-	separator->setSeparator(true);
-	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
-
 	mGenerateCodeAction->setText(tr("Generate TRIK code"));
-	mGenerateCodeAction->setIcon(QIcon(":/images/generateQtsCode.svg"));
+	mGenerateCodeAction->setIcon(QIcon(":/trik/qts/images/generateQtsCode.svg"));
 	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
 	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()), Qt::UniqueConnection);
 
 	mUploadProgramAction->setText(tr("Upload program"));
-	mUploadProgramAction->setIcon(QIcon(":/images/uploadProgram.svg"));
+	mUploadProgramAction->setIcon(QIcon(":/trik/qts/images/uploadProgram.svg"));
 	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
 	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()), Qt::UniqueConnection);
 
 	mRunProgramAction->setText(tr("Run program"));
-	mRunProgramAction->setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
-	ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
+	mRunProgramAction->setIcon(QIcon(":/trik/qts/images/run.png"));
+	ActionInfo runProgramActionInfo(mRunProgramAction, "interpreters", "tools");
 	connect(mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()), Qt::UniqueConnection);
 
 	mStopRobotAction->setText(tr("Stop robot"));
-	mStopRobotAction->setIcon(QIcon(":/images/stopRobot.svg"));
-	ActionInfo stopRobotActionInfo(mStopRobotAction, "generators", "tools");
+	mStopRobotAction->setIcon(QIcon(":/trik/qts/images/stop.png"));
+	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	connect(mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()), Qt::UniqueConnection);
 
-	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo, separatorInfo};
+	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
 QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
@@ -77,6 +72,12 @@ QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
 	HotKeyActionInfo stopRobotInfo("Generator.StopTrik", tr("Stop TRIK Robot"), mStopRobotAction);
 
 	return { generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo };
+}
+
+QIcon TrikQtsGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	Q_UNUSED(robotModel)
+	return QIcon(":/trik/qts/images/switch-to-trik-qts.svg");
 }
 
 generatorBase::MasterGeneratorBase *TrikQtsGeneratorPlugin::masterGenerator()

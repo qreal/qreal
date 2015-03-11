@@ -2,13 +2,13 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include <interpreterBase/blocksBase/robotsBlock.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <kitBase/blocksBase/robotsBlock.h>
+#include <kitBase/robotModel/robotModelInterface.h>
 #include <utils/tracer.h>
 
 using namespace interpreterCore::interpreter::details;
 using namespace qReal;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 Autoconfigurer::Autoconfigurer(const GraphicalModelAssistInterface &graphicalModelApi
 		, BlocksTable &blocksTable
@@ -25,8 +25,8 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, const QString &
 		const IdList children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
 
 		for (const Id &child : children) {
-			interpreterBase::blocksBase::RobotsBlock * const block
-					= dynamic_cast<interpreterBase::blocksBase::RobotsBlock *>(mBlocksTable.block(child));
+			kitBase::blocksBase::RobotsBlock * const block
+					= dynamic_cast<kitBase::blocksBase::RobotsBlock *>(mBlocksTable.block(child));
 			if (!block) {
 				continue;
 			}

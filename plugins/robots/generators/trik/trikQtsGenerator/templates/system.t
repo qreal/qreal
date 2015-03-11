@@ -1,1 +1,1 @@
-script.system("@@COMMAND@@");
+script.system(@@COMMAND@@);

@@ -1,14 +1,14 @@
 #include "soundSensor.h"
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 const int soundMaxValue = 1023;
 
 SoundSensor::SoundSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::SoundSensor(info, port)
+	: kitBase::robotModel::robotParts::SoundSensor(info, port)
 	, mImplementation(robotCommunicator, port, enums::lowLevelSensorType::SOUND_DBA, enums::sensorMode::RAWMODE)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/ev3Speaker.h"
+#include <ev3Kit/robotModel/parts/ev3Speaker.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-namespace ev3KitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -13,8 +13,8 @@ class Speaker : public robotModel::parts::Ev3Speaker
 	Q_OBJECT
 
 public:
-	Speaker(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	Speaker(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	/// @param volume.Volume to play the tone (0-100).

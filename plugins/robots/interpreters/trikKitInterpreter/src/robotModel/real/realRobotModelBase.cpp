@@ -28,8 +28,8 @@
 #include "parts/gamepadPadPressSensor.h"
 #include "parts/gamepadWheel.h"
 
-using namespace trikKitInterpreter::robotModel::real;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::real;
+using namespace kitBase::robotModel;
 
 RealRobotModelBase::RealRobotModelBase(const QString &kitId, const QString &robotId)
 	: TrikRobotModelBase(kitId, robotId)

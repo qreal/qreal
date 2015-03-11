@@ -1,9 +1,9 @@
 #include "twoDMotor.h"
 
-using namespace nxtKitInterpreter::robotModel::twoD::parts;
+using namespace nxt::robotModel::twoD::parts;
 
-TwoDMotor::TwoDMotor(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+TwoDMotor::TwoDMotor(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: NxtMotor(info, port)
 	, mEngine(engine)

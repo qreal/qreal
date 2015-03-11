@@ -1,14 +1,12 @@
 QT += widgets
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui \
-	$$PWD/../../../../qrutils \
-	$$PWD/../../interpreters/interpreterBase/include \
-	$$PWD/../../../../qrtext/include \
+includes(plugins/robots/generators/generatorBase \
+		qrutils \
+		qrtext \
+		plugins/robots/common/kitBase \
+)
 
-links(qrkernel qslog qrutils qrrepo qrtext robots-interpreter-base)
+links(qrkernel qslog qrutils qrrepo qrtext qrgui-tool-plugin-interface robots-kit-base)
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
@@ -16,7 +14,6 @@ TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_
 
 HEADERS += \
 	$$PWD/include/generatorBase/robotsGeneratorDeclSpec.h \
-	$$PWD/include/generatorBase/generatorKitPluginInterface.h \
 	$$PWD/include/generatorBase/robotsGeneratorPluginBase.h \
 	$$PWD/include/generatorBase/masterGeneratorBase.h \
 	$$PWD/include/generatorBase/generatorCustomizer.h \

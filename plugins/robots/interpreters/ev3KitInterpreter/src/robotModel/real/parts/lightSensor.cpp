@@ -2,11 +2,11 @@
 
 const unsigned lightSensorResponseSize = 9;
 
-using namespace ev3KitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace ev3::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
-LightSensor::LightSensor(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+LightSensor::LightSensor(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: robotParts::LightSensor(info, port)
 	, mImplementation(robotCommunicator, port, LIGHT_ACTIVE, READY_PCT)

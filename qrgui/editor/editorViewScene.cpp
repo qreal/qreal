@@ -81,27 +81,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	});
 }
 
-void EditorViewScene::drawForeground(QPainter *painter, const QRectF &rect)
-{
-	const QPointF point = sceneRect().topLeft();
-	foreach (QPixmap *pixmap, mForegroundPixmaps) {
-		painter->drawPixmap(point, *pixmap);
-	}
-	QGraphicsScene::drawForeground(painter, rect);
-}
-
-void EditorViewScene::putOnForeground(QPixmap *pixmap)
-{
-	if (!mForegroundPixmaps.contains(pixmap)) {
-		mForegroundPixmaps.push_back(pixmap);
-	}
-}
-
-void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
-{
-	mForegroundPixmaps.removeAll(pixmap);
-}
-
 qreal EditorViewScene::realIndexGrid()
 {
 	return mRealIndexGrid;

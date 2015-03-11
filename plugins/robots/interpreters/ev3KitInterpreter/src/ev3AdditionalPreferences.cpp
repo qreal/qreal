@@ -4,7 +4,7 @@
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
 
-using namespace ev3KitInterpreter;
+using namespace ev3;
 using namespace qReal;
 
 Ev3AdditionalPreferences::Ev3AdditionalPreferences(const QString &realRobotName, QWidget *parent)
@@ -81,7 +81,7 @@ void Ev3AdditionalPreferences::restoreSettings()
 	}
 }
 
-void Ev3AdditionalPreferences::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface * const robotModel)
+void Ev3AdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
 	const bool isReal = robotModel->name() == mRealRobotName;
 	mUi->communicationTypeGroupBox->setVisible(isReal);

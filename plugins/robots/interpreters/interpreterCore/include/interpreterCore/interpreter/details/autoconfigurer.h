@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/devicesConfigurationProvider.h>
+#include <kitBase/devicesConfigurationProvider.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
@@ -14,7 +14,7 @@ namespace details {
 /// required by blocks devices with the user configuration. If conflict is detected
 /// error is reported. If some block requires a device that is forgotten to be selected by
 /// user then it is automaticly selected by this autoconfigurer.
-class Autoconfigurer : public interpreterBase::DevicesConfigurationProvider
+class Autoconfigurer : public kitBase::DevicesConfigurationProvider
 {
 public:
 	/// Constructor.

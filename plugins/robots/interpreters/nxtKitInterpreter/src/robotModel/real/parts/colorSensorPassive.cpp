@@ -1,11 +1,11 @@
 #include "colorSensorPassive.h"
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
+using namespace nxt::robotModel::real::parts;
 
-ColorSensorPassive::ColorSensorPassive(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+ColorSensorPassive::ColorSensorPassive(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::ColorSensorPassive(info, port)
+	: kitBase::robotModel::robotParts::ColorSensorPassive(info, port)
 	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORNONE)
 {
 	connect(&mImpl, &ColorSensorImpl::newData, this, &ColorSensorPassive::newData);

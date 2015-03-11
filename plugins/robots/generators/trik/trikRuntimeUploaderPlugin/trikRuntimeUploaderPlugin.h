@@ -1,26 +1,26 @@
 #pragma once
 
-#include <trikGeneratorBase/trikGeneratorPluginBase.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
 namespace trik {
 
-class TrikRuntimeUploaderPlugin : public TrikGeneratorPluginBase
+class TrikRuntimeUploaderPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
+	Q_INTERFACES(qReal::ToolPluginInterface)
 	Q_PLUGIN_METADATA(IID "trik.TrikRuntimeUploaderPlugin")
 
 public:
 	TrikRuntimeUploaderPlugin();
 
-	QList<qReal::ActionInfo> actions() override;
+	void init(const qReal::PluginConfigurator &configurator) override;
+	QList<qReal::ActionInfo> actions() override;  // Transfers ownership of QAction objects.
 
 private slots:
 	void uploadRuntime();
 
 private:
-	generatorBase::MasterGeneratorBase *masterGenerator() override;
-	qReal::text::LanguageInfo language() const override;
-
+	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 	QAction *mAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
