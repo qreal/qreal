@@ -9,6 +9,7 @@
 #include "model/commonDifference.h"
 #include "model/diffModel.h"
 
+
 namespace versioning
 {
 namespace details

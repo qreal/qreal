@@ -1,6 +1,8 @@
 #include "authenticationSettingsWidget.h"
 #include "ui_authenticationSettingsWidget.h"
-#include "../../qrkernel/settingsManager.h"
+
+
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal::versioning::ui;
 
@@ -14,8 +16,7 @@ AuthenticationSettingsWidget::AuthenticationSettingsWidget(QWidget *parent)
 	connect(mUi->enabledCheckBox, SIGNAL(clicked()), this, SLOT(onEnableChecked()));
 }
 
-AuthenticationSettingsWidget::AuthenticationSettingsWidget(QString const &settingsPrefix
-		, QWidget *parent)
+AuthenticationSettingsWidget::AuthenticationSettingsWidget(QString const &settingsPrefix, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::AuthenticationSettingsWidget)
 	, mSettingsPrefix(settingsPrefix)

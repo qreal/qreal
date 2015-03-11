@@ -2,12 +2,13 @@
 
 #include <QtCore/QObject>
 
-#include "qrgui/versioning/diffPluginInterface.h"
-#include "qrutils/versioningUtils/briefVersioningInterface.h"
-#include "qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
-#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include <qrgui/versioning/diffPluginInterface.h>
+#include <qrutils/versioningUtils/briefVersioningInterface.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 #include "model/modelLoader.h"
+
 
 namespace versioning
 {
@@ -27,15 +28,24 @@ public:
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QPair<QString, qReal::gui::PreferencesPage *> preferencesPage();
 
-	void configure(qReal::ProjectManagementInterface *projectManager, qReal::ErrorReporterInterface *errorReporter
-							   , qrRepo::WorkingCopyManagementInterface *workingCopyManager, qReal::BriefVersioningInterface *vcs
-							   , QWidget *parent, qReal::EditorManagerInterface *manager);
+	void configure(
+		qReal::ProjectManagementInterface *projectManager
+		, qReal::ErrorReporterInterface *errorReporter
+		, qrRepo::WorkingCopyManagementInterface *workingCopyManager
+		, qReal::BriefVersioningInterface *vcs
+		, QWidget *parent, qReal::EditorManagerInterface *manager
+	);
 
 public slots:
-	void showDiff(QString const &targetProject, QWidget *parentWidget, bool const &compactMode = false);
-	void showDiff(QString repoRevision, QString const &targetProject, QWidget *parentWidget, const bool &compactMode = false);
-	void showDiff(QString oldRepoRevision , QString newRepoRevision
-			, QString const &targetProject, QWidget *parentWidget, bool const &compactMode = false);
+	void showDiff(QString const &targetProject, QWidget *parentWidget, bool compactMode = false);
+	void showDiff(QString repoRevision, QString const &targetProject, QWidget *parentWidget, bool compactMode = false);
+	void showDiff(
+		QString oldRepoRevision
+		, QString newRepoRevision
+		, QString const &targetProject
+		, QWidget *parentWidget
+		, bool compactMode = false
+	);
 
 private slots:
 	void onModelLoaded(DiffModel *model);

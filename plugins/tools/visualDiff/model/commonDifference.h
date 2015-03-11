@@ -1,9 +1,11 @@
 #pragma once
 
-#include "qrgui/models/models.h"
-#include "qrrepo/commonRepoApi.h"
+#include <qrgui/models/models.h>
+#include <qrrepo/commonRepoApi.h>
+
 #include "diffState.h"
 #include "modification.h"
+
 
 namespace versioning
 {
@@ -13,8 +15,7 @@ namespace details
 class CommonDifference
 {
 public:
-	CommonDifference(qReal::models::Models *oldModel
-			, qReal::models::Models *newModel, qReal::Id const &id);
+	CommonDifference(qReal::models::Models *oldModel, qReal::models::Models *newModel, qReal::Id const &id);
 	virtual ~CommonDifference() {}
 
 	qReal::Id id() const;

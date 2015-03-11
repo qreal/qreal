@@ -3,6 +3,7 @@
 #include <QtGui/QColor>
 #include <QtWidgets/QDialog>
 
+
 namespace Ui {
 	class DiffColorPreferencesDialog;
 }

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "qrutils/versioningUtils/briefVersioningInterface.h"
-#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
 #include "versioningPluginInterface.h"
 #include "qrgui/models/models.h"
+#include <qrutils/versioningUtils/briefVersioningInterface.h>
+#include "qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
+#include "qrgui/plugins/toolPluginInterface/pluginInterface.h"
 #include "qrgui/mainWindow/projectManager/projectManager.h"
 #include "qrgui/versioning/versioningPluginsManagerDeclSpec.h"
 
@@ -19,11 +19,17 @@ class /*QRGUI_VERSIONING_PLUGINS_MANAGER_EXPORT*/ VersioningPluginsManager
 
 public:
 	/// Inits plugin list using loaded by plugin manager ones
-	VersioningPluginsManager(qrRepo::RepoControlInterface *repoApi
-		, ErrorReporterInterface *errorReporter, ProjectManager * projectManager);
+	VersioningPluginsManager(
+		qrRepo::RepoControlInterface *repoApi
+		, ErrorReporterInterface *errorReporter
+		, ProjectManager * projectManager
+	);
 
-	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
-			, EditorManagerInterface *editorManager, QWidget *parent);
+	void initFromToolPlugins(
+		QListIterator<ToolPluginInterface *> iterator
+		, EditorManagerInterface *editorManager
+		, QWidget *parent
+	);
 
 	BriefVersioningInterface *activeClient(const QString &workingDir);
 
@@ -32,10 +38,12 @@ public:
 	bool onFileChanged(QString const &filePath, QString const &workingDir);
 
 public slots:
-	void beginWorkingCopyDownloading(QString const &repoAddress
+	void beginWorkingCopyDownloading(
+			QString const &repoAddress
 			, QString const &targetProject
 			, QString commitId = "-1"
-			, bool quiet = false);
+			, bool quiet = false
+	);
 	void beginWorkingCopyUpdating(QString const &targetProject = QString());
 	void beginChangesSubmitting(
 		QString const &description

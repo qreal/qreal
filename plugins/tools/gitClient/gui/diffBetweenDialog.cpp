@@ -1,8 +1,8 @@
+#include "diffBetweenDialog.h"
+
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QFileDialog>
-
-#include "diffBetweenDialog.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 
 using namespace git::ui;

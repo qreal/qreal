@@ -17,12 +17,12 @@ public:
 
 signals:
 	void loadVersion(QString hash);
-	void showDiff(QString const &fstHash, QString const &scndHash, QWidget* widget);
+	void showDiff(QString const &fstHash, QString const &scndHash, QWidget *widget);
 	void swapTab();
 
 private slots:
 	void getHash();
-	void showDiff(QListWidgetItem* item);
+	void showDiff(QListWidgetItem *item);
 
 private:
 	void initDiffWidget();

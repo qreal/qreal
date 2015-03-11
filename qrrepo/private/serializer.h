@@ -5,10 +5,12 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-#include "../../qrkernel/roles.h"
-#include "../workingCopyInspectionInterface.h"
+#include <qrkernel/roles.h>
+
+#include "qrrepo/workingCopyInspectionInterface.h"
 #include "classes/object.h"
 #include "valuesSerializer.h"
+
 
 namespace qrRepo {
 

@@ -12,9 +12,13 @@ namespace details
 class Difference
 {
 public:
-	Difference(qReal::models::Models *oldModel
-			, qReal::models::Models *newModel, qReal::Id const &graphicalId
-			, qReal::Id const &logicalId, ElementType type);
+	Difference(
+		qReal::models::Models *oldModel
+		, qReal::models::Models *newModel
+		, qReal::Id const &graphicalId
+		, qReal::Id const &logicalId
+		, ElementType type
+	);
 
 	qReal::Id graphicalId() const;
 	qReal::Id logicalId() const;

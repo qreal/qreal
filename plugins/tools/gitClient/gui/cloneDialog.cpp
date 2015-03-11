@@ -1,8 +1,9 @@
+#include "cloneDialog.h"
+
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QFileDialog>
 
-#include "cloneDialog.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace git::ui;
 
@@ -25,7 +26,7 @@ CloneDialog::CloneDialog(QWidget *parent)
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->addWidget(mUrlLabel, 0, 0);
 	mainLayout->addWidget(mUrlComboBox, 0, 1, 1, 2);
-	mainLayout->addLayout(buttonsLayout,2, 0, 1, 3);
+	mainLayout->addLayout(buttonsLayout, 2, 0, 1, 3);
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Clone options"));

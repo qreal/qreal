@@ -4,9 +4,10 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QGridLayout>
+#include <QtGui/QScreen>
 
-#include <QScreen>
-#include "qrkernel/ids.h"
+#include <qrkernel/ids.h>
+
 
 namespace versioning
 {

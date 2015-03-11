@@ -1,11 +1,11 @@
 #include "idListDiffWidget.h"
 
+
 using namespace versioning;
 using namespace versioning::details;
 
 IdListDiffWidget::IdListDiffWidget(DiffModel *diffModel, QWidget *parent)
-	: QWidget(parent), mSameElements(), mAddedElements()
-	, mRemovedElements(), mDiffModel(diffModel)
+	: QWidget(parent), mSameElements(), mAddedElements(), mRemovedElements(), mDiffModel(diffModel)
 {
 	mLayout = new QGridLayout(this);
 	mLayout->setMargin(3);
@@ -20,16 +20,16 @@ IdListDiffWidget::IdListDiffWidget(DiffModel *diffModel, QWidget *parent)
 	mAddedLabel->setFont(labelFont);
 	mRemovedLabel->setFont(labelFont);
 
-	mSameIdListWidget = new IdListWidget(mDiffModel, this);
-	mAddedIdListWidget = new IdListWidget(mDiffModel, this);
-	mRemovedIdListWidget = new IdListWidget(mDiffModel, this);
+	auto &mSIdLW = mSameIdListWidget = new IdListWidget(mDiffModel, this);
+	auto &mAIdLW = mAddedIdListWidget = new IdListWidget(mDiffModel, this);
+	auto &mRIdLW = mRemovedIdListWidget = new IdListWidget(mDiffModel, this);
 
-	connect(mSameIdListWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
-	connect(mSameIdListWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
-	connect(mAddedIdListWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
-	connect(mAddedIdListWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
-	connect(mRemovedIdListWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
-	connect(mRemovedIdListWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
+	connect(mSIdLW, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
+	connect(mSIdLW, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
+	connect(mAIdLW, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
+	connect(mAIdLW, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
+	connect(mRIdLW, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
+	connect(mRIdLW, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
 
 	mLayout->addWidget(mSameLabel, 0, 0);
 	mLayout->addWidget(mSameIdListWidget, 1, 0);

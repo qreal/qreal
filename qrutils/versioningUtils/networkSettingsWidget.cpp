@@ -1,6 +1,8 @@
 #include "networkSettingsWidget.h"
 #include "ui_networkSettingsWidget.h"
-#include "../../qrkernel/settingsManager.h"
+
+#include <qrkernel/settingsManager.h>
+
 
 using namespace qReal::versioning::ui;
 
@@ -12,8 +14,7 @@ NetworkSettingsWidget::NetworkSettingsWidget(QWidget *parent)
 	reinit();
 }
 
-NetworkSettingsWidget::NetworkSettingsWidget(const QString &settingsPrefix
-		, QWidget *parent)
+NetworkSettingsWidget::NetworkSettingsWidget(const QString &settingsPrefix, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::NetworkSettingsWidget)
 	, mSettingsPrefix(settingsPrefix)

@@ -1,5 +1,6 @@
 #include "branchNameDialog.h"
-#include <QGridLayout>
+
+#include <QtWidgets/QGridLayout>
 
 using namespace git::ui;
 

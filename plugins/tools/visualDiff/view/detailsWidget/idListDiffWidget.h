@@ -8,6 +8,7 @@
 #include "model/diffModel.h"
 #include "model/diffState.h"
 
+
 namespace versioning
 {
 namespace details

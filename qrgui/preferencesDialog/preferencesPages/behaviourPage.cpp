@@ -6,6 +6,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/uxInfo/uxInfo.h>
 
+
 using namespace qReal;
 
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
@@ -20,8 +21,12 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
 	/// @todo: Get rid of notifying components directly
-	connect(mUi->collectErgonomicValuesCheckBox, &QAbstractButton::clicked
-			, [](bool status) { utils::UXInfo::setStatus(status); });
+	connect(
+		mUi->collectErgonomicValuesCheckBox
+		, &QAbstractButton::clicked
+		, [](bool status) { utils::UXInfo::setStatus(status); }
+	);
+
 	restoreSettings();
 }
 
@@ -56,7 +61,7 @@ void PreferencesBehaviourPage::save()
 	bool const usabilityTestingMode = mUi->usabilityModeCheckBox->isChecked();
 	SettingsManager::setValue("usabilityTestingMode", usabilityTestingMode);
 	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
-			|| usabilityTestingMode);
+		|| usabilityTestingMode);
 	SettingsManager::setValue("touchMode", mUi->touchModeCheckBox->isChecked());
 	if (mUsabilityTestingMode != usabilityTestingMode) {
 		if (usabilityTestingMode) {

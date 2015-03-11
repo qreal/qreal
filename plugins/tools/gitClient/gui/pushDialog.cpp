@@ -1,8 +1,9 @@
+#include "pushDialog.h"
+
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QFileDialog>
 
-#include "pushDialog.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace git::ui;
 

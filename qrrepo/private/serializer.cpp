@@ -327,14 +327,14 @@ bool Serializer::removeUnsaved(const QString &path)
 		}
 		if (fileInfo.isDir()) {
 			bool const invocationResult =
-					mSavedDirectories.contains(fileInfo.filePath())
-						? removeUnsaved(fileInfo.filePath())
-						: reportRemoved(fileInfo.filePath());
+				mSavedDirectories.contains(fileInfo.filePath())
+					? removeUnsaved(fileInfo.filePath())
+					: reportRemoved(fileInfo.filePath());
 			result = result & invocationResult;
 		} else {
 			result = mSavedFiles.contains(fileInfo.filePath())
-					? result
-					: (reportRemoved(fileInfo.filePath()) && result);
+				? result
+				: (reportRemoved(fileInfo.filePath()) && result);
 		}
 	}
 	return result;

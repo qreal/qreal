@@ -1,5 +1,6 @@
 #include "idWidget.h"
 
+
 using namespace versioning;
 using namespace versioning::details;
 
@@ -66,6 +67,7 @@ QString IdWidget::labelLogicalText() const
 	if (mLogicalId != qReal::Id()) {
 		result += tr("Logical Id: ") + mLogicalId.toString();
 	}
+
 	mLabelLogical->setToolTip(result);
 	return result;
 }
@@ -76,6 +78,7 @@ QString IdWidget::labelGraphicalText() const
 	if (mGraphicalId != qReal::Id()) {
 		result += tr("Graphical Id: ") + mGraphicalId.toString();
 	}
+
 	mLabelGraphical->setToolTip(result);
 	return result;
 }

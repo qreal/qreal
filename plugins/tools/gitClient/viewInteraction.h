@@ -4,6 +4,7 @@
 
 #include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+
 #include "gui/pushDialog.h"
 #include "gui/pullDialog.h"
 #include "gui/commitDialog.h"
@@ -56,20 +57,20 @@ public slots:
 	void mergeBranch();
 
 private slots:
-	void onInitComplete(bool const success);
-	void onCloneComplete(bool const success);
-	void onCommitComplete(bool const success);
-	void onRemoteComplete(bool const success);
-	void onPushComplete(bool const success);
-	void onPullComplete(bool const success);
-	void onResetComplete(bool const success);
-	void onCheckoutBranch(bool const success);
-	void onCreateBranchComplete(bool const success);
-	void onDeleteBranchComplete(bool const success);
-	void onStatusComplete(QString answer, bool const success);
-	void onLogComplete(QString answer, bool const success);
-	void onRemoteListComplete(QString answer, bool const success);
-	void onCheckoutComplete(bool const success);
+	void onInitComplete(bool success);
+	void onCloneComplete(bool success);
+	void onCommitComplete(bool success);
+	void onRemoteComplete(bool success);
+	void onPushComplete(bool success);
+	void onPullComplete(bool success);
+	void onResetComplete(bool success);
+	void onCheckoutBranch(bool success);
+	void onCreateBranchComplete(bool success);
+	void onDeleteBranchComplete(bool success);
+	void onStatusComplete(QString answer, bool success);
+	void onLogComplete(QString answer, bool success);
+	void onRemoteListComplete(QString answer, bool success);
+	void onCheckoutComplete(bool success);
 	void modeChanged(bool compactMode);
 	void removeClosedTab(QWidget *widget);
 

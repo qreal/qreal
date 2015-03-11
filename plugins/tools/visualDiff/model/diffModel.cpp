@@ -1,15 +1,17 @@
 #include "diffModel.h"
+
+#include <qrgui/models/graphicalModelAssistApi.h>
+#include <qrgui/models/logicalModelAssistApi.h>
+
 #include "difference.h"
 
-#include "qrgui/models/graphicalModelAssistApi.h"
-#include "qrgui/models/logicalModelAssistApi.h"
 
 using namespace versioning;
 using namespace versioning::details;
 
-DiffModel::DiffModel(qReal::models::Models *oldModel
-		, qReal::models::Models *newModel)
-	: mOldModel(oldModel), mNewModel(newModel)
+DiffModel::DiffModel(qReal::models::Models *oldModel, qReal::models::Models *newModel)
+	: mOldModel(oldModel)
+	, mNewModel(newModel)
 	, mOldGraphicalElements(graphicalElements(mOldModel))
 	, mNewGraphicalElements(graphicalElements(mNewModel))
 	, mAllGraphicalElements(uniteIdLists(mOldGraphicalElements, mNewGraphicalElements))
@@ -24,7 +26,7 @@ Difference *DiffModel::difference(const qReal::Id &id) const
 	if (mDifferences.keys().contains(logicalId)) {
 		return mDifferences[logicalId];
 	} else {
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -50,16 +52,20 @@ qReal::IdList DiffModel::newGraphicalElements() const
 
 qReal::Id DiffModel::logicalId(const qReal::Id &id) const
 {
-	if ((mOldModel->logicalRepoApi().exist(id) && mOldModel->logicalRepoApi().isLogicalElement(id))
-		|| (mNewModel->logicalRepoApi().exist(id) && mNewModel->logicalRepoApi().isLogicalElement(id))) {
+	bool isOldLogicEl = mOldModel->logicalRepoApi().exist(id) && mOldModel->logicalRepoApi().isLogicalElement(id);
+	bool isNewLogicEl = mNewModel->logicalRepoApi().exist(id) && mNewModel->logicalRepoApi().isLogicalElement(id);
+	if (isOldLogicEl || isNewLogicEl) {
 		return id;
 	}
+
 	if (mOldGraphicalElements.contains(id)) {
 		return mOldModel->graphicalRepoApi().logicalId(id);
 	}
+
 	if (mNewGraphicalElements.contains(id)) {
 		return mNewModel->graphicalRepoApi().logicalId(id);
 	}
+
 	return qReal::Id();
 }
 
@@ -68,6 +74,7 @@ ElementType DiffModel::elementType(const qReal::Id &id) const
 	if (mAllGraphicalElements.contains(id)) {
 		return (logicalId(id) != qReal::Id()) ? GraphicalAndLogical : PurelyGraphical;
 	}
+
 	return (logicalId(id) != qReal::Id()) ? PurelyLogical : Nonexistent;
 }
 
@@ -83,6 +90,7 @@ void DiffModel::graphicalElements(qReal::models::Models *model, qReal::IdList &r
 	if (model->graphicalModelAssistApi().isGraphicalId(parent)) {
 		result.append(parent);
 	}
+
 	foreach (qReal::Id const &child, model->graphicalRepoApi().children(parent)) {
 		graphicalElements(model, result, child);
 	}
@@ -96,6 +104,7 @@ qReal::IdList DiffModel::uniteIdLists(const qReal::IdList &list1, const qReal::I
 			result.append(id);
 		}
 	}
+
 	return result;
 }
 

@@ -1,14 +1,15 @@
 #include "preferencesDialog.h"
-#include "ui_preferencesDialog.h"
 
 #include <QtWidgets/QMessageBox>
 
 #include <qrutils/qRealFileDialog.h>
 
+#include "ui_preferencesDialog.h"
 #include "preferencesPages/behaviourPage.h"
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
+
 
 using namespace qReal::gui;
 using namespace utils;

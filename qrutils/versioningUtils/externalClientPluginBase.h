@@ -3,8 +3,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QProcess>
 
-#include "../utilsDeclSpec.h"
-#include "qrgui/versioning/versioningPluginInterface.h"
+#include <qrgui/versioning/versioningPluginInterface.h>
+
+#include "qrutils/utilsDeclSpec.h"
 
 namespace qReal {
 namespace versioning {
@@ -30,10 +31,16 @@ public:
 	///                      If empty value speified, target project will be working one
 	/// @param sourceProject A path to source project. If empty working one used
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
-	bool invokeOperation(QStringList const &args, bool needPreparation = true
-			, QString const &workingDir = QString(), bool const checkWorkingDir = true
-			, bool const needProcessing = true, QString const &targetProject = QString()
-			, QString const &sourceProject = QString(), bool const reportErrors = true);
+	bool invokeOperation(
+			QStringList const &args
+			, bool needPreparation = true
+			, QString const &workingDir = QString()
+			, bool const checkWorkingDir = true
+			, bool const needProcessing = true
+			, QString const &targetProject = QString()
+			, QString const &sourceProject = QString()
+			, bool const reportErrors = true
+	);
 
 	/// Starts process which executable`s path specified by setPathToClient() method in separate thread.
 	/// @param args Startup arguments
@@ -44,13 +51,15 @@ public:
 	/// @param checkWorkingDir Specifies if before operation will be checked if specified directory is under version control
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
 	/// @returns Pointer to started operaton
-	invocation::LongOperation *invokeOperationAsync(QStringList const &args
+	invocation::LongOperation *invokeOperationAsync(
+		QStringList const &args
 		, QVariant const &tag
 		, bool needPreparation = true
 		, QString const &workingDir = QString()
 		, QString const &sourceProject = QString()
 		, bool const checkWorkingDir = true
-		, bool reportErrors = true);
+		, bool reportErrors = true
+	);
 
 //	/// Starts process which executable`s path specified by setPathToClient() method in new thread.
 //	/// When process is finished singal invokeComplete is emited.

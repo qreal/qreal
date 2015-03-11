@@ -1,5 +1,5 @@
 #pragma once
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>

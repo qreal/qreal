@@ -1,8 +1,10 @@
 #include "changeVersionWidget.h"
-#include "ui_changeVersionWidget.h"
 
 #include <QtCore/QString>
 #include <QtCore/QListIterator>
+
+#include "ui_changeVersionWidget.h"
+
 
 ChangeVersionWidget::ChangeVersionWidget(QWidget *parent) :
 	QWidget(parent),
@@ -35,10 +37,11 @@ void ChangeVersionWidget::showDiff(QListWidgetItem *item)
 	QString firstHash = item->data(Qt::UserRole).toString();
 	int row = mUi->listWidgetForLog->row(item);
 	QListWidgetItem *item2 = mUi->listWidgetForLog->item(row + 1);
-	if (mDiffWidget->layout() != NULL){
+	if (mDiffWidget->layout() != nullptr) {
 		clearLayout(mDiffWidget->layout());
 	}
-	if (item2 != nullptr){
+
+	if (item2 != nullptr) {
 		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), mDiffWidget);
 	} else {
 		emit showDiff(firstHash, QString(), mDiffWidget);
@@ -58,16 +61,18 @@ void ChangeVersionWidget::initDiffWidget()
 
 void ChangeVersionWidget::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart
 {
-	if (listLog.size() != 0){
+	if (listLog.size() != 0) {
 		mUi->listWidgetForLog->clear();
 		int number = 0;
-		while (number < listLog.size()){
+
+		while (number < listLog.size()) {
 			QListWidgetItem *item = new QListWidgetItem;
 			item->setData(Qt::UserRole,listLog.at(number).first);
 			item->setText(listLog.at(number).second);
 			mUi->listWidgetForLog->addItem(item);
 			number++;
 		}
+
 		connect(mUi->listWidgetForLog, SIGNAL(itemClicked(QListWidgetItem*))
 				, this, SLOT(showDiff(QListWidgetItem*)),Qt::DirectConnection);
 		mUi->listWidgetForLog->item(0)->setSelected(true);
@@ -83,7 +88,7 @@ void ChangeVersionWidget::updateLog(QList<QPair<QString , QString> > listLog) //
 void ChangeVersionWidget::clearLayout(QLayout *layout)
 {
 	QLayoutItem *item;
-	while((item = layout->takeAt(0))){
+	while((item = layout->takeAt(0))) {
 		if (item->layout()) {
 			clearLayout(item->layout());
 			delete item->layout();

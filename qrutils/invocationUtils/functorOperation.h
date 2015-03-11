@@ -2,6 +2,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QThread>
+
 #include "private/functors.h"
 #include "longOperation.h"
 
@@ -49,7 +50,7 @@ public:
 	explicit FunctorOperation(details::FunctorInterface<TResult> *functorInterface, int timeout = INT_MAX)
 		: LongOperation(timeout), mFunctor(functorInterface)
 	{
-		if (mFunctor->withProgress()){
+		if (mFunctor->withProgress()) {
 			mFunctor->setProgressIfNecessary(mProgress);
 		}
 	}

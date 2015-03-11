@@ -1,7 +1,9 @@
 #pragma once
 
 #include <qrgui/editor/editorViewScene.h>
+
 #include "model/diffState.h"
+
 
 namespace versioning
 {
@@ -15,7 +17,9 @@ public:
 			, Controller &controller
 			, SceneCustomizer const &customizer
 			, Id const &rootId
-			, QObject *parent = 0);
+			, QObject *parent = 0
+	);
+
 	void initForDiff();
 	void highlight(qReal::Id const &id, details::DiffState const state);
 	void hint(qReal::Id const &graphicalId);

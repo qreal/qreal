@@ -1,22 +1,29 @@
+#include "diffColorPreferencesDialog.h"
+
 #include <QtWidgets/QColorDialog>
 
-#include "diffColorPreferencesDialog.h"
+#include <qrkernel/settingsManager.h>
+
 #include "ui_diffColorPreferencesDialog.h"
-#include "qrkernel/settingsManager.h"
+
 
 using namespace versioning::ui;
 
 DiffColorPreferencesDialog::DiffColorPreferencesDialog(QWidget *parent)
-	: QDialog(parent)
-	, mUi(new Ui::DiffColorPreferencesDialog)
+	: QDialog(parent), mUi(new Ui::DiffColorPreferencesDialog)
 {
 	mUi->setupUi(this);
 
-	mAddedRemovedColor = mAddedRemovedColorBefore = qReal::SettingsManager::value("diffAddedRemovedColor"
+	mAddedRemovedColor = mAddedRemovedColorBefore = qReal::SettingsManager::value(
+		"diffAddedRemovedColor"
 		, QVariant(defaultAddedRemovedColor())).value<QColor>();
-	mModifiedColor = mModifiedColorBefore = qReal::SettingsManager::value("diffModifiedColor"
+
+	mModifiedColor = mModifiedColorBefore = qReal::SettingsManager::value(
+		"diffModifiedColor"
 		, QVariant(defaultModifiedColor())).value<QColor>();
-	mHintColor = mHintColorBefore = qReal::SettingsManager::value("diffHintColor"
+
+	mHintColor = mHintColorBefore = qReal::SettingsManager::value(
+		"diffHintColor"
 		, QVariant(defaultHintColor())).value<QColor>();
 
 	setButtonColor(mUi->addedRemovedColorButton, mAddedRemovedColor);

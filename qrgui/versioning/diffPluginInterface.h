@@ -1,7 +1,9 @@
 #pragma once
+
 #include "qrutils/versioningUtils/briefVersioningInterface.h"
 #include "qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
 #include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+
 
 namespace qReal
 {
@@ -13,23 +15,40 @@ public:
 
 	/// Must be implemented to show diff between working copy and HEAD revision
 	/// in remote repository.
-	virtual void showDiff(QString const &targetProject, QWidget *parentWidget
-						  , bool const &compactMode = false) = 0;
+	virtual void showDiff(
+		QString const &targetProject
+		, QWidget *parentWidget
+		, bool compactMode = false
+	) = 0;
 
 	/// Must be implemented to show diff between working copy and specified revision
 	/// in remote repository.
-	virtual void showDiff(QString repoRevision, QString const &targetProject
-						  , QWidget *parentWidget, bool const &compactMode = false) = 0;
+	virtual void showDiff(
+		QString repoRevision
+		, QString const &targetProject
+		, QWidget *parentWidget
+		, bool compactMode = false
+	) = 0;
 
 	/// Must be implemented to show diff between two specified revisions
 	/// in remote repository.
-	virtual void showDiff(QString oldRepoRevision , QString newRepoRevision
-			, QString const &targetProject, QWidget *parentWidget, bool const &compactMode = false) = 0;
+	virtual void showDiff(
+		QString oldRepoRevision
+		, QString newRepoRevision
+		, QString const &targetProject
+		, QWidget *parentWidget
+		, bool compactMode = false
+	) = 0;
 
 	/// For plugin, because plugin's configurator cannot give necessary objects
-	virtual void configure(ProjectManagementInterface *projectManager, ErrorReporterInterface *errorReporter
-						   , qrRepo::WorkingCopyManagementInterface *workingCopyManager, BriefVersioningInterface *vcs
-						   , QWidget *parent, EditorManagerInterface *manager) = 0;
+	virtual void configure(
+		ProjectManagementInterface *projectManager
+		, ErrorReporterInterface *errorReporter
+		, qrRepo::WorkingCopyManagementInterface *workingCopyManager
+		, BriefVersioningInterface *vcs
+		, QWidget *parent, EditorManagerInterface *manager
+	) = 0;
+
 };
 
 }

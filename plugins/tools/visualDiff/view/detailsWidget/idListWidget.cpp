@@ -1,5 +1,6 @@
 #include "idListWidget.h"
 
+
 using namespace versioning;
 using namespace versioning::details;
 
@@ -17,6 +18,7 @@ void IdListWidget::setIdList(const qReal::IdList &graphicalIdList)
 	foreach (qReal::Id const &id, mGraphicalIdList) {
 		mLogicalIdList.append(mDiffProvider->logicalId(id));
 	}
+
 	for (int i = 0; i < mGraphicalIdList.count(); ++i) {
 		addIdWidget(i);
 	}
@@ -33,6 +35,7 @@ void IdListWidget::clearIdWidgets()
 		mLayout->removeWidget(idWidget);
 		delete idWidget;
 	}
+
 	mIdWidgets.clear();
 	mGraphicalIdList.clear();
 	mLogicalIdList.clear();

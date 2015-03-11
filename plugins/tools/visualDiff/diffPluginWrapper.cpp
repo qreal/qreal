@@ -1,8 +1,9 @@
+#include "diffPluginWrapper.h"
+
 #include <QtWidgets/QTabWidget>
 
-#include "diffPluginWrapper.h"
-#include "plugins/tools/visualDiff/model/diffModel.h"
-#include "plugins/tools/visualDiff/view/diffWindow.h"
+#include <plugins/tools/visualDiff/model/diffModel.h>
+#include <plugins/tools/visualDiff/view/diffWindow.h>
 
 
 using namespace versioning;
@@ -14,7 +15,7 @@ DiffPluginWrapper::DiffPluginWrapper()
 
 Customizer *DiffPluginWrapper::customizationInterface()
 {
-	return NULL;
+	return nullptr;
 }
 
 void DiffPluginWrapper::updateSettings()
@@ -33,12 +34,18 @@ void DiffPluginWrapper::init(const PluginConfigurator &configurator)
 
 QPair<QString, gui::PreferencesPage *> DiffPluginWrapper::preferencesPage()
 {
-	return QPair<QString, gui::PreferencesPage *>(); //потом сюда впили настройку цветов.
+	///to do: make color options
+	return QPair<QString, gui::PreferencesPage *>();
 }
 
-void DiffPluginWrapper::configure(ProjectManagementInterface *projectManager, ErrorReporterInterface *errorReporter
-								  , qrRepo::WorkingCopyManagementInterface *workingCopyManager
-								  , BriefVersioningInterface *vcs, QWidget *parent, EditorManagerInterface *manager)
+void DiffPluginWrapper::configure(
+	ProjectManagementInterface *projectManager
+	, ErrorReporterInterface *errorReporter
+	, qrRepo::WorkingCopyManagementInterface *workingCopyManager
+	, BriefVersioningInterface *vcs
+	, QWidget *parent
+	, EditorManagerInterface *manager
+)
 {
 	mWorkingCopyManager = workingCopyManager;
 	mVcs = vcs;
@@ -50,23 +57,32 @@ void DiffPluginWrapper::configure(ProjectManagementInterface *projectManager, Er
 	connect(mLoader, SIGNAL(modelLoaded(DiffModel*)), this, SLOT(onModelLoaded(DiffModel*)));
 }
 
-void DiffPluginWrapper::showDiff(const QString &targetProject, QWidget *parentWidget, const bool &compactMode)
+void DiffPluginWrapper::showDiff(const QString &targetProject, QWidget *parentWidget, bool compactMode)
 {
 	mCompactMode = compactMode;
 	mParentWidget = parentWidget;
 	mLoader->startModelLoading(targetProject);
 }
 
-void DiffPluginWrapper::showDiff(QString repoRevision, const QString &targetProject
-								 , QWidget *parentWidget, bool const &compactMode)
+void DiffPluginWrapper::showDiff(
+	QString repoRevision
+	, const QString &targetProject
+	, QWidget *parentWidget
+	, bool compactMode
+)
 {
 	mCompactMode = compactMode;
 	mParentWidget = parentWidget;
 	mLoader->startModelLoading(repoRevision, targetProject);
 }
 
-void DiffPluginWrapper::showDiff(QString oldRepoRevision, QString newRepoRevision
-		, const QString &targetProject, QWidget *parentWidget, const bool &compactMode)
+void DiffPluginWrapper::showDiff(
+	QString oldRepoRevision
+	, QString newRepoRevision
+	, const QString &targetProject
+	, QWidget *parentWidget
+	, bool compactMode
+)
 {
 	mCompactMode = compactMode;
 	mParentWidget = parentWidget;
@@ -82,7 +98,8 @@ void DiffPluginWrapper::onModelLoaded(DiffModel *model)
 	int diagrams = model->newModel()->graphicalModelAssistApi().childrenOfRootDiagram();
 	QTabWidget *diffWindowSet = new QTabWidget;
 	for (int i = 0; i < diagrams; i++){
-		diffWindowSet->addTab(new DiffWindow(model, mCompactMode, i, mMainWindow), QString(tr("diagram ") + QString::number(i+1)));
+		DiffWindow *tmp = new DiffWindow(model, mCompactMode, i, mMainWindow);
+		diffWindowSet->addTab(tmp, QString(tr("diagram ") + QString::number(i+1)));
 	}
 
 	mParentWidget->layout()->addWidget(diffWindowSet);

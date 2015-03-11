@@ -10,8 +10,12 @@ namespace details
 class LogicalDifference : public CommonDifference
 {
 public:
-	LogicalDifference(qReal::models::Models *oldModel
-			, qReal::models::Models *newModel, qReal::Id const &logicalId);
+	LogicalDifference(
+		qReal::models::Models *oldModel
+		, qReal::models::Models *newModel
+		, qReal::Id const &logicalId
+	);
+
 	virtual ~LogicalDifference() {}
 
 protected:

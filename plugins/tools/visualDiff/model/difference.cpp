@@ -5,11 +5,14 @@ using namespace versioning::details;
 //repo <-> old object
 //working copy <-> new object
 
-Difference::Difference(qReal::models::Models *oldModel
+Difference::Difference(
+		qReal::models::Models *oldModel
 		, qReal::models::Models *newModel
 		, qReal::Id const &graphicalId
 		, qReal::Id const &logicalId, ElementType type)
-	: mGraphicalId(graphicalId), mLogicalId(logicalId), mType(type)
+	: mGraphicalId(graphicalId)
+	, mLogicalId(logicalId)
+	, mType(type)
 {
 	switch(type) {
 	case GraphicalAndLogical:
@@ -21,10 +24,6 @@ Difference::Difference(qReal::models::Models *oldModel
 		break;
 	case PurelyLogical:
 		mLogicalDifference = new LogicalDifference(oldModel, newModel, logicalId);
-		break;
-	default:
-		qDebug() << "Unknown Element Type";
-		qDebug() << type;
 		break;
 	}
 }

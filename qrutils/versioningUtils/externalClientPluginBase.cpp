@@ -2,7 +2,7 @@
 #include <QtWidgets/QApplication>
 
 #include "externalClientPluginBase.h"
-#include "../invocationUtils/functorOperation.h"
+#include "invocationUtils/functorOperation.h"
 
 using namespace qReal::versioning;
 
@@ -47,14 +47,16 @@ void ExternalClientPluginBase::onErrorsOccured(QStringList const &errorMessages)
 	}
 }
 
-bool ExternalClientPluginBase::invokeOperation(const QStringList &args
-		, bool needPreparation
-		, QString const &workingDir
-		, bool const checkWorkingDir
-		, bool needProcessing
-		, QString const &targetProject
-		, QString const &sourceProject
-		, bool reportErrors)
+bool ExternalClientPluginBase::invokeOperation(
+	const QStringList &args
+	, bool needPreparation
+	, QString const &workingDir
+	, bool const checkWorkingDir
+	, bool needProcessing
+	, QString const &targetProject
+	, QString const &sourceProject
+	, bool reportErrors
+)
 {
 	if (needPreparation) {
 		prepareWorkingCopy(workingDir, sourceProject);
@@ -66,22 +68,30 @@ bool ExternalClientPluginBase::invokeOperation(const QStringList &args
 	return result;
 }
 
-invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(QStringList const &args
+invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
+		QStringList const &args
 		, QVariant const &tag
 		, bool needPreparation
 		, QString const &workingDir
 		, QString const &sourceProject
 		, bool const checkWorkingDir
-		, bool reportErrors)
+		, bool reportErrors
+)
 {
 	if (needPreparation) {
 		prepareWorkingCopy(workingDir, sourceProject);
 	}
 	invocation::details::FunctorInterface<bool> *functor =
-			new invocation::details::Functor<bool, ExternalClientPluginBase
+		new invocation::details::Functor<bool, ExternalClientPluginBase
 			, bool(ExternalClientPluginBase::*)(const QStringList&, bool, const QString&, const bool)
-			,const QStringList&, bool, const QString&, const bool>(this, &ExternalClientPluginBase::startAndWait, args
-																	 , reportErrors, workingDir, checkWorkingDir);
+			,const QStringList&, bool, const QString&, const bool>(
+				this
+				, &ExternalClientPluginBase::startAndWait
+				, args
+				, reportErrors
+				, workingDir
+				, checkWorkingDir
+	);
 
 	invocation::FunctorOperation<bool> *operation = new invocation::FunctorOperation<bool>(functor);
 	// TODO: make it with progress
@@ -159,7 +169,8 @@ bool ExternalClientPluginBase::startProcess(QStringList const &args, QString con
 
 	if (!mClientProcess->waitForStarted()) {
 		if (reportErrors) {
-			emit errorOccured(tr("An error occured while starting versioning client process (maybe path is not correct?)"));
+			QString text = tr("An error occured while starting versioning client process (maybe path is not correct?)");
+			emit errorOccured(text);
 		}
 		return false;
 	}

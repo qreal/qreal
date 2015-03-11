@@ -1,23 +1,33 @@
 #include "diffView.h"
+
 #include "model/elementType.h"
+
 
 using namespace versioning;
 using namespace versioning::details;
 using namespace qReal;
 
-DiffView::DiffView(QWidget *parent, DiffModel *diffModel, bool isOldModel, Controller &controller
-	, const SceneCustomizer &customizer, const Id &rootId)
-	: EditorView( *(isOldModel ? diffModel->oldModel() : diffModel->newModel())
+DiffView::DiffView(
+		QWidget *parent
+		, DiffModel *diffModel
+		, bool isOldModel
+		, Controller &controller
+		, const SceneCustomizer &customizer
+		, const Id &rootId
+		)
+	: EditorView(
+		  *(isOldModel ? diffModel->oldModel() : diffModel->newModel())
 		, controller
 		, customizer
 		, rootId
-		, parent)
+		, parent
+		)
 	, mScene(*(isOldModel ? diffModel->oldModel() : diffModel->newModel()), controller, customizer, rootId, this)
 	, mMVIface(this, &mScene)
 	, mDiffModel(diffModel)
 	, mIsOldModel(isOldModel)
 	, mModel(mIsOldModel ? mDiffModel->oldModel() : mDiffModel->newModel())
-	, mDetailsWidget(NULL)
+	, mDetailsWidget(nullptr)
 {
 	this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
 	setScene(&mScene);
@@ -142,8 +152,10 @@ void DiffView::highlight(const qReal::Id &id)
 {
 	Difference *difference = mDiffModel->difference(id);
 	if (difference) {
-		DiffState const state = (PurelyGraphical == difference->elementType()) ?
-				difference->graphicalDifference()->state() : difference->logicalDifference()->state();
+		DiffState const state = (PurelyGraphical == difference->elementType())
+			? difference->graphicalDifference()->state()
+			: difference->logicalDifference()->state();
+
 		mScene.highlight(id, state);
 	}
 }

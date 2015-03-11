@@ -1,12 +1,14 @@
 #pragma once
 
-#include "diffScene.h"
-#include "detailsWidget/diffDetailsWidget.h"
 #include <qrgui/editor/editorView.h>
-#include "model/diffModel.h"
 #include <qrgui/models/models.h>
 #include <qrgui/editor/sceneCustomizer.h>
 #include <qrgui/controller/controller.h>
+
+#include "model/diffModel.h"
+#include "detailsWidget/diffDetailsWidget.h"
+#include "diffScene.h"
+
 
 namespace versioning
 {
@@ -18,12 +20,15 @@ class DiffView : public EditorView
 	Q_OBJECT
 
 public:
-	DiffView(QWidget *parent
-			, versioning::DiffModel *diffModel
-			, bool isOldModel
-			, Controller &controller
-			, SceneCustomizer const &customizer
-			, Id const &rootId);
+	DiffView(
+		QWidget *parent
+		, versioning::DiffModel *diffModel
+		, bool isOldModel
+		, Controller &controller
+		, SceneCustomizer const &customizer
+		, Id const &rootId
+	);
+
 	void setDetailsWidget(DiffDetailsWidget *widget);
 
 public slots:

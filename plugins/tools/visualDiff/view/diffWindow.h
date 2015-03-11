@@ -7,9 +7,11 @@
 
 #include <qrgui/editor/sceneCustomizer.h>
 #include <qrgui/controller/controller.h>
+
 #include "model/diffModel.h"
 #include "diffView.h"
 #include "detailsWidget/diffDetailsWidget.h"
+
 
 namespace versioning
 {

@@ -1,5 +1,6 @@
 #include "parentWidget.h"
 
+
 using namespace versioning;
 using namespace versioning::details;
 
@@ -36,40 +37,52 @@ void ParentWidget::setId(const qReal::Id &graphicalId, const qReal::Id &logicalI
 	if (!difference) {
 		return;
 	}
+
 	DiffState const state = difference->graphicalDifference()->parentState();
 	switch(state) {
 	case Same:
 		mOldParentLabel->setText(tr("Parents of this element in the old and new models are the same:"));
 		mNewParentLabel->setText("");
-		mOldIdWidget->setId(difference->graphicalDifference()->oldParent()
-				, difference->logicalDifference()->oldParent());
+		mOldIdWidget->setId(
+			difference->graphicalDifference()->oldParent()
+			, difference->logicalDifference()->oldParent()
+		);
+
 		mNewIdWidget->reset();
 		break;
 	case Modified:
 		mOldParentLabel->setText(tr("Parent in the old model:"));
 		mNewParentLabel->setText(tr("Parent in the new model:"));
-		mOldIdWidget->setId(difference->graphicalDifference()->oldParent()
-				, difference->logicalDifference()->oldParent());
-		mNewIdWidget->setId(difference->graphicalDifference()->newParent()
-				, difference->logicalDifference()->newParent());
+		mOldIdWidget->setId(
+			difference->graphicalDifference()->oldParent()
+			, difference->logicalDifference()->oldParent()
+		);
+
+		mNewIdWidget->setId(
+			difference->graphicalDifference()->newParent()
+			, difference->logicalDifference()->newParent()
+		);
+
 		break;
 	case Added:
 		mOldParentLabel->setText(tr("The element doesnt`t exist in the old model"));
 		mNewParentLabel->setText(tr("Parent in the new model:"));
 		mOldIdWidget->reset();
-		mNewIdWidget->setId(difference->graphicalDifference()->newParent()
-				, difference->logicalDifference()->newParent());
+		mNewIdWidget->setId(
+			difference->graphicalDifference()->newParent()
+			, difference->logicalDifference()->newParent()
+		);
+
 		break;
 	case Removed:
 		mOldParentLabel->setText(tr("Parent in the old model:"));
 		mNewParentLabel->setText(tr("The element doesnt`t exist in the new model"));
-		mOldIdWidget->setId(difference->graphicalDifference()->oldParent()
-				, difference->logicalDifference()->oldParent());
+		mOldIdWidget->setId(
+			difference->graphicalDifference()->oldParent()
+			, difference->logicalDifference()->oldParent()
+		);
+
 		mNewIdWidget->reset();
-		break;
-	default:
-		qDebug() << "Unknown Diff State";
-		qDebug() << state;
 		break;
 	}
 }

@@ -4,7 +4,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include "../utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace qReal
 {
@@ -26,10 +26,12 @@ public slots:
 	/// @param targetProject Path to target project
 	/// @param commitId Order id of the required revision. If negative value specified, fetching last revision.
 	/// @param quiet Should system inform about the errors and open project after downloading
-	virtual void beginWorkingCopyDownloading(QString const &repoAddress
-			, QString const &targetProject
-			, QString commitId = "-1"
-			, bool quiet = false) = 0;
+	virtual void beginWorkingCopyDownloading(
+		QString const &repoAddress
+		, QString const &targetProject
+		, QString commitId = "-1"
+		, bool quiet = false
+	) = 0;
 
 	/// Starts updating specified project to last revision
 	/// in asynchroniouos mode. When finished emitted @see

@@ -4,6 +4,7 @@
 
 #include "diffState.h"
 
+
 namespace versioning
 {
 namespace details

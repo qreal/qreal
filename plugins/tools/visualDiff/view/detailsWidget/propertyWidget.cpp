@@ -1,12 +1,13 @@
 #include "propertyWidget.h"
-#include "../diffColorPreferencesDialog.h"
+
+#include "view/diffColorPreferencesDialog.h"
 #include "model/diffState.h"
+
 
 using namespace versioning;
 using namespace versioning::details;
 
-PropertyWidget::PropertyWidget(DiffModel *diffModel
-		, bool isGraphical, QWidget *parent)
+PropertyWidget::PropertyWidget(DiffModel *diffModel, bool isGraphical, QWidget *parent)
 	: QWidget(parent), mDiffModel(diffModel), mIsGraphical(isGraphical)
 {
 	mLayout = new QGridLayout(this);
@@ -34,8 +35,10 @@ void PropertyWidget::setProperty(const qReal::Id &graphicalId, const qReal::Id &
 		setPropertyValue(mOldValueLabel, mOldIdWidget, difference()->oldProperty(mPropertyName), 1);
 		break;
 	case Modified:
-		QColor const color = qReal::SettingsManager::value("diffModifiedColor"
+		QColor const color = qReal::SettingsManager::value(
+			"diffModifiedColor"
 			, ui::DiffColorPreferencesDialog::defaultModifiedColor()).value<QColor>();
+
 		QPalette palette = mPropertyNameLabel->palette();
 		palette.setColor(QPalette::Foreground, color);
 		mPropertyNameLabel->setPalette(palette);
@@ -85,8 +88,6 @@ void PropertyWidget::setPropertyValue(QLabel *label, IdWidget *idWidget, QVarian
 			createButton();
 			return;
 		}
-		qDebug() << "Unsupported QVariant type.";
-		qDebug() << value;
 		return;
 	}
 	label = new QLabel(this);

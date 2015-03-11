@@ -2,6 +2,7 @@
 
 using namespace versioning::details;
 
+
 Modification::Modification()
 {
 }

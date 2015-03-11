@@ -1,12 +1,11 @@
 #include "propertiesWidget.h"
 
+
 using namespace versioning;
 using namespace versioning::details;
 
-PropertiesWidget::PropertiesWidget(DiffModel *diffModel
-		, bool isGraphical, QWidget *parent)
-	: QWidget(parent), mDiffModel(diffModel)
-	, mIsGraphical(isGraphical), mPropertyWidgets()
+PropertiesWidget::PropertiesWidget(DiffModel *diffModel, bool isGraphical, QWidget *parent)
+	: QWidget(parent), mDiffModel(diffModel), mIsGraphical(isGraphical), mPropertyWidgets()
 {
 	mLayout = new QGridLayout(this);
 	mLayout->setMargin(3);

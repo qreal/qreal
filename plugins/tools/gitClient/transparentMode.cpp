@@ -1,16 +1,20 @@
 #include "transparentMode.h"
-#include <QtCore/QDebug>
+
 #include <QtCore/QRegExp>
 #include <QtCore/QString>
+
 #include "gitPlugin.h"
+
 
 using namespace git;
 
-TransparentMode::TransparentMode(GitPlugin *plugin
-								 , qReal::ProjectManagementInterface *projectManager
-								 , qReal::gui::MainWindowInterpretersInterface *mainWindowIface
-								 , qReal::SystemEvents *systemInterface):
-	mPlugin(plugin)
+TransparentMode::TransparentMode(
+		GitPlugin *plugin
+		, qReal::ProjectManagementInterface *projectManager
+		, qReal::gui::MainWindowInterpretersInterface *mainWindowIface
+		, qReal::SystemEvents *systemInterface
+		)
+	: mPlugin(plugin)
 	, mProjectManager(projectManager)
 	, mMainWindowIface(mainWindowIface)
 	, mSystemInterface(systemInterface)
@@ -22,27 +26,27 @@ TransparentMode::TransparentMode(GitPlugin *plugin
 
 void TransparentMode::openChangeVersionTab()
 {
-	if (!tabIsReady){
+	if (!tabIsReady) {
 		init();
 	}
+
 	isFullScreen = mMainWindowIface->isFullScreen();
-	if (!isFullScreen){
+	if (!isFullScreen) {
 		mMainWindowIface->makeFullScreen(true);
 	}
+
 	getAndUpdateLog();
 	mCompactWidget->setVisible(true);
 	mMainWindowIface->openTab(mCompactWidget, "Change Version");
 	mCompactWidget->setMaximumSize(mCompactWidget->size());
-
-
 }
 
-void TransparentMode::isInit(QString const &directory, const bool &prepareAndProcess)
+void TransparentMode::isInit(QString const &directory, bool prepareAndProcess)
 {
-	if (!mPlugin->isMyWorkingCopy(directory, true, prepareAndProcess)){
+	if (!mPlugin->isMyWorkingCopy(directory, true, prepareAndProcess)) {
 		mPlugin->doInit(directory, true);
 	}
-	if (!tabIsReady){
+	if (!tabIsReady) {
 		init();
 	}
 }
@@ -57,8 +61,7 @@ void TransparentMode::getAndUpdateLog()
 
 void TransparentMode::removeBrokenPointers(QWidget *widget)
 {
-	if (widget == mCompactWidget)
-	{
+	if (widget == mCompactWidget) {
 		tabIsReady = false;
 		mMainWindowIface->makeFullScreen(isFullScreen);
 	}
@@ -75,10 +78,14 @@ void TransparentMode::init()
 {
 	mCompactWidget = new ChangeVersionWidget;
 	mCompactWidget->setVisible(false);
-	connect(mCompactWidget, SIGNAL(showDiff(QString, QString, QWidget*)), this
-			, SLOT(showDiff(QString, QString, QWidget*)));
+	connect(
+		mCompactWidget
+		, SIGNAL(showDiff(QString, QString, QWidget *))
+		, this
+		, SLOT(showDiff(QString, QString, QWidget *))
+	);
 	connect(mCompactWidget, SIGNAL(loadVersion(QString)),SLOT(setVersion(QString)));
-	connect(mSystemInterface, SIGNAL(indefiniteTabClosed(QWidget*)), this, SLOT(removeBrokenPointers(QWidget*)));
+	connect(mSystemInterface, SIGNAL(indefiniteTabClosed(QWidget *)), this, SLOT(removeBrokenPointers(QWidget *)));
 	tabIsReady = true;
 }
 
@@ -113,15 +120,14 @@ void TransparentMode::saveVersion()
 
 QList<QPair<QString , QString> >TransparentMode::parseLog(QString log) //hash & mainPart
 {
-	if (log != ""){
+	if (log != "") {
 		QStringList listLog = log.split(QChar('\n'));
 		QRegExp parseHash (".*[^-]-");
 		int version = listLog.size();
 		int number = 0;
 		QList<QPair <QString, QString> > listOfParseLog;
 
-		while (version != 0)
-		{
+		while (version != 0) {
 			version--;
 			QString tmpList = listLog.at(number);
 			number++;
@@ -133,6 +139,7 @@ QList<QPair<QString , QString> >TransparentMode::parseLog(QString log) //hash & 
 			hash.remove("\"");
 			listOfParseLog.append(qMakePair(hash, tmpList));
 		}
+
 		return listOfParseLog;
 	} else {
 		return QList<QPair <QString, QString> >();

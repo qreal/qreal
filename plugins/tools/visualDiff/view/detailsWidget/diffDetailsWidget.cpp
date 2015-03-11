@@ -1,7 +1,10 @@
+#include "diffDetailsWidget.h"
+
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QScrollBar>
-#include "diffDetailsWidget.h"
+
 #include "model/commonDifference.h"
+
 
 using namespace versioning;
 using namespace versioning::details;
@@ -91,16 +94,17 @@ void DiffDetailsWidget::initChildrenWidget()
 
 void DiffDetailsWidget::initPropertiesWidgets()
 {
-	mGraphicalPropertiesWidget = new PropertiesWidget(mDiffProvider, true, this);
-	mLogicalPropertiesWidget = new PropertiesWidget(mDiffProvider, false, this);
-	connect(mGraphicalPropertiesWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
-	connect(mGraphicalPropertiesWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
-	connect(mGraphicalPropertiesWidget, SIGNAL(idListButtonClicked(bool,QString)), this, SLOT(onIdListButtonClicked(bool,QString)));
-	connect(mLogicalPropertiesWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
-	connect(mLogicalPropertiesWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
-	connect(mLogicalPropertiesWidget, SIGNAL(idListButtonClicked(bool,QString)), this, SLOT(onIdListButtonClicked(bool,QString)));
-	openTab(mGraphicalPropertiesWidget, tr("Graphical Properties"));
-	openTab(mLogicalPropertiesWidget, tr("Logical Properties"));
+	auto &mGPW = mGraphicalPropertiesWidget = new PropertiesWidget(mDiffProvider, true, this);
+	auto &mLPW = mLogicalPropertiesWidget = new PropertiesWidget(mDiffProvider, false, this);
+
+	connect(mGPW, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
+	connect(mGPW, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
+	connect(mGPW, SIGNAL(idListButtonClicked(bool,QString)), this, SLOT(onIdListButtonClicked(bool,QString)));
+	connect(mLPW, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
+	connect(mLPW, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
+	connect(mLPW, SIGNAL(idListButtonClicked(bool,QString)), this, SLOT(onIdListButtonClicked(bool,QString)));
+	openTab(mGPW, tr("Graphical Properties"));
+	openTab(mLPW, tr("Logical Properties"));
 }
 
 int DiffDetailsWidget::openTab(QWidget *widget, const QString &caption)
@@ -159,11 +163,13 @@ void DiffDetailsWidget::openNewIdListDiffTab(bool isGraphical, const QString &pr
 				removed.append(id);
 			}
 		}
+
 		foreach (qReal::Id const &id, newList) {
 			if (!oldList.contains(id)) {
 				added.append(id);
 			}
 		}
+
 		break;
 	}
 
@@ -180,10 +186,12 @@ void DiffDetailsWidget::closeSessionTabs()
 	for (int i = sessionTabStart; i < tabCount; ++i) {
 		mTabWidget->removeTab(sessionTabStart);
 	}
+
 	foreach (IdListDiffWidget *widget, mListDiffWidgets) {
 		widget->reset();
 		delete widget;
 	}
+
 	mListDiffWidgets.clear();
 }
 

@@ -2,9 +2,11 @@
 
 #include <QtCore/QObject>
 
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "qrutils/versioningUtils/briefVersioningInterface.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrutils/versioningUtils/briefVersioningInterface.h>
+
 #include "diffModel.h"
+
 
 namespace versioning
 {
@@ -16,10 +18,12 @@ class ModelLoader : public QObject
 	Q_OBJECT
 
 public:
-	ModelLoader(qReal::BriefVersioningInterface *vcs
+	ModelLoader(
+			qReal::BriefVersioningInterface *vcs
 			, qReal::ErrorReporterInterface *errorReporter
 			, qReal::EditorManagerInterface *editorManager
-			, qrRepo::WorkingCopyManagementInterface *workingCopyManager);
+			, qrRepo::WorkingCopyManagementInterface *workingCopyManager
+	);
 
 	void startModelLoading(QString const &targetProject);
 	void startModelLoading(QString repoRevision, QString const &targetProject);

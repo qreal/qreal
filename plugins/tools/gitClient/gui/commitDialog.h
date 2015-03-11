@@ -24,6 +24,6 @@ private:
 	QPushButton *mOkButton;
 	QPushButton *mCancel;
 };
-}
 
+}
 }

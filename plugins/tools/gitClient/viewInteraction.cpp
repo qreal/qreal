@@ -1,8 +1,11 @@
 #include "viewInteraction.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrutils/versioningUtils/versionSelector.h"
+
+#include <qrkernel/settingsManager.h>
+#include <qrutils/versioningUtils/versionSelector.h>
+#include <QtWidgets/QGridLayout>
+
 #include "gitPlugin.h"
-#include <QGridLayout>
+
 
 using namespace git::details;
 using namespace git::ui;
@@ -230,22 +233,22 @@ void ViewInteraction::showMessage(const QString &message)
 	mMainWindowIface->errorReporter()->addInformation(message);
 }
 
-void ViewInteraction::onInitComplete(const bool success)
+void ViewInteraction::onInitComplete(bool success)
 {
-	if (success){
+	if (success) {
 		showMessage(tr("Init successfully."));
 	}
 }
 
-void ViewInteraction::onCloneComplete(const bool success)
+void ViewInteraction::onCloneComplete(bool success)
 {
-	if (success){
+	if (success) {
 		showMessage(tr("Clone successfully"));
 		reopenWithoutSavings();
 	}
 }
 
-void ViewInteraction::onCommitComplete(const bool success)
+void ViewInteraction::onCommitComplete(bool success)
 {
 	if (success) {
 		showMessage(tr("Commited successfully."));
@@ -253,15 +256,15 @@ void ViewInteraction::onCommitComplete(const bool success)
 	}
 }
 
-void ViewInteraction::onRemoteComplete(const bool success)
+void ViewInteraction::onRemoteComplete(bool success)
 {
-	if (success){
+	if (success) {
 		showMessage(tr("Remote successfully."));
 		reopenWithoutSavings();
 	}
 }
 
-void ViewInteraction::onPushComplete(const bool success)
+void ViewInteraction::onPushComplete(bool success)
 {
 	if (success) {
 		showMessage(tr("Pushed successfully."));
@@ -269,7 +272,7 @@ void ViewInteraction::onPushComplete(const bool success)
 	}
 }
 
-void ViewInteraction::onPullComplete(const bool success)
+void ViewInteraction::onPullComplete(bool success)
 {
 	if (success) {
 		showMessage(tr("Pulled successfully."));
@@ -277,35 +280,35 @@ void ViewInteraction::onPullComplete(const bool success)
 	}
 }
 
-void ViewInteraction::onResetComplete(const bool success)
+void ViewInteraction::onResetComplete(bool success)
 {
 	if (success) {
 		showMessage(tr("Reseted successfully."));
 	}
 }
 
-void ViewInteraction::onCheckoutBranch(const bool success)
+void ViewInteraction::onCheckoutBranch(bool success)
 {
 	if (success) {
 		showMessage(tr("Checkout branch successfully."));
 	}
 }
 
-void ViewInteraction::onCreateBranchComplete(const bool success)
+void ViewInteraction::onCreateBranchComplete(bool success)
 {
 	if (success) {
 		showMessage(tr("Create branch successfully."));
 	}
 }
 
-void ViewInteraction::onDeleteBranchComplete(const bool success)
+void ViewInteraction::onDeleteBranchComplete(bool success)
 {
 	if (success) {
 		showMessage(tr("Delete branch successfully."));
 	}
 }
 
-void ViewInteraction::onStatusComplete(QString answer, const bool success)
+void ViewInteraction::onStatusComplete(QString answer, bool success)
 {
 	if (!success)
 		return;
@@ -317,7 +320,7 @@ void ViewInteraction::onStatusComplete(QString answer, const bool success)
 	}
 }
 
-void ViewInteraction::onLogComplete(QString answer, const bool success)
+void ViewInteraction::onLogComplete(QString answer, bool success)
 {
 	Q_UNUSED(success)
 	ui::SimpleOutputDialog *dialog = new ui::SimpleOutputDialog(tr("Log dialog"), mMainWindowIface->windowWidget());
@@ -332,9 +335,9 @@ void ViewInteraction::onLogComplete(QString answer, const bool success)
 	}
 }
 
-void ViewInteraction::onRemoteListComplete(QString answer, const bool success)
+void ViewInteraction::onRemoteListComplete(QString answer, bool success)
 {
-	if (!success){
+	if (!success) {
 		return;
 	}
 
@@ -368,9 +371,9 @@ void ViewInteraction::diffBetweenClicked()
 	QString const newHash = dialog->firstHash();
 	QString const oldHash = dialog->secondHash();
 	QWidget *widget = makeDiffTab();
-	if (oldHash.isEmpty()){
+	if (oldHash.isEmpty()) {
 		mPlugin->showDiff(newHash, mProjectManager->saveFilePath(), widget, false);
-	} else{
+	} else {
 		mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, false);
 	}
 	mMainWindowIface->windowWidget()->setEnabled(true);
@@ -429,7 +432,7 @@ void ViewInteraction::modeChanged(bool compactMode)
 {
 	mMenu.first().menu()->menuAction()->setVisible(!compactMode);
 	mMenu.last().action()->setVisible(compactMode);
-	if (compactMode){
+	if (compactMode) {
 		connect(mSystemEvents, SIGNAL(projectManagerSaveComplete()), mCompactMode, SLOT(saveVersion()));
 	} else {
 		disconnect(mSystemEvents, SIGNAL(projectManagerSaveComplete()), mCompactMode, SLOT(saveVersion()));
@@ -438,9 +441,9 @@ void ViewInteraction::modeChanged(bool compactMode)
 
 void ViewInteraction::removeClosedTab(QWidget *widget)
 {
-	if (mDiffWidgets.contains(widget)){
+	if (mDiffWidgets.contains(widget)) {
 		mDiffWidgets.removeOne(widget);
-		if (mDiffWidgets.isEmpty()){
+		if (mDiffWidgets.isEmpty()) {
 			mMainWindowIface->makeFullScreen(isFullScreen);
 		}
 	}
@@ -456,7 +459,7 @@ void ViewInteraction::reopenWithoutSavings()
 QWidget *ViewInteraction::makeDiffTab()
 {
 	isFullScreen = mMainWindowIface->isFullScreen();
-	if (!isFullScreen){
+	if (!isFullScreen) {
 		mMainWindowIface->makeFullScreen(true);
 	}
 	mMainWindowIface->makeFullScreen();

@@ -1,6 +1,6 @@
-#include <QtWidgets/QHBoxLayout>
-
 #include "commitDialog.h"
+
+#include <QtWidgets/QHBoxLayout>
 
 using namespace git::ui;
 

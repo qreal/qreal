@@ -1,5 +1,6 @@
 #include "childrenWidget.h"
 
+
 using namespace versioning;
 using namespace versioning::details;
 
@@ -16,6 +17,7 @@ void ChildrenWidget::setId(const qReal::Id &graphicalId, const qReal::Id &logica
 	if (!difference) {
 		return;
 	}
+
 	qReal::IdList same;
 	qReal::IdList added;
 	qReal::IdList removed;
@@ -23,20 +25,20 @@ void ChildrenWidget::setId(const qReal::Id &graphicalId, const qReal::Id &logica
 	foreach (qReal::Id const &id, all) {
 		DiffState const state = difference->graphicalDifference()->childState(id);
 		switch(state) {
-		case Same:
+		case DiffState::Same:
 			same.append(id);
 			break;
-		case Added:
+		case DiffState::Added:
 			added.append(id);
 			break;
-		case Removed:
+		case DiffState::Removed:
 			removed.append(id);
 			break;
-		default:
-			qDebug() << "Modified or unknown child state";
-			qDebug() << state;
+		case DiffState::Modified:
+			break;
 		}
 	}
+
 	IdListDiffWidget::setIdLists(same, added, removed);
 }
 
@@ -50,7 +52,8 @@ void ChildrenWidget::setLabelTitles()
 	}
 
 	if (mSameElements.empty()) {
-		mSameLabel->setText(tr("1. This element in the old model doesn`t have common children with the new models one"));
+		QString text = tr("1. This element in the old model doesn`t have common children with the new models one");
+		mSameLabel->setText(text);
 	} else {
 		mSameLabel->setText(tr("1. Children that element has in both models:"));
 	}
