@@ -38,6 +38,7 @@ mainWindow.depends = \
 
 models.depends = \
 	pluginManager \
+	controller \
 
 editor.depends = \
 	models \
@@ -46,6 +47,7 @@ editor.depends = \
 	brandManager \
 	pluginManager \
 	thirdparty \
+	dialogs \
 
 dialogs.depends = \
 	models \
