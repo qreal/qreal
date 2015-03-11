@@ -215,6 +215,7 @@ private slots:
 
 	void saveDiagramAsAPicture();
 
+	void print();
 	void makeSvg();
 	void showGrid(bool isChecked);
 

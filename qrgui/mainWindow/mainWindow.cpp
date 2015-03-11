@@ -158,6 +158,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
+	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
@@ -520,6 +521,27 @@ void MainWindow::setData(const QString &data, const QPersistentModelIndex &index
 	// not going to use this index anymore.
 	QAbstractItemModel * const model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, data, role);
+}
+
+void MainWindow::print()
+{
+	const bool isEditorTab = getCurrentTab() != nullptr;
+
+	if (isEditorTab) {
+		QPrinter printer(QPrinter::HighResolution);
+		QPrintDialog dialog(&printer, this);
+		if (dialog.exec() == QDialog::Accepted) {
+			QPainter painter(&printer);
+			getCurrentTab()->scene()->render(&painter);
+		}
+	} else {
+		QsciScintillaBase *textTab = static_cast<QsciScintillaBase *>(currentTab());
+		QsciPrinter printer(QPrinter::HighResolution);
+		QPrintDialog dialog(&printer, this);
+		if (dialog.exec() == QDialog::Accepted) {
+			printer.printRange(textTab);
+		}
+	}
 }
 
 void MainWindow::makeSvg()
@@ -1100,6 +1122,7 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("Editor.ZoomOut", tr("Zoom Out"), mUi->actionZoom_Out);
 	HotKeyManager::setCommand("Editor.CloseCurrentTab", tr("Close current tab"), closeCurrentTabAction);
 	HotKeyManager::setCommand("Editor.CloseAllTabs", tr("Close all tabs"), closeAllTabsAction);
+	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
 	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
 }
@@ -1118,6 +1141,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionSave->setEnabled(!isDecorativeTab);
 	mUi->actionSave_as->setEnabled(!isDecorativeTab);
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
+	mUi->actionPrint->setEnabled(!isDecorativeTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);

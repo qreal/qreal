@@ -55,6 +55,7 @@
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
     <addaction name="actionSave_diagram_as_a_picture"/>
+    <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -477,6 +478,15 @@
    </property>
    <property name="text">
     <string>OpenGL Renderer</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/print.png</normaloff>:/mainWindow/images/print.png</iconset>
+   </property>
+   <property name="text">
+    <string>Print</string>
    </property>
   </action>
   <action name="actionMakeSvg">
