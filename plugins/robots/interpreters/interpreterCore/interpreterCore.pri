@@ -2,7 +2,7 @@ QT += svg xml widgets
 
 includes(plugins/robots/interpreters/interpreterCore \
 		plugins/robots/common/kitBase \
-		plugins/robots/common/twoDModel `\
+		plugins/robots/common/twoDModel \
 		plugins/robots/utils \
 		qrtext \
 )
