@@ -10,7 +10,7 @@ namespace qReal {
 class ErrorReporterInterface;
 }
 
-namespace interpreterBase {
+namespace kitBase {
 class InterpreterControlInterface;
 }
 
@@ -33,7 +33,7 @@ public:
 	~Model();
 
 	void init(qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::InterpreterControlInterface &interpreterControl);
+			, kitBase::InterpreterControlInterface &interpreterControl);
 
 	/// Returns a reference to a world map.
 	WorldModel &worldModel();

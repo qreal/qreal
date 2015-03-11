@@ -7,7 +7,7 @@
 #include "src/engine/items/regions/regionItem.h"
 
 using namespace twoDModel::constraints::details;
-using namespace interpreterBase;
+using namespace kitBase;
 
 ConditionsFactory::ConditionsFactory(Events &events
 		, const Variables &variables
@@ -106,8 +106,9 @@ Condition ConditionsFactory::inside(const QString &objectId, const QString &regi
 			return region->containsPoint(robotModel->rotationCenter());
 		}
 
-		if (interpreterBase::robotModel::robotParts::Device * const device
-				= dynamic_cast<interpreterBase::robotModel::robotParts::Device *>(object)) {
+		if (kitBase::robotModel::robotParts::Device * const device
+				= dynamic_cast<kitBase::robotModel::robotParts::Device *>(object))
+		{
 			const QStringList parts = objectId.split('.');
 			if (objectId.isEmpty()) {
 				return false;

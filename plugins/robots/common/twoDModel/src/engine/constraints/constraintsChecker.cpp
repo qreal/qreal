@@ -148,21 +148,21 @@ void ConstraintsChecker::bindRobotObject(twoDModel::model::RobotModel * const ro
 	mObjects[robotId] = robot;
 
 	connect(&robot->configuration(), &model::SensorsConfiguration::deviceAdded
-			, [=](const interpreterBase::robotModel::PortInfo &port, bool isLoading) {
+			, [=](const kitBase::robotModel::PortInfo &port, bool isLoading) {
 		Q_UNUSED(isLoading)
 		bindDeviceObject(robotId, robot, port);
 	});
 
 	/// @todo: add led, display and other devices here.
 	connect(&robot->configuration(), &model::SensorsConfiguration::deviceRemoved
-			, [=](const interpreterBase::robotModel::PortInfo &port, bool isLoading) {
+			, [=](const kitBase::robotModel::PortInfo &port, bool isLoading) {
 		Q_UNUSED(isLoading)
 		mObjects.remove(portName(robotId, port));
 	});
 }
 
 void ConstraintsChecker::bindDeviceObject(const QString &robotId
-		, model::RobotModel * const robot, const interpreterBase::robotModel::PortInfo &port)
+		, model::RobotModel * const robot, const kitBase::robotModel::PortInfo &port)
 {
 	mObjects[portName(robotId, port)] = robot->info().configuration().device(port);
 }
@@ -177,10 +177,10 @@ QString ConstraintsChecker::firstUnusedRobotId() const
 	return "robot" + QString::number(id);
 }
 
-QString ConstraintsChecker::portName(const QString &robotId, const interpreterBase::robotModel::PortInfo &port) const
+QString ConstraintsChecker::portName(const QString &robotId, const kitBase::robotModel::PortInfo &port) const
 {
 	return QString("%1.%2_%3").arg(robotId, port.name()
-			, port.direction() == interpreterBase::robotModel::input ? "in" : "out");
+			, port.direction() == kitBase::robotModel::input ? "in" : "out");
 }
 
 void ConstraintsChecker::programStarted()
@@ -193,7 +193,7 @@ void ConstraintsChecker::programStarted()
 		}
 
 		const QString robotId = robotIds[0];
-		for (interpreterBase::robotModel::robotParts::Device * const device : robot->info().configuration().devices()) {
+		for (kitBase::robotModel::robotParts::Device * const device : robot->info().configuration().devices()) {
 			bindDeviceObject(robotId, robot, device->port());
 		}
 	}

@@ -9,7 +9,7 @@ namespace qReal {
 class ErrorReporterInterface;
 }
 
-namespace interpreterBase {
+namespace kitBase {
 namespace robotModel {
 class PortInfo;
 }
@@ -79,9 +79,9 @@ private:
 	void bindRobotObject(model::RobotModel * const robot);
 	void bindDeviceObject(const QString &robotId
 			, model::RobotModel * const robot
-			, const interpreterBase::robotModel::PortInfo &port);
+			, const kitBase::robotModel::PortInfo &port);
 	QString firstUnusedRobotId() const;
-	QString portName(const QString &robotId, const interpreterBase::robotModel::PortInfo &port) const;
+	QString portName(const QString &robotId, const kitBase::robotModel::PortInfo &port) const;
 
 	void programStarted();
 	void programFinished();

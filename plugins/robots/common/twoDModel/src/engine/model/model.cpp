@@ -5,6 +5,7 @@
 #include <kitBase/interpreterControlInterface.h>
 
 #include "src/engine/constraints/constraintsChecker.h"
+#include "twoDModel/robotModel/nullTwoDRobotModel.h"
 
 using namespace twoDModel::model;
 
@@ -20,7 +21,7 @@ Model::~Model()
 }
 
 void Model::init(qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::InterpreterControlInterface &interpreterControl)
+		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mErrorReporter = &errorReporter;
 	mChecker.reset(new constraints::ConstraintsChecker(errorReporter, *this));
