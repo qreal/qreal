@@ -17,7 +17,7 @@ public:
 			, qrRepo::LogicalRepoApi *metamodelRepoApi
 			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, const qReal::Id elementId = qReal::Id()
+			, const qReal::Id elementId = qReal::Id::rootId()
 			);
 };
 }

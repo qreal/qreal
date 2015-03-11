@@ -19,6 +19,19 @@ QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<Comple
 	QSharedPointer<Identifier> propertyNode =
 			qrtext::as<Identifier>(complexIdentifierNode->secondPartOfComplexIdentifier());
 	QString propertyName = propertyNode->name();
+	qDebug() << propertyName << logicalModelInterface->name(elementId);
 
-	return logicalModelInterface->propertyByRoleName(elementId, propertyName).toString();
+	if (elementId != qReal::Id::rootId()) {
+		return logicalModelInterface->propertyByRoleName(elementId, propertyName).toString();
+	} else {
+		// TODO: wtf
+		QList<qReal::Id> listOfElementIds;
+		for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
+			if (elementId.element() == typeNode->name()) {
+				listOfElementIds << elementId;
+			}
+		}
+
+		return logicalModelInterface->propertyByRoleName(listOfElementIds.first(), propertyName).toString();
+	}
 }
