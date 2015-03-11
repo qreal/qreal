@@ -6,7 +6,6 @@
 #include <twoDModel/engine/twoDModelControlInterface.h>
 
 #include "trikAdditionalPreferences.h"
-#include "trikFSharpAdditionalPreferences.h"
 
 #include <trikKit/blocks/trikBlocksFactory.h>
 #include "robotModel/real/realRobotModelV6.h"
@@ -62,7 +61,6 @@ private:
 	bool mOwnsBlocksFactory = true;
 
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
-	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences = nullptr;  //Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
 
 	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.

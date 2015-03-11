@@ -25,10 +25,15 @@ TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpG
 HEADERS += \
 	$$PWD/trikFSharpGeneratorPlugin.h \
 	$$PWD/trikFSharpMasterGenerator.h \
+	$$PWD/trikFSharpAdditionalPreferences.h \
 
 SOURCES += \
 	$$PWD/trikFSharpGeneratorPlugin.cpp \
 	$$PWD/trikFSharpMasterGenerator.cpp \
+	$$PWD/trikFSharpAdditionalPreferences.cpp \
+
+FORMS += \
+	$$PWD/trikFSharpAdditionalPreferences.ui \
 
 RESOURCES = \
 	$$PWD/trikFSharpGenerator.qrc \

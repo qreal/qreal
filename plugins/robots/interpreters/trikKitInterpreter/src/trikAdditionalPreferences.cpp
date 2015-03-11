@@ -33,6 +33,6 @@ void TrikAdditionalPreferences::restoreSettings()
 
 void TrikAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
-	const bool isReal = mRealRobotNames.contains(robotModel->name());
+	const bool isReal = !robotModel->name().contains("TwoD");
 	mUi->tcpSettingsGroupBox->setVisible(isReal);
 }

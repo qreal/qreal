@@ -24,14 +24,12 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	mTwoDModelV6.reset(modelEngine);
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
-	mFSharpAdditionalPreferences = new TrikFSharpAdditionalPreferences();
 }
 
 TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 {
 	if (mOwnsAdditionalPreferences) {
 		delete mAdditionalPreferences;
-		delete mFSharpAdditionalPreferences;
 	}
 
 	if (mOwnsBlocksFactory) {
@@ -97,7 +95,7 @@ kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobot
 QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
-	return {mAdditionalPreferences, mFSharpAdditionalPreferences};
+	return {mAdditionalPreferences};
 }
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
