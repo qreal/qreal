@@ -15,8 +15,7 @@ HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
 	$$PWD/trikDisplayWidget.h \
 	$$PWD/trikKitInterpreterPlugin.h \
-	$$PWD/robotModel/real/realRobotModelBase.h \
-	$$PWD/robotModel/real/realRobotModelV6.h \
+	$$PWD/robotModel/real/realRobotModel.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
 	$$PWD/robotModel/real/parts/button.h \
@@ -52,8 +51,7 @@ SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
 	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikDisplayWidget.cpp \
-	$$PWD/robotModel/real/realRobotModelBase.cpp \
-	$$PWD/robotModel/real/realRobotModelV6.cpp \
+	$$PWD/robotModel/real/realRobotModel.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \
 	$$PWD/robotModel/real/parts/button.cpp \

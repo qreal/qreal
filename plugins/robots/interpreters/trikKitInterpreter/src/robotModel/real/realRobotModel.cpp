@@ -1,4 +1,4 @@
-#include "realRobotModelBase.h"
+#include "realRobotModel.h"
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
@@ -31,42 +31,57 @@
 using namespace trik::robotModel::real;
 using namespace kitBase::robotModel;
 
-RealRobotModelBase::RealRobotModelBase(const QString &kitId, const QString &robotId)
+RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 	: TrikRobotModelBase(kitId, robotId)
 	, mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
 {
 	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::connected
-			, this, &RealRobotModelBase::connected);
+			, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::disconnected
-			, this, &RealRobotModelBase::disconnected);
+			, this, &RealRobotModel::disconnected);
 }
 
-bool RealRobotModelBase::needsConnection() const
+QString RealRobotModel::name() const
+{
+	return "TrikRealRobotModel";
+}
+
+QString RealRobotModel::friendlyName() const
+{
+	return tr("Interpretation (Wi-Fi)");
+}
+
+int RealRobotModel::priority() const
+{
+	return 8;  // Right after qts generator
+}
+
+bool RealRobotModel::needsConnection() const
 {
 	return true;
 }
 
-void RealRobotModelBase::connectToRobot()
+void RealRobotModel::connectToRobot()
 {
 	mRobotCommunicator->connect();
 }
 
-void RealRobotModelBase::stopRobot()
+void RealRobotModel::stopRobot()
 {
 	mRobotCommunicator->stopRobot();
 }
 
-void RealRobotModelBase::disconnectFromRobot()
+void RealRobotModel::disconnectFromRobot()
 {
 	mRobotCommunicator->disconnect();
 }
 
-void RealRobotModelBase::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
+void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
 {
 	mRobotCommunicator->setErrorReporter(errorReporter);
 }
 
-robotParts::Device *RealRobotModelBase::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
+robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port, *mRobotCommunicator);

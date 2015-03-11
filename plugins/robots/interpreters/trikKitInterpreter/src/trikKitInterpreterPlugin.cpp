@@ -13,17 +13,17 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
-	: mRealRobotModelV6(kitId(), "trikKitRobot") // todo: somewhere generate robotId for each robot
-	, mTwoDRobotModelV6(mRealRobotModelV6)
+	: mRealRobotModel(kitId(), "trikKitRobot") // todo: somewhere generate robotId for each robot
+	, mTwoDRobotModel(mRealRobotModel)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {
-	mTwoDRobotModelV6.setWheelPorts("M3", "M4");
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6);
+	mTwoDRobotModel.setWheelPorts("M3", "M4");
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
-	mTwoDRobotModelV6.setEngine(modelEngine->engine());
-	mTwoDModelV6.reset(modelEngine);
+	mTwoDRobotModel.setEngine(modelEngine->engine());
+	mTwoDModel.reset(modelEngine);
 
-	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel.name() });
 }
 
 TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
@@ -49,19 +49,19 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
 
-	mTwoDModelV6->init(configurator.eventsForKitPlugin()
+	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()
 			, configurator.qRealConfigurator().graphicalModelApi()
 			, configurator.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
 			, configurator.interpreterControl());
 
-	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
+	mRealRobotModel.setErrorReporter(interpretersInterface.errorReporter());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
+			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mTwoDRobotModelV6, &robotModel::twoD::TwoDRobotModel::rereadSettings);
+			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
 QString TrikKitInterpreterPlugin::kitId() const
@@ -76,7 +76,7 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
-	return {&mRealRobotModelV6, &mTwoDRobotModelV6};
+	return {&mRealRobotModel, &mTwoDRobotModel};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
@@ -89,7 +89,7 @@ kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFac
 
 kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
 {
-	return &mTwoDRobotModelV6;
+	return &mTwoDRobotModel;
 }
 
 QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
@@ -107,17 +107,17 @@ QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModelV6->showTwoDModelWidgetActionInfo() };
+	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
 
-	HotKeyActionInfo d2V6ModelActionInfo("Interpreter.Show2dModelForTrikV6", tr("Show 2d model for TRIK v6")
-			, mTwoDModelV6->showTwoDModelWidgetActionInfo().action());
+	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForTrik", tr("Show 2d model for TRIK")
+			, mTwoDModel->showTwoDModelWidgetActionInfo().action());
 
-	return { d2V6ModelActionInfo };
+	return { d2ModelActionInfo };
 }
 
 QString TrikKitInterpreterPlugin::defaultSettingsFile() const
@@ -128,24 +128,23 @@ QString TrikKitInterpreterPlugin::defaultSettingsFile() const
 QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
-	/// @todo: draw icons for v6
-	return &robotModel == &mRealRobotModelV6
+	return &robotModel == &mRealRobotModel
 			? QIcon(":/icons/switch-real-trik.svg")
-			: &robotModel == &mTwoDRobotModelV6
+			: &robotModel == &mTwoDRobotModel
 					? QIcon(":/icons/switch-2d.svg")
 					: QIcon();
 }
 
 kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 {
-	return &mTwoDModelV6->devicesConfigurationProvider();
+	return &mTwoDModel->devicesConfigurationProvider();
 }
 
 void TrikKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
 {
 	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
-	const bool v6Enabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModelV6.name();
-	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setVisible(v6Enabled);
+	const bool twoDModelEnabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModel.name();
+	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(twoDModelEnabled);
 }
 
 QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
