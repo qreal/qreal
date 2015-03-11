@@ -14,6 +14,7 @@ Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qR
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
 	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
+	mNameOfMetamodel = mApi->stringProperty(mId, "name");
 	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
@@ -202,7 +203,7 @@ bool Editor::generatePluginHeader(const QString &hdrTemplate)
 		return false;
 	}
 
-	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)); // header requires just plugin name customization
+	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(/*mName*/mNameOfMetamodel)); // header requires just plugin name customization
 	QTextStream out(&pluginHeaderFile);
 	out.setCodec("UTF-8");
 	out << headerTemplate;
@@ -247,7 +248,7 @@ bool Editor::generatePluginSource()
 	generateParentsMap();
 
 	// inserting plugin name all over the template
-	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mName));
+	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(/*mName*/mNameOfMetamodel));
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
@@ -342,15 +343,15 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 	if (!dir.exists(mName))
 		dir.mkdir(mName);
 	dir.cd(mName);
-
-	QString fileName = dir.absoluteFilePath(mName + ".pro");
+	QString nameOfMetamodel = mApi->stringProperty(mId, "name");
+	QString fileName = dir.absoluteFilePath(/*nName*/nameOfMetamodel + ".pro");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
 		return false;
 	}
 
-	projectTemplate.replace(metamodelNameTag, mName); // .pro-file requires just plugin name customization
+	projectTemplate.replace(metamodelNameTag, /*mName*/mNameOfMetamodel); // .pro-file requires just plugin name customization
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	out << projectTemplate;

@@ -68,6 +68,7 @@ namespace qrmc {
 		qrRepo::LogicalRepoApi *mApi;
 		qReal::Id mId;
 		QString mName;
+		QString mNameOfMetamodel;
 		bool mLoadingComplete;
 		QList<Editor*> mIncludes;
 		QMap<QString, Diagram*> mDiagrams;
