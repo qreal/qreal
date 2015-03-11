@@ -78,7 +78,7 @@ protected:
 
 	/// Notifies system about changes in working copy. Must be called after correcpoding VCS operations
 	/// @param targetProject A path to project whicth will recieve chages in working copy after processing.
-	///                      If empty value speified, target project will be working one
+	/// If empty value speified, target project will be working one
 	void processWorkingCopy(QString const &targetProject = QString());
 
 	/// Virtual, must be implemented in each plugin. Returns

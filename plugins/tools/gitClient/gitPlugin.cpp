@@ -1,9 +1,11 @@
-#include <QtWidgets/QApplication>
-
-#include <QtCore/QRegExp>
 #include "gitPlugin.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrutils/fileSystemUtils.h"
+
+#include <QtWidgets/QApplication>
+#include <QtCore/QRegExp>
+
+#include <qrkernel/settingsManager.h>
+#include <qrutils/fileSystemUtils.h>
+
 #include "tags.h"
 
 using namespace git;
@@ -11,6 +13,14 @@ using namespace qReal::versioning;
 
 QString const tempFolderName = "tempGit";
 int const defaultTimeout = 30000;
+
+// some defaults for function invokeOperation are empty, alias for convenience
+bool const needPreparation = true;
+bool const checkWorkingDir = true;
+bool const needProcessing = true;
+QString const dummyWorkingDir = "";
+QString const dummySourceProject = "";
+QString const dummyTargetProject = "";
 
 GitPlugin::GitPlugin()
 	: mViewInteraction(new details::ViewInteraction(this))
@@ -34,7 +44,7 @@ QString GitPlugin::pathToGit() const
 
 qReal::Customizer *GitPlugin::customizationInterface()
 {
-	return NULL;
+	return nullptr;
 }
 
 void GitPlugin::updateSettings()
@@ -74,21 +84,42 @@ bool GitPlugin::onFileChanged(QString const &filePath, QString const &workingDir
 	return doAdd(filePath, workingDir);
 }
 
-void GitPlugin::beginWorkingCopyDownloading(QString const &repoAddress
+void GitPlugin::beginWorkingCopyDownloading(
+		QString const &repoAddress
 		, QString const &targetProject
-		, QString commitId, bool quiet)
+		, QString commitId
+		, bool quiet
+)
 {
 	bool success = true;
-	if (commitId.isEmpty()){
-		success = invokeOperation(QStringList() << "init", true, QString()
-								  , false, true, targetProject, QString(), quiet);
-	} else{
-		if(commitId == "-1"){
+	if (commitId.isEmpty()) {
+		success = invokeOperation(
+			QStringList() << "init"
+			, needPreparation
+			, dummyWorkingDir
+			, !checkWorkingDir
+			, needProcessing
+			, targetProject
+			, dummySourceProject
+			, quiet
+		);
+	} else {
+		if(commitId == "-1") {
 			commitId = "HEAD";
 		}
-		success = invokeOperation(QStringList() << "reset" << commitId << "--hard"
-								  , true, QString(), true, true, targetProject, repoAddress, quiet);
+
+		success = invokeOperation(
+			QStringList() << "reset" << commitId << "--hard"
+			, needPreparation
+			, dummyWorkingDir
+			, checkWorkingDir
+			, needProcessing
+			, targetProject
+			, repoAddress
+			, quiet
+		);
 	}
+
 	emit workingCopyDownloaded(success, targetProject);
 }
 
@@ -97,7 +128,7 @@ void GitPlugin::beginWorkingCopyUpdating(QString const &targetProject)
 	startPull(tempFolder(), targetProject);
 }
 
-void GitPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject, const bool &quiet)
+void GitPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject, bool quiet)
 {
 	startCommit(description, tempFolder(), targetProject, quiet);
 }
@@ -116,7 +147,8 @@ QString GitPlugin::information(QString const &targetProject)
 
 QString GitPlugin::commitId(QString const &targetProject)
 {
-	invokeOperation(QStringList() << "log" << "--pretty=%H" << "-1",true ,QString() ,true ,true ,targetProject);
+	QStringList args {"log", "--pretty=%H", "-1"};
+	invokeOperation(args, needPreparation, dummyWorkingDir, checkWorkingDir, needProcessing, targetProject);
 	return standartOutput().remove("\"");
 }
 
@@ -125,12 +157,19 @@ QString GitPlugin::remoteRepositoryUrl(QString const &targetProject)
 	return targetProject;
 }
 
-bool GitPlugin::isMyWorkingCopy(QString const &directory, const bool &quiet, bool const &prepareAndProcess)
+bool GitPlugin::isMyWorkingCopy(QString const &directory, bool quiet, bool prepareAndProcess)
 {
-	QStringList infoArgs;
-	infoArgs << "remote" << "show";
-	return invokeOperation(infoArgs, prepareAndProcess, directory, false, prepareAndProcess
-		, QString(), QString(), !quiet);
+	QStringList infoArgs{"remote", "show"};
+	return invokeOperation(
+		infoArgs
+		, prepareAndProcess
+		, directory
+		, !checkWorkingDir
+		, prepareAndProcess
+		, dummyTargetProject
+		, dummySourceProject
+		, !quiet
+	);
 }
 
 int GitPlugin::timeout() const
@@ -158,9 +197,10 @@ void GitPlugin::startCheckoutBranch(const QString &branchName, const QString &ta
 	const Tag tagStruct("checkoutBranch");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(QStringList() << "checkout" << branchName, tagVariant, true, targetFolder);
+	invokeOperationAsync(QStringList() << "checkout" << branchName, tagVariant, needPreparation, targetFolder);
 }
 
+// to do: make it work - need merge + conflictResolver
 void GitPlugin::createBranch(const QString &branchName)
 {
 	emit createBranchComplete(invokeOperation(QStringList() << "branch" << branchName));
@@ -182,58 +222,63 @@ QString GitPlugin::friendlyName()
 	return "Git Plugin";
 }
 
-void GitPlugin::setVersion(QString hash, bool const &quiet)
+//non secure, to do: must be as transaction - if break - need reset
+void GitPlugin::setVersion(QString hash, bool quiet)
 {
+	bool nPrp = needPreparation;
+	bool nPrc = needProcessing;
+	bool cWD = checkWorkingDir;
+
 	//because if we have unsaved changes, it would be a crash
 	if (!this->isMyWorkingCopy(QString(), false, true)){
 		this->doInit(QString(), true);
 	}
-	this->beginChangesSubmitting("version was saved in a transparent mode", QString(), quiet);
+	this->beginChangesSubmitting("version was saved in a transparent mode", dummyTargetProject, quiet);
 
 	//some magic with git branches
 	QStringList args;
 	args << "branch" << "tmp";
-	invokeOperation(args, true, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "checkout" << "tmp";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "reset" << "--hard" << hash;
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "checkout" << "master";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "cherry-pick" << "tmp" << "--allow-empty" << "--keep-redundant-commits" << "--strategy=ours";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "branch" << "branchTEMP";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "reset" << "--hard" << "tmp";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "reset" << "--soft" << "branchTEMP";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "commit" << "--amend" << "-m" << "version was saved in a transparent mode";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "branch" << "-D" << "branchTEMP";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, !nPrc, dummyTargetProject, dummySourceProject, !quiet);
 
 	args.clear();
 	args << "branch" << "-D" << "tmp";
-	invokeOperation(args, false, QString(), false, true, QString(), QString(), !quiet);
+	invokeOperation(args, !nPrp, dummyWorkingDir, !cWD, nPrc, dummyTargetProject, dummySourceProject, !quiet);
 }
 
 void GitPlugin::setDiffViewerInterface(qReal::DiffPluginInterface *diffInterface)
@@ -255,22 +300,39 @@ bool GitPlugin::clientExist()
 	return res;
 }
 
-QString GitPlugin::getLog(QString const &format, bool const &quiet)
+QString GitPlugin::getLog(QString const &format, bool quiet)
 {
 	return doLog(format, quiet);
 }
 
-void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
+void GitPlugin::doInit(QString const &targetFolder, bool quiet)
 {
 	bool isInit = isMyWorkingCopy(targetFolder,true,true);
 	if (!isInit){
-		QStringList arguments;
-		arguments  << "init";
-		bool result = invokeOperation(arguments, true, targetFolder, false, true, QString(), QString(), !quiet);
+		QStringList arguments{"init"};
+		bool result = invokeOperation(
+			arguments
+			, needPreparation
+			, targetFolder
+			, checkWorkingDir
+			, needProcessing
+			, dummyTargetProject
+			, dummySourceProject
+			, !quiet
+		);
 
 		arguments.clear();
 		arguments << "add" << "-A";
-		invokeOperation(arguments, true, targetFolder, true, true, QString(), QString(), !quiet);
+		invokeOperation(
+			arguments
+			, needPreparation
+			, targetFolder
+			, checkWorkingDir
+			, needProcessing
+			, dummyTargetProject
+			, dummySourceProject
+			, !quiet
+		);
 
 		doUserEmailConfig();
 		doUserNameConfig();
@@ -278,35 +340,57 @@ void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 		if (!quiet){
 			emit initComplete(result);
 		}
-	}else{
+	} else {
 		emit initComplete(isInit);
 	}
 }
 
-void GitPlugin::startClone(QString const &from
-		, QString const &targetProject)
+void GitPlugin::startClone(QString const &from, QString const &targetProject)
 {
-	QStringList arguments;
-	arguments << "clone" << from << mTempDir;
+	QStringList arguments{"clone", from, mTempDir};
 
 	const Tag tagStruct("clone");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, false, qApp->applicationDirPath(), targetProject, false);
+	QString workingDir = qApp->applicationDirPath();
+	invokeOperationAsync(arguments, tagVariant, !needPreparation, workingDir, targetProject, !checkWorkingDir);
 }
 
-void GitPlugin::startCommit(QString const &message, QString const &from
-		, QString const &sourceProject, const bool &quiet)
+void GitPlugin::startCommit(QString const &message
+		, QString const &from
+		, QString const &sourceProject
+		, bool quiet
+)
 {
 	Q_UNUSED(from)
 	QStringList arguments;
 	arguments << "add" << "-A";
-	bool result = invokeOperation(arguments, true, QString(), true, true, QString(), sourceProject, !quiet);
+	bool result = invokeOperation(
+		arguments
+		, needPreparation
+		, dummyWorkingDir
+		, checkWorkingDir
+		, needProcessing
+		, dummyWorkingDir
+		, sourceProject
+		, !quiet
+	);
+
 	if (result){
 		arguments.clear();
 		arguments << "commit" << "-m" << message;
-		result = invokeOperation(arguments, true, QString(), false, true, QString(), sourceProject, !quiet);
+		result = invokeOperation(
+			arguments
+			, needPreparation
+			, dummyWorkingDir
+			, !checkWorkingDir
+			, needProcessing
+			, dummyTargetProject
+			, sourceProject
+			, !quiet
+		);
 	}
+
 	if (!quiet){
 		emit commitComplete(result);
 		emit operationComplete("commit", result);
@@ -315,27 +399,38 @@ void GitPlugin::startCommit(QString const &message, QString const &from
 
 void GitPlugin::doRemote(QString const &remote, QString const &adress, QString const &targetFolder)
 {
-	QStringList arguments;
-	arguments << "remote" << "add" << remote << adress;
+	QStringList arguments{"remote", "add", remote, adress};
 
-	bool const result = invokeOperation(arguments, true, QString(), false, true, targetFolder, QString());
+	bool const result = invokeOperation(
+		arguments
+		, needPreparation
+		, dummyWorkingDir
+		, !checkWorkingDir
+		, needProcessing
+		, targetFolder
+		, dummySourceProject
+	);
+
 	emit addComplete(result);
 	emit operationComplete("add", result);
 	emit operationComplete("remote", result);
 }
 
-void GitPlugin::startPush(QString const &remote
-						, QString const &sourceProject
-						, QString const &targetFolder)
+void GitPlugin::startPush(
+	QString const &remote
+	, QString const &sourceProject
+	, QString const &targetFolder
+)
 {
 	QString targetDir = targetFolder.isEmpty() ? tempFolder() : targetFolder;
-	QStringList arguments;
 
 	invokeOperation(QStringList() << "remote" << "-v");
 	QStringList tmp = standartOutput().split(QChar('\n'));
+
 	while (!tmp.first().startsWith(remote) && !tmp.isEmpty()){
 		tmp.removeFirst();
 	}
+
 	QString repo = tmp.first();
 	repo.remove(remote, Qt::CaseSensitive);
 	repo.remove(" ", Qt::CaseSensitive);
@@ -344,36 +439,33 @@ void GitPlugin::startPush(QString const &remote
 	repo.remove("(push)", Qt::CaseSensitive);
 	repo.remove("https://", Qt::CaseSensitive);
 
-	arguments << "push" << "https://" + getUsername() + ":" + getPassword() + "@" + repo << "master";
+	QStringList arguments{"push" ,"https://" + getUsername() + ":" + getPassword() + "@" + repo, "master"};
 
 	const Tag tagStruct("push");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, true, targetDir, sourceProject);
+	invokeOperationAsync(arguments, tagVariant, needPreparation, targetDir, sourceProject);
 }
 
 void GitPlugin::startPull(const QString &remote, QString const &targetFolder)
 {
-	QStringList arguments;
-	arguments << "pull" << remote << "master";
+	QStringList arguments{"pull", remote, "master"};
 
 	const Tag tagStruct("pull");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, true, targetFolder, QString(), false);
+	invokeOperationAsync(arguments, tagVariant, needPreparation, targetFolder, dummySourceProject, !checkWorkingDir);
 }
 
-void GitPlugin::startReset(QString const &hash, QString const &targetFolder, const bool &quiet)
+void GitPlugin::startReset(QString const &hash, QString const &targetFolder, bool quiet)
 {
 	QString targetDir = targetFolder.isEmpty() ? tempFolder() : targetFolder;
-	QStringList arguments;
-	// TODO: Add different variants
-	arguments << "reset" << hash << "--hard";
+	QStringList arguments{"reset", hash, "--hard"};
 
 	const Tag tagStruct("reset", QString(), quiet);
-	QVariant tagVariant;
-	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, true, targetDir, QString(), true, !quiet);
+	QVariant tagVar;
+	tagVar.setValue(tagStruct);
+	invokeOperationAsync(arguments, tagVar, needPreparation, targetDir, dummySourceProject, checkWorkingDir, !quiet);
 }
 
 void GitPlugin::doUserNameConfig()
@@ -383,17 +475,14 @@ void GitPlugin::doUserNameConfig()
 	QString username = "qReal";
 
 	bool const authenticationEnabled = qReal::SettingsManager::value(enabledKey, false).toBool();
-	if (authenticationEnabled
-		&& !qReal::SettingsManager::value(usernameKey, false).toString().isEmpty()){
+	if (authenticationEnabled && !qReal::SettingsManager::value(usernameKey, false).toString().isEmpty()){
 			username = qReal::SettingsManager::value(usernameKey, false).toString();
 		}
 
-	QStringList arguments;
-	arguments << "config" << "user.name" << "\"" + username + "\"";
-	bool const result = invokeOperation(arguments, false, QString(), true, true, QString(), QString(), true);
+	QStringList arguments{"config", "user.name", "\"" + username + "\""};
+	bool result = invokeOperation(arguments);
 	emit operationComplete("userName", result);
 }
-
 
 void GitPlugin::doUserEmailConfig()
 {
@@ -407,23 +496,21 @@ void GitPlugin::doUserEmailConfig()
 			email = qReal::SettingsManager::value(emailKey, false).toString();
 		}
 
-	QStringList arguments;
-	arguments << "config" << "user.email" << email;
-	bool const result = invokeOperation(arguments, true, QString(), true, false, QString(), QString(), true);
+	QStringList arguments{"config", "user.email", email};
+	bool result = invokeOperation(arguments);
 	emit operationComplete("userEmail", result);
 }
 
 bool GitPlugin::doAdd(QString const &what, QString const &targetFolder, bool force)
 {
-	QStringList arguments;
-	arguments << "add" << what;
+	QStringList arguments{"add", what};
 	if (force){
 		arguments.append("-f");
 	}
 	QString path = what;
 	path = getFilePath(path);
 
-	bool const result = invokeOperation(arguments, false, path, false, false, targetFolder, QString());
+	bool result = invokeOperation(arguments, !needPreparation, path, !checkWorkingDir, !needProcessing, targetFolder);
 	emit addComplete(result);
 	emit operationComplete("add", result);
 	return result;
@@ -438,8 +525,7 @@ QString &GitPlugin::getFilePath(QString &adress)
 
 bool GitPlugin::doRemove(QString const &what, bool force)
 {
-	QStringList arguments;
-	arguments << "rm" << what << "-r";
+	QStringList arguments{"rm", what, "-r"};
 
 	if (force) {
 		arguments.append("-f");
@@ -448,7 +534,7 @@ bool GitPlugin::doRemove(QString const &what, bool force)
 	QString path = what;
 	path = getFilePath(path);
 
-	bool const result = invokeOperation(arguments, false, path, false, false, QString(), QString(), true);
+	bool result = invokeOperation(arguments, !needPreparation, path, !checkWorkingDir, !needProcessing);
 	emit removeComplete(result);
 	emit operationComplete("rm", result);
 	return result;
@@ -456,9 +542,16 @@ bool GitPlugin::doRemove(QString const &what, bool force)
 
 bool GitPlugin::doClean(QString const &targetProject)
 {
-	QStringList arguments;
-	arguments << "clean" << "-xdf";
-	bool const result = invokeOperation(arguments, true, QString(), true, true, targetProject, QString());
+	QStringList arguments{"clean", "-xdf"};
+	bool result = invokeOperation(
+		arguments
+		, needPreparation
+		, dummyWorkingDir
+		, checkWorkingDir
+		, needProcessing
+		, targetProject
+	);
+
 	emit cleanComplete(result);
 	emit operationComplete("clean", result);
 	return result;
@@ -466,26 +559,43 @@ bool GitPlugin::doClean(QString const &targetProject)
 
 QString GitPlugin::doStatus(QString const &targetProject)
 {
-	int result = invokeOperation(QStringList() << "status", true, QString(), true, true, targetProject);
+	bool result = invokeOperation(
+		QStringList() << "status"
+		, needPreparation
+		, dummyWorkingDir
+		, checkWorkingDir
+		, needProcessing
+		, targetProject
+	);
 	QString answer = standartOutput();
 	emit statusComplete(answer, result);
 	return answer;
 }
 
-QString GitPlugin::doLog(QString const &format, const bool &quiet, bool const &showDialog)
+QString GitPlugin::doLog(QString const &format, bool quiet, bool showDialog)
 {
-	QStringList arguments;
-	arguments << "log";
+	QStringList arguments{"log"};
 	if (format.size() != 0) {
 		arguments << format;
 	}
 
-	bool result = invokeOperation(arguments, true, QString(), true, true, QString(), QString(), quiet);
+	bool result = invokeOperation(
+		arguments
+		, needPreparation
+		, dummyWorkingDir
+		, checkWorkingDir
+		, needProcessing
+		, dummyTargetProject
+		, dummySourceProject
+		, quiet
+	);
 
 	QString answer = standartOutput();
+
 	if (showDialog){
 		emit logComplete(answer, result);
 	}
+
 	return answer;
 }
 
@@ -570,17 +680,17 @@ void GitPlugin::onCheckoutComplete(const bool result)
 }
 
 void GitPlugin::showDiff(QString oldHash, QString newHash, const QString &targetProject, QWidget *widget
-, bool const &compactMode)
+, bool compactMode)
 {
 	mDiffInterface->showDiff(oldHash, newHash, targetProject, widget, compactMode);
 }
 
-void GitPlugin::showDiff(QString oldhash, const QString &targetProject, QWidget *widget, const bool &compactMode)
+void GitPlugin::showDiff(QString oldhash, const QString &targetProject, QWidget *widget, bool compactMode)
 {
 	mDiffInterface->showDiff(oldhash, targetProject, widget, compactMode);
 }
 
-void GitPlugin::showDiff(const QString &targetProject, QWidget *widget, const bool &compactMode)
+void GitPlugin::showDiff(const QString &targetProject, QWidget *widget, bool compactMode)
 {
 	mDiffInterface->showDiff(targetProject, widget, compactMode);
 }

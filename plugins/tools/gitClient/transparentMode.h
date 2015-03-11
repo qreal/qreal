@@ -39,7 +39,6 @@ private:
 	GitPlugin *mPlugin;
 	qReal::SystemEvents *mSystemInterface;
 
-	//TODO allow open several tabs
 	bool tabIsReady;
 	bool isFullScreen;
 

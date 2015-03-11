@@ -40,7 +40,11 @@ public slots:
 	/// in asynchroniouos mode. When finished emitted @see
 	/// Examples: svn commit, git commit + git push, etc...
 	/// @param description A message that desciripts all changes made in working copy
-	virtual void beginChangesSubmitting(QString const &description, QString const &targetProject = QString(), bool const &quiet = false) = 0;
+	virtual void beginChangesSubmitting(
+		QString const &description
+		, QString const &targetProject = QString()
+		, bool quiet = false
+	) = 0;
 
 	/// Invokes internal operations for reiniting itself.
 	/// Examples: svn clean up, git init
@@ -61,8 +65,11 @@ public slots:
 	/// Implementation must determine if specified working copy
 	/// is versioned with this VCS.
 	/// @param directory Path to interested directory
-	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
-								, bool const &prepareAndProcess = false) = 0;
+	virtual bool isMyWorkingCopy(
+		QString const &directory = QString()
+		, bool quiet = false
+		, bool prepareAndProcess = false
+	) = 0;
 
 	///This method return name of plugin. Examples: GitPlugin..
 	virtual QString friendlyName() = 0;

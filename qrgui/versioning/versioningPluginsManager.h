@@ -37,20 +37,27 @@ public slots:
 			, QString commitId = "-1"
 			, bool quiet = false);
 	void beginWorkingCopyUpdating(QString const &targetProject = QString());
-	void beginChangesSubmitting(QString const &description, QString const &targetProject = QString(), bool const &quiet = false);
+	void beginChangesSubmitting(
+		QString const &description
+		, QString const &targetProject = QString()
+		, bool quiet = false
+	);
 	bool reinitWorkingCopy(QString const &targetProject = QString());
 	QString information(QString const &targetProject = QString());
 	QString commitId(QString const &targetProject = QString());
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
-	bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
-						, bool const &prepareAndProcess = false);
+	bool isMyWorkingCopy(
+		QString const &directory = QString()
+		, bool quiet = false
+		, bool prepareAndProcess = false
+	);
 	QString friendlyName();
 	bool clientExist();
 
 private slots:
-	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
-	void onWorkingCopyUpdated(bool const success);
-	void onChangesSubmitted(bool const success);
+	void onWorkingCopyDownloaded(bool success, QString const &targetProject);
+	void onWorkingCopyUpdated(bool success);
+	void onChangesSubmitted(bool success);
 
 private:
 	QString tempFolder() const;

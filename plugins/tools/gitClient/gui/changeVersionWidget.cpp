@@ -1,8 +1,8 @@
 #include "changeVersionWidget.h"
 #include "ui_changeVersionWidget.h"
+
 #include <QtCore/QString>
-#include <QDebug>
-#include <QListIterator>
+#include <QtCore/QListIterator>
 
 ChangeVersionWidget::ChangeVersionWidget(QWidget *parent) :
 	QWidget(parent),
@@ -38,7 +38,7 @@ void ChangeVersionWidget::showDiff(QListWidgetItem *item)
 	if (mDiffWidget->layout() != NULL){
 		clearLayout(mDiffWidget->layout());
 	}
-	if (item2 != NULL){
+	if (item2 != nullptr){
 		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), mDiffWidget);
 	} else {
 		emit showDiff(firstHash, QString(), mDiffWidget);
@@ -88,9 +88,11 @@ void ChangeVersionWidget::clearLayout(QLayout *layout)
 			clearLayout(item->layout());
 			delete item->layout();
 		}
+
 		if (item->widget()) {
 			delete item->widget();
 		}
+
 		delete item;
 	}
 }

@@ -2,8 +2,8 @@
 
 #include <QtCore/QObject>
 
-#include "../../../qrgui/plugins/toolPluginInterface/pluginInterface.h"
-#include "../../../qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
+#include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include "gui/pushDialog.h"
 #include "gui/pullDialog.h"
 #include "gui/commitDialog.h"
@@ -69,6 +69,7 @@ private slots:
 	void onStatusComplete(QString answer, bool const success);
 	void onLogComplete(QString answer, bool const success);
 	void onRemoteListComplete(QString answer, bool const success);
+	void onCheckoutComplete(bool const success);
 	void modeChanged(bool compactMode);
 	void removeClosedTab(QWidget *widget);
 

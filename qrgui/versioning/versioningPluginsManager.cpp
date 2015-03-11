@@ -49,12 +49,12 @@ void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInter
 				}
 			}
 			versioningPlugin->setWorkingCopyManager(mRepoApi);
-			connect(versioningPlugin, SIGNAL(workingCopyDownloaded(bool const, QString const &))
-					, this, SLOT(onWorkingCopyDownloaded(bool const, QString const &)));
-			connect(versioningPlugin, SIGNAL(workingCopyUpdated(bool const))
-					, this, SLOT(onWorkingCopyUpdated(bool const)));
-			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
-					, this, SLOT(onChangesSubmitted(bool const)));
+			connect(versioningPlugin, SIGNAL(workingCopyDownloaded(bool, QString const &))
+					, this, SLOT(onWorkingCopyDownloaded(bool, QString const &)));
+			connect(versioningPlugin, SIGNAL(workingCopyUpdated(bool))
+					, this, SLOT(onWorkingCopyUpdated(bool)));
+			connect(versioningPlugin, SIGNAL(changesSubmitted(bool))
+					, this, SLOT(onChangesSubmitted(bool)));
 		}
 	}
 	if (mDiffInterface){
@@ -143,8 +143,11 @@ void VersioningPluginsManager::beginWorkingCopyUpdating(QString const &targetPro
 	return activeVcs->beginWorkingCopyUpdating(targetProject);
 }
 
-void VersioningPluginsManager::beginChangesSubmitting(QString const &description
-														, QString const &targetProject, const bool &quiet)
+void VersioningPluginsManager::beginChangesSubmitting(
+		QString const &description
+		, QString const &targetProject
+		, bool quiet
+)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
 	if (!activeVcs) {
@@ -189,8 +192,7 @@ QString VersioningPluginsManager::remoteRepositoryUrl(QString const &targetProje
 	return activeVcs->remoteRepositoryUrl(targetProject);
 }
 
-bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory, bool const &quiet
-												, bool const &prepareAndProcess)
+bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory, bool quiet, bool prepareAndProcess)
 {
 	Q_UNUSED(quiet)
 	return activePlugin(prepareAndProcess, directory) != NULL;
@@ -229,13 +231,13 @@ void VersioningPluginsManager::reportWarnings(const QStringList &messages)
 	}
 }
 
-void VersioningPluginsManager::onWorkingCopyDownloaded(const bool success
+void VersioningPluginsManager::onWorkingCopyDownloaded(bool success
 		, QString const &targetProject)
 {
 	emit workingCopyDownloaded(success, targetProject);
 }
 
-void VersioningPluginsManager::onWorkingCopyUpdated(const bool success)
+void VersioningPluginsManager::onWorkingCopyUpdated(bool success)
 {
 	QString currentAdress = mProjectManager->saveFilePath();
 	mProjectManager->close();
@@ -243,7 +245,7 @@ void VersioningPluginsManager::onWorkingCopyUpdated(const bool success)
 	emit workingCopyUpdated(success);
 }
 
-void VersioningPluginsManager::onChangesSubmitted(const bool success)
+void VersioningPluginsManager::onChangesSubmitted(bool success)
 {
 	emit changesSubmitted(success);
 }

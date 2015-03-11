@@ -7,6 +7,7 @@ CONFIG += c++11
 DESTDIR = ../../../bin/plugins/tools/
 
 INCLUDEPATH += \
+	$$PWD/ \
 	$$PWD/../../../ \
 	$$PWD/../../../qrgui/ \
 
@@ -18,42 +19,41 @@ OBJECTS_DIR = .obj
 TRANSLATIONS += gitClient_ru.ts
 
 HEADERS += \
-    gitPlugin.h \
-    viewInteraction.h \
-    tags.h \
-	transparentMode.h \
-    gui/versioningPage.h \
-#    ../../qrgui/dialogs/preferencesPages/preferencesPage.h \
-    gui/commitDialog.h \
-    gui/pushDialog.h \
-    gui/cloneDialog.h \
-    gui/remoteDialog.h \
-    gui/pullDialog.h \
-    gui/resetDialog.h \
-    gui/statusDialog.h \
-    gui/changeVersionWidget.h \
-    gui/diffBetweenDialog.h \
-    gui/branchNameDialog.h \
-    gui/simpleOutputDialog.h
+	$$PWD/gitPlugin.h \
+	$$PWD/viewInteraction.h \
+	$$PWD/tags.h \
+	$$PWD/transparentMode.h \
+	$$PWD/gui/versioningPage.h \
+	$$PWD/gui/commitDialog.h \
+	$$PWD/gui/pushDialog.h \
+	$$PWD/gui/cloneDialog.h \
+	$$PWD/gui/remoteDialog.h \
+	$$PWD/gui/pullDialog.h \
+	$$PWD/gui/resetDialog.h \
+	$$PWD/gui/statusDialog.h \
+	$$PWD/gui/changeVersionWidget.h \
+	$$PWD/gui/diffBetweenDialog.h \
+	$$PWD/gui/branchNameDialog.h \
+	$$PWD/gui/simpleOutputDialog.h
 
 SOURCES += \
-    gitPlugin.cpp \
-    viewInteraction.cpp \
-	transparentMode.cpp \
-    gui/versioningPage.cpp \
-    gui/commitDialog.cpp \
-    gui/pushDialog.cpp \
-    gui/cloneDialog.cpp \
-    gui/remoteDialog.cpp \
-    gui/pullDialog.cpp \
-    gui/resetDialog.cpp \
-    gui/statusDialog.cpp \
-    gui/changeVersionWidget.cpp \
-    gui/diffBetweenDialog.cpp \
-    gui/branchNameDialog.cpp \
-    gui/simpleOutputDialog.cpp
+	$$PWD/gitPlugin.cpp \
+	$$PWD/viewInteraction.cpp \
+	$$PWD/transparentMode.cpp \
+	$$PWD/gui/versioningPage.cpp \
+	$$PWD/gui/commitDialog.cpp \
+	$$PWD/gui/pushDialog.cpp \
+	$$PWD/gui/cloneDialog.cpp \
+	$$PWD/gui/remoteDialog.cpp \
+	$$PWD/gui/pullDialog.cpp \
+	$$PWD/gui/resetDialog.cpp \
+	$$PWD/gui/statusDialog.cpp \
+	$$PWD/gui/changeVersionWidget.cpp \
+	$$PWD/gui/diffBetweenDialog.cpp \
+	$$PWD/gui/branchNameDialog.cpp \
+	$$PWD/gui/simpleOutputDialog.cpp
 
 
 FORMS += \
-	gui/versioningPage.ui \
-	gui/changeVersionWidget.ui
+	$$PWD/gui/versioningPage.ui \
+	$$PWD/gui/changeVersionWidget.ui

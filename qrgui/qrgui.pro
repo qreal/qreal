@@ -64,9 +64,4 @@ pluginManager.depends = \
 	toolPluginInterface \
 
 versioning.depends = \
-	models \
-	editor \
-	controller \
 	toolPluginInterface \
-	thirdparty \
-	mouseGestures \
