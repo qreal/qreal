@@ -23,10 +23,14 @@ TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikQtsGene
 HEADERS += \
 	$$PWD/trikQtsGeneratorPlugin.h \
 	$$PWD/trikQtsMasterGenerator.h \
+	$$PWD/trikQtsControlFlowValidator.h \
+	$$PWD/threadsValidator.h \
 
 SOURCES += \
 	$$PWD/trikQtsGeneratorPlugin.cpp \
 	$$PWD/trikQtsMasterGenerator.cpp \
+	$$PWD/trikQtsControlFlowValidator.cpp \
+	$$PWD/threadsValidator.cpp \
 
 RESOURCES = \
 	$$PWD/trikQtsGenerator.qrc \
