@@ -67,7 +67,7 @@ void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 
 void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 {
-	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel, this);
+	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel);
 
 	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);

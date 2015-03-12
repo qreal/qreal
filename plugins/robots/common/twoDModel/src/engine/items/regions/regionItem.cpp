@@ -9,7 +9,7 @@ const QSizeF defaultSize = QSizeF(200, 200);
 using namespace twoDModel::items;
 
 RegionItem::RegionItem(QGraphicsItem *parent)
-	: QGraphicsItem(parent)
+	: QGraphicsObject(parent)
 	, mTextItem(new QGraphicsTextItem(this))
 	, mFilled(true)
 	, mColor(defaultColor)
@@ -75,6 +75,16 @@ void RegionItem::setSize(const QSizeF &size)
 	mSize = size;
 }
 
+bool RegionItem::containsPoint(const QPointF &point) const
+{
+	return QGraphicsItem::contains(mapFromScene(point));
+}
+
+bool RegionItem::containsItem(QGraphicsItem *item) const
+{
+	return containsPoint(item->boundingRect().center());
+}
+
 QRectF RegionItem::boundingRect() const
 {
 	return QRectF(QPointF(), mSize);
@@ -86,6 +96,7 @@ void RegionItem::serialize(QDomElement &element)
 		element.setAttribute("id", id());
 	}
 
+	element.setAttribute("type", regionType());
 	element.setAttribute("filled", filled() ? "true" : "false");
 
 	if (!text().isEmpty()) {

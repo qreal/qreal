@@ -5,12 +5,14 @@ using namespace twoDModel::constraints::details;
 Event::Event(const QString &id
 		, const Condition &condition
 		, const Trigger &trigger
-		, bool dropsOnFire)
+		, bool dropsOnFire
+		, bool isSettedInitially)
 	: mId(id)
-	, mIsAlive(false)
+	, mIsAlive(isSettedInitially)
 	, mCondition(condition)
 	, mTrigger(trigger)
 	, mDropsOnFire(dropsOnFire)
+	, mIsSettedInitially(isSettedInitially)
 {
 }
 
@@ -22,6 +24,11 @@ QString Event::id() const
 bool Event::isAlive() const
 {
 	return mIsAlive;
+}
+
+bool Event::isAliveInitially() const
+{
+	return mIsSettedInitially;
 }
 
 void Event::setUp()

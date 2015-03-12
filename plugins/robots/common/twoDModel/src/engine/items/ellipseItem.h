@@ -7,7 +7,7 @@
 namespace twoDModel {
 namespace items {
 
-class EllipseItem : public QObject, public ColorFieldItem
+class EllipseItem : public ColorFieldItem
 {
 	Q_OBJECT
 

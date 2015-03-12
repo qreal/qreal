@@ -58,3 +58,8 @@ QPainterPath BoundRegion::shape() const
 	stroker.setWidth(mStroke);
 	return stroker.createStroke(mBoundItem.shape());
 }
+
+QString BoundRegion::regionType() const
+{
+	return "bound";
+}

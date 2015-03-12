@@ -235,114 +235,134 @@
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="48"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="46"/>
         <source>Root element must be &quot;constraints&quot; tag</source>
         <translation>Корневой элемент должен быть тэгом &quot;constraints&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="72"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="80"/>
         <source>There must be a &quot;timelimit&quot; constraint.</source>
         <translation>Должен иметься тэг &quot;timelimit&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="77"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="85"/>
         <source>There must be only one &quot;timelimit&quot; tag.</source>
         <translation>Тэг &quot;timelimit&quot; может быть только один.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="122"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="130"/>
         <source>Event tag must have &quot;condition&quot; or &quot;conditions&quot; child tag. &quot;%1&quot; found instead.</source>
         <translation>Тег &quot;event&quot; должен иметь дочерний тэг &quot;condition&quot; или &quot;conditions&quot;. Вместо этого найдено &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="128"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="136"/>
         <source>Event tag must have &quot;trigger&quot; or &quot;triggers&quot; child tag. &quot;%1&quot; found instead.</source>
         <translation>Тег &quot;event&quot; должен иметь дочерний тэг &quot;trigger&quot; или &quot;triggers&quot;. Вместо этого найдено &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="198"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="202"/>
         <source>Program worked for too long time</source>
         <translation>Программа работала слишком долго</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="235"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="239"/>
         <source>&quot;Glue&quot; attribute must have value &quot;and&quot; or &quot;or&quot;.</source>
         <translation>Аттрибут &quot;glue&quot; должен иметь значение &quot;and&quot; или &quot;or&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="286"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="426"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="290"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="430"/>
         <source>Unknown tag &quot;%1&quot;.</source>
         <translation>Неизвестный тэг &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="509"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="513"/>
         <source>Unknown value &quot;%1&quot;.</source>
         <translation>Неизвестное значение &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="581"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="585"/>
         <source>Invalid integer value &quot;%1&quot;</source>
         <translation>&quot;%1&quot; - не целое число</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="595"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="599"/>
         <source>Invalid floating point value &quot;%1&quot;</source>
         <translation>&quot;%1&quot; - не число</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="608"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="612"/>
         <source>Invalid boolean value &quot;%1&quot; (expected &quot;true&quot; or &quot;false&quot;)</source>
         <translation>&quot;%1&quot; - не логическое значение (ожидалось &quot;true&quot; или &quot;false&quot;)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="641"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="645"/>
         <source>Duplicate id: &quot;%1&quot;</source>
         <translation>Переобъявление события &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="651"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="655"/>
         <source>%1 tag must have exactly %2 child tag(s)</source>
         <translation>У тэга &quot;%1&quot; должно быть ровно %2 дочерних(ий) тэг(а)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="661"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="665"/>
         <source>%1 tag must have at least %2 child tag(s)</source>
         <translation>У тэга &quot;%1&quot; должно быть как минимум %2 дочерних(ий) тэг(а)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="671"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="675"/>
         <source>&quot;%1&quot; tag must have &quot;%2&quot; attribute.</source>
         <translation>У тэга &quot;%1&quot; должен быть аттрибут &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="681"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="685"/>
         <source>Expected &quot;%1&quot; tag, got &quot;%2&quot;.</source>
         <translation>Ожидался тэг &quot;%1&quot;, найден - &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="695"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="699"/>
         <source>Attribute &quot;%1&quot; of the tag &quot;%2&quot; must not be empty.</source>
         <translation>Атрибут &quot;%1&quot; тэга &quot;%2&quot; не может быть пустым.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="89"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="101"/>
+        <source>No such region: %1</source>
+        <translation>Нет такого региона: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="97"/>
+        <source>%1 is not a region</source>
+        <translation>%1 - не регион</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="128"/>
+        <source>%1 has incorrect type for mathing it with region</source>
+        <translation>%1 не сопоставить с регионом (не тот тип)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="137"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="149"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="72"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="84"/>
         <source>No such event: %1</source>
         <translation>Нет такого события: %1</translation>
     </message>
     <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="84"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="54"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="67"/>
         <source>No such object: %1</source>
         <translation>Нет такого объекта: %1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="78"/>
         <source>Object &quot;%1&quot; has no property &quot;%1&quot;</source>
-        <translation>У объекта &quot;%1&quot; нет свойства &quot;%1&quot;</translation>
+        <translation type="vanished">У объекта &quot;%1&quot; нет свойства &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="78"/>
+        <source>Object &quot;%1&quot; has no property &quot;%2&quot;</source>
+        <translation>У объекта &quot;%1&quot; нет свойства &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -410,9 +430,27 @@
 <context>
     <name>twoDModel::constraints::ConstraintsChecker</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="55"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="70"/>
         <source>Error while parsing constraints: %1</source>
         <translation>Ошибка чтения ограничений: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="212"/>
+        <source>Program has finished, but the task is not accomplished.</source>
+        <translation>Программа отработала, но задание не выполнено.</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::model::Model</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/model/model.cpp" line="28"/>
+        <source>The task is accomplished!</source>
+        <translation>Задание выполнено!</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/model/model.cpp" line="36"/>
+        <source>Error in checker: %1</source>
+        <translation>Ошибка в проверяющей программе: %1</translation>
     </message>
 </context>
 <context>
@@ -475,74 +513,74 @@
 <context>
     <name>twoDModel::view::D2ModelWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
         <source>Black</source>
         <translation>Черный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="156"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="157"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="157"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="158"/>
         <source>Do you really want to clear scene?</source>
         <translation>Вы действительно хотите очистить сцену?</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="159"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="160"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="160"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="161"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="379"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="380"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="379"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="399"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="380"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="400"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="399"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="400"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="771"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="772"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="779"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="780"/>
         <source>No wheel</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="777"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="785"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>

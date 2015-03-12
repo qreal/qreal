@@ -9,6 +9,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
 #include <kitBase/robotModel/robotParts/motor.h>
@@ -386,7 +387,14 @@ void D2ModelWidget::loadWorldModel()
 		return;
 	}
 
-	const QDomDocument save = utils::xmlUtils::loadDocument(loadFileName);
+	QString errorMessage;
+	int errorLine, errorColumn;
+	const QDomDocument save = utils::xmlUtils::loadDocument(loadFileName, &errorMessage, &errorLine, &errorColumn);
+	if (!errorMessage.isEmpty()) {
+		mModel.errorReporter()->addError(QString("%1:%2: %3")
+				.arg(QString::number(errorLine), QString::number(errorColumn), errorMessage));
+	}
+
 	loadXml(save);
 }
 

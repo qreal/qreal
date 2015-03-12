@@ -7,7 +7,7 @@
 namespace twoDModel {
 namespace items {
 
-class LineItem : public QObject, public ColorFieldItem
+class LineItem : public ColorFieldItem
 {
 	Q_OBJECT
 
