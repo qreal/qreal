@@ -16,6 +16,8 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 	, mModel(model)
 	, mParser(new details::ConstraintsParser(mEvents, mVariables, mObjects, mModel.timeline(), mStatus))
 	, mParsedSuccessfully(false)
+	, mSuccessTriggered(false)
+	, mFailTriggered(false)
 {
 	connect(&mStatus, &details::StatusReporter::success, [this]() { mSuccessTriggered = true; });
 	connect(&mStatus, &details::StatusReporter::success, this, &ConstraintsChecker::success);

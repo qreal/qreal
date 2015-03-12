@@ -388,7 +388,8 @@ void D2ModelWidget::loadWorldModel()
 	}
 
 	QString errorMessage;
-	int errorLine, errorColumn;
+	int errorLine = 0;
+	int errorColumn = 0;
 	const QDomDocument save = utils::xmlUtils::loadDocument(loadFileName, &errorMessage, &errorLine, &errorColumn);
 	if (!errorMessage.isEmpty()) {
 		mModel.errorReporter()->addError(QString("%1:%2: %3")

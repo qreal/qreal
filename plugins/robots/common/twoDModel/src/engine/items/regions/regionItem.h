@@ -60,7 +60,6 @@ public:
 	virtual void serialize(QDomElement &element);
 	virtual void deserialize(const QDomElement &element);
 
-
 protected:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 

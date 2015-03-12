@@ -31,7 +31,6 @@ void NxtMotor::on(int speed, bool breakMode)
 void NxtMotor::on(int speed, long unsigned int degrees, bool breakMode)
 {
 	robotParts::Motor::on(speed);
-	Q_UNUSED(speed);
 	Q_UNUSED(degrees);
 	Q_UNUSED(breakMode);
 }
