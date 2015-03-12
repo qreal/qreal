@@ -14,10 +14,9 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> fo
 			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface)
 {
-	QSharedPointer<ast::Identifier> type = qrtext::as<ast::Identifier>(foreachNode->identifier());
-	QString result;
+	QSharedPointer<ast::Identifier> identifier = qrtext::as<ast::Identifier>(foreachNode->identifier());
+	QSharedPointer<ast::Identifier> type = qrtext::as<ast::Identifier>(foreachNode->type());
 
-	// TODO: OMG
 	QList<qReal::Id> listOfElements;
 	for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
 		if (elementId.element() == type->name()) {
@@ -25,6 +24,7 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> fo
 		}
 	}
 
+	QString result;
 	for (const qReal::Id element : listOfElements) {
 		QSharedPointer<ast::Program> programNode = qrtext::as<ast::Program>(foreachNode->program());
 		result += GeneratorForProgramNode::generatedResult(programNode, metamodelRepoApi

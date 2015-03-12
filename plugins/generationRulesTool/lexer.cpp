@@ -27,6 +27,7 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 
 	tokenDefinitions.defineKeyword(TokenTypes::newlineKeyword, "newline");
 	tokenDefinitions.defineKeyword(TokenTypes::foreachKeyword, "foreach");
+	tokenDefinitions.defineKeyword(TokenTypes::inKeyword, "in");
 
 	tokenDefinitions.defineToken(TokenTypes::text,
 			QRegularExpression(R"(('[^'\\]*(\\(.|\n)[^'\\]*)*'))")

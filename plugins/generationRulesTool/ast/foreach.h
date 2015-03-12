@@ -8,8 +8,11 @@ namespace ast {
 class Foreach : public Node
 {
 public:
-	explicit Foreach(QSharedPointer<Node> const &identifier, QSharedPointer<Node> const &program)
+	explicit Foreach(QSharedPointer<Node> const &identifier
+			, QSharedPointer<Node> const &type
+			, QSharedPointer<Node> const &program)
 		: mIdentifier(identifier)
+		, mType(type)
 		, mProgram(program)
 	{
 	}
@@ -17,6 +20,11 @@ public:
 	QSharedPointer<Node> identifier()
 	{
 		return mIdentifier;
+	}
+
+	QSharedPointer<Node> type()
+	{
+		return mType;
 	}
 
 	QSharedPointer<Node> program()
@@ -31,6 +39,7 @@ public:
 
 private:
 	QSharedPointer<Node> mIdentifier;
+	QSharedPointer<Node> mType;
 	QSharedPointer<Node> mProgram;
 };
 }

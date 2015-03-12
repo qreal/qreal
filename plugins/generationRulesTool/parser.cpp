@@ -58,12 +58,16 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 	};
 
 	auto foreachStatement = (-TokenTypes::foreachKeyword & -TokenTypes::openingBracket & identifier
-				& -TokenTypes::closingBracket & -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
+				& -TokenTypes::inKeyword & identifier & -TokenTypes::closingBracket
+				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
 			>> [] (QSharedPointer<TemporaryPair> statementPair) {
-				auto identifier = statementPair->left();
+				auto identifierAndType = qrtext::as<TemporaryPair>(statementPair->left());
+				auto identifier = identifierAndType->left();
+				auto type = identifierAndType->right();
+
 				auto program = statementPair->right();
 
-				return qrtext::wrap(new ast::Foreach(identifier, program));
+				return qrtext::wrap(new ast::Foreach(identifier, type, program));
 	};
 
 	auto text = TokenTypes::text

@@ -49,8 +49,8 @@ void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, 
 void GenerationRulesPlugin::generateCode()
 {
 	QString stream = "'enum State {'\n"
-			"foreach (State) {\n"
-			"State.Name ',' \n"
+			"foreach (state in State) {\n"
+			"state.Name ',' \n"
 			"newline \n"
 			"} \n"
 			"StartState.Name ',' newline \n"
