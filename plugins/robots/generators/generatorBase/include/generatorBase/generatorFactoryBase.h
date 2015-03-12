@@ -110,7 +110,11 @@ public:
 
 	/// Returns a pointer to a threads instantiation generator
 	virtual simple::AbstractSimpleGenerator *forkCallGenerator(const qReal::Id &id
-			, GeneratorCustomizer &customizer, const qReal::IdList &threads);
+			, GeneratorCustomizer &customizer, const QMap<qReal::Id, QString> &threads);
+
+	/// Returns a pointer to a generator of thread joins
+	virtual simple::AbstractSimpleGenerator *joinGenerator(const qReal::Id &id
+			, GeneratorCustomizer &customizer, const QStringList &joinedThreads, const QString &mainThreadId);
 
 	/// Returns a pointer to a code generator for blocks with regular semantics
 	virtual simple::AbstractSimpleGenerator *simpleGenerator(const qReal::Id &id

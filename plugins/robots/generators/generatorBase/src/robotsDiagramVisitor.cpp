@@ -34,6 +34,8 @@ RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(const qReal::Id &l
 		return falseGuard;
 	} else if (guardProperty == "iteration") {
 		return iterationGuard;
+	} else if (!guardProperty.isEmpty()) {
+		return threadIdGuard;
 	}
 
 	return emptyGuard;
@@ -66,6 +68,9 @@ void RobotsDiagramVisitor::visit(const qReal::Id &nodeId, QList<utils::DeepFirst
 		break;
 	case enums::semantics::forkBlock:
 		visitFork(nodeId, links);
+		break;
+	case enums::semantics::joinBlock:
+		visitJoin(nodeId, links);
 		break;
 	default:
 		visitUnknown(nodeId, links);

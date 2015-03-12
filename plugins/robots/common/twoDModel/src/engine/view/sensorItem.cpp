@@ -25,7 +25,6 @@ SensorItem::SensorItem(model::SensorsConfiguration &configuration
 	, mConfiguration(configuration)
 	, mPort(port)
 	, mPointImpl()
-	, mRotater(nullptr)
 	, mImageRect(imageRect.isEmpty() ? this->imageRect() : imageRect)
 	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
 			, selectionDrift, selectionDrift))
@@ -43,11 +42,8 @@ SensorItem::SensorItem(model::SensorsConfiguration &configuration
 	mPortItem->moveBy(-mPortItem->boundingRect().width() - 5, -mPortItem->boundingRect().height() - 5);
 	mPortItem->setFlag(ItemIgnoresTransformations);
 	mPortItem->hide();
-}
 
-void SensorItem::setRotatePoint(const QPointF &rotatePoint)
-{
-	mRotatePoint = rotatePoint;
+	RotateItem::init();
 }
 
 void SensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
@@ -160,33 +156,6 @@ void SensorItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-void SensorItem::setRotation(qreal angle)
-{
-	QGraphicsItem::setRotation(angle);
-}
-
-QRectF SensorItem::rect() const
-{
-	return mImageRect;
-}
-
-void SensorItem::setSelected(bool isSelected)
-{
-	QGraphicsItem::setSelected(isSelected);
-}
-
-void SensorItem::setRotater(Rotater *rotater)
-{
-	mRotater = rotater;
-}
-
-void SensorItem::checkSelection()
-{
-	if (mRotater) {
-		mRotater->setVisible(isSelected());
-	}
-}
-
 QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionHasChanged) {
@@ -197,7 +166,7 @@ QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value
 		mConfiguration.setDirection(mPort, rotation());
 	}
 
-	return AbstractItem::itemChange(change, value);
+	return RotateItem::itemChange(change, value);
 }
 
 void SensorItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)

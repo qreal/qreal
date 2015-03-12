@@ -16,6 +16,7 @@ enum Semantics {
 	, loopBlock
 	, switchBlock
 	, forkBlock
+	, joinBlock
 };
 
 }
@@ -64,6 +65,9 @@ protected:
 	/// Implementation must tell if block with given id has fork semantics
 	virtual bool isFork(const qReal::Id &block) const;
 
+	/// Implementation must tell if block with given id has join semantics
+	virtual bool isJoin(const qReal::Id &block) const;
+
 private:
 	const qReal::Id mDefaultInitialBlockType;
 	const qReal::Id mDefaultFinalBlockType;
@@ -71,6 +75,7 @@ private:
 	const qReal::Id mDefaultLoopBlockType;
 	const qReal::Id mDefaultSwitchBlockType;
 	const qReal::Id mDefaultForkBlockType;
+	const qReal::Id mDefaultJoinBlockType;
 	const qReal::Id mDefaultSubprogramCallBlockType;
 };
 

@@ -74,14 +74,14 @@
         <translation>Конструкция не поддерживается интерпретатором</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="189"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="190"/>
         <source>Currently interpreter allows only tables denoted by identifier and by integer expression index, as in &apos;a[1 + 2] = 3&apos;</source>
         <translation>Сейчас интерпретатор поддерживает именованные таблицы с целочисленным выражением в качестве индекса, например, &apos;a[1 + 2] = 3&apos;</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="286"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="296"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="309"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="287"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="297"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="310"/>
         <source>Division by zero</source>
         <translation>Деление на 0</translation>
     </message>
@@ -187,7 +187,6 @@
         <translation>идентификатор</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/string.h" line="14"/>
         <location filename="../../qrtext/src/lua/luaLexer.cpp" line="87"/>
         <source>string</source>
         <translation>строка</translation>
@@ -213,19 +212,16 @@
         <translation>любой</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/boolean.h" line="14"/>
         <source>boolean</source>
-        <translation>логический</translation>
+        <translation type="vanished">логический</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/float.h" line="14"/>
         <source>float</source>
-        <translation>вещественный</translation>
+        <translation type="vanished">вещественный</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/integer.h" line="14"/>
         <source>integer</source>
-        <translation>целый</translation>
+        <translation type="vanished">целый</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/lua/types/nil.h" line="14"/>
@@ -233,14 +229,12 @@
         <translation>нулевой</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/number.h" line="14"/>
         <source>number</source>
-        <translation>число</translation>
+        <translation type="vanished">число</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/table.h" line="30"/>
         <source>table[%1]</source>
-        <translation>массив[%1]</translation>
+        <translation type="vanished">массив[%1]</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/core/parser/operators/simpleParser.h" line="37"/>

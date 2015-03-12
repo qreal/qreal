@@ -62,6 +62,7 @@ TEST_F(ConstraintsParserTests, timeLimitConstraintTest)
 	ASSERT_EQ(mEvents.count(), 1);
 	Event * const event = mEvents.values()[0];
 	ASSERT_NE(event, nullptr);
+	event->setUp();
 
 	bool eventFired = false;
 	QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
@@ -98,6 +99,7 @@ TEST_F(ConstraintsParserTests, timerWithoutDropTest)
 	ASSERT_EQ(mEvents.count(), 2);
 	Event * const event = mEvents["event"];
 	ASSERT_NE(event, nullptr);
+	event->setUp();
 
 	bool eventFired = false;
 	QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
@@ -139,6 +141,7 @@ TEST_F(ConstraintsParserTests, timerWithDropTest)
 	ASSERT_EQ(mEvents.count(), 2);
 	Event * const event = mEvents["event"];
 	ASSERT_NE(event, nullptr);
+	event->setUp();
 
 	bool eventFired = false;
 	QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
@@ -204,6 +207,7 @@ TEST_F(ConstraintsParserTests, comparisonTest)
 		ASSERT_EQ(mEvents.count(), 2);
 		Event * const event = mEvents["event"];
 		ASSERT_NE(event, nullptr);
+		event->setUp();
 
 		bool eventFired = false;
 		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
@@ -254,6 +258,7 @@ TEST_F(ConstraintsParserTests, constraintTagAndTypeOfTagTest)
 		ASSERT_EQ(mEvents.count(), 2);
 		Event * const event = mEvents["constraint"];
 		ASSERT_NE(event, nullptr);
+		event->setUp();
 
 		bool eventFired = false;
 		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
@@ -306,6 +311,7 @@ TEST_F(ConstraintsParserTests, setVariableTest)
 		ASSERT_EQ(mEvents.count(), 2);
 		Event * const event = mEvents["event"];
 		ASSERT_NE(event, nullptr);
+		event->setUp();
 
 		bool eventFired = false;
 		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
@@ -354,6 +360,7 @@ TEST_F(ConstraintsParserTests, addToVariableTest)
 		ASSERT_EQ(mEvents.count(), 2);
 		Event * const event = mEvents["event"];
 		ASSERT_NE(event, nullptr);
+		event->setUp();
 
 		bool eventFired = false;
 		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
@@ -476,10 +483,13 @@ TEST_F(ConstraintsParserTests, communicationTest)
 	QMap<QString, int> fireCounters;
 
 	for (const QString &eventId : mEvents.keys()) {
-		Event const *event = mEvents[eventId];
+		Event * const event = mEvents[eventId];
 		ASSERT_NE(event, nullptr);
 		fireCounters[eventId] = 0;
 		QObject::connect(event, &Event::fired, [&fireCounters, eventId]() { ++fireCounters[eventId]; });
+		if (event->isAliveInitially()) {
+			event->setUp();
+		}
 	}
 
 	const int timeout = 2000;

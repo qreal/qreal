@@ -5,14 +5,15 @@
 #include "generatorBase/parts/subprograms.h"
 
 #include "src/rules/forkRules/forkRule.h"
+#include "src/rules/joinRules/joinRule.h"
 
 using namespace generatorBase;
 using namespace qReal;
 
-ControlFlowGeneratorBase::ControlFlowGeneratorBase(
-		const qrRepo::RepoApi &repo
+ControlFlowGeneratorBase::ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
+		, PrimaryControlFlowValidator &validator
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
@@ -23,7 +24,7 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 	, mCustomizer(customizer)
 	, mIsMainGenerator(isThisDiagramMain)
 	, mDiagram(diagramId)
-	, mValidator(new PrimaryControlFlowValidator(repo, errorReporter, customizer, diagramId, this))
+	, mValidator(validator)
 {
 }
 
@@ -33,14 +34,17 @@ ControlFlowGeneratorBase::~ControlFlowGeneratorBase()
 
 bool ControlFlowGeneratorBase::preGenerationCheck()
 {
-	return mValidator->validate();
+	return mValidator.validate(mDiagram, mThreadId);
 }
 
-semantics::SemanticTree *ControlFlowGeneratorBase::generate(const qReal::Id &initialNode)
+semantics::SemanticTree *ControlFlowGeneratorBase::generate(const qReal::Id &initialNode, const QString &threadId)
 {
+	mThreadId = threadId;
+
 	// If initial node is non-null then pregeneration check was already performed;
 	if (initialNode.isNull() && !preGenerationCheck()) {
 		mSemanticTree = nullptr;
+		mErrorsOccured = true;
 		return nullptr;
 	}
 
@@ -71,7 +75,7 @@ bool ControlFlowGeneratorBase::generateForks()
 	while (mCustomizer.factory()->threads().hasUnprocessedThreads()) {
 		const Id thread = mCustomizer.factory()->threads().nextUnprocessedThread();
 		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread, false);
-		if (!threadGenerator->generate(thread)) {
+		if (!threadGenerator->generate(thread, mCustomizer.factory()->threads().threadId(thread))) {
 			return false;
 		}
 	}
@@ -110,17 +114,17 @@ enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(const qReal::I
 
 qReal::Id ControlFlowGeneratorBase::initialNode() const
 {
-	return mValidator->initialNode();
+	return mValidator.initialNode();
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::ifBranchesFor(const qReal::Id &id) const
 {
-	return mValidator->ifBranchesFor(id);
+	return mValidator.ifBranchesFor(id);
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(const qReal::Id &id) const
 {
-	return mValidator->loopBranchesFor(id);
+	return mValidator.loopBranchesFor(id);
 }
 
 GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const
@@ -136,14 +140,38 @@ void ControlFlowGeneratorBase::visitFinal(const Id &id, const QList<LinkInfo> &l
 
 void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 {
-	// n-ary fork creates (n-1) new threads and one thread is the old one.
-	const LinkInfo currentThread = links.first();
-	// In case of current thread fork block behaviours like nop-block.
+	LinkInfo currentThread = links.first();
+	QHash<Id, QString> threadIds;
+
+	// Determine which thread is the main by examining guards of outgoing links
+	// If there are no guards then a random thread will be chosen as main
+	for (const LinkInfo &thread : links) {
+		QString threadId = mRepo.stringProperty(thread.linkId, "Guard");
+		threadIds[thread.linkId] = threadId;
+		if (threadId == mThreadId) {
+			currentThread = thread;
+		}
+	}
+
 	visitRegular(id, { currentThread });
-	const QList<LinkInfo> newThreads = links.mid(1);
-	semantics::ForkRule rule(mSemanticTree, id, newThreads, mCustomizer.factory()->threads());
+	links.removeAll(currentThread);
+	semantics::ForkRule rule(mSemanticTree, id, links, threadIds, mCustomizer.factory()->threads());
 	rule.apply();
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.
 	links = {currentThread};
+}
+
+void ControlFlowGeneratorBase::visitJoin(const Id &id, QList<LinkInfo> &links)
+{
+	bool const fromMain = (mRepo.stringProperty(links[0].linkId, "Guard") == mThreadId);
+	semantics::JoinRule rule(mSemanticTree, id, mThreadId, mCustomizer.factory()->threads(), fromMain);
+	rule.apply();
+
+	if (fromMain) {
+		visitRegular(id, links);
+	} else {
+		links.clear();
+		visitFinal(id, links);
+	}
 }

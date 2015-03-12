@@ -6,6 +6,7 @@ HEADERS += \
 	$$PWD/rectangleImpl.h \
 	$$PWD/pointImpl.h \
 	$$PWD/rotateItem.h \
+	$$PWD/rotater.h \
 	$$PWD/colorListEditor.h \
 	$$PWD/stylusImpl.h \
 	$$PWD/gridDrawer.h \
@@ -23,6 +24,7 @@ SOURCES += \
 	$$PWD/colorListEditor.cpp \
 	$$PWD/stylusImpl.cpp \
 	$$PWD/rotateItem.cpp \
+	$$PWD/rotater.cpp \
 	$$PWD/gridDrawer.cpp \
 	$$PWD/paintWidget.cpp \
 	$$PWD/animatedHighlighter.cpp \

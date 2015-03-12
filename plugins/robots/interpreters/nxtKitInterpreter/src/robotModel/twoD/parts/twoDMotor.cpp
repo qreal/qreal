@@ -12,6 +12,7 @@ TwoDMotor::TwoDMotor(const kitBase::robotModel::DeviceInfo &info
 
 void TwoDMotor::on(int speed, unsigned long degrees, bool breakMode)
 {
+	NxtMotor::on(speed, degrees, breakMode);
 	mEngine.setNewMotor(speed, degrees, port(), breakMode);
 }
 

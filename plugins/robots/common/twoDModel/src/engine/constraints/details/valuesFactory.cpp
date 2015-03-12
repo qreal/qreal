@@ -51,7 +51,7 @@ Value ValuesFactory::typeOf(const QString &objectId) const
 {
 	return [this, objectId]() {
 		if (!mObjects.contains(objectId)) {
-			reportError(QObject::tr("No such object: %1"));
+			reportError(QObject::tr("No such object: %1").arg(objectId));
 			return typeOfNull;
 		}
 
@@ -64,7 +64,7 @@ Value ValuesFactory::objectState(const QString &objectId, const QString &propert
 {
 	return [this, objectId, property]() {
 		if (!mObjects.contains(objectId)) {
-			reportError(QObject::tr("No such object: %1"));
+			reportError(QObject::tr("No such object: %1").arg(objectId));
 			return QVariant();
 		}
 
@@ -75,7 +75,7 @@ Value ValuesFactory::objectState(const QString &objectId, const QString &propert
 
 		const int index = object->metaObject()->indexOfProperty(qPrintable(property));
 		if (index < 0) {
-			reportError(QObject::tr("Object \"%1\" has no property \"%1\""));
+			reportError(QObject::tr("Object \"%1\" has no property \"%2\"").arg(objectId, property));
 			return QVariant();
 		}
 

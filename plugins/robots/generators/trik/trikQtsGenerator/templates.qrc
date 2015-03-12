@@ -203,5 +203,8 @@
         <file>templates/luaPrinting/floatToString.t</file>
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
+        <file>templates/threads/join.t</file>
+        <file>templates/threads/receiveMessage.t</file>
+        <file>templates/threads/sendMessage.t</file>
     </qresource>
 </RCC>
