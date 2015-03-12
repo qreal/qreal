@@ -9,7 +9,7 @@
 #include "src/ui/exerciseExportDialog.h"
 
 using namespace interpreterCore;
-using namespace interpreterBase;
+using namespace kitBase;
 
 ExerciseExportManager::ExerciseExportManager(qReal::LogicalModelAssistInterface &logicalModel
 		, qrRepo::RepoControlInterface &repoControlApi)

@@ -6,7 +6,7 @@
 #include <QtWidgets/QPushButton>
 
 using namespace interpreterCore::ui;
-using namespace interpreterBase;
+using namespace kitBase;
 
 ExerciseExportDialog::ExerciseExportDialog(QWidget *parent)
 	: QDialog(parent)

@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialog>
 #include <QtCore/QScopedPointer>
 
-#include <interpreterBase/readOnly.h>
+#include <kitBase/readOnly.h>
 
 class QCheckBox;
 
@@ -22,7 +22,7 @@ public:
 
 	~ExerciseExportDialog() override;
 
-	interpreterBase::ReadOnlyFlags readOnlyFlags() const;
+	kitBase::ReadOnlyFlags readOnlyFlags() const;
 
 private:
 	QScopedPointer<QCheckBox> mWorldReadOnlyCheckBox;
