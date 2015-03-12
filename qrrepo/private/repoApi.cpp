@@ -1,4 +1,4 @@
-#include "../repoApi.h"
+#include "repoApi.h"
 
 #include <QtCore/QDebug>
 
