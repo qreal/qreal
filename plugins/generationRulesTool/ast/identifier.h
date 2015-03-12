@@ -5,24 +5,23 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents simple identifier node.
 class Identifier : public Node
 {
 public:
+	/// Constructor for Identifier.
+	/// @param name - identifier name.
 	Identifier(QString const &name)
 		: mName(name)
 	{
 	}
 
+	/// Returns identifier name.
 	QString const &name() const {
 		return mName;
 	}
 
 private:
-//	void accept(core::AstVisitorInterface &visitor) const override
-//	{
-//		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
-//	}
-
 	QString mName;
 };
 

@@ -6,6 +6,7 @@
 #include <QtCore/QDebug>
 #include <type_traits>
 
+/// Tokens recognizable by lexer.
 namespace simpleParser {
 enum class TokenTypes {
 	newline
