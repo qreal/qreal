@@ -256,10 +256,12 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 			return;
 		}
 
-		if(item(curr)) {
-			mScene->removeItem(item(curr));
-			delete item(curr);
+		if (Element *element = item(curr)) {
+			mScene->onElementDeleted(element);
+			mScene->removeItem(element);
+			delete element;
 		}
+
 		removeItem(curr);
 	}
 
