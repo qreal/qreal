@@ -94,22 +94,14 @@ NodeElement::NodeElement(ElementImpl *impl
 
 NodeElement::~NodeElement()
 {
-	deleteGuides();
-
-	foreach (EdgeElement *edge, mEdgeList) {
+	for (EdgeElement * const edge : mEdgeList) {
 		edge->removeLink(this);
 	}
 
-	foreach (Label *title, mLabels) {
-		delete title;
-	}
-
+	deleteGuides();
+	qDeleteAll(mLabels);
 	delete mElementImpl;
-
-	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
-		delete action;
-	}
-
+	qDeleteAll(mBonusContextMenuActions);
 	delete mGrid;
 	delete mPortHandler;
 }
@@ -286,7 +278,7 @@ void NodeElement::switchGrid(bool isChecked)
 	if (isChecked) {
 		alignToGrid();
 
-		foreach (EdgeElement * const edge, mEdgeList) {
+		for (EdgeElement * const edge : mEdgeList) {
 			edge->alignToGrid();
 		}
 	}
