@@ -259,8 +259,12 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 		}
 	} else if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
 		mModel.worldModel().removeWall(wall);
+		mCurrentWall = nullptr;
 	} else if (items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item)) {
 		mModel.worldModel().removeColorField(colorField);
+		mCurrentLine = nullptr;
+		mCurrentStylus = nullptr;
+		mCurrentEllipse = nullptr;
 	}
 }
 

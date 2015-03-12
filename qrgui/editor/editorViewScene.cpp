@@ -110,7 +110,7 @@ void EditorViewScene::clearScene()
 
 void EditorViewScene::itemSelectUpdate()
 {
-	foreach (QGraphicsItem * const item, mSelectList) {
+	for (QGraphicsItem * const item : mSelectList) {
 		item->setSelected(true);
 	}
 }
@@ -690,7 +690,7 @@ void EditorViewScene::deleteElements(IdList &idsToDelete)
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
+	if (dynamic_cast<QGraphicsTextItem *>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
 	} else if (isArrow(event->key())) {
@@ -841,9 +841,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			item->setAcceptedMouseButtons(0);
 		}
 
-		foreach (QGraphicsItem * const item, mSelectList) {
-			item->setSelected(true);
-		}
+		itemSelectUpdate();
 
 		if (item) {
 			item->setSelected(!mSelectList.contains(item));
@@ -1079,13 +1077,12 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (mIsSelectEvent && (event->button() == Qt::LeftButton)) {
-		foreach (QGraphicsItem* item, items()) {
+		for (QGraphicsItem * const item : items()) {
 			item->setAcceptedMouseButtons(Qt::MouseButtons(Qt::RightButton | Qt::LeftButton));
 		}
+
 		mIsSelectEvent = false;
-		foreach (QGraphicsItem* item, mSelectList) {
-			item->setSelected(true);
-		}
+		itemSelectUpdate();
 		mSelectList.clear();
 		return;
 	}
@@ -1476,6 +1473,13 @@ void EditorViewScene::setActionsEnabled(bool enabled)
 	}
 
 	mActionDeleteFromDiagram.setEnabled(enabled);
+}
+
+void EditorViewScene::onElementDeleted(Element *element)
+{
+	/// @todo: Make it more automated, conceptually this method is not needed.
+	mSelectList.removeAll(element);
+	mHighlightedElements.remove(element);
 }
 
 void EditorViewScene::deselectLabels()

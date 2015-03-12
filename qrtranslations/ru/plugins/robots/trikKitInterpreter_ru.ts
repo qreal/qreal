@@ -30,19 +30,16 @@
 <context>
     <name>TrikFSharpAdditionalPreferences</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="14"/>
         <source>Form</source>
-        <translation>Настройки F#</translation>
+        <translation type="vanished">Настройки F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="35"/>
         <source>F# settings</source>
-        <translation>Настройки F#</translation>
+        <translation type="vanished">Настройки F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="65"/>
         <source>enter path to F# compile </source>
-        <translation>Введите путь к компилятору F#</translation>
+        <translation type="vanished">Введите путь к компилятору F#</translation>
     </message>
 </context>
 <context>
@@ -55,27 +52,38 @@
 <context>
     <name>trik::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="76"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="74"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="119"/>
-        <source>Show 2d model for TRIK v6</source>
-        <translation>Открыть 2D модель для TRIK v6</translation>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="117"/>
+        <source>Show 2d model for TRIK</source>
+        <translation>Открыть 2D модель для TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="156"/>
+        <source>Show 2d model for TRIK v6</source>
+        <translation type="vanished">Открыть 2D модель для TRIK v6</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="153"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
     </message>
 </context>
 <context>
-    <name>trik::robotModel::real::RealRobotModelV6</name>
+    <name>trik::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/real/realRobotModelV6.cpp" line="21"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="51"/>
         <source>Interpretation (Wi-Fi)</source>
         <translation>Интерпретация (Wi-Fi)</translation>
+    </message>
+</context>
+<context>
+    <name>trik::robotModel::real::RealRobotModelV6</name>
+    <message>
+        <source>Interpretation (Wi-Fi)</source>
+        <translation type="vanished">Интерпретация (Wi-Fi)</translation>
     </message>
 </context>
 <context>
