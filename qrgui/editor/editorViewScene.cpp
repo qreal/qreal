@@ -690,7 +690,7 @@ void EditorViewScene::deleteElements(IdList &idsToDelete)
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
+	if (dynamic_cast<QGraphicsTextItem *>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
 	} else if (isArrow(event->key())) {
