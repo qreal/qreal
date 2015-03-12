@@ -84,6 +84,9 @@ void DevicesConfigurationManager::onActiveTabChanged(const TabInfo &info)
 		return;
 	}
 
-	const qReal::Id logicalRootId = mGraphicalModelAssistInterface.logicalId(info.rootDiagramId());
-	load(mLogicalModelAssistInterface.propertyByRoleName(logicalRootId, "devicesConfiguration").toString());
+	const Id logicalRootId = mGraphicalModelAssistInterface.logicalId(info.rootDiagramId());
+	const QString devicesConfiguration = logicalRootId.isNull()
+			? QString()
+			: mLogicalModelAssistInterface.propertyByRoleName(logicalRootId, "devicesConfiguration").toString();
+	load(devicesConfiguration);
 }
