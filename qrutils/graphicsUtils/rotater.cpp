@@ -1,6 +1,7 @@
 #include "rotater.h"
 
 #include <QtGui/QCursor>
+#include <qmath.h>
 
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/graphicsUtils/rotateItem.h>
@@ -71,7 +72,7 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	mLineImpl.drawItem(painter, mX2, mY2, second.x(), second.y());
 }
 
-void Rotater::setPenBrushForExtraxtion(QPainter *painter, const QStyleOptionGraphicsItem *option)
+void Rotater::setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option)
 {
 	Q_UNUSED(option)
 	QPen pen(Qt::red);

@@ -35,7 +35,7 @@ public:
 	virtual void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter *painter);
 	virtual void drawFieldForResizeItem(QPainter *painter);
-	virtual void setPenBrushForExtraxtion(QPainter *painter, const QStyleOptionGraphicsItem *option);
+	virtual void setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option);
 	virtual void setPenBrushDriftRect(QPainter *painter);
 
 	static QStringList getPenStyleList();

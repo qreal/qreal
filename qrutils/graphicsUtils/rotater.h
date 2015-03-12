@@ -21,7 +21,7 @@ public:
 	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem *option, QWidget* widget = 0) override;
 	void drawExtractionForItem(QPainter* painter) override;
 	void drawFieldForResizeItem(QPainter* painter) override;
-	void setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option) override;
+	void setPenBrushForExtraction(QPainter* painter, const QStyleOptionGraphicsItem* option) override;
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 	void calcResizeItem(QGraphicsSceneMouseEvent *event) override;
 
