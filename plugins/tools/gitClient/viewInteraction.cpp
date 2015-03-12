@@ -345,7 +345,12 @@ void ViewInteraction::onRemoteListComplete(QString answer, bool success)
 	dialog->message(answer);
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
-	}
+    }
+}
+
+void ViewInteraction::onCheckoutComplete(bool success)
+{
+    Q_UNUSED(success)
 }
 
 void ViewInteraction::versionsClicked()
