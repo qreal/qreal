@@ -31,7 +31,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 {
 	mActionsManager.init(&configurer.mainWindowInterpretersInterface());
 
-	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
+	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager, configurer.systemEvents()
+			, configurer.logicalModelApi());
 
 	mDevicesConfigurationManager.reset(new DevicesConfigurationManager(
 			configurer.graphicalModelApi()
@@ -101,6 +102,16 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
+
+	const qrRepo::LogicalRepoApi &repoApi = configurer.logicalModelApi().logicalRepoApi();
+
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
+			, [this, &repoApi] (const qReal::Id &id) {
+				Q_UNUSED(id);
+
+				mDockDevicesConfigurer->setEnabled(
+						!repoApi.metaInformation("twoDModelSensorsReadOnly").toBool());
+			});
 
 	connect(&mActionsManager.saveAsTaskAction(), &QAction::triggered
 			, [this] () { mSaveAsTaskManager->save(); });
@@ -293,7 +304,6 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 				emit mEventsForKitPlugin.robotModelChanged(model.name());
 			}
 			);
-
 }
 
 void RobotsPluginFacade::sync()

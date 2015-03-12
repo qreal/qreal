@@ -58,7 +58,7 @@ ReadOnlyFlags SaveAsTaskDialog::readOnlyFlags() const
 	setFlag(ReadOnly::World, mWorldReadOnlyCheckBox);
 	setFlag(ReadOnly::Sensors, mSensorsReadOnlyCheckBox);
 	setFlag(ReadOnly::RobotPosition, mRobotPositionReadOnlyCheckBox);
-	setFlag(ReadOnly::RobotConfiguration, mRobotConfigurationReadOnlyCheckBox);
+	setFlag(ReadOnly::RobotSetup, mRobotConfigurationReadOnlyCheckBox);
 	setFlag(ReadOnly::SimulationSettings, mSimulationSettingsReadOnlyCheckBox);
 
 	return result;

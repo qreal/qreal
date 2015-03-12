@@ -30,6 +30,8 @@ public:
 	explicit RobotsSettingsPage(
 			KitPluginManager &kitPluginManager
 			, RobotModelManager &robotModelManager
+			, qReal::SystemEvents &systemEvents
+			, qReal::LogicalModelAssistInterface &logicalModel
 			, QWidget *parent = nullptr
 			);
 

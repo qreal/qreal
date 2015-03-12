@@ -20,7 +20,7 @@ enum ReadOnlyEnum {
 	, RobotPosition = 4
 
 	/// Robot model configuration parameters such as wheel to motor port bindings are read-only.
-	, RobotConfiguration = 8
+	, RobotSetup = 8
 
 	/// Simulation parameters like used physics engine and simulation speed are read-only.
 	, SimulationSettings = 16

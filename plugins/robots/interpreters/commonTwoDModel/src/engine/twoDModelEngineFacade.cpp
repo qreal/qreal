@@ -150,7 +150,7 @@ void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInt
 	load("twoDModelWorldReadOnly", interpreterBase::ReadOnly::World);
 	load("twoDModelSensorsReadOnly", interpreterBase::ReadOnly::Sensors);
 	load("twoDModelRobotPositionReadOnly", interpreterBase::ReadOnly::RobotPosition);
-	load("twoDModelRobotConfigurationReadOnly", interpreterBase::ReadOnly::RobotConfiguration);
+	load("twoDModelRobotConfigurationReadOnly", interpreterBase::ReadOnly::RobotSetup);
 	load("twoDModelSimulationSettingsReadOnly", interpreterBase::ReadOnly::SimulationSettings);
 
 	mView->setInteractivityFlags(readOnlyFlags);

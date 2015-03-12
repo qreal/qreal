@@ -40,7 +40,7 @@ void SaveAsTaskManager::save()
 	save("twoDModelWorldReadOnly", ReadOnly::World);
 	save("twoDModelSensorsReadOnly", ReadOnly::Sensors);
 	save("twoDModelRobotPositionReadOnly", ReadOnly::RobotPosition);
-	save("twoDModelRobotConfigurationReadOnly", ReadOnly::RobotConfiguration);
+	save("twoDModelRobotConfigurationReadOnly", ReadOnly::RobotSetup);
 	save("twoDModelSimulationSettingsReadOnly", ReadOnly::SimulationSettings);
 
 	QString fileName = utils::QRealFileDialog::getSaveFileName("SaveAsTask"
@@ -59,10 +59,6 @@ void SaveAsTaskManager::save()
 
 	const QString currentWorkingFile = mRepoControlApi.workingFile();
 
-	if (currentWorkingFile.isEmpty()) {
-		return;
-	}
-
 	mRepoControlApi.saveTo(fileName);
 
 	// Restore old flags.
@@ -73,7 +69,7 @@ void SaveAsTaskManager::save()
 	save("twoDModelWorldReadOnly", ReadOnly::World);
 	save("twoDModelSensorsReadOnly", ReadOnly::Sensors);
 	save("twoDModelRobotPositionReadOnly", ReadOnly::RobotPosition);
-	save("twoDModelRobotConfigurationReadOnly", ReadOnly::RobotConfiguration);
+	save("twoDModelRobotConfigurationReadOnly", ReadOnly::RobotSetup);
 	save("twoDModelSimulationSettingsReadOnly", ReadOnly::SimulationSettings);
 
 	// Save model again to set its working directory to old value.

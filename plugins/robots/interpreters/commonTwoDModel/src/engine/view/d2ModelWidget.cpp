@@ -676,7 +676,7 @@ void D2ModelWidget::setInteractivityFlags(int flags)
 	mUi->loadWorldModelPushButton->setVisible(!worldReadOnly);
 
 	const bool sensorsReadOnly = (flags & ReadOnly::Sensors) != 0;
-	const bool robotConfigurationReadOnly = (flags & ReadOnly::RobotConfiguration) != 0;
+	const bool robotConfigurationReadOnly = (flags & ReadOnly::RobotSetup) != 0;
 
 	setTabHidden(mUi->portsTab, sensorsReadOnly && robotConfigurationReadOnly);
 

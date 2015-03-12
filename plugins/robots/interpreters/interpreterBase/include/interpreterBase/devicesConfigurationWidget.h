@@ -19,7 +19,8 @@ class RobotModelInterface;
 }
 
 /// A number of combo boxes for devices selection.
-class ROBOTS_INTERPRETER_BASE_EXPORT DevicesConfigurationWidget : public QScrollArea, public DevicesConfigurationProvider
+class ROBOTS_INTERPRETER_BASE_EXPORT DevicesConfigurationWidget : public QScrollArea
+		, public DevicesConfigurationProvider
 {
 	Q_OBJECT
 

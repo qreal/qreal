@@ -15,9 +15,10 @@ using namespace interpreterCore::ui;
 using namespace interpreterBase;
 using namespace qReal;
 
-RobotsSettingsPage::RobotsSettingsPage(
-		KitPluginManager &kitPluginManager
+RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager
 		, RobotModelManager &robotModelManager
+		, SystemEvents &systemEvents
+		, LogicalModelAssistInterface &logicalModel
 		, QWidget *parent)
 	: PreferencesPage(parent)
 	, mUi(new Ui::PreferencesRobotSettingsPage)
@@ -34,6 +35,16 @@ RobotsSettingsPage::RobotsSettingsPage(
 	mUi->devicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mUi->devicesConfigurer, &DevicesConfigurationWidget::selectRobotModel);
+
+	const auto onActiveTabChanged = [this, &logicalModel] (const qReal::Id &id)
+	{
+		Q_UNUSED(id);
+
+		mUi->devicesConfigurer->setEnabled(
+				!logicalModel.logicalRepoApi().metaInformation("twoDModelSensorsReadOnly").toBool());
+	};
+
+	connect(&systemEvents, &SystemEvents::activeTabChanged, onActiveTabChanged);
 
 	restoreSettings();
 	saveSelectedRobotModel();
