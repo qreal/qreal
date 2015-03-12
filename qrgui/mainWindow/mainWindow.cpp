@@ -161,8 +161,9 @@ void MainWindow::connectActions()
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
-	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
+	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
+	mUi->actionNew_Diagram->setVisible(mToolManager.customizer()->enableNewDiagramAction());
 
 	connect(mUi->logicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromLogicalExplorer);
@@ -1103,7 +1104,10 @@ void MainWindow::setDefaultShortcuts()
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
-	mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+	if (mToolManager.customizer()->enableNewDiagramAction()) {
+		mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+		HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
+	}
 
 	// TODO: bind Ctrl+P to print when it will be repaired
 	// TODO: bind Ctrl+F to find dialog when it will be repaired
@@ -1112,7 +1116,6 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("File.Save", tr("Save project"), mUi->actionSave);
 	HotKeyManager::setCommand("File.SaveAs", tr("Save project as"), mUi->actionSave_as);
 	HotKeyManager::setCommand("File.NewProject", tr("New project"), mUi->actionNewProject);
-	HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
 	HotKeyManager::setCommand("Editor.Undo", tr("Undo"), mUi->actionUndo);
 	HotKeyManager::setCommand("Editor.Redo", tr("Redo"), mUi->actionRedo);
 	HotKeyManager::setCommand("Editor.ZoomIn", tr("Zoom In"), mUi->actionZoom_In);
@@ -1625,6 +1628,16 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
 			if (toolbar) {
 				toolbar->addAction(action.action());
+				connect(action.action(), &QAction::changed, [toolbar]() {
+					for (QAction * const action : toolbar->actions()) {
+						if (action->isVisible()) {
+							toolbar->setVisible(true);
+							return;
+						}
+					}
+
+					toolbar->hide();
+				});
 			}
 		}
 	}

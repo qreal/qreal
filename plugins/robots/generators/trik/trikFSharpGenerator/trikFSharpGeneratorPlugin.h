@@ -1,6 +1,7 @@
 #pragma once
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
+#include "trikFSharpAdditionalPreferences.h"
 
 namespace trik {
 namespace fSharp {
@@ -14,10 +15,12 @@ class TrikFSharpGeneratorPlugin : public TrikGeneratorPluginBase
 
 public:
 	TrikFSharpGeneratorPlugin();
+	~TrikFSharpGeneratorPlugin();
 
 	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
+	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
@@ -51,6 +54,9 @@ private:
 
 	/// Action that stops script execution and turns off motors.
 	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
+
+	TrikFSharpAdditionalPreferences *mAdditionalPreferences = nullptr;  //Transfers ownership
+	bool mOwnsAdditionalPreferences = true;
 };
 
 }

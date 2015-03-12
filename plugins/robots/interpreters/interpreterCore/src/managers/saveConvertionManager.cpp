@@ -149,6 +149,7 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 				, { "trikKitInterpreter", "trik" }
 				, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
 				, { "nxtKitRobot", "nxtKitUsbRobot" }
+				, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
 	})});
 }
 

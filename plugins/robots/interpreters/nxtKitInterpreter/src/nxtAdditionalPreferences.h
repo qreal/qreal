@@ -27,11 +27,10 @@ private slots:
 	void manualComPortCheckboxChecked(bool state);
 
 private:
-	QString selectedCommunication() const;
 	QString selectedPortName() const;
 
 	Ui::NxtAdditionalPreferences *mUi;
-	const QString mRealRobotName;
+	const QString mBluetoothRobotName;
 };
 
 }

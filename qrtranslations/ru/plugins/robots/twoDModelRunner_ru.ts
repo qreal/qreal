@@ -18,5 +18,10 @@
         <source>Run emulation in background.</source>
         <translation>Произвести эмуляцию в фоне.</translation>
     </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/twoDModelRunner/main.cpp" line="40"/>
+        <source>Use this option set to &quot;minimal&quot; to disable connection to X server</source>
+        <translation>Используйте эту опцию, установленную в &quot;minimal&quot; для того, чтобы запустить программу без X-сервера</translation>
+    </message>
 </context>
 </TS>
