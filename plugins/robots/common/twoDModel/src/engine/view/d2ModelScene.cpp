@@ -6,6 +6,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <qrutils/deleteLaterHelper.h>
 
 #include "robotItem.h"
 
@@ -39,7 +40,7 @@ D2ModelScene::D2ModelScene(model::Model &model
 	});
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &QGraphicsScene::addItem);
 	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &QGraphicsScene::addItem);
-	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [](QGraphicsItem *item) { delete item; });
+	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &D2ModelScene::onItemRemoved);
 
 	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
 	connect(&mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
@@ -95,6 +96,12 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 	delete robotItem;
 
 	emit robotListChanged(nullptr);
+}
+
+void D2ModelScene::onItemRemoved(QGraphicsItem *item)
+{
+	removeItem(item);
+	utils::DeleteLaterHelper<QGraphicsItem>::deleteLater(item);
 }
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
