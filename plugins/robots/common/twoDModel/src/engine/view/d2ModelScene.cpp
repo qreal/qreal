@@ -1,5 +1,4 @@
 #include "d2ModelScene.h"
-
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
@@ -101,6 +100,8 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 void D2ModelScene::onItemRemoved(QGraphicsItem *item)
 {
 	removeItem(item);
+	// We delete the item not immediately cause in other handlers of WorldModel`s itemRemoved() signal
+	// it may still be used.
 	utils::DeleteLaterHelper<QGraphicsItem>::deleteLater(item);
 }
 
