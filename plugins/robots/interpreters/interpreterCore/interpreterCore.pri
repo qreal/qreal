@@ -1,19 +1,15 @@
 QT += svg xml widgets
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/src/ \
-	$$PWD/../interpreterBase/include/ \
-	$$PWD/../commonTwoDModel/include/ \
-	$$PWD/../../generators/generatorBase/include/ \
-	$$PWD/../../utils/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui/ \
-	$$PWD/../../../../qrtext/include \
+includes(plugins/robots/interpreters/interpreterCore \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/twoDModel `\
+		plugins/robots/utils \
+		qrtext \
+)
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
-		qrgui-tool-plugin-interface robots-interpreter-base robots-utils robots-common-2d-model \
-		)
+		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model \
+)
 
 HEADERS += \
 	$$PWD/include/interpreterCore/robotsPluginFacade.h \

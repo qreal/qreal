@@ -8,12 +8,17 @@
         <translation type="vanished">Файл с исходным кодом на Школьном Алгоритмическом Языке</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtRussianCGenerator/nxtRussianCGeneratorPlugin.cpp" line="32"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtRussianCGenerator/nxtRussianCGeneratorPlugin.cpp" line="11"/>
+        <source>Generation (Russian C)</source>
+        <translation>Генерация (ШАЯ)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtRussianCGenerator/nxtRussianCGeneratorPlugin.cpp" line="14"/>
         <source>Generate to Russian C</source>
         <translation>Генерировать на Школьном Алгоритмическом Языке</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtRussianCGenerator/nxtRussianCGeneratorPlugin.cpp" line="44"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtRussianCGenerator/nxtRussianCGeneratorPlugin.cpp" line="28"/>
         <source>Generate Russian C Code</source>
         <translation>Сгенерировать код на Школьном Алгоритмическом Языке</translation>
     </message>

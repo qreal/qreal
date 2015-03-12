@@ -36,7 +36,10 @@ int main(int argc, char *argv[])
 	parser.addVersionOption();
 	parser.addPositionalArgument("qrs-file", QObject::tr("Save file to be interpreted."));
 	QCommandLineOption backgroundOption({"b", "background"}, QObject::tr("Run emulation in background."));
+	QCommandLineOption platformOption("platform"
+			, QObject::tr("Use this option set to \"minimal\" to disable connection to X server"), "minimal");
 	parser.addOption(backgroundOption);
+	parser.addOption(platformOption);
 
 	qsrand(time(0));
 	initLogging();

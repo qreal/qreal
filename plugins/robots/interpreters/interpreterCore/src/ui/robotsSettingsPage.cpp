@@ -6,13 +6,13 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
-#include <interpreterBase/additionalPreferences.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include <kitBase/additionalPreferences.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 #include "interpreterCore/managers/robotModelManager.h"
 
 using namespace interpreterCore::ui;
-using namespace interpreterBase;
+using namespace kitBase;
 using namespace qReal;
 
 RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager
@@ -84,15 +84,19 @@ void RobotsSettingsPage::initializeKitRadioButtons()
 QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(const QString &kitId, QRadioButton * const kitButton)
 {
 	QButtonGroup * const result = new QButtonGroup(kitButton);
+	QList<robotModel::RobotModelInterface *> robotModels;
 	for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
-		for (auto &robotModel : kitPlugin->robotModels()) {
-			QRadioButton * const button = new QRadioButton(robotModel->friendlyName(), this);
-			button->setObjectName(kitId + robotModel->name());
-			button->hide();
-			mButtonsToRobotModelsMapping[button] = robotModel;
-			connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
-			result->addButton(button);
-		}
+		robotModels += kitPlugin->robotModels();
+	}
+
+	robotModel::RobotModelUtils::sortRobotModels(robotModels);
+	for (auto robotModel : robotModels) {
+		QRadioButton * const button = new QRadioButton(robotModel->friendlyName(), this);
+		button->setObjectName(kitId + robotModel->name());
+		button->hide();
+		mButtonsToRobotModelsMapping[button] = robotModel;
+		connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
+		result->addButton(button);
 	}
 
 	return result;

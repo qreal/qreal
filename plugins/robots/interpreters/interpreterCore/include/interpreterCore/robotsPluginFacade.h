@@ -4,8 +4,8 @@
 #include <QtCore/QScopedPointer>
 
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
-#include <interpreterBase/eventsForKitPluginInterface.h>
-#include <interpreterBase/devicesConfigurationWidget.h>
+#include <kitBase/eventsForKitPluginInterface.h>
+#include <kitBase/devicesConfigurationWidget.h>
 
 #include "interpreterCore/customizer.h"
 #include "interpreterCore/managers/kitPluginManager.h"
@@ -65,7 +65,7 @@ private:
 	void initKitPlugins(const qReal::PluginConfigurator &configurer);
 
 	void initFactoriesFor(const QString &kitId
-			, const interpreterBase::robotModel::RobotModelInterface *model
+			, const kitBase::robotModel::RobotModelInterface *model
 			, const qReal::PluginConfigurator &configurer);
 
 	void connectEventsForKitPlugin();
@@ -92,13 +92,13 @@ private:
 	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
 	QScopedPointer<ExerciseExportManager> mSaveAsTaskManager;
 
-	interpreterBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
+	kitBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 
 	BlocksFactoryManager mBlocksFactoryManager;
 
-	interpreterBase::EventsForKitPluginInterface mEventsForKitPlugin;
+	kitBase::EventsForKitPluginInterface mEventsForKitPlugin;
 };
 
 }

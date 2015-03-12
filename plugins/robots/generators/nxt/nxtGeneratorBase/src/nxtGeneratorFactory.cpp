@@ -16,7 +16,7 @@ using namespace generatorBase::simple;
 
 NxtGeneratorFactory::NxtGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)

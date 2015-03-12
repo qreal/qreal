@@ -1,7 +1,7 @@
 #pragma once
 
 #include <qrutils/interpreter/block.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <kitBase/robotModel/robotModelInterface.h>
 
 namespace utils {
 class AbstractTimer;
@@ -19,7 +19,7 @@ class TimerBlock : public qReal::interpretation::Block
 	Q_OBJECT
 
 public:
-	explicit TimerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	explicit TimerBlock(kitBase::robotModel::RobotModelInterface &robotModel);
 	~TimerBlock() override;
 
 	void run() override;

@@ -4,7 +4,7 @@
 #include <QtWidgets/QRadioButton>
 
 #include <qrgui/preferencesDialog/preferencesPage.h>
-#include <interpreterBase/devicesConfigurationProvider.h>
+#include <kitBase/devicesConfigurationProvider.h>
 
 #include "interpreterCore/managers/kitPluginManager.h"
 #include "interpreterCore/managers/robotModelManager.h"
@@ -18,7 +18,7 @@ namespace ui {
 
 /// Preferences page for robots interpreter plugin. Contains constructor kit selector and a placeholder for
 /// kit-specific settings.
-class RobotsSettingsPage : public qReal::gui::PreferencesPage, public interpreterBase::DevicesConfigurationProvider
+class RobotsSettingsPage : public qReal::gui::PreferencesPage, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -80,7 +80,7 @@ private:
 
 	/// Has ownership over buttons indirectly, via Qt parent-child memory management system.
 	/// Does not have ownership over robot models.
-	QHash<QAbstractButton *, interpreterBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
+	QHash<QAbstractButton *, kitBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
 
 	/// Reference to logical model, to be able to change settings for current save, for example, disable sensors
 	/// changes when save explicitly prohibits it.

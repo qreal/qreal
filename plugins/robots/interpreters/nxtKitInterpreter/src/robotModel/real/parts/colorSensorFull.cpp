@@ -1,11 +1,11 @@
 #include "colorSensorFull.h"
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
+using namespace nxt::robotModel::real::parts;
 
-ColorSensorFull::ColorSensorFull(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+ColorSensorFull::ColorSensorFull(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::ColorSensorFull(info, port)
+	: kitBase::robotModel::robotParts::ColorSensorFull(info, port)
 	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORFULL)
 {
 	connect(&mImpl, &ColorSensorImpl::newData, this, &ColorSensorFull::newData);

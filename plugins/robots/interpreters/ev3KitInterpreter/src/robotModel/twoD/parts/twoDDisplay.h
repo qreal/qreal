@@ -21,8 +21,8 @@ class Display : public robotModel::parts::NxtDisplay, public graphicsUtils::Pain
 	Q_OBJECT
 
 public:
-	Display(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	Display(kitBase::robotModel::DeviceInfo const &info
+			, kitBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void drawPixel(int x, int y) override;

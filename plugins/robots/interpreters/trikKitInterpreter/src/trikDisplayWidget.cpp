@@ -4,7 +4,7 @@
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
 
-using namespace trikKitInterpreter;
+using namespace trik;
 
 TrikDisplayWidget::TrikDisplayWidget(QWidget *parent)
 	: twoDModel::engine::TwoDModelDisplayWidget(parent)

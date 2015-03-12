@@ -1,22 +1,22 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+#include <kitBase/robotModel/robotParts/rangeSensor.h>
 #include "nxtInputDevice.h"
 #include "communication/i2cCommunicator.h"
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class SonarSensor : public interpreterBase::robotModel::robotParts::RangeSensor
+class SonarSensor : public kitBase::robotModel::robotParts::RangeSensor
 {
 	Q_OBJECT
 	Q_CLASSINFO("friendlyName", tr("Sonar sensor"))
 
 public:
-	SonarSensor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	SonarSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

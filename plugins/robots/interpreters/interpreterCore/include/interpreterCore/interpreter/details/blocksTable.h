@@ -1,7 +1,7 @@
 #pragma once
 
 #include <qrutils/interpreter/blocksTableBase.h>
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
 
 #include "interpreterCore/managers/blocksFactoryManagerInterface.h"
 
@@ -9,7 +9,7 @@ namespace interpreterCore {
 namespace interpreter {
 namespace details {
 
-/// Implementation of blocks table functionality required by InterpreterBase.
+/// Implementation of blocks table functionality required by kitBase.
 /// Provides mapping from block ids to objects that implement logic of block, also creates blocks when needed, so
 /// clients can simply request a block by given id, and a block table will do the rest.
 /// Also supports operations that shall be performed on all blocks in a system, such as setting failure or idle flags.
@@ -21,13 +21,13 @@ public:
 	/// @param blocksFactoryManager - a factory manager that is used to create new blocks when needed.
 	/// @param robotModelManager - has a reference to current robot model.
 	BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager);
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager);
 
 private:
 	qReal::interpretation::BlockInterface *produceBlock(const qReal::Id &element) override;
 
 	BlocksFactoryManagerInterface &mBlocksFactoryManager;
-	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 };
 
 }

@@ -1,22 +1,22 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
+#include <kitBase/robotModel/robotParts/colorSensorFull.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
 #include "implementations/colorSensorImpl.h"
 
-namespace ev3KitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class ColorSensorFull : public interpreterBase::robotModel::robotParts::ColorSensorFull
+class ColorSensorFull : public kitBase::robotModel::robotParts::ColorSensorFull
 {
 	Q_OBJECT
 
 public:
-	ColorSensorFull(const interpreterBase::robotModel::DeviceInfo &info
-			  , const interpreterBase::robotModel::PortInfo &port
+	ColorSensorFull(const kitBase::robotModel::DeviceInfo &info
+			  , const kitBase::robotModel::PortInfo &port
 			  , utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

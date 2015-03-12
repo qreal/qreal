@@ -525,7 +525,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">2D модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="15"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="16"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -534,12 +534,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="16"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="17"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="17"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="18"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
@@ -579,7 +579,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="18"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="19"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -708,9 +708,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ActionsManager</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="185"/>
         <source>Switch to </source>
-        <translation>Переключиться в режим </translation>
+        <translation type="vanished">Переключиться в режим </translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="215"/>
+        <source>Switch to</source>
+        <translation>Переключиться в режим</translation>
     </message>
 </context>
 <context>
@@ -930,7 +934,7 @@ p, li { white-space: pre-wrap; }
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="198"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="191"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>

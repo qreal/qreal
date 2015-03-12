@@ -2,12 +2,12 @@
 
 #include <QtCore/QByteArray>
 
-#include <interpreterBase/robotModel/robotParts/abstractSensor.h>
+#include <kitBase/robotModel/robotParts/abstractSensor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-#include "commandConstants.h"
+#include "src/commandConstants.h"
 
-namespace ev3KitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -19,7 +19,7 @@ class Ev3InputDevice : public QObject
 public:
 
 	Ev3InputDevice(utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, const interpreterBase::robotModel::PortInfo &port
+			, const kitBase::robotModel::PortInfo &port
 			, SensorTypeEnum lowLevelSensorType
 			, INPUT_DEVICE_SUBCODE sensorMode);
 

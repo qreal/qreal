@@ -1,11 +1,11 @@
 #include "accelerometer.h"
 
-using namespace trikKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 Accelerometer::Accelerometer(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::AccelerometerSensor(info, port)
+	: kitBase::robotModel::robotParts::AccelerometerSensor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
 	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData

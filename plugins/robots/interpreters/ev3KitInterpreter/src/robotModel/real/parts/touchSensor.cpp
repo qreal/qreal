@@ -1,13 +1,12 @@
 #include "touchSensor.h"
-#include <QDebug>
 
 const unsigned touchSensorResponseSize = 9;
 
-using namespace ev3KitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace ev3::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
-TouchSensor::TouchSensor(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+TouchSensor::TouchSensor(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: robotParts::TouchSensor(info, port)
 	, mImplementation(robotCommunicator, port, SWITCH, READY_SI)

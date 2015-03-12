@@ -4,7 +4,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
 
 #include "interpreterCore/textLanguage/robotsBlockParser.h"
 
@@ -26,7 +26,7 @@ public:
 	/// Constructor.
 	/// @param robotModelManager - has reference to current robot model.
 	/// @param parser - contains sensor variables and is needed here to update them.
-	SensorVariablesUpdater(const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+	SensorVariablesUpdater(const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::DebuggerInterface &textLanguageToolbox
 			);
 
@@ -47,10 +47,10 @@ private slots:
 private:
 	int updateInterval() const;
 
-	void updateScalarSensorVariables(const interpreterBase::robotModel::PortInfo &sensorPortInfo, int reading);
+	void updateScalarSensorVariables(const kitBase::robotModel::PortInfo &sensorPortInfo, int reading);
 	void updateScalarSensorVariable(const QString &variable, int reading);
 
-	void updateVectorSensorVariables(const interpreterBase::robotModel::PortInfo &sensorPortInfo
+	void updateVectorSensorVariables(const kitBase::robotModel::PortInfo &sensorPortInfo
 			, const QVector<int> &reading);
 
 	void updateVectorSensorVariable(const QString &variable, const QVector<int> &reading);
@@ -58,7 +58,7 @@ private:
 	void resetVariables();
 
 	QScopedPointer<utils::AbstractTimer> mUpdateTimer;
-	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	qrtext::DebuggerInterface &mParser;
 };
 
