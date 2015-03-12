@@ -1,9 +1,11 @@
 #include "button.h"
 
+#include "src/commandConstants.h"
+
 const unsigned buttonResponseSize = 6;
 
-using namespace ev3KitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace ev3::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 Button::Button(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)

@@ -24,7 +24,7 @@ QImage Customizer::applicationLogo() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.0.2";
+	return "3.0.2.1";
 }
 
 QString Customizer::aboutText() const
@@ -38,6 +38,11 @@ QString Customizer::examplesDirectory() const
 }
 
 bool Customizer::showInterpeterButton() const
+{
+	return false;
+}
+
+bool Customizer::enableNewDiagramAction() const
 {
 	return false;
 }

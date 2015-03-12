@@ -5,7 +5,7 @@
 
 #include <qrtext/core/types/typeExpression.h>
 #include <qrrepo/repoApi.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <kitBase/robotModel/robotModelInterface.h>
 
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
@@ -23,7 +23,7 @@ class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
 	Variables(const QString &pathToTemplates
-			, const interpreterBase::robotModel::RobotModelInterface &robotModel
+			, const kitBase::robotModel::RobotModelInterface &robotModel
 			, qrtext::LanguageToolboxInterface &luaToolbox);
 
 	/// Returns global variables declarations string
@@ -43,7 +43,7 @@ protected:
 	QString variableDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
 
 private:
-	const interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+	const kitBase::robotModel::RobotModelInterface &mRobotModel;
 	qrtext::LanguageToolboxInterface &mLuaToolbox;
 	QStringList mManualDeclarations;
 };

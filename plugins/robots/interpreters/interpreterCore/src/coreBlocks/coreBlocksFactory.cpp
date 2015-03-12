@@ -17,8 +17,8 @@
 #include "details/printTextBlock.h"
 #include "details/clearScreenBlock.h"
 
-#include <commonTwoDModel/blocks/markerDownBlock.h>
-#include <commonTwoDModel/blocks/markerUpBlock.h>
+#include <twoDModel/blocks/markerDownBlock.h>
+#include <twoDModel/blocks/markerUpBlock.h>
 
 using namespace interpreterCore::coreBlocks;
 

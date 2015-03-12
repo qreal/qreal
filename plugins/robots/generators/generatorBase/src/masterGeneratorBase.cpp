@@ -18,7 +18,7 @@ using namespace qReal;
 
 MasterGeneratorBase::MasterGeneratorBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const utils::ParserErrorReporter &parserErrorReporter
 		, const Id &diagramId)

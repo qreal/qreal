@@ -9,11 +9,11 @@
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 #include <utils/tracer.h>
 
-#include "commandConstants.h"
+#include "src/commandConstants.h"
 
 const unsigned keepAliveResponseSize = 5;
 
-using namespace ev3KitInterpreter::communication;
+using namespace ev3::communication;
 
 BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
 	: mPort(nullptr)

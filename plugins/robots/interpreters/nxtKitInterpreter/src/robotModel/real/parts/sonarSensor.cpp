@@ -1,13 +1,13 @@
 #include "sonarSensor.h"
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 SonarSensor::SonarSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 
-	: interpreterBase::robotModel::robotParts::RangeSensor(info, port)
+	: kitBase::robotModel::robotParts::RangeSensor(info, port)
 	, mImplementation(robotCommunicator, port
 			, enums::lowLevelSensorType::LOWSPEED_9V, enums::sensorMode::RAWMODE)
 	, mI2C(robotCommunicator)
@@ -63,12 +63,12 @@ void SonarSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 	}
 }
 
-void SonarSensor::setMode(nxtKitInterpreter::enums::sonarMode::SonarModeEnum mode)
+void SonarSensor::setMode(nxt::enums::sonarMode::SonarModeEnum mode)
 {
 	writeRegister(enums::sonarRegisters::COMMAND, mode);
 }
 
-void SonarSensor::writeRegister(nxtKitInterpreter::enums::sonarRegisters::SonarRegistersEnum reg, int value)
+void SonarSensor::writeRegister(nxt::enums::sonarRegisters::SonarRegistersEnum reg, int value)
 {
 	QByteArray command(3, 0);
 	command[0] = enums::sonarRegisters::SONAR_ADDRESS;

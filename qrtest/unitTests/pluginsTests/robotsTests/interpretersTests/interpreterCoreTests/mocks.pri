@@ -5,6 +5,6 @@ HEADERS += \
 
 HEADERS += \
 	../../../../mocks/plugins/robots/interpreters/interpreterCore/managers/blocksFactoryManagerInterfaceMock.h \
-	../../../../mocks/plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/configurationInterfaceMock.h \
-	../../../../mocks/plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/robotModelInterfaceMock.h \
-	../../../../mocks/plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/robotModelManagerInterfaceMock.h \
+	../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/configurationInterfaceMock.h \
+	../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h \
+	../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \

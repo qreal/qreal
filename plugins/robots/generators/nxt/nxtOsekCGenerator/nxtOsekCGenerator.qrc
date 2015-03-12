@@ -1,7 +1,10 @@
 <RCC>
-    <qresource prefix="/nxt/">
+    <qresource prefix="/nxt/osek">
         <file>images/generateOsekCode.svg</file>
         <file>images/flashRobot.svg</file>
         <file>images/uploadProgram.svg</file>
+        <file>images/switch-to-nxt-osek-c.svg</file>
+        <file>images/run.png</file>
+        <file>images/stop.png</file>
     </qresource>
 </RCC>

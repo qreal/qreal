@@ -12,8 +12,8 @@ namespace parts {
 class TwoDMotor : public robotModel::parts::NxtMotor
 {
 public:
-	TwoDMotor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port
+	TwoDMotor(kitBase::robotModel::DeviceInfo const &info
+			, kitBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void on(int speed, long unsigned int degrees, bool breakMode) override;

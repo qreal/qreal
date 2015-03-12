@@ -3,14 +3,14 @@
 #include <utils/tracer.h>
 #include <utils/timelineInterface.h>
 #include <utils/abstractTimer.h>
-#include <interpreterBase/robotModel/robotParts/scalarSensor.h>
-#include <interpreterBase/robotModel/robotParts/vectorSensor.h>
+#include <kitBase/robotModel/robotParts/scalarSensor.h>
+#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 static const int unrealUpdateInterval = 20;
 static const int realUpdateInterval = 200;
 
 using namespace interpreterCore::interpreter::details;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 SensorVariablesUpdater::SensorVariablesUpdater(const RobotModelManagerInterface &robotModelManager
 		, qrtext::DebuggerInterface &textLanguageToolbox

@@ -1,53 +1,21 @@
 QT += widgets network
 
-includes(plugins/robots/interpreters/interpreterBase plugins/robots/interpreters/commonTwoDModel plugins/robots/utils qrtext plugins/robots/interpreters/trikKitInterpreter/src)
-	$$PWD/../../../../../thirdparty/qslog \
+includes(plugins/robots/common/kitBase \
+		plugins/robots/common/twoDModel \
+		plugins/robots/common/trikKit \
+		plugins/robots/utils \
+		qrtext \
+		plugins/robots/interpreters/trikKitInterpreter/src)
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-interpreter-base robots-common-2d-model qextserialport \
-		qslog \
+		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog \
 		)
 
 HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
 	$$PWD/trikDisplayWidget.h \
 	$$PWD/trikKitInterpreterPlugin.h \
-	$$PWD/trikFSharpAdditionalPreferences.h \
-	$$PWD/blocks/trikBlocksFactory.h \
-	$$PWD/blocks/details/setBackgroundBlock.h \
-	$$PWD/blocks/details/smileBlock.h \
-	$$PWD/blocks/details/trikEnginesForwardBlock.h \
-	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
-	$$PWD/blocks/details/waitForMotionBlock.h \
-	$$PWD/blocks/details/speakerBlock.h \
-	$$PWD/blocks/details/ledBlock.h \
-	$$PWD/blocks/details/sayBlock.h \
-	$$PWD/blocks/details/systemCommandBlock.h \
-	$$PWD/blocks/details/waitGamepadButtonBlock.h \
-	$$PWD/blocks/details/waitGamepadConnectBlock.h \
-	$$PWD/blocks/details/waitGamepadDisconnectBlock.h \
-	$$PWD/blocks/details/waitGamepadWheelBlock.h \
-	$$PWD/blocks/details/waitPadPressBlock.h \
-	$$PWD/robotModel/trikRobotModelBase.h \
-	$$PWD/robotModel/parts/trikColorSensor.h \
-	$$PWD/robotModel/parts/trikDisplay.h \
-	$$PWD/robotModel/parts/trikGamepadButton.h \
-	$$PWD/robotModel/parts/trikGamepadConnectionIndicator.h \
-	$$PWD/robotModel/parts/trikGamepadPad.h \
-	$$PWD/robotModel/parts/trikGamepadPadPressSensor.h \
-	$$PWD/robotModel/parts/trikGamepadWheel.h \
-	$$PWD/robotModel/parts/trikSpeaker.h \
-	$$PWD/robotModel/parts/trikPowerMotor.h \
-	$$PWD/robotModel/parts/trikServoMotor.h \
-	$$PWD/robotModel/parts/trikInfraredSensor.h \
-	$$PWD/robotModel/parts/trikLed.h \
-	$$PWD/robotModel/parts/trikLineSensor.h \
-	$$PWD/robotModel/parts/trikMotionSensor.h \
-	$$PWD/robotModel/parts/trikSonarSensor.h \
-	$$PWD/robotModel/parts/trikObjectSensor.h \
-	$$PWD/robotModel/parts/trikShell.h \
-	$$PWD/robotModel/real/realRobotModelBase.h \
-	$$PWD/robotModel/real/realRobotModelV6.h \
+	$$PWD/robotModel/real/realRobotModel.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
 	$$PWD/robotModel/real/parts/button.h \
@@ -78,54 +46,12 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDLineSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDObjectSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDColorSensor.h \
-	$$PWD/blocks/details/drawLineBlock.h \
-	$$PWD/blocks/details/drawPixelBlock.h \
-	$$PWD/blocks/details/drawRectBlock.h \
-	$$PWD/blocks/details/drawEllipseBlock.h \
-	$$PWD/blocks/details/drawArcBlock.h \
-	$$PWD/blocks/details/setPainterWidthBlock.h \
-	$$PWD/blocks/details/setPainterColorBlock.h \
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
-	$$PWD/trikFSharpAdditionalPreferences.cpp \
 	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikDisplayWidget.cpp \
-	$$PWD/blocks/trikBlocksFactory.cpp \
-	$$PWD/blocks/details/setBackgroundBlock.cpp \
-	$$PWD/blocks/details/smileBlock.cpp \
-	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
-	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
-	$$PWD/blocks/details/waitForMotionBlock.cpp \
-	$$PWD/blocks/details/speakerBlock.cpp \
-	$$PWD/blocks/details/ledBlock.cpp \
-	$$PWD/blocks/details/sayBlock.cpp \
-	$$PWD/blocks/details/systemCommandBlock.cpp \
-	$$PWD/blocks/details/waitGamepadButtonBlock.cpp \
-	$$PWD/blocks/details/waitGamepadConnectBlock.cpp \
-	$$PWD/blocks/details/waitGamepadDisconnectBlock.cpp \
-	$$PWD/blocks/details/waitGamepadWheelBlock.cpp \
-	$$PWD/blocks/details/waitPadPressBlock.cpp \
-	$$PWD/robotModel/trikRobotModelBase.cpp \
-	$$PWD/robotModel/parts/trikColorSensor.cpp \
-	$$PWD/robotModel/parts/trikDisplay.cpp \
-	$$PWD/robotModel/parts/trikGamepadButton.cpp \
-	$$PWD/robotModel/parts/trikGamepadConnectionIndicator.cpp \
-	$$PWD/robotModel/parts/trikGamepadPad.cpp \
-	$$PWD/robotModel/parts/trikGamepadPadPressSensor.cpp \
-	$$PWD/robotModel/parts/trikGamepadWheel.cpp \
-	$$PWD/robotModel/parts/trikInfraredSensor.cpp \
-	$$PWD/robotModel/parts/trikLed.cpp \
-	$$PWD/robotModel/parts/trikLineSensor.cpp \
-	$$PWD/robotModel/parts/trikMotionSensor.cpp \
-	$$PWD/robotModel/parts/trikObjectSensor.cpp \
-	$$PWD/robotModel/parts/trikPowerMotor.cpp \
-	$$PWD/robotModel/parts/trikServoMotor.cpp \
-	$$PWD/robotModel/parts/trikSonarSensor.cpp \
-	$$PWD/robotModel/parts/trikSpeaker.cpp \
-	$$PWD/robotModel/parts/trikShell.cpp \
-	$$PWD/robotModel/real/realRobotModelBase.cpp \
-	$$PWD/robotModel/real/realRobotModelV6.cpp \
+	$$PWD/robotModel/real/realRobotModel.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \
 	$$PWD/robotModel/real/parts/button.cpp \
@@ -156,18 +82,10 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDObjectSensor.cpp \
 	$$PWD/robotModel/twoD/parts/twoDColorSensor.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
-	$$PWD/blocks/details/drawLineBlock.cpp \
-	$$PWD/blocks/details/drawPixelBlock.cpp \
-	$$PWD/blocks/details/drawRectBlock.cpp \
-	$$PWD/blocks/details/drawEllipseBlock.cpp \
-	$$PWD/blocks/details/drawArcBlock.cpp \
-	$$PWD/blocks/details/setPainterWidthBlock.cpp \
-	$$PWD/blocks/details/setPainterColorBlock.cpp \
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
 	$$PWD/trikDisplayWidget.ui \
-	$$PWD/trikFSharpAdditionalPreferences.ui \
 
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \

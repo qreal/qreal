@@ -1,7 +1,7 @@
 #include "generatorBase/generatorFactoryBase.h"
 #include "generatorBase/generatorCustomizer.h"
 
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 #include "simpleGenerators/nullGenerator.h"
 #include "simpleGenerators/commentElementGenerator.h"
@@ -63,7 +63,7 @@
 using namespace generatorBase;
 using namespace qReal;
 using namespace simple;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter

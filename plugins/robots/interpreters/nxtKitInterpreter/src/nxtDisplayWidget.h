@@ -5,14 +5,14 @@
 #include <qrutils/graphicsUtils/painterInterface.h>
 #include <qrutils/graphicsUtils/paintWidget.h>
 
-#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
+#include "twoDModel/engine/twoDModelDisplayWidget.h"
 
 namespace Ui
 {
 class NxtDisplayWidget;
 }
 
-namespace nxtKitInterpreter {
+namespace nxt {
 
 class NxtDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 {

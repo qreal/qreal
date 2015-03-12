@@ -1,20 +1,20 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
+#include <kitBase/robotModel/robotParts/encoderSensor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class EncoderSensor : public interpreterBase::robotModel::robotParts::EncoderSensor
+class EncoderSensor : public kitBase::robotModel::robotParts::EncoderSensor
 {
 	Q_OBJECT
 
 public:
-	EncoderSensor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	EncoderSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

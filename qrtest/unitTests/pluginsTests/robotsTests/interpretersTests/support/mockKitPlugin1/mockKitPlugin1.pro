@@ -6,10 +6,10 @@ DESTDIR = $$DESTDIR/plugins/unittests/
 
 QT += widgets
 
-links(robots-interpreter-base)
+links(robots-kit-base)
 
 INCLUDEPATH += \
-	../../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
+	../../../../../../../plugins/robots/common/kitBase/include/ \
 	../../../../../../../plugins/robots/utils/include/ \
 	../../../../../../../qrgui/ \
 	../../../../../../../ \
