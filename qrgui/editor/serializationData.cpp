@@ -19,7 +19,7 @@ QDataStream &operator<< (QDataStream &out, const EdgeData &data)
 	out << data.id << data.logicalId << data.srcId << data.dstId
 			<< data.portFrom << data.portTo
 			<< data.configuration << data.pos
-			<< data.logicalProperties;
+			<< data.shapeType << data.logicalProperties;
 	return out;
 }
 
@@ -28,7 +28,7 @@ QDataStream &operator>> (QDataStream &in, EdgeData &data)
 	in >> data.id >> data.logicalId >> data.srcId >> data.dstId
 			>> data.portFrom >> data.portTo
 			>> data.configuration >> data.pos
-			>> data.logicalProperties;
+			>> data.shapeType >> data.logicalProperties;
 	return in;
 }
 

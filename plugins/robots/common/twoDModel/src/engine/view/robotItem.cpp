@@ -1,6 +1,7 @@
 #include "robotItem.h"
 
 #include "src/engine/model/constants.h"
+#include "src/engine/items/startPosition.h"
 
 using namespace twoDModel::view;
 using namespace graphicsUtils;
@@ -14,7 +15,6 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	: RotateItem()
 	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
-	, mRotater(nullptr)
 	, mRectangleImpl()
 	, mRobotModel(robotModel)
 {
@@ -44,6 +44,8 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	mBeepItem->setParentItem(this);
 	mBeepItem->setPos((robotWidth - beepWavesSize) / 2, (robotHeight - beepWavesSize) / 2);
 	mBeepItem->setVisible(false);
+
+	RotateItem::init();
 }
 
 void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -131,11 +133,6 @@ void RobotItem::addSensor(const kitBase::robotModel::PortInfo &port, SensorItem 
 	mSensors[port] = sensor;
 	sensor->setParentItem(this);
 
-	Rotater * const rotater = new Rotater();
-	rotater->setMasterItem(sensor);
-	rotater->setVisible(false);
-	sensor->setRotater(rotater);
-
 	sensor->setPos(mRobotModel.configuration().position(port));
 	sensor->setRotation(mRobotModel.configuration().direction(port));
 }
@@ -165,31 +162,6 @@ void RobotItem::updateSensorRotation(const kitBase::robotModel::PortInfo &port)
 	}
 }
 
-void RobotItem::setRotater(Rotater *rotater)
-{
-	mRotater = rotater;
-}
-
-QRectF RobotItem::rect() const
-{
-	return boundingRect();
-}
-
-void RobotItem::setSelected(bool isSelected)
-{
-	QGraphicsItem::setSelected(isSelected);
-}
-
-void RobotItem::checkSelection()
-{
-	mRotater->setVisible(isSelected());
-}
-
-Rotater *RobotItem::rotater() const
-{
-	return mRotater;
-}
-
 void RobotItem::setNeededBeep(bool isNeededBeep)
 {
 	mBeepItem->setVisible(isNeededBeep);
@@ -205,7 +177,7 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 		mRobotModel.setRotation(rotation());
 	}
 
-	return AbstractItem::itemChange(change, value);
+	return RotateItem::itemChange(change, value);
 }
 
 void RobotItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
@@ -221,6 +193,16 @@ void RobotItem::recoverDragStartPosition()
 RobotModel &RobotItem::robotModel()
 {
 	return mRobotModel;
+}
+
+void RobotItem::returnToStartPosition()
+{
+	mRobotModel.setRotation(mRobotModel.startPositionMarker()->rotation());
+	// Here we want the center of the robot to be the position of the marker.
+	const QPointF shiftFromPicture = mapFromScene(pos());
+	const QPointF markerPos = mRobotModel.startPositionMarker()->scenePos();
+	const QPointF shiftToCenter = mapToScene(QPointF()) - mapToScene(boundingRect().center() - shiftFromPicture);
+	mRobotModel.setPosition(markerPos + shiftToCenter);
 }
 
 void RobotItem::BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option

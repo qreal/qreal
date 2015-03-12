@@ -28,11 +28,13 @@ HEADERS += \
 	$$PWD/trikFSharpGeneratorPlugin.h \
 	$$PWD/trikFSharpMasterGenerator.h \
 	$$PWD/trikFSharpAdditionalPreferences.h \
+	$$PWD/trikFSharpControlFlowValidator.h \
 
 SOURCES += \
 	$$PWD/trikFSharpGeneratorPlugin.cpp \
 	$$PWD/trikFSharpMasterGenerator.cpp \
 	$$PWD/trikFSharpAdditionalPreferences.cpp \
+	$$PWD/trikFSharpControlFlowValidator.cpp \
 
 FORMS += \
 	$$PWD/trikFSharpAdditionalPreferences.ui \

@@ -19,6 +19,7 @@ public:
 			const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
+			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
@@ -39,7 +40,8 @@ public:
 	/// Takes ownership on result.
 	/// @param initialNode The starting block of the traversal. If empty then initial node
 	/// of the diagram given in constructor will be used.
-	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id());
+	/// @param threadId The name of a thread that is to be generated.
+	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
 
 	/// Returns true if some generation errors occured and the generation process can`t be proceeded with other
 	/// control flow generators (fatal errors occured).
@@ -48,6 +50,7 @@ public:
 	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitFinal(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
+	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 
 protected:
 	/// Can be overloaded by ancestors for custom behaviour.
@@ -68,11 +71,12 @@ protected:
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
+	QString mThreadId;
 	bool mErrorsOccured;
 	const bool mIsMainGenerator;
 
 	const qReal::Id mDiagram;
-	PrimaryControlFlowValidator *mValidator;  // Takes owneship via Qt parentship system
+	PrimaryControlFlowValidator &mValidator;
 };
 
 }

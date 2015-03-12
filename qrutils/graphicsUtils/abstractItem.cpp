@@ -7,8 +7,6 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-#include <QtCore/QDebug>
-
 using namespace graphicsUtils;
 
 AbstractItem::AbstractItem(QGraphicsItem* parent)
@@ -43,7 +41,7 @@ void AbstractItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* opti
 	drawItem(painter, option, widget);
 	if (option->state & QStyle::State_Selected) {
 		painter->save();
-		setPenBrushForExtraxtion(painter, option);
+		setPenBrushForExtraction(painter, option);
 		drawExtractionForItem(painter);
 		painter->restore();
 	}
@@ -73,7 +71,7 @@ void AbstractItem::drawFieldForResizeItem(QPainter* painter)
 	painter->drawRect(x2 - resizeDrift, y1, resizeDrift, resizeDrift);
 }
 
-void AbstractItem::setPenBrushForExtraxtion(QPainter *painter, const QStyleOptionGraphicsItem *option)
+void AbstractItem::setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option)
 {
 	Q_UNUSED(option);
 	QPen pen(Qt::red);

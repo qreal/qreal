@@ -336,13 +336,17 @@
         <translation>%1 - не регион</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="128"/>
-        <source>%1 has incorrect type for mathing it with region</source>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="129"/>
+        <source>%1 has incorrect type for matching it with region</source>
         <translation>%1 не сопоставить с регионом (не тот тип)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="137"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="149"/>
+        <source>%1 has incorrect type for mathing it with region</source>
+        <translation type="vanished">%1 не сопоставить с регионом (не тот тип)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="138"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="150"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="72"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="84"/>
         <source>No such event: %1</source>
@@ -430,12 +434,12 @@
 <context>
     <name>twoDModel::constraints::ConstraintsChecker</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="70"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="72"/>
         <source>Error while parsing constraints: %1</source>
         <translation>Ошибка чтения ограничений: %1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="212"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="214"/>
         <source>Program has finished, but the task is not accomplished.</source>
         <translation>Программа отработала, но задание не выполнено.</translation>
     </message>
@@ -443,12 +447,12 @@
 <context>
     <name>twoDModel::model::Model</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/model/model.cpp" line="28"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/model/model.cpp" line="29"/>
         <source>The task is accomplished!</source>
         <translation>Задание выполнено!</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/model/model.cpp" line="36"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/model/model.cpp" line="37"/>
         <source>Error in checker: %1</source>
         <translation>Ошибка в проверяющей программе: %1</translation>
     </message>
@@ -513,74 +517,74 @@
 <context>
     <name>twoDModel::view::D2ModelWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
         <source>Black</source>
         <translation>Черный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="119"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="118"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="157"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="156"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="158"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="157"/>
         <source>Do you really want to clear scene?</source>
         <translation>Вы действительно хотите очистить сцену?</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="160"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="159"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="161"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="160"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="380"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="365"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="380"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="400"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="365"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="385"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="400"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="385"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="779"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="780"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="762"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="763"/>
         <source>No wheel</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="785"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="768"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>

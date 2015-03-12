@@ -37,7 +37,7 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
 
-	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel, &interpretersInterface] (const qReal::Id &id)
+	const auto onActiveTabChanged = [this, &graphicalModel, &logicalModel, &interpretersInterface] (const qReal::Id &id)
 	{
 		mView->setEnabled(!id.isNull());
 		const qReal::Id logicalId = graphicalModel.logicalId(id);

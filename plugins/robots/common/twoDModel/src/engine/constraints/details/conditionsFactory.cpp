@@ -126,7 +126,7 @@ Condition ConditionsFactory::inside(const QString &objectId, const QString &regi
 			return false;
 		}
 
-		reportError(QObject::tr("%1 has incorrect type for mathing it with region").arg(objectId));
+		reportError(QObject::tr("%1 has incorrect type for matching it with region").arg(objectId));
 		return false;
 	};
 }

@@ -1,11 +1,5 @@
 #pragma once
 
-#include <QtCore/QList>
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-#include <QtXml/QDomDocument>
-
-#include <qrutils/graphicsUtils/abstractItem.h>
 #include <qrutils/graphicsUtils/stylusImpl.h>
 
 #include "lineItem.h"

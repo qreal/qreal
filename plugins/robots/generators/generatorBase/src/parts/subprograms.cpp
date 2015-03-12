@@ -66,7 +66,7 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator, const QStrin
 		}
 
 		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
-		semantics::SemanticTree *controlFlow = generator->generate();
+		semantics::SemanticTree *controlFlow = generator->generate(Id(), "@@unknown@@");
 		if (!controlFlow) {
 			return false;
 		}

@@ -20,6 +20,7 @@ public:
 			const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
+			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
