@@ -29,7 +29,8 @@ HEADERS = \
 	generator/commonGenerator.h \
 	generator/generatorForProgramNode.h \
 	generator/generatorForForeachNode.h \
-	generator/generatorForComplexIdentifierNode.h
+	generator/generatorForComplexIdentifierNode.h \
+	ast/callGeneratorFor.h
 
 SOURCES = \
 	generationRulesPlugin.cpp \

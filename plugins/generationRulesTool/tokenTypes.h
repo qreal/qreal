@@ -23,6 +23,8 @@ enum class TokenTypes {
 	, newlineKeyword
 	, inKeyword
 
+	, callGeneratorForKeyword
+
 	, text
 
 	, comment
@@ -82,6 +84,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::inKeyword:
 		debug << "inKeyword ";
+		break;
+
+	case TokenTypes::callGeneratorForKeyword:
+		debug << "callGeneratorForKeyword ";
 		break;
 
 	case TokenTypes::text:

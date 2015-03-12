@@ -1,5 +1,6 @@
 #include "parser.h"
 
+#include "ast/callGeneratorFor.h"
 #include "ast/complexIdentifier.h"
 #include "ast/foreach.h"
 #include "ast/identifier.h"
@@ -70,6 +71,12 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return qrtext::wrap(new ast::Foreach(identifier, type, program));
 	};
 
+	auto callGeneratorForStatement = (-TokenTypes::callGeneratorForKeyword & -TokenTypes::openingBracket
+				& identifier & -TokenTypes::closingBracket)
+			>> [] (QSharedPointer<ast::Node> identifierNode) {
+				return qrtext::wrap(new ast::CallGeneratorFor(identifierNode));
+	};
+
 	auto text = TokenTypes::text
 			>> [] (Token<TokenTypes> const &token) {
 				return new ast::Text(token.lexeme());
@@ -80,7 +87,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Newline();
 	};
 
-	statement = text | newline | complexIdentifier | foreachStatement;
+	statement = text | newline | complexIdentifier | foreachStatement | callGeneratorForStatement;
 
 	return program.parser();
 }
