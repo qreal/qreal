@@ -7,7 +7,7 @@
 #include "src/ui/robotsSettingsPage.h"
 #include "interpreterCore/managers/paletteUpdateManager.h"
 #include "interpreterCore/managers/kitAutoSwitcher.h"
-#include "src/managers/saveAsTaskManager.h"
+#include "src/managers/exerciseExportManager.h"
 
 using namespace interpreterCore;
 
@@ -31,8 +31,11 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 {
 	mActionsManager.init(&configurer.mainWindowInterpretersInterface());
 
-	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager, configurer.systemEvents()
+	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager
 			, configurer.logicalModelApi());
+
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
+			, mRobotSettingsPage, &ui::RobotsSettingsPage::onProjectOpened);
 
 	mDevicesConfigurationManager.reset(new DevicesConfigurationManager(
 			configurer.graphicalModelApi()
@@ -91,7 +94,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
 			, mBlocksFactoryManager, mKitPluginManager, mRobotModelManager, this);
 
-	mSaveAsTaskManager.reset(new SaveAsTaskManager(configurer.logicalModelApi(), configurer.repoControlInterface()));
+	mSaveAsTaskManager.reset(new ExerciseExportManager(configurer.logicalModelApi(), configurer.repoControlInterface()));
 
 	connectInterpreterToActions();
 

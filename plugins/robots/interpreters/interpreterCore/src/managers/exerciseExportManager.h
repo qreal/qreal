@@ -10,13 +10,13 @@ class RepoControlInterface;
 
 namespace interpreterCore {
 
-class SaveAsTaskManager
+class ExerciseExportManager
 {
 public:
-	explicit SaveAsTaskManager(qReal::LogicalModelAssistInterface &logicalModel
+	explicit ExerciseExportManager(qReal::LogicalModelAssistInterface &logicalModel
 			, qrRepo::RepoControlInterface &repoControlApi);
 
-	~SaveAsTaskManager();
+	~ExerciseExportManager();
 
 	void save();
 

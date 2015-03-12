@@ -10,17 +10,17 @@ class QCheckBox;
 namespace interpreterCore {
 namespace ui {
 
-class SaveAsTaskDialog : public QDialog
+class ExerciseExportDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
 	/// Constructor.
-	explicit SaveAsTaskDialog(
+	explicit ExerciseExportDialog(
 			QWidget *parent = nullptr
 			);
 
-	~SaveAsTaskDialog() override;
+	~ExerciseExportDialog() override;
 
 	interpreterBase::ReadOnlyFlags readOnlyFlags() const;
 

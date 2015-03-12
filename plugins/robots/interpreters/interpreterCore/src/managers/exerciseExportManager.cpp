@@ -1,4 +1,4 @@
-#include "saveAsTaskManager.h"
+#include "exerciseExportManager.h"
 
 #include <QtWidgets/QFileDialog>
 
@@ -6,25 +6,25 @@
 #include <qrrepo/repoControlInterface.h>
 #include <qrutils/qRealFileDialog.h>
 
-#include "src/ui/saveAsTaskDialog.h"
+#include "src/ui/exerciseExportDialog.h"
 
 using namespace interpreterCore;
 using namespace interpreterBase;
 
-SaveAsTaskManager::SaveAsTaskManager(qReal::LogicalModelAssistInterface &logicalModel
+ExerciseExportManager::ExerciseExportManager(qReal::LogicalModelAssistInterface &logicalModel
 		, qrRepo::RepoControlInterface &repoControlApi)
 	: mLogicalModel(logicalModel)
 	, mRepoControlApi(repoControlApi)
 {
 }
 
-SaveAsTaskManager::~SaveAsTaskManager()
+ExerciseExportManager::~ExerciseExportManager()
 {
 }
 
-void SaveAsTaskManager::save()
+void ExerciseExportManager::save()
 {
-	ui::SaveAsTaskDialog dialog;
+	ui::ExerciseExportDialog dialog;
 	if (dialog.exec() == QDialog::Rejected) {
 		return;
 	}

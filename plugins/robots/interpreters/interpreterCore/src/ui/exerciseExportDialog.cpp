@@ -1,4 +1,4 @@
-#include "saveAsTaskDialog.h"
+#include "exerciseExportDialog.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QVBoxLayout>
@@ -8,7 +8,7 @@
 using namespace interpreterCore::ui;
 using namespace interpreterBase;
 
-SaveAsTaskDialog::SaveAsTaskDialog(QWidget *parent)
+ExerciseExportDialog::ExerciseExportDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	setModal(true);
@@ -43,11 +43,11 @@ SaveAsTaskDialog::SaveAsTaskDialog(QWidget *parent)
 	buttonsLayout->addWidget(cancelButton);
 }
 
-SaveAsTaskDialog::~SaveAsTaskDialog()
+ExerciseExportDialog::~ExerciseExportDialog()
 {
 }
 
-ReadOnlyFlags SaveAsTaskDialog::readOnlyFlags() const
+ReadOnlyFlags ExerciseExportDialog::readOnlyFlags() const
 {
 	ReadOnlyFlags result;
 

@@ -15,8 +15,6 @@
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
 
-#include <QtCore/QDebug>
-
 using namespace twoDModel;
 using namespace view;
 using namespace qReal;

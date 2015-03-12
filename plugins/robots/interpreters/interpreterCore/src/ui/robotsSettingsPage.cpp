@@ -17,13 +17,13 @@ using namespace qReal;
 
 RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager
 		, RobotModelManager &robotModelManager
-		, SystemEvents &systemEvents
 		, LogicalModelAssistInterface &logicalModel
 		, QWidget *parent)
 	: PreferencesPage(parent)
 	, mUi(new Ui::PreferencesRobotSettingsPage)
 	, mKitPluginManager(kitPluginManager)
 	, mRobotModelManager(robotModelManager)
+	, mLogicalModel(logicalModel)
 {
 	setWindowIcon(QIcon(":/icons/preferences/robot.svg"));
 	mUi->setupUi(this);
@@ -35,16 +35,6 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager
 	mUi->devicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mUi->devicesConfigurer, &DevicesConfigurationWidget::selectRobotModel);
-
-	const auto onActiveTabChanged = [this, &logicalModel] (const qReal::Id &id)
-	{
-		Q_UNUSED(id);
-
-		mUi->devicesConfigurer->setEnabled(
-				!logicalModel.logicalRepoApi().metaInformation("twoDModelSensorsReadOnly").toBool());
-	};
-
-	connect(&systemEvents, &SystemEvents::activeTabChanged, onActiveTabChanged);
 
 	restoreSettings();
 	saveSelectedRobotModel();
@@ -174,6 +164,12 @@ void RobotsSettingsPage::restoreSettings()
 			}
 		}
 	}
+}
+
+void RobotsSettingsPage::onProjectOpened()
+{
+	mUi->devicesConfigurer->setEnabled(
+			!mLogicalModel.logicalRepoApi().metaInformation("twoDModelSensorsReadOnly").toBool());
 }
 
 void RobotsSettingsPage::changeEvent(QEvent *e)
