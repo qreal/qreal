@@ -375,7 +375,7 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool setSelected)
 	if (numTab != -1) {
 		mUi->tabs->setCurrentIndex(numTab);
 		const Id currentTabId = getCurrentTab()->editorViewScene().rootItemId();
-		mToolManager.activeTabChanged(currentTabId);
+		mToolManager.activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
 	} else {
 		openNewTab(idx);
 	}
@@ -1152,13 +1152,15 @@ void MainWindow::currentTabChanged(int newIndex)
 
 	mUi->actionGesturesShow->setEnabled(isEditorTab);
 
-	if (!isEditorTab) {
-		mToolManager.activeTabChanged(Id());
-	} else {
+	if (isEditorTab) {
 		const Id currentTabId = getCurrentTab()->mvIface().rootId();
-		mToolManager.activeTabChanged(currentTabId);
+		mToolManager.activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
 		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
+	} else if (text::QScintillaTextEdit * const text = dynamic_cast<text::QScintillaTextEdit *>(currentTab())) {
+		mToolManager.activeTabChanged(TabInfo(mTextManager->path(text), text));
+	} else {
+		mToolManager.activeTabChanged(TabInfo(currentTab()));
 	}
 
 	emit rootDiagramChanged();

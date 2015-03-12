@@ -141,9 +141,10 @@ kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigur
 	return &mTwoDModel->devicesConfigurationProvider();
 }
 
-void NxtKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
+void NxtKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
 {
-	bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
-	enabled &= mCurrentlySelectedModelName == mTwoDRobotModel.name();
+	const Id type = info.rootDiagramId().type();
+	const bool enabled = type == robotDiagramType || type == subprogramDiagramType
+			&& mCurrentlySelectedModelName == mTwoDRobotModel.name();
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
 }

@@ -22,7 +22,7 @@ DevicesConfigurationManager::DevicesConfigurationManager(
 	, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 {
 	QObject::connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
-			, [&] (const Id &diagramRootId) { this->onActiveTabChanged(diagramRootId); });
+			, [&] (const TabInfo &info) { this->onActiveTabChanged(info); });
 }
 
 QString DevicesConfigurationManager::save() const
@@ -78,12 +78,12 @@ void DevicesConfigurationManager::onDeviceConfigurationChanged(const QString &ro
 	mLogicalModelAssistInterface.setPropertyByRoleName(logicalRootId, save(), "devicesConfiguration");
 }
 
-void DevicesConfigurationManager::onActiveTabChanged(const Id &graphicalRootId)
+void DevicesConfigurationManager::onActiveTabChanged(const TabInfo &info)
 {
-	if (graphicalRootId.isNull()) {
+	if (info.type() != TabInfo::TabType::editor) {
 		return;
 	}
 
-	const qReal::Id logicalRootId = mGraphicalModelAssistInterface.logicalId(graphicalRootId);
+	const qReal::Id logicalRootId = mGraphicalModelAssistInterface.logicalId(info.rootDiagramId());
 	load(mLogicalModelAssistInterface.propertyByRoleName(logicalRootId, "devicesConfiguration").toString());
 }

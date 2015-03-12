@@ -35,10 +35,10 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
-	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel] (const qReal::Id &id)
+	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel] (const qReal::TabInfo &info)
 	{
-		mView->setEnabled(!id.isNull());
-		const qReal::Id logicalId = graphicalModel.logicalId(id);
+		mView->setEnabled(info.type() == qReal::TabInfo::TabType::editor);
+		const qReal::Id logicalId = graphicalModel.logicalId(info.rootDiagramId());
 		const QString xml = logicalId.isNull()
 				? QString()
 				: logicalModel.propertyByRoleName(logicalId, "worldModel").toString();
