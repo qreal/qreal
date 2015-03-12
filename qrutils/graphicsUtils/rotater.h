@@ -1,23 +1,18 @@
 #pragma once
 
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-
 #include <qrutils/graphicsUtils/abstractItem.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
-#include <qrutils/graphicsUtils/rotateItem.h>
 
-namespace twoDModel {
-namespace view {
+namespace graphicsUtils {
+
+class RotateItem;
 
 const int length = 30;
 const int addAngle = 30; // Degrees; for arrow pike drawing
 
 /// Class that represents line that allows to rotate QGraphicItems
-class Rotater : public QObject, public graphicsUtils::AbstractItem
+class QRUTILS_EXPORT Rotater : public AbstractItem
 {
-	Q_OBJECT
-
 public:
 	Rotater();
 
@@ -30,7 +25,7 @@ public:
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 	void calcResizeItem(QGraphicsSceneMouseEvent *event) override;
 
-	void setMasterItem(graphicsUtils::RotateItem *masterItem);
+	void setMasterItem(RotateItem *masterItem);
 
 private:
 	void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
@@ -45,5 +40,4 @@ private:
 	graphicsUtils::LineImpl mLineImpl;
 };
 
-}
 }

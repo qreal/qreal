@@ -19,7 +19,6 @@
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
-#include "rotater.h"
 
 #include "src/engine/view/d2ModelScene.h"
 #include "src/engine/view/robotItem.h"
@@ -187,7 +186,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
 	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
 
-	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(setInitialRobotBeforeRun()));
+	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(returnToStartMarker()));
 	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
 
 	initRunStopButtons();
@@ -286,24 +285,10 @@ void D2ModelWidget::init()
 	updateWheelComboBoxes();
 }
 
-void D2ModelWidget::saveInitialRobotBeforeRun()
+void D2ModelWidget::returnToStartMarker()
 {
-	for (RobotModel *robotModel : mModel.robotModels()) {
-		RobotState state;
-		state.pos = robotModel->position();
-		state.rotation = robotModel->rotation();
-		mInitialRobotsBeforeRun.insert(robotModel, state);
-	}
-}
-
-void D2ModelWidget::setInitialRobotBeforeRun()
-{
-	QMapIterator<RobotModel *, RobotState> iterator(mInitialRobotsBeforeRun);
-
-	while (iterator.hasNext()) {
-		iterator.next();
-		iterator.key()->setPosition(iterator.value().pos);
-		iterator.key()->setRotation(iterator.value().rotation);
+	for (RobotModel * const model : mModel.robotModels()) {
+		mScene->robot(*model)->returnToStartPosition();
 	}
 }
 
@@ -603,8 +588,6 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 {
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
-
-	saveInitialRobotBeforeRun();
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)

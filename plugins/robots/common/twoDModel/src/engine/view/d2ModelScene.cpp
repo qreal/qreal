@@ -13,6 +13,7 @@
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/startPosition.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -73,12 +74,7 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 	connect(robotItem, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
 
 	addItem(robotItem);
-
-	Rotater * const rotater = new Rotater();
-	rotater->setMasterItem(robotItem);
-	rotater->setVisible(false);
-
-	robotItem->setRotater(rotater);
+	addItem(robotItem->robotModel().startPositionMarker());
 
 	mRobots.insert(robotModel, robotItem);
 
@@ -100,16 +96,6 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	const QPointF position = mouseEvent->scenePos();
-
-	for (RobotItem * const robotItem : mRobots.values()) {
-		robotItem->checkSelection();
-
-		for (SensorItem *sensor : robotItem->sensors().values()) {
-			if (sensor) {
-				sensor->checkSelection();
-			}
-		}
-	}
 
 	emit mousePressed();
 
@@ -161,17 +147,6 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	if (mouseEvent->buttons() & Qt::LeftButton) {
-		for (RobotItem * const robotItem : mRobots.values()) {
-			robotItem->checkSelection();
-			for (SensorItem *sensor : robotItem->sensors().values()) {
-				if (sensor) {
-					sensor->checkSelection();
-				}
-			}
-		}
-	}
-
 	bool needUpdate = true;
 	switch (mDrawingAction){
 	case wall:
@@ -204,15 +179,6 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	for (RobotItem * const robotItem : mRobots.values()) {
-		robotItem->checkSelection();
-		for (SensorItem *sensor : robotItem->sensors().values()) {
-			if (sensor) {
-				sensor->checkSelection();
-			}
-		}
-	}
-
 	emit mouseReleased();
 
 	// After dragging item may be null. We mustn`t select it in that case.

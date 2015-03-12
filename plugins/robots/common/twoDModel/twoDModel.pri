@@ -42,7 +42,6 @@ HEADERS += \
 	$$PWD/src/engine/view/d2ModelScene.h \
 	$$PWD/src/engine/view/robotItem.h \
 	$$PWD/src/engine/view/sensorItem.h \
-	$$PWD/src/engine/view/rotater.h \
 	$$PWD/src/engine/view/sonarSensorItem.h \
 	$$PWD/src/engine/view/gridParameters.h \
 	$$PWD/src/engine/constraints/constraintsChecker.h \
@@ -68,6 +67,7 @@ HEADERS += \
 	$$PWD/src/engine/items/lineItem.h \
 	$$PWD/src/engine/items/colorFieldItem.h \
 	$$PWD/src/engine/items/ellipseItem.h \
+	$$PWD/src/engine/items/startPosition.h \
 	$$PWD/src/engine/items/regions/regionItem.h \
 	$$PWD/src/engine/items/regions/ellipseRegion.h \
 	$$PWD/src/engine/items/regions/rectangularRegion.h \
@@ -80,7 +80,6 @@ SOURCES += \
 	$$PWD/src/engine/view/d2ModelScene.cpp \
 	$$PWD/src/engine/view/robotItem.cpp \
 	$$PWD/src/engine/view/sensorItem.cpp \
-	$$PWD/src/engine/view/rotater.cpp \
 	$$PWD/src/engine/view/sonarSensorItem.cpp \
 	$$PWD/src/engine/view/gridParameters.cpp \
 	$$PWD/src/engine/view/twoDModelDisplayWidget.cpp \
@@ -99,16 +98,17 @@ SOURCES += \
 	$$PWD/src/engine/items/lineItem.cpp \
 	$$PWD/src/engine/items/colorFieldItem.cpp \
 	$$PWD/src/engine/items/ellipseItem.cpp \
+	$$PWD/src/engine/items/startPosition.cpp \
+	$$PWD/src/engine/items/regions/regionItem.cpp \
+	$$PWD/src/engine/items/regions/ellipseRegion.cpp \
+	$$PWD/src/engine/items/regions/rectangularRegion.cpp \
+	$$PWD/src/engine/items/regions/boundRegion.cpp \
 	$$PWD/src/engine/constraints/constraintsChecker.cpp \
 	$$PWD/src/engine/constraints/details/constraintsParser.cpp \
 	$$PWD/src/engine/constraints/details/event.cpp \
 	$$PWD/src/engine/constraints/details/conditionsFactory.cpp \
 	$$PWD/src/engine/constraints/details/triggersFactory.cpp \
 	$$PWD/src/engine/constraints/details/valuesFactory.cpp \
-	$$PWD/src/engine/items/regions/regionItem.cpp \
-	$$PWD/src/engine/items/regions/ellipseRegion.cpp \
-	$$PWD/src/engine/items/regions/rectangularRegion.cpp \
-	$$PWD/src/engine/items/regions/boundRegion.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/button.cpp \
 	$$PWD/src/robotModel/parts/colorSensorBlue.cpp \
