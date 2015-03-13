@@ -22,6 +22,8 @@ private slots:
 	void generateCode();
 
 private:
+	void generateCodeFromString(QString stream);
+
 	qrRepo::RepoControlInterface *mRepo;  // Doesn't have ownership
 	QAction mAction;  // "Generate" button
 

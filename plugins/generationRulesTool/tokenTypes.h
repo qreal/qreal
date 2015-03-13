@@ -27,6 +27,10 @@ enum class TokenTypes {
 
 	, text
 
+	, outcomingLinksKeyword
+	, incomingLinksKeyword
+	, linksKeyword
+
 	, comment
 	, string
 };
@@ -92,6 +96,18 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::text:
 		debug << "text ";
+		break;
+
+	case TokenTypes::outcomingLinksKeyword:
+		debug << "outcomingLinksKeyword ";
+		break;
+
+	case TokenTypes::incomingLinksKeyword:
+		debug << "incomingLinksKeyword ";
+		break;
+
+	case TokenTypes::linksKeyword:
+		debug << "linksKeyword ";
 		break;
 
 	default:

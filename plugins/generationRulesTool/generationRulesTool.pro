@@ -30,7 +30,12 @@ HEADERS = \
 	generator/generatorForProgramNode.h \
 	generator/generatorForForeachNode.h \
 	generator/generatorForComplexIdentifierNode.h \
-	ast/callGeneratorFor.h
+	ast/callGeneratorFor.h \
+	ast/outcomingLinks.h \
+	ast/incomingLinks.h \
+	ast/links.h \
+	generator/auxiliaryGenerators/outcomingLinksListGenerator.h \
+	generator/auxiliaryGenerators/simpleTypeListGenerator.h
 
 SOURCES = \
 	generationRulesPlugin.cpp \
@@ -39,4 +44,6 @@ SOURCES = \
 	generator/commonGenerator.cpp \
 	generator/generatorForProgramNode.cpp \
 	generator/generatorForForeachNode.cpp \
-	generator/generatorForComplexIdentifierNode.cpp
+	generator/generatorForComplexIdentifierNode.cpp \
+	generator/auxiliaryGenerators/outcomingLinksListGenerator.cpp \
+	generator/auxiliaryGenerators/simpleTypeListGenerator.cpp

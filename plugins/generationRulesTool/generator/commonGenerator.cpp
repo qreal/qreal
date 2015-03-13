@@ -33,7 +33,7 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 	}
 	else if (node->is<ast::Foreach>()) {
 		QSharedPointer<ast::Foreach> foreachNode = qrtext::as<ast::Foreach>(node);
-		result = GeneratorForForeachNode::generatedResult(foreachNode, metamodelRepoApi, modelRepo, logicalModelInterface);
+		result = GeneratorForForeachNode::generatedResult(foreachNode, metamodelRepoApi, modelRepo, logicalModelInterface, elementId);
 	}
 	else if (node->is<ast::Newline>()) {
 		result = "\n";

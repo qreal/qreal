@@ -4,8 +4,11 @@
 #include "ast/complexIdentifier.h"
 #include "ast/foreach.h"
 #include "ast/identifier.h"
+#include "ast/incomingLinks.h"
+#include "ast/links.h"
 #include "ast/newline.h"
 #include "ast/node.h"
+#include "ast/outcomingLinks.h"
 #include "ast/program.h"
 #include "ast/text.h"
 
@@ -58,8 +61,25 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return qrtext::wrap(new ast::ComplexIdentifier(identifier, property));
 	};
 
+	auto outcomingLinksIdentifier = (identifier & -TokenTypes::dot & -TokenTypes::outcomingLinksKeyword)
+			>> [] (QSharedPointer<ast::Node> identifierNode) {
+				return qrtext::wrap(new ast::OutcomingLinks(identifierNode));
+	};
+
+	auto incomingLinksIdentifier = (identifier & -TokenTypes::dot & -TokenTypes::incomingLinksKeyword)
+			>> [] (QSharedPointer<ast::Node> identifierNode) {
+				return qrtext::wrap(new ast::IncomingLinks(identifierNode));
+	};
+
+	auto linksIdenitifer = (identifier & -TokenTypes::dot & -TokenTypes::linksKeyword)
+			>> [] (QSharedPointer<ast::Node> identifierNode) {
+				return qrtext::wrap(new ast::Links(identifierNode));
+	};
+
 	auto foreachStatement = (-TokenTypes::foreachKeyword & -TokenTypes::openingBracket & identifier
-				& -TokenTypes::inKeyword & identifier & -TokenTypes::closingBracket
+				& -TokenTypes::inKeyword
+				& (identifier | outcomingLinksIdentifier | incomingLinksIdentifier | linksIdenitifer)
+				& -TokenTypes::closingBracket
 				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
 			>> [] (QSharedPointer<TemporaryPair> statementPair) {
 				auto identifierAndType = qrtext::as<TemporaryPair>(statementPair->left());

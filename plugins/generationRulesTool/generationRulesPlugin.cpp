@@ -48,16 +48,37 @@ void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, 
 
 void GenerationRulesPlugin::generateCode()
 {
-	QString stream = "'enum State {'\n"
-			"foreach (state in State) {\n"
-			"state.Name ',' \n"
-			"newline \n"
+	QString enumStream =
+			"'enum State {'\n"
+				"foreach (state in State) {\n"
+				"state.Name ',' \n"
+				"newline \n"
 			"} \n"
 			"StartState.Name ',' newline \n"
 			"EndState.Name newline \n"
-			"'}' \n";
+			"'}' \n"
+			;
 
-	// testing lexer
+	//generateCodeFromString(enumStream);
+
+	QString stateStream =
+			"foreach (state in State) {\n"
+				"'case' State.name ’:’ newline"
+				"foreach (transition in state.outcomingLinks) {"
+					"'if (symbol == ' transition.symbol ')' newline"
+						"'currentState = ' transition.end.name ';' newline"
+						"'break;' newline"
+				"}"
+				"'else' newline"
+					"'currentState = ' EndState.name ';' newline"
+					"'break;' newline"
+			;
+
+	generateCodeFromString(stateStream);
+}
+
+void GenerationRulesPlugin::generateCodeFromString(QString stream)
+{
 	QScopedPointer<simpleParser::Lexer> lexer;
 	QList<qrtext::core::Error> errors;
 

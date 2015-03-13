@@ -35,6 +35,10 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 			QRegularExpression(R"(('[^'\\]*(\\(.|\n)[^'\\]*)*'))")
 			, QObject::tr("text"));
 
+	tokenDefinitions.defineKeyword(TokenTypes::outcomingLinksKeyword, "outcomingLinks");
+	tokenDefinitions.defineKeyword(TokenTypes::incomingLinksKeyword, "incomingLinks");
+	tokenDefinitions.defineKeyword(TokenTypes::linksKeyword, "links");
+
 	return tokenDefinitions;
 }
 
