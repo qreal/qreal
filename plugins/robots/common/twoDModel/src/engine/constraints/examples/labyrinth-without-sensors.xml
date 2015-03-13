@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+	<world>
+		<trace/>
+		<walls>
+			<wall end="450:-400" id="" begin="-300:-400"/>
+			<wall end="-300:200" id="" begin="-300:-250"/>
+			<wall end="450:200" id="" begin="-300:200"/>
+			<wall end="450:200" id="" begin="450:-250"/>
+			<wall end="150:-100" id="" begin="150:-400"/>
+			<wall end="300:50" id="" begin="300:-250"/>
+			<wall end="450:-250" id="" begin="300:-250"/>
+			<wall end="-150:-250" id="" begin="-300:-250"/>
+			<wall end="0:-250" id="" begin="-150:-250"/>
+			<wall end="-150:-100" id="" begin="150:-100"/>
+			<wall end="150:50" id="" begin="-150:50"/>
+			<wall end="150:200" id="" begin="150:50"/>
+		</walls>
+		<colorFields/>
+		<regions>
+			<region type="rectangle" visible="true" color="blue" text="Старт" x="-450" y="-400" width="150" height="150" id="start zone"/>
+			<region type="rectangle" visible="true" color="red" text="Финиш" x="450" y="-400" width="150" height="150"/>
+
+			<region id="warzone" type="rectangle" visible="false" x="-450" y="-400" width="1050" height="600"/>
+			<region id="factical finish" type="rectangle" visible="false" x="500" y="-350" width="50" height="50"/>
+		</regions>
+	</world>
+	<robots>
+		<robot id="trikKitRobot" direction="0" position="-401:-351">
+			<sensors>
+				<sensor type="kitBase::robotModel::robotParts::Motor" direction="0" port="M4###output###JM4$$$D$$$4###" position="75:25"/>
+				<sensor type="kitBase::robotModel::robotParts::Motor" direction="0" port="M3###output###JM3$$$C$$$3###" position="75:25"/>
+				<sensor type="kitBase::robotModel::robotParts::Motor" direction="0" port="M2###output###JM2$$$B$$$2###" position="75:25"/>
+				<sensor type="kitBase::robotModel::robotParts::Motor" direction="0" port="M1###output###JM1$$$A$$$1###" position="75:25"/>
+			</sensors>
+			<startPosition direction="0" x="-376" y="-326"/>
+		</robot>
+	</robots>
+	<constraints>
+		<timelimit value="300000"/> <!-- 5 min -->
+		<constraint checkOnce="true" failMessage="Робот должен находиться в зоне старта перед запуском!">
+			<inside objectId="robot1" regionId="start zone"/>
+		</constraint>
+		<constraint checkOnce="true" failMessage="У робота не должно быть датчиков">
+			<conditions glue="and">
+				<equals>
+					<typeOf objectId="robot1.A1_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.A2_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.A3_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.A4_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.A5_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.A6_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.D1_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.D2_in"/>
+					<string value="undefined"/>
+				</equals>
+				<equals>
+					<typeOf objectId="robot1.F1_in"/>
+					<string value="undefined"/>
+				</equals>
+			</conditions>
+		</constraint>
+		<constraint failMessage="Робот попытался объехать лабиринт!">
+			<inside objectId="robot1" regionId="warzone"/>
+		</constraint>
+		<event settedUpInitially="true">
+			<condition>
+				<inside objectId="robot1" regionId="factical finish"/>
+			</condition>
+			<trigger>
+				<success/>
+			</trigger>
+		</event>
+	</constraints>
+</root>

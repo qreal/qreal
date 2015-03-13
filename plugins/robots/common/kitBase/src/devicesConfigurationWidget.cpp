@@ -107,7 +107,6 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
-	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
 	Q_UNUSED(reason)
