@@ -95,6 +95,7 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 
 void D2ModelScene::onItemRemoved(QGraphicsItem *item)
 {
+	mGraphicsItem = nullptr;
 	removeItem(item);
 	// We delete the item not immediately cause in other handlers of WorldModel`s itemRemoved() signal
 	// it may still be used.
