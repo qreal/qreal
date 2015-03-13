@@ -49,7 +49,7 @@ void RobotsBlockParser::setReservedVariables()
 			if (port.reservedVariableType() == kitBase::robotModel::PortInfo::ReservedVariableType::scalar) {
 				setVariableValue(port.reservedVariable(), 0);
 			} else {
-				setVectorVariableValue(port.reservedVariable(), QVector<int>());
+				setVectorVariableValue(port.reservedVariable(), QVector<int>{0});
 			}
 
 			markAsSpecial(port.reservedVariable());
