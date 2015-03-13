@@ -13,17 +13,15 @@ class TrikFSharpAdditionalPreferences : public kitBase::AdditionalPreferences
 	Q_OBJECT
 
 public:
-	explicit TrikFSharpAdditionalPreferences(QWidget *parent = 0);
+	explicit TrikFSharpAdditionalPreferences(const QString &robotName, QWidget *parent = 0);
 	~TrikFSharpAdditionalPreferences();
 
 	void save() override;
 	void restoreSettings() override;
-	QString defaultSettingsFile() const;
-
-signals:
-	void settingsChanged();
+	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel) override;
 
 private:
+	const QString mRobotName;
 	Ui::TrikFSharpAdditionalPreferences *mUi;
 };
 

@@ -12,13 +12,13 @@ public:
 	ForkCallGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
 		, const qReal::Id &id
-		, const qReal::IdList &threads
+		, const QMap<qReal::Id, QString> &threads
 		, QObject *parent = 0);
 
 	QString generate() override;
 
 private:
-	const qReal::IdList mThreads;
+	const QMap<qReal::Id, QString> mThreads;
 };
 
 }

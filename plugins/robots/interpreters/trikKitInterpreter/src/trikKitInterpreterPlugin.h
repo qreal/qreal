@@ -6,10 +6,9 @@
 #include <twoDModel/engine/twoDModelControlInterface.h>
 
 #include "trikAdditionalPreferences.h"
-#include "trikFSharpAdditionalPreferences.h"
 
 #include <trikKit/blocks/trikBlocksFactory.h>
-#include "robotModel/real/realRobotModelV6.h"
+#include "robotModel/real/realRobotModel.h"
 #include "robotModel/twoD/twoDRobotModel.h"
 
 namespace trik {
@@ -53,16 +52,15 @@ private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
 private:
-	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;
-	robotModel::real::RealRobotModelV6 mRealRobotModelV6;
-	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+	robotModel::real::RealRobotModel mRealRobotModel;
+	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 
 	/// @todo Use shared pointers instead of this sh~.
 	blocks::TrikBlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
 	bool mOwnsBlocksFactory = true;
 
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
-	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences = nullptr;  //Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
 
 	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.

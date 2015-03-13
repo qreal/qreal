@@ -152,17 +152,17 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	QGraphicsItem * const sensorItem = mView.sensorItem(port);
 	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
 	const bool wasSelected = sensorItem->isSelected();
-	const bool rotaterWasVisible = robot->rotater()->isVisible();
-	const bool rotaterWasSelected = robot->rotater()->isSelected();
+	const bool rotaterWasVisible = robot->rotater().isVisible();
+	const bool rotaterWasSelected = robot->rotater().isSelected();
 	mView.setSensorVisible(port, false);
-	robot->rotater()->setVisible(false);
+	robot->rotater().setVisible(false);
 
 	mView.scene()->render(&painter, QRectF(), scanningRect);
 
 	mView.setSensorVisible(port, true);
 	mView.sensorItem(port)->setSelected(wasSelected);
-	robot->rotater()->setVisible(rotaterWasVisible);
-	robot->rotater()->setSelected(rotaterWasSelected);
+	robot->rotater().setVisible(rotaterWasVisible);
+	robot->rotater().setSelected(rotaterWasSelected);
 
 	return image;
 }

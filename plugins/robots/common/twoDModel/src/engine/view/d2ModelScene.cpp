@@ -13,6 +13,7 @@
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/startPosition.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -66,19 +67,14 @@ void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 
 void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 {
-	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel, this);
+	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel);
 
 	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
 	connect(robotItem, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
 
 	addItem(robotItem);
-
-	Rotater * const rotater = new Rotater();
-	rotater->setMasterItem(robotItem);
-	rotater->setVisible(false);
-
-	robotItem->setRotater(rotater);
+	addItem(robotItem->robotModel().startPositionMarker());
 
 	// ask robot model for a camera port?
 	kitBase::robotModel::PortInfo port("LineSensorPort", kitBase::robotModel::input);
@@ -111,16 +107,6 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	const QPointF position = mouseEvent->scenePos();
-
-	for (RobotItem * const robotItem : mRobots.values()) {
-		robotItem->checkSelection();
-
-		for (SensorItem *sensor : robotItem->sensors().values()) {
-			if (sensor) {
-				sensor->checkSelection();
-			}
-		}
-	}
 
 	emit mousePressed();
 
@@ -172,17 +158,6 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	if (mouseEvent->buttons() & Qt::LeftButton) {
-		for (RobotItem * const robotItem : mRobots.values()) {
-			robotItem->checkSelection();
-			for (SensorItem *sensor : robotItem->sensors().values()) {
-				if (sensor) {
-					sensor->checkSelection();
-				}
-			}
-		}
-	}
-
 	bool needUpdate = true;
 	switch (mDrawingAction){
 	case wall:
@@ -215,15 +190,6 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	for (RobotItem * const robotItem : mRobots.values()) {
-		robotItem->checkSelection();
-		for (SensorItem *sensor : robotItem->sensors().values()) {
-			if (sensor) {
-				sensor->checkSelection();
-			}
-		}
-	}
-
 	emit mouseReleased();
 
 	// After dragging item may be null. We mustn`t select it in that case.
@@ -304,8 +270,12 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 		}
 	} else if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
 		mModel.worldModel().removeWall(wall);
+		mCurrentWall = nullptr;
 	} else if (items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item)) {
 		mModel.worldModel().removeColorField(colorField);
+		mCurrentLine = nullptr;
+		mCurrentStylus = nullptr;
+		mCurrentEllipse = nullptr;
 	}
 }
 

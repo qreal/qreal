@@ -12,12 +12,15 @@
 using namespace trik::fSharp;
 using namespace qReal;
 
+const QString robotModelName = "TrikFSharpGeneratorRobotModel";
+
 TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
-	: TrikGeneratorPluginBase("TrikFSharpGeneratorRobotModel", tr("Generation (F#)"), 7 /* Last order */)
+	: TrikGeneratorPluginBase(robotModelName, tr("Generation (F#)"), 7 /* Last order */)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
+	, mAdditionalPreferences(new TrikFSharpAdditionalPreferences(robotModelName))
 {
 	mGenerateCodeAction->setText(tr("Generate FSharp code"));
 	mGenerateCodeAction->setIcon(QIcon(":/fSharp/images/generateFsCode.svg"));
@@ -34,6 +37,13 @@ TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
 	mStopRobotAction->setText(tr("Stop robot"));
 	mStopRobotAction->setIcon(QIcon(":/fSharp/images/stop.png"));
 	connect(mStopRobotAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::stopRobot);
+}
+
+TrikFSharpGeneratorPlugin::~TrikFSharpGeneratorPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
 }
 
 QList<ActionInfo> TrikFSharpGeneratorPlugin::customActions()
@@ -64,6 +74,12 @@ QIcon TrikFSharpGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::
 {
 	Q_UNUSED(robotModel)
 	return QIcon(":/fSharp/images/switch-to-trik-f-sharp.svg");
+}
+
+QList<kitBase::AdditionalPreferences *> TrikFSharpGeneratorPlugin::settingsWidgets()
+{
+	mOwnsAdditionalPreferences = false;
+	return {mAdditionalPreferences};
 }
 
 generatorBase::MasterGeneratorBase *TrikFSharpGeneratorPlugin::masterGenerator()

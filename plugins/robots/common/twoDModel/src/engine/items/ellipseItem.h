@@ -1,10 +1,5 @@
 #pragma once
-#include <QtCore/QList>
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-#include <QtXml/QDomDocument>
 
-#include <qrutils/graphicsUtils/abstractItem.h>
 #include <qrutils/graphicsUtils/rectangleImpl.h>
 
 #include "colorFieldItem.h"
@@ -12,7 +7,7 @@
 namespace twoDModel {
 namespace items {
 
-class EllipseItem : public QObject, public ColorFieldItem
+class EllipseItem : public ColorFieldItem
 {
 	Q_OBJECT
 

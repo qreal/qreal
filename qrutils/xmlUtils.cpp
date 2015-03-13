@@ -5,7 +5,7 @@
 
 using namespace utils;
 
-QDomDocument xmlUtils::loadDocument(const QString& fileName)
+QDomDocument xmlUtils::loadDocument(const QString &fileName, QString *errorMessage, int *errorLine, int *errorColumn)
 {
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly)) {
@@ -14,15 +14,8 @@ QDomDocument xmlUtils::loadDocument(const QString& fileName)
 	}
 
 	QDomDocument doc;
-	QString error = "";
-	int errorLine = 0;
-	int errorCol = 0;
-
-	if (!doc.setContent(&file, false, &error, &errorLine, &errorCol))
+	if (!doc.setContent(&file, false, errorMessage, errorLine, errorColumn))
 	{
-		qDebug() << "parse error in " << fileName
-				<< " at (" << errorLine << "," << errorCol
-				<< "): " << error;
 		file.close();
 		return QDomDocument();
 	}

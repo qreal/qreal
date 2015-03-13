@@ -13,6 +13,7 @@ public:
 
 private:
 	QPainterPath shape() const override;
+	QString regionType() const override;
 };
 
 }

@@ -5,7 +5,14 @@
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "sensorsConfiguration.h"
 
+class QGraphicsItem;
+
 namespace twoDModel {
+
+namespace items {
+class StartPosition;
+}
+
 namespace model {
 
 class Settings;
@@ -85,6 +92,12 @@ public:
 	/// The robot stops drawing its trace on the floor after that.
 	void markerUp();
 
+	/// Returns a position of the center of the robot in scene coordinates.
+	QPointF rotationCenter() const;
+	/// Returns the item whose scene position will determine robot`s start position.
+	/// Transfers ownership.
+	QGraphicsItem *startPositionMarker() const;
+
 public slots:
 	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
 
@@ -113,7 +126,6 @@ private:
 		bool breakMode;
 	};
 
-	QPointF rotationCenter() const;
 	QVector2D robotDirectionVector() const;
 	QPainterPath robotBoundingPath() const;
 
@@ -152,6 +164,7 @@ private:
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
 
+	items::StartPosition *mStartPositionMarker;  // Transfers ownership to QGraphicsScene
 };
 
 }

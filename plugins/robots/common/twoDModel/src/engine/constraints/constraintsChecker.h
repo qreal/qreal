@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QSet>
+#include <QtXml/QDomElement>
 
 #include "details/defines.h"
 
@@ -8,12 +9,24 @@ namespace qReal {
 class ErrorReporterInterface;
 }
 
-namespace utils {
-class TimelineInterface;
+namespace kitBase {
+namespace robotModel {
+class PortInfo;
+}
 }
 
 namespace twoDModel {
+
+namespace model {
+class Model;
+class RobotModel;
+}
+
 namespace constraints {
+
+namespace details {
+class ConstraintsParser;
+}
 
 /// Checks robot`s behaviour in 2D model world.
 /// The constraints are specified in terms of XML-based language. The program on that language
@@ -26,13 +39,15 @@ class ConstraintsChecker : public QObject
 	Q_OBJECT
 
 public:
-	ConstraintsChecker(const utils::TimelineInterface &timeline
-			, qReal::ErrorReporterInterface &errorReporter);
+	ConstraintsChecker(qReal::ErrorReporterInterface &errorReporter, model::Model &model);
 	~ConstraintsChecker();
 
 	/// Parses the given program on 2D model constraints language and returns the success of this operation.
 	/// All parser errors will be reported using errorReporter interface passed to constructor.
-	bool parseConstraints(const QString &constraintsXml);
+	bool parseConstraints(const QDomElement &constraintsXml);
+
+	/// Adds constraints xml as a child to a given element.
+	void serializeConstraints(QDomElement &parent) const;
 
 	/// Checks once all constraints active at the call moment. If all constraints are satisfied nothing happens.
 	/// If some constraint is violated fail() signal will be emitted. It may also happen that robot has fulfilled
@@ -59,15 +74,33 @@ private:
 	void setUpEvent();
 	void dropEvent();
 
-	const utils::TimelineInterface &mTimeline;
+	void bindToWorldModelObjects();
+	void bindToRobotObjects();
+	void bindRobotObject(model::RobotModel * const robot);
+	void bindDeviceObject(const QString &robotId
+			, model::RobotModel * const robot
+			, const kitBase::robotModel::PortInfo &port);
+	QString firstUnusedRobotId() const;
+	QString portName(const QString &robotId, const kitBase::robotModel::PortInfo &port) const;
+
+	void programStarted();
+	void programFinished();
+
 	qReal::ErrorReporterInterface &mErrorReporter;
+	model::Model &mModel;
 	details::StatusReporter mStatus;
+	QScopedPointer<details::ConstraintsParser> mParser;
+	bool mParsedSuccessfully;
+	bool mSuccessTriggered;
+	bool mFailTriggered;
 
 	details::Events mEvents;
 	details::Variables mVariables;
 	details::Objects mObjects;
 
 	QSet<details::Event *> mActiveEvents;
+
+	QDomElement mCurrentXml;
 };
 
 }

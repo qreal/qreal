@@ -35,8 +35,8 @@ DATE="$(date +'%Y-%m-%d')"
 YEAR="$(date +'%Y')"
 
 bash $PWD/replace.sh "version=\"$SHORT_OLD_VERSION\"" "version=\"$SHORT_NEW_VERSION\"" $ROOT/plugins/robots/editor/generated/robotsMetamodel.xml
-bash $PWD/replace.sh "var version = \".*\";" "var version = \"$GREEK_NEW_VERSION\";" $ROOT/plugins/robots/editor/doc/html/version.js
-bash $PWD/replace.sh "var year = [0-9]\\+;" "var year = $YEAR;" $ROOT/plugins/robots/editor/doc/html/version.js
+bash $PWD/replace.sh "var version = \".*\";" "var version = \"$GREEK_NEW_VERSION\";" $ROOT/plugins/robots/editor/doc/help/version.js
+bash $PWD/replace.sh "var year = [0-9]\\+;" "var year = $YEAR;" $ROOT/plugins/robots/editor/doc/help/version.js
 bash $PWD/replace.sh "return \"$GREEK_OLD_VERSION\";" "return \"$GREEK_NEW_VERSION\";" $ROOT/plugins/robots/interpreters/interpreterCore/src/customizer.cpp
 bash $PWD/replace.sh "<Version>$DIGITAL_OLD_VERSION<\\/Version>\n    <ReleaseDate>.*<\\/ReleaseDate>" "<Version>$DIGITAL_NEW_VERSION<\\/Version>\\n    <ReleaseDate>$DATE<\\/ReleaseDate>" $ROOT/installer/packages "*/meta/package.xml"
 

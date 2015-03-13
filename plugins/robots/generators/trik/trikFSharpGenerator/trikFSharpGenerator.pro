@@ -18,17 +18,26 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base robots-utils)
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base robots-utils \
+		qrgui-preferences-dialog robots-kit-base \
+)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpGenerator_ru.ts
 
 HEADERS += \
 	$$PWD/trikFSharpGeneratorPlugin.h \
 	$$PWD/trikFSharpMasterGenerator.h \
+	$$PWD/trikFSharpAdditionalPreferences.h \
+	$$PWD/trikFSharpControlFlowValidator.h \
 
 SOURCES += \
 	$$PWD/trikFSharpGeneratorPlugin.cpp \
 	$$PWD/trikFSharpMasterGenerator.cpp \
+	$$PWD/trikFSharpAdditionalPreferences.cpp \
+	$$PWD/trikFSharpControlFlowValidator.cpp \
+
+FORMS += \
+	$$PWD/trikFSharpAdditionalPreferences.ui \
 
 RESOURCES = \
 	$$PWD/trikFSharpGenerator.qrc \

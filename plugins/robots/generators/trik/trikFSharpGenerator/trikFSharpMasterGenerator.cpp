@@ -1,5 +1,7 @@
 #include "trikFSharpMasterGenerator.h"
 
+#include "trikFSharpControlFlowValidator.h"
+
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 
@@ -25,4 +27,9 @@ QString TrikFSharpMasterGenerator::targetPath()
 bool TrikFSharpMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
+}
+
+generatorBase::PrimaryControlFlowValidator *TrikFSharpMasterGenerator::createValidator()
+{
+	return new TrikFSharpControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
 }

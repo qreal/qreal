@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QtXml/QDomDocument>
-#include <QtWidgets/QGraphicsItem>
-
 #include <qrutils/graphicsUtils/abstractItem.h>
 
 namespace twoDModel {

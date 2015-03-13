@@ -7,12 +7,17 @@ namespace trik {
 namespace robotModel {
 namespace real {
 
-class RealRobotModelBase : public TrikRobotModelBase
+class RealRobotModel : public TrikRobotModelBase
 {
 	Q_OBJECT
 
 public:
-	RealRobotModelBase(const QString &kitId, const QString &robotId);
+	RealRobotModel(const QString &kitId, const QString &robotId);
+
+
+	QString name() const;
+	QString friendlyName() const;
+	int priority() const;
 
 	bool needsConnection() const override;
 	void connectToRobot() override;
