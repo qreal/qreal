@@ -37,6 +37,9 @@ const QString getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
 const QString initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 const QString getContainersLineTag = "@@GetContainedByLine@@";
 const QString getReferencePropertiesLineTag = "@@GetReferencePropertiesLine@@";
+
+const QString getPropertyNameTag = "@@GetPropertyName@@";
+
 const QString getConnectionsLineTag = "@@GetConnectedTypesLine@@";
 const QString getUsagesLineTag = "@@GetUsedTypesLine@@";
 const QString getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";

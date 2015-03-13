@@ -239,6 +239,9 @@ bool Editor::generatePluginSource()
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
+
+	//generatePropertyNames();//SUPERFIX
+
 	generateReferenceProperties();
 	generateConnections();
 	generateUsages();
@@ -550,6 +553,11 @@ void Editor::generateReferenceProperties()
 {
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
+
+//void Editor::generatePropertyNames()
+//{
+//	generatePluginMethod(getPropertyNameTag, ReferencePropertiesGenerator());
+//}
 
 void Editor::generateConnections()
 {
