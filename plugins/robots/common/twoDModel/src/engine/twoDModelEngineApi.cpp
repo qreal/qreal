@@ -127,9 +127,12 @@ uint TwoDModelEngineApi::spoilColor(const uint color) const
 
 QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFactor) const
 {
-	const DeviceInfo device = mModel.robotModels()[0]->configuration().type(port);
+	DeviceInfo device = mModel.robotModels()[0]->configuration().type(port);
 	if (device.isNull()) {
-		return QImage();
+		device = mModel.robotModels()[0]->info().specialDevice(port);
+		if (device.isNull()) {
+			return QImage();
+		}
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);

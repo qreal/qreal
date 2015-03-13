@@ -25,6 +25,8 @@ public:
 	void read() override;
 
 private:
+	bool closeEnough(const QColor &color) const;
+
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 	QColor mLineColor;
 };

@@ -5,6 +5,8 @@
 using namespace trik::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
+
+
 LineSensor::LineSensor(const DeviceInfo &info, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikLineSensor(info, port)
@@ -40,5 +42,38 @@ void LineSensor::detectLine()
 void LineSensor::read()
 {
 	QImage image = mEngine.areaUnderSensor(port(), 2.0);
-	emit newData({0, 0, 0});
+
+	int height = image.height();
+	int width = image.width();
+
+	int blacks = 0;
+	int horizontalBlacks = 0;
+	int horizontalLineWidth = image.height() * 0.2;
+	int xCoordinates = 0;
+	QVector<QVector<bool> > bitMap(height, QVector<bool>(width, false));
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			bitMap[i][j] = closeEnough(image.pixel(j, i));
+			if (bitMap[i][j]) {
+				++blacks;
+				xCoordinates += i;
+				if (((height - horizontalLineWidth) / 2 < i)
+						&& (i < (height + horizontalLineWidth) / 2)) {
+					++horizontalBlacks;
+				}
+			}
+		}
+	}
+
+	emit newData({
+			xCoordinates / blacks
+			, blacks / (height * width - blacks)
+			, horizontalBlacks / (height * horizontalLineWidth)
+	});
+}
+
+bool LineSensor::closeEnough(const QColor &color) const
+{
+	return qMax(abs(color.red() - mLineColor.red()), qMax(abs(color.green() - mLineColor.green())
+		, abs(color.blue() - mLineColor.blue()))) < 10;
 }

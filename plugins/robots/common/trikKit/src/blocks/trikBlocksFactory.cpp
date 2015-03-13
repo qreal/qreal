@@ -22,6 +22,9 @@
 #include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
+#include "details/initCameraBlock.h"
+#include "details/detectLineBlock.h"
+#include "details/lineDetectorToVariable.h"
 #include "details/waitForMotionBlock.h"
 #include "details/speakerBlock.h"
 #include "details/ledBlock.h"
@@ -68,11 +71,11 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &e
 	} else if (elementMetatypeIs(element, "TrikSystem")) {
 		return new SystemCommandBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new InitCameraBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new DetectLineBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new LineDetectorToVariableBlock();
 	} else if (elementMetatypeIs(element, "TrikSendMessage")) {
 		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitForMessage")) {
