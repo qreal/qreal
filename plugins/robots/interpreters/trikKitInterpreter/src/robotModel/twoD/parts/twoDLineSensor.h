@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QtGui/QColor>
+
+#include <twoDModel/engine/twoDModelEngineInterface.h>
 #include <trikKit/robotModel/parts/trikLineSensor.h>
 
 namespace trik {
@@ -15,11 +18,15 @@ class LineSensor : public robotModel::parts::TrikLineSensor
 
 public:
 	LineSensor(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port);
+			, const kitBase::robotModel::PortInfo &port, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void init() override;
 	void detectLine() override;
 	void read() override;
+
+private:
+	twoDModel::engine::TwoDModelEngineInterface &mEngine;
+	QColor mLineColor;
 };
 
 }

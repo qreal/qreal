@@ -87,9 +87,8 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 
-	addAllowedConnection(PortInfo("LineSensorXPort", input, {}, "lineSensorX"), { lineSensorInfo() });
-	addAllowedConnection(PortInfo("LineSensorSizePort", input, {}, "lineSensorSize"), { lineSensorInfo() });
-	addAllowedConnection(PortInfo("LineSensorCrossroadsPort", input, {}, "lineSensorCross"), { lineSensorInfo() });
+	addAllowedConnection(PortInfo("LineSensorPort", input, {}, "lineSensor"
+			, PortInfo::ReservedVariableType::vector), { lineSensorInfo() });
 
 	addAllowedConnection(PortInfo("ObjectSensorXPort", input, {}, "objectSensorX"), { objectSensorInfo() });
 	addAllowedConnection(PortInfo("ObjectSensorYPort", input, {}, "objectSensorY"), { objectSensorInfo() });

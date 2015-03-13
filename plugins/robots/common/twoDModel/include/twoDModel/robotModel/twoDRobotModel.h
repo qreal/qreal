@@ -66,6 +66,13 @@ public:
 		return QRect();
 	}
 
+	virtual kitBase::robotModel::DeviceInfo specialDevice(const kitBase::robotModel::PortInfo &port) const
+	{
+		Q_UNUSED(port)
+
+		return kitBase::robotModel::DeviceInfo();
+	}
+
 protected:
 	engine::TwoDModelEngineInterface *engine();
 
