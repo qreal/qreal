@@ -1,5 +1,7 @@
 #include "startPosition.h"
 
+#include "src/engine/model/constants.h"
+
 using namespace twoDModel::items;
 
 const QSizeF size = QSizeF(13, 13);
@@ -8,6 +10,8 @@ const int lineWidth = 3;
 StartPosition::StartPosition(QGraphicsItem *parent)
 	: RotateItem(parent)
 {
+	setX(robotWidth / 2);
+	setY(robotHeight / 2);
 	RotateItem::init();
 }
 
@@ -51,8 +55,9 @@ void StartPosition::deserialize(const QDomElement &robotElement)
 		const QString startPositionY = robotElement.hasAttribute("startPosY")
 				? robotElement.attribute("startPosY")
 				: robotY;
-		setX(startPositionX.toDouble());
-		setY(startPositionY.toDouble());
+		setX(startPositionX.toDouble() + robotWidth / 2);
+		setY(startPositionY.toDouble() + robotHeight / 2);
+		setRotation(robotElement.attribute("direction").toDouble());
 	} else {
 		setX(startPositionElement.attribute("x").toDouble());
 		setX(startPositionElement.attribute("y").toDouble());
