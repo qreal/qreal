@@ -157,7 +157,7 @@ void DevicesConfigurationWidget::save()
 		const QString robotModel = box->property("robotModel").toString();
 		const PortInfo port = box->property("port").value<PortInfo>();
 		const DeviceInfo device = box->itemData(box->currentIndex()).value<DeviceInfo>();
-		if (currentConfiguration(robotModel, port) != device) {
+		if (robotModel == mCurrentModelType && currentConfiguration(mCurrentModelId, port) != device) {
 			propagateChanges(port, device);
 		}
 	}
