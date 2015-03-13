@@ -7,25 +7,29 @@
 #include "generatorBase/generatorCustomizer.h"
 #include "robotsDiagramVisitor.h"
 
+#include "robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 
 typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 
-/// Validates given diagram checking all nessesary for each generator conditions
-/// (like all links are connected correctly marked and so on). Also collects
+/// Base class for all validators of robot diagrams.
+/// Default implementation validates given diagram checking all nessesary for each generator conditions
+/// (like all links are connected correctly marked and so on). It also collects
 /// simplest info about diagram (like initial node id, if/then branches and so on).
-class PrimaryControlFlowValidator : public QObject, public RobotsDiagramVisitor
+class ROBOTS_GENERATOR_EXPORT PrimaryControlFlowValidator : public QObject, public RobotsDiagramVisitor
 {
 public:
 	PrimaryControlFlowValidator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, const qReal::Id &diagramId
 			, QObject *parent = 0);
 
-	/// Validates diagram with id specified in constructor. Returns 'true' if
-	/// diagram is correct, 'false' otherwise
-	bool validate();
+	/// Validates given diagram assuming that execution of the diagram starts in a thread with given id.
+	virtual bool validate(const qReal::Id &diagramId, const QString &threadId);
+
+	/// Returns a pointer to a copy of the validator. The copy will be owned by the parent of the original validator.
+	virtual PrimaryControlFlowValidator *clone();
 
 	/// Returns id of the only node with initial semantics on diagram. The result
 	/// is ready only after validation process was successfully finished.
@@ -42,7 +46,7 @@ public:
 	/// successfully finished.
 	QPair<LinkInfo, LinkInfo> loopBranchesFor(const qReal::Id &id) const;
 
-private:
+protected:
 	void findInitialNode();
 	void error(const QString &message, const qReal::Id &id);
 	bool checkForConnected(const LinkInfo &link);
@@ -53,12 +57,13 @@ private:
 	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
+	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 	void visitUnknown(const qReal::Id &id, const QList<LinkInfo> &links) override;
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
-	const qReal::Id mDiagram;
+	qReal::Id mDiagram;
 	bool mErrorsOccured;
 
 	qReal::Id mInitialNode;

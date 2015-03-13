@@ -5,11 +5,13 @@
 
 #include "generatorBase/generatorCustomizer.h"
 
+#include "robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 
 /// A base for those entities who must travel through model and process every block
 /// differentiating their semantics
-class RobotsDiagramVisitor : public utils::DeepFirstSearcher::VisitorInterface
+class ROBOTS_GENERATOR_EXPORT RobotsDiagramVisitor : public utils::DeepFirstSearcher::VisitorInterface
 {
 public:
 	RobotsDiagramVisitor(const qrRepo::RepoApi &repo, GeneratorCustomizer &customizer);
@@ -24,6 +26,7 @@ protected:
 		, iterationGuard
 		, trueGuard
 		, falseGuard
+		, threadIdGuard
 	};
 
 	/// Starts repo graph dfs-traversal
@@ -53,6 +56,9 @@ protected:
 
 	/// This method is called when traverser gets into a block with fork semantics
 	virtual void visitFork(const qReal::Id &id, QList<utils::DeepFirstSearcher::LinkInfo> &links) = 0;
+
+	/// This method is called when traverser gets into a block with join semantics
+	virtual void visitJoin(const qReal::Id &id, QList<utils::DeepFirstSearcher::LinkInfo> &links) = 0;
 
 	/// This method is called when traverser gets into a block with unknown semantics
 	virtual void visitUnknown(const qReal::Id &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);

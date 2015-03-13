@@ -69,7 +69,7 @@ Trigger TriggersFactory::setUpEvent(const QString &id) const
 {
 	return [this, id]() {
 		if (!mEvents.contains(id)) {
-			reportError(QObject::tr("No such event: %1"));
+			reportError(QObject::tr("No such event: %1").arg(id));
 			return;
 		}
 
@@ -81,7 +81,7 @@ Trigger TriggersFactory::dropEvent(const QString &id) const
 {
 	return [this, id]() {
 		if (!mEvents.contains(id)) {
-			reportError(QObject::tr("No such event: %1"));
+			reportError(QObject::tr("No such event: %1").arg(id));
 			return;
 		}
 

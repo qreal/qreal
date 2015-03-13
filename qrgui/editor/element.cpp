@@ -162,8 +162,11 @@ void Element::keyPressEvent(QKeyEvent *event)
 		for (Label * const label : mLabels) {
 			if (!label->isReadOnly()) {
 				label->startTextInteraction();
+				event->accept();
 				return;
 			}
 		}
 	}
+
+	QGraphicsItem::keyPressEvent(event);
 }

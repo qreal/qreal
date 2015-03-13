@@ -31,10 +31,10 @@ protected:
 	QList<MotorType *> parsePorts(ReportErrors reportErrors = ReportErrors::report)
 	{
 		QList<MotorType *> result;
-		const QStringList ports = eval<QStringList>("Ports", reportErrors);
+		const QList<robotModel::PortInfo> ports = parsePorts(reportErrors);
 
-		for (const QString &port : ports) {
-			MotorType * const motor = robotModel::RobotModelUtils::findDevice<MotorType>(mRobotModel, port.trimmed());
+		for (const robotModel::PortInfo &port : ports) {
+			MotorType * const motor = robotModel::RobotModelUtils::findDevice<MotorType>(mRobotModel, port);
 			if (motor) {
 				result << motor;
 			}
@@ -42,6 +42,9 @@ protected:
 
 		return result;
 	}
+
+	/// Non-template method for evaluating 'Port' property into a list of PortInfos.
+	QList<robotModel::PortInfo> parsePorts(ReportErrors reportErrors = ReportErrors::report);
 
 	/// @todo Move it to Block maybe?
 	robotModel::RobotModelInterface &mRobotModel;

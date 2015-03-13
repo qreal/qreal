@@ -34,10 +34,12 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		, const qReal::SystemEvents &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
-		, const qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
-	auto onActiveTabChanged = [this, &graphicalModel, &logicalModel] (const qReal::Id &id)
+	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
+
+	const auto onActiveTabChanged = [this, &graphicalModel, &logicalModel, &interpretersInterface] (const qReal::Id &id)
 	{
 		mView->setEnabled(!id.isNull());
 		const qReal::Id logicalId = graphicalModel.logicalId(id);
@@ -45,7 +47,13 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				? QString()
 				: logicalModel.propertyByRoleName(logicalId, "worldModel").toString();
 		QDomDocument worldModel;
-		worldModel.setContent(xml);
+		QString errorMessage;
+		int errorLine, errorColumn;
+		if (!xml.isEmpty() && !worldModel.setContent(xml, &errorMessage, &errorLine, &errorColumn)) {
+			interpretersInterface.errorReporter()->addError(QString("%1:%2: %3")
+					.arg(QString::number(errorLine), QString::number(errorColumn), errorMessage));
+		}
+
 		mView->loadXml(worldModel);
 
 		loadReadOnlyFlags(logicalModel);

@@ -1,5 +1,7 @@
 #include "trikQtsMasterGenerator.h"
 
+#include "trikQtsControlFlowValidator.h"
+
 using namespace trik::qts;
 
 TrikQtsMasterGenerator::TrikQtsMasterGenerator(const qrRepo::RepoApi &repo
@@ -22,4 +24,9 @@ QString TrikQtsMasterGenerator::targetPath()
 bool TrikQtsMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
+}
+
+generatorBase::PrimaryControlFlowValidator *TrikQtsMasterGenerator::createValidator()
+{
+	return new TrikQtsControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
 }

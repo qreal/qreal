@@ -17,7 +17,10 @@ public:
 	/// Must be called each time when generator gets into the block with the
 	/// fork semantics for every block that start new thread.
 	/// @param id The initial node of the thread
-	void registerThread(const qReal::Id &id);
+	void registerThread(const qReal::Id &id, const QString &threadId);
+
+	/// Returns the id of a thread which starts at the given node
+	QString threadId(const qReal::Id &id) const;
 
 	/// Must be called each time when semantic tree for some thread was built.
 	void threadProcessed(const qReal::Id &id, semantics::SemanticTree &tree);
@@ -34,6 +37,12 @@ public:
 	/// Returns a list of thread names on all diagrams of the model.
 	QStringList threadNames() const;
 
+	/// Adds a thread to a join point.
+	void addJoin(const qReal::Id &id, const QString &threadId);
+
+	/// Returns a list of names of the threads that are being joined at the given join node.
+	QStringList joinedThreads(const qReal::Id &id) const;
+
 	/// Generates and returns the code of the section with threads forward declarations.
 	QString generateDeclarations() const;
 
@@ -45,6 +54,8 @@ private:
 
 	QSet<qReal::Id> mUnprocessedThreads;
 	QMap<qReal::Id, semantics::SemanticTree *> mProcessedThreads;
+	QMap<qReal::Id, QString> mThreadIds;
+	QMap<qReal::Id, QStringList> mJoins;
 };
 
 }
