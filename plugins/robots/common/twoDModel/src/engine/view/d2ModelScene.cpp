@@ -59,16 +59,19 @@ void D2ModelScene::setInteractivityFlags(int flags)
 	mRobotReadOnly = (flags & kitBase::ReadOnly::RobotPosition) != 0;
 	mSensorsReadOnly = (flags & kitBase::ReadOnly::Sensors) != 0;
 
-	for (auto item : items()) {
-		auto robotItem = dynamic_cast<RobotItem *>(item);
-		auto sensorItem = dynamic_cast<SensorItem *>(item);
-		auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
+	for (const auto item : items()) {
+		const auto robotItem = dynamic_cast<RobotItem *>(item);
+		const auto sensorItem = dynamic_cast<SensorItem *>(item);
+		const auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
+		const auto startPosition = dynamic_cast<items::StartPosition *>(item);
 		if (worldItem) {
 			worldItem->setEditable(!mWorldReadOnly);
 		} else if (robotItem) {
 			robotItem->setEditable(!mRobotReadOnly);
 		} else if (sensorItem) {
 			sensorItem->setEditable(!mSensorsReadOnly);
+		} else if (startPosition) {
+			startPosition->setEditable(!mRobotReadOnly);
 		}
 	}
 }
