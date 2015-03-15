@@ -37,6 +37,9 @@ const QString getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
 const QString initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 const QString getContainersLineTag = "@@GetContainedByLine@@";
 const QString getReferencePropertiesLineTag = "@@GetReferencePropertiesLine@@";
+
+const QString getPropertyNameTag = "@@GetPropertyName@@";
+
 const QString getConnectionsLineTag = "@@GetConnectedTypesLine@@";
 const QString getUsagesLineTag = "@@GetUsedTypesLine@@";
 const QString getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";
@@ -97,6 +100,8 @@ const QString startXScalabilityTag = "@@NodeLinePortStartXScalable@@";
 const QString startYScalabilityTag = "@@NodeLinePortStartYScalable@@";
 const QString endXScalabilityTag = "@@NodeLinePortEndXScalable@@";
 const QString endYScalabilityTag = "@@NodeLinePortEndYScalable@@";
+const QString labelRotationTag = "@@Rotation@@";
+const QString portsForFromPortTypesTag = "@@PortsForFromPortTypes@@";
 const QString labelXTag = "@@LabelX@@";
 const QString labelYTag = "@@LabelY@@";
 const QString labelNameTag = "@@LabelName@@";
@@ -118,6 +123,7 @@ const QString lineTypeTag = "@@LineType@@";
 const QString isResizeable = "@@IsResizeable@@";
 const QString xCoordIsScalable = "@@XCoordIsScalable@@";
 const QString yCoordIsScalable = "@@YCoordIsScalable@@";
+
 const QString nodesListTag = "@@NodesList@@";
 const QString edgesListTag = "@@EdgesList@@";
 const QString sdfFileTag = "@@SdfFile@@";

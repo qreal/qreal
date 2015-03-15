@@ -9,15 +9,16 @@ HEADERS += pluginInterface.h \
 
 #INCLUDEPATH += ../../../qrgui \
 #               ../../../qrgui/editorPluginInterface \
+##		../../../qrgui/plugins/editorPluginInterface \
 
-INCLUDEPATH += $$PWD/../../../qrgui/editorPluginInterface \
-               $$PWD/../../../qrgui \
-               $$PWD/../../../qrkernel \
-               $$PWD/../../.. \
+#INCLUDEPATH += $$PWD/../../../qrgui/editorPluginInterface \
+INCLUDEPATH += $$PWD/../../../qrgui/plugins/editorPluginInterface \
+		$$PWD/../../../qrgui/plugins \ 
+                $$PWD/../../../qrgui \
+                $$PWD/../../../qrkernel \
+                $$PWD/../../.. \
 
 RESOURCES += plugin.qrc
 
-ROOT = @@PathToSources@@
-DESTINATION = @@Destination@@
-include (@@PathToSources@@plugins/editorsSdk/pluginsCommon.pri)
-                        
+include (../../../qrmc/plugins/pluginsCommon.pri)
+

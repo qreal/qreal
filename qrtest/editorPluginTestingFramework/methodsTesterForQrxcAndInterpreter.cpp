@@ -2,6 +2,7 @@
 #include "convertingMethods.h"
 #include "defs.h"
 #include "qrkernel/exception/exception.h"
+#include <QElapsedTimer>
 
 #include <QtCore/QDebug>
 
@@ -281,6 +282,17 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
 		Q_UNUSED(editorManagerInterface);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorId;
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertIdIntoStringList(editorId);
 	}
 
@@ -338,6 +350,16 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
 
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->diagrams(editorId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		for (int i = 0; i < 5; ++i)
 		{
 
@@ -394,6 +416,7 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithIdParameter
 		Q_UNUSED(editorId);
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
+
 		for (int i = 0; i < 5; ++i) {
 			//returnCount();
 			//increase();
@@ -424,6 +447,17 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithIdParameter
 			//returnCount();
 			//increase();
 	//		++count;
+
+			qint64 time = 0;
+			QElapsedTimer timer;
+			for (int i = 0; i < 1000; ++i)
+			{
+				timer.start();
+				editorManagerInterface->elements(diagramId);
+				time += timer.nsecsElapsed();
+			}
+			time = time / 1000;
+
 			if (i < 4)
 			{
 				ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
@@ -488,6 +522,17 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParame
 		Q_UNUSED(propertyName);
 		QString const &editorName = editorId.editor();
 		QString const &diagramName = diagramId.diagram();
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->elements(editorName, diagramName);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return editorManagerInterface->elements(editorName, diagramName);
 	}
 
@@ -534,6 +579,18 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->mouseGesture(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
+
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->mouseGesture(elementId));
 	}
 
@@ -569,7 +626,6 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 //
 
 
-
 		foreach (Id const &parentDiagram, editorManagerInterface->diagrams(editorId)) {
 			foreach (Id const &parentElement,
 					 editorManagerInterface->elements(diagramId)) {
@@ -599,6 +655,27 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 		IdList ololo = editorManagerInterface->elements(diagramId);
 //
 
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+
+			foreach (Id const &parentDiagram, editorManagerInterface->diagrams(editorId)) {
+				foreach (Id const &parentElement,
+						 editorManagerInterface->elements(diagramId)) {
+					bool isParent = editorManagerInterface->isParentOf(elementId, parentElement);
+					if (isParent) {
+						result << parentElement.toString();
+						result <<  " is parent of ";
+						result << elementId.toString();
+					}
+				}
+			}
+
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
 
 
 		foreach (Id const &parentDiagram, editorManagerInterface->diagrams(editorId)) {
@@ -667,6 +744,16 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		QStringList result;
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->friendlyName(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
 
 		for (int i = 0; i < 5; ++i)
 		{
@@ -741,6 +828,17 @@ class MethodsTesterForQrxcAndInterpreter::DescriptionListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->description(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->description(elementId));
 	}
 
@@ -794,6 +892,24 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		QStringList result;
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+
+			try {
+				result = ConvertingMethods::convertStringIntoStringList(
+						editorManagerInterface->propertyDescription(elementId, propertyName));
+			} catch (Exception e) {
+				result.append("method failed");
+			}
+
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		try {
 			result = ConvertingMethods::convertStringIntoStringList(
 					editorManagerInterface->propertyDescription(elementId, propertyName));
@@ -844,6 +960,17 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDisplayedNameListGenerator
 	{
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->propertyDisplayedName(elementId,propertyName);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->propertyDisplayedName(elementId,propertyName));
 	}
@@ -891,6 +1018,17 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->containedTypes(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->containedTypes(elementId));
 	}
 
@@ -939,6 +1077,17 @@ class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->explosions(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
 	}
 
@@ -988,6 +1137,17 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		QString const &name = elementId.element();
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->enumValues(elementId, name);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertingQPairListIntoStringList(editorManagerInterface->enumValues(elementId, name));
 	}
 
@@ -1035,6 +1195,17 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		QString const &name = elementId.element();
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->typeName(elementId, name);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->typeName(elementId, name));
 	}
 
@@ -1086,6 +1257,17 @@ class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->referenceProperties(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return (editorManagerInterface->referenceProperties(elementId));
 	}
 
@@ -1135,6 +1317,17 @@ class MethodsTesterForQrxcAndInterpreter::AllChildrenTypesOfListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->allChildrenTypesOf(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return (editorManagerInterface->allChildrenTypesOf(elementId));
 	}
 
@@ -1182,6 +1375,17 @@ class MethodsTesterForQrxcAndInterpreter::IsEditorListGenerator
 		Q_UNUSED(elementId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->isEditor(editorId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isEditor(editorId));
 	}
 
@@ -1228,6 +1432,17 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->isDiagram(diagramId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isDiagram(diagramId));
 	}
 
@@ -1274,6 +1489,17 @@ class MethodsTesterForQrxcAndInterpreter::IsElementListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->isElement(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isElement(elementId));
 	}
 
@@ -1320,6 +1546,17 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->propertyNames(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return (editorManagerInterface->propertyNames(elementId));
 	}
 
@@ -1365,6 +1602,17 @@ class MethodsTesterForQrxcAndInterpreter::PortTypesListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->portTypes(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return editorManagerInterface->portTypes(elementId);
 	}
 
@@ -1409,6 +1657,17 @@ class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 	{
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->defaultPropertyValue(elementId, propertyName);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->defaultPropertyValue(elementId, propertyName));
 	}
@@ -1456,6 +1715,17 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->propertiesWithDefaultValues(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
 	}
 
@@ -1503,6 +1773,17 @@ class MethodsTesterForQrxcAndInterpreter::HasElementListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->hasElement(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->hasElement(elementId));
 	}
 
@@ -1550,6 +1831,17 @@ class MethodsTesterForQrxcAndInterpreter::FindElementByTypeListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		QString const &type = elementId.element();
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->findElementByType(type);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertIdIntoStringList(editorManagerInterface->findElementByType(type));
 	}
 
@@ -1598,6 +1890,17 @@ class MethodsTesterForQrxcAndInterpreter::IsGraphicalElementListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->isGraphicalElementNode(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertBoolIntoStringList(
 				editorManagerInterface->isGraphicalElementNode(elementId));
 	}
@@ -1648,6 +1951,17 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 		Q_UNUSED(propertyName);
 		QString const &editorName = editorId.editor();
 		QString const &elementName = elementId.element();
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->isNodeOrEdge(editorName, elementName);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertIntIntoStringList(
 				editorManagerInterface->isNodeOrEdge(editorName, elementName));
 	}
@@ -1700,6 +2014,17 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNameListGenerator
 		Q_UNUSED(propertyName);
 		QString const &editorName = editorId.editor();
 		QString const &diagramName = diagramId.diagram();
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->diagramName(editorName, diagramName);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->diagramName(editorName, diagramName));
 	}
@@ -1750,6 +2075,17 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNodeNameListGenerator
 		Q_UNUSED(propertyName);
 		QString const &editorName = editorId.editor();
 		QString const &diagramName = diagramId.diagram();
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->diagramNodeName(editorName, diagramName);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->diagramNodeName(editorName, diagramName));
 	}
@@ -1797,6 +2133,17 @@ class MethodsTesterForQrxcAndInterpreter::IsParentPropertyListGenerator
 	{
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->isParentProperty(elementId, propertyName);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertBoolIntoStringList(
 				editorManagerInterface->isParentProperty(elementId, propertyName));
 	}
@@ -1844,6 +2191,17 @@ class MethodsTesterForQrxcAndInterpreter::ChildrenListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->children(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->children(elementId));
 	}
 
@@ -1891,6 +2249,17 @@ class MethodsTesterForQrxcAndInterpreter::ShapeListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->shape(elementId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->shape(elementId));
 	}
 
@@ -1937,6 +2306,17 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsGenerator
 			)
 	{
 		Q_UNUSED(propertyName);
+
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->paletteGroups(editorId, diagramId);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		QStringList ololo = editorManagerInterface->paletteGroups(editorId, diagramId);
 		return ololo;
 	}
@@ -2064,6 +2444,16 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsListGenerator
 			, QString const &group
 			)
 	{
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->paletteGroupList(editorId, diagramId, group);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
+
 		return editorManagerInterface->paletteGroupList(editorId, diagramId, group);
 	}
 
@@ -2109,6 +2499,15 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 			, QString const &group
 			)
 	{
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 1000; ++i)
+		{
+			timer.start();
+			editorManagerInterface->paletteGroupDescription(editorId, diagramId, group);
+			time += timer.nsecsElapsed();
+		}
+		time = time / 1000;
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->paletteGroupDescription(editorId, diagramId, group));
 	}
 

@@ -68,6 +68,7 @@ namespace qrmc {
 		qrRepo::LogicalRepoApi *mApi;
 		qReal::Id mId;
 		QString mName;
+		QString mNameOfMetamodel;
 		bool mLoadingComplete;
 		QList<Editor*> mIncludes;
 		QMap<QString, Diagram*> mDiagrams;
@@ -92,7 +93,7 @@ namespace qrmc {
 		class PropertyDisplayedNamesGenerator;
 		class ParentsMapGenerator;
 		class PossibleEdgesGenerator;
-		void generatePluginMethod(const QString &tag, const MethodGenerator &generator);
+		void generatePluginMethod(const QString &tag, MethodGenerator const &generator);
 	};
 
 }

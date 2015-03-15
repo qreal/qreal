@@ -3,14 +3,18 @@ include (utils/utils.pri)
 
 TARGET = qrmc
 
-include(../global.pri)  #is it correct? o_O
+include(../global.pri)
 
 HEADERS += metaCompiler.h \
-	 # qrkernel/definitions.h \
+	  qrkernel/definitions.h \
 	  ../qrkernel/ids.h \
 	  ../qrrepo/repoApi.h \
 	  diagram.h \
-	  editor.h \              
+	  editor.h \
+#    templates/elements.h.template \
+#    templates/pluginInterface.cpp.template \
+#    templates/pluginInterface.h.template
+
 
 
 
@@ -23,11 +27,21 @@ QT += xml
 
 CONFIG += c++11
 
+links(qrkernel)
+links(qrrepo)
 
+#OTHER_FILES += \
+#    templates/edge.template \
+#    templates/node.template \
+#    templates/plugin.qrc.template \
+#    templates/plugins.pro.template \
+#    templates/pro.template \
+#    templates/utils.template
 
-#QT += xml gui
-#CONFIG += console #is it correct? o_O
-
-#links(bin)         #is it correct? o_O
-links(qrkernel)    #is it correct? o_O
-links(qrrepo)      #is it correct? o_O
+OTHER_FILES += \
+	templates/edge.template \
+	templates/node.template \
+	templates/plugin.qrc.template \
+	templates/plugins.pro.template \
+	templates/pro.template \
+	templates/utils.template

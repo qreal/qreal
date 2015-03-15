@@ -158,6 +158,8 @@ void MainClass::returnOldValueOfTemp() const
 
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
+	//QString tempPath = "plugins/editors/qrtest/qrxc";
+
 	mQrmcLauncher.launchQrmc(fileName, pathToQrmc, mGeneratedCodeDirQrmc);
 }
 

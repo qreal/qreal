@@ -14,6 +14,7 @@ Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qR
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
 	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
+	mNameOfMetamodel = mApi->stringProperty(mId, "name");
 	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
@@ -202,7 +203,7 @@ bool Editor::generatePluginHeader(const QString &hdrTemplate)
 		return false;
 	}
 
-	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)); // header requires just plugin name customization
+	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(/*mName*/mNameOfMetamodel)); // header requires just plugin name customization
 	QTextStream out(&pluginHeaderFile);
 	out.setCodec("UTF-8");
 	out << headerTemplate;
@@ -238,6 +239,9 @@ bool Editor::generatePluginSource()
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
+
+	//generatePropertyNames();//SUPERFIX
+
 	generateReferenceProperties();
 	generateConnections();
 	generateUsages();
@@ -247,7 +251,7 @@ bool Editor::generatePluginSource()
 	generateParentsMap();
 
 	// inserting plugin name all over the template
-	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mName));
+	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(/*mName*/mNameOfMetamodel));
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
@@ -342,15 +346,15 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 	if (!dir.exists(mName))
 		dir.mkdir(mName);
 	dir.cd(mName);
-
-	QString fileName = dir.absoluteFilePath(mName + ".pro");
+	QString nameOfMetamodel = mApi->stringProperty(mId, "name");
+	QString fileName = dir.absoluteFilePath(/*nName*/nameOfMetamodel + ".pro");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
 		return false;
 	}
 
-	projectTemplate.replace(metamodelNameTag, mName); // .pro-file requires just plugin name customization
+	projectTemplate.replace(metamodelNameTag, /*mName*/mNameOfMetamodel); // .pro-file requires just plugin name customization
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	out << projectTemplate;
@@ -396,6 +400,7 @@ public:
 
 class Editor::NamesGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~NamesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateNamesMap(lineTemplate);
 	}
@@ -403,6 +408,7 @@ public:
 
 class Editor::MouseGesturesGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~MouseGesturesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateMouseGesturesMap(lineTemplate);
 	}
@@ -410,6 +416,7 @@ public:
 
 class Editor::PropertiesGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~PropertiesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertiesMap(lineTemplate);
 	}
@@ -417,6 +424,7 @@ public:
 
 class Editor::PropertyDefaultsGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~PropertyDefaultsGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertyDefaultsMap(lineTemplate);
 	}
@@ -424,6 +432,7 @@ public:
 
 class Editor::PropertyDisplayedNamesGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~PropertyDisplayedNamesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertyDisplayedNamesMap(lineTemplate);
 	}
@@ -431,6 +440,7 @@ public:
 
 class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~ParentsMapGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateParentsMap(lineTemplate);
 	}
@@ -438,6 +448,7 @@ public:
 
 class Editor::ContainersGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~ContainersGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateContainers(lineTemplate);
 	}
@@ -445,6 +456,7 @@ public:
 
 class Editor::ReferencePropertiesGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~ReferencePropertiesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateReferenceProperties(lineTemplate);
 	}
@@ -452,6 +464,7 @@ public:
 
 class Editor::ConnectionsGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~ConnectionsGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateConnections(lineTemplate);
 	}
@@ -459,6 +472,7 @@ public:
 
 class Editor::UsagesGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~UsagesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateUsages(lineTemplate);
 	}
@@ -466,6 +480,7 @@ public:
 
 class Editor::FactoryGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~FactoryGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateFactory(lineTemplate);
 	}
@@ -473,6 +488,7 @@ public:
 
 class Editor::IsNodeOrEdgeGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~IsNodeOrEdgeGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateIsNodeOrEdge(lineTemplate);
 	}
@@ -480,6 +496,7 @@ public:
 
 class Editor::PossibleEdgesGenerator: public Editor::MethodGenerator {
 public:
+	virtual ~PossibleEdgesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePossibleEdges(lineTemplate);
 	}
@@ -536,6 +553,11 @@ void Editor::generateReferenceProperties()
 {
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
+
+//void Editor::generatePropertyNames()
+//{
+//	generatePluginMethod(getPropertyNameTag, ReferencePropertiesGenerator());
+//}
 
 void Editor::generateConnections()
 {

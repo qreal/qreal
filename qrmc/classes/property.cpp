@@ -1,6 +1,5 @@
 #include "property.h"
 #include "../utils/defs.h"
-#include "../utils/nameNormalizer.h"
 
 #include <QDebug>
 
@@ -111,7 +110,7 @@ void Property::print() const
 QString Property::generatePropertyLine(const QString &lineTemplate) const
 {
 	QString result = lineTemplate;
-	result.replace(propertyNameTag, mName).replace(propertyTypeTag, NameNormalizer::normalize(mType));
+	result.replace(propertyNameTag, mName).replace(propertyTypeTag, mType);
 	return result;
 }
 

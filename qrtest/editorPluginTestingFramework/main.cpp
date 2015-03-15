@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	}
 	QString const workingCopyDir = argv[1];
 	QString const &configurationFileName = argv[2];
-	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/"
+	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../../qrmc/"
 			, qApp->applicationDirPath(), configurationFileName);
 	return newMainClass.travisTestResult();
 }

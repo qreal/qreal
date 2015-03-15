@@ -9,11 +9,11 @@ QString const pluginsDir = "/plugins";
 QString const pathToQrmcGeneratedCode = "";
 QString const pathToQrxcGeneratedCode = "";
 
-QString const pathToQrmcGeneratedPlugin = "";
+QString const pathToQrmcGeneratedPlugin = "/plugins";
 QString const pathToQrxcGeneratedPlugin = "/plugins";
 
 QString const pathToQRealRootFromQrmc = "../";
-QString const pathToQRealRootFromQrxc = "../";
+QString const pathToQRealRootFromQrxc = "../../";
 
 /// Todo: remove qrtest/binaries from this part
 /// debug/plugins/editors/ /plugins/editors/qrmc

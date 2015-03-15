@@ -4,22 +4,26 @@
 @@NodeConstructor@@
 		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}
 
-                void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
-                                 qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
-	                         qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
+				void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
+								 qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
+							 qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
 
 		{
-@@NodeUnusedArgs@@
+//@@NodeUnusedArgs@@ //hardcode begins
+			Q_UNUSED(portFactory);
+			Q_UNUSED(ports);
+//hardcode ends
+
 			mRenderer = renderer;
 @@NodeLoadShapeRenderer@@
-@@NodeLoadPortsRenderer@@
+@@NodeLoadPortsRenderer@@ //SUPER HARDCODE (shape.cpp(162))
 @@NodeSetContents@@
 @@NodeInitPorts@@
 @@NodeInit@@
 
 //extremely temporary fixing
 		ports << portFactory.createPort(QPointF(0.994424, 0.54334), false, false, 538, 473, new NonTyped());
-                mRenderer->setElementRepo(elementRepo);
+				mRenderer->setElementRepo(elementRepo);
 
 		}
 
@@ -37,13 +41,8 @@
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-<<<<<<< HEAD
-		
-		void updateData(ElementRepoInterface *repo) const
-=======
 
 		void updateData(qReal::ElementRepoInterface *repo) const
->>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 		{
 @@UpdateData@@
 		}
@@ -63,10 +62,10 @@
 			return @@IsSortContainer@@;
 		}
 
-                QVector<int> sizeOfForestalling() const
+				QVector<int> sizeOfForestalling() const
 		{
 			return @@SizeOfForestalling@@;
-		}       
+		}
 
 		int sizeOfChildrenForestalling() const
 		{
@@ -87,9 +86,6 @@
 		{
 			return @@MaximizesChildren@@;
 		}
-<<<<<<< HEAD
-                
-=======
 
 //temporary fixing
 		bool createChildrenFromMenu() const
@@ -97,7 +93,6 @@
 			return true;
 		}
 
->>>>>>> 2a644e69703bdf2b2ea8122ede877834aceddde1
 		QList<double> border() const
 		{
 			QList<double> list;
@@ -116,7 +111,7 @@
 		}
 
 
-//temporary fixing		
+//temporary fixing
 		QStringList fromPortTypes() const
 		{
 			return QStringList("NonTyped");
