@@ -25,7 +25,9 @@ public:
 	/// returns "yes" if we want to generate html with testing results and "no" otherwise
 	QString htmlGenerationParameter() const;
 	/// returns path to generated binaries and plugins
-	QString generatedCodeDir() const;
+	QString generatedCodeDirQrxc() const;
+	QString generatedCodeDirQrmc() const;
+
 
 private:
 	/// given tag, returns tag value from configuration file
@@ -38,7 +40,8 @@ private:
 	QString mPrefix;
 	QString mQRealRootPath;
 	QString mGenerateHtml;
-	QString mGeneratedCodeDir;
+	QString mGeneratedCodeDirQrxc;
+	QString mGeneratedCodeDirQrmc;
 
 	QDomDocument mXml;
 };

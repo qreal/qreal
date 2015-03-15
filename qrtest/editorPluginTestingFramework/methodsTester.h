@@ -28,6 +28,8 @@ protected:
 
 private:
 
+	QStringList generateOutputTimeForOneMethod(AbstractStringGenerator const &stringGenerator);
+
 	/// generated method name and results for two interfaces, returns triplet of strings
 	QPair<QString, QPair<QString, QString> > generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator);
 

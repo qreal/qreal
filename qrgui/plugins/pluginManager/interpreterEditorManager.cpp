@@ -571,6 +571,14 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(const Id &id) 
 		}
 	}
 
+
+   foreach (const Id &property, repo->children(metaId)) {
+	   if (repo->hasProperty(property, "name")) {
+		   result << repo->name(property);
+	   }
+   }
+
+
 	return result;
 }
 

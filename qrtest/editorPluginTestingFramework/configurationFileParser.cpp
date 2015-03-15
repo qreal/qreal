@@ -19,7 +19,8 @@ void ConfigurationFileParser::parseConfigurationFile(QString const &configuratio
 	mPrefix = valueByTag("prefix");
 	mQRealRootPath = valueByTag("qrealRoot");
 	mGenerateHtml = valueByTag("generateHtml");
-	mGeneratedCodeDir = valueByTag("generatedCodeDir");
+	mGeneratedCodeDirQrxc = valueByTag("generatedCodeDirQrxc");
+	mGeneratedCodeDirQrmc = valueByTag("generatedCodeDirQrmc");
 }
 
 QString ConfigurationFileParser::valueByTag(QString const &tag) const
@@ -65,7 +66,11 @@ QString ConfigurationFileParser::htmlGenerationParameter() const
 	return mGenerateHtml;
 }
 
-QString ConfigurationFileParser::generatedCodeDir() const
+QString ConfigurationFileParser::generatedCodeDirQrxc() const
 {
-	return mGeneratedCodeDir;
+	return mGeneratedCodeDirQrxc;
+}
+QString ConfigurationFileParser::generatedCodeDirQrmc() const
+{
+	return mGeneratedCodeDirQrmc;
 }

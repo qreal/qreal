@@ -37,6 +37,7 @@ private:
 	class StringGeneratorForDiagrams;
 	class StringGeneratorForElements;
 	class StringGeneratorForProperties;
+	class StringGeneratorForGroups;
 
 	class EditorsListGenerator;
 	class DiagramsListGenerator;
@@ -74,6 +75,12 @@ private:
 	class IsParentPropertyListGenerator;
 	class ChildrenListGenerator;
 	class ShapeListGenerator;
+
+	class PaletteGroupsGenerator;
+	class PaletteGroupsListGenerator;
+	class PaletteGroupDescriptionGenerator;
+	class ReferencePropertiesGenerator;
+	class IsParentOfGenerator;
 
 	/// forms results of testing for each method, puts them into mGeneratedList
 	void testMethods();

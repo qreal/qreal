@@ -10,7 +10,7 @@ class PluginCompiler
 public:
 
 	/// compiles code that is generated in qrmcLauncher and qrxcLauncher
-	void compilePlugin(
+	void compilePlugin(const QString &fileName,
 		QString const &directoryToCodeToCompile
 		, QString const &pathToQmake
 		, QString const &pathToMake

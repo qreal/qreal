@@ -114,7 +114,40 @@ bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &sec
 	QSet<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod);
 	QSet<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod);
 
-	return (firstMethodParsed == secondMethodParsed);
+	QStringList ololo = firstMethodParsed.values();
+	QStringList ololoResult;
+
+	QStringList ololo1 = secondMethodParsed.values();
+	QStringList ololoResult1;
+
+
+	for (QString element : ololo)
+	{
+		ololoResult.append(element.toLower());
+	}
+
+	for (QString element : ololo1)
+	{
+		ololoResult1.append(element.toLower());
+	}
+
+
+	for (QString element : ololoResult)
+	{
+		bool result = ololoResult1.contains(element);
+		if (!result)
+			return false;
+	}
+
+	for (QString element : ololoResult1)
+	{
+		bool result = ololoResult.contains(element);
+		if (!result)
+			return false;
+	}
+
+	return true;
+//	return (firstMethodParsed == secondMethodParsed);
 }
 
 QString HtmlMaker::lineColor(QString const &firstResult, QString const &secondResult)

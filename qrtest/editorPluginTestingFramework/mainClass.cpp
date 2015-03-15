@@ -24,29 +24,38 @@ MainClass::MainClass(
 		: mTempOldValue(SettingsManager::value("temp").toString())
 		, mApplicationPath(applicationPath)
 {
+	qDebug() << applicationPath;
+	qDebug() << mApplicationPath;
 	setTempValueInSettingsManager();
 
 	qDebug() << "configuration file: " << configurationFileName;
 	parseConfigurationFile(configurationFileName);
 
-	deleteOldBinaries(mGeneratedCodeDir);
+	deleteOldBinaries(mGeneratedCodeDirQrxc);
+	deleteOldBinaries(mGeneratedCodeDirQrmc);
+
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
+//	QString const &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
+//	QString const &pluginName = prefix + normalizedMetamodelName + "-d" + "." + pluginExtension;
+
 
 	copyTestMetamodel(fileName);
 
 	launchQrxc(normalizedFileName);
-	compilePlugin(mGeneratedCodeDir + pathToQrxcGeneratedCode);
-	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDir + pathToQrxcGeneratedPlugin);
+	compilePlugin(mGeneratedCodeDirQrxc + pathToQrxcGeneratedCode, normalizedFileName);
+	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrxc + pathToQrxcGeneratedPlugin);
 	appendPluginNames();
 
 	launchQrmc(fileName, pathToQrmc);
-	compilePlugin(mGeneratedCodeDir + pathToQrmcGeneratedCode);
-	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDir + pathToQrmcGeneratedPlugin);
+	compilePlugin(mGeneratedCodeDirQrmc + pathToQrmcGeneratedCode, normalizedFileName);
+	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrmc + pathToQrmcGeneratedPlugin);
 
 	InterpreterEditorManager interpreterEditorManager(fileName, nullptr);
-	EditorManager qrxcEditorManager(nullptr);
-	// we cast qrxc plugin to Editor Manager
+	EditorManager qrxcEditorManager("plugins/editors/qrxc/plugins");
+	//EditorManager qw("plugins");
+//	qw->ololo();
+	// we cast qrxc plugin to Editor Manager "plugins/editors/qrxc/plugin
 
 	MethodsTesterForQrxcAndInterpreter* const interpreterMethodsTester = new MethodsTesterForQrxcAndInterpreter(
 			&qrxcEditorManager
@@ -87,11 +96,12 @@ void MainClass::createFolder(QString const &path)
 
 void MainClass::createNewFolders()
 {
-	createFolder(mGeneratedCodeDir);
-	createFolder(mGeneratedCodeDir + pluginsDir);
-	createFolder(mGeneratedCodeDir + sourcesDir);
-	createFolder(mGeneratedCodeDir + pathToQrmcGeneratedPlugin);
-	createFolder(mGeneratedCodeDir + pathToQrxcGeneratedPlugin);
+	createFolder(mGeneratedCodeDirQrxc);
+	createFolder(mGeneratedCodeDirQrxc + pluginsDir);
+	createFolder(mGeneratedCodeDirQrxc + sourcesDir);
+	// !!!
+	createFolder(mGeneratedCodeDirQrxc + pathToQrmcGeneratedPlugin);
+	createFolder(mGeneratedCodeDirQrxc + pathToQrxcGeneratedPlugin);
 }
 
 QString MainClass::normalizedName(QString const &fileName)
@@ -137,7 +147,7 @@ void MainClass::copyTestMetamodel(QString const &fileName)
 
 void MainClass::setTempValueInSettingsManager()
 {
-	mApplicationPath.chop(4);
+//	mApplicationPath.chop(4);
 	SettingsManager::setValue("temp", mApplicationPath + tempValueForSettingsManager);
 }
 
@@ -148,13 +158,14 @@ void MainClass::returnOldValueOfTemp() const
 
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
-	mQrmcLauncher.launchQrmc(fileName, pathToQrmc, mGeneratedCodeDir);
+	mQrmcLauncher.launchQrmc(fileName, pathToQrmc, mGeneratedCodeDirQrmc);
 }
 
-void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
+void MainClass::compilePlugin(QString const &directoryToCodeToCompile, const QString &fileName)
 {
 	mPluginCompiler.compilePlugin(
-			directoryToCodeToCompile
+			fileName
+			, directoryToCodeToCompile
 			, mQmakeParameter
 			, mMakeParameter
 			, mConfigurationParameter
@@ -163,7 +174,9 @@ void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
 
 void MainClass::launchQrxc(QString const &fileName)
 {
-	mQrxcLauncher.launchQrxc(fileName, mApplicationPath, mGeneratedCodeDir);
+	//mApplicationPath
+	QString tempPath = "plugins/editors/qrxc";
+	mQrxcLauncher.launchQrxc(fileName, mQRealRootPath, tempPath);
 }
 
 EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const &pathToFile)
@@ -174,7 +187,7 @@ EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const 
 void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult)
 {
-	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, mGeneratedCodeDir);
+	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, mGeneratedCodeDirQrxc);
 }
 
 void MainClass::appendPluginNames()
@@ -184,6 +197,8 @@ void MainClass::appendPluginNames()
 
 void MainClass::parseConfigurationFile(QString const &fileName)
 {
+	qDebug() << "ololo";
+	qDebug() << mApplicationPath;
 	mConfigurationFileParser.parseConfigurationFile(fileName);
 
 	mQmakeParameter = mConfigurationFileParser.qmakeParameter();
@@ -193,6 +208,7 @@ void MainClass::parseConfigurationFile(QString const &fileName)
 	mPrefix = mConfigurationFileParser.prefix();
 	mQRealRootPath = mConfigurationFileParser.qRealRootPath();
 	mGenerateHtml = mConfigurationFileParser.htmlGenerationParameter();
-	mGeneratedCodeDir = mConfigurationFileParser.generatedCodeDir();
+	mGeneratedCodeDirQrxc = mConfigurationFileParser.generatedCodeDirQrxc();
+	mGeneratedCodeDirQrmc = mConfigurationFileParser.generatedCodeDirQrmc();
 }
 

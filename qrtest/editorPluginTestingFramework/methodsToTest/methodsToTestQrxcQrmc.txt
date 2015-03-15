@@ -1,14 +1,20 @@
+diagrams
+elements
+explosions
+getPortTypes
+getEnumValues
 propertiesWithDefaultValues
-usedTypes
-connectedTypes
+typesContanedBy
 getPossibleEdges
+//usedTypes? exist
+//connectedTypes? exist
 isNodeOrEdge
 
 getPropertyNames
 getReferenceProperties
-getParentsOf
+getParentsOf 
 
-//getPropertyTypes
+getPropertyTypes
 getPropertyDefaultValue
 
 diagramName
@@ -25,3 +31,8 @@ isParentOf
 
 diagramPaletteGroup
 diagramPaletteGroupDescription
+diagramPaletteGroups
+
+
+
+//editorName() const = 0;

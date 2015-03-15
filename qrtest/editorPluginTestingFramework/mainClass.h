@@ -49,7 +49,7 @@ private:
 	void returnOldValueOfTemp() const;
 
 	void launchQrmc(QString const &fileName, QString const &pathToQrmc);
-	void compilePlugin(QString const &directoryToCodeToCompile);
+	void compilePlugin(QString const &directoryToCodeToCompile, const QString &fileName);
 	void launchQrxc(QString const &fileName);
 	void createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult);
@@ -88,7 +88,10 @@ private:
 	/// "yes" if we want to generate html and "no" otherwise
 	QString mGenerateHtml;
 	/// path to generated code (from root)
-	QString mGeneratedCodeDir;
+	//QString mGeneratedCodeDir;
+	QString mGeneratedCodeDirQrxc;
+	QString mGeneratedCodeDirQrmc;
+
 
 	/// result of testing for travis
 	int mResultOfTesting;

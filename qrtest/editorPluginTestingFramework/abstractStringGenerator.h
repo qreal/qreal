@@ -13,8 +13,23 @@ public:
 	/// generates string of results for one method of one interface
 	virtual QString generateString() const = 0;
 
+	/// generates string of results for one method of one interface
+	virtual QString generateStringTime()
+	{
+		return "";
+	}
+
+
+
+
 	/// generates name of tested method
 	virtual QString methodName() const = 0;
+
+	virtual QStringList ololo()
+	{
+		QStringList result;
+		return result;
+	}
 };
 
 }

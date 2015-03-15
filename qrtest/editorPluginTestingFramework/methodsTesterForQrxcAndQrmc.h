@@ -63,6 +63,12 @@ private:
 	class DiagramPaletteGroupListStringGenerator;
 	class DiagramPaletteGroupDescriptionStringGenerator;
 
+	class DiagramsStringGenerator;
+	class ElementsStringGenerator;
+	class ExplosionsStringGenerator;
+	class PortTypesStringGenerator;
+	class EnumValueStringGenerator;
+
 	/// fills mGeneratedList with results of testing
 	void testMethods();
 

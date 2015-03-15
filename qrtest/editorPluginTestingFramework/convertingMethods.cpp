@@ -3,6 +3,44 @@
 using namespace editorPluginTestingFramework;
 using namespace qReal;
 
+
+QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(QList<EditorInterface::ExplosionData> const &explDataList)
+{
+	QStringList resultList;
+
+	//EditorInterface::ExplosionData ololo// = explDataList.first();
+	for (EditorInterface::ExplosionData const & element : explDataList)
+	{
+		resultList.append(element.targetElement);
+	}
+
+
+//	QStringList result;
+//	foreach (Explosion const &explosion, explosionList) {
+//		QString const &target = explosion.target().toString();
+//		result.append(target);
+//	}
+
+
+	return resultList;
+}
+
+
+
+QStringList ConvertingMethods::convertingQPairListIntoStringList(const QList<QPair<QString, QString> > &qPairList)
+{
+	QStringList resultList;
+	for (auto const & element : qPairList )
+	{
+		resultList.append(element.first);
+		resultList.append(element.second);
+	}
+
+	return resultList;
+}
+
+
+
 QStringList ConvertingMethods::convertIdListIntoStringList(IdList const idList)
 {
 	QStringList resultList;
@@ -68,14 +106,7 @@ QString ConvertingMethods::transformateOutput(
 
 	return result;
 }
-QString ConvertingMethods::transformateOutputOther(
-		QList<QPair<QString, QString>> const &output
-		, Id const &id
-		, QString const &name
-		)
-{
-	return "";
-}
+
 
 
 QSet<QString> ConvertingMethods::resultToCompare(QString const &method)

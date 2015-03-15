@@ -32,11 +32,31 @@ QPair<QString, QPair<QString, QString> > MethodsTester::testMethodIfExistsInList
 	return resultPair;
 }
 
+QStringList generateOutputTimeForOneMethod(AbstractStringGenerator const &stringGenerator)
+{
+	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
+	QString const &methodName = firstGenerator->methodName();
+	QStringList ololo = firstGenerator->ololo();
+	QString const &firstResult = firstGenerator->generateStringTime();
+	QStringList ololo1 = firstGenerator->ololo();
+
+
+	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
+	QString const &secondResult = secondGenerator->generateStringTime();
+	return ololo;
+}
+
+
+
 QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator)
 {
 	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
 	QString const &methodName = firstGenerator->methodName();
+	QStringList ololo = firstGenerator->ololo();
 	QString const &firstResult = firstGenerator->generateString();
+	QString qwerty = firstGenerator->generateStringTime();
+	QStringList ololo1 = firstGenerator->ololo();
+
 
 	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
 	QString const &secondResult = secondGenerator->generateString();

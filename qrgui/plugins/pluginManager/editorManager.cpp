@@ -13,6 +13,26 @@
 
 using namespace qReal;
 
+EditorManager::EditorManager(QString ololo)
+	: mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors/qrxc/plugins"))
+{
+	mPluginManager =(PluginManager(qApp->applicationDirPath(), "plugins/editors/qrxc/plugins"));
+
+	const auto pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
+
+	for (EditorInterface * const iEditor : pluginsList) {
+		const QString pluginName = mPluginManager.fileName(iEditor);
+
+		if (iEditor) {
+			mPluginsLoaded += iEditor->id();
+			mPluginFileName.insert(iEditor->id(), pluginName);
+			mPluginIface[iEditor->id()] = iEditor;
+		}
+	}
+
+}
+
+
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
 	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors"))
@@ -200,7 +220,7 @@ QString EditorManager::propertyDisplayedName(const Id &id, const QString &proper
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	if (id.idSize() != 4) {
-		return "";
+	//	return "";
 	}
 	return mPluginIface[id.editor()]->propertyDisplayedName(id.diagram(), id.element(), propertyName);
 }
