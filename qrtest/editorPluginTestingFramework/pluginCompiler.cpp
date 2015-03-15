@@ -26,19 +26,13 @@ void PluginCompiler::compilePlugin(const QString &fileName
 	qDebug() << "STARTING PLUGIN COMPILING";
 	QProcess builder;
 	builder.setWorkingDirectory(directoryToCodeToCompile);
-	//builder.setEnvironment();
 	QStringList environment = QProcess::systemEnvironment();
 	builder.setEnvironment(environment);
 	QStringList qmakeArgs;
 	qmakeArgs.append("CONFIG+=" + configurationParameter);
-	//QFile *ololo;
-
-
 
 	RepoApi *const mRepoApi = new RepoApi(fileName + ".qrs");
-
 	QString pluginName = "";
-
 	IdList const metamodels = mRepoApi->children(Id::rootId());
 
 	foreach (Id const &key, metamodels) {
@@ -50,22 +44,20 @@ void PluginCompiler::compilePlugin(const QString &fileName
 		}
 	}
 
+	QString file = directoryToCodeToCompile + "/" + pluginName + ".pro";
+	qDebug() << file;
+	QFile data(file);
+	//data.open(QIODevice::Append);
+	data.open(QIODevice::ReadOnly);
+	QByteArray a = data.readAll();
+	data.close();
+	data.open(QIODevice::WriteOnly);
 
-
-		QString qwertyuiop = directoryToCodeToCompile + "/" + pluginName + ".pro";
-		qDebug() << qwertyuiop;
-		//QFile data(directoryToCodeToCompile + pluginName + ".pro");
-		QFile data(qwertyuiop);
-		data.open(QIODevice::ReadOnly);
-		QByteArray a = data.readAll();
-		data.close();
-		data.open(QIODevice::WriteOnly);
-
-		data.write(a + "DESTDIR = plugins");
+	data.write(a + "DESTDIR = plugins");
 
 
 		//data.write();
-		data.close();
+	data.close();
 
 //	QString = ololo.fil;
 

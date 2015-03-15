@@ -6,7 +6,7 @@ namespace editorPluginTestingFramework {
 QString const sourcesDir = "/sources";
 QString const pluginsDir = "/plugins";
 
-QString const pathToQrmcGeneratedCode = "/sources/qrmc";
+QString const pathToQrmcGeneratedCode = "";
 QString const pathToQrxcGeneratedCode = "";
 
 QString const pathToQrmcGeneratedPlugin = "";

@@ -14,9 +14,9 @@
 using namespace qReal;
 
 EditorManager::EditorManager(QString ololo)
-	: mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors/qrxc/plugins"))
+	: mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors/qrtest/qrxc/plugins"))
 {
-	mPluginManager =(PluginManager(qApp->applicationDirPath(), "plugins/editors/qrxc/plugins"));
+	mPluginManager =(PluginManager(qApp->applicationDirPath(), "plugins/editors/qrtest/qrxc/plugins"));
 
 	const auto pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
 

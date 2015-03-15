@@ -175,7 +175,7 @@ void MainClass::compilePlugin(QString const &directoryToCodeToCompile, const QSt
 void MainClass::launchQrxc(QString const &fileName)
 {
 	//mApplicationPath
-	QString tempPath = "plugins/editors/qrxc";
+	QString tempPath = "plugins/editors/qrtest/qrxc";
 	mQrxcLauncher.launchQrxc(fileName, mQRealRootPath, tempPath);
 }
 
@@ -187,7 +187,7 @@ EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const 
 void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult)
 {
-	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, mGeneratedCodeDirQrxc);
+	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, mGeneratedDirHtml);
 }
 
 void MainClass::appendPluginNames()
@@ -210,5 +210,6 @@ void MainClass::parseConfigurationFile(QString const &fileName)
 	mGenerateHtml = mConfigurationFileParser.htmlGenerationParameter();
 	mGeneratedCodeDirQrxc = mConfigurationFileParser.generatedCodeDirQrxc();
 	mGeneratedCodeDirQrmc = mConfigurationFileParser.generatedCodeDirQrmc();
+	mGeneratedDirHtml = mConfigurationFileParser.generatedDirHtml();
 }
 

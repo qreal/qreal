@@ -21,6 +21,7 @@ void ConfigurationFileParser::parseConfigurationFile(QString const &configuratio
 	mGenerateHtml = valueByTag("generateHtml");
 	mGeneratedCodeDirQrxc = valueByTag("generatedCodeDirQrxc");
 	mGeneratedCodeDirQrmc = valueByTag("generatedCodeDirQrmc");
+	mGeneratedDirHtml = valueByTag("generatedDirHtml");
 }
 
 QString ConfigurationFileParser::valueByTag(QString const &tag) const
@@ -74,3 +75,10 @@ QString ConfigurationFileParser::generatedCodeDirQrmc() const
 {
 	return mGeneratedCodeDirQrmc;
 }
+
+QString ConfigurationFileParser::generatedDirHtml() const
+{
+	return mGeneratedDirHtml;
+}
+
+

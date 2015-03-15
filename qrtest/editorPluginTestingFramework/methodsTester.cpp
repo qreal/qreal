@@ -29,10 +29,14 @@ QPair<QString, QPair<QString, QString> > MethodsTester::testMethodIfExistsInList
 		resultPair = generateOutputForOneMethod(stringGenerator);
 	}
 
+	if (mMethodsToTest.contains(method)) {
+		generateOutputTimeForOneMethod(stringGenerator);
+	}
+
 	return resultPair;
 }
 
-QStringList generateOutputTimeForOneMethod(AbstractStringGenerator const &stringGenerator)
+QStringList MethodsTester::generateOutputTimeForOneMethod(AbstractStringGenerator const &stringGenerator)
 {
 	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
 	QString const &methodName = firstGenerator->methodName();

@@ -91,6 +91,7 @@ private:
 	//QString mGeneratedCodeDir;
 	QString mGeneratedCodeDirQrxc;
 	QString mGeneratedCodeDirQrmc;
+	QString mGeneratedDirHtml;
 
 
 	/// result of testing for travis

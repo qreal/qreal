@@ -28,6 +28,8 @@ public:
 	QString generatedCodeDirQrxc() const;
 	QString generatedCodeDirQrmc() const;
 
+	QString generatedDirHtml() const;
+
 
 private:
 	/// given tag, returns tag value from configuration file
@@ -42,6 +44,7 @@ private:
 	QString mGenerateHtml;
 	QString mGeneratedCodeDirQrxc;
 	QString mGeneratedCodeDirQrmc;
+	QString mGeneratedDirHtml;
 
 	QDomDocument mXml;
 };
