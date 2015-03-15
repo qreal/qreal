@@ -500,9 +500,9 @@ void EditorGenerator::setValues(QDomElement &parent, Id const &id)
 	}
 }
 
-void EditorGenerator::setGroupNodes(QDomElement &parent, Id const &id)
+void EditorGenerator::setGroupNodes(QDomElement &parent, const Id &id)
 {
-	for (Id const idChild : mApi.children(id)) {
+	for (const Id &idChild : mApi.children(id)) {
 		if (idChild != Id::rootId()) {
 			QDomElement groupNodeTag = mDocument.createElement("groupNode");
 			ensureCorrectness(idChild, groupNodeTag, "name", mApi.name(idChild));
@@ -510,7 +510,7 @@ void EditorGenerator::setGroupNodes(QDomElement &parent, Id const &id)
 			ensureCorrectness(idChild, groupNodeTag, "xPosition", mApi.property(idChild, "xPosition").toString());
 			ensureCorrectness(idChild, groupNodeTag, "yPosition", mApi.property(idChild, "yPosition").toString());
 
-			Id typeElement = Id::loadFromString(mApi.property(idChild, "type").toString());
+			const Id typeElement = Id::loadFromString(mApi.property(idChild, "type").toString());
 			ensureCorrectness(idChild, groupNodeTag, "type", mApi.name(typeElement));
 
 			parent.appendChild(groupNodeTag);
@@ -664,8 +664,8 @@ void EditorGenerator::setExplosion(QDomElement &parent, Id const &id)
 	IdList const inLinks = mApi.incomingLinks(id);
 	foreach (Id const inLink, inLinks) {
 		if (inLink.element() == "Explosion") {
-			Id const elementId = mApi.from(inLink);
-			QString const typeName = elementId.element();
+			const Id elementId = mApi.from(inLink);
+			const QString typeName = elementId.element();
 			if (typeName == "MetaEntityNode" || typeName == "MetaEntityGroup") {
 				QDomElement target = mDocument.createElement("target");
 				ensureCorrectness(elementId, target, "type", mApi.name(elementId));
@@ -688,7 +688,7 @@ void EditorGenerator::setExplosionProperties(QDomElement &target, Id const &link
 	target.setAttribute("requireImmediateLinkage", mApi.property(linkId, "requireImmediateLinkage").toString());
 }
 
-void EditorGenerator::setDividability(QDomElement &parent, Id const&id)
+void EditorGenerator::setDividability(QDomElement &parent, const Id &id)
 {
 	QDomElement dividability = mDocument.createElement("dividability");
 	parent.appendChild(dividability);
