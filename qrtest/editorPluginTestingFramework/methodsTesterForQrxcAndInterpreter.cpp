@@ -321,16 +321,22 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 20; ++i)
-		{
+		for (int i = 0; i < 20; ++i) {
 			timer.start();
-			editorManagerInterface->diagrams(editorId);
-			time += timer.nsecsElapsed();
-		}
-		time = time / 20;
 
-		QPair<qint64, int> result = qMakePair(time, 20);
-		return result;
+			for (int i = 0; i < 20; ++i) {
+				editorManagerInterface->diagrams(editorId);
+			}
+			time += timer.nsecsElapsed();
+			time = time / 20;
+		}
+
+
+
+
+
+		QPair<qint64, int> result1 = qMakePair(time, 20);
+		return result1;
 	}
 
 	virtual AbstractStringGenerator* clone() const
