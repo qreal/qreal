@@ -21,7 +21,7 @@ QList<qReal::ActionInfo> GenerationRulesPlugin::actions()
 	return {info};
 }
 
-void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi)
+void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi)
 {
 	mRepo = &configurator.repoControlInterface();
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();

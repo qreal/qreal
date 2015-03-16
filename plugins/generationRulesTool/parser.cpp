@@ -26,7 +26,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				QList<QSharedPointer<ast::Node>> result;
 				for (auto const &stat : statementList->list()) {
 					if (stat->is<TemporaryList>()) {
-					// it is a list of assignments
+						// it is a list of assignments
 						for (auto const &assignment : qrtext::as<TemporaryList>(stat)->list()) {
 							result << assignment;
 						}
@@ -51,8 +51,8 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 
 	auto complexIdentifier = (identifier & -TokenTypes::dot & identifier)
 			>> [] (QSharedPointer<TemporaryPair> tokens) {
-				auto identifier = tokens->left();
-				auto property = tokens->right();
+				auto const identifier = tokens->left();
+				auto const property = tokens->right();
 
 				return qrtext::wrap(new ast::ComplexIdentifier(identifier, property));
 	};
@@ -60,8 +60,8 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 	auto foreachStatement = (-TokenTypes::foreachKeyword & -TokenTypes::openingBracket & TokenTypes::identifier
 				& -TokenTypes::closingBracket & -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
 			>> [] (QSharedPointer<TemporaryPair> statementPair) {
-				auto identifier = statementPair->right();
-				auto program = statementPair->left();
+				auto const identifier = statementPair->right();
+				auto const program = statementPair->left();
 
 				return qrtext::wrap(new ast::Foreach(identifier, program));
 	};

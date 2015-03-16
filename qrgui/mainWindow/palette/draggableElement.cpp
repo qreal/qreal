@@ -150,7 +150,7 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 
 void DraggableElement::openGenerationToolsWindowActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
+	const QAction * const action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
 	SpecifyGenerationRulesDialog *rulesDialog = new SpecifyGenerationRulesDialog(mMainWindow, mEditorManagerProxy, id);
 	rulesDialog->setModal(true);

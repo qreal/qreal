@@ -12,13 +12,13 @@ class Text : public Node
 public:
 	/// Constructor.
 	/// @param string - value of a literal (with quotes).
-	Text(QString const &text)
+	Text(const QString &text)
 		: mText(text)
 	{
 	}
 
 	/// Returns value of a string (with quotes).
-	QString const &text() const {
+	const QString &text() const {
 		return mText;
 	}
 

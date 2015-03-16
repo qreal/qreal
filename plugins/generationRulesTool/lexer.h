@@ -6,6 +6,8 @@
 #include "tokenTypes.h"
 
 namespace simpleParser {
+
+/// Lexer for generation rules tool language.
 class Lexer: public qrtext::core::Lexer<TokenTypes>
 {
 public:

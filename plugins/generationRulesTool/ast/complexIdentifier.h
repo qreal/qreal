@@ -13,20 +13,20 @@ public:
 	/// Constructor for ComplexIdentifier.
 	/// @param firstPart - part before dot.
 	/// @param secondPart - part after dot.
-	explicit ComplexIdentifier(QSharedPointer<Node> const &firstPart, QSharedPointer<Node> const &secondPart)
+	explicit ComplexIdentifier(const QSharedPointer<Node> &firstPart, const QSharedPointer<Node> &secondPart)
 		: mFirstPart(firstPart)
 		, mSecondPart(secondPart)
 	{
 	}
 
 	/// Returns first part of complex identifier.
-	QSharedPointer<Node> firstPartOfComplexIdentifier()
+	QSharedPointer<Node> firstPartOfComplexIdentifier() const
 	{
 		return mFirstPart;
 	}
 
 	/// Returns second part of complex identifier.
-	QSharedPointer<Node> secondPartOfComplexIdentifier()
+	QSharedPointer<Node> secondPartOfComplexIdentifier() const
 	{
 		return mSecondPart;
 	}

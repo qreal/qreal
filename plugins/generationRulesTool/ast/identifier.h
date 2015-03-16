@@ -11,13 +11,13 @@ class Identifier : public Node
 public:
 	/// Constructor for Identifier.
 	/// @param name - identifier name.
-	Identifier(QString const &name)
+	Identifier(const QString &name)
 		: mName(name)
 	{
 	}
 
 	/// Returns identifier name.
-	QString const &name() const {
+	const QString &name() const {
 		return mName;
 	}
 

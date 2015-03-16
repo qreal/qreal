@@ -16,7 +16,7 @@ public:
 
 	QList<qReal::ActionInfo> actions() override;
 
-	void init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi) override;
+	void init(const qReal::PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi) override;
 
 private slots:
 	void generateCode();

@@ -12,7 +12,7 @@ class Program : public Node
 public:
 	/// Constructor.
 	/// @param statements - a list of statements in a program.
-	explicit Program(QList<QSharedPointer<Node>> const &statements)
+	explicit Program(const QList<QSharedPointer<Node>> &statements)
 		: mStatements(statements)
 	{
 	}

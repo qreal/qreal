@@ -12,27 +12,27 @@ public:
 	/// Constructor for Foreach.
 	/// @param identifier - foreach identifier.
 	/// @param program - subprogram.
-	explicit Foreach(QSharedPointer<Node> const &identifier, QSharedPointer<Node> const &program)
+	explicit Foreach(const QSharedPointer<Node> &identifier, const QSharedPointer<Node> &program)
 		: mIdentifier(identifier)
 		, mProgram(program)
 	{
 	}
 
 	/// Returns identifier node.
-	QSharedPointer<Node> identifier()
+	QSharedPointer<Node> identifier() const
 	{
 		return mIdentifier;
 	}
 
 	/// Returns program node.
-	QSharedPointer<Node> program()
+	QSharedPointer<Node> program() const
 	{
 		return mProgram;
 	}
 
 	QList<QSharedPointer<Node>> children() const override
 	{
-		return QList<QSharedPointer<Node>>({mIdentifier, mProgram});
+		return {mIdentifier, mProgram};
 	}
 
 private:
