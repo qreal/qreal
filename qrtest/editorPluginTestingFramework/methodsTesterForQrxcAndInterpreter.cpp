@@ -226,8 +226,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
 	}
 
 
-
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
