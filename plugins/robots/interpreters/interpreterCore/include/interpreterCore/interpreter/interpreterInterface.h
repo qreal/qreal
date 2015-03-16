@@ -3,13 +3,13 @@
 #include <QtCore/QObject>
 
 #include <qrkernel/ids.h>
-#include <interpreterBase/interpreterControlInterface.h>
+#include <kitBase/interpreterControlInterface.h>
 
 namespace interpreterCore {
 namespace interpreter {
 
 /// Interface that allows interpreter to communicate with other parts of a system.
-class InterpreterInterface : public interpreterBase::InterpreterControlInterface
+class InterpreterInterface : public kitBase::InterpreterControlInterface
 {
 	Q_OBJECT
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/trikInfraredSensor.h"
+#include <trikKit/robotModel/parts/trikInfraredSensor.h>
 #include <utils/tcpRobotCommunicator.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -13,8 +13,8 @@ class InfraredSensor : public robotModel::parts::TrikInfraredSensor
 	Q_OBJECT
 
 public:
-	InfraredSensor(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+	InfraredSensor(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;

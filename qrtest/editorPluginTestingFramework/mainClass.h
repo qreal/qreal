@@ -52,7 +52,8 @@ private:
 	void compilePlugin(QString const &directoryToCodeToCompile, const QString &fileName);
 	void launchQrxc(QString const &fileName);
 	void createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
-			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult);
+			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
+			, QList<QPair<QString, QPair<QString, QString> > > timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultInterpter);
 
 	/// puts names of generated plugins into mQrxcGeneratedPluginList (for further creation of EditorManager)
 	void appendPluginNames();

@@ -1,14 +1,14 @@
 #include "sensorsConfigurationManagerTest.h"
 
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensor.h>
+#include <kitBase/robotModel/robotParts/touchSensor.h>
+#include <kitBase/robotModel/robotParts/colorSensor.h>
 
 #include "mocks/qrgui/mainWindow/mainWindowInterpretersInterfaceMock.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
 using namespace interpreterCore;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 using namespace testing;
 
 void SensorsConfigurationManagerTest::SetUp()

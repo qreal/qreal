@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QApplication>
 
-#include <commonTwoDModel/engine/view/d2ModelWidget.h>
+#include <twoDModel/engine/view/d2ModelWidget.h>
 
 using namespace twoDModel;
 

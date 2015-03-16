@@ -55,53 +55,42 @@ QStringList @@MetamodelName@@Plugin::elements(const QString &diagram) const
 	return elementsNameMap[diagram].keys();
 }
 
-//elementsDescriptionMap->mElementsDescriptionMap
 QString @@MetamodelName@@Plugin::elementDescription(const QString &diagram, const QString &element) const
 {
-	return mElementsDescriptionMap[diagram][element];
+	return elementsDescriptionMap[diagram][element];
 }
 
-//propertiesDescriptionMap->mPropertiesDescriptionMap
 QString @@MetamodelName@@Plugin::propertyDescription(const QString &diagram, const QString &element, const QString &property) const
 {
-	return mPropertiesDescriptionMap[diagram][element][property];
+	return propertiesDescriptionMap[diagram][element][property];
 }
 
-//propertiesDisplayedNamesMap->mPropertiesDisplayedNamesMap
 QString @@MetamodelName@@Plugin::propertyDisplayedName(const QString &diagram, const QString &element, const QString &property) const
 {
-	return mPropertiesDisplayedNamesMap[diagram][element][property];
+	return propertiesDisplayedNamesMap[diagram][element][property];
 }
 
-//parentsMap->mParentsMap
 bool @@MetamodelName@@Plugin::isParentOf(const QString &parentDiagram, const QString &parentElement, const QString &childDiagram, const QString &childElement) const
 {
 	if (childDiagram == parentDiagram && childElement == parentElement)
 		return true;
-	if (mParentsMap[childDiagram][childElement].contains(qMakePair(parentDiagram, parentElement)))
+	if (parentsMap[childDiagram][childElement].contains(qMakePair(parentDiagram, parentElement)))
 		return true;
 	typedef QPair<QString, QString> StringPair;
-	foreach (StringPair const &pair, mParentsMap[childDiagram][childElement])
+	foreach (StringPair const &pair, parentsMap[childDiagram][childElement])
 		if (isParentOf(parentDiagram, parentElement, pair.first, pair.second))
 			return true;
 	return false;
 }
-//parentsMap->mParentsMap
+
 QList<QPair<QString, QString> > @@MetamodelName@@Plugin::getParentsOf(const QString &diagram, const QString &element) const
 {
 	return parentsMap[diagram][element];
 }
 
-//really strange correction(in qrxc it looks at the same way)
 QStringList @@MetamodelName@@Plugin::diagramPaletteGroups(const QString &diagram) const
 {
-	//return paletteGroupsMap[diagram].keys();
-	QStringList result;
-	for (QPair<QString, QStringList> const &group : mPaletteGroupsMap[diagram]) {
-		result << group.first;
-	}
-
-	return result;
+	return paletteGroupsMap[diagram].keys();
 }
 
 QStringList @@MetamodelName@@Plugin::diagramPaletteGroupList(const QString &diagram, const QString &group) const
@@ -109,17 +98,14 @@ QStringList @@MetamodelName@@Plugin::diagramPaletteGroupList(const QString &diag
 	return paletteGroupsMap[diagram][group];
 }
 
-//really strange correction(in qrxc it looks at the same way)
 QStringList @@MetamodelName@@Plugin::getPropertiesWithDefaultValues(const QString &element) const
 {
-	return mPaletteGroupsDescriptionMap[diagram][group];
+	return propertyDefault[element].keys();
 }
 
-//really strange correction(in qrxc it looks at the same way)
 QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(const QString &diagram, const QString &group) const
 {
-//	return paletteGroupsDescriptionMap[diagram][group];
-	return mPaletteGroupsDescriptionMap[diagram][group];
+	return paletteGroupsDescriptionMap[diagram][group];
 }
 
 QString @@MetamodelName@@Plugin::editorName() const
@@ -127,28 +113,24 @@ QString @@MetamodelName@@Plugin::editorName() const
 	 return "@@MetamodelName@@ Editor";
 }
 
-//diagramNameMap->mDiagramNameMap
 QString @@MetamodelName@@Plugin::diagramName(const QString &diagram) const
 {
-	return mDiagramNameMap[diagram];
+	return diagramNameMap[diagram];
 }
 
-//diagramNodeNameMap->mDiagramNodeNameMap
 QString @@MetamodelName@@Plugin::diagramNodeName(const QString &diagram) const
 {
-	return mDiagramNodeNameMap[diagram];
+	return diagramNodeNameMap[diagram];
 }
 
-//elementsNameMap->mElementsNameMap
 QString @@MetamodelName@@Plugin::elementName(const QString &diagram, const QString &element) const
 {
-	return mElementsNameMap[diagram][element];
+	return elementsNameMap[diagram][element];
 }
 
-//elementMouseGesturesMap->mElementMouseGesturesMap
 QString @@MetamodelName@@Plugin::elementMouseGesture(const QString &diagram, const QString &element) const
 {
-	return mElementMouseGesturesMap[diagram][element];
+	return elementMouseGesturesMap[diagram][element];
 }
 
 qReal::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(const QString &/*diagram*/, const QString &element) const
@@ -216,10 +198,10 @@ QString @@MetamodelName@@Plugin::getPropertyType(const QString &element, const Q
 {
 	return propertyTypes[element][property];
 }
-//propertyDefault->mPropertyDefault
+
 QString @@MetamodelName@@Plugin::getPropertyDefaultValue(const QString &element, const QString &property) const
 {
-	return mPropertyDefault[element][property];
+	return propertyDefault[element][property];
 }
 
 QList<qReal::ListenerInterface*> @@MetamodelName@@Plugin::listeners() const

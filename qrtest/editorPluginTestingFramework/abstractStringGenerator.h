@@ -18,6 +18,8 @@ public:
 	{
 		return "";
 	}
+//	virtual QList<QPair<qint64, int>> generateListTime(EditorManagerInterface *editorManagerInterface) = 0;
+
 
 
 

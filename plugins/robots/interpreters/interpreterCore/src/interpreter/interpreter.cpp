@@ -8,11 +8,11 @@
 
 #include <utils/timelineInterface.h>
 #include <utils/tracer.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <kitBase/robotModel/robotModelInterface.h>
 
 using namespace qReal;
 using namespace interpreterCore::interpreter;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 const int maxThreadsCount = 100;
@@ -22,7 +22,7 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, const qReal::ProjectManagementInterface &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &languageToolbox
 		, QAction &connectToRobotAction
 		)
@@ -39,14 +39,14 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 {
 	connect(
 			&mRobotModelManager
-			, &interpreterBase::robotModel::RobotModelManagerInterface::allDevicesConfigured
+			, &kitBase::robotModel::RobotModelManagerInterface::allDevicesConfigured
 			, this
 			, &Interpreter::devicesConfiguredSlot
 			);
 
 	connect(
 			&mRobotModelManager
-			, &interpreterBase::robotModel::RobotModelManagerInterface::connected
+			, &kitBase::robotModel::RobotModelManagerInterface::connected
 			, this
 			, &Interpreter::connectedSlot
 			);

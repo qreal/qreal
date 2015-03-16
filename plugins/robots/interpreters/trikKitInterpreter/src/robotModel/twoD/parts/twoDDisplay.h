@@ -1,12 +1,12 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include "robotModel/parts/trikDisplay.h"
+#include <trikKit/robotModel/parts/trikDisplay.h>
 
-#include <commonTwoDModel/engine/twoDModelEngineInterface.h>
-#include <commonTwoDModel/engine/twoDModelDisplayInterface.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelDisplayInterface.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace twoD {
 namespace parts {
@@ -16,8 +16,8 @@ class Display : public robotModel::parts::TrikDisplay, public graphicsUtils::Pai
 	Q_OBJECT
 
 public:
-	Display(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	Display(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void drawSmile(bool sad) override;

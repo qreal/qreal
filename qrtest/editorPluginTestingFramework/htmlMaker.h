@@ -11,10 +11,9 @@ class HtmlMaker
 {
 public:
 	/// creates .html-file with results of testing
-	void makeHtml(
-			QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
+	void makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
-			, QString const &pathToHtml);
+			, QList<QPair<QString, QPair<QString, QString> > > timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultIntertpter, QString const &pathToHtml);
 
 private:
 	/// adds one table with results of testing for qrxc-qrmc or qrxc-interpreter

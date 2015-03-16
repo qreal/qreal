@@ -1,7 +1,7 @@
 #include "motor.h"
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase;
 using namespace robotModel;
 using namespace utils;
 using namespace robotCommunication;

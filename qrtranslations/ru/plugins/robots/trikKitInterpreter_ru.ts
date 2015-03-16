@@ -30,19 +30,16 @@
 <context>
     <name>TrikFSharpAdditionalPreferences</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="14"/>
         <source>Form</source>
-        <translation>Настройки F#</translation>
+        <translation type="vanished">Настройки F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="35"/>
         <source>F# settings</source>
-        <translation>Настройки F#</translation>
+        <translation type="vanished">Настройки F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="65"/>
         <source>enter path to F# compile </source>
-        <translation>Введите путь к компилятору F#</translation>
+        <translation type="vanished">Введите путь к компилятору F#</translation>
     </message>
 </context>
 <context>
@@ -53,25 +50,59 @@
     </message>
 </context>
 <context>
-    <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
+    <name>trik::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="66"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="74"/>
+        <source>TRIK</source>
+        <translation>ТРИК</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="117"/>
+        <source>Show 2d model for TRIK</source>
+        <translation>Открыть 2D модель для TRIK</translation>
+    </message>
+    <message>
+        <source>Show 2d model for TRIK v6</source>
+        <translation type="vanished">Открыть 2D модель для TRIK v6</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="153"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
     </message>
+</context>
+<context>
+    <name>trik::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="90"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="51"/>
+        <source>Interpretation (Wi-Fi)</source>
+        <translation>Интерпретация (Wi-Fi)</translation>
+    </message>
+</context>
+<context>
+    <name>trik::robotModel::real::RealRobotModelV6</name>
+    <message>
+        <source>Interpretation (Wi-Fi)</source>
+        <translation type="vanished">Интерпретация (Wi-Fi)</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
+    <message>
+        <source>Enter robot`s IP-address here...</source>
+        <translation type="vanished">Введите IP-адрес робота...</translation>
+    </message>
+    <message>
         <source>TRIK</source>
-        <translation>ТРИК</translation>
+        <translation type="vanished">ТРИК</translation>
     </message>
     <message>
         <source>Show 2d model for TRIK v4</source>
         <translation type="vanished">Открыть 2D модель для TRIK v4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="136"/>
         <source>Show 2d model for TRIK v6</source>
-        <translation>Открыть 2D модель для TRIK v6</translation>
+        <translation type="vanished">Открыть 2D модель для TRIK v6</translation>
     </message>
 </context>
 <context>
@@ -95,9 +126,8 @@
 <context>
     <name>trikKitInterpreter::blocks::details::WaitGamepadButtonBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/waitGamepadButtonBlock.cpp" line="26"/>
         <source>Incorrect port for gamepad button %1</source>
-        <translation>Неверная кнопка Android-пульта %1</translation>
+        <translation type="vanished">Неверная кнопка Android-пульта %1</translation>
     </message>
 </context>
 <context>
@@ -110,81 +140,71 @@
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikColorSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikColorSensor.h" line="15"/>
         <source>Color Sensor</source>
-        <translation>Сенсор цвета</translation>
+        <translation type="vanished">Сенсор цвета</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikGamepadButton</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadButton.h" line="14"/>
         <source>Android Gamepad Button</source>
-        <translation>Кнопка Android-пульта</translation>
+        <translation type="vanished">Кнопка Android-пульта</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikGamepadConnectionIndicator</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadConnectionIndicator.h" line="14"/>
         <source>Android Gamepad Connection Indicator</source>
-        <translation>Индикатор подключения Android-пульта</translation>
+        <translation type="vanished">Индикатор подключения Android-пульта</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikGamepadPad</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadPad.h" line="15"/>
         <source>Android Gamepad Pad</source>
-        <translation>Активная область Android-пульта</translation>
+        <translation type="vanished">Активная область Android-пульта</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikGamepadPadPressSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadPadPressSensor.h" line="14"/>
         <source>Android Gamepad Pad as Button</source>
-        <translation>Активная область Android-пульта как кнопка</translation>
+        <translation type="vanished">Активная область Android-пульта как кнопка</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikGamepadWheel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikGamepadWheel.h" line="15"/>
         <source>Android Gamepad Wheel</source>
-        <translation>&quot;Руль&quot; Android-пульта</translation>
+        <translation type="vanished">&quot;Руль&quot; Android-пульта</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikInfraredSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikInfraredSensor.h" line="13"/>
         <source>Infrared Sensor</source>
-        <translation>Инфракрасный сенсор</translation>
+        <translation type="vanished">Инфракрасный сенсор</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikLed</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikLed.h" line="13"/>
         <source>Led</source>
-        <translation>Светодиод</translation>
+        <translation type="vanished">Светодиод</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikLineSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikLineSensor.h" line="14"/>
         <source>Line Sensor</source>
-        <translation>Сенсор линии</translation>
+        <translation type="vanished">Сенсор линии</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikMotionSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikMotionSensor.h" line="13"/>
         <source>Motion Sensor</source>
-        <translation>Сенсор движения</translation>
+        <translation type="vanished">Сенсор движения</translation>
     </message>
 </context>
 <context>
@@ -197,41 +217,36 @@
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikObjectSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikObjectSensor.h" line="14"/>
         <source>Object Sensor</source>
-        <translation>Сенсор объекта</translation>
+        <translation type="vanished">Сенсор объекта</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikPowerMotor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikPowerMotor.h" line="13"/>
         <source>Power Motor</source>
-        <translation>Силовой мотор</translation>
+        <translation type="vanished">Силовой мотор</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikServoMotor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikServoMotor.h" line="13"/>
         <source>Servo Motor</source>
-        <translation>Сервомотор</translation>
+        <translation type="vanished">Сервомотор</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikShell</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikShell.h" line="14"/>
         <source>Shell</source>
-        <translation>Командный интерпретатор</translation>
+        <translation type="vanished">Командный интерпретатор</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikSonarSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikSonarSensor.h" line="12"/>
         <source>Sonic Sensor</source>
-        <translation>Ультразвуковой сенсор</translation>
+        <translation type="vanished">Ультразвуковой сенсор</translation>
     </message>
 </context>
 <context>
@@ -251,9 +266,8 @@
 <context>
     <name>trikKitInterpreter::robotModel::real::RealRobotModelV6</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/real/realRobotModelV6.cpp" line="21"/>
         <source>Real Robot (v6)</source>
-        <translation>Реальный робот (v6)</translation>
+        <translation type="vanished">Реальный робот (v6)</translation>
     </message>
 </context>
 <context>

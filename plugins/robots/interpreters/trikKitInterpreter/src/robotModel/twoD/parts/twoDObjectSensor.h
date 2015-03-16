@@ -1,8 +1,8 @@
 #pragma once
 
-#include "robotModel/parts/trikObjectSensor.h"
+#include <trikKit/robotModel/parts/trikObjectSensor.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace twoD {
 namespace parts {
@@ -14,8 +14,8 @@ class ObjectSensor : public robotModel::parts::TrikObjectSensor
 	Q_OBJECT
 
 public:
-	ObjectSensor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port);
+	ObjectSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
 
 	void init() override;
 	void detect() override;

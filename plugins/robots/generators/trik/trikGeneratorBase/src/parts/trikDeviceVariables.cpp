@@ -4,8 +4,8 @@
 
 using namespace trik::parts;
 
-QString TrikDeviceVariables::variableTemplatePath(const interpreterBase::robotModel::DeviceInfo &device
-		, const interpreterBase::robotModel::PortInfo &port) const
+QString TrikDeviceVariables::variableTemplatePath(const kitBase::robotModel::DeviceInfo &device
+		, const kitBase::robotModel::PortInfo &port) const
 {
 	if (device.name() == "trikLineSensor"
 			|| device.name() == "trikObjectSensor"

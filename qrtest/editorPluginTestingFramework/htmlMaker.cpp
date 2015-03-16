@@ -17,6 +17,9 @@ using namespace utils;
 void HtmlMaker::makeHtml(
 			QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
+			, QList<QPair<QString, QPair<QString, QString> >> timeResult
+			, QList<QPair<QString, QPair<QString, QString> >> timeResultIntertpter
+
 			, QString const &pathToHtml)
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
@@ -38,6 +41,14 @@ void HtmlMaker::makeHtml(
 	QDomElement breakLine = newElement(body, "br");
 	addTable(body, qrxcAndInterpreterResult, QObject::tr("Table with results of comparison between qrxc and interpreter")
 			, QObject::tr("Method name"), "QRXC", "Interpreter");
+	addTable(body, timeResult, QObject::tr("Table with results of time qrxc and qrmc")
+			, QObject::tr("Method name"), "qrxc", "qrmc");
+	addTable(body, timeResultIntertpter, QObject::tr("Table with results of time qrxc and interpreter")
+			, QObject::tr("Method name"), "qrxc", "interpreter");
+
+
+
+
 
 	QString const &fileName = pathToHtml + "/output.html";
 	OutFile outHtml(fileName);

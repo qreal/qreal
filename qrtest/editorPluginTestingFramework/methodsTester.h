@@ -11,6 +11,8 @@ namespace editorPluginTestingFramework {
 
 class MethodsTester
 {
+public:
+	QList<QPair<QString, QPair<QString, QString> >> generateTimeResult();
 
 protected:
 
@@ -26,15 +28,18 @@ protected:
 	/// fills list of methods to test with methods from given .txt-file
 	void fillMethodsToTestList(QString const &fileName);
 
+
 private:
 
-	QStringList generateOutputTimeForOneMethod(AbstractStringGenerator const &stringGenerator);
+	void generateOutputTimeForOneMethod(AbstractStringGenerator const &stringGenerator);
 
 	/// generated method name and results for two interfaces, returns triplet of strings
 	QPair<QString, QPair<QString, QString> > generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator);
 
 	/// list of methods to be tested, is filled from files
 	QStringList mMethodsToTest;
+	QList<QPair<QString, QPair<QString, QString> >> mTimeResult;
+
 };
 
 }

@@ -4,17 +4,17 @@
 <context>
     <name>trik::TrikRuntimeUploaderPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="11"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="12"/>
         <source>Upload Runtime</source>
         <translation>Загрузить ПО на робот</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="56"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="62"/>
         <source>WinSCP process failed to launch, check path in settings.</source>
         <translation>Не удалось запустить WinSCP, проверьте путь в настройках.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="66"/>
         <source>Attention! Started to download the runtime. Please do not turn off the robot.</source>
         <translation>Внимание! Начата загрузка ПО. Пожалуйста, не отключайте робота.</translation>
     </message>

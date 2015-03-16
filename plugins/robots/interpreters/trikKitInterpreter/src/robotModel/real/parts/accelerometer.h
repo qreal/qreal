@@ -1,20 +1,20 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
+#include <kitBase/robotModel/robotParts/accelerometerSensor.h>
 #include <utils/tcpRobotCommunicator.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class Accelerometer : public interpreterBase::robotModel::robotParts::AccelerometerSensor
+class Accelerometer : public kitBase::robotModel::robotParts::AccelerometerSensor
 {
 	Q_OBJECT
 
 public:
-	Accelerometer(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	Accelerometer(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &robotCommunicator);
 
 	void read() override;

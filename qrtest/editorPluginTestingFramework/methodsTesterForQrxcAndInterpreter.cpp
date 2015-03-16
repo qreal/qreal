@@ -3,8 +3,11 @@
 #include "defs.h"
 #include "qrkernel/exception/exception.h"
 #include <QElapsedTimer>
-
+#include <iostream>
 #include <QtCore/QDebug>
+#include <cstdint>
+
+using namespace std;
 
 using namespace editorPluginTestingFramework;
 using namespace qReal;
@@ -51,16 +54,11 @@ public:
 		return resultStr;
 	}
 
+	virtual QStringList generateListTime(EditorManagerInterface *editorManagerInterface) = 0;
 
-	virtual QStringList ololo()
-	{
-		QStringList result;
-		return result;
-	}
 
 protected:
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const = 0;
-	virtual QStringList generateListTime(EditorManagerInterface *editorManagerInterface) = 0;
 
 
 	virtual QStringList callMethod(
@@ -71,7 +69,7 @@ protected:
 			, QString const &propertyName = ""
 			) const = 0;
 
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId = Id::rootId()
 			, Id const &diagramId = Id::rootId()
@@ -102,15 +100,14 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForEditors
 
 	virtual QStringList generateListTime(EditorManagerInterface *editorManagerInterface)
 	{
-		QStringList resultList;
+		//QStringList result;
+		QStringList res;
 
 		foreach (Id const &editor, editorManagerInterface->editors()) {
-			QString const additionalString = ConvertingMethods::transformateOutput(
-					callMethodTime(editorManagerInterface, editor), editor);
-			resultList.append(additionalString);
-			resultList.append("|");
+			QPair<qint64, int> additional =  callMethodTime(editorManagerInterface, editor);
+			res.append(QString::number(additional.first));
 		}
-		return resultList;
+		return res;
 	}
 
 
@@ -134,25 +131,17 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForDiagrams
 		return resultList;
 	}
 
-
-
 	virtual QStringList generateListTime(EditorManagerInterface *editorManagerInterface)
 	{
-		QStringList resultList;
-
+		QStringList result;
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
-				QString const additionalString = ConvertingMethods::transformateOutput(
-						callMethodTime(editorManagerInterface, editor, diagram), diagram);
-				resultList.append(additionalString);
-				resultList.append("|");
+				QPair<qint64, int> additional = callMethodTime(editorManagerInterface, editor, diagram);
+				result.append(QString::number(additional.first));
 			}
 		}
-		return resultList;
+		return result;
 	}
-
-
-
 
 };
 
@@ -177,21 +166,19 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
 	}
 
 
-	virtual QStringList generateListTime(EditorManagerInterface *editorManagerInterface)
+	virtual QStringList  generateListTime(EditorManagerInterface *editorManagerInterface)
 	{
-		QStringList resultList;
-
+		QStringList result;
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				foreach (Id const &element, editorManagerInterface->elements(diagram)) {
-					QString const additionalString = ConvertingMethods::transformateOutput(
-							callMethodTime(editorManagerInterface, editor, diagram, element), element);
-					resultList.append(additionalString);
-					resultList.append("|");
+					QPair<qint64, int> additional =
+							callMethodTime(editorManagerInterface, editor, diagram, element);
+					result.append(QString::number(additional.first));
 				}
 			}
 		}
-		return resultList;
+		return result;
 	}
 
 };
@@ -222,22 +209,20 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
 
 	virtual QStringList generateListTime(EditorManagerInterface *editorManagerInterface)
 	{
-		QStringList resultList;
+		QStringList result;
 
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				foreach (Id const &element, editorManagerInterface->elements(diagram)) {
 					foreach (QString const &property, editorManagerInterface->propertyNames(element)) {
-						QString const additionalString = ConvertingMethods::transformateOutput(
-								callMethodTime(editorManagerInterface, editor, diagram, element, property)
-								, Id::rootId(), property + "(" + element.element() + ")");
-						resultList.append(additionalString);
-						resultList.append("|");
+						QPair<qint64, int> additional =
+								callMethodTime(editorManagerInterface, editor, diagram, element, property);
+						result.append(QString::number(additional.first));
 					}
 				}
 			}
 		}
-		return resultList;
+		return result;
 	}
 
 
@@ -268,9 +253,7 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 		return ConvertingMethods::convertIdIntoStringList(editorId);
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -285,17 +268,16 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorId;
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertIdIntoStringList(editorId);
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 
 	virtual AbstractStringGenerator* clone() const
@@ -303,14 +285,6 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 		AbstractStringGenerator* clonedGenerator = new EditorsListGenerator();
 		return clonedGenerator;
 	}
-
-	virtual QStringList ololo()
-	{
-		qwerty.append("ololo");
-		return qwerty;
-	}
-
-	QStringList qwerty;
 };
 
 class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
@@ -335,9 +309,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->diagrams(editorId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -345,50 +317,23 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 			, QString const &propertyName
 			)
 	{
-		QStringList result;
 		Q_UNUSED(diagramId);
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->diagrams(editorId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
+		time = time / 20;
 
-		for (int i = 0; i < 5; ++i)
-		{
-
-				editorManagerInterface->diagrams(editorId);
-				increase();
-		}
+		QPair<qint64, int> result = qMakePair(time, 20);
 		return result;
 	}
-
-
-
-	void increase()
-	{
-		++count;
-	}
-
-
-	virtual QStringList ololo()
-	{
-		QStringList result;
-
-		QString ololo = QString::number(count);
-		result.append(ololo);
-		return result;
-	}
-
-
-private: int count = 1;
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -417,22 +362,10 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithIdParameter
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
 
-		for (int i = 0; i < 5; ++i) {
-			//returnCount();
-			//increase();
-	//		++count;
-			if (i < 4)
-			{
-				ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
-			}
-			else 	return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
-
-		}
-
+		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -443,47 +376,24 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithIdParameter
 		Q_UNUSED(editorId);
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
-		for (int i = 0; i < 5; ++i) {
-			//returnCount();
-			//increase();
-	//		++count;
-
-			qint64 time = 0;
-			QElapsedTimer timer;
-			for (int i = 0; i < 1000; ++i)
-			{
-				timer.start();
-				editorManagerInterface->elements(diagramId);
-				time += timer.nsecsElapsed();
-			}
-			time = time / 1000;
-
-			if (i < 4)
-			{
-				ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
-			}
-			else 	return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
-
+		qint64 time = 0;
+		QElapsedTimer timer;
+		for (int i = 0; i < 20; ++i)
+		{
+			timer.start();
+			editorManagerInterface->elements(diagramId);
+			time += timer.nsecsElapsed();
 		}
-
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
 		AbstractStringGenerator* clonedGenerator = new ElementsListGeneratorWithIdParameter();
 		return clonedGenerator;
 	}
-
-//	void returnCount()
-//	{
-//		count = count + 1;
-//		//return count;
-//	}
-//	int count = 1;
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParameters
@@ -509,8 +419,7 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParame
 		return editorManagerInterface->elements(editorName, diagramName);
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -525,17 +434,16 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParame
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->elements(editorName, diagramName);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return editorManagerInterface->elements(editorName, diagramName);
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -568,7 +476,7 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 
 
 
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -582,18 +490,16 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->mouseGesture(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-
-		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->mouseGesture(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -601,8 +507,6 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 		return clonedGenerator;
 	}
 };
-
-
 
 class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
@@ -621,11 +525,6 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 			) const
 	{
 		QStringList result;
-
-		IdList ololo = editorManagerInterface->elements(diagramId);
-//
-
-
 		foreach (Id const &parentDiagram, editorManagerInterface->diagrams(editorId)) {
 			foreach (Id const &parentElement,
 					 editorManagerInterface->elements(diagramId)) {
@@ -642,7 +541,7 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 
 
 
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -650,52 +549,24 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 			, QString const &propertyName
 			)
 	{
-		QStringList result;
-
-		IdList ololo = editorManagerInterface->elements(diagramId);
-//
-
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
-			timer.start();
-
 			foreach (Id const &parentDiagram, editorManagerInterface->diagrams(editorId)) {
 				foreach (Id const &parentElement,
 						 editorManagerInterface->elements(diagramId)) {
+					timer.start();
 					bool isParent = editorManagerInterface->isParentOf(elementId, parentElement);
-					if (isParent) {
-						result << parentElement.toString();
-						result <<  " is parent of ";
-						result << elementId.toString();
-					}
+					time += timer.nsecsElapsed();
 				}
 			}
 
-			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-
-		foreach (Id const &parentDiagram, editorManagerInterface->diagrams(editorId)) {
-			foreach (Id const &parentElement,
-					 editorManagerInterface->elements(diagramId)) {
-				bool isParent = editorManagerInterface->isParentOf(elementId, parentElement);
-				if (isParent) {
-					result << parentElement.toString();
-					result <<  " is parent of ";
-					result << elementId.toString();
-				}
-			}
-		}
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
 		return result;
 	}
-
-
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -703,9 +574,6 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 		return clonedGenerator;
 	}
 };
-
-
-
 
 
 class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
@@ -730,8 +598,7 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->friendlyName(elementId));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -743,49 +610,19 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
-		QStringList result;
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->friendlyName(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		for (int i = 0; i < 5; ++i)
-		{
-			editorManagerInterface->friendlyName(elementId);
-			increase();
-		}
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
 		return result;
-
-
 	}
-
-void increase()
-{
-	++count;
-}
-
-
-virtual QStringList ololo()
-{
-	QStringList result;
-
-	QString ololo = QString::number(count);
-	result.append(ololo);
-	return result;
-}
-
-
-private: int count = 1;
-
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -816,8 +653,7 @@ class MethodsTesterForQrxcAndInterpreter::DescriptionListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->description(elementId));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -831,19 +667,16 @@ class MethodsTesterForQrxcAndInterpreter::DescriptionListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->description(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->description(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -881,7 +714,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator
 	}
 
 
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -891,34 +724,24 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator
 	{
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
-		QStringList result;
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 
 			try {
-				result = ConvertingMethods::convertStringIntoStringList(
-						editorManagerInterface->propertyDescription(elementId, propertyName));
+				editorManagerInterface->propertyDescription(elementId, propertyName);
 			} catch (Exception e) {
-				result.append("method failed");
 			}
 
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		try {
-			result = ConvertingMethods::convertStringIntoStringList(
-					editorManagerInterface->propertyDescription(elementId, propertyName));
-		} catch (Exception e) {
-			result.append("method failed");
-		}
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
 		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -950,7 +773,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDisplayedNameListGenerator
 	}
 
 
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -963,19 +786,16 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDisplayedNameListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->propertyDisplayedName(elementId,propertyName);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertStringIntoStringList(
-				editorManagerInterface->propertyDisplayedName(elementId,propertyName));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1006,8 +826,7 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->containedTypes(elementId));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1021,18 +840,16 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->containedTypes(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->containedTypes(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1063,10 +880,7 @@ class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
 		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
 	}
 
-
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1080,17 +894,16 @@ class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->explosions(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1123,9 +936,7 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		return ConvertingMethods::convertingQPairListIntoStringList(editorManagerInterface->enumValues(elementId, name));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1140,17 +951,16 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->enumValues(elementId, name);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertingQPairListIntoStringList(editorManagerInterface->enumValues(elementId, name));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1182,8 +992,7 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->typeName(elementId, name));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1198,19 +1007,16 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->typeName(elementId, name);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->typeName(elementId, name));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1218,8 +1024,6 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 		return clonedGenerator;
 	}
 };
-
-
 
 class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
@@ -1243,10 +1047,7 @@ class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 		return (editorManagerInterface->referenceProperties(elementId));
 	}
 
-
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1260,17 +1061,16 @@ class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->referenceProperties(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return (editorManagerInterface->referenceProperties(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1278,9 +1078,6 @@ class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 		return clonedGenerator;
 	}
 };
-
-
-
 
 class MethodsTesterForQrxcAndInterpreter::AllChildrenTypesOfListGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
@@ -1304,9 +1101,7 @@ class MethodsTesterForQrxcAndInterpreter::AllChildrenTypesOfListGenerator
 		return (editorManagerInterface->allChildrenTypesOf(elementId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1320,19 +1115,16 @@ class MethodsTesterForQrxcAndInterpreter::AllChildrenTypesOfListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->allChildrenTypesOf(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return (editorManagerInterface->allChildrenTypesOf(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1363,8 +1155,7 @@ class MethodsTesterForQrxcAndInterpreter::IsEditorListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isEditor(editorId));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1378,18 +1169,16 @@ class MethodsTesterForQrxcAndInterpreter::IsEditorListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->isEditor(editorId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isEditor(editorId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1419,9 +1208,7 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isDiagram(diagramId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1435,17 +1222,16 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->isDiagram(diagramId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isDiagram(diagramId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1476,9 +1262,7 @@ class MethodsTesterForQrxcAndInterpreter::IsElementListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isElement(elementId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1492,17 +1276,16 @@ class MethodsTesterForQrxcAndInterpreter::IsElementListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->isElement(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isElement(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1533,9 +1316,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 		return (editorManagerInterface->propertyNames(elementId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1549,18 +1330,16 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->propertyNames(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return (editorManagerInterface->propertyNames(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1591,7 +1370,7 @@ class MethodsTesterForQrxcAndInterpreter::PortTypesListGenerator
 		return editorManagerInterface->portTypes(elementId);
 	}
 
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, const Id &editorId
 			, const Id &diagramId
@@ -1605,17 +1384,16 @@ class MethodsTesterForQrxcAndInterpreter::PortTypesListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->portTypes(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return editorManagerInterface->portTypes(elementId);
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1646,8 +1424,7 @@ class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 				editorManagerInterface->defaultPropertyValue(elementId, propertyName));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1660,18 +1437,16 @@ class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->defaultPropertyValue(elementId, propertyName);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertStringIntoStringList(
-				editorManagerInterface->defaultPropertyValue(elementId, propertyName));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1702,9 +1477,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1718,19 +1491,16 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->propertiesWithDefaultValues(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1761,8 +1531,7 @@ class MethodsTesterForQrxcAndInterpreter::HasElementListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->hasElement(elementId));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1776,17 +1545,16 @@ class MethodsTesterForQrxcAndInterpreter::HasElementListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->hasElement(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->hasElement(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1818,8 +1586,7 @@ class MethodsTesterForQrxcAndInterpreter::FindElementByTypeListGenerator
 		return ConvertingMethods::convertIdIntoStringList(editorManagerInterface->findElementByType(type));
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1834,18 +1601,16 @@ class MethodsTesterForQrxcAndInterpreter::FindElementByTypeListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->findElementByType(type);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertIdIntoStringList(editorManagerInterface->findElementByType(type));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1877,9 +1642,7 @@ class MethodsTesterForQrxcAndInterpreter::IsGraphicalElementListGenerator
 				editorManagerInterface->isGraphicalElementNode(elementId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1893,18 +1656,16 @@ class MethodsTesterForQrxcAndInterpreter::IsGraphicalElementListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->isGraphicalElementNode(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertBoolIntoStringList(
-				editorManagerInterface->isGraphicalElementNode(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -1937,9 +1698,7 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 				editorManagerInterface->isNodeOrEdge(editorName, elementName));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -1954,20 +1713,16 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->isNodeOrEdge(editorName, elementName);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertIntIntoStringList(
-				editorManagerInterface->isNodeOrEdge(editorName, elementName));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2000,9 +1755,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNameListGenerator
 				editorManagerInterface->diagramName(editorName, diagramName));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2017,18 +1770,16 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNameListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->diagramName(editorName, diagramName);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertStringIntoStringList(
-				editorManagerInterface->diagramName(editorName, diagramName));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2061,9 +1812,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNodeNameListGenerator
 				editorManagerInterface->diagramNodeName(editorName, diagramName));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2078,19 +1827,16 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNodeNameListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->diagramNodeName(editorName, diagramName);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertStringIntoStringList(
-				editorManagerInterface->diagramNodeName(editorName, diagramName));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2121,9 +1867,7 @@ class MethodsTesterForQrxcAndInterpreter::IsParentPropertyListGenerator
 				editorManagerInterface->isParentProperty(elementId, propertyName));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2136,18 +1880,16 @@ class MethodsTesterForQrxcAndInterpreter::IsParentPropertyListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->isParentProperty(elementId, propertyName);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertBoolIntoStringList(
-				editorManagerInterface->isParentProperty(elementId, propertyName));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2178,9 +1920,7 @@ class MethodsTesterForQrxcAndInterpreter::ChildrenListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->children(elementId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2194,18 +1934,16 @@ class MethodsTesterForQrxcAndInterpreter::ChildrenListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->children(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->children(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2236,9 +1974,7 @@ class MethodsTesterForQrxcAndInterpreter::ShapeListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->shape(elementId));
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2252,17 +1988,16 @@ class MethodsTesterForQrxcAndInterpreter::ShapeListGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->shape(elementId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->shape(elementId));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2270,9 +2005,6 @@ class MethodsTesterForQrxcAndInterpreter::ShapeListGenerator
 		return clonedGenerator;
 	}
 };
-
-
-
 
 class MethodsTesterForQrxcAndInterpreter::PaletteGroupsGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForDiagrams
@@ -2295,9 +2027,7 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsGenerator
 		return ololo;
 	}
 
-
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2309,19 +2039,16 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsGenerator
 
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->paletteGroups(editorId, diagramId);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		QStringList ololo = editorManagerInterface->paletteGroups(editorId, diagramId);
-		return ololo;
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2330,25 +2057,10 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsGenerator
 	}
 };
 
-
-
 class MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups : public MethodsTesterForQrxcAndInterpreter::StringGenerator
 {
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const {
 		QStringList resultList;
-
-//		foreach (QString const &diagram, EditorManagerInterface->diagramrams()) {
-//			foreach (QString const &group, EditorManagerInterface->diagramPaletteGroups(diagram)) {
-//				QString const additionalString = ConvertingMethods::transformateOutput(
-//						callMethod(EditorManagerInterface, diagram, group), Id::rootId(), group);
-//				resultList.append(additionalString);
-//				resultList.append("|");
-//			}
-//		}
-
-//		return resultList;
-
-
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				if (!editorManagerInterface->paletteGroups(editor, diagram).isEmpty())
@@ -2374,11 +2086,7 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups : public Meth
 		}
 		return resultList;
 
-
 	}
-
-
-
 
 	virtual QStringList generateListTime(EditorManagerInterface *editorManagerInterface) {
 		QStringList resultList;
@@ -2387,34 +2095,26 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups : public Meth
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				if (!editorManagerInterface->paletteGroups(editor, diagram).isEmpty())
 					foreach (QString const &group, editorManagerInterface->paletteGroups(editor, diagram)) {
-						QString const additionalString = ConvertingMethods::transformateOutput(
-								callMethodTime(editorManagerInterface, editor, diagram, diagram, group), Id::rootId(), group);
-						resultList.append(additionalString);
-						resultList.append("|");
+						QPair<qint64, int> additional = callMethodTime(editorManagerInterface, editor, diagram, diagram, group);
+						resultList.append(QString::number(additional.first));
 					}
 				else {
-					QString const additionalString = ConvertingMethods::transformateOutput(
-							callMethod(editorManagerInterface, editor, diagram), editor, "");
-					resultList.append(additionalString);
+//					QString const additionalString = ConvertingMethods::transformateOutput(
+//							callMethod(editorManagerInterface, editor, diagram), editor, "");
+//					resultList.append(additionalString);
 
-					QString ololo = "Is Empty";
+//					QString ololo = "Is Empty";
 
-					resultList.append(additionalString);
-					resultList.append("|");
-					resultList.append(ololo);
-					//return resultList;
+//					resultList.append(additionalString);
+//					resultList.append("|");
+//					resultList.append(ololo);
+//					//return resultList;
 				}
 			}
 		}
 		return resultList;
-
-
 	}
-
-
 };
-
-
 
 class MethodsTesterForQrxcAndInterpreter::PaletteGroupsListGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups
@@ -2435,8 +2135,7 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsListGenerator
 		return editorManagerInterface->paletteGroupList(editorId, diagramId, group);
 	}
 
-
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2446,15 +2145,15 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsListGenerator
 	{
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->paletteGroupList(editorId, diagramId, group);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-
-		return editorManagerInterface->paletteGroupList(editorId, diagramId, group);
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
 
 
@@ -2464,12 +2163,6 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsListGenerator
 		return clonedGenerator;
 	}
 };
-
-
-
-
-
-
 
 class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups
@@ -2491,7 +2184,7 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 	}
 
 
-	virtual QStringList callMethodTime(
+	virtual QPair<qint64, int> callMethodTime(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
 			, Id const &diagramId
@@ -2501,16 +2194,16 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 	{
 		qint64 time = 0;
 		QElapsedTimer timer;
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
 			editorManagerInterface->paletteGroupDescription(editorId, diagramId, group);
 			time += timer.nsecsElapsed();
 		}
-		time = time / 1000;
-		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->paletteGroupDescription(editorId, diagramId, group));
+		time = time / 20;
+		QPair<qint64, int> result = qMakePair(time, 20);
+		return result;
 	}
-
 
 	virtual AbstractStringGenerator* clone() const
 	{
@@ -2518,31 +2211,6 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 		return clonedGenerator;
 	}
 };
-
-
-
-
-/*
-
-
-	virtual bool isDiagramNode(const Id &id) const = 0;
-
-	virtual bool isParentOf(const Id &child, const Id &parent) const = 0;
-virtual QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const = 0;
-	virtual bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
-			, const QString &childDiagram, const QString &childElement) const = 0;
-	virtual QString propertyNameByDisplayedName(const Id &id, const QString &displayedPropertyName) const = 0;
-	virtual bool isRootDiagramNode(const Id &id) const = 0;
-
-virtual QStringList paletteGroupList
-(const Id &editor,const Id &diagram, const QString &group) const = 0;
-	virtual QString paletteGroupDescription(const Id &editor, const Id &diagram, const QString &group) const = 0;
-
-
-
-
-  */
-
 
 void MethodsTesterForQrxcAndInterpreter::testMethods()
 {
@@ -2593,7 +2261,6 @@ void MethodsTesterForQrxcAndInterpreter::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(ReferencePropertiesGenerator(), "referenceProperties"));
 	mGeneratedList.append(testMethodIfExistsInList(IsParentOfGenerator(), "isParentOf"));
 }
-
 
 QList<QPair<QString, QPair<QString, QString> > > MethodsTesterForQrxcAndInterpreter::generatedResult()
 {

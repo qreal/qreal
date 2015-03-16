@@ -12,36 +12,46 @@
 using namespace trik::fSharp;
 using namespace qReal;
 
+const QString robotModelName = "TrikFSharpGeneratorRobotModel";
+
 TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
-	: mGenerateCodeAction(new QAction(nullptr))
+	: TrikGeneratorPluginBase(robotModelName, tr("Generation (F#)"), 7 /* Last order */)
+	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
-{
-}
-
-QList<ActionInfo> TrikFSharpGeneratorPlugin::actions()
+	, mAdditionalPreferences(new TrikFSharpAdditionalPreferences(robotModelName))
 {
 	mGenerateCodeAction->setText(tr("Generate FSharp code"));
 	mGenerateCodeAction->setIcon(QIcon(":/fSharp/images/generateFsCode.svg"));
-	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
 	connect(mGenerateCodeAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::generateCode);
 
 	mUploadProgramAction->setText(tr("Upload program FSharp"));
 	mUploadProgramAction->setIcon(QIcon(":/fSharp/images/uploadProgram.svg"));
-	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
 	connect(mUploadProgramAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::uploadProgram);
 
 	mRunProgramAction->setText(tr("Run program FSharp"));
-	mRunProgramAction->setIcon(QIcon(":/fSharp/images/uploadAndExecuteProgram.svg"));
-	ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
+	mRunProgramAction->setIcon(QIcon(":/fSharp/images/run.png"));
 	connect(mRunProgramAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::runProgram);
 
 	mStopRobotAction->setText(tr("Stop robot"));
-	mStopRobotAction->setIcon(QIcon(":/fSharp/images/stopRobot.svg"));
-	ActionInfo stopRobotActionInfo(mStopRobotAction, "generators", "tools");
+	mStopRobotAction->setIcon(QIcon(":/fSharp/images/stop.png"));
 	connect(mStopRobotAction, &QAction::triggered, this, &TrikFSharpGeneratorPlugin::stopRobot);
+}
 
+TrikFSharpGeneratorPlugin::~TrikFSharpGeneratorPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+}
+
+QList<ActionInfo> TrikFSharpGeneratorPlugin::customActions()
+{
+	const ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
+	const ActionInfo runProgramActionInfo(mRunProgramAction, "interpreters", "tools");
+	const ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
@@ -58,6 +68,18 @@ QList<HotKeyActionInfo> TrikFSharpGeneratorPlugin::hotKeyActions()
 	HotKeyActionInfo stopRobotInfo("Generator.StopFSharp", tr("Stop FSharp Robot"), mStopRobotAction);
 
 	return {generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo};
+}
+
+QIcon TrikFSharpGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	Q_UNUSED(robotModel)
+	return QIcon(":/fSharp/images/switch-to-trik-f-sharp.svg");
+}
+
+QList<kitBase::AdditionalPreferences *> TrikFSharpGeneratorPlugin::settingsWidgets()
+{
+	mOwnsAdditionalPreferences = false;
+	return {mAdditionalPreferences};
 }
 
 generatorBase::MasterGeneratorBase *TrikFSharpGeneratorPlugin::masterGenerator()

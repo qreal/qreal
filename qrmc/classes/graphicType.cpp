@@ -283,11 +283,13 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 		}
 	}
 	if (referencePropertiesList.isEmpty()) {
-		return "";
+		//return "";
+		referencePropertiesString.replace(referencePropertiesListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
 	} else {
 		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
-		return referencePropertiesString;
+		//return referencePropertiesString;
 	}
+	return referencePropertiesString;
 }
 
 QString GraphicType::generateParents(const QString &lineTemplate) const

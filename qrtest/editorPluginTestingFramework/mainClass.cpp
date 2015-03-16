@@ -63,14 +63,18 @@ MainClass::MainClass(
 
 	QList<QPair<QString, QPair<QString, QString> > > interpreterMethodsTesterOutput =
 			interpreterMethodsTester->generatedResult();
+	QList<QPair<QString, QPair<QString, QString> > > methodsTimeOutputInterpreter = interpreterMethodsTester->generateTimeResult();
+
 
 	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
 		MethodsTesterForQrxcAndQrmc* const methodsTester = new MethodsTesterForQrxcAndQrmc(
 				qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
 		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generatedOutput();
+		QList<QPair<QString, QPair<QString, QString> > > methodsTimeOutput = methodsTester->generateTimeResult();
+
 		if (mGenerateHtml == "yes") {
-			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput);
+			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput, methodsTimeOutput, methodsTimeOutputInterpreter);
 		}
 		mResultOfTesting = MethodsCheckerForTravis::calculateResult(methodsTesterOutput
 				, interpreterMethodsTesterOutput);
@@ -187,9 +191,11 @@ EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const 
 }
 
 void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
-		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult)
+		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
+		, QList<QPair<QString, QPair<QString, QString> > > timeResult
+		, QList<QPair<QString, QPair<QString, QString> > > timeResultInterpter)
 {
-	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, mGeneratedDirHtml);
+	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, timeResult, timeResultInterpter, mGeneratedDirHtml);
 }
 
 void MainClass::appendPluginNames()

@@ -19,6 +19,11 @@ public:
 		qReal::Id target;
 		bool connected;
 		bool targetVisited;
+
+		bool operator==(const LinkInfo &other) {
+			return linkId == other.linkId && target == other.target
+					&& connected == other.connected && targetVisited == other.targetVisited;
+		}
 	};
 
 	/// An interface for processing visited nodes

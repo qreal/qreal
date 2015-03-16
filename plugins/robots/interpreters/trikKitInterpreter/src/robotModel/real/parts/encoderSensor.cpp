@@ -2,12 +2,12 @@
 
 #include <qrutils/inFile.h>
 
-using namespace trikKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 EncoderSensor::EncoderSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
-	: interpreterBase::robotModel::robotParts::EncoderSensor(info, port)
+	: kitBase::robotModel::robotParts::EncoderSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
 	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData

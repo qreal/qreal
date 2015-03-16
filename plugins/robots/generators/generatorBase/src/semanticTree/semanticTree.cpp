@@ -39,6 +39,8 @@ SemanticNode *SemanticTree::produceNodeFor(const Id &id)
 		return produceFinal(id);
 	case enums::semantics::forkBlock:
 		return produceFork(id);
+	case enums::semantics::joinBlock:
+		return produceJoin(id);
 	case enums::semantics::switchBlock:
 		return produceSwitch(id);
 	default:
@@ -64,6 +66,11 @@ LoopNode *SemanticTree::produceLoop(const Id &id)
 ForkNode *SemanticTree::produceFork(const Id &id)
 {
 	return new ForkNode(id, this);
+}
+
+JoinNode *SemanticTree::produceJoin(const Id &id)
+{
+	return new JoinNode(id, this);
 }
 
 SwitchNode *SemanticTree::produceSwitch(const Id &id)

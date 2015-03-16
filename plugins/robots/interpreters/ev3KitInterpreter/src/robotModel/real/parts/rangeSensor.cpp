@@ -1,13 +1,12 @@
 #include "rangeSensor.h"
-#include <QDebug>
 
 const unsigned rangeSensorResponseSize = 9;
 
-using namespace ev3KitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace ev3::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
-RangeSensor::RangeSensor(const interpreterBase::robotModel::DeviceInfo &info
-		, const interpreterBase::robotModel::PortInfo &port
+RangeSensor::RangeSensor(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: robotParts::RangeSensor(info, port)
 	, mImplementation(robotCommunicator, port, REFLECTION, READY_RAW)

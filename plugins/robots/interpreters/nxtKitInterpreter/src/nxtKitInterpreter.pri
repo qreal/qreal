@@ -1,32 +1,25 @@
 QT += widgets
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-interpreter-base robots-common-2d-model qextserialport \
-		qslog \
+		robots-utils robots-kit-base robots-2d-model robots-nxt-kit qextserialport qslog \
 		)
 
-includes(plugins/robots/interpreters/interpreterBase plugins/robots/interpreters/commonTwoDModel plugins/robots/utils qrtext plugins/robots/interpreters/nxtKitInterpreter/src) \
+includes(plugins/robots/common/kitBase \
+		plugins/robots/common/twoDModel \
+		plugins/robots/common/nxtKit \
+		plugins/robots/utils \
+		qrtext \
+		plugins/robots/interpreters/nxtKitInterpreter/src \
+)
 
 HEADERS += \
 	$$PWD/commandConstants.h \
 	$$PWD/nxtAdditionalPreferences.h \
 	$$PWD/nxtDisplayWidget.h \
 	$$PWD/nxtKitInterpreterPlugin.h \
-	$$PWD/blocks/nxtBlocksFactory.h \
-	$$PWD/blocks/details/speakerBlock.h \
-	$$PWD/blocks/details/beepBlock.h \
-	$$PWD/blocks/details/playToneBlock.h \
-	$$PWD/blocks/details/drawCircleBlock.h \
-	$$PWD/blocks/details/drawLineBlock.h \
-	$$PWD/blocks/details/drawPixelBlock.h \
-	$$PWD/blocks/details/drawRectBlock.h \
-	$$PWD/blocks/details/nxtEnginesBackwardBlock.h \
-	$$PWD/blocks/details/nxtEnginesForwardBlock.h \
-	$$PWD/robotModel/nxtRobotModelBase.h \
-	$$PWD/robotModel/parts/nxtDisplay.h \
-	$$PWD/robotModel/parts/nxtSpeaker.h \
-	$$PWD/robotModel/parts/nxtMotor.h \
 	$$PWD/robotModel/real/realRobotModel.h \
+	$$PWD/robotModel/real/usbRealRobotModel.h \
+	$$PWD/robotModel/real/bluetoothRealRobotModel.h \
 	$$PWD/robotModel/real/parts/nxtInputDevice.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
@@ -53,21 +46,9 @@ SOURCES += \
 	$$PWD/nxtAdditionalPreferences.cpp \
 	$$PWD/nxtDisplayWidget.cpp \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
-	$$PWD/blocks/nxtBlocksFactory.cpp \
-	$$PWD/blocks/details/speakerBlock.cpp \
-	$$PWD/blocks/details/beepBlock.cpp \
-	$$PWD/blocks/details/playToneBlock.cpp \
-	$$PWD/blocks/details/drawCircleBlock.cpp \
-	$$PWD/blocks/details/drawLineBlock.cpp \
-	$$PWD/blocks/details/drawPixelBlock.cpp \
-	$$PWD/blocks/details/drawRectBlock.cpp \
-	$$PWD/blocks/details/nxtEnginesBackwardBlock.cpp \
-	$$PWD/blocks/details/nxtEnginesForwardBlock.cpp \
-	$$PWD/robotModel/nxtRobotModelBase.cpp \
-	$$PWD/robotModel/parts/nxtDisplay.cpp \
-	$$PWD/robotModel/parts/nxtSpeaker.cpp \
-	$$PWD/robotModel/parts/nxtMotor.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
+	$$PWD/robotModel/real/usbRealRobotModel.cpp \
+	$$PWD/robotModel/real/bluetoothRealRobotModel.cpp \
 	$$PWD/robotModel/real/parts/nxtInputDevice.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \

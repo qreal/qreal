@@ -1,7 +1,7 @@
 QT += widgets
 
-links(qrtext robots-interpreter-base)
-includes(plugins/robots/interpreters/interpreterBase plugins/robots/utils qrtext)
+links(qrtext robots-kit-base)
+includes(plugins/robots/common/kitBase plugins/robots/utils qrtext)
 
 HEADERS += \
 	$$PWD/nullKitInterpreterPlugin.h \
