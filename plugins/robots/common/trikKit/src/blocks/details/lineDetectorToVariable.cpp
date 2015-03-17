@@ -8,6 +8,6 @@ LineDetectorToVariableBlock::LineDetectorToVariableBlock()
 
 void LineDetectorToVariableBlock::run()
 {
-	evalCode(stringProperty("variable") + " = lineSensor[0]");
+	evalCode(stringProperty("Variable") + " = lineSensor[0]");
 	emit done(mNextBlockId);
 }
