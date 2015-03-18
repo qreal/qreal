@@ -5,7 +5,7 @@
 
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 
-#include "ast/outcomingLinks.h"
+#include "ast/identifier.h"
 
 namespace generationRules {
 namespace generator {
@@ -13,7 +13,7 @@ namespace generator {
 class OutcomingLinksListGenerator
 {
 public:
-	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::OutcomingLinks> linksIdentifierNode
+	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Identifier> linksIdentifierNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, const qReal::Id elementId
 			);

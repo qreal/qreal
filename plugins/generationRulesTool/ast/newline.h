@@ -7,10 +7,6 @@ namespace ast {
 
 class Newline : public Node
 {
-public:
-	explicit Newline()
-	{
-	}
 };
 }
 }

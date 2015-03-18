@@ -59,19 +59,20 @@ void GenerationRulesPlugin::generateCode()
 			"'}' \n"
 			;
 
-	//generateCodeFromString(enumStream);
+	generateCodeFromString(enumStream);
 
 	QString stateStream =
 			"foreach (state in State) {\n"
-				"'case' State.name ’:’ newline"
-				"foreach (transition in state.outcomingLinks) {"
-					"'if (symbol == ' transition.symbol ')' newline"
-						"'currentState = ' transition.end.name ';' newline"
-						"'break;' newline"
-				"}"
-				"'else' newline"
-					"'currentState = ' EndState.name ';' newline"
+				"'case ' State.Name ':' newline \n"
+				"foreach (transition in state.outcomingLinks) { \n"
+					"'if (symbol == ' transition.symbol ')' newline \n"
+						"'currentState = ' transition.transitionEnd.Name ';' newline \n"
+						"'break;' newline \n"
+				"} \n"
+				"'else' newline \n"
+					"'currentState = ' EndState.Name ';' newline \n"
 					"'break;' newline"
+			"}"
 			;
 
 	generateCodeFromString(stateStream);
@@ -102,9 +103,9 @@ void GenerationRulesPlugin::generateCodeFromString(QString stream)
 	}
 
 	// testing parser result
-	QSharedPointer<simpleParser::ast::Program> program = parserResult.dynamicCast<simpleParser::ast::Program>();
+	auto program = parserResult.dynamicCast<simpleParser::ast::Foreach>();
 	qDebug() << program.isNull();
-	auto programRepresentation = qrtext::as<simpleParser::ast::Program>(program);
+	auto programRepresentation = qrtext::as<simpleParser::ast::Foreach>(program);
 	qDebug() << "Is null as program: " << programRepresentation.isNull();
 
 	auto programChildren = programRepresentation->children();

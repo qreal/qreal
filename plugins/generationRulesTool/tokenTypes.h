@@ -31,6 +31,8 @@ enum class TokenTypes {
 	, incomingLinksKeyword
 	, linksKeyword
 
+	, transitionEndKeyword
+
 	, comment
 	, string
 };
@@ -108,6 +110,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::linksKeyword:
 		debug << "linksKeyword ";
+		break;
+
+	case TokenTypes::transitionEndKeyword:
+		debug << "transitionEndKeyword ";
 		break;
 
 	default:

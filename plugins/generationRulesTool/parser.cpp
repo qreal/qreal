@@ -9,8 +9,10 @@
 #include "ast/newline.h"
 #include "ast/node.h"
 #include "ast/outcomingLinks.h"
+#include "ast/partOfComplexIdentifier.h"
 #include "ast/program.h"
 #include "ast/text.h"
+#include "ast/transitionEnd.h"
 
 using namespace simpleParser;
 
@@ -53,42 +55,58 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Identifier(token.lexeme());
 	};
 
-	auto complexIdentifier = (identifier & -TokenTypes::dot & identifier)
+	auto transitionEndIdentifier = (-TokenTypes::transitionEndKeyword & -TokenTypes::dot & identifier)
+			>> [] (QSharedPointer<ast::Node> partOfComplexIdentifier) {
+				return qrtext::wrap(new ast::TransitionEnd(partOfComplexIdentifier));
+	};
+
+	auto complexIdentifier = (identifier & -TokenTypes::dot & (transitionEndIdentifier | identifier))
 			>> [] (QSharedPointer<TemporaryPair> tokens) {
-				auto identifier = tokens->left();
-				auto property = tokens->right();
+				auto firstIdentifier = tokens->left();
+				auto secondIdentifier = tokens->right();
 
-				return qrtext::wrap(new ast::ComplexIdentifier(identifier, property));
+				return qrtext::wrap(new ast::ComplexIdentifier(firstIdentifier, secondIdentifier));
 	};
 
-	auto outcomingLinksIdentifier = (identifier & -TokenTypes::dot & -TokenTypes::outcomingLinksKeyword)
-			>> [] (QSharedPointer<ast::Node> identifierNode) {
-				return qrtext::wrap(new ast::OutcomingLinks(identifierNode));
+	auto outcomingLinksIdentifier = (TokenTypes::outcomingLinksKeyword)
+			>> [] (Token<TokenTypes> const &token) {
+				return new ast::OutcomingLinks();
 	};
 
-	auto incomingLinksIdentifier = (identifier & -TokenTypes::dot & -TokenTypes::incomingLinksKeyword)
-			>> [] (QSharedPointer<ast::Node> identifierNode) {
-				return qrtext::wrap(new ast::IncomingLinks(identifierNode));
+	auto incomingLinksIdentifier = (TokenTypes::incomingLinksKeyword)
+			>> [] (Token<TokenTypes> const &token) {
+				return new ast::IncomingLinks();
 	};
 
-	auto linksIdenitifer = (identifier & -TokenTypes::dot & -TokenTypes::linksKeyword)
-			>> [] (QSharedPointer<ast::Node> identifierNode) {
-				return qrtext::wrap(new ast::Links(identifierNode));
+	auto linksIdentifier = (TokenTypes::linksKeyword)
+			>> [] (Token<TokenTypes> const &token) {
+				return new ast::Links();
 	};
 
 	auto foreachStatement = (-TokenTypes::foreachKeyword & -TokenTypes::openingBracket & identifier
-				& -TokenTypes::inKeyword
-				& (identifier | outcomingLinksIdentifier | incomingLinksIdentifier | linksIdenitifer)
+				& -TokenTypes::inKeyword & identifier
+				& ~(-TokenTypes::dot & outcomingLinksIdentifier)
 				& -TokenTypes::closingBracket
 				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
 			>> [] (QSharedPointer<TemporaryPair> statementPair) {
-				auto identifierAndType = qrtext::as<TemporaryPair>(statementPair->left());
-				auto identifier = identifierAndType->left();
-				auto type = identifierAndType->right();
+				auto identifierTypeAndLinks = qrtext::as<TemporaryPair>(statementPair->left());
+				auto temporaryIdentifier = identifierTypeAndLinks->left();
+				auto temporaryType = identifierTypeAndLinks->right();
 
 				auto program = statementPair->right();
 
-				return qrtext::wrap(new ast::Foreach(identifier, type, program));
+				if (temporaryIdentifier->is<TemporaryPair>()) {
+					auto identifierAndType = qrtext::as<TemporaryPair>(temporaryIdentifier);
+
+					auto type = identifierAndType->right();
+					auto identifier = identifierAndType->left();
+
+					auto links = temporaryType;
+
+					return qrtext::wrap(new ast::Foreach(identifier, type, program, links));
+				}
+
+				return qrtext::wrap(new ast::Foreach(temporaryIdentifier, temporaryType, program));
 	};
 
 	auto callGeneratorForStatement = (-TokenTypes::callGeneratorForKeyword & -TokenTypes::openingBracket

@@ -39,6 +39,8 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineKeyword(TokenTypes::incomingLinksKeyword, "incomingLinks");
 	tokenDefinitions.defineKeyword(TokenTypes::linksKeyword, "links");
 
+	tokenDefinitions.defineKeyword(TokenTypes::transitionEndKeyword, "transitionEnd");
+
 	return tokenDefinitions;
 }
 

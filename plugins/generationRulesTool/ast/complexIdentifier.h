@@ -8,7 +8,7 @@ namespace ast {
 class ComplexIdentifier : public Node
 {
 public:
-	explicit ComplexIdentifier(QSharedPointer<Node> const &firstPart, QSharedPointer<Node> const &secondPart)
+	ComplexIdentifier(QSharedPointer<Node> const &firstPart, QSharedPointer<Node> const &secondPart)
 		: mFirstPart(firstPart)
 		, mSecondPart(secondPart)
 	{

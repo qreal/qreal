@@ -35,7 +35,9 @@ HEADERS = \
 	ast/incomingLinks.h \
 	ast/links.h \
 	generator/auxiliaryGenerators/outcomingLinksListGenerator.h \
-	generator/auxiliaryGenerators/simpleTypeListGenerator.h
+	generator/auxiliaryGenerators/simpleTypeListGenerator.h \
+    ast/transitionEnd.h \
+    ast/partOfComplexIdentifier.h
 
 SOURCES = \
 	generationRulesPlugin.cpp \

@@ -21,13 +21,14 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> fo
 {
 	QSharedPointer<ast::Node> identifierName = foreachNode->identifier();
 	QSharedPointer<ast::Node> identifierToIterate = foreachNode->type();
+	QSharedPointer<ast::Node> optionalLinkPart = foreachNode->optionalLinkPart();
 
 	qReal::IdList listOfElements;
-	if (identifierToIterate->is<ast::Identifier>()) {
+	if (optionalLinkPart.isNull()) {
 		listOfElements = SimpleTypeListGenerator::generatedList(qrtext::as<ast::Identifier>(identifierToIterate)
 				, logicalModelInterface, elementId);
-	} else if (identifierToIterate->is<ast::OutcomingLinks>()) {
-		listOfElements = OutcomingLinksListGenerator::generatedList(qrtext::as<ast::OutcomingLinks>(identifierToIterate)
+	} else {
+		listOfElements = OutcomingLinksListGenerator::generatedList(qrtext::as<ast::Identifier>(identifierToIterate)
 				, logicalModelInterface, elementId);
 	}
 

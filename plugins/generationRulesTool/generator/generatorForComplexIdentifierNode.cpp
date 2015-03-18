@@ -1,6 +1,7 @@
 #include "generatorForComplexIdentifierNode.h"
 
 #include "ast/identifier.h"
+#include "ast/transitionEnd.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
@@ -14,23 +15,33 @@ QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<Comple
 	Q_UNUSED(metamodelRepoApi);
 	Q_UNUSED(modelRepo);
 
-	QSharedPointer<Identifier> typeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());
+	auto typeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());
+	auto secondNode = complexIdentifierNode->secondPartOfComplexIdentifier();
 
-	QSharedPointer<Identifier> propertyNode =
-			qrtext::as<Identifier>(complexIdentifierNode->secondPartOfComplexIdentifier());
-	QString propertyName = propertyNode->name();
+	if (secondNode->is<Identifier>()) {
+		auto propertyNode =
+				qrtext::as<Identifier>(secondNode);
+		auto propertyName = propertyNode->name();
 
-	if (elementId != qReal::Id::rootId()) {
-		return logicalModelInterface->propertyByRoleName(elementId, propertyName).toString();
-	} else {
-		// TODO: wtf
-		QList<qReal::Id> listOfElementIds;
-		for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
-			if (elementId.element() == typeNode->name()) {
-				listOfElementIds << elementId;
+		if (elementId != qReal::Id::rootId()) {
+			return logicalModelInterface->propertyByRoleName(elementId, propertyName).toString();
+		} else {
+			// TODO: wtf
+			QList<qReal::Id> listOfElementIds;
+			for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
+				if (elementId.element() == typeNode->name()) {
+					listOfElementIds << elementId;
+				}
 			}
-		}
 
-		return logicalModelInterface->propertyByRoleName(listOfElementIds.first(), propertyName).toString();
+			return logicalModelInterface->propertyByRoleName(listOfElementIds.first(), propertyName).toString();
+		}
+	} else {
+		// typeNode.transitionEnd.idenitiferName
+
+		auto transitionEndNode = qrtext::as<TransitionEnd>(secondNode);
+		auto propertyName = qrtext::as<Identifier>(transitionEndNode->firstIdentifier())->name();
+
+		return logicalModelInterface->propertyByRoleName(logicalModelInterface->to(elementId), propertyName).toString();
 	}
 }
