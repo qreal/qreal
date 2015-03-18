@@ -59,7 +59,10 @@ void GenerationRulesPlugin::generateCode()
 			"'}' \n"
 			;
 
-	generateCodeFromString(enumStream);
+	auto parserResultForEnum = generatedTreeFromString(enumStream);
+	auto programForEnum = parserResultForEnum.dynamicCast<simpleParser::ast::Program>();
+	QString resultOfGenerationForEnum = generator::CommonGenerator::generatedResult(programForEnum, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface);
+	qDebug() << resultOfGenerationForEnum;
 
 	QString stateStream =
 			"foreach (state in State) {\n"
@@ -75,10 +78,13 @@ void GenerationRulesPlugin::generateCode()
 			"}"
 			;
 
-	generateCodeFromString(stateStream);
+	auto parserResultForState = generatedTreeFromString(stateStream);
+	auto programForState = parserResultForState.dynamicCast<simpleParser::ast::Foreach>();
+	QString resultOfGenerationForState = generator::CommonGenerator::generatedResult(programForState, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface);
+	qDebug() << resultOfGenerationForState;
 }
 
-void GenerationRulesPlugin::generateCodeFromString(QString stream)
+QSharedPointer<simpleParser::ast::Node> GenerationRulesPlugin::generatedTreeFromString(QString stream)
 {
 	QScopedPointer<simpleParser::Lexer> lexer;
 	QList<qrtext::core::Error> errors;
@@ -102,15 +108,5 @@ void GenerationRulesPlugin::generateCodeFromString(QString stream)
 		qDebug() << error.errorMessage();
 	}
 
-	// testing parser result
-	auto program = parserResult.dynamicCast<simpleParser::ast::Foreach>();
-	qDebug() << program.isNull();
-	auto programRepresentation = qrtext::as<simpleParser::ast::Foreach>(program);
-	qDebug() << "Is null as program: " << programRepresentation.isNull();
-
-	auto programChildren = programRepresentation->children();
-	qDebug() << programChildren.size();
-
-	QString resultOfGeneration = generator::CommonGenerator::generatedResult(program, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface);
-	qDebug() << resultOfGeneration;
+	return parserResult;
 }

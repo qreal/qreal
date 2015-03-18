@@ -1,5 +1,7 @@
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 
+#include "ast/node.h"
+
 namespace generationRules {
 
 /// Class, which represents example of using interpreted plugin.
@@ -22,7 +24,7 @@ private slots:
 	void generateCode();
 
 private:
-	void generateCodeFromString(QString stream);
+	QSharedPointer<simpleParser::ast::Node> generatedTreeFromString(QString stream);
 
 	qrRepo::RepoControlInterface *mRepo;  // Doesn't have ownership
 	QAction mAction;  // "Generate" button
