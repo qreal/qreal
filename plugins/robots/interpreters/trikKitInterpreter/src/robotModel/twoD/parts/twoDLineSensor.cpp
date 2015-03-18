@@ -39,7 +39,6 @@ void LineSensor::detectLine()
 	mLineColor.setRed(red / size);
 	mLineColor.setGreen(green / size);
 	mLineColor.setBlue(blue / size);
-	qDebug() << mLineColor.red() << mLineColor.green() << mLineColor.blue();
 }
 
 void LineSensor::read()
