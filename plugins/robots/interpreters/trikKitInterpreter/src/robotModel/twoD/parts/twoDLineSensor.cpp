@@ -1,6 +1,5 @@
 #include "twoDLineSensor.h"
 
-#include <QtCore/QDebug>
 #include <QtGui/QImage>
 
 using namespace trik::robotModel::twoD::parts;
@@ -12,6 +11,7 @@ LineSensor::LineSensor(const DeviceInfo &info, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikLineSensor(info, port)
 	, mEngine(engine)
+	, mLineColor(Qt::black)
 {
 }
 
@@ -49,30 +49,30 @@ void LineSensor::read()
 	int width = image.width();
 
 	int blacks = 0;
-	int horizontalBlacks = 0;
+	int crossBlacks = 0;
 	int horizontalLineWidth = image.height() * 0.2;
 	qreal xCoordinates = 0;
 	for (int i = 0; i < height; ++i) {
-		int blacksNumber = 0;
+		int blacksInRow = 0;
 		qreal xSum = 0;
 
 		for (int j = 0; j < width; ++j) {
 			if (closeEnough(image.pixel(j, i))) {
-				++blacksNumber;
+				++blacksInRow;
 				xSum += (j + 1) * 100.0 / (width / 2.0) - 100;
 			}
 		}
 
-		xCoordinates += (blacksNumber ? xSum / blacksNumber : 0);
-		blacks += blacksNumber;
+		xCoordinates += (blacksInRow ? xSum / blacksInRow : 0);
+		blacks += blacksInRow;
 		if (((height - horizontalLineWidth) / 2 < i) && (i < (height + horizontalLineWidth) / 2)) {
-			horizontalBlacks += blacksNumber;
+			crossBlacks += blacksInRow;
 		}
 	}
 
 	const int x = qRound(xCoordinates / height);
 	const int lineWidth = blacks / height;
-	const int cross = qRound(horizontalBlacks * 100.0 / (height * horizontalLineWidth));
+	const int cross = qRound(crossBlacks * 100.0 / (height * horizontalLineWidth));
 	emit newData({ x, lineWidth, cross });
 }
 

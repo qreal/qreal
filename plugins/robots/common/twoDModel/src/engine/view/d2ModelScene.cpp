@@ -83,7 +83,7 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 		SensorItem *camera = new SensorItem(robotModel->configuration(), port
 				, robotModel->info().sensorImagePath(device), robotModel->info().sensorImageRect(device));
 		robotItem->addSensor(port, camera);
-		camera->setPos(robotItem->boundingRect().right() // + camera->boundingRect().width() / 2
+		camera->setPos(robotItem->boundingRect().right()
 				, robotItem->boundingRect().center().y());
 		camera->setRotation(0);
 	}
