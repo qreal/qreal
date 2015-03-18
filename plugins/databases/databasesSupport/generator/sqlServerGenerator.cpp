@@ -1,13 +1,12 @@
-/*#include "databasesGenerator.h"
-
+#include "sqlServerGenerator.h"
 #include <QtWidgets/QApplication>
 
-using namespace qReal;
-using namespace databasesSupport;
+namespace qReal {
+namespace databasesSupport {
 
 QString const databases = "Databases";
 
-DatabasesGenerator::DatabasesGenerator(const PluginConfigurator configurator)
+SqlServerGenerator::SqlServerGenerator(const PluginConfigurator configurator)
 	: mCurrentDiagram(Id::rootId())
 	, mCurrentId(Id::rootId())
 	, mCodeFileName("code.txt")
@@ -16,44 +15,53 @@ DatabasesGenerator::DatabasesGenerator(const PluginConfigurator configurator)
 	, mGraphicalModelApi(configurator.graphicalModelApi())
 	, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 	, mErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter())
-	, mDatatypesChecker(new DatatypesChecker("", configurator.mainWindowInterpretersInterface().errorReporter()))
+//	, mDatatypesChecker(new DatatypesChecker("", configurator.mainWindowInterpretersInterface().errorReporter()))
 {
-	//mAppTranslator.load(":/DatabasesGenerator_" + QLocale::system().name());
+	//mAppTranslator.load(":/SqlServerGenerator_" + QLocale::system().name());
 	//QApplication::installTranslator(&mAppTranslator);
 
 	//mParser = new BlockParser(mErrorReporter);
 }
 
-DatabasesGenerator::~DatabasesGenerator()
+SqlServerGenerator::~SqlServerGenerator()
 {
-	delete mDatatypesChecker;
+//	delete mDatatypesChecker;
 }
 
-void DatabasesGenerator::activeTabChanged(Id const &rootElementId)
+void SqlServerGenerator::activeTabChanged(Id const &rootElementId)
 {
-	bool const enabled = rootElementId.diagram() == blockDiagram;
+	/*bool const enabled = rootElementId.diagram() == blockDiagram;
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		if (actionInfo.isAction()) {
 			actionInfo.action()->setEnabled(enabled);
 		} else {
 			actionInfo.menu()->setEnabled(enabled);
 		}
+	}*/
+}
+
+void SqlServerGenerator::clearPhysicalModel()
+{
+	IdList tableNodes = findNodes("DatabasesPhysicalNode");
+	foreach (Id const &id, tableNodes) {
+		mLogicalModelApi.removeElement(id);
+		//mGraphicalModelApi.removeElement(mGraphicalModelApi.graphicalIdsByLogicalId(id).first());
 	}
 }
 
-void DatabasesGenerator::setCodeFileName(QString const &name)
+void SqlServerGenerator::setCodeFileName(QString const &name)
 {
 	mCodeFileName = name;
 }
 
-void DatabasesGenerator::setWorkDir(QString const &path)
+void SqlServerGenerator::setWorkDir(QString const &path)
 {
 	if (path != "") {
 		mWorkDir = path + "/";
 	}
 }
 
-IdList DatabasesGenerator::findNodes(QString const &name)
+IdList SqlServerGenerator::findNodes(QString const &name)
 {
 	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(mCurrentDiagram);
 	IdList filteredChildren;
@@ -67,7 +75,7 @@ IdList DatabasesGenerator::findNodes(QString const &name)
 	//return Id::rootId();
 }
 
-QVariant DatabasesGenerator::getProperty(Id const &id, QString const &propertyName)
+QVariant SqlServerGenerator::getProperty(Id const &id, QString const &propertyName)
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
@@ -76,7 +84,7 @@ QVariant DatabasesGenerator::getProperty(Id const &id, QString const &propertyNa
 	return mLogicalModelApi.logicalRepoApi().property(mGraphicalModelApi.logicalId(id), propertyName);
 }
 
-Id DatabasesGenerator::getParent(Id const &id)
+Id SqlServerGenerator::getParent(Id const &id)
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mGraphicalModelApi.graphicalRepoApi().parent(mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0));
@@ -85,7 +93,7 @@ Id DatabasesGenerator::getParent(Id const &id)
 	return mGraphicalModelApi.graphicalRepoApi().parent(id);
 }
 
-IdList DatabasesGenerator::getChildren(Id const &id)
+IdList SqlServerGenerator::getChildren(Id const &id)
 {
 	//Id s = mGraphicalModelApi.graphicalRepoApi().parent(mGraphicalModelApi.graphicalIdsByLogicalId(child).at(0));
 
@@ -96,7 +104,7 @@ IdList DatabasesGenerator::getChildren(Id const &id)
 	return mGraphicalModelApi.graphicalRepoApi().children(id);
 }
 
-IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
+IdList SqlServerGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 {
 	IdList relationshipsOut = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
 	IdList boundedEntities;
@@ -130,7 +138,7 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 	return boundedEntities;
 }
 
-void DatabasesGenerator::error(QString error, bool isCritical)
+void SqlServerGenerator::error(QString error, bool isCritical)
 {
 	if (isCritical) {
 		mInterpretersInterface.errorReporter()->addCritical(error);
@@ -141,7 +149,7 @@ void DatabasesGenerator::error(QString error, bool isCritical)
 	//mCurrentDiagram = Id::rootId();
 }
 
-Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
+Id SqlServerGenerator::getPrimaryKey(Id const &entityId)
 {
 	IdList attributesSet = getChildren(entityId);
 	if(attributesSet.isEmpty()) {
@@ -157,22 +165,28 @@ Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
 		}
 	}
 	if (primaryKeyCount != 1) {
-		error("Invalid number of primary key in entity with name '" + getProperty(entityId, "Name").toString() +  "': " + QString::number(primaryKeyCount), true);
+		error(
+			"Invalid number of primary key in entity with name '"
+			+ getProperty(entityId, "Name").toString()
+			+  "': "
+			+ QString::number(primaryKeyCount)
+			, true
+		);
 		return Id::rootId();
 	}
 	return primaryKey;
 }
 
-Id DatabasesGenerator::getPrimaryKeyOfSet(IdList const &entitySet)
+Id SqlServerGenerator::getPrimaryKeyOfSet(IdList const &entitySet)
 {
 	return getPrimaryKey(entitySet.at(0));
 }
-QString DatabasesGenerator::getPrimaryKeyNameOfSet(IdList const &entitySet)
+QString SqlServerGenerator::getPrimaryKeyNameOfSet(IdList const &entitySet)
 {
 	return("PrimaryKeyOfTable" + getProperty(entitySet.at(0), "Name").toByteArray());
 }
 
-int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> set)
+int SqlServerGenerator::getParentList(Id const &childEntity, QList<IdList> set)
 {
 	int listCounter = 0;
 	foreach (IdList const &list, set) {
@@ -183,7 +197,7 @@ int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> set)
 	return -1;
 }
 
-QString DatabasesGenerator::getListTableName(IdList const &list)
+QString SqlServerGenerator::getListTableName(IdList const &list)
 {
 	QString name = "";
 	bool first = true;
@@ -198,7 +212,7 @@ QString DatabasesGenerator::getListTableName(IdList const &list)
 	return name;
 }
 
-bool DatabasesGenerator::checkEntities()
+bool SqlServerGenerator::checkEntities()
 {
 	bool result = true;
 	IdList entities = findNodes("Entity");
@@ -216,7 +230,7 @@ bool DatabasesGenerator::checkEntities()
 	return result;
 }
 
-bool DatabasesGenerator::checkAttributes()
+bool SqlServerGenerator::checkAttributes()
 {
 	bool result = true;
 	IdList attributes = findNodes("Attribute");
@@ -233,15 +247,15 @@ bool DatabasesGenerator::checkAttributes()
 			result = false;
 			error(tr("Attribute has no datatype in entity '") + parentName + "'", true);
 		}
-		if (!mDatatypesChecker->isDatatype(datatype)) {
+/*		if (!mDatatypesChecker->isDatatype(datatype)) {
 			result = false;
 			error(tr("Invalid datatype in entity '") + parentName + "'", true);
-		}
+		}*/
 	}
 	return result;
 }
 
-bool DatabasesGenerator::checkRelationships()
+bool SqlServerGenerator::checkRelationships()
 {
 	bool result = true;
 	IdList relationships = findNodes("OneToManyRelationship");
@@ -258,7 +272,7 @@ bool DatabasesGenerator::checkRelationships()
 	return result;
 }
 
-void DatabasesGenerator::checkCorrectness()
+bool SqlServerGenerator::checkCorrectness()
 {
 	bool checkOne = checkRelationships();
 	bool checkTwo = checkAttributes();
@@ -266,9 +280,10 @@ void DatabasesGenerator::checkCorrectness()
 	if (checkOne && checkTwo && checkThree) {
 		mErrorReporter->addInformation("Diagram is correct.");
 	}
+	return checkOne && checkTwo && checkThree;
 }
 
-void DatabasesGenerator::generateSQL()
+/*void SqlServerGenerator::generateSQL()
 {
 	mErrorReporter->clear();
 	mPassedElements.clear();
@@ -461,23 +476,105 @@ void DatabasesGenerator::generateSQL()
 	delete[] match;
 	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
+}*/
+
+qReal::Id SqlServerGenerator::createElementFromString(QString const &elemName, QPointF coord, Id const &parentLogicalId, bool coordByParent)
+{
+	Id id = Id::loadFromString(QString("qrm:/Sql_server_2008/DatabasesPhysicalModelMetamodel/" + elemName));
+	Id logicalId = mLogicalModelApi.createElement(parentLogicalId, id);
+	Id graphicalParentId = Id::rootId();
+	if (parentLogicalId != Id::rootId()) {
+		graphicalParentId = mGraphicalModelApi.graphicalIdsByLogicalId(parentLogicalId).first();
+		if (coordByParent)
+			coord = mGraphicalModelApi.position(graphicalParentId);
+	}
+	mGraphicalModelApi.createElement(graphicalParentId, logicalId, true, elemName, coord);
+	return logicalId;
 }
 
-void DatabasesGenerator::generatePhysicalModel()
+qReal::Id SqlServerGenerator::makeRowFromAttribute(Id const &attributeId, Id const &parentId)
 {
+	QPointF coord = mGraphicalModelApi.position(attributeId);
+	Id logicalRowId = createElementFromString("Row", QPointF(), parentId);
+	QString rowName = getProperty(attributeId, "Name").toString();
+	mLogicalModelApi.setPropertyByRoleName(logicalRowId, rowName, "Name");
+	return logicalRowId;
+}
+
+qReal::Id SqlServerGenerator::makeTableFromEntity(Id const &entityId, Id const &parentId)
+{
+	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(entityId).first());
+	Id logicalTableId = createElementFromString("Table", coord, parentId);
+	QString tableName = getProperty(entityId, "Name").toString();
+	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
+
+	IdList attributesSet = getChildren(entityId);
+	foreach (Id const &attributeId, attributesSet) {
+		makeRowFromAttribute(attributeId, logicalTableId);
+	}
+	return logicalTableId;
+}
+
+qReal::Id SqlServerGenerator::makeTableFromEntitySet(IdList const &set, Id const &parentId)
+{
+	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(set.first()).first());
+	Id logicalTableId = createElementFromString("Table", coord, parentId);
+	QString tableName = getListTableName(set);
+	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
+
+	foreach(Id const &entityId, set){
+		IdList attributes = getChildren(entityId);
+		foreach (Id const &attributeId, attributes) {
+			makeRowFromAttribute(attributeId, logicalTableId);
+		}
+	}
+	return logicalTableId;
+}
+
+qReal::Id SqlServerGenerator::copyOneToManyRelationship(Id const &logicalModelId, Id const &parentId, Id const &from, Id const &to)
+{
+	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(logicalModelId).first());
+	Id logicalId = createElementFromString("PhysicalOneToManyRelationship", coord, parentId);
+	Id graphicalId = mGraphicalModelApi.graphicalIdsByLogicalId(logicalId).first();
+
+	QString name = getProperty(logicalModelId, "Name").toString();
+	mLogicalModelApi.setPropertyByRoleName(logicalId, name, "Name");
+
+	mLogicalModelApi.setFrom(logicalId, from);
+	mLogicalModelApi.setTo(logicalId, to);
+	mGraphicalModelApi.setFrom(graphicalId, mGraphicalModelApi.graphicalIdsByLogicalId(from).first());
+	mGraphicalModelApi.setTo(graphicalId,  mGraphicalModelApi.graphicalIdsByLogicalId(to).first());
+	return logicalId;
+}
+
+qReal::Id SqlServerGenerator::copyManyToManyRelationship(Id const &logicalModelId, Id const &parentId, Id const &from, Id const &to)
+{
+	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(logicalModelId).first());
+	Id logicalId = createElementFromString("PhysicalManyToManyRelationship", coord, parentId);
+	Id graphicalId = mGraphicalModelApi.graphicalIdsByLogicalId(logicalId).first();
+
+	QString name = getProperty(logicalModelId, "Name").toString();
+	mLogicalModelApi.setPropertyByRoleName(logicalId, name, "Name");
+
+	mLogicalModelApi.setFrom(logicalId, from);
+	mLogicalModelApi.setTo(logicalId, to);
+	mGraphicalModelApi.setFrom(graphicalId, mGraphicalModelApi.graphicalIdsByLogicalId(from).first());
+	mGraphicalModelApi.setTo(graphicalId,  mGraphicalModelApi.graphicalIdsByLogicalId(to).first());
+	return logicalId;
+}
+
+void SqlServerGenerator::generatePhysicalModel()
+{
+	clearPhysicalModel();
+
 	mErrorReporter->clear();
 	mPassedElements.clear();
 
-	bool checkRel = checkRelationships();
-	bool checkAtt = checkAttributes();
-	bool checkEnt = checkEntities();
-	if (!(checkRel && checkAtt && checkEnt)) {
+	if (!checkCorrectness()) {
 		return;
 	}
 
-	Id diagramId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/DatabasesPhysicalNode"));
-	Id logicalDiagramId = mLogicalModelApi.createElement(Id::rootId(), diagramId);
-	mGraphicalModelApi.createElement(Id::rootId(), logicalDiagramId, true, QString("Databases Physical Model"), QPointF(23.0, 23.0));
+	Id logicalDiagramId = createElementFromString("DatabasesPhysicalNode");
 	Id graphicalDiagramId = mGraphicalModelApi.graphicalIdsByLogicalId(logicalDiagramId).first();
 
 	QList<IdList> oneToOneBoundedEntitiesSets;
@@ -492,31 +589,12 @@ void DatabasesGenerator::generatePhysicalModel()
 		// If alone entity
 		if (relationships.isEmpty()) {
 			mPassedElements.append(entityId);
-
-			// Creating
-			Id tableId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Table"));
-			Id createdLogicalTableId = mLogicalModelApi.createElement(Id::rootId(), tableId);
-			QPointF tableCoordinates = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(entityId).first());
-			Id createdGraphicalTableId = mGraphicalModelApi.createElement(graphicalDiagramId, createdLogicalTableId, true, QString("Table"), tableCoordinates);
-
-			// Copying properties and childrens
-			QString tableName = getProperty(entityId, "Name").toString();
-			mLogicalModelApi.setPropertyByRoleName(createdLogicalTableId, tableName, "Name");
-
-			IdList attributesSet = getChildren(entityId);
-			foreach (Id const &attributeId, attributesSet) {
-				Id rowId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Row"));
-				Id createdLogicalRowId = mLogicalModelApi.createElement(Id::rootId(), rowId);
-				QPointF rowCoordinates = mGraphicalModelApi.position(attributeId);
-				mGraphicalModelApi.createElement(createdGraphicalTableId, createdLogicalRowId, true, QString("Row"), rowCoordinates);
-
-				QString rowName = getProperty(attributeId, "Name").toString();
-				mLogicalModelApi.setPropertyByRoleName(createdLogicalRowId, rowName, "Name");
-			}
-		} else {
+			Id logicalTableId = makeTableFromEntity(entityId, logicalDiagramId);
+		}
+		else {
 		// if not alone entity
 		// make set
-			if (mPassedElements.indexOf(entityId) == -1) {
+			if (!mPassedElements.contains(entityId)) {
 				mPassedElements.append(entityId);
 				// List for set of tables bounded with one-to-one relationship
 				IdList oneToOneBoundedEntitySet;
@@ -544,32 +622,8 @@ void DatabasesGenerator::generatePhysicalModel()
 
 	IdList setTables;
 	foreach(IdList const &set, oneToOneBoundedEntitiesSets) {
-		// Creating
-		Id tableId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Table"));
-		Id createdLogicalTableId = mLogicalModelApi.createElement(Id::rootId(), tableId);
-		setTables.append(createdLogicalTableId);
-		QPointF tableCoordinates = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(set.first()).first());
-		Id createdGraphicalTableId = mGraphicalModelApi.createElement(graphicalDiagramId, createdLogicalTableId, true, QString("Table"), tableCoordinates);
-
-		// Copying properties and childrens
-		QString tableName = getListTableName(set);
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalTableId, tableName, "Name");
-
-		IdList attributesSet;
-		foreach(Id const &entityId, set){
-			IdList attributes = getChildren(entityId);
-			attributesSet.append(attributes);
-		}
-
-		foreach (Id const &attributeId, attributesSet) {
-			Id rowId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Row"));
-			Id createdLogicalRowId = mLogicalModelApi.createElement(Id::rootId(), rowId);
-			QPointF rowCoordinates = mGraphicalModelApi.position(attributeId);
-			mGraphicalModelApi.createElement(createdGraphicalTableId, createdLogicalRowId, true, QString("Row"), rowCoordinates);
-
-			QString rowName = getProperty(attributeId, "Name").toString();
-			mLogicalModelApi.setPropertyByRoleName(createdLogicalRowId, rowName, "Name");
-			}
+		Id logicalTableId = makeTableFromEntitySet(set, logicalDiagramId);
+		setTables.append(logicalTableId);
 	}
 
 	IdList oneToManyRelationships = findNodes("OneToManyRelationship");
@@ -583,12 +637,7 @@ void DatabasesGenerator::generatePhysicalModel()
 			error("Too many relationships from "+ getProperty(from, "Name").toString() + "to " + getProperty(to, "Name").toString(), true);
 			return;
 		}
-/////
-		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneBoundedEntitiesSets.at(toSet));
-		if (toPrimaryKey == Id::rootId()) {
-			return;
-		}
-////////
+
 		QString columnNameForRelationship = getProperty(relationship, "ColumnName").toString();
 		if (columnNameForRelationship.isEmpty()) {
 			mErrorReporter->addInformation(tr("Column name for one-to-many relationship with name '") + getProperty(relationship, "Name").toString()+ tr("' is`n specified. Column name was generated automatically."));
@@ -598,29 +647,11 @@ void DatabasesGenerator::generatePhysicalModel()
 		match[toSet][fromSet] = -1;
 
 		//add bounding attribute
-		Id rowId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Row"));
-		Id createdLogicalRowId = mLogicalModelApi.createElement(Id::rootId(), rowId);
-		QPointF rowCoordinates = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(fromSet)).first());
-		mGraphicalModelApi.createElement(mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(fromSet)).first(), createdLogicalRowId, true, QString("Row"), rowCoordinates);
-
+		Id logicalRowId = createElementFromString("Row", QPointF(), setTables.at(fromSet), true);
 		QString rowName = getProperty(relationship, "ColumnName").toString();
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalRowId, rowName, "Name");
+		mLogicalModelApi.setPropertyByRoleName(logicalRowId, rowName, "Name");
 
-		//copy relationship
-		Id newRelationshipId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/PhysicalOneToManyRelationship"));
-		Id createdLogicalRelationshipId = mLogicalModelApi.createElement(Id::rootId(), newRelationshipId);
-		QPointF relationshipCoordinates = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(relationship).first());
-		Id createdGraphicalRelationshipId = mGraphicalModelApi.createElement(graphicalDiagramId, createdLogicalRelationshipId, true, QString("One-to-many"), relationshipCoordinates);
-
-		QString relationshipName = getProperty(relationship, "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalRelationshipId, relationshipName, "Name");
-
-		mLogicalModelApi.setFrom(createdLogicalRelationshipId, setTables.at(fromSet));
-		mLogicalModelApi.setTo(createdLogicalRelationshipId, setTables.at(toSet));
-
-		mGraphicalModelApi.setFrom(createdGraphicalRelationshipId, mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(fromSet)).first());
-		mGraphicalModelApi.setTo(createdGraphicalRelationshipId,  mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(toSet)).first());
-
+		copyOneToManyRelationship(relationship, logicalDiagramId, setTables.at(fromSet), setTables.at(toSet));
 	}
 
 	IdList manyToManyRelationships = findNodes("ManyToManyRelationship");
@@ -634,18 +665,6 @@ void DatabasesGenerator::generatePhysicalModel()
 			error(tr("Too many relationships from ") + getProperty(from, "Name").toString() + tr(" to ") + getProperty(to, "Name").toString(), true);
 			return;
 		}
-////////////////
-		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneBoundedEntitiesSets.at(toSet));
-		if (toPrimaryKey == Id::rootId()) {
-			return;
-		}
-		//QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
-		Id fromPrimaryKey = getPrimaryKeyOfSet(oneToOneBoundedEntitiesSets.at(fromSet));
-		//QString fromPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(fromSet));
-		if (fromPrimaryKey == Id::rootId()) {
-			return;
-		}
-		///////////////
 
 		QString relationshipTableName = getProperty(relationship, "TableName").toString();
 		if (relationshipTableName.isEmpty()) {
@@ -656,64 +675,22 @@ void DatabasesGenerator::generatePhysicalModel()
 		match[toSet][fromSet] = 2;
 
 		// Creating
-		Id tableId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Table"));
-		Id createdLogicalTableId = mLogicalModelApi.createElement(Id::rootId(), tableId);
-		Id createdGraphicalTableId = mGraphicalModelApi.createElement(graphicalDiagramId, createdLogicalTableId, true, QString("Table"), QPointF());
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalTableId, relationshipTableName, "Name");
+		Id logicalTableId = createElementFromString("Table", QPointF(), logicalDiagramId);
+		mLogicalModelApi.setPropertyByRoleName(logicalTableId, relationshipTableName, "Name");
 
-		//copy relationship 1
-		Id newRelationshipId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/PhysicalManyToManyRelationship"));
-		Id createdLogicalRelationshipId = mLogicalModelApi.createElement(Id::rootId(), newRelationshipId);
-		//QPointF relationshipCoordinates = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(relationship).first());
-		Id createdGraphicalRelationshipId = mGraphicalModelApi.createElement(graphicalDiagramId, createdLogicalRelationshipId, true, QString("Many-to-many"), QPointF());
-
-		QString relationshipName = getProperty(relationship, "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalRelationshipId, relationshipName, "Name");
-
-		mLogicalModelApi.setFrom(newRelationshipId, setTables.at(fromSet));
-		mLogicalModelApi.setTo(newRelationshipId, createdLogicalTableId);
-		mGraphicalModelApi.setTo(createdGraphicalRelationshipId, createdGraphicalTableId);
-		mGraphicalModelApi.setFrom(createdGraphicalRelationshipId, mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(fromSet)).first());
-		//mLogicalModelApi.setTo(newRelationshipId, setTables.at(toSet));
-
-		//copy relationship 1
-		Id newRelationshipId2 = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/PhysicalManyToManyRelationship"));
-		Id createdLogicalRelationshipId2 = mLogicalModelApi.createElement(Id::rootId(), newRelationshipId2);
-		//QPointF relationshipCoordinates2 = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(relationship).first());
-		Id createdGraphicalRelationshipId2 = mGraphicalModelApi.createElement(graphicalDiagramId, createdLogicalRelationshipId2, true, QString("Many-to-many"), QPointF());
-
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalRelationshipId, relationshipName, "Name");
-
-		mGraphicalModelApi.setFrom(createdGraphicalRelationshipId2, createdGraphicalTableId);
-		mGraphicalModelApi.setTo(createdGraphicalRelationshipId2,  mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(toSet)).first());
-		mLogicalModelApi.setFrom(newRelationshipId, createdLogicalTableId);
-		mLogicalModelApi.setTo(newRelationshipId, setTables.at(toSet));
+		//copy relationship
+		copyManyToManyRelationship(relationship, logicalDiagramId, setTables.at(fromSet), logicalTableId);
+		copyManyToManyRelationship(relationship, logicalDiagramId, logicalTableId, setTables.at(toSet));
 
 		//add bounding attribute
-		Id rowId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Row"));
-		Id createdLogicalRowId = mLogicalModelApi.createElement(Id::rootId(), rowId);
-		QPointF rowCoordinates = mGraphicalModelApi.position(createdGraphicalTableId);
-		mGraphicalModelApi.createElement(createdGraphicalTableId, createdLogicalRowId, true, QString("Row"), rowCoordinates);
-
+		Id logicalRowIdOne = createElementFromString("Row", QPointF(), logicalTableId, true);
 		QString rowName = "keyOf" + getProperty(setTables.at(fromSet), "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalRowId, rowName, "Name");
+		mLogicalModelApi.setPropertyByRoleName(logicalRowIdOne, rowName, "Name");
 
 		//add bounding attribute 2
-		Id rowId2 = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Row"));
-		Id createdLogicalRowId2 = mLogicalModelApi.createElement(Id::rootId(), rowId2);
-		QPointF rowCoordinates2 = mGraphicalModelApi.position(createdGraphicalTableId);
-		mGraphicalModelApi.createElement(createdGraphicalTableId, createdLogicalRowId2, true, QString("Row"), rowCoordinates);
-
+		Id logicalRowIdTwo = createElementFromString("Row", QPointF(), logicalTableId, true);
 		QString rowName2 = "keyOf" + getProperty(setTables.at(toSet), "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(createdLogicalRowId2, rowName2, "Name");
-/////////
-		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
-		Id fromPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(fromSet));
-		QString fromPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(fromSet));
-		codeFile.write((toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toByteArray()).toUtf8());
-		codeFile.write(",\r\n");
-		codeFile.write((fromPrimaryKeyName + " " + getProperty(fromPrimaryKey, "DataType").toByteArray()).toUtf8());
-		/////////////
+		mLogicalModelApi.setPropertyByRoleName(logicalRowIdTwo, rowName2, "Name");
 	}
 
 	for (int i = 0; i < oneToOneSetsSize; i++) {
@@ -723,7 +700,7 @@ void DatabasesGenerator::generatePhysicalModel()
 	mErrorReporter->addInformation(tr("Physical model was generated successfully"));
 }
 
-void DatabasesGenerator::generateSQLCode()
+void SqlServerGenerator::generateSQLCode()
 {
 	mErrorReporter->clear();
 
@@ -754,4 +731,6 @@ void DatabasesGenerator::generateSQLCode()
 	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }
-*/
+
+}
+}

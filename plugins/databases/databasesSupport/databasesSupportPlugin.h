@@ -11,7 +11,7 @@
 
 #include "databasesPreferencesPage.h"
 #include "databasesCustomizer.h"
-#include "generator/databasesGenerator.h"
+#include "generator/sqlServerGenerator.h"
 
 namespace qReal {
 namespace databasesSupport {
