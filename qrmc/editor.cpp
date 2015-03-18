@@ -240,7 +240,7 @@ bool Editor::generatePluginSource()
 	generateElementsFactory();
 	generateContainers();
 
-	//generatePropertyNames();//SUPERFIX
+	generatePropertyNames();//fix
 
 	generateReferenceProperties();
 	generateConnections();
@@ -462,6 +462,14 @@ public:
 	}
 };
 
+class Editor::PropertyNameGenerator: public Editor::MethodGenerator {//fix
+public://fix
+	virtual ~PropertyNameGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generatePropertyName(lineTemplate);
+	}
+};
+
 class Editor::ConnectionsGenerator: public Editor::MethodGenerator {
 public:
 	virtual ~ConnectionsGenerator() {}
@@ -554,10 +562,10 @@ void Editor::generateReferenceProperties()
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
 
-//void Editor::generatePropertyNames()
-//{
-//	generatePluginMethod(getPropertyNameTag, ReferencePropertiesGenerator());
-//}
+void Editor::generatePropertyNames()//fix
+{
+	generatePluginMethod(getPropertyNameTag, PropertyNameGenerator());
+}
 
 void Editor::generateConnections()
 {

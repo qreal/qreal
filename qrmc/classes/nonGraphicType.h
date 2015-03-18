@@ -16,6 +16,9 @@ namespace qrmc {
 		virtual QString generatePropertyDefaults(const QString &namesTemplate) const;
 		virtual QString generatePropertyDisplayedNames(const QString &lineTemplate) const;
 		virtual QString generateReferenceProperties(const QString &lineTemplate) const;
+
+		virtual QString generatePropertyName(const QString &lineTemplate) const;//debugfix
+
 		virtual QString generateParents(const QString &lineTemplate) const;
 		virtual QString generateContainers(const QString &lineTemplate) const;
 		virtual QString generateConnections(const QString &lineTemplate) const;

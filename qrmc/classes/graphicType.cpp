@@ -292,6 +292,27 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 	return referencePropertiesString;
 }
 
+QString GraphicType::generatePropertyName(const QString &lineTemplate) const//fix
+{
+	if (!mIsVisible)
+		return "";
+	QString propertyNameString = lineTemplate;
+	QString propertyNameList = "";
+	foreach (Property *property, mProperties) {
+		if (!property->isReferenceProperty()) {
+			propertyNameList = propertyNameList /*+ " << "*/  + "\"" + property->name() + "\"";
+		}
+	}
+	if (propertyNameList.isEmpty()) {
+		//return "";
+		propertyNameString.replace(propertyNameListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
+	} else {
+		propertyNameString.replace(propertyNameListTag, propertyNameList + ";\n	}//").replace(elementNameTag, name() + "\"){//");
+		//return propertyNameString;
+	}
+	return propertyNameString;
+}
+
 QString GraphicType::generateParents(const QString &lineTemplate) const
 {
 	QString parentsMapString;
