@@ -72,7 +72,7 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &e
 		return new SystemCommandBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
 		return new InitCameraBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
+	} else if (elementMetatypeIs(element, "TrikDetect")) {
 		return new DetectLineBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDetectorToVariable")) {
 		return new LineDetectorToVariableBlock();

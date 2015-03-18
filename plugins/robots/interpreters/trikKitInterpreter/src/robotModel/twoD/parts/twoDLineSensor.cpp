@@ -1,5 +1,6 @@
 #include "twoDLineSensor.h"
 
+#include <QtCore/QDebug>
 #include <QtGui/QImage>
 
 using namespace trik::robotModel::twoD::parts;
@@ -21,27 +22,31 @@ void LineSensor::init()
 void LineSensor::detectLine()
 {
 	QImage image = mEngine.areaUnderSensor(port(), 0.2);
+//	image.save("/home/ashatta/img.png");
+
 	int size = image.width() * image.height();
-	qreal red = 0;
-	qreal green = 0;
-	qreal blue = 0;
+	int red = 0;
+	int green = 0;
+	int blue = 0;
 	for (int x = 0; x < image.width(); ++x) {
 		for (int y = 0; y < image.height(); ++y) {
-			QColor pixelColor(image.pixel(x, y));
-			red += pixelColor.redF();
-			green += pixelColor.greenF();
-			blue += pixelColor.blueF();
+			QRgb pixelColor(image.pixel(x, y));
+			red += qRed(pixelColor);
+			green += qGreen(pixelColor);
+			blue += qBlue(pixelColor);
 		}
 	}
 
-	mLineColor.setRedF(red / size);
-	mLineColor.setGreenF(green / size);
-	mLineColor.setBlueF(blue / size);
+	mLineColor.setRed(red / size);
+	mLineColor.setGreen(green / size);
+	mLineColor.setBlue(blue / size);
+	qDebug() << mLineColor.red() << mLineColor.green() << mLineColor.blue();
 }
 
 void LineSensor::read()
 {
 	QImage image = mEngine.areaUnderSensor(port(), 2.0);
+//	image.save("/home/ashatta/img.png");
 
 	int height = image.height();
 	int width = image.width();
@@ -57,23 +62,25 @@ void LineSensor::read()
 			if (bitMap[i][j]) {
 				++blacks;
 				xCoordinates += i;
-				if (((height - horizontalLineWidth) / 2 < i)
-						&& (i < (height + horizontalLineWidth) / 2)) {
+				if (((height - horizontalLineWidth) / 2 < i) && (i < (height + horizontalLineWidth) / 2)) {
 					++horizontalBlacks;
 				}
 			}
 		}
 	}
 
-	emit newData({
-			xCoordinates / blacks
-			, blacks / (height * width - blacks)
-			, horizontalBlacks / (height * horizontalLineWidth)
-	});
+	const int x = blacks ? qRound((xCoordinates / blacks - width / 2) * 100.0 / (width / 2)) : 0;
+	const int lineWidth = blacks / (height * width - blacks);
+	const int cross = horizontalBlacks / (height * horizontalLineWidth);
+	emit newData({ x, lineWidth, cross });
 }
 
 bool LineSensor::closeEnough(const QColor &color) const
 {
-	return qMax(abs(color.red() - mLineColor.red()), qMax(abs(color.green() - mLineColor.green())
-		, abs(color.blue() - mLineColor.blue()))) < 10;
+//	qDebug() << color.red() << color.green() << color.blue();
+//	qDebug() << mLineColor.red() << mLineColor.green() << mLineColor.blue();
+//	qDebug() << "\n";
+//	return qMax(abs(color.red() - mLineColor.red()), qMax(abs(color.green() - mLineColor.green())
+//		, abs(color.blue() - mLineColor.blue()))) < 10;
+	return color.red() < 10 && color.green() < 10 && color.blue() < 10;
 }

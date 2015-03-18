@@ -135,10 +135,16 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 		}
 	}
 
-	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
+	QGraphicsItem * const sensorItem = mView.sensorItem(port);
+	const QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	const QPointF position = neededPosDir.first;
-	const qreal width = mModel.robotModels()[0]->info().sensorImageRect(device).width() * widthFactor / 2.0;
-	const QRectF scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
+	const qreal direction = neededPosDir.second;
+	const QRect imageRect = mModel.robotModels()[0]->info().sensorImageRect(device);
+	const qreal width = imageRect.width() * widthFactor / 2.0;
+	const qreal rotationFactor = sensorItem->mapToScene(imageRect).boundingRect().width() / imageRect.width();
+	const qreal realWidth = width * rotationFactor;
+	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
+			, 2 * realWidth, 2 * realWidth);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
@@ -149,22 +155,23 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	painter.setPen(QPen(Qt::white));
 	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
-	QGraphicsItem * const sensorItem = mView.sensorItem(port);
 	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
 	const bool wasSelected = sensorItem->isSelected();
 	const bool rotaterWasVisible = robot->rotater().isVisible();
 	const bool rotaterWasSelected = robot->rotater().isSelected();
-	mView.setSensorVisible(port, false);
-	robot->rotater().setVisible(false);
+	robot->setVisible(false);
 
 	mView.scene()->render(&painter, QRectF(), scanningRect);
 
-	mView.setSensorVisible(port, true);
 	mView.sensorItem(port)->setSelected(wasSelected);
+	robot->setVisible(true);
 	robot->rotater().setVisible(rotaterWasVisible);
 	robot->rotater().setSelected(rotaterWasSelected);
 
-	return image;
+	const QPoint offset = QPointF(width, width).toPoint();
+	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
+	const QRect realImage(rotated.rect().center() - offset, rotated.rect().center() + offset - QPoint(1, 1));
+	return rotated.copy(realImage);
 }
 
 int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
