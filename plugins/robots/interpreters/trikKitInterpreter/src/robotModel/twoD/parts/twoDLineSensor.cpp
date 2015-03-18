@@ -22,7 +22,6 @@ void LineSensor::init()
 void LineSensor::detectLine()
 {
 	QImage image = mEngine.areaUnderSensor(port(), 0.2);
-//	image.save("/home/ashatta/img.png");
 
 	int size = image.width() * image.height();
 	int red = 0;
@@ -46,7 +45,6 @@ void LineSensor::detectLine()
 void LineSensor::read()
 {
 	QImage image = mEngine.areaUnderSensor(port(), 2.0);
-//	image.save("/home/ashatta/img.png");
 
 	int height = image.height();
 	int width = image.width();
@@ -54,33 +52,34 @@ void LineSensor::read()
 	int blacks = 0;
 	int horizontalBlacks = 0;
 	int horizontalLineWidth = image.height() * 0.2;
-	int xCoordinates = 0;
-	QVector<QVector<bool> > bitMap(height, QVector<bool>(width, false));
+	qreal xCoordinates = 0;
 	for (int i = 0; i < height; ++i) {
+		int blacksNumber = 0;
+		qreal xSum = 0;
+
 		for (int j = 0; j < width; ++j) {
-			bitMap[i][j] = closeEnough(image.pixel(j, i));
-			if (bitMap[i][j]) {
-				++blacks;
-				xCoordinates += i;
-				if (((height - horizontalLineWidth) / 2 < i) && (i < (height + horizontalLineWidth) / 2)) {
-					++horizontalBlacks;
-				}
+			if (closeEnough(image.pixel(j, i))) {
+				++blacksNumber;
+				xSum += (j + 1) * 100.0 / (width / 2.0) - 100;
 			}
+		}
+
+		xCoordinates += (blacksNumber ? xSum / blacksNumber : 0);
+		blacks += blacksNumber;
+		if (((height - horizontalLineWidth) / 2 < i) && (i < (height + horizontalLineWidth) / 2)) {
+			horizontalBlacks += blacksNumber;
 		}
 	}
 
-	const int x = blacks ? qRound((xCoordinates / blacks - width / 2) * 100.0 / (width / 2)) : 0;
-	const int lineWidth = blacks / (height * width - blacks);
-	const int cross = horizontalBlacks / (height * horizontalLineWidth);
+	const int x = qRound(xCoordinates / height);
+	const int lineWidth = blacks / height;
+	const int cross = qRound(horizontalBlacks * 100.0 / (height * horizontalLineWidth));
 	emit newData({ x, lineWidth, cross });
 }
 
 bool LineSensor::closeEnough(const QColor &color) const
 {
-//	qDebug() << color.red() << color.green() << color.blue();
-//	qDebug() << mLineColor.red() << mLineColor.green() << mLineColor.blue();
-//	qDebug() << "\n";
-//	return qMax(abs(color.red() - mLineColor.red()), qMax(abs(color.green() - mLineColor.green())
-//		, abs(color.blue() - mLineColor.blue()))) < 10;
+	return qMax(abs(color.red() - mLineColor.red()), qMax(abs(color.green() - mLineColor.green())
+		, abs(color.blue() - mLineColor.blue()))) < 10;
 	return color.red() < 10 && color.green() < 10 && color.blue() < 10;
 }

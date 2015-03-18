@@ -170,7 +170,7 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 
 	const QPoint offset = QPointF(width, width).toPoint();
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
-	const QRect realImage(rotated.rect().center() - offset, rotated.rect().center() + offset - QPoint(1, 1));
+	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
 	return rotated.copy(realImage);
 }
 
