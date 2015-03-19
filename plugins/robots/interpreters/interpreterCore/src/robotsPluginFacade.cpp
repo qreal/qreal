@@ -94,7 +94,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
 			, mBlocksFactoryManager, mKitPluginManager, mRobotModelManager, this);
 
-	mSaveAsTaskManager.reset(new ExerciseExportManager(configurer.logicalModelApi(), configurer.repoControlInterface()));
+	mSaveAsTaskManager.reset(new ExerciseExportManager(configurer.logicalModelApi()
+			, configurer.repoControlInterface(), configurer.projectManager()));
 
 	connectInterpreterToActions();
 
@@ -114,9 +115,18 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 				mDockDevicesConfigurer->setEnabled(
 						!repoApi.metaInformation("twoDModelSensorsReadOnly").toBool());
+
+				const bool hasReadOnlyFlags = repoApi.metaInformation("twoDModelWorldReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelSensorsReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelRobotPositionReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelRobotConfigurationReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelSimulationSettingsReadOnly").toBool()
+						;
+
+				mActionsManager.exportExerciseAction().setEnabled(!hasReadOnlyFlags);
 			});
 
-	connect(&mActionsManager.saveAsTaskAction(), &QAction::triggered
+	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered
 			, [this] () { mSaveAsTaskManager->save(); });
 
 	sync();

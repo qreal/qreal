@@ -6,6 +6,7 @@
 
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
+#include <kitBase/readOnly.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
 #include <kitBase/devicesConfigurationProvider.h>
@@ -64,10 +65,8 @@ public:
 
 	/// Sets groups of items on 2d model that can not be modified by user. Used for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.
-	/// Specific flags are listed in ReadOnly enum and can be combined. 0 means all interaction is allowed,
-	/// 0xFFFFFFFF --- all interaction is forbidden.
 	/// @see ReadOnly
-	void setInteractivityFlags(int flags);
+	void setInteractivityFlags(kitBase::ReadOnlyFlags flags);
 
 signals:
 	/// Emitted each time when user closes 2D model window.

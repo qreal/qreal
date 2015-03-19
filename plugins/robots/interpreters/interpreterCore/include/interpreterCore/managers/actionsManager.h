@@ -51,7 +51,7 @@ public:
 
 	/// Action that allows to save current model as an exercise with different limitations, such as inability to
 	/// change world in 2d model or configuration of robot sensors.
-	QAction &saveAsTaskAction();
+	QAction &exportExerciseAction();
 
 public slots:
 	/// Reacts to selection of another robot model.
@@ -98,7 +98,7 @@ private:
 
 	/// Action that allows to save current model as an exercise with different limitations, such as inability to
 	/// change world in 2d model or configuration of robot sensors.
-	QAction mSaveAsTaskAction;
+	QAction mExportExerciseAction;
 
 	QAction mSeparator1;
 	QAction mSeparator2;

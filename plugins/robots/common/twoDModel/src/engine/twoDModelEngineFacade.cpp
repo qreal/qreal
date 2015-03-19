@@ -147,7 +147,7 @@ void TwoDModelEngineFacade::onStopInterpretation()
 
 void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)
 {
-	int readOnlyFlags = kitBase::ReadOnly::None;
+	kitBase::ReadOnlyFlags readOnlyFlags = kitBase::ReadOnly::None;
 
 	const auto load = [&] (const QString &tag, kitBase::ReadOnly::ReadOnlyEnum flag) {
 		if (logicalModel.logicalRepoApi().metaInformation(tag).toBool()) {

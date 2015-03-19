@@ -19,10 +19,13 @@ public slots:
 	/// Tries to open an existing file, prompts you to save changes, if any. Checks for the presence of a file and the
 	/// sufficiency of the plugins. In the event of any failure, leaving the project as is and returns false, o/w true.
 	virtual bool openExisting(const QString &fileName) = 0;
+
 	/// Similarly @see openExisting(), but offers the user select a file (by a dialog)
 	virtual bool suggestToOpenExisting() = 0;
+
 	/// Creating a new project
 	virtual bool openNewWithDiagram() = 0;
+
 	/// Offers the user select a file (by a dialog) and import all diagrams from it into the current project.
 	virtual bool suggestToImport() = 0;
 
@@ -31,20 +34,26 @@ public slots:
 
 	/// Save the project in the user file, if it specified. Otherwise save to autosave file
 	virtual void save() = 0;
+
 	/// Save the project in the file with the name fileName, if it not empty (fileName). Otherwise return false only.
 	virtual bool saveAs(const QString &fileName) = 0;
+
 	/// Similarly @see saveAs(const QString &fileName), but offers the user specified file location (by a dialog)
 	virtual bool suggestToSaveAs() = 0;
+
 	/// Similarly @see save(), if specified project-file, similarly @see suggestToSaveAs() o/w
 	virtual bool saveOrSuggestToSaveAs() = 0;
 
 public:
 	/// Create an empty project
 	virtual bool openEmptyWithSuggestToSaveChanges() = 0;
+
 	/// Try to open save file with name fileName, show messages is file non exist or plugins are missing and
 	/// return false, or return true otherwise. fileName == "" (default value) will be create an empty project.
 	virtual bool open(const QString &fileName = QString()) = 0;
+
 	virtual bool suggestToSaveChangesOrCancel() = 0;
+
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
 
 	/// Returns path to save file. If temp file it will return empty string.

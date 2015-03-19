@@ -2,6 +2,7 @@
 
 namespace qReal {
 class LogicalModelAssistInterface;
+class ProjectManagementInterface;
 }
 
 namespace qrRepo {
@@ -14,7 +15,7 @@ class ExerciseExportManager
 {
 public:
 	explicit ExerciseExportManager(qReal::LogicalModelAssistInterface &logicalModel
-			, qrRepo::RepoControlInterface &repoControlApi);
+			, qrRepo::RepoControlInterface &repoControlApi, qReal::ProjectManagementInterface &projectManager);
 
 	~ExerciseExportManager();
 
@@ -23,6 +24,7 @@ public:
 private:
 	qReal::LogicalModelAssistInterface &mLogicalModel;
 	qrRepo::RepoControlInterface &mRepoControlApi;
+	qReal::ProjectManagementInterface &mProjectManager;
 };
 
 }

@@ -6,7 +6,6 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
-#include <kitBase/readOnly.h>
 
 #include "robotItem.h"
 
@@ -53,7 +52,7 @@ bool D2ModelScene::oneRobot() const
 	return mRobots.size() == 1;
 }
 
-void D2ModelScene::setInteractivityFlags(int flags)
+void D2ModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
 {
 	mWorldReadOnly = (flags & kitBase::ReadOnly::World) != 0;
 	mRobotReadOnly = (flags & kitBase::ReadOnly::RobotPosition) != 0;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCOre/QFlags>
+
 namespace kitBase {
 
 /// Flags that determine allowed interaction of 2d model widget contents with user.
@@ -25,29 +27,10 @@ enum ReadOnlyEnum {
 	/// Simulation parameters like used physics engine and simulation speed are read-only.
 	, SimulationSettings = 16
 };
+
 }
 
-/// Convenience class that holds model read only flags and provides access to them.
-class ReadOnlyFlags {
-public:
-	/// Sets specified flag to a specified value.
-	void setFlag(ReadOnly::ReadOnlyEnum flag, bool enabled)
-	{
-		if (enabled) {
-			mFlags |= flag;
-		} else {
-			mFlags &= ~flag;
-		}
-	}
-
-	/// Returns value of given flag.
-	bool flag(ReadOnly::ReadOnlyEnum flag) const
-	{
-		return (mFlags & flag) != 0;
-	}
-
-private:
-	int mFlags = ReadOnly::None;
-};
+Q_DECLARE_FLAGS(ReadOnlyFlags, ReadOnly::ReadOnlyEnum)
+Q_DECLARE_OPERATORS_FOR_FLAGS(ReadOnlyFlags)
 
 }

@@ -7,6 +7,7 @@
 #include <qrutils/graphicsUtils/gridDrawer.h>
 
 #include <kitBase/devicesConfigurationProvider.h>
+#include <kitBase/readOnly.h>
 
 namespace twoDModel {
 
@@ -43,7 +44,7 @@ public:
 	/// Forbid all interaction with specified categories of objects on scene, for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.
 	/// Categories of items include world model (walls, lines, etc.), sensors, robot position.
-	void setInteractivityFlags(int flags);
+	void setInteractivityFlags(kitBase::ReadOnlyFlags flags);
 
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.

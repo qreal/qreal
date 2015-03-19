@@ -17,7 +17,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mStopRobotAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr)
 	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
-	, mSaveAsTaskAction(QIcon(), QObject::tr("Save as task..."), nullptr)
+	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
@@ -33,7 +33,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 			<< &mRunAction
 			<< &mStopRobotAction
 			<< &mRobotSettingsAction
-			<< &mSaveAsTaskAction
+			<< &mExportExerciseAction
 			;
 }
 
@@ -53,7 +53,7 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 
 	result << qReal::ActionInfo(&mSeparator2, "interpreters", "tools")
 			<< qReal::ActionInfo(&mRobotSettingsAction, "interpreters", "tools")
-			<< qReal::ActionInfo(&mSaveAsTaskAction, "", "tools")
+			<< qReal::ActionInfo(&mExportExerciseAction, "", "tools")
 			;
 
 	return result;
@@ -103,9 +103,9 @@ QAction &ActionsManager::robotSettingsAction()
 	return mRobotSettingsAction;
 }
 
-QAction &ActionsManager::saveAsTaskAction()
+QAction &ActionsManager::exportExerciseAction()
 {
-	return mSaveAsTaskAction;
+	return mExportExerciseAction;
 }
 
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
@@ -164,8 +164,12 @@ void ActionsManager::updateEnabledActions()
 	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 
 	for (QAction * const action : mActions) {
-		action->setEnabled(enabled);
+		if (action != &mRobotSettingsAction) {
+			action->setEnabled(enabled);
+		}
 	}
+
+
 }
 
 void ActionsManager::initKitPluginActions()

@@ -28,7 +28,7 @@ private:
 	QScopedPointer<QCheckBox> mWorldReadOnlyCheckBox;
 	QScopedPointer<QCheckBox> mSensorsReadOnlyCheckBox;
 	QScopedPointer<QCheckBox> mRobotPositionReadOnlyCheckBox;
-	QScopedPointer<QCheckBox> mRobotConfigurationReadOnlyCheckBox;
+	QScopedPointer<QCheckBox> mRobotSetupReadOnlyCheckBox;
 	QScopedPointer<QCheckBox> mSimulationSettingsReadOnlyCheckBox;
 };
 

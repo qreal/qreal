@@ -3,6 +3,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include <qrgui/models/logicalModelAssistApi.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrrepo/repoControlInterface.h>
 #include <qrutils/qRealFileDialog.h>
 
@@ -12,9 +13,10 @@ using namespace interpreterCore;
 using namespace kitBase;
 
 ExerciseExportManager::ExerciseExportManager(qReal::LogicalModelAssistInterface &logicalModel
-		, qrRepo::RepoControlInterface &repoControlApi)
+		, qrRepo::RepoControlInterface &repoControlApi, qReal::ProjectManagementInterface &projectManager)
 	: mLogicalModel(logicalModel)
 	, mRepoControlApi(repoControlApi)
+	, mProjectManager(projectManager)
 {
 }
 
@@ -30,11 +32,9 @@ void ExerciseExportManager::save()
 	}
 
 	ReadOnlyFlags flags = dialog.readOnlyFlags();
-	QHash<ReadOnly::ReadOnlyEnum, bool> oldFlags;
 
-	const auto save = [this, &flags, &oldFlags] (const QString &tag, ReadOnly::ReadOnlyEnum flag) {
-		oldFlags.insert(flag, mLogicalModel.logicalRepoApi().metaInformation(tag).toBool());
-		mLogicalModel.mutableLogicalRepoApi().setMetaInformation(tag, flags.flag(flag));
+	const auto save = [this, &flags/*, &oldFlags*/] (const QString &tag, ReadOnly::ReadOnlyEnum flag) {
+		mLogicalModel.mutableLogicalRepoApi().setMetaInformation(tag, flags.testFlag(flag));
 	};
 
 	save("twoDModelWorldReadOnly", ReadOnly::World);
@@ -57,21 +57,7 @@ void ExerciseExportManager::save()
 		fileName += ".qrs";
 	}
 
-	const QString currentWorkingFile = mRepoControlApi.workingFile();
-
 	mRepoControlApi.saveTo(fileName);
 
-	// Restore old flags.
-	for (ReadOnly::ReadOnlyEnum flag : oldFlags.keys()) {
-		flags.setFlag(flag, oldFlags[flag]);
-	}
-
-	save("twoDModelWorldReadOnly", ReadOnly::World);
-	save("twoDModelSensorsReadOnly", ReadOnly::Sensors);
-	save("twoDModelRobotPositionReadOnly", ReadOnly::RobotPosition);
-	save("twoDModelRobotConfigurationReadOnly", ReadOnly::RobotSetup);
-	save("twoDModelSimulationSettingsReadOnly", ReadOnly::SimulationSettings);
-
-	// Save model again to set its working directory to old value.
-	mRepoControlApi.saveTo(currentWorkingFile);
+	mProjectManager.open(fileName);
 }

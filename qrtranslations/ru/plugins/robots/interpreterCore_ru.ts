@@ -454,27 +454,27 @@ p, li { white-space: pre-wrap; }
         <translation>TRIK Studio</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="50"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="55"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="55"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="60"/>
         <source>Configure devices</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="64"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="69"/>
         <source>Sensors state</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="79"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="84"/>
         <source>Subprograms</source>
         <translation>Подпрограммы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="84"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="89"/>
         <source>The list of all declared subprograms in the project</source>
         <translation>Список всех объявленных в проекте подпрограмм</translation>
     </message>
@@ -544,7 +544,7 @@ p, li { white-space: pre-wrap; }
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="19"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="20"/>
         <source>Save as task...</source>
         <translation>Сохранить как упражнение...</translation>
     </message>
@@ -676,12 +676,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Гироскоп</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/saveAsTaskManager.cpp" line="48"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/exerciseExportManager.cpp" line="48"/>
         <source>Select file to export save to</source>
         <translation>Укажите имя файла, в который будет сохранено упражнение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/saveAsTaskManager.cpp" line="50"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/exerciseExportManager.cpp" line="50"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файл сохранения TRIK Studio (*.qrs)</translation>
     </message>
@@ -712,7 +712,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="215"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="224"/>
         <source>Switch to</source>
         <translation>Переключиться в режим</translation>
     </message>
@@ -735,7 +735,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="101"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="105"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -927,14 +927,57 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>interpreterCore::ui::ExerciseExportDialog</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="17"/>
+        <source>Select non-modifiable parts of exercize</source>
+        <translation>Выберите неизменяемые части упражнения</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="19"/>
+        <source>2d model world is read only</source>
+        <translation>Двумерная модель неизменяема</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="20"/>
+        <source>2d model sensor positions are read only</source>
+        <translation>Расположение сенсоров в двумерной модели неизменяемо</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="21"/>
+        <source>2d model robot position is read only</source>
+        <translation>Начальное положение робота в двумерной модели неизменяемо</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="22"/>
+        <source>Motors to wheels binding is read only</source>
+        <translation>Соответствие портов моторов и колёс неизменяемо</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="23"/>
+        <source>2d model simulation settings are read only</source>
+        <translation>Настройки симуляции двумерной модели (физика, шумы и т.д.) неизменяемы</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="44"/>
+        <source>Ok</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="48"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
     <name>interpreterCore::ui::RobotsSettingsPage</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="74"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="64"/>
         <source>No constructor kit plugins loaded</source>
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="191"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="198"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>
@@ -942,44 +985,36 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ui::SaveAsTaskDialog</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="15"/>
         <source>Select non-modifiable parts of exercize</source>
-        <translation>Выберите неизменяемые части упражнения</translation>
+        <translation type="vanished">Выберите неизменяемые части упражнения</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="17"/>
         <source>2d model world is read only</source>
-        <translation>Двумерная модель неизменяема</translation>
+        <translation type="vanished">Двумерная модель неизменяема</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="18"/>
         <source>2d model sensor positions are read only</source>
-        <translation>Расположение сенсоров в двумерной модели неизменяемо</translation>
+        <translation type="vanished">Расположение сенсоров в двумерной модели неизменяемо</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="19"/>
         <source>2d model robot position is read only</source>
-        <translation>Начальное положение робота в двумерной модели неизменяемо</translation>
+        <translation type="vanished">Начальное положение робота в двумерной модели неизменяемо</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="20"/>
         <source>Robot configuration is read only</source>
-        <translation>Соответствие моторов портам неизменяемо</translation>
+        <translation type="vanished">Соответствие моторов портам неизменяемо</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="21"/>
         <source>2d model simulation settings are read only</source>
-        <translation>Настройки симуляции двумерной модели (физика, шумы и т.д.) неизменяемы</translation>
+        <translation type="vanished">Настройки симуляции двумерной модели (физика, шумы и т.д.) неизменяемы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="35"/>
         <source>Ok</source>
-        <translation>ОК</translation>
+        <translation type="vanished">ОК</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/saveAsTaskDialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
     </message>
 </context>
 <context>

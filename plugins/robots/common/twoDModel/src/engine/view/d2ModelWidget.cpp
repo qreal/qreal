@@ -18,7 +18,6 @@
 #include <kitBase/robotModel/robotParts/colorSensor.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
-#include <kitBase/readOnly.h>
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -608,7 +607,7 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 	mModel.deserialize(worldModel);
 }
 
-void D2ModelWidget::setInteractivityFlags(int flags)
+void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 {
 	const auto openTab = [this](QWidget * const tab) {
 		QList<const QWidget *> tabOrder{mUi->toolsTab, mUi->portsTab, mUi->modelSettingsTab};
@@ -664,11 +663,17 @@ void D2ModelWidget::setInteractivityFlags(int flags)
 	setTabHidden(mUi->toolsTab, worldReadOnly);
 
 	mUi->gridParametersBox->setVisible(!worldReadOnly);
+	if (!worldReadOnly) {
+		mUi->sceneHeaderWidget->layout()->removeItem(mUi->horizontalSpacer);
+	} else {
+		static_cast<QHBoxLayout *>(mUi->sceneHeaderWidget->layout())->insertItem(1, mUi->horizontalSpacer);
+	}
+
 	mUi->saveWorldModelPushButton->setVisible(!worldReadOnly);
 	mUi->loadWorldModelPushButton->setVisible(!worldReadOnly);
 
-	const bool sensorsReadOnly = (flags & ReadOnly::Sensors) != 0;
-	const bool robotConfigurationReadOnly = (flags & ReadOnly::RobotSetup) != 0;
+	const bool sensorsReadOnly = flags.testFlag(ReadOnly::Sensors);
+	const bool robotConfigurationReadOnly = flags.testFlag(ReadOnly::RobotSetup);
 
 	setTabHidden(mUi->portsTab, sensorsReadOnly && robotConfigurationReadOnly);
 
@@ -676,7 +681,7 @@ void D2ModelWidget::setInteractivityFlags(int flags)
 	mUi->leftWheelComboBox->setEnabled(!robotConfigurationReadOnly);
 	mUi->rightWheelComboBox->setEnabled(!robotConfigurationReadOnly);
 
-	const bool simulationSettingsReadOnly = (flags & ReadOnly::SimulationSettings) != 0;
+	const bool simulationSettingsReadOnly = flags.testFlag(ReadOnly::SimulationSettings);
 
 	setTabHidden(mUi->modelSettingsTab, simulationSettingsReadOnly);
 

@@ -64,6 +64,7 @@ HEADERS += \
 	$$PWD/include/kitBase/devicesConfigurationWidget.h \
 	$$PWD/include/kitBase/eventsForKitPluginInterface.h \
 	$$PWD/include/kitBase/interpreterControlInterface.h \
+	$$PWD/include/kitBase/readOnly.h \
 	$$PWD/include/kitBase/blocksBase/robotsBlock.h \
 	$$PWD/include/kitBase/blocksBase/blocksFactoryInterface.h \
 	$$PWD/include/kitBase/blocksBase/commonBlocksFactory.h \
