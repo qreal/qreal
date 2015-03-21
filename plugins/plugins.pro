@@ -16,7 +16,6 @@ SUBDIRS += \
 SUBDIRS += \
 	generationRulesTool/generationRulesTool.pro \
 
-
 # tool plugins
 SUBDIRS += \
 	$$PWD/tools/exterminatus/exterminatus.pro \
