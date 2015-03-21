@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtCOre/QFlags>
+#include <QtCore/QFlags>
 
 namespace kitBase {
 
