@@ -25,8 +25,9 @@ public:
 	/// @param id Id of metamodel element we are specifying generation rules for.
 	SpecifyGenerationRulesDialog(MainWindow &mainWindow
 			, const EditorManagerInterface &interpreterEditorManager
-			, Id const &id);
-	~SpecifyGenerationRulesDialog();
+			, const Id &id);
+
+	~SpecifyGenerationRulesDialog() override;
 
 private slots:
 	/// Inserts property into the code.
@@ -36,13 +37,14 @@ private slots:
 private:
 	/// Adds properties to the properties list.
 	void addPropertiesList();
+
 	/// Returns properties displayed names list.
 	/// @param propertiesNames List of properties.
-	QStringList propertiesDisplayedNamesList(QStringList const &propertiesNames);
+	QStringList propertiesDisplayedNamesList(const QStringList &propertiesNames);
 
 	Ui::SpecifyGenerationRulesDialog *mUi;  // has ownership
 	const EditorManagerInterface &mInterpreterEditorManager;
-	Id mId;
+	const Id mId;
 	QStringList mPropertiesNames;
 };
 

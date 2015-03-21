@@ -6,8 +6,8 @@ using namespace gui;
 
 SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(MainWindow &mainWindow
 		, const EditorManagerInterface &interpreterEditorManager
-		, Id const &id) :
-	QDialog(&mainWindow)
+		, Id const &id)
+	: QDialog(&mainWindow)
 	, mUi(new Ui::SpecifyGenerationRulesDialog)
 	, mInterpreterEditorManager(interpreterEditorManager)
 	, mId(id)
@@ -26,22 +26,22 @@ SpecifyGenerationRulesDialog::~SpecifyGenerationRulesDialog()
 
 void SpecifyGenerationRulesDialog::insertPropertyIntoCode(QListWidgetItem* property)
 {
-	QString const propertyName = property->text();
+	const QString propertyName = property->text();
 	mUi->codeArea->insertPlainText(propertyName);
 }
 
 void SpecifyGenerationRulesDialog::addPropertiesList()
 {
 	mPropertiesNames = mInterpreterEditorManager.propertyNames(mId);
-	QStringList const propertiesDisplayedNames = propertiesDisplayedNamesList(mPropertiesNames);
+	const QStringList propertiesDisplayedNames = propertiesDisplayedNamesList(mPropertiesNames);
 	mUi->propertiesView->clear();
 	mUi->propertiesView->addItems(propertiesDisplayedNames);
 }
 
-QStringList SpecifyGenerationRulesDialog::propertiesDisplayedNamesList(QStringList const &propertiesNames)
+QStringList SpecifyGenerationRulesDialog::propertiesDisplayedNamesList(const QStringList &propertiesNames)
 {
 	QStringList propertiesDisplayedNames;
-	for (QString const &propertyName : propertiesNames) {
+	for (const QString &propertyName : propertiesNames) {
 		propertiesDisplayedNames << mInterpreterEditorManager.propertyDisplayedName(mId, propertyName);
 	}
 

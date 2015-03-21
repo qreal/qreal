@@ -151,10 +151,10 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 void DraggableElement::openGenerationToolsWindowActionTriggered()
 {
 	const QAction * const action = static_cast<QAction *>(sender());
-	Id id = action->data().value<Id>();
-	SpecifyGenerationRulesDialog *rulesDialog = new SpecifyGenerationRulesDialog(mMainWindow, mEditorManagerProxy, id);
-	rulesDialog->setModal(true);
-	rulesDialog->show();
+	const Id id = action->data().value<Id>();
+	SpecifyGenerationRulesDialog rulesDialog(mMainWindow, mEditorManagerProxy, id);
+	rulesDialog.setModal(true);
+	rulesDialog.exec();
 }
 
 void DraggableElement::deleteElement()
