@@ -70,8 +70,8 @@ protected:
 	virtual void onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
 
 	/// Can be overrided to enable or disable concrete actions on toolbars.
-	/// Default implemetation enables all customActions() if current diagram is non-null and disables all else.
-	virtual void onCurrentDiagramChanged(const qReal::Id &id);
+	/// Default implemetation enables all customActions() if current tab is editor or text one and disables all else.
+	virtual void onCurrentDiagramChanged(const qReal::TabInfo &info);
 
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership

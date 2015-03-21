@@ -121,9 +121,9 @@ void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterfac
 	}
 }
 
-void ActionsManager::onActiveTabChanged(const qReal::Id &activeTabId)
+void ActionsManager::onActiveTabChanged(const qReal::TabInfo &info)
 {
-	const bool isDiagramTab = !activeTabId.isNull();
+	const bool isDiagramTab = info.type() == qReal::TabInfo::TabType::editor;
 	mRunAction.setEnabled(isDiagramTab);
 	mStopRobotAction.setEnabled(isDiagramTab);
 }
