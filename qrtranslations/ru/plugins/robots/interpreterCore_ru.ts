@@ -712,7 +712,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="224"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="228"/>
         <source>Switch to</source>
         <translation>Переключиться в режим</translation>
     </message>
@@ -939,9 +939,13 @@ p, li { white-space: pre-wrap; }
         <translation>Двумерная модель неизменяема</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="20"/>
         <source>2d model sensor positions are read only</source>
-        <translation>Расположение сенсоров в двумерной модели неизменяемо</translation>
+        <translation type="vanished">Расположение сенсоров в двумерной модели неизменяемо</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="20"/>
+        <source>Sensors are read only</source>
+        <translation>Положение и конфигурация сенсоров неизменяемы</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="21"/>

@@ -693,7 +693,9 @@ void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 
 	const bool simulationSettingsReadOnly = flags.testFlag(ReadOnly::SimulationSettings);
 
-	setTabHidden(mUi->modelSettingsTab, simulationSettingsReadOnly);
+	mUi->realisticPhysicsCheckBox->setEnabled(!simulationSettingsReadOnly);
+	mUi->enableMotorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
+	mUi->enableSensorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
 
 	mSensorsReadOnly = sensorsReadOnly;
 

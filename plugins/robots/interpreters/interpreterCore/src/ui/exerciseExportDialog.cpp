@@ -17,7 +17,7 @@ ExerciseExportDialog::ExerciseExportDialog(QWidget *parent)
 	setWindowTitle(tr("Select non-modifiable parts of exercize"));
 
 	mWorldReadOnlyCheckBox.reset(new QCheckBox(tr("2d model world is read only")));
-	mSensorsReadOnlyCheckBox.reset(new QCheckBox(tr("2d model sensor positions are read only")));
+	mSensorsReadOnlyCheckBox.reset(new QCheckBox(tr("Sensors are read only")));
 	mRobotPositionReadOnlyCheckBox.reset(new QCheckBox(tr("2d model robot position is read only")));
 	mRobotSetupReadOnlyCheckBox.reset(new QCheckBox(tr("Motors to wheels binding is read only")));
 	mSimulationSettingsReadOnlyCheckBox.reset(new QCheckBox(tr("2d model simulation settings are read only")));
