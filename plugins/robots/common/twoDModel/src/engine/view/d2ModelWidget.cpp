@@ -662,10 +662,20 @@ void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 
 	setTabHidden(mUi->toolsTab, worldReadOnly);
 
+	const auto hasSpacer = [this]() {
+		for (int i = 0; i < mUi->sceneHeaderWidget->layout()->count(); ++i) {
+			if (mUi->sceneHeaderWidget->layout()->itemAt(i) == mUi->horizontalSpacer) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
 	mUi->gridParametersBox->setVisible(!worldReadOnly);
-	if (!worldReadOnly) {
+	if (!worldReadOnly && hasSpacer()) {
 		mUi->sceneHeaderWidget->layout()->removeItem(mUi->horizontalSpacer);
-	} else {
+	} else if (worldReadOnly && !hasSpacer()){
 		static_cast<QHBoxLayout *>(mUi->sceneHeaderWidget->layout())->insertItem(1, mUi->horizontalSpacer);
 	}
 
