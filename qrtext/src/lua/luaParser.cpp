@@ -277,13 +277,14 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 						const auto result = QSharedPointer<TemporaryList>(new TemporaryList());
 						if (node->is<ast::Expression>()) {
 							result->list() << as<ast::Expression>(node);
+							return as<ast::Node>(result);
+						} else if (node->is<TemporaryDiscardableNode>()) {
+							return as<ast::Node>(result);
 						} else {
 							context().reportInternalError(QObject::tr("In 'args' semantic action node is "
 									"of incorrect type"));
 							return wrap(new TemporaryErrorNode());
 						}
-
-						return as<ast::Node>(result);
 					}
 				}
 			/= "args"
