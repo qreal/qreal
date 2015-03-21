@@ -1,6 +1,7 @@
 #include "exerciseExportManager.h"
 
 #include <QtWidgets/QFileDialog>
+#include <QtCore/QUuid>
 
 #include <qrgui/models/logicalModelAssistApi.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
@@ -33,7 +34,7 @@ void ExerciseExportManager::save()
 
 	ReadOnlyFlags flags = dialog.readOnlyFlags();
 
-	const auto save = [this, &flags/*, &oldFlags*/] (const QString &tag, ReadOnly::ReadOnlyEnum flag) {
+	const auto save = [this, &flags] (const QString &tag, ReadOnly::ReadOnlyEnum flag) {
 		mLogicalModel.mutableLogicalRepoApi().setMetaInformation(tag, flags.testFlag(flag));
 	};
 
@@ -42,6 +43,8 @@ void ExerciseExportManager::save()
 	save("twoDModelRobotPositionReadOnly", ReadOnly::RobotPosition);
 	save("twoDModelRobotConfigurationReadOnly", ReadOnly::RobotSetup);
 	save("twoDModelSimulationSettingsReadOnly", ReadOnly::SimulationSettings);
+
+	mLogicalModel.mutableLogicalRepoApi().setMetaInformation("exerciseId", QUuid::createUuid().toString());
 
 	QString fileName = utils::QRealFileDialog::getSaveFileName("SaveAsTask"
 			, nullptr
