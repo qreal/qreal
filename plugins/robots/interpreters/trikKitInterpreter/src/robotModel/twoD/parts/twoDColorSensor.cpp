@@ -14,5 +14,5 @@ void ColorSensor::init()
 
 void ColorSensor::read()
 {
-	emit newData({0, 0, 0});
+	emit newData({});
 }
