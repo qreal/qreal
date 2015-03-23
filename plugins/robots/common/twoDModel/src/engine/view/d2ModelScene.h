@@ -95,6 +95,8 @@ private slots:
 	/// @param robotModel Robot model which was removed
 	void onRobotRemove(model::RobotModel *robotModel);
 
+	void onItemRemoved(QGraphicsItem *item);
+
 private:
 	enum DrawingAction
 	{
