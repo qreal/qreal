@@ -1,11 +1,11 @@
 #include "d2ModelScene.h"
-
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <qrutils/deleteLaterHelper.h>
 
 #include "robotItem.h"
 
@@ -37,7 +37,7 @@ D2ModelScene::D2ModelScene(model::Model &model
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &D2ModelScene::onWallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &D2ModelScene::onColorItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &D2ModelScene::onOtherItemAdded);
-	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [](QGraphicsItem *item) { delete item; });
+	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &D2ModelScene::onItemRemoved);
 
 	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
 	connect(&mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
@@ -131,6 +131,15 @@ void D2ModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 void D2ModelScene::onOtherItemAdded(QGraphicsItem *item)
 {
 	addItem(item);
+}
+
+void D2ModelScene::onItemRemoved(QGraphicsItem *item)
+{
+	mGraphicsItem = nullptr;
+	removeItem(item);
+	// We delete the item not immediately cause in other handlers of WorldModel`s itemRemoved() signal
+	// it may still be used.
+	utils::DeleteLaterHelper<QGraphicsItem>::deleteLater(item);
 }
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)

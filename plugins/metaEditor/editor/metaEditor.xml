@@ -145,6 +145,7 @@
 						<contains type="MetaEditor::MetaEntityEdge"/>
 						<contains type="MetaEditor::MetaEntityPort"/>
 						<contains type="MetaEditor::MetaEntityEnum"/>
+						<contains type="MetaEditor::MetaEntityGroup"/>
 						<contains type="MetaEditor::MetaEntityImport"/>
 						<contains type="MetaEditor::Inheritance"/>
 					</container>
@@ -269,6 +270,14 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="displayedName"/>
+						<property type="string" name="description"/>
+						<property type="string" name="path"/>
+						<property type="bool" name="isDividable">
+							<default>false</default>
+						</property>
+						<property type="bool" name="hardLabel">
+							<default>true</default>
+						</property>
 						<property type="labelTypes" name="labelType">
 							<default>dynamicText</default>
 							<description>тип текста(статический, динамический)</description>
@@ -285,7 +294,7 @@
 							<reference type="MetaEntityPort"/>
 						</property>
 						<property type="linkShapeType" name="shape">
-							<default>square</default>
+							<default>broken</default>
 						</property>
 					</properties>
 					<container>
@@ -330,6 +339,9 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="displayedName"/>
+						<property type="bool" name="editable">
+							<default>false</default>
+						</property>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityValue"/>
@@ -406,6 +418,79 @@
 					<properties>
 						<property type="string" name="valueName"/>
 						<property type="string" name="displayedName"/>
+					</properties>
+					<containers/>
+				</logic>
+			</node>
+			<node name="MetaEntityGroup" displayedName="Group" description="">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line fill="#000000" stroke-style="dash" stroke="#2f4f4f" y1="0" x1="0" y2="200" stroke-width="2" x2="0" fill-style="solid"/>
+						<line fill="#000000" stroke-style="dash" stroke="#2f4f4f" y1="0" x1="200" y2="200" stroke-width="2" x2="200" fill-style="solid"/>
+						<line fill="#000000" stroke-style="dash" stroke="#2f4f4f" y1="0" x1="0" y2="0" stroke-width="2" x2="200" fill-style="solid"/>
+						<line fill="#000000" stroke-style="dash" stroke="#2f4f4f" y1="200" x1="0" y2="200" stroke-width="2" x2="200" fill-style="solid"/>
+					</picture>
+					<labels>
+						<label x="5" y="3" textBinded="name" center="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="20" starty="0"/>
+							<end endx="180" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="20" starty="100"/>
+							<end endx="180" endy="100"/>
+						</linePort>
+						<linePort>
+							<start starty="20" startx="0"/>
+							<end endy="180" endx="0"/>
+						</linePort>
+						<linePort>
+							<start starty="20" startx="100"/>
+							<end endy="180" endx="100"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations/>
+					<properties>
+						<property type="string" name="rootNode"/>
+					</properties>
+					<container>
+						<contains type="MetaEditor::MetaEntityGroupNode"/>
+						<properties>
+							<sortContainer/>
+							<minimizeToChildren/>
+							<banChildrenMove/>
+							<forestalling size="5,25,5,5"/>
+							<childrenForestalling size="5"/>
+						</properties>
+					</container>
+				</logic>
+			</node>
+			<node name="MetaEntityGroupNode" displayedName="Group Node" description="">
+				<graphics>
+					<picture sizex="140" sizey="12">
+					</picture>
+					<labels>
+						<label x="10" y="0" textBinded="name"/>
+					</labels>
+					<ports/>
+				</graphics>
+				<logic>
+					<generalizations/>
+					<properties>
+						<property type="reference" name="type">
+							<reference type="MetaEntityNode"/>
+						</property>
+						<property type="string" name="parent"/>
+						<property type="int" name="xPosition">
+							<default>0</default>
+						</property>
+						<property type="int" name="yPosition">
+							<default>0</default>
+						</property>
 					</properties>
 					<containers/>
 				</logic>
@@ -636,6 +721,10 @@
 				<element name="Inheritance"/>
 				<element name="Container"/>
 				<element name="Explosion"/>
+			</group>
+			<group name="Grouping" description="">
+				<element name="MetaEntityGroup"/>
+				<element name="MetaEntityGroupNode"/>
 			</group>
 		</palette>
 	</diagram>

@@ -51,7 +51,6 @@ Value ValuesFactory::typeOf(const QString &objectId) const
 {
 	return [this, objectId]() {
 		if (!mObjects.contains(objectId)) {
-			reportError(QObject::tr("No such object: %1").arg(objectId));
 			return typeOfNull;
 		}
 

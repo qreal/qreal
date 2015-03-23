@@ -58,9 +58,9 @@ public slots:
 	/// @param model - newly selected robot model.
 	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
 
-	/// Reacts to selection of a new tab on scene.
-	/// @param activeTabId - id of a root element of new active tab.
-	void onActiveTabChanged(const qReal::Id &activeTabId);
+	/// Reacts to selection of a new tab in main window.
+	/// @param info - the information about the new active tab.
+	void onActiveTabChanged(const qReal::TabInfo &info);
 
 private slots:
 	void onRobotModelActionChecked(QObject *robotModelObject);

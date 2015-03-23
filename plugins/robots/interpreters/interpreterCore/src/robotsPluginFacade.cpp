@@ -110,8 +110,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	const qrRepo::LogicalRepoApi &repoApi = configurer.logicalModelApi().logicalRepoApi();
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
-			, [this, &repoApi] (const qReal::Id &id) {
-				Q_UNUSED(id);
+			, [this, &repoApi] (const qReal::TabInfo &info) {
+				Q_UNUSED(info);
 
 				mDockDevicesConfigurer->setEnabled(
 						!repoApi.metaInformation("twoDModelSensorsReadOnly").toBool());

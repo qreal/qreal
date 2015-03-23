@@ -142,6 +142,9 @@ void LuaToolbox::markAsSpecial(const QString &identifier)
 	if (!mSpecialIdentifiers.contains(identifier)) {
 		mSpecialIdentifiers << identifier;
 	}
+
+	mInterpreter->addReadOnlyVariable(identifier);
+	mAnalyzer->addReadOnlyVariable(identifier);
 }
 
 QVariant LuaToolbox::value(const QString &identifier) const

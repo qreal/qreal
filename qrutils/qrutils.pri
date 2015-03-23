@@ -15,6 +15,7 @@ HEADERS += \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
 	$$PWD/parserErrorReporter.h \
+	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \

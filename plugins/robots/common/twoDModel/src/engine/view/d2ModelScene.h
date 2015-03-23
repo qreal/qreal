@@ -111,6 +111,8 @@ private slots:
 	/// Called after new other item is added to a world model.
 	void onOtherItemAdded(QGraphicsItem *item);
 
+	void onItemRemoved(QGraphicsItem *item);
+
 private:
 	enum DrawingAction
 	{

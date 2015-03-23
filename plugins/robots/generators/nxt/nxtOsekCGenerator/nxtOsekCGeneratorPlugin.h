@@ -37,7 +37,7 @@ protected:
 	bool canGenerateTo(const QString &project) override;
 
 	void onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model) override;
-	void onCurrentDiagramChanged(const qReal::Id &id) override;
+	void onCurrentDiagramChanged(const qReal::TabInfo &info) override;
 
 private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
