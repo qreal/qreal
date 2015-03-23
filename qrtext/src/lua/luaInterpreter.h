@@ -43,6 +43,9 @@ public:
 	/// Sets a value of identifier with given name to given value.
 	void setVariableValue(const QString &name, const QVariant &value);
 
+	/// Registers variable with given name as read-only (can be modified only by setVariableValue() call).
+	void addReadOnlyVariable(const QString &name);
+
 	/// Clear all execution state, except added intrinsic functions.
 	void clear();
 
@@ -59,6 +62,10 @@ private:
 
 	QHash<QString, QVariant> mIdentifierValues;
 	QHash<QString, std::function<QVariant(const QList<QVariant> &)>> mIntrinsicFunctions;
+
+	/// A set of variables which can be modified only by setVariableValue() call (used to support sensor variables and
+	/// ailases)
+	QSet<QString> mReadOnlyVariables;
 
 	QList<core::Error> &mErrors;
 };
