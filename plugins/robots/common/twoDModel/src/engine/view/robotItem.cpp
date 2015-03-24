@@ -50,7 +50,7 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> sensors = robotModel.info().specialDevices();
 	for (const kitBase::robotModel::PortInfo &port : sensors.keys()) {
 		const kitBase::robotModel::DeviceInfo device = sensors[port];
-		const SensorItem *sensorItem = new SensorItem(robotModel.configuration(), port
+		SensorItem *sensorItem = new SensorItem(robotModel.configuration(), port
 				, robotModel.info().sensorImagePath(device), robotModel.info().sensorImageRect(device));
 		addSensor(port, sensorItem);
 
