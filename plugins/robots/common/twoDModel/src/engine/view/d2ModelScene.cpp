@@ -76,18 +76,6 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 	addItem(robotItem);
 	addItem(robotItem->robotModel().startPositionMarker());
 
-	// ask robot model for a camera port?
-	kitBase::robotModel::PortInfo port("LineSensorPort", kitBase::robotModel::input);
-	kitBase::robotModel::DeviceInfo device = robotModel->info().specialDevice(port);
-	if (!device.isNull()) {
-		SensorItem *camera = new SensorItem(robotModel->configuration(), port
-				, robotModel->info().sensorImagePath(device), robotModel->info().sensorImageRect(device));
-		robotItem->addSensor(port, camera);
-		camera->setPos(robotItem->boundingRect().right()
-				, robotItem->boundingRect().center().y());
-		camera->setRotation(0);
-	}
-
 	mRobots.insert(robotModel, robotItem);
 
 	emit robotListChanged(robotItem);

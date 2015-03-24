@@ -129,7 +129,7 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 {
 	DeviceInfo device = mModel.robotModels()[0]->configuration().type(port);
 	if (device.isNull()) {
-		device = mModel.robotModels()[0]->info().specialDevice(port);
+		device = mModel.robotModels()[0]->info().specialDevices()[port];
 		if (device.isNull()) {
 			return QImage();
 		}

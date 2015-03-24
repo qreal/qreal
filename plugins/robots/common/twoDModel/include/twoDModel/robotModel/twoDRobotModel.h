@@ -66,11 +66,19 @@ public:
 		return QRect();
 	}
 
-	virtual kitBase::robotModel::DeviceInfo specialDevice(const kitBase::robotModel::PortInfo &port) const
+	/// Returns ports and info of devices that are specific to a particular robot model and non-configurable.
+	virtual QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> specialDevices() const
+	{
+		return QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo>();
+	}
+
+	/// Returns position and direction of a special device image relative to robot image center
+	/// (for example, -1 stands for left or top side, 1 stands for right or bottom side of an image).
+	virtual QPair<QPoint, qreal> specialDeviceConfiguration(const kitBase::robotModel::PortInfo &port) const
 	{
 		Q_UNUSED(port)
 
-		return kitBase::robotModel::DeviceInfo();
+		return qMakePair(QPoint(), 0);
 	}
 
 protected:

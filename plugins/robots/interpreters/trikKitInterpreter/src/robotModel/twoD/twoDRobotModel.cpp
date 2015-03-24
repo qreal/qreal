@@ -133,11 +133,19 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 	return QRect();
 }
 
-kitBase::robotModel::DeviceInfo TwoDRobotModel::specialDevice(const PortInfo &port) const
+QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TwoDRobotModel::specialDevices() const
 {
-	if (port.name() == "LineSensorPort") {
-		return DeviceInfo::create<parts::LineSensor>();
+	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::TwoDRobotModel::specialDevices());
+	result[PortInfo("LineSensorPort", input)] = DeviceInfo::create<parts::LineSensor>();
+	return result;
+}
+
+
+QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &port) const
+{
+	if (port == PortInfo("LineSensorPort", input)) {
+		return qMakePair(QPoint(1, 0), 0);
 	}
 
-	return twoDModel::robotModel::TwoDRobotModel::specialDevice(port);
+	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }
