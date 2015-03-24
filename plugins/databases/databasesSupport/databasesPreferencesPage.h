@@ -15,12 +15,17 @@ namespace databasesSupport {
 
 class DatabasesPreferencesPage : public PreferencesPage
 {
+	Q_OBJECT
 public:
 	explicit DatabasesPreferencesPage(QWidget *parent = 0);
 	~DatabasesPreferencesPage();
 
 	void save();
 	virtual void restoreSettings();
+public slots:
+	void dbmsChanging(QString const &dbmsName);
+signals:
+	void dbmsChanged(QString const &dbmsName);
 private:
 	Ui::DatabasesPreferencesPage *mUi;
 };

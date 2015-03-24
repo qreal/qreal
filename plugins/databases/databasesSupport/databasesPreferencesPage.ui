@@ -34,7 +34,12 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox">
+     <widget class="QComboBox" name="dbmsBox">
+      <item>
+       <property name="text">
+        <string>Microsoft SQL Server 2008</string>
+       </property>
+      </item>
       <item>
        <property name="text">
         <string>MySQL</string>
@@ -48,11 +53,6 @@
       <item>
        <property name="text">
         <string>SQLite</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Microsoft SQL Server</string>
        </property>
       </item>
       <item>

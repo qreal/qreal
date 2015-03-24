@@ -17,7 +17,6 @@ HEADERS += \
 	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
     generator/databasesGenerator.h \
     generator/datatypesChecker.h \
-    generator/sqlServerGenerator.h
 
 HEADERS += \
     databasesSupportPlugin.h \
@@ -30,7 +29,6 @@ SOURCES += \
     databasesCustomizer.cpp \
     generator/databasesGenerator.cpp \
     generator/datatypesChecker.cpp \
-    generator/sqlServerGenerator.cpp
 
 OTHER_FILES += \
     databasesSupport.pri \

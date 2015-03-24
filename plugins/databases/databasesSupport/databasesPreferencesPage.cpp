@@ -12,11 +12,17 @@ DatabasesPreferencesPage::DatabasesPreferencesPage(QWidget *parent)
 		, mUi(new Ui::DatabasesPreferencesPage())
 {
 	mUi->setupUi(this);
+	connect(mUi->dbmsBox, SIGNAL(currentTextChanged(QString)), this, SLOT(dbmsChanging(QString)));
 }
 
 DatabasesPreferencesPage::~DatabasesPreferencesPage()
 {
 	delete mUi;
+}
+
+void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
+{
+	emit dbmsChanged(dbmsName);
 }
 
 void DatabasesPreferencesPage::save()

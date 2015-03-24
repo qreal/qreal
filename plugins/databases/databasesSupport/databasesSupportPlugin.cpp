@@ -25,7 +25,7 @@ DatabasesSupportPlugin::~DatabasesSupportPlugin()
 
 void DatabasesSupportPlugin::init(PluginConfigurator const &configurator)
 {
-	mDatabasesGenerator = new SqlServerGenerator(configurator);
+	mDatabasesGenerator = new DatabasesGenerator(configurator, mPreferencesPage);
 	initActions();
 }
 
@@ -84,19 +84,6 @@ void DatabasesSupportPlugin::generateCode()
 void DatabasesSupportPlugin::generatePhysicalModel()
 {
 	mDatabasesGenerator->generatePhysicalModel();
-	/*Id id = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/DatabasesPhysicalNode"));
-	Id created = mModelApi->logicalModelApi.createElement(Id::rootId(), id);
-	mModelApi->graphicalModelApi.createElement(Id::rootId(), created, true, QString("Databases Physical Model"), QPointF(23.0, 23.0));
-
-	IdList entityNodes = findNodes("Entity");
-	foreach (Id const &entityId, entityNodes) {
-		Id tableId = Id::loadFromString(QString("qrm:/DatabasesPhysicalModelMetamodel/DatabasesPhysicalModelMetamodel/Table"));
-		Id createdTableId = mModelApi->logicalModelApi.createElement(Id::rootId(), tableId);
-		QPointF tableCoordinates = mModelApi->graphicalModelApi.position(mModelApi->graphicalModelApi.graphicalIdsByLogicalId(entityId).first());
-		Id createdGraphicalId = mModelApi->graphicalModelApi.graphicalIdsByLogicalId(created).first();
-		mModelApi->graphicalModelApi.createElement(createdGraphicalId, createdTableId, true, QString("Table"), tableCoordinates);
-		QString tableName = getProperty(entityId, "Name").toString();
-	}*/
 }
 
 }
