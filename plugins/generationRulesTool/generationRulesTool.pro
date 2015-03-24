@@ -37,7 +37,8 @@ HEADERS = \
 	generator/auxiliaryGenerators/outcomingLinksListGenerator.h \
 	generator/auxiliaryGenerators/simpleTypeListGenerator.h \
 	ast/transitionEnd.h \
-	ast/partOfComplexIdentifier.h
+	ast/partOfComplexIdentifier.h \
+	generator/variablesTable.h
 
 SOURCES = \
 	generationRulesPlugin.cpp \
@@ -48,4 +49,5 @@ SOURCES = \
 	generator/generatorForForeachNode.cpp \
 	generator/generatorForComplexIdentifierNode.cpp \
 	generator/auxiliaryGenerators/outcomingLinksListGenerator.cpp \
-	generator/auxiliaryGenerators/simpleTypeListGenerator.cpp
+	generator/auxiliaryGenerators/simpleTypeListGenerator.cpp \
+	generator/variablesTable.cpp

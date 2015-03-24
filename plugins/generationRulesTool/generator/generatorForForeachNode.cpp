@@ -17,27 +17,47 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> fo
 			, qrRepo::LogicalRepoApi *metamodelRepoApi
 			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, const qReal::Id elementId)
+			, VariablesTable tableOfVariables
+			, const qReal::Id elementId
+			, const QString &basicElementType
+			, const QString &basicElementName)
 {
-	QSharedPointer<ast::Node> identifierName = foreachNode->identifier();
+	// TODO: do something in these situations: foreach () {foreach () {...}}
+	Q_UNUSED(basicElementType);
+
+	QSharedPointer<ast::Identifier> identifier = qrtext::as<ast::Identifier>(foreachNode->identifier());
+	auto elementName = identifier->name();
+
 	QSharedPointer<ast::Node> identifierToIterate = foreachNode->type();
 	QSharedPointer<ast::Node> optionalLinkPart = foreachNode->optionalLinkPart();
+
+	QString elementType;
 
 	qReal::IdList listOfElements;
 	if (optionalLinkPart.isNull()) {
 		listOfElements = SimpleTypeListGenerator::generatedList(qrtext::as<ast::Identifier>(identifierToIterate)
 				, logicalModelInterface, elementId);
+
+		elementType = qrtext::as<ast::Identifier>(identifierToIterate)->name();
 	} else {
 		listOfElements = OutcomingLinksListGenerator::generatedList(qrtext::as<ast::Identifier>(identifierToIterate)
 				, logicalModelInterface, elementId);
+
+		auto linkTypeIdentifier = qrtext::as<ast::Identifier>(
+				qrtext::as<ast::OutcomingLinks>(optionalLinkPart)->linkType());
+		elementType = linkTypeIdentifier->name();
 	}
+
+	tableOfVariables.addNewVariable(elementName, elementType);
 
 	QString result;
 	for (const qReal::Id element : listOfElements) {
 		QSharedPointer<ast::Program> programNode = qrtext::as<ast::Program>(foreachNode->program());
 		result += GeneratorForProgramNode::generatedResult(programNode, metamodelRepoApi
-				, modelRepo, logicalModelInterface, element);
+				, modelRepo, logicalModelInterface, tableOfVariables, element, elementType, elementName);
 	}
+
+	tableOfVariables.removeVariable(elementName);
 
 	return result;
 }

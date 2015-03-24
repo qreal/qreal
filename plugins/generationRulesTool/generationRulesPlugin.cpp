@@ -16,6 +16,7 @@
 #include "ast/program.h"
 #include "ast/text.h"
 
+#include "generator/variablesTable.h"
 #include "generator/commonGenerator.h"
 
 using namespace generationRules;
@@ -61,13 +62,15 @@ void GenerationRulesPlugin::generateCode()
 
 	auto parserResultForEnum = generatedTreeFromString(enumStream);
 	auto programForEnum = parserResultForEnum.dynamicCast<simpleParser::ast::Program>();
-	QString resultOfGenerationForEnum = generator::CommonGenerator::generatedResult(programForEnum, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface);
+	generationRules::generator::VariablesTable table;
+	QString resultOfGenerationForEnum = generator::CommonGenerator::generatedResult(programForEnum, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
 	qDebug() << resultOfGenerationForEnum;
+	table.clear();
 
 	QString stateStream =
 			"foreach (state in State) {\n"
 				"'case ' State.Name ':' newline \n"
-				"foreach (transition in state.outcomingLinks) { \n"
+				"foreach (transition in state.outcomingLinks(Transition)) { \n"
 					"'if (symbol == ' transition.symbol ')' newline \n"
 						"'currentState = ' transition.transitionEnd.Name ';' newline \n"
 						"'break;' newline \n"
@@ -80,7 +83,7 @@ void GenerationRulesPlugin::generateCode()
 
 	auto parserResultForState = generatedTreeFromString(stateStream);
 	auto programForState = parserResultForState.dynamicCast<simpleParser::ast::Foreach>();
-	QString resultOfGenerationForState = generator::CommonGenerator::generatedResult(programForState, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface);
+	QString resultOfGenerationForState = generator::CommonGenerator::generatedResult(programForState, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
 	qDebug() << resultOfGenerationForState;
 }
 

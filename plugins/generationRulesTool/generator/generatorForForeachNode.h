@@ -7,6 +7,8 @@
 
 #include "ast/foreach.h"
 
+#include "variablesTable.h"
+
 namespace generationRules {
 namespace generator {
 
@@ -17,7 +19,10 @@ public:
 			, qrRepo::LogicalRepoApi *metamodelRepoApi
 			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
+			, VariablesTable tableOfVariables
 			, const qReal::Id elementId
+			, const QString &basicElementType = ""
+			, const QString &basicElementName = ""
 			);
 };
 

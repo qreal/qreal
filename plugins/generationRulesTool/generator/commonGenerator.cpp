@@ -18,22 +18,27 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 		, qrRepo::LogicalRepoApi *metamodelRepoApi
 		, qrRepo::RepoControlInterface *modelRepo
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, const qReal::Id elementId)
+		, VariablesTable tableOfVariables
+		, const qReal::Id elementId
+		, const QString &elementType
+		, const QString &elementName)
 {
 	QString result;
 
 	if (node->is<ast::Program>()) {
 		QSharedPointer<ast::Program> program = qrtext::as<ast::Program>(node);
-		result = GeneratorForProgramNode::generatedResult(program, metamodelRepoApi, modelRepo, logicalModelInterface, elementId);
+		result = GeneratorForProgramNode::generatedResult(program, metamodelRepoApi
+				, modelRepo, logicalModelInterface, tableOfVariables, elementId, elementType, elementName);
 	}
 	else if (node->is<ast::ComplexIdentifier>()) {
 		QSharedPointer<ast::ComplexIdentifier> complexIdentifier = qrtext::as<ast::ComplexIdentifier>(node);
 		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, metamodelRepoApi
-				, modelRepo, logicalModelInterface, elementId);
+				, modelRepo, logicalModelInterface, tableOfVariables, elementId, elementType, elementName);
 	}
 	else if (node->is<ast::Foreach>()) {
 		QSharedPointer<ast::Foreach> foreachNode = qrtext::as<ast::Foreach>(node);
-		result = GeneratorForForeachNode::generatedResult(foreachNode, metamodelRepoApi, modelRepo, logicalModelInterface, elementId);
+		result = GeneratorForForeachNode::generatedResult(foreachNode, metamodelRepoApi, modelRepo
+				, logicalModelInterface, tableOfVariables, elementId, elementType, elementName);
 	}
 	else if (node->is<ast::Newline>()) {
 		result = "\n";
