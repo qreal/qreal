@@ -42,6 +42,8 @@ public:
 	/// Returns the average brightness of the picture under the light sensor on the given port.
 	virtual int readLightSensor(const kitBase::robotModel::PortInfo &port) const = 0;
 
+	/// Returns an image of the scene under a sensor on the given port.
+	/// @param widthFactor ratio of a return area width to width of sensor image.
 	virtual QImage areaUnderSensor(const kitBase::robotModel::PortInfo &port, qreal widthFactor) const = 0;
 
 	/// Draws sound waves during the given amount of time thus showing that the robot plays some sound.

@@ -49,11 +49,12 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 
 	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> sensors = robotModel.info().specialDevices();
 	for (const kitBase::robotModel::PortInfo &port : sensors.keys()) {
-		kitBase::robotModel::DeviceInfo device = sensors[port];
-		SensorItem *sensorItem = new SensorItem(robotModel.configuration(), port
+		const kitBase::robotModel::DeviceInfo device = sensors[port];
+		const SensorItem *sensorItem = new SensorItem(robotModel.configuration(), port
 				, robotModel.info().sensorImagePath(device), robotModel.info().sensorImageRect(device));
 		addSensor(port, sensorItem);
-		QPair<QPoint, qreal> configuration(robotModel.info().specialDeviceConfiguration(port));
+
+		const QPair<QPoint, qreal> configuration(robotModel.info().specialDeviceConfiguration(port));
 		QPoint position(configuration.first.x() * boundingRect().width() / 2
 				, configuration.first.y() * boundingRect().height() / 2);
 		sensorItem->setPos(position + boundingRect().center());
