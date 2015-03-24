@@ -17,7 +17,6 @@ namespace generator {
 class GeneratorForComplexIdentifierNode
 {
 public:
-	///
 	/// @param elementType - type of basic element in foreach
 	/// @param elementName - name of basic element in foreach
 	static QString generatedResult(QSharedPointer<simpleParser::ast::ComplexIdentifier> complexIdentifierNode
@@ -31,10 +30,32 @@ public:
 			);
 
 private:
-	static QString generatedResultForCorrectNode(QSharedPointer<simpleParser::ast::Identifier> typeNode
-			, QSharedPointer<simpleParser::ast::Node> secondNode
+	/// This function is called if complex identifier name is the same as basic name in foreach.
+	/// For example, foreach (x in State) {x.property}
+	static QString generatedResultForNodeWithBasicName(
+			const qReal::Id elementId
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, const qReal::Id elementId);
+			, const QString &property);
+
+	/// This function is called when we have SomeType.property, and element od SomeType type is unique.
+	static QString generatedResultForNodeWithUniqueType(
+			qReal::LogicalModelAssistInterface *logicalModelInterface
+			, const QString &type
+			, const QString &propertyName);
+
+	/// This function is called for .transitionEnd
+	static QString generatedResultForOutcomingLink(
+			const qReal::Id linkId
+			, qReal::LogicalModelAssistInterface *logicalModelInterface
+			, const QString &propertyName);
+
+	/// This function is called if the variable is in variables table, but is not the same as basic variable name in foreach.
+	/// TODO: realize.
+	static QString generatedResultForOtherVariable(
+			const QString &variableName
+			, qReal::LogicalModelAssistInterface *logicalModelInterface
+			, const QString &propertyName
+			);
 };
 
 }

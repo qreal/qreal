@@ -22,6 +22,24 @@ void VariablesTable::clear()
 	mHashTable.clear();
 }
 
+QString VariablesTable::textRepresentation() const
+{
+	QString result = "";
+
+	QHashIterator<QString, QString> iterator(mHashTable);
+	while (iterator.hasNext()) {
+		iterator.next();
+		result += iterator.key() + " " + iterator.value() + "\n";
+	}
+
+	return result;
+}
+
+bool VariablesTable::containsVariable(const QString &name) const
+{
+	return mHashTable.contains(name);
+}
+
 QString VariablesTable::typeByName(const QString &name) const
 {
 	return mHashTable.value(name);

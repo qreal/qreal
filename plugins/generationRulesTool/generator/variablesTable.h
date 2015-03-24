@@ -16,6 +16,9 @@ public:
 
 	void clear();
 
+	QString textRepresentation() const;
+
+	bool containsVariable(const QString &name) const;
 	QString typeByName(const QString &name) const;
 
 private:

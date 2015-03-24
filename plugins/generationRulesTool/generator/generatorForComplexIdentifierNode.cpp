@@ -18,56 +18,80 @@ QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<Comple
 	Q_UNUSED(metamodelRepoApi);
 	Q_UNUSED(modelRepo);
 
-	auto typeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());
-	auto currentElementName = typeNode->name();
+	// this node can be identifier or type name.
+	auto elementOrTypeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());
+	auto currentElementOrTypeName = elementOrTypeNode->name();
 
+	// this node can be property or pair of (linkEndType, property)
 	auto secondNode = complexIdentifierNode->secondPartOfComplexIdentifier();
 
-	if (elementName == currentElementName) {
-		return generatedResultForCorrectNode(typeNode, secondNode, logicalModelInterface, elementId);
-	} else {
-		QList<qReal::Id> listOfElementIds;
-		for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
-			if (elementId.element() == currentElementName) {
-				listOfElementIds << elementId;
+	if (secondNode->is<Identifier>()) {
+		auto property = qrtext::as<Identifier>(secondNode)->name();
+
+		if (elementName == currentElementOrTypeName) {
+			return generatedResultForNodeWithBasicName(elementId, logicalModelInterface, property);
+		} else {
+			if (tableOfVariables.containsVariable(currentElementOrTypeName)) {
+				return generatedResultForOtherVariable(currentElementOrTypeName, logicalModelInterface, property);
+			} else {
+				return generatedResultForNodeWithUniqueType(logicalModelInterface, currentElementOrTypeName, property);
 			}
 		}
+	} else {
+		if (secondNode->is<TransitionEnd>()) {
+			auto asTransitionEnd = qrtext::as<TransitionEnd>(secondNode);
+			auto propertyNode = qrtext::as<Identifier>(asTransitionEnd->firstIdentifier());
+			auto propertyName = propertyNode->name();
 
-		qReal::Id correctId = listOfElementIds.first();
-		return generatedResultForCorrectNode(typeNode, secondNode, logicalModelInterface, correctId);
+			return generatedResultForOutcomingLink(elementId, logicalModelInterface, propertyName);
+		}
 	}
 }
 
-QString GeneratorForComplexIdentifierNode::generatedResultForCorrectNode(
-		QSharedPointer<simpleParser::ast::Identifier> typeNode
-		, QSharedPointer<simpleParser::ast::Node> secondNode
+QString GeneratorForComplexIdentifierNode::generatedResultForNodeWithBasicName(
+		qReal::Id const elementId
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, const qReal::Id elementId)
+		, const QString &property
+		)
 {
-	if (secondNode->is<Identifier>()) {
-		auto propertyNode =
-				qrtext::as<Identifier>(secondNode);
-		auto propertyName = propertyNode->name();
+	return logicalModelInterface->propertyByRoleName(elementId, property).toString();
+}
 
-		if (elementId != qReal::Id::rootId()) {
-			return logicalModelInterface->propertyByRoleName(elementId, propertyName).toString();
-		} else {
-			// TODO: wtf
-			QList<qReal::Id> listOfElementIds;
-			for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
-				if (elementId.element() == typeNode->name()) {
-					listOfElementIds << elementId;
-				}
-			}
+QString GeneratorForComplexIdentifierNode::generatedResultForNodeWithUniqueType(
+		qReal::LogicalModelAssistInterface *logicalModelInterface
+		, const QString &type
+		, const QString &propertyName)
+{
+	QList<qReal::Id> listOfElementIds;
 
-			return logicalModelInterface->propertyByRoleName(listOfElementIds.first(), propertyName).toString();
+	for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
+		if (elementId.element() == type) {
+			listOfElementIds << elementId;
 		}
-	} else {
-		// typeNode.transitionEnd.identifierName
-
-		auto transitionEndNode = qrtext::as<TransitionEnd>(secondNode);
-		auto propertyName = qrtext::as<Identifier>(transitionEndNode->firstIdentifier())->name();
-
-		return logicalModelInterface->propertyByRoleName(logicalModelInterface->to(elementId), propertyName).toString();
 	}
+
+	if (listOfElementIds.size() != 1) {
+		// TODO: throw exception
+		qDebug() << "Element of type " << type << "is not unique!";
+		return "";
+	} else {
+		return logicalModelInterface->propertyByRoleName(listOfElementIds.first(), propertyName).toString();
+	}
+}
+
+QString GeneratorForComplexIdentifierNode::generatedResultForOutcomingLink(
+		const qReal::Id linkId
+		, qReal::LogicalModelAssistInterface *logicalModelInterface
+		, const QString &propertyName)
+{
+	qReal::Id transitionEndId = logicalModelInterface->to(linkId);
+	return logicalModelInterface->propertyByRoleName(transitionEndId, propertyName).toString();
+}
+
+QString GeneratorForComplexIdentifierNode::generatedResultForOtherVariable(
+		const QString &variableName
+		, qReal::LogicalModelAssistInterface *logicalModelInterface
+		, const QString &propertyName)
+{
+	return "";
 }
