@@ -38,7 +38,8 @@ HEADERS = \
 	generator/auxiliaryGenerators/simpleTypeListGenerator.h \
 	ast/transitionEnd.h \
 	ast/partOfComplexIdentifier.h \
-	generator/variablesTable.h
+	generator/variablesTable.h \
+    ast/tab.h
 
 SOURCES = \
 	generationRulesPlugin.cpp \

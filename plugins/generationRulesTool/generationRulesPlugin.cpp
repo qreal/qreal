@@ -50,13 +50,13 @@ void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, 
 void GenerationRulesPlugin::generateCode()
 {
 	QString enumStream =
-			"'enum State {'\n"
+			"'enum State {' newline \n"
 				"foreach (state in State) {\n"
-				"state.Name ',' \n"
+				"tab state.Name ',' \n"
 				"newline \n"
 			"} \n"
-			"StartState.Name ',' newline \n"
-			"EndState.Name newline \n"
+			"tab StartState.Name ',' newline \n"
+			"tab EndState.Name newline \n"
 			"'}' \n"
 			;
 
@@ -69,15 +69,15 @@ void GenerationRulesPlugin::generateCode()
 
 	QString stateStream =
 			"foreach (state in State) {\n"
-				"'case ' State.Name ':' newline \n"
+				"'case ' state.Name ':' newline \n"
 				"foreach (transition in state.outcomingLinks(Transition)) { \n"
-					"'if (symbol == ' transition.symbol ')' newline \n"
-						"'currentState = ' transition.transitionEnd.Name ';' newline \n"
-						"'break;' newline \n"
+					"tab 'if (symbol == ' transition.symbol ')' newline \n"
+						"tab tab 'currentState = ' transition.transitionEnd.Name ';' newline \n"
+						"tab tab 'break;' newline \n"
 				"} \n"
-				"'else' newline \n"
-					"'currentState = ' EndState.Name ';' newline \n"
-					"'break;' newline"
+				"tab 'else' newline \n"
+					"tab tab 'currentState = ' EndState.Name ';' newline \n"
+					"tab tab 'break;' newline"
 			"}"
 			;
 

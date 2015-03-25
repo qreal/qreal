@@ -10,6 +10,7 @@
 #include "ast/identifier.h"
 #include "ast/newline.h"
 #include "ast/text.h"
+#include "ast/tab.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser;
@@ -46,6 +47,9 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 	else if (node->is<ast::Text>()) {
 		QSharedPointer<ast::Text> text = qrtext::as<ast::Text>(node);
 		result = text->text();
+	}
+	else if (node->is<ast::Tab>()) {
+		result += "	";
 	}
 	else {
 		qDebug() << "Something went wrong";

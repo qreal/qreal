@@ -11,6 +11,7 @@
 #include "ast/outcomingLinks.h"
 #include "ast/partOfComplexIdentifier.h"
 #include "ast/program.h"
+#include "ast/tab.h"
 #include "ast/text.h"
 #include "ast/transitionEnd.h"
 
@@ -32,7 +33,6 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				QList<QSharedPointer<ast::Node>> result;
 				for (auto const &stat : statementList->list()) {
 					if (stat->is<TemporaryList>()) {
-					// it is a list of assignments
 						for (auto const &assignment : qrtext::as<TemporaryList>(stat)->list()) {
 							result << assignment;
 						}
@@ -126,7 +126,12 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Newline();
 	};
 
-	statement = text | newline | complexIdentifier | foreachStatement | callGeneratorForStatement;
+	auto tab = TokenTypes::tabKeyword
+			>> [] (Token<TokenTypes> const &token) {
+				return new ast::Tab();
+	};
+
+	statement = text | tab | newline | complexIdentifier | foreachStatement | callGeneratorForStatement;
 
 	return program.parser();
 }

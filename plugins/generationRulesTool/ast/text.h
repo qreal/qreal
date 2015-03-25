@@ -17,8 +17,8 @@ public:
 	}
 
 	/// Returns value of a string (without quotes).
-	QString const &text() {
-		QString textWithoutQuotes = mText.remove('\'');
+	const QString &text() {
+		const QString &textWithoutQuotes = mText.remove('\'');
 		return textWithoutQuotes;
 	}
 
