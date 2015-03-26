@@ -1,3 +1,6 @@
+#include <QtCore/QPair>
+#include <QtCore/QStack>
+
 #include "generatorBase/masterGeneratorBase.h"
 
 #include <qrutils/outFile.h>
@@ -126,6 +129,8 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
+	resultCode = generateLinkingInfo(resultCode);
+
 	processGeneratedCode(resultCode);
 
 	const QString pathToOutput = targetPath();
@@ -134,6 +139,47 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	afterGeneration();
 
 	return pathToOutput;
+}
+
+QString MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
+{
+	QString const open = "@~(qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\})~@";
+	QString const close = "@#%1#@";
+	QRegExp re;
+	QStack< QPair<QString, int> > stack;
+	QList< QPair<QString, QPair<int, int>> > results;
+	int lineNumber = 1;
+
+	for (QString const &line : resultCode.split("\n")){
+		re.setPattern(open);
+		int const pos = re.indexIn(line);
+		if (pos > -1) {
+			QString const id = re.cap(1);
+			stack.push(QPair<QString, int>(id, lineNumber));
+		}
+
+		if (!stack.isEmpty()) {
+			QString const id = stack.top().first;
+			if (line.contains(close.arg(id))) {
+				results.append(QPair<QString, QPair<int, int>>(id
+						, QPair<int, int>(stack.top().second, lineNumber)));
+				stack.pop();
+			}
+		}
+
+		lineNumber++;
+	}
+
+	QString out;
+
+	for (QPair<QString, QPair<int, int>> res : results) {
+		out += res.first + "@" + QString::number(res.second.first) + "@" + QString::number(res.second.second)
+				+ "\n";
+	}
+	QFileInfo fileInfo = QFileInfo(targetPath());
+	outputCode(fileInfo.absolutePath() + "/" + fileInfo.completeBaseName() + ".dbg", out);
+
+	return resultCode.remove(QRegExp("@(~|#)qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\}(~|#)@"));
 }
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
