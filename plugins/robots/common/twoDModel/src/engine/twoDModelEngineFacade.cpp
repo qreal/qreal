@@ -30,21 +30,16 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 
 void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 		, const qReal::SystemEvents &systemEvents
-		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
 
-	const auto onActiveTabChanged = [this, &graphicalModel, &logicalModel, &interpretersInterface]
-			(const qReal::TabInfo &info)
+	const auto onActiveTabChanged = [this, &logicalModel, &interpretersInterface](const qReal::TabInfo &info)
 	{
 		mView->setEnabled(info.type() == qReal::TabInfo::TabType::editor);
-		const qReal::Id logicalId = graphicalModel.logicalId(info.rootDiagramId());
-		const QString xml = logicalId.isNull()
-				? QString()
-				: logicalModel.propertyByRoleName(logicalId, "worldModel").toString();
+		const QString xml = logicalModel.logicalRepoApi().metaInformation("worldModel").toString();
 		QDomDocument worldModel;
 		QString errorMessage;
 		int errorLine, errorColumn;
@@ -92,12 +87,8 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
 
-	connect(mModel.data(), &model::Model::modelChanged, [this, &graphicalModel, &logicalModel
-			, &interpreterControl, &interpretersInterface] (const QDomDocument &xml) {
-				const qReal::Id logicalId = graphicalModel.logicalId(interpretersInterface.activeDiagram());
-				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
-					logicalModel.setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");
-				}
+	connect(mModel.data(), &model::Model::modelChanged, [this, &logicalModel] (const QDomDocument &xml) {
+		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
 	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); });
