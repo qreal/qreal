@@ -20,7 +20,7 @@ BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
 	: mPort(nullptr)
 	, mKeepAliveTimer(new QTimer(this))
 {
-	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
+	//QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
 
 BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
@@ -71,7 +71,9 @@ void BluetoothRobotCommunicationThread::connect()
 	QByteArray const response = receive(keepAliveResponseSize);
 
 	emit connected(response != QByteArray(), QString());
-
+	mKeepAliveTimer->moveToThread(this->thread());
+	mKeepAliveTimer->disconnect();
+	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 	mKeepAliveTimer->start(500);
 }
 
@@ -139,6 +141,7 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 
 	if (response == QByteArray()) {
 		emit disconnected();
+		mKeepAliveTimer->stop();
 	}
 }
 

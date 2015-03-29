@@ -1,4 +1,5 @@
 #include <QtCore/QMetaType>
+#include <QtCore/QMetaObject>
 
 #include "utils/robotCommunication/robotCommunicator.h"
 
@@ -36,12 +37,12 @@ void RobotCommunicator::send(QByteArray const &buffer, const unsigned responseSi
 
 void RobotCommunicator::connect()
 {
-	mRobotCommunicationThreadObject->connect();
+	QMetaObject::invokeMethod(mRobotCommunicationThreadObject, "connect");
 }
 
 void RobotCommunicator::disconnect()
 {
-	mRobotCommunicationThreadObject->disconnect();
+	QMetaObject::invokeMethod(mRobotCommunicationThreadObject, "disconnect");
 }
 
 void RobotCommunicator::checkConsistency()

@@ -39,7 +39,7 @@ private:
 	libusb_device_handle *mHandle;
 
 	/// Timer that sends messages to robot to check that connection is still alive
-	//QTimer *mKeepAliveTimer;
+	QTimer *mKeepAliveTimer;
 };
 
 }

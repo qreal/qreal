@@ -1,6 +1,8 @@
 #include "usbRobotCommunicationThread.h"
+#include <QtCore/QTimer>
 #include <QtCore/QThread>
 
+#include "src/robotModel/real/ev3DirectCommand.h"
 #include "commandConstants.h"
 
 #define EV3_VID 0x0694
@@ -17,14 +19,14 @@ using namespace ev3KitInterpreter::communication;
 
 UsbRobotCommunicationThread::UsbRobotCommunicationThread()
 	: mHandle(nullptr)
-//	, mKeepAliveTimer(new QTimer(this))
+	, mKeepAliveTimer(new QTimer(this))
 {
 	//QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
 
 UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 {
-	//disconnect();
+	disconnect();
 }
 
 void UsbRobotCommunicationThread::send(QObject *addressee
@@ -44,7 +46,6 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 	}
 }
 
-///todo: Add check for connection.
 void UsbRobotCommunicationThread::connect()
 {
 	if (mHandle) {
@@ -71,13 +72,10 @@ void UsbRobotCommunicationThread::connect()
 	}
 
 	emit connected(true, QString());
-
-	// Sending "Keep alive" command to check connection.
-	//keepAlive();
-
-	//emit connected(response != QByteArray());
-
-	//mKeepAliveTimer->start(500);
+	mKeepAliveTimer->moveToThread(this->thread());
+	mKeepAliveTimer->disconnect();
+	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
+	mKeepAliveTimer->start(500);
 }
 
 void UsbRobotCommunicationThread::reconnect()
@@ -103,6 +101,31 @@ void UsbRobotCommunicationThread::allowLongJobs(bool allow)
 
 void UsbRobotCommunicationThread::checkForConnection()
 {
+	if (!mHandle) {
+		return;
+	}
+
+	// Sending "Keep alive" command to check connection.
+	unsigned char command[10];
+	command[0] = 8;
+	command[1] = 0;
+	command[2] = 0;
+	command[3] = 0;
+	command[4] = enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY;
+	command[5] = 0;
+	command[6] = 0;
+	command[7] = enums::opcode::OpcodeEnum::KEEP_ALIVE;
+	command[8] = enums::argumentSize::ArgumentSizeEnum::BYTE;
+	command[9] = 10; //Number of minutes before entering sleep mode.
+
+	int actualLength = 0;
+	int success = libusb_bulk_transfer(mHandle, EV3_EP_OUT, command, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT);
+
+	if (success != 0) {
+		emit disconnected();
+		mKeepAliveTimer->stop();
+	}
+
 }
 
 void UsbRobotCommunicationThread::send(const QByteArray &buffer, const unsigned responseSize, QByteArray &outputBuffer)
