@@ -1,10 +1,10 @@
 #pragma once
 
-#include "robotModel/parts/nxtMotor.h"
+#include <nxtKit/robotModel/parts/nxtMotor.h>
 
-#include <commonTwoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace twoD {
 namespace parts {
@@ -12,8 +12,8 @@ namespace parts {
 class TwoDMotor : public robotModel::parts::NxtMotor
 {
 public:
-	TwoDMotor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	TwoDMotor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void on(int speed, long unsigned int degrees, bool breakMode) override;

@@ -40,7 +40,7 @@ using namespace generatorBase::simple;
 
 TrikGeneratorFactory::TrikGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, lua::LuaProcessor &luaProcessor
 		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)

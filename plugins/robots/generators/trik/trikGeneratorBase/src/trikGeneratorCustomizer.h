@@ -11,7 +11,7 @@ class TrikGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 public:
 	TrikGeneratorCustomizer(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
 			, const QString &generatorName);
 

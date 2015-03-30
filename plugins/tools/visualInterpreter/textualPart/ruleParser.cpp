@@ -266,7 +266,7 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 			return;
 		}
 
-		setProperty(id, prop, result->toString());
+		setProperty(id, prop, result->toStringList().join(','));
 	}
 
 }

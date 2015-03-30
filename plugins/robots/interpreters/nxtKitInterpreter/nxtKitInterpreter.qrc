@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>nxtDefaultSettings.ini</file>
         <file>icons/switch-2d.svg</file>
-        <file>icons/switch-real-nxt.svg</file>
+        <file>icons/switch-real-nxt-usb.svg</file>
+        <file>icons/switch-real-nxt-bluetooth.svg</file>
     </qresource>
 </RCC>

@@ -2,8 +2,8 @@
 
 #include <QtGui/QColor>
 
-#include <interpreterBase/robotModel/robotModelUtils.h>
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/lightSensor.h>
 
 #include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
@@ -13,17 +13,17 @@
 #include "robotModel/twoD/parts/twoDLineSensor.h"
 #include "robotModel/twoD/parts/twoDObjectSensor.h"
 #include "robotModel/twoD/parts/twoDColorSensor.h"
-#include "robotModel/parts/trikLineSensor.h"
-#include "robotModel/parts/trikObjectSensor.h"
-#include "robotModel/parts/trikColorSensor.h"
-#include "robotModel/parts/trikInfraredSensor.h"
-#include "robotModel/parts/trikSonarSensor.h"
+#include <trikKit/robotModel/parts/trikLineSensor.h>
+#include <trikKit/robotModel/parts/trikObjectSensor.h>
+#include <trikKit/robotModel/parts/trikColorSensor.h>
+#include <trikKit/robotModel/parts/trikInfraredSensor.h>
+#include <trikKit/robotModel/parts/trikSonarSensor.h>
 
 #include "trikDisplayWidget.h"
 
-using namespace trikKitInterpreter::robotModel;
-using namespace trikKitInterpreter::robotModel::twoD;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel;
+using namespace trik::robotModel::twoD;
+using namespace kitBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
@@ -51,7 +51,7 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikLineSensor>()) {
-		return new parts::LineSensor(deviceInfo, port);
+		return new parts::LineSensor(deviceInfo, port, *engine());
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikObjectSensor>()) {
@@ -99,12 +99,14 @@ twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget
 
 QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
 {
-	if (deviceType.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+	if (deviceType.isA<kitBase::robotModel::robotParts::LightSensor>()) {
 		return ":icons/twoDColorEmpty.svg";
 	} else if (deviceType.isA<robotModel::parts::TrikInfraredSensor>()) {
 		return ":icons/twoDIrRangeSensor.svg";
 	} else if (deviceType.isA<robotModel::parts::TrikSonarSensor>()) {
 		return ":icons/twoDUsRangeSensor.svg";
+	} else if (deviceType.isA<robotModel::parts::TrikLineSensor>()) {
+		return ":icons/twoDVideoModule.svg";
 	}
 
 	return QString();
@@ -116,7 +118,7 @@ void TwoDRobotModel::setWheelPorts(const QString &leftWheelPort, const QString &
 	mRightWheelPort = rightWheelPort;
 }
 
-QRect TwoDRobotModel::sensorImageRect(const interpreterBase::robotModel::DeviceInfo &deviceType) const
+QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const
 {
 	if (deviceType.isA<robotParts::LightSensor>()) {
 		return QRect(-6, -6, 12, 12);
@@ -124,7 +126,26 @@ QRect TwoDRobotModel::sensorImageRect(const interpreterBase::robotModel::DeviceI
 		return QRect(-18, -18, 36, 36);
 	} else if (deviceType.isA<robotModel::parts::TrikSonarSensor>()) {
 		return QRect(-18, -18, 36, 36);
+	} else if (deviceType.isA<robotModel::parts::TrikLineSensor>()) {
+		return QRect(-9, -9, 18, 18);
 	}
 
 	return QRect();
+}
+
+QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TwoDRobotModel::specialDevices() const
+{
+	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::TwoDRobotModel::specialDevices());
+	result[PortInfo("LineSensorPort", input)] = DeviceInfo::create<parts::LineSensor>();
+	return result;
+}
+
+
+QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &port) const
+{
+	if (port == PortInfo("LineSensorPort", input)) {
+		return qMakePair(QPoint(1, 0), 0);
+	}
+
+	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }

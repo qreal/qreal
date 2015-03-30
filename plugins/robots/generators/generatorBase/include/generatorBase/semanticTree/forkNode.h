@@ -15,14 +15,14 @@ public:
 	explicit ForkNode(const qReal::Id &idBinded, QObject *parent = 0);
 
 	/// Adds one more thread to this fork block.
-	void appendThread(const qReal::Id &thread);
+	void appendThread(const qReal::Id &thread, const QString &threadId);
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
-	QSet<qReal::Id> mThreads;
+	QMap<qReal::Id, QString> mThreads;
 };
 
 }

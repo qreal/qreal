@@ -56,6 +56,11 @@ public:
 		return QString();
 	}
 
+	virtual bool enableNewDiagramAction() const
+	{
+		return true;
+	}
+
 	/// Tells if we should show trace connections menu or not
 	virtual bool showConnectionRelatedMenus() const
 	{

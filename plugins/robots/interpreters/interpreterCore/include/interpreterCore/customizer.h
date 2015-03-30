@@ -18,6 +18,8 @@ public:
 	QString aboutText() const override;
 	QString examplesDirectory() const override;
 
+	bool enableNewDiagramAction() const override;
+
 	void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface) override;
 
 	/// Embeds the given widget into main window`s left dock panel

@@ -1,7 +1,7 @@
 #include "generatorBase/generatorFactoryBase.h"
 #include "generatorBase/generatorCustomizer.h"
 
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 #include "simpleGenerators/nullGenerator.h"
 #include "simpleGenerators/commentElementGenerator.h"
@@ -10,6 +10,7 @@
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
 #include "simpleGenerators/forkCallGenerator.h"
+#include "simpleGenerators/joinGenerator.h"
 #include "simpleGenerators/switchGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
@@ -36,6 +37,8 @@
 #include "simpleGenerators/labelGenerator.h"
 #include "simpleGenerators/gotoSimpleGenerator.h"
 #include "simpleGenerators/variableInitGenerator.h"
+#include "simpleGenerators/sendMessageThreadsGenerator.h"
+#include "simpleGenerators/receiveMessageThreadsGenerator.h"
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
@@ -63,7 +66,7 @@
 using namespace generatorBase;
 using namespace qReal;
 using namespace simple;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
@@ -223,9 +226,15 @@ AbstractSimpleGenerator *GeneratorFactoryBase::switchDefaultGenerator(const Id &
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(const Id &id
-		, GeneratorCustomizer &customizer, const IdList &threads)
+		, GeneratorCustomizer &customizer, const QMap<Id, QString> &threads)
 {
 	return new ForkCallGenerator(mRepo, customizer, id, threads, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::joinGenerator(const Id &id, GeneratorCustomizer &customizer
+		, const QStringList &joinedThreads, const QString &mainThreadId)
+{
+	return new JoinGenerator(mRepo, customizer, id, joinedThreads, mainThreadId, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(const qReal::Id &id
@@ -275,6 +284,10 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(const qReal::Id &
 		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "VariableInit") {
 		return new VariableInitGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "SendMessageThreads") {
+		return new SendMessageThreadsGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "ReceiveMessageThreads") {
+		return new ReceiveMessageThreadsGenerator(mRepo, customizer, id, this);
 	}
 
 	return new NullGenerator(mRepo, customizer, id, this);

@@ -27,10 +27,12 @@ private:
 	void createEdge(QDomElement &parent, qReal::Id const &id);
 	void createEnum(QDomElement &parent, qReal::Id const &id);
 	void createPort(QDomElement &parent, qReal::Id const &id);
+	void createGroup(QDomElement &parent, const qReal::Id &id);
 	void setProperties(QDomElement &parent, qReal::Id const &id);
 	void setPorts(QDomElement &parent, qReal::Id const &id, QString const &direction);
 	void setContextMenuFields(QDomElement &parent, qReal::Id const &id);
 	void setValues(QDomElement &parent, qReal::Id const &id);
+	void setGroupNodes(QDomElement &parent, const qReal::Id &id);
 	void setAssociations(QDomElement &parent, qReal::Id const &id);
 	void setUsages(QDomElement &parent, qReal::Id const &id);
 	void setConnections(QDomElement &parent, qReal::Id const &id);
@@ -44,6 +46,7 @@ private:
 	void setContainerProperties(QDomElement &parent, qReal::Id const &id);
 	void setExplosion(QDomElement &parent, qReal::Id const &id);
 	void setExplosionProperties(QDomElement &target, qReal::Id const &linkId);
+	void setDividability(QDomElement &parent, const qReal::Id &id);
 	void newSetConnections(QDomElement &parent, const qReal::Id &id
 			, QString const &commonTagName, QString const &internalTagName, QString const &typeName);
 	void ensureCorrectness(qReal::Id const &id, QDomElement element, QString const &tagName, QString const &value);

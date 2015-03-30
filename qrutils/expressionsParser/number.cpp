@@ -42,9 +42,9 @@ void Number::setValue(const QVariant &value)
 	mValue = value;
 }
 
-QString Number::toString() const
+QStringList Number::toStringList() const
 {
-	return value().toString();
+	return value().toStringList();
 }
 
 void Number::operator+=(const Number &add)

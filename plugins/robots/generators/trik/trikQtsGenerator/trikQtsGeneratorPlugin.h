@@ -20,12 +20,11 @@ public:
 	TrikQtsGeneratorPlugin();
 	~TrikQtsGeneratorPlugin() override;
 
-	QList<qReal::ActionInfo> actions() override;
-	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
-	void init(const qReal::PluginConfigurator &configurator
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage) override;
+	QList<qReal::ActionInfo> customActions() override;
+	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;

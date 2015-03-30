@@ -46,9 +46,9 @@ void DeploymentInterpreterPlugin::init(PluginConfigurator const &configurator)
 	connect(mRunAction, &QAction::triggered, mInterpreter, &interpretation::Interpreter::startInterpretation);
 	connect(mStopAction, &QAction::triggered, mInterpreter, &interpretation::Interpreter::stopInterpretation);
 
-	connect(&configurator.systemEvents(), &SystemEvents::activeTabChanged, [=](Id const &id) {
-		bool const isOurTab = id.editor() == startingElementType.editor()
-				&& id.diagram() == startingElementType.diagram();
+	connect(&configurator.systemEvents(), &SystemEvents::activeTabChanged, [=](TabInfo const &info) {
+		const bool isOurTab = info.rootDiagramId().editor() == startingElementType.editor()
+				&& info.rootDiagramId().diagram() == startingElementType.diagram();
 		mRunAction->setVisible(isOurTab);
 		mStopAction->setVisible(isOurTab);
 		mShellDock->setVisible(isOurTab);

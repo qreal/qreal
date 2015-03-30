@@ -52,23 +52,26 @@ public:
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
-	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
+	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
 
-	/// Reacts to selection of a new tab on scene.
-	/// @param activeTabId - id of a root element of new active tab.
-	void onActiveTabChanged(const qReal::Id &activeTabId);
+	/// Reacts to selection of a new tab in main window.
+	/// @param info - the information about the new active tab.
+	void onActiveTabChanged(const qReal::TabInfo &info);
 
 private slots:
 	void onRobotModelActionChecked(QObject *robotModelObject);
 
 private:
-	QString kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const;
+	QString kitIdOf(kitBase::robotModel::RobotModelInterface &model) const;
 
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
 	void updateEnabledActions();
 
 	/// Loads actions from kit plugins.
 	void initKitPluginActions();
+
+	/// Creates action with menu that lets switching between robot models.
+	QAction *produceMenuAction(const QString &kitId, QActionGroup * const subActions) const;
 
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
 	KitPluginManager &mKitPluginManager;
@@ -100,8 +103,6 @@ private:
 
 	/// Actions that are placed on the panel for quick switching between robot models.
 	QMap<QString, qReal::ActionInfo> mRobotModelActions;
-
-	QMap<QString, qReal::ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
 
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.

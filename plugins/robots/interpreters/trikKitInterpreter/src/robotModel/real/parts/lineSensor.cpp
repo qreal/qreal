@@ -1,7 +1,7 @@
 #include "lineSensor.h"
 
-using namespace trikKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 LineSensor::LineSensor(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikLineSensor(info, port), mRobotCommunicator(tcpRobotCommunicator)
@@ -18,5 +18,5 @@ void LineSensor::detectLine()
 
 void LineSensor::read()
 {
-	emit newData({0, 0, 0});
+	emit newData({});
 }

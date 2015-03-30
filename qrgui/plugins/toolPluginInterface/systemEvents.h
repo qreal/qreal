@@ -7,6 +7,7 @@
 #include <qrkernel/ids.h>
 
 #include "qrgui/plugins/toolPluginInterface/toolPluginInterfaceDeclSpec.h"
+#include "qrgui/plugins/toolPluginInterface/tabInfo.h"
 
 namespace qReal {
 
@@ -16,7 +17,7 @@ class QRGUI_TOOL_PLUGIN_INTERFACE_EXPORT SystemEvents : public QObject
 
 signals:
 	void closedMainWindow();
-	void activeTabChanged(const Id &rootElementId);
+	void activeTabChanged(const TabInfo &info);
 	void settingsUpdated();
 	void codePathChanged(const qReal::Id &diagram, const QFileInfo &oldFileInfo, const QFileInfo &newFileInfo);
 	void newCodeAppeared(const qReal::Id &diagram, const QFileInfo &fileInfo);
