@@ -25,6 +25,7 @@ public:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
+	void deserialize(const QDomElement &element) override;
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
 	void deserializePenBrush(const QDomElement &element);
 

@@ -130,6 +130,12 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = false;
 }
 
+void WallItem::deserialize(const QDomElement &element)
+{
+	LineItem::deserialize(element);
+	recalculateBorders();
+}
+
 QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement wallNode = document.createElement(mSerializeName);

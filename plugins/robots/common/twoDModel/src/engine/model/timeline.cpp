@@ -10,6 +10,7 @@ Timeline::Timeline(QObject *parent)
 	, mSpeedFactor(normalSpeedFactor)
 	, mCyclesCount(0)
 	, mIsStarted(false)
+	, mTimestamp(0)
 {
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
 	mTimer.setInterval(defaultRealTimeInterval);

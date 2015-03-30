@@ -294,8 +294,8 @@ uint TwoDModelEngineApi::spoilLight(const uint color) const
 
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
 {
-	const view::SensorItem *sensor = mView.sensorItem(port);
-	const QPointF position = sensor ? sensor->scenePos() : QPointF();
-	const qreal direction = sensor ? sensor->rotation() + mModel.robotModels()[0]->rotation() : 0;
+	RobotModel * const robotModel = mModel.robotModels()[0];
+	const QPointF position = robotModel->configuration().position(port) + robotModel->position();
+	const qreal direction = robotModel->configuration().direction(port) + robotModel->rotation();
 	return { position, direction };
 }
