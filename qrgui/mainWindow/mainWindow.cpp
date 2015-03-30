@@ -1659,6 +1659,11 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	}
 }
 
+QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
+{
+	return mListOfAdditionalActions;
+}
+
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(models().repoControlApi(), models().graphicalModelAssistApi()
@@ -1699,6 +1704,8 @@ void MainWindow::initInterpretedPlugins()
 			, mFacade.events(), *mTextManager));
 
 	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
+	mListOfAdditionalActions = mInterpretedPluginLoader.menuActionsList();
+
 	traverseListOfActions(actions);
 }
 

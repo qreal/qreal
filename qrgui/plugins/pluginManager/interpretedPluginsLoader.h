@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QAction>
+
 #include <plugins/toolPluginInterface/pluginConfigurator.h>
 #include "plugins/pluginManager/interpreterEditorManager.h"
 
@@ -22,6 +24,8 @@ public:
 
 	/// Returns list of actions for all plugins.
 	QList<ActionInfo> listOfActions() const;
+
+	QList<QAction *> menuActionsList() const;
 
 private:
 	InterpretedPluginManager mPluginManager;

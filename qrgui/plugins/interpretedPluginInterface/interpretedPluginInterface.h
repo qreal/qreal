@@ -1,6 +1,7 @@
 #pragma once
 
-#include "plugins/toolPluginInterface/pluginInterface.h"
+#include <plugins/toolPluginInterface/pluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 
 namespace qReal {
 
@@ -14,7 +15,13 @@ public:
 	virtual void init(
 			const PluginConfigurator &configurator
 			, qrRepo::LogicalRepoApi &metamodelRepoApi
+			, EditorManagerInterface *editorManagerInterface
 			) = 0;
+
+	virtual QList<QAction *> menuActionList() const
+	{
+		return {};
+	}
 };
 
 }

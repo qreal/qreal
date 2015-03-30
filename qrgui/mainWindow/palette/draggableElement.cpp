@@ -15,7 +15,6 @@
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
-#include "dialogs/generationRules/specifyGenerationRulesDialog.h"
 #include "mouseGestures/gesturePainter.h"
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
@@ -77,7 +76,6 @@ DraggableElement::DraggableElement(
 
 	setAttribute(Qt::WA_AcceptTouchEvents);
 }
-
 
 QIcon DraggableElement::icon() const
 {
@@ -146,15 +144,6 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 	if (messageBox.exec() == QMessageBox::Ok) {
 		checkElementForChildren();
 	}
-}
-
-void DraggableElement::openGenerationToolsWindowActionTriggered()
-{
-	const QAction * const action = static_cast<QAction *>(sender());
-	const Id id = action->data().value<Id>();
-	SpecifyGenerationRulesDialog rulesDialog(mMainWindow, mEditorManagerProxy, id);
-	rulesDialog.setModal(true);
-	rulesDialog.exec();
 }
 
 void DraggableElement::deleteElement()
@@ -312,10 +301,14 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 					, Qt::QueuedConnection);
 			deleteElementPaletteAction->setData(elementId.toVariant());
 
-			QAction * const addGenerationRulesAction = menu->addAction(tr("Add generation rules"));
-			connect(addGenerationRulesAction, &QAction::triggered
-					, this, &DraggableElement::openGenerationToolsWindowActionTriggered);
-			addGenerationRulesAction->setData(elementId.toVariant());
+			auto additionalMenuActions = mMainWindow.optionalMenuActionsForInterpretedPlugins();
+			if (!additionalMenuActions.isEmpty()) {
+				menu->addActions(additionalMenuActions);
+
+				for (QAction *action : additionalMenuActions) {
+					action->setData(elementId.toVariant());
+				}
+			}
 
 			menu->exec(QCursor::pos());
 		}

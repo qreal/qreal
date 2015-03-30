@@ -14,7 +14,7 @@ namespace qReal {
 namespace gui {
 
 /// Window where you can specify generation rules for interpreted diagram element.
-class QRGUI_DIALOGS_EXPORT SpecifyGenerationRulesDialog : public QDialog
+class SpecifyGenerationRulesDialog : public QDialog
 {
 	Q_OBJECT
 
@@ -23,9 +23,7 @@ public:
 	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of metamodel element we are specifying generation rules for.
-	SpecifyGenerationRulesDialog(MainWindow &mainWindow
-			, const EditorManagerInterface &interpreterEditorManager
-			, const Id &id);
+	SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager, const Id &id, QWidget *parent = 0);
 
 	~SpecifyGenerationRulesDialog() override;
 
@@ -43,8 +41,8 @@ private:
 	QStringList propertiesDisplayedNamesList(const QStringList &propertiesNames);
 
 	Ui::SpecifyGenerationRulesDialog *mUi;  // has ownership
-	const EditorManagerInterface &mInterpreterEditorManager;
-	const Id mId;
+	EditorManagerInterface *mInterpreterEditorManager;
+	Id mId;
 	QStringList mPropertiesNames;
 };
 
