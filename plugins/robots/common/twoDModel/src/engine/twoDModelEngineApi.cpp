@@ -83,7 +83,7 @@ int TwoDModelEngineApi::spoilSonarReading(const int distance) const
 
 int TwoDModelEngineApi::readColorSensor(const PortInfo &port) const
 {
-	const QImage image = printColorSensor(port);
+	const QImage image = areaUnderSensor(port, 1.0);
 	QHash<uint, int> countsColor;
 
 	const uint *data = reinterpret_cast<const uint *>(image.bits());
@@ -125,17 +125,26 @@ uint TwoDModelEngineApi::spoilColor(const uint color) const
 	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
-QImage TwoDModelEngineApi::printColorSensor(const PortInfo &port) const
+QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFactor) const
 {
-	const DeviceInfo device = mModel.robotModels()[0]->configuration().type(port);
+	DeviceInfo device = mModel.robotModels()[0]->configuration().type(port);
 	if (device.isNull()) {
-		return QImage();
+		device = mModel.robotModels()[0]->info().specialDevices()[port];
+		if (device.isNull()) {
+			return QImage();
+		}
 	}
 
-	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
+	QGraphicsItem * const sensorItem = mView.sensorItem(port);
+	const QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	const QPointF position = neededPosDir.first;
-	const qreal width = mModel.robotModels()[0]->info().sensorImageRect(device).width() / 2.0;
-	const QRectF scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
+	const qreal direction = neededPosDir.second;
+	const QRect imageRect = mModel.robotModels()[0]->info().sensorImageRect(device);
+	const qreal width = imageRect.width() * widthFactor / 2.0;
+	const qreal rotationFactor = sensorItem->mapToScene(imageRect).boundingRect().width() / imageRect.width();
+	const qreal realWidth = width * rotationFactor;
+	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
+			, 2 * realWidth, 2 * realWidth);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
@@ -146,22 +155,23 @@ QImage TwoDModelEngineApi::printColorSensor(const PortInfo &port) const
 	painter.setPen(QPen(Qt::white));
 	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
-	QGraphicsItem * const sensorItem = mView.sensorItem(port);
 	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
 	const bool wasSelected = sensorItem->isSelected();
 	const bool rotaterWasVisible = robot->rotater().isVisible();
 	const bool rotaterWasSelected = robot->rotater().isSelected();
-	mView.setSensorVisible(port, false);
-	robot->rotater().setVisible(false);
+	robot->setVisible(false);
 
 	mView.scene()->render(&painter, QRectF(), scanningRect);
 
-	mView.setSensorVisible(port, true);
 	mView.sensorItem(port)->setSelected(wasSelected);
+	robot->setVisible(true);
 	robot->rotater().setVisible(rotaterWasVisible);
 	robot->rotater().setSelected(rotaterWasSelected);
 
-	return image;
+	const QPoint offset = QPointF(width, width).toPoint();
+	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
+	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
+	return rotated.copy(realImage);
 }
 
 int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
@@ -231,7 +241,7 @@ int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
-	const QImage image = printColorSensor(port);
+	const QImage image = areaUnderSensor(port, 1.0);
 	if (image.isNull()) {
 		return 0;
 	}

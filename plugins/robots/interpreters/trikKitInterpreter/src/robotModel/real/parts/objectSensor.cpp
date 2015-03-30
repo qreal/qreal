@@ -20,5 +20,5 @@ void ObjectSensor::detect()
 
 void ObjectSensor::read()
 {
-	emit newData({0, 0, 0});
+	emit newData({});
 }

@@ -18,5 +18,5 @@ void LineSensor::detectLine()
 
 void LineSensor::read()
 {
-	emit newData({0, 0, 0});
+	emit newData({});
 }

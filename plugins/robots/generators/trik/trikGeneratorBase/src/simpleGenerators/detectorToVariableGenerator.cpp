@@ -16,7 +16,7 @@ DetectorToVariableGenerator::DetectorToVariableGenerator(const qrRepo::RepoApi &
 							// property in a repository, otherwise parser will be complaining about "= lineSensorX",
 							// but that string is not even seen by user.
 							? ""
-							: repo.property(id, "Variable").toString() + "= lineSensorX"
+							: repo.property(id, "Variable").toString() + "= lineSensor[0]"
 					, customizer.factory()->functionBlockConverter(id, "Variable"))
 			}, parent)
 {

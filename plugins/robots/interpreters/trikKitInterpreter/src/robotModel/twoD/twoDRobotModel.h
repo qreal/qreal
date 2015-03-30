@@ -20,6 +20,9 @@ public:
 	QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const override;
 	QRect sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const;
 
+	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> specialDevices() const override;
+	QPair<QPoint, qreal> specialDeviceConfiguration(const kitBase::robotModel::PortInfo &port) const override;
+
 	void setWheelPorts(const QString &leftWheelPort, const QString &rightWheelPort);
 
 private:
