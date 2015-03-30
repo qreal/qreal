@@ -386,7 +386,7 @@ private:
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
 
-	QList<QAction *> mListOfAdditionalActions;
+	QList<QAction *> mListOfAdditionalActions; // doesn't have ownership
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;

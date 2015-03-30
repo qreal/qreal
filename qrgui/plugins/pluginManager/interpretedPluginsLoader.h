@@ -31,6 +31,6 @@ public:
 private:
 	InterpretedPluginManager mPluginManager;
 	QMap<QString, qrRepo::RepoApi *> mEditorRepoApi;  // doesn't have ownership
-	InterpreterEditorManager *mInterpreterEditorManager;
+	InterpreterEditorManager *mInterpreterEditorManager; // doesn't have ownership
 };
 }

@@ -41,8 +41,8 @@ private:
 	QStringList propertiesDisplayedNamesList(const QStringList &propertiesNames);
 
 	Ui::SpecifyGenerationRulesDialog *mUi;  // has ownership
-	EditorManagerInterface *mInterpreterEditorManager;
-	Id mId;
+	EditorManagerInterface *mInterpreterEditorManager; // doesn't have ownership
+	const Id mId;
 	QStringList mPropertiesNames;
 };
 
