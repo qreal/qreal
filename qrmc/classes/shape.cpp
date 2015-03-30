@@ -158,7 +158,6 @@ void Shape::generate(QString &classTemplate) const
 								: "";
 	QString portRendererLine = (hasLinePorts() || hasPointPorts())
 								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
-//								: nodeIndent + "Q_UNUSED(portRenderer)";
 								: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
 	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
 							.replace(nodeWidthTag, QString::number(mWidth))

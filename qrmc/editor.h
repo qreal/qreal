@@ -58,9 +58,7 @@ namespace qrmc {
 		void generateElementsFactory();
 		void generateContainers();
 		void generateReferenceProperties();
-
-		void generatePropertyNames();//fix
-
+		void generatePropertyNames();
 		void generateConnections();
 		void generateUsages();
 		void generateIsNodeOrEdge();
@@ -85,9 +83,7 @@ namespace qrmc {
 		class MethodGenerator;
 		class ContainersGenerator;
 		class ReferencePropertiesGenerator;
-
-		class PropertyNameGenerator;//fix
-
+		class PropertyNameGenerator;
 		class ConnectionsGenerator;
 		class UsagesGenerator;
 		class FactoryGenerator;

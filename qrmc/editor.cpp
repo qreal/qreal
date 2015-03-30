@@ -203,7 +203,7 @@ bool Editor::generatePluginHeader(const QString &hdrTemplate)
 		return false;
 	}
 
-	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(/*mName*/mNameOfMetamodel)); // header requires just plugin name customization
+	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mNameOfMetamodel));
 	QTextStream out(&pluginHeaderFile);
 	out.setCodec("UTF-8");
 	out << headerTemplate;
@@ -239,9 +239,7 @@ bool Editor::generatePluginSource()
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
-
-	generatePropertyNames();//fix
-
+	generatePropertyNames();
 	generateReferenceProperties();
 	generateConnections();
 	generateUsages();
@@ -251,7 +249,7 @@ bool Editor::generatePluginSource()
 	generateParentsMap();
 
 	// inserting plugin name all over the template
-	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(/*mName*/mNameOfMetamodel));
+	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mNameOfMetamodel));
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
@@ -354,7 +352,7 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 		return false;
 	}
 
-	projectTemplate.replace(metamodelNameTag, /*mName*/mNameOfMetamodel); // .pro-file requires just plugin name customization
+	projectTemplate.replace(metamodelNameTag, mNameOfMetamodel);
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	out << projectTemplate;
@@ -462,8 +460,8 @@ public:
 	}
 };
 
-class Editor::PropertyNameGenerator: public Editor::MethodGenerator {//fix
-public://fix
+class Editor::PropertyNameGenerator: public Editor::MethodGenerator {
+public:
 	virtual ~PropertyNameGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertyName(lineTemplate);
@@ -562,7 +560,7 @@ void Editor::generateReferenceProperties()
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
 
-void Editor::generatePropertyNames()//fix
+void Editor::generatePropertyNames()
 {
 	generatePluginMethod(getPropertyNameTag, PropertyNameGenerator());
 }

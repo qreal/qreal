@@ -283,33 +283,31 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 		}
 	}
 	if (referencePropertiesList.isEmpty()) {
-		//return "";
 		referencePropertiesString.replace(referencePropertiesListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
 	} else {
 		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
-		//return referencePropertiesString;
 	}
 	return referencePropertiesString;
 }
 
-QString GraphicType::generatePropertyName(const QString &lineTemplate) const//fix
+QString GraphicType::generatePropertyName(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
 	QString propertyNameString = lineTemplate;
 	QString propertyNameList = "";
-	foreach (Property *property, mProperties) {
+	for (Property *property: mProperties) {
 		if (!property->isReferenceProperty()) {
 			propertyNameList = propertyNameList /*+ " << "*/  + "\"" + property->name() + "\"";
 		}
 	}
+
 	if (propertyNameList.isEmpty()) {
-		//return "";
 		propertyNameString.replace(propertyNameListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
 	} else {
 		propertyNameString.replace(propertyNameListTag, propertyNameList + ";\n	}//").replace(elementNameTag, name() + "\"){//");
-		//return propertyNameString;
 	}
+
 	return propertyNameString;
 }
 

@@ -5,7 +5,7 @@ QT += xml widgets
 TEMPLATE = lib
 CONFIG += plugin
 
-DESTDIR = $$DESTDIR/plugins#/tools/
+DESTDIR = $$DESTDIR/plugins
 
 links(qrkernel qrutils qrmc qrgui-preferences-dialog)
 

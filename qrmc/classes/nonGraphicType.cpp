@@ -47,7 +47,7 @@ QString NonGraphicType::generateReferenceProperties(const QString &lineTemplate)
 	return "";
 }
 
-QString NonGraphicType::generatePropertyName(const QString &lineTemplate) const//debugfix
+QString NonGraphicType::generatePropertyName(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
