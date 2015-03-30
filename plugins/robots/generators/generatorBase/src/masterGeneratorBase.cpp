@@ -181,7 +181,7 @@ QString MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 	QFileInfo fileInfo = QFileInfo(targetPath());
 	outputCode(fileInfo.absolutePath() + "/" + fileInfo.completeBaseName() + ".dbg", out);
 
-	return resultCode.remove(QRegExp("@(~|#)qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\}(~|#)@"));
+	return resultCode.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
 }
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
