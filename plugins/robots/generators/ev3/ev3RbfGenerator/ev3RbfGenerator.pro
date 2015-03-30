@@ -30,3 +30,14 @@ INCLUDEPATH += \
 }
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3RbfGenerator_ru.ts
+
+HEADERS += \
+    ev3RbfGeneratorPlugin.h \
+    ev3RbfMasterGenerator.h
+
+SOURCES += \
+    ev3RbfGeneratorPlugin.cpp \
+    ev3RbfMasterGenerator.cpp
+
+RESOURCES += \
+    ev3RbfGenerator.qrc
