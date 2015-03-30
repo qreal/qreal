@@ -10,9 +10,9 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	: QDialog(parent)
 	, mUi(new Ui::SpecifyGenerationRulesDialog)
 	, mInterpreterEditorManager(interpreterEditorManager)
+	, mId(id)
 {
 	mUi->setupUi(this);
-	mId = id;
 
 	addPropertiesList();
 	connect(mUi->propertiesView, &QListWidget::itemDoubleClicked, this

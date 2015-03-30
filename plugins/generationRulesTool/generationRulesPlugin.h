@@ -20,8 +20,7 @@ public:
 	QList<qReal::ActionInfo> actions() override;
 	QList<QAction*> menuActionList() const override;
 
-	void init(
-			const qReal::PluginConfigurator &configurator
+	void init(const qReal::PluginConfigurator &configurator
 			, qrRepo::LogicalRepoApi &metamodelRepoApi
 			, qReal::EditorManagerInterface *editorManagerInterface) override;
 

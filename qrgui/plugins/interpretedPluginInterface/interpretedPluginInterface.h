@@ -18,6 +18,7 @@ public:
 			, EditorManagerInterface *editorManagerInterface
 			) = 0;
 
+	/// Shall be overriden in concrete plugin; returns list of additional actions for elements in palette.
 	virtual QList<QAction *> menuActionList() const
 	{
 		return {};

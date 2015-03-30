@@ -29,8 +29,7 @@ QList<QAction *> GenerationRulesPlugin::menuActionList() const
 	return {addGenerationRuleAction};
 }
 
-void GenerationRulesPlugin::init(
-		const qReal::PluginConfigurator &configurator
+void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
 		, qrRepo::LogicalRepoApi &metamodelRepoApi
 		, qReal::EditorManagerInterface *editorManagerInterface)
 {

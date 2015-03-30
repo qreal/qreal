@@ -25,6 +25,7 @@ public:
 	/// Returns list of actions for all plugins.
 	QList<ActionInfo> listOfActions() const;
 
+	/// Returns list of additional actions in palette.
 	QList<QAction *> menuActionsList() const;
 
 private:
