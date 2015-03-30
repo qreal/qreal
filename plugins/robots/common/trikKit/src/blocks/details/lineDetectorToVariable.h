@@ -12,7 +12,7 @@ class LineDetectorToVariableBlock : public qReal::interpretation::Block
 public:
 	LineDetectorToVariableBlock();
 
-	void run();
+	void run() override;
 };
 
 }

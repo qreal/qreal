@@ -60,14 +60,14 @@ void WatchListWindow::updateVariables()
 			mUi->watchListTableWidget->insertRow(row);
 			QTableWidgetItem* item = new QTableWidgetItem(identifier);
 			mUi->watchListTableWidget->setItem(row, 0, item);
-			QStringList v = value(identifier);
-			QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
+			const QStringList v = value(identifier);
+			const QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
 			item = new QTableWidgetItem(text);
 			mUi->watchListTableWidget->setItem(row, 1, item);
 		} else {
 			mUi->watchListTableWidget->item(row, 0)->setText(identifier);
-			QStringList v = value(identifier);
-			QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
+			const QStringList v = value(identifier);
+			const QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
 			mUi->watchListTableWidget->item(row, 1)->setText(text);
 		}
 

@@ -5,8 +5,6 @@
 using namespace trik::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
-
-
 LineSensor::LineSensor(const DeviceInfo &info, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikLineSensor(info, port)
@@ -23,7 +21,7 @@ void LineSensor::detectLine()
 {
 	QImage image = mEngine.areaUnderSensor(port(), 0.2);
 
-	int size = image.width() * image.height();
+	const int size = image.width() * image.height();
 	int red = 0;
 	int green = 0;
 	int blue = 0;
@@ -43,10 +41,10 @@ void LineSensor::detectLine()
 
 void LineSensor::read()
 {
-	QImage image = mEngine.areaUnderSensor(port(), 2.0);
+	const QImage image = mEngine.areaUnderSensor(port(), 2.0);
 
-	int height = image.height();
-	int width = image.width();
+	const int height = image.height();
+	const int width = image.width();
 
 	int blacks = 0;
 	int crossBlacks = 0;
