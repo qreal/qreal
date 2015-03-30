@@ -1,4 +1,5 @@
 #include "ev3GeneratorBase/ev3MasterGeneratorBase.h"
+#include "ev3GeneratorCustomizer.h"
 
 using namespace ev3;
 
@@ -15,5 +16,6 @@ Ev3MasterGeneratorBase::Ev3MasterGeneratorBase(const qrRepo::RepoApi &repo
 
 generatorBase::GeneratorCustomizer *Ev3MasterGeneratorBase::createCustomizer()
 {
-	return nullptr;
+	return new Ev3GeneratorCustomizer(mRepo, mErrorReporter
+			, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
 }

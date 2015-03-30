@@ -39,10 +39,12 @@ HEADERS += \
     include/ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h \
     include/ev3GeneratorBase/ev3MasterGeneratorBase.h \
     src/ev3GeneratorCustomizer.h \
-    src/ev3GeneratorFactory.h
+    src/ev3GeneratorFactory.h \
+    src/simpleGenerators/drawLineGenerator.h
 
 SOURCES += \
     src/ev3GeneratorPluginBase.cpp \
     src/ev3MasterGeneratorBase.cpp \
     src/ev3GeneratorCustomizer.cpp \
-    src/ev3GeneratorFactory.cpp
+    src/ev3GeneratorFactory.cpp \
+    src/simpleGenerators/drawLineGenerator.cpp

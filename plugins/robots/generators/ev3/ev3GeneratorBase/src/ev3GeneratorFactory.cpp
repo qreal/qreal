@@ -25,7 +25,7 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 
 QString Ev3GeneratorFactory::pathToTemplates() const
 {
-	return "";
+	return ":/" + mGeneratorName + "/templates";
 }
 
 generatorBase::parts::DeviceVariables *Ev3GeneratorFactory::deviceVariables() const

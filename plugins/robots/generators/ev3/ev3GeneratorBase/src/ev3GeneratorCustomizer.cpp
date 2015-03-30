@@ -13,5 +13,5 @@ Ev3GeneratorCustomizer::Ev3GeneratorCustomizer(const qrRepo::RepoApi &repo
 
 generatorBase::GeneratorFactoryBase *Ev3GeneratorCustomizer::factory()
 {
-	return nullptr;
+	return &mFactory;
 }
