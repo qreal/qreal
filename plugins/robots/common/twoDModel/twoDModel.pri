@@ -40,10 +40,11 @@ HEADERS += \
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
 	$$PWD/src/engine/view/d2ModelScene.h \
+	$$PWD/src/engine/view/gridParameters.h \
 	$$PWD/src/engine/view/robotItem.h \
+	$$PWD/src/engine/view/rotater.h \
 	$$PWD/src/engine/view/sensorItem.h \
 	$$PWD/src/engine/view/sonarSensorItem.h \
-	$$PWD/src/engine/view/gridParameters.h \
 	$$PWD/src/engine/constraints/constraintsChecker.h \
 	$$PWD/src/engine/constraints/details/defines.h \
 	$$PWD/src/engine/constraints/details/constraintsParser.h \

@@ -17,6 +17,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mStopRobotAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr)
 	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
+	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
@@ -32,6 +33,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 			<< &mRunAction
 			<< &mStopRobotAction
 			<< &mRobotSettingsAction
+			<< &mExportExerciseAction
 			;
 }
 
@@ -51,6 +53,7 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 
 	result << qReal::ActionInfo(&mSeparator2, "interpreters", "tools")
 			<< qReal::ActionInfo(&mRobotSettingsAction, "interpreters", "tools")
+			<< qReal::ActionInfo(&mExportExerciseAction, "", "tools")
 			;
 
 	return result;
@@ -100,6 +103,11 @@ QAction &ActionsManager::robotSettingsAction()
 	return mRobotSettingsAction;
 }
 
+QAction &ActionsManager::exportExerciseAction()
+{
+	return mExportExerciseAction;
+}
+
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
 	mConnectToRobotAction.setVisible(model.needsConnection());
@@ -123,6 +131,7 @@ void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterfac
 
 void ActionsManager::onActiveTabChanged(const qReal::TabInfo &info)
 {
+	updateEnabledActions();
 	const bool isDiagramTab = info.type() == qReal::TabInfo::TabType::editor;
 	mRunAction.setEnabled(isDiagramTab);
 	mStopRobotAction.setEnabled(isDiagramTab);
@@ -155,8 +164,12 @@ void ActionsManager::updateEnabledActions()
 	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 
 	for (QAction * const action : mActions) {
-		action->setEnabled(enabled);
+		if (action != &mRobotSettingsAction) {
+			action->setEnabled(enabled);
+		}
 	}
+
+
 }
 
 void ActionsManager::initKitPluginActions()

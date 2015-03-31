@@ -1,5 +1,7 @@
 #include "twoDModel/engine/twoDModelEngineFacade.h"
 
+#include <kitBase/readOnly.h>
+
 #include "twoDModel/engine/view/d2ModelWidget.h"
 #include "model/model.h"
 #include "twoDModelEngineApi.h"
@@ -49,6 +51,8 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		}
 
 		mView->loadXml(worldModel);
+
+		loadReadOnlyFlags(logicalModel);
 	};
 
 	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
@@ -131,4 +135,23 @@ void TwoDModelEngineFacade::onStartInterpretation()
 void TwoDModelEngineFacade::onStopInterpretation()
 {
 	mModel->timeline().stop();
+}
+
+void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)
+{
+	kitBase::ReadOnlyFlags readOnlyFlags = kitBase::ReadOnly::None;
+
+	const auto load = [&] (const QString &tag, kitBase::ReadOnly::ReadOnlyEnum flag) {
+		if (logicalModel.logicalRepoApi().metaInformation(tag).toBool()) {
+			readOnlyFlags |= flag;
+		}
+	};
+
+	load("twoDModelWorldReadOnly", kitBase::ReadOnly::World);
+	load("twoDModelSensorsReadOnly", kitBase::ReadOnly::Sensors);
+	load("twoDModelRobotPositionReadOnly", kitBase::ReadOnly::RobotPosition);
+	load("twoDModelRobotConfigurationReadOnly", kitBase::ReadOnly::RobotSetup);
+	load("twoDModelSimulationSettingsReadOnly", kitBase::ReadOnly::SimulationSettings);
+
+	mView->setInteractivityFlags(readOnlyFlags);
 }
