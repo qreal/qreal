@@ -51,7 +51,6 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()
-			, configurator.qRealConfigurator().graphicalModelApi()
 			, configurator.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
 			, configurator.interpreterControl());
