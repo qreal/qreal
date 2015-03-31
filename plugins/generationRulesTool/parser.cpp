@@ -73,6 +73,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 
 	auto newline = TokenTypes::newlineKeyword
 			>> [] (Token<TokenTypes> const &token) {
+				Q_UNUSED(token);
 				return new ast::Newline();
 	};
 

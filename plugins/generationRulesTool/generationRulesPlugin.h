@@ -39,9 +39,9 @@ private:
 	/// Metamodel repo api.
 	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
 
-	qReal::gui::SpecifyGenerationRulesDialog *mSpecifyGenerationRulesDialog; // Doesn't have ownership
+	qReal::gui::SpecifyGenerationRulesDialog *mSpecifyGenerationRulesDialog;  // Doesn't have ownership
 
-	qReal::EditorManagerInterface *mEditorManagerInterface; // Doesn't have ownership
+	qReal::EditorManagerInterface *mEditorManagerInterface;  // Doesn't have ownership
 };
 
 }
