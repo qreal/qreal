@@ -25,7 +25,7 @@ public:
 	virtual QVariant value() const;
 	void setValue(const QVariant &value);
 
-	QString toString() const;
+	QStringList toStringList() const;
 
 	void operator+=(const Number &add);
 	void operator-=(const Number &sub);

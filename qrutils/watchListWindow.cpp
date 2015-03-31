@@ -39,14 +39,14 @@ void WatchListWindow::updateVariables()
 	int row = 0;
 
 	std::function<QStringList()> identifiers;
-	std::function<QString(const QString &)> value;
+	std::function<QStringList(const QString &)> value;
 
 	if (!mNewParser) {
 		identifiers = [this] () { return mParser->variables().keys(); };
-		value = [this] (const QString &name) { return mParser->variables().value(name)->toString(); };
+		value = [this] (const QString &name) { return mParser->variables().value(name)->toStringList(); };
 	} else {
 		identifiers = [this] () { return mNewParser->identifiers(); };
-		value = [this] (const QString &name) { return mNewParser->value<QString>(name); };
+		value = [this] (const QString &name) { return mNewParser->value<QStringList>(name); };
 	}
 
 	QStringList sortedIdentifiers = identifiers();
@@ -60,11 +60,15 @@ void WatchListWindow::updateVariables()
 			mUi->watchListTableWidget->insertRow(row);
 			QTableWidgetItem* item = new QTableWidgetItem(identifier);
 			mUi->watchListTableWidget->setItem(row, 0, item);
-			item = new QTableWidgetItem(value(identifier));
+			const QStringList v = value(identifier);
+			const QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
+			item = new QTableWidgetItem(text);
 			mUi->watchListTableWidget->setItem(row, 1, item);
 		} else {
 			mUi->watchListTableWidget->item(row, 0)->setText(identifier);
-			mUi->watchListTableWidget->item(row, 1)->setText(value(identifier));
+			const QStringList v = value(identifier);
+			const QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
+			mUi->watchListTableWidget->item(row, 1)->setText(text);
 		}
 
 		++row;
