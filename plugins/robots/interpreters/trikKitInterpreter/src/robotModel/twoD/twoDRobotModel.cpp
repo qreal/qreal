@@ -51,7 +51,7 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikLineSensor>()) {
-		return new parts::LineSensor(deviceInfo, port);
+		return new parts::LineSensor(deviceInfo, port, *engine());
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikObjectSensor>()) {
@@ -105,6 +105,8 @@ QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
 		return ":icons/twoDIrRangeSensor.svg";
 	} else if (deviceType.isA<robotModel::parts::TrikSonarSensor>()) {
 		return ":icons/twoDUsRangeSensor.svg";
+	} else if (deviceType.isA<robotModel::parts::TrikLineSensor>()) {
+		return ":icons/twoDVideoModule.svg";
 	}
 
 	return QString();
@@ -124,7 +126,26 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 		return QRect(-18, -18, 36, 36);
 	} else if (deviceType.isA<robotModel::parts::TrikSonarSensor>()) {
 		return QRect(-18, -18, 36, 36);
+	} else if (deviceType.isA<robotModel::parts::TrikLineSensor>()) {
+		return QRect(-9, -9, 18, 18);
 	}
 
 	return QRect();
+}
+
+QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TwoDRobotModel::specialDevices() const
+{
+	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::TwoDRobotModel::specialDevices());
+	result[PortInfo("LineSensorPort", input)] = DeviceInfo::create<parts::LineSensor>();
+	return result;
+}
+
+
+QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &port) const
+{
+	if (port == PortInfo("LineSensorPort", input)) {
+		return qMakePair(QPoint(1, 0), 0);
+	}
+
+	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }

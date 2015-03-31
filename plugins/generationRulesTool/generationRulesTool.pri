@@ -20,8 +20,13 @@ HEADERS += \
 	$$PWD/ast/newline.h \
 	$$PWD/ast/foreach.h \
 	$$PWD/ast/complexIdentifier.h \
+	$$PWD/dialogs/specifyGenerationRulesDialog.h \
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \
 	$$PWD/lexer.cpp \
 	$$PWD/parser.cpp \
+	$$PWD/dialogs/specifyGenerationRulesDialog.cpp \
+
+FORMS += \
+	$$PWD/dialogs/specifyGenerationRulesDialog.ui \
