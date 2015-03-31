@@ -11,11 +11,15 @@
 
 namespace twoDModel {
 
+/// Creates instances null QReal environment, of robots plugin and runs interpretation on 2D model window.
 class Runner
 {
 public:
 	Runner();
 
+	/// Starts the interpretation process. The given save file will be opened and interpreted in 2D model window.
+	/// @param background If true then the save file will be interpreted in the fastest speed and 2D model window
+	/// will be closed immediately after the interpretation stopped.
 	void interpret(const QString &saveFile, bool background);
 
 private:

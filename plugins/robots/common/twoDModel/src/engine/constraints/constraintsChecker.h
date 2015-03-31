@@ -76,6 +76,7 @@ private:
 
 	void bindToWorldModelObjects();
 	void bindToRobotObjects();
+	void bindObject(const QString &id, QObject * const object);
 	void bindRobotObject(model::RobotModel * const robot);
 	void bindDeviceObject(const QString &robotId
 			, model::RobotModel * const robot

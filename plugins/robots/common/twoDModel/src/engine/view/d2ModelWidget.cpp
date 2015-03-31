@@ -49,7 +49,6 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
-	, mAutoOpen(true)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -310,12 +309,6 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 void D2ModelWidget::close()
 {
 	setVisible(false);
-}
-
-void D2ModelWidget::setBackgroundMode(bool enabled)
-{
-	mAutoOpen = !enabled;
-	mModel.timeline().setImmediateMode(enabled);
 }
 
 void D2ModelWidget::changeEvent(QEvent *e)
@@ -599,6 +592,11 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 	mModel.deserialize(worldModel);
 }
 
+void D2ModelWidget::setImmediateMode(bool enabled)
+{
+	mModel.timeline().setImmediateMode(enabled);
+}
+
 void D2ModelWidget::enableRobotFollowing(bool on)
 {
 	mFollowRobot = on;
@@ -726,10 +724,6 @@ void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 
 void D2ModelWidget::bringToFront()
 {
-	if (!mAutoOpen) {
-		return;
-	}
-
 	if (isHidden()) {
 		show();
 	}

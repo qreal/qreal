@@ -29,6 +29,7 @@ void Timeline::stop()
 {
 	if (mIsStarted) {
 		mIsStarted = false;
+		mTimer.stop();
 		emit stopped();
 	}
 }

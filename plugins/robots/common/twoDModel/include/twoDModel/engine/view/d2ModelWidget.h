@@ -49,11 +49,6 @@ public:
 	void init();
 	void close();
 
-	/// Enables or disables background 2D model mode.
-	/// In background mode the window is not shown and robot modeling is performed momently.
-	/// By default background mode is disabled.
-	void setBackgroundMode(bool enabled);
-
 	D2ModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
@@ -61,6 +56,10 @@ public:
 	void setSensorVisible(const kitBase::robotModel::PortInfo &port, bool isVisible);
 
 	void loadXml(const QDomDocument &worldModel);
+
+	/// If true is passed then the speed of interpretation will be setted to the fastest one and this window
+	/// will be closed just after the interpretation stops.
+	void setImmediateMode(bool enabled);
 
 signals:
 	/// Emitted each time when user closes 2D model window.
@@ -214,8 +213,6 @@ private:
 	bool mFirstShow = true;
 
 	bool mDisplayIsVisible = false;
-
-	bool mAutoOpen;
 };
 
 }
