@@ -2,9 +2,11 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
+#include "ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h"
+
 namespace ev3 {
 
-class Ev3GeneratorFactory : public generatorBase::GeneratorFactoryBase
+class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3GeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
 	Ev3GeneratorFactory(qrRepo::RepoApi const &repo
@@ -19,8 +21,6 @@ public:
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
 	QString pathToTemplates() const override;
-
-	generatorBase::parts::DeviceVariables *deviceVariables() const override;
 
 private:
 	QString const mGeneratorName;

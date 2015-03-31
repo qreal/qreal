@@ -18,17 +18,10 @@ Ev3GeneratorFactory::~Ev3GeneratorFactory()
 
 generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGenerator(const qReal::Id &id, generatorBase::GeneratorCustomizer &customizer)
 {
-	Q_UNUSED(id)
-	Q_UNUSED(customizer)
-	return nullptr;
+	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
 QString Ev3GeneratorFactory::pathToTemplates() const
 {
 	return ":/" + mGeneratorName + "/templates";
-}
-
-generatorBase::parts::DeviceVariables *Ev3GeneratorFactory::deviceVariables() const
-{
-	return nullptr;
 }

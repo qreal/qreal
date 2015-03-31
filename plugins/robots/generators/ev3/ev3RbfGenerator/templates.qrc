@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/ev3Rbf">
+        <file>templates/finalNodeMain.t</file>
+        <file>templates/initialNode.t</file>
+        <file>templates/main.t</file>
+    </qresource>
+</RCC>
