@@ -46,6 +46,32 @@ bool RobotsGeneratorPluginBase::canGenerateTo(const QString &project)
 	return !fileInfo.exists() || difference < maxTimestampsDifference;
 }
 
+void RobotsGeneratorPluginBase::onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	if (robotModels().count() == 1) {
+		kitBase::robotModel::RobotModelInterface * const ourModel = robotModels()[0];;
+		for (const ActionInfo &action : customActions()) {
+			if (action.isAction()) {
+				action.action()->setVisible(ourModel == &model);
+			} else {
+				action.menu()->setVisible(ourModel == &model);
+			}
+		}
+	}
+}
+
+void RobotsGeneratorPluginBase::onCurrentDiagramChanged(const TabInfo &info)
+{
+	const bool enabled = info.type() == TabInfo::TabType::code || info.type() == TabInfo::TabType::editor;
+	for (const ActionInfo &action : customActions()) {
+		if (action.isAction()) {
+			action.action()->setEnabled(enabled);
+		} else {
+			action.menu()->setEnabled(enabled);
+		}
+	}
+}
+
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	const Id &activeDiagram = mMainWindowInterface->activeDiagram();
@@ -103,28 +129,36 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 	return fileInfo;
 }
 
-void RobotsGeneratorPluginBase::init(const PluginConfigurator &configurator
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-		, qrtext::LanguageToolboxInterface &textLanguage)
+void RobotsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	mProjectManager = &configurator.projectManager();
-	mSystemEvents = &configurator.systemEvents();
-	mTextManager = &configurator.textManager();
+	mProjectManager = &configurator.qRealConfigurator().projectManager();
+	mSystemEvents = &configurator.qRealConfigurator().systemEvents();
+	mTextManager = &configurator.qRealConfigurator().textManager();
 
-	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepo = dynamic_cast<const qrRepo::RepoApi *>(&configurator.logicalModelApi().logicalRepoApi());
-	mProjectManager = &configurator.projectManager();
-	mRobotModelManager = &robotModelManager;
-	mTextLanguage = &textLanguage;
+	mMainWindowInterface = &configurator.qRealConfigurator().mainWindowInterpretersInterface();
+	mRepo = dynamic_cast<const qrRepo::RepoApi *>(&configurator.qRealConfigurator().logicalModelApi().logicalRepoApi());
+	mProjectManager = &configurator.qRealConfigurator().projectManager();
+	mRobotModelManager = &configurator.robotModelManager();
+	mTextLanguage = &configurator.textLanguage();
 
-	mParserErrorReporter.reset(new ParserErrorReporter(textLanguage, *mMainWindowInterface->errorReporter()
-			, configurator.logicalModelApi().editorManagerInterface()));
+	mParserErrorReporter.reset(new ParserErrorReporter(*mTextLanguage, *mMainWindowInterface->errorReporter()
+			, configurator.qRealConfigurator().logicalModelApi().editorManagerInterface()));
 
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));
 	connect(mSystemEvents, SIGNAL(newCodeAppeared(qReal::Id, QFileInfo)), this, SLOT(addNewCode(qReal::Id, QFileInfo)));
 	connect(mSystemEvents, SIGNAL(diagramClosed(qReal::Id)), this, SLOT(removeDiagram(qReal::Id)));
 	connect(mSystemEvents, SIGNAL(codeTabClosed(QFileInfo)), this, SLOT(removeCode(QFileInfo)));
+
+	connect(mRobotModelManager, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this, &RobotsGeneratorPluginBase::onCurrentRobotModelChanged);
+	connect(mSystemEvents, &SystemEvents::activeTabChanged, this, &RobotsGeneratorPluginBase::onCurrentDiagramChanged);
+}
+
+QString RobotsGeneratorPluginBase::friendlyKitName() const
+{
+	// Kit friendly name is already defined in interpreter kit plugins.
+	return QString();
 }
 
 bool RobotsGeneratorPluginBase::generateCode(bool openTab)

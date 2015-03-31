@@ -5,8 +5,10 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents newline node.
 class Newline : public Node
 {
 };
+
 }
 }

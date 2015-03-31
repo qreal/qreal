@@ -31,6 +31,11 @@ private:
 	/// Returns a converter that adds quotes for "System" block.
 	static qReal::ProjectConverter from301to302Converter();
 
+	/// Replaces "interpreterBase" to "kitBase", "commonTwoDModel" to "twoDModel",
+	/// "*kitInterpreter" to "*" in devices names, replaces robot model names (in NXT case adds "Usb" to robot model,
+	/// in TRIK removes v6 from robot model name).
+	static qReal::ProjectConverter from302to310Converter();
+
 	static bool isRobotsDiagram(const qReal::Id &diagram);
 	static qReal::IdList elementsOfRobotsDiagrams(const qReal::LogicalModelAssistInterface &logicalApi);
 	static QString editor();
@@ -45,7 +50,8 @@ private:
 	static qReal::ProjectConverter constructConverter(const QString &oldVersion, const QString &newVersion
 			, const QList<std::function<bool(const qReal::Id &
 					, qReal::LogicalModelAssistInterface &)> > &filters
-			, const std::function<bool(const qReal::Id &)> &condition = [] (const qReal::Id &) { return true; }
+			, const std::function<bool(const qReal::Id &)> &condition
+					= [] (const qReal::Id &block) { return !block.isNull(); }
 			);
 
 	/// Helper method, constructs property replace filter. Takes map in form { {<from>, <to>}, ... } and applies

@@ -1,3 +1,7 @@
+INCLUDEPATH += \
+	$$PWD/../ \
+	$$PWD/../../ \
+
 TEMPLATE = subdirs
 
 HEADERS += \

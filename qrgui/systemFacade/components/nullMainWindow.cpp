@@ -223,7 +223,7 @@ void NullMainWindow::openFirstDiagram()
 void NullMainWindow::openTabWithEditor(const Id &id)
 {
 	mActiveId = id;
-	emit mEvents.activeTabChanged(id);
+	emit mEvents.activeTabChanged(TabInfo(id, nullptr));
 }
 
 QDockWidget *NullMainWindow::logicalModelDock() const

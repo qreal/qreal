@@ -100,7 +100,7 @@ void ToolPluginManager::updateSettings()
 	emit mSystemEvents->settingsUpdated();
 }
 
-void ToolPluginManager::activeTabChanged(const Id & rootElementId)
+void ToolPluginManager::activeTabChanged(const TabInfo &info)
 {
-	emit mSystemEvents->activeTabChanged(rootElementId);
+	emit mSystemEvents->activeTabChanged(info);
 }

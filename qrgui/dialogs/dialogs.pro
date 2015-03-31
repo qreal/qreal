@@ -29,7 +29,6 @@ HEADERS += \
 	$$PWD/projectManagement/suggestToCreateDiagramWidget.h \
 	$$PWD/projectManagement/suggestToCreateDiagramDialog.h \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.h \
-	$$PWD/generationRules/specifyGenerationRulesDialog.h \
 	$$PWD/findReplaceDialog.h \
 
 SOURCES += \
@@ -47,7 +46,6 @@ SOURCES += \
 	$$PWD/projectManagement/suggestToCreateDiagramWidget.cpp \
 	$$PWD/projectManagement/suggestToCreateDiagramDialog.cpp \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.cpp \
-	$$PWD/generationRules/specifyGenerationRulesDialog.cpp \
 	$$PWD/findReplaceDialog.cpp \
 
 FORMS += \
@@ -58,5 +56,4 @@ FORMS += \
 	$$PWD/metamodelingOnFly/addNodeDialog.ui \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.ui \
 	$$PWD/metamodelingOnFly/restoreElementDialog.ui \
-	$$PWD/generationRules/specifyGenerationRulesDialog.ui \
 	$$PWD/findReplaceDialog.ui \

@@ -104,32 +104,32 @@
         <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="934"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="936"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1418"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1420"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1422"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1424"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1426"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1428"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1430"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1432"/>
         <source>Paste only graphical copy</source>
         <translation>Вставить только графическую копию</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1434"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1436"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>

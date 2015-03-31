@@ -5,15 +5,19 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents simple identifier node.
 class Identifier : public Node
 {
 public:
-	Identifier(QString const &name)
+	/// Constructor for Identifier.
+	/// @param name - identifier name.
+	Identifier(const QString &name)
 		: mName(name)
 	{
 	}
 
-	QString const &name() const {
+	/// Returns identifier name.
+	const QString &name() const {
 		return mName;
 	}
 

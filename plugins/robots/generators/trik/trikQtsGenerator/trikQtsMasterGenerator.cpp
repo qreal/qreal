@@ -1,11 +1,13 @@
 #include "trikQtsMasterGenerator.h"
 
+#include "trikQtsControlFlowValidator.h"
+
 using namespace trik::qts;
 
 TrikQtsMasterGenerator::TrikQtsMasterGenerator(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const utils::ParserErrorReporter &parserErrorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const qReal::Id &diagramId
 		, const QString &generatorName)
@@ -22,4 +24,9 @@ QString TrikQtsMasterGenerator::targetPath()
 bool TrikQtsMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
+}
+
+generatorBase::PrimaryControlFlowValidator *TrikQtsMasterGenerator::createValidator()
+{
+	return new TrikQtsControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
 }

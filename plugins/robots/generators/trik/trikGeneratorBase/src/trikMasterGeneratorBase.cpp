@@ -6,7 +6,7 @@ using namespace trik;
 TrikMasterGeneratorBase::TrikMasterGeneratorBase(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const utils::ParserErrorReporter &parserErrorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const qReal::Id &diagramId
 		, const QString &generatorName)

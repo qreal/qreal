@@ -1,16 +1,16 @@
 #include "twoDRobotModel.h"
 
-#include <interpreterBase/robotModel/robotParts/speaker.h>
-#include <interpreterBase/robotModel/robotParts/motor.h>
-#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
+#include <kitBase/robotModel/robotParts/speaker.h>
+#include <kitBase/robotModel/robotParts/motor.h>
+#include <kitBase/robotModel/robotParts/encoderSensor.h>
+#include <kitBase/robotModel/robotParts/touchSensor.h>
+#include <kitBase/robotModel/robotParts/rangeSensor.h>
+#include <kitBase/robotModel/robotParts/lightSensor.h>
+#include <kitBase/robotModel/robotParts/colorSensorBlue.h>
+#include <kitBase/robotModel/robotParts/colorSensorFull.h>
+#include <kitBase/robotModel/robotParts/colorSensorGreen.h>
+#include <kitBase/robotModel/robotParts/colorSensorPassive.h>
+#include <kitBase/robotModel/robotParts/colorSensorRed.h>
 
 #include "nxtDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
@@ -19,7 +19,7 @@
 
 using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
@@ -63,7 +63,7 @@ twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget
 	return new NxtDisplayWidget(parent);
 }
 
-QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+QRect TwoDRobotModel::sensorImageRect(kitBase::robotModel::DeviceInfo const &deviceType) const
 {
 	if (deviceType.isA<robotParts::TouchSensor>()) {
 		return QRect(-12, -5, 25, 10);

@@ -5,7 +5,7 @@
 class QextSerialPort;
 class QTimer;
 
-namespace ev3KitInterpreter {
+namespace ev3 {
 namespace communication {
 
 class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface

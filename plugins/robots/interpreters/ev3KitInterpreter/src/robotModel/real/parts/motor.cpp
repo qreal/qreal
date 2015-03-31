@@ -1,7 +1,9 @@
 #include "motor.h"
 
-using namespace ev3KitInterpreter::robotModel::real::parts;
-using namespace interpreterBase;
+#include "src/commandConstants.h"
+
+using namespace ev3::robotModel::real::parts;
+using namespace kitBase;
 using namespace robotModel;
 using namespace utils;
 using namespace robotCommunication;
@@ -14,6 +16,7 @@ Motor::Motor(const DeviceInfo &info, const PortInfo &port, RobotCommunicator &ro
 
 void Motor::on(int speed)
 {
+	Ev3Motor::on(speed);
 	QByteArray command(15, 0);
 	command[0] = 13;
 	command[1] = 0x00;

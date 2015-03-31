@@ -1,7 +1,7 @@
 #include "interpreterCore/managers/paletteUpdateManager.h"
 
 using namespace interpreterCore;
-using namespace interpreterBase;
+using namespace kitBase;
 
 PaletteUpdateManager::PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider
 		, const BlocksFactoryManagerInterface &factoryManager, QObject *parent)

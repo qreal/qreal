@@ -49,6 +49,7 @@ EditorView::EditorView(const models::Models &models
 	SettingsListener::listen("GridWidth", &mScene, &EditorViewScene::redraw);
 	SettingsListener::listen("CurrentFont", this, &EditorView::setSceneFont);
 
+	mScene.setActionsEnabled(false);
 	addAction(&mScene.deleteAction());
 	addActions(mScene.editorActions());
 }

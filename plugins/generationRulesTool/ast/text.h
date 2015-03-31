@@ -6,12 +6,13 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents text node.
 class Text : public Node
 {
 public:
 	/// Constructor.
-	/// @param string - value of a literal (without quotes).
-	Text(QString const &text)
+	/// @param string - value of a literal (with quotes).
+	Text(const QString &text)
 		: mText(text)
 	{
 	}

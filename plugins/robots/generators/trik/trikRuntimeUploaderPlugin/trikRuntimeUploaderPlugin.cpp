@@ -4,6 +4,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 
 using namespace trik;
 
@@ -11,15 +12,20 @@ TrikRuntimeUploaderPlugin::TrikRuntimeUploaderPlugin()
 	: mAction(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime"), nullptr))
 {
 	connect(mAction, &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
+	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == "trikKit");
+	qReal::SettingsListener::listen("SelectedRobotKit", [this](const QString selectedKit) {
+		mAction->setVisible(selectedKit == "trikKit");
+	});
+}
+
+void TrikRuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurator)
+{
+	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 }
 
 QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
 {
-	QAction *separator = new QAction(this);
-	separator->setSeparator(true);
-	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
-	qReal::ActionInfo info(mAction, "generators", "tools");
-	return { info, separatorInfo };
+	return { qReal::ActionInfo(mAction, "", "tools") };
 }
 
 void TrikRuntimeUploaderPlugin::uploadRuntime()
@@ -60,14 +66,4 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 			tr("Attention! Started to download the runtime. Please do not turn off the robot.")
 		);
 	}
-}
-
-generatorBase::MasterGeneratorBase *TrikRuntimeUploaderPlugin::masterGenerator()
-{
-	return nullptr;
-}
-
-qReal::text::LanguageInfo TrikRuntimeUploaderPlugin::language() const
-{
-	return qReal::text::Languages::textFileInfo("*.txt");
 }

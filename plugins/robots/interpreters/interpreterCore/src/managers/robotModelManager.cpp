@@ -3,7 +3,7 @@
 #include <qrkernel/settingsManager.h>
 
 using namespace interpreterCore;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 RobotModelManager::RobotModelManager()
 	: mRobotModel(&mDefaultRobotModel)

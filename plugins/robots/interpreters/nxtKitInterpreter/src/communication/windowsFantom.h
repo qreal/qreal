@@ -2,7 +2,7 @@
 
 #include <QtCore/QLibrary>
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace communication {
 
 /// Proxy for Fantom driver DLL for Windows. Responsible for loading DLL and

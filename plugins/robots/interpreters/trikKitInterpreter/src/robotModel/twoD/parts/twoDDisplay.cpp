@@ -1,7 +1,7 @@
 #include "twoDDisplay.h"
 
-using namespace trikKitInterpreter::robotModel::twoD::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::twoD::parts;
+using namespace kitBase::robotModel;
 
 /// @todo: This constant adjusts screen coordinates shift. It must be 0.
 const int yDisplayShift = 8;

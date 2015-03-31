@@ -1,20 +1,20 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
+#include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
 #include "nxtInputDevice.h"
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class GyroscopeSensor : public interpreterBase::robotModel::robotParts::GyroscopeSensor
+class GyroscopeSensor : public kitBase::robotModel::robotParts::GyroscopeSensor
 {
 	Q_OBJECT
 
 public:
-	GyroscopeSensor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	GyroscopeSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

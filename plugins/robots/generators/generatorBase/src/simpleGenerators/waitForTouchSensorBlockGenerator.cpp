@@ -10,7 +10,6 @@ WaitForTouchSensorBlockGenerator::WaitForTouchSensorBlockGenerator(const qrRepo:
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/touch.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())
-			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
 			, parent)
 {
 }

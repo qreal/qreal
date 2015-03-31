@@ -9,15 +9,13 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-links(qrkernel qrutils qrrepo qscintilla2 robots-generator-base robots-nxt-generator-base)
+includes(plugins/robots/generators/nxt/nxtGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		qrtext \
+)
 
-INCLUDEPATH += \
-	$$PWD/../nxtGeneratorBase/include/ \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
+links(qrkernel qrutils qrrepo qscintilla2 robots-generator-base robots-nxt-generator-base)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtRussianCGenerator_ru.ts
 

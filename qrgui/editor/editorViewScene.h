@@ -123,6 +123,9 @@ public:
 	/// Enables or diasables all editor actions.
 	void setActionsEnabled(bool enabled);
 
+	/// Handles deletion of the element from scene.
+	void onElementDeleted(Element *element);
+
 public slots:
 	qReal::Id createElement(const QString &type);
 

@@ -12,7 +12,7 @@ const QString encoderVariablePerfix = QObject::tr("encoder");
 const QString timeVariableName = QObject::tr("time");
 
 RobotsBlockParser::RobotsBlockParser(
-		const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, const utils::ComputableNumber::IntComputer &timeComputer)
 	: qrtext::lua::LuaToolbox()
 	, mRobotModelManager(robotModelManager)
@@ -22,7 +22,7 @@ RobotsBlockParser::RobotsBlockParser(
 
 	addIntrinsicFuctions();
 
-	connect(&mRobotModelManager, &interpreterBase::robotModel::RobotModelManagerInterface::robotModelChanged
+	connect(&mRobotModelManager, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
 			, this, &RobotsBlockParser::setReservedVariables);
 }
 
@@ -33,7 +33,7 @@ void RobotsBlockParser::setReservedVariables()
 	setVariableValue("pi", 3.14159265);
 	markAsSpecialConstant("pi");
 
-	for (const interpreterBase::robotModel::PortInfo &port : mRobotModelManager.model().availablePorts()) {
+	for (const kitBase::robotModel::PortInfo &port : mRobotModelManager.model().availablePorts()) {
 		setVariableValue(port.name(), QString("'%1'").arg(port.name()));
 
 		markAsSpecial(port.name());
@@ -46,10 +46,10 @@ void RobotsBlockParser::setReservedVariables()
 		}
 
 		if (!port.reservedVariable().isEmpty()) {
-			if (port.reservedVariableType() == interpreterBase::robotModel::PortInfo::ReservedVariableType::scalar) {
+			if (port.reservedVariableType() == kitBase::robotModel::PortInfo::ReservedVariableType::scalar) {
 				setVariableValue(port.reservedVariable(), 0);
 			} else {
-				setVectorVariableValue(port.reservedVariable(), QVector<int>());
+				setVectorVariableValue(port.reservedVariable(), QVector<int>{0});
 			}
 
 			markAsSpecial(port.reservedVariable());

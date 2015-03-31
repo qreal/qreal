@@ -1,5 +1,7 @@
 #include "trikFSharpMasterGenerator.h"
 
+#include "trikFSharpControlFlowValidator.h"
+
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 
@@ -8,7 +10,7 @@ using namespace trik::fSharp;
 TrikFSharpMasterGenerator::TrikFSharpMasterGenerator(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const utils::ParserErrorReporter &parserErrorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const qReal::Id &diagramId
 		, const QString &generatorName)
@@ -25,4 +27,9 @@ QString TrikFSharpMasterGenerator::targetPath()
 bool TrikFSharpMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
+}
+
+generatorBase::PrimaryControlFlowValidator *TrikFSharpMasterGenerator::createValidator()
+{
+	return new TrikFSharpControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
 }

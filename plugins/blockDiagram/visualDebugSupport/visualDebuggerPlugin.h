@@ -86,7 +86,7 @@ private slots:
 	/// dynamically
 	void showWatchList();
 
-	void activeTabChanged(qReal::Id const &rootElementId);
+	void activeTabChanged(qReal::TabInfo const &info);
 
 private:
 	qReal::VisualDebugger *mVisualDebugger;

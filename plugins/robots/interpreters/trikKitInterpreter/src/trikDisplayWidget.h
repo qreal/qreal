@@ -5,13 +5,13 @@
 #include <qrutils/graphicsUtils/painterInterface.h>
 #include <qrutils/graphicsUtils/paintWidget.h>
 
-#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
+#include "twoDModel/engine/twoDModelDisplayWidget.h"
 
 namespace Ui {
 class TrikDisplayWidget;
 }
 
-namespace trikKitInterpreter {
+namespace trik {
 
 class TrikDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 {

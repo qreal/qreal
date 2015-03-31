@@ -9,7 +9,8 @@ namespace utils {
 class QRUTILS_EXPORT xmlUtils
 {
 public:
-	static QDomDocument loadDocument(const QString& fileName);
+	static QDomDocument loadDocument(const QString &fileName
+		, QString *errorMessage = 0, int *errorLine = 0, int *errorColumn = 0);
 };
 
 }

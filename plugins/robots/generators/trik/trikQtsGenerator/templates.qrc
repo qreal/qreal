@@ -76,9 +76,7 @@
         <file>templates/accelerometer/accelerometerX.t</file>
         <file>templates/accelerometer/accelerometerY.t</file>
         <file>templates/accelerometer/accelerometerZ.t</file>
-        <file>templates/videosensors/LineSensorX.t</file>
-        <file>templates/videosensors/LineSensorSize.t</file>
-        <file>templates/videosensors/LineSensorCrossroads.t</file>
+        <file>templates/videosensors/LineSensor.t</file>
         <file>templates/videosensors/ObjectSensorX.t</file>
         <file>templates/videosensors/ObjectSensorY.t</file>
         <file>templates/videosensors/ObjectSensorSize.t</file>
@@ -203,5 +201,8 @@
         <file>templates/luaPrinting/floatToString.t</file>
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
+        <file>templates/threads/join.t</file>
+        <file>templates/threads/receiveMessage.t</file>
+        <file>templates/threads/sendMessage.t</file>
     </qresource>
 </RCC>

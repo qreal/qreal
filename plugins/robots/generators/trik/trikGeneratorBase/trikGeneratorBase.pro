@@ -7,17 +7,17 @@ QT += widgets
 TEMPLATE = lib
 CONFIG += plugin
 
-links(qrkernel qslog qrutils qrrepo robots-generator-base robots-interpreter-base)
+includes(plugins/robots/generators/trik/trikGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/trikKit \
+		plugins/robots/utils \
+		qrtext \
+)
+
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots-trik-kit)
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
-
-INCLUDEPATH += \
-	$$PWD/include \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
 
@@ -27,6 +27,7 @@ HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
+	$$PWD/src/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
 	$$PWD/src/converters/backgroundColorConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
@@ -63,6 +64,7 @@ SOURCES += \
 	$$PWD/src/trikMasterGeneratorBase.cpp \
 	$$PWD/src/trikGeneratorCustomizer.cpp \
 	$$PWD/src/trikGeneratorFactory.cpp \
+	$$PWD/src/robotModel/trikGeneratorRobotModel.cpp \
 	$$PWD/src/parts/trikDeviceVariables.cpp \
 	$$PWD/src/converters/backgroundColorConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \

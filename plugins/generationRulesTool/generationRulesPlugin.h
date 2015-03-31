@@ -1,6 +1,7 @@
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 
-#include "ast/node.h"
+#include "dialogs/specifyGenerationRulesDialog.h"
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 namespace generationRules {
 
@@ -17,11 +18,16 @@ public:
 	virtual ~GenerationRulesPlugin();
 
 	QList<qReal::ActionInfo> actions() override;
+	QList<QAction*> menuActionList() const override;
 
-	void init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi) override;
+	void init(const qReal::PluginConfigurator &configurator
+			, qrRepo::LogicalRepoApi &metamodelRepoApi
+			, qReal::EditorManagerInterface *editorManagerInterface) override;
 
 private slots:
 	void generateCode();
+
+	void openGenerationRulesWindow();
 
 private:
 	QSharedPointer<simpleParser::ast::Node> generatedTreeFromString(QString stream);
@@ -36,6 +42,10 @@ private:
 
 	/// Metamodel repo api.
 	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
+
+	qReal::gui::SpecifyGenerationRulesDialog *mSpecifyGenerationRulesDialog;  // Doesn't have ownership
+
+	qReal::EditorManagerInterface *mEditorManagerInterface;  // Doesn't have ownership
 };
 
 }

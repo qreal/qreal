@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QApplication>
 
-using namespace ev3KitInterpreter;
+using namespace ev3;
 using namespace qReal;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
@@ -29,19 +29,19 @@ QString Ev3KitInterpreterPlugin::friendlyKitName() const
 	return tr("Lego EV3");
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robotModels()
+QList<kitBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robotModels()
 {
 	return  {&mRealRobotModel};
 }
 
-interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
-		const interpreterBase::robotModel::RobotModelInterface *model)
+kitBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model)
 	return mBlocksFactory;
 }
 
-QList<interpreterBase::AdditionalPreferences *> Ev3KitInterpreterPlugin::settingsWidgets()
+QList<kitBase::AdditionalPreferences *> Ev3KitInterpreterPlugin::settingsWidgets()
 {
 	return { mAdditionalPreferences };
 }
@@ -57,7 +57,7 @@ QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
 }
 
 QIcon Ev3KitInterpreterPlugin::iconForFastSelector(
-		const interpreterBase::robotModel::RobotModelInterface &robotModel) const
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
 	return QIcon();

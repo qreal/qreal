@@ -61,16 +61,64 @@
     </message>
 </context>
 <context>
-    <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
+    <name>nxt::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="73"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="82"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="118"/>
         <source>Show 2d model</source>
         <translation>Открыть 2D модель</translation>
+    </message>
+</context>
+<context>
+    <name>nxt::communication::UsbRobotCommunicationThread</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="208"/>
+        <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
+        <translation>Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="210"/>
+        <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
+        <translation>Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>nxt::robotModel::real::BluetoothRealRobotModel</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/bluetoothRealRobotModel.cpp" line="19"/>
+        <source>Interpretation (Bluetooth)</source>
+        <translation>Интерпретация (Bluetooth)</translation>
+    </message>
+</context>
+<context>
+    <name>nxt::robotModel::real::UsbRealRobotModel</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/usbRealRobotModel.cpp" line="19"/>
+        <source>Interpretation (USB)</source>
+        <translation>Интерпретация (USB)</translation>
+    </message>
+</context>
+<context>
+    <name>nxt::robotModel::real::parts::SonarSensor</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/parts/sonarSensor.h" line="15"/>
+        <source>Sonar sensor</source>
+        <translation>Сенсор расстояния</translation>
+    </message>
+</context>
+<context>
+    <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
+    <message>
+        <source>Lego NXT</source>
+        <translation type="vanished">Лего NXT</translation>
+    </message>
+    <message>
+        <source>Show 2d model</source>
+        <translation type="vanished">Открыть 2D модель</translation>
     </message>
 </context>
 <context>
@@ -97,30 +145,26 @@
 <context>
     <name>nxtKitInterpreter::communication::UsbRobotCommunicationThread</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="208"/>
         <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
-        <translation>Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
+        <translation type="vanished">Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="210"/>
         <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
-        <translation>Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
+        <translation type="vanished">Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::parts::NxtMotor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/parts/nxtMotor.h" line="13"/>
         <source>Motor</source>
-        <translation>Мотор</translation>
+        <translation type="vanished">Мотор</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="45"/>
         <source>Real Robot</source>
-        <translation>Реальный робот</translation>
+        <translation type="vanished">Реальный робот</translation>
     </message>
 </context>
 <context>
@@ -161,9 +205,8 @@
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::SonarSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/parts/sonarSensor.h" line="15"/>
         <source>Sonar sensor</source>
-        <translation>Сенсор расстояния</translation>
+        <translation type="vanished">Сенсор расстояния</translation>
     </message>
 </context>
 <context>

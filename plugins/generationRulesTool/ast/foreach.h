@@ -5,6 +5,7 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents foreach node.
 class Foreach : public Node
 {
 public:
@@ -19,12 +20,14 @@ public:
 	{
 	}
 
+	/// Returns identifier node.
 	QSharedPointer<Node> identifier() const
 	{
 		return mIdentifier;
 	}
 
-	QSharedPointer<Node> type() const
+	/// Returns program node.
+	QSharedPointer<Node> program() const
 	{
 		return mType;
 	}
@@ -41,7 +44,7 @@ public:
 
 	QList<QSharedPointer<Node>> children() const override
 	{
-		return {mIdentifier, mType, mProgram, mLinkType};
+		return {mIdentifier, mProgram};
 	}
 
 private:

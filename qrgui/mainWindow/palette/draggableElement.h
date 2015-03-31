@@ -53,7 +53,6 @@ private slots:
 	void changePropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();
 	void deleteElementPaletteActionTriggered();
-	void openGenerationToolsWindowActionTriggered();
 	void deleteElement();
 	void checkElementForRootDiagramNode();
 

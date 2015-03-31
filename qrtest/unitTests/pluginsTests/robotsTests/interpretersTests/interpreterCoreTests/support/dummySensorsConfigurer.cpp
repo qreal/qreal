@@ -3,7 +3,7 @@
 #include <QtCore/QDebug>
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 DummySensorsConfigurer::DummySensorsConfigurer(QString const &name)
 	: DevicesConfigurationProvider(name)

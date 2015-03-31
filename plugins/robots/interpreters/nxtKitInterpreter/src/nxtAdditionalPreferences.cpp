@@ -4,17 +4,15 @@
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
 
-using namespace nxtKitInterpreter;
+using namespace nxt;
 using namespace qReal;
 
 NxtAdditionalPreferences::NxtAdditionalPreferences(const QString &realRobotName, QWidget *parent)
 	: AdditionalPreferences(parent)
 	, mUi(new Ui::NxtAdditionalPreferences)
-	, mRealRobotName(realRobotName)
+	, mBluetoothRobotName(realRobotName)
 {
 	mUi->setupUi(this);
-	connect(mUi->bluetoothRadioButton, &QRadioButton::toggled
-			, mUi->bluetoothSettingsGroupBox, &QWidget::setVisible);
 	connect(mUi->manualComPortCheckbox, &QCheckBox::toggled
 			, this, &NxtAdditionalPreferences::manualComPortCheckboxChecked);
 }
@@ -27,7 +25,6 @@ NxtAdditionalPreferences::~NxtAdditionalPreferences()
 void NxtAdditionalPreferences::save()
 {
 	SettingsManager::setValue("NxtBluetoothPortName", selectedPortName());
-	SettingsManager::setValue("NxtValueOfCommunication", selectedCommunication());
 	SettingsManager::setValue("NxtManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
 	emit settingsChanged();
 }
@@ -69,23 +66,11 @@ void NxtAdditionalPreferences::restoreSettings()
 		mUi->manualComPortCheckbox->setChecked(false);
 		mUi->manualComPortCheckbox->setChecked(SettingsManager::value("NxtManualComPortCheckboxChecked").toBool());
 	}
-
-	const QString typeOfCommunication = SettingsManager::value("NxtValueOfCommunication").toString();
-	if (typeOfCommunication == "bluetooth") {
-		mUi->bluetoothRadioButton->setChecked(true);
-	} else if (typeOfCommunication == "usb") {
-		mUi->usbRadioButton->setChecked(true);
-	} else {
-		mUi->bluetoothRadioButton->setChecked(false);
-		mUi->usbRadioButton->setChecked(false);
-	}
 }
 
-void NxtAdditionalPreferences::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface * const robotModel)
+void NxtAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
-	const bool isReal = robotModel->name() == mRealRobotName;
-	mUi->communicationTypeGroupBox->setVisible(isReal);
-	mUi->bluetoothSettingsGroupBox->setVisible(mUi->bluetoothRadioButton->isChecked() && isReal);
+	mUi->bluetoothSettingsGroupBox->setVisible(robotModel->name() == mBluetoothRobotName);
 }
 
 void NxtAdditionalPreferences::manualComPortCheckboxChecked(bool state)
@@ -105,12 +90,6 @@ void NxtAdditionalPreferences::manualComPortCheckboxChecked(bool state)
 		mUi->directInputComPortLineEdit->hide();
 		mUi->noComPortsFoundLabel->hide();
 	}
-}
-
-QString NxtAdditionalPreferences::selectedCommunication() const
-{
-	return mUi->bluetoothRadioButton->isChecked() ? "bluetooth"
-			: mUi->usbRadioButton->isChecked() ? "usb" : "";
 }
 
 QString NxtAdditionalPreferences::selectedPortName() const

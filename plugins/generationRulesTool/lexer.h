@@ -6,11 +6,8 @@
 #include "tokenTypes.h"
 
 namespace simpleParser {
-/// Lexer of something like Lua 5.3 based on regular expressions. Provides a list of tokens by given input string.
-/// Allows Unicode input.
-///
-/// Now lexer (with default token patterns) follows Lua 5.3 specification with following exceptions:
-/// - long brackets are not supported, either for string literals or for comments.
+
+/// Lexer for generation rules tool language.
 class Lexer: public qrtext::core::Lexer<TokenTypes>
 {
 public:

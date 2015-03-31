@@ -4,7 +4,7 @@ using namespace nxt;
 
 NxtGeneratorCustomizer::NxtGeneratorCustomizer(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QString &generatorName)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
