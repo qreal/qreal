@@ -9,7 +9,16 @@ PortInfo::PortInfo()
 PortInfo::PortInfo(const QString &name, Direction direction
 		, const QStringList &nameAliases, const QString &reservedVariableName
 		, ReservedVariableType reservedVariableType)
+	: PortInfo(name, name, direction, nameAliases, reservedVariableName, reservedVariableType)
+{
+}
+
+PortInfo::PortInfo(const QString &name, const QString &userFriendlyName, Direction direction
+		, const QStringList &nameAliases
+		, const QString &reservedVariableName
+		, ReservedVariableType reservedVariableType)
 	: mName(name)
+	, mUserFriendlyName(userFriendlyName)
 	, mDirection(direction)
 	, mNameAliases(nameAliases)
 	, mReservedVariable(reservedVariableName)
@@ -25,6 +34,11 @@ bool PortInfo::isValid() const
 QString PortInfo::name() const
 {
 	return mName;
+}
+
+QString PortInfo::userFriendlyName() const
+{
+	return mUserFriendlyName;
 }
 
 Direction PortInfo::direction() const

@@ -27,7 +27,13 @@ public:
 
 	/// Constructs new PortInfo instance. If name is empty then the port is considered to be invalid.
 	/// Ports with same names but different directions are considered to be different.
-	explicit PortInfo(const QString &name, Direction direction
+	PortInfo(const QString &name, Direction direction
+			, const QStringList &nameAliases = QStringList()
+			, const QString &reservedVariableName = QString()
+			, ReservedVariableType reservedVariableType = ReservedVariableType::scalar);
+
+	/// Constructs new PortInfo instance with given user-friendly name.
+	PortInfo(const QString &name, const QString &userFriendlyName, Direction direction
 			, const QStringList &nameAliases = QStringList()
 			, const QString &reservedVariableName = QString()
 			, ReservedVariableType reservedVariableType = ReservedVariableType::scalar);
@@ -35,8 +41,11 @@ public:
 	/// Returns true if this PortInfo is non-empty (i.e. really describes some port)
 	bool isValid() const;
 
-	/// Returns the name of the port.
+	/// Returns internal name of the port.
 	QString name() const;
+
+	/// Returns user-friendly name of the port.
+	QString userFriendlyName() const;
 
 	/// Returns the direction of this port. Ports with similar names but different
 	/// directions are considered to be different.
@@ -57,6 +66,7 @@ public:
 
 private:
 	QString mName;
+	QString mUserFriendlyName;
 	Direction mDirection;
 	QStringList mNameAliases;
 	QString mReservedVariable;

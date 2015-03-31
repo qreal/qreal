@@ -26,7 +26,7 @@ void WaitForSensorBlock::run()
 		mActiveWaitingTimer.start();
 	} else {
 		mActiveWaitingTimer.stop();
-		error(tr("%1 is not configured on port %2").arg(device().friendlyName(), mPort.name()));
+		error(tr("%1 is not configured on port %2").arg(device().friendlyName(), mPort.userFriendlyName()));
 	}
 }
 
