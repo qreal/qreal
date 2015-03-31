@@ -2,12 +2,22 @@
 
 using namespace ev3::rbf;
 
-Ev3RbfMasterGenerator::Ev3RbfMasterGenerator(const qrRepo::RepoApi &repo
+Ev3RbfMasterGenerator::Ev3RbfMasterGenerator(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, const qReal::Id &diagramId
-		, const QString &generatorName)
+		, qReal::Id const &diagramId
+		, QString const &generatorName)
 	: Ev3MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId, generatorName)
 {
+}
+
+QString Ev3RbfMasterGenerator::targetPath()
+{
+	return QString("%1/%2.rbf").arg(mProjectDir, mProjectName);
+}
+
+bool Ev3RbfMasterGenerator::supportsGotoGeneration() const
+{
+	return false;
 }
