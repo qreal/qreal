@@ -24,6 +24,11 @@ QPair<int, int> CodeBlockManager::intervalById(QString const &path, Id const &id
 	return mBlockToCode.contains(path) ? mBlockToCode[path].value(id, QPair<int, int>()) : QPair<int, int>();
 }
 
+QList<Id> CodeBlockManager::IdsByLineNumber(QString const &path, int lineNumber)
+{
+	return mCodeToBlock.contains(path) ? mCodeToBlock[path].value(lineNumber, QList<Id>()) : QList<Id>();
+}
+
 void CodeBlockManager::readDbgFile(QString const &path)
 {
 	QFile file(path + ".dbg");
@@ -35,12 +40,23 @@ void CodeBlockManager::readDbgFile(QString const &path)
 	QTextStream in(&file);
 
 	mBlockToCode.insert(path, QMap<Id, QPair<int, int> >());
+	mCodeToBlock.insert(path, QMap<int, QList<Id> >());
 
 	while(!in.atEnd()) {
 		QString line = in.readLine();
 		QStringList fields = line.split("@");
-		mBlockToCode[path].insert(Id::loadFromString(fields[0])
-				, QPair<int, int>(fields[1].toInt(), fields[2].toInt()));
+		Id id = Id::loadFromString(fields[0]);
+		int const from = fields[1].toInt();
+		int const to = fields[2].toInt();
+
+		mBlockToCode[path].insert(id, QPair<int, int>(from, to));
+
+		for (int i = from; i <= to; i++) {
+			if (!mCodeToBlock[path].contains(i)) {
+				mCodeToBlock[path].insert(i, QList<Id>());
+			}
+			mCodeToBlock[path][i].append(id);
+		}
 	}
 
 	file.close();
