@@ -3,6 +3,8 @@
 #include "dialogs/specifyGenerationRulesDialog.h"
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
+#include "ast/node.h"
+
 namespace generationRules {
 
 /// Class, which represents example of using interpreted plugin.

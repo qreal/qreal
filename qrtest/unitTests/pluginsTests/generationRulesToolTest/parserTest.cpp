@@ -19,17 +19,18 @@ void ParserTest::TearDown()
 
 TEST_F(ParserTest, parserTestForForeachExample)
 {
-	const QString stream = "'enum State {'\n"
-				"foreach (State) {\n"
-				"State.name ',' \n"
-				"newline \n"
-				"} \n"
-				"StartState.name ',' newline \n"
-				"EndState.name newline \n"
-				"'}' \n";
+	const QString stream =
+		"'enum State {' newline \n"
+			"foreach (state in State) {\n"
+			"tab state.Name ',' \n"
+			"newline \n"
+		"} \n"
+		"tab StartState.Name ',' newline \n"
+		"tab EndState.Name newline \n"
+		"'}' \n";
 
 	const auto lexerResult = mLexer->tokenize(stream);
 	const auto parserResult = mParser->parse(lexerResult, mLexer->userFriendlyTokenNames());
 
-	ASSERT_EQ(parserResult->children().size(), 8);
+	ASSERT_EQ(parserResult->children().size(), 11);
 }

@@ -26,12 +26,13 @@ public:
 		return mIdentifier;
 	}
 
-	/// Returns program node.
-	QSharedPointer<Node> program() const
+	/// Returns type node.
+	QSharedPointer<Node> type() const
 	{
 		return mType;
 	}
 
+	/// Returns program node.
 	QSharedPointer<Node> program() const
 	{
 		return mProgram;
