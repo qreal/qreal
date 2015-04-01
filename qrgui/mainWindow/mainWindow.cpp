@@ -50,6 +50,7 @@
 #include <mouseGestures/gesturesWidget.h>
 
 #include <textEditor/textManager.h>
+#include <textEditor/codeBlockManager.h>
 #include <textEditor/qscintillaTextEdit.h>
 
 #include "qrealApplication.h"
@@ -1434,6 +1435,8 @@ void MainWindow::setIndexesOfPropertyEditor(const Id &id)
 
 void MainWindow::highlight(const Id &graphicalId, bool exclusive, const QColor &color)
 {
+	highlightCode(models().graphicalModelAssistApi().logicalId(graphicalId), true);
+
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
 		EditorView * const view = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
 		if (!view) {
@@ -1448,8 +1451,29 @@ void MainWindow::highlight(const Id &graphicalId, bool exclusive, const QColor &
 	}
 }
 
+void MainWindow::highlightCode(Id const &graphicalId, bool highlight)
+{
+	text::QScintillaTextEdit *area = dynamic_cast<text::QScintillaTextEdit *>(currentTab());
+
+	if (area) {
+		if (highlight) {
+			QString const filePath = mTextManager->path(area);
+			QPair<int, int> const interval = mTextManager->codeBlockManager().intervalById(filePath, graphicalId);
+			area->setMarkerBackgroundColor(QColor::fromRgb(0, 255, 0));
+			area->markerDefine(text::QScintillaTextEdit::Background, text::QScintillaTextEdit::SC_MARK_BACKGROUND);
+			for (int i = interval.first; i <= interval.second; i++) {
+				area->markerAdd(i - 1, text::QScintillaTextEdit::SC_MARK_BACKGROUND);
+			}
+		} else {
+			area->markerDeleteAll();
+		}
+	}
+}
+
 void MainWindow::dehighlight(const Id &graphicalId)
 {
+	highlightCode(models().graphicalModelAssistApi().logicalId(graphicalId), false);
+
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
 		EditorView * const view = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
 		if (!view) {

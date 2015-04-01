@@ -39,6 +39,7 @@ bool TextManager::openFile(const QString &filePath, const QString &generatorName
 		mPathType.insert(filePath, true);
 		mModified.insert(filePath, QPair<bool, bool>(false, false));
 		mGeneratorName.insert(filePath, generatorName);
+		mCodeBlockManager.addNewCode(filePath);
 
 		connect(area, SIGNAL(textWasModified(text::QScintillaTextEdit*))
 				, this, SLOT(setModified(text::QScintillaTextEdit*)));
@@ -75,6 +76,7 @@ bool TextManager::closeFile(const QString &filePath)
 	mModified.remove(filePath);
 	mGeneratorName.remove(filePath);
 	unbindCode(filePath);
+	mCodeBlockManager.removeCode(filePath);
 	return mText.remove(filePath);
 }
 
@@ -258,4 +260,9 @@ bool TextManager::saveText(bool saveAs)
 QString TextManager::generatorName(const QString &filePath) const
 {
 	return mGeneratorName.value(filePath, "");
+}
+
+CodeBlockManager &TextManager::codeBlockManager()
+{
+	return mCodeBlockManager;
 }

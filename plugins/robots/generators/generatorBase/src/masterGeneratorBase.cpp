@@ -178,8 +178,8 @@ QString MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 		out += res.first + "@" + QString::number(res.second.first) + "@" + QString::number(res.second.second)
 				+ "\n";
 	}
-	QFileInfo fileInfo = QFileInfo(targetPath());
-	outputCode(fileInfo.absolutePath() + "/" + fileInfo.completeBaseName() + ".dbg", out);
+
+	outputCode(targetPath() + ".dbg", out);
 
 	return resultCode.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
 }
