@@ -5,10 +5,10 @@
 namespace ev3 {
 namespace simple {
 
-class DrawLineGenerator : public generatorBase::simple::BindingGenerator
+class DrawPixelGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DrawLineGenerator(qrRepo::RepoApi const &repo
+	DrawPixelGenerator(qrRepo::RepoApi const &repo
 			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent);

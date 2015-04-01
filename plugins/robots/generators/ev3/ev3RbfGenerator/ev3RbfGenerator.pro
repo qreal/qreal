@@ -42,6 +42,6 @@ SOURCES += \
 
 RESOURCES += \
 	ev3RbfGenerator.qrc \
-    templates.qrc
+	templates.qrc \
 
 OTHER_FILES +=

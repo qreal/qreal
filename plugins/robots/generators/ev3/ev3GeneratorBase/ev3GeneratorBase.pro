@@ -35,16 +35,22 @@ INCLUDEPATH += \
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3GeneratorBase_ru.ts
 
 HEADERS += \
-    include/ev3GeneratorBase/ev3GeneratorPluginBase.h \
-    include/ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h \
-    include/ev3GeneratorBase/ev3MasterGeneratorBase.h \
-    src/ev3GeneratorCustomizer.h \
-    src/ev3GeneratorFactory.h \
-    src/simpleGenerators/drawLineGenerator.h
+	include/ev3GeneratorBase/ev3GeneratorPluginBase.h \
+	include/ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h \
+	include/ev3GeneratorBase/ev3MasterGeneratorBase.h \
+	src/ev3GeneratorCustomizer.h \
+	src/ev3GeneratorFactory.h \
+	src/simpleGenerators/drawLineGenerator.h \
+	src/simpleGenerators/drawPixelGenerator.h \
+	src/simpleGenerators/drawRectGenerator.h \
+	src/simpleGenerators/drawCircleGenerator.h \
 
 SOURCES += \
-    src/ev3GeneratorPluginBase.cpp \
-    src/ev3MasterGeneratorBase.cpp \
-    src/ev3GeneratorCustomizer.cpp \
-    src/ev3GeneratorFactory.cpp \
-    src/simpleGenerators/drawLineGenerator.cpp
+	src/ev3GeneratorPluginBase.cpp \
+	src/ev3MasterGeneratorBase.cpp \
+	src/ev3GeneratorCustomizer.cpp \
+	src/ev3GeneratorFactory.cpp \
+	src/simpleGenerators/drawLineGenerator.cpp \
+	src/simpleGenerators/drawPixelGenerator.cpp \
+	src/simpleGenerators/drawRectGenerator.cpp \
+	src/simpleGenerators/drawCircleGenerator.cpp \
