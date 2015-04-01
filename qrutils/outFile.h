@@ -14,6 +14,10 @@ public:
 	~OutFile();
 	QTextStream &operator()();
 
+	/// Creates in heap new OutFile instance if it can be done
+	/// or returns nullptr and writes into log error message otherwise.
+	static OutFile *openOrLogError(const QString &fileName);
+
 private:
 	QTextStream mOut;
 	QFile mFile;
