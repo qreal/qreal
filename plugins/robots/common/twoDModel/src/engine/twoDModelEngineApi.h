@@ -28,6 +28,8 @@ public:
 	int readColorSensor(const kitBase::robotModel::PortInfo &port) const override;
 	int readLightSensor(const kitBase::robotModel::PortInfo &port) const override;
 
+	QImage areaUnderSensor(const kitBase::robotModel::PortInfo &port, qreal widthFactor) const override;
+
 	void playSound(int timeInMs) override;
 
 	void markerDown(const QColor &color) override;
@@ -39,7 +41,6 @@ public:
 private:
 	QPair<QPointF, qreal> countPositionAndDirection(const kitBase::robotModel::PortInfo &port) const;
 
-	QImage printColorSensor(const kitBase::robotModel::PortInfo &port) const;
 	int readColorFullSensor(QHash<uint, int> const &countsColor) const;
 	int readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const;
 	int readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const;

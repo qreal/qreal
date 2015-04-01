@@ -6,6 +6,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
@@ -103,6 +104,10 @@ void D2ModelWidget::initWidget()
 
 	mUi->setupUi(this);
 
+	mToolsTabName = mUi->mainTabBar->tabText(0);
+	mPortsTabName = mUi->mainTabBar->tabText(1);
+	mModelSettingsTabName = mUi->mainTabBar->tabText(2);
+
 	mScene = new D2ModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
 	mUi->graphicsView->setScene(mScene);
@@ -161,6 +166,7 @@ void D2ModelWidget::connectUiButtons()
 			mScene->clearScene(false, Reason::userAction);
 		}
 	});
+
 	connect(mUi->clearFloorButton, &QAbstractButton::clicked, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
 			, mUi->clearFloorButton, &QAbstractButton::setVisible, Qt::QueuedConnection);
@@ -421,6 +427,8 @@ void D2ModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
 					, robotModel.info().sensorImageRect(device)
 					);
 
+	sensor->setEditable(!mSensorsReadOnly);
+
 	robotItem->addSensor(port, sensor);
 }
 
@@ -595,6 +603,101 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 void D2ModelWidget::setImmediateMode(bool enabled)
 {
 	mModel.timeline().setImmediateMode(enabled);
+}
+
+void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
+{
+	const auto openTab = [this](QWidget * const tab) {
+		QList<const QWidget *> tabOrder{mUi->toolsTab, mUi->portsTab, mUi->modelSettingsTab};
+		QHash<const QWidget *, QString> tabs{
+				{mUi->toolsTab, mToolsTabName}
+				, {mUi->portsTab, mPortsTabName}
+				, {mUi->modelSettingsTab, mModelSettingsTabName}
+		};
+
+		if (!tabs.keys().contains(tab)) {
+			throw qReal::Exception("Trying to add unknown tab to tools palette in 2d model");
+		}
+
+		int tabsIndex = 0;
+
+		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
+			if (mUi->mainTabBar->widget(i) == tab) {
+				return;
+			} else {
+				while (tabsIndex < tabOrder.size() && mUi->mainTabBar->widget(i) != tabOrder[tabsIndex]) {
+					if (tabOrder[tabsIndex] == tab) {
+						mUi->mainTabBar->insertTab(i, tab, tabs[tab]);
+						return;
+					}
+
+					++tabsIndex;
+				}
+			}
+		}
+
+		mUi->mainTabBar->insertTab(mUi->mainTabBar->count(), tab, tabs[tab]);
+	};
+
+	const auto closeTab = [this](QWidget * const tab) {
+		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
+			if (mUi->mainTabBar->widget(i) == tab) {
+				mUi->mainTabBar->removeTab(i);
+				--i;
+			}
+		}
+	};
+
+	const auto setTabHidden = [this, &openTab, &closeTab](QWidget * const tab, const bool hidden) {
+		if (hidden) {
+			closeTab(tab);
+		} else {
+			openTab(tab);
+		}
+	};
+
+	const bool worldReadOnly = (flags & ReadOnly::World) != 0;
+
+	setTabHidden(mUi->toolsTab, worldReadOnly);
+
+	const auto hasSpacer = [this]() {
+		for (int i = 0; i < mUi->sceneHeaderWidget->layout()->count(); ++i) {
+			if (mUi->sceneHeaderWidget->layout()->itemAt(i) == mUi->horizontalSpacer) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	mUi->gridParametersBox->setVisible(!worldReadOnly);
+	if (!worldReadOnly && hasSpacer()) {
+		mUi->sceneHeaderWidget->layout()->removeItem(mUi->horizontalSpacer);
+	} else if (worldReadOnly && !hasSpacer()){
+		static_cast<QHBoxLayout *>(mUi->sceneHeaderWidget->layout())->insertItem(1, mUi->horizontalSpacer);
+	}
+
+	mUi->saveWorldModelPushButton->setVisible(!worldReadOnly);
+	mUi->loadWorldModelPushButton->setVisible(!worldReadOnly);
+
+	const bool sensorsReadOnly = flags.testFlag(ReadOnly::Sensors);
+	const bool robotConfigurationReadOnly = flags.testFlag(ReadOnly::RobotSetup);
+
+	setTabHidden(mUi->portsTab, sensorsReadOnly && robotConfigurationReadOnly);
+
+	mCurrentConfigurer->setEnabled(!sensorsReadOnly);
+	mUi->leftWheelComboBox->setEnabled(!robotConfigurationReadOnly);
+	mUi->rightWheelComboBox->setEnabled(!robotConfigurationReadOnly);
+
+	const bool simulationSettingsReadOnly = flags.testFlag(ReadOnly::SimulationSettings);
+
+	mUi->realisticPhysicsCheckBox->setEnabled(!simulationSettingsReadOnly);
+	mUi->enableMotorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
+	mUi->enableSensorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
+
+	mSensorsReadOnly = sensorsReadOnly;
+
+	mScene->setInteractivityFlags(flags);
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)

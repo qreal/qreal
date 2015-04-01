@@ -46,6 +46,20 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	mBeepItem->setVisible(false);
 
 	RotateItem::init();
+
+	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> sensors = robotModel.info().specialDevices();
+	for (const kitBase::robotModel::PortInfo &port : sensors.keys()) {
+		const kitBase::robotModel::DeviceInfo device = sensors[port];
+		SensorItem *sensorItem = new SensorItem(robotModel.configuration(), port
+				, robotModel.info().sensorImagePath(device), robotModel.info().sensorImageRect(device));
+		addSensor(port, sensorItem);
+
+		const QPair<QPoint, qreal> configuration(robotModel.info().specialDeviceConfiguration(port));
+		QPoint position(configuration.first.x() * boundingRect().width() / 2
+				, configuration.first.y() * boundingRect().height() / 2);
+		sensorItem->setPos(position + boundingRect().center());
+		sensorItem->setRotation(configuration.second);
+	}
 }
 
 void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -75,8 +89,11 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	emit mousePressed();
 	AbstractItem::mousePressEvent(event);
-	mRobotModel.onRobotLiftedFromGround();
-	mDragStart = mRobotModel.position();
+
+	if (editable()) {
+		mRobotModel.onRobotLiftedFromGround();
+		mDragStart = mRobotModel.position();
+	}
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -87,7 +104,9 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
-	onLanded();
+	if (editable()) {
+		onLanded();
+	}
 }
 
 void RobotItem::onLanded()

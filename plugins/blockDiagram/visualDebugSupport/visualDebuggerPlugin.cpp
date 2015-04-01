@@ -36,7 +36,8 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 
 	mDebuggerConnector = new DebuggerConnector(this);
 
-	connect(&configurator.systemEvents(), SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(qReal::Id)));
+	connect(&configurator.systemEvents(), &SystemEvents::activeTabChanged
+			, this, &VisualDebuggerPlugin::activeTabChanged);
 }
 
 QPair<QString, gui::PreferencesPage *> VisualDebuggerPlugin::preferencesPage()
@@ -130,9 +131,9 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	return mActionInfos;
 }
 
-void VisualDebuggerPlugin::activeTabChanged(Id const &rootElementId)
+void VisualDebuggerPlugin::activeTabChanged(TabInfo const &info)
 {
-	bool const enabled = rootElementId.diagram() == blockDiagram;
+	bool const enabled = info.rootDiagramId().diagram() == blockDiagram;
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		if (actionInfo.isAction()) {
 			actionInfo.action()->setEnabled(enabled);

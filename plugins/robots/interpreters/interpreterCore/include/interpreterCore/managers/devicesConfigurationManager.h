@@ -40,9 +40,9 @@ private:
 			, const kitBase::robotModel::DeviceInfo &sensor
 			, Reason reason) override;
 
-	/// Reacts to changing of editor tab.
-	/// @param graphicalRootId - id of a root diagram of newly selected tab.
-	void onActiveTabChanged(const qReal::Id &graphicalRootId);
+	/// Reacts to selection of a new tab in main window.
+	/// @param info - the information about the new active tab.
+	void onActiveTabChanged(const qReal::TabInfo &info);
 
 	/// Serializes current sensors configuration into inner string representation.
 	QString save() const;

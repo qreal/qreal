@@ -49,14 +49,18 @@ public:
 	/// Action that shows settings page with "robots" tab selected.
 	QAction &robotSettingsAction();
 
+	/// Action that allows to save current model as an exercise with different limitations, such as inability to
+	/// change world in 2d model or configuration of robot sensors.
+	QAction &exportExerciseAction();
+
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
 	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
 
-	/// Reacts to selection of a new tab on scene.
-	/// @param activeTabId - id of a root element of new active tab.
-	void onActiveTabChanged(const qReal::Id &activeTabId);
+	/// Reacts to selection of a new tab in main window.
+	/// @param info - the information about the new active tab.
+	void onActiveTabChanged(const qReal::TabInfo &info);
 
 private slots:
 	void onRobotModelActionChecked(QObject *robotModelObject);
@@ -91,6 +95,10 @@ private:
 
 	/// Action that shows robots tab in settings dialog
 	QAction mRobotSettingsAction;
+
+	/// Action that allows to save current model as an exercise with different limitations, such as inability to
+	/// change world in 2d model or configuration of robot sensors.
+	QAction mExportExerciseAction;
 
 	QAction mSeparator1;
 	QAction mSeparator2;

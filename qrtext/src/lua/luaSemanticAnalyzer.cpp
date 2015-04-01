@@ -73,10 +73,19 @@ void LuaSemanticAnalyzer::addIntrinsicFunction(const QString &name, const QShare
 	mIntrinsicFunctions.insert(name, type);
 }
 
+void LuaSemanticAnalyzer::addReadOnlyVariable(const QString &name)
+{
+	mReadOnlyVariables.insert(name);
+}
+
 void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &node)
 {
 	if (node->is<ast::Assignment>()) {
 		auto assignment = as<ast::Assignment>(node);
+		if (!checkForReadOnlyVariables(assignment->variable())) {
+			return;
+		}
+
 		constrainAssignment(assignment, assignment->variable(), assignment->value());
 		checkForUndeclaredIdentifiers(assignment->value());
 	} else if (node->is<ast::Identifier>()) {
@@ -286,6 +295,19 @@ void LuaSemanticAnalyzer::checkForUndeclaredIdentifiers(const QSharedPointer<cor
 	}
 }
 
+bool LuaSemanticAnalyzer::checkForReadOnlyVariables(const QSharedPointer<core::ast::Node> &node)
+{
+	if (node->is<ast::Identifier>()) {
+		const auto identifier = as<ast::Identifier>(node);
+		if (mReadOnlyVariables.contains(identifier->name())) {
+			reportError(node, QObject::tr("Variable %1 is read-only").arg(identifier->name()));
+			return false;
+		}
+	}
+
+	return true;
+}
+
 QMap<QString, QSharedPointer<types::TypeExpression>> LuaSemanticAnalyzer::variableTypes() const
 {
 	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result = SemanticAnalyzer::variableTypes();
@@ -294,4 +316,10 @@ QMap<QString, QSharedPointer<types::TypeExpression>> LuaSemanticAnalyzer::variab
 	}
 
 	return result;
+}
+
+void LuaSemanticAnalyzer::clear()
+{
+	SemanticAnalyzer::clear();
+	mReadOnlyVariables.clear();
 }

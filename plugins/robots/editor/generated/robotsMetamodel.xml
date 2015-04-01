@@ -160,7 +160,6 @@
 						<contains type="AbstractNode"/>
 					</container>
 					<properties>
-						<property displayedName="World model" type="string" name="worldModel" />
 						<property displayedName="Devices configuration" type="string" name="devicesConfiguration" />
 					</properties>
 				</logic>
