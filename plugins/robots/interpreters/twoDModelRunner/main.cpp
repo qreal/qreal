@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 			, "path-to-report", "report.json");
 	QCommandLineOption trajectoryOption("trajectory", QObject::tr("A path to file where robot`s trajectory will be"\
 				" written. The writing will not be performed not immediately, each trajectory point will be written"\
-				" just when obtained by checker, engine so FIFOs are recommended to be targets for this option.")
+				" just when obtained by checker, so FIFOs are recommended to be targets for this option.")
 			, "path-to-trajectory", "trajectory.fifo");
 	parser.addOption(backgroundOption);
 	parser.addOption(platformOption);
