@@ -6,6 +6,7 @@
 
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
+#include <kitBase/readOnly.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
 #include <kitBase/devicesConfigurationProvider.h>
@@ -61,6 +62,11 @@ public:
 	void setSensorVisible(const kitBase::robotModel::PortInfo &port, bool isVisible);
 
 	void loadXml(const QDomDocument &worldModel);
+
+	/// Sets groups of items on 2d model that can not be modified by user. Used for "challenge" mode where student
+	/// shall provide program that makes robot do specific task in given unmodifyable world model.
+	/// @see ReadOnly
+	void setInteractivityFlags(kitBase::ReadOnlyFlags flags);
 
 signals:
 	/// Emitted each time when user closes 2D model window.
@@ -216,6 +222,12 @@ private:
 	bool mDisplayIsVisible = false;
 
 	bool mAutoOpen;
+
+	QString mToolsTabName;
+	QString mModelSettingsTabName;
+	QString mPortsTabName;
+
+	bool mSensorsReadOnly = false;
 };
 
 }

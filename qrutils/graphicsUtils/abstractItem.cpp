@@ -12,6 +12,7 @@ using namespace graphicsUtils;
 AbstractItem::AbstractItem(QGraphicsItem* parent)
 	: QGraphicsObject(parent), mDragState(None)
 	, mX1(0), mY1(0), mX2(0), mY2(0), mView(nullptr)
+	, mEditable(true)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -433,6 +434,17 @@ void AbstractItem::setId(const QString &id)
 	mId = id;
 }
 
+void AbstractItem::setEditable(bool editable)
+{
+	mEditable = editable;
+	setFlag(QGraphicsItem::ItemIsMovable, editable);
+}
+
+bool AbstractItem::editable() const
+{
+	return mEditable;
+}
+
 void AbstractItem::serialize(QDomElement &element)
 {
 	element.setAttribute("id", id());
@@ -445,6 +457,10 @@ void AbstractItem::deserialize(const QDomElement &element)
 
 void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
+	if (!mEditable) {
+		return;
+	}
+
 	QMenu *menu = new QMenu();
 	QAction *removeAction = menu->addAction(QObject::tr("Remove"));
 	QAction *selectedAction = menu->exec(event->screenPos());

@@ -15,11 +15,16 @@ void InterpretedPluginsLoader::init(
 	mEditorRepoApi = mInterpreterEditorManager->listOfMetamodels();
 
 	for (qrRepo::RepoApi * const repo : mEditorRepoApi.values()) {
-		mPluginManager.init(configurator, *repo);
+		mPluginManager.init(configurator, *repo, editorManager);
 	}
 }
 
 QList<ActionInfo> InterpretedPluginsLoader::listOfActions() const
 {
 	return mPluginManager.actions();
+}
+
+QList<QAction *> InterpretedPluginsLoader::menuActionsList() const
+{
+	return mPluginManager.menuActionsList();
 }

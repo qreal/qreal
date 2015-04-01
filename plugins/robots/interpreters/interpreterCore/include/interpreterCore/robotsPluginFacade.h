@@ -19,6 +19,8 @@
 
 namespace interpreterCore {
 
+class ExerciseExportManager;
+
 namespace ui {
 class RobotsSettingsPage;
 }
@@ -88,6 +90,7 @@ private:
 	RobotModelManager mRobotModelManager;
 	ActionsManager mActionsManager;
 	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
+	QScopedPointer<ExerciseExportManager> mSaveAsTaskManager;
 
 	kitBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership

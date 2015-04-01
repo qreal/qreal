@@ -94,7 +94,7 @@ QString ValuesSerializer::serializeQVariant(const QVariant &v)
 	case QVariant::Double:
 		return QString::number(v.toDouble());
 	case QVariant::Bool:
-		return QString("%1").arg(v.toBool());
+		return QString("%1").arg(v.toBool() ? "true" : "false");
 	case QVariant::String:
 		return v.toString();
 	case QVariant::StringList:

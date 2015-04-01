@@ -69,7 +69,7 @@ void AbstractScene::setX2andY2(QGraphicsSceneMouseEvent *event)
 void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	if (mGraphicsItem) {
+	if (mGraphicsItem && mGraphicsItem->editable()) {
 		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
@@ -93,7 +93,7 @@ void AbstractScene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 	QList<QGraphicsItem *> list = items(event->scenePos());
 	foreach (QGraphicsItem *graphicsItem, list){
 		AbstractItem *item = dynamic_cast<graphicsUtils::AbstractItem *>(graphicsItem);
-		if (item) {
+		if (item && item->editable()) {
 			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
 		}
 	}
@@ -108,8 +108,9 @@ void AbstractScene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsIte
 			grItem->setFlag(QGraphicsItem::ItemIsMovable, false);
 		}
 	}
+
 	if (item && item != mEmptyRect) {
-		item->setFlag(QGraphicsItem::ItemIsMovable, true);
+		item->setFlag(QGraphicsItem::ItemIsMovable, false);
 	}
 }
 
@@ -131,7 +132,7 @@ void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
-	if (mGraphicsItem) {
+	if (mGraphicsItem && mGraphicsItem->editable()) {
 		mGraphicsItem->changeDragState(mX1, mY1);
 		if (mGraphicsItem->getDragState() != AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);

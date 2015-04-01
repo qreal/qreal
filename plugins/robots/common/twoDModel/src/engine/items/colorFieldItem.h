@@ -9,10 +9,9 @@ class ColorFieldItem : public graphicsUtils::AbstractItem
 {
 public:
 	explicit ColorFieldItem(QGraphicsItem* parent = 0);
-	virtual ~ColorFieldItem();
+	~ColorFieldItem() override;
 
-	virtual QRectF boundingRect() const = 0;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
+	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) override = 0;
 
 	virtual QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) = 0;
 };

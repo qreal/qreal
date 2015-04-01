@@ -35,7 +35,6 @@ public:
 	/// @todo: Separate twoD model engine from the enviroment (get rid of parameters)
 	virtual void init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 			, const qReal::SystemEvents &systemEvents
-			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, kitBase::InterpreterControlInterface &interpreterControl) = 0;

@@ -161,6 +161,9 @@ public:
 	void setEnabledForAllElementsInPalette(bool enabled) override;
 	void endPaletteModification() override;
 
+	/// Additional actions for interpreter palette.
+	QList<QAction *> optionalMenuActionsForInterpretedPlugins();
+
 signals:
 	void rootDiagramChanged();
 
@@ -384,6 +387,8 @@ private:
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
+
+	QList<QAction *> mListOfAdditionalActions; // doesn't have ownership
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
