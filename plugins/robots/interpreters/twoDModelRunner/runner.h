@@ -13,8 +13,10 @@
 namespace twoDModel {
 
 /// Creates instances null QReal environment, of robots plugin and runs interpretation on 2D model window.
-class Runner
+class Runner : public QObject
 {
+	Q_OBJECT
+
 public:
 	/// Constructor.
 	/// @param report A path to a file where JSON report about the session will be written after it ends.
@@ -29,6 +31,8 @@ public:
 	void interpret(const QString &saveFile, bool background);
 
 private:
+	void onRobotRided(const QPointF &newPosition, const qreal newRotation);
+
 	qReal::SystemFacade mQRealFacade;
 	qReal::ConsoleErrorReporter mErrorReporter;
 	qReal::ProjectManager mProjectManager;

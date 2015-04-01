@@ -29,11 +29,15 @@ void Reporter::addError(const QString &message)
 	mMessages << qMakePair(Level::error, message);
 }
 
-void Reporter::newTrajectoryPoint(int timestamp, const QPointF &position, qreal rotation)
+void Reporter::newTrajectoryPoint(const QString &robotId, int timestamp, const QPointF &position, qreal rotation)
 {
 	if (!mTrajectoryFile.isNull()) {
-		(*mTrajectoryFile)() << QString("%1 %2 %3 %4").arg(QString::number(timestamp)
-				, QString::number(position.x()), QString::number(position.y()), QString::number(rotation));
+		(*mTrajectoryFile)() << QString("%1 %2 %3 %4 %5\n").arg(robotId
+				, QString::number(timestamp)
+				, QString::number(position.x())
+				, QString::number(position.y())
+				, QString::number(rotation));
+		mTrajectoryFile->flush();
 	}
 }
 

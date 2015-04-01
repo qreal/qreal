@@ -22,6 +22,11 @@ QTextStream &OutFile::operator()()
 	return mOut;
 }
 
+void OutFile::flush()
+{
+	mOut.flush();
+}
+
 OutFile *OutFile::openOrLogError(const QString &fileName)
 {
 	if (fileName.isEmpty()) {

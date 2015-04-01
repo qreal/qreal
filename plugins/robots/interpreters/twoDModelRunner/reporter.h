@@ -41,7 +41,7 @@ public slots:
 	void addError(const QString &message);
 
 	/// Writes an information abount the new trajectory point into the given in constructor file.
-	void newTrajectoryPoint(int timestamp, const QPointF &position, qreal rotation);
+	void newTrajectoryPoint(const QString &robotId, int timestamp, const QPointF &position, qreal rotation);
 
 	/// Writes an information about all messages shown to user during the interpretation process into the specified
 	/// in constructor file in XML format.

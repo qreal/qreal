@@ -14,6 +14,9 @@ public:
 	~OutFile();
 	QTextStream &operator()();
 
+	/// Flushes all new modifications in text stream into the file system.
+	void flush();
+
 	/// Creates in heap new OutFile instance if it can be done
 	/// or returns nullptr and writes into log error message otherwise.
 	static OutFile *openOrLogError(const QString &fileName);

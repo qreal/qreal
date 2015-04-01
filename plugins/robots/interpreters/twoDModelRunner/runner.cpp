@@ -27,12 +27,9 @@ Runner::Runner(const QString &report, const QString &trajectory)
 		qReal::SettingsManager::loadDefaultSettings(defaultSettingsFile);
 	}
 
-	QObject::connect(&mErrorReporter, &qReal::ConsoleErrorReporter::informationAdded
-		, &mReporter, &Reporter::addInformation);
-	QObject::connect(&mErrorReporter, &qReal::ConsoleErrorReporter::errorAdded
-		, &mReporter, &Reporter::addError);
-	QObject::connect(&mErrorReporter, &qReal::ConsoleErrorReporter::criticalAdded
-		, &mReporter, &Reporter::addError);
+	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::informationAdded, &mReporter, &Reporter::addInformation);
+	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::errorAdded, &mReporter, &Reporter::addError);
+	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::criticalAdded, &mReporter, &Reporter::addError);
 }
 
 Runner::~Runner()
@@ -56,15 +53,28 @@ void Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		QObject::connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped
+		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped
 				, &mMainWindow, &qReal::NullMainWindow::emulateClose);
 	}
 
 	for (view::D2ModelWidget * const  twoDModelWindow : twoDModelWindows) {
-		QObject::connect(twoDModelWindow, &view::D2ModelWidget::widgetClosed
+		connect(twoDModelWindow, &view::D2ModelWidget::widgetClosed
 				, &mMainWindow, &qReal::NullMainWindow::emulateClose);
 		twoDModelWindow->model().timeline().setImmediateMode(background);
+		for (model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
+			connect(robotModel, &model::RobotModel::robotRided, this, &Runner::onRobotRided, Qt::UniqueConnection);
+		}
 	}
 
 	mPluginFacade.actionsManager().runAction().trigger();
+}
+
+void Runner::onRobotRided(const QPointF &newPosition, const qreal newRotation)
+{
+	mReporter.newTrajectoryPoint(
+			static_cast<model::RobotModel *>(sender())->info().robotId()
+			, mPluginFacade.interpreter().timeElapsed()
+			, newPosition
+			, newRotation
+	);
 }
