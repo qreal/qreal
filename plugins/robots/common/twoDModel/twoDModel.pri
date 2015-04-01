@@ -16,6 +16,13 @@ HEADERS += \
 	$$PWD/include/twoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/twoDModel/engine/twoDModelEngineInterface.h \
 	$$PWD/include/twoDModel/engine/view/d2ModelWidget.h \
+	$$PWD/include/twoDModel/engine/model/constants.h \
+	$$PWD/include/twoDModel/engine/model/model.h \
+	$$PWD/include/twoDModel/engine/model/worldModel.h \
+	$$PWD/include/twoDModel/engine/model/timeline.h \
+	$$PWD/include/twoDModel/engine/model/robotModel.h \
+	$$PWD/include/twoDModel/engine/model/sensorsConfiguration.h \
+	$$PWD/include/twoDModel/engine/model/settings.h \
 	$$PWD/include/twoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/twoDModel/robotModel/parts/button.h \
 	$$PWD/include/twoDModel/robotModel/parts/colorSensorBlue.h \
@@ -52,14 +59,7 @@ HEADERS += \
 	$$PWD/src/engine/constraints/details/conditionsFactory.h \
 	$$PWD/src/engine/constraints/details/triggersFactory.h \
 	$$PWD/src/engine/constraints/details/valuesFactory.h \
-	$$PWD/src/engine/model/model.h \
-	$$PWD/src/engine/model/constants.h \
-	$$PWD/src/engine/model/settings.h \
-	$$PWD/src/engine/model/sensorsConfiguration.h \
-	$$PWD/src/engine/model/worldModel.h \
-	$$PWD/src/engine/model/timeline.h \
 	$$PWD/src/engine/model/modelTimer.h \
-	$$PWD/src/engine/model/robotModel.h \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \

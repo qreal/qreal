@@ -3,7 +3,7 @@
 #include <qrutils/graphicsUtils/rectangleImpl.h>
 
 #include "sensorItem.h"
-#include "src/engine/model/robotModel.h"
+#include "twoDModel/engine/model/robotModel.h"
 
 namespace twoDModel {
 namespace view {

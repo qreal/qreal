@@ -3,6 +3,7 @@
 #include <QtWidgets/QApplication>
 
 #include <twoDModel/engine/view/d2ModelWidget.h>
+#include <twoDModel/engine/model/model.h>
 
 using namespace twoDModel;
 
@@ -62,7 +63,7 @@ void Runner::interpret(const QString &saveFile, bool background)
 	for (view::D2ModelWidget * const  twoDModelWindow : twoDModelWindows) {
 		QObject::connect(twoDModelWindow, &view::D2ModelWidget::widgetClosed
 				, &mMainWindow, &qReal::NullMainWindow::emulateClose);
-		twoDModelWindow->setImmediateMode(background);
+		twoDModelWindow->model().timeline().setImmediateMode(background);
 	}
 
 	mPluginFacade.actionsManager().runAction().trigger();

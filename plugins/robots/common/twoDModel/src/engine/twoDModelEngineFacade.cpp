@@ -3,7 +3,7 @@
 #include <kitBase/readOnly.h>
 
 #include "twoDModel/engine/view/d2ModelWidget.h"
-#include "model/model.h"
+#include "twoDModel/engine/model/model.h"
 #include "twoDModelEngineApi.h"
 
 using namespace twoDModel::engine;

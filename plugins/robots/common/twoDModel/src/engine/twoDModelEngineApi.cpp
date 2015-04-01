@@ -13,8 +13,8 @@
 #include <kitBase/robotModel/robotParts/colorSensorGreen.h>
 #include <kitBase/robotModel/robotParts/colorSensorBlue.h>
 
-#include "model/model.h"
-#include "model/constants.h"
+#include "twoDModel/engine/model/model.h"
+#include "twoDModel/engine/model/constants.h"
 
 #include "twoDModel/engine/view/d2ModelWidget.h"
 #include "view/d2ModelScene.h"

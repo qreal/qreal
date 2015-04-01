@@ -58,9 +58,8 @@ public:
 
 	void loadXml(const QDomDocument &worldModel);
 
-	/// If true is passed then the speed of interpretation will be setted to the fastest one and this window
-	/// will be closed just after the interpretation stops.
-	void setImmediateMode(bool enabled);
+	/// Returns a reference to a model part of 2D model MVC architecture.
+	model::Model &model() const;
 
 	/// Sets groups of items on 2d model that can not be modified by user. Used for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.

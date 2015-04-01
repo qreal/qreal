@@ -10,7 +10,7 @@
 
 #include <kitBase/robotModel/portInfo.h>
 
-#include "src/engine/model/sensorsConfiguration.h"
+#include "twoDModel/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
 namespace view {

@@ -29,8 +29,8 @@
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 
-#include "src/engine/model/constants.h"
-#include "src/engine/model/model.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/model.h"
 
 #include "twoDModel/engine/nullTwoDModelDisplayWidget.h"
 
@@ -600,9 +600,9 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 	mModel.deserialize(worldModel);
 }
 
-void D2ModelWidget::setImmediateMode(bool enabled)
+Model &D2ModelWidget::model() const
 {
-	mModel.timeline().setImmediateMode(enabled);
+	return mModel;
 }
 
 void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)

@@ -3,8 +3,8 @@
 #include <kitBase/robotModel/portInfo.h>
 
 #include "sensorItem.h"
-#include "src/engine/model/worldModel.h"
-#include "src/engine/model/sensorsConfiguration.h"
+#include "twoDModel/engine/model/worldModel.h"
+#include "twoDModel/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
 namespace view {

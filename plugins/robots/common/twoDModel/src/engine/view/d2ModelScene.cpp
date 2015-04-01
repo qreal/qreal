@@ -9,7 +9,7 @@
 
 #include "robotItem.h"
 
-#include "src/engine/model/model.h"
+#include "twoDModel/engine/model/model.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
