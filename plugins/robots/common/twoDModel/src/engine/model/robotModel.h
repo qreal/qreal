@@ -108,7 +108,7 @@ signals:
 	void positionChanged(const QPointF &newPosition);
 	void rotationChanged(qreal newRotation);
 
-	/// Emitted when robot rided himself (moved on motors force, not dragged by cursor or smth) from one point to other.
+	/// Emitted when robot rided himself (moved on motors force, not dragged by user or smth) from one point to other.
 	void robotRided(const QPointF &newPosition, const qreal newRotation);
 
 	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.

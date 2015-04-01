@@ -8,6 +8,7 @@
 #include <qrgui/editor/sceneCustomizer.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <interpreterCore/robotsPluginFacade.h>
+#include "reporter.h"
 
 namespace twoDModel {
 
@@ -15,9 +16,14 @@ namespace twoDModel {
 class Runner
 {
 public:
-	Runner();
+	/// Constructor.
+	/// @param report A path to a file where JSON report about the session will be written after it ends.
+	/// @param trajectory A path to a file where robot`s trajectory will be written during the session.
+	Runner(const QString &report, const QString &trajectory);
+	~Runner();
 
 	/// Starts the interpretation process. The given save file will be opened and interpreted in 2D model window.
+	/// @param saveFile QReal save file (qrs) that will be opened and interpreted.
 	/// @param background If true then the save file will be interpreted in the fastest speed and 2D model window
 	/// will be closed immediately after the interpretation stopped.
 	void interpret(const QString &saveFile, bool background);
@@ -31,6 +37,7 @@ private:
 	qReal::SceneCustomizer mSceneCustomizer;
 	qReal::PluginConfigurator mConfigurator;
 	interpreterCore::RobotsPluginFacade mPluginFacade;
+	Reporter mReporter;
 };
 
 }
