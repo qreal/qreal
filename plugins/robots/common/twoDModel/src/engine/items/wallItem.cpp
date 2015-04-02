@@ -77,6 +77,11 @@ void WallItem::drawExtractionForItem(QPainter *painter)
 void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
+
+	if (!editable()) {
+		return;
+	}
+
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
 	mOldX1 = event->scenePos().x() - mX1;
 	mOldY1 = event->scenePos().y() - mY1;
@@ -84,6 +89,10 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
+	if (!editable()) {
+		return;
+	}
+
 	// When selecting a robot item on the scene than display widget may appear.
 	// After that scene would be shrinked and mouse move event would be generated (but actually
 	// mouse cursor is not moved). Because of that selected robot item moves which should not be because you

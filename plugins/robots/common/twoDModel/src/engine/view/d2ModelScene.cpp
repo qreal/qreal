@@ -34,12 +34,9 @@ D2ModelScene::D2ModelScene(model::Model &model
 	setItemIndexMethod(NoIndex);
 	setEmptyPenBrushItems();
 
-	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &QGraphicsScene::addItem);
-	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, [this](items::WallItem *wall) {
-		connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
-	});
-	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &QGraphicsScene::addItem);
-	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &QGraphicsScene::addItem);
+	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &D2ModelScene::onWallAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &D2ModelScene::onColorItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &D2ModelScene::onOtherItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &D2ModelScene::onItemRemoved);
 
 	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
@@ -53,6 +50,29 @@ D2ModelScene::~D2ModelScene()
 bool D2ModelScene::oneRobot() const
 {
 	return mRobots.size() == 1;
+}
+
+void D2ModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
+{
+	mWorldReadOnly = (flags & kitBase::ReadOnly::World) != 0;
+	mRobotReadOnly = (flags & kitBase::ReadOnly::RobotPosition) != 0;
+	mSensorsReadOnly = (flags & kitBase::ReadOnly::Sensors) != 0;
+
+	for (const auto item : items()) {
+		const auto robotItem = dynamic_cast<RobotItem *>(item);
+		const auto sensorItem = dynamic_cast<SensorItem *>(item);
+		const auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
+		const auto startPosition = dynamic_cast<items::StartPosition *>(item);
+		if (worldItem) {
+			worldItem->setEditable(!mWorldReadOnly);
+		} else if (robotItem) {
+			robotItem->setEditable(!mRobotReadOnly);
+		} else if (sensorItem) {
+			sensorItem->setEditable(!mSensorsReadOnly);
+		} else if (startPosition) {
+			startPosition->setEditable(!mRobotReadOnly);
+		}
+	}
 }
 
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
@@ -73,6 +93,8 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
 	connect(robotItem, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
 
+	robotItem->setEditable(!mRobotReadOnly);
+
 	addItem(robotItem);
 	addItem(robotItem->robotModel().startPositionMarker());
 
@@ -91,6 +113,24 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 	delete robotItem;
 
 	emit robotListChanged(nullptr);
+}
+
+void D2ModelScene::onWallAdded(items::WallItem *wall)
+{
+	addItem(wall);
+	connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
+	wall->setEditable(!mWorldReadOnly);
+}
+
+void D2ModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
+{
+	addItem(item);
+	item->setEditable(!mWorldReadOnly);
+}
+
+void D2ModelScene::onOtherItemAdded(QGraphicsItem *item)
+{
+	addItem(item);
 }
 
 void D2ModelScene::onItemRemoved(QGraphicsItem *item)
@@ -242,7 +282,7 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
-	if (mGraphicsItem) {
+	if (mGraphicsItem && mGraphicsItem->editable()) {
 		mGraphicsItem->changeDragState(mX1, mY1);
 		if (mGraphicsItem->getDragState() != AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
@@ -293,7 +333,7 @@ void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event)
 void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	if (mGraphicsItem) {
+	if (mGraphicsItem && mGraphicsItem->editable()) {
 		const QPointF oldBegin = mGraphicsItem->getX1andY1();
 		const QPointF oldEnd = mGraphicsItem->getX2andY2();
 		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
@@ -318,6 +358,17 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
 		for (QGraphicsItem * const item : selectedItems()) {
+			auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
+			auto robotItem = dynamic_cast<RobotItem *>(item);
+			auto sensorItem = dynamic_cast<SensorItem *>(item);
+			if (worldItem && mWorldReadOnly) {
+				return;
+			} else if (robotItem && mRobotReadOnly) {
+				return;
+			} else if (sensorItem && mSensorsReadOnly) {
+				return;
+			}
+
 			deleteItem(item);
 		}
 	} else {

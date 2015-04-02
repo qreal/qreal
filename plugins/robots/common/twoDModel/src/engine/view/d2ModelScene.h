@@ -7,6 +7,7 @@
 #include <qrutils/graphicsUtils/gridDrawer.h>
 
 #include <kitBase/devicesConfigurationProvider.h>
+#include <kitBase/readOnly.h>
 
 namespace twoDModel {
 
@@ -39,6 +40,11 @@ public:
 
 	/// Returns true if existing only one robot
 	bool oneRobot() const;
+
+	/// Forbid all interaction with specified categories of objects on scene, for "challenge" mode where student
+	/// shall provide program that makes robot do specific task in given unmodifyable world model.
+	/// Categories of items include world model (walls, lines, etc.), sensors, robot position.
+	void setInteractivityFlags(kitBase::ReadOnlyFlags flags);
 
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
@@ -96,6 +102,15 @@ private slots:
 	/// @param robotModel Robot model which was removed
 	void onRobotRemove(model::RobotModel *robotModel);
 
+	/// Called after new wall is added to a world model.
+	void onWallAdded(items::WallItem *wall);
+
+	/// Called after new color field item is added to a world model.
+	void onColorItemAdded(graphicsUtils::AbstractItem *item);
+
+	/// Called after new other item is added to a world model.
+	void onOtherItemAdded(QGraphicsItem *item);
+
 	void onItemRemoved(QGraphicsItem *item);
 
 private:
@@ -146,6 +161,10 @@ private:
 	items::LineItem *mCurrentLine = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
+
+	bool mWorldReadOnly = false;
+	bool mRobotReadOnly = false;
+	bool mSensorsReadOnly = false;
 };
 
 }

@@ -15,7 +15,7 @@ public:
 	virtual AbstractItem* clone() const = 0;
 
 	virtual QRectF boundingRect() const = 0;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
+	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) override = 0;
 
 	virtual QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) = 0;
 };
