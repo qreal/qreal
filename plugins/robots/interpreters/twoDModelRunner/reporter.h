@@ -33,6 +33,9 @@ public:
 
 	~Reporter();
 
+	/// Returns true if last reported to user message was an error.
+	bool lastMessageIsError();
+
 public slots:
 	/// Reports informational message reported to user during the interpretation process.
 	void addInformation(const QString &message);

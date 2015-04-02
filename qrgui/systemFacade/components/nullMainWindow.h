@@ -86,7 +86,7 @@ public:
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
 
 	/// Sends close event via SystemEvents.
-	void emulateClose();
+	void emulateClose(int returnCode = 0);
 
 private:
 	void openFirstDiagram();

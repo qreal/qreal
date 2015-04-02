@@ -54,12 +54,11 @@ void Runner::interpret(const QString &saveFile, bool background)
 
 	if (background) {
 		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped
-				, &mMainWindow, &qReal::NullMainWindow::emulateClose);
+				, [=]() { mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0); });
 	}
 
 	for (view::D2ModelWidget * const  twoDModelWindow : twoDModelWindows) {
-		connect(twoDModelWindow, &view::D2ModelWidget::widgetClosed
-				, &mMainWindow, &qReal::NullMainWindow::emulateClose);
+		connect(twoDModelWindow, &view::D2ModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
 		for (model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
 			connect(robotModel, &model::RobotModel::robotRided, this, &Runner::onRobotRided, Qt::UniqueConnection);

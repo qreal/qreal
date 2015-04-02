@@ -19,6 +19,11 @@ Reporter::~Reporter()
 {
 }
 
+bool Reporter::lastMessageIsError()
+{
+	return !mMessages.isEmpty() && mMessages.last().first == Level::error;
+}
+
 void Reporter::addInformation(const QString &message)
 {
 	mMessages << qMakePair(Level::information, message);

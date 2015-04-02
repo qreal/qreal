@@ -263,7 +263,7 @@ void NullMainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWid
 	Q_UNUSED(dockWidget)
 }
 
-void NullMainWindow::emulateClose()
+void NullMainWindow::emulateClose(int returnCode)
 {
 	if (mClosed) {
 		return;
@@ -271,5 +271,5 @@ void NullMainWindow::emulateClose()
 
 	mClosed = true;
 	emit mEvents.closedMainWindow();
-	QCoreApplication::exit(0);
+	QCoreApplication::exit(returnCode);
 }
