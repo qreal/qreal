@@ -93,6 +93,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 
 D2ModelWidget::~D2ModelWidget()
 {
+	mSelectedRobotItem = nullptr;
 	delete mScene;
 	delete mDisplay;
 	delete mUi;
