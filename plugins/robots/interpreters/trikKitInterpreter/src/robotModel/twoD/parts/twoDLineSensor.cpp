@@ -43,35 +43,35 @@ void LineSensor::read()
 {
 	const QImage image = mEngine.areaUnderSensor(port(), 2.0);
 
-//	const int height = image.height();
-//	const int width = image.width();
+	const int height = image.height();
+	const int width = image.width();
 
-//	int blacks = 0;
-//	int crossBlacks = 0;
-//	int horizontalLineWidth = image.height() * 0.2;
-//	qreal xCoordinates = 0;
-//	for (int i = 0; i < height; ++i) {
-//		int blacksInRow = 0;
-//		qreal xSum = 0;
+	int blacks = 0;
+	int crossBlacks = 0;
+	int horizontalLineWidth = image.height() * 0.2;
+	qreal xCoordinates = 0;
+	for (int i = 0; i < height; ++i) {
+		int blacksInRow = 0;
+		qreal xSum = 0;
 
-//		for (int j = 0; j < width; ++j) {
-//			if (closeEnough(image.pixel(j, i))) {
-//				++blacksInRow;
-//				xSum += (j + 1) * 100.0 / (width / 2.0) - 100;
-//			}
-//		}
+		for (int j = 0; j < width; ++j) {
+			if (closeEnough(image.pixel(j, i))) {
+				++blacksInRow;
+				xSum += (j + 1) * 100.0 / (width / 2.0) - 100;
+			}
+		}
 
-//		xCoordinates += (blacksInRow ? xSum / blacksInRow : 0);
-//		blacks += blacksInRow;
-//		if (((height - horizontalLineWidth) / 2 < i) && (i < (height + horizontalLineWidth) / 2)) {
-//			crossBlacks += blacksInRow;
-//		}
-//	}
+		xCoordinates += (blacksInRow ? xSum / blacksInRow : 0);
+		blacks += blacksInRow;
+		if (((height - horizontalLineWidth) / 2 < i) && (i < (height + horizontalLineWidth) / 2)) {
+			crossBlacks += blacksInRow;
+		}
+	}
 
-//	const int x = qRound(xCoordinates / height);
-//	const int lineWidth = blacks / height;
-//	const int cross = qRound(crossBlacks * 100.0 / (height * horizontalLineWidth));
-//	emit newData({ x, lineWidth, cross });
+	const int x = qRound(xCoordinates / height);
+	const int lineWidth = blacks / height;
+	const int cross = qRound(crossBlacks * 100.0 / (height * horizontalLineWidth));
+	emit newData({ x, lineWidth, cross });
 }
 
 bool LineSensor::closeEnough(const QColor &color) const

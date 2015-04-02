@@ -136,7 +136,6 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TwoDRobotModel::specialDevices() const
 {
 	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::TwoDRobotModel::specialDevices());
-//	result[PortInfo("LineSensorPort", input)] = DeviceInfo::create<parts::LineSensor>();
 	return result;
 }
 
