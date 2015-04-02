@@ -12,6 +12,8 @@ class WallItem : public LineItem
 public:
 	WallItem(const QPointF &begin, const QPointF &end);
 
+	AbstractItem* clone() const override;
+
 	QPointF begin();
 	QPointF end();
 	bool isDragged() const;
@@ -43,7 +45,7 @@ private:
 
 	bool mDragged;
 	bool mOverlappedWithRobot;
-	QImage mImage;
+	const QImage mImage;
 
 	int mOldX1;
 	int mOldY1;

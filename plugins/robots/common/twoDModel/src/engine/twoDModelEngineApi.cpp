@@ -20,6 +20,13 @@
 #include "view/d2ModelScene.h"
 #include "view/robotItem.h"
 
+#include "src/engine/items/wallItem.h"
+#include "src/engine/items/colorFieldItem.h"
+#include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/stylusItem.h"
+#include "src/engine/items/regions/ellipseRegion.h"
+#include "src/engine/items/regions/rectangularRegion.h"
+
 using namespace twoDModel;
 using namespace kitBase::robotModel;
 using namespace twoDModel::model;
@@ -155,18 +162,18 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	painter.setPen(QPen(Qt::white));
 	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
-	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
-	const bool wasSelected = sensorItem->isSelected();
-	const bool rotaterWasVisible = robot->rotater().isVisible();
-	const bool rotaterWasSelected = robot->rotater().isSelected();
-	robot->setVisible(false);
+	QGraphicsScene temporaryScene;
 
-	mView.scene()->render(&painter, QRectF(), scanningRect);
+	const auto &worldModel = mModel.worldModel();
+	for (items::WallItem *wall : worldModel.walls()) {
+		temporaryScene.addItem(wall->clone());
+	}
 
-	mView.sensorItem(port)->setSelected(wasSelected);
-	robot->setVisible(true);
-	robot->rotater().setVisible(rotaterWasVisible);
-	robot->rotater().setSelected(rotaterWasSelected);
+	for (items::ColorFieldItem *colorField : worldModel.colorFields()) {
+		temporaryScene.addItem(colorField->clone());
+	}
+
+	temporaryScene.render(&painter, QRectF(), scanningRect);
 
 	const QPoint offset = QPointF(width, width).toPoint();
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));

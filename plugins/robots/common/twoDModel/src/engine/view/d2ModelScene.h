@@ -34,6 +34,7 @@ public:
 	D2ModelScene(model::Model &model
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
+
 	~D2ModelScene() override;
 
 	/// Returns true if existing only one robot

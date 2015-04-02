@@ -14,6 +14,19 @@ StylusItem::StylusItem(qreal x1, qreal y1)
 	mTmpY1 = y1;
 }
 
+AbstractItem* StylusItem::clone() const
+{
+	const auto cloned = new StylusItem(mX1, mY1);
+	cloned->mTmpX1 = mTmpX1;
+	cloned->mTmpY1 = mTmpY1;
+	cloned->mBoundingRect = mBoundingRect;
+	for (const auto item : mAbstractListLine) {
+		cloned->mAbstractListLine.push_back(item);
+	}
+
+	return cloned;
+}
+
 void StylusItem::addLine(qreal x2, qreal y2)
 {
 	mX2 = x2;

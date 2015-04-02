@@ -9,13 +9,17 @@ const int currentDrift = drift / 2;
 EllipseItem::EllipseItem(const QPointF &begin, const QPointF &end)
 	: mEllipseImpl()
 {
-	mPen.setColor(Qt::black);
 	mX1 = begin.x();
 	mY1 = begin.y();
 	mX2 = end.x();
 	mY2 = end.y();
 	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
+}
+
+AbstractItem* EllipseItem::clone() const
+{
+	return new EllipseItem({mX1, mY1}, {mX2, mY2});
 }
 
 void EllipseItem::setPrivateData()

@@ -14,6 +14,8 @@ class StylusItem : public ColorFieldItem
 public:
 	StylusItem(qreal x1, qreal y1);
 
+	AbstractItem* clone() const override;
+
 	void addLine(qreal x2, qreal y2);
 
 	QRectF boundingRect() const override;

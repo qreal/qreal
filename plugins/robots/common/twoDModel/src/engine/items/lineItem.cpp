@@ -26,6 +26,16 @@ LineItem::LineItem(const QPointF &begin, const QPointF &end, int cornerRadius)
 	setPrivateData();
 }
 
+AbstractItem* LineItem::clone() const
+{
+	const auto cloned = new LineItem({mX1, mY1}, {mX2, mY2}, mCornerRadius);
+	cloned->mCellNumbX1 = mCellNumbX1;
+	cloned->mCellNumbY1 = mCellNumbY1;
+	cloned->mCellNumbX2 = mCellNumbX2;
+	cloned->mCellNumbY2 = mCellNumbY2;
+	return cloned;
+}
+
 void LineItem::setPrivateData()
 {
 	mPen.setColor(Qt::green);
@@ -64,13 +74,13 @@ QPainterPath LineItem::shape() const
 void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (event->modifiers() & Qt::ShiftModifier) {
-		mX2=event->scenePos().x();
-		mY2=event->scenePos().y();
+		mX2 = event->scenePos().x();
+		mY2 = event->scenePos().y();
 		reshapeRectWithShift();
 	} else {
 		if (SettingsManager::value("2dShowGrid").toBool()
 				&& (mDragState == TopLeft || mDragState == BottomRight)
-				&& dynamic_cast<WallItem *>(this))
+				&& dynamic_cast<WallItem *>(this))  /// @todo Oh sh~
 		{
 			calcResizeItem(event, SettingsManager::value("2dGridCellSize").toInt());
 		} else {

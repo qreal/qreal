@@ -3,6 +3,11 @@
 #include "src/engine/model/constants.h"
 #include "src/engine/items/startPosition.h"
 
+#include <QtCore/QDebug>
+#include <QtCore/QCoreApplication>
+#include <QtGui/QMouseEvent>
+#include <QtWidgets/QApplication>
+
 using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace twoDModel::model;
