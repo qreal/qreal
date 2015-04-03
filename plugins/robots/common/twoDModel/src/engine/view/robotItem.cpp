@@ -35,10 +35,12 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
-	mX2 = mX1 + robotWidth;
-	mY2 = mY1 + robotHeight;
-	mMarkerPoint = QPointF(0, mY2 / 2);  // Marker is situated behind the robot
-	mPen.setWidth(defaultTraceWidth);
+	setX2(x1() + robotWidth);
+	setY2(y1() + robotHeight);
+	mMarkerPoint = QPointF(0, y2() / 2);  // Marker is situated behind the robot
+	QPen pen(this->pen());
+	pen.setWidth(defaultTraceWidth);
+	setPen(pen);
 
 	setTransformOriginPoint(rotatePoint);
 	mBeepItem->setParentItem(this);
@@ -66,18 +68,18 @@ void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* opti
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
-	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
+	mRectangleImpl.drawImageItem(painter, x1(), y1(), x2(), y2(), mImage);
 }
 
 void RobotItem::drawExtractionForItem(QPainter* painter)
 {
 	painter->setPen(QPen(Qt::blue));
-	painter->drawRect(QRectF(QPointF(mX1, mY1), QPointF(mX2, mY2)));
+	painter->drawRect(QRectF(QPointF(x1(), y1()), QPointF(x2(), y2())));
 }
 
 QRectF RobotItem::boundingRect() const
 {
-	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
+	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), border);
 }
 
 QRectF RobotItem::calcNecessaryBoundingRect() const
@@ -143,7 +145,7 @@ void RobotItem::ride(const QPointF &newPos, qreal rotation)
 	const QPointF newMarker = mapToScene(mMarkerPoint);
 	QPen pen;
 	pen.setColor(mRobotModel.markerColor());
-	pen.setWidth(mPen.width());
+	pen.setWidth(this->pen().width());
 	emit drawTrace(pen, oldMarker, newMarker);
 }
 

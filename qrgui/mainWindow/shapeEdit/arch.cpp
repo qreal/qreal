@@ -7,13 +7,13 @@ Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	:Item(parent)
 {
 	mNeedScalingRect = false;
-	mPen.setColor(Qt::gray);
-	mBrush.setStyle(Qt::NoBrush);
+	setPen(QPen(Qt::gray));
+	setBrush(QBrush(QColor(), Qt::NoBrush));
 	mDomElementType = pictureType;
-	mX1 = rect.left();
-	mX2 = rect.right();
-	mY1 = rect.top();
-	mY2 = rect.bottom();
+	setX1(rect.left());
+	setX2(rect.right());
+	setY1(rect.top());
+	setY2(rect.bottom());
 	mSpanAngle = spanAngle;
 	mStartAngle = startAngle;
 	mRect = rect;
@@ -23,13 +23,13 @@ Arch::Arch(const Arch &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = pictureType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mSpanAngle = other.mSpanAngle;
 	mStartAngle = other.mStartAngle;
 	mRect = other.mRect;

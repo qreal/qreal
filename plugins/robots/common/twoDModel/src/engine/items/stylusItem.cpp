@@ -6,17 +6,19 @@ using namespace graphicsUtils;
 StylusItem::StylusItem(qreal x1, qreal y1)
 	: mStylusImpl()
 {
-	mPen.setColor(Qt::black);
-	mPen.setCapStyle(Qt::RoundCap);
-	mX1 = x1;
-	mY1 = y1;
+	QPen pen(this->pen());
+	pen.setColor(Qt::black);
+	pen.setCapStyle(Qt::RoundCap);
+	setPen(pen);
+	setX1(x1);
+	setY1(y1);
 	mTmpX1 = x1;
 	mTmpY1 = y1;
 }
 
 AbstractItem *StylusItem::clone() const
 {
-	const auto cloned = new StylusItem(mX1, mY1);
+	const auto cloned = new StylusItem(x1(), y1());
 	cloned->mTmpX1 = mTmpX1;
 	cloned->mTmpY1 = mTmpY1;
 	cloned->mBoundingRect = mBoundingRect;
@@ -29,16 +31,16 @@ AbstractItem *StylusItem::clone() const
 
 void StylusItem::addLine(qreal x2, qreal y2)
 {
-	mX2 = x2;
-	mY2 = y2;
-	LineItem *line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(mX2, mY2));
-	line->setPen(mPen);
-	line->setBrush(mBrush);
+	setX2(x2);
+	setY2(y2);
+	LineItem *line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(this->x2(), this->y2()));
+	line->setPen(pen());
+	line->setBrush(brush());
 	line->setSerializeName(QString("stylusLine"));
 	mAbstractListLine.push_back(line);
 	recalculateProperties();
-	mTmpX1 = mX2;
-	mTmpY1 = mY2;
+	mTmpX1 = this->x2();
+	mTmpY1 = this->y2();
 }
 
 QPainterPath StylusItem::shape() const
@@ -122,14 +124,16 @@ void StylusItem::deserialize(const QDomElement &element)
 	recalculateProperties();
 
 	readPenBrush(element);
-	mPen.setCapStyle(Qt::RoundCap);
+	QPen pen(this->pen());
+	pen.setCapStyle(Qt::RoundCap);
+	setPen(pen);
 	QDomNodeList stylusAttributes = element.childNodes();
 	for (int i = 0; i < stylusAttributes.length(); ++i) {
 			QDomElement type = stylusAttributes.at(i).toElement();
 			if (type.tagName() == "stylusLine") {
 				LineItem * const line = new LineItem(QPointF(0, 0), QPointF(0, 0));
 				line->deserialize(type);
-				line->setPen(mPen);
+				line->setPen(this->pen());
 				mAbstractListLine.append(line);
 				recalculateProperties();
 			} else {

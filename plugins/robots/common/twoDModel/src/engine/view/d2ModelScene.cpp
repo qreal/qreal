@@ -284,7 +284,7 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 	if (mGraphicsItem && mGraphicsItem->editable()) {
 		mGraphicsItem->changeDragState(mX1, mY1);
-		if (mGraphicsItem->getDragState() != AbstractItem::None) {
+		if (mGraphicsItem->dragState() != AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 	}
@@ -334,9 +334,9 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	if (mGraphicsItem && mGraphicsItem->editable()) {
-		const QPointF oldBegin = mGraphicsItem->getX1andY1();
-		const QPointF oldEnd = mGraphicsItem->getX2andY2();
-		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
+		const QPointF oldBegin(mGraphicsItem->x1(), mGraphicsItem->y1());
+		const QPointF oldEnd(mGraphicsItem->x2(), mGraphicsItem->y2());
+		if (mGraphicsItem->dragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 
@@ -432,7 +432,8 @@ void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 	const QPointF pos = event->scenePos();
 	if (mCurrentWall) {
 		const QPointF oldPos = mCurrentWall->end();
-		mCurrentWall->setX2andY2(pos.x(), pos.y());
+		mCurrentWall->setX2(pos.x());
+		mCurrentWall->setY2(pos.y());
 		if (SettingsManager::value("2dShowGrid").toBool()) {
 			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
@@ -441,7 +442,8 @@ void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 
 			for (RobotItem * const robotItem : mRobots.values()) {
 				if (shape.intersects(robotItem->realBoundingRect())) {
-					mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+					mCurrentWall->setX2(oldPos.x());
+					mCurrentWall->setY2(oldPos.y());
 					break;
 				}
 			}
@@ -457,7 +459,8 @@ void D2ModelScene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentLine) {
-		mCurrentLine->setX2andY2(pos.x(), pos.y());
+		mCurrentWall->setX2(pos.x());
+		mCurrentWall->setY2(pos.y());
 		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentLine->reshapeRectWithShift();
 		}
@@ -476,7 +479,8 @@ void D2ModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentEllipse) {
-		mCurrentEllipse->setX2andY2(pos.x(), pos.y());
+		mCurrentEllipse->setX2(pos.x());
+		mCurrentEllipse->setY2(pos.y());
 		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentEllipse->reshapeRectWithShift();
 		}

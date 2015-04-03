@@ -26,7 +26,7 @@ WallItem::WallItem(const QPointF &begin, const QPointF &end)
 
 AbstractItem *WallItem::clone() const
 {
-	const auto cloned = new WallItem({mX1, mY1}, {mX2, mY2});
+	const auto cloned = new WallItem({x1(), y1()}, {x2(), y2()});
 	cloned->mOldX1 = mOldX1;
 	cloned->mOldY1 = mOldY1;
 	cloned->mDragged = mDragged;
@@ -38,21 +38,25 @@ AbstractItem *WallItem::clone() const
 void WallItem::setPrivateData()
 {
 	setZValue(1);
-	mPen.setWidth(wallWidth);
-	mPen.setStyle(Qt::NoPen);
-	mBrush.setStyle(Qt::SolidPattern);
-	mBrush.setTextureImage(mImage);
+	QPen pen(this->pen());
+	pen.setWidth(wallWidth);
+	pen.setStyle(Qt::NoPen);
+	setPen(pen);
+	QBrush brush(this->brush());
+	brush.setStyle(Qt::SolidPattern);
+	brush.setTextureImage(mImage);
+	setBrush(brush);
 	mSerializeName = "wall";
 }
 
 QPointF WallItem::begin()
 {
-	return QPointF(mX1, mY1) + scenePos();
+	return QPointF(x1(), y1()) + scenePos();
 }
 
 QPointF WallItem::end()
 {
-	return QPointF(mX2, mY2) + scenePos();
+	return QPointF(x2(), y2()) + scenePos();
 }
 
 void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -70,8 +74,8 @@ void WallItem::drawExtractionForItem(QPainter *painter)
 	}
 
 	painter->setPen(QPen(Qt::green));
-	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, drift);
-	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, mX1, mY1, mX2, mY2);
+	mLineImpl.drawExtractionForItem(painter, x1(), y1(), x2(), y2(), drift);
+	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, x1(), y1(), x2(), y2());
 }
 
 void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -83,8 +87,8 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	}
 
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
-	mOldX1 = event->scenePos().x() - mX1;
-	mOldY1 = event->scenePos().y() - mY1;
+	mOldX1 = event->scenePos().x() - x1();
+	mOldY1 = event->scenePos().y() - y1();
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -102,22 +106,22 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
-	const QRectF oldPos =  QRectF(QPointF(mX1, mY1), QPointF(mX2, mY2));
+	const QRectF oldPos =  QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
 
 	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		const QPointF pos = event->scenePos();
-		const qreal deltaX = (mX1 - mX2);
-		const qreal deltaY = (mY1 - mY2);
-		mX1 = pos.x() - mOldX1;
-		mY1 = pos.y() - mOldY1;
+		const qreal deltaX = (x1() - x2());
+		const qreal deltaY = (y1() - y2());
+		setX1(pos.x() - mOldX1);
+		setY1(pos.y() - mOldY1);
 
 		if (SettingsManager::value("2dShowGrid").toBool()) {
 			const int indexGrid = SettingsManager::value("2dGridCellSize").toInt();
 			reshapeBeginWithGrid(indexGrid);
-			mCellNumbX1 = mX1 / indexGrid;
-			mCellNumbY1 = mY1 / indexGrid;
-			mCellNumbX2 = mX2 / indexGrid;
-			mCellNumbY2 = mY2 / indexGrid;
+			mCellNumbX1 = x1() / indexGrid;
+			mCellNumbY1 = y1() / indexGrid;
+			mCellNumbX2 = x2() / indexGrid;
+			mCellNumbY2 = y2() / indexGrid;
 		}
 
 		setDraggedEnd(deltaX, deltaY);
@@ -141,7 +145,7 @@ bool WallItem::isDragged() const
 
 qreal WallItem::width() const
 {
-	return mPen.width();
+	return pen().width();
 }
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -154,10 +158,10 @@ QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPic
 {
 	QDomElement wallNode = document.createElement(mSerializeName);
 	AbstractItem::serialize(wallNode);
-	wallNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
-			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
-	wallNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
-			+ ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+	wallNode.setAttribute("begin", QString::number(x1() + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(y1() + scenePos().y() - topLeftPicture.y()));
+	wallNode.setAttribute("end", QString::number(x2() + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(y2() + scenePos().y() - topLeftPicture.y()));
 	return wallNode;
 }
 
