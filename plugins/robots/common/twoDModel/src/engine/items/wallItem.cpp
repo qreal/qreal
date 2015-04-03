@@ -24,7 +24,7 @@ WallItem::WallItem(const QPointF &begin, const QPointF &end)
 	setAcceptDrops(true);
 }
 
-AbstractItem* WallItem::clone() const
+AbstractItem *WallItem::clone() const
 {
 	const auto cloned = new WallItem({mX1, mY1}, {mX2, mY2});
 	cloned->mOldX1 = mOldX1;

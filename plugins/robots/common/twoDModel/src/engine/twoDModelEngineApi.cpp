@@ -19,6 +19,7 @@
 #include "twoDModel/engine/view/d2ModelWidget.h"
 #include "view/d2ModelScene.h"
 #include "view/robotItem.h"
+#include "view/fakeScene.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
@@ -34,6 +35,11 @@ using namespace twoDModel::model;
 TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
 	: mModel(model)
 	, mView(view)
+	, mFakeScene(new view::FakeScene(mModel.worldModel()))
+{
+}
+
+TwoDModelEngineApi::~TwoDModelEngineApi()
 {
 }
 
@@ -153,28 +159,7 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
 			, 2 * realWidth, 2 * realWidth);
 
-	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
-	QPainter painter(&image);
-
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::white));
-	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
-
-	QGraphicsScene temporaryScene;
-
-	const auto &worldModel = mModel.worldModel();
-	for (items::WallItem *wall : worldModel.walls()) {
-		temporaryScene.addItem(wall->clone());
-	}
-
-	for (items::ColorFieldItem *colorField : worldModel.colorFields()) {
-		temporaryScene.addItem(colorField->clone());
-	}
-
-	temporaryScene.render(&painter, QRectF(), scanningRect);
-
+	const QImage image(mFakeScene->render(scanningRect));
 	const QPoint offset = QPointF(width, width).toPoint();
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
 	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);

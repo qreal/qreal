@@ -12,7 +12,7 @@ class WallItem : public LineItem
 public:
 	WallItem(const QPointF &begin, const QPointF &end);
 
-	AbstractItem* clone() const override;
+	AbstractItem *clone() const override;
 
 	QPointF begin();
 	QPointF end();

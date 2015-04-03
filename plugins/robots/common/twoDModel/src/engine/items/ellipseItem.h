@@ -14,7 +14,7 @@ class EllipseItem : public ColorFieldItem
 public:
 	EllipseItem(const QPointF &begin, const QPointF &end);
 
-	AbstractItem* clone() const override;
+	AbstractItem *clone() const override;
 
 	QRectF boundingRect() const override;
 	QRectF calcNecessaryBoundingRect() const override;

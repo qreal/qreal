@@ -40,6 +40,7 @@ HEADERS += \
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
 	$$PWD/src/engine/view/d2ModelScene.h \
+	$$PWD/src/engine/view/fakeScene.h \
 	$$PWD/src/engine/view/gridParameters.h \
 	$$PWD/src/engine/view/robotItem.h \
 	$$PWD/src/engine/view/rotater.h \
@@ -79,6 +80,7 @@ SOURCES += \
 	$$PWD/src/engine/twoDModelEngineApi.cpp \
 	$$PWD/src/engine/view/d2ModelWidget.cpp \
 	$$PWD/src/engine/view/d2ModelScene.cpp \
+	$$PWD/src/engine/view/fakeScene.cpp \
 	$$PWD/src/engine/view/robotItem.cpp \
 	$$PWD/src/engine/view/sensorItem.cpp \
 	$$PWD/src/engine/view/sonarSensorItem.cpp \

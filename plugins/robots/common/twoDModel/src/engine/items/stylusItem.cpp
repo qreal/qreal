@@ -14,7 +14,7 @@ StylusItem::StylusItem(qreal x1, qreal y1)
 	mTmpY1 = y1;
 }
 
-AbstractItem* StylusItem::clone() const
+AbstractItem *StylusItem::clone() const
 {
 	const auto cloned = new StylusItem(mX1, mY1);
 	cloned->mTmpX1 = mTmpX1;

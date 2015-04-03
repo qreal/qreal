@@ -26,7 +26,7 @@ LineItem::LineItem(const QPointF &begin, const QPointF &end, int cornerRadius)
 	setPrivateData();
 }
 
-AbstractItem* LineItem::clone() const
+AbstractItem *LineItem::clone() const
 {
 	const auto cloned = new LineItem({mX1, mY1}, {mX2, mY2}, mCornerRadius);
 	cloned->mCellNumbX1 = mCellNumbX1;
