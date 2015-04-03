@@ -6,5 +6,12 @@
         <file>templates/drawing/clearScreen.t</file>
         <file>templates/drawing/drawLine.t</file>
         <file>templates/drawing/drawPixel.t</file>
+        <file>templates/drawing/printText.t</file>
+        <file>templates/drawing/drawFilledRect.t</file>
+        <file>templates/drawing/drawRect.t</file>
+        <file>templates/drawing/drawCircle.t</file>
+        <file>templates/drawing/drawFilledCircle.t</file>
+        <file>templates/beep.t</file>
+        <file>templates/playTone.t</file>
     </qresource>
 </RCC>

@@ -837,7 +837,9 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
+						<label x="-35" y="-30" text="Volume (%):" hard="true"/>
 						<label x="-60" y="60" text="Wait for Completion:"/>
+						<label x="60" y="-30" textBinded="Volume" hard="true" background="white"/>
 						<label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
 					</labels>
 					<nonResizeable/>
@@ -847,6 +849,9 @@
 					<properties>
 						<property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
 							<default>true</default>
+						</property>
+						<property displayedName="Volume" type="string" name="Volume">
+							<default>50</default>
 						</property>
 					</properties>
 					<generalizations>

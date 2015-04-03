@@ -1,10 +1,19 @@
-#ifndef DRAWRECTGENERATOR_H
-#define DRAWRECTGENERATOR_H
+#pragma once
 
-class DrawRectGenerator
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
+
+namespace ev3 {
+namespace simple {
+
+class DrawRectGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DrawRectGenerator();
+	DrawRectGenerator(qrRepo::RepoApi const &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, qReal::Id const &id
+			, QObject *parent);
 };
 
-#endif // DRAWRECTGENERATOR_H
+}
+}
+

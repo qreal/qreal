@@ -2,6 +2,8 @@
 
 #include "simpleGenerators/drawPixelGenerator.h"
 #include "simpleGenerators/drawLineGenerator.h"
+#include "simpleGenerators/drawRectGenerator.h"
+#include "simpleGenerators/drawCircleGenerator.h"
 
 using namespace ev3;
 using namespace ev3::simple;
@@ -28,6 +30,10 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return new DrawLineGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3DrawPixel") {
 		return new DrawPixelGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3DrawRect") {
+		return new DrawRectGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3DrawCircle") {
+		return new DrawCircleGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);

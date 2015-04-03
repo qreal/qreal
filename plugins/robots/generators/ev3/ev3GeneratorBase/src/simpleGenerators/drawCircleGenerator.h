@@ -1,10 +1,18 @@
-#ifndef DRAWCIRCLEGENERATOR_H
-#define DRAWCIRCLEGENERATOR_H
+#pragma once
 
-class DrawCircleGenerator
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
+
+namespace ev3 {
+namespace simple {
+
+class DrawCircleGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DrawCircleGenerator();
+	DrawCircleGenerator(qrRepo::RepoApi const &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, qReal::Id const &id
+			, QObject *parent);
 };
 
-#endif // DRAWCIRCLEGENERATOR_H
+}
+}

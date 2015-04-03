@@ -21,5 +21,6 @@ int BeepBlock::duration()
 
 void BeepBlock::doJob(ev3KitInterpreter::robotModel::parts::Ev3Speaker &speaker)
 {
-	speaker.beep(duration());
+	int const volume = eval<int>("Volume");
+	speaker.beep(volume, duration());
 }
