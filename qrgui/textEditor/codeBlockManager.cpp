@@ -26,12 +26,14 @@ void CodeBlockManager::setActive(QString const &path, bool active)
 
 QPair<int, int> CodeBlockManager::intervalById(QString const &path, Id const &id)
 {
-	return mActive.value(path, false) && mBlockToCode.contains(path) ? mBlockToCode[path].value(id, QPair<int, int>()) : QPair<int, int>();
+	return mActive.value(path, false) && mBlockToCode.contains(path)
+			? mBlockToCode[path].value(id, QPair<int, int>()) : QPair<int, int>();
 }
 
 QList<Id> CodeBlockManager::IdsByLineNumber(QString const &path, int lineNumber)
 {
-	return mActive.value(path, false) && mCodeToBlock.contains(path) ? mCodeToBlock[path].value(lineNumber, QList<Id>()) : QList<Id>();
+	return mActive.value(path, false) && mCodeToBlock.contains(path)
+			? mCodeToBlock[path].value(lineNumber, QList<Id>()) : QList<Id>();
 }
 
 void CodeBlockManager::readDbgFile(QString const &path)
