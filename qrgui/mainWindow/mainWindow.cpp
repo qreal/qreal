@@ -1487,6 +1487,12 @@ void MainWindow::dehighlight(const Id &graphicalId)
 		} else {
 			scene->dehighlight(graphicalId);
 		}
+
+		for (text::QScintillaTextEdit *area : mTextManager->code(view->mvIface().rootId())) {
+			if (mTextManager->isDefaultPath(mTextManager->path(area))) {
+				area->markerDeleteAll();
+			}
+		}
 	}
 }
 

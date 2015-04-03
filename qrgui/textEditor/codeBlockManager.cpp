@@ -19,14 +19,19 @@ void CodeBlockManager::removeCode(QString const &path)
 	mBlockToCode.remove(path);
 }
 
+void CodeBlockManager::setActive(QString const &path, bool active)
+{
+	mActive.insert(path, active);
+}
+
 QPair<int, int> CodeBlockManager::intervalById(QString const &path, Id const &id)
 {
-	return mBlockToCode.contains(path) ? mBlockToCode[path].value(id, QPair<int, int>()) : QPair<int, int>();
+	return mActive.value(path, false) && mBlockToCode.contains(path) ? mBlockToCode[path].value(id, QPair<int, int>()) : QPair<int, int>();
 }
 
 QList<Id> CodeBlockManager::IdsByLineNumber(QString const &path, int lineNumber)
 {
-	return mCodeToBlock.contains(path) ? mCodeToBlock[path].value(lineNumber, QList<Id>()) : QList<Id>();
+	return mActive.value(path, false) && mCodeToBlock.contains(path) ? mCodeToBlock[path].value(lineNumber, QList<Id>()) : QList<Id>();
 }
 
 void CodeBlockManager::readDbgFile(QString const &path)
@@ -41,6 +46,7 @@ void CodeBlockManager::readDbgFile(QString const &path)
 
 	mBlockToCode.insert(path, QMap<Id, QPair<int, int> >());
 	mCodeToBlock.insert(path, QMap<int, QList<Id> >());
+	mActive.insert(path, true);
 
 	while(!in.atEnd()) {
 		QString line = in.readLine();

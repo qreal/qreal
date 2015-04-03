@@ -51,7 +51,7 @@ void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 
 void QScintillaTextEdit::init()
 {
-	connect(this, &QsciScintilla::textChanged, this, &QScintillaTextEdit::emitTextWasModified);
+	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
 	setDefaultSettings();
 	setCurrentLanguage(Languages::textFileInfo("*.txt"));
 }

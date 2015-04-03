@@ -153,11 +153,16 @@ bool TextManager::isModifiedEver(const QString &path) const
 
 void TextManager::setModified(text::QScintillaTextEdit *code, bool modified)
 {
-	QPair<bool, bool> mod = mModified.value(mPath.value(code));
+	QString const &path = mPath.value(code);
+	QPair<bool, bool> mod = mModified.value(path);
 	mod.first = !modified || mod.first;
 	mod.second = modified && code->isUndoAvailable();
 	code->setModified(mod.second);
-	mModified.insert(mPath.value(code), mod);
+	mModified.insert(path, mod);
+
+	if (isDefaultPath(path)) {
+		mCodeBlockManager.setActive(path, !(modified && code->isUndoAvailable()));
+	}
 
 	emit textChanged(modified && code->isUndoAvailable());
 }
