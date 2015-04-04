@@ -1103,6 +1103,7 @@ void InterpreterEditorManager::addNodeElement(const Id &diagram, const QString &
 	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
 	repo->setProperty(nodeId, "createChildrenFromMenu", "false");
 	repo->setProperty(nodeId, "isHidden", "false");
+
 	foreach (const Id &elem, repo->children(diag)) {
 		if (repo->name(elem) == "AbstractNode" && repo->isLogicalElement(elem)) {
 			const Id inheritanceLink("MetaEditor", "MetaEditor", "Inheritance", QUuid::createUuid().toString());
@@ -1142,6 +1143,26 @@ void InterpreterEditorManager::addEdgeElement(const Id &diagram, const QString &
 	repo->setProperty(associationId, "name", name + "Association");
 	repo->setProperty(associationId, "beginType", beginType);
 	repo->setProperty(associationId, "endType", endType);
+}
+
+void InterpreterEditorManager::updateGenerationRule(const Id &id, const QString &newRule) const
+{
+	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	if (repoAndMetaIdPair.second.element() == "MetaEntityNode") {
+		repoAndMetaIdPair.first->setProperty(repoAndMetaIdPair.second, "generationRule", newRule);
+	}
+}
+
+QString InterpreterEditorManager::generationRule(const Id &id) const
+{
+	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	const qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
+	const Id metaId = repoAndMetaIdPair.second;
+	if (metaId.element() == "MetaEntityNode") {
+		return repo->stringProperty(metaId, "generationRule");
+	}
+
+	return "";
 }
 
 QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(const QString &name) const

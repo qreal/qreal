@@ -6,17 +6,24 @@ using namespace gui;
 
 SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager
 		, const Id &id
+		, qrRepo::LogicalRepoApi *metamodelRepoApi
 		, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::SpecifyGenerationRulesDialog)
 	, mInterpreterEditorManager(interpreterEditorManager)
 	, mId(id)
+	, mMetamodelRepoApi(metamodelRepoApi)
 {
 	mUi->setupUi(this);
 
 	addPropertiesList();
+	addOldRule();
+
 	connect(mUi->propertiesView, &QListWidget::itemDoubleClicked, this
 			, &SpecifyGenerationRulesDialog::insertPropertyIntoCode);
+
+	connect(mUi->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this
+			, &SpecifyGenerationRulesDialog::saveGenerationRule);
 
 	this->setVisible(true);
 }
@@ -32,12 +39,23 @@ void SpecifyGenerationRulesDialog::insertPropertyIntoCode(QListWidgetItem* prope
 	mUi->codeArea->insertPlainText(propertyName);
 }
 
+void SpecifyGenerationRulesDialog::saveGenerationRule()
+{
+	mInterpreterEditorManager->updateGenerationRule(mId, mUi->codeArea->toPlainText());
+}
+
 void SpecifyGenerationRulesDialog::addPropertiesList()
 {
 	mPropertiesNames = mInterpreterEditorManager->propertyNames(mId);
 	const QStringList propertiesDisplayedNames = propertiesDisplayedNamesList(mPropertiesNames);
 	mUi->propertiesView->clear();
 	mUi->propertiesView->addItems(propertiesDisplayedNames);
+}
+
+void SpecifyGenerationRulesDialog::addOldRule()
+{
+	const QString previousRule = mInterpreterEditorManager->generationRule(mId);
+	mUi->codeArea->insertPlainText(previousRule);
 }
 
 QStringList SpecifyGenerationRulesDialog::propertiesDisplayedNamesList(const QStringList &propertiesNames)

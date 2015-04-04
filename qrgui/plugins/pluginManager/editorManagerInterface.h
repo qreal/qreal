@@ -59,6 +59,9 @@ public:
 	virtual bool isDiagram(const Id &id) const = 0;
 	virtual bool isElement(const Id &id) const = 0;
 
+	virtual void updateGenerationRule(const Id &id, const QString &newRule) const = 0;
+	virtual QString generationRule(const Id &id) const = 0;
+
 	virtual QStringList propertyNames(const Id &id) const = 0;
 	virtual QStringList portTypes(const Id &id) const = 0;
 	virtual QString defaultPropertyValue(const Id &id, QString name) const = 0;

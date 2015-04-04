@@ -120,6 +120,9 @@ public:
 	IdList propertiesWithTheSameName(const Id &id
 			, const QString &propertyCurrentName, const QString &propertyNewName) const override;
 
+	void updateGenerationRule(const Id &id, const QString &newRule) const override;
+	QString generationRule(const Id &id) const override;
+
 	QStringList getPropertiesInformation(const Id &id) const override;
 	QStringList getSameNamePropertyParams(const Id &propertyId, const QString &propertyName) const override;
 	void restoreRemovedProperty(const Id &propertyId, const QString &previousName) const override;

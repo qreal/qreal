@@ -113,6 +113,10 @@ public:
 			, const QString &endType
 			) const override;
 
+	/// TODO: where does it have to be?
+	void updateGenerationRule(const Id &id, const QString &newRule) const override;
+	QString generationRule(const Id &id) const override;
+
 	QPair<Id, Id> createEditorAndDiagram(const QString &name) const override;
 	void saveMetamodel(const QString &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;

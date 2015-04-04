@@ -108,6 +108,9 @@ public:
 			, const QString &labelText, const QString &labelType, const QString &lineType
 			, const QString &beginType, const QString &endType) const override;
 
+	void updateGenerationRule(const Id &id, const QString &newRule) const override;
+	QString generationRule(const Id &id) const override;
+
 	QPair<Id, Id> createEditorAndDiagram(const QString &name) const override;
 	void saveMetamodel(const QString &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;

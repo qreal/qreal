@@ -23,7 +23,10 @@ public:
 	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of metamodel element we are specifying generation rules for.
-	SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager, const Id &id, QWidget *parent = 0);
+	SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager
+			, const Id &id
+			, qrRepo::LogicalRepoApi *metamodelRepoApi
+			, QWidget *parent = 0);
 
 	~SpecifyGenerationRulesDialog() override;
 
@@ -32,9 +35,14 @@ private slots:
 	/// @param propertyName Property to insert.
 	void insertPropertyIntoCode(QListWidgetItem* property);
 
+	void saveGenerationRule();
+
 private:
 	/// Adds properties to the properties list.
 	void addPropertiesList();
+
+	/// Adds previously added rule.
+	void addOldRule();
 
 	/// Returns properties displayed names list.
 	/// @param propertiesNames List of properties.
@@ -44,6 +52,7 @@ private:
 	EditorManagerInterface *mInterpreterEditorManager;  // doesn't have ownership
 	const Id mId;
 	QStringList mPropertiesNames;
+	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // doesn't have ownership
 };
 
 }

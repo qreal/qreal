@@ -75,7 +75,8 @@ void GenerationRulesPlugin::generateCode()
 	auto parserResultForEnum = generatedTreeFromString(enumStream);
 	auto programForEnum = parserResultForEnum.dynamicCast<simpleParser::ast::Program>();
 	generationRules::generator::VariablesTable table;
-	QString resultOfGenerationForEnum = generator::CommonGenerator::generatedResult(programForEnum, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
+	QString resultOfGenerationForEnum = generator::CommonGenerator::generatedResult(programForEnum
+			, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
 	qDebug() << resultOfGenerationForEnum;
 	table.clear();
 
@@ -95,7 +96,8 @@ void GenerationRulesPlugin::generateCode()
 
 	auto parserResultForState = generatedTreeFromString(stateStream);
 	auto programForState = parserResultForState.dynamicCast<simpleParser::ast::Foreach>();
-	QString resultOfGenerationForState = generator::CommonGenerator::generatedResult(programForState, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
+	QString resultOfGenerationForState = generator::CommonGenerator::generatedResult(programForState
+			, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
 	qDebug() << resultOfGenerationForState;
 }
 
@@ -130,5 +132,5 @@ void GenerationRulesPlugin::openGenerationRulesWindow()
 {
 	const QAction * const action = static_cast<QAction *>(sender());
 	const qReal::Id id = action->data().value<qReal::Id>();
-	mSpecifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id);
+	mSpecifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id, mMetamodelRepoApi);
 }
