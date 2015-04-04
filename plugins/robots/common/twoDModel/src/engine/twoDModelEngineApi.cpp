@@ -301,3 +301,21 @@ QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortIn
 	const qreal direction = sensor ? sensor->rotation() + mModel.robotModels()[0]->rotation() : 0;
 	return { position, direction };
 }
+
+void TwoDModelEngineApi::enableBackgroundSceneDebugging()
+{
+	// A crappy piece of code that must be never called in master branch,
+	// but this is a pretty convenient way to debug a fake scene.
+	QGraphicsView * const fakeScene = new QGraphicsView;
+	fakeScene->setScene(mFakeScene.data());
+	fakeScene->show();
+	QTimer * const timer = new QTimer;
+	timer->setInterval(300);
+	timer->setSingleShot(false);
+	fakeScene->setMinimumWidth(700);
+	fakeScene->setMinimumHeight(600);
+	fakeScene->setWindowFlags(fakeScene->windowFlags() | Qt::WindowStaysOnTopHint);
+	QObject::connect(timer, SIGNAL(timeout()), mFakeScene.data(), SLOT(update()));
+	QTimer::singleShot(1000, [=]() { fakeScene->setVisible(mModel.robotModels()[0]->info().robotId().contains("trik")); });
+	timer->start();
+}

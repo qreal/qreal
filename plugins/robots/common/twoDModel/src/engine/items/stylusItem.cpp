@@ -19,11 +19,16 @@ StylusItem::StylusItem(qreal x1, qreal y1)
 AbstractItem *StylusItem::clone() const
 {
 	const auto cloned = new StylusItem(x1(), y1());
+	AbstractItem::copyTo(cloned);
+	connect(this, &StylusItem::segmentAdded, [=](LineItem * const segment) {
+		cloned->mAbstractListLine << segment->clone();
+		cloned->recalculateProperties();
+	});
 	cloned->mTmpX1 = mTmpX1;
 	cloned->mTmpY1 = mTmpY1;
 	cloned->mBoundingRect = mBoundingRect;
-	for (const auto item : mAbstractListLine) {
-		cloned->mAbstractListLine.push_back(item);
+	for (const AbstractItem *item : mAbstractListLine) {
+		cloned->mAbstractListLine.push_back(static_cast<const LineItem *>(item)->clone());
 	}
 
 	return cloned;
@@ -33,7 +38,7 @@ void StylusItem::addLine(qreal x2, qreal y2)
 {
 	setX2(x2);
 	setY2(y2);
-	LineItem *line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(this->x2(), this->y2()));
+	LineItem * const line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(this->x2(), this->y2()));
 	line->setPen(pen());
 	line->setBrush(brush());
 	line->setSerializeName(QString("stylusLine"));
@@ -41,6 +46,7 @@ void StylusItem::addLine(qreal x2, qreal y2)
 	recalculateProperties();
 	mTmpX1 = this->x2();
 	mTmpY1 = this->y2();
+	emit segmentAdded(line);
 }
 
 QPainterPath StylusItem::shape() const
@@ -107,8 +113,8 @@ QDomElement StylusItem::serialize(QDomDocument &document, const QPoint &topLeftP
 {
 	QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
 	AbstractItem::serialize(stylusNode);
-	for (AbstractItem *abstractItem : mAbstractListLine) {
-			LineItem *line = dynamic_cast<LineItem *>(abstractItem);
+	for (AbstractItem * const abstractItem : mAbstractListLine) {
+			LineItem * const line = static_cast<LineItem *>(abstractItem);
 			line->setSerializeName("stylusLine");
 			QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
 			stylusNode.appendChild(item);
@@ -135,6 +141,7 @@ void StylusItem::deserialize(const QDomElement &element)
 				line->deserialize(type);
 				line->setPen(this->pen());
 				mAbstractListLine.append(line);
+				emit segmentAdded(line);
 				recalculateProperties();
 			} else {
 //				Tracer::debug(tracer::enums::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");

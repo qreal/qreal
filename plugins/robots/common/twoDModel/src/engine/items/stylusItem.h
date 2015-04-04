@@ -36,6 +36,10 @@ public:
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
 	void deserialize(const QDomElement &element) override;
 
+signals:
+	/// Emitted when user draws new segment in this stylus line.
+	void segmentAdded(LineItem *segment);
+
 private:
 	void recalculateProperties();
 

@@ -19,7 +19,9 @@ EllipseItem::EllipseItem(const QPointF &begin, const QPointF &end)
 
 AbstractItem *EllipseItem::clone() const
 {
-	return new EllipseItem({x1(), y1()}, {x2(), y2()});
+	EllipseItem * const cloned = new EllipseItem({x1(), y1()}, {x2(), y2()});
+	AbstractItem::copyTo(cloned);
+	return cloned;
 }
 
 void EllipseItem::setPrivateData()

@@ -18,8 +18,6 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	, mRectangleImpl()
 	, mRobotModel(robotModel)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
-
 	connect(&mRobotModel, &model::RobotModel::robotRided, this, &RobotItem::ride);
 	connect(&mRobotModel, &model::RobotModel::positionChanged, this, &RobotItem::setPos);
 	connect(&mRobotModel, &model::RobotModel::rotationChanged, this, &RobotItem::setRotation);

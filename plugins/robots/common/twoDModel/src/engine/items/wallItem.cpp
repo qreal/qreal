@@ -27,6 +27,12 @@ WallItem::WallItem(const QPointF &begin, const QPointF &end)
 AbstractItem *WallItem::clone() const
 {
 	const auto cloned = new WallItem({x1(), y1()}, {x2(), y2()});
+	AbstractItem::copyTo(cloned);
+	connect(this, &AbstractItem::positionChanged, cloned, &WallItem::recalculateBorders);
+	connect(this, &AbstractItem::x1Changed, cloned, &WallItem::recalculateBorders);
+	connect(this, &AbstractItem::y1Changed, cloned, &WallItem::recalculateBorders);
+	connect(this, &AbstractItem::x2Changed, cloned, &WallItem::recalculateBorders);
+	connect(this, &AbstractItem::y2Changed, cloned, &WallItem::recalculateBorders);
 	cloned->mOldX1 = mOldX1;
 	cloned->mOldY1 = mOldY1;
 	cloned->mDragged = mDragged;

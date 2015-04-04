@@ -15,6 +15,8 @@ namespace graphicsUtils {
 
 class QRUTILS_EXPORT AbstractItem : public QGraphicsObject
 {
+	Q_OBJECT
+
 public:
 	enum DragState {
 		None
@@ -101,11 +103,36 @@ public:
 	void setEditable(bool editable);
 	bool editable() const;
 
+signals:
+	/// Emitted when QGraphicsItem has repositioned.
+	void positionChanged(const QPointF &pos);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void x1Changed(qreal x1);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void y1Changed(qreal y1);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void x2Changed(qreal x2);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void y2Changed(qreal y2);
+
+	/// Emitted when item`s pen changed somehow.
+	void penChanged(const QPen &pen);
+
+	/// Emitted when item`s brush changed somehow.
+	void brushChanged(const QBrush &brush);
+
 protected:
 	virtual void serialize(QDomElement &element);
 	virtual void deserialize(const QDomElement &element);
 
-	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+	void copyTo(AbstractItem * const other) const;
 
 private:
 	DragState mDragState;

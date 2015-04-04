@@ -51,6 +51,8 @@ private:
 	uint spoilLight(const uint color) const;
 	int spoilSonarReading(const int distance) const;
 
+	void enableBackgroundSceneDebugging();
+
 	model::Model &mModel;
 	view::D2ModelWidget &mView;
 	QScopedPointer<view::FakeScene> mFakeScene;

@@ -459,8 +459,8 @@ void D2ModelScene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentLine) {
-		mCurrentWall->setX2(pos.x());
-		mCurrentWall->setY2(pos.y());
+		mCurrentLine->setX2(pos.x());
+		mCurrentLine->setY2(pos.y());
 		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentLine->reshapeRectWithShift();
 		}

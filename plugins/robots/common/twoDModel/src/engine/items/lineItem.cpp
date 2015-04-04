@@ -29,6 +29,7 @@ LineItem::LineItem(const QPointF &begin, const QPointF &end, int cornerRadius)
 AbstractItem *LineItem::clone() const
 {
 	const auto cloned = new LineItem({x1(), y1()}, {x2(), y2()}, mCornerRadius);
+	AbstractItem::copyTo(cloned);
 	cloned->mCellNumbX1 = mCellNumbX1;
 	cloned->mCellNumbY1 = mCellNumbY1;
 	cloned->mCellNumbX2 = mCellNumbX2;
