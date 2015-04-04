@@ -86,7 +86,7 @@
      <height>261</height>
     </rect>
    </property>
-   <widget class="QTextBrowser" name="codeArea">
+   <widget class="QPlainTextEdit" name="codeArea">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -94,18 +94,6 @@
       <width>631</width>
       <height>261</height>
      </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>631</width>
-      <height>261</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>631</width>
-      <height>261</height>
-     </size>
     </property>
    </widget>
   </widget>
