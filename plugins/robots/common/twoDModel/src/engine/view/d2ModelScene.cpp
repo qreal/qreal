@@ -119,12 +119,14 @@ void D2ModelScene::onWallAdded(items::WallItem *wall)
 {
 	addItem(wall);
 	connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
+	connect(wall, &items::WallItem::delettedWithContextMenu, this, &D2ModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
 }
 
 void D2ModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
 	addItem(item);
+	connect(item, &graphicsUtils::AbstractItem::delettedWithContextMenu, this, &D2ModelScene::deleteSelectedItems);
 	item->setEditable(!mWorldReadOnly);
 }
 
@@ -314,6 +316,13 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 		mCurrentLine = nullptr;
 		mCurrentStylus = nullptr;
 		mCurrentEllipse = nullptr;
+	}
+}
+
+void D2ModelScene::deleteSelectedItems()
+{
+	for (QGraphicsItem * const item : selectedItems()) {
+		deleteItem(item);
 	}
 }
 

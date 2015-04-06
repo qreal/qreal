@@ -125,6 +125,9 @@ signals:
 	/// Emitted when item`s brush changed somehow.
 	void brushChanged(const QBrush &brush);
 
+	/// Emitted when user clicks with right mouse button on this item and selects to remove it.
+	void delettedWithContextMenu();
+
 protected:
 	virtual void serialize(QDomElement &element);
 	virtual void deserialize(const QDomElement &element);
