@@ -43,6 +43,8 @@ private slots:
 	void updateVariables();
 
 private:
+	QString toString(const QVariant &value) const;
+
 	WatchListWindow(const utils::ExpressionsParser * const parser
 			, const qrtext::DebuggerInterface * const newParser
 			, QWidget *parent);
