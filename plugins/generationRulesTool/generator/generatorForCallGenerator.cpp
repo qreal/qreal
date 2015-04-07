@@ -18,6 +18,9 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 		, const QString &elementName
 		)
 {
+	Q_UNUSED(elementType);
+	Q_UNUSED(elementName);
+
 	auto identifier = qrtext::as<simpleParser::ast::Identifier>(callGeneratorForNode->identifier())->name();
 	auto generatorNameNode = callGeneratorForNode->generatorName();
 
@@ -43,7 +46,7 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 
 		for (auto element : listOfElements) {
 			result += CommonGenerator::generatedResult(generatedTree, logicalModelInterface, tableOfVariables
-					, editorManagerInterface, element, identifier);
+					, editorManagerInterface, element, identifier, identifier);
 		}
 
 		return result;
