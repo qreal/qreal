@@ -30,6 +30,7 @@ public:
 	explicit RobotsSettingsPage(
 			KitPluginManager &kitPluginManager
 			, RobotModelManager &robotModelManager
+			, qReal::LogicalModelAssistInterface &logicalModel
 			, QWidget *parent = nullptr
 			);
 
@@ -37,6 +38,10 @@ public:
 
 	void save() override;
 	void restoreSettings() override;
+
+public slots:
+	/// Called when current project changed, allows settings page to react on save-specific settings.
+	void onProjectOpened();
 
 signals:
 	/// Emitted when uder saves settings on this page.
@@ -66,14 +71,20 @@ private:
 	Ui::PreferencesRobotSettingsPage *mUi;  // Has ownership.
 	KitPluginManager &mKitPluginManager;
 	RobotModelManager &mRobotModelManager;
-	QButtonGroup *mKitButtons;  // Has ownership indirectly, via Qt parent-child memory management system.
 
-	// Has ownership indirectly, via Qt parent-child memory management system.
+	/// Has ownership indirectly, via Qt parent-child memory management system.
+	QButtonGroup *mKitButtons;
+
+	/// Has ownership indirectly, via Qt parent-child memory management system.
 	QHash<QAbstractButton *, QButtonGroup *> mKitRobotModels;
 
-	// Has ownership over buttons indirectly, via Qt parent-child memory management system.
-	// Does not have ownership over robot models.
+	/// Has ownership over buttons indirectly, via Qt parent-child memory management system.
+	/// Does not have ownership over robot models.
 	QHash<QAbstractButton *, kitBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
+
+	/// Reference to logical model, to be able to change settings for current save, for example, disable sensors
+	/// changes when save explicitly prohibits it.
+	qReal::LogicalModelAssistInterface &mLogicalModel;
 };
 
 }

@@ -15,14 +15,15 @@ using namespace interpreterCore::ui;
 using namespace kitBase;
 using namespace qReal;
 
-RobotsSettingsPage::RobotsSettingsPage(
-		KitPluginManager &kitPluginManager
+RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager
 		, RobotModelManager &robotModelManager
+		, LogicalModelAssistInterface &logicalModel
 		, QWidget *parent)
 	: PreferencesPage(parent)
 	, mUi(new Ui::PreferencesRobotSettingsPage)
 	, mKitPluginManager(kitPluginManager)
 	, mRobotModelManager(robotModelManager)
+	, mLogicalModel(logicalModel)
 {
 	setWindowIcon(QIcon(":/icons/preferences/robot.svg"));
 	mUi->setupUi(this);
@@ -167,6 +168,12 @@ void RobotsSettingsPage::restoreSettings()
 			}
 		}
 	}
+}
+
+void RobotsSettingsPage::onProjectOpened()
+{
+	mUi->devicesConfigurer->setEnabled(
+			!mLogicalModel.logicalRepoApi().metaInformation("twoDModelSensorsReadOnly").toBool());
 }
 
 void RobotsSettingsPage::changeEvent(QEvent *e)

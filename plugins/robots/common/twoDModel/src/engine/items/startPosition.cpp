@@ -68,5 +68,5 @@ void StartPosition::changeDragState(qreal x, qreal y)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
-	mDragState = None;
+	setDragState(None);
 }

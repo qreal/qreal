@@ -78,5 +78,4 @@ bool LineSensor::closeEnough(const QColor &color) const
 {
 	return qMax(abs(color.red() - mLineColor.red()), qMax(abs(color.green() - mLineColor.green())
 		, abs(color.blue() - mLineColor.blue()))) < 10;
-	return color.red() < 10 && color.green() < 10 && color.blue() < 10;
 }

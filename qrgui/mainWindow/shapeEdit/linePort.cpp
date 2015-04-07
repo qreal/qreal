@@ -4,25 +4,25 @@ LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
 	:Line(x1, y1, x2, y2, parent), mType("NonTyped")
 {
 	mNeedScalingRect = true;
-	mPen.setColor(Qt::blue);
+	setPen(QPen(Qt::blue));
 	mDomElementType = portType;
-	mX1 = x1;
-	mY1 = y1;
-	mX2 = x2;
-	mY2 = y2;
+	setX1(x1);
+	setY1(y1);
+	setX2(x2);
+	setY2(y2);
 }
 
 LinePort::LinePort(const LinePort &other)
 	:Line(other)
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = portType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mListScalePoint = other.mListScalePoint;
 	mType = other.mType;
 	setPos(other.x(), other.y());

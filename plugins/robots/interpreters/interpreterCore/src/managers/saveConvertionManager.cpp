@@ -158,6 +158,15 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 						, { "lineSensorSize", "lineSensor[1]" }
 						, { "lineSensorCross", "lineSensor[2]" }
 				})
+				, [] (const Id &block, LogicalModelAssistInterface &logicalApi) {
+					if (block.element() == "RobotsDiagramNode") {
+						const auto worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
+						logicalApi.mutableLogicalRepoApi().setMetaInformation("worldModel", worldModel);
+						return true;
+					}
+
+					return false;
+				}
 			}
 	);
 }

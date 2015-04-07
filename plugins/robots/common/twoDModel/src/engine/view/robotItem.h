@@ -41,6 +41,9 @@ public:
 	/// Sets robot`s position to the start position marker.
 	void returnToStartPosition();
 
+	/// Returns true if a robot is currently dragged with mouse.
+	bool isDragged() const;
+
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 

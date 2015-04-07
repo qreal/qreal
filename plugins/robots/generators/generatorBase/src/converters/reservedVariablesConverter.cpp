@@ -42,7 +42,7 @@ QString ReservedVariablesConverter::deviceExpression(const kitBase::robotModel::
 	const kitBase::robotModel::DeviceInfo device = mDevices[port];
 	if (device.isNull()) {
 		mErrorReporter.addError(QObject::tr("Device on port %1 is not configured."\
-				" Please select it on the left-side panel.").arg(port.name()));
+				" Please select it on the left-side panel.").arg(port.userFriendlyName()));
 		return QObject::tr("/* ERROR: SELECT DEVICE TYPE */");
 	}
 

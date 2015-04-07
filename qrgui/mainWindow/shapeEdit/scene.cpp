@@ -55,7 +55,8 @@ QPointF Scene::setCXandCY(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mLine->setX2andY2(mX2, mY2);
+	mLine->setX2(mX2);
+	mLine->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mLine->reshapeRectWithShift();
 }
@@ -63,7 +64,8 @@ void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mLinePort->setX2andY2(mX2, mY2);
+	mLinePort->setX2(mX2);
+	mLinePort->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mLinePort->reshapeRectWithShift();
 }
@@ -71,7 +73,8 @@ void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mEllipse->setX2andY2(mX2, mY2);
+	mEllipse->setX2(mX2);
+	mEllipse->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mEllipse->reshapeRectWithShift();
 }
@@ -79,7 +82,8 @@ void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mRectangle->setX2andY2(mX2, mY2);
+	mRectangle->setX2(mX2);
+	mRectangle->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mRectangle->reshapeRectWithShift();
 }
@@ -93,7 +97,8 @@ void Scene::reshapeStylus(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeCurveFirst(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mCurve->setX2andY2(mX2, mY2);
+	mCurve->setX2(mX2);
+	mCurve->setY2(mY2);
 }
 
 void Scene::reshapeCurveSecond(QGraphicsSceneMouseEvent *event)
@@ -133,7 +138,7 @@ QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 	foreach (Item *item, list) {
 		item->changeDragState(x, y);
 		item->changeScalingPointState(x, y);
-		if (item->getDragState() != Item::None)  {
+		if (item->dragState() != Item::None)  {
 			mView->setDragMode(QGraphicsView::NoDrag);
 			return QPair<bool, Item *>(true, item);
 		}

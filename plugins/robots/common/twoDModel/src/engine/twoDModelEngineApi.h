@@ -9,12 +9,14 @@ class Model;
 }
 namespace view {
 class D2ModelWidget;
+class FakeScene;
 }
 
 class TwoDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
 	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view);
+	~TwoDModelEngineApi();
 
 	void setNewMotor(int speed, uint degrees
 			, const kitBase::robotModel::PortInfo &port, bool breakMode) override;
@@ -49,8 +51,11 @@ private:
 	uint spoilLight(const uint color) const;
 	int spoilSonarReading(const int distance) const;
 
+	void enableBackgroundSceneDebugging();
+
 	model::Model &mModel;
 	view::D2ModelWidget &mView;
+	QScopedPointer<view::FakeScene> mFakeScene;
 };
 
 }
