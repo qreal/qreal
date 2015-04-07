@@ -163,7 +163,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	mUi->actionNew_Diagram->setVisible(mToolManager.customizer()->enableNewDiagramAction());
 
 	connect(mUi->logicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromLogicalExplorer);
@@ -1110,10 +1109,8 @@ void MainWindow::setDefaultShortcuts()
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
-	if (mToolManager.customizer()->enableNewDiagramAction()) {
-		mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
-		HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
-	}
+	mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+	HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
 
 	// TODO: bind Ctrl+P to print when it will be repaired
 	// TODO: bind Ctrl+F to find dialog when it will be repaired
@@ -1694,6 +1691,10 @@ void MainWindow::initToolPlugins()
 	mUi->paletteTree->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
+
+	if (!toolManager().customizer()->enableNewDiagramAction()) {
+		mUi->fileToolbar->removeAction(mUi->actionNew_Diagram);
+	}
 }
 
 void MainWindow::initInterpretedPlugins()
