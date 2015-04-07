@@ -70,7 +70,7 @@ void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	if (mGraphicsItem && mGraphicsItem->editable()) {
-		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
+		if (mGraphicsItem->dragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 		mGraphicsItem->resizeItem(event);
@@ -81,7 +81,7 @@ void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event,graphicsUtils::A
 {
 	setX2andY2(event);
 	if (item) {
-		if (item->getDragState() != graphicsUtils::AbstractItem::None) {
+		if (item->dragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 		item->resizeItem(event);
@@ -134,7 +134,7 @@ void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 	if (mGraphicsItem && mGraphicsItem->editable()) {
 		mGraphicsItem->changeDragState(mX1, mY1);
-		if (mGraphicsItem->getDragState() != AbstractItem::None) {
+		if (mGraphicsItem->dragState() != AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 	}

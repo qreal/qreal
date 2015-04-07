@@ -18,6 +18,7 @@
 #include <kitBase/robotModel/robotParts/colorSensor.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
+#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -417,6 +418,8 @@ void D2ModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
 			&& !device.isA<ColorSensor>()
 			&& !device.isA<LightSensor>()
 			&& !device.isA<RangeSensor>()
+			/// @todo For working with line sensor from TRIK. Actually this information shall be loaded from plugins.
+			&& !device.isA<VectorSensor>()
 			))
 	{
 		return;
@@ -513,6 +516,7 @@ void D2ModelWidget::onSelectionChange()
 				if (mSelectedRobotItem) {
 					unsetSelectedRobotItem();
 				}
+
 				return;
 			}
 			oneRobotItem = true;
@@ -521,8 +525,8 @@ void D2ModelWidget::onSelectionChange()
 
 	if (oneRobotItem
 			&& mSelectedRobotItem
-			&& robotItem->robotModel().info().robotId()
-			== mSelectedRobotItem->robotModel().info().robotId()) {
+			&& robotItem->robotModel().info().robotId() == mSelectedRobotItem->robotModel().info().robotId())
+	{
 		return;
 	}
 
@@ -869,7 +873,7 @@ void D2ModelWidget::updateWheelComboBoxes()
 	for (const PortInfo &port : mSelectedRobotItem->robotModel().info().availablePorts()) {
 		for (const DeviceInfo &device : mSelectedRobotItem->robotModel().info().allowedDevices(port)) {
 			if (device.isA<Motor>()) {
-				const QString item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
+				const QString item = tr("%1 (port %2)").arg(device.friendlyName(), port.userFriendlyName());
 				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
 				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
 			}

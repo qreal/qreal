@@ -4,26 +4,26 @@ QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* par
 	:Item(parent), mRectangleImpl()
 {
 	mNeedScalingRect = true;
-	mPen.setColor(Qt::black);
-	mBrush.setStyle(Qt::NoBrush);
+	setPen(QPen(Qt::black));
+	setBrush(QBrush(QColor(), Qt::NoBrush));
 	mDomElementType = pictureType;
-	mX1 = x1;
-	mY1 = y1;
-	mX2 = x2;
-	mY2 = y2;
+	setX1(x1);
+	setY1(y1);
+	setX2(x2);
+	setY2(y2);
 }
 
 QRealRectangle::QRealRectangle(const QRealRectangle &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = pictureType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mListScalePoint = other.mListScalePoint;
 	setPos(other.x(), other.y());
 }
@@ -36,14 +36,14 @@ Item* QRealRectangle::clone()
 
 QRectF QRealRectangle::boundingRect() const
 {
-	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, scalingDrift);
+	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), scalingDrift);
 }
 
 void QRealRectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
-	mRectangleImpl.drawRectItem(painter, mX1, mY1, mX2, mY2);
+	mRectangleImpl.drawRectItem(painter, x1(), y1(), x2(), y2());
 }
 
 QPair<QDomElement, Item::DomElementTypes> QRealRectangle::generateItem(QDomDocument &document
