@@ -16,10 +16,9 @@ class GeneratorForProgramNode
 {
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Program> programNode
-			, qrRepo::LogicalRepoApi *metamodelRepoApi
-			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
+			, qReal::EditorManagerInterface *editorManagerInterface
 			, qReal::Id const elementId
 			, const QString &elementType = ""
 			, const QString &elementName = ""

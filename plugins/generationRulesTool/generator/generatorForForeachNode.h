@@ -16,10 +16,9 @@ class GeneratorForForeachNode
 {
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Foreach> foreachNode
-			, qrRepo::LogicalRepoApi *metamodelRepoApi
-			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
+			, qReal::EditorManagerInterface *editorManagerInterface
 			, const qReal::Id elementId
 			, const QString &basicElementType = ""
 			, const QString &basicElementName = ""

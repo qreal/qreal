@@ -9,10 +9,9 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> programNode
-		, qrRepo::LogicalRepoApi *metamodelRepoApi
-		, qrRepo::RepoControlInterface *modelRepo
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable tableOfVariables
+		, qReal::EditorManagerInterface *editorManagerInterface
 		, qReal::Id const elementId
 		, const QString &elementType
 		, const QString &elementName)
@@ -21,8 +20,8 @@ QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> program
 
 	QList<QSharedPointer<Node>> statements = programNode->children();
 	for (QSharedPointer<Node> statement : statements) {
-		result += CommonGenerator::generatedResult(statement, metamodelRepoApi
-				, modelRepo, logicalModelInterface, tableOfVariables, elementId, elementType, elementName);
+		result += CommonGenerator::generatedResult(statement, logicalModelInterface, tableOfVariables
+				, editorManagerInterface, elementId, elementType, elementName);
 	}
 
 	return result;

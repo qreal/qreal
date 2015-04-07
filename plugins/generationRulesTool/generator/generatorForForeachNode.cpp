@@ -14,10 +14,9 @@ using namespace generationRules::generator;
 using namespace simpleParser;
 
 QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> foreachNode
-			, qrRepo::LogicalRepoApi *metamodelRepoApi
-			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
+			, qReal::EditorManagerInterface *editorManagerInterface
 			, const qReal::Id elementId
 			, const QString &basicElementType
 			, const QString &basicElementName)
@@ -53,8 +52,8 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> fo
 	QString result;
 	for (const qReal::Id element : listOfElements) {
 		QSharedPointer<ast::Program> programNode = qrtext::as<ast::Program>(foreachNode->program());
-		result += GeneratorForProgramNode::generatedResult(programNode, metamodelRepoApi
-				, modelRepo, logicalModelInterface, tableOfVariables, element, elementType, elementName);
+		result += GeneratorForProgramNode::generatedResult(programNode, logicalModelInterface, tableOfVariables
+				, editorManagerInterface, element, elementType, elementName);
 	}
 
 	tableOfVariables.removeVariable(elementName);

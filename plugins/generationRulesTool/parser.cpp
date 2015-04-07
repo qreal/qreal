@@ -76,11 +76,13 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 
 	auto incomingLinksIdentifier = (TokenTypes::incomingLinksKeyword)
 			>> [] (Token<TokenTypes> const &token) {
+				Q_UNUSED(token);
 				return new ast::IncomingLinks();
 	};
 
 	auto linksIdentifier = (TokenTypes::linksKeyword)
 			>> [] (Token<TokenTypes> const &token) {
+				Q_UNUSED(token);
 				return new ast::Links();
 	};
 
@@ -111,9 +113,17 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 	};
 
 	auto callGeneratorForStatement = (-TokenTypes::callGeneratorForKeyword & -TokenTypes::openingBracket
-				& identifier & -TokenTypes::closingBracket)
-			>> [] (QSharedPointer<ast::Node> identifierNode) {
-				return qrtext::wrap(new ast::CallGeneratorFor(identifierNode));
+				& identifier
+				& ~(-TokenTypes::comma & identifier)
+				& -TokenTypes::closingBracket)
+			>> [] (QSharedPointer<ast::Node> temporaryNode) {
+				if (!temporaryNode->is<TemporaryPair>()) {
+					return qrtext::wrap(new ast::CallGeneratorFor(temporaryNode));
+				} else {
+					auto pair = qrtext::as<TemporaryPair>(temporaryNode);
+
+					return qrtext::wrap(new ast::CallGeneratorFor(pair->left(), pair->right()));
+				}
 	};
 
 	auto text = TokenTypes::text

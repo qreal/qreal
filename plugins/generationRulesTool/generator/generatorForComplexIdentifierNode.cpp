@@ -7,16 +7,15 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<ComplexIdentifier> complexIdentifierNode
-		, qrRepo::LogicalRepoApi *metamodelRepoApi
-		, qrRepo::RepoControlInterface *modelRepo
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable tableOfVariables
+		, qReal::EditorManagerInterface *editorManagerInterface
 		, const qReal::Id elementId
 		, const QString &elementType
 		, const QString &elementName)
 {
-	Q_UNUSED(metamodelRepoApi);
-	Q_UNUSED(modelRepo);
+	Q_UNUSED(elementType);
+	Q_UNUSED(editorManagerInterface);
 
 	// this node can be identifier or type name.
 	auto elementOrTypeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());

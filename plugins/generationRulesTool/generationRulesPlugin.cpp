@@ -19,13 +19,15 @@
 #include "generator/variablesTable.h"
 #include "generator/commonGenerator.h"
 
+#include "treeGeneratorFromString.h"
+
 using namespace generationRules;
 
 GenerationRulesPlugin::GenerationRulesPlugin()
 	: mRepo(nullptr)
 	, mAction(tr("Destroy everything"), nullptr)
 {
-	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::generateCode);
+	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::generateCodeForAllElements);
 }
 
 GenerationRulesPlugin::~GenerationRulesPlugin()
@@ -59,73 +61,32 @@ void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
 	mEditorManagerInterface = editorManagerInterface;
 }
 
-void GenerationRulesPlugin::generateCode()
+void GenerationRulesPlugin::generateCodeForAllElements()
 {
-	QString enumStream =
-			"'enum State {' newline \n"
-				"foreach (state in State) {\n"
-				"tab state.Name ',' \n"
-				"newline \n"
-			"} \n"
-			"tab StartState.Name ',' newline \n"
-			"tab EndState.Name newline \n"
-			"'}' \n"
-			;
+	// we need id of root element in metamodel
+	// we consider that we have only one editor and one diagram
+	// TODO: fix this
+	qReal::Id editorId = mEditorManagerInterface->editors().first();
+	qReal::Id diagramId = mEditorManagerInterface->diagrams(editorId).first();
+	QString fullRootNodeName = mEditorManagerInterface->diagramNodeNameString(editorId, diagramId);
 
-	auto parserResultForEnum = generatedTreeFromString(enumStream);
-	auto programForEnum = parserResultForEnum.dynamicCast<simpleParser::ast::Program>();
-	generationRules::generator::VariablesTable table;
-	QString resultOfGenerationForEnum = generator::CommonGenerator::generatedResult(programForEnum
-			, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
-	qDebug() << resultOfGenerationForEnum;
-	table.clear();
+	QString rootNodeName = fullRootNodeName.split("/").last();
+	qReal::Id rootNodeId = mEditorManagerInterface->elementsWithTheSameName(diagramId, rootNodeName, "MetaEntityNode").first();
 
-	QString stateStream =
-			"foreach (state in State) {\n"
-				"'case ' state.Name ':' newline \n"
-				"foreach (transition in state.outcomingLinks(Transition)) { \n"
-					"tab 'if (symbol == ' transition.symbol ')' newline \n"
-						"tab tab 'currentState = ' transition.transitionEnd.Name ';' newline \n"
-						"tab tab 'break;' newline \n"
-				"} \n"
-				"tab 'else' newline \n"
-					"tab tab 'currentState = ' EndState.Name ';' newline \n"
-					"tab tab 'break;' newline"
-			"}"
-			;
-
-	auto parserResultForState = generatedTreeFromString(stateStream);
-	auto programForState = parserResultForState.dynamicCast<simpleParser::ast::Foreach>();
-	QString resultOfGenerationForState = generator::CommonGenerator::generatedResult(programForState
-			, mMetamodelRepoApi, mRepo, mLogicalModelAssistInterface, table);
-	qDebug() << resultOfGenerationForState;
+	generateCode(rootNodeId);
 }
 
-QSharedPointer<simpleParser::ast::Node> GenerationRulesPlugin::generatedTreeFromString(QString stream)
+void GenerationRulesPlugin::generateCode(const qReal::Id &rootId)
 {
-	QScopedPointer<simpleParser::Lexer> lexer;
-	QList<qrtext::core::Error> errors;
+	QString rootStream = mEditorManagerInterface->generationRule(rootId);
 
-	errors.clear();
-	lexer.reset(new simpleParser::Lexer(errors));
-
-	auto lexerResult = lexer->tokenize(stream);
-
-	for (qrtext::core::Token<simpleParser::TokenTypes> token : lexerResult) {
-		qDebug() << token.token();
-	}
-
-	// testing parser
-	errors.clear();
-	QScopedPointer<simpleParser::Parser> parser;
-	parser.reset(new simpleParser::Parser(errors));
-	auto parserResult = parser->parse(lexerResult, lexer->userFriendlyTokenNames());
-
-	for (qrtext::core::Error error : errors) {
-		qDebug() << error.errorMessage();
-	}
-
-	return parserResult;
+	auto parserResultForRoot = TreeGeneratorFromString::generatedTreeFromString(rootStream);
+	auto programForRoot = parserResultForRoot.dynamicCast<simpleParser::ast::Program>();
+	generationRules::generator::VariablesTable table;
+	QString resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
+			, mLogicalModelAssistInterface, table, mEditorManagerInterface);
+	qDebug() << resultOfGenerationForRoot;
+	table.clear();
 }
 
 void GenerationRulesPlugin::openGenerationRulesWindow()

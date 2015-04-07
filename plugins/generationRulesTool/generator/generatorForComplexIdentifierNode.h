@@ -20,10 +20,9 @@ public:
 	/// @param elementType - type of basic element in foreach
 	/// @param elementName - name of basic element in foreach
 	static QString generatedResult(QSharedPointer<simpleParser::ast::ComplexIdentifier> complexIdentifierNode
-			, qrRepo::LogicalRepoApi *metamodelRepoApi
-			, qrRepo::RepoControlInterface *modelRepo
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
+			, qReal::EditorManagerInterface *editorManagerInterface
 			, qReal::Id const elementId
 			, const QString &elementType = ""
 			, const QString &elementName = ""

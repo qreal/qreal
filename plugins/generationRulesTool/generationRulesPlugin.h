@@ -27,13 +27,13 @@ public:
 			, qReal::EditorManagerInterface *editorManagerInterface) override;
 
 private slots:
-	void generateCode();
+	void generateCodeForAllElements();
+
+	void generateCode(const qReal::Id &rootId);
 
 	void openGenerationRulesWindow();
 
 private:
-	QSharedPointer<simpleParser::ast::Node> generatedTreeFromString(QString stream);
-
 	qrRepo::RepoControlInterface *mRepo;  // Doesn't have ownership
 	QAction mAction;  // "Generate" button
 

@@ -5,24 +5,25 @@
 
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 
-#include "ast/node.h"
+#include "ast/callGeneratorFor.h"
 
 #include "variablesTable.h"
 
 namespace generationRules {
 namespace generator {
 
-class CommonGenerator
+class GeneratorForCallGenerator
 {
 public:
-	static QString generatedResult(QSharedPointer<simpleParser::ast::Node> node
+	static QString generatedResult(QSharedPointer<simpleParser::ast::CallGeneratorFor> callGeneratorForNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
 			, qReal::EditorManagerInterface *editorManagerInterface
-			, const qReal::Id elementId = qReal::Id::rootId()
+			, qReal::Id const elementId
 			, const QString &elementType = ""
 			, const QString &elementName = ""
 			);
 };
+
 }
 }

@@ -19,6 +19,7 @@ enum class TokenTypes {
 	, closingCurlyBracket
 
 	, dot
+	, comma
 
 	, foreachKeyword
 	, newlineKeyword
@@ -80,6 +81,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::dot:
 		debug << "dot ";
+		break;
+
+	case TokenTypes::comma:
+		debug << "comma";
 		break;
 
 	case TokenTypes::foreachKeyword:
