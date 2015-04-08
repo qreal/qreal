@@ -4,8 +4,8 @@
     <DisplayName xml:lang="ru_ru">Поддержка ТРИК</DisplayName>
     <Description>Install it for working with TRIK in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором ТРИК</Description>
-    <Version>3.0.2-4</Version>
-    <ReleaseDate>2015-02-27</ReleaseDate>
+    <Version>3.1.0-1</Version>
+    <ReleaseDate>2015-04-08</ReleaseDate>
     <Licenses>
         <License name="WinScp Component License" file="WinScp-license.txt" />
     </Licenses>
