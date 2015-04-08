@@ -124,8 +124,7 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 				}
 
 				foreach (const Id &diagramChild, repo->children(editorChild)) {
-					if (diagramChild.element() == "MetaEntityEdge"
-							|| !repo->stringProperty(diagramChild, "shape").isEmpty())
+					if (diagramChild.element() == "MetaEntityEdge")
 					{
 						if (repo->hasProperty(diagramChild,"abstract")) {
 							if (repo->stringProperty(diagramChild, "abstract") == "true") {
@@ -141,6 +140,28 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 							result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
 						}
 					}
+					else if (repo->hasProperty(diagramChild, "shape"))
+					{
+						if (!repo->stringProperty(diagramChild, "shape").isEmpty())
+						{
+
+							if (repo->hasProperty(diagramChild,"abstract")) {
+								if (repo->stringProperty(diagramChild, "abstract") == "true") {
+									repo->setProperty(diagramChild, "isHidden", "true");
+								}
+							}
+
+							if (!repo->hasProperty(diagramChild, "isHidden")) {
+								repo->setProperty(diagramChild, "isHidden", "false");
+							}
+
+							if (repo->stringProperty(diagramChild, "isHidden") != "true") {
+								result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
+							}
+						}
+
+					}
+
 				}
 			}
 		}

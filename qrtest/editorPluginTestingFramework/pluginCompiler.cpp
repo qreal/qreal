@@ -25,7 +25,6 @@ void PluginCompiler::compilePlugin(const QString &fileName
 {
 	qDebug() << "STARTING PLUGIN COMPILING";
 	QProcess builder;
-	builder.setWorkingDirectory(directoryToCodeToCompile);
 	QStringList environment = QProcess::systemEnvironment();
 	builder.setEnvironment(environment);
 	QStringList qmakeArgs;
@@ -44,11 +43,30 @@ void PluginCompiler::compilePlugin(const QString &fileName
 		}
 	}
 
+
+	if (directoryToCodeToCompile.contains("qrmc"))
+	{
+		QString file1 = "./" + pluginName + "/" +  pluginName + ".pro";
+		QFile data1(file1);
+		data1.open(QIODevice::ReadOnly);
+		QByteArray b = data1.readAll();
+		data1.close();
+		data1.open(QIODevice::WriteOnly);
+
+		data1.write(b + "DESTDIR = ../plugins/editors/qrtest/qrmc/plugins");
+
+		builder.setWorkingDirectory("./" + pluginName + "/");
+		data1.close();
+
+	} else {
+
+
 	QString file = directoryToCodeToCompile + "/" + pluginName + ".pro";
 	qDebug() << file;
 	QFile data(file);
 	//data.open(QIODevice::Append);
 	data.open(QIODevice::ReadOnly);
+
 	QByteArray a = data.readAll();
 	data.close();
 	data.open(QIODevice::WriteOnly);
@@ -58,6 +76,9 @@ void PluginCompiler::compilePlugin(const QString &fileName
 
 		//data.write();
 	data.close();
+	builder.setWorkingDirectory(directoryToCodeToCompile);
+
+	}
 
 //	QString = ololo.fil;
 

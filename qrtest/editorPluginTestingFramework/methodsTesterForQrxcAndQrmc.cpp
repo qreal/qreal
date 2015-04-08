@@ -9,6 +9,8 @@
 
 #include <iostream>
 #include <QElapsedTimer>
+#include <QtCore/qmath.h>
+
 using namespace std;
 
 using namespace qReal;
@@ -70,7 +72,7 @@ protected:
 			, QString const &property = ""
 			) const = 0;
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, QString const &diagram
 			, QString const &element = ""
@@ -100,8 +102,13 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForDiagrams : public MethodsTe
 	virtual QStringList generateListTime(EditorInterface *editorInterface)  {
 		QStringList resultList;
 		foreach (QString const &diagram, editorInterface->diagrams()) {
-			QPair<qint64, int> additional =  callMethodTime(editorInterface, diagram, "", "");
+			QPair<qint64, qint64> additional =  callMethodTime(editorInterface, diagram, "", "");
 			resultList.append(QString::number(additional.first));
+			resultList.append(" ");
+
+			resultList.append(QString::number(additional.second));
+			resultList.append("|");
+
 		}
 		return resultList;
 	}
@@ -130,8 +137,13 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForElements : public MethodsTe
 
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			foreach (QString const &element, editorInterface->elements(diagram)) {
-				QPair<qint64, int> additional = callMethodTime(editorInterface, diagram, element, "");
+				QPair<qint64, qint64> additional = callMethodTime(editorInterface, diagram, element, "");
 				resultList.append(QString::number(additional.first));
+				resultList.append(" ");
+
+				resultList.append(QString::number(additional.second));
+				resultList.append("|");
+
 			}
 		}
 		return resultList;
@@ -163,9 +175,14 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForProperties : public Methods
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			foreach (QString const &element, editorInterface->elements(diagram)) {
 				foreach (QString const &property, editorInterface->getPropertyNames(diagram, element)) {
-					QPair<qint64, int> additional =
+					QPair<qint64, qint64> additional =
 							callMethodTime(editorInterface, diagram, element, property);
 					resultList.append(QString::number(additional.first));
+					resultList.append(" ");
+
+					resultList.append(QString::number(additional.second));
+					resultList.append("|");
+
 				}
 			}
 		}
@@ -196,8 +213,13 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForGroups : public MethodsTest
 
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			foreach (QString const &group, editorInterface->diagramPaletteGroups(diagram)) {
-				QPair<qint64, int> additional = callMethodTime(editorInterface, diagram, group);
+				QPair<qint64, qint64> additional = callMethodTime(editorInterface, diagram, group);
 				resultList.append(QString::number(additional.first));
+				resultList.append(" ");
+
+				resultList.append(QString::number(additional.second));
+				resultList.append("|");
+
 			}
 		}
 
@@ -224,7 +246,7 @@ class MethodsTesterForQrxcAndQrmc::ElementsStringGenerator
 		return editorInterface->elements(diagram);
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -233,16 +255,30 @@ class MethodsTesterForQrxcAndQrmc::ElementsStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->elements(diagram);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->elements(diagram);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -272,13 +308,14 @@ class MethodsTesterForQrxcAndQrmc::ExplosionsStringGenerator
 		//result.append("ololo");
 		Q_UNUSED(property);
 		//ExplosionData
+		//editorInterface->
 		QList<EditorInterface::ExplosionData> ololo = editorInterface->explosions(diagram, element);
 		result = ConvertingMethods::convertQListExplosionDataIntoStringList(ololo);
 		return result; //ConvertingMethods::convertExplosionListIntoStringList(editorInterface->explosions(diagram, element));
 	}
 
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -286,16 +323,31 @@ class MethodsTesterForQrxcAndQrmc::ExplosionsStringGenerator
 			)
 	{
 		Q_UNUSED(property);
-		qint64 time = 0;
+
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->explosions(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->explosions(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -326,7 +378,7 @@ class MethodsTesterForQrxcAndQrmc::PortTypesStringGenerator
 		return editorInterface->getPortTypes(diagram, element);
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -336,16 +388,30 @@ class MethodsTesterForQrxcAndQrmc::PortTypesStringGenerator
 		Q_UNUSED(diagram);
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getPortTypes(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getPortTypes(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -377,7 +443,7 @@ class MethodsTesterForQrxcAndQrmc::PropertiesWithDefaultValuesStringGenerator
 		return editorInterface->getPropertiesWithDefaultValues(element);
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -387,16 +453,30 @@ class MethodsTesterForQrxcAndQrmc::PropertiesWithDefaultValuesStringGenerator
 		Q_UNUSED(diagram);
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getPropertiesWithDefaultValues(element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getPropertiesWithDefaultValues(element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -427,7 +507,7 @@ class MethodsTesterForQrxcAndQrmc::TypesContainedByStringGenerator
 		return editorInterface->getTypesContainedBy(element);
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -437,16 +517,30 @@ class MethodsTesterForQrxcAndQrmc::TypesContainedByStringGenerator
 		Q_UNUSED(diagram);
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getTypesContainedBy(element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getTypesContainedBy(element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -492,7 +586,7 @@ class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 	}
 
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -502,24 +596,36 @@ class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 		Q_UNUSED(diagram);
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
+			for (int i = 0; i < 20; ++i)
+			{
+				foreach (PossibleEdgesType const &pair, editorInterface->getPossibleEdges(element)) {
+					QString const &firstElement = pair.first.first;
+					QString const &secondElement = pair.first.second;
 
-			foreach (PossibleEdgesType const &pair, editorInterface->getPossibleEdges(element)) {
-				QString const &firstElement = pair.first.first;
-				QString const &secondElement = pair.first.second;
-
-				QString const &thirdElement = QString("%1").arg(pair.second.first);
-				QString const &fourthElement = pair.second.second;
+					QString const &thirdElement = QString("%1").arg(pair.second.first);
+					QString const &fourthElement = pair.second.second;
+				}
 			}
-
-			time += timer.nsecsElapsed();
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -550,7 +656,7 @@ class MethodsTesterForQrxcAndQrmc::IsNodeOrEdgeStringGenerator
 		return ConvertingMethods::convertIntIntoStringList(editorInterface->isNodeOrEdge(element));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -560,16 +666,30 @@ class MethodsTesterForQrxcAndQrmc::IsNodeOrEdgeStringGenerator
 		Q_UNUSED(diagram);
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->isNodeOrEdge(element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->isNodeOrEdge(element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -599,7 +719,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyNamesStringGenerator
 		return editorInterface->getPropertyNames(diagram, element);
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -608,16 +728,30 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyNamesStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getPropertyNames(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getPropertyNames(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -647,7 +781,7 @@ class MethodsTesterForQrxcAndQrmc::GetReferencePropertiesStringGenerator
 		return editorInterface->getReferenceProperties(diagram, element);
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -656,16 +790,30 @@ class MethodsTesterForQrxcAndQrmc::GetReferencePropertiesStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getReferenceProperties(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getReferenceProperties(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -697,7 +845,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyTypesStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->getPropertyType(element, property));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -706,16 +854,30 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyTypesStringGenerator
 	{
 		Q_UNUSED(diagram);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getPropertyType(element, property);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getPropertyType(element, property);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -746,7 +908,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyDefaultValueStringGenerator
 	}
 
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -755,16 +917,30 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyDefaultValueStringGenerator
 	{
 		Q_UNUSED(diagram);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getPropertyDefaultValue(element, property);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getPropertyDefaultValue(element, property);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -794,7 +970,7 @@ class MethodsTesterForQrxcAndQrmc::EnumValueStringGenerator
 		return ConvertingMethods::convertingQPairListIntoStringList(editorInterface->getEnumValues(diagram));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -803,16 +979,30 @@ class MethodsTesterForQrxcAndQrmc::EnumValueStringGenerator
 	{
 		Q_UNUSED(diagram);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->getEnumValues(diagram);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->getEnumValues(diagram);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -854,7 +1044,7 @@ class MethodsTesterForQrxcAndQrmc::GetParentsOfStringGenerator
 		return result;
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -863,20 +1053,33 @@ class MethodsTesterForQrxcAndQrmc::GetParentsOfStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			foreach (ParentsOfType const &pair, editorInterface->getParentsOf(diagram, element)) {
-				QString const &firstElement = pair.first;
-				QString const &secondElement = pair.second;
+			for (int i = 0; i < 20; ++i)
+			{
+				foreach (ParentsOfType const &pair, editorInterface->getParentsOf(diagram, element)) {
+					QString const &firstElement = pair.first;
+					QString const &secondElement = pair.second;
+				}
 			}
-
-			time += timer.nsecsElapsed();
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -908,7 +1111,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramsStringGenerator
 		return editorInterface->diagrams();
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -918,16 +1121,30 @@ class MethodsTesterForQrxcAndQrmc::DiagramsStringGenerator
 		Q_UNUSED(property);
 		Q_UNUSED(element);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->diagrams();
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->diagrams();
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -959,7 +1176,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNameStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramName(diagram));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -969,16 +1186,30 @@ class MethodsTesterForQrxcAndQrmc::DiagramNameStringGenerator
 		Q_UNUSED(property);
 		Q_UNUSED(element);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->diagramName(diagram);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->diagramName(diagram);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1009,7 +1240,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNodeNameStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramNodeName(diagram));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -1019,16 +1250,30 @@ class MethodsTesterForQrxcAndQrmc::DiagramNodeNameStringGenerator
 		Q_UNUSED(property);
 		Q_UNUSED(element);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->diagramNodeName(diagram);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->diagramNodeName(diagram);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1058,7 +1303,7 @@ class MethodsTesterForQrxcAndQrmc::ElementNameStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementName(diagram, element));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -1067,16 +1312,30 @@ class MethodsTesterForQrxcAndQrmc::ElementNameStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->elementName(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->elementName(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1106,7 +1365,7 @@ class MethodsTesterForQrxcAndQrmc::ElementMouseGestureStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementMouseGesture(diagram, element));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -1115,16 +1374,30 @@ class MethodsTesterForQrxcAndQrmc::ElementMouseGestureStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->elementMouseGesture(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->elementMouseGesture(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1154,7 +1427,7 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementDescription(diagram, element));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -1163,16 +1436,30 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->elementDescription(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->elementDescription(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1201,23 +1488,37 @@ class MethodsTesterForQrxcAndQrmc::PropertyDescriptionStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDescription(diagram, element, property));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
 			)
 	{
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->propertyDescription(diagram, element, property);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->propertyDescription(diagram, element, property);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1246,23 +1547,37 @@ class MethodsTesterForQrxcAndQrmc::PropertyDisplayedNameStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDisplayedName(diagram, element, property));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
 			)
 	{
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->propertyDisplayedName(diagram, element, property);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->propertyDisplayedName(diagram, element, property);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1302,7 +1617,7 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 		return result;
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -1311,22 +1626,34 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-
-			foreach (QString const &parentDiagram, editorInterface->diagrams()) {
-				foreach (QString const &parentElement, editorInterface->elements(diagram)) {
-					bool isParent = editorInterface->isParentOf(parentDiagram, parentElement, diagram, element);
+			for (int i = 0; i < 20; ++i)
+			{
+				foreach (QString const &parentDiagram, editorInterface->diagrams()) {
+					foreach (QString const &parentElement, editorInterface->elements(diagram)) {
+						bool isParent = editorInterface->isParentOf(parentDiagram, parentElement, diagram, element);
+					}
 				}
 			}
-
-			time += timer.nsecsElapsed();
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1356,7 +1683,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupListStringGenerator
 		return editorInterface->diagramPaletteGroupList(diagram, element);
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -1365,16 +1692,30 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupListStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->diagramPaletteGroupList(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->diagramPaletteGroupList(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1404,7 +1745,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramPaletteGroupDescription(diagram, element));
 	}
 
-	virtual QPair<qint64, int> callMethodTime(
+	virtual QPair<qint64, double> callMethodTime(
 			EditorInterface *editorInterface
 			, const QString &diagram
 			, const QString &element
@@ -1413,16 +1754,30 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 	{
 		Q_UNUSED(property);
 
-		qint64 time = 0;
 		QElapsedTimer timer;
+		qint64 array[20];
+		qint64 time = 0;
+		qint64 expectedValue = 0;
+		qint64 variance = 0;
 		for (int i = 0; i < 20; ++i)
 		{
 			timer.start();
-			editorInterface->diagramPaletteGroupDescription(diagram, element);
-			time += timer.nsecsElapsed();
+			for (int i = 0; i < 20; ++i)
+			{
+				editorInterface->diagramPaletteGroupDescription(diagram, element);
+			}
+			array[i] = timer.nsecsElapsed();
+			time += array[i];
 		}
-		time = time / 20;
-		QPair<qint64, int> result = qMakePair(time, 20);
+		expectedValue = time / 20;
+
+		for (int t = 0; t < 20; ++t)
+		{
+			variance +=qPow ((array[t] - expectedValue), 2);
+
+		}
+		variance = variance / 20;
+		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
 
@@ -1453,14 +1808,14 @@ void MethodsTesterForQrxcAndQrmc::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesStringGenerator()
 			, "propertiesWithDefaulValues"));
 	mGeneratedList.append(testMethodIfExistsInList(TypesContainedByStringGenerator(), "typesContanedBy"));
-	mGeneratedList.append(testMethodIfExistsInList(GetPossibleEdgesStringGenerator(), "getPossibleEdges"));
+//	mGeneratedList.append(testMethodIfExistsInList(GetPossibleEdgesStringGenerator(), "getPossibleEdges"));
 	mGeneratedList.append(testMethodIfExistsInList(IsNodeOrEdgeStringGenerator(), "isNodeOrEdge"));
 
 	mGeneratedList.append(testMethodIfExistsInList(GetPropertyNamesStringGenerator(), "getPropertyNames"));
 	mGeneratedList.append(testMethodIfExistsInList(GetReferencePropertiesStringGenerator(), "getReferenceProperties"));
-	mGeneratedList.append(testMethodIfExistsInList(GetParentsOfStringGenerator(), "getParentsOf"));
+//	mGeneratedList.append(testMethodIfExistsInList(GetParentsOfStringGenerator(), "getParentsOf"));
 
-	mGeneratedList.append(testMethodIfExistsInList(GetPropertyTypesStringGenerator(), "getPropertyTypes"));
+//	mGeneratedList.append(testMethodIfExistsInList(GetPropertyTypesStringGenerator(), "getPropertyTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(GetPropertyDefaultValueStringGenerator(), "getPropertyDefaultValue"));
 
 	mGeneratedList.append(testMethodIfExistsInList(DiagramNameStringGenerator(), "diagramName"));
@@ -1471,13 +1826,13 @@ void MethodsTesterForQrxcAndQrmc::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(ElementDescriptionStringGenerator(), "elementDescription"));
 
 	mGeneratedList.append(testMethodIfExistsInList(PropertyDisplayedNameStringGenerator(), "propertyDisplayedName"));
-	mGeneratedList.append(testMethodIfExistsInList(PropertyDescriptionStringGenerator(), "propertyDescription"));
+	//mGeneratedList.append(testMethodIfExistsInList(PropertyDescriptionStringGenerator(), "propertyDescription"));
 
-	//mGeneratedList.append(testMethodIfExistsInList(IsParentOfStringGenerator(), "isParentOf"));
+	mGeneratedList.append(testMethodIfExistsInList(IsParentOfStringGenerator(), "isParentOf"));
 
-	mGeneratedList.append(testMethodIfExistsInList(DiagramPaletteGroupListStringGenerator(), "diagramPaletteGroup"));
-	mGeneratedList.append(testMethodIfExistsInList(DiagramPaletteGroupDescriptionStringGenerator()
-			, "diagramPaletteGroupDescription"));
+//	mGeneratedList.append(testMethodIfExistsInList(DiagramPaletteGroupListStringGenerator(), "diagramPaletteGroup"));
+//	mGeneratedList.append(testMethodIfExistsInList(DiagramPaletteGroupDescriptionStringGenerator()
+//			, "diagramPaletteGroupDescription"));
 }
 
 bool MethodsTesterForQrxcAndQrmc::containsOnly(QString const &string, QChar const &symbol)

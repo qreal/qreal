@@ -143,13 +143,9 @@ qReal::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(const QString &/
 
 QStringList @@MetamodelName@@Plugin::getPropertyNames(const QString &/*diagram*/, const QString &element) const
 {
-//	return propertyTypes[element].keys();
-//SUPER HARDCODE BEGINS
 	QStringList result;
-	if (element == "Ololo") {
-	}
+@@GetPropertyNamesLine@@
 	return result;
-//SUPER HARDCODE ENDS
 }
 
 QStringList @@MetamodelName@@Plugin::getReferenceProperties(const QString &/*diagram*/, const QString &element) const
