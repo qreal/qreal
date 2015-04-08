@@ -141,16 +141,34 @@ qReal::ProjectConverter SaveConvertionManager::from301to302Converter()
 
 ProjectConverter SaveConvertionManager::from302to310Converter()
 {
-	return constructConverter("3.0.2", "3.1.0", { replace( {
-				{ "interpreterBase", "kitBase"}
-				, { "commonTwoDModel", "twoDModel" }
-				, { "nxtKitInterpreter", "nxt" }
-				, { "ev3KitInterpreter", "ev3" }
-				, { "trikKitInterpreter", "trik" }
-				, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
-				, { "nxtKitRobot", "nxtKitUsbRobot" }
-				, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
-	})});
+	return constructConverter("3.0.2", "3.1.0"
+			, {
+				replace({
+						{ "interpreterBase", "kitBase"}
+						, { "commonTwoDModel", "twoDModel" }
+						, { "nxtKitInterpreter", "nxt" }
+						, { "ev3KitInterpreter", "ev3" }
+						, { "trikKitInterpreter", "trik" }
+						, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
+						, { "nxtKitRobot", "nxtKitUsbRobot" }
+						, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
+				})
+				, replace({
+						{ "lineSensorX", "lineSensor[0]"}
+						, { "lineSensorSize", "lineSensor[1]" }
+						, { "lineSensorCross", "lineSensor[2]" }
+				})
+				, [] (const Id &block, LogicalModelAssistInterface &logicalApi) {
+					if (block.element() == "RobotsDiagramNode") {
+						const auto worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
+						logicalApi.mutableLogicalRepoApi().setMetaInformation("worldModel", worldModel);
+						return true;
+					}
+
+					return false;
+				}
+			}
+	);
 }
 
 bool SaveConvertionManager::isRobotsDiagram(const Id &diagram)

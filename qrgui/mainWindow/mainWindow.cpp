@@ -163,7 +163,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	mUi->actionNew_Diagram->setVisible(mToolManager.customizer()->enableNewDiagramAction());
 
 	connect(mUi->logicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromLogicalExplorer);
@@ -375,7 +374,7 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool setSelected)
 	if (numTab != -1) {
 		mUi->tabs->setCurrentIndex(numTab);
 		const Id currentTabId = getCurrentTab()->editorViewScene().rootItemId();
-		mToolManager.activeTabChanged(currentTabId);
+		mToolManager.activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
 	} else {
 		openNewTab(idx);
 	}
@@ -1104,10 +1103,8 @@ void MainWindow::setDefaultShortcuts()
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
-	if (mToolManager.customizer()->enableNewDiagramAction()) {
-		mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
-		HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
-	}
+	mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+	HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
 
 	// TODO: bind Ctrl+P to print when it will be repaired
 	// TODO: bind Ctrl+F to find dialog when it will be repaired
@@ -1152,13 +1149,15 @@ void MainWindow::currentTabChanged(int newIndex)
 
 	mUi->actionGesturesShow->setEnabled(isEditorTab);
 
-	if (!isEditorTab) {
-		mToolManager.activeTabChanged(Id());
-	} else {
+	if (isEditorTab) {
 		const Id currentTabId = getCurrentTab()->mvIface().rootId();
-		mToolManager.activeTabChanged(currentTabId);
+		mToolManager.activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
 		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
+	} else if (text::QScintillaTextEdit * const text = dynamic_cast<text::QScintillaTextEdit *>(currentTab())) {
+		mToolManager.activeTabChanged(TabInfo(mTextManager->path(text), text));
+	} else {
+		mToolManager.activeTabChanged(TabInfo(currentTab()));
 	}
 
 	emit rootDiagramChanged();
@@ -1651,6 +1650,11 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	}
 }
 
+QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
+{
+	return mListOfAdditionalActions;
+}
+
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(models().repoControlApi(), models().graphicalModelAssistApi()
@@ -1681,6 +1685,10 @@ void MainWindow::initToolPlugins()
 	mUi->paletteTree->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
+
+	if (!toolManager().customizer()->enableNewDiagramAction()) {
+		mUi->fileToolbar->removeAction(mUi->actionNew_Diagram);
+	}
 }
 
 void MainWindow::initInterpretedPlugins()
@@ -1691,6 +1699,8 @@ void MainWindow::initInterpretedPlugins()
 			, mFacade.events(), *mTextManager));
 
 	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
+	mListOfAdditionalActions = mInterpretedPluginLoader.menuActionsList();
+
 	traverseListOfActions(actions);
 }
 

@@ -343,7 +343,8 @@ void XmlLoader::readImage(const QDomElement &image)
 	const QString workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
 	const QString fullFileName = workingDirName + "/" + fileName;
 	Image* item = new Image(fullFileName, rect.left(), rect.top(), nullptr);
-	item->setX2andY2(rect.right(), rect.bottom());
+	item->setX2(rect.right());
+	item->setY2(rect.bottom());
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(image));
 	mScene->addItem(item);

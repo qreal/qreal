@@ -39,14 +39,14 @@ void WatchListWindow::updateVariables()
 	int row = 0;
 
 	std::function<QStringList()> identifiers;
-	std::function<QString(const QString &)> value;
+	std::function<QVariant(const QString &)> value;
 
 	if (!mNewParser) {
 		identifiers = [this] () { return mParser->variables().keys(); };
-		value = [this] (const QString &name) { return mParser->variables().value(name)->toString(); };
+		value = [this] (const QString &name) { return mParser->variables().value(name)->value(); };
 	} else {
 		identifiers = [this] () { return mNewParser->identifiers(); };
-		value = [this] (const QString &name) { return mNewParser->value<QString>(name); };
+		value = [this] (const QString &name) { return mNewParser->value<QVariant>(name); };
 	}
 
 	QStringList sortedIdentifiers = identifiers();
@@ -58,14 +58,12 @@ void WatchListWindow::updateVariables()
 
 		if (row >= mUi->watchListTableWidget->rowCount()) {
 			mUi->watchListTableWidget->insertRow(row);
-			QTableWidgetItem* item = new QTableWidgetItem(identifier);
-			mUi->watchListTableWidget->setItem(row, 0, item);
-			item = new QTableWidgetItem(value(identifier));
-			mUi->watchListTableWidget->setItem(row, 1, item);
-		} else {
-			mUi->watchListTableWidget->item(row, 0)->setText(identifier);
-			mUi->watchListTableWidget->item(row, 1)->setText(value(identifier));
+			mUi->watchListTableWidget->setItem(row, 0, new QTableWidgetItem());
+			mUi->watchListTableWidget->setItem(row, 1, new QTableWidgetItem());
 		}
+
+		mUi->watchListTableWidget->item(row, 0)->setText(identifier);
+		mUi->watchListTableWidget->item(row, 1)->setText(toString(value(identifier)));
 
 		++row;
 	}
@@ -73,6 +71,16 @@ void WatchListWindow::updateVariables()
 	for (int i = row; i < mUi->watchListTableWidget->rowCount(); ++i) {
 		mUi->watchListTableWidget->removeRow(row);
 	}
+}
+
+QString WatchListWindow::toString(const QVariant &value) const
+{
+	if (value.type() == QVariant::StringList) {
+		const QStringList list = value.toStringList();
+		return list.isEmpty() ? "" : QString("{ %1 }").arg(list.join(", "));
+	}
+
+	return value.toString();
 }
 
 void WatchListWindow::hideVariables(const QStringList &variableNames)

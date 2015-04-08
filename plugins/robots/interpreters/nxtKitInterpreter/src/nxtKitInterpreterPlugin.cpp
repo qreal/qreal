@@ -65,7 +65,6 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()
-			, configurator.qRealConfigurator().graphicalModelApi()
 			, configurator.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
 			, configurator.interpreterControl());
@@ -141,9 +140,10 @@ kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigur
 	return &mTwoDModel->devicesConfigurationProvider();
 }
 
-void NxtKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
+void NxtKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
 {
-	bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
-	enabled &= mCurrentlySelectedModelName == mTwoDRobotModel.name();
+	const Id type = info.rootDiagramId().type();
+	const bool enabled = (type == robotDiagramType || type == subprogramDiagramType)
+			&& mCurrentlySelectedModelName == mTwoDRobotModel.name();
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
 }

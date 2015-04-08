@@ -80,7 +80,7 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 		, const PortInfo &port, QList<DeviceInfo> const &sensors)
 {
 	const QString labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
-	QLabel * const portLabel = new QLabel(labelText.arg(port.name()), this);
+	QLabel * const portLabel = new QLabel(labelText.arg(port.userFriendlyName()), this);
 	QComboBox * const comboBox = new QComboBox(this);
 	comboBox->setProperty("robotModel", robotModel);
 	comboBox->setProperty("port", QVariant::fromValue(port));
@@ -107,7 +107,6 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
-	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
 	Q_UNUSED(reason)
@@ -157,7 +156,7 @@ void DevicesConfigurationWidget::save()
 		const QString robotModel = box->property("robotModel").toString();
 		const PortInfo port = box->property("port").value<PortInfo>();
 		const DeviceInfo device = box->itemData(box->currentIndex()).value<DeviceInfo>();
-		if (currentConfiguration(robotModel, port) != device) {
+		if (robotModel == mCurrentModelType && currentConfiguration(mCurrentModelId, port) != device) {
 			propagateChanges(port, device);
 		}
 	}

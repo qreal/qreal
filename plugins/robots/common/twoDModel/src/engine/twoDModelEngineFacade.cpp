@@ -1,5 +1,7 @@
 #include "twoDModel/engine/twoDModelEngineFacade.h"
 
+#include <kitBase/readOnly.h>
+
 #include "twoDModel/engine/view/d2ModelWidget.h"
 #include "model/model.h"
 #include "twoDModelEngineApi.h"
@@ -30,20 +32,16 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 
 void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 		, const qReal::SystemEvents &systemEvents
-		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
 
-	const auto onActiveTabChanged = [this, &graphicalModel, &logicalModel, &interpretersInterface] (const qReal::Id &id)
+	const auto onActiveTabChanged = [this, &logicalModel, &interpretersInterface](const qReal::TabInfo &info)
 	{
-		mView->setEnabled(!id.isNull());
-		const qReal::Id logicalId = graphicalModel.logicalId(id);
-		const QString xml = logicalId.isNull()
-				? QString()
-				: logicalModel.propertyByRoleName(logicalId, "worldModel").toString();
+		mView->setEnabled(info.type() == qReal::TabInfo::TabType::editor);
+		const QString xml = logicalModel.logicalRepoApi().metaInformation("worldModel").toString();
 		QDomDocument worldModel;
 		QString errorMessage;
 		int errorLine, errorColumn;
@@ -53,6 +51,8 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		}
 
 		mView->loadXml(worldModel);
+
+		loadReadOnlyFlags(logicalModel);
 	};
 
 	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
@@ -91,12 +91,8 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
 
-	connect(mModel.data(), &model::Model::modelChanged, [this, &graphicalModel, &logicalModel
-			, &interpreterControl, &interpretersInterface] (const QDomDocument &xml) {
-				const qReal::Id logicalId = graphicalModel.logicalId(interpretersInterface.activeDiagram());
-				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
-					logicalModel.setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");
-				}
+	connect(mModel.data(), &model::Model::modelChanged, [this, &logicalModel] (const QDomDocument &xml) {
+		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
 	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); });
@@ -139,4 +135,23 @@ void TwoDModelEngineFacade::onStartInterpretation()
 void TwoDModelEngineFacade::onStopInterpretation()
 {
 	mModel->timeline().stop();
+}
+
+void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)
+{
+	kitBase::ReadOnlyFlags readOnlyFlags = kitBase::ReadOnly::None;
+
+	const auto load = [&] (const QString &tag, kitBase::ReadOnly::ReadOnlyEnum flag) {
+		if (logicalModel.logicalRepoApi().metaInformation(tag).toBool()) {
+			readOnlyFlags |= flag;
+		}
+	};
+
+	load("twoDModelWorldReadOnly", kitBase::ReadOnly::World);
+	load("twoDModelSensorsReadOnly", kitBase::ReadOnly::Sensors);
+	load("twoDModelRobotPositionReadOnly", kitBase::ReadOnly::RobotPosition);
+	load("twoDModelRobotConfigurationReadOnly", kitBase::ReadOnly::RobotSetup);
+	load("twoDModelSimulationSettingsReadOnly", kitBase::ReadOnly::SimulationSettings);
+
+	mView->setInteractivityFlags(readOnlyFlags);
 }

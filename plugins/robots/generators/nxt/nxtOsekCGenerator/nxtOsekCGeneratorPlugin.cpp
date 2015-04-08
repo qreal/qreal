@@ -67,9 +67,9 @@ void NxtOsekCGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::Ro
 	mFlashRobotAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
 }
 
-void NxtOsekCGeneratorPlugin::onCurrentDiagramChanged(const Id &id)
+void NxtOsekCGeneratorPlugin::onCurrentDiagramChanged(const TabInfo &info)
 {
-	RobotsGeneratorPluginBase::onCurrentDiagramChanged(id);
+	RobotsGeneratorPluginBase::onCurrentDiagramChanged(info);
 	checkNxtTools();
 	mFlashRobotAction->setEnabled(true);
 }

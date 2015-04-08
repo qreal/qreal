@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QAction>
+
 #include <qrutils/pluginManagers/pluginManager.h>
 
 #include <plugins/interpretedPluginInterface/interpretedPluginInterface.h>
@@ -17,12 +19,14 @@ public:
 	/// Inits interpreted plugins.
 	/// @param configurator - information about model
 	/// @param metamodelRepoApi - information about metamodel
-	void init(const PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
+	void init(const PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi, EditorManagerInterface *editorManagerInterface);
 
 	/// Returns list of actions of all plugins.
 	QList<ActionInfo> actions() const;
 	/// Returns list of all preferences pages.
 	QList<QPair<QString, gui::PreferencesPage *>> preferencesPages() const;
+	/// Returns list of menu actions for elements in palette.
+	QList<QAction *> menuActionsList() const;
 
 	/// Returns a multimap of project conveters to editors whoose diagrams they convert.
 	/// @warning The result is obtained each time from scratch when you call this method so better to memorize it.

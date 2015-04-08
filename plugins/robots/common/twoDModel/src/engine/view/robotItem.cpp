@@ -18,8 +18,6 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	, mRectangleImpl()
 	, mRobotModel(robotModel)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
-
 	connect(&mRobotModel, &model::RobotModel::robotRided, this, &RobotItem::ride);
 	connect(&mRobotModel, &model::RobotModel::positionChanged, this, &RobotItem::setPos);
 	connect(&mRobotModel, &model::RobotModel::rotationChanged, this, &RobotItem::setRotation);
@@ -35,10 +33,12 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
-	mX2 = mX1 + robotWidth;
-	mY2 = mY1 + robotHeight;
-	mMarkerPoint = QPointF(0, mY2 / 2);  // Marker is situated behind the robot
-	mPen.setWidth(defaultTraceWidth);
+	setX2(x1() + robotWidth);
+	setY2(y1() + robotHeight);
+	mMarkerPoint = QPointF(0, y2() / 2);  // Marker is situated behind the robot
+	QPen pen(this->pen());
+	pen.setWidth(defaultTraceWidth);
+	setPen(pen);
 
 	setTransformOriginPoint(rotatePoint);
 	mBeepItem->setParentItem(this);
@@ -46,24 +46,38 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	mBeepItem->setVisible(false);
 
 	RotateItem::init();
+
+	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> sensors = robotModel.info().specialDevices();
+	for (const kitBase::robotModel::PortInfo &port : sensors.keys()) {
+		const kitBase::robotModel::DeviceInfo device = sensors[port];
+		SensorItem *sensorItem = new SensorItem(robotModel.configuration(), port
+				, robotModel.info().sensorImagePath(device), robotModel.info().sensorImageRect(device));
+		addSensor(port, sensorItem);
+
+		const QPair<QPoint, qreal> configuration(robotModel.info().specialDeviceConfiguration(port));
+		QPoint position(configuration.first.x() * boundingRect().width() / 2
+				, configuration.first.y() * boundingRect().height() / 2);
+		sensorItem->setPos(position + boundingRect().center());
+		sensorItem->setRotation(configuration.second);
+	}
 }
 
 void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
-	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
+	mRectangleImpl.drawImageItem(painter, x1(), y1(), x2(), y2(), mImage);
 }
 
 void RobotItem::drawExtractionForItem(QPainter* painter)
 {
 	painter->setPen(QPen(Qt::blue));
-	painter->drawRect(QRectF(QPointF(mX1, mY1), QPointF(mX2, mY2)));
+	painter->drawRect(QRectF(QPointF(x1(), y1()), QPointF(x2(), y2())));
 }
 
 QRectF RobotItem::boundingRect() const
 {
-	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
+	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), border);
 }
 
 QRectF RobotItem::calcNecessaryBoundingRect() const
@@ -75,8 +89,11 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	emit mousePressed();
 	AbstractItem::mousePressEvent(event);
-	mRobotModel.onRobotLiftedFromGround();
-	mDragStart = mRobotModel.position();
+
+	if (editable()) {
+		mRobotModel.onRobotLiftedFromGround();
+		mDragStart = mRobotModel.position();
+	}
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -87,7 +104,9 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
-	onLanded();
+	if (editable()) {
+		onLanded();
+	}
 }
 
 void RobotItem::onLanded()
@@ -124,7 +143,7 @@ void RobotItem::ride(const QPointF &newPos, qreal rotation)
 	const QPointF newMarker = mapToScene(mMarkerPoint);
 	QPen pen;
 	pen.setColor(mRobotModel.markerColor());
-	pen.setWidth(mPen.width());
+	pen.setWidth(this->pen().width());
 	emit drawTrace(pen, oldMarker, newMarker);
 }
 

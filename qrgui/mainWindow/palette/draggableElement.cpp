@@ -77,7 +77,6 @@ DraggableElement::DraggableElement(
 	setAttribute(Qt::WA_AcceptTouchEvents);
 }
 
-
 QIcon DraggableElement::icon() const
 {
 	return mData.icon();
@@ -287,16 +286,30 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		if (mEditorManagerProxy.isInterpretationMode()) {
 			QMenu *menu = new QMenu();
 			QAction * const changePropertiesPaletteAction = menu->addAction(tr("Change Properties"));
-			connect(changePropertiesPaletteAction, SIGNAL(triggered()), SLOT(changePropertiesPaletteActionTriggered()));
+			connect(changePropertiesPaletteAction, &QAction::triggered
+					, this, &DraggableElement::changePropertiesPaletteActionTriggered);
 			changePropertiesPaletteAction->setData(elementId.toVariant());
+
 			QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
-			connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearancePaletteActionTriggered()));
+			connect(changeAppearancePaletteAction, &QAction::triggered
+					, this,  &DraggableElement::changeAppearancePaletteActionTriggered);
 			changeAppearancePaletteAction->setData(elementId.toVariant());
+
 			QAction * const deleteElementPaletteAction = menu->addAction(tr("Delete Element"));
 			connect(deleteElementPaletteAction, &QAction::triggered
 					, this, &DraggableElement::deleteElementPaletteActionTriggered
 					, Qt::QueuedConnection);
 			deleteElementPaletteAction->setData(elementId.toVariant());
+
+			auto additionalMenuActions = mMainWindow.optionalMenuActionsForInterpretedPlugins();
+			if (!additionalMenuActions.isEmpty()) {
+				menu->addActions(additionalMenuActions);
+
+				for (QAction *action : additionalMenuActions) {
+					action->setData(elementId.toVariant());
+				}
+			}
+
 			menu->exec(QCursor::pos());
 		}
 	} else {

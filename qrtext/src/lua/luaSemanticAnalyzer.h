@@ -24,8 +24,13 @@ public:
 	/// @param type - type of a function.
 	void addIntrinsicFunction(const QString &name, const QSharedPointer<types::Function> &type);
 
+	/// Registers variable with given name as read-only (or predefined).
+	void addReadOnlyVariable(const QString &name);
+
 	/// Override that excludes intrinsic function identifiers.
 	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
+
+	void clear() override;
 
 private:
 	void analyzeNode(const QSharedPointer<core::ast::Node> &node) override;
@@ -44,6 +49,10 @@ private:
 	/// such information down to recursive tree traversal).
 	void checkForUndeclaredIdentifiers(const QSharedPointer<core::ast::Node> &node);
 
+	/// Reports errors about all read-only variables. Supposed to be called on left side of assignment.
+	/// @returns true, if everything is ok.
+	bool checkForReadOnlyVariables(const QSharedPointer<core::ast::Node> &node);
+
 	QSharedPointer<core::types::TypeExpression> mBoolean;
 	QSharedPointer<core::types::TypeExpression> mFloat;
 	QSharedPointer<core::types::TypeExpression> mInteger;
@@ -51,6 +60,9 @@ private:
 	QSharedPointer<core::types::TypeExpression> mString;
 
 	QHash<QString, QSharedPointer<types::Function>> mIntrinsicFunctions;
+
+	/// A set of predefined variables.
+	QSet<QString> mReadOnlyVariables;
 };
 
 }

@@ -99,11 +99,6 @@ qReal::IdList CoreBlocksFactory::blocksToDisable() const
 		result
 				<< id("MarkerDown")
 				<< id("MarkerUp");
-	} else {
-		result
-				<< id("Join")
-				<< id("SendMessageThreads")
-				<< id("ReceiveMessageThreads");
 	}
 
 	return result;

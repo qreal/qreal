@@ -60,10 +60,10 @@ void RobotsGeneratorPluginBase::onCurrentRobotModelChanged(kitBase::robotModel::
 	}
 }
 
-void RobotsGeneratorPluginBase::onCurrentDiagramChanged(const Id &id)
+void RobotsGeneratorPluginBase::onCurrentDiagramChanged(const TabInfo &info)
 {
+	const bool enabled = info.type() == TabInfo::TabType::code || info.type() == TabInfo::TabType::editor;
 	for (const ActionInfo &action : customActions()) {
-		const bool enabled = !id.isNull();
 		if (action.isAction()) {
 			action.action()->setEnabled(enabled);
 		} else {
@@ -164,7 +164,9 @@ QString RobotsGeneratorPluginBase::friendlyKitName() const
 bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 {
 	mProjectManager->save();
+	/// @todo: clearErrors() and clear() are absolutely different methods without documentation - wtf?
 	mMainWindowInterface->errorReporter()->clearErrors();
+	mMainWindowInterface->errorReporter()->clear();
 
 	MasterGeneratorBase * const generator = masterGenerator();
 	const QFileInfo path = srcPath();

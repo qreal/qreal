@@ -6,6 +6,9 @@ links(qslog)
 
 include(../../../qrrepo/qrrepo.pri)
 
+INCLUDEPATH += \
+	$$PWD/../../../qrrepo/ \
+
 SOURCES += \
 	repoApiTest.cpp \
 	privateTests/folderCompressorTest.cpp \

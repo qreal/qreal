@@ -51,7 +51,6 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()
-			, configurator.qRealConfigurator().graphicalModelApi()
 			, configurator.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
 			, configurator.interpreterControl());
@@ -140,9 +139,10 @@ kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigur
 	return &mTwoDModel->devicesConfigurationProvider();
 }
 
-void TrikKitInterpreterPlugin::onActiveTabChanged(const Id &rootElementId)
+void TrikKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
 {
-	const bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	const Id type = info.rootDiagramId().type();
+	const bool enabled = type == robotDiagramType || type == subprogramDiagramType;
 	const bool twoDModelEnabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModel.name();
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(twoDModelEnabled);
 }

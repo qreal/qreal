@@ -1,4 +1,4 @@
-﻿#include "../repoApi.h"
+#include "repoApi.h"
 
 #include <QtCore/QDebug>
 
@@ -400,7 +400,9 @@ void RepoApi::saveTo(const QString &workingFile)
 {
 	if (!mIgnoreAutosave) {
 		mRepository.setWorkingFile(workingFile);
-		mRepository.saveAll();
+		if (!workingFile.isEmpty()) {
+			mRepository.saveAll();
+		}
 	}
 }
 

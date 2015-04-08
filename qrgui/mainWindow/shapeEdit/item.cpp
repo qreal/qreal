@@ -13,7 +13,9 @@ Item::Item(graphicsUtils::AbstractItem* parent)
 	mNeedScalingRect = false;
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
-	mBrush.setColor(mPen.color());
+	QBrush brush(this->brush());
+	brush.setColor(pen().color());
+	setBrush(brush);
 	mZValue = 0;
 	initListScalePoint();
 }
@@ -103,7 +105,7 @@ void Item::swap(qreal &x, qreal &y)
 
 void Item::setNoneDragState()
 {
-	mDragState = None;
+	setDragState(None);
 }
 
 void Item::calcForChangeScalingState(const QPointF&pos, const QPointF& point1, const QPointF& point2
@@ -154,7 +156,7 @@ void Item::calcForChangeScalingState(const QPointF&pos, const QPointF& point1, c
 	if (mScalingState == topLeftX || mScalingState == topLeftY || mScalingState == bottomRightX
 			|| mScalingState == bottomRightY)
 	{
-		mDragState = None;
+		setNoneDragState();
 	}
 }
 

@@ -1,5 +1,7 @@
 #include "startPosition.h"
 
+#include "src/engine/model/constants.h"
+
 using namespace twoDModel::items;
 
 const QSizeF size = QSizeF(13, 13);
@@ -8,6 +10,8 @@ const int lineWidth = 3;
 StartPosition::StartPosition(QGraphicsItem *parent)
 	: RotateItem(parent)
 {
+	setX(robotWidth / 2);
+	setY(robotHeight / 2);
 	RotateItem::init();
 }
 
@@ -32,8 +36,8 @@ void StartPosition::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *
 void StartPosition::serialize(QDomElement &robotElement, QDomDocument &target) const
 {
 	QDomElement startPositionElement = target.createElement("startPosition");
-	startPositionElement.setAttribute("startPosX", scenePos().x());
-	startPositionElement.setAttribute("startPosY", scenePos().y());
+	startPositionElement.setAttribute("x", scenePos().x());
+	startPositionElement.setAttribute("y", scenePos().y());
 	startPositionElement.setAttribute("direction", rotation());
 	robotElement.appendChild(startPositionElement);
 }
@@ -45,17 +49,12 @@ void StartPosition::deserialize(const QDomElement &robotElement)
 		const QStringList robotPositionParts = robotElement.attribute("position").split(":");
 		const QString robotX = robotPositionParts.count() != 2 ? "0" : robotPositionParts[0];
 		const QString robotY = robotPositionParts.count() != 2 ? "0" : robotPositionParts[1];
-		const QString startPositionX = robotElement.hasAttribute("startPosX")
-				? robotElement.attribute("startPosX")
-				: robotX;
-		const QString startPositionY = robotElement.hasAttribute("startPosY")
-				? robotElement.attribute("startPosY")
-				: robotY;
-		setX(startPositionX.toDouble());
-		setY(startPositionY.toDouble());
+		setX(robotX.toDouble() + robotWidth / 2);
+		setY(robotY.toDouble() + robotHeight / 2);
+		setRotation(robotElement.attribute("direction").toDouble());
 	} else {
 		setX(startPositionElement.attribute("x").toDouble());
-		setX(startPositionElement.attribute("y").toDouble());
+		setY(startPositionElement.attribute("y").toDouble());
 		setRotation(startPositionElement.attribute("direction").toDouble());
 	}
 }
@@ -69,5 +68,5 @@ void StartPosition::changeDragState(qreal x, qreal y)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
-	mDragState = None;
+	setDragState(None);
 }

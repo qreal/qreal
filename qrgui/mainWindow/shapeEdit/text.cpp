@@ -35,8 +35,8 @@ Text::Text(const Text &other)
 {
 	mIsDynamicText = other.mIsDynamicText;
 	mNeedScalingRect = other.mNeedScalingRect;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = labelType;
 	mX1 = other.mX1;
 	mY1 = other.mY1;

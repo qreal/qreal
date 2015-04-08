@@ -177,7 +177,7 @@ void SensorItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 SensorItem::PortItem::PortItem(const PortInfo &port)
 	: mPort(port)
 	, mFont("Times", 10, QFont::Normal, true)
-	, mBoundingRect(QFontMetrics(mFont).boundingRect(port.name()))
+	, mBoundingRect(QFontMetrics(mFont).boundingRect(port.userFriendlyName()))
 {
 }
 
@@ -204,7 +204,7 @@ void SensorItem::PortItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 	pen.setColor(Qt::black);
 	painter->setPen(pen);
 	painter->setFont(mFont);
-	painter->drawText(boundingRect(), mPort.name(), QTextOption(Qt::AlignCenter));
+	painter->drawText(boundingRect(), mPort.userFriendlyName(), QTextOption(Qt::AlignCenter));
 
 	painter->restore();
 }
