@@ -15,7 +15,7 @@
         <License name="Kinetic Scroller Component License" file="QsKineticScroller-license.txt" />
         <License name="QsLog Component License" file="QsLog-license.txt" />
         <License name="QScintilla Component License" file="Scintilla-license.txt" />
-        <License name="QScintilla GPL Exception" file="QScntilla-GPL-exception.txt" />
+        <License name="QScintilla GPL Exception" file="QScintilla-GPL-exception.txt" />
         <License name="Qt Property Browser Component License" file="QtPropertyBrowser-license.txt" />
         <License name="Windows Modern Style Component License" file="WindowsModernStyle-license.txt" />
     </Licenses>
