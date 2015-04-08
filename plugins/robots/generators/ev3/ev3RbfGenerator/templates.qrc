@@ -31,5 +31,11 @@
         <file>templates/ports/D.t</file>
         <file>templates/engines/stop.t</file>
         <file>templates/engines/backward.t</file>
+        <file>templates/buttons/waitForRight.t</file>
+        <file>templates/buttons/waitForBack.t</file>
+        <file>templates/buttons/waitForDown.t</file>
+        <file>templates/buttons/waitForEnter.t</file>
+        <file>templates/buttons/waitForLeft.t</file>
+        <file>templates/buttons/waitForUp.t</file>
     </qresource>
 </RCC>

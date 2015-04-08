@@ -47,6 +47,8 @@ HEADERS += \
 	src/simpleGenerators/enginesGenerator.h \
 	src/converters/portNameConverter.h \
 	src/simpleGenerators/enginesStopGenerator.h \
+	src/simpleGenerators/waitForButtonGenerator.h \
+	src/converters/goToBlockNumberConverter.h \
 
 SOURCES += \
 	src/ev3GeneratorPluginBase.cpp \
@@ -60,3 +62,5 @@ SOURCES += \
 	src/simpleGenerators/enginesGenerator.cpp \
 	src/converters/portNameConverter.cpp \
 	src/simpleGenerators/enginesStopGenerator.cpp \
+	src/simpleGenerators/waitForButtonGenerator.cpp \
+	src/converters/goToBlockNumberConverter.cpp \

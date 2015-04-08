@@ -6,9 +6,14 @@
 #include "simpleGenerators/drawCircleGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
+#include "simpleGenerators/waitForButtonGenerator.h"
+
+#include "converters/portNameConverter.h"
+#include "converters/goToBlockNumberConverter.h"
 
 using namespace ev3;
 using namespace ev3::simple;
+using namespace ev3::converters;
 using namespace generatorBase::simple;
 
 Ev3GeneratorFactory::Ev3GeneratorFactory(const qrRepo::RepoApi &repo
@@ -18,6 +23,7 @@ Ev3GeneratorFactory::Ev3GeneratorFactory(const qrRepo::RepoApi &repo
 		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
+	, mGoToBlockNumber(0)
 {
 }
 
@@ -40,9 +46,37 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType == "Ev3EnginesStop") {
 		return new EnginesStopGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3WaitForUp") {
+		mGoToBlockNumber++;
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForUp.t", this);
+	} else if (elementType == "Ev3WaitForEnter") {
+		mGoToBlockNumber++;
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
+	} else if (elementType == "Ev3WaitForDown") {
+		mGoToBlockNumber++;
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
+	 } else if (elementType == "Ev3WaitForRight") {
+		mGoToBlockNumber++;
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
+	} else if (elementType == "Ev3WaitForLeft") {
+		mGoToBlockNumber++;
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
+	} else if (elementType == "Ev3WaitForBack") {
+		mGoToBlockNumber++;
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForBack.t", this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
+}
+
+Binding::ConverterInterface *Ev3GeneratorFactory::portNameConverter() const
+{
+	return new PortNameConverter(pathToTemplates());
+}
+
+Binding::ConverterInterface *Ev3GeneratorFactory::goToBlockNumberConverter() const
+{
+	return new GoToBlockNumberConverter(QString::number(mGoToBlockNumber));
 }
 
 QString Ev3GeneratorFactory::pathToTemplates() const

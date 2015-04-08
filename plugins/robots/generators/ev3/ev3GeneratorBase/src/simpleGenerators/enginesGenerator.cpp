@@ -4,7 +4,6 @@
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace ev3::simple;
-using namespace ev3::converters;
 using namespace generatorBase::simple;
 
 EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
@@ -18,7 +17,7 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 					: "engines/forward.t"
 			, {
 			Binding::createConverting("@@Port@@", "Ports"
-					, new PortNameConverter(customizer.factory()->pathToTemplates()))
+					, customizer.factory()->portNameConverter())
 			, Binding::createConverting("@@Power@@", "Power"
 					, customizer.factory()->intPropertyConverter(id, "Power"))
 			}

@@ -20,10 +20,15 @@ public:
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
+	generatorBase::simple::Binding::ConverterInterface *portNameConverter() const override;
+
+	generatorBase::simple::Binding::ConverterInterface *goToBlockNumberConverter() const;
+
 	QString pathToTemplates() const override;
 
 private:
 	QString const mGeneratorName;
+	int mGoToBlockNumber;
 };
 
 }
