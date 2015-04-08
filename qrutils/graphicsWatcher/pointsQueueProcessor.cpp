@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-﻿#include "pointsQueueProcessor.h"
+#include "pointsQueueProcessor.h"
 
 using namespace utils::sensorsGraph;
 

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-﻿#include "editorViewScene.h"
+#include "editorViewScene.h"
 
 #include <QtGui/QClipboard>
 #include <QtWidgets/QApplication>

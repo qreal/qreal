@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-﻿#include "pasteNodeCommand.h"
+#include "pasteNodeCommand.h"
 
 #include <qrgui/models/models.h>
 
