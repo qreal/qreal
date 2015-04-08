@@ -13,5 +13,21 @@
         <file>templates/drawing/drawFilledCircle.t</file>
         <file>templates/beep.t</file>
         <file>templates/playTone.t</file>
+        <file>templates/engines/forward.t</file>
+        <file>templates/ports/A.t</file>
+        <file>templates/ports/AB.t</file>
+        <file>templates/ports/ABC.t</file>
+        <file>templates/ports/ABCD.t</file>
+        <file>templates/ports/ABD.t</file>
+        <file>templates/ports/AC.t</file>
+        <file>templates/ports/ACD.t</file>
+        <file>templates/ports/AD.t</file>
+        <file>templates/ports/B.t</file>
+        <file>templates/ports/BC.t</file>
+        <file>templates/ports/BCD.t</file>
+        <file>templates/ports/BD.t</file>
+        <file>templates/ports/C.t</file>
+        <file>templates/ports/CD.t</file>
+        <file>templates/ports/D.t</file>
     </qresource>
 </RCC>

@@ -4,6 +4,7 @@
 #include "simpleGenerators/drawLineGenerator.h"
 #include "simpleGenerators/drawRectGenerator.h"
 #include "simpleGenerators/drawCircleGenerator.h"
+#include "simpleGenerators/enginesGenerator.h"
 
 using namespace ev3;
 using namespace ev3::simple;
@@ -34,6 +35,8 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return new DrawRectGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3DrawCircle") {
 		return new DrawCircleGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("EnginesForward") || elementType.contains("EnginesBackward")) {
+		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
