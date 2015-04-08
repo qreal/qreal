@@ -46,6 +46,7 @@ HEADERS += \
 	src/simpleGenerators/drawCircleGenerator.h \
 	src/simpleGenerators/enginesGenerator.h \
 	src/converters/portNameConverter.h \
+	src/simpleGenerators/enginesStopGenerator.h \
 
 SOURCES += \
 	src/ev3GeneratorPluginBase.cpp \
@@ -58,3 +59,4 @@ SOURCES += \
 	src/simpleGenerators/drawCircleGenerator.cpp \
 	src/simpleGenerators/enginesGenerator.cpp \
 	src/converters/portNameConverter.cpp \
+	src/simpleGenerators/enginesStopGenerator.cpp \

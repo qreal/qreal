@@ -29,5 +29,7 @@
         <file>templates/ports/C.t</file>
         <file>templates/ports/CD.t</file>
         <file>templates/ports/D.t</file>
+        <file>templates/engines/stop.t</file>
+        <file>templates/engines/backward.t</file>
     </qresource>
 </RCC>
