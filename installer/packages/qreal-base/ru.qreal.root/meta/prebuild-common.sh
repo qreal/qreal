@@ -4,13 +4,16 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
+cp     $INSTALLER_ROOT/licenses/ApacheLicense-v2.0*.txt                  $PWD
 cp     $INSTALLER_ROOT/licenses/gpl-3.0*.txt                             $PWD
 cp     $INSTALLER_ROOT/licenses/OFL*.txt                                 $PWD
 cp     $INSTALLER_ROOT/licenses/QsKineticScroller-license*.txt           $PWD
 cp     $INSTALLER_ROOT/licenses/QsLog-license*.txt                       $PWD
 cp     $INSTALLER_ROOT/licenses/QtPropertyBrowser-license*.txt           $PWD
+cp     $INSTALLER_ROOT/licenses/QScintilla-GPL-exception*.txt            $PWD
 cp     $INSTALLER_ROOT/licenses/Scintilla-license*.txt                   $PWD
 cp     $INSTALLER_ROOT/licenses/WindowsModernStyle-license*.txt          $PWD
+cp     $INSTALLER_ROOT/licenses/acknowledgments.txt                      $PWD/../data
 
 
 mkdir -p $PWD/../data/platforms
