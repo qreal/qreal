@@ -12,7 +12,7 @@
     <Watermark>../images/trik-studio-watermark.png</Watermark>
 
     <StartMenuDir>TRIK Studio</StartMenuDir>
-    <UninstallerName>maintenance</UninstallerName>
+    <MaintenanceToolName>maintenance</MaintenanceToolName>
     <RemoveTargetDir>true</RemoveTargetDir>
     <AllowSpaceInPath>false</AllowSpaceInPath>
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
