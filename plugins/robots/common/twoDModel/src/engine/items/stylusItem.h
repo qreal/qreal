@@ -14,6 +14,8 @@ class StylusItem : public ColorFieldItem
 public:
 	StylusItem(qreal x1, qreal y1);
 
+	AbstractItem *clone() const override;
+
 	void addLine(qreal x2, qreal y2);
 
 	QRectF boundingRect() const override;
@@ -33,6 +35,10 @@ public:
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
 	void deserialize(const QDomElement &element) override;
+
+signals:
+	/// Emitted when user draws new segment in this stylus line.
+	void segmentAdded(LineItem *segment);
 
 private:
 	void recalculateProperties();

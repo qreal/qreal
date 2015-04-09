@@ -138,6 +138,7 @@ private:
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
 	void deleteItem(QGraphicsItem *item);
+	void deleteSelectedItems();
 
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);

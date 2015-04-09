@@ -19,6 +19,14 @@
 #include "twoDModel/engine/view/d2ModelWidget.h"
 #include "view/d2ModelScene.h"
 #include "view/robotItem.h"
+#include "view/fakeScene.h"
+
+#include "src/engine/items/wallItem.h"
+#include "src/engine/items/colorFieldItem.h"
+#include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/stylusItem.h"
+#include "src/engine/items/regions/ellipseRegion.h"
+#include "src/engine/items/regions/rectangularRegion.h"
 
 using namespace twoDModel;
 using namespace kitBase::robotModel;
@@ -27,6 +35,11 @@ using namespace twoDModel::model;
 TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
 	: mModel(model)
 	, mView(view)
+	, mFakeScene(new view::FakeScene(mModel.worldModel()))
+{
+}
+
+TwoDModelEngineApi::~TwoDModelEngineApi()
 {
 }
 
@@ -146,28 +159,7 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
 			, 2 * realWidth, 2 * realWidth);
 
-	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
-	QPainter painter(&image);
-
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::white));
-	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
-
-	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
-	const bool wasSelected = sensorItem->isSelected();
-	const bool rotaterWasVisible = robot->rotater().isVisible();
-	const bool rotaterWasSelected = robot->rotater().isSelected();
-	robot->setVisible(false);
-
-	mView.scene()->render(&painter, QRectF(), scanningRect);
-
-	mView.sensorItem(port)->setSelected(wasSelected);
-	robot->setVisible(true);
-	robot->rotater().setVisible(rotaterWasVisible);
-	robot->rotater().setSelected(rotaterWasSelected);
-
+	const QImage image(mFakeScene->render(scanningRect));
 	const QPoint offset = QPointF(width, width).toPoint();
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
 	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
@@ -308,4 +300,25 @@ QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortIn
 	const QPointF position = robotModel->configuration().position(port) + robotModel->position();
 	const qreal direction = robotModel->configuration().direction(port) + robotModel->rotation();
 	return { position, direction };
+}
+
+void TwoDModelEngineApi::enableBackgroundSceneDebugging()
+{
+	// A crappy piece of code that must be never called in master branch,
+	// but this is a pretty convenient way to debug a fake scene.
+	// If called from constructor (where robotModels are not initialized yet)
+	// then NXT and TRIK 2D fake scenes will be shown.
+	QGraphicsView * const fakeScene = new QGraphicsView;
+	fakeScene->setScene(mFakeScene.data());
+	QTimer * const timer = new QTimer;
+	QObject::connect(timer, SIGNAL(timeout()), mFakeScene.data(), SLOT(update()));
+	timer->setInterval(300);
+	timer->setSingleShot(false);
+	fakeScene->setMinimumWidth(700);
+	fakeScene->setMinimumHeight(600);
+	fakeScene->setWindowFlags(fakeScene->windowFlags() | Qt::WindowStaysOnTopHint);
+	fakeScene->setVisible(mModel.robotModels().isEmpty()
+			? true
+			: mModel.robotModels()[0]->info().robotId().contains("trik"));
+	timer->start();
 }

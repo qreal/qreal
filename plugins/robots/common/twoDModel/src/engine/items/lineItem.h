@@ -14,6 +14,8 @@ class LineItem : public ColorFieldItem
 public:
 	LineItem(const QPointF &begin, const QPointF &end, int cornerRadius = 0);
 
+	AbstractItem *clone() const override;
+
 	QPainterPath shape() const override;
 
 	QRectF boundingRect() const override;
