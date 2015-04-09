@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Checks if there is licensing disclaimer at the top of the file
+# Checks if there is pragma once and there is no ifdef
 
 proc checkCopyrightNotice { fileName } {
   set firstLine  [lindex [getAllLines $fileName] 0]
