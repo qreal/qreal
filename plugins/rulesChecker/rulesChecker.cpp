@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-﻿#include "rulesChecker.h"
+#include "rulesChecker.h"
 #include <QtWidgets/QFileDialog>
 
 #include "../../qrrepo/repoApi.h"
