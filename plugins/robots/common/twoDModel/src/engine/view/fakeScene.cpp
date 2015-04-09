@@ -1,6 +1,6 @@
 #include "fakeScene.h"
 
-#include "src/engine/model/worldModel.h"
+#include "twoDModel/engine/model/worldModel.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
 
