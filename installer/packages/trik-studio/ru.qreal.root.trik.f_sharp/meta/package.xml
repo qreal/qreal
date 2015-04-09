@@ -7,7 +7,7 @@
     <Dependencies>ru.qreal.root.trik.core</Dependencies>
     <Version>3.1.0-1</Version>
     <ReleaseDate>2015-04-08</ReleaseDate>
-    <SortingPriority>10</SortingPriority>
+    <SortingPriority>5</SortingPriority>
     <Default>false</Default>
     <ForcedInstallation>false</ForcedInstallation>
 </Package>
