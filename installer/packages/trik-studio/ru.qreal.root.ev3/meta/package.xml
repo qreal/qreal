@@ -9,7 +9,7 @@
     <Licenses>
         <License name="QextSerialPort Component License" file="QextSerialPort-license.txt" />
     </Licenses>
-    <SortingPriority>8</SortingPriority>
+    <SortingPriority>17</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>
 </Package>
