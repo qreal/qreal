@@ -17,7 +17,6 @@
         <License name="Qt Property Browser Component License" file="QtPropertyBrowser-license.txt" />
         <License name="Windows Modern Style Component License" file="WindowsModernStyle-license.txt" />
     </Licenses>
-    <Default>true</Default>
     <ForcedInstallation>true</ForcedInstallation>
     <UserInterfaces>
         <UserInterface>targetwidget.ui</UserInterface>

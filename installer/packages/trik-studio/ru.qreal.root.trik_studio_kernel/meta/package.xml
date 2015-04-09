@@ -8,6 +8,5 @@
     <ReleaseDate>2015-04-08</ReleaseDate>
     <Licenses/>
     <SortingPriority>10</SortingPriority>
-    <Default>true</Default>
     <ForcedInstallation>true</ForcedInstallation>
 </Package>
