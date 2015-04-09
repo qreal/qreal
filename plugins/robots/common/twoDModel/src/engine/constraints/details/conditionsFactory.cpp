@@ -3,7 +3,7 @@
 #include <QtCore/QSharedPointer>
 
 #include "event.h"
-#include "src/engine/model/robotModel.h"
+#include "twoDModel/engine/model/robotModel.h"
 #include "src/engine/items/regions/regionItem.h"
 
 using namespace twoDModel::constraints::details;

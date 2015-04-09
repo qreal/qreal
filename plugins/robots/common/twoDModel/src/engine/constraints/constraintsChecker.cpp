@@ -4,7 +4,7 @@
 
 #include "details/constraintsParser.h"
 #include "details/event.h"
-#include "src/engine/model/model.h"
+#include "twoDModel/engine/model/model.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
 #include "src/engine/items/regions/regionItem.h"

@@ -1,6 +1,6 @@
 #include <QtCore/QDateTime>
 
-#include "timeline.h"
+#include "twoDModel/engine/model/timeline.h"
 #include "modelTimer.h"
 
 using namespace twoDModel::model;

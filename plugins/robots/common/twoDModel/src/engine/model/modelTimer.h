@@ -2,7 +2,7 @@
 
 #include <utils/abstractTimer.h>
 
-#include "timeline.h"
+#include "twoDModel/engine/model/timeline.h"
 
 namespace twoDModel {
 namespace model {

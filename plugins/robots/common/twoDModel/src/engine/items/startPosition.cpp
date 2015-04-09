@@ -1,6 +1,6 @@
 #include "startPosition.h"
 
-#include "src/engine/model/constants.h"
+#include "twoDModel/engine/model/constants.h"
 
 using namespace twoDModel::items;
 

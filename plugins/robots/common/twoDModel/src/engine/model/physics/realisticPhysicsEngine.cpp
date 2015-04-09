@@ -3,9 +3,9 @@
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
-#include "src/engine/model/constants.h"
-#include "src/engine/model/worldModel.h"
-#include "src/engine/model/timeline.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/worldModel.h"
+#include "twoDModel/engine/model/timeline.h"
 #include "src/engine/items/wallItem.h"
 
 using namespace twoDModel::model;

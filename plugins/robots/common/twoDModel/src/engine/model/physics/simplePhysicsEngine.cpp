@@ -5,8 +5,8 @@
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
-#include "src/engine/model/constants.h"
-#include "src/engine/model/worldModel.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/worldModel.h"
 
 using namespace twoDModel::model;
 using namespace physics;

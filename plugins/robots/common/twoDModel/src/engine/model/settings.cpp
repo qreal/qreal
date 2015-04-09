@@ -1,4 +1,4 @@
-#include "settings.h"
+#include "twoDModel/engine/model/settings.h"
 
 #include <qrkernel/settingsManager.h>
 

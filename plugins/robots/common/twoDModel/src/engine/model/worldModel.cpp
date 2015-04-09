@@ -1,8 +1,8 @@
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
 
-#include "constants.h"
-#include "worldModel.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/worldModel.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"

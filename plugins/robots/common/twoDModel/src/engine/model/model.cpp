@@ -1,4 +1,4 @@
-#include "model.h"
+#include "twoDModel/engine/model/model.h"
 
 #include <qrkernel/settingsManager.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>

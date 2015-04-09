@@ -3,8 +3,8 @@
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
-#include "constants.h"
-#include "sensorsConfiguration.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/sensorsConfiguration.h"
 
 using namespace twoDModel::model;
 using namespace kitBase::robotModel;
