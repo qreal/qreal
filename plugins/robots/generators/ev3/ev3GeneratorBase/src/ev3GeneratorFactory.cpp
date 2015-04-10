@@ -7,8 +7,9 @@
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
 #include "simpleGenerators/waitForButtonGenerator.h"
+#include "simpleGenerators/waitForTouchSensorGenerator.h"
 
-#include "converters/portNameConverter.h"
+#include "converters/outputPortNameConverter.h"
 #include "converters/goToBlockNumberConverter.h"
 
 using namespace ev3;
@@ -64,14 +65,17 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 	} else if (elementType == "Ev3WaitForBack") {
 		mGoToBlockNumber++;
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForBack.t", this);
+	} else if (elementType == "Ev3WaitForTouchSensor") {
+		mGoToBlockNumber++;
+		return new WaitForTouchSensorGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
-Binding::ConverterInterface *Ev3GeneratorFactory::portNameConverter() const
+Binding::ConverterInterface *Ev3GeneratorFactory::outputPortNameConverter() const
 {
-	return new PortNameConverter(pathToTemplates());
+	return new OutputPortNameConverter(pathToTemplates());
 }
 
 Binding::ConverterInterface *Ev3GeneratorFactory::goToBlockNumberConverter() const

@@ -1,7 +1,7 @@
 #include "enginesGenerator.h"
-#include "src/converters/portNameConverter.h"
 
 #include <generatorBase/generatorCustomizer.h>
+#include "src/ev3GeneratorCustomizer.h"
 
 using namespace ev3::simple;
 using namespace generatorBase::simple;
@@ -17,7 +17,7 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 					: "engines/forward.t"
 			, {
 			Binding::createConverting("@@Port@@", "Ports"
-					, customizer.factory()->portNameConverter())
+					, static_cast<Ev3GeneratorFactory *>(customizer.factory())->outputPortNameConverter())
 			, Binding::createConverting("@@Power@@", "Power"
 					, customizer.factory()->intPropertyConverter(id, "Power"))
 			}

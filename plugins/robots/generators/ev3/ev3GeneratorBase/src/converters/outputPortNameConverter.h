@@ -11,10 +11,10 @@ namespace converters {
 /// For this purpose converter will search for "ports/*.t" template where
 /// * is a port name. If such template found its contents will be returned otherwise
 /// the result will be raw port name.
-class PortNameConverter : public generatorBase::converters::TemplateParametrizedConverter
+class OutputPortNameConverter : public generatorBase::converters::TemplateParametrizedConverter
 {
 public:
-	PortNameConverter(QString const &pathToTemplates);
+	OutputPortNameConverter(QString const &pathToTemplates);
 
 	QString convert(QString const &portNameOrAlias) const override;
 };

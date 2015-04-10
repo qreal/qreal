@@ -45,10 +45,11 @@ HEADERS += \
 	src/simpleGenerators/drawRectGenerator.h \
 	src/simpleGenerators/drawCircleGenerator.h \
 	src/simpleGenerators/enginesGenerator.h \
-	src/converters/portNameConverter.h \
 	src/simpleGenerators/enginesStopGenerator.h \
 	src/simpleGenerators/waitForButtonGenerator.h \
 	src/converters/goToBlockNumberConverter.h \
+	src/simpleGenerators/waitForTouchSensorGenerator.h \
+	src/converters/outputPortNameConverter.h \
 
 SOURCES += \
 	src/ev3GeneratorPluginBase.cpp \
@@ -60,7 +61,8 @@ SOURCES += \
 	src/simpleGenerators/drawRectGenerator.cpp \
 	src/simpleGenerators/drawCircleGenerator.cpp \
 	src/simpleGenerators/enginesGenerator.cpp \
-	src/converters/portNameConverter.cpp \
 	src/simpleGenerators/enginesStopGenerator.cpp \
 	src/simpleGenerators/waitForButtonGenerator.cpp \
 	src/converters/goToBlockNumberConverter.cpp \
+	src/simpleGenerators/waitForTouchSensorGenerator.cpp \
+	src/converters/outputPortNameConverter.cpp \

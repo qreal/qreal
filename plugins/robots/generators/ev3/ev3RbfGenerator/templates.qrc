@@ -37,5 +37,11 @@
         <file>templates/buttons/waitForEnter.t</file>
         <file>templates/buttons/waitForLeft.t</file>
         <file>templates/buttons/waitForUp.t</file>
+        <file>templates/sensors/touch.t</file>
+        <file>templates/ports/1.t</file>
+        <file>templates/ports/2.t</file>
+        <file>templates/ports/3.t</file>
+        <file>templates/ports/4.t</file>
+        <file>templates/wait/timer.t</file>
     </qresource>
 </RCC>

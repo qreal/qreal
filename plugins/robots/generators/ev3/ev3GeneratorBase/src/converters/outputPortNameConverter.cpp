@@ -1,13 +1,13 @@
-#include "portNameConverter.h"
+#include "outputPortNameConverter.h"
 
 using namespace ev3::converters;
 
-PortNameConverter::PortNameConverter(QString const &pathToTemplates)
+OutputPortNameConverter::OutputPortNameConverter(QString const &pathToTemplates)
 	: TemplateParametrizedConverter(pathToTemplates)
 {
 }
 
-QString PortNameConverter::convert(QString const &portNameOrAlias) const
+QString OutputPortNameConverter::convert(QString const &portNameOrAlias) const
 {
 	QString portName = portNameOrAlias;
 	QStringList myStringList = portName.toUpper().split(QRegExp("\\W+"), QString::SkipEmptyParts);
