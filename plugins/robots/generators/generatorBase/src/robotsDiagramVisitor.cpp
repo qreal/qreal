@@ -33,7 +33,7 @@ RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(const qReal::Id &l
 	} else if (guardProperty == "false") {
 		return falseGuard;
 	} else if (guardProperty == "iteration") {
-		return iterationGuard;
+		return bodyGuard;
 	} else if (!guardProperty.isEmpty()) {
 		return threadIdGuard;
 	}

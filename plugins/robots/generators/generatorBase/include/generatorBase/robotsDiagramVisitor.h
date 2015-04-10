@@ -23,7 +23,7 @@ protected:
 	enum LinkGuard
 	{
 		emptyGuard = 0
-		, iterationGuard
+		, bodyGuard  // :)
 		, trueGuard
 		, falseGuard
 		, threadIdGuard
