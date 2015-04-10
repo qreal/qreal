@@ -54,7 +54,7 @@ void Reporter::reportMessages()
 
 	QJsonArray messages;
 	for (const QPair<Level, QString> &message : mMessages) {
-		messages.append(QJsonObject({
+		messages.append(QJsonObject::fromVariantMap({
 			{ "level", message.first == Level::information ? "info" : "error" }
 			, { "message", message.second }
 		}));
