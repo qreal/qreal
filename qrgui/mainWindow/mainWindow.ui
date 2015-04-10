@@ -41,7 +41,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>19</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -149,7 +149,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>84</width>
+     <width>89</width>
      <height>217</height>
     </size>
    </property>
@@ -306,8 +306,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>102</width>
-     <height>127</height>
+     <width>107</width>
+     <height>132</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -502,6 +502,9 @@
   <action name="actionHelp">
    <property name="text">
     <string>Small Help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actionAbout">
