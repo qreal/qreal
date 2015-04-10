@@ -18,20 +18,9 @@ public:
 	{
 		return "";
 	}
-//	virtual QList<QPair<qint64, int>> generateListTime(EditorManagerInterface *editorManagerInterface) = 0;
-
-
-
-
 
 	/// generates name of tested method
 	virtual QString methodName() const = 0;
-
-	virtual QStringList ololo()
-	{
-		QStringList result;
-		return result;
-	}
 };
 
 }

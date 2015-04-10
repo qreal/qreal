@@ -29,10 +29,6 @@ QPair<QString, QPair<QString, QString> > MethodsTester::testMethodIfExistsInList
 		resultPair = generateOutputForOneMethod(stringGenerator);
 	}
 
-	if (mMethodsToTest.contains(method)) {
-		generateOutputTimeForOneMethod(stringGenerator);
-	}
-
 	return resultPair;
 }
 
@@ -49,13 +45,8 @@ void MethodsTester::generateOutputTimeForOneMethod(AbstractStringGenerator const
 	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
 	QString const &methodName = firstGenerator->methodName();
 	QString const &firstResult = firstGenerator->generateStringTime();
-	QStringList ololo1 = firstGenerator->ololo();
 
 	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
-	QString const &secondResult = secondGenerator->generateStringTime();
-	QPair<QString, QString> methodsPair = qMakePair(firstResult, secondResult);
-	QPair<QString, QPair<QString, QString> > resultPair = qMakePair(methodName, methodsPair);
-	mTimeResult.append(resultPair);
 
 	//return resultPair;
 }
@@ -66,16 +57,20 @@ QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMeth
 {
 	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
 	QString const &methodName = firstGenerator->methodName();
-	QStringList ololo = firstGenerator->ololo();
 	QString const &firstResult = firstGenerator->generateString();
-	QString qwerty = firstGenerator->generateStringTime();
-	QStringList ololo1 = firstGenerator->ololo();
+	QString const &firstResultTime = firstGenerator->generateStringTime();
 
 
 	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
 	QString const &secondResult = secondGenerator->generateString();
+	QString const &secondResultTime = secondGenerator->generateStringTime();
+	QPair<QString, QString> methodsPairTime = qMakePair(firstResultTime, secondResultTime);
+	QPair<QString, QPair<QString, QString> > resultPairTime = qMakePair(methodName, methodsPairTime);
+	mTimeResult.append(resultPairTime);
+
 
 	QPair<QString, QString> methodsPair = qMakePair(firstResult, secondResult);
+
 	QPair<QString, QPair<QString, QString> > resultPair = qMakePair(methodName, methodsPair);
 
 	return resultPair;
