@@ -1198,15 +1198,17 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		// Double click on a title activates it
-		if (Label *title = dynamic_cast<Label*>(itemAt(event->scenePos(), QTransform()))) {
-			if (!title->hasFocus()) {  // Do not activate already activated item
+		for (QGraphicsItem * const item : items(event->scenePos())) {
+			if (Label * const label = dynamic_cast<Label*>(item)) {
+				if (!label->hasFocus() && !label->isReadOnly()) {  // Do not activate already activated or readonly item
+					event->accept();
+					label->startTextInteraction();
+					return;
+				}
+			} else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 				event->accept();
-				title->startTextInteraction();
-				return;
+				mExploser.handleDoubleClick(element->logicalId());
 			}
-		} else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
-			event->accept();
-			mExploser.handleDoubleClick(element->logicalId());
 		}
 	}
 }
