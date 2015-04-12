@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/devicesConfigurationProvider.h>
+#include <kitBase/devicesConfigurationProvider.h>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
@@ -20,7 +20,7 @@ namespace interpreterCore {
 /// DevicesConfigurationProvider-s so they are kept in sync with each other.
 /// DevicesConfigurationManager is a center of this network and is the one place which saves sensor settings
 /// in a registry.
-class DevicesConfigurationManager : public interpreterBase::DevicesConfigurationProvider
+class DevicesConfigurationManager : public kitBase::DevicesConfigurationProvider
 {
 public:
 	/// Constructor.
@@ -36,13 +36,13 @@ public:
 
 private:
 	void onDeviceConfigurationChanged(const QString &robotModel
-			, const interpreterBase::robotModel::PortInfo &port
-			, const interpreterBase::robotModel::DeviceInfo &sensor
+			, const kitBase::robotModel::PortInfo &port
+			, const kitBase::robotModel::DeviceInfo &sensor
 			, Reason reason) override;
 
-	/// Reacts to changing of editor tab.
-	/// @param graphicalRootId - id of a root diagram of newly selected tab.
-	void onActiveTabChanged(const qReal::Id &graphicalRootId);
+	/// Reacts to selection of a new tab in main window.
+	/// @param info - the information about the new active tab.
+	void onActiveTabChanged(const qReal::TabInfo &info);
 
 	/// Serializes current sensors configuration into inner string representation.
 	QString save() const;

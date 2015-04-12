@@ -4,7 +4,7 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 PortNameConverter::PortNameConverter(const QString &pathToTemplates
-		, QList<interpreterBase::robotModel::PortInfo> const &ports)
+		, QList<kitBase::robotModel::PortInfo> const &ports)
 	: TemplateParametrizedConverter(pathToTemplates)
 	, mPorts(ports)
 {
@@ -13,7 +13,7 @@ PortNameConverter::PortNameConverter(const QString &pathToTemplates
 QString PortNameConverter::convert(const QString &portNameOrAlias) const
 {
 	QString portName;
-	for (const interpreterBase::robotModel::PortInfo &port : mPorts) {
+	for (const kitBase::robotModel::PortInfo &port : mPorts) {
 		if (port.name() == portNameOrAlias || port.nameAliases().contains(portNameOrAlias)) {
 			portName = port.name();
 			if (port.name() == portNameOrAlias) {

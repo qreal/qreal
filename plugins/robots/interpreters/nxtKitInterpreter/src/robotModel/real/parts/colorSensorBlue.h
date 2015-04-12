@@ -1,22 +1,22 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
+#include <kitBase/robotModel/robotParts/colorSensorBlue.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
 #include "implementations/colorSensorImpl.h"
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class ColorSensorBlue : public interpreterBase::robotModel::robotParts::ColorSensorBlue
+class ColorSensorBlue : public kitBase::robotModel::robotParts::ColorSensorBlue
 {
 	Q_OBJECT
 
 public:
-	ColorSensorBlue(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	ColorSensorBlue(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;

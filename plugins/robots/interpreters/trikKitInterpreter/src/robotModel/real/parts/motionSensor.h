@@ -1,9 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/trikMotionSensor.h"
+#include <trikKit/robotModel/parts/trikMotionSensor.h>
 #include <utils/tcpRobotCommunicator.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -13,8 +13,8 @@ class MotionSensor : public robotModel::parts::TrikMotionSensor
 	Q_OBJECT
 
 public:
-	MotionSensor(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	MotionSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;

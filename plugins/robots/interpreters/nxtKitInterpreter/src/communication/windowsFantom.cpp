@@ -2,7 +2,7 @@
 #include "windowsFantom.h"
 #include "fantomMethods.h"
 
-using namespace nxtKitInterpreter::communication;
+using namespace nxt::communication;
 
 unsigned long const fantomDriverUnavailableResult = 100500;
 

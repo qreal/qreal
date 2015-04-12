@@ -58,7 +58,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0">
+     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0">
       <item row="0" column="0">
        <widget class="QCheckBox" name="splashScreenCheckBox">
         <property name="text">
@@ -66,53 +66,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Color of old line:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QComboBox" name="colorComboBox">
-        <property name="minimumSize">
-         <size>
-          <width>170</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="frame">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="paintOldLineCheckBox">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Paint the old line</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="2" colspan="2">
+      <item row="0" column="1" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
          <number>5</number>

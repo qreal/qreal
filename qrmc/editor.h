@@ -7,6 +7,7 @@
 #include <QtCore/QSet>
 
 #include "../qrrepo/repoApi.h"
+#include "classes/port.h" //fix//here
 
 namespace qrmc {
 	class MetaCompiler;
@@ -35,6 +36,7 @@ namespace qrmc {
 
 		Type *findType(const QString &name);
 		QSet<EnumType*> getAllEnumTypes();
+		QStringList getAllPortNames() const;//fix
 		Diagram *findDiagram(const QString &name);
 		QMap<QString, Diagram*> diagrams();
 
@@ -58,6 +60,7 @@ namespace qrmc {
 		void generateElementsFactory();
 		void generateContainers();
 		void generateReferenceProperties();
+		void generatePortTypes();//fix
 		void generatePropertyNames();
 		void generateConnections();
 		void generateUsages();
@@ -83,6 +86,7 @@ namespace qrmc {
 		class MethodGenerator;
 		class ContainersGenerator;
 		class ReferencePropertiesGenerator;
+		class PortTypesGenerator;//fix
 		class PropertyNameGenerator;
 		class ConnectionsGenerator;
 		class UsagesGenerator;

@@ -5,7 +5,7 @@
 #include <utils/tracer.h>
 #include "commandConstants.h"
 
-using namespace nxtKitInterpreter::communication;
+using namespace nxt::communication;
 
 const unsigned lsGetStatusResponseSize = 6;
 
@@ -16,7 +16,7 @@ I2CCommunicator::I2CCommunicator(utils::robotCommunication::RobotCommunicator &r
 
 void I2CCommunicator::sendI2C(QObject *addressee
 		, const QByteArray &buffer, const int responseSize
-		, const interpreterBase::robotModel::PortInfo &port)
+		, const kitBase::robotModel::PortInfo &port)
 {
 	utils::Tracer::debug(utils::Tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
 
@@ -67,7 +67,7 @@ void I2CCommunicator::sendI2C(QObject *addressee
 	}
 }
 
-bool I2CCommunicator::waitForI2CBytes(int bytes, const interpreterBase::robotModel::PortInfo &port)
+bool I2CCommunicator::waitForI2CBytes(int bytes, const kitBase::robotModel::PortInfo &port)
 {
 	time_t const startTime = clock();
 	do {
@@ -82,7 +82,7 @@ bool I2CCommunicator::waitForI2CBytes(int bytes, const interpreterBase::robotMod
 	} while (true);
 }
 
-int I2CCommunicator::i2cBytesReady(const interpreterBase::robotModel::PortInfo &port)
+int I2CCommunicator::i2cBytesReady(const kitBase::robotModel::PortInfo &port)
 {
 	QByteArray command(5, 0);
 	command[0] = 0x03;
@@ -103,7 +103,7 @@ int I2CCommunicator::i2cBytesReady(const interpreterBase::robotModel::PortInfo &
 	}
 }
 
-char I2CCommunicator::toNxtInputPort(const interpreterBase::robotModel::PortInfo &port)
+char I2CCommunicator::toNxtInputPort(const kitBase::robotModel::PortInfo &port)
 {
 	return static_cast<char>(port.name().toInt() - 1);
 }

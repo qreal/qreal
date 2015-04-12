@@ -8,9 +8,9 @@ env:
   - CONFIG=release PROJECT=qrealRobots     VERA=false TESTS=true
   - CONFIG=debug   PROJECT=qrealBP         VERA=false TESTS=true
   - CONFIG=release PROJECT=qrealBP         VERA=false TESTS=true
-  - CONFIG=debug   PROJECT=qrealTest       VERA=false TESTS="./exampleTests-d && ./qrgui_unittests-d && ./qrrepo_unittests-d && ./qrutils_unittests-d && ./visualDebugSupport_unittests-d && ./qrtext_unittests-d"
-  - CONFIG=release PROJECT=qrealTest       VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests && ./qrtext_unittests"
-  - CONFIG=debug   PROJECT=qrealRobotsTest VERA=false TESTS="./robots_interpreterBase_unittests-d && ./robots_interpreterCore_unittests-d"
+  - CONFIG=debug   PROJECT=qrealTest       VERA=false TESTS="./exampleTests-d && ./qrgui_unittests-d && ./qrrepo_unittests-d && ./qrutils_unittests-d && ./visualDebugSupport_unittests-d && ./qrtext_unittests-d && ./generationRulesTool_unittests-d"
+  - CONFIG=release PROJECT=qrealTest       VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests && ./qrtext_unittests && ./generationRulesTool_unittests"
+  - CONFIG=debug   PROJECT=qrealRobotsTest VERA=false TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d"
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi

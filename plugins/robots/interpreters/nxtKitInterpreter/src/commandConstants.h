@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nxtKitInterpreter {
+namespace nxt {
 
 const unsigned maxMessageSize = 59;
 const unsigned i2cBufferSize = 24;

@@ -1,7 +1,7 @@
 #include "twoDDisplay.h"
 
 using namespace nxtKitInterpreter::robotModel::twoD::parts;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
 Display::Display(DeviceInfo const &info
 		, PortInfo const &port

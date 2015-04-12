@@ -19,14 +19,14 @@ using namespace generatorBase;
 using namespace qReal;
 using namespace semantics;
 
-ReadableControlFlowGenerator::ReadableControlFlowGenerator(
-		const qrRepo::RepoApi &repo
+ReadableControlFlowGenerator::ReadableControlFlowGenerator(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
+		, PrimaryControlFlowValidator &validator
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
-	: ControlFlowGeneratorBase(repo, errorReporter, customizer, diagramId, parent, isThisDiagramMain)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mTravelingForSecondTime(false)
 {
 }
@@ -34,11 +34,8 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(const Id &diagramId, bool cloneForNewDiagram)
 {
 	ReadableControlFlowGenerator * const copy = new ReadableControlFlowGenerator(mRepo
-			, mErrorReporter, mCustomizer, diagramId, parent(), false);
-	if (!cloneForNewDiagram) {
-		delete copy->mValidator;
-		copy->mValidator = mValidator;
-	}
+			, mErrorReporter, mCustomizer, (cloneForNewDiagram ? *mValidator.clone() : mValidator)
+			, diagramId, parent(), false);
 
 	return copy;
 }

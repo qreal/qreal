@@ -163,8 +163,10 @@ void Shape::generate(QString &classTemplate) const
 							.replace(nodeWidthTag, QString::number(mWidth))
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
-	foreach(Port *port, mPorts)
+	foreach(Port *port, mPorts) {
+		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());//fix
 		portsInitLine += port->generateInit(compiler) + endline;
+	}
 
 	QString labelsInitLine;
 	QString labelsUpdateLine;
@@ -188,6 +190,12 @@ void Shape::generate(QString &classTemplate) const
 			.replace(updateDataTag, labelsUpdateLine)
 			.replace(labelDefinitionTag, labelsDefinitionLine);
 }
+
+QList<Port*> Shape::getPorts() const//fix
+{
+	return mPorts;
+}
+
 
 void Shape::generateSdf() const
 {

@@ -109,6 +109,14 @@ QVariant LuaInterpreter::interpret(const QSharedPointer<core::ast::Node> &root
 
 		if (variable->is<ast::Identifier>()) {
 			auto name = as<ast::Identifier>(variable)->name();
+
+			if (mReadOnlyVariables.contains(name)) {
+				mErrors.append(core::Error(root->start(), QObject::tr("Variable %1 is read-only")
+						, core::ErrorType::runtimeError, core::Severity::error));
+
+				return QVariant();
+			}
+
 			mIdentifierValues.insert(name, interpretedValue);
 			return QVariant();
 		} else if (variable->is<ast::IndexingExpression>()) {
@@ -230,9 +238,15 @@ void LuaInterpreter::setVariableValue(const QString &name, const QVariant &value
 	}
 }
 
+void LuaInterpreter::addReadOnlyVariable(const QString &name)
+{
+	mReadOnlyVariables.insert(name);
+}
+
 void LuaInterpreter::clear()
 {
 	mIdentifierValues.clear();
+	mReadOnlyVariables.clear();
 }
 
 QVariant LuaInterpreter::interpretUnaryOperator(const QSharedPointer<core::ast::Node> &root

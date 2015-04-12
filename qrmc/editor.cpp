@@ -154,6 +154,26 @@ Diagram* Editor::findDiagram(const QString &name)
 	return nullptr;
 }
 
+QStringList Editor::getAllPortNames() const//fix
+{
+	QStringList result;
+
+	foreach (const Diagram * const diagram, mDiagrams.values()) {
+		foreach (const Type * const type, diagram->types()) {
+			if (dynamic_cast<const Port * const>(type)) {
+				result << type->name();
+			}
+		}
+	}
+
+	foreach (const Editor * const editor, mIncludes) {
+		result += editor->getAllPortNames();
+	}
+
+	result.removeDuplicates();
+	return result;
+}
+
 QMap<QString, Diagram*> Editor::diagrams()
 {
 	return mDiagrams;
@@ -178,8 +198,9 @@ void Editor::generate(const QString &headerTemplate, const QString &sourceTempla
 	mElementsHeaderTemplate = elementsHeaderTemplate;
 
 	generatePluginHeader(headerTemplate);
-	generatePluginSource();
+	//generatePluginSource();
 	generateElementsClasses();
+	generatePluginSource();
 	generateResourceFile(resourceTemplate);
 	generateProjectFile(projectTemplate);
 }
@@ -241,6 +262,7 @@ bool Editor::generatePluginSource()
 	generateContainers();
 	generatePropertyNames();
 	generateReferenceProperties();
+	generatePortTypes();//fix
 	generateConnections();
 	generateUsages();
 	generateIsNodeOrEdge();
@@ -460,6 +482,14 @@ public:
 	}
 };
 
+class Editor::PortTypesGenerator: public Editor::MethodGenerator {
+public://fix
+	virtual ~PortTypesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generatePortTypes(lineTemplate);
+	}
+};
+
 class Editor::PropertyNameGenerator: public Editor::MethodGenerator {
 public:
 	virtual ~PropertyNameGenerator() {}
@@ -558,6 +588,11 @@ void Editor::generateContainers()
 void Editor::generateReferenceProperties()
 {
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
+}
+
+void Editor::generatePortTypes()//fix
+{
+	generatePluginMethod(getPortTypesLineTag, PortTypesGenerator());
 }
 
 void Editor::generatePropertyNames()

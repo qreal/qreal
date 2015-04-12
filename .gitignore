@@ -22,6 +22,7 @@ bin/*
 *.Release
 *.prf
 usabilityFiles/*
+**/.build/*
 
 # Generated editors
 **/generated/elements.h

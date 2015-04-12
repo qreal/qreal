@@ -47,6 +47,12 @@ QString NonGraphicType::generateReferenceProperties(const QString &lineTemplate)
 	return "";
 }
 
+QString NonGraphicType::generatePortTypes(const QString &lineTemplate) const//fix
+{
+	Q_UNUSED(lineTemplate);
+	return "";
+}
+
 QString NonGraphicType::generatePropertyName(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);

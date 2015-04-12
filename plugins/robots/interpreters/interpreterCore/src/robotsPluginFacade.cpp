@@ -1,12 +1,13 @@
 #include "interpreterCore/robotsPluginFacade.h"
 
 #include <qrkernel/settingsManager.h>
-#include <interpreterBase/robotModel/portInfo.h>
+#include <kitBase/robotModel/portInfo.h>
 
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "src/ui/robotsSettingsPage.h"
 #include "interpreterCore/managers/paletteUpdateManager.h"
 #include "interpreterCore/managers/kitAutoSwitcher.h"
+#include "src/managers/exerciseExportManager.h"
 
 using namespace interpreterCore;
 
@@ -28,7 +29,13 @@ RobotsPluginFacade::~RobotsPluginFacade()
 
 void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 {
-	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
+	mActionsManager.init(&configurer.mainWindowInterpretersInterface());
+
+	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager
+			, configurer.logicalModelApi());
+
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
+			, mRobotSettingsPage, &ui::RobotsSettingsPage::onProjectOpened);
 
 	mDevicesConfigurationManager.reset(new DevicesConfigurationManager(
 			configurer.graphicalModelApi()
@@ -45,7 +52,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
 			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
 
-	interpreterBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
+	kitBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
 	coreFactory->configure(configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, mRobotModelManager
@@ -87,14 +94,40 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
 			, mBlocksFactoryManager, mKitPluginManager, mRobotModelManager, this);
 
+	mSaveAsTaskManager.reset(new ExerciseExportManager(configurer.logicalModelApi()
+			, configurer.repoControlInterface(), configurer.projectManager()));
+
 	connectInterpreterToActions();
 
 	connectEventsForKitPlugin();
 
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
+
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
+
+	const qrRepo::LogicalRepoApi &repoApi = configurer.logicalModelApi().logicalRepoApi();
+
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
+			, [this, &repoApi] (const qReal::TabInfo &info) {
+				Q_UNUSED(info);
+
+				mDockDevicesConfigurer->setEnabled(
+						!repoApi.metaInformation("twoDModelSensorsReadOnly").toBool());
+
+				const bool hasReadOnlyFlags = repoApi.metaInformation("twoDModelWorldReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelSensorsReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelRobotPositionReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelRobotConfigurationReadOnly").toBool()
+						| repoApi.metaInformation("twoDModelSimulationSettingsReadOnly").toBool()
+						;
+
+				mActionsManager.exportExerciseAction().setEnabled(!hasReadOnlyFlags);
+			});
+
+	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered
+			, [this] () { mSaveAsTaskManager->save(); });
 
 	sync();
 }
@@ -118,7 +151,7 @@ QStringList RobotsPluginFacade::defaultSettingsFiles() const
 {
 	QStringList result = { ":/interpreterCoreDefaultSettings.ini" };
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
-		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 			const QString defaultSettings = kit->defaultSettingsFile();
 			if (!defaultSettings.isEmpty()) {
 				result << defaultSettings;
@@ -177,12 +210,12 @@ bool RobotsPluginFacade::selectKit(const qReal::PluginConfigurator &configurer)
 
 void RobotsPluginFacade::initSensorWidgets()
 {
-	mDockDevicesConfigurer = new interpreterBase::DevicesConfigurationWidget(nullptr, true);
+	mDockDevicesConfigurer = new kitBase::DevicesConfigurationWidget(nullptr, true);
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mDockDevicesConfigurer, &interpreterBase::DevicesConfigurationWidget::selectRobotModel);
-	for (interpreterBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
-		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
+			, mDockDevicesConfigurer, &kitBase::DevicesConfigurationWidget::selectRobotModel);
+	for (kitBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
+		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
 			mDockDevicesConfigurer->prependCustomWidget(*model, kit->quickPreferencesFor(*model));
 		}
 	}
@@ -200,10 +233,10 @@ void RobotsPluginFacade::initSensorWidgets()
 			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStop);
 	connect(mInterpreter, &interpreter::InterpreterInterface::started, mGraphicsWatcherManager, [=]() {
 		mActionsManager.runAction().setVisible(false);
-		mActionsManager.stopRobotAction().setVisible(true);
+		mActionsManager.stopRobotAction().setVisible(mRobotModelManager.model().interpretedModel());
 	});
 	connect(mInterpreter, &interpreter::InterpreterInterface::stopped, mGraphicsWatcherManager, [=]() {
-		mActionsManager.runAction().setVisible(true);
+		mActionsManager.runAction().setVisible(mRobotModelManager.model().interpretedModel());
 		mActionsManager.stopRobotAction().setVisible(false);
 	});
 
@@ -219,33 +252,29 @@ void RobotsPluginFacade::initKitPlugins(const qReal::PluginConfigurator &configu
 {
 	/// @todo: Check that this code works when different kit is selected
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
-		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-			kit->init(mEventsForKitPlugin, configurer.systemEvents(), configurer.graphicalModelApi()
-					, configurer.logicalModelApi(), configurer.mainWindowInterpretersInterface(), *mInterpreter);
+		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+			kit->init(kitBase::KitPluginConfigurator(configurer
+					, mRobotModelManager, *mParser, mEventsForKitPlugin, *mInterpreter));
 
-			for (const interpreterBase::robotModel::RobotModelInterface *model : kit->robotModels()) {
+			for (const kitBase::robotModel::RobotModelInterface *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);
-				connect(&mEventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
-						, model, &interpreterBase::robotModel::RobotModelInterface::onInterpretationStarted);
+				connect(&mEventsForKitPlugin, &kitBase::EventsForKitPluginInterface::interpretationStarted
+						, model, &kitBase::robotModel::RobotModelInterface::onInterpretationStarted);
 			}
 
 			mDevicesConfigurationManager->connectDevicesConfigurationProvider(kit->devicesConfigurationProvider());
-		}
-
-		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
-			generator->init(configurer, mRobotModelManager, *mParser);
 		}
 	}
 }
 
 void RobotsPluginFacade::initFactoriesFor(const QString &kitId
-		, const interpreterBase::robotModel::RobotModelInterface *model
+		, const kitBase::robotModel::RobotModelInterface *model
 		, const qReal::PluginConfigurator &configurer)
 {
 	// Pulling each robot model to each kit plugin with same ids. We need it for supporting
 	// plugin-based blocks set extension for concrete roobt model.
-	for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-		interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit->blocksFactoryFor(model);
+	for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+		kitBase::blocksBase::BlocksFactoryInterface * const factory = kit->blocksFactoryFor(model);
 		if (factory) {
 			/// @todo Non-obvious dependency on mParser, which may or may not be constructed here.
 			///       More functional style will be helpful here.
@@ -267,24 +296,23 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 			mInterpreter
 			, &interpreter::InterpreterInterface::started
 			, &mEventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
+			, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			);
 
 	QObject::connect(
 			mInterpreter
 			, &interpreter::InterpreterInterface::stopped
 			, &mEventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
+			, &kitBase::EventsForKitPluginInterface::interpretationStopped
 			);
 
 	QObject::connect(
 			&mRobotModelManager
 			, &RobotModelManager::robotModelChanged
-			, [this](interpreterBase::robotModel::RobotModelInterface &model) {
+			, [this](kitBase::robotModel::RobotModelInterface &model) {
 				emit mEventsForKitPlugin.robotModelChanged(model.name());
 			}
 			);
-
 }
 
 void RobotsPluginFacade::sync()

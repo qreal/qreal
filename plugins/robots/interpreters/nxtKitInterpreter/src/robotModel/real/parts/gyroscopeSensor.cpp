@@ -1,12 +1,12 @@
 #include "gyroscopeSensor.h"
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 GyroscopeSensor::GyroscopeSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::GyroscopeSensor(info, port)
+	: kitBase::robotModel::robotParts::GyroscopeSensor(info, port)
 	, mImplementation(robotCommunicator, port, enums::lowLevelSensorType::ANGLE, enums::sensorMode::RAWMODE)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse

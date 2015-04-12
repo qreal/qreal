@@ -6,7 +6,7 @@
 
 using namespace interpreterCore::coreBlocks::details;
 
-TimerBlock::TimerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+TimerBlock::TimerBlock(kitBase::robotModel::RobotModelInterface &robotModel)
 	: mTimer(robotModel.timeline().produceTimer())
 {
 	mTimer->setParent(this);

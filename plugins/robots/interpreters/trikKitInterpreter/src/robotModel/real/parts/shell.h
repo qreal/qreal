@@ -1,9 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/trikShell.h"
+#include <trikKit/robotModel/parts/trikShell.h>
 #include <utils/tcpRobotCommunicator.h>
 
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -13,8 +13,8 @@ class Shell : public robotModel::parts::TrikShell
 	Q_OBJECT
 
 public:
-	Shell(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	Shell(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void runCommand(const QString &command) override;

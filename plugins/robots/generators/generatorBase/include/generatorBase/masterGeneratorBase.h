@@ -9,6 +9,7 @@
 #include "generatorCustomizer.h"
 #include "controlFlowGeneratorBase.h"
 #include "templateParametrizedEntity.h"
+#include "primaryControlFlowValidator.h"
 
 namespace utils {
 class ParserErrorReporter;
@@ -36,7 +37,7 @@ class ROBOTS_GENERATOR_EXPORT MasterGeneratorBase : public QObject, public Templ
 public:
 	MasterGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const utils::ParserErrorReporter &parserErrorReporter
 			, const qReal::Id &diagramId);
@@ -57,6 +58,9 @@ protected:
 	/// Default implementation takes ownership via QObject parentship system.
 	virtual lua::LuaProcessor *createLuaProcessor();
 
+	/// Default implementation takes ownership via QObject parentship system.
+	virtual PrimaryControlFlowValidator *createValidator();
+
 	/// Implementation must return a path to a file where all generated code
 	/// will be written. Called on the last stage of the generation process
 	/// so concrete generators have time to 'prepare' this path
@@ -72,10 +76,11 @@ protected:
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
-	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	qrtext::LanguageToolboxInterface &mTextLanguage;
 	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;
+	PrimaryControlFlowValidator *mValidator;
 	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
 	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership
 	QString mProjectName;

@@ -1,19 +1,15 @@
 QT += svg xml widgets
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/src/ \
-	$$PWD/../interpreterBase/include/ \
-	$$PWD/../commonTwoDModel/include/ \
-	$$PWD/../../generators/generatorBase/include/ \
-	$$PWD/../../utils/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui/ \
-	$$PWD/../../../../qrtext/include \
+includes(plugins/robots/interpreters/interpreterCore \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/twoDModel \
+		plugins/robots/utils \
+		qrtext \
+)
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
-		qrgui-tool-plugin-interface robots-interpreter-base robots-utils robots-common-2d-model \
-		)
+		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model \
+)
 
 HEADERS += \
 	$$PWD/include/interpreterCore/robotsPluginFacade.h \
@@ -39,6 +35,8 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/printTextBlock.h \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
+	$$PWD/src/managers/exerciseExportManager.h \
+	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 
 SOURCES += \
@@ -55,14 +53,16 @@ SOURCES += \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
 	$$PWD/src/managers/actionsManager.cpp \
 	$$PWD/src/managers/blocksFactoryManager.cpp \
-	$$PWD/src/managers/graphicsWatcherManager.cpp \
-	$$PWD/src/managers/kitPluginManager.cpp \
-	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
-	$$PWD/src/managers/paletteUpdateManager.cpp \
-	$$PWD/src/managers/saveConvertionManager.cpp \
+	$$PWD/src/managers/exerciseExportManager.cpp \
+	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \
+	$$PWD/src/managers/kitPluginManager.cpp \
+	$$PWD/src/managers/paletteUpdateManager.cpp \
+	$$PWD/src/managers/robotModelManager.cpp \
+	$$PWD/src/managers/saveConvertionManager.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
+	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
 
 FORMS += \

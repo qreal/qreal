@@ -38,8 +38,10 @@ const QString initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 const QString getContainersLineTag = "@@GetContainedByLine@@";
 const QString getReferencePropertiesLineTag = "@@GetReferencePropertiesLine@@";
 
-const QString getPropertyNameTag = "@@GetPropertyNamesLine@@";//fix
+const QString getPortTypesLineTag = "@@GetPortTypesLine@@";//fix
+const QString portTypesListTag = "@@PortTypesList@@";//fix
 
+const QString getPropertyNameTag = "@@GetPropertyNamesLine@@";
 const QString getConnectionsLineTag = "@@GetConnectedTypesLine@@";
 const QString getUsagesLineTag = "@@GetUsedTypesLine@@";
 const QString getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";
@@ -85,7 +87,7 @@ const QString containersListTag = "@@ContainedByList@@";
 const QString connectionsListTag = "@@ConnectedToList@@";
 const QString referencePropertiesListTag = "@@ReferencePropertiesList@@";
 
-const QString propertyNameListTag = "@@PropertiesList@@";//fix
+const QString propertyNameListTag = "@@PropertiesList@@";
 
 const QString usagesListTag = "@@UsedTypesList@@";
 const QString isNodeOrEdgeTag = "@@IsNodeOrEdgeValue@@";

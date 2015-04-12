@@ -4,7 +4,7 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <qrtext/lua/luaToolbox.h>
 
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
 
 namespace interpreterCore {
 namespace textLanguage {
@@ -18,7 +18,7 @@ public:
 	/// Constructor
 	/// @param robotModelManager - provides information about robot model.
 	/// @param timeComputer - method to get time elapsed since start of interpretation, used in predefined variable.
-	RobotsBlockParser(const interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+	RobotsBlockParser(const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, const utils::ComputableNumber::IntComputer &timeComputer);
 
 	/// Returns a list of predefined variables that should be hidden from user (sensor and port variables, basically).
@@ -32,7 +32,7 @@ private slots:
 private:
 	void addIntrinsicFuctions();
 
-	const interpreterBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	const utils::ComputableNumber::IntComputer mTimeComputer;
 	QStringList mHiddenVariables;
 };

@@ -20,12 +20,14 @@ namespace qrmc {
 		virtual ~GraphicType();
 		virtual bool init(const QString &context);
 		virtual bool resolve();
+		//virtual Type* clone() const = 0;
 
 		virtual bool isGraphicalType() const;
 		virtual QString generateProperties(const QString &lineTemplate) const;
 		virtual QString generatePropertyDefaults(const QString &namesTemplate) const;
 		virtual QString generatePropertyDisplayedNames(const QString &lineTemplate) const;
 		virtual QString generateReferenceProperties(const QString &lineTemplate) const;
+		virtual QString generatePortTypes(const QString &lineTemplate) const;//fix
 		virtual QString generatePropertyName(const QString &lineTemplate) const;
 		virtual QString generateParents(const QString &lineTemplate) const;
 		virtual QString generateContainers(const QString &lineTemplate) const;

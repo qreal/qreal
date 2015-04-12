@@ -15,6 +15,7 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 		, from300Beta2to300rc1Converter()
 		, from300to301Converter()
 		, from301to302Converter()
+		, from302to310Converter()
 	};
 }
 
@@ -138,6 +139,38 @@ qReal::ProjectConverter SaveConvertionManager::from301to302Converter()
 	return constructConverter("3.0.1", "3.0.2", { quote("TrikSystem", "Command") } );
 }
 
+ProjectConverter SaveConvertionManager::from302to310Converter()
+{
+	return constructConverter("3.0.2", "3.1.0"
+			, {
+				replace({
+						{ "interpreterBase", "kitBase"}
+						, { "commonTwoDModel", "twoDModel" }
+						, { "nxtKitInterpreter", "nxt" }
+						, { "ev3KitInterpreter", "ev3" }
+						, { "trikKitInterpreter", "trik" }
+						, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
+						, { "nxtKitRobot", "nxtKitUsbRobot" }
+						, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
+				})
+				, replace({
+						{ "lineSensorX", "lineSensor[0]"}
+						, { "lineSensorSize", "lineSensor[1]" }
+						, { "lineSensorCross", "lineSensor[2]" }
+				})
+				, [] (const Id &block, LogicalModelAssistInterface &logicalApi) {
+					if (block.element() == "RobotsDiagramNode") {
+						const auto worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
+						logicalApi.mutableLogicalRepoApi().setMetaInformation("worldModel", worldModel);
+						return true;
+					}
+
+					return false;
+				}
+			}
+	);
+}
+
 bool SaveConvertionManager::isRobotsDiagram(const Id &diagram)
 {
 	const QStringList robotsDiagrams = { "RobotsDiagram", "SubprogramDiagram" };
@@ -149,6 +182,7 @@ IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistI
 	IdList result;
 	for (const Id &diagramId : logicalApi.children(Id::rootId())) {
 		if (isRobotsDiagram(diagramId)) {
+			result += diagramId;
 			result += logicalApi.children(diagramId);
 		}
 	}
@@ -191,7 +225,8 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> Sav
 	return [=] (const Id &block, LogicalModelAssistInterface &logicalApi) {
 		bool modificationsMade = false;
 		QMapIterator<QString, QVariant> iterator = logicalApi.logicalRepoApi().propertiesIterator(block);
-		for (iterator.next(); iterator.hasNext(); iterator.next()) {
+		while (iterator.hasNext()) {
+			iterator.next();
 			const QString name = iterator.key();
 			QString value = iterator.value().toString();
 			bool replacementOccured = false;

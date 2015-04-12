@@ -13,12 +13,13 @@
 #include <qrutils/interpreter/blocks/switchBlock.h>
 #include <qrutils/interpreter/blocks/commentBlock.h>
 #include <qrutils/interpreter/blocks/subprogramBlock.h>
+#include <qrutils/interpreter/blocks/unsupportedBlock.h>
 
 #include "details/printTextBlock.h"
 #include "details/clearScreenBlock.h"
 
-#include <commonTwoDModel/blocks/markerDownBlock.h>
-#include <commonTwoDModel/blocks/markerUpBlock.h>
+#include <twoDModel/blocks/markerDownBlock.h>
+#include <twoDModel/blocks/markerUpBlock.h>
 
 using namespace interpreterCore::coreBlocks;
 
@@ -40,6 +41,12 @@ qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &e
 		return new qReal::interpretation::blocks::LoopBlock();
 	} else if (elementMetatypeIs(element, "Fork")) {
 		return new qReal::interpretation::blocks::ForkBlock();
+	} else if (elementMetatypeIs(element, "Join")) {
+		return new qReal::interpretation::blocks::UnsupportedBlock();
+	} else if (elementMetatypeIs(element, "SendMessageThreads")) {
+		return new qReal::interpretation::blocks::UnsupportedBlock();
+	} else if (elementMetatypeIs(element, "ReceiveMessageThreads")) {
+		return new qReal::interpretation::blocks::UnsupportedBlock();
 	} else if (elementMetatypeIs(element, "Subprogram")) {
 		return new qReal::interpretation::blocks::SubprogramBlock();
 	} else if (elementMetatypeIs(element, "Function")) {
@@ -71,6 +78,9 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("SwitchBlock")
 		, id("Loop")
 		, id("Fork")
+		, id("Join")
+		, id("SendMessageThreads")
+		, id("ReceiveMessageThreads")
 		, id("Subprogram")
 		, id("Function")
 		, id("VariableInit")
@@ -88,8 +98,7 @@ qReal::IdList CoreBlocksFactory::blocksToDisable() const
 	if (!mRobotModelManager->model().name().contains("TwoD")) {
 		result
 				<< id("MarkerDown")
-				<< id("MarkerUp")
-				;
+				<< id("MarkerUp");
 	}
 
 	return result;

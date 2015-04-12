@@ -62,5 +62,5 @@ qReal::SystemEvents &QrguiFacade::systemEvents()
 void QrguiFacade::setActiveTab(qReal::Id const &id)
 {
 	mActiveTab = id;
-	emit systemEvents().activeTabChanged(id);
+	emit systemEvents().activeTabChanged(qReal::TabInfo(id, nullptr));
 }

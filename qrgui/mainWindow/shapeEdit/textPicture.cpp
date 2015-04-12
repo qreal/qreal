@@ -23,8 +23,8 @@ TextPicture::TextPicture(const TextPicture &other)
 	: Text()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = pictureType;
 	mX1 = other.mX1;
 	mY1 = other.mY1;
@@ -50,7 +50,7 @@ void TextPicture::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	painter->setFont(mFont);
-	painter->setPen(mPen);
+	painter->setPen(pen());
 	mText.setVisible(false);
 	qreal x = mX1;
 	qreal y = mY1;
@@ -119,7 +119,7 @@ void TextPicture::setFontPixelSize(int size)
 
 void TextPicture::setFontColor(const QString &text)
 {
-	mPen.setColor(QColor(text));
+	setPen(QPen(QColor(text)));
 }
 
 void TextPicture::setFontItalic(bool isChecked)
@@ -142,8 +142,8 @@ void TextPicture::readFont(const QDomElement &docItem)
 	QDomElement dom = docItem;
 	if(!dom.isNull()) {
 		if (dom.hasAttribute("font-fill")) {
-			QColor color = dom.attribute("font-fill");
-			mPen.setColor(color);
+			const QColor color = dom.attribute("font-fill");
+			setPen(QPen(color));
 		}
 
 		if (dom.hasAttribute("font-size")) {
@@ -182,7 +182,7 @@ void TextPicture::readFont(const QDomElement &docItem)
 QDomElement TextPicture::setFontToDoc(QDomDocument &document, const QString &domName)
 {
 	QDomElement dom = document.createElement(domName);
-	dom.setAttribute("font-fill", mPen.color().name());
+	dom.setAttribute("font-fill", pen().color().name());
 	dom.setAttribute("font-size", mFont.pixelSize());
 	dom.setAttribute("font-name", mFont.family());
 	dom.setAttribute("i", mFont.italic() ? "1" : "0");

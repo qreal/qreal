@@ -188,7 +188,7 @@
      </property>
      <layout class="QVBoxLayout" name="devicesConfiguratorLayout">
       <item>
-       <widget class="interpreterBase::DevicesConfigurationWidget" name="devicesConfigurer" native="true"/>
+       <widget class="kitBase::DevicesConfigurationWidget" name="devicesConfigurer" native="true"/>
       </item>
      </layout>
     </widget>
@@ -314,9 +314,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>interpreterBase::DevicesConfigurationWidget</class>
+   <class>kitBase::DevicesConfigurationWidget</class>
    <extends>QWidget</extends>
-   <header>interpreterBase/devicesConfigurationWidget.h</header>
+   <header>kitBase/devicesConfigurationWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

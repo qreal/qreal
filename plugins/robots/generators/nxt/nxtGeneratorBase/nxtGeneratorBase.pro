@@ -7,17 +7,17 @@ QT += widgets
 TEMPLATE = lib
 CONFIG += plugin
 
-links(qrkernel qslog qrutils qrrepo robots-generator-base)
+includes(plugins/robots/generators/nxt/nxtGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/nxtKit \
+		plugins/robots/utils \
+		qrtext \
+)
+
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-nxt-kit robots-kit-base)
 
 DEFINES += ROBOTS_NXT_GENERATOR_BASE_LIBRARY
-
-INCLUDEPATH += \
-	$$PWD/include \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtGeneratorBase_ru.ts
 
@@ -28,6 +28,7 @@ HEADERS += \
 	$$PWD/include/nxtGeneratorBase/nxtGeneratorFactory.h \
 	$$PWD/include/nxtGeneratorBase/parts/images.h \
 	$$PWD/src/nxtGeneratorCustomizer.h \
+	$$PWD/src/robotModel/nxtGeneratorRobotModel.h \
 	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.h \
@@ -42,6 +43,7 @@ SOURCES += \
 	$$PWD/src/nxtMasterGeneratorBase.cpp \
 	$$PWD/src/nxtGeneratorCustomizer.cpp \
 	$$PWD/src/nxtGeneratorFactory.cpp \
+	$$PWD/src/robotModel/nxtGeneratorRobotModel.cpp \
 	$$PWD/src/parts/images.cpp \
 	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawBlockGenerator.cpp \

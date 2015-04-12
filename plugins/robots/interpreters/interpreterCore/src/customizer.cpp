@@ -42,6 +42,11 @@ bool Customizer::showInterpeterButton() const
 	return false;
 }
 
+bool Customizer::enableNewDiagramAction() const
+{
+	return false;
+}
+
 void Customizer::customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface)
 {
 	mDockInterface = dockInterface;

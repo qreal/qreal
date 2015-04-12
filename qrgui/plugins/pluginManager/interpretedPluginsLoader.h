@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QAction>
+
 #include <plugins/toolPluginInterface/pluginConfigurator.h>
 #include "plugins/pluginManager/interpreterEditorManager.h"
 
@@ -23,9 +25,12 @@ public:
 	/// Returns list of actions for all plugins.
 	QList<ActionInfo> listOfActions() const;
 
+	/// Returns list of additional actions in palette.
+	QList<QAction *> menuActionsList() const;
+
 private:
 	InterpretedPluginManager mPluginManager;
 	QMap<QString, qrRepo::RepoApi *> mEditorRepoApi;  // doesn't have ownership
-	InterpreterEditorManager *mInterpreterEditorManager;
+	InterpreterEditorManager *mInterpreterEditorManager; // doesn't have ownership
 };
 }

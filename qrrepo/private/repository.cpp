@@ -515,6 +515,7 @@ void Repository::open(const QString &saveFile)
 	mObjects.clear();
 	init();
 	mSerializer.setWorkingFile(saveFile);
+	mWorkingFile = saveFile;
 	loadFromDisk();
 }
 

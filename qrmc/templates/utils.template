@@ -5,12 +5,13 @@
 @@InitPropertyNamesMapLine@@=	propertiesDisplayedNamesMap["@@DiagramName@@"]["@@ElementName@@"]["@@PropertyName@@"] = QString::fromUtf8("@@PropertyDisplayedName@@");
 @@InitPropertyTypesMapLine@@=	propertyTypes["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyType@@";
 @@InitPropertyDefaultMapLine@@=	propertyDefault["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyDefaultValue@@";
-@@InitParentsMapLine@@=	parentsMap["@@DiagramName@@"]["@@ChildElementName@@"] << qMakePair(QString("@@DiagramName@@"), QString("@@ParentElementName@@")); 	
+@@InitParentsMapLine@@=	parentsMap["@@DiagramName@@"]["@@ChildElementName@@"] << qMakePair(QString("@@DiagramName@@"), QString("@@ParentElementName@@"));
 @@GetGraphicalObjectLine@@=	if (element == "@@ElementName@@")\n		return new @@ElementName@@();
 @@GetPropertyNamesLine@@=	if (element == "@@ElementName@@")\n		result  << @@PropertiesList@@;
 @@GetContainedByLine@@=	if (element == "@@ElementName@@")\n		result @@ContainedByList@@;
 @@GetConnectedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@ConnectedToList@@;
 @@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@UsedTypesList@@ ;
+@@GetPortTypesLine@@=	if (element == "@@ElementName@@") {\n 		result << @@PortTypesList@@;\n	}
 @@GetReferencePropertiesLine@@=	if (element == "@@ElementName@@")\n 		result @@ReferencePropertiesList@@;
 @@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
 @@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result @@EnumValuesList@@;

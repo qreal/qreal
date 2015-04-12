@@ -2,6 +2,7 @@
 #include "property.h"
 #include "../diagram.h"
 #include "../utils/nameNormalizer.h"
+#include "shape.h"
 
 #include <QDebug>
 
@@ -288,6 +289,33 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
 	}
 	return referencePropertiesString;
+}
+
+QString GraphicType::generatePortTypes(const QString &lineTemplate) const//fix
+{
+	QString portTypesString = lineTemplate;
+	QString portTypesList = "";
+
+	QList<Port*> getPortTypes = this->mShape.getPorts();
+	QSet<QString> portTypes;
+	foreach (Port *port, getPortTypes) {
+			portTypes.insert(port->type());
+		}
+
+	if (!portTypes.empty()) {
+		foreach (const QString &type, portTypes) {
+			portTypesList = portTypesList + "\"" + type + "\"";
+		}
+
+		if (portTypesList.isEmpty()) {
+			portTypesString.replace(portTypesListTag, "*/}//").replace(elementNameTag, name());;
+		} else {
+			portTypesString.replace(portTypesListTag, portTypesList).replace(elementNameTag, name());
+		}
+	} else {
+		return "";
+	}
+	return portTypesString;
 }
 
 QString GraphicType::generatePropertyName(const QString &lineTemplate) const

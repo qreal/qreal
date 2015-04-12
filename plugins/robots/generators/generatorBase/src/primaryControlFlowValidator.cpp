@@ -5,26 +5,26 @@ using namespace qReal;
 
 /// @todo: Unify code with interpreter
 
-PrimaryControlFlowValidator::PrimaryControlFlowValidator(
-		const qrRepo::RepoApi &repo
+PrimaryControlFlowValidator::PrimaryControlFlowValidator(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
-		, const Id &diagramId
 		, QObject *parent)
 	: QObject(parent)
 	, RobotsDiagramVisitor(repo, customizer)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
-	, mDiagram(diagramId)
 {
 }
 
-bool PrimaryControlFlowValidator::validate()
+bool PrimaryControlFlowValidator::validate(const qReal::Id &diagramId, const QString &threadId)
 {
+	Q_UNUSED(threadId)
+
 	mIfBranches.clear();
 	mLoopBranches.clear();
 
+	mDiagram = diagramId;
 	findInitialNode();
 	if (mInitialNode.isNull()) {
 		error(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"), mDiagram);
@@ -35,6 +35,11 @@ bool PrimaryControlFlowValidator::validate()
 	startSearch(mInitialNode);
 
 	return !mErrorsOccured;
+}
+
+PrimaryControlFlowValidator *PrimaryControlFlowValidator::clone()
+{
+	return new PrimaryControlFlowValidator(mRepo, mErrorReporter, mCustomizer, parent());
 }
 
 qReal::Id PrimaryControlFlowValidator::initialNode() const
@@ -211,6 +216,12 @@ void PrimaryControlFlowValidator::visitSwitch(const Id &id
 	}
 }
 
+void PrimaryControlFlowValidator::visitUnknown(const Id &id, const QList<LinkInfo> &links)
+{
+	Q_UNUSED(links)
+	error(QObject::tr("Unknown block type"), id);
+}
+
 void PrimaryControlFlowValidator::visitFork(const Id &id, QList<LinkInfo> &links)
 {
 	if (links.size() < 2) {
@@ -223,11 +234,10 @@ void PrimaryControlFlowValidator::visitFork(const Id &id, QList<LinkInfo> &links
 	}
 }
 
-void PrimaryControlFlowValidator::visitUnknown(const Id &id
-		, const QList<LinkInfo> &links)
+void PrimaryControlFlowValidator::visitJoin(const Id &id, QList<LinkInfo> &links)
 {
+	Q_UNUSED(id)
 	Q_UNUSED(links)
-	error(QObject::tr("Unknown block type"), id);
 }
 
 void PrimaryControlFlowValidator::error(const QString &message, const qReal::Id &id)

@@ -3,12 +3,12 @@
 #include "commandConstants.h"
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 EncoderSensor::EncoderSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::EncoderSensor(info, port)
+	: kitBase::robotModel::robotParts::EncoderSensor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 	, mState(idle)
 {

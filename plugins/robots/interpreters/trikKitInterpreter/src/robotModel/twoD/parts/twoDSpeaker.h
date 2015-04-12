@@ -1,10 +1,9 @@
 #pragma once
 
-#include "robotModel/parts/trikSpeaker.h"
+#include <trikKit/robotModel/parts/trikSpeaker.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
 
-#include <commonTwoDModel/engine/twoDModelEngineInterface.h>
-
-namespace trikKitInterpreter {
+namespace trik {
 namespace robotModel {
 namespace twoD {
 namespace parts {
@@ -14,8 +13,8 @@ class TwoDSpeaker : public robotModel::parts::TrikSpeaker
 	Q_OBJECT
 
 public:
-	TwoDSpeaker(const interpreterBase::robotModel::DeviceInfo &info
-			, const interpreterBase::robotModel::PortInfo &port
+	TwoDSpeaker(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void play(const QString &filePath) override;

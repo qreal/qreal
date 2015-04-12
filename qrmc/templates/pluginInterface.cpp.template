@@ -214,10 +214,9 @@ QList<qReal::EditorInterface::ExplosionData>@@MetamodelName@@Plugin::explosions(
 QStringList @@MetamodelName@@Plugin::getPortTypes(const QString &/*diagram*/, const QString &element) const
 {
 	QStringList result;
-	if (element == "Node") {
-		result << "NonTyped";
-	}
+@@GetPortTypesLine@@
 	return result;
+
 }
 
 QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(const QString &name) const
