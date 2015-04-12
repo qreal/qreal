@@ -41,3 +41,4 @@
 @@ComplexArrow@@=			static const QPointF points[] = {\n				QPointF(-15,30),\n				QPointF(-10,10),\n				QPointF(0,0),\n				QPointF(10,10),\n				QPointF(15,30),\n				QPointF(0,23),\n				QPointF(-15,30)\n			};\n			painter->drawPolyline(points, 7);
 @@FilledArrowColor@@=			brush.setColor(Qt::black);
 @@EmptyArrowColor@@=			brush.setColor(Qt::white);
+@@ElementDescriptionMapLine@@=	elementsDescriptionMap["@@DiagramName@@"]["@@ElementName@@"] = tr("@@Description@@");

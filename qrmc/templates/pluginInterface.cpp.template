@@ -70,6 +70,11 @@ QString @@MetamodelName@@Plugin::propertyDisplayedName(const QString &diagram, c
 	return propertiesDisplayedNamesMap[diagram][element][property];
 }
 
+void @@MetamodelName@@Plugin::initDescriptionMap()   //fix
+{
+@@ElementDescriptionMapLine@@
+}
+
 bool @@MetamodelName@@Plugin::isParentOf(const QString &parentDiagram, const QString &parentElement, const QString &childDiagram, const QString &childElement) const
 {
 	if (childDiagram == parentDiagram && childElement == parentElement)

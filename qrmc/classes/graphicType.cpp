@@ -31,6 +31,7 @@ GraphicType::~GraphicType()
 bool GraphicType::init(const QString &context)
 {
 	Type::init(context);
+	mDescription = mApi->stringProperty(mId, "description");//fix
 
 	mIsVisible = false;
 	if (mApi->hasProperty(mId, "shape"))
@@ -272,6 +273,27 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 	return displayedNamesString;
 }
 
+QString GraphicType::generateElementDescription(const QString &lineTemplate) const//fix
+{
+	if (mDescription.isEmpty())
+		return "";
+
+	QString displayedNamesString;
+	QString temp = this->generateElementDescriptionLine(lineTemplate);
+	if (!temp.isEmpty()) {
+		displayedNamesString += temp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
+	}
+
+	return displayedNamesString;
+}
+
+QString GraphicType::generateElementDescriptionLine(const QString &lineTemplate) const//fix
+{
+	QString result = lineTemplate;
+	result.replace(descriptionTag, mDescription);
+	return result;
+}
+
 QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
@@ -291,7 +313,7 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 	return referencePropertiesString;
 }
 
-QString GraphicType::generatePortTypes(const QString &lineTemplate) const//fix
+QString GraphicType::generatePortTypes(const QString &lineTemplate) const//oldfix
 {
 	QString portTypesString = lineTemplate;
 	QString portTypesList = "";

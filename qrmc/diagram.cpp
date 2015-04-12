@@ -177,6 +177,13 @@ public:
 	}
 };
 
+class Diagram::ElementDescriptonGenerator: public Diagram::MapMethodGenerator {
+public://fix
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generateElementDescription(lineTemplate);
+	}
+};
+
 class Diagram::ParentsMapGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, const QString &lineTemplate) const {
@@ -241,6 +248,11 @@ QString Diagram::generatePropertyDisplayedNamesMap(const QString &lineTemplate) 
 	return generateMapMethod(lineTemplate, PropertyDisplayedNamesGenerator());
 }
 
+QString Diagram::generateElementDescriptionMap(const QString &lineTemplate) const//fix
+{
+	return generateMapMethod(lineTemplate, ElementDescriptonGenerator());
+}
+
 QString Diagram::generateParentsMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, ParentsMapGenerator());
@@ -273,7 +285,7 @@ public:
 	}
 };
 
-class Diagram::PortTypesGenerator: public Diagram::ListMethodGenerator {//fix
+class Diagram::PortTypesGenerator: public Diagram::ListMethodGenerator {//oldfix
 public:
 	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generatePortTypes(lineTemplate);
@@ -337,7 +349,7 @@ QString Diagram::generateReferenceProperties(const QString &lineTemplate) const
 	return generateListMethod(lineTemplate, ReferencePropertiesGenerator());
 }
 
-QString Diagram::generatePortTypes(const QString &lineTemplate) const//fix
+QString Diagram::generatePortTypes(const QString &lineTemplate) const//oldfix
 {
 	return generateListMethod(lineTemplate, PortTypesGenerator());
 }

@@ -154,7 +154,7 @@ Diagram* Editor::findDiagram(const QString &name)
 	return nullptr;
 }
 
-QStringList Editor::getAllPortNames() const//fix
+QStringList Editor::getAllPortNames() const//oldfix
 {
 	QStringList result;
 
@@ -255,6 +255,7 @@ bool Editor::generatePluginSource()
 	generateDiagramNodeNamesMap();
 	generateNamesMap();
 	generatePropertyDisplayedNamesMap();
+	generateElementDescriptionMap();//fix
 	generateMouseGesturesMap();
 	generatePropertiesMap();
 	generatePropertyDefaultsMap();
@@ -262,7 +263,7 @@ bool Editor::generatePluginSource()
 	generateContainers();
 	generatePropertyNames();
 	generateReferenceProperties();
-	generatePortTypes();//fix
+	generatePortTypes();//oldfix
 	generateConnections();
 	generateUsages();
 	generateIsNodeOrEdge();
@@ -458,6 +459,14 @@ public:
 	}
 };
 
+class Editor::ElementDescriptionGenerator: public Editor::MethodGenerator {
+public://fix
+	virtual ~ElementDescriptionGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generateElementDescriptionMap(lineTemplate);
+	}
+};
+
 class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
 public:
 	virtual ~ParentsMapGenerator() {}
@@ -483,7 +492,7 @@ public:
 };
 
 class Editor::PortTypesGenerator: public Editor::MethodGenerator {
-public://fix
+public://oldfix
 	virtual ~PortTypesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePortTypes(lineTemplate);
@@ -560,6 +569,11 @@ void Editor::generatePropertyDisplayedNamesMap()
 	generatePluginMethod(initPropertyDisplayedNamesTag, PropertyDisplayedNamesGenerator());
 }
 
+void Editor::generateElementDescriptionMap()//fix
+{
+	generatePluginMethod(elementDescriptionMapTag, ElementDescriptionGenerator());
+}
+
 void Editor::generateParentsMap()
 {
 	generatePluginMethod(initParentsMapLineTag, ParentsMapGenerator());
@@ -590,7 +604,7 @@ void Editor::generateReferenceProperties()
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
 
-void Editor::generatePortTypes()//fix
+void Editor::generatePortTypes()//oldfix
 {
 	generatePluginMethod(getPortTypesLineTag, PortTypesGenerator());
 }

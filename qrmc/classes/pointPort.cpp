@@ -36,7 +36,7 @@ QString PointPort::generateInit(MetaCompiler *compiler) const
 
 }
 
-void PointPort::generatePortList(const QStringList &portTypes)//fix
+void PointPort::generatePortList(const QStringList &portTypes)//oldfix
 {
 	if (!portTypes.contains(mType)) {
 		mType = "NonTyped";
