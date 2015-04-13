@@ -81,7 +81,7 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 		lineType = "solidLine";
 	lineType = "Qt::" + NameNormalizer::normalize(lineType);
 
-	QString portsForFromPortTypes = generatePorts(mFromPorts);
+	const QString portsForFromPortTypes = generatePorts(mFromPorts);
 
 	edgeClass.replace(edgeInitTag, labelsInitLine)
 			.replace(updateDataTag, labelsUpdateLine)
@@ -227,11 +227,11 @@ QString EdgeType::generateResourceLine(const QString &resourceTemplate) const
 QString EdgeType::generatePorts(const QStringList &portTypes) const
 {
 	QString typeForReturning = "";
-	foreach (const QString &type, portTypes) {
-		//out() << " << \"" << type << "\"";
+	for (const QString &type : portTypes) {
 		typeForReturning += type;
 	}
-	if (typeForReturning == "")
+
+	if (typeForReturning.isEmpty())
 		typeForReturning = "NonTyped";
 
 	return typeForReturning;

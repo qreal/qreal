@@ -154,6 +154,26 @@ Diagram* Editor::findDiagram(const QString &name)
 	return nullptr;
 }
 
+QStringList Editor::getAllPortNames() const//oldfix
+{
+	QStringList result;
+
+	foreach (const Diagram * const diagram, mDiagrams.values()) {
+		foreach (const Type * const type, diagram->types()) {
+			if (dynamic_cast<const Port * const>(type)) {
+				result << type->name();
+			}
+		}
+	}
+
+	foreach (const Editor * const editor, mIncludes) {
+		result += editor->getAllPortNames();
+	}
+
+	result.removeDuplicates();
+	return result;
+}
+
 QMap<QString, Diagram*> Editor::diagrams()
 {
 	return mDiagrams;
@@ -178,8 +198,9 @@ void Editor::generate(const QString &headerTemplate, const QString &sourceTempla
 	mElementsHeaderTemplate = elementsHeaderTemplate;
 
 	generatePluginHeader(headerTemplate);
-	generatePluginSource();
+	//generatePluginSource();
 	generateElementsClasses();
+	generatePluginSource();
 	generateResourceFile(resourceTemplate);
 	generateProjectFile(projectTemplate);
 }
@@ -203,7 +224,7 @@ bool Editor::generatePluginHeader(const QString &hdrTemplate)
 		return false;
 	}
 
-	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(/*mName*/mNameOfMetamodel)); // header requires just plugin name customization
+	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mNameOfMetamodel));
 	QTextStream out(&pluginHeaderFile);
 	out.setCodec("UTF-8");
 	out << headerTemplate;
@@ -234,15 +255,15 @@ bool Editor::generatePluginSource()
 	generateDiagramNodeNamesMap();
 	generateNamesMap();
 	generatePropertyDisplayedNamesMap();
+	generateElementDescriptionMap();//fix
 	generateMouseGesturesMap();
 	generatePropertiesMap();
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
-
-	generatePropertyNames();//fix
-
+	generatePropertyNames();
 	generateReferenceProperties();
+	generatePortTypes();//oldfix
 	generateConnections();
 	generateUsages();
 	generateIsNodeOrEdge();
@@ -251,7 +272,7 @@ bool Editor::generatePluginSource()
 	generateParentsMap();
 
 	// inserting plugin name all over the template
-	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(/*mName*/mNameOfMetamodel));
+	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mNameOfMetamodel));
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
@@ -354,7 +375,7 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 		return false;
 	}
 
-	projectTemplate.replace(metamodelNameTag, /*mName*/mNameOfMetamodel); // .pro-file requires just plugin name customization
+	projectTemplate.replace(metamodelNameTag, mNameOfMetamodel);
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	out << projectTemplate;
@@ -438,6 +459,14 @@ public:
 	}
 };
 
+class Editor::ElementDescriptionGenerator: public Editor::MethodGenerator {
+public://fix
+	virtual ~ElementDescriptionGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generateElementDescriptionMap(lineTemplate);
+	}
+};
+
 class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
 public:
 	virtual ~ParentsMapGenerator() {}
@@ -462,8 +491,16 @@ public:
 	}
 };
 
-class Editor::PropertyNameGenerator: public Editor::MethodGenerator {//fix
-public://fix
+class Editor::PortTypesGenerator: public Editor::MethodGenerator {
+public://oldfix
+	virtual ~PortTypesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generatePortTypes(lineTemplate);
+	}
+};
+
+class Editor::PropertyNameGenerator: public Editor::MethodGenerator {
+public:
 	virtual ~PropertyNameGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertyName(lineTemplate);
@@ -532,6 +569,11 @@ void Editor::generatePropertyDisplayedNamesMap()
 	generatePluginMethod(initPropertyDisplayedNamesTag, PropertyDisplayedNamesGenerator());
 }
 
+void Editor::generateElementDescriptionMap()//fix
+{
+	generatePluginMethod(elementDescriptionMapTag, ElementDescriptionGenerator());
+}
+
 void Editor::generateParentsMap()
 {
 	generatePluginMethod(initParentsMapLineTag, ParentsMapGenerator());
@@ -562,7 +604,12 @@ void Editor::generateReferenceProperties()
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
 
-void Editor::generatePropertyNames()//fix
+void Editor::generatePortTypes()//oldfix
+{
+	generatePluginMethod(getPortTypesLineTag, PortTypesGenerator());
+}
+
+void Editor::generatePropertyNames()
 {
 	generatePluginMethod(getPropertyNameTag, PropertyNameGenerator());
 }

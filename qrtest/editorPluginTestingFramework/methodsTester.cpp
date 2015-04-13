@@ -38,8 +38,6 @@ QList<QPair<QString, QPair<QString, QString> >> MethodsTester::generateTimeResul
 	return mTimeResult;
 }
 
-
-
 void MethodsTester::generateOutputTimeForOneMethod(AbstractStringGenerator const &stringGenerator)
 {
 	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
@@ -47,11 +45,7 @@ void MethodsTester::generateOutputTimeForOneMethod(AbstractStringGenerator const
 	QString const &firstResult = firstGenerator->generateStringTime();
 
 	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
-
-	//return resultPair;
 }
-
-
 
 QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator)
 {
@@ -60,7 +54,6 @@ QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMeth
 	QString const &firstResult = firstGenerator->generateString();
 	QString const &firstResultTime = firstGenerator->generateStringTime();
 
-
 	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
 	QString const &secondResult = secondGenerator->generateString();
 	QString const &secondResultTime = secondGenerator->generateStringTime();
@@ -68,9 +61,7 @@ QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMeth
 	QPair<QString, QPair<QString, QString> > resultPairTime = qMakePair(methodName, methodsPairTime);
 	mTimeResult.append(resultPairTime);
 
-
 	QPair<QString, QString> methodsPair = qMakePair(firstResult, secondResult);
-
 	QPair<QString, QPair<QString, QString> > resultPair = qMakePair(methodName, methodsPair);
 
 	return resultPair;

@@ -64,7 +64,7 @@ public:
 	virtual QString diagramNodeName(const QString &diagram) const;
 	virtual QString elementName(const QString &diagram, const QString &element) const;
 	virtual QString elementMouseGesture(const QString &digram, const QString &element) const;
-
+        virtual void initDescriptionMap();//fix
 	virtual QList<qReal::ListenerInterface*> listeners() const;
 
 //Are these right corrections?

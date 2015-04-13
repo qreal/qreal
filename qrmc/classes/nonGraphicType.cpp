@@ -41,13 +41,25 @@ QString NonGraphicType::generatePropertyDisplayedNames(const QString &lineTempla
 	return "";
 }
 
+QString NonGraphicType::generateElementDescription(const QString &lineTemplate) const
+{//fix
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
 QString NonGraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
 }
 
-QString NonGraphicType::generatePropertyName(const QString &lineTemplate) const//debugfix
+QString NonGraphicType::generatePortTypes(const QString &lineTemplate) const//oldfix
+{
+	Q_UNUSED(lineTemplate);
+	return "";
+}
+
+QString NonGraphicType::generatePropertyName(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";

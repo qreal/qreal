@@ -229,6 +229,7 @@ class MethodsTesterForQrxcAndQrmc::ElementsStringGenerator
 		return result;
 	}
 
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -290,6 +291,7 @@ class MethodsTesterForQrxcAndQrmc::ExplosionsStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -348,6 +350,7 @@ class MethodsTesterForQrxcAndQrmc::PortTypesStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -406,6 +409,7 @@ class MethodsTesterForQrxcAndQrmc::PropertiesWithDefaultValuesStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -464,6 +468,7 @@ class MethodsTesterForQrxcAndQrmc::TypesContainedByStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -541,6 +546,7 @@ class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -599,6 +605,7 @@ class MethodsTesterForQrxcAndQrmc::IsNodeOrEdgeStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -656,6 +663,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyNamesStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -713,6 +721,7 @@ class MethodsTesterForQrxcAndQrmc::GetReferencePropertiesStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -771,6 +780,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyTypesStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -829,6 +839,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyDefaultValueStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -886,6 +897,7 @@ class MethodsTesterForQrxcAndQrmc::EnumValueStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -959,6 +971,7 @@ class MethodsTesterForQrxcAndQrmc::GetParentsOfStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1018,6 +1031,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramsStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1077,6 +1091,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNameStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1135,6 +1150,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNodeNameStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1192,6 +1208,7 @@ class MethodsTesterForQrxcAndQrmc::ElementNameStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1249,6 +1266,7 @@ class MethodsTesterForQrxcAndQrmc::ElementMouseGestureStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1307,6 +1325,7 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1362,6 +1381,7 @@ class MethodsTesterForQrxcAndQrmc::PropertyDescriptionStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1418,6 +1438,7 @@ class MethodsTesterForQrxcAndQrmc::PropertyDisplayedNameStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1490,6 +1511,7 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1547,6 +1569,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupListStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1604,6 +1627,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;

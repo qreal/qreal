@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <QtCore/qmath.h>
 
-
 using namespace std;
 
 using namespace editorPluginTestingFramework;
@@ -42,7 +41,6 @@ public:
 		return resultStr;
 	}
 
-
 	virtual QString generateStringTime()
 	{
 		QString resultStr = "";
@@ -53,7 +51,6 @@ public:
 
 		return resultStr;
 	}
-
 
 protected:
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const = 0;
@@ -95,8 +92,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForEditors
 		}
 		return resultList;
 	}
-
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::StringGeneratorForDiagrams
@@ -105,7 +100,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForDiagrams
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const
 	{
 		QStringList resultList;
-
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				QString const additionalString = ConvertingMethods::transformateOutput(
@@ -115,14 +109,12 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForDiagrams
 				mListOfTime.append(" ");
 				mListOfTime.append(QString::number(additional.second));
 				mListOfTime.append("|");
-
 				resultList.append(additionalString);
 				resultList.append("|");
 			}
 		}
 		return resultList;
 	}
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
@@ -131,7 +123,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const
 	{
 		QStringList resultList;
-
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				foreach (Id const &element, editorManagerInterface->elements(diagram)) {
@@ -142,7 +133,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
 					mListOfTime.append(" ");
 					mListOfTime.append(QString::number(additional.second));
 					mListOfTime.append("|");
-
 					resultList.append(additionalString);
 					resultList.append("|");
 				}
@@ -150,9 +140,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
 		}
 		return resultList;
 	}
-
-
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
@@ -161,7 +148,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const
 	{
 		QStringList resultList;
-
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
 				foreach (Id const &element, editorManagerInterface->elements(diagram)) {
@@ -174,7 +160,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
 						mListOfTime.append(" ");
 						mListOfTime.append(QString::number(additional.second));
 						mListOfTime.append("|");
-
 						resultList.append(additionalString);
 						resultList.append("|");
 					}
@@ -183,8 +168,6 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
 		}
 		return resultList;
 	}
-
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
@@ -243,10 +226,10 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
@@ -282,6 +265,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
@@ -305,6 +289,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -365,10 +350,10 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithIdParameter
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParameters
@@ -428,6 +413,7 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParame
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -466,13 +452,14 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->mouseGesture(elementId));
 	}
@@ -488,10 +475,10 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
-
 };
 
 class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
@@ -523,13 +510,14 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 					foreach (Id const &parentElement,
 							 editorManagerInterface->elements(diagramId))
 					{
-						bool isParent = editorManagerInterface->isParentOf(elementId, parentElement);
+						editorManagerInterface->isParentOf(elementId, parentElement);
 					}
 				}
 			}
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
@@ -537,6 +525,7 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 			variance +=qPow ((array[t] - expectedValue), 2);
 
 		}
+
 		variance = variance / 20;
 
 		QStringList result;
@@ -565,6 +554,7 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -604,6 +594,7 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
@@ -611,6 +602,7 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 			variance +=qPow ((array[t] - expectedValue), 2);
 
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->friendlyName(elementId));
 	}
@@ -626,6 +618,7 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -664,12 +657,12 @@ class MethodsTesterForQrxcAndInterpreter::DescriptionListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
 		variance = variance / 20;
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->description(elementId));
@@ -686,6 +679,7 @@ class MethodsTesterForQrxcAndInterpreter::DescriptionListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -726,12 +720,12 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
 		variance = variance / 20;
 
@@ -756,6 +750,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -793,15 +788,15 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDisplayedNameListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
-		variance = variance / 20;
 
+		variance = variance / 20;
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->propertyDisplayedName(elementId,propertyName));
 	}
@@ -817,6 +812,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDisplayedNameListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -855,6 +851,7 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
@@ -862,6 +859,7 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 			variance +=qPow ((array[t] - expectedValue), 2);
 
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->containedTypes(elementId));
 	}
@@ -877,6 +875,8 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -915,13 +915,14 @@ class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
 	}
@@ -937,6 +938,8 @@ class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -976,13 +979,14 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertingQPairListIntoStringList(editorManagerInterface->enumValues(elementId, name));
 	}
@@ -998,6 +1002,7 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1037,6 +1042,7 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
@@ -1044,6 +1050,7 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 			variance +=qPow ((array[t] - expectedValue), 2);
 
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->typeName(elementId, name));
 	}
@@ -1059,6 +1066,8 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1094,16 +1103,18 @@ class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 			{
 				editorManagerInterface->referenceProperties(elementId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return (editorManagerInterface->referenceProperties(elementId));
 	}
@@ -1119,6 +1130,7 @@ class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1157,13 +1169,14 @@ class MethodsTesterForQrxcAndInterpreter::AllChildrenTypesOfListGenerator
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return (editorManagerInterface->allChildrenTypesOf(elementId));
 	}
@@ -1179,6 +1192,8 @@ class MethodsTesterForQrxcAndInterpreter::AllChildrenTypesOfListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1214,16 +1229,18 @@ class MethodsTesterForQrxcAndInterpreter::IsEditorListGenerator
 			{
 				editorManagerInterface->isEditor(editorId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isEditor(editorId));
 	}
@@ -1239,6 +1256,8 @@ class MethodsTesterForQrxcAndInterpreter::IsEditorListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1273,16 +1292,18 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator
 			{
 				editorManagerInterface->isDiagram(diagramId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isDiagram(diagramId));
 	}
@@ -1298,6 +1319,7 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1333,16 +1355,18 @@ class MethodsTesterForQrxcAndInterpreter::IsElementListGenerator
 			{
 				editorManagerInterface->isElement(elementId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isElement(elementId));
 	}
@@ -1358,6 +1382,8 @@ class MethodsTesterForQrxcAndInterpreter::IsElementListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1393,16 +1419,18 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 			{
 				editorManagerInterface->propertyNames(elementId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return (editorManagerInterface->propertyNames(elementId));
 	}
@@ -1418,6 +1446,8 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1453,16 +1483,18 @@ class MethodsTesterForQrxcAndInterpreter::PortTypesListGenerator
 			{
 				editorManagerInterface->portTypes(elementId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return editorManagerInterface->portTypes(elementId);
 	}
@@ -1478,6 +1510,8 @@ class MethodsTesterForQrxcAndInterpreter::PortTypesListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1512,16 +1546,18 @@ class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 			{
 				editorManagerInterface->defaultPropertyValue(elementId, propertyName);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->defaultPropertyValue(elementId, propertyName));
@@ -1538,6 +1574,8 @@ class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1573,16 +1611,18 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 			{
 				editorManagerInterface->propertiesWithDefaultValues(elementId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
 	}
@@ -1598,6 +1638,8 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1633,16 +1675,18 @@ class MethodsTesterForQrxcAndInterpreter::HasElementListGenerator
 			{
 				editorManagerInterface->hasElement(elementId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->hasElement(elementId));
 	}
@@ -1658,6 +1702,8 @@ class MethodsTesterForQrxcAndInterpreter::HasElementListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1694,18 +1740,19 @@ class MethodsTesterForQrxcAndInterpreter::FindElementByTypeListGenerator
 			{
 				editorManagerInterface->findElementByType(type);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
-		variance = variance / 20;
 
+		variance = variance / 20;
 		return ConvertingMethods::convertIdIntoStringList(editorManagerInterface->findElementByType(type));
 	}
 
@@ -1720,6 +1767,7 @@ class MethodsTesterForQrxcAndInterpreter::FindElementByTypeListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1755,16 +1803,18 @@ class MethodsTesterForQrxcAndInterpreter::IsGraphicalElementListGenerator
 			{
 				editorManagerInterface->isGraphicalElementNode(elementId);
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		return ConvertingMethods::convertBoolIntoStringList(
 				editorManagerInterface->isGraphicalElementNode(elementId));
@@ -1781,6 +1831,8 @@ class MethodsTesterForQrxcAndInterpreter::IsGraphicalElementListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1843,6 +1895,7 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1850,7 +1903,7 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 
 class MethodsTesterForQrxcAndInterpreter::DiagramNameListGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForDiagrams
-{//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+{
 	virtual QString methodName() const
 	{
 		return "Diagram name";
@@ -1905,6 +1958,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNameListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -1967,6 +2021,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNodeNameListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -2027,6 +2082,7 @@ class MethodsTesterForQrxcAndInterpreter::IsParentPropertyListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -2087,6 +2143,7 @@ class MethodsTesterForQrxcAndInterpreter::ChildrenListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -2147,6 +2204,7 @@ class MethodsTesterForQrxcAndInterpreter::ShapeListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -2205,6 +2263,7 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -2289,6 +2348,7 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsListGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;
@@ -2345,6 +2405,7 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 		QPair<qint64, double> result = qMakePair(expectedValue, sqrt(variance));
 		return result;
 	}
+private:
 
 	mutable qint64 expectedValue = 0;
 	mutable qint64 variance = 0;

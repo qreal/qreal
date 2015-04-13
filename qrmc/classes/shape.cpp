@@ -158,14 +158,15 @@ void Shape::generate(QString &classTemplate) const
 								: "";
 	QString portRendererLine = (hasLinePorts() || hasPointPorts())
 								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
-//								: nodeIndent + "Q_UNUSED(portRenderer)";
 								: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
 	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
 							.replace(nodeWidthTag, QString::number(mWidth))
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
-	foreach(Port *port, mPorts)
+	foreach(Port *port, mPorts) {
+		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());//oldfix
 		portsInitLine += port->generateInit(compiler) + endline;
+	}
 
 	QString labelsInitLine;
 	QString labelsUpdateLine;
@@ -189,6 +190,12 @@ void Shape::generate(QString &classTemplate) const
 			.replace(updateDataTag, labelsUpdateLine)
 			.replace(labelDefinitionTag, labelsDefinitionLine);
 }
+
+QList<Port*> Shape::getPorts() const//oldfix
+{
+	return mPorts;
+}
+
 
 void Shape::generateSdf() const
 {

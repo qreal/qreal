@@ -25,4 +25,5 @@ SOURCES += \
 	$$PWD/label.cpp \
 	$$PWD/linePort.cpp \
 	$$PWD/pointPort.cpp \
+	$$PWD/port.cpp \
 	$$PWD/scalableCoordinate.cpp \

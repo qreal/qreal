@@ -10,6 +10,7 @@ bool LinePort::init(const QDomElement &element, int width, int height)
 {
 	mWidth = width;
 	mHeight = height;
+	mType = element.attribute("type", "NonTyped");//oldfix
 	QDomElement portStartElement = element.firstChildElement("start");
 	QDomElement portEndElement = element.firstChildElement("end");
 
@@ -75,3 +76,9 @@ QString LinePort::generateInit(MetaCompiler *compiler) const
 	return result;
 }
 
+void LinePort::generatePortList(const QStringList &portTypes)//oldfix
+{
+	if (!portTypes.contains(mType)) {
+		mType = "NonTyped";
+	}
+}
