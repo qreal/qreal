@@ -4,24 +4,20 @@
 <context>
     <name>Block</name>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="40"/>
         <source>Control flow break detected, stopping</source>
-        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="47"/>
         <source>Too many outgoing links</source>
-        <translation>Слишком много исходящих связей</translation>
+        <translation type="vanished">Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="52"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>
@@ -92,7 +88,7 @@
         <translation>Целичисленное деление на ноль</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="451"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="483"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -132,20 +128,24 @@
 <context>
     <name>qReal::interpretation::Block</name>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="40"/>
         <source>Control flow break detected, stopping</source>
-        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="47"/>
         <source>Too many outgoing links</source>
-        <translation type="vanished">Слишком много исходящих связей</translation>
+        <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="52"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
         <source>Outgoing link is not connected</source>
-        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
+        <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>
@@ -235,22 +235,30 @@
 <context>
     <name>qReal::interpretation::blocks::LoopBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="29"/>
         <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
-        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
+        <translation type="vanished">Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="34"/>
+        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="29"/>
+        <source>There must be a link with &quot;body&quot; marker on it</source>
+        <translation>Из блока &quot;Цикл&quot; должна выходить стрелка с маркером &quot;тело цикла&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="33"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="43"/>
-        <source>Two links marked as &quot;iteration&quot; found</source>
-        <translation>Найдено две связи, помеченные как &quot;итерация&quot;</translation>
+        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="42"/>
+        <source>Two links marked as &quot;body&quot; found</source>
+        <translation>Найдено две связи, помеченные как &quot;тело цикла&quot;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="63"/>
+        <source>Two links marked as &quot;iteration&quot; found</source>
+        <translation type="vanished">Найдено две связи, помеченные как &quot;итерация&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/blocks/loopBlock.cpp" line="62"/>
         <source>There must be a non-marked outgoing link</source>
         <translation>Должна быть непомеченная исходящая связь</translation>
     </message>

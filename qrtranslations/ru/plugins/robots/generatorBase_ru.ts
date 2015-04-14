@@ -46,13 +46,21 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="158"/>
-        <source>Two outgoing links marked with &quot;iteration&quot; found</source>
-        <translation>Обе связи помечены меткой &quot;итерация&quot;</translation>
+        <source>Two outgoing links marked with &quot;body&quot; found</source>
+        <translation>Обе связи помечены меткой &quot;тело цикла&quot;</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="166"/>
+        <source>There must be a link with &quot;body&quot; marker on it</source>
+        <translation>Из блока &quot;Цикл&quot; должна выходить связь с маркером &quot;тело цикла&quot;</translation>
+    </message>
+    <message>
+        <source>Two outgoing links marked with &quot;iteration&quot; found</source>
+        <translation type="vanished">Обе связи помечены меткой &quot;итерация&quot;</translation>
+    </message>
+    <message>
         <source>There must be a link with &quot;iteration&quot; marker on it</source>
-        <translation>Одна из связей должна быть с маркером &quot;итерация&quot;</translation>
+        <translation type="vanished">Одна из связей должна быть с маркером &quot;итерация&quot;</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="199"/>
