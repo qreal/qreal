@@ -6,7 +6,7 @@
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="12"/>
         <source>Upload Runtime</source>
-        <translation>Загрузить ПО на робот</translation>
+        <translation>Загрузить системное ПО на робот</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.cpp" line="62"/>

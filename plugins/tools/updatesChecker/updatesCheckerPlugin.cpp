@@ -98,6 +98,7 @@ void UpdatesCheckerPlugin::showUpdatesDialog()
 		updater->start();
 
 		QLOG_INFO() << "Shutting down to install it";
+		QApplication::closeAllWindows();
 		QApplication::quit();
 	}
 }
