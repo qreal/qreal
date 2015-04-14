@@ -69,6 +69,8 @@
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/sound.t</file>
         <file>templates/sensors/touch.t</file>
+        <file>templates/sensors/scalar.t</file>
+        <file>templates/sensors/vector.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
