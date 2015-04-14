@@ -18,11 +18,13 @@
 
 #include "utils/timelineInterface.h"
 
+#include "twoDModel/twoDModelDeclSpec.h"
+
 namespace twoDModel {
 namespace model {
 
 /// A timeline returning 2D-model time in ms
-class Timeline : public QObject, public utils::TimelineInterface
+class TWO_D_MODEL_EXPORT Timeline : public QObject, public utils::TimelineInterface
 {
 	Q_OBJECT
 

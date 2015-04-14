@@ -22,6 +22,8 @@
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtXml/QDomDocument>
 
+#include "twoDModel/twoDModelDeclSpec.h"
+
 class QGraphicsItem;
 
 namespace twoDModel {
@@ -34,7 +36,7 @@ class RegionItem;
 
 namespace model {
 
-class WorldModel : public QObject
+class TWO_D_MODEL_EXPORT WorldModel : public QObject
 {
 	Q_OBJECT
 

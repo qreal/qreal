@@ -20,6 +20,8 @@
 #include "settings.h"
 #include <twoDModel/robotModel/twoDRobotModel.h>
 
+#include "twoDModel/twoDModelDeclSpec.h"
+
 namespace qReal {
 class ErrorReporterInterface;
 }
@@ -38,7 +40,7 @@ namespace model {
 
 /// A main class managing model part of 2D emulator. Creates and maintains different parts
 /// such as world map, robot model, timelines and physical engines.
-class Model : public QObject
+class TWO_D_MODEL_EXPORT Model : public QObject
 {
 	Q_OBJECT
 

@@ -16,11 +16,13 @@
 
 #include <QtCore/QObject>
 
+#include "twoDModel/twoDModelDeclSpec.h"
+
 namespace twoDModel {
 namespace model {
 
 /// Incapsulates settings used by 2D model.
-class Settings : public QObject
+class TWO_D_MODEL_EXPORT Settings : public QObject
 {
 	Q_OBJECT
 

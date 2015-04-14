@@ -19,6 +19,8 @@
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "sensorsConfiguration.h"
 
+#include "twoDModel/twoDModelDeclSpec.h"
+
 class QGraphicsItem;
 
 namespace twoDModel {
@@ -37,7 +39,7 @@ class PhysicsEngineBase;
 class WorldModel;
 class Timeline;
 
-class RobotModel : public QObject
+class TWO_D_MODEL_EXPORT RobotModel : public QObject
 {
 	Q_OBJECT
 

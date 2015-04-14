@@ -20,11 +20,13 @@
 
 #include <kitBase/devicesConfigurationProvider.h>
 
+#include "twoDModel/twoDModelDeclSpec.h"
+
 namespace twoDModel {
 namespace model {
 
 /// Represents position and direction of simulated sensors relative to robot.
-class SensorsConfiguration : public QObject, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT SensorsConfiguration : public QObject, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
