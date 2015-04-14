@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "robotModel.h"
+#include "twoDModel/engine/model/robotModel.h"
 
 #include <qmath.h>
 #include <QtGui/QTransform>
@@ -22,9 +22,9 @@
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
 #include <kitBase/robotModel/robotParts/motor.h>
 
-#include "constants.h"
-#include "settings.h"
-#include "timeline.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/settings.h"
+#include "twoDModel/engine/model/timeline.h"
 
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
