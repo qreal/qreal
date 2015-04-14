@@ -70,6 +70,8 @@
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/motion.t</file>
+        <file>templates/sensors/scalar.t</file>
+        <file>templates/sensors/vector.t</file>
         <file>templates/gyroscope/gyroscopeX.t</file>
         <file>templates/gyroscope/gyroscopeY.t</file>
         <file>templates/gyroscope/gyroscopeZ.t</file>

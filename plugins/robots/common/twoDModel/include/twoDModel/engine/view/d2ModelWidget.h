@@ -64,11 +64,6 @@ public:
 	void init();
 	void close();
 
-	/// Enables or disables background 2D model mode.
-	/// In background mode the window is not shown and robot modeling is performed momently.
-	/// By default background mode is disabled.
-	void setBackgroundMode(bool enabled);
-
 	D2ModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
@@ -76,6 +71,9 @@ public:
 	void setSensorVisible(const kitBase::robotModel::PortInfo &port, bool isVisible);
 
 	void loadXml(const QDomDocument &worldModel);
+
+	/// Returns a reference to a model part of 2D model MVC architecture.
+	model::Model &model() const;
 
 	/// Sets groups of items on 2d model that can not be modified by user. Used for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.

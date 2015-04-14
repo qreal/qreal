@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Nessesary Files</DisplayName>
+    <DisplayName xml:lang="ru_ru">Обязательные файлы</DisplayName>
+    <Description>Enables support of TRIK in TRIK Studio</Description>
+    <Description xml:lang="ru_ru">Поддержка конструктора ТРИК</Description>
+    <Version>3.1.0-1</Version>
+    <ReleaseDate>2015-04-08</ReleaseDate>
+    <Licenses>
+        <License name="WinScp Component License" file="WinScp-license.txt" />
+    </Licenses>
+    <SortingPriority>10</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

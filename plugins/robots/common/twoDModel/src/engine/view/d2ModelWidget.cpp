@@ -44,8 +44,8 @@
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 
-#include "src/engine/model/constants.h"
-#include "src/engine/model/model.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/model.h"
 
 #include "twoDModel/engine/nullTwoDModelDisplayWidget.h"
 
@@ -65,7 +65,6 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
-	, mAutoOpen(true)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -109,6 +108,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 
 D2ModelWidget::~D2ModelWidget()
 {
+	mSelectedRobotItem = nullptr;
 	delete mScene;
 	delete mDisplay;
 	delete mUi;
@@ -331,12 +331,6 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 void D2ModelWidget::close()
 {
 	setVisible(false);
-}
-
-void D2ModelWidget::setBackgroundMode(bool enabled)
-{
-	mAutoOpen = !enabled;
-	mModel.timeline().setImmediateMode(enabled);
 }
 
 void D2ModelWidget::changeEvent(QEvent *e)
@@ -625,6 +619,11 @@ void D2ModelWidget::loadXml(const QDomDocument &worldModel)
 	mModel.deserialize(worldModel);
 }
 
+Model &D2ModelWidget::model() const
+{
+	return mModel;
+}
+
 void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 {
 	const auto openTab = [this](QWidget * const tab) {
@@ -847,10 +846,6 @@ void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 
 void D2ModelWidget::bringToFront()
 {
-	if (!mAutoOpen) {
-		return;
-	}
-
 	if (isHidden()) {
 		show();
 	}

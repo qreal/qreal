@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Examples</DisplayName>
+    <DisplayName xml:lang="ru_ru">Примеры</DisplayName>
+    <Description>A set of examples for Lego NXT kit</Description>
+    <Description xml:lang="ru_ru">Набор примеров программ для Lego NXT</Description>
+    <Version>3.1.0-1</Version>
+    <ReleaseDate>2015-04-08</ReleaseDate>
+    <SortingPriority>8</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

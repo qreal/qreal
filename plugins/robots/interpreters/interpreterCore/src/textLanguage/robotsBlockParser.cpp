@@ -14,8 +14,10 @@
 
 #include "interpreterCore/textLanguage/robotsBlockParser.h"
 
+#include <kitBase/robotModel/robotModelUtils.h>
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
+#include <qrtext/lua/types/string.h>
 
 using namespace qReal;
 using namespace interpreterCore::textLanguage;
@@ -130,6 +132,14 @@ void RobotsBlockParser::addIntrinsicFuctions()
 	};
 
 	add0aryFunction("time", new types::Integer(), [this]() { return mTimeComputer(); });
+	add1aryFunction("sensor", new types::Integer(), new types::String(), [this](const QVariant &port) {
+		if (port.toString().isEmpty()) {
+			/// @todo: Add error reporting
+			return 0;
+		}
+
+		return interpret<int>("sensor" + port.toString());
+	});
 
 	addFloatFunction("sin", [](qreal x) {return sin(x); });
 	addFloatFunction("cos", [](qreal x) {return cos(x); });
