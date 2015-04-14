@@ -40,8 +40,7 @@ bool LoopBlock::initNextBlocks()
 
 	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
-	const QString iterationNotFoundError = tr("There must be an outgoing link with"\
-			" property <b>Guard</b> set as <b>iteration</b>. See help, chapter <i>Programming</i>");
+	const QString iterationNotFoundError = tr("There must be a link with \"body\" marker on it");
 	foreach (const Id &linkId, links) {
 		const Id targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId.isNull()) {
@@ -54,7 +53,7 @@ bool LoopBlock::initNextBlocks()
 				mIterationStartBlockId = targetBlockId;
 				iterationFound = true;
 			} else {
-				error(tr("Two links marked as \"iteration\" found"));
+				error(tr("Two links marked as \"body\" found"));
 				return false;
 			}
 		} else if (stringProperty(linkId, "Guard") == "") {
