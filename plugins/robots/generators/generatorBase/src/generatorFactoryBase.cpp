@@ -382,7 +382,9 @@ Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 
 Binding::ConverterInterface *GeneratorFactoryBase::portNameConverter() const
 {
-	return new converters::PortNameConverter(pathToTemplates(), mRobotModelManager.model().availablePorts());
+	return new converters::PortNameConverter(pathToTemplates()
+			, mRobotModelManager.model().availablePorts()
+			, mErrorReporter);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
