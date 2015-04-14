@@ -9,4 +9,5 @@ cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-nxt-interpreter.so           
 cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-nxt-osek-c-generator.so       $PWD/../data/plugins/tools/kitPlugins/
 cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-nxt-russian-c-generator.so    $PWD/../data/plugins/tools/kitPlugins/
 cp -pr $BIN_DIR/librobots-nxt-generator-base.so*                                 $PWD/../data
+cp -pr $BIN_DIR/librobots-nxt-kit.so*                                            $PWD/../data
 cp -pr $BIN_DIR/libqextserialport.so*                                            $PWD/../data

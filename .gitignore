@@ -1,7 +1,6 @@
 *~
 *.autosave
 *.a
-*.core
 *.moc
 *.o
 *.obj
@@ -36,3 +35,6 @@ plugin.qrc
 
 # Visual Paradigm temporaries
 umlDocumentation/*\~*
+
+# Installers temporary data
+**/ru.qreal.root*/data/*

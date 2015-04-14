@@ -1,4 +1,18 @@
-﻿#include "editorViewScene.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "editorViewScene.h"
 
 #include <QtGui/QClipboard>
 #include <QtWidgets/QApplication>
@@ -1198,15 +1212,17 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		// Double click on a title activates it
-		if (Label *title = dynamic_cast<Label*>(itemAt(event->scenePos(), QTransform()))) {
-			if (!title->hasFocus()) {  // Do not activate already activated item
+		for (QGraphicsItem * const item : items(event->scenePos())) {
+			if (Label * const label = dynamic_cast<Label*>(item)) {
+				if (!label->hasFocus() && !label->isReadOnly()) {  // Do not activate already activated or readonly item
+					event->accept();
+					label->startTextInteraction();
+					return;
+				}
+			} else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 				event->accept();
-				title->startTextInteraction();
-				return;
+				mExploser.handleDoubleClick(element->logicalId());
 			}
-		} else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
-			event->accept();
-			mExploser.handleDoubleClick(element->logicalId());
 		}
 	}
 }
