@@ -126,7 +126,12 @@ void SettingsManager::mergeSettings(const QString &fileNameForImport, QHash<QStr
 {
 	QSettings settings(fileNameForImport, QSettings::IniFormat);
 	for (const QString &name : settings.allKeys()) {
-		target[name] = settings.value(name);
+		const QVariant newValue = settings.value(name);
+		const QVariant oldValue = target[name];
+		if (newValue != oldValue) {
+			target[name] = settings.value(name);
+			emit settingsChanged(name, oldValue, newValue);
+		}
 	}
 }
 
