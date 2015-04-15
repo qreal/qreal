@@ -9,11 +9,13 @@
     <Script>installscript.qs</Script>
     <Licenses>
          <!-- TODO: find all russian license texts -->
+        <License name="Apache License 2.0" file="ApacheLicense-v2.0.txt" />
         <License name="GNU Public License 3.0" file="gpl-3.0.txt" />
         <License name="Open Fonts License" file="OFL.txt" />
         <License name="Kinetic Scroller Component License" file="QsKineticScroller-license.txt" />
         <License name="QsLog Component License" file="QsLog-license.txt" />
         <License name="QScintilla Component License" file="Scintilla-license.txt" />
+        <License name="QScintilla GPL Exception" file="QScintilla-GPL-exception.txt" />
         <License name="Qt Property Browser Component License" file="QtPropertyBrowser-license.txt" />
         <License name="Windows Modern Style Component License" file="WindowsModernStyle-license.txt" />
     </Licenses>

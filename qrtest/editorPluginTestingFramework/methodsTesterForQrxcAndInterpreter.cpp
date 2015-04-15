@@ -52,6 +52,30 @@ public:
 		return resultStr;
 	}
 
+//	можно сделать, например, так: допустим, у нас есть функция int f(int x); и функция string g(string x, int y);, мы хотим их обе из одного кода вызвать и померять их время работы. тогда можно сделать так:
+	virtual void callFunction(std::function<void()> functionToCall)
+	{
+		//QElapsedTimer timer;
+//	  //...
+		for (int j = 0; j < 20; ++j)
+		{
+//		//	timer.start();
+			for (int i = 0; i < 20; ++i)
+			{
+				functionToCall();
+			}
+//	 //   array[i] = timer.nsecsElapsed();
+//	//    time += array[i];
+		}
+	}
+
+//	а вызывать её так:
+
+//	int x = 1;
+//	callFunction( [x] () { f(x); })
+//	callFunction( [x] () { g("abc", x); })
+
+
 protected:
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const = 0;
 
@@ -191,6 +215,7 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 		Q_UNUSED(propertyName);
 		Q_UNUSED(editorManagerInterface);
 
+
 		QElapsedTimer timer;
 		qint64 array[20];
 		qint64 time = 0;
@@ -240,6 +265,16 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		return "Diagrams";
 	}
 
+	int f()
+	{
+		return 100500;
+	}
+
+	void ololo()
+	{
+		callFunction( [this]() { f(); });
+	}
+
 	virtual QStringList callMethod(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
@@ -254,6 +289,15 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		QElapsedTimer timer;
 		qint64 array[20];
 		qint64 time = 0;
+
+	//	mutable int x = 1;
+//
+		//callFunction( [x] () { editorManagerInterface->diagrams(editorId); });
+		// int f(int x); и функция string g(string x, int y);,
+
+		//	callFunction( [this] () mutable { f(); });
+		//	callFunction( [x] () { g("abc", x); })
+
 
 		for (int i = 0; i < 20; ++i)
 		{
