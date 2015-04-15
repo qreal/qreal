@@ -1,0 +1,48 @@
+#include "enumType.h"
+#include "../utils/nameNormalizer.h"
+
+using namespace qReal;
+using namespace qrmc;
+
+EnumType::EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
+{
+}
+
+bool EnumType::init(const QString &context)
+{
+	Type::init(context);
+	IdList children = mApi->children(mId);
+	foreach(Id child, children) {
+		if (!mApi->isLogicalElement(child))
+			continue;
+		if (child.element() == metaEntityValue) {
+			mValues << mApi->stringProperty(child, "valueName");
+		}
+	}
+
+	return true;
+}
+
+Type* EnumType::clone() const
+{
+	EnumType *result = new EnumType(nullptr, mApi, mId);
+	Type::copyFields(result);
+	result->mValues = mValues;
+	return result;
+}
+
+void EnumType::print()
+{
+	qDebug() << "enum type" << mName;
+}
+
+QString EnumType::generateEnums(const QString &lineTemplate) const
+{
+	QString enums;
+	QString line = lineTemplate;
+	foreach(QString value, mValues) {
+		enums += "<< \"" + value + "\" ";
+	}
+	line.replace(enumsListTag, enums).replace(elementNameTag, name());
+	return line;
+}
