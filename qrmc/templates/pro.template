@@ -1,0 +1,24 @@
+QREAL_EDITOR_NAME = "@@MetamodelName@@"
+
+CONFIG += C++11
+
+SOURCES += pluginInterface.cpp
+
+HEADERS += pluginInterface.h \
+	elements.h
+
+#INCLUDEPATH += ../../../qrgui \
+#               ../../../qrgui/editorPluginInterface \
+##		../../../qrgui/plugins/editorPluginInterface \
+
+#INCLUDEPATH += $$PWD/../../../qrgui/editorPluginInterface \
+INCLUDEPATH += $$PWD/../../../qrgui/plugins/editorPluginInterface \
+		$$PWD/../../../qrgui/plugins \ 
+                $$PWD/../../../qrgui \
+                $$PWD/../../../qrkernel \
+                $$PWD/../../.. \
+
+RESOURCES += plugin.qrc
+
+include (../../../qrmc/plugins/pluginsCommon.pri)
+

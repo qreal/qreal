@@ -1,0 +1,141 @@
+	class @@ElementName@@ : public qReal::ElementImpl
+	{
+	public:
+@@NodeConstructor@@
+		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}
+
+				void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
+								 qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
+							 qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
+
+		{
+//@@NodeUnusedArgs@@ //hardcode begins
+			Q_UNUSED(portFactory);
+			Q_UNUSED(ports);
+//hardcode ends
+
+			mRenderer = renderer;
+@@NodeLoadShapeRenderer@@
+@@NodeLoadPortsRenderer@@ //SUPER HARDCODE (shape.cpp(162))
+@@NodeSetContents@@
+@@NodeInitPorts@@
+@@NodeInit@@
+
+//extremely temporary fixing
+		ports << portFactory.createPort(QPointF(0.994424, 0.54334), false, false, 538, 473, new NonTyped());
+				mRenderer->setElementRepo(elementRepo);
+
+		}
+
+		~@@ElementName@@() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+
+		void updateData(qReal::ElementRepoInterface *repo) const
+		{
+@@UpdateData@@
+		}
+
+		bool isNode() const
+		{
+			return @@IsNode@@;
+		}
+
+		bool isContainer() const
+		{
+			return @@IsContainer@@;
+		}
+
+		bool isSortingContainer() const
+		{
+			return @@IsSortContainer@@;
+		}
+
+				QVector<int> sizeOfForestalling() const
+		{
+			return @@SizeOfForestalling@@;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return @@SizeOfChildrenForestalling@@;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return @@MinimizesToChildren@@;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return @@HasMovableChildren@@;
+		}
+
+		bool maximizesChildren() const
+		{
+			return @@MaximizesChildren@@;
+		}
+
+//temporary fixing
+		bool createChildrenFromMenu() const
+		{
+			return true;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+@@NodeBorder@@
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return @@ItemsList@@;
+		}
+
+		bool isResizeable() const
+		{
+			return @@IsResizeable@@;
+		}
+
+
+//temporary fixing
+		QStringList fromPortTypes() const
+		{
+			return QStringList("NonTyped");
+		}
+
+//temporary fixing
+		QStringList toPortTypes() const
+		{
+			return QStringList("NonTyped");
+		}
+
+//temporary fixing
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+	private:
+		qReal::SdfRendererInterface *mRenderer;
+@@LabelDefinition@@
+	};
+
