@@ -53,8 +53,9 @@ public:
 	}
 
 //	можно сделать, например, так: допустим, у нас есть функция int f(int x); и функция string g(string x, int y);, мы хотим их обе из одного кода вызвать и померять их время работы. тогда можно сделать так:
-	virtual void callFunction(std::function<void()> functionToCall)
+	virtual void callFunction(std::function<void()> functionToCall) const
 	{
+
 		//QElapsedTimer timer;
 //	  //...
 		for (int j = 0; j < 20; ++j)
@@ -295,7 +296,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		//callFunction( [x] () { editorManagerInterface->diagrams(editorId); });
 		// int f(int x); и функция string g(string x, int y);,
 
-		//	callFunction( [this] () mutable { f(); });
+			callFunction( [editorManagerInterface, editorId] () { editorManagerInterface->diagrams(editorId); });
 		//	callFunction( [x] () { g("abc", x); })
 
 
