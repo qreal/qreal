@@ -15,6 +15,7 @@ void @@MetamodelName@@Plugin::initPlugin()
 	initMouseGestureMap();
 	initPropertyMap();
 	initPropertyDefaultsMap();
+	initDescriptionMap();
 }
 
 void @@MetamodelName@@Plugin::initNameMap()
