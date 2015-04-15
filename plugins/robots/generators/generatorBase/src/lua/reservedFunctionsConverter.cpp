@@ -38,5 +38,15 @@ QString ReservedFunctionsConverter::convert(const QString &name, const QStringLi
 		return readTemplate("functions/time.t");
 	}
 
+	if (name == "sensor") {
+		/// @todo: Display an error if wrong arguments count
+		return readTemplate("sensors/scalar.t").replace("@@PORT@@", args.count() ? args[0] : QString());
+	}
+
+	if (name == "vectorSensor") {
+		/// @todo: Display an error if wrong arguments count
+		return readTemplate("sensors/vector.t").replace("@@PORT@@", args.count() ? args[0] : QString());
+	}
+
 	return QString();
 }

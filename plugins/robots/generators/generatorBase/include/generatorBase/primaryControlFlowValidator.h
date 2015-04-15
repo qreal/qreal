@@ -55,7 +55,7 @@ public:
 	QPair<LinkInfo, LinkInfo> ifBranchesFor(const qReal::Id &id) const;
 
 	/// Returns branches of the given block with loop semantics. First value in the
-	/// resulting pair is the first block of 'iteration' branch, second - of the
+	/// resulting pair is the first block of 'body' branch, second - of the
 	/// non-marked one. The result is ready only after validation process was
 	/// successfully finished.
 	QPair<LinkInfo, LinkInfo> loopBranchesFor(const qReal::Id &id) const;

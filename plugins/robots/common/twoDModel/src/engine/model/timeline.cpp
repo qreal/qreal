@@ -14,7 +14,7 @@
 
 #include <QtCore/QDateTime>
 
-#include "timeline.h"
+#include "twoDModel/engine/model/timeline.h"
 #include "modelTimer.h"
 
 using namespace twoDModel::model;
@@ -24,6 +24,7 @@ Timeline::Timeline(QObject *parent)
 	, mSpeedFactor(normalSpeedFactor)
 	, mCyclesCount(0)
 	, mIsStarted(false)
+	, mTimestamp(0)
 {
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
 	mTimer.setInterval(defaultRealTimeInterval);
@@ -42,6 +43,7 @@ void Timeline::stop()
 {
 	if (mIsStarted) {
 		mIsStarted = false;
+		mTimer.stop();
 		emit stopped();
 	}
 }

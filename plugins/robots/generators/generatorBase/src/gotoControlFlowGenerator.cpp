@@ -79,14 +79,14 @@ void GotoControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInfo> &li
 	Q_UNUSED(links)
 
 	QPair<LinkInfo, LinkInfo> const branches(loopBranchesFor(id));
-	const LinkInfo iterationLink = branches.first;
+	const LinkInfo bodyLink = branches.first;
 	const LinkInfo nextLink = branches.second;
 
 	LoopNode * const thisNode = static_cast<LoopNode *>(mSemanticTree->findNodeFor(id));
-	thisNode->bodyZone()->appendChild(produceGotoNode(iterationLink.target));
+	thisNode->bodyZone()->appendChild(produceGotoNode(bodyLink.target));
 	thisNode->insertSiblingAfterThis(produceGotoNode(nextLink.target));
 
-	produceNextNodeIfNeeded(iterationLink, thisNode);
+	produceNextNodeIfNeeded(bodyLink, thisNode);
 	produceNextNodeIfNeeded(nextLink, thisNode);
 }
 

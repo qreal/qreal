@@ -38,6 +38,8 @@ bash $PWD/replace.sh "version=\"$SHORT_OLD_VERSION\"" "version=\"$SHORT_NEW_VERS
 bash $PWD/replace.sh "var version = \".*\";" "var version = \"$GREEK_NEW_VERSION\";" $ROOT/plugins/robots/editor/doc/help/version.js
 bash $PWD/replace.sh "var year = [0-9]\\+;" "var year = $YEAR;" $ROOT/plugins/robots/editor/doc/help/version.js
 bash $PWD/replace.sh "return \"$GREEK_OLD_VERSION\";" "return \"$GREEK_NEW_VERSION\";" $ROOT/plugins/robots/interpreters/interpreterCore/src/customizer.cpp
+bash $PWD/replace.sh "const QString requiredVersion = \"$SHORT_OLD_VERSION\"" "const QString requiredVersion = \"$SHORT_NEW_VERSION\"" $ROOT/plugins/robots/utils/include/utils/requiredVersion.h
+bash $PWD/replace.sh "<Version>$GREEK_OLD_VERSION<\\/Version>" "<Version>$GREEK_NEW_VERSION<\\/Version>" $ROOT/installer/config "trik-studio*.xml"
 bash $PWD/replace.sh "<Version>$DIGITAL_OLD_VERSION<\\/Version>\n    <ReleaseDate>.*<\\/ReleaseDate>" "<Version>$DIGITAL_NEW_VERSION<\\/Version>\\n    <ReleaseDate>$DATE<\\/ReleaseDate>" $ROOT/installer/packages "*/meta/package.xml"
 
 cd $ROOT

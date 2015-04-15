@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "settings.h"
+#include "twoDModel/engine/model/settings.h"
 
 #include <qrkernel/settingsManager.h>
 

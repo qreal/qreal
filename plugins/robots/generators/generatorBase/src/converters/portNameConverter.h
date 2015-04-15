@@ -18,6 +18,10 @@
 
 #include "generatorBase/converters/templateParametrizedConverter.h"
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
 namespace generatorBase {
 namespace converters {
 
@@ -31,12 +35,14 @@ class PortNameConverter : public TemplateParametrizedConverter
 {
 public:
 	PortNameConverter(const QString &pathToTemplates
-			, QList<kitBase::robotModel::PortInfo> const &ports);
+			, QList<kitBase::robotModel::PortInfo> const &ports
+			, qReal::ErrorReporterInterface &errorReporter);
 
 	QString convert(const QString &portNameOrAlias) const override;
 
 private:
 	QList<kitBase::robotModel::PortInfo> const mPorts;
+	qReal::ErrorReporterInterface &mErrorReporter;
 };
 
 }

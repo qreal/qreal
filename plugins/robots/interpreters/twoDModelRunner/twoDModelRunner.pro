@@ -36,7 +36,9 @@ TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModelRunne
 
 HEADERS += \
 	$$PWD/runner.h \
+	$$PWD/reporter.h \
 
 SOURCES += \
 	$$PWD/main.cpp \
 	$$PWD/runner.cpp \
+	$$PWD/reporter.cpp \
