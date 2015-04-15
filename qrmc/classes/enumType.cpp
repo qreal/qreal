@@ -16,7 +16,10 @@ bool EnumType::init(const QString &context)
 		if (!mApi->isLogicalElement(child))
 			continue;
 		if (child.element() == metaEntityValue) {
-			mValues << mApi->stringProperty(child, "valueName");
+			//mValues << mApi->stringProperty(child, "valueName");
+			QString name = mApi->stringProperty(child, "valueName");
+			QString displayedName = mApi->stringProperty(child,"displayedName");
+			mValues[name] = displayedName;
 		}
 	}
 
@@ -38,11 +41,16 @@ void EnumType::print()
 
 QString EnumType::generateEnums(const QString &lineTemplate) const
 {
-	QString enums;
+	//QString enums;
 	QString line = lineTemplate;
-	foreach(QString value, mValues) {
-		enums += "<< \"" + value + "\" ";
+//	foreach(QString value, mValues) {
+//		enums += "<< \"" + value + "\" ";
+//	}
+//	line.replace(enumsListTag, enums).replace(elementNameTag, name());
+	for (const QString &value : mValues.keys()) {
+		line.replace(enumsListTag, mValues[value]).replace(dispNameTag, value).replace(elementNameTag, name());
+
 	}
-	line.replace(enumsListTag, enums).replace(elementNameTag, name());
+
 	return line;
 }
