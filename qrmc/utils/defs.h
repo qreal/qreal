@@ -29,6 +29,7 @@ const QString metamodelNameTag = "@@MetamodelName@@";
 const QString initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
 const QString initDiagramNodeNameMapLineTag = "@@InitDiagramNodeNameMapLine@@";
 const QString initPropertyDisplayedNamesTag = "@@InitPropertyNamesMapLine@@";
+const QString dispNameTag = "@@DispName@@";
 const QString initElementNameMapLineTag = "@@InitElementNameMapLine@@";
 const QString initParentsMapLineTag = "@@InitParentsMapLine@@";
 const QString initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";

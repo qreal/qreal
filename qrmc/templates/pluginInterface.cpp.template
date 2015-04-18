@@ -227,8 +227,8 @@ QStringList @@MetamodelName@@Plugin::getPortTypes(const QString &/*diagram*/, co
 
 QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(const QString &name) const
 {
-	Q_UNUSED(name);
-	return {};
+@@GetEnumValuesLine@@
+	return{};
 }
 
 bool @@MetamodelName@@Plugin::isEnumEditable(const QString &name) const
