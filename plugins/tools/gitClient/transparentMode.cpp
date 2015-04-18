@@ -5,7 +5,6 @@
 
 #include "gitPlugin.h"
 
-
 using namespace git;
 
 TransparentMode::TransparentMode(
@@ -67,11 +66,27 @@ void TransparentMode::removeBrokenPointers(QWidget *widget)
 	}
 }
 
-void TransparentMode::showDiff(QString newHash, QString oldHash, QWidget *widget)
+void TransparentMode::showDiff(const QString &newHash, const QString &oldHash, QWidget *widget)
 {
-	//mMainWindowIface->windowWidget()->setEnabled(false);
 	mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, true);
-	//mMainWindowIface->windowWidget()->setEnabled(true);
+}
+
+void TransparentMode::showDiffAsync(const QString &newHash, const QString &oldHash, QWidget *widget)
+{
+	invocation::details::FunctorInterface<void> *functor =
+		new invocation::details::VoidFunctor<void, TransparentMode
+			, void(TransparentMode::*)(const QString&, const QString&, QWidget *)
+			, const QString&, const QString&, QWidget *>(
+				this
+				, &TransparentMode::showDiff
+				, oldHash
+				, newHash
+				, widget
+	);
+
+	invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>(functor);
+	mMainWindowIface->reportOperation(operation);
+	operation->invokeAsync();
 }
 
 void TransparentMode::init()
@@ -82,7 +97,7 @@ void TransparentMode::init()
 		mCompactWidget
 		, SIGNAL(showDiff(QString, QString, QWidget *))
 		, this
-		, SLOT(showDiff(QString, QString, QWidget *))
+		, SLOT(showDiffAsync(QString,QString,QWidget*))
 	);
 	connect(mCompactWidget, SIGNAL(loadVersion(QString)),SLOT(setVersion(QString)));
 	connect(mSystemInterface, SIGNAL(indefiniteTabClosed(QWidget *)), this, SLOT(removeBrokenPointers(QWidget *)));

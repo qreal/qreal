@@ -1,5 +1,6 @@
 QT += widgets
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog -lqrgui-versioning-plugins-manager
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog -lqrgui-versioning-plugins-manager \
+			-lqrgui-dialogs
 
 TEMPLATE = lib
 CONFIG += plugin

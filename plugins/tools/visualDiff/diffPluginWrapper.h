@@ -37,12 +37,17 @@ public:
 	);
 
 public slots:
-	void showDiff(QString const &targetProject, QWidget *parentWidget, bool compactMode = false);
-	void showDiff(QString repoRevision, QString const &targetProject, QWidget *parentWidget, bool compactMode = false);
+	void showDiff(const QString &targetProject, QWidget *parentWidget, bool compactMode = false);
 	void showDiff(
-		QString oldRepoRevision
-		, QString newRepoRevision
+		const QString &repoRevision
 		, QString const &targetProject
+		, QWidget *parentWidget
+		, bool compactMode = false
+	);
+	void showDiff(
+		const QString &oldRepoRevision
+		, const QString &newRepoRevision
+		, const QString &targetProject
 		, QWidget *parentWidget
 		, bool compactMode = false
 	);

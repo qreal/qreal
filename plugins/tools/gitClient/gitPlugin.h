@@ -98,10 +98,10 @@ public slots:
 	void startMergeBranch(QString const &targetBranchName);
 
 	//Difference between commits
-	void showDiff(QString const &targetProject, QWidget *widget, bool compactMode = true);
-	void showDiff(QString oldHash, QString newHash
+	void showDiff(const QString &targetProject, QWidget *widget, bool compactMode = true);
+	void showDiff(const QString &oldHash, const QString &newHash
 				  , QString const &targetProject, QWidget *widget, bool compactMode = true);
-	void showDiff(QString oldhash, QString const &targetProject, QWidget *widget, bool compactMode = true);
+	void showDiff(const QString &oldhash, QString const &targetProject, QWidget *widget, bool compactMode = true);
 
 signals:
 	void workingCopyDownloaded(bool success, QString const &targetProject);

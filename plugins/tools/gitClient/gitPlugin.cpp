@@ -684,13 +684,13 @@ void GitPlugin::onCheckoutComplete(const bool result)
 	emit operationComplete("checkout", result);
 }
 
-void GitPlugin::showDiff(QString oldHash, QString newHash, const QString &targetProject, QWidget *widget
+void GitPlugin::showDiff(const QString &oldHash, const QString &newHash, const QString &targetProject, QWidget *widget
 , bool compactMode)
 {
 	mDiffInterface->showDiff(oldHash, newHash, targetProject, widget, compactMode);
 }
 
-void GitPlugin::showDiff(QString oldhash, const QString &targetProject, QWidget *widget, bool compactMode)
+void GitPlugin::showDiff(const QString &oldhash, const QString &targetProject, QWidget *widget, bool compactMode)
 {
 	mDiffInterface->showDiff(oldhash, targetProject, widget, compactMode);
 }

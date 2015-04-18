@@ -16,7 +16,7 @@ public:
 	/// Must be implemented to show diff between working copy and HEAD revision
 	/// in remote repository.
 	virtual void showDiff(
-		QString const &targetProject
+		const QString &targetProject
 		, QWidget *parentWidget
 		, bool compactMode = false
 	) = 0;
@@ -24,8 +24,8 @@ public:
 	/// Must be implemented to show diff between working copy and specified revision
 	/// in remote repository.
 	virtual void showDiff(
-		QString repoRevision
-		, QString const &targetProject
+		const QString &repoRevision
+		, const QString &targetProject
 		, QWidget *parentWidget
 		, bool compactMode = false
 	) = 0;
@@ -33,9 +33,9 @@ public:
 	/// Must be implemented to show diff between two specified revisions
 	/// in remote repository.
 	virtual void showDiff(
-		QString oldRepoRevision
-		, QString newRepoRevision
-		, QString const &targetProject
+		const QString &oldRepoRevision
+		, const QString &newRepoRevision
+		, const QString &targetProject
 		, QWidget *parentWidget
 		, bool compactMode = false
 	) = 0;

@@ -6,6 +6,7 @@
 
 #include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrutils/invocationUtils/functorOperation.h>
 
 #include "gui/changeVersionWidget.h"
 
@@ -36,12 +37,13 @@ private slots:
 	void setVersion(QString hash);
 	void getAndUpdateLog();
 	void removeBrokenPointers(QWidget *widget);
-	void showDiff(QString newHash, QString oldHash, QWidget *widget);
+	void showDiffAsync(const QString &newHash, const QString &oldHash, QWidget *widget);
 
 private:
 	void init();
 	void isInit(const QString &directory = QString());
 	QList<QPair<QString, QString> > parseLog(QString log); //hash & mainPart
+	void showDiff(const QString &newHash, const QString &oldHash, QWidget *widget);
 
 	GitPlugin *mPlugin;
 	ChangeVersionWidget *mCompactWidget;

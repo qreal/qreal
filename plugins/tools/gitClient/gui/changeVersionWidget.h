@@ -17,7 +17,7 @@ public:
 
 signals:
 	void loadVersion(QString hash);
-	void showDiff(QString const &fstHash, QString const &scndHash, QWidget *widget);
+	void showDiff(const QString &fstHash, const QString &scndHash, QWidget *widget);
 	void swapTab();
 
 private slots:
