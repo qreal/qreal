@@ -70,7 +70,11 @@ private slots:
 private:
 	QString tempFolder() const;
 	void prepareWorkingCopy();
-	VersioningPluginInterface *activePlugin(bool needPreparation = true, QString const &workingDir = "");
+	VersioningPluginInterface *activePlugin(
+		bool needPreparation = true
+		, QString const &workingDir = ""
+		, bool quiet = true
+	);
 	WorkingCopyInspectionInterface *activeWorkingCopyInspector(QString const &workingDir = "");
 
 	void reportError(QString const &message);

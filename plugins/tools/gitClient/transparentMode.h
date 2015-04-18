@@ -40,7 +40,7 @@ private slots:
 
 private:
 	void init();
-	void isInit(const QString &directory = QString(), bool prepareAndProcess = true);
+	void isInit(const QString &directory = QString());
 	QList<QPair<QString, QString> > parseLog(QString log); //hash & mainPart
 
 	GitPlugin *mPlugin;

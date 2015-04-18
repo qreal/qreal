@@ -78,16 +78,22 @@ void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInter
 	}
 }
 
-VersioningPluginInterface *VersioningPluginsManager::activePlugin(bool needPreparation, const QString &workingDir)
+VersioningPluginInterface *VersioningPluginsManager::activePlugin(
+	bool needPreparation
+	, const QString &workingDir
+	, bool quiet
+)
 {
 	if (needPreparation) {
 		prepareWorkingCopy();
 	}
 
 	VersioningPluginInterface *result = nullptr;
-	foreach (VersioningPluginInterface *plugin, mPlugins) {
-		if (plugin->isMyWorkingCopy(workingDir,true)) {
+	// 1 project one vcs
+	for (VersioningPluginInterface *plugin : mPlugins) {
+		if (plugin->isMyWorkingCopy(workingDir, quiet)) {
 			result = plugin;
+			break;
 		}
 	}
 

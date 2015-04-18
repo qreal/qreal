@@ -305,17 +305,17 @@ QString GitPlugin::getLog(QString const &format, bool quiet)
 	return doLog(format, quiet);
 }
 
-void GitPlugin::doInit(QString const &targetFolder, bool quiet)
+void GitPlugin::doInit(QString const &targetFolder, bool prepareAndProcess, bool quiet)
 {
-	bool isInit = isMyWorkingCopy(targetFolder,true,true);
+	bool isInit = isMyWorkingCopy(targetFolder, quiet, prepareAndProcess);
 	if (!isInit){
 		QStringList arguments{"init"};
 		bool result = invokeOperation(
 			arguments
 			, needPreparation
 			, targetFolder
-			, checkWorkingDir
-			, needProcessing
+			, !checkWorkingDir
+			, !needProcessing
 			, dummyTargetProject
 			, dummySourceProject
 			, !quiet
@@ -325,9 +325,9 @@ void GitPlugin::doInit(QString const &targetFolder, bool quiet)
 		arguments << "add" << "-A";
 		invokeOperation(
 			arguments
-			, needPreparation
+			, !needPreparation
 			, targetFolder
-			, checkWorkingDir
+			, !checkWorkingDir
 			, needProcessing
 			, dummyTargetProject
 			, dummySourceProject
@@ -492,9 +492,10 @@ void GitPlugin::doUserEmailConfig()
 
 	bool const authenticationEnabled = qReal::SettingsManager::value(enabledKey, false).toBool();
 	if (authenticationEnabled
-		&& !qReal::SettingsManager::value(emailKey, false).toString().isEmpty()){
-			email = qReal::SettingsManager::value(emailKey, false).toString();
-		}
+		&& !qReal::SettingsManager::value(emailKey, false).toString().isEmpty())
+	{
+		email = qReal::SettingsManager::value(emailKey, false).toString();
+	}
 
 	QStringList arguments{"config", "user.email", email};
 	bool result = invokeOperation(arguments);
@@ -587,7 +588,7 @@ QString GitPlugin::doLog(QString const &format, bool quiet, bool showDialog)
 		, needProcessing
 		, dummyTargetProject
 		, dummySourceProject
-		, quiet
+		, !quiet
 	);
 
 	QString answer = standartOutput();

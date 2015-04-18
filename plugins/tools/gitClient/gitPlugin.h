@@ -33,10 +33,12 @@ public:
 	virtual bool onFileChanged(QString const &filePath, QString const &workingDir);
 
 	// Brief VCS interface
-	virtual void beginWorkingCopyDownloading(QString const &repoAddress
-			, QString const &targetProject
-			, QString commitId = "-1"
-			, bool quiet = false);
+	virtual void beginWorkingCopyDownloading(
+		QString const &repoAddress
+		, QString const &targetProject
+		, QString commitId = "-1"
+		, bool quiet = false
+	);
 	virtual void beginWorkingCopyUpdating(QString const &targetProject = QString());
 	virtual void beginChangesSubmitting(
 		QString const &description
@@ -47,8 +49,11 @@ public:
 	virtual QString information(QString const &targetProject = QString());
 	virtual QString commitId(QString const &targetProject = QString());
 	virtual QString remoteRepositoryUrl(QString const &targetProject = QString());
-	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool quiet = false
-								, bool prepareAndProcess = false);
+	virtual bool isMyWorkingCopy(
+		QString const &directory = QString()
+		, bool quiet = false
+		, bool prepareAndProcess = false
+	);
 	virtual QString friendlyName();
 	bool clientExist();
 
@@ -57,7 +62,10 @@ public:
 	void setDiffViewerInterface(qReal::DiffPluginInterface *diffInterface);
 
 public slots:
-	void doInit(QString const &targetFolder = QString(), bool quiet = false);
+	void doInit(QString const &targetFolder = QString()
+		, bool prepareAndProcess = true
+		, bool quiet = false
+	);
 	void startClone(QString const &from = QString(), QString const &targetProject = QString());
 	void startCommit(
 		QString const &message
@@ -121,6 +129,7 @@ signals:
 
 protected:
 	// External client overloads
+	friend class TransparentMode;
 	virtual int timeout() const;
 	virtual QString tempFolder() const;
 

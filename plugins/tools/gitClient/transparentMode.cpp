@@ -41,10 +41,10 @@ void TransparentMode::openChangeVersionTab()
 	mCompactWidget->setMaximumSize(mCompactWidget->size());
 }
 
-void TransparentMode::isInit(QString const &directory, bool prepareAndProcess)
+void TransparentMode::isInit(QString const &directory)
 {
-	if (!mPlugin->isMyWorkingCopy(directory, true, prepareAndProcess)) {
-		mPlugin->doInit(directory, true);
+	if (!mPlugin->isMyWorkingCopy(directory, true, true)) {
+		mPlugin->doInit(directory, true, true);
 	}
 	if (!tabIsReady) {
 		init();
@@ -113,7 +113,7 @@ void TransparentMode::setVersion(QString hash)
 
 void TransparentMode::saveVersion()
 {
-	isInit();
+	isInit(mPlugin->mTempDir);
 	mPlugin->beginChangesSubmitting("version was saved in a transparent mode", mProjectManager->saveFilePath(), true);
 	getAndUpdateLog();
 }
