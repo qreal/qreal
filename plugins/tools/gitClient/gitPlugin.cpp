@@ -312,7 +312,7 @@ void GitPlugin::doInit(QString const &targetFolder, bool prepareAndProcess, bool
 	bool isInit = isMyWorkingCopy(targetFolder, quiet, prepareAndProcess);
 	if (!isInit){
 		QStringList arguments{"init"};
-		invokeOperation(
+		bool result = invokeOperation(
 			arguments
 			, needPreparation
 			, targetFolder

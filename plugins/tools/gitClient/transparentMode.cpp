@@ -69,9 +69,9 @@ void TransparentMode::removeBrokenPointers(QWidget *widget)
 
 void TransparentMode::showDiff(QString newHash, QString oldHash, QWidget *widget)
 {
-	mMainWindowIface->windowWidget()->setEnabled(false);
+	//mMainWindowIface->windowWidget()->setEnabled(false);
 	mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, true);
-	mMainWindowIface->windowWidget()->setEnabled(true);
+	//mMainWindowIface->windowWidget()->setEnabled(true);
 }
 
 void TransparentMode::init()
