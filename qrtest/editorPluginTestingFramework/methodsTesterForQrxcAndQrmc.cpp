@@ -16,8 +16,6 @@ using namespace std;
 using namespace qReal;
 using namespace editorPluginTestingFramework;
 
-//using namespace ExplosionData;
-
 MethodsTesterForQrxcAndQrmc::MethodsTesterForQrxcAndQrmc(
 		EditorInterface * const qrmcGeneratedPlugin
 		, EditorInterface * const qrxcGeneratedPlugin
@@ -649,10 +647,13 @@ class MethodsTesterForQrxcAndQrmc::EnumValueStringGenerator
 			) const
 	{
 		Q_UNUSED(diagram);
-		mResult = callFunction( [editorInterface, element]
-						() { editorInterface->getEnumValues(element); });
+		QStringList propertyNames = editorInterface->getPropertyNames(diagram, element);
+		QString name = propertyNames[0];
+		QString type = editorInterface->getPropertyType(element, name);
+		mResult = callFunction( [editorInterface, type]
+						() { editorInterface->getEnumValues(type); });
 
-		return ConvertingMethods::convertingQPairListIntoStringList(editorInterface->getEnumValues(element));
+		return ConvertingMethods::convertingQPairListIntoStringList(editorInterface->getEnumValues(type));
 	}
 
 	virtual AbstractStringGenerator* clone() const
