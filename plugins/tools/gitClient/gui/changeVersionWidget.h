@@ -16,7 +16,7 @@ public:
 	void updateLog(QList<QPair<QString, QString> > listLog);
 
 signals:
-	void loadVersion(QString hash);
+	void loadVersion(const QString& hash);
 	void showDiff(const QString &fstHash, const QString &scndHash, QWidget *widget);
 	void swapTab();
 

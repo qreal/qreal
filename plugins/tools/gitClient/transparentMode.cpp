@@ -99,7 +99,7 @@ void TransparentMode::init()
 		, this
 		, SLOT(showDiffAsync(QString,QString,QWidget*))
 	);
-	connect(mCompactWidget, SIGNAL(loadVersion(QString)),SLOT(setVersion(QString)));
+	connect(mCompactWidget, SIGNAL(loadVersion(QString)),SLOT(setVersionAsync(QString)));
 	connect(mSystemInterface, SIGNAL(indefiniteTabClosed(QWidget *)), this, SLOT(removeBrokenPointers(QWidget *)));
 	tabIsReady = true;
 }
@@ -118,12 +118,28 @@ void TransparentMode::listLog()
 	}
 }
 
-void TransparentMode::setVersion(QString hash)
+void TransparentMode::setVersionAsync(const QString &hash)
 {
-	mPlugin->setVersion(hash, true);
+	invocation::details::FunctorInterface<void> *functor =
+		new invocation::details::VoidFunctor<void, TransparentMode
+			, void(TransparentMode::*)(const QString&)
+			, const QString&>(
+				this
+				, &TransparentMode::setVersion
+				, hash
+	);
+
+	invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>(functor);
+	mMainWindowIface->reportOperation(operation);
+	operation->invokeAsync();
 	QString currentAdress = mProjectManager->saveFilePath();
 	mProjectManager->close();
 	mProjectManager->open(currentAdress);
+}
+
+void TransparentMode::setVersion(const QString& hash)
+{
+	mPlugin->setVersion(hash, true);
 }
 
 void TransparentMode::saveVersion()
