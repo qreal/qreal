@@ -46,7 +46,7 @@ void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInter
 
 		if (versioningPlugin) {
 			mPlugins.append(versioningPlugin);
-			if (!versioningPlugin->clientExist()) {
+        if (!versioningPlugin->clientExist()) {
 				foreach(ActionInfo const &actionInfo, versioningPlugin->actions()) {
 					if (actionInfo.isAction()){
 						actionInfo.action()->setVisible(false);

@@ -230,7 +230,7 @@ void GitPlugin::setVersion(QString hash, bool quiet)
 	bool cWD = checkWorkingDir;
 
 	//because if we have unsaved changes, it would be a crash
-	if (!this->isMyWorkingCopy(QString(), false, true)){
+	if (!this->isMyWorkingCopy(QString(), quiet, nPrp)){
 		this->doInit(QString(), true);
 	}
 	this->beginChangesSubmitting("version was saved in a transparent mode", dummyTargetProject, quiet);
@@ -291,7 +291,8 @@ bool GitPlugin::clientExist()
 	QProcess *process = new QProcess;
 	process->start(pathToGit(), QStringList() << "--version");
 	process->waitForFinished();
-	bool res = process->readAllStandardOutput().startsWith(QString("git").toLocal8Bit());
+    QByteArray answer = process->readAllStandardOutput();
+    bool res = answer.startsWith(QString("git").toLocal8Bit());
 	qReal::SettingsManager::setValue("gitClientExist", res);
 	if (res) {
 		setPathToClient(pathToGit());
@@ -307,25 +308,13 @@ QString GitPlugin::getLog(QString const &format, bool quiet)
 
 void GitPlugin::doInit(QString const &targetFolder, bool prepareAndProcess, bool quiet)
 {
+
 	bool isInit = isMyWorkingCopy(targetFolder, quiet, prepareAndProcess);
 	if (!isInit){
 		QStringList arguments{"init"};
-		bool result = invokeOperation(
-			arguments
-			, needPreparation
-			, targetFolder
-			, !checkWorkingDir
-			, !needProcessing
-			, dummyTargetProject
-			, dummySourceProject
-			, !quiet
-		);
-
-		arguments.clear();
-		arguments << "add" << "-A";
 		invokeOperation(
 			arguments
-			, !needPreparation
+			, needPreparation
 			, targetFolder
 			, !checkWorkingDir
 			, needProcessing
@@ -334,8 +323,23 @@ void GitPlugin::doInit(QString const &targetFolder, bool prepareAndProcess, bool
 			, !quiet
 		);
 
-		doUserEmailConfig();
-		doUserNameConfig();
+		if (result) {
+			arguments.clear();
+			arguments << "add" << "-A";
+			invokeOperation(
+				arguments
+				, needPreparation
+				, targetFolder
+				, !checkWorkingDir
+				, needProcessing
+				, dummyTargetProject
+				, dummySourceProject
+				, !quiet
+			);
+
+			doUserEmailConfig();
+			doUserNameConfig();
+		}
 
 		if (!quiet){
 			emit initComplete(result);

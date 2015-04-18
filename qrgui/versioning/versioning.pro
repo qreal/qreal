@@ -6,7 +6,7 @@ TARGET = qrgui-versioning-plugins-manager
 
 QT += widgets
 
-LIBS += -L$$PWD/../../bin -lqrkernel
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqrrepo -lqrgui-tool-plugin-interface
 
 DEFINES += QRGUI_VERSIONING_PLUGINS_MANAGER_LIBRARY
 
