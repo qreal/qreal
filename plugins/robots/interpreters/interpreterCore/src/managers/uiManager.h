@@ -28,15 +28,11 @@ class UiManager : public QObject
 public:
 	/// Represents the mode user currently works in.
 	enum class Mode {
-		/// User is doing something other that editing diagrams or code (for example start tab is opened).
-		Nothing = 0
-		/// User edits visual diagram (diagram tab is opened and interpretation is not going).
-		, DiagramEdit
-		/// User edits code (text tab is opened and interpretation is not going).
-		, CodeEdit
-		/// User edits diagram or code and interpretation going.
-		, Debugging
-	};
+		/// User edits code or diagram or just staring at the start tab or something like this.
+		Editing = 0x000001
+		/// User debugs the program: interpretation going or 2D model world is constructed.
+		, Debugging = 0x000002
+	};  // Do not change the values of the elements - it will break backward compability.
 
 	UiManager(QAction &debugModeAction
 			, QAction &editModeAction
@@ -50,13 +46,20 @@ public:
 	/// Embeds the given widgets into main window`s left dock panel tabifying them together.
 	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
 
+private slots:
+	void onActiveTabChanged(const qReal::TabInfo &tab);
+	void switchToEditorMode();
+	void switchToDebuggerMode();
+
 private:
 	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
 
-	QString settingsKeyFor(Mode mode) const;
-	void saveDocks(Mode mode) const;
-	void restoreDocks(Mode mode) const;
+	int currentMode() const;
+	QString currentSettingsKey() const;
+
+	void saveDocks() const;
+	void reloadDocks() const;
 
 	void addWidgetsForDocksDebugging() const;
 
@@ -65,10 +68,8 @@ private:
 	qReal::gui::MainWindowDockInterface &mMainWindow;
 	qReal::SystemEvents &mSystemEvents;
 	kitBase::EventsForKitPluginInterface &mKitPluginEvents;
-	const QHash<Mode, QString> mSettingsKeys;
-	Mode mCurrentMode = Mode::Nothing;
+	qReal::TabInfo::TabType mCurrentTab = qReal::TabInfo::TabType::other;
+	Mode mCurrentMode = Mode::Editing;
 };
-
-uint qHash(UiManager::Mode mode);
 
 }

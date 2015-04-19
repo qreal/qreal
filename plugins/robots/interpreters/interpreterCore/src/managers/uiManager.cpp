@@ -17,16 +17,11 @@
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
 
+#include <QtWidgets/QAction>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
 
 using namespace interpreterCore;
-
-static const QString invalidSettingsKey = "docksInInvalidMode";
-static const QString nothingSettingsKey = "docksInNothingMode";
-static const QString diagramEditSettingsKey = "docksInDiagramEditMode";
-static const QString codeEditSettingsKey = "docksInCodeEditMode";
-static const QString debuggingSettingsKey = "docksInDebuggingMode";
 
 UiManager::UiManager(QAction &debugModeAction
 		, QAction &editModeAction
@@ -38,20 +33,21 @@ UiManager::UiManager(QAction &debugModeAction
 	, mMainWindow(mainWindow)
 	, mSystemEvents(systemEvents)
 	, mKitPluginEvents(kitPluginEvents)
-	, mSettingsKeys({
-			{ Mode::Nothing, nothingSettingsKey }
-			, { Mode::DiagramEdit, diagramEditSettingsKey }
-			, { Mode::CodeEdit, codeEditSettingsKey }
-			, { Mode::DiagramEdit, diagramEditSettingsKey }
-	})
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
+
+	connect(&mKitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
+			, this, &UiManager::switchToDebuggerMode);
+	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
+	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
+	switchToEditorMode();
+
 	addWidgetsForDocksDebugging();
 }
 
 void UiManager::placeDevicesConfig(QWidget *devicesWidget)
 {
-	QDockWidget *devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
+	QDockWidget * const devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
 	devicesDock->setObjectName("devicesConfigurationDock");
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, devicesDock);
 }
@@ -69,33 +65,58 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	mMainWindow.tabifyDockWidget(watchWindow, graphWatchDock);
 }
 
+void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
+{
+	saveDocks();
+	mCurrentTab = tab.type();
+	reloadDocks();
+}
+
+void UiManager::switchToEditorMode()
+{
+	saveDocks();
+	mCurrentMode = Mode::Editing;
+	reloadDocks();
+	mEditModeAction.setVisible(false);
+	mDebugModeAction.setVisible(true);
+}
+
+void UiManager::switchToDebuggerMode()
+{
+	saveDocks();
+	mCurrentMode = Mode::Debugging;
+	reloadDocks();
+	mEditModeAction.setVisible(true);
+	mDebugModeAction.setVisible(false);
+}
+
 QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content) const
 {
-	QDockWidget *dock = new QDockWidget(title);
+	QDockWidget * const dock = new QDockWidget(title);
 	dock->setWidget(content);
 	return dock;
 }
 
-QString UiManager::settingsKeyFor(UiManager::Mode mode) const
+int UiManager::currentMode() const
 {
-	if (!mSettingsKeys.contains(mode)) {
-		QLOG_ERROR() << "No settings key correspond to mode" << static_cast<int>(mode);
-		return invalidSettingsKey;
-	}
-
-	return mSettingsKeys[mode];
+	return static_cast<int>(mCurrentTab) | static_cast<int>(mCurrentMode);
 }
 
-void UiManager::saveDocks(Mode mode) const
+QString UiManager::currentSettingsKey() const
 {
-	qReal::SettingsManager::setValue(settingsKeyFor(mode), mMainWindow.saveState(static_cast<int>(mode)));
+	return "docksStateInMode" + QString::number(currentMode());
 }
 
-void UiManager::restoreDocks(UiManager::Mode mode) const
+void UiManager::saveDocks() const
 {
-	const QByteArray state = qReal::SettingsManager::value(settingsKeyFor(mode)).toByteArray();
-	if (!mMainWindow.restoreState(state, static_cast<int>(mode))) {
-		QLOG_ERROR() << "Cannot apply docks state for mode" << static_cast<int>(mode) << ":" << state;
+	qReal::SettingsManager::setValue(currentSettingsKey(), mMainWindow.saveState(currentMode()));
+}
+
+void UiManager::reloadDocks() const
+{
+	const QByteArray state = qReal::SettingsManager::value(currentSettingsKey()).toByteArray();
+	if (!mMainWindow.restoreState(state, currentMode())) {
+		QLOG_ERROR() << "Cannot apply docks state for mode" << currentMode() << ":" << state;
 	}
 }
 
@@ -109,13 +130,8 @@ void UiManager::addWidgetsForDocksDebugging() const
 	QLineEdit * const lineEdit = new QLineEdit(mainWindow);
 	lineEdit->move(button->geometry().bottomLeft());
 	connect(button, &QPushButton::clicked, [=]() {
-		lineEdit->setText(mMainWindow.saveState(static_cast<int>(mCurrentMode)));
+		lineEdit->setText(mMainWindow.saveState(currentMode()));
 	});
 	button->show();
 	lineEdit->show();
-}
-
-uint interpreterCore::qHash(UiManager::Mode mode)
-{
-	return static_cast<uint>(mode);
 }
