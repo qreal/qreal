@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,8 @@
 
 #include <QtWidgets/QDockWidget>
 
-namespace qReal
-{
-namespace gui
-{
+namespace qReal {
+namespace gui {
 
 class MainWindowDockInterface
 {
@@ -47,6 +45,15 @@ public:
 
 	/// Adds the given @param dockWidget into the specified @param area
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) = 0;
+
+	/// Serializes all docks and toolbar placement and returns the resulting data.
+	/// This data can be used for restoring the window state next time.
+	/// @param version An integer parameter that will be also serialized into state.
+	virtual QByteArray saveState(int version = 0) const = 0;
+
+	/// Restores the @arg state of the main window obtained by saveState() method.
+	/// @param version An integer parameter that will be compared to the one serialized in @arg state.
+	virtual bool restoreState(const QByteArray &state, int version = 0) = 0;
 };
 
 }

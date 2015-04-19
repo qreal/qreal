@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1975,6 +1975,16 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
 	mAdditionalDocks << dockWidget;
 	QMainWindow::addDockWidget(area, dockWidget);
+}
+
+QByteArray MainWindow::saveState(int version) const
+{
+	return QMainWindow::saveState(version);
+}
+
+bool MainWindow::restoreState(const QByteArray &state, int version)
+{
+	return QMainWindow::restoreState(state, version);
 }
 
 void MainWindow::setTabText(QWidget *tab, const QString &text)

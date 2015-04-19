@@ -37,6 +37,7 @@ HEADERS += \
 	$$PWD/include/interpreterCore/managers/devicesConfigurationManager.h \
 	$$PWD/include/interpreterCore/managers/paletteUpdateManager.h \
 	$$PWD/include/interpreterCore/managers/kitAutoSwitcher.h \
+	$$PWD/include/interpreterCore/managers/uiModeManager.h \
 	$$PWD/include/interpreterCore/customizer.h \
 	$$PWD/include/interpreterCore/defaultRobotModel.h \
 	$$PWD/include/interpreterCore/interpreter/interpreter.h \
@@ -75,6 +76,7 @@ SOURCES += \
 	$$PWD/src/managers/paletteUpdateManager.cpp \
 	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/saveConvertionManager.cpp \
+	$$PWD/src/managers/uiModeManager.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \

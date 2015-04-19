@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -275,6 +275,19 @@ void NullMainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWid
 {
 	Q_UNUSED(area)
 	Q_UNUSED(dockWidget)
+}
+
+QByteArray NullMainWindow::saveState(int version) const
+{
+	Q_UNUSED(version)
+	return QByteArray();
+}
+
+bool NullMainWindow::restoreState(const QByteArray &state, int version)
+{
+	Q_UNUSED(state)
+	Q_UNUSED(version)
+	return true;
 }
 
 void NullMainWindow::emulateClose(int returnCode)
