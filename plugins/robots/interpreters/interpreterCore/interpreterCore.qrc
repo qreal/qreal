@@ -51,5 +51,7 @@
 		<file>icons/switch-real-nxt.svg</file>
 		<file>icons/switch-real-trik.svg</file>
 		<file>icons/splashscreen.png</file>
+		<file>icons/robots_debug_mode.svg</file>
+		<file>icons/robots_edit_mode.svg</file>
 	</qresource>
 </RCC>

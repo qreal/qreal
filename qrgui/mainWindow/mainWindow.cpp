@@ -37,6 +37,7 @@
 #include <qrkernel/settingsListener.h>
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
+#include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
@@ -1662,7 +1663,7 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	}
 
 	for (const ActionInfo &action : actions) {
-		const QString menuName = "menu" + QString(action.menuName()[0].toUpper()) + action.menuName().mid(1);
+		const QString menuName = "menu" + utils::StringUtils::capitalizeFirstLetter(action.menuName());
 		QMenu * const menu = findChild<QMenu *>(menuName);
 		if (menu) {
 			addActionOrSubmenu(menu, action);

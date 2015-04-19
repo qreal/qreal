@@ -38,3 +38,8 @@ QString StringUtils::wrap(const QString &string)
 {
 	return "\"" + string + "\"";
 }
+
+QString StringUtils::capitalizeFirstLetter(const QString &string)
+{
+	return string.at(0).toUpper() + string.mid(1);
+}

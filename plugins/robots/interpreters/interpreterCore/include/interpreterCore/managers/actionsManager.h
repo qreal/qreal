@@ -67,6 +67,15 @@ public:
 	/// change world in 2d model or configuration of robot sensors.
 	QAction &exportExerciseAction();
 
+	/// Action that changes current UI mode to debug: hides palette, property editor and so on,
+	/// opens variable values dock and maybe 2D model dock.
+	QAction &debugModeAction();
+
+	/// Action that changes current UI mode to edit: show palette and property editor if we are
+	/// editing diagram or variables list if we are editing the code.
+	/// Closess variable values dock and maybe 2D model dock.
+	QAction &editModeAction();
+
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
@@ -113,6 +122,15 @@ private:
 	/// Action that allows to save current model as an exercise with different limitations, such as inability to
 	/// change world in 2d model or configuration of robot sensors.
 	QAction mExportExerciseAction;
+
+	/// Action that changes current UI mode to debug: hides palette, property editor and so on,
+	/// opens variable values dock and maybe 2D model dock.
+	QAction mDebugModeAction;
+
+	/// Action that changes current UI mode to edit: show palette and property editor if we are
+	/// editing diagram or variables list if we are editing the code.
+	/// Closess variable values dock and maybe 2D model dock.
+	QAction mEditModeAction;
 
 	QAction mSeparator1;
 	QAction mSeparator2;

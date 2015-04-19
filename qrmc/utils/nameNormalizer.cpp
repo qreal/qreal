@@ -15,7 +15,8 @@
 #include "nameNormalizer.h"
 
 #include <QtCore/QStringList>
-#include <QtCore/QDebug>
+
+#include "qrutils/stringUtils.h"
 
 QString NameNormalizer::normalize(const QString &name)
 {
@@ -36,13 +37,15 @@ QString NameNormalizer::upperFirst(const QString &string)
 {
 	if (string.size() < 1)
 	{
-		return "";
+		return QString();
 	}
-	QStringList tokens = string.split(" ");
+
+	const QStringList tokens = string.split(" ");
 	QStringList upperedTokens;
-	foreach (QString token, tokens)
+	for (const QString &token : tokens)
 	{
-		upperedTokens.append(token.at(0).toUpper() + token.mid(1));
+		upperedTokens.append(utils::StringUtils::capitalizeFirstLetter(token));
 	}
+
 	return upperedTokens.join("_");
 }

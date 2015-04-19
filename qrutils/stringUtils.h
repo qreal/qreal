@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <QtCore/QString>
-
 #include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
@@ -30,6 +28,9 @@ public:
 
 	/// Wraps the given string into double quotes and returns the result.
 	static QString wrap(const QString &string);
+
+	/// Returns new instance of string that exactly the same as given but with first letter in upper case.
+	static QString capitalizeFirstLetter(const QString &string);
 };
 
 }
