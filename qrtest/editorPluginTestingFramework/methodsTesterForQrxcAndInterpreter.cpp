@@ -734,6 +734,15 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		return "Enum values";
 	}
 
+	virtual void callEnum(EditorManagerInterface *editorManagerInterface, Id const &elementId) const
+	{
+		QStringList nameList =  editorManagerInterface->propertyNames(elementId);
+		for (const QString &name : nameList)
+		{
+			editorManagerInterface->enumValues(elementId, name);
+		}
+	}
+
 	virtual QStringList callMethod(
 			EditorManagerInterface *editorManagerInterface
 			, Id const &editorId
@@ -746,15 +755,18 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 
-		QStringList qwerty =  editorManagerInterface->propertyNames(elementId);
-		QString const &name = "";
-		QString asd = qwerty[0];
+		mResult = callFunction( [this, editorManagerInterface, elementId]
+				() { callEnum(editorManagerInterface, elementId); } );
 
-		mResult = callFunction( [editorManagerInterface, elementId, asd]
-				() { editorManagerInterface->enumValues(elementId, asd); } );
+		QStringList nameList =  editorManagerInterface->propertyNames(elementId);
 
+		QList<QPair<QString, QString>> result;
+		for (const QString &name : nameList)
+		{
+			result.append(editorManagerInterface->enumValues(elementId, name));
+		}
 
-		return ConvertingMethods::convertingQPairListIntoStringList(editorManagerInterface->enumValues(elementId, asd));
+		return ConvertingMethods::convertingQPairListIntoStringList(result);
 	}
 
 	virtual AbstractStringGenerator* clone() const

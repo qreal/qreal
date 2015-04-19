@@ -546,6 +546,7 @@ QList<QPair<QString, QString>> InterpreterEditorManager::enumValues(const Id &id
 	const qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	const Id metaId = repoAndMetaIdPair.second;
 	IdList ololo = repo->children(metaId);
+
 	foreach (const Id &property, repo->children(metaId)) {
 		if (repo->name(property) == name) {
 			QString newId =  property.id();
