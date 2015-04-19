@@ -37,7 +37,6 @@ HEADERS += \
 	$$PWD/include/interpreterCore/managers/devicesConfigurationManager.h \
 	$$PWD/include/interpreterCore/managers/paletteUpdateManager.h \
 	$$PWD/include/interpreterCore/managers/kitAutoSwitcher.h \
-	$$PWD/include/interpreterCore/managers/uiModeManager.h \
 	$$PWD/include/interpreterCore/customizer.h \
 	$$PWD/include/interpreterCore/defaultRobotModel.h \
 	$$PWD/include/interpreterCore/interpreter/interpreter.h \
@@ -50,6 +49,7 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/printTextBlock.h \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
+	$$PWD/src/managers/uiManager.h \
 	$$PWD/src/managers/exerciseExportManager.h \
 	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
@@ -69,6 +69,7 @@ SOURCES += \
 	$$PWD/src/managers/actionsManager.cpp \
 	$$PWD/src/managers/blocksFactoryManager.cpp \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
+	$$PWD/src/managers/uiManager.cpp \
 	$$PWD/src/managers/exerciseExportManager.cpp \
 	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \
@@ -76,7 +77,6 @@ SOURCES += \
 	$$PWD/src/managers/paletteUpdateManager.cpp \
 	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/saveConvertionManager.cpp \
-	$$PWD/src/managers/uiModeManager.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \

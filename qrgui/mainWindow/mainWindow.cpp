@@ -1678,9 +1678,15 @@ QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
 
 void MainWindow::initToolPlugins()
 {
-	mToolManager.init(PluginConfigurator(models().repoControlApi(), models().graphicalModelAssistApi()
-		, models().logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-		, mFacade.events(), *mTextManager));
+	mToolManager.init(PluginConfigurator(models().repoControlApi()
+		, models().graphicalModelAssistApi()
+		, models().logicalModelAssistApi()
+		, *this
+		, *this
+		, *mProjectManager
+		, *mSceneCustomizer
+		, mFacade.events()
+		, *mTextManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	traverseListOfActions(actions);
@@ -1752,12 +1758,18 @@ void MainWindow::customizeActionsVisibility()
 
 void MainWindow::initInterpretedPlugins()
 {
-	mInterpretedPluginLoader.init(editorManagerProxy().proxiedEditorManager()
-			, PluginConfigurator(models().repoControlApi(), models().graphicalModelAssistApi()
-			, models().logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-			, mFacade.events(), *mTextManager));
+	mInterpretedPluginLoader.init(editorManagerProxy().proxiedEditorManager(), PluginConfigurator(
+			models().repoControlApi()
+			, models().graphicalModelAssistApi()
+			, models().logicalModelAssistApi()
+			, *this
+			, *this
+			, *mProjectManager
+			, *mSceneCustomizer
+			, mFacade.events()
+			, *mTextManager));
 
-	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
+	const QList<ActionInfo> actions = mInterpretedPluginLoader.listOfActions();
 	mListOfAdditionalActions = mInterpretedPluginLoader.menuActionsList();
 
 	traverseListOfActions(actions);
@@ -1786,12 +1798,11 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::initToolManager()
 {
-	Customizer * const customizer = mToolManager.customizer();
+	const Customizer * const customizer = mToolManager.customizer();
 	if (customizer) {
 		setWindowTitle(customizer->windowTitle());
 		setWindowIcon(customizer->applicationIcon());
 		setVersion(customizer->productVersion());
-		customizer->customizeDocks(this);
 	}
 }
 

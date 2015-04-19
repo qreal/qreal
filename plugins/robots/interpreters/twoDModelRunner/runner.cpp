@@ -29,13 +29,13 @@ Runner::Runner(const QString &report, const QString &trajectory)
 			, mQRealFacade.models().graphicalModelAssistApi()
 			, mQRealFacade.models().logicalModelAssistApi()
 			, mMainWindow
+			, mMainWindow
 			, mProjectManager
 			, mSceneCustomizer
 			, mQRealFacade.events()
 			, mTextManager)
 	, mReporter(report, trajectory)
 {
-	mPluginFacade.customizer().customizeDocks(&mMainWindow);
 	mPluginFacade.init(mConfigurator);
 	for (const QString &defaultSettingsFile : mPluginFacade.defaultSettingsFiles()) {
 		qReal::SettingsManager::loadDefaultSettings(defaultSettingsFile);

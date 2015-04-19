@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ private:
 	BrandManager();
 	~BrandManager();
 
-	Customizer *mCustomizer;  // Doesn`t take ownership
+	const Customizer *mCustomizer;  // Doesn`t take ownership
 	const Fonts *mFonts;  // Takes ownership
 	const Styles *mStyles;  // Takes ownership
 };

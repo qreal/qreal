@@ -21,8 +21,10 @@
 namespace interpreterCore {
 
 /// Manages docks shown in the main window depending on mode user currently works in.
-class UiModeManager
+class UiManager : public QObject
 {
+	Q_OBJECT
+
 public:
 	/// Represents the mode user currently works in.
 	enum class Mode {
@@ -36,13 +38,22 @@ public:
 		, Debugging
 	};
 
-	UiModeManager(QAction &debugModeAction
+	UiManager(QAction &debugModeAction
 			, QAction &editModeAction
 			, qReal::gui::MainWindowDockInterface &mainWindow
 			, qReal::SystemEvents &systemEvents
 			, kitBase::EventsForKitPluginInterface &kitPluginEvents);
 
+	/// Embeds the given widget into main window`s left dock panel
+	void placeDevicesConfig(QWidget *devicesWidget);
+
+	/// Embeds the given widgets into main window`s left dock panel tabifying them together.
+	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
+
 private:
+	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
+	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
+
 	QString settingsKeyFor(Mode mode) const;
 	void saveDocks(Mode mode) const;
 	void restoreDocks(Mode mode) const;
@@ -55,11 +66,9 @@ private:
 	qReal::SystemEvents &mSystemEvents;
 	kitBase::EventsForKitPluginInterface &mKitPluginEvents;
 	const QHash<Mode, QString> mSettingsKeys;
+	Mode mCurrentMode = Mode::Nothing;
 };
 
-uint qHash(UiModeManager::Mode mode)
-{
-	return static_cast<uint>(mode);
-}
+uint qHash(UiManager::Mode mode);
 
 }

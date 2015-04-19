@@ -12,10 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "interpreterCore/managers/uiModeManager.h"
+#include "uiManager.h"
 
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
+
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
 
 using namespace interpreterCore;
 
@@ -25,7 +28,7 @@ static const QString diagramEditSettingsKey = "docksInDiagramEditMode";
 static const QString codeEditSettingsKey = "docksInCodeEditMode";
 static const QString debuggingSettingsKey = "docksInDebuggingMode";
 
-UiModeManager::UiModeManager(QAction &debugModeAction
+UiManager::UiManager(QAction &debugModeAction
 		, QAction &editModeAction
 		, qReal::gui::MainWindowDockInterface &mainWindow
 		, qReal::SystemEvents &systemEvents
@@ -42,10 +45,38 @@ UiModeManager::UiModeManager(QAction &debugModeAction
 			, { Mode::DiagramEdit, diagramEditSettingsKey }
 	})
 {
+	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 	addWidgetsForDocksDebugging();
 }
 
-QString UiModeManager::settingsKeyFor(UiModeManager::Mode mode) const
+void UiManager::placeDevicesConfig(QWidget *devicesWidget)
+{
+	QDockWidget *devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
+	devicesDock->setObjectName("devicesConfigurationDock");
+	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, devicesDock);
+}
+
+void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)
+{
+	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
+	watchWindow->setObjectName("variablesDebuggerDock");
+	watchWindow->setFloating(false);
+
+	QDockWidget * const graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+	graphWatchDock->setObjectName("graphicsWatcherDock");
+	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
+
+	mMainWindow.tabifyDockWidget(watchWindow, graphWatchDock);
+}
+
+QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content) const
+{
+	QDockWidget *dock = new QDockWidget(title);
+	dock->setWidget(content);
+	return dock;
+}
+
+QString UiManager::settingsKeyFor(UiManager::Mode mode) const
 {
 	if (!mSettingsKeys.contains(mode)) {
 		QLOG_ERROR() << "No settings key correspond to mode" << static_cast<int>(mode);
@@ -55,12 +86,12 @@ QString UiModeManager::settingsKeyFor(UiModeManager::Mode mode) const
 	return mSettingsKeys[mode];
 }
 
-void UiModeManager::saveDocks(Mode mode) const
+void UiManager::saveDocks(Mode mode) const
 {
 	qReal::SettingsManager::setValue(settingsKeyFor(mode), mMainWindow.saveState(static_cast<int>(mode)));
 }
 
-void UiModeManager::restoreDocks(UiModeManager::Mode mode) const
+void UiManager::restoreDocks(UiManager::Mode mode) const
 {
 	const QByteArray state = qReal::SettingsManager::value(settingsKeyFor(mode)).toByteArray();
 	if (!mMainWindow.restoreState(state, static_cast<int>(mode))) {
@@ -68,8 +99,23 @@ void UiModeManager::restoreDocks(UiModeManager::Mode mode) const
 	}
 }
 
-void UiModeManager::addWidgetsForDocksDebugging() const
+void UiManager::addWidgetsForDocksDebugging() const
 {
 	// This method provides tools only for development.
 	// It must not be called in master branch code.
+	QWidget * const mainWindow = dynamic_cast<QWidget *>(&mMainWindow);
+	QPushButton * const button = new QPushButton("Snapshot docks", mainWindow);
+	button->move(mainWindow->geometry().center());
+	QLineEdit * const lineEdit = new QLineEdit(mainWindow);
+	lineEdit->move(button->geometry().bottomLeft());
+	connect(button, &QPushButton::clicked, [=]() {
+		lineEdit->setText(mMainWindow.saveState(static_cast<int>(mCurrentMode)));
+	});
+	button->show();
+	lineEdit->show();
+}
+
+uint interpreterCore::qHash(UiManager::Mode mode)
+{
+	return static_cast<uint>(mode);
 }

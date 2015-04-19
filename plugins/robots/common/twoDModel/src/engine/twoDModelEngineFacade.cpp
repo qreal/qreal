@@ -173,6 +173,7 @@ void TwoDModelEngineFacade::initDock()
 	}
 
 	QDockWidget *dock = new QDockWidget(mView->windowTitle(), mainWindow);
+	dock->setObjectName("2dModelDock");
 	dock->setWidget(mView.data());
 	mView->setParent(dock);
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered, dock, &QWidget::show);

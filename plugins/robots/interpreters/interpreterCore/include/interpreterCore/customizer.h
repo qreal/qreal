@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,24 +34,12 @@ public:
 
 	QList<QPair<QString, qReal::ActionVisibility>> actionsVisibility() const override;
 
-	void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface) override;
-
-	/// Embeds the given widget into main window`s left dock panel
-	void placeDevicesConfig(QWidget *devicesWidget);
-
-	/// Embeds the given widgets into main window`s left dock panel tabifying them together.
-	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
-
 	bool showInterpeterButton() const override;
 
 	QString userPaletteTitle() const override;
 	QString userPaletteDescription() const override;
 
 private:
-	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
-	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
-
-	qReal::gui::MainWindowDockInterface *mDockInterface;
 };
 
 }

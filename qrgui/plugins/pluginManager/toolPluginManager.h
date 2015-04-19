@@ -57,7 +57,7 @@ public:
 	/// Returns GUI customizer object. In each QReal's instance there should be only one plugin with
 	/// valid customizationInterface(): robots plugin for QReal:Robots, ubiq plugin for QReal:Ubiq etc.
 	/// If there're more than one plugin of that kind, it is not specified which one will be used.
-	Customizer *customizer() const;
+	const Customizer *customizer() const;
 
 	/// Notifies plugins about change of currently open tab. The passed in parameter structure contains information
 	/// about newly opened tab (or maybe null info in case of last tab is closed).
@@ -72,7 +72,7 @@ private:
 	QList<ToolPluginInterface *> mPlugins;
 
 	/// An object and that is used to customize GUI with values from plugins
-	Customizer mCustomizer;
+	const Customizer mCustomizer;
 
 	/// Common part of all plugin managers
 	PluginManager mPluginManager;

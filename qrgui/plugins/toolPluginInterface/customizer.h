@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
-
-#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 
 namespace qReal {
 
@@ -99,12 +97,6 @@ public:
 	virtual bool showUsagesRelatedMenus() const
 	{
 		return false;
-	}
-
-	/// Customizes docks placement and visibility. Default implementation does nothing
-	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
-	{
-		Q_UNUSED(dockInterface)
 	}
 
 	virtual QString userPaletteTitle() const
