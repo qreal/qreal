@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ using namespace kitBase::robotModel;
 using namespace robotParts;
 
 D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
-	: QRealDialog("D2ModelWindow", parent)
+	: QWidget(parent)
 	, mUi(new Ui::D2Form)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
@@ -297,15 +297,15 @@ void D2ModelWidget::changeSpeed(int curIndex)
 	}
 }
 
-void D2ModelWidget::init()
-{
-	mUi->graphicsView->show();
-	bringToFront();
+//void D2ModelWidget::init()
+//{
+//	mUi->graphicsView->show();
+//	bringToFront();
 
-	update();
+//	update();
 
-	updateWheelComboBoxes();
-}
+//	updateWheelComboBoxes();
+//}
 
 void D2ModelWidget::returnToStartMarker()
 {
@@ -348,7 +348,7 @@ void D2ModelWidget::changeEvent(QEvent *e)
 void D2ModelWidget::showEvent(QShowEvent *e)
 {
 	e->accept();
-	QRealDialog::showEvent(e);
+	QWidget::showEvent(e);
 	if (mFirstShow) {
 		mFirstShow = false;
 		onFirstShow();
@@ -594,7 +594,6 @@ void D2ModelWidget::setSensorVisible(const kitBase::robotModel::PortInfo &port, 
 void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
-	serializeParameters();
 	emit widgetClosed();
 }
 

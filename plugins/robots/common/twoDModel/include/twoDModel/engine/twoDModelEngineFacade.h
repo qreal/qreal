@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
+	void initDock();
 	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);
 
 	const QString mRobotModelName;
