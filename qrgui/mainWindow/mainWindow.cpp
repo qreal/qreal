@@ -1706,8 +1706,46 @@ void MainWindow::initToolPlugins()
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
 
-	if (!toolManager().customizer()->enableNewDiagramAction()) {
-		mUi->fileToolbar->removeAction(mUi->actionNew_Diagram);
+	customizeActionsVisibility();
+}
+
+void MainWindow::customizeActionsVisibility()
+{
+	QList<QAction *> actions = findChildren<QAction *>();
+	for (const QPair<QString, ActionVisibility> &info : toolManager().customizer()->actionsVisibility()) {
+		QAction *action = nullptr;
+		for (QAction * const currentAction : actions) {
+			if (currentAction->objectName() == info.first) {
+				action = currentAction;
+				break;
+			}
+		}
+
+		if (!action) {
+			qDebug() << "Cannot find" << info.first << "in main window actions";
+			continue;
+		}
+
+		QList<QToolBar *> toolBars;
+		for (QWidget * const associatedWidget : action->associatedWidgets()) {
+			if (QToolBar * const toolBar = qobject_cast<QToolBar *>(associatedWidget)) {
+				toolBars << toolBar;
+			}
+		}
+
+		switch (info.second) {
+		case ActionVisibility::VisibleEverywhere:
+			action->setVisible(true);
+			break;
+		case ActionVisibility::VisibleOnlyInMenu:
+			for (QToolBar * const toolBar : toolBars) {
+				toolBar->removeAction(action);
+			}
+			break;
+		case ActionVisibility::Invisible:
+			action->setVisible(false);
+			break;
+		}
 	}
 }
 

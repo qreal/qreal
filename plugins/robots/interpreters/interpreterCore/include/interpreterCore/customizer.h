@@ -32,7 +32,7 @@ public:
 	QString aboutText() const override;
 	QString examplesDirectory() const override;
 
-	bool enableNewDiagramAction() const override;
+	QList<QPair<QString, qReal::ActionVisibility>> actionsVisibility() const override;
 
 	void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface) override;
 

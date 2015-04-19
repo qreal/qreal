@@ -21,6 +21,17 @@
 
 namespace qReal {
 
+/// Represents a state of an action on the main toolbar.
+enum class ActionVisibility
+{
+	/// The action is visible in main menu and on the toolbar (if it added there).
+	VisibleEverywhere = 0
+	/// The action is visible only in main menu (if was visible on the toolbar it will be dropped from it).
+	, VisibleOnlyInMenu
+	/// The action is visible neither in main menu nor in toolbar.
+	, Invisible
+};
+
 /// Customization class for configuring QReal's main GUI module
 class Customizer
 {
@@ -70,9 +81,13 @@ public:
 		return QString();
 	}
 
-	virtual bool enableNewDiagramAction() const
+	/// Customizes the visibility of the actions on the toolbar and main menu.
+	/// Returns a list of pairs with first element of each meaning the name of the action
+	/// and second - visibility customization of this action.
+	/// Action can be disabled only from toolbar or from toolbar and menu.
+	virtual QList<QPair<QString, ActionVisibility>> actionsVisibility() const
 	{
-		return true;
+		return {};
 	}
 
 	/// Tells if we should show trace connections menu or not

@@ -51,12 +51,15 @@ QString Customizer::examplesDirectory() const
 	return QApplication::applicationDirPath() + "/examples";
 }
 
-bool Customizer::showInterpeterButton() const
+QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() const
 {
-	return false;
+	return {
+		{ "actionNew_Diagram", qReal::ActionVisibility::VisibleOnlyInMenu }
+		, { "actionFullscreen", qReal::ActionVisibility::Invisible }
+	};
 }
 
-bool Customizer::enableNewDiagramAction() const
+bool Customizer::showInterpeterButton() const
 {
 	return false;
 }
