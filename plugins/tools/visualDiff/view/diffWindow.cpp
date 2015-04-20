@@ -16,6 +16,7 @@ DiffWindow::DiffWindow(
 	, mController(new Controller)
 	, mShowDetails(false)
 	, mCompactMode(compactMode)
+	, changed(false)
 	, mDiagram(diagram)
 {
 	if (compactMode){
@@ -42,6 +43,11 @@ DiffWindow::~DiffWindow()
 versioning::details::DiffView *DiffWindow::getNewModel()
 {
 	return mNewView;
+}
+
+bool DiffWindow::diagramChanged()
+{
+	return changed;
 }
 
 void DiffWindow::showDetails()
@@ -93,25 +99,26 @@ void DiffWindow::initViews()
 	QModelIndex indexForOld = mDiffModel->oldModel()->graphicalModel()->index(condition ? mDiagram : 0, 0);
 	Id rootIdForOld = mDiffModel->oldModel()->graphicalModelAssistApi().idByIndex(indexForOld);
 	mOldView = new details::DiffView(mMainWindow, mDiffModel, true, *mController, *mSceneCustomizer, rootIdForOld);
+	QFrame *oldFrame = new QFrame;
+	oldFrame->setLayout(initView(mOldView));
+	sizes << 1;
+	splitter->addWidget(oldFrame);
 
-	if (!mCompactMode && condition){
-		QFrame *oldFrame = new QFrame;
-		oldFrame->setLayout(initView(mOldView));
-		sizes << 1;
-		splitter->addWidget(oldFrame);
-	} else {
-		mOldView->setVisible(false);
-	}
 
 	QModelIndex indexForNew = mDiffModel->newModel()->graphicalModel()->index(mDiagram,0);
 	Id rootIdForNew = mDiffModel->newModel()->graphicalModelAssistApi().idByIndex(indexForNew);
 	mNewView = new details::DiffView(mMainWindow, mDiffModel, false, *mController, *mSceneCustomizer, rootIdForNew);
-	QFrame *newFrame = new QFrame;
-	newFrame->setLayout(initView(mNewView));
+	if (!mCompactMode && condition){
+		QFrame *newFrame = new QFrame;
+		newFrame->setLayout(initView(mNewView));
+		splitter->addWidget(newFrame);
+	} else {
+		mNewView->setVisible(false);
+	}
 
-	splitter->addWidget(newFrame);
 	splitter->setSizes(sizes);
 	mSplitter->addWidget(splitter);
+	changed = mNewView->isChanged() || mOldView->isChanged();
 }
 
 QGridLayout *DiffWindow::initView(details::DiffView *view)

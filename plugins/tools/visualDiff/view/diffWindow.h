@@ -24,6 +24,7 @@ public:
 	DiffWindow(DiffModel *diffModel, bool compactMode, int diagram, QWidget *parent = 0);
 	~DiffWindow();
 	details::DiffView *getNewModel();
+	bool diagramChanged();
 
 private slots:
 	void showDetails();
@@ -51,6 +52,7 @@ private:
 
 	bool mShowDetails;
 	bool mCompactMode;
+	bool changed;
 	int mDiagram;
 };
 

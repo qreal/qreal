@@ -30,6 +30,7 @@ public:
 	);
 
 	void setDetailsWidget(DiffDetailsWidget *widget);
+	bool isChanged();
 
 public slots:
 	void adjustZoom(int zoom);
@@ -61,6 +62,7 @@ private:
 
 	DiffModel *mDiffModel;
 	bool mIsOldModel;
+	bool changed;
 	models::Models *mModel;
 	DiffDetailsWidget *mDetailsWidget;
 };

@@ -95,11 +95,17 @@ void DiffPluginWrapper::onModelLoaded(DiffModel *model)
 		return;
 	}
 
-	int diagrams = model->newModel()->graphicalModelAssistApi().childrenOfRootDiagram();
+	int newDiagrams = model->newModel()->graphicalModelAssistApi().childrenOfRootDiagram();
+	int oldDiagrams = model->oldModel()->graphicalModelAssistApi().childrenOfRootDiagram();
+	int diagrams = std::min(newDiagrams, oldDiagrams);
 	QTabWidget *diffWindowSet = new QTabWidget;
 	for (int i = 0; i < diagrams; i++){
 		DiffWindow *tmp = new DiffWindow(model, mCompactMode, i, mMainWindow);
-		diffWindowSet->addTab(tmp, QString(tr("diagram ") + QString::number(i+1)));
+		QString text = QString(tr("diagram ")) + QString::number(i+1);
+		if (tmp->diagramChanged()) {
+			text += QString("_CHANGED*");
+		}
+		diffWindowSet->addTab(tmp, text);
 	}
 
 	mParentWidget->layout()->addWidget(diffWindowSet);

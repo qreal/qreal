@@ -21,11 +21,12 @@ DiffView::DiffView(
 		, customizer
 		, rootId
 		, parent
-		)
+	)
 	, mScene(*(isOldModel ? diffModel->oldModel() : diffModel->newModel()), controller, customizer, rootId, this)
 	, mMVIface(this, &mScene)
 	, mDiffModel(diffModel)
 	, mIsOldModel(isOldModel)
+	, changed(false)
 	, mModel(mIsOldModel ? mDiffModel->oldModel() : mDiffModel->newModel())
 	, mDetailsWidget(nullptr)
 {
@@ -46,7 +47,12 @@ void DiffView::setDetailsWidget(DiffDetailsWidget *widget)
 	connect(mDetailsWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)),
 		this, SLOT(hintItem(qReal::Id)));
 	connect(mDetailsWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)),
-		this, SLOT(unhintItem(qReal::Id)));
+			this, SLOT(unhintItem(qReal::Id)));
+}
+
+bool DiffView::isChanged()
+{
+	return changed;
 }
 
 void DiffView::adjustZoom(int zoom)
@@ -155,6 +161,10 @@ void DiffView::highlight(const qReal::Id &id)
 		DiffState const state = (PurelyGraphical == difference->elementType())
 			? difference->graphicalDifference()->state()
 			: difference->logicalDifference()->state();
+
+		if (state ) {
+			changed = true;
+		}
 
 		mScene.highlight(id, state);
 	}
