@@ -22,19 +22,25 @@ OutFile::OutFile(const QString &fileName, bool *success)
 	: mFile(fileName)
 {
 	if (fileName.isEmpty()) {
-		success && (*success = false);
+		if (success) {
+			*success = false;
+		}
 		return;
 	}
 
 	if (!mFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		QLOG_ERROR() << QString("Opening %1 for write failed: %2").arg(fileName, mFile.errorString());
-		success && (*success = false);
+		if (success) {
+			*success = false;
+		}
 		return;
 	}
 
 	mOut.setDevice(&mFile);
 	mOut.setCodec("UTF-8");
-	success && (*success = false);
+	if (success) {
+		*success = true;
+	}
 }
 
 OutFile::~OutFile()

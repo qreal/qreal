@@ -21,7 +21,6 @@
 #include <QtCore/QUuid>
 #include <QtGui/QPolygon>
 
-#include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
@@ -54,6 +53,11 @@ Serializer::Serializer(const QString &saveDirName)
 Serializer::~Serializer()
 {
 	clearWorkingDir();
+}
+
+QString Serializer::workingDirectory() const
+{
+	return mWorkingDir;
 }
 
 void Serializer::clearWorkingDir() const

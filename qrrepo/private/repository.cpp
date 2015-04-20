@@ -44,6 +44,11 @@ Repository::~Repository()
 	qDeleteAll(mObjects);
 }
 
+Serializer &Repository::serializer()
+{
+	return mSerializer;
+}
+
 IdList Repository::findElementsByName(const QString &name, bool sensitivity, bool regExpression) const
 {
 	const Qt::CaseSensitivity caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;

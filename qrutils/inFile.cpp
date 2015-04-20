@@ -23,7 +23,9 @@ QString InFile::readAll(const QString &fileName, QString *errorString)
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		QLOG_ERROR() << QString("Opening %1 for read failed: %2").arg(fileName, file.errorString());
-		errorString && (*errorString = file.errorString()).isEmpty();
+		if (errorString) {
+			*errorString = file.errorString();
+		}
 		return QString();
 	}
 
@@ -32,6 +34,8 @@ QString InFile::readAll(const QString &fileName, QString *errorString)
 	input.setCodec("UTF-8");
 	const QString text = input.readAll();
 	file.close();
-	errorString && (*errorString = QString()).isEmpty();
+	if (errorString) {
+		*errorString = QString();
+	}
 	return text;
 }

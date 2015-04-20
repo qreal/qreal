@@ -102,7 +102,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		return QPair<QString, QString>("", "");
 	}
 
-	bool fileOpened;
+	bool fileOpened = false;
 	OutFile outpro(pathToFile + "/" + fileBaseName + ".pro", &fileOpened);
 	outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
 	if (includeProList != "") {

@@ -77,7 +77,7 @@ QHash<Id, QPair<QString, QString> > DatabaseEditorSchemeGenerator::modelList()
 ErrorReporterInterface& DatabaseEditorSchemeGenerator::generateDatabaseScheme(const Id &modelId, const QString &pathToFile)
 {
 	IdList tableList = mApi.children(modelId);
-	bool fileOpened;
+	bool fileOpened = false;
 	OutFile sqlFile(pathToFile + ".sql", &fileOpened);
 	foreach (Id tableId, tableList) {
 		QString const tableType = mApi.logicalRepoApi().typeName(tableId);

@@ -34,6 +34,9 @@ public:
 	explicit Serializer(const QString &saveDirName);
 	~Serializer();
 
+	/// Returns a directory where save files will be temporary unpacked.
+	QString workingDirectory() const;
+
 	void clearWorkingDir() const;
 	void setWorkingFile(const QString &workingFile);
 

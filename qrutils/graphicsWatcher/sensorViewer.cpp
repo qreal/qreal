@@ -125,7 +125,7 @@ void SensorViewer::exportHistory()
 		fileName += ".csv";
 	}
 
-	bool fileOpened;
+	bool fileOpened = false;
 	OutFile out(fileName, &fileOpened);
 	out() << "time" << ";" << "value" << "\n";
 	for (int i = 0; i < mPointsDataProcessor->pointsBase().size(); ++i) {

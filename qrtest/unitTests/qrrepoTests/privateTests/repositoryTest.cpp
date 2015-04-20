@@ -66,7 +66,7 @@ void RepositoryTest::removeDirectory(QString const &dirName)
 }
 
 void RepositoryTest::SetUp() {
-	mSerializer = new Serializer("saveFile");
+	mRepository = new Repository("saveFile.qrs");
 
 	LogicalObject parentObj(parent);
 	parentObj.setParent(fakeParent);
@@ -118,12 +118,7 @@ void RepositoryTest::SetUp() {
 	list.push_back(&child2_childObj);
 	list.push_back(&child3_childObj);
 
-	mSerializer->saveToDisk(list, QHash<QString, QVariant>());
-
-	mRepository = new Repository("saveFile.qrs");
-
-	mSerializer->clearWorkingDir();
-	delete mSerializer;
+	mRepository->serializer().saveToDisk(list, QHash<QString, QVariant>());
 
 	LogicalObject newObj1(newId1);
 	LogicalObject newObj2(newId2);
@@ -135,15 +130,12 @@ void RepositoryTest::SetUp() {
 	newList.push_back(&newObj1);
 	newList.push_back(&newObj2);
 
-	mSerializer = new Serializer("newSaveFile");
-	mSerializer->saveToDisk(newList, QHash<QString, QVariant>());
+	mRepository->serializer().setWorkingFile("newSaveFile");
+	mRepository->serializer().saveToDisk(newList, QHash<QString, QVariant>());
 }
 
 void RepositoryTest::TearDown() {
 	delete mRepository;
-
-	mSerializer->clearWorkingDir();
-	delete mSerializer;
 
 	QFile::remove("saveFile.qrs");
 	QFile::remove("newSaveFile.qrs");
@@ -345,7 +337,7 @@ TEST_F(RepositoryTest, removeIdTest) {
 
 // Same as removeFromDisk test fro Serializer
 TEST_F(RepositoryTest, removeIdListTest) {
-	mSerializer->decompressFile("saveFile.qrs");
+	mRepository->serializer().decompressFile("saveFile.qrs");
 	IdList toRemove;
 	toRemove << child3 << child1_child << child2_child << child3_child;
 	mRepository->remove(toRemove);
@@ -637,7 +629,7 @@ TEST_F(RepositoryTest, saveDiagramsByIdTest) {
 
 	mRepository->saveDiagramsById(diagramIds);
 
-	mSerializer->decompressFile("diagram1.qrs");
+	mRepository->serializer().decompressFile("diagram1.qrs");
 
 	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor1/diagram2/element3/child1"));
 	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));

@@ -30,8 +30,11 @@ namespace details {
 class Repository
 {
 public:
-	Repository(const QString &workingFile);
-	virtual ~Repository();
+	explicit Repository(const QString &workingFile);
+	~Repository();
+
+	/// Returns a reference to serializer component used for low-level saving operations.
+	Serializer &serializer();
 
 	/// replacing property values that contains input value with new value
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced
