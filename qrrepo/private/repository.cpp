@@ -31,7 +31,6 @@ Repository::Repository(const QString &workingFile)
 	loadFromDisk();
 }
 
-
 void Repository::init()
 {
 	mObjects.insert(Id::rootId(), new LogicalObject(Id::rootId()));
@@ -120,7 +119,7 @@ qReal::IdList Repository::elementsByPropertyContent(const QString &propertyValue
 	return result;
 }
 
-void Repository::replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue)
+void Repository::replaceProperties(const qReal::IdList &toReplace, const QString &value, const QString &newValue)
 {
 	foreach (const qReal::Id &currentId, toReplace) {
 		mObjects[currentId]->replaceProperties(value, newValue);

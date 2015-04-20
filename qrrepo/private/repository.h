@@ -40,7 +40,7 @@ public:
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced
 	/// @param value - input value that should be contained by any property of each element
 	/// @param newValue - string representation of value with what property values should be replaced
-	void replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue);
+	void replaceProperties(const qReal::IdList &toReplace, const QString &value, const QString &newValue);
 
 	/// returning IdList of elements that names contains input string
 	/// @param name - string that should be contained by names of elements that Id's are in the output list
