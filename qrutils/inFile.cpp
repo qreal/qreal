@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,25 @@
  * limitations under the License. */
 
 #include "inFile.h"
-#include <qrkernel/exception/exception.h>
+
+#include <qrkernel/logging.h>
 
 using namespace utils;
 
-QString InFile::readAll(const QString &fileName)
+QString InFile::readAll(const QString &fileName, QString *errorString)
 {
 	QFile file(fileName);
-	file.open(QIODevice::ReadOnly | QIODevice::Text);
-	if (!file.isOpen()) {
-		throw qReal::Exception((fileName + " - file open operation failed").toUtf8());
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QLOG_ERROR() << QString("Opening %1 for read failed: %2").arg(fileName, file.errorString());
+		errorString && (*errorString = file.errorString()).isEmpty();
+		return QString();
 	}
 
 	QTextStream input;
 	input.setDevice(&file);
 	input.setCodec("UTF-8");
-	QString text = input.readAll();
+	const QString text = input.readAll();
 	file.close();
+	errorString && (*errorString = QString()).isEmpty();
 	return text;
 }

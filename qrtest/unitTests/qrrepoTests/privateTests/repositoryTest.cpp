@@ -66,10 +66,6 @@ void RepositoryTest::removeDirectory(QString const &dirName)
 }
 
 void RepositoryTest::SetUp() {
-	mOldTempFolder = SettingsManager::value("temp").toString();
-	mNewTempFolder = QDir::currentPath() + "/unsaved";
-	SettingsManager::setValue("temp", mNewTempFolder);
-
 	mSerializer = new Serializer("saveFile");
 
 	LogicalObject parentObj(parent);
@@ -151,9 +147,6 @@ void RepositoryTest::TearDown() {
 
 	QFile::remove("saveFile.qrs");
 	QFile::remove("newSaveFile.qrs");
-	QDir().rmdir(mNewTempFolder);
-
-	SettingsManager::setValue("temp", mOldTempFolder);
 }
 
 TEST_F(RepositoryTest, replacePropertiesTest) {

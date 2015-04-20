@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,8 @@ namespace details {
 class Serializer
 {
 public:
-	Serializer(const QString &saveDirName);
+	explicit Serializer(const QString &saveDirName);
+	~Serializer();
 
 	void clearWorkingDir() const;
 	void setWorkingFile(const QString &workingFile);
@@ -43,8 +44,6 @@ public:
 	void decompressFile(const QString &fileName);
 
 private:
-	static void clearDir(const QString &path);
-
 	void loadFromDisk(const QString &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(const QDir &dir, QHash<qReal::Id, Object *> &objectsHash);
 

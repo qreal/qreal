@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,12 @@
 
 #include "logicalModel.h"
 
+#include <QtCore/QUuid>
+
+#include <qrkernel/definitions.h>
+
 #include "models/details/graphicalModel.h"
 
-#include <QtCore/QUuid>
 
 using namespace qReal;
 using namespace models;

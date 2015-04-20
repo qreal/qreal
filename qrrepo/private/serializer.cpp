@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QUuid>
 #include <QtGui/QPolygon>
 
 #include <qrkernel/settingsManager.h>
@@ -35,24 +36,27 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
-const QString unsavedDir = "unsaved";
+const QString unsavedDir = "%1/unsaved%2";
 
-Serializer::Serializer(const QString& saveDirName)
-	: mWorkingDir(QCoreApplication::applicationDirPath() + "/" + unsavedDir)
+Serializer::Serializer(const QString &saveDirName)
+	: mWorkingDir(unsavedDir.arg(QCoreApplication::applicationDirPath(), QUuid::createUuid().toString().mid(0, 7)))
 	, mWorkingFile(saveDirName)
 {
 	clearWorkingDir();
-	/// @todo: throw away this legacy piece of sh.t
-	SettingsManager::setValue("temp", mWorkingDir);
 	QDir dir(QCoreApplication::applicationDirPath());
 	if (!dir.cd(mWorkingDir)) {
 		QDir().mkdir(mWorkingDir);
 	}
 }
 
+Serializer::~Serializer()
+{
+	clearWorkingDir();
+}
+
 void Serializer::clearWorkingDir() const
 {
-	clearDir(mWorkingDir);
+	FileSystemUtils::clearDir(mWorkingDir);
 }
 
 void Serializer::removeFromDisk(const Id &id) const
@@ -88,7 +92,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
 
-	QDir compressDir(SettingsManager::value("temp").toString());
+	QDir compressDir(mWorkingDir);
 	QDir dir = fileInfo.absolutePath();
 
 	QFile previousSave(dir.absolutePath() + "/" + fileName +".qrs");
@@ -104,7 +108,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		FileSystemUtils::makeHidden(filePath);
 	}
 
-	clearDir(mWorkingDir);
+	clearWorkingDir();
 }
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)
@@ -114,7 +118,7 @@ void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QStr
 		decompressFile(mWorkingFile);
 	}
 
-	loadFromDisk(SettingsManager::value("temp").toString(), objectsHash);
+	loadFromDisk(mWorkingDir, objectsHash);
 	loadMetaInfo(metaInfo);
 }
 
@@ -185,27 +189,6 @@ void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
 	{
 		metaInfo[child.attribute("key")] = ValuesSerializer::deserializeQVariant(
 				child.attribute("type"), child.attribute("value"));
-	}
-}
-
-void Serializer::clearDir(const QString &path)
-{
-	if (path.isEmpty()) {
-		return;
-	}
-
-	QDir dir(path);
-	if (!dir.exists()) {
-		return;
-	}
-
-	foreach (const QFileInfo &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-		if (fileInfo.isDir()) {
-			clearDir(fileInfo.filePath());
-			dir.rmdir(fileInfo.fileName());
-		} else {
-			dir.remove(fileInfo.fileName());
-		}
 	}
 }
 

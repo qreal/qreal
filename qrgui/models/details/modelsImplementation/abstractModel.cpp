@@ -15,7 +15,8 @@
 #include "abstractModel.h"
 
 #include <QtCore/QUuid>
-#include <QtCore/QDebug>
+
+#include <qrkernel/definitions.h>
 
 using namespace qReal;
 using namespace models::details::modelsImplementation;

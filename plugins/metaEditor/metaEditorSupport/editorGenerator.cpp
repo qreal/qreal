@@ -102,22 +102,22 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		return QPair<QString, QString>("", "");
 	}
 
-	try {
-		OutFile outpro(pathToFile + "/" + fileBaseName + ".pro");
-		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
-		if (includeProList != "") {
-			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
-		}
-		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
-		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToFile, pathToQRealSource);
-		outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
-		outpro() << "\n";
-		outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
-		outpro() << "\n\n";
-
-		generateTranslations(pathToFile, fileBaseName, relativeQRealSourcesPath);
+	bool fileOpened;
+	OutFile outpro(pathToFile + "/" + fileBaseName + ".pro", &fileOpened);
+	outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
+	if (includeProList != "") {
+		outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
 	}
-	catch (char *) {
+	outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
+	QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToFile, pathToQRealSource);
+	outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
+	outpro() << "\n";
+	outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
+	outpro() << "\n\n";
+
+	generateTranslations(pathToFile, fileBaseName, relativeQRealSourcesPath);
+
+	if (!fileOpened) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
 	}
 

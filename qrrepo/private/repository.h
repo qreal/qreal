@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 
 #include "classes/graphicalObject.h"
 #include "classes/logicalObject.h"
-#include "qrRepoGlobal.h"
 #include "serializer.h"
 
 namespace qrRepo {
@@ -31,8 +30,8 @@ namespace details {
 class Repository
 {
 public:
-	QRREPO_EXPORT Repository(const QString &workingFile);
-	QRREPO_EXPORT virtual ~Repository();
+	Repository(const QString &workingFile);
+	virtual ~Repository();
 
 	/// replacing property values that contains input value with new value
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced
@@ -159,7 +158,7 @@ private:
 	QList<Object*> allChildrenOf(qReal::Id id) const;
 	QList<Object*> allChildrenOfWithLogicalId(qReal::Id id) const;
 
-	QHash<qReal::Id, Object*> mObjects;
+	QHash<qReal::Id, Object *> mObjects;
 	QHash<QString, QVariant> mMetaInfo;
 
 	/// Name of the current save file for project.
