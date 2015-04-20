@@ -46,9 +46,10 @@ void FileSystemUtils::clearDir(const QString &path)
 	foreach (const QFileInfo &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
 			clearDir(fileInfo.filePath());
-			dir.rmdir(fileInfo.fileName());
 		} else {
 			dir.remove(fileInfo.fileName());
 		}
 	}
+
+	dir.rmdir(path);
 }
