@@ -70,7 +70,10 @@ QPair<QString, qReal::gui::PreferencesPage *> GitPlugin::preferencesPage()
 
 bool GitPlugin::onFileAdded(QString const &filePath, QString const &workingDir)
 {
-	return doAdd(filePath, workingDir);
+//	return doAdd(filePath, workingDir);
+	Q_UNUSED(filePath)
+	Q_UNUSED(workingDir)
+	return true;
 }
 
 bool GitPlugin::onFileRemoved(QString const &filePath, QString const &workingDir)
@@ -81,7 +84,10 @@ bool GitPlugin::onFileRemoved(QString const &filePath, QString const &workingDir
 
 bool GitPlugin::onFileChanged(QString const &filePath, QString const &workingDir)
 {
-	return doAdd(filePath, workingDir);
+//	return doAdd(filePath, workingDir);
+	Q_UNUSED(filePath)
+	Q_UNUSED(workingDir)
+	return true;
 }
 
 void GitPlugin::beginWorkingCopyDownloading(
@@ -368,7 +374,7 @@ void GitPlugin::startCommit(QString const &message
 {
 	Q_UNUSED(from)
 	QStringList arguments;
-	arguments << "add" << "-A";
+	arguments << "add" << "-f" << "-A";
 	bool result = invokeOperation(
 		arguments
 		, needPreparation
