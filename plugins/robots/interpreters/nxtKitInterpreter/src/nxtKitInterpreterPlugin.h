@@ -56,10 +56,6 @@ public:
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
-private slots:
-	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
-	void onActiveTabChanged(const qReal::TabInfo &info);
-
 private:
 	robotModel::real::UsbRealRobotModel mUsbRealRobotModel;
 	robotModel::real::BluetoothRealRobotModel mBluetoothRealRobotModel;

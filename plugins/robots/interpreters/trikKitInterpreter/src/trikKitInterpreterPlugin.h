@@ -60,9 +60,6 @@ public:
 
 
 private slots:
-	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
-	void onActiveTabChanged(const qReal::TabInfo &info);
-
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
 private:

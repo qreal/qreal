@@ -29,10 +29,6 @@ using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
-	, mTwoDModelActionInfo(
-			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
-			, "interpreters"
-			, "tools")
 	, mModel(new model::Model())
 	, mView(new view::D2ModelWidget(*mModel.data()))
 	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
@@ -121,7 +117,6 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this, connectTwoDModel, disconnectTwoDModel](const QString &modelName) {
 				const bool isCurrentModel = modelName == mRobotModelName;
-				showTwoDModelWidgetActionInfo().action()->setVisible(isCurrentModel);
 				if (isCurrentModel) {
 					connectTwoDModel();
 				} else {
@@ -130,11 +125,6 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				}
 			}
 			);
-}
-
-qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
-{
-	return mTwoDModelActionInfo;
 }
 
 kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()
@@ -176,10 +166,10 @@ void TwoDModelEngineFacade::initDock()
 	dock->setObjectName("2dModelDock");
 	dock->setWidget(mView.data());
 	mView->setParent(dock);
-	connect(mTwoDModelActionInfo.action(), &QAction::triggered, dock, &QWidget::show);
 	dock->setVisible(false);
 
 	mainWindow->addDockWidget(Qt::RightDockWidgetArea, dock);
+	mDock = dock;
 }
 
 void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)

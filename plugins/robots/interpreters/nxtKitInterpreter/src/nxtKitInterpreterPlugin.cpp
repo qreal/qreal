@@ -61,9 +61,6 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
-			, this, &NxtKitInterpreterPlugin::onActiveTabChanged);
-
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
 	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
@@ -121,17 +118,12 @@ QList<kitBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets
 
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
+	return {};
 }
 
 QList<HotKeyActionInfo> NxtKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
-
-	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForNxt", tr("Show 2d model")
-			, mTwoDModel->showTwoDModelWidgetActionInfo().action());
-
-	return { d2ModelActionInfo };
+	return {};
 }
 
 QString NxtKitInterpreterPlugin::defaultSettingsFile() const
@@ -152,12 +144,4 @@ QIcon NxtKitInterpreterPlugin::iconForFastSelector(
 kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
-}
-
-void NxtKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
-{
-	const Id type = info.rootDiagramId().type();
-	const bool enabled = (type == robotDiagramType || type == subprogramDiagramType)
-			&& mCurrentlySelectedModelName == mTwoDRobotModel.name();
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
 }

@@ -38,9 +38,6 @@ class TWO_D_MODEL_EXPORT TwoDModelControlInterface : public QObject
 public:
 	virtual ~TwoDModelControlInterface() {}
 
-	/// Returns an action information for showing 2D model window.
-	virtual qReal::ActionInfo &showTwoDModelWidgetActionInfo() = 0;
-
 	/// Returns a reference to the devices configurator.
 	/// Can be used by outside enviroment to connect it to other ones.
 	virtual kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() = 0;

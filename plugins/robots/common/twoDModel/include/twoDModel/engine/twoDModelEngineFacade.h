@@ -52,7 +52,6 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, kitBase::InterpreterControlInterface &interpreterControl) override;
 
-	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
 	kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
 
 	TwoDModelEngineInterface &engine();
@@ -66,11 +65,11 @@ private:
 	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);
 
 	const QString mRobotModelName;
-	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::D2ModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
+	QWidget *mDock;
 };
 
 }
