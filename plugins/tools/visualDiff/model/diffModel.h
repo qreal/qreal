@@ -19,6 +19,7 @@ public:
 	qReal::IdList newGraphicalElements() const;
 	qReal::Id logicalId(qReal::Id const &id) const;
 	details::ElementType elementType(qReal::Id const &id) const;
+	bool isModelChanged();
 
 private:
 	qReal::IdList graphicalElements(qReal::models::Models *model);
@@ -32,6 +33,7 @@ private:
 	qReal::IdList mNewGraphicalElements;
 	qReal::IdList mAllGraphicalElements;
 	QHash<qReal::Id, details::Difference *> mDifferences;
+	bool mModelChanged;
 };
 
 }

@@ -26,6 +26,13 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
+        <widget class="QPushButton" name="pushButtonUpdate">
+         <property name="text">
+          <string>Update</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QListWidget" name="listWidgetForLog"/>
        </item>
        <item>

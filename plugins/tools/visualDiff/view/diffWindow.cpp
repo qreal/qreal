@@ -118,7 +118,7 @@ void DiffWindow::initViews()
 
 	splitter->setSizes(sizes);
 	mSplitter->addWidget(splitter);
-	changed = mNewView->isChanged() || mOldView->isChanged();
+	changed = mDiffModel->isModelChanged();
 }
 
 QGridLayout *DiffWindow::initView(details::DiffView *view)

@@ -68,24 +68,25 @@ QPair<QString, qReal::gui::PreferencesPage *> GitPlugin::preferencesPage()
 	return mViewInteraction->preferencesPage();
 }
 
-bool GitPlugin::onFileAdded(QString const &filePath, QString const &workingDir)
+bool GitPlugin::onFileAdded(const QList<QString> &list, QString const &workingDir)
 {
 //	return doAdd(filePath, workingDir);
-	Q_UNUSED(filePath)
+	Q_UNUSED(list)
 	Q_UNUSED(workingDir)
 	return true;
 }
 
-bool GitPlugin::onFileRemoved(QString const &filePath, QString const &workingDir)
+bool GitPlugin::onFileRemoved(const QList<QString> &list, QString const &workingDir)
 {
 	Q_UNUSED(workingDir)
-	return doRemove(filePath);
+	Q_UNUSED(list)
+	return true;
 }
 
-bool GitPlugin::onFileChanged(QString const &filePath, QString const &workingDir)
+bool GitPlugin::onFileChanged(const QList<QString> &list, QString const &workingDir)
 {
 //	return doAdd(filePath, workingDir);
-	Q_UNUSED(filePath)
+	Q_UNUSED(list)
 	Q_UNUSED(workingDir)
 	return true;
 }
@@ -521,7 +522,7 @@ bool GitPlugin::doAdd(QString const &what, QString const &targetFolder, bool for
 	QString path = what;
 	path = getFilePath(path);
 
-	bool result = invokeOperation(arguments, !needPreparation, path, !checkWorkingDir, !needProcessing, targetFolder);
+	bool result = invokeOperation(arguments, needPreparation, path, !checkWorkingDir, needProcessing, targetFolder);
 	emit addComplete(result);
 	emit operationComplete("add", result);
 	return result;
@@ -534,7 +535,7 @@ QString &GitPlugin::getFilePath(QString &adress)
 	return adress.remove(pos, len - pos);
 }
 
-bool GitPlugin::doRemove(QString const &what, bool force)
+bool GitPlugin::doRemove(QString const &what, bool prepare, bool process, bool force)
 {
 	QStringList arguments{"rm", what, "-r"};
 
@@ -545,7 +546,7 @@ bool GitPlugin::doRemove(QString const &what, bool force)
 	QString path = what;
 	path = getFilePath(path);
 
-	bool result = invokeOperation(arguments, !needPreparation, path, !checkWorkingDir, !needProcessing);
+	bool result = invokeOperation(arguments, prepare, path, !checkWorkingDir, process);
 	emit removeComplete(result);
 	emit operationComplete("rm", result);
 	return result;

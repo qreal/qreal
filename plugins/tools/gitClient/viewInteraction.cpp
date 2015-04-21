@@ -438,7 +438,13 @@ void ViewInteraction::modeChanged(bool compactMode)
 	mMenu.first().menu()->menuAction()->setVisible(!compactMode);
 	mMenu.last().action()->setVisible(compactMode);
 	if (compactMode) {
-		connect(mSystemEvents, SIGNAL(projectManagerSaveComplete()), mCompactMode, SLOT(saveVersion()));
+		connect(
+			mSystemEvents
+			, SIGNAL(projectManagerSaveComplete())
+			, mCompactMode
+			, SLOT(saveVersion())
+			, Qt::DirectConnection
+		);
 	} else {
 		disconnect(mSystemEvents, SIGNAL(projectManagerSaveComplete()), mCompactMode, SLOT(saveVersion()));
 	}

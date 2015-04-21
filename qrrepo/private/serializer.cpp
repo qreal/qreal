@@ -54,6 +54,16 @@ bool Serializer::prepareSaving()
 	mSavedDirectories.clear();
 	mSavedFiles.clear();
 
+	if (!reportAddedList.empty()) {
+		reportAddedList.clear();
+	}
+	if (!reportChangedList.empty()) {
+		reportChangedList.clear();
+	}
+	if (!reportRemovedList.empty()) {
+		reportRemovedList.clear();
+	}
+
 	clearDir(mWorkingDir);
 	if (QFileInfo(mWorkingFile).exists()) {
 		decompressFile(mWorkingFile);
@@ -62,26 +72,26 @@ bool Serializer::prepareSaving()
 	return true;
 }
 
-bool Serializer::reportAdded(const QString &fileName)
+bool Serializer::reportAdded()
 {
 	if (mWorkingCopyInspector) {
-		return mWorkingCopyInspector->onFileAdded(fileName, mWorkingDir);
+		return mWorkingCopyInspector->onFileAdded(reportAddedList, mWorkingDir);
 	}
 	return true;
 }
 
-bool Serializer::reportRemoved(const QString &fileName)
+bool Serializer::reportRemoved()
 {
 	if (mWorkingCopyInspector) {
-		return mWorkingCopyInspector->onFileRemoved(fileName, mWorkingDir);
+		return mWorkingCopyInspector->onFileRemoved(reportRemovedList, mWorkingDir);
 	}
 	return true;
 }
 
-bool Serializer::reportChanged(const QString &fileName)
+bool Serializer::reportChanged()
 {
 	if (mWorkingCopyInspector) {
-		return mWorkingCopyInspector->onFileChanged(fileName, mWorkingDir);
+		return mWorkingCopyInspector->onFileChanged(reportChangedList, mWorkingDir);
 	}
 	return true;
 }
@@ -96,7 +106,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 	bool firstTimeSave = prepareSaving();
 
 	foreach (Object const * const object, objects) {
-		QString const filePath = createDirectory(object->id(), object->isLogicalObject());
+		QString filePath = createDirectory(object->id(), object->isLogicalObject());
 
 		QDomDocument doc;
 		QDomElement root = object->serialize(doc);
@@ -111,9 +121,9 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		doc.save(out(), 2);
 		mSavedFiles << filePath;
 		if (!fileExists) {
-			reportAdded(filePath);
+			reportAddedList.push_front(filePath);
 		} else {
-			reportChanged(filePath);
+			reportChangedList.push_back(filePath);
 		}
 	}
 
@@ -140,6 +150,9 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 	}
 
 	clearDir(mWorkingDir);
+	reportAdded();
+	reportChanged();
+	reportRemoved();
 }
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)
@@ -225,14 +238,14 @@ void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo, bool isF
 		root.appendChild(element);
 	}
 
-	QString const filePath = mWorkingDir + "/metaInfo.xml";
+	QString filePath = mWorkingDir + "/metaInfo.xml";
 	OutFile out(filePath);
 	out() << document.toString(4);
 
 	if (isFirstTimeSave) {
-		reportAdded(filePath);
+		reportAddedList.push_back(filePath);
 	} else {
-		reportChanged(filePath);
+		reportChangedList.push_back(filePath);
 	}
 }
 
@@ -326,15 +339,17 @@ bool Serializer::removeUnsaved(const QString &path)
 			continue;
 		}
 		if (fileInfo.isDir()) {
-			bool const invocationResult =
-				mSavedDirectories.contains(fileInfo.filePath())
-					? removeUnsaved(fileInfo.filePath())
-					: reportRemoved(fileInfo.filePath());
+			bool invocationResult = true;
+			if (mSavedDirectories.contains(fileInfo.filePath())) {
+				invocationResult = removeUnsaved(fileInfo.filePath());
+			} else {
+				reportRemovedList.push_back(fileInfo.filePath());
+			}
 			result = result & invocationResult;
 		} else {
-			result = mSavedFiles.contains(fileInfo.filePath())
-				? result
-				: (reportRemoved(fileInfo.filePath()) && result);
+			if (!mSavedFiles.contains(fileInfo.filePath())) {
+				reportRemovedList.push_back(fileInfo.filePath());
+			}
 		}
 	}
 	return result;

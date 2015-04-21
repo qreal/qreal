@@ -101,6 +101,7 @@ void TransparentMode::init()
 	);
 	connect(mCompactWidget, SIGNAL(loadVersion(QString)),SLOT(setVersionAsync(QString)));
 	connect(mSystemInterface, SIGNAL(indefiniteTabClosed(QWidget *)), this, SLOT(removeBrokenPointers(QWidget *)));
+	connect(mCompactWidget, SIGNAL(updateLogs()), SLOT(getAndUpdateLog()));
 	tabIsReady = true;
 }
 
@@ -146,7 +147,7 @@ void TransparentMode::saveVersion()
 {
 	isInit(mPlugin->mTempDir);
 	mPlugin->beginChangesSubmitting("version was saved in a transparent mode", mProjectManager->saveFilePath(), true);
-	getAndUpdateLog();
+	//getAndUpdateLog();
 }
 
 QList<QPair<QString , QString> >TransparentMode::parseLog(QString log) //hash & mainPart

@@ -116,34 +116,34 @@ BriefVersioningInterface *VersioningPluginsManager::activeClient(QString const &
 	return activePlugin(false, workingDir);
 }
 
-bool VersioningPluginsManager::onFileAdded(const QString &filePath, const QString &workingDir)
+bool VersioningPluginsManager::onFileAdded(const QList<QString> &list, const QString &workingDir)
 {
 	WorkingCopyInspectionInterface *activeInspector = activeWorkingCopyInspector(workingDir);
 	if (!activeInspector) {
 		return true;
 	}
 
-	return activeInspector->onFileAdded(filePath, workingDir);
+	return activeInspector->onFileAdded(list, workingDir);
 }
 
-bool VersioningPluginsManager::onFileRemoved(const QString &filePath, const QString &workingDir)
+bool VersioningPluginsManager::onFileRemoved(const QList<QString> &list, const QString &workingDir)
 {
 	WorkingCopyInspectionInterface *activeInspector = activeWorkingCopyInspector(workingDir);
 	if (!activeInspector) {
 		return true;
 	}
 
-	return activeInspector->onFileRemoved(filePath, workingDir);
+	return activeInspector->onFileRemoved(list, workingDir);
 }
 
-bool VersioningPluginsManager::onFileChanged(const QString &filePath, const QString &workingDir)
+bool VersioningPluginsManager::onFileChanged(const QList<QString> &list, const QString &workingDir)
 {
 	WorkingCopyInspectionInterface *activeInspector = activeWorkingCopyInspector(workingDir);
 	if (!activeInspector) {
 		return true;
 	}
 
-	return activeInspector->onFileChanged(filePath, workingDir);
+	return activeInspector->onFileChanged(list, workingDir);
 }
 
 void VersioningPluginsManager::beginWorkingCopyDownloading(

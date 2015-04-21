@@ -16,6 +16,7 @@ DiffModel::DiffModel(qReal::models::Models *oldModel, qReal::models::Models *new
 	, mNewGraphicalElements(graphicalElements(mNewModel))
 	, mAllGraphicalElements(uniteIdLists(mOldGraphicalElements, mNewGraphicalElements))
 	, mDifferences()
+	, mModelChanged(false)
 {
 	findDifferences();
 }
@@ -78,6 +79,11 @@ ElementType DiffModel::elementType(const qReal::Id &id) const
 	return (logicalId(id) != qReal::Id()) ? PurelyLogical : Nonexistent;
 }
 
+bool DiffModel::isModelChanged()
+{
+	return mModelChanged;
+}
+
 qReal::IdList DiffModel::graphicalElements(qReal::models::Models *model)
 {
 	qReal::IdList result;
@@ -112,6 +118,10 @@ void DiffModel::findDifferences()
 {
 	foreach(qReal::Id const &id, mAllGraphicalElements) {
 		qReal::Id const logicalId = this->logicalId(id);
-		mDifferences.insert(logicalId, new Difference(mOldModel, mNewModel, id, logicalId, elementType(id)));
+		Difference *tmp = new Difference(mOldModel, mNewModel, id, logicalId, elementType(id));
+		if (tmp->graphicalDifference()->state() || tmp->logicalDifference()->state()) {
+			mModelChanged = true;
+		}
+		mDifferences.insert(logicalId, tmp);
 	}
 }

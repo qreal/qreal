@@ -4,6 +4,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QList>
 
 #include <qrkernel/roles.h>
 
@@ -53,9 +54,9 @@ private:
 
 	bool prepareSaving();
 
-	bool reportAdded(QString const &fileName);
-	bool reportRemoved(QString const &fileName);
-	bool reportChanged(QString const &fileName);
+	bool reportAdded();
+	bool reportRemoved();
+	bool reportChanged();
 
 
 	QString mWorkingDir;
@@ -65,6 +66,10 @@ private:
 	QSet<QString> mSavedFiles;
 	QSet<QString> mSavedDirectories;
 	QMap<QString, QFile *> mFiles;
+
+	QList<QString > reportAddedList;
+	QList<QString> reportChangedList;
+	QList<QString> reportRemovedList;
 };
 
 }

@@ -13,14 +13,14 @@ public:
 
 	/// Called when file was added to working copy and
 	/// needs to be included under version control
-	virtual bool onFileAdded(QString const &filePath, QString const &workingDir) = 0;
+	virtual bool onFileAdded(const QList<QString> &list, QString const &workingDir) = 0;
 
 	/// Called when file was removed from working copy and
 	/// needs to be excluded from version control
-	virtual bool onFileRemoved(QString const &filePath, QString const &workingDir) = 0;
+	virtual bool onFileRemoved(const QList<QString> &list, QString const &workingDir) = 0;
 
 	/// Called when file in working copy was changed
-	virtual bool onFileChanged(QString const &filePath, QString const &workingDir) = 0;
+	virtual bool onFileChanged(const QList<QString> &list, QString const &workingDir) = 0;
 };
 
 }

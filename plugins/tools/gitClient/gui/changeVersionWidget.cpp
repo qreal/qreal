@@ -14,6 +14,7 @@ ChangeVersionWidget::ChangeVersionWidget(QWidget *parent) :
 	this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	mUi->label->hide();
 	connect(mUi->pushButtonLoad, SIGNAL(clicked()), SLOT(getHash()));
+	connect(mUi->pushButtonUpdate, SIGNAL(clicked()), SIGNAL(updateLogs()));
 	mUi->listWidgetForLog->setMinimumWidth(this->width() / 5);
 	initDiffWidget();
 }

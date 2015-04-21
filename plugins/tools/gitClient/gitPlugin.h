@@ -28,9 +28,9 @@ public:
 	virtual QPair<QString, qReal::gui::PreferencesPage *> preferencesPage();
 
 	// Working copy inspection
-	virtual bool onFileAdded(QString const &filePath, QString const &workingDir);
-	virtual bool onFileRemoved(QString const &filePath, QString const &workingDir);
-	virtual bool onFileChanged(QString const &filePath, QString const &workingDir);
+	virtual bool onFileAdded(const QList<QString> &list, QString const &workingDir);
+	virtual bool onFileRemoved(const QList<QString> &list, QString const &workingDir);
+	virtual bool onFileChanged(const QList<QString> &list, QString const &workingDir);
 
 	// Brief VCS interface
 	virtual void beginWorkingCopyDownloading(
@@ -82,7 +82,7 @@ public slots:
 	void startPull(QString const &remote, QString const &targetFolder = QString());
 	void startReset(QString const &hash = QString(), QString const &targetFolder = QString(), bool quiet = false);
 	bool doAdd(QString const &what, QString const &targetFolder, bool force = true);
-	bool doRemove(QString const &what, bool force = true);
+	bool doRemove(QString const &what, bool prepare = true, bool process = true, bool force = true);
 	bool doClean(const QString &targetProject = QString());
 	QString doStatus(const QString &targetProject = QString());
 	QString doLog(QString const &format = QString(), bool quiet = false, bool showDialog = false);

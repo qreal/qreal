@@ -33,9 +33,9 @@ public:
 
 	BriefVersioningInterface *activeClient(const QString &workingDir);
 
-	bool onFileAdded(QString const &filePath, QString const &workingDir);
-	bool onFileRemoved(QString const &filePath, QString const &workingDir);
-	bool onFileChanged(QString const &filePath, QString const &workingDir);
+	bool onFileAdded(const QList<QString> &list, QString const &workingDir);
+	bool onFileRemoved(const QList<QString> &list, QString const &workingDir);
+	bool onFileChanged(const QList<QString> &list, QString const &workingDir);
 
 public slots:
 	void beginWorkingCopyDownloading(
