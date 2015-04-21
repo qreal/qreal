@@ -32,8 +32,8 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
 	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
-	, mDebugModeAction(QIcon(":/icons/robots_edit_mode.svg"), QObject::tr("Switch to debug mode"), nullptr)
-	, mEditModeAction(QIcon(":/icons/robots_debug_mode.svg"), QObject::tr("Switch to edit mode"), nullptr)
+	, mDebugModeAction(QObject::tr("Switch to debug mode"), nullptr)
+	, mEditModeAction(QObject::tr("Switch to edit mode"), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
@@ -62,10 +62,6 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 QList<qReal::ActionInfo> ActionsManager::actions()
 {
 	QList<qReal::ActionInfo> result;
-
-	result
-			<< qReal::ActionInfo(&mEditModeAction, "view", "_View")
-			<< qReal::ActionInfo(&mDebugModeAction, "view", "_View");
 
 	result << mPluginActionInfos;
 

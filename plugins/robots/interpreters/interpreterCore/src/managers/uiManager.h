@@ -53,6 +53,7 @@ private slots:
 
 private:
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
+	void produceModeButton(Mode mode, QAction &action, QStatusBar *statusBar) const;
 
 	int currentMode() const;
 	QString currentSettingsKey() const;

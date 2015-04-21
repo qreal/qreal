@@ -14,17 +14,23 @@
 
 #include "uiManager.h"
 
+#include <QtWidgets/QAction>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QVBoxLayout>
+
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
 #include <qrutils/inFile.h>
 
-#include <QtWidgets/QAction>
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
+#include "src/ui/modeStripe.h"
 
 using namespace interpreterCore;
+
+static const QColor editModeColor = qRgb(158, 190, 245);
+static const QColor debugModeColor = qRgb(255, 0, 0);
 
 UiManager::UiManager(QAction &debugModeAction
 		, QAction &editModeAction
@@ -40,10 +46,13 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
-	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
-	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
+	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
+	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 	mEditModeAction.setVisible(false);
 	mDebugModeAction.setVisible(true);
+
+	produceModeButton(Mode::Editing, debugModeAction, mMainWindow.statusBar());
+	produceModeButton(Mode::Debugging, editModeAction, mMainWindow.statusBar());
 }
 
 void UiManager::placeDevicesConfig(QWidget *devicesWidget)
@@ -109,6 +118,31 @@ QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content
 	QDockWidget * const dock = new QDockWidget(title);
 	dock->setWidget(content);
 	return dock;
+}
+
+void UiManager::produceModeButton(UiManager::Mode mode, QAction &action, QStatusBar *statusBar) const
+{
+	const QString tooltip = tr("Press %1 or click here to switch to %2");
+	QAbstractButton *result = nullptr;
+	QString switchTarget;
+	switch (mode) {
+	case Mode::Editing:
+		result = new ui::ModeStripe(action, editModeColor, tr("Edit mode"), statusBar);
+		switchTarget = tr("debug mode");
+		break;
+	case Mode::Debugging:
+		result = new ui::ModeStripe(action, debugModeColor, tr("Debug mode"), statusBar);
+		switchTarget = tr("edit mode");
+		break;
+	}
+
+	if (!result) {
+		qWarning() << "Forgot to implement producing status bar button for mode" << static_cast<int>(mode);
+		return;
+	}
+
+	result->setToolTip(tooltip.arg(action.shortcut().toString(), switchTarget));
+	statusBar->insertWidget(0, result);
 }
 
 int UiManager::currentMode() const
