@@ -15,6 +15,7 @@
 #include "nullMainWindow.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtWidgets/QStatusBar>
 
 using namespace qReal;
 
@@ -28,6 +29,7 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	, mPropertyEditorDock(new QDockWidget)
 	, mErrorReporterDock(new QDockWidget)
 	, mPaletteDock(new QDockWidget)
+	, mStatusBar(new QStatusBar)
 {
 }
 
@@ -54,6 +56,7 @@ NullMainWindow::~NullMainWindow()
 	delete mPropertyEditorDock;
 	delete mErrorReporterDock;
 	delete mPaletteDock;
+	delete mStatusBar;
 }
 
 
@@ -263,6 +266,11 @@ QDockWidget *NullMainWindow::errorReporterDock() const
 QDockWidget *NullMainWindow::paletteDock() const
 {
 	return mPaletteDock;
+}
+
+QStatusBar *NullMainWindow::statusBar() const
+{
+	return mStatusBar;
 }
 
 void NullMainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)

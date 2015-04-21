@@ -1977,6 +1977,11 @@ QDockWidget *MainWindow::paletteDock() const
 	return mUi->paletteDock;
 }
 
+QStatusBar *MainWindow::statusBar() const
+{
+	return mUi->statusbar;
+}
+
 void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	QMainWindow::tabifyDockWidget(first, second);

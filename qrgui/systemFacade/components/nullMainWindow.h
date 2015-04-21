@@ -95,6 +95,7 @@ public:
 	QDockWidget *propertyEditorDock() const override;
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
+	QStatusBar *statusBar() const override;
 
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
@@ -118,6 +119,7 @@ private:
 	QDockWidget *mPropertyEditorDock;  // Takes ownership
 	QDockWidget *mErrorReporterDock;  // Takes ownership
 	QDockWidget *mPaletteDock;  // Takes ownership
+	QStatusBar *mStatusBar;  // Takes ownership
 	bool mClosed = false;
 };
 
