@@ -16,8 +16,11 @@
 
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/inFile.h>
 
 #include <QtWidgets/QAction>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
 
@@ -31,18 +34,16 @@ UiManager::UiManager(QAction &debugModeAction
 	: mDebugModeAction(debugModeAction)
 	, mEditModeAction(editModeAction)
 	, mMainWindow(mainWindow)
-	, mSystemEvents(systemEvents)
-	, mKitPluginEvents(kitPluginEvents)
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 
-	connect(&mKitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
+	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
-	switchToEditorMode();
-
-	addWidgetsForDocksDebugging();
+	mEditModeAction.setVisible(false);
+	mDebugModeAction.setVisible(true);
 }
 
 void UiManager::placeDevicesConfig(QWidget *devicesWidget)
@@ -63,10 +64,15 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
 	mMainWindow.tabifyDockWidget(watchWindow, graphWatchDock);
+	reloadDocks();
 }
 
 void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 {
+	if (tab.type() == mCurrentTab) {
+		return;
+	}
+
 	saveDocks();
 	mCurrentTab = tab.type();
 	reloadDocks();
@@ -74,6 +80,10 @@ void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 
 void UiManager::switchToEditorMode()
 {
+	if (mCurrentMode == Mode::Editing) {
+		return;
+	}
+
 	saveDocks();
 	mCurrentMode = Mode::Editing;
 	reloadDocks();
@@ -83,6 +93,10 @@ void UiManager::switchToEditorMode()
 
 void UiManager::switchToDebuggerMode()
 {
+	if (mCurrentMode == Mode::Debugging) {
+		return;
+	}
+
 	saveDocks();
 	mCurrentMode = Mode::Debugging;
 	reloadDocks();
@@ -125,13 +139,20 @@ void UiManager::addWidgetsForDocksDebugging() const
 	// This method provides tools only for development.
 	// It must not be called in master branch code.
 	QWidget * const mainWindow = dynamic_cast<QWidget *>(&mMainWindow);
+	QDialog * const dialog = new QDialog(mainWindow);
+	QVBoxLayout * const layout = new QVBoxLayout;
+	dialog->setLayout(layout);
 	QPushButton * const button = new QPushButton("Snapshot docks", mainWindow);
-	button->move(mainWindow->geometry().center());
 	QLineEdit * const lineEdit = new QLineEdit(mainWindow);
-	lineEdit->move(button->geometry().bottomLeft());
 	connect(button, &QPushButton::clicked, [=]() {
-		lineEdit->setText(mMainWindow.saveState(currentMode()));
+		const QString tempSettingsFileName = "tempFileForStoringWindowState";
+		QSettings tempSettings(tempSettingsFileName, QSettings::IniFormat);
+		tempSettings.setValue(currentSettingsKey(), mMainWindow.saveState(currentMode()));
+		tempSettings.sync();
+		lineEdit->setText(utils::InFile::readAll(tempSettingsFileName).split("\n", QString::SkipEmptyParts).last());
+		QFile::remove(tempSettingsFileName);
 	});
-	button->show();
-	lineEdit->show();
+	layout->addWidget(button);
+	layout->addWidget(lineEdit);
+	dialog->show();
 }

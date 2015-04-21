@@ -29,9 +29,9 @@ public:
 	/// Represents the mode user currently works in.
 	enum class Mode {
 		/// User edits code or diagram or just staring at the start tab or something like this.
-		Editing = 0x000001
+		Editing = 0x100000
 		/// User debugs the program: interpretation going or 2D model world is constructed.
-		, Debugging = 0x000002
+		, Debugging = 0x200000
 	};  // Do not change the values of the elements - it will break backward compability.
 
 	UiManager(QAction &debugModeAction
@@ -52,7 +52,6 @@ private slots:
 	void switchToDebuggerMode();
 
 private:
-	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
 
 	int currentMode() const;
@@ -66,8 +65,6 @@ private:
 	QAction &mDebugModeAction;
 	QAction &mEditModeAction;
 	qReal::gui::MainWindowDockInterface &mMainWindow;
-	qReal::SystemEvents &mSystemEvents;
-	kitBase::EventsForKitPluginInterface &mKitPluginEvents;
 	qReal::TabInfo::TabType mCurrentTab = qReal::TabInfo::TabType::other;
 	Mode mCurrentMode = Mode::Editing;
 };
