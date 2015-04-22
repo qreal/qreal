@@ -106,26 +106,26 @@ public slots:
 signals:
 	void workingCopyDownloaded(bool success, QString const &targetProject);
 	void workingCopyUpdated(bool success);
-	void changesSubmitted(const bool success);
+	void changesSubmitted(bool success);
 	void clientInstalled(QString client, bool exist);
 
-	void initComplete(bool const success);
-	void cloneComplete(bool const success);
-	void commitComplete(bool const success);
-	void remoteComplete(bool const success);
-	void pushComplete(bool const success);
-	void pullComplete(bool const success);
-	void resetComplete(bool const success);
-	void cleanComplete(bool const success);
-	void addComplete(bool const success);
-	void checkoutComplete(bool const success);
-	void deleteBranchComplete(bool const success);
-	void createBranchComplete(bool const success);
-	void removeComplete(bool const success);
-	void statusComplete(QString const &answer, bool const success);
-	void logComplete(QString const &answer, bool const success);
-	void remoteListComplete(QString const &answer, bool const success);
-	void operationComplete(QString const &name, bool const success);
+	void initComplete(bool success);
+	void cloneComplete(bool success);
+	void commitComplete(bool success);
+	void remoteComplete(bool success);
+	void pushComplete(bool success);
+	void pullComplete(bool success);
+	void resetComplete(bool success);
+	void cleanComplete(bool success);
+	void addComplete(bool success);
+	void checkoutComplete(bool success);
+	void deleteBranchComplete(bool success);
+	void createBranchComplete(bool success);
+	void removeComplete(bool success);
+	void statusComplete(QString const &answer, bool success);
+	void logComplete(QString const &answer, bool success);
+	void remoteListComplete(QString const &answer, bool success);
+	void operationComplete(QString const &name, bool success);
 
 protected:
 	// External client overloads
@@ -134,12 +134,12 @@ protected:
 	virtual QString tempFolder() const;
 
 private:
-	void onCloneComplete(bool const result, const bool quiet);
-	void onRemoteComplete(bool const result);
-	void onPushComplete(bool const result);
-	void onPullComplete(bool const result);
-	void onResetComplete(bool const result, const bool quiet);
-	void onCheckoutComplete(bool const result);
+	void onCloneComplete(bool result, bool quiet);
+	void onRemoteComplete(bool result);
+	void onPushComplete(bool result);
+	void onPullComplete(bool result);
+	void onResetComplete(bool result, bool quiet);
+	void onCheckoutComplete(bool result);
 
 	QString &getFilePath(QString &adress);
 	QString getUsername();

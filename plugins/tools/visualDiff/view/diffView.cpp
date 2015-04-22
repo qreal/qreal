@@ -54,7 +54,7 @@ void DiffView::adjustZoom(int zoom)
 	qreal const xExpand = 0.01;
 	qreal const yExpand = 0.01;
 
-	resetMatrix();
+	resetTransform();
 	scale(xExpand * zoom, yExpand * zoom);
 }
 
