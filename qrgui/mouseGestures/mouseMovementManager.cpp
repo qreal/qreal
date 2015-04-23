@@ -83,19 +83,17 @@ QLineF MouseMovementManager::newLine()
 
 void MouseMovementManager::initializeGestures()
 {
-	if (SettingsManager::value("gestures").toBool()) {
-		QMap<QString, PathVector> gestures;
-		gestures.insert(deletionGestureKey, stringToPath(deletionGesture));
-		for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
-			const QString pathStr = mEditorManagerInterface.mouseGesture(element);
-			if (!pathStr.isEmpty() && !mInitializedGestures.contains(element)) {
-				gestures.insert(element.toString(), stringToPath(pathStr));
-				mInitializedGestures << element;
-			}
+	QMap<QString, PathVector> gestures;
+	gestures.insert(deletionGestureKey, stringToPath(deletionGesture));
+	for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
+		const QString pathStr = mEditorManagerInterface.mouseGesture(element);
+		if (!pathStr.isEmpty() && !mInitializedGestures.contains(element)) {
+			gestures.insert(element.toString(), stringToPath(pathStr));
+			mInitializedGestures << element;
 		}
-
-		mGesturesManager->initIdealGestures(gestures);
 	}
+
+	mGesturesManager->initIdealGestures(gestures);
 }
 
 void MouseMovementManager::recountCentre()
