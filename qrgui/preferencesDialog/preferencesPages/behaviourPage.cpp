@@ -63,7 +63,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
-	SettingsManager::setValue("gestures", mUi->gesturesCheckBox->isChecked());
+	SettingsManager::setValue("gesturesEnabled", mUi->gesturesCheckBox->isChecked());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
 	SettingsManager::setValue("touchMode", mUi->touchModeCheckBox->isChecked());
 }
@@ -78,18 +78,18 @@ void PreferencesBehaviourPage::restoreSettings()
 		}
 	}
 
-	bool gesturesEnabled = SettingsManager::value("gestures").toBool();
+	bool gesturesEnabled = SettingsManager::value("gesturesEnabled").toBool();
 
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching").toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
-	mUi->gesturesCheckBox->setChecked(SettingsManager::value("AutosaveInterval").toBool());
+	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
+	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
 	mUi->gesturesCheckBox->setChecked(gesturesEnabled);
+
 	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);
 	mUi->gestureDelayLabel->setVisible(gesturesEnabled);
 	mUi->gestureDelayTimeUnitLabel->setVisible(gesturesEnabled);
-	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
-	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	const int editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();

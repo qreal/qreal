@@ -63,3 +63,4 @@ recentProjectsLimit=5
 dragArea = 12
 touchMode=false
 interpreterStackSize=4000
+gesturesEnabled=true
