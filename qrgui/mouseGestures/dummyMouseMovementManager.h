@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Zimin Grigory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,12 @@
 namespace qReal {
 namespace gestures {
 
-class QRGUI_MOUSE_GESTURES_EXPORT ProxyMouseMovementManager : public MouseMovementManagerInterface
+class QRGUI_MOUSE_GESTURES_EXPORT DummyMouseMovementManager : public MouseMovementManagerInterface
 {
 	Q_OBJECT
 
 public:
-	ProxyMouseMovementManager(const Id &diagram, const EditorManagerInterface &editorManagerInterface);
+	DummyMouseMovementManager(const Id &diagram, const EditorManagerInterface &editorManagerInterface);
 
 	/// Creates and returns the widget that shows available for this manager mouse gestures.
 	/// Transfers ownership.

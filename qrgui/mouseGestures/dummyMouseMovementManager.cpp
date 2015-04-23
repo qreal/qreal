@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "proxyMouseMovementManager.h"
+#include "dummyMouseMovementManager.h"
 
 #include <qrkernel/logging.h>
 
@@ -30,7 +30,7 @@ const QString deletionGesture = "0, 200 : 200, 0 : ";
 
 using namespace qReal::gestures;
 
-ProxyMouseMovementManager::ProxyMouseMovementManager(const Id &diagram
+DummyMouseMovementManager::DummyMouseMovementManager(const Id &diagram
 		, const qReal::EditorManagerInterface &editorManagerInterface)
 	: mDiagram(diagram)
 	, mEditorManagerInterface(editorManagerInterface)
@@ -39,7 +39,7 @@ ProxyMouseMovementManager::ProxyMouseMovementManager(const Id &diagram
 	mGesturesManager.reset(new MixedGesturesManager);
 }
 
-QWidget *ProxyMouseMovementManager::producePainter() const
+QWidget *DummyMouseMovementManager::producePainter() const
 {
 	GesturesWidget * const result = new GesturesWidget;
 	QList<QPair<QString, Id> > elements;
@@ -50,11 +50,11 @@ QWidget *ProxyMouseMovementManager::producePainter() const
 	}
 
 	result->setElements(elements);
-	connect(result, &GesturesWidget::currentElementChanged, this, &ProxyMouseMovementManager::drawIdealPath);
+	connect(result, &GesturesWidget::currentElementChanged, this, &DummyMouseMovementManager::drawIdealPath);
 	return result;
 }
 
-void ProxyMouseMovementManager::drawIdealPath()
+void DummyMouseMovementManager::drawIdealPath()
 {
 	GesturesWidget * const gesturesPainter = static_cast<GesturesWidget *>(sender());
 	const Id currentElement = gesturesPainter->currentElement();
@@ -64,12 +64,12 @@ void ProxyMouseMovementManager::drawIdealPath()
 	}
 }
 
-void ProxyMouseMovementManager::clear()
+void DummyMouseMovementManager::clear()
 {
 	mPath.clear();
 }
 
-QLineF ProxyMouseMovementManager::newLine()
+QLineF DummyMouseMovementManager::newLine()
 {
 	QLineF line;
 	if (mPath.back().size() > 1) {
@@ -80,11 +80,11 @@ QLineF ProxyMouseMovementManager::newLine()
 	return line;
 }
 
-void ProxyMouseMovementManager::initializeGestures()
+void DummyMouseMovementManager::initializeGestures()
 {
 }
 
-void ProxyMouseMovementManager::recountCentre()
+void DummyMouseMovementManager::recountCentre()
 {
 	if (mPath.empty() || mPath.back().empty()) {
 		return;
@@ -98,7 +98,7 @@ void ProxyMouseMovementManager::recountCentre()
 	mCenter = ((count - 1) * mCenter + mPath.back().back()) / count;
 }
 
-void ProxyMouseMovementManager::mousePress(const QPointF &pnt)
+void DummyMouseMovementManager::mousePress(const QPointF &pnt)
 {
 	QList<QPointF> path;
 	path.push_back(pnt);
@@ -106,7 +106,7 @@ void ProxyMouseMovementManager::mousePress(const QPointF &pnt)
 	recountCentre();
 }
 
-void ProxyMouseMovementManager::mouseMove(const QPointF &pnt)
+void DummyMouseMovementManager::mouseMove(const QPointF &pnt)
 {
 	PointVector path = mPath.back();
 	mPath.pop_back();
@@ -115,12 +115,12 @@ void ProxyMouseMovementManager::mouseMove(const QPointF &pnt)
 	recountCentre();
 }
 
-QPointF ProxyMouseMovementManager::pos()
+QPointF DummyMouseMovementManager::pos()
 {
 	return mCenter;
 }
 
-QPoint ProxyMouseMovementManager::parsePoint(const QString &str)
+QPoint DummyMouseMovementManager::parsePoint(const QString &str)
 {
 	bool isInt = true;
 	int x = str.section(comma, 0, 0).toInt(&isInt, 0);
@@ -128,12 +128,12 @@ QPoint ProxyMouseMovementManager::parsePoint(const QString &str)
 	return QPoint(x, y);
 }
 
-ProxyMouseMovementManager::GestureResult ProxyMouseMovementManager::result()
+DummyMouseMovementManager::GestureResult DummyMouseMovementManager::result()
 {
 	return GestureResult();
 }
 
-QPointF ProxyMouseMovementManager::firstPoint()
+QPointF DummyMouseMovementManager::firstPoint()
 {
 	if (!mPath.isEmpty() && !mPath.at(0).empty()) {
 		return QPointF(mPath.at(0).at(0));
@@ -141,7 +141,7 @@ QPointF ProxyMouseMovementManager::firstPoint()
 	return QPointF(0, 0);
 }
 
-QPointF ProxyMouseMovementManager::lastPoint()
+QPointF DummyMouseMovementManager::lastPoint()
 {
 	if (!mPath.isEmpty() && !mPath.back().empty()) {
 		return QPointF(mPath.back().back());
@@ -149,18 +149,18 @@ QPointF ProxyMouseMovementManager::lastPoint()
 	return QPointF(0, 0);
 }
 
-bool ProxyMouseMovementManager::wasMoving()
+bool DummyMouseMovementManager::wasMoving()
 {
 	return (firstPoint() != lastPoint() || mPath.size() > 1 ||
 			(!mPath.isEmpty() && mPath.at(0).size() > 2));
 }
 
-bool ProxyMouseMovementManager::isEdgeCandidate()
+bool DummyMouseMovementManager::isEdgeCandidate()
 {
 	return mPath.count() <= 1;
 }
 
-bool ProxyMouseMovementManager::pathIsEmpty()
+bool DummyMouseMovementManager::pathIsEmpty()
 {
 	return mPath.isEmpty();
 }
