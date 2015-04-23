@@ -26,6 +26,8 @@
 
 #include <qrkernel/logging.h>
 #include <qrgui/models/models.h>
+#include <qrgui/mouseGestures/mouseMovementManager.h>
+#include <qrgui/mouseGestures/proxyMouseMovementManager.h>
 
 #include "editor/sceneCustomizer.h"
 #include "editor/commands/multipleRemoveAndUpdateCommand.h"
@@ -55,7 +57,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mRightButtonPressed(false)
 	, mLeftButtonPressed(false)
 	, mHighlightNode(nullptr)
-	, mMouseMovementManager(mRootId, mEditorManager)
+	, mMouseMovementManager(new gestures::ProxyMouseMovementManager(mRootId, mEditorManager))
 	, mActionSignalMapper(new QSignalMapper(this))
 	, mTimer(new QTimer(this))
 	, mTimerForArrowButtons(new QTimer(this))
@@ -64,6 +66,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mIsSelectEvent(false)
+	, mMouseGesturesEnamled(false)
 	, mExploser(models, controller, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
 	, mActionCutOnDiagram(nullptr)
@@ -879,13 +882,13 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mSelectList.append(item);
 			event->accept();
 		}
-	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
+	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton) && mMouseGesturesEnamled) {
 		mTimer->stop();
 
 		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
 		QLOG_TRACE() << "Started mouse gesture at " << pos;
 
-		mMouseMovementManager.mousePress(event->scenePos());
+		mMouseMovementManager.data()->mousePress(event->scenePos());
 		mRightButtonPressed = true;
 	}
 
@@ -966,7 +969,7 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	const gestures::MouseMovementManager::GestureResult result = mMouseMovementManager.result();
+	const gestures::MouseMovementManager::GestureResult result = mMouseMovementManager.data()->result();
 	switch (result.type()) {
 	case gestures::MouseMovementManager::invalidGesture:
 		break;
@@ -974,14 +977,14 @@ void EditorViewScene::getObjectByGesture()
 		// Creating element with its center in the center of gesture (see #1086)
 		const Id id = result.elementType();
 		const QSize elementSize = mEditorManager.iconSize(id);
-		const QPointF gestureCenter = mMouseMovementManager.pos();
+		const QPointF gestureCenter = mMouseMovementManager.data()->pos();
 		const QPointF elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
 		createElement(id.toString(), gestureCenter - elementCenter);
 		break;
 	}
 	case gestures::MouseMovementManager::deleteGesture:
 		// Deletting element under the gesture center
-		const QPointF gestureCenter = mMouseMovementManager.pos();
+		const QPointF gestureCenter = mMouseMovementManager.data()->pos();
 		for (QGraphicsItem * const item : items(gestureCenter)) {
 			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
 				deleteElements(IdList() << node->id());
@@ -1053,8 +1056,8 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 
 void EditorViewScene::createEdge(const QString &idStr)
 {
-	const QPointF start = mMouseMovementManager.firstPoint();
-	const QPointF end = mMouseMovementManager.lastPoint();
+	const QPointF start = mMouseMovementManager.data()->firstPoint();
+	const QPointF end = mMouseMovementManager.data()->lastPoint();
 	CreateElementCommand *createCommand;
 	const Id id = createElement(idStr, start, true, &createCommand);
 	Element *edgeElement = getElem(id);
@@ -1135,10 +1138,10 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mShouldReparentItems = false;
 	}
 
-	if (event->button() == Qt::RightButton && !(mMouseMovementManager.pathIsEmpty())) {
+	if (event->button() == Qt::RightButton && !(mMouseMovementManager.data()->pathIsEmpty())) {
 		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
 		QLOG_TRACE() << "Mouse gesture movement to " << pos;
-		mMouseMovementManager.mouseMove(event->scenePos());
+		mMouseMovementManager.data()->mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();
 		EdgeElement * const edgeElement = dynamic_cast<EdgeElement *>(element);
@@ -1148,7 +1151,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				return;
 			}
 		}
-		if (!mMouseMovementManager.wasMoving()) {
+		if (!mMouseMovementManager.data()->wasMoving()) {
 			deleteGesture();
 			if (element && !element->isSelected()) {
 				element->setSelected(true);
@@ -1161,11 +1164,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		QLOG_TRACE() << "Mouse gesture release at " << pos;
 
-		const QPointF start = mMouseMovementManager.firstPoint();
-		const QPointF end = mMouseMovementManager.lastPoint();
+		const QPointF start = mMouseMovementManager.data()->firstPoint();
+		const QPointF end = mMouseMovementManager.data()->lastPoint();
 		NodeElement * const startNode = findNodeAt(start);
 		NodeElement * const endNode = findNodeAt(end);
-		if (startNode && endNode && mMouseMovementManager.isEdgeCandidate()
+		if (startNode && endNode && mMouseMovementManager.data()->isEdgeCandidate()
 				&& startNode->id() != endNode->id()) {
 			getLinkByGesture(startNode, *endNode);
 			deleteGesture();
@@ -1193,7 +1196,7 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
 			QLOG_TRACE() << "Mouse gesture movement to " << pos;
 
-			mMouseMovementManager.mouseMove(event->scenePos());
+			mMouseMovementManager.data()->mouseMove(event->scenePos());
 			drawGesture();
 		} else {
 			QGraphicsScene::mouseMoveEvent(event);
@@ -1276,7 +1279,7 @@ const SceneCustomizer &EditorViewScene::customizer() const
 
 QWidget *EditorViewScene::gesturesPainterWidget() const
 {
-	return mMouseMovementManager.producePainter();
+	return mMouseMovementManager.data()->producePainter();
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
@@ -1297,7 +1300,7 @@ void EditorViewScene::setNeedDrawGrid(bool show)
 
 void EditorViewScene::drawGesture()
 {
-	QLineF line = mMouseMovementManager.newLine();
+	QLineF line = mMouseMovementManager.data()->newLine();
 	QGraphicsLineItem *item = new QGraphicsLineItem(line);
 	qreal size = mGesture.size() * 0.1;
 	qreal color_ratio = pow(fabs(sin(size)), 1.5);
@@ -1314,7 +1317,7 @@ void EditorViewScene::deleteGesture()
 		removeItem(item);
 	}
 	mGesture.clear();
-	mMouseMovementManager.clear();
+	mMouseMovementManager.data()->clear();
 }
 
 void EditorViewScene::redraw()
@@ -1496,6 +1499,16 @@ void EditorViewScene::onElementDeleted(Element *element)
 	/// @todo: Make it more automated, conceptually this method is not needed.
 	mSelectList.removeAll(element);
 	mHighlightedElements.remove(element);
+}
+
+void EditorViewScene::enableMouseGestures(bool enabled)
+{
+	if (enabled) {
+		mMouseMovementManager.reset(new gestures::MouseMovementManager(mRootId, mEditorManager));
+	} else {
+		mMouseMovementManager.reset(new gestures::ProxyMouseMovementManager(mRootId, mEditorManager));
+	}
+	mMouseGesturesEnamled = enabled;
 }
 
 void EditorViewScene::deselectLabels()

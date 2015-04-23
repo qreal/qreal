@@ -17,6 +17,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include <qrkernel/logging.h>
+#include <qrkernel/timeMeasurer.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 
@@ -206,12 +207,14 @@ void ProjectManagerWrapper::close()
 
 void ProjectManagerWrapper::save()
 {
+	TimeMeasurer mt("save");
 	mMainWindow->editorManagerProxy().saveMetamodel("");
 	ProjectManager::save();
 }
 
 bool ProjectManagerWrapper::saveOrSuggestToSaveAs()
 {
+	TimeMeasurer mt("suggestOrsave");
 	if (mTextManager->saveText(false)) {
 		return true;
 	}
@@ -232,6 +235,7 @@ void ProjectManagerWrapper::setUnsavedIndicator(bool isUnsaved)
 
 bool ProjectManagerWrapper::suggestToSaveAs()
 {
+	TimeMeasurer mt("suggestTosave");
 	if (mTextManager->saveText(true)) {
 		return true;
 	}

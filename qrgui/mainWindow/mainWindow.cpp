@@ -1005,6 +1005,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	} else {
 		const Id diagramId = models().graphicalModelAssistApi().idByIndex(index);
 		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, diagramId, this);
+		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gestures").toBool());
 		mController->diagramOpened(diagramId);
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
