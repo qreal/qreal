@@ -120,23 +120,6 @@ QPointF ProxyMouseMovementManager::pos()
 	return mCenter;
 }
 
-PathVector ProxyMouseMovementManager::stringToPath(const QString &valueStr)
-{
-	PathVector result;
-	const QStringList paths = valueStr.split(pathDelimeter, QString::SkipEmptyParts);
-	for (const QString &pathStr : paths) {
-		QStringList points = pathStr.split(pointDelimeter, QString::SkipEmptyParts);
-		PointVector path;
-		for (const QString &str : points) {
-			path << parsePoint(str);
-		}
-
-		result << path;
-	}
-
-	return result;
-}
-
 QPoint ProxyMouseMovementManager::parsePoint(const QString &str)
 {
 	bool isInt = true;

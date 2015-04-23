@@ -43,7 +43,7 @@ HEADERS += \
 	$$PWD/private/rectanglegesturesmanager.h \
 	$$PWD/private/nearestposgridgesturesmanager.h \
 	$$PWD/private/sorts.h \
-    proxyMouseMovementManager.h
+	$$PWD/proxyMouseMovementManager.h
 
 SOURCES += \
 	$$PWD/mouseMovementManager.cpp \
@@ -56,7 +56,7 @@ SOURCES += \
 	$$PWD/private/mixedgesturesmanager.cpp \
 	$$PWD/private/rectanglegesturesmanager.cpp \
 	$$PWD/private/nearestposgridgesturesmanager.cpp \
-    proxyMouseMovementManager.cpp
+	$$PWD/proxyMouseMovementManager.cpp
 
 FORMS += \
 	$$PWD/gesturesWidget.ui \

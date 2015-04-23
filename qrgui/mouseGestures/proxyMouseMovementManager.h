@@ -33,7 +33,6 @@ public:
 	void mouseMove(const QPointF &point) override;
 	void clear() override;
 	GestureResult result() override;
-	static PathVector stringToPath(const QString &str);
 	QPointF pos() override;
 	QPointF firstPoint() override;
 	QPointF lastPoint() override;
