@@ -66,7 +66,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mIsSelectEvent(false)
-	, mMouseGesturesEnamled(false)
+	, mMouseGesturesEnabled(false)
 	, mExploser(models, controller, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
 	, mActionCutOnDiagram(nullptr)
@@ -882,7 +882,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mSelectList.append(item);
 			event->accept();
 		}
-	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton) && mMouseGesturesEnamled) {
+	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton) && mMouseGesturesEnabled) {
 		mTimer->stop();
 
 		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
@@ -1508,7 +1508,7 @@ void EditorViewScene::enableMouseGestures(bool enabled)
 	} else {
 		mMouseMovementManager.reset(new gestures::ProxyMouseMovementManager(mRootId, mEditorManager));
 	}
-	mMouseGesturesEnamled = enabled;
+	mMouseGesturesEnabled = enabled;
 }
 
 void EditorViewScene::deselectLabels()

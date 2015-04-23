@@ -283,7 +283,7 @@ private:
 	QList<QGraphicsItem* > mSelectList;
 
 	bool mIsSelectEvent;
-	bool mMouseGesturesEnamled;
+	bool mMouseGesturesEnabled;
 
 	QMenu mContextMenu;
 
