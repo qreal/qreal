@@ -14,16 +14,21 @@
 
 #pragma once
 
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
 
 namespace interpreterCore {
 namespace ui {
 
 /// A widget shown on the status bar to indicate current mode (editing or debugging).
-class ModeStripe : public QPushButton
+class ModeStripe : public QLabel
 {
 public:
-	ModeStripe(QAction &modeAction, const QColor &color, const QString &text, QWidget *parent = 0);
+	ModeStripe(QAction &modeAction, const QString &text, QWidget *parent = 0);
+
+private:
+	void mousePressEvent(QMouseEvent * event) override;
+
+	QAction &mAction;
 };
 
 }

@@ -29,8 +29,10 @@
 
 using namespace interpreterCore;
 
-static const QColor editModeColor = qRgb(158, 190, 245);
-static const QColor debugModeColor = qRgb(255, 0, 0);
+static const QColor backgrondColor = QPalette().color(QPalette::Background);
+static const QColor editModeColor = QPalette().color(QPalette::Background);
+//static const QColor editModeColor = qRgb(135, 206, 250);
+static const QColor debugModeColor = qRgb(152, 251, 152);
 
 UiManager::UiManager(QAction &debugModeAction
 		, QAction &editModeAction
@@ -48,11 +50,14 @@ UiManager::UiManager(QAction &debugModeAction
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
-	mEditModeAction.setVisible(false);
-	mDebugModeAction.setVisible(true);
 
+	mMainWindow.statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black; padding: 10px; }");
+	editModeAction.setProperty("modeName", tr("edit mode"));
+	debugModeAction.setProperty("modeName", tr("debug mode"));
 	produceModeButton(Mode::Editing, debugModeAction, mMainWindow.statusBar());
 	produceModeButton(Mode::Debugging, editModeAction, mMainWindow.statusBar());
+
+	switchToEditorMode();
 }
 
 void UiManager::placeDevicesConfig(QWidget *devicesWidget)
@@ -85,32 +90,42 @@ void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 	saveDocks();
 	mCurrentTab = tab.type();
 	reloadDocks();
+	toggleModeButtons();
 }
 
 void UiManager::switchToEditorMode()
 {
-	if (mCurrentMode == Mode::Editing) {
-		return;
-	}
-
-	saveDocks();
-	mCurrentMode = Mode::Editing;
-	reloadDocks();
-	mEditModeAction.setVisible(false);
-	mDebugModeAction.setVisible(true);
+	switchToMode(Mode::Editing);
 }
 
 void UiManager::switchToDebuggerMode()
 {
-	if (mCurrentMode == Mode::Debugging) {
+	switchToMode(Mode::Debugging);
+}
+
+void UiManager::switchToMode(UiManager::Mode mode)
+{
+	if (mCurrentMode == mode) {
 		return;
 	}
 
 	saveDocks();
-	mCurrentMode = Mode::Debugging;
+	mCurrentMode = mode;
 	reloadDocks();
-	mEditModeAction.setVisible(true);
-	mDebugModeAction.setVisible(false);
+	toggleModeButtons();
+}
+
+void UiManager::toggleModeButtons()
+{
+	mEditModeAction.setVisible(mCurrentMode == Mode::Debugging && mCurrentTab != qReal::TabInfo::TabType::other);
+	mDebugModeAction.setVisible(mCurrentMode == Mode::Editing && mCurrentTab != qReal::TabInfo::TabType::other);
+
+	const QColor color = mCurrentTab == qReal::TabInfo::TabType::other
+			? backgrondColor
+			: mCurrentMode == Mode::Editing ? editModeColor : debugModeColor;
+	QPalette palette;
+	palette.setColor(QPalette::Background, color);
+	mMainWindow.statusBar()->setPalette(palette);
 }
 
 QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content) const
@@ -122,17 +137,15 @@ QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content
 
 void UiManager::produceModeButton(UiManager::Mode mode, QAction &action, QStatusBar *statusBar) const
 {
-	const QString tooltip = tr("Press %1 or click here to switch to %2");
-	QAbstractButton *result = nullptr;
-	QString switchTarget;
+	QWidget *result = nullptr;
 	switch (mode) {
+	case Mode::Dummy:
+		return;
 	case Mode::Editing:
-		result = new ui::ModeStripe(action, editModeColor, tr("Edit mode"), statusBar);
-		switchTarget = tr("debug mode");
+		result = new ui::ModeStripe(action, tr("Edit mode"), statusBar);
 		break;
 	case Mode::Debugging:
-		result = new ui::ModeStripe(action, debugModeColor, tr("Debug mode"), statusBar);
-		switchTarget = tr("edit mode");
+		result = new ui::ModeStripe(action, tr("Debug mode"), statusBar);
 		break;
 	}
 
@@ -141,8 +154,7 @@ void UiManager::produceModeButton(UiManager::Mode mode, QAction &action, QStatus
 		return;
 	}
 
-	result->setToolTip(tooltip.arg(action.shortcut().toString(), switchTarget));
-	statusBar->insertWidget(0, result);
+	statusBar->addWidget(result, 10);
 }
 
 int UiManager::currentMode() const

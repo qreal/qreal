@@ -18,11 +18,20 @@
 
 using namespace interpreterCore::ui;
 
-ModeStripe::ModeStripe(QAction &modeAction, const QColor &color, const QString &text, QWidget *parent)
-	: QPushButton(text, parent)
+ModeStripe::ModeStripe(QAction &modeAction, const QString &text, QWidget *parent)
+	: QLabel(QString("&nbsp;&nbsp;&nbsp;<b>%1</b> - press %2 or click here to switch to %3")
+			.arg(text, modeAction.shortcut().toString(), modeAction.property("modeName").toString()), parent)
+	, mAction(modeAction)
 {
-	setFlat(true);
+	setFrameShape(QFrame::NoFrame);
+	setFrameShadow(QFrame::Plain);
+	setLineWidth(0);
 	addAction(&modeAction);
-	connect(this, &QPushButton::pressed, &modeAction, &QAction::trigger);
 	connect(&modeAction, &QAction::changed, this, [&modeAction, this]() { setVisible(modeAction.isVisible()); });
+}
+
+void ModeStripe::mousePressEvent(QMouseEvent *event)
+{
+	mAction.trigger();
+	QLabel::mousePressEvent(event);
 }
