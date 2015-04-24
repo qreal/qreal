@@ -30,7 +30,7 @@ QPushButton:pressed{
     <number>0</number>
    </property>
    <item row="1" column="4">
-    <widget class="QPushButton" name="buttonOn">
+    <widget class="QPushButton" name="buttonPower">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
        <horstretch>1</horstretch>
@@ -78,7 +78,7 @@ QPushButton:pressed{
     </widget>
    </item>
    <item row="5" column="4">
-    <widget class="QPushButton" name="buttonDown">
+    <widget class="QPushButton" name="buttonEnter">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
        <horstretch>1</horstretch>
@@ -106,7 +106,7 @@ QPushButton:pressed{
     </widget>
    </item>
    <item row="3" column="4">
-    <widget class="QPushButton" name="buttonUp">
+    <widget class="QPushButton" name="buttonEscape">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
        <horstretch>1</horstretch>
@@ -207,7 +207,7 @@ QPushButton:pressed{
     </widget>
    </item>
    <item row="5" column="1">
-    <widget class="QPushButton" name="buttonDownLeft">
+    <widget class="QPushButton" name="buttonDown">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
        <horstretch>1</horstretch>
@@ -263,7 +263,7 @@ QPushButton:pressed{
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QPushButton" name="buttonAttach">
+    <widget class="QPushButton" name="buttonUp">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
        <horstretch>1</horstretch>

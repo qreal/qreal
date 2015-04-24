@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <functional>
@@ -25,13 +39,13 @@ public:
 		, SaveInvalid
 	};
 
-	typedef std::function<ConvertionResult(GraphicalModelAssistInterface const &
+	typedef std::function<ConvertionResult(const GraphicalModelAssistInterface &
 			, LogicalModelAssistInterface &)> Converter;
 
-	ProjectConverter(QString const &editor
-			, Version const &fromVersion
-			, Version const &toVersion
-			, Converter const &converter)
+	ProjectConverter(const QString &editor
+			, const Version &fromVersion
+			, const Version &toVersion
+			, const Converter &converter)
 		: mEditor(editor)
 		, mFromVersion(fromVersion)
 		, mToVersion(toVersion)
@@ -60,7 +74,7 @@ public:
 	/// Performs conversion process and returns the success or the fail reason of this operation.
 	/// If operation was unsuccessful then the whole save is not accepted by the system
 	/// and corresponding error message will be shown.
-	ConvertionResult convert(GraphicalModelAssistInterface const &graphicalApi
+	ConvertionResult convert(const GraphicalModelAssistInterface &graphicalApi
 			, LogicalModelAssistInterface &logicalApi)
 	{
 		return mConverter(graphicalApi, logicalApi);

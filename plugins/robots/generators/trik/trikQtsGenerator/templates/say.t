@@ -1,1 +1,1 @@
-brick.say("@@TEXT@@");
+brick.say(@@TEXT@@);

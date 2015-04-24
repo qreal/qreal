@@ -1,27 +1,32 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 TARGET = qrgui-editor
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils \
-		-lqrgui-mouse-gestures -lqrgui-thirdparty -lqrgui-models \
-		-lqrgui-controller -lqrgui-plugin-manager -lqrgui-brand-manager \
-		-lqrgui-dialogs \
+include(../../global.pri)
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
+TEMPLATE = lib
+
+links(qrkernel qslog qrutils \
+		qrgui-mouse-gestures qrgui-thirdparty qrgui-models \
+		qrgui-controller qrgui-plugin-manager qrgui-brand-manager \
+		qrgui-dialogs \
+)
+
+includes(qrgui)
 
 QT += widgets
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
 
 DEFINES += QRGUI_EDITOR_LIBRARY
 

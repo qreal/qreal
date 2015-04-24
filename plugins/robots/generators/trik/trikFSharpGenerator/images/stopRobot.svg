@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: CorelDRAW X6 -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xml:space="preserve"
+   width="150px"
+   height="150px"
+   version="1.1"
+   style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+   viewBox="0 0 15000 15000"
+   id="svg2"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="stopRobot.svg"><metadata
+   id="metadata23"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="640"
+   inkscape:window-height="480"
+   id="namedview21"
+   showgrid="false"
+   inkscape:zoom="1.5733333"
+   inkscape:cx="74.999998"
+   inkscape:cy="74.999998"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="svg2" />
+ <defs
+   id="defs4">
+  <style
+   type="text/css"
+   id="style6">
+   
+    .str0 {stroke:#B3B3B3;stroke-width:127}
+    .fil0 {fill:#FEFEFE}
+    .fil1 {fill:url(#id0)}
+   
+  </style>
+  <linearGradient
+   id="id0"
+   gradientUnits="userSpaceOnUse"
+   x1="8378.43"
+   y1="13066.6"
+   x2="6438.69"
+   y2="2065.77">
+   <stop
+   offset="0"
+   style="stop-color:red"
+   id="stop9" />
+   <stop
+   offset="1"
+   style="stop-color:#FC4141"
+   id="stop11" />
+  </linearGradient>
+ </defs>
+ <g
+   id="Layer_x0020_1">
+  <metadata
+   id="CorelCorpID_0Corel-Layer" />
+  <circle
+   class="fil0 str0"
+   cx="7409"
+   cy="7566"
+   r="5854"
+   id="circle15" />
+  <circle
+   class="fil1"
+   cx="7409"
+   cy="7566"
+   r="5357"
+   id="circle17" />
+  <rect
+   class="fil0"
+   x="3246"
+   y="6540"
+   width="8295"
+   height="2160"
+   rx="691"
+   ry="691"
+   id="rect19" />
+ </g>
+<text
+   xml:space="preserve"
+   style="font-size:4000px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+   x="2571.875"
+   y="13651.172"
+   id="text3022"
+   sodipodi:linespacing="125%"><tspan
+     sodipodi:role="line"
+     id="tspan3024"
+     x="2571.875"
+     y="13651.172">F#</tspan></text>
+
+</svg>

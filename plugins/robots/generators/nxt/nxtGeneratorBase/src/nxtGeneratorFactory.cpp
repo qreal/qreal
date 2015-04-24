@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtGeneratorBase/nxtGeneratorFactory.h"
 
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
@@ -14,11 +28,11 @@ using namespace nxt;
 using namespace nxt::simple;
 using namespace generatorBase::simple;
 
-NxtGeneratorFactory::NxtGeneratorFactory(qrRepo::RepoApi const &repo
+NxtGeneratorFactory::NxtGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, QString const &generatorName)
+		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
 	, mImages(pathToTemplates())
@@ -34,18 +48,12 @@ parts::Images &NxtGeneratorFactory::images()
 	return mImages;
 }
 
-generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGenerator(qReal::Id const &id
+generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGenerator(const qReal::Id &id
 		, generatorBase::GeneratorCustomizer &customizer)
 {
-	QString const elementType = id.element();
-	if (elementType == "NxtWaitForEnter") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
-	} else if (elementType == "NxtWaitForEscape") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEscape.t", this);
-	} else if (elementType == "NxtWaitForLeft") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
-	} else if (elementType == "NxtWaitForRight") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
+	const QString elementType = id.element();
+	if (elementType == "NxtWaitForButton") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "ClearScreen") {
 		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("DrawPixel")) {

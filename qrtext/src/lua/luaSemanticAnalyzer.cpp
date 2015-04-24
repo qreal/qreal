@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrtext/src/lua/luaSemanticAnalyzer.h"
 
 #include "qrtext/src/lua/luaGeneralizationsTable.h"
@@ -68,16 +82,26 @@ LuaSemanticAnalyzer::LuaSemanticAnalyzer(QList<Error> &errors)
 	mString = core::wrap(new types::String());
 }
 
-void LuaSemanticAnalyzer::addIntrinsicFunction(QString const &name, QSharedPointer<types::Function> const &type)
+void LuaSemanticAnalyzer::addIntrinsicFunction(const QString &name, const QSharedPointer<types::Function> &type)
 {
 	mIntrinsicFunctions.insert(name, type);
 }
 
-void LuaSemanticAnalyzer::analyzeNode(QSharedPointer<core::ast::Node> const &node)
+void LuaSemanticAnalyzer::addReadOnlyVariable(const QString &name)
+{
+	mReadOnlyVariables.insert(name);
+}
+
+void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &node)
 {
 	if (node->is<ast::Assignment>()) {
 		auto assignment = as<ast::Assignment>(node);
+		if (!checkForReadOnlyVariables(assignment->variable())) {
+			return;
+		}
+
 		constrainAssignment(assignment, assignment->variable(), assignment->value());
+		checkForUndeclaredIdentifiers(assignment->value());
 	} else if (node->is<ast::Identifier>()) {
 		auto identifier = as<ast::Identifier>(node);
 		if (hasDeclaration(identifier->name())) {
@@ -132,7 +156,7 @@ void LuaSemanticAnalyzer::analyzeNode(QSharedPointer<core::ast::Node> const &nod
 	}
 }
 
-void LuaSemanticAnalyzer::analyzeUnaryOperator(QSharedPointer<core::ast::Node> const &node)
+void LuaSemanticAnalyzer::analyzeUnaryOperator(const QSharedPointer<core::ast::Node> &node)
 {
 	auto operand = as<core::ast::UnaryOperator>(node)->operand();
 	if (node->is<ast::UnaryMinus>()) {
@@ -150,7 +174,7 @@ void LuaSemanticAnalyzer::analyzeUnaryOperator(QSharedPointer<core::ast::Node> c
 	}
 }
 
-void LuaSemanticAnalyzer::analyzeBinaryOperator(QSharedPointer<core::ast::Node> const &node)
+void LuaSemanticAnalyzer::analyzeBinaryOperator(const QSharedPointer<core::ast::Node> &node)
 {
 	auto left = as<core::ast::BinaryOperator>(node)->leftOperand();
 	auto right = as<core::ast::BinaryOperator>(node)->rightOperand();
@@ -206,8 +230,8 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(QSharedPointer<core::ast::Node> 
 	}
 }
 
-void LuaSemanticAnalyzer::constrainAssignment(QSharedPointer<core::ast::Node> const &operation
-		, QSharedPointer<core::ast::Node> const &lhs, QSharedPointer<core::ast::Node> const &rhs)
+void LuaSemanticAnalyzer::constrainAssignment(const QSharedPointer<core::ast::Node> &operation
+		, const QSharedPointer<core::ast::Node> &lhs, const QSharedPointer<core::ast::Node> &rhs)
 {
 	if (!lhs->is<ast::Identifier>() && !lhs->is<ast::IndexingExpression>()) {
 		reportError(operation, QObject::tr("Incorrect assignment, only variables and tables can be assigned to."));
@@ -232,7 +256,7 @@ void LuaSemanticAnalyzer::constrainAssignment(QSharedPointer<core::ast::Node> co
 	}
 }
 
-void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> const &node)
+void LuaSemanticAnalyzer::analyzeFunctionCall(const QSharedPointer<core::ast::Node> &node)
 {
 	auto functionCall = as<ast::FunctionCall>(node);
 	auto function = functionCall->function();
@@ -269,12 +293,47 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> co
 	}
 }
 
+void LuaSemanticAnalyzer::checkForUndeclaredIdentifiers(const QSharedPointer<core::ast::Node> &node)
+{
+	for (const auto &child : node->children()) {
+		if (!child.isNull()) {
+			checkForUndeclaredIdentifiers(child);
+		}
+	}
+
+	if (node->is<ast::Identifier>()) {
+		const auto identifier = as<ast::Identifier>(node);
+		if (declaration(identifier->name()) == node && !mIntrinsicFunctions.contains(identifier->name())) {
+			reportError(node, QObject::tr("Undeclared identifier: %1").arg(identifier->name()));
+		}
+	}
+}
+
+bool LuaSemanticAnalyzer::checkForReadOnlyVariables(const QSharedPointer<core::ast::Node> &node)
+{
+	if (node->is<ast::Identifier>()) {
+		const auto identifier = as<ast::Identifier>(node);
+		if (mReadOnlyVariables.contains(identifier->name())) {
+			reportError(node, QObject::tr("Variable %1 is read-only").arg(identifier->name()));
+			return false;
+		}
+	}
+
+	return true;
+}
+
 QMap<QString, QSharedPointer<types::TypeExpression>> LuaSemanticAnalyzer::variableTypes() const
 {
 	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result = SemanticAnalyzer::variableTypes();
-	for (QString const &identifier : mIntrinsicFunctions.keys()) {
+	for (const QString &identifier : mIntrinsicFunctions.keys()) {
 		result.remove(identifier);
 	}
 
 	return result;
+}
+
+void LuaSemanticAnalyzer::clear()
+{
+	SemanticAnalyzer::clear();
+	mReadOnlyVariables.clear();
 }

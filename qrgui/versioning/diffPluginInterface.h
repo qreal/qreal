@@ -1,8 +1,8 @@
 #pragma once
 
-#include "qrutils/versioningUtils/briefVersioningInterface.h"
-#include "qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
-#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include <qrutils/versioningUtils/briefVersioningInterface.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 
 namespace qReal

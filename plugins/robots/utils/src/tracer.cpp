@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
@@ -8,7 +22,7 @@ using namespace utils;
 
 Tracer *Tracer::mInstance = nullptr;
 
-QString const logFileName = QString("QRealRobots.log");
+const QString logFileName = QString("QRealRobots.log");
 
 void Tracer::enableCategory(TracerEnum category)
 {
@@ -35,7 +49,7 @@ void Tracer::setTarget(TraceTarget target)
 	instance()->mTarget = target;
 }
 
-void Tracer::debug(TracerEnum category, QString const &methodName, QString const &message)
+void Tracer::debug(TracerEnum category, const QString &methodName, const QString &message)
 {
 	instance()->debugImpl(category, methodName, message);
 }
@@ -55,12 +69,12 @@ Tracer *Tracer::instance()
 	return mInstance;
 }
 
-void Tracer::enableCategoryImpl(TracerEnum const &category)
+void Tracer::enableCategoryImpl(const TracerEnum &category)
 {
 	mCategories[category] = true;
 }
 
-void Tracer::disableCategoryImpl(TracerEnum const &category)
+void Tracer::disableCategoryImpl(const TracerEnum &category)
 {
 	mCategories[category] = false;
 }
@@ -75,7 +89,7 @@ void Tracer::disableAllImpl()
 	mCategories.fill(false);
 }
 
-void Tracer::debugImpl(TracerEnum const &category, QString const &methodName, QString const &message)
+void Tracer::debugImpl(const TracerEnum &category, const QString &methodName, const QString &message)
 {
 	if (mCategories[category]) {
 		switch (mTarget) {

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "arch.h"
 
 #include <math.h>
@@ -7,29 +21,29 @@ Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	:Item(parent)
 {
 	mNeedScalingRect = false;
-	mPen.setColor(Qt::gray);
-	mBrush.setStyle(Qt::NoBrush);
+	setPen(QPen(Qt::gray));
+	setBrush(QBrush(QColor(), Qt::NoBrush));
 	mDomElementType = pictureType;
-	mX1 = rect.left();
-	mX2 = rect.right();
-	mY1 = rect.top();
-	mY2 = rect.bottom();
+	setX1(rect.left());
+	setX2(rect.right());
+	setY1(rect.top());
+	setY2(rect.bottom());
 	mSpanAngle = spanAngle;
 	mStartAngle = startAngle;
 	mRect = rect;
 }
 
-Arch::Arch(Arch const &other)
+Arch::Arch(const Arch &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = pictureType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mSpanAngle = other.mSpanAngle;
 	mStartAngle = other.mStartAngle;
 	mRect = other.mRect;
@@ -106,14 +120,14 @@ void Arch::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-QRectF Arch::sceneBoundingRectCoord(QPoint const &topLeftPicture)
+QRectF Arch::sceneBoundingRectCoord(const QPoint &topLeftPicture)
 {
-	qreal const x1 = scenePos().x() + mRect.x() - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + mRect.y() - topLeftPicture.y();
+	const qreal x1 = scenePos().x() + mRect.x() - topLeftPicture.x();
+	const qreal y1 = scenePos().y() + mRect.y() - topLeftPicture.y();
 	return QRectF(x1, y1, mRect.width(), mRect.height());
 }
 
-QPair<QDomElement, Item::DomElementTypes> Arch::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Arch::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement arch = document.createElement("arc");
 	arch.setAttribute("startAngle", mStartAngle);

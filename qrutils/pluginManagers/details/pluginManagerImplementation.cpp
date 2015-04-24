@@ -1,11 +1,27 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "pluginManagerImplementation.h"
+
+#include <QtCore/QCoreApplication>
 
 #include <qrkernel/logging.h>
 
 using namespace qReal::details;
 
-PluginManagerImplementation::PluginManagerImplementation(QString const &applicationDirPath
-		, QString const &additionalPart)
+PluginManagerImplementation::PluginManagerImplementation(const QString &applicationDirPath
+		, const QString &additionalPart)
 	: mPluginsDir(QDir(applicationDirPath))
 	, mApplicationDirectoryPath(applicationDirPath)
 	, mAdditionalPart(additionalPart)
@@ -24,13 +40,13 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 	}
 
 	QList<QString> splittedDir = mAdditionalPart.split('/');
-	for (QString const &partOfDirectory : splittedDir) {
+	for (const QString &partOfDirectory : splittedDir) {
 		mPluginsDir.cd(partOfDirectory);
 	}
 
 	QList<QObject *> listOfPlugins;
 
-	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
+	for (const QString &fileName : mPluginsDir.entryList(QDir::Files)) {
 		QPair<QObject *, QString> const pluginAndError =  pluginLoadedByName(fileName);
 		QObject * const pluginByName = pluginAndError.first;
 		if (pluginByName) {
@@ -45,9 +61,9 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 	return listOfPlugins;
 }
 
-QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QString const &pluginName)
+QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const QString &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
 	loader->load();
 	QObject *plugin = loader->instance();
 
@@ -56,7 +72,7 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QStrin
 		return qMakePair(plugin, QString());
 	}
 
-	QString const loaderError = loader->errorString();
+	const QString loaderError = loader->errorString();
 
 	// Unloading of plugins is currently (Qt 5.3) broken due to a bug in metatype system: calling Q_DECLARE_METATYPE
 	// from plugin registers some data from plugin address space in Qt metatype system, which is not being updated
@@ -82,7 +98,7 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QStrin
 	return qMakePair(nullptr, loaderError);
 }
 
-QString PluginManagerImplementation::unloadPlugin(QString const &pluginName)
+QString PluginManagerImplementation::unloadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = mLoaders[pluginName];
 
@@ -90,7 +106,7 @@ QString PluginManagerImplementation::unloadPlugin(QString const &pluginName)
 		mLoaders.remove(pluginName);
 
 		if (!loader->unload()) {
-			QString const error = loader->errorString();
+			const QString error = loader->errorString();
 			delete loader;
 			return error;
 		}

@@ -4,83 +4,108 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="28"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="44"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
         <translation>Генерация невозможна, на диаграмме нет начальных блоков</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="57"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="78"/>
         <source>This element must have exactly ONE outgoing link</source>
         <translation>От этого элемента должна отходить в точности одна связь</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="67"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="88"/>
         <source>Final node must not have outgoing links</source>
         <oldsource>Final node must not have outgioing links</oldsource>
         <translation>От блока &quot;Конец&quot; не должно отходить связей</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="75"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="96"/>
         <source>If block must have exactly TWO outgoing links</source>
         <translation>От условного блока должно отходить в точности две связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="90"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="111"/>
         <source>Two outgoing links marked with &apos;true&apos; found</source>
         <translation>Обе связи помечены меткой &quot;истина&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="99"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="120"/>
         <source>Two outgoing links marked with &apos;false&apos; found</source>
         <translation>Обе связи помечены меткой &quot;ложь&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="138"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="129"/>
+        <source>There must be at least one link with &quot;true&quot; or &quot;false&quot; marker on it</source>
+        <translation>Должна быть как минимум одна связь с маркером &quot;истина&quot; или &quot;ложь&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="158"/>
         <source>Loop block must have exactly TWO outgoing links</source>
         <translation>От блока &quot;Цикл&quot; должно отходить в точности две связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="152"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="172"/>
+        <source>Two outgoing links marked with &quot;body&quot; found</source>
+        <translation>Обе связи помечены меткой &quot;тело цикла&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="180"/>
+        <source>There must be a link with &quot;body&quot; marker on it</source>
+        <translation>Из блока &quot;Цикл&quot; должна выходить связь с маркером &quot;тело цикла&quot;</translation>
+    </message>
+    <message>
         <source>Two outgoing links marked with &quot;iteration&quot; found</source>
-        <translation>Обе связи помечены меткой &quot;итерация&quot;</translation>
+        <translation type="vanished">Обе связи помечены меткой &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="160"/>
+        <source>There must be a link with &quot;iteration&quot; marker on it</source>
+        <translation type="vanished">Одна из связей должна быть с маркером &quot;итерация&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="213"/>
+        <source>There must be exactly one link without marker on it (default branch)</source>
+        <translation>Ветка без маркера должна быть в точности одна (ветка &quot;default&quot;)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="229"/>
+        <source>There must be a link without marker on it (default branch)</source>
+        <translation>Должна быть связь без маркера (ветка &quot;default&quot;)</translation>
+    </message>
+    <message>
         <source>There must be a link with property &quot;Guard&quot; set to &quot;iteration&quot;</source>
-        <translation>Должна быть связь с меткой &quot;итерация&quot;</translation>
+        <translation type="vanished">Должна быть связь с меткой &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="171"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="190"/>
         <source>Outgoing links from loop block must be connected to different blocks</source>
         <translation>Исходящие связи должны быть присоединены к разным блокам</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="184"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="203"/>
         <source>There must be at list TWO links outgoing from switch block</source>
         <translation>От блока выбора должно отходить минимум ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="194"/>
         <source>There must be exactly one link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="201"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="220"/>
         <source>Duplicate case branch: &apos;%1&apos;</source>
         <translation>Найдено более одной ветки &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="210"/>
         <source>There must be a link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="217"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="242"/>
         <source>Fork block must have at least TWO outgoing links</source>
         <translation>Из блок &quot;Параллельные задачи&quot; должно выходить как минимум две связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="230"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="236"/>
         <source>Unknown block type</source>
         <translation>Неизвестный блок</translation>
     </message>
@@ -93,7 +118,7 @@
         <translation type="obsolete">Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="52"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="71"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
     </message>
@@ -114,7 +139,7 @@
         <translation type="obsolete">От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="243"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="268"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
@@ -127,9 +152,8 @@
         <translation type="obsolete">Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="108"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
-        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+        <translation type="vanished">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
     <message>
         <source>This diagram isn&apos;t structed diagram, because there are IF block with 2 back arrows!</source>
@@ -140,29 +164,34 @@
         <translation type="obsolete">Данная диаграмма слишком сложна для генерации.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="58"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="72"/>
         <source>Graphical diagram instance not found</source>
         <translation>Графическая модель диаграммы с подпрограммой не найдена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="138"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="152"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Введите корректный идентификатор подпрограммы &quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="144"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="158"/>
         <source>Duplicate identifier: </source>
         <translation>Такой идентификатор уже используется: </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="44"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="58"/>
         <source>Device on port %1 is not configured. Please select it on the left-side panel.</source>
         <translation>Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели слева.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="46"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="60"/>
         <source>/* ERROR: SELECT DEVICE TYPE */</source>
         <translation>/* ОШИБКА: ВЫБЕРИТЕ ТИП СЕНСОРА */</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/portNameConverter.cpp" line="45"/>
+        <source>Port %1 is unknown. It will be generated as-is.</source>
+        <translation>Порт %1 неизвестен системе. Он будет сгенерирован в код в таком виде.</translation>
     </message>
 </context>
 <context>
@@ -179,17 +208,17 @@
 <context>
     <name>generatorBase::MasterGeneratorBase</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="86"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="107"/>
         <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код. Генерирую код с &apos;goto&apos;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="101"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="122"/>
         <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
         <translation>Данная диаграмма не может быть сгенерирована даже в код с &apos;goto&apos;. Обратитесь к разработчикам (что вы там понаписали :)?)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="124"/>
         <source>This diagram cannot be generated into the structured code.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код.</translation>
     </message>

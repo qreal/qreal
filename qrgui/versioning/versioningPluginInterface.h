@@ -6,6 +6,9 @@
 
 #include "qrgui/versioning/diffPluginInterface.h"
 
+#include "versioningPluginsManagerDeclSpec.h"
+
+
 namespace qReal {
 
 /// Base class for all VCS cliens. Consists of 3 parts: view part,
@@ -14,7 +17,7 @@ namespace qReal {
 /// component to maintain working copy in correct state.
 /// Brief interface provides a number of actions that each VCS
 /// should be able to invoke by definition.
-class VersioningPluginInterface
+class QRUTILS_EXPORT VersioningPluginInterface
 		: public BriefVersioningInterface
 		, public ToolPluginInterface
 		, public qrRepo::WorkingCopyInspectionInterface

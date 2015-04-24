@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QMenu>
@@ -34,38 +48,38 @@ class QRGUI_EDITOR_EXPORT ExploserView : public QObject
 	Q_OBJECT
 
 public:
-	explicit ExploserView(models::Models const &models
+	explicit ExploserView(const models::Models &models
 			, Controller &controller
-			, SceneCustomizer const &customizer
+			, const SceneCustomizer &customizer
 			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
-	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
+	void createConnectionSubmenus(QMenu &contextMenu, const Element * const element) const;
 
 	/// Activates binded with explosion element or creates default explosed element
-	void handleDoubleClick(Id const &id);
+	void handleDoubleClick(const Id &id);
 
 	/// Adds commands of explosion creation to given element creation command
 	void handleCreationWithExplosion(commands::AbstractCommand *createCommand
-			, Id const &source, Id const &target);
+			, const Id &source, const Id &target);
 
 signals:
 	/// Activates first binded with explosion link graphical instance of the element
 	/// with given @arg id.
-	void goTo(Id const &id);
+	void goTo(const Id &id);
 
 	/// Emitted when palette contents could change and thus must be reread.
 	void refreshPalette();
 
 	/// Emitted when user requested to change some element`s graphical representation.
-	void openShapeEditor(Id const &id
-		, QString const &propertyValue
+	void openShapeEditor(const Id &id
+		, const QString &propertyValue
 		/// @todo: whan passing it by reference the build on travis fails
-		, EditorManagerInterface const *editorManagerProxy
+		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts);
 
 	/// Emitted each time when scene must invoke ExpandCommand to the child instance with the given id.
-	void expandElement(Id const &element);
+	void expandElement(const Id &element);
 
 private slots:
 	void addExplosionActionTriggered();
@@ -77,21 +91,21 @@ private slots:
 	void addElementToPaletteActionTriggered();
 
 private:
-	void createAddExplosionMenu(Element const * const element
+	void createAddExplosionMenu(const Element * const element
 			, QMenu &contextMenu, QList<Explosion> const &explosions
-			, qReal::Id const &alreadyConnectedElement) const;
+			, const qReal::Id &alreadyConnectedElement) const;
 
-	void createRemoveExplosionMenu(Element const * const element
-			, QMenu &contextMenu, qReal::Id const &outgoingConnection) const;
+	void createRemoveExplosionMenu(const Element * const element
+			, QMenu &contextMenu, const qReal::Id &outgoingConnection) const;
 
-	void createExpandAction(Element const * const element
-			, QMenu &contextMenu, qReal::Id const &alreadyConnectedElement) const;
+	void createExpandAction(const Element * const element
+			, QMenu &contextMenu, const qReal::Id &alreadyConnectedElement) const;
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
 	Controller &mController;
-	SceneCustomizer const &mCustomizer;
+	const SceneCustomizer &mCustomizer;
 };
 
 }

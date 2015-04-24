@@ -1,92 +1,158 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPen>
-#include <QtGui/QBrush>
 #include <QtWidgets/QGraphicsView>
 #include <QtXml/QDomDocument>
-#include <QtCore/QPair>
-#include <QtCore/QList>
 
-#include "../utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 const int drift = 15;
 const int resizeDrift = 10;
 const int scalingDrift = 10;
 const int scalingRect = 6;
 
-namespace graphicsUtils
-{
+namespace graphicsUtils {
 
-class QRUTILS_EXPORT AbstractItem : public QGraphicsItem
+class QRUTILS_EXPORT AbstractItem : public QGraphicsObject
 {
+	Q_OBJECT
+
 public:
 	enum DragState {
-		None,
-		TopLeft,
-		TopRight,
-		BottomLeft,
-		BottomRight,
-		Ctrl
+		None
+		, TopLeft
+		, TopRight
+		, BottomLeft
+		, BottomRight
+		, Ctrl
 	};
 
-	AbstractItem(QGraphicsItem* parent = 0);
+	explicit AbstractItem(QGraphicsItem *parent = 0);
+
 	virtual QRectF boundingRect() const = 0;
 	virtual QRectF realBoundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual QPainterPath realShape() const;
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
-	virtual void drawExtractionForItem(QPainter* painter);
-	virtual void drawFieldForResizeItem(QPainter* painter);
-	virtual void setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option);
-	virtual void setPenBrushDriftRect(QPainter* painter);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	virtual void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
+	virtual void drawExtractionForItem(QPainter *painter);
+	virtual void drawFieldForResizeItem(QPainter *painter);
+	virtual void setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option);
+	virtual void setPenBrushDriftRect(QPainter *painter);
 
 	static QStringList getPenStyleList();
 	static QStringList getBrushStyleList();
 
 	QPen pen() const;
 	QBrush brush() const;
-	void setBrush(const QBrush& brush);
-	void setPen(const QPen& pen);
+	void setBrush(const QBrush &brush);
+	void setPen(const QPen &pen);
 
-	virtual void setPenStyle(QString const &text);
+	virtual void setPenStyle(const QString &text);
 	virtual void setPenWidth(int width);
-	virtual void setPenColor(QString const &text);
-	virtual void setBrushStyle(QString const &text);
-	virtual void setBrushColor(QString const &text);
-	virtual void setBrush(QString const &brushStyle, QString const &brushColor);
-	virtual void setPen(QString const &penStyle, int width, QString const &penColor);
-	virtual void setPenBrush(QString const &penStyle, int width, QString const &penColor, QString const &brushStyle, QString const &brushColor);
+	virtual void setPenColor(const QString &text);
+	virtual void setBrushStyle(const QString &text);
+	virtual void setBrushColor(const QString &text);
+	virtual void setBrush(const QString &brushStyle, const QString &brushColor);
+	virtual void setPen(const QString &penStyle, int width, const QString &penColor);
+	virtual void setPenBrush(const QString &penStyle, int width, const QString &penColor, const QString &brushStyle
+			, const QString &brushColor);
 
-	QPointF getX1andY1(void);
-	QPointF getX2andY2(void);
+	/// Returns a x-coordinate of the first item`s end (it may be one corner of the rectangle or the begin of the line).
+	qreal x1() const;
+	/// Returns a y-coordinate of the first item`s end (it may be one corner of the rectangle or the begin of the line).
+	qreal x2() const;
+	/// Returns a x-coordinate of the second item`s end (it may be one corner of the rectangle or the end of the line).
+	qreal y1() const;
+	/// Returns a y-coordinate of the second item`s end (it may be one corner of the rectangle or the end of the line).
+	qreal y2() const;
+	/// Sets an x-coordinate of the first item`s end (it may be one corner of the rectangle or the begin of the line).
+	void setX1(qreal x1);
+	/// Sets an y-coordinate of the first item`s end (it may be one corner of the rectangle or the begin of the line).
+	void setY1(qreal y1);
+	/// Sets an x-coordinate of the second item`s end (it may be one corner of the rectangle or the end of the line).
+	void setX2(qreal x2);
+	/// Sets an y-coordinate of the second item`s end (it may be one corner of the rectangle or the end of the line).
+	void setY2(qreal y2);
 
-	void setX1andY1(qreal x, qreal y);
-	void setX1andY2(qreal x, qreal y);
-	void setX2andY1(qreal x, qreal y);
-	void setX2andY2(qreal x, qreal y);
-	void setCoordinates(QRectF const &pos);
+	void setCoordinates(const QRectF &pos);
 
 	virtual void reshapeRectWithShift();
 	virtual void changeDragState(qreal x, qreal y);
-	DragState getDragState() const;
+	DragState dragState() const;
+	void setDragState(DragState dragState);
 
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
-	void reverseOldResizingItem(QPointF begin, QPointF end);
+	void reverseOldResizingItem(const QPointF &begin, const QPointF &end);
 
 	//for save to xml
-	virtual void setXandY(QDomElement& dom, QRectF const &rect);
-	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
-	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
-	void readPenBrush(QDomElement const &docItem);
+	virtual void setXandY(QDomElement& dom, const QRectF &rect);
+	QDomElement setPenBrushToDoc(QDomDocument &document, const QString &domName);
+	virtual QRectF sceneBoundingRectCoord(const QPoint &topLeftPicture);
+	void readPenBrush(const QDomElement &docItem);
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
+	/// Returns a unique identifier of an item if it was assigned in the model.
+	QString id() const;
+
+	/// Sets a unique identifier of an item.
+	void setId(const QString &id);
+
+	void setEditable(bool editable);
+	bool editable() const;
+
+signals:
+	/// Emitted when QGraphicsItem has repositioned.
+	void positionChanged(const QPointF &pos);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void x1Changed(qreal x1);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void y1Changed(qreal y1);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void x2Changed(qreal x2);
+
+	/// Emitted when the x-coorinate of the first item`s end modified for some reason.
+	void y2Changed(qreal y2);
+
+	/// Emitted when item`s pen changed somehow.
+	void penChanged(const QPen &pen);
+
+	/// Emitted when item`s brush changed somehow.
+	void brushChanged(const QBrush &brush);
+
+	/// Emitted when user clicks with right mouse button on this item and selects to remove it.
+	void delettedWithContextMenu();
+
 protected:
+	virtual void serialize(QDomElement &element);
+	virtual void deserialize(const QDomElement &element);
+
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+	void copyTo(AbstractItem * const other) const;
+
+private:
 	DragState mDragState;
-	QRectF mBoundingRect;
 	QPen mPen;
 	QBrush mBrush;
 	qreal mX1;
@@ -94,6 +160,8 @@ protected:
 	qreal mX2;
 	qreal mY2;
 	QGraphicsView *mView;
+	QString mId;
+	bool mEditable;
 };
 
 }

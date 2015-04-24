@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "luaSemanticAnalyzerTest.h"
 
 #include "qrtext/core/types/any.h"
@@ -28,7 +42,7 @@ void LuaSemanticAnalyzerTest::SetUp()
 	mLexer.reset(new LuaLexer(mErrors));
 }
 
-QSharedPointer<qrtext::core::ast::Node> LuaSemanticAnalyzerTest::parse(QString const &code)
+QSharedPointer<qrtext::core::ast::Node> LuaSemanticAnalyzerTest::parse(const QString &code)
 {
 	return mParser->parse(mLexer->tokenize(code), mLexer->userFriendlyTokenNames());
 }
@@ -140,7 +154,7 @@ TEST_F(LuaSemanticAnalyzerTest, functionReturnType)
 
 TEST_F(LuaSemanticAnalyzerTest, functionParameters)
 {
-	auto tree = parse("a = f(b, c)");
+	auto tree = parse("b = 1; c = 'c'; a = f(b, c)");
 
 	mAnalyzer->addIntrinsicFunction("f", QSharedPointer<types::Function>(new types::Function(
 			QSharedPointer<core::types::TypeExpression>(new types::Float()),
@@ -152,7 +166,7 @@ TEST_F(LuaSemanticAnalyzerTest, functionParameters)
 
 	EXPECT_TRUE(mErrors.isEmpty());
 
-	auto assignment = as<ast::Assignment>(tree);
+	auto assignment = as<ast::Assignment>(as<ast::Block>(tree)->children()[2]);
 
 	auto f = as<ast::FunctionCall>(assignment->value());
 
@@ -270,3 +284,11 @@ TEST_F(LuaSemanticAnalyzerTest, complexByteOperationsExpression)
 	EXPECT_TRUE(mAnalyzer->type(a2)->is<types::Integer>());
 }
 
+TEST_F(LuaSemanticAnalyzerTest, unknownIdentifier)
+{
+	auto tree = parse("a = b");
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_EQ(1, mErrors.size());
+}

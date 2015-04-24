@@ -1,20 +1,34 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "printTextBlock.h"
 
-#include <interpreterBase/robotModel/robotModelUtils.h>
-#include <interpreterBase/robotModel/robotParts/display.h>
+#include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/display.h>
 
 using namespace interpreterCore::coreBlocks::details;
 
-PrintTextBlock::PrintTextBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
-	: interpreterBase::blocksBase::common::DisplayBlock(robotModel)
+PrintTextBlock::PrintTextBlock(kitBase::robotModel::RobotModelInterface &robotModel)
+	: kitBase::blocksBase::common::DisplayBlock(robotModel)
 {
 }
 
-void PrintTextBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
+void PrintTextBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 {
-	int const x = eval<int>("XCoordinateText");
-	int const y = eval<int>("YCoordinateText");
-	QString const result = eval<QString>("PrintText");
+	const int x = eval<int>("XCoordinateText");
+	const int y = eval<int>("YCoordinateText");
+	const QString result = eval<QString>("PrintText");
 	if (!errorsOccured()) {
 		display.printText(x, y, result);
 		emit done(mNextBlockId);

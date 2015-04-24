@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <qrrepo/repoApi.h>
@@ -23,7 +37,7 @@ class QRGUI_MODELS_EXPORT GraphicalModel : public modelsImplementation::Abstract
 
 public:
 	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
-			, EditorManagerInterface const &editorManagerInterface);
+			, const EditorManagerInterface &editorManagerInterface);
 
 	virtual ~GraphicalModel();
 
@@ -31,22 +45,22 @@ public:
 	void setAssistApi(GraphicalModelAssistApi * const graphicalAssistApi);
 
 	void connectToLogicalModel(LogicalModel * const logicalModel);
-	void updateElements(Id const &logicalId, QString const &name);
-	void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name
-			, QPointF const &position);
+	void updateElements(const Id &logicalId, const QString &name);
+	void addElementToModel(const Id &parent, const Id &id,const Id &logicalId, const QString &name
+			, const QPointF &position);
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
-	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
-	qrRepo::GraphicalRepoApi const &api() const;
+	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
+	const qrRepo::GraphicalRepoApi &api() const;
 	qrRepo::GraphicalRepoApi &mutableApi() const;
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
-	QList<QPersistentModelIndex> indexesWithLogicalId(Id const &logicalId) const;
+	QList<QPersistentModelIndex> indexesWithLogicalId(const Id &logicalId) const;
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
-	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
+	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling);
 
 signals:
-	void nameChanged(Id const &id);
+	void nameChanged(const Id &id);
 
 private:
 	LogicalModelView mLogicalModelView;
@@ -56,13 +70,13 @@ private:
 	virtual void init();
 	void loadSubtreeFromClient(modelsImplementation::GraphicalModelItem * const parent);
 	modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem
-			, Id const &id);
+			, const Id &id);
 
-	void setNewName(Id const &id, QString const newValue);
-	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id
+	void setNewName(const Id &id, const QString newValue);
+	virtual modelsImplementation::AbstractModelItem *createModelItem(const Id &id
 			, modelsImplementation::AbstractModelItem *parentItem) const;
 	void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
-			, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
+			, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
 			, details::modelsImplementation::AbstractModelItem *child);
 };

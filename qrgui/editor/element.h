@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QGraphicsItem>
@@ -35,7 +49,7 @@ public:
 	/// Constructor
 	/// @param elementImpl - pointer to implementation of the element. Takes ownership.
 	Element(ElementImpl *elementImpl
-			, Id const &id
+			, const Id &id
 			, models::GraphicalModelAssistApi &graphicalAssistApi
 			, models::LogicalModelAssistApi &logicalAssistApi
 			);
@@ -58,9 +72,9 @@ public:
 	virtual void initTitles();
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves
-	virtual void setLogicalProperty(QString const &roleName, QString const &value
+	virtual void setLogicalProperty(const QString &roleName, const QString &value
 			, bool withUndoRedo = false);
-	QString logicalProperty(QString const &roleName) const;
+	QString logicalProperty(const QString &roleName) const;
 
 	virtual void setColorRect(bool bl) = 0;
 
@@ -75,8 +89,8 @@ public:
 	void updateEnabledState();
 
 public slots:
-	virtual void select(bool const singleSelected);
-	virtual void setSelectionState(bool const selected);
+	virtual void select(const bool singleSelected);
+	virtual void setSelectionState(const bool selected);
 
 signals:
 	void switchFolding(bool);
@@ -88,7 +102,7 @@ protected:
 
 	bool mMoving;
 	bool mEnabled;
-	Id const mId;
+	const Id mId;
 	ElementImpl * const mElementImpl;  // Has ownership.
 	QList<Label *> mLabels;
 

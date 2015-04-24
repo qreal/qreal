@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -20,26 +34,29 @@ namespace invocation
 /// You just call setInvocationTarget(...) with the function specification
 /// and enumerate arguments. Args count must be less or equal 5
 /// @code
-///		void SomeClass::doOperation(int intArg, QString const &stringArg)
+///		void SomeClass::doOperation(int intArg, const QString &stringArg)
 ///		{
 ///		}
 ///		FunctorOperation<void> *operation = new FunctorOperation<void>(30000);
 ///		operation->setInvocationTarget(this, &SampleClass::doOperation, 5, true); // Class-member usage
-///		connect(operation, SIGNAL(finished(invocation::InvocationResult)), this, SLOT(onOperationComplete(invocation::InvocationResult)));
-///		operation->invokeAsync();
-/// The second one  represents operation with progress providing.
+///		connect(operation, SIGNAL(finished(invocation::InvocationResult))
+///				, this, SLOT(onOperationComplete(invocation::InvocationResult)));
+///		operation->invoceAsync();
+/// The second one  represents operation without progress providing.
 /// For this got worked your function must accept Progress * type as
 /// the first argument. Then you just call setInvocationTargetWithProgress(...)
 /// with the function specifications and enumerate all args except the first one.
 /// Args count must be less or equal 5 ('progress' arg + 4 args)
 /// @code
-///		void SomeClass::doOperation(Progress *progress, int intArg, QString const &stringArg)
+///		void SomeClass::doOperation(Progress *progress, int intArg, const QString &stringArg)
 ///		{ // here you can use 'progress' parameter for progress providing
 ///		}
 ///		FunctorOperation<void> *operation = new FunctorOperation<void>(30000);
 ///		operation->setInvocationTargetWithProgress(this, &SampleClass::doOperation, 5, QString("some string"));
-///		connect(operation, SIGNAL(finished(invocation::InvocationResult)), this, SLOT(onOperationComplete(invocation::InvocationResult)));
-///		operation->invokeAsync();
+///		connect(operation, SIGNAL(finished(invocation::InvocationResult))
+///				, this, SLOT(onOperationComplete(invocation::InvocationResult)));
+///		operation->invoceAsync();
+///
 /// @param TResult Must be function return value type
 
 template<typename TResult>
@@ -54,6 +71,7 @@ public:
 			mFunctor->setProgressIfNecessary(mProgress);
 		}
 	}
+
 	virtual ~FunctorOperation()
 	{
 	}

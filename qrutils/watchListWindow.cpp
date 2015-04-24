@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "watchListWindow.h"
 #include "ui_watchListWindow.h"
 
@@ -5,18 +19,18 @@
 
 using namespace utils;
 
-WatchListWindow::WatchListWindow(qrtext::DebuggerInterface const &interpreter, QWidget *parent)
+WatchListWindow::WatchListWindow(const qrtext::DebuggerInterface &interpreter, QWidget *parent)
 	: WatchListWindow(nullptr, &interpreter, parent)
 {
 }
 
-WatchListWindow::WatchListWindow(utils::ExpressionsParser const *parser, QWidget *parent)
+WatchListWindow::WatchListWindow(const utils::ExpressionsParser *parser, QWidget *parent)
 	: WatchListWindow(parser, nullptr, parent)
 {
 }
 
-WatchListWindow::WatchListWindow(utils::ExpressionsParser const * const parser
-		, qrtext::DebuggerInterface const * const newParser
+WatchListWindow::WatchListWindow(const utils::ExpressionsParser * const parser
+		, const qrtext::DebuggerInterface * const newParser
 		, QWidget *parent)
 	: QDockWidget(parent)
 	, mUi(new Ui::watchListWindow)
@@ -39,33 +53,31 @@ void WatchListWindow::updateVariables()
 	int row = 0;
 
 	std::function<QStringList()> identifiers;
-	std::function<QString(QString const &)> value;
+	std::function<QVariant(const QString &)> value;
 
 	if (!mNewParser) {
 		identifiers = [this] () { return mParser->variables().keys(); };
-		value = [this] (QString const &name) { return mParser->variables().value(name)->toString(); };
+		value = [this] (const QString &name) { return mParser->variables().value(name)->value(); };
 	} else {
 		identifiers = [this] () { return mNewParser->identifiers(); };
-		value = [this] (QString const &name) { return mNewParser->value<QString>(name); };
+		value = [this] (const QString &name) { return mNewParser->value<QVariant>(name); };
 	}
 
 	QStringList sortedIdentifiers = identifiers();
 	qSort(sortedIdentifiers);
-	for (QString const &identifier : sortedIdentifiers) {
+	for (const QString &identifier : sortedIdentifiers) {
 		if (mHiddenVariables.contains(identifier)) {
 			continue;
 		}
 
 		if (row >= mUi->watchListTableWidget->rowCount()) {
 			mUi->watchListTableWidget->insertRow(row);
-			QTableWidgetItem* item = new QTableWidgetItem(identifier);
-			mUi->watchListTableWidget->setItem(row, 0, item);
-			item = new QTableWidgetItem(value(identifier));
-			mUi->watchListTableWidget->setItem(row, 1, item);
-		} else {
-			mUi->watchListTableWidget->item(row, 0)->setText(identifier);
-			mUi->watchListTableWidget->item(row, 1)->setText(value(identifier));
+			mUi->watchListTableWidget->setItem(row, 0, new QTableWidgetItem());
+			mUi->watchListTableWidget->setItem(row, 1, new QTableWidgetItem());
 		}
+
+		mUi->watchListTableWidget->item(row, 0)->setText(identifier);
+		mUi->watchListTableWidget->item(row, 1)->setText(toString(value(identifier)));
 
 		++row;
 	}
@@ -75,9 +87,19 @@ void WatchListWindow::updateVariables()
 	}
 }
 
-void WatchListWindow::hideVariables(QStringList const &variableNames)
+QString WatchListWindow::toString(const QVariant &value) const
 {
-	for (QString const &variableName : variableNames) {
+	if (value.type() == QVariant::StringList) {
+		const QStringList list = value.toStringList();
+		return list.isEmpty() ? "" : QString("{ %1 }").arg(list.join(", "));
+	}
+
+	return value.toString();
+}
+
+void WatchListWindow::hideVariables(const QStringList &variableNames)
+{
+	for (const QString &variableName : variableNames) {
 		mHiddenVariables.insert(variableName);
 	}
 }

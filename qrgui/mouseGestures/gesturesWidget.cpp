@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "gesturesWidget.h"
 
 #include "ui_gesturesWidget.h"
@@ -5,7 +19,7 @@
 
 using namespace qReal::gestures;
 
-int const pointsAtSegment = 5;
+const int pointsAtSegment = 5;
 
 GesturesWidget::GesturesWidget(QWidget *parent)
 	: QWidget(parent)
@@ -21,14 +35,14 @@ GesturesWidget::~GesturesWidget()
 	delete mUi;
 }
 
-void GesturesWidget::draw(QString const &paths)
+void GesturesWidget::draw(const QString &paths)
 {
-	int const frame = 10;
-	int const gestureAreaSize = qMin(mUi->gesturePixmap->width(), mUi->gesturePixmap->size().height()) - frame;
-	QSize const size(gestureAreaSize, gestureAreaSize);
+	const int frame = 10;
+	const int gestureAreaSize = qMin(mUi->gesturePixmap->width(), mUi->gesturePixmap->size().height()) - frame;
+	const QSize size(gestureAreaSize, gestureAreaSize);
 
 	GesturePainter painter(paths, Qt::white, Qt::blue, gestureAreaSize);
-	QPixmap const gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+	const QPixmap gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
 
 	mUi->gesturePixmap->setPixmap(gestureIcon.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

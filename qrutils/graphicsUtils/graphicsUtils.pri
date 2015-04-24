@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 HEADERS += \
 	$$PWD/abstractItem.h \
 	$$PWD/lineImpl.h \
@@ -6,6 +20,7 @@ HEADERS += \
 	$$PWD/rectangleImpl.h \
 	$$PWD/pointImpl.h \
 	$$PWD/rotateItem.h \
+	$$PWD/rotater.h \
 	$$PWD/colorListEditor.h \
 	$$PWD/stylusImpl.h \
 	$$PWD/gridDrawer.h \
@@ -23,6 +38,7 @@ SOURCES += \
 	$$PWD/colorListEditor.cpp \
 	$$PWD/stylusImpl.cpp \
 	$$PWD/rotateItem.cpp \
+	$$PWD/rotater.cpp \
 	$$PWD/gridDrawer.cpp \
 	$$PWD/paintWidget.cpp \
 	$$PWD/animatedHighlighter.cpp \

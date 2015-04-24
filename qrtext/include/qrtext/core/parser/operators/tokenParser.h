@@ -1,7 +1,23 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryToken.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
 namespace qrtext {
 namespace core {
@@ -13,7 +29,7 @@ class TokenParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes token to parse and lambda function to execute if token is parsed successfully.
-	explicit TokenParser(TokenType token, SemanticAction const &semanticAction)
+	explicit TokenParser(TokenType token, const SemanticAction &semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}
@@ -25,12 +41,17 @@ public:
 
 		Token<TokenType> const token = tokenStream.next();
 		if (!tokenStream.expect(mToken)) {
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		auto node = wrap(mSemanticAction(token));
 		if (node) {
 			node->connect(token);
+		} else {
+			parserContext.reportInternalError(
+					QObject::tr("Semantic action incorrectly discarded node in TokenParser"));
+
+			return wrap(new TemporaryDiscardableNode());
 		}
 
 		return node;

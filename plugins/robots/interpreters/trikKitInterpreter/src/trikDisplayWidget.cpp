@@ -1,9 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikDisplayWidget.h"
 #include "ui_trikDisplayWidget.h"
 
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 
-using namespace trikKitInterpreter;
+using namespace trik;
 
 TrikDisplayWidget::TrikDisplayWidget(QWidget *parent)
 	: twoDModel::engine::TwoDModelDisplayWidget(parent)
@@ -39,28 +54,30 @@ int TrikDisplayWidget::displayHeight() const
 	return mUi->display->height();
 }
 
-bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
+bool TrikDisplayWidget::buttonIsDown(const QString &buttonPort) const
 {
-	if (buttonPort == "LeftButtonPort") {
+	if (buttonPort == "Left") {
 		return mUi->buttonLeft->isDown();
-	} else if (buttonPort == "RightButtonPort") {
+	} else if (buttonPort == "Right") {
 		return mUi->buttonRight->isDown();
-	} else if (buttonPort == "UpButtonPort") {
+	} else if (buttonPort == "Up") {
 		return mUi->buttonUp->isDown();
-	} else if (buttonPort == "DownButtonPort") {
+	} else if (buttonPort == "Down") {
 		return mUi->buttonDown->isDown();
-	} else if (buttonPort == "EnterButtonPort") {
-		return mUi->buttonDownLeft->isDown();
-	} else if (buttonPort == "EscapeButtonPort") {
-		return mUi->buttonAttach->isDown();
-	} else if (buttonPort == "PowerButtonPort") {
-		return mUi->buttonOn->isDown();
+	} else if (buttonPort == "Enter") {
+		return mUi->buttonEnter->isDown();
+	} else if (buttonPort == "Esc") {
+		return mUi->buttonEscape->isDown();
+	} else if (buttonPort == "Power") {
+		return mUi->buttonPower->isDown();
 	}
 
-	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
+	QLOG_WARN() << "Button on port" << buttonPort << "is not supported by 2d model";
+
+	return false;
 }
 
-void TrikDisplayWidget::setLedColor(QColor const &color)
+void TrikDisplayWidget::setLedColor(const QColor &color)
 {
 	QPalette backgroundPalette(palette());
 	backgroundPalette.setColor(QPalette::Background, color);

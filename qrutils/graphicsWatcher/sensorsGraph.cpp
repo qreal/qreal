@@ -1,4 +1,18 @@
-﻿#include "sensorsGraph.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "sensorsGraph.h"
 #include "ui_sensorsGraph.h"
 
 using namespace utils::sensorsGraph;
@@ -8,27 +22,27 @@ struct SensorsGraph::TrackObject {
 	QString inParserName;
 	QString displayName;
 
-	TrackObject(int const &id, QString const &internalName, QString const &externalName)
+	TrackObject(const int &id, const QString &internalName, const QString &externalName)
 		: index(id)
 		, inParserName(internalName)
 		, displayName(externalName)
 	{
 	}
 
-	TrackObject(int const &id)
+	TrackObject(const int &id)
 		: index(id)
 		, inParserName("")
 		, displayName("")
 	{
 	}
 
-	bool operator ==(TrackObject const &other) const
+	bool operator ==(const TrackObject &other) const
 	{
 		return index == other.index;
 	}
 };
 
-SensorsGraph::SensorsGraph(qrtext::DebuggerInterface const &parser, QWidget *parent)
+SensorsGraph::SensorsGraph(const qrtext::DebuggerInterface &parser, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::SensorsGraph)
 	, mParser(parser)
@@ -50,7 +64,13 @@ SensorsGraph::~SensorsGraph()
 	delete mUi;
 }
 
-void SensorsGraph::addTrackingObject(int const index, QString const &inParserName, QString const &displayName)
+void SensorsGraph::setStartStopButtonsVisible(bool visible)
+{
+	mStartButton.setVisible(visible);
+	mStopButton.setVisible(visible);
+}
+
+void SensorsGraph::addTrackingObject(const int index, const QString &inParserName, const QString &displayName)
 {
 	TrackObject newObject(index, inParserName, displayName);
 	if (mWatchList.contains(newObject)) {
@@ -78,10 +98,10 @@ void SensorsGraph::clearTrackingObjects()
 void SensorsGraph::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
-	qreal const verticalCoefficent = 0.8;
-	qreal const horizontalCoefficent = 0.8;
-	qreal const plotWidth = size().width() * horizontalCoefficent;
-	qreal const plotHeight = size().height() * verticalCoefficent;
+	const qreal verticalCoefficent = 0.8;
+	const qreal horizontalCoefficent = 0.8;
+	const qreal plotWidth = size().width() * horizontalCoefficent;
+	const qreal plotHeight = size().height() * verticalCoefficent;
 
 	mPlotFrame->setSceneRect(-plotWidth, -plotHeight, plotWidth, plotHeight);
 	mPlotFrame->setFixedSize(plotWidth, plotHeight);
@@ -110,26 +130,31 @@ void SensorsGraph::initGui()
 
 void SensorsGraph::setupToolElements()
 {
-	QSize const iconSize(20, 20);
+	const QSize iconSize(20, 20);
 
-	mStopButton.setIcon(QPixmap("://graphicsWatcher/icons/stop_btn.png"));
+	mStopButton.setIcon(QPixmap(":/graphicsWatcher/icons/stop_btn.png"));
 	mStopButton.setIconSize(iconSize);
+	mStopButton.setToolTip(tr("Stop tracking"));
 
-	mStartButton.setIcon(QPixmap("://graphicsWatcher/icons/start_btn.png"));
+	mStartButton.setIcon(QPixmap(":/graphicsWatcher/icons/start_btn.png"));
 	mStartButton.setIconSize(iconSize);
+	mStartButton.setToolTip(tr("Start tracking"));
 
-	mResetButton.setIcon(QPixmap("://graphicsWatcher/icons/reset_btn.png"));
+	mResetButton.setIcon(QPixmap(":/graphicsWatcher/icons/reset_btn.png"));
 	mResetButton.setIconSize(iconSize);
+	mResetButton.setToolTip(tr("Reset plot"));
 
-	mZoomInButton.setIcon(QPixmap("://graphicsWatcher/icons/zoomIn_btn.png"));
+	mZoomInButton.setIcon(QPixmap(":/graphicsWatcher/icons/zoomIn_btn.png"));
 	mZoomInButton.setIconSize(iconSize);
+	mZoomInButton.setToolTip(tr("Zoom In"));
 
-	mZoomOutButton.setIcon(QPixmap("://graphicsWatcher/icons/zoomOut_btn.png"));
+	mZoomOutButton.setIcon(QPixmap(":/graphicsWatcher/icons/zoomOut_btn.png"));
 	mZoomOutButton.setIconSize(iconSize);
+	mZoomOutButton.setToolTip(tr("Zoom Out"));
 
-	mSaveButton.setIcon(QPixmap("://icons/save_as.png"));
+	mSaveButton.setIcon(QPixmap(":/mainWindow/images/save_as.png"));
 	mSaveButton.setIconSize(iconSize);
-
+	mSaveButton.setToolTip(tr("Export values..."));
 }
 
 void SensorsGraph::makeConnections()
@@ -152,12 +177,12 @@ void SensorsGraph::watchListChanged()
 		return;
 	}
 
-	foreach (TrackObject const &item, mWatchList) {
+	foreach (const TrackObject &item, mWatchList) {
 		mSlotComboBox.addItem(tr(item.displayName.toUtf8()), item.index);
 	}
 }
 
-void SensorsGraph::sensorsInput(int const slotIndex, qreal const value)
+void SensorsGraph::sensorsInput(const int slotIndex, const qreal value)
 {
 	if (mCurrentSlot == slotIndex) {
 		mPlotFrame->setNextValue(value);
@@ -181,10 +206,10 @@ void SensorsGraph::startJob()
 
 void SensorsGraph::updateValues()
 {
-	int const notExists = -1;
+	const int notExists = -1;
 
 	TrackObject currentObject(mCurrentSlot);
-	int const index = mWatchList.indexOf(currentObject);
+	const int index = mWatchList.indexOf(currentObject);
 	if (index != notExists) {
 		double number = mParser.value<double>(mWatchList.at(index).inParserName);
 		if (number) {
@@ -205,8 +230,8 @@ void SensorsGraph::resetAll()
 	mPlotFrame->zoomOut();
 }
 
-void SensorsGraph::configureUpdateIntervals(int const &readSensorsInterval, int const &autoScaleInterval
-		, int const &textUpdaterInterval)
+void SensorsGraph::configureUpdateIntervals(const int &readSensorsInterval, const int &autoScaleInterval
+		, const int &textUpdaterInterval)
 {
 	mPlotFrame->configureUserOptions(readSensorsInterval, autoScaleInterval, textUpdaterInterval);
 }

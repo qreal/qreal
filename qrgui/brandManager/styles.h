@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QApplication>
@@ -11,7 +25,7 @@ namespace qReal {
 class Styles
 {
 public:
-	explicit Styles(Fonts const &fonts)
+	explicit Styles(const Fonts &fonts)
 		: mFonts(fonts)
 	{
 	}
@@ -122,7 +136,7 @@ protected:
 
 	/// Returns either given url without modifications or transforms it into absolute disk location
 	/// for more convenient styles debugging (modifications do not need rebuilds then)
-	QString processUrl(QString const &resourceUrl) const
+	QString processUrl(const QString &resourceUrl) const
 	{
 		// TODO: uncomment one of the next scenarious
 
@@ -135,7 +149,7 @@ protected:
 		// return QApplication::applicationDirPath() + "/../qrgui/brandManager" + choppedString;
 	}
 
-	Fonts const &mFonts;
+	const Fonts &mFonts;
 };
 
 }

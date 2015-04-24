@@ -1,10 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "twoDDisplay.h"
 
-using namespace nxtKitInterpreter::robotModel::twoD::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::twoD::parts;
+using namespace kitBase::robotModel;
 
-Display::Display(DeviceInfo const &info
-		, PortInfo const &port
+Display::Display(const DeviceInfo &info
+		, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::NxtDisplay(info, port)
 	, mEngine(engine)
@@ -36,7 +50,7 @@ void Display::drawCircle(int x, int y, int radius)
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::printText(int x, int y, QString const &text)
+void Display::printText(int x, int y, const QString &text)
 {
 	mStringPlaces << QPoint(x, y);
 	mStrings << text;
@@ -57,15 +71,15 @@ void Display::clearScreen()
 void Display::paint(QPainter *painter)
 {
 	/// @todo ZOMG.
-	qreal const pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
-	qreal const pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
+	const qreal pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
+	const qreal pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
 
 	QPen pen;
 	QFont font;
 	font.setPixelSize(pixHeight * textPixelHeight);
 
 	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
-	foreach (QPoint const &point, mPoints) {
+	foreach (const QPoint &point, mPoints) {
 		painter->drawRect(point.x() * pixWidth, point.y() * pixHeight, pixWidth, pixHeight);
 	}
 
@@ -74,23 +88,23 @@ void Display::paint(QPainter *painter)
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
 
-	foreach (QLine const &line, mLines) {
+	foreach (const QLine &line, mLines) {
 		painter->drawLine(line.x1() * pixWidth, line.y1() * pixHeight, line.x2() * pixWidth, line.y2() * pixHeight);
 	}
 
-	foreach (QRect const &circle, mCircles) {
+	foreach (const QRect &circle, mCircles) {
 		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
 	}
 
-	foreach (QRect const &rect, mRects) {
+	foreach (const QRect &rect, mRects) {
 		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
 	}
 
 	QListIterator<QString> strings(mStrings);
 	QListIterator<QPoint> strPlaces(mStringPlaces);
 	while (strings.hasNext() && strPlaces.hasNext()) {
-		QString const str = strings.next();
-		QPoint const place = strPlaces.next();
+		const QString str = strings.next();
+		const QPoint place = strPlaces.next();
 		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
 				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
 	}

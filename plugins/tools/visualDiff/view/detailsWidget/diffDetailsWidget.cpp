@@ -59,7 +59,7 @@ void DiffDetailsWidget::initLayout()
 void DiffDetailsWidget::initIdWidget()
 {
 	mIdWidget = new IdWidget(tr("<Click item to see details>"), this);
-	QGridLayout *mIdLayout = new QGridLayout(this);
+	QGridLayout *mIdLayout = new QGridLayout;
 	QScrollArea *mScrollArea = new QScrollArea(this);
 	mScrollArea->setAlignment(Qt::AlignCenter);
 	mScrollArea->setWidgetResizable(true);

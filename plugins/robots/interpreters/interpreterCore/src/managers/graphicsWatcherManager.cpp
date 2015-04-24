@@ -1,13 +1,28 @@
-#include "graphicsWatcherManager.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "interpreterCore/managers/graphicsWatcherManager.h"
 
 using namespace interpreterCore;
 using namespace utils;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
-GraphicsWatcherManager::GraphicsWatcherManager(qrtext::DebuggerInterface const &parser, QObject *parent)
+GraphicsWatcherManager::GraphicsWatcherManager(const qrtext::DebuggerInterface &parser, QObject *parent)
 	: QObject(parent)
 	, mWatcher(new sensorsGraph::SensorsGraph(parser))
 {
+	mWatcher->setStartStopButtonsVisible(false);
 }
 
 QWidget *GraphicsWatcherManager::widget()
@@ -25,8 +40,8 @@ void GraphicsWatcherManager::forceStop()
 	mWatcher->stopJob();
 }
 
-void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
+void GraphicsWatcherManager::onDeviceConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
@@ -35,15 +50,17 @@ void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotMo
 	updateSensorsList(robotModel);
 }
 
-void GraphicsWatcherManager::updateSensorsList(QString const &currentRobotModel)
+void GraphicsWatcherManager::updateSensorsList(const QString &currentRobotModel)
 {
 	mWatcher->clearTrackingObjects();
 	int index = 0;
-	for (PortInfo const &port : configuredPorts(currentRobotModel)) {
-		DeviceInfo const device = currentConfiguration(currentRobotModel, port);
+	for (const PortInfo &port : configuredPorts(currentRobotModel)) {
+		const DeviceInfo device = currentConfiguration(currentRobotModel, port);
 		/// @todo It must depend on port, port must return its variable
-		QString const variableName = port.reservedVariable();
-		mWatcher->addTrackingObject(index, variableName, device.friendlyName());
-		++index;
+		const QString variableName = port.reservedVariable();
+		if (!device.isNull() && !variableName.isEmpty()) {
+			mWatcher->addTrackingObject(index, variableName, QString("%1: %2").arg(port.name(), device.friendlyName()));
+			++index;
+		}
 	}
 }

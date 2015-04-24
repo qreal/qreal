@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtWidgets/QApplication>
 
 #include "visualDebuggerPlugin.h"
@@ -36,7 +50,8 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 
 	mDebuggerConnector = new DebuggerConnector(this);
 
-	connect(&configurator.systemEvents(), SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(qReal::Id)));
+	connect(&configurator.systemEvents(), &SystemEvents::activeTabChanged
+			, this, &VisualDebuggerPlugin::activeTabChanged);
 }
 
 QPair<QString, gui::PreferencesPage *> VisualDebuggerPlugin::preferencesPage()
@@ -130,9 +145,9 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	return mActionInfos;
 }
 
-void VisualDebuggerPlugin::activeTabChanged(Id const &rootElementId)
+void VisualDebuggerPlugin::activeTabChanged(TabInfo const &info)
 {
-	bool const enabled = rootElementId.diagram() == blockDiagram;
+	bool const enabled = info.rootDiagramId().diagram() == blockDiagram;
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		if (actionInfo.isAction()) {
 			actionInfo.action()->setEnabled(enabled);

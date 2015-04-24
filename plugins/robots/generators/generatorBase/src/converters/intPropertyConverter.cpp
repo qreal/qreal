@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "intPropertyConverter.h"
 
 #include <qrtext/lua/luaToolbox.h>
@@ -8,10 +22,10 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
+IntPropertyConverter::IntPropertyConverter(const QString &pathToTemplates
 		, lua::LuaProcessor &luaTranslator
-		, qReal::Id const &id
-		, QString const &propertyName
+		, const qReal::Id &id
+		, const QString &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter
 		, simple::Binding::ConverterInterface *typeConverter)
 	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
@@ -25,9 +39,9 @@ IntPropertyConverter::~IntPropertyConverter()
 	delete mTypeConverter;
 }
 
-QString IntPropertyConverter::convert(QString const &data) const
+QString IntPropertyConverter::convert(const QString &data) const
 {
-	QString const preparedCode = CodeConverterBase::convert(data);
+	const QString preparedCode = CodeConverterBase::convert(data);
 	if (preparedCode.isEmpty()) {
 		return "0";
 	}
@@ -39,7 +53,7 @@ QString IntPropertyConverter::convert(QString const &data) const
 	}
 
 	QString castTemplate = readTemplate("types/cast.t");
-	QString const intType = mTypeConverter->convert("int");
+	const QString intType = mTypeConverter->convert("int");
 	castTemplate.replace("@@TYPE@@", intType);
 	castTemplate.replace("@@EXPRESSION@@", preparedCode);
 	return castTemplate;

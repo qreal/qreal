@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "generatorBase/robotsGeneratorDeclSpec.h"
@@ -17,22 +31,23 @@ class ROBOTS_GENERATOR_EXPORT ReadableControlFlowGenerator : public ControlFlowG
 
 public:
 	ReadableControlFlowGenerator(
-			qrRepo::RepoApi const &repo
+			const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &diagramId
+			, PrimaryControlFlowValidator &validator
+			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 
 	/// Implementation of clone operation for readable generator
-	ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId) override;
+	ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) override;
 
 	void beforeSearch() override;
 
-	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
 
 	/// This method can be used for semantic tree debug printing after all
 	/// traversal stages.
@@ -48,7 +63,7 @@ private:
 	/// for the emulation of some priority for semantic rules.
 	void performGeneration() override;
 
-	bool applyFirstPossible(qReal::Id const &currentId
+	bool applyFirstPossible(const qReal::Id &currentId
 			, QList<semantics::SemanticTransformationRule *> const &rules
 			, bool thereWillBeMoreRules);
 

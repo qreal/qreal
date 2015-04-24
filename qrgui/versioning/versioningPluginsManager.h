@@ -1,17 +1,20 @@
 #pragma once
 
-#include "versioningPluginInterface.h"
-#include "qrgui/models/models.h"
+#include <qrgui/models/models.h>
 #include <qrutils/versioningUtils/briefVersioningInterface.h>
-#include "qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
-#include "qrgui/plugins/toolPluginInterface/pluginInterface.h"
-#include "qrgui/mainWindow/projectManager/projectManager.h"
-#include "qrgui/versioning/versioningPluginsManagerDeclSpec.h"
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
+#include <qrgui/mainWindow/projectManager/projectManagerWrapper.h>
+
+#include "versioningPluginInterface.h"
+
+#include "versioningPluginsManagerDeclSpec.h"
+
 
 namespace qReal
 {
 
-class /*QRGUI_VERSIONING_PLUGINS_MANAGER_EXPORT*/ VersioningPluginsManager
+class QRUTILS_EXPORT VersioningPluginsManager
 		: public BriefVersioningInterface
 		, public qrRepo::WorkingCopyInspectionInterface
 {
@@ -21,8 +24,8 @@ public:
 	/// Inits plugin list using loaded by plugin manager ones
 	VersioningPluginsManager(
 		qrRepo::RepoControlInterface *repoApi
-		, ErrorReporterInterface *errorReporter
-		, ProjectManager * projectManager
+		, qReal::ErrorReporterInterface *errorReporter
+		, qReal::ProjectManagerWrapper *projectManager
 	);
 
 	void initFromToolPlugins(
@@ -84,9 +87,9 @@ private:
 
 	qrRepo::RepoControlInterface *mRepoApi;
 	QList<VersioningPluginInterface *> mPlugins;
-	ErrorReporterInterface *mErrorReporter;
+	qReal::ErrorReporterInterface *mErrorReporter;
 	DiffPluginInterface *mDiffInterface;
-	ProjectManager *mProjectManager;
+	qReal::ProjectManagerWrapper *mProjectManager;
 	QString mTempDir;
 };
 

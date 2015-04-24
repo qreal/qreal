@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "mixedgesturesmanager.h"
 
 #include "rectanglegesturesmanager.h"
@@ -15,7 +29,7 @@ MixedGesturesManager::MixedGesturesManager()
 
 MixedGesturesManager::~MixedGesturesManager()
 {
-	for (QString const &object : mGestures.keys()) {
+	for (const QString &object : mGestures.keys()) {
 		delete mGestures[object].first;
 		delete mGestures[object].second;
 		mGestures.remove(object);
@@ -23,7 +37,7 @@ MixedGesturesManager::~MixedGesturesManager()
 }
 
 
-qreal MixedGesturesManager::getMaxDistance(QString const &)
+qreal MixedGesturesManager::getMaxDistance(const QString &)
 {
 	return 30;
 }
@@ -41,7 +55,7 @@ qreal MixedGesturesManager::getDistance(QPair<qreal *,qreal *> const &key1, QPai
 	return dist1 * weight1 + dist2 * weight2;
 }
 
-QPair<qreal *, qreal *> MixedGesturesManager::getKey(PathVector const &path)
+QPair<qreal *, qreal *> MixedGesturesManager::getKey(const PathVector &path)
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;
@@ -55,7 +69,7 @@ MixedClassifier::MixedClassifier(QPair<qreal *, qreal *> const &key)
 	mKey = key;
 }
 
-MixedClassifier::MixedClassifier(PathVector const &path)
+MixedClassifier::MixedClassifier(const PathVector &path)
 {
 	MixedGesturesManager gManager;
 	mKey = gManager.getKey(path);
@@ -71,7 +85,7 @@ MixedClassifier::~MixedClassifier()
 	delete mKey.second;
 }
 
-qreal MixedClassifier::getDistance(MixedClassifier const &classifier)
+qreal MixedClassifier::getDistance(const MixedClassifier &classifier)
 {
 	QPair<qreal *, qreal *> key = classifier.key();
 	MixedGesturesManager gManager;

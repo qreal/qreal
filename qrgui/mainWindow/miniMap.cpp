@@ -1,8 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "miniMap.h"
 
 MiniMap::MiniMap(QWidget *parent)
 		: QGraphicsView(parent)
-		, mEditorView(NULL)
+		, mEditorView(nullptr)
 		, mMode(None)
 {
 }
@@ -24,14 +38,14 @@ void MiniMap::changeSource(int index)
 	if (index != -1) {
 		setCurrentScene();
 	} else {
-		setScene(NULL);
+		setScene(nullptr);
 	}
 }
 
 void MiniMap::setCurrentScene()
 {
 	mEditorView = mWindow->getCurrentTab();
-	if (mEditorView == NULL) {
+	if (mEditorView == nullptr) {
 		return;
 	}
 
@@ -48,7 +62,7 @@ void MiniMap::setScene(QGraphicsScene *scene)
 
 void MiniMap::showScene()
 {
-	if (scene() != NULL) {
+	if (scene() != nullptr) {
 		setSceneRect(scene()->sceneRect());
 		fitInView(sceneRect(), Qt::KeepAspectRatio);
 	}
@@ -64,7 +78,7 @@ void MiniMap::ensureVisible(QList<QRectF> region)
 void MiniMap::clear()
 {
 	mEditorViewRect = QRectF();
-	mEditorView = NULL;
+	mEditorView = nullptr;
 }
 
 QRectF MiniMap::getNewRect()
@@ -87,7 +101,7 @@ void MiniMap::wheelEvent(QWheelEvent *event)
 
 void MiniMap::mousePressEvent(QMouseEvent *event)
 {
-	if (mEditorView != NULL) {
+	if (mEditorView != nullptr) {
 		mMode = Drag;
 		mEditorView->centerOn(mapToScene(event->pos()));
 	}
@@ -96,7 +110,7 @@ void MiniMap::mousePressEvent(QMouseEvent *event)
 
 void MiniMap::mouseMoveEvent(QMouseEvent *event)
 {
-	if (mEditorView != NULL && mMode == Drag) {
+	if (mEditorView != nullptr && mMode == Drag) {
 		mEditorView->centerOn(mapToScene(event->pos()));
 	}
 	QGraphicsView::mouseMoveEvent(event);
@@ -114,7 +128,7 @@ void MiniMap::resizeEvent(QResizeEvent *event)
 	QGraphicsView::resizeEvent(event);
 }
 
-void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)
+void MiniMap::drawForeground(QPainter *painter, const QRectF &rect)
 {
 	QGraphicsView::drawForeground(painter, rect);
 	painter->setPen(Qt::darkYellow);
@@ -126,7 +140,7 @@ void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)
 	painter->drawRect(mEditorViewRect);
 }
 
-void MiniMap::drawNonExistentAreas(QPainter *painter, QRectF const &rect)
+void MiniMap::drawNonExistentAreas(QPainter *painter, const QRectF &rect)
 {
 	QList<QRectF> areas = getNonExistentAreas(rect);
 	foreach (QRectF area, areas) {
@@ -134,7 +148,7 @@ void MiniMap::drawNonExistentAreas(QPainter *painter, QRectF const &rect)
 	}
 }
 
-QList<QRectF> MiniMap::getNonExistentAreas(QRectF const &rect)
+QList<QRectF> MiniMap::getNonExistentAreas(const QRectF &rect)
 {
 	QRectF existent = rect.intersected(sceneRect());
 

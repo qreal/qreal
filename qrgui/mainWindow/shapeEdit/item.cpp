@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "item.h"
 
 #include <math.h>
@@ -13,7 +27,9 @@ Item::Item(graphicsUtils::AbstractItem* parent)
 	mNeedScalingRect = false;
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
-	mBrush.setColor(mPen.color());
+	QBrush brush(this->brush());
+	brush.setColor(pen().color());
+	setBrush(brush);
 	mZValue = 0;
 	initListScalePoint();
 }
@@ -47,7 +63,7 @@ int Item::sign(int x)
 	return x > 0 ? 1 : -1;
 }
 
-qreal Item::length(QPointF const &point1, QPointF const &point2)
+qreal Item::length(const QPointF &point1, const QPointF &point2)
 {
 	return sqrt(pow((point1.x() - point2.x()), 2) + pow((point1.y() - point2.y()), 2));
 }
@@ -103,10 +119,10 @@ void Item::swap(qreal &x, qreal &y)
 
 void Item::setNoneDragState()
 {
-	mDragState = None;
+	setDragState(None);
 }
 
-void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2
+void Item::calcForChangeScalingState(const QPointF&pos, const QPointF& point1, const QPointF& point2
 		, int correction)
 {
 	qreal x = pos.x();
@@ -154,7 +170,7 @@ void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, Q
 	if (mScalingState == topLeftX || mScalingState == topLeftY || mScalingState == bottomRightX
 			|| mScalingState == bottomRightY)
 	{
-		mDragState = None;
+		setNoneDragState();
 	}
 }
 
@@ -200,7 +216,7 @@ void Item::setListScalePoint(QList<QPair<ScalingPointState, QColor> > list)
 	mListScalePoint = list;
 }
 
-QString Item::setScaleForDoc(int i, QRect const &rect)
+QString Item::setScaleForDoc(int i, const QRect &rect)
 {
 	QString text;
 
@@ -254,7 +270,7 @@ QString Item::setSingleScaleForDoc(int i, int x, int y)
 	return text;
 }
 
-void Item::setXandY(QDomElement& dom, QRectF const &rect)
+void Item::setXandY(QDomElement& dom, const QRectF &rect)
 {
 	dom.setAttribute("y1", setScaleForDoc(4, rect.toRect()));
 	dom.setAttribute("x1", setScaleForDoc(0, rect.toRect()));
@@ -262,12 +278,12 @@ void Item::setXandY(QDomElement& dom, QRectF const &rect)
 	dom.setAttribute("x2", setScaleForDoc(3, rect.toRect()));
 }
 
-void Item::setVisibilityCondition(VisibilityCondition const &condition)
+void Item::setVisibilityCondition(const VisibilityCondition &condition)
 {
 	mVisibilityCondition = condition;
 }
 
-void Item::setVisibilityCondition(QString const &property, QString const &sign, QString const &value)
+void Item::setVisibilityCondition(const QString &property, const QString &sign, const QString &value)
 {
 	mVisibilityCondition.property = property;
 	mVisibilityCondition.sign = sign;
@@ -294,13 +310,13 @@ QPair<QDomElement, Item::DomElementTypes> Item::generateDom(QDomDocument &docume
 	return result;
 }
 
-bool Item::VisibilityCondition::operator==(Item::VisibilityCondition const &other) const
+bool Item::VisibilityCondition::operator==(const Item::VisibilityCondition &other) const
 {
 	return this->property == other.property && this->sign == other.sign
 			&& this->value == other.value;
 }
 
-bool Item::VisibilityCondition::operator!=(Item::VisibilityCondition const &other) const
+bool Item::VisibilityCondition::operator!=(const Item::VisibilityCondition &other) const
 {
 	return !(*this == other);
 }

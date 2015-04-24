@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QWidget>
@@ -32,18 +46,18 @@ class ShapeEdit : public QWidget
 
 public:
 	explicit ShapeEdit(QWidget *parent = nullptr);
-	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role
+	ShapeEdit(qReal::models::details::LogicalModel *model, const QPersistentModelIndex &index, const int &role
 		, bool useTypedPorts);
-	ShapeEdit(Id const &id, EditorManagerInterface const &editorManagerProxy
-		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
+	ShapeEdit(const Id &id, const EditorManagerInterface &editorManagerProxy
+		, const qrRepo::GraphicalRepoApi &graphicalRepoApi, MainWindow *mainWindow
 		, EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
 
 	graphicsUtils::AbstractView* getView();
-	void load(QString const &text);
+	void load(const QString &text);
 
 signals:
-	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
+	void shapeSaved(const QString &shape, const QPersistentModelIndex &index, const int &role);
 	void saveSignal();
 	void saveToXmlSignal();
 	void openSignal();
@@ -72,11 +86,11 @@ private slots:
 	void open();
 	void addImage(bool checked);
 	void setNoPalette();
-	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
+	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
 	void setNoFontPalette();
-	void setItemFontPalette(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void setItemFontPalette(const QPen &penItem, const QFont &fontItem, const QString &name);
 	void setNoPortType();
-	void setPortType(QString const &type);
+	void setPortType(const QString &type);
 	void changeTextName();
 	void resetHighlightAllButtons();
 
@@ -90,10 +104,10 @@ private:
 
 	// TODO: lolwut? Use assist API instead.
 	qReal::models::details::LogicalModel *mModel;  // Doesn't have ownership.
-	QPersistentModelIndex const mIndex;
-	int const mRole;
+	const QPersistentModelIndex mIndex;
+	const int mRole;
 	Id mId;
-	EditorManagerInterface const *mEditorManager;  // Doesn't have ownership.
+	const EditorManagerInterface *mEditorManager;  // Doesn't have ownership.
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;  // Doesn't have ownership.
 	EditorView *mEditorView;  // Doesn't have ownership.
@@ -108,21 +122,21 @@ private:
 	void setHighlightOneButton(QAbstractButton *oneButton);
 
 	void setValuePenStyleComboBox(Qt::PenStyle penStyle);
-	void setValuePenColorComboBox(QColor const &penColor);
+	void setValuePenColorComboBox(const QColor &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setValueBrushStyleComboBox(Qt::BrushStyle brushStyle);
 	void setValueBrushColorComboBox(QColor brushColor);
 
-	void setValueTextFamilyFontComboBox(QFont const &fontItem);
+	void setValueTextFamilyFontComboBox(const QFont &fontItem);
 	void setValueTextPixelSizeSpinBox(int size);
-	void setValueTextColorComboBox(QColor const &penColor);
+	void setValueTextColorComboBox(const QColor &penColor);
 	void setValueItalicCheckBox(bool check);
 	void setValueBoldCheckBox(bool check);
 	void setValueUnderlineCheckBox(bool check);
-	void setValueTextNameLineEdit(QString const &name);
+	void setValueTextNameLineEdit(const QString &name);
 
 	void generateDom();
-	void exportToXml(QString const &fileName);
+	void exportToXml(const QString &fileName);
 	QList<QDomElement> generateGraphics();
 
 	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;

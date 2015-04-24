@@ -100,7 +100,7 @@ void TransparentMode::init()
 		, SLOT(showDiffAsync(QString,QString,QWidget*))
 	);
 	connect(mCompactWidget, SIGNAL(loadVersion(QString)),SLOT(setVersionAsync(QString)));
-	connect(mSystemInterface, SIGNAL(indefiniteTabClosed(QWidget *)), this, SLOT(removeBrokenPointers(QWidget *)));
+	connect(mSystemInterface, SIGNAL(otherTabClosed(QWidget *)), this, SLOT(removeBrokenPointers(QWidget *)));
 	connect(mCompactWidget, SIGNAL(updateLogs()), SLOT(getAndUpdateLog()));
 	tabIsReady = true;
 }

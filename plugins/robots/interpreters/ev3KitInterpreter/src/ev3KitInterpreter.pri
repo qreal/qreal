@@ -1,63 +1,61 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 QT += widgets
 
-INCLUDEPATH += \
-	$$PWD \
-	$$PWD/../../interpreterBase/include \
-	$$PWD/../../../utils/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui/ \
-	$$PWD/../../../../../qrtext/include \
+includes(plugins/robots/common/kitBase \
+		plugins/robots/common/twoDModel \
+		plugins/robots/common/ev3Kit \
+		plugins/robots/utils \
+		qrtext \
+		plugins/robots/interpeters/ev3KitInterpreter/src \
+)
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
-		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
-		-lrobots-utils -lrobots-interpreter-base -lqextserialport \
+links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
+		robots-utils robots-kit-base robots-ev3-kit qextserialport \
+)
 
 HEADERS += \
 	$$PWD/commandConstants.h \
 	$$PWD/ev3AdditionalPreferences.h \
 	$$PWD/ev3KitInterpreterPlugin.h \
-	$$PWD/robotModel/ev3RobotModelBase.h \
 	$$PWD/robotModel/real/realRobotModel.h \
-	$$PWD/robotModel/parts/ev3Display.h \
-	$$PWD/robotModel/parts/ev3Speaker.h \
-	$$PWD/robotModel/parts/ev3Motor.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
 	$$PWD/robotModel/real/parts/motor.h \
-	$$PWD/blocks/ev3BlocksFactory.h \
-	$$PWD/blocks/details/speakerBlock.h \
-	$$PWD/blocks/details/beepBlock.h \
-	$$PWD/blocks/details/playToneBlock.h \
-	$$PWD/blocks/details/drawCircleBlock.h \
-	$$PWD/blocks/details/drawLineBlock.h \
-	$$PWD/blocks/details/drawPixelBlock.h \
-	$$PWD/blocks/details/drawRectBlock.h \
-	$$PWD/blocks/details/ev3EnginesBackwardBlock.h \
-	$$PWD/blocks/details/ev3EnginesForwardBlock.h \
-
+	$$PWD/robotModel/real/parts/button.h \
+	$$PWD/robotModel/real/parts/ev3InputDevice.h \
+	$$PWD/robotModel/real/parts/touchSensor.h \
+	$$PWD/robotModel/real/parts/lightSensor.h \
+	$$PWD/robotModel/real/parts/rangeSensor.h \
+	$$PWD/robotModel/real/parts/colorSensorFull.h \
+	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
 
 SOURCES += \
 	$$PWD/ev3AdditionalPreferences.cpp \
 	$$PWD/ev3KitInterpreterPlugin.cpp \
-	$$PWD/robotModel/ev3RobotModelBase.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
-	$$PWD/robotModel/parts/ev3Display.cpp \
-	$$PWD/robotModel/parts/ev3Speaker.cpp \
-	$$PWD/robotModel/parts/ev3Motor.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \
 	$$PWD/robotModel/real/parts/motor.cpp \
-	$$PWD/blocks/ev3BlocksFactory.cpp \
-	$$PWD/blocks/details/speakerBlock.cpp \
-	$$PWD/blocks/details/beepBlock.cpp \
-	$$PWD/blocks/details/playToneBlock.cpp \
-	$$PWD/blocks/details/drawCircleBlock.cpp \
-	$$PWD/blocks/details/drawLineBlock.cpp \
-	$$PWD/blocks/details/drawPixelBlock.cpp \
-	$$PWD/blocks/details/drawRectBlock.cpp \
-	$$PWD/blocks/details/ev3EnginesBackwardBlock.cpp \
-	$$PWD/blocks/details/ev3EnginesForwardBlock.cpp \
-
+	$$PWD/robotModel/real/parts/button.cpp \
+	$$PWD/robotModel/real/parts/ev3InputDevice.cpp \
+	$$PWD/robotModel/real/parts/touchSensor.cpp \
+	$$PWD/robotModel/real/parts/lightSensor.cpp \
+	$$PWD/robotModel/real/parts/rangeSensor.cpp \
+	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
+	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
 
 FORMS += \
 	$$PWD/ev3AdditionalPreferences.ui \

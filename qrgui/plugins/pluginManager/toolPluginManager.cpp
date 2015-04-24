@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "toolPluginManager.h"
 
 #include <QtWidgets/QApplication>
@@ -22,7 +36,7 @@ ToolPluginManager::~ToolPluginManager()
 {
 }
 
-void ToolPluginManager::init(PluginConfigurator const &configurator)
+void ToolPluginManager::init(const PluginConfigurator &configurator)
 {
 	QLOG_INFO() << "Initializing tool plugins...";
 	mSystemEvents = &configurator.systemEvents();
@@ -55,7 +69,7 @@ QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 void ToolPluginManager::loadDefaultSettings()
 {
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
-		for (QString const &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
+		for (const QString &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
 			SettingsManager::loadDefaultSettings(defaultSettingsFile);
 		}
 	}
@@ -77,7 +91,7 @@ QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() cons
 {
 	QMultiMap<QString, ProjectConverter> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
-		for (ProjectConverter const &converter : toolPlugin->projectConverters()) {
+		for (const ProjectConverter &converter : toolPlugin->projectConverters()) {
 			result.insertMulti(converter.editor(), converter);
 		}
 	}
@@ -100,9 +114,9 @@ void ToolPluginManager::updateSettings()
 	emit mSystemEvents->settingsUpdated();
 }
 
-void ToolPluginManager::activeTabChanged(Id const & rootElementId)
+void ToolPluginManager::activeTabChanged(const TabInfo &info)
 {
-	emit mSystemEvents->activeTabChanged(rootElementId);
+	emit mSystemEvents->activeTabChanged(info);
 }
 
 QList<ToolPluginInterface *> ToolPluginManager::plugins() const

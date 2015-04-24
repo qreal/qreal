@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 /*
  * LEGO® MINDSTORMS EV3
  *
@@ -286,10 +300,10 @@ typedef   enum
 
 //  \endverbatim \ref cBranch "BRANCH" \verbatim
 //        BRANCH                          011000..
-                                      //?       00
-                                      //?       01
-                                      //?       10
-                                      //?       11
+									  //?       00
+									  //?       01
+									  //?       10
+									  //?       11
 //                    JR_LT                  001..
   opJR_LT8                    = 0x64, //        00
   opJR_LT16                   = 0x65, //        01
@@ -614,7 +628,6 @@ typedef   enum
   GET_ON_OFF    = 1,                    //!< Set, Get
   GET_VISIBLE   = 2,                    //!< Set, Get
   GET_RESULT    = 4,                    //!<      Get
-  GET_PIN       = 5,                    //!< Set, Get
   SEARCH_ITEMS  = 8,                    //!<      Get
   SEARCH_ITEM   = 9,                    //!<      Get
   FAVOUR_ITEMS  = 10,                   //!<      Get
@@ -646,7 +659,6 @@ typedef   enum
   SET_ON_OFF    = 1,                    //!< Set, Get
   SET_VISIBLE   = 2,                    //!< Set, Get
   SET_SEARCH    = 3,                    //!< Set
-  SET_PIN       = 5,                    //!< Set, Get
   SET_PASSKEY   = 6,                    //!< Set
   SET_CONNECTION = 7,                    //!< Set
   SET_BRICKNAME = 8,
@@ -950,9 +962,9 @@ STRING_SUBCODE;
 
 /*! \page programid Program ID's (Slots)
 
-    \anchor prgid
+	\anchor prgid
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -974,7 +986,7 @@ SLOT;
 
 /*! \page buttons Button
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -996,7 +1008,7 @@ BUTTONTYPE;
 
 /*! \page mathsubcode Specific command parameter
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1060,7 +1072,7 @@ TST_SUBCODE;
 
 /*! \page browsers Browser Types Avaliable
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1078,7 +1090,7 @@ BROWSERTYPE;
 
 /*! \page fonts Font Types Avaliable
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1096,7 +1108,7 @@ FONTTYPE;
 
 /*! \page icons Icon Types Avaliable
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1250,7 +1262,7 @@ A_ICON_NO;
 
 /*! \page bttypes Bluetooth Device Types
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1269,7 +1281,7 @@ BTTYPE;
 
 /*! \page ledpatterns LED Pattern
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1305,7 +1317,7 @@ LEDTYPE;
 
 /*! \page filetypes File Types Avaliable
 
-    \verbatim */
+	\verbatim */
 
 
 typedef   enum
@@ -1333,9 +1345,9 @@ FILETYPE;
 
 /*! \page results Results
 
-    Describes result from executing functions
+	Describes result from executing functions
 
-    \verbatim */
+	\verbatim */
 
 
 typedef   enum
@@ -1410,7 +1422,7 @@ DEL;
 
 /*! \page transportlayers Hardware Transport Layer
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1427,7 +1439,7 @@ HWTYPE;
 
 /*! \page encryptions Encryption Types
 
-    \verbatim */
+	\verbatim */
 
 typedef   enum
 {
@@ -1539,6 +1551,27 @@ typedef   enum
 }
 DEVCMD;
 
+enum SensorTypeEnum {
+    NO_SENSOR = 0x00
+    , SWITCH = 0x01
+    , TEMPERATURE = 0x02
+    , REFLECTION = 0x03
+    , ANGLE = 0x04
+    , LIGHT_ACTIVE = 0x05
+    , LIGHT_INACTIVE = 0x06
+    , SOUND_DB = 0x07
+    , SOUND_DBA = 0x08
+    , CUSTOM = 0x09
+    , LOWSPEED = 0x0A
+    , LOWSPEED_9V = 0x0B
+    , SONAR_METRIC = 0x0C  // Not documented
+    , COLORFULL = 0x0D
+    , COLORRED = 0x0E
+    , COLORGREEN = 0x0F
+    , COLORBLUE = 0x10
+    , COLORNONE = 0x11
+};
+
 /*\endverbatim
  *
  *  \n
@@ -1571,16 +1604,16 @@ DEVCMD;
 #define   BYTEToBytes(_x)               (UBYTE)((_x) & 0xFF)
 
 #define   PROGRAMHeader(VersionInfo,NumberOfObjects,GlobalBytes)\
-                                        'L','E','G','O',LONGToBytes(0),WORDToBytes((UWORD)(BYTECODE_VERSION * 100.0)),WORDToBytes(NumberOfObjects),LONGToBytes(GlobalBytes)
+										'L','E','G','O',LONGToBytes(0),WORDToBytes((UWORD)(BYTECODE_VERSION * 100.0)),WORDToBytes(NumberOfObjects),LONGToBytes(GlobalBytes)
 
 #define   VMTHREADHeader(OffsetToInstructions,LocalBytes)\
-                                        LONGToBytes(OffsetToInstructions),0,0,0,0,LONGToBytes(LocalBytes)
+										LONGToBytes(OffsetToInstructions),0,0,0,0,LONGToBytes(LocalBytes)
 
 #define   SUBCALLHeader(OffsetToInstructions,LocalBytes)\
-                                        LONGToBytes(OffsetToInstructions),0,0,1,0,LONGToBytes(LocalBytes)
+										LONGToBytes(OffsetToInstructions),0,0,1,0,LONGToBytes(LocalBytes)
 
 #define   BLOCKHeader(OffsetToInstructions,OwnerObjectId,TriggerCount)\
-                                        LONGToBytes(OffsetToInstructions),WORDToBytes(OwnerObjectId),WORDToBytes(TriggerCount),LONGToBytes(0)
+										LONGToBytes(OffsetToInstructions),WORDToBytes(OwnerObjectId),WORDToBytes(TriggerCount),LONGToBytes(0)
 
 //        MACROS FOR PRIMITIVES AND SYSTEM CALLS
 

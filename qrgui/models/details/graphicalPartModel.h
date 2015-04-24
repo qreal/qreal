@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
@@ -33,59 +47,59 @@ public:
 	/// Constructor.
 	/// @param repoApi - reference to repository API.
 	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
-			, modelsImplementation::ModelIndexesInterface const &graphicalModel);
+			, const modelsImplementation::ModelIndexesInterface &graphicalModel);
 
 	virtual ~GraphicalPartModel();
 
 	// Override.
-	virtual QVariant data(QModelIndex const &index, int role) const;
+	virtual QVariant data(const QModelIndex &index, int role) const;
 
 	// Override.
-	virtual bool setData(QModelIndex const &index, QVariant const &value, int role);
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 
 	// Override.
-	virtual int rowCount(QModelIndex const &parent = QModelIndex()) const;
+	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// Override.
-	virtual int columnCount(QModelIndex const &parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// Override.
-	virtual QModelIndex index(int row, int column, QModelIndex const &parent = QModelIndex()) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
 	// Override.
-	virtual QModelIndex parent(QModelIndex const &index) const;
+	virtual QModelIndex parent(const QModelIndex &index) const;
 
 	// Override.
-	virtual bool removeRows(int row, int count, QModelIndex const &parent = QModelIndex());
+	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
 	/// Adds new graphical part to model and repository.
 	/// @param element - id of an element to which a part shall be added. It shall already exist in repository,
 	///        but not nesessarily in a model.
 	/// @param index - index of a part, which uniquely identifies it in an element.
 	/// @returns model index of newly added part.
-	QModelIndex addGraphicalPart(Id const &element, int index);
+	QModelIndex addGraphicalPart(const Id &element, int index);
 
 	/// Returns index by given id of an element and index of a part within it.
-	QModelIndex findIndex(Id const &element, int index) const;
+	QModelIndex findIndex(const Id &element, int index) const;
 
 	/// Deletes model contents and reloads it from repo.
 	void reinit();
 
 public slots:
-	virtual void rowsAboutToBeRemovedInGraphicalModel(QModelIndex const &parent, int start, int end);
+	virtual void rowsAboutToBeRemovedInGraphicalModel(const QModelIndex &parent, int start, int end);
 
 private:
 	void clear();
-	void load(Id const &parent = Id::rootId());
-	void loadElement(Id const &id);
-	QModelIndex addGraphicalPart(Id const &element, int index, bool addToRepo);
+	void load(const Id &parent = Id::rootId());
+	void loadElement(const Id &id);
+	QModelIndex addGraphicalPart(const Id &element, int index, bool addToRepo);
 
 	qrRepo::GraphicalRepoApi &mRepoApi;
 	QList<QList<modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.
 
 	/// Maps id to an index of this id in mItems list.
 	QHash<Id, int> mIdPositions;
-	modelsImplementation::ModelIndexesInterface const &mGraphicalModel;
+	const modelsImplementation::ModelIndexesInterface &mGraphicalModel;
 };
 
 }

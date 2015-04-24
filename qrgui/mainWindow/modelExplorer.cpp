@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "modelExplorer.h"
 
 #include <QtGui/QFocusEvent>
@@ -32,7 +46,7 @@ void ModelExplorer::setAssistApi(details::ModelsAssistInterface * const model)
 	mModel = model;
 }
 
-void ModelExplorer::setExploser(models::Exploser const &exploser)
+void ModelExplorer::setExploser(const models::Exploser &exploser)
 {
 	mExploser = &exploser;
 }
@@ -50,10 +64,10 @@ void ModelExplorer::changeEditorActionsSet(QList<QAction *> const &actions)
 
 void ModelExplorer::commitData(QWidget *editor)
 {
-	Id const id = static_cast<AbstractModel *>(model())->idByIndex(currentIndex());
-	QString const oldName = model()->data(currentIndex()).toString();
+	const Id id = static_cast<AbstractModel *>(model())->idByIndex(currentIndex());
+	const QString oldName = model()->data(currentIndex()).toString();
 	QTreeView::commitData(editor);
-	QString const newName = model()->data(currentIndex()).toString();
+	const QString newName = model()->data(currentIndex()).toString();
 	if (oldName != newName) {
 		mController->execute(new commands::RenameCommand(*mModel, id, oldName, newName, mExploser));
 	}

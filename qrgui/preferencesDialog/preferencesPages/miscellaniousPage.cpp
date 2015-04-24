@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
@@ -17,8 +31,6 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged
 			, [=](int value ) { SettingsManager::setValue("toolbarSize", value); });
-
-	mUi->colorComboBox->addItems(QColor::colorNames());
 
 	restoreSettings();
 }
@@ -41,7 +53,7 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
-	QString const path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage"
+	const QString path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage"
 			, this, tr("Open Directory")).replace("\\", "/");
 	if (!path.isEmpty()) {
 		mUi->imagesPathEdit->setText(path);
@@ -55,8 +67,6 @@ void PreferencesMiscellaniousPage::save()
 
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
 	SettingsManager::setValue("recentProjectsLimit", mUi->recentProjectsLimitSpinBox->value());
-	SettingsManager::setValue("PaintOldEdgeMode", mUi->paintOldLineCheckBox->isChecked());
-	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
 
 	SettingsManager::setValue("toolbarSize", mUi->toolbarSizeSlider->value());
 }
@@ -65,12 +75,6 @@ void PreferencesMiscellaniousPage::restoreSettings()
 {
 	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
-
-	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
-
-	QString curColor = SettingsManager::value("oldLineColor").toString();
-	int curColorIndex = mUi->colorComboBox->findText(curColor);
-	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 
 	mUi->toolbarSizeSlider->setValue(SettingsManager::value("toolbarSize").toInt());
 

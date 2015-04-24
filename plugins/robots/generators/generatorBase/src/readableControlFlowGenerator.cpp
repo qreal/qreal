@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "readableControlFlowGenerator.h"
 
 #include "rules/simpleRules/simpleUnvisitedRule.h"
@@ -19,24 +33,24 @@ using namespace generatorBase;
 using namespace qReal;
 using namespace semantics;
 
-ReadableControlFlowGenerator::ReadableControlFlowGenerator(
-		qrRepo::RepoApi const &repo
+ReadableControlFlowGenerator::ReadableControlFlowGenerator(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
-		, Id const &diagramId
+		, PrimaryControlFlowValidator &validator
+		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
-	: ControlFlowGeneratorBase(repo, errorReporter, customizer, diagramId, parent, isThisDiagramMain)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mTravelingForSecondTime(false)
 {
 }
 
-ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagramId)
+ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(const Id &diagramId, bool cloneForNewDiagram)
 {
 	ReadableControlFlowGenerator * const copy = new ReadableControlFlowGenerator(mRepo
-			, mErrorReporter, mCustomizer, diagramId, parent(), false);
-	delete copy->mValidator;
-	copy->mValidator = mValidator;
+			, mErrorReporter, mCustomizer, (cloneForNewDiagram ? *mValidator.clone() : mValidator)
+			, diagramId, parent(), false);
+
 	return copy;
 }
 
@@ -65,9 +79,10 @@ void ReadableControlFlowGenerator::beforeSearch()
 {
 }
 
-void ReadableControlFlowGenerator::visitRegular(Id const &id
-		, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitRegular(const Id &id
+		, const QList<LinkInfo> &links)
 {
+	ControlFlowGeneratorBase::visitRegular(id, links);
 	SimpleUnvisitedRule unvisitedRule(mSemanticTree, id, links[0]);
 	SimpleVisitedOneZoneRule visitedOneZoneRule(mSemanticTree, id, links[0]);
 	SimpleMergedIfBranchesRule ifMergedBranchesRule(mSemanticTree, id, links[0]);
@@ -84,8 +99,8 @@ void ReadableControlFlowGenerator::visitRegular(Id const &id
 	applyFirstPossible(id, rules, !mTravelingForSecondTime);
 }
 
-void ReadableControlFlowGenerator::visitConditional(Id const &id
-		, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitConditional(const Id &id
+		, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
@@ -103,8 +118,8 @@ void ReadableControlFlowGenerator::visitConditional(Id const &id
 	applyFirstPossible(id, { &oneVisitedRule, &bothUnvisitedRule }, false);
 }
 
-void ReadableControlFlowGenerator::visitLoop(Id const &id
-		, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitLoop(const Id &id
+		, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
@@ -124,7 +139,7 @@ void ReadableControlFlowGenerator::visitLoop(Id const &id
 	applyFirstPossible(id, { &bothUnvisitedRule, &iterationVisitedRule, &nextVisitedRule }, false);
 }
 
-void ReadableControlFlowGenerator::visitSwitch(Id const &id, QList<LinkInfo> const &links)
+void ReadableControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &links)
 {
 	SwitchInitializationRule buildingRule(mSemanticTree, id, links, mRepo);
 	applyFirstPossible(id, { &buildingRule }, false);
@@ -139,7 +154,7 @@ bool ReadableControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
 	return mCantBeGeneratedIntoStructuredCode;
 }
 
-bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
+bool ReadableControlFlowGenerator::applyFirstPossible(const Id &currentId
 		, QList<SemanticTransformationRule *> const &rules
 		, bool thereWillBeMoreRules)
 {

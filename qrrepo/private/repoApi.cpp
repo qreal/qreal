@@ -1,27 +1,44 @@
-﻿#include "../repoApi.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "repoApi.h"
 
 using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
 
-RepoApi::RepoApi(QString const &workingDirectory, bool ignoreAutosave)
+RepoApi::RepoApi(const QString &workingDirectory, bool ignoreAutosave)
 		: mRepository(workingDirectory)
 		, mIgnoreAutosave(ignoreAutosave)
 {
 }
 
-QString RepoApi::name(Id const &id) const
+QString RepoApi::name(const Id &id) const
 {
-	Q_ASSERT(mRepository.property(id, "name").canConvert<QString>());
+	if (!mRepository.property(id, "name").canConvert<QString>()) {
+		Q_ASSERT(mRepository.property(id, "name").canConvert<QString>());
+	}
+
 	return mRepository.property(id, "name").toString();
 }
 
-void RepoApi::setName(Id const &id, QString const &name)
+void RepoApi::setName(const Id &id, const QString &name)
 {
 	mRepository.setProperty(id, "name", name);
 }
 
-IdList RepoApi::children(Id const &id) const
+IdList RepoApi::children(const Id &id) const
 {
 	return mRepository.children(id);
 }
@@ -31,65 +48,65 @@ void RepoApi::printDebug()
 	mRepository.printDebug();
 }
 
-IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
+IdList RepoApi::findElementsByName(const QString &name, bool sensitivity, bool regExpression) const
 {
 	return mRepository.findElementsByName(name, sensitivity, regExpression);
 }
 
-qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity,
-		bool regExpression) const
+qReal::IdList RepoApi::elementsByPropertyContent(const QString &propertyContent, bool sensitivity
+		, bool regExpression) const
 {
 	return mRepository.elementsByPropertyContent(propertyContent, sensitivity, regExpression);
 }
 
-void RepoApi::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
+void RepoApi::replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue)
 {
 	mRepository.replaceProperties(toReplace, value, newValue);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child)
+void RepoApi::addChild(const Id &id, const Id &child)
 {
 	mRepository.addChild(id, child);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
+void RepoApi::addChild(const Id &id, const Id &child, const Id &logicalId)
 {
 	mRepository.addChild(id, child, logicalId);
 }
 
-void RepoApi::stackBefore(Id const &id, Id const &child, Id const &sibling)
+void RepoApi::stackBefore(const Id &id, const Id &child, const Id &sibling)
 {
 	mRepository.stackBefore(id, child, sibling);
 }
 
-Id RepoApi::copy(qReal::Id const &src)
+Id RepoApi::copy(const qReal::Id &src)
 {
 	return mRepository.cloneObject(src);
 }
 
-void RepoApi::removeChild(Id const &id, Id const &child)
+void RepoApi::removeChild(const Id &id, const Id &child)
 {
 	mRepository.removeChild(id, child);
 }
 
-void RepoApi::removeChildren(Id const &id)
+void RepoApi::removeChildren(const Id &id)
 {
-	foreach (Id const &child, children(id)) {
+	foreach (const Id &child, children(id)) {
 		removeChild(id, child);
 	}
 }
 
-void RepoApi::removeElement(Id const &id)
+void RepoApi::removeElement(const Id &id)
 {
 	Q_ASSERT(id != Id::rootId());
 
-	foreach (Id const &child, children(id)) {
+	foreach (const Id &child, children(id)) {
 		removeElement(child);
 	}
 
 	if (hasProperty(id, "links")) {
-		IdList const links = property(id, "links").value<IdList>();
-		foreach (Id const &link, links) {
+		const IdList links = property(id, "links").value<IdList>();
+		foreach (const Id &link, links) {
 			if (mRepository.exist(link)) {
 				if (hasProperty(link, "from") && property(link, "from").value<Id>() == id) {
 					setProperty(link, "from", Id::rootId().toVariant());
@@ -105,15 +122,15 @@ void RepoApi::removeElement(Id const &id)
 	removeLinkEnds("to", id);
 
 	if (hasProperty(id, "outgoingExplosions")) {
-		IdList const explosions = property(id, "outgoingExplosions").value<IdList>();
-		foreach (Id const &target, explosions) {
+		const IdList explosions = property(id, "outgoingExplosions").value<IdList>();
+		foreach (const Id &target, explosions) {
 			removeExplosion(id, target);
 		}
 	}
 
 	if (hasProperty(id, "incomingExplosions")) {
-		IdList const explosions = property(id, "incomingExplosions").value<IdList>();
-		foreach (Id const &source, explosions) {
+		const IdList explosions = property(id, "incomingExplosions").value<IdList>();
+		foreach (const Id &source, explosions) {
 			if (exist(source)) {
 				removeExplosion(source, id);
 			}
@@ -123,7 +140,7 @@ void RepoApi::removeElement(Id const &id)
 	mRepository.remove(id);
 }
 
-void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
+void RepoApi::removeLinkEnds(const QString &endName, const Id &id) {
 	if (hasProperty(id, endName)) {
 		Id target = property(id, endName).value<Id>();
 		if (hasProperty(target, "links")) {
@@ -132,23 +149,23 @@ void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 	}
 }
 
-Id RepoApi::parent(Id const &id) const
+Id RepoApi::parent(const Id &id) const
 {
 	return mRepository.parent(id);
 }
 
-void RepoApi::setParent(Id const &id, Id const &parent)
+void RepoApi::setParent(const Id &id, const Id &parent)
 {
-	Id const oldParent = mRepository.parent(id);
+	const Id oldParent = mRepository.parent(id);
 	mRepository.removeChild(oldParent, id);
 	mRepository.setParent(id, parent);
 }
 
-IdList RepoApi::links(Id const &id, QString const &direction) const
+IdList RepoApi::links(const Id &id, const QString &direction) const
 {
 	IdList links = mRepository.property(id, "links").value<IdList>();
 	IdList result;
-	foreach (Id const link, links) {
+	foreach (const Id link, links) {
 		if (mRepository.exist(link) && mRepository.property(link, direction).value<Id>() == id) {
 			result.append(link);
 		}
@@ -156,34 +173,34 @@ IdList RepoApi::links(Id const &id, QString const &direction) const
 	return result;
 }
 
-IdList RepoApi::outgoingLinks(Id const &id) const
+IdList RepoApi::outgoingLinks(const Id &id) const
 {
 	return links(id, "from");
 }
 
-IdList RepoApi::incomingLinks(Id const &id) const
+IdList RepoApi::incomingLinks(const Id &id) const
 {
 	return links(id, "to");
 }
 
-IdList RepoApi::links(Id const &id) const
+IdList RepoApi::links(const Id &id) const
 {
 	return incomingLinks(id) << outgoingLinks(id);
 }
 
-qReal::Id RepoApi::outgoingExplosion(qReal::Id const &id) const
+qReal::Id RepoApi::outgoingExplosion(const qReal::Id &id) const
 {
 	return mRepository.property(id, "outgoingExplosion").value<Id>();
 }
 
-qReal::IdList RepoApi::incomingExplosions(qReal::Id const &id) const
+qReal::IdList RepoApi::incomingExplosions(const qReal::Id &id) const
 {
 	return mRepository.property(id, "incomingExplosions").value<IdList>();
 }
 
-void RepoApi::addExplosion(qReal::Id const &source, qReal::Id const &destination)
+void RepoApi::addExplosion(const qReal::Id &source, const qReal::Id &destination)
 {
-	Id const oldTarget = outgoingExplosion(source);
+	const Id oldTarget = outgoingExplosion(source);
 	if (oldTarget == destination) {
 		return;
 	}
@@ -194,20 +211,20 @@ void RepoApi::addExplosion(qReal::Id const &source, qReal::Id const &destination
 	addToIdList(destination, "incomingExplosions", source);
 }
 
-void RepoApi::removeExplosion(qReal::Id const &source, qReal::Id const &destination)
+void RepoApi::removeExplosion(const qReal::Id &source, const qReal::Id &destination)
 {
 	mRepository.setProperty(source, "outgoingExplosion", Id().toVariant());
 	removeFromList(destination, "incomingExplosions", source);
 }
 
-qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
+qReal::IdList RepoApi::connectedElements(const qReal::Id &id) const
 {
 	qReal::IdList result = outgoingConnectedElements(id);
 	result.append(incomingConnectedElements(id));
 	return result;
 }
 
-qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
+qReal::IdList RepoApi::outgoingConnectedElements(const qReal::Id &id) const
 {
 	qReal::IdList result;
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
@@ -218,7 +235,7 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 	return result;
 }
 
-qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
+qReal::IdList RepoApi::incomingConnectedElements(const qReal::Id &id) const
 {
 	qReal::IdList result;
 	foreach (qReal::Id curLink, incomingLinks(id)) {
@@ -229,23 +246,23 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	return result;
 }
 
-QVariant RepoApi::property(Id const &id, QString const &propertyName) const
+QVariant RepoApi::property(const Id &id, const QString &propertyName) const
 {
 	return mRepository.property(id, propertyName);
 }
 
-QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
+QString RepoApi::stringProperty(const Id &id, const QString &propertyName) const
 {
 	Q_ASSERT(mRepository.property(id, propertyName).canConvert<QString>());
 	return mRepository.property(id, propertyName).toString();
 }
 
-void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
+void RepoApi::setProperty(const Id &id, const QString &propertyName, const QVariant &value)
 {
 	mRepository.setProperty(id, propertyName, value);
 }
 
-void RepoApi::removeProperty(Id const &id, QString const &propertyName)
+void RepoApi::removeProperty(const Id &id, const QString &propertyName)
 {
 	mRepository.removeProperty(id, propertyName);
 }
@@ -255,38 +272,38 @@ void RepoApi::copyProperties(const Id &dest, const Id &src)
 	mRepository.copyProperties(dest, src);
 }
 
-QMap<QString, QVariant> RepoApi::properties(Id const &id)
+QMap<QString, QVariant> RepoApi::properties(const Id &id)
 {
 	return mRepository.properties(id);
 }
 
-void RepoApi::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
+void RepoApi::setProperties(const Id &id, QMap<QString, QVariant> const &properties)
 {
 	mRepository.setProperties(id, properties);
 }
 
-bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
+bool RepoApi::hasProperty(const Id &id, const QString &propertyName) const
 {
 	return mRepository.hasProperty(id, propertyName);
 }
 
-void RepoApi::setBackReference(Id const &id, Id const &reference) const
+void RepoApi::setBackReference(const Id &id, const Id &reference) const
 {
 	mRepository.setBackReference(id, reference);
 }
 
-void RepoApi::removeBackReference(Id const &id, Id const &reference) const
+void RepoApi::removeBackReference(const Id &id, const Id &reference) const
 {
 	mRepository.removeBackReference(id, reference);
 }
 
-Id RepoApi::from(Id const &id) const
+Id RepoApi::from(const Id &id) const
 {
 	Q_ASSERT(mRepository.property(id, "from").canConvert<Id>());
 	return mRepository.property(id, "from").value<Id>();
 }
 
-void RepoApi::setFrom(Id const &id, Id const &from)
+void RepoApi::setFrom(const Id &id, const Id &from)
 {
 	if (hasProperty(id, "from")) {
 		Id prev = mRepository.property(id, "from").value<Id>();
@@ -296,13 +313,13 @@ void RepoApi::setFrom(Id const &id, Id const &from)
 	addToIdList(from, "links", id, "from");
 }
 
-Id RepoApi::to(Id const &id) const
+Id RepoApi::to(const Id &id) const
 {
 	Q_ASSERT(mRepository.property(id, "to").canConvert<Id>());
 	return mRepository.property(id, "to").value<Id>();
 }
 
-void RepoApi::setTo(Id const &id, Id const &to)
+void RepoApi::setTo(const Id &id, const Id &to)
 {
 	if (hasProperty(id, "to")) {
 		Id prev = mRepository.property(id, "to").value<Id>();
@@ -312,59 +329,59 @@ void RepoApi::setTo(Id const &id, Id const &to)
 	addToIdList(to, "links", id, "to");
 }
 
-qreal RepoApi::fromPort(Id const &id) const
+qreal RepoApi::fromPort(const Id &id) const
 {
 	Q_ASSERT(mRepository.property(id, "fromPort").canConvert<qreal>());
 	return mRepository.property(id, "fromPort").value<qreal>();
 }
 
-void RepoApi::setFromPort(Id const &id, qreal fromPort)
+void RepoApi::setFromPort(const Id &id, qreal fromPort)
 {
 	mRepository.setProperty(id, "fromPort", fromPort);
 }
 
-qreal RepoApi::toPort(Id const &id) const
+qreal RepoApi::toPort(const Id &id) const
 {
 	Q_ASSERT(mRepository.property(id, "toPort").canConvert<qreal>());
 	return mRepository.property(id, "toPort").value<qreal>();
 }
 
-void RepoApi::setToPort(Id const &id, qreal toPort)
+void RepoApi::setToPort(const Id &id, qreal toPort)
 {
 	mRepository.setProperty(id, "toPort", toPort);
 }
 
-QVariant RepoApi::position(Id const &id) const
+QVariant RepoApi::position(const Id &id) const
 {
 	return mRepository.property(id, "position");
 }
 
-QVariant RepoApi::configuration(Id const &id) const
+QVariant RepoApi::configuration(const Id &id) const
 {
 	return mRepository.property(id, "configuration");
 }
 
-void RepoApi::setPosition(Id const &id, QVariant const &position)
+void RepoApi::setPosition(const Id &id, const QVariant &position)
 {
 	mRepository.setProperty(id, "position", position);
 }
 
-void RepoApi::setConfiguration(Id const &id, QVariant const &configuration)
+void RepoApi::setConfiguration(const Id &id, const QVariant &configuration)
 {
 	mRepository.setProperty(id, "configuration", configuration);
 }
 
-bool RepoApi::isLogicalElement(qReal::Id const &id) const
+bool RepoApi::isLogicalElement(const qReal::Id &id) const
 {
 	return mRepository.isLogicalId(id);
 }
 
-bool RepoApi::isGraphicalElement(qReal::Id const &id) const
+bool RepoApi::isGraphicalElement(const qReal::Id &id) const
 {
 	return !mRepository.isLogicalId(id);
 }
 
-qReal::Id RepoApi::logicalId(qReal::Id const &id) const
+qReal::Id RepoApi::logicalId(const qReal::Id &id) const
 {
 	return mRepository.logicalId(id);
 }
@@ -374,12 +391,12 @@ void RepoApi::exterminate()
 	mRepository.exterminate();
 }
 
-void RepoApi::open(QString const &saveFile)
+void RepoApi::open(const QString &saveFile)
 {
 	mRepository.open(saveFile);
 }
 
-void RepoApi::exportToXml(QString const &targetFile) const
+void RepoApi::exportToXml(const QString &targetFile) const
 {
 	mRepository.exportToXml(targetFile);
 }
@@ -389,11 +406,13 @@ void RepoApi::saveAll()
 	mRepository.saveAll();
 }
 
-void RepoApi::saveTo(QString const &workingFile)
+void RepoApi::saveTo(const QString &workingFile)
 {
 	if (!mIgnoreAutosave) {
 		mRepository.setWorkingFile(workingFile);
-		mRepository.saveAll();
+		if (!workingFile.isEmpty()) {
+			mRepository.saveAll();
+		}
 	}
 }
 
@@ -402,7 +421,7 @@ void RepoApi::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 	mRepository.saveDiagramsById(diagramIds);
 }
 
-void RepoApi::importFromDisk(QString const &importedFile)
+void RepoApi::importFromDisk(const QString &importedFile)
 {
 	mRepository.importFromDisk(importedFile);
 }
@@ -420,7 +439,7 @@ QString RepoApi::workingFile() const
 IdList RepoApi::graphicalElements() const
 {
 	IdList result;
-	foreach (Id const &id, mRepository.elements()) {
+	foreach (const Id &id, mRepository.elements()) {
 		if (!mRepository.isLogicalId(id))
 			result.append(id);
 	}
@@ -442,7 +461,7 @@ void RepoApi::processWorkingCopy(const QString &workingCopyPath, QString const &
 	mRepository.processWorkingCopy(workingCopyPath, targetProject);
 }
 
-void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
+void RepoApi::addToIdList(const Id &target, const QString &listName, const Id &data, const QString &direction)
 {
 	if (target == Id::rootId())
 		return;
@@ -463,7 +482,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 	}
 }
 
-void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data, QString const &direction)
+void RepoApi::removeFromList(const Id &target, const QString &listName, const Id &data, const QString &direction)
 {
 	if (target == Id::rootId())
 		return;
@@ -479,16 +498,16 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
 	mRepository.setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
 }
 
-Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
+Id RepoApi::otherEntityFromLink(const Id &linkId, const Id &firstNode) const
 {
-	Id const fromId = from(linkId);
+	const Id fromId = from(linkId);
 	if (fromId != firstNode)
 		return fromId;
 	else
 		return to(linkId);
 }
 
-IdList RepoApi::logicalElements(Id const &type) const
+IdList RepoApi::logicalElements(const Id &type) const
 {
 	Q_ASSERT(type.idSize() == 3);
 
@@ -500,7 +519,7 @@ IdList RepoApi::logicalElements(Id const &type) const
 	return result;
 }
 
-IdList RepoApi::graphicalElements(Id const &type) const
+IdList RepoApi::graphicalElements(const Id &type) const
 {
 	Q_ASSERT(type.idSize() == 3);
 
@@ -512,22 +531,22 @@ IdList RepoApi::graphicalElements(Id const &type) const
 	return result;
 }
 
-IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regExpression) const
+IdList RepoApi::elementsByType(const QString &type, bool sensitivity, bool regExpression) const
 {
-	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
+	const Qt::CaseSensitivity caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
 	QRegExp *regExp = new QRegExp(type,caseSensitivity);
 
 	IdList result;
 
 	if (regExpression) {
-		foreach (Id const &id, mRepository.elements()) {
+		foreach (const Id &id, mRepository.elements()) {
 			if (id.element().contains(*regExp)) {
 				result.append(id);
 			}
 		}
 	} else {
-		foreach (Id const &id, mRepository.elements()) {
+		foreach (const Id &id, mRepository.elements()) {
 			if (id.element().contains(type, caseSensitivity)) {
 				result.append(id);
 			}
@@ -536,7 +555,7 @@ IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regEx
 	return result;
 }
 
-qReal::IdList RepoApi::elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const
+qReal::IdList RepoApi::elementsByProperty(const QString &property, bool sensitivity, bool regExpression) const
 {
 	return mRepository.elementsByProperty(property, sensitivity, regExpression);
 }
@@ -546,51 +565,51 @@ int RepoApi::elementsCount() const
 	return mRepository.elements().size();
 }
 
-bool RepoApi::exist(Id const &id) const
+bool RepoApi::exist(const Id &id) const
 {
 	return mRepository.exist(id);
 }
 
-IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
+IdList RepoApi::temporaryRemovedLinksAt(const Id &id, const QString &direction) const
 {
 	return mRepository.temporaryRemovedLinksAt(id, direction);
 }
 
-void RepoApi::setTemporaryRemovedLinks(Id const &id, IdList const &value, QString const &direction)
+void RepoApi::setTemporaryRemovedLinks(const Id &id, const IdList &value, const QString &direction)
 {
 	mRepository.setTemporaryRemovedLinks(id, direction, value);
 }
 
-void RepoApi::removeTemporaryRemovedLinks(Id const &id)
+void RepoApi::removeTemporaryRemovedLinks(const Id &id)
 {
 	mRepository.removeTemporaryRemovedLinks(id);
 }
 
-QMapIterator<QString, QVariant> RepoApi::propertiesIterator(qReal::Id const &id) const
+QMapIterator<QString, QVariant> RepoApi::propertiesIterator(const qReal::Id &id) const
 {
 	return mRepository.propertiesIterator(id);
 }
 
-void RepoApi::createGraphicalPart(qReal::Id const &id, int partIndex)
+void RepoApi::createGraphicalPart(const qReal::Id &id, int partIndex)
 {
 	mRepository.createGraphicalPart(id, partIndex);
 }
 
-QList<int> RepoApi::graphicalParts(qReal::Id const &id) const
+QList<int> RepoApi::graphicalParts(const qReal::Id &id) const
 {
 	return mRepository.graphicalParts(id);
 }
 
-QVariant RepoApi::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const
+QVariant RepoApi::graphicalPartProperty(const qReal::Id &id, int partIndex, const QString &propertyName) const
 {
 	return mRepository.graphicalPartProperty(id, partIndex, propertyName);
 }
 
 void RepoApi::setGraphicalPartProperty(
-		qReal::Id const &id
+		const qReal::Id &id
 		, int partIndex
-		, QString const &propertyName
-		, QVariant const &value
+		, const QString &propertyName
+		, const QVariant &value
 		)
 {
 	mRepository.setGraphicalPartProperty(id, partIndex, propertyName, value);
@@ -601,12 +620,12 @@ QStringList RepoApi::metaInformationKeys() const
 	return mRepository.metaInformationKeys();
 }
 
-QVariant RepoApi::metaInformation(QString const &key) const
+QVariant RepoApi::metaInformation(const QString &key) const
 {
 	return mRepository.metaInformation(key);
 }
 
-void RepoApi::setMetaInformation(QString const &key, QVariant const &info)
+void RepoApi::setMetaInformation(const QString &key, const QVariant &info)
 {
 	mRepository.setMetaInformation(key, info);
 }

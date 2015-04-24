@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "element.h"
 
 #include <QtGui/QKeyEvent>
@@ -9,10 +23,10 @@
 
 using namespace qReal;
 
-qreal const disabledEffectStrength = 0.9;
+const qreal disabledEffectStrength = 0.9;
 
 Element::Element(ElementImpl *elementImpl
-		, Id const &id
+		, const Id &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
@@ -61,12 +75,12 @@ QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 	return QList<ContextMenuAction*>();
 }
 
-QString Element::logicalProperty(QString const &roleName) const
+QString Element::logicalProperty(const QString &roleName) const
 {
 	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
 }
 
-void Element::setLogicalProperty(QString const &roleName, QString const &value, bool withUndoRedo)
+void Element::setLogicalProperty(const QString &roleName, const QString &value, bool withUndoRedo)
 {
 	commands::AbstractCommand *command = new commands::ChangePropertyCommand(&mLogicalAssistApi
 			, roleName, logicalId(), value);
@@ -127,7 +141,7 @@ bool Element::createChildrenFromMenu() const
 
 void Element::updateEnabledState()
 {
-	bool const enabled = mLogicalAssistApi.editorManagerInterface().elements(
+	const bool enabled = mLogicalAssistApi.editorManagerInterface().elements(
 			Id(mId.editor(), mId.diagram())).contains(mId.type());
 
 	mEnabled = enabled;
@@ -145,7 +159,7 @@ void Element::updateEnabledState()
 
 void Element::setHideNonHardLabels(bool hide)
 {
-	for (Label const * const label : mLabels) {
+	for (const Label * const label : mLabels) {
 		if (label->isSelected()) {
 			return;
 		}
@@ -162,8 +176,11 @@ void Element::keyPressEvent(QKeyEvent *event)
 		for (Label * const label : mLabels) {
 			if (!label->isReadOnly()) {
 				label->startTextInteraction();
+				event->accept();
 				return;
 			}
 		}
 	}
+
+	QGraphicsItem::keyPressEvent(event);
 }

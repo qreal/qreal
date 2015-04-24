@@ -1,15 +1,12 @@
+include(../../../global.pri)
+
 TEMPLATE = lib
-CONFIG += plugin c++11
-QT += widgets
-DESTDIR = ../../../bin/plugins/tools
+CONFIG += plugin
 
-MOC_DIR = .moc
-RCC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
+DESTDIR = $$DESTDIR/plugins/tools/
 
-LIBS += -L../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lqrgui-tool-plugin-interface -lqrgui-models \
-				-lqrgui-editor -lqrgui-controller -lqrgui-mouse-gestures -lqrgui-thirdparty -lqrgui-versioning-plugins-manager\
+links(qrkernel qslog qrutils qrrepo qrgui-tool-plugin-interface qrgui-models \
+				qrgui-editor qrgui-controller qrgui-mouse-gestures qrgui-thirdparty qrgui-versioning-plugins-manager )
 
 INCLUDEPATH = \
 	$$PWD/ \
@@ -17,6 +14,10 @@ INCLUDEPATH = \
 	$$PWD/../../ \
 	$$PWD/../../../ \
 	$$PWD/../../../qrgui/ \
+
+TRANSLATIONS += $$PWD/../../../visualDiff_ru.ts
+
+QT += widgets
 
 HEADERS += \
 	$$PWD/diffPluginWrapper.h \

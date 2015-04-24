@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "abstractView.h"
 
 #include <qrkernel/definitions.h>
@@ -16,8 +30,8 @@ AbstractView::~AbstractView()
 {
 }
 
-void AbstractView::rowsAboutToBeMoved(QModelIndex const &sourceParent
-		, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
+void AbstractView::rowsAboutToBeMoved(const QModelIndex &sourceParent
+		, int sourceStart, int sourceEnd, const QModelIndex &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceParent)
 	Q_UNUSED(sourceStart)
@@ -26,8 +40,8 @@ void AbstractView::rowsAboutToBeMoved(QModelIndex const &sourceParent
 	Q_UNUSED(destinationRow)
 }
 
-void AbstractView::rowsMoved(QModelIndex const &sourceParent, int sourceStart
-		, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
+void AbstractView::rowsMoved(const QModelIndex &sourceParent, int sourceStart
+		, int sourceEnd, const QModelIndex &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceParent)
 	Q_UNUSED(sourceStart)
@@ -36,7 +50,7 @@ void AbstractView::rowsMoved(QModelIndex const &sourceParent, int sourceStart
 	Q_UNUSED(destinationRow)
 }
 
-void AbstractView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+void AbstractView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
 		, QVector<int> const &roles)
 {
 	Q_UNUSED(topLeft)
@@ -44,14 +58,14 @@ void AbstractView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bo
 	Q_UNUSED(roles)
 }
 
-void AbstractView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)
+void AbstractView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
 	Q_UNUSED(parent)
 	Q_UNUSED(start)
 	Q_UNUSED(end)
 }
 
-void AbstractView::rowsInserted(QModelIndex const &parent, int start, int end)
+void AbstractView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	Q_UNUSED(parent)
 	Q_UNUSED(start)

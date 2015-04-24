@@ -46,7 +46,7 @@ void QextSerialPortPrivate::platformSpecificInit()
 {
     handle = INVALID_HANDLE_VALUE;
     ZeroMemory(&overlap, sizeof(OVERLAPPED));
-    overlap.hEvent = CreateEvent(NULL, true, false, NULL);
+    overlap.hEvent = CreateEvent(nullptr, true, false, nullptr);
     winEventNotifier = 0;
     bytesToWriteLock = new QReadWriteLock;
 }
@@ -83,7 +83,7 @@ bool QextSerialPortPrivate::open_sys(QIODevice::OpenMode mode)
 
     /*open the port*/
     handle = CreateFileW((wchar_t *)fullPortNameWin(port).utf16(), GENERIC_READ|GENERIC_WRITE,
-                           0, NULL, OPEN_EXISTING, dwFlagsAndAttributes, NULL);
+                           0, nullptr, OPEN_EXISTING, dwFlagsAndAttributes, nullptr);
     if (handle != INVALID_HANDLE_VALUE) {
         q->setOpenMode(mode);
         /*configure port settings*/
@@ -206,7 +206,7 @@ qint64 QextSerialPortPrivate::readData_sys(char *data, qint64 maxSize)
             else
                 failed = true;
         }
-    } else if (!ReadFile(handle, (void *)data, (DWORD)maxSize, &bytesRead, NULL)) {
+    } else if (!ReadFile(handle, (void *)data, (DWORD)maxSize, &bytesRead, nullptr)) {
         failed = true;
     }
     if (!failed)
@@ -231,7 +231,7 @@ qint64 QextSerialPortPrivate::writeData_sys(const char *data, qint64 maxSize)
     if (queryMode == QextSerialPort::EventDriven) {
         OVERLAPPED *newOverlapWrite = new OVERLAPPED;
         ZeroMemory(newOverlapWrite, sizeof(OVERLAPPED));
-        newOverlapWrite->hEvent = CreateEvent(NULL, true, false, NULL);
+        newOverlapWrite->hEvent = CreateEvent(nullptr, true, false, nullptr);
         if (WriteFile(handle, (void *)data, (DWORD)maxSize, &bytesWritten, newOverlapWrite)) {
             CloseHandle(newOverlapWrite->hEvent);
             delete newOverlapWrite;
@@ -250,7 +250,7 @@ qint64 QextSerialPortPrivate::writeData_sys(const char *data, qint64 maxSize)
                 QESP_WARNING("QextSerialPort: couldn't close OVERLAPPED handle");
             delete newOverlapWrite;
         }
-    } else if (!WriteFile(handle, (void *)data, (DWORD)maxSize, &bytesWritten, NULL)) {
+    } else if (!WriteFile(handle, (void *)data, (DWORD)maxSize, &bytesWritten, nullptr)) {
         failed = true;
     }
 

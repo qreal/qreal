@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
-#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/tabInfo.h>
 
 #include "gui/pushDialog.h"
 #include "gui/pullDialog.h"
@@ -24,6 +24,8 @@ class GitPlugin;
 
 namespace details {
 
+using qReal::TabInfo;
+
 class ViewInteraction : public QObject
 {
 	Q_OBJECT
@@ -33,7 +35,7 @@ public:
 
 	QList<qReal::ActionInfo> actions() const;
 	QPair<QString, qReal::gui::PreferencesPage *> preferencesPage() const;
-	void init(qReal::PluginConfigurator const &configurator);
+	void init(const qReal::PluginConfigurator &configurator);
 
 public slots:
 	void initClicked();
@@ -67,16 +69,17 @@ private slots:
 	void onCheckoutBranch(bool success);
 	void onCreateBranchComplete(bool success);
 	void onDeleteBranchComplete(bool success);
-	void onStatusComplete(QString answer, bool success);
-	void onLogComplete(QString answer, bool success);
-	void onRemoteListComplete(QString answer, bool success);
+	void onStatusComplete(const QString &answer, bool success);
+	void onLogComplete(const QString &answer, bool success);
+	void onRemoteListComplete(const QString &answer, bool success);
 	void onCheckoutComplete(bool success);
 	void modeChanged(bool compactMode);
 	void removeClosedTab(QWidget *widget);
+	void activeTabChanged(const TabInfo &info);
 
 private:
 	void initActions();
-	void showMessage(QString const &message);
+	void showMessage(const QString &message);
 	void reopenWithoutSavings();
 	QWidget *makeDiffTab();
 
@@ -91,5 +94,6 @@ private:
 	TransparentMode *mCompactMode;
 	qReal::SystemEvents *mSystemEvents;
 };
+
 }
 }

@@ -3,18 +3,16 @@
 #include <QtWidgets/QApplication>
 
 #include <qrutils/fileSystemUtils.h>
-
-#include "qrgui/mainWindow/mainWindow.h"
+#include <qrgui/mainWindow/mainWindow.h>
 
 
 using namespace qReal;
 
 QString const tempFolderName = "tempVCS";
 
-VersioningPluginsManager::VersioningPluginsManager(
-		qrRepo::RepoControlInterface *repoApi
-		, ErrorReporterInterface *errorReporter
-		, ProjectManager *projectManager
+VersioningPluginsManager::VersioningPluginsManager(qrRepo::RepoControlInterface *repoApi
+		, qReal::ErrorReporterInterface *errorReporter
+		, qReal::ProjectManagerWrapper *projectManager
 		)
 	: mRepoApi(repoApi), mErrorReporter(errorReporter)
 	, mDiffInterface(NULL)
@@ -46,7 +44,7 @@ void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInter
 
 		if (versioningPlugin) {
 			mPlugins.append(versioningPlugin);
-        if (!versioningPlugin->clientExist()) {
+		if (!versioningPlugin->clientExist()) {
 				foreach(ActionInfo const &actionInfo, versioningPlugin->actions()) {
 					if (actionInfo.isAction()){
 						actionInfo.action()->setVisible(false);

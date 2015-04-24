@@ -1,6 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "valuesSerializer.h"
 
-#include "../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
 
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
@@ -8,7 +22,7 @@
 using namespace qReal;
 using namespace qrRepo::details;
 
-IdList ValuesSerializer::deserializeIdList(QDomElement const &elem, QString const &name)
+IdList ValuesSerializer::deserializeIdList(const QDomElement &elem, const QString &name)
 {
 	QDomNodeList list = elem.elementsByTagName(name);
 	if (list.count() != 1) {
@@ -35,12 +49,12 @@ IdList ValuesSerializer::deserializeIdList(QDomElement const &elem, QString cons
 	return result;
 }
 
-Id ValuesSerializer::deserializeId(QString const &elementStr)
+Id ValuesSerializer::deserializeId(const QString &elementStr)
 {
 	return elementStr.isEmpty() ? Id() : Id::loadFromString(elementStr);
 }
 
-QVariant ValuesSerializer::deserializeQVariant(QString const &typeName, QString const &valueStr)
+QVariant ValuesSerializer::deserializeQVariant(const QString &typeName, const QString &valueStr)
 {
 	if (typeName.toLower() == "int") {
 		return QVariant(valueStr.toInt());
@@ -59,11 +73,11 @@ QVariant ValuesSerializer::deserializeQVariant(QString const &typeName, QString 
 	} else if (typeName == "QPointF") {
 		return QVariant(deserializeQPointF(valueStr));
 	} else if (typeName == "QPolygon" || typeName == "QPolygonF") {
-		QStringList const points = valueStr.split(" : ", QString::SkipEmptyParts);
+		const QStringList points = valueStr.split(" : ", QString::SkipEmptyParts);
 		QPolygon polygonResult;
 		QPolygonF polygonFResult;
-		foreach (QString const &str, points) {
-			QPointF const point = deserializeQPointF(str);
+		foreach (const QString &str, points) {
+			const QPointF point = deserializeQPointF(str);
 			polygonFResult << point;
 			polygonResult << point.toPoint();
 		}
@@ -77,14 +91,14 @@ QVariant ValuesSerializer::deserializeQVariant(QString const &typeName, QString 
 	}
 }
 
-QPointF ValuesSerializer::deserializeQPointF(QString const &str)
+QPointF ValuesSerializer::deserializeQPointF(const QString &str)
 {
 	qreal x = str.section(", ", 0, 0).toDouble();
 	qreal y = str.section(", ", 1, 1).toDouble();
 	return QPointF(x, y);
 }
 
-QString ValuesSerializer::serializeQVariant(QVariant const &v)
+QString ValuesSerializer::serializeQVariant(const QVariant &v)
 {
 	switch (v.type()) {
 	case QVariant::Int:
@@ -94,7 +108,7 @@ QString ValuesSerializer::serializeQVariant(QVariant const &v)
 	case QVariant::Double:
 		return QString::number(v.toDouble());
 	case QVariant::Bool:
-		return QString("%1").arg(v.toBool());
+		return QString("%1").arg(v.toBool() ? "true" : "false");
 	case QVariant::String:
 		return v.toString();
 	case QVariant::StringList:
@@ -119,22 +133,22 @@ QString ValuesSerializer::serializeQVariant(QVariant const &v)
 	}
 }
 
-QString ValuesSerializer::serializeQPointF(QPointF const &p)
+QString ValuesSerializer::serializeQPointF(const QPointF &p)
 {
 	return QString::number(p.x()) + ", " + QString::number(p.y());
 }
 
-QString ValuesSerializer::serializeQPolygonF(QPolygonF const &p)
+QString ValuesSerializer::serializeQPolygonF(const QPolygonF &p)
 {
 	QString result("");
-	foreach (QPointF const &point, p) {
+	foreach (const QPointF &point, p) {
 		result += serializeQPointF(point) + " : ";
 	}
 
 	return result;
 }
 
-QDomElement ValuesSerializer::serializeIdList(QString const &tagName, IdList const &idList, QDomDocument &document)
+QDomElement ValuesSerializer::serializeIdList(const QString &tagName, const IdList &idList, QDomDocument &document)
 {
 	QDomElement result = document.createElement(tagName);
 	foreach (Id id, idList) {
@@ -146,12 +160,13 @@ QDomElement ValuesSerializer::serializeIdList(QString const &tagName, IdList con
 	return result;
 }
 
-QDomElement ValuesSerializer::serializeNamedVariantsMap(QString const &tagName, QMap<QString, QVariant> const &map, QDomDocument &document)
+QDomElement ValuesSerializer::serializeNamedVariantsMap(const QString &tagName, QMap<QString, QVariant> const &map
+		, QDomDocument &document)
 {
 	QDomElement result = document.createElement(tagName);
 
 	for (QMap<QString, QVariant>::const_iterator i = map.constBegin(); i != map.constEnd(); ++i) {
-		QString const typeName = i.value().typeName();
+		const QString typeName = i.value().typeName();
 		if (typeName == "qReal::IdList") {
 			QDomElement list = ValuesSerializer::serializeIdList(i.key(), i.value().value<IdList>(), document);
 			list.setAttribute("type", "qReal::IdList");
@@ -168,7 +183,7 @@ QDomElement ValuesSerializer::serializeNamedVariantsMap(QString const &tagName, 
 	return result;
 }
 
-void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map, QDomElement const &element)
+void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map, const QDomElement &element)
 {
 	for (QDomElement property = element.firstChildElement();
 			!property.isNull();
@@ -176,21 +191,21 @@ void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map,
 	{
 		if (property.hasAttribute("type")) {
 			if (property.attribute("type") == "qReal::IdList") {
-				QString const key = property.tagName();
-				IdList const value = ValuesSerializer::deserializeIdList(element, property.tagName());
+				const QString key = property.tagName();
+				const IdList value = ValuesSerializer::deserializeIdList(element, property.tagName());
 				map.insert(key, IdListHelper::toVariant(value));
 			} else {
 				throw Exception("Unknown list type");
 			}
 		} else {
-			QString const type = property.tagName();
-			QString const key = property.attribute("key");
+			const QString type = property.tagName();
+			const QString key = property.attribute("key");
 			if (key.isEmpty()) {
 				throw Exception("Missing property name");
 			}
 
-			QString const valueStr = property.attribute("value", "");
-			QVariant const value = ValuesSerializer::deserializeQVariant(type, valueStr);
+			const QString valueStr = property.attribute("value", "");
+			const QVariant value = ValuesSerializer::deserializeQVariant(type, valueStr);
 			map.insert(key, value);
 		}
 	}

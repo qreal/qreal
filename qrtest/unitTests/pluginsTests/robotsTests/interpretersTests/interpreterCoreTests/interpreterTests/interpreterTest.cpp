@@ -1,9 +1,23 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "interpreterTest.h"
 
 #include <QtCore/QCoreApplication>
 
 #include <qrtext/lua/luaToolbox.h>
-#include "src/interpreter/interpreter.h"
+#include "interpreterCore/interpreter/interpreter.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
@@ -23,15 +37,17 @@ void InterpreterTest::SetUp()
 	mFakeConnectToRobotAction.reset(new QAction(nullptr));
 
 	ON_CALL(mConfigurationInterfaceMock, devices()).WillByDefault(
-			Return(QList<interpreterBase::robotModel::robotParts::Device *>())
+			Return(QList<kitBase::robotModel::robotParts::Device *>())
 			);
 	EXPECT_CALL(mConfigurationInterfaceMock, devices()).Times(AtLeast(1));
 
 	/// @todo: Do we need this code in some common place? Why do we need to write
 	/// it every time when we are going to use RobotModelManager mock?
 
+	ON_CALL(mModel, robotId()).WillByDefault(Return("mockRobot"));
+	EXPECT_CALL(mModel, robotId()).Times(AtLeast(1));
+
 	ON_CALL(mModel, name()).WillByDefault(Return("mockRobot"));
-	EXPECT_CALL(mModel, name()).Times(AtLeast(1));
 
 	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
 	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(0));
@@ -52,10 +68,10 @@ void InterpreterTest::SetUp()
 			);
 	EXPECT_CALL(mModel, disconnectFromRobot()).Times(AtLeast(0));
 
-	ON_CALL(mModel, configurablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
+	ON_CALL(mModel, configurablePorts()).WillByDefault(Return(QList<kitBase::robotModel::PortInfo>()));
 	EXPECT_CALL(mModel, configurablePorts()).Times(AtLeast(0));
 
-	ON_CALL(mModel, availablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
+	ON_CALL(mModel, availablePorts()).WillByDefault(Return(QList<kitBase::robotModel::PortInfo>()));
 	EXPECT_CALL(mModel, availablePorts()).Times(AtLeast(0));
 
 	ON_CALL(mModel, applyConfiguration()).WillByDefault(
@@ -88,7 +104,7 @@ void InterpreterTest::SetUp()
 			);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
-			Invoke([=] (qReal::Id const &id, interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (qReal::Id const &id, kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->block(id);
 			} )
@@ -96,7 +112,7 @@ void InterpreterTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(
-			Invoke([=] (interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->providedBlocks().toSet();
 			} )
@@ -117,15 +133,15 @@ void InterpreterTest::SetUp()
 
 TEST_F(InterpreterTest, interpret)
 {
-	EXPECT_CALL(mModel, stopRobot()).Times(1);
+	EXPECT_CALL(mModel, stopRobot()).Times(2);
 
 	mInterpreter->interpret();
 }
 
 TEST_F(InterpreterTest, stopRobot)
 {
-	// It shall be called directly here and in destructor of a model.
-	EXPECT_CALL(mModel, stopRobot()).Times(2);
+	// It shall be called directly here, before interpretation and in destructor of a model.
+	EXPECT_CALL(mModel, stopRobot()).Times(3);
 
 	mInterpreter->interpret();
 	mInterpreter->stopRobot();

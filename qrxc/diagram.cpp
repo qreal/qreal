@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "diagram.h"
 
 #include "type.h"
@@ -11,7 +25,7 @@
 
 #include <QtCore/QDebug>
 
-Diagram::Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor)
+Diagram::Diagram(const QString &name, const QString &nodeName, const QString &displayedName, Editor *editor)
 	: mDiagramName(name)
 	, mDiagramNodeName(nodeName)
 	, mDiagramDisplayedName(displayedName)
@@ -25,7 +39,7 @@ Diagram::~Diagram()
 	qDeleteAll(mTypes);
 }
 
-bool Diagram::init(QDomElement const &diagramElement)
+bool Diagram::init(const QDomElement &diagramElement)
 {
 	for (QDomElement element = diagramElement.firstChildElement();
 		!element.isNull();
@@ -49,7 +63,7 @@ bool Diagram::init(QDomElement const &diagramElement)
 	return true;
 }
 
-bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
+bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 {
 	for (QDomElement element = graphicTypesElement.firstChildElement();
 		!element.isNull();
@@ -88,7 +102,7 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 	return true;
 }
 
-bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
+bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 {
 	for (QDomElement element = nonGraphicTypesElement.firstChildElement();
 		!element.isNull();
@@ -142,7 +156,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 	return true;
 }
 
-void Diagram::initPalette(QDomElement const &paletteElement)
+void Diagram::initPalette(const QDomElement &paletteElement)
 {
 	mShallPaletteBeSorted = paletteElement.attribute("sorted", "true") == "true";
 
@@ -170,7 +184,7 @@ bool Diagram::resolve()
 {
 	foreach (ImportSpecification import, mImports) {
 		Type *importedType = mEditor->findType(import.name);
-		if (importedType == NULL) {
+		if (importedType == nullptr) {
 			qDebug() << "ERROR: imported type" << import.name << "not found, skipping";
 			continue;
 		}

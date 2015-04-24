@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-rc2">
+	<include>../../commonMetamodels/kernelMetamodel.xml</include>
+	<include>../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
+	<include>../../commonMetamodels/basicActionsMetamodel.xml</include>
+	<namespace>UML 2.0</namespace>
+	<diagram displayedName="Deployment Sequence Diagram" nodeName="DeploymentDiagramGroup" name="DeploymentDiagram">
+		<nonGraphicTypes>
+			<enum name="GuardType" editable="true">
+				<value name="iteration" displayedName="iteration"/>
+				<value name="true" displayedName="true"/>
+				<value name="false" displayedName="false"/>
+			</enum>
+			<enum name="VirtualBoxMachineType" editable="true">
+				<value name="Windows81" displayedName="Windows 8.1"/>
+				<value name="Ubuntu" displayedName="Ubuntu 32"/>
+				<value name="Ubuntu_64" displayedName="Ubuntu 64"/>
+			</enum>
+			<enum name="ProductName" editable="false">
+				<value name="trikStudio" displayedName="TRIK Studio"/>
+			</enum>
+			<enum name="DownloadsCounterMode" editable="false">
+				<value name="latest" displayedName="Publish to latest"/>
+				<value name="experimental" displayedName="Publish to experimental"/>
+			</enum>
+			<groups>
+				<group name="DeploymentDiagramGroup" rootNode="diagram">
+					<groupNode type="DeploymentDiagramNode" name="diagram" xPosition="0" yPosition="0"/>
+					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
+				</group>
+				<group name="SubprogramDiagramGroup" rootNode="diagram">
+					<groupNode type="SubprogramDiagram" name="diagram" xPosition="0" yPosition="0"/>
+					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
+				</group>
+			</groups>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<!-- Algorithms -->
+			<node displayedName="Deployment Sequence Diagram"  name="DeploymentDiagramNode">
+				<graphics>
+					<picture sizex="204" sizey="204">
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="202" stroke-width="0" x1="22" y2="202" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="2" y2="182" fill-style="none" x2="2"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="202" y2="182" fill-style="none" x2="202"/>
+						<arc spanAngle="1440" startAngle="1440" y1="2" x1="2" y2="42" x2="42"/>
+						<arc spanAngle="1440" startAngle="0" y1="2" x1="162" y2="42" x2="202"/>
+						<arc spanAngle="1440" startAngle="2880" y1="162" x1="2" y2="202" x2="42"/>
+						<arc spanAngle="-1440" startAngle="0" y1="162" x1="162" y2="202" x2="202"/>
+					</picture>
+					<labels>
+						<label x="42" y="12" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="2" y="102"/>
+						<pointPort x="102" y="2"/>
+						<pointPort x="202" y="102"/>
+						<pointPort x="102" y="202"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container>
+						<contains type="AbstractNode"/>
+					</container>
+				</logic>
+			</node>
+			<node name="AbstractNode" abstract="true">
+				<graphics>
+					<picture sizex="50" sizey="50">
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+				</logic>
+			</node>
+			<node displayedName="Subprogram Diagram" name="SubprogramDiagram">
+				<graphics>
+					<picture sizex="204" sizey="204">
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="202" stroke-width="0" x1="22" y2="202" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="2" y2="182" fill-style="none" x2="2"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="202" y2="182" fill-style="none" x2="202"/>
+						<arc spanAngle="1440" startAngle="1440" y1="2" x1="2" y2="42" x2="42"/>
+						<arc spanAngle="1440" startAngle="0" y1="2" x1="162" y2="42" x2="202"/>
+						<arc spanAngle="1440" startAngle="2880" y1="162" x1="2" y2="202" x2="42"/>
+						<arc spanAngle="-1440" startAngle="0" y1="162" x1="162" y2="202" x2="202"/>
+					</picture>
+					<labels>
+						<label x="42" y="12" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="2" y="102"/>
+						<pointPort x="102" y="2"/>
+						<pointPort x="202" y="102"/>
+						<pointPort x="102" y="202"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container>
+						<contains type="AbstractNode"/>
+					</container>
+				</logic>
+			</node>
+			<node displayedName="Final Node" name="FinalNode" path="13, 200 : 198, 15 :  | 12, 12 : 198, 198 : " description="The final node of the program. If the program consists of some parallel execution lines the reachment of this block terminates the corresponding execution line. This block can`t have outgoing links.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/finalBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Comment" name="CommentBlock" description="This block can hold text notes that are ignored by generators and interpreters. Use it for improving the diagram readability.">
+				<graphics>
+					<picture sizex="200" sizey="100">
+						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="100" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="100" fill="#ffffff" stroke="#000000" x1="200" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="0" fill="#ffffff" stroke="#000000" x1="0" x2="178" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="180" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label x="20" y="20" textBinded="Comment" hard="true" background="white"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="175" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="200" starty="25"/>
+							<end endx="200" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="100"/>
+							<end endx="195" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="180" starty="0"/>
+							<end endx="200" endy="20"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Comment" type="string" name="Comment">
+							<default>\"Enter some text here...\"</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Subprogram" name="Subprogram" description="Subprogram call. Subprograms are used for splitting repetitive program parts into a separate diagram and then calling it from main diagram or other subprograms. When this block is added into a diagram it will be suggested to enter subprogram name. The double click on subprogram call block may open the corresponding subprogram diagram. Moreover user palette will appear containing existing subrpograms, they can be dragged into a diagram like the usial blocks.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/subprogramBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-30" textBinded="name" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+					<explodesTo>
+						<target type="SubprogramDiagramGroup" makeReusable="true" requireImmediateLinkage="true"/>
+					</explodesTo>
+				</logic>
+			</node>
+			<node displayedName="Variable Initialization" name="VariableInit" description="Assignes a given value to a given variable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/variableInitBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="variable" background="white"/>
+						<label x="-60" y="60" text="Variable:"/>
+						<label x="33" y="80" textBinded="value" background="white"/>
+						<label x="-65" y="80" text="Value:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Variable" type="string" name="variable">
+							<default>x</default>
+						</property>
+						<property displayedName="Value" type="string" name="value">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+					<container/>
+				</logic>
+			</node>
+			<node displayedName="Initial Node" name="InitialNode" path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " description="The entry point of the program execution. Each diagram should have only one such block, it must not have incomming links and it must have only one outgoing link. The interpretation process starts from exactly this block.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/initialBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<edge displayedName="Link" name="ControlFlow" description="For creating a link between two elements A and B you can just hover a mouse above A, press the right mouse button and (without releasing it) draw a line to the element B. Alternatively you can just 'pull' a link from a small blue circle next to the element.">
+				<graphics>
+					<lineType type="solidLine"/>
+					<shape type="broken"/>
+					<labels>
+						<label textBinded="Guard" hard="true"/>
+					</labels>
+				</graphics>
+				<logic>
+					<associations endType="open_arrow" beginType="no_arrow">
+						<association beginName="begin" endName="end"/>
+					</associations>
+					<possibleEdges>
+						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
+					</possibleEdges>
+					<properties>
+						<property displayedName="Guard" type="GuardType" name="Guard"/>
+					</properties>
+					<dividability isDividable="true"/>
+				</logic>
+			</edge>
+			<node displayedName="Loop" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the 'Iterations' parameter. This block must have two outgoing links. One of them must be marked with the 'iteration' guard (that means that the property 'Guard' of the link must be set to 'iteration' value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our 'Loop' block for the given number of times.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/loopBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Iterations" hard="true" background="white"/>
+						<label x="-30" y="-30" text="Iterations:" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Iterations" type="string" name="Iterations">
+							<default>10</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Function" name="Function" path="58, 12 : 58, 172 :  | 58, 12 : 148, 12 :  | 12, 96 : 108, 96 : " description="Evaluates a value of the given expression. Also new variables can be defined in this block. See the 'Expressions Syntax' chapter in help for more information about 'Function' block syntax.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/functionBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-37" y="60" text="Body:"/>
+						<label x="30" y="60" textBinded="Body" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Body" type="string" name="Body"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Condition" name="IfBlock" path="96, 182 : 180, 94 :  | 98, 12 : 180, 94 :  | 12, 98 : 96, 182 :  | 98, 12 : 12, 98 : " description="Separates program execution in correspondece with the given condition. The 'Condition' parameter value must be some boolean expression that will determine subsequent program execution line. This block must have two outgoing links, at least one of them must have 'Guard' parameter set to 'true' or 'false'. The execution will be proceed trough the link marked with the guard corresponding to 'Condition' parameter of the block.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Condition" background="white"/>
+						<label x="-25" y="60" text="Condition:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Condition" type="string" name="Condition">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Switch" name="SwitchBlock" description="Selects the program execution branch in correspondence with some expression value. The value of the expression written in 'Expression' property is compared to the values on the outgoing links. If equal value is found then execution will be proceeded by that branch. Else branch without a marker will be selected.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/switchBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="Expression" background="white"/>
+						<label x="-25" y="60" text="Expression:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Expression" type="string" name="Expression">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- Actions for extending version -->
+			<node displayedName="Increment version" name="IncrementVersionInSourceCode" description="Extends TRIKStudio version in the source code, commits and pushes changes. Versions must be specified in short format (3.0.0-a1 instead of 3.0.0-alpha1).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/default.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-30" text="Increment version" hard="true" background="white"/>
+						<label x="50" y="60" textBinded="Path" background="white"/>
+						<label x="-50" y="60" text="Path to sources:"/>
+						<label x="50" y="80" textBinded="OldVersion" background="white"/>
+						<label x="-50" y="80" text="Old version:"/>
+						<label x="50" y="100" textBinded="NewVersion" background="white"/>
+						<label x="-50" y="100" text="New version:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Path to sources" type="DirectoryPath" name="Path">
+							<default></default>
+						</property>
+						<property displayedName="Old version" type="string" name="OldVersion">
+							<default>3.0.0</default>
+						</property>
+						<property displayedName="New version" type="string" name="NewVersion">
+							<default>3.0.1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Help with changelog" name="HelpWithChangelog" description="Prepends the TRIK Studio changelog file with commit messages starting from the given tag.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/default.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-30" text="Help with changelog" hard="true" background="white"/>
+						<label x="50" y="60" textBinded="Path" background="white"/>
+						<label x="-50" y="60" text="Path to sources:"/>
+						<label x="50" y="80" textBinded="Tag" background="white"/>
+						<label x="-50" y="80" text="From tag:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Path to sources" type="DirectoryPath" name="Path">
+							<default></default>
+						</property>
+						<property displayedName="From tag" type="string" name="Tag">
+							<default>trikStudio-3.0.0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- Actions for building installers -->
+			<node displayedName="Build on Virtual Machine" name="BuildOnVirtualMachine" description= "Creates or runs the virtual machine of the given in arg1 type (possible types are enumerated in 'machine_types.text' file next to this script). \nRecommended values: Ubuntu, Ubuntu_64 or Windows81 (VDI image files are already prepared for those OS types by developers). \nThe virtual machine will build the version of the given in arg2 product. Currently only 'trikStudio' option is officially supported. \nThe version (arg3) may be HEAD (then HEAD of the master branch will be built) or contain some version number.\nImportant: the version is obtained by the tag in the remote repository. The tag must consist of two parts separated by minus sign ('-'). The first part must be an id of the product (arg1 value) and the second part must be a version (arg3 value). For the above example the tag must be trikStudio-3.0.0-rc2.\n\n The script will create the virtual machine named QReal_{machine_type} if it does not exist yet. In that case arg4 must contain a path to VDI image prepared for version build.\n The image will be copied to VM files directory, so take care of enough disk space before build. Project developers have a link to prepared VDI images, also it may be published (see project wiki). \narg5 must contain absolute or relative path to a folder that will be used by VM guest OS. In prepared VDI images shared folder name is hard-coded and must be 'share'. \nIf you have a private key from autoupdates server and you plan to deploy builded version as the last there then private and public keys should be placed to the shared folder before build, otherwise deployment step will be ignored. As the result of the successfull build you will obtain installer files ready for usage placed in the shared folder.\n\n">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/default.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-30" text="Build on VirtualBox" hard="true" background="white"/>
+						<label x="50" y="60" textBinded="OsType" background="white"/>
+						<label x="-50" y="60" text="OS:"/>
+						<label x="50" y="80" textBinded="ProductName" background="white"/>
+						<label x="-50" y="80" text="Product:"/>
+						<label x="50" y="100" textBinded="Version" background="white"/>
+						<label x="-50" y="100" text="Version:"/>
+						<label x="50" y="120" textBinded="VDI" background="white"/>
+						<label x="-50" y="120" text="VDI Image:"/>
+						<label x="50" y="140" textBinded="SharedFolder" background="white"/>
+						<label x="-50" y="140" text="Shared Folder:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="OS" type="VirtualBoxMachineType" name="OsType">
+							<default>Windows81</default>
+						</property>
+						<property displayedName="Product" type="ProductName" name="ProductName">
+							<default>trikStudio</default>
+						</property>
+						<property displayedName="Version" type="string" name="Version">
+							<default>HEAD</default>
+						</property>
+						<property displayedName="VDI Image (optional)" type="FilePath" name="VDI">
+							<default></default>
+						</property>
+						<property displayedName="Shared folder (optional)" type="DirectoryPath" name="SharedFolder">
+							<default></default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- Actions for uploading and sharing data -->
+			<node displayedName="Upload to Google Drive" name="UploadToGoogleDrive">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/default.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-30" text="Upload to Google Drive" hard="true" background="white"/>
+						<label x="50" y="60" textBinded="File" background="white"/>
+						<label x="-50" y="60" text="File:"/>
+						<label x="50" y="80" textBinded="FolderId" background="white"/>
+						<label x="-50" y="80" text="Folder Id:"/>
+						<label x="50" y="100" textBinded="Username" background="white"/>
+						<label x="-50" y="100" text="User (email):"/>
+						<label x="50" y="120" textBinded="Password" background="white"/>
+						<label x="-50" y="120" text="Password:"/>
+						<label x="50" y="140" textBinded="ResultingVariable" background="white"/>
+						<label x="-50" y="140" text="Result:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="File" type="string" name="File">
+							<default></default>
+						</property>
+						<property displayedName="Folder Id" type="string" name="FolderId">
+							<default>0B0YEMCLGZLEnVzdESHJ5djhibVU</default>
+						</property>
+						<property displayedName="User (email)" type="string" name="Username">
+							<default>qrealproject@gmail.com</default>
+						</property>
+						<property displayedName="Password" type="string" name="Password">
+							<default></default>
+						</property>
+						<property displayedName="Resulting Variable" type="string" name="ResultingVariable">
+							<default>uploadedUrl</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Update Dowloads Counter" name="UpdateDownloadsCounter" description="Clones http://github.com/qreal/tools, edits siteScripts folder contents an pushes back changes to the remote repository and then uploads to production site server. The first argument is mode: 'latest' or 'experimental'. In the latest mode all latest references will be updated to windows offline installer. In the exprimental mode latest link will not be replaced but experimental will be. Version must be specified in '3.0.0-rc2' format. In the tails there must be 2N arguments where N is uploaded installers count. The first argument of each pair is the key of linksMap, second is an installer URL. Windows offline installer pair must go first (it will be written into latest and/or experimental sections). Code will be pushed using ~/.ssh/id_rsa. For uploading downloads couter to production server however another ssh key must be used. It must be specified as the third parameter. Public key may be stored next to private one and must be named with the same name as private but with .pub suffix. ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub may be temporaly renamed into ~/.ssh/old_id_rsa and ~/.ssh/old_id_rsa.pub during the uploading process.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/default.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-30" text="Update Downloads Counter" hard="true" background="white"/>
+						<label x="50" y="60" textBinded="Mode" background="white"/>
+						<label x="-50" y="60" text="Mode:"/>
+						<label x="50" y="80" textBinded="Version" background="white"/>
+						<label x="-50" y="80" text="New version:"/>
+						<label x="50" y="100" textBinded="SshKey" background="white"/>
+						<label x="-50" y="100" text="Private key:"/>
+						<label x="50" y="120" textBinded="Keys" background="white"/>
+						<label x="-50" y="120" text="Keys:"/>
+						<label x="50" y="140" textBinded="Urls" background="white"/>
+						<label x="-50" y="140" text="URLs:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Mode" type="DownloadsCounterMode" name="Mode">
+							<default>latest</default>
+						</property>
+						<property displayedName="New version" type="string" name="Version">
+							<default>3.0.0</default>
+						</property>
+						<property displayedName="Path to private key" type="FilePath" name="SshKey">
+							<default></default>
+						</property>
+						<property displayedName="Keys" type="string" name="Keys">
+							<default>keys</default>
+						</property>
+						<property displayedName="URLs" type="string" name="Urls">
+							<default>urls</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Upload to Google Site" name="UploadToGoogleSite" description="Adds new links to the filecabinet of the given google site. The site is identified by the google identifier (for example, qrealrobots for robots.qreal.ru) which is passed as the first argument. The second and the third arguments are email (or username) and password of site admin`s google account correspondingly. Following information should contain 3N arguments where N is the number of uploaded links. Each tripple must contain first URL of the linked resource, second the title of the uploaded link and finally the description of the resource.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/default.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-30" text="Upload to Google Site" hard="true" background="white"/>
+						<label x="50" y="60" textBinded="Site" background="white"/>
+						<label x="-50" y="60" text="Site name:"/>
+						<label x="50" y="80" textBinded="Username" background="white"/>
+						<label x="-50" y="80" text="User (email):"/>
+						<label x="50" y="100" textBinded="Password" background="white"/>
+						<label x="-50" y="100" text="Password:"/>
+						<label x="50" y="120" textBinded="Urls" background="white"/>
+						<label x="-50" y="120" text="URLs:"/>
+						<label x="50" y="140" textBinded="Titles" background="white"/>
+						<label x="-50" y="140" text="Titles:"/>
+						<label x="50" y="160" textBinded="Descriptions" background="white"/>
+						<label x="-50" y="160" text="Descriptions:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Site name" type="string" name="Site">
+							<default>qrealrobots</default>
+						</property>
+						<property displayedName="User (email)" type="string" name="Username">
+							<default>qrealproject@gmail.com</default>
+						</property>
+						<property displayedName="Password" type="string" name="Password">
+							<default></default>
+						</property>
+						<property displayedName="URLs" type="string" name="Urls">
+							<default>urls</default>
+						</property>
+						<property displayedName="Titles" type="string" name="Titles">
+							<default>titles</default>
+						</property>
+						<property displayedName="Descriptions" type="string" name="Descriptions">
+							<default>descriptions</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+		</graphicTypes>
+
+		<palette sorted="false">
+			<group name="Algorithms">
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
+				<element name="Function"/>
+				<element name="IfBlock"/>
+				<element name="SwitchBlock"/>
+				<element name="Loop"/>
+				<element name="Subprogram"/>
+				<element name="Fork"/>
+				<element name="VariableInit"/>
+				<element name="CommentBlock"/>
+			</group>
+			<group name="Version Extension">
+				<element name="IncrementVersionInSourceCode"/>
+				<element name="HelpWithChangelog"/>
+			</group>
+			<group name="Build">
+				<element name="BuildOnVirtualMachine"/>
+			</group>
+			<group name="Uploading">
+				<element name="UploadToGoogleDrive"/>
+				<element name="UpdateDownloadsCounter"/>
+				<element name="UploadToGoogleSite"/>
+			</group>
+		</palette>
+	</diagram>
+</metamodel>

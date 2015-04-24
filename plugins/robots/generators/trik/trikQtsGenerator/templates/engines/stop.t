@@ -1,1 +1,1 @@
-brick.motor(@@PORT@@).setPower(0);
+brick.motor(@@PORT@@).powerOff();

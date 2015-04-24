@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtOsekCGeneratorPlugin.h"
 
 #include <QtCore/QDir>
@@ -13,13 +27,14 @@ using namespace qReal;
 using namespace gui;
 
 NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
-	: mGenerateCodeAction(nullptr)
-	, mFlashRobotAction(nullptr)
-	, mUploadProgramAction(nullptr)
+	: NxtGeneratorPluginBase("NxtOsekCGeneratorRobotModel", tr("Generation (NXT OSEK C)"), 9 /* After 2D model */)
+	, mGenerateCodeAction(new QAction(nullptr))
+	, mFlashRobotAction(new QAction(nullptr))
+	, mUploadProgramAction(new QAction(nullptr))
 	, mNxtToolsPresent(false)
 	, mMasterGenerator(nullptr)
 {
-	checkNxtTools();
+	initActions();
 	initHotKeyActions();
 }
 
@@ -28,19 +43,14 @@ NxtOsekCGeneratorPlugin::~NxtOsekCGeneratorPlugin()
 	delete mFlashTool;
 }
 
-QString NxtOsekCGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString NxtOsekCGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString("nxt-tools/%1/%1.c").arg(projectName);
 }
 
-QString NxtOsekCGeneratorPlugin::extension() const
+text::LanguageInfo NxtOsekCGeneratorPlugin::language() const
 {
-	return "c";
-}
-
-QString NxtOsekCGeneratorPlugin::extensionDescription() const
-{
-	return tr("Lego NXT Source File");
+	return qReal::text::Languages::c();
 }
 
 QString NxtOsekCGeneratorPlugin::generatorName() const
@@ -48,62 +58,85 @@ QString NxtOsekCGeneratorPlugin::generatorName() const
 	return "nxtOsekC";
 }
 
-bool NxtOsekCGeneratorPlugin::canGenerateTo(QString const &project)
+bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 {
-	QString const cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
-	QFileInfo const cFile(cFilePath);
-	QFileInfo const makeFile(cFile.absolutePath() + "/makefile");
+	const QString cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
+	const QFileInfo cFile(cFilePath);
+	const QFileInfo makeFile(cFile.absolutePath() + "/makefile");
 	if (!cFile.exists() || !makeFile.exists()) {
 		return true;
 	}
 
 	// If c file has much later timestamp then it was edited by user - restrincting generation to this file.
-	int const timestampMaxDifference = 100;
+	const int timestampMaxDifference = 100;
 	return (cFile.lastModified().toMSecsSinceEpoch()
 			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference);
 }
 
-void NxtOsekCGeneratorPlugin::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::LanguageToolboxInterface &textLanguage)
+void NxtOsekCGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
-	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
+	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
+	checkNxtTools();
+	mUploadProgramAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
+	mFlashRobotAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
+}
+
+void NxtOsekCGeneratorPlugin::onCurrentDiagramChanged(const TabInfo &info)
+{
+	RobotsGeneratorPluginBase::onCurrentDiagramChanged(info);
+	checkNxtTools();
+	mFlashRobotAction->setEnabled(true);
+}
+
+void NxtOsekCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
+{
+	RobotsGeneratorPluginBase::init(configurator);
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtOsekCGeneratorPlugin::onUploadingComplete);
 }
 
-QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()
+QList<ActionInfo> NxtOsekCGeneratorPlugin::customActions()
 {
-	checkNxtTools();
+	const ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+	const ActionInfo flashRobotActionInfo(mFlashRobotAction, "", "tools");
+	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "interpreters", "tools");
+	return { generateCodeActionInfo, flashRobotActionInfo, uploadProgramActionInfo };
+}
 
-	mGenerateCodeAction.setText(tr("Generate code"));
-	mGenerateCodeAction.setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
-	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+QList<HotKeyActionInfo> NxtOsekCGeneratorPlugin::hotKeyActions()
+{
+	return mHotKeyActionInfos;
+}
 
-	mFlashRobotAction.setText(tr("Flash robot"));
-	mFlashRobotAction.setIcon(QIcon(":/nxt/images/flashRobot.svg"));
-	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
-	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
+QIcon NxtOsekCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	Q_UNUSED(robotModel)
+	return QIcon(":/nxt/osek/images/switch-to-nxt-osek-c.svg");
+}
 
-	mUploadProgramAction.setText(tr("Upload program"));
-	mUploadProgramAction.setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
-	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+void NxtOsekCGeneratorPlugin::initActions()
+{
+	mGenerateCodeAction->setText(tr("Generate code"));
+	mGenerateCodeAction->setIcon(QIcon(":/nxt/osek/images/generateOsekCode.svg"));
+	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-	return mNxtToolsPresent
-			? QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo << uploadProgramActionInfo
-			: QList<ActionInfo>() << generateCodeActionInfo;
+	mFlashRobotAction->setText(tr("Flash robot"));
+	mFlashRobotAction->setIcon(QIcon(":/nxt/osek/images/flashRobot.svg"));
+	connect(mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
+
+	mUploadProgramAction->setText(tr("Upload program"));
+	mUploadProgramAction->setIcon(QIcon(":/nxt/osek/images/run.png"));
+	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 }
 
 void NxtOsekCGeneratorPlugin::initHotKeyActions()
 {
-	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
-	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
 
-	HotKeyActionInfo generateActionInfo("Generator.GenerateNxt", tr("Generate NXT OSEK code"), &mGenerateCodeAction);
-	HotKeyActionInfo uploadActionInfo("Generator.UploadNxt", tr("Upload program to NXT device"), &mUploadProgramAction);
+	HotKeyActionInfo generateActionInfo("Generator.GenerateNxt", tr("Generate NXT OSEK code"), mGenerateCodeAction);
+	HotKeyActionInfo uploadActionInfo("Generator.UploadNxt", tr("Upload program to NXT device"), mUploadProgramAction);
 
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
 }
@@ -114,7 +147,7 @@ void NxtOsekCGeneratorPlugin::onUploadingComplete(bool success)
 		return;
 	}
 
-	NxtFlashTool::RunPolicy const runPolicy = static_cast<NxtFlashTool::RunPolicy>(
+	const NxtFlashTool::RunPolicy runPolicy = static_cast<NxtFlashTool::RunPolicy>(
 			SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 
 	switch (runPolicy) {
@@ -131,15 +164,11 @@ void NxtOsekCGeneratorPlugin::onUploadingComplete(bool success)
 	}
 }
 
-QList<HotKeyActionInfo> NxtOsekCGeneratorPlugin::hotKeyActions()
-{
-	return mHotKeyActionInfos;
-}
-
 generatorBase::MasterGeneratorBase *NxtOsekCGeneratorPlugin::masterGenerator()
 {
 	mMasterGenerator = new NxtOsekCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()
@@ -147,7 +176,7 @@ generatorBase::MasterGeneratorBase *NxtOsekCGeneratorPlugin::masterGenerator()
 	return mMasterGenerator;
 }
 
-void NxtOsekCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+void NxtOsekCGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	mMasterGenerator->initialize();
 	mMasterGenerator->setProjectDir(newFileInfo);
@@ -169,7 +198,7 @@ void NxtOsekCGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		QFileInfo const fileInfo = generateCodeForProcessing();
+		const QFileInfo fileInfo = generateCodeForProcessing();
 
 		if (fileInfo != QFileInfo()) {
 			mFlashTool->uploadProgram(fileInfo);
@@ -203,7 +232,4 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 		mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
 #endif
 	}
-
-	mUploadProgramAction.setVisible(mNxtToolsPresent);
-	mFlashRobotAction.setVisible(mNxtToolsPresent);
 }

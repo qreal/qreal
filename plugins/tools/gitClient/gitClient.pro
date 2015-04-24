@@ -1,23 +1,21 @@
-QT += widgets
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog -lqrgui-versioning-plugins-manager \
-			-lqrgui-dialogs
+include(../../../global.pri)
 
 TEMPLATE = lib
 CONFIG += plugin
-CONFIG += c++11
-DESTDIR = ../../../bin/plugins/tools/
+
+DESTDIR = $$DESTDIR/plugins/tools/
+
+links(qrkernel qrutils qrgui-preferences-dialog qrgui-versioning-plugins-manager \
+		 qrgui-dialogs)
 
 INCLUDEPATH += \
 	$$PWD/ \
 	$$PWD/../../../ \
 	$$PWD/../../../qrgui/ \
 
-MOC_DIR = .moc
-RCC_DIR = .rcc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
+TRANSLATIONS += $$PWD/../../../gitClient_ru.ts
 
-TRANSLATIONS += gitClient_ru.ts
+QT += widgets
 
 HEADERS += \
 	$$PWD/gitPlugin.h \

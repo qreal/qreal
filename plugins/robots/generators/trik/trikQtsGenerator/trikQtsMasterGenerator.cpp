@@ -1,14 +1,32 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikQtsMasterGenerator.h"
+
+#include "trikQtsControlFlowValidator.h"
 
 using namespace trik::qts;
 
-TrikQtsMasterGenerator::TrikQtsMasterGenerator(qrRepo::RepoApi const &repo
+TrikQtsMasterGenerator::TrikQtsMasterGenerator(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const utils::ParserErrorReporter &parserErrorReporter
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
-	: TrikMasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId, generatorName)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
+	: TrikMasterGeneratorBase(repo, errorReporter, parserErrorReporter, robotModelManager, textLanguage
+			, diagramId, generatorName)
 {
 }
 
@@ -20,4 +38,9 @@ QString TrikQtsMasterGenerator::targetPath()
 bool TrikQtsMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
+}
+
+generatorBase::PrimaryControlFlowValidator *TrikQtsMasterGenerator::createValidator()
+{
+	return new TrikQtsControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
 }

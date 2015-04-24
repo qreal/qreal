@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-beta2">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.1.0">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -36,7 +36,7 @@
 				<value name="A6"/>
 			</enum>
 			<enum name="GuardType" editable="true">
-				<value name="iteration" displayedName="iteration"/>
+				<value name="iteration" displayedName="body"/>
 				<value name="true" displayedName="true"/>
 				<value name="false" displayedName="false"/>
 			</enum>
@@ -68,6 +68,7 @@
 				<value name="green" displayedName="green"/>
 				<value name="red" displayedName="red"/>
 				<value name="off" displayedName="off"/>
+				<value name="orange" displayedName="orange"/>
 			</enum>
 			<enum name="BackgroundColor">
 				<value name="white" displayedName="white"/>
@@ -92,6 +93,32 @@
 				<value name="line" displayedName="Line sensor"/>
 				<value name="object" displayedName="Object sensor"/>
 				<value name="color" displayedName="Color sensor"/>
+			</enum>
+			<enum name="DetectableVideoSensor">
+				<value name="line" displayedName="Line sensor"/>
+				<value name="object" displayedName="Object sensor"/>
+			</enum>
+			<enum name="TrikButtons">
+				<value name="Up"/>
+				<value name="Down"/>
+				<value name="Left"/>
+				<value name="Right"/>
+				<value name="Enter"/>
+				<value name="Esc"/>
+			</enum>
+			<enum name="NxtButtons">
+				<value name="Left"/>
+				<value name="Right"/>
+				<value name="Enter"/>
+				<value name="Escape"/>
+			</enum>
+			<enum name="Ev3Buttons">
+				<value name="Back"/>
+				<value name="Down"/>
+				<value name="Enter"/>
+				<value name="Left"/>
+				<value name="Right"/>
+				<value name="Up"/>
 			</enum>
 			<groups>
 				<group name="RobotsDiagramGroup" rootNode="diagram">
@@ -133,7 +160,6 @@
 						<contains type="AbstractNode"/>
 					</container>
 					<properties>
-						<property displayedName="World model" type="string" name="worldModel" />
 						<property displayedName="Devices configuration" type="string" name="devicesConfiguration" />
 					</properties>
 				</logic>
@@ -257,7 +283,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Subprogram" name="Subprogram" description="Subprogram call. Subprograms are used for splitting repetitive program parts into a separate diagram and then calling it from main diagram or other subprograms. When this block is added into a diagram it will be suggested to enter subprogram name. The double click on subprogram call block may open the corresponding subprogram diagram. Moreover user palette will appear containing existing subrpograms, they can be dragged into a diagram like the usial blocks.">
+			<node displayedName="Subprogram" name="Subprogram" description="Subprogram call. Subprograms are used for splitting repetitive program parts into a separate diagram and then calling it from main diagram or other subprograms. When this block is added into a diagram it will be suggested to enter subprogram name. The double click on subprogram call block may open the corresponding subprogram diagram. Moreover user palette will appear containing existing subrpograms, they can be dragged into a diagram like the usual blocks.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/subprogramRobotsBlock.png" x1="0" y2="50" x2="50"/>
@@ -277,7 +303,7 @@
 					</explodesTo>
 				</logic>
 			</node>
-			<node displayedName="Variable Initialization" name="VariableInit" description="Assignes a given value to a given variable.">
+			<node displayedName="Variable Initialization" name="VariableInit" description="Assigns a given value to a given variable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/variableInitBlock.png" x1="0" y2="50" x2="50"/>
@@ -341,8 +367,7 @@
 					<dividability isDividable="true"/>
 				</logic>
 			</edge>
-
-			<node displayedName="Loop" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the 'Iterations' parameter. This block must have two outgoing links. One of them must be marked with the 'iteration' guard (that means that the property 'Guard' of the link must be set to 'iteration' value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our 'Loop' block for the given number of times.">
+			<node displayedName="Loop" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the 'Iterations' parameter. This block must have two outgoing links. One of them must be marked with the 'body' guard (that means that the property 'Guard' of the link must be set to 'body' value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our 'Loop' block for the given number of times.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/loopBlock.svg" x1="0" y2="50" x2="50"/>
@@ -365,8 +390,7 @@
 					</generalizations>
 				</logic>
 			</node>
-
-			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.">
+			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links. 'Guard' property of every link must contain unique thread identifiers, and one of those identifiers must be the same as the identifier of a thread where fork is placed (it must be 'main' if it is the first fork in a program.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
@@ -376,6 +400,66 @@
 				</graphics>
 				<logic>
 					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Join" name="Join" description="Joins a number of threads into one. 'Guard' property of the single outgoing link must contain an identifier of one of threads being joined. The specified thread would wait until the rest of them finish execution, and then proceed in a normal way.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/joinBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Send Message To Thread" name="SendMessageThreads" description="Sends a message to a specified thread.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sendMessageThreadsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-50" y="60" text="Thread:"/>
+						<label x="30" y="60" textBinded="Thread" background="white"/>
+						<label x="-50" y="90" text="Message:"/>
+						<label x="30" y="90" textBinded="Message" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property name="Thread" displayedName="Thread" type="string"/>
+						<property name="Message" displayedName="Message" type="string"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Receive Message From Thread" name="ReceiveMessageThreads" description="Receive a message sent to a thread from which this block is called.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/receiveMessageThreadsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-37" y="60" text="Variable:"/>
+						<label x="30" y="60" textBinded="Variable" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property name="Variable" displayedName="Variable" type="string"/>
+					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -425,7 +509,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node displayedName="Switch" name="SwitchBlock" description="Selects the program execution branch in correspondence with some expression value. The value of the expression written in 'Expression' property is compared to the values on the outgoing links. If equal value is found then execution will be proceeded by that branch. Else branch without a marker will be selected.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -491,7 +574,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Motors Backward" name="NxtEnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
+			<node displayedName="Motors Backward" name="NxtEnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usual mode.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -559,7 +642,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Motors Backward" name="Ev3EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
+			<node displayedName="Motors Backward" name="Ev3EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usual mode.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -624,7 +707,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Motors Backward" name="TrikV6EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
+			<node displayedName="Motors Backward" name="TrikV6EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usual mode.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -733,7 +816,7 @@
 					</generalizations>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>A, B, C</default>
+							<default>A, B, C, D</default>
 						</property>
 					</properties>
 				</logic>
@@ -983,18 +1066,6 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node abstract="true" name="VideocameraBlock">
-				<logic>
-					<properties>
-						<property displayedName="Mode" type="VideoSensor" name="Mode">
-							<default>line</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
 			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1008,12 +1079,17 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
+					<properties>
+						<property displayedName="Mode" type="VideoSensor" name="Mode">
+							<default>line</default>
+						</property>
+					</properties>
 					<generalizations>
-						<parent parentName="VideocameraBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Detect by Videocamera" name="TrikDetect" description="Initializes videocamera line or object or color detector with the color of the object in the middle of the camera`s sight.">
+			<node displayedName="Detect by Videocamera" name="TrikDetect" description="Initializes videocamera line or object detector with the color of the object in the middle of the camera`s sight.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/detectBlock.svg" x1="0" y2="50" x2="50"/>
@@ -1026,20 +1102,23 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
+					<properties>
+						<property displayedName="Mode" type="DetectableVideoSensor" name="Mode">
+							<default>line</default>
+						</property>
+					</properties>
 					<generalizations>
-						<parent parentName="VideocameraBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Detector into Variable" name="TrikDetectorToVariable" description="Stores  current videocamera line or object or color detector`s value into a given variable.">
+			<node displayedName="Line Detector into Variable" name="TrikDetectorToVariable" description="Stores videocamera line detector`s value into a given variable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/detectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/lineDetectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Mode" hard="true" background="white"/>
-						<label x="65" y="-30" textBinded="Mode" hard="true" background="white"/>
-						<label x="-15" y="60" text="Detector into Variable" background="white"/>
+						<label x="-15" y="60" text="Line Detector into Variable" background="white"/>
 						<label x="-15" y="80" text="Variable:"/>
 						<label x="85" y="80" textBinded="Variable" background="white"/>
 					</labels>
@@ -1050,7 +1129,7 @@
 						<property displayedName="Variable" type="string" name="Variable" />
 					</properties>
 					<generalizations>
-						<parent parentName="VideocameraBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -1075,6 +1154,147 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+				</logic>
+			</node>
+
+			<!-- Waiting for sensors blocks, EV3 -->
+			<node name="Ev3SensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="Ev3SensorPort" name="Port">
+							<default>1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Touch Sensor" name="Ev3WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Color" name="Ev3WaitForColor" path="196, 12 : 196, 154 :  | 12, 12 : 380, 12 : 380, 154 : 12, 154 : 12, 12 : " description="Waits till the color sensor on the given port will recognize the given color.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="37" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="37" y="60" textBinded="Color"/>
+						<label x="0" y="60" text="Color:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Color" type="Color" name="Color">
+							<default>red</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Light" name="Ev3WaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or less than the given in the 'Percents' parameter value (0 to 100).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="45" y="60" textBinded="Percents"/>
+						<label x="-26" y="60" text="Percents:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Percents" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Range Sensor" name="Ev3WaitForRangeSensor" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic or infrared range sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance" background="white"/>
+						<label x="-60" y="60" text="Distance (cm):"/>
+						<label x="55" y="80" textBinded="Sign" background="white"/>
+						<label x="-90" y="80" text="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Distance" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for button" name="Ev3WaitForButton" description="Waits for press of a button on a brick.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Button"/>
+						<label x="-20" y="60" text="Button:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+				<container/>
+				<properties>
+					<property displayedName="Button" type="Ev3Buttons" name="Button">
+						<default>Up</default>
+					</property>
+				</properties>
+				<generalizations>
+					<parent parentName="AbstractNode"/>
+				</generalizations>
 				</logic>
 			</node>
 
@@ -1110,7 +1330,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Sound Sensor" name="NxtWaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Waits till the loudness obtained by the sound sensor on the given port will be greater or lower then the given value.">
+			<node displayedName="Wait for Sound Sensor" name="NxtWaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Waits till the loudness obtained by the sound sensor on the given port will be greater or less than the given value.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
@@ -1140,7 +1360,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Sonar Distance" name="NxtWaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or lower then the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Sonar Distance" name="NxtWaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1170,7 +1390,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Color Intensity" name="NxtWaitForColorIntensity" path="201, 137 : 200, 143 : 199, 149 : 198, 154 : 196, 160 : 193, 166 : 190, 171 : 186, 176 : 182, 180 : 178, 184 : 173, 188 : 168, 191 : 162, 194 : 156, 196 : 151, 197 : 145, 198 : 139, 198 : 133, 198 : 127, 197 : 122, 196 : 116, 194 : 110, 191 : 105, 188 : 100, 184 : 96, 180 : 92, 176 : 88, 171 : 85, 166 : 82, 160 : 80, 154 : 79, 149 : 78, 143 : 78, 137 : 78, 131 : 79, 125 : 80, 120 : 82, 114 : 85, 108 : 88, 103 : 92, 98 : 96, 94 : 100, 90 : 105, 86 : 110, 83 : 116, 80 : 122, 78 : 127, 77 : 133, 76 : 139, 76 : 145, 76 : 151, 77 : 156, 78 : 162, 80 : 168, 83 : 173, 86 : 178, 90 : 182, 94 : 186, 98 : 190, 103 : 193, 108 : 196, 114 : 198, 120 : 199, 125 : 200, 131 : 201, 137 :  | 260, 136 : 259, 148 : 257, 160 : 254, 171 : 250, 183 : 245, 194 : 239, 204 : 231, 214 : 223, 223 : 214, 231 : 204, 239 : 194, 245 : 183, 250 : 171, 254 : 160, 257 : 148, 259 : 136, 259 : 124, 259 : 112, 257 : 101, 254 : 89, 250 : 78, 245 : 68, 239 : 58, 231 : 49, 223 : 41, 214 : 33, 204 : 27, 194 : 22, 183 : 18, 171 : 15, 160 : 13, 148 : 13, 136 : 13, 124 : 15, 112 : 18, 101 : 22, 89 : 27, 78 : 33, 68 : 41, 58 : 49, 49 : 58, 41 : 68, 33 : 78, 27 : 89, 22 : 101, 18 : 112, 15 : 124, 13 : 136, 13 : 148, 13 : 160, 15 : 171, 18 : 183, 22 : 194, 27 : 204, 33 : 214, 41 : 223, 49 : 231, 58 : 239, 68 : 245, 78 : 250, 89 : 254, 101 : 257, 112 : 259, 124 : 260, 136 : " description="Waits till the value returned by the color sensor on the given port will be greater or lower then the given in the 'Intensity' parameter value (the intensity is specified in percents, 0 to 100).">
+			<node displayedName="Wait for Color Intensity" name="NxtWaitForColorIntensity" path="201, 137 : 200, 143 : 199, 149 : 198, 154 : 196, 160 : 193, 166 : 190, 171 : 186, 176 : 182, 180 : 178, 184 : 173, 188 : 168, 191 : 162, 194 : 156, 196 : 151, 197 : 145, 198 : 139, 198 : 133, 198 : 127, 197 : 122, 196 : 116, 194 : 110, 191 : 105, 188 : 100, 184 : 96, 180 : 92, 176 : 88, 171 : 85, 166 : 82, 160 : 80, 154 : 79, 149 : 78, 143 : 78, 137 : 78, 131 : 79, 125 : 80, 120 : 82, 114 : 85, 108 : 88, 103 : 92, 98 : 96, 94 : 100, 90 : 105, 86 : 110, 83 : 116, 80 : 122, 78 : 127, 77 : 133, 76 : 139, 76 : 145, 76 : 151, 77 : 156, 78 : 162, 80 : 168, 83 : 173, 86 : 178, 90 : 182, 94 : 186, 98 : 190, 103 : 193, 108 : 196, 114 : 198, 120 : 199, 125 : 200, 131 : 201, 137 :  | 260, 136 : 259, 148 : 257, 160 : 254, 171 : 250, 183 : 245, 194 : 239, 204 : 231, 214 : 223, 223 : 214, 231 : 204, 239 : 194, 245 : 183, 250 : 171, 254 : 160, 257 : 148, 259 : 136, 259 : 124, 259 : 112, 257 : 101, 254 : 89, 250 : 78, 245 : 68, 239 : 58, 231 : 49, 223 : 41, 214 : 33, 204 : 27, 194 : 22, 183 : 18, 171 : 15, 160 : 13, 148 : 13, 136 : 13, 124 : 15, 112 : 18, 101 : 22, 89 : 27, 78 : 33, 68 : 41, 58 : 49, 49 : 58, 41 : 68, 33 : 78, 27 : 89, 22 : 101, 18 : 112, 15 : 124, 13 : 136, 13 : 148, 13 : 160, 15 : 171, 18 : 183, 22 : 194, 27 : 204, 33 : 214, 41 : 223, 49 : 231, 58 : 239, 68 : 245, 78 : 250, 89 : 254, 101 : 257, 112 : 259, 124 : 260, 136 : " description="Waits till the value returned by the color sensor on the given port will be greater or less than the given in the 'Intensity' parameter value (the intensity is specified in percents, 0 to 100).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
@@ -1225,7 +1445,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Light" name="NxtWaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or lower then the given in the 'Percents' parameter value (0 to 100).">
+			<node displayedName="Wait for Light" name="NxtWaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or less than the given in the 'Percents' parameter value (0 to 100).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
@@ -1286,73 +1506,27 @@
 					</generalizations>
 				</logic>
 			</node>
-
-			<node displayedName="Wait for \&quot;Enter\&quot; button" name="NxtWaitForEnter" description="Waits for \&quot;Enter\&quot;. button press.">
+			<node displayedName="Wait for Button" name="NxtWaitForButton" description="Waits for press of a button on a brick.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for  Enter" background="white"/>
+						<label x="40" y="60" textBinded="Button"/>
+						<label x="-20" y="60" text="Button:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Wait for \&quot;Escape\&quot; button" name="NxtWaitForEscape" description="Waits for \&quot;Escape\&quot; button press.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="-20" y="60" text="Wait for Escape" background="white"/>
-					</labels>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Wait for \&quot;Left\&quot; button" name="NxtWaitForLeft" description="Waits for \&quot;Left\&quot; button press.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="-20" y="60" text="Wait for Left" background="white"/>
-					</labels>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Wait for \&quot;Right\&quot; button" name="NxtWaitForRight" description="Waits for \&quot;Right\&quot; button press.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="-20" y="60" text="Wait for Right" background="white"/>
-					</labels>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
+				<container/>
+				<properties>
+					<property displayedName="Button" type="NxtButtons" name="Button">
+						<default>Enter</default>
+					</property>
+				</properties>
+				<generalizations>
+					<parent parentName="AbstractNode"/>
+				</generalizations>
 				</logic>
 			</node>
 
@@ -1392,7 +1566,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Light" name="TrikWaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or lower then the given in the 'Percents' parameter value (0 to 100).">
+			<node displayedName="Wait for Light" name="TrikWaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or less than the given in the 'Percents' parameter value (0 to 100).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
@@ -1422,7 +1596,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Ultrasonic Distance" name="TrikWaitForSonarDistance" description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or lower then the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Ultrasonic Distance" name="TrikWaitForSonarDistance" description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1452,7 +1626,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Infrared Distance" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or lower then the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Infrared Distance" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1482,7 +1656,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Gyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="TrikWaitForGyroscope" description="Waits till the value returned by the gyroscope on the given port will be greater or lower then the given in the 'Degrees/sec' parameter value.">
+			<node displayedName="Wait for Gyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="TrikWaitForGyroscope" description="Waits till the value returned by the gyroscope on the given port will be greater or less than the given in the 'Degrees/sec' parameter value.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
@@ -1592,13 +1766,38 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for \&quot;Enter\&quot; button" name="TrikWaitForEnter" description="Waits for \&quot;Enter\&quot;. button press.">
+			<node displayedName="Wait for Button" name="TrikWaitForButton" description="Waits for press of a button on a brick.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for  Enter" background="white"/>
+						<label x="40" y="60" textBinded="Button"/>
+						<label x="-20" y="60" text="Button:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Button" type="TrikButtons" name="Button">
+							<default>Up</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait Gamepad Button" name="TrikWaitGamepadButton" description="Waits for Android gamepad 'magic button' press. Buttons are identified by numbers from 1 to 5 (from left to right)">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trikWaitGamepadButtonBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-30" y="60" text="Wait gamepad button" background="white"/>
+						<label x="50" y="-30" textBinded="Button" hard="true"/>
+						<label x="0" y="-30" text="Button:" hard="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1607,15 +1806,22 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+					<properties>
+						<property displayedName="Button" type="int" name="Button">
+							<default>1</default>
+						</property>
+					</properties>
 				</logic>
 			</node>
-			<node displayedName="Wait for \&quot;Left\&quot; button" name="TrikWaitForLeft" description="Waits for \&quot;Left\&quot; button press.">
+			<node displayedName="Wait Pad Press" name="TrikWaitPadPress" description="Waits for Android gamepad pad press (left pad has number 1, right pad - number 2).">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitPadPressBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Left" background="white"/>
+						<label x="-20" y="60" text="Wait pad press" background="white"/>
+						<label x="50" y="-30" textBinded="Pad" hard="true"/>
+						<label x="0" y="-30" text="Pad:" hard="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1624,71 +1830,73 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+					<properties>
+						<property displayedName="Pad" type="int" name="Pad">
+							<default>1</default>
+						</property>
+					</properties>
 				</logic>
 			</node>
-			<node displayedName="Wait for \&quot;Right\&quot; button" name="TrikWaitForRight" description="Waits for \&quot;Right\&quot; button press.">
+			<node displayedName="Wait for Gamepad Wheel" name="TrikWaitGamepadWheel" description="Waits till the value returned by gamepad wheel be greater or less than the given in the 'Angle' parameter value. Angle is measured from -100 (max left) to 100 (max right).">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitGamepadWheelBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Right" background="white"/>
+						<label x="-70" y="-30" text="Wait for Gamepad Wheel" hard="true"/>
+						<label x="50" y="60" textBinded="Angle"/>
+						<label x="-30" y="60" text="Angle:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<container/>
+					<properties>
+						<property displayedName="Angle" type="string" name="Angle">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikAnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Gamepad Disconnect" name="TrikWaitGamepadDisconnect" description="Waits until Android gamepad is disconnected.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trikWaitGamepadDisconnectBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-70" y="-30" text="Wait for Gamepad Disconnect" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties />
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for \&quot;Down\&quot; button" name="TrikWaitForDown" description="Waits for \&quot;Down\&quot; button press.">
+			<node displayedName="Wait for Gamepad Connect" name="TrikWaitGamepadConnect" description="Waits until Android gamepad is connected.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trikWaitGamepadConnectBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Down" background="white"/>
+						<label x="-70" y="-30" text="Wait for Gamepad Connect" hard="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Wait for \&quot;Up\&quot; button" name="TrikWaitForUp" description="Waits for \&quot;Up\&quot; button press.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="-20" y="60" text="Wait for Up" background="white"/>
-					</labels>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Wait for \&quot;Power\&quot; button" name="TrikWaitForPower" description="Waits for \&quot;Power\&quot; button press.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="-20" y="60" text="Wait for Power" background="white"/>
-					</labels>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
+					<properties />
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -1761,7 +1969,7 @@
 							<default>1</default>
 						</property>
 						<property displayedName="Text" type="string" name="PrintText">
-							<default>Enter some text here...</default>
+							<default>'Enter some text here'</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1772,7 +1980,7 @@
 			<node displayedName="Marker Down" name="MarkerDown" description="Moves the marker of the 2D model robot down to the floor: the robot will draw its trace on the floor after that. If the marker of another color is already drawing at the moment it will be replaced.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image name="images/markerDown.svg" x1="0" x2="50" y1="0" y2="50" />
+						<image name="images/markerDownBlock.svg" x1="0" x2="50" y1="0" y2="50" />
 					</picture>
 					<labels>
 						<label x="27" y="-30" textBinded="Color" hard="true"/>
@@ -1795,7 +2003,7 @@
 			<node displayedName="Marker Up" name="MarkerUp" description="Lifts the marker of the 2D model robot up: the robot stops drawing its trace on the floor after that.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image name="images/markerUp.svg" x1="0" x2="50" y1="0" y2="50" />
+						<image name="images/markerUpBlock.svg" x1="0" x2="50" y1="0" y2="50" />
 					</picture>
 					<nonResizeable/>
 				</graphics>
@@ -1945,13 +2153,14 @@
 					</generalizations>
 				</logic>
 			</node>
+
 			<!-- EV3 display drawing blocks -->
 			<node displayedName="Draw Pixel" name="Ev3DrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
-		 			<labels>
+					<labels>
 						<label x="36" y="60" textBinded="XCoordinatePix"/>
 						<label x="0" y="60" text="X: "/>
 						<label x="36" y="80" textBinded="YCoordinatePix"/>
@@ -2001,7 +2210,7 @@
 						<default>0</default>
 					</property>
 					<property displayedName="X2" type="int" name="X2CoordinateLine">
-					 	 <default>10</default>
+						 <default>10</default>
 					</property>
 					<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 						<default>10</default>
@@ -2019,15 +2228,15 @@
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateRect"/>
-						<label x="-10" y="60" text="X: "/>
+						<label x="-20" y="60" text="X: "/>
 						<label x="50" y="80" textBinded="YCoordinateRect"/>
-						<label x="-10" y="80" text="Y: "/>
+						<label x="-20" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="WidthRect"/>
-						<label x="-10" y="100" text="Width: "/>
+						<label x="-20" y="100" text="Width: "/>
 						<label x="50" y="120" textBinded="HeightRect"/>
-						<label x="-10" y="120" text="Height: "/>
+						<label x="-20" y="120" text="Height: "/>
 						<label x="50" y="140" textBinded="Filled"/>
-						<label x="-10" y="140" text="Filled: "/>
+						<label x="-20" y="140" text="Filled: "/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2062,13 +2271,13 @@
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateCircle"/>
-						<label x="0" y="60" text="X: "/>
+						<label x="-20" y="60" text="X: "/>
 						<label x="50" y="80" textBinded="YCoordinateCircle"/>
-						<label x="0" y="80" text="Y: "/>
+						<label x="-20" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="CircleRadius"/>
-						<label x="0" y="100" text="Radius: "/>
+						<label x="-20" y="100" text="Radius: "/>
 						<label x="50" y="120" textBinded="Filled"/>
-						<label x="0" y="120" text="Filled: "/>
+						<label x="-20" y="120" text="Filled: "/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2093,6 +2302,7 @@
 					</generalizations>
 				</logic>
 			</node>
+
 			<!-- TRIK display drawing blocks -->
 			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
 				<graphics>
@@ -2132,7 +2342,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Width" type="int" name="Width">
-							<default>0</default>
+							<default>1</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2157,10 +2367,10 @@
 					<container/>
 					<properties>
 						<property displayedName="X" type="int" name="XCoordinatePix">
-							<default>0</default>
+							<default>5</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinatePix">
-							<default>0</default>
+							<default>5</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2394,7 +2604,9 @@
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Text" type="string" name="Text" />
+						<property displayedName="Text" type="string" name="Text">
+							<default>\"Hi!\"</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>
@@ -2426,7 +2638,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for message" name="TrikWaitForMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
+			<node displayedName="Wait for Message" name="TrikWaitForMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
@@ -2448,6 +2660,7 @@
 				</logic>
 			</node>
 		</graphicTypes>
+
 		<palette sorted="false">
 			<group name="Algorithms">
 				<element name="InitialNode"/>
@@ -2458,6 +2671,7 @@
 				<element name="Loop"/>
 				<element name="Subprogram"/>
 				<element name="Fork"/>
+				<element name="Join"/>
 				<element name="VariableInit"/>
 				<element name="CommentBlock"/>
 			</group>
@@ -2467,12 +2681,12 @@
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
-		<element name="Ev3Beep"/>
-		<element name="Ev3PlayTone"/>
-		<element name="Ev3EnginesForward"/>
+				<element name="NxtClearEncoder"/>
+				<element name="Ev3Beep"/>
+				<element name="Ev3PlayTone"/>
+				<element name="Ev3EnginesForward"/>
 				<element name="Ev3EnginesBackward"/>
 				<element name="Ev3EnginesStop"/>
-				<element name="NxtClearEncoder"/>
 				<element name="TrikPlayTone"/>
 				<element name="TrikV6EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
@@ -2486,9 +2700,15 @@
 				<element name="TrikDetect" />
 				<element name="TrikDetectorToVariable" />
 				<element name="TrikSendMessage" />
+				<element name="SendMessageThreads"/>
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>
+				<element name="Ev3WaitForTouchSensor"/>
+<!--				<element name="Ev3WaitForColor"/>
+				<element name="Ev3WaitForLight"/>-->
+				<element name="Ev3WaitForRangeSensor"/>
+				<element name="Ev3WaitForButton"/>
 				<element name="NxtWaitForTouchSensor"/>
 				<element name="NxtWaitForSonarDistance"/>
 				<element name="NxtWaitForColor"/>
@@ -2496,22 +2716,20 @@
 				<element name="NxtWaitForColorIntensity"/>
 				<element name="NxtWaitForLight"/>
 				<element name="NxtWaitForSound"/>
-				<element name="NxtWaitForEnter"/>
-				<element name="NxtWaitForEscape"/>
-				<element name="NxtWaitForLeft"/>
-				<element name="NxtWaitForRight"/>
+				<element name="NxtWaitForButton"/>
 				<element name="TrikWaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>
 				<element name="TrikWaitForMotion"/>
 				<element name="TrikWaitForEncoder"/>
-				<element name="TrikWaitForEnter"/>
-				<element name="TrikWaitForLeft"/>
-				<element name="TrikWaitForRight"/>
-				<element name="TrikWaitForDown"/>
-				<element name="TrikWaitForUp"/>
-				<element name="TrikWaitForPower"/>
+				<element name="TrikWaitForButton"/>
 				<element name="TrikWaitForMessage" />
+				<element name="TrikWaitGamepadButton" />
+				<element name="TrikWaitPadPress" />
+				<element name="TrikWaitGamepadWheel" />
+				<element name="TrikWaitGamepadDisconnect" />
+				<element name="TrikWaitGamepadConnect" />
+				<element name="ReceiveMessageThreads"/>
 			</group>
 			<group name="Drawing">
 				<element name="NxtDrawRect"/>

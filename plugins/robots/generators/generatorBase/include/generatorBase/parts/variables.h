@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QMap>
@@ -5,7 +19,7 @@
 
 #include <qrtext/core/types/typeExpression.h>
 #include <qrrepo/repoApi.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <kitBase/robotModel/robotModelInterface.h>
 
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
@@ -22,28 +36,28 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
-	Variables(QString const &pathToTemplates
-			, interpreterBase::robotModel::RobotModelInterface const &robotModel
+	Variables(const QString &pathToTemplates
+			, const kitBase::robotModel::RobotModelInterface &robotModel
 			, qrtext::LanguageToolboxInterface &luaToolbox);
 
 	/// Returns global variables declarations string
 	QString generateVariableString() const;
 
 	/// Returns given expression type using inner type inference algorithm
-	QSharedPointer<qrtext::core::types::TypeExpression> expressionType(QString const &expression) const;
+	QSharedPointer<qrtext::core::types::TypeExpression> expressionType(const QString &expression) const;
 
 	/// Adds given string to variables declaration section.
 	/// This method can be called multiple times with the same string but it
 	/// will be deduplicated.
-	void appendManualDeclaration(QString const &variables);
+	void appendManualDeclaration(const QString &variables);
 
 protected:
-	QString typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	QString constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	QString variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	QString typeExpression(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
+	QString constantDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
+	QString variableDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
 
 private:
-	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
+	const kitBase::robotModel::RobotModelInterface &mRobotModel;
 	qrtext::LanguageToolboxInterface &mLuaToolbox;
 	QStringList mManualDeclarations;
 };

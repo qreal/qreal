@@ -1,14 +1,28 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "encoderSensor.h"
 
 #include "commandConstants.h"
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
-EncoderSensor::EncoderSensor(DeviceInfo const &info, PortInfo const &port
+EncoderSensor::EncoderSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::EncoderSensor(info, port)
+	: kitBase::robotModel::robotParts::EncoderSensor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 	, mState(idle)
 {
@@ -44,7 +58,7 @@ void EncoderSensor::nullify()
 	mRobotCommunicator.send(this, command, 0);
 }
 
-void EncoderSensor::readingDone(QObject *addressee, QByteArray const &reading)
+void EncoderSensor::readingDone(QObject *addressee, const QByteArray &reading)
 {
 	if (addressee != this) {
 		return;
@@ -53,7 +67,7 @@ void EncoderSensor::readingDone(QObject *addressee, QByteArray const &reading)
 	sensorSpecificProcessResponse(reading);
 }
 
-void EncoderSensor::sensorSpecificProcessResponse(QByteArray const &reading)
+void EncoderSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	mState = idle;
 

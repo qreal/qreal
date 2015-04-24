@@ -1,6 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "statPoint.h"
 
-StatPoint::StatPoint(QPointF const &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)
+StatPoint::StatPoint(const QPointF &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)
 	: PortInterface(impl), mPoint(point), mPropX(propX), mPropY(propY), mInitWidth(initWidth), mInitHeight(initHeight)
 {}
 
@@ -9,7 +23,7 @@ StatPoint::operator QPointF () const
 	return mPoint;
 }
 
-void StatPoint::operator= (QPointF const &p)
+void StatPoint::operator= (const QPointF &p)
 {
 	mPoint = p;
 	mPropX = false;
@@ -18,15 +32,15 @@ void StatPoint::operator= (QPointF const &p)
 	mInitWidth = 1;
 }
 
-void StatPoint::paint(QPainter *painter, QRectF const &contents) const
+void StatPoint::paint(QPainter *painter, const QRectF &contents) const
 {
-	qreal const x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
-	qreal const y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
+	const qreal x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
+	const qreal y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
 
 	QLineF pointToDraw(x - 0.1, y - 0.1, x + 0.1, y + 0.1);
 
-	QColor const portColor("#465945");
-	QColor const highlightColor("#c3dcc4");
+	const QColor portColor("#465945");
+	const QColor highlightColor("#c3dcc4");
 
 	painter->save();
 	QPen pen = painter->pen();
@@ -41,10 +55,10 @@ void StatPoint::paint(QPainter *painter, QRectF const &contents) const
 	painter->restore();
 }
 
-QPointF StatPoint::transformForContents(QRectF const &contents) const
+QPointF StatPoint::transformForContents(const QRectF &contents) const
 {
-	qreal const x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
-	qreal const y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
+	const qreal x = mPoint.x() * (mPropX ? mInitWidth : contents.width());
+	const qreal y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
 
 	return QPointF(x, y);
 }

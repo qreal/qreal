@@ -1,13 +1,27 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "ev3AdditionalPreferences.h"
 #include "ui_ev3AdditionalPreferences.h"
 
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
 
-using namespace ev3KitInterpreter;
+using namespace ev3;
 using namespace qReal;
 
-Ev3AdditionalPreferences::Ev3AdditionalPreferences(QString const &realRobotName, QWidget *parent)
+Ev3AdditionalPreferences::Ev3AdditionalPreferences(const QString &realRobotName, QWidget *parent)
 		: AdditionalPreferences(parent)
 		, mUi(new Ui::Ev3AdditionalPreferences)
 		, mRealRobotName(realRobotName)
@@ -35,18 +49,18 @@ void Ev3AdditionalPreferences::save()
 void Ev3AdditionalPreferences::restoreSettings()
 {
 	QList<QextPortInfo> const ports = QextSerialEnumerator::getPorts();
-	QString const defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
+	const QString defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
 	mUi->comPortComboBox->clear();
 
-	for (QextPortInfo const &info : ports) {
-		QRegExp const portNameRegexp("COM\\d+", Qt::CaseInsensitive);
+	for (const QextPortInfo &info : ports) {
+		const QRegExp portNameRegexp("COM\\d+", Qt::CaseInsensitive);
 		if (portNameRegexp.indexIn(info.portName) != -1) {
-			QString const portName = portNameRegexp.cap();
+			const QString portName = portNameRegexp.cap();
 			mUi->comPortComboBox->addItem(portName);
 		}
 	}
 
-	int const defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
+	const int defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
 	if (defaultIndex != -1) {
 		mUi->comPortComboBox->setCurrentIndex(defaultIndex);
 	}
@@ -70,7 +84,7 @@ void Ev3AdditionalPreferences::restoreSettings()
 		mUi->manualComPortCheckbox->setChecked(SettingsManager::value("Ev3ManualComPortCheckboxChecked").toBool());
 	}
 
-	QString const typeOfCommunication = SettingsManager::value("Ev3ValueOfCommunication").toString();
+	const QString typeOfCommunication = SettingsManager::value("Ev3ValueOfCommunication").toString();
 	if (typeOfCommunication == "bluetooth") {
 		mUi->bluetoothRadioButton->setChecked(true);
 	} else if (typeOfCommunication == "usb") {
@@ -81,16 +95,16 @@ void Ev3AdditionalPreferences::restoreSettings()
 	}
 }
 
-void Ev3AdditionalPreferences::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface * const robotModel)
+void Ev3AdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
-	bool const isReal = robotModel->name() == mRealRobotName;
+	const bool isReal = robotModel->name() == mRealRobotName;
 	mUi->communicationTypeGroupBox->setVisible(isReal);
 	mUi->bluetoothSettingsGroupBox->setVisible(mUi->bluetoothRadioButton->isChecked() && isReal);
 }
 
 void Ev3AdditionalPreferences::manualComPortCheckboxChecked(bool state)
 {
-	QString const defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
+	const QString defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
 
 	if (state) {
 		mUi->comPortComboBox->hide();

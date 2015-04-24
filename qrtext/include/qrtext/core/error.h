@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -37,13 +51,13 @@ public:
 	/// @param errorMessage - textual description of an error.
 	/// @param errorType - what component (lexer/parser/so on) reported error.
 	/// @param severity - severity of an error.
-	Error(Connection const &connection, QString const &errorMessage, ErrorType errorType, Severity severity);
+	Error(const Connection &connection, const QString &errorMessage, ErrorType errorType, Severity severity);
 
 	/// Returns point in code where an error was detected.
-	Connection const &connection() const;
+	const Connection &connection() const;
 
 	/// Returns textual description of an error.
-	QString const &errorMessage() const;
+	const QString &errorMessage() const;
 
 	/// Returns what component (lexer/parser/so on) reported error.
 	ErrorType errorType() const;

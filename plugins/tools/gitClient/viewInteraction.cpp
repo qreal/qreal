@@ -73,7 +73,7 @@ void ViewInteraction::initActions()
 	connect(remoteListAction, SIGNAL(triggered()), this, SLOT(remoteListClicked()));
 
 	QAction *versionsAction = new QAction(tr("Versions"), this);
-	versionsAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
+	versionsAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_V));
 	connect(versionsAction, SIGNAL(triggered()), this, SLOT(versionsClicked()));
 
 	QMenu *diffMenu = new QMenu(tr("Visual diff..."));
@@ -124,6 +124,7 @@ void ViewInteraction::init(const qReal::PluginConfigurator &configurator)
 	mSystemEvents = &(configurator.systemEvents());
 	mCompactMode = new TransparentMode(mPlugin, mProjectManager, mMainWindowIface, mSystemEvents);
 	modeChanged(qReal::SettingsManager::value("versioningCompactMode").toBool());
+	connect(mSystemEvents, SIGNAL(activeTabChanged(TabInfo)), SLOT(activeTabChanged(const TabInfo &)));
 }
 
 void ViewInteraction::initClicked()
@@ -308,7 +309,7 @@ void ViewInteraction::onDeleteBranchComplete(bool success)
 	}
 }
 
-void ViewInteraction::onStatusComplete(QString answer, bool success)
+void ViewInteraction::onStatusComplete(const QString &answer, bool success)
 {
 	if (!success)
 		return;
@@ -320,7 +321,7 @@ void ViewInteraction::onStatusComplete(QString answer, bool success)
 	}
 }
 
-void ViewInteraction::onLogComplete(QString answer, bool success)
+void ViewInteraction::onLogComplete(const QString &answer, bool success)
 {
 	Q_UNUSED(success)
 	ui::SimpleOutputDialog *dialog = new ui::SimpleOutputDialog(tr("Log dialog"), mMainWindowIface->windowWidget());
@@ -335,7 +336,7 @@ void ViewInteraction::onLogComplete(QString answer, bool success)
 	}
 }
 
-void ViewInteraction::onRemoteListComplete(QString answer, bool success)
+void ViewInteraction::onRemoteListComplete(const QString &answer, bool success)
 {
 	if (!success) {
 		return;
@@ -345,12 +346,12 @@ void ViewInteraction::onRemoteListComplete(QString answer, bool success)
 	dialog->message(answer);
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
-    }
+	}
 }
 
 void ViewInteraction::onCheckoutComplete(bool success)
 {
-    Q_UNUSED(success)
+	Q_UNUSED(success)
 }
 
 void ViewInteraction::versionsClicked()
@@ -439,14 +440,14 @@ void ViewInteraction::modeChanged(bool compactMode)
 	mMenu.last().action()->setVisible(compactMode);
 	if (compactMode) {
 		connect(
-			mSystemEvents
-			, SIGNAL(projectManagerSaveComplete())
+			mProjectManager
+			, SIGNAL(saveComplete())
 			, mCompactMode
 			, SLOT(saveVersion())
 			, Qt::DirectConnection
 		);
 	} else {
-		disconnect(mSystemEvents, SIGNAL(projectManagerSaveComplete()), mCompactMode, SLOT(saveVersion()));
+		disconnect(mProjectManager, SIGNAL(saveComplete()), mCompactMode, SLOT(saveVersion()));
 	}
 }
 
@@ -457,6 +458,17 @@ void ViewInteraction::removeClosedTab(QWidget *widget)
 		if (mDiffWidgets.isEmpty()) {
 			mMainWindowIface->makeFullScreen(isFullScreen);
 		}
+	}
+}
+
+void ViewInteraction::activeTabChanged(const qReal::TabInfo &info)
+{
+	if (info.type() == qReal::TabInfo::TabType::editor) {
+		mMenu.first().menu()->menuAction()->setEnabled(true);
+		mMenu.last().action()->setEnabled(true);
+	} else {
+		mMenu.first().menu()->menuAction()->setEnabled(false);
+		mMenu.last().action()->setEnabled(false);
 	}
 }
 
@@ -480,6 +492,6 @@ QWidget *ViewInteraction::makeDiffTab()
 	widget->setLayout(mLayout);
 	mMainWindowIface->openTab(widget, "diff");
 	mDiffWidgets << widget;
-	connect(mSystemEvents, SIGNAL(indefiniteTabClosed(QWidget*)), this, SLOT(removeClosedTab(QWidget*)));
+	connect(mSystemEvents, SIGNAL(otherTabClosed(QWidget*)), this, SLOT(removeClosedTab(QWidget*)));
 	return widget;
 }

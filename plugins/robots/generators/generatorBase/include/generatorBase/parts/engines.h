@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QSet>
@@ -13,9 +27,9 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Engines : public InitTerminateCodeGenerator
 {
 public:
-	Engines(QString const &pathToTemplates
-			, simple::Binding::ConverterInterface const *outputPortConverter
-			, simple::Binding::MultiConverterInterface const *outputPortsConverter);
+	Engines(const QString &pathToTemplates
+			, const simple::Binding::ConverterInterface *outputPortConverter
+			, const simple::Binding::MultiConverterInterface *outputPortsConverter);
 	virtual ~Engines();
 
 	virtual void reinit();
@@ -23,18 +37,18 @@ public:
 	virtual QString terminateCode();
 
 	/// Marks given output port used in resulting program. Adds init/termnate code for it.
-	void registerUsageOnPort(QString const &outputPort);
+	void registerUsageOnPort(const QString &outputPort);
 
 	/// Marks given output ports used in resulting program. Adds init/termnate code for them.
 	/// Output ports are splitted with system engines multiconverter.
-	void registerUsageOnPorts(QString const &outputPorts);
+	void registerUsageOnPorts(const QString &outputPorts);
 
 private:
-	QString readEngineTemplate(QString const &pathToTemplate);
+	QString readEngineTemplate(const QString &pathToTemplate);
 
 	QSet<QString> mUsedPorts;
-	simple::Binding::ConverterInterface const *mOutputPortConverter;  // Takes ownership
-	simple::Binding::MultiConverterInterface const *mOutputPortsConverter;  // Takes ownership
+	const simple::Binding::ConverterInterface *mOutputPortConverter;  // Takes ownership
+	const simple::Binding::MultiConverterInterface *mOutputPortsConverter;  // Takes ownership
 };
 
 }
