@@ -1,11 +1,13 @@
 #pragma once
 
-#include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
-#include "../../../qrutils/versioningUtils/authenticationSettingsWidget.h"
-#include "../../../qrutils/versioningUtils/networkSettingsWidget.h"
-#include <qrgui/preferencesDialog/preferencesPage.h>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
+
+#include <qrgui/preferencesDialog/preferencesPage.h>
+#include <qrutils/versioningUtils/authenticationSettingsWidget.h>
+#include <qrutils/versioningUtils/networkSettingsWidget.h>
+#include <qrgui/preferencesDialog/preferencesPage.h>
+
 
 namespace Ui {
 	class PreferencesVersioningPage;

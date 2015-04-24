@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -25,10 +39,11 @@ public:
 	/// @param args Startup arguments
 	/// @param needPreparation Specifies if working copy must be fetchced from current project
 	/// @param workingDir A path to working directory. If empty, tempFolder() used
-	/// @param checkWorkingDir Specifies if before operation will be checked if specified directory is under version control
+	/// @param checkWorkingDir Specifies if before operation will be checked
+	///							if specified directory is under version control
 	/// @param needProcessing Specifies if changes in working copy must be registered in current project
 	/// @param targetProject A path to project whicth will recieve chages in working copy after processing.
-	///                      If empty value speified, target project will be working one
+	///							If empty value speified, target project will be working one
 	/// @param sourceProject A path to source project. If empty working one used
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
 	bool invokeOperation(
@@ -48,7 +63,8 @@ public:
 	/// @param tag !!!!! A callback that will be called when operation complete with result specification.
 	/// @param workingDir A path to working directory. If empty, tempFolder() used
 	/// @param sourceProject A path to source project. If empty, working one used
-	/// @param checkWorkingDir Specifies if before operation will be checked if specified directory is under version control
+	/// @param checkWorkingDir Specifies if before operation will be checked
+	///				if specified directory is under version control
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
 	/// @returns Pointer to started operaton
 	invocation::LongOperation *invokeOperationAsync(

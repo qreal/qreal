@@ -45,6 +45,8 @@ HEADERS += \
 	$$PWD/logicalRepoApi.h \
 	$$PWD/repoControlInterface.h \
 	$$PWD/commonRepoApi.h \
+	$$PWD/workingCopyManagementInterface.h \
+	$$PWD/workingCopyInspectionInterface.h \
 
 DEFINES += QRREPO_LIBRARY
 

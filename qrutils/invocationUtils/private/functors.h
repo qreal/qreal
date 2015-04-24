@@ -16,7 +16,8 @@
 
 #include <QtCore/qglobal.h>
 #include <QtConcurrent/qtconcurrentcompilertest.h>
-#include "../progress.h"
+
+#include <qrutils/invocationUtils/progress.h>
 
 namespace invocation
 {

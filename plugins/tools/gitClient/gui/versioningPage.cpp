@@ -1,9 +1,11 @@
+#include "versioningPage.h"
+#include "ui_versioningPage.h"
+
 #include <QtWidgets/QFileDialog>
 #include <QProcess>
 
-#include "versioningPage.h"
-#include "ui_versioningPage.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
+
 
 using namespace git::ui;
 
