@@ -432,7 +432,7 @@ void Repository::save(const IdList &list) const
 	mSerializer.saveToDisk(toSave, mMetaInfo);
 }
 
-void Repository::saveWithLogicalId(const qReal::IdList &list)
+void Repository::saveWithLogicalId(const qReal::IdList &list) const
 {
 	QList<Object*> toSave;
 	for (const Id &id : list) {

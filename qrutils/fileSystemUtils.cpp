@@ -32,7 +32,7 @@ bool FileSystemUtils::makeHidden(const QString &filePath)
 #endif
 }
 
-bool FileSystemUtils::removeDir(QString const &dirPath, bool recursive)
+bool FileSystemUtils::removeDir(const QString &dirPath, bool recursive)
 {
 	QDir dir(dirPath);
 	if (!dir.exists()) {
@@ -44,7 +44,7 @@ bool FileSystemUtils::removeDir(QString const &dirPath, bool recursive)
 	return dir.rmdir(dirPath);
 }
 
-bool FileSystemUtils::clearDir(QString const &dirPath)
+bool FileSystemUtils::clearDir(const QString &dirPath)
 {
 	QDir dir(dirPath);
 	if (!dir.exists()) {
@@ -53,7 +53,7 @@ bool FileSystemUtils::clearDir(QString const &dirPath)
 	return clearDir(dir);
 }
 
-bool FileSystemUtils::removeFile(QString const &filePath)
+bool FileSystemUtils::removeFile(const QString &filePath)
 {
 	QFile file(filePath);
 	if (!file.exists()) {

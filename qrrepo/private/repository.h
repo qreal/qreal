@@ -109,7 +109,7 @@ public:
 
 	void saveAll() const;
 	void save(const qReal::IdList &list) const;
-	void saveWithLogicalId(const qReal::IdList &list);
+	void saveWithLogicalId(const qReal::IdList &list) const;
 
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 	void remove(const qReal::IdList &list) const;
