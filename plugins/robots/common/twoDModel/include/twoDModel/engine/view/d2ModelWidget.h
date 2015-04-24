@@ -64,6 +64,10 @@ public:
 //	void init();
 	void close();
 
+	/// Enables or disables compact 2D model mode.
+	/// In a compact mode 2D model window has much less controls, they may seem in another way.
+	void setCompactMode(bool enabled);
+
 	D2ModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 

@@ -17,12 +17,15 @@
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
 
-
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "twoDModel/engine/twoDModelControlInterface.h"
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
 #include "twoDModel/twoDModelDeclSpec.h"
+
+namespace utils {
+class SmartDock;
+}
 
 namespace twoDModel {
 
@@ -61,7 +64,6 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
-	void initDock();
 	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);
 
 	const QString mRobotModelName;
@@ -69,7 +71,7 @@ private:
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::D2ModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
-	QWidget *mDock;
+	QScopedPointer<utils::SmartDock> mDock;
 };
 
 }

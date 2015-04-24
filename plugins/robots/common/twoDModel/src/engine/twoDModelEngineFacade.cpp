@@ -14,11 +14,8 @@
 
 #include "twoDModel/engine/twoDModelEngineFacade.h"
 
-#include <QtWidgets/QDockWidget>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMainWindow>
-
 #include <qrkernel/logging.h>
+#include <qrutils/smartDock.h>
 #include <kitBase/readOnly.h>
 
 #include "twoDModel/engine/view/d2ModelWidget.h"
@@ -32,14 +29,13 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	, mModel(new model::Model())
 	, mView(new view::D2ModelWidget(*mModel.data()))
 	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
+	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
 	mModel.data()->addRobotModel(robotModel);
 
 	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
 	connect(mView.data(), &view::D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
 	connect(mView.data(), &view::D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
-
-	initDock();
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
@@ -145,31 +141,6 @@ void TwoDModelEngineFacade::onStartInterpretation()
 void TwoDModelEngineFacade::onStopInterpretation()
 {
 	mModel->timeline().stop();
-}
-
-void TwoDModelEngineFacade::initDock()
-{
-	QMainWindow *mainWindow = nullptr;
-	for (QWidget * const topLevelWidget : QApplication::topLevelWidgets()) {
-		if (QMainWindow * const currentWindow = dynamic_cast<QMainWindow *>(topLevelWidget)) {
-			mainWindow = currentWindow;
-			break;
-		}
-	}
-
-	if (!mainWindow) {
-		QLOG_ERROR() << "Can`t find top level window!";
-		return;
-	}
-
-	QDockWidget *dock = new QDockWidget(mView->windowTitle(), mainWindow);
-	dock->setObjectName("2dModelDock");
-	dock->setWidget(mView.data());
-	mView->setParent(dock);
-	dock->setVisible(false);
-
-	mainWindow->addDockWidget(Qt::RightDockWidgetArea, dock);
-	mDock = dock;
 }
 
 void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)
