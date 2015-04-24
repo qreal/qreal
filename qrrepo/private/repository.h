@@ -107,8 +107,8 @@ public:
 	/// @param importedFile - name of file to be imported
 	void importFromDisk(const QString &importedFile);
 
-	void saveAll();
-	void save(const qReal::IdList &list);
+	void saveAll() const;
+	void save(const qReal::IdList &list) const;
 	void saveWithLogicalId(const qReal::IdList &list);
 
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);

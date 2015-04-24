@@ -417,12 +417,12 @@ bool Repository::exist(const Id &id) const
 	return (mObjects[id] != nullptr);
 }
 
-void Repository::saveAll()
+void Repository::saveAll() const
 {
 	mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
 }
 
-void Repository::save(const IdList &list)
+void Repository::save(const IdList &list) const
 {
 	QList<Object*> toSave;
 	for (const Id &id : list) {

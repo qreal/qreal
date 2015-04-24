@@ -130,8 +130,8 @@ public:
 	/// RepoApi's wrapper for Repository.importFromDisk
 	/// @param importedFile - file to be imported
 	void importFromDisk(QString const &importedFile) override;
-	void saveAll() override;
-	void save(qReal::IdList &list) override;
+	void saveAll() const override;
+	void save(qReal::IdList &list) const override;
 	void saveTo(QString const &workingFile) override;
 
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) override;

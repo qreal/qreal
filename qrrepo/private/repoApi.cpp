@@ -401,7 +401,7 @@ void RepoApi::exportToXml(const QString &targetFile) const
 	mRepository.exportToXml(targetFile);
 }
 
-void RepoApi::saveAll()
+void RepoApi::saveAll() const
 {
 	mRepository.saveAll();
 }
@@ -426,7 +426,7 @@ void RepoApi::importFromDisk(const QString &importedFile)
 	mRepository.importFromDisk(importedFile);
 }
 
-void RepoApi::save(IdList &list)
+void RepoApi::save(const IdList &list) const
 {
 	mRepository.save(list);
 }

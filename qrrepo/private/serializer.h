@@ -43,13 +43,13 @@ public:
 	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
 	void removeFromDisk(qReal::Id const &id) const;
-	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo);
+	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
 	void prepareWorkingCopy(const QString &workingCopyPath, QString const &sourceProject = QString());
 	void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
-	void decompressFile(QString const &fileName);
+	void decompressFile(QString const &fileName) const;
 
 private:
 	static void clearDir(const QString &path);
@@ -57,32 +57,32 @@ private:
 	void loadFromDisk(const QString &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(const QDir &dir, QHash<qReal::Id, Object *> &objectsHash);
 
-	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo, bool isFirstTimeSave);
+	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
 	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;
 
 	QString pathToElement(const qReal::Id &id) const;
-	QString createDirectory(const qReal::Id &id, bool logical);
+	QString createDirectory(const qReal::Id &id, bool logical) const;
 
-	bool addSaved();
-	bool removeUnsaved(QString const &path);
 
-	bool prepareSaving();
+	bool removeUnsaved(QString const &path) const;
 
-	bool reportAdded();
-	bool reportRemoved();
-	bool reportChanged();
+	bool prepareSaving() const;
+
+	bool reportAdded() const;
+	bool reportRemoved() const;
+	bool reportChanged() const;
 
 	QString mWorkingDir;
 	QString mWorkingFile;
 
 	WorkingCopyInspectionInterface *mWorkingCopyInspector;
-	QSet<QString> mSavedFiles;
-	QSet<QString> mSavedDirectories;
-	QMap<QString, QFile *> mFiles;
+	mutable QSet<QString> mSavedFiles;
+	mutable QSet<QString> mSavedDirectories;
+	mutable QMap<QString, QFile *> mFiles;
 
-	QList<QString > reportAddedList;
-	QList<QString> reportChangedList;
-	QList<QString> reportRemovedList;
+	mutable QList<QString > reportAddedList;
+	mutable QList<QString> reportChangedList;
+	mutable QList<QString> reportRemovedList;
 };
 
 }
