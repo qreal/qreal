@@ -1,17 +1,17 @@
 HEADERS += \
-	versioningUtils/briefVersioningInterface.h \
-	versioningUtils/externalClientPluginBase.h \
-	versioningUtils/authenticationSettingsWidget.h \
-	versioningUtils/networkSettingsWidget.h \
-	versioningUtils/versionSelector.h \
+	$$PWD/briefVersioningInterface.h \
+	$$PWD/externalClientPluginBase.h \
+	$$PWD/authenticationSettingsWidget.h \
+	$$PWD/networkSettingsWidget.h \
+	$$PWD/versionSelector.h \
 
 SOURCES += \
-	versioningUtils/externalClientPluginBase.cpp \
-	versioningUtils/authenticationSettingsWidget.cpp \
-	versioningUtils/networkSettingsWidget.cpp \
-	versioningUtils/versionSelector.cpp \
+	$$PWD/externalClientPluginBase.cpp \
+	$$PWD/authenticationSettingsWidget.cpp \
+	$$PWD/networkSettingsWidget.cpp \
+	$$PWD/versionSelector.cpp \
 
 FORMS += \
-	versioningUtils/authenticationSettingsWidget.ui \
-	versioningUtils/networkSettingsWidget.ui \
-	versioningUtils/versionSelector.ui \
+	$$PWD/authenticationSettingsWidget.ui \
+	$$PWD/networkSettingsWidget.ui \
+	$$PWD/versionSelector.ui \
