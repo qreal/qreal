@@ -39,6 +39,7 @@ public:
 	MOCK_METHOD1(open, bool(const QString &fileName));
 	MOCK_METHOD0(suggestToSaveChangesOrCancel, bool());
 	MOCK_METHOD1(setUnsavedIndicator, void(bool isUnsaved));
+	MOCK_METHOD0(getUnsavedIndicator, bool());
 };
 
 }
