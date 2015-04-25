@@ -406,10 +406,10 @@ void RepoApi::saveAll() const
 	mRepository.saveAll();
 }
 
-void RepoApi::saveTo(const QString &workingFile)
+void RepoApi::saveTo(const QString &workingFile, bool isNewSave)
 {
 	if (!mIgnoreAutosave) {
-		mRepository.setWorkingFile(workingFile);
+		mRepository.setWorkingFile(workingFile, isNewSave);
 		if (!workingFile.isEmpty()) {
 			mRepository.saveAll();
 		}

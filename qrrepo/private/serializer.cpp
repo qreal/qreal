@@ -62,9 +62,13 @@ void Serializer::removeFromDisk(const Id &id) const
 	dir.remove(pathToElement(id));
 }
 
-void Serializer::setWorkingFile(const QString &workingFile)
+void Serializer::setWorkingFile(const QString &workingFile, bool isNewSave)
 {
 	mWorkingFile = workingFile;
+	if (isNewSave) {
+		QDir dir;
+		dir.remove(QFileInfo(mWorkingFile).absoluteFilePath());
+	}
 }
 
 void Serializer::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
@@ -193,7 +197,7 @@ void Serializer::loadFromDisk(const QString &currentPath, QHash<qReal::Id, Objec
 	}
 }
 
-void Serializer::prepareWorkingCopy(const QString &targetFolder, QString const &sourceProject)
+void Serializer::prepareWorkingCopy(const QString &targetFolder, const QString &sourceProject)
 {
 	if (!QDir(targetFolder).removeRecursively()){
 		clearDir(targetFolder);
@@ -207,7 +211,7 @@ void Serializer::prepareWorkingCopy(const QString &targetFolder, QString const &
 	}
 }
 
-void Serializer::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
+void Serializer::processWorkingCopy(const QString &workingCopyPath, const QString &targetProject)
 {
 	QString const targetProjectPath = targetProject.isEmpty() ? mWorkingFile : targetProject;
 		if (QDir(workingCopyPath).exists()) {

@@ -132,7 +132,7 @@ public:
 	void importFromDisk(QString const &importedFile) override;
 	void saveAll() const override;
 	void save(const qReal::IdList &list) const override;
-	void saveTo(const QString &workingFile) override;
+	void saveTo(const QString &workingFile, bool isNewSave = false) override;
 
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) override;
 	void open(const QString &saveFile) override;

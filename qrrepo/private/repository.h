@@ -113,7 +113,7 @@ public:
 
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 	void remove(const qReal::IdList &list) const;
-	void setWorkingFile(const QString &workingDir);
+	void setWorkingFile(const QString &workingDir, bool isNewSave = false);
 	void exportToXml(const QString &targetFile) const;
 
 	/// Returns current working file name

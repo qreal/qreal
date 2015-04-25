@@ -47,7 +47,7 @@ public:
 	virtual void importFromDisk(const QString &importedFile) = 0;
 	virtual void saveAll() const = 0;
 	virtual void save(const qReal::IdList &list) const = 0;
-	virtual void saveTo(const QString &workingFile) = 0;
+	virtual void saveTo(const QString &workingFile, bool isNewSave = false) = 0;
 
 	/// exports repo contents to a single XML file
 	virtual void exportToXml(const QString &targetFile) const = 0;

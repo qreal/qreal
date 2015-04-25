@@ -481,9 +481,9 @@ void Repository::remove(const qReal::Id &id)
 	}
 }
 
-void Repository::setWorkingFile(const QString &workingFile)
+void Repository::setWorkingFile(const QString &workingFile, bool isNewSave)
 {
-	mSerializer.setWorkingFile(workingFile);
+	mSerializer.setWorkingFile(workingFile, isNewSave);
 	mWorkingFile = workingFile;
 }
 

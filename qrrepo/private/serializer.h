@@ -38,7 +38,7 @@ public:
 	Serializer(const QString &saveDirName);
 
 	void clearWorkingDir() const;
-	void setWorkingFile(const QString &workingFile);
+	void setWorkingFile(const QString &workingFile, bool isNewSave = false);
 
 	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
@@ -46,8 +46,8 @@ public:
 	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
-	void prepareWorkingCopy(const QString &workingCopyPath, QString const &sourceProject = QString());
-	void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
+	void prepareWorkingCopy(const QString &workingCopyPath, const QString &sourceProject = QString());
+	void processWorkingCopy(const QString &workingCopyPath, const QString &targetProject = QString());
 
 	void decompressFile(QString const &fileName) const;
 
