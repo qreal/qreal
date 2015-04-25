@@ -71,7 +71,7 @@ private:
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::D2ModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
-	QScopedPointer<utils::SmartDock> mDock;
+	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
 };
 
 }

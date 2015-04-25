@@ -47,12 +47,20 @@ public:
 
 private:
 	QMainWindow *findMainWindow() const;
+
+	bool event(QEvent *event) override;
+
+	void initDock();
 	void initDialog();
 
-	QMainWindow *mMainWindow;
-	QWidget *mInnerWidget;
-	QDialog *mDialog;
+	/// Overrides default behaviour to float in QDialog shape.
+	void checkFloating();
+
+	QMainWindow *mMainWindow;  // Doesn`t take ownerhsip
+	QWidget *mInnerWidget;  // Doesn`t take ownerhsip
+	QDialog *mDialog;  // Takes ownership
 	Mode mCurrentMode;
+	bool mDragged = false;
 };
 
 }

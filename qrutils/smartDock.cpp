@@ -14,9 +14,10 @@
 
 #include "smartDock.h"
 
+#include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
-#include <QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
 
 #include <qrutils/qRealDialog.h>
 
@@ -31,9 +32,8 @@ SmartDock::SmartDock(const QString &objectName, QWidget *innerWidget, QMainWindo
 	setObjectName(objectName);
 	Q_ASSERT(mMainWindow);
 
-	setWidget(mInnerWidget);
+	initDock();
 	initDialog();
-	setWindowTitle(mInnerWidget->windowTitle());
 
 	mMainWindow->addDockWidget(Qt::RightDockWidgetArea, this);
 }
@@ -69,6 +69,13 @@ void SmartDock::switchToFloating()
 	mDialog->show();
 }
 
+void SmartDock::checkFloating()
+{
+	if (isFloating() && !mDragged) {
+		switchToFloating();
+	}
+}
+
 QMainWindow *SmartDock::findMainWindow() const
 {
 	for (QWidget * const topLevelWidget : QApplication::topLevelWidgets()) {
@@ -78,6 +85,33 @@ QMainWindow *SmartDock::findMainWindow() const
 	}
 
 	return nullptr;
+}
+
+bool SmartDock::event(QEvent *event)
+{
+	switch (event->type()) {
+	case QEvent::MouseButtonPress:
+	case QEvent::MouseButtonRelease:
+		if (static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton) {
+			mDragged = event->type() == QEvent::MouseButtonPress;
+			checkFloating();
+		}
+		break;
+	case QEvent::MouseButtonDblClick:
+		mDragged = false;
+		break;
+	default:
+		break;
+	}
+
+	return QDockWidget::event(event);
+}
+
+void SmartDock::initDock()
+{
+	setWindowTitle(mInnerWidget->windowTitle());
+	setWidget(mInnerWidget);
+	connect(this, &QDockWidget::topLevelChanged, this, &SmartDock::checkFloating);
 }
 
 void SmartDock::initDialog()
