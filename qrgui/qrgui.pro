@@ -88,3 +88,4 @@ pluginManager.depends = \
 
 versioning.depends = \
 	toolPluginInterface \
+	systemFacade \

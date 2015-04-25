@@ -20,9 +20,7 @@ TEMPLATE = lib
 
 QT += widgets
 
-links(qrkernel qrrepo qrutils qrgui-tool-plugin-interface)
-
-includes(qrgui)
+links(qrkernel qrrepo qrutils qrgui-tool-plugin-interface qrgui-facade)
 
 DEFINES += QRGUI_VERSIONING_PLUGINS_MANAGER_LIBRARY
 

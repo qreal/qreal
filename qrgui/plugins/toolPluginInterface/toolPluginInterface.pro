@@ -14,7 +14,7 @@
 
 TARGET = qrgui-tool-plugin-interface
 
-#QT += widgets
+QT += widgets
 
 include(../../../global.pri)
 
