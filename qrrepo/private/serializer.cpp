@@ -119,7 +119,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 			, "Serializer::saveToDisk(...)"
 			, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
-	prepareSaving();
+	bool isFirstTimeSave = prepareSaving();
 
 	foreach (const Object * const object, objects) {
 		const QString filePath = createDirectory(object->id(), object->isLogicalObject());
@@ -143,7 +143,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		}
 	}
 
-	saveMetaInfo(metaInfo);
+	saveMetaInfo(metaInfo, isFirstTimeSave);
 	removeUnsaved(mWorkingDir);
 
 	QFileInfo fileInfo(mWorkingFile);
@@ -241,7 +241,7 @@ void Serializer::loadModel(const QDir &dir, QHash<qReal::Id, Object*> &objectsHa
 	}
 }
 
-void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
+void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo, bool isFirstTimeSave) const
 {
 	QDomDocument document;
 	QDomElement root = document.createElement("metaInformation");
@@ -257,6 +257,13 @@ void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
 	const QString filePath = mWorkingDir + "/metaInfo.xml";
 	OutFile out(filePath);
 	out() << document.toString(4);
+
+	if (isFirstTimeSave) {
+		reportAddedList.push_back(filePath);
+	} else {
+		reportChangedList.push_back(filePath);
+	}
+	mSavedFiles << filePath;
 }
 
 void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
@@ -358,6 +365,8 @@ bool Serializer::removeUnsaved(const QString &path) const
 				invocationResult = removeUnsaved(fileInfo.filePath());
 			} else {
 				reportRemovedList.push_back(fileInfo.filePath());
+				clearDir(fileInfo.absoluteFilePath());
+				dir.rmdir(fileInfo.baseName());
 			}
 			result = result & invocationResult;
 		} else {
