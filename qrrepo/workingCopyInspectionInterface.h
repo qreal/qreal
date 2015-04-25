@@ -16,6 +16,7 @@
 
 #include <QtCore/QString>
 
+
 namespace qrRepo
 {
 

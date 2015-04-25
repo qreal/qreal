@@ -28,7 +28,7 @@
 namespace qReal
 {
 
-class QRUTILS_EXPORT VersioningPluginsManager
+class QRGUI_VERSIONING_PLUGINS_MANAGER_EXPORT VersioningPluginsManager
 		: public BriefVersioningInterface
 		, public qrRepo::WorkingCopyInspectionInterface
 {

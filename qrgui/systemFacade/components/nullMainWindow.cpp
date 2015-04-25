@@ -180,6 +180,7 @@ void NullMainWindow::closeTab(QWidget *tab)
 
 bool NullMainWindow::isFullScreen()
 {
+	return true;
 }
 
 void NullMainWindow::makeFullScreen(bool fullScreen)
