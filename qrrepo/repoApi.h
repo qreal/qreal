@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,23 @@
 
 #pragma once
 
-#include <QtCore/QSet>
-
-#include <qrkernel/roles.h>
-#include "private/repository.h"
 #include "private/qrRepoGlobal.h"
 #include "repoControlInterface.h"
-#include "commonRepoApi.h"
 #include "graphicalRepoApi.h"
 #include "logicalRepoApi.h"
 
 namespace qrRepo {
+
+namespace details {
+class Repository;
+}
 
 /// Repository interface. Supports higher level queries, than \see Repository, so is more convenient to work with.
 class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 {
 public:
 	explicit RepoApi(const QString &workingDirectory, bool ignoreAutosave = false);
-	// Default destructor ok.
+	~RepoApi();
 
 	/// Replacing property values that contains input value with new value.
 	/// @param toReplace Id list that contains ids of elements that properties should be replaced.
@@ -189,7 +188,7 @@ private:
 	qReal::IdList links(const qReal::Id &id, const QString &direction) const;
 	void removeLinkEnds(const QString &endName, const qReal::Id &id);
 
-	details::Repository mRepository;
+	QScopedPointer<details::Repository> mRepository;
 	bool mIgnoreAutosave;
 };
 

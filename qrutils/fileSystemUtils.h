@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public:
 	/// @param dirPath Path to removing directory
 	/// @param recursive If true, the directory will be recursively cleared.
 	/// If false and directory was nonempty then operation fails
-	static bool removeDir(const QString &dirPath, bool const recursive = true);
+	static bool removeDir(const QString &dirPath, bool recursive = true);
 
 	/// Clears specified directory
 	/// @param dirPath Path to clearing directory
@@ -43,9 +43,6 @@ public:
 	static bool removeFile(const QString &filePath);
 
 	static void resetAttributes(const QString &filePath);
-
-private:
-	static bool clearDir(QDir dir);
 };
 
 }

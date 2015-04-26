@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * limitations under the License. */
 
 #include "generatorBase/masterGeneratorBase.h"
+
+#include <QtCore/QDir>
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>

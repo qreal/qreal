@@ -15,7 +15,7 @@
 #include "trikFSharpGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
-#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
 #include <QtCore/QProcess>
 
 #include <qrkernel/settingsManager.h>

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #include "fileSystemUtils.h"
 
 #include <QtCore/QFile>
+#include <QtCore/QDir>
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -38,19 +39,10 @@ bool FileSystemUtils::removeDir(const QString &dirPath, bool recursive)
 	if (!dir.exists()) {
 		return true;
 	}
-	if (recursive && !clearDir(dir)) {
+	if (recursive && !clearDir(dirPath)) {
 		return false;
 	}
 	return dir.rmdir(dirPath);
-}
-
-bool FileSystemUtils::clearDir(const QString &dirPath)
-{
-	QDir dir(dirPath);
-	if (!dir.exists()) {
-		return true;
-	}
-	return clearDir(dir);
 }
 
 bool FileSystemUtils::removeFile(const QString &filePath)
@@ -72,11 +64,20 @@ void FileSystemUtils::resetAttributes(const QString &filePath)
 #endif
 }
 
-bool FileSystemUtils::clearDir(QDir dir)
+bool FileSystemUtils::clearDir(const QString &dirPath)
 {
+	if (dirPath.isEmpty()) {
+		return true;
+	}
+
+	QDir dir(dirPath);
+	if (!dir.exists()) {
+		return true;
+	}
+
 	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
-			if (!clearDir(QDir(fileInfo.filePath())) || !dir.rmdir(fileInfo.fileName())) {
+			if (!clearDir(fileInfo.filePath()) || !dir.rmdir(fileInfo.fileName())) {
 				return false;
 			}
 		} else {

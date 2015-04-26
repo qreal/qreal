@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,37 @@
 #include "outFile.h"
 
 #include <qrkernel/logging.h>
-#include <qrkernel/exception/exception.h>
 
 using namespace utils;
 
-OutFile::OutFile(const QString &fileName)
+OutFile::OutFile(const QString &fileName, bool *success)
+	: mFile(fileName)
 {
-	mFile.setFileName(fileName);
-	mFile.open(QIODevice::WriteOnly | QIODevice::Text);
-	if (!mFile.isOpen()) {
-		throw qReal::Exception("File open operation failed");
+	if (fileName.isEmpty()) {
+		if (success) {
+			*success = false;
+		}
+		return;
+	}
+
+	if (!mFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		QLOG_ERROR() << QString("Opening %1 for write failed: %2").arg(fileName, mFile.errorString());
+		if (success) {
+			*success = false;
+		}
+		return;
 	}
 
 	mOut.setDevice(&mFile);
 	mOut.setCodec("UTF-8");
+	if (success) {
+		*success = true;
+	}
+}
+
+OutFile::~OutFile()
+{
+	mFile.close();
 }
 
 QTextStream &OutFile::operator()()
@@ -41,23 +58,7 @@ void OutFile::flush()
 	mOut.flush();
 }
 
-OutFile *OutFile::openOrLogError(const QString &fileName)
+QString OutFile::errorString() const
 {
-	if (fileName.isEmpty()) {
-		return nullptr;
-	}
-
-	try {
-		utils::OutFile * const file = new utils::OutFile(fileName);
-		return file;
-	} catch (const qReal::Exception &exception) {
-		QLOG_ERROR() << exception.message();
-	}
-
-	return nullptr;
-}
-
-OutFile::~OutFile()
-{
-	mFile.close();
+	return mFile.errorString();
 }
