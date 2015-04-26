@@ -26,10 +26,10 @@
 #include <qrkernel/settingsManager.h>
 #include <qrrepo/repoApi.h>
 
-#include <plugins/editorPluginInterface/editorInterface.h>
-#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/pluginManager/interpretedPluginManager.h"
+#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
+#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/pluginManager/interpretedPluginManager.h"
 
 #include "pluginsManagerDeclSpec.h"
 

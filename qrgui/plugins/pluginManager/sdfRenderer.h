@@ -36,6 +36,7 @@
 
 #include "pluginsManagerDeclSpec.h"
 
+
 namespace qReal {
 
 class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public SdfRendererInterface

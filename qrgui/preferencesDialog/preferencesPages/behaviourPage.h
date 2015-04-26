@@ -16,6 +16,7 @@
 
 #include "qrgui/preferencesDialog/preferencesPage.h"
 
+
 namespace Ui {
 	class PreferencesBehaviourPage;
 }

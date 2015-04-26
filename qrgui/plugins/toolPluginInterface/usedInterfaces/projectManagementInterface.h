@@ -69,6 +69,7 @@ public:
 	virtual bool suggestToSaveChangesOrCancel() = 0;
 
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
+	virtual bool getUnsavedIndicator() = 0;
 
 	/// Returns path to save file. If temp file it will return empty string.
 	virtual QString saveFilePath() const = 0;
@@ -84,6 +85,9 @@ signals:
 
 	/// Emitted each time when project manager has closed current project
 	void closed();
+
+	/// Emitted each time when project manager has saved current project
+	void saveComplete();
 };
 
 }

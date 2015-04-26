@@ -46,6 +46,7 @@ public slots:
 	bool saveOrSuggestToSaveAs() override;
 
 	void setUnsavedIndicator(bool isUnsaved) override;
+	bool getUnsavedIndicator() override;
 
 	/// Saves current project into given file without refreshing application state after it
 	void saveTo(const QString &fileName);

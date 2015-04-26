@@ -21,8 +21,9 @@ TEMPLATE = app
 QT += widgets printsupport xml svg
 
 links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor qrgui-controller qrgui-dialogs qrgui-preferences-dialog \
-		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager  \
+		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager \
 		qrgui-facade qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
+		qrgui-versioning-plugins-manager \
 )
 
 includes(qrgui)

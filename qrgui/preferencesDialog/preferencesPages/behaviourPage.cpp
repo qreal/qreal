@@ -19,6 +19,7 @@
 
 #include <qrkernel/settingsManager.h>
 
+
 using namespace qReal;
 
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
@@ -32,6 +33,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	initLanguages();
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
+
 	restoreSettings();
 }
 

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <plugins/toolPluginInterface/pluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
 #include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 
 namespace qReal {

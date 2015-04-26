@@ -17,7 +17,7 @@
 #include <QtCore/QFileInfo>
 
 #include <qrgui/systemFacade/components/projectManager.h>
-#include "textEditor/textManagerInterface.h"
+#include "qrgui/textEditor/textManagerInterface.h"
 #include "versionsConverterManager.h"
 
 namespace qReal {
@@ -45,6 +45,7 @@ public slots:
 	bool saveOrSuggestToSaveAs() override;
 
 	void setUnsavedIndicator(bool isUnsaved) override;
+	bool getUnsavedIndicator() override;
 
 public:
 	bool open(const QString &fileName = QString()) override;

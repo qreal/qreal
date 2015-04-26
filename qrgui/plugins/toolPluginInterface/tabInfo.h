@@ -16,6 +16,7 @@
 
 #include <qrkernel/ids.h>
 
+
 namespace qReal {
 
 /// Describes the contents of the tabs opened in main window`s central tab area. Tabs are categorized by their types,

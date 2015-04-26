@@ -42,8 +42,12 @@ EditorView::EditorView(const models::Models &models
 
 	connect(&mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(&mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
-	connect(&mScene, &EditorViewScene::sceneRectChanged, this
-			, static_cast<void (EditorView::*)(const QRectF &)>(&EditorView::setSceneRect));
+	connect(
+		&mScene
+		, &EditorViewScene::sceneRectChanged
+		, this
+		, static_cast<void (EditorView::*)(QRectF const &)>(&EditorView::setSceneRect)
+	);
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
@@ -200,8 +204,7 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 	}
 
 	if (event->buttons() & Qt::LeftButton) {
-		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning()
-				&& !itemAt(event->pos())) {
+		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning() && !itemAt(event->pos())) {
 			setDragMode(RubberBandDrag);
 		}
 		if (event->modifiers() & Qt::ControlModifier) {

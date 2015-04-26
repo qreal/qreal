@@ -14,6 +14,8 @@
 
 TARGET = qrgui-tool-plugin-interface
 
+QT += widgets
+
 include(../../../global.pri)
 
 TEMPLATE = lib

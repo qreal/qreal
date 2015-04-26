@@ -19,6 +19,7 @@
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 
+
 namespace qReal {
 
 /// Customization class for configuring QReal's main GUI module

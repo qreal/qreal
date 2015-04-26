@@ -287,6 +287,7 @@ void ProjectManager::save()
 	saveTo(mSaveFilePath);
 	mAutosaver.removeAutoSave();
 	refreshApplicationStateAfterSave();
+	emit saveComplete();
 }
 
 bool ProjectManager::restoreIncorrectlyTerminated()
@@ -309,7 +310,8 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
-	return saveAs(saveFileName(tr("Select file to save current model to")));}
+	return saveAs(saveFileName(tr("Select file to save current model to")));
+}
 
 bool ProjectManager::saveAs(const QString &fileName)
 {
@@ -318,9 +320,10 @@ bool ProjectManager::saveAs(const QString &fileName)
 		return false;
 	}
 	mAutosaver.removeAutoSave();
-	mModels.repoControlApi().saveTo(workingFileName);
+	mModels.repoControlApi().saveTo(workingFileName, true);
 	setSaveFilePath(workingFileName);
 	refreshApplicationStateAfterSave();
+	emit saveComplete();
 	return true;
 }
 
@@ -345,6 +348,11 @@ QString ProjectManager::saveFileName(const QString &promptPhrase) const
 void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	mUnsavedIndicator = isUnsaved;
+}
+
+bool ProjectManager::getUnsavedIndicator()
+{
+	return mUnsavedIndicator;
 }
 
 void ProjectManager::fileNotFoundMessage(const QString &fileName) const

@@ -43,7 +43,7 @@ public:
 	/// Replacing property values that contains input value with new value.
 	/// @param value - input value that should be contained by any property of element.
 	/// @param newValue - string representation of value with what property values should be replaced.
-	void replaceProperties(const QString value, const QString &newValue);
+	void replaceProperties(const QString &value, const QString &newValue);
 
 	/// Creates deep copy of this object also creating new objects for children (parent remains as is).
 	/// @param objHash - hashtable with cloned object and its children, will be used to get information

@@ -30,6 +30,7 @@ SUBDIRS += \
 SUBDIRS += \
 	generationRulesTool/generationRulesTool.pro \
 
+
 # tool plugins
 SUBDIRS += \
 	$$PWD/tools/exterminatus/exterminatus.pro \
@@ -37,6 +38,8 @@ SUBDIRS += \
 	$$PWD/tools/refactoring/refactoring.pro \
 #	$$PWD/tools/testInvocation/testInvocation.pro \
 	$$PWD/tools/uxInfo/uxInfo.pro \
+	$$PWD/tools/gitClient/gitClient.pro \
+	$$PWD/tools/visualDiff/visualDiff.pro \
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils

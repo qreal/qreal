@@ -97,6 +97,9 @@ public:
 	virtual QWidget *currentTab() = 0;
 	virtual void openTab(QWidget *tab, const QString &title) = 0;
 	virtual void closeTab(QWidget *tab) = 0;
+	virtual bool isFullScreen() = 0;
+	virtual void makeFullScreen(bool fullScreen = true) = 0;
+
 	/// Sets text on the header of the tab containing the given widget or does nothing if such tab was not found.
 	virtual void setTabText(QWidget *tab, const QString &text) = 0;
 

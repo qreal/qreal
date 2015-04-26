@@ -31,6 +31,7 @@ SUBDIRS += \
 	toolPluginInterface \
 	interpretedPluginInterface \
 	thirdparty \
+	versioning \
 
 pluginManager.subdir = $$PWD/plugins/pluginManager
 editorPluginInterface.subdir = $$PWD/plugins/editorPluginInterface
@@ -48,6 +49,7 @@ mainWindow.depends = \
 	hotKeyManager \
 	brandManager \
 	thirdparty \
+	versioning \
 
 systemFacade.depends = \
 	models \
@@ -83,3 +85,7 @@ brandManager.depends = \
 
 pluginManager.depends = \
 	toolPluginInterface \
+
+versioning.depends = \
+	toolPluginInterface \
+	systemFacade \

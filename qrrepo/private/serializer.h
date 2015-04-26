@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,14 @@
 #include <QtCore/QVariant>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QList>
 
 #include <qrkernel/roles.h>
 
+#include "qrrepo/workingCopyInspectionInterface.h"
 #include "classes/object.h"
 #include "valuesSerializer.h"
+
 
 namespace qrRepo {
 namespace details {
@@ -31,31 +34,55 @@ namespace details {
 class Serializer
 {
 public:
-	Serializer(const QString &saveDirName);
+	explicit Serializer(const QString &saveDirName);
+	~Serializer();
+
+	/// Returns a directory where save files will be temporary unpacked.
+	QString workingDirectory() const;
 
 	void clearWorkingDir() const;
-	void setWorkingFile(const QString &workingFile);
+	void setWorkingFile(const QString &workingFile, bool isNewSave = false);
+
+	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
 	void removeFromDisk(const qReal::Id &id) const;
 	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
-	void decompressFile(const QString &fileName);
+	void prepareWorkingCopy(const QString &workingCopyPath, const QString &sourceProject = QString());
+	void processWorkingCopy(const QString &workingCopyPath, const QString &targetProject = QString());
+
+	void decompressFile(QString const &fileName) const;
 
 private:
-	static void clearDir(const QString &path);
-
 	void loadFromDisk(const QString &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(const QDir &dir, QHash<qReal::Id, Object *> &objectsHash);
 
-	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
+	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo, bool isFirstTimeSave) const;
 	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;
 
 	QString pathToElement(const qReal::Id &id) const;
 	QString createDirectory(const qReal::Id &id, bool logical) const;
 
+	bool removeUnsaved(QString const &path) const;
+
+	bool prepareSaving() const;
+
+	bool reportAdded() const;
+	bool reportRemoved() const;
+	bool reportChanged() const;
+
 	QString mWorkingDir;
 	QString mWorkingFile;
+
+	WorkingCopyInspectionInterface *mWorkingCopyInspector;
+	mutable QSet<QString> mSavedFiles;
+	mutable QSet<QString> mSavedDirectories;
+	mutable QMap<QString, QFile *> mFiles;
+
+	mutable QList<QString > reportAddedList;
+	mutable QList<QString> reportChangedList;
+	mutable QList<QString> reportRemovedList;
 };
 
 }

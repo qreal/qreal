@@ -281,7 +281,6 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
-	QDir().rmdir(SettingsManager::value("temp").toString());
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -610,6 +609,18 @@ void MainWindow::closeTab(QWidget *tab)
 	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
 }
 
+void MainWindow::makeFullScreen(bool fullScreen)
+{
+	if (mIsFullscreen != fullScreen){
+		this->fullscreen();
+	}
+}
+
+bool MainWindow::isFullScreen()
+{
+	return mIsFullscreen;
+}
+
 QMap<QString, gui::PreferencesPage *> MainWindow::preferencesPages() const
 {
 	QMap<QString, PreferencesPage *> result;
@@ -771,7 +782,7 @@ void MainWindow::closeCurrentTab()
 
 void MainWindow::closeTab(int index)
 {
-	QWidget * const widget = mUi->tabs->widget(index);
+	QWidget *widget = mUi->tabs->widget(index);
 	EditorView * const diagram = dynamic_cast<EditorView *>(widget);
 	text::QScintillaTextEdit * const possibleCodeTab = dynamic_cast<text::QScintillaTextEdit *>(widget);
 
@@ -784,6 +795,7 @@ void MainWindow::closeTab(int index)
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
 		emit mFacade.events().codeTabClosed(QFileInfo(path));
 	} else {
+		emit mFacade.events().otherTabClosed(widget);
 		// TODO: process other tabs (for example, start tab)
 	}
 
@@ -1705,6 +1717,10 @@ void MainWindow::initToolPlugins()
 	mUi->paletteTree->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
+
+	mVersioningManager = new VersioningPluginsManager(&(models().repoControlApi()), mErrorReporter, mProjectManager);
+	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins())
+			,&editorManager(), this);
 
 	if (!toolManager().customizer()->enableNewDiagramAction()) {
 		mUi->fileToolbar->removeAction(mUi->actionNew_Diagram);

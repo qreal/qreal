@@ -48,6 +48,8 @@ public:
 	MOCK_METHOD0(currentTab, QWidget *());
 	MOCK_METHOD2(openTab, void(QWidget *tab, QString const &title));
 	MOCK_METHOD1(closeTab, void(QWidget *tab));
+	MOCK_METHOD0(isFullScreen, bool());
+	MOCK_METHOD1(makeFullScreen, void(bool fullScreen));
 	MOCK_METHOD2(setTabText, void(QWidget *tab, QString const &text));
 
 	MOCK_METHOD0(beginPaletteModification, void());

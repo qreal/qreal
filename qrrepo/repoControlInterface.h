@@ -16,10 +16,13 @@
 
 #include <qrkernel/roles.h>
 
+#include "workingCopyManagementInterface.h"
+#include "workingCopyInspectionInterface.h"
+
 namespace qrRepo {
 
+class RepoControlInterface : public WorkingCopyManagementInterface
 /// Provides repository control methods, like save or open saved contents.
-class RepoControlInterface
 {
 public:
 	virtual ~RepoControlInterface() {}
@@ -44,7 +47,7 @@ public:
 	virtual void importFromDisk(const QString &importedFile) = 0;
 	virtual void saveAll() const = 0;
 	virtual void save(const qReal::IdList &list) const = 0;
-	virtual void saveTo(const QString &workingFile) = 0;
+	virtual void saveTo(const QString &workingFile, bool isNewSave = false) = 0;
 
 	/// exports repo contents to a single XML file
 	virtual void exportToXml(const QString &targetFile) const = 0;
@@ -55,6 +58,8 @@ public:
 	virtual void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) = 0;
 
 	virtual void open(const QString &workingFile) = 0;
+
+	virtual void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector) = 0;
 
 	/// Returns current working file name, to which model is saved
 	virtual QString workingFile() const = 0;

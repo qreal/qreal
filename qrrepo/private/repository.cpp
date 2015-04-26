@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ Repository::Repository(const QString &workingFile)
 	loadFromDisk();
 }
 
-
 void Repository::init()
 {
 	mObjects.insert(Id::rootId(), new LogicalObject(Id::rootId()));
@@ -42,6 +41,11 @@ Repository::~Repository()
 {
 	mSerializer.clearWorkingDir();
 	qDeleteAll(mObjects);
+}
+
+Serializer &Repository::serializer()
+{
+	return mSerializer;
 }
 
 IdList Repository::findElementsByName(const QString &name, bool sensitivity, bool regExpression) const
@@ -115,7 +119,7 @@ qReal::IdList Repository::elementsByPropertyContent(const QString &propertyValue
 	return result;
 }
 
-void Repository::replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue)
+void Repository::replaceProperties(const qReal::IdList &toReplace, const QString &value, const QString &newValue)
 {
 	foreach (const qReal::Id &currentId, toReplace) {
 		mObjects[currentId]->replaceProperties(value, newValue);
@@ -481,9 +485,9 @@ void Repository::remove(const qReal::Id &id)
 	}
 }
 
-void Repository::setWorkingFile(const QString &workingFile)
+void Repository::setWorkingFile(const QString &workingFile, bool isNewSave)
 {
-	mSerializer.setWorkingFile(workingFile);
+	mSerializer.setWorkingFile(workingFile, isNewSave);
 	mWorkingFile = workingFile;
 }
 
@@ -601,6 +605,21 @@ void Repository::setGraphicalPartProperty(
 	}
 
 	graphicalObject->setGraphicalPartProperty(partIndex, propertyName, value);
+}
+
+void Repository::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
+{
+	mSerializer.setWorkingCopyInspector(inspector);
+}
+
+void Repository::prepareWorkingCopy(const QString &targetFolder, const QString &sourceProject)
+{
+	mSerializer.prepareWorkingCopy(targetFolder, sourceProject);
+}
+
+void Repository::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
+{
+	mSerializer.processWorkingCopy(workingCopyPath, targetProject);
 }
 
 QStringList Repository::metaInformationKeys() const

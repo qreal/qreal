@@ -33,8 +33,8 @@ bool VersionsConverterManager::validateCurrentProject()
 		editorsToCheck << element.editor();
 	}
 
-	QMap<Id, Version> const savedVersions = mMainWindow.models().logicalModelAssistApi().editorVersions();
-	QMultiMap<QString, ProjectConverter> const converters = mMainWindow.toolManager().projectConverters();
+	const QMap<Id, Version> savedVersions = mMainWindow.models().logicalModelAssistApi().editorVersions();
+	const QMultiMap<QString, ProjectConverter> converters = mMainWindow.toolManager().projectConverters();
 
 	for (const QString &editor : editorsToCheck) {
 		const Version currentVersion = mMainWindow.editorManager().version(Id(editor));
@@ -72,7 +72,7 @@ bool VersionsConverterManager::convertProject(const Version &enviromentVersion
 	// Stage II: Checking that versions are not overlapped
 	for (int index = 0; index < sortedConverters.count() - 1; ++index) {
 		if (sortedConverters[index].toVersion() > sortedConverters[index + 1].fromVersion()) {
-			qDebug() << "Converter versions are overlapped!";
+			qWarning() << "Converter versions are overlapped!";
 			return false;
 		}
 	}
@@ -105,6 +105,8 @@ bool VersionsConverterManager::convertProject(const Version &enviromentVersion
 	if (converterApplied) {
 		mMainWindow.errorReporter()->addInformation(QObject::tr("Project was automaticly converted to version %1."\
 				" Please check its contents.").arg(enviromentVersion.toString()));
+		mMainWindow.models().mutableLogicalRepoApi().setMetaInformation(
+				converters.first().editor() + "Version", enviromentVersion.toString());
 	}
 
 	return true;

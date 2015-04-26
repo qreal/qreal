@@ -26,8 +26,8 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
-#include <plugins/pluginManager/sdfRenderer.h>
-#include <plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/plugins/pluginManager/sdfRenderer.h>
+#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
 
 #include "qrgui/editor/element.h"
 #include "qrgui/editor/edgeElement.h"
@@ -37,7 +37,7 @@
 #include "qrgui/editor/private/umlPortHandler.h"
 #include "qrgui/editor/private/portHandler.h"
 
-#include "editor/serializationData.h"
+#include "qrgui/editor/serializationData.h"
 
 namespace qReal {
 

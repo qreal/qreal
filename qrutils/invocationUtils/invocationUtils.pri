@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CONFIG += c++11
+
 HEADERS += \
 	$$PWD/progress.h \
 	$$PWD/longOperation.h \

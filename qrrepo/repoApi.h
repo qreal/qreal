@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,23 @@
 
 #pragma once
 
-#include <QtCore/QSet>
-
-#include <qrkernel/roles.h>
-#include "private/repository.h"
 #include "private/qrRepoGlobal.h"
 #include "repoControlInterface.h"
-#include "commonRepoApi.h"
 #include "graphicalRepoApi.h"
 #include "logicalRepoApi.h"
 
 namespace qrRepo {
+
+namespace details {
+class Repository;
+}
 
 /// Repository interface. Supports higher level queries, than \see Repository, so is more convenient to work with.
 class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 {
 public:
 	explicit RepoApi(const QString &workingDirectory, bool ignoreAutosave = false);
-	// Default destructor ok.
+	~RepoApi();
 
 	/// Replacing property values that contains input value with new value.
 	/// @param toReplace Id list that contains ids of elements that properties should be replaced.
@@ -129,10 +128,11 @@ public:
 
 	/// RepoApi's wrapper for Repository.importFromDisk
 	/// @param importedFile - file to be imported
-	void importFromDisk(const QString &importedFile) override;
+	void importFromDisk(QString const &importedFile) override;
 	void saveAll() const override;
 	void save(const qReal::IdList &list) const override;
-	void saveTo(const QString &workingFile) override;
+	void saveTo(const QString &workingFile, bool isNewSave = false) override;
+
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) override;
 	void open(const QString &saveFile) override;
 	void exportToXml(const QString &targetFile) const override;
@@ -144,6 +144,11 @@ public:
 	qReal::IdList graphicalElements() const override;
 	qReal::IdList graphicalElements(const qReal::Id &type) const override;
 	qReal::IdList logicalElements(const qReal::Id &type) const override;
+
+	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
+
+	void prepareWorkingCopy(QString const &targetFolder, QString const &sourceProject = QString());
+	void processWorkingCopy(QString const &workingCopyPath, QString const &targetProject = QString());
 
 	qReal::Id logicalId(const qReal::Id &id) const override;
 
@@ -183,7 +188,7 @@ private:
 	qReal::IdList links(const qReal::Id &id, const QString &direction) const;
 	void removeLinkEnds(const QString &endName, const qReal::Id &id);
 
-	details::Repository mRepository;
+	QScopedPointer<details::Repository> mRepository;
 	bool mIgnoreAutosave;
 };
 

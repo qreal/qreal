@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "models/exploser.h"
+#include "qrgui/models/exploser.h"
 
 namespace qReal {
 namespace commands {

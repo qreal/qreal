@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QUuid>
 #include <QtGui/QPolygon>
 
-#include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
@@ -35,42 +35,103 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
-const QString unsavedDir = "unsaved";
+const QString unsavedDir = "%1/unsaved/%2";
 
-Serializer::Serializer(const QString& saveDirName)
-	: mWorkingDir(QCoreApplication::applicationDirPath() + "/" + unsavedDir)
+Serializer::Serializer(const QString &saveDirName)
+	// Syncroniously running instances of QReal can clear temp dirs of each other.
+	// So generating new UUID as temp dir name.
+	: mWorkingDir(unsavedDir.arg(QCoreApplication::applicationDirPath(), QUuid::createUuid().toString()))
 	, mWorkingFile(saveDirName)
+	, mWorkingCopyInspector(nullptr)
 {
 	clearWorkingDir();
-	/// @todo: throw away this legacy piece of sh.t
-	SettingsManager::setValue("temp", mWorkingDir);
 	QDir dir(QCoreApplication::applicationDirPath());
 	if (!dir.cd(mWorkingDir)) {
 		QDir().mkdir(mWorkingDir);
 	}
 }
 
+Serializer::~Serializer()
+{
+	clearWorkingDir();
+}
+
+QString Serializer::workingDirectory() const
+{
+	return mWorkingDir;
+}
+
 void Serializer::clearWorkingDir() const
 {
-	clearDir(mWorkingDir);
+	FileSystemUtils::clearDir(mWorkingDir);
 }
 
 void Serializer::removeFromDisk(const Id &id) const
 {
-	QDir dir;
-	dir.remove(pathToElement(id));
+	QDir().remove(pathToElement(id));
 }
 
-void Serializer::setWorkingFile(const QString &workingFile)
+void Serializer::setWorkingFile(const QString &workingFile, bool isNewSave)
 {
 	mWorkingFile = workingFile;
+	if (isNewSave) {
+		QDir().remove(QFileInfo(mWorkingFile).absoluteFilePath());
+	}
 }
+
+void Serializer::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
+{
+	mWorkingCopyInspector = inspector;
+}
+
+bool Serializer::prepareSaving() const
+{
+	mSavedDirectories.clear();
+	mSavedFiles.clear();
+	reportAddedList.clear();
+	reportChangedList.clear();
+	reportRemovedList.clear();
+
+	clearWorkingDir();
+	if (QFileInfo(mWorkingFile).exists()) {
+		decompressFile(mWorkingFile);
+		return false;
+	}
+	return true;
+}
+
+bool Serializer::reportAdded() const
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileAdded(reportAddedList, mWorkingDir);
+	}
+	return true;
+}
+
+bool Serializer::reportRemoved() const
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileRemoved(reportRemovedList, mWorkingDir);
+	}
+	return true;
+}
+
+bool Serializer::reportChanged() const
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileChanged(reportChangedList, mWorkingDir);
+	}
+	return true;
+}
+
 
 void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const
 {
 	Q_ASSERT_X(!mWorkingFile.isEmpty()
-		, "Serializer::saveToDisk(...)"
-		, "may be Repository of RepoApi (see Models constructor also) has been initialised with empty filename?");
+			, "Serializer::saveToDisk(...)"
+			, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
+
+	bool isFirstTimeSave = prepareSaving();
 
 	foreach (const Object * const object, objects) {
 		const QString filePath = createDirectory(object->id(), object->isLogicalObject());
@@ -79,16 +140,28 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		QDomElement root = object->serialize(doc);
 		doc.appendChild(root);
 
+		QFileInfo fileInfo(filePath);
+		bool fileExists = fileInfo.exists();
+		if (fileExists) {
+			QDir().remove(filePath);
+		}
 		OutFile out(filePath);
 		doc.save(out(), 2);
+		mSavedFiles << filePath;
+		if (!fileExists) {
+			reportAddedList.push_front(filePath);
+		} else {
+			reportChangedList.push_back(filePath);
+		}
 	}
 
-	saveMetaInfo(metaInfo);
+	saveMetaInfo(metaInfo, isFirstTimeSave);
+	removeUnsaved(mWorkingDir);
 
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
 
-	QDir compressDir(SettingsManager::value("temp").toString());
+	QDir compressDir(mWorkingDir);
 	QDir dir = fileInfo.absolutePath();
 
 	QFile previousSave(dir.absolutePath() + "/" + fileName +".qrs");
@@ -104,7 +177,10 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		FileSystemUtils::makeHidden(filePath);
 	}
 
-	clearDir(mWorkingDir);
+	reportAdded();
+	reportChanged();
+	reportRemoved();
+	clearWorkingDir();
 }
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)
@@ -114,7 +190,7 @@ void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QStr
 		decompressFile(mWorkingFile);
 	}
 
-	loadFromDisk(SettingsManager::value("temp").toString(), objectsHash);
+	loadFromDisk(mWorkingDir, objectsHash);
 	loadMetaInfo(metaInfo);
 }
 
@@ -126,6 +202,31 @@ void Serializer::loadFromDisk(const QString &currentPath, QHash<qReal::Id, Objec
 		dir.cdUp();
 		dir.cd("graphical");
 		loadModel(dir, objectsHash);
+	}
+}
+
+void Serializer::prepareWorkingCopy(const QString &targetFolder, const QString &sourceProject)
+{
+	if (!QDir(targetFolder).removeRecursively()){
+		FileSystemUtils::clearDir(targetFolder);
+	}
+	QString const workingFile = sourceProject.isEmpty() ? mWorkingFile : sourceProject;
+	if (QFileInfo(workingFile).exists()) {
+		FolderCompressor::decompressFolder(workingFile, targetFolder);
+	} else {
+		QDir().mkdir(targetFolder);
+	}
+}
+
+void Serializer::processWorkingCopy(const QString &workingCopyPath, const QString &targetProject)
+{
+	QString const targetProjectPath = targetProject.isEmpty() ? mWorkingFile : targetProject;
+		if (QDir(workingCopyPath).exists()) {
+		FolderCompressor::compressFolder(workingCopyPath, targetProjectPath);
+	}
+	if (!QDir(workingCopyPath).removeRecursively()){
+		FileSystemUtils::clearDir(workingCopyPath);
+		QDir(workingCopyPath).rmdir(workingCopyPath);
 	}
 }
 
@@ -151,7 +252,7 @@ void Serializer::loadModel(const QDir &dir, QHash<qReal::Id, Object*> &objectsHa
 	}
 }
 
-void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
+void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo, bool isFirstTimeSave) const
 {
 	QDomDocument document;
 	QDomElement root = document.createElement("metaInformation");
@@ -167,6 +268,13 @@ void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
 	const QString filePath = mWorkingDir + "/metaInfo.xml";
 	OutFile out(filePath);
 	out() << document.toString(4);
+
+	if (isFirstTimeSave) {
+		reportAddedList.push_back(filePath);
+	} else {
+		reportChangedList.push_back(filePath);
+	}
+	mSavedFiles << filePath;
 }
 
 void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
@@ -188,27 +296,6 @@ void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
 	}
 }
 
-void Serializer::clearDir(const QString &path)
-{
-	if (path.isEmpty()) {
-		return;
-	}
-
-	QDir dir(path);
-	if (!dir.exists()) {
-		return;
-	}
-
-	foreach (const QFileInfo &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-		if (fileInfo.isDir()) {
-			clearDir(fileInfo.filePath());
-			dir.rmdir(fileInfo.fileName());
-		} else {
-			dir.remove(fileInfo.fileName());
-		}
-	}
-}
-
 QString Serializer::pathToElement(const Id &id) const
 {
 	QString dirName = mWorkingDir;
@@ -224,23 +311,60 @@ QString Serializer::pathToElement(const Id &id) const
 
 QString Serializer::createDirectory(const Id &id, bool logical) const
 {
+	mSavedDirectories << QFileInfo(mWorkingDir).filePath();
 	QString dirName = mWorkingDir + "/tree";
+	mSavedDirectories << QFileInfo(dirName).filePath();
 	dirName += logical ? "/logical" : "/graphical";
+	mSavedDirectories << QFileInfo(dirName).filePath();
 
 	const QStringList partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >= 1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
 		dirName += "/" + partsList[i];
+		QDir dir(dirName);
+		if (!dir.exists()) {
+			dir.mkpath(dirName);
+		}
+		mSavedDirectories << QFileInfo(dirName).filePath();
 	}
 
 	QDir dir;
 	dir.rmdir(mWorkingDir);
 	dir.mkpath(dirName);
-
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-void Serializer::decompressFile(const QString &fileName)
+bool Serializer::removeUnsaved(const QString &path) const
+{
+	QDir dir(path);
+	if (!dir.exists()) {
+		return true;
+	}
+	bool result = true;
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.fileName().startsWith('.')) {
+			continue;
+		}
+		if (fileInfo.isDir()) {
+			bool invocationResult = true;
+			if (mSavedDirectories.contains(fileInfo.filePath())) {
+				invocationResult = removeUnsaved(fileInfo.filePath());
+			} else {
+				reportRemovedList.push_back(fileInfo.filePath());
+				FileSystemUtils::clearDir(fileInfo.absoluteFilePath());
+				dir.rmdir(fileInfo.baseName());
+			}
+			result = result & invocationResult;
+		} else {
+			if (!mSavedFiles.contains(fileInfo.filePath())) {
+				reportRemovedList.push_back(fileInfo.filePath());
+			}
+		}
+	}
+	return result;
+}
+
+void Serializer::decompressFile(const QString &fileName) const
 {
 	FolderCompressor::decompressFolder(fileName, mWorkingDir);
 }

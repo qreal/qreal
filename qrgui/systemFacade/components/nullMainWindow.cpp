@@ -178,6 +178,16 @@ void NullMainWindow::closeTab(QWidget *tab)
 	Q_UNUSED(tab)
 }
 
+bool NullMainWindow::isFullScreen()
+{
+	return true;
+}
+
+void NullMainWindow::makeFullScreen(bool fullScreen)
+{
+	Q_UNUSED(fullScreen)
+}
+
 void NullMainWindow::setTabText(QWidget *tab, const QString &text)
 {
 	Q_UNUSED(tab)

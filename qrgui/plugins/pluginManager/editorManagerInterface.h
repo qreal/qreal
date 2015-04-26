@@ -25,11 +25,8 @@
 #include <qrkernel/version.h>
 #include <qrkernel/settingsManager.h>
 
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
-#include "qrgui/plugins/pluginManager/pattern.h"
-#include "qrgui/plugins/pluginManager/explosion.h"
-#include "qrgui/plugins/pluginManager/details/patternParser.h"
-
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 #include "qrgui/plugins/editorPluginInterface/editorInterface.h"
 #include "qrgui/plugins/pluginManager/pattern.h"
 #include "qrgui/plugins/pluginManager/explosion.h"

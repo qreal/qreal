@@ -26,13 +26,13 @@
 #include <qrutils/pluginManagers/pluginManager.h>
 #include <qrgui/preferencesDialog/preferencesPage.h>
 
-#include <plugins/toolPluginInterface/toolPluginInterface.h>
-#include <plugins/toolPluginInterface/customizer.h>
-#include <plugins/toolPluginInterface/pluginConfigurator.h>
-#include <plugins/toolPluginInterface/hotKeyActionInfo.h>
-#include <plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/customizer.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 
-#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
+#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
@@ -63,6 +63,7 @@ public:
 	/// about newly opened tab (or maybe null info in case of last tab is closed).
 	void activeTabChanged(const TabInfo &info);
 
+	QList<ToolPluginInterface *> plugins() const;
 private:
 	/// Asks plugins for custom default settings and merges them with engine`s ones.
 	void loadDefaultSettings();

@@ -19,8 +19,8 @@
 
 #include <qrkernel/roles.h>
 
-#include "editor/edgeElement.h"
-#include "models/commands/createElementCommand.h"
+#include "qrgui/editor/edgeElement.h"
+#include "qrgui/models/commands/createElementCommand.h"
 
 namespace qReal {
 

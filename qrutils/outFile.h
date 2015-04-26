@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,19 +21,31 @@
 
 namespace utils {
 
+/// A class that provides a convenient way to write information to a file.
+/// File is opened for writing in constructor, if something went wrong log entry will be created.
+/// Exampe of usage:
+///
+/// bool fileOpened;
+/// OutFile out("/tmp/myFile.txt", &fileOpened);
+/// if (!fileOpened) {
+///     errorReported.addError(out.errorString());
+///     return;
+/// }
+/// out() << "1\n";
+/// out() << "2\n";
+///
 class QRUTILS_EXPORT OutFile
 {
 public:
-	explicit OutFile(const QString &fileName);
+	explicit OutFile(const QString &fileName, bool *success = 0);
 	~OutFile();
 	QTextStream &operator()();
 
 	/// Flushes all new modifications in text stream into the file system.
 	void flush();
 
-	/// Creates in heap new OutFile instance if it can be done
-	/// or returns nullptr and writes into log error message otherwise.
-	static OutFile *openOrLogError(const QString &fileName);
+	/// Returns a human-readable message of the last occured error.
+	QString errorString() const;
 
 private:
 	QTextStream mOut;

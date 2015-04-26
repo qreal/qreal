@@ -16,10 +16,11 @@
 
 #include <QtWidgets/QAction>
 
-#include <plugins/toolPluginInterface/pluginConfigurator.h>
-#include "plugins/pluginManager/interpreterEditorManager.h"
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
 
 #include "pluginsManagerDeclSpec.h"
+
 
 namespace qReal {
 

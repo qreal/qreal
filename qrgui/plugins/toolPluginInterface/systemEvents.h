@@ -37,6 +37,7 @@ signals:
 	void newCodeAppeared(const qReal::Id &diagram, const QFileInfo &fileInfo);
 	void diagramClosed(const qReal::Id &diagram);
 	void codeTabClosed(const QFileInfo &fileInfo);
+	void otherTabClosed(QWidget *widget);
 
 	/// Emitted each time when new element was added into the logical model.
 	void logicalElementAdded(const Id &id);

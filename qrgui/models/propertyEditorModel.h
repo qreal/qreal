@@ -19,8 +19,8 @@
 
 #include <qrrepo/logicalRepoApi.h>
 
-#include "models/modelsDeclSpec.h"
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/models/modelsDeclSpec.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 
 /// Proxy model for property editor, maps single element from main model
 /// (logical or graphical) to a list model with element properties.

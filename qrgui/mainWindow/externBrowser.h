@@ -15,14 +15,14 @@
 #pragma once
 
 #ifdef Q_WS_WIN
-#include "mainwindow/windowsExternBrowser.h"
+#include "mainWindow/windowsExternBrowser.h"
 #endif
 
 #ifdef Q_OS_LINUX
-#include "mainwindow/linuxExternBrowser.h"
+#include "mainWindow/linuxExternBrowser.h"
 #endif
 
 #ifdef Q_OS_MAC
 #pragma message ("Mac OS is not needed, use Windows or Linux instead")
-#include "mainwindow/macExternBrowser.h"
+#include "mainWindow/macExternBrowser.h"
 #endif

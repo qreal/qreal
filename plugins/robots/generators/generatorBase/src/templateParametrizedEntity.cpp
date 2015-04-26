@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 #include <QtCore/QDebug>
 
 #include <qrutils/inFile.h>
-#include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 
 using namespace generatorBase;
 
@@ -37,15 +37,11 @@ TemplateParametrizedEntity::~TemplateParametrizedEntity()
 QString TemplateParametrizedEntity::readTemplate(const QString &pathFromRoot) const
 {
 	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
-	QString result;
-
-	try {
-		result = utils::InFile::readAll(fullPath);
-	} catch (const qReal::Exception &exception) {
-		// Without this try-catch program would be failing every time when
-		// someone forgets or missprints tamplate name or unknown block with
-		// common generation rule will ty to read template
-		qDebug() << "UNHANDLED EXCEPTION: " + exception.message();
+	QString errorMessage;
+	const QString result = utils::InFile::readAll(fullPath, &errorMessage);
+	if (!errorMessage.isEmpty()) {
+		QLOG_ERROR() << "Reading from template while generating code failed";
+		qWarning() << errorMessage;
 	}
 
 	return result;
@@ -54,18 +50,10 @@ QString TemplateParametrizedEntity::readTemplate(const QString &pathFromRoot) co
 QString TemplateParametrizedEntity::readTemplateIfExists(const QString &pathFromRoot, const QString &fallback) const
 {
 	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
-	if (!QFile(fullPath).exists()) {
+	QString errorMessage;
+	const QString result = utils::InFile::readAll(fullPath, &errorMessage);
+	if (!errorMessage.isEmpty()) {
 		return fallback;
-	}
-
-	QString result = fallback;
-
-	try {
-		result = utils::InFile::readAll(fullPath);
-	} catch (const qReal::Exception &) {
-		// Without this try-catch program would be failing every time when
-		// someone forgets or missprints tamplate name or unknown block with
-		// common generation rule will ty to read template
 	}
 
 	return result;

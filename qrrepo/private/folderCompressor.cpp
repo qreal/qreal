@@ -41,7 +41,8 @@ bool FolderCompressor::compress(const QString &sourceFolder, const QString &pref
 	}
 
 	// 1 - list all folders inside the current folder
-	dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
+	//      ones, like '.svn/' and '.git/' needed for correct versioning
+	dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Hidden);
 	QFileInfoList foldersList = dir.entryInfoList();
 
 	// 2 - For each folder in list: call the same function with folders' paths
@@ -56,7 +57,16 @@ bool FolderCompressor::compress(const QString &sourceFolder, const QString &pref
 	dir.setFilter(QDir::NoDotAndDotDot | QDir::Files);
 	QFileInfoList filesList = dir.entryInfoList();
 
-	// 4- For each mFile in list: add mFile path and compressed binary data
+	// 4 - If folder is empty it also needs to be compressed.
+	//       Writing '/' character to the end of path to distinguish it from files
+	//       (else we can have issue with subversion)
+	if (filesList.empty()) {
+		dataStream << QString(prefix + "/");
+		dataStream << QString(); //empty data part, need for correct decompression
+		return true;
+	}
+
+	// 5- For each mFile in list: add mFile path and compressed binary data
 	foreach (const QFileInfo &fileInfo, filesList) {
 		QFile file(dir.absolutePath() + "/" + fileInfo.fileName());
 		if (!file.open(QIODevice::ReadOnly)) { // couldn't open file
@@ -107,13 +117,18 @@ bool FolderCompressor::decompressFolder(const QString &sourceFile, const QString
 			}
 		}
 
-		QFile outFile(destinationFolder + "/" + fileName);
-		if (!outFile.open(QIODevice::WriteOnly)) {
-			file.close();
-			return false;
+		if (!fileName.endsWith('/')) {
+			//we have an empty directory (see part 4 of compression),
+			// it was create earlier, continue
+			QFile outFile(destinationFolder + "/" + fileName);
+			if (!outFile.open(QIODevice::WriteOnly)) {
+				file.close();
+				return false;
+			}
+			outFile.write(qUncompress(data));
+			outFile.close();
 		}
-		outFile.write(qUncompress(data));
-		outFile.close();
+
 	}
 
 	file.close();

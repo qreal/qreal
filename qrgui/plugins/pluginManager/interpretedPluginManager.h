@@ -18,8 +18,8 @@
 
 #include <qrutils/pluginManagers/pluginManager.h>
 
-#include <plugins/interpretedPluginInterface/interpretedPluginInterface.h>
-#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
+#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
+#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 

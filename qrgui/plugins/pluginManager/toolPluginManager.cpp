@@ -118,3 +118,8 @@ void ToolPluginManager::activeTabChanged(const TabInfo &info)
 {
 	emit mSystemEvents->activeTabChanged(info);
 }
+
+QList<ToolPluginInterface *> ToolPluginManager::plugins() const
+{
+	return mPlugins;
+}

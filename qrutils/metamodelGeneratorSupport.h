@@ -21,6 +21,7 @@
 #include <qrgui/mainWindow/errorReporter.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
+
 namespace utils {
 
 /// This class helps with generation new metamodels based on existing ones. For

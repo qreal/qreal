@@ -16,8 +16,8 @@
 
 #include <QtWidgets/QGraphicsTextItem>
 
-#include "plugins/editorPluginInterface/labelInterface.h"
-#include "models/graphicalModelAssistApi.h"
+#include "qrgui/plugins/editorPluginInterface/labelInterface.h"
+#include "qrgui/models/graphicalModelAssistApi.h"
 
 namespace qReal {
 

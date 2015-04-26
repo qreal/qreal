@@ -32,6 +32,7 @@
 
 #include "pluginsManagerDeclSpec.h"
 
+
 namespace qReal {
 
 class Element;

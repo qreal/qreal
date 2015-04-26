@@ -74,6 +74,8 @@ public:
 	QWidget *currentTab() override;
 	void openTab(QWidget *tab, const QString &title) override;
 	void closeTab(QWidget *tab) override;
+	virtual bool isFullScreen() override;
+	virtual void makeFullScreen(bool fullScreen = true) override;
 	void setTabText(QWidget *tab, const QString &text) override;
 
 	void beginPaletteModification() override;

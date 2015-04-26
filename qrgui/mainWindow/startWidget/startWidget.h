@@ -18,7 +18,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 
-#include "mainWindow/projectManager/projectManagerWrapper.h"
+#include <qrgui/mainWindow/projectManager/projectManagerWrapper.h>
 
 namespace qReal {
 

@@ -26,7 +26,6 @@ HEADERS += \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \
-	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
 	$$PWD/parserErrorReporter.h \
 	$$PWD/deleteLaterHelper.h \
@@ -45,7 +44,6 @@ SOURCES += \
 	$$PWD/stringUtils.cpp \
 	$$PWD/qRealDialog.cpp \
 	$$PWD/qRealFileDialog.cpp \
-	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
@@ -82,6 +80,9 @@ include($$PWD/mathUtils/mathUtils.pri)
 
 # Real-time plot
 include($$PWD/graphicsWatcher/sensorsGraph.pri)
+
+# Some stuff available for using in versioning plugins
+include($$PWD/versioningUtils/versioningUtils.pri)
 
 #Plugin managers
 include($$PWD/pluginManagers/pluginManagers.pri)

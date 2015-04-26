@@ -20,7 +20,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 
-#include "mainWindow/mainWindow.h"
+#include <qrgui/mainWindow/mainWindow.h>
 
 #include <models/models.h>
 #include <editor/editorViewScene.h>
@@ -228,6 +228,11 @@ void ProjectManagerWrapper::setUnsavedIndicator(bool isUnsaved)
 {
 	ProjectManager::setUnsavedIndicator(isUnsaved);
 	refreshWindowTitleAccordingToSaveFile();
+}
+
+bool ProjectManagerWrapper::getUnsavedIndicator()
+{
+	return ProjectManager::getUnsavedIndicator();
 }
 
 bool ProjectManagerWrapper::suggestToSaveAs()

@@ -24,11 +24,11 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "findManager.h"
-#include "referenceList.h"
-#include "projectManager/projectManagerWrapper.h"
-#include "tabWidget.h"
-#include "startWidget/startWidget.h"
+#include <qrgui/mainWindow/findManager.h>
+#include <qrgui/mainWindow/referenceList.h>
+#include <qrgui/mainWindow/projectManager/projectManagerWrapper.h>
+#include <qrgui/mainWindow/tabWidget.h>
+#include <qrgui/mainWindow/startWidget/startWidget.h>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
@@ -46,6 +46,10 @@
 
 #include <qrgui/preferencesDialog/preferencesDialog.h>
 #include <qrgui/dialogs/findReplaceDialog.h>
+
+#include <qrgui/versioning/versioningPluginInterface.h>
+#include <qrgui/versioning/versioningPluginsManager.h>
+
 
 class QGraphicsView;
 
@@ -136,6 +140,8 @@ public:
 	virtual QWidget *currentTab();
 	virtual void openTab(QWidget *tab, const QString &title);
 	virtual void closeTab(QWidget *tab);
+	virtual void makeFullScreen(bool fullScreen = true);
+	virtual bool isFullScreen();
 
 	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
 
@@ -368,6 +374,7 @@ private:
 
 	Controller *mController;
 	ToolPluginManager mToolManager;
+	VersioningPluginsManager *mVersioningManager;
 	InterpretedPluginsLoader mInterpretedPluginLoader;
 	PropertyEditorModel mPropertyModel;
 	text::TextManager *mTextManager;

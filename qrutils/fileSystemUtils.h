@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QDir>
 
 #include "qrutils/utilsDeclSpec.h"
 
@@ -27,6 +28,21 @@ public:
 	/// Tries hide specified file on windows and returns if operation was successfull.
 	/// To make file hidden on Linux just make its name starting with '.'
 	static bool makeHidden(const QString &filePath);
+
+	/// Removes specified directory from disk. Returns if operation succeeded
+	/// @param dirPath Path to removing directory
+	/// @param recursive If true, the directory will be recursively cleared.
+	/// If false and directory was nonempty then operation fails
+	static bool removeDir(const QString &dirPath, bool recursive = true);
+
+	/// Clears specified directory
+	/// @param dirPath Path to clearing directory
+	static bool clearDir(const QString &dirPath);
+
+	/// Removes specified file. Returns if operation succeeded
+	static bool removeFile(const QString &filePath);
+
+	static void resetAttributes(const QString &filePath);
 };
 
 }

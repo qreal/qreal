@@ -20,6 +20,7 @@
 #include <qrgui/models/logicalModelAssistApi.h>
 #include <qrgui/dialogs/findReplaceDialog.h>
 
+
 /// Class that manages operations of find & replace.
 class FindManager : public QObject
 {

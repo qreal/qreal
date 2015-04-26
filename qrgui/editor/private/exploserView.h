@@ -17,6 +17,7 @@
 #include <QtWidgets/QMenu>
 
 #include <qrkernel/ids.h>
+#include "qrgui/editor/editorDeclSpec.h"
 
 namespace qReal {
 
@@ -42,7 +43,7 @@ namespace details {
 
 /// This class contains methods for processing all system explosion-based operations
 /// from the view aspect
-class ExploserView : public QObject
+class QRGUI_EDITOR_EXPORT ExploserView : public QObject
 {
 	Q_OBJECT
 

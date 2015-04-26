@@ -125,15 +125,16 @@ void SensorViewer::exportHistory()
 		fileName += ".csv";
 	}
 
-	try {
-		OutFile out(fileName);
-		out() << "time" << ";" << "value" << "\n";
-		for (int i = 0; i < mPointsDataProcessor->pointsBase().size(); ++i) {
-			const qreal plotValue = mPointsDataProcessor->pointsBase()[i].y();
-			out() << i << ";" << mPointsDataProcessor->pointToAbsoluteValue(plotValue) << "\n";
-		}
-	} catch (const qReal::Exception &exception) {
-		QLOG_ERROR() << "An error occured during exporting sensor values to" << fileName << ":" << exception.message();
+	bool fileOpened = false;
+	OutFile out(fileName, &fileOpened);
+	out() << "time" << ";" << "value" << "\n";
+	for (int i = 0; i < mPointsDataProcessor->pointsBase().size(); ++i) {
+		const qreal plotValue = mPointsDataProcessor->pointsBase()[i].y();
+		out() << i << ";" << mPointsDataProcessor->pointToAbsoluteValue(plotValue) << "\n";
+	}
+
+	if (!fileOpened) {
+		QLOG_ERROR() << "Couldn`t export sensor values.";
 	}
 }
 
