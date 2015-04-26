@@ -14,10 +14,14 @@
 
 #include "smartDock.h"
 
+#include <QtCore/QTimer>
+#include <QtCore/QPropertyAnimation>
 #include <QtGui/QMouseEvent>
+#include <QtWidgets/QStyle>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QPushButton>
 
 #include <qrutils/qRealDialog.h>
 
@@ -52,6 +56,7 @@ void SmartDock::switchToDocked()
 	mDialog->close();
 	mDialog->layout()->removeWidget(mInnerWidget);
 	setWidget(mInnerWidget);
+	setFloating(false);
 	show();
 }
 
@@ -67,13 +72,36 @@ void SmartDock::switchToFloating()
 	static_cast<QVBoxLayout *>(mDialog->layout())->addWidget(mInnerWidget);
 	mInnerWidget->show();
 	mDialog->show();
+	if (QWidget * const button = mDialog->findChild<QWidget *>("dockSmartDockToMainWindowButton")) {
+		// This button is not in layout and thus can sunk in other widgets.
+		button->raise();
+	}
 }
 
 void SmartDock::checkFloating()
 {
-	if (isFloating() && !mDragged) {
+	// Mouse button releasing may cause dock animation into some dock area.
+	// topLevelChanged() will be emitted only when animation is finished, so
+	// we must not change dock state when animation is running.
+	if (isFloating() && !mDragged && !isAnimating()) {
 		switchToFloating();
 	}
+}
+
+bool SmartDock::isAnimating()
+{
+	// A bit hacky way to know dialog animation state. If user repositions dock
+	if (!mMainWindow->isAnimated()) {
+		return false;
+	}
+
+	for (QPropertyAnimation *animation : findChildren<QPropertyAnimation *>()) {
+		if (animation->state() == QAbstractAnimation::Running && animation->propertyName() == "geometry") {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 QMainWindow *SmartDock::findMainWindow() const
@@ -94,7 +122,11 @@ bool SmartDock::event(QEvent *event)
 	case QEvent::MouseButtonRelease:
 		if (static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton) {
 			mDragged = event->type() == QEvent::MouseButtonPress;
-			checkFloating();
+			if (QEvent::MouseButtonRelease == event->type()) {
+				// Mouse button releasing may cause dock animation into some dock area.
+				// This animation is not started immediately, so checking for it when all handlers worked out.
+				QTimer::singleShot(0, this, SLOT(checkFloating()));
+			}
 		}
 		break;
 	case QEvent::MouseButtonDblClick:
@@ -124,4 +156,12 @@ void SmartDock::initDialog()
 	layout->setContentsMargins(0, 0, 0, 0);
 	mDialog->setLayout(layout);
 	mDialog->setVisible(false);
+	QPushButton * const button = new QPushButton(mDialog);
+	button->setObjectName("dockSmartDockToMainWindowButton");
+	button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	const int smallButtonSize = 20;
+	button->setFixedSize(smallButtonSize, smallButtonSize);
+	button->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton));
+	button->setToolTip("Dock window into main");
+	connect(button, &QAbstractButton::clicked, this, &SmartDock::switchToDocked);
 }

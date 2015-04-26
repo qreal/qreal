@@ -22,6 +22,8 @@ namespace utils {
 /// and like separate QDialog when it is in the floatible state.
 class SmartDock : public QDockWidget
 {
+	Q_OBJECT
+
 public:
 	/// Represents a state of this dock: it is docked into window or floats as QDialog.
 	enum class Mode
@@ -45,6 +47,10 @@ public:
 	/// Embeds inner widget into separate QDialog, makes it floating and acting like regular window.
 	void switchToFloating();
 
+private slots:
+	/// Overrides default behaviour to float in QDialog shape.
+	void checkFloating();
+
 private:
 	QMainWindow *findMainWindow() const;
 
@@ -53,8 +59,7 @@ private:
 	void initDock();
 	void initDialog();
 
-	/// Overrides default behaviour to float in QDialog shape.
-	void checkFloating();
+	bool isAnimating();
 
 	QMainWindow *mMainWindow;  // Doesn`t take ownerhsip
 	QWidget *mInnerWidget;  // Doesn`t take ownerhsip
