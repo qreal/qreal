@@ -34,12 +34,9 @@ SmartDock::SmartDock(const QString &objectName, QWidget *innerWidget, QMainWindo
 	, mCurrentMode(Mode::Docked)
 {
 	setObjectName(objectName);
-	Q_ASSERT(mMainWindow);
 
 	initDock();
 	initDialog();
-
-	mMainWindow->addDockWidget(Qt::RightDockWidgetArea, this);
 }
 
 SmartDock::~SmartDock()
@@ -76,6 +73,18 @@ void SmartDock::switchToFloating()
 		// This button is not in layout and thus can sunk in other widgets.
 		button->raise();
 	}
+}
+
+void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
+{
+	mMainWindow->addDockWidget(area, this);
+}
+
+void SmartDock::detachFromMainWindow()
+{
+	close();
+	mDialog->close();
+	mMainWindow->removeDockWidget(this);
 }
 
 void SmartDock::checkFloating()
@@ -141,6 +150,10 @@ bool SmartDock::event(QEvent *event)
 
 void SmartDock::initDock()
 {
+	if (!mMainWindow) {
+		return;
+	}
+
 	setWindowTitle(mInnerWidget->windowTitle());
 	setWidget(mInnerWidget);
 	connect(this, &QDockWidget::topLevelChanged, this, &SmartDock::checkFloating);
@@ -156,12 +169,16 @@ void SmartDock::initDialog()
 	layout->setContentsMargins(0, 0, 0, 0);
 	mDialog->setLayout(layout);
 	mDialog->setVisible(false);
-	QPushButton * const button = new QPushButton(mDialog);
-	button->setObjectName("dockSmartDockToMainWindowButton");
-	button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-	const int smallButtonSize = 20;
-	button->setFixedSize(smallButtonSize, smallButtonSize);
-	button->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton));
-	button->setToolTip("Dock window into main");
-	connect(button, &QAbstractButton::clicked, this, &SmartDock::switchToDocked);
+	if (mMainWindow) {
+		QPushButton * const button = new QPushButton(mDialog);
+		button->setObjectName("dockSmartDockToMainWindowButton");
+		button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+		const int smallButtonSize = 20;
+		button->setFixedSize(smallButtonSize, smallButtonSize);
+		button->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton));
+		button->setToolTip("Dock window into main");
+		connect(button, &QAbstractButton::clicked, this, &SmartDock::switchToDocked);
+	} else {
+		switchToFloating();
+	}
 }

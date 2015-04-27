@@ -45,6 +45,7 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	, mPropertyEditorDock(new QDockWidget)
 	, mErrorReporterDock(new QDockWidget)
 	, mPaletteDock(new QDockWidget)
+	, mStatusBar(new QStatusBar)
 {
 	connect(&projectManager, &ProjectManagementInterface::afterOpen, this, &NullMainWindow::openFirstDiagram);
 }

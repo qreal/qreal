@@ -115,9 +115,10 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				const bool isCurrentModel = modelName == mRobotModelName;
 				if (isCurrentModel) {
 					connectTwoDModel();
+					mDock->attachToMainWindow(Qt::TopDockWidgetArea);
 				} else {
 					disconnectTwoDModel();
-					mView->close();
+					mDock->detachFromMainWindow();
 				}
 			}
 			);

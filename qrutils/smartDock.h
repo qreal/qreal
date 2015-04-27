@@ -47,6 +47,12 @@ public:
 	/// Embeds inner widget into separate QDialog, makes it floating and acting like regular window.
 	void switchToFloating();
 
+	/// Adds this dock into last main window dock area. Shows it in the list of available docks.
+	void attachToMainWindow(Qt::DockWidgetArea area);
+
+	/// Hides this dock and removes it from the list of main window`s docks.
+	void detachFromMainWindow();
+
 private slots:
 	/// Overrides default behaviour to float in QDialog shape.
 	void checkFloating();
