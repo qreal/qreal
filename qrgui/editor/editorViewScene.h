@@ -17,10 +17,11 @@
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtCore/QSignalMapper>
+#include <QtCore/QScopedPointer>
 
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
-#include <qrgui/mouseGestures/mouseMovementManager.h>
+#include <qrgui/mouseGestures/mouseMovementManagerInterface.h>
 
 #include "qrgui/editor/editorDeclSpec.h"
 #include "qrgui/editor/copyPaste/clipboardHandler.h"
@@ -140,6 +141,9 @@ public:
 	/// Handles deletion of the element from scene.
 	void onElementDeleted(Element *element);
 
+	/// Enable or Disable mousegestures
+	void enableMouseGestures(bool enabled);
+
 public slots:
 	qReal::Id createElement(const QString &type);
 
@@ -257,7 +261,7 @@ private:
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
 
-	gestures::MouseMovementManager mMouseMovementManager;
+	QScopedPointer<gestures::MouseMovementManagerInterface> mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 
@@ -279,6 +283,7 @@ private:
 	QList<QGraphicsItem* > mSelectList;
 
 	bool mIsSelectEvent;
+	bool mMouseGesturesEnabled;
 
 	QMenu mContextMenu;
 

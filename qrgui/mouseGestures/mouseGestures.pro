@@ -29,6 +29,7 @@ TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mouseGestures_ru.ts
 
 HEADERS += \
 	$$PWD/mouseGesturesDeclSpec.h \
+	$$PWD/mouseMovementManagerInterface.h \
 	$$PWD/mouseMovementManager.h \
 	$$PWD/gesturesWidget.h \
 	$$PWD/gesturePainter.h \
@@ -42,6 +43,7 @@ HEADERS += \
 	$$PWD/private/rectanglegesturesmanager.h \
 	$$PWD/private/nearestposgridgesturesmanager.h \
 	$$PWD/private/sorts.h \
+	$$PWD/dummyMouseMovementManager.h
 
 SOURCES += \
 	$$PWD/mouseMovementManager.cpp \
@@ -54,6 +56,7 @@ SOURCES += \
 	$$PWD/private/mixedgesturesmanager.cpp \
 	$$PWD/private/rectanglegesturesmanager.cpp \
 	$$PWD/private/nearestposgridgesturesmanager.cpp \
+	$$PWD/dummyMouseMovementManager.cpp
 
 FORMS += \
 	$$PWD/gesturesWidget.ui \

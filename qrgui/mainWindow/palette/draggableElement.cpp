@@ -70,7 +70,7 @@ DraggableElement::DraggableElement(
 	QString description = mData.description();
 	if (!description.isEmpty()) {
 		const QString rawGesture = mEditorManagerProxy.mouseGesture(data.id());
-		if (!rawGesture.isEmpty()) {
+		if (!rawGesture.isEmpty() && qReal::SettingsManager::value("gesturesEnabled").toBool()) {
 			const QSize size(gestureTipSize, gestureTipSize);
 			gestures::GesturePainter painter(rawGesture, Qt::white, Qt::blue, gestureTipSize);
 			const QPixmap gesture = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);

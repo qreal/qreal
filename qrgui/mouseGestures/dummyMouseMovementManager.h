@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Zimin Grigory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * limitations under the License. */
 
 #pragma once
-
 #include <qrkernel/ids.h>
 
 #include <QtCore/QMap>
@@ -31,12 +30,12 @@
 namespace qReal {
 namespace gestures {
 
-class QRGUI_MOUSE_GESTURES_EXPORT MouseMovementManager : public MouseMovementManagerInterface
+class QRGUI_MOUSE_GESTURES_EXPORT DummyMouseMovementManager : public MouseMovementManagerInterface
 {
 	Q_OBJECT
 
 public:
-	MouseMovementManager(const Id &diagram, const EditorManagerInterface &editorManagerInterface);
+	DummyMouseMovementManager(const Id &diagram, const EditorManagerInterface &editorManagerInterface);
 
 	/// Creates and returns the widget that shows available for this manager mouse gestures.
 	/// Transfers ownership.
@@ -47,7 +46,6 @@ public:
 	void mouseMove(const QPointF &point) override;
 	void clear() override;
 	GestureResult result() override;
-	static PathVector stringToPath(const QString &str);
 	QPointF pos() override;
 	QPointF firstPoint() override;
 	QPointF lastPoint() override;
