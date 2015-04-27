@@ -79,6 +79,13 @@ void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
 {
 	setParent(mMainWindow);
 	mMainWindow->addDockWidget(area, this);
+	if (mCurrentMode == Mode::Docked) {
+		mCurrentMode = Mode::Floats;
+		switchToDocked();
+	} else {
+		mCurrentMode = Mode::Docked;
+		switchToFloating();
+	}
 }
 
 void SmartDock::detachFromMainWindow()
@@ -142,6 +149,11 @@ bool SmartDock::event(QEvent *event)
 		break;
 	case QEvent::MouseButtonDblClick:
 		mDragged = false;
+		break;
+	case QEvent::Show:
+		if (!widget()) {
+			close();
+		}
 		break;
 	default:
 		break;
