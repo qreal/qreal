@@ -55,15 +55,15 @@ private slots:
 	void switchToMode(Mode mode);
 	void toggleModeButtons();
 
+	void saveDocks() const;
+	void reloadDocks() const;
+
 private:
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
 	void produceModeButton(Mode mode, QAction &action, QStatusBar *statusBar) const;
 
 	int currentMode() const;
 	QString currentSettingsKey() const;
-
-	void saveDocks() const;
-	void reloadDocks() const;
 
 	void addWidgetsForDocksDebugging() const;
 

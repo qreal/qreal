@@ -14,6 +14,7 @@
 
 #include "uiManager.h"
 
+#include <QtCore/QTimer>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
@@ -48,6 +49,8 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
+	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::robotModelChanged
+			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocks())); });
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 

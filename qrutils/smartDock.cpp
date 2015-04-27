@@ -77,6 +77,7 @@ void SmartDock::switchToFloating()
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
 {
+	setParent(mMainWindow);
 	mMainWindow->addDockWidget(area, this);
 }
 
@@ -85,6 +86,7 @@ void SmartDock::detachFromMainWindow()
 	close();
 	mDialog->close();
 	mMainWindow->removeDockWidget(this);
+	setParent(nullptr);
 }
 
 void SmartDock::checkFloating()
