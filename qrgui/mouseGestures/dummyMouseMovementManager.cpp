@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "mouseMovementManager.h"
+#include "dummyMouseMovementManager.h"
 
 #include <qrkernel/logging.h>
 
@@ -30,17 +30,16 @@ const QString deletionGesture = "0, 200 : 200, 0 : ";
 
 using namespace qReal::gestures;
 
-MouseMovementManager::MouseMovementManager(const Id &diagram
+DummyMouseMovementManager::DummyMouseMovementManager(const Id &diagram
 		, const qReal::EditorManagerInterface &editorManagerInterface)
 	: mDiagram(diagram)
 	, mEditorManagerInterface(editorManagerInterface)
 {
 	mKeyStringManager.reset(new KeyManager);
 	mGesturesManager.reset(new MixedGesturesManager);
-	initializeGestures();
 }
 
-QWidget *MouseMovementManager::producePainter() const
+QWidget *DummyMouseMovementManager::producePainter() const
 {
 	GesturesWidget * const result = new GesturesWidget;
 	QList<QPair<QString, Id> > elements;
@@ -51,11 +50,11 @@ QWidget *MouseMovementManager::producePainter() const
 	}
 
 	result->setElements(elements);
-	connect(result, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
+	connect(result, &GesturesWidget::currentElementChanged, this, &DummyMouseMovementManager::drawIdealPath);
 	return result;
 }
 
-void MouseMovementManager::drawIdealPath()
+void DummyMouseMovementManager::drawIdealPath()
 {
 	GesturesWidget * const gesturesPainter = static_cast<GesturesWidget *>(sender());
 	const Id currentElement = gesturesPainter->currentElement();
@@ -65,12 +64,12 @@ void MouseMovementManager::drawIdealPath()
 	}
 }
 
-void MouseMovementManager::clear()
+void DummyMouseMovementManager::clear()
 {
 	mPath.clear();
 }
 
-QLineF MouseMovementManager::newLine()
+QLineF DummyMouseMovementManager::newLine()
 {
 	QLineF line;
 	if (mPath.back().size() > 1) {
@@ -81,22 +80,11 @@ QLineF MouseMovementManager::newLine()
 	return line;
 }
 
-void MouseMovementManager::initializeGestures()
+void DummyMouseMovementManager::initializeGestures()
 {
-	QMap<QString, PathVector> gestures;
-	gestures.insert(deletionGestureKey, stringToPath(deletionGesture));
-	for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
-		const QString pathStr = mEditorManagerInterface.mouseGesture(element);
-		if (!pathStr.isEmpty() && !mInitializedGestures.contains(element)) {
-			gestures.insert(element.toString(), stringToPath(pathStr));
-			mInitializedGestures << element;
-		}
-	}
-
-	mGesturesManager->initIdealGestures(gestures);
 }
 
-void MouseMovementManager::recountCentre()
+void DummyMouseMovementManager::recountCentre()
 {
 	if (mPath.empty() || mPath.back().empty()) {
 		return;
@@ -110,7 +98,7 @@ void MouseMovementManager::recountCentre()
 	mCenter = ((count - 1) * mCenter + mPath.back().back()) / count;
 }
 
-void MouseMovementManager::mousePress(const QPointF &pnt)
+void DummyMouseMovementManager::mousePress(const QPointF &pnt)
 {
 	QList<QPointF> path;
 	path.push_back(pnt);
@@ -118,7 +106,7 @@ void MouseMovementManager::mousePress(const QPointF &pnt)
 	recountCentre();
 }
 
-void MouseMovementManager::mouseMove(const QPointF &pnt)
+void DummyMouseMovementManager::mouseMove(const QPointF &pnt)
 {
 	PointVector path = mPath.back();
 	mPath.pop_back();
@@ -127,29 +115,12 @@ void MouseMovementManager::mouseMove(const QPointF &pnt)
 	recountCentre();
 }
 
-QPointF MouseMovementManager::pos()
+QPointF DummyMouseMovementManager::pos()
 {
 	return mCenter;
 }
 
-PathVector MouseMovementManager::stringToPath(const QString &valueStr)
-{
-	PathVector result;
-	const QStringList paths = valueStr.split(pathDelimeter, QString::SkipEmptyParts);
-	for (const QString &pathStr : paths) {
-		QStringList points = pathStr.split(pointDelimeter, QString::SkipEmptyParts);
-		PointVector path;
-		for (const QString &str : points) {
-			path << parsePoint(str);
-		}
-
-		result << path;
-	}
-
-	return result;
-}
-
-QPoint MouseMovementManager::parsePoint(const QString &str)
+QPoint DummyMouseMovementManager::parsePoint(const QString &str)
 {
 	bool isInt = true;
 	int x = str.section(comma, 0, 0).toInt(&isInt, 0);
@@ -157,36 +128,12 @@ QPoint MouseMovementManager::parsePoint(const QString &str)
 	return QPoint(x, y);
 }
 
-MouseMovementManager::GestureResult MouseMovementManager::result()
+DummyMouseMovementManager::GestureResult DummyMouseMovementManager::result()
 {
-	initializeGestures();
-	GestureResult result;
-	mGesturesManager->setKey(mPath);
-	mPath.clear();
-	qreal minDist = INT_MAX;
-
-	QMap<QString, Id> gestures;
-	gestures[deletionGestureKey] = Id();
-	for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
-		if (mInitializedGestures.contains(element)) {
-			gestures[element.toString()] = element;
-		}
-	}
-
-	for (const QString &key: gestures.keys()) {
-		minDist = qMin(minDist, mGesturesManager->getMaxDistance(key));
-		const qreal dist = mGesturesManager->getDistance(key);
-		if (dist < minDist) {
-			minDist = dist;
-			result.setType(key == deletionGestureKey ? deleteGesture : createElementGesture);
-			result.setElementType(gestures[key]);
-		}
-	}
-
-	return result;
+	return GestureResult();
 }
 
-QPointF MouseMovementManager::firstPoint()
+QPointF DummyMouseMovementManager::firstPoint()
 {
 	if (!mPath.isEmpty() && !mPath.at(0).empty()) {
 		return QPointF(mPath.at(0).at(0));
@@ -194,7 +141,7 @@ QPointF MouseMovementManager::firstPoint()
 	return QPointF(0, 0);
 }
 
-QPointF MouseMovementManager::lastPoint()
+QPointF DummyMouseMovementManager::lastPoint()
 {
 	if (!mPath.isEmpty() && !mPath.back().empty()) {
 		return QPointF(mPath.back().back());
@@ -202,18 +149,18 @@ QPointF MouseMovementManager::lastPoint()
 	return QPointF(0, 0);
 }
 
-bool MouseMovementManager::wasMoving()
+bool DummyMouseMovementManager::wasMoving()
 {
 	return (firstPoint() != lastPoint() || mPath.size() > 1 ||
 			(!mPath.isEmpty() && mPath.at(0).size() > 2));
 }
 
-bool MouseMovementManager::isEdgeCandidate()
+bool DummyMouseMovementManager::isEdgeCandidate()
 {
 	return mPath.count() <= 1;
 }
 
-bool MouseMovementManager::pathIsEmpty()
+bool DummyMouseMovementManager::pathIsEmpty()
 {
 	return mPath.isEmpty();
 }

@@ -37,6 +37,7 @@ protected:
 
 private slots:
 	void showAutoSaveBox(bool show);
+	void updateGesturesSettings(bool gesturesEnabled);
 
 private:
 	void initLanguages();
