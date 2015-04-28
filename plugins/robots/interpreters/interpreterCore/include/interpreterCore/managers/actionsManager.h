@@ -73,7 +73,7 @@ public:
 
 	/// Action that changes current UI mode to edit: show palette and property editor if we are
 	/// editing diagram or variables list if we are editing the code.
-	/// Closess variable values dock and maybe 2D model dock.
+	/// Closes variable values dock and maybe 2D model dock.
 	QAction &editModeAction();
 
 public slots:

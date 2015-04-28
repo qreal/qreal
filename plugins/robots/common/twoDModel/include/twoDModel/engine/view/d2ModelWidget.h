@@ -61,7 +61,7 @@ public:
 	D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
-	/// Overrides default closing behavoiur with just hiding window.
+	/// Overrides default closing behaviour with just hiding window.
 	void close();
 
 	D2ModelScene *scene();

@@ -33,7 +33,6 @@ using namespace interpreterCore;
 
 static const QColor backgrondColor = QPalette().color(QPalette::Background);
 static const QColor editModeColor = QPalette().color(QPalette::Background);
-//static const QColor editModeColor = qRgb(135, 206, 250);
 static const QColor debugModeColor = qRgb(152, 251, 152);
 
 UiManager::UiManager(QAction &debugModeAction
