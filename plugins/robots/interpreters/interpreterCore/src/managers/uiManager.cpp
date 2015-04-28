@@ -25,6 +25,7 @@
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
 #include <qrutils/inFile.h>
+#include <qrutils/smartDock.h>
 
 #include "src/ui/modeStripe.h"
 
@@ -177,13 +178,26 @@ void UiManager::saveDocks() const
 
 void UiManager::reloadDocks() const
 {
+	hack2dModelDock();
 	const QByteArray state = qReal::SettingsManager::value(currentSettingsKey()).toByteArray();
 	if (!mMainWindow.restoreState(state, currentMode())) {
 		QLOG_ERROR() << "Cannot apply docks state for mode" << currentMode() << ":" << state;
 	}
 }
 
-void UiManager::addWidgetsForDocksDebugging() const
+void UiManager::hack2dModelDock() const
+{
+	// 2D model is placed into smart dock: it may be embedded into instance of QDialog
+	// that is not influeced by mMainWindow::restoreState. So we must first switch to a docked form
+	// and then restore docks state.
+	if (const QObject *window = dynamic_cast<QObject *>(&mMainWindow)) {
+		if (utils::SmartDock *twoDModel = window->findChild<utils::SmartDock *>()) {
+			twoDModel->switchToDocked();
+		}
+	}
+}
+
+void UiManager::enableDocksSnapshotter() const
 {
 	// This method provides tools only for development.
 	// It must not be called in master branch code.

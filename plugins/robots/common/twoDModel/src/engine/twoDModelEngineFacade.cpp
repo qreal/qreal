@@ -107,7 +107,7 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
-	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); });
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); delete mDock; });
 
 	connect(&eventsForKitPlugin
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged

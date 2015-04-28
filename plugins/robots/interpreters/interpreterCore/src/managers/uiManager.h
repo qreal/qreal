@@ -65,7 +65,8 @@ private:
 	int currentMode() const;
 	QString currentSettingsKey() const;
 
-	void addWidgetsForDocksDebugging() const;
+	void hack2dModelDock() const;
+	void enableDocksSnapshotter() const;
 
 	QAction &mDebugModeAction;
 	QAction &mEditModeAction;

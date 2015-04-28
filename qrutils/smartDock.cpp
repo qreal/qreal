@@ -30,7 +30,7 @@ using namespace utils;
 SmartDock::SmartDock(const QString &objectName, QWidget *innerWidget, QMainWindow *parent)
 	: mMainWindow(parent ? parent : findMainWindow())
 	, mInnerWidget(innerWidget)
-	, mDialog(new QRealDialog(objectName, mMainWindow))
+	, mDialog(new QRealDialog(objectName))
 	, mCurrentMode(Mode::Docked)
 {
 	setObjectName(objectName);
@@ -41,6 +41,7 @@ SmartDock::SmartDock(const QString &objectName, QWidget *innerWidget, QMainWindo
 
 SmartDock::~SmartDock()
 {
+	delete mDialog;
 }
 
 void SmartDock::switchToDocked()
@@ -170,12 +171,14 @@ void SmartDock::initDock()
 
 	setWindowTitle(mInnerWidget->windowTitle());
 	setWidget(mInnerWidget);
+	setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	connect(this, &QDockWidget::topLevelChanged, this, &SmartDock::checkFloating);
 }
 
 void SmartDock::initDialog()
 {
 	mDialog->setWindowTitle(mInnerWidget->windowTitle());
+	mDialog->setWindowIcon(mInnerWidget->windowIcon());
 	mDialog->setWindowFlags(mDialog->windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QVBoxLayout * const layout = new QVBoxLayout;
 	layout->setMargin(0);
@@ -183,6 +186,7 @@ void SmartDock::initDialog()
 	layout->setContentsMargins(0, 0, 0, 0);
 	mDialog->setLayout(layout);
 	mDialog->setVisible(false);
+	connect(mDialog, &QDialog::finished, this, &SmartDock::switchToDocked);
 	if (mMainWindow) {
 		QPushButton * const button = new QPushButton(mDialog);
 		button->setObjectName("dockSmartDockToMainWindowButton");
