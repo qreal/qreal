@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,8 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
 	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
+	, mDebugModeAction(QObject::tr("Switch to debug mode"), nullptr)
+	, mEditModeAction(QObject::tr("Switch to edit mode"), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
@@ -49,6 +51,12 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 			<< &mRobotSettingsAction
 			<< &mExportExerciseAction
 			;
+
+	mEditModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
+	mDebugModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+
+	mStopRobotAction.setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
+	mRunAction.setShortcut(QKeySequence(Qt::Key_F5));
 }
 
 QList<qReal::ActionInfo> ActionsManager::actions()
@@ -63,7 +71,7 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 			<< qReal::ActionInfo(&mStopRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mSeparator1, "interpreters", "tools");
 
-	result += mRobotModelActions.values();
+	result << mRobotModelActions.values();
 
 	result << qReal::ActionInfo(&mSeparator2, "interpreters", "tools")
 			<< qReal::ActionInfo(&mRobotSettingsAction, "interpreters", "tools")
@@ -75,14 +83,13 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 
 QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 {
-	mStopRobotAction.setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
-	mRunAction.setShortcut(QKeySequence(Qt::Key_F5));
-
 	QList<qReal::HotKeyActionInfo> result;
 
 	result += mPluginHotKeyActionInfos;
 
 	result
+			<< qReal::HotKeyActionInfo("Editor.EditMode", mEditModeAction.text(), &mEditModeAction)
+			<< qReal::HotKeyActionInfo("Editor.DebugMode", mDebugModeAction.text(), &mDebugModeAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), &mRunAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), &mStopRobotAction)
 			;
@@ -120,6 +127,16 @@ QAction &ActionsManager::robotSettingsAction()
 QAction &ActionsManager::exportExerciseAction()
 {
 	return mExportExerciseAction;
+}
+
+QAction &ActionsManager::debugModeAction()
+{
+	return mDebugModeAction;
+}
+
+QAction &ActionsManager::editModeAction()
+{
+	return mEditModeAction;
 }
 
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)

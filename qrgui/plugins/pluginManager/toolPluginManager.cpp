@@ -99,14 +99,15 @@ QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() cons
 	return result;
 }
 
-Customizer *ToolPluginManager::customizer() const
+const Customizer *ToolPluginManager::customizer() const
 {
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		if (toolPlugin->customizationInterface()) {
 			return toolPlugin->customizationInterface();
 		}
 	}
-	return const_cast<qReal::Customizer *>(&mCustomizer);
+
+	return &mCustomizer;
 }
 
 void ToolPluginManager::updateSettings()

@@ -57,9 +57,6 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
-			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
-
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
 
@@ -120,17 +117,12 @@ QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
+	return {};
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
-
-	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForTrik", tr("Show 2d model for TRIK")
-			, mTwoDModel->showTwoDModelWidgetActionInfo().action());
-
-	return { d2ModelActionInfo };
+	return {};
 }
 
 QString TrikKitInterpreterPlugin::defaultSettingsFile() const
@@ -151,14 +143,6 @@ QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
-}
-
-void TrikKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
-{
-	const Id type = info.rootDiagramId().type();
-	const bool enabled = type == robotDiagramType || type == subprogramDiagramType;
-	const bool twoDModelEnabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModel.name();
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(twoDModelEnabled);
 }
 
 QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()

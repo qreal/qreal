@@ -49,9 +49,11 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/printTextBlock.h \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
+	$$PWD/src/managers/uiManager.h \
 	$$PWD/src/managers/exerciseExportManager.h \
 	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
+	$$PWD/src/ui/modeStripe.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -68,6 +70,7 @@ SOURCES += \
 	$$PWD/src/managers/actionsManager.cpp \
 	$$PWD/src/managers/blocksFactoryManager.cpp \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
+	$$PWD/src/managers/uiManager.cpp \
 	$$PWD/src/managers/exerciseExportManager.cpp \
 	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \
@@ -78,6 +81,7 @@ SOURCES += \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
+	$$PWD/src/ui/modeStripe.cpp \
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

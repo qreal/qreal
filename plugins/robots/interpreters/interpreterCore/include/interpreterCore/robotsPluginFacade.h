@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@
 namespace interpreterCore {
 
 class ExerciseExportManager;
+class UiManager;
 
 namespace ui {
 class RobotsSettingsPage;
@@ -105,13 +106,12 @@ private:
 	ActionsManager mActionsManager;
 	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
 	QScopedPointer<ExerciseExportManager> mSaveAsTaskManager;
+	QScopedPointer<UiManager> mUiManager;
 
 	kitBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
-
 	BlocksFactoryManager mBlocksFactoryManager;
-
 	kitBase::EventsForKitPluginInterface mEventsForKitPlugin;
 };
 

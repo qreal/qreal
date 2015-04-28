@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,15 @@
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
 
-
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "twoDModel/engine/twoDModelControlInterface.h"
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
 #include "twoDModel/twoDModelDeclSpec.h"
+
+namespace utils {
+class SmartDock;
+}
 
 namespace twoDModel {
 
@@ -52,7 +55,6 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, kitBase::InterpreterControlInterface &interpreterControl) override;
 
-	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
 	kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
 
 	TwoDModelEngineInterface &engine();
@@ -65,11 +67,11 @@ private:
 	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);
 
 	const QString mRobotModelName;
-	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::D2ModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
+	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
 };
 
 }

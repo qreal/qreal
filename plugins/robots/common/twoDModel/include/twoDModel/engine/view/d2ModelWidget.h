@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QGraphicsView>
 
-#include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
 #include <kitBase/readOnly.h>
 
@@ -30,6 +29,7 @@
 #include "twoDModel/twoDModelDeclSpec.h"
 
 class QComboBox;
+class QPushButton;
 class QDomDocument;
 
 namespace Ui {
@@ -53,7 +53,7 @@ class D2ModelScene;
 class SensorItem;
 class RobotItem;
 
-class TWO_D_MODEL_EXPORT D2ModelWidget : public utils::QRealDialog, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT D2ModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -61,7 +61,7 @@ public:
 	D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
-	void init();
+	/// Overrides default closing behavoiur with just hiding window.
 	void close();
 
 	D2ModelScene *scene();
