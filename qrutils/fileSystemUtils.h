@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,9 @@ public:
 	/// Tries hide specified file on windows and returns if operation was successfull.
 	/// To make file hidden on Linux just make its name starting with '.'
 	static bool makeHidden(const QString &filePath);
+
+	/// Recursively removes every entry in the given directory.
+	static void clearDir(const QString &path);
 };
 
 }

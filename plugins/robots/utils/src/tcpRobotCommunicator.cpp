@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,10 +53,10 @@ bool TcpRobotCommunicator::uploadProgram(const QString &programName)
 		return false;
 	}
 
-	QString fileContents;
-	try {
-		fileContents = utils::InFile::readAll(programName);
-	} catch (const qReal::Exception &) {
+	QString errorString;
+	const QString fileContents = utils::InFile::readAll(programName, &errorString);
+	if (!errorString.isEmpty()) {
+		QLOG_ERROR() << "Reading file to transfer failed";
 		return false;
 	}
 
