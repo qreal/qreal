@@ -22,7 +22,7 @@ includes(plugins/robots/interpreters/interpreterCore \
 )
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
-		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model \
+		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model qslog \
 )
 
 HEADERS += \

@@ -16,13 +16,15 @@
 
 #include <QtWidgets/QDockWidget>
 
+#include "qrutils/utilsDeclSpec.h"
+
 namespace utils {
 
 class QRealDialog;
 
 /// A container for some widget that bahaves like QDockWidget when it docked into the QMainWidow instance
 /// and like separate QDialog when it is in the floatible state.
-class SmartDock : public QDockWidget
+class QRUTILS_EXPORT SmartDock : public QDockWidget
 {
 	Q_OBJECT
 
