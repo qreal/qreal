@@ -19,7 +19,7 @@
 using namespace interpreterCore::ui;
 
 ModeStripe::ModeStripe(QAction &modeAction, const QString &text, QWidget *parent)
-	: QLabel(QString("&nbsp;&nbsp;&nbsp;<b>%1</b> - press %2 or click here to switch to %3")
+	: QLabel(("&nbsp;&nbsp;&nbsp;<b>%1</b> - " + tr("press %2 or click here to switch to %3"))
 			.arg(text, modeAction.shortcut().toString(), modeAction.property("modeName").toString()), parent)
 	, mAction(modeAction)
 {

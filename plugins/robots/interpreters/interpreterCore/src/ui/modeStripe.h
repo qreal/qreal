@@ -22,6 +22,8 @@ namespace ui {
 /// A widget shown on the status bar to indicate current mode (editing or debugging).
 class ModeStripe : public QLabel
 {
+	Q_OBJECT
+
 public:
 	ModeStripe(QAction &modeAction, const QString &text, QWidget *parent = 0);
 
