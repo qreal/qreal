@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 
 #include "fileSystemUtils.h"
 
+#include <QtCore/QDir>
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
@@ -28,4 +30,26 @@ bool FileSystemUtils::makeHidden(const QString &filePath)
 	Q_UNUSED(filePath)
 	return false;
 #endif
+}
+
+void FileSystemUtils::clearDir(const QString &path)
+{
+	if (path.isEmpty()) {
+		return;
+	}
+
+	QDir dir(path);
+	if (!dir.exists()) {
+		return;
+	}
+
+	foreach (const QFileInfo &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.isDir()) {
+			clearDir(fileInfo.filePath());
+		} else {
+			dir.remove(fileInfo.fileName());
+		}
+	}
+
+	dir.rmdir(path);
 }
