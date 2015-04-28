@@ -62,6 +62,7 @@ UiManager::UiManager(QAction &debugModeAction
 	produceModeButton(Mode::Debugging, editModeAction, mMainWindow.statusBar());
 
 	switchToEditorMode();
+	onActiveTabChanged(qReal::TabInfo());
 }
 
 void UiManager::placeDevicesConfig(QWidget *devicesWidget)
