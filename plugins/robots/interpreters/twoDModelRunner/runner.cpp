@@ -60,7 +60,7 @@ void Runner::interpret(const QString &saveFile, bool background)
 	/// @todo: A bit hacky way to get 2D model window. Actually we must not have need in this.
 	/// GUI must be separated from logic and not appear here at all.
 	QList<view::D2ModelWidget *> twoDModelWindows;
-	for (QWidget * const widget : QApplication::topLevelWidgets()) {
+	for (QWidget * const widget : QApplication::allWidgets()) {
 		if (view::D2ModelWidget * const twoDModelWindow = dynamic_cast<view::D2ModelWidget *>(widget)) {
 			twoDModelWindows << twoDModelWindow;
 		}

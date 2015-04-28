@@ -195,6 +195,8 @@ void SmartDock::initDialog()
 	connect(mDialog, &QDialog::finished, [=]() {
 		if (mMainWindow) {
 			switchToDocked();
+		} else {
+			mInnerWidget->close();
 		}
 	});
 	if (mMainWindow) {
