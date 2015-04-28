@@ -14,6 +14,8 @@
 
 #include "nullMainWindow.h"
 
+#include <qrkernel/settingsManager.h>
+
 #include <QtCore/QCoreApplication>
 #include <QtWidgets/QStatusBar>
 
@@ -58,6 +60,7 @@ NullMainWindow::~NullMainWindow()
 	delete mErrorReporterDock;
 	delete mPaletteDock;
 	delete mStatusBar;
+	SettingsManager::instance()->saveData();
 }
 
 

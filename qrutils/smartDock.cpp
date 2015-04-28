@@ -82,6 +82,7 @@ void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
 		return;
 	}
 
+	mDialog->resumeSerialization();
 	setParent(mMainWindow);
 	mMainWindow->addDockWidget(area, this);
 	if (mCurrentMode == Mode::Docked) {
@@ -95,6 +96,7 @@ void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
 
 void SmartDock::detachFromMainWindow()
 {
+	mDialog->suspendSerialization();
 	close();
 	mDialog->close();
 	if (mMainWindow) {

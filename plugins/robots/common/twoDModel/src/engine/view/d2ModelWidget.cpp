@@ -323,10 +323,6 @@ void D2ModelWidget::close()
 	setVisible(false);
 }
 
-void D2ModelWidget::setCompactMode(bool enabled)
-{
-}
-
 void D2ModelWidget::changeEvent(QEvent *e)
 {
 	QWidget::changeEvent(e);

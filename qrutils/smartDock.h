@@ -18,6 +18,8 @@
 
 namespace utils {
 
+class QRealDialog;
+
 /// A container for some widget that bahaves like QDockWidget when it docked into the QMainWidow instance
 /// and like separate QDialog when it is in the floatible state.
 class SmartDock : public QDockWidget
@@ -69,7 +71,7 @@ private:
 
 	QMainWindow *mMainWindow;  // Doesn`t take ownerhsip
 	QWidget *mInnerWidget;  // Doesn`t take ownerhsip
-	QDialog *mDialog;  // Takes ownership
+	QRealDialog *mDialog;  // Takes ownership
 	Mode mCurrentMode;
 	bool mDragged = false;
 };

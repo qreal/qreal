@@ -31,6 +31,14 @@ public:
 	///in settings so should be unique.
 	explicit QRealDialog(const QString &id, QWidget *parent = 0);
 
+	/// After this method called till the next call of resumeSerialization() this instance will
+	/// not serialize window geometry into settings when closed (default behaviour).
+	void suspendSerialization();
+
+	/// Cancels call of suspendSerialization(). After this method called window geometry will be
+	/// serialized into settings again.
+	void resumeSerialization();
+
 protected:
 	virtual void showEvent(QShowEvent *);
 	virtual void closeEvent(QCloseEvent *);
@@ -49,6 +57,7 @@ protected:
 
 private:
 	const QString mId;
+	bool mSerializationSuspended = false;
 };
 
 }
