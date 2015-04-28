@@ -61,7 +61,7 @@ public:
 	D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
-//	void init();
+	/// Overrides default closing behavoiur with just hiding window.
 	void close();
 
 	/// Enables or disables compact 2D model mode.

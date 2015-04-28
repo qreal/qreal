@@ -78,6 +78,10 @@ void SmartDock::switchToFloating()
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
 {
+	if (!mMainWindow) {
+		return;
+	}
+
 	setParent(mMainWindow);
 	mMainWindow->addDockWidget(area, this);
 	if (mCurrentMode == Mode::Docked) {
@@ -93,8 +97,10 @@ void SmartDock::detachFromMainWindow()
 {
 	close();
 	mDialog->close();
-	mMainWindow->removeDockWidget(this);
-	setParent(nullptr);
+	if (mMainWindow) {
+		mMainWindow->removeDockWidget(this);
+		setParent(nullptr);
+	}
 }
 
 void SmartDock::checkFloating()
@@ -186,7 +192,11 @@ void SmartDock::initDialog()
 	layout->setContentsMargins(0, 0, 0, 0);
 	mDialog->setLayout(layout);
 	mDialog->setVisible(false);
-	connect(mDialog, &QDialog::finished, this, &SmartDock::switchToDocked);
+	connect(mDialog, &QDialog::finished, [=]() {
+		if (mMainWindow) {
+			switchToDocked();
+		}
+	});
 	if (mMainWindow) {
 		QPushButton * const button = new QPushButton(mDialog);
 		button->setObjectName("dockSmartDockToMainWindowButton");

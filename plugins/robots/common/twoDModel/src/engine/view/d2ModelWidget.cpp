@@ -297,16 +297,6 @@ void D2ModelWidget::changeSpeed(int curIndex)
 	}
 }
 
-//void D2ModelWidget::init()
-//{
-//	mUi->graphicsView->show();
-//	bringToFront();
-
-//	update();
-
-//	updateWheelComboBoxes();
-//}
-
 void D2ModelWidget::returnToStartMarker()
 {
 	for (RobotModel * const model : mModel.robotModels()) {
