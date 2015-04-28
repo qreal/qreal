@@ -23,8 +23,6 @@ public:
 	virtual QString windowTitle() const;
 	virtual QString productVersion() const;
 
-	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
-
 	virtual bool showInterpeterButton() const;
 	virtual bool showConnectionRelatedMenus() const;
 
