@@ -14,12 +14,15 @@
 
 #include "outFile.h"
 
+#include <QtCore/QBuffer>
+
 #include <qrkernel/logging.h>
 
 using namespace utils;
 
 OutFile::OutFile(const QString &fileName, bool *success)
 	: mFile(fileName)
+	, mOut(&mDummyArray)
 {
 	if (fileName.isEmpty()) {
 		if (success) {

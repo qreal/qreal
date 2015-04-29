@@ -48,8 +48,9 @@ public:
 	QString errorString() const;
 
 private:
-	QTextStream mOut;
+	QByteArray mDummyArray;
 	QFile mFile;
+	QTextStream mOut;
 };
 
 }
