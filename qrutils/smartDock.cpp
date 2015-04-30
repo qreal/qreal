@@ -70,10 +70,6 @@ void SmartDock::switchToFloating()
 	static_cast<QVBoxLayout *>(mDialog->layout())->addWidget(mInnerWidget);
 	mInnerWidget->show();
 	mDialog->show();
-	if (QWidget * const button = mDialog->findChild<QWidget *>("dockSmartDockToMainWindowButton")) {
-		// This button is not in layout and thus can sunk in other widgets.
-		button->raise();
-	}
 }
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
@@ -201,16 +197,7 @@ void SmartDock::initDialog()
 			mInnerWidget->close();
 		}
 	});
-	if (mMainWindow) {
-		QPushButton * const button = new QPushButton(mDialog);
-		button->setObjectName("dockSmartDockToMainWindowButton");
-		button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-		const int smallButtonSize = 20;
-		button->setFixedSize(smallButtonSize, smallButtonSize);
-		button->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton));
-		button->setToolTip("Dock window into main");
-		connect(button, &QAbstractButton::clicked, this, &SmartDock::switchToDocked);
-	} else {
+	if (!mMainWindow) {
 		switchToFloating();
 	}
 }
