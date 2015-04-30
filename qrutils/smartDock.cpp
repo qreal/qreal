@@ -56,6 +56,7 @@ void SmartDock::switchToDocked()
 	setWidget(mInnerWidget);
 	setFloating(false);
 	show();
+	checkCentralWidget();
 }
 
 void SmartDock::switchToFloating()
@@ -70,6 +71,7 @@ void SmartDock::switchToFloating()
 	static_cast<QVBoxLayout *>(mDialog->layout())->addWidget(mInnerWidget);
 	mInnerWidget->show();
 	mDialog->show();
+	checkCentralWidget();
 }
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
@@ -109,6 +111,12 @@ void SmartDock::checkFloating()
 	if (isFloating() && !mDragged && !isAnimating()) {
 		switchToFloating();
 	}
+}
+
+void SmartDock::checkCentralWidget()
+{
+	mMainWindow->centralWidget()->setVisible(isFloating() || !isVisible()
+			|| mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea);
 }
 
 bool SmartDock::isAnimating()
@@ -159,6 +167,10 @@ bool SmartDock::event(QEvent *event)
 		if (!widget()) {
 			close();
 		}
+		checkCentralWidget();
+		break;
+	case QEvent::Hide:
+		checkCentralWidget();
 		break;
 	default:
 		break;
@@ -177,6 +189,7 @@ void SmartDock::initDock()
 	setWidget(mInnerWidget);
 	setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	connect(this, &QDockWidget::topLevelChanged, this, &SmartDock::checkFloating);
+	connect(this, &QDockWidget::dockLocationChanged, this, &SmartDock::checkCentralWidget);
 }
 
 void SmartDock::initDialog()

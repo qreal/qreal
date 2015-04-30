@@ -61,6 +61,9 @@ private slots:
 	/// Overrides default behaviour to float in QDialog shape.
 	void checkFloating();
 
+	/// If this window is docked to the top of main window hides central widget.
+	void checkCentralWidget();
+
 private:
 	QMainWindow *findMainWindow() const;
 
