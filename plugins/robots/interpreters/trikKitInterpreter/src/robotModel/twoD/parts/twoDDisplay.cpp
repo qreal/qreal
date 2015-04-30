@@ -92,8 +92,8 @@ void Display::printText(int x, int y, const QString &text)
 
 void Display::clearScreen()
 {
+	// Background color is not cleared
 	mCurrentImage = QImage();
-	mBackground = Qt::transparent;
 	mLabels.clear();
 	mPixels.clear();
 	mLines.clear();
