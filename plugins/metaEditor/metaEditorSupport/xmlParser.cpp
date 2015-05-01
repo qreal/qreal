@@ -3,16 +3,16 @@
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
 #include <QtCore/QPointF>
-#include <QtCore/QProcess>
+#include <QtCore/QDir>
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QPolygonF>
 #include <QtXml/QDomDocument>
 
 #include "math.h"
 
-#include "../../../qrrepo/repoApi.h"
-#include "../../../qrutils/xmlUtils.h"
-#include "../../../qrkernel/exception/exception.h"
+#include <qrrepo/repoApi.h>
+#include <qrutils/xmlUtils.h>
+#include <qrkernel/exception/exception.h>
 
 using namespace qReal;
 using namespace metaEditor;

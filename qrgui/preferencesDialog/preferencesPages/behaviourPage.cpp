@@ -32,6 +32,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	initLanguages();
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
+	connect(mUi->gesturesCheckBox, SIGNAL(toggled(bool)), SLOT(updateGesturesSettings(bool)));
 	restoreSettings();
 }
 
@@ -62,6 +63,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
+	SettingsManager::setValue("gesturesEnabled", mUi->gesturesCheckBox->isChecked());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
 	SettingsManager::setValue("touchMode", mUi->touchModeCheckBox->isChecked());
 }
@@ -76,11 +78,18 @@ void PreferencesBehaviourPage::restoreSettings()
 		}
 	}
 
+	bool gesturesEnabled = SettingsManager::value("gesturesEnabled").toBool();
+
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching").toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
 	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
+	mUi->gesturesCheckBox->setChecked(gesturesEnabled);
+
+	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);
+	mUi->gestureDelayLabel->setVisible(gesturesEnabled);
+	mUi->gestureDelayTimeUnitLabel->setVisible(gesturesEnabled);
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	const int editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
@@ -91,6 +100,13 @@ void PreferencesBehaviourPage::showAutoSaveBox(bool show)
 {
 	mUi->autoSaveSpinBox->setVisible(show);
 	mUi->autoSaveLabel->setVisible(show);
+}
+
+void PreferencesBehaviourPage::updateGesturesSettings(bool gesturesEnabled)
+{
+	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);
+	mUi->gestureDelayLabel->setVisible(gesturesEnabled);
+	mUi->gestureDelayTimeUnitLabel->setVisible(gesturesEnabled);
 }
 
 void PreferencesBehaviourPage::initLanguages()

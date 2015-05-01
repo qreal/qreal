@@ -29,13 +29,13 @@ Runner::Runner(const QString &report, const QString &trajectory)
 			, mQRealFacade.models().graphicalModelAssistApi()
 			, mQRealFacade.models().logicalModelAssistApi()
 			, mMainWindow
+			, mMainWindow
 			, mProjectManager
 			, mSceneCustomizer
 			, mQRealFacade.events()
 			, mTextManager)
 	, mReporter(report, trajectory)
 {
-	mPluginFacade.customizer().customizeDocks(&mMainWindow);
 	mPluginFacade.init(mConfigurator);
 	for (const QString &defaultSettingsFile : mPluginFacade.defaultSettingsFiles()) {
 		qReal::SettingsManager::loadDefaultSettings(defaultSettingsFile);
@@ -60,7 +60,7 @@ void Runner::interpret(const QString &saveFile, bool background)
 	/// @todo: A bit hacky way to get 2D model window. Actually we must not have need in this.
 	/// GUI must be separated from logic and not appear here at all.
 	QList<view::D2ModelWidget *> twoDModelWindows;
-	for (QWidget * const widget : QApplication::topLevelWidgets()) {
+	for (QWidget * const widget : QApplication::allWidgets()) {
 		if (view::D2ModelWidget * const twoDModelWindow = dynamic_cast<view::D2ModelWidget *>(widget)) {
 			twoDModelWindows << twoDModelWindow;
 		}

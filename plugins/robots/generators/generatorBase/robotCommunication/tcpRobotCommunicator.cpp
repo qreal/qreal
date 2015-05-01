@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #include <QtCore/QDebug>
 
 #include <qrkernel/settingsManager.h>
-#include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 #include <qrutils/inFile.h>
 
 using namespace trik;
@@ -42,10 +42,10 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 		return false;
 	}
 
-	QString fileContents;
-	try {
-		fileContents = utils::InFile::readAll(programName);
-	} catch (qReal::Exception const &) {
+	QString errorString;
+	const QString fileContents = utils::InFile::readAll(programName, *errorString);
+	if (!errorString.isEmpty()) {
+		QLOG_ERROR() << "Reading file to transfer failed";
 		return false;
 	}
 

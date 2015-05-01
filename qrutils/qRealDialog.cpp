@@ -23,6 +23,17 @@ QRealDialog::QRealDialog(const QString &id, QWidget *parent)
 	: QDialog(parent)
 	, mId(id)
 {
+	deserializeParameters();
+}
+
+void QRealDialog::suspendSerialization()
+{
+	mSerializationSuspended = true;
+}
+
+void QRealDialog::resumeSerialization()
+{
+	mSerializationSuspended = false;
 }
 
 void QRealDialog::showEvent(QShowEvent *event)
@@ -39,6 +50,10 @@ void QRealDialog::closeEvent(QCloseEvent *event)
 
 void QRealDialog::serializeParameters()
 {
+	if (mSerializationSuspended) {
+		return;
+	}
+
 	SettingsManager::setValue(maximizedKey(), isMaximized());
 	SettingsManager::setValue(positionKey(), pos());
 	SettingsManager::setValue(sizeKey(), size());

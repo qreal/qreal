@@ -45,10 +45,6 @@ void SerializerTest::removeDirectory(QString const &dirName)
 
 void SerializerTest::SetUp()
 {
-	mOldTempFolder = SettingsManager::value("temp").toString();
-	mNewTempFolder = QDir::currentPath() + "/unsaved";
-	SettingsManager::setValue("temp", mNewTempFolder);
-
 	mSerializer = new Serializer("saveFile");
 }
 
@@ -58,9 +54,6 @@ void SerializerTest::TearDown()
 	delete mSerializer;
 
 	QFile::remove("saveFile.qrs");
-	QDir().rmdir(mNewTempFolder);
-
-	SettingsManager::setValue("temp", mOldTempFolder);
 }
 
 TEST_F(SerializerTest, saveAndLoadFromDiskTest)

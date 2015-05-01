@@ -57,7 +57,7 @@ Object::~Object()
 {
 }
 
-void Object::replaceProperties(const QString value, const QString &newValue)
+void Object::replaceProperties(const QString &value, const QString &newValue)
 {
 	foreach (const QVariant &val, mProperties.values()) {
 		if (val.toString().contains(value)) {

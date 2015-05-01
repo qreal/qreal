@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,24 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
+#include <QtWidgets/QLabel>
 
-#include "../../../qrrepo/private/repository.h"
-#include "../../../qrrepo/private/serializer.h"
+namespace interpreterCore {
+namespace ui {
 
-namespace qrTest {
+/// A widget shown on the status bar to indicate current mode (editing or debugging).
+class ModeStripe : public QLabel
+{
+	Q_OBJECT
 
-class RepositoryTest : public testing::Test {
+public:
+	ModeStripe(QAction &modeAction, const QString &text, QWidget *parent = 0);
 
-protected:
-	virtual void SetUp();
+private:
+	void mousePressEvent(QMouseEvent * event) override;
 
-	virtual void TearDown();
-
-	void removeDirectory(QString const &dirName);
-
-	qrRepo::details::Repository *mRepository;
+	QAction &mAction;
 };
 
+}
 }

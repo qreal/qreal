@@ -10,8 +10,8 @@
 using namespace twoDModel;
 
 Reporter::Reporter(const QString &messagesFile, const QString &trajectoryFile)
-	: mMessagesFile(utils::OutFile::openOrLogError(messagesFile))
-	, mTrajectoryFile(utils::OutFile::openOrLogError(trajectoryFile))
+	: mMessagesFile(new utils::OutFile(messagesFile))
+	, mTrajectoryFile(new utils::OutFile(trajectoryFile))
 {
 }
 

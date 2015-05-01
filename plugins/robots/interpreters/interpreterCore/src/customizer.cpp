@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,46 +51,17 @@ QString Customizer::examplesDirectory() const
 	return QApplication::applicationDirPath() + "/examples";
 }
 
+QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() const
+{
+	return {
+		{ "actionNew_Diagram", qReal::ActionVisibility::VisibleOnlyInMenu }
+		, { "actionFullscreen", qReal::ActionVisibility::Invisible }
+	};
+}
+
 bool Customizer::showInterpeterButton() const
 {
 	return false;
-}
-
-bool Customizer::enableNewDiagramAction() const
-{
-	return false;
-}
-
-void Customizer::customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface)
-{
-	mDockInterface = dockInterface;
-	dockInterface->logicalModelDock()->hide();
-	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
-	dockInterface->graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
-}
-
-void Customizer::placeDevicesConfig(QWidget *devicesWidget)
-{
-	QDockWidget *devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
-	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, devicesDock);
-}
-
-void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)
-{
-	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
-	watchWindow->setFloating(false);
-
-	QDockWidget * const graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
-	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
-
-	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
-}
-
-QDockWidget *Customizer::produceDockWidget(const QString &title, QWidget *content) const
-{
-	QDockWidget *dock = new QDockWidget(title);
-	dock->setWidget(content);
-	return dock;
 }
 
 QString Customizer::userPaletteTitle() const

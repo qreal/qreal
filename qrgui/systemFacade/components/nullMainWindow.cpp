@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,10 @@
 
 #include "nullMainWindow.h"
 
+#include <qrkernel/settingsManager.h>
+
 #include <QtCore/QCoreApplication>
+#include <QtWidgets/QStatusBar>
 
 using namespace qReal;
 
@@ -28,6 +31,7 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	, mPropertyEditorDock(new QDockWidget)
 	, mErrorReporterDock(new QDockWidget)
 	, mPaletteDock(new QDockWidget)
+	, mStatusBar(new QStatusBar)
 {
 }
 
@@ -43,6 +47,7 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	, mPropertyEditorDock(new QDockWidget)
 	, mErrorReporterDock(new QDockWidget)
 	, mPaletteDock(new QDockWidget)
+	, mStatusBar(new QStatusBar)
 {
 	connect(&projectManager, &ProjectManagementInterface::afterOpen, this, &NullMainWindow::openFirstDiagram);
 }
@@ -54,6 +59,8 @@ NullMainWindow::~NullMainWindow()
 	delete mPropertyEditorDock;
 	delete mErrorReporterDock;
 	delete mPaletteDock;
+	delete mStatusBar;
+	SettingsManager::instance()->saveData();
 }
 
 
@@ -265,6 +272,11 @@ QDockWidget *NullMainWindow::paletteDock() const
 	return mPaletteDock;
 }
 
+QStatusBar *NullMainWindow::statusBar() const
+{
+	return mStatusBar;
+}
+
 void NullMainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	Q_UNUSED(first)
@@ -275,6 +287,19 @@ void NullMainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWid
 {
 	Q_UNUSED(area)
 	Q_UNUSED(dockWidget)
+}
+
+QByteArray NullMainWindow::saveState(int version) const
+{
+	Q_UNUSED(version)
+	return QByteArray();
+}
+
+bool NullMainWindow::restoreState(const QByteArray &state, int version)
+{
+	Q_UNUSED(state)
+	Q_UNUSED(version)
+	return true;
 }
 
 void NullMainWindow::emulateClose(int returnCode)

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@
 #include <qrkernel/settingsListener.h>
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
+#include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
@@ -239,7 +240,10 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
-	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() { mUi->menuPanels->addActions(createPopupMenu()->actions()); });
+	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() {
+		mUi->menuPanels->clear();
+		mUi->menuPanels->addActions(createPopupMenu()->actions());
+	});
 
 	setDefaultShortcuts();
 }
@@ -281,7 +285,6 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
-	QDir().rmdir(SettingsManager::value("temp").toString());
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -1005,6 +1008,9 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	} else {
 		const Id diagramId = models().graphicalModelAssistApi().idByIndex(index);
 		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, diagramId, this);
+		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gesturesEnabled").toBool());
+		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()) ,&EditorViewScene::enableMouseGestures);
+		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);
 		mController->diagramOpened(diagramId);
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
@@ -1161,7 +1167,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
 
-	mUi->actionGesturesShow->setEnabled(isEditorTab);
+	mUi->actionGesturesShow->setEnabled(qReal::SettingsManager::value("gesturesEnabled").toBool());
 
 	if (isEditorTab) {
 		const Id currentTabId = getCurrentTab()->mvIface().rootId();
@@ -1656,7 +1662,7 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	}
 
 	for (const ActionInfo &action : actions) {
-		const QString menuName = "menu" + QString(action.menuName()[0].toUpper()) + action.menuName().mid(1);
+		const QString menuName = "menu" + utils::StringUtils::capitalizeFirstLetter(action.menuName());
 		QMenu * const menu = findChild<QMenu *>(menuName);
 		if (menu) {
 			addActionOrSubmenu(menu, action);
@@ -1671,9 +1677,15 @@ QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
 
 void MainWindow::initToolPlugins()
 {
-	mToolManager.init(PluginConfigurator(models().repoControlApi(), models().graphicalModelAssistApi()
-		, models().logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-		, mFacade.events(), *mTextManager));
+	mToolManager.init(PluginConfigurator(models().repoControlApi()
+		, models().graphicalModelAssistApi()
+		, models().logicalModelAssistApi()
+		, *this
+		, *this
+		, *mProjectManager
+		, *mSceneCustomizer
+		, mFacade.events()
+		, *mTextManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	traverseListOfActions(actions);
@@ -1700,19 +1712,63 @@ void MainWindow::initToolPlugins()
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
 
-	if (!toolManager().customizer()->enableNewDiagramAction()) {
-		mUi->fileToolbar->removeAction(mUi->actionNew_Diagram);
+	customizeActionsVisibility();
+}
+
+void MainWindow::customizeActionsVisibility()
+{
+	QList<QAction *> actions = findChildren<QAction *>();
+	for (const QPair<QString, ActionVisibility> &info : toolManager().customizer()->actionsVisibility()) {
+		QAction *action = nullptr;
+		for (QAction * const currentAction : actions) {
+			if (currentAction->objectName() == info.first) {
+				action = currentAction;
+				break;
+			}
+		}
+
+		if (!action) {
+			qDebug() << "Cannot find" << info.first << "in main window actions";
+			continue;
+		}
+
+		QList<QToolBar *> toolBars;
+		for (QWidget * const associatedWidget : action->associatedWidgets()) {
+			if (QToolBar * const toolBar = qobject_cast<QToolBar *>(associatedWidget)) {
+				toolBars << toolBar;
+			}
+		}
+
+		switch (info.second) {
+		case ActionVisibility::VisibleEverywhere:
+			action->setVisible(true);
+			break;
+		case ActionVisibility::VisibleOnlyInMenu:
+			for (QToolBar * const toolBar : toolBars) {
+				toolBar->removeAction(action);
+			}
+			break;
+		case ActionVisibility::Invisible:
+			action->setVisible(false);
+			break;
+		}
 	}
 }
 
 void MainWindow::initInterpretedPlugins()
 {
-	mInterpretedPluginLoader.init(editorManagerProxy().proxiedEditorManager()
-			, PluginConfigurator(models().repoControlApi(), models().graphicalModelAssistApi()
-			, models().logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-			, mFacade.events(), *mTextManager));
+	mInterpretedPluginLoader.init(editorManagerProxy().proxiedEditorManager(), PluginConfigurator(
+			models().repoControlApi()
+			, models().graphicalModelAssistApi()
+			, models().logicalModelAssistApi()
+			, *this
+			, *this
+			, *mProjectManager
+			, *mSceneCustomizer
+			, mFacade.events()
+			, *mTextManager));
 
-	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
+	const QList<ActionInfo> actions = mInterpretedPluginLoader.listOfActions();
 	mListOfAdditionalActions = mInterpretedPluginLoader.menuActionsList();
 
 	traverseListOfActions(actions);
@@ -1741,12 +1797,11 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::initToolManager()
 {
-	Customizer * const customizer = mToolManager.customizer();
+	const Customizer * const customizer = mToolManager.customizer();
 	if (customizer) {
 		setWindowTitle(customizer->windowTitle());
 		setWindowIcon(customizer->applicationIcon());
 		setVersion(customizer->productVersion());
-		customizer->customizeDocks(this);
 	}
 }
 
@@ -1921,6 +1976,11 @@ QDockWidget *MainWindow::paletteDock() const
 	return mUi->paletteDock;
 }
 
+QStatusBar *MainWindow::statusBar() const
+{
+	return mUi->statusbar;
+}
+
 void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	QMainWindow::tabifyDockWidget(first, second);
@@ -1930,6 +1990,16 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
 	mAdditionalDocks << dockWidget;
 	QMainWindow::addDockWidget(area, dockWidget);
+}
+
+QByteArray MainWindow::saveState(int version) const
+{
+	return QMainWindow::saveState(version);
+}
+
+bool MainWindow::restoreState(const QByteArray &state, int version)
+{
+	return QMainWindow::restoreState(state, version);
 }
 
 void MainWindow::setTabText(QWidget *tab, const QString &text)

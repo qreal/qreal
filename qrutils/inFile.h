@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,10 @@ class QRUTILS_EXPORT InFile
 public:
 	/// Read all data from given file.
 	/// @param fileName Name of the file to be read.
+	/// @param errorString If non-null and file open operation failed it will be assigned with
+	///  human-readable error message.
 	/// @returns All contents of a file.
-	static QString readAll(const QString &fileName);
+	static QString readAll(const QString &fileName, QString *errorString = 0);
 };
 
 }
