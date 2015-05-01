@@ -348,7 +348,12 @@ QString GraphicType::generatePropertyName(const QString &lineTemplate) const
 	QString propertyNameList = "";
 	for (Property *property: mProperties) {
 		if (!property->isReferenceProperty()) {
-			propertyNameList = propertyNameList /*+ " << "*/  + "\"" + property->name() + "\"";
+			if (!propertyNameList.isEmpty()) {
+				propertyNameList = propertyNameList + " << " + + "\"" + property->name() + "\"";
+			}
+			else {
+			propertyNameList = propertyNameList + "\"" + property->name() + "\"";
+			}
 		}
 	}
 
