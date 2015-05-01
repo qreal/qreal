@@ -13,7 +13,7 @@
  * limitations under the License. */
 
 #include "mainWindow.h"
-#include "ui_mainWindow.h"
+#include <mainWindow/.build/debug/ui/ui_mainWindow.h>
 
 #include <QtCore/QProcess>
 #include <QtCore/QPluginLoader>
