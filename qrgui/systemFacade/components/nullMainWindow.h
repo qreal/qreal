@@ -103,6 +103,8 @@ public:
 	QByteArray saveState(int version = 0) const override;
 	bool restoreState(const QByteArray &state, int version = 0) override;
 
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
+
 	/// Sends close event via SystemEvents.
 	void emulateClose(int returnCode = 0);
 

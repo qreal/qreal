@@ -22,14 +22,14 @@ namespace model {
 class Model;
 }
 namespace view {
-class D2ModelWidget;
+class TwoDModelWidget;
 class FakeScene;
 }
 
 class TwoDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
-	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view);
+	TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
 	~TwoDModelEngineApi();
 
 	void setNewMotor(int speed, uint degrees
@@ -68,7 +68,7 @@ private:
 	void enableBackgroundSceneDebugging();
 
 	model::Model &mModel;
-	view::D2ModelWidget &mView;
+	view::TwoDModelWidget &mView;
 	QScopedPointer<view::FakeScene> mFakeScene;
 };
 

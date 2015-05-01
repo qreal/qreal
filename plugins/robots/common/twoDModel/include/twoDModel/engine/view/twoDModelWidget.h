@@ -33,7 +33,7 @@ class QPushButton;
 class QDomDocument;
 
 namespace Ui {
-class D2Form;
+class TwoDModelWidget;
 }
 
 namespace graphicsUtils {
@@ -49,22 +49,23 @@ class RobotModel;
 
 namespace view {
 
-class D2ModelScene;
+class TwoDModelScene;
 class SensorItem;
 class RobotItem;
+class ActionsBox;
 
-class TWO_D_MODEL_EXPORT D2ModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
-	D2ModelWidget(model::Model &model, QWidget *parent = 0);
-	~D2ModelWidget();
+	TwoDModelWidget(model::Model &model, QWidget *parent = 0);
+	~TwoDModelWidget();
 
 	/// Overrides default closing behaviour with just hiding window.
 	void close();
 
-	D2ModelScene *scene();
+	TwoDModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
 	SensorItem *sensorItem(const kitBase::robotModel::PortInfo &port);
@@ -79,6 +80,10 @@ public:
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.
 	/// @see ReadOnly
 	void setInteractivityFlags(kitBase::ReadOnlyFlags flags);
+
+	/// Enables or disables compact 2D model mode.
+	/// In a compact mode 2D model window has less controls, they may seem in another way.
+	void setCompactMode(bool enabled);
 
 signals:
 	/// Emitted each time when user closes 2D model window.
@@ -150,14 +155,6 @@ private:
 	static const int indexOfSonarSensor = 3;
 	static const int indexOfLightSensor = 4;
 
-	struct RobotState {
-	public:
-		RobotState();
-
-		QPointF pos;
-		double rotation;
-	};
-
 	void changePalette();
 	void connectUiButtons();
 	void initButtonGroups();
@@ -167,6 +164,7 @@ private:
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void setDisplayVisibility(bool visible);
+	void setRunStopButtonsVisibility();
 
 	QDomDocument generateXml() const;
 
@@ -184,6 +182,7 @@ private:
 	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
 
 	void setCursorTypeForDrawing(CursorType type);
+	void setCursorType(int cursorType);
 	void setCursorType(CursorType cursor);
 
 	void initWidget();
@@ -209,8 +208,9 @@ private:
 
 	void incrementTimelineCounter();
 
-	Ui::D2Form *mUi = nullptr;
-	D2ModelScene *mScene = nullptr;
+	Ui::TwoDModelWidget *mUi = nullptr;
+	TwoDModelScene *mScene = nullptr;
+	QScopedPointer<ActionsBox> mActions;
 
 	RobotItem *mSelectedRobotItem = nullptr;
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;
@@ -222,7 +222,6 @@ private:
 	int mWidth = 0;
 
 	QButtonGroup mButtonGroup;
-	QButtonGroup mCursorButtonGroup;
 
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType
@@ -240,6 +239,8 @@ private:
 	QString mPortsTabName;
 
 	bool mSensorsReadOnly = false;
+
+	bool mCompactMode = false;
 };
 
 }

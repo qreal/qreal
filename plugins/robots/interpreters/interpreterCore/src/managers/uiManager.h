@@ -57,6 +57,7 @@ private slots:
 
 	void saveDocks() const;
 	void reloadDocks() const;
+	void resetMainWindowCorners() const;
 
 private:
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;

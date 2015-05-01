@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,18 @@
 
 #pragma once
 
-#include "twoDModelDisplayWidget.h"
+#include <QtWidgets/QWidget>
 
 namespace twoDModel {
-namespace engine {
+namespace view {
 
-/// Display widget for NullRobotModel
-class NullTwoDModelDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
+/// A widget containing a set of items that can be drawn on 2D model scene.
+class Palette : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit NullTwoDModelDisplayWidget(QWidget *parent = 0);
-
-	~NullTwoDModelDisplayWidget();
-
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
-	bool buttonIsDown(const QString &buttonId) const override;
-	void repaintDisplay();
-	int displayWidth() const;
-	int displayHeight() const;
-
+	explicit Palette(QWidget *parent = 0);
 };
 
 }

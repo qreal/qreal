@@ -40,7 +40,9 @@ void ClipboardHandler::copy()
 	QList<NodeData> nodesData = getNodesData(nodes);
 	QList<EdgeData> edgesData = getEdgesData();
 
-	pushDataToClipboard(nodesData, edgesData);
+	if (!nodesData.isEmpty() || !edgesData.isEmpty()) {
+		pushDataToClipboard(nodesData, edgesData);
+	}
 }
 
 QList<NodeData> ClipboardHandler::getNodesData(QList<NodeElement *> const &nodes)

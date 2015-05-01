@@ -42,6 +42,9 @@ public:
 
 	int speedFactor() const;
 
+	/// Returns true if timeline is ticking at the moment.
+	bool isStarted() const;
+
 	quint64 timestamp() const override;
 
 	utils::AbstractTimer *produceTimer() override;
