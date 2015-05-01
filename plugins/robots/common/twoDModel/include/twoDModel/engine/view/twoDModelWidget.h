@@ -33,7 +33,7 @@ class QPushButton;
 class QDomDocument;
 
 namespace Ui {
-class D2Form;
+class TwoDModelWidget;
 }
 
 namespace graphicsUtils {
@@ -49,22 +49,22 @@ class RobotModel;
 
 namespace view {
 
-class D2ModelScene;
+class TwoDModelScene;
 class SensorItem;
 class RobotItem;
 
-class TWO_D_MODEL_EXPORT D2ModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
-	D2ModelWidget(model::Model &model, QWidget *parent = 0);
-	~D2ModelWidget();
+	TwoDModelWidget(model::Model &model, QWidget *parent = 0);
+	~TwoDModelWidget();
 
 	/// Overrides default closing behaviour with just hiding window.
 	void close();
 
-	D2ModelScene *scene();
+	TwoDModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
 	SensorItem *sensorItem(const kitBase::robotModel::PortInfo &port);
@@ -154,14 +154,6 @@ private:
 	static const int indexOfSonarSensor = 3;
 	static const int indexOfLightSensor = 4;
 
-	struct RobotState {
-	public:
-		RobotState();
-
-		QPointF pos;
-		double rotation;
-	};
-
 	void changePalette();
 	void connectUiButtons();
 	void initButtonGroups();
@@ -214,8 +206,8 @@ private:
 
 	void incrementTimelineCounter();
 
-	Ui::D2Form *mUi = nullptr;
-	D2ModelScene *mScene = nullptr;
+	Ui::TwoDModelWidget *mUi = nullptr;
+	TwoDModelScene *mScene = nullptr;
 
 	RobotItem *mSelectedRobotItem = nullptr;
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;

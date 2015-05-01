@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "twoDModelDisplayWidget.h"
+#include "twoDModel/engine/twoDModelDisplayWidget.h"
 
 namespace twoDModel {
 namespace engine {

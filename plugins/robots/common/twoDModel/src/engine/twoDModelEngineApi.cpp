@@ -31,10 +31,10 @@
 #include "twoDModel/engine/model/model.h"
 #include "twoDModel/engine/model/constants.h"
 
-#include "twoDModel/engine/view/d2ModelWidget.h"
-#include "view/d2ModelScene.h"
-#include "view/robotItem.h"
-#include "view/fakeScene.h"
+#include "twoDModel/engine/view/twoDModelWidget.h"
+#include "view/scene/twoDModelScene.h"
+#include "view/scene/robotItem.h"
+#include "view/scene/fakeScene.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
@@ -47,7 +47,7 @@ using namespace twoDModel;
 using namespace kitBase::robotModel;
 using namespace twoDModel::model;
 
-TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
+TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view)
 	: mModel(model)
 	, mView(view)
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))

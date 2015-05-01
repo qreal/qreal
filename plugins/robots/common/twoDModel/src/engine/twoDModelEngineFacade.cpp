@@ -18,7 +18,7 @@
 #include <qrutils/smartDock.h>
 #include <kitBase/readOnly.h>
 
-#include "twoDModel/engine/view/d2ModelWidget.h"
+#include "twoDModel/engine/view/twoDModelWidget.h"
 #include "twoDModel/engine/model/model.h"
 #include "twoDModelEngineApi.h"
 
@@ -27,16 +27,16 @@ using namespace twoDModel::engine;
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
-	, mView(new view::D2ModelWidget(*mModel.data()))
+	, mView(new view::TwoDModelWidget(*mModel.data()))
 	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
 	mModel.data()->addRobotModel(robotModel);
 
-	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
-	connect(mView.data(), &view::D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
-	connect(mView.data(), &view::D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
-	connect(mDock, &utils::SmartDock::dockedChanged, mView.data(), &view::D2ModelWidget::setCompactMode);
+	connect(mView.data(), &view::TwoDModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
+	connect(mView.data(), &view::TwoDModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mView.data(), &view::TwoDModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mDock, &utils::SmartDock::dockedChanged, mView.data(), &view::TwoDModelWidget::setCompactMode);
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()

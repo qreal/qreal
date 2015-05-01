@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include "twoDRobotModel.h"
-#include "include/twoDModel/engine/nullTwoDModelDisplayWidget.h"
+#include "twoDModel/robotModel/twoDRobotModel.h"
+#include "src/engine/view/nullTwoDModelDisplayWidget.h"
 
 namespace twoDModel {
 

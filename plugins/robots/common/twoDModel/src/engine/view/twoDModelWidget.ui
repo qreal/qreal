@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>D2Form</class>
- <widget class="QWidget" name="D2Form">
+ <class>TwoDModelWidget</class>
+ <widget class="QWidget" name="TwoDModelWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -38,41 +38,6 @@
       <property name="horizontalSpacing">
        <number>6</number>
       </property>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="saveWorldModelPushButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Save World Model (Ctrl+S)</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-          <normaloff>:/icons/2d_save.png</normaloff>:/icons/2d_save.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>Ctrl+S</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0" colspan="2">
        <widget class="QWidget" name="mainTabBarWidget" native="true">
         <property name="sizePolicy">
@@ -125,65 +90,6 @@
              <string>Tools</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_3">
-             <item row="5" column="0" colspan="2">
-              <widget class="QGroupBox" name="penBrushToolBox">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="title">
-                <string>Pen</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_4">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="widthLabel">
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Width</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="colorLabel">
-                  <property name="maximumSize">
-                   <size>
-                    <width>64</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Color</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0" colspan="2">
-                 <widget class="graphicsUtils::ColorListEditor" name="penColorComboBox"/>
-                </item>
-                <item row="1" column="0" colspan="2">
-                 <widget class="QSpinBox" name="penWidthSpinBox"/>
-                </item>
-               </layout>
-              </widget>
-             </item>
              <item row="2" column="0">
               <widget class="QPushButton" name="stylusButton">
                <property name="sizePolicy">
@@ -262,19 +168,6 @@
                 <bool>false</bool>
                </property>
               </widget>
-             </item>
-             <item row="6" column="0" colspan="2">
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
              </item>
              <item row="3" column="0">
               <widget class="QPushButton" name="clearButton">
@@ -603,149 +496,7 @@
         </layout>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QPushButton" name="multiselectionCursorButton">
-        <property name="toolTip">
-         <string>Multiselection mode</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-          <normaloff>:/icons/2d_multiselection.png</normaloff>:/icons/2d_multiselection.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QPushButton" name="initialStateButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Return a robot to initial position</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-          <normaloff>:/icons/2d_robot_back.png</normaloff>:/icons/2d_robot_back.png</iconset>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="loadWorldModelPushButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Load World Model (Ctrl+O)</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-          <normaloff>:/icons/2d_open.png</normaloff>:/icons/2d_open.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>Ctrl+O</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QPushButton" name="autoCenteringButton">
-        <property name="toolTip">
-         <string>Camera following robot</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-          <normaloff>:/icons/2d_target.png</normaloff>:/icons/2d_target.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QPushButton" name="handCursorButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Hand dragging mode</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-          <normaloff>:/icons/2d_hand.png</normaloff>:/icons/2d_hand.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
+      <item row="2" column="0" colspan="2">
        <widget class="QPushButton" name="stopButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -783,7 +534,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item row="1" column="0" colspan="2">
        <widget class="QPushButton" name="runButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -974,18 +725,14 @@
    <header>qrutils/graphicsUtils/abstractItemView.h</header>
   </customwidget>
   <customwidget>
-   <class>graphicsUtils::ColorListEditor</class>
-   <extends>QComboBox</extends>
-   <header>qrutils/graphicsUtils/colorListEditor.h</header>
-  </customwidget>
-  <customwidget>
    <class>twoDModel::view::GridParameters</class>
    <extends>QFrame</extends>
-   <header>src/engine/view/gridParameters.h</header>
+   <header>src/engine/view/parts/gridParameters.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
   <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
  </resources>
  <connections/>
