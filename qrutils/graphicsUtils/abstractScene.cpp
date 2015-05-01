@@ -256,6 +256,18 @@ QString AbstractScene::brushColorItems()
 	return mBrushColorItems;
 }
 
+QList<AbstractItem *> AbstractScene::abstractItems(const QPointF &scenePos) const
+{
+	QList<AbstractItem *> result;
+	for (QGraphicsItem * const item : items(scenePos)) {
+		if (AbstractItem * const abstractItem = dynamic_cast<AbstractItem *>(item)) {
+			result << abstractItem;
+		}
+	}
+
+	return result;
+}
+
 void AbstractScene::setPenStyleItems(const QString &text)
 {
 	mPenStyleItems = text;
@@ -295,10 +307,13 @@ void AbstractScene::addActions(const QList<QAction *> &actions)
 
 void AbstractScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
-	QGraphicsScene::contextMenuEvent(event);
-	QMenu menu;
-	menu.addActions(mActions);
-	if (!menu.isEmpty()) {
-		menu.exec(event->screenPos());
+	if (abstractItems(event->scenePos()).isEmpty()) {
+		QMenu menu;
+		menu.addActions(mActions);
+		if (!menu.isEmpty()) {
+			menu.exec(event->screenPos());
+		}
+	} else {
+		QGraphicsScene::contextMenuEvent(event);
 	}
 }

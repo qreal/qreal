@@ -73,6 +73,8 @@ protected:
 	QString brushStyleItems();
 	QString brushColorItems();
 
+	QList<AbstractItem *> abstractItems(const QPointF &scenePos) const;
+
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 	AbstractView *mView;
