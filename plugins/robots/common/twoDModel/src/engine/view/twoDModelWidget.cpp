@@ -115,9 +115,8 @@ void TwoDModelWidget::initWidget()
 
 	mUi->setupUi(this);
 
-	mToolsTabName = mUi->mainTabBar->tabText(0);
-	mPortsTabName = mUi->mainTabBar->tabText(1);
-	mModelSettingsTabName = mUi->mainTabBar->tabText(2);
+	mPortsTabName = mUi->mainTabBar->tabText(0);
+	mModelSettingsTabName = mUi->mainTabBar->tabText(1);
 
 	mScene = new TwoDModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
@@ -192,7 +191,7 @@ void TwoDModelWidget::connectUiButtons()
 
 	connect(&mActions->clearFloorAction(), &QAction::triggered, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
-			, &mActions->clearFloorAction(), &QAction::setVisible, Qt::QueuedConnection);
+			, &mActions->clearFloorAction(), &QAction::setEnabled, Qt::QueuedConnection);
 
 //	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
 //	connect(mUi->penColorComboBox, SIGNAL(activated(int)), this, SiLOT(changePenColor(int)));
@@ -587,10 +586,9 @@ Model &TwoDModelWidget::model() const
 void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 {
 	const auto openTab = [this](QWidget * const tab) {
-		QList<const QWidget *> tabOrder{mUi->toolsTab, mUi->portsTab, mUi->modelSettingsTab};
+		QList<const QWidget *> tabOrder{mUi->portsTab, mUi->modelSettingsTab};
 		QHash<const QWidget *, QString> tabs{
-				{mUi->toolsTab, mToolsTabName}
-				, {mUi->portsTab, mPortsTabName}
+				{mUi->portsTab, mPortsTabName}
 				, {mUi->modelSettingsTab, mModelSettingsTabName}
 		};
 
@@ -637,7 +635,8 @@ void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 
 	const bool worldReadOnly = (flags & ReadOnly::World) != 0;
 
-	setTabHidden(mUi->toolsTab, worldReadOnly);
+	mUi->palette->setVisible(!worldReadOnly);
+	mActions->setWorldModelActionsVisible(!worldReadOnly);
 
 	const auto hasSpacer = [this]() {
 		for (int i = 0; i < mUi->sceneHeaderWidget->layout()->count(); ++i) {

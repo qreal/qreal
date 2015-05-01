@@ -88,12 +88,6 @@
            <property name="usesScrollButtons">
             <bool>false</bool>
            </property>
-           <widget class="QWidget" name="toolsTab">
-            <attribute name="title">
-             <string>Tools</string>
-            </attribute>
-            <layout class="QGridLayout" name="gridLayout_3"/>
-           </widget>
            <widget class="QWidget" name="portsTab">
             <attribute name="title">
              <string>Ports</string>

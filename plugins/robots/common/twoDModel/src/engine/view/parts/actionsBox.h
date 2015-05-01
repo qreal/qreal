@@ -30,29 +30,30 @@ public:
 	~ActionsBox();
 
 	/// Returns a reference to action that switches scene to dragging mode (mouse interaction will move scene).
-	QAction &scrollHandModeAction();
+	QAction &scrollHandModeAction() const;
 
 	/// Returns a reference to action that switches scene to rubber band drag mode
 	/// (mouse interaction will draw selection rectangle).
-	QAction &multiSelectionModeAction();
+	QAction &multiSelectionModeAction() const;
 
 	/// Returns a reference to action that prompts user to export current world model to some file.
-	QAction &saveModelAction();
+	QAction &saveModelAction() const;
 
 	/// Returns a reference to action that prompts user to import current world model from some file.
-	QAction &loadModelAction();
+	QAction &loadModelAction() const;
 
 	/// Returns a reference to action that clears all items from 2D model scene;
-	QAction &deleteAllAction();
+	QAction &deleteAllAction() const;
 
 	/// Returns a reference to action that clears all robot traces from 2D model scene;
-	QAction &clearFloorAction();
+	QAction &clearFloorAction() const;
 
 	/// Returns a list of actions that can be shown in scene context menu.
-	QList<QAction *> sceneContextMenuActions();
+	QList<QAction *> sceneContextMenuActions() const;
 
-	/// Shows or hides saveModelAction() and loadModelAction().
-	void setSaveLoadActionsVisible(bool visible);
+public slots:
+	/// Shows or hides all actions that can modify world model.
+	void setWorldModelActionsVisible(bool visible);
 
 	/// Sets or unsets shortcuts to saveModelAction() and loadModelAction().
 	void setSaveLoadActionsShortcutsEnabled(bool enabled);

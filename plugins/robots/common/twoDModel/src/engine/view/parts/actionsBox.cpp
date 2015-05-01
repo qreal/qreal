@@ -40,37 +40,37 @@ ActionsBox::~ActionsBox()
 {
 }
 
-QAction &ActionsBox::scrollHandModeAction()
+QAction &ActionsBox::scrollHandModeAction() const
 {
 	return *mScrollHandModeAction;
 }
 
-QAction &ActionsBox::multiSelectionModeAction()
+QAction &ActionsBox::multiSelectionModeAction() const
 {
 	return *mMultiSelectionModeAction;
 }
 
-QAction &ActionsBox::saveModelAction()
+QAction &ActionsBox::saveModelAction() const
 {
 	return *mSaveWorldModelAction;
 }
 
-QAction &ActionsBox::loadModelAction()
+QAction &ActionsBox::loadModelAction() const
 {
 	return *mLoadWorldModelAction;
 }
 
-QAction &ActionsBox::deleteAllAction()
+QAction &ActionsBox::deleteAllAction() const
 {
 	return *mDeleteAllAction;
 }
 
-QAction &ActionsBox::clearFloorAction()
+QAction &ActionsBox::clearFloorAction() const
 {
 	return *mClearFloorAction;
 }
 
-QList<QAction *> ActionsBox::sceneContextMenuActions()
+QList<QAction *> ActionsBox::sceneContextMenuActions() const
 {
 	return {
 		&scrollHandModeAction()
@@ -84,10 +84,12 @@ QList<QAction *> ActionsBox::sceneContextMenuActions()
 	};
 }
 
-void ActionsBox::setSaveLoadActionsVisible(bool visible)
+void ActionsBox::setWorldModelActionsVisible(bool visible)
 {
 	saveModelAction().setVisible(visible);
 	loadModelAction().setVisible(visible);
+	deleteAllAction().setVisible(visible);
+	clearFloorAction().setVisible(visible);
 }
 
 void ActionsBox::setSaveLoadActionsShortcutsEnabled(bool enabled)

@@ -230,7 +230,6 @@ private:
 
 	bool mAutoOpen;
 
-	QString mToolsTabName;
 	QString mModelSettingsTabName;
 	QString mPortsTabName;
 
