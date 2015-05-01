@@ -18,18 +18,23 @@ using namespace twoDModel::view;
 
 ActionsBox::ActionsBox(QObject *parent)
 	: QObject(parent)
+	, mSceneModeActions(this)
 	, mScrollHandModeAction(new QAction(QIcon(":/icons/2d_hand.png"), tr("Hand dragging mode"), nullptr))
 	, mMultiSelectionModeAction(new QAction(QIcon(":/icons/2d_multiselection.png"), tr("Multiselection mode"), nullptr))
-	, mSceneModeActions(this)
-	, mSeparator(new QAction(nullptr))
+	, mSeparator1(new QAction(nullptr))
 	, mSaveWorldModelAction(new QAction(QIcon(":/icons/2d_save.png"), tr("Save world model..."), nullptr))
 	, mLoadWorldModelAction(new QAction(QIcon(":/icons/2d_open.png"), tr("Load world model..."), nullptr))
+	, mSeparator2(new QAction(nullptr))
+	, mClearFloorAction(new QAction(QIcon(":/icons/2d_clear_floor.svg"), tr("Clear floor"), nullptr))
 {
 	mScrollHandModeAction->setCheckable(true);
 	mMultiSelectionModeAction->setCheckable(true);
 	mSceneModeActions.addAction(mScrollHandModeAction.data());
 	mSceneModeActions.addAction(mMultiSelectionModeAction.data());
-	mSeparator->setSeparator(true);
+	mSeparator1->setSeparator(true);
+	mSeparator2->setSeparator(true);
+	connect(mClearFloorAction.data(), &QAction::changed
+			, [=]() { mSeparator2->setVisible(mClearFloorAction->isVisible()); });
 }
 
 ActionsBox::~ActionsBox()
@@ -56,14 +61,21 @@ QAction &ActionsBox::loadModelAction()
 	return *mLoadWorldModelAction;
 }
 
+QAction &ActionsBox::clearFloorAction()
+{
+	return *mClearFloorAction;
+}
+
 QList<QAction *> ActionsBox::sceneContextMenuActions()
 {
 	return {
 		&scrollHandModeAction()
 		, &multiSelectionModeAction()
-		, mSeparator.data()
+		, mSeparator1.data()
 		, &saveModelAction()
 		, &loadModelAction()
+		, mSeparator2.data()
+		, &clearFloorAction()
 	};
 }
 

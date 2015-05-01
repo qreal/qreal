@@ -178,9 +178,9 @@ void TwoDModelWidget::connectUiButtons()
 		}
 	});
 
-	connect(mUi->clearFloorButton, &QAbstractButton::clicked, &mModel.worldModel(), &WorldModel::clearRobotTrace);
+	connect(&mActions->clearFloorAction(), &QAction::triggered, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
-			, mUi->clearFloorButton, &QAbstractButton::setVisible, Qt::QueuedConnection);
+			, &mActions->clearFloorAction(), &QAction::setVisible, Qt::QueuedConnection);
 
 	connect(&mButtonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *, bool)>(&QButtonGroup::buttonToggled)
 			, [this](QAbstractButton *button, bool toggled) {

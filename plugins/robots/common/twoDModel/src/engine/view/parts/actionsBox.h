@@ -42,6 +42,9 @@ public:
 	/// Returns a reference to action that prompts user to import current world model from some file.
 	QAction &loadModelAction();
 
+	/// Returns a reference to action that clears all robot traces from 2D model scene;
+	QAction &clearFloorAction();
+
 	/// Returns a list of actions that can be shown in scene context menu.
 	QList<QAction *> sceneContextMenuActions();
 
@@ -52,13 +55,18 @@ public:
 	void setSaveLoadActionsShortcutsEnabled(bool enabled);
 
 private:
+	QActionGroup mSceneModeActions;
 	QScopedPointer<QAction> mScrollHandModeAction;
 	QScopedPointer<QAction> mMultiSelectionModeAction;
-	QActionGroup mSceneModeActions;
-	QScopedPointer<QAction> mSeparator;
+
+	QScopedPointer<QAction> mSeparator1;
 
 	QScopedPointer<QAction> mSaveWorldModelAction;
 	QScopedPointer<QAction> mLoadWorldModelAction;
+
+	QScopedPointer<QAction> mSeparator2;
+
+	QScopedPointer<QAction> mClearFloorAction;
 };
 
 }
