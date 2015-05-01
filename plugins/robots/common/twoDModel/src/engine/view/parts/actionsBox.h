@@ -42,6 +42,9 @@ public:
 	/// Returns a reference to action that prompts user to import current world model from some file.
 	QAction &loadModelAction();
 
+	/// Returns a reference to action that clears all items from 2D model scene;
+	QAction &deleteAllAction();
+
 	/// Returns a reference to action that clears all robot traces from 2D model scene;
 	QAction &clearFloorAction();
 
@@ -66,6 +69,7 @@ private:
 
 	QScopedPointer<QAction> mSeparator2;
 
+	QScopedPointer<QAction> mDeleteAllAction;
 	QScopedPointer<QAction> mClearFloorAction;
 };
 

@@ -25,6 +25,7 @@ ActionsBox::ActionsBox(QObject *parent)
 	, mSaveWorldModelAction(new QAction(QIcon(":/icons/2d_save.png"), tr("Save world model..."), nullptr))
 	, mLoadWorldModelAction(new QAction(QIcon(":/icons/2d_open.png"), tr("Load world model..."), nullptr))
 	, mSeparator2(new QAction(nullptr))
+	, mDeleteAllAction(new QAction(QIcon(":/icons/2d_clear.png"), tr("Clear items"), nullptr))
 	, mClearFloorAction(new QAction(QIcon(":/icons/2d_clear_floor.svg"), tr("Clear floor"), nullptr))
 {
 	mScrollHandModeAction->setCheckable(true);
@@ -33,8 +34,6 @@ ActionsBox::ActionsBox(QObject *parent)
 	mSceneModeActions.addAction(mMultiSelectionModeAction.data());
 	mSeparator1->setSeparator(true);
 	mSeparator2->setSeparator(true);
-	connect(mClearFloorAction.data(), &QAction::changed
-			, [=]() { mSeparator2->setVisible(mClearFloorAction->isVisible()); });
 }
 
 ActionsBox::~ActionsBox()
@@ -61,6 +60,11 @@ QAction &ActionsBox::loadModelAction()
 	return *mLoadWorldModelAction;
 }
 
+QAction &ActionsBox::deleteAllAction()
+{
+	return *mDeleteAllAction;
+}
+
 QAction &ActionsBox::clearFloorAction()
 {
 	return *mClearFloorAction;
@@ -75,6 +79,7 @@ QList<QAction *> ActionsBox::sceneContextMenuActions()
 		, &saveModelAction()
 		, &loadModelAction()
 		, mSeparator2.data()
+		, &deleteAllAction()
 		, &clearFloorAction()
 	};
 }

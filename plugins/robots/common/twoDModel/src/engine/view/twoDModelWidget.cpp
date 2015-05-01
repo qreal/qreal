@@ -178,17 +178,17 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->enableMotorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 	connect(mUi->enableSensorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 
-//	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
-//		QMessageBox confirmation;
-//		confirmation.setWindowTitle(tr("Warning"));
-//		confirmation.setText(tr("Do you really want to clear scene?"));
-//		confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-//		confirmation.setButtonText(QMessageBox::Yes, tr("Yes"));
-//		confirmation.setButtonText(QMessageBox::Cancel, tr("Cancel"));
-//		if (QMessageBox::Yes == confirmation.exec()) {
-//			mScene->clearScene(false, Reason::userAction);
-//		}
-//	});
+	connect(&mActions->deleteAllAction(), &QAction::triggered, [this](){
+		QMessageBox confirmation;
+		confirmation.setWindowTitle(tr("Warning"));
+		confirmation.setText(tr("Do you really want to clear scene?"));
+		confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+		confirmation.setButtonText(QMessageBox::Yes, tr("Yes"));
+		confirmation.setButtonText(QMessageBox::Cancel, tr("Cancel"));
+		if (QMessageBox::Yes == confirmation.exec()) {
+			mScene->clearScene(false, Reason::userAction);
+		}
+	});
 
 	connect(&mActions->clearFloorAction(), &QAction::triggered, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
