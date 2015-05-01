@@ -88,6 +88,11 @@ int Timeline::speedFactor() const
 	return mSpeedFactor;
 }
 
+bool Timeline::isStarted() const
+{
+	return mIsStarted;
+}
+
 quint64 Timeline::timestamp() const
 {
 	return mTimestamp;

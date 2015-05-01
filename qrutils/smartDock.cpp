@@ -57,6 +57,7 @@ void SmartDock::switchToDocked()
 	setFloating(false);
 	show();
 	checkCentralWidget();
+	emit dockedChanged(true);
 }
 
 void SmartDock::switchToFloating()
@@ -72,6 +73,7 @@ void SmartDock::switchToFloating()
 	mInnerWidget->show();
 	mDialog->show();
 	checkCentralWidget();
+	emit dockedChanged(false);
 }
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)

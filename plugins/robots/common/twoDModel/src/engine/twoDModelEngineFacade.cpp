@@ -36,6 +36,7 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
 	connect(mView.data(), &view::D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
 	connect(mView.data(), &view::D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mDock, &utils::SmartDock::dockedChanged, mView.data(), &view::D2ModelWidget::setCompactMode);
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()

@@ -57,6 +57,11 @@ public:
 	/// Hides this dock and removes it from the list of main window`s docks.
 	void detachFromMainWindow();
 
+signals:
+	/// Emitted with 'true' value when this dock is in regular (docked) form.
+	/// Otherwise (when it floats in QDialog form) emitted with 'false' value.
+	void dockedChanged(bool docked);
+
 private slots:
 	/// Overrides default behaviour to float in QDialog shape.
 	void checkFloating();

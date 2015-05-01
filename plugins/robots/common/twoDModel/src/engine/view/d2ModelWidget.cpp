@@ -85,15 +85,9 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
 	connect(&mModel.timeline(), &Timeline::tick, this, &D2ModelWidget::incrementTimelineCounter);
-	connect(&mModel.timeline(), &Timeline::started, [this]() {
-		mUi->runButton->setVisible(false);
-		mUi->stopButton->setVisible(true);
-	});
-	connect(&mModel.timeline(), &Timeline::stopped, [this]() {
-		mUi->runButton->setVisible(true);
-		mUi->stopButton->setVisible(false);
-	});
-	mUi->stopButton->setVisible(false);
+	connect(&mModel.timeline(), &Timeline::started, this, &D2ModelWidget::setRunStopButtonsVisibility);
+	connect(&mModel.timeline(), &Timeline::stopped, this, &D2ModelWidget::setRunStopButtonsVisibility);
+	setRunStopButtonsVisibility();
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -708,6 +702,12 @@ void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 	mScene->setInteractivityFlags(flags);
 }
 
+void D2ModelWidget::setCompactMode(bool enabled)
+{
+	mCompactMode = enabled;
+	setRunStopButtonsVisibility();
+}
+
 void D2ModelWidget::enableRobotFollowing(bool on)
 {
 	mFollowRobot = on;
@@ -744,6 +744,12 @@ void D2ModelWidget::setDisplayVisibility(bool visible)
 	const QString direction = visible ? "right" : "left";
 	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
 	SettingsManager::setValue("2d_displayVisible", visible);
+}
+
+void D2ModelWidget::setRunStopButtonsVisibility()
+{
+	mUi->runButton->setVisible(!mCompactMode && !mModel.timeline().isStarted());
+	mUi->stopButton->setVisible(!mCompactMode && mModel.timeline().isStarted());
 }
 
 QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(CursorType type) const

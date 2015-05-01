@@ -80,6 +80,10 @@ public:
 	/// @see ReadOnly
 	void setInteractivityFlags(kitBase::ReadOnlyFlags flags);
 
+	/// Enables or disables compact 2D model mode.
+	/// In a compact mode 2D model window has less controls, they may seem in another way.
+	void setCompactMode(bool enabled);
+
 signals:
 	/// Emitted each time when user closes 2D model window.
 	void widgetClosed();
@@ -167,6 +171,7 @@ private:
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void setDisplayVisibility(bool visible);
+	void setRunStopButtonsVisibility();
 
 	QDomDocument generateXml() const;
 
@@ -240,6 +245,8 @@ private:
 	QString mPortsTabName;
 
 	bool mSensorsReadOnly = false;
+
+	bool mCompactMode = false;
 };
 
 }
