@@ -37,22 +37,17 @@ public:
 	{
 		QString resultStr = "";
 
-		foreach (QString const &elementOfList, generateList(mEditorInterface)) {
+		for (const QString &elementOfList: generateList(mEditorInterface)) {
 			resultStr += elementOfList + " ";
 		}
 
 		return resultStr;
 	}
 
-
 	virtual QString generateStringTime()
 	{
 		QString resultStr = "";
-
-		foreach (QString elementOfList, mListOfTime) {
-			resultStr += elementOfList + " ";
-		}
-
+		resultStr = mListOfTime.join(' ');
 		return resultStr;
 	}
 
@@ -71,16 +66,18 @@ public:
 			{
 				functionToCall();
 			}
+
 			array[i] = timer.nsecsElapsed();
 			time += array[i];
 		}
+
 		expectedValue = time / 20;
 
 		for (int t = 0; t < 20; ++t)
 		{
 			variance +=qPow ((array[t] - expectedValue), 2);
-
 		}
+
 		variance = variance / 20;
 		double sqrtVariance = sqrt(variance);
 
@@ -97,12 +94,13 @@ protected:
 
 	virtual QStringList callMethod(
 			EditorInterface *editorInterface
-			, QString const &diagram
-			, QString const &element = ""
-			, QString const &property = ""
+			, const QString &diagram
+			, const QString &element = ""
+			, const QString &property = ""
 			) const = 0;
 
 	QStringList mutable mListOfTime;
+
 private:
 	EditorInterface *mEditorInterface;
 };
@@ -111,39 +109,35 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForDiagrams : public MethodsTe
 {
 	virtual QStringList generateList(EditorInterface *editorInterface) const {
 		QStringList resultList;
-		foreach (QString const &diagram, editorInterface->diagrams()) {
-			QString const additionalString = ConvertingMethods::transformateOutput(
+		for (const QString &diagram : editorInterface->diagrams()) {
+			const QString additionalString = ConvertingMethods::transformateOutput(
 					callMethod(editorInterface, diagram, "", ""), Id::rootId(), diagram);
 			QPair<qint64, double> additional = dataOfTime();
 			mListOfTime.append(QString::number(additional.first));
 			mListOfTime.append(" ");
 			mListOfTime.append(QString::number(additional.second));
 			mListOfTime.append("|");
-
 			resultList.append(additionalString);
 			resultList.append("|");
 		}
 
 		return resultList;
 	}
-
 };
 
 class MethodsTesterForQrxcAndQrmc::StringGeneratorForElements : public MethodsTesterForQrxcAndQrmc::StringGenerator
 {
 	virtual QStringList generateList(EditorInterface *editorInterface) const {
 		QStringList resultList;
-
-		foreach (QString const &diagram, editorInterface->diagrams()) {
-			foreach (QString const &element, editorInterface->elements(diagram)) {
-				QString const additionalString = ConvertingMethods::transformateOutput(
+		for (const QString &diagram : editorInterface->diagrams()) {
+			for (const QString &element : editorInterface->elements(diagram)) {
+				const QString additionalString = ConvertingMethods::transformateOutput(
 						callMethod(editorInterface, diagram, element, ""), Id::rootId(), element);
 				QPair<qint64, double> additional = dataOfTime();
 				mListOfTime.append(QString::number(additional.first));
 				mListOfTime.append(" ");
 				mListOfTime.append(QString::number(additional.second));
 				mListOfTime.append("|");
-
 				resultList.append(additionalString);
 				resultList.append("|");
 			}
@@ -151,25 +145,22 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForElements : public MethodsTe
 
 		return resultList;
 	}
-
 };
 
 class MethodsTesterForQrxcAndQrmc::StringGeneratorForProperties : public MethodsTesterForQrxcAndQrmc::StringGenerator
 {
 	virtual QStringList generateList(EditorInterface *editorInterface) const {
 		QStringList resultList;
-
-		foreach (QString const &diagram, editorInterface->diagrams()) {
-			foreach (QString const &element, editorInterface->elements(diagram)) {
-				foreach (QString const &property, editorInterface->getPropertyNames(diagram, element)) {
-					QString const additionalString = ConvertingMethods::transformateOutput(callMethod(
+		for (const QString &diagram : editorInterface->diagrams()) {
+			for (const QString &element : editorInterface->elements(diagram)) {
+				for (const QString &property : editorInterface->getPropertyNames(diagram, element)) {
+					const QString additionalString = ConvertingMethods::transformateOutput(callMethod(
 							editorInterface, diagram, element, property), Id::rootId(), property + "(" + element + ")");
 					QPair<qint64, double> additional = dataOfTime();
 					mListOfTime.append(QString::number(additional.first));
 					mListOfTime.append(" ");
 					mListOfTime.append(QString::number(additional.second));
 					mListOfTime.append("|");
-
 					resultList.append(additionalString);
 					resultList.append("|");
 				}
@@ -185,16 +176,15 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForGroups : public MethodsTest
 	virtual QStringList generateList(EditorInterface *editorInterface) const {
 		QStringList resultList;
 
-		foreach (QString const &diagram, editorInterface->diagrams()) {
-			foreach (QString const &group, editorInterface->diagramPaletteGroups(diagram)) {
-				QString const additionalString = ConvertingMethods::transformateOutput(
+		for (const QString &diagram: editorInterface->diagrams()) {
+			for (const QString &group: editorInterface->diagramPaletteGroups(diagram)) {
+				const QString &additionalString = ConvertingMethods::transformateOutput(
 						callMethod(editorInterface, diagram, group), Id::rootId(), group);
 				QPair<qint64, double> additional = dataOfTime();
 				mListOfTime.append(QString::number(additional.first));
 				mListOfTime.append(" ");
 				mListOfTime.append(QString::number(additional.second));
 				mListOfTime.append("|");
-
 				resultList.append(additionalString);
 				resultList.append("|");
 			}
@@ -202,8 +192,6 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForGroups : public MethodsTest
 
 		return resultList;
 	}
-
-
 };
 
 class MethodsTesterForQrxcAndQrmc::ElementsStringGenerator
@@ -418,12 +406,12 @@ class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 						() { editorInterface->getPossibleEdges(element); });
 
 		QStringList result;
-		foreach (PossibleEdgesType const &pair, editorInterface->getPossibleEdges(element)) {
-			QString const &firstElement = pair.first.first;
-			QString const &secondElement = pair.first.second;
+		for (PossibleEdgesType const &pair: editorInterface->getPossibleEdges(element)) {
+			const QString &firstElement = pair.first.first;
+			const QString &secondElement = pair.first.second;
 
-			QString const &thirdElement = QString("%1").arg(pair.second.first);
-			QString const &fourthElement = pair.second.second;
+			const QString &thirdElement = QString("%1").arg(pair.second.first);
+			const QString &fourthElement = pair.second.second;
 
 			result << firstElement << secondElement << thirdElement << fourthElement;
 		}
@@ -713,9 +701,9 @@ class MethodsTesterForQrxcAndQrmc::GetParentsOfStringGenerator
 		QStringList result;
 
 		result << element << ": ";
-		foreach (ParentsOfType const &pair, editorInterface->getParentsOf(diagram, element)) {
-			QString const &firstElement = pair.first;
-			QString const &secondElement = pair.second;
+		for (ParentsOfType const &pair: editorInterface->getParentsOf(diagram, element)) {
+			const QString &firstElement = pair.first;
+			const QString &secondElement = pair.second;
 
 			result << firstElement << secondElement;
 		}
@@ -1042,9 +1030,9 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 	virtual void callIsParent(EditorInterface *editorInterface, const QString &diagram
 							, const QString &element) const
 	{
-		foreach (QString const &parentDiagram, editorInterface->diagrams()) {
-			foreach (QString const &parentElement, editorInterface->elements(diagram)) {
-				bool isParent = editorInterface->isParentOf(parentDiagram, parentElement, diagram, element);
+		for (const QString &parentDiagram: editorInterface->diagrams()) {
+			for (const QString &parentElement: editorInterface->elements(diagram)) {
+				editorInterface->isParentOf(parentDiagram, parentElement, diagram, element);
 			}
 		}
 	}
@@ -1061,8 +1049,8 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 
 		Q_UNUSED(property);
 		QStringList result;
-		foreach (QString const &parentDiagram, editorInterface->diagrams()) {
-			foreach (QString const &parentElement, editorInterface->elements(diagram)) {
+		for (const QString &parentDiagram: editorInterface->diagrams()) {
+			for (const QString &parentElement: editorInterface->elements(diagram)) {
 				bool isParent = editorInterface->isParentOf(parentDiagram, parentElement, diagram, element);
 				if (isParent) {
 					result << parentElement << " is parent of " << element << "\n";
@@ -1083,6 +1071,7 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 	{
 		return mResult;
 	}
+
 private:
 	mutable QPair<qint64, double> mResult = qMakePair(0, 0.0);
 };
@@ -1119,6 +1108,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupListStringGenerator
 	{
 		return mResult;
 	}
+
 private:
 	mutable QPair<qint64, double> mResult = qMakePair(0, 0.0);
 };
@@ -1175,7 +1165,6 @@ void MethodsTesterForQrxcAndQrmc::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(PortTypesStringGenerator(), "getPortTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(EnumValueStringGenerator(), "getEnumValues"));
 
-
 	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesStringGenerator()
 			, "propertiesWithDefaulValues"));
 	mGeneratedList.append(testMethodIfExistsInList(TypesContainedByStringGenerator(), "typesContanedBy"));
@@ -1206,7 +1195,7 @@ void MethodsTesterForQrxcAndQrmc::testMethods()
 //			, "diagramPaletteGroupDescription"));
 }
 
-bool MethodsTesterForQrxcAndQrmc::containsOnly(QString const &string, QChar const &symbol)
+bool MethodsTesterForQrxcAndQrmc::containsOnly(const QString &string, QChar const &symbol)
 {
 	bool containsOnlyThisSymbol = true;
 

@@ -2,7 +2,6 @@
 #include <QtCore/QString>
 
 namespace editorPluginTestingFramework {
-///plugins /sources
 QString const sourcesDir = "/sources";
 QString const pluginsDir = "/plugins";
 
@@ -15,8 +14,6 @@ QString const pathToQrxcGeneratedPlugin = "/plugins";
 QString const pathToQRealRootFromQrmc = "../";
 QString const pathToQRealRootFromQrxc = "../../";
 
-/// Todo: remove qrtest/binaries from this part
-/// debug/plugins/editors/ /plugins/editors/qrmc
 QString const destDirForQrmc = "";
 QString const destDirForQrxc = "";
 

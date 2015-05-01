@@ -32,11 +32,9 @@ EditorInterface* PluginLoader::loadedPlugin(
 		if (mRepoApi->isLogicalElement(key)) {
 			QString const &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
 			QString const &pluginName = prefix + normalizedMetamodelName + "-d" + "." + pluginExtension;
-			qDebug() << pluginName;
 			mPluginNames.append(pluginName);
 
 			QPluginLoader * const loader = new QPluginLoader(mPluginDir.absoluteFilePath(pluginName));
-			qDebug() << mPluginDir.absoluteFilePath(pluginName);
 			loader->load();
 			QObject *plugin = loader->instance();
 

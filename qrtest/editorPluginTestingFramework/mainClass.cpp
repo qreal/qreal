@@ -24,21 +24,16 @@ MainClass::MainClass(
 		: mTempOldValue(SettingsManager::value("temp").toString())
 		, mApplicationPath(applicationPath)
 {
-	qDebug() << applicationPath;
-	qDebug() << mApplicationPath;
 	setTempValueInSettingsManager();
 
 	qDebug() << "configuration file: " << configurationFileName;
 	parseConfigurationFile(configurationFileName);
 
-	deleteOldBinaries(mGeneratedCodeDirQrxc);
-	deleteOldBinaries(mGeneratedCodeDirQrmc);
+	//deleteOldBinaries(mGeneratedCodeDirQrxc);
+	//deleteOldBinaries(mGeneratedCodeDirQrmc);
 
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
-//	QString const &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
-//	QString const &pluginName = prefix + normalizedMetamodelName + "-d" + "." + pluginExtension;
-
 
 	copyTestMetamodel(fileName);
 
@@ -53,8 +48,6 @@ MainClass::MainClass(
 
 	InterpreterEditorManager interpreterEditorManager(fileName, nullptr);
 	EditorManager qrxcEditorManager("plugins/editors/qrxc/plugins");
-	//EditorManager qw("plugins");
-//	qw->ololo();
 	// we cast qrxc plugin to Editor Manager "plugins/editors/qrxc/plugin
 
 	MethodsTesterForQrxcAndInterpreter* const interpreterMethodsTester = new MethodsTesterForQrxcAndInterpreter(
@@ -103,8 +96,7 @@ void MainClass::createNewFolders()
 	createFolder(mGeneratedCodeDirQrxc);
 	createFolder(mGeneratedCodeDirQrxc + pluginsDir);
 	createFolder(mGeneratedCodeDirQrxc + sourcesDir);
-	// !!!
-	createFolder(mGeneratedCodeDirQrxc + pathToQrmcGeneratedPlugin);
+	createFolder(mGeneratedCodeDirQrmc + pathToQrmcGeneratedPlugin);
 	createFolder(mGeneratedCodeDirQrxc + pathToQrxcGeneratedPlugin);
 }
 
@@ -128,14 +120,14 @@ void MainClass::deleteOldBinaries(QString const &directory)
 		return;
 	}
 
-//	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-//		if (fileInfo.isDir()) {
-//			deleteOldBinaries(fileInfo.filePath());
-//			dir.rmdir(fileInfo.fileName());
-//		} else {
-//			dir.remove(fileInfo.fileName());
-//		}
-//	}
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.isDir()) {
+			deleteOldBinaries(fileInfo.filePath());
+			dir.rmdir(fileInfo.fileName());
+		} else {
+			dir.remove(fileInfo.fileName());
+		}
+	}
 }
 
 void MainClass::copyTestMetamodel(QString const &fileName)
@@ -162,8 +154,6 @@ void MainClass::returnOldValueOfTemp() const
 
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
-	//QString tempPath = "plugins/editors/qrtest/qrxc";
-
 	mQrmcLauncher.launchQrmc(fileName, pathToQrmc, mGeneratedCodeDirQrmc);
 }
 
@@ -180,7 +170,6 @@ void MainClass::compilePlugin(QString const &directoryToCodeToCompile, const QSt
 
 void MainClass::launchQrxc(QString const &fileName)
 {
-	//mApplicationPath
 	QString tempPath = "plugins/editors/qrtest/qrxc";
 	mQrxcLauncher.launchQrxc(fileName, mQRealRootPath, tempPath);
 }
@@ -205,8 +194,6 @@ void MainClass::appendPluginNames()
 
 void MainClass::parseConfigurationFile(QString const &fileName)
 {
-	qDebug() << "ololo";
-	qDebug() << mApplicationPath;
 	mConfigurationFileParser.parseConfigurationFile(fileName);
 
 	mQmakeParameter = mConfigurationFileParser.qmakeParameter();

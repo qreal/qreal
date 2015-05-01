@@ -4,8 +4,9 @@
 	<configuration>debug</configuration>
 	<pluginExtension>dll</pluginExtension>
 	<prefix></prefix>
-	<qrealRoot>../</qrealRoot>
+	<qrealRoot>../../</qrealRoot>
 	<generateHtml>yes</generateHtml>
-	<generatedCodeDirQrxc>/plugins/editors/qrxc</generatedCodeDirQrxc>
-	<generatedCodeDirQrmc>/plugins/editors/qrmc</generatedCodeDirQrmc>
+	<generatedCodeDirQrxc>./plugins/editors/qrtest/qrxc</generatedCodeDirQrxc>
+	<generatedCodeDirQrmc>./plugins/editors/qrtest/qrmc</generatedCodeDirQrmc>
+	<generatedDirHtml>./plugins/editors/qrtest</generatedDirHtml>
 </xml>

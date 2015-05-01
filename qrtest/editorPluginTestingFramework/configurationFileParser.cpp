@@ -80,5 +80,3 @@ QString ConfigurationFileParser::generatedDirHtml() const
 {
 	return mGeneratedDirHtml;
 }
-
-

@@ -46,10 +46,6 @@ void HtmlMaker::makeHtml(
 	addTable(body, timeResultIntertpter, QObject::tr("Table with results of time qrxc and interpreter")
 			, QObject::tr("Method name"), "qrxc", "interpreter");
 
-
-
-
-
 	QString const &fileName = pathToHtml + "/output.html";
 	OutFile outHtml(fileName);
 	mHtml.save(outHtml(), 4);
@@ -125,40 +121,36 @@ bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &sec
 	QSet<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod);
 	QSet<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod);
 
-	QStringList ololo = firstMethodParsed.values();
-	QStringList ololoResult;
+	QStringList first = firstMethodParsed.values();
+	QStringList firstResult;
 
-	QStringList ololo1 = secondMethodParsed.values();
-	QStringList ololoResult1;
-
-
-	for (QString element : ololo)
+	QStringList second = secondMethodParsed.values();
+	QStringList secondResult;
+	for (const QString &element : first)
 	{
-		ololoResult.append(element.toLower());
+		firstResult.append(element.toLower());
 	}
 
-	for (QString element : ololo1)
+	for (QString element : second)
 	{
-		ololoResult1.append(element.toLower());
+		secondResult.append(element.toLower());
 	}
 
-
-	for (QString element : ololoResult)
+	for (QString element : firstResult)
 	{
-		bool result = ololoResult1.contains(element);
+		bool result = secondResult.contains(element);
 		if (!result)
 			return false;
 	}
 
-	for (QString element : ololoResult1)
+	for (QString element : secondResult)
 	{
-		bool result = ololoResult.contains(element);
+		bool result = firstResult.contains(element);
 		if (!result)
 			return false;
 	}
 
 	return true;
-//	return (firstMethodParsed == secondMethodParsed);
 }
 
 QString HtmlMaker::lineColor(QString const &firstResult, QString const &secondResult)

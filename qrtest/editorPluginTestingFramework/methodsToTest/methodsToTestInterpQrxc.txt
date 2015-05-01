@@ -7,51 +7,37 @@ elements(QString, QString)
 mouseGestures
 friendlyName
 description
-propertyDescription
+//propertyDescription
 propertyDisplayedName
 
-containedTypes 
+containedTypes
 explosions
 enumValues
-typeName
-allChildrenTypesOf
+//typeName
+//allChildrenTypesOf
 
-isEditor
-isDiagram
-isElement
+//isEditor
+//isDiagram
+//isElement
 
 propertyNames
 portTypes
 defaultPropertyValues
 propertiesWithDefaultValues
 
-hasElement
-findElementByType
-isGraphicalElement
+//hasElement
+//findElementByType
+//isGraphicalElement
 
 isNodeOrEdge
 diagramName
 diagramNodeName
-isParentProperty
-children
-shape
+//isParentProperty
+//children
+//shape
 
-paletteGroups
-paletteGroupList
-paletteGroupDescription
-
+//paletteGroups
+//paletteGroupList
+//paletteGroupDescription
 referenceProperties
 isParentOf
-
-
-
-	virtual bool isDiagramNode(const Id &id) const = 0;
-
-	virtual bool isParentOf(const Id &child, const Id &parent) const = 0;
-	
-	virtual QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const = 0;
-	virtual bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
-			, const QString &childDiagram, const QString &childElement) const = 0;
-	virtual QString propertyNameByDisplayedName(const Id &id, const QString &displayedPropertyName) const = 0;
-	virtual bool isRootDiagramNode(const Id &id) const = 0;
-	

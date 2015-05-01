@@ -43,76 +43,40 @@ void PluginCompiler::compilePlugin(const QString &fileName
 		}
 	}
 
-
 	if (directoryToCodeToCompile.contains("qrmc"))
 	{
-		QString file1 = "./" + pluginName + "/" +  pluginName + ".pro";
-		QFile data1(file1);
-		data1.open(QIODevice::ReadOnly);
-		QByteArray b = data1.readAll();
-		data1.close();
-		data1.open(QIODevice::WriteOnly);
-
-		data1.write(b + "DESTDIR = ../plugins/editors/qrtest/qrmc/plugins");
-
+		QString fileForQrmc = "./" + pluginName + "/" +  pluginName + ".pro";
+		QFile dataQrmc(fileForQrmc);
+		dataQrmc.open(QIODevice::ReadOnly);
+		QByteArray saveDataQrmc = dataQrmc.readAll();
+		dataQrmc.close();
+		dataQrmc.open(QIODevice::WriteOnly);
+		dataQrmc.write(saveDataQrmc + "DESTDIR = ../plugins/editors/qrtest/qrmc/plugins");
 		builder.setWorkingDirectory("./" + pluginName + "/");
-		data1.close();
-
+		dataQrmc.close();
 	} else {
-
-
-	QString file = directoryToCodeToCompile + "/" + pluginName + ".pro";
-	qDebug() << file;
-	QFile data(file);
-	//data.open(QIODevice::Append);
-	data.open(QIODevice::ReadOnly);
-
-	QByteArray a = data.readAll();
-	data.close();
-	data.open(QIODevice::WriteOnly);
-
-	data.write(a + "DESTDIR = plugins");
-
-
-		//data.write();
-	data.close();
-	builder.setWorkingDirectory(directoryToCodeToCompile);
-
+		QString fileForQrxc = directoryToCodeToCompile + "/" + pluginName + ".pro";
+		QFile dataQrxc(fileForQrxc);
+		dataQrxc.open(QIODevice::ReadOnly);
+		QByteArray saveDataQrxc = dataQrxc.readAll();
+		dataQrxc.close();
+		dataQrxc.open(QIODevice::WriteOnly);
+		dataQrxc.write(saveDataQrxc + "DESTDIR = plugins");
+		dataQrxc.close();
+		builder.setWorkingDirectory(directoryToCodeToCompile);
 	}
 
-//	QString = ololo.fil;
-
 	qmakeArgs.append(pluginName + ".pro");
-
 	builder.start(pathToQmake, qmakeArgs);
-	bool qwerty = builder.waitForFinished();
-	int asdf = builder.exitCode();
-	QString ololo = builder.readAllStandardOutput();
-	qDebug() << ololo;
 
-
-	if (qwerty && builder.exitCode() == 0) {
-		//builder.start(pathToMake);
+	if (builder.waitForFinished() && builder.exitCode() == 0) {
 		builder.start("mingw32-make");
 
 		bool const finished = builder.waitForFinished(100000);
 		qDebug()  << "make";
-		QString ololo1 = builder.readAllStandardOutput();
-		qDebug() << finished;
-		qDebug() << ololo1;
-		QString ololo2 = builder.readAllStandardError();
-		qDebug() << "wwwwwwwwwwwwwwwwwwwww";
-		qDebug() << ololo2;
 
-
-		int tololo = builder.exitCode();
-
-		qDebug() << tololo;
-
-
-		if (finished && tololo == 0) {
+		if (finished && builder.exitCode() == 0) {
 			qDebug()  << "make ok";
 		}
-
 	}
 }
