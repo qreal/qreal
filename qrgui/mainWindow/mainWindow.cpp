@@ -13,7 +13,7 @@
  * limitations under the License. */
 
 #include "mainWindow.h"
-#include <mainWindow/.build/debug/ui/ui_mainWindow.h>
+#include "ui_mainWindow.h"
 
 #include <QtCore/QProcess>
 #include <QtCore/QPluginLoader>
@@ -1043,7 +1043,13 @@ void MainWindow::openFirstDiagram()
 	if (rootIds.count() == 0) {
 		return;
 	}
-	openNewTab(models().graphicalModelAssistApi().indexById(rootIds[0]));
+
+	for (const Id &id : rootIds) {
+		if (models().graphicalRepoApi().isGraphicalElement(id)) {
+			openNewTab(models().graphicalModelAssistApi().indexById(id));
+			break;
+		}
+	}
 }
 
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
