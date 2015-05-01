@@ -14,9 +14,50 @@
 
 #include "palette.h"
 
+#include <QtWidgets/QAction>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
+
 using namespace twoDModel::view;
 
 Palette::Palette(QWidget *parent)
 	: QWidget(parent)
+	, mCursorAction(new QAction(QIcon(":/icons/2d_none.png"), tr("Cursor (N)"), nullptr))
+	, mGroup(new QActionGroup(this))
+	, mToolBar(new QToolBar(this))
 {
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+
+	QVBoxLayout * const layout = new QVBoxLayout(this);
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->setMargin(0);
+	layout->setSpacing(0);
+
+	mToolBar->setOrientation(Qt::Vertical);
+	layout->addWidget(mToolBar);
+
+	mCursorAction->setShortcut(QKeySequence(Qt::Key_N));
+	registerTool(mCursorAction.data());
+}
+
+Palette::~Palette()
+{
+}
+
+const QAction &Palette::cursorAction() const
+{
+	return *mCursorAction;
+}
+
+void Palette::registerTool(QAction * const tool)
+{
+	tool->setCheckable(true);
+	tool->setParent(this);
+	mGroup->addAction(tool);
+	mToolBar->addAction(tool);
+}
+
+void Palette::unselect()
+{
+	mCursorAction->trigger();
 }

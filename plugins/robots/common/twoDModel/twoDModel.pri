@@ -78,6 +78,7 @@ HEADERS += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
+	$$PWD/src/engine/items/tool.h \
 	$$PWD/src/engine/items/wallItem.h \
 	$$PWD/src/engine/items/stylusItem.h \
 	$$PWD/src/engine/items/lineItem.h \
@@ -114,6 +115,7 @@ SOURCES += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
+	$$PWD/src/engine/items/tool.cpp \
 	$$PWD/src/engine/items/wallItem.cpp \
 	$$PWD/src/engine/items/stylusItem.cpp \
 	$$PWD/src/engine/items/lineItem.cpp \

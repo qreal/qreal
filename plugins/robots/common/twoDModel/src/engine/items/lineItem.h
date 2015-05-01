@@ -30,6 +30,10 @@ public:
 
 	AbstractItem *clone() const override;
 
+	/// Creates and returns colored line item for 2D model palette.
+	/// Transfers ownership.
+	static QAction *lineTool();
+
 	QPainterPath shape() const override;
 
 	QRectF boundingRect() const override;

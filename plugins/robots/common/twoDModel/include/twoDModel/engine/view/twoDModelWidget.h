@@ -157,11 +157,8 @@ private:
 
 	void changePalette();
 	void connectUiButtons();
-	void initButtonGroups();
 	void setPortsGroupBoxAndWheelComboBoxes();
 	void unsetPortsGroupBoxAndWheelComboBoxes();
-
-	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void setDisplayVisibility(bool visible);
 	void setRunStopButtonsVisibility();
@@ -186,6 +183,7 @@ private:
 	void setCursorType(CursorType cursor);
 
 	void initWidget();
+	void initPalette();
 	QList<graphicsUtils::AbstractItem *> selectedColorItems() const;
 	bool isColorItem(graphicsUtils::AbstractItem * const item) const;
 
@@ -220,8 +218,6 @@ private:
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
 	int mWidth = 0;
-
-	QButtonGroup mButtonGroup;
 
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType

@@ -14,38 +14,31 @@
 
 #pragma once
 
-#include <QtWidgets/QWidget>
-
-class QToolBar;
-class QAction;
-class QActionGroup;
+#include <QtWidgets/QAction>
 
 namespace twoDModel {
-namespace view {
+namespace items {
 
-/// A widget containing a set of items that can be drawn on 2D model scene.
-class Palette : public QWidget
+/// @brief Represents an item on 2D model palette.
+class Tool
 {
-	Q_OBJECT
-
 public:
-	explicit Palette(QWidget *parent = 0);
-	~Palette();
+	Tool(const QIcon &icon, const QString &displayedName);
+	~Tool();
 
-	/// Returns a pointer to 'none' tool that triggered when no other tool selected.
-	const QAction &cursorAction() const;
+	/// Returns an icon that will be drawn on 2D model palette.
+	QIcon icon() const;
 
-public slots:
-	/// Appends an item to 2D model`s palette.
-	void registerTool(QAction * const tool);
+	/// Returns name of this tool that will be shown in a tooltip of item on 2D model palette.
+	QString displayedName() const;
 
-	/// Activates cursor action.
-	void unselect();
+	/// Returns an action
+	QAction &action() const;
 
 private:
-	QScopedPointer<QAction> mCursorAction;
-	QScopedPointer<QActionGroup> mGroup;
-	QToolBar *mToolBar;  // Takes ownership
+	const QIcon mIcon;
+	const QString mDisplayedName;
+	QAction mAction;
 };
 
 }

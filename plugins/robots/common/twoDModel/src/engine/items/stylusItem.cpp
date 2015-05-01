@@ -14,6 +14,8 @@
 
 #include "stylusItem.h"
 
+#include <QtWidgets/QAction>
+
 using namespace twoDModel::items;
 using namespace graphicsUtils;
 
@@ -46,6 +48,13 @@ AbstractItem *StylusItem::clone() const
 	}
 
 	return cloned;
+}
+
+QAction *StylusItem::stylusTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_stylus.png"), tr("Stylus (S)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_S));
+	return result;
 }
 
 void StylusItem::addLine(qreal x2, qreal y2)

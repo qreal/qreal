@@ -71,6 +71,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
 	initWidget();
+	initPalette();
 
 	connectUiButtons();
 	mUi->realisticPhysicsCheckBox->setChecked(mModel.settings().realisticPhysics());
@@ -82,7 +83,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::mousePressed, this, &TwoDModelWidget::refreshCursor);
 	connect(mScene, &TwoDModelScene::mouseReleased, this, &TwoDModelWidget::refreshCursor);
 	connect(mScene, &TwoDModelScene::mouseReleased, this, [this](){ saveToRepo(); });
-	connect(mScene, &TwoDModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
+	connect(mScene, &TwoDModelScene::robotPressed, mUi->palette, &Palette::unselect);
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
@@ -91,9 +92,9 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	setRunStopButtonsVisibility();
 
-	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
+//	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 //	mUi->autoCenteringButton->setChecked(mFollowRobot);
-	mUi->noneButton->setChecked(true);
+	mUi->palette->unselect();
 
 	setFocus();
 
@@ -135,8 +136,6 @@ void TwoDModelWidget::initWidget()
 //	mUi->penColorComboBox->setColorList(colorList, translatedColorList);
 //	mUi->penColorComboBox->setColor(QColor("black"));
 
-	initButtonGroups();
-
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
 	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
@@ -148,48 +147,52 @@ void TwoDModelWidget::initWidget()
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
 }
 
+void TwoDModelWidget::initPalette()
+{
+	QAction * const wallTool = items::WallItem::wallTool();
+	QAction * const lineTool = items::LineItem::lineTool();
+	QAction * const ellipseTool = items::EllipseItem::ellipseTool();
+	QAction * const stylusTool = items::StylusItem::stylusTool();
+
+	mUi->palette->registerTool(wallTool);
+	mUi->palette->registerTool(lineTool);
+	mUi->palette->registerTool(ellipseTool);
+	mUi->palette->registerTool(stylusTool);
+
+	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
+	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
+	connect(ellipseTool, &QAction::triggered, mScene, &TwoDModelScene::addEllipse);
+	connect(stylusTool, &QAction::triggered, mScene, &TwoDModelScene::addStylus);
+	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
+
+	connect(wallTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawWall); });
+	connect(lineTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawLine); });
+	connect(ellipseTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawEllipse); });
+	connect(stylusTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawStylus); });
+	connect(&mUi->palette->cursorAction(), &QAction::triggered, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
+}
+
 void TwoDModelWidget::connectUiButtons()
 {
 	connect(mUi->realisticPhysicsCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 	connect(mUi->enableMotorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 	connect(mUi->enableSensorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 
-	connect(mUi->ellipseButton, &QAbstractButton::toggled, mScene, &TwoDModelScene::addEllipse);
-	connect(mUi->stylusButton, &QAbstractButton::toggled, mScene, &TwoDModelScene::addStylus);
-	connect(mUi->lineButton, &QAbstractButton::toggled, mScene, &TwoDModelScene::addLine);
-	connect(mUi->wallButton, &QAbstractButton::toggled, mScene, &TwoDModelScene::addWall);
-	connect(mUi->noneButton, &QAbstractButton::toggled, mScene, &TwoDModelScene::setNoneStatus);
-
-	connect(mUi->ellipseButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawEllipse); });
-	connect(mUi->stylusButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawStylus); });
-	connect(mUi->lineButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawLine); });
-	connect(mUi->wallButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawWall); });
-	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
-
-	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
-		QMessageBox confirmation;
-		confirmation.setWindowTitle(tr("Warning"));
-		confirmation.setText(tr("Do you really want to clear scene?"));
-		confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-		confirmation.setButtonText(QMessageBox::Yes, tr("Yes"));
-		confirmation.setButtonText(QMessageBox::Cancel, tr("Cancel"));
-		if (QMessageBox::Yes == confirmation.exec()) {
-			mScene->clearScene(false, Reason::userAction);
-		}
-	});
+//	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
+//		QMessageBox confirmation;
+//		confirmation.setWindowTitle(tr("Warning"));
+//		confirmation.setText(tr("Do you really want to clear scene?"));
+//		confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+//		confirmation.setButtonText(QMessageBox::Yes, tr("Yes"));
+//		confirmation.setButtonText(QMessageBox::Cancel, tr("Cancel"));
+//		if (QMessageBox::Yes == confirmation.exec()) {
+//			mScene->clearScene(false, Reason::userAction);
+//		}
+//	});
 
 	connect(&mActions->clearFloorAction(), &QAction::triggered, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
 			, &mActions->clearFloorAction(), &QAction::setVisible, Qt::QueuedConnection);
-
-	connect(&mButtonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *, bool)>(&QButtonGroup::buttonToggled)
-			, [this](QAbstractButton *button, bool toggled) {
-				if (toggled) {
-					setHighlightOneButton(button);
-				} else if (!mButtonGroup.checkedButton()) {
-					setHighlightOneButton(mUi->noneButton);
-				}
-	});
 
 //	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
 //	connect(mUi->penColorComboBox, SIGNAL(activated(int)), this, SiLOT(changePenColor(int)));
@@ -209,16 +212,6 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
 
 	initRunStopButtons();
-}
-
-void TwoDModelWidget::initButtonGroups()
-{
-	mButtonGroup.setExclusive(false);
-	mButtonGroup.addButton(mUi->lineButton);
-	mButtonGroup.addButton(mUi->wallButton);
-	mButtonGroup.addButton(mUi->stylusButton);
-	mButtonGroup.addButton(mUi->ellipseButton);
-	mButtonGroup.addButton(mUi->noneButton);
 }
 
 void TwoDModelWidget::setPortsGroupBoxAndWheelComboBoxes()
@@ -254,22 +247,6 @@ void TwoDModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 		}
 
 		delete mCurrentConfigurer;
-	}
-}
-
-void TwoDModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
-{
-	for (QAbstractButton * const button : mButtonGroup.buttons()) {
-		if (button != oneButton && button->isChecked()) {
-			// This will disable toggled(false) emission, we are interested only in checked buttons.
-			button->blockSignals(true);
-			button->setChecked(false);
-			button->blockSignals(false);
-		}
-	}
-
-	if (!oneButton->isChecked()) {
-		oneButton->setChecked(true);
 	}
 }
 
