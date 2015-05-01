@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <QtCore/QDebug>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "abstractScene.h"
@@ -279,4 +279,26 @@ void AbstractScene::setBrushStyleItems(const QString &text)
 void AbstractScene::setBrushColorItems(const QString &text)
 {
 	mBrushColorItems = text;
+}
+
+void AbstractScene::addAction(QAction * const action)
+{
+	mActions << action;
+	mView->addAction(action);
+}
+
+void AbstractScene::addActions(const QList<QAction *> &actions)
+{
+	mActions << actions;
+	mView->addActions(actions);
+}
+
+void AbstractScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QGraphicsScene::contextMenuEvent(event);
+	QMenu menu;
+	menu.addActions(mActions);
+	if (!menu.isEmpty()) {
+		menu.exec(event->screenPos());
+	}
 }

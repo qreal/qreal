@@ -52,6 +52,7 @@ namespace view {
 class TwoDModelScene;
 class SensorItem;
 class RobotItem;
+class ActionsBox;
 
 class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
@@ -181,6 +182,7 @@ private:
 	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
 
 	void setCursorTypeForDrawing(CursorType type);
+	void setCursorType(int cursorType);
 	void setCursorType(CursorType cursor);
 
 	void initWidget();
@@ -208,6 +210,7 @@ private:
 
 	Ui::TwoDModelWidget *mUi = nullptr;
 	TwoDModelScene *mScene = nullptr;
+	QScopedPointer<ActionsBox> mActions;
 
 	RobotItem *mSelectedRobotItem = nullptr;
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;
@@ -219,7 +222,6 @@ private:
 	int mWidth = 0;
 
 	QButtonGroup mButtonGroup;
-	QButtonGroup mCursorButtonGroup;
 
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType

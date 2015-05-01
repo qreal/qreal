@@ -16,7 +16,6 @@
 
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QCheckBox>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
 
 namespace twoDModel {

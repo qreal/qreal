@@ -34,9 +34,10 @@
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
 #include <kitBase/robotModel/robotParts/vectorSensor.h>
 
+#include "parts/actionsBox.h"
+
 #include "scene/sensorItem.h"
 #include "scene/sonarSensorItem.h"
-
 #include "scene/twoDModelScene.h"
 #include "scene/robotItem.h"
 
@@ -62,6 +63,7 @@ using namespace robotParts;
 TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::TwoDModelWidget)
+	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
@@ -89,8 +91,6 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	setRunStopButtonsVisibility();
 
-	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
-	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 //	mUi->autoCenteringButton->setChecked(mFollowRobot);
 	mUi->noneButton->setChecked(true);
@@ -120,6 +120,7 @@ void TwoDModelWidget::initWidget()
 
 	mScene = new TwoDModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
+	mScene->addActions(mActions->sceneContextMenuActions());
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	move(0, 0);
@@ -191,16 +192,18 @@ void TwoDModelWidget::connectUiButtons()
 	});
 
 //	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
-//	connect(mUi->penColorComboBox, SIGNAL(activated(int)), this, SLOT(changePenColor(int)));
+//	connect(mUi->penColorComboBox, SIGNAL(activated(int)), this, SiLOT(changePenColor(int)));
 
-//	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
-//	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
+	connect(&mActions->saveModelAction(), &QAction::triggered, this, &TwoDModelWidget::saveWorldModel);
+	connect(&mActions->loadModelAction(), &QAction::triggered, this, &TwoDModelWidget::loadWorldModel);
 
 //	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 
 //	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
-//	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
-//	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
+	connect(&mActions->scrollHandModeAction(), &QAction::toggled
+			, this, &TwoDModelWidget::onHandCursorButtonToggled);
+	connect(&mActions->multiSelectionModeAction(), &QAction::toggled
+			, this, &TwoDModelWidget::onMultiselectionCursorButtonToggled);
 
 //	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(returnToStartMarker()));
 	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
@@ -216,10 +219,6 @@ void TwoDModelWidget::initButtonGroups()
 	mButtonGroup.addButton(mUi->stylusButton);
 	mButtonGroup.addButton(mUi->ellipseButton);
 	mButtonGroup.addButton(mUi->noneButton);
-
-	mCursorButtonGroup.setExclusive(true);
-//	mCursorButtonGroup.addButton(mUi->handCursorButton);
-//	mCursorButtonGroup.addButton(mUi->multiselectionCursorButton);
 }
 
 void TwoDModelWidget::setPortsGroupBoxAndWheelComboBoxes()
@@ -342,6 +341,7 @@ void TwoDModelWidget::showEvent(QShowEvent *e)
 void TwoDModelWidget::onFirstShow()
 {
 	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
+	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 }
 
 void TwoDModelWidget::centerOnRobot()
@@ -679,8 +679,8 @@ void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 		static_cast<QHBoxLayout *>(mUi->sceneHeaderWidget->layout())->insertItem(1, mUi->horizontalSpacer);
 	}
 
-//	mUi->saveWorldModelPushButton->setVisible(!worldReadOnly);
-//	mUi->loadWorldModelPushButton->setVisible(!worldReadOnly);
+	mActions->saveModelAction().setVisible(!worldReadOnly);
+	mActions->loadModelAction().setVisible(!worldReadOnly);
 
 	const bool sensorsReadOnly = flags.testFlag(ReadOnly::Sensors);
 	const bool robotConfigurationReadOnly = flags.testFlag(ReadOnly::RobotSetup);
@@ -706,6 +706,7 @@ void TwoDModelWidget::setCompactMode(bool enabled)
 {
 	mCompactMode = enabled;
 	setRunStopButtonsVisibility();
+	mActions->setSaveLoadActionsShortcutsEnabled(!mCompactMode);
 }
 
 void TwoDModelWidget::enableRobotFollowing(bool on)
@@ -721,6 +722,7 @@ void TwoDModelWidget::setCursorType(CursorType cursor)
 	SettingsManager::setValue("2dCursorType", cursor);
 	mUi->graphicsView->setDragMode(cursorTypeToDragType(cursor));
 	mUi->graphicsView->setCursor(cursorTypeToCursor(cursor));
+	syncCursorButtons();
 }
 
 void TwoDModelWidget::changePhysicsSettings()
@@ -816,10 +818,10 @@ void TwoDModelWidget::syncCursorButtons()
 {
 	switch(mNoneCursorType) {
 	case hand:
-//		mUi->handCursorButton->setChecked(true);
+		mActions->scrollHandModeAction().setChecked(true);
 		break;
 	case multiselection:
-//		mUi->multiselectionCursorButton->setChecked(true);
+		mActions->multiSelectionModeAction().setChecked(true);
 		break;
 	default:
 		break;

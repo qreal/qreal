@@ -50,6 +50,12 @@ public:
 	void setBrushStyleItems(const QString &text);
 	void setBrushColorItems(const QString &text);
 
+	/// Appends the given action to the context menu shown on empty scene.
+	void addAction(QAction * const action);
+
+	/// Appends the given list of action to the context menu shown on empty scene.
+	void addActions(const QList<QAction *> &actions);
+
 protected:
 	void setEmptyRect(int x, int y, int w, int h);
 
@@ -66,6 +72,8 @@ protected:
 	QString penColorItems();
 	QString brushStyleItems();
 	QString brushColorItems();
+
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 	AbstractView *mView;
 	graphicsUtils::AbstractItem *mGraphicsItem;
@@ -85,6 +93,8 @@ protected:
 	int mFirstPenWidth;
 
 	QGraphicsRectItem *mEmptyRect;
+
+	QList<QAction *> mActions;
 };
 
 }
