@@ -67,6 +67,7 @@ HEADERS += \
 	$$PWD/src/engine/view/parts/palette.h \
 	$$PWD/src/engine/view/parts/actionsBox.h \
 	$$PWD/src/engine/view/parts/gridParameters.h \
+	$$PWD/src/engine/view/parts/detailsTab.h \
 	$$PWD/src/engine/constraints/constraintsChecker.h \
 	$$PWD/src/engine/constraints/details/defines.h \
 	$$PWD/src/engine/constraints/details/constraintsParser.h \
@@ -105,6 +106,7 @@ SOURCES += \
 	$$PWD/src/engine/view/parts/palette.cpp \
 	$$PWD/src/engine/view/parts/actionsBox.cpp \
 	$$PWD/src/engine/view/parts/gridParameters.cpp \
+	$$PWD/src/engine/view/parts/detailsTab.cpp \
 	$$PWD/src/engine/model/model.cpp \
 	$$PWD/src/engine/model/settings.cpp \
 	$$PWD/src/engine/model/robotModel.cpp \

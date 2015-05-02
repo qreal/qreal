@@ -118,47 +118,6 @@
                </property>
               </spacer>
              </item>
-             <item row="1" column="0">
-              <widget class="QGroupBox" name="motorsGroupBox">
-               <property name="title">
-                <string>Motors</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_3">
-                <item>
-                 <widget class="QLabel" name="leftWheelLabel">
-                  <property name="text">
-                   <string>Left wheel:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="leftWheelComboBox"/>
-                </item>
-                <item>
-                 <widget class="QLabel" name="rightWheelLabel">
-                  <property name="text">
-                   <string>Right wheel:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="rightWheelComboBox"/>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QGroupBox" name="portsGroupBox">
-               <property name="title">
-                <string>Ports configuration</string>
-               </property>
-               <layout class="QFormLayout" name="portsFormLayout">
-                <property name="fieldGrowthPolicy">
-                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-                </property>
-               </layout>
-              </widget>
-             </item>
             </layout>
            </widget>
            <widget class="QWidget" name="modelSettingsTab">
@@ -166,36 +125,6 @@
              <string>Model settings</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_5">
-             <item row="0" column="0">
-              <widget class="QGroupBox" name="physicsGroupBox">
-               <property name="title">
-                <string>Physics</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout">
-                <item>
-                 <widget class="QCheckBox" name="realisticPhysicsCheckBox">
-                  <property name="text">
-                   <string>Realistic physics</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
-                  <property name="text">
-                   <string>Realistic sensors</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="enableMotorNoiseCheckBox">
-                  <property name="text">
-                   <string>Realistic engines</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
              <item row="2" column="0">
               <spacer name="verticalSpacer">
                <property name="orientation">
@@ -318,38 +247,6 @@
           <verstretch>1</verstretch>
          </sizepolicy>
         </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="QFrame" name="displayFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QPushButton" name="displayButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-             <normaloff>:/icons/2d_left.png</normaloff>:/icons/2d_left.png</iconset>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
       <item row="1" column="1" colspan="3">
@@ -509,6 +406,130 @@
         </layout>
        </widget>
       </item>
+      <item row="2" column="2">
+       <widget class="QFrame" name="detailsPanel">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="toggleDetailsButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
+             <normaloff>:/icons/2d_left.png</normaloff>:/icons/2d_left.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="detailsContainer" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="twoDModel::view::DetailsTab" name="detailsTab">
+              <column>
+               <property name="text">
+                <string notr="true">1</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="portsFrame">
+              <layout class="QFormLayout" name="portsFormLayout">
+               <property name="fieldGrowthPolicy">
+                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+               </property>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="motorsFrame">
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QLabel" name="leftWheelLabel">
+                 <property name="text">
+                  <string>Left wheel:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="leftWheelComboBox"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="rightWheelLabel">
+                 <property name="text">
+                  <string>Right wheel:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="rightWheelComboBox"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="physicsFrame">
+              <layout class="QVBoxLayout" name="verticalLayout">
+               <item>
+                <widget class="QCheckBox" name="realisticPhysicsCheckBox">
+                 <property name="text">
+                  <string>Realistic physics</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
+                 <property name="text">
+                  <string>Realistic sensors</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="enableMotorNoiseCheckBox">
+                 <property name="text">
+                  <string>Realistic engines</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -530,6 +551,11 @@
    <class>twoDModel::view::Palette</class>
    <extends>QWidget</extends>
    <header>src/engine/view/parts/palette.h</header>
+  </customwidget>
+  <customwidget>
+   <class>twoDModel::view::DetailsTab</class>
+   <extends>QTreeWidget</extends>
+   <header>src/engine/view/parts/detailsTab.h</header>
   </customwidget>
  </customwidgets>
  <resources>

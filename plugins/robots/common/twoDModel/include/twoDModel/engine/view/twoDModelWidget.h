@@ -133,7 +133,7 @@ private slots:
 
 	void changePhysicsSettings();
 
-	void toggleDisplayVisibility();
+	void toggleDetailsVisibility();
 
 	void returnToStartMarker();
 
@@ -156,7 +156,7 @@ private:
 	void setPortsGroupBoxAndWheelComboBoxes();
 	void unsetPortsGroupBoxAndWheelComboBoxes();
 
-	void setDisplayVisibility(bool visible);
+	void setDetailsVisibility(bool visible);
 	void setRunStopButtonsVisibility();
 
 	QDomDocument generateXml() const;
@@ -180,6 +180,8 @@ private:
 
 	void initWidget();
 	void initPalette();
+	void initDetailsTab();
+
 	QList<graphicsUtils::AbstractItem *> selectedColorItems() const;
 	bool isColorItem(graphicsUtils::AbstractItem * const item) const;
 
@@ -220,7 +222,7 @@ private:
 	CursorType mCursorType; // current cursorType
 
 	bool mFollowRobot = false;
-	bool mDisplayIsVisible = false;
+	bool mDetailsAreVisible = false;
 	bool mFirstShow = true;
 
 	QString mModelSettingsTabName;

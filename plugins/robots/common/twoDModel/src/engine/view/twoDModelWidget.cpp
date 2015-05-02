@@ -78,6 +78,8 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	initPalette();
 
 	connectUiButtons();
+
+	mUi->detailsTab->setPhysicsSettings(mUi->physicsFrame);
 	mUi->realisticPhysicsCheckBox->setChecked(mModel.settings().realisticPhysics());
 	mUi->enableSensorNoiseCheckBox->setChecked(mModel.settings().realisticSensors());
 	mUi->enableMotorNoiseCheckBox->setChecked(mModel.settings().realisticMotors());
@@ -143,10 +145,7 @@ void TwoDModelWidget::initWidget()
 
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-	mUi->displayFrame->setEnabled(false);
-
-	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
+	mUi->detailsTab->setDisplay(mDisplay);
 
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
@@ -175,6 +174,10 @@ void TwoDModelWidget::initPalette()
 	connect(ellipseTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawEllipse); });
 	connect(stylusTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawStylus); });
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
+}
+
+void TwoDModelWidget::initDetailsTab()
+{
 }
 
 void TwoDModelWidget::connectUiButtons()
@@ -215,18 +218,18 @@ void TwoDModelWidget::connectUiButtons()
 			, this, &TwoDModelWidget::onMultiselectionCursorButtonToggled);
 
 //	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(returnToStartMarker()));
-	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
+	connect(mUi->toggleDetailsButton, &QAbstractButton::clicked, this, &TwoDModelWidget::toggleDetailsVisibility);
 
 	initRunStopButtons();
 }
 
 void TwoDModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 {
-	mCurrentConfigurer = new DevicesConfigurationWidget(mUi->portsGroupBox, true, true);
+	mCurrentConfigurer = new DevicesConfigurationWidget(mUi->portsFrame, true, true);
 	mCurrentConfigurer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	mCurrentConfigurer->loadRobotModels({ &mSelectedRobotItem->robotModel().info() });
 	mCurrentConfigurer->selectRobotModel(mSelectedRobotItem->robotModel().info());
-	mUi->portsGroupBox->layout()->addWidget(mCurrentConfigurer);
+	mUi->portsFrame->layout()->addWidget(mCurrentConfigurer);
 	mCurrentConfigurer->connectDevicesConfigurationProvider(&mSelectedRobotItem->robotModel().configuration());
 	connectDevicesConfigurationProvider(&mSelectedRobotItem->robotModel().configuration());
 
@@ -240,12 +243,15 @@ void TwoDModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 
 	connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
 	connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
+
+	mUi->detailsTab->setDevicesConfigurer(mUi->portsFrame);
+	mUi->detailsTab->setMotorsConfigurer(mUi->motorsFrame);
 }
 
 void TwoDModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 {
 	if (mCurrentConfigurer) {
-		mUi->portsGroupBox->layout()->removeWidget(mCurrentConfigurer);
+		mUi->portsFrame->layout()->removeWidget(mCurrentConfigurer);
 		mCurrentConfigurer->disconnectDevicesConfigurationProvider();
 
 		if (mSelectedRobotItem) {
@@ -307,6 +313,7 @@ void TwoDModelWidget::showEvent(QShowEvent *e)
 void TwoDModelWidget::onFirstShow()
 {
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
+	setDetailsVisibility(SettingsManager::value("2d_detailsVisible").toBool());
 }
 
 void TwoDModelWidget::centerOnRobot()
@@ -721,18 +728,18 @@ void TwoDModelWidget::changePhysicsSettings()
 	mModel.settings().rereadNoiseSettings();
 }
 
-void TwoDModelWidget::toggleDisplayVisibility()
+void TwoDModelWidget::toggleDetailsVisibility()
 {
-	setDisplayVisibility(!mDisplayIsVisible);
+	setDetailsVisibility(!mDetailsAreVisible);
 }
 
-void TwoDModelWidget::setDisplayVisibility(bool visible)
+void TwoDModelWidget::setDetailsVisibility(bool visible)
 {
-	mDisplayIsVisible = visible;
-	mDisplay->setVisible(visible);
+	mDetailsAreVisible = visible;
+	mUi->detailsContainer->setVisible(visible);
 	const QString direction = visible ? "right" : "left";
-	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
-	SettingsManager::setValue("2d_displayVisible", visible);
+	mUi->toggleDetailsButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
+	SettingsManager::setValue("2d_detailsVisible", visible);
 }
 
 void TwoDModelWidget::setRunStopButtonsVisibility()
@@ -948,13 +955,12 @@ void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 	setPortsGroupBoxAndWheelComboBoxes();
 	updateWheelComboBoxes();
 
+	mUi->detailsTab->setDisplay(nullptr);
 	delete mDisplay;
 	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget(this);
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-	mUi->displayFrame->setEnabled(true);
-	setDisplayVisibility(mDisplayIsVisible);
+	mUi->detailsTab->setDisplay(mDisplay);
 
 	mUi->leftWheelComboBox->show();
 	mUi->rightWheelComboBox->show();
@@ -972,12 +978,10 @@ void TwoDModelWidget::unsetSelectedRobotItem()
 		mSelectedRobotItem = nullptr;
 	}
 
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->removeWidget(mDisplay);
+	mUi->detailsTab->setDisplay(nullptr);
 	delete mDisplay;
 	mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-
-	mUi->displayFrame->setEnabled(false);
+	mUi->detailsTab->setDisplay(mDisplay);
 }
 
 void TwoDModelWidget::incrementTimelineCounter()
