@@ -43,14 +43,25 @@ QString EnumType::generateEnums(const QString &lineTemplate) const
 {
 	//QString enums;
 	QString line = lineTemplate;
+	QString lineForWright = "";
 //	foreach(QString value, mValues) {
 //		enums += "<< \"" + value + "\" ";
 //	}
 //	line.replace(enumsListTag, enums).replace(elementNameTag, name());
 	for (const QString &value : mValues.keys()) {
-		line.replace(enumsListTag, mValues[value]).replace(dispNameTag, value).replace(elementNameTag, name());
+		//line.replace(enumsListTag, mValues[value]).replace(dispNameTag, value).replace(elementNameTag, name());
+//{ qMakePair(QString("@@DispName@@"), tr("@@EnumValuesList@@")) };
 
+
+		if (!lineForWright.isEmpty()) {
+			lineForWright += ", qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
+		}
+		else {
+			lineForWright = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
+		}
+		//line.replace(qMakeLineTag, lineForWright).replace(elementNameTag, name());
 	}
+	line.replace(qMakeLineTag, lineForWright).replace(elementNameTag, name());
 
 	return line;
 }

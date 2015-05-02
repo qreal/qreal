@@ -42,4 +42,4 @@
 @@FilledArrowColor@@=			brush.setColor(Qt::black);
 @@EmptyArrowColor@@=			brush.setColor(Qt::white);
 @@ElementDescriptionMapLine@@=	elementsDescriptionMap["@@DiagramName@@"]["@@ElementName@@"] = tr("@@Description@@");
-@@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		return { qMakePair(QString("@@DispName@@"), tr("@@EnumValuesList@@")) };
+@@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		return { @@qMakeLine@@ };

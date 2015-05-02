@@ -168,4 +168,6 @@ const QString metaEntityAssociation = "MetaEntityAssociation";
 
 const QString nameOfTheDirectory = "name of the directory";
 
+const QString qMakeLineTag = "@@qMakeLine@@";//enumFix
+
 
