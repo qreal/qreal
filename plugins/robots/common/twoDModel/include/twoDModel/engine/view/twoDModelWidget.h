@@ -123,7 +123,9 @@ private slots:
 	void changePenColor(int textIndex);
 	void onSelectionChange();
 
-	void changeSpeed(int curIndex);
+	void speedUp();
+	void speedDown();
+	void checkSpeedButtons();
 
 	void enableRobotFollowing(bool on);
 	void onHandCursorButtonToggled(bool on);
@@ -148,12 +150,6 @@ private:
 	};
 
 	static const int defaultPenWidth = 6;
-
-	static const int indexOfNoneSensor = 0;
-	static const int indexOfTouchSensor = 1;
-	static const int indexOfColorSensor = 2;
-	static const int indexOfSonarSensor = 3;
-	static const int indexOfLightSensor = 4;
 
 	void changePalette();
 	void connectUiButtons();
@@ -218,17 +214,14 @@ private:
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
 	int mWidth = 0;
+	int mCurrentSpeed;
 
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType
 
 	bool mFollowRobot = false;
-
-	bool mFirstShow = true;
-
 	bool mDisplayIsVisible = false;
-
-	bool mAutoOpen;
+	bool mFirstShow = true;
 
 	QString mModelSettingsTabName;
 	QString mPortsTabName;

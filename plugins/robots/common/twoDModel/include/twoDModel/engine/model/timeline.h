@@ -33,9 +33,7 @@ public:
 	static const int fps = 28; // frames per second
 	static const int defaultFrameLength = 1000 / fps;
 
-	static const int slowSpeedFactor = 2;
 	static const int normalSpeedFactor = 5;
-	static const int fastSpeedFactor = 10;
 	static const int immediateSpeedFactor = 100000000;
 
 	explicit Timeline(QObject *parent = 0);

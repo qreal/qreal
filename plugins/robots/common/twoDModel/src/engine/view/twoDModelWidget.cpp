@@ -60,6 +60,9 @@ using namespace kitBase;
 using namespace kitBase::robotModel;
 using namespace robotParts;
 
+const QList<int> speedFactors = { 2, 3, 4, 5, 6, 8, 10, 15, 20 };
+const int defailtSpeedFactorIndex = 3;
+
 TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::TwoDModelWidget)
@@ -67,6 +70,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
+	, mCurrentSpeed(defailtSpeedFactorIndex)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -98,6 +102,8 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 
 	setFocus();
 
+	mModel.timeline().setSpeedFactor(speedFactors[defailtSpeedFactorIndex]);
+	checkSpeedButtons();
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
 }
 
@@ -199,7 +205,8 @@ void TwoDModelWidget::connectUiButtons()
 	connect(&mActions->saveModelAction(), &QAction::triggered, this, &TwoDModelWidget::saveWorldModel);
 	connect(&mActions->loadModelAction(), &QAction::triggered, this, &TwoDModelWidget::loadWorldModel);
 
-//	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
+	connect(mUi->speedUpButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedUp);
+	connect(mUi->speedDownButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedDown);
 
 //	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
 	connect(&mActions->scrollHandModeAction(), &QAction::toggled
@@ -246,23 +253,6 @@ void TwoDModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 		}
 
 		delete mCurrentConfigurer;
-	}
-}
-
-void TwoDModelWidget::changeSpeed(int curIndex)
-{
-	switch(curIndex){
-	case 0:
-		mModel.timeline().setSpeedFactor(Timeline::slowSpeedFactor);
-		break;
-	case 1:
-		mModel.timeline().setSpeedFactor(Timeline::normalSpeedFactor);
-		break;
-	case 2:
-		mModel.timeline().setSpeedFactor(Timeline::fastSpeedFactor);
-		break;
-	default:
-		mModel.timeline().setSpeedFactor(Timeline::normalSpeedFactor);
 	}
 }
 
@@ -316,7 +306,6 @@ void TwoDModelWidget::showEvent(QShowEvent *e)
 
 void TwoDModelWidget::onFirstShow()
 {
-	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 }
 
@@ -509,6 +498,28 @@ void TwoDModelWidget::onSelectionChange()
 
 		setSelectedRobotItem(robotItem);
 	}
+}
+
+void TwoDModelWidget::speedUp()
+{
+	if (mCurrentSpeed < speedFactors.count() - 1) {
+		mModel.timeline().setSpeedFactor(speedFactors[++mCurrentSpeed]);
+		checkSpeedButtons();
+	}
+}
+
+void TwoDModelWidget::speedDown()
+{
+	if (mCurrentSpeed > 0) {
+		mModel.timeline().setSpeedFactor(speedFactors[--mCurrentSpeed]);
+		checkSpeedButtons();
+	}
+}
+
+void TwoDModelWidget::checkSpeedButtons()
+{
+	mUi->speedUpButton->setEnabled(mCurrentSpeed < speedFactors.count() - 1);
+	mUi->speedDownButton->setEnabled(mCurrentSpeed > 0);
 }
 
 void TwoDModelWidget::setValuePenColorComboBox(const QColor &penColor)
