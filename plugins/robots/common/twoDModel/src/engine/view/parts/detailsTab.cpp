@@ -51,7 +51,10 @@ void DetailsTab::initWidget()
 	setHeaderHidden(true);
 	setSelectionMode(NoSelection);
 	setIndentation(10);
-	setStyleSheet("QTreeWidget { background: transparent }");
+	QPalette palette;
+	palette.setColor(QPalette::Window, Qt::transparent);
+	palette.setColor(QPalette::Base, Qt::transparent);
+	setPalette(palette);
 	setAnimated(true);
 }
 
@@ -80,10 +83,6 @@ void DetailsTab::setDevicesConfigurer(QWidget *widget)
 {
 	mDevices = widget;
 	setItemWidget(mDevicesItem, 0, widget);
-	mDevices->setStyleSheet("QScrollArea {background: transparent}"\
-			"QScrollArea>QWidget {background: transparent}"\
-			"QScrollArea>QWidget>QWidget {background: transparent}"
-	);
 	mDevices->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 }
 
