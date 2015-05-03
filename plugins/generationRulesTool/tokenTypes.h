@@ -27,6 +27,7 @@ enum class TokenTypes {
 	, inKeyword
 
 	, callGeneratorForKeyword
+	, generatorKeyword
 
 	, text
 
@@ -35,6 +36,7 @@ enum class TokenTypes {
 	, linksKeyword
 
 	, transitionEndKeyword
+	, transitionStartKeyword
 
 	, comment
 	, string
@@ -107,6 +109,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 		debug << "callGeneratorForKeyword ";
 		break;
 
+	case TokenTypes::generatorKeyword:
+		debug << "generatorKeyword ";
+		break;
+
 	case TokenTypes::text:
 		debug << "text ";
 		break;
@@ -125,6 +131,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::transitionEndKeyword:
 		debug << "transitionEndKeyword ";
+		break;
+
+	case TokenTypes::transitionStartKeyword:
+		debug << "transitionStartKeyword ";
 		break;
 
 	default:

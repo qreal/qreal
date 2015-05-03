@@ -39,7 +39,15 @@ HEADERS += \
 	$$PWD/generator/auxiliaryGenerators/outcomingLinksListGenerator.h \
 	$$PWD/generator/auxiliaryGenerators/simpleTypeListGenerator.h \
 	$$PWD/generator/generatorForCallGenerator.h \
-	$$PWD/treeGeneratorFromString.h
+	$$PWD/treeGeneratorFromString.h \
+	$$PWD/ast/generator.h \
+	$$PWD/generator/generatorForGeneratorNode.h \
+	$$PWD/ast/list.h \
+	$$PWD/ast/transitionStart.h \
+	$$PWD/ast/elementIdentifier.h \
+	$$PWD/generator/generatorForElementIdentifierNode.h \
+	$$PWD/generator/auxiliaryGenerators/incomingLinksListGenerator.h \
+	$$PWD/generator/auxiliaryGenerators/listGenerator.h
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \
@@ -54,7 +62,11 @@ SOURCES += \
 	$$PWD/generator/auxiliaryGenerators/outcomingLinksListGenerator.cpp \
 	$$PWD/generator/auxiliaryGenerators/simpleTypeListGenerator.cpp \
 	$$PWD/generator/generatorForCallGenerator.cpp \
-	$$PWD/treeGeneratorFromString.cpp
+	$$PWD/treeGeneratorFromString.cpp \
+	$$PWD/generator/generatorForGeneratorNode.cpp \
+	$$PWD/generator/generatorForElementIdentifierNode.cpp \
+	$$PWD/generator/auxiliaryGenerators/incomingLinksListGenerator.cpp \
+	$$PWD/generator/auxiliaryGenerators/listGenerator.cpp
 
 FORMS += \
 	$$PWD/dialogs/specifyGenerationRulesDialog.ui \

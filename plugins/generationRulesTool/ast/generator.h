@@ -5,19 +5,13 @@
 namespace simpleParser {
 namespace ast {
 
-/// Class that represents foreach node.
-class Foreach : public Node
+/// Class that represents generator node.
+class Generator : public Node
 {
 public:
-	/// Constructor.
-	/// @param identifier - iterator identifier.
-	/// @param list - list to iterate.
-	/// @param program - subprogram.
-	Foreach(QSharedPointer<Node> const &identifier
-			, QSharedPointer<Node> const &list
+	Generator(QSharedPointer<Node> const &identifier
 			, QSharedPointer<Node> const &program)
 		: mIdentifier(identifier)
-		, mList(list)
 		, mProgram(program)
 	{
 	}
@@ -28,11 +22,6 @@ public:
 		return mIdentifier;
 	}
 
-	QSharedPointer<Node> listPart() const
-	{
-		return mList;
-	}
-
 	/// Returns program node.
 	QSharedPointer<Node> program() const
 	{
@@ -41,12 +30,11 @@ public:
 
 	QList<QSharedPointer<Node>> children() const override
 	{
-		return {mIdentifier, mList, mProgram};
+		return {mIdentifier, mProgram};
 	}
 
 private:
 	QSharedPointer<Node> mIdentifier;
-	QSharedPointer<Node> mList;
 	QSharedPointer<Node> mProgram;
 };
 }

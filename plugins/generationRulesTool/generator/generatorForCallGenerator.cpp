@@ -1,6 +1,8 @@
 #include "generatorForCallGenerator.h"
 
 #include "commonGenerator.h"
+#include "generatorForGeneratorNode.h"
+
 #include "ast/identifier.h"
 
 #include "treeGeneratorFromString.h"
@@ -13,6 +15,7 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable tableOfVariables
 		, qReal::EditorManagerInterface *editorManagerInterface
+		, const QString &generatorName
 		, qReal::Id const elementId
 		, const QString &elementType
 		, const QString &elementName
@@ -46,11 +49,17 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 
 		for (auto element : listOfElements) {
 			result += CommonGenerator::generatedResult(generatedTree, logicalModelInterface, tableOfVariables
-					, editorManagerInterface, element, identifier, identifier);
+					, editorManagerInterface, generatorName, element, identifier, identifier);
 		}
 
 		return result;
 	} else {
-		return "Not supported yet";
+		QString generatorName = qrtext::as<simpleParser::ast::Identifier>(generatorNameNode)->name();
+		QString result = "";
+
+		for (auto element : listOfElements) {
+			result += CommonGenerator::generatedResult(generatedTree, logicalModelInterface, tableOfVariables
+					, editorManagerInterface, generatorName, element, identifier);
+		}
 	}
 }

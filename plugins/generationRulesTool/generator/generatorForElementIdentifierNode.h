@@ -5,6 +5,8 @@
 
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 
+#include "ast/elementIdentifier.h"
+#include "ast/identifier.h"
 #include "ast/node.h"
 
 #include "variablesTable.h"
@@ -12,18 +14,18 @@
 namespace generationRules {
 namespace generator {
 
-class CommonGenerator
+class GeneratorForElementIdentifierNode
 {
 public:
-	static QString generatedResult(QSharedPointer<simpleParser::ast::Node> node
+	static qReal::IdList neededElementId(QSharedPointer<simpleParser::ast::ElementIdentifier> elementIdentifierNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
 			, qReal::EditorManagerInterface *editorManagerInterface
-			, const QString &generatorName = ""
-			, const qReal::Id elementId = qReal::Id::rootId()
+			, qReal::Id const elementId
 			, const QString &elementType = ""
 			, const QString &elementName = ""
 			);
 };
+
 }
 }

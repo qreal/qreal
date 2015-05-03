@@ -32,6 +32,7 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineKeyword(TokenTypes::inKeyword, "in");
 
 	tokenDefinitions.defineKeyword(TokenTypes::callGeneratorForKeyword, "callGeneratorFor");
+	tokenDefinitions.defineKeyword(TokenTypes::generatorKeyword, "Generator");
 
 	tokenDefinitions.defineToken(TokenTypes::text,
 			QRegularExpression(R"(('[^'\\]*(\\(.|\n)[^'\\]*)*'))")
@@ -42,6 +43,7 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineKeyword(TokenTypes::linksKeyword, "links");
 
 	tokenDefinitions.defineKeyword(TokenTypes::transitionEndKeyword, "transitionEnd");
+	tokenDefinitions.defineKeyword(TokenTypes::transitionStartKeyword, "transitionStart");
 
 	return tokenDefinitions;
 }

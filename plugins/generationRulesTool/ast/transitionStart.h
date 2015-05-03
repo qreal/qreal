@@ -5,7 +5,7 @@
 namespace simpleParser {
 namespace ast {
 
-class TransitionEnd : public Node
+class TransitionStart : public Node
 {
 };
 

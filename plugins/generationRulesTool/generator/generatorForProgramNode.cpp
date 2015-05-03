@@ -12,6 +12,7 @@ QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> program
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable tableOfVariables
 		, qReal::EditorManagerInterface *editorManagerInterface
+		, const QString &generatorName
 		, qReal::Id const elementId
 		, const QString &elementType
 		, const QString &elementName)
@@ -21,7 +22,7 @@ QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> program
 	QList<QSharedPointer<Node>> statements = programNode->children();
 	for (QSharedPointer<Node> statement : statements) {
 		result += CommonGenerator::generatedResult(statement, logicalModelInterface, tableOfVariables
-				, editorManagerInterface, elementId, elementType, elementName);
+				, editorManagerInterface, generatorName, elementId, elementType, elementName);
 	}
 
 	return result;

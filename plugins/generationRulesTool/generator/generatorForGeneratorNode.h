@@ -1,29 +1,30 @@
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QSharedPointer>
-
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 
-#include "ast/node.h"
+#include <QtCore/QSharedPointer>
+#include <QtCore/QString>
+
+#include "ast/generator.h"
 
 #include "variablesTable.h"
 
 namespace generationRules {
 namespace generator {
 
-class CommonGenerator
+class GeneratorForGeneratorNode
 {
 public:
-	static QString generatedResult(QSharedPointer<simpleParser::ast::Node> node
+	static QString generatedResult(QSharedPointer<simpleParser::ast::Generator> generatorNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
 			, qReal::EditorManagerInterface *editorManagerInterface
-			, const QString &generatorName = ""
+			, const QString &wantedGeneratorName
 			, const qReal::Id elementId = qReal::Id::rootId()
-			, const QString &elementType = ""
-			, const QString &elementName = ""
+			, const QString &basicElementType = ""
+			, const QString &basicElementName = ""
 			);
 };
+
 }
 }

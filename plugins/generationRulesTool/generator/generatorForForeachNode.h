@@ -19,7 +19,8 @@ public:
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable tableOfVariables
 			, qReal::EditorManagerInterface *editorManagerInterface
-			, const qReal::Id elementId
+			, const QString &generatorName = ""
+			, const qReal::Id elementId = qReal::Id::rootId()
 			, const QString &basicElementType = ""
 			, const QString &basicElementName = ""
 			);

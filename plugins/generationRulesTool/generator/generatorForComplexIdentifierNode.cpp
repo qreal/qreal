@@ -1,4 +1,5 @@
 #include "generatorForComplexIdentifierNode.h"
+#include "generatorForElementIdentifierNode.h"
 
 #include "ast/identifier.h"
 #include "ast/transitionEnd.h"
@@ -17,34 +18,53 @@ QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<Comple
 	Q_UNUSED(elementType);
 	Q_UNUSED(editorManagerInterface);
 
-	// this node can be identifier or type name.
-	auto elementOrTypeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());
-	auto currentElementOrTypeName = elementOrTypeNode->name();
+	auto identifierPart = qrtext::as<Identifier>(complexIdentifierNode->identifierPart());
+	auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
 
-	// this node can be property or pair of (linkEndType, property)
-	auto secondNode = complexIdentifierNode->secondPartOfComplexIdentifier();
+	return logicalModelInterface->propertyByRoleName(elementId, propertyPart->name()).toString();
+//	if (!complexIdentifierNode->propertyPart()) {
+//		// it is type node for callGeneratorFor node
+//	} else {
+//		auto secondPart = complexIdentifierNode->secondPartOfComplexIdentifier();
 
-	if (secondNode->is<Identifier>()) {
-		auto property = qrtext::as<Identifier>(secondNode)->name();
+//		if (secondPart->is<Identifier>()) {
+//			// it is property
 
-		if (elementName == currentElementOrTypeName) {
-			return generatedResultForNodeWithBasicName(elementId, logicalModelInterface, property);
-		} else {
-			if (tableOfVariables.containsVariable(currentElementOrTypeName)) {
-				return generatedResultForOtherVariable(currentElementOrTypeName, logicalModelInterface, property);
-			} else {
-				return generatedResultForNodeWithUniqueType(logicalModelInterface, currentElementOrTypeName, property);
-			}
-		}
-	} else {
-		if (secondNode->is<TransitionEnd>()) {
-			auto asTransitionEnd = qrtext::as<TransitionEnd>(secondNode);
-			auto propertyNode = qrtext::as<Identifier>(asTransitionEnd->firstIdentifier());
-			auto propertyName = propertyNode->name();
+//			auto asIdentifier = qrtext::as<Identifier>(secondPart);
+//		} else if (secondPart->is<TransitionEnd>()) {
+//			auto asTransitionEnd = qrtext::as<TransitionEnd>(secondPart);
 
-			return generatedResultForOutcomingLink(elementId, logicalModelInterface, propertyName);
-		}
-	}
+//		}
+//	}
+
+//	// this node can be identifier or type name.
+//	auto elementOrTypeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());
+//	auto currentElementOrTypeName = elementOrTypeNode->name();
+
+//	// this node can be property or pair of (linkEndType, property)
+//	auto secondNode = complexIdentifierNode->secondPartOfComplexIdentifier();
+
+//	if (secondNode->is<Identifier>()) {
+//		auto property = qrtext::as<Identifier>(secondNode)->name();
+
+//		if (elementName == currentElementOrTypeName) {
+//			return generatedResultForNodeWithBasicName(elementId, logicalModelInterface, property);
+//		} else {
+//			if (tableOfVariables.containsVariable(currentElementOrTypeName)) {
+//				return generatedResultForOtherVariable(currentElementOrTypeName, logicalModelInterface, property);
+//			} else {
+//				return generatedResultForNodeWithUniqueType(logicalModelInterface, currentElementOrTypeName, property);
+//			}
+//		}
+//	} else {
+//		if (secondNode->is<TransitionEnd>()) {
+//			auto asTransitionEnd = qrtext::as<TransitionEnd>(secondNode);
+//			auto propertyNode = qrtext::as<Identifier>(asTransitionEnd->firstIdentifier());
+//			auto propertyName = propertyNode->name();
+
+//			return generatedResultForOutcomingLink(elementId, logicalModelInterface, propertyName);
+//		}
+//	}
 }
 
 QString GeneratorForComplexIdentifierNode::generatedResultForNodeWithBasicName(
