@@ -89,7 +89,7 @@ void ActionsBox::setWorldModelActionsVisible(bool visible)
 	saveModelAction().setVisible(visible);
 	loadModelAction().setVisible(visible);
 	deleteAllAction().setVisible(visible);
-	clearFloorAction().setVisible(visible);
+	/// @todo: Do we need to hide clearFloorAction() here?
 }
 
 void ActionsBox::setSaveLoadActionsShortcutsEnabled(bool enabled)
