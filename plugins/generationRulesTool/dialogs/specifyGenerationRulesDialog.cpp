@@ -25,6 +25,7 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	connect(mUi->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this
 			, &SpecifyGenerationRulesDialog::saveGenerationRule);
 
+	this->setWindowTitle("Specify rules for " + mInterpreterEditorManager->friendlyName(mId));
 	this->setVisible(true);
 }
 

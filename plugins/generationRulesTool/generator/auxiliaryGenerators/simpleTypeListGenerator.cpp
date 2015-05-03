@@ -4,7 +4,7 @@ using namespace generationRules::generator;
 using namespace simpleParser;
 
 qReal::IdList SimpleTypeListGenerator::generatedList(
-		QSharedPointer<ast::Identifier> linksIdentifierNode
+		QSharedPointer<ast::Identifier> simpleIdentifierNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, const qReal::Id elementId)
 {
@@ -12,7 +12,7 @@ qReal::IdList SimpleTypeListGenerator::generatedList(
 
 	qReal::IdList listOfElements;
 	for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
-		if (elementId.element() == linksIdentifierNode->name()) {
+		if (elementId.element() == simpleIdentifierNode->name()) {
 			listOfElements << elementId;
 		}
 	}

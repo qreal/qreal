@@ -72,7 +72,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 	};
 
 	auto elementIdentifier = (identifier &
-				~(-TokenTypes::dot & (identifier | transitionEndIdentifier | transitionStartIdentifier)))
+				~(-TokenTypes::dot & (transitionEndIdentifier | transitionStartIdentifier)))
 			>> [] (QSharedPointer<ast::Node> elementIdentifierNode) {
 				if (elementIdentifierNode->is<TemporaryPair>()) {
 					auto asPair = qrtext::as<TemporaryPair>(elementIdentifierNode);
@@ -86,7 +86,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				}
 	};
 
-	auto complexIdentifier = (elementIdentifier & -TokenTypes::dot & identifier)
+	auto complexIdentifier = (elementIdentifier & -TokenTypes::doubleColon & identifier)
 			>> [] (QSharedPointer<TemporaryPair> identifierAndProperty) {
 				auto identifierPart = identifierAndProperty->left();
 				auto propertyPart = identifierAndProperty->right();

@@ -13,7 +13,7 @@ namespace generator {
 class SimpleTypeListGenerator
 {
 public:
-	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Identifier> linksIdentifierNode
+	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Identifier> simpleIdentifierNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, const qReal::Id elementId
 			);
