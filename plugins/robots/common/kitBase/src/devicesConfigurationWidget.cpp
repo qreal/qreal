@@ -82,6 +82,7 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	palette.setColor(QPalette::Background, Qt::transparent);
 	result->setPalette(palette);
 	QVBoxLayout * const layout = new QVBoxLayout(result);
+	layout->setContentsMargins(0, 0, 0, 0);
 	QList<PortInfo> const configurablePorts = robotModel.configurablePorts();
 	for (const PortInfo &port : configurablePorts) {
 		layout->addLayout(initPort(robotModel.name(), port, robotModel.allowedDevices(port)));

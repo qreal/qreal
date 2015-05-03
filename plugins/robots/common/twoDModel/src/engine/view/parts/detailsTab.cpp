@@ -52,6 +52,7 @@ void DetailsTab::initWidget()
 {
 	setHeaderHidden(true);
 	setSelectionMode(NoSelection);
+	setIndentation(10);
 	setStyleSheet("QTreeWidget { background: transparent }");
 	setAnimated(true);
 }
@@ -67,6 +68,10 @@ void DetailsTab::setDevicesConfigurer(QWidget *widget)
 {
 	mDevices = widget;
 	setItemWidget(mDevicesItem, 0, widget);
+	mDevices->setStyleSheet("QScrollArea {background: transparent}"\
+			"QScrollArea>QWidget {background: transparent}"\
+			"QScrollArea>QWidget>QWidget {background: transparent}"
+	);
 }
 
 void DetailsTab::setMotorsConfigurer(QWidget *widget)
