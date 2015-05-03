@@ -123,9 +123,6 @@ void TwoDModelWidget::initWidget()
 
 	mUi->setupUi(this);
 
-	mPortsTabName = mUi->mainTabBar->tabText(0);
-	mModelSettingsTabName = mUi->mainTabBar->tabText(1);
-
 	mScene = new TwoDModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
 	mScene->addActions(mActions->sceneContextMenuActions());
@@ -603,54 +600,6 @@ Model &TwoDModelWidget::model() const
 
 void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 {
-	const auto openTab = [this](QWidget * const tab) {
-		QList<const QWidget *> tabOrder{mUi->portsTab, mUi->modelSettingsTab};
-		QHash<const QWidget *, QString> tabs{
-				{mUi->portsTab, mPortsTabName}
-				, {mUi->modelSettingsTab, mModelSettingsTabName}
-		};
-
-		if (!tabs.keys().contains(tab)) {
-			throw qReal::Exception("Trying to add unknown tab to tools palette in 2d model");
-		}
-
-		int tabsIndex = 0;
-
-		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
-			if (mUi->mainTabBar->widget(i) == tab) {
-				return;
-			} else {
-				while (tabsIndex < tabOrder.size() && mUi->mainTabBar->widget(i) != tabOrder[tabsIndex]) {
-					if (tabOrder[tabsIndex] == tab) {
-						mUi->mainTabBar->insertTab(i, tab, tabs[tab]);
-						return;
-					}
-
-					++tabsIndex;
-				}
-			}
-		}
-
-		mUi->mainTabBar->insertTab(mUi->mainTabBar->count(), tab, tabs[tab]);
-	};
-
-	const auto closeTab = [this](QWidget * const tab) {
-		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
-			if (mUi->mainTabBar->widget(i) == tab) {
-				mUi->mainTabBar->removeTab(i);
-				--i;
-			}
-		}
-	};
-
-	const auto setTabHidden = [this, &openTab, &closeTab](QWidget * const tab, const bool hidden) {
-		if (hidden) {
-			closeTab(tab);
-		} else {
-			openTab(tab);
-		}
-	};
-
 	const bool worldReadOnly = (flags & ReadOnly::World) != 0;
 
 	mUi->palette->setVisible(!worldReadOnly);
@@ -673,13 +622,11 @@ void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 		static_cast<QHBoxLayout *>(mUi->sceneHeaderWidget->layout())->insertItem(1, mUi->horizontalSpacer);
 	}
 
-	mActions->saveModelAction().setVisible(!worldReadOnly);
-	mActions->loadModelAction().setVisible(!worldReadOnly);
-
 	const bool sensorsReadOnly = flags.testFlag(ReadOnly::Sensors);
 	const bool robotConfigurationReadOnly = flags.testFlag(ReadOnly::RobotSetup);
 
-	setTabHidden(mUi->portsTab, sensorsReadOnly && robotConfigurationReadOnly);
+	mUi->detailsTab->setDevicesSectionsVisible(!sensorsReadOnly);
+	mUi->detailsTab->setMotorsSectionsVisible(!robotConfigurationReadOnly);
 
 	mCurrentConfigurer->setEnabled(!sensorsReadOnly);
 	mUi->leftWheelComboBox->setEnabled(!robotConfigurationReadOnly);
@@ -687,9 +634,7 @@ void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 
 	const bool simulationSettingsReadOnly = flags.testFlag(ReadOnly::SimulationSettings);
 
-	mUi->realisticPhysicsCheckBox->setEnabled(!simulationSettingsReadOnly);
-	mUi->enableMotorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
-	mUi->enableSensorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
+	mUi->detailsTab->setPhysicsSectionsVisible(!simulationSettingsReadOnly);
 
 	mSensorsReadOnly = sensorsReadOnly;
 

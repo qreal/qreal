@@ -100,11 +100,15 @@ void DetailsTab::setPhysicsSettings(QWidget *widget)
 
 void DetailsTab::setDevicesSectionsVisible(bool visible)
 {
-	mDevices->setHidden(!visible);
-	mMotors->setHidden(!visible);
+	mDevicesRoot->setHidden(!visible);
+}
+
+void DetailsTab::setMotorsSectionsVisible(bool visible)
+{
+	mMotorsRoot->setHidden(!visible);
 }
 
 void DetailsTab::setPhysicsSectionsVisible(bool visible)
 {
-	mPhysics->setHidden(!visible);
+	mPhysicsRoot->setHidden(!visible);
 }

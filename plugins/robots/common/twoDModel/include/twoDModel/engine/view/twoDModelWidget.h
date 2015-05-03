@@ -225,9 +225,6 @@ private:
 	bool mDetailsAreVisible = false;
 	bool mFirstShow = true;
 
-	QString mModelSettingsTabName;
-	QString mPortsTabName;
-
 	bool mSensorsReadOnly = false;
 
 	bool mCompactMode = false;

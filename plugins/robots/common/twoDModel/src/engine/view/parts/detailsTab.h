@@ -41,8 +41,11 @@ public slots:
 	/// Shows physics settings widget in corresponding section.
 	void setPhysicsSettings(QWidget *widget);
 
-	/// Shows or hides all sections related to robot`s devices configuration.
+	/// Shows or hides all sections related to robot`s devices configuration (not motors).
 	void setDevicesSectionsVisible(bool visible);
+
+	/// Shows or hides all sections related to robot`s motors configuration.
+	void setMotorsSectionsVisible(bool visible);
 
 	/// Shows or hides all sections related to model physics configuration.
 	void setPhysicsSectionsVisible(bool visible);
