@@ -49,6 +49,7 @@ public slots:
 
 private:
 	void initWidget();
+	void initItem(QTreeWidgetItem *item, const QString &text, bool expanded);
 
 	QTreeWidgetItem *mDisplayRoot;  // Takes ownership
 	QTreeWidgetItem *mDevicesRoot;  // Takes ownership

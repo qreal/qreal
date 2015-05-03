@@ -14,6 +14,9 @@
 
 #include "detailsTab.h"
 
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
+
 using namespace twoDModel::view;
 
 DetailsTab::DetailsTab(QWidget *parent)
@@ -33,15 +36,10 @@ DetailsTab::DetailsTab(QWidget *parent)
 {
 	initWidget();
 
-	mDisplayRoot->setText(0, tr("Display"));
-	mDevicesRoot->setText(0, tr("Ports configuration"));
-	mMotorsRoot->setText(0, tr("Motors"));
-	mPhysicsRoot->setText(0, tr("Physics"));
-
-	mDisplayRoot->setExpanded(true);
-	mDevicesRoot->setExpanded(true);
-	mMotorsRoot->setExpanded(false);
-	mPhysicsRoot->setExpanded(false);
+	initItem(mDisplayRoot, tr("Display"), true);
+	initItem(mDevicesRoot, tr("Ports configuration"), true);
+	initItem(mMotorsRoot, tr("Motors"), false);
+	initItem(mPhysicsRoot, tr("Physics"), false);
 }
 
 DetailsTab::~DetailsTab()
@@ -55,6 +53,20 @@ void DetailsTab::initWidget()
 	setIndentation(10);
 	setStyleSheet("QTreeWidget { background: transparent }");
 	setAnimated(true);
+}
+
+void DetailsTab::initItem(QTreeWidgetItem *item, const QString &text, bool expanded)
+{
+	QWidget * const widget = new QWidget(this);
+	QVBoxLayout * const layout = new QVBoxLayout(widget);
+	QLabel * const label = new QLabel(text, widget);
+	label->setFrameStyle(QFrame::NoFrame);
+	layout->addStretch();
+	layout->addWidget(label);
+	layout->addStretch();
+	setItemWidget(item, 0, widget);
+	item->setSizeHint(0, QSize(100, 50));
+	item->setExpanded(expanded);
 }
 
 void DetailsTab::setDisplay(QWidget *widget)
@@ -72,6 +84,7 @@ void DetailsTab::setDevicesConfigurer(QWidget *widget)
 			"QScrollArea>QWidget {background: transparent}"\
 			"QScrollArea>QWidget>QWidget {background: transparent}"
 	);
+	mDevices->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 }
 
 void DetailsTab::setMotorsConfigurer(QWidget *widget)

@@ -408,6 +408,12 @@
       </item>
       <item row="2" column="2">
        <widget class="QFrame" name="detailsPanel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -451,7 +457,19 @@
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="detailsContainer" native="true">
+          <widget class="QFrame" name="detailsContainer">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <widget class="twoDModel::view::DetailsTab" name="detailsTab">
@@ -464,6 +482,12 @@
             </item>
             <item>
              <widget class="QFrame" name="portsFrame">
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
               <layout class="QFormLayout" name="portsFormLayout">
                <property name="fieldGrowthPolicy">
                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -491,6 +515,12 @@
             </item>
             <item>
              <widget class="QFrame" name="motorsFrame">
+              <property name="frameShape">
+               <enum>QFrame::Panel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
               <layout class="QVBoxLayout" name="verticalLayout_3">
                <item>
                 <widget class="QLabel" name="leftWheelLabel">
@@ -517,6 +547,12 @@
             </item>
             <item>
              <widget class="QFrame" name="physicsFrame">
+              <property name="frameShape">
+               <enum>QFrame::Panel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
               <layout class="QVBoxLayout" name="verticalLayout">
                <item>
                 <widget class="QCheckBox" name="realisticPhysicsCheckBox">
