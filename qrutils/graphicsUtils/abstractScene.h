@@ -56,6 +56,13 @@ public:
 	/// Appends the given list of action to the context menu shown on empty scene.
 	void addActions(const QList<QAction *> &actions);
 
+signals:
+	/// Emitted when user pressed left mouse button on this scene.
+	void leftButtonPressed();
+
+	/// Emitted when user releases left mouse button on this scene.
+	void leftButtonReleased();
+
 protected:
 	void setEmptyRect(int x, int y, int w, int h);
 
@@ -66,6 +73,9 @@ protected:
 
 	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
 	void setMoveFlag(QGraphicsSceneMouseEvent *event);
+
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 	QString penStyleItems();
 	int penWidthItems();

@@ -113,6 +113,22 @@ void AbstractScene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void AbstractScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	QGraphicsScene::mousePressEvent(mouseEvent);
+	if (mouseEvent->button() == Qt::LeftButton) {
+		emit leftButtonPressed();
+	}
+}
+
+void AbstractScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	QGraphicsScene::mouseReleaseEvent(mouseEvent);
+	if (mouseEvent->button() == Qt::LeftButton) {
+		emit leftButtonReleased();
+	}
+}
+
 void AbstractScene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem *item)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
