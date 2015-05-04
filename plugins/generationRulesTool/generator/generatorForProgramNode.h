@@ -8,6 +8,7 @@
 #include "ast/program.h"
 
 #include "variablesTable.h"
+#include "generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
@@ -16,9 +17,7 @@ class GeneratorForProgramNode
 {
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Program> programNode
-			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable tableOfVariables
-			, qReal::EditorManagerInterface *editorManagerInterface
+			, GeneratorConfigurer generatorConfigurer
 			, const QString &generatorName
 			, qReal::Id const elementId
 			, const QString &elementType = ""

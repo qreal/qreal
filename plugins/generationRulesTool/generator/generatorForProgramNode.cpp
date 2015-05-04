@@ -3,15 +3,11 @@
 
 #include "ast/node.h"
 
-#include "variablesTable.h"
-
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> programNode
-		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, VariablesTable tableOfVariables
-		, qReal::EditorManagerInterface *editorManagerInterface
+		, GeneratorConfigurer generatorConfigurer
 		, const QString &generatorName
 		, qReal::Id const elementId
 		, const QString &elementType
@@ -21,8 +17,8 @@ QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> program
 
 	QList<QSharedPointer<Node>> statements = programNode->children();
 	for (QSharedPointer<Node> statement : statements) {
-		result += CommonGenerator::generatedResult(statement, logicalModelInterface, tableOfVariables
-				, editorManagerInterface, generatorName, elementId, elementType, elementName);
+		result += CommonGenerator::generatedResult(statement, generatorConfigurer, generatorName
+				, elementId, elementType, elementName);
 	}
 
 	return result;

@@ -8,6 +8,7 @@
 #include "ast/foreach.h"
 
 #include "variablesTable.h"
+#include "generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
@@ -16,9 +17,7 @@ class GeneratorForForeachNode
 {
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Foreach> foreachNode
-			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable tableOfVariables
-			, qReal::EditorManagerInterface *editorManagerInterface
+			, GeneratorConfigurer generatorConfigurer
 			, const QString &generatorName = ""
 			, const qReal::Id elementId = qReal::Id::rootId()
 			, const QString &basicElementType = ""

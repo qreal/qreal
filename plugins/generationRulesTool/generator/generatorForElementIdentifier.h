@@ -1,5 +1,7 @@
-#ifndef GENERATORFORELEMENTIDENTIFIER_H
-#define GENERATORFORELEMENTIDENTIFIER_H
+#pragma once
+
+namespace generationRules {
+namespace generator {
 
 class GeneratorForElementIdentifier
 {
@@ -7,4 +9,5 @@ public:
 	GeneratorForElementIdentifier();
 };
 
-#endif // GENERATORFORELEMENTIDENTIFIER_H
+}
+}

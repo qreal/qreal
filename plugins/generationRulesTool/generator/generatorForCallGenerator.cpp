@@ -12,9 +12,7 @@
 using namespace generationRules::generator;
 
 QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::ast::CallGeneratorFor> callGeneratorForNode
-		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, VariablesTable tableOfVariables
-		, qReal::EditorManagerInterface *editorManagerInterface
+		, GeneratorConfigurer generatorConfigurer
 		, const QString &generatorName
 		, qReal::Id const elementId
 		, const QString &elementType
@@ -30,12 +28,14 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 	// another stupid hack
 	// we need to have current editor id and diagram id
 	// and it can be metaEntityEdge
-	auto diagramId = editorManagerInterface->diagrams(editorManagerInterface->editors().first()).first();
+	auto diagramId = generatorConfigurer.diagramId();
+	auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
 	qReal::Id currentElementId = editorManagerInterface->elementsWithTheSameName(diagramId, identifier, "MetaEntityNode").first();
 
 	auto generationRuleForCurrentElement = editorManagerInterface->generationRule(currentElementId);
 	QSharedPointer<simpleParser::ast::Node> generatedTree = TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
 
+	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
 	// now we have to iterate all elements in the model with "identifier" type
 	qReal::IdList listOfElements;
 	for (const qReal::Id element : logicalModelInterface->children(elementId)) {
@@ -48,8 +48,8 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 		QString result = "";
 
 		for (auto element : listOfElements) {
-			result += CommonGenerator::generatedResult(generatedTree, logicalModelInterface, tableOfVariables
-					, editorManagerInterface, generatorName, element, identifier, identifier);
+			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer
+					, generatorName, element, identifier, identifier);
 		}
 
 		return result;
@@ -58,8 +58,7 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 		QString result = "";
 
 		for (auto element : listOfElements) {
-			result += CommonGenerator::generatedResult(generatedTree, logicalModelInterface, tableOfVariables
-					, editorManagerInterface, generatorName, element, identifier);
+			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer, generatorName, element, identifier);
 		}
 	}
 }

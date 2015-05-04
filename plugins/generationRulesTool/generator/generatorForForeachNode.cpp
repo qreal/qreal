@@ -14,9 +14,7 @@ using namespace generationRules::generator;
 using namespace simpleParser;
 
 QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> foreachNode
-			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable tableOfVariables
-			, qReal::EditorManagerInterface *editorManagerInterface
+			, GeneratorConfigurer generatorConfigurer
 			, const QString &generatorName
 			, const qReal::Id elementId
 			, const QString &basicElementType
@@ -32,16 +30,17 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> fo
 	QString elementType = "";
 
 	auto listNode = qrtext::as<simpleParser::ast::List>(foreachNode->listPart());
+	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
+
 	qReal::IdList listOfElements = ListGenerator::listOfIds(listNode, logicalModelInterface, elementId);
 
 	QString result;
 	for (const qReal::Id element : listOfElements) {
 		QSharedPointer<ast::Program> programNode = qrtext::as<ast::Program>(foreachNode->program());
-		result += GeneratorForProgramNode::generatedResult(programNode, logicalModelInterface, tableOfVariables
-				, editorManagerInterface, generatorName, element, elementType, elementName);
+		result += GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer, generatorName, element, elementType, elementName);
 	}
 
-	tableOfVariables.removeVariable(elementName);
+	generatorConfigurer.variablesTable().removeVariable(elementName);
 
 	return result;
 }

@@ -10,6 +10,7 @@
 #include "ast/node.h"
 
 #include "variablesTable.h"
+#include "generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
@@ -20,9 +21,7 @@ public:
 	/// @param elementType - type of basic element in foreach
 	/// @param elementName - name of basic element in foreach
 	static QString generatedResult(QSharedPointer<simpleParser::ast::ComplexIdentifier> complexIdentifierNode
-			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable tableOfVariables
-			, qReal::EditorManagerInterface *editorManagerInterface
+			, GeneratorConfigurer generatorConfigurer
 			, qReal::Id const elementId
 			, const QString &elementType = ""
 			, const QString &elementName = ""

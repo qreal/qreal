@@ -7,9 +7,7 @@
 using namespace generationRules::generator;
 
 QString GeneratorForGeneratorNode::generatedResult(QSharedPointer<simpleParser::ast::Generator> generatorNode
-			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable tableOfVariables
-			, qReal::EditorManagerInterface *editorManagerInterface
+			, GeneratorConfigurer generatorConfigurer
 			, const QString &wantedGeneratorName
 			, const qReal::Id elementId
 			, const QString &basicElementType
@@ -22,8 +20,8 @@ QString GeneratorForGeneratorNode::generatedResult(QSharedPointer<simpleParser::
 	auto programNode = qrtext::as<simpleParser::ast::Program>(generatorNode->program());
 
 	if (wantedGeneratorName == generatorName) {
-		return GeneratorForProgramNode::generatedResult(programNode, logicalModelInterface
-				, tableOfVariables, editorManagerInterface, generatorName, elementId, basicElementType, basicElementName);
+		return GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer,
+				generatorName, elementId, basicElementType, basicElementName);
 	} else {
 		// TODO: throw exception
 		return "Fail!!";

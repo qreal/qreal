@@ -29,7 +29,10 @@ public:
 private slots:
 	void generateCodeForAllElements();
 
-	void generateCode(const qReal::Id &rootId);
+	void generateCode(
+			const qReal::Id &editorId
+			, const qReal::Id &diagramId
+			, const qReal::Id &rootId);
 
 	void openGenerationRulesWindow();
 

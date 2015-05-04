@@ -18,6 +18,7 @@
 
 #include "generator/variablesTable.h"
 #include "generator/commonGenerator.h"
+#include "generator/generatorConfigurer.h"
 
 #include "treeGeneratorFromString.h"
 
@@ -73,18 +74,24 @@ void GenerationRulesPlugin::generateCodeForAllElements()
 	QString rootNodeName = fullRootNodeName.split("/").last();
 	qReal::Id rootNodeId = mEditorManagerInterface->elementsWithTheSameName(diagramId, rootNodeName, "MetaEntityNode").first();
 
-	generateCode(rootNodeId);
+	generateCode(editorId, diagramId, rootNodeId);
 }
 
-void GenerationRulesPlugin::generateCode(const qReal::Id &rootId)
+void GenerationRulesPlugin::generateCode(
+		const qReal::Id &editorId
+		, const qReal::Id &diagramId
+		, const qReal::Id &rootId)
 {
 	QString rootStream = mEditorManagerInterface->generationRule(rootId);
 
 	auto parserResultForRoot = TreeGeneratorFromString::generatedTreeFromString(rootStream);
 	auto programForRoot = parserResultForRoot.dynamicCast<simpleParser::ast::Program>();
 	generationRules::generator::VariablesTable table;
+
+	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface, mEditorManagerInterface, table, editorId, diagramId);
+
 	QString resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
-			, mLogicalModelAssistInterface, table, mEditorManagerInterface);
+			, generatorConfigurer);
 	qDebug() << resultOfGenerationForRoot;
 	table.clear();
 }

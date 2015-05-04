@@ -8,63 +8,18 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<ComplexIdentifier> complexIdentifierNode
-		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, VariablesTable tableOfVariables
-		, qReal::EditorManagerInterface *editorManagerInterface
+		, GeneratorConfigurer generatorConfigurer
 		, const qReal::Id elementId
 		, const QString &elementType
 		, const QString &elementName)
 {
 	Q_UNUSED(elementType);
-	Q_UNUSED(editorManagerInterface);
 
 	auto identifierPart = qrtext::as<Identifier>(complexIdentifierNode->identifierPart());
 	auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
 
+	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
 	return logicalModelInterface->propertyByRoleName(elementId, propertyPart->name()).toString();
-//	if (!complexIdentifierNode->propertyPart()) {
-//		// it is type node for callGeneratorFor node
-//	} else {
-//		auto secondPart = complexIdentifierNode->secondPartOfComplexIdentifier();
-
-//		if (secondPart->is<Identifier>()) {
-//			// it is property
-
-//			auto asIdentifier = qrtext::as<Identifier>(secondPart);
-//		} else if (secondPart->is<TransitionEnd>()) {
-//			auto asTransitionEnd = qrtext::as<TransitionEnd>(secondPart);
-
-//		}
-//	}
-
-//	// this node can be identifier or type name.
-//	auto elementOrTypeNode = qrtext::as<Identifier>(complexIdentifierNode->firstPartOfComplexIdentifier());
-//	auto currentElementOrTypeName = elementOrTypeNode->name();
-
-//	// this node can be property or pair of (linkEndType, property)
-//	auto secondNode = complexIdentifierNode->secondPartOfComplexIdentifier();
-
-//	if (secondNode->is<Identifier>()) {
-//		auto property = qrtext::as<Identifier>(secondNode)->name();
-
-//		if (elementName == currentElementOrTypeName) {
-//			return generatedResultForNodeWithBasicName(elementId, logicalModelInterface, property);
-//		} else {
-//			if (tableOfVariables.containsVariable(currentElementOrTypeName)) {
-//				return generatedResultForOtherVariable(currentElementOrTypeName, logicalModelInterface, property);
-//			} else {
-//				return generatedResultForNodeWithUniqueType(logicalModelInterface, currentElementOrTypeName, property);
-//			}
-//		}
-//	} else {
-//		if (secondNode->is<TransitionEnd>()) {
-//			auto asTransitionEnd = qrtext::as<TransitionEnd>(secondNode);
-//			auto propertyNode = qrtext::as<Identifier>(asTransitionEnd->firstIdentifier());
-//			auto propertyName = propertyNode->name();
-
-//			return generatedResultForOutcomingLink(elementId, logicalModelInterface, propertyName);
-//		}
-//	}
 }
 
 QString GeneratorForComplexIdentifierNode::generatedResultForNodeWithBasicName(
