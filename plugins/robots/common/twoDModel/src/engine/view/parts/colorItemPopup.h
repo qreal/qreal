@@ -16,6 +16,12 @@
 
 #include <qrutils/graphicsUtils/itemPopup.h>
 
+class QSpinBox;
+
+namespace graphicsUtils {
+class ColorListEditor;
+}
+
 namespace twoDModel {
 
 namespace items {
@@ -24,6 +30,8 @@ class ColorFieldItem;
 
 namespace view {
 
+/// A popup for configuring ColorFieldItem on 2D model scene.
+/// Contains item`s color picker and spin box for setting item`s thickness.
 class ColorItemPopup : public graphicsUtils::ItemPopup
 {
 public:
@@ -32,10 +40,14 @@ public:
 
 private:
 	bool suits(QGraphicsItem *item) override;
-	void attachTo(const QList<QGraphicsItem *> &items) override;
-	void detach() override;
+	void attachTo(const QList<QGraphicsItem *> &items);
 
-	QList<items::ColorFieldItem *> mItems;
+	void initWidget();
+	QWidget *initColorPicker();
+	QWidget *initSpinBox();
+
+	graphicsUtils::ColorListEditor *mColorPicker;  // Takes ownership
+	QSpinBox *mSpinBox;  // Takes ownership
 };
 
 }

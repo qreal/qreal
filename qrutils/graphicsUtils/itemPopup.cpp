@@ -14,6 +14,7 @@
 
 #include "itemPopup.h"
 
+#include <QtWidgets/QLayout>
 #include <QtWidgets/QGraphicsView>
 
 #include "abstractScene.h"
@@ -30,7 +31,6 @@ ItemPopup::ItemPopup(AbstractScene &scene, QWidget *parent)
 
 	connect(&mScene, &AbstractScene::leftButtonPressed, this, &ItemPopup::onMousePressedScene);
 	connect(&mScene, &AbstractScene::leftButtonReleased, this, &ItemPopup::onMouseReleasedScene);
-	setFixedSize(100, 100);
 }
 
 ItemPopup::~ItemPopup()
@@ -49,11 +49,48 @@ void ItemPopup::attachTo(QGraphicsItem *item)
 
 void ItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 {
-	Q_UNUSED(items)
+	mCurrentItems = items;
 }
 
 void ItemPopup::detach()
 {
+	mCurrentItems.clear();
+}
+
+void ItemPopup::updateDueToLayout()
+{
+	setFixedSize(layout()->sizeHint());
+}
+
+QVariant ItemPopup::dominantPropertyValue(const QString &property)
+{
+	QMap<QVariant, int> valuesCounts;
+	for (QGraphicsItem * const item : mCurrentItems) {
+		if (QObject * const object = dynamic_cast<QObject *>(item)) {
+			const QVariant value = object->property(property.toLocal8Bit());
+			if (value.isValid()) {
+				++valuesCounts[value];
+			}
+		}
+	}
+
+	QVariant result;
+	for (const QVariant &value : valuesCounts.keys()) {
+		if (valuesCounts[value] > valuesCounts[result]) {
+			result = value;
+		}
+	}
+
+	return result;
+}
+
+void ItemPopup::setPropertyMassively(const QString &property, const QVariant &value)
+{
+	for (QGraphicsItem * const item : mCurrentItems) {
+		if (QObject * const object = dynamic_cast<QObject *>(item)) {
+			object->setProperty(property.toLocal8Bit(), value);
+		}
+	}
 }
 
 void ItemPopup::onMousePressedScene()

@@ -1,7 +1,7 @@
 /* Copyright 2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+	 * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
@@ -14,6 +14,11 @@
 
 #include "colorItemPopup.h"
 
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QSpinBox>
+
+#include <qrutils/graphicsUtils/colorListEditor.h>
+
 #include "src/engine/items/wallItem.h"
 
 using namespace twoDModel::view;
@@ -21,6 +26,7 @@ using namespace twoDModel::view;
 ColorItemPopup::ColorItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent)
 	: ItemPopup(scene, parent)
 {
+	initWidget();
 }
 
 ColorItemPopup::~ColorItemPopup()
@@ -36,13 +42,45 @@ bool ColorItemPopup::suits(QGraphicsItem *item)
 
 void ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 {
-	mItems.clear();
-	for (QGraphicsItem * const item : items) {
-		mItems << dynamic_cast<items::ColorFieldItem *>(item);
-	}
+	ItemPopup::attachTo(items);
+	mColorPicker->setColor(dominantPropertyValue("color").value<QColor>());
+	mSpinBox->setValue(dominantPropertyValue("thickness").toInt());
 }
 
-void ColorItemPopup::detach()
+void twoDModel::view::ColorItemPopup::initWidget()
 {
-	mItems.clear();
+	QVBoxLayout * const layout = new QVBoxLayout(this);
+	layout->addWidget(initColorPicker());
+	layout->addWidget(initSpinBox());
+
+	updateDueToLayout();
+}
+
+QWidget *ColorItemPopup::initColorPicker()
+{
+	graphicsUtils::ColorListEditor * const editor = new graphicsUtils::ColorListEditor(this, true);
+	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
+	editor->setColorList(colorList);
+	editor->setFocusPolicy(Qt::NoFocus);
+	connect(editor, &graphicsUtils::ColorListEditor::colorChanged, [=](const QColor &color) {
+		setPropertyMassively("color", color);
+	});
+
+	mColorPicker = editor;
+	return editor;
+}
+
+QWidget *ColorItemPopup::initSpinBox()
+{
+	QSpinBox * const spinBox = new QSpinBox(this);
+	QPalette spinBoxPalette;
+	spinBoxPalette.setColor(QPalette::Window, Qt::transparent);
+	spinBoxPalette.setColor(QPalette::Base, Qt::transparent);
+	spinBox->setPalette(spinBoxPalette);
+	connect(spinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=](int value) {
+		setPropertyMassively("thickness", value);
+	});
+
+	mSpinBox = spinBox;
+	return spinBox;
 }

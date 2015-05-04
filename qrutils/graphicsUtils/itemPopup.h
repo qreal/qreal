@@ -22,7 +22,7 @@ namespace graphicsUtils {
 
 class AbstractScene;
 
-/// A base class for popup window that configures some item on 2D model scene.
+/// A base class for popup window that configures some item on graphicsUtils::AbstractScene.
 /// Each time when user selets the item of template type this popup will appear to specify some
 /// properties of the item.
 class ItemPopup : public QFrame
@@ -33,7 +33,17 @@ public:
 	explicit ItemPopup(AbstractScene &scene, QWidget *parent = 0);
 	~ItemPopup();
 
-private slots:
+protected slots:
+	/// This will set fixed size of this window in consideration with layout.
+	/// Must be called each time when layout of this widget changes.
+	/// This is not performed automaticly cause this widget is not in parent layout, it floats
+	/// on the parent widget.
+	void updateDueToLayout();
+
+	/// Sets the property to all items .
+	/// Items that are not QObjects are ignored. Setting properties is performed with Qt reflection.
+	void setPropertyMassively(const QString &property, const QVariant &value);
+
 	/// Implementation must return should this window be shown for the given item or not.
 	/// This can be prettily done with templates, but QObject can not be used with them.
 	/// Default implementation returns true for graphicsUtils::AbstractItem instances.
@@ -44,20 +54,25 @@ private slots:
 	virtual void attachTo(QGraphicsItem *item);
 
 	/// Called when this window is shown for some group of items.
-	/// Default implementation does nothing.
+	/// Default implementation remembers items for future.
 	virtual void attachTo(const QList<QGraphicsItem *> &items);
 
 	/// Called when user canceled his selection and before the window is hidden.
-	/// Default implementation does nothing.
+	/// Default implementation clears items memorized last time.
 	virtual void detach();
 
 	void onMousePressedScene();
 	void onMouseReleasedScene();
 
-private:
+protected:
+	/// Searches for the given property value that is met most oftenly among items memorized in last attachTo() call.
+	/// Items that are not QObjects are ignored. Obtaining property values is performed with Qt reflection.
+	QVariant dominantPropertyValue(const QString &property);
+
 	QPointF leftmostTopmost(const QList<QGraphicsItem *> &items);
 
 	AbstractScene &mScene;
+	QList<QGraphicsItem *> mCurrentItems;
 };
 
 }

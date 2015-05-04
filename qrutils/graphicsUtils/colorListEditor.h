@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,12 @@ class QRUTILS_EXPORT ColorListEditor : public QComboBox
 	Q_OBJECT
 
 public:
-	explicit ColorListEditor(QWidget *widget = 0);
+	/// @param minimalistic If true then only colors will be shown; otherwise color will be written by text.
+	explicit ColorListEditor(QWidget *widget = 0, bool minimalistic = false);
+
+signals:
+	/// Emitted when user picked another color.
+	void colorChanged(const QColor &color);
 
 public:
 	void setColorList(const QStringList &colorList, const QStringList &translatedColorList = QStringList());
@@ -37,7 +42,7 @@ public:
 private:
 	void populateList();
 
-	QColor mColor;
+	bool mMinimalistic;
 	QStringList mColorList;
 	QStringList mTranslatedColorList;
 };
