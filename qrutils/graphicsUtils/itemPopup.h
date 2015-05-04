@@ -33,6 +33,9 @@ public:
 	explicit ItemPopup(AbstractScene &scene, QWidget *parent = 0);
 	~ItemPopup();
 
+	/// Enables or disables automatic popping up.
+	void setEnabled(bool enabled);
+
 protected slots:
 	/// This will set fixed size of this window in consideration with layout.
 	/// Must be called each time when layout of this widget changes.
@@ -73,6 +76,7 @@ protected:
 
 	AbstractScene &mScene;
 	QList<QGraphicsItem *> mCurrentItems;
+	bool mEnabled = true;
 };
 
 }

@@ -37,6 +37,15 @@ ItemPopup::~ItemPopup()
 {
 }
 
+void ItemPopup::setEnabled(bool enabled)
+{
+	mEnabled = enabled;
+	if (!enabled && isVisible()) {
+		detach();
+		hide();
+	}
+}
+
 bool ItemPopup::suits(QGraphicsItem *item)
 {
 	return dynamic_cast<AbstractItem *>(item) != nullptr;
@@ -103,6 +112,10 @@ void ItemPopup::onMousePressedScene()
 
 void ItemPopup::onMouseReleasedScene()
 {
+	if (!mEnabled) {
+		return;
+	}
+
 	QList<QGraphicsItem *> items;
 	for (QGraphicsItem * const item : mScene.selectedItems()) {
 		if (suits(item)) {

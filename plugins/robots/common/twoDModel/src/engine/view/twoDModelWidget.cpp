@@ -541,6 +541,7 @@ void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 
 	mUi->palette->setVisible(!worldReadOnly);
 	mActions->setWorldModelActionsVisible(!worldReadOnly);
+	mColorFieldItemPopup->setEnabled(!worldReadOnly);
 
 	const auto hasSpacer = [this]() {
 		for (int i = 0; i < mUi->sceneHeaderWidget->layout()->count(); ++i) {
