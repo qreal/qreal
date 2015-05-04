@@ -36,6 +36,7 @@
 
 #include "parts/actionsBox.h"
 #include "parts/colorItemPopup.h"
+#include "parts/robotItemPopup.h"
 
 #include "scene/sensorItem.h"
 #include "scene/sonarSensorItem.h"
@@ -130,10 +131,11 @@ void TwoDModelWidget::initWidget()
 	mUi->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	move(0, 0);
 
-	// Popup will listen to scene events, appear, disappear and free itself.
 	QPen defaultPen(Qt::black);
 	defaultPen.setWidth(defaultPenWidth);
+	// Popups will listen to scene events, appear, disappear and free itself.
 	mColorFieldItemPopup = new ColorItemPopup(defaultPen, *mScene, this);
+	mRobotItemPopup = new RobotItemPopup(*mScene, this);
 	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, Qt::NoBrush);

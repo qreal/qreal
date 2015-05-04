@@ -54,6 +54,7 @@ class SensorItem;
 class RobotItem;
 class ActionsBox;
 class ColorItemPopup;
+class RobotItemPopup;
 
 class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
@@ -202,6 +203,7 @@ private:
 	TwoDModelScene *mScene = nullptr;
 	QScopedPointer<ActionsBox> mActions;
 	ColorItemPopup *mColorFieldItemPopup;  // Takes ownership
+	RobotItemPopup *mRobotItemPopup;  // Takes ownership
 
 	RobotItem *mSelectedRobotItem = nullptr;
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;

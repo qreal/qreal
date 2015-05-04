@@ -51,14 +51,16 @@ bool ItemPopup::suits(QGraphicsItem *item)
 	return dynamic_cast<AbstractItem *>(item) != nullptr;
 }
 
-void ItemPopup::attachTo(QGraphicsItem *item)
+bool ItemPopup::attachTo(QGraphicsItem *item)
 {
 	attachTo(QList<QGraphicsItem *>() << item);
+	return true;
 }
 
-void ItemPopup::attachTo(const QList<QGraphicsItem *> &items)
+bool ItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 {
 	mCurrentItems = items;
+	return true;
 }
 
 void ItemPopup::detach()
@@ -129,10 +131,9 @@ void ItemPopup::onMouseReleasedScene()
 		return;
 	}
 
-	if (items.count() == 1) {
-		attachTo(items.first());
-	} else {
-		attachTo(items);
+	const bool shouldShow = items.count() == 1 ? attachTo(items.first()) : attachTo(items);
+	if (!shouldShow) {
+		return;
 	}
 
 	show();

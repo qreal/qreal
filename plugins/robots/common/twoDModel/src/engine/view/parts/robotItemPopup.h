@@ -16,49 +16,38 @@
 
 #include <qrutils/graphicsUtils/itemPopup.h>
 
+class QAbstractButton;
 class QSpinBox;
-
-namespace graphicsUtils {
-class ColorListEditor;
-}
 
 namespace twoDModel {
 namespace view {
 
-/// A popup for configuring ColorFieldItem on 2D model scene.
-/// Contains item`s color picker and spin box for setting item`s thickness.
-class ColorItemPopup : public graphicsUtils::ItemPopup
+class RobotItem;
+
+/// A popup for RobotItem on 2D model scene.
+/// Contains spin box for setting robot`s marker thickness and a couple of position management buttons.
+class RobotItemPopup : public graphicsUtils::ItemPopup
 {
 	Q_OBJECT
 
 public:
-	ColorItemPopup(const QPen &pen, graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
-	~ColorItemPopup();
-
-	/// Returns last pen thickness entered by user.
-	QColor lastColor() const;
-
-	/// Returns last pen thickness entered by user.
-	int lastThickness() const;
-
-signals:
-	/// Emitted when pen configured by user changed.
-	void userPenChanged(const QPen &pen);
+	explicit RobotItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
+	~RobotItemPopup();
 
 private:
 	bool suits(QGraphicsItem *item) override;
+	bool attachTo(QGraphicsItem *item) override;
 	bool attachTo(const QList<QGraphicsItem *> &items) override;
 
 	void initWidget();
-	QWidget *initColorPicker();
+	QWidget *initFollowButton();
+	QWidget *initReturnButton();
 	QWidget *initSpinBox();
 
-	QPen pen() const;
-
-	graphicsUtils::ColorListEditor *mColorPicker;  // Takes ownership
+	QAbstractButton *mFollowButton;  // Takes ownership
+	QAbstractButton *mReturnButton;  // Takes ownership
 	QSpinBox *mSpinBox;  // Takes ownership
-	QColor mLastColor;
-	int mLastThickness;
+	RobotItem *mCurrentItem = nullptr;  // Does not take ownership
 };
 
 }

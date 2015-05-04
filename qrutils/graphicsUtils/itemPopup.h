@@ -53,12 +53,14 @@ protected slots:
 	virtual bool suits(QGraphicsItem *item);
 
 	/// Called when this window is shown for some item.
+	/// If false is returned then the popup will not be shown.
 	/// Default implementation calls attachTo({item}).
-	virtual void attachTo(QGraphicsItem *item);
+	virtual bool attachTo(QGraphicsItem *item);
 
 	/// Called when this window is shown for some group of items.
-	/// Default implementation remembers items for future.
-	virtual void attachTo(const QList<QGraphicsItem *> &items);
+	/// If false is returned then the popup will not be shown.
+	/// Default implementation remembers items for future and returns true.
+	virtual bool attachTo(const QList<QGraphicsItem *> &items);
 
 	/// Called when user canceled his selection and before the window is hidden.
 	/// Default implementation clears items memorized last time.

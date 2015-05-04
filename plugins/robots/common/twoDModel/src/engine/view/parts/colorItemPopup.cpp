@@ -52,7 +52,7 @@ bool ColorItemPopup::suits(QGraphicsItem *item)
 			&& dynamic_cast<items::WallItem *>(item) == nullptr;
 }
 
-void ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
+bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 {
 	ItemPopup::attachTo(items);
 
@@ -68,6 +68,8 @@ void ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	mLastColor = lastColorBackup;
 	mLastThickness = lastThicknessBackup;
 	blockSignals(false);
+
+	return true;
 }
 
 void twoDModel::view::ColorItemPopup::initWidget()
