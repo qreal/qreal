@@ -97,7 +97,7 @@ void Rotater::setPenBrushForExtraction(QPainter *painter, const QStyleOptionGrap
 
 void Rotater::drawExtractionForItem(QPainter *painter)
 {
-	mLineImpl.drawExtractionForItem(painter, x1(), y1(), y2(), y2(), mDrift);
+	mLineImpl.drawExtractionForItem(painter, x1(), y1(), x2(), y2(), mDrift);
 	drawFieldForResizeItem(painter);
 }
 
