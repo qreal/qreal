@@ -34,9 +34,21 @@ namespace view {
 /// Contains item`s color picker and spin box for setting item`s thickness.
 class ColorItemPopup : public graphicsUtils::ItemPopup
 {
+	Q_OBJECT
+
 public:
-	explicit ColorItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
+	explicit ColorItemPopup(const QPen &pen, graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
 	~ColorItemPopup();
+
+	/// Returns last pen thickness entered by user.
+	QColor lastColor() const;
+
+	/// Returns last pen thickness entered by user.
+	int lastThickness() const;
+
+signals:
+	/// Emitted when pen configured by user changed.
+	void userPenChanged(const QPen &pen);
 
 private:
 	bool suits(QGraphicsItem *item) override;
@@ -46,8 +58,12 @@ private:
 	QWidget *initColorPicker();
 	QWidget *initSpinBox();
 
+	QPen pen() const;
+
 	graphicsUtils::ColorListEditor *mColorPicker;  // Takes ownership
 	QSpinBox *mSpinBox;  // Takes ownership
+	QColor mLastColor;
+	int mLastThickness;
 };
 
 }

@@ -23,14 +23,26 @@
 
 using namespace twoDModel::view;
 
-ColorItemPopup::ColorItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent)
+ColorItemPopup::ColorItemPopup(const QPen &pen, graphicsUtils::AbstractScene &scene, QWidget *parent)
 	: ItemPopup(scene, parent)
+	, mLastColor(pen.color())
+	, mLastThickness(pen.width())
 {
 	initWidget();
 }
 
 ColorItemPopup::~ColorItemPopup()
 {
+}
+
+QColor ColorItemPopup::lastColor() const
+{
+	return mLastColor;
+}
+
+int ColorItemPopup::lastThickness() const
+{
+	return mLastThickness;
 }
 
 bool ColorItemPopup::suits(QGraphicsItem *item)
@@ -43,8 +55,19 @@ bool ColorItemPopup::suits(QGraphicsItem *item)
 void ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 {
 	ItemPopup::attachTo(items);
+
+	// Subsequent setting values to editors will cause theese values loss. Saving it here.
+	const QColor lastColorBackup = mLastColor;
+	const int lastThicknessBackup = mLastThickness;
+	blockSignals(true);
+
 	mColorPicker->setColor(dominantPropertyValue("color").value<QColor>());
 	mSpinBox->setValue(dominantPropertyValue("thickness").toInt());
+
+	// Restoring values that really were picked by user.
+	mLastColor = lastColorBackup;
+	mLastThickness = lastThicknessBackup;
+	blockSignals(false);
 }
 
 void twoDModel::view::ColorItemPopup::initWidget()
@@ -59,11 +82,16 @@ void twoDModel::view::ColorItemPopup::initWidget()
 QWidget *ColorItemPopup::initColorPicker()
 {
 	graphicsUtils::ColorListEditor * const editor = new graphicsUtils::ColorListEditor(this, true);
+	editor->setToolTip(tr("Color"));
 	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
 	editor->setColorList(colorList);
 	editor->setFocusPolicy(Qt::NoFocus);
 	connect(editor, &graphicsUtils::ColorListEditor::colorChanged, [=](const QColor &color) {
 		setPropertyMassively("color", color);
+		if (mLastColor != color) {
+			mLastColor = color;
+			emit userPenChanged(pen());
+		}
 	});
 
 	mColorPicker = editor;
@@ -73,14 +101,27 @@ QWidget *ColorItemPopup::initColorPicker()
 QWidget *ColorItemPopup::initSpinBox()
 {
 	QSpinBox * const spinBox = new QSpinBox(this);
+	spinBox->setRange(1, 30);
+	spinBox->setToolTip(tr("Thickness"));
 	QPalette spinBoxPalette;
 	spinBoxPalette.setColor(QPalette::Window, Qt::transparent);
 	spinBoxPalette.setColor(QPalette::Base, Qt::transparent);
 	spinBox->setPalette(spinBoxPalette);
 	connect(spinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=](int value) {
 		setPropertyMassively("thickness", value);
+		if (mLastThickness != value) {
+			mLastThickness = value;
+			emit userPenChanged(pen());
+		}
 	});
 
 	mSpinBox = spinBox;
 	return spinBox;
+}
+
+QPen ColorItemPopup::pen() const
+{
+	QPen pen(mLastColor);
+	pen.setWidth(mLastThickness);
+	return pen;
 }

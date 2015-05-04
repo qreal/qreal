@@ -53,6 +53,7 @@ class TwoDModelScene;
 class SensorItem;
 class RobotItem;
 class ActionsBox;
+class ColorItemPopup;
 
 class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
@@ -119,8 +120,6 @@ private slots:
 	void saveWorldModel();
 	void loadWorldModel();
 
-	void changePenWidth(int width);
-	void changePenColor(int textIndex);
 	void onSelectionChange();
 
 	void speedUp();
@@ -151,7 +150,6 @@ private:
 
 	static const int defaultPenWidth = 6;
 
-	void changePalette();
 	void connectUiButtons();
 	void setPortsGroupBoxAndWheelComboBoxes();
 	void unsetPortsGroupBoxAndWheelComboBoxes();
@@ -169,10 +167,6 @@ private:
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
-
-	void setValuePenColorComboBox(const QColor &penColor);
-	void setValuePenWidthSpinBox(int width);
-	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
 
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(int cursorType);
@@ -207,6 +201,7 @@ private:
 	Ui::TwoDModelWidget *mUi = nullptr;
 	TwoDModelScene *mScene = nullptr;
 	QScopedPointer<ActionsBox> mActions;
+	ColorItemPopup *mColorFieldItemPopup;  // Takes ownership
 
 	RobotItem *mSelectedRobotItem = nullptr;
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;
@@ -215,7 +210,6 @@ private:
 
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
-	int mWidth = 0;
 	int mCurrentSpeed;
 
 	CursorType mNoneCursorType; // cursorType for noneStatus

@@ -70,7 +70,6 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
-	, mWidth(defaultPenWidth)
 	, mCurrentSpeed(defailtSpeedFactorIndex)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
@@ -131,18 +130,14 @@ void TwoDModelWidget::initWidget()
 	mUi->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	move(0, 0);
 
-//	mUi->penWidthSpinBox->setRange(1, 30);
-//	mUi->penWidthSpinBox->setValue(mWidth);
-//	mUi->penColorComboBox->setColor(QColor("black"));
-
-//	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
-//	const QStringList translatedColorList = { tr("Black"), tr("Blue"), tr("Green"), tr("Yellow"), tr("Red") };
-
-//	mUi->penColorComboBox->setColorList(colorList, translatedColorList);
-//	mUi->penColorComboBox->setColor(QColor("black"));
-
 	// Popup will listen to scene events, appear, disappear and free itself.
-	new ColorItemPopup(*mScene, this);
+	QPen defaultPen(Qt::black);
+	defaultPen.setWidth(defaultPenWidth);
+	mColorFieldItemPopup = new ColorItemPopup(defaultPen, *mScene, this);
+	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
+	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
+		mScene->setPenBrushItems(pen, Qt::NoBrush);
+	});
 
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
@@ -202,9 +197,6 @@ void TwoDModelWidget::connectUiButtons()
 	connect(&mActions->clearFloorAction(), &QAction::triggered, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
 			, &mActions->clearFloorAction(), &QAction::setEnabled, Qt::QueuedConnection);
-
-//	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
-//	connect(mUi->penColorComboBox, SIGNAL(activated(int)), this, SiLOT(changePenColor(int)));
 
 	connect(&mActions->saveModelAction(), &QAction::triggered, this, &TwoDModelWidget::saveWorldModel);
 	connect(&mActions->loadModelAction(), &QAction::triggered, this, &TwoDModelWidget::loadWorldModel);
@@ -426,46 +418,8 @@ QList<AbstractItem *> TwoDModelWidget::selectedColorItems() const
 	return resList;
 }
 
-void TwoDModelWidget::changePenWidth(int width)
-{
-	mScene->setPenWidthItems(width);
-	mWidth = width;
-	for (AbstractItem * const item : selectedColorItems()) {
-		item->setPenWidth(width);
-	}
-
-	mScene->update();
-}
-
-void TwoDModelWidget::changePenColor(int textIndex)
-{
-//	const QString text = mUi->penColorComboBox->colorByIndex(textIndex).name();
-//	mScene->setPenColorItems(text);
-//	for (AbstractItem * const item : selectedColorItems()) {
-//		item->setPenColor(text);
-//	}
-
-	mScene->update();
-}
-
-void TwoDModelWidget::changePalette()
-{
-	const QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
-	if (!listSelectedItems.isEmpty()) {
-		AbstractItem *item = dynamic_cast<AbstractItem *>(listSelectedItems.back());
-		if (isColorItem(item)) {
-			const QPen penItem = item->pen();
-			const QBrush brushItem = item->brush();
-			setItemPalette(penItem, brushItem);
-			mScene->setPenBrushItems(penItem, brushItem);
-		}
-	}
-}
-
 void TwoDModelWidget::onSelectionChange()
 {
-	changePalette();
-
 	if (mScene->oneRobot()) {
 		return;
 	}
@@ -528,27 +482,6 @@ void TwoDModelWidget::checkSpeedButtons()
 {
 	mUi->speedUpButton->setEnabled(mCurrentSpeed < speedFactors.count() - 1);
 	mUi->speedDownButton->setEnabled(mCurrentSpeed > 0);
-}
-
-void TwoDModelWidget::setValuePenColorComboBox(const QColor &penColor)
-{
-//	mUi->penColorComboBox->setColor(penColor);
-}
-
-void TwoDModelWidget::setValuePenWidthSpinBox(int width)
-{
-//	mUi->penWidthSpinBox->setValue(width);
-}
-
-void TwoDModelWidget::setItemPalette(const QPen &penItem, const QBrush &brushItem)
-{
-	Q_UNUSED(brushItem)
-//	mUi->penColorComboBox->blockSignals(true);
-//	mUi->penWidthSpinBox->blockSignals(true);
-//	setValuePenWidthSpinBox(penItem.width());
-//	setValuePenColorComboBox(penItem.color());
-//	mUi->penColorComboBox->blockSignals(false);
-//	mUi->penWidthSpinBox->blockSignals(false);
 }
 
 TwoDModelScene *TwoDModelWidget::scene()
