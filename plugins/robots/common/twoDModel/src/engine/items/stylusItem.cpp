@@ -52,7 +52,7 @@ AbstractItem *StylusItem::clone() const
 
 QAction *StylusItem::stylusTool()
 {
-	QAction * const result = new QAction(QIcon(":/icons/2d_stylus.png"), tr("Stylus (S)"), nullptr);
+	QAction * const result = new QAction(QIcon(":/icons/2d_pencil.png"), tr("Stylus (S)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_S));
 	return result;
 }
