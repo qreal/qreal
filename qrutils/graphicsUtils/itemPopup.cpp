@@ -44,7 +44,7 @@ bool ItemPopup::suits(QGraphicsItem *item)
 
 void ItemPopup::attachTo(QGraphicsItem *item)
 {
-	Q_UNUSED(item)
+	attachTo(QList<QGraphicsItem *>() << item);
 }
 
 void ItemPopup::attachTo(const QList<QGraphicsItem *> &items)

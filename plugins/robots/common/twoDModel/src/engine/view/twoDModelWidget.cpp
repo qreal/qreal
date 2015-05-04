@@ -35,6 +35,7 @@
 #include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 #include "parts/actionsBox.h"
+#include "parts/colorItemPopup.h"
 
 #include "scene/sensorItem.h"
 #include "scene/sonarSensorItem.h"
@@ -139,6 +140,9 @@ void TwoDModelWidget::initWidget()
 
 //	mUi->penColorComboBox->setColorList(colorList, translatedColorList);
 //	mUi->penColorComboBox->setColor(QColor("black"));
+
+	// Popup will listen to scene events, appear, disappear and free itself.
+	new ColorItemPopup(*mScene, this);
 
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);

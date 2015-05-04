@@ -40,7 +40,7 @@ private slots:
 	virtual bool suits(QGraphicsItem *item);
 
 	/// Called when this window is shown for some item.
-	/// Default implementation does nothing.
+	/// Default implementation calls attachTo({item}).
 	virtual void attachTo(QGraphicsItem *item);
 
 	/// Called when this window is shown for some group of items.
