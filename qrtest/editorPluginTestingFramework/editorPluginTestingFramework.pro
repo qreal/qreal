@@ -157,6 +157,15 @@ SOURCES += \
 	configurationFileParser.cpp \
 	methodsCheckerForTravis.cpp
 
+FORMS += \
+	../../qrgui/mainwindow/mainwindow.ui \
+	../../qrgui/mainWindow/shapeEdit/shapeEdit.ui \
+	../../qrgui/mainWindow/shapeEdit/visibilityConditionsDialog.ui \
+	../../qrgui/mainwindow/referenceList.ui \	
+#	ui_mainWindow.h  \
+
+
+
 links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qrgui-tool-plugin-interface qscintilla2 qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-facade qslog)                        
 
 win32 {

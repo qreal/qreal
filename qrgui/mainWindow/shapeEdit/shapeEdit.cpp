@@ -13,7 +13,7 @@
  * limitations under the License. */
 
 #include "shapeEdit.h"
-#include <mainWindow/.build/debug/ui/ui_shapeEdit.h>
+#include "ui_shapeEdit.h"
 
 #include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>

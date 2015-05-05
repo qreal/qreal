@@ -13,7 +13,7 @@
  * limitations under the License. */
 
 #include "referenceList.h"
-#include <mainWindow/.build/debug/ui/ui_referenceList.h>
+#include "ui_referenceList.h"
 
 #include "mainWindow/mainWindow.h"
 
