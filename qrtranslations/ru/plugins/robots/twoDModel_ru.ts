@@ -4,220 +4,177 @@
 <context>
     <name>D2Form</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="14"/>
         <source>2D Robot Model</source>
-        <translation>Двумерная модель</translation>
+        <translation type="vanished">Двумерная модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="609"/>
         <source>Multiselection mode</source>
-        <translation>Режим выделения</translation>
+        <translation type="vanished">Режим выделения</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="693"/>
         <source>Camera following robot</source>
-        <translation>Следовать за роботом</translation>
+        <translation type="vanished">Следовать за роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="125"/>
         <source>Tools</source>
-        <translation>Инструменты</translation>
+        <translation type="vanished">Инструменты</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="137"/>
         <source>Pen</source>
-        <translation>Перо</translation>
+        <translation type="vanished">Перо</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="149"/>
         <source>Width</source>
-        <translation>Ширина</translation>
+        <translation type="vanished">Ширина</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="171"/>
         <source>Color</source>
-        <translation>Цвет</translation>
+        <translation type="vanished">Цвет</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="202"/>
         <source>Pencil (P)</source>
-        <translation>Карандаш (P)</translation>
+        <translation type="vanished">Карандаш (P)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="218"/>
         <source>P</source>
-        <translation>P</translation>
+        <translation type="vanished">P</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="240"/>
         <source>Line (L)</source>
-        <translation>Линия (L)</translation>
+        <translation type="vanished">Линия (L)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="256"/>
         <source>L</source>
-        <translation>L</translation>
+        <translation type="vanished">L</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="294"/>
         <source>Clear</source>
-        <translation>Очистить все</translation>
+        <translation type="vanished">Очистить все</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="329"/>
         <source>None (N)</source>
-        <translation>Курсор (N)</translation>
+        <translation type="vanished">Курсор (N)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="345"/>
         <source>N</source>
-        <translation>N</translation>
+        <translation type="vanished">N</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="367"/>
         <source>Ellipse (E)</source>
-        <translation>Эллипс (E)</translation>
+        <translation type="vanished">Эллипс (E)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="383"/>
         <source>E</source>
-        <translation>E</translation>
+        <translation type="vanished">E</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="405"/>
         <source>Wall (W)</source>
-        <translation>Стена (W)</translation>
+        <translation type="vanished">Стена (W)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="421"/>
         <source>W</source>
-        <translation>W</translation>
+        <translation type="vanished">W</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="431"/>
         <source>Clear floor</source>
-        <translation>Очистить пол от следов робота</translation>
+        <translation type="vanished">Очистить пол от следов робота</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="446"/>
         <source>Ports</source>
-        <translation>Порты</translation>
+        <translation type="vanished">Порты</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="477"/>
         <source>Motors</source>
-        <translation>Моторы</translation>
+        <translation type="vanished">Моторы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="483"/>
         <source>Left wheel:</source>
-        <translation>Левое колесо:</translation>
+        <translation type="vanished">Левое колесо:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="493"/>
         <source>Right wheel:</source>
-        <translation>Правое колесо:</translation>
+        <translation type="vanished">Правое колесо:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="506"/>
         <source>Ports configuration</source>
-        <translation>Порты</translation>
+        <translation type="vanished">Порты</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="519"/>
         <source>Model settings</source>
-        <translation>Настройки модели</translation>
+        <translation type="vanished">Настройки модели</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="525"/>
         <source>Speed</source>
         <oldsource>Set speed</oldsource>
-        <translation>Скорость</translation>
+        <translation type="vanished">Скорость</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="538"/>
         <source>Low</source>
-        <translation>Низкая</translation>
+        <translation type="vanished">Низкая</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="543"/>
         <source>Medium</source>
-        <translation>Средняя</translation>
+        <translation type="vanished">Средняя</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="548"/>
         <source>High</source>
-        <translation>Высокая</translation>
+        <translation type="vanished">Высокая</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="559"/>
         <source>Physics</source>
-        <translation>Физика</translation>
+        <translation type="vanished">Физика</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="565"/>
         <source>Realistic physics</source>
-        <translation>Реалистичная физика</translation>
+        <translation type="vanished">Реалистичная физика</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="572"/>
         <source>Realistic sensors</source>
-        <translation>Реалистичные сенсоры</translation>
+        <translation type="vanished">Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="579"/>
         <source>Realistic engines</source>
-        <translation>Реалистичные моторы</translation>
+        <translation type="vanished">Реалистичные моторы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="56"/>
         <source>Save World Model (Ctrl+S)</source>
-        <translation>Сохранить модель мира (Ctrl+S)</translation>
+        <translation type="vanished">Сохранить модель мира (Ctrl+S)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="72"/>
         <source>Ctrl+S</source>
-        <translation>Ctrl+S</translation>
+        <translation type="vanished">Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="670"/>
         <source>Load World Model (Ctrl+O)</source>
-        <translation>Загрузить модель мира (Ctrl+O)</translation>
+        <translation type="vanished">Загрузить модель мира (Ctrl+O)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="686"/>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation type="vanished">Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="725"/>
         <source>Hand dragging mode</source>
-        <translation>Режим таскания сцены</translation>
+        <translation type="vanished">Режим таскания сцены</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="769"/>
         <source>Stop program (Esc)</source>
-        <translation>Остановить программу (Esc)</translation>
+        <translation type="vanished">Остановить программу (Esc)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="807"/>
         <source>Run program (Enter)</source>
-        <translation>Запустить программу (Enter)</translation>
+        <translation type="vanished">Запустить программу (Enter)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="647"/>
         <source>Return a robot to initial position</source>
-        <translation>Вернуть робота в исходное положение</translation>
+        <translation type="vanished">Вернуть робота в исходное положение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="943"/>
         <source>Time in 2D model</source>
-        <translation>Время в 2D модели</translation>
+        <translation type="vanished">Время в 2D модели</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2Form.ui" line="952"/>
         <source> sec.</source>
-        <translation> сек.</translation>
+        <translation type="vanished"> сек.</translation>
     </message>
 </context>
 <context>
@@ -379,6 +336,74 @@
     </message>
 </context>
 <context>
+    <name>TwoDModelWidget</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="14"/>
+        <source>2D Robot Model</source>
+        <translation>Двумерная модель</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="92"/>
+        <source>Run program (Enter)</source>
+        <translation>Запустить программу (Enter)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="133"/>
+        <source>Stop program (Esc)</source>
+        <translation>Остановить программу (Esc)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="194"/>
+        <source>Return robot to the initial position</source>
+        <translation>Вернуть робота в исходное положение</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="257"/>
+        <source>Decrease speed</source>
+        <translation>Уменьшить скорость</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="298"/>
+        <source>Time in 2D model</source>
+        <translation>Время в 2D модели</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="307"/>
+        <source> sec.</source>
+        <translation> сек.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="335"/>
+        <source>Increase speed</source>
+        <translation>Увеличить скорость</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="474"/>
+        <source>Left wheel:</source>
+        <translation>Левое колесо:</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="484"/>
+        <source>Right wheel:</source>
+        <translation>Правое колесо:</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="506"/>
+        <source>Realistic physics</source>
+        <translation>Реалистичная физика</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="513"/>
+        <source>Realistic sensors</source>
+        <translation>Реалистичные сенсоры</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.ui" line="520"/>
+        <source>Realistic engines</source>
+        <translation>Реалистичные моторы</translation>
+    </message>
+</context>
+<context>
     <name>twoDModel::D2ModelWidget</name>
     <message>
         <source>Black</source>
@@ -454,6 +479,38 @@
     </message>
 </context>
 <context>
+    <name>twoDModel::items::EllipseItem</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/items/ellipseItem.cpp" line="45"/>
+        <source>Ellipse (E)</source>
+        <translation>Эллипс (E)</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::items::LineItem</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/items/lineItem.cpp" line="55"/>
+        <source>Line (L)</source>
+        <translation>Линия (L)</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::items::StylusItem</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/items/stylusItem.cpp" line="55"/>
+        <source>Stylus (S)</source>
+        <translation>Стилус (S)</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::items::WallItem</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/items/wallItem.cpp" line="59"/>
+        <source>Wall (W)</source>
+        <translation>Стена (W)</translation>
+    </message>
+</context>
+<context>
     <name>twoDModel::model::Model</name>
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/model/model.cpp" line="43"/>
@@ -524,86 +581,225 @@
     </message>
 </context>
 <context>
+    <name>twoDModel::view::ActionsBox</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/actionsBox.cpp" line="22"/>
+        <source>Hand dragging mode</source>
+        <translation>Режим таскания сцены</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/actionsBox.cpp" line="23"/>
+        <source>Multiselection mode</source>
+        <translation>Режим выделения</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/actionsBox.cpp" line="25"/>
+        <source>Save world model...</source>
+        <translation>Сохранить модель мира...</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/actionsBox.cpp" line="26"/>
+        <source>Load world model...</source>
+        <translation>Загрузить модель мира...</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/actionsBox.cpp" line="28"/>
+        <source>Clear items</source>
+        <translation>Очистить всё</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/actionsBox.cpp" line="29"/>
+        <source>Clear floor</source>
+        <translation>Очистить пол от следов робота</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::view::ColorItemPopup</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/colorItemPopup.cpp" line="87"/>
+        <source>Color</source>
+        <translation>Цвет</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/colorItemPopup.cpp" line="107"/>
+        <source>Thickness</source>
+        <translation>Толщина</translation>
+    </message>
+</context>
+<context>
     <name>twoDModel::view::D2ModelWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="138"/>
         <source>Black</source>
-        <translation>Черный</translation>
+        <translation type="vanished">Черный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="138"/>
         <source>Blue</source>
-        <translation>Синий</translation>
+        <translation type="vanished">Синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="138"/>
         <source>Green</source>
-        <translation>Зеленый</translation>
+        <translation type="vanished">Зеленый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="138"/>
         <source>Yellow</source>
-        <translation>Желтый</translation>
+        <translation type="vanished">Желтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="138"/>
         <source>Red</source>
-        <translation>Красный</translation>
+        <translation type="vanished">Красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="176"/>
         <source>Warning</source>
-        <translation>Предупреждение</translation>
+        <translation type="vanished">Предупреждение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="177"/>
         <source>Do you really want to clear scene?</source>
-        <translation>Вы действительно хотите очистить сцену?</translation>
+        <translation type="vanished">Вы действительно хотите очистить сцену?</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="179"/>
         <source>Yes</source>
-        <translation>Да</translation>
+        <translation type="vanished">Да</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="180"/>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="370"/>
         <source>Saving world and robot model</source>
-        <translation>Сохранение модели мира</translation>
+        <translation type="vanished">Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="370"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="390"/>
         <source>2D model saves (*.xml)</source>
-        <translation>Файлы 2D модели (*.xml)</translation>
+        <translation type="vanished">Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="390"/>
         <source>Loading world and robot model</source>
-        <translation>Загрузка модели мира</translation>
+        <translation type="vanished">Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="868"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="869"/>
         <source>No wheel</source>
-        <translation>Отсутствует</translation>
+        <translation type="vanished">Отсутствует</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/d2ModelWidget.cpp" line="874"/>
         <source>%1 (port %2)</source>
-        <translation>%1 (порт %2)</translation>
+        <translation type="vanished">%1 (порт %2)</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::view::DetailsTab</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/detailsTab.cpp" line="39"/>
+        <source>Display</source>
+        <translation>Дисплей</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/detailsTab.cpp" line="40"/>
+        <source>Ports configuration</source>
+        <translation>Порты</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/detailsTab.cpp" line="41"/>
+        <source>Motors</source>
+        <translation>Моторы</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/detailsTab.cpp" line="42"/>
+        <source>Physics</source>
+        <translation>Физика</translation>
     </message>
 </context>
 <context>
     <name>twoDModel::view::GridParameters</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/gridParameters.cpp" line="30"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/gridParameters.cpp" line="30"/>
         <source>Grid</source>
         <translation>Сетка</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::view::Palette</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/palette.cpp" line="25"/>
+        <source>Cursor (N)</source>
+        <translation>Курсор (N)</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::view::RobotItemPopup</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/robotItemPopup.cpp" line="74"/>
+        <source>Camera folowing robot: %1</source>
+        <translation>Следовать за роботом: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/robotItemPopup.cpp" line="75"/>
+        <source>enabled</source>
+        <translation>включено</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/robotItemPopup.cpp" line="75"/>
+        <source>disabled</source>
+        <translation>отключено</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/robotItemPopup.cpp" line="82"/>
+        <source>Return robot to the initial position</source>
+        <translation>Вернуть робота в исходное положение</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/robotItemPopup.cpp" line="100"/>
+        <source>Marker thickness</source>
+        <translation>Толщина маркера</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::view::TwoDModelWidget</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="188"/>
+        <source>Warning</source>
+        <translation>Предупреждение</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="189"/>
+        <source>Do you really want to clear scene?</source>
+        <translation>Вы действительно хотите очистить сцену?</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="191"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="192"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="331"/>
+        <source>Saving world and robot model</source>
+        <translation>Сохранение модели мира</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="331"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="351"/>
+        <source>2D model saves (*.xml)</source>
+        <translation>Файлы 2D модели (*.xml)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="351"/>
+        <source>Loading world and robot model</source>
+        <translation>Загрузка модели мира</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="755"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="756"/>
+        <source>No wheel</source>
+        <translation>Отсутствует</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="761"/>
+        <source>%1 (port %2)</source>
+        <translation>%1 (порт %2)</translation>
     </message>
 </context>
 </TS>
