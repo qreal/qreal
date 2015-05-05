@@ -99,8 +99,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	setRunStopButtonsVisibility();
 
-//	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
-//	mUi->autoCenteringButton->setChecked(mFollowRobot);
+	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->palette->unselect();
 
 	setFocus();
@@ -213,7 +212,7 @@ void TwoDModelWidget::connectUiButtons()
 			, this, &TwoDModelWidget::onMultiselectionCursorButtonToggled);
 
 	connect(mRobotItemPopup, &RobotItemPopup::restoreRobotPositionClicked, this, &TwoDModelWidget::returnToStartMarker);
-//	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(returnToStartMarker()));
+	connect(mUi->initialStateButton, &QAbstractButton::clicked, this, &TwoDModelWidget::returnToStartMarker);
 	connect(mUi->toggleDetailsButton, &QAbstractButton::clicked, this, &TwoDModelWidget::toggleDetailsVisibility);
 
 	initRunStopButtons();

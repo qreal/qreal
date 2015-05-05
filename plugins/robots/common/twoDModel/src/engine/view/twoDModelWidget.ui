@@ -69,6 +69,47 @@
        </widget>
       </item>
       <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="runButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Run program (Enter)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
+          <normaloff>:/icons/2d_run.png</normaloff>:/icons/2d_run.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
        <widget class="QPushButton" name="stopButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -78,14 +119,14 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>60</height>
+          <width>44</width>
+          <height>44</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
-          <height>60</height>
+          <width>44</width>
+          <height>44</height>
          </size>
         </property>
         <property name="toolTip">
@@ -104,43 +145,22 @@
           <height>44</height>
          </size>
         </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QPushButton" name="runButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>60</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>60</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Run program (Enter)</string>
-        </property>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="initialStateButton">
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
-          <normaloff>:/icons/2d_run.png</normaloff>:/icons/2d_run.png</iconset>
+          <normaloff>:/icons/2d_robot_back.png</normaloff>:/icons/2d_robot_back.png</iconset>
         </property>
-        <property name="iconSize">
-         <size>
-          <width>44</width>
-          <height>44</height>
-         </size>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -169,6 +189,9 @@
           <horstretch>1</horstretch>
           <verstretch>1</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Return robot to the initial position</string>
         </property>
        </widget>
       </item>
