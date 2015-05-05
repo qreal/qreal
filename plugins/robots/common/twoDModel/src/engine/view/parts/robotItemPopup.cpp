@@ -18,6 +18,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 
+#include <qrkernel/settingsManager.h>
+
 #include "src/engine/view/scene/robotItem.h"
 
 using namespace twoDModel::view;
@@ -41,6 +43,9 @@ bool RobotItemPopup::attachTo(QGraphicsItem *item)
 {
 	mCurrentItem = dynamic_cast<RobotItem *>(item);
 	mSpinBox->setValue(mCurrentItem->pen().width());
+
+	const bool followingEnabled = qReal::SettingsManager::value("2dFollowingRobot").toBool();
+	mFollowButton->setChecked(followingEnabled);
 	return true;
 }
 
@@ -53,9 +58,39 @@ bool RobotItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 void RobotItemPopup::initWidget()
 {
 	QGridLayout * const layout = new QGridLayout(this);
-	layout->addWidget(initSpinBox(), 0, 0);
+	layout->addWidget(initFollowButton(), 0, 0);
+	layout->addWidget(initReturnButton(), 0, 1);
+	layout->addWidget(initSpinBox(), 1, 0, 1, 2);
 
 	updateDueToLayout();
+}
+
+QWidget *RobotItemPopup::initFollowButton()
+{
+	mFollowButton = initButton(":/icons/2d_target.png", QString());
+	mFollowButton->setCheckable(true);
+	connect(mFollowButton, &QAbstractButton::toggled, this, &RobotItemPopup::followingChanged);
+	connect(mFollowButton, &QAbstractButton::toggled, [=](bool enabled) {
+		mFollowButton->setToolTip(tr("Camera folowing robot: %1")
+				.arg(enabled ? tr("enabled") : tr("disabled")));
+	});
+	return mFollowButton;
+}
+
+QWidget *RobotItemPopup::initReturnButton()
+{
+	mReturnButton = initButton(":/icons/2d_robot_back.png", tr("Return robot to the initial position"));
+	connect(mReturnButton, &QAbstractButton::clicked, this, &RobotItemPopup::restoreRobotPositionClicked);
+	return mReturnButton;
+}
+
+QAbstractButton *RobotItemPopup::initButton(const QString &icon, const QString &toolTip)
+{
+	QPushButton * const result = new QPushButton(QIcon(icon), QString(), this);
+	result->setToolTip(toolTip);
+	result->setFlat(true);
+	result->setFixedSize(24, 24);
+	return result;
 }
 
 QWidget *RobotItemPopup::initSpinBox()

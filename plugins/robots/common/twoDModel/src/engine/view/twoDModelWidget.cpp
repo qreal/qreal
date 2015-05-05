@@ -206,12 +206,13 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->speedUpButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedUp);
 	connect(mUi->speedDownButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedDown);
 
-//	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
+	connect(mRobotItemPopup, &RobotItemPopup::followingChanged, this, &TwoDModelWidget::enableRobotFollowing);
 	connect(&mActions->scrollHandModeAction(), &QAction::toggled
 			, this, &TwoDModelWidget::onHandCursorButtonToggled);
 	connect(&mActions->multiSelectionModeAction(), &QAction::toggled
 			, this, &TwoDModelWidget::onMultiselectionCursorButtonToggled);
 
+	connect(mRobotItemPopup, &RobotItemPopup::restoreRobotPositionClicked, this, &TwoDModelWidget::returnToStartMarker);
 //	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(returnToStartMarker()));
 	connect(mUi->toggleDetailsButton, &QAbstractButton::clicked, this, &TwoDModelWidget::toggleDetailsVisibility);
 

@@ -34,6 +34,13 @@ public:
 	explicit RobotItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
 	~RobotItemPopup();
 
+signals:
+	/// Emitted when user decides to follow or unfollow robot item.
+	void followingChanged(bool enabled);
+
+	/// Emitted when user clicked restore robot position button.
+	void restoreRobotPositionClicked();
+
 private:
 	bool suits(QGraphicsItem *item) override;
 	bool attachTo(QGraphicsItem *item) override;
@@ -42,6 +49,7 @@ private:
 	void initWidget();
 	QWidget *initFollowButton();
 	QWidget *initReturnButton();
+	QAbstractButton *initButton(const QString &icon, const QString &toolTip);
 	QWidget *initSpinBox();
 
 	QAbstractButton *mFollowButton;  // Takes ownership
