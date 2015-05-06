@@ -1,8 +1,26 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <kitBase/robotModel/portInfo.h>
 
 #include "generatorBase/converters/templateParametrizedConverter.h"
+
+namespace qReal {
+class ErrorReporterInterface;
+}
 
 namespace generatorBase {
 namespace converters {
@@ -17,12 +35,14 @@ class PortNameConverter : public TemplateParametrizedConverter
 {
 public:
 	PortNameConverter(const QString &pathToTemplates
-			, QList<kitBase::robotModel::PortInfo> const &ports);
+			, QList<kitBase::robotModel::PortInfo> const &ports
+			, qReal::ErrorReporterInterface &errorReporter);
 
 	QString convert(const QString &portNameOrAlias) const override;
 
 private:
 	QList<kitBase::robotModel::PortInfo> const mPorts;
+	qReal::ErrorReporterInterface &mErrorReporter;
 };
 
 }

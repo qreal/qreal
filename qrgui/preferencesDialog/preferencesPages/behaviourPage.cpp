@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
@@ -18,6 +32,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	initLanguages();
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
+	connect(mUi->gesturesCheckBox, SIGNAL(toggled(bool)), SLOT(updateGesturesSettings(bool)));
 	restoreSettings();
 }
 
@@ -48,6 +63,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
+	SettingsManager::setValue("gesturesEnabled", mUi->gesturesCheckBox->isChecked());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
 	SettingsManager::setValue("touchMode", mUi->touchModeCheckBox->isChecked());
 }
@@ -62,11 +78,18 @@ void PreferencesBehaviourPage::restoreSettings()
 		}
 	}
 
+	bool gesturesEnabled = SettingsManager::value("gesturesEnabled").toBool();
+
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching").toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
 	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
+	mUi->gesturesCheckBox->setChecked(gesturesEnabled);
+
+	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);
+	mUi->gestureDelayLabel->setVisible(gesturesEnabled);
+	mUi->gestureDelayTimeUnitLabel->setVisible(gesturesEnabled);
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	const int editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
@@ -77,6 +100,13 @@ void PreferencesBehaviourPage::showAutoSaveBox(bool show)
 {
 	mUi->autoSaveSpinBox->setVisible(show);
 	mUi->autoSaveLabel->setVisible(show);
+}
+
+void PreferencesBehaviourPage::updateGesturesSettings(bool gesturesEnabled)
+{
+	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);
+	mUi->gestureDelayLabel->setVisible(gesturesEnabled);
+	mUi->gestureDelayTimeUnitLabel->setVisible(gesturesEnabled);
 }
 
 void PreferencesBehaviourPage::initLanguages()

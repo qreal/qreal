@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
@@ -8,14 +22,14 @@ namespace model {
 class Model;
 }
 namespace view {
-class D2ModelWidget;
+class TwoDModelWidget;
 class FakeScene;
 }
 
 class TwoDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
-	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view);
+	TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
 	~TwoDModelEngineApi();
 
 	void setNewMotor(int speed, uint degrees
@@ -54,7 +68,7 @@ private:
 	void enableBackgroundSceneDebugging();
 
 	model::Model &mModel;
-	view::D2ModelWidget &mView;
+	view::TwoDModelWidget &mView;
 	QScopedPointer<view::FakeScene> mFakeScene;
 };
 

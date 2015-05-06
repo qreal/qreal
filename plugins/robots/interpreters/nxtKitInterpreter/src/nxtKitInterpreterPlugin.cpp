@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtKitInterpreterPlugin.h"
 
 #include <QtWidgets/QApplication>
@@ -46,9 +60,6 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 {
 	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
-
-	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
-			, this, &NxtKitInterpreterPlugin::onActiveTabChanged);
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
@@ -107,17 +118,12 @@ QList<kitBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets
 
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
+	return {};
 }
 
 QList<HotKeyActionInfo> NxtKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
-
-	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForNxt", tr("Show 2d model")
-			, mTwoDModel->showTwoDModelWidgetActionInfo().action());
-
-	return { d2ModelActionInfo };
+	return {};
 }
 
 QString NxtKitInterpreterPlugin::defaultSettingsFile() const
@@ -138,12 +144,4 @@ QIcon NxtKitInterpreterPlugin::iconForFastSelector(
 kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
-}
-
-void NxtKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
-{
-	const Id type = info.rootDiagramId().type();
-	const bool enabled = (type == robotDiagramType || type == subprogramDiagramType)
-			&& mCurrentlySelectedModelName == mTwoDRobotModel.name();
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
 }

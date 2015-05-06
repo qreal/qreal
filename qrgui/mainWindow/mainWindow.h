@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QSignalMapper>
@@ -143,14 +157,20 @@ public:
 	/// @param diagram Id of a diagram we need to add elements from.
 	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
 
-	virtual QDockWidget *logicalModelDock() const;
-	virtual QDockWidget *graphicalModelDock() const;
-	virtual QDockWidget *propertyEditorDock() const;
-	virtual QDockWidget *errorReporterDock() const;
-	virtual QDockWidget *paletteDock() const;
+	QDockWidget *logicalModelDock() const override;
+	QDockWidget *graphicalModelDock() const override;
+	QDockWidget *propertyEditorDock() const override;
+	QDockWidget *errorReporterDock() const override;
+	QDockWidget *paletteDock() const override;
+	QStatusBar *statusBar() const override;
 
-	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
-	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
+	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
+	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
+
+	QByteArray saveState(int version = 0) const override;
+	bool restoreState(const QByteArray &state, int version = 0) override;
+
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
 	void setTabText(QWidget *tab, const QString &text) override;
 
@@ -201,6 +221,7 @@ private slots:
 	/// Diagram opening must happen after plugins initialization
 	void initPluginsAndStartWidget();
 	void initToolPlugins();
+	void customizeActionsVisibility();
 
 	/// handler for menu 'button find' pressed
 	void showFindDialog();

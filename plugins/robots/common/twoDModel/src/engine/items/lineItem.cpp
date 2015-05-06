@@ -1,6 +1,19 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtGui/QPainter>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QAction>
 
 #include <qrkernel/settingsManager.h>
 #include "lineItem.h"
@@ -35,6 +48,13 @@ AbstractItem *LineItem::clone() const
 	cloned->mCellNumbX2 = mCellNumbX2;
 	cloned->mCellNumbY2 = mCellNumbY2;
 	return cloned;
+}
+
+QAction *LineItem::lineTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_ruler.png"), tr("Line (L)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_L));
+	return result;
 }
 
 void LineItem::setPrivateData()

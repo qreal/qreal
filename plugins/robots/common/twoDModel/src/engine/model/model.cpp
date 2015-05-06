@@ -1,11 +1,25 @@
-#include "model.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "twoDModel/engine/model/model.h"
 
 #include <qrkernel/settingsManager.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <kitBase/interpreterControlInterface.h>
 
 #include "src/engine/constraints/constraintsChecker.h"
-#include "twoDModel/robotModel/nullTwoDRobotModel.h"
+#include "src/robotModel/nullTwoDRobotModel.h"
 
 using namespace twoDModel::model;
 
@@ -27,11 +41,15 @@ void Model::init(qReal::ErrorReporterInterface &errorReporter
 	mChecker.reset(new constraints::ConstraintsChecker(errorReporter, *this));
 	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
 		errorReporter.addInformation(tr("The task is accomplished!"));
-		interpreterControl.stopRobot();
+		// Stopping cannot be performed immediately because we still have constraints to check in event loop
+		// and they need scene to be alive (in checker stopping interpretation means deletting all).
+		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::fail, [&](const QString &message) {
 		errorReporter.addError(message);
-		interpreterControl.stopRobot();
+		// Stopping cannot be performed immediately because we still have constraints to check in event loop
+		// and they need scene to be alive (in checker stopping interpretation means deletting all).
+		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError, [&errorReporter](const QString &message) {
 		errorReporter.addCritical(tr("Error in checker: %1").arg(message));

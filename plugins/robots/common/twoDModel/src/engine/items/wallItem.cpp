@@ -1,8 +1,21 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "wallItem.h"
 
-#include <QtGui/QVector2D>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtWidgets/QStyleOptionGraphicsItem>
 
 #include <math.h>
 #include <qrkernel/settingsManager.h>
@@ -39,6 +52,13 @@ AbstractItem *WallItem::clone() const
 	cloned->mOverlappedWithRobot = mOverlappedWithRobot;
 	cloned->mPath = mPath;
 	return cloned;
+}
+
+QAction *WallItem::wallTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_wall.png"), tr("Wall (W)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_W));
+	return result;
 }
 
 void WallItem::setPrivateData()
@@ -158,6 +178,12 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsItem::mouseReleaseEvent(event);
 	mDragged = false;
+}
+
+void WallItem::deserialize(const QDomElement &element)
+{
+	LineItem::deserialize(element);
+	recalculateBorders();
 }
 
 QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
