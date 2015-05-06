@@ -73,7 +73,10 @@ private:
 
 	QVariant operateOnIndexingExpression(const QSharedPointer<core::ast::Node> &indexingExpression
 			, const core::SemanticAnalyzer &semanticAnalyzer
-			, const std::function<QVariant(const QString &, const QVariantList &, const QVector<int> &)> &action);
+			, const std::function<QVariant(const QString &
+					, const QVariantList &
+					, const QVector<int> &
+					, const core::Connection &)> &action);
 
 	QVariant constructTable(const QSharedPointer<core::ast::Node> &tableConstructor
 			, const core::SemanticAnalyzer &semanticAnalyzer);
@@ -83,14 +86,18 @@ private:
 
 	QVariantList doAssignToTableElement(const QVariantList &table
 			, const QVariant &value
-			, const QVector<int> &index);
+			, const QVector<int> &index
+			, const core::Connection &connection);
 
 	QVariant slice(const QSharedPointer<core::ast::Node> &indexingExpression
 			, const core::SemanticAnalyzer &semanticAnalyzer);
 
 	QVariant operateOnIndexingExpressionRecursive(const QSharedPointer<core::ast::Node> &indexingExpression
 			, const QVector<int> &currentIndex, const core::SemanticAnalyzer &semanticAnalyzer
-			, const std::function<QVariant(const QString &, const QVariantList &, const QVector<int> &)> &action);
+			, const std::function<QVariant(const QString &
+					, const QVariantList &
+					, const QVector<int> &
+					, const core::Connection &)> &action);
 
 	QHash<QString, QVariant> mIdentifierValues;
 	QHash<QString, std::function<QVariant(const QList<QVariant> &)>> mIntrinsicFunctions;

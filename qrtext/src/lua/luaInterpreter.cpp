@@ -324,14 +324,20 @@ QVariant LuaInterpreter::interpretBinaryOperator(const QSharedPointer<core::ast:
 
 QVariant LuaInterpreter::operateOnIndexingExpression(const QSharedPointer<core::ast::Node> &indexingExpression
 		, const core::SemanticAnalyzer &semanticAnalyzer
-		, const std::function<QVariant(const QString &, const QVariantList &, const QVector<int> &)> &action)
+		, const std::function<QVariant(const QString &
+				, const QVariantList &
+				, const QVector<int> &
+				, const core::Connection &)> &action)
 {
 	return operateOnIndexingExpressionRecursive(indexingExpression, {}, semanticAnalyzer, action);
 }
 
 QVariant LuaInterpreter::operateOnIndexingExpressionRecursive(const QSharedPointer<core::ast::Node> &indexingExpression
 		, const QVector<int> &currentIndex, const core::SemanticAnalyzer &semanticAnalyzer
-		, const std::function<QVariant(const QString &, const QVariantList &, const QVector<int> &)> &action)
+		, const std::function<QVariant(const QString &
+				, const QVariantList &
+				, const QVector<int> &
+				, const core::Connection &)> &action)
 {
 	const auto node = as<ast::IndexingExpression>(indexingExpression);
 
@@ -348,7 +354,7 @@ QVariant LuaInterpreter::operateOnIndexingExpressionRecursive(const QSharedPoint
 			const auto index = interpret(node->indexer(), semanticAnalyzer).toInt();
 			const auto table = mIdentifierValues.value(name).value<QVariantList>();
 
-			return action(name, table, QVector<int>{index} + currentIndex);
+			return action(name, table, QVector<int>{index} + currentIndex, node->start());
 		}
 
 		reportError();
@@ -407,9 +413,12 @@ void LuaInterpreter::assignToTableElement(const QSharedPointer<core::ast::Node> 
 		, const QVariant &interpretedValue, const core::SemanticAnalyzer &semanticAnalyzer)
 {
 	const auto action = [this, &interpretedValue] (
-			const QString &name, const QVariantList &table, const QVector<int> &index)
+			const QString &name
+			, const QVariantList &table
+			, const QVector<int> &index
+			, const core::Connection &connection)
 	{
-		mIdentifierValues.insert(name, doAssignToTableElement(table, interpretedValue, index));
+		mIdentifierValues.insert(name, doAssignToTableElement(table, interpretedValue, index, connection));
 		return QVariant();
 	};
 
@@ -418,11 +427,19 @@ void LuaInterpreter::assignToTableElement(const QSharedPointer<core::ast::Node> 
 
 QVariantList LuaInterpreter::doAssignToTableElement(const QVariantList &table
 		, const QVariant &value
-		, const QVector<int> &index)
+		, const QVector<int> &index
+		, const core::Connection &connection)
 {
 	QVariantList result;
 	int i = 0;
 	const int currentIndex = index.first();
+	if (currentIndex < 0) {
+		mErrors.append(core::Error(connection
+				, QObject::tr("Negative index for a table")
+				, core::ErrorType::runtimeError, core::Severity::error));
+		return table;
+	}
+
 	const QVector<int> remainingIndex = index.mid(1);
 
 	if (remainingIndex.isEmpty()) {
@@ -431,13 +448,23 @@ QVariantList LuaInterpreter::doAssignToTableElement(const QVariantList &table
 			result << QVariant();
 		}
 
-		result[currentIndex] = value;
+		if (currentIndex >= 0) {
+			result[currentIndex] = value;
+		} else {
+			mErrors.append(core::Error(connection
+					, QObject::tr("Negative index for a table")
+					, core::ErrorType::runtimeError, core::Severity::error));
+		}
+
 		return result;
 	}
 
 	for (const auto &element : table) {
 		if (i == currentIndex) {
-			result << QVariant(doAssignToTableElement(element.value<QVariantList>(), value, remainingIndex));
+			result << QVariant(doAssignToTableElement(element.value<QVariantList>()
+					, value
+					, remainingIndex
+					, connection));
 		} else {
 			result << element;
 		}
@@ -450,7 +477,7 @@ QVariantList LuaInterpreter::doAssignToTableElement(const QVariantList &table
 			result << QVariant();
 		}
 
-		result << QVariant(doAssignToTableElement({}, value, remainingIndex));
+		result << QVariant(doAssignToTableElement({}, value, remainingIndex, connection));
 	}
 
 	return result;
@@ -459,7 +486,10 @@ QVariantList LuaInterpreter::doAssignToTableElement(const QVariantList &table
 QVariant LuaInterpreter::slice(const QSharedPointer<core::ast::Node> &indexingExpression
 		, const core::SemanticAnalyzer &semanticAnalyzer)
 {
-	const auto action = [this] (const QString &name, const QVariantList &table, const QVector<int> &index)
+	const auto action = [this] (const QString &name
+			, const QVariantList &table
+			, const QVector<int> &index
+			, const core::Connection &connection)
 	{
 		Q_UNUSED(name);
 
@@ -474,10 +504,24 @@ QVariant LuaInterpreter::slice(const QSharedPointer<core::ast::Node> &indexingEx
 				return QVariant();
 			}
 
+			if (i < 0) {
+				mErrors.append(core::Error(connection
+						, QObject::tr("Negative index for a table")
+						, core::ErrorType::runtimeError, core::Severity::error));
+				return QVariant();
+			}
+
 			slice = slice[i].value<QVariantList>();
 		}
 
 		if (slice.size() <= lastIndex) {
+			return QVariant();
+		}
+
+		if (lastIndex < 0) {
+			mErrors.append(core::Error(connection
+					, QObject::tr("Negative index for a table")
+					, core::ErrorType::runtimeError, core::Severity::error));
 			return QVariant();
 		}
 

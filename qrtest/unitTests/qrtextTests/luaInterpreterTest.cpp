@@ -493,3 +493,31 @@ TEST_F(LuaInterpreterTest, threeDArraySanityCheck)
 	EXPECT_EQ(9, interpret<int>("a[1][1][0]"));
 	ASSERT_TRUE(mErrors.isEmpty());
 }
+
+TEST_F(LuaInterpreterTest, negativeOutOfRangeSlice)
+{
+	interpret<int>("a = {1, 2}");
+	EXPECT_EQ(0, interpret<int>("a[-1]"));
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	interpret<int>("b = {{1, 2}, {3, 4}}");
+	EXPECT_EQ(0, interpret<int>("b[-1][0]"));
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	EXPECT_EQ(0, interpret<int>("b[0][-1]"));
+	EXPECT_EQ(1, mErrors.size());
+}
+
+TEST_F(LuaInterpreterTest, negativOutOfRangeAssignment)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	interpret<int>("a[-1][0] = 5");
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	interpret<int>("a[0][-1] = 5");
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	interpret<int>("a[-1][-1] = 5");
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+}
