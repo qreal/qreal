@@ -33,7 +33,8 @@ PrimaryControlFlowValidator *TrikFSharpControlFlowValidator::clone()
 void TrikFSharpControlFlowValidator::visitRegular(const qReal::Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
-	if (id.element() == "SendMessageThreads" || id.element() == "ReceiveMessageThreads") {
+	if (id.element() == "SendMessageThreads" || id.element() == "ReceiveMessageThreads"
+			|| id.element() == "KillThread") {
 		error(tr("Block type is unsupported by F# generator"), id);
 	}
 

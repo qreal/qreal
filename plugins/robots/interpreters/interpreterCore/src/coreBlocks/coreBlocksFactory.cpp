@@ -57,6 +57,8 @@ qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &e
 		return new qReal::interpretation::blocks::ForkBlock();
 	} else if (elementMetatypeIs(element, "Join")) {
 		return new qReal::interpretation::blocks::UnsupportedBlock();
+	} else if (elementMetatypeIs(element, "KillThread")) {
+		return new qReal::interpretation::blocks::UnsupportedBlock();
 	} else if (elementMetatypeIs(element, "SendMessageThreads")) {
 		return new qReal::interpretation::blocks::UnsupportedBlock();
 	} else if (elementMetatypeIs(element, "ReceiveMessageThreads")) {
@@ -95,6 +97,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Join")
 		, id("SendMessageThreads")
 		, id("ReceiveMessageThreads")
+		, id("KillThread")
 		, id("Subprogram")
 		, id("Function")
 		, id("VariableInit")

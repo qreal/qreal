@@ -25,6 +25,7 @@
 #include "simpleGenerators/whileLoopGenerator.h"
 #include "simpleGenerators/forkCallGenerator.h"
 #include "simpleGenerators/joinGenerator.h"
+#include "simpleGenerators/killThreadGenerator.h"
 #include "simpleGenerators/switchGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
@@ -302,6 +303,8 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(const qReal::Id &
 		return new SendMessageThreadsGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "ReceiveMessageThreads") {
 		return new ReceiveMessageThreadsGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "KillThread") {
+		return new KillThreadGenerator(mRepo, customizer, id, this);
 	}
 
 	return new NullGenerator(mRepo, customizer, id, this);
