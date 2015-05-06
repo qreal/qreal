@@ -19,14 +19,14 @@
 namespace twoDModel {
 namespace view {
 
-/// A widget for beautiful palcement of different setting and robot parts in 2D model right panel.
+/// A widget for beautiful placement of different setting and robot parts in 2D model right panel.
 class DetailsTab : public QTreeWidget
 {
 	Q_OBJECT
 
 public:
 	explicit DetailsTab(QWidget *parent = 0);
-	~DetailsTab();
+	~DetailsTab() override;
 
 public slots:
 	/// Shows display item in corresponding section. If nullptr is passed the whole section will be hidden.

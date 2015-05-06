@@ -133,14 +133,14 @@ void TwoDModelScene::onWallAdded(items::WallItem *wall)
 {
 	addItem(wall);
 	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
-	connect(wall, &items::WallItem::delettedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
+	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
 }
 
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
 	addItem(item);
-	connect(item, &graphicsUtils::AbstractItem::delettedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
+	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	item->setEditable(!mWorldReadOnly);
 }
 

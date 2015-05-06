@@ -16,6 +16,8 @@
 
 #include <QtWidgets/QFrame>
 
+#include <qrutils/utilsDeclSpec.h>
+
 class QGraphicsItem;
 
 namespace graphicsUtils {
@@ -25,7 +27,7 @@ class AbstractScene;
 /// A base class for popup window that configures some item on graphicsUtils::AbstractScene.
 /// Each time when user selets the item of template type this popup will appear to specify some
 /// properties of the item.
-class ItemPopup : public QFrame
+class QRUTILS_EXPORT ItemPopup : public QFrame
 {
 	Q_OBJECT
 

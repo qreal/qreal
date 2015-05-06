@@ -35,7 +35,7 @@ public:
 	ColorItemPopup(const QPen &pen, graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
 	~ColorItemPopup();
 
-	/// Returns last pen thickness entered by user.
+	/// Returns last color selected by user.
 	QColor lastColor() const;
 
 	/// Returns last pen thickness entered by user.
