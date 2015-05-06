@@ -13,16 +13,11 @@ using namespace generationRules::generator;
 
 QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::ast::CallGeneratorFor> callGeneratorForNode
 		, GeneratorConfigurer generatorConfigurer
-		, const QString &generatorName
-		, qReal::Id const elementId
-		, const QString &elementType
-		, const QString &elementName
-		)
+		, const QString &generatorName)
 {
-	Q_UNUSED(elementType);
-	Q_UNUSED(elementName);
-
 	auto identifier = qrtext::as<simpleParser::ast::Identifier>(callGeneratorForNode->identifier())->name();
+	auto elementId = generatorConfigurer.variablesTable().currentId(identifier);
+
 	auto generatorNameNode = callGeneratorForNode->generatorName();
 
 	// another stupid hack
@@ -48,8 +43,7 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 		QString result = "";
 
 		for (auto element : listOfElements) {
-			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer
-					, generatorName, element, identifier, identifier);
+			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer, generatorName);
 		}
 
 		return result;
@@ -58,7 +52,7 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::
 		QString result = "";
 
 		for (auto element : listOfElements) {
-			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer, generatorName, element, identifier);
+			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
 		}
 	}
 }

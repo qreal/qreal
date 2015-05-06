@@ -9,38 +9,34 @@
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 #include "auxiliaryGenerators/listGenerator.h"
+#include "auxiliaryGenerators/identifierTypeGenerator.h"
 
 using namespace generationRules::generator;
-using namespace simpleParser;
+using namespace simpleParser::ast;
 
-QString GeneratorForForeachNode::generatedResult(QSharedPointer<ast::Foreach> foreachNode
+QString GeneratorForForeachNode::generatedResult(QSharedPointer<Foreach> foreachNode
 			, GeneratorConfigurer generatorConfigurer
-			, const QString &generatorName
-			, const qReal::Id elementId
-			, const QString &basicElementType
-			, const QString &basicElementName)
+			, const QString &generatorName)
 {
-	// TODO: do something in these situations: foreach () {foreach () {...}}
-	Q_UNUSED(basicElementType);
-	Q_UNUSED(basicElementName);
+	auto identifierPart = qrtext::as<Identifier>(foreachNode->identifier());
+	auto identifierName = identifierPart->name();
 
-	QSharedPointer<ast::Identifier> identifier = qrtext::as<ast::Identifier>(foreachNode->identifier());
-	auto elementName = identifier->name();
-
-	QString elementType = "";
-
-	auto listNode = qrtext::as<simpleParser::ast::List>(foreachNode->listPart());
+	auto listPart = qrtext::as<List>(foreachNode->listPart());
 	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
 
-	qReal::IdList listOfElements = ListGenerator::listOfIds(listNode, logicalModelInterface, elementId);
+	auto identifierType = IdentifierTypeGenerator::variableType(listPart);
+
+	qReal::IdList listOfElements = ListGenerator::listOfIds(listPart, logicalModelInterface, generatorConfigurer.variablesTable());
 
 	QString result;
+	generatorConfigurer.variablesTable().addNewVariable(identifierName, identifierType, listOfElements);
+
 	for (const qReal::Id element : listOfElements) {
-		QSharedPointer<ast::Program> programNode = qrtext::as<ast::Program>(foreachNode->program());
-		result += GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer, generatorName, element, elementType, elementName);
+		QSharedPointer<Program> programNode = qrtext::as<Program>(foreachNode->program());
+		result += GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer, generatorName);
 	}
 
-	generatorConfigurer.variablesTable().removeVariable(elementName);
+	generatorConfigurer.variablesTable().removeVariable(identifierName);
 
 	return result;
 }

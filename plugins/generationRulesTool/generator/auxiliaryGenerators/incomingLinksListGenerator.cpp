@@ -7,7 +7,21 @@ qReal::IdList IncomingLinksListGenerator::generatedList(
 		QSharedPointer<Identifier> linksIdentifierNode
 		, QSharedPointer<Identifier> linksTypeNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, const qReal::Id elementId)
+		, VariablesTable variablesTable)
 {
-	return logicalModelInterface->logicalRepoApi().incomingLinks(elementId);
+	auto elementName = linksIdentifierNode->name();
+	auto elementId = variablesTable.currentId(elementName);
+
+	auto linksType = linksTypeNode->name();
+
+	auto allIncomingLinks = logicalModelInterface->logicalRepoApi().incomingLinks(elementId);
+	qReal::IdList linksList;
+
+	for (const auto currentLink : allIncomingLinks) {
+		if (currentLink.element() == linksType) {
+			linksList << currentLink;
+		}
+	}
+
+	return linksList;
 }

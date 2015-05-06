@@ -19,9 +19,6 @@ public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Foreach> foreachNode
 			, GeneratorConfigurer generatorConfigurer
 			, const QString &generatorName = ""
-			, const qReal::Id elementId = qReal::Id::rootId()
-			, const QString &basicElementType = ""
-			, const QString &basicElementName = ""
 			);
 };
 

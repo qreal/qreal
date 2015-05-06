@@ -8,14 +8,12 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<ComplexIdentifier> complexIdentifierNode
-		, GeneratorConfigurer generatorConfigurer
-		, const qReal::Id elementId
-		, const QString &elementType
-		, const QString &elementName)
+		, GeneratorConfigurer generatorConfigurer)
 {
-	Q_UNUSED(elementType);
-
 	auto identifierPart = qrtext::as<Identifier>(complexIdentifierNode->identifierPart());
+	auto identifierName = identifierPart->name();
+	auto elementId = generatorConfigurer.variablesTable().currentId(identifierName);
+
 	auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
 
 	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();

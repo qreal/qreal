@@ -18,11 +18,7 @@ class GeneratorForGeneratorNode
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Generator> generatorNode
 			, GeneratorConfigurer generatorConfigurer
-			, const QString &wantedGeneratorName
-			, const qReal::Id elementId = qReal::Id::rootId()
-			, const QString &basicElementType = ""
-			, const QString &basicElementName = ""
-			);
+			, const QString &wantedGeneratorName);
 };
 
 }

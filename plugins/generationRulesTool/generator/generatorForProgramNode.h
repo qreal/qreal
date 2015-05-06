@@ -19,9 +19,6 @@ public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Program> programNode
 			, GeneratorConfigurer generatorConfigurer
 			, const QString &generatorName
-			, qReal::Id const elementId
-			, const QString &elementType = ""
-			, const QString &elementName = ""
 			);
 };
 

@@ -8,17 +8,13 @@ using namespace simpleParser::ast;
 
 QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> programNode
 		, GeneratorConfigurer generatorConfigurer
-		, const QString &generatorName
-		, qReal::Id const elementId
-		, const QString &elementType
-		, const QString &elementName)
+		, const QString &generatorName)
 {
 	QString result;
 
 	QList<QSharedPointer<Node>> statements = programNode->children();
 	for (QSharedPointer<Node> statement : statements) {
-		result += CommonGenerator::generatedResult(statement, generatorConfigurer, generatorName
-				, elementId, elementType, elementName);
+		result += CommonGenerator::generatedResult(statement, generatorConfigurer, generatorName);
 	}
 
 	return result;

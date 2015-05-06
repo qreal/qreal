@@ -21,37 +21,29 @@ using namespace simpleParser;
 
 QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 		, GeneratorConfigurer generatorConfigurer
-		, const QString &generatorName
-		, const qReal::Id elementId
-		, const QString &elementType
-		, const QString &elementName)
+		, const QString &generatorName)
 {
 	QString result;
 
 	if (node->is<ast::Program>()) {
 		QSharedPointer<ast::Program> program = qrtext::as<ast::Program>(node);
-		result = GeneratorForProgramNode::generatedResult(program, generatorConfigurer, generatorName
-				, elementId, elementType, elementName);
+		result = GeneratorForProgramNode::generatedResult(program, generatorConfigurer, generatorName);
 	}
 	else if (node->is<ast::ComplexIdentifier>()) {
 		QSharedPointer<ast::ComplexIdentifier> complexIdentifier = qrtext::as<ast::ComplexIdentifier>(node);
-		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, generatorConfigurer
-				, elementId, elementType, elementName);
+		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, generatorConfigurer);
 	}
 	else if (node->is<ast::Foreach>()) {
 		QSharedPointer<ast::Foreach> foreachNode = qrtext::as<ast::Foreach>(node);
-		result = GeneratorForForeachNode::generatedResult(foreachNode, generatorConfigurer
-				, generatorName, elementId, elementType, elementName);
+		result = GeneratorForForeachNode::generatedResult(foreachNode, generatorConfigurer, generatorName);
 	}
 	else if (node->is<ast::CallGeneratorFor>()) {
 		QSharedPointer<ast::CallGeneratorFor> callGeneratorNode = qrtext::as<ast::CallGeneratorFor>(node);
-		result = GeneratorForCallGenerator::generatedResult(callGeneratorNode, generatorConfigurer
-				, generatorName, elementId, elementType, elementName);
+		result = GeneratorForCallGenerator::generatedResult(callGeneratorNode, generatorConfigurer, generatorName);
 	}
 	else if (node->is<ast::Generator>()) {
 		QSharedPointer<ast::Generator> generatorNode = qrtext::as<ast::Generator>(node);
-		result = GeneratorForGeneratorNode::generatedResult(generatorNode, generatorConfigurer
-				, generatorName, elementId, elementType, elementName);
+		result = GeneratorForGeneratorNode::generatedResult(generatorNode, generatorConfigurer, generatorName);
 	}
 	else if (node->is<ast::Newline>()) {
 		result = "\n";

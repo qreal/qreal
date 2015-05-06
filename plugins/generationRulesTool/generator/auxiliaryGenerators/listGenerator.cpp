@@ -15,7 +15,7 @@ using namespace simpleParser::ast;
 qReal::IdList ListGenerator::listOfIds(
 		QSharedPointer<List> listNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, const qReal::Id elementId)
+		, VariablesTable variablesTable)
 {
 	auto mainPartOfListIdentifier = qrtext::as<ElementIdentifier>(listNode->identifier());
 	auto identifierPart = qrtext::as<Identifier>(mainPartOfListIdentifier->identifierPart());
@@ -23,14 +23,16 @@ qReal::IdList ListGenerator::listOfIds(
 
 	if (!optionalLinkPart) {
 		// listNode is element node => listNode is identifier node (without transitionEnd or TransitionStart)
-		return SimpleTypeListGenerator::generatedList(identifierPart, logicalModelInterface, elementId);
+		return SimpleTypeListGenerator::generatedList(identifierPart, logicalModelInterface);
 	} else {
 		if (optionalLinkPart->is<IncomingLinks>()) {
-			auto linkType = qrtext::as<IncomingLinks>(optionalLinkPart)->linkType();
-			auto asIdentifier = qrtext::as<Identifier>(linkType);
-			return IncomingLinksListGenerator::generatedList(identifierPart, asIdentifier, logicalModelInterface, elementId);
+			auto linkType = qrtext::as<Identifier>(qrtext::as<IncomingLinks>(optionalLinkPart)->linkType());
+
+			return IncomingLinksListGenerator::generatedList(identifierPart, linkType, logicalModelInterface, variablesTable);
 		} else {
-			return OutcomingLinksListGenerator::generatedList(identifierPart, logicalModelInterface, elementId);
+			auto linkType = qrtext::as<Identifier>(qrtext::as<OutcomingLinks>(optionalLinkPart)->linkType());
+
+			return OutcomingLinksListGenerator::generatedList(identifierPart, linkType, logicalModelInterface, variablesTable);
 		}
 	}
 }

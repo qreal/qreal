@@ -21,11 +21,7 @@ public:
 	/// @param elementType - type of basic element in foreach
 	/// @param elementName - name of basic element in foreach
 	static QString generatedResult(QSharedPointer<simpleParser::ast::ComplexIdentifier> complexIdentifierNode
-			, GeneratorConfigurer generatorConfigurer
-			, qReal::Id const elementId
-			, const QString &elementType = ""
-			, const QString &elementName = ""
-			);
+			, GeneratorConfigurer generatorConfigurer);
 
 private:
 	/// This function is called if complex identifier name is the same as basic name in foreach.
