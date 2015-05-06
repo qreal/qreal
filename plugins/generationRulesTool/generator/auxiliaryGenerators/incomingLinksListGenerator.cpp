@@ -5,6 +5,7 @@ using namespace simpleParser::ast;
 
 qReal::IdList IncomingLinksListGenerator::generatedList(
 		QSharedPointer<Identifier> linksIdentifierNode
+		, QSharedPointer<Identifier> linksTypeNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, const qReal::Id elementId)
 {

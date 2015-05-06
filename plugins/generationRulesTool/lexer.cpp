@@ -32,6 +32,8 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineKeyword(TokenTypes::tabKeyword, "tab");
 	tokenDefinitions.defineKeyword(TokenTypes::inKeyword, "in");
 
+	tokenDefinitions.defineKeyword(TokenTypes::thisKeyword, "this");
+
 	tokenDefinitions.defineKeyword(TokenTypes::callGeneratorForKeyword, "callGeneratorFor");
 	tokenDefinitions.defineKeyword(TokenTypes::generatorKeyword, "Generator");
 

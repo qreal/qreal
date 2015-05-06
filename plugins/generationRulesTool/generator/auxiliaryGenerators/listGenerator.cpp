@@ -18,16 +18,19 @@ qReal::IdList ListGenerator::listOfIds(
 		, const qReal::Id elementId)
 {
 	auto mainPartOfListIdentifier = qrtext::as<ElementIdentifier>(listNode->identifier());
-	auto firstPart = qrtext::as<Identifier>(mainPartOfListIdentifier->identifierPart());
+	auto identifierPart = qrtext::as<Identifier>(mainPartOfListIdentifier->identifierPart());
 	auto optionalLinkPart = listNode->optionalLinkPart();
 
 	if (!optionalLinkPart) {
-		return SimpleTypeListGenerator::generatedList(firstPart, logicalModelInterface, elementId);
+		// listNode is element node => listNode is identifier node (without transitionEnd or TransitionStart)
+		return SimpleTypeListGenerator::generatedList(identifierPart, logicalModelInterface, elementId);
 	} else {
 		if (optionalLinkPart->is<IncomingLinks>()) {
-			return IncomingLinksListGenerator::generatedList(firstPart, logicalModelInterface, elementId);
+			auto linkType = qrtext::as<IncomingLinks>(optionalLinkPart)->linkType();
+			auto asIdentifier = qrtext::as<Identifier>(linkType);
+			return IncomingLinksListGenerator::generatedList(identifierPart, asIdentifier, logicalModelInterface, elementId);
 		} else {
-			return OutcomingLinksListGenerator::generatedList(firstPart, logicalModelInterface, elementId);
+			return OutcomingLinksListGenerator::generatedList(identifierPart, logicalModelInterface, elementId);
 		}
 	}
 }

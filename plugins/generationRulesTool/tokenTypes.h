@@ -27,6 +27,8 @@ enum class TokenTypes {
 	, tabKeyword
 	, inKeyword
 
+	, thisKeyword
+
 	, callGeneratorForKeyword
 	, generatorKeyword
 
