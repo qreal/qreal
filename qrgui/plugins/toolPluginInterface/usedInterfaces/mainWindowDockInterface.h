@@ -59,6 +59,9 @@ public:
 	/// Restores the @arg state of the main window obtained by saveState() method.
 	/// @param version An integer parameter that will be compared to the one serialized in @arg state.
 	virtual bool restoreState(const QByteArray &state, int version = 0) = 0;
+
+	/// Sets the given dock widget @arg area to occupy the specified @arg corner.
+	virtual void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) = 0;
 };
 
 }

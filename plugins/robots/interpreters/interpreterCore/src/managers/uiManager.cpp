@@ -182,7 +182,18 @@ void UiManager::reloadDocks() const
 	const QByteArray state = qReal::SettingsManager::value(currentSettingsKey()).toByteArray();
 	if (!mMainWindow.restoreState(state, currentMode())) {
 		QLOG_ERROR() << "Cannot apply docks state for mode" << currentMode() << ":" << state;
+	} else {
+		resetMainWindowCorners();
 	}
+}
+
+void UiManager::resetMainWindowCorners() const
+{
+	// Seems like on different platforms the default corner occupation is different, so fixing it here...
+	mMainWindow.setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+	mMainWindow.setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 }
 
 void UiManager::hack2dModelDock() const

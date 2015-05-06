@@ -56,6 +56,8 @@ void SmartDock::switchToDocked()
 	setWidget(mInnerWidget);
 	setFloating(false);
 	show();
+	checkCentralWidget();
+	emit dockedChanged(true);
 }
 
 void SmartDock::switchToFloating()
@@ -70,10 +72,8 @@ void SmartDock::switchToFloating()
 	static_cast<QVBoxLayout *>(mDialog->layout())->addWidget(mInnerWidget);
 	mInnerWidget->show();
 	mDialog->show();
-	if (QWidget * const button = mDialog->findChild<QWidget *>("dockSmartDockToMainWindowButton")) {
-		// This button is not in layout and thus can sunk in other widgets.
-		button->raise();
-	}
+	checkCentralWidget();
+	emit dockedChanged(false);
 }
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
@@ -113,6 +113,12 @@ void SmartDock::checkFloating()
 	if (isFloating() && !mDragged && !isAnimating()) {
 		switchToFloating();
 	}
+}
+
+void SmartDock::checkCentralWidget()
+{
+	mMainWindow->centralWidget()->setVisible(isFloating() || !isVisible()
+			|| mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea);
 }
 
 bool SmartDock::isAnimating()
@@ -163,6 +169,10 @@ bool SmartDock::event(QEvent *event)
 		if (!widget()) {
 			close();
 		}
+		checkCentralWidget();
+		break;
+	case QEvent::Hide:
+		checkCentralWidget();
 		break;
 	default:
 		break;
@@ -181,6 +191,7 @@ void SmartDock::initDock()
 	setWidget(mInnerWidget);
 	setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	connect(this, &QDockWidget::topLevelChanged, this, &SmartDock::checkFloating);
+	connect(this, &QDockWidget::dockLocationChanged, this, &SmartDock::checkCentralWidget);
 }
 
 void SmartDock::initDialog()
@@ -201,16 +212,7 @@ void SmartDock::initDialog()
 			mInnerWidget->close();
 		}
 	});
-	if (mMainWindow) {
-		QPushButton * const button = new QPushButton(mDialog);
-		button->setObjectName("dockSmartDockToMainWindowButton");
-		button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-		const int smallButtonSize = 20;
-		button->setFixedSize(smallButtonSize, smallButtonSize);
-		button->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton));
-		button->setToolTip("Dock window into main");
-		connect(button, &QAbstractButton::clicked, this, &SmartDock::switchToDocked);
-	} else {
+	if (!mMainWindow) {
 		switchToFloating();
 	}
 }

@@ -302,6 +302,12 @@ bool NullMainWindow::restoreState(const QByteArray &state, int version)
 	return true;
 }
 
+void NullMainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
+{
+	Q_UNUSED(corner)
+	Q_UNUSED(area)
+}
+
 void NullMainWindow::emulateClose(int returnCode)
 {
 	if (mClosed) {

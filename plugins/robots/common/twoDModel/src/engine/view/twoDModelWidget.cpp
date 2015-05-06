@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDModel/engine/view/d2ModelWidget.h"
-#include "ui_d2Form.h"
+#include "twoDModel/engine/view/twoDModelWidget.h"
+#include "ui_twoDModelWidget.h"
 
 #include <QtCore/qmath.h>
 #include <QtCore/QDebug>
@@ -34,11 +34,14 @@
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
 #include <kitBase/robotModel/robotParts/vectorSensor.h>
 
-#include "sensorItem.h"
-#include "sonarSensorItem.h"
+#include "parts/actionsBox.h"
+#include "parts/colorItemPopup.h"
+#include "parts/robotItemPopup.h"
 
-#include "src/engine/view/d2ModelScene.h"
-#include "src/engine/view/robotItem.h"
+#include "scene/sensorItem.h"
+#include "scene/sonarSensorItem.h"
+#include "scene/twoDModelScene.h"
+#include "scene/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/ellipseItem.h"
@@ -47,7 +50,7 @@
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/model.h"
 
-#include "twoDModel/engine/nullTwoDModelDisplayWidget.h"
+#include "nullTwoDModelDisplayWidget.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -59,54 +62,54 @@ using namespace kitBase;
 using namespace kitBase::robotModel;
 using namespace robotParts;
 
-D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
+const QList<int> speedFactors = { 2, 3, 4, 5, 6, 8, 10, 15, 20 };
+const int defailtSpeedFactorIndex = 3;
+
+TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
-	, mUi(new Ui::D2Form)
+	, mUi(new Ui::TwoDModelWidget)
+	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
-	, mWidth(defaultPenWidth)
+	, mCurrentSpeed(defailtSpeedFactorIndex)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
 	initWidget();
+	initPalette();
 
 	connectUiButtons();
+
+	mUi->detailsTab->setPhysicsSettings(mUi->physicsFrame);
 	mUi->realisticPhysicsCheckBox->setChecked(mModel.settings().realisticPhysics());
 	mUi->enableSensorNoiseCheckBox->setChecked(mModel.settings().realisticSensors());
 	mUi->enableMotorNoiseCheckBox->setChecked(mModel.settings().realisticMotors());
 	changePhysicsSettings();
 
-	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::onSelectionChange);
-	connect(mScene, &D2ModelScene::mousePressed, this, &D2ModelWidget::refreshCursor);
-	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::refreshCursor);
-	connect(mScene, &D2ModelScene::mouseReleased, this, [this](){ saveToRepo(); });
-	connect(mScene, &D2ModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
-	connect(mScene, &D2ModelScene::robotListChanged, this, &D2ModelWidget::onRobotListChange);
+	connect(mScene, &TwoDModelScene::selectionChanged, this, &TwoDModelWidget::onSelectionChange);
+	connect(mScene, &TwoDModelScene::mousePressed, this, &TwoDModelWidget::refreshCursor);
+	connect(mScene, &TwoDModelScene::mouseReleased, this, &TwoDModelWidget::refreshCursor);
+	connect(mScene, &TwoDModelScene::mouseReleased, this, [this](){ saveToRepo(); });
+	connect(mScene, &TwoDModelScene::robotPressed, mUi->palette, &Palette::unselect);
+	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
-	connect(&mModel.timeline(), &Timeline::tick, this, &D2ModelWidget::incrementTimelineCounter);
-	connect(&mModel.timeline(), &Timeline::started, [this]() {
-		mUi->runButton->setVisible(false);
-		mUi->stopButton->setVisible(true);
-	});
-	connect(&mModel.timeline(), &Timeline::stopped, [this]() {
-		mUi->runButton->setVisible(true);
-		mUi->stopButton->setVisible(false);
-	});
-	mUi->stopButton->setVisible(false);
+	connect(&mModel.timeline(), &Timeline::tick, this, &TwoDModelWidget::incrementTimelineCounter);
+	connect(&mModel.timeline(), &Timeline::started, this, &TwoDModelWidget::setRunStopButtonsVisibility);
+	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
+	setRunStopButtonsVisibility();
 
-	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
-	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
-	mUi->autoCenteringButton->setChecked(mFollowRobot);
-	mUi->noneButton->setChecked(true);
+	mUi->palette->unselect();
 
 	setFocus();
 
+	mModel.timeline().setSpeedFactor(speedFactors[defailtSpeedFactorIndex]);
+	checkSpeedButtons();
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
 }
 
-D2ModelWidget::~D2ModelWidget()
+TwoDModelWidget::~TwoDModelWidget()
 {
 	mSelectedRobotItem = nullptr;
 	delete mScene;
@@ -114,64 +117,73 @@ D2ModelWidget::~D2ModelWidget()
 	delete mUi;
 }
 
-void D2ModelWidget::initWidget()
+void TwoDModelWidget::initWidget()
 {
 	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 
 	mUi->setupUi(this);
 
-	mToolsTabName = mUi->mainTabBar->tabText(0);
-	mPortsTabName = mUi->mainTabBar->tabText(1);
-	mModelSettingsTabName = mUi->mainTabBar->tabText(2);
-
-	mScene = new D2ModelScene(mModel, mUi->graphicsView);
+	mScene = new TwoDModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
+	mScene->addActions(mActions->sceneContextMenuActions());
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	move(0, 0);
 
-	mUi->penWidthSpinBox->setRange(1, 30);
-	mUi->penWidthSpinBox->setValue(mWidth);
-	mUi->penColorComboBox->setColor(QColor("black"));
-
-	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
-	const QStringList translatedColorList = { tr("Black"), tr("Blue"), tr("Green"), tr("Yellow"), tr("Red") };
-
-	mUi->penColorComboBox->setColorList(colorList, translatedColorList);
-	mUi->penColorComboBox->setColor(QColor("black"));
-
-	initButtonGroups();
+	QPen defaultPen(Qt::black);
+	defaultPen.setWidth(defaultPenWidth);
+	// Popups will listen to scene events, appear, disappear and free itself.
+	mColorFieldItemPopup = new ColorItemPopup(defaultPen, *mScene, this);
+	mRobotItemPopup = new RobotItemPopup(*mScene, this);
+	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
+	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
+		mScene->setPenBrushItems(pen, Qt::NoBrush);
+	});
 
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-	mUi->displayFrame->setEnabled(false);
-
-	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
+	mUi->detailsTab->setDisplay(mDisplay);
 
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
-	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &D2ModelScene::alignWalls);
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
 }
 
-void D2ModelWidget::connectUiButtons()
+void TwoDModelWidget::initPalette()
 {
-	connect(mUi->realisticPhysicsCheckBox, &QAbstractButton::toggled, this, &D2ModelWidget::changePhysicsSettings);
-	connect(mUi->enableMotorNoiseCheckBox, &QAbstractButton::toggled, this, &D2ModelWidget::changePhysicsSettings);
-	connect(mUi->enableSensorNoiseCheckBox, &QAbstractButton::toggled, this, &D2ModelWidget::changePhysicsSettings);
+	QAction * const wallTool = items::WallItem::wallTool();
+	QAction * const lineTool = items::LineItem::lineTool();
+	QAction * const ellipseTool = items::EllipseItem::ellipseTool();
+	QAction * const stylusTool = items::StylusItem::stylusTool();
 
-	connect(mUi->ellipseButton, &QAbstractButton::toggled, mScene, &D2ModelScene::addEllipse);
-	connect(mUi->stylusButton, &QAbstractButton::toggled, mScene, &D2ModelScene::addStylus);
-	connect(mUi->lineButton, &QAbstractButton::toggled, mScene, &D2ModelScene::addLine);
-	connect(mUi->wallButton, &QAbstractButton::toggled, mScene, &D2ModelScene::addWall);
-	connect(mUi->noneButton, &QAbstractButton::toggled, mScene, &D2ModelScene::setNoneStatus);
+	mUi->palette->registerTool(wallTool);
+	mUi->palette->registerTool(lineTool);
+	mUi->palette->registerTool(ellipseTool);
+	mUi->palette->registerTool(stylusTool);
 
-	connect(mUi->ellipseButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawEllipse); });
-	connect(mUi->stylusButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawStylus); });
-	connect(mUi->lineButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawLine); });
-	connect(mUi->wallButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawWall); });
-	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
+	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
+	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
+	connect(ellipseTool, &QAction::triggered, mScene, &TwoDModelScene::addEllipse);
+	connect(stylusTool, &QAction::triggered, mScene, &TwoDModelScene::addStylus);
+	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
 
-	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
+	connect(wallTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawWall); });
+	connect(lineTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawLine); });
+	connect(ellipseTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawEllipse); });
+	connect(stylusTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawStylus); });
+	connect(&mUi->palette->cursorAction(), &QAction::triggered, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
+}
+
+void TwoDModelWidget::initDetailsTab()
+{
+}
+
+void TwoDModelWidget::connectUiButtons()
+{
+	connect(mUi->realisticPhysicsCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
+	connect(mUi->enableMotorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
+	connect(mUi->enableSensorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
+
+	connect(&mActions->deleteAllAction(), &QAction::triggered, [this](){
 		QMessageBox confirmation;
 		confirmation.setWindowTitle(tr("Warning"));
 		confirmation.setText(tr("Do you really want to clear scene?"));
@@ -183,58 +195,36 @@ void D2ModelWidget::connectUiButtons()
 		}
 	});
 
-	connect(mUi->clearFloorButton, &QAbstractButton::clicked, &mModel.worldModel(), &WorldModel::clearRobotTrace);
+	connect(&mActions->clearFloorAction(), &QAction::triggered, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
-			, mUi->clearFloorButton, &QAbstractButton::setVisible, Qt::QueuedConnection);
+			, &mActions->clearFloorAction(), &QAction::setEnabled, Qt::QueuedConnection);
 
-	connect(&mButtonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *, bool)>(&QButtonGroup::buttonToggled)
-			, [this](QAbstractButton *button, bool toggled) {
-				if (toggled) {
-					setHighlightOneButton(button);
-				} else if (!mButtonGroup.checkedButton()) {
-					setHighlightOneButton(mUi->noneButton);
-				}
-	});
+	connect(&mActions->saveModelAction(), &QAction::triggered, this, &TwoDModelWidget::saveWorldModel);
+	connect(&mActions->loadModelAction(), &QAction::triggered, this, &TwoDModelWidget::loadWorldModel);
 
-	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
-	connect(mUi->penColorComboBox, SIGNAL(activated(int)), this, SLOT(changePenColor(int)));
+	connect(mUi->speedUpButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedUp);
+	connect(mUi->speedDownButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedDown);
 
-	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
-	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
+	connect(mRobotItemPopup, &RobotItemPopup::followingChanged, this, &TwoDModelWidget::enableRobotFollowing);
+	connect(&mActions->scrollHandModeAction(), &QAction::toggled
+			, this, &TwoDModelWidget::onHandCursorButtonToggled);
+	connect(&mActions->multiSelectionModeAction(), &QAction::toggled
+			, this, &TwoDModelWidget::onMultiselectionCursorButtonToggled);
 
-	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
-
-	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
-	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
-	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
-
-	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(returnToStartMarker()));
-	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
+	connect(mRobotItemPopup, &RobotItemPopup::restoreRobotPositionClicked, this, &TwoDModelWidget::returnToStartMarker);
+	connect(mUi->initialStateButton, &QAbstractButton::clicked, this, &TwoDModelWidget::returnToStartMarker);
+	connect(mUi->toggleDetailsButton, &QAbstractButton::clicked, this, &TwoDModelWidget::toggleDetailsVisibility);
 
 	initRunStopButtons();
 }
 
-void D2ModelWidget::initButtonGroups()
+void TwoDModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 {
-	mButtonGroup.setExclusive(false);
-	mButtonGroup.addButton(mUi->lineButton);
-	mButtonGroup.addButton(mUi->wallButton);
-	mButtonGroup.addButton(mUi->stylusButton);
-	mButtonGroup.addButton(mUi->ellipseButton);
-	mButtonGroup.addButton(mUi->noneButton);
-
-	mCursorButtonGroup.setExclusive(true);
-	mCursorButtonGroup.addButton(mUi->handCursorButton);
-	mCursorButtonGroup.addButton(mUi->multiselectionCursorButton);
-}
-
-void D2ModelWidget::setPortsGroupBoxAndWheelComboBoxes()
-{
-	mCurrentConfigurer = new DevicesConfigurationWidget(mUi->portsGroupBox, true, true);
+	mCurrentConfigurer = new DevicesConfigurationWidget(mUi->portsFrame, true, true);
 	mCurrentConfigurer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	mCurrentConfigurer->loadRobotModels({ &mSelectedRobotItem->robotModel().info() });
 	mCurrentConfigurer->selectRobotModel(mSelectedRobotItem->robotModel().info());
-	mUi->portsGroupBox->layout()->addWidget(mCurrentConfigurer);
+	mUi->portsFrame->layout()->addWidget(mCurrentConfigurer);
 	mCurrentConfigurer->connectDevicesConfigurationProvider(&mSelectedRobotItem->robotModel().configuration());
 	connectDevicesConfigurationProvider(&mSelectedRobotItem->robotModel().configuration());
 
@@ -248,12 +238,15 @@ void D2ModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 
 	connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
 	connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
+
+	mUi->detailsTab->setDevicesConfigurer(mUi->portsFrame);
+	mUi->detailsTab->setMotorsConfigurer(mUi->motorsFrame);
 }
 
-void D2ModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
+void TwoDModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 {
 	if (mCurrentConfigurer) {
-		mUi->portsGroupBox->layout()->removeWidget(mCurrentConfigurer);
+		mUi->portsFrame->layout()->removeWidget(mCurrentConfigurer);
 		mCurrentConfigurer->disconnectDevicesConfigurationProvider();
 
 		if (mSelectedRobotItem) {
@@ -264,47 +257,14 @@ void D2ModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 	}
 }
 
-void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
-{
-	for (QAbstractButton * const button : mButtonGroup.buttons()) {
-		if (button != oneButton && button->isChecked()) {
-			// This will disable toggled(false) emission, we are interested only in checked buttons.
-			button->blockSignals(true);
-			button->setChecked(false);
-			button->blockSignals(false);
-		}
-	}
-
-	if (!oneButton->isChecked()) {
-		oneButton->setChecked(true);
-	}
-}
-
-void D2ModelWidget::changeSpeed(int curIndex)
-{
-	switch(curIndex){
-	case 0:
-		mModel.timeline().setSpeedFactor(Timeline::slowSpeedFactor);
-		break;
-	case 1:
-		mModel.timeline().setSpeedFactor(Timeline::normalSpeedFactor);
-		break;
-	case 2:
-		mModel.timeline().setSpeedFactor(Timeline::fastSpeedFactor);
-		break;
-	default:
-		mModel.timeline().setSpeedFactor(Timeline::normalSpeedFactor);
-	}
-}
-
-void D2ModelWidget::returnToStartMarker()
+void TwoDModelWidget::returnToStartMarker()
 {
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
 	}
 }
 
-void D2ModelWidget::keyPressEvent(QKeyEvent *event)
+void TwoDModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
 	if ((event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus) && event->modifiers() == Qt::ControlModifier) {
@@ -318,12 +278,12 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void D2ModelWidget::close()
+void TwoDModelWidget::close()
 {
 	setVisible(false);
 }
 
-void D2ModelWidget::changeEvent(QEvent *e)
+void TwoDModelWidget::changeEvent(QEvent *e)
 {
 	QWidget::changeEvent(e);
 	switch (e->type()) {
@@ -335,7 +295,7 @@ void D2ModelWidget::changeEvent(QEvent *e)
 	}
 }
 
-void D2ModelWidget::showEvent(QShowEvent *e)
+void TwoDModelWidget::showEvent(QShowEvent *e)
 {
 	e->accept();
 	QWidget::showEvent(e);
@@ -345,25 +305,26 @@ void D2ModelWidget::showEvent(QShowEvent *e)
 	}
 }
 
-void D2ModelWidget::onFirstShow()
+void TwoDModelWidget::onFirstShow()
 {
-	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
+	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
+	setDetailsVisibility(SettingsManager::value("2d_detailsVisible").toBool());
 }
 
-void D2ModelWidget::centerOnRobot()
+void TwoDModelWidget::centerOnRobot()
 {
 	if (mSelectedRobotItem && mFollowRobot && mSelectedRobotItem->robotModel().onTheGround()) {
 		mScene->centerOnRobot(mSelectedRobotItem);
 	}
 }
 
-void D2ModelWidget::setCursorTypeForDrawing(CursorType type)
+void TwoDModelWidget::setCursorTypeForDrawing(CursorType type)
 {
 	mCursorType = type;
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 }
 
-void D2ModelWidget::saveWorldModel()
+void TwoDModelWidget::saveWorldModel()
 {
 	// Saves world and robot models simultaneously, for now.
 	QString saveFileName = QRealFileDialog::getSaveFileName("Save2DModelWidget", this
@@ -383,7 +344,7 @@ void D2ModelWidget::saveWorldModel()
 	saveFile() << save.toString(4);
 }
 
-void D2ModelWidget::loadWorldModel()
+void TwoDModelWidget::loadWorldModel()
 {
 	// Loads world and robot models simultaneously.
 	const QString loadFileName = QRealFileDialog::getOpenFileName("Open2DModelWidget", this
@@ -404,7 +365,7 @@ void D2ModelWidget::loadWorldModel()
 	loadXml(save);
 }
 
-void D2ModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
+void TwoDModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
 {
 	robotItem->removeSensor(port);
 	RobotModel &robotModel = robotItem->robotModel();
@@ -440,13 +401,13 @@ void D2ModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
 	robotItem->addSensor(port, sensor);
 }
 
-bool D2ModelWidget::isColorItem(AbstractItem * const item) const
+bool TwoDModelWidget::isColorItem(AbstractItem * const item) const
 {
 	return dynamic_cast<items::ColorFieldItem *>(item)
 			&& !dynamic_cast<items::WallItem *>(item);
 }
 
-QList<AbstractItem *> D2ModelWidget::selectedColorItems() const
+QList<AbstractItem *> TwoDModelWidget::selectedColorItems() const
 {
 	QList<AbstractItem *> resList;
 	for (QGraphicsItem * const graphicsItem : mScene->selectedItems()) {
@@ -459,46 +420,8 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems() const
 	return resList;
 }
 
-void D2ModelWidget::changePenWidth(int width)
+void TwoDModelWidget::onSelectionChange()
 {
-	mScene->setPenWidthItems(width);
-	mWidth = width;
-	for (AbstractItem * const item : selectedColorItems()) {
-		item->setPenWidth(width);
-	}
-
-	mScene->update();
-}
-
-void D2ModelWidget::changePenColor(int textIndex)
-{
-	const QString text = mUi->penColorComboBox->colorByIndex(textIndex).name();
-	mScene->setPenColorItems(text);
-	for (AbstractItem * const item : selectedColorItems()) {
-		item->setPenColor(text);
-	}
-
-	mScene->update();
-}
-
-void D2ModelWidget::changePalette()
-{
-	const QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
-	if (!listSelectedItems.isEmpty()) {
-		AbstractItem *item = dynamic_cast<AbstractItem *>(listSelectedItems.back());
-		if (isColorItem(item)) {
-			const QPen penItem = item->pen();
-			const QBrush brushItem = item->brush();
-			setItemPalette(penItem, brushItem);
-			mScene->setPenBrushItems(penItem, brushItem);
-		}
-	}
-}
-
-void D2ModelWidget::onSelectionChange()
-{
-	changePalette();
-
 	if (mScene->oneRobot()) {
 		return;
 	}
@@ -541,38 +464,39 @@ void D2ModelWidget::onSelectionChange()
 	}
 }
 
-void D2ModelWidget::setValuePenColorComboBox(const QColor &penColor)
+void TwoDModelWidget::speedUp()
 {
-	mUi->penColorComboBox->setColor(penColor);
+	if (mCurrentSpeed < speedFactors.count() - 1) {
+		mModel.timeline().setSpeedFactor(speedFactors[++mCurrentSpeed]);
+		checkSpeedButtons();
+	}
 }
 
-void D2ModelWidget::setValuePenWidthSpinBox(int width)
+void TwoDModelWidget::speedDown()
 {
-	mUi->penWidthSpinBox->setValue(width);
+	if (mCurrentSpeed > 0) {
+		mModel.timeline().setSpeedFactor(speedFactors[--mCurrentSpeed]);
+		checkSpeedButtons();
+	}
 }
 
-void D2ModelWidget::setItemPalette(const QPen &penItem, const QBrush &brushItem)
+void TwoDModelWidget::checkSpeedButtons()
 {
-	Q_UNUSED(brushItem)
-	mUi->penColorComboBox->blockSignals(true);
-	mUi->penWidthSpinBox->blockSignals(true);
-	setValuePenWidthSpinBox(penItem.width());
-	setValuePenColorComboBox(penItem.color());
-	mUi->penColorComboBox->blockSignals(false);
-	mUi->penWidthSpinBox->blockSignals(false);
+	mUi->speedUpButton->setEnabled(mCurrentSpeed < speedFactors.count() - 1);
+	mUi->speedDownButton->setEnabled(mCurrentSpeed > 0);
 }
 
-D2ModelScene *D2ModelWidget::scene()
+TwoDModelScene *TwoDModelWidget::scene()
 {
 	return mScene;
 }
 
-engine::TwoDModelDisplayWidget *D2ModelWidget::display()
+engine::TwoDModelDisplayWidget *TwoDModelWidget::display()
 {
 	return mDisplay;
 }
 
-void D2ModelWidget::setSensorVisible(const kitBase::robotModel::PortInfo &port, bool isVisible)
+void TwoDModelWidget::setSensorVisible(const kitBase::robotModel::PortInfo &port, bool isVisible)
 {
 	RobotModel *robotModel = mModel.robotModels()[0];
 
@@ -581,92 +505,45 @@ void D2ModelWidget::setSensorVisible(const kitBase::robotModel::PortInfo &port, 
 	}
 }
 
-void D2ModelWidget::closeEvent(QCloseEvent *event)
+void TwoDModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
 	emit widgetClosed();
 }
 
-SensorItem *D2ModelWidget::sensorItem(const kitBase::robotModel::PortInfo &port)
+SensorItem *TwoDModelWidget::sensorItem(const kitBase::robotModel::PortInfo &port)
 {
 	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
 }
 
-void D2ModelWidget::saveToRepo()
+void TwoDModelWidget::saveToRepo()
 {
 	emit mModel.modelChanged(generateXml());
 }
 
-QDomDocument D2ModelWidget::generateXml() const
+QDomDocument TwoDModelWidget::generateXml() const
 {
 	return mModel.serialize();
 }
 
-void D2ModelWidget::loadXml(const QDomDocument &worldModel)
+void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 {
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 }
 
-Model &D2ModelWidget::model() const
+Model &TwoDModelWidget::model() const
 {
 	return mModel;
 }
 
-void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
+void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 {
-	const auto openTab = [this](QWidget * const tab) {
-		QList<const QWidget *> tabOrder{mUi->toolsTab, mUi->portsTab, mUi->modelSettingsTab};
-		QHash<const QWidget *, QString> tabs{
-				{mUi->toolsTab, mToolsTabName}
-				, {mUi->portsTab, mPortsTabName}
-				, {mUi->modelSettingsTab, mModelSettingsTabName}
-		};
-
-		if (!tabs.keys().contains(tab)) {
-			throw qReal::Exception("Trying to add unknown tab to tools palette in 2d model");
-		}
-
-		int tabsIndex = 0;
-
-		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
-			if (mUi->mainTabBar->widget(i) == tab) {
-				return;
-			} else {
-				while (tabsIndex < tabOrder.size() && mUi->mainTabBar->widget(i) != tabOrder[tabsIndex]) {
-					if (tabOrder[tabsIndex] == tab) {
-						mUi->mainTabBar->insertTab(i, tab, tabs[tab]);
-						return;
-					}
-
-					++tabsIndex;
-				}
-			}
-		}
-
-		mUi->mainTabBar->insertTab(mUi->mainTabBar->count(), tab, tabs[tab]);
-	};
-
-	const auto closeTab = [this](QWidget * const tab) {
-		for (int i = 0; i < mUi->mainTabBar->count(); ++i) {
-			if (mUi->mainTabBar->widget(i) == tab) {
-				mUi->mainTabBar->removeTab(i);
-				--i;
-			}
-		}
-	};
-
-	const auto setTabHidden = [this, &openTab, &closeTab](QWidget * const tab, const bool hidden) {
-		if (hidden) {
-			closeTab(tab);
-		} else {
-			openTab(tab);
-		}
-	};
-
 	const bool worldReadOnly = (flags & ReadOnly::World) != 0;
 
-	setTabHidden(mUi->toolsTab, worldReadOnly);
+	mUi->palette->setVisible(!worldReadOnly);
+	mActions->setWorldModelActionsVisible(!worldReadOnly);
+	mColorFieldItemPopup->setEnabled(!worldReadOnly);
 
 	const auto hasSpacer = [this]() {
 		for (int i = 0; i < mUi->sceneHeaderWidget->layout()->count(); ++i) {
@@ -685,13 +562,11 @@ void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 		static_cast<QHBoxLayout *>(mUi->sceneHeaderWidget->layout())->insertItem(1, mUi->horizontalSpacer);
 	}
 
-	mUi->saveWorldModelPushButton->setVisible(!worldReadOnly);
-	mUi->loadWorldModelPushButton->setVisible(!worldReadOnly);
-
 	const bool sensorsReadOnly = flags.testFlag(ReadOnly::Sensors);
 	const bool robotConfigurationReadOnly = flags.testFlag(ReadOnly::RobotSetup);
 
-	setTabHidden(mUi->portsTab, sensorsReadOnly && robotConfigurationReadOnly);
+	mUi->detailsTab->setDevicesSectionsVisible(!sensorsReadOnly);
+	mUi->detailsTab->setMotorsSectionsVisible(!robotConfigurationReadOnly);
 
 	mCurrentConfigurer->setEnabled(!sensorsReadOnly);
 	mUi->leftWheelComboBox->setEnabled(!robotConfigurationReadOnly);
@@ -699,31 +574,37 @@ void D2ModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 
 	const bool simulationSettingsReadOnly = flags.testFlag(ReadOnly::SimulationSettings);
 
-	mUi->realisticPhysicsCheckBox->setEnabled(!simulationSettingsReadOnly);
-	mUi->enableMotorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
-	mUi->enableSensorNoiseCheckBox->setEnabled(!simulationSettingsReadOnly);
+	mUi->detailsTab->setPhysicsSectionsVisible(!simulationSettingsReadOnly);
 
 	mSensorsReadOnly = sensorsReadOnly;
 
 	mScene->setInteractivityFlags(flags);
 }
 
-void D2ModelWidget::enableRobotFollowing(bool on)
+void TwoDModelWidget::setCompactMode(bool enabled)
+{
+	mCompactMode = enabled;
+	setRunStopButtonsVisibility();
+	mActions->setSaveLoadActionsShortcutsEnabled(!mCompactMode);
+}
+
+void TwoDModelWidget::enableRobotFollowing(bool on)
 {
 	mFollowRobot = on;
 	SettingsManager::setValue("2dFollowingRobot", on);
 }
 
-void D2ModelWidget::setCursorType(CursorType cursor)
+void TwoDModelWidget::setCursorType(CursorType cursor)
 {
 	mNoneCursorType = cursor;
 	mCursorType = mNoneCursorType;
 	SettingsManager::setValue("2dCursorType", cursor);
 	mUi->graphicsView->setDragMode(cursorTypeToDragType(cursor));
 	mUi->graphicsView->setCursor(cursorTypeToCursor(cursor));
+	syncCursorButtons();
 }
 
-void D2ModelWidget::changePhysicsSettings()
+void TwoDModelWidget::changePhysicsSettings()
 {
 	SettingsManager::setValue("2DModelRealisticPhysics", mUi->realisticPhysicsCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
@@ -732,21 +613,27 @@ void D2ModelWidget::changePhysicsSettings()
 	mModel.settings().rereadNoiseSettings();
 }
 
-void D2ModelWidget::toggleDisplayVisibility()
+void TwoDModelWidget::toggleDetailsVisibility()
 {
-	setDisplayVisibility(!mDisplayIsVisible);
+	setDetailsVisibility(!mDetailsAreVisible);
 }
 
-void D2ModelWidget::setDisplayVisibility(bool visible)
+void TwoDModelWidget::setDetailsVisibility(bool visible)
 {
-	mDisplayIsVisible = visible;
-	mDisplay->setVisible(visible);
+	mDetailsAreVisible = visible;
+	mUi->detailsContainer->setVisible(visible);
 	const QString direction = visible ? "right" : "left";
-	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
-	SettingsManager::setValue("2d_displayVisible", visible);
+	mUi->toggleDetailsButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
+	SettingsManager::setValue("2d_detailsVisible", visible);
 }
 
-QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(CursorType type) const
+void TwoDModelWidget::setRunStopButtonsVisibility()
+{
+	mUi->runButton->setVisible(!mCompactMode && !mModel.timeline().isStarted());
+	mUi->stopButton->setVisible(!mCompactMode && mModel.timeline().isStarted());
+}
+
+QGraphicsView::DragMode TwoDModelWidget::cursorTypeToDragType(CursorType type) const
 {
 	switch(type) {
 	case noDrag:
@@ -764,7 +651,7 @@ QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(CursorType type) con
 	}
 }
 
-QCursor D2ModelWidget::cursorTypeToCursor(CursorType type) const
+QCursor TwoDModelWidget::cursorTypeToCursor(CursorType type) const
 {
 	switch(type) {
 	case noDrag:
@@ -786,41 +673,41 @@ QCursor D2ModelWidget::cursorTypeToCursor(CursorType type) const
 	}
 }
 
-void D2ModelWidget::refreshCursor()
+void TwoDModelWidget::refreshCursor()
 {
 	mUi->graphicsView->setDragMode(cursorTypeToDragType(mCursorType));
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 }
 
-void D2ModelWidget::onHandCursorButtonToggled(bool on)
+void TwoDModelWidget::onHandCursorButtonToggled(bool on)
 {
 	if (on) {
 		setCursorType(hand);
 	}
 }
 
-void D2ModelWidget::onMultiselectionCursorButtonToggled(bool on)
+void TwoDModelWidget::onMultiselectionCursorButtonToggled(bool on)
 {
 	if (on) {
 		setCursorType(multiselection);
 	}
 }
 
-void D2ModelWidget::syncCursorButtons()
+void TwoDModelWidget::syncCursorButtons()
 {
 	switch(mNoneCursorType) {
 	case hand:
-		mUi->handCursorButton->setChecked(true);
+		mActions->scrollHandModeAction().setChecked(true);
 		break;
 	case multiselection:
-		mUi->multiselectionCursorButton->setChecked(true);
+		mActions->multiSelectionModeAction().setChecked(true);
 		break;
 	default:
 		break;
 	}
 }
 
-void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
+void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
 	Q_UNUSED(port)
@@ -833,7 +720,7 @@ void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 	}
 }
 
-void D2ModelWidget::bringToFront()
+void TwoDModelWidget::bringToFront()
 {
 	if (isHidden()) {
 		show();
@@ -844,13 +731,13 @@ void D2ModelWidget::bringToFront()
 	}
 }
 
-void D2ModelWidget::initRunStopButtons()
+void TwoDModelWidget::initRunStopButtons()
 {
-	connect(mUi->runButton, &QPushButton::clicked, this, &D2ModelWidget::runButtonPressed);
-	connect(mUi->stopButton, &QPushButton::clicked, this, &D2ModelWidget::stopButtonPressed);
+	connect(mUi->runButton, &QPushButton::clicked, this, &TwoDModelWidget::runButtonPressed);
+	connect(mUi->stopButton, &QPushButton::clicked, this, &TwoDModelWidget::stopButtonPressed);
 }
 
-void D2ModelWidget::updateWheelComboBoxes()
+void TwoDModelWidget::updateWheelComboBoxes()
 {
 	if (!mSelectedRobotItem) {
 		mUi->leftWheelComboBox->hide();
@@ -917,7 +804,7 @@ void D2ModelWidget::updateWheelComboBoxes()
 	}
 }
 
-void D2ModelWidget::onRobotListChange(RobotItem *robotItem)
+void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 {
 	if (mScene->oneRobot()) {
 		setSelectedRobotItem(mScene->robot(*mModel.robotModels()[0]));
@@ -943,55 +830,46 @@ void D2ModelWidget::onRobotListChange(RobotItem *robotItem)
 	}
 }
 
-void D2ModelWidget::setSelectedRobotItem(RobotItem *robotItem)
+void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 {
 	mSelectedRobotItem = robotItem;
 
-	connect(&mSelectedRobotItem->robotModel(), &RobotModel::robotRided, this, &D2ModelWidget::centerOnRobot);
-	connect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
+	connect(&mSelectedRobotItem->robotModel(), &RobotModel::robotRided, this, &TwoDModelWidget::centerOnRobot);
+	connect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this, &TwoDModelWidget::centerOnRobot);
 
 	setPortsGroupBoxAndWheelComboBoxes();
 	updateWheelComboBoxes();
 
+	mUi->detailsTab->setDisplay(nullptr);
 	delete mDisplay;
 	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget(this);
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-	mUi->displayFrame->setEnabled(true);
-	setDisplayVisibility(mDisplayIsVisible);
+	mUi->detailsTab->setDisplay(mDisplay);
 
 	mUi->leftWheelComboBox->show();
 	mUi->rightWheelComboBox->show();
 }
 
-void D2ModelWidget::unsetSelectedRobotItem()
+void TwoDModelWidget::unsetSelectedRobotItem()
 {
 	if (mSelectedRobotItem) {
 		unsetPortsGroupBoxAndWheelComboBoxes();
 		disconnect(&mSelectedRobotItem->robotModel(), &RobotModel::robotRided, this
-				, &D2ModelWidget::centerOnRobot);
+				, &TwoDModelWidget::centerOnRobot);
 		disconnect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this
-				, &D2ModelWidget::centerOnRobot);
+				, &TwoDModelWidget::centerOnRobot);
 
 		mSelectedRobotItem = nullptr;
 	}
 
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->removeWidget(mDisplay);
+	mUi->detailsTab->setDisplay(nullptr);
 	delete mDisplay;
 	mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
-	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-
-	mUi->displayFrame->setEnabled(false);
+	mUi->detailsTab->setDisplay(mDisplay);
 }
 
-void D2ModelWidget::incrementTimelineCounter()
+void TwoDModelWidget::incrementTimelineCounter()
 {
 	mUi->timelineBox->stepBy(1);
-}
-
-D2ModelWidget::RobotState::RobotState()
-	: pos()
-	, rotation(0)
-{
 }

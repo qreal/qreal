@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,31 @@
 
 #pragma once
 
-#include "twoDModelDisplayWidget.h"
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QLabel>
 
 namespace twoDModel {
-namespace engine {
+namespace view {
 
-/// Display widget for NullRobotModel
-class NullTwoDModelDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
+class GridParameters : public QFrame
 {
 	Q_OBJECT
 
 public:
-	explicit NullTwoDModelDisplayWidget(QWidget *parent = 0);
+	explicit GridParameters(QWidget *parent = 0);
+	~GridParameters();
 
-	~NullTwoDModelDisplayWidget();
+public slots:
+	void showGrid(bool isGridEnabled);
+	void setCellSize(int cellSizeValue);
 
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
-	bool buttonIsDown(const QString &buttonId) const override;
-	void repaintDisplay();
-	int displayWidth() const;
-	int displayHeight() const;
+signals:
+	void parametersChanged();
 
+private:
+	QSlider *mCellSize;
+	QCheckBox *mShowGridCheckBox;
 };
 
 }

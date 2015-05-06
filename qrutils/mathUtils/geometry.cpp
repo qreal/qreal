@@ -38,6 +38,13 @@ QVector2D Geometry::projection(const QVector2D &projected, const QVector2D &targ
 	return normalizedTarget * scalarProduct(normalizedTarget, projected);
 }
 
+QVector2D Geometry::rotateVector(const QVector2D &vector, qreal angleInDegrees)
+{
+	const qreal angle = angleInDegrees * pi / 180;
+	return QVector2D(vector.x() * cos(angle) - vector.y() * sin(angle)
+			, vector.x() * sin(angle) + vector.y() * cos(angle));
+}
+
 QPointF Geometry::normalPoint(const QLineF &line, const QPointF &point)
 {
 	const qreal x1 = line.p1().x();

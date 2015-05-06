@@ -30,6 +30,10 @@ public:
 
 	AbstractItem *clone() const override;
 
+	/// Creates and returns colored stylus item for 2D model palette.
+	/// Transfers ownership.
+	static QAction *stylusTool();
+
 	void addLine(qreal x2, qreal y2);
 
 	QRectF boundingRect() const override;

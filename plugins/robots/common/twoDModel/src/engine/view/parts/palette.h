@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,38 @@
 
 #pragma once
 
-#include <QtWidgets/QSlider>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QLabel>
+#include <QtWidgets/QWidget>
+
+class QToolBar;
+class QAction;
+class QActionGroup;
 
 namespace twoDModel {
 namespace view {
 
-class GridParameters : public QFrame
+/// A widget containing a set of items that can be drawn on 2D model scene.
+class Palette : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit GridParameters(QWidget *parent = 0);
-	~GridParameters();
+	explicit Palette(QWidget *parent = 0);
+	~Palette();
+
+	/// Returns a pointer to 'none' tool that triggered when no other tool selected.
+	const QAction &cursorAction() const;
 
 public slots:
-	void showGrid(bool isGridEnabled);
-	void setCellSize(int cellSizeValue);
+	/// Appends an item to 2D model`s palette.
+	void registerTool(QAction * const tool);
 
-signals:
-	void parametersChanged();
+	/// Activates cursor action.
+	void unselect();
 
 private:
-	QSlider *mCellSize;
-	QCheckBox *mShowGridCheckBox;
+	QScopedPointer<QAction> mCursorAction;
+	QScopedPointer<QActionGroup> mGroup;
+	QToolBar *mToolBar;  // Takes ownership
 };
 
 }

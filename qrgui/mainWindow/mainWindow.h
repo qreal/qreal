@@ -170,6 +170,8 @@ public:
 	QByteArray saveState(int version = 0) const override;
 	bool restoreState(const QByteArray &state, int version = 0) override;
 
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
+
 	void setTabText(QWidget *tab, const QString &text) override;
 
 	void beginPaletteModification() override;

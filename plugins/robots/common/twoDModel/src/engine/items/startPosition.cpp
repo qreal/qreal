@@ -84,3 +84,8 @@ void StartPosition::changeDragState(qreal x, qreal y)
 	Q_UNUSED(y)
 	setDragState(None);
 }
+
+void StartPosition::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	Q_UNUSED(event)
+}
