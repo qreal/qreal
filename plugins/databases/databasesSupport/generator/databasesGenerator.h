@@ -20,17 +20,18 @@ public:
 	void clearPhysicalModel();
 public slots:
 	bool checkCorrectness();
-	/// Generate code from block diagram and build it in executable file
-	//void generateSQL();
 	void generatePhysicalModel();
+
 	void generateSQLCode();
-	void generateWithSqlServer2008();
 	void changeEditor(QString const &dbmsName);
 
 private:
+	void generateWithSqlServer2008();
+	void generateWithMySql5();
+	void generateWithSqlite();
 	qReal::ErrorReporterInterface *mErrorReporter;
 	qReal::Id createElementFromString(QString const &elemName, QPointF coord = QPointF(), Id const &parentLogicalId = Id::rootId(), bool coordByParent = false);
-	qReal::Id makeRowFromAttribute(Id const &attributeId, Id const &parentId);
+	qReal::Id makeColumnFromAttribute(Id const &attributeId, Id const &parentId);
 	qReal::Id makeTableFromEntity(Id const &entityId, Id const &parentId);
 	qReal::Id makeTableFromEntitySet(IdList const &set, Id const &parentId);
 	qReal::Id copyOneToManyRelationship(Id const &logicalModelId, Id const &parentId, Id const &from, Id const &to);
@@ -72,6 +73,7 @@ private:
 	QFile codeFile;
 	QString mDbms;
 	DatabasesPreferencesPage const *mPreferencesPage;
+	gui::MainWindowInterpretersInterface &mMainWindowInterface;
 	//DatatypesChecker *mDatatypesChecker;
 };
 

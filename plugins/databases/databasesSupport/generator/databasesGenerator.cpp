@@ -17,9 +17,15 @@ DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator, Da
 	, mErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter())
 	, mDbms(QString("Sql_server_2008"))
 	, mPreferencesPage(preferencesPage)
+	, mMainWindowInterface(configurator.mainWindowInterpretersInterface())
 //	, mDatatypesChecker(new DatatypesChecker("", configurator.mainWindowInterpretersInterface().errorReporter()))
 {
 	connect(mPreferencesPage, SIGNAL(dbmsChanged(QString)), this, SLOT(changeEditor(QString)));
+
+	//configurator.mainWindowInterpretersInterface().
+	configurator.mainWindowInterpretersInterface().unloadPlugin("sqlite");
+	configurator.mainWindowInterpretersInterface().unloadPlugin("my_sql_5");
+	configurator.mainWindowInterpretersInterface().unloadPlugin("sql_server_2008");
 	//mAppTranslator.load(":/DatabasesGenerator_" + QLocale::system().name());
 	//QApplication::installTranslator(&mAppTranslator);
 
@@ -290,8 +296,9 @@ bool DatabasesGenerator::checkCorrectness()
 
 qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName, QPointF coord, Id const &parentLogicalId, bool coordByParent)
 {
-	Id id = Id::loadFromString(QString("qrm:/" + mDbms + "/DatabasesPhysicalModelMetamodel/" + elemName));
-	Id logicalId = mLogicalModelApi.createElement(parentLogicalId, id);
+	Id id = Id::loadFromString(QString("qrm:/" + mDbms
+						+ "/DatabasesPhysicalModelMetamodel/" + elemName));
+	Id logicalId = mLogicalModelApi.createElement(Id::rootId(), id);
 	Id graphicalParentId = Id::rootId();
 	if (parentLogicalId != Id::rootId()) {
 		graphicalParentId = mGraphicalModelApi.graphicalIdsByLogicalId(parentLogicalId).first();
@@ -299,16 +306,17 @@ qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName, Q
 			coord = mGraphicalModelApi.position(graphicalParentId);
 	}
 	mGraphicalModelApi.createElement(graphicalParentId, logicalId, true, elemName, coord);
+	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(Id::rootId());
 	return logicalId;
 }
 
-qReal::Id DatabasesGenerator::makeRowFromAttribute(Id const &attributeId, Id const &parentId)
+qReal::Id DatabasesGenerator::makeColumnFromAttribute(Id const &attributeId, Id const &parentId)
 {
 	QPointF coord = mGraphicalModelApi.position(attributeId);
-	Id logicalRowId = createElementFromString("Row", QPointF(), parentId);
+	Id logicalColumnId = createElementFromString("Column", QPointF(), parentId);
 	QString rowName = getProperty(attributeId, "Name").toString();
-	mLogicalModelApi.setPropertyByRoleName(logicalRowId, rowName, "Name");
-	return logicalRowId;
+	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "Name");
+	return logicalColumnId;
 }
 
 qReal::Id DatabasesGenerator::makeTableFromEntity(Id const &entityId, Id const &parentId)
@@ -320,8 +328,10 @@ qReal::Id DatabasesGenerator::makeTableFromEntity(Id const &entityId, Id const &
 
 	IdList attributesSet = getChildren(entityId);
 	foreach (Id const &attributeId, attributesSet) {
-		makeRowFromAttribute(attributeId, logicalTableId);
+		makeColumnFromAttribute(attributeId, logicalTableId);
 	}
+
+	IdList tableNodes = findNodes("Table");
 	return logicalTableId;
 }
 
@@ -335,7 +345,7 @@ qReal::Id DatabasesGenerator::makeTableFromEntitySet(IdList const &set, Id const
 	foreach(Id const &entityId, set){
 		IdList attributes = getChildren(entityId);
 		foreach (Id const &attributeId, attributes) {
-			makeRowFromAttribute(attributeId, logicalTableId);
+			makeColumnFromAttribute(attributeId, logicalTableId);
 		}
 	}
 	return logicalTableId;
@@ -428,9 +438,9 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> oneToOneBou
 		match[toSet][fromSet] = -1;
 
 		//add bounding attribute
-		Id logicalRowId = createElementFromString("Row", QPointF(), setTables.at(fromSet), true);
+		Id logicalColumnId = createElementFromString("Column", QPointF(), setTables.at(fromSet), true);
 		QString rowName = getProperty(relationship, "ColumnName").toString();
-		mLogicalModelApi.setPropertyByRoleName(logicalRowId, rowName, "Name");
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "Name");
 		// copy relationship
 		copyOneToManyRelationship(relationship, logicalDiagramId, setTables.at(fromSet), setTables.at(toSet));
 	}
@@ -468,14 +478,14 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> oneToOneBo
 		copyManyToManyRelationship(relationship, logicalDiagramId, logicalTableId, setTables.at(toSet));
 
 		//add bounding attribute
-		Id logicalRowIdOne = createElementFromString("Row", QPointF(), logicalTableId, true);
+		Id logicalColumnIdOne = createElementFromString("Column", QPointF(), logicalTableId, true);
 		QString rowName = "keyOf" + getProperty(setTables.at(fromSet), "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(logicalRowIdOne, rowName, "Name");
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdOne, rowName, "Name");
 
 		//add bounding attribute 2
-		Id logicalRowIdTwo = createElementFromString("Row", QPointF(), logicalTableId, true);
+		Id logicalColumnIdTwo = createElementFromString("Column", QPointF(), logicalTableId, true);
 		QString rowName2 = "keyOf" + getProperty(setTables.at(toSet), "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(logicalRowIdTwo, rowName2, "Name");
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdTwo, rowName2, "Name");
 	}
 	return true;
 }
@@ -527,8 +537,12 @@ void DatabasesGenerator::generatePhysicalModel()
 
 void DatabasesGenerator::generateSQLCode()
 {
-	if (mDbms = "Sql_server_2008")
+	if (mDbms == "Sql_server_2008")
 		generateWithSqlServer2008();
+	if (mDbms == "My_sql_5")
+		generateWithMySql5();
+	if (mDbms == "Sqlite")
+		generateWithSqlite();
 }
 
 void DatabasesGenerator::generateWithSqlServer2008()
@@ -542,6 +556,59 @@ void DatabasesGenerator::generateWithSqlServer2008()
 	IdList tableNodes = findNodes("Table");
 	foreach (Id const tableId, tableNodes) {
 			codeFile.write("CREATE TABLE ");
+			codeFile.write("dbo." + getProperty(tableId, "Name").toByteArray());
+			codeFile.write("\r\n(");
+			IdList rowsSet = getChildren(tableId);
+
+			bool first = true;
+			foreach (Id const &rowId, rowsSet) {
+				if (!first) {
+					codeFile.write(",");
+				}
+				first = false;
+				codeFile.write("\r\n");
+				codeFile.write(getProperty(rowId, "Name").toByteArray());
+				codeFile.write(" ");
+				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+				if (getProperty(rowId, "null").toBool())
+					codeFile.write(" NULL");
+				else if (getProperty(rowId, "notNull").toBool())
+					codeFile.write(" NOT NULL");
+
+				if (getProperty(rowId, "isPrimaryKey").toBool())
+					codeFile.write(" PRIMARY KEY");
+
+				if (getProperty(rowId, "unique").toBool())
+					codeFile.write(" UNIQUE");
+
+			}
+			codeFile.write("\r\n);\r\n\r\n");
+		}
+	codeFile.close();
+	mErrorReporter->addInformation(tr("Code was generated successfully"));
+}
+
+void DatabasesGenerator::generateWithMySql5()
+{
+	mErrorReporter->clear();
+
+	codeFile.setFileName(mWorkDir + mCodeFileName);
+	if (!codeFile.open(QIODevice::WriteOnly))
+		return;
+
+	IdList tableNodes = findNodes("Table");
+	foreach (Id const tableId, tableNodes) {
+			codeFile.write("CREATE ");
+
+			if (getProperty(tableId, "temporary").toBool())
+				codeFile.write("TEMPORARY ");
+
+			codeFile.write("TABLE ");
+
+			if (getProperty(tableId, "if_not_exists").toBool())
+				codeFile.write("IF NOT EXISTS ");
+
 			codeFile.write(getProperty(tableId, "Name").toByteArray());
 			codeFile.write("\r\n(");
 			IdList rowsSet = getChildren(tableId);
@@ -556,8 +623,125 @@ void DatabasesGenerator::generateWithSqlServer2008()
 				codeFile.write(getProperty(rowId, "Name").toByteArray());
 				codeFile.write(" ");
 				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+				if (getProperty(rowId, "null").toBool())
+					codeFile.write(" NULL");
+				else if (getProperty(rowId, "notNull").toBool())
+					codeFile.write(" NOT NULL");
+
+				if (getProperty(rowId, "isPrimaryKey").toBool())
+					codeFile.write(" PRIMARY KEY");
+
+				if (getProperty(rowId, "unique").toBool())
+					codeFile.write(" UNIQUE");
+
+				QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
+				if (defaultValue != "")
+					codeFile.write(" DEFAULT '" + defaultValue + "'");
+
+				if (getProperty(rowId, "auto_increment").toBool())
+					codeFile.write(" AUTO_INCREMENT");
+
 			}
 			codeFile.write("\r\n);\r\n\r\n");
+
+			QByteArray tableType = getProperty(tableId, "type").toByteArray();
+			if (tableType != "")
+				codeFile.write(" TYPE " + tableType);
+
+			QByteArray autoIncrementValue = getProperty(tableId, "auto_increment").toByteArray();
+			if (autoIncrementValue != "")
+				codeFile.write(" AUTO_INCREMENT " + autoIncrementValue);
+
+			QByteArray avgColumnLength = getProperty(tableId, "avg_row_length").toByteArray();
+			if (avgColumnLength != "")
+				codeFile.write(" AVG_ROW_LENGTH " + avgColumnLength);
+
+			if (getProperty(tableId, "check_sum").toBool())
+				codeFile.write(" CHECKSUM");
+
+			QByteArray comment = getProperty(tableId, "comment").toByteArray();
+			if (comment != "")
+				codeFile.write(" COMMENT " + comment);
+
+			QByteArray maxColumns = getProperty(tableId, "max_rows").toByteArray();
+			if (maxColumns != "")
+				codeFile.write(" MAX_ROWS " + maxColumns);
+
+			QByteArray minColumns = getProperty(tableId, "min_rows").toByteArray();
+			if (minColumns != "")
+				codeFile.write(" MIN_ROWS " + minColumns);
+
+			if (getProperty(tableId, "pack_keys").toBool())
+				codeFile.write(" PACK_KEYS");
+
+			if (getProperty(tableId, "delay_key_write").toBool())
+				codeFile.write(" DELAY_KEY_WRITE");
+		}
+	codeFile.close();
+	mErrorReporter->addInformation(tr("Code was generated successfully"));
+}
+
+void DatabasesGenerator::generateWithSqlite()
+{
+	mErrorReporter->clear();
+
+	codeFile.setFileName(mWorkDir + mCodeFileName);
+	if (!codeFile.open(QIODevice::WriteOnly))
+		return;
+
+	IdList tableNodes = findNodes("Table");
+	foreach (Id const tableId, tableNodes) {
+			codeFile.write("CREATE ");
+
+			if (getProperty(tableId, "temporary").toBool())
+				codeFile.write("TEMPORARY ");
+			else if (getProperty(tableId, "temp").toBool())
+				codeFile.write("TEMP ");
+
+			codeFile.write("TABLE ");
+
+			if (getProperty(tableId, "if_not_exists").toBool())
+				codeFile.write("IF NOT EXISTS ");
+
+			codeFile.write(getProperty(tableId, "Name").toByteArray());
+			codeFile.write("\r\n(");
+			IdList rowsSet = getChildren(tableId);
+
+			bool first = true;
+			foreach (Id const &rowId, rowsSet) {
+				if (!first) {
+					codeFile.write(",");
+				}
+				first = false;
+				codeFile.write("\r\n");
+				codeFile.write(getProperty(rowId, "Name").toByteArray());
+				codeFile.write(" ");
+				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+				if (getProperty(rowId, "null").toBool())
+					codeFile.write(" NULL");
+				else if (getProperty(rowId, "notNull").toBool())
+					codeFile.write(" NOT NULL");
+
+				if (getProperty(rowId, "isPrimaryKey").toBool())
+					codeFile.write(" PRIMARY KEY");
+
+				if (getProperty(rowId, "unique").toBool())
+					codeFile.write(" UNIQUE");
+
+				QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
+				if (defaultValue != "")
+					codeFile.write(" DEFAULT '" + defaultValue + "'");
+
+				if (getProperty(rowId, "auto_increment").toBool())
+					codeFile.write(" AUTO_INCREMENT");
+
+			}
+			codeFile.write("\r\n);\r\n\r\n");
+
+			if (getProperty(tableId, "without_rowid").toBool())
+				codeFile.write(" WITHOUT ROWID");
 		}
 	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
@@ -565,8 +749,26 @@ void DatabasesGenerator::generateWithSqlServer2008()
 
 void DatabasesGenerator::changeEditor(QString const &dbmsName)
 {
-	if (dbmsName == "Microsoft SQL Server 2008")
+	if (mDbms =="Sql_server_2008")
+		mMainWindowInterface.unloadPlugin("sql_server_2008");
+	else if (mDbms == "My_sql_5")
+		mMainWindowInterface.unloadPlugin("my_sql_5");
+	else if (mDbms =="Sqlite")
+		mMainWindowInterface.unloadPlugin("sqlite");
+
+	if  (dbmsName =="Sql_server_2008")
+	{
 		mDbms = "Sql_server_2008";
+		mMainWindowInterface.loadPlugin("sql_server_2008.xml", "sql_server_2008");
+	} else if (mDbms =="My_sql_5")
+	{
+		mDbms = "My_sql_5";
+		mMainWindowInterface.loadPlugin("my_sql_5.xml", "my_sql_5");
+	} else if (mDbms == "Sqlite")
+	{
+		mDbms = "Sqlite";
+		mMainWindowInterface.loadPlugin("sqlite.xml", "sqlite");
+	}
 }
 
 }

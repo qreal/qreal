@@ -42,12 +42,12 @@
       </item>
       <item>
        <property name="text">
-        <string>MySQL</string>
+        <string>MySQL 5</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Oracle</string>
+        <string>Oracle SQL Developer</string>
        </property>
       </item>
       <item>

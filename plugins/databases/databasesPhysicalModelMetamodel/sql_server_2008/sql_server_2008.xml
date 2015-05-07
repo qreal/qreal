@@ -17,7 +17,7 @@
 				<logic>
 					<container>
 						<contains type="DatabasesPhysicalModelMetamodel::Table"/>
-						<contains type="DatabasesPhysicalModelMetamodel::Row"/>
+						<contains type="DatabasesPhysicalModelMetamodel::Column"/>
 						<contains type="DatabasesPhysicalModelMetamodel::PhysicalOneToManyRelationship"/>
 						<contains type="DatabasesPhysicalModelMetamodel::PhysicalManyToManyRelationship"/>
 					</container>
@@ -52,7 +52,7 @@
 				</graphics>
 				<logic>
 					<container>
-						<contains type="Databases::Row"/>
+						<contains type="DatabasesPhysicalModelMetamodel::Column"/>
 						 <properties>
 							<sortContainer/>
 							<minimizeToChildren/>
@@ -63,11 +63,10 @@
 					</container>
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
-						<property type="string" name="check" displayedName="Check"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Row" displayedName="Row">
+			<node name="Column" displayedName="Column">
 				<graphics>
 					<picture sizex="150" sizey="31">
 						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="31" x2="150"/>
@@ -104,9 +103,11 @@
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isUnique" displayedName="Unique"/>
 						<property type="bool" name="notNull" displayedName="Not null"/>
+						<property type="bool" name="null" displayedName="Null"/>
 						<property type="string" name="DataType" displayedName="Data Type">
 							<default>INT</default>
 						</property>
+						<property type="string" name="default" displayedName="Default"/>
 					</properties>
 				</logic>
 			</node>
@@ -186,9 +187,9 @@
 			</edge>
 		</graphicTypes>
 		<palette>
-		<group name="Tables and Rows">
+		<group name="Tables and Columns">
 				<element name="Table"/>
-				<element name="Row"/>
+				<element name="Column"/>
 			</group>
 			<group name="Relationships">
 				<element name="PhysicalManyToManyRelationship"/>

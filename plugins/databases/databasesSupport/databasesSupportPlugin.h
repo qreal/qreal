@@ -29,7 +29,6 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
 	virtual QList<qReal::ActionInfo> actions();
-signals:
 
 public slots:
 	void checkCorrectness();
