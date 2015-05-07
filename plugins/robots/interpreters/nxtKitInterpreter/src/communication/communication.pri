@@ -33,7 +33,7 @@ win32 {
 
 }
 
-unix {
+unix:!macx {
 	HEADERS += \
 		$$PWD/linuxFantom.h \
 

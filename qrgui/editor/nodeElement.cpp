@@ -183,7 +183,7 @@ void NodeElement::setGeometry(const QRectF &geom)
 
 void NodeElement::setPos(const QPointF &pos)
 {
-	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
+	if (qIsNaN(pos.x()) || qIsNaN(pos.y())) {
 		setPos(QPointF());
 		mContents.moveTo(QPointF());
 		storeGeometry();

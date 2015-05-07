@@ -37,7 +37,7 @@ public:
 	virtual void reshapeRectWithShift();
 
 	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(const QRect &rect);
-	void setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair);
+	void setDomXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
 

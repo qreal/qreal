@@ -36,13 +36,10 @@
 using namespace qReal;
 using namespace enums;
 
-const qreal pi = 3.14159265358979;
-
 const qreal epsilon = 0.00000000001;
 
 const int rightRotation = 1;// the difference between the elements of NodeSide
 const int maxReductCoeff = 16;
-const int standartReductCoeff = 3;
 
 /** @brief indicator of edges' movement */
 
@@ -1116,7 +1113,7 @@ void EdgeElement::setPos(qreal x, qreal y)
 
 void EdgeElement::setPos(const QPointF &pos)
 {
-	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
+	if (qIsNaN(pos.x()) || qIsNaN(pos.y())) {
 		Element::setPos(QPointF());
 		QLOG_WARN() << "NaN passed to EdgeElement::setPos(). That means that something went wrong."\
 				"Learn to reproduce this message. The position has been set to (0,0).";

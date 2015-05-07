@@ -99,14 +99,6 @@ unix {
 		$$PWD/linuxExternBrowser.cpp \
 }
 
-macx {
-	HEADERS += \
-		$$PWD/macExternBrowser.h \
-
-	SOURCES += \
-		$$PWD/macExternBrowser.cpp \
-}
-
 FORMS += \
 	$$PWD/mainWindow.ui \
 	$$PWD/referenceList.ui \
