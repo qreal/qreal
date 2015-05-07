@@ -292,3 +292,14 @@ TEST_F(LuaSemanticAnalyzerTest, unknownIdentifier)
 
 	EXPECT_EQ(1, mErrors.size());
 }
+
+TEST_F(LuaSemanticAnalyzerTest, subarrayAssignment)
+{
+	auto tree = parse("a = {{1}}");
+	mAnalyzer->analyze(tree);
+	tree = parse("a[0] = {2}");
+	mAnalyzer->analyze(tree);
+
+	EXPECT_EQ(0, mErrors.size());
+}
+
