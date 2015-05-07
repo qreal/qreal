@@ -2,6 +2,7 @@
 #include "generatorForElementIdentifierNode.h"
 
 #include "ast/identifier.h"
+#include "ast/elementIdentifier.h"
 #include "ast/transitionEnd.h"
 
 using namespace generationRules::generator;

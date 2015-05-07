@@ -10,6 +10,7 @@
 #include "ast/node.h"
 
 #include "variablesTable.h"
+#include "generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
@@ -17,13 +18,8 @@ namespace generator {
 class GeneratorForElementIdentifierNode
 {
 public:
-	static qReal::IdList neededElementId(QSharedPointer<simpleParser::ast::ElementIdentifier> elementIdentifierNode
-			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable tableOfVariables
-			, qReal::EditorManagerInterface *editorManagerInterface
-			, qReal::Id const elementId
-			, const QString &elementType = ""
-			, const QString &elementName = ""
+	static qReal::Id neededElementId(QSharedPointer<simpleParser::ast::ElementIdentifier> elementIdentifierNode
+			, GeneratorConfigurer generatorCofigurer
 			);
 };
 

@@ -5,46 +5,30 @@
 #include <ast/identifier.h>
 
 using namespace generationRules::generator;
+using namespace simpleParser::ast;
 
-qReal::IdList GeneratorForElementIdentifierNode::neededElementId(
-		QSharedPointer<simpleParser::ast::ElementIdentifier> elementIdentifierNode
-		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, VariablesTable tableOfVariables
-		, qReal::EditorManagerInterface *editorManagerInterface
-		, const qReal::Id elementId
-		, const QString &elementType
-		, const QString &elementName)
+qReal::Id GeneratorForElementIdentifierNode::neededElementId(
+		QSharedPointer<ElementIdentifier> elementIdentifierNode
+		, GeneratorConfigurer generatorConfigurer)
 {
-	Q_UNUSED(tableOfVariables);
-	Q_UNUSED(editorManagerInterface);
-	Q_UNUSED(elementType);
-	Q_UNUSED(elementName);
+	auto identifierPart = qrtext::as<Identifier>(elementIdentifierNode->identifierPart());
+	auto optionalTransitionPart = elementIdentifierNode->optionalTransitionPart();
 
-	auto firstPart = elementIdentifierNode->identifierPart();
-	auto secondPart = elementIdentifierNode->optionalTransitionPart();
+	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
+	auto elementId = generatorConfigurer.variablesTable().currentId(identifierPart->name());
 
-	if (secondPart) {
+	if (optionalTransitionPart) {
 		// we have to return transitionEnd or transitionStart for this element
-		if (secondPart->is<simpleParser::ast::TransitionEnd>()) {
-			return {logicalModelInterface->to(elementId)};
-		} else if (secondPart->is<simpleParser::ast::TransitionStart>()) {
-			return {logicalModelInterface->from(elementId)};
+		if (optionalTransitionPart->is<TransitionEnd>()) {
+			return logicalModelInterface->to(elementId);
+		} else if (optionalTransitionPart->is<TransitionStart>()) {
+			return logicalModelInterface->from(elementId);
 		} else {
 			// TODO: throw exception
 			qDebug() << "ERROR";
-			return {qReal::Id::rootId()};
+			return qReal::Id::rootId();
 		}
 	} else {
-		// we need all elements in model with given name
-		auto typeName = qrtext::as<simpleParser::ast::Identifier>(firstPart)->name();
-		qReal::IdList listOfElementIds;
-
-		for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
-			if (elementId.element() == typeName) {
-				listOfElementIds << elementId;
-			}
-		}
-
-		return listOfElementIds;
+		return elementId;
 	}
 }
