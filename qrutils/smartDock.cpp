@@ -117,8 +117,10 @@ void SmartDock::checkFloating()
 
 void SmartDock::checkCentralWidget()
 {
-	mMainWindow->centralWidget()->setVisible(isFloating() || !isVisible()
-			|| mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea);
+	const bool tabsVisible = isFloating() || !isVisible() || mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea;
+	for (QWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QWidget *>()) {
+		centralWidget->setVisible(tabsVisible);
+	}
 }
 
 bool SmartDock::isAnimating()

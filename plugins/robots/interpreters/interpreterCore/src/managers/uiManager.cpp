@@ -191,9 +191,9 @@ void UiManager::resetMainWindowCorners() const
 {
 	// Seems like on different platforms the default corner occupation is different, so fixing it here...
 	mMainWindow.setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
-	mMainWindow.setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
 	mMainWindow.setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
 }
 
 void UiManager::hack2dModelDock() const
