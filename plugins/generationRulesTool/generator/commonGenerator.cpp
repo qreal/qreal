@@ -20,14 +20,13 @@ using namespace generationRules::generator;
 using namespace simpleParser;
 
 QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
-		, GeneratorConfigurer generatorConfigurer
-		, const QString &generatorName)
+		, GeneratorConfigurer generatorConfigurer)
 {
 	QString result;
 
 	if (node->is<ast::Program>()) {
 		QSharedPointer<ast::Program> program = qrtext::as<ast::Program>(node);
-		result = GeneratorForProgramNode::generatedResult(program, generatorConfigurer, generatorName);
+		result = GeneratorForProgramNode::generatedResult(program, generatorConfigurer);
 	}
 	else if (node->is<ast::ComplexIdentifier>()) {
 		QSharedPointer<ast::ComplexIdentifier> complexIdentifier = qrtext::as<ast::ComplexIdentifier>(node);
@@ -35,15 +34,15 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 	}
 	else if (node->is<ast::Foreach>()) {
 		QSharedPointer<ast::Foreach> foreachNode = qrtext::as<ast::Foreach>(node);
-		result = GeneratorForForeachNode::generatedResult(foreachNode, generatorConfigurer, generatorName);
+		result = GeneratorForForeachNode::generatedResult(foreachNode, generatorConfigurer);
 	}
 	else if (node->is<ast::CallGeneratorFor>()) {
 		QSharedPointer<ast::CallGeneratorFor> callGeneratorNode = qrtext::as<ast::CallGeneratorFor>(node);
-		result = GeneratorForCallGenerator::generatedResult(callGeneratorNode, generatorConfigurer, generatorName);
+		result = GeneratorForCallGenerator::generatedResult(callGeneratorNode, generatorConfigurer);
 	}
 	else if (node->is<ast::Generator>()) {
 		QSharedPointer<ast::Generator> generatorNode = qrtext::as<ast::Generator>(node);
-		result = GeneratorForGeneratorNode::generatedResult(generatorNode, generatorConfigurer, generatorName);
+		result = GeneratorForGeneratorNode::generatedResult(generatorNode, generatorConfigurer);
 	}
 	else if (node->is<ast::Newline>()) {
 		result = "\n";

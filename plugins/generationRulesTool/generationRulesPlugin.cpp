@@ -101,8 +101,10 @@ void GenerationRulesPlugin::generateCode(
 	auto parserResultForRoot = TreeGeneratorFromString::generatedTreeFromString(rootStream);
 	auto programForRoot = parserResultForRoot.dynamicCast<simpleParser::ast::Program>();
 	generationRules::generator::VariablesTable table;
+	generationRules::generator::CurrentScope scope;
 
-	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface, mEditorManagerInterface, table, editorId, diagramId);
+	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface, mEditorManagerInterface
+			, table, scope, editorId, diagramId);
 
 	QString resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
 			, generatorConfigurer);

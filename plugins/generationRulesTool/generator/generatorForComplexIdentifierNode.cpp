@@ -5,16 +5,16 @@
 #include "ast/elementIdentifier.h"
 #include "ast/transitionEnd.h"
 
+#include "generatorForElementIdentifierNode.h"
+
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<ComplexIdentifier> complexIdentifierNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	auto identifierPart = qrtext::as<Identifier>(complexIdentifierNode->identifierPart());
-	auto identifierName = identifierPart->name();
-	auto elementId = generatorConfigurer.variablesTable().currentId(identifierName);
-
+	auto identifierPart = qrtext::as<ElementIdentifier>(complexIdentifierNode->identifierPart());
+	auto elementId = GeneratorForElementIdentifierNode::neededElementId(identifierPart, generatorConfigurer);
 	auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
 
 	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();

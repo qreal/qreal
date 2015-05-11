@@ -7,14 +7,13 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> programNode
-		, GeneratorConfigurer generatorConfigurer
-		, const QString &generatorName)
+		, GeneratorConfigurer generatorConfigurer)
 {
 	QString result;
 
 	QList<QSharedPointer<Node>> statements = programNode->children();
 	for (QSharedPointer<Node> statement : statements) {
-		result += CommonGenerator::generatedResult(statement, generatorConfigurer, generatorName);
+		result += CommonGenerator::generatedResult(statement, generatorConfigurer);
 	}
 
 	return result;

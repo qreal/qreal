@@ -1,5 +1,6 @@
 #include "generatorForElementIdentifierNode.h"
 
+#include <ast/this.h>
 #include <ast/transitionEnd.h>
 #include <ast/transitionStart.h>
 #include <ast/identifier.h>
@@ -11,11 +12,17 @@ qReal::Id GeneratorForElementIdentifierNode::neededElementId(
 		QSharedPointer<ElementIdentifier> elementIdentifierNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	auto identifierPart = qrtext::as<Identifier>(elementIdentifierNode->identifierPart());
+	auto identifierPart = elementIdentifierNode->identifierPart();
 	auto optionalTransitionPart = elementIdentifierNode->optionalTransitionPart();
 
 	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
-	auto elementId = generatorConfigurer.variablesTable().currentId(identifierPart->name());
+
+	qReal::Id elementId;
+	if (identifierPart->is<Identifier>()) {
+		elementId = generatorConfigurer.variablesTable().currentId(qrtext::as<Identifier>(identifierPart)->name());
+	} else {
+		elementId = generatorConfigurer.currentScope().currentId();
+	}
 
 	if (optionalTransitionPart) {
 		// we have to return transitionEnd or transitionStart for this element

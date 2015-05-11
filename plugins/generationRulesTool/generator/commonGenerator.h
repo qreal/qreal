@@ -18,7 +18,6 @@ class CommonGenerator
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Node> node
 			, GeneratorConfigurer generatorConfigurer
-			, const QString &generatorName = ""
 			);
 };
 }

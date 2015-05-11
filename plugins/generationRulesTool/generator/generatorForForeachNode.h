@@ -18,7 +18,6 @@ class GeneratorForForeachNode
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Foreach> foreachNode
 			, GeneratorConfigurer generatorConfigurer
-			, const QString &generatorName = ""
 			);
 };
 

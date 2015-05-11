@@ -5,20 +5,17 @@
 #include "generatorForProgramNode.h"
 
 using namespace generationRules::generator;
+using namespace simpleParser::ast;
 
-QString GeneratorForGeneratorNode::generatedResult(QSharedPointer<simpleParser::ast::Generator> generatorNode
-			, GeneratorConfigurer generatorConfigurer
-			, const QString &wantedGeneratorName)
+QString GeneratorForGeneratorNode::generatedResult(QSharedPointer<Generator> generatorNode
+			, GeneratorConfigurer generatorConfigurer)
 {
-	auto generatorNameNode = qrtext::as<simpleParser::ast::Identifier>(generatorNode->identifier());
+	auto generatorNameNode = qrtext::as<Identifier>(generatorNode->identifier());
 	auto generatorName = generatorNameNode->name();
 
-	auto programNode = qrtext::as<simpleParser::ast::Program>(generatorNode->program());
+	auto programNode = qrtext::as<Program>(generatorNode->program());
 
-	if (wantedGeneratorName == generatorName) {
-		return GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer, generatorName);
-	} else {
-		// TODO: throw exception
-		return "Fail!!";
+	if (generatorConfigurer.currentScope().currentGeneratorName() == generatorName) {
+		return GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer);
 	}
 }

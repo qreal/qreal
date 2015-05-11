@@ -64,7 +64,9 @@ HEADERS += \
 	$$PWD/generator/auxiliaryGenerators/listGenerator.h \
 	$$PWD/generator/generatorConfigurer.h \
 	$$PWD/generator/auxiliaryGenerators/identifierTypeGenerator.h \
-	$$PWD/generator/typeQualifier.h
+	$$PWD/generator/typeQualifier.h \
+	$$PWD/ast/this.h \
+	$$PWD/generator/currentScope.h
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \
@@ -85,7 +87,8 @@ SOURCES += \
 	$$PWD/generator/auxiliaryGenerators/incomingLinksListGenerator.cpp \
 	$$PWD/generator/auxiliaryGenerators/listGenerator.cpp \
 	$$PWD/generator/auxiliaryGenerators/identifierTypeGenerator.cpp \
-	$$PWD/generator/typeQualifier.cpp
+	$$PWD/generator/typeQualifier.cpp \
+	$$PWD/generator/currentScope.cpp
 
 FORMS += \
 	$$PWD/dialogs/specifyGenerationRulesDialog.ui \

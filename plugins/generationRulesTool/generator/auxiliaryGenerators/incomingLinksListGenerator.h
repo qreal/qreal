@@ -8,6 +8,7 @@
 #include "ast/identifier.h"
 
 #include "generator/variablesTable.h"
+#include "generator/currentScope.h"
 
 namespace generationRules {
 namespace generator {
@@ -20,10 +21,11 @@ public:
 	/// @param linksTypeNode - second part (SpecificType in previous example).
 	/// @param logicalModelInterface - information about model.
 	/// @param variablesTable - table of variables.
-	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Identifier> linksIdentifierNode
+	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Node> linksIdentifierNode
 			, QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable variablesTable
+			, CurrentScope currentScope
 			);
 };
 }

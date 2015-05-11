@@ -17,8 +17,7 @@ class GeneratorForGeneratorNode
 {
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Generator> generatorNode
-			, GeneratorConfigurer generatorConfigurer
-			, const QString &wantedGeneratorName);
+			, GeneratorConfigurer generatorConfigurer);
 };
 
 }

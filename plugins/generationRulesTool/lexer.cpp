@@ -40,6 +40,7 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineToken(TokenTypes::dot, QRegularExpression("\\."), ".");
 	tokenDefinitions.defineToken(TokenTypes::comma, QRegularExpression("\\,"), ",");
 	tokenDefinitions.defineToken(TokenTypes::doubleColon, QRegularExpression("::"), "::");
+	tokenDefinitions.defineToken(TokenTypes::arrow, QRegularExpression("->"), "->");
 
 	tokenDefinitions.defineKeyword(TokenTypes::newlineKeyword, "newline");
 	tokenDefinitions.defineKeyword(TokenTypes::foreachKeyword, "foreach");

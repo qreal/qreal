@@ -17,9 +17,7 @@ class GeneratorForProgramNode
 {
 public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Program> programNode
-			, GeneratorConfigurer generatorConfigurer
-			, const QString &generatorName
-			);
+			, GeneratorConfigurer generatorConfigurer);
 };
 
 }

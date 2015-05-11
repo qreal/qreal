@@ -7,6 +7,7 @@
 
 #include "ast/node.h"
 #include "variablesTable.h"
+#include "currentScope.h"
 
 namespace generationRules {
 namespace generator {
@@ -24,11 +25,13 @@ public:
 	GeneratorConfigurer(qReal::LogicalModelAssistInterface *logicalModelInterface
 			, qReal::EditorManagerInterface *editorManagerInterface
 			, VariablesTable &variablesTable
+			, CurrentScope &currentScope
 			, const qReal::Id &editorId
 			, const qReal::Id &diagramId)
 		: mLogicalModelAssistInterface(logicalModelInterface)
 		, mEditorManagerInterface(editorManagerInterface)
 		, mVariablesTable(variablesTable)
+		, mCurrentScope(currentScope)
 		, mEditorId(editorId)
 		, mDiagramId(diagramId)
 	{}
@@ -51,6 +54,12 @@ public:
 		return mVariablesTable;
 	}
 
+	/// Returns information about current scope (generator name, "this").
+	CurrentScope &currentScope() const
+	{
+		return mCurrentScope;
+	}
+
 	/// Returns current editor id.
 	const qReal::Id &editorId() const
 	{
@@ -67,6 +76,7 @@ private:
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // doesn't have ownership
 	VariablesTable &mVariablesTable;
 	qReal::EditorManagerInterface *mEditorManagerInterface;  // doesn't have ownership
+	CurrentScope &mCurrentScope;
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
 };

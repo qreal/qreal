@@ -29,6 +29,7 @@
 #include "ast/program.h"
 #include "ast/tab.h"
 #include "ast/text.h"
+#include "ast/this.h"
 #include "ast/transitionEnd.h"
 #include "ast/transitionStart.h"
 #include "ast/list.h"
@@ -85,7 +86,13 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::TransitionEnd();
 	};
 
-	auto elementIdentifier = (identifier &
+	auto thisIdentifier = TokenTypes::thisKeyword
+			>> [] (Token<TokenTypes> const &token) {
+				Q_UNUSED(token);
+				return new ast::This();
+	};
+
+	auto elementIdentifier = ((identifier | thisIdentifier) &
 				~(-TokenTypes::dot & (transitionEndIdentifier | transitionStartIdentifier)))
 			>> [] (QSharedPointer<ast::Node> elementIdentifierNode) {
 				if (elementIdentifierNode->is<TemporaryPair>()) {
@@ -100,7 +107,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				}
 	};
 
-	auto complexIdentifier = (elementIdentifier & -TokenTypes::doubleColon & identifier)
+	auto complexIdentifier = (elementIdentifier & -TokenTypes::arrow & identifier)
 			>> [] (QSharedPointer<TemporaryPair> identifierAndProperty) {
 				auto identifierPart = identifierAndProperty->left();
 				auto propertyPart = identifierAndProperty->right();
@@ -126,7 +133,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return qrtext::wrap(new ast::Links(linkTypeNode));
 	};
 
-	auto listIdentifier = (elementIdentifier & ~(-TokenTypes::dot
+	auto listIdentifier = (elementIdentifier & ~(-TokenTypes::doubleColon
 				& (outcomingLinksIdentifier | incomingLinksIdentifier | linksIdentifier)))
 			>> [] (QSharedPointer<ast::Node> identifierAndOptionalLink) {
 				if (identifierAndOptionalLink->is<TemporaryPair>()) {
@@ -191,6 +198,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 
 	auto tab = TokenTypes::tabKeyword
 			>> [] (Token<TokenTypes> const &token) {
+				Q_UNUSED(token);
 				return new ast::Tab();
 	};
 

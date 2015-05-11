@@ -9,7 +9,7 @@ VariablesTable::VariablesTable()
 
 void VariablesTable::addNewVariable(const QString &name, const QString &type, const qReal::IdList &listOfIds)
 {
-	VariableData newVariableData(type, listOfIds);
+	VariableData *newVariableData = new VariableData(type, listOfIds);
 	mHashTable.insert(name, newVariableData);
 }
 
@@ -27,10 +27,10 @@ QString VariablesTable::textRepresentation() const
 {
 	QString result = "";
 
-	QHashIterator<QString, VariableData> iterator(mHashTable);
+	QHashIterator<QString, VariableData*> iterator(mHashTable);
 	while (iterator.hasNext()) {
 		iterator.next();
-		result += iterator.key() + " " + iterator.value().stringRepresentation() + "\n";
+		result += iterator.key() + " " + iterator.value()->stringRepresentation() + "\n";
 	}
 
 	return result;
@@ -43,15 +43,20 @@ bool VariablesTable::containsVariable(const QString &name) const
 
 QString VariablesTable::typeByName(const QString &name) const
 {
-	return mHashTable.value(name).type();
+	return mHashTable.value(name)->type();
 }
 
 qReal::Id VariablesTable::currentId(const QString &variableName) const
 {
-	return mHashTable.value(variableName).currentId();
+	return mHashTable.value(variableName)->currentId();
 }
 
 void VariablesTable::movePointer(const QString &variableName)
 {
-	mHashTable.value(variableName).moveToNextId();
+	mHashTable.value(variableName)->moveToNextId();
+}
+
+bool VariablesTable::nextIdExists(const QString &variableName) const
+{
+	return mHashTable.value(variableName)->nextExists();
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QHash>
+#include <QtCore/QStack>
 #include <QtCore/QString>
 
 #include <qrkernel/ids.h>
@@ -13,31 +14,38 @@ class VariablesTable
 public:
 	VariablesTable();
 
+	/// Structure with information about variable.
 	struct VariableData {
 	public:
+		/// Default constructor.
 		VariableData()
 			: mIdListIterator(qReal::IdList())
 		{
 		}
 
+		/// Constructor.
+		/// @param type - variable type.
+		/// @param listOfIds - list of ids to iterate.
 		VariableData(const QString &type, const qReal::IdList &listOfIds)
 			: mType(type)
 			, mListOfIds(listOfIds)
 			, mIdListIterator(mListOfIds)
 		{
-			mCurrentId = mListOfIds.first();
 		}
 
+		/// Returns current id in list.
 		qReal::Id currentId() const
 		{
 			return mCurrentId;
 		}
 
+		/// Returns variable type.
 		QString type() const
 		{
 			return mType;
 		}
 
+		/// Moves pointer to the next id.
 		void moveToNextId() const
 		{
 			if (mIdListIterator.hasNext()) {
@@ -45,10 +53,18 @@ public:
 			}
 		}
 
+		/// Returns string representation for output.
 		QString stringRepresentation() const
 		{
-			return mType;
+			return mType + " " + mCurrentId.toString();
 		}
+
+		/// Returns true if next element exists.
+		bool nextExists() const
+		{
+			return mIdListIterator.hasNext();
+		}
+
 	private:
 		QString mType;
 		qReal::IdList mListOfIds;
@@ -56,21 +72,40 @@ public:
 		mutable QListIterator<qReal::Id> mIdListIterator;
 	};
 
+	/// Adds new variable to the table.
+	/// @param name - new variable name.
+	/// @param type - variable type.
+	/// @param listOfIdds - list of ids to iterate.
 	void addNewVariable(const QString &name, const QString &type, const qReal::IdList &listOfIds);
+	/// Removes variable from the table.
+	/// @param name - variable name.
 	void removeVariable(const QString &name);
 
+	/// Clears the table.
 	void clear();
 
+	/// Returns string representation of the table (for debug).
 	QString textRepresentation() const;
 
+	/// Returns true if variable with given name exists.
+	/// @param name - variable name.
 	bool containsVariable(const QString &name) const;
+	/// Returns type of variable.
+	/// @param name - variable name.
 	QString typeByName(const QString &name) const;
 
+	/// Returns current id in iterated list.
+	/// @param variableName - variable name.
 	qReal::Id currentId(const QString &variableName) const;
+	/// Moves pointer in ids list to next id.
+	/// @param variableName - variable name.
 	void movePointer(const QString &variableName);
+	/// Returns true if next element in list exists.
+	/// @param variableName - variable name.
+	bool nextIdExists(const QString &variableName) const;
 
 private:
-	QHash<QString, VariableData> mHashTable;
+	QHash<QString, VariableData*> mHashTable;
 };
 
 }

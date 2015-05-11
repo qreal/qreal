@@ -4,55 +4,65 @@
 #include "generatorForGeneratorNode.h"
 
 #include "ast/identifier.h"
+#include "ast/elementIdentifier.h"
 
 #include "treeGeneratorFromString.h"
-
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include "generatorForElementIdentifierNode.h"
+#include "typeQualifier.h"
 
 using namespace generationRules::generator;
+using namespace simpleParser::ast;
 
-QString GeneratorForCallGenerator::generatedResult(QSharedPointer<simpleParser::ast::CallGeneratorFor> callGeneratorForNode
-		, GeneratorConfigurer generatorConfigurer
-		, const QString &generatorName)
+QString GeneratorForCallGenerator::generatedResult(QSharedPointer<CallGeneratorFor> callGeneratorForNode
+		, GeneratorConfigurer generatorConfigurer)
 {
-	auto identifier = qrtext::as<simpleParser::ast::Identifier>(callGeneratorForNode->identifier())->name();
-	auto elementId = generatorConfigurer.variablesTable().currentId(identifier);
+	auto calledIdentifier = qrtext::as<ElementIdentifier>(callGeneratorForNode->identifier());
+	auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier, generatorConfigurer);
+	auto currentElementType = TypeQualifier::elementIdentifierType(calledIdentifier, generatorConfigurer);
+
+	auto diagramId = generatorConfigurer.diagramId();
+	auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
 
 	auto generatorNameNode = callGeneratorForNode->generatorName();
 
-	// another stupid hack
-	// we need to have current editor id and diagram id
-	// and it can be metaEntityEdge
-	auto diagramId = generatorConfigurer.diagramId();
-	auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
-	qReal::Id currentElementId = editorManagerInterface->elementsWithTheSameName(diagramId, identifier, "MetaEntityNode").first();
+	qReal::Id elementIdInMetamodel = idInMetamodel(editorManagerInterface, currentElementType, diagramId);
 
-	auto generationRuleForCurrentElement = editorManagerInterface->generationRule(currentElementId);
-	QSharedPointer<simpleParser::ast::Node> generatedTree = TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
+	auto generationRuleForCurrentElement = editorManagerInterface->generationRule(elementIdInMetamodel);
+	QSharedPointer<Node> generatedTree = TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
 
-	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
-	// now we have to iterate all elements in the model with "identifier" type
-	qReal::IdList listOfElements;
-	for (const qReal::Id element : logicalModelInterface->children(elementId)) {
-		if (element.element() == identifier) {
-			listOfElements << element;
-		}
-	}
+	generatorConfigurer.currentScope().changeCurrentId(currentElementId);
 
+	QString resultOfGeneration = "";
 	if (!generatorNameNode) {
-		QString result = "";
-
-		for (auto element : listOfElements) {
-			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer, generatorName);
-		}
-
-		return result;
+		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
 	} else {
-		QString generatorName = qrtext::as<simpleParser::ast::Identifier>(generatorNameNode)->name();
-		QString result = "";
+		QString generatorName = qrtext::as<Identifier>(generatorNameNode)->name();
+		generatorConfigurer.currentScope().changeCurrentGeneratorName(generatorName);
 
-		for (auto element : listOfElements) {
-			result += CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
+		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
+	}
+
+	generatorConfigurer.currentScope().removeLastCurrentId();
+
+	return resultOfGeneration;
+}
+
+qReal::Id GeneratorForCallGenerator::idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface
+		, const QString &elementName
+		, const qReal::Id &diagramId)
+{
+	qReal::Id elementId;
+
+	if (!editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityNode").isEmpty()) {
+		elementId = editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityNode").first();
+	} else {
+		if (!editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityEdge").isEmpty()) {
+			elementId = editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityEdge").first();
+		} else {
+			qDebug() << "Element " + elementName + " in metamodel for callGeneratorFor not found!";
+			elementId = qReal::Id::rootId();
 		}
 	}
+
+	return elementId;
 }
