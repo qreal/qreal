@@ -46,7 +46,7 @@ public:
 		}
 
 		/// Moves pointer to the next id.
-		void moveToNextId() const
+		void moveToNextId()
 		{
 			if (mIdListIterator.hasNext()) {
 				mCurrentId = mIdListIterator.next();
@@ -56,11 +56,18 @@ public:
 		/// Returns string representation for output.
 		QString stringRepresentation() const
 		{
-			return mType + " " + mCurrentId.toString();
+			int length = mListOfIds.length();
+
+			QString result;
+			for (const auto id : mListOfIds) {
+				result += id.toString();
+			}
+
+			return mType + " " + QString::number(length) + " " + result;
 		}
 
 		/// Returns true if next element exists.
-		bool nextExists() const
+		bool nextExists()
 		{
 			return mIdListIterator.hasNext();
 		}
@@ -68,8 +75,8 @@ public:
 	private:
 		QString mType;
 		qReal::IdList mListOfIds;
-		mutable qReal::Id mCurrentId;
-		mutable QListIterator<qReal::Id> mIdListIterator;
+		qReal::Id mCurrentId;
+		QListIterator<qReal::Id> mIdListIterator;
 	};
 
 	/// Adds new variable to the table.
@@ -96,13 +103,13 @@ public:
 
 	/// Returns current id in iterated list.
 	/// @param variableName - variable name.
-	qReal::Id currentId(const QString &variableName) const;
+	qReal::Id currentId(const QString &variableName);
 	/// Moves pointer in ids list to next id.
 	/// @param variableName - variable name.
 	void movePointer(const QString &variableName);
 	/// Returns true if next element in list exists.
 	/// @param variableName - variable name.
-	bool nextIdExists(const QString &variableName) const;
+	bool nextIdExists(const QString &variableName);
 
 private:
 	QHash<QString, VariableData*> mHashTable;

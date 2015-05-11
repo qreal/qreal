@@ -66,7 +66,8 @@ HEADERS += \
 	$$PWD/generator/auxiliaryGenerators/identifierTypeGenerator.h \
 	$$PWD/generator/typeQualifier.h \
 	$$PWD/ast/this.h \
-	$$PWD/generator/currentScope.h
+	$$PWD/generator/currentScope.h \
+	$$PWD/dialogs/specifyPathToGeneratedCodeDialog.h
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \
@@ -88,7 +89,9 @@ SOURCES += \
 	$$PWD/generator/auxiliaryGenerators/listGenerator.cpp \
 	$$PWD/generator/auxiliaryGenerators/identifierTypeGenerator.cpp \
 	$$PWD/generator/typeQualifier.cpp \
-	$$PWD/generator/currentScope.cpp
+	$$PWD/generator/currentScope.cpp \
+	$$PWD/dialogs/specifyPathToGeneratedCodeDialog.cpp
 
 FORMS += \
 	$$PWD/dialogs/specifyGenerationRulesDialog.ui \
+	$$PWD/dialogs/specifyPathToGeneratedCodeDialog.ui

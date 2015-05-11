@@ -46,7 +46,7 @@ QString VariablesTable::typeByName(const QString &name) const
 	return mHashTable.value(name)->type();
 }
 
-qReal::Id VariablesTable::currentId(const QString &variableName) const
+qReal::Id VariablesTable::currentId(const QString &variableName)
 {
 	return mHashTable.value(variableName)->currentId();
 }
@@ -56,7 +56,7 @@ void VariablesTable::movePointer(const QString &variableName)
 	mHashTable.value(variableName)->moveToNextId();
 }
 
-bool VariablesTable::nextIdExists(const QString &variableName) const
+bool VariablesTable::nextIdExists(const QString &variableName)
 {
 	return mHashTable.value(variableName)->nextExists();
 }

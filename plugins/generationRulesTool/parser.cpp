@@ -61,12 +61,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 					}
 				}
 
-				if (result.size() == 1) {
-					// Do not create Program node for simple expression.
-					return result.first();
-				} else {
-					return qrtext::wrap(new ast::Program(result));
-				}
+				return qrtext::wrap(new ast::Program(result));
 	};
 
 	auto identifier = TokenTypes::identifier

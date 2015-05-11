@@ -45,8 +45,7 @@ private slots:
 
 	void generateCode(
 			const qReal::Id &editorId
-			, const qReal::Id &diagramId
-			, const qReal::Id &rootId);
+			, const qReal::Id &diagramId);
 
 	void openGenerationRulesWindow();
 
@@ -65,6 +64,8 @@ private:
 	qReal::gui::SpecifyGenerationRulesDialog *mSpecifyGenerationRulesDialog;  // Doesn't have ownership
 
 	qReal::EditorManagerInterface *mEditorManagerInterface;  // Doesn't have ownership
+
+	qReal::Id mRootId;
 };
 
 }

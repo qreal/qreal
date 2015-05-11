@@ -86,17 +86,16 @@ void GenerationRulesPlugin::generateCodeForAllElements()
 	QString fullRootNodeName = mEditorManagerInterface->diagramNodeNameString(editorId, diagramId);
 
 	QString rootNodeName = fullRootNodeName.split("/").last();
-	qReal::Id rootNodeId = mEditorManagerInterface->elementsWithTheSameName(diagramId, rootNodeName, "MetaEntityNode").first();
+	mRootId = mEditorManagerInterface->elementsWithTheSameName(diagramId, rootNodeName, "MetaEntityNode").first();
 
-	generateCode(editorId, diagramId, rootNodeId);
+	generateCode(editorId, diagramId);
 }
 
 void GenerationRulesPlugin::generateCode(
 		const qReal::Id &editorId
-		, const qReal::Id &diagramId
-		, const qReal::Id &rootId)
+		, const qReal::Id &diagramId)
 {
-	QString rootStream = mEditorManagerInterface->generationRule(rootId);
+	QString rootStream = mEditorManagerInterface->generationRule(mRootId);
 
 	auto parserResultForRoot = TreeGeneratorFromString::generatedTreeFromString(rootStream);
 	auto programForRoot = parserResultForRoot.dynamicCast<simpleParser::ast::Program>();
