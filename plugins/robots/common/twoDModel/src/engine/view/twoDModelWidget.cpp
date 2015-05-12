@@ -99,7 +99,6 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	setRunStopButtonsVisibility();
 
-	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->palette->unselect();
 
 	setFocus();
@@ -307,6 +306,7 @@ void TwoDModelWidget::showEvent(QShowEvent *e)
 
 void TwoDModelWidget::onFirstShow()
 {
+	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	setDetailsVisibility(SettingsManager::value("2d_detailsVisible").toBool());
 }
