@@ -199,8 +199,6 @@ void ActionsManager::updateEnabledActions()
 			action->setEnabled(enabled);
 		}
 	}
-
-
 }
 
 void ActionsManager::initKitPluginActions()
@@ -229,6 +227,8 @@ void ActionsManager::initKitPluginActions()
 			}
 		}
 
+		QList<QAction *> twoDModelActions;
+		QList<QAction *> realRobotActions;
 		kitBase::robotModel::RobotModelUtils::sortRobotModels(robotModels);
 		for (kitBase::robotModel::RobotModelInterface * const robotModel : robotModels) {
 			const QString &text = robotModel->friendlyName();
@@ -238,39 +238,65 @@ void ActionsManager::initKitPluginActions()
 			fastSelectionAction->setObjectName("switchTo" + kitId + robotModel->name());
 			fastSelectionAction->setCheckable(true);
 			group->addAction(fastSelectionAction);
+			if (text.contains("2D")) {
+				twoDModelActions << fastSelectionAction;
+			} else {
+				realRobotActions << fastSelectionAction;
+			}
 		}
 
 		if (!kits.isEmpty()) {
-			QAction * const action = produceMenuAction(kitId, group);
-			if (robotModels.count() > topRecommendedModels) {
-				QAction * const separator = new QAction(nullptr);
-				separator->setSeparator(true);
-				action->menu()->insertAction(action->menu()->actions()[topRecommendedModels], separator);
+			QAction * const twoDModelSwitcher = produceMenuAction(kitId, tr("2D model"), twoDModelActions);
+			QAction * const realRobotSwitcher = produceMenuAction(kitId, tr("Real robot"), realRobotActions);
+//			if (robotModels.count() > topRecommendedModels) {
+//				QAction * const separator = new QAction(nullptr);
+//				separator->setSeparator(true);
+//				action->menu()->insertAction(action->menu()->actions()[topRecommendedModels], separator);
+//			}
+
+			QMap<QString, qReal::ActionInfo>::iterator twoDModelPosition;
+			if (twoDModelSwitcher) {
+				twoDModelPosition = mRobotModelActions.insertMulti(kitId
+						, qReal::ActionInfo(twoDModelSwitcher, "interpreters", "tools"));
 			}
 
-			const qReal::ActionInfo actionInfo(action, "interpreters", "tools");
-			mRobotModelActions.insert(kitId, actionInfo);
+			if (realRobotSwitcher) {
+				mRobotModelActions.insertMulti(twoDModelPosition, kitId
+						, qReal::ActionInfo(realRobotSwitcher, "interpreters", "tools"));
+			}
 		}
 	}
 }
 
-QAction *ActionsManager::produceMenuAction(const QString &kitId, QActionGroup * const subActions) const
+QAction *ActionsManager::produceMenuAction(const QString &kitId, const QString &name
+		, const QList<QAction *> &subActions) const
 {
-	QAction * const menuAction = new QAction(QIcon(), tr("Switch to"), nullptr);
+	if (subActions.isEmpty()) {
+		return nullptr;
+	}
+
+	if (subActions.count() == 1) {
+		return subActions.first();
+	}
+
+	QAction * const menuAction = new QAction(QIcon(), name, nullptr);
+	menuAction->setCheckable(true);
+	menuAction->setIcon(subActions.first()->icon());
 	menuAction->setMenu(new QMenu);
-	menuAction->menu()->addActions(subActions->actions());
+	menuAction->menu()->addActions(subActions);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, [this, menuAction, kitId](kitBase::robotModel::RobotModelInterface &model) {
 		const QString actionName = "switchTo" + kitId + model.name();
 		for (QAction * const action : menuAction->menu()->actions()) {
 			if (action->objectName() == actionName) {
 				menuAction->setIcon(action->icon());
+				menuAction->setChecked(true);
 				action->setChecked(true);
 				return;
 			}
 		}
 
-		menuAction->setIcon(QIcon());
+		menuAction->setChecked(false);
 	});
 
 	connect(menuAction, &QAction::triggered, [=]() { menuAction->menu()->exec(QCursor::pos()); });
