@@ -54,6 +54,7 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
+	mMainWindow.statusBar()->setAutoFillBackground(true);
 	mMainWindow.statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black; padding: 10px; }");
 	editModeAction.setProperty("modeName", tr("edit mode"));
 	debugModeAction.setProperty("modeName", tr("debug mode"));
@@ -129,6 +130,7 @@ void UiManager::toggleModeButtons()
 			: mCurrentMode == Mode::Editing ? editModeColor : debugModeColor;
 	QPalette palette;
 	palette.setColor(QPalette::Background, color);
+	palette.setColor(QPalette::Base, color);
 	mMainWindow.statusBar()->setPalette(palette);
 }
 
