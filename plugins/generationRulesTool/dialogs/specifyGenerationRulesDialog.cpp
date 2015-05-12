@@ -31,10 +31,17 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	mUi->setupUi(this);
 
 	addPropertiesList();
+
+	mUi->templatesWidget->header()->close();
+	addTemplatesList();
+
 	addOldRule();
 
 	connect(mUi->propertiesView, &QListWidget::itemDoubleClicked, this
 			, &SpecifyGenerationRulesDialog::insertPropertyIntoCode);
+
+	connect(mUi->templatesWidget, &QTreeWidget::itemDoubleClicked, this
+			, &SpecifyGenerationRulesDialog::insertTemplateIntoCode);
 
 	connect(mUi->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this
 			, &SpecifyGenerationRulesDialog::saveGenerationRule);
@@ -54,6 +61,12 @@ void SpecifyGenerationRulesDialog::insertPropertyIntoCode(QListWidgetItem* prope
 	mUi->codeArea->insertPlainText(propertyName);
 }
 
+void SpecifyGenerationRulesDialog::insertTemplateIntoCode(QTreeWidgetItem *templateItem)
+{
+	const QString templateName = templateItem->text(0);
+	mUi->codeArea->insertPlainText(templateName);
+}
+
 void SpecifyGenerationRulesDialog::saveGenerationRule()
 {
 	mInterpreterEditorManager->updateGenerationRule(mId, mUi->codeArea->toPlainText());
@@ -65,6 +78,37 @@ void SpecifyGenerationRulesDialog::addPropertiesList()
 	const QStringList propertiesDisplayedNames = propertiesDisplayedNamesList(mPropertiesNames);
 	mUi->propertiesView->clear();
 	mUi->propertiesView->addItems(propertiesDisplayedNames);
+}
+
+void SpecifyGenerationRulesDialog::addTemplatesList()
+{
+	mUi->templatesWidget->setColumnCount(1);
+
+	QStringList generalTemplates = {"this", "CallGeneratorFor", "Generator", "foreach"};
+	QStringList textTemplates = {"newline", "tab"};
+	QStringList linksTemplates = {"incomingLinks", "outcomingLinks", "links", "transitionEnd", "transitionStart"};
+
+	addOneTypeTemplates("General templates", generalTemplates);
+	addOneTypeTemplates("Text templates", textTemplates);
+	addOneTypeTemplates("Links templates", linksTemplates);
+
+	mUi->templatesWidget->expandAll();
+}
+
+void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, QStringList listOfTemplates)
+{
+	QTreeWidgetItem *oneTypeTempatesList = new QTreeWidgetItem(mUi->templatesWidget);
+	oneTypeTempatesList->setText(0, type);
+
+	QList<QTreeWidgetItem*> templatesItems;
+	for (const auto templateName : listOfTemplates) {
+		QTreeWidgetItem *treeItem = new QTreeWidgetItem();
+		treeItem->setText(0, templateName);
+		templatesItems.append(treeItem);
+	}
+	oneTypeTempatesList->insertChildren(0, templatesItems);
+
+	mUi->templatesWidget->insertTopLevelItem(0, oneTypeTempatesList);
 }
 
 void SpecifyGenerationRulesDialog::addOldRule()

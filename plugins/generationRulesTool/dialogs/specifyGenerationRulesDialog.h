@@ -46,14 +46,21 @@ public:
 
 private slots:
 	/// Inserts property into the code.
-	/// @param propertyName Property to insert.
+	/// @param property - Property to insert.
 	void insertPropertyIntoCode(QListWidgetItem* property);
+
+	/// Inserts template into the code.
+	/// @param templateItem - Template clicked.
+	void insertTemplateIntoCode(QTreeWidgetItem* templateItem);
 
 	void saveGenerationRule();
 
 private:
 	/// Adds properties to the properties list.
 	void addPropertiesList();
+
+	void addTemplatesList();
+	void addOneTypeTemplates(const QString &type, QStringList listOfTemplates);
 
 	/// Adds previously added rule.
 	void addOldRule();
