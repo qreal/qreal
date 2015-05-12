@@ -121,6 +121,9 @@ void SmartDock::checkCentralWidget()
 	for (QWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QWidget *>()) {
 		centralWidget->setVisible(tabsVisible);
 	}
+
+	mMainWindow->centralWidget()->setSizePolicy(QSizePolicy::Preferred
+			, tabsVisible ? QSizePolicy::Preferred : QSizePolicy::Maximum);
 }
 
 bool SmartDock::isAnimating()
