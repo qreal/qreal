@@ -209,9 +209,7 @@ void ActionsManager::initKitPluginActions()
 		QActionGroup * const group = new QActionGroup(this);
 		QList<kitBase::robotModel::RobotModelInterface *> robotModels;
 		QMap<kitBase::robotModel::RobotModelInterface *, QIcon> fastSelectorIcons;
-		int topRecommendedModels = 0;
 		for (kitBase::KitPluginInterface * const kitPlugin : kits) {
-			topRecommendedModels = qMax(topRecommendedModels, kitPlugin->topRecommendedRobotModels());
 			mPluginActionInfos << kitPlugin->customActions();
 			mPluginHotKeyActionInfos << kitPlugin->hotKeyActions();
 			for (kitBase::robotModel::RobotModelInterface * const robotModel : kitPlugin->robotModels()) {
@@ -246,11 +244,6 @@ void ActionsManager::initKitPluginActions()
 		if (!kits.isEmpty()) {
 			QAction * const twoDModelSwitcher = produceMenuAction(kitId, tr("2D model"), twoDModelActions);
 			QAction * const realRobotSwitcher = produceMenuAction(kitId, tr("Real robot"), realRobotActions);
-//			if (robotModels.count() > topRecommendedModels) {
-//				QAction * const separator = new QAction(nullptr);
-//				separator->setSeparator(true);
-//				action->menu()->insertAction(action->menu()->actions()[topRecommendedModels], separator);
-//			}
 
 			QMap<QString, qReal::ActionInfo>::iterator twoDModelPosition;
 			if (twoDModelSwitcher) {
