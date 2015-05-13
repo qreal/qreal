@@ -1519,7 +1519,7 @@ void MainWindow::applySettings()
 
 void MainWindow::resetToolbarSize(int size)
 {
-	for (QToolBar * const bar : findChildren<QToolBar *>()) {
+	for (QToolBar * const bar : toolBars()) {
 		bar->setIconSize(QSize(size, size));
 	}
 }
@@ -1989,7 +1989,7 @@ QStatusBar *MainWindow::statusBar() const
 
 QList<QToolBar *> MainWindow::toolBars() const
 {
-	return findChildren<QToolBar *>();
+	return findChildren<QToolBar *>(QString(), Qt::FindDirectChildrenOnly);
 }
 
 void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
