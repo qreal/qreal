@@ -160,6 +160,11 @@ void TwoDModelScene::onItemRemoved(QGraphicsItem *item)
 
 void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+	if (mouseEvent->button() != Qt::LeftButton) {
+		AbstractScene::mousePressEvent(mouseEvent);
+		return;
+	}
+
 	const QPointF position = mouseEvent->scenePos();
 
 	emit mousePressed();
@@ -239,11 +244,15 @@ void TwoDModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	if (needUpdate) {
 		update();
 	}
-
 }
 
 void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+	if (mouseEvent->button() != Qt::LeftButton) {
+		AbstractScene::mouseReleaseEvent(mouseEvent);
+		return;
+	}
+
 	emit mouseReleased();
 
 	// After dragging item may be null. We mustn`t select it in that case.
