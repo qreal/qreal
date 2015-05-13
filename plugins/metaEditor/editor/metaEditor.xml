@@ -139,6 +139,8 @@
 						<property type="string" name="nodeName">
 							<description>имя элемента, который будет корневым для диаграмм на создаваемом языке</description>
 						</property>
+						<property type="string" name="generatedCodeFolder"/>
+						<property type="string" name="mainFileName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>

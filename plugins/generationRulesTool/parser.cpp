@@ -116,7 +116,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return qrtext::wrap(new ast::OutcomingLinks(linkTypeNode));
 	};
 
-	auto incomingLinksIdentifier = (TokenTypes::incomingLinksKeyword& -TokenTypes::openingBracket
+	auto incomingLinksIdentifier = (-TokenTypes::incomingLinksKeyword& -TokenTypes::openingBracket
 				& identifier & -TokenTypes::closingBracket)
 			>> [] (QSharedPointer<ast::Node> linkTypeNode) {
 				return qrtext::wrap(new ast::IncomingLinks(linkTypeNode));

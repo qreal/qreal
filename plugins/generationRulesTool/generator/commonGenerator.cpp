@@ -22,7 +22,7 @@ using namespace simpleParser;
 QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 		, GeneratorConfigurer generatorConfigurer)
 {
-	QString result;
+	QString result = "";
 
 	if (node->is<ast::Program>()) {
 		QSharedPointer<ast::Program> program = qrtext::as<ast::Program>(node);

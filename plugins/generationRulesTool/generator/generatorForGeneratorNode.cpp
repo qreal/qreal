@@ -17,5 +17,7 @@ QString GeneratorForGeneratorNode::generatedResult(QSharedPointer<Generator> gen
 
 	if (generatorConfigurer.currentScope().currentGeneratorName() == generatorName) {
 		return GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer);
+	} else {
+		return "";
 	}
 }
