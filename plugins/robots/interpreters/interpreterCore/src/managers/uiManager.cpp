@@ -51,7 +51,7 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [=]() { QTimer::singleShot(0, this, SLOT(onRobotModelChanged())); });
+			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocksSavingToolbarsAndErrors())); });
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
@@ -117,7 +117,7 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 	saveDocks();
 	mCurrentMode = mode;
-	reloadDocks();
+	reloadDocksSavingToolbarsAndErrors();
 	toggleModeButtons();
 }
 
@@ -190,10 +190,11 @@ void UiManager::reloadDocks() const
 	}
 }
 
-void UiManager::onRobotModelChanged() const
+void UiManager::reloadDocksSavingToolbarsAndErrors() const
 {
 	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
-	// will loose some toolbars visibility state, so memorizing it here...
+	// will loose some toolbars visibility and error reporter state, so memorizing it here...
+	const bool errorReporterWasVisible = mMainWindow.errorReporterDock()->isVisible();
 	QMap<QToolBar *, bool> toolBarsVisiblity;
 	for (QToolBar * const toolBar : mMainWindow.toolBars()) {
 		toolBarsVisiblity[toolBar] = toolBar->isVisible();
@@ -203,6 +204,7 @@ void UiManager::onRobotModelChanged() const
 	reloadDocks();
 
 	// And finally restoring old configuration.
+	mMainWindow.errorReporterDock()->setVisible(errorReporterWasVisible);
 	for (QToolBar * const toolBar : toolBarsVisiblity.keys()) {
 		toolBar->setVisible(toolBarsVisiblity[toolBar]);
 	}

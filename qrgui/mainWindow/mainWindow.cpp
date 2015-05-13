@@ -2010,7 +2010,12 @@ QByteArray MainWindow::saveState(int version) const
 
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
-	return QMainWindow::restoreState(state, version);
+	const bool result = QMainWindow::restoreState(state, version);
+	if (!mUi->errorListWidget->count() > 0) {
+		mUi->errorDock->hide();
+	}
+
+	return result;
 }
 
 void MainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)

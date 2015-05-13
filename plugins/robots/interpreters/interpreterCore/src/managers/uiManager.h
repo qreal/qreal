@@ -57,7 +57,7 @@ private slots:
 
 	void saveDocks() const;
 	void reloadDocks() const;
-	void onRobotModelChanged() const;
+	void reloadDocksSavingToolbarsAndErrors() const;
 	void resetMainWindowCorners() const;
 
 private:
