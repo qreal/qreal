@@ -242,18 +242,15 @@ void ActionsManager::initKitPluginActions()
 		}
 
 		if (!kits.isEmpty()) {
-			QAction * const twoDModelSwitcher = produceMenuAction(kitId, tr("2D model"), twoDModelActions);
 			QAction * const realRobotSwitcher = produceMenuAction(kitId, tr("Real robot"), realRobotActions);
-
-			QMap<QString, qReal::ActionInfo>::iterator twoDModelPosition;
-			if (twoDModelSwitcher) {
-				twoDModelPosition = mRobotModelActions.insertMulti(kitId
-						, qReal::ActionInfo(twoDModelSwitcher, "interpreters", "tools"));
-			}
+			QAction * const twoDModelSwitcher = produceMenuAction(kitId, tr("2D model"), twoDModelActions);
 
 			if (realRobotSwitcher) {
-				mRobotModelActions.insertMulti(twoDModelPosition, kitId
-						, qReal::ActionInfo(realRobotSwitcher, "interpreters", "tools"));
+				mRobotModelActions.insertMulti(kitId, qReal::ActionInfo(realRobotSwitcher, "interpreters", "tools"));
+			}
+
+			if (twoDModelSwitcher) {
+				mRobotModelActions.insertMulti(kitId, qReal::ActionInfo(twoDModelSwitcher, "interpreters", "tools"));
 			}
 		}
 	}
