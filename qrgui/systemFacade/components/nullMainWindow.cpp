@@ -277,6 +277,11 @@ QStatusBar *NullMainWindow::statusBar() const
 	return mStatusBar;
 }
 
+QList<QToolBar *> NullMainWindow::toolBars() const
+{
+	return {};
+}
+
 void NullMainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	Q_UNUSED(first)

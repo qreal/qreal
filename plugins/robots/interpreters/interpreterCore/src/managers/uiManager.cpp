@@ -20,6 +20,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 
 #include <qrkernel/logging.h>
@@ -50,7 +51,7 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocks())); });
+			, [=]() { QTimer::singleShot(0, this, SLOT(onRobotModelChanged())); });
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
@@ -186,6 +187,24 @@ void UiManager::reloadDocks() const
 		QLOG_ERROR() << "Cannot apply docks state for mode" << currentMode() << ":" << state;
 	} else {
 		resetMainWindowCorners();
+	}
+}
+
+void UiManager::onRobotModelChanged() const
+{
+	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
+	// will loose some toolbars visibility state, so memorizing it here...
+	QMap<QToolBar *, bool> toolBarsVisiblity;
+	for (QToolBar * const toolBar : mMainWindow.toolBars()) {
+		toolBarsVisiblity[toolBar] = toolBar->isVisible();
+	}
+
+	// Now reloading docks, toolbars are in random visibility after this...
+	reloadDocks();
+
+	// And finally restoring old configuration.
+	for (QToolBar * const toolBar : toolBarsVisiblity.keys()) {
+		toolBar->setVisible(toolBarsVisiblity[toolBar]);
 	}
 }
 

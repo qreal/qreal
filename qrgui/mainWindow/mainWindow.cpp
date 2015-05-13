@@ -1987,6 +1987,11 @@ QStatusBar *MainWindow::statusBar() const
 	return mUi->statusbar;
 }
 
+QList<QToolBar *> MainWindow::toolBars() const
+{
+	return findChildren<QToolBar *>();
+}
+
 void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	QMainWindow::tabifyDockWidget(first, second);
