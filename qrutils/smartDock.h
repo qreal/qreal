@@ -45,6 +45,7 @@ public:
 	SmartDock(const QString &objectName, QWidget *innerWidget, QMainWindow *parent = nullptr);
 	~SmartDock();
 
+public slots:
 	/// Embeds inner widget into this dock widget instance, docks it to some panel.
 	void switchToDocked();
 
@@ -78,6 +79,9 @@ private:
 	void initDialog();
 
 	bool isAnimating();
+
+	void switchToDockedQuietly();
+	void switchToFloatingQuietly();
 
 	QMainWindow *mMainWindow;  // Doesn`t take ownerhsip
 	QWidget *mInnerWidget;  // Doesn`t take ownerhsip

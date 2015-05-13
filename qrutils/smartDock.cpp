@@ -50,14 +50,19 @@ void SmartDock::switchToDocked()
 		return;
 	}
 
+	switchToDockedQuietly();
+	show();
+	checkCentralWidget();
+	emit dockedChanged(true);
+}
+
+void SmartDock::switchToDockedQuietly()
+{
 	mCurrentMode = Mode::Docked;
 	mDialog->close();
 	mDialog->layout()->removeWidget(mInnerWidget);
 	setWidget(mInnerWidget);
 	setFloating(false);
-	show();
-	checkCentralWidget();
-	emit dockedChanged(true);
 }
 
 void SmartDock::switchToFloating()
@@ -66,14 +71,19 @@ void SmartDock::switchToFloating()
 		return;
 	}
 
+	switchToFloatingQuietly();
+	mDialog->show();
+	checkCentralWidget();
+	emit dockedChanged(false);
+}
+
+void SmartDock::switchToFloatingQuietly()
+{
 	mCurrentMode = Mode::Floats;
 	setWidget(nullptr);
 	close();
 	static_cast<QVBoxLayout *>(mDialog->layout())->addWidget(mInnerWidget);
 	mInnerWidget->show();
-	mDialog->show();
-	checkCentralWidget();
-	emit dockedChanged(false);
 }
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
@@ -87,10 +97,10 @@ void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
 	mMainWindow->addDockWidget(area, this);
 	if (mCurrentMode == Mode::Docked) {
 		mCurrentMode = Mode::Floats;
-		switchToDocked();
+		switchToDockedQuietly();
 	} else {
 		mCurrentMode = Mode::Docked;
-		switchToFloating();
+		switchToFloatingQuietly();
 	}
 }
 
@@ -118,7 +128,7 @@ void SmartDock::checkFloating()
 void SmartDock::checkCentralWidget()
 {
 	const bool tabsVisible = isFloating() || !isVisible() || mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea;
-	for (QWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QWidget *>()) {
+	for (QTabWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QTabWidget *>()) {
 		centralWidget->setVisible(tabsVisible);
 	}
 
