@@ -26,7 +26,8 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
-		, const Id &initialNode)
+		, const Id &initialNode
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -35,6 +36,7 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
@@ -43,7 +45,8 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, const Id &diagramToInterpret
-		, BlocksTableInterface &blocksTable)
+		, BlocksTableInterface &blocksTable
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -53,6 +56,7 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
@@ -181,7 +185,7 @@ void Thread::turnOn(BlockInterface * const block)
 		mProcessEventsMapper->setMapping(mProcessEventsTimer, mCurrentBlock);
 		mProcessEventsTimer->start();
 	} else {
-		mCurrentBlock->interpret();
+		mCurrentBlock->interpret(mId);
 	}
 }
 
@@ -189,7 +193,7 @@ void Thread::interpretAfterEventsProcessing(QObject *blockObject)
 {
 	BlockInterface * const block = dynamic_cast<BlockInterface *>(blockObject);
 	if (block) {
-		block->interpret();
+		block->interpret(mId);
 	}
 }
 
@@ -207,4 +211,9 @@ void Thread::turnOff(BlockInterface * const block)
 
 	mStack.pop();
 	mInterpretersInterface.dehighlight(block->id());
+}
+
+QString Thread::id() const
+{
+	return mId;
 }

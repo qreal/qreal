@@ -35,7 +35,7 @@ class QRUTILS_EXPORT Block : public BlockInterface
 	Q_OBJECT
 
 public:
-	void interpret() override;
+	void interpret(const QString &threadId) override;
 
 	void setFailedStatus() override;
 
@@ -147,6 +147,7 @@ protected:
 	const qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Doesn't have ownership.
 
 	qReal::Id mGraphicalId;
+	QString mThreadId;
 
 private slots:
 	void finishedRunning();

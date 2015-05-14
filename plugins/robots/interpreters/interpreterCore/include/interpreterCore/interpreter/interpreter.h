@@ -75,7 +75,7 @@ public slots:
 
 private slots:
 	void threadStopped();
-	void newThread(const qReal::Id &startBlockId);
+	void newThread(const qReal::Id &startBlockId, const QString &threadId);
 
 	void connectedSlot(bool success, const QString &errorString);
 	void devicesConfiguredSlot();
@@ -90,7 +90,7 @@ private:
 		, idle
 	};
 
-	void addThread(qReal::interpretation::Thread * const thread);
+	void addThread(qReal::interpretation::Thread * const thread, const QString &threadId);
 
 	void reportError(const QString &message);
 
@@ -100,7 +100,7 @@ private:
 
 	InterpreterState mState;
 	quint64 mInterpretationStartedTimestamp;
-	QList<qReal::interpretation::Thread *> mThreads;  // Has ownership
+	QHash<QString, qReal::interpretation::Thread *> mThreads;  // Has ownership
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 

@@ -32,7 +32,7 @@ public:
 	~BlockInterface() override {}
 
 	/// Starts block execution.
-	virtual void interpret() = 0;
+	virtual void interpret(const QString &threadId) = 0;
 
 	/// Called each time when the interpretation process fails for some reason.
 	/// Block must deinitialize its recources here.
@@ -51,7 +51,7 @@ signals:
 
 	/// Emitted each time when the block has requested new thread. Useful for fork blocks.
 	/// @param startBlock - an id of the block that was decided to start the thread execution.
-	void newThread(const qReal::Id &startBlock);
+	void newThread(const qReal::Id &startBlock, const QString &threadId);
 
 	/// Emitted each time when the block stops its execution due to some error.
 	void failure();

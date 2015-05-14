@@ -45,7 +45,8 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, BlocksTableInterface &blocksTable
-			, const Id &initialNode);
+			, const Id &initialNode
+			, const QString &threadId);
 
 	/// Creates new instance of thread starting from initial node of specified diagram.
 	/// @param graphicalModelApi - graphical model, contains diagram.
@@ -57,19 +58,22 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, const Id &diagramToInterpret
-			, BlocksTableInterface &blocksTable);
+			, BlocksTableInterface &blocksTable
+			, const QString &threadId);
 
 	~Thread() override;
 
 	/// Starts interpretation process starting from the block specified in one of the constructors.
 	void interpret();
 
+	QString id() const;
+
 signals:
 	/// Emitted when interpretation process was terminated (correctly or due to errors).
 	void stopped();
 
 	/// Emitted when one of the blocks interpreted by this thread requested new thread.
-	void newThread(const qReal::Id &startBlockId);
+	void newThread(const qReal::Id &startBlockId, const QString &threadId);
 
 private slots:
 	void nextBlock(const qReal::Id &blockId);
@@ -100,6 +104,7 @@ private:
 	int mBlocksSincePreviousEventsProcessing;
 	QTimer *mProcessEventsTimer;  // Has ownership
 	QSignalMapper *mProcessEventsMapper;  // Has ownership
+	QString mId;
 };
 
 }

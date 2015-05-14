@@ -63,10 +63,10 @@ void Interpreter::startInterpretation()
 	const Id currentDiagramId = mInterpretersInterface.activeDiagram();
 
 	qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
-			, mInterpretersInterface, mInitialNodeType, currentDiagramId, mBlocksTable);
+			, mInterpretersInterface, mInitialNodeType, currentDiagramId, mBlocksTable, "main");
 
 	emit started();
-	addThread(initialThread);
+	addThread(initialThread, "main");
 }
 
 void Interpreter::stopInterpretation()
@@ -82,7 +82,7 @@ void Interpreter::threadStopped()
 {
 	Thread * const thread = static_cast<Thread *>(sender());
 
-	mThreads.removeAll(thread);
+	mThreads.remove(thread->id());
 	delete thread;
 
 	if (mThreads.isEmpty()) {
@@ -90,21 +90,26 @@ void Interpreter::threadStopped()
 	}
 }
 
-void Interpreter::newThread(const Id &startBlockId)
+void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 {
+	if (mThreads.contains(threadId)) {
+		reportError(tr("Cannot create new thread with already occupied id %1").arg(threadId));
+		stopInterpretation();
+	}
+
 	Thread * const thread = new Thread(&mGraphicalModelApi, mInterpretersInterface
-			, mInitialNodeType, mBlocksTable, startBlockId);
-	addThread(thread);
+			, mInitialNodeType, mBlocksTable, startBlockId, threadId);
+	addThread(thread, threadId);
 }
 
-void Interpreter::addThread(Thread * const thread)
+void Interpreter::addThread(Thread * const thread, const QString &threadId)
 {
 	if (mThreads.count() >= maxThreadsCount) {
 		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
 		stopInterpretation();
 	}
 
-	mThreads.append(thread);
+	mThreads[threadId] = thread;
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
 	connect(thread, &Thread::newThread, this, &Interpreter::newThread);
