@@ -65,6 +65,7 @@ signals:
 private slots:
 	void threadStopped();
 	void newThread(const qReal::Id &startBlockId, const QString &threadId);
+	void killThread(const QString &threadId);
 
 private:
 	enum InterpreterState {

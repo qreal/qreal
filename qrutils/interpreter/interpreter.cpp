@@ -113,10 +113,20 @@ void Interpreter::addThread(Thread * const thread, const QString &threadId)
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
 	connect(thread, &Thread::newThread, this, &Interpreter::newThread);
+	connect(thread, &Thread::killThread, this, &Interpreter::killThread);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {
 		thread->interpret();
+	}
+}
+
+void Interpreter::killThread(const QString &threadId)
+{
+	if (mThreads.contains(threadId)) {
+		mThreads[threadId]->stop();
+	} else {
+		reportError(tr("Killing non-existent thread %1").arg(threadId));
 	}
 }
 

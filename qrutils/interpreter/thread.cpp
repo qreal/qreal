@@ -90,6 +90,11 @@ void Thread::interpret()
 	}
 }
 
+void Thread::stop()
+{
+	emit stopped();
+}
+
 void Thread::nextBlock(const Id &blockId)
 {
 	turnOff(mCurrentBlock);
@@ -163,6 +168,7 @@ void Thread::turnOn(BlockInterface * const block)
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
 	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock);
 	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread);
+	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread);
 	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure);
 	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto);
 

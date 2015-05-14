@@ -215,10 +215,20 @@ void Interpreter::addThread(qReal::interpretation::Thread * const thread, const 
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
 	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
+	connect(thread, &qReal::interpretation::Thread::killThread, this, &Interpreter::killThread);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {
 		thread->interpret();
+	}
+}
+
+void Interpreter::killThread(const QString &threadId)
+{
+	if (mThreads.contains(threadId)) {
+		mThreads[threadId]->stop();
+	} else {
+		reportError(tr("Killing non-existent thread %1").arg(threadId));
 	}
 }
 

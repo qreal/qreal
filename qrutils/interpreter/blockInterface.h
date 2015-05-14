@@ -53,6 +53,8 @@ signals:
 	/// @param startBlock - an id of the block that was decided to start the thread execution.
 	void newThread(const qReal::Id &startBlock, const QString &threadId);
 
+	void killThread(const QString &threadId);
+
 	/// Emitted each time when the block stops its execution due to some error.
 	void failure();
 

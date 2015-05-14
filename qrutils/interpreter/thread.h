@@ -66,6 +66,8 @@ public:
 	/// Starts interpretation process starting from the block specified in one of the constructors.
 	void interpret();
 
+	void stop();
+
 	QString id() const;
 
 signals:
@@ -74,6 +76,8 @@ signals:
 
 	/// Emitted when one of the blocks interpreted by this thread requested new thread.
 	void newThread(const qReal::Id &startBlockId, const QString &threadId);
+
+	void killThread(const QString &threadId);
 
 private slots:
 	void nextBlock(const qReal::Id &blockId);
