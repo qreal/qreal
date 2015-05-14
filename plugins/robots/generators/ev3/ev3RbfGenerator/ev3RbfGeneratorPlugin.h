@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtCore/QProcess>
 #include <ev3GeneratorBase/ev3GeneratorPluginBase.h>
 
 namespace ev3 {
@@ -24,9 +25,21 @@ protected:
 	QString extensionDescription() const override;
 	QString generatorName() const override;
 
+private slots:
+
+	/// Generates and uploads script to a robot.
+	/// @returns True, if successful.
+	bool uploadProgram();
+
 private:
+	///Function that checks installed JRE or not
+	bool javaInstalled();
+
 	/// Action that launches code generator
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
+
+	/// Action that generates and uploads program on a robot
+	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
 }

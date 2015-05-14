@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/ev3">
         <file>images/generateRbfCode.svg</file>
+        <file>images/uploadProgram.svg</file>
     </qresource>
 </RCC>
