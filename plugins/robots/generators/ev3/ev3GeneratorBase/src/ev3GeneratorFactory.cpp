@@ -8,6 +8,7 @@
 #include "simpleGenerators/enginesStopGenerator.h"
 #include "simpleGenerators/waitForButtonGenerator.h"
 #include "simpleGenerators/waitForTouchSensorGenerator.h"
+#include "simpleGenerators/ifElementGenerator.h"
 
 #include "converters/outputPortNameConverter.h"
 #include "converters/goToBlockNumberConverter.h"
@@ -30,6 +31,12 @@ Ev3GeneratorFactory::Ev3GeneratorFactory(const qrRepo::RepoApi &repo
 
 Ev3GeneratorFactory::~Ev3GeneratorFactory()
 {
+}
+
+AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting)
+{
+	mGoToBlockNumber++;
+	return new IfElementGenerator(mRepo, customizer, id, elseIsEmpty, needInverting, this);
 }
 
 generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGenerator(const qReal::Id &id, generatorBase::GeneratorCustomizer &customizer)

@@ -1,4 +1,4 @@
-#include "gotoControlFlowGenerator.h"
+#include "generatorBase/gotoControlFlowGenerator.h"
 
 using namespace generatorBase;
 using namespace qReal;

@@ -1,0 +1,1 @@
+CP_EQF(@@LEFT@@,@@RIGHT@@,condition)

@@ -9,5 +9,6 @@ GoToBlockNumberConverter::GoToBlockNumberConverter(const QString &goToBlockNumbe
 
 QString GoToBlockNumberConverter::convert(const QString &data) const
 {
-	return data + mGoToBlockNumber;
+	Q_UNUSED(data)
+	return "Block" + mGoToBlockNumber;
 }

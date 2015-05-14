@@ -50,6 +50,7 @@ HEADERS += \
 	src/converters/goToBlockNumberConverter.h \
 	src/simpleGenerators/waitForTouchSensorGenerator.h \
 	src/converters/outputPortNameConverter.h \
+    src/simpleGenerators/ifElementGenerator.h
 
 SOURCES += \
 	src/ev3GeneratorPluginBase.cpp \
@@ -66,3 +67,4 @@ SOURCES += \
 	src/converters/goToBlockNumberConverter.cpp \
 	src/simpleGenerators/waitForTouchSensorGenerator.cpp \
 	src/converters/outputPortNameConverter.cpp \
+    src/simpleGenerators/ifElementGenerator.cpp

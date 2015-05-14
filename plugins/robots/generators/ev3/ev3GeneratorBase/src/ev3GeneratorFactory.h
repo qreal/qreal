@@ -17,6 +17,10 @@ public:
 
 	~Ev3GeneratorFactory() override;
 
+	/// Returns a pointer to a code generator for blocks with if semantics
+	generatorBase::simple::AbstractSimpleGenerator *ifGenerator(qReal::Id const &id
+			, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting) override;
+
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 

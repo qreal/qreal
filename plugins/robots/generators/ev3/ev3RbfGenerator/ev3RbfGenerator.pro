@@ -19,6 +19,7 @@ INCLUDEPATH += \
 	$$PWD/../ev3GeneratorBase/include/ \
 	$$PWD/../../generatorBase/include/ \
 	$$PWD/../../../interpreters/interpreterBase/include \
+	$$PWD/../generatorBase/src/ \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui \
 	$$PWD/../../../../../qrtext/include \

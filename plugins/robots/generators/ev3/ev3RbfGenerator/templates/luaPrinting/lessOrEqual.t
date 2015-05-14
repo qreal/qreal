@@ -1,0 +1,1 @@
+CP_LTEQF(@@LEFT@@,@@RIGHT@@,condition)

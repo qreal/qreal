@@ -1,0 +1,1 @@
+CP_LTF(@@LEFT@@,@@RIGHT@@,condition)

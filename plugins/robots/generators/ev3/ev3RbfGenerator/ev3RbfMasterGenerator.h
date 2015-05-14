@@ -15,6 +15,10 @@ public:
 			, qReal::Id const &diagramId
 			, QString const &generatorName);
 
+	/// Starts code generation process. Returns path to file with generated code
+	/// if it was successfull and an empty string otherwise.
+	QString generate() override;
+
 protected:
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
