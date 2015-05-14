@@ -33,14 +33,15 @@ public:
 	static const int fps = 28; // frames per second
 	static const int defaultFrameLength = 1000 / fps;
 
-	static const int slowSpeedFactor = 2;
 	static const int normalSpeedFactor = 5;
-	static const int fastSpeedFactor = 10;
 	static const int immediateSpeedFactor = 100000000;
 
 	explicit Timeline(QObject *parent = 0);
 
 	int speedFactor() const;
+
+	/// Returns true if timeline is ticking at the moment.
+	bool isStarted() const;
 
 	quint64 timestamp() const override;
 

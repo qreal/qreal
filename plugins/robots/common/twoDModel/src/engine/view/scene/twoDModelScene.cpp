@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "d2ModelScene.h"
+#include "twoDModelScene.h"
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
@@ -34,7 +34,7 @@ using namespace view;
 using namespace qReal;
 using namespace graphicsUtils;
 
-D2ModelScene::D2ModelScene(model::Model &model
+TwoDModelScene::TwoDModelScene(model::Model &model
 		, AbstractView *view
 		, QObject *parent)
 	: AbstractScene(view, parent)
@@ -48,25 +48,25 @@ D2ModelScene::D2ModelScene(model::Model &model
 	setItemIndexMethod(NoIndex);
 	setEmptyPenBrushItems();
 
-	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &D2ModelScene::onWallAdded);
-	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &D2ModelScene::onColorItemAdded);
-	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &D2ModelScene::onOtherItemAdded);
-	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &D2ModelScene::onItemRemoved);
+	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &TwoDModelScene::onOtherItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &TwoDModelScene::onItemRemoved);
 
-	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
-	connect(&mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
+	connect(&mModel, &model::Model::robotAdded, this, &TwoDModelScene::onRobotAdd);
+	connect(&mModel, &model::Model::robotRemoved, this, &TwoDModelScene::onRobotRemove);
 }
 
-D2ModelScene::~D2ModelScene()
+TwoDModelScene::~TwoDModelScene()
 {
 }
 
-bool D2ModelScene::oneRobot() const
+bool TwoDModelScene::oneRobot() const
 {
 	return mRobots.size() == 1;
 }
 
-void D2ModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
+void TwoDModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
 {
 	mWorldReadOnly = (flags & kitBase::ReadOnly::World) != 0;
 	mRobotReadOnly = (flags & kitBase::ReadOnly::RobotPosition) != 0;
@@ -89,7 +89,7 @@ void D2ModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
 	}
 }
 
-void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
+void TwoDModelScene::handleNewRobotPosition(RobotItem *robotItem)
 {
 	for (const items::WallItem *wall : mModel.worldModel().walls()) {
 		if (wall->realShape().intersects(robotItem->realBoundingRect())) {
@@ -99,12 +99,12 @@ void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 	}
 }
 
-void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
+void TwoDModelScene::onRobotAdd(model::RobotModel *robotModel)
 {
 	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel);
 
-	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
-	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
+	connect(robotItem, &RobotItem::changedPosition, this, &TwoDModelScene::handleNewRobotPosition);
+	connect(robotItem, &RobotItem::mousePressed, this, &TwoDModelScene::robotPressed);
 	connect(robotItem, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
 
 	robotItem->setEditable(!mRobotReadOnly);
@@ -117,7 +117,7 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 	emit robotListChanged(robotItem);
 }
 
-void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
+void TwoDModelScene::onRobotRemove(model::RobotModel *robotModel)
 {
 	RobotItem *robotItem = mRobots[robotModel];
 
@@ -129,27 +129,27 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 	emit robotListChanged(nullptr);
 }
 
-void D2ModelScene::onWallAdded(items::WallItem *wall)
+void TwoDModelScene::onWallAdded(items::WallItem *wall)
 {
 	addItem(wall);
-	connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
-	connect(wall, &items::WallItem::delettedWithContextMenu, this, &D2ModelScene::deleteSelectedItems);
+	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
+	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
 }
 
-void D2ModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
+void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
 	addItem(item);
-	connect(item, &graphicsUtils::AbstractItem::delettedWithContextMenu, this, &D2ModelScene::deleteSelectedItems);
+	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	item->setEditable(!mWorldReadOnly);
 }
 
-void D2ModelScene::onOtherItemAdded(QGraphicsItem *item)
+void TwoDModelScene::onOtherItemAdded(QGraphicsItem *item)
 {
 	addItem(item);
 }
 
-void D2ModelScene::onItemRemoved(QGraphicsItem *item)
+void TwoDModelScene::onItemRemoved(QGraphicsItem *item)
 {
 	mGraphicsItem = nullptr;
 	removeItem(item);
@@ -158,7 +158,7 @@ void D2ModelScene::onItemRemoved(QGraphicsItem *item)
 	utils::DeleteLaterHelper<QGraphicsItem>::deleteLater(item);
 }
 
-void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	const QPointF position = mouseEvent->scenePos();
 
@@ -210,7 +210,7 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	AbstractScene::mousePressEvent(mouseEvent);
 }
 
-void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void TwoDModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	bool needUpdate = true;
 	switch (mDrawingAction){
@@ -242,7 +242,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 }
 
-void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	emit mouseReleased();
 
@@ -294,7 +294,7 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
 
-void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
+void TwoDModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
@@ -308,7 +308,7 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 	update();
 }
 
-void D2ModelScene::deleteItem(QGraphicsItem *item)
+void TwoDModelScene::deleteItem(QGraphicsItem *item)
 {
 	if (!items().contains(item)) {
 		return;
@@ -333,27 +333,27 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 	}
 }
 
-void D2ModelScene::deleteSelectedItems()
+void TwoDModelScene::deleteSelectedItems()
 {
 	for (QGraphicsItem * const item : selectedItems()) {
 		deleteItem(item);
 	}
 }
 
-void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event)
+void TwoDModelScene::forMoveResize(QGraphicsSceneMouseEvent *event)
 {
 	reshapeItem(event);
 	update();
 }
 
-void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event)
+void TwoDModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event)
 {
 	reshapeItem(event);
 	mGraphicsItem = nullptr;
 	update();
 }
 
-void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
+void TwoDModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	if (mGraphicsItem && mGraphicsItem->editable()) {
@@ -377,7 +377,7 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelScene::keyPressEvent(QKeyEvent *event)
+void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
 		for (QGraphicsItem * const item : selectedItems()) {
@@ -399,7 +399,7 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void D2ModelScene::drawBackground(QPainter *painter, const QRectF &rect)
+void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (SettingsManager::value("2dShowGrid").toBool()) {
 		mWidthOfGrid = SettingsManager::value("GridWidth").toReal() / 100;
@@ -410,32 +410,32 @@ void D2ModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 	}
 }
 
-void D2ModelScene::addWall()
+void TwoDModelScene::addWall()
 {
 	mDrawingAction = wall;
 }
 
-void D2ModelScene::addLine()
+void TwoDModelScene::addLine()
 {
 	mDrawingAction = line;
 }
 
-void D2ModelScene::addStylus()
+void TwoDModelScene::addStylus()
 {
 	mDrawingAction = stylus;
 }
 
-void D2ModelScene::addEllipse()
+void TwoDModelScene::addEllipse()
 {
 	mDrawingAction = ellipse;
 }
 
-void D2ModelScene::setNoneStatus()
+void TwoDModelScene::setNoneStatus()
 {
 	mDrawingAction = none;
 }
 
-void D2ModelScene::clearScene(bool removeRobot, Reason reason)
+void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 {
 	mModel.worldModel().clear();
 
@@ -450,7 +450,7 @@ void D2ModelScene::clearScene(bool removeRobot, Reason reason)
 	}
 }
 
-void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
+void TwoDModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentWall) {
@@ -478,7 +478,7 @@ void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelScene::reshapeLine(QGraphicsSceneMouseEvent *event)
+void TwoDModelScene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentLine) {
@@ -490,7 +490,7 @@ void D2ModelScene::reshapeLine(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelScene::reshapeStylus(QGraphicsSceneMouseEvent *event)
+void TwoDModelScene::reshapeStylus(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentStylus) {
@@ -498,7 +498,7 @@ void D2ModelScene::reshapeStylus(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
+void TwoDModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentEllipse) {
@@ -510,7 +510,7 @@ void D2ModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos)
+void TwoDModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos)
 {
 	bool isNeedStop = false;
 
@@ -523,7 +523,7 @@ void D2ModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath &s
 
 	wall->onOverlappedWithRobot(isNeedStop);
 	if (wall->isDragged() && ((mDrawingAction == none) ||
-			(mDrawingAction == D2ModelScene::wall && mCurrentWall == wall)))
+			(mDrawingAction == TwoDModelScene::wall && mCurrentWall == wall)))
 	{
 		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
 		if (isNeedStop) {
@@ -532,7 +532,7 @@ void D2ModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath &s
 	}
 }
 
-void D2ModelScene::alignWalls()
+void TwoDModelScene::alignWalls()
 {
 	if (SettingsManager::value("2dShowGrid").toBool()) {
 		for (items::WallItem * const wall : mModel.worldModel().walls()) {
@@ -543,12 +543,12 @@ void D2ModelScene::alignWalls()
 	}
 }
 
-RobotItem *D2ModelScene::robot(model::RobotModel &robotModel)
+RobotItem *TwoDModelScene::robot(model::RobotModel &robotModel)
 {
 	return mRobots.value(&robotModel);
 }
 
-void D2ModelScene::centerOnRobot(RobotItem *selectedItem)
+void TwoDModelScene::centerOnRobot(RobotItem *selectedItem)
 {
 	RobotItem *robotItem = mRobots.values().first();
 

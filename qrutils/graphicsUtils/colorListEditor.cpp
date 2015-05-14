@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,22 @@
 
 using namespace graphicsUtils;
 
-ColorListEditor::ColorListEditor(QWidget *widget)
+const QString customStyle = "QComboBox { background-color: %1; selection-background-color: transparent; }"\
+		"QComboBox::drop-down { width: 0px; border: 0px; }";
+
+ColorListEditor::ColorListEditor(QWidget *widget, bool minimalistic)
 	: QComboBox(widget)
+	, mMinimalistic(minimalistic)
 {
+	if (minimalistic) {
+		connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=]() {
+			setStyleSheet(customStyle.arg(color().name()));
+		});
+	}
+
+	connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=]() {
+		emit colorChanged(color());
+	});
 }
 
 void ColorListEditor::setColorList(const QStringList &colorList, const QStringList &translatedColorList)
@@ -48,7 +61,7 @@ void ColorListEditor::populateList()
 	QStringList colorNames = mColorList;
 	for (int i = 0; i < colorNames.size(); ++i) {
 		const QColor color(colorNames[i]);
-		insertItem(i, mTranslatedColorList[i]);
+		insertItem(i, mMinimalistic ? QString() : mTranslatedColorList[i]);
 		setItemData(i, color, Qt::DecorationRole);
 	}
 }

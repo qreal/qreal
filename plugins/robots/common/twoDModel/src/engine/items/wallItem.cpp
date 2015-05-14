@@ -14,9 +14,8 @@
 
 #include "wallItem.h"
 
-#include <QtGui/QVector2D>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtWidgets/QStyleOptionGraphicsItem>
 
 #include <math.h>
 #include <qrkernel/settingsManager.h>
@@ -53,6 +52,13 @@ AbstractItem *WallItem::clone() const
 	cloned->mOverlappedWithRobot = mOverlappedWithRobot;
 	cloned->mPath = mPath;
 	return cloned;
+}
+
+QAction *WallItem::wallTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_wall.png"), tr("Wall (W)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_W));
+	return result;
 }
 
 void WallItem::setPrivateData()

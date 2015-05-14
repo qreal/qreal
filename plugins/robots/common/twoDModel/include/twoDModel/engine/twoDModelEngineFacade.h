@@ -33,7 +33,7 @@ namespace model {
 class Model;
 }
 namespace view {
-class D2ModelWidget;
+class TwoDModelWidget;
 }
 
 namespace engine {
@@ -69,7 +69,7 @@ private:
 	const QString mRobotModelName;
 
 	QScopedPointer<model::Model> mModel;
-	QScopedPointer<view::D2ModelWidget> mView;
+	QScopedPointer<view::TwoDModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
 	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
 };

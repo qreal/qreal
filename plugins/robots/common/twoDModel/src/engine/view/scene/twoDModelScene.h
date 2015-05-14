@@ -41,16 +41,16 @@ namespace view {
 class RobotItem;
 
 /// Implementation of QGraphicsScene for 2D robot model
-class D2ModelScene: public graphicsUtils::AbstractScene, public kitBase::DevicesConfigurationProvider
+class TwoDModelScene: public graphicsUtils::AbstractScene, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
-	D2ModelScene(model::Model &model
+	TwoDModelScene(model::Model &model
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
 
-	~D2ModelScene() override;
+	~TwoDModelScene() override;
 
 	/// Returns true if existing only one robot
 	bool oneRobot() const;

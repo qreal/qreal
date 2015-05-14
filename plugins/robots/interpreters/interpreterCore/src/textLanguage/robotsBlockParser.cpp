@@ -150,7 +150,7 @@ void RobotsBlockParser::addIntrinsicFuctions()
 	addFloatFunction("atan", [](qreal x) {return atan(x); });
 	addFloatToIntegerFunction("sgn", [](qreal x) {return (0 < x) - (x < 0); });
 	addFloatFunction("sqrt", [](qreal x) {return sqrt(x); });
-	addFloatFunction("abs", [](qreal x) {return abs(x); });
+	addFloatFunction("abs", [](qreal x) {return qAbs(x); });
 	addFloatToIntegerFunction("ceil", [](qreal x) {return static_cast<int>(ceil(x)); });
 	addFloatToIntegerFunction("floor", [](qreal x) {return static_cast<int>(floor(x)); });
 	addIntegerFunction("random", [](int x) {return rand() % x; });

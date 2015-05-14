@@ -28,6 +28,10 @@ public:
 
 	AbstractItem *clone() const override;
 
+	/// Creates and returns wall item for 2D model palette.
+	/// Transfers ownership.
+	static QAction *wallTool();
+
 	QPointF begin();
 	QPointF end();
 	bool isDragged() const;

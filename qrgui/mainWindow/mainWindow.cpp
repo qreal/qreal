@@ -2008,6 +2008,11 @@ bool MainWindow::restoreState(const QByteArray &state, int version)
 	return QMainWindow::restoreState(state, version);
 }
 
+void MainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
+{
+	QMainWindow::setCorner(corner, area);
+}
+
 void MainWindow::setTabText(QWidget *tab, const QString &text)
 {
 	const int index = mUi->tabs->indexOf(tab);

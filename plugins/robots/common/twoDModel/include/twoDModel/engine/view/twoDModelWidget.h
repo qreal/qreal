@@ -33,7 +33,7 @@ class QPushButton;
 class QDomDocument;
 
 namespace Ui {
-class D2Form;
+class TwoDModelWidget;
 }
 
 namespace graphicsUtils {
@@ -49,22 +49,25 @@ class RobotModel;
 
 namespace view {
 
-class D2ModelScene;
+class TwoDModelScene;
 class SensorItem;
 class RobotItem;
+class ActionsBox;
+class ColorItemPopup;
+class RobotItemPopup;
 
-class TWO_D_MODEL_EXPORT D2ModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
-	D2ModelWidget(model::Model &model, QWidget *parent = 0);
-	~D2ModelWidget();
+	TwoDModelWidget(model::Model &model, QWidget *parent = 0);
+	~TwoDModelWidget();
 
 	/// Overrides default closing behaviour with just hiding window.
 	void close();
 
-	D2ModelScene *scene();
+	TwoDModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
 	SensorItem *sensorItem(const kitBase::robotModel::PortInfo &port);
@@ -79,6 +82,10 @@ public:
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.
 	/// @see ReadOnly
 	void setInteractivityFlags(kitBase::ReadOnlyFlags flags);
+
+	/// Enables or disables compact 2D model mode.
+	/// In a compact mode 2D model window has less controls, they may seem in another way.
+	void setCompactMode(bool enabled);
 
 signals:
 	/// Emitted each time when user closes 2D model window.
@@ -114,11 +121,11 @@ private slots:
 	void saveWorldModel();
 	void loadWorldModel();
 
-	void changePenWidth(int width);
-	void changePenColor(int textIndex);
 	void onSelectionChange();
 
-	void changeSpeed(int curIndex);
+	void speedUp();
+	void speedDown();
+	void checkSpeedButtons();
 
 	void enableRobotFollowing(bool on);
 	void onHandCursorButtonToggled(bool on);
@@ -126,7 +133,7 @@ private slots:
 
 	void changePhysicsSettings();
 
-	void toggleDisplayVisibility();
+	void toggleDetailsVisibility();
 
 	void returnToStartMarker();
 
@@ -144,29 +151,12 @@ private:
 
 	static const int defaultPenWidth = 6;
 
-	static const int indexOfNoneSensor = 0;
-	static const int indexOfTouchSensor = 1;
-	static const int indexOfColorSensor = 2;
-	static const int indexOfSonarSensor = 3;
-	static const int indexOfLightSensor = 4;
-
-	struct RobotState {
-	public:
-		RobotState();
-
-		QPointF pos;
-		double rotation;
-	};
-
-	void changePalette();
 	void connectUiButtons();
-	void initButtonGroups();
 	void setPortsGroupBoxAndWheelComboBoxes();
 	void unsetPortsGroupBoxAndWheelComboBoxes();
 
-	void setHighlightOneButton(QAbstractButton * const oneButton);
-
-	void setDisplayVisibility(bool visible);
+	void setDetailsVisibility(bool visible);
+	void setRunStopButtonsVisibility();
 
 	QDomDocument generateXml() const;
 
@@ -179,14 +169,14 @@ private:
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
 
-	void setValuePenColorComboBox(const QColor &penColor);
-	void setValuePenWidthSpinBox(int width);
-	void setItemPalette(const QPen &penItem, const QBrush &brushItem);
-
 	void setCursorTypeForDrawing(CursorType type);
+	void setCursorType(int cursorType);
 	void setCursorType(CursorType cursor);
 
 	void initWidget();
+	void initPalette();
+	void initDetailsTab();
+
 	QList<graphicsUtils::AbstractItem *> selectedColorItems() const;
 	bool isColorItem(graphicsUtils::AbstractItem * const item) const;
 
@@ -209,8 +199,11 @@ private:
 
 	void incrementTimelineCounter();
 
-	Ui::D2Form *mUi = nullptr;
-	D2ModelScene *mScene = nullptr;
+	Ui::TwoDModelWidget *mUi = nullptr;
+	TwoDModelScene *mScene = nullptr;
+	QScopedPointer<ActionsBox> mActions;
+	ColorItemPopup *mColorFieldItemPopup;  // Takes ownership
+	RobotItemPopup *mRobotItemPopup;  // Takes ownership
 
 	RobotItem *mSelectedRobotItem = nullptr;
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;
@@ -219,27 +212,18 @@ private:
 
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
-	int mWidth = 0;
-
-	QButtonGroup mButtonGroup;
-	QButtonGroup mCursorButtonGroup;
+	int mCurrentSpeed;
 
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType
 
 	bool mFollowRobot = false;
-
+	bool mDetailsAreVisible = false;
 	bool mFirstShow = true;
 
-	bool mDisplayIsVisible = false;
-
-	bool mAutoOpen;
-
-	QString mToolsTabName;
-	QString mModelSettingsTabName;
-	QString mPortsTabName;
-
 	bool mSensorsReadOnly = false;
+
+	bool mCompactMode = false;
 };
 
 }

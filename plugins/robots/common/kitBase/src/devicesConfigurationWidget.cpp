@@ -82,6 +82,7 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	palette.setColor(QPalette::Background, Qt::transparent);
 	result->setPalette(palette);
 	QVBoxLayout * const layout = new QVBoxLayout(result);
+	layout->setContentsMargins(0, 0, 0, 0);
 	QList<PortInfo> const configurablePorts = robotModel.configurablePorts();
 	for (const PortInfo &port : configurablePorts) {
 		layout->addLayout(initPort(robotModel.name(), port, robotModel.allowedDevices(port)));
@@ -96,6 +97,7 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 	const QString labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
 	QLabel * const portLabel = new QLabel(labelText.arg(port.userFriendlyName()), this);
 	QComboBox * const comboBox = new QComboBox(this);
+	comboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 	comboBox->setProperty("robotModel", robotModel);
 	comboBox->setProperty("port", QVariant::fromValue(port));
 	mConfigurers << comboBox;
