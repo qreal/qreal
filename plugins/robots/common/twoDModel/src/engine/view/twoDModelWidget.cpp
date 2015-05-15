@@ -99,7 +99,6 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	setRunStopButtonsVisibility();
 
-	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->palette->unselect();
 
 	setFocus();
@@ -206,10 +205,10 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->speedDownButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedDown);
 
 	connect(mRobotItemPopup, &RobotItemPopup::followingChanged, this, &TwoDModelWidget::enableRobotFollowing);
-	connect(&mActions->scrollHandModeAction(), &QAction::toggled
-			, this, &TwoDModelWidget::onHandCursorButtonToggled);
-	connect(&mActions->multiSelectionModeAction(), &QAction::toggled
-			, this, &TwoDModelWidget::onMultiselectionCursorButtonToggled);
+	connect(&mActions->scrollHandModeAction(), &QAction::triggered
+			, this, &TwoDModelWidget::onHandCursorActionTriggered);
+	connect(&mActions->multiSelectionModeAction(), &QAction::triggered
+			, this, &TwoDModelWidget::onMultiselectionCursorActionTriggered);
 
 	connect(mRobotItemPopup, &RobotItemPopup::restoreRobotPositionClicked, this, &TwoDModelWidget::returnToStartMarker);
 	connect(mUi->initialStateButton, &QAbstractButton::clicked, this, &TwoDModelWidget::returnToStartMarker);
@@ -307,6 +306,7 @@ void TwoDModelWidget::showEvent(QShowEvent *e)
 
 void TwoDModelWidget::onFirstShow()
 {
+	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	setDetailsVisibility(SettingsManager::value("2d_detailsVisible").toBool());
 }
@@ -679,18 +679,16 @@ void TwoDModelWidget::refreshCursor()
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 }
 
-void TwoDModelWidget::onHandCursorButtonToggled(bool on)
+void TwoDModelWidget::onHandCursorActionTriggered()
 {
-	if (on) {
-		setCursorType(hand);
-	}
+	setCursorType(hand);
+	mUi->palette->unselect();
 }
 
-void TwoDModelWidget::onMultiselectionCursorButtonToggled(bool on)
+void TwoDModelWidget::onMultiselectionCursorActionTriggered()
 {
-	if (on) {
-		setCursorType(multiselection);
-	}
+	setCursorType(multiselection);
+	mUi->palette->unselect();
 }
 
 void TwoDModelWidget::syncCursorButtons()

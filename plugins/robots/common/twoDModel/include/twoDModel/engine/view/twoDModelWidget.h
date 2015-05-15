@@ -128,8 +128,8 @@ private slots:
 	void checkSpeedButtons();
 
 	void enableRobotFollowing(bool on);
-	void onHandCursorButtonToggled(bool on);
-	void onMultiselectionCursorButtonToggled(bool on);
+	void onHandCursorActionTriggered();
+	void onMultiselectionCursorActionTriggered();
 
 	void changePhysicsSettings();
 

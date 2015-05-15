@@ -1519,7 +1519,7 @@ void MainWindow::applySettings()
 
 void MainWindow::resetToolbarSize(int size)
 {
-	for (QToolBar * const bar : findChildren<QToolBar *>()) {
+	for (QToolBar * const bar : toolBars()) {
 		bar->setIconSize(QSize(size, size));
 	}
 }
@@ -1987,6 +1987,11 @@ QStatusBar *MainWindow::statusBar() const
 	return mUi->statusbar;
 }
 
+QList<QToolBar *> MainWindow::toolBars() const
+{
+	return findChildren<QToolBar *>(QString(), Qt::FindDirectChildrenOnly);
+}
+
 void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	QMainWindow::tabifyDockWidget(first, second);
@@ -2005,7 +2010,12 @@ QByteArray MainWindow::saveState(int version) const
 
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
-	return QMainWindow::restoreState(state, version);
+	const bool result = QMainWindow::restoreState(state, version);
+	if (!mUi->errorListWidget->count() > 0) {
+		mUi->errorDock->hide();
+	}
+
+	return result;
 }
 
 void MainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)

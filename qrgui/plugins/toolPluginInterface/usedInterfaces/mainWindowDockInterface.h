@@ -17,6 +17,7 @@
 #include <QtWidgets/QDockWidget>
 
 class QStatusBar;
+class QToolBar;
 
 namespace qReal {
 namespace gui {
@@ -43,6 +44,9 @@ public:
 
 	/// Returns the pointer to main window`s stripe in the bottom of the window.
 	virtual QStatusBar *statusBar() const = 0;
+
+	/// Returns a list of all toolbars on this main window.
+	virtual QList<QToolBar *> toolBars() const = 0;
 
 	/// Moves @param second dock widget on top of @param first dock widget, creating a tabbed dock area
 	/// in the main window.

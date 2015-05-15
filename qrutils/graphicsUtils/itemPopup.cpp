@@ -31,6 +31,7 @@ ItemPopup::ItemPopup(AbstractScene &scene, QWidget *parent)
 
 	connect(&mScene, &AbstractScene::leftButtonPressed, this, &ItemPopup::onMousePressedScene);
 	connect(&mScene, &AbstractScene::leftButtonReleased, this, &ItemPopup::onMouseReleasedScene);
+	connect(&mScene, &AbstractScene::selectionChanged, this, &ItemPopup::checkSelection);
 }
 
 ItemPopup::~ItemPopup()
@@ -106,6 +107,7 @@ void ItemPopup::setPropertyMassively(const QString &property, const QVariant &va
 
 void ItemPopup::onMousePressedScene()
 {
+	mMousePressed = true;
 	if (isVisible()) {
 		detach();
 		hide();
@@ -114,7 +116,13 @@ void ItemPopup::onMousePressedScene()
 
 void ItemPopup::onMouseReleasedScene()
 {
-	if (!mEnabled) {
+	mMousePressed = false;
+	checkSelection();
+}
+
+void ItemPopup::checkSelection()
+{
+	if (!mEnabled && mMousePressed) {
 		return;
 	}
 

@@ -16,7 +16,8 @@
 
 using namespace graphicsUtils;
 
-const QString customStyle = "QComboBox { background-color: %1; selection-background-color: transparent; }"\
+const QString customStyle =
+		"QComboBox { background: %1; border: 0px; border-radius: 2px; selection-background-color: transparent; }"\
 		"QComboBox::drop-down { width: 0px; border: 0px; }";
 
 ColorListEditor::ColorListEditor(QWidget *widget, bool minimalistic)
