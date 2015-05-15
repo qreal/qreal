@@ -27,8 +27,9 @@
 
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
-#include "editor/labelFactory.h"
 #include "editor/editorViewScene.h"
+#include "editor/labels/label.h"
+#include "editor/labels/labelFactory.h"
 
 #include "editor/private/lineFactory.h"
 #include "editor/private/lineHandler.h"

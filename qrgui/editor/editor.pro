@@ -51,8 +51,9 @@ HEADERS += \
 	$$PWD/edgeElement.h \
 	$$PWD/element.h \
 	$$PWD/nodeElement.h \
-	$$PWD/label.h \
-	$$PWD/labelFactory.h \
+	$$PWD/labels/label.h \
+	$$PWD/labels/labelFactory.h \
+	$$PWD/labels/labelProperties.h \
 	$$PWD/contextMenuAction.h \
 	$$PWD/embedded/linkers/embeddedLinker.h \
 	$$PWD/embedded/linkers/embeddedLinkers.h \
@@ -103,8 +104,9 @@ SOURCES += \
 	$$PWD/edgeElement.cpp \
 	$$PWD/element.cpp \
 	$$PWD/nodeElement.cpp \
-	$$PWD/label.cpp \
-	$$PWD/labelFactory.cpp \
+	$$PWD/labels/label.cpp \
+	$$PWD/labels/labelFactory.cpp \
+	$$PWD/labels/labelProperties.cpp \
 	$$PWD/contextMenuAction.cpp \
 	$$PWD/embedded/linkers/embeddedLinker.cpp \
 	$$PWD/embedded/linkers/embeddedLinkers.cpp \
