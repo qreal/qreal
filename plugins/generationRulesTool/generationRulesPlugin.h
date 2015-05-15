@@ -13,11 +13,12 @@
  * limitations under the License. */
 
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
-
-#include "dialogs/specifyGenerationRulesDialog.h"
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 #include "ast/node.h"
+
+#include "dialogs/specifyGenerationRulesDialog.h"
+#include "dialogs/specifyPathToGeneratedCodeDialog.h"
 
 namespace generationRules {
 
@@ -41,6 +42,8 @@ public:
 			, qReal::EditorManagerInterface *editorManagerInterface) override;
 
 private slots:
+	void openWindowForPathsSpecifying();
+
 	void generateCodeForAllElements();
 
 	void generateCode(
@@ -61,11 +64,14 @@ private:
 	/// Metamodel repo api.
 	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
 
-	qReal::gui::SpecifyGenerationRulesDialog *mSpecifyGenerationRulesDialog;  // Doesn't have ownership
-
 	qReal::EditorManagerInterface *mEditorManagerInterface;  // Doesn't have ownership
 
 	qReal::Id mRootId;
+
+	qReal::gui::SpecifyPathToGeneratedCodeDialog *mSpecifyPathsDialog;
+
+	QString mPathToGeneratedCode;
+	QString mMainFileName;
 };
 
 }

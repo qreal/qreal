@@ -18,6 +18,7 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QSharedPointer>
 #include <QtCore/QDebug>
+#include <QtCore/QDir>
 
 #include "lexer.h"
 #include "parser.h"
@@ -42,7 +43,7 @@ GenerationRulesPlugin::GenerationRulesPlugin()
 	: mRepo(nullptr)
 	, mAction(tr("Destroy everything"), nullptr)
 {
-	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::generateCodeForAllElements);
+	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::openWindowForPathsSpecifying);
 }
 
 GenerationRulesPlugin::~GenerationRulesPlugin()
@@ -78,6 +79,9 @@ void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
 
 void GenerationRulesPlugin::generateCodeForAllElements()
 {
+	mMainFileName = mSpecifyPathsDialog->currentFileName();
+	mPathToGeneratedCode = mSpecifyPathsDialog->currentPathToFolder();
+
 	// we need id of root element in metamodel
 	// we consider that we have only one editor and one diagram
 	// TODO: fix this
@@ -103,7 +107,7 @@ void GenerationRulesPlugin::generateCode(
 	generationRules::generator::CurrentScope scope;
 
 	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface, mEditorManagerInterface
-			, table, scope, editorId, diagramId);
+			, table, scope, editorId, diagramId, mPathToGeneratedCode);
 
 	QString resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
 			, generatorConfigurer);
@@ -115,5 +119,13 @@ void GenerationRulesPlugin::openGenerationRulesWindow()
 {
 	const QAction * const action = static_cast<QAction *>(sender());
 	const qReal::Id id = action->data().value<qReal::Id>();
-	mSpecifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id, mMetamodelRepoApi);
+	auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id, mMetamodelRepoApi);
+}
+
+void GenerationRulesPlugin::openWindowForPathsSpecifying()
+{
+	mSpecifyPathsDialog = new qReal::gui::SpecifyPathToGeneratedCodeDialog(mMetamodelRepoApi);
+
+	connect(mSpecifyPathsDialog, &qReal::gui::SpecifyPathToGeneratedCodeDialog::pathsSpecified, this
+			, &GenerationRulesPlugin::generateCodeForAllElements);
 }

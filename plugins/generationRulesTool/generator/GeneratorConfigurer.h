@@ -27,13 +27,15 @@ public:
 			, VariablesTable &variablesTable
 			, CurrentScope &currentScope
 			, const qReal::Id &editorId
-			, const qReal::Id &diagramId)
+			, const qReal::Id &diagramId
+			, const QString &pathToGeneratedCode)
 		: mLogicalModelAssistInterface(logicalModelInterface)
 		, mEditorManagerInterface(editorManagerInterface)
 		, mVariablesTable(variablesTable)
 		, mCurrentScope(currentScope)
 		, mEditorId(editorId)
 		, mDiagramId(diagramId)
+		, mPathToGeneratedCode(pathToGeneratedCode)
 	{}
 
 	/// Returns logical model interface (data about model).
@@ -72,6 +74,12 @@ public:
 		return mDiagramId;
 	}
 
+	/// Returns path to generated code.
+	const QString &pathToGeneratedCode() const
+	{
+		return mPathToGeneratedCode;
+	}
+
 private:
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // doesn't have ownership
 	VariablesTable &mVariablesTable;
@@ -79,6 +87,7 @@ private:
 	CurrentScope &mCurrentScope;
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
+	const QString &mPathToGeneratedCode;
 };
 
 }

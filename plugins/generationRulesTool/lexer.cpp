@@ -42,6 +42,8 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineToken(TokenTypes::doubleColon, QRegularExpression("::"), "::");
 	tokenDefinitions.defineToken(TokenTypes::arrow, QRegularExpression("->"), "->");
 
+	tokenDefinitions.defineToken(TokenTypes::plus, QRegularExpression("\\+"), "+");
+
 	tokenDefinitions.defineKeyword(TokenTypes::newlineKeyword, "newline");
 	tokenDefinitions.defineKeyword(TokenTypes::foreachKeyword, "foreach");
 	tokenDefinitions.defineKeyword(TokenTypes::tabKeyword, "tab");
@@ -51,6 +53,8 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 
 	tokenDefinitions.defineKeyword(TokenTypes::callGeneratorForKeyword, "callGeneratorFor");
 	tokenDefinitions.defineKeyword(TokenTypes::generatorKeyword, "Generator");
+
+	tokenDefinitions.defineKeyword(TokenTypes::generateToFileKeyword, "generateToFile");
 
 	tokenDefinitions.defineToken(TokenTypes::text,
 			QRegularExpression(R"(('[^'\\]*(\\(.|\n)[^'\\]*)*'))")

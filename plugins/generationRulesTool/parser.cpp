@@ -33,6 +33,8 @@
 #include "ast/transitionEnd.h"
 #include "ast/transitionStart.h"
 #include "ast/list.h"
+#include "ast/generateToFile.h"
+#include "ast/string.h"
 
 using namespace simpleParser;
 
@@ -185,6 +187,36 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Text(token.lexeme());
 	};
 
+	auto string = (complexIdentifier & -TokenTypes::plus & text)
+			>> [] (QSharedPointer<TemporaryPair> temporaryPair) {
+				auto identifierPart = temporaryPair->left();
+				auto textPart = temporaryPair->right();
+
+				return qrtext::wrap(new ast::String(identifierPart, textPart));
+	};
+
+	auto generateToFileStatement = (-TokenTypes::generateToFileKeyword & -TokenTypes::openingBracket
+				& elementIdentifier & -TokenTypes::comma & string
+				& ~(-TokenTypes::comma & identifier)
+				& -TokenTypes::closingBracket)
+			>> [] (QSharedPointer<TemporaryPair> temporaryNode) {
+				if (temporaryNode->left()->is<TemporaryPair>()) {
+					auto firstPart = qrtext::as<TemporaryPair>(temporaryNode);
+
+					auto element = firstPart->left();
+					auto fileName = firstPart->right();
+					auto generatorName = temporaryNode->right();
+
+					return qrtext::wrap(new ast::GenerateToFile(element, fileName, generatorName));
+
+				} else {
+					auto element = temporaryNode->left();
+					auto fileName = temporaryNode->right();
+
+					return qrtext::wrap(new ast::GenerateToFile(element, fileName));
+				}
+	};
+
 	auto newline = TokenTypes::newlineKeyword
 			>> [] (Token<TokenTypes> const &token) {
 				Q_UNUSED(token);
@@ -197,7 +229,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Tab();
 	};
 
-	statement = text | tab | newline | complexIdentifier | foreachStatement | callGeneratorForStatement | generatorStatement;
+	statement = text | tab | newline | complexIdentifier | foreachStatement | callGeneratorForStatement | generateToFileStatement | generatorStatement;
 
 	return program.parser();
 }

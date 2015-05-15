@@ -37,6 +37,8 @@ enum class TokenTypes {
 	, doubleColon
 	, arrow
 
+	, plus
+
 	, foreachKeyword
 	, newlineKeyword
 	, tabKeyword
@@ -46,6 +48,8 @@ enum class TokenTypes {
 
 	, callGeneratorForKeyword
 	, generatorKeyword
+
+	, generateToFileKeyword
 
 	, text
 
@@ -115,6 +119,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 		debug << "arrow";
 		break;
 
+	case TokenTypes::plus:
+		debug << "plus";
+		break;
+
 	case TokenTypes::foreachKeyword:
 		debug << "foreachKeyword ";
 		break;
@@ -141,6 +149,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::generatorKeyword:
 		debug << "generatorKeyword ";
+		break;
+
+	case TokenTypes::generateToFileKeyword:
+		debug << "generateToFileKeyword ";
 		break;
 
 	case TokenTypes::text:

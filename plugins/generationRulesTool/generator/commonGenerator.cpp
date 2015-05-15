@@ -5,6 +5,7 @@
 #include "generatorForForeachNode.h"
 #include "generatorForCallGenerator.h"
 #include "generatorForGeneratorNode.h"
+#include "generatorForGenerateToFile.h"
 
 #include "ast/program.h"
 #include "ast/complexIdentifier.h"
@@ -39,6 +40,10 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 	else if (node->is<ast::CallGeneratorFor>()) {
 		QSharedPointer<ast::CallGeneratorFor> callGeneratorNode = qrtext::as<ast::CallGeneratorFor>(node);
 		result = GeneratorForCallGenerator::generatedResult(callGeneratorNode, generatorConfigurer);
+	}
+	else if (node->is<ast::GenerateToFile>()) {
+		QSharedPointer<ast::GenerateToFile> generateToFileNode = qrtext::as<ast::GenerateToFile>(node);
+		result = GeneratorForGenerateToFile::generatedResult(generateToFileNode, generatorConfigurer);
 	}
 	else if (node->is<ast::Generator>()) {
 		QSharedPointer<ast::Generator> generatorNode = qrtext::as<ast::Generator>(node);

@@ -3,6 +3,8 @@
 #include <QtWidgets/QDialog>
 #include <QtCore/QSettings>
 
+#include <qrrepo/logicalRepoApi.h>
+
 namespace Ui {
 class SpecifyPathToGeneratedCodeDialog;
 }
@@ -15,17 +17,28 @@ class SpecifyPathToGeneratedCodeDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit SpecifyPathToGeneratedCodeDialog(QWidget *parent = 0);
+	SpecifyPathToGeneratedCodeDialog(
+			qrRepo::LogicalRepoApi *metamodelRepoApi
+			, QWidget *parent = 0);
 	~SpecifyPathToGeneratedCodeDialog();
-
-	void restoreSettings();
-	void saveSettings();
 
 	QString currentPathToFolder() const;
 	QString currentFileName() const;
 
+signals:
+	void pathsSpecified();
+
+private slots:
+	void restoreSettings();
+
+	void saveSettings();
+
+	void specifyFolder();
+
 private:
 	Ui::SpecifyPathToGeneratedCodeDialog *mUi;
+
+	qrRepo::LogicalRepoApi *mMetamodelRepoApi;
 };
 
 }

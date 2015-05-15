@@ -81,7 +81,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="specifyFilderButton">
+  <widget class="QPushButton" name="specifyFolderButton">
    <property name="geometry">
     <rect>
      <x>370</x>
