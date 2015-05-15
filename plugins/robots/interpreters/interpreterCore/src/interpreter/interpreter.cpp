@@ -196,6 +196,7 @@ void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 	if (mThreads.contains(threadId)) {
 		reportError(tr("Cannot create new thread with already occupied id %1").arg(threadId));
 		stopRobot();
+		return;
 	}
 
 	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
