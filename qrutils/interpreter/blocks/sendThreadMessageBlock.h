@@ -6,7 +6,7 @@ namespace qReal {
 namespace interpretation {
 namespace blocks {
 
-class QRUTILS_EXPORT KillThreadBlock : public Block
+class SendThreadMessageBlock : public Block
 {
 	Q_OBJECT
 public:

@@ -16,6 +16,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QStack>
+#include <QtCore/QQueue>
 #include <QtCore/QSignalMapper>
 
 #include <qrkernel/ids.h>
@@ -68,6 +69,9 @@ public:
 
 	void stop();
 
+	void newMessage(const QString &message);
+	bool getMessage(QString &message);
+
 	QString id() const;
 
 signals:
@@ -78,6 +82,8 @@ signals:
 	void newThread(const qReal::Id &startBlockId, const QString &threadId);
 
 	void killThread(const QString &threadId);
+
+	void sendMessage(const QString &threadId, const QString &message);
 
 private slots:
 	void nextBlock(const qReal::Id &blockId);
@@ -109,6 +115,7 @@ private:
 	QTimer *mProcessEventsTimer;  // Has ownership
 	QSignalMapper *mProcessEventsMapper;  // Has ownership
 	QString mId;
+	QQueue<QString> mMessages;
 };
 
 }

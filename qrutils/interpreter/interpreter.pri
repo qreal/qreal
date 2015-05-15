@@ -32,7 +32,9 @@ HEADERS += \
 	$$PWD/blocks/variableInitBlock.h \
 	$$PWD/blocks/unsupportedBlock.h \
 	$$PWD/blocks/joinBlock.h \
-	$$PWD/blocks/killThreadBlock.h
+	$$PWD/blocks/killThreadBlock.h \
+	$$PWD/blocks/sendThreadMessageBlock.h \
+	$$PWD/blocks/receiveThreadMessageBlock.h
 
 SOURCES += \
 	$$PWD/interpreter.cpp \
@@ -52,4 +54,6 @@ SOURCES += \
 	$$PWD/blocks/variableInitBlock.cpp \
 	$$PWD/blocks/unsupportedBlock.cpp \
 	$$PWD/blocks/joinBlock.cpp \
-	$$PWD/blocks/killThreadBlock.cpp
+	$$PWD/blocks/killThreadBlock.cpp \
+	$$PWD/blocks/sendThreadMessageBlock.cpp \
+	$$PWD/blocks/receiveThreadMessageBlock.cpp

@@ -1,10 +1,12 @@
 #include "joinBlock.h"
 
+#include <qrutils/interpreter/thread.h>
+
 using namespace qReal::interpretation::blocks;
 
 void JoinBlock::run()
 {
-	emit done(mThreadId == mSurvivingId ? mNextBlockId : Id());
+	emit done(mThread->id() == mSurvivingId ? mNextBlockId : Id());
 }
 
 bool JoinBlock::initNextBlocks()

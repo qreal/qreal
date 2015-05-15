@@ -216,6 +216,7 @@ void Interpreter::addThread(qReal::interpretation::Thread * const thread, const 
 
 	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
 	connect(thread, &qReal::interpretation::Thread::killThread, this, &Interpreter::killThread);
+	connect(thread, &qReal::interpretation::Thread::sendMessage, this, &Interpreter::sendMessage);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {
@@ -229,6 +230,15 @@ void Interpreter::killThread(const QString &threadId)
 		mThreads[threadId]->stop();
 	} else {
 		reportError(tr("Killing non-existent thread %1").arg(threadId));
+	}
+}
+
+void Interpreter::sendMessage(const QString &threadId, const QString &message)
+{
+	if (mThreads.contains(threadId)) {
+		mThreads[threadId]->newMessage(message);
+	} else {
+		reportError(tr("Sending message to non-existent thread %1").arg(threadId));
 	}
 }
 

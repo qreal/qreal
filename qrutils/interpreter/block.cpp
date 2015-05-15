@@ -85,7 +85,7 @@ const Id Block::id() const
 	return mGraphicalId;
 }
 
-void Block::interpret(const QString &threadId)
+void Block::interpret(Thread *thread)
 {
 	// mState == running is not filtered out due to recursions and forks
 	if (mState == failed) {
@@ -93,7 +93,7 @@ void Block::interpret(const QString &threadId)
 	}
 
 	mState = running;
-	mThreadId = threadId;
+	mThread = thread;
 	if (initNextBlocks()) {
 		run();
 	}

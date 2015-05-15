@@ -29,13 +29,15 @@
 namespace qReal {
 namespace interpretation {
 
+class Thread;
+
 /// Base class for all blocks implementations used in interpreter.
 class QRUTILS_EXPORT Block : public BlockInterface
 {
 	Q_OBJECT
 
 public:
-	void interpret(const QString &threadId) override;
+	void interpret(Thread *thread) override;
 
 	void setFailedStatus() override;
 
@@ -151,7 +153,7 @@ protected:
 	const qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Doesn't have ownership.
 
 	qReal::Id mGraphicalId;
-	QString mThreadId;
+	Thread *mThread;
 
 private slots:
 	void finishedRunning();

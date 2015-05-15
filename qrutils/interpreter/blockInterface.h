@@ -23,6 +23,8 @@
 namespace qReal {
 namespace interpretation {
 
+class Thread;
+
 /// An interface of the block`s implementation used in the interprer for executing it.
 class QRUTILS_EXPORT BlockInterface : public QObject
 {
@@ -32,7 +34,7 @@ public:
 	~BlockInterface() override {}
 
 	/// Starts block execution.
-	virtual void interpret(const QString &threadId) = 0;
+	virtual void interpret(Thread *thread) = 0;
 
 	/// Called each time when the interpretation process fails for some reason.
 	/// Block must deinitialize its recources here.
@@ -54,6 +56,8 @@ signals:
 	void newThread(const qReal::Id &startBlock, const QString &threadId);
 
 	void killThread(const QString &threadId);
+
+	void sendMessage(const QString &threadId, const QString &message);
 
 	/// Emitted each time when the block stops its execution due to some error.
 	void failure();

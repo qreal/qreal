@@ -25,6 +25,8 @@
 #include <qrutils/interpreter/blocks/forkBlock.h>
 #include <qrutils/interpreter/blocks/joinBlock.h>
 #include <qrutils/interpreter/blocks/killThreadBlock.h>
+#include <qrutils/interpreter/blocks/sendThreadMessageBlock.h>
+#include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
 #include <qrutils/interpreter/blocks/ifBlock.h>
 #include <qrutils/interpreter/blocks/switchBlock.h>
 #include <qrutils/interpreter/blocks/commentBlock.h>
@@ -62,9 +64,9 @@ qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &e
 	} else if (elementMetatypeIs(element, "KillThread")) {
 		return new qReal::interpretation::blocks::KillThreadBlock();
 	} else if (elementMetatypeIs(element, "SendMessageThreads")) {
-		return new qReal::interpretation::blocks::UnsupportedBlock();
+		return new qReal::interpretation::blocks::SendThreadMessageBlock();
 	} else if (elementMetatypeIs(element, "ReceiveMessageThreads")) {
-		return new qReal::interpretation::blocks::UnsupportedBlock();
+		return new qReal::interpretation::blocks::ReceiveThreadMessageBlock();
 	} else if (elementMetatypeIs(element, "Subprogram")) {
 		return new qReal::interpretation::blocks::SubprogramBlock();
 	} else if (elementMetatypeIs(element, "Function")) {

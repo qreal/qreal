@@ -14,6 +14,8 @@
 
 #include "forkBlock.h"
 
+#include <qrutils/interpreter/thread.h>
+
 using namespace qReal::interpretation::blocks;
 
 void ForkBlock::run()
@@ -57,14 +59,15 @@ bool ForkBlock::initNextBlocks()
 		mThreadStartBlocks[threadId] = targetBlockId;
 	}
 
-	if (mThreadStartBlocks.contains(mThreadId)) {
-		mNextBlockId = mThreadStartBlocks[mThreadId];
-		mThreadStartBlocks.remove(mThreadId);
+	if (mThreadStartBlocks.contains(mThread->id())) {
+		mNextBlockId = mThreadStartBlocks[mThread->id()];
+		mThreadStartBlocks.remove(mThread->id());
 	} else if (!createdIds.isEmpty()) {
 		mNextBlockId = mThreadStartBlocks[createdIds[0]];
 		mThreadStartBlocks.remove(createdIds[0]);
 	} else {
-		error(tr("There must be a link that has its 'Guard' property set to the current thread id %1").arg(mThreadId));
+		error(tr("There must be a link that has its 'Guard' property set to the current thread id %1")
+				.arg(mThread->id()));
 		return false;
 	}
 

@@ -8,6 +8,7 @@ namespace blocks {
 
 class QRUTILS_EXPORT JoinBlock : public Block
 {
+	Q_OBJECT
 public:
 	void run() override;
 
