@@ -247,12 +247,12 @@
         <translation>чувствительность к регистру</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/findReplaceDialog.cpp" line="29"/>
+        <location filename="../../qrgui/dialogs/findReplaceDialog.cpp" line="43"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/findReplaceDialog.cpp" line="104"/>
+        <location filename="../../qrgui/dialogs/findReplaceDialog.cpp" line="118"/>
         <source> / </source>
         <translation> / </translation>
     </message>
@@ -334,47 +334,47 @@
 <context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="86"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="100"/>
         <source>Warning:</source>
         <translation>Внимание:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="87"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="101"/>
         <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
         <translation>Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="90"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="104"/>
         <source>Proceed anyway</source>
         <translation>Продолжить все равно</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="91"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="105"/>
         <source>Cancel the type conversion</source>
         <translation>Отменить преобразование типа</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="105"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="119"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="105"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="119"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="114"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="128"/>
         <source>Restore properties</source>
         <translation>Восстановление свойств</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="140"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="154"/>
         <source>Add new property</source>
         <translation>Добавление нового свойства</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="143"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="157"/>
         <source>Properties editor: </source>
         <translation>Редактор свойств: </translation>
     </message>
@@ -382,12 +382,12 @@
 <context>
     <name>qReal::ProgressBar</name>
     <message>
-        <location filename="../../qrgui/dialogs/progressDialog/progressBar.cpp" line="104"/>
+        <location filename="../../qrgui/dialogs/progressDialog/progressBar.cpp" line="118"/>
         <source>%p% - canceled</source>
         <translation>%p% - отменено</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/progressDialog/progressBar.cpp" line="105"/>
+        <location filename="../../qrgui/dialogs/progressDialog/progressBar.cpp" line="119"/>
         <source>canceled</source>
         <translation>отменено</translation>
     </message>
@@ -395,7 +395,7 @@
 <context>
     <name>qReal::ProgressDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/progressDialog/progressDialog.cpp" line="12"/>
+        <location filename="../../qrgui/dialogs/progressDialog/progressDialog.cpp" line="26"/>
         <source>Please wait...</source>
         <translation>Ждите...</translation>
     </message>
@@ -403,27 +403,27 @@
 <context>
     <name>qReal::RestoreElementDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="33"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="47"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="35"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="49"/>
         <source>Deleted</source>
         <translation>Удален</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="59"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="73"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="59"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="73"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="59"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="73"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
@@ -431,32 +431,32 @@
 <context>
     <name>qReal::RestorePropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="14"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="28"/>
         <source>Property name</source>
         <translation>Имя свойства</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="16"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="30"/>
         <source>State</source>
         <translation>Состояние</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="18"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="32"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="20"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="34"/>
         <source>Default value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="53"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="67"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="56"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="70"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
@@ -464,7 +464,7 @@
 <context>
     <name>qReal::SuggestToCreateDiagramDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateDiagramDialog.cpp" line="18"/>
+        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateDiagramDialog.cpp" line="32"/>
         <source>Create diagram</source>
         <translation>Создание диаграммы</translation>
     </message>
@@ -472,12 +472,12 @@
 <context>
     <name>qReal::SuggestToCreateDiagramWidget</name>
     <message>
-        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateDiagramWidget.cpp" line="33"/>
+        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateDiagramWidget.cpp" line="47"/>
         <source>editor: </source>
         <translation>редактор: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateDiagramWidget.cpp" line="33"/>
+        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateDiagramWidget.cpp" line="47"/>
         <source>, diagram: </source>
         <translation>, диаграмма: </translation>
     </message>
@@ -485,7 +485,7 @@
 <context>
     <name>qReal::SuggestToCreateProjectDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateProjectDialog.cpp" line="18"/>
+        <location filename="../../qrgui/dialogs/projectManagement/suggestToCreateProjectDialog.cpp" line="32"/>
         <source>Create project</source>
         <translation>Создать проект</translation>
     </message>
@@ -493,12 +493,12 @@
 <context>
     <name>qReal::gui::AddNodeDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/addNodeDialog.cpp" line="31"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/addNodeDialog.cpp" line="45"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/addNodeDialog.cpp" line="31"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/addNodeDialog.cpp" line="45"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
@@ -506,12 +506,12 @@
 <context>
     <name>qReal::gui::EdgePropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="31"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="45"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="31"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="45"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
@@ -519,7 +519,7 @@
 <context>
     <name>qReal::gui::PropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/propertiesDialog.cpp" line="25"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/propertiesDialog.cpp" line="39"/>
         <source>Properties: </source>
         <translation>Свойства:</translation>
     </message>

@@ -67,10 +67,6 @@ protected:
 
 	Block();
 
-	/// Shall be reimplemented to set ids of next blocks. Default implementation covers usual sequential blocks, like
-	/// "motors on", it is reimplemented in "if", "loop" and such kinds of blocks.
-	virtual bool initNextBlocks();
-
 	/// Returns a property of current block with given name as QVariant.
 	QVariant property(const QString &propertyName) const;
 
@@ -164,6 +160,10 @@ private:
 		, running
 		, failed
 	};
+
+	/// Shall be reimplemented to set ids of next blocks. Default implementation covers usual sequential blocks, like
+	/// "motors on", it is reimplemented in "if", "loop" and such kinds of blocks.
+	virtual bool initNextBlocks();
 
 	/// Shall be reimplemented to provide semantics of block execution.
 	virtual void run() = 0;

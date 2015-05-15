@@ -33,7 +33,7 @@ class QRUTILS_EXPORT BlockInterface : public QObject
 public:
 	~BlockInterface() override {}
 
-	/// Starts block execution.
+	/// Starts block execution inside a given thread.
 	virtual void interpret(Thread *thread) = 0;
 
 	/// Called each time when the interpretation process fails for some reason.
@@ -55,8 +55,10 @@ signals:
 	/// @param startBlock - an id of the block that was decided to start the thread execution.
 	void newThread(const qReal::Id &startBlock, const QString &threadId);
 
+	/// Emitted when the block requests stopping execution of some thread.
 	void killThread(const QString &threadId);
 
+	/// Emitted when the block wants to send a message to another thread.
 	void sendMessage(const QString &threadId, const QString &message);
 
 	/// Emitted each time when the block stops its execution due to some error.

@@ -4,7 +4,7 @@
 <context>
     <name>qReal::gui::RenameDialog</name>
     <message>
-        <location filename="../../qrgui/models/details/renameDialog.cpp" line="12"/>
+        <location filename="../../qrgui/models/details/renameDialog.cpp" line="26"/>
         <source>Enter new name</source>
         <translation>Введите имя</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>qReal::models::details::modelsImplementation::AbstractModel</name>
     <message>
-        <location filename="../../qrgui/models/details/modelsImplementation/abstractModel.cpp" line="28"/>
+        <location filename="../../qrgui/models/details/modelsImplementation/abstractModel.cpp" line="43"/>
         <source>name</source>
         <translation>имя</translation>
     </message>

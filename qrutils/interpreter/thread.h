@@ -67,11 +67,17 @@ public:
 	/// Starts interpretation process starting from the block specified in one of the constructors.
 	void interpret();
 
+	/// Stops interpretation.
 	void stop();
 
+	/// Inserts a message to a message queue.
 	void newMessage(const QString &message);
+
+	/// If there are unprocessed messages, sets message parameter to the oldest and returns true.
+	/// Returns false otherwise.
 	bool getMessage(QString &message);
 
+	/// Returns string id of a thread.
 	QString id() const;
 
 signals:
@@ -81,8 +87,10 @@ signals:
 	/// Emitted when one of the blocks interpreted by this thread requested new thread.
 	void newThread(const qReal::Id &startBlockId, const QString &threadId);
 
+	/// Emitted when one of the blocks wants to stop some thread.
 	void killThread(const QString &threadId);
 
+	/// Emitted when one of the blocks wants to send message to another thread.
 	void sendMessage(const QString &threadId, const QString &message);
 
 private slots:
