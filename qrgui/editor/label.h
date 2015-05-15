@@ -89,7 +89,6 @@ private:
 
 	QString enumText(const QString &enumValue) const;
 
-	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;
 	bool mScalingY;

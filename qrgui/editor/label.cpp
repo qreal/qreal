@@ -24,7 +24,7 @@ using namespace qReal;
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
 		, int index, qreal x, qreal y, const QString &text, qreal rotation)
-	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
+	: mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
 	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 	, mIndex(index)
@@ -37,7 +37,7 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elem
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
 		, int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation)
-	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
+	: mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
 	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 	, mIndex(index)
