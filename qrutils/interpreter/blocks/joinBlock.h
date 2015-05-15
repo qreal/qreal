@@ -10,12 +10,12 @@ class QRUTILS_EXPORT JoinBlock : public Block
 {
 	Q_OBJECT
 public:
+	JoinBlock();
+
 	void run() override;
 
 private:
-	bool initNextBlocks() override;
-
-	QString mSurvivingId;
+	int mIncomingTokens;
 };
 
 }

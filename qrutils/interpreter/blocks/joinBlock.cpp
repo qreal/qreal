@@ -4,23 +4,27 @@
 
 using namespace qReal::interpretation::blocks;
 
-void JoinBlock::run()
+JoinBlock::JoinBlock()
+	: mIncomingTokens(0)
 {
-	emit done(mThread->id() == mSurvivingId ? mNextBlockId : Id());
 }
 
-bool JoinBlock::initNextBlocks()
+void JoinBlock::run()
 {
-	if (!Block::initNextBlocks()) {
-		return false;
-	}
-
 	const Id link = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id())[0];
-	mSurvivingId = mLogicalModelApi->propertyByRoleName(mGraphicalModelApi->logicalId(link), "Guard").toString();
-	if (mSurvivingId.isEmpty()) {
+	const QString survivingId = mLogicalModelApi->propertyByRoleName(mGraphicalModelApi->logicalId(link), "Guard")
+			.toString();
+	if (survivingId.isEmpty()) {
 		error(tr("Link outgoing from join block must have surviving thread id in its 'Guard' property"));
-		return false;
+		return;
 	}
 
-	return true;
+	if (mThread->id() != survivingId) {
+		disconnect(SIGNAL(done()), mThread);
+	}
+
+	mIncomingTokens++;
+	if (mIncomingTokens == mGraphicalModelApi->graphicalRepoApi().incomingLinks(id()).size()) {
+		emit done(mNextBlockId);
+	}
 }
