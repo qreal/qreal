@@ -25,7 +25,6 @@ QString IdentifierTypeGenerator::variableType(QSharedPointer<List> listNode)
 	}
 
 	// TODO: rewrite this code.
-
 	if (optionalLinkPart->is<IncomingLinks>()) {
 		auto linkTypeNode = qrtext::as<IncomingLinks>(optionalLinkPart)->linkType();
 		auto linkTypeIdentifier = qrtext::as<Identifier>(linkTypeNode);

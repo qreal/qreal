@@ -71,7 +71,8 @@ HEADERS += \
 	$$PWD/ast/generateToFile.h \
 	$$PWD/generator/generatorForGenerateToFile.h \
 	$$PWD/ast/string.h \
-	$$PWD/generator/auxiliaryGenerators/stringGenerator.h
+	$$PWD/generator/auxiliaryGenerators/stringGenerator.h \
+	$$PWD/appearance/ruleHighlighter.h
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \
@@ -96,7 +97,8 @@ SOURCES += \
 	$$PWD/generator/currentScope.cpp \
 	$$PWD/dialogs/specifyPathToGeneratedCodeDialog.cpp \
 	$$PWD/generator/generatorForGenerateToFile.cpp \
-	$$PWD/generator/auxiliaryGenerators/stringGenerator.cpp
+	$$PWD/generator/auxiliaryGenerators/stringGenerator.cpp \
+	$$PWD/appearance/ruleHighlighter.cpp
 
 FORMS += \
 	$$PWD/dialogs/specifyGenerationRulesDialog.ui \

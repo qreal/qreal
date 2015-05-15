@@ -15,6 +15,8 @@
 #include "specifyGenerationRulesDialog.h"
 #include "ui_specifyGenerationRulesDialog.h"
 
+#include "appearance/ruleHighlighter.h"
+
 using namespace qReal;
 using namespace gui;
 
@@ -29,6 +31,9 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	, mMetamodelRepoApi(metamodelRepoApi)
 {
 	mUi->setupUi(this);
+
+	generationRules::RuleHighlighter *ruleHighlighter = new generationRules::RuleHighlighter(
+			mUi->codeArea->document());
 
 	addPropertiesList();
 
