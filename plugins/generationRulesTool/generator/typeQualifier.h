@@ -5,7 +5,7 @@
 
 #include "ast/elementIdentifier.h"
 
-#include "GeneratorConfigurer.h"
+#include "generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
