@@ -30,7 +30,8 @@
 #include <qrgui/models/commands/renameCommand.h>
 #include <qrgui/plugins/editorPluginInterface/editorInterface.h>
 
-#include "editor/labelFactory.h"
+#include "editor/labels/label.h"
+#include "editor/labels/labelFactory.h"
 #include "editor/editorViewScene.h"
 #include "editor/ports/portFactory.h"
 

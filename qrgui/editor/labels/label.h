@@ -16,8 +16,10 @@
 
 #include <QtWidgets/QGraphicsTextItem>
 
-#include "plugins/editorPluginInterface/labelInterface.h"
-#include "models/graphicalModelAssistApi.h"
+#include <qrgui/plugins/editorPluginInterface/labelInterface.h>
+#include <qrgui/models/graphicalModelAssistApi.h>
+
+#include "qrgui/editor/labels/labelProperties.h"
 
 namespace qReal {
 
@@ -26,27 +28,33 @@ class Label : public QGraphicsTextItem, public LabelInterface
 	Q_OBJECT
 
 public:
-	Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
-			, int index, qreal x, qreal y, const QString &text, qreal rotation);
-
-	Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
-			, int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation);
+	Label(models::GraphicalModelAssistApi &graphicalAssistApi
+			, const Id &elementId
+			, const LabelProperties &properties);
 
 	~Label() override;
 
 	void init(const QRectF &contents);
-	void setBackground(const QColor &background);
-	void setScaling(bool scalingX, bool scalingY);
 
-	bool isHard() const;
-	virtual void setHard(bool hard);
+	void setBackground(const QColor &background) override;
+	void setScaling(bool scalingX, bool scalingY) override;
+	void setHard(bool hard) override;
+
+	void setFlags(GraphicsItemFlags flags) override;
+
+	void setTextInteractionFlags(Qt::TextInteractionFlags flags) override;
+	void setHtml(const QString &html) override;
+	void setPlainText(const QString &text) override;
+
+	void setPrefix(const QString &text) override;
+	void setSuffix(const QString &text) override;
+
+	void setTextFromRepo(const QString &text) override;
+
+	QRectF boundingRect() const override;
 
 	bool isReadOnly() const;
-
-	void startTextInteraction();
-	void setTitleFont();
-
-	void setTextFromRepo(const QString& text);
+	bool isHard() const;
 
 	void setParentSelected(bool isSelected);
 	void setParentContents(const QRectF &contents);
@@ -56,30 +64,25 @@ public:
 
 	void clearMoveFlag();
 
-	virtual void setFlags(GraphicsItemFlags flags);
-	virtual void setTextInteractionFlags(Qt::TextInteractionFlags flags);
-	virtual void setHtml(const QString &html);
-	virtual void setPlainText(const QString &text);
-
-protected:
-	enum InterpreterPropertyType
-	{
-		propertyText
-		, coordinate
-		, textWidth
-	};
-
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
-	virtual void focusOutEvent(QFocusEvent *event);
-	virtual void keyPressEvent(QKeyEvent *event);
-
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+	void startTextInteraction();
 
 private:
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+	void focusOutEvent(QFocusEvent *event) override;
+	void keyPressEvent(QKeyEvent *event) override;
+
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+	void drawText(QPainter *painter, const QRectF &rect, const QString &text);
+	QRectF prefixRect() const;
+	QRectF suffixRect() const;
+	QRectF textRect(const QString &text) const;
+
 	void init();
+	void reinitFont();
+
 	void updateData(bool withUndoRedo = false);
 	void updateRect(QPointF newBottomRightPoint);
 	void setText(const QString &text);
@@ -89,26 +92,17 @@ private:
 
 	QString enumText(const QString &enumValue) const;
 
-	bool mFocusIn;
-	bool mReadOnly;
-	bool mScalingX;
-	bool mScalingY;
 	QMap<QString, QString> mEnumValues;
 	QRectF mContents;
 	QRectF mParentContents;
-	qreal mRotation;
-	QPointF mPoint;
 	QString mOldText;
-	QString mBinding;
-	QColor mBackground;
 	bool mIsStretched;
-	bool mIsHard;
 	bool mParentIsSelected;
 	bool mWasMoved;
 	bool mShouldMove;
-	const int mIndex;
 	const Id mId;
 	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;
+	LabelProperties mProperties;
 };
 
 }
