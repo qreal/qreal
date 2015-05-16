@@ -38,7 +38,7 @@ public:
 
 	void setBackground(const QColor &background) override;
 	void setScaling(bool scalingX, bool scalingY) override;
-	virtual void setHard(bool hard) override;
+	void setHard(bool hard) override;
 
 	void setFlags(GraphicsItemFlags flags) override;
 
@@ -46,7 +46,12 @@ public:
 	void setHtml(const QString &html) override;
 	void setPlainText(const QString &text) override;
 
+	void setPrefix(const QString &text) override;
+	void setSuffix(const QString &text) override;
+
 	void setTextFromRepo(const QString &text) override;
+
+	QRectF boundingRect() const override;
 
 	bool isReadOnly() const;
 	bool isHard() const;
@@ -61,7 +66,7 @@ public:
 
 	void startTextInteraction();
 
-protected:
+private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
@@ -70,8 +75,11 @@ protected:
 	void keyPressEvent(QKeyEvent *event) override;
 
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+	void drawText(QPainter *painter, const QRectF &rect, const QString &text);
+	QRectF prefixRect() const;
+	QRectF suffixRect() const;
+	QRectF textRect(const QString &text) const;
 
-private:
 	void init();
 	void reinitFont();
 

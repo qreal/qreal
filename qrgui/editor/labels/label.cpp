@@ -156,6 +156,16 @@ void Label::setPlainText(const QString &text)
 	QGraphicsTextItem::setPlainText(text);
 }
 
+void Label::setPrefix(const QString &text)
+{
+	mProperties.setPrefix(text);
+}
+
+void Label::setSuffix(const QString &text)
+{
+	mProperties.setSuffix(text);
+}
+
 void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
@@ -354,9 +364,7 @@ void Label::startTextInteraction()
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	QString text = toPlainText();
-
-	if (text.isEmpty() && !mParentIsSelected && !isSelected()) {
+	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected()) {
 		return;
 	}
 
@@ -364,15 +372,58 @@ void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 	painter->setBrush(mProperties.background());
 
 	if ((mParentIsSelected && toPlainText().isEmpty()) || isSelected()) {
-		painter->setPen(QPen(Qt::DotLine));
+		painter->setPen(QPen(Qt::DashLine));
 	} else if (!toPlainText().isEmpty()) {
-		painter->setPen(QPen(Qt::transparent));
+		painter->setPen(QPen(Qt::lightGray, 1, Qt::DotLine));
 	}
 
-	painter->drawRect(boundingRect());
+	painter->drawRoundedRect(QGraphicsTextItem::boundingRect(), 2, 2);
 	painter->restore();
 
+	painter->save();
+	painter->setFont(font());
+	drawText(painter, prefixRect(), mProperties.prefix());
+	drawText(painter, suffixRect(), mProperties.siffix());
+	painter->restore();
+
+	// Default dashed frame is drawn arround the whole bounding rect (arround prefix and suffix too). Disabling it.
+	const_cast<QStyleOptionGraphicsItem *>(option)->state &= ~QStyle::State_Selected & ~QStyle::State_HasFocus;
 	QGraphicsTextItem::paint(painter, option, widget);
+}
+
+void Label::drawText(QPainter *painter, const QRectF &rect, const QString &text)
+{
+	painter->drawText(rect, Qt::AlignCenter, text);
+}
+
+QRectF Label::prefixRect() const
+{
+	const QRectF thisRect = QGraphicsTextItem::boundingRect();
+	QRectF textRect = this->textRect(mProperties.prefix());
+	const qreal x = thisRect.left() - textRect.width();
+	const qreal y = thisRect.top() + (thisRect.height() - textRect.height()) / 2;
+	textRect.moveTo(x, y);
+	return textRect;
+}
+
+QRectF Label::suffixRect() const
+{
+	const QRectF thisRect = QGraphicsTextItem::boundingRect();
+	QRectF textRect = this->textRect(mProperties.siffix());
+	const qreal x = thisRect.right();
+	const qreal y = thisRect.top() + (thisRect.height() - textRect.height()) / 2;
+	textRect.moveTo(x, y);
+	return textRect;
+}
+
+QRectF Label::textRect(const QString &text) const
+{
+	return QFontMetrics(font()).boundingRect(text).adjusted(-3, 0, 3, 0);
+}
+
+QRectF Label::boundingRect() const
+{
+	return QGraphicsTextItem::boundingRect().united(prefixRect()).united(suffixRect());
 }
 
 void Label::updateRect(QPointF newBottomRightPoint)

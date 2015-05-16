@@ -14,6 +14,8 @@ LabelProperties::LabelProperties()
 	, mScalingX(false)
 	, mScalingY(false)
 	, mIsHard(false)
+	, mPrefix()
+	, mSuffix()
 {
 }
 
@@ -29,6 +31,8 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &tex
 	, mScalingX(false)
 	, mScalingY(false)
 	, mIsHard(false)
+	, mPrefix()
+	, mSuffix()
 {
 }
 
@@ -44,10 +48,13 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &bin
 	, mScalingX(false)
 	, mScalingY(false)
 	, mIsHard(false)
+	, mPrefix()
+	, mSuffix()
 {
 }
 
 LabelProperties::LabelProperties(const LabelProperties &other)
+	: QObject(other.parent())
 {
 	this->mIndex = other.mIndex;
 	this->mX = other.mX;
@@ -60,6 +67,8 @@ LabelProperties::LabelProperties(const LabelProperties &other)
 	this->mScalingX = other.mScalingX;
 	this->mScalingY = other.mScalingY;
 	this->mIsHard = other.mIsHard;
+	this->mPrefix = other.mPrefix;
+	this->mSuffix = other.mSuffix;
 }
 
 int LabelProperties::index() const
@@ -207,5 +216,31 @@ void LabelProperties::setHard(bool hard)
 	if (mIsHard != hard) {
 		mIsHard = hard;
 		emit isHardChanged(hard);
+	}
+}
+
+QString LabelProperties::prefix() const
+{
+	return mPrefix;
+}
+
+void LabelProperties::setPrefix(const QString &text)
+{
+	if (mPrefix != text) {
+		mPrefix = text;
+		emit prefixChanged(text);
+	}
+}
+
+QString LabelProperties::siffix() const
+{
+	return mSuffix;
+}
+
+void LabelProperties::setSuffix(const QString &text)
+{
+	if (mSuffix != text) {
+		mSuffix = text;
+		emit suffixChanged(text);
 	}
 }

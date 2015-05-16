@@ -21,6 +21,8 @@ class LabelProperties : public QObject
 	Q_PROPERTY(bool scalingX READ scalingX WRITE setScalingX NOTIFY scalingXChanged)
 	Q_PROPERTY(bool scalingY READ scalingY WRITE setScalingY NOTIFY scalingYChanged)
 	Q_PROPERTY(bool isHard READ isHard WRITE setHard NOTIFY isHardChanged)
+	Q_PROPERTY(QString prefix READ prefix WRITE setPrefix NOTIFY prefixChanged)
+	Q_PROPERTY(QString siffix READ siffix WRITE setSuffix NOTIFY suffixChanged)
 
 public:
 	LabelProperties();
@@ -98,6 +100,18 @@ public:
 	/// Enabled or disables a property of the label to stay on the scene even if parent element is not selected.
 	void setHard(bool hard);
 
+	/// Returns text drawn just before label contents.
+	QString prefix() const;
+
+	/// Sets text drawn just before label contents.
+	void setPrefix(const QString &text);
+
+	/// Returns text drawn just after label contents.
+	QString siffix() const;
+
+	/// Sets text drawn just after label contents.
+	void setSuffix(const QString &text);
+
 signals:
 	/// Emitted when label`s index among other siblings changes.
 	void indexChanged(int index);
@@ -132,6 +146,12 @@ signals:
 	/// Emitted when a property of the label to stay on the scene even if parent element is not selected changes.
 	void isHardChanged(bool value);
 
+	/// Emitted when text drawn just before label contents changes.
+	void prefixChanged(const QString &text);
+
+	/// Emitted when text drawn just after label contents changes.
+	void suffixChanged(const QString &text);
+
 private:
 	int mIndex;
 	qreal mX;
@@ -144,6 +164,8 @@ private:
 	bool mScalingX;
 	bool mScalingY;
 	bool mIsHard;
+	QString mPrefix;
+	QString mSuffix;
 };
 
 }
