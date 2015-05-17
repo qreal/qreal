@@ -50,7 +50,6 @@ void DatabasesSupportPlugin::initActions()
 	connect(mCheckCorectnessAction, SIGNAL(triggered()), this, SLOT(checkCorrectness()));
 
 	mGenerateCodeAction = new QAction(tr("Generate SQL"), NULL);
-	//ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
 	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	mGeneratePhysicalModelAction = new QAction(tr("Generate physical model"), NULL);
@@ -62,13 +61,7 @@ void DatabasesSupportPlugin::initActions()
 	mDatabasesMenu->addAction(mGeneratePhysicalModelAction);
 	ActionInfo databasesMenuInfo(mDatabasesMenu, "tools");
 
-	/*mDatabasesPhysicalModelMenu = new QMenu(tr("Physical model.."));
-	mDatabasesPhysicalModelMenu->addAction(mGeneratePhysicalModelAction);
-	ActionInfo databasesPhysicalModelMenuInfo(mDatabasesPhysicalModelMenu, "tools");*/
-
 	mActionInfos << databasesMenuInfo;
-
-	//mActionInfos << databasesPhysicalModelMenuInfo;
 }
 
 void DatabasesSupportPlugin::checkCorrectness()

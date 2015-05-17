@@ -13,6 +13,7 @@ namespace Ui {
 namespace qReal {
 namespace databasesSupport {
 
+/// Class for plugin preferences
 class DatabasesPreferencesPage : public PreferencesPage
 {
 	Q_OBJECT

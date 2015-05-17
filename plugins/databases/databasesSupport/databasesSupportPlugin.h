@@ -5,7 +5,6 @@
 #include "../../../qrgui/mainwindow/errorReporter.h"
 
 #include <QtCore/QTranslator>
-
 #include <qrutils/expressionsParser/expressionsParser.h>
 #include <qrkernel/ids.h>
 
@@ -16,6 +15,9 @@
 namespace qReal {
 namespace databasesSupport {
 
+/// Main class for QReal:databases
+/// Provides cooperation between main window
+/// and functionality
 class DatabasesSupportPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -31,8 +33,11 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 public slots:
+	/// Checks simple rules of correctnes (regirection to generator)
 	void checkCorrectness();
+	/// Generates physical model from logical model (regirection to generator)
 	void generateCode();
+	/// Checks SQL-code from physical model(regirection to generator)
 	void generatePhysicalModel();
 
 private:

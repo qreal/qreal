@@ -16,7 +16,6 @@ LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils -lqrmc
 HEADERS += \
 	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
     generator/databasesGenerator.h \
-    generator/datatypesChecker.h \
 
 HEADERS += \
     databasesSupportPlugin.h \
@@ -28,13 +27,10 @@ SOURCES += \
     databasesPreferencesPage.cpp \
     databasesCustomizer.cpp \
     generator/databasesGenerator.cpp \
-    generator/datatypesChecker.cpp \
 
 OTHER_FILES += \
     databasesSupport.pri \
     generator/glossary/datatypes.txt
-
-#include(databasesSupport.pri)
 
 FORMS += \
     databasesPreferencesPage.ui

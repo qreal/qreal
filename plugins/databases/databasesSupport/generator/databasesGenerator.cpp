@@ -8,7 +8,6 @@ QString const databases = "Databases";
 
 DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator, DatabasesPreferencesPage const *preferencesPage)
 	: mCurrentDiagram(Id::rootId())
-	, mCurrentId(Id::rootId())
 	, mCodeFileName("code.txt")
 	, mWorkDir("")
 	, mLogicalModelApi(configurator.logicalModelApi())
@@ -18,35 +17,15 @@ DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator, Da
 	, mDbms(QString("Sql_server_2008"))
 	, mPreferencesPage(preferencesPage)
 	, mMainWindowInterface(configurator.mainWindowInterpretersInterface())
-//	, mDatatypesChecker(new DatatypesChecker("", configurator.mainWindowInterpretersInterface().errorReporter()))
 {
 	connect(mPreferencesPage, SIGNAL(dbmsChanged(QString)), this, SLOT(changeEditor(QString)));
-
-	//configurator.mainWindowInterpretersInterface().
+	mMainWindowInterface.loadPlugin("sqlServer2008.xml", "sqlServer2008");
 	configurator.mainWindowInterpretersInterface().unloadPlugin("sqlite");
-	configurator.mainWindowInterpretersInterface().unloadPlugin("my_sql_5");
-	configurator.mainWindowInterpretersInterface().unloadPlugin("sql_server_2008");
-	//mAppTranslator.load(":/DatabasesGenerator_" + QLocale::system().name());
-	//QApplication::installTranslator(&mAppTranslator);
-
-	//mParser = new BlockParser(mErrorReporter);
+	configurator.mainWindowInterpretersInterface().unloadPlugin("mySql5");
 }
 
 DatabasesGenerator::~DatabasesGenerator()
 {
-//	delete mDatatypesChecker;
-}
-
-void DatabasesGenerator::activeTabChanged(Id const &rootElementId)
-{
-	/*bool const enabled = rootElementId.diagram() == blockDiagram;
-	foreach (ActionInfo const &actionInfo, mActionInfos) {
-		if (actionInfo.isAction()) {
-			actionInfo.action()->setEnabled(enabled);
-		} else {
-			actionInfo.menu()->setEnabled(enabled);
-		}
-	}*/
 }
 
 void DatabasesGenerator::clearPhysicalModel()
@@ -54,7 +33,6 @@ void DatabasesGenerator::clearPhysicalModel()
 	IdList tableNodes = findNodes("DatabasesPhysicalNode");
 	foreach (Id const &id, tableNodes) {
 		mLogicalModelApi.removeElement(id);
-		//mGraphicalModelApi.removeElement(mGraphicalModelApi.graphicalIdsByLogicalId(id).first());
 	}
 }
 
@@ -80,8 +58,6 @@ IdList DatabasesGenerator::findNodes(QString const &name)
 		}
 	}
 	return filteredChildren;
-	//error(VisualDebugger::missingBeginNode);
-	//return Id::rootId();
 }
 
 QVariant DatabasesGenerator::getProperty(Id const &id, QString const &propertyName)
@@ -104,8 +80,6 @@ Id DatabasesGenerator::getParent(Id const &id)
 
 IdList DatabasesGenerator::getChildren(Id const &id)
 {
-	//Id s = mGraphicalModelApi.graphicalRepoApi().parent(mGraphicalModelApi.graphicalIdsByLogicalId(child).at(0));
-
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mGraphicalModelApi.graphicalRepoApi().children(mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0));
 	}
@@ -154,8 +128,7 @@ void DatabasesGenerator::error(QString error, bool isCritical)
 	} else {
 		mInterpretersInterface.errorReporter()->addWarning(error, Id::rootId());
 	}
-	//mCurrentId = Id::rootId();
-	//mCurrentDiagram = Id::rootId();
+	mCurrentDiagram = Id::rootId();
 }
 
 Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
@@ -256,10 +229,6 @@ bool DatabasesGenerator::checkAttributes()
 			result = false;
 			error(tr("Attribute has no datatype in entity '") + parentName + "'", true);
 		}
-/*		if (!mDatatypesChecker->isDatatype(datatype)) {
-			result = false;
-			error(tr("Invalid datatype in entity '") + parentName + "'", true);
-		}*/
 	}
 	return result;
 }
@@ -275,7 +244,10 @@ bool DatabasesGenerator::checkRelationships()
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
 		if (out == Id::rootId() || from == Id::rootId()) {
 			result = false;
-			error(getProperty(relationship, "name").toString() + tr(" relationship with name '") + getProperty(relationship, "Name").toString() + tr("' has invalid ends"), true);
+			error(getProperty(relationship, "name").toString()
+				+ tr(" relationship with name '")
+				+ getProperty(relationship, "Name").toString()
+				+ tr("' has invalid ends"), true);
 		}
 	}
 	return result;
@@ -297,7 +269,7 @@ bool DatabasesGenerator::checkCorrectness()
 qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName, QPointF coord, Id const &parentLogicalId, bool coordByParent)
 {
 	Id id = Id::loadFromString(QString("qrm:/" + mDbms
-						+ "/DatabasesPhysicalModelMetamodel/" + elemName));
+			+ "/DatabasesPhysicalModelMetamodel/" + elemName));
 	Id logicalId = mLogicalModelApi.createElement(Id::rootId(), id);
 	Id graphicalParentId = Id::rootId();
 	if (parentLogicalId != Id::rootId()) {
@@ -306,7 +278,6 @@ qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName, Q
 			coord = mGraphicalModelApi.position(graphicalParentId);
 	}
 	mGraphicalModelApi.createElement(graphicalParentId, logicalId, true, elemName, coord);
-	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(Id::rootId());
 	return logicalId;
 }
 
@@ -351,7 +322,10 @@ qReal::Id DatabasesGenerator::makeTableFromEntitySet(IdList const &set, Id const
 	return logicalTableId;
 }
 
-qReal::Id DatabasesGenerator::copyOneToManyRelationship(Id const &logicalModelId, Id const &parentId, Id const &from, Id const &to)
+qReal::Id DatabasesGenerator::copyOneToManyRelationship(Id const &logicalModelId
+		, Id const &parentId
+		, Id const &from
+		, Id const &to)
 {
 	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(logicalModelId).first());
 	Id logicalId = createElementFromString("PhysicalOneToManyRelationship", coord, parentId);
@@ -367,7 +341,10 @@ qReal::Id DatabasesGenerator::copyOneToManyRelationship(Id const &logicalModelId
 	return logicalId;
 }
 
-qReal::Id DatabasesGenerator::copyManyToManyRelationship(Id const &logicalModelId, Id const &parentId, Id const &from, Id const &to)
+qReal::Id DatabasesGenerator::copyManyToManyRelationship(Id const &logicalModelId
+		, Id const &parentId
+		, Id const &from
+		, Id const &to)
 {
 	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(logicalModelId).first());
 	Id logicalId = createElementFromString("PhysicalManyToManyRelationship", coord, parentId);
@@ -383,8 +360,6 @@ qReal::Id DatabasesGenerator::copyManyToManyRelationship(Id const &logicalModelI
 	return logicalId;
 }
 
-/// Search for alone entities (we make table for each alone entity)
-/// Formation of one-to-one sets (we will union entities bounded by one-to-one relationship in one table)
 QList<IdList> DatabasesGenerator::processEntities(Id const &logicalDiagramId)
 {
 	QList<IdList> oneToOneBoundedEntitiesSets;
@@ -415,7 +390,9 @@ QList<IdList> DatabasesGenerator::processEntities(Id const &logicalDiagramId)
 	return oneToOneBoundedEntitiesSets;
 }
 
-bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> oneToOneBoundedEntitiesSets, IdList setTables, int **match, Id const &logicalDiagramId)
+bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneToOneBoundedEntitiesSets
+		, IdList setTables
+		, Id const &logicalDiagramId)
 {
 	IdList oneToManyRelationships = findNodes("OneToManyRelationship");
 	foreach (Id const &relationship, oneToManyRelationships) {
@@ -424,20 +401,24 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> oneToOneBou
 		int toSet = getParentList(to, oneToOneBoundedEntitiesSets);
 		int fromSet = getParentList(from, oneToOneBoundedEntitiesSets);
 
-		if (match[toSet][fromSet] != 0) {
-			error("Too many relationships from "+ getProperty(from, "Name").toString() + "to " + getProperty(to, "Name").toString(), true);
+		if (mRelMatrix[toSet][fromSet] != 0) {
+			error("Too many relationships from "
+				 + getProperty(from, "Name").toString()
+				 + "to " + getProperty(to, "Name").toString(), true);
 			return false;
 		}
 
 		QString columnNameForRelationship = getProperty(relationship, "ColumnName").toString();
 		if (columnNameForRelationship.isEmpty()) {
-			mErrorReporter->addInformation(tr("Column name for one-to-many relationship with name '") + getProperty(relationship, "Name").toString()+ tr("' is`n specified. Column name was generated automatically."));
+			mErrorReporter->addInformation(tr("Column name for one-to-many relationship with name '")
+				+ getProperty(relationship, "Name").toString()
+				+ tr("' is`n specified. Column name was generated automatically."));
 			columnNameForRelationship = getPrimaryKeyNameOfSet(oneToOneBoundedEntitiesSets.at(toSet));
 		}
-		match[fromSet][toSet] = 1;
-		match[toSet][fromSet] = -1;
+		mRelMatrix[fromSet][toSet] = 1;
+		mRelMatrix[toSet][fromSet] = -1;
 
-		//add bounding attribute
+		// add bounding attribute
 		Id logicalColumnId = createElementFromString("Column", QPointF(), setTables.at(fromSet), true);
 		QString rowName = getProperty(relationship, "ColumnName").toString();
 		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "Name");
@@ -447,7 +428,9 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> oneToOneBou
 	return true;
 }
 
-bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> oneToOneBoundedEntitiesSets, IdList setTables, int **match, Id const &logicalDiagramId)
+bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &oneToOneBoundedEntitiesSets
+		, IdList setTables
+		, Id const &logicalDiagramId)
 {
 	IdList manyToManyRelationships = findNodes("ManyToManyRelationship");
 	foreach (Id const &relationship, manyToManyRelationships) {
@@ -456,26 +439,37 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> oneToOneBo
 		int toSet = getParentList(to, oneToOneBoundedEntitiesSets);
 		int fromSet = getParentList(from, oneToOneBoundedEntitiesSets);
 
-		if (match[toSet][fromSet] != 0) {
-			error(tr("Too many relationships from ") + getProperty(from, "Name").toString() + tr(" to ") + getProperty(to, "Name").toString(), true);
+		if (mRelMatrix[toSet][fromSet] != 0) {
+			error(tr("Too many relationships from ")
+				+ getProperty(from, "Name").toString()
+				+ tr(" to ") + getProperty(to, "Name").toString(), true);
 			return false;
 		}
 
 		QString relationshipTableName = getProperty(relationship, "TableName").toString();
 		if (relationshipTableName.isEmpty()) {
-			mErrorReporter->addInformation(tr("Table name for many-to-many relationship with name '") + getProperty(relationship, "Name").toString() +  tr("' is`t specified. Table name was generated automatically"), Id::rootId());
-			relationshipTableName = (getListTableName(oneToOneBoundedEntitiesSets.at(fromSet)) + "_" + getListTableName(oneToOneBoundedEntitiesSets.at(toSet))).toUtf8();
+			mErrorReporter->addInformation(tr("Table name for many-to-many relationship with name '")
+				+ getProperty(relationship, "Name").toString()
+				+ tr("' is`t specified. Table name was generated automatically"), Id::rootId());
+			relationshipTableName = (getListTableName(oneToOneBoundedEntitiesSets.at(fromSet))
+				+ "_" + getListTableName(oneToOneBoundedEntitiesSets.at(toSet))).toUtf8();
 		}
-		match[toSet][fromSet] = 2;
-		match[toSet][fromSet] = 2;
+		mRelMatrix[toSet][fromSet] = 2;
+		mRelMatrix[toSet][fromSet] = 2;
 
 		// Creating
 		Id logicalTableId = createElementFromString("Table", QPointF(), logicalDiagramId);
 		mLogicalModelApi.setPropertyByRoleName(logicalTableId, relationshipTableName, "Name");
 
 		//copy relationship
-		copyManyToManyRelationship(relationship, logicalDiagramId, setTables.at(fromSet), logicalTableId);
-		copyManyToManyRelationship(relationship, logicalDiagramId, logicalTableId, setTables.at(toSet));
+		copyManyToManyRelationship(relationship
+				, logicalDiagramId
+				, setTables.at(fromSet)
+				, logicalTableId);
+		copyManyToManyRelationship(relationship
+				, logicalDiagramId
+				, logicalTableId
+				, setTables.at(toSet));
 
 		//add bounding attribute
 		Id logicalColumnIdOne = createElementFromString("Column", QPointF(), logicalTableId, true);
@@ -508,38 +502,40 @@ void DatabasesGenerator::generatePhysicalModel()
 		setTables.append(logicalTableId);
 	}
 
-	// match[i][k] =
+	// mRelMatrix[i][k] =
 	// 0 - no relationships
 	// 1 - one-to-many relationship (i - many, k - one)
 	// -1 - one-to-many relationship (i - one, k - many)
 	// 2 - many-to-many relationship
 	// 3 - one-to-one relationship
 	int oneToOneSetsSize = oneToOneBoundedEntitiesSets.size();
-	int **match = new int*[oneToOneSetsSize];
 	for (int i = 0; i < oneToOneSetsSize; i++) {
-		match[i] = new int[oneToOneSetsSize];
 		for (int k = 0; k < oneToOneSetsSize; k++)
-			match[i][k] = 0;
-		match[i][i] = 3;
+			mRelMatrix[i][k] = 0;
+		mRelMatrix[i][i] = 3;
 	}
 
-	if (!processOneToManyRelationships(oneToOneBoundedEntitiesSets, setTables, match, logicalDiagramId))
+	if (!processOneToManyRelationships(oneToOneBoundedEntitiesSets
+			, setTables
+			, logicalDiagramId))
 		return;
-	if (!processManyToManyRelationships(oneToOneBoundedEntitiesSets, setTables, match, logicalDiagramId))
+	if (!processManyToManyRelationships(oneToOneBoundedEntitiesSets
+			, setTables
+			, logicalDiagramId))
 		return;
 
 	for (int i = 0; i < oneToOneSetsSize; i++) {
-		delete[] match[i];
+		delete[] mRelMatrix[i];
 	}
-	delete[] match;
+	delete[] mRelMatrix;
 	mErrorReporter->addInformation(tr("Physical model was generated successfully"));
 }
 
 void DatabasesGenerator::generateSQLCode()
 {
-	if (mDbms == "Sql_server_2008")
+	if (mDbms == "SqlServer2008")
 		generateWithSqlServer2008();
-	if (mDbms == "My_sql_5")
+	if (mDbms == "MySql5")
 		generateWithMySql5();
 	if (mDbms == "Sqlite")
 		generateWithSqlite();
@@ -749,21 +745,21 @@ void DatabasesGenerator::generateWithSqlite()
 
 void DatabasesGenerator::changeEditor(QString const &dbmsName)
 {
-	if (mDbms =="Sql_server_2008")
-		mMainWindowInterface.unloadPlugin("sql_server_2008");
-	else if (mDbms == "My_sql_5")
-		mMainWindowInterface.unloadPlugin("my_sql_5");
+	if (mDbms =="SqlServer2008")
+		mMainWindowInterface.unloadPlugin("sqlServer2008");
+	else if (mDbms == "MySql5")
+		mMainWindowInterface.unloadPlugin("mySql5");
 	else if (mDbms =="Sqlite")
 		mMainWindowInterface.unloadPlugin("sqlite");
 
 	if  (dbmsName =="Sql_server_2008")
 	{
 		mDbms = "Sql_server_2008";
-		mMainWindowInterface.loadPlugin("sql_server_2008.xml", "sql_server_2008");
+		mMainWindowInterface.loadPlugin("sqlServer2008.xml", "sqlServer2008");
 	} else if (mDbms =="My_sql_5")
 	{
 		mDbms = "My_sql_5";
-		mMainWindowInterface.loadPlugin("my_sql_5.xml", "my_sql_5");
+		mMainWindowInterface.loadPlugin("mySql5.xml", "mySql5");
 	} else if (mDbms == "Sqlite")
 	{
 		mDbms = "Sqlite";

@@ -1,51 +1,87 @@
 #pragma once
-
 #include <QtCore/QTranslator>
 #include <qrgui/mainwindow/errorReporter.h>
 #include <qrkernel/ids.h>
-#include "datatypesChecker.h"
+
 #include "databasesPreferencesPage.h"
 
 namespace qReal {
 namespace databasesSupport {
 
+/// Class for generation physical db model from logical db model
+/// and generation SQL-code for dbmss from physical model
+/// Designations: physical model - pm, logical model - lm
 class DatabasesGenerator : public QObject
 {
 	Q_OBJECT
 public:
-	DatabasesGenerator(PluginConfigurator const configurator, DatabasesPreferencesPage const *preferencesPage);
+	DatabasesGenerator(PluginConfigurator const configurator
+			, DatabasesPreferencesPage const *preferencesPage);
 	~DatabasesGenerator();
 
-	void activeTabChanged(qReal::Id const &rootElementId);
-	void clearPhysicalModel();
 public slots:
+	/// Checks simple correctness rules
 	bool checkCorrectness();
+	/// Generates physical model from lm
 	void generatePhysicalModel();
-
+	/// Generates SQL-code from pm
 	void generateSQLCode();
+	/// Changes current dbms-editor
 	void changeEditor(QString const &dbmsName);
 
 private:
+	/// These methods generate SQL-code in addiction of dbms
 	void generateWithSqlServer2008();
 	void generateWithMySql5();
 	void generateWithSqlite();
-	qReal::ErrorReporterInterface *mErrorReporter;
-	qReal::Id createElementFromString(QString const &elemName, QPointF coord = QPointF(), Id const &parentLogicalId = Id::rootId(), bool coordByParent = false);
+
+	/// Creates element of diagram from string
+	qReal::Id createElementFromString(QString const &elemName
+			, QPointF coord = QPointF()
+			, Id const &parentLogicalId = Id::rootId()
+			, bool coordByParent = false); // true means, that coordinates will be taken from parent
+	/// Creates elem of pm "Column" from elem of lm "Attribute"
 	qReal::Id makeColumnFromAttribute(Id const &attributeId, Id const &parentId);
+	/// Creates elem of pm "Table" from elem of lm "Entity"
 	qReal::Id makeTableFromEntity(Id const &entityId, Id const &parentId);
+	/// Creates elem of pm "Column" from set of entities
+	/// Combines attributes of all entities
 	qReal::Id makeTableFromEntitySet(IdList const &set, Id const &parentId);
-	qReal::Id copyOneToManyRelationship(Id const &logicalModelId, Id const &parentId, Id const &from, Id const &to);
-	qReal::Id copyManyToManyRelationship(Id const &logicalModelId, Id const &parentId, Id const &from, Id const &to);
+	/// Creates elem of pm "PhysicalOneToManyRelationship"
+	/// from elem of lm "OneToManyRelationship"
+	qReal::Id copyOneToManyRelationship(Id const &logicalModelId
+			, Id const &parentId
+			, Id const &from
+			, Id const &to);
+	/// Creates two elems of pm "PhysicalManyToManyRelationship"
+	/// from elem of lm "OneToManyRelationship"
+	qReal::Id copyManyToManyRelationship(Id const &logicalModelId
+			, Id const &parentId
+			, Id const &from
+			, Id const &to);
 
+	/// Searches for alone entities (we make table for each alone entity)
+	/// Formations of one-to-one sets
+	/// (we will union entities bounded by one-to-one relationship in one table)
 	QList<IdList> processEntities(Id const &logicalDiagramId);
-	bool processOneToManyRelationships(QList<IdList> oneToOneBoundedEntitiesSets, IdList setTables, int **match, Id const &logicalDiagramId);
-	bool processManyToManyRelationships(QList<IdList> oneToOneBoundedEntitiesSets, IdList setTables, int **match, Id const &logicalDiagramId);
+	/// Sets identificators of one-to-many in match matrix
+	/// Searches for errors
+	/// Adds bounding attribute
+	bool processOneToManyRelationships(QList<IdList> const &oneToOneBoundedEntitiesSets
+			, IdList setTables
+			, Id const &logicalDiagramId);
+	/// Sets identificators of many-to-many in match matrix
+	/// Searches for errors
+	/// Adds bounding table
+	bool processManyToManyRelationships(QList<IdList> const &oneToOneBoundedEntitiesSets
+			, IdList setTables
+			, Id const &logicalDiagramId);
 
-	//QList<qReal::ActionInfo> mActionInfos;
-	//QTranslator mAppTranslator;
 
 	void setCodeFileName(QString const &name);
 	void setWorkDir(QString const &path);
+
+	// Finds element of diagram with specified name
 	IdList findNodes(QString const &name);
 	QVariant getProperty(Id const &id, QString const &propertyName);
 	Id getParent(Id const &id);
@@ -53,6 +89,7 @@ private:
 	IdList getBoundedWithOneToOneRealationship(Id const &id);
 	void error(QString error, bool isCritical);
 	Id getPrimaryKey(Id const &entityId);
+	void clearPhysicalModel();
 
 	Id getPrimaryKeyOfSet(IdList const &entitySet);
 	QString getPrimaryKeyNameOfSet(IdList const &entitySet);
@@ -62,19 +99,20 @@ private:
 	bool checkAttributes();
 	bool checkRelationships();
 
+	// do not make const & (some methods don`t work)
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
 	qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	Id mCurrentDiagram;
-	Id mCurrentId;
 	IdList mPassedElements;
 	QString mCodeFileName;
 	QString mWorkDir;
 	QFile codeFile;
 	QString mDbms;
+	int **mRelMatrix; // Relationship matrix
 	DatabasesPreferencesPage const *mPreferencesPage;
 	gui::MainWindowInterpretersInterface &mMainWindowInterface;
-	//DatatypesChecker *mDatatypesChecker;
+	qReal::ErrorReporterInterface *mErrorReporter;
 };
 
 }

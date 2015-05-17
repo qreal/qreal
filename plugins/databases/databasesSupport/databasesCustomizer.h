@@ -9,6 +9,8 @@
 namespace qReal {
 namespace databasesSupport {
 
+// TODO
+/// Class for databases customisation
 class DatabasesCustomizer : public QObject, public qReal::Customizer
 {
 	Q_OBJECT
