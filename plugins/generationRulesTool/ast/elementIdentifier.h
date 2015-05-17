@@ -21,12 +21,14 @@ public:
 	}
 
 	/// Returns identifier part.
-	const QSharedPointer<Node> &identifierPart() const {
+	const QSharedPointer<Node> &identifierPart() const
+	{
 		return mIdentifierPart;
 	}
 
 	/// Returns transition part.
-	const QSharedPointer<Node> &optionalTransitionPart() const {
+	const QSharedPointer<Node> &optionalTransitionPart() const
+	{
 		return mOptionalTransitionPart;
 	}
 

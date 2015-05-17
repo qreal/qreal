@@ -5,15 +5,20 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents outcomingLinks node.
 class OutcomingLinks : public Node
 {
 public:
+	/// Constructor.
+	/// @param linkType - type of outcoming links.
 	explicit OutcomingLinks(QSharedPointer<Node> linkType)
 		: mLinkType(linkType)
 	{
 	}
 
-	QSharedPointer<Node> linkType() const {
+	/// Returns link type node.
+	QSharedPointer<Node> linkType() const
+	{
 		return mLinkType;
 	}
 

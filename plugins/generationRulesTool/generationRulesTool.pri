@@ -40,7 +40,6 @@ HEADERS += \
 	$$PWD/ast/incomingLinks.h \
 	$$PWD/ast/links.h \
 	$$PWD/ast/outcomingLinks.h \
-	$$PWD/ast/partOfComplexIdentifier.h \
 	$$PWD/ast/tab.h \
 	$$PWD/ast/transitionEnd.h \
 	$$PWD/ast/callGeneratorFor.h \

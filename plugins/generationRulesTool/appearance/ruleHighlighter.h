@@ -4,14 +4,16 @@
 
 namespace generationRules {
 
+/// Class for highlighting generation rules.
 class RuleHighlighter : public QSyntaxHighlighter
 {
-Q_OBJECT
+	Q_OBJECT
 
- public:
+public:
+	/// Constructor.
 	RuleHighlighter(QTextDocument *parent = 0);
 
- protected:
+protected:
 	void highlightBlock(const QString &text);
 
 private:

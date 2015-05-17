@@ -25,7 +25,6 @@
 #include "ast/newline.h"
 #include "ast/node.h"
 #include "ast/outcomingLinks.h"
-#include "ast/partOfComplexIdentifier.h"
 #include "ast/program.h"
 #include "ast/tab.h"
 #include "ast/text.h"

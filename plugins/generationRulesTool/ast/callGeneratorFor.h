@@ -5,9 +5,13 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents callGeneratorFor node.
 class CallGeneratorFor : public Node
 {
 public:
+	/// Constructor.
+	/// @param identifier - identifier part (for example, element in callGeneratorFor(element, generatorName).
+	/// @param generator - optional generator name (generatorName in previous example).
 	CallGeneratorFor(QSharedPointer<Node> const &identifier
 			, QSharedPointer<Node> const &generator = QSharedPointer<Node>())
 		: mIdentifier(identifier)
@@ -15,11 +19,15 @@ public:
 	{
 	}
 
-	QSharedPointer<Node> const &identifier() const {
+	/// Returns identifier part.
+	QSharedPointer<Node> const &identifier() const
+	{
 		return mIdentifier;
 	}
 
-	QSharedPointer<Node> const &generatorName() const {
+	/// Returns generatorName part.
+	QSharedPointer<Node> const &generatorName() const
+	{
 		return mGeneratorName;
 	}
 

@@ -5,6 +5,7 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents tab node.
 class Tab : public Node
 {
 };

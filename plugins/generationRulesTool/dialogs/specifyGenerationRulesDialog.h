@@ -53,13 +53,18 @@ private slots:
 	/// @param templateItem - Template clicked.
 	void insertTemplateIntoCode(QTreeWidgetItem* templateItem);
 
+	/// Saves generation rule into metamodel.
 	void saveGenerationRule();
 
 private:
 	/// Adds properties to the properties list.
 	void addPropertiesList();
 
+	/// Adds list of templates.
 	void addTemplatesList();
+	/// Add templates of one type.
+	/// @param type - template type.
+	/// @param listOfTemplates - list of templates of this type.
 	void addOneTypeTemplates(const QString &type, QStringList listOfTemplates);
 
 	/// Adds previously added rule.

@@ -5,6 +5,7 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents transitionEnd node.
 class TransitionEnd : public Node
 {
 };

@@ -18,12 +18,14 @@ public:
 	}
 
 	/// Returns identifier part of list identifier.
-	QSharedPointer<Node> identifier() const {
+	QSharedPointer<Node> identifier() const
+	{
 		return mIdentifier;
 	}
 
 	/// Returns link part of list identifier.
-	QSharedPointer<Node> optionalLinkPart() const {
+	QSharedPointer<Node> optionalLinkPart() const
+	{
 		return mOptionalLinkPart;
 	}
 

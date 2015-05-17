@@ -5,9 +5,14 @@
 namespace simpleParser {
 namespace ast {
 
+/// Class that represents generateToFile node.
 class GenerateToFile : public Node
 {
 public:
+	/// Constructor.
+	/// @param identifier - identifier part.
+	/// @param fileName - name of file we want to generate code into.
+	/// @param generator - optional generatorName node.
 	GenerateToFile(QSharedPointer<Node> const &identifier
 			, QSharedPointer<Node> const &fileName
 			, QSharedPointer<Node> const &generator = QSharedPointer<Node>())
@@ -17,16 +22,19 @@ public:
 	{
 	}
 
+	/// Returns identifier part.
 	QSharedPointer<Node> const &identifier() const
 	{
 		return mIdentifier;
 	}
 
+	/// Returns file name part.
 	QSharedPointer<Node> const &fileName() const
 	{
 		return mFileName;
 	}
 
+	/// Returns generator name part.
 	QSharedPointer<Node> const &generatorName() const
 	{
 		return mGeneratorName;
