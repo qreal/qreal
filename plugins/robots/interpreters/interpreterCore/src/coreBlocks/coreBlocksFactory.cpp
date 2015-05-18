@@ -20,6 +20,7 @@
 #include "details/timerBlock.h"
 #include <qrutils/interpreter/blocks/functionBlock.h>
 #include <qrutils/interpreter/blocks/variableInitBlock.h>
+#include <qrutils/interpreter/blocks/randomInitBlock.h>
 
 #include <qrutils/interpreter/blocks/loopBlock.h>
 #include <qrutils/interpreter/blocks/forkBlock.h>
@@ -67,6 +68,8 @@ qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &e
 		return new qReal::interpretation::blocks::FunctionBlock();
 	} else if (elementMetatypeIs(element, "VariableInit")) {
 		return new qReal::interpretation::blocks::VariableInitBlock();
+	} else if (elementMetatypeIs(element, "Randomizer")) {
+		return new qReal::interpretation::blocks::RandomInitBlock();
 	} else if (elementMetatypeIs(element, "PrintText")) {
 		return new details::PrintTextBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "ClearScreen")) {
@@ -98,6 +101,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Subprogram")
 		, id("Function")
 		, id("VariableInit")
+		, id("Randomizer")
 		, id("ClearScreen")
 		, id("PrintText")
 		, id("MarkerDown")
