@@ -493,7 +493,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Condition" type="string" name="Condition">
-							<default>0</default>
+							<default>x > 0</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -515,7 +515,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Expression" type="string" name="Expression">
-							<default>0</default>
+							<default>x</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -577,8 +577,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="40" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -601,8 +601,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="40" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -641,8 +641,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="40" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -665,8 +665,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="40" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -696,8 +696,8 @@
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="40" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -714,8 +714,8 @@
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:" />
-						<label x="40" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%" />
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:" />
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%" />
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -732,8 +732,8 @@
 						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="40" y="60" textBinded="Power" background="white" prefix="Angle:" suffix="°"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Angle:" suffix="°"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -758,7 +758,7 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -780,7 +780,7 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -802,7 +802,7 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1815,7 +1815,7 @@
 						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="65" y="-35" textBinded="Delay" hard="true" prefix="Delay:" suffix="ms"/>
+						<label x="30" y="-35" textBinded="Delay" hard="true" prefix="Delay:" suffix="ms"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
