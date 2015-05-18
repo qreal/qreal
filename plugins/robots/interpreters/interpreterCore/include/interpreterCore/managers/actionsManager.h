@@ -98,7 +98,7 @@ private:
 	void initKitPluginActions();
 
 	/// Creates action with menu that lets switching between robot models.
-	QAction *produceMenuAction(const QString &kitId, QActionGroup * const subActions) const;
+	QAction *produceMenuAction(const QString &kitId, const QString &name, const QList<QAction *> &subActions) const;
 
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
 	KitPluginManager &mKitPluginManager;
@@ -142,7 +142,7 @@ private:
 	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Actions that are placed on the panel for quick switching between robot models.
-	QMap<QString, qReal::ActionInfo> mRobotModelActions;
+	QMultiMap<QString, qReal::ActionInfo> mRobotModelActions;
 
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.

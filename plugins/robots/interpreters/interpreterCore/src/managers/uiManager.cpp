@@ -20,6 +20,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 
 #include <qrkernel/logging.h>
@@ -50,10 +51,11 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocks())); });
+			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocksSavingToolbarsAndErrors())); });
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
+	mMainWindow.statusBar()->setAutoFillBackground(true);
 	mMainWindow.statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black; padding: 10px; }");
 	editModeAction.setProperty("modeName", tr("edit mode"));
 	debugModeAction.setProperty("modeName", tr("debug mode"));
@@ -115,7 +117,7 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 	saveDocks();
 	mCurrentMode = mode;
-	reloadDocks();
+	reloadDocksSavingToolbarsAndErrors();
 	toggleModeButtons();
 }
 
@@ -129,6 +131,7 @@ void UiManager::toggleModeButtons()
 			: mCurrentMode == Mode::Editing ? editModeColor : debugModeColor;
 	QPalette palette;
 	palette.setColor(QPalette::Background, color);
+	palette.setColor(QPalette::Base, color);
 	mMainWindow.statusBar()->setPalette(palette);
 }
 
@@ -187,13 +190,33 @@ void UiManager::reloadDocks() const
 	}
 }
 
+void UiManager::reloadDocksSavingToolbarsAndErrors() const
+{
+	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
+	// will loose some toolbars visibility and error reporter state, so memorizing it here...
+	const bool errorReporterWasVisible = mMainWindow.errorReporterDock()->isVisible();
+	QMap<QToolBar *, bool> toolBarsVisiblity;
+	for (QToolBar * const toolBar : mMainWindow.toolBars()) {
+		toolBarsVisiblity[toolBar] = toolBar->isVisible();
+	}
+
+	// Now reloading docks, toolbars are in random visibility after this...
+	reloadDocks();
+
+	// And finally restoring old configuration.
+	mMainWindow.errorReporterDock()->setVisible(errorReporterWasVisible);
+	for (QToolBar * const toolBar : toolBarsVisiblity.keys()) {
+		toolBar->setVisible(toolBarsVisiblity[toolBar]);
+	}
+}
+
 void UiManager::resetMainWindowCorners() const
 {
 	// Seems like on different platforms the default corner occupation is different, so fixing it here...
 	mMainWindow.setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
-	mMainWindow.setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
 	mMainWindow.setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
 }
 
 void UiManager::hack2dModelDock() const

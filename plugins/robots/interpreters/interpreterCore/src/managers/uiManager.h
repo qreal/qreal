@@ -57,6 +57,7 @@ private slots:
 
 	void saveDocks() const;
 	void reloadDocks() const;
+	void reloadDocksSavingToolbarsAndErrors() const;
 	void resetMainWindowCorners() const;
 
 private:

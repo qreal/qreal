@@ -30,6 +30,7 @@
 #include <qrgui/mouseGestures/dummyMouseMovementManager.h>
 
 #include "editor/sceneCustomizer.h"
+#include "editor/labels/label.h"
 #include "editor/commands/multipleRemoveAndUpdateCommand.h"
 #include "editor/commands/createAndUpdateGroupCommand.h"
 #include "editor/commands/insertIntoEdgeCommand.h"

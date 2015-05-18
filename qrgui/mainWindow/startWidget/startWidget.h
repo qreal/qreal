@@ -35,8 +35,8 @@ class StartWidget : public QWidget
 public:
 	StartWidget(MainWindow *mainWindow, ProjectManager *projectManager);
 
-	/// Shows or hides interpreter buttons. Also this method can change layout of the
-	/// buttons on start tab.
+	/// If false is passed the interpreters buttons instances are deletted.
+	/// This method can change layout of the buttons on start tab.
 	void setVisibleForInterpreterButton(const bool visible);
 
 private slots:
