@@ -471,6 +471,7 @@
 					</picture>
 					<labels>
 						<label x="30" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
+						<label x="30" y="90" textBinded="Synchronized" background="white" prefix="Synchronized:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -478,6 +479,9 @@
 					<container/>
 					<properties>
 						<property name="Variable" displayedName="Variable" type="string"/>
+						<property name="Synchronized" displayedName="Synchronized" type="bool">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>

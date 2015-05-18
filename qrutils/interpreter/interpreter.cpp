@@ -135,8 +135,6 @@ void Interpreter::sendMessage(const QString &threadId, const QString &message)
 {
 	if (mThreads.contains(threadId)) {
 		mThreads[threadId]->newMessage(message);
-	} else {
-		reportError(tr("Sending message to non-existent thread %1").arg(threadId));
 	}
 }
 

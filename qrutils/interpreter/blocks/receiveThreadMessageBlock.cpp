@@ -30,6 +30,10 @@ void ReceiveThreadMessageBlock::run()
 	if (mThread->getMessage(message)) {
 		receiveMessage(message);
 	}
+
+	if (!boolProperty("Synchronized")) {
+		receiveMessage("\"\"");
+	}
 }
 
 void ReceiveThreadMessageBlock::receiveMessage(const QString &message)
