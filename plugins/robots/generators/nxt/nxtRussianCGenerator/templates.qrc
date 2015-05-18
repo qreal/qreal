@@ -186,5 +186,6 @@
         <file>templates/luaPrinting/floatToString.t</file>
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
+        <file>templates/variables/randomInitialization.t</file>
     </qresource>
 </RCC>

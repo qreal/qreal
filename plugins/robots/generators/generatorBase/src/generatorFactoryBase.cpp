@@ -51,6 +51,7 @@
 #include "simpleGenerators/labelGenerator.h"
 #include "simpleGenerators/gotoSimpleGenerator.h"
 #include "simpleGenerators/variableInitGenerator.h"
+#include "simpleGenerators/randomInitGenerator.h"
 #include "simpleGenerators/sendMessageThreadsGenerator.h"
 #include "simpleGenerators/receiveMessageThreadsGenerator.h"
 
@@ -298,6 +299,8 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(const qReal::Id &
 		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "VariableInit") {
 		return new VariableInitGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Randomizer") {
+		return new RandomInitGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "SendMessageThreads") {
 		return new SendMessageThreadsGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "ReceiveMessageThreads") {

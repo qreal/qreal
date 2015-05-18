@@ -14,20 +14,19 @@
 
 #pragma once
 
-#include <qrutils/interpreter/block.h>
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
-namespace qReal {
-namespace interpretation {
-namespace blocks {
+namespace generatorBase {
+namespace simple {
 
-/// A block for interpreter which initializes given variable with a random value between to given numbers.
-class RandomInitBlock : public Block
+class RandomInitGenerator : public BindingGenerator
 {
-	Q_OBJECT
 public:
-	void run() override;
+	RandomInitGenerator(const qrRepo::RepoApi &repo
+			, GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent = 0);
 };
 
-}
 }
 }
