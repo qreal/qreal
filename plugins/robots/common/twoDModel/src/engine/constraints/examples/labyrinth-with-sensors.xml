@@ -22,7 +22,7 @@
 			<region type="rectangle" visible="true" color="red" text="Финиш" x="450" y="-400" width="150" height="150"/>
 
 			<region id="warzone" type="rectangle" visible="false" x="-450" y="-400" width="1050" height="600"/>
-			<region id="factical finish" type="rectangle" visible="false" x="500" y="-350" width="50" height="50"/>
+			<region id="factical finish" type="rectangle" visible="false" x="500" y="-350" width="100" height="150"/>
 		</regions>
 	</world>
 	<robots>
