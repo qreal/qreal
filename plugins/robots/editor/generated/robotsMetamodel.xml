@@ -501,6 +501,22 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Condition Closure" name="FiBlock" description="Unites control flow from different condition branches.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<rectangle fill="#000000" stroke-width="1" fill-style="none" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="solid"/>
+					</picture>
+					<labels/>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Switch" name="SwitchBlock" description="Selects the program execution branch in correspondence with some expression value. The value of the expression written in 'Expression' property is compared to the values on the outgoing links. If equal value is found then execution will be proceeded by that branch. Else branch without a marker will be selected.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2512,6 +2528,7 @@
 				<element name="FinalNode"/>
 				<element name="Function"/>
 				<element name="IfBlock"/>
+				<element name="FiBlock"/>
 				<element name="SwitchBlock"/>
 				<element name="Loop"/>
 				<element name="Subprogram"/>
