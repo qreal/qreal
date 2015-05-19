@@ -47,7 +47,7 @@ public:
 	void clearScreen() override;
 
 	void paint(QPainter *painter) override;
-	void clear() override;
+	void reset() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

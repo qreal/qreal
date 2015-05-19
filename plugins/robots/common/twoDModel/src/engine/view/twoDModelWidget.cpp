@@ -840,7 +840,8 @@ void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 
 	mUi->detailsTab->setDisplay(nullptr);
 	delete mDisplay;
-	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget(this);
+	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
+	mDisplay->setParent(this);
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
 	mUi->detailsTab->setDisplay(mDisplay);

@@ -27,9 +27,9 @@ void TwoDModelDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter
 	mPainter = painter;
 }
 
-void TwoDModelDisplayWidget::clear() const
+void TwoDModelDisplayWidget::reset()
 {
 	if (mPainter) {
-		mPainter->clear();
+		mPainter->reset();
 	}
 }
