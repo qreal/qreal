@@ -70,6 +70,7 @@ HEADERS += \
 	$$PWD/src/engine/view/parts/detailsTab.h \
 	$$PWD/src/engine/view/parts/colorItemPopup.h \
 	$$PWD/src/engine/view/parts/robotItemPopup.h \
+	$$PWD/src/engine/view/parts/speedPopup.h \
 	$$PWD/src/engine/constraints/constraintsChecker.h \
 	$$PWD/src/engine/constraints/details/defines.h \
 	$$PWD/src/engine/constraints/details/constraintsParser.h \
@@ -111,6 +112,7 @@ SOURCES += \
 	$$PWD/src/engine/view/parts/detailsTab.cpp \
 	$$PWD/src/engine/view/parts/colorItemPopup.cpp \
 	$$PWD/src/engine/view/parts/robotItemPopup.cpp \
+	$$PWD/src/engine/view/parts/speedPopup.cpp \
 	$$PWD/src/engine/model/model.cpp \
 	$$PWD/src/engine/model/settings.cpp \
 	$$PWD/src/engine/model/robotModel.cpp \

@@ -112,5 +112,8 @@ void Timeline::setImmediateMode(bool immediateMode)
 
 void Timeline::setSpeedFactor(int factor)
 {
-	mSpeedFactor = factor;
+	if (mSpeedFactor != factor) {
+		mSpeedFactor = factor;
+		emit speedFactorChanged(factor);
+	}
 }
