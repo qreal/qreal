@@ -279,11 +279,10 @@ QAction *ActionsManager::produceMenuAction(const QString &kitId, const QString &
 	menuAction->menu()->addActions(subActions);
 
 	auto checkAction = [this, menuAction, kitId](const QString &name) {
-		const QString actionName = name;
 		for (QAction * const action : menuAction->menu()->actions()) {
-			if (action->objectName() == actionName) {
+			if (action->objectName() == name) {
 				action->setChecked(true);
-				qReal::SettingsManager::setValue("lastFastSelectorActionFor" + kitId, actionName);
+				qReal::SettingsManager::setValue("lastFastSelectorActionFor" + kitId, name);
 				menuAction->setIcon(action->icon());
 				menuAction->setChecked(true);
 				return action;
@@ -299,10 +298,12 @@ QAction *ActionsManager::produceMenuAction(const QString &kitId, const QString &
 		checkAction("switchTo" + kitId + model.name());
 	});
 
-	connect(menuAction, &QAction::triggered, [this, kitId, checkAction]() {
+	connect(menuAction, &QAction::triggered, [this, kitId, checkAction, menuAction]() {
 		const QString key = qReal::SettingsManager::value("lastFastSelectorActionFor" + kitId).toString();
 		if (QAction * const action = checkAction(key)) {
 			action->trigger();
+		} else if (!menuAction->menu()->actions().isEmpty()) {
+			menuAction->menu()->actions().first()->trigger();
 		}
 	});
 
