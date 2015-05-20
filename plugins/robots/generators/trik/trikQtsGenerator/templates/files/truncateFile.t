@@ -1,1 +1,1 @@
-script.truncate("@@FILE@@");
+script.truncateFile("@@FILE@@");
