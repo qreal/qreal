@@ -42,8 +42,8 @@ public:
 	/// Writes the text to a given file
 	virtual void writeToFile(const QString &filePath, const QString &text) = 0;
 
-	/// Truncates a given file
-	virtual void truncateFile(const QString &filePath) = 0;
+	/// Removes a given file
+	virtual void removeFile(const QString &filePath) = 0;
 };
 
 }

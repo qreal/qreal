@@ -38,11 +38,11 @@ void Shell::writeToFile(const QString &filePath, const QString &text)
 {
 	QFile out(filePath);
 	out.open(QIODevice::WriteOnly | QIODevice::Append);
-	out.write((text + "\n").toUtf8());
+	out.write(text.toUtf8());
 }
 
-void Shell::truncateFile(const QString &filePath)
+void Shell::removeFile(const QString &filePath)
 {
 	QFile out(filePath);
-	out.open(QIODevice::WriteOnly);
+	out.remove();
 }

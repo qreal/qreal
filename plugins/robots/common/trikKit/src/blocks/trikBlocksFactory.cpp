@@ -52,7 +52,7 @@
 #include "details/waitPadPressBlock.h"
 
 #include "details/writeToFileBlock.h"
-#include "details/truncateBlock.h"
+#include "details/removeFileBlock.h"
 
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 
@@ -154,8 +154,8 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &e
 
 	} else if (elementMetatypeIs(element, "TrikWriteToFile")) {
 		return new WriteToFileBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikTruncateFile")) {
-		return new TruncateBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikRemoveFile")) {
+		return new RemoveFileBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -229,7 +229,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 
 	result
 			<< id("TrikWriteToFile")
-			<< id("TrikTruncateFile")
+			<< id("TrikRemoveFile")
 			;
 
 	return result;

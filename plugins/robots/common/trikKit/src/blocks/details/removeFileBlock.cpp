@@ -12,17 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "truncateBlock.h"
+#include "removeFileBlock.h"
 
 using namespace trik::blocks::details;
 
-TruncateBlock::TruncateBlock(kitBase::robotModel::RobotModelInterface &robotModel)
+RemoveFileBlock::RemoveFileBlock(kitBase::robotModel::RobotModelInterface &robotModel)
 	: kitBase::blocksBase::common::DeviceBlock<robotModel::parts::TrikShell>(robotModel)
 {
 }
 
-void TruncateBlock::doJob(robotModel::parts::TrikShell &shell)
+void RemoveFileBlock::doJob(robotModel::parts::TrikShell &shell)
 {
-	shell.truncateFile(stringProperty(id(), "File"));
+	shell.removeFile(stringProperty(id(), "File"));
 	emit done(mNextBlockId);
 }

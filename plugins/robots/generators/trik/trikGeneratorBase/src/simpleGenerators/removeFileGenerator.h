@@ -14,25 +14,20 @@
 
 #pragma once
 
-#include <kitBase/blocksBase/common/deviceBlock.h>
-#include "trikKit/robotModel/parts/trikShell.h"
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
 namespace trik {
-namespace blocks {
-namespace details {
+namespace simple {
 
-/// Interpreter implementation of truncating a file.
-class TruncateBlock : public kitBase::blocksBase::common::DeviceBlock<robotModel::parts::TrikShell>
+/// Generator for 'Remove File' block.
+class RemoveFileGenerator  : public generatorBase::simple::BindingGenerator
 {
-	Q_OBJECT
-
 public:
-	explicit TruncateBlock(kitBase::robotModel::RobotModelInterface &robotModel);
-
-private:
-	void doJob(robotModel::parts::TrikShell &shell) override;
+	RemoveFileGenerator(const qrRepo::RepoApi &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent);
 };
 
-}
 }
 }

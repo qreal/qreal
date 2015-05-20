@@ -69,7 +69,7 @@ HEADERS += \
 	$$PWD/src/blocks/details/detectLineBlock.h \
 	$$PWD/src/blocks/details/lineDetectorToVariable.h \
 	$$PWD/src/blocks/details/writeToFileBlock.h \
-	$$PWD/src/blocks/details/truncateBlock.h
+	$$PWD/src/blocks/details/removeFileBlock.h
 
 SOURCES += \
 	$$PWD/src/robotModel/trikRobotModelBase.cpp \
@@ -116,6 +116,6 @@ SOURCES += \
 	$$PWD/src/blocks/details/detectLineBlock.cpp \
 	$$PWD/src/blocks/details/lineDetectorToVariable.cpp \
 	$$PWD/src/blocks/details/writeToFileBlock.cpp \
-	$$PWD/src/blocks/details/truncateBlock.cpp
+	$$PWD/src/blocks/details/removeFileBlock.cpp
 
 TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/trikKit_ru.ts

@@ -46,7 +46,7 @@
 #include "simpleGenerators/waitGamepadWheelGenerator.h"
 #include "simpleGenerators/waitPadPressGenerator.h"
 #include "simpleGenerators/fileWriteGenerator.h"
-#include "simpleGenerators/truncateGenerator.h"
+#include "simpleGenerators/removeFileGenerator.h"
 #include "parts/trikDeviceVariables.h"
 
 using namespace trik;
@@ -133,8 +133,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 		return new WaitGamepadDisconnectGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWriteToFile") {
 		return new FileWriteGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikTruncateFile") {
-		return new TruncateGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikRemoveFile") {
+		return new RemoveFileGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);

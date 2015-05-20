@@ -1048,7 +1048,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Truncate File" name="TrikTruncateFile" description="Truncates a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
+			<node displayedName="Remove File" name="TrikRemoveFile" description="Removes a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 					</picture>
@@ -2591,7 +2591,7 @@
 				<element name="TrikSendMessage" />
 				<element name="SendMessageThreads"/>
 				<element name="TrikWriteToFile"/>
-				<element name="TrikTruncateFile"/>
+				<element name="TrikRemoveFile"/>
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>

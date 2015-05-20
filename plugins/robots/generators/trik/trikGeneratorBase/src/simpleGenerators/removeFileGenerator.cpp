@@ -12,18 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "truncateGenerator.h"
+#include "removeFileGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-TruncateGenerator::TruncateGenerator(const qrRepo::RepoApi &repo
+RemoveFileGenerator::RemoveFileGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "files/truncateFile.t"
+	: BindingGenerator(repo, customizer, id, "files/removeFile.t"
 			, { Binding::createDirect("@@FILE@@", "File") }
 			, parent)
 {

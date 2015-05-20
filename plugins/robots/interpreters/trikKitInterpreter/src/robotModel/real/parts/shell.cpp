@@ -53,9 +53,9 @@ void Shell::writeToFile(const QString &filePath, const QString &text)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Shell::truncateFile(const QString &filePath)
+void Shell::removeFile(const QString &filePath)
 {
-	const QString pathToCommand = ":/trikQts/templates/files/truncateFile.t";
+	const QString pathToCommand = ":/trikQts/templates/files/removeFile.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@FILE@@", filePath) + "script.run();";
 

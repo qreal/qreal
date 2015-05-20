@@ -206,7 +206,7 @@
         <file>templates/threads/join.t</file>
         <file>templates/threads/receiveMessage.t</file>
         <file>templates/threads/sendMessage.t</file>
-        <file>templates/files/truncateFile.t</file>
+        <file>templates/files/removeFile.t</file>
         <file>templates/files/writeFile.t</file>
     </qresource>
 </RCC>

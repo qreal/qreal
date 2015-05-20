@@ -73,7 +73,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.h \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.h \
 	$$PWD/src/simpleGenerators/fileWriteGenerator.h \
-	$$PWD/src/simpleGenerators/truncateGenerator.h
+	$$PWD/src/simpleGenerators/removeFileGenerator.h
 
 SOURCES += \
 	$$PWD/src/trikGeneratorPluginBase.cpp \
@@ -112,4 +112,4 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.cpp \
 	$$PWD/src/simpleGenerators/fileWriteGenerator.cpp \
-	$$PWD/src/simpleGenerators/truncateGenerator.cpp
+	$$PWD/src/simpleGenerators/removeFileGenerator.cpp

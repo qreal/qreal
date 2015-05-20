@@ -37,7 +37,7 @@ public:
 
 	void writeToFile(const QString &filePath, const QString &text) override;
 
-	void truncateFile(const QString &filePath) override;
+	void removeFile(const QString &filePath) override;
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;
