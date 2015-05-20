@@ -22,7 +22,7 @@ namespace blocks {
 
 /// Interpreter's implementation of cross-threads messages. Tries to receive a message from its thread's mailbox.
 /// If the message queue is empty, waits a thread to deliver a message by calling receiveMessage().
-class ReceiveThreadMessageBlock : public Block
+class QRUTILS_EXPORT ReceiveThreadMessageBlock : public Block
 {
 	Q_OBJECT
 public:

@@ -21,7 +21,7 @@ namespace interpretation {
 namespace blocks {
 
 /// Interpreter's implementation of cross-threads messages. Sends a message by emitting sendMessage() signal.
-class SendThreadMessageBlock : public Block
+class QRUTILS_EXPORT SendThreadMessageBlock : public Block
 {
 	Q_OBJECT
 public:
