@@ -48,7 +48,7 @@ void Shell::writeToFile(const QString &filePath, const QString &text)
 {
 	const QString pathToCommand = ":/trikQts/templates/writeFile.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@FILE@@", filePath).replace("@@TEXT@@", text) + "script.run();";
+			.replace("@@FILE@@", filePath).replace("@@TEXT@@", text + "\n") + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

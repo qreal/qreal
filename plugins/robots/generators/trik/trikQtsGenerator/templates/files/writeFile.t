@@ -1,0 +1,1 @@
+script.writeToFile("@@FILE@@", @@TEXT@@);
