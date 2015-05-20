@@ -51,6 +51,9 @@
 #include "details/waitGamepadWheelBlock.h"
 #include "details/waitPadPressBlock.h"
 
+#include "details/writeToFileBlock.h"
+#include "details/truncateBlock.h"
+
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 
 using namespace trik::blocks;
@@ -148,6 +151,11 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &e
 		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadConnect")) {
 		return new qReal::interpretation::blocks::EmptyBlock();
+
+	} else if (elementMetatypeIs(element, "TrikWriteToFile")) {
+		return new WriteToFileBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikTruncateFile")) {
+		return new TruncateBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -217,6 +225,11 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWaitGamepadWheel")
 			<< id("TrikWaitGamepadDisconnect")
 			<< id("TrikWaitGamepadConnect")
+			;
+
+	result
+			<< id("TrikWriteToFile")
+			<< id("TrikTruncateFile")
 			;
 
 	return result;

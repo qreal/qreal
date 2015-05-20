@@ -14,36 +14,25 @@
 
 #pragma once
 
-#include <trikKit/robotModel/parts/trikShell.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <kitBase/blocksBase/common/deviceBlock.h>
+#include "trikKit/robotModel/parts/trikShell.h"
 
 namespace trik {
-namespace robotModel {
-namespace real {
-namespace parts {
+namespace blocks {
+namespace details {
 
-class Shell : public robotModel::parts::TrikShell
+/// Interpreter implementation of truncating a file.
+class TruncateBlock : public kitBase::blocksBase::common::DeviceBlock<robotModel::parts::TrikShell>
 {
 	Q_OBJECT
 
 public:
-	Shell(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
-
-	void runCommand(const QString &command) override;
-
-	void say(const QString &text) override;
-
-	void writeToFile(const QString &filePath, const QString &text) override;
-
-	void truncateFile(const QString &filePath) override;
+	explicit TruncateBlock(kitBase::robotModel::RobotModelInterface &robotModel);
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	void doJob(robotModel::parts::TrikShell &shell) override;
 };
 
-}
 }
 }
 }

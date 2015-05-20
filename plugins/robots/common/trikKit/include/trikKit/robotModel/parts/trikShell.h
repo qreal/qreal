@@ -38,6 +38,12 @@ public:
 
 	/// Force trik say the text
 	virtual void say(const QString &text) = 0;
+
+	/// Writes the text to a given file
+	virtual void writeToFile(const QString &filePath, const QString &text) = 0;
+
+	/// Truncates a given file
+	virtual void truncateFile(const QString &filePath) = 0;
 };
 
 }

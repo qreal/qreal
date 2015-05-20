@@ -1025,6 +1025,50 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Write To File" name="TrikWriteToFile" description="Writes a given message to a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
+						<label x="33" y="90" textBinded="Text" background="white" prefix="Text:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="File" type="string" name="File">
+							<default>output.txt</default>
+						</property>
+						<property displayedName="Text" type="string" name="Text"/>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Truncate File" name="TrikTruncateFile" description="Truncates a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="File" type="string" name="File">
+							<default>output.txt</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2546,6 +2590,8 @@
 				<element name="TrikDetectorToVariable" />
 				<element name="TrikSendMessage" />
 				<element name="SendMessageThreads"/>
+				<element name="TrikWriteToFile"/>
+				<element name="TrikTruncateFile"/>
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>
