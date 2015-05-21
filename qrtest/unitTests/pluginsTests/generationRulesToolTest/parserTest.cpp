@@ -54,3 +54,17 @@ TEST_F(ParserTest, parserTestForForeachExample)
 
 	ASSERT_EQ(parserResult->children().size(), 6);
 }
+
+TEST_F(ParserTest, parserTestForIfStatement)
+{
+	QString stream = "if (this->Name != 'StartState') { \n"
+			"newline } \n"
+			"else { \n"
+			"this->Name newline } \n"
+			;
+
+	const auto lexerResult = mLexer->tokenize(stream);
+	const auto parserResult = mParser->parse(lexerResult, mLexer->userFriendlyTokenNames());
+
+	ASSERT_EQ(parserResult->children().size(), 1);
+}

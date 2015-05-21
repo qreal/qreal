@@ -42,6 +42,7 @@ public:
 		return mIdentifier;
 	}
 
+	/// Returns list node.
 	QSharedPointer<Node> listPart() const
 	{
 		return mList;

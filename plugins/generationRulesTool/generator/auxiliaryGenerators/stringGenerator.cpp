@@ -8,10 +8,10 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QString StringGenerator::generatedString(QSharedPointer<String> stringNode, GeneratorConfigurer generatorCongifurer)
+QString StringGenerator::generatedString(QSharedPointer<String> stringNode, GeneratorConfigurer generatorConfigurer)
 {
 	const auto identifierPart = qrtext::as<ComplexIdentifier>(stringNode->identifierPart());
-	const auto generatedString = GeneratorForComplexIdentifierNode::generatedResult(identifierPart, generatorCongifurer);
+	const auto generatedString = GeneratorForComplexIdentifierNode::generatedResult(identifierPart, generatorConfigurer).toString();
 
 	const auto textPart = qrtext::as<Text>(stringNode->textPart());
 	const auto text = textPart->text();

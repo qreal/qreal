@@ -44,6 +44,14 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 
 	tokenDefinitions.defineToken(TokenTypes::plus, QRegularExpression("\\+"), "+");
 
+	tokenDefinitions.defineToken(TokenTypes::greater, QRegularExpression("\\>"), ">");
+	tokenDefinitions.defineToken(TokenTypes::less, QRegularExpression("\\<"), ",");
+	tokenDefinitions.defineToken(TokenTypes::equal, QRegularExpression("=="), "==");
+	tokenDefinitions.defineToken(TokenTypes::notEqual, QRegularExpression("!="), "!=");
+
+	tokenDefinitions.defineKeyword(TokenTypes::ifKeyword, "if");
+	tokenDefinitions.defineKeyword(TokenTypes::elseKeyword, "else");
+
 	tokenDefinitions.defineKeyword(TokenTypes::newlineKeyword, "newline");
 	tokenDefinitions.defineKeyword(TokenTypes::foreachKeyword, "foreach");
 	tokenDefinitions.defineKeyword(TokenTypes::tabKeyword, "tab");

@@ -3,17 +3,17 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 
-#include "generator/generatorConfigurer.h"
+#include "ast/condition.h"
 
-#include "ast/string.h"
+#include "generator/generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
 
-class StringGenerator
+class ConditionGenerator
 {
 public:
-	static QString generatedString(QSharedPointer<simpleParser::ast::String> stringNode
+	static bool conditionSatisfied(QSharedPointer<simpleParser::ast::Condition> conditionNode
 			, GeneratorConfigurer generatorConfigurer);
 };
 

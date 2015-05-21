@@ -34,6 +34,10 @@
 #include "ast/list.h"
 #include "ast/generateToFile.h"
 #include "ast/string.h"
+#include "ast/equal.h"
+#include "ast/notEqual.h"
+#include "ast/condition.h"
+#include "ast/ifNode.h"
 
 using namespace simpleParser;
 
@@ -216,6 +220,45 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				}
 	};
 
+	auto comparator = TokenTypes::equal >> [] { return new ast::Equal(); }
+				| TokenTypes::notEqual >> [] { return new ast::NotEqual(); };
+
+	auto condition = (complexIdentifier
+				& ~(comparator & text))
+			>> [] (QSharedPointer<ast::Node> temporaryNode) {
+				if (temporaryNode->is<TemporaryPair>()) {
+					auto asPair = qrtext::as<TemporaryPair>(temporaryNode);
+
+					auto firstPart = asPair->left();
+
+					auto temporarySecondPart = qrtext::as<TemporaryPair>(asPair->right());
+					auto comparatorNode = temporarySecondPart->left();
+					auto secondPart = temporarySecondPart->right();
+
+					return qrtext::wrap(new ast::Condition(firstPart, comparatorNode, secondPart));
+				} else {
+					return qrtext::wrap(new ast::Condition(temporaryNode));
+				}
+	};
+
+	auto ifExpression = (-TokenTypes::ifKeyword & -TokenTypes::openingBracket & condition & -TokenTypes::closingBracket
+				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket
+				& ~(-TokenTypes::elseKeyword & -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket))
+			>> [] (QSharedPointer<TemporaryPair> temporaryPair) {
+					auto leftPart = temporaryPair->left();
+					auto rightPart = temporaryPair->right();
+
+					if (leftPart->is<TemporaryPair>()) {
+						auto asPair = qrtext::as<TemporaryPair>(leftPart);
+						auto conditionNode = asPair->left();
+						auto trueBranchNode = asPair->right();
+
+						return qrtext::wrap(new ast::IfNode(conditionNode, trueBranchNode, rightPart));
+					} else {
+						return qrtext::wrap(new ast::IfNode(leftPart, rightPart));
+					}
+	};
+
 	auto newline = TokenTypes::newlineKeyword
 			>> [] (Token<TokenTypes> const &token) {
 				Q_UNUSED(token);
@@ -228,7 +271,8 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Tab();
 	};
 
-	statement = text | tab | newline | complexIdentifier | foreachStatement | callGeneratorForStatement | generateToFileStatement | generatorStatement;
+	statement = text | tab | newline | complexIdentifier | foreachStatement
+			| callGeneratorForStatement | generateToFileStatement | generatorStatement | ifExpression;
 
 	return program.parser();
 }

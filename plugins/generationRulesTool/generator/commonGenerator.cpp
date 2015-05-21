@@ -6,6 +6,7 @@
 #include "generatorForCallGenerator.h"
 #include "generatorForGeneratorNode.h"
 #include "generatorForGenerateToFile.h"
+#include "generatorForIfNode.h"
 
 #include "ast/program.h"
 #include "ast/complexIdentifier.h"
@@ -16,6 +17,7 @@
 #include "ast/callGeneratorFor.h"
 #include "ast/generator.h"
 #include "ast/tab.h"
+#include "ast/ifNode.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser;
@@ -31,7 +33,7 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 	}
 	else if (node->is<ast::ComplexIdentifier>()) {
 		QSharedPointer<ast::ComplexIdentifier> complexIdentifier = qrtext::as<ast::ComplexIdentifier>(node);
-		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, generatorConfigurer);
+		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, generatorConfigurer).toString();
 	}
 	else if (node->is<ast::Foreach>()) {
 		QSharedPointer<ast::Foreach> foreachNode = qrtext::as<ast::Foreach>(node);
@@ -48,6 +50,10 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 	else if (node->is<ast::Generator>()) {
 		QSharedPointer<ast::Generator> generatorNode = qrtext::as<ast::Generator>(node);
 		result = GeneratorForGeneratorNode::generatedResult(generatorNode, generatorConfigurer);
+	}
+	else if (node->is<ast::IfNode>()) {
+		QSharedPointer<ast::IfNode> ifNode = qrtext::as<ast::IfNode>(node);
+		result = GeneratorForIfNode::generatedResult(ifNode, generatorConfigurer);
 	}
 	else if (node->is<ast::Newline>()) {
 		result = "\n";

@@ -39,6 +39,14 @@ enum class TokenTypes {
 
 	, plus
 
+	, greater
+	, less
+	, equal
+	, notEqual
+
+	, ifKeyword
+	, elseKeyword
+
 	, foreachKeyword
 	, newlineKeyword
 	, tabKeyword
@@ -121,6 +129,30 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::plus:
 		debug << "plus";
+		break;
+
+	case TokenTypes::greater:
+		debug << "greater";
+		break;
+
+	case TokenTypes::less:
+		debug << "less";
+		break;
+
+	case TokenTypes::equal:
+		debug << "equal";
+		break;
+
+	case TokenTypes::notEqual:
+		debug << "notEqual";
+		break;
+
+	case TokenTypes::ifKeyword:
+		debug << "ifKeyword";
+		break;
+
+	case TokenTypes::elseKeyword:
+		debug << "elseKeyword";
 		break;
 
 	case TokenTypes::foreachKeyword:

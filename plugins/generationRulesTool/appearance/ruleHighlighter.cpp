@@ -15,7 +15,8 @@ RuleHighlighter::RuleHighlighter(QTextDocument *parent)
 			<< "\\bcallGeneratorFor\\b" << "\\bGenerator\\b" << "\\bthis\\b"
 			<< "\\btab\\b" << "\\bgenerateToFile\\b"
 			<< "\\boutcomingLinks\\b" << "\\bincomingLinks\\b" << "\\blinks\\b"
-			<< "\\btransitionEnd\\b" << "\\btransitionStart\\b";
+			<< "\\btransitionEnd\\b" << "\\btransitionStart\\b"
+			<< "\\bif\\b" << "\\belse\\b";
 
 	for (const auto pattern : keywordPatterns) {
 		rule.pattern = QRegExp(pattern);

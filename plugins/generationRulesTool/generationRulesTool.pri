@@ -71,7 +71,13 @@ HEADERS += \
 	$$PWD/generator/generatorForGenerateToFile.h \
 	$$PWD/ast/string.h \
 	$$PWD/generator/auxiliaryGenerators/stringGenerator.h \
-	$$PWD/appearance/ruleHighlighter.h
+	$$PWD/appearance/ruleHighlighter.h \
+	$$PWD/ast/equal.h \
+	$$PWD/ast/notEqual.h \
+	$$PWD/ast/condition.h \
+	$$PWD/ast/ifNode.h \
+	$$PWD/generator/generatorForIfNode.h \
+	$$PWD/generator/auxiliaryGenerators/generatorForCondition.h \
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \
@@ -97,7 +103,9 @@ SOURCES += \
 	$$PWD/dialogs/specifyPathToGeneratedCodeDialog.cpp \
 	$$PWD/generator/generatorForGenerateToFile.cpp \
 	$$PWD/generator/auxiliaryGenerators/stringGenerator.cpp \
-	$$PWD/appearance/ruleHighlighter.cpp
+	$$PWD/appearance/ruleHighlighter.cpp \
+	$$PWD/generator/generatorForIfNode.cpp \
+	$$PWD/generator/auxiliaryGenerators/generatorForCondition.cpp \
 
 FORMS += \
 	$$PWD/dialogs/specifyGenerationRulesDialog.ui \
