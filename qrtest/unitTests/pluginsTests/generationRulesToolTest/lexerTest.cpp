@@ -54,7 +54,7 @@ TEST_F(LexerTest, lexerTestForForeachExample)
 	EXPECT_EQ(simpleParser::TokenTypes::identifier, lexerResult[8].token());
 	EXPECT_EQ(simpleParser::TokenTypes::arrow, lexerResult[9].token());
 	EXPECT_EQ(simpleParser::TokenTypes::identifier, lexerResult[10].token());
-	EXPECT_EQ(simpleParser::TokenTypes::text, lexerResult[11].token());
+	EXPECT_EQ(simpleParser::TokenTypes::separator, lexerResult[11].token());
 	EXPECT_EQ(simpleParser::TokenTypes::newlineKeyword, lexerResult[12].token());
 	EXPECT_EQ(simpleParser::TokenTypes::closingCurlyBracket, lexerResult[13].token());
 
