@@ -22,6 +22,7 @@
 #include <qrutils/interpreter/blocks/variableInitBlock.h>
 #include <qrutils/interpreter/blocks/randomInitBlock.h>
 
+#include <qrutils/interpreter/blocks/emptyBlock.h>
 #include <qrutils/interpreter/blocks/loopBlock.h>
 #include <qrutils/interpreter/blocks/forkBlock.h>
 #include <qrutils/interpreter/blocks/joinBlock.h>
@@ -54,6 +55,8 @@ qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &e
 		return new qReal::interpretation::blocks::CommentBlock;
 	} else if (elementMetatypeIs(element, "IfBlock")) {
 		return new qReal::interpretation::blocks::IfBlock();
+	} else if (elementMetatypeIs(element, "FiBlock")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "SwitchBlock")) {
 		return new qReal::interpretation::blocks::SwitchBlock();
 	} else if (elementMetatypeIs(element, "Loop")) {
@@ -98,6 +101,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Timer")
 		, id("CommentBlock")
 		, id("IfBlock")
+		, id("FiBlock")
 		, id("SwitchBlock")
 		, id("Loop")
 		, id("Fork")
