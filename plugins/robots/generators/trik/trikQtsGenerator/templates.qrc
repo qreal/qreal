@@ -207,5 +207,6 @@
         <file>templates/threads/receiveMessage.t</file>
         <file>templates/threads/sendMessage.t</file>
         <file>templates/threads/killThread.t</file>
+        <file>templates/variables/randomInitialization.t</file>
     </qresource>
 </RCC>

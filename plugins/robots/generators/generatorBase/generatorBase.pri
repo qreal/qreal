@@ -196,6 +196,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
+	$$PWD/src/simpleGenerators/randomInitGenerator.h \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.h \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.h \
 	$$PWD/src/simpleGenerators/killThreadGenerator.h \
@@ -260,6 +261,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/labelGenerator.cpp \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/variableInitGenerator.cpp \
+	$$PWD/src/simpleGenerators/randomInitGenerator.cpp \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/killThreadGenerator.cpp \
