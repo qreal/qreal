@@ -206,6 +206,8 @@
         <file>templates/threads/join.t</file>
         <file>templates/threads/receiveMessage.t</file>
         <file>templates/threads/sendMessage.t</file>
+        <file>templates/files/removeFile.t</file>
+        <file>templates/files/writeFile.t</file>
         <file>templates/threads/killThread.t</file>
         <file>templates/variables/randomInitialization.t</file>
     </qresource>

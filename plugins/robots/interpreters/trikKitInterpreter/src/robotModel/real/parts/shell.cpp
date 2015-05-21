@@ -43,3 +43,21 @@ void Shell::runCommand(const QString &command)
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
+
+void Shell::writeToFile(const QString &filePath, const QString &text)
+{
+	const QString pathToCommand = ":/trikQts/templates/files/writeFile.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@FILE@@", filePath).replace("@@TEXT@@", "\"" + text + "\"") + "script.run();";
+
+	mRobotCommunicator.runDirectCommand(directCommand);
+}
+
+void Shell::removeFile(const QString &filePath)
+{
+	const QString pathToCommand = ":/trikQts/templates/files/removeFile.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@FILE@@", filePath) + "script.run();";
+
+	mRobotCommunicator.runDirectCommand(directCommand);
+}

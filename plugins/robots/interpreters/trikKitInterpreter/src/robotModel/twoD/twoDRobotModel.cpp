@@ -22,6 +22,7 @@
 #include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
+#include "robotModel/twoD/parts/twoDShell.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
 #include "robotModel/twoD/parts/twoDLed.h"
 #include "robotModel/twoD/parts/twoDLineSensor.h"
@@ -32,6 +33,7 @@
 #include <trikKit/robotModel/parts/trikColorSensor.h>
 #include <trikKit/robotModel/parts/trikInfraredSensor.h>
 #include <trikKit/robotModel/parts/trikSonarSensor.h>
+#include <trikKit/robotModel/parts/trikShell.h>
 
 #include "trikDisplayWidget.h"
 
@@ -54,6 +56,10 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {
 		return new parts::TwoDSpeaker(deviceInfo, port, *engine());
+	}
+
+	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {
+		return new parts::Shell(deviceInfo, port);
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikInfraredSensor>()) {

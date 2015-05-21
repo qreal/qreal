@@ -14,36 +14,20 @@
 
 #pragma once
 
-#include <trikKit/robotModel/parts/trikShell.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
 namespace trik {
-namespace robotModel {
-namespace real {
-namespace parts {
+namespace simple {
 
-class Shell : public robotModel::parts::TrikShell
+/// Generator for 'Remove File' block.
+class RemoveFileGenerator  : public generatorBase::simple::BindingGenerator
 {
-	Q_OBJECT
-
 public:
-	Shell(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
-
-	void runCommand(const QString &command) override;
-
-	void say(const QString &text) override;
-
-	void writeToFile(const QString &filePath, const QString &text) override;
-
-	void removeFile(const QString &filePath) override;
-
-private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	RemoveFileGenerator(const qrRepo::RepoApi &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent);
 };
 
-}
-}
 }
 }

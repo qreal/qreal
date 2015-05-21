@@ -15,21 +15,19 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikShell.h>
-#include <utils/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
-namespace real {
+namespace twoD {
 namespace parts {
 
+/// Emulates shell in interpreter. runCommand() and say() methods do nothing, but file operations are supported.
 class Shell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
-
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, const kitBase::robotModel::PortInfo &port);
 
 	void runCommand(const QString &command) override;
 
@@ -38,9 +36,6 @@ public:
 	void writeToFile(const QString &filePath, const QString &text) override;
 
 	void removeFile(const QString &filePath) override;
-
-private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }
