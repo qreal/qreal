@@ -131,9 +131,9 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
-	resultCode = generateLinkingInfo(resultCode);
-
 	processGeneratedCode(resultCode);
+
+	generateLinkingInfo(resultCode);
 
 	const QString pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
@@ -143,7 +143,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	return pathToOutput;
 }
 
-QString MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
+void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 {
 	QString const open = "@~(qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\})~@";
 	QString const close = "@#%1#@";
@@ -187,7 +187,7 @@ QString MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 
 	outputCode(targetPath() + ".dbg", out);
 
-	return resultCode.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
+	resultCode = resultCode.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
 }
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()

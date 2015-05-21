@@ -53,7 +53,7 @@ public:
 	virtual QString generate(const QString &indentString);
 
 protected:
-	QString generateLinkingInfo(QString &resultCode);
+	void generateLinkingInfo(QString &resultCode);
 	virtual GeneratorCustomizer *createCustomizer() = 0;
 
 	/// Default implementation takes ownership via QObject parentship system.
