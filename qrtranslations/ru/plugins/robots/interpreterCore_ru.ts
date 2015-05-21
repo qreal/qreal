@@ -941,9 +941,19 @@ p, li { white-space: pre-wrap; }
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="205"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="197"/>
+        <source>Cannot create new thread with already occupied id %1</source>
+        <translation>Идентификатор потока %1 уже занят</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="211"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="233"/>
+        <source>Killing non-existent thread %1</source>
+        <translation>Попытка завершить несуществующий поток %1</translation>
     </message>
 </context>
 <context>

@@ -12,17 +12,17 @@
         <translation type="vanished">С робота:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="116"/>
+        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="130"/>
         <source>From robot: </source>
         <translation>На роботе: </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="122"/>
+        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="136"/>
         <source>TRIK runtime version is too old, please update it by pressing &apos;Upload Runtime&apos; button on toolbar</source>
         <translation>ПО робота устарело, обновите его, нажав на кнопку &quot;Загрузить ПО на робот&quot; на панели инструментов</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="163"/>
+        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="177"/>
         <source>Current TRIK runtime version can not be received</source>
         <translation>Не удаётся получить текущую версию прошивки ТРИК</translation>
     </message>

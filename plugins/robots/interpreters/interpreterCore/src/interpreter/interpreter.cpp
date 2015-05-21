@@ -171,11 +171,11 @@ void Interpreter::devicesConfiguredSlot()
 		const Id &currentDiagramId = mInterpretersInterface.activeDiagram();
 
 		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
-				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable);
+				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable, "main");
 
 		emit started();
 
-		addThread(initialThread);
+		addThread(initialThread, "main");
 	}
 }
 
@@ -183,7 +183,7 @@ void Interpreter::threadStopped()
 {
 	qReal::interpretation::Thread * const thread = static_cast<qReal::interpretation::Thread *>(sender());
 
-	mThreads.removeAll(thread);
+	mThreads.remove(thread->id());
 	delete thread;
 
 	if (mThreads.isEmpty()) {
@@ -191,29 +191,53 @@ void Interpreter::threadStopped()
 	}
 }
 
-void Interpreter::newThread(const Id &startBlockId)
+void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 {
-	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
-			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId);
+	if (mThreads.contains(threadId)) {
+		reportError(tr("Cannot create new thread with already occupied id %1").arg(threadId));
+		stopRobot();
+		return;
+	}
 
-	addThread(thread);
+	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
+			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId, threadId);
+
+	addThread(thread, threadId);
 }
 
-void Interpreter::addThread(qReal::interpretation::Thread * const thread)
+void Interpreter::addThread(qReal::interpretation::Thread * const thread, const QString &threadId)
 {
 	if (mThreads.count() >= maxThreadsCount) {
 		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
 		stopRobot();
 	}
 
-	mThreads.append(thread);
+	mThreads[threadId] = thread;
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
 	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
+	connect(thread, &qReal::interpretation::Thread::killThread, this, &Interpreter::killThread);
+	connect(thread, &qReal::interpretation::Thread::sendMessage, this, &Interpreter::sendMessage);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {
 		thread->interpret();
+	}
+}
+
+void Interpreter::killThread(const QString &threadId)
+{
+	if (mThreads.contains(threadId)) {
+		mThreads[threadId]->stop();
+	} else {
+		reportError(tr("Killing non-existent thread %1").arg(threadId));
+	}
+}
+
+void Interpreter::sendMessage(const QString &threadId, const QString &message)
+{
+	if (mThreads.contains(threadId)) {
+		mThreads[threadId]->newMessage(message);
 	}
 }
 

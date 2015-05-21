@@ -67,7 +67,9 @@ HEADERS += \
 	$$PWD/src/blocks/details/setPainterColorBlock.h \
 	$$PWD/src/blocks/details/initCameraBlock.h \
 	$$PWD/src/blocks/details/detectLineBlock.h \
-	$$PWD/src/blocks/details/lineDetectorToVariable.h
+	$$PWD/src/blocks/details/lineDetectorToVariable.h \
+	$$PWD/src/blocks/details/writeToFileBlock.h \
+	$$PWD/src/blocks/details/removeFileBlock.h \
 
 SOURCES += \
 	$$PWD/src/robotModel/trikRobotModelBase.cpp \
@@ -112,6 +114,8 @@ SOURCES += \
 	$$PWD/src/blocks/details/setPainterColorBlock.cpp \
 	$$PWD/src/blocks/details/initCameraBlock.cpp \
 	$$PWD/src/blocks/details/detectLineBlock.cpp \
-	$$PWD/src/blocks/details/lineDetectorToVariable.cpp
+	$$PWD/src/blocks/details/lineDetectorToVariable.cpp \
+	$$PWD/src/blocks/details/writeToFileBlock.cpp \
+	$$PWD/src/blocks/details/removeFileBlock.cpp \
 
 TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/trikKit_ru.ts
