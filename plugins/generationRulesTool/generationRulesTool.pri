@@ -78,6 +78,7 @@ HEADERS += \
 	$$PWD/ast/ifNode.h \
 	$$PWD/generator/generatorForIfNode.h \
 	$$PWD/generator/auxiliaryGenerators/generatorForCondition.h \
+	$$PWD/ast/separator.h
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \

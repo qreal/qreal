@@ -31,6 +31,7 @@ public:
 			, mListOfIds(listOfIds)
 			, mIdListIterator(mListOfIds)
 		{
+			mCurrentId = mIdListIterator.next();
 		}
 
 		/// Returns current id in list.

@@ -36,17 +36,32 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<Foreach> foreach
 	auto actionNode = foreachNode->program();
 
 	while (generatorConfigurer.variablesTable().nextIdExists(identifierName)) {
+		result += resultForOneIteration(actionNode, generatorConfigurer);
 		generatorConfigurer.variablesTable().movePointer(identifierName);
-		if (actionNode->is<Program>()) {
-			result += GeneratorForProgramNode::generatedResult(qrtext::as<Program>(actionNode), generatorConfigurer);
-		} else {
-			if (actionNode->is<CallGeneratorFor>()) {
-				result += GeneratorForCallGenerator::generatedResult(qrtext::as<CallGeneratorFor>(actionNode), generatorConfigurer);
-			}
-		}
 	}
 
+	if (foreachNode->excludeText()) {
+		generatorConfigurer.setExcludeText(true);
+	}
+	generatorConfigurer.variablesTable().movePointer(identifierName);
+	result += resultForOneIteration(actionNode, generatorConfigurer);
+	generatorConfigurer.setExcludeText(false);
+
 	generatorConfigurer.variablesTable().removeVariable(identifierName);
+
+	return result;
+}
+
+QString GeneratorForForeachNode::resultForOneIteration(QSharedPointer<Node> actionNode, GeneratorConfigurer generatorConfigurer)
+{
+	QString result = "";
+	if (actionNode->is<Program>()) {
+		result = GeneratorForProgramNode::generatedResult(qrtext::as<Program>(actionNode), generatorConfigurer);
+	} else {
+		if (actionNode->is<CallGeneratorFor>()) {
+			result = GeneratorForCallGenerator::generatedResult(qrtext::as<CallGeneratorFor>(actionNode), generatorConfigurer);
+		}
+	}
 
 	return result;
 }

@@ -19,6 +19,10 @@ public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::Foreach> foreachNode
 			, GeneratorConfigurer generatorConfigurer
 			);
+
+private:
+	static QString resultForOneIteration(QSharedPointer<simpleParser::ast::Node> actionNode
+			, GeneratorConfigurer generatorConfigurer);
 };
 
 }

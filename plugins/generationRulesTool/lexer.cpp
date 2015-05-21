@@ -41,6 +41,7 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineToken(TokenTypes::comma, QRegularExpression("\\,"), ",");
 	tokenDefinitions.defineToken(TokenTypes::doubleColon, QRegularExpression("::"), "::");
 	tokenDefinitions.defineToken(TokenTypes::arrow, QRegularExpression("->"), "->");
+	tokenDefinitions.defineToken(TokenTypes::separator, QRegularExpression("','"), "'','");
 
 	tokenDefinitions.defineToken(TokenTypes::plus, QRegularExpression("\\+"), "+");
 
@@ -54,6 +55,7 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 
 	tokenDefinitions.defineKeyword(TokenTypes::newlineKeyword, "newline");
 	tokenDefinitions.defineKeyword(TokenTypes::foreachKeyword, "foreach");
+	tokenDefinitions.defineKeyword(TokenTypes::foreachExcludeKeyword, "foreach_excludeLast");
 	tokenDefinitions.defineKeyword(TokenTypes::tabKeyword, "tab");
 	tokenDefinitions.defineKeyword(TokenTypes::inKeyword, "in");
 

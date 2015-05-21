@@ -36,6 +36,7 @@ public:
 		, mEditorId(editorId)
 		, mDiagramId(diagramId)
 		, mPathToGeneratedCode(pathToGeneratedCode)
+		, mExcludeText(false)
 	{}
 
 	/// Returns logical model interface (data about model).
@@ -80,6 +81,18 @@ public:
 		return mPathToGeneratedCode;
 	}
 
+	/// Returns true if we have to exclude text.
+	const bool &excludeText() const
+	{
+		return mExcludeText;
+	}
+
+	/// Updates exclude text flag.
+	void setExcludeText(const bool &exclude)
+	{
+		mExcludeText = exclude;
+	}
+
 private:
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // doesn't have ownership
 	VariablesTable &mVariablesTable;
@@ -88,6 +101,7 @@ private:
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
 	const QString &mPathToGeneratedCode;
+	bool mExcludeText;
 };
 
 }

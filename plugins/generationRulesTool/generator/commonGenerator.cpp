@@ -18,6 +18,7 @@
 #include "ast/generator.h"
 #include "ast/tab.h"
 #include "ast/ifNode.h"
+#include "ast/separator.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser;
@@ -58,12 +59,17 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 	else if (node->is<ast::Newline>()) {
 		result = "\n";
 	}
+	else if (node->is<ast::Separator>()) {
+		if (!generatorConfigurer.excludeText()) {
+			result = ',';
+		}
+	}
 	else if (node->is<ast::Text>()) {
 		QSharedPointer<ast::Text> text = qrtext::as<ast::Text>(node);
 		result = text->text();
 	}
 	else if (node->is<ast::Tab>()) {
-		result += "	";
+		result = "	";
 	}
 	else {
 		qDebug() << "Something went wrong";

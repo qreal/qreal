@@ -38,6 +38,7 @@
 #include "ast/notEqual.h"
 #include "ast/condition.h"
 #include "ast/ifNode.h"
+#include "ast/separator.h"
 
 using namespace simpleParser;
 
@@ -147,7 +148,24 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				}
 	};
 
-	auto foreachStatement = (-TokenTypes::foreachKeyword & -TokenTypes::openingBracket & identifier
+	auto foreachExcludeStatement = (-TokenTypes::foreachExcludeKeyword
+				& -TokenTypes::openingBracket & identifier
+				& -TokenTypes::inKeyword & listIdentifier
+				& -TokenTypes::closingBracket
+				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
+			>> [] (QSharedPointer<TemporaryPair> statementPair) {
+				auto identifierAndList = qrtext::as<TemporaryPair>(statementPair->left());
+
+				auto identifierPart = identifierAndList->left();
+				auto listPart = identifierAndList->right();
+
+				auto program = statementPair->right();
+
+				return qrtext::wrap(new ast::Foreach(identifierPart, listPart, program, true));
+	};
+
+	auto foreachStatement = (-TokenTypes::foreachKeyword
+				& -TokenTypes::openingBracket & identifier
 				& -TokenTypes::inKeyword & listIdentifier
 				& -TokenTypes::closingBracket
 				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
@@ -271,7 +289,13 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Tab();
 	};
 
-	statement = text | tab | newline | complexIdentifier | foreachStatement
+	auto separator = TokenTypes::separator
+			>> [] (Token<TokenTypes> const &token) {
+				Q_UNUSED(token);
+				return new ast::Separator();
+	};
+
+	statement = text | tab | newline | separator | complexIdentifier | foreachStatement | foreachExcludeStatement
 			| callGeneratorForStatement | generateToFileStatement | generatorStatement | ifExpression;
 
 	return program.parser();

@@ -36,6 +36,7 @@ enum class TokenTypes {
 	, comma
 	, doubleColon
 	, arrow
+	, separator
 
 	, plus
 
@@ -48,6 +49,7 @@ enum class TokenTypes {
 	, elseKeyword
 
 	, foreachKeyword
+	, foreachExcludeKeyword
 	, newlineKeyword
 	, tabKeyword
 	, inKeyword
@@ -127,6 +129,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 		debug << "arrow";
 		break;
 
+	case TokenTypes::separator:
+		debug << "separator";
+		break;
+
 	case TokenTypes::plus:
 		debug << "plus";
 		break;
@@ -157,6 +163,10 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 
 	case TokenTypes::foreachKeyword:
 		debug << "foreachKeyword ";
+		break;
+
+	case TokenTypes::foreachExcludeKeyword:
+		debug << "foreachExcludeKeyword";
 		break;
 
 	case TokenTypes::newlineKeyword:
