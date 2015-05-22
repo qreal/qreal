@@ -5,6 +5,8 @@
 
 #include "ev3RbfMasterGenerator.h"
 
+#include <QtCore/QDebug>
+
 using namespace ev3::rbf;
 
 Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
@@ -15,7 +17,7 @@ Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
 
 QString Ev3RbfGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QString("ev3-rbf/%1/%1.rbf").arg(projectName);
+	return QString("ev3-rbf/%1/%1.lms").arg(projectName);
 }
 
 QString Ev3RbfGeneratorPlugin::extension() const
@@ -39,12 +41,17 @@ bool Ev3RbfGeneratorPlugin::uploadProgram()
 		mMainWindowInterface->errorReporter()->addError(tr("Java JRE not found"));
 		return false;
 	}
+	QFileInfo const fileInfo = generateCodeForProcessing();
+	//qDebug() << fileInfo.absoluteFilePath();
+	//qDebug() << fileInfo.absolutePath();
+	//qDebug() << fileInfo.absoluteDir();
 	return true;
 }
 
 bool Ev3RbfGeneratorPlugin::javaInstalled()
 {
 	QProcess myProcess;
+	myProcess.setEnvironment(QProcess::systemEnvironment());
 	myProcess.start("java");
 	myProcess.waitForFinished();
 	return !myProcess.readAllStandardError().isEmpty();

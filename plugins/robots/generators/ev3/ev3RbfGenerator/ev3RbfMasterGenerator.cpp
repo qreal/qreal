@@ -89,7 +89,7 @@ QString Ev3RbfMasterGenerator::generate()
 
 QString Ev3RbfMasterGenerator::targetPath()
 {
-	return QString("%1/%2.rbf").arg(mProjectDir, mProjectName);
+	return QString("%1/%2.lms").arg(mProjectDir, mProjectName);
 }
 
 bool Ev3RbfMasterGenerator::supportsGotoGeneration() const

@@ -10,7 +10,7 @@ QByteArray Ev3DirectCommand::formCommand(int size, int messageCounter, ushort gl
 {
 	QByteArray command(size, 0);
 	command[0] = (size - 2) & 0xFF;
-	command[1] = (size >> 8) & 0xFF ;
+	command[1] = ((size - 2) >> 8) & 0xFF ;
 	command[2] = messageCounter & 0xFF;
 	command[3] = (messageCounter >> 8) & 0xFF;
 	command[4] = type;
