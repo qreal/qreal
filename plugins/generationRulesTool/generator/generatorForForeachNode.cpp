@@ -7,6 +7,7 @@
 #include "ast/program.h"
 #include "ast/callGeneratorFor.h"
 #include "ast/list.h"
+#include "ast/text.h"
 
 #include "plugins/pluginManager/editorManagerInterface.h"
 
@@ -40,12 +41,13 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<Foreach> foreach
 		generatorConfigurer.variablesTable().movePointer(identifierName);
 	}
 
-	if (foreachNode->excludeText()) {
-		generatorConfigurer.setExcludeText(true);
+	const auto excludedText = qrtext::as<Text>(foreachNode->excludedText());
+	if (excludedText) {
+		generatorConfigurer.setExcludedText(excludedText->text());
 	}
 	generatorConfigurer.variablesTable().movePointer(identifierName);
 	result += resultForOneIteration(actionNode, generatorConfigurer);
-	generatorConfigurer.setExcludeText(false);
+	generatorConfigurer.setExcludedText(QString());
 
 	generatorConfigurer.variablesTable().removeVariable(identifierName);
 

@@ -36,7 +36,7 @@ public:
 		, mEditorId(editorId)
 		, mDiagramId(diagramId)
 		, mPathToGeneratedCode(pathToGeneratedCode)
-		, mExcludeText(false)
+		, mExcludedText(QString())
 	{}
 
 	/// Returns logical model interface (data about model).
@@ -82,15 +82,15 @@ public:
 	}
 
 	/// Returns true if we have to exclude text.
-	const bool &excludeText() const
+	const QString &excludedText() const
 	{
-		return mExcludeText;
+		return mExcludedText;
 	}
 
 	/// Updates exclude text flag.
-	void setExcludeText(const bool &exclude)
+	void setExcludedText(const QString &excludedText)
 	{
-		mExcludeText = exclude;
+		mExcludedText = excludedText;
 	}
 
 private:
@@ -101,7 +101,7 @@ private:
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
 	const QString &mPathToGeneratedCode;
-	bool mExcludeText;
+	QString mExcludedText;
 };
 
 }

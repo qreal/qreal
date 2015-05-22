@@ -30,11 +30,11 @@ public:
 	Foreach(QSharedPointer<Node> const &identifier
 			, QSharedPointer<Node> const &list
 			, QSharedPointer<Node> const &program
-			, bool const &excludeText = false)
+			, QSharedPointer<Node> const &excludedText = QSharedPointer<Node>())
 		: mIdentifier(identifier)
 		, mList(list)
 		, mProgram(program)
-		, mExcludeText(excludeText)
+		, mExcludedText(excludedText)
 	{
 	}
 
@@ -56,10 +56,10 @@ public:
 		return mProgram;
 	}
 
-	/// Returns true if we have to exclude text from last iteration, otherwise returns false.
-	const bool excludeText() const
+	/// Returns excluded text.
+	QSharedPointer<Node> excludedText() const
 	{
-		return mExcludeText;
+		return mExcludedText;
 	}
 
 	QList<QSharedPointer<Node>> children() const override
@@ -71,7 +71,7 @@ private:
 	QSharedPointer<Node> mIdentifier;
 	QSharedPointer<Node> mList;
 	QSharedPointer<Node> mProgram;
-	const bool mExcludeText;
+	QSharedPointer<Node> mExcludedText;
 };
 }
 }

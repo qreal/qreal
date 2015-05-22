@@ -38,7 +38,6 @@
 #include "ast/notEqual.h"
 #include "ast/condition.h"
 #include "ast/ifNode.h"
-#include "ast/separator.h"
 
 using namespace simpleParser;
 
@@ -148,20 +147,30 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				}
 	};
 
+	auto text = TokenTypes::text
+			>> [] (Token<TokenTypes> const &token) {
+				return new ast::Text(token.lexeme());
+	};
+
 	auto foreachExcludeStatement = (-TokenTypes::foreachExcludeKeyword
 				& -TokenTypes::openingBracket & identifier
 				& -TokenTypes::inKeyword & listIdentifier
+				& -TokenTypes::comma & -TokenTypes::excludeKeyword & text
 				& -TokenTypes::closingBracket
 				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
 			>> [] (QSharedPointer<TemporaryPair> statementPair) {
-				auto identifierAndList = qrtext::as<TemporaryPair>(statementPair->left());
+				const auto identifierListAndText = qrtext::as<TemporaryPair>(statementPair->left());
 
-				auto identifierPart = identifierAndList->left();
-				auto listPart = identifierAndList->right();
+				const auto identifierAndList = qrtext::as<TemporaryPair>(identifierListAndText->left());
 
-				auto program = statementPair->right();
+				const auto identifierPart = identifierAndList->left();
+				const auto listPart = identifierAndList->right();
 
-				return qrtext::wrap(new ast::Foreach(identifierPart, listPart, program, true));
+				const auto excludedSymbol = identifierListAndText->right();
+
+				const auto program = statementPair->right();
+
+				return qrtext::wrap(new ast::Foreach(identifierPart, listPart, program, excludedSymbol));
 	};
 
 	auto foreachStatement = (-TokenTypes::foreachKeyword
@@ -201,11 +210,6 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				auto program = nameAndProgram->right();
 
 				return qrtext::wrap(new ast::Generator(generatorName, program));
-	};
-
-	auto text = TokenTypes::text
-			>> [] (Token<TokenTypes> const &token) {
-				return new ast::Text(token.lexeme());
 	};
 
 	auto string = (complexIdentifier & -TokenTypes::plus & text)
@@ -289,13 +293,7 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 				return new ast::Tab();
 	};
 
-	auto separator = TokenTypes::separator
-			>> [] (Token<TokenTypes> const &token) {
-				Q_UNUSED(token);
-				return new ast::Separator();
-	};
-
-	statement = text | tab | newline | separator | complexIdentifier | foreachStatement | foreachExcludeStatement
+	statement = text | tab | newline | complexIdentifier | foreachStatement | foreachExcludeStatement
 			| callGeneratorForStatement | generateToFileStatement | generatorStatement | ifExpression;
 
 	return program.parser();

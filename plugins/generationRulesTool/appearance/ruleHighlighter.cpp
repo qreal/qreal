@@ -17,7 +17,7 @@ RuleHighlighter::RuleHighlighter(QTextDocument *parent)
 			<< "\\boutcomingLinks\\b" << "\\bincomingLinks\\b" << "\\blinks\\b"
 			<< "\\btransitionEnd\\b" << "\\btransitionStart\\b"
 			<< "\\bif\\b" << "\\belse\\b"
-			<< "\\bforeach_excludeLast\\b";
+			<< "\\bforeach_excludeLast\\b" << "\\bexclude\\b";
 
 	for (const auto pattern : keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
