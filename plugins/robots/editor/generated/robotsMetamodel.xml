@@ -338,9 +338,9 @@
 						<rectangle x1="38" y1="8" x2="42" y2="12" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
 					</picture>
 					<labels>
-						<label x="33" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
-						<label x="20" y="90" textBinded="From" background="white" prefix="From:"/>
-						<label x="70" y="90" textBinded="To" background="white" prefix="To:"/>
+						<label x="70" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
+						<label x="20" y="90" textBinded="LowerBound" background="white" prefix="From:"/>
+						<label x="70" y="90" textBinded="UpperBound" background="white" prefix="To:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -349,11 +349,11 @@
 						<property displayedName="Variable" type="string" name="Variable">
 							<default>x</default>
 						</property>
-						<property displayedName="From" type="string" name="From">
+						<property displayedName="From" type="string" name="LowerBound">
 							<default>0</default>
 						</property>
-						<property displayedName="To" type="string" name="To">
-							<default>0</default>
+						<property displayedName="To" type="string" name="UpperBound">
+							<default>10</default>
 						</property>
 					</properties>
 					<generalizations>

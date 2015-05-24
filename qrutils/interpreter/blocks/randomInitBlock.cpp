@@ -18,8 +18,8 @@ using namespace qReal::interpretation::blocks;
 
 void RandomInitBlock::run()
 {
-	int from = eval<int>("From");
-	int to = eval<int>("To");
+	int from = eval<int>("LowerBound");
+	int to = eval<int>("UpperBound");
 	if (from > to) {
 		qSwap(from, to);
 	}
