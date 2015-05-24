@@ -200,6 +200,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.h \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.h \
 	$$PWD/src/simpleGenerators/killThreadGenerator.h \
+	$$PWD/src/simpleGenerators/getButtonCodeGenerator.h \
 	$$PWD/src/lua/luaPrinter.h \
 	$$PWD/src/lua/reservedFunctionsConverter.h \
 
@@ -265,6 +266,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/killThreadGenerator.cpp \
+	$$PWD/src/simpleGenerators/getButtonCodeGenerator.cpp \
 	$$PWD/src/lua/luaProcessor.cpp \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \
