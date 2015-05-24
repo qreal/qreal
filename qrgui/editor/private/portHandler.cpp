@@ -122,10 +122,12 @@ void PortHandler::connectTemporaryRemovedLinksToPort(const IdList &temporaryRemo
 		}
 
 		if (direction == "from") {
-			const QPointF startPos = edge->mapFromItem(mNode, nearestPort(edge->line().first(), edge->fromPortTypes()));
+			const QPointF startPos = edge->mapFromItem(mNode
+					, nearestPort(edge->mapToScene(edge->line().first()), edge->fromPortTypes()));
 			edge->placeStartTo(startPos);
 		} else {
-			const QPointF endPos = edge->mapFromItem(mNode, nearestPort(edge->line().last(), edge->toPortTypes()));
+			const QPointF endPos = edge->mapFromItem(mNode
+					, nearestPort(edge->mapToScene(edge->line().last()), edge->toPortTypes()));
 			edge->placeEndTo(endPos);
 		}
 		edge->connectToPort();
