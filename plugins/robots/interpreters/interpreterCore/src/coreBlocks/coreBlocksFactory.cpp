@@ -21,7 +21,6 @@
 #include <qrutils/interpreter/blocks/functionBlock.h>
 #include <qrutils/interpreter/blocks/variableInitBlock.h>
 #include <qrutils/interpreter/blocks/randomInitBlock.h>
-
 #include <qrutils/interpreter/blocks/emptyBlock.h>
 #include <qrutils/interpreter/blocks/loopBlock.h>
 #include <qrutils/interpreter/blocks/forkBlock.h>

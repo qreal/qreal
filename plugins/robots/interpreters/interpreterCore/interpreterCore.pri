@@ -53,7 +53,7 @@ HEADERS += \
 	$$PWD/src/managers/exerciseExportManager.h \
 	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
-	$$PWD/src/ui/modeStripe.h \
+	$$PWD/src/ui/modeStripe.h
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -81,7 +81,7 @@ SOURCES += \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
-	$$PWD/src/ui/modeStripe.cpp \
+	$$PWD/src/ui/modeStripe.cpp
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

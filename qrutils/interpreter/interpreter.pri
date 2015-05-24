@@ -35,7 +35,7 @@ HEADERS += \
 	$$PWD/blocks/killThreadBlock.h \
 	$$PWD/blocks/sendThreadMessageBlock.h \
 	$$PWD/blocks/receiveThreadMessageBlock.h \
-	$$PWD/blocks/randomInitBlock.h \
+	$$PWD/blocks/randomInitBlock.h
 
 SOURCES += \
 	$$PWD/interpreter.cpp \
@@ -58,4 +58,4 @@ SOURCES += \
 	$$PWD/blocks/joinBlock.cpp \
 	$$PWD/blocks/killThreadBlock.cpp \
 	$$PWD/blocks/sendThreadMessageBlock.cpp \
-	$$PWD/blocks/receiveThreadMessageBlock.cpp \
+	$$PWD/blocks/receiveThreadMessageBlock.cpp
