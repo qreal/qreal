@@ -364,16 +364,12 @@ void Label::startTextInteraction()
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected()) {
-		return;
-	}
-
 	painter->save();
 	painter->setBrush(mProperties.background());
 
-	if ((mParentIsSelected && toPlainText().isEmpty()) || isSelected()) {
+	if (isSelected()) {
 		painter->setPen(QPen(Qt::DashLine));
-	} else if (!toPlainText().isEmpty()) {
+	} else {
 		painter->setPen(QPen(Qt::lightGray, 1, Qt::DotLine));
 	}
 
