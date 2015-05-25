@@ -31,8 +31,6 @@ void GetButtonCodeBlock::run()
 		robotParts::Button *button = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, port.name());
 		if (button) {
 			mButtons << port.name();
-			connect(button, &robotParts::Button::newData, this, &GetButtonCodeBlock::responseSlot);
-			button->read();
 		}
 	}
 
@@ -43,16 +41,10 @@ void GetButtonCodeBlock::timerTimeout()
 {
 	for (const QString &buttonPort : mButtons) {
 		robotParts::Button *button = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, buttonPort);
-		button->read();
-	}
-}
-
-void GetButtonCodeBlock::responseSlot(int reading)
-{
-	if (reading) {
-		robotParts::Button *button = static_cast<robotParts::Button *>(sender());
-		evalCode(stringProperty("Variable") + " = " + QString::number(button->code()));
-		stop();
+		if (evalCode<bool>(button->port().reservedVariable())) {
+			evalCode(stringProperty("Variable") + " = " + QString::number(button->code()));
+			stop();
+		}
 	}
 }
 

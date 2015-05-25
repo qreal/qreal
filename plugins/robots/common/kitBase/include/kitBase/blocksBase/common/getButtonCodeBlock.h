@@ -30,9 +30,6 @@ public:
 	void run() override;
 
 private slots:
-	/// Called when one of the buttons changes its state.
-	void responseSlot(int reading);
-
 	void timerTimeout() override;
 
 private:
