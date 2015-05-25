@@ -434,38 +434,17 @@ void MainWindow::activateItemOrDiagram(const Id &id, bool setSelected)
 	}
 }
 
-void MainWindow::sceneSelectionChanged()
+void MainWindow::sceneSelectionChanged(const QList<Element *> &elements)
 {
 	if (!getCurrentTab()) {
 		return;
 	}
 
-	QList<Element*> selected;
-	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
-
-	foreach (QGraphicsItem* item, items) {
-		Element* element = dynamic_cast<Element*>(item);
-		if (element) {
-			if (element->isSelected()) {
-				selected.append(element);
-				element->setSelectionState(true);
-			} else {
-				element->setSelectionState(false);
-				element->select(false);
-			}
-		}
-	}
-
-	if (selected.isEmpty()) {
+	if (elements.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.clearModelIndexes();
-	} else if (selected.length() > 1) {
-		foreach(Element* notSingleSelected, selected) {
-			notSingleSelected->select(false);
-		}
-	} else {
-		Element* const singleSelected = selected.at(0);
-		singleSelected->select(true);
+	} else if (elements.length() == 1) {
+		Element * const singleSelected = elements.at(0);
 		setIndexesOfPropertyEditor(singleSelected->id());
 
 		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected->id());
@@ -1072,7 +1051,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->mutableMvIface().setRootIndex(index);
 
 	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
-	connect(tab->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(&tab->editorViewScene(), &EditorViewScene::sceneSelectionChanged, this, &MainWindow::sceneSelectionChanged);
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
 	connect(models().graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, &tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));

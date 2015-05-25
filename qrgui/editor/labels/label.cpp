@@ -198,12 +198,6 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	if (!mShouldMove) {
-		QGraphicsTextItem::mousePressEvent(event);
-		event->ignore();
-		return;
-	}
-
 	mIsStretched = (event->pos().x() >= boundingRect().right() - 10
 			&& event->pos().y() >= boundingRect().bottom() - 10);
 
