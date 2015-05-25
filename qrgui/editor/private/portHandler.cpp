@@ -330,10 +330,10 @@ int PortHandler::numberOfPorts() const
 
 void PortHandler::connectLinksToPorts()
 {
-	const QList<QGraphicsItem *> items = mNode->scene()->items(mNode->scenePos());
-	foreach (QGraphicsItem *item, items) {
-		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
-		if (edge) {
+	const QList<QGraphicsItem *> items = mNode->scene()->items(mNode->boundingRect().translated(mNode->pos()));
+	for (QGraphicsItem * const item : items) {
+		EdgeElement * const edge = dynamic_cast<EdgeElement *>(item);
+		if (edge && edge->isHanging()) {
 			edge->connectToPort();
 			return;
 		}
