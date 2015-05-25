@@ -168,3 +168,16 @@ QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &
 
 	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }
+
+QHash<QString, int> TwoDRobotModel::buttonCodes() const
+{
+	QHash<QString, int> result;
+	result["LeftButton"] = 105;
+	result["RightButton"] = 106;
+	result["UpButton"] = 103;
+	result["DownButton"] = 108;
+	result["EnterButton"] = 28;
+	result["PowerButton"] = 116;
+	result["EscButton"] = 1;
+	return result;
+}

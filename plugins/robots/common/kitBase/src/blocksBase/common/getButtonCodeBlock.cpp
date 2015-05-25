@@ -51,7 +51,7 @@ void GetButtonCodeBlock::responseSlot(int reading)
 {
 	if (reading) {
 		robotParts::Button *button = static_cast<robotParts::Button *>(sender());
-		evalCode(stringProperty("Variable") + " = " + button->port().name());
+		evalCode(stringProperty("Variable") + " = " + QString::number(button->code()));
 		stop();
 	}
 }

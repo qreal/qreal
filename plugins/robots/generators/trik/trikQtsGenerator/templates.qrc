@@ -211,5 +211,12 @@
         <file>templates/threads/killThread.t</file>
         <file>templates/variables/randomInitialization.t</file>
         <file>templates/wait/buttonCode.t</file>
+        <file>templates/buttons/DownButton.t</file>
+        <file>templates/buttons/EnterButton.t</file>
+        <file>templates/buttons/EscButton.t</file>
+        <file>templates/buttons/LeftButton.t</file>
+        <file>templates/buttons/PowerButton.t</file>
+        <file>templates/buttons/RightButton.t</file>
+        <file>templates/buttons/UpButton.t</file>
     </qresource>
 </RCC>
