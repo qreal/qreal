@@ -155,26 +155,32 @@ qReal::ProjectConverter SaveConvertionManager::from301to302Converter()
 
 ProjectConverter SaveConvertionManager::from302to310Converter()
 {
+	const QMap<QString, QString> replacementRules = {
+			{ "interpreterBase", "kitBase"}
+			, { "commonTwoDModel", "twoDModel" }
+			, { "nxtKitInterpreter", "nxt" }
+			, { "ev3KitInterpreter", "ev3" }
+			, { "trikKitInterpreter", "trik" }
+			, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
+			, { "nxtKitRobot", "nxtKitUsbRobot" }
+			, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
+			, { "lineSensorX", "lineSensor[0]"}
+			, { "lineSensorSize", "lineSensor[1]" }
+			, { "lineSensorCross", "lineSensor[2]" }
+	};
+
 	return constructConverter("3.0.2", "3.1.0"
 			, {
-				replace({
-						{ "interpreterBase", "kitBase"}
-						, { "commonTwoDModel", "twoDModel" }
-						, { "nxtKitInterpreter", "nxt" }
-						, { "ev3KitInterpreter", "ev3" }
-						, { "trikKitInterpreter", "trik" }
-						, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
-						, { "nxtKitRobot", "nxtKitUsbRobot" }
-						, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
-				})
-				, replace({
-						{ "lineSensorX", "lineSensor[0]"}
-						, { "lineSensorSize", "lineSensor[1]" }
-						, { "lineSensorCross", "lineSensor[2]" }
-				})
-				, [] (const Id &block, LogicalModelAssistInterface &logicalApi) {
+				replace(replacementRules)
+				, [=](const Id &block, LogicalModelAssistInterface &logicalApi) {
 					if (block.element() == "RobotsDiagramNode") {
-						const auto worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
+						QString worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
+						for (const QString &toReplace : replacementRules.keys()) {
+							if (worldModel.contains(toReplace)) {
+								worldModel.replace(toReplace, replacementRules[toReplace]);
+							}
+						}
+
 						logicalApi.mutableLogicalRepoApi().setMetaInformation("worldModel", worldModel);
 						return true;
 					}
@@ -197,7 +203,6 @@ IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistI
 	for (const Id &diagramId : logicalApi.children(Id::rootId())) {
 		if (isRobotsDiagram(diagramId)) {
 			result += diagramId;
-			result += logicalApi.children(diagramId);
 		}
 	}
 

@@ -45,6 +45,7 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
+	, mDisplayWidget(new TrikDisplayWidget())
 {
 }
 
@@ -112,9 +113,9 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo(mRightWheelPort, output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent) const
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 {
-	return new TrikDisplayWidget(parent);
+	return mDisplayWidget;
 }
 
 QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const

@@ -198,12 +198,6 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	if (!mShouldMove) {
-		QGraphicsTextItem::mousePressEvent(event);
-		event->ignore();
-		return;
-	}
-
 	mIsStretched = (event->pos().x() >= boundingRect().right() - 10
 			&& event->pos().y() >= boundingRect().bottom() - 10);
 
@@ -364,16 +358,16 @@ void Label::startTextInteraction()
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected()) {
+	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected() && dynamic_cast<EdgeElement *>(parentItem())) {
 		return;
 	}
 
 	painter->save();
 	painter->setBrush(mProperties.background());
 
-	if ((mParentIsSelected && toPlainText().isEmpty()) || isSelected()) {
+	if (isSelected()) {
 		painter->setPen(QPen(Qt::DashLine));
-	} else if (!toPlainText().isEmpty()) {
+	} else {
 		painter->setPen(QPen(Qt::lightGray, 1, Qt::DotLine));
 	}
 

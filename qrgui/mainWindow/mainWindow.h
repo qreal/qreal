@@ -244,7 +244,7 @@ private slots:
 	void makeSvg();
 	void showGrid(bool isChecked);
 
-	void sceneSelectionChanged();
+	void sceneSelectionChanged(const QList<Element *> &elements);
 
 	void applySettings();
 	void resetToolbarSize(int size);

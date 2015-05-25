@@ -37,6 +37,7 @@
 #include "parts/actionsBox.h"
 #include "parts/colorItemPopup.h"
 #include "parts/robotItemPopup.h"
+#include "parts/speedPopup.h"
 
 #include "scene/sensorItem.h"
 #include "scene/sonarSensorItem.h"
@@ -63,7 +64,7 @@ using namespace kitBase::robotModel;
 using namespace robotParts;
 
 const QList<int> speedFactors = { 2, 3, 4, 5, 6, 8, 10, 15, 20 };
-const int defailtSpeedFactorIndex = 3;
+const int defaultSpeedFactorIndex = 3;
 
 TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
@@ -71,7 +72,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
-	, mCurrentSpeed(defailtSpeedFactorIndex)
+	, mCurrentSpeed(defaultSpeedFactorIndex)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -97,13 +98,21 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(&mModel.timeline(), &Timeline::tick, this, &TwoDModelWidget::incrementTimelineCounter);
 	connect(&mModel.timeline(), &Timeline::started, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
+	connect(&mModel.timeline(), &Timeline::speedFactorChanged, [=](int value) {
+		const QPoint downCoords = mUi->speedDownButton->mapTo(this, mUi->speedDownButton->rect().bottomRight());
+		const QPoint upCoords = mUi->speedUpButton->mapTo(this, mUi->speedUpButton->rect().bottomLeft());
+		const QPoint coords((downCoords.x() + upCoords.x() - mSpeedPopup->width()) / 2, downCoords.y() + 10);
+		mSpeedPopup->move(coords);
+		// Setting value in precents
+		mSpeedPopup->setSpeed(100 / speedFactors[defaultSpeedFactorIndex] * value);
+	});
 	setRunStopButtonsVisibility();
 
 	mUi->palette->unselect();
 
 	setFocus();
 
-	mModel.timeline().setSpeedFactor(speedFactors[defailtSpeedFactorIndex]);
+	mModel.timeline().setSpeedFactor(speedFactors[defaultSpeedFactorIndex]);
 	checkSpeedButtons();
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
 }
@@ -134,9 +143,16 @@ void TwoDModelWidget::initWidget()
 	// Popups will listen to scene events, appear, disappear and free itself.
 	mColorFieldItemPopup = new ColorItemPopup(defaultPen, *mScene, this);
 	mRobotItemPopup = new RobotItemPopup(*mScene, this);
+	mSpeedPopup = new SpeedPopup(this);
+
 	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, Qt::NoBrush);
+	});
+
+	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
+		mCurrentSpeed = defaultSpeedFactorIndex;
+		mModel.timeline().setSpeedFactor(speedFactors[defaultSpeedFactorIndex]);
 	});
 
 	mDisplay->setMinimumSize(displaySize);
@@ -840,7 +856,8 @@ void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 
 	mUi->detailsTab->setDisplay(nullptr);
 	delete mDisplay;
-	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget(this);
+	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
+	mDisplay->setParent(this);
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
 	mUi->detailsTab->setDisplay(mDisplay);

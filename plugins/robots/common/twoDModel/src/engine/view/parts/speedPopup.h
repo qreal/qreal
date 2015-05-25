@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,35 @@
 
 #include <QtWidgets/QWidget>
 
-#include "twoDModel/engine/twoDModelDisplayInterface.h"
-#include "twoDModel/twoDModelDeclSpec.h"
+class QLabel;
+class QAbstractButton;
+class QTimer;
 
 namespace twoDModel {
-namespace engine {
+namespace view {
 
-/// Base class for all widgets that emulate diaplay`s behaviour. Implements 'clear' function.
-class TWO_D_MODEL_EXPORT TwoDModelDisplayWidget : public QWidget, public TwoDModelDisplayInterface
+/// A small popup bringing feedback to user when he changes 2D model interpretation speed.
+class SpeedPopup : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit TwoDModelDisplayWidget(QWidget *parent = nullptr);
+	explicit SpeedPopup(QWidget *parent);
 
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
-	void reset() override;
+public slots:
+
+	void setSpeed(int speed);
+
+signals:
+	/// Emitted when user wants to reset speed factor to default value.
+	void resetToDefault();
 
 private:
-	graphicsUtils::PainterInterface *mPainter;
+	void updateDueToLayout();
+
+	QLabel *mText;
+	QAbstractButton *mResetButton;
+	QTimer *mHideTimer;
 };
 
 }

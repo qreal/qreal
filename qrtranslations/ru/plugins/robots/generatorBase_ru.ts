@@ -179,12 +179,16 @@
         <translation>Такой идентификатор уже используется: </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="58"/>
         <source>Device on port %1 is not configured. Please select it on the left-side panel.</source>
-        <translation>Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели слева.</translation>
+        <translation type="vanished">Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели слева.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="58"/>
+        <source>Device on port %1 is not configured. Please select it on the &quot;Configure devices&quot; panel on the right-hand side.</source>
+        <translation>Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели &quot;Настройки сенсоров&quot; справа.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="62"/>
         <source>/* ERROR: SELECT DEVICE TYPE */</source>
         <translation>/* ОШИБКА: ВЫБЕРИТЕ ТИП СЕНСОРА */</translation>
     </message>

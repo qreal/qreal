@@ -160,7 +160,8 @@ void Display::paint(QPainter *painter)
 	painter->restore();
 }
 
-void Display::clear()
+void Display::reset()
 {
 	clearScreen();
+	setBackground(Qt::transparent);
 }

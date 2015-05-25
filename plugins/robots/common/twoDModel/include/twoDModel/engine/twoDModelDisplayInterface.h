@@ -42,8 +42,8 @@ public:
 	/// Returns the drawable area`s height in px.
 	virtual int displayHeight() const = 0;
 
-	/// Clears the display erasing everything on it.
-	virtual void clear() const = 0;
+	/// Must implement the behavior of display of simulated robot model in the end of interpretation.
+	virtual void reset() = 0;
 };
 
 }

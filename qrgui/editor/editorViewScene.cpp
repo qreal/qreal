@@ -88,7 +88,8 @@ EditorViewScene::EditorViewScene(const models::Models &models
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
-	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
+	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::onSelectionChanged);
+	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::deselectLabels);
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
 	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
@@ -1129,10 +1130,6 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				if ((e && (nodeItem->id() != e->id())) || !e) {
 					sendEvent(item, event);
 				}
-				if (list.size() > 1 && nodeItem) {
-					nodeItem->setVisibleEmbeddedLinkers(false);
-					nodeItem->setPortsVisible(QStringList());
-				}
 			}
 		}
 		// in case there'll be 2 consecutive release events
@@ -1512,10 +1509,39 @@ void EditorViewScene::enableMouseGestures(bool enabled)
 	}
 }
 
+void EditorViewScene::onSelectionChanged()
+{
+	QList<Element *> selected;
+	for (QGraphicsItem * const item : items()) {
+		Label * const label = dynamic_cast<Label *>(item);
+		Element * const element = dynamic_cast<Element *>(label ? label->parentItem() : item);
+		if (element && !selected.contains(element)) {
+			if (element->isSelected() || (label && label->isSelected())) {
+				selected.append(element);
+				element->setSelectionState(true);
+			} else {
+				element->setSelectionState(false);
+				element->select(false);
+			}
+		}
+	}
+
+	if (selected.length() > 1) {
+		for (Element * const notSingleSelected : selected) {
+			notSingleSelected->select(false);
+		}
+	} else if (selected.length() == 1) {
+		Element * const singleSelected = selected.at(0);
+		singleSelected->select(true);
+	}
+
+	emit sceneSelectionChanged(selected);
+}
+
 void EditorViewScene::deselectLabels()
 {
-	foreach (QGraphicsItem *item, items()) {
-		Label *label = dynamic_cast<Label *>(item);
+	for (QGraphicsItem * const item : items()) {
+		Label * const label = dynamic_cast<Label *>(item);
 		if (label && !label->isSelected()) {
 			label->clearMoveFlag();
 		}

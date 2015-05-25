@@ -179,6 +179,9 @@ signals:
 		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts);
 
+	/// Emitted a set of selected editor elements has changed.
+	void sceneSelectionChanged(const QList<Element *> &elements);
+
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
@@ -206,6 +209,7 @@ private slots:
 	/// Updates repository after the move. Controled by the timer.
 	void updateMovedElements();
 
+	void onSelectionChanged();
 	void deselectLabels();
 
 private:
