@@ -358,6 +358,10 @@ void Label::startTextInteraction()
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected() && dynamic_cast<EdgeElement *>(parentItem())) {
+		return;
+	}
+
 	painter->save();
 	painter->setBrush(mProperties.background());
 
