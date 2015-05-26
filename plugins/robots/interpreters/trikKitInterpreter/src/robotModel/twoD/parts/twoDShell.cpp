@@ -29,6 +29,11 @@ void Shell::runCommand(const QString &command)
 	Q_UNUSED(command)
 }
 
+void Shell::runCode(const QString &code)
+{
+	Q_UNUSED(code)
+}
+
 void Shell::say(const QString &text)
 {
 	Q_UNUSED(text)

@@ -14,6 +14,7 @@
 
 #include "systemGenerator.h"
 
+#include <qrutils/stringUtils.h>
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace trik::simple;
@@ -25,9 +26,12 @@ SystemGenerator::SystemGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, repo.property(id, "Code").toBool() ? "nativeCode.t" : "system.t"
-			, { Binding::createConverting("@@COMMAND@@", "Command"
-					, customizer.factory()->stringPropertyConverter(id, "Command"))
-				}
+			, { repo.property(id, "Code").toBool()
+					? Binding::createStatic("@@COMMAND@@"
+							, utils::StringUtils::dequote(repo.property(id, "Command").toString()))
+					: Binding::createConverting("@@COMMAND@@", "Command"
+							, customizer.factory()->stringPropertyConverter(id, "Command"))
+			}
 			, parent)
 {
 }

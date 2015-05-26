@@ -1092,7 +1092,9 @@
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Command" type="string" name="Command" />
+						<property displayedName="Command" type="string" name="Command">
+							<default>'echo ' .. '123'</default>
+						</property>
 						<property displayedName="Code" type="bool" name="Code">
 							<default>false</default>
 						</property>

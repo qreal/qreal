@@ -16,6 +16,7 @@
 
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
+#include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrgui/models/models.h>
 
@@ -79,11 +80,7 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 
 bool ProjectManager::open(const QString &fileName)
 {
-	const QString dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
-			|| (fileName.startsWith("\"") && fileName.endsWith("\""))
-					? fileName.mid(1, fileName.length() - 2)
-					: fileName;
-
+	const QString dequotedFileName = utils::StringUtils::dequote(fileName);
 	const QFileInfo fileInfo(dequotedFileName);
 
 	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
