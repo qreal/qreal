@@ -1,0 +1,1 @@
+max(@@ARGUMENT1@@, @@ARGUMENT2@@)
