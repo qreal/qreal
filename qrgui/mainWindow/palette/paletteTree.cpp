@@ -51,21 +51,8 @@ void PaletteTree::initUi()
 	mLayout->addWidget(mComboBox);
 	mLayout->addLayout(controlButtonsLayout);
 
-	mNodesStateButtonExpands = SettingsManager::value("nodesStateButtonExpands").toBool();
-	mChangeExpansionState = new QToolButton;
-	mChangeExpansionState->setGeometry(0, 0, 30, 30);
-	setExpansionButtonAppearance();
-	mChangeExpansionState->setIconSize(QSize(30, 30));
-	connect(mChangeExpansionState, SIGNAL(clicked()), this, SLOT(changeExpansionState()));
-	controlButtonsLayout->addWidget(mChangeExpansionState);
-
-	mChangeRepresentation = new QToolButton;
-	mChangeRepresentation->setGeometry(0, 0, 30, 30);
-	mChangeRepresentation->setIcon(QIcon(":/mainWindow/images/changeRepresentation.png"));
-	mChangeRepresentation->setToolTip(tr("Change representation"));
-	mChangeRepresentation->setIconSize(QSize(30, 30));
-	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
-	controlButtonsLayout->addWidget(mChangeRepresentation);
+	mSearchField = new QLineEdit(this);
+	mLayout->addWidget(mSearchField);
 
 	setMinimumSize(200, 100);
 }
@@ -293,28 +280,6 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 void PaletteTree::initMainWindow(MainWindow *mainWindow)
 {
 	mMainWindow = mainWindow;
-}
-
-void PaletteTree::changeExpansionState()
-{
-	mNodesStateButtonExpands = !mNodesStateButtonExpands;
-	if (mNodesStateButtonExpands) {
-		expand();
-	} else {
-		collapse();
-	}
-	setExpansionButtonAppearance();
-}
-
-void PaletteTree::setExpansionButtonAppearance()
-{
-	if (mNodesStateButtonExpands) {
-		mChangeExpansionState->setIcon(QIcon(":/mainWindow/images/collapseAll.png"));
-		mChangeExpansionState->setToolTip(tr("Collapse all"));
-	} else {
-		mChangeExpansionState->setIcon(QIcon(":/mainWindow/images/expandAll.png"));
-		mChangeExpansionState->setToolTip(tr("Expand all"));
-	}
 }
 
 void PaletteTree::installEventFilter(QObject *obj)

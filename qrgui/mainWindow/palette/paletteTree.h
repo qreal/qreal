@@ -30,6 +30,8 @@
 #include "mainWindow/palette/paletteTreeWidgets.h"
 #include "plugins/pluginManager/proxyEditorManager.h"
 
+class QLineEdit;
+
 namespace  qReal {
 namespace gui {
 
@@ -101,9 +103,6 @@ signals:
 	void paletteParametersChanged();
 
 public slots:
-	/// Change expanded/collapsed state of current tree.
-	void changeExpansionState();
-
 	/// Expand all nodes of current tree.
 	void expand();
 
@@ -123,9 +122,6 @@ public slots:
 	void refreshUserPalettes();
 
 private:
-	/// Change icon and tooltip
-	void setExpansionButtonAppearance();
-
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
@@ -157,12 +153,6 @@ private:
 	/// Pointer to current tree.
 	PaletteTreeWidgets *mTree;
 
-	/// Button that changes expansion state of current tree
-	QToolButton *mChangeExpansionState;
-
-	/// Button that changes palette representation.
-	QToolButton *mChangeRepresentation;
-
 	/// List with all editor's trees.
 	QList<PaletteTreeWidgets *> mEditorsTrees;
 
@@ -172,6 +162,9 @@ private:
 	/// Combobox with editors.
 	QComboBox *mComboBox;
 
+	/// Text field for search in palette.
+	QLineEdit *mSearchField;
+
 	/// Main layout of the widget.
 	QVBoxLayout *mLayout;
 
@@ -180,9 +173,6 @@ private:
 
 	/// Representation flag
 	bool mIconsView;
-
-	/// Whether expand/collapse button expands tree
-	bool mNodesStateButtonExpands;
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;

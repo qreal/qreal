@@ -16,17 +16,24 @@
 
 #include <QtWidgets/QWidget>
 
-#include "painterInterface.h"
-#include "qrutils/utilsDeclSpec.h"
+#include <qrutils/widgets/painterInterface.h>
+#include <qrutils/utilsDeclSpec.h>
 
-namespace graphicsUtils
-{
+namespace qReal {
+namespace ui {
 
+/// A widget that can be used for separating painting logic from the widget itself.
+/// Accepts a number of PainterInterface objects and redraws itself calling paint() method of each painter.
+/// @see qReal::ui::PainterInterface.
 class QRUTILS_EXPORT PaintWidget : public QWidget
 {
 	Q_OBJECT
+
 public:
 	explicit PaintWidget(QWidget *parent = 0);
+
+	/// Appeds the given painter to the collection of @arg painters of this widget.
+	/// The paint() method of @arg painter will be called each time when this widget is redrawn by the system.
 	void appendPainter(PainterInterface *painter);
 
 protected:
@@ -34,7 +41,7 @@ protected:
 
 private:
 	QList<PainterInterface*> mPainters;
-
 };
 
+}
 }

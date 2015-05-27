@@ -29,7 +29,7 @@ public:
 
 	~NullTwoDModelDisplayWidget();
 
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
+	void setPainter(qReal::ui::PainterInterface *painter) override;
 	bool buttonIsDown(const QString &buttonId) const override;
 	void repaintDisplay();
 	int displayWidth() const;
