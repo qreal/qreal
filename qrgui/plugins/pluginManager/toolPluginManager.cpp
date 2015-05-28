@@ -87,11 +87,11 @@ QList<QPair<QString, gui::PreferencesPage *>> ToolPluginManager::preferencesPage
 	return result;
 }
 
-QList<gui::OutputWidget *> ToolPluginManager::outputWidgets() const
+QList<utils::OutputWidget *> ToolPluginManager::outputWidgets() const
 {
-	QList<gui::OutputWidget *> result;
+	QList<utils::OutputWidget *> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
-//		result << toolPlugin->outputWidgets();
+		result << toolPlugin->outputWidgets();
 	}
 
 	return result;

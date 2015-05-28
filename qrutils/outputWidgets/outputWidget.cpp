@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QVBoxLayout>
 
-using namespace qReal::gui;
+using namespace utils;
 
 OutputWidget::OutputWidget(QWidget *parent)
 	: QWidget(parent)

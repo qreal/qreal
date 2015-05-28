@@ -18,6 +18,7 @@
 #include <qrtext/languageToolboxInterface.h>
 #include <kitBase/eventsForKitPluginInterface.h>
 #include <kitBase/interpreterControlInterface.h>
+#include <kitBase/robotOutputWidget.h>
 #include <kitBase/robotModel/robotModelManagerInterface.h>
 
 namespace kitBase {
@@ -30,12 +31,14 @@ public:
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
-			, kitBase::InterpreterControlInterface &interpreterControl)
+			, kitBase::InterpreterControlInterface &interpreterControl
+			, RobotOutputWidget &outputWidget)
 		: mQRealConfigurator(qRealConfigurator)
 		, mRobotModelManager(robotModelManager)
 		, mTextLanguage(textLanguage)
 		, mEventsForKitPlugin(eventsForKitPlugin)
 		, mInterpreterControl(interpreterControl)
+		, mOutputWidget(outputWidget)
 	{
 	}
 
@@ -71,12 +74,18 @@ public:
 		return mInterpreterControl;
 	}
 
+	RobotOutputWidget &outputWidget() const
+	{
+		return mOutputWidget;
+	}
+
 private:
 	const qReal::PluginConfigurator &mQRealConfigurator;
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	qrtext::LanguageToolboxInterface &mTextLanguage;
 	const kitBase::EventsForKitPluginInterface &mEventsForKitPlugin;
 	kitBase::InterpreterControlInterface &mInterpreterControl;
+	RobotOutputWidget &mOutputWidget;
 };
 
 }

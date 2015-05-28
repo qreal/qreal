@@ -297,7 +297,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="qReal::gui::OutputDock" name="errorDock">
+  <widget class="utils::OutputDock" name="errorDock">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
      <horstretch>0</horstretch>
@@ -795,9 +795,9 @@
    <header>mainWindow/modelExplorer.h</header>
   </customwidget>
   <customwidget>
-   <class>qReal::gui::OutputDock</class>
+   <class>utils::OutputDock</class>
    <extends>QDockWidget</extends>
-   <header>mainWindow/outputDock.h</header>
+   <header>qrutils/outputWidgets/outputDock.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

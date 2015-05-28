@@ -90,9 +90,12 @@ void RealRobotModel::disconnectFromRobot()
 	mRobotCommunicator->disconnect();
 }
 
-void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
+void RealRobotModel::configureOutput(qReal::ErrorReporterInterface *errorReporter
+		, kitBase::RobotOutputWidget &outputWidget)
 {
 	mRobotCommunicator->setErrorReporter(errorReporter);
+	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::printText
+			, &outputWidget, &kitBase::RobotOutputWidget::print);
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)

@@ -32,6 +32,7 @@ RobotsPluginFacade::RobotsPluginFacade()
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
+	, mOutputWidget(new kitBase::RobotOutputWidget)
 {
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, &mActionsManager, &ActionsManager::onRobotModelChanged);
@@ -95,6 +96,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			);
 
 	mInterpreter = interpreter;
+	connect(mInterpreter, &interpreter::InterpreterInterface::started
+			, mOutputWidget, &kitBase::RobotOutputWidget::clear);
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::closedMainWindow
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
@@ -166,6 +169,11 @@ interpreterCore::Customizer &RobotsPluginFacade::customizer()
 ActionsManager &RobotsPluginFacade::actionsManager()
 {
 	return mActionsManager;
+}
+
+utils::OutputWidget *RobotsPluginFacade::outputWidget()
+{
+	return mOutputWidget;
 }
 
 QStringList RobotsPluginFacade::defaultSettingsFiles() const
@@ -275,7 +283,7 @@ void RobotsPluginFacade::initKitPlugins(const qReal::PluginConfigurator &configu
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 			kit->init(kitBase::KitPluginConfigurator(configurer
-					, mRobotModelManager, *mParser, mEventsForKitPlugin, *mInterpreter));
+					, mRobotModelManager, *mParser, mEventsForKitPlugin, *mInterpreter, *mOutputWidget));
 
 			for (const kitBase::robotModel::RobotModelInterface *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);

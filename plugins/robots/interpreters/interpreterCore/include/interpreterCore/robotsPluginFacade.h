@@ -20,6 +20,7 @@
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <kitBase/eventsForKitPluginInterface.h>
 #include <kitBase/devicesConfigurationWidget.h>
+#include <kitBase/robotOutputWidget.h>
 
 #include "interpreterCore/customizer.h"
 #include "interpreterCore/managers/kitPluginManager.h"
@@ -69,6 +70,8 @@ public:
 	/// Returns diagram interpter`s management interface.
 	interpreter::InterpreterInterface &interpreter() const;
 
+	utils::OutputWidget *outputWidget();
+
 private:
 	void connectInterpreterToActions();
 
@@ -113,6 +116,7 @@ private:
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 	BlocksFactoryManager mBlocksFactoryManager;
 	kitBase::EventsForKitPluginInterface mEventsForKitPlugin;
+	kitBase::RobotOutputWidget *mOutputWidget;  // Doesn't have ownership
 };
 
 }

@@ -18,10 +18,6 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QLabel>
 
-#include <qrkernel/exception/exception.h>
-
-#include "mainWindow/errorListWidget.h"
-
 using namespace qReal;
 using namespace gui;
 
@@ -39,7 +35,6 @@ ErrorReporter::ErrorReporter(ErrorListWidget* const errorListWidget)
 void ErrorReporter::addInformation(const QString &message, const Id &position)
 {
 	Error error(message, Error::information, position);
-	mErrors.append(error);
 	showError(error);
 	emit informationAdded(message, position);
 }
@@ -47,7 +42,6 @@ void ErrorReporter::addInformation(const QString &message, const Id &position)
 void ErrorReporter::addWarning(const QString &message, const Id &position)
 {
 	Error error(message, Error::warning, position);
-	mErrors.append(error);
 	showError(error);
 	emit warningAdded(message, position);
 }
@@ -55,7 +49,6 @@ void ErrorReporter::addWarning(const QString &message, const Id &position)
 void ErrorReporter::addError(const QString &message, const Id &position)
 {
 	Error error(message, Error::error, position);
-	mErrors.append(error);
 	showError(error);
 	emit errorAdded(message, position);
 }
@@ -63,7 +56,6 @@ void ErrorReporter::addError(const QString &message, const Id &position)
 void ErrorReporter::addCritical(const QString &message, const Id &position)
 {
 	Error error(message, Error::critical, position);
-	mErrors.append(error);
 	showError(error);
 	emit criticalAdded(message, position);
 }
@@ -93,6 +85,7 @@ bool ErrorReporter::wereErrors()
 
 void ErrorReporter::showError(const Error &error)
 {
+	mErrors.append(error);
 	if (mErrorListWidget) {
 		mErrorListWidget->addError(error);
 	}

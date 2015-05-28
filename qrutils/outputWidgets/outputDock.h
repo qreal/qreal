@@ -2,10 +2,9 @@
 
 #include <QtWidgets/QDockWidget>
 
-#include <mainWindow/outputWidget.h>
+#include <qrutils/outputWidgets/outputWidget.h>
 
-namespace qReal {
-namespace gui {
+namespace utils {
 
 /// Bottom dock that manages displaying of different output widgets.
 class OutputDock : public QDockWidget
@@ -13,6 +12,7 @@ class OutputDock : public QDockWidget
 	Q_OBJECT
 public:
 	explicit OutputDock(QWidget *parent = 0);
+	~OutputDock();
 
 	/// Takes control over given widget.
 	void addWidget(OutputWidget *widget);
@@ -30,5 +30,4 @@ private:
 	QList<OutputWidget *> mWidgets;  // Has ownership.
 };
 
-}
 }

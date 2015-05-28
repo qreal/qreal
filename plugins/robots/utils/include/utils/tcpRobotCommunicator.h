@@ -70,6 +70,10 @@ signals:
 
 	void newVectorSensorData(const QString &port, QVector<int> const &data);
 
+	void printText(const QString &text);
+
+	void startedRunning();
+
 private slots:
 	void processControlMessage(const QString &message);
 	void processTelemetryMessage(const QString &message);

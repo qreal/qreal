@@ -18,14 +18,13 @@
 #include <QtWidgets/QLabel>
 
 #include <qrkernel/ids.h>
-
 #include <qrgui/mainWindow/error.h>
-#include <qrgui/mainWindow/outputWidget.h>
+#include <qrutils/outputWidgets/outputWidget.h>
 
 namespace qReal {
 namespace gui {
 
-class ErrorListWidget : public qReal::gui::OutputWidget
+class ErrorListWidget : public utils::OutputWidget
 {
 	Q_OBJECT
 

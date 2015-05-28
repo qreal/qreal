@@ -40,8 +40,6 @@ public:
 	virtual void addCritical(const QString &message, const Id &position = Id::rootId());
 	virtual bool wereErrors();
 
-	void updateVisibility(bool isVisible);
-
 signals:
 	/// Emitted when new message with level 'Info' added to error reporter.
 	void informationAdded(const QString &message, const Id &position);

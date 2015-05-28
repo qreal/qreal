@@ -1,15 +1,21 @@
 #include "outputDock.h"
 
-using namespace qReal::gui;
+using namespace utils;
 
 OutputDock::OutputDock(QWidget *parent)
 	: QDockWidget(parent)
 {
 }
 
-void OutputDock::addWidget(OutputWidget *widget)
+OutputDock::~OutputDock()
+{
+	qDeleteAll(mWidgets);
+}
+
+void OutputDock::addWidget(utils::OutputWidget *widget)
 {
 	mWidgets << widget;
+
 	connect(widget, &OutputWidget::toggleVisibility, this, &OutputDock::toggleVisibility);
 	connect(widget, &OutputWidget::showRequest, this, &OutputDock::showOutputWidget);
 	connect(widget, &OutputWidget::hideRequest, this, &OutputDock::hideOutputWidget);

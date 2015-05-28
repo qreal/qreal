@@ -46,6 +46,10 @@ void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configur
 	RobotsGeneratorPluginBase::init(configurator);
 	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
 	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
+	connect(mCommunicator, &utils::TcpRobotCommunicator::printText
+			, &configurator.outputWidget(), &kitBase::RobotOutputWidget::print);
+	connect(mCommunicator, &utils::TcpRobotCommunicator::startedRunning
+			, &configurator.outputWidget(), &kitBase::RobotOutputWidget::clear);
 }
 
 QList<ActionInfo> TrikQtsGeneratorPlugin::customActions()

@@ -47,8 +47,6 @@ HEADERS += \
 	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
-	$$PWD/outputDock.h \
-	$$PWD/outputWidget.h \
 	$$PWD/projectManager/projectManagerWrapper.h \
 	$$PWD/projectManager/versionsConverterManager.h \
 	$$PWD/palette/paletteTree.h \
@@ -74,8 +72,6 @@ SOURCES += \
 	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
-	$$PWD/outputDock.cpp \
-	$$PWD/outputWidget.cpp \
 	$$PWD/projectManager/projectManagerWrapper.cpp \
 	$$PWD/projectManager/versionsConverterManager.cpp \
 	$$PWD/palette/paletteTree.cpp \

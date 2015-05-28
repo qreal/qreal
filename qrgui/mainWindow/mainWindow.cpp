@@ -1809,7 +1809,7 @@ void MainWindow::initOutputDock()
 	mErrorReporter = new gui::ErrorReporter(mErrorListWidget);
 	mUi->errorDock->addWidget(mErrorListWidget);
 
-	for (OutputWidget *widget : mToolManager.outputWidgets()) {
+	for (utils::OutputWidget *widget : mToolManager.outputWidgets()) {
 		mUi->errorDock->addWidget(widget);
 	}
 

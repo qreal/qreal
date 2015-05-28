@@ -2,8 +2,7 @@
 
 #include <QtWidgets/QWidget>
 
-namespace qReal {
-namespace gui {
+namespace utils {
 
 /// Base class for widgets displaying something in a bottom dock. Can request its visibility change.
 class OutputWidget : public QWidget
@@ -13,7 +12,7 @@ public:
 	explicit OutputWidget(QWidget *parent = 0);
 
 	/// Initializes real displaying widget.
-	void setWidget(QWidget *widget);
+	virtual void setWidget(QWidget *widget);
 
 signals:
 	/// Emitted when a widget wants to change its visibility.
@@ -26,5 +25,4 @@ signals:
 	void hideRequest();
 };
 
-}
 }
