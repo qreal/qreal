@@ -17,7 +17,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMenu>
-#include <QtWidgets/QAction>
 #include <QtGui/QClipboard>
 #include <QtGui/QTextDocument>
 
@@ -27,10 +26,14 @@ using namespace qReal::gui;
 
 ErrorListWidget::ErrorListWidget(QWidget *parent)
 	: OutputWidget(parent)
+	, mAction(tr("Show errors"), nullptr)
 {
 	setWidget(&mListWidget);
+
 	connect(&mListWidget, &QListWidget::itemDoubleClicked, this, &ErrorListWidget::highlightElement);
 	initContextMenu();
+
+	mAction.setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
 }
 
 void ErrorListWidget::highlightElement(QListWidgetItem* const item)
@@ -135,4 +138,14 @@ QIcon ErrorListWidget::errorIcon(const Error &error)
 QString ErrorListWidget::title() const
 {
 	return tr("Issues");
+}
+
+QAction *ErrorListWidget::action()
+{
+	return &mAction;
+}
+
+QString ErrorListWidget::shortcutName() const
+{
+	return "Output.Errors";
 }

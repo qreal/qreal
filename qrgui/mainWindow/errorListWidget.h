@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QAction>
 
 #include <qrkernel/ids.h>
 #include <qrgui/mainWindow/error.h>
@@ -37,6 +38,10 @@ public:
 
 	QString title() const override;
 
+	QAction *action() override;
+
+	QString shortcutName() const override;
+
 signals:
 	void clearRequested();
 
@@ -55,6 +60,7 @@ private:
 
 	QListWidget mListWidget;
 	QMenu *mContextMenu;
+	QAction mAction;
 };
 
 }

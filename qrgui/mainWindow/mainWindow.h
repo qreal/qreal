@@ -358,6 +358,7 @@ private:
 	void initTabs();
 	void initDocks();
 	void initOutputDock();
+	void initOutputWidget(utils::OutputWidget *outputWidget);
 	void initExplorers();
 	void initRecentProjectsMenu();
 	void openStartTab();

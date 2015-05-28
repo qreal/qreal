@@ -16,6 +16,10 @@ public:
 
 	virtual QString title() const = 0;
 
+	virtual QAction *action() = 0;
+
+	virtual QString shortcutName() const = 0;
+
 signals:
 	/// Emitted when a widget wants to change its visibility.
 	void toggleVisibility();

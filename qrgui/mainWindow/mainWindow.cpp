@@ -1807,14 +1807,27 @@ void MainWindow::initOutputDock()
 	mErrorListWidget = new ErrorListWidget;
 	connect(mErrorListWidget, &ErrorListWidget::highlightId, this, &MainWindow::selectItemWithError);
 	mErrorReporter = new gui::ErrorReporter(mErrorListWidget);
-	mUi->outputTabs->addWidget(mErrorListWidget);
 
+	initOutputWidget(mErrorListWidget);
 	for (utils::OutputWidget *widget : mToolManager.outputWidgets()) {
-		mUi->outputTabs->addWidget(widget);
+		initOutputWidget(widget);
 	}
 
 	mUi->errorDock->setVisible(false);
 	mUi->outputTabs->setDock(mUi->errorDock);
+}
+
+void MainWindow::initOutputWidget(utils::OutputWidget *outputWidget)
+{
+	mUi->outputTabs->addWidget(outputWidget);
+	QAction *action = outputWidget->action();
+	if (!action) {
+		return;
+	}
+
+	addAction(action);
+	HotKeyManager::setCommand(outputWidget->shortcutName(), action->text(), action);
+	connect(action, &QAction::triggered, outputWidget, &utils::OutputWidget::toggleVisibility);
 }
 
 void MainWindow::initGridProperties()

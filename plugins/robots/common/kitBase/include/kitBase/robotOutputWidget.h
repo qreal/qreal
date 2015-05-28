@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QPlainTextEdit>
+#include <QtWidgets/QAction>
 
 #include <qrutils/outputWidgets/outputWidget.h>
 
@@ -14,6 +15,10 @@ public:
 
 	QString title() const override;
 
+	QAction *action() override;
+
+	QString shortcutName() const override;
+
 public slots:
 	void print(const QString &text);
 
@@ -21,6 +26,7 @@ public slots:
 
 private:
 	QPlainTextEdit mOutput;
+	QAction mAction;
 };
 
 }

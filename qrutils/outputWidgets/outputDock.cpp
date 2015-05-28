@@ -30,7 +30,7 @@ void OutputDock::toggleVisibility()
 		return;
 	}
 
-	if (outputWidget == currentWidget()) {
+	if (outputWidget == currentWidget() && mDock->isVisible()) {
 		mDock->hide();
 	} else {
 		showWidget(outputWidget);
