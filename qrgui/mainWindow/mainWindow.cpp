@@ -116,9 +116,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	initDocks();
 
-	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
-
 	mPreferencesDialog.init();
 
 
@@ -1759,11 +1756,6 @@ void MainWindow::initInterpretedPlugins()
 	traverseListOfActions(actions);
 }
 
-void MainWindow::showErrors(const gui::ErrorReporter * const errorReporter)
-{
-	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-}
-
 void MainWindow::reinitModels()
 {
 	closeAllTabs();
@@ -1806,10 +1798,22 @@ void MainWindow::initTabs()
 void MainWindow::initDocks()
 {
 	mUi->paletteDock->setWidget(mUi->paletteTree);
-	mUi->errorDock->setWidget(mUi->errorListWidget);
-	mUi->errorListWidget->init(this);
-	mUi->errorDock->setVisible(false);
+	initOutputDock();
 	resetToolbarSize(SettingsManager::value("toolbarSize").toInt());
+}
+
+void MainWindow::initOutputDock()
+{
+	mErrorListWidget = new ErrorListWidget;
+	connect(mErrorListWidget, &ErrorListWidget::highlightId, this, &MainWindow::selectItemWithError);
+	mErrorReporter = new gui::ErrorReporter(mErrorListWidget);
+	mUi->errorDock->addWidget(mErrorListWidget);
+
+	for (OutputWidget *widget : mToolManager.outputWidgets()) {
+		mUi->errorDock->addWidget(widget);
+	}
+
+	mUi->errorDock->setVisible(false);
 }
 
 void MainWindow::initGridProperties()
@@ -1990,7 +1994,7 @@ QByteArray MainWindow::saveState(int version) const
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
 	const bool result = QMainWindow::restoreState(state, version);
-	if (!mUi->errorListWidget->count() > 0) {
+	if (mErrorListWidget->count() == 0) {
 		mUi->errorDock->hide();
 	}
 

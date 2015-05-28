@@ -87,6 +87,16 @@ QList<QPair<QString, gui::PreferencesPage *>> ToolPluginManager::preferencesPage
 	return result;
 }
 
+QList<gui::OutputWidget *> ToolPluginManager::outputWidgets() const
+{
+	QList<gui::OutputWidget *> result;
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+//		result << toolPlugin->outputWidgets();
+	}
+
+	return result;
+}
+
 QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() const
 {
 	QMultiMap<QString, ProjectConverter> result;

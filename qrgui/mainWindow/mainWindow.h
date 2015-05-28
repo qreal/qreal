@@ -65,6 +65,7 @@ class Models;
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+class ErrorListWidget;
 }
 
 namespace text {
@@ -113,8 +114,6 @@ public:
 			, const QString &propertyValue, int role);
 
 	virtual void openSettingsDialog(const QString &tab);
-
-	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
 	//virtual void showInTextEditor(const QFileInfo &fileInfo);
@@ -197,7 +196,6 @@ public slots:
 	virtual void selectItemOrDiagram(const Id &graphicalId);
 
 	void selectItemWithError(const Id &id);
-	void showErrors(const gui::ErrorReporter * const errorReporter);
 
 	void changePaletteRepresentation();
 	void closeStartTab();
@@ -359,6 +357,7 @@ private:
 	void initToolManager();
 	void initTabs();
 	void initDocks();
+	void initOutputDock();
 	void initExplorers();
 	void initRecentProjectsMenu();
 	void openStartTab();
@@ -386,6 +385,7 @@ private:
 	QModelIndex mRootIndex;
 
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
+	gui::ErrorListWidget *mErrorListWidget; // Doesn't have ownership.
 
 	/// Fullscreen mode flag
 	bool mIsFullscreen;
