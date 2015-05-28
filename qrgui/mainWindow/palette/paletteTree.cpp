@@ -24,6 +24,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/widgets/searchLineEdit.h>
 
 #include "mainWindow/palette/draggableElement.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
@@ -51,7 +52,7 @@ void PaletteTree::initUi()
 	mLayout->addWidget(mComboBox);
 	mLayout->addLayout(controlButtonsLayout);
 
-	mSearchField = new QLineEdit(this);
+	mSearchField = new ui::SearchLineEdit(this);
 	mLayout->addWidget(mSearchField);
 
 	setMinimumSize(200, 100);

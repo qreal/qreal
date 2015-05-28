@@ -16,7 +16,9 @@ HEADERS += \
 	$$PWD/colorListEditor.h \
 	$$PWD/paintWidget.h \
 	$$PWD/painterInterface.h \
+	$$PWD/searchLineEdit.h \
 
 SOURCES += \
 	$$PWD/colorListEditor.cpp \
 	$$PWD/paintWidget.cpp \
+	$$PWD/searchLineEdit.cpp \
