@@ -125,6 +125,9 @@ private:
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
+private slots:
+	void onSearchTextChanged(const QRegExp &searchText);
+
 private:
 	/// Forbids to make copies of the object.
 	explicit PaletteTree(const PaletteTree &paletteTree);
@@ -161,9 +164,6 @@ private:
 
 	/// Combobox with editors.
 	QComboBox *mComboBox;
-
-	/// Text field for search in palette.
-	QLineEdit *mSearchField;
 
 	/// Main layout of the widget.
 	QVBoxLayout *mLayout;

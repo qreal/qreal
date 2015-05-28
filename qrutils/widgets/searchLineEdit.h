@@ -13,18 +13,36 @@ class SearchLineEdit : public QFrame
 	Q_OBJECT
 
 public:
+	/// A enumeration of possible search options
+	enum class SearchOptions
+	{
+		/// Search is performed ignoring letters case
+		CaseInsensitive
+		/// Search is performed respectively to letters case
+		, CaseSensitive
+		/// The text in box is treated as regular expression
+		, RegularExpression
+	};
+
 	explicit SearchLineEdit(QWidget *parent = nullptr);
 
 signals:
 	/// Emitted when the text in the text field is modified.
-	void textChanged(const QString &text);
+	/// @param text A ready for matching reglar expression.
+	void textChanged(const QRegExp &text);
 
 private:
 	QToolButton *initButton(const QIcon &icon, const QString &toolTip);
 	void onTextChanged(const QString &text);
+	void makeContextMenu();
+	QRegExp regexpFromText(const QString &text, SearchOptions option) const;
 
-	QToolButton *mActionsButton;  // Takes ownership
+	QToolButton *mOptionsButton;  // Takes ownership
 	QToolButton *mClearButton;  // Takes ownership
+	QAction *mCaseInsensitive;  // Takes ownership
+	QAction *mCaseSensitive;  // Takes ownership
+	QAction *mRegularExpression;  // Takes ownership
+	SearchOptions mCurrentOption;
 };
 
 }

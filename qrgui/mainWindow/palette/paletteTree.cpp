@@ -52,8 +52,9 @@ void PaletteTree::initUi()
 	mLayout->addWidget(mComboBox);
 	mLayout->addLayout(controlButtonsLayout);
 
-	mSearchField = new ui::SearchLineEdit(this);
-	mLayout->addWidget(mSearchField);
+	ui::SearchLineEdit * const searchField = new ui::SearchLineEdit(this);
+	connect(searchField, &ui::SearchLineEdit::textChanged, this, &PaletteTree::onSearchTextChanged);
+	mLayout->addWidget(searchField);
 
 	setMinimumSize(200, 100);
 }
@@ -250,6 +251,11 @@ int PaletteTree::maxItemsCountInARow() const
 {
 	const int max = mTree->maxItemsCountInARow();
 	return max ? max : mItemsCountInARow;
+}
+
+void PaletteTree::onSearchTextChanged(const QRegExp &searchText)
+{
+
 }
 
 void PaletteTree::changeRepresentation()
