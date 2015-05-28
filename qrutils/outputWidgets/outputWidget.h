@@ -14,6 +14,8 @@ public:
 	/// Initializes real displaying widget.
 	virtual void setWidget(QWidget *widget);
 
+	virtual QString title() const = 0;
+
 signals:
 	/// Emitted when a widget wants to change its visibility.
 	void toggleVisibility();

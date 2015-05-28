@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QTabWidget>
 
 #include <qrutils/outputWidgets/outputWidget.h>
 
 namespace utils {
 
 /// Bottom dock that manages displaying of different output widgets.
-class OutputDock : public QDockWidget
+class OutputDock : public QTabWidget
 {
 	Q_OBJECT
 public:
@@ -17,6 +17,8 @@ public:
 	/// Takes control over given widget.
 	void addWidget(OutputWidget *widget);
 
+	void setDock(QWidget *dock);
+
 public slots:
 	void toggleVisibility();
 
@@ -24,10 +26,14 @@ public slots:
 
 	void hideOutputWidget();
 
-private:
-	void showWidget(OutputWidget *widget);
+private slots:
+	void closeTab(int index);
 
-	QList<OutputWidget *> mWidgets;  // Has ownership.
+private:
+	void showWidget(OutputWidget *outputWidget);
+
+	QList<OutputWidget *> mWidgets;  // Has ownership
+	QWidget *mDock;  // Doesn't have ownership
 };
 
 }

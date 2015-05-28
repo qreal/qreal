@@ -12,6 +12,8 @@ class RobotOutputWidget : public utils::OutputWidget
 public:
 	explicit RobotOutputWidget(QWidget *parent = nullptr);
 
+	QString title() const override;
+
 public slots:
 	void print(const QString &text);
 

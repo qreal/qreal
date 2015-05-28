@@ -3,8 +3,10 @@
 using namespace utils;
 
 OutputDock::OutputDock(QWidget *parent)
-	: QDockWidget(parent)
+	: QTabWidget(parent)
 {
+	setTabsClosable(true);
+	connect(this, &OutputDock::tabCloseRequested, this, &OutputDock::closeTab);
 }
 
 OutputDock::~OutputDock()
@@ -28,8 +30,8 @@ void OutputDock::toggleVisibility()
 		return;
 	}
 
-	if (outputWidget == widget()) {
-		hide();
+	if (outputWidget == currentWidget()) {
+		mDock->hide();
 	} else {
 		showWidget(outputWidget);
 	}
@@ -40,21 +42,42 @@ void OutputDock::showOutputWidget()
 	showWidget(dynamic_cast<OutputWidget *>(sender()));
 }
 
-void OutputDock::showWidget(OutputWidget *widget)
+void OutputDock::showWidget(OutputWidget *outputWidget)
 {
-	if (!widget) {
+	if (!outputWidget) {
 		return;
 	}
 
-	setWidget(widget);
-	if (!isVisible()) {
-		show();
+	if (!mDock->isVisible()) {
+		mDock->show();
 	}
+
+	for (int i = 0; i < count(); ++i) {
+		if (outputWidget == widget(i)) {
+			setCurrentIndex(i);
+			return;
+		}
+	}
+
+	setCurrentIndex(addTab(outputWidget, outputWidget->title()));
 }
 
 void OutputDock::hideOutputWidget()
 {
-	if (sender() == widget()) {
-		hide();
+	if (sender() == currentWidget()) {
+		closeTab(currentIndex());
 	}
+}
+
+void OutputDock::closeTab(int index)
+{
+	removeTab(index);
+	if (count() == 0) {
+		mDock->hide();
+	}
+}
+
+void OutputDock::setDock(QWidget *dock)
+{
+	mDock = dock;
 }

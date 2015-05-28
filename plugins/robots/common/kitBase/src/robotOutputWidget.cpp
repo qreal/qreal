@@ -21,4 +21,10 @@ void RobotOutputWidget::print(const QString &text)
 void RobotOutputWidget::clear()
 {
 	mOutput.clear();
+	emit hideRequest();
+}
+
+QString RobotOutputWidget::title() const
+{
+	return tr("Robot output");
 }

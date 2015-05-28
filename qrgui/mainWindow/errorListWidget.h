@@ -35,6 +35,8 @@ public:
 	void clear();
 	void addError(const Error &error);
 
+	QString title() const override;
+
 signals:
 	void clearRequested();
 

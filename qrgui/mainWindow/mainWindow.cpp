@@ -1807,13 +1807,14 @@ void MainWindow::initOutputDock()
 	mErrorListWidget = new ErrorListWidget;
 	connect(mErrorListWidget, &ErrorListWidget::highlightId, this, &MainWindow::selectItemWithError);
 	mErrorReporter = new gui::ErrorReporter(mErrorListWidget);
-	mUi->errorDock->addWidget(mErrorListWidget);
+	mUi->outputTabs->addWidget(mErrorListWidget);
 
 	for (utils::OutputWidget *widget : mToolManager.outputWidgets()) {
-		mUi->errorDock->addWidget(widget);
+		mUi->outputTabs->addWidget(widget);
 	}
 
 	mUi->errorDock->setVisible(false);
+	mUi->outputTabs->setDock(mUi->errorDock);
 }
 
 void MainWindow::initGridProperties()

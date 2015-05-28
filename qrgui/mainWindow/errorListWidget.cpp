@@ -131,3 +131,8 @@ QIcon ErrorListWidget::errorIcon(const Error &error)
 		throw new Exception("Incorrect total severity");
 	}
 }
+
+QString ErrorListWidget::title() const
+{
+	return tr("Issues");
+}
