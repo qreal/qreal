@@ -1108,6 +1108,7 @@
 			<node displayedName="Write To File" name="TrikWriteToFile" description="Writes a given message to a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/writeToFileBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
@@ -1131,6 +1132,9 @@
 			<node displayedName="Remove File" name="TrikRemoveFile" description="Removes a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
+						<rectangle fill="#000000" stroke-width="1" fill-style="none" y1="10" y2="40" x1="10" stroke="#000000" x2="40" stroke-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="5" stroke-width="0" x1="5" y2="45" fill-style="none" x2="45"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="45" stroke-width="0" x1="5" y2="5" fill-style="none" x2="45"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
