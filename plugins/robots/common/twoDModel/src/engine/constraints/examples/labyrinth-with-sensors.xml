@@ -86,7 +86,17 @@
 		<constraint failMessage="Робот попытался объехать лабиринт!">
 			<inside objectId="robot1" regionId="warzone"/>
 		</constraint>
+
+		<!-- Finish checker should not be setted up initially, else we can drag robot into finish zone and this event will be emitted together with error -->
 		<event settedUpInitially="true">
+			<condition>
+				<timer timeout="100" forceDropOnTimeout="true"/>
+			</condition>
+			<trigger>
+				<setUp id="finish checker"/>
+			</trigger>
+		</event>
+		<event id="finish checker" settedUpInitially="false">
 			<condition>
 				<inside objectId="robot1" regionId="factical finish"/>
 			</condition>
