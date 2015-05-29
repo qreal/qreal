@@ -16,6 +16,8 @@
 
 #include <QtWidgets/QFrame>
 
+#include <qrutils/utilsDeclSpec.h>
+
 class QToolButton;
 class QLineEdit;
 
@@ -23,7 +25,7 @@ namespace qReal {
 namespace ui {
 
 /// A text field styled for search. Contains options switcher and clear button.
-class SearchLineEdit : public QFrame
+class QRUTILS_EXPORT SearchLineEdit : public QFrame
 {
 	Q_OBJECT
 
