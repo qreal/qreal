@@ -1,11 +1,9 @@
 #include "generatorForComplexIdentifierNode.h"
-#include "generatorForElementIdentifierNode.h"
+#include "auxiliaryGenerators/generatorForElementIdentifierNode.h"
 
 #include "ast/identifier.h"
 #include "ast/elementIdentifier.h"
 #include "ast/transitionEnd.h"
-
-#include "generatorForElementIdentifierNode.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser::ast;

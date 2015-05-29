@@ -13,11 +13,11 @@
 namespace generationRules {
 namespace generator {
 
-class OutcomingLinksListGenerator
+class LinksListGenerator
 {
 public:
 	/// Returns list of links ids by type.
-	/// @param linksIdentifierNode - first part (for example, identName in identName.outcomingLinks(SpecificType)).
+	/// @param linksIdentifierNode - first part (for example, identName in identName.links(SpecificType)).
 	/// @param linksTypeNode - second part (SpecificType in previous example).
 	/// @param logicalModelInterface - information about model.
 	/// @param variablesTable - table of variables.
@@ -27,6 +27,13 @@ public:
 			, VariablesTable variablesTable
 			, CurrentScope currentScope
 			);
+
+	static qReal::Id elementId(QSharedPointer<simpleParser::ast::Node> linksIdentifierNode
+			, VariablesTable variablesTable
+			, CurrentScope currentScope);
+
+	static qReal::IdList linksOfNeededType(QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
+			, qReal::IdList allLinks);
 };
 
 }

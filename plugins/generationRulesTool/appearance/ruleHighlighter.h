@@ -23,6 +23,8 @@ private:
 		QTextCharFormat format;
 	};
 
+	static QStringList listWithSpecialSymbols(const QStringList listToAppendSymbols);
+
 	QVector<HighlightingRule> mHighlightingRules;
 
 	QTextCharFormat mKeywordFormat;

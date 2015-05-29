@@ -10,8 +10,8 @@
 #include "ast/identifier.h"
 #include "ast/node.h"
 
-#include "variablesTable.h"
-#include "generatorConfigurer.h"
+#include "commonInfo/variablesTable.h"
+#include "commonInfo/generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {

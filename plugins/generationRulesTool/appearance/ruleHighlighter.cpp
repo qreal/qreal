@@ -1,4 +1,5 @@
 #include "ruleHighlighter.h"
+#include "keywords.h"
 
 using namespace generationRules;
 
@@ -11,13 +12,9 @@ RuleHighlighter::RuleHighlighter(QTextDocument *parent)
 	mKeywordFormat.setFontWeight(QFont::Bold);
 
 	QStringList keywordPatterns;
-	keywordPatterns << "\\bforeach\\b" << "\\bin\\b" << "\\bnewline\\b"
-			<< "\\bcallGeneratorFor\\b" << "\\bGenerator\\b" << "\\bthis\\b"
-			<< "\\btab\\b" << "\\bgenerateToFile\\b"
-			<< "\\boutcomingLinks\\b" << "\\bincomingLinks\\b" << "\\blinks\\b"
-			<< "\\btransitionEnd\\b" << "\\btransitionStart\\b"
-			<< "\\bif\\b" << "\\belse\\b"
-			<< "\\bforeach_excludeLast\\b" << "\\bexclude\\b";
+	keywordPatterns << listWithSpecialSymbols(keywords::generalTemplates)
+			<< listWithSpecialSymbols(keywords::textTemplates)
+			<< listWithSpecialSymbols(keywords::linksTemplates);
 
 	for (const auto pattern : keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
@@ -44,4 +41,16 @@ void RuleHighlighter::highlightBlock(const QString &text)
 			index = expression.indexIn(text, index + length);
 		}
 	}
+}
+
+QStringList RuleHighlighter::listWithSpecialSymbols(const QStringList listToAppendSymbols)
+{
+	QStringList result;
+
+	for (const auto &listElement : listToAppendSymbols) {
+		auto newElement = "\\b" + listElement + "\\b";
+		result << newElement;
+	}
+
+	return result;
 }

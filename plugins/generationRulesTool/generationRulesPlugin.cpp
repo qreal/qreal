@@ -31,9 +31,9 @@
 #include "ast/program.h"
 #include "ast/text.h"
 
-#include "generator/variablesTable.h"
+#include "generator/commonInfo/variablesTable.h"
 #include "generator/commonGenerator.h"
-#include "generator/generatorConfigurer.h"
+#include "generator/commonInfo/generatorConfigurer.h"
 
 #include "treeGeneratorFromString.h"
 

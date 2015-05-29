@@ -1,4 +1,5 @@
 #include "outcomingLinksListGenerator.h"
+#include "linksListGenerator.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
@@ -9,24 +10,7 @@ qReal::IdList OutcomingLinksListGenerator::generatedList(QSharedPointer<Node> li
 		, VariablesTable variablesTable
 		, CurrentScope currentScope)
 {
-	qReal::Id elementId;
-	if (linksIdentifierNode->is<Identifier>()) {
-		auto elementName = qrtext::as<Identifier>(linksIdentifierNode)->name();
-		elementId = variablesTable.currentId(elementName);
-	} else {
-		elementId = currentScope.currentId();
-	}
-
-	auto linksType = linksTypeNode->name();
-
-	auto allOutcomingLinks = logicalModelInterface->logicalRepoApi().outgoingLinks(elementId);
-	qReal::IdList linksList;
-
-	for (const auto currentLink : allOutcomingLinks) {
-		if (currentLink.element() == linksType) {
-			linksList << currentLink;
-		}
-	}
-
-	return linksList;
+	auto neededElementId = LinksListGenerator::elementId(linksIdentifierNode, variablesTable, currentScope);
+	auto allIncomingLinks = logicalModelInterface->logicalRepoApi().outgoingLinks(neededElementId);
+	return LinksListGenerator::linksOfNeededType(linksTypeNode, allIncomingLinks);
 }

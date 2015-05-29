@@ -7,8 +7,8 @@
 
 #include "ast/list.h"
 
-#include "generator/variablesTable.h"
-#include "generator/currentScope.h"
+#include "generator/commonInfo/variablesTable.h"
+#include "generator/commonInfo/currentScope.h"
 
 namespace generationRules {
 namespace generator {

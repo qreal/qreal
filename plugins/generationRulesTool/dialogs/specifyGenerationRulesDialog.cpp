@@ -16,6 +16,7 @@
 #include "ui_specifyGenerationRulesDialog.h"
 
 #include "appearance/ruleHighlighter.h"
+#include "appearance/keywords.h"
 
 using namespace qReal;
 using namespace gui;
@@ -89,13 +90,9 @@ void SpecifyGenerationRulesDialog::addTemplatesList()
 {
 	mUi->templatesWidget->setColumnCount(1);
 
-	QStringList generalTemplates = {"this", "CallGeneratorFor", "Generator", "foreach"};
-	QStringList textTemplates = {"newline", "tab"};
-	QStringList linksTemplates = {"incomingLinks", "outcomingLinks", "links", "transitionEnd", "transitionStart"};
-
-	addOneTypeTemplates("General templates", generalTemplates);
-	addOneTypeTemplates("Text templates", textTemplates);
-	addOneTypeTemplates("Links templates", linksTemplates);
+	addOneTypeTemplates("General templates", generationRules::keywords::generalTemplates);
+	addOneTypeTemplates("Text templates", generationRules::keywords::textTemplates);
+	addOneTypeTemplates("Links templates", generationRules::keywords::linksTemplates);
 
 	mUi->templatesWidget->expandAll();
 }
@@ -106,7 +103,7 @@ void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, QStr
 	oneTypeTempatesList->setText(0, type);
 
 	QList<QTreeWidgetItem*> templatesItems;
-	for (const auto templateName : listOfTemplates) {
+	for (const auto &templateName : listOfTemplates) {
 		QTreeWidgetItem *treeItem = new QTreeWidgetItem();
 		treeItem->setText(0, templateName);
 		templatesItems.append(treeItem);
@@ -118,14 +115,14 @@ void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, QStr
 
 void SpecifyGenerationRulesDialog::addOldRule()
 {
-	const QString previousRule = mInterpreterEditorManager->generationRule(mId);
+	const auto previousRule = mInterpreterEditorManager->generationRule(mId);
 	mUi->codeArea->insertPlainText(previousRule);
 }
 
 QStringList SpecifyGenerationRulesDialog::propertiesDisplayedNamesList(const QStringList &propertiesNames)
 {
 	QStringList propertiesDisplayedNames;
-	for (const QString &propertyName : propertiesNames) {
+	for (const auto &propertyName : propertiesNames) {
 		propertiesDisplayedNames << mInterpreterEditorManager->propertyDisplayedName(mId, propertyName);
 	}
 

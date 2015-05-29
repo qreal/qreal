@@ -7,9 +7,11 @@
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 #include "ast/callGeneratorFor.h"
+#include "ast/elementIdentifier.h"
+#include "ast/identifier.h"
 
-#include "variablesTable.h"
-#include "generatorConfigurer.h"
+#include "commonInfo/variablesTable.h"
+#include "commonInfo/generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
@@ -20,6 +22,10 @@ public:
 	static QString generatedResult(QSharedPointer<simpleParser::ast::CallGeneratorFor> callGeneratorForNode
 			, GeneratorConfigurer generatorConfigurer
 			);
+
+	static QString commonGeneratedString(QSharedPointer<simpleParser::ast::ElementIdentifier> calledIdentifier
+			, QSharedPointer<simpleParser::ast::Identifier> generatorNameNode
+			, GeneratorConfigurer generatorConfigurer);
 
 private:
 	static qReal::Id idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface

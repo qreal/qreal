@@ -8,8 +8,8 @@
 
 #include "ast/generateToFile.h"
 
-#include "variablesTable.h"
-#include "generatorConfigurer.h"
+#include "commonInfo/variablesTable.h"
+#include "commonInfo/generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {
@@ -26,10 +26,6 @@ private:
 			const QString &resultOfGeneration
 			, const QString &fileName
 			, const QString &pathToCode);
-
-	static qReal::Id idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface
-			, const QString &elementName
-			, const qReal::Id &diagramId);
 };
 
 }

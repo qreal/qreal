@@ -4,11 +4,10 @@
 #include "generatorForGeneratorNode.h"
 
 #include "ast/identifier.h"
-#include "ast/elementIdentifier.h"
 
 #include "treeGeneratorFromString.h"
-#include "generatorForElementIdentifierNode.h"
-#include "typeQualifier.h"
+#include "auxiliaryGenerators/generatorForElementIdentifierNode.h"
+#include "commonInfo/typeQualifier.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
@@ -17,13 +16,21 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<CallGeneratorF
 		, GeneratorConfigurer generatorConfigurer)
 {
 	auto calledIdentifier = qrtext::as<ElementIdentifier>(callGeneratorForNode->identifier());
+	auto generatorNameNode = qrtext::as<Identifier>(callGeneratorForNode->generatorName());
+
+	return commonGeneratedString(calledIdentifier, generatorNameNode, generatorConfigurer);
+}
+
+QString GeneratorForCallGenerator::commonGeneratedString(
+		QSharedPointer<ElementIdentifier> calledIdentifier
+		, QSharedPointer<Identifier> generatorNameNode
+		, GeneratorConfigurer generatorConfigurer)
+{
 	auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier, generatorConfigurer);
 	auto currentElementType = TypeQualifier::elementIdentifierType(calledIdentifier, generatorConfigurer);
 
 	auto diagramId = generatorConfigurer.diagramId();
 	auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
-
-	auto generatorNameNode = callGeneratorForNode->generatorName();
 
 	qReal::Id elementIdInMetamodel = idInMetamodel(editorManagerInterface, currentElementType, diagramId);
 
@@ -36,7 +43,7 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<CallGeneratorF
 	if (!generatorNameNode) {
 		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
 	} else {
-		QString generatorName = qrtext::as<Identifier>(generatorNameNode)->name();
+		QString generatorName = generatorNameNode->name();
 		generatorConfigurer.currentScope().changeCurrentGeneratorName(generatorName);
 
 		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);

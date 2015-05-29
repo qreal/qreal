@@ -6,11 +6,13 @@
 #include "ast/elementIdentifier.h"
 #include "ast/string.h"
 
-#include "generatorForElementIdentifierNode.h"
+#include "auxiliaryGenerators/generatorForElementIdentifierNode.h"
 #include "commonGenerator.h"
-#include "typeQualifier.h"
+#include "commonInfo/typeQualifier.h"
 #include "treeGeneratorFromString.h"
 #include "auxiliaryGenerators/stringGenerator.h"
+
+#include "generatorForCallGenerator.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
@@ -19,37 +21,14 @@ QString GeneratorForGenerateToFile::generatedResult(
 		QSharedPointer<GenerateToFile> generateToFileNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	auto calledIdentifier = qrtext::as<ElementIdentifier>(generateToFileNode->identifier());
-	auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier, generatorConfigurer);
-	auto currentElementType = TypeQualifier::elementIdentifierType(calledIdentifier, generatorConfigurer);
+	const auto calledIdentifier = qrtext::as<ElementIdentifier>(generateToFileNode->identifier());
+	const auto generatorNameNode = qrtext::as<Identifier>(generateToFileNode->generatorName());
 
-	auto diagramId = generatorConfigurer.diagramId();
-	auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
+	const auto fileNameNode = qrtext::as<String>(generateToFileNode->fileName());
+	const auto fileName = StringGenerator::generatedString(fileNameNode, generatorConfigurer);
+	const auto pathToCode = generatorConfigurer.pathToGeneratedCode();
 
-	auto fileNameNode = qrtext::as<String>(generateToFileNode->fileName());
-	auto fileName = StringGenerator::generatedString(fileNameNode, generatorConfigurer);
-	auto pathToCode = generatorConfigurer.pathToGeneratedCode();
-
-	auto generatorNameNode = generateToFileNode->generatorName();
-
-	qReal::Id elementIdInMetamodel = idInMetamodel(editorManagerInterface, currentElementType, diagramId);
-
-	auto generationRuleForCurrentElement = editorManagerInterface->generationRule(elementIdInMetamodel);
-	QSharedPointer<Node> generatedTree = TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
-
-	generatorConfigurer.currentScope().changeCurrentId(currentElementId);
-
-	QString resultOfGeneration = "";
-	if (!generatorNameNode) {
-		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
-	} else {
-		QString generatorName = qrtext::as<Identifier>(generatorNameNode)->name();
-		generatorConfigurer.currentScope().changeCurrentGeneratorName(generatorName);
-
-		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
-	}
-
-	generatorConfigurer.currentScope().removeLastCurrentId();
+	const auto resultOfGeneration = GeneratorForCallGenerator::commonGeneratedString(calledIdentifier, generatorNameNode, generatorConfigurer);
 
 	writeToFile(resultOfGeneration, fileName, pathToCode);
 
@@ -70,24 +49,4 @@ void GeneratorForGenerateToFile::writeToFile(
 
 		outputFile.close();
 	}
-}
-
-qReal::Id GeneratorForGenerateToFile::idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface
-		, const QString &elementName
-		, const qReal::Id &diagramId)
-{
-	qReal::Id elementId;
-
-	if (!editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityNode").isEmpty()) {
-		elementId = editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityNode").first();
-	} else {
-		if (!editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityEdge").isEmpty()) {
-			elementId = editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityEdge").first();
-		} else {
-			qDebug() << "Element " + elementName + " in metamodel for callGeneratorFor not found!";
-			elementId = qReal::Id::rootId();
-		}
-	}
-
-	return elementId;
 }

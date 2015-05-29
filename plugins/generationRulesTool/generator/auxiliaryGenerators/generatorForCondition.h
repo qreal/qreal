@@ -5,7 +5,7 @@
 
 #include "ast/condition.h"
 
-#include "generator/generatorConfigurer.h"
+#include "generator/commonInfo/generatorConfigurer.h"
 
 namespace generationRules {
 namespace generator {

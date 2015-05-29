@@ -3,7 +3,7 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 
-#include "generator/generatorConfigurer.h"
+#include "generator/commonInfo/generatorConfigurer.h"
 
 #include "ast/string.h"
 
