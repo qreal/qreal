@@ -32,8 +32,13 @@ class ErrorListWidget : public utils::OutputWidget
 public:
 	explicit ErrorListWidget(QWidget *parent = nullptr);
 
+	/// Returns a number of error messages.
 	int count() const;
+
+	/// Clears error list.
 	void clear();
+
+	/// Appends error to a list of messages.
 	void addError(const Error &error);
 
 	QString title() const override;

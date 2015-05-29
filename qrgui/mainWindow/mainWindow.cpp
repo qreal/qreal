@@ -1542,7 +1542,7 @@ void MainWindow::fullscreen()
 		hideDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		hideDockWidget(mUi->logicalModelDock, "logicalModel");
 		hideDockWidget(mUi->propertyDock, "propertyEditor");
-		hideDockWidget(mUi->errorDock, "errorReporter");
+		hideDockWidget(mUi->outputDock, "output");
 
 		mUi->actionFullscreen->setIcon(QIcon(":/mainWindow/images/unFullScreen.svg"));
 	} else {
@@ -1550,7 +1550,7 @@ void MainWindow::fullscreen()
 		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		showDockWidget(mUi->logicalModelDock, "logicalModel");
 		showDockWidget(mUi->propertyDock, "propertyEditor");
-		showDockWidget(mUi->errorDock, "errorReporter");
+		showDockWidget(mUi->outputDock, "output");
 
 		mUi->actionFullscreen->setIcon(QIcon(":/mainWindow/images/fullScreen.svg"));
 	}
@@ -1813,8 +1813,8 @@ void MainWindow::initOutputDock()
 		initOutputWidget(widget);
 	}
 
-	mUi->errorDock->setVisible(false);
-	mUi->outputTabs->setDock(mUi->errorDock);
+	mUi->outputDock->setVisible(false);
+	mUi->outputTabs->setDock(mUi->outputDock);
 }
 
 void MainWindow::initOutputWidget(utils::OutputWidget *outputWidget)
@@ -1971,7 +1971,7 @@ QDockWidget *MainWindow::propertyEditorDock() const
 
 QDockWidget *MainWindow::errorReporterDock() const
 {
-	return mUi->errorDock;
+	return mUi->outputDock;
 }
 
 QDockWidget *MainWindow::paletteDock() const
@@ -2009,7 +2009,7 @@ bool MainWindow::restoreState(const QByteArray &state, int version)
 {
 	const bool result = QMainWindow::restoreState(state, version);
 	if (mErrorListWidget->count() == 0) {
-		mUi->errorDock->hide();
+		mUi->outputDock->hide();
 	}
 
 	return result;

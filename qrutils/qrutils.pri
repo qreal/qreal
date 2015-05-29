@@ -32,8 +32,8 @@ HEADERS += \
 	$$PWD/parserErrorReporter.h \
 	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
-	$$PWD/outputWidgets/outputDock.h \
 	$$PWD/outputWidgets/outputWidget.h \
+	$$PWD/outputWidgets/outputTabs.h
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -53,8 +53,8 @@ SOURCES += \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
-	$$PWD/outputWidgets/outputDock.cpp \
 	$$PWD/outputWidgets/outputWidget.cpp \
+	$$PWD/outputWidgets/outputTabs.cpp
 
 FORMS += \
 	$$PWD/watchListWindow.ui

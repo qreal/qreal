@@ -70,8 +70,10 @@ signals:
 
 	void newVectorSensorData(const QString &port, QVector<int> const &data);
 
+	/// Emitted when a robot wants to print something to stdout.
 	void printText(const QString &text);
 
+	/// Emitted when a robot starts program execution.
 	void startedRunning();
 
 private slots:

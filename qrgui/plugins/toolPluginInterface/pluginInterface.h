@@ -79,6 +79,7 @@ public:
 		return {};
 	}
 
+	/// Returns a list of widgets that may display some information in a bottom dock.
 	virtual QList<utils::OutputWidget *> outputWidgets()
 	{
 		return {};

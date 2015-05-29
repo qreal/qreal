@@ -55,6 +55,7 @@ public:
 	/// @warning The result is obtained each time from scratch when you call this method so better to memorize it.
 	QMultiMap<QString, ProjectConverter> projectConverters() const;
 
+	/// Returns a list of widgets that plugins want to add to bottom dock.
 	QList<utils::OutputWidget *> outputWidgets() const;
 
 	/// Returns GUI customizer object. In each QReal's instance there should be only one plugin with

@@ -65,7 +65,7 @@
     </property>
     <widget class="QMenu" name="menuPanels">
      <property name="title">
-      <string>&amp;Panels</string>
+      <string>Panels</string>
      </property>
     </widget>
     <addaction name="actionFullscreen"/>
@@ -297,7 +297,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="errorDock">
+  <widget class="QDockWidget" name="outputDock">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
      <horstretch>0</horstretch>
@@ -323,7 +323,7 @@
     <bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>&amp;Output</string>
+    <string>O&amp;utput</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -331,11 +331,7 @@
    <widget class="QWidget" name="errorDockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="utils::OutputDock" name="outputTabs">
-       <property name="currentIndex">
-        <number>-1</number>
-       </property>
-      </widget>
+      <widget class="utils::OutputTabs" name="outputTabs"/>
      </item>
     </layout>
    </widget>
@@ -376,7 +372,7 @@
     </size>
    </property>
    <property name="windowTitle">
-    <string>P&amp;roperty Editor</string>
+    <string>Pr&amp;operty Editor</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -447,7 +443,7 @@
      <normaloff>:/mainWindow/images/zoomin.png</normaloff>:/mainWindow/images/zoomin.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Zoom In</string>
+    <string>Zoom In</string>
    </property>
    <property name="shortcut">
     <string>Ctrl++</string>
@@ -459,7 +455,7 @@
      <normaloff>:/mainWindow/images/zoomout.png</normaloff>:/mainWindow/images/zoomout.png</iconset>
    </property>
    <property name="text">
-    <string>Zoom &amp;Out</string>
+    <string>Zoom Out</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
@@ -490,7 +486,7 @@
      <normaloff>:/mainWindow/images/print.png</normaloff>:/mainWindow/images/print.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Print</string>
+    <string>Print</string>
    </property>
   </action>
   <action name="actionMakeSvg">
@@ -505,7 +501,7 @@
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>&amp;Small Help</string>
+    <string>Small Help</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -513,12 +509,12 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>&amp;About...</string>
+    <string>About...</string>
    </property>
   </action>
   <action name="actionAboutQt">
    <property name="text">
-    <string>About &amp;Qt...</string>
+    <string>About Qt...</string>
    </property>
   </action>
   <action name="actionShowSplash">
@@ -529,7 +525,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Show splashscreen</string>
+    <string>Show splashscreen</string>
    </property>
   </action>
   <action name="actionSave">
@@ -538,7 +534,7 @@
      <normaloff>:/mainWindow/images/save.svg</normaloff>:/mainWindow/images/save.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Save</string>
+    <string>Save</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -546,7 +542,7 @@
   </action>
   <action name="actionSave_as">
    <property name="text">
-    <string>Sa&amp;ve as...</string>
+    <string>Save as...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
@@ -558,7 +554,7 @@
      <normaloff>:/mainWindow/images/open.svg</normaloff>:/mainWindow/images/open.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Open...</string>
+    <string>Open...</string>
    </property>
    <property name="toolTip">
     <string>Open</string>
@@ -575,7 +571,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Show grid</string>
+    <string>Show grid</string>
    </property>
   </action>
   <action name="actionSwitch_on_grid">
@@ -583,17 +579,17 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Switch &amp;on grid</string>
+    <string>Switch on grid</string>
    </property>
   </action>
   <action name="actionGesturesShow">
    <property name="text">
-    <string>&amp;Mouse gestures</string>
+    <string>Mouse gestures</string>
    </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>&amp;Preferences...</string>
+    <string>Preferences...</string>
    </property>
   </action>
   <action name="actionSwitch_on_alignment">
@@ -604,7 +600,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>S&amp;witch on alignment</string>
+    <string>Switch on alignment</string>
    </property>
   </action>
   <action name="actionShow_alignment">
@@ -615,7 +611,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>S&amp;how alignment</string>
+    <string>Show alignment</string>
    </property>
   </action>
   <action name="actionDebug">
@@ -671,7 +667,7 @@
      <normaloff>:/mainWindow/images/newDiagram.svg</normaloff>:/mainWindow/images/newDiagram.svg</iconset>
    </property>
    <property name="text">
-    <string>New &amp;Diagram</string>
+    <string>New Diagram</string>
    </property>
    <property name="toolTip">
     <string>Create new diagram in a current model</string>
@@ -683,7 +679,7 @@
      <normaloff>:/mainWindow/images/fullScreen.svg</normaloff>:/mainWindow/images/fullScreen.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Fullscreen Mode</string>
+    <string>Fullscreen Mode</string>
    </property>
    <property name="toolTip">
     <string>Fullscreen Mode</string>
@@ -698,7 +694,7 @@
      <normaloff>:/mainWindow/images/newProject.svg</normaloff>:/mainWindow/images/newProject.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;New Project</string>
+    <string>New Project</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+N</string>
@@ -714,7 +710,7 @@
   </action>
   <action name="actionSave_diagram_as_a_picture">
    <property name="text">
-    <string>Sav&amp;e diagram as a picture...</string>
+    <string>Save diagram as a picture...</string>
    </property>
   </action>
   <action name="actionCloseProject">
@@ -724,7 +720,7 @@
   </action>
   <action name="actionFind">
    <property name="text">
-    <string>&amp;Find...</string>
+    <string>Find...</string>
    </property>
   </action>
   <action name="actionFind_and_replace">
@@ -738,7 +734,7 @@
      <normaloff>:/mainWindow/images/undo.png</normaloff>:/mainWindow/images/undo.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Undo</string>
+    <string>Undo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Z</string>
@@ -750,7 +746,7 @@
      <normaloff>:/mainWindow/images/redo.png</normaloff>:/mainWindow/images/redo.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Redo</string>
+    <string>Redo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Z</string>
@@ -766,7 +762,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show a&amp;ll text</string>
+    <string>Show all text</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+T</string>
@@ -803,9 +799,9 @@
    <header>mainWindow/modelExplorer.h</header>
   </customwidget>
   <customwidget>
-   <class>utils::OutputDock</class>
+   <class>utils::OutputTabs</class>
    <extends>QTabWidget</extends>
-   <header>qrutils/outputWidgets/outputDock.h</header>
+   <header>qrutils/outputWidgets/outputTabs.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

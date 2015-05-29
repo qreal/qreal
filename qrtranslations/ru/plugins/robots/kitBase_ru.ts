@@ -28,6 +28,19 @@
     </message>
 </context>
 <context>
+    <name>kitBase::RobotOutputWidget</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/kitBase/src/robotOutputWidget.cpp" line="23"/>
+        <source>Show robot output</source>
+        <translation>Показать вывод робота</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/kitBase/src/robotOutputWidget.cpp" line="46"/>
+        <source>Robot output</source>
+        <translation>Вывод робота</translation>
+    </message>
+</context>
+<context>
     <name>kitBase::blocksBase::common::WaitForButtonBlock</name>
     <message>
         <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForButtonBlock.cpp" line="36"/>

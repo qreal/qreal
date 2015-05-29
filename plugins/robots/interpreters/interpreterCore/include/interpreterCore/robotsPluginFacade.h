@@ -70,6 +70,7 @@ public:
 	/// Returns diagram interpter`s management interface.
 	interpreter::InterpreterInterface &interpreter() const;
 
+	/// Returns widget for displaying robot stdout.
 	utils::OutputWidget *outputWidget();
 
 private:
