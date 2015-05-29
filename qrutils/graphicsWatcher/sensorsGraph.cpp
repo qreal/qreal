@@ -90,9 +90,8 @@ void SensorsGraph::removeTracking(const int index)
 
 void SensorsGraph::clearTrackingObjects()
 {
-	for (int i = 0; i < mWatchList.count(); ++i) {
-		removeTracking(i);
-	}
+	mWatchList.clear();
+	watchListChanged();
 }
 
 void SensorsGraph::paintEvent(QPaintEvent *event)
