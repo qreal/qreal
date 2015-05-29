@@ -87,7 +87,7 @@ QRegExp SearchLineEdit::regexpFromText(const QString &text, SearchOptions option
 		return QRegExp(text);
 	}
 
-	const QStringList parts = text.split(QRegExp("\\w+"), QString::SkipEmptyParts);
+	const QStringList parts = text.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 	QRegExp result(parts.join("|"));
 	result.setCaseSensitivity(option == SearchOptions::CaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
 	return result;

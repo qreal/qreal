@@ -255,7 +255,7 @@ int PaletteTree::maxItemsCountInARow() const
 
 void PaletteTree::onSearchTextChanged(const QRegExp &searchText)
 {
-
+	mTree->filter(searchText);
 }
 
 void PaletteTree::changeRepresentation()
