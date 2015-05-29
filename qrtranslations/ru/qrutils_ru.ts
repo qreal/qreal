@@ -171,9 +171,8 @@
         <translation>Попытка завершить несуществующую задачу %1</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="139"/>
         <source>Sending message to non-existent thread %1</source>
-        <translation>Попытка отправить  сообщение несуществующие задаче %1</translation>
+        <translation type="vanished">Попытка отправить  сообщение несуществующие задаче %1</translation>
     </message>
 </context>
 <context>
@@ -259,7 +258,7 @@
 <context>
     <name>qReal::interpretation::blocks::JoinBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/joinBlock.cpp" line="18"/>
+        <location filename="../../qrutils/interpreter/blocks/joinBlock.cpp" line="32"/>
         <source>Link outgoing from join block must have surviving thread id in its &apos;Guard&apos; property</source>
         <translation>Связь, исходящая из блока &quot;Слияние задач&quot;, должна быть помечена идентификатором задачи, продолжающей работу после слияния</translation>
     </message>
@@ -267,7 +266,7 @@
 <context>
     <name>qReal::interpretation::blocks::KillThreadBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/killThreadBlock.cpp" line="10"/>
+        <location filename="../../qrutils/interpreter/blocks/killThreadBlock.cpp" line="24"/>
         <source>Need to specify a thread to be stopped</source>
         <translation>Необходимо указать задачу, которая должна быть остановлена</translation>
     </message>
@@ -306,7 +305,7 @@
 <context>
     <name>qReal::interpretation::blocks::ReceiveThreadMessageBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/receiveThreadMessageBlock.cpp" line="11"/>
+        <location filename="../../qrutils/interpreter/blocks/receiveThreadMessageBlock.cpp" line="25"/>
         <source>Need to specify variable which will contain received message</source>
         <translation>Необходимо указать переменную, которая будет содержать полученное сообщение</translation>
     </message>
@@ -314,7 +313,7 @@
 <context>
     <name>qReal::interpretation::blocks::SendThreadMessageBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/sendThreadMessageBlock.cpp" line="9"/>
+        <location filename="../../qrutils/interpreter/blocks/sendThreadMessageBlock.cpp" line="23"/>
         <source>Need to specify a receiving thread in &apos;Thread&apos; property</source>
         <translation>Необходимо указать задачу-получателя сообщения</translation>
     </message>
@@ -369,6 +368,34 @@
         <location filename="../../qrutils/interpreter/blocks/unsupportedBlock.cpp" line="21"/>
         <source>Block of a type which is unsupported by an interpreter</source>
         <translation>Блок типа, не поддерживаемого в интерпретаторе</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::SearchLineEdit</name>
+    <message>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="17"/>
+        <source>Clear text</source>
+        <translation>Очистить текст</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="18"/>
+        <source>Case insensitive</source>
+        <translation>Не учитывать регистр</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="19"/>
+        <source>Case sensitive</source>
+        <translation>Учитывать регистр</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="20"/>
+        <source>Regular expression</source>
+        <translation>Регулярное выражение</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="29"/>
+        <source>Enter search text...</source>
+        <translation>Введите текст поиска...</translation>
     </message>
 </context>
 <context>
