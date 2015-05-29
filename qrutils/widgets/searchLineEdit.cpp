@@ -45,7 +45,7 @@ SearchLineEdit::SearchLineEdit(QWidget *parent)
 
 	makeContextMenu();
 	mOptionsButton->setPopupMode(QToolButton::InstantPopup);
-	mOptionsButton->setFixedSize(32, 12);
+	mOptionsButton->setFixedSize(16, 12);
 	mCaseInsensitive->trigger();
 
 	connect(mClearButton, &QAbstractButton::clicked, mLineEdit, &QLineEdit::clear);
@@ -64,7 +64,7 @@ QToolButton *SearchLineEdit::initButton(const QIcon &icon, const QString &toolTi
 	QToolButton * const result = new QToolButton(this);
 	result->setIcon(icon);
 	result->setToolTip(toolTip);
-	result->setStyleSheet("border: 0");
+	result->setStyleSheet("QToolButton { border: 0; } QToolButton:menu-indicator { image: none; }");
 	return result;
 }
 
