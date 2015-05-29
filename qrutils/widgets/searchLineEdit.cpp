@@ -24,22 +24,22 @@ SearchLineEdit::SearchLineEdit(QWidget *parent)
 	layout->setContentsMargins(2, 2, 2, 2);
 	layout->setSpacing(2);
 
-	QLineEdit * const lineEdit = new QLineEdit(this);
-	connect(lineEdit, &QLineEdit::textChanged, this, &SearchLineEdit::onTextChanged);
-	lineEdit->setPlaceholderText(tr("Enter search text..."));
-	lineEdit->setStyleSheet("border: 0");
+	mLineEdit = new QLineEdit(this);
+	connect(mLineEdit, &QLineEdit::textChanged, this, &SearchLineEdit::onTextChanged);
+	mLineEdit->setPlaceholderText(tr("Enter search text..."));
+	mLineEdit->setStyleSheet("border: 0");
 
 	makeContextMenu();
 	mOptionsButton->setPopupMode(QToolButton::InstantPopup);
 	mOptionsButton->setFixedSize(32, 12);
 	mCaseInsensitive->trigger();
 
-	connect(mClearButton, &QAbstractButton::clicked, lineEdit, &QLineEdit::clear);
+	connect(mClearButton, &QAbstractButton::clicked, mLineEdit, &QLineEdit::clear);
 	mClearButton->setFixedSize(16, 16);
 	mClearButton->hide();
 
 	layout->addWidget(mOptionsButton);
-	layout->addWidget(lineEdit);
+	layout->addWidget(mLineEdit);
 	layout->addWidget(mClearButton);
 
 	setStyleSheet("QFrame { background: white; border: 1px solid black; border-radius: 2px; }");
@@ -56,15 +56,24 @@ QToolButton *SearchLineEdit::initButton(const QIcon &icon, const QString &toolTi
 
 void SearchLineEdit::onTextChanged(const QString &text)
 {
-	emit textChanged(regexpFromText(text, mCurrentOption));
 	mClearButton->setVisible(!text.isEmpty());
+	notifyTextChanged();
 }
 
 void SearchLineEdit::makeContextMenu()
 {
-	connect(mCaseSensitive, &QAction::triggered, [=]() { mCurrentOption = SearchOptions::CaseSensitive; });
-	connect(mCaseInsensitive, &QAction::triggered, [=]() { mCurrentOption = SearchOptions::CaseInsensitive; });
-	connect(mRegularExpression, &QAction::triggered, [=]() { mCurrentOption = SearchOptions::RegularExpression; });
+	connect(mCaseSensitive, &QAction::triggered, [=]() {
+		mCurrentOption = SearchOptions::CaseSensitive;
+		notifyTextChanged();
+	});
+	connect(mCaseInsensitive, &QAction::triggered, [=]() {
+		mCurrentOption = SearchOptions::CaseInsensitive;
+		notifyTextChanged();
+	});
+	connect(mRegularExpression, &QAction::triggered, [=]() {
+		mCurrentOption = SearchOptions::RegularExpression;
+		notifyTextChanged();
+	});
 
 	QActionGroup * const group = new QActionGroup(this);
 	group->setExclusive(true);
@@ -79,6 +88,11 @@ void SearchLineEdit::makeContextMenu()
 	QMenu * const menu = new QMenu(this);
 	menu->addActions(group->actions());
 	mOptionsButton->setMenu(menu);
+}
+
+void SearchLineEdit::notifyTextChanged()
+{
+	emit textChanged(regexpFromText(mLineEdit->text(), mCurrentOption));
 }
 
 QRegExp SearchLineEdit::regexpFromText(const QString &text, SearchOptions option) const

@@ -3,6 +3,7 @@
 #include <QtWidgets/QFrame>
 
 class QToolButton;
+class QLineEdit;
 
 namespace qReal {
 namespace ui {
@@ -35,10 +36,12 @@ private:
 	QToolButton *initButton(const QIcon &icon, const QString &toolTip);
 	void onTextChanged(const QString &text);
 	void makeContextMenu();
+	void notifyTextChanged();
 	QRegExp regexpFromText(const QString &text, SearchOptions option) const;
 
 	QToolButton *mOptionsButton;  // Takes ownership
 	QToolButton *mClearButton;  // Takes ownership
+	QLineEdit *mLineEdit;  // Takes ownership
 	QAction *mCaseInsensitive;  // Takes ownership
 	QAction *mCaseSensitive;  // Takes ownership
 	QAction *mRegularExpression;  // Takes ownership
