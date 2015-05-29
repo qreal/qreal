@@ -16,6 +16,7 @@
 *	@brief class for an edge on a diagram
 **/
 
+#include <QtCore/QtMath>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>

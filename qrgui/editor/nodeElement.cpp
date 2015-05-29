@@ -15,6 +15,7 @@
 #include "nodeElement.h"
 
 #include <QtCore/QUuid>
+#include <QtCore/QtMath>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QMessageBox>
