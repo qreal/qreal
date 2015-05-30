@@ -13,22 +13,21 @@
  * limitations under the License. */
 
 #include "gamepadPad.h"
+#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-GamepadPad::GamepadPad(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+GamepadPad::GamepadPad(const DeviceInfo &info, const PortInfo &port)
 	: robotModel::parts::TrikGamepadPad(info, port)
-	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newVectorSensorData
+	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newVectorSensorData
 			, this, &GamepadPad::onIncomingData);
 }
 
 void GamepadPad::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	utils::TcpRobotCommunicator::instance().requestData(port().name());
 }
 
 void GamepadPad::onIncomingData(const QString &portName, const QVector<int> &value)

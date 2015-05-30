@@ -47,6 +47,12 @@ TcpRobotCommunicator::~TcpRobotCommunicator()
 	disconnect();
 }
 
+TcpRobotCommunicator &TcpRobotCommunicator::instance()
+{
+	static TcpRobotCommunicator result("TrikTcpServer");
+	return result;
+}
+
 bool TcpRobotCommunicator::uploadProgram(const QString &programName)
 {
 	if (programName.isEmpty()) {
@@ -196,7 +202,7 @@ void TcpRobotCommunicator::connect()
 		return;
 	}
 
-	if (mControlConnection.isConnected() && mTelemetryConnection.isConnected()) {
+	if (mControlConnection.isConnected() || mTelemetryConnection.isConnected()) {
 		if (mCurrentIP == server) {
 			return;
 		}

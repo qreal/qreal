@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,28 @@
 
 #pragma once
 
-#include <trikKit/robotModel/parts/trikShell.h>
+#include "device.h"
+#include "kitBase/robotOutputWidget.h"
 
-namespace trik {
+namespace kitBase {
 namespace robotModel {
-namespace real {
-namespace parts {
+namespace robotParts {
 
-class Shell : public robotModel::parts::TrikShell
+/// Base class for command shells.
+class ROBOTS_KIT_BASE_EXPORT Shell : public Device
 {
 	Q_OBJECT
+	Q_CLASSINFO("name", "shell")
+	Q_CLASSINFO("friendlyName", tr("Shell"))
+	Q_CLASSINFO("direction", "output")
 
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port);
 
-	void runCommand(const QString &command) override;
-
-	void say(const QString &text) override;
-
-	void writeToFile(const QString &filePath, const QString &text) override;
-
-	void removeFile(const QString &filePath) override;
-
-	void print(kitBase::RobotOutputWidget &outputWidget, const QString &text) override;
+	virtual void print(RobotOutputWidget &outputWidget, const QString &text) = 0;
 };
 
-}
 }
 }
 }

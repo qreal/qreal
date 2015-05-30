@@ -210,5 +210,6 @@
         <file>templates/files/writeFile.t</file>
         <file>templates/threads/killThread.t</file>
         <file>templates/variables/randomInitialization.t</file>
+        <file>templates/functions/print.t</file>
     </qresource>
 </RCC>

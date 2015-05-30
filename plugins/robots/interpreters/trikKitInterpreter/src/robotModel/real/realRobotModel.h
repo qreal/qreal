@@ -45,9 +45,6 @@ protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;
-
-private:
-	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;
 };
 
 }

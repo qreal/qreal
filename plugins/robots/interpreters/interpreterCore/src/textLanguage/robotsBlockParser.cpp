@@ -15,6 +15,8 @@
 #include "interpreterCore/textLanguage/robotsBlockParser.h"
 
 #include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/shell.h>
+
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
 #include <qrtext/lua/types/string.h>
@@ -27,12 +29,13 @@ const QString sensorVariablePerfix = QObject::tr("sensor");
 const QString encoderVariablePerfix = QObject::tr("encoder");
 const QString timeVariableName = QObject::tr("time");
 
-RobotsBlockParser::RobotsBlockParser(
-		const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-		, const utils::ComputableNumber::IntComputer &timeComputer)
+RobotsBlockParser::RobotsBlockParser(const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
+		, const utils::ComputableNumber::IntComputer &timeComputer
+		, kitBase::RobotOutputWidget &outputWidget)
 	: qrtext::lua::LuaToolbox()
 	, mRobotModelManager(robotModelManager)
 	, mTimeComputer(timeComputer)
+	, mOutputWidget(outputWidget)
 {
 	setReservedVariables();
 
@@ -139,6 +142,16 @@ void RobotsBlockParser::addIntrinsicFuctions()
 		}
 
 		return interpret<int>("sensor" + port.toString());
+	});
+
+	add1aryFunction("print", new types::String(), new types::String, [this](const QVariant &text) {
+		kitBase::robotModel::robotParts::Shell *shell = kitBase::robotModel::RobotModelUtils::findDevice
+				<kitBase::robotModel::robotParts::Shell>(mRobotModelManager.model(), "ShellPort");
+		if (shell) {
+			shell->print(mOutputWidget, text.toString());
+		}
+
+		return text;
 	});
 
 	addFloatFunction("sin", [](qreal x) {return sin(x); });

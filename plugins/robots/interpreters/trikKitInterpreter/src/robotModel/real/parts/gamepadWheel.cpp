@@ -13,22 +13,21 @@
  * limitations under the License. */
 
 #include "gamepadWheel.h"
+#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-GamepadWheel::GamepadWheel(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+GamepadWheel::GamepadWheel(const DeviceInfo &info, const PortInfo &port)
 	: robotModel::parts::TrikGamepadWheel(info, port)
-	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newScalarSensorData
 			, this, &GamepadWheel::onIncomingData);
 }
 
 void GamepadWheel::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	utils::TcpRobotCommunicator::instance().requestData(port().name());
 }
 
 void GamepadWheel::onIncomingData(const QString &portName, int value)

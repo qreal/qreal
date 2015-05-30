@@ -29,10 +29,7 @@ class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
 	Q_OBJECT
 
 public:
-	/// Constructor.
-	/// @param serverIpSettingsKey - where to find server ip setting in a registry.
-	explicit TcpRobotCommunicator(const QString &serverIpSettingsKey);
-	~TcpRobotCommunicator();
+	static TcpRobotCommunicator &instance();
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
 	bool uploadProgram(const QString &programName);
@@ -82,6 +79,11 @@ private slots:
 	void versionTimeOut();
 
 private:
+	/// Constructor.
+	/// @param serverIpSettingsKey - where to find server ip setting in a registry.
+	explicit TcpRobotCommunicator(const QString &serverIpSettingsKey);
+	~TcpRobotCommunicator();
+
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(const QString &data, QTcpSocket &socket);
 

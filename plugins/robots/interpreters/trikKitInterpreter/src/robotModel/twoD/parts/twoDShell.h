@@ -36,6 +36,8 @@ public:
 	void writeToFile(const QString &filePath, const QString &text) override;
 
 	void removeFile(const QString &filePath) override;
+
+	void print(kitBase::RobotOutputWidget &outputWidget, const QString &text) override;
 };
 
 }

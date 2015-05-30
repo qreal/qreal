@@ -32,23 +32,21 @@ TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
-	, mCommunicator(nullptr)
 {
 }
 
 TrikQtsGeneratorPlugin::~TrikQtsGeneratorPlugin()
 {
-	delete mCommunicator;
 }
 
 void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	RobotsGeneratorPluginBase::init(configurator);
-	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
-	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
-	connect(mCommunicator, &utils::TcpRobotCommunicator::printText
+	utils::TcpRobotCommunicator::instance().setErrorReporter(
+			configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
+	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::printText
 			, &configurator.outputWidget(), &kitBase::RobotOutputWidget::print);
-	connect(mCommunicator, &utils::TcpRobotCommunicator::startedRunning
+	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::startedRunning
 			, &configurator.outputWidget(), &kitBase::RobotOutputWidget::clear);
 }
 
@@ -129,7 +127,7 @@ bool TrikQtsGeneratorPlugin::uploadProgram()
 	const QFileInfo fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-		const bool result = mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
+		const bool result = utils::TcpRobotCommunicator::instance().uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
 			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 		}
@@ -145,7 +143,7 @@ void TrikQtsGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
 		const QFileInfo fileInfo = generateCodeForProcessing();
-		mCommunicator->runProgram(fileInfo.fileName());
+		utils::TcpRobotCommunicator::instance().runProgram(fileInfo.fileName());
 	} else {
 		qDebug() << "Program upload failed, aborting";
 	}
@@ -153,11 +151,11 @@ void TrikQtsGeneratorPlugin::runProgram()
 
 void TrikQtsGeneratorPlugin::stopRobot()
 {
-	if (!mCommunicator->stopRobot()) {
+	if (!utils::TcpRobotCommunicator::instance().stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
 
-	mCommunicator->runDirectCommand(
+	utils::TcpRobotCommunicator::instance().runDirectCommand(
 			"script.system(\"killall aplay\"); \n"
 			"script.system(\"killall vlc\");"
 			, true

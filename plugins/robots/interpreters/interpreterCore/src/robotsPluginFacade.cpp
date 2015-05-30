@@ -66,7 +66,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	}
 
 	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
-			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
+			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }, *mOutputWidget));
 
 	kitBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
 	coreFactory->configure(configurer.graphicalModelApi()
