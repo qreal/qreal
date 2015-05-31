@@ -2,6 +2,7 @@
 #include "commonGenerator.h"
 
 #include "ast/node.h"
+#include "ast/generateToFile.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
@@ -11,9 +12,12 @@ QString GeneratorForProgramNode::generatedResult(QSharedPointer<Program> program
 {
 	QString result;
 
-	QList<QSharedPointer<Node>> statements = programNode->children();
-	for (QSharedPointer<Node> statement : statements) {
-		result += CommonGenerator::generatedResult(statement, generatorConfigurer);
+	const auto statements = programNode->children();
+	for (const auto statement : statements) {
+		const auto currentResult = CommonGenerator::generatedResult(statement, generatorConfigurer);
+		if (!statement->is<GenerateToFile>()) {
+			result += currentResult;
+		}
 	}
 
 	return result;
