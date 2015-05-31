@@ -8,8 +8,8 @@ using namespace qReal::gui;
 SpecifyPathToGeneratedCodeDialog::SpecifyPathToGeneratedCodeDialog(
 		qrRepo::LogicalRepoApi *metamodelRepoApi
 		, QWidget *parent) :
-	mMetamodelRepoApi(metamodelRepoApi)
-	, QDialog(parent)
+	QDialog(parent)
+	, mMetamodelRepoApi(metamodelRepoApi)
 	, mUi(new Ui::SpecifyPathToGeneratedCodeDialog)
 {
 	mUi->setupUi(this);

@@ -36,6 +36,8 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	generationRules::RuleHighlighter *ruleHighlighter = new generationRules::RuleHighlighter(
 			mUi->codeArea->document());
 
+	Q_UNUSED(ruleHighlighter);
+
 	addPropertiesList();
 
 	mUi->templatesWidget->header()->close();

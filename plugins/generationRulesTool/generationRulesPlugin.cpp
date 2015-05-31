@@ -120,6 +120,7 @@ void GenerationRulesPlugin::openGenerationRulesWindow()
 	const QAction * const action = static_cast<QAction *>(sender());
 	const qReal::Id id = action->data().value<qReal::Id>();
 	auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id, mMetamodelRepoApi);
+	Q_UNUSED(specifyGenerationRulesDialog);
 }
 
 void GenerationRulesPlugin::openWindowForPathsSpecifying()

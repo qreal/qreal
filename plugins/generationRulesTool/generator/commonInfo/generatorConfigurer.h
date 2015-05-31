@@ -95,8 +95,8 @@ public:
 
 private:
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // doesn't have ownership
-	VariablesTable &mVariablesTable;
 	qReal::EditorManagerInterface *mEditorManagerInterface;  // doesn't have ownership
+	VariablesTable &mVariablesTable;
 	CurrentScope &mCurrentScope;
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
