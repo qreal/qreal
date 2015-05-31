@@ -8,9 +8,12 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates type of given list element.
 class IdentifierTypeGenerator
 {
 public:
+	/// Returns element type of given list.
+	/// @param listNode - list node.
 	static QString variableType(QSharedPointer<simpleParser::ast::List> listNode);
 };
 

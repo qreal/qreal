@@ -12,10 +12,10 @@ qReal::Id GeneratorForElementIdentifierNode::neededElementId(
 		QSharedPointer<ElementIdentifier> elementIdentifierNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	auto identifierPart = elementIdentifierNode->identifierPart();
-	auto optionalTransitionPart = elementIdentifierNode->optionalTransitionPart();
+	const auto identifierPart = elementIdentifierNode->identifierPart();
+	const auto optionalTransitionPart = elementIdentifierNode->optionalTransitionPart();
 
-	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
+	const auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
 
 	qReal::Id elementId;
 	if (identifierPart->is<Identifier>()) {

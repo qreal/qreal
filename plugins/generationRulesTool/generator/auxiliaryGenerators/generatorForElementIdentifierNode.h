@@ -15,9 +15,13 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates result for elementIdentifier node.
 class GeneratorForElementIdentifierNode
 {
 public:
+	/// Returns id of element identifier.
+	/// @param elementIdentifierNode - element identifier node.
+	/// @generatorConfigurer - information about model and metamodel.
 	static qReal::Id neededElementId(QSharedPointer<simpleParser::ast::ElementIdentifier> elementIdentifierNode
 			, GeneratorConfigurer generatorCofigurer
 			);

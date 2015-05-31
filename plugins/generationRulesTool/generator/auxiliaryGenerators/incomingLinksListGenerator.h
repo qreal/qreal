@@ -13,6 +13,7 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates list of all incoming links of given type.
 class IncomingLinksListGenerator
 {
 public:

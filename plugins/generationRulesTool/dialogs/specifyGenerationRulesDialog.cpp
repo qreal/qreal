@@ -52,7 +52,7 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	connect(mUi->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this
 			, &SpecifyGenerationRulesDialog::saveGenerationRule);
 
-	this->setWindowTitle("Specify rules for " + mInterpreterEditorManager->friendlyName(mId));
+	this->setWindowTitle(tr("Specify rules for ") + mInterpreterEditorManager->friendlyName(mId));
 	this->setVisible(true);
 }
 
@@ -90,9 +90,9 @@ void SpecifyGenerationRulesDialog::addTemplatesList()
 {
 	mUi->templatesWidget->setColumnCount(1);
 
-	addOneTypeTemplates("General templates", generationRules::keywords::generalTemplates);
-	addOneTypeTemplates("Text templates", generationRules::keywords::textTemplates);
-	addOneTypeTemplates("Links templates", generationRules::keywords::linksTemplates);
+	addOneTypeTemplates(tr("General templates"), generationRules::keywords::generalTemplates);
+	addOneTypeTemplates(tr("Text templates"), generationRules::keywords::textTemplates);
+	addOneTypeTemplates(tr("Links templates"), generationRules::keywords::linksTemplates);
 
 	mUi->templatesWidget->expandAll();
 }

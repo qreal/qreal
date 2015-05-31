@@ -10,10 +10,10 @@ using namespace simpleParser::ast;
 QString GeneratorForGeneratorNode::generatedResult(QSharedPointer<Generator> generatorNode
 			, GeneratorConfigurer generatorConfigurer)
 {
-	auto generatorNameNode = qrtext::as<Identifier>(generatorNode->identifier());
-	auto generatorName = generatorNameNode->name();
+	const auto generatorNameNode = qrtext::as<Identifier>(generatorNode->identifier());
+	const auto generatorName = generatorNameNode->name();
 
-	auto programNode = qrtext::as<Program>(generatorNode->program());
+	const auto programNode = qrtext::as<Program>(generatorNode->program());
 
 	if (generatorConfigurer.currentScope().currentGeneratorName() == generatorName) {
 		return GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer);

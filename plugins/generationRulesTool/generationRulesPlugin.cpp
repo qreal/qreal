@@ -41,7 +41,7 @@ using namespace generationRules;
 
 GenerationRulesPlugin::GenerationRulesPlugin()
 	: mRepo(nullptr)
-	, mAction(tr("Destroy everything"), nullptr)
+	, mAction(tr("Generate code for current diagram"), nullptr)
 {
 	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::openWindowForPathsSpecifying);
 }
@@ -58,7 +58,7 @@ QList<qReal::ActionInfo> GenerationRulesPlugin::actions()
 
 QList<QAction *> GenerationRulesPlugin::menuActionList() const
 {
-	auto addGenerationRuleAction = new QAction("Add generation rule!!!", nullptr);
+	auto addGenerationRuleAction = new QAction(tr("Add generation rule"), nullptr);
 	connect(addGenerationRuleAction, &QAction::triggered, this, &GenerationRulesPlugin::openGenerationRulesWindow);
 
 	return {addGenerationRuleAction};

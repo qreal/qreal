@@ -10,9 +10,13 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates string (for string node).
 class StringGenerator
 {
 public:
+	/// Returns generated string.
+	/// @param stringNode - string node.
+	/// @param generatorConfigurer - information about model and metamodel.
 	static QString generatedString(QSharedPointer<simpleParser::ast::String> stringNode
 			, GeneratorConfigurer generatorConfigurer);
 };

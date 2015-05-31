@@ -11,10 +11,10 @@ using namespace simpleParser::ast;
 QVariant GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<ComplexIdentifier> complexIdentifierNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	auto identifierPart = qrtext::as<ElementIdentifier>(complexIdentifierNode->identifierPart());
-	auto elementId = GeneratorForElementIdentifierNode::neededElementId(identifierPart, generatorConfigurer);
-	auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
+	const auto identifierPart = qrtext::as<ElementIdentifier>(complexIdentifierNode->identifierPart());
+	const auto elementId = GeneratorForElementIdentifierNode::neededElementId(identifierPart, generatorConfigurer);
+	const auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
 
-	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
+	const auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
 	return logicalModelInterface->propertyByRoleName(elementId, propertyPart->name());
 }

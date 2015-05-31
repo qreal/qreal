@@ -11,31 +11,32 @@ using namespace simpleParser::ast;
 
 QString IdentifierTypeGenerator::variableType(QSharedPointer<List> listNode)
 {
-	auto mainPartOfListIdentifier = qrtext::as<ElementIdentifier>(listNode->identifier());
+	const auto mainPartOfListIdentifier = qrtext::as<ElementIdentifier>(listNode->identifier());
 
-	auto identifierPart = mainPartOfListIdentifier->identifierPart();
-	auto optionalLinkPart = listNode->optionalLinkPart();
+	const auto identifierPart = mainPartOfListIdentifier->identifierPart();
+	const auto optionalLinkPart = listNode->optionalLinkPart();
 
 	if (identifierPart->is<Identifier>()) {
-		auto asIdentifier = qrtext::as<Identifier>(identifierPart);
+		const auto asIdentifier = qrtext::as<Identifier>(identifierPart);
 
 		if (!optionalLinkPart) {
 			return asIdentifier->name();
 		}
 	}
 
-	// TODO: rewrite this code.
 	if (optionalLinkPart->is<IncomingLinks>()) {
-		auto linkTypeNode = qrtext::as<IncomingLinks>(optionalLinkPart)->linkType();
-		auto linkTypeIdentifier = qrtext::as<Identifier>(linkTypeNode);
+		const auto linkTypeNode = qrtext::as<IncomingLinks>(optionalLinkPart)->linkType();
+		const auto linkTypeIdentifier = qrtext::as<Identifier>(linkTypeNode);
 
 		return linkTypeIdentifier->name();
 	} else {
 		if (optionalLinkPart->is<OutcomingLinks>()) {
-			auto linkTypeNode = qrtext::as<OutcomingLinks>(optionalLinkPart)->linkType();
-			auto linkTypeIdentifier = qrtext::as<Identifier>(linkTypeNode);
+			const auto linkTypeNode = qrtext::as<OutcomingLinks>(optionalLinkPart)->linkType();
+			const auto linkTypeIdentifier = qrtext::as<Identifier>(linkTypeNode);
 
 			return linkTypeIdentifier->name();
+		} else {
+			return "";
 		}
 	}
 }

@@ -8,7 +8,7 @@ qReal::IdList SimpleTypeListGenerator::generatedList(
 		, qReal::LogicalModelAssistInterface *logicalModelInterface)
 {
 	qReal::IdList listOfElements;
-	for (const qReal::Id elementId : logicalModelInterface->children(qReal::Id::rootId())) {
+	for (const auto &elementId : logicalModelInterface->children(qReal::Id::rootId())) {
 		if (elementId.element() == simpleIdentifierNode->name()) {
 			listOfElements << elementId;
 		}

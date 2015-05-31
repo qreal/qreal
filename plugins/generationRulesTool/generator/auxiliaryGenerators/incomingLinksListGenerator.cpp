@@ -11,7 +11,7 @@ qReal::IdList IncomingLinksListGenerator::generatedList(
 		, VariablesTable variablesTable
 		, CurrentScope currentScope)
 {
-	auto neededElementId = LinksListGenerator::elementId(linksIdentifierNode, variablesTable, currentScope);
-	auto allIncomingLinks = logicalModelInterface->logicalRepoApi().incomingLinks(neededElementId);
+	const auto neededElementId = LinksListGenerator::elementId(linksIdentifierNode, variablesTable, currentScope);
+	const auto allIncomingLinks = logicalModelInterface->logicalRepoApi().incomingLinks(neededElementId);
 	return LinksListGenerator::linksOfNeededType(linksTypeNode, allIncomingLinks);
 }

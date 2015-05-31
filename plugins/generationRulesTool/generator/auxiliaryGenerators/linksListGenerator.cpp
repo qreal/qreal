@@ -21,7 +21,7 @@ qReal::Id LinksListGenerator::elementId(QSharedPointer<Node> linksIdentifierNode
 {
 	qReal::Id elementId;
 	if (linksIdentifierNode->is<Identifier>()) {
-		auto elementName = qrtext::as<Identifier>(linksIdentifierNode)->name();
+		const auto elementName = qrtext::as<Identifier>(linksIdentifierNode)->name();
 		elementId = variablesTable.currentId(elementName);
 	} else {
 		elementId = currentScope.currentId();

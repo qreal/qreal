@@ -9,10 +9,12 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that provides information about identifiers: their name, type and list of ids.
 class VariablesTable
 {
 public:
 	VariablesTable();
+	~VariablesTable();
 
 	/// Structure with information about variable.
 	struct VariableData {
@@ -113,7 +115,7 @@ public:
 	bool nextIdExists(const QString &variableName);
 
 private:
-	QHash<QString, VariableData*> mHashTable;
+	QHash<QString, VariableData*> mHashTable;  // has ownership.
 };
 
 }

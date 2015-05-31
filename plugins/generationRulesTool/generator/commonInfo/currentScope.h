@@ -8,12 +8,13 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that provides information about current scope.
 class CurrentScope
 {
 public:
 	CurrentScope();
 
-	/// Methods for work with stack of "this".
+	/// Methods for work with stack of current "this" elements.
 	/// Changes current "this" id (when callGeneratorFor is called, "this" changes).
 	/// @param newCurrentVariableId - new "this" id.
 	void changeCurrentId(const qReal::Id &newCurrentVariableId);

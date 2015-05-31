@@ -13,6 +13,7 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates list of links of given type.
 class LinksListGenerator
 {
 public:
@@ -21,6 +22,7 @@ public:
 	/// @param linksTypeNode - second part (SpecificType in previous example).
 	/// @param logicalModelInterface - information about model.
 	/// @param variablesTable - table of variables.
+	/// @param currentScope - information about current scope.
 	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Node> linksIdentifierNode
 			, QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
@@ -28,10 +30,17 @@ public:
 			, CurrentScope currentScope
 			);
 
+	/// Returns id of current element.
+	/// @param linksIdentifierNode - identifier node or "this".
+	/// @param variablesTable - table of variables.
+	/// @param currentScope - information about current scope.
 	static qReal::Id elementId(QSharedPointer<simpleParser::ast::Node> linksIdentifierNode
 			, VariablesTable variablesTable
 			, CurrentScope currentScope);
 
+	/// Returns links of needed type from links of all types.
+	/// @param linksTypeNode - links type node.
+	/// @param allLinks - list of all links.
 	static qReal::IdList linksOfNeededType(QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
 			, qReal::IdList allLinks);
 };

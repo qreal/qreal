@@ -15,8 +15,8 @@ using namespace simpleParser::ast;
 QString GeneratorForCallGenerator::generatedResult(QSharedPointer<CallGeneratorFor> callGeneratorForNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	auto calledIdentifier = qrtext::as<ElementIdentifier>(callGeneratorForNode->identifier());
-	auto generatorNameNode = qrtext::as<Identifier>(callGeneratorForNode->generatorName());
+	const auto calledIdentifier = qrtext::as<ElementIdentifier>(callGeneratorForNode->identifier());
+	const auto generatorNameNode = qrtext::as<Identifier>(callGeneratorForNode->generatorName());
 
 	return commonGeneratedString(calledIdentifier, generatorNameNode, generatorConfigurer);
 }
@@ -26,15 +26,15 @@ QString GeneratorForCallGenerator::commonGeneratedString(
 		, QSharedPointer<Identifier> generatorNameNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier, generatorConfigurer);
-	auto currentElementType = TypeQualifier::elementIdentifierType(calledIdentifier, generatorConfigurer);
+	const auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier, generatorConfigurer);
+	const auto currentElementType = TypeQualifier::elementIdentifierType(calledIdentifier, generatorConfigurer);
 
-	auto diagramId = generatorConfigurer.diagramId();
-	auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
+	const auto diagramId = generatorConfigurer.diagramId();
+	const auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
 
-	qReal::Id elementIdInMetamodel = idInMetamodel(editorManagerInterface, currentElementType, diagramId);
+	const auto elementIdInMetamodel = idInMetamodel(editorManagerInterface, currentElementType, diagramId);
 
-	auto generationRuleForCurrentElement = editorManagerInterface->generationRule(elementIdInMetamodel);
+	const auto generationRuleForCurrentElement = editorManagerInterface->generationRule(elementIdInMetamodel);
 	QSharedPointer<Node> generatedTree = TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
 
 	generatorConfigurer.currentScope().changeCurrentId(currentElementId);

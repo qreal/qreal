@@ -13,9 +13,15 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates list of ids for list node.
 class ListGenerator
 {
 public:
+	/// Returns list of ids for given list node.
+	/// @param listNode - list node.
+	/// @param logicalModelInterface - model interface.
+	/// @param variablesTable - table of variables.
+	/// @param currentScope - information about current scope.
 	static qReal::IdList listOfIds(QSharedPointer<simpleParser::ast::List> listNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable variablesTable

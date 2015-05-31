@@ -20,13 +20,13 @@ using namespace simpleParser::ast;
 QString GeneratorForForeachNode::generatedResult(QSharedPointer<Foreach> foreachNode
 			, GeneratorConfigurer generatorConfigurer)
 {
-	auto identifierPart = qrtext::as<Identifier>(foreachNode->identifier());
-	auto identifierName = identifierPart->name();
+	const auto identifierPart = qrtext::as<Identifier>(foreachNode->identifier());
+	const auto identifierName = identifierPart->name();
 
-	auto listPart = qrtext::as<List>(foreachNode->listPart());
-	auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
+	const auto listPart = qrtext::as<List>(foreachNode->listPart());
+	const auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
 
-	auto identifierType = IdentifierTypeGenerator::variableType(listPart);
+	const auto identifierType = IdentifierTypeGenerator::variableType(listPart);
 
 	qReal::IdList listOfElements = ListGenerator::listOfIds(listPart, logicalModelInterface
 			, generatorConfigurer.variablesTable(), generatorConfigurer.currentScope());
@@ -34,7 +34,7 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<Foreach> foreach
 	QString result;
 	generatorConfigurer.variablesTable().addNewVariable(identifierName, identifierType, listOfElements);
 
-	auto actionNode = foreachNode->program();
+	const auto actionNode = foreachNode->program();
 
 	while (generatorConfigurer.variablesTable().nextIdExists(identifierName)) {
 		result += resultForOneIteration(actionNode, generatorConfigurer);
