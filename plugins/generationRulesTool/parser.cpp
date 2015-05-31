@@ -221,25 +221,13 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 	};
 
 	auto generateToFileStatement = (-TokenTypes::generateToFileKeyword & -TokenTypes::openingBracket
-				& elementIdentifier & -TokenTypes::comma & string
-				& ~(-TokenTypes::comma & identifier)
-				& -TokenTypes::closingBracket)
+				& (string | text) & -TokenTypes::closingBracket
+				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket)
 			>> [] (QSharedPointer<TemporaryPair> temporaryNode) {
-				if (temporaryNode->left()->is<TemporaryPair>()) {
-					auto firstPart = qrtext::as<TemporaryPair>(temporaryNode);
+				auto fileNamePart = temporaryNode->left();
+				auto programPart = temporaryNode->right();
 
-					auto element = firstPart->left();
-					auto fileName = firstPart->right();
-					auto generatorName = temporaryNode->right();
-
-					return qrtext::wrap(new ast::GenerateToFile(element, fileName, generatorName));
-
-				} else {
-					auto element = temporaryNode->left();
-					auto fileName = temporaryNode->right();
-
-					return qrtext::wrap(new ast::GenerateToFile(element, fileName));
-				}
+				return qrtext::wrap(new ast::GenerateToFile(fileNamePart, programPart));
 	};
 
 	auto comparator = TokenTypes::equal >> [] { return new ast::Equal(); }

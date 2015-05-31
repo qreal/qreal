@@ -10,22 +10,13 @@ class GenerateToFile : public Node
 {
 public:
 	/// Constructor.
-	/// @param identifier - identifier part.
 	/// @param fileName - name of file we want to generate code into.
-	/// @param generator - optional generatorName node.
-	GenerateToFile(QSharedPointer<Node> const &identifier
-			, QSharedPointer<Node> const &fileName
-			, QSharedPointer<Node> const &generator = QSharedPointer<Node>())
-		: mIdentifier(identifier)
-		, mFileName(fileName)
-		, mGeneratorName(generator)
+	/// @param program - program part.
+	GenerateToFile(QSharedPointer<Node> const &fileName
+			, QSharedPointer<Node> const &program)
+		: mFileName(fileName)
+		, mProgram(program)
 	{
-	}
-
-	/// Returns identifier part.
-	QSharedPointer<Node> const &identifier() const
-	{
-		return mIdentifier;
 	}
 
 	/// Returns file name part.
@@ -34,16 +25,15 @@ public:
 		return mFileName;
 	}
 
-	/// Returns generator name part.
-	QSharedPointer<Node> const &generatorName() const
+	/// Returns program part.
+	QSharedPointer<Node> const &program() const
 	{
-		return mGeneratorName;
+		return mProgram;
 	}
 
 private:
-	QSharedPointer<Node> mIdentifier;
 	QSharedPointer<Node> mFileName;
-	QSharedPointer<Node> mGeneratorName;
+	QSharedPointer<Node> mProgram;
 };
 
 }

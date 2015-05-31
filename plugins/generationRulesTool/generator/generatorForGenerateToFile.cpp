@@ -5,6 +5,8 @@
 
 #include "ast/elementIdentifier.h"
 #include "ast/string.h"
+#include "ast/text.h"
+#include "ast/program.h"
 
 #include "auxiliaryGenerators/generatorForElementIdentifierNode.h"
 #include "commonGenerator.h"
@@ -12,7 +14,7 @@
 #include "treeGeneratorFromString.h"
 #include "auxiliaryGenerators/stringGenerator.h"
 
-#include "generatorForCallGenerator.h"
+#include "generatorForProgramNode.h"
 
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
@@ -21,14 +23,19 @@ QString GeneratorForGenerateToFile::generatedResult(
 		QSharedPointer<GenerateToFile> generateToFileNode
 		, GeneratorConfigurer generatorConfigurer)
 {
-	const auto calledIdentifier = qrtext::as<ElementIdentifier>(generateToFileNode->identifier());
-	const auto generatorNameNode = qrtext::as<Identifier>(generateToFileNode->generatorName());
+	const auto programNode = qrtext::as<Program>(generateToFileNode->program());
+	const auto fileNameNode = generateToFileNode->fileName();
 
-	const auto fileNameNode = qrtext::as<String>(generateToFileNode->fileName());
-	const auto fileName = StringGenerator::generatedString(fileNameNode, generatorConfigurer);
+	QString fileName;
+	if (fileNameNode->is<String>()) {
+		fileName = StringGenerator::generatedString(qrtext::as<String>(fileNameNode), generatorConfigurer);
+	} else {
+		fileName = qrtext::as<Text>(fileNameNode)->text();
+	}
+
 	const auto pathToCode = generatorConfigurer.pathToGeneratedCode();
 
-	const auto resultOfGeneration = GeneratorForCallGenerator::commonGeneratedString(calledIdentifier, generatorNameNode, generatorConfigurer);
+	const auto resultOfGeneration = GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer);
 
 	writeToFile(resultOfGeneration, fileName, pathToCode);
 
@@ -41,7 +48,6 @@ void GeneratorForGenerateToFile::writeToFile(
 		, const QString &pathToCode)
 {
 	QFile outputFile(pathToCode + "/" + fileName);
-	qDebug() << pathToCode + "/" + fileName;
 
 	if (outputFile.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&outputFile);
