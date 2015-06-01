@@ -729,6 +729,17 @@
     <string>Ctrl+Shift+T</string>
    </property>
   </action>
+  <action name="actionCloseBottomDocks">
+   <property name="text">
+    <string>Close Bottom Docks</string>
+   </property>
+   <property name="toolTip">
+    <string>Close Bottom Docks</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>

@@ -283,6 +283,7 @@ private slots:
 	void setTextChanged(bool changed);
 
 	void showDock();
+	void closeBottomDocks();
 
 private:
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical

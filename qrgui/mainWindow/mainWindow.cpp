@@ -242,6 +242,9 @@ void MainWindow::connectActions()
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
 
+	addAction(mUi->actionCloseBottomDocks);
+	connect(mUi->actionCloseBottomDocks, &QAction::triggered, this, &MainWindow::closeBottomDocks);
+
 	setDefaultShortcuts();
 }
 
@@ -1847,6 +1850,15 @@ void MainWindow::showDock()
 	}
 
 	outputWidget->raise();
+}
+
+void MainWindow::closeBottomDocks()
+{
+	for (QDockWidget *dock : findChildren<QDockWidget *>()) {
+		if (dockWidgetArea(dock) == Qt::BottomDockWidgetArea) {
+			dock->hide();
+		}
+	}
 }
 
 void MainWindow::initGridProperties()
