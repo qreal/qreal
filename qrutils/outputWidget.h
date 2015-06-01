@@ -17,21 +17,25 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QAction>
 
+#include <qrutils/utilsDeclSpec.h>
+
 namespace utils {
 
 /// Base class for widgets displaying something in a bottom dock. Can request its visibility change.
-class OutputWidget : public QDockWidget
+class QRUTILS_EXPORT OutputWidget : public QDockWidget
 {
 	Q_OBJECT
 public:
 	explicit OutputWidget(const QString &title, QWidget *parent = 0);
 
+	/// @todo: use toggleViewAction instead.
 	QAction *action();
 
 	/// Returns a name of shortcut for registering in HotKeyManager.
 	virtual QString shortcutName() const = 0;
 
 signals:
+	/// @todo: not needed.
 	void showMe();
 
 private:
