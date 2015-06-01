@@ -1190,7 +1190,7 @@
     <message>
         <location filename="../../qrgui/mainWindow/errorListWidget.cpp" line="140"/>
         <source>Issues</source>
-        <translation>Сообщения</translation>
+        <translation>Ошибки</translation>
     </message>
 </context>
 <context>

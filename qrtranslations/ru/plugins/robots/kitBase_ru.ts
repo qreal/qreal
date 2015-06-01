@@ -32,12 +32,12 @@
     <message>
         <location filename="../../../../plugins/robots/common/kitBase/src/robotOutputWidget.cpp" line="23"/>
         <source>Show robot output</source>
-        <translation>Показать вывод робота</translation>
+        <translation>Показать консоль</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/common/kitBase/src/robotOutputWidget.cpp" line="46"/>
         <source>Robot output</source>
-        <translation>Вывод робота</translation>
+        <translation>Консоль робота</translation>
     </message>
 </context>
 <context>
