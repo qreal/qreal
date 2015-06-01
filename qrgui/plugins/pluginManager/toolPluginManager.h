@@ -25,7 +25,7 @@
 
 #include <qrutils/pluginManagers/pluginManager.h>
 #include <qrgui/preferencesDialog/preferencesPage.h>
-#include <qrutils/outputWidgets/outputWidget.h>
+#include <qrutils/outputWidget.h>
 
 #include <plugins/toolPluginInterface/toolPluginInterface.h>
 #include <plugins/toolPluginInterface/customizer.h>

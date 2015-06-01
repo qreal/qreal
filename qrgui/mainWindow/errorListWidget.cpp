@@ -25,15 +25,15 @@
 using namespace qReal::gui;
 
 ErrorListWidget::ErrorListWidget(QWidget *parent)
-	: OutputWidget(parent)
-	, mAction(tr("Show errors"), nullptr)
+	: OutputWidget(tr("Issues"), parent)
 {
 	setWidget(&mListWidget);
+	setObjectName("errorReporter");
 
 	connect(&mListWidget, &QListWidget::itemDoubleClicked, this, &ErrorListWidget::highlightElement);
 	initContextMenu();
 
-	mAction.setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
+	action()->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
 }
 
 void ErrorListWidget::highlightElement(QListWidgetItem* const item)
@@ -81,7 +81,7 @@ int ErrorListWidget::count() const
 void ErrorListWidget::clear()
 {
 	mListWidget.clear();
-	emit hideRequest();
+	hide();
 }
 
 void ErrorListWidget::addError(const Error &error)
@@ -100,7 +100,7 @@ void ErrorListWidget::addError(const Error &error)
 	mListWidget.setItemWidget(item, label);
 	mListWidget.setCurrentItem(item);
 
-	emit showRequest();
+	emit showMe();
 }
 
 QString ErrorListWidget::severityMessage(const Error &error)
@@ -133,16 +133,6 @@ QIcon ErrorListWidget::errorIcon(const Error &error)
 	default:
 		throw new Exception("Incorrect total severity");
 	}
-}
-
-QString ErrorListWidget::title() const
-{
-	return tr("Issues");
-}
-
-QAction *ErrorListWidget::action()
-{
-	return &mAction;
 }
 
 QString ErrorListWidget::shortcutName() const

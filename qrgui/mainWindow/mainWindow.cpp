@@ -1542,7 +1542,9 @@ void MainWindow::fullscreen()
 		hideDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		hideDockWidget(mUi->logicalModelDock, "logicalModel");
 		hideDockWidget(mUi->propertyDock, "propertyEditor");
-		hideDockWidget(mUi->outputDock, "output");
+		for (utils::OutputWidget *widget : mOutputWidgets) {
+			hideDockWidget(widget, widget->objectName());
+		}
 
 		mUi->actionFullscreen->setIcon(QIcon(":/mainWindow/images/unFullScreen.svg"));
 	} else {
@@ -1550,7 +1552,9 @@ void MainWindow::fullscreen()
 		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		showDockWidget(mUi->logicalModelDock, "logicalModel");
 		showDockWidget(mUi->propertyDock, "propertyEditor");
-		showDockWidget(mUi->outputDock, "output");
+		for (utils::OutputWidget *widget : mOutputWidgets) {
+			showDockWidget(widget, widget->objectName());
+		}
 
 		mUi->actionFullscreen->setIcon(QIcon(":/mainWindow/images/fullScreen.svg"));
 	}
@@ -1798,11 +1802,11 @@ void MainWindow::initTabs()
 void MainWindow::initDocks()
 {
 	mUi->paletteDock->setWidget(mUi->paletteTree);
-	initOutputDock();
+	initOutputDocks();
 	resetToolbarSize(SettingsManager::value("toolbarSize").toInt());
 }
 
-void MainWindow::initOutputDock()
+void MainWindow::initOutputDocks()
 {
 	mErrorListWidget = new ErrorListWidget;
 	connect(mErrorListWidget, &ErrorListWidget::highlightId, this, &MainWindow::selectItemWithError);
@@ -1812,22 +1816,37 @@ void MainWindow::initOutputDock()
 	for (utils::OutputWidget *widget : mToolManager.outputWidgets()) {
 		initOutputWidget(widget);
 	}
-
-	mUi->outputDock->setVisible(false);
-	mUi->outputTabs->setDock(mUi->outputDock);
 }
 
 void MainWindow::initOutputWidget(utils::OutputWidget *outputWidget)
 {
-	mUi->outputTabs->addWidget(outputWidget);
-	QAction *action = outputWidget->action();
-	if (!action) {
+	mOutputWidgets << outputWidget;
+	addDockWidget(Qt::BottomDockWidgetArea, outputWidget);
+	connect(outputWidget, &utils::OutputWidget::showMe, this, &MainWindow::showDock);
+
+	addAction(outputWidget->action());
+	HotKeyManager::setCommand(outputWidget->shortcutName(), outputWidget->action()->text(), outputWidget->action());
+	outputWidget->hide();
+}
+
+void MainWindow::showDock()
+{
+	utils::OutputWidget *outputWidget = dynamic_cast<utils::OutputWidget *>(sender());
+	if (!outputWidget) {
 		return;
 	}
 
-	addAction(action);
-	HotKeyManager::setCommand(outputWidget->shortcutName(), action->text(), action);
-	connect(action, &QAction::triggered, outputWidget, &utils::OutputWidget::toggleVisibility);
+	outputWidget->show();
+	if (tabifiedDockWidgets(outputWidget).isEmpty()) {
+		for (utils::OutputWidget *dock : findChildren<utils::OutputWidget *>()) {
+			if (dockWidgetArea(dock) == dockWidgetArea(outputWidget) && dock != outputWidget) {
+				tabifyDockWidget(dock, outputWidget);
+				break;
+			}
+		}
+	}
+
+	outputWidget->raise();
 }
 
 void MainWindow::initGridProperties()
@@ -1971,7 +1990,7 @@ QDockWidget *MainWindow::propertyEditorDock() const
 
 QDockWidget *MainWindow::errorReporterDock() const
 {
-	return mUi->outputDock;
+	return mErrorListWidget;
 }
 
 QDockWidget *MainWindow::paletteDock() const
@@ -2009,7 +2028,13 @@ bool MainWindow::restoreState(const QByteArray &state, int version)
 {
 	const bool result = QMainWindow::restoreState(state, version);
 	if (mErrorListWidget->count() == 0) {
-		mUi->outputDock->hide();
+		mErrorListWidget->hide();
+	}
+
+	for (utils::OutputWidget *widget : mOutputWidgets) {
+		if (widget != mErrorListWidget) {
+			widget->hide();
+		}
 	}
 
 	return result;

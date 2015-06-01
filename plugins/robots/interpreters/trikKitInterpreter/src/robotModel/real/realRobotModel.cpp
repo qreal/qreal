@@ -94,7 +94,7 @@ void RealRobotModel::configureOutput(qReal::ErrorReporterInterface *errorReporte
 {
 	utils::TcpRobotCommunicator::instance().setErrorReporter(errorReporter);
 	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::printText
-			, &outputWidget, &kitBase::RobotOutputWidget::print);
+			, &outputWidget, &kitBase::RobotOutputWidget::print, Qt::UniqueConnection);
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)

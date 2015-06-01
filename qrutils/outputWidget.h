@@ -12,20 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "outputWidget.h"
+#pragma once
 
-#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QAction>
 
-using namespace utils;
+namespace utils {
 
-OutputWidget::OutputWidget(QWidget *parent)
-	: QWidget(parent)
+/// Base class for widgets displaying something in a bottom dock. Can request its visibility change.
+class OutputWidget : public QDockWidget
 {
-	setLayout(new QVBoxLayout);
-	layout()->setContentsMargins(0, 0, 0, 0);
-}
+	Q_OBJECT
+public:
+	explicit OutputWidget(const QString &title, QWidget *parent = 0);
 
-void OutputWidget::setWidget(QWidget *widget)
-{
-	layout()->addWidget(widget);
+	QAction *action();
+
+	/// Returns a name of shortcut for registering in HotKeyManager.
+	virtual QString shortcutName() const = 0;
+
+signals:
+	void showMe();
+
+private:
+	QAction mAction;
+};
+
 }

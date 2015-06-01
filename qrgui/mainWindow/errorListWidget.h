@@ -20,7 +20,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrgui/mainWindow/error.h>
-#include <qrutils/outputWidgets/outputWidget.h>
+#include <qrutils/outputWidget.h>
 
 namespace qReal {
 namespace gui {
@@ -40,10 +40,6 @@ public:
 
 	/// Appends error to a list of messages.
 	void addError(const Error &error);
-
-	QString title() const override;
-
-	QAction *action() override;
 
 	QString shortcutName() const override;
 
@@ -65,7 +61,6 @@ private:
 
 	QListWidget mListWidget;
 	QMenu *mContextMenu;
-	QAction mAction;
 };
 
 }

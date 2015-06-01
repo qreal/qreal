@@ -19,36 +19,27 @@
 using namespace kitBase;
 
 RobotOutputWidget::RobotOutputWidget(QWidget *parent)
-	: utils::OutputWidget(parent)
-	, mAction(tr("Show robot output"), nullptr)
+	: utils::OutputWidget(tr("Robot output"), parent)
 {
 	setWidget(&mOutput);
 	mOutput.setReadOnly(true);
 
-	mAction.setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
+	setObjectName("robotOutput");
+
+	action()->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
 }
 
 void RobotOutputWidget::print(const QString &text)
 {
 	mOutput.appendPlainText(text);
 	mOutput.verticalScrollBar()->setValue(mOutput.verticalScrollBar()->maximum());
-	emit showRequest();
+	emit showMe();
 }
 
 void RobotOutputWidget::clear()
 {
 	mOutput.clear();
-	emit hideRequest();
-}
-
-QString RobotOutputWidget::title() const
-{
-	return tr("Robot output");
-}
-
-QAction *RobotOutputWidget::action()
-{
-	return &mAction;
+	hide();
 }
 
 QString RobotOutputWidget::shortcutName() const

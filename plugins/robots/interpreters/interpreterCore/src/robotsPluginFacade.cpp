@@ -82,7 +82,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mActionsManager.editModeAction()
 			, configurer.mainWindowDockInterface()
 			, configurer.systemEvents()
-			, mEventsForKitPlugin));
+			, mEventsForKitPlugin
+			, *mOutputWidget));
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()

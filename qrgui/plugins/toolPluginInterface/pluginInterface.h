@@ -21,7 +21,7 @@
 
 #include <qrrepo/repoControlInterface.h>
 #include <qrgui/preferencesDialog/preferencesPage.h>
-#include <qrutils/outputWidgets/outputWidget.h>
+#include <qrutils/outputWidget.h>
 
 #include "qrgui/plugins/toolPluginInterface/customizer.h"
 #include "qrgui/plugins/toolPluginInterface/pluginConfigurator.h"

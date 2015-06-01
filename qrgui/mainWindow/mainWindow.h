@@ -282,6 +282,8 @@ private slots:
 	void updatePaletteIcons();
 	void setTextChanged(bool changed);
 
+	void showDock();
+
 private:
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
@@ -357,7 +359,7 @@ private:
 	void initToolManager();
 	void initTabs();
 	void initDocks();
-	void initOutputDock();
+	void initOutputDocks();
 	void initOutputWidget(utils::OutputWidget *outputWidget);
 	void initExplorers();
 	void initRecentProjectsMenu();
@@ -386,7 +388,8 @@ private:
 	QModelIndex mRootIndex;
 
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
-	gui::ErrorListWidget *mErrorListWidget; // Doesn't have ownership.
+	gui::ErrorListWidget *mErrorListWidget; // Has ownership.
+	QList<utils::OutputWidget *> mOutputWidgets; // Has ownership.
 
 	/// Fullscreen mode flag
 	bool mIsFullscreen;

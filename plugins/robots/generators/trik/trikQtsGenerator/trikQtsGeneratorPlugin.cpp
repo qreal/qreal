@@ -45,7 +45,7 @@ void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configur
 	utils::TcpRobotCommunicator::instance().setErrorReporter(
 			configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
 	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::printText
-			, &configurator.outputWidget(), &kitBase::RobotOutputWidget::print);
+			, &configurator.outputWidget(), &kitBase::RobotOutputWidget::print, Qt::UniqueConnection);
 	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::startedRunning
 			, &configurator.outputWidget(), &kitBase::RobotOutputWidget::clear);
 }
