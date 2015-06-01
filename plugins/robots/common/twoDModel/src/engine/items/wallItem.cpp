@@ -85,7 +85,7 @@ QPointF WallItem::end()
 	return QPointF(x2(), y2()) + scenePos();
 }
 
-void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void WallItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
@@ -132,7 +132,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
-	const QRectF oldPos =  QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
+	const QRectF oldPos = QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
 
 	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		const QPointF pos = event->scenePos();

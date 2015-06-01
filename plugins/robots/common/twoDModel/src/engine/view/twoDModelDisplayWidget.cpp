@@ -22,7 +22,7 @@ TwoDModelDisplayWidget::TwoDModelDisplayWidget(QWidget *parent)
 {
 }
 
-void TwoDModelDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
+void TwoDModelDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	mPainter = painter;
 }

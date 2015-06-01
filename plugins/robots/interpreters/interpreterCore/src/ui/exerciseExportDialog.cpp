@@ -51,7 +51,7 @@ ExerciseExportDialog::ExerciseExportDialog(QWidget *parent)
 	mainLayout->addWidget(mRobotSetupReadOnlyCheckBox.data());
 	mainLayout->addWidget(mSimulationSettingsReadOnlyCheckBox.data());
 
-	QHBoxLayout * const buttonsLayout = new QHBoxLayout(this);
+	QHBoxLayout * const buttonsLayout = new QHBoxLayout();
 
 	mainLayout->addLayout(buttonsLayout);
 

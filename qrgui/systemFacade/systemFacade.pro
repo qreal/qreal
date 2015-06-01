@@ -20,7 +20,7 @@ TEMPLATE = lib
 
 QT += widgets
 
-links(qrkernel qslog qrgui-models qrgui-plugin-manager qrgui-text-editor qrgui-tool-plugin-interface)
+links(qrkernel qslog qrutils qrgui-models qrgui-plugin-manager qrgui-text-editor qrgui-tool-plugin-interface)
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_system_facade_ru.ts
 

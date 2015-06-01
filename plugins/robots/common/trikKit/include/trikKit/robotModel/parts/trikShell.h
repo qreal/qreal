@@ -33,6 +33,9 @@ public:
 	/// Run current command in the trik
 	virtual void runCommand(const QString &command) = 0;
 
+	/// Evaluates the given code on native runtime language.
+	virtual void runCode(const QString &code) = 0;
+
 	/// Force trik say the text
 	virtual void say(const QString &text) = 0;
 

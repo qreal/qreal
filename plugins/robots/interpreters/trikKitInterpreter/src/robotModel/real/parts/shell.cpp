@@ -43,6 +43,11 @@ void Shell::runCommand(const QString &command)
 	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
 }
 
+void Shell::runCode(const QString &code)
+{
+	utils::TcpRobotCommunicator::instance().runDirectCommand(code);
+}
+
 void Shell::writeToFile(const QString &filePath, const QString &text)
 {
 	const QString pathToCommand = ":/trikQts/templates/files/writeFile.t";

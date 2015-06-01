@@ -16,8 +16,7 @@
 
 #include <QtWidgets/QWidget>
 
-#include <qrutils/graphicsUtils/painterInterface.h>
-#include <qrutils/graphicsUtils/paintWidget.h>
+#include <qrutils/widgets/paintWidget.h>
 
 #include "twoDModel/engine/twoDModelDisplayWidget.h"
 
@@ -36,7 +35,7 @@ public:
 	explicit NxtDisplayWidget(QWidget *parent = 0);
 	~NxtDisplayWidget();
 
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
+	void setPainter(qReal::ui::PainterInterface *painter) override;
 
 	bool buttonIsDown(const QString &buttonId) const override;
 

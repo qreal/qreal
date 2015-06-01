@@ -21,12 +21,9 @@ HEADERS += \
 	$$PWD/pointImpl.h \
 	$$PWD/rotateItem.h \
 	$$PWD/rotater.h \
-	$$PWD/colorListEditor.h \
 	$$PWD/stylusImpl.h \
 	$$PWD/itemPopup.h \
 	$$PWD/gridDrawer.h \
-	$$PWD/paintWidget.h \
-	$$PWD/painterInterface.h \
 	$$PWD/animatedHighlighter.h \
 
 SOURCES += \
@@ -36,11 +33,9 @@ SOURCES += \
 	$$PWD/abstractItemView.cpp \
 	$$PWD/rectangleImpl.cpp \
 	$$PWD/pointImpl.cpp \
-	$$PWD/colorListEditor.cpp \
 	$$PWD/stylusImpl.cpp \
 	$$PWD/itemPopup.cpp \
 	$$PWD/rotateItem.cpp \
 	$$PWD/rotater.cpp \
 	$$PWD/gridDrawer.cpp \
-	$$PWD/paintWidget.cpp \
 	$$PWD/animatedHighlighter.cpp \

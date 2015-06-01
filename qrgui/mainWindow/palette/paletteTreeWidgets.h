@@ -69,6 +69,9 @@ public:
 	void customizeExplosionTitles(const QString &userGroupTitle
 			, const QString &userGroupDescription);
 
+	/// Filters contents of both trees showing only items whoose names matches the given regular expression.
+	void filter(const QRegExp &regexp);
+
 private:
 	void initWidgets();
 	void initWidget(PaletteTreeWidget * const tree);

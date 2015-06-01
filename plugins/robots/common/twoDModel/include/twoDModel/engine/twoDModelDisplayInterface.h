@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <qrutils/graphicsUtils/painterInterface.h>
+#include <qrutils/widgets/painterInterface.h>
 
 namespace twoDModel {
 namespace engine {
@@ -26,7 +26,7 @@ public:
 	virtual ~TwoDModelDisplayInterface() {}
 
 	/// Accepts the given painter and draws on the display area with it.
-	virtual void setPainter(graphicsUtils::PainterInterface *painter) = 0;
+	virtual void setPainter(qReal::ui::PainterInterface *painter) = 0;
 
 	/// Returns true if the given button is pressed in 2D model.
 	/// @todo Supposes polling, which is not very good for buttons.

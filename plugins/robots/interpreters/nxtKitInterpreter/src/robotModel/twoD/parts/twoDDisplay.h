@@ -30,7 +30,7 @@ const int textPixelWidth = 16;
 const int nxtDisplayHeight = 64;
 const int nxtDisplayWidth = 100;
 
-class Display : public robotModel::parts::NxtDisplay, public graphicsUtils::PainterInterface
+class Display : public robotModel::parts::NxtDisplay, public qReal::ui::PainterInterface
 {
 	Q_OBJECT
 

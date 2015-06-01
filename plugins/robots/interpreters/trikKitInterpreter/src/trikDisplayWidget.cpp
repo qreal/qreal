@@ -33,7 +33,7 @@ TrikDisplayWidget::~TrikDisplayWidget()
 	delete mUi;
 }
 
-void TrikDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
+void TrikDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	TwoDModelDisplayWidget::setPainter(painter);
 	mUi->display->appendPainter(painter);

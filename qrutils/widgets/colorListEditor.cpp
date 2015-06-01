@@ -14,7 +14,7 @@
 
 #include "colorListEditor.h"
 
-using namespace graphicsUtils;
+using namespace qReal::ui;
 
 const QString customStyle =
 		"QComboBox { background: %1; border: 0px; border-radius: 2px; selection-background-color: transparent; }"\
@@ -59,9 +59,8 @@ void ColorListEditor::setColor(const QColor &color)
 
 void ColorListEditor::populateList()
 {
-	QStringList colorNames = mColorList;
-	for (int i = 0; i < colorNames.size(); ++i) {
-		const QColor color(colorNames[i]);
+	for (int i = 0; i < mColorList.size(); ++i) {
+		const QColor color(mColorList[i]);
 		insertItem(i, mMinimalistic ? QString() : mTranslatedColorList[i]);
 		setItemData(i, color, Qt::DecorationRole);
 	}

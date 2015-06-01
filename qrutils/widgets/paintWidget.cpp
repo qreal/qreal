@@ -12,20 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "paintWidget.h"
 
-#include <QtGui/QPainter>
+using namespace qReal::ui;
 
-#include "qrutils/utilsDeclSpec.h"
-
-namespace graphicsUtils {
-
-class QRUTILS_EXPORT PainterInterface
+PaintWidget::PaintWidget(QWidget *parent)
+	: QWidget(parent)
 {
-public:
-	virtual ~PainterInterface() {}
-	virtual void paint(QPainter *painter) = 0;
-	virtual void reset() = 0;
-};
+}
 
+void PaintWidget::paintEvent(QPaintEvent *event)
+{
+	QWidget::paintEvent(event);
+	QPainter painter(this);
+
+	for (PainterInterface * const painterIface : mPainters) {
+		painterIface->paint(&painter);
+	}
+}
+
+void PaintWidget::appendPainter(PainterInterface *painter)
+{
+	mPainters << painter;
 }
