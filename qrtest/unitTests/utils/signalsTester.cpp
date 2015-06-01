@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "signalsTester.h"
 
 #include <algorithm>
@@ -10,7 +24,7 @@ SignalsTester::SignalsTester(OrderEnum order)
 	: mInOrder(order)
 {
 	mTimer.setSingleShot(true);
-	connect(&mMapper, static_cast<void (QSignalMapper::*)(QString const &)>(&QSignalMapper::mapped)
+	connect(&mMapper, static_cast<void (QSignalMapper::*)(const QString &)>(&QSignalMapper::mapped)
 			, this, &SignalsTester::onSignal);
 
 	connect(&mTimer, &QTimer::timeout, this, &SignalsTester::onTimeout);
@@ -21,16 +35,16 @@ SignalsTester::~SignalsTester()
 	qDeleteAll(mSenders);
 }
 
-bool SignalsTester::isSignalEmitted(QString const &signalName) const
+bool SignalsTester::isSignalEmitted(const QString &signalName) const
 {
 	return mSignals.contains(signalName) && mSignals.value(signalName) > 0;
 }
 
-void SignalsTester::onSignal(QString const &signalName)
+void SignalsTester::onSignal(const QString &signalName)
 {
 	if (mSignals.contains(signalName)) {
 		if (mInOrder == inOrder) {
-			for (QString const &signal : mSignalsOrder) {
+			for (const QString &signal : mSignalsOrder) {
 				if (signal == signalName) {
 					break;
 				} else if (mSignals.value(signal) == 0) {

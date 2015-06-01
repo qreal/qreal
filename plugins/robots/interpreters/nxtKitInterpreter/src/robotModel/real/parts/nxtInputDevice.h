@@ -1,11 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/abstractSensor.h>
+#include <kitBase/robotModel/robotParts/abstractSensor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
 #include "commandConstants.h"
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace robotModel {
 namespace real {
 namespace parts {
@@ -25,16 +39,16 @@ public:
 
 	NxtInputDevice(
 			utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, interpreterBase::robotModel::PortInfo const &port
-			, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
-			, enums::sensorMode::SensorModeEnum const &sensorMode);
+			, const kitBase::robotModel::PortInfo &port
+			, const enums::lowLevelSensorType::SensorTypeEnum &lowLevelSensorType
+			, const enums::sensorMode::SensorModeEnum &sensorMode);
 
 	/// Sends configuration buffer into the real device. When configuration is done configured() singal is emitted.
 	void configure();
 
 	/// Sends given buffer to a real device.
 	/// @param responseSize An expected size of the responce buffer.
-	void send(QByteArray const &buffer, unsigned const responseSize);
+	void send(const QByteArray &buffer, const unsigned responseSize);
 
 	/// Returns a state of the communication with the device.
 	State state() const;
@@ -50,16 +64,16 @@ public:
 
 signals:
 	/// Emitted when responce buffer has unknown data and must be processed by the concrete device.
-	void sensorSpecificProcessResponse(QByteArray const &reading);
+	void sensorSpecificProcessResponse(const QByteArray &reading);
 
 	/// Emitted when the configuration process is done.
 	void configured(bool success);
 
 private slots:
-	void readingDone(QObject *addressee, QByteArray const &reading);
+	void readingDone(QObject *addressee, const QByteArray &reading);
 
 private:
-	void processResponse(QByteArray const &reading);
+	void processResponse(const QByteArray &reading);
 
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 	char mLowLevelPort;

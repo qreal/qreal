@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtGeneratorBase/nxtMasterGeneratorBase.h"
 
 #include "nxtGeneratorCustomizer.h"
@@ -5,13 +19,14 @@
 
 using namespace nxt;
 
-NxtMasterGeneratorBase::NxtMasterGeneratorBase(qrRepo::RepoApi const &repo
+NxtMasterGeneratorBase::NxtMasterGeneratorBase(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const utils::ParserErrorReporter &parserErrorReporter
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
+	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, parserErrorReporter, diagramId)
 	, mGeneratorName(generatorName)
 {
 }
@@ -36,10 +51,10 @@ void NxtMasterGeneratorBase::afterGeneration()
 	saveImages(mProjectDir);
 }
 
-void NxtMasterGeneratorBase::saveImages(QString const &projectDir)
+void NxtMasterGeneratorBase::saveImages(const QString &projectDir)
 {
 	QMap<QString, QImage> &images = static_cast<NxtGeneratorFactory *>(mCustomizer->factory())->images().bmpFiles();
-	for (QString const &fileName : images.keys()) {
+	for (const QString &fileName : images.keys()) {
 		images[fileName].save(projectDir + '/' + fileName + ".bmp", "BMP", -1);
 	}
 }

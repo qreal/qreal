@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -29,18 +43,18 @@ public:
 	/// @param id Command id.
 	/// @param label Short description of command
 	/// @param command QAction object which contains shortcuts and with whom connection is performed.
-	static void setCommand(QString const &id, QString const &label, QAction *command);
+	static void setCommand(const QString &id, const QString &label, QAction *command);
 
-	static void deleteCommand(QString const &id);
+	static void deleteCommand(const QString &id);
 
 	/// Sets a new shortcut to existing command
 	/// @param id Command id
 	/// @param keyseq Shortcut
-	static bool setShortcut(QString const &id, QKeySequence const &keyseq);
+	static bool setShortcut(const QString &id, const QKeySequence &keyseq);
 
-	static void resetShortcuts(QString const &id);
+	static void resetShortcuts(const QString &id);
 	static void resetAllShortcuts();
-	static void deleteShortcut(QString const &id, QString const &shortcut);
+	static void deleteShortcut(const QString &id, const QString &shortcut);
 
 	static QHash<QString, QAction *> commands();
 	static QHash<QString, QString> shortcuts();
@@ -52,21 +66,21 @@ private:
 
 	void operator=(HotKeyManager const&);
 
-	void registerCommand(QString const &id, QAction *command);
+	void registerCommand(const QString &id, QAction *command);
 
-	bool registerShortcut(QString const &id, QKeySequence const &keyseq);
-	void registerShortcut(QString const &id, QString const &shortcut);
+	bool registerShortcut(const QString &id, const QKeySequence &keyseq);
+	void registerShortcut(const QString &id, const QString &shortcut);
 
-	void findShortcut(QString const &shortcut);
+	void findShortcut(const QString &shortcut);
 
-	void resetShortcutsPrivate(QString const &id);
+	void resetShortcutsPrivate(const QString &id);
 	void resetAllShortcutsPrivate();
-	void deleteShortcutPrivate(QString const &id, QString const &shortcut);
+	void deleteShortcutPrivate(const QString &id, const QString &shortcut);
 
-	void deleteCommandPrivate(QString const &id);
-	bool hasPrefixOf(QString const &keyseq);
-	void addPrefixes(QString const &keyseq);
-	void deletePrefixes(QString const &keyseq);
+	void deleteCommandPrivate(const QString &id);
+	bool hasPrefixOf(const QString &keyseq);
+	void addPrefixes(const QString &keyseq);
+	void deletePrefixes(const QString &keyseq);
 
 	QHash<QString, QAction *> commandsPrivate();
 	QHash<QString, QString> shortcutsPrivate();

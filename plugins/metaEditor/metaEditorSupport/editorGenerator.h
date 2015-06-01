@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -27,10 +41,12 @@ private:
 	void createEdge(QDomElement &parent, qReal::Id const &id);
 	void createEnum(QDomElement &parent, qReal::Id const &id);
 	void createPort(QDomElement &parent, qReal::Id const &id);
+	void createGroup(QDomElement &parent, const qReal::Id &id);
 	void setProperties(QDomElement &parent, qReal::Id const &id);
 	void setPorts(QDomElement &parent, qReal::Id const &id, QString const &direction);
 	void setContextMenuFields(QDomElement &parent, qReal::Id const &id);
 	void setValues(QDomElement &parent, qReal::Id const &id);
+	void setGroupNodes(QDomElement &parent, const qReal::Id &id);
 	void setAssociations(QDomElement &parent, qReal::Id const &id);
 	void setUsages(QDomElement &parent, qReal::Id const &id);
 	void setConnections(QDomElement &parent, qReal::Id const &id);
@@ -44,6 +60,7 @@ private:
 	void setContainerProperties(QDomElement &parent, qReal::Id const &id);
 	void setExplosion(QDomElement &parent, qReal::Id const &id);
 	void setExplosionProperties(QDomElement &target, qReal::Id const &linkId);
+	void setDividability(QDomElement &parent, const qReal::Id &id);
 	void newSetConnections(QDomElement &parent, const qReal::Id &id
 			, QString const &commonTagName, QString const &internalTagName, QString const &typeName);
 	void ensureCorrectness(qReal::Id const &id, QDomElement element, QString const &tagName, QString const &value);
@@ -55,6 +72,8 @@ private:
 	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);
 	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
 	static void generateTranslations(QString const &path, QString const &name, QString const &qrealRoot);
+
+	void checkRootNodeValid(qReal::Id const &diagram, QString const rootNode);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

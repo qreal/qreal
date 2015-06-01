@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "label.h"
 #include "../metaCompiler.h"
 
@@ -5,7 +19,7 @@
 
 using namespace qrmc;
 
-bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
+bool Label::init(const QDomElement &element, int index, bool nodeLabel, int width, int height)
 {
 	initCoordinate(mX, element.attribute("x", "0"), width);
 	initCoordinate(mY, element.attribute("y", "0"), height);
@@ -67,7 +81,7 @@ QString Label::generateUpdate(MetaCompiler *compiler) const
 			.replace(labelIndexTag, QString::number(mIndex));
 }
 
-QStringList Label::getListOfStr(QString const &strToParse) const
+QStringList Label::getListOfStr(const QString &strToParse) const
 {
 	return strToParse.split("##");
 }
@@ -85,7 +99,7 @@ QString Label::generateCodeForUpdateData() const
 		}
 	} else {
 		int counter = 1;
-		foreach (QString const &listElement, list) {
+		foreach (const QString &listElement, list) {
 			QString field;
 			if (counter % 2 == 0) {
 				if (listElement == "name") {

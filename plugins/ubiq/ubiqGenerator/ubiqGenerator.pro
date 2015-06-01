@@ -1,14 +1,28 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+include(../../../global.pri)
+
 TEMPLATE = lib
 
 CONFIG += plugin
-CONFIG += c++11
 
-DESTDIR = ../../../bin/plugins/
+copyToDestdir(templates)
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
+DESTDIR = $$DESTDIR/plugins/tools
 
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
+links(qrkernel qrutils)
 
 HEADERS = \
 	customizer.h \
@@ -16,23 +30,13 @@ HEADERS = \
 	generator.h \
 	messageGenerator.h \
 	customClassGenerator.h \
-	#abstractGenerator.h \
-	dispatcherGenerator.h
+	dispatcherGenerator.h \
 
 SOURCES = \
 	ubiqGeneratorPlugin.cpp \
 	generator.cpp \
 	messageGenerator.cpp \
 	customClassGenerator.cpp \
-	#abstractGenerator.cpp \
-	dispatcherGenerator.cpp
+	dispatcherGenerator.cpp \
 
-win32 {
-	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
-}
-else {
-	QMAKE_POST_LINK = "mkdir ../../../bin/templates/ && cp -r templates ../../../bin/templates/ "
-}
-
-
-
+QT += widgets

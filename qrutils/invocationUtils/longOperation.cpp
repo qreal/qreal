@@ -1,13 +1,27 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "longOperation.h"
 
 using namespace invocation;
 
 LongOperation::LongOperation(int timeout)
-	: mThread(NULL)
+	: mThread(nullptr)
 	, mIsOperationWithProgress(false)
 	, mProgress(new Progress)
 	, mTimeout(timeout)
-	, mTimer(NULL)
+	, mTimer(nullptr)
 {
 }
 
@@ -23,7 +37,7 @@ bool LongOperation::hasProgress() const
 
 invocation::Progress *LongOperation::progress() const
 {
-	return (mIsOperationWithProgress) ? mProgress : NULL;
+	return (mIsOperationWithProgress) ? mProgress : nullptr;
 }
 
 bool LongOperation::isRunning() const
@@ -38,7 +52,7 @@ invocation::InvocationState LongOperation::invocationResult() const
 
 void LongOperation::invoceSync(QThread::Priority priority)
 {
-  // TODO: start timer in another thread to get timeouts work
+	// TODO: start timer in another thread to get timeouts work
 	startInvocation(priority);
 	mThread->wait();
 }

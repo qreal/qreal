@@ -1,6 +1,21 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "singleXmlSerializer.h"
 
-#include "../../qrutils/outFile.h"
+#include <qrutils/outFile.h>
+
 #include "classes/logicalObject.h"
 #include "classes/graphicalObject.h"
 #include "valuesSerializer.h"
@@ -8,7 +23,7 @@
 using namespace qrRepo::details;
 using namespace qReal;
 
-void SingleXmlSerializer::exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects)
+void SingleXmlSerializer::exportToXml(const QString &targetFile, QHash<qReal::Id, Object*> const &objects)
 {
 	Q_ASSERT_X(!targetFile.isEmpty(), "XmlSerializer::exportTo(...)", "target filename is empty");
 
@@ -16,7 +31,7 @@ void SingleXmlSerializer::exportToXml(QString const &targetFile, QHash<qReal::Id
 	QDomElement root = doc.createElement("project");
 	doc.appendChild(root);
 
-	foreach (Id const &id, objects[Id::rootId()]->children()) {
+	foreach (const Id &id, objects[Id::rootId()]->children()) {
 
 		// skip logical elements of diagrams
 		if (objects[id]->isLogicalObject()) {
@@ -30,11 +45,12 @@ void SingleXmlSerializer::exportToXml(QString const &targetFile, QHash<qReal::Id
 	doc.save(out(), 4);
 }
 
-void SingleXmlSerializer::exportDiagram(Id const &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void SingleXmlSerializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomElement &root
+		, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement diagram = doc.createElement("diagram");
 
-	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[diagramId]);
+	const GraphicalObject * const graphicalObject = dynamic_cast<const GraphicalObject *>(objects[diagramId]);
 	if (graphicalObject) {
 		diagram.setAttribute("logical_id", graphicalObject->logicalId().toString());
 	}
@@ -45,7 +61,7 @@ void SingleXmlSerializer::exportDiagram(Id const &diagramId, QDomDocument &doc, 
 
 	QDomElement elements = doc.createElement("elements");
 
-	foreach (Id const &id, objects[diagramId]->children()) {
+	foreach (const Id &id, objects[diagramId]->children()) {
 		exportElement(id, doc, elements, objects);
 	}
 
@@ -54,13 +70,14 @@ void SingleXmlSerializer::exportDiagram(Id const &diagramId, QDomDocument &doc, 
 	root.appendChild(diagram);
 }
 
-void SingleXmlSerializer::exportElement(Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void SingleXmlSerializer::exportElement(const Id &id, QDomDocument &doc, QDomElement &root
+		, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement element = doc.createElement("element");
 	element.setAttribute("name", objects[id]->properties()["name"].toString());
 	element.setAttribute("graphical_id", id.toString());
 
-	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[id]);
+	const GraphicalObject * const graphicalObject = dynamic_cast<const GraphicalObject *>(objects[id]);
 	if (graphicalObject) {
 		element.setAttribute("logical_id", graphicalObject->logicalId().toString());
 	}
@@ -71,7 +88,8 @@ void SingleXmlSerializer::exportElement(Id const &id, QDomDocument &doc, QDomEle
 	root.appendChild(element);
 }
 
-void SingleXmlSerializer::exportChildren(Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void SingleXmlSerializer::exportChildren(const Id &id, QDomDocument &doc, QDomElement &root
+		, QHash<qReal::Id, Object*> const &objects)
 {
 	Object *object = objects[id];
 	int size = object->children().size();
@@ -82,20 +100,21 @@ void SingleXmlSerializer::exportChildren(Id const &id, QDomDocument &doc, QDomEl
 	QDomElement children = doc.createElement("children");
 	children.setAttribute("count", size);
 
-	foreach (Id const &id, object->children()) {
+	foreach (const Id &id, object->children()) {
 		exportElement(id, doc, children, objects);
 	}
 
 	root.appendChild(children);
 }
 
-void SingleXmlSerializer::exportProperties(Id const&id, QDomDocument &doc, QDomElement &root, QHash<Id, Object *> const &objects)
+void SingleXmlSerializer::exportProperties(const Id&id, QDomDocument &doc, QDomElement &root
+		, QHash<Id, Object *> const &objects)
 {
 	QDomElement props = doc.createElement("properties");
 
-	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[id]);
-	LogicalObject const * const logicalObject
-			= dynamic_cast<LogicalObject const *>(objects[graphicalObject->logicalId()]);
+	const GraphicalObject * const graphicalObject = dynamic_cast<const GraphicalObject *>(objects[id]);
+	const LogicalObject * const logicalObject
+			= dynamic_cast<const LogicalObject *>(objects[graphicalObject->logicalId()]);
 
 	QMap<QString, QVariant> properties;
 
@@ -112,7 +131,7 @@ void SingleXmlSerializer::exportProperties(Id const&id, QDomDocument &doc, QDomE
 		properties[i.key()] = i.value();
 	}
 
-	foreach (QString const &key, properties.keys()) {
+	foreach (const QString &key, properties.keys()) {
 		QDomElement prop = doc.createElement("property");
 
 		QString typeName = properties[key].typeName();

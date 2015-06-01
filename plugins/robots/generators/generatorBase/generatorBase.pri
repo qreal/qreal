@@ -1,14 +1,26 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 QT += widgets
 
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui \
-	$$PWD/../../../../qrutils \
-	$$PWD/../../interpreters/interpreterBase/include \
-	$$PWD/../../../../qrtext/include \
+includes(plugins/robots/generators/generatorBase \
+		qrutils \
+		qrtext \
+		plugins/robots/common/kitBase \
+)
 
-LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lqrtext -lrobots-interpreter-base
+links(qrkernel qslog qrutils qrrepo qrtext qrgui-tool-plugin-interface robots-kit-base)
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
@@ -16,7 +28,6 @@ TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_
 
 HEADERS += \
 	$$PWD/include/generatorBase/robotsGeneratorDeclSpec.h \
-	$$PWD/include/generatorBase/generatorKitPluginInterface.h \
 	$$PWD/include/generatorBase/robotsGeneratorPluginBase.h \
 	$$PWD/include/generatorBase/masterGeneratorBase.h \
 	$$PWD/include/generatorBase/generatorCustomizer.h \
@@ -36,6 +47,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/semanticTree/switchNode.h \
 	$$PWD/include/generatorBase/semanticTree/loopNode.h \
 	$$PWD/include/generatorBase/semanticTree/forkNode.h \
+	$$PWD/include/generatorBase/semanticTree/joinNode.h \
 	$$PWD/include/generatorBase/semanticTree/rootNode.h \
 	$$PWD/include/generatorBase/parts/variables.h \
 	$$PWD/include/generatorBase/parts/subprograms.h \
@@ -67,6 +79,7 @@ HEADERS += \
 	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.h \
 	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.h \
 	$$PWD/src/rules/forkRules/forkRule.h \
+	$$PWD/src/rules/joinRules/joinRule.h \
 	$$PWD/src/rules/switchRules/switchInitializationRule.h \
 	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.h \
 
@@ -99,6 +112,7 @@ SOURCES += \
 	$$PWD/src/semanticTree/switchNode.cpp \
 	$$PWD/src/semanticTree/loopNode.cpp \
 	$$PWD/src/semanticTree/forkNode.cpp \
+	$$PWD/src/semanticTree/joinNode.cpp \
 	$$PWD/src/semanticTree/rootNode.cpp \
 	$$PWD/src/rules/semanticTransformationRule.cpp \
 	$$PWD/src/rules/simpleRules/simpleBlockRuleBase.cpp \
@@ -115,6 +129,7 @@ SOURCES += \
 	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.cpp \
 	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.cpp \
 	$$PWD/src/rules/forkRules/forkRule.cpp \
+	$$PWD/src/rules/joinRules/joinRule.cpp \
 	$$PWD/src/rules/switchRules/switchInitializationRule.cpp \
 	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.cpp \
 	$$PWD/src/gotoControlFlowGenerator.cpp \
@@ -155,6 +170,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/forLoopGenerator.h \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.h \
 	$$PWD/src/simpleGenerators/forkCallGenerator.h \
+	$$PWD/src/simpleGenerators/joinGenerator.h \
 	$$PWD/src/simpleGenerators/switchGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
 	$$PWD/src/simpleGenerators/timerGenerator.h \
@@ -180,6 +196,10 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
+	$$PWD/src/simpleGenerators/randomInitGenerator.h \
+	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.h \
+	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.h \
+	$$PWD/src/simpleGenerators/killThreadGenerator.h \
 	$$PWD/src/lua/luaPrinter.h \
 	$$PWD/src/lua/reservedFunctionsConverter.h \
 
@@ -212,6 +232,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/forLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/forkCallGenerator.cpp \
+	$$PWD/src/simpleGenerators/joinGenerator.cpp \
 	$$PWD/src/simpleGenerators/switchGenerator.cpp \
 	$$PWD/src/simpleGenerators/bindingGenerator.cpp \
 	$$PWD/src/simpleGenerators/binding.cpp \
@@ -240,6 +261,10 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/labelGenerator.cpp \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/variableInitGenerator.cpp \
+	$$PWD/src/simpleGenerators/randomInitGenerator.cpp \
+	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.cpp \
+	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
+	$$PWD/src/simpleGenerators/killThreadGenerator.cpp \
 	$$PWD/src/lua/luaProcessor.cpp \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \

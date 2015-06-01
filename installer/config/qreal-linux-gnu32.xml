@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>QReal</Name>
+    <Version>1.0.0</Version>
+    <Title>QReal</Title>
+    <Publisher>SPbSU</Publisher>
+    <ProductUrl>http://qreal.ru</ProductUrl>
+
+    <InstallerWindowIcon>../images/qreal.ico</InstallerWindowIcon>
+    <InstallerApplicationIcon>../images/qreal.ico</InstallerApplicationIcon>
+    <Logo>../images/qreal-logo.png</Logo>
+    <Watermark>../images/qreal-watermark.png</Watermark>
+
+    <StartMenuDir>TRIK Studio</StartMenuDir>
+    <UninstallerName>maintenance</UninstallerName>
+    <RemoveTargetDir>true</RemoveTargetDir>
+    <AllowSpaceInPath>false</AllowSpaceInPath>
+    <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
+
+    <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
+    <TargetDir>@HomeDir@QReal</TargetDir>
+    <AdminTargetDir>@RootDir@QReal</AdminTargetDir>
+
+<!-- TODO: Due to some issues in QtIFW if user modifies initial target dir RunProgram is still substitutes here initial value. Uncomment it when fixed -->
+<!--    <RunProgram>@TargetDir@/qreal</RunProgram> -->
+
+    <RemoteRepositories>
+        <Repository>
+            <Url>http://195.19.241.150/packages/qreal-repo-linux-gnu32/</Url>
+        </Repository>
+    </RemoteRepositories>
+</Installer>

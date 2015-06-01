@@ -1,11 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/parts/engines.h"
 
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Engines::Engines(QString const &pathToTemplates
-		, simple::Binding::ConverterInterface const *outputPortConverter
-		, simple::Binding::MultiConverterInterface const *outputPortsConverter)
+Engines::Engines(const QString &pathToTemplates
+		, const simple::Binding::ConverterInterface *outputPortConverter
+		, const simple::Binding::MultiConverterInterface *outputPortsConverter)
 	: InitTerminateCodeGenerator(pathToTemplates)
 	, mOutputPortConverter(outputPortConverter)
 	, mOutputPortsConverter(outputPortsConverter)
@@ -33,24 +47,24 @@ QString Engines::terminateCode()
 	return readEngineTemplate("termination/motor.t");
 }
 
-QString Engines::readEngineTemplate(QString const &pathToTemplate)
+QString Engines::readEngineTemplate(const QString &pathToTemplate)
 {
 	QStringList result;
-	foreach (QString const &port, mUsedPorts) {
+	foreach (const QString &port, mUsedPorts) {
 		result << readTemplateIfExists(pathToTemplate).replace("@@PORT@@", port);
 	}
 
 	return result.join('\n');
 }
 
-void Engines::registerUsageOnPort(QString const &outputPort)
+void Engines::registerUsageOnPort(const QString &outputPort)
 {
 	mUsedPorts << mOutputPortConverter->convert(outputPort);
 }
 
-void Engines::registerUsageOnPorts(QString const &outputPorts)
+void Engines::registerUsageOnPorts(const QString &outputPorts)
 {
-	foreach (QString const &port, mOutputPortsConverter->convert(outputPorts)) {
+	foreach (const QString &port, mOutputPortsConverter->convert(outputPorts)) {
 		mUsedPorts << port;
 	}
 }

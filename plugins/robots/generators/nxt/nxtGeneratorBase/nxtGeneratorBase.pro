@@ -1,35 +1,37 @@
-QT += widgets
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-CONFIG += c++11
+TARGET = robots-nxt-generator-base
+
+include(../../../../../global.pri)
+
+QT += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
 
-DESTDIR = $$PWD/../../../../../bin/
-TARGET = robots-nxt-generator-base
+includes(plugins/robots/generators/nxt/nxtGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/nxtKit \
+		plugins/robots/utils \
+		qrtext \
+)
 
-MOC_DIR = .moc
-RCC_DIR = .moc
-OBJECTS_DIR = .obj
-
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lrobots-generator-base
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-nxt-kit robots-kit-base)
 
 DEFINES += ROBOTS_NXT_GENERATOR_BASE_LIBRARY
-
-INCLUDEPATH += \
-	$$PWD/include \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
-
-# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-!macx {
-	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../../../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
-}
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtGeneratorBase_ru.ts
 
@@ -40,6 +42,7 @@ HEADERS += \
 	$$PWD/include/nxtGeneratorBase/nxtGeneratorFactory.h \
 	$$PWD/include/nxtGeneratorBase/parts/images.h \
 	$$PWD/src/nxtGeneratorCustomizer.h \
+	$$PWD/src/robotModel/nxtGeneratorRobotModel.h \
 	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.h \
@@ -54,6 +57,7 @@ SOURCES += \
 	$$PWD/src/nxtMasterGeneratorBase.cpp \
 	$$PWD/src/nxtGeneratorCustomizer.cpp \
 	$$PWD/src/nxtGeneratorFactory.cpp \
+	$$PWD/src/robotModel/nxtGeneratorRobotModel.cpp \
 	$$PWD/src/parts/images.cpp \
 	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawBlockGenerator.cpp \

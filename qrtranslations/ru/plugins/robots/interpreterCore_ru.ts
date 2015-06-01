@@ -449,32 +449,32 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Trik Studio</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="11"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="25"/>
         <source>TRIK Studio</source>
         <translation>TRIK Studio</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="50"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="47"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="55"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="69"/>
         <source>Configure devices</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="64"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="80"/>
         <source>Sensors state</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="79"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="69"/>
         <source>Subprograms</source>
         <translation>Подпрограммы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="84"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="74"/>
         <source>The list of all declared subprograms in the project</source>
         <translation>Список всех объявленных в проекте подпрограмм</translation>
     </message>
@@ -483,24 +483,24 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Дисплей</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="38"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="53"/>
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
         <translation>Конфигурация сенсоров противоречива. Проверьте, что в указанные в программе используются два разных сенсора на одном порту</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="10"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="26"/>
         <source>sensor</source>
         <oldsource>Sensor</oldsource>
         <translation>sensor</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="11"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="27"/>
         <source>encoder</source>
         <oldsource>Encoder</oldsource>
         <translation>encoder</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="12"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="28"/>
         <source>time</source>
         <translation>time</translation>
     </message>
@@ -525,7 +525,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">2D модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="15"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="30"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -534,34 +534,47 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="16"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="31"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="17"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="32"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="19"/>
-        <source>Text under pictogram</source>
-        <translation>Текст под пиктограммами</translation>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="34"/>
+        <source>Save as task...</source>
+        <translation>Сохранить как упражнение...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="78"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="35"/>
+        <source>Switch to debug mode</source>
+        <translation>Переключиться в режим отладки</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="36"/>
+        <source>Switch to edit mode</source>
+        <translation>Переключиться в режим редактирования</translation>
+    </message>
+    <message>
+        <source>Text under pictogram</source>
+        <translation type="vanished">Текст под пиктограммами</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="93"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="79"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="94"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="82"/>
         <source>Toggle titles visibility</source>
-        <translation>Показать/скрыть встроенные редакторы свойств</translation>
+        <translation type="vanished">Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
         <source>Switch to 2d model</source>
@@ -576,7 +589,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="18"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="33"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -585,9 +598,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="35"/>
         <source>Robots</source>
-        <translation>Роботы</translation>
+        <translation type="vanished">Роботы</translation>
     </message>
     <message>
         <source>Add connection</source>
@@ -673,6 +685,16 @@ p, li { white-space: pre-wrap; }
         <source>Gyroscope</source>
         <translation type="vanished">Гироскоп</translation>
     </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/exerciseExportManager.cpp" line="65"/>
+        <source>Select file to export save to</source>
+        <translation>Укажите имя файла, в который будет сохранено упражнение</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/exerciseExportManager.cpp" line="67"/>
+        <source>QReal Save File(*.qrs)</source>
+        <translation>Файл сохранения TRIK Studio (*.qrs)</translation>
+    </message>
 </context>
 <context>
     <name>SensorsConfigurationWidget</name>
@@ -696,15 +718,19 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ActionsManager</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="193"/>
         <source>Switch to </source>
-        <translation>Переключиться в режим </translation>
+        <translation type="vanished">Переключиться в режим </translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="259"/>
+        <source>Switch to</source>
+        <translation>Переключиться в режим</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::DefaultRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/defaultRobotModel.cpp" line="17"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/defaultRobotModel.cpp" line="31"/>
         <source>Empty model</source>
         <translation>Пустая модель</translation>
     </message>
@@ -719,122 +745,126 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="100"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="126"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
 </context>
 <context>
+    <name>interpreterCore::UiManager</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="58"/>
+        <source>edit mode</source>
+        <translation>режим редактирования</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="59"/>
+        <source>debug mode</source>
+        <translation>режим отладки</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="149"/>
+        <source>Edit mode</source>
+        <translation>Режим редактирования</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="152"/>
+        <source>Debug mode</source>
+        <translation>Режим отладки</translation>
+    </message>
+</context>
+<context>
     <name>interpreterCore::coreBlocks::details::CommentBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/commentBlock.cpp" line="14"/>
         <source>The comment block with incoming links detected!</source>
-        <translation>Блок &quot;Комментарий&quot; не может иметь входящих связей!</translation>
+        <translation type="vanished">Блок &quot;Комментарий&quot; не может иметь входящих связей!</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::ForkBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/forkBlock.cpp" line="22"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/forkBlock.cpp" line="34"/>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
-        <translation>Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
+        <translation type="vanished">Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/forkBlock.cpp" line="39"/>
         <source>There must be at least two outgoing links</source>
-        <translation>Должно быть как минимум две исходящие связи</translation>
+        <translation type="vanished">Должно быть как минимум две исходящие связи</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::IfBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="23"/>
         <source>There must be exactly TWO links outgoing from if block</source>
-        <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
+        <translation type="vanished">От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="30"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="39"/>
         <source>Two links marked with &apos;true&apos; found</source>
-        <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
+        <translation type="vanished">Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="46"/>
         <source>Two links marked with &apos;false&apos; found</source>
-        <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
+        <translation type="vanished">Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="53"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
-        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+        <translation type="vanished">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::LoopBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="30"/>
         <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
-        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
+        <translation type="vanished">Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="35"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="44"/>
         <source>Two links marked as &quot;iteration&quot; found</source>
-        <translation>Найдено две связи, помеченные как &quot;итерация&quot;</translation>
+        <translation type="vanished">Найдено две связи, помеченные как &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/loopBlock.cpp" line="64"/>
         <source>There must be a non-marked outgoing link</source>
-        <translation>Должна быть непомеченная исходящая связь</translation>
+        <translation type="vanished">Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::SubprogramBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/subprogramBlock.cpp" line="22"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
-        <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
+        <translation type="vanished">Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::SwitchBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="23"/>
         <source>There must be at list TWO links outgoing from switch block</source>
-        <translation>От блока выбора должно отходить минимум ДВЕ связи</translation>
+        <translation type="vanished">От блока выбора должно отходить минимум ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="30"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="39"/>
         <source>There must be exactly one link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="44"/>
         <source>Duplicate case branch: &apos;%1&apos;</source>
-        <translation>Найдено более одной ветки &apos;%1&apos;</translation>
+        <translation type="vanished">Найдено более одной ветки &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="53"/>
         <source>There must be a link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
     </message>
 </context>
 <context>
@@ -881,43 +911,56 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="69"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="144"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="84"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="157"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="74"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="89"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="123"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="136"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="129"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="142"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="197"/>
+        <source>Cannot create new thread with already occupied id %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="211"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="233"/>
+        <source>Killing non-existent thread %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="242"/>
+        <source>Sending message to non-existent thread %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::interpreter::details::Thread</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/thread.cpp" line="85"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
-        <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
+        <translation type="vanished">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/thread.cpp" line="90"/>
         <source>Stack overflow</source>
-        <translation>Переполнение стека</translation>
+        <translation type="vanished">Переполнение стека</translation>
     </message>
 </context>
 <context>
@@ -932,16 +975,110 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>interpreterCore::ui::ExerciseExportDialog</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="31"/>
+        <source>Select non-modifiable parts of exercize</source>
+        <translation>Выберите неизменяемые части упражнения</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="33"/>
+        <source>2d model world is read only</source>
+        <translation>Двумерная модель неизменяема</translation>
+    </message>
+    <message>
+        <source>2d model sensor positions are read only</source>
+        <translation type="vanished">Расположение сенсоров в двумерной модели неизменяемо</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="34"/>
+        <source>Sensors are read only</source>
+        <translation>Положение и конфигурация сенсоров неизменяемы</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="35"/>
+        <source>2d model robot position is read only</source>
+        <translation>Начальное положение робота в двумерной модели неизменяемо</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="36"/>
+        <source>Motors to wheels binding is read only</source>
+        <translation>Соответствие портов моторов и колёс неизменяемо</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="37"/>
+        <source>2d model simulation settings are read only</source>
+        <translation>Настройки симуляции двумерной модели (физика, шумы и т.д.) неизменяемы</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="58"/>
+        <source>Ok</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/exerciseExportDialog.cpp" line="62"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
+    <name>interpreterCore::ui::ModeStripe</name>
+    <message>
+        <source>&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b&gt;%1&lt;/b&gt; - press %2 or click here to switch to %3</source>
+        <translation type="vanished">&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b&gt;%1&lt;/b&gt; - нажмите %2 или кликните здесь для переключения в %3</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/modeStripe.cpp" line="22"/>
+        <source>press %2 or click here to switch to %3</source>
+        <translation>нажмите %2 или кликните здесь для переключения в %3</translation>
+    </message>
+</context>
+<context>
     <name>interpreterCore::ui::RobotsSettingsPage</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="62"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="78"/>
         <source>No constructor kit plugins loaded</source>
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="186"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="212"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
+    </message>
+</context>
+<context>
+    <name>interpreterCore::ui::SaveAsTaskDialog</name>
+    <message>
+        <source>Select non-modifiable parts of exercize</source>
+        <translation type="vanished">Выберите неизменяемые части упражнения</translation>
+    </message>
+    <message>
+        <source>2d model world is read only</source>
+        <translation type="vanished">Двумерная модель неизменяема</translation>
+    </message>
+    <message>
+        <source>2d model sensor positions are read only</source>
+        <translation type="vanished">Расположение сенсоров в двумерной модели неизменяемо</translation>
+    </message>
+    <message>
+        <source>2d model robot position is read only</source>
+        <translation type="vanished">Начальное положение робота в двумерной модели неизменяемо</translation>
+    </message>
+    <message>
+        <source>Robot configuration is read only</source>
+        <translation type="vanished">Соответствие моторов портам неизменяемо</translation>
+    </message>
+    <message>
+        <source>2d model simulation settings are read only</source>
+        <translation type="vanished">Настройки симуляции двумерной модели (физика, шумы и т.д.) неизменяемы</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="vanished">ОК</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отмена</translation>
     </message>
 </context>
 <context>

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "textPicture.h"
 
 TextPicture::TextPicture()
@@ -9,7 +23,7 @@ TextPicture::TextPicture()
 	mIsDynamicText = false;
 }
 
-TextPicture::TextPicture(int x, int y, QString const &text)
+TextPicture::TextPicture(int x, int y, const QString &text)
 	: Text()
 {
 	mDomElementType = pictureType;
@@ -19,12 +33,12 @@ TextPicture::TextPicture(int x, int y, QString const &text)
 	init(x, y, text);
 }
 
-TextPicture::TextPicture(TextPicture const &other)
+TextPicture::TextPicture(const TextPicture &other)
 	: Text()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = pictureType;
 	mX1 = other.mX1;
 	mY1 = other.mY1;
@@ -50,7 +64,7 @@ void TextPicture::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	painter->setFont(mFont);
-	painter->setPen(mPen);
+	painter->setPen(pen());
 	mText.setVisible(false);
 	qreal x = mX1;
 	qreal y = mY1;
@@ -97,12 +111,12 @@ QString TextPicture::name() const
 	return mText.toPlainText();
 }
 
-void TextPicture::setPoint(QPoint const &point)
+void TextPicture::setPoint(const QPoint &point)
 {
 	setPos(point);
 }
 
-void TextPicture::setTextName(QString const &name)
+void TextPicture::setTextName(const QString &name)
 {
 	mText.setPlainText(name);
 }
@@ -117,9 +131,9 @@ void TextPicture::setFontPixelSize(int size)
 	mFont.setPixelSize(size);
 }
 
-void TextPicture::setFontColor(QString const &text)
+void TextPicture::setFontColor(const QString &text)
 {
-	mPen.setColor(QColor(text));
+	setPen(QPen(QColor(text)));
 }
 
 void TextPicture::setFontItalic(bool isChecked)
@@ -137,13 +151,13 @@ void TextPicture::setFontUnderline(bool isChecked)
 	mFont.setUnderline(isChecked);
 }
 
-void TextPicture::readFont(QDomElement const &docItem)
+void TextPicture::readFont(const QDomElement &docItem)
 {
 	QDomElement dom = docItem;
 	if(!dom.isNull()) {
 		if (dom.hasAttribute("font-fill")) {
-			QColor color = dom.attribute("font-fill");
-			mPen.setColor(color);
+			const QColor color = dom.attribute("font-fill");
+			setPen(QPen(color));
 		}
 
 		if (dom.hasAttribute("font-size")) {
@@ -179,10 +193,10 @@ void TextPicture::readFont(QDomElement const &docItem)
 	}
 }
 
-QDomElement TextPicture::setFontToDoc(QDomDocument &document, QString const &domName)
+QDomElement TextPicture::setFontToDoc(QDomDocument &document, const QString &domName)
 {
 	QDomElement dom = document.createElement(domName);
-	dom.setAttribute("font-fill", mPen.color().name());
+	dom.setAttribute("font-fill", pen().color().name());
 	dom.setAttribute("font-size", mFont.pixelSize());
 	dom.setAttribute("font-name", mFont.family());
 	dom.setAttribute("i", mFont.italic() ? "1" : "0");
@@ -193,11 +207,11 @@ QDomElement TextPicture::setFontToDoc(QDomDocument &document, QString const &dom
 }
 
 QPair<QDomElement, Item::DomElementTypes> TextPicture::generateItem(QDomDocument &document
-		, QPoint const &topLeftPicture)
+		, const QPoint &topLeftPicture)
 {
 	QDomElement text = setFontToDoc(document, "text");
-	int const x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
-	int const y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
+	const int x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
+	const int y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y1", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x1", setSingleScaleForDoc(0, x1, y1));
 

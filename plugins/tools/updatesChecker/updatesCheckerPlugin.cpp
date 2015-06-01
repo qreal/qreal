@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "updatesCheckerPlugin.h"
 
 #include <QtWidgets/QApplication>
@@ -13,20 +27,20 @@
 using namespace updatesChecker;
 
 UpdatesCheckerPlugin::UpdatesCheckerPlugin()
-	: mSeparator(nullptr)
-	, mCheckForUpdatesAction(tr("Check for updates"), nullptr)
+	: mSeparator(new QAction(nullptr))
+	, mCheckForUpdatesAction(new QAction(tr("Check for updates"), nullptr))
 {
-	mSeparator.setSeparator(true);
-	connect(&mCheckForUpdatesAction, &QAction::triggered, this, &UpdatesCheckerPlugin::checkForUpdates);
+	mSeparator->setSeparator(true);
+	connect(mCheckForUpdatesAction, &QAction::triggered, this, &UpdatesCheckerPlugin::checkForUpdates);
 }
 
 QList<qReal::ActionInfo> UpdatesCheckerPlugin::actions()
 {
-	return { qReal::ActionInfo(&mSeparator, "", "help")
-		, qReal::ActionInfo(&mCheckForUpdatesAction, "", "help") };
+	return { qReal::ActionInfo(mSeparator, "", "help")
+		, qReal::ActionInfo(mCheckForUpdatesAction, "", "help") };
 }
 
-void UpdatesCheckerPlugin::init(qReal::PluginConfigurator const &configurator)
+void UpdatesCheckerPlugin::init(const qReal::PluginConfigurator &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mMainWindowWidget = configurator.mainWindowInterpretersInterface().windowWidget();
@@ -84,6 +98,7 @@ void UpdatesCheckerPlugin::showUpdatesDialog()
 		updater->start();
 
 		QLOG_INFO() << "Shutting down to install it";
+		QApplication::closeAllWindows();
 		QApplication::quit();
 	}
 }

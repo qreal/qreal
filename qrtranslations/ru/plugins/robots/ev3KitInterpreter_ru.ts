@@ -51,11 +51,26 @@
     </message>
 </context>
 <context>
-    <name>ev3KitInterpreter::Ev3KitInterpreterPlugin</name>
+    <name>ev3::Ev3KitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="29"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="43"/>
         <source>Lego EV3</source>
         <translation>Лего EV3</translation>
+    </message>
+</context>
+<context>
+    <name>ev3::robotModel::real::RealRobotModel</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/realRobotModel.cpp" line="50"/>
+        <source>Interpretation (USB, Bluetooth)</source>
+        <translation>Интерпретация (USB, Bluetooth)</translation>
+    </message>
+</context>
+<context>
+    <name>ev3KitInterpreter::Ev3KitInterpreterPlugin</name>
+    <message>
+        <source>Lego EV3</source>
+        <translation type="vanished">Лего EV3</translation>
     </message>
 </context>
 <context>
@@ -75,25 +90,22 @@
 <context>
     <name>ev3KitInterpreter::blocks::details::SpeakerBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/blocks/details/speakerBlock.cpp" line="31"/>
         <source>Speaker is not configured (WTF?)</source>
-        <translation>Динамик не сконфигурирован</translation>
+        <translation type="vanished">Динамик не сконфигурирован</translation>
     </message>
 </context>
 <context>
     <name>ev3KitInterpreter::robotModel::parts::Ev3Motor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/parts/ev3Motor.h" line="13"/>
         <source>Motor</source>
-        <translation>Мотор</translation>
+        <translation type="vanished">Мотор</translation>
     </message>
 </context>
 <context>
     <name>ev3KitInterpreter::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/realRobotModel.cpp" line="35"/>
         <source>Real Robot EV3</source>
-        <translation>Реальный робот</translation>
+        <translation type="vanished">Реальный робот</translation>
     </message>
 </context>
 </TS>

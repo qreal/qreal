@@ -1,9 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "qrtext/core/ast/binaryOperator.h"
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/precedenceTable.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
 namespace qrtext {
 namespace core {
@@ -16,8 +32,8 @@ public:
 	/// Constructor for general case, takes precedence table, parser for primary expression and parser for binary
 	/// operator.
 	ExpressionParser(QSharedPointer<PrecedenceTable<TokenType>> const &precedenceTable
-			, ParserRef<TokenType> const &primary
-			, ParserRef<TokenType> const &binOp)
+			, const ParserRef<TokenType> &primary
+			, const ParserRef<TokenType> &binOp)
 		: mPrecedenceTable(precedenceTable)
 		, mStartPrecedence(0)
 		, mPrimary(primary)
@@ -53,37 +69,41 @@ private:
 	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream, ParserContext<TokenType> &parserContext
 			, int currentPrecedence) const
 	{
-		auto resultAst = mPrimary->parse(tokenStream, parserContext);
+		QSharedPointer<ast::Node> resultAst = mPrimary->parse(tokenStream, parserContext);
 
-		if (!resultAst) {
-			// There was an error, which shall be already reported.
-			return wrap(nullptr);
+		if (resultAst->is<TemporaryErrorNode>()) {
+			return resultAst;
 		}
 
 		while (mPrecedenceTable->binaryOperators().contains(tokenStream.next().token())
 				&& mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary) >= currentPrecedence)
 		{
-			int const newPrecedence = mPrecedenceTable->associativity(tokenStream.next().token()) == Associativity::left
+			const int newPrecedence = mPrecedenceTable->associativity(tokenStream.next().token()) == Associativity::left
 					? 1 + mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary)
 					: mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary)
 					;
 
-			auto binOpResult = mBinOp->parse(tokenStream, parserContext);
-
-			auto rightOperandResult = parse(tokenStream, parserContext, newPrecedence);
+			const QSharedPointer<ast::Node> binOpResult = mBinOp->parse(tokenStream, parserContext);
+			if (binOpResult->is<TemporaryErrorNode>()) {
+				// There was an error when parsing binary operator, it shall be already reported.
+				return binOpResult;
+			}
 
 			auto op = as<ast::BinaryOperator>(binOpResult);
 			if (!op) {
-				// There was an error when parsing binary operator, it shall be already reported.
-				return wrap(nullptr);
+				parserContext.reportInternalError(QObject::tr("Binary operator in expression is of the wrong type"));
+				return wrap(new TemporaryErrorNode());
+			}
+
+			const QSharedPointer<ast::Node> rightOperandResult = parse(tokenStream, parserContext, newPrecedence);
+			if (rightOperandResult->is<TemporaryErrorNode>()) {
+				return rightOperandResult;
+			} else if (rightOperandResult->is<TemporaryDiscardableNode>()) {
+				parserContext.reportError(QObject::tr("Right operand required"));
+				return wrap(new TemporaryErrorNode());
 			}
 
 			op->setLeftOperand(resultAst);
-
-			if (!rightOperandResult) {
-				parserContext.reportError(QObject::tr("Right operand required"));
-			}
-
 			op->setRightOperand(rightOperandResult);
 			resultAst = op;
 		}
@@ -92,10 +112,10 @@ private:
 	}
 
 	QSharedPointer<PrecedenceTable<TokenType>> mPrecedenceTable;
-	int const mStartPrecedence;
+	const int mStartPrecedence;
 
-	ParserRef<TokenType> const mPrimary;
-	ParserRef<TokenType> const mBinOp;
+	const ParserRef<TokenType> mPrimary;
+	const ParserRef<TokenType> mBinOp;
 };
 
 }

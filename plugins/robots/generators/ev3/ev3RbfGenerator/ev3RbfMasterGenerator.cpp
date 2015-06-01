@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "ev3RbfMasterGenerator.h"
 
 #include <qrtext/languageToolboxInterface.h>
 #include <qrutils/stringUtils.h>
+#include <QtCore/QDir>
 
 #include <generatorBase/parts/initTerminateCodeGenerator.h>
 #include <generatorBase/gotoControlFlowGenerator.h>
@@ -16,15 +31,16 @@ using namespace qReal;
 
 Ev3RbfMasterGenerator::Ev3RbfMasterGenerator(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const utils::ParserErrorReporter &parserErrorReporter
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, qReal::Id const &diagramId
 		, QString const &generatorName)
-	: Ev3MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId, generatorName)
+	: Ev3MasterGeneratorBase(repo, errorReporter, parserErrorReporter, robotModelManager, textLanguage, diagramId, generatorName)
 {
 }
 
-QString Ev3RbfMasterGenerator::generate()
+QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 {
 	if (mDiagram.isNull()) {
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
@@ -47,9 +63,9 @@ QString Ev3RbfMasterGenerator::generate()
 	mErrorReporter.addInformation(tr("Generating code with 'goto' statements."));
 	semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 	if (gotoMainControlFlow) {
-		mainCode = gotoMainControlFlow->toString(1);
+		mainCode = gotoMainControlFlow->toString(1, indentString);
 		bool const gotoSubprogramsResult = mCustomizer->factory()
-				->subprograms()->generate(mGotoControlFlowGenerator);
+				->subprograms()->generate(mGotoControlFlowGenerator, indentString);
 		if (!gotoSubprogramsResult) {
 			mainCode = QString();
 		}
@@ -65,21 +81,21 @@ QString Ev3RbfMasterGenerator::generate()
 	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
 	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
 	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
-	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations());
+	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations(indentString));
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->initCode(), 1));
+			mCustomizer->factory()->initCode(), 1, indentString));
 	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->terminateCode(), 1));
+			mCustomizer->factory()->terminateCode(), 1, indentString));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->isrHooksCode(), 1));
+			mCustomizer->factory()->isrHooksCode(), 1, indentString));
 	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
 	processGeneratedCode(resultCode);
 
-	QString const pathToOutput = targetPath();
+	const QString pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
 
 	afterGeneration();

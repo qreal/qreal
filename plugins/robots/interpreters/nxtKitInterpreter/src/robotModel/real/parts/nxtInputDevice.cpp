@@ -1,15 +1,29 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtInputDevice.h"
 
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
+using namespace nxt::robotModel::real::parts;
 using namespace utils;
 
 NxtInputDevice::NxtInputDevice(
 		utils::robotCommunication::RobotCommunicator &robotCommunicator
-		, interpreterBase::robotModel::PortInfo const &port
-		, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
-		, enums::sensorMode::SensorModeEnum const &sensorMode)
+		, const kitBase::robotModel::PortInfo &port
+		, const enums::lowLevelSensorType::SensorTypeEnum &lowLevelSensorType
+		, const enums::sensorMode::SensorModeEnum &sensorMode)
 	: mRobotCommunicator(robotCommunicator)
 	, mLowLevelPort(port.name().at(0).toLatin1() - '1')
 	, mLowLevelSensorType(lowLevelSensorType)
@@ -22,14 +36,14 @@ NxtInputDevice::NxtInputDevice(
 			, this, &NxtInputDevice::readingDone);
 }
 
-void NxtInputDevice::readingDone(QObject *addressee, QByteArray const &reading)
+void NxtInputDevice::readingDone(QObject *addressee, const QByteArray &reading)
 {
 	if (addressee == this) {
 		processResponse(reading);
 	}
 }
 
-void NxtInputDevice::processResponse(QByteArray const &reading)
+void NxtInputDevice::processResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
 		mState = idle;
@@ -80,7 +94,7 @@ void NxtInputDevice::configure()
 	send(command, 5);
 }
 
-void NxtInputDevice::send(QByteArray const &buffer, unsigned const responseSize)
+void NxtInputDevice::send(const QByteArray &buffer, const unsigned responseSize)
 {
 	mRobotCommunicator.send(this, buffer, responseSize);
 }

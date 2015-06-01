@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtXml/QDomElement>
@@ -16,7 +30,7 @@ public:
 	Type(bool isResolved, Diagram *diagram);
 	virtual ~Type();
 	virtual Type* clone() const = 0;
-	virtual bool init(QDomElement const &element, QString const &context);
+	virtual bool init(const QDomElement &element, const QString &context);
 	virtual bool resolve() = 0;
 	virtual bool isResolving() const;
 	bool isResolved() const;
@@ -28,10 +42,10 @@ public:
 
 	QMap<QString, Property*> properties() const;
 
-	void setName(QString const &name);
+	void setName(const QString &name);
 	void setDiagram(Diagram *diagram);
-	void setContext(QString const &newContext);
-	void setDisplayedName(QString const &displayedName);
+	void setContext(const QString &newContext);
+	void setDisplayedName(const QString &displayedName);
 	virtual void generateCode(utils::OutFile &out) = 0;
 	virtual void generateNameMapping(utils::OutFile &out) = 0;
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;

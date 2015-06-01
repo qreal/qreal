@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QDir>
@@ -28,7 +42,7 @@ public:
 	ToolPluginManager();
 	~ToolPluginManager();
 
-	void init(PluginConfigurator const &configurator);
+	void init(const PluginConfigurator &configurator);
 	void updateSettings();
 	QList<ActionInfo> actions() const;
 	QList<QPair<QString, gui::PreferencesPage *> > preferencesPages() const;
@@ -43,12 +57,11 @@ public:
 	/// Returns GUI customizer object. In each QReal's instance there should be only one plugin with
 	/// valid customizationInterface(): robots plugin for QReal:Robots, ubiq plugin for QReal:Ubiq etc.
 	/// If there're more than one plugin of that kind, it is not specified which one will be used.
-	Customizer *customizer() const;
+	const Customizer *customizer() const;
 
-	/// Notifies plugins about change of currently open tab. If last tab is closed or current
-	/// tab is not diagram at all (text editor, for example), rootElementId is Id()
-	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
-	void activeTabChanged(Id const & rootElementId);
+	/// Notifies plugins about change of currently open tab. The passed in parameter structure contains information
+	/// about newly opened tab (or maybe null info in case of last tab is closed).
+	void activeTabChanged(const TabInfo &info);
 
 private:
 	/// Asks plugins for custom default settings and merges them with engine`s ones.
@@ -59,7 +72,7 @@ private:
 	QList<ToolPluginInterface *> mPlugins;
 
 	/// An object and that is used to customize GUI with values from plugins
-	Customizer mCustomizer;
+	const Customizer mCustomizer;
 
 	/// Common part of all plugin managers
 	PluginManager mPluginManager;

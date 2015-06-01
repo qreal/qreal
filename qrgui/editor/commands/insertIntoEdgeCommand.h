@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "editor/editorViewScene.h"
@@ -16,11 +30,11 @@ public:
 			, models::LogicalModelAssistApi &logicalAssistApi
 			, models::GraphicalModelAssistApi &graphicalAssistApi
 			, models::Exploser &exploser
-			, Id const &firstElem
-			, Id const &lastElem
-			, Id const &parent
-			, QPointF const &scenePos
-			, QPointF const &shift
+			, const Id &firstElem
+			, const Id &lastElem
+			, const Id &parent
+			, const QPointF &scenePos
+			, const QPointF &shift
 			, bool isFromLogicalModel
 			, CreateElementCommand *createCommand = 0);
 
@@ -31,7 +45,7 @@ protected:
 	virtual bool restoreState();
 
 private:
-	void initCommand(CreateElementCommand *&command, Id const &type);
+	void initCommand(CreateElementCommand *&command, const Id &type);
 	void makeLink(CreateElementCommand *command, NodeElement *src, NodeElement *dst);
 
 	EditorViewScene &mScene;

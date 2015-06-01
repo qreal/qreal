@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "modelsAssistApi.h"
 
 #include "models/details/modelsImplementation/abstractModel.h"
@@ -7,18 +21,18 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManagerInterface const &editorManagerInterface)
+ModelsAssistApi::ModelsAssistApi(AbstractModel &model, const EditorManagerInterface &editorManagerInterface)
 	: mModel(model), mEditorManagerInterface(editorManagerInterface)
 {
 }
 
-EditorManagerInterface const &ModelsAssistApi::editorManagerInterface() const
+const EditorManagerInterface &ModelsAssistApi::editorManagerInterface() const
 {
 	return mEditorManagerInterface;
 }
 
-Id ModelsAssistApi::createElement(Id const &parent, Id const &id, Id const &logicalId
-		, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id ModelsAssistApi::createElement(const Id &parent, const Id &id, const Id &logicalId
+		, bool isFromLogicalModel, const QString &name, const QPointF &position)
 {
 	Q_ASSERT(parent.idSize() == 4);
 	Id newId = id;
@@ -32,33 +46,33 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, Id const &logi
 	return newId;
 }
 
-void ModelsAssistApi::setProperty(Id const &elem, QVariant const &newValue, int const role)
+void ModelsAssistApi::setProperty(const Id &elem, const QVariant &newValue, const int role)
 {
 	mModel.setData(indexById(elem), newValue, role);
 }
 
-void ModelsAssistApi::stackBefore(Id const &element, Id const &sibling)
+void ModelsAssistApi::stackBefore(const Id &element, const Id &sibling)
 {
 	mModel.stackBefore(indexById(element), indexById(sibling));
 }
 
-QVariant ModelsAssistApi::property(Id const &elem, int const role) const
+QVariant ModelsAssistApi::property(const Id &elem, const int role) const
 {
 	return mModel.data(indexById(elem), role);
 }
 
-int ModelsAssistApi::roleIndexByName(Id const &elem, QString const &roleName) const
+int ModelsAssistApi::roleIndexByName(const Id &elem, const QString &roleName) const
 {
-	QStringList const properties = editorManagerInterface().propertyNames(elem.type());
+	const QStringList properties = editorManagerInterface().propertyNames(elem.type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
 
-QModelIndex ModelsAssistApi::indexById(Id const &id) const
+QModelIndex ModelsAssistApi::indexById(const Id &id) const
 {
 	return mModel.indexById(id);
 }
 
-Id ModelsAssistApi::idByIndex(QModelIndex const &index) const
+Id ModelsAssistApi::idByIndex(const QModelIndex &index) const
 {
 	return mModel.idByIndex(index);
 }
@@ -88,22 +102,22 @@ Id ModelsAssistApi::rootId() const
 	return idByIndex(mModel.rootIndex());
 }
 
-void ModelsAssistApi::setTo(Id const &elem, Id const &newValue)
+void ModelsAssistApi::setTo(const Id &elem, const Id &newValue)
 {
 	setProperty(elem, newValue.toVariant(), roles::toRole);
 }
 
-Id ModelsAssistApi::to(Id const &elem) const
+Id ModelsAssistApi::to(const Id &elem) const
 {
 	return property(elem, roles::toRole).value<Id>();
 }
 
-void ModelsAssistApi::setFrom(Id const &elem, Id const &newValue)
+void ModelsAssistApi::setFrom(const Id &elem, const Id &newValue)
 {
 	setProperty(elem, newValue.toVariant(), roles::fromRole);
 }
 
-Id ModelsAssistApi::from(Id const &elem) const
+Id ModelsAssistApi::from(const Id &elem) const
 {
 	return property(elem, roles::fromRole).value<Id>();
 }

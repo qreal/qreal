@@ -1,10 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
 #include <QtCore/QUrl>
-#include <QtCore/QHash>
-#include <QtCore/QMetaType>
 #include <QtCore/QDebug>
 
 #include "kernelDeclSpec.h"
@@ -21,7 +31,7 @@ public:
 	/// Loads Id from string in format "qrm:/<editor>/<diagram>/<element>/<id>".
 	/// @param string A string from which we must load Id.
 	/// @returns Loaded Id.
-	static Id loadFromString(QString const &string);
+	static Id loadFromString(const QString &string);
 
 	/// Creates element Id, assigning to its first three parts values passed as
 	/// parameters and generating new GUID for "id" part.
@@ -29,7 +39,7 @@ public:
 	/// @param diagram Diagram name of an element (tab in a palette).
 	/// @param element Type name of an element ("Class", for example).
 	/// @returns Created element Id.
-	static Id createElementId(QString const &editor, QString const &diagram, QString const &element);
+	static Id createElementId(const QString &editor, const QString &diagram, const QString &element);
 
 	/// Root Id for a model tree stored in repository.
 	/// @returns Root id.
@@ -40,7 +50,7 @@ public:
 	/// @param diagram Diagram part of an Id (palette tab name).
 	/// @param element Element part of an Id (element type name).
 	/// @param id Id part of an, mm, Id. Represents identity of a model element.
-	explicit Id(QString const &editor = "", QString  const &diagram = ""
+	explicit Id(const QString &editor = "", QString  const &diagram = ""
 			, QString  const &element = "", QString  const &id = "");
 
 	/// Convenience constructor, creates Id by given base Id adding new part as
@@ -48,7 +58,7 @@ public:
 	/// constructs diagram Id.
 	/// @param base Id that will be extended.
 	/// @param additional Part of Id that will be added to base Id.
-	Id(Id const &base, QString const &additional);
+	Id(const Id &base, const QString &additional);
 
 	/// Returns true if this id is an empty one (same as == Id())
 	bool isNull() const;
@@ -95,7 +105,7 @@ private:
 };
 
 /// Id equality operator. Ids are equal when all their parts are equal.
-inline bool operator==(Id const &i1, Id const &i2)
+inline bool operator==(const Id &i1, const Id &i2)
 {
 	return i1.editor() == i2.editor()
 			&& i1.diagram() == i2.diagram()
@@ -104,26 +114,26 @@ inline bool operator==(Id const &i1, Id const &i2)
 }
 
 /// Id inequality operator.
-inline bool operator!=(Id const &i1, Id const &i2)
+inline bool operator!=(const Id &i1, const Id &i2)
 {
 	return !(i1 == i2);
 }
 
 /// Comparison operator for using Id in maps
-inline bool operator<(Id const &i1, Id const &i2)
+inline bool operator<(const Id &i1, const Id &i2)
 {
 	return i1.toString() < i2.toString();
 }
 
 /// Hash function for Id for using it in QHash.
-inline uint qHash(Id const &key)
+inline uint qHash(const Id &key)
 {
 	return qHash(key.editor()) ^ qHash(key.diagram()) ^ qHash(key.element())
 			^ qHash(key.id());
 }
 
 /// Operator for printing Id in QDebug.
-inline QDebug operator<<(QDebug dbg, Id const &id)
+inline QDebug operator<<(QDebug dbg, const Id &id)
 {
 	dbg << id.toString();
 	return dbg.space();
@@ -136,7 +146,7 @@ typedef QList<Id> IdList;
 class QRKERNEL_EXPORT IdListHelper
 {
 public:
-	static QVariant toVariant(IdList const &list);
+	static QVariant toVariant(const IdList &list);
 };
 
 typedef Id Metatype;
@@ -147,5 +157,5 @@ Q_DECLARE_METATYPE(qReal::Id)
 
 Q_DECLARE_METATYPE(qReal::IdList)
 
-QRKERNEL_EXPORT QDataStream& operator<< (QDataStream &out, qReal::Id const &id);
+QRKERNEL_EXPORT QDataStream& operator<< (QDataStream &out, const qReal::Id &id);
 QRKERNEL_EXPORT QDataStream& operator>> (QDataStream &in, qReal::Id &id);

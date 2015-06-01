@@ -1,13 +1,27 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "twoDDisplay.h"
 
-using namespace trikKitInterpreter::robotModel::twoD::parts;
-using namespace interpreterBase::robotModel;
+using namespace trik::robotModel::twoD::parts;
+using namespace kitBase::robotModel;
 
 /// @todo: This constant adjusts screen coordinates shift. It must be 0.
-int const yDisplayShift = 8;
+const int yDisplayShift = 8;
 
-Display::Display(DeviceInfo const &info
-		, PortInfo const &port
+Display::Display(const DeviceInfo &info
+		, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikDisplay(info, port)
 	, mEngine(engine)
@@ -18,7 +32,7 @@ Display::Display(DeviceInfo const &info
 	mEngine.display()->setPainter(this);
 }
 
-void Display::setPainterColor(QColor const &color)
+void Display::setPainterColor(const QColor &color)
 {
 	mCurrentPenColor = color;
 }
@@ -64,13 +78,13 @@ void Display::drawSmile(bool sad)
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::setBackground(QColor const &color)
+void Display::setBackground(const QColor &color)
 {
 	mBackground = color;
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::printText(int x, int y, QString const &text)
+void Display::printText(int x, int y, const QString &text)
 {
 	mLabels[qMakePair(x, y + yDisplayShift)] = {text, mCurrentPenColor};
 	mEngine.display()->repaintDisplay();
@@ -78,8 +92,8 @@ void Display::printText(int x, int y, QString const &text)
 
 void Display::clearScreen()
 {
+	// Background color is not cleared
 	mCurrentImage = QImage();
-	mBackground = Qt::transparent;
 	mLabels.clear();
 	mPixels.clear();
 	mLines.clear();
@@ -95,7 +109,7 @@ void Display::clearScreen()
 
 void Display::paint(QPainter *painter)
 {
-	QRect const displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
+	const QRect displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
 	painter->save();
 	painter->setPen(mBackground);
 	painter->setBrush(mBackground);

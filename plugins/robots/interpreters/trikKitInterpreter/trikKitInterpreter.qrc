@@ -12,5 +12,7 @@
         <file>icons/smile.png</file>
         <file>icons/twoDColorEmpty.svg</file>
         <file>icons/twoDVideoModule.svg</file>
+        <file>icons/twoDIrRangeSensor.svg</file>
+        <file>icons/twoDUsRangeSensor.svg</file>
     </qresource>
 </RCC>

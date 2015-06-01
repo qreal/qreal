@@ -1,52 +1,57 @@
-QT += widgets network
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-CONFIG += c++11
+TARGET = robots-trik-f-sharp-generator
+
+include(../../../../../global.pri)
+
+QT += widgets network
 
 TEMPLATE = lib
 CONFIG += plugin
 
-DESTDIR = $$PWD/../../../../../bin/plugins/tools/kitPlugins/
-TARGET = robots-trik-f-sharp-generator
+copyToDestdir($$PWD/lib/Trik.Core.dll)
 
-MOC_DIR = .moc
-RCC_DIR = .moc
-OBJECTS_DIR = .obj
+DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
-		-lrobots-generator-base -lrobots-trik-generator-base -lrobots-utils \
+includes(plugins/robots/generators/trik/trikGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		plugins/robots/utils \
+		qrtext \
+)
 
-INCLUDEPATH += \
-	$$PWD/../trikGeneratorBase/include/ \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../utils/include/ \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
-
-win32 {
-	QMAKE_POST_LINK = "cmd /C "copy lib\\Trik.Core.dll ..\\..\\..\\..\\..\\bin /y""
-}
-else {
-	QMAKE_POST_LINK = "cp lib/Trik.Core.dll ../../../../../bin"
-}
-
-# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-!macx {
-	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../../../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
-}
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base robots-utils \
+		qrgui-preferences-dialog robots-kit-base \
+)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpGenerator_ru.ts
 
 HEADERS += \
 	$$PWD/trikFSharpGeneratorPlugin.h \
 	$$PWD/trikFSharpMasterGenerator.h \
+	$$PWD/trikFSharpAdditionalPreferences.h \
+	$$PWD/trikFSharpControlFlowValidator.h \
 
 SOURCES += \
 	$$PWD/trikFSharpGeneratorPlugin.cpp \
 	$$PWD/trikFSharpMasterGenerator.cpp \
+	$$PWD/trikFSharpAdditionalPreferences.cpp \
+	$$PWD/trikFSharpControlFlowValidator.cpp \
+
+FORMS += \
+	$$PWD/trikFSharpAdditionalPreferences.ui \
 
 RESOURCES = \
 	$$PWD/trikFSharpGenerator.qrc \

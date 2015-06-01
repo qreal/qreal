@@ -39,12 +39,12 @@ public:
 		LexerFunction fnLexer_,
 		const char *languageName_=0,
 		LexerFunction fnFolder_=0,
-		const char * const wordListDescriptions_[] = NULL,
+		const char * const wordListDescriptions_[] = nullptr,
 		int styleBits_=5);
 	LexerModule(int language_,
 		LexerFactoryFunction fnFactory_,
 		const char *languageName_,
-		const char * const wordListDescriptions_[] = NULL,
+		const char * const wordListDescriptions_[] = nullptr,
 		int styleBits_=8);
 	virtual ~LexerModule() {
 	}

@@ -1,16 +1,41 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
-#include "mainWindow/mainWindowDockInterface.h"
-
 namespace qReal {
+
+/// Represents a state of an action on the main toolbar.
+enum class ActionVisibility
+{
+	/// The action is visible in main menu and on the toolbar (if it added there).
+	VisibleEverywhere = 0
+	/// The action is visible only in main menu (if was visible on the toolbar it will be dropped from it).
+	, VisibleOnlyInMenu
+	/// The action is visible neither in main menu nor in toolbar.
+	, Invisible
+};
 
 /// Customization class for configuring QReal's main GUI module
 class Customizer
 {
 public:
+	virtual ~Customizer() {}
+
 	/// Tells if we should show the button of opening the interpreted diagram or not
 	virtual bool showInterpeterButton() const
 	{
@@ -54,6 +79,15 @@ public:
 		return QString();
 	}
 
+	/// Customizes the visibility of the actions on the toolbar and main menu.
+	/// Returns a list of pairs with first element of each meaning the name of the action
+	/// and second - visibility customization of this action.
+	/// Action can be disabled only from toolbar or from toolbar and menu.
+	virtual QList<QPair<QString, ActionVisibility>> actionsVisibility() const
+	{
+		return {};
+	}
+
 	/// Tells if we should show trace connections menu or not
 	virtual bool showConnectionRelatedMenus() const
 	{
@@ -63,12 +97,6 @@ public:
 	virtual bool showUsagesRelatedMenus() const
 	{
 		return false;
-	}
-
-	/// Customizes docks placement and visibility. Default implementation does nothing
-	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
-	{
-		Q_UNUSED(dockInterface)
 	}
 
 	virtual QString userPaletteTitle() const

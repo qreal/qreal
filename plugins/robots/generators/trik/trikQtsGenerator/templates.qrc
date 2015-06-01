@@ -60,7 +60,7 @@
         <file>templates/types/array.t</file>
         <file>templates/types/cast.t</file>
         <file>templates/sensors/Enter.t</file>
-        <file>templates/sensors/Power.t</file>
+        <file>templates/sensors/Esc.t</file>
         <file>templates/sensors/Left.t</file>
         <file>templates/sensors/Right.t</file>
         <file>templates/sensors/Up.t</file>
@@ -70,15 +70,15 @@
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/motion.t</file>
+        <file>templates/sensors/scalar.t</file>
+        <file>templates/sensors/vector.t</file>
         <file>templates/gyroscope/gyroscopeX.t</file>
         <file>templates/gyroscope/gyroscopeY.t</file>
         <file>templates/gyroscope/gyroscopeZ.t</file>
         <file>templates/accelerometer/accelerometerX.t</file>
         <file>templates/accelerometer/accelerometerY.t</file>
         <file>templates/accelerometer/accelerometerZ.t</file>
-        <file>templates/videosensors/LineSensorX.t</file>
-        <file>templates/videosensors/LineSensorSize.t</file>
-        <file>templates/videosensors/LineSensorCrossroads.t</file>
+        <file>templates/videosensors/LineSensor.t</file>
         <file>templates/videosensors/ObjectSensorX.t</file>
         <file>templates/videosensors/ObjectSensorY.t</file>
         <file>templates/videosensors/ObjectSensorSize.t</file>
@@ -90,6 +90,20 @@
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
+        <file>templates/gamepad/gamepadButton.t</file>
+        <file>templates/gamepad/gamepadConnectionIndicator.t</file>
+        <file>templates/gamepad/gamepadPad.t</file>
+        <file>templates/gamepad/gamepadPadPressSensor.t</file>
+        <file>templates/gamepad/gamepadWheel.t</file>
+        <file>templates/ports/GamepadButton1Port.t</file>
+        <file>templates/ports/GamepadButton2Port.t</file>
+        <file>templates/ports/GamepadButton3Port.t</file>
+        <file>templates/ports/GamepadButton4Port.t</file>
+        <file>templates/ports/GamepadButton5Port.t</file>
+        <file>templates/ports/GamepadPad1PosPort.t</file>
+        <file>templates/ports/GamepadPad1PressedPort.t</file>
+        <file>templates/ports/GamepadPad2PosPort.t</file>
+        <file>templates/ports/GamepadPad2PressedPort.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
@@ -106,10 +120,16 @@
         <file>templates/functions/sqrt.t</file>
         <file>templates/functions/time.t</file>
         <file>templates/wait/encoder.t</file>
+        <file>templates/wait/gamepadButton.t</file>
+        <file>templates/wait/gamepadConnect.t</file>
+        <file>templates/wait/gamepadDisconnect.t</file>
+        <file>templates/wait/gamepadWheel.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
         <file>templates/wait/infrared.t</file>
         <file>templates/wait/motion.t</file>
+        <file>templates/wait/padPress.t</file>
+        <file>templates/wait/button.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>
@@ -132,12 +152,6 @@
         <file>templates/drawing/drawArc.t</file>
         <file>templates/drawing/setPainterWidth.t</file>
         <file>templates/drawing/setPainterColor.t</file>
-        <file>templates/buttons/waitForEnter.t</file>
-        <file>templates/buttons/waitForUp.t</file>
-        <file>templates/buttons/waitForDown.t</file>
-        <file>templates/buttons/waitForLeft.t</file>
-        <file>templates/buttons/waitForRight.t</file>
-        <file>templates/buttons/waitForPower.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
         <file>templates/engines/backward.t</file>
@@ -189,5 +203,12 @@
         <file>templates/luaPrinting/floatToString.t</file>
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
+        <file>templates/threads/join.t</file>
+        <file>templates/threads/receiveMessage.t</file>
+        <file>templates/threads/sendMessage.t</file>
+        <file>templates/files/removeFile.t</file>
+        <file>templates/files/writeFile.t</file>
+        <file>templates/threads/killThread.t</file>
+        <file>templates/variables/randomInitialization.t</file>
     </qresource>
 </RCC>

@@ -1,12 +1,26 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "gyroscopeSensor.h"
 #include <utils/tracer.h>
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
-using namespace interpreterBase::robotModel;
+using namespace nxt::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
-GyroscopeSensor::GyroscopeSensor(DeviceInfo const &info, PortInfo const &port
+GyroscopeSensor::GyroscopeSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::GyroscopeSensor(info, port)
+	: kitBase::robotModel::robotParts::GyroscopeSensor(info, port)
 	, mImplementation(robotCommunicator, port, enums::lowLevelSensorType::ANGLE, enums::sensorMode::RAWMODE)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse
@@ -41,7 +55,7 @@ void GyroscopeSensor::doConfiguration()
 	mImplementation.configure();
 }
 
-void GyroscopeSensor::sensorSpecificProcessResponse(QByteArray const &reading)
+void GyroscopeSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
 		utils::Tracer::debug(
@@ -50,7 +64,7 @@ void GyroscopeSensor::sensorSpecificProcessResponse(QByteArray const &reading)
 				, "Something is wrong, response is empty"
 				);
 	} else {
-		int const sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
+		const int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mImplementation.setState(NxtInputDevice::idle);
 		emit newData(sensorValue);
 	}

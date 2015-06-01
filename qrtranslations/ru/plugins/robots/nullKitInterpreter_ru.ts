@@ -4,7 +4,7 @@
 <context>
     <name>nullKitInterpreter::NullKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullKitInterpreterPlugin.cpp" line="21"/>
+        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullKitInterpreterPlugin.cpp" line="33"/>
         <source>Empty Kit</source>
         <translation>Пустая модель</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>nullKitInterpreter::NullRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullRobotModel.cpp" line="17"/>
+        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullRobotModel.cpp" line="31"/>
         <source>Null model</source>
         <translation>Пустая модель</translation>
     </message>

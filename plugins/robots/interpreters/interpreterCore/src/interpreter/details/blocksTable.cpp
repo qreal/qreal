@@ -1,46 +1,33 @@
-#include "blocksTable.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "interpreterCore/interpreter/details/blocksTable.h"
 
 #include <qrkernel/exception/exception.h>
 
 using namespace qReal;
-using namespace interpreterBase::blocksBase;
+using namespace kitBase::blocksBase;
 using namespace interpreterCore::interpreter::details;
 
 BlocksTable::BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager)
 	: mBlocksFactoryManager(blocksFactoryManager)
 	, mRobotModelManager(robotModelManager)
 {
 }
 
-BlocksTable::~BlocksTable()
+interpretation::BlockInterface *BlocksTable::produceBlock(const Id &element)
 {
-	qDeleteAll(mBlocks);
-}
-
-BlockInterface *BlocksTable::block(Id const &element)
-{
-	if (mBlocks.contains(element)) {
-		return mBlocks[element];
-	}
-
-	BlockInterface * const newBlock = mBlocksFactoryManager.block(element, mRobotModelManager.model());
-	if (newBlock) {
-		mBlocks.insert(element, newBlock);
-	}
-
-	return newBlock;
-}
-
-void BlocksTable::clear()
-{
-	qDeleteAll(mBlocks);
-	mBlocks.clear();
-}
-
-void BlocksTable::setFailure()
-{
-	for (BlockInterface * const block : mBlocks.values()) {
-		block->setFailedStatus();
-	}
+	return mBlocksFactoryManager.block(element, mRobotModelManager.model());
 }

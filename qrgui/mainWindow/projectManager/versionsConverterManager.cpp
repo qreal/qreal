@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "versionsConverterManager.h"
 
 #include <QtWidgets/QMessageBox>
@@ -14,17 +28,17 @@ VersionsConverterManager::VersionsConverterManager(MainWindow &mainWindow)
 bool VersionsConverterManager::validateCurrentProject()
 {
 	QSet<QString> editorsToCheck;
-	IdList const allElements = mMainWindow.models()->logicalModelAssistApi().children(Id::rootId());
-	for (Id const &element : allElements) {
+	const IdList allElements = mMainWindow.models().logicalModelAssistApi().children(Id::rootId());
+	for (const Id &element : allElements) {
 		editorsToCheck << element.editor();
 	}
 
-	QMap<Id, Version> const savedVersions = mMainWindow.models()->logicalModelAssistApi().editorVersions();
-	QMultiMap<QString, ProjectConverter> const converters = mMainWindow.toolManager().projectConverters();
+	const QMap<Id, Version> savedVersions = mMainWindow.models().logicalModelAssistApi().editorVersions();
+	const QMultiMap<QString, ProjectConverter> converters = mMainWindow.toolManager().projectConverters();
 
-	for (QString const &editor : editorsToCheck) {
-		Version const currentVersion = mMainWindow.editorManager().version(Id(editor));
-		Version const savedVersion = savedVersions[Id(editor)];
+	for (const QString &editor : editorsToCheck) {
+		const Version currentVersion = mMainWindow.editorManager().version(Id(editor));
+		const Version savedVersion = savedVersions[Id(editor)];
 
 		if (currentVersion == savedVersion) {
 			continue;
@@ -43,14 +57,14 @@ bool VersionsConverterManager::validateCurrentProject()
 	return true;
 }
 
-bool VersionsConverterManager::convertProject(Version const &enviromentVersion
-		, Version const &saveVersion
+bool VersionsConverterManager::convertProject(const Version &enviromentVersion
+		, const Version &saveVersion
 		, QList<ProjectConverter> const &converters)
 {
 	// Stage I: Sorting converters by versions
 	QList<ProjectConverter> sortedConverters = converters;
 	qSort(sortedConverters.begin(), sortedConverters.end()
-		, [=](ProjectConverter const &converter1, ProjectConverter const &converter2)
+		, [=](const ProjectConverter &converter1, const ProjectConverter &converter2)
 	{
 		return converter1.fromVersion() < converter2.fromVersion();
 	});
@@ -58,7 +72,7 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 	// Stage II: Checking that versions are not overlapped
 	for (int index = 0; index < sortedConverters.count() - 1; ++index) {
 		if (sortedConverters[index].toVersion() > sortedConverters[index + 1].fromVersion()) {
-			qDebug() << "Converter versions are overlapped!";
+			qWarning() << "Converter versions are overlapped!";
 			return false;
 		}
 	}
@@ -68,9 +82,9 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 	// Stage III: Sequentially applying converters
 	for (ProjectConverter &converter : sortedConverters) {
 		if (converter.fromVersion() >= saveVersion && converter.toVersion() <= enviromentVersion) {
-			ProjectConverter::ConvertionResult const result = converter.convert(
-					mMainWindow.models()->graphicalModelAssistApi()
-					, mMainWindow.models()->logicalModelAssistApi());
+			const ProjectConverter::ConvertionResult result = converter.convert(
+					mMainWindow.models().graphicalModelAssistApi()
+					, mMainWindow.models().logicalModelAssistApi());
 			switch (result) {
 			case ProjectConverter::Success:
 				converterApplied = true;
@@ -91,6 +105,8 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 	if (converterApplied) {
 		mMainWindow.errorReporter()->addInformation(QObject::tr("Project was automaticly converted to version %1."\
 				" Please check its contents.").arg(enviromentVersion.toString()));
+		mMainWindow.models().mutableLogicalRepoApi().setMetaInformation(
+				converters.first().editor() + "Version", enviromentVersion.toString());
 	}
 
 	return true;
@@ -98,34 +114,34 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 
 void VersionsConverterManager::displayCannotConvertError()
 {
-	QString const errorMessage = QObject::tr("The attempt to automaticly convert this project "\
+	const QString errorMessage = QObject::tr("The attempt to automaticly convert this project "\
 			"to the current enviroment version failed and thus save file can`t be opened. ");
 
 	showError(errorMessage);
 }
 
-void VersionsConverterManager::displayTooOldSaveError(Version const &saveVersion)
+void VersionsConverterManager::displayTooOldSaveError(const Version &saveVersion)
 {
-	bool const showVersionDetails = saveVersion.isValid();
-	QString const reason = showVersionDetails
+	const bool showVersionDetails = saveVersion.isValid();
+	const QString reason = showVersionDetails
 			? QObject::tr("This project was created by version %1 of the editor.").arg(saveVersion.toString())
 			: QObject::tr("This project was created by too old version of the editor.");
 
-	QString const errorMessage = reason + QObject::tr(" It is now considered outdated and cannot be opened.");
+	const QString errorMessage = reason + QObject::tr(" It is now considered outdated and cannot be opened.");
 
 	showError(errorMessage);
 }
 
-void VersionsConverterManager::displayTooOldEnviromentError(Version const &saveVersion)
+void VersionsConverterManager::displayTooOldEnviromentError(const Version &saveVersion)
 {
-	QString const errorMessage = QObject::tr("The save you are trying to open is made by version %1 of editor, "\
+	const QString errorMessage = QObject::tr("The save you are trying to open is made by version %1 of editor, "\
 			"whitch is newer than currently installed enviroment. "\
 			"Update your version before opening this save.").arg(saveVersion.toString());
 
 	showError(errorMessage);
 }
 
-void VersionsConverterManager::showError(QString const &errorMessage)
+void VersionsConverterManager::showError(const QString &errorMessage)
 {
 	QMessageBox::information(&mMainWindow, QObject::tr("Can`t open project file"), errorMessage);
 }

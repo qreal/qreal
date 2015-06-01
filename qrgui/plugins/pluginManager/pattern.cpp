@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "pattern.h"
 
 #include <QtCore/QPointF>
@@ -8,12 +22,12 @@
 
 using namespace qReal;
 
-GroupNode::GroupNode(QString const &type, QString const &id, QPointF const &position, QString const &parent)
+GroupNode::GroupNode(const QString &type, const QString &id, const QPointF &position, const QString &parent)
 	: type(type), id(id), position(position), parent(parent)
 {
 }
 
-GroupEdge::GroupEdge(QString const &type, QString const &from, QString const &to)
+GroupEdge::GroupEdge(const QString &type, const QString &from, const QString &to)
 	: type(type), from(from), to(to)
 {
 }
@@ -22,14 +36,14 @@ Pattern::Pattern()
 {
 }
 
-Pattern::Pattern(QString const &editor, QString const &diagram, QString const &name
-		, QString const &inNode, QString const &outNode, QString const &rootNode)
+Pattern::Pattern(const QString &editor, const QString &diagram, const QString &name
+		, const QString &inNode, const QString &outNode, const QString &rootNode)
 	: mEditor(editor), mDiagram(diagram), mGroupName(name)
 	, mInNode(inNode), mOutNode(outNode), mRootNode(rootNode)
 {
 }
 
-void Pattern::setEditor(QString const &editor)
+void Pattern::setEditor(const QString &editor)
 {
 	mEditor = editor;
 }
@@ -39,17 +53,17 @@ QString Pattern::editor() const
 	return mEditor;
 }
 
-void Pattern::setDiagram(QString const &diagram)
+void Pattern::setDiagram(const QString &diagram)
 {
 	mDiagram = diagram;
 }
 
-QString Pattern::diagram()
+QString Pattern::diagram() const
 {
 	return mDiagram;
 }
 
-void Pattern::setName(QString const &name)
+void Pattern::setName(const QString &name)
 {
 	mGroupName = name;
 }
@@ -59,13 +73,13 @@ QString Pattern::name() const
 	return mGroupName;
 }
 
-void Pattern::addNode(QString const &type, QString const &id, QPointF const &pos, QString const &parent)
+void Pattern::addNode(const QString &type, const QString &id, const QPointF &pos, const QString &parent)
 {
 	GroupNode newNode(type, id, pos, parent);
 	mNodes.append(newNode);
 }
 
-void Pattern::addEdge(QString const &type, QString const &from, QString const &to)
+void Pattern::addEdge(const QString &type, const QString &from, const QString &to)
 {
 	GroupEdge newEdge(type, from, to);
 	mEdges.append(newEdge);
@@ -81,12 +95,12 @@ QList<GroupEdge> Pattern::edges() const
 	return mEdges;
 }
 
-void Pattern::setInNode(QString const &id)
+void Pattern::setInNode(const QString &id)
 {
 	mInNode = id;
 }
 
-void Pattern::setOutNode(QString const &id)
+void Pattern::setOutNode(const QString &id)
 {
 	mOutNode = id;
 }
@@ -98,7 +112,7 @@ QString Pattern::rootNode() const
 
 QString Pattern::rootType() const
 {
-	for (GroupNode const &node : mNodes) {
+	for (const GroupNode &node : mNodes) {
 		if (node.id == mRootNode) {
 			return node.type;
 		}
@@ -107,7 +121,7 @@ QString Pattern::rootType() const
 	return QString();
 }
 
-void Pattern::setRootNode(QString const &rootId)
+void Pattern::setRootNode(const QString &rootId)
 {
 	mRootNode = rootId;
 }
@@ -128,9 +142,9 @@ void Pattern::countSize(EditorManager *editorManager)
 	qreal maxY = 0;
 	qreal minX = 0;
 	qreal maxX = 0;
-	for (GroupNode const &node : mNodes) {
-		Id const element(mEditor, mDiagram, node.type, "");
-		QSize const size = editorManager->iconSize(element);
+	for (const GroupNode &node : mNodes) {
+		const Id element(mEditor, mDiagram, node.type, "");
+		const QSize size = editorManager->iconSize(element);
 		if (minY > node.position.y()) {
 			minY = node.position.y();
 		}

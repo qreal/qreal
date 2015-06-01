@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 
 namespace qrtext {
 namespace core {
@@ -13,7 +28,7 @@ class AlternativeParser : public ParserInterface<TokenType>
 {
 public:
 	/// Constructor. Takes parsers for two alternatives.
-	AlternativeParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
+	AlternativeParser(const ParserRef<TokenType> &parser1, const ParserRef<TokenType> &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}
@@ -23,7 +38,7 @@ public:
 	{
 		if (tokenStream.isEnd()) {
 			parserContext.reportError(QObject::tr("Unexpected end of input"));
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		if (!(mParser1->first().intersect(mParser2->first())).isEmpty()) {
@@ -40,7 +55,7 @@ public:
 		}
 
 		parserContext.reportError(QObject::tr("Unexpected token"));
-		return wrap(nullptr);
+		return wrap(new TemporaryErrorNode());
 	}
 
 	QSet<TokenType> first() const override

@@ -2,9 +2,9 @@
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
-#include "commandConstants.h"
+#include "src/commandConstants.h"
 
-namespace ev3KitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace real {
 

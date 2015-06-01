@@ -1,38 +1,19 @@
-TEMPLATE = lib
-QT += xml
-
-CONFIG += c++11
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 TARGET = qrmc
 
-DEPENDPATH += . \
-	templates
+TEMPLATE = lib
 
-INCLUDEPATH += \
-	$$PWD/.. \
-
-LIBS += -L../bin -lqrkernel -lqrrepo
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
-
-DESTDIR = ../bin
-
-# Input
-HEADERS += \
-	$$PWD/metaCompiler.h \
-	$$PWD/../qrkernel/definitions.h \
-	$$PWD/../qrkernel/ids.h \
-	$$PWD/../qrrepo/repoApi.h \
-	$$PWD/diagram.h \
-	$$PWD/editor.h \              
-
-SOURCES += \
-	$$PWD/metaCompiler.cpp \
-	$$PWD/diagram.cpp \
-	$$PWD/editor.cpp \
-
-include (classes/classes.pri)
-include (utils/utils.pri)
+include(qrmc.pri)

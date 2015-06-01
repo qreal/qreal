@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QDialog>
@@ -22,8 +36,8 @@ public:
 	/// @param interpreterEditorManager Editor manager.
 	/// @param elementsWithTheSameNameList IdList of elements with the same name.
 	RestoreElementDialog(QWidget *parent
-			, EditorManagerInterface const &interpreterEditorManager
-			, IdList const &elementsWithTheSameNameList);
+			, const EditorManagerInterface &interpreterEditorManager
+			, const IdList &elementsWithTheSameNameList);
 
 	/// Destructor.
 	~RestoreElementDialog();
@@ -40,11 +54,11 @@ private slots:
 
 private:
 	Ui::RestoreElementDialog *mUi; // Has ownership
-	EditorManagerInterface const &mInterpreterEditorManager;
+	const EditorManagerInterface &mInterpreterEditorManager;
 	IdList mElementsWithTheSameNameList;
 
 	void fillSameNameElementsTreeView();
 	// Object has ownership over list elements.
-	QList<QStandardItem *> prepareRow(QString const &first, QString const &second, QString const &third);
+	QList<QStandardItem *> prepareRow(const QString &first, const QString &second, const QString &third);
 };
 }

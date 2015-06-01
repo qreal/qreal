@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QHash>
@@ -17,11 +31,11 @@ public:
 	/// @param id - id of a new object.
 	/// @param parent - id of a parent of new object. Graphical object must always have a parent (for example, ROOT_ID).
 	/// @param logicalId - id of corresponding logical object. Graphical object must always represent a logical object.
-	GraphicalObject(qReal::Id const &id, qReal::Id const &parent, qReal::Id const &logicalId);
+	GraphicalObject(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
 
 	/// Deserializing constructor.
 	/// @param element - root of XML DOM subtree with serialized object.
-	explicit GraphicalObject(QDomElement const &element);
+	explicit GraphicalObject(const QDomElement &element);
 
 	virtual ~GraphicalObject();
 
@@ -43,14 +57,14 @@ public:
 	/// Returns the value of graphical part property.
 	/// @param index - index of a graphical part.
 	/// @param name - name of a property which value we want to get.
-	QVariant graphicalPartProperty(int index, QString const &name) const;
+	QVariant graphicalPartProperty(int index, const QString &name) const;
 
 	/// Sets the value of graphical part property. If a property already exists, its value will be overwritten,
 	/// otherwise new property will be created with given value.
 	/// @param index - index of a graphical part.
 	/// @param name - name of a property which value we want to set.
 	/// @param value - new value of a property.
-	void setGraphicalPartProperty(int index, QString const &name, QVariant const &value);
+	void setGraphicalPartProperty(int index, const QString &name, const QVariant &value);
 
 protected:
 	// Override.

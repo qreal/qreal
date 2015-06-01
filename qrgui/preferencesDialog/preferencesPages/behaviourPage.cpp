@@ -1,10 +1,23 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
 #include <QtCore/QDir>
 
 #include <qrkernel/settingsManager.h>
-#include <qrutils/uxInfo/uxInfo.h>
 
 using namespace qReal;
 
@@ -19,9 +32,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	initLanguages();
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
-	/// @todo: Get rid of notifying components directly
-	connect(mUi->collectErgonomicValuesCheckBox, &QAbstractButton::clicked
-			, [](bool status) { utils::UXInfo::setStatus(status); });
+	connect(mUi->gesturesCheckBox, SIGNAL(toggled(bool)), SLOT(updateGesturesSettings(bool)));
 	restoreSettings();
 }
 
@@ -43,7 +54,7 @@ void PreferencesBehaviourPage::changeEvent(QEvent *e)
 
 void PreferencesBehaviourPage::save()
 {
-	QString const language = mUi->languageComboBox->itemData(mUi->languageComboBox->currentIndex()).toString();
+	const QString language = mUi->languageComboBox->itemData(mUi->languageComboBox->currentIndex()).toString();
 	SettingsManager::setValue("systemLocale", language);
 	if (mOldLanguage != language) {
 		setRestartFlag();
@@ -52,24 +63,14 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
+	SettingsManager::setValue("gesturesEnabled", mUi->gesturesCheckBox->isChecked());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
-	bool const usabilityTestingMode = mUi->usabilityModeCheckBox->isChecked();
-	SettingsManager::setValue("usabilityTestingMode", usabilityTestingMode);
-	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
-			|| usabilityTestingMode);
 	SettingsManager::setValue("touchMode", mUi->touchModeCheckBox->isChecked());
-	if (mUsabilityTestingMode != usabilityTestingMode) {
-		if (usabilityTestingMode) {
-			mUi->collectErgonomicValuesCheckBox->setChecked(true);
-		}
-
-		mUsabilityTestingMode = usabilityTestingMode;
-	}
 }
 
 void PreferencesBehaviourPage::restoreSettings()
 {
-	QString const locale = SettingsManager::value("systemLocale").toString();
+	const QString locale = SettingsManager::value("systemLocale").toString();
 	mOldLanguage = locale;
 	for (int index = 0; index < mUi->languageComboBox->count(); ++index) {
 		if (locale == mUi->languageComboBox->itemData(index).toString()) {
@@ -77,20 +78,22 @@ void PreferencesBehaviourPage::restoreSettings()
 		}
 	}
 
+	bool gesturesEnabled = SettingsManager::value("gesturesEnabled").toBool();
+
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching").toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
-	mUi->collectErgonomicValuesCheckBox->setChecked(SettingsManager::value("collectErgonomicValues").toBool());
-	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
-	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);
 	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
+	mUi->gesturesCheckBox->setChecked(gesturesEnabled);
+
+	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);
+	mUi->gestureDelayLabel->setVisible(gesturesEnabled);
+	mUi->gestureDelayTimeUnitLabel->setVisible(gesturesEnabled);
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
-	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
+	const int editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
 	mUi->paletteTabCheckBox->setVisible(editorsLoadedCount != 1);
-	/// @todo: Get rid of notifying components directly
-	utils::UXInfo::setStatus(mUi->collectErgonomicValuesCheckBox->isChecked());
 }
 
 void PreferencesBehaviourPage::showAutoSaveBox(bool show)
@@ -99,15 +102,22 @@ void PreferencesBehaviourPage::showAutoSaveBox(bool show)
 	mUi->autoSaveLabel->setVisible(show);
 }
 
+void PreferencesBehaviourPage::updateGesturesSettings(bool gesturesEnabled)
+{
+	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);
+	mUi->gestureDelayLabel->setVisible(gesturesEnabled);
+	mUi->gestureDelayTimeUnitLabel->setVisible(gesturesEnabled);
+}
+
 void PreferencesBehaviourPage::initLanguages()
 {
 	mUi->languageComboBox->addItem(tr("<System Language>"));
 	mUi->languageComboBox->addItem("English", "en");
 	QDir translationsDir(QApplication::applicationDirPath() + "/translations");
-	for (QString const &locale: translationsDir.entryList(QDir::Dirs)) {
-		QString const language = QLocale(locale).nativeLanguageName();
+	for (const QString &locale: translationsDir.entryList(QDir::Dirs)) {
+		const QString language = QLocale(locale).nativeLanguageName();
 		if (!language.isEmpty()) {
-			QString const capitalizedLanguage = language[0].toUpper() + language.mid(1);
+			const QString capitalizedLanguage = language[0].toUpper() + language.mid(1);
 			mUi->languageComboBox->addItem(capitalizedLanguage, locale);
 		}
 	}

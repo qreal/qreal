@@ -1,0 +1,13 @@
+This Ubuntu instance differs from the original one with the next steps complete:
+
+1. Installed guest additions
+2. Downloaded and installed Qt 5.3
+3. Downloaded and installed QtIFW-1.6.0
+4. Installed gcc
+5. Installed git
+6. Copyed guest scripts
+7. Configured autostart onBooted.sh in .profile
+8. Disabled sudo password
+9. Removed unity, lightdm, gtk and so on
+10. Setted up autologin to tty1
+11. Installed libgl1-mesa-dev

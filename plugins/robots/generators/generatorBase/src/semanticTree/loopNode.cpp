@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/semanticTree/loopNode.h"
 
 #include <qrutils/stringUtils.h>
@@ -5,7 +19,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-LoopNode::LoopNode(Id const &idBinded, QObject *parent)
+LoopNode::LoopNode(const Id &idBinded, QObject *parent)
 	: ConditionalNode(idBinded, parent)
 	, mBodyZone(new ZoneNode(this))
 	, mDoWhileForm(false)
@@ -13,7 +27,7 @@ LoopNode::LoopNode(Id const &idBinded, QObject *parent)
 	mBodyZone->setParentNode(this);
 }
 
-QString LoopNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString LoopNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	simple::AbstractSimpleGenerator *generator = nullptr;
 	if (mId.isNull()) {
@@ -30,8 +44,8 @@ QString LoopNode::toStringImpl(GeneratorCustomizer &customizer, int indent) cons
 		}
 	}
 
-	QString result = utils::StringUtils::addIndent(generator->generate(), indent);
-	QString const bodyCode = mBodyZone->toString(customizer, indent + 1);
+	QString result = utils::StringUtils::addIndent(generator->generate(), indent, indentString);
+	const QString bodyCode = mBodyZone->toString(customizer, indent + 1, indentString);
 	result.replace("@@BODY@@", bodyCode);
 	return result;
 }

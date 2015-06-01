@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "edgeType.h"
 
 #include <QtCore/QDebug>
@@ -200,7 +214,7 @@ bool EdgeType::initPortTypes()
 	return true;
 }
 
-void EdgeType::initPortTypes(QDomElement const &portsElement, QStringList &ports)
+void EdgeType::initPortTypes(const QDomElement &portsElement, QStringList &ports)
 {
 	ports << "NonTyped";
 	if (portsElement.isNull()) {
@@ -217,7 +231,7 @@ void EdgeType::initPortTypes(QDomElement const &portsElement, QStringList &ports
 	ports.removeDuplicates();
 }
 
-bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
+bool EdgeType::initLabel(Label *label, const QDomElement &element, const int &count)
 {
 	return label->init(element, count, false, mWidth, mHeight);
 }
@@ -240,7 +254,7 @@ void EdgeType::generateCode(OutFile &out)
 {
 	generateGraphics();
 
-	QString const className = NameNormalizer::normalize(qualifiedName());
+	const QString className = NameNormalizer::normalize(qualifiedName());
 
 	out() << "\tclass " << className << " : public qReal::ElementImpl {\n"
 	<< "\tpublic:\n";
@@ -255,7 +269,7 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out() << "\t\tvoid init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,\n"
+	out() << "\t\tvoid init(QRectF &, const PortFactoryInterface &, QList<PortInterface *> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}\n\n"
 	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
@@ -268,7 +282,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n"
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
-	<< "\t\tqReal::ElementImpl *clone() { return NULL; }\n"
+	<< "\t\tqReal::ElementImpl *clone() { return nullptr; }\n"
 	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 	<< "\t\tbool isNode() const { return false; }\n"
 	<< "\t\tbool isResizeable() const { return true; }\n"
@@ -290,9 +304,7 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n"
 	<< "\t\t\treturn enums::linkShape::" << mShapeType << ";\n\t\t}\n";
 
-	out() << "\t\tbool isPort() const { return false; }\n"
-	<< "\t\tbool hasPin() const { return false; }\n"
-	<< "\t\tbool createChildrenFromMenu() const { return false; }\n"
+	out() << "\t\tbool createChildrenFromMenu() const { return false; }\n"
 	<< "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n"
 	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
@@ -353,7 +365,7 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\t};\n\n";
 }
 
-void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
+void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 {
 	QString style = styleString;
 
@@ -531,12 +543,12 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
 }
 
-void EdgeType::generatePorts(OutFile &out, QStringList const &portTypes)
+void EdgeType::generatePorts(OutFile &out, const QStringList &portTypes)
 {
 	out() << "QStringList result;\n"
 		  << "\t\t\tresult";
 
-	foreach (QString const &type, portTypes) {
+	foreach (const QString &type, portTypes) {
 		out() << " << \"" << type << "\"";
 	}
 

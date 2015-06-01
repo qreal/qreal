@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "editorGenerator.h"
 
 #include <QtCore/QFile>
@@ -88,22 +102,22 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		return QPair<QString, QString>("", "");
 	}
 
-	try {
-		OutFile outpro(pathToFile + "/" + fileBaseName + ".pro");
-		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
-		if (includeProList != "") {
-			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
-		}
-		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
-		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToFile, pathToQRealSource);
-		outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
-		outpro() << "\n";
-		outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
-		outpro() << "\n\n";
-
-		generateTranslations(pathToFile, fileBaseName, relativeQRealSourcesPath);
+	bool fileOpened = false;
+	OutFile outpro(pathToFile + "/" + fileBaseName + ".pro", &fileOpened);
+	outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
+	if (includeProList != "") {
+		outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
 	}
-	catch (char *) {
+	outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
+	QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToFile, pathToQRealSource);
+	outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
+	outpro() << "\n";
+	outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
+	outpro() << "\n\n";
+
+	generateTranslations(pathToFile, fileBaseName, relativeQRealSourcesPath);
+
+	if (!fileOpened) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
 	}
 
@@ -199,6 +213,9 @@ void EditorGenerator::createDiagrams(QDomElement &parent, Id const &id)
 			QDomElement diagram = mDocument.createElement("diagram");
 			ensureCorrectness(typeElement, diagram, "name", mApi.name(typeElement));
 			ensureCorrectness(typeElement, diagram, "displayedName", mApi.stringProperty(typeElement, "displayedName"));
+
+			QString const rootNode = mApi.stringProperty(typeElement, "nodeName");
+			checkRootNodeValid(typeElement, rootNode);
 			ensureCorrectness(typeElement, diagram, "nodeName", mApi.stringProperty(typeElement, "nodeName"));
 			parent.appendChild(diagram);
 			serializeObjects(diagram, typeElement);
@@ -220,6 +237,7 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	mDiagramName = mApi.name(idParent);
 
 	QDomElement tagNonGraphic = mDocument.createElement("nonGraphicTypes");
+	QDomElement tagGroups = mDocument.createElement("groups");
 
 	foreach (Id const &id, childElems) {
 		if (idParent != Id::rootId()) {
@@ -228,8 +246,14 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 				createEnum(tagNonGraphic, id);
 			} else if (objectType == "MetaEntityPort") {
 				createPort(tagNonGraphic, id);
+			} else if (objectType == "MetaEntityGroup") {
+				createGroup(tagGroups, id);
 			}
 		}
+	}
+
+	if (!tagGroups.childNodes().isEmpty()) {
+		tagNonGraphic.appendChild(tagGroups);
 	}
 
 	if (!tagNonGraphic.childNodes().isEmpty()) {
@@ -313,6 +337,9 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	QDomElement edge = mDocument.createElement("edge");
 	ensureCorrectness(id, edge, "name", mApi.name(id));
 	ensureCorrectness(id, edge, "displayedName", mApi.stringProperty(id, "displayedName"));
+	ensureCorrectness(id, edge, "description", mApi.stringProperty(id, "description"));
+	ensureCorrectness(id, edge, "path", mApi.stringProperty(id, "path"));
+
 	parent.appendChild(edge);
 
 	if (mApi.stringProperty(id, "lineType") != "") {
@@ -343,6 +370,8 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 			} else {
 				mErrorReporter.addWarning(QObject::tr("Incorrect label type"), id);
 			}
+
+			label.setAttribute("hard", mApi.stringProperty(id, "hardLabel"));
 		}
 	}
 
@@ -356,6 +385,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	setPorts(logic, id, "to");
 	setGeneralization(logic, id);
 	setExplosion(logic, id);
+	setDividability(logic, id);
 }
 
 void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
@@ -363,6 +393,7 @@ void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
 	QDomElement enumElement = mDocument.createElement("enum");
 	ensureCorrectness(id, enumElement, "name", mApi.name(id));
 	ensureCorrectness(id, enumElement, "displayedName", mApi.stringProperty(id, "displayedName"));
+	ensureCorrectness(id, enumElement, "editable", mApi.property(id, "editable").toBool() ? "true" : "false");
 	parent.appendChild(enumElement);
 
 	setValues(enumElement, id);
@@ -373,6 +404,15 @@ void EditorGenerator::createPort(QDomElement &parent, Id const &id)
 	QDomElement portElement = mDocument.createElement("port");
 	ensureCorrectness(id, portElement, "name", mApi.name(id));
 	parent.appendChild(portElement);
+}
+
+void EditorGenerator::createGroup(QDomElement &parent, const Id &id)
+{
+	QDomElement groupElement = mDocument.createElement("group");
+	ensureCorrectness(id, groupElement, "name", mApi.name(id));
+	ensureCorrectness(id, groupElement, "rootNode", mApi.stringProperty(id, "rootNode"));
+	parent.appendChild(groupElement);
+	setGroupNodes(groupElement, id);
 }
 
 void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
@@ -473,6 +513,25 @@ void EditorGenerator::setValues(QDomElement &parent, Id const &id)
 		}
 	}
 }
+
+void EditorGenerator::setGroupNodes(QDomElement &parent, const Id &id)
+{
+	for (const Id &idChild : mApi.children(id)) {
+		if (idChild != Id::rootId()) {
+			QDomElement groupNodeTag = mDocument.createElement("groupNode");
+			ensureCorrectness(idChild, groupNodeTag, "name", mApi.name(idChild));
+			ensureCorrectness(idChild, groupNodeTag, "parent", mApi.stringProperty(idChild, "parent"));
+			ensureCorrectness(idChild, groupNodeTag, "xPosition", mApi.property(idChild, "xPosition").toString());
+			ensureCorrectness(idChild, groupNodeTag, "yPosition", mApi.property(idChild, "yPosition").toString());
+
+			const Id typeElement = Id::loadFromString(mApi.property(idChild, "type").toString());
+			ensureCorrectness(idChild, groupNodeTag, "type", mApi.name(typeElement));
+
+			parent.appendChild(groupNodeTag);
+		}
+	}
+}
+
 
 void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
 {
@@ -619,9 +678,9 @@ void EditorGenerator::setExplosion(QDomElement &parent, Id const &id)
 	IdList const inLinks = mApi.incomingLinks(id);
 	foreach (Id const inLink, inLinks) {
 		if (inLink.element() == "Explosion") {
-			Id const elementId = mApi.from(inLink);
-			QString const typeName = elementId.element();
-			if (typeName == "MetaEntityNode") {
+			const Id elementId = mApi.from(inLink);
+			const QString typeName = elementId.element();
+			if (typeName == "MetaEntityNode" || typeName == "MetaEntityGroup") {
 				QDomElement target = mDocument.createElement("target");
 				ensureCorrectness(elementId, target, "type", mApi.name(elementId));
 				setExplosionProperties(target, inLink);
@@ -641,6 +700,13 @@ void EditorGenerator::setExplosionProperties(QDomElement &target, Id const &link
 {
 	target.setAttribute("makeReusable", mApi.property(linkId, "makeReusable").toString());
 	target.setAttribute("requireImmediateLinkage", mApi.property(linkId, "requireImmediateLinkage").toString());
+}
+
+void EditorGenerator::setDividability(QDomElement &parent, const Id &id)
+{
+	QDomElement dividability = mDocument.createElement("dividability");
+	parent.appendChild(dividability);
+	dividability.setAttribute("isDividable", mApi.stringProperty(id, "isDividable"));
 }
 
 void EditorGenerator::setSizesForContainer(QString const &propertyName, QDomElement &properties, Id const &id)
@@ -697,4 +763,17 @@ bool EditorGenerator::findPort(QString const &name) const
 	}
 
 	return false;
+}
+
+void EditorGenerator::checkRootNodeValid(Id const &diagram, QString const rootNode)
+{
+	for (Id const &child : mApi.children(diagram)) {
+		if ((child.element() == "MetaEntityNode" || child.element() == "MetaEntityGroup")
+				&& mApi.name(child) == rootNode) {
+			return;
+		}
+	}
+
+	mErrorReporter.addError(QObject::tr("Root node for diagram %1 (which is %2) shall exist")
+			.arg(mApi.name(diagram)).arg(rootNode), diagram);
 }

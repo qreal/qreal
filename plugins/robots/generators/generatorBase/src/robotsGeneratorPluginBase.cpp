@@ -1,37 +1,45 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/robotsGeneratorPluginBase.h"
 
 #include <QtCore/QDateTime>
 
 #include <qrutils/inFile.h>
 #include <qrutils/nameNormalizer.h>
+#include <qrutils/parserErrorReporter.h>
 #include <qrgui/textEditor/qscintillaTextEdit.h>
 
 using namespace generatorBase;
 using namespace qReal;
-using namespace gui;
 using namespace utils;
 
 /// If file info creation and modification timestamps differ less than on this value it is considered
 /// that file was created and filled at the same time.
-int const maxTimestampsDifference = 3000;
+const int maxTimestampsDifference = 3000;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
 }
 
-QString RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
+RobotsGeneratorPluginBase::~RobotsGeneratorPluginBase()
+{
+}
+
+QString RobotsGeneratorPluginBase::defaultFilePath(const QString &projectName) const
 {
 	return projectName;
-}
-
-QString RobotsGeneratorPluginBase::extension() const
-{
-	return QString();
-}
-
-QString RobotsGeneratorPluginBase::extensionDescription() const
-{
-	return QString();
 }
 
 QString RobotsGeneratorPluginBase::generatorName() const
@@ -41,20 +49,46 @@ QString RobotsGeneratorPluginBase::generatorName() const
 
 QString RobotsGeneratorPluginBase::defaultProjectName() const
 {
-	QString const filePath = mProjectManager->saveFilePath();
+	const QString filePath = mProjectManager->saveFilePath();
 	return filePath.isEmpty() ? "example" : QFileInfo(filePath).baseName();
 }
 
-bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
+bool RobotsGeneratorPluginBase::canGenerateTo(const QString &project)
 {
-	QFileInfo const fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
-	int const difference = fileInfo.lastModified().toMSecsSinceEpoch() - fileInfo.created().toMSecsSinceEpoch();
+	const QFileInfo fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
+	const int difference = fileInfo.lastModified().toMSecsSinceEpoch() - fileInfo.created().toMSecsSinceEpoch();
 	return !fileInfo.exists() || difference < maxTimestampsDifference;
+}
+
+void RobotsGeneratorPluginBase::onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	if (robotModels().count() == 1) {
+		kitBase::robotModel::RobotModelInterface * const ourModel = robotModels()[0];;
+		for (const ActionInfo &action : customActions()) {
+			if (action.isAction()) {
+				action.action()->setVisible(ourModel == &model);
+			} else {
+				action.menu()->setVisible(ourModel == &model);
+			}
+		}
+	}
+}
+
+void RobotsGeneratorPluginBase::onCurrentDiagramChanged(const TabInfo &info)
+{
+	const bool enabled = info.type() == TabInfo::TabType::code || info.type() == TabInfo::TabType::editor;
+	for (const ActionInfo &action : customActions()) {
+		if (action.isAction()) {
+			action.action()->setEnabled(enabled);
+		} else {
+			action.menu()->setEnabled(enabled);
+		}
+	}
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
-	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
+	const Id &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	int exampleNumber = 0;
 	QString projectName;
@@ -69,7 +103,7 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {
-		for (QFileInfo const &path : pathsList) {
+		for (const QFileInfo &path : pathsList) {
 			if (mTextManager->isDefaultPath(path.absoluteFilePath())
 				&& !mTextManager->isModifiedEver(path.absoluteFilePath())
 				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName()))
@@ -86,11 +120,11 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 {
 	QFileInfo fileInfo;
-	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
+	const Id &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	if (!activeDiagram.isNull()) {
 		if (generateCode(false)) {
-			foreach (QFileInfo const &path, mCodePath.values(activeDiagram)) {
+			foreach (const QFileInfo &path, mCodePath.values(activeDiagram)) {
 				if (mTextManager->isDefaultPath(path.absoluteFilePath())
 					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
 					&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
@@ -101,7 +135,7 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 		} else {
 			return QFileInfo();
 		}
-	} else if (QScintillaTextEdit *code = dynamic_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
+	} else if (auto code = dynamic_cast<text::QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
 		fileInfo = QFileInfo(mTextManager->path(code));
 		mTextManager->saveText(false);
 	}
@@ -109,50 +143,63 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 	return fileInfo;
 }
 
-void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::LanguageToolboxInterface &textLanguage)
+void RobotsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	mProjectManager = &configurator.projectManager();
-	mSystemEvents = &configurator.systemEvents();
-	mTextManager = &configurator.textManager();
+	mProjectManager = &configurator.qRealConfigurator().projectManager();
+	mSystemEvents = &configurator.qRealConfigurator().systemEvents();
+	mTextManager = &configurator.qRealConfigurator().textManager();
 
-	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
-	mProjectManager = &configurator.projectManager();
-	mRobotModelManager = &robotModelManager;
-	mTextLanguage = &textLanguage;
+	mMainWindowInterface = &configurator.qRealConfigurator().mainWindowInterpretersInterface();
+	mRepo = dynamic_cast<const qrRepo::RepoApi *>(&configurator.qRealConfigurator().logicalModelApi().logicalRepoApi());
+	mProjectManager = &configurator.qRealConfigurator().projectManager();
+	mRobotModelManager = &configurator.robotModelManager();
+	mTextLanguage = &configurator.textLanguage();
+
+	mParserErrorReporter.reset(new ParserErrorReporter(*mTextLanguage, *mMainWindowInterface->errorReporter()
+			, configurator.qRealConfigurator().logicalModelApi().editorManagerInterface()));
 
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));
 	connect(mSystemEvents, SIGNAL(newCodeAppeared(qReal::Id, QFileInfo)), this, SLOT(addNewCode(qReal::Id, QFileInfo)));
 	connect(mSystemEvents, SIGNAL(diagramClosed(qReal::Id)), this, SLOT(removeDiagram(qReal::Id)));
 	connect(mSystemEvents, SIGNAL(codeTabClosed(QFileInfo)), this, SLOT(removeCode(QFileInfo)));
+
+	connect(mRobotModelManager, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this, &RobotsGeneratorPluginBase::onCurrentRobotModelChanged);
+	connect(mSystemEvents, &SystemEvents::activeTabChanged, this, &RobotsGeneratorPluginBase::onCurrentDiagramChanged);
+}
+
+QString RobotsGeneratorPluginBase::friendlyKitName() const
+{
+	// Kit friendly name is already defined in interpreter kit plugins.
+	return QString();
 }
 
 bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 {
 	mProjectManager->save();
+	/// @todo: clearErrors() and clear() are absolutely different methods without documentation - wtf?
 	mMainWindowInterface->errorReporter()->clearErrors();
+	mMainWindowInterface->errorReporter()->clear();
 
 	MasterGeneratorBase * const generator = masterGenerator();
-	QFileInfo const path = srcPath();
+	const QFileInfo path = srcPath();
 
 	generator->initialize();
 	generator->setProjectDir(path);
 
-	QString const generatedSrcPath = generator->generate();
+	const QString generatedSrcPath = generator->generate(language().indent());
 
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		delete generator;
 		return false;
 	}
 
-	Id const activeDiagram = mMainWindowInterface->activeDiagram();
+	const Id activeDiagram = mMainWindowInterface->activeDiagram();
 
-	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
+	const QString generatedCode = utils::InFile::readAll(generatedSrcPath);
 	if (!generatedCode.isEmpty()) {
-		mTextManager->showInTextEditor(path, generatorName());
+		mTextManager->showInTextEditor(path, generatorName(), language());
 	}
 
 	if (!openTab) {
@@ -163,29 +210,29 @@ bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 	return true;
 }
 
-void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram
-		, QFileInfo const &oldFileInfo
-		, QFileInfo const &newFileInfo)
+void RobotsGeneratorPluginBase::regenerateCode(const qReal::Id &diagram
+		, const QFileInfo &oldFileInfo
+		, const QFileInfo &newFileInfo)
 {
-	if (!oldFileInfo.completeSuffix().compare(extension())) {
+	if (!oldFileInfo.completeSuffix().compare(language().extension)) {
 		mCodePath.remove(diagram, oldFileInfo);
 		mCodePath.insert(diagram, newFileInfo);
 		regenerateExtraFiles(newFileInfo);
 	}
 }
 
-void RobotsGeneratorPluginBase::addNewCode(Id const &diagram, QFileInfo const &fileInfo)
+void RobotsGeneratorPluginBase::addNewCode(const Id &diagram, const QFileInfo &fileInfo)
 {
 	mCodePath.insert(diagram, fileInfo);
 }
 
-void RobotsGeneratorPluginBase::removeDiagram(qReal::Id const &diagram)
+void RobotsGeneratorPluginBase::removeDiagram(const qReal::Id &diagram)
 {
 	mCodePath.remove(diagram);
 }
 
-void RobotsGeneratorPluginBase::removeCode(QFileInfo const &fileInfo)
+void RobotsGeneratorPluginBase::removeCode(const QFileInfo &fileInfo)
 {
-	Id const &diagram = mCodePath.key(fileInfo);
+	const Id &diagram = mCodePath.key(fileInfo);
 	mCodePath.remove(diagram, fileInfo);
 }

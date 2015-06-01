@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtXml/QDomDocument>
@@ -29,17 +43,17 @@ public:
 	QString version() const;
 
 	bool isLoaded();
-	bool load(QDir const &currentDir);
+	bool load(const QDir &currentDir);
 
-	Type *findType(QString const &name);
+	Type *findType(const QString &name);
 
 	QSet<EnumType *> getAllEnumTypes();
 	QStringList getAllPortNames() const;
-	Diagram *findDiagram(QString const &name);
+	Diagram *findDiagram(const QString &name);
 	QMap<QString, Diagram*> diagrams();
 
 	void generateListenerIncludes(utils::OutFile &out) const;
-	void generateListenerFactory(utils::OutFile &out, QString const &pluginName) const;
+	void generateListenerFactory(utils::OutFile &out, const QString &pluginName) const;
 
 private:
 	XmlCompiler *mXmlCompiler;

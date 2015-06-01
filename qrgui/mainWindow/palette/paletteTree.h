@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QTreeWidget>
@@ -41,13 +55,13 @@ public:
 	/** Delete chosen editor.
 	  @param id Editor id.
 	*/
-	void deleteEditor(Id const &id);
+	void deleteEditor(const Id &id);
 	QComboBox* comboBox() const;
 	QList<QString> editorsNames() const;
 	Id currentEditor() const;
 
 	/// Set item with such id as active in ComboBox.
-	void setComboBox(Id const &id);
+	void setComboBox(const Id &id);
 	void setIconsView(bool iconsView);
 	bool iconsView() const;
 	void setItemsCountInARow(int count);
@@ -71,17 +85,17 @@ public:
 	void initMainWindow(MainWindow *mainWindow);
 	void installEventFilter(QObject *obj);
 
-	void setElementVisible(Id const &metatype, bool visible);
+	void setElementVisible(const Id &metatype, bool visible);
 
 	void setVisibleForAllElements(bool visible);
 
-	void setElementEnabled(Id const &metatype, bool enabled);
+	void setElementEnabled(const Id &metatype, bool enabled);
 
 	void setEnabledForAllElements(bool enabled);
 
 	/// Sets user palettes headers and descriptions.
-	void customizeExplosionTitles(QString const &userGroupTitle
-			, QString const &userGroupDescription);
+	void customizeExplosionTitles(const QString &userGroupTitle
+			, const QString &userGroupDescription);
 
 signals:
 	void paletteParametersChanged();
@@ -97,7 +111,7 @@ public slots:
 	void collapse();
 
 	void setActiveEditor(int index);
-	void setActiveEditor(Id const &id);
+	void setActiveEditor(const Id &id);
 
 	/// Recreate PaletteTree.
 	void recreateTrees();
@@ -117,7 +131,7 @@ private:
 
 private:
 	/// Forbids to make copies of the object.
-	explicit PaletteTree(PaletteTree const &paletteTree);
+	explicit PaletteTree(const PaletteTree &paletteTree);
 
 	virtual void resizeEvent(QResizeEvent *);
 

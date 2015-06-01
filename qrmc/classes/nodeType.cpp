@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nodeType.h"
 #include "../diagram.h"
 #include "../metaCompiler.h"
@@ -10,8 +24,7 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
-	mIsHavePin(false)
+NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id)
 {
 }
 
@@ -26,7 +39,7 @@ Type* NodeType::clone() const
 	return result;
 }
 
-bool NodeType::init(QString const &context)
+bool NodeType::init(const QString &context)
 {
 	GraphicType::init(context);
 	return true;
@@ -39,20 +52,20 @@ void NodeType::print()
 
 
 
-QString NodeType::generateIsNodeOrEdge(QString const &lineTemplate) const
+QString NodeType::generateIsNodeOrEdge(const QString &lineTemplate) const
 {
 	QString line = lineTemplate;
 	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "1");
 	return line;
 }
 
-QString NodeType::generateEdgeClass(QString const &classTemplate) const
+QString NodeType::generateEdgeClass(const QString &classTemplate) const
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString NodeType::generateNodeClass(QString const &classTemplate)
+QString NodeType::generateNodeClass(const QString &classTemplate)
 {
 	if (!mIsVisible)
 		return "";
@@ -72,8 +85,6 @@ QString NodeType::generateNodeClass(QString const &classTemplate)
 					: compiler->getTemplateUtils(nodeInvalidBorderTag);
 
 	nodeClass.replace(isContainerTag, isContainer)
-			.replace(isPortTag, loadBoolProperty(mId, "isPin"))
-			.replace(hasPinTag, isAction)
 			.replace(nodeBorderTag, border)
 			.replace(isNodeTag, "true")
 			.replace(elementNameTag, name())
@@ -83,7 +94,7 @@ QString NodeType::generateNodeClass(QString const &classTemplate)
 	return nodeClass;
 }
 
-QString NodeType::loadBoolProperty(qReal::Id const &id, QString const &property) const
+QString NodeType::loadBoolProperty(const qReal::Id &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -92,7 +103,7 @@ QString NodeType::loadBoolProperty(qReal::Id const &id, QString const &property)
 	return result;
 }
 
-QString NodeType::loadIntProperty(qReal::Id const &id, QString const &property) const
+QString NodeType::loadIntProperty(const qReal::Id &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -101,7 +112,7 @@ QString NodeType::loadIntProperty(qReal::Id const &id, QString const &property) 
 	return result;
 }
 
-QString NodeType::loadIntVectorProperty(qReal::Id const &id, QString const &property) const
+QString NodeType::loadIntVectorProperty(const qReal::Id &id, const QString &property) const
 {
 	QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty()) {
@@ -157,7 +168,7 @@ void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *co
 			.replace(itemsList, compiler->getTemplateUtils(itemsValidList));
 }
 
-QString NodeType::generateResourceLine(QString const &resourceTemplate) const
+QString NodeType::generateResourceLine(const QString &resourceTemplate) const
 {
 	return mShape.generateResourceLine(resourceTemplate);
 }

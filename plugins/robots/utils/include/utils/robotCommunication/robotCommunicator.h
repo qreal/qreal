@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -19,8 +33,8 @@ public:
 	explicit RobotCommunicator(QObject *parent = 0);
 	~RobotCommunicator();
 
-	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
-	void send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer);
+	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
+	void send(const QByteArray &buffer, const unsigned responseSize, QByteArray &outputBuffer);
 	void connect();
 	void disconnect();
 
@@ -30,10 +44,10 @@ public:
 	void checkConsistency();
 
 signals:
-	void errorOccured(QString const &message);
-	void connected(bool success, QString const &errorString);
+	void errorOccured(const QString &message);
+	void connected(bool success, const QString &errorString);
 	void disconnected();
-	void response(QObject *addressee, QByteArray const &buffer);
+	void response(QObject *addressee, const QByteArray &buffer);
 
 private:
 	QThread mRobotCommunicationThread;

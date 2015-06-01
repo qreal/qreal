@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "image.h"
 
 #include <QtGui/QBitmap>
@@ -13,23 +27,23 @@ Image::Image(QString fileName, qreal x, qreal y, Item* parent)
 	mPixmapItem = new QGraphicsPixmapItem(*pixmap);
 	mNeedScalingRect = true;
 	mDomElementType = pictureType;
-	mX1 = x;
-	mY1 = y;
-	mX2 = x + pixmap->width();
-	mY2 = y + pixmap->height();
+	setX1(x);
+	setY1(y);
+	setX2(x + pixmap->width());
+	setY2(y + pixmap->height());
 }
 
-Image::Image(Image const &other)
+Image::Image(const Image &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = pictureType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mListScalePoint = other.mListScalePoint;
 	mPixmapItem = other.mPixmapItem;
 	mFileName = other.mFileName;
@@ -45,7 +59,7 @@ Item* Image::clone()
 
 QRectF Image::boundingRect() const
 {
-	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, scalingDrift);
+	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), scalingDrift);
 }
 
 void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -53,7 +67,7 @@ void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 
-	mRectangleImpl.drawImageItemWithMirrored(painter, mX1, mY1, mX2, mY2, mImage);
+	mRectangleImpl.drawImageItemWithMirrored(painter, x1(), y1(), x2(), y2(), mImage);
 }
 
 void Image::setItemZValue(int zValue)
@@ -63,7 +77,7 @@ void Image::setItemZValue(int zValue)
 	setZValue(zValue);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement image = document.createElement("image");
 	setXandY(image, sceneBoundingRectCoord(topLeftPicture));

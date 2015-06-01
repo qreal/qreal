@@ -1,8 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "blocksTableTest.h"
 
 #include <QtCore/QSharedPointer>
 
-#include "src/interpreter/details/blocksTable.h"
+#include "interpreterCore/interpreter/details/blocksTable.h"
 #include "support/dummyBlocksFactory.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
@@ -19,15 +33,16 @@ void BlocksTableTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
-			Invoke([=] (qReal::Id const &id, interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (qReal::Id const &id, kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->block(id);
 			} )
 			);
+
 	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(
-			Invoke([=] (interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+			Invoke([=] (kitBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
 					return blocksFactory->providedBlocks().toSet();
 			} )
@@ -41,9 +56,9 @@ void BlocksTableTest::SetUp()
 TEST_F(BlocksTableTest, blocksCreation)
 {
 	BlocksTable table(mBlocksFactoryManager, mModelManager);
-	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
+	qReal::interpretation::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
 	ASSERT_NE(nullptr, block1);
 	ASSERT_EQ(block1, block2);
 	ASSERT_NE(nullptr, block3);
@@ -53,9 +68,9 @@ TEST_F(BlocksTableTest, blocksCreation)
 TEST_F(BlocksTableTest, clear)
 {
 	BlocksTable table(mBlocksFactoryManager, mModelManager);
-	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
+	qReal::interpretation::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
 	ASSERT_NE(nullptr, block1);
 	ASSERT_EQ(block1, block2);
 	ASSERT_NE(nullptr, block3);
@@ -65,9 +80,9 @@ TEST_F(BlocksTableTest, clear)
 	ASSERT_EQ(QString("block1"), block1->objectName());
 	ASSERT_EQ(QString("block3"), block3->objectName());
 	table.clear();
-	interpreterBase::blocksBase::BlockInterface *block4 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block5 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block6 = table.block(qReal::Id("a", "b", "c", "e"));
+	qReal::interpretation::BlockInterface *block4 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block5 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block6 = table.block(qReal::Id("a", "b", "c", "e"));
 	ASSERT_NE(nullptr, block4);
 	ASSERT_EQ(block4, block5);
 	ASSERT_NE(nullptr, block6);

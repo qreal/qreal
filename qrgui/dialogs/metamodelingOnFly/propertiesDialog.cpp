@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QStringListModel>
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QMessageBox>
@@ -8,9 +22,9 @@
 using namespace qReal;
 using namespace gui;
 
-PropertiesDialog::PropertiesDialog(EditorManagerInterface const &interpreterEditorManager
+PropertiesDialog::PropertiesDialog(const EditorManagerInterface &interpreterEditorManager
 		, qrRepo::LogicalRepoApi &logicalRepoApi
-		, Id const &id
+		, const Id &id
 		, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::PropertiesDialog)
@@ -38,10 +52,10 @@ PropertiesDialog::~PropertiesDialog()
 	delete mUi;
 }
 
-QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList const &propertiesNames)
+QStringList PropertiesDialog::getPropertiesDisplayedNamesList(const QStringList &propertiesNames)
 {
 	QStringList propertiesDisplayedNames;
-	for (QString const &propertyName : propertiesNames) {
+	for (const QString &propertyName : propertiesNames) {
 		propertiesDisplayedNames << mInterpreterEditorManager.propertyDisplayedName(mId, propertyName);
 	}
 
@@ -51,15 +65,15 @@ QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList const 
 void PropertiesDialog::updatePropertiesNamesList()
 {
 	mPropertiesNames = mInterpreterEditorManager.propertyNames(mId);
-	QStringList const propertiesDisplayedNames = getPropertiesDisplayedNamesList(mPropertiesNames);
+	const QStringList propertiesDisplayedNames = getPropertiesDisplayedNamesList(mPropertiesNames);
 	mUi->propertiesNamesList->clear();
 	mUi->propertiesNamesList->addItems(propertiesDisplayedNames);
 	disableParentProperties(propertiesDisplayedNames);
 }
 
-void PropertiesDialog::disableParentProperties(QStringList const propertiesDisplayedNames)
+void PropertiesDialog::disableParentProperties(const QStringList propertiesDisplayedNames)
 {
-	int const size = mPropertiesNames.length();
+	const int size = mPropertiesNames.length();
 
 	for (int i = 0; i < size; i++) {
 		if (mInterpreterEditorManager.isParentProperty(mId, mPropertiesNames[i])) {
@@ -80,12 +94,12 @@ void PropertiesDialog::deleteProperty()
 		return;
 	}
 
-	QString const &propertyName = mPropertiesNames[mUi->propertiesNamesList->currentRow()];
+	const QString &propertyName = mPropertiesNames[mUi->propertiesNamesList->currentRow()];
 	mInterpreterEditorManager.deleteProperty(propertyName);
 	updatePropertiesNamesList();
 }
 
-void PropertiesDialog::change(QString const &text)
+void PropertiesDialog::change(const QString &text)
 {
 	if (!text.isEmpty()) {
 		mEditPropertiesDialog.changeProperty(
@@ -108,7 +122,7 @@ void PropertiesDialog::change(QString const &text)
 }
 
 
-bool PropertiesDialog::checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id)
+bool PropertiesDialog::checkElementOnDiagram(const qrRepo::LogicalRepoApi &api, Id &id)
 {
 	if (id.idSize() != 3) {
 		id = Id(id.editor(), id.diagram(), id.element());
@@ -123,14 +137,14 @@ bool PropertiesDialog::checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, 
 	return sign;
 }
 
-void PropertiesDialog::findElementsOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id)
+void PropertiesDialog::findElementsOnDiagram(const qrRepo::LogicalRepoApi &api, Id &id)
 {
 	if (id.idSize() != 3) {
 		id = Id(id.editor(), id.diagram(), id.element());
 	}
 
 	IdList logicalElements = api.logicalElements(id);
-	for (auto const &logicalElement: logicalElements) {
+	for (const auto &logicalElement: logicalElements) {
 		if (!mElementsOnDiagram->contains(logicalElement)) {
 			mElementsOnDiagram->append(logicalElement);
 		}
@@ -154,6 +168,6 @@ void PropertiesDialog::changeProperty()
 		return;
 	}
 
-	QString const &propDisplayedName = mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())->text();
+	const QString &propDisplayedName = mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())->text();
 	change(propDisplayedName);
 }

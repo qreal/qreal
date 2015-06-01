@@ -2,84 +2,115 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>TrikFSharpAdditionalPreferences</name>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpAdditionalPreferences.ui" line="14"/>
+        <source>Form</source>
+        <translation>Настройки F#</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpAdditionalPreferences.ui" line="35"/>
+        <source>F# settings</source>
+        <translation>Настройки F#</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpAdditionalPreferences.ui" line="65"/>
+        <source>enter path to F# compile </source>
+        <translation>Введите путь до компилятора F#</translation>
+    </message>
+</context>
+<context>
+    <name>trik::fSharp::TrikFSharpControlFlowValidator</name>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpControlFlowValidator.cpp" line="38"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpControlFlowValidator.cpp" line="47"/>
+        <source>Block type is unsupported by F# generator</source>
+        <translation>Этот блок не поддерживается генератором F#</translation>
+    </message>
+</context>
+<context>
     <name>trik::fSharp::TrikFSharpGeneratorPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="25"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="32"/>
+        <source>Generation (F#)</source>
+        <translation>Генерация (F#)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="39"/>
         <source>Generate FSharp code</source>
         <translation>Генерировать код на F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="30"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="43"/>
         <source>Upload program FSharp</source>
         <translation>Загрузить программу на F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="35"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="47"/>
         <source>Run program FSharp</source>
         <translation>Запустить программу на F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="40"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="51"/>
         <source>Stop robot</source>
         <translation>Остановить робота</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="55"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="79"/>
         <source>Generate FSharp Code</source>
         <translation>Генерировать кода на F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="56"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="80"/>
         <source>Upload FSharp Program</source>
         <translation>Загрузить программу на F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="57"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="81"/>
         <source>Run FSharp Program</source>
         <translation>Запустить программу на F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="58"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="82"/>
         <source>Stop FSharp Robot</source>
         <translation>Остановить F#-программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="85"/>
         <source>FSharp Source File</source>
-        <translation>Исходный код F#</translation>
+        <translation type="vanished">Исходный код F#</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="102"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="134"/>
         <source>Please provide path to the FSharp Compiler in Settings dialog.</source>
         <translation>Пожалуйста, заполните путь до компилятора F# в диалоге настроек.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="117"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="149"/>
         <source>Unable to launch F# compiler</source>
         <translation>Не удалось запустить компилятор F#, проверьте настройки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="125"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="157"/>
         <source>Please provide path to the WinSCP in Settings dialog.</source>
         <translation>Пожалуйста, заполните путь до WinSCP в диалоге настроек.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="139"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="171"/>
         <source>Unable to launch WinSCP</source>
         <translation>Не удалось запустить WinSCP, проверьте настройки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="144"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="176"/>
         <source>After downloading the program, enter &apos;exit&apos; or close the window</source>
         <translation>После окончания загрузки программы введите &apos;exit&apos; или закройте окно</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="153"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="185"/>
         <source>Attention, the robot starts about a half-minute</source>
         <translation>Внимание, робот запустится примерно через полминуты</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="168"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikFSharpGenerator/trikFSharpGeneratorPlugin.cpp" line="200"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом, проверьте настройки (меню &apos;Настройки&apos; -&gt; &apos;Настройки...&apos; -&gt; &apos;Роботы&apos;), проверьте, включён ли робот</translation>
     </message>

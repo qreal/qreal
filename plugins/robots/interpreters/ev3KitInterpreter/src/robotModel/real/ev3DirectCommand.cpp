@@ -1,6 +1,7 @@
 #include "ev3DirectCommand.h"
 
-using namespace ev3KitInterpreter::robotModel::real;
+using namespace ev3;
+using namespace ev3::robotModel::real;
 
 Ev3DirectCommand::Ev3DirectCommand()
 {
