@@ -22,6 +22,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QMainWindow>
 
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
@@ -40,10 +41,11 @@ UiManager::UiManager(QAction &debugModeAction
 		, QAction &editModeAction
 		, qReal::gui::MainWindowDockInterface &mainWindow
 		, qReal::SystemEvents &systemEvents
-		, kitBase::EventsForKitPluginInterface &kitPluginEvents)
+		, kitBase::EventsForKitPluginInterface &kitPluginEvents, kitBase::RobotOutputWidget &outputWidget)
 	: mDebugModeAction(debugModeAction)
 	, mEditModeAction(editModeAction)
 	, mMainWindow(mainWindow)
+	, mOutputWidget(outputWidget)
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 
@@ -195,6 +197,7 @@ void UiManager::reloadDocksSavingToolbarsAndErrors() const
 	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
 	// will loose some toolbars visibility and error reporter state, so memorizing it here...
 	const bool errorReporterWasVisible = mMainWindow.errorReporterDock()->isVisible();
+	const bool robotOutputWasVisible = mOutputWidget.isVisible();
 	QMap<QToolBar *, bool> toolBarsVisiblity;
 	for (QToolBar * const toolBar : mMainWindow.toolBars()) {
 		toolBarsVisiblity[toolBar] = toolBar->isVisible();
@@ -205,6 +208,7 @@ void UiManager::reloadDocksSavingToolbarsAndErrors() const
 
 	// And finally restoring old configuration.
 	mMainWindow.errorReporterDock()->setVisible(errorReporterWasVisible);
+	mOutputWidget.setVisible(robotOutputWasVisible);
 	for (QToolBar * const toolBar : toolBarsVisiblity.keys()) {
 		toolBar->setVisible(toolBarsVisiblity[toolBar]);
 	}

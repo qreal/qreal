@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,21 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "colorSensor.h"
+#pragma once
 
-using namespace trik::robotModel::real::parts;
-using namespace kitBase::robotModel;
+#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QAction>
 
-ColorSensor::ColorSensor(const DeviceInfo &info, const PortInfo &port)
-	: robotModel::parts::TrikColorSensor(info, port)
+namespace utils {
+
+/// Base class for widgets displaying something in a bottom dock. Can request its visibility change.
+class OutputWidget : public QDockWidget
 {
-}
+	Q_OBJECT
+public:
+	explicit OutputWidget(const QString &title, QWidget *parent = 0);
 
-void ColorSensor::init()
-{
-}
+	QAction *action();
 
-void ColorSensor::read()
-{
-	emit newData({});
+	/// Returns a name of shortcut for registering in HotKeyManager.
+	virtual QString shortcutName() const = 0;
+
+signals:
+	void showMe();
+
+private:
+	QAction mAction;
+};
+
 }

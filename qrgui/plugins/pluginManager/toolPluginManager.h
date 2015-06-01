@@ -25,6 +25,7 @@
 
 #include <qrutils/pluginManagers/pluginManager.h>
 #include <qrgui/preferencesDialog/preferencesPage.h>
+#include <qrutils/outputWidget.h>
 
 #include <plugins/toolPluginInterface/toolPluginInterface.h>
 #include <plugins/toolPluginInterface/customizer.h>
@@ -53,6 +54,9 @@ public:
 	/// Returns a multimap of project conveters to editors whoose diagrams they convert.
 	/// @warning The result is obtained each time from scratch when you call this method so better to memorize it.
 	QMultiMap<QString, ProjectConverter> projectConverters() const;
+
+	/// Returns a list of widgets that plugins want to add to bottom dock.
+	QList<utils::OutputWidget *> outputWidgets() const;
 
 	/// Returns GUI customizer object. In each QReal's instance there should be only one plugin with
 	/// valid customizationInterface(): robots plugin for QReal:Robots, ubiq plugin for QReal:Ubiq etc.

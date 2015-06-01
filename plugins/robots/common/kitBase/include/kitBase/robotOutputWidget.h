@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,21 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "colorSensor.h"
+#pragma once
 
-using namespace trik::robotModel::real::parts;
-using namespace kitBase::robotModel;
+#include <QtWidgets/QPlainTextEdit>
+#include <QtWidgets/QAction>
 
-ColorSensor::ColorSensor(const DeviceInfo &info, const PortInfo &port)
-	: robotModel::parts::TrikColorSensor(info, port)
+#include <qrutils/outputWidget.h>
+
+namespace kitBase {
+
+class RobotOutputWidget : public utils::OutputWidget
 {
-}
+	Q_OBJECT
+public:
+	explicit RobotOutputWidget(QWidget *parent = nullptr);
 
-void ColorSensor::init()
-{
-}
+	QString shortcutName() const override;
 
-void ColorSensor::read()
-{
-	emit newData({});
+public slots:
+	/// Appends given text to the end of output.
+	void print(const QString &text);
+
+	/// Clears output.
+	void clear();
+
+private:
+	QPlainTextEdit mOutput;
+};
+
 }

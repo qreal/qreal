@@ -66,7 +66,7 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, interpretersInterface
 			, configurator.interpreterControl());
 
-	mRealRobotModel.setErrorReporter(interpretersInterface.errorReporter());
+	mRealRobotModel.configureOutput(interpretersInterface.errorReporter(), configurator.outputWidget());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);

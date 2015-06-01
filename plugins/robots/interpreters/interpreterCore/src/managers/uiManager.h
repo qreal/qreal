@@ -17,6 +17,7 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <kitBase/eventsForKitPluginInterface.h>
+#include <kitBase/robotOutputWidget.h>
 
 namespace interpreterCore {
 
@@ -40,7 +41,8 @@ public:
 			, QAction &editModeAction
 			, qReal::gui::MainWindowDockInterface &mainWindow
 			, qReal::SystemEvents &systemEvents
-			, kitBase::EventsForKitPluginInterface &kitPluginEvents);
+			, kitBase::EventsForKitPluginInterface &kitPluginEvents
+			, kitBase::RobotOutputWidget &outputWidget);
 
 	/// Embeds the given widget into main window`s left dock panel
 	void placeDevicesConfig(QWidget *devicesWidget);
@@ -73,6 +75,7 @@ private:
 	QAction &mDebugModeAction;
 	QAction &mEditModeAction;
 	qReal::gui::MainWindowDockInterface &mMainWindow;
+	kitBase::RobotOutputWidget &mOutputWidget;
 	qReal::TabInfo::TabType mCurrentTab = static_cast<qReal::TabInfo::TabType>(-1);
 	Mode mCurrentMode = Mode::Dummy;
 };
