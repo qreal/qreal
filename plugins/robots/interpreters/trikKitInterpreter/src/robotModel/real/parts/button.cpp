@@ -13,21 +13,21 @@
  * limitations under the License. */
 
 #include "button.h"
+#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Button::Button(const DeviceInfo &info, const PortInfo &port, int code
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
-	: robotParts::Button(info, port, code), mRobotCommunicator(tcpRobotCommunicator)
+Button::Button(const DeviceInfo &info, const PortInfo &port, int code)
+	: robotParts::Button(info, port, code)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newScalarSensorData
 			, this, &Button::onIncomingData);
 }
 
 void Button::read()
 {
-	mRobotCommunicator.requestData("button:" + port().name());
+	utils::TcpRobotCommunicator::instance().requestData("button:" + port().name());
 }
 
 void Button::onIncomingData(const QString &portName, int value)

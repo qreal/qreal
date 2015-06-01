@@ -20,7 +20,8 @@
 #include <QtWidgets/QAction>
 
 #include <qrrepo/repoControlInterface.h>
-#include "qrgui/preferencesDialog/preferencesPage.h"
+#include <qrgui/preferencesDialog/preferencesPage.h>
+#include <qrutils/outputWidget.h>
 
 #include "qrgui/plugins/toolPluginInterface/customizer.h"
 #include "qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
@@ -74,6 +75,12 @@ public:
 	/// If no converter provided for some version than it is considered that
 	/// no modifications required for such save.
 	virtual QList<ProjectConverter> projectConverters()
+	{
+		return {};
+	}
+
+	/// Returns a list of widgets that may display some information in a bottom dock.
+	virtual QList<utils::OutputWidget *> outputWidgets()
 	{
 		return {};
 	}

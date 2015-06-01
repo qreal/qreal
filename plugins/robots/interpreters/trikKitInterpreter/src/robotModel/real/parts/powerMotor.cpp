@@ -15,14 +15,13 @@
 #include "powerMotor.h"
 
 #include <qrutils/inFile.h>
+#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-PowerMotor::PowerMotor(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+PowerMotor::PowerMotor(const DeviceInfo &info, const PortInfo &port)
 	: robotModel::parts::TrikPowerMotor(info, port)
-	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
@@ -33,7 +32,7 @@ void PowerMotor::on(int speed)
 			.replace("@@PORT@@", "\"" + port().name() + "\"")
 			.replace("@@POWER@@", QString::number(speed)) + "script.run();";
 
-	mRobotCommunicator.runDirectCommand(directCommand);
+	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
 }
 
 void PowerMotor::stop()

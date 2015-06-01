@@ -32,16 +32,13 @@ class ErrorReporter : public QObject, public ErrorReporterInterface
 
 public:
 	ErrorReporter();
-	ErrorReporter(ErrorListWidget * const errorListWidget, QDockWidget * const errorList);
+	ErrorReporter(ErrorListWidget * const errorListWidget);
 
 	virtual void addInformation(const QString &message, const Id &position = Id::rootId());
 	virtual void addWarning(const QString &message, const Id &position = Id::rootId());
 	virtual void addError(const QString &message, const Id &position = Id::rootId());
 	virtual void addCritical(const QString &message, const Id &position = Id::rootId());
 	virtual bool wereErrors();
-
-	bool showErrors(ErrorListWidget * const errorListWidget, QDockWidget * const errorList) const;
-	void updateVisibility(bool isVisible);
 
 signals:
 	/// Emitted when new message with level 'Info' added to error reporter.
@@ -61,16 +58,10 @@ public slots:
 	virtual void clearErrors();
 
 private:
-	static QString severityMessage(const Error &error);
-	void showError(const Error &error, ErrorListWidget * const errorListWidget) const;
+	void showError(const Error &error);
 
 	QList<Error> mErrors;
-
 	ErrorListWidget * const mErrorListWidget;  // Doesn't have ownership
-	QDockWidget * const mErrorList;  // Doesn't have ownership
-
-	/// Should error window be shown or not
-	bool mIsVisible;
 };
 
 }

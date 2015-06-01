@@ -24,6 +24,7 @@
 #include <kitBase/robotModel/robotModelInterfaceMock.h>
 #include <kitBase/robotModel/robotModelManagerInterfaceMock.h>
 #include <kitBase/robotModel/configurationInterfaceMock.h>
+#include <kitBase/robotOutputWidget.h>
 #include <utils/realTimeline.h>
 
 /// @todo /src/managers
@@ -50,6 +51,7 @@ protected:
 	BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
 	ConfigurationInterfaceMock mConfigurationInterfaceMock;
 	QScopedPointer<interpreterCore::textLanguage::RobotsBlockParser> mParser;
+	kitBase::RobotOutputWidget mOutputWidget;
 };
 
 }

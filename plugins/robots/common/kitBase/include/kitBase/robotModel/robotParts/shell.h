@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,28 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/button.h>
+#include "device.h"
+#include "kitBase/robotOutputWidget.h"
 
-namespace trik {
+namespace kitBase {
 namespace robotModel {
-namespace real {
-namespace parts {
+namespace robotParts {
 
-class Button : public kitBase::robotModel::robotParts::Button
+/// Base class for command shells.
+class ROBOTS_KIT_BASE_EXPORT Shell : public Device
 {
 	Q_OBJECT
+	Q_CLASSINFO("name", "shell")
+	Q_CLASSINFO("friendlyName", tr("Shell"))
+	Q_CLASSINFO("direction", "output")
 
 public:
-	Button(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port
-			, int code);
+	Shell(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
 
-	void read() override;
-
-public slots:
-	void onIncomingData(const QString &portName, int value);
+	virtual void print(RobotOutputWidget &outputWidget, const QString &text) = 0;
 };
 
-}
 }
 }
 }

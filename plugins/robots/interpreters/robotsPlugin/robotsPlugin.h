@@ -39,6 +39,7 @@ public:
 	QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::ProjectConverter> projectConverters() override;
+	QList<utils::OutputWidget *> outputWidgets() override;  // Transfers ownership.
 	QStringList defaultSettingsFiles() override;
 
 private:

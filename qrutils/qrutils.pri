@@ -32,6 +32,7 @@ HEADERS += \
 	$$PWD/parserErrorReporter.h \
 	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
+	$$PWD/outputWidget.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
+	$$PWD/outputWidget.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui

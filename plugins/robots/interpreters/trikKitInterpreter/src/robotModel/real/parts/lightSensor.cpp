@@ -13,6 +13,7 @@
  * limitations under the License. */
 
 #include "lightSensor.h"
+#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
@@ -20,17 +21,16 @@ using namespace kitBase::robotModel;
 const int maxLightValue = 1023;
 
 LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		)
 	: kitBase::robotModel::robotParts::LightSensor(info, port)
-	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newScalarSensorData
 			, this, &LightSensor::onIncomingData);
 }
 
 void LightSensor::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	utils::TcpRobotCommunicator::instance().requestData(port().name());
 }
 
 void LightSensor::onIncomingData(const QString &portName, int value)

@@ -61,6 +61,11 @@ QList<ProjectConverter> RobotsPlugin::projectConverters()
 	return interpreterCore::SaveConvertionManager::converters();
 }
 
+QList<utils::OutputWidget *> RobotsPlugin::outputWidgets()
+{
+	return { mRobotsPluginFacade->outputWidget() };
+}
+
 QStringList RobotsPlugin::defaultSettingsFiles()
 {
 	return mRobotsPluginFacade->defaultSettingsFiles();
