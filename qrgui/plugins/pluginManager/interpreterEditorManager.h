@@ -127,7 +127,6 @@ public:
 			, const QString &endType
 			) const override;
 
-	/// TODO: where does it have to be?
 	void updateGenerationRule(const Id &id, const QString &newRule) const override;
 	QString generationRule(const Id &id) const override;
 

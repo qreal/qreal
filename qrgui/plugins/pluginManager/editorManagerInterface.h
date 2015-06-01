@@ -73,12 +73,13 @@ public:
 	virtual bool isDiagram(const Id &id) const = 0;
 	virtual bool isElement(const Id &id) const = 0;
 
+	/// Updates generation rule for given element.
+	/// @param id - element id.
+	/// @param newRule - new generation rule.
 	virtual void updateGenerationRule(const Id &id, const QString &newRule) const = 0;
+	/// Returns rule for given element.
+	/// @param id - element id.
 	virtual QString generationRule(const Id &id) const = 0;
-
-//	virtual void updateGeneratedCodeProperties(const QString &pathToFolder, const QString &mainFileName) const = 0;
-//	virtual QString pathToGeneratedCode() const = 0;
-//	virtual QString mainFileWithGeneratedCodeName() const = 0;
 
 	virtual QStringList propertyNames(const Id &id) const = 0;
 	virtual QStringList portTypes(const Id &id) const = 0;
