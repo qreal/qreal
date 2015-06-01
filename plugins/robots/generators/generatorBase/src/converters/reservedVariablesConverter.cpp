@@ -48,6 +48,12 @@ QString ReservedVariablesConverter::convert(const QString &variable) const
 		}
 	}
 
+	for (const QString &button : mRobotModel.buttonCodes().keys()) {
+		if (variable == button) {
+			return readTemplate(QString("buttons/%1.t").arg(button));
+		}
+	}
+
 	return variable;
 }
 

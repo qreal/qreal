@@ -29,6 +29,7 @@ class Button : public kitBase::robotModel::robotParts::Button
 public:
 	Button(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
+			, int code
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
