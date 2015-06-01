@@ -79,7 +79,6 @@ void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
 
 void GenerationRulesPlugin::generateCodeForAllElements()
 {
-	mMainFileName = mSpecifyPathsDialog->currentFileName();
 	mPathToGeneratedCode = mSpecifyPathsDialog->currentPathToFolder();
 
 	// we need id of root element in metamodel

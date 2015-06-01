@@ -30,11 +30,6 @@ SpecifyPathToGeneratedCodeDialog::~SpecifyPathToGeneratedCodeDialog()
 	delete mUi;
 }
 
-QString SpecifyPathToGeneratedCodeDialog::currentFileName() const
-{
-	return mUi->fileLineEdit->text();
-}
-
 QString SpecifyPathToGeneratedCodeDialog::currentPathToFolder() const
 {
 	return mUi->folderLineEdit->text();
@@ -43,13 +38,11 @@ QString SpecifyPathToGeneratedCodeDialog::currentPathToFolder() const
 void SpecifyPathToGeneratedCodeDialog::restoreSettings()
 {
 	mUi->folderLineEdit->setText(mMetamodelRepoApi->metaInformation("PathToFolder").toString());
-	mUi->fileLineEdit->setText(mMetamodelRepoApi->metaInformation("MainFileName").toString());
 }
 
 void SpecifyPathToGeneratedCodeDialog::saveSettings()
 {
 	mMetamodelRepoApi->setMetaInformation("PathToFolder", mUi->folderLineEdit->text());
-	mMetamodelRepoApi->setMetaInformation("MainFileName", mUi->fileLineEdit->text());
 
 	createDirectory(mUi->folderLineEdit->text());
 

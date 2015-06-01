@@ -28,8 +28,6 @@ public:
 
 	/// Returns current path to folder with generated code.
 	QString currentPathToFolder() const;
-	/// Returns current main file name.
-	QString currentFileName() const;
 
 signals:
 	/// Emitted when ok button pushed and paths saved.

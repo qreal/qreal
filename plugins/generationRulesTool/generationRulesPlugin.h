@@ -71,7 +71,6 @@ private:
 	qReal::gui::SpecifyPathToGeneratedCodeDialog *mSpecifyPathsDialog;  // Doesn't have ownership.
 
 	QString mPathToGeneratedCode;
-	QString mMainFileName;
 };
 
 }
