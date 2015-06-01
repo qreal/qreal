@@ -113,7 +113,7 @@ void GenerationRulesPlugin::generateCode(
 	const auto resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
 			, generatorConfigurer);
 
-	qDebug() << resultOfGenerationForRoot;
+	Q_UNUSED(resultOfGenerationForRoot);
 	table.clear();
 }
 

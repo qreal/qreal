@@ -51,6 +51,8 @@ void SpecifyPathToGeneratedCodeDialog::saveSettings()
 	mMetamodelRepoApi->setMetaInformation("PathToFolder", mUi->folderLineEdit->text());
 	mMetamodelRepoApi->setMetaInformation("MainFileName", mUi->fileLineEdit->text());
 
+	createDirectory(mUi->folderLineEdit->text());
+
 	emit pathsSpecified();
 }
 
@@ -58,4 +60,33 @@ void SpecifyPathToGeneratedCodeDialog::specifyFolder()
 {
 	const auto folderName = QFileDialog::getExistingDirectory(this, tr("Specify directory:"));
 	mUi->folderLineEdit->setText(folderName);
+}
+
+void SpecifyPathToGeneratedCodeDialog::createDirectory(const QString &directory)
+{
+	QDir dir;
+	clearDir(directory);
+	dir.mkpath(directory);
+}
+
+void SpecifyPathToGeneratedCodeDialog::clearDir(const QString &path)
+{
+	if (path.isEmpty()) {
+		return;
+	}
+
+	QDir dir(path);
+	if (!dir.exists()) {
+		return;
+	}
+
+	for (const auto &fileInfo : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.isDir()) {
+			clearDir(fileInfo.filePath());
+		} else {
+			dir.remove(fileInfo.fileName());
+		}
+	}
+
+	dir.rmdir(path);
 }

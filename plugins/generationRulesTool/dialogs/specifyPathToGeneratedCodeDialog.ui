@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
+    <width>564</width>
     <height>137</height>
    </rect>
   </property>
@@ -22,7 +22,7 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>210</x>
      <y>100</y>
      <width>341</width>
      <height>32</height>
@@ -38,10 +38,10 @@
   <widget class="QLabel" name="folderLabel">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>10</x>
      <y>40</y>
-     <width>41</width>
-     <height>16</height>
+     <width>201</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -51,10 +51,10 @@
   <widget class="QLabel" name="fileLabel">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>70</y>
-     <width>91</width>
-     <height>16</height>
+     <width>201</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -64,9 +64,9 @@
   <widget class="QLineEdit" name="folderLineEdit">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>170</x>
      <y>40</y>
-     <width>251</width>
+     <width>301</width>
      <height>20</height>
     </rect>
    </property>
@@ -74,9 +74,9 @@
   <widget class="QLineEdit" name="fileLineEdit">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>170</x>
      <y>70</y>
-     <width>251</width>
+     <width>301</width>
      <height>20</height>
     </rect>
    </property>
@@ -84,7 +84,7 @@
   <widget class="QPushButton" name="specifyFolderButton">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>480</x>
      <y>40</y>
      <width>71</width>
      <height>21</height>

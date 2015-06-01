@@ -43,6 +43,10 @@ private slots:
 	void specifyFolder();
 
 private:
+	static void createDirectory(const QString &directory);
+
+	static void clearDir(const QString &path);
+
 	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // doesnt' have ownership.
 
 	Ui::SpecifyPathToGeneratedCodeDialog *mUi;  // doesn't have owhership.
