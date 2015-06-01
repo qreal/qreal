@@ -18,12 +18,14 @@
 #include <QtWidgets/QAction>
 
 #include <qrutils/outputWidget.h>
+#include <kitBase/kitBaseDeclSpec.h>
 
 namespace kitBase {
 
-class RobotOutputWidget : public utils::OutputWidget
+class ROBOTS_KIT_BASE_EXPORT RobotOutputWidget : public utils::OutputWidget
 {
 	Q_OBJECT
+
 public:
 	explicit RobotOutputWidget(QWidget *parent = nullptr);
 
