@@ -16,6 +16,7 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates string for complexIdentifier node.
 class GeneratorForComplexIdentifierNode
 {
 public:

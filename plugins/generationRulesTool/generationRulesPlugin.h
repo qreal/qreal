@@ -59,7 +59,7 @@ private:
 	/// To syncronize logical and graphical models with repository.
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Doesn't have ownership
 
-	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;
+	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // Doesn't have ownership.
 
 	/// Metamodel repo api.
 	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
@@ -68,7 +68,7 @@ private:
 
 	qReal::Id mRootId;
 
-	qReal::gui::SpecifyPathToGeneratedCodeDialog *mSpecifyPathsDialog;
+	qReal::gui::SpecifyPathToGeneratedCodeDialog *mSpecifyPathsDialog;  // Doesn't have ownership.
 
 	QString mPathToGeneratedCode;
 	QString mMainFileName;

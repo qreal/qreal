@@ -43,7 +43,7 @@ private slots:
 	void specifyFolder();
 
 private:
-	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // doesnt' hane ownership.
+	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // doesnt' have ownership.
 
 	Ui::SpecifyPathToGeneratedCodeDialog *mUi;  // doesn't have owhership.
 };

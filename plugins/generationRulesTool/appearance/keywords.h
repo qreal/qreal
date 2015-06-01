@@ -2,6 +2,7 @@
 
 #include <QtCore/QStringList>
 
+/// Templates (for highlighter and list of templates in dialog).
 namespace generationRules {
 namespace keywords {
 

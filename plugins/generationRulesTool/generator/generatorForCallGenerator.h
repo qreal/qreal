@@ -16,18 +16,22 @@
 namespace generationRules {
 namespace generator {
 
+/// Class that generates result for callGeneratorFor node.
 class GeneratorForCallGenerator
 {
 public:
+	/// Returns generated string.
+	/// @param callGeneratorForNode - node to generate code for.
+	/// @param generatorConfigurer - information about model and metamodel.
 	static QString generatedResult(QSharedPointer<simpleParser::ast::CallGeneratorFor> callGeneratorForNode
 			, GeneratorConfigurer generatorConfigurer
 			);
 
+private:
 	static QString commonGeneratedString(QSharedPointer<simpleParser::ast::ElementIdentifier> calledIdentifier
 			, QSharedPointer<simpleParser::ast::Identifier> generatorNameNode
 			, GeneratorConfigurer generatorConfigurer);
 
-private:
 	static qReal::Id idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface
 			, const QString &elementName
 			, const qReal::Id &diagramId);
