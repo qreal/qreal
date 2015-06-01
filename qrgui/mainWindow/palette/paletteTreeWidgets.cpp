@@ -254,3 +254,9 @@ void PaletteTreeWidgets::refreshUserPalette()
 
 	mUserTree->addGroups(groups, descriptions, true, mEditorManager->friendlyName(mDiagram), true);
 }
+
+void PaletteTreeWidgets::filter(const QRegExp &regexp)
+{
+	mEditorTree->filter(regexp);
+	mUserTree->filter(regexp);
+}

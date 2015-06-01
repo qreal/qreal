@@ -19,8 +19,11 @@
 
 #include <qrutils/utilsDeclSpec.h>
 
-namespace graphicsUtils {
+namespace qReal {
+namespace ui {
 
+/// Provides a minimalistic color picker providing switching between a fixed set of colors
+/// (in contrast to complicated QColorDialog able to pick any one).
 class QRUTILS_EXPORT ColorListEditor : public QComboBox
 {
 	Q_OBJECT
@@ -34,9 +37,16 @@ signals:
 	void colorChanged(const QColor &color);
 
 public:
+	/// Sets colors user can switch between. In compact mode @arg translatedColorList will be ignored.
 	void setColorList(const QStringList &colorList, const QStringList &translatedColorList = QStringList());
+
+	/// Returns the currently selected by user color.
 	QColor color() const;
+
+	/// Returns the color value in the given combobox cell.
 	QColor colorByIndex(int index) const;
+
+	/// Sets the color that will be shown as selected.
 	void setColor(const QColor &color);
 
 private:
@@ -47,4 +57,5 @@ private:
 	QStringList mTranslatedColorList;
 };
 
+}
 }

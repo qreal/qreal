@@ -334,7 +334,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="graphicsUtils::ColorListEditor" name="textColorComboBox">
+       <widget class="qReal::ui::ColorListEditor" name="textColorComboBox">
         <property name="geometry">
          <rect>
           <x>40</x>
@@ -761,7 +761,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="graphicsUtils::ColorListEditor" name="penColorComboBox">
+       <widget class="qReal::ui::ColorListEditor" name="penColorComboBox">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -906,7 +906,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="graphicsUtils::ColorListEditor" name="brushColorComboBox">
+       <widget class="qReal::ui::ColorListEditor" name="brushColorComboBox">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -1088,9 +1088,9 @@
    <header>qrutils/graphicsUtils/abstractItemView.h</header>
   </customwidget>
   <customwidget>
-   <class>graphicsUtils::ColorListEditor</class>
+   <class>qReal::ui::ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>qrutils/graphicsUtils/colorListEditor.h</header>
+   <header>qrutils/widgets/colorListEditor.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

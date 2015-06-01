@@ -30,11 +30,11 @@ class TWO_D_MODEL_EXPORT TwoDModelDisplayWidget : public QWidget, public TwoDMod
 public:
 	explicit TwoDModelDisplayWidget(QWidget *parent = nullptr);
 
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
+	void setPainter(qReal::ui::PainterInterface *painter) override;
 	void reset() override;
 
 private:
-	graphicsUtils::PainterInterface *mPainter;
+	qReal::ui::PainterInterface *mPainter;
 };
 
 }

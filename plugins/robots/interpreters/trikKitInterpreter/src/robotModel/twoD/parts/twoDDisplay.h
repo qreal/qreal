@@ -25,7 +25,7 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class Display : public robotModel::parts::TrikDisplay, public graphicsUtils::PainterInterface
+class Display : public robotModel::parts::TrikDisplay, public qReal::ui::PainterInterface
 {
 	Q_OBJECT
 

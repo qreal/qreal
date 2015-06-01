@@ -16,10 +16,8 @@
 
 #include <QtGui/QImage>
 
-#include <qrutils/graphicsUtils/painterInterface.h>
-#include <qrutils/graphicsUtils/paintWidget.h>
-
-#include "twoDModel/engine/twoDModelDisplayWidget.h"
+#include <qrutils/widgets/paintWidget.h>
+#include <twoDModel/engine/twoDModelDisplayWidget.h>
 
 namespace Ui {
 class TrikDisplayWidget;
@@ -37,7 +35,7 @@ public:
 
 	void reset() override;
 
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
+	void setPainter(qReal::ui::PainterInterface *painter) override;
 
 	void repaintDisplay() override;
 	int displayWidth() const override;

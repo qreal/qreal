@@ -90,3 +90,6 @@ include($$PWD/pluginManagers/pluginManagers.pri)
 
 # Tools for interpreting behavioral diagrams
 include($$PWD/interpreter/interpreter.pri)
+
+# The collection of useful widgets
+include($$PWD/widgets/widgets.pri)
