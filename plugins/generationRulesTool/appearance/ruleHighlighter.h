@@ -11,6 +11,7 @@ class RuleHighlighter : public QSyntaxHighlighter
 
 public:
 	/// Constructor.
+	/// @param parent - text document we want to highlight.
 	RuleHighlighter(QTextDocument *parent = 0);
 
 protected:

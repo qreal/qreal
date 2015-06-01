@@ -9,11 +9,6 @@ VariablesTable::VariablesTable()
 
 VariablesTable::~VariablesTable()
 {
-	QHashIterator<QString, VariableData*> iterator(mHashTable);
-	while (iterator.hasNext()) {
-		iterator.next();
-		delete iterator.value();
-	}
 }
 
 void VariablesTable::addNewVariable(const QString &name, const QString &type, const qReal::IdList &listOfIds)

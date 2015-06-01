@@ -99,27 +99,29 @@ void GenerationRulesPlugin::generateCode(
 		const qReal::Id &editorId
 		, const qReal::Id &diagramId)
 {
-	QString rootStream = mEditorManagerInterface->generationRule(mRootId);
+	const auto rootStream = mEditorManagerInterface->generationRule(mRootId);
 
-	auto parserResultForRoot = TreeGeneratorFromString::generatedTreeFromString(rootStream);
-	auto programForRoot = parserResultForRoot.dynamicCast<simpleParser::ast::Program>();
+	const auto parserResultForRoot = TreeGeneratorFromString::generatedTreeFromString(rootStream);
+	const auto programForRoot = parserResultForRoot.dynamicCast<simpleParser::ast::Program>();
+
 	generationRules::generator::VariablesTable table;
 	generationRules::generator::CurrentScope scope;
 
 	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface, mEditorManagerInterface
 			, table, scope, editorId, diagramId, mPathToGeneratedCode);
 
-	QString resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
+	const auto resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
 			, generatorConfigurer);
+
 	qDebug() << resultOfGenerationForRoot;
 	table.clear();
 }
 
 void GenerationRulesPlugin::openGenerationRulesWindow()
 {
-	const QAction * const action = static_cast<QAction *>(sender());
-	const qReal::Id id = action->data().value<qReal::Id>();
-	auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id, mMetamodelRepoApi);
+	const auto * const action = static_cast<QAction *>(sender());
+	const auto id = action->data().value<qReal::Id>();
+	const auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id, mMetamodelRepoApi);
 	Q_UNUSED(specifyGenerationRulesDialog);
 }
 
