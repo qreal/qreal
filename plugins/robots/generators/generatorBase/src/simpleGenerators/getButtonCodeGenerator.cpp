@@ -12,24 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDModel/robotModel/parts/button.h"
+#include "getButtonCodeGenerator.h"
 
-#include "twoDModel/engine/twoDModelEngineInterface.h"
-#include "twoDModel/engine/twoDModelDisplayWidget.h"
+using namespace generatorBase::simple;
 
-using namespace twoDModel::robotModel::parts;
-using namespace kitBase::robotModel;
-
-Button::Button(const kitBase::robotModel::DeviceInfo &info
-		, const kitBase::robotModel::PortInfo &port
-		, int code
-		, engine::TwoDModelEngineInterface &engine)
-	: robotParts::Button(info, port, code)
-	, mEngine(engine)
+GetButtonCodeGenerator::GetButtonCodeGenerator(const qrRepo::RepoApi &repo
+		, GeneratorCustomizer &customizer
+		, const qReal::Id &id
+		, QObject *parent)
+	: BindingGenerator(repo, customizer, id, "wait/buttonCode.t"
+			, { Binding::createDirect("@@VARIABLE@@", "Variable") }
+			, parent)
 {
 }
 
-void Button::read()
-{
-	emit newData(mEngine.display()->buttonIsDown(port().name()) ? 1 : 0);
-}

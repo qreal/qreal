@@ -1959,6 +1959,26 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Get Button Code" name="GetButtonCode" description="Assigns a given variable a value of pressed button.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+					</picture>
+					<labels>
+						<label x="30" y="60" textBinded="Variable" hard="true" prefix="Variable:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>x</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 
 			<!-- Common display drawing blocks -->
 			<node displayedName="Clear Screen" name="ClearScreen" description="Clears everything drawn on the robot`s screen.">
@@ -2708,6 +2728,7 @@
 				<element name="TrikWaitGamepadDisconnect" />
 				<element name="TrikWaitGamepadConnect" />
 				<element name="ReceiveMessageThreads"/>
+				<element name="GetButtonCode"/>
 			</group>
 			<group name="Drawing">
 				<element name="NxtDrawRect"/>

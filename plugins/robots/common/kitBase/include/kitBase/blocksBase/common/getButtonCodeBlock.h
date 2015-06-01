@@ -12,24 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDModel/robotModel/parts/button.h"
+#pragma once
 
-#include "twoDModel/engine/twoDModelEngineInterface.h"
-#include "twoDModel/engine/twoDModelDisplayWidget.h"
+#include <kitBase/blocksBase/common/waitBlock.h>
 
-using namespace twoDModel::robotModel::parts;
-using namespace kitBase::robotModel;
+namespace kitBase {
+namespace blocksBase {
+namespace common {
 
-Button::Button(const kitBase::robotModel::DeviceInfo &info
-		, const kitBase::robotModel::PortInfo &port
-		, int code
-		, engine::TwoDModelEngineInterface &engine)
-	: robotParts::Button(info, port, code)
-	, mEngine(engine)
+/// Interpreter's implementation of "Get Button Code" block.
+class ROBOTS_KIT_BASE_EXPORT GetButtonCodeBlock : public WaitBlock
 {
+	Q_OBJECT
+public:
+	GetButtonCodeBlock(robotModel::RobotModelInterface &robotModel);
+
+	void run() override;
+
+private slots:
+	void timerTimeout() override;
+
+private:
+	robotModel::DeviceInfo device() const override;
+
+	QList<QString> mButtons;
+};
+
 }
-
-void Button::read()
-{
-	emit newData(mEngine.display()->buttonIsDown(port().name()) ? 1 : 0);
+}
 }

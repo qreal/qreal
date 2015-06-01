@@ -18,8 +18,8 @@
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Button::Button(const DeviceInfo &info, const PortInfo &port)
-	: robotParts::Button(info, port)
+Button::Button(const DeviceInfo &info, const PortInfo &port, int code)
+	: robotParts::Button(info, port, code)
 {
 	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newScalarSensorData
 			, this, &Button::onIncomingData);

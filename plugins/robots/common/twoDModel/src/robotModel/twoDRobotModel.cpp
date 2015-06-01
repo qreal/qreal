@@ -112,7 +112,7 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Button>()) {
-		return new parts::Button(deviceInfo, port, *mEngine);
+		return new parts::Button(deviceInfo, port, buttonCodes()[port.name() + "Button"], *mEngine);
 	}
 
 	if (deviceInfo.isA<robotParts::Motor>()) {

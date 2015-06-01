@@ -69,6 +69,8 @@ public:
 
 	void applyConfiguration() final;
 
+	QHash<QString, int> buttonCodes() const override;
+
 	/// Shall be reimplemented to provide base device classes through which devices are convertable (see description
 	/// of that method in RobotModelInterface for more details). Default implementation returns empty list, so
 	/// no devices are convertable.

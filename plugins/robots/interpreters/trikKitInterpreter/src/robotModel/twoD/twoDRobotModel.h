@@ -39,6 +39,8 @@ public:
 
 	void setWheelPorts(const QString &leftWheelPort, const QString &rightWheelPort);
 
+	QHash<QString, int> buttonCodes() const override;
+
 private:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port

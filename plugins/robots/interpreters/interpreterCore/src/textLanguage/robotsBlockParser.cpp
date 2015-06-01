@@ -74,6 +74,13 @@ void RobotsBlockParser::setReservedVariables()
 			markAsSpecial(port.reservedVariable());
 		}
 	}
+
+	const QHash<QString, int> buttons = mRobotModelManager.model().buttonCodes();
+	for (const QString &button : buttons.keys()) {
+		setVariableValue(button, buttons[button]);
+		markAsSpecial(button);
+		mHiddenVariables << button;
+	}
 }
 
 const QStringList &RobotsBlockParser::hiddenVariables() const

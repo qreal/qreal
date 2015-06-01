@@ -23,6 +23,7 @@
 #include <kitBase/blocksBase/common/waitForLightSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <kitBase/blocksBase/common/waitForButtonBlock.h>
+#include <kitBase/blocksBase/common/getButtonCodeBlock.h>
 
 #include <qrutils/interpreter/blocks/emptyBlock.h>
 #include "details/smileBlock.h"
@@ -156,6 +157,9 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &e
 		return new WriteToFileBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikRemoveFile")) {
 		return new RemoveFileBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "GetButtonCode")) {
+		return new GetButtonCodeBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -231,6 +235,8 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWriteToFile")
 			<< id("TrikRemoveFile")
 			;
+
+	result << id("GetButtonCode");
 
 	return result;
 }
