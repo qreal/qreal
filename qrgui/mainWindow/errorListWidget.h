@@ -15,38 +15,25 @@
 #pragma once
 
 #include <QtWidgets/QListWidget>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QAction>
 
 #include <qrkernel/ids.h>
-#include <qrgui/mainWindow/error.h>
-#include <qrutils/outputWidget.h>
+
+#include "qrgui/mainWindow/error.h"
 
 namespace qReal {
-namespace gui {
+	class MainWindow;
+}
 
-class ErrorListWidget : public utils::OutputWidget
+class ErrorListWidget : public QListWidget
 {
 	Q_OBJECT
 
 public:
 	explicit ErrorListWidget(QWidget *parent = nullptr);
-
-	/// Returns a number of error messages.
-	int count() const;
-
-	/// Clears error list.
-	void clear();
-
-	/// Appends error to a list of messages.
-	void addError(const Error &error);
-
-	QString shortcutName() const override;
+	void init(qReal::MainWindow* mainWindow);
 
 signals:
 	void clearRequested();
-
-	void highlightId(const Id &id);
 
 private slots:
 	void highlightElement(QListWidgetItem * const item);
@@ -54,14 +41,10 @@ private slots:
 	void showContextMenu(const QPoint &pos);
 
 private:
-	static QString severityMessage(const Error &error);
-	static QIcon errorIcon(const Error &error);
 
 	void initContextMenu();
 
-	QListWidget mListWidget;
+	qReal::MainWindow* mMainWindow;
 	QMenu *mContextMenu;
 };
 
-}
-}

@@ -185,18 +185,22 @@ void TrikFSharpGeneratorPlugin::runProgram()
 		tr("Attention, the robot starts about a half-minute")
 	);
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(
+	utils::TcpRobotCommunicator communicator("TrikTcpServer");
+
+	communicator.runDirectCommand(
 			"script.system(\"mono FSharp/Environment/example0.exe\"); "
 	);
 }
 
 void TrikFSharpGeneratorPlugin::stopRobot()
 {
-	if (!utils::TcpRobotCommunicator::instance().stopRobot()) {
+	utils::TcpRobotCommunicator communicator("TrikTcpServer");
+
+	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(
+	communicator.runDirectCommand(
 			"script.system(\"killall mono\"); "
 			"script.system(\"killall aplay\"); \n"
 			"script.system(\"killall vlc\");"

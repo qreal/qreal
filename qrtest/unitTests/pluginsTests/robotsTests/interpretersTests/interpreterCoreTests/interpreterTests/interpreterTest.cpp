@@ -88,8 +88,7 @@ void InterpreterTest::SetUp()
 	ON_CALL(mBlocksFactoryManager, addFactory(_, _)).WillByDefault(Return());
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
-	mParser.reset(new interpreterCore::textLanguage::RobotsBlockParser(mModelManager, []() { return 0; }
-		, mOutputWidget));
+	mParser.reset(new interpreterCore::textLanguage::RobotsBlockParser(mModelManager, []() { return 0; }));
 
 	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
 	blocksFactory->configure(

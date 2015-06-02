@@ -13,21 +13,22 @@
  * limitations under the License. */
 
 #include "sonarSensor.h"
-#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-SonarSensor::SonarSensor(const DeviceInfo &info, const PortInfo &port)
+SonarSensor::SonarSensor(const DeviceInfo &info, const PortInfo &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikSonarSensor(info, port)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
 			, this, &SonarSensor::onIncomingData);
 }
 
 void SonarSensor::read()
 {
-	utils::TcpRobotCommunicator::instance().requestData(port().name());
+	mRobotCommunicator.requestData(port().name());
 }
 
 void SonarSensor::onIncomingData(const QString &portName, int value)

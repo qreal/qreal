@@ -19,7 +19,6 @@
 #include <qrtext/lua/luaToolbox.h>
 
 #include <kitBase/robotModel/robotModelManagerInterface.h>
-#include <kitBase/robotOutputWidget.h>
 
 namespace interpreterCore {
 namespace textLanguage {
@@ -34,8 +33,7 @@ public:
 	/// @param robotModelManager - provides information about robot model.
 	/// @param timeComputer - method to get time elapsed since start of interpretation, used in predefined variable.
 	RobotsBlockParser(const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, const utils::ComputableNumber::IntComputer &timeComputer
-			, kitBase::RobotOutputWidget &outputWidget);
+			, const utils::ComputableNumber::IntComputer &timeComputer);
 
 	/// Returns a list of predefined variables that should be hidden from user (sensor and port variables, basically).
 	const QStringList &hiddenVariables() const;
@@ -50,7 +48,6 @@ private:
 
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	const utils::ComputableNumber::IntComputer mTimeComputer;
-	kitBase::RobotOutputWidget &mOutputWidget;
 	QStringList mHiddenVariables;
 };
 

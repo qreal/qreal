@@ -16,7 +16,6 @@
 
 #include <trikKit/robotModel/trikRobotModelBase.h>
 #include <utils/tcpRobotCommunicator.h>
-#include <kitBase/robotOutputWidget.h>
 
 namespace trik {
 namespace robotModel {
@@ -39,12 +38,15 @@ public:
 	void stopRobot() override;
 	void disconnectFromRobot() override;
 
-	void configureOutput(qReal::ErrorReporterInterface *errorReporter, kitBase::RobotOutputWidget &outputWidget);
+	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 
 protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;
+
+private:
+	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;
 };
 
 }

@@ -47,10 +47,11 @@ using namespace kitBase::robotModel;
 
 RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 	: TrikRobotModelBase(kitId, robotId)
+	, mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
 {
-	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::connected
+	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::connected
 			, this, &RealRobotModel::connected);
-	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::disconnected
+	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::disconnected
 			, this, &RealRobotModel::disconnected);
 }
 
@@ -76,73 +77,70 @@ bool RealRobotModel::needsConnection() const
 
 void RealRobotModel::connectToRobot()
 {
-	utils::TcpRobotCommunicator::instance().connect();
+	mRobotCommunicator->connect();
 }
 
 void RealRobotModel::stopRobot()
 {
-	utils::TcpRobotCommunicator::instance().stopRobot();
+	mRobotCommunicator->stopRobot();
 }
 
 void RealRobotModel::disconnectFromRobot()
 {
-	utils::TcpRobotCommunicator::instance().disconnect();
+	mRobotCommunicator->disconnect();
 }
 
-void RealRobotModel::configureOutput(qReal::ErrorReporterInterface *errorReporter
-		, kitBase::RobotOutputWidget &outputWidget)
+void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
 {
-	utils::TcpRobotCommunicator::instance().setErrorReporter(errorReporter);
-	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::printText
-			, &outputWidget, &kitBase::RobotOutputWidget::print, Qt::UniqueConnection);
+	mRobotCommunicator->setErrorReporter(errorReporter);
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
-		return new parts::Display(displayInfo(), port);
+		return new parts::Display(displayInfo(), port, *mRobotCommunicator);
 	}  else if (deviceInfo.isA(speakerInfo())) {
-		return new parts::Speaker(speakerInfo(), port);
+		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadButtonInfo())) {
-		return new parts::GamepadButton(gamepadButtonInfo(), port);
+		return new parts::GamepadButton(gamepadButtonInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadPadPressSensorInfo())) {
-		return new parts::GamepadPadPressSensor(gamepadPadPressSensorInfo(), port);
+		return new parts::GamepadPadPressSensor(gamepadPadPressSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(buttonInfo())) {
-		return new parts::Button(buttonInfo(), port, buttonCodes()[port.name() + "Button"]);
+		return new parts::Button(buttonInfo(), port, buttonCodes()[port.name() + "Button"], *mRobotCommunicator);
 	} else if (deviceInfo.isA(powerMotorInfo())) {
-		return new parts::PowerMotor(powerMotorInfo(), port);
+		return new parts::PowerMotor(powerMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(servoMotorInfo())) {
-		return new parts::ServoMotor(servoMotorInfo(), port);
+		return new parts::ServoMotor(servoMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(encoderInfo())) {
-		return new parts::EncoderSensor(encoderInfo(), port);
+		return new parts::EncoderSensor(encoderInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(lightSensorInfo())) {
-		return new parts::LightSensor(lightSensorInfo(), port);
+		return new parts::LightSensor(lightSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(infraredSensorInfo())) {
-		return new parts::InfraredSensor(infraredSensorInfo(), port);
+		return new parts::InfraredSensor(infraredSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(sonarSensorInfo())) {
-		return new parts::SonarSensor(sonarSensorInfo(), port);
+		return new parts::SonarSensor(sonarSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(motionSensorInfo())) {
-		return new parts::MotionSensor(motionSensorInfo(), port);
+		return new parts::MotionSensor(motionSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gyroscopeInfo())) {
-		return new parts::Gyroscope(motionSensorInfo(), port);
+		return new parts::Gyroscope(motionSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(accelerometerInfo())) {
-		return new parts::Accelerometer(motionSensorInfo(), port);
+		return new parts::Accelerometer(motionSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(lineSensorInfo())) {
-		return new parts::LineSensor(lineSensorInfo(), port);
+		return new parts::LineSensor(lineSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(colorSensorInfo())) {
-		return new parts::ColorSensor(colorSensorInfo(), port);
+		return new parts::ColorSensor(colorSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(objectSensorInfo())) {
-		return new parts::ObjectSensor(objectSensorInfo(), port);
+		return new parts::ObjectSensor(objectSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(ledInfo())) {
-		return new parts::Led(ledInfo(), port);
+		return new parts::Led(ledInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(shellInfo())) {
-		return new parts::Shell(shellInfo(), port);
+		return new parts::Shell(shellInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadConnectionIndicatorInfo())) {
-		return new parts::GamepadConnectionIndicator(gamepadConnectionIndicatorInfo(), port);
+		return new parts::GamepadConnectionIndicator(gamepadConnectionIndicatorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadPadInfo())) {
-		return new parts::GamepadPad(gamepadPadInfo(), port);
+		return new parts::GamepadPad(gamepadPadInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadWheelInfo())) {
-		return new parts::GamepadWheel(gamepadWheelInfo(), port);
+		return new parts::GamepadWheel(gamepadWheelInfo(), port, *mRobotCommunicator);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());

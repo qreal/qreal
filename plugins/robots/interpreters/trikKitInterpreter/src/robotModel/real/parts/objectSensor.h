@@ -15,6 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikObjectSensor.h>
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -28,11 +29,15 @@ class ObjectSensor : public robotModel::parts::TrikObjectSensor
 
 public:
 	ObjectSensor(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port);
+			, const kitBase::robotModel::PortInfo &port
+			, utils::TcpRobotCommunicator &robotCommunicator);
 
 	void init() override;
 	void detect() override;
 	void read() override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

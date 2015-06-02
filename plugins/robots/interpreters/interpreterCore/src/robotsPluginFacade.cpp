@@ -32,7 +32,6 @@ RobotsPluginFacade::RobotsPluginFacade()
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
-	, mOutputWidget(new kitBase::RobotOutputWidget)
 {
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, &mActionsManager, &ActionsManager::onRobotModelChanged);
@@ -66,7 +65,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	}
 
 	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
-			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }, *mOutputWidget));
+			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
 
 	kitBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
 	coreFactory->configure(configurer.graphicalModelApi()
@@ -82,8 +81,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mActionsManager.editModeAction()
 			, configurer.mainWindowDockInterface()
 			, configurer.systemEvents()
-			, mEventsForKitPlugin
-			, *mOutputWidget));
+			, mEventsForKitPlugin));
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
@@ -97,8 +95,6 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			);
 
 	mInterpreter = interpreter;
-	connect(mInterpreter, &interpreter::InterpreterInterface::started
-			, mOutputWidget, &kitBase::RobotOutputWidget::clear);
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::closedMainWindow
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
@@ -170,11 +166,6 @@ interpreterCore::Customizer &RobotsPluginFacade::customizer()
 ActionsManager &RobotsPluginFacade::actionsManager()
 {
 	return mActionsManager;
-}
-
-utils::OutputWidget *RobotsPluginFacade::outputWidget()
-{
-	return mOutputWidget;
 }
 
 QStringList RobotsPluginFacade::defaultSettingsFiles() const
@@ -284,7 +275,7 @@ void RobotsPluginFacade::initKitPlugins(const qReal::PluginConfigurator &configu
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 			kit->init(kitBase::KitPluginConfigurator(configurer
-					, mRobotModelManager, *mParser, mEventsForKitPlugin, *mInterpreter, *mOutputWidget));
+					, mRobotModelManager, *mParser, mEventsForKitPlugin, *mInterpreter));
 
 			for (const kitBase::robotModel::RobotModelInterface *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);
