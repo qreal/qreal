@@ -30,9 +30,7 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 \
-	robots-kit-base robots-generator-base robots-trik-generator-base robots-utils \
-)
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base robots-utils)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikQtsGenerator_ru.ts
 

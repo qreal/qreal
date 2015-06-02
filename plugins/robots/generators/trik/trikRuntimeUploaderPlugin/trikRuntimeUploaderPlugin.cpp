@@ -44,35 +44,34 @@ QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
 
 void TrikRuntimeUploaderPlugin::uploadRuntime()
 {
-	const QString openConnection = QString("open scp://root@%1")
+	QProcess scpProcess;
+	const QString openConnection = QString("\"open scp://root@%1\"")
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString());
 
-	const QString killTrikGui = "call killall trikGui";
-	const QString createTrikDirectory = "call mkdir -p /home/root/trik";
-	const QString removePermissions = "call chmod a-x trik/trik*";
-	const QString restorePermissions = "call chmod a+x trik/trik*";
-	const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
+	const QString killTrikGui = "\"call killall trikGui\"";
+	const QString createTrikDirectory = "\"call mkdir -p /home/root/trik\"";
+	const QString removePermissions = "\"call chmod a-x trik/trik*\"";
+	const QString restorePermissions = "\"call chmod a+x trik/trik*\"";
+	const QString restartTrikGui = "\"call /bin/sh -c '/etc/trik/trikGui.sh &'\"";
 
-	const QString moveCommand = "synchronize remote trikRuntime /home/root/trik";
+	const QString moveCommand = " \"synchronize remote trikRuntime /home/root/trik\"";
 
 	const QString rawWinscpPath = qReal::SettingsManager::value("WinScpPath").toString();
 	const QString winscpPath = rawWinscpPath.startsWith("./")
 			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
 			: rawWinscpPath;
 
-	const QStringList args = {
-		"/command"
-		, openConnection
-		, createTrikDirectory
-		, removePermissions
-		, killTrikGui
-		, moveCommand
-		, restorePermissions
-		, restartTrikGui
-		, "exit"
-	};
+	const QString command = QString("\"%1\" /command %2 %3 %4 %5 %6 %7 %8")
+			.arg(winscpPath)
+			.arg(openConnection)
+			.arg(createTrikDirectory)
+			.arg(removePermissions)
+			.arg(killTrikGui)
+			.arg(moveCommand)
+			.arg(restorePermissions)
+			.arg(restartTrikGui);
 
-	if (!QProcess::startDetached(winscpPath, args, QApplication::applicationDirPath())) {
+	if (!scpProcess.startDetached(command + " \"exit\" ")) {
 		mMainWindowInterface->errorReporter()->addError(
 			tr("WinSCP process failed to launch, check path in settings.")
 		);
