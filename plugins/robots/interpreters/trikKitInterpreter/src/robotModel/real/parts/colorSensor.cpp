@@ -17,8 +17,9 @@
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-ColorSensor::ColorSensor(const DeviceInfo &info, const PortInfo &port)
+ColorSensor::ColorSensor(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &robotCommunicator)
 	: robotModel::parts::TrikColorSensor(info, port)
+	, mRobotCommunicator(robotCommunicator)
 {
 }
 

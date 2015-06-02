@@ -51,8 +51,3 @@ void Shell::removeFile(const QString &filePath)
 	QFile out(filePath);
 	out.remove();
 }
-
-void Shell::print(kitBase::RobotOutputWidget &outputWidget, const QString &text)
-{
-	outputWidget.print(text);
-}

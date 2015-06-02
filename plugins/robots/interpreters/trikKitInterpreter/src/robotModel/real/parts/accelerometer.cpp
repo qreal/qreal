@@ -13,21 +13,22 @@
  * limitations under the License. */
 
 #include "accelerometer.h"
-#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Accelerometer::Accelerometer(const DeviceInfo &info, const PortInfo &port)
+Accelerometer::Accelerometer(const DeviceInfo &info, const PortInfo &port
+		, utils::TcpRobotCommunicator &robotCommunicator)
 	: kitBase::robotModel::robotParts::AccelerometerSensor(info, port)
+	, mRobotCommunicator(robotCommunicator)
 {
-	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
 			, this, &Accelerometer::onIncomingData);
 }
 
 void Accelerometer::read()
 {
-	utils::TcpRobotCommunicator::instance().requestData(port().name());
+	mRobotCommunicator.requestData(port().name());
 }
 
 void Accelerometer::onIncomingData(const QString &portName, int value)

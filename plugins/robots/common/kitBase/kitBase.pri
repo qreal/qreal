@@ -24,7 +24,6 @@ TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/kitBase_ru.ts
 SOURCES += \
 	$$PWD/src/devicesConfigurationProvider.cpp \
 	$$PWD/src/devicesConfigurationWidget.cpp \
-	$$PWD/src/robotOutputWidget.cpp \
 	$$PWD/src/blocksBase/robotsBlock.cpp \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
 	$$PWD/src/blocksBase/common/clearEncoderBlock.cpp \
@@ -70,7 +69,6 @@ SOURCES += \
 	$$PWD/src/robotModel/robotParts/soundSensor.cpp \
 	$$PWD/src/robotModel/robotParts/touchSensor.cpp \
 	$$PWD/src/robotModel/robotParts/vectorSensor.cpp \
-	$$PWD/src/robotModel/robotParts/shell.cpp
 
 HEADERS += \
 	$$PWD/include/kitBase/kitBaseDeclSpec.h \
@@ -79,7 +77,6 @@ HEADERS += \
 	$$PWD/include/kitBase/additionalPreferences.h \
 	$$PWD/include/kitBase/devicesConfigurationProvider.h \
 	$$PWD/include/kitBase/devicesConfigurationWidget.h \
-	$$PWD/include/kitBase/robotOutputWidget.h \
 	$$PWD/include/kitBase/eventsForKitPluginInterface.h \
 	$$PWD/include/kitBase/interpreterControlInterface.h \
 	$$PWD/include/kitBase/readOnly.h \
@@ -135,4 +132,3 @@ HEADERS += \
 	$$PWD/include/kitBase/robotModel/robotParts/soundSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/touchSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/vectorSensor.h \
-	$$PWD/include/kitBase/robotModel/robotParts/shell.h

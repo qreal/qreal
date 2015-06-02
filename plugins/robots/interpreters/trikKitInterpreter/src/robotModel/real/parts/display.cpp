@@ -17,13 +17,13 @@
 #include <QtGui/QColor>
 
 #include <qrutils/inFile.h>
-#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Display::Display(const DeviceInfo &info, const PortInfo &port)
+Display::Display(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikDisplay(info, port)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
@@ -33,7 +33,7 @@ void Display::drawSmile(bool sad)
 			: ":/trikQts/templates/drawing/smile.t";
 
 	const QString directCommand = utils::InFile::readAll(pathToCommand);
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Display::setBackground(const QColor &color)
@@ -42,14 +42,14 @@ void Display::setBackground(const QColor &color)
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COLOR@@", color.name());
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Display::clearScreen()
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/clearScreen.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand);
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Display::printText(int x, int y, const QString &text)
@@ -58,7 +58,7 @@ void Display::printText(int x, int y, const QString &text)
 	const QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
 			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "script.run();";
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Display::setPainterColor(const QColor &color)

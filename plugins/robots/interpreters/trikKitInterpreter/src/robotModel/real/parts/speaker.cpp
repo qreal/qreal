@@ -15,13 +15,14 @@
 #include "speaker.h"
 
 #include <qrutils/inFile.h>
-#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Speaker::Speaker(const DeviceInfo &info, const PortInfo &port)
+Speaker::Speaker(const DeviceInfo &info, const PortInfo &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikSpeaker(info, port)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
@@ -31,5 +32,5 @@ void Speaker::play(const QString &filePath)
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@FILENAME@@", filePath) + "script.run();";
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }

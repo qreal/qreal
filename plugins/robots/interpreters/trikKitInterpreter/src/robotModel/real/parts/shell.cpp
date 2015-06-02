@@ -15,13 +15,14 @@
 #include "shell.h"
 
 #include <qrutils/inFile.h>
-#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Shell::Shell(const DeviceInfo &info, const PortInfo &port)
+Shell::Shell(const DeviceInfo &info, const PortInfo &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikShell(info, port)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
@@ -31,7 +32,7 @@ void Shell::say(const QString &text)
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@TEXT@@", "\"" + text + "\"") + "script.run();";
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Shell::runCommand(const QString &command)
@@ -40,12 +41,12 @@ void Shell::runCommand(const QString &command)
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COMMAND@@", command) + "script.run();";
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Shell::runCode(const QString &code)
 {
-	utils::TcpRobotCommunicator::instance().runDirectCommand(code);
+	mRobotCommunicator.runDirectCommand(code);
 }
 
 void Shell::writeToFile(const QString &filePath, const QString &text)
@@ -54,7 +55,7 @@ void Shell::writeToFile(const QString &filePath, const QString &text)
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@FILE@@", filePath).replace("@@TEXT@@", "\"" + text + "\"") + "script.run();";
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Shell::removeFile(const QString &filePath)
@@ -63,16 +64,5 @@ void Shell::removeFile(const QString &filePath)
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@FILE@@", filePath) + "script.run();";
 
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
-}
-
-void Shell::print(kitBase::RobotOutputWidget &outputWidget, const QString &text)
-{
-	Q_UNUSED(outputWidget)
-
-	const QString pathToCommand = ":/trikQts/templates/functions/print.t";
-	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@ARGUMENT@@", "\"" + text + "\"") + ";script.run();";
-
-	utils::TcpRobotCommunicator::instance().runDirectCommand(directCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }

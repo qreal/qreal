@@ -13,21 +13,22 @@
  * limitations under the License. */
 
 #include "infraredSensor.h"
-#include <utils/tcpRobotCommunicator.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-InfraredSensor::InfraredSensor(const DeviceInfo &info, const PortInfo &port)
+InfraredSensor::InfraredSensor(const DeviceInfo &info, const PortInfo &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikInfraredSensor(info, port)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&utils::TcpRobotCommunicator::instance(), &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
 			, this, &InfraredSensor::onIncomingData);
 }
 
 void InfraredSensor::read()
 {
-	utils::TcpRobotCommunicator::instance().requestData(port().name());
+	mRobotCommunicator.requestData(port().name());
 }
 
 void InfraredSensor::onIncomingData(const QString &portName, int value)

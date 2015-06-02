@@ -15,6 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikLed.h>
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -27,10 +28,14 @@ class Led : public robotModel::parts::TrikLed
 
 public:
 	Led(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port);
+			, const kitBase::robotModel::PortInfo &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 
 	void setColor(const QString &color) override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

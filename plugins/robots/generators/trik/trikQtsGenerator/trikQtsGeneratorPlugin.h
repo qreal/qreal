@@ -72,6 +72,8 @@ private:
 
 	/// Action that stops script execution and turns off motors.
 	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
+
+	utils::TcpRobotCommunicator *mCommunicator;
 };
 
 }

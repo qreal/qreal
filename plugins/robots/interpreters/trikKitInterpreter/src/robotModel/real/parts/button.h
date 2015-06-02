@@ -15,6 +15,7 @@
 #pragma once
 
 #include <kitBase/robotModel/robotParts/button.h>
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -28,12 +29,16 @@ class Button : public kitBase::robotModel::robotParts::Button
 public:
 	Button(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, int code);
+			, int code
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
 
 public slots:
 	void onIncomingData(const QString &portName, int value);
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }
