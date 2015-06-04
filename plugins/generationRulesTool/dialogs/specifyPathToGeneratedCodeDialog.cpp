@@ -79,22 +79,18 @@ bool SpecifyPathToGeneratedCodeDialog::directoryRemoved(const QString &directory
 {
 	QDir dir(directory);
 
-	if (!dir.exists()) {
+	if (!dir.exists() || dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty()) {
 		return true;
 	}
 
-	if (!dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty()) {
-		if (QMessageBox::question(nullptr, tr("Warning"), tr("All files and folders from ")
-				+ mUi->folderLineEdit->text() + tr(" directory will be removed. Continue?")) == QMessageBox::Yes) {
-			clearDir(directory);
+	if (QMessageBox::question(nullptr, tr("Warning"), tr("All files and folders from ")
+			+ mUi->folderLineEdit->text() + tr(" directory will be removed. Continue?")) == QMessageBox::Yes) {
+		clearDir(directory);
 
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 void SpecifyPathToGeneratedCodeDialog::clearDir(const QString &path)
