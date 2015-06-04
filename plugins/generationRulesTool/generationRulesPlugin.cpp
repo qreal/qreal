@@ -15,6 +15,7 @@
 #include "generationRulesPlugin.h"
 
 #include <QtWidgets/QAction>
+#include <QtWidgets/QMessageBox>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QSharedPointer>
 #include <QtCore/QDebug>
@@ -80,6 +81,7 @@ void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
 void GenerationRulesPlugin::generateCodeForAllElements()
 {
 	mPathToGeneratedCode = mSpecifyPathsDialog->currentPathToFolder();
+	mMainFileName = mSpecifyPathsDialog->currentFileName();
 
 	// we need id of root element in metamodel
 	// we consider that we have only one editor and one diagram
@@ -112,7 +114,20 @@ void GenerationRulesPlugin::generateCode(
 	const auto resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
 			, generatorConfigurer);
 
-	Q_UNUSED(resultOfGenerationForRoot);
+	if (!resultOfGenerationForRoot.isEmpty()) {
+		qDebug() << mPathToGeneratedCode << mMainFileName;
+		QFile outputFile(mPathToGeneratedCode + "/" + mMainFileName);
+
+		if (outputFile.open(QIODevice::WriteOnly)) {
+			QTextStream stream(&outputFile);
+			stream << resultOfGenerationForRoot;
+
+			outputFile.close();
+		}
+	}
+
+	QMessageBox::information(nullptr, tr("Files generated"), tr("All files have been generated to ") + mPathToGeneratedCode + ("."));
+
 	table.clear();
 }
 

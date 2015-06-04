@@ -28,6 +28,8 @@ public:
 
 	/// Returns current path to folder with generated code.
 	QString currentPathToFolder() const;
+	/// Returns current main file name.
+	QString currentFileName() const;
 
 signals:
 	/// Emitted when ok button pushed and paths saved.
@@ -41,7 +43,9 @@ private slots:
 	void specifyFolder();
 
 private:
-	static void createDirectory(const QString &directory);
+	bool directoryCreated(const QString &directory) const;
+
+	bool directoryRemoved(const QString &directory) const;
 
 	static void clearDir(const QString &path);
 

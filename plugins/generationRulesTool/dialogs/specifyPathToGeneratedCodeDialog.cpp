@@ -2,6 +2,7 @@
 #include "ui_specifyPathToGeneratedCodeDialog.h"
 
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 using namespace qReal::gui;
 
@@ -35,18 +36,25 @@ QString SpecifyPathToGeneratedCodeDialog::currentPathToFolder() const
 	return mUi->folderLineEdit->text();
 }
 
+QString SpecifyPathToGeneratedCodeDialog::currentFileName() const
+{
+	return mUi->fileNameLineEdit->text();
+}
+
 void SpecifyPathToGeneratedCodeDialog::restoreSettings()
 {
 	mUi->folderLineEdit->setText(mMetamodelRepoApi->metaInformation("PathToFolder").toString());
+	mUi->fileNameLineEdit->setText(mMetamodelRepoApi->metaInformation("MainFileName").toString());
 }
 
 void SpecifyPathToGeneratedCodeDialog::saveSettings()
 {
 	mMetamodelRepoApi->setMetaInformation("PathToFolder", mUi->folderLineEdit->text());
+	mMetamodelRepoApi->setMetaInformation("MainFileName", mUi->fileNameLineEdit->text());
 
-	createDirectory(mUi->folderLineEdit->text());
-
-	emit pathsSpecified();
+	if (directoryCreated(mUi->folderLineEdit->text())) {
+		emit pathsSpecified();
+	}
 }
 
 void SpecifyPathToGeneratedCodeDialog::specifyFolder()
@@ -55,11 +63,38 @@ void SpecifyPathToGeneratedCodeDialog::specifyFolder()
 	mUi->folderLineEdit->setText(folderName);
 }
 
-void SpecifyPathToGeneratedCodeDialog::createDirectory(const QString &directory)
+bool SpecifyPathToGeneratedCodeDialog::directoryCreated(const QString &directory) const
 {
 	QDir dir;
-	clearDir(directory);
-	dir.mkpath(directory);
+
+	if (directoryRemoved(directory)) {
+		dir.mkpath(directory);
+		return true;
+	}
+
+	return false;
+}
+
+bool SpecifyPathToGeneratedCodeDialog::directoryRemoved(const QString &directory) const
+{
+	QDir dir(directory);
+
+	if (!dir.exists()) {
+		return true;
+	}
+
+	if (!dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty()) {
+		if (QMessageBox::question(nullptr, tr("Warning"), tr("All files and folders from ")
+				+ mUi->folderLineEdit->text() + tr(" directory will be removed. Continue?")) == QMessageBox::Yes) {
+			clearDir(directory);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	return true;
 }
 
 void SpecifyPathToGeneratedCodeDialog::clearDir(const QString &path)
