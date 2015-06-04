@@ -227,7 +227,4 @@ void SmartDock::initDialog()
 			mInnerWidget->close();
 		}
 	});
-	if (!mMainWindow) {
-		switchToFloating();
-	}
 }
