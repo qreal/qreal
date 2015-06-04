@@ -19,11 +19,14 @@
 #include <QtCore/QDebug>
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
+#include <trikGeneratorBase/robotModel/trikGeneratorRobotModel.h>
 #include <utils/tcpRobotCommunicator.h>
 
 #include "trikQtsMasterGenerator.h"
+#include "emptyShell.h"
 
 using namespace trik::qts;
+using namespace kitBase::robotModel;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
@@ -46,6 +49,10 @@ void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configur
 	RobotsGeneratorPluginBase::init(configurator);
 	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
 	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
+	const PortInfo shellPort("ShellPort", output);
+	EmptyShell * const shell = new EmptyShell(DeviceInfo::create<trik::robotModel::parts::TrikShell>(), shellPort);
+	connect(mCommunicator, &utils::TcpRobotCommunicator::printText, shell, &EmptyShell::print);
+	mRobotModel->addDevice(shellPort, shell);
 }
 
 QList<ActionInfo> TrikQtsGeneratorPlugin::customActions()
@@ -88,7 +95,7 @@ QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
 	return { generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo };
 }
 
-QIcon TrikQtsGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+QIcon TrikQtsGeneratorPlugin::iconForFastSelector(const RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
 	return QIcon(":/trik/qts/images/switch-to-trik-qts.svg");

@@ -17,8 +17,10 @@ HEADERS += \
 	$$PWD/paintWidget.h \
 	$$PWD/painterInterface.h \
 	$$PWD/searchLineEdit.h \
+	$$PWD/consoleDock.h \
 
 SOURCES += \
 	$$PWD/colorListEditor.cpp \
 	$$PWD/paintWidget.cpp \
 	$$PWD/searchLineEdit.cpp \
+	$$PWD/consoleDock.cpp \

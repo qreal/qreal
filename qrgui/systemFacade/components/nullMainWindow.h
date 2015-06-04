@@ -117,6 +117,7 @@ private:
 	SystemEvents &mEvents;
 	const GraphicalModelAssistInterface *mGraphicalModel;
 	Id mActiveId;
+	QWidget *mWindowWidget;  // Takes ownership
 	QDockWidget *mLogicalModelDock;  // Takes ownership
 	QDockWidget *mGraphicalModelDock;  // Takes ownership
 	QDockWidget *mPropertyEditorDock;  // Takes ownership

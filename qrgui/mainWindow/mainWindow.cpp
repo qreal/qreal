@@ -118,6 +118,8 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
+	mUi->errorDock->toggleViewAction()->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
+	addAction(mUi->errorDock->toggleViewAction());
 
 	mPreferencesDialog.init();
 
@@ -244,6 +246,9 @@ void MainWindow::connectActions()
 		mUi->menuPanels->clear();
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
+
+	addAction(mUi->actionHideBottomDocks);
+	connect(mUi->actionHideBottomDocks, &QAction::triggered, this, &MainWindow::hideBottomDocks);
 
 	setDefaultShortcuts();
 }
@@ -1127,6 +1132,8 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
 	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
+	HotKeyManager::setCommand("View.ToggleErrorReporter", tr("Toggle errors panel")
+			, mUi->errorDock->toggleViewAction());
 }
 
 void MainWindow::currentTabChanged(int newIndex)
@@ -1577,6 +1584,15 @@ void MainWindow::fullscreen()
 			if (mLastTabBarIndexes.contains(bar)) {
 				bar->setCurrentIndex(mLastTabBarIndexes[bar]);
 			}
+		}
+	}
+}
+
+void MainWindow::hideBottomDocks()
+{
+	for (QDockWidget *dock : findChildren<QDockWidget *>()) {
+		if (dockWidgetArea(dock) == Qt::BottomDockWidgetArea) {
+			dock->hide();
 		}
 	}
 }
