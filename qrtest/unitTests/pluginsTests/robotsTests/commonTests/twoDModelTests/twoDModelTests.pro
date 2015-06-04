@@ -26,7 +26,7 @@ INCLUDEPATH += \
 
 # Tests
 HEADERS += \
-	$$PWD/engineTests/constrasTests/constraintsParserTests.h \
+	$$PWD/engineTests/constraintsTests/constraintsParserTests.h \
 
 SOURCES += \
 	$$PWD/engineTests/constraintsTests/constraintsParserTests.cpp \
