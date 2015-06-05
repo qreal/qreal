@@ -70,6 +70,9 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, availablePorts()).WillByDefault(Return(QList<kitBase::robotModel::PortInfo>()));
 	EXPECT_CALL(mModel, availablePorts()).Times(AtLeast(0));
 
+	ON_CALL(mModel, buttonCodes()).WillByDefault(Return(StringIntHash()));
+	EXPECT_CALL(mModel, buttonCodes()).Times(AtLeast(1));
+
 	ON_CALL(mModel, applyConfiguration()).WillByDefault(
 			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitAllDevicesConfigured)
 			);
@@ -125,6 +128,12 @@ void InterpreterTest::SetUp()
 			, *mParser
 			, *mFakeConnectToRobotAction
 			));
+
+	mInterpreterStopped = false;
+	QObject::connect(mInterpreter.data(), &InterpreterInterface::stopped, [this]() {
+		mEventLoop.exit();
+		mInterpreterStopped = true;
+	});
 }
 
 TEST_F(InterpreterTest, interpret)
@@ -132,6 +141,10 @@ TEST_F(InterpreterTest, interpret)
 	EXPECT_CALL(mModel, stopRobot()).Times(2);
 
 	mInterpreter->interpret();
+	if (!mInterpreterStopped) {
+		// Queued connections must work!
+		mEventLoop.exec();
+	}
 }
 
 TEST_F(InterpreterTest, stopRobot)
@@ -140,5 +153,10 @@ TEST_F(InterpreterTest, stopRobot)
 	EXPECT_CALL(mModel, stopRobot()).Times(3);
 
 	mInterpreter->interpret();
+	if (!mInterpreterStopped) {
+		// Queued connections must work!
+		mEventLoop.exec();
+	}
+
 	mInterpreter->stopRobot();
 }
