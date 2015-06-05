@@ -1959,12 +1959,13 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Get Button Code" name="GetButtonCode" description="Assigns a given variable a value of pressed button.">
+			<node displayedName="Get Button Code" name="GetButtonCode" description="Assigns a given variable a value of pressed button. If no button is pressed at the moment and 'Wait' property is false when variable is set to -1.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 					</picture>
 					<labels>
 						<label x="30" y="60" textBinded="Variable" hard="true" prefix="Variable:"/>
+						<label x="30" y="90" textBinded="Wait" hard="true" prefix="Wait:"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -1972,6 +1973,9 @@
 					<properties>
 						<property displayedName="Variable" type="string" name="Variable">
 							<default>x</default>
+						</property>
+						<property displayedName="Wait" type="bool" name="Wait">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
