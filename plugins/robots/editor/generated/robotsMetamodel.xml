@@ -1098,6 +1098,9 @@
 						<property displayedName="Code" type="bool" name="Code">
 							<default>false</default>
 						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>
@@ -2020,6 +2023,9 @@
 						<property displayedName="Text" type="string" name="PrintText">
 							<default>'Enter some text here'</default>
 						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2602,6 +2608,9 @@
 					<properties>
 						<property displayedName="Text" type="string" name="Text">
 							<default>\"Hi!\"</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
 						</property>
 					</properties>
 					<container/>
