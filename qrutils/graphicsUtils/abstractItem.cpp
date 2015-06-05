@@ -345,7 +345,7 @@ void AbstractItem::setXandY(QDomElement& dom, const QRectF &rect)
 	dom.setAttribute("x2", rect.right());
 }
 
-QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString &domName)
+QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString &domName) const
 {
 	QDomElement dom = document.createElement(domName);
 	dom.setAttribute("fill", mBrush.color().name());
@@ -472,7 +472,7 @@ bool AbstractItem::editable() const
 	return mEditable;
 }
 
-void AbstractItem::serialize(QDomElement &element)
+void AbstractItem::serialize(QDomElement &element) const
 {
 	element.setAttribute("id", id());
 }

@@ -77,7 +77,7 @@ public:
 	void clearRobotTrace();
 
 	/// Saves world to XML.
-	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const;
+	QDomElement serialize(QDomDocument &document) const;
 	void deserialize(const QDomElement &element);
 
 	/// Searches on the scene item with the given id. Returns nullptr if not found.

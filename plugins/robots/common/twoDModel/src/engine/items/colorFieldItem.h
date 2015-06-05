@@ -46,10 +46,7 @@ public:
 	/// Creates a copy of this graphical item. Transfers ownership to the caller.
 	virtual AbstractItem *clone() const = 0;
 
-	virtual QRectF boundingRect() const = 0;
-	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) override = 0;
-
-	virtual QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) = 0;
+	virtual QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const = 0;
 };
 
 }

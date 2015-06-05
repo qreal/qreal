@@ -86,7 +86,7 @@ QDomDocument Model::serialize() const
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
 	save.appendChild(root);
-	root.appendChild(mWorldModel.serialize(save, QPoint(0, 0)));
+	root.appendChild(mWorldModel.serialize(save));
 
 	QDomElement robots = save.createElement("robots");
 	for (RobotModel *robotModel : mRobotModels) {
