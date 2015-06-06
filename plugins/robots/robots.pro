@@ -20,10 +20,9 @@ SUBDIRS = \
 	common \
 	interpreters \
 	generators \
-	qextserialport \
+	thirdparty \
 	utils \
 
-qextserialport.subdir = $$PWD/thirdparty/qextserialport
-common.depends = qextserialport utils
-interpreters.depends = common qextserialport utils
+common.depends = thirdparty utils
+interpreters.depends = common
 generators.depends = common
