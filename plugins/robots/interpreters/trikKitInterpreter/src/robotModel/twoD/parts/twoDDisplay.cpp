@@ -19,6 +19,8 @@ using namespace kitBase::robotModel;
 
 /// @todo: This constant adjusts screen coordinates shift. It must be 0.
 const int yDisplayShift = 8;
+const qreal realWidth = 218;
+const qreal realHeight = 274;
 
 Display::Display(const DeviceInfo &info
 		, const PortInfo &port
@@ -120,6 +122,7 @@ void Display::paint(QPainter *painter)
 
 	painter->save();
 	painter->setPen(Qt::black);
+	painter->scale(mEngine.display()->displayWidth() / realWidth, mEngine.display()->displayHeight() / realHeight);
 
 	for (QPair<int, int> const &point : mLabels.keys()) {
 		/// @todo: Honest labels must be here, without text overlapping.
@@ -146,7 +149,7 @@ void Display::paint(QPainter *painter)
 
 	for (int i = 0; i < mEllipses.length(); ++i) {
 		painter->setPen(QPen(mEllipses.at(i).color, mEllipses.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawEllipse(mEllipses.at(i).ellipse.x(), mEllipses.at(i).ellipse.y()
+		painter->drawEllipse(QPointF(mEllipses.at(i).ellipse.x(), mEllipses.at(i).ellipse.y())
 				, mEllipses.at(i).ellipse.width(), mEllipses.at(i).ellipse.height());
 	}
 
