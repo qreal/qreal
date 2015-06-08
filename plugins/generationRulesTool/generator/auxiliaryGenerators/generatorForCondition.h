@@ -18,7 +18,7 @@ public:
 	/// @param conditionNode - node with condition to check.
 	/// @generatorConfigurer - information about model and metamodel.
 	static bool conditionSatisfied(const QSharedPointer<simpleParser::ast::Condition> &conditionNode
-			, GeneratorConfigurer generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer);
 };
 
 }

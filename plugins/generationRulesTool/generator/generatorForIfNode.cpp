@@ -9,7 +9,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QString GeneratorForIfNode::generatedResult(const QSharedPointer<IfNode> &ifNode, GeneratorConfigurer generatorConfigurer)
+QString GeneratorForIfNode::generatedResult(const QSharedPointer<IfNode> &ifNode, const GeneratorConfigurer &generatorConfigurer)
 {
 	const auto condition = qrtext::as<Condition>(ifNode->condition());
 	const auto conditionSatisfied = ConditionGenerator::conditionSatisfied(condition, generatorConfigurer);

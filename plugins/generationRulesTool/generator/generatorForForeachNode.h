@@ -26,7 +26,7 @@ public:
 
 private:
 	static QString resultForOneIteration(const QSharedPointer<simpleParser::ast::Node> &actionNode
-			, GeneratorConfigurer generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer);
 };
 
 }

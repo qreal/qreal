@@ -55,7 +55,7 @@ QString GeneratorForForeachNode::generatedResult(const QSharedPointer<Foreach> &
 }
 
 QString GeneratorForForeachNode::resultForOneIteration(const QSharedPointer<Node> &actionNode
-		, GeneratorConfigurer generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer)
 {
 	QString result = "";
 	if (actionNode->is<Program>()) {

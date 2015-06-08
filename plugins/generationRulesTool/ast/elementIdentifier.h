@@ -13,7 +13,7 @@ public:
 	/// Constructor for ElementIdentifier.
 	/// @param identifierPart - part defore dot.
 	/// @param optionalTransitionPart - optional part after dot.
-	ElementIdentifier(const QSharedPointer<Node> &identifierPart
+	explicit ElementIdentifier(const QSharedPointer<Node> &identifierPart
 			, const QSharedPointer<Node> &optionalTransitionPart = QSharedPointer<Node>())
 		: mIdentifierPart(identifierPart)
 		, mOptionalTransitionPart(optionalTransitionPart)

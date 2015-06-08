@@ -23,7 +23,7 @@ public:
 	/// @param complexIdentifier - identifier node.
 	/// @param generatorConfigurer - all information about generator.
 	static QVariant generatedResult(const QSharedPointer<simpleParser::ast::ComplexIdentifier> &complexIdentifierNode
-			, GeneratorConfigurer generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer);
 };
 
 }

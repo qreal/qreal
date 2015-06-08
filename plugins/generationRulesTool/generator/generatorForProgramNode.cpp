@@ -8,7 +8,7 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForProgramNode::generatedResult(const QSharedPointer<Program> &programNode
-		, GeneratorConfigurer generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer)
 {
 	QString result;
 

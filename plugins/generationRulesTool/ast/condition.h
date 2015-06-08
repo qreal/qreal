@@ -11,7 +11,7 @@ class Condition : public Node
 public:
 	/// Constructor for Condition.
 	/// @param firstPart - boolean condition node.
-	Condition(const QSharedPointer<Node> &firstPart)
+	explicit Condition(const QSharedPointer<Node> &firstPart)
 		: mFirstPart(firstPart)
 		, mComparator(QSharedPointer<Node>())
 		, mSecondPart(QSharedPointer<Node>())

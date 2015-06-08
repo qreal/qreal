@@ -19,7 +19,7 @@ public:
 	/// @param ifNode - node to generate code for.
 	/// @param generatorConfigurer - information about model and metamodel.
 	static QString generatedResult(const QSharedPointer<simpleParser::ast::IfNode> &ifNode
-			, GeneratorConfigurer generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer);
 };
 
 }

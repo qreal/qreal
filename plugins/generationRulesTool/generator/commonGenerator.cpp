@@ -23,7 +23,7 @@ using namespace generationRules::generator;
 using namespace simpleParser;
 
 QString CommonGenerator::generatedResult(const QSharedPointer<ast::Node> &node
-		, GeneratorConfigurer generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer)
 {
 	QString result = "";
 
