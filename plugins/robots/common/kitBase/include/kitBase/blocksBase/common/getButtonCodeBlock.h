@@ -35,6 +35,8 @@ private slots:
 private:
 	robotModel::DeviceInfo device() const override;
 
+	void returnCode(int code);
+
 	QList<QString> mButtons;
 };
 

@@ -42,13 +42,22 @@ void GetButtonCodeBlock::timerTimeout()
 	for (const QString &buttonPort : mButtons) {
 		robotParts::Button *button = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, buttonPort);
 		if (evalCode<bool>(button->port().reservedVariable())) {
-			evalCode(stringProperty("Variable") + " = " + QString::number(button->code()));
-			stop();
+			returnCode(button->code());
 		}
+	}
+
+	if (!boolProperty("Wait")) {
+		returnCode(-1);
 	}
 }
 
 DeviceInfo GetButtonCodeBlock::device() const
 {
 	return DeviceInfo();
+}
+
+void GetButtonCodeBlock::returnCode(int code)
+{
+	evalCode(stringProperty("Variable") + " = " + QString::number(code));
+	stop();
 }
