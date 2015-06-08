@@ -1,1 +1,1 @@
-@@VARIABLE@@ = brick.keys().buttonCode();
+@@VARIABLE@@ = brick.keys().buttonCode(@@WAIT@@);

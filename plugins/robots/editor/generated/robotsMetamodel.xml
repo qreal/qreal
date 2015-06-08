@@ -1959,12 +1959,13 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Get Button Code" name="GetButtonCode" description="Assigns a given variable a value of pressed button.">
+			<node displayedName="Get Button Code" name="GetButtonCode" description="Assigns a given variable a value of pressed button. If no button is pressed at the moment and 'Wait' property is false when variable is set to -1.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 					</picture>
 					<labels>
 						<label x="30" y="60" textBinded="Variable" hard="true" prefix="Variable:"/>
+						<label x="30" y="90" textBinded="Wait" hard="true" prefix="Wait:"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -1972,6 +1973,9 @@
 					<properties>
 						<property displayedName="Variable" type="string" name="Variable">
 							<default>x</default>
+						</property>
+						<property displayedName="Wait" type="bool" name="Wait">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2632,19 +2636,23 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Message" name="TrikWaitForMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
+			<node displayedName="Wait for Message" name="TrikWaitForMessage" description="Stores a message from another robot into a given variable. When no incoming messages are present at the moment, a robot will wait for incoming message if 'Synchronized' property is true, and empty string will be assigned to a variable otherwise.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="Variable" hard="false" prefix="Variable:"/>
+						<label x="50" y="90" textBinded="Synchronized" hard="false" prefix="Synchronized:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<properties>
 						<property displayedName="Variable" type="string" name="Variable" />
+						<property displayedName="Synchronized" type="bool" name="Synchronized">
+							<default>true</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>
