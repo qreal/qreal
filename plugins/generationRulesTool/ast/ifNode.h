@@ -13,9 +13,9 @@ public:
 	/// @param condition - condition of if statement.
 	/// @param trueBranch - called if condition is true.
 	/// @param falseBranch - called otherwise.
-	IfNode(QSharedPointer<Node> const &condition
-			, QSharedPointer<Node> const &trueBranch
-			, QSharedPointer<Node> const &falseBranch = QSharedPointer<ast::Node>())
+	IfNode(const QSharedPointer<Node> &condition
+			, const QSharedPointer<Node> &trueBranch
+			, const QSharedPointer<Node> &falseBranch = QSharedPointer<ast::Node>())
 		: mCondition(condition)
 		, mTrueBranch(trueBranch)
 		, mFalseBranch(falseBranch)

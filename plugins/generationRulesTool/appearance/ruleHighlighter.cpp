@@ -31,7 +31,7 @@ RuleHighlighter::RuleHighlighter(QTextDocument *parent)
 
 void RuleHighlighter::highlightBlock(const QString &text)
 {
-	for (const auto rule : mHighlightingRules) {
+	for (const auto &rule : mHighlightingRules) {
 		QRegExp expression(rule.pattern);
 		int index = expression.indexIn(text);
 
@@ -43,7 +43,7 @@ void RuleHighlighter::highlightBlock(const QString &text)
 	}
 }
 
-QStringList RuleHighlighter::listWithSpecialSymbols(const QStringList listToAppendSymbols)
+QStringList RuleHighlighter::listWithSpecialSymbols(const QStringList &listToAppendSymbols)
 {
 	QStringList result;
 

@@ -10,11 +10,21 @@ class Condition : public Node
 {
 public:
 	/// Constructor for Condition.
-	/// @param identifierPart - part defore dot.
-	/// @param optionalTransitionPart - optional part after dot.
+	/// @param firstPart - boolean condition node.
+	Condition(const QSharedPointer<Node> &firstPart)
+		: mFirstPart(firstPart)
+		, mComparator(QSharedPointer<Node>())
+		, mSecondPart(QSharedPointer<Node>())
+	{
+	}
+
+	/// Constructor for Condition.
+	/// @param firstPart - node we want to compare.
+	/// @param comparator - comparator symbol node (==, !=).
+	/// @param secondPart - node we want to compare.
 	Condition(const QSharedPointer<Node> &firstPart
-			, const QSharedPointer<Node> &comparator = QSharedPointer<Node>()
-			, const QSharedPointer<Node> &secondPart = QSharedPointer<Node>())
+			, const QSharedPointer<Node> &comparator
+			, const QSharedPointer<Node> &secondPart)
 		: mFirstPart(firstPart)
 		, mComparator(comparator)
 		, mSecondPart(secondPart)

@@ -8,8 +8,8 @@ using namespace qReal::gui;
 
 SpecifyPathToGeneratedCodeDialog::SpecifyPathToGeneratedCodeDialog(
 		qrRepo::LogicalRepoApi *metamodelRepoApi
-		, QWidget *parent) :
-	QDialog(parent)
+		, QWidget *parent)
+	: QDialog(parent)
 	, mMetamodelRepoApi(metamodelRepoApi)
 	, mUi(new Ui::SpecifyPathToGeneratedCodeDialog)
 {
@@ -84,7 +84,8 @@ bool SpecifyPathToGeneratedCodeDialog::directoryRemoved(const QString &directory
 	}
 
 	if (QMessageBox::question(nullptr, tr("Warning"), tr("All files and folders from ")
-			+ mUi->folderLineEdit->text() + tr(" directory will be removed. Continue?")) == QMessageBox::Yes) {
+			+ mUi->folderLineEdit->text() + tr(" directory will be removed. Continue?")) == QMessageBox::Yes)
+	{
 		clearDir(directory);
 
 		return true;

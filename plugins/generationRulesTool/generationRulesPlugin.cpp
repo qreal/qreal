@@ -86,11 +86,11 @@ void GenerationRulesPlugin::generateCodeForAllElements()
 	// we need id of root element in metamodel
 	// we consider that we have only one editor and one diagram
 	// TODO: fix this
-	qReal::Id editorId = mEditorManagerInterface->editors().first();
-	qReal::Id diagramId = mEditorManagerInterface->diagrams(editorId).first();
-	QString fullRootNodeName = mEditorManagerInterface->diagramNodeNameString(editorId, diagramId);
+	const auto editorId = mEditorManagerInterface->editors().first();
+	const auto diagramId = mEditorManagerInterface->diagrams(editorId).first();
+	const auto fullRootNodeName = mEditorManagerInterface->diagramNodeNameString(editorId, diagramId);
 
-	QString rootNodeName = fullRootNodeName.split("/").last();
+	const auto rootNodeName = fullRootNodeName.split("/").last();
 	mRootId = mEditorManagerInterface->elementsWithTheSameName(diagramId, rootNodeName, "MetaEntityNode").first();
 
 	generateCode(editorId, diagramId);

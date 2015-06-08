@@ -25,7 +25,7 @@ public:
 	static qReal::IdList listOfIds(QSharedPointer<simpleParser::ast::List> listNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable variablesTable
-			, CurrentScope currentScope);
+			, const CurrentScope &currentScope);
 };
 }
 }

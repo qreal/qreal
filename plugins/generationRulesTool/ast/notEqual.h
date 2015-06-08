@@ -9,5 +9,6 @@ namespace ast {
 class NotEqual : public Node
 {
 };
+
 }
 }

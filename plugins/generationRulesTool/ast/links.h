@@ -11,7 +11,7 @@ class Links : public Node
 public:
 	/// Constructor.
 	/// @param linkType - type of links (for example, SomeType in links(SomeType))
-	explicit Links(QSharedPointer<Node> linkType)
+	explicit Links(const QSharedPointer<Node> &linkType)
 		: mLinkType(linkType)
 	{
 	}

@@ -99,9 +99,9 @@ void SpecifyGenerationRulesDialog::addTemplatesList()
 	mUi->templatesWidget->expandAll();
 }
 
-void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, QStringList listOfTemplates)
+void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, const QStringList &listOfTemplates)
 {
-	QTreeWidgetItem *oneTypeTempatesList = new QTreeWidgetItem(mUi->templatesWidget);
+	auto * const oneTypeTempatesList = new QTreeWidgetItem(mUi->templatesWidget);
 	oneTypeTempatesList->setText(0, type);
 
 	QList<QTreeWidgetItem*> templatesItems;

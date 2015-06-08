@@ -27,7 +27,7 @@ public:
 			, QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable variablesTable
-			, CurrentScope currentScope
+			, const CurrentScope &currentScope
 			);
 
 	/// Returns id of current element.
@@ -36,7 +36,7 @@ public:
 	/// @param currentScope - information about current scope.
 	static qReal::Id elementId(QSharedPointer<simpleParser::ast::Node> linksIdentifierNode
 			, VariablesTable variablesTable
-			, CurrentScope currentScope);
+			, const CurrentScope &currentScope);
 
 	/// Returns links of needed type from links of all types.
 	/// @param linksTypeNode - links type node.

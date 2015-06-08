@@ -12,8 +12,8 @@ public:
 	/// Constructor.
 	/// @param fileName - name of file we want to generate code into.
 	/// @param program - program part.
-	GenerateToFile(QSharedPointer<Node> const &fileName
-			, QSharedPointer<Node> const &program)
+	GenerateToFile(const QSharedPointer<Node> &fileName
+			, const QSharedPointer<Node> &program)
 		: mFileName(fileName)
 		, mProgram(program)
 	{

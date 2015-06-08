@@ -62,10 +62,11 @@ private:
 
 	/// Adds list of templates.
 	void addTemplatesList();
+
 	/// Add templates of one type.
 	/// @param type - template type.
 	/// @param listOfTemplates - list of templates of this type.
-	void addOneTypeTemplates(const QString &type, QStringList listOfTemplates);
+	void addOneTypeTemplates(const QString &type, const QStringList &listOfTemplates);
 
 	/// Adds previously added rule.
 	void addOldRule();

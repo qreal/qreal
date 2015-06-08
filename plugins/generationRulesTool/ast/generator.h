@@ -9,8 +9,8 @@ namespace ast {
 class Generator : public Node
 {
 public:
-	Generator(QSharedPointer<Node> const &identifier
-			, QSharedPointer<Node> const &program)
+	Generator(const QSharedPointer<Node> &identifier
+			, const QSharedPointer<Node> &program)
 		: mIdentifier(identifier)
 		, mProgram(program)
 	{

@@ -8,7 +8,7 @@ qReal::IdList LinksListGenerator::generatedList(
 		, QSharedPointer<Identifier> linksTypeNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable variablesTable
-		, CurrentScope currentScope)
+		, const CurrentScope &currentScope)
 {
 	const auto neededElementId = elementId(linksIdentifierNode, variablesTable, currentScope);
 	const auto allLinks = logicalModelInterface->logicalRepoApi().links(neededElementId);
@@ -17,7 +17,7 @@ qReal::IdList LinksListGenerator::generatedList(
 
 qReal::Id LinksListGenerator::elementId(QSharedPointer<Node> linksIdentifierNode
 		, VariablesTable variablesTable
-		, CurrentScope currentScope)
+		, const CurrentScope &currentScope)
 {
 	qReal::Id elementId;
 	if (linksIdentifierNode->is<Identifier>()) {

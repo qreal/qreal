@@ -11,7 +11,7 @@ class IncomingLinks : public Node
 public:
 	/// Constructor.
 	/// @param linkType - type of incoming links (for example, SomeType in incomingLinks(SomeType))
-	explicit IncomingLinks(QSharedPointer<Node> linkType)
+	explicit IncomingLinks(const QSharedPointer<Node> &linkType)
 		: mLinkType(linkType)
 	{
 	}

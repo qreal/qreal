@@ -27,7 +27,7 @@ public:
 			, QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable variablesTable
-			, CurrentScope currentScope
+			, const CurrentScope &currentScope
 			);
 };
 

@@ -10,9 +10,9 @@ class CallGeneratorFor : public Node
 {
 public:
 	/// Constructor.
-	/// @param identifier - identifier part (for example, element in callGeneratorFor(element, generatorName).
+	/// @param identifier - identifier part (for example, element in callGeneratorFor(element, generatorName)).
 	/// @param generator - optional generator name (generatorName in previous example).
-	CallGeneratorFor(QSharedPointer<Node> const &identifier
+	explicit CallGeneratorFor(QSharedPointer<Node> const &identifier
 			, QSharedPointer<Node> const &generator = QSharedPointer<Node>())
 		: mIdentifier(identifier)
 		, mGeneratorName(generator)

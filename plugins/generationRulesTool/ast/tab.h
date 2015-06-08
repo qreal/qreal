@@ -9,5 +9,6 @@ namespace ast {
 class Tab : public Node
 {
 };
+
 }
 }

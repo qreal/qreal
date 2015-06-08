@@ -11,7 +11,7 @@ class OutcomingLinks : public Node
 public:
 	/// Constructor.
 	/// @param linkType - type of outcoming links.
-	explicit OutcomingLinks(QSharedPointer<Node> linkType)
+	explicit OutcomingLinks(const QSharedPointer<Node> &linkType)
 		: mLinkType(linkType)
 	{
 	}

@@ -27,10 +27,10 @@ public:
 	/// @param identifier - iterator identifier.
 	/// @param list - list to iterate.
 	/// @param program - subprogram.
-	Foreach(QSharedPointer<Node> const &identifier
-			, QSharedPointer<Node> const &list
-			, QSharedPointer<Node> const &program
-			, QSharedPointer<Node> const &excludedText = QSharedPointer<Node>())
+	Foreach(const QSharedPointer<Node> &identifier
+			, const QSharedPointer<Node> &list
+			, const QSharedPointer<Node> &program
+			, const QSharedPointer<Node> &excludedText = QSharedPointer<Node>())
 		: mIdentifier(identifier)
 		, mList(list)
 		, mProgram(program)

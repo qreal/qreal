@@ -24,7 +24,7 @@ private:
 		QTextCharFormat format;
 	};
 
-	static QStringList listWithSpecialSymbols(const QStringList listToAppendSymbols);
+	static QStringList listWithSpecialSymbols(const QStringList &listToAppendSymbols);
 
 	QVector<HighlightingRule> mHighlightingRules;
 

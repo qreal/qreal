@@ -65,7 +65,7 @@ QString CommonGenerator::generatedResult(QSharedPointer<ast::Node> node
 		}
 	}
 	else if (node->is<ast::Tab>()) {
-		result = "	";
+		result = "\t";
 	}
 	else {
 		qDebug() << "Something went wrong";

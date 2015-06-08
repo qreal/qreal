@@ -15,7 +15,7 @@ using namespace simpleParser::ast;
 qReal::IdList ListGenerator::listOfIds(QSharedPointer<List> listNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable variablesTable
-		, CurrentScope currentScope)
+		, const CurrentScope &currentScope)
 {
 	const auto mainPartOfListIdentifier = qrtext::as<ElementIdentifier>(listNode->identifier());
 	// first part can be identifier or "this"

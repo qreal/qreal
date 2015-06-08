@@ -8,7 +8,7 @@ qReal::IdList OutcomingLinksListGenerator::generatedList(QSharedPointer<Node> li
 		, QSharedPointer<Identifier> linksTypeNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable variablesTable
-		, CurrentScope currentScope)
+		, const CurrentScope &currentScope)
 {
 	const auto neededElementId = LinksListGenerator::elementId(linksIdentifierNode, variablesTable, currentScope);
 	const auto allIncomingLinks = logicalModelInterface->logicalRepoApi().outgoingLinks(neededElementId);

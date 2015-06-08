@@ -111,4 +111,4 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/dialogs/specifyGenerationRulesDialog.ui \
-	$$PWD/dialogs/specifyPathToGeneratedCodeDialog.ui
+	$$PWD/dialogs/specifyPathToGeneratedCodeDialog.ui \

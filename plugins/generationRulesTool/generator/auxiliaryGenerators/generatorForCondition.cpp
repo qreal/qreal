@@ -11,7 +11,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-bool ConditionGenerator::conditionSatisfied(QSharedPointer<Condition> conditionNode
+bool ConditionGenerator::conditionSatisfied(const QSharedPointer<Condition> &conditionNode
 		, GeneratorConfigurer generatorConfigurer)
 {
 	const auto complexIdentifierNode = qrtext::as<ComplexIdentifier>(conditionNode->firstPart());

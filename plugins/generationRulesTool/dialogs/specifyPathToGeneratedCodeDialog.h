@@ -21,13 +21,14 @@ public:
 	/// Constructor.
 	/// @param metamodelRepoApi - metamodel data (paths are stored in metamodel).
 	/// @param parent - parent of this dialog.
-	SpecifyPathToGeneratedCodeDialog(
+	explicit SpecifyPathToGeneratedCodeDialog(
 			qrRepo::LogicalRepoApi *metamodelRepoApi
 			, QWidget *parent = 0);
-	~SpecifyPathToGeneratedCodeDialog();
+	~SpecifyPathToGeneratedCodeDialog() override;
 
 	/// Returns current path to folder with generated code.
 	QString currentPathToFolder() const;
+
 	/// Returns current main file name.
 	QString currentFileName() const;
 

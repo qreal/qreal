@@ -19,7 +19,7 @@
 namespace simpleParser {
 namespace ast {
 
-/// Class that represents identifier which contains of two parts separated by dot.
+/// Class that represents identifier which consists of two parts separated by dot.
 class ComplexIdentifier : public Node
 {
 public:
