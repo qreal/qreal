@@ -17,7 +17,7 @@ public:
 	/// Returns generated string.
 	/// @param stringNode - string node.
 	/// @param generatorConfigurer - information about model and metamodel.
-	static QString generatedString(QSharedPointer<simpleParser::ast::String> stringNode
+	static QString generatedString(const QSharedPointer<simpleParser::ast::String> &stringNode
 			, GeneratorConfigurer generatorConfigurer);
 };
 

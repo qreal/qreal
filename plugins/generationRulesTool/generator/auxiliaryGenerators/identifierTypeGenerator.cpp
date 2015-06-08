@@ -9,7 +9,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QString IdentifierTypeGenerator::variableType(QSharedPointer<List> listNode)
+QString IdentifierTypeGenerator::variableType(const QSharedPointer<List> &listNode)
 {
 	const auto mainPartOfListIdentifier = qrtext::as<ElementIdentifier>(listNode->identifier());
 

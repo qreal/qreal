@@ -23,8 +23,8 @@ public:
 	/// @param logicalModelInterface - information about model.
 	/// @param variablesTable - table of variables.
 	/// @param currentScope - information about current scope.
-	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Node> linksIdentifierNode
-			, QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
+	static qReal::IdList generatedList(const QSharedPointer<simpleParser::ast::Node> &linksIdentifierNode
+			, const QSharedPointer<simpleParser::ast::Identifier> &linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			, VariablesTable variablesTable
 			, const CurrentScope &currentScope

@@ -8,7 +8,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QVariant GeneratorForComplexIdentifierNode::generatedResult(QSharedPointer<ComplexIdentifier> complexIdentifierNode
+QVariant GeneratorForComplexIdentifierNode::generatedResult(const QSharedPointer<ComplexIdentifier> &complexIdentifierNode
 		, GeneratorConfigurer generatorConfigurer)
 {
 	const auto identifierPart = qrtext::as<ElementIdentifier>(complexIdentifierNode->identifierPart());

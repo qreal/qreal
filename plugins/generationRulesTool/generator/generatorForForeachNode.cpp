@@ -17,7 +17,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QString GeneratorForForeachNode::generatedResult(QSharedPointer<Foreach> foreachNode
+QString GeneratorForForeachNode::generatedResult(const QSharedPointer<Foreach> &foreachNode
 			, GeneratorConfigurer generatorConfigurer)
 {
 	const auto identifierPart = qrtext::as<Identifier>(foreachNode->identifier());
@@ -54,7 +54,8 @@ QString GeneratorForForeachNode::generatedResult(QSharedPointer<Foreach> foreach
 	return result;
 }
 
-QString GeneratorForForeachNode::resultForOneIteration(QSharedPointer<Node> actionNode, GeneratorConfigurer generatorConfigurer)
+QString GeneratorForForeachNode::resultForOneIteration(const QSharedPointer<Node> &actionNode
+		, GeneratorConfigurer generatorConfigurer)
 {
 	QString result = "";
 	if (actionNode->is<Program>()) {

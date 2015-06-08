@@ -22,7 +22,7 @@ public:
 	/// Returns id of element identifier.
 	/// @param elementIdentifierNode - element identifier node.
 	/// @generatorConfigurer - information about model and metamodel.
-	static qReal::Id neededElementId(QSharedPointer<simpleParser::ast::ElementIdentifier> elementIdentifierNode
+	static qReal::Id neededElementId(const QSharedPointer<simpleParser::ast::ElementIdentifier> &elementIdentifierNode
 			, GeneratorConfigurer generatorCofigurer
 			);
 };

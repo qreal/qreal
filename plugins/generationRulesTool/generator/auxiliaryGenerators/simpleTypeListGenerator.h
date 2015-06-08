@@ -17,7 +17,7 @@ public:
 	/// Returns list of ids for given list node.
 	/// @param simpleIdentifierNode - simple identifier node.
 	/// @param logicalModelInterface - information about model.
-	static qReal::IdList generatedList(QSharedPointer<simpleParser::ast::Identifier> simpleIdentifierNode
+	static qReal::IdList generatedList(const QSharedPointer<simpleParser::ast::Identifier> &simpleIdentifierNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
 			);
 };

@@ -20,7 +20,7 @@ public:
 	/// Returns generated string.
 	/// @param programNode - node to generate code for.
 	/// @param generatorConfigurer - information about model and metamodel.
-	static QString generatedResult(QSharedPointer<simpleParser::ast::Program> programNode
+	static QString generatedResult(const QSharedPointer<simpleParser::ast::Program> &programNode
 			, GeneratorConfigurer generatorConfigurer);
 };
 

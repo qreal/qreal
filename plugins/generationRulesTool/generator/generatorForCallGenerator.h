@@ -23,13 +23,13 @@ public:
 	/// Returns generated string.
 	/// @param callGeneratorForNode - node to generate code for.
 	/// @param generatorConfigurer - information about model and metamodel.
-	static QString generatedResult(QSharedPointer<simpleParser::ast::CallGeneratorFor> callGeneratorForNode
+	static QString generatedResult(const QSharedPointer<simpleParser::ast::CallGeneratorFor> &callGeneratorForNode
 			, GeneratorConfigurer generatorConfigurer
 			);
 
 private:
-	static QString commonGeneratedString(QSharedPointer<simpleParser::ast::ElementIdentifier> calledIdentifier
-			, QSharedPointer<simpleParser::ast::Identifier> generatorNameNode
+	static QString commonGeneratedString(const QSharedPointer<simpleParser::ast::ElementIdentifier> &calledIdentifier
+			, const QSharedPointer<simpleParser::ast::Identifier> &generatorNameNode
 			, GeneratorConfigurer generatorConfigurer);
 
 	static qReal::Id idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface

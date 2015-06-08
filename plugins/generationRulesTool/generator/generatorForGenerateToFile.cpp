@@ -19,8 +19,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QString GeneratorForGenerateToFile::generatedResult(
-		QSharedPointer<GenerateToFile> generateToFileNode
+QString GeneratorForGenerateToFile::generatedResult(const QSharedPointer<GenerateToFile> &generateToFileNode
 		, GeneratorConfigurer generatorConfigurer)
 {
 	const auto programNode = qrtext::as<Program>(generateToFileNode->program());

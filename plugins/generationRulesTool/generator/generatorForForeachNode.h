@@ -20,12 +20,12 @@ public:
 	/// Returns generated string.
 	/// @param foreachNode - node to generate code for.
 	/// @param generatorConfigurer - information about model and metamodel.
-	static QString generatedResult(QSharedPointer<simpleParser::ast::Foreach> foreachNode
+	static QString generatedResult(const QSharedPointer<simpleParser::ast::Foreach> &foreachNode
 			, GeneratorConfigurer generatorConfigurer
 			);
 
 private:
-	static QString resultForOneIteration(QSharedPointer<simpleParser::ast::Node> actionNode
+	static QString resultForOneIteration(const QSharedPointer<simpleParser::ast::Node> &actionNode
 			, GeneratorConfigurer generatorConfigurer);
 };
 

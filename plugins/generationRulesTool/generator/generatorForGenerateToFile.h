@@ -21,7 +21,7 @@ public:
 	/// Returns generated string.
 	/// @param generateToFileNode - node to generate code for.
 	/// @param generatorConfigurer - information about model and metamodel.
-	static QString generatedResult(QSharedPointer<simpleParser::ast::GenerateToFile> generateToFileNode
+	static QString generatedResult(const QSharedPointer<simpleParser::ast::GenerateToFile> &generateToFileNode
 			, GeneratorConfigurer generatorConfigurer
 			);
 

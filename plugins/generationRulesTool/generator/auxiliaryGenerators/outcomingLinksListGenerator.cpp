@@ -4,8 +4,8 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-qReal::IdList OutcomingLinksListGenerator::generatedList(QSharedPointer<Node> linksIdentifierNode
-		, QSharedPointer<Identifier> linksTypeNode
+qReal::IdList OutcomingLinksListGenerator::generatedList(const QSharedPointer<Node> &linksIdentifierNode
+		, const QSharedPointer<Identifier> &linksTypeNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
 		, VariablesTable variablesTable
 		, const CurrentScope &currentScope)

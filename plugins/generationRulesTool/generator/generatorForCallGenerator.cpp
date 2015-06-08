@@ -12,7 +12,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QString GeneratorForCallGenerator::generatedResult(QSharedPointer<CallGeneratorFor> callGeneratorForNode
+QString GeneratorForCallGenerator::generatedResult(const QSharedPointer<CallGeneratorFor> &callGeneratorForNode
 		, GeneratorConfigurer generatorConfigurer)
 {
 	const auto calledIdentifier = qrtext::as<ElementIdentifier>(callGeneratorForNode->identifier());
@@ -21,9 +21,8 @@ QString GeneratorForCallGenerator::generatedResult(QSharedPointer<CallGeneratorF
 	return commonGeneratedString(calledIdentifier, generatorNameNode, generatorConfigurer);
 }
 
-QString GeneratorForCallGenerator::commonGeneratedString(
-		QSharedPointer<ElementIdentifier> calledIdentifier
-		, QSharedPointer<Identifier> generatorNameNode
+QString GeneratorForCallGenerator::commonGeneratedString(const QSharedPointer<ElementIdentifier> &calledIdentifier
+		, const QSharedPointer<Identifier> &generatorNameNode
 		, GeneratorConfigurer generatorConfigurer)
 {
 	const auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier, generatorConfigurer);

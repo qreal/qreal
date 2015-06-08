@@ -14,7 +14,7 @@ class IdentifierTypeGenerator
 public:
 	/// Returns element type of given list.
 	/// @param listNode - list node.
-	static QString variableType(QSharedPointer<simpleParser::ast::List> listNode);
+	static QString variableType(const QSharedPointer<simpleParser::ast::List> &listNode);
 };
 
 }

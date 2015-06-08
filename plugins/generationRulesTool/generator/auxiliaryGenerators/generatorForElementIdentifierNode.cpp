@@ -8,8 +8,7 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-qReal::Id GeneratorForElementIdentifierNode::neededElementId(
-		QSharedPointer<ElementIdentifier> elementIdentifierNode
+qReal::Id GeneratorForElementIdentifierNode::neededElementId(const QSharedPointer<ElementIdentifier> &elementIdentifierNode
 		, GeneratorConfigurer generatorConfigurer)
 {
 	const auto identifierPart = elementIdentifierNode->identifierPart();
