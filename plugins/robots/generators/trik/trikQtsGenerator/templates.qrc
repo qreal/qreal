@@ -121,6 +121,7 @@
         <file>templates/functions/time.t</file>
         <file>templates/functions/min.t</file>
         <file>templates/functions/max.t</file>
+        <file>templates/functions/print.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/gamepadButton.t</file>
         <file>templates/wait/gamepadConnect.t</file>

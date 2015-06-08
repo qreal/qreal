@@ -39,9 +39,9 @@ HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
-	$$PWD/src/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
 	$$PWD/src/converters/backgroundColorConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \

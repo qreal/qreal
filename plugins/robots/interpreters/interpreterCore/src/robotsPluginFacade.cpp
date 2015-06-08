@@ -15,6 +15,7 @@
 #include "interpreterCore/robotsPluginFacade.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/widgets/consoleDock.h>
 #include <kitBase/robotModel/portInfo.h>
 
 #include "src/coreBlocks/coreBlocksFactory.h"
@@ -81,7 +82,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mActionsManager.editModeAction()
 			, configurer.mainWindowDockInterface()
 			, configurer.systemEvents()
-			, mEventsForKitPlugin));
+			, mEventsForKitPlugin
+			, mRobotModelManager));
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
@@ -263,6 +265,8 @@ void RobotsPluginFacade::initSensorWidgets()
 
 	mUiManager->placeDevicesConfig(mDockDevicesConfigurer);
 	mUiManager->placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
+	mActionsManager.appendHotKey("View.ToggleRobotConsole", tr("Toggle robot console panel")
+			, *mUiManager->robotConsole().toggleViewAction());
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);
