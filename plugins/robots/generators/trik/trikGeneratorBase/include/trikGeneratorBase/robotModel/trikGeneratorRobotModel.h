@@ -16,10 +16,12 @@
 
 #include <trikKit/robotModel/trikRobotModelBase.h>
 
+#include "trikGeneratorBase/trikGeneratorBaseDeclSpec.h"
+
 namespace trik {
 namespace robotModel {
 
-class TrikGeneratorRobotModel : public TrikRobotModelBase
+class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikGeneratorRobotModel : public TrikRobotModelBase
 {
 	Q_OBJECT
 

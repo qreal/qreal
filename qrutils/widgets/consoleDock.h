@@ -16,13 +16,15 @@
 
 #include <QtWidgets/QDockWidget>
 
+#include "qrutils/utilsDeclSpec.h"
+
 class QPlainTextEdit;
 
 namespace qReal {
 namespace ui {
 
 /// A widget for displaying console output in main window.
-class ConsoleDock : public QDockWidget
+class QRUTILS_EXPORT ConsoleDock : public QDockWidget
 {
 	Q_OBJECT
 

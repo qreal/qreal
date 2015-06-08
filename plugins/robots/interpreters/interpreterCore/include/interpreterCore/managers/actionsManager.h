@@ -150,7 +150,7 @@ private:
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
 
-	/// List of additional hotkey customizations obtained from external enviromnent.
+	/// List of additional hotkey customizations obtained from external environment.
 	QList<qReal::HotKeyActionInfo> mAdditionalHotKeyInfos;  // Does not have ownership over underlying QActions.
 
 	/// Main window interface object, to ask about currently open tab and so on.
