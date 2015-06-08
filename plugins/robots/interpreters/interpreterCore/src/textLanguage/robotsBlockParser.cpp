@@ -169,7 +169,6 @@ void RobotsBlockParser::addIntrinsicFuctions()
 		kitBase::robotModel::robotParts::Shell *shell = kitBase::robotModel::RobotModelUtils::findDevice
 				<kitBase::robotModel::robotParts::Shell>(mRobotModelManager.model(), "ShellPort");
 		if (shell) {
-			qDebug() << "printing in interpreter" << text.toString() << shell;
 			shell->print(text.toString());
 		}
 
