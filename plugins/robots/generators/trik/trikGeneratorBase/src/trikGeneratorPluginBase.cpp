@@ -16,7 +16,7 @@
 
 #include <trikKit/blocks/trikBlocksFactory.h>
 
-#include "src/robotModel/trikGeneratorRobotModel.h"
+#include "trikGeneratorBase/robotModel/trikGeneratorRobotModel.h"
 
 using namespace trik;
 

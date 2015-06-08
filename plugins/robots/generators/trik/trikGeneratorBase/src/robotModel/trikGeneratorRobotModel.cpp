@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikGeneratorRobotModel.h"
+#include "trikGeneratorBase/robotModel/trikGeneratorRobotModel.h"
 
 using namespace trik::robotModel;
 
@@ -51,4 +51,20 @@ bool TrikGeneratorRobotModel::interpretedModel() const
 int TrikGeneratorRobotModel::priority() const
 {
 	return mPriority;
+}
+
+void TrikGeneratorRobotModel::addDevice(const kitBase::robotModel::PortInfo &port
+		, kitBase::robotModel::robotParts::Device *device)
+{
+	mPreConfiguredDevices[port] = device;
+}
+
+kitBase::robotModel::robotParts::Device *TrikGeneratorRobotModel::createDevice(const kitBase::robotModel::PortInfo &port
+		, const kitBase::robotModel::DeviceInfo &deviceInfo)
+{
+	if (mPreConfiguredDevices.contains(port) && mPreConfiguredDevices[port]->deviceInfo().isA(deviceInfo)) {
+		return mPreConfiguredDevices[port];
+	}
+
+	return TrikGeneratorRobotModel::createDevice(port, deviceInfo);
 }

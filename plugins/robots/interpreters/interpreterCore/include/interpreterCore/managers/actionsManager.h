@@ -76,6 +76,9 @@ public:
 	/// Closes variable values dock and maybe 2D model dock.
 	QAction &editModeAction();
 
+	/// Provides a possibility to transfer hotkey configurer to engine.
+	void appendHotKey(const QString &actionId, const QString &label, QAction &action);
+
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
@@ -146,6 +149,9 @@ private:
 
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
+
+	/// List of additional hotkey customizations obtained from external enviromnent.
+	QList<qReal::HotKeyActionInfo> mAdditionalHotKeyInfos;  // Does not have ownership over underlying QActions.
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

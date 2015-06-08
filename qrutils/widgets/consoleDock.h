@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,33 @@
 
 #pragma once
 
-#include <trikKit/robotModel/trikRobotModelBase.h>
+#include <QtWidgets/QDockWidget>
 
-namespace trik {
-namespace robotModel {
+class QPlainTextEdit;
 
-class TrikGeneratorRobotModel : public TrikRobotModelBase
+namespace qReal {
+namespace ui {
+
+/// A widget for displaying console output in main window.
+class ConsoleDock : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	TrikGeneratorRobotModel(const QString &kitId, const QString &robotId
-			, const QString &name, const QString &friendlyName, int priority);
+	explicit ConsoleDock(const QString &title, QWidget *parent = nullptr);
 
-	QString name() const override;
-	QString friendlyName() const override;
+	/// Returns true if console contains no displayed text.
+	bool isEmpty() const;
 
-	bool needsConnection() const override;
-	bool interpretedModel() const override;
+public slots:
+	/// Appends given text to the end of output.
+	void print(const QString &text);
 
-	int priority() const override;
+	/// Clears output.
+	void clear();
 
 private:
-	const QString mName;
-	const QString mFriendlyName;
-	const int mPriority;
+	QPlainTextEdit *mOutput;  // Takes ownership
 };
 
 }

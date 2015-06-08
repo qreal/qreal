@@ -51,11 +51,15 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
 	, mLanguageToolbox(languageToolbox)
 {
+	// Other components may want to subscribe to allDevicesConfigured() signal because
+	// it seems to be the only way to perform robot devices additional initialization.
+	// We must let them work out before interpretation starts, so creating queued connection.
 	connect(
 			&mRobotModelManager
 			, &kitBase::robotModel::RobotModelManagerInterface::allDevicesConfigured
 			, this
 			, &Interpreter::devicesConfiguredSlot
+			, Qt::QueuedConnection
 			);
 
 	connect(

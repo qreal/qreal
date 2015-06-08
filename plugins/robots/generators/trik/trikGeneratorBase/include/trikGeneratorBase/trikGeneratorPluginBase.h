@@ -48,8 +48,9 @@ public:
 protected:
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 
-private:
 	QScopedPointer<robotModel::TrikGeneratorRobotModel> mRobotModel;
+
+private:
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 };
 

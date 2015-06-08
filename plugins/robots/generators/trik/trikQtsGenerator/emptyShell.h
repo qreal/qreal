@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,27 +17,24 @@
 #include <trikKit/robotModel/parts/trikShell.h>
 
 namespace trik {
-namespace robotModel {
-namespace twoD {
-namespace parts {
+namespace qts {
 
-/// Emulates shell in interpreter. runCommand() and say() methods do nothing, but file operations are supported.
-class Shell : public robotModel::parts::TrikShell
+class EmptyShell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
+
 public:
-	Shell(const kitBase::robotModel::DeviceInfo &info
+	EmptyShell(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port);
 
+public slots:
+	void print(const QString &text) override;
 	void runCommand(const QString &command) override;
 	void runCode(const QString &code) override;
 	void say(const QString &text) override;
 	void writeToFile(const QString &filePath, const QString &text) override;
 	void removeFile(const QString &filePath) override;
-	void print(const QString &text) override;
 };
 
-}
-}
 }
 }

@@ -15,6 +15,8 @@
 #include "interpreterCore/textLanguage/robotsBlockParser.h"
 
 #include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/shell.h>
+
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
 #include <qrtext/lua/types/string.h>
@@ -161,6 +163,17 @@ void RobotsBlockParser::addIntrinsicFuctions()
 		}
 
 		return interpret<int>("sensor" + port.toString());
+	});
+
+	add1aryFunction("print", new types::String(), new types::String, [this](const QVariant &text) {
+		kitBase::robotModel::robotParts::Shell *shell = kitBase::robotModel::RobotModelUtils::findDevice
+				<kitBase::robotModel::robotParts::Shell>(mRobotModelManager.model(), "ShellPort");
+		if (shell) {
+			qDebug() << "printing in interpreter" << text.toString() << shell;
+			shell->print(text.toString());
+		}
+
+		return text;
 	});
 
 	addFloatFunction("sin", [](qreal x) {return sin(x); });
