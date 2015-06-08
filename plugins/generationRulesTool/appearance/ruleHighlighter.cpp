@@ -16,7 +16,7 @@ RuleHighlighter::RuleHighlighter(QTextDocument *parent)
 			<< listWithSpecialSymbols(keywords::textTemplates)
 			<< listWithSpecialSymbols(keywords::linksTemplates);
 
-	for (const auto pattern : keywordPatterns) {
+	for (const auto &pattern : keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mKeywordFormat;
 
