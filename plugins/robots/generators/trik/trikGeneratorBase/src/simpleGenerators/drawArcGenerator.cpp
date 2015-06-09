@@ -36,6 +36,8 @@ DrawArcGenerator::DrawArcGenerator(const qrRepo::RepoApi &repo
 							, customizer.factory()->intPropertyConverter(id, "StartAngle"))
 					, Binding::createConverting("@@SpanAngle@@", "SpanAngle"
 							, customizer.factory()->intPropertyConverter(id, "SpanAngle"))
+					, Binding::createConverting("@@REDRAW@@", "Redraw"
+							, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			}
 			, parent)
 {

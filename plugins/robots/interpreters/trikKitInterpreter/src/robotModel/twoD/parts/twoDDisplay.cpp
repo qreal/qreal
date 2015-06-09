@@ -44,34 +44,44 @@ void Display::setPainterWidth(int penWidth)
 	mCurrentPenWidth = penWidth;
 }
 
-void Display::drawPixel(int x, int y)
+void Display::drawPixel(int x, int y, bool redraw)
 {
 	mPixels << PixelCoordinates(x, y, mCurrentPenColor, mCurrentPenWidth);
-	mEngine.display()->repaintDisplay();
+	if (redraw) {
+		mEngine.display()->repaintDisplay();
+	}
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2)
+void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
 {
 	mLines << LineCoordinates(x1, y1, x2, y2, mCurrentPenColor, mCurrentPenWidth);
-	mEngine.display()->repaintDisplay();
+	if (redraw)	{
+		mEngine.display()->repaintDisplay();
+	}
 }
 
-void Display::drawRect(int x, int y, int width, int height)
+void Display::drawRect(int x, int y, int width, int height, bool redraw)
 {
 	mRects << RectCoordinates(x, y, width, height, mCurrentPenColor, mCurrentPenWidth);
-	mEngine.display()->repaintDisplay();
+	if (redraw) {
+		mEngine.display()->repaintDisplay();
+	}
 }
 
-void Display::drawEllipse(int x, int y, int width, int height)
+void Display::drawEllipse(int x, int y, int width, int height, bool redraw)
 {
 	mEllipses << EllipseCoordinates(x, y, width, height, mCurrentPenColor, mCurrentPenWidth);
-	mEngine.display()->repaintDisplay();
+	if (redraw)	{
+		mEngine.display()->repaintDisplay();
+	}
 }
 
-void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)
+void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle, bool redraw)
 {
 	mArcs << ArcCoordinates(x, y, width, height, startAngle, spanAngle, mCurrentPenColor, mCurrentPenWidth);
-	mEngine.display()->repaintDisplay();
+	if (redraw) {
+		mEngine.display()->repaintDisplay();
+	}
 }
 
 void Display::drawSmile(bool sad)
@@ -80,19 +90,23 @@ void Display::drawSmile(bool sad)
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::setBackground(const QColor &color)
+void Display::setBackground(const QColor &color, bool redraw)
 {
 	mBackground = color;
-	mEngine.display()->repaintDisplay();
+	if (redraw) {
+		mEngine.display()->repaintDisplay();
+	}
 }
 
-void Display::printText(int x, int y, const QString &text)
+void Display::printText(int x, int y, const QString &text, bool redraw)
 {
 	mLabels[qMakePair(x, y + yDisplayShift)] = {text, mCurrentPenColor};
-	mEngine.display()->repaintDisplay();
+	if (redraw) {
+		mEngine.display()->repaintDisplay();
+	}
 }
 
-void Display::clearScreen()
+void Display::clearScreen(bool redraw)
 {
 	// Background color is not cleared
 	mCurrentImage = QImage();
@@ -104,7 +118,7 @@ void Display::clearScreen()
 	mArcs.clear();
 	mCurrentPenWidth = 0;
 	mCurrentPenColor = Qt::black;
-	if (mEngine.display()) {
+	if (mEngine.display() && redraw) {
 		mEngine.display()->repaintDisplay();
 	}
 }
@@ -122,7 +136,7 @@ void Display::paint(QPainter *painter)
 
 	painter->save();
 	painter->setPen(Qt::black);
-	painter->scale(mEngine.display()->displayWidth() / realWidth, mEngine.display()->displayHeight() / realHeight);
+	painter->scale(displayRect.width() / realWidth, displayRect.height() / realHeight);
 
 	for (QPair<int, int> const &point : mLabels.keys()) {
 		/// @todo: Honest labels must be here, without text overlapping.
@@ -165,6 +179,6 @@ void Display::paint(QPainter *painter)
 
 void Display::reset()
 {
-	clearScreen();
-	setBackground(Qt::transparent);
+	clearScreen(true);
+	setBackground(Qt::transparent, true);
 }

@@ -29,6 +29,8 @@ PrintTextBlockGenerator::PrintTextBlockGenerator(const qrRepo::RepoApi &repo
 					, customizer.factory()->intPropertyConverter(id, "YCoordinateText"))
 			<< Binding::createConverting("@@TEXT@@", "PrintText"
 					, customizer.factory()->stringPropertyConverter(id, "PrintText"))
+			<< Binding::createConverting("@@REDRAW@@", "Redraw"
+					, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			, parent)
 {
 }

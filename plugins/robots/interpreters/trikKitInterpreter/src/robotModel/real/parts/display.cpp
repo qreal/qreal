@@ -36,27 +36,29 @@ void Display::drawSmile(bool sad)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::setBackground(const QColor &color)
+void Display::setBackground(const QColor &color, bool redraw)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/setBackground.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@COLOR@@", color.name());
+			.replace("@@COLOR@@", color.name()).replace("@@REDRAW@@", redraw ? "true" : "false");
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::clearScreen()
+void Display::clearScreen(bool redraw)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/clearScreen.t";
-	const QString directCommand = utils::InFile::readAll(pathToCommand);
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@REDRAW@@", redraw ? "true" : "false");
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::printText(int x, int y, const QString &text)
+void Display::printText(int x, int y, const QString &text, bool redraw)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/printText.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
-			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "script.run();";
+			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y))
+			.replace("@@REDRAW@@", redraw ? "true" : "false") + "script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
@@ -71,37 +73,41 @@ void Display::setPainterWidth(int penWidth)
 	Q_UNUSED(penWidth)
 }
 
-void Display::drawPixel(int x, int y)
+void Display::drawPixel(int x, int y, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
+	Q_UNUSED(redraw)
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2)
+void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
 {
 	Q_UNUSED(x1)
 	Q_UNUSED(y1)
 	Q_UNUSED(x2)
 	Q_UNUSED(y2)
+	Q_UNUSED(redraw)
 }
 
-void Display::drawRect(int x, int y, int width, int height)
+void Display::drawRect(int x, int y, int width, int height, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(width)
 	Q_UNUSED(height)
+	Q_UNUSED(redraw)
 }
 
-void Display::drawEllipse(int x, int y, int width, int height)
+void Display::drawEllipse(int x, int y, int width, int height, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(width)
 	Q_UNUSED(height)
+	Q_UNUSED(redraw)
 }
 
-void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)
+void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
@@ -109,4 +115,5 @@ void Display::drawArc(int x, int y, int width, int height, int startAngle, int s
 	Q_UNUSED(height)
 	Q_UNUSED(startAngle)
 	Q_UNUSED(spanAngle)
+	Q_UNUSED(redraw)
 }

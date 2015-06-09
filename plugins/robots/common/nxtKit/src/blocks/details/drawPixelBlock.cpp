@@ -28,8 +28,10 @@ void DrawPixelBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	auto nxtDisplay = static_cast<robotModel::parts::NxtDisplay *>(&display);
 	const int x = eval<int>("XCoordinatePix");
 	const int y = eval<int>("YCoordinatePix");
+	const bool redraw = boolProperty("Redraw");
+
 	if (!errorsOccured()) {
-		nxtDisplay->drawPixel(x, y);
+		nxtDisplay->drawPixel(x, y, redraw);
 		emit done(mNextBlockId);
 	}
 }

@@ -91,8 +91,8 @@ void TwoDRobotModel::onInterpretationStarted()
 	robotModel::parts::TrikDisplay * const display =
 			RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*this, "DisplayPort");
 	if (display) {
-		display->clearScreen();
-		display->setBackground(QColor(Qt::gray));
+		display->clearScreen(true);
+		display->setBackground(QColor(Qt::gray), true);
 	} else {
 		/// @todo: if we get here it is wrong because display is not configured before the interpretation!
 	}

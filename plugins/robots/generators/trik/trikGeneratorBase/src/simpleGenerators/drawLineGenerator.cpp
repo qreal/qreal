@@ -32,6 +32,8 @@ DrawLineGenerator::DrawLineGenerator(const qrRepo::RepoApi &repo
 							, customizer.factory()->intPropertyConverter(id, "X2CoordinateLine"))
 					, Binding::createConverting("@@Y2CoordinateLine@@", "Y2CoordinateLine"
 							, customizer.factory()->intPropertyConverter(id, "Y2CoordinateLine"))
+					, Binding::createConverting("@@REDRAW@@", "Redraw"
+							, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			}
 			, parent)
 {

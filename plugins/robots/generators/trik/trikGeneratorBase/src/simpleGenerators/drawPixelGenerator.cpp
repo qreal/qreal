@@ -28,6 +28,8 @@ DrawPixelGenerator::DrawPixelGenerator(const qrRepo::RepoApi &repo
 					, customizer.factory()->intPropertyConverter(id, "XCoordinatePix"))
 			, Binding::createConverting("@@YCoordinatePix@@", "YCoordinatePix"
 					, customizer.factory()->intPropertyConverter(id, "YCoordinatePix"))
+			, Binding::createConverting("@@REDRAW@@", "Redraw"
+					, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			}
 			, parent)
 {

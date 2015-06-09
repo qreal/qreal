@@ -25,6 +25,6 @@ ClearScreenBlock::ClearScreenBlock(kitBase::robotModel::RobotModelInterface &rob
 
 void ClearScreenBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 {
-	display.clearScreen();
+	display.clearScreen(boolProperty("Redraw"));
 	emit done(mNextBlockId);
 }

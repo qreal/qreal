@@ -1991,6 +1991,11 @@
 				</graphics>
 				<logic>
 					<container/>
+					<properties>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -2019,6 +2024,9 @@
 						</property>
 						<property displayedName="Text" type="string" name="PrintText">
 							<default>'Enter some text here'</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2084,6 +2092,9 @@
 						<property displayedName="Y" type="int" name="YCoordinatePix">
 							<default>0</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2117,6 +2128,9 @@
 						</property>
 						<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 							<default>10</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2152,6 +2166,9 @@
 						<property displayedName="Height" type="int" name="HeightRect">
 							<default>5</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2182,6 +2199,9 @@
 						<property displayedName="Radius" type="int" name="CircleRadius">
 							<default>5</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2209,6 +2229,9 @@
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinatePix">
 							<default>0</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 				<generalizations>
@@ -2243,6 +2266,9 @@
 					</property>
 					<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 						<default>10</default>
+					</property>
+					<property displayedName="Redraw" type="bool" name="Redraw">
+						<default>true</default>
 					</property>
 				</properties>
 				<generalizations>
@@ -2282,6 +2308,9 @@
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2315,6 +2344,9 @@
 						</property>
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2388,6 +2420,9 @@
 						<property displayedName="Y" type="int" name="YCoordinatePix">
 							<default>5</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2421,6 +2456,9 @@
 						</property>
 						<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 							<default>10</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2456,6 +2494,9 @@
 						<property displayedName="Height" type="int" name="HeightRect">
 							<default>5</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2489,6 +2530,9 @@
 						</property>
 						<property displayedName="Height" type="int" name="HeightEllipse">
 							<default>5</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2531,6 +2575,9 @@
 						</property>
 						<property displayedName="SpanAngle" type="int" name="SpanAngle">
 							<default>20</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2580,6 +2627,9 @@
 					<properties>
 						<property displayedName="Color" type="BackgroundColor" name="Color">
 							<default>white</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<container/>
