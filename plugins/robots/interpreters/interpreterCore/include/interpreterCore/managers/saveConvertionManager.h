@@ -29,6 +29,9 @@ public:
 	static QList<qReal::ProjectConverter> converters();
 
 private:
+	typedef std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> LogicalFilter;
+	typedef std::function<bool(const qReal::Id &, qReal::GraphicalModelAssistInterface &)> GraphicalFilter;
+
 	/// Returns a converter that restricts all saves made by editors till 3.0.0 alpha1.
 	static qReal::ProjectConverter before300Alpha1Converter();
 
@@ -50,7 +53,8 @@ private:
 	/// in TRIK removes v6 from robot model name).
 	static qReal::ProjectConverter from302to310Converter();
 
-	static bool isRobotsDiagram(const qReal::Id &diagram);
+	static bool isRobotsDiagram(const qReal::Id &element);
+	static bool isDiagramType(const qReal::Id &element);
 	static qReal::IdList elementsOfRobotsDiagrams(const qReal::LogicalModelAssistInterface &logicalApi);
 	static QString editor();
 
@@ -62,8 +66,8 @@ private:
 	///        Every filter will be called for every logical block in a save.
 	/// @param condition - logical predicate that shall be true for a block to be processed.
 	static qReal::ProjectConverter constructConverter(const QString &oldVersion, const QString &newVersion
-			, const QList<std::function<bool(const qReal::Id &
-					, qReal::LogicalModelAssistInterface &)> > &filters
+			, const QList<LogicalFilter> &logicalFilters
+			, const QList<GraphicalFilter> &graphicalFilters = {}
 			, const std::function<bool(const qReal::Id &)> &condition
 					= [] (const qReal::Id &block) { return !block.isNull(); }
 			);

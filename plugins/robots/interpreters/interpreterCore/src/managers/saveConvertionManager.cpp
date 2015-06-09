@@ -91,6 +91,7 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 						, {"digitSensor2", "sensorD2"}
 				})
 			}
+			, {}
 			, [] (const Id &block) { return block.element().startsWith("Trik"); }
 			);
 
@@ -169,6 +170,9 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 			, { "lineSensorCross", "lineSensor[2]" }
 	};
 
+	/// @todo: leaks
+	QMap<Id, Id> *convertedIds = new QMap<Id, Id>();
+
 	return constructConverter("3.0.2", "3.1.0"
 			, {
 				replace(replacementRules)
@@ -188,13 +192,51 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 					return false;
 				}
 			}
+			, {
+				// This one repairs labels positions. At some moment a number of labels on scene
+				// reduced a lot, so old saves used wrong partial models. The easiest fix "by hand"
+				// is to cut and paste element. This converter does the same thing.
+				[convertedIds](const Id &block, GraphicalModelAssistInterface &graphicalApi) {
+					if (isDiagramType(block)) {
+						return false;
+					}
+
+					const bool isEdge = block.element() == "ControlFlow";
+					const Id newBlock = Id::createElementId(block.editor(), block.diagram(), block.element());
+					convertedIds->insert(block, newBlock);
+					graphicalApi.createElement(graphicalApi.parent(block)
+							, newBlock
+							, false
+							, graphicalApi.name(block)
+							, graphicalApi.position(block)
+							, graphicalApi.logicalId(block));
+					graphicalApi.copyProperties(newBlock, block);
+
+					if (isEdge && convertedIds->contains(graphicalApi.from(newBlock))) {
+						graphicalApi.setFrom(newBlock, convertedIds->value(graphicalApi.from(newBlock)));
+					}
+
+					if (isEdge && convertedIds->contains(graphicalApi.to(newBlock))) {
+						graphicalApi.setTo(newBlock, convertedIds->value(graphicalApi.to(newBlock)));
+					}
+
+					graphicalApi.removeElement(block);
+					return true;
+				}
+			}
 	);
 }
 
-bool SaveConvertionManager::isRobotsDiagram(const Id &diagram)
+bool SaveConvertionManager::isRobotsDiagram(const Id &element)
 {
 	const QStringList robotsDiagrams = { "RobotsDiagram", "SubprogramDiagram" };
-	return diagram.editor() == editor() && robotsDiagrams.contains(diagram.diagram());
+	return element.editor() == editor() && robotsDiagrams.contains(element.diagram());
+}
+
+bool SaveConvertionManager::isDiagramType(const Id &element)
+{
+	const QStringList robotsDiagrams = { "RobotsDiagramNode", "SubprogramDiagramNode" };
+	return isRobotsDiagram(element) && robotsDiagrams.contains(element.element());
 }
 
 IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistInterface &logicalApi)
@@ -211,26 +253,48 @@ IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistI
 
 qReal::ProjectConverter SaveConvertionManager::constructConverter(const QString &oldVersion
 		, const QString &newVersion
-		, const QList<std::function<bool(const Id &, LogicalModelAssistInterface &)>> &filters
+		, const QList<LogicalFilter> &logicalFilters
+		, const QList<GraphicalFilter> &graphicalFilters
 		, const std::function<bool(const qReal::Id &)> &condition
 		)
 {
 	return ProjectConverter(editor(), Version::fromString(oldVersion), Version::fromString(newVersion)
-			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
-		Q_UNUSED(graphicalApi);
-
 		bool modificationsMade = false;
 
-		for (const Id &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
-			const Id block = graphicalApi.logicalId(graphicalBlock);
+		for (const Id &block : elementsOfRobotsDiagrams(logicalApi)) {
+			const Id logicalBlock = graphicalApi.isGraphicalId(block)
+					? graphicalApi.logicalId(block)
+					: block;
 
-			if (!condition(block)) {
+			if (!condition(logicalBlock)) {
 				continue;
 			}
 
-			for (const auto &filter : filters) {
-				modificationsMade |= filter(block, logicalApi);
+			for (const auto &filter : logicalFilters) {
+				modificationsMade |= filter(logicalBlock, logicalApi);
+			}
+
+			if (graphicalFilters.isEmpty()) {
+				// A small optimization not to count graphical id.
+				continue;
+			}
+
+			Id graphicalBlock;
+			if (graphicalApi.isGraphicalId(block)) {
+				graphicalBlock = block;
+			} else {
+				const IdList graphicalIds = graphicalApi.graphicalIdsByLogicalId(logicalBlock);
+				if (graphicalIds.isEmpty()) {
+					continue;
+				}
+
+				graphicalBlock = graphicalIds.first();
+			}
+
+			for (const auto &filter : graphicalFilters) {
+				modificationsMade |= filter(graphicalBlock, graphicalApi);
 			}
 		}
 
