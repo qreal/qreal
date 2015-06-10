@@ -27,6 +27,9 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/inFile.h>
 #include <qrutils/smartDock.h>
+#include <qrutils/widgets/consoleDock.h>
+#include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/shell.h>
 
 #include "src/ui/modeStripe.h"
 
@@ -40,20 +43,32 @@ UiManager::UiManager(QAction &debugModeAction
 		, QAction &editModeAction
 		, qReal::gui::MainWindowDockInterface &mainWindow
 		, qReal::SystemEvents &systemEvents
-		, kitBase::EventsForKitPluginInterface &kitPluginEvents)
+		, kitBase::EventsForKitPluginInterface &kitPluginEvents
+		, kitBase::robotModel::RobotModelManagerInterface &robotModelManager)
 	: mDebugModeAction(debugModeAction)
 	, mEditModeAction(editModeAction)
 	, mMainWindow(mainWindow)
+	, mRobotConsole(new qReal::ui::ConsoleDock(tr("Robot console"), mMainWindow.windowWidget()))
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
+	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
+			, mRobotConsole, &qReal::ui::ConsoleDock::clear);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocksSavingToolbarsAndErrors())); });
+	connect(&robotModelManager, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this, &UiManager::onRobotModelChanged);
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
+
+	mRobotConsole->hide();
+	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
+	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
+	mMainWindow.windowWidget()->addAction(mRobotConsole->toggleViewAction());
+	mRobotConsole->toggleViewAction()->setShortcut(Qt::ALT + Qt::Key_2);
 
 	mMainWindow.statusBar()->setAutoFillBackground(true);
 	mMainWindow.statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black; padding: 10px; }");
@@ -87,6 +102,11 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	reloadDocks();
 }
 
+qReal::ui::ConsoleDock &UiManager::robotConsole()
+{
+	return *mRobotConsole;
+}
+
 void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 {
 	if (tab.type() == mCurrentTab) {
@@ -97,6 +117,22 @@ void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 	mCurrentTab = tab.type();
 	reloadDocks();
 	toggleModeButtons();
+}
+
+void UiManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	auto subscribeShell = [this, &model]() {
+		if (kitBase::robotModel::robotParts::Shell * const shell = kitBase::robotModel::RobotModelUtils::findDevice
+				<kitBase::robotModel::robotParts::Shell>(model, "ShellPort"))
+		{
+			connect(shell, &kitBase::robotModel::robotParts::Shell::textPrinted
+					, mRobotConsole, &qReal::ui::ConsoleDock::print, Qt::UniqueConnection);
+		}
+	};
+
+	// Shell can be already configured or not. However, checking for it now or later, when everything is ready for use.
+	subscribeShell();
+	connect(&model, &kitBase::robotModel::RobotModelInterface::allDevicesConfigured, subscribeShell);
 }
 
 void UiManager::switchToEditorMode()
@@ -187,6 +223,10 @@ void UiManager::reloadDocks() const
 		QLOG_ERROR() << "Cannot apply docks state for mode" << currentMode() << ":" << state;
 	} else {
 		resetMainWindowCorners();
+		// Same trick as main window does with error reporter.
+		if (mRobotConsole->isEmpty()) {
+			mRobotConsole->hide();
+		}
 	}
 }
 
@@ -195,6 +235,7 @@ void UiManager::reloadDocksSavingToolbarsAndErrors() const
 	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
 	// will loose some toolbars visibility and error reporter state, so memorizing it here...
 	const bool errorReporterWasVisible = mMainWindow.errorReporterDock()->isVisible();
+	const bool robotConsoleWasVisible = mRobotConsole->isVisible();
 	QMap<QToolBar *, bool> toolBarsVisiblity;
 	for (QToolBar * const toolBar : mMainWindow.toolBars()) {
 		toolBarsVisiblity[toolBar] = toolBar->isVisible();
@@ -205,6 +246,7 @@ void UiManager::reloadDocksSavingToolbarsAndErrors() const
 
 	// And finally restoring old configuration.
 	mMainWindow.errorReporterDock()->setVisible(errorReporterWasVisible);
+	mRobotConsole->setVisible(robotConsoleWasVisible);
 	for (QToolBar * const toolBar : toolBarsVisiblity.keys()) {
 		toolBar->setVisible(toolBarsVisiblity[toolBar]);
 	}

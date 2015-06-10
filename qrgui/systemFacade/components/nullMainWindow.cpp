@@ -26,12 +26,13 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(nullptr)
-	, mLogicalModelDock(new QDockWidget)
-	, mGraphicalModelDock(new QDockWidget)
-	, mPropertyEditorDock(new QDockWidget)
-	, mErrorReporterDock(new QDockWidget)
-	, mPaletteDock(new QDockWidget)
-	, mStatusBar(new QStatusBar)
+	, mWindowWidget(new QWidget)
+	, mLogicalModelDock(new QDockWidget(mWindowWidget))
+	, mGraphicalModelDock(new QDockWidget(mWindowWidget))
+	, mPropertyEditorDock(new QDockWidget(mWindowWidget))
+	, mErrorReporterDock(new QDockWidget(mWindowWidget))
+	, mPaletteDock(new QDockWidget(mWindowWidget))
+	, mStatusBar(new QStatusBar(mWindowWidget))
 {
 }
 
@@ -42,24 +43,20 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(&graphicalModel)
-	, mLogicalModelDock(new QDockWidget)
-	, mGraphicalModelDock(new QDockWidget)
-	, mPropertyEditorDock(new QDockWidget)
-	, mErrorReporterDock(new QDockWidget)
-	, mPaletteDock(new QDockWidget)
-	, mStatusBar(new QStatusBar)
+	, mWindowWidget(new QWidget)
+	, mLogicalModelDock(new QDockWidget(mWindowWidget))
+	, mGraphicalModelDock(new QDockWidget(mWindowWidget))
+	, mPropertyEditorDock(new QDockWidget(mWindowWidget))
+	, mErrorReporterDock(new QDockWidget(mWindowWidget))
+	, mPaletteDock(new QDockWidget(mWindowWidget))
+	, mStatusBar(new QStatusBar(mWindowWidget))
 {
 	connect(&projectManager, &ProjectManagementInterface::afterOpen, this, &NullMainWindow::openFirstDiagram);
 }
 
 NullMainWindow::~NullMainWindow()
 {
-	delete mLogicalModelDock;
-	delete mGraphicalModelDock;
-	delete mPropertyEditorDock;
-	delete mErrorReporterDock;
-	delete mPaletteDock;
-	delete mStatusBar;
+	delete mWindowWidget;
 	SettingsManager::instance()->saveData();
 }
 
@@ -111,7 +108,7 @@ void NullMainWindow::reinitModels()
 
 QWidget *NullMainWindow::windowWidget()
 {
-	return nullptr;
+	return mWindowWidget;
 }
 
 bool NullMainWindow::unloadPlugin(const QString &pluginName)
