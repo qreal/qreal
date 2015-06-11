@@ -460,8 +460,7 @@
 						<line x1="27" y1="23" x2="33" y2="17" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
 					</picture>
 					<labels>
-						<label x="-50" y="60" text="Thread:"/>
-						<label x="30" y="60" textBinded="Thread" background="white"/>
+						<label x="30" y="60" textBinded="Thread" background="white" prefix="Thread:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
