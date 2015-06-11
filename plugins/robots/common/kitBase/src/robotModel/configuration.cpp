@@ -27,7 +27,8 @@ void Configuration::configureDevice(robotParts::Device * const device)
 	Q_ASSERT(device);
 
 	if (mConfiguredDevices.contains(device->port())
-			&& mConfiguredDevices.value(device->port())->deviceInfo() == device->deviceInfo())
+			&& mConfiguredDevices.value(device->port())->deviceInfo() == device->deviceInfo()
+			&& device->port().name() != "DisplayPort")  // hack for cleaning display in 2D model
 	{
 		// It is same device that is already configured on that port, we don't need to do anything.
 		return;
@@ -37,7 +38,8 @@ void Configuration::configureDevice(robotParts::Device * const device)
 	mConfiguredDevices.remove(device->port());
 
 	if (mPendingDevices.contains(device->port())) {
-		if (mPendingDevices.value(device->port())->deviceInfo() == device->deviceInfo()) {
+		if (mPendingDevices.value(device->port())->deviceInfo() == device->deviceInfo()
+			&& device->port().name() != "DisplayPort") { // hack for cleaning display in 2D model
 			// It is same device that is already pending for configuration on that port, we don't need to do anything.
 			return;
 		}
