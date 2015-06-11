@@ -39,25 +39,25 @@ public:
 	}
 
 	/// Returns identifier node.
-	QSharedPointer<Node> identifier() const
+	const QSharedPointer<Node> &identifier() const
 	{
 		return mIdentifier;
 	}
 
 	/// Returns list node.
-	QSharedPointer<Node> listPart() const
+	const QSharedPointer<Node> &listPart() const
 	{
 		return mList;
 	}
 
 	/// Returns program node.
-	QSharedPointer<Node> program() const
+	const QSharedPointer<Node> &program() const
 	{
 		return mProgram;
 	}
 
 	/// Returns excluded text.
-	QSharedPointer<Node> excludedText() const
+	const QSharedPointer<Node> &excludedText() const
 	{
 		return mExcludedText;
 	}

@@ -21,13 +21,13 @@ public:
 	}
 
 	/// Returns identifier part.
-	QSharedPointer<Node> identifierPart()
+	const QSharedPointer<Node> &identifierPart()
 	{
 		return mIdentifierPart;
 	}
 
 	/// Returns text part.
-	QSharedPointer<Node> textPart()
+	const QSharedPointer<Node> &textPart()
 	{
 		return mTextPart;
 	}

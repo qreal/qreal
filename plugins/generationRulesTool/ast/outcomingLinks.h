@@ -17,7 +17,7 @@ public:
 	}
 
 	/// Returns link type node.
-	QSharedPointer<Node> linkType() const
+	const QSharedPointer<Node> &linkType() const
 	{
 		return mLinkType;
 	}

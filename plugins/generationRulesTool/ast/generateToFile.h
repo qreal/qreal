@@ -20,13 +20,13 @@ public:
 	}
 
 	/// Returns file name part.
-	QSharedPointer<Node> const &fileName() const
+	const QSharedPointer<Node> &fileName() const
 	{
 		return mFileName;
 	}
 
 	/// Returns program part.
-	QSharedPointer<Node> const &program() const
+	const QSharedPointer<Node> &program() const
 	{
 		return mProgram;
 	}

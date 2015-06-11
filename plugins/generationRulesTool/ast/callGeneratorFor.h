@@ -12,21 +12,21 @@ public:
 	/// Constructor.
 	/// @param identifier - identifier part (for example, element in callGeneratorFor(element, generatorName)).
 	/// @param generator - optional generator name (generatorName in previous example).
-	explicit CallGeneratorFor(QSharedPointer<Node> const &identifier
-			, QSharedPointer<Node> const &generator = QSharedPointer<Node>())
+	explicit CallGeneratorFor(const QSharedPointer<Node> &identifier
+			, const QSharedPointer<Node> &generator = QSharedPointer<Node>())
 		: mIdentifier(identifier)
 		, mGeneratorName(generator)
 	{
 	}
 
 	/// Returns identifier part.
-	QSharedPointer<Node> const &identifier() const
+	const QSharedPointer<Node> &identifier() const
 	{
 		return mIdentifier;
 	}
 
 	/// Returns generatorName part.
-	QSharedPointer<Node> const &generatorName() const
+	const QSharedPointer<Node> &generatorName() const
 	{
 		return mGeneratorName;
 	}

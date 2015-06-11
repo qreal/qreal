@@ -33,10 +33,10 @@ void RuleHighlighter::highlightBlock(const QString &text)
 {
 	for (const auto &rule : mHighlightingRules) {
 		QRegExp expression(rule.pattern);
-		int index = expression.indexIn(text);
+		auto index = expression.indexIn(text);
 
 		while (index >= 0) {
-			int length = expression.matchedLength();
+			const auto length = expression.matchedLength();
 			setFormat(index, length, rule.format);
 			index = expression.indexIn(text, index + length);
 		}
@@ -48,7 +48,7 @@ QStringList RuleHighlighter::listWithSpecialSymbols(const QStringList &listToApp
 	QStringList result;
 
 	for (const auto &listElement : listToAppendSymbols) {
-		auto newElement = "\\b" + listElement + "\\b";
+		const auto newElement = "\\b" + listElement + "\\b";
 		result << newElement;
 	}
 

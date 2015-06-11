@@ -34,8 +34,7 @@ public:
 	/// Returns value of a string (without quotes).
 	const QString &text()
 	{
-		const QString &textWithoutQuotes = mText.remove('\'');
-		return textWithoutQuotes;
+		return mText.remove('\'');
 	}
 
 private:

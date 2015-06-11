@@ -23,19 +23,19 @@ public:
 	}
 
 	/// Returns condition node.
-	QSharedPointer<Node> condition() const
+	const QSharedPointer<Node> &condition() const
 	{
 		return mCondition;
 	}
 
 	/// Returns true branch node.
-	QSharedPointer<Node> trueBranch() const
+	const QSharedPointer<Node> &trueBranch() const
 	{
 		return mTrueBranch;
 	}
 
 	/// Returns false branch node.
-	QSharedPointer<Node> falseBranch() const
+	const QSharedPointer<Node> &falseBranch() const
 	{
 		return mFalseBranch;
 	}

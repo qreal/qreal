@@ -17,13 +17,13 @@ public:
 	}
 
 	/// Returns identifier node.
-	QSharedPointer<Node> identifier() const
+	const QSharedPointer<Node> &identifier() const
 	{
 		return mIdentifier;
 	}
 
 	/// Returns program node.
-	QSharedPointer<Node> program() const
+	const QSharedPointer<Node> &program() const
 	{
 		return mProgram;
 	}

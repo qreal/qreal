@@ -34,13 +34,13 @@ public:
 	}
 
 	/// Returns first part of complex identifier.
-	QSharedPointer<Node> identifierPart() const
+	const QSharedPointer<Node> &identifierPart() const
 	{
 		return mIdentifierPart;
 	}
 
 	/// Returns second part of complex identifier.
-	QSharedPointer<Node> propertyPart() const
+	const QSharedPointer<Node> &propertyPart() const
 	{
 		return mPropertyPart;
 	}
