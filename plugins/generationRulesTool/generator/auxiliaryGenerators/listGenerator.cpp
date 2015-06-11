@@ -12,9 +12,9 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-qReal::IdList ListGenerator::listOfIds(QSharedPointer<List> listNode
+qReal::IdList ListGenerator::listOfIds(const QSharedPointer<List> &listNode
 		, qReal::LogicalModelAssistInterface *logicalModelInterface
-		, VariablesTable variablesTable
+		, VariablesTable &variablesTable
 		, const CurrentScope &currentScope)
 {
 	const auto mainPartOfListIdentifier = qrtext::as<ElementIdentifier>(listNode->identifier());

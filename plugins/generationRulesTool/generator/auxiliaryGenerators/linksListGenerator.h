@@ -26,7 +26,7 @@ public:
 	static qReal::IdList generatedList(const QSharedPointer<simpleParser::ast::Node> &linksIdentifierNode
 			, const QSharedPointer<simpleParser::ast::Identifier> &linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable variablesTable
+			, VariablesTable &variablesTable
 			, const CurrentScope &currentScope
 			);
 
@@ -35,14 +35,14 @@ public:
 	/// @param variablesTable - table of variables.
 	/// @param currentScope - information about current scope.
 	static qReal::Id elementId(const QSharedPointer<simpleParser::ast::Node> &linksIdentifierNode
-			, VariablesTable variablesTable
+			, VariablesTable &variablesTable
 			, const CurrentScope &currentScope);
 
 	/// Returns links of needed type from links of all types.
 	/// @param linksTypeNode - links type node.
 	/// @param allLinks - list of all links.
-	static qReal::IdList linksOfNeededType(QSharedPointer<simpleParser::ast::Identifier> linksTypeNode
-			, qReal::IdList allLinks);
+	static qReal::IdList linksOfNeededType(const QSharedPointer<simpleParser::ast::Identifier> &linksTypeNode
+			, const qReal::IdList &allLinks);
 };
 
 }

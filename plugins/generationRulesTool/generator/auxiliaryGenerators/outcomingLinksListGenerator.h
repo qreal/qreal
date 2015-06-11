@@ -26,7 +26,7 @@ public:
 	static qReal::IdList generatedList(const QSharedPointer<simpleParser::ast::Node> &linksIdentifierNode
 			, const QSharedPointer<simpleParser::ast::Identifier> &linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface
-			, VariablesTable variablesTable
+			, VariablesTable &variablesTable
 			, const CurrentScope &currentScope
 			);
 };

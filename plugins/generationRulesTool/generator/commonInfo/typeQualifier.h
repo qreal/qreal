@@ -17,7 +17,7 @@ public:
 	/// Returns element type.
 	/// @param elementIdentifier - element identifier node.
 	/// @param generatorConfigurer - information about model and metamodel.
-	static QString elementIdentifierType(QSharedPointer<simpleParser::ast::ElementIdentifier> elementIdentifier
+	static QString elementIdentifierType(const QSharedPointer<simpleParser::ast::ElementIdentifier> &elementIdentifier
 		, const GeneratorConfigurer &generatorConfigurer);
 };
 

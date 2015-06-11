@@ -7,7 +7,7 @@
 using namespace simpleParser::ast;
 using namespace generationRules::generator;
 
-QString TypeQualifier::elementIdentifierType(QSharedPointer<ElementIdentifier> elementIdentifier, const GeneratorConfigurer &generatorConfigurer)
+QString TypeQualifier::elementIdentifierType(const QSharedPointer<ElementIdentifier> &elementIdentifier, const GeneratorConfigurer &generatorConfigurer)
 {
 	const auto identifierPart = qrtext::as<Identifier>(elementIdentifier->identifierPart());
 	const auto optionalLinkPart = elementIdentifier->optionalTransitionPart();
