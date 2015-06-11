@@ -66,5 +66,5 @@ kitBase::robotModel::robotParts::Device *TrikGeneratorRobotModel::createDevice(c
 		return mPreConfiguredDevices[port];
 	}
 
-	return TrikGeneratorRobotModel::createDevice(port, deviceInfo);
+	return TrikRobotModelBase::createDevice(port, deviceInfo);
 }
