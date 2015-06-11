@@ -86,6 +86,7 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	QList<qReal::HotKeyActionInfo> result;
 
 	result += mPluginHotKeyActionInfos;
+	result += mAdditionalHotKeyInfos;
 
 	result
 			<< qReal::HotKeyActionInfo("Editor.EditMode", mEditModeAction.text(), &mEditModeAction)
@@ -137,6 +138,11 @@ QAction &ActionsManager::debugModeAction()
 QAction &ActionsManager::editModeAction()
 {
 	return mEditModeAction;
+}
+
+void ActionsManager::appendHotKey(const QString &actionId, const QString &label, QAction &action)
+{
+	mAdditionalHotKeyInfos << qReal::HotKeyActionInfo(actionId, label, &action);
 }
 
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,47 +12,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDShell.h"
+#include "emptyShell.h"
 
-#include <QtCore/QFile>
+using namespace trik::qts;
 
-using namespace trik::robotModel::twoD::parts;
-
-Shell::Shell(const kitBase::robotModel::DeviceInfo &info
+EmptyShell::EmptyShell(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port)
-	: robotModel::parts::TrikShell(info, port)
+	: TrikShell(info, port)
 {
 }
 
-void Shell::runCommand(const QString &command)
+void EmptyShell::print(const QString &text)
+{
+	emit textPrinted(text);
+}
+
+void EmptyShell::runCommand(const QString &command)
 {
 	Q_UNUSED(command)
 }
 
-void Shell::runCode(const QString &code)
+void EmptyShell::runCode(const QString &code)
 {
 	Q_UNUSED(code)
 }
 
-void Shell::say(const QString &text)
+void EmptyShell::say(const QString &text)
 {
 	Q_UNUSED(text)
 }
 
-void Shell::writeToFile(const QString &filePath, const QString &text)
+void EmptyShell::writeToFile(const QString &filePath, const QString &text)
 {
-	QFile out(filePath);
-	out.open(QIODevice::WriteOnly | QIODevice::Append);
-	out.write(text.toUtf8());
+	Q_UNUSED(filePath)
+	Q_UNUSED(text)
 }
 
-void Shell::removeFile(const QString &filePath)
+void EmptyShell::removeFile(const QString &filePath)
 {
-	QFile out(filePath);
-	out.remove();
+	Q_UNUSED(filePath)
 }
 
-void Shell::print(const QString &text)
-{
-	emit textPrinted(text);
-}

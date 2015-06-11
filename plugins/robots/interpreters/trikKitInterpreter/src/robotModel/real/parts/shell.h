@@ -32,14 +32,11 @@ public:
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void runCommand(const QString &command) override;
-
 	void runCode(const QString &code) override;
-
 	void say(const QString &text) override;
-
 	void writeToFile(const QString &filePath, const QString &text) override;
-
 	void removeFile(const QString &filePath) override;
+	void print(const QString &text) override;
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;

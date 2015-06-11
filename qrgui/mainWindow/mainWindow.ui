@@ -323,7 +323,7 @@
     <bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>Output</string>
+    <string>Errors</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -766,6 +766,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+T</string>
+   </property>
+  </action>
+  <action name="actionHideBottomDocks">
+   <property name="text">
+    <string>Hide bottom docks</string>
+   </property>
+   <property name="toolTip">
+    <string>Hide bottom docks</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
    </property>
   </action>
  </widget>
