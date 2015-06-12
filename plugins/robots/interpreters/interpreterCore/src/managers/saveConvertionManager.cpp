@@ -170,9 +170,6 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 			, { "lineSensorCross", "lineSensor[2]" }
 	};
 
-	/// @todo: leaks
-	QMap<Id, Id> *convertedIds = new QMap<Id, Id>();
-
 	return constructConverter("3.0.2", "3.1.0"
 			, {
 				replace(replacementRules)
@@ -196,33 +193,10 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 				// This one repairs labels positions. At some moment a number of labels on scene
 				// reduced a lot, so old saves used wrong partial models. The easiest fix "by hand"
 				// is to cut and paste element. This converter does the same thing.
-				[convertedIds](const Id &block, GraphicalModelAssistInterface &graphicalApi) {
-					if (isDiagramType(block)) {
-						return false;
-					}
-
-					const bool isEdge = block.element() == "ControlFlow";
-					const Id newBlock = Id::createElementId(block.editor(), block.diagram(), block.element());
-					convertedIds->insert(block, newBlock);
-					graphicalApi.createElement(graphicalApi.parent(block)
-							, newBlock
-							, false
-							, graphicalApi.name(block)
-							, graphicalApi.position(block)
-							, graphicalApi.logicalId(block));
-					graphicalApi.copyProperties(newBlock, block);
-
-					if (isEdge && convertedIds->contains(graphicalApi.from(newBlock))) {
-						graphicalApi.setFrom(newBlock, convertedIds->value(graphicalApi.from(newBlock)));
-					}
-
-					if (isEdge && convertedIds->contains(graphicalApi.to(newBlock))) {
-						graphicalApi.setTo(newBlock, convertedIds->value(graphicalApi.to(newBlock)));
-					}
-
-					graphicalApi.removeElement(block);
-					return true;
-				}
+				graphicalRecreate([](const Id &block, qReal::GraphicalModelAssistInterface &) { return block.type(); }
+						, [](const Id &newBlock, const Id &oldBlock, qReal::GraphicalModelAssistInterface &model) {
+							model.copyProperties(newBlock, oldBlock);
+				})
 			}
 	);
 }
@@ -235,26 +209,37 @@ bool SaveConvertionManager::isRobotsDiagram(const Id &element)
 
 bool SaveConvertionManager::isDiagramType(const Id &element)
 {
-	const QStringList robotsDiagrams = { "RobotsDiagramNode", "SubprogramDiagramNode" };
+	const QStringList robotsDiagrams = { "RobotsDiagramNode", "SubprogramDiagram" };
 	return isRobotsDiagram(element) && robotsDiagrams.contains(element.element());
+}
+
+bool SaveConvertionManager::isEdgeType(const Id &element)
+{
+	return element.element() == "ControlFlow";
 }
 
 IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistInterface &logicalApi)
 {
-	IdList result;
-	for (const Id &diagramId : logicalApi.children(Id::rootId())) {
-		if (isRobotsDiagram(diagramId)) {
-			result += diagramId;
+	IdList nodes;
+	IdList edges;
+	for (const Id &blockId : logicalApi.children(Id::rootId())) {
+		if (isRobotsDiagram(blockId)) {
+			if (isEdgeType(blockId)) {
+				edges += blockId;
+			} else {
+				nodes += blockId;
+			}
 		}
 	}
 
-	return result;
+	// When we traverse elements it is important to traverse first nodes and then edges.
+	return nodes + edges;
 }
 
 qReal::ProjectConverter SaveConvertionManager::constructConverter(const QString &oldVersion
 		, const QString &newVersion
 		, const QList<LogicalFilter> &logicalFilters
-		, const QList<GraphicalFilter> &graphicalFilters
+			, const QList<GraphicalFilter> &graphicalFilters
 		, const std::function<bool(const qReal::Id &)> &condition
 		)
 {
@@ -302,8 +287,7 @@ qReal::ProjectConverter SaveConvertionManager::constructConverter(const QString 
 	});
 }
 
-std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> SaveConvertionManager::replace(
-		const QMap<QString, QString> &replacementRules)
+SaveConvertionManager::LogicalFilter SaveConvertionManager::replace(const QMap<QString, QString> &replacementRules)
 {
 	return [=] (const Id &block, LogicalModelAssistInterface &logicalApi) {
 		bool modificationsMade = false;
@@ -331,8 +315,7 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> Sav
 	};
 }
 
-std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)>
-		SaveConvertionManager::deleteBlocks(const QStringList &blocks)
+SaveConvertionManager::LogicalFilter SaveConvertionManager::deleteBlocks(const QStringList &blocks)
 {
 	return [=] (const Id &block, LogicalModelAssistInterface &logicalApi) {
 		if (blocks.contains(block.element())) {
@@ -344,8 +327,7 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)>
 	};
 }
 
-std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> SaveConvertionManager::quote(
-		const QString &blockType, const QString &property)
+SaveConvertionManager::LogicalFilter SaveConvertionManager::quote(const QString &blockType, const QString &property)
 {
 	return [blockType, property] (const qReal::Id &block, qReal::LogicalModelAssistInterface &logicalApi) {
 		if (block.element() == blockType) {
@@ -357,5 +339,55 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> Sav
 		}
 
 		return false;
+	};
+}
+
+SaveConvertionManager::GraphicalFilter SaveConvertionManager::graphicalRecreate(
+		const SaveConvertionManager::GraphicalReplacer &replacer
+		, const SaveConvertionManager::GraphicalConstructor &constructor)
+{
+	return [replacer, constructor](const Id &block, GraphicalModelAssistInterface &graphicalApi) {
+		// Just iterating throught the elements on some diagram, ignoring the diagram itself.
+		if (isDiagramType(block)) {
+			return false;
+		}
+
+		// For each element trying to find out what to replace it with.
+		const Id newType = replacer(block, graphicalApi);
+		if (newType.isNull()) {
+			// Not every element be replaced, concrete implementation must decide it.
+			return false;
+		}
+
+		// Then creating new element of some type...
+		const Id newBlock = Id::createElementId(newType.editor(), newType.diagram(), newType.element());
+		graphicalApi.createElement(graphicalApi.parent(block)
+				, newBlock
+				, false
+				, graphicalApi.name(block)
+				, graphicalApi.position(block)
+				, graphicalApi.logicalId(block));
+		// And initializing it...
+		constructor(newBlock, block, graphicalApi);
+
+		const bool isEdge = isEdgeType(block);
+		if (isEdge) {
+			// If out element is edge then connecting it to same elements as the old one was connected
+			graphicalApi.setFrom(newBlock, graphicalApi.from(block));
+			graphicalApi.setTo(newBlock, graphicalApi.to(block));
+		} else {
+			// Replacing old node in all incomming and outgoing edges of the old node with the new one.
+			for (const Id &edge : graphicalApi.graphicalRepoApi().outgoingLinks(block)) {
+				graphicalApi.mutableGraphicalRepoApi().setProperty(edge, "from", newBlock.toVariant());
+			}
+
+			for (const Id &edge : graphicalApi.graphicalRepoApi().incomingLinks(block)) {
+				graphicalApi.mutableGraphicalRepoApi().setProperty(edge, "to", newBlock.toVariant());
+			}
+		}
+
+		// And finally disposing of outdated entity.
+		graphicalApi.removeElement(block);
+		return true;
 	};
 }

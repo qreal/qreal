@@ -31,6 +31,9 @@ public:
 private:
 	typedef std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> LogicalFilter;
 	typedef std::function<bool(const qReal::Id &, qReal::GraphicalModelAssistInterface &)> GraphicalFilter;
+	typedef std::function<qReal::Id(const qReal::Id &, qReal::GraphicalModelAssistInterface &)> GraphicalReplacer;
+	typedef std::function<void(const qReal::Id &, const qReal::Id &
+			, qReal::GraphicalModelAssistInterface &)> GraphicalConstructor;
 
 	/// Returns a converter that restricts all saves made by editors till 3.0.0 alpha1.
 	static qReal::ProjectConverter before300Alpha1Converter();
@@ -55,6 +58,7 @@ private:
 
 	static bool isRobotsDiagram(const qReal::Id &element);
 	static bool isDiagramType(const qReal::Id &element);
+	static bool isEdgeType(const qReal::Id &element);
 	static qReal::IdList elementsOfRobotsDiagrams(const qReal::LogicalModelAssistInterface &logicalApi);
 	static QString editor();
 
@@ -74,17 +78,26 @@ private:
 
 	/// Helper method, constructs property replace filter. Takes map in form { {<from>, <to>}, ... } and applies
 	/// replacements coded in this map to every property of a block.
-	static std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> replace(
-			const QMap<QString, QString> &replacementRules);
+	static LogicalFilter replace(const QMap<QString, QString> &replacementRules);
 
 	/// Helper method, constructs deleting filter. If block in old save was removed from metamodel of a new version,
 	/// it is safer to delete it completely.
-	static std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> deleteBlocks(
-			const QStringList &blocks);
+	static LogicalFilter deleteBlocks(const QStringList &blocks);
 
 	/// Helper method, constructs quoting filter. Puts '"' around value of given property of all blocks with given type.
-	static std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> quote(
-			const QString &blockType, const QString &property);
+	static LogicalFilter quote(const QString &blockType, const QString &property);
+
+	/// Helper method, constructs filter for graphical model recreation. For each graphical block in model
+	/// \a constructor will be called with the id of that block. If constructor returns non-null type id
+	/// current block in model will be replaced with the new instance of returned type.
+	/// Links will be automaticly reconnected to a new nodes even if recreated themselves.
+	/// @param replacer A function that would tell if we need to replace the given block in graphical model.
+	/// If null id is returned the block stays without modification. Otherwise returned type id will be used
+	/// to replace current block with the returned one.
+	/// @param constructor A fucntion that will initialize new element right after its creation.
+	/// The id of the new block, old block and graphical model will be passed there in this exact order.
+	static GraphicalFilter graphicalRecreate(const GraphicalReplacer &replacer
+			, const GraphicalConstructor &constructor);
 };
 
 }
