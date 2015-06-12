@@ -41,7 +41,10 @@ public:
 	kitBase::robotModel::PortInfo defaultLeftWheelPort() const;
 	kitBase::robotModel::PortInfo defaultRightWheelPort() const override;
 
-	engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const;
+	engine::TwoDModelDisplayWidget *displayWidget() const;
+
+private:
+	engine::TwoDModelDisplayWidget *mDisplayWidget;
 };
 
 }

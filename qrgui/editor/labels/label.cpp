@@ -22,28 +22,21 @@
 
 using namespace qReal;
 
-Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
-		, int index, qreal x, qreal y, const QString &text, qreal rotation)
-	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
-	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
-	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
-	, mIndex(index)
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
+		, const Id &elementId
+		, const LabelProperties &properties)
+	: mIsStretched(false)
+	, mParentIsSelected(false)
+	, mWasMoved(false)
+	, mShouldMove(false)
 	, mId(elementId)
 	, mGraphicalModelAssistApi(graphicalAssistApi)
+	, mProperties(properties)
 {
-	setText(text);
-	init();
-}
+	if (properties.isStatic()) {
+		setText(properties.text());
+	}
 
-Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, const Id &elementId
-		, int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation)
-	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
-	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
-	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
-	, mIndex(index)
-	, mId(elementId)
-	, mGraphicalModelAssistApi(graphicalAssistApi)
-{
 	init();
 }
 
@@ -56,11 +49,11 @@ void Label::init()
 	QGraphicsTextItem::setFlags(ItemIsSelectable);
 	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
 
-	setTitleFont();
-	setRotation(mRotation);
-	if (!mBinding.isEmpty()) {
+	reinitFont();
+	setRotation(mProperties.rotation());
+	if (!mProperties.isStatic()) {
 		QList<QPair<QString, QString>> const values = mGraphicalModelAssistApi
-				.editorManagerInterface().enumValues(mId, mBinding);
+				.editorManagerInterface().enumValues(mId, mProperties.binding());
 		for (QPair<QString, QString> const &pair : values) {
 			mEnumValues[pair.first] = pair.second;
 		}
@@ -137,8 +130,8 @@ void Label::scaleCoordinates(const QRectF &contents)
 		return;
 	}
 
-	const qreal x = mPoint.x() * (!mScalingX ? mContents.width() : contents.width());
-	const qreal y = mPoint.y() * (!mScalingX ? mContents.height() : contents.height());
+	const qreal x = mProperties.x() * (!mProperties.scalingX() ? mContents.width() : contents.width());
+	const qreal y = mProperties.y() * (!mProperties.scalingY() ? mContents.height() : contents.height());
 
 	setPos(x, y);
 }
@@ -163,26 +156,36 @@ void Label::setPlainText(const QString &text)
 	QGraphicsTextItem::setPlainText(text);
 }
 
+void Label::setPrefix(const QString &text)
+{
+	mProperties.setPrefix(text);
+}
+
+void Label::setSuffix(const QString &text)
+{
+	mProperties.setSuffix(text);
+}
+
 void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
 	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
-	if (mBinding == "name") {
+	if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
-		parent->setLogicalProperty(mBinding, value, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
 	} else {
 		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)
 				: enumText(value);
-		parent->setLogicalProperty(mBinding, repoValue, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), repoValue, withUndoRedo);
 	}
 
-	mGraphicalModelAssistApi.setLabelPosition(mId, mIndex, pos());
-	mGraphicalModelAssistApi.setLabelSize(mId, mIndex, this->boundingRect().size());
+	mGraphicalModelAssistApi.setLabelPosition(mId, mProperties.index(), pos());
+	mGraphicalModelAssistApi.setLabelSize(mId, mProperties.index(), boundingRect().size());
 }
 
-void Label::setTitleFont()
+void Label::reinitFont()
 {
 	setFont(BrandManager::fonts()->sceneLabelsFont());
 }
@@ -192,12 +195,6 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if (dynamic_cast<EdgeElement *>(parentItem())) {
 		// Passing event to edge because users usially want to edit its property when clicking on it.
 		QGraphicsItem::mousePressEvent(event);
-		return;
-	}
-
-	if (!mShouldMove) {
-		QGraphicsTextItem::mousePressEvent(event);
-		event->ignore();
 		return;
 	}
 
@@ -248,43 +245,43 @@ void Label::init(const QRectF &contents)
 	mContents = contents;
 	mParentContents = contents;
 
-	if (mGraphicalModelAssistApi.hasLabel(mId, mIndex)) {
-		const QPointF currentPos = mGraphicalModelAssistApi.labelPosition(mId, mIndex);
-		mPoint.setX(currentPos.x() / mContents.width());
-		mPoint.setY(currentPos.y() / mContents.height());
+	if (mGraphicalModelAssistApi.hasLabel(mId, mProperties.index())) {
+		const QPointF currentPos = mGraphicalModelAssistApi.labelPosition(mId, mProperties.index());
+		mProperties.setX(currentPos.x() / mContents.width());
+		mProperties.setY(currentPos.y() / mContents.height());
 		setPos(currentPos);
 	} else {
-		const qreal x = mPoint.x() * mContents.width();
-		const qreal y = mPoint.y() * mContents.height();
+		const qreal x = mProperties.x() * mContents.width();
+		const qreal y = mProperties.y() * mContents.height();
 		setPos(x, y);
-		mGraphicalModelAssistApi.createLabel(mId, mIndex, QPointF(x, y), this->boundingRect().size());
+		mGraphicalModelAssistApi.createLabel(mId, mProperties.index(), QPointF(x, y), boundingRect().size());
 	}
 }
 
 void Label::setScaling(bool scalingX, bool scalingY)
 {
-	mScalingX = scalingX;
-	mScalingY = scalingY;
+	mProperties.setScalingX(scalingX);
+	mProperties.setScalingY(scalingY);
 }
 
 void Label::setBackground(const QColor &background)
 {
-	mBackground = background;
+	mProperties.setBackground(background);
 }
 
 bool Label::isHard() const
 {
-	return mIsHard;
+	return mProperties.isHard();
 }
 
 void Label::setHard(bool hard)
 {
-	mIsHard = hard;
+	mProperties.setHard(hard);
 }
 
 bool Label::isReadOnly() const
 {
-	return mReadOnly;
+	return mProperties.isReadOnly();
 }
 
 void Label::focusOutEvent(QFocusEvent *event)
@@ -299,7 +296,7 @@ void Label::focusOutEvent(QFocusEvent *event)
 
 	unsetCursor();
 
-	if (mReadOnly) {
+	if (isReadOnly()) {
 		return;
 	}
 
@@ -349,7 +346,7 @@ void Label::startTextInteraction()
 
 	mOldText = toPlainText();
 
-	setTextInteractionFlags(mReadOnly ? Qt::TextBrowserInteraction : Qt::TextEditorInteraction);
+	setTextInteractionFlags(isReadOnly() ? Qt::TextBrowserInteraction : Qt::TextEditorInteraction);
 	setFocus(Qt::OtherFocusReason);
 
 	// Set full text selection
@@ -361,25 +358,66 @@ void Label::startTextInteraction()
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	QString text = toPlainText();
-
-	if (text.isEmpty() && !mParentIsSelected && !isSelected()) {
+	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected() && dynamic_cast<EdgeElement *>(parentItem())) {
 		return;
 	}
 
 	painter->save();
-	painter->setBrush(QBrush(mBackground));
+	painter->setBrush(mProperties.background());
 
-	if ((mParentIsSelected && toPlainText().isEmpty()) || isSelected()) {
-		painter->setPen(QPen(Qt::DotLine));
-	} else if (!toPlainText().isEmpty()) {
-		painter->setPen(QPen(Qt::transparent));
+	if (isSelected()) {
+		painter->setPen(QPen(Qt::DashLine));
+	} else {
+		painter->setPen(QPen(Qt::lightGray, 1, Qt::DotLine));
 	}
 
-	painter->drawRect(boundingRect());
+	painter->drawRoundedRect(QGraphicsTextItem::boundingRect(), 2, 2);
 	painter->restore();
 
+	painter->save();
+	painter->setFont(font());
+	drawText(painter, prefixRect(), mProperties.prefix());
+	drawText(painter, suffixRect(), mProperties.siffix());
+	painter->restore();
+
+	// Default dashed frame is drawn arround the whole bounding rect (arround prefix and suffix too). Disabling it.
+	const_cast<QStyleOptionGraphicsItem *>(option)->state &= ~QStyle::State_Selected & ~QStyle::State_HasFocus;
 	QGraphicsTextItem::paint(painter, option, widget);
+}
+
+void Label::drawText(QPainter *painter, const QRectF &rect, const QString &text)
+{
+	painter->drawText(rect, Qt::AlignCenter, text);
+}
+
+QRectF Label::prefixRect() const
+{
+	const QRectF thisRect = QGraphicsTextItem::boundingRect();
+	QRectF textRect = this->textRect(mProperties.prefix());
+	const qreal x = thisRect.left() - textRect.width();
+	const qreal y = thisRect.top() + (thisRect.height() - textRect.height()) / 2;
+	textRect.moveTo(x, y);
+	return textRect;
+}
+
+QRectF Label::suffixRect() const
+{
+	const QRectF thisRect = QGraphicsTextItem::boundingRect();
+	QRectF textRect = this->textRect(mProperties.siffix());
+	const qreal x = thisRect.right();
+	const qreal y = thisRect.top() + (thisRect.height() - textRect.height()) / 2;
+	textRect.moveTo(x, y);
+	return textRect;
+}
+
+QRectF Label::textRect(const QString &text) const
+{
+	return QFontMetrics(font()).boundingRect(text).adjusted(-3, 0, 3, 0);
+}
+
+QRectF Label::boundingRect() const
+{
+	return QGraphicsTextItem::boundingRect().united(prefixRect()).united(suffixRect());
 }
 
 void Label::updateRect(QPointF newBottomRightPoint)
@@ -402,7 +440,7 @@ QRectF Label::labelMovingRect() const
 
 QString Label::enumText(const QString &enumValue) const
 {
-	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mBinding)
+	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mProperties.binding())
 			? enumValue
 			: QString();
 }

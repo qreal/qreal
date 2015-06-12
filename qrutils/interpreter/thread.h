@@ -16,6 +16,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QStack>
+#include <QtCore/QQueue>
 #include <QtCore/QSignalMapper>
 
 #include <qrkernel/ids.h>
@@ -45,7 +46,8 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, BlocksTableInterface &blocksTable
-			, const Id &initialNode);
+			, const Id &initialNode
+			, const QString &threadId);
 
 	/// Creates new instance of thread starting from initial node of specified diagram.
 	/// @param graphicalModelApi - graphical model, contains diagram.
@@ -57,19 +59,39 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, const Id &diagramToInterpret
-			, BlocksTableInterface &blocksTable);
+			, BlocksTableInterface &blocksTable
+			, const QString &threadId);
 
 	~Thread() override;
 
 	/// Starts interpretation process starting from the block specified in one of the constructors.
 	void interpret();
 
+	/// Stops interpretation.
+	void stop();
+
+	/// Inserts a message to a message queue.
+	void newMessage(const QString &message);
+
+	/// If there are unprocessed messages, sets message parameter to the oldest and returns true.
+	/// Returns false otherwise.
+	bool getMessage(QString &message);
+
+	/// Returns string id of a thread.
+	QString id() const;
+
 signals:
 	/// Emitted when interpretation process was terminated (correctly or due to errors).
 	void stopped();
 
 	/// Emitted when one of the blocks interpreted by this thread requested new thread.
-	void newThread(const qReal::Id &startBlockId);
+	void newThread(const qReal::Id &startBlockId, const QString &threadId);
+
+	/// Emitted when one of the blocks wants to stop some thread.
+	void killThread(const QString &threadId);
+
+	/// Emitted when one of the blocks wants to send message to another thread.
+	void sendMessage(const QString &threadId, const QString &message);
 
 private slots:
 	void nextBlock(const qReal::Id &blockId);
@@ -100,6 +122,8 @@ private:
 	int mBlocksSincePreviousEventsProcessing;
 	QTimer *mProcessEventsTimer;  // Has ownership
 	QSignalMapper *mProcessEventsMapper;  // Has ownership
+	QString mId;
+	QQueue<QString> mMessages;
 };
 
 }

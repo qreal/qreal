@@ -191,7 +191,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Return robot to the initial position</string>
+         <string/>
         </property>
        </widget>
       </item>

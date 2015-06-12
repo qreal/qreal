@@ -67,4 +67,8 @@ void GesturesWidget::setElements(QList<QPair<QString, qReal::Id> > const &elemen
 		item->setData(Qt::UserRole, QVariant::fromValue(element.second));
 		mUi->listWidget->addItem(item);
 	}
+
+	if (mUi->listWidget->count() > 0) {
+		mUi->listWidget->setCurrentRow(0);
+	}
 }

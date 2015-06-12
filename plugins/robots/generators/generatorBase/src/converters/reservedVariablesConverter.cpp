@@ -48,6 +48,12 @@ QString ReservedVariablesConverter::convert(const QString &variable) const
 		}
 	}
 
+	for (const QString &button : mRobotModel.buttonCodes().keys()) {
+		if (variable == button) {
+			return readTemplate(QString("buttons/%1.t").arg(button));
+		}
+	}
+
 	return variable;
 }
 
@@ -56,7 +62,9 @@ QString ReservedVariablesConverter::deviceExpression(const kitBase::robotModel::
 	const kitBase::robotModel::DeviceInfo device = mDevices[port];
 	if (device.isNull()) {
 		mErrorReporter.addError(QObject::tr("Device on port %1 is not configured."\
-				" Please select it on the left-side panel.").arg(port.userFriendlyName()));
+				" Please select it on the \"Configure devices\" panel on the right-hand side.")
+						.arg(port.userFriendlyName())
+		);
 		return QObject::tr("/* ERROR: SELECT DEVICE TYPE */");
 	}
 

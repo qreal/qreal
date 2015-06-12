@@ -16,7 +16,14 @@
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
 #include <kitBase/eventsForKitPluginInterface.h>
+
+namespace qReal {
+namespace ui {
+class ConsoleDock;
+}
+}
 
 namespace interpreterCore {
 
@@ -40,7 +47,8 @@ public:
 			, QAction &editModeAction
 			, qReal::gui::MainWindowDockInterface &mainWindow
 			, qReal::SystemEvents &systemEvents
-			, kitBase::EventsForKitPluginInterface &kitPluginEvents);
+			, kitBase::EventsForKitPluginInterface &kitPluginEvents
+			, kitBase::robotModel::RobotModelManagerInterface &robotModelManager);
 
 	/// Embeds the given widget into main window`s left dock panel
 	void placeDevicesConfig(QWidget *devicesWidget);
@@ -48,8 +56,12 @@ public:
 	/// Embeds the given widgets into main window`s left dock panel tabifying them together.
 	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
 
+	/// Returns a pointer to widget where robot standard output is displayed.
+	qReal::ui::ConsoleDock &robotConsole();
+
 private slots:
 	void onActiveTabChanged(const qReal::TabInfo &tab);
+	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
 	void switchToEditorMode();
 	void switchToDebuggerMode();
 	void switchToMode(Mode mode);
@@ -57,6 +69,7 @@ private slots:
 
 	void saveDocks() const;
 	void reloadDocks() const;
+	void reloadDocksSavingToolbarsAndErrors() const;
 	void resetMainWindowCorners() const;
 
 private:
@@ -74,6 +87,7 @@ private:
 	qReal::gui::MainWindowDockInterface &mMainWindow;
 	qReal::TabInfo::TabType mCurrentTab = static_cast<qReal::TabInfo::TabType>(-1);
 	Mode mCurrentMode = Mode::Dummy;
+	qReal::ui::ConsoleDock *mRobotConsole;  // Transfers ownership to main window.
 };
 
 }

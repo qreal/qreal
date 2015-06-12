@@ -17,7 +17,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QSpinBox>
 
-#include <qrutils/graphicsUtils/colorListEditor.h>
+#include <qrutils/widgets/colorListEditor.h>
 
 #include "src/engine/items/wallItem.h"
 
@@ -83,12 +83,12 @@ void twoDModel::view::ColorItemPopup::initWidget()
 
 QWidget *ColorItemPopup::initColorPicker()
 {
-	graphicsUtils::ColorListEditor * const editor = new graphicsUtils::ColorListEditor(this, true);
+	qReal::ui::ColorListEditor * const editor = new qReal::ui::ColorListEditor(this, true);
 	editor->setToolTip(tr("Color"));
 	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
 	editor->setColorList(colorList);
 	editor->setFocusPolicy(Qt::NoFocus);
-	connect(editor, &graphicsUtils::ColorListEditor::colorChanged, [=](const QColor &color) {
+	connect(editor, &qReal::ui::ColorListEditor::colorChanged, [=](const QColor &color) {
 		setPropertyMassively("color", color);
 		if (mLastColor != color) {
 			mLastColor = color;

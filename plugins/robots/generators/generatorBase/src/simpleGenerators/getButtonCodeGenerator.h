@@ -14,31 +14,19 @@
 
 #pragma once
 
-#include <trikKit/robotModel/trikRobotModelBase.h>
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-namespace trik {
-namespace robotModel {
+namespace generatorBase {
+namespace simple {
 
-class TrikGeneratorRobotModel : public TrikRobotModelBase
+/// Generates code that gets a code of a pressed button.
+class GetButtonCodeGenerator : public BindingGenerator
 {
-	Q_OBJECT
-
 public:
-	TrikGeneratorRobotModel(const QString &kitId, const QString &robotId
-			, const QString &name, const QString &friendlyName, int priority);
-
-	QString name() const override;
-	QString friendlyName() const override;
-
-	bool needsConnection() const override;
-	bool interpretedModel() const override;
-
-	int priority() const override;
-
-private:
-	const QString mName;
-	const QString mFriendlyName;
-	const int mPriority;
+	GetButtonCodeGenerator(const qrRepo::RepoApi &repo
+			, GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent);
 };
 
 }

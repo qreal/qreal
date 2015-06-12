@@ -18,8 +18,9 @@
 #include <QtWidgets/QGraphicsColorizeEffect>
 
 #include <qrkernel/settingsListener.h>
+#include <qrgui/models/commands/changePropertyCommand.h>
 
-#include "models/commands/changePropertyCommand.h"
+#include "qrgui/editor/labels/label.h"
 
 using namespace qReal;
 

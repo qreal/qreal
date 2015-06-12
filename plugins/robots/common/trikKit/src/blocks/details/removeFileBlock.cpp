@@ -12,20 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "removeFileBlock.h"
 
-#include <QtGui/QPainter>
+using namespace trik::blocks::details;
 
-#include "qrutils/utilsDeclSpec.h"
-
-namespace graphicsUtils {
-
-class QRUTILS_EXPORT PainterInterface
+RemoveFileBlock::RemoveFileBlock(kitBase::robotModel::RobotModelInterface &robotModel)
+	: kitBase::blocksBase::common::DeviceBlock<robotModel::parts::TrikShell>(robotModel)
 {
-public:
-	virtual ~PainterInterface() {}
-	virtual void paint(QPainter *painter) = 0;
-	virtual void clear() = 0;
-};
+}
 
+void RemoveFileBlock::doJob(robotModel::parts::TrikShell &shell)
+{
+	shell.removeFile(stringProperty(id(), "File"));
+	emit done(mNextBlockId);
 }

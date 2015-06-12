@@ -96,6 +96,7 @@ public:
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
 	QStatusBar *statusBar() const override;
+	QList<QToolBar *> toolBars() const override;
 
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
@@ -116,6 +117,7 @@ private:
 	SystemEvents &mEvents;
 	const GraphicalModelAssistInterface *mGraphicalModel;
 	Id mActiveId;
+	QWidget *mWindowWidget;  // Takes ownership
 	QDockWidget *mLogicalModelDock;  // Takes ownership
 	QDockWidget *mGraphicalModelDock;  // Takes ownership
 	QDockWidget *mPropertyEditorDock;  // Takes ownership

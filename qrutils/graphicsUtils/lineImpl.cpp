@@ -14,6 +14,8 @@
 
 #include "lineImpl.h"
 
+#include <qrutils/mathUtils/math.h>
+
 using namespace graphicsUtils;
 
 LineImpl::LineImpl()
@@ -68,7 +70,12 @@ QPainterPath LineImpl::shape(const int drift, qreal x1, qreal y1, qreal x2, qrea
 	ps.setWidth(drift);
 
 	path.moveTo(x1, y1);
-	path.lineTo(x2, y2);
+	if (mathUtils::Math::eq(x1, x2) && mathUtils::Math::eq(y1, y2)) {
+		path.lineTo(x2 + 0.1, y2);
+	} else {
+		path.lineTo(x2, y2);
+	}
+
 	path = ps.createStroke(path);
 
 	return path;

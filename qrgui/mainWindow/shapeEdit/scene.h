@@ -37,7 +37,6 @@
 #include "mainWindow/shapeEdit/path.h"
 #include "mainWindow/shapeEdit/curve.h"
 #include "mainWindow/shapeEdit/image.h"
-#include "editor/label.h"
 
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;

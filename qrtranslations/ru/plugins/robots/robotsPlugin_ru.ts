@@ -4,7 +4,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/robotsPlugin/robotsPlugin.cpp" line="32"/>
+        <location filename="../../../../plugins/robots/interpreters/robotsPlugin/robotsPlugin.cpp" line="46"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>

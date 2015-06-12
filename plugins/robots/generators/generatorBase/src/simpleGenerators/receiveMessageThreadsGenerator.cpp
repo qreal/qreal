@@ -25,7 +25,9 @@ ReceiveMessageThreadsGenerator::ReceiveMessageThreadsGenerator(const qrRepo::Rep
 	: BindingGenerator(repo, customizer, id, "threads/receiveMessage.t"
 			, { Binding::createConverting("@@VARIABLE@@"
 					, "Variable"
-					, customizer.factory()->functionBlockConverter(id, "Variable")) }
+					, customizer.factory()->functionBlockConverter(id, "Variable"))
+				, Binding::createConverting("@@SYNCHRONIZED@@", "Synchronized"
+					, customizer.factory()->boolPropertyConverter(id, "Synchronized", false)) }
 			, parent)
 {
 }

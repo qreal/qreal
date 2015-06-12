@@ -12,27 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "paintWidget.h"
-#include "painterInterface.h"
+#include "receiveThreadMessageBlock.h"
 
-using namespace graphicsUtils;
+#include <qrutils/interpreter/thread.h>
 
-PaintWidget::PaintWidget(QWidget *parent)
-	: QWidget(parent)
+using namespace qReal::interpretation::blocks;
+
+void ReceiveThreadMessageBlock::run()
 {
-}
+	mVariable = stringProperty("Variable");
+	if (mVariable.isEmpty()) {
+		error(tr("Need to specify variable which will contain received message"));
+		return;
+	}
 
-void PaintWidget::paintEvent(QPaintEvent *event)
-{
-	QWidget::paintEvent(event);
-	QPainter painter(this);
+	QString message;
+	if (mThread->getMessage(message)) {
+		receiveMessage(message);
+	}
 
-	for (PainterInterface * const painterIface : mPainters) {
-		painterIface->paint(&painter);
+	if (!boolProperty("Synchronized")) {
+		receiveMessage("\"\"");
 	}
 }
 
-void PaintWidget::appendPainter(PainterInterface *painter)
+void ReceiveThreadMessageBlock::receiveMessage(const QString &message)
 {
-	mPainters << painter;
+	evalCode(mVariable + " = " + message);
+	emit done(mNextBlockId);
 }

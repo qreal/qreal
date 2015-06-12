@@ -289,7 +289,7 @@
 						<image y1="0" name="images/subprogramRobotsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="-30" textBinded="name" hard="true"/>
+						<label x="-20" y="-35" textBinded="name" hard="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -309,10 +309,8 @@
 						<image y1="0" name="images/variableInitBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="60" textBinded="variable" background="white"/>
-						<label x="-60" y="60" text="Variable:"/>
-						<label x="33" y="80" textBinded="value" background="white"/>
-						<label x="-65" y="80" text="Value:"/>
+						<label x="33" y="60" textBinded="variable" background="white" prefix="Variable:"/>
+						<label x="33" y="90" textBinded="value" background="white" prefix="Value:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -323,6 +321,39 @@
 						</property>
 						<property displayedName="Value" type="string" name="value">
 							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+					<container/>
+				</logic>
+			</node>
+			<node displayedName="Random Initialization" name="Randomizer" description="Sets a variable value to a random value inside given interval.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<rectangle x1="5" y1="5" x2="45" y2="45" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="none"/>
+						<rectangle x1="8" y1="38" x2="12" y2="42" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+						<rectangle x1="23" y1="23" x2="27" y2="27" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+						<rectangle x1="38" y1="8" x2="42" y2="12" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+					</picture>
+					<labels>
+						<label x="70" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
+						<label x="20" y="90" textBinded="LowerBound" background="white" prefix="From:"/>
+						<label x="70" y="90" textBinded="UpperBound" background="white" prefix="To:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>x</default>
+						</property>
+						<property displayedName="From" type="string" name="LowerBound">
+							<default>0</default>
+						</property>
+						<property displayedName="To" type="string" name="UpperBound">
+							<default>10</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -373,8 +404,7 @@
 						<image y1="0" name="images/loopBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Iterations" hard="true" background="white"/>
-						<label x="-30" y="-30" text="Iterations:" hard="true"/>
+						<label x="40" y="-35" textBinded="Iterations" hard="true" background="white" prefix="Iterations:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -420,16 +450,38 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Kill Thread" name="KillThread" description="Terminates execution of a specified thread.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<ellipse x1="10" y1="10" x2="40" y2="40" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="none"/>
+						<line x1="17" y1="17" x2="23" y2="23" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+						<line x1="17" y1="23" x2="23" y2="17" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+						<line x1="27" y1="17" x2="33" y2="23" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+						<line x1="27" y1="23" x2="33" y2="17" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+					</picture>
+					<labels>
+						<label x="30" y="60" textBinded="Thread" background="white" prefix="Thread:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property name="Thread" displayedName="Thread" type="string"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Send Message To Thread" name="SendMessageThreads" description="Sends a message to a specified thread.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/sendMessageThreadsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-50" y="60" text="Thread:"/>
-						<label x="30" y="60" textBinded="Thread" background="white"/>
-						<label x="-50" y="90" text="Message:"/>
-						<label x="30" y="90" textBinded="Message" background="white"/>
+						<label x="30" y="60" textBinded="Thread" background="white" prefix="Thread:"/>
+						<label x="30" y="90" textBinded="Message" background="white" prefix="Message:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -450,8 +502,8 @@
 						<image y1="0" name="images/receiveMessageThreadsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-37" y="60" text="Variable:"/>
-						<label x="30" y="60" textBinded="Variable" background="white"/>
+						<label x="30" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
+						<label x="30" y="90" textBinded="Synchronized" background="white" prefix="Synchronized:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -459,6 +511,9 @@
 					<container/>
 					<properties>
 						<property name="Variable" displayedName="Variable" type="string"/>
+						<property name="Synchronized" displayedName="Synchronized" type="bool">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -471,8 +526,7 @@
 						<image y1="0" name="images/functionBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-37" y="60" text="Body:"/>
-						<label x="30" y="60" textBinded="Body" background="white"/>
+						<label x="30" y="60" textBinded="Body" background="white" prefix="Body:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -492,8 +546,7 @@
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="60" textBinded="Condition" background="white"/>
-						<label x="-25" y="60" text="Condition:"/>
+						<label x="40" y="60" textBinded="Condition" background="white" prefix="Condition:" />
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -501,9 +554,25 @@
 					<container/>
 					<properties>
 						<property displayedName="Condition" type="string" name="Condition">
-							<default>0</default>
+							<default>x > 0</default>
 						</property>
 					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="End if" name="FiBlock" description="Unites control flow from different condition branches.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<rectangle fill="#000000" stroke-width="1" fill-style="none" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="solid"/>
+					</picture>
+					<labels/>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties/>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -515,8 +584,7 @@
 						<image y1="0" name="images/switchBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="Expression" background="white"/>
-						<label x="-25" y="60" text="Expression:"/>
+						<label x="50" y="60" textBinded="Expression" background="white" prefix="Expression:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -524,7 +592,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Expression" type="string" name="Expression">
-							<default>0</default>
+							<default>x</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -586,10 +654,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -612,10 +678,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -654,10 +718,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -680,10 +742,8 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -713,10 +773,8 @@
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -733,10 +791,8 @@
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:" />
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%" />
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -753,10 +809,8 @@
 						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="65" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Angle (degrees):"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Angle:" suffix="°"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -781,8 +835,7 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-10" y="-30" text="Ports:" hard="true"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -804,8 +857,7 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-10" y="-30" text="Ports:" hard="true"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -827,8 +879,7 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-10" y="-30" text="Ports:" hard="true"/>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -852,10 +903,8 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-30" text="Volume (%):" hard="true"/>
-						<label x="-60" y="60" text="Wait for Completion:"/>
-						<label x="60" y="-30" textBinded="Volume" hard="true" background="white"/>
-						<label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
+						<label x="60" y="-35" textBinded="Volume" hard="true" background="white" prefix="Volume:" siffix="%"/>
+						<label x="70" y="60" textBinded="WaitForCompletion" background="white" prefix="Wait for Completion:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -880,14 +929,10 @@
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-30" text="Frequency (Hz):" hard="true"/>
-						<label x="-35" y="60" text="Volume (%):"/>
-						<label x="-68" y="80" text="Duration (ms):"/>
-						<label x="-68" y="100" text="Wait for Completion:"/>
-						<label x="50" y="-30" textBinded="Frequency" hard="true" background="white"/>
-						<label x="60" y="60" textBinded="Volume" background="white"/>
-						<label x="60" y="80" textBinded="Duration" background="white"/>
-						<label x="60" y="100" textBinded="WaitForCompletion" background="white"/>
+						<label x="50" y="-35" textBinded="Frequency" hard="true" background="white" prefix="Frequency:" suffix="Hz"/>
+						<label x="60" y="60" textBinded="Volume" background="white" prefix="Volume:" suffix="%"/>
+						<label x="60" y="90" textBinded="Duration" background="white" prefix="Duration" suffix="ms"/>
+						<label x="60" y="120" textBinded="WaitForCompletion" background="white" prefix="Wait for Completion:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -918,8 +963,7 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-60" y="60" text="Wait for Completion:"/>
-						<label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
+						<label x="70" y="60" textBinded="WaitForCompletion" background="white" prefix="Wait for Completion:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -941,14 +985,10 @@
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-30" text="Frequency (Hz):" hard="true"/>
-						<label x="-35" y="60" text="Volume (%):"/>
-						<label x="-68" y="80" text="Duration (ms):"/>
-						<label x="-68" y="100" text="Wait for Completion:"/>
-						<label x="50" y="-30" textBinded="Frequency" hard="true" background="white"/>
-						<label x="60" y="60" textBinded="Volume" background="white"/>
-						<label x="60" y="80" textBinded="Duration" background="white"/>
-						<label x="60" y="100" textBinded="WaitForCompletion" background="white"/>
+						<label x="50" y="-35" textBinded="Frequency" hard="true" background="white" prefix="Frequency:" suffix="Hz"/>
+						<label x="60" y="60" textBinded="Volume" background="white" prefix="Volume:" suffix="%"/>
+						<label x="60" y="90" textBinded="Duration" background="white" prefix="Duration" suffix="ms"/>
+						<label x="60" y="120" textBinded="WaitForCompletion" background="white" prefix="Wait for Completion:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -979,8 +1019,7 @@
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-30" text="File name:" />
-						<label x="50" y="-30" textBinded="FileName" background="white"/>
+						<label x="50" y="-35" textBinded="FileName" background="white" prefix="File name:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1002,8 +1041,7 @@
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-10" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1025,8 +1063,7 @@
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-10" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1048,16 +1085,65 @@
 						<image y1="0" name="images/systemBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Command:" hard="true"/>
-						<label x="55" y="-30" textBinded="Command" hard="true" background="white"/>
+						<label x="40" y="60" textBinded="Command" background="white" prefix="Command:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Command" type="string" name="Command" />
+						<property displayedName="Command" type="string" name="Command">
+							<default>'echo ' .. '123'</default>
+						</property>
 						<property displayedName="Code" type="bool" name="Code">
 							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Write To File" name="TrikWriteToFile" description="Writes a given message to a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/writeToFileBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
+						<label x="33" y="90" textBinded="Text" background="white" prefix="Text:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="File" type="string" name="File">
+							<default>output.txt</default>
+						</property>
+						<property displayedName="Text" type="string" name="Text"/>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Remove File" name="TrikRemoveFile" description="Removes a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<rectangle fill="#000000" stroke-width="1" fill-style="none" y1="10" y2="40" x1="10" stroke="#000000" x2="40" stroke-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="5" stroke-width="0" x1="5" y2="45" fill-style="none" x2="45"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="45" stroke-width="0" x1="5" y2="5" fill-style="none" x2="45"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="File" type="string" name="File">
+							<default>output.txt</default>
 						</property>
 					</properties>
 					<container/>
@@ -1072,9 +1158,8 @@
 						<image y1="0" name="images/initCameraBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Mode" hard="true" background="white"/>
-						<label x="65" y="-30" textBinded="Mode" hard="true" background="white"/>
-						<label x="-15" y="60" text="Initialize Videocamera" background="white"/>
+						<label x="40" y="-35" textBinded="Mode" hard="true" background="white" prefix="Mode:"/>
+						<label x="-25" y="60" text="Initialize Videocamera" background="white"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1095,9 +1180,8 @@
 						<image y1="0" name="images/detectBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Mode" hard="true" background="white"/>
-						<label x="65" y="-30" textBinded="Mode" hard="true" background="white"/>
-						<label x="-15" y="60" text="Detect by Videocamera" background="white"/>
+						<label x="40" y="-35" textBinded="Mode" hard="true" background="white" prefix="Mode:"/>
+						<label x="-25" y="60" text="Detect by Videocamera" background="white"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1119,14 +1203,15 @@
 					</picture>
 					<labels>
 						<label x="-15" y="60" text="Line Detector into Variable" background="white"/>
-						<label x="-15" y="80" text="Variable:"/>
-						<label x="85" y="80" textBinded="Variable" background="white"/>
+						<label x="40" y="90" textBinded="Variable" background="white" prefix="Variable:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Variable" type="string" name="Variable" />
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>err</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -1139,8 +1224,7 @@
 						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Color:" hard="true"/>
-						<label x="35" y="-30" textBinded="Color" hard="true" background="white"/>
+						<label x="35" y="-35" textBinded="Color" hard="true" background="white" prefix="Color:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1177,8 +1261,7 @@
 						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1195,10 +1278,8 @@
 						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="37" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="37" y="60" textBinded="Color"/>
-						<label x="0" y="60" text="Color:"/>
+						<label x="37" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="37" y="60" textBinded="Color" prefix="Color:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1220,12 +1301,9 @@
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="45" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Percents:"/>
-						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Percents" prefix="Percents:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1250,12 +1328,9 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="50" y="60" textBinded="Distance" background="white"/>
-						<label x="-60" y="60" text="Distance (cm):"/>
-						<label x="55" y="80" textBinded="Sign" background="white"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="50" y="60" textBinded="Distance" background="white" prefix="Distance:" suffix="cm"/>
+						<label x="55" y="90" textBinded="Sign" background="white" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1280,8 +1355,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="60" textBinded="Button"/>
-						<label x="-20" y="60" text="Button:"/>
+						<label x="40" y="60" textBinded="Button" prefix="Button:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1318,8 +1392,7 @@
 						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1336,12 +1409,9 @@
 						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="45" y="60" textBinded="Volume" background="white"/>
-						<label x="-30" y="60" text="Volume:"/>
-						<label x="50" y="80" textBinded="Sign" background="white"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="50" y="60" textBinded="Volume" background="white" prefix="Volume:"/>
+						<label x="50" y="90" textBinded="Sign" background="white" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1366,12 +1436,9 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="50" y="60" textBinded="Distance" background="white"/>
-						<label x="-60" y="60" text="Distance (cm):"/>
-						<label x="55" y="80" textBinded="Sign" background="white"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="50" y="60" textBinded="Distance" background="white" prefix="Distance:" suffix="cm"/>
+						<label x="50" y="90" textBinded="Sign" background="white" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1396,12 +1463,9 @@
 						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="55" y="60" textBinded="Intensity" background="white"/>
-						<label x="-55" y="60" text="Intensity:"/>
-						<label x="55" y="80" textBinded="Sign" background="white"/>
-						<label x="-85" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Intensity" background="white" prefix="Intensity:"/>
+						<label x="55" y="90" textBinded="Sign" background="white" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1426,10 +1490,8 @@
 						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="37" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="37" y="60" textBinded="Color"/>
-						<label x="0" y="60" text="Color:"/>
+						<label x="37" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="37" y="60" textBinded="Color" prefix="Color:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1451,12 +1513,9 @@
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="45" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Percents:"/>
-						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Percents" prefix="Percents:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1481,12 +1540,9 @@
 						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="40" y="60" textBinded="TachoLimit"/>
-						<label x="-90" y="60" text="Tacho Limit:"/>
-						<label x="60" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
+						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1512,8 +1568,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="60" textBinded="Button"/>
-						<label x="-20" y="60" text="Button:"/>
+						<label x="40" y="60" textBinded="Button" prefix="Button:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1572,12 +1627,9 @@
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="45" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Percents:"/>
-						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Percents" prefix="Percents:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1602,12 +1654,9 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="50" y="60" textBinded="Distance"/>
-						<label x="-60" y="60" text="Distance:"/>
-						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Distance" prefix="Distance:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1632,12 +1681,9 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="50" y="60" textBinded="Distance"/>
-						<label x="-60" y="60" text="Distance:"/>
-						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Distance" prefix="Distance:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1662,10 +1708,8 @@
 						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="35" y="60" textBinded="Degrees"/>
-						<label x="-56" y="60" text="Degrees/sec:"/>
-						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="55" y="60" textBinded="Degrees" prefix="Degrees/sec:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1690,12 +1734,9 @@
 						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="Acceleration"/>
-						<label x="-26" y="60" text="Acceleration:"/>
-						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-100" y="80" text="Sign:"/>
-						<label x="50" y="100" textBinded="AccelerationAxis"/>
-						<label x="-80" y="100" text="Acceleration Axis:"/>
+						<label x="50" y="60" textBinded="Acceleration" prefix="Acceleration:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="50" y="120" textBinded="AccelerationAxis" prefix="Axis:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1723,8 +1764,7 @@
 						<image y1="0" name="images/waitForMotionBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" text="F1" hard="true" background="white"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="40" y="-35" text="F1" hard="true" background="white" prefix="Port:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1741,12 +1781,9 @@
 						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-30" textBinded="Port" hard="true"/>
-						<label x="0" y="-30" text="Port:" hard="true"/>
-						<label x="40" y="60" textBinded="TachoLimit"/>
-						<label x="-90" y="60" text="Tacho Limit:"/>
-						<label x="60" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
+						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1772,8 +1809,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="60" textBinded="Button"/>
-						<label x="-20" y="60" text="Button:"/>
+						<label x="40" y="60" textBinded="Button" prefix="Button:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1795,9 +1831,8 @@
 						<image y1="0" name="images/trikWaitGamepadButtonBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-30" y="60" text="Wait gamepad button" background="white"/>
-						<label x="50" y="-30" textBinded="Button" hard="true"/>
-						<label x="0" y="-30" text="Button:" hard="true"/>
+						<label x="-35" y="60" text="Wait gamepad button" background="white"/>
+						<label x="50" y="-35" textBinded="Button" hard="true" prefix="Button:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1820,8 +1855,7 @@
 					</picture>
 					<labels>
 						<label x="-20" y="60" text="Wait pad press" background="white"/>
-						<label x="50" y="-30" textBinded="Pad" hard="true"/>
-						<label x="0" y="-30" text="Pad:" hard="true"/>
+						<label x="50" y="-35" textBinded="Pad" hard="true" prefix="Pad:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1843,11 +1877,9 @@
 						<image y1="0" name="images/trikWaitGamepadWheelBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-70" y="-30" text="Wait for Gamepad Wheel" hard="true"/>
-						<label x="50" y="60" textBinded="Angle"/>
-						<label x="-30" y="60" text="Angle:"/>
-						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Sign:"/>
+						<label x="-70" y="-35" text="Wait for Gamepad Wheel" hard="true"/>
+						<label x="55" y="60" textBinded="Angle" prefix="Angle:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1872,7 +1904,7 @@
 						<image y1="0" name="images/trikWaitGamepadDisconnectBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-70" y="-30" text="Wait for Gamepad Disconnect" hard="true"/>
+						<label x="-70" y="-35" text="Wait for Gamepad Disconnect" hard="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1890,7 +1922,7 @@
 						<image y1="0" name="images/trikWaitGamepadConnectBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-70" y="-30" text="Wait for Gamepad Connect" hard="true"/>
+						<label x="-70" y="-35" text="Wait for Gamepad Connect" hard="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1910,8 +1942,7 @@
 						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="65" y="-30" textBinded="Delay" hard="true"/>
-						<label x="-30" y="-30" text="Delay (ms):" hard="true"/>
+						<label x="30" y="-35" textBinded="Delay" hard="true" prefix="Delay:" suffix="ms"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1920,6 +1951,30 @@
 					<properties>
 						<property displayedName="Delay (ms)" type="string" name="Delay">
 							<default>1000</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Get Button Code" name="GetButtonCode" description="Assigns a given variable a value of pressed button. If no button is pressed at the moment and 'Wait' property is false when variable is set to -1.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+					</picture>
+					<labels>
+						<label x="30" y="60" textBinded="Variable" hard="true" prefix="Variable:"/>
+						<label x="30" y="90" textBinded="Wait" hard="true" prefix="Wait:"/>
+					</labels>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>x</default>
+						</property>
+						<property displayedName="Wait" type="bool" name="Wait">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1950,12 +2005,9 @@
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateText"/>
-						<label x="0" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateText"/>
-						<label x="0" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="PrintText"/>
-						<label x="0" y="100" text="Text: "/>
+						<label x="50" y="60" textBinded="XCoordinateText" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateText" prefix="Y:"/>
+						<label x="50" y="120" textBinded="PrintText" prefix="Text:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1983,8 +2035,7 @@
 						<image name="images/markerDownBlock.svg" x1="0" x2="50" y1="0" y2="50" />
 					</picture>
 					<labels>
-						<label x="27" y="-30" textBinded="Color" hard="true"/>
-						<label x="-10" y="-30" text="Color:" hard="true"/>
+						<label x="27" y="-35" textBinded="Color" hard="true" prefix="Color:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2022,10 +2073,8 @@
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="XCoordinatePix"/>
-						<label x="0" y="60" text="X: "/>
-						<label x="36" y="80" textBinded="YCoordinatePix"/>
-						<label x="0" y="80" text="Y: "/>
+						<label x="36" y="60" textBinded="XCoordinatePix" prefix="X:"/>
+						<label x="36" y="90" textBinded="YCoordinatePix" prefix="Y:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2050,14 +2099,10 @@
 						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="X1CoordinateLine"/>
-						<label x="0" y="60" text="X1: "/>
-						<label x="36" y="80" textBinded="Y1CoordinateLine"/>
-						<label x="0" y="80" text="Y1: "/>
-						<label x="36" y="100" textBinded="X2CoordinateLine"/>
-						<label x="0" y="100" text="X2: "/>
-						<label x="36" y="120" textBinded="Y2CoordinateLine"/>
-						<label x="0" y="120" text="Y2: "/>
+						<label x="36" y="60" textBinded="X1CoordinateLine" prefix="X1:"/>
+						<label x="36" y="90" textBinded="Y1CoordinateLine" prefix="Y1:"/>
+						<label x="36" y="120" textBinded="X2CoordinateLine" prefix="X2:"/>
+						<label x="36" y="150" textBinded="Y2CoordinateLine" prefix="Y2:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2088,14 +2133,10 @@
 						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateRect"/>
-						<label x="-10" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateRect"/>
-						<label x="-10" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="WidthRect"/>
-						<label x="-10" y="100" text="Width: "/>
-						<label x="50" y="120" textBinded="HeightRect"/>
-						<label x="-10" y="120" text="Height: "/>
+						<label x="50" y="60" textBinded="XCoordinateRect" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateRect" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthRect" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightRect" prefix="Height:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2126,12 +2167,9 @@
 						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateCircle"/>
-						<label x="0" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateCircle"/>
-						<label x="0" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="CircleRadius"/>
-						<label x="0" y="100" text="Radius: "/>
+						<label x="50" y="60" textBinded="XCoordinateCircle" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateCircle" prefix="Y:"/>
+						<label x="50" y="120" textBinded="CircleRadius" prefix="Radius:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2161,10 +2199,8 @@
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="XCoordinatePix"/>
-						<label x="0" y="60" text="X: "/>
-						<label x="36" y="80" textBinded="YCoordinatePix"/>
-						<label x="0" y="80" text="Y: "/>
+						<label x="36" y="60" textBinded="XCoordinatePix" prefix="X:"/>
+						<label x="36" y="90" textBinded="YCoordinatePix" prefix="Y:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2189,14 +2225,10 @@
 					<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
 				</picture>
 				<labels>
-					<label x="36" y="60" textBinded="X1CoordinateLine"/>
-					<label x="0" y="60" text="X1: "/>
-					<label x="36" y="80" textBinded="Y1CoordinateLine"/>
-					<label x="0" y="80" text="Y1: "/>
-					<label x="36" y="100" textBinded="X2CoordinateLine"/>
-					<label x="0" y="100" text="X2: "/>
-					<label x="36" y="120" textBinded="Y2CoordinateLine"/>
-					<label x="0" y="120" text="Y2: "/>
+					<label x="36" y="60" textBinded="X1CoordinateLine" prefix="X1:"/>
+					<label x="36" y="90" textBinded="Y1CoordinateLine" prefix="Y1:"/>
+					<label x="36" y="120" textBinded="X2CoordinateLine" prefix="X2:"/>
+					<label x="36" y="150" textBinded="Y2CoordinateLine" prefix="Y2:"/>
 				</labels>
 				<nonResizeable/>
 			</graphics>
@@ -2227,16 +2259,11 @@
 					<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateRect"/>
-						<label x="-20" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateRect"/>
-						<label x="-20" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="WidthRect"/>
-						<label x="-20" y="100" text="Width: "/>
-						<label x="50" y="120" textBinded="HeightRect"/>
-						<label x="-20" y="120" text="Height: "/>
-						<label x="50" y="140" textBinded="Filled"/>
-						<label x="-20" y="140" text="Filled: "/>
+						<label x="50" y="60" textBinded="XCoordinateRect" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateRect" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthRect" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightRect" prefix="Height:"/>
+						<label x="50" y="180" textBinded="Filled" prefix="Filled:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2270,14 +2297,10 @@
 						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateCircle"/>
-						<label x="-20" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateCircle"/>
-						<label x="-20" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="CircleRadius"/>
-						<label x="-20" y="100" text="Radius: "/>
-						<label x="50" y="120" textBinded="Filled"/>
-						<label x="-20" y="120" text="Filled: "/>
+						<label x="50" y="60" textBinded="XCoordinateCircle" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateCircle" prefix="Y:"/>
+						<label x="50" y="120" textBinded="CircleRadius" prefix="Radius:"/>
+						<label x="50" y="150" textBinded="Filled" prefix="Filled:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2310,8 +2333,7 @@
 						<image y1="0" name="images/brushColorBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Color:" hard="true"/>
-						<label x="35" y="-30" textBinded="Color" hard="true"/>
+						<label x="-15" y="-35" text="Color:" hard="true" prefix="Color:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2333,8 +2355,7 @@
 						<image y1="0" name="images/brushWidthBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Width:" hard="true"/>
-						<label x="50" y="-30" textBinded="Width" hard="true"/>
+						<label x="50" y="-35" textBinded="Width" hard="true" prefix="Width:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2356,10 +2377,8 @@
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="XCoordinatePix"/>
-						<label x="0" y="60" text="X: "/>
-						<label x="36" y="80" textBinded="YCoordinatePix"/>
-						<label x="0" y="80" text="Y: "/>
+						<label x="36" y="60" textBinded="XCoordinatePix" prefix="X:"/>
+						<label x="36" y="90" textBinded="YCoordinatePix" prefix="Y:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2384,14 +2403,10 @@
 						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="X1CoordinateLine"/>
-						<label x="0" y="60" text="X1: "/>
-						<label x="36" y="80" textBinded="Y1CoordinateLine"/>
-						<label x="0" y="80" text="Y1: "/>
-						<label x="36" y="100" textBinded="X2CoordinateLine"/>
-						<label x="0" y="100" text="X2: "/>
-						<label x="36" y="120" textBinded="Y2CoordinateLine"/>
-						<label x="0" y="120" text="Y2: "/>
+						<label x="36" y="60" textBinded="X1CoordinateLine" prefix="X1:"/>
+						<label x="36" y="90" textBinded="Y1CoordinateLine" prefix="Y1:"/>
+						<label x="36" y="120" textBinded="X2CoordinateLine" prefix="X2:"/>
+						<label x="36" y="150" textBinded="Y2CoordinateLine" prefix="Y2:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2422,14 +2437,10 @@
 						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateRect"/>
-						<label x="-10" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateRect"/>
-						<label x="-10" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="WidthRect"/>
-						<label x="-10" y="100" text="Width: "/>
-						<label x="50" y="120" textBinded="HeightRect"/>
-						<label x="-10" y="120" text="Height: "/>
+						<label x="50" y="60" textBinded="XCoordinateRect" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateRect" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthRect" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightRect" prefix="Height:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2460,14 +2471,10 @@
 						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateEllipse"/>
-						<label x="-10" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateEllipse"/>
-						<label x="-10" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="WidthEllipse"/>
-						<label x="-10" y="100" text="Width: "/>
-						<label x="50" y="120" textBinded="HeightEllipse"/>
-						<label x="-10" y="120" text="Height: "/>
+						<label x="50" y="60" textBinded="XCoordinateEllipse" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateEllipse" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthEllipse" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightEllipse" prefix="Height:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2498,18 +2505,12 @@
 						<image y1="0" name="images/drawArcBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="XCoordinateArc"/>
-						<label x="-10" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateArc"/>
-						<label x="-10" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="WidthArc"/>
-						<label x="-10" y="100" text="Width: "/>
-						<label x="50" y="120" textBinded="HeightArc"/>
-						<label x="-10" y="120" text="Height: "/>
-						<label x="100" y="140" textBinded="StartAngle"/>
-						<label x="-10" y="140" text="StartAngle: "/>
-						<label x="90" y="160" textBinded="SpanAngle"/>
-						<label x="-10" y="160" text="SpanAngle: "/>
+						<label x="50" y="60" textBinded="XCoordinateArc" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateArc" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthArc" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightArc" prefix="Height:"/>
+						<label x="50" y="180" textBinded="StartAngle" prefix="Start Angle:"/>
+						<label x="50" y="210" textBinded="SpanAngle" prefix="Span Angle:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2574,8 +2575,7 @@
 						<image y1="0" name="images/setBackgroundBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Color:" hard="true"/>
-						<label x="35" y="-30" textBinded="Color" hard="true"/>
+						<label x="35" y="-35" textBinded="Color" hard="true" prefix="Color:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2597,8 +2597,7 @@
 						<image y1="0" name="images/sayBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Text:" hard="true"/>
-						<label x="35" y="-30" textBinded="Text" hard="true"/>
+						<label x="35" y="-35" textBinded="Text" hard="true" prefix="Text:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2620,10 +2619,8 @@
 						<image y1="0" name="images/sendMessageBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-40" y="60" text="Message:" hard="false"/>
-						<label x="45" y="60" textBinded="Message" hard="false"/>
-						<label x="-40" y="80" text="Hull number:" hard="false"/>
-						<label x="45" y="80" textBinded="HullNumber" hard="false"/>
+						<label x="45" y="60" textBinded="Message" hard="false" prefix="Message:"/>
+						<label x="45" y="90" textBinded="HullNumber" hard="false" prefix="Hull number:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2638,20 +2635,23 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Message" name="TrikWaitForMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
+			<node displayedName="Wait for Message" name="TrikWaitForMessage" description="Stores a message from another robot into a given variable. When no incoming messages are present at the moment, a robot will wait for incoming message if 'Synchronized' property is true, and empty string will be assigned to a variable otherwise.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-40" y="60" text="Variable:" hard="false"/>
-						<label x="50" y="60" textBinded="Variable" hard="false"/>
+						<label x="50" y="60" textBinded="Variable" hard="false" prefix="Variable:"/>
+						<label x="50" y="90" textBinded="Synchronized" hard="false" prefix="Synchronized:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<properties>
 						<property displayedName="Variable" type="string" name="Variable" />
+						<property displayedName="Synchronized" type="bool" name="Synchronized">
+							<default>true</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>
@@ -2667,12 +2667,15 @@
 				<element name="FinalNode"/>
 				<element name="Function"/>
 				<element name="IfBlock"/>
+				<element name="FiBlock"/>
 				<element name="SwitchBlock"/>
 				<element name="Loop"/>
 				<element name="Subprogram"/>
 				<element name="Fork"/>
 				<element name="Join"/>
+				<element name="KillThread"/>
 				<element name="VariableInit"/>
+				<element name="Randomizer"/>
 				<element name="CommentBlock"/>
 			</group>
 			<group name="Actions">
@@ -2701,6 +2704,8 @@
 				<element name="TrikDetectorToVariable" />
 				<element name="TrikSendMessage" />
 				<element name="SendMessageThreads"/>
+				<element name="TrikWriteToFile"/>
+				<element name="TrikRemoveFile"/>
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>
@@ -2730,6 +2735,7 @@
 				<element name="TrikWaitGamepadDisconnect" />
 				<element name="TrikWaitGamepadConnect" />
 				<element name="ReceiveMessageThreads"/>
+				<element name="GetButtonCode"/>
 			</group>
 			<group name="Drawing">
 				<element name="NxtDrawRect"/>
