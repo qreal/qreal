@@ -275,7 +275,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Comment" type="string" name="Comment">
-							<default>\"Enter some text here...\"</default>
+							<default>Enter some text here...</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1894,7 +1894,7 @@
 						</property>
 					</properties>
 					<generalizations>
-						<parent parentName="TrikAnalogSensorBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -2725,7 +2725,7 @@
 				<element name="TrikWaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>
-				<element name="TrikWaitForMotion"/>
+				<!-- <element name="TrikWaitForMotion"/> -->
 				<element name="TrikWaitForEncoder"/>
 				<element name="TrikWaitForButton"/>
 				<element name="TrikWaitForMessage" />
