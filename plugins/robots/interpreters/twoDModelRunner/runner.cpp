@@ -75,7 +75,8 @@ void Runner::interpret(const QString &saveFile, bool background)
 		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
 		for (model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
-			connect(robotModel, &model::RobotModel::robotRided, this, &Runner::onRobotRided, Qt::UniqueConnection);
+			connect(robotModel, &model::RobotModel::positionRecalculated
+					, this, &Runner::onRobotRided, Qt::UniqueConnection);
 		}
 	}
 
