@@ -11,8 +11,8 @@
         <file>icons/2d_pencil.png</file>
         <file>icons/2d_stop.png</file>
         <file>icons/2d_run.png</file>
-        <file>icons/robots_stop.png</file>
-        <file>icons/robots_run.png</file>
+        <file>icons/robots_stop.svg</file>
+        <file>icons/robots_run.svg</file>
         <file>icons/robots_connect.svg</file>
         <file>icons/robots_settings.png</file>
         <file>icons/2d_wall.png</file>
