@@ -49,28 +49,21 @@ public:
 	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
 			, const modelsImplementation::ModelIndexesInterface &graphicalModel);
 
-	virtual ~GraphicalPartModel();
+	~GraphicalPartModel() override;
 
-	// Override.
-	virtual QVariant data(const QModelIndex &index, int role) const;
+	QVariant data(const QModelIndex &index, int role) const override;
 
-	// Override.
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
-	// Override.
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-	// Override.
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-	// Override.
-	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
-	// Override.
-	virtual QModelIndex parent(const QModelIndex &index) const;
+	QModelIndex parent(const QModelIndex &index) const override;
 
-	// Override.
-	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
 	/// Adds new graphical part to model and repository.
 	/// @param element - id of an element to which a part shall be added. It shall already exist in repository,

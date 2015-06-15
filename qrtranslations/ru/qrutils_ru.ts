@@ -373,27 +373,27 @@
 <context>
     <name>qReal::ui::SearchLineEdit</name>
     <message>
-        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="17"/>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="31"/>
         <source>Clear text</source>
         <translation>Очистить текст</translation>
     </message>
     <message>
-        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="18"/>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="32"/>
         <source>Case insensitive</source>
         <translation>Не учитывать регистр</translation>
     </message>
     <message>
-        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="19"/>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="33"/>
         <source>Case sensitive</source>
         <translation>Учитывать регистр</translation>
     </message>
     <message>
-        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="20"/>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="34"/>
         <source>Regular expression</source>
         <translation>Регулярное выражение</translation>
     </message>
     <message>
-        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="29"/>
+        <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="43"/>
         <source>Enter search text...</source>
         <translation>Введите текст поиска...</translation>
     </message>
@@ -442,32 +442,32 @@
 <context>
     <name>utils::sensorsGraph::SensorsGraph</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="137"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="136"/>
         <source>Stop tracking</source>
         <translation>Остановить слежение</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="141"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="140"/>
         <source>Start tracking</source>
         <translation>Начать слежение</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="145"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="144"/>
         <source>Reset plot</source>
         <translation>Очистить график</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="149"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="148"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="153"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="152"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="157"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="156"/>
         <source>Export values...</source>
         <translation>Экспорт значений...</translation>
     </message>

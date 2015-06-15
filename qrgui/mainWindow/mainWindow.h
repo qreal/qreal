@@ -236,10 +236,11 @@ private slots:
 	void showHelp();
 
 	void fullscreen();
+	void hideBottomDocks();
+
 	void openRecentProjectsMenu();
 
 	void saveDiagramAsAPicture();
-
 	void print();
 	void makeSvg();
 	void showGrid(bool isChecked);

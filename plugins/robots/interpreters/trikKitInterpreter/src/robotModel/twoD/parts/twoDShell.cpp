@@ -51,3 +51,8 @@ void Shell::removeFile(const QString &filePath)
 	QFile out(filePath);
 	out.remove();
 }
+
+void Shell::print(const QString &text)
+{
+	emit textPrinted(text);
+}

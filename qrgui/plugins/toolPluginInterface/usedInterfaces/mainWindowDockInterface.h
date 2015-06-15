@@ -27,6 +27,9 @@ class MainWindowDockInterface
 public:
 	virtual ~MainWindowDockInterface() {}
 
+	/// Returns a widget of main window for such operation as appending actions to it and so on.
+	virtual QWidget *windowWidget() = 0;
+
 	/// Returns the pointer to main window`s logical model explorer dock.
 	virtual QDockWidget *logicalModelDock() const = 0;
 
