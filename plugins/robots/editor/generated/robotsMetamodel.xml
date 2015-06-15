@@ -275,7 +275,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Comment" type="string" name="Comment">
-							<default>\"Enter some text here...\"</default>
+							<default>Enter some text here...</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -332,10 +332,7 @@
 			<node displayedName="Random Initialization" name="Randomizer" description="Sets a variable value to a random value inside given interval.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<rectangle x1="5" y1="5" x2="45" y2="45" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="none"/>
-						<rectangle x1="8" y1="38" x2="12" y2="42" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
-						<rectangle x1="23" y1="23" x2="27" y2="27" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
-						<rectangle x1="38" y1="8" x2="42" y2="12" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+						<image y1="0" name="images/randomizerBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="70" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
@@ -453,15 +450,10 @@
 			<node displayedName="Kill Thread" name="KillThread" description="Terminates execution of a specified thread.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<ellipse x1="10" y1="10" x2="40" y2="40" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="none"/>
-						<line x1="17" y1="17" x2="23" y2="23" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
-						<line x1="17" y1="23" x2="23" y2="17" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
-						<line x1="27" y1="17" x2="33" y2="23" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
-						<line x1="27" y1="23" x2="33" y2="17" fill="#000000" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+						<image y1="0" name="images/killThreadBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-50" y="60" text="Thread:"/>
-						<label x="30" y="60" textBinded="Thread" background="white"/>
+						<label x="30" y="60" textBinded="Thread" background="white" prefix="Thread:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -566,7 +558,7 @@
 			<node displayedName="End if" name="FiBlock" description="Unites control flow from different condition branches.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<rectangle fill="#000000" stroke-width="1" fill-style="none" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="solid"/>
+						<image y1="0" name="images/endIfBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels/>
 					<nonResizeable/>
@@ -1132,9 +1124,7 @@
 			<node displayedName="Remove File" name="TrikRemoveFile" description="Removes a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<rectangle fill="#000000" stroke-width="1" fill-style="none" y1="10" y2="40" x1="10" stroke="#000000" x2="40" stroke-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="5" stroke-width="0" x1="5" y2="45" fill-style="none" x2="45"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="45" stroke-width="0" x1="5" y2="5" fill-style="none" x2="45"/>
+						<image y1="0" name="images/removeFileBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
@@ -1895,7 +1885,7 @@
 						</property>
 					</properties>
 					<generalizations>
-						<parent parentName="TrikAnalogSensorBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -1962,6 +1952,7 @@
 			<node displayedName="Get Button Code" name="GetButtonCode" description="Assigns a given variable a value of pressed button. If no button is pressed at the moment and 'Wait' property is false when variable is set to -1.">
 				<graphics>
 					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/getButtonCodeBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="30" y="60" textBinded="Variable" hard="true" prefix="Variable:"/>
@@ -2283,7 +2274,7 @@
 			<node displayedName="Draw Rectangle" name="Ev3DrawRect" description="Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-					<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateRect" prefix="X:"/>
@@ -2776,7 +2767,7 @@
 				<element name="TrikWaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>
-				<element name="TrikWaitForMotion"/>
+				<!-- <element name="TrikWaitForMotion"/> -->
 				<element name="TrikWaitForEncoder"/>
 				<element name="TrikWaitForButton"/>
 				<element name="TrikWaitForMessage" />

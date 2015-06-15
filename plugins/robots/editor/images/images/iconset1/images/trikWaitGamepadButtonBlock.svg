@@ -10,8 +10,8 @@ viewBox="0 0 15000 15000"
     .str0 {stroke:black;stroke-width:10}
     .str1 {stroke:#FF002F;stroke-width:165.1}
     .fil45 {fill:none}
-    .fil57 {fill:#1A1A1A}
-    .fil58 {fill:#BDBFC1}
+    .fil55 {fill:#1A1A1A}
+    .fil56 {fill:#BDBFC1}
     .fil0 {fill:#CE7F22}
     .fil2 {fill:#CF7F22}
     .fil3 {fill:#CF8022}
@@ -56,20 +56,18 @@ viewBox="0 0 15000 15000"
     .fil42 {fill:#F09222}
     .fil43 {fill:#F19222}
     .fil44 {fill:#F29322}
-    .fil60 {fill:#FF002F}
-    .fil56 {fill:white}
+    .fil58 {fill:#FF002F}
     .fil1 {fill:black;fill-opacity:0.000000}
-    .fil51 {fill:url(#id2)}
-    .fil54 {fill:url(#id3)}
-    .fil59 {fill:url(#id4)}
-    .fil55 {fill:url(#id5)}
-    .fil46 {fill:url(#id6)}
-    .fil52 {fill:url(#id7);fill-rule:nonzero}
-    .fil49 {fill:url(#id8);fill-rule:nonzero}
-    .fil48 {fill:url(#id9);fill-rule:nonzero}
-    .fil47 {fill:url(#id10);fill-rule:nonzero}
-    .fil53 {fill:url(#id11);fill-rule:nonzero}
-    .fil50 {fill:url(#id12);fill-rule:nonzero}
+    .fil53 {fill:url(#id2)}
+    .fil57 {fill:url(#id3)}
+    .fil54 {fill:url(#id4)}
+    .fil46 {fill:url(#id5)}
+    .fil51 {fill:url(#id6);fill-rule:nonzero}
+    .fil49 {fill:url(#id7);fill-rule:nonzero}
+    .fil48 {fill:url(#id8);fill-rule:nonzero}
+    .fil47 {fill:url(#id9);fill-rule:nonzero}
+    .fil52 {fill:url(#id10);fill-rule:nonzero}
+    .fil50 {fill:url(#id11);fill-rule:nonzero}
    ]]>
   </style>
       <clipPath id="id0">
@@ -78,42 +76,40 @@ viewBox="0 0 15000 15000"
       <clipPath id="id1">
        <path d="M2397 14058l10225 0c788,0 1432,-645 1432,-1432l0 -10225c0,-788 -645,-1432 -1432,-1432l-10225 0c-788,0 -1432,645 -1432,1432l0 10225c0,788 645,1432 1432,1432z"/>
       </clipPath>
-  <linearGradient id="id2" gradientUnits="objectBoundingBox" x1="50%" y1="100%" x2="50%" y2="0%">
-   <stop offset="0" style="stop-color:#1A1A1A"/>
-   <stop offset="1" style="stop-color:#4D4D4D"/>
-  </linearGradient>
-  <linearGradient id="id3" gradientUnits="objectBoundingBox" x1="50%" y1="100%" x2="50%" y2="0%">
+  <linearGradient id="id2" gradientUnits="objectBoundingBox" x1="49.9998%" y1="100%" x2="49.9998%" y2="0%">
    <stop offset="0" style="stop-color:#C42121"/>
    <stop offset="1" style="stop-color:#E94E4F"/>
   </linearGradient>
-  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="10828.3" y1="3862.13" x2="10828.3" y2="1394.65">
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="10687.2" y1="12681.6" x2="10687.2" y2="10214.1">
    <stop offset="0" style="stop-color:#CCCCCC"/>
    <stop offset="1" style="stop-color:#E6E6E6"/>
   </linearGradient>
-  <linearGradient id="id5" gradientUnits="objectBoundingBox" x1="50%" y1="98.9999%" x2="50%" y2="1.00006%">
-   <stop offset="0" style="stop-color:gray"/>
-   <stop offset="1" style="stop-color:#CCCCCC"/>
-  </linearGradient>
-  <linearGradient id="id6" gradientUnits="objectBoundingBox" xlink:href="#id5" x1="50%" y1="98.9999%" x2="50%" y2="0.999987%">
-  </linearGradient>
-  <linearGradient id="id7" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="1701.8" y1="9590.46" x2="1701.8" y2="7891.29">
-  </linearGradient>
-  <linearGradient id="id8" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="9612.78" y1="9590.47" x2="9612.78" y2="7891.28">
-  </linearGradient>
-  <linearGradient id="id9" gradientUnits="objectBoundingBox" x1="50%" y1="100%" x2="50%" y2="0%">
+  <linearGradient id="id4" gradientUnits="objectBoundingBox" x1="50%" y1="99.0005%" x2="50%" y2="1.00006%">
    <stop offset="0" style="stop-color:#1A1A1A"/>
    <stop offset="1" style="stop-color:#333333"/>
   </linearGradient>
-  <linearGradient id="id10" gradientUnits="objectBoundingBox" xlink:href="#id2" x1="50%" y1="100%" x2="50%" y2="0%">
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="7431.04" y1="8850.26" x2="7431.04" y2="3069.02">
+   <stop offset="0" style="stop-color:gray"/>
+   <stop offset="1" style="stop-color:#CCCCCC"/>
   </linearGradient>
-  <linearGradient id="id11" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="5315.41" y1="9588.67" x2="5315.41" y2="7893.03">
+  <linearGradient id="id6" gradientUnits="userSpaceOnUse" x1="3683.43" y1="5798.03" x2="3683.43" y2="4462.47">
+   <stop offset="0" style="stop-color:#1A1A1A"/>
+   <stop offset="1" style="stop-color:#4D4D4D"/>
   </linearGradient>
-  <linearGradient id="id12" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="13226.4" y1="9588.66" x2="13226.4" y2="7893.04">
+  <linearGradient id="id7" gradientUnits="userSpaceOnUse" xlink:href="#id6" x1="8973.84" y1="5798.04" x2="8973.84" y2="4462.46">
+  </linearGradient>
+  <linearGradient id="id8" gradientUnits="objectBoundingBox" xlink:href="#id4" x1="50%" y1="100%" x2="50%" y2="0%">
+  </linearGradient>
+  <linearGradient id="id9" gradientUnits="objectBoundingBox" xlink:href="#id6" x1="50%" y1="100%" x2="50%" y2="0%">
+  </linearGradient>
+  <linearGradient id="id10" gradientUnits="userSpaceOnUse" xlink:href="#id6" x1="6065.82" y1="5796.63" x2="6065.82" y2="4463.84">
+  </linearGradient>
+  <linearGradient id="id11" gradientUnits="userSpaceOnUse" xlink:href="#id6" x1="11356.2" y1="5796.63" x2="11356.2" y2="4463.84">
   </linearGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_297056072">
+  <g id="_288080832">
    <g id="_348901672">
     <path class="fil0" d="M2188 80l10642 0c1167,0 2113,946 2113,2113l0 10642c0,1167 -946,2113 -2113,2113l-10642 0c-1167,0 -2113,-946 -2113,-2113l0 -10642c0,-1167 946,-2113 2113,-2113z"/>
     <g>
@@ -431,40 +427,32 @@ viewBox="0 0 15000 15000"
  </g>
  <g id="Слой_x0020_2">
   <metadata id="CorelCorpID_1Corel-Layer"/>
-  <rect class="fil46" x="8851" y="6100" width="5132" height="5269" rx="660" ry="660"/>
-  <polygon class="fil47" points="12245,7536 10553,7542 11397,6333 "/>
-  <polygon class="fil48" points="12245,9964 10553,9958 11397,11166 "/>
-  <polygon class="fil49" points="10212,9590 10216,7898 9009,8744 "/>
-  <polygon class="fil50" points="12625,9589 12626,7897 13831,8746 "/>
-  <circle class="fil51" cx="11396" cy="8750" r="522"/>
-  <rect class="fil46" x="940" y="6100" width="5132" height="5269" rx="660" ry="660"/>
-  <polygon class="fil47" points="4334,7536 2642,7542 3486,6333 "/>
-  <polygon class="fil48" points="4334,9964 2642,9958 3486,11166 "/>
-  <polygon class="fil52" points="2301,9590 2305,7898 1098,8744 "/>
-  <polygon class="fil53" points="4714,9589 4715,7897 5920,8746 "/>
-  <circle class="fil51" cx="3485" cy="8750" r="522"/>
-  <rect class="fil54" x="6779" y="8200" width="1426" height="1080" rx="208" ry="208"/>
-  <rect class="fil54" x="6779" y="6999" width="1426" height="1080" rx="208" ry="208"/>
-  <rect class="fil54" x="6779" y="5797" width="1426" height="1080" rx="208" ry="208"/>
-  <rect class="fil54" x="6779" y="9402" width="1426" height="1080" rx="208" ry="208"/>
-  <rect class="fil54" x="6779" y="10603" width="1426" height="1080" rx="208" ry="208"/>
-  <rect class="fil55" x="2342" y="11939" width="2139" height="1261" rx="312" ry="242"/>
-  <rect class="fil55" x="10372" y="11939" width="2139" height="1261" rx="312" ry="242"/>
-  <rect class="fil56" transform="matrix(2.6652E-014 1.00632 -1.00632 2.6652E-014 9555.21 4990.15)" width="466" height="466"/>
-  <rect class="fil56" transform="matrix(2.6652E-014 1.00632 -1.00632 2.6652E-014 8607.34 4990.15)" width="466" height="466"/>
-  <rect class="fil56" transform="matrix(2.6652E-014 1.00632 -1.00632 2.6652E-014 7712.72 4990.15)" width="466" height="466"/>
-  <rect class="fil56" transform="matrix(2.6652E-014 1.00632 -1.00632 2.6652E-014 6839.4 4990.15)" width="466" height="466"/>
-  <rect class="fil56" transform="matrix(2.6652E-014 1.00632 -1.00632 2.6652E-014 5934.13 4990.15)" width="466" height="466"/>
-  <rect class="fil57" transform="matrix(2.6652E-014 0.875424 -1.00632 2.31852E-014 7645.26 590.419)" width="3831" height="339" rx="127" ry="127"/>
-  <rect class="fil57 str0" transform="matrix(-0.594888 0.556545 -0.6875 -0.734865 8292.88 3895.13)" width="1334" height="296" rx="148" ry="148"/>
-  <rect class="fil57 str0" transform="matrix(0.567985 0.583975 0.721384 -0.701632 6701.71 3882.58)" width="1334" height="296" rx="148" ry="148"/>
-  <circle class="fil58" cx="10828" cy="2628" r="1606"/>
-  <circle class="fil59" cx="10828" cy="2628" r="1234"/>
-  <rect class="fil60" x="10670" y="1649" width="232" height="1147"/>
-  <rect class="fil60" transform="matrix(3.25936E-014 1.09711 -1.06161 2.5065E-014 11821 2558.52)" width="212" height="1080"/>
-  <line class="fil45 str1" x1="10445" y1="1848" x2="10842" y2= "1509" />
-  <line class="fil45 str1" x1="11138" y1="1847" x2="10742" y2= "1508" />
-  <line class="fil45 str1" x1="11592" y1="2331" x2="11931" y2= "2728" />
-  <line class="fil45 str1" x1="11591" y1="3024" x2="11930" y2= "2628" />
+  <rect class="fil46" x="2144" y="3010" width="10574" height="5899" rx="1359" ry="739"/>
+  <polygon class="fil47" points="10829,4412 9499,4417 10163,3467 "/>
+  <polygon class="fil48" points="10829,5839 9499,5834 10163,6784 "/>
+  <polygon class="fil49" points="9445,5798 9448,4468 8499,5133 "/>
+  <polygon class="fil50" points="10883,5797 10884,4467 11831,5134 "/>
+  <polygon class="fil47" points="5539,4412 4209,4417 4872,3467 "/>
+  <polygon class="fil48" points="5539,5839 4209,5834 4872,6784 "/>
+  <polygon class="fil51" points="4154,5798 4158,4468 3209,5133 "/>
+  <polygon class="fil52" points="5593,5797 5594,4467 6541,5134 "/>
+  <rect class="fil53" x="7055" y="7001" width="861" height="652" rx="125" ry="125"/>
+  <rect class="fil54" x="4215" y="8079" width="1099" height="648" rx="160" ry="125"/>
+  <rect class="fil54" x="9604" y="8047" width="1099" height="648" rx="160" ry="125"/>
+  <rect class="fil55" transform="matrix(2.6652E-014 -0.875424 -1.00632 -2.31852E-014 7715.81 11866.6)" width="3831" height="339" rx="127" ry="127"/>
+  <rect class="fil55 str0" transform="matrix(-0.594888 -0.556545 -0.6875 0.734865 8363.43 8561.91)" width="1334" height="296" rx="148" ry="148"/>
+  <rect class="fil55 str0" transform="matrix(0.567985 -0.583975 0.721384 0.701632 6772.26 8574.46)" width="1334" height="296" rx="148" ry="148"/>
+  <circle class="fil56" cx="10687" cy="11448" r="1606"/>
+  <circle class="fil57" cx="10687" cy="11448" r="1234"/>
+  <rect class="fil58" x="10529" y="10468" width="232" height="1147"/>
+  <rect class="fil58" transform="matrix(3.25936E-014 1.09711 -1.06161 2.5065E-014 11679.9 11378)" width="212" height="1080"/>
+  <line class="fil45 str1" x1="10304" y1="10667" x2="10700" y2= "10328" />
+  <line class="fil45 str1" x1="10997" y1="10667" x2="10600" y2= "10328" />
+  <line class="fil45 str1" x1="11451" y1="11151" x2="11790" y2= "11547" />
+  <line class="fil45 str1" x1="11450" y1="11843" x2="11789" y2= "11447" />
+  <rect class="fil53" x="8792" y="7001" width="861" height="652" rx="125" ry="125"/>
+  <rect class="fil53" x="10561" y="7001" width="861" height="652" rx="125" ry="125"/>
+  <rect class="fil53" x="3518" y="7001" width="861" height="652" rx="125" ry="125"/>
+  <rect class="fil53" x="5297" y="7001" width="861" height="652" rx="125" ry="125"/>
  </g>
 </svg>
