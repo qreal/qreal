@@ -15,6 +15,8 @@
 #include "printTextBlockGenerator.h"
 #include "generatorBase/generatorCustomizer.h"
 
+#include <qrutils/stringUtils.h>
+
 using namespace generatorBase::simple;
 using namespace qReal;
 
@@ -27,8 +29,11 @@ PrintTextBlockGenerator::PrintTextBlockGenerator(const qrRepo::RepoApi &repo
 					, customizer.factory()->intPropertyConverter(id, "XCoordinateText"))
 			<< Binding::createConverting("@@Y@@", "YCoordinateText"
 					, customizer.factory()->intPropertyConverter(id, "YCoordinateText"))
-			<< Binding::createConverting("@@TEXT@@", "PrintText"
-					, customizer.factory()->stringPropertyConverter(id, "PrintText"))
+			<< (repo.property(id, "Evaluate").toBool()
+					? Binding::createConverting("@@TEXT@@", "PrintText"
+							, customizer.factory()->stringPropertyConverter(id, "PrintText"))
+					: Binding::createStatic("@@TEXT@@"
+							, utils::StringUtils::wrap(repo.stringProperty(id, "PrintText"))))
 			, parent)
 {
 }
