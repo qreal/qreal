@@ -1072,7 +1072,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="System Call" name="TrikSystem" description="Invokes bash script-style command on the robot.">
+			<node displayedName="System Call" name="TrikSystem" description="Invokes bash script-style command on the robot. If 'Evaluate' property is set to true then the value of 'Command' property is interpreted as a formula, otherwise it is interpreted as plain string.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/systemBlock.svg" x1="0" y2="50" x2="50"/>
@@ -1085,9 +1085,12 @@
 				<logic>
 					<properties>
 						<property displayedName="Command" type="string" name="Command">
-							<default>'echo ' .. '123'</default>
+							<default>echo 123</default>
 						</property>
 						<property displayedName="Code" type="bool" name="Code">
+							<default>false</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
 							<default>false</default>
 						</property>
 					</properties>
@@ -1991,7 +1994,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. '$' token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash ('\\') is written before the '$' token. Example: '\\$a = $a' expression will print '$a = 5' if the value of the variable 'a' is 5.">
+			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. '$' token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash ('\\') is written before the '$' token. Example: '\\$a = $a' expression will print '$a = 5' if the value of the variable 'a' is 5.  If 'Evaluate' property is set to true then the value of 'Text' property is interpreted as a formula, otherwise it is interpreted as plain string.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
@@ -2013,7 +2016,10 @@
 							<default>1</default>
 						</property>
 						<property displayedName="Text" type="string" name="PrintText">
-							<default>'Enter some text here'</default>
+							<default>Enter some text here</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2583,7 +2589,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Say" name="TrikSay" description="Synthesizes the given phrase and plays it on the robot.">
+			<node displayedName="Say" name="TrikSay" description="Synthesizes the given phrase and plays it on the robot. If 'Evaluate' property is set to true then the value of 'Text' property is interpreted as a formula, otherwise it is interpreted as plain string.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/sayBlock.png" x1="0" y2="50" x2="50"/>
@@ -2596,7 +2602,10 @@
 				<logic>
 					<properties>
 						<property displayedName="Text" type="string" name="Text">
-							<default>\"Hi!\"</default>
+							<default>Hi!</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
 						</property>
 					</properties>
 					<container/>

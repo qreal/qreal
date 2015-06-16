@@ -30,7 +30,9 @@ void SystemCommandBlock::doJob(robotModel::parts::TrikShell &shell)
 		const QString code = utils::StringUtils::dequote(stringProperty("Command").replace("\"", "\\\""));
 		shell.runCode(code);
 	} else {
-		const QString command = stringProperty("Command").replace("\"", "\\\"");
+		const QString command = utils::StringUtils::wrap(boolProperty("Evaluate")
+				? eval<QString>("Command")
+				: stringProperty("Command").replace("\"", "\\\""));
 		shell.runCommand(command);
 	}
 
