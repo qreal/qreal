@@ -110,14 +110,14 @@ private:
 	RobotModelManager &mRobotModelManager;
 
 	/// Action that runs program
-	QAction mRunAction;
+	QAction *mRunAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that stops program and also stops robot motors
-	QAction mStopRobotAction;
+	QAction *mStopRobotAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Checkable action that establishes connection to robot. If successful,
 	/// action will be checked, if connection lost, it will uncheck
-	QAction mConnectToRobotAction;
+	QAction *mConnectToRobotAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that shows robots tab in settings dialog
 	QAction mRobotSettingsAction;
