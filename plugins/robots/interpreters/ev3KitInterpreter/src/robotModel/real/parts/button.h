@@ -16,6 +16,7 @@
 
 #include <kitBase/robotModel/robotParts/button.h>
 #include <utils/robotCommunication/robotCommunicator.h>
+#include "src/robotModel/real/ev3DirectCommand.h"
 
 namespace ev3 {
 namespace robotModel {

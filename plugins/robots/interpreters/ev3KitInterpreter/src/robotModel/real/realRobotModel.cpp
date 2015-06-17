@@ -18,6 +18,7 @@
 #include <qrkernel/exception/exception.h>
 
 #include "src/communication/bluetoothRobotCommunicationThread.h"
+#include "src/communication/usbRobotCommunicationThread.h"
 
 #include "parts/display.h"
 #include "parts/speaker.h"
@@ -72,7 +73,7 @@ void RealRobotModel::rereadSettings()
 	if (valueOfCommunication == "bluetooth") {
 		communicator = new communication::BluetoothRobotCommunicationThread;
 	} else if (valueOfCommunication == "usb") {
-		communicator = new communication::BluetoothRobotCommunicationThread; // TODO usb
+		communicator = new communication::UsbRobotCommunicationThread;
 	}
 
 	mRobotCommunicator->setRobotCommunicationThreadObject(communicator);

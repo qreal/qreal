@@ -23,7 +23,9 @@
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 #include <utils/tracer.h>
 
+#include "src/robotModel/real/ev3DirectCommand.h"
 #include "src/commandConstants.h"
+
 
 const unsigned keepAliveResponseSize = 5;
 
@@ -50,8 +52,8 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 	}
 
 	send(buffer);
-	if (buffer.size() >= 5 && buffer[4] == DIRECT_COMMAND_REPLY) {
-		const QByteArray result = receive(responseSize);
+	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
+		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
 		emit response(addressee, QByteArray());
@@ -84,7 +86,9 @@ void BluetoothRobotCommunicationThread::connect()
 	const QByteArray response = receive(keepAliveResponseSize);
 
 	emit connected(response != QByteArray(), QString());
-
+	mKeepAliveTimer->moveToThread(this->thread());
+	mKeepAliveTimer->disconnect();
+	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 	mKeepAliveTimer->start(500);
 }
 
@@ -152,23 +156,16 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 
 	if (response == QByteArray()) {
 		emit disconnected();
+		mKeepAliveTimer->stop();
 	}
 }
 
 void BluetoothRobotCommunicationThread::keepAlive()
 {
-	QByteArray command(9, 0);
-	command[0] = 7;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opKEEP_ALIVE;
-	command[8] = 10;
+	QByteArray command = robotModel::real::Ev3DirectCommand::formCommand(10, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	int index = 7;
+	robotModel::real::Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::KEEP_ALIVE, command, index);
+	robotModel::real::Ev3DirectCommand::addByteParameter(10, command, index); //10 - Number of minutes before entering sleep mode.
 	send(command);
 }
 

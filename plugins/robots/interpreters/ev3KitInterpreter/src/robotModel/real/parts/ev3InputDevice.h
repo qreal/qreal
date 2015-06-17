@@ -19,7 +19,7 @@
 #include <kitBase/robotModel/robotParts/abstractSensor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-#include "src/commandConstants.h"
+#include "src/robotModel/real/ev3DirectCommand.h"
 
 namespace ev3 {
 namespace robotModel {
@@ -31,23 +31,23 @@ class Ev3InputDevice : public QObject
 	Q_OBJECT
 
 public:
-
 	Ev3InputDevice(utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, const kitBase::robotModel::PortInfo &port
-			, SensorTypeEnum lowLevelSensorType
-			, INPUT_DEVICE_SUBCODE sensorMode);
+			, const kitBase::robotModel::PortInfo &port);
 
 	void send(QByteArray command, const unsigned responseSize, QByteArray reading);
 
 	/// Returns a value of port that can be used as corresponding byte in request packages.
 	char lowLevelPort() const;
 
+	QByteArray readySiCommand(int port, int sensorMode);
+	QByteArray readyRawCommand(int port, int sensorMode);
+	QByteArray readyPercentCommand(int port, int sensorMode);
+
 private:
+	//enums::inputPort::InputPortEnum parsePort();
 
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 	char mLowLevelPort;
-	SensorTypeEnum mLowLevelSensorType;
-	INPUT_DEVICE_SUBCODE mSensorMode;
 };
 
 }

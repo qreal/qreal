@@ -26,6 +26,9 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		robots-utils robots-kit-base robots-ev3-kit qextserialport \
 )
 
+INCLUDEPATH += $$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0
+LIBS += -L$$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/MinGW32/dll -llibusb-1.0 \
+
 HEADERS += \
 	$$PWD/commandConstants.h \
 	$$PWD/ev3AdditionalPreferences.h \
@@ -41,6 +44,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/rangeSensor.h \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
+	$$PWD/robotModel/real/ev3DirectCommand.h \
 
 SOURCES += \
 	$$PWD/ev3AdditionalPreferences.cpp \
@@ -56,6 +60,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
+	$$PWD/robotModel/real/ev3DirectCommand.cpp \
 
 FORMS += \
 	$$PWD/ev3AdditionalPreferences.ui \

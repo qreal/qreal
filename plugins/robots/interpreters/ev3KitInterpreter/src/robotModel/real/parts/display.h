@@ -17,6 +17,8 @@
 #include <ev3Kit/robotModel/parts/ev3Display.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
+#include "src/robotModel/real/ev3DirectCommand.h"
+
 namespace ev3 {
 namespace robotModel {
 namespace real {

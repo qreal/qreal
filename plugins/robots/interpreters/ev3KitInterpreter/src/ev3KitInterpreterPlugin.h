@@ -31,6 +31,7 @@ class Ev3KitInterpreterPlugin : public QObject, public kitBase::KitPluginInterfa
 
 public:
 	Ev3KitInterpreterPlugin();
+	~Ev3KitInterpreterPlugin() override;
 
 	QString kitId() const override;
 
@@ -52,8 +53,12 @@ public:
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
+
 	Ev3AdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	bool mOwnsAdditionalPreferences = true;
+
 	blocks::Ev3BlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
+	bool mOwnsBlocksFactory = true;
 
 };
 

@@ -21,7 +21,7 @@
 #include <qrtext/languageToolboxInterface.h>
 
 #include "readableControlFlowGenerator.h"
-#include "gotoControlFlowGenerator.h"
+#include "generatorBase/gotoControlFlowGenerator.h"
 #include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"

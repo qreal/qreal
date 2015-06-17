@@ -28,7 +28,7 @@ public:
 	Ev3Speaker(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port);
 
-	void beep(unsigned time);
+	void beep(int volume, int duration);
 	virtual void playTone(int volume, int frequency, int duration) = 0;
 };
 

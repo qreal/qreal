@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "gotoControlFlowGenerator.h"
+#include "generatorBase/gotoControlFlowGenerator.h"
 
 using namespace generatorBase;
 using namespace qReal;

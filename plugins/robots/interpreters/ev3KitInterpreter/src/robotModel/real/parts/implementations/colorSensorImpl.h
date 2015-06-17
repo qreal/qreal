@@ -17,7 +17,6 @@
 #include <kitBase/robotModel/robotParts/colorSensor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-#include "src/commandConstants.h"
 #include "src/robotModel/real/parts/ev3InputDevice.h"
 
 namespace ev3 {
@@ -32,7 +31,7 @@ class ColorSensorImpl : public QObject
 public:
 	ColorSensorImpl(const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, SensorTypeEnum lowLevelType);
+			, enums::sensorType::SensorTypeEnum lowLevelType);
 
 	void read();
 
@@ -42,7 +41,7 @@ signals:
 private:
 	Ev3InputDevice mImplementation;
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
-	SensorTypeEnum mLowLevelType;
+	enums::sensorType::SensorTypeEnum mLowLevelType;
 };
 
 }

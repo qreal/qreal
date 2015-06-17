@@ -1,0 +1,1 @@
+CP_GTF(@@LEFT@@,@@RIGHT@@,condition)

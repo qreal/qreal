@@ -14,7 +14,9 @@
 
 HEADERS += \
 	$$PWD/bluetoothRobotCommunicationThread.h \
+	$$PWD/usbRobotCommunicationThread.h \
 
 
 SOURCES += \
 	$$PWD/bluetoothRobotCommunicationThread.cpp \
+	$$PWD/usbRobotCommunicationThread.cpp \
