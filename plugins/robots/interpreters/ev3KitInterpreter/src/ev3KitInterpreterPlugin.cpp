@@ -23,14 +23,13 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
-		: mRealRobotModel(kitId(), "ev3robot") // todo: somewhere generate robotId for each robot
-		, mBlocksFactory(new blocks::Ev3BlocksFactory)
+	: mRealRobotModel(kitId(), "ev3robot") // todo: somewhere generate robotId for each robot
+	, mBlocksFactory(new blocks::Ev3BlocksFactory)
 {
 	mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
 
 	connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
-		, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
-
+			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
 }
 
 Ev3KitInterpreterPlugin::~Ev3KitInterpreterPlugin()
@@ -56,18 +55,20 @@ QString Ev3KitInterpreterPlugin::friendlyKitName() const
 
 QList<kitBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robotModels()
 {
-	return  {&mRealRobotModel};
+	return {&mRealRobotModel};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
 		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model)
+	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
 QList<kitBase::AdditionalPreferences *> Ev3KitInterpreterPlugin::settingsWidgets()
 {
+	mOwnsAdditionalPreferences = false;
 	return { mAdditionalPreferences };
 }
 

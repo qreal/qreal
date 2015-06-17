@@ -20,14 +20,20 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
 		plugins/robots/interpeters/ev3KitInterpreter/src \
+		plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0 \
 )
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
 		robots-utils robots-kit-base robots-ev3-kit qextserialport \
 )
 
-INCLUDEPATH += $$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0
-LIBS += -L$$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/MinGW32/dll -llibusb-1.0 \
+win32 {
+	LIBS += -L$$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/MinGW32/dll -llibusb-1.0
+}
+
+unix {
+	LIBS += -lusb-1.0
+}
 
 HEADERS += \
 	$$PWD/commandConstants.h \

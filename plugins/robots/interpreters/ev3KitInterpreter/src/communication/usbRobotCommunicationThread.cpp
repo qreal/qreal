@@ -150,7 +150,7 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer, const unsigned 
 
 void UsbRobotCommunicationThread::send(const QByteArray &buffer) const
 {
-	unsigned char *cmd = (unsigned char*)(buffer.data());
+	uchar *cmd = reinterpret_cast<uchar *>(const_cast<char *>(buffer.data()));
 	int actualLength = 0;
 	libusb_bulk_transfer(mHandle, EV3_EP_OUT, cmd, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT);
 }
