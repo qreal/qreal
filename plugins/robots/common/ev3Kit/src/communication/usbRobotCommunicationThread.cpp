@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "usbRobotCommunicationThread.h"
+#include "ev3Kit/communication/usbRobotCommunicationThread.h"
+
 #include <QtCore/QTimer>
 #include <QtCore/QThread>
 
-#include "src/robotModel/real/ev3DirectCommand.h"
-#include "src/commandConstants.h"
+#include <libusb.h>
+
+#include "ev3Kit/communication/ev3DirectCommand.h"
+#include "ev3Kit/communication/commandConstants.h"
 
 #define EV3_VID 0x0694
 #define EV3_PID 0x0005

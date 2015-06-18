@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/ev3/interpreter">
+        <file>images/switch-to-ev3.svg</file>
+    </qresource>
+</RCC>

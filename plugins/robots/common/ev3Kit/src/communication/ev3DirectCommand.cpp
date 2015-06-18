@@ -1,13 +1,14 @@
-#include "ev3DirectCommand.h"
+#include "ev3Kit/communication/ev3DirectCommand.h"
 
 using namespace ev3;
-using namespace ev3::robotModel::real;
+using namespace ev3::communication;
 
 Ev3DirectCommand::Ev3DirectCommand()
 {
 }
 
-QByteArray Ev3DirectCommand::formCommand(int size, int messageCounter, ushort globalSize, int localSize, enums::commandType::CommandTypeEnum type)
+QByteArray Ev3DirectCommand::formCommand(int size, int messageCounter, ushort globalSize
+		, int localSize, enums::commandType::CommandTypeEnum type)
 {
 	QByteArray command(size, 0);
 	command[0] = (size - 2) & 0xFF;

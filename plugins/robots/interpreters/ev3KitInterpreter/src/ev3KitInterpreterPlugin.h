@@ -34,21 +34,14 @@ public:
 	~Ev3KitInterpreterPlugin() override;
 
 	QString kitId() const override;
-
 	QString friendlyKitName() const override;
-
 	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
-
 	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
 			const kitBase::robotModel::RobotModelInterface *model) override;
-
 	// Transfers ownership.
 	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
-
 	QList<qReal::ActionInfo> customActions() override;
-
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
-
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
 private:

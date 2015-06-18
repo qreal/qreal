@@ -34,7 +34,6 @@
 
 #pragma once
 
-
 namespace ev3 {
 namespace enums {
 

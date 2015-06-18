@@ -16,22 +16,22 @@
 
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
-class QextSerialPort;
 class QTimer;
+class libusb_device_handle;
 
 namespace ev3 {
 namespace communication {
 
-class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
+class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
 {
 	Q_OBJECT
 
 public:
-	BluetoothRobotCommunicationThread();
-	~BluetoothRobotCommunicationThread();
+	UsbRobotCommunicationThread();
+	~UsbRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
+	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void connect();
 	void reconnect();
 	void disconnect();
@@ -44,14 +44,13 @@ private slots:
 	void checkForConnection();
 
 private:
-	void send(const QByteArray &buffer, const unsigned responseSize
+	void send(QByteArray const &buffer, unsigned const responseSize
 			, QByteArray &outputBuffer);
-	void send(const QByteArray &buffer) const;
-	void keepAlive();
+	void send(QByteArray const &buffer) const;
 
 	QByteArray receive(int size) const;
 
-	QextSerialPort *mPort;
+	libusb_device_handle *mHandle;
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;

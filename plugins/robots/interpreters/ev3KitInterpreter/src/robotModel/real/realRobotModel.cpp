@@ -17,8 +17,8 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 
-#include "src/communication/bluetoothRobotCommunicationThread.h"
-#include "src/communication/usbRobotCommunicationThread.h"
+#include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
+#include <ev3Kit/communication/usbRobotCommunicationThread.h>
 
 #include "parts/display.h"
 #include "parts/speaker.h"

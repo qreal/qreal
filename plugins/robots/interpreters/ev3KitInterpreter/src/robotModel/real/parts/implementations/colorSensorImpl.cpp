@@ -13,7 +13,6 @@
  * limitations under the License. */
 
 #include "colorSensorImpl.h"
-#include "src/commandConstants.h"
 
 const unsigned colorSensorResponseSize = 9;
 

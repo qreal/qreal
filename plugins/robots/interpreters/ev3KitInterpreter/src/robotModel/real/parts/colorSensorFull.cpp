@@ -14,9 +14,12 @@
 
 #include "colorSensorFull.h"
 
+#include <ev3Kit/communication/ev3DirectCommand.h>
+
 const unsigned colorSensorResponseSize = 9;
 
 using namespace ev3::robotModel::real::parts;
+using namespace ev3::communication;
 using namespace kitBase::robotModel;
 
 ColorSensorFull::ColorSensorFull(const kitBase::robotModel::DeviceInfo &info
@@ -31,7 +34,8 @@ ColorSensorFull::ColorSensorFull(const kitBase::robotModel::DeviceInfo &info
 void ColorSensorFull::read()
 {
 	//Something weird with ColorSensorFull and ColorSensorImpl
-	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 4, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 4, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::INPUT_DEVICE_READY_RAW, command, index);
 	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);

@@ -14,17 +14,25 @@
 
 QT += widgets
 
-links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
+links(qrkernel qslog qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
 		robots-utils robots-kit-base robots-2d-model qextserialport \
-		qslog \
 		)
 
 includes(plugins/robots/common/ev3Kit \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/twoDModel \
 		plugins/robots/utils \
+		plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0 \
 		qrtext \
 )
+
+win32 {
+	LIBS += -llibusb-1.0
+}
+
+unix {
+	LIBS += -L /usr/bin -lusb-1.0
+}
 
 HEADERS += \
 	$$PWD/include/ev3Kit/robotModel/ev3RobotModelBase.h \
@@ -32,6 +40,10 @@ HEADERS += \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Speaker.h \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Motor.h \
 	$$PWD/include/ev3Kit/blocks/ev3BlocksFactory.h \
+	$$PWD/include/ev3Kit/communication/commandConstants.h \
+	$$PWD/include/ev3Kit/communication/ev3DirectCommand.h \
+	$$PWD/include/ev3Kit/communication/bluetoothRobotCommunicationThread.h \
+	$$PWD/include/ev3Kit/communication/usbRobotCommunicationThread.h \
 	$$PWD/src/blocks/details/speakerBlock.h \
 	$$PWD/src/blocks/details/beepBlock.h \
 	$$PWD/src/blocks/details/playToneBlock.h \
@@ -57,5 +69,8 @@ SOURCES += \
 	$$PWD/src/blocks/details/drawRectBlock.cpp \
 	$$PWD/src/blocks/details/ev3EnginesBackwardBlock.cpp \
 	$$PWD/src/blocks/details/ev3EnginesForwardBlock.cpp \
+	$$PWD/src/communication/ev3DirectCommand.cpp \
+	$$PWD/src/communication/bluetoothRobotCommunicationThread.cpp \
+	$$PWD/src/communication/usbRobotCommunicationThread.cpp \
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/ev3Kit_ru.ts

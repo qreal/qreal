@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-HEADERS += \
-	$$PWD/bluetoothRobotCommunicationThread.h \
-	$$PWD/usbRobotCommunicationThread.h \
+TEMPLATE = subdirs
 
+include(../../../../global.pri)
 
-SOURCES += \
-	$$PWD/bluetoothRobotCommunicationThread.cpp \
-	$$PWD/usbRobotCommunicationThread.cpp \
+copyToDestdir(MinGW32/dll/libusb-1.0.dll, NOW)

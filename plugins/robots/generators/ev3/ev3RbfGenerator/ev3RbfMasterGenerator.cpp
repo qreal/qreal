@@ -36,7 +36,8 @@ Ev3RbfMasterGenerator::Ev3RbfMasterGenerator(qrRepo::RepoApi const &repo
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, qReal::Id const &diagramId
 		, QString const &generatorName)
-	: Ev3MasterGeneratorBase(repo, errorReporter, parserErrorReporter, robotModelManager, textLanguage, diagramId, generatorName)
+	: Ev3MasterGeneratorBase(repo, errorReporter, parserErrorReporter
+			, robotModelManager, textLanguage, diagramId, generatorName)
 {
 }
 
@@ -60,7 +61,6 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	}
 
 	QString mainCode;
-	mErrorReporter.addInformation(tr("Generating code with 'goto' statements."));
 	semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 	if (gotoMainControlFlow) {
 		mainCode = gotoMainControlFlow->toString(1, indentString);

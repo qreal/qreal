@@ -15,6 +15,7 @@
 #pragma once
 
 #include <kitBase/robotModel/robotParts/colorSensor.h>
+#include <ev3Kit/communication/commandConstants.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
 #include "src/robotModel/real/parts/ev3InputDevice.h"

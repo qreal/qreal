@@ -18,8 +18,6 @@
 #include <utils/robotCommunication/robotCommunicator.h>
 #include <ev3Kit/robotModel/parts/ev3Motor.h>
 
-#include "src/robotModel/real/ev3DirectCommand.h"
-
 namespace ev3 {
 namespace robotModel {
 namespace real {

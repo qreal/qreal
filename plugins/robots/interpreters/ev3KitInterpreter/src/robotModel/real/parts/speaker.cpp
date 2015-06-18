@@ -13,9 +13,12 @@
  * limitations under the License. */
 
 #include "speaker.h"
-#include "src/commandConstants.h"
+
+#include <ev3Kit/communication/commandConstants.h>
+#include <ev3Kit/communication/ev3DirectCommand.h>
 
 using namespace ev3::robotModel::real::parts;
+using namespace ev3::communication;
 using namespace kitBase::robotModel;
 
 Speaker::Speaker(const DeviceInfo &info, const PortInfo &port

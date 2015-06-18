@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group and Dmitry Mordvinov
+# Copyright 2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,6 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = \
-	editor \
-	examples \
-	common \
-	interpreters \
-	generators \
-	utils \
-	thirdparty \
-
-common.depends = thirdparty utils
-interpreters.depends = common thirdparty utils
-generators.depends = common
+SUBDIRS += \
+	qextserialport \
+	libusb-1.0.19 \

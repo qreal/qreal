@@ -82,9 +82,8 @@ QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
 	return {};
 }
 
-QIcon Ev3KitInterpreterPlugin::iconForFastSelector(
-		const kitBase::robotModel::RobotModelInterface &robotModel) const
+QIcon Ev3KitInterpreterPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
-	return QIcon();
+	return QIcon(":/ev3/interpreter/images/switch-to-ev3.svg");
 }

@@ -14,9 +14,11 @@
 
 #include "motor.h"
 
-#include "src/commandConstants.h"
+#include <ev3Kit/communication/commandConstants.h>
+#include <ev3Kit/communication/ev3DirectCommand.h>
 
 using namespace ev3::robotModel::real::parts;
+using namespace ev3::communication;
 using namespace kitBase;
 using namespace robotModel;
 using namespace utils;
@@ -30,7 +32,8 @@ Motor::Motor(const DeviceInfo &info, const PortInfo &port, RobotCommunicator &ro
 
 void Motor::on(int speed)
 {
-	QByteArray command = Ev3DirectCommand::formCommand(19, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	QByteArray command = Ev3DirectCommand::formCommand(19, 0, 0, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::OUTPUT_POWER, command, index);
 	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);
@@ -50,7 +53,8 @@ void Motor::stop()
 
 void Motor::off()
 {
-	QByteArray command = Ev3DirectCommand::formCommand(14, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	QByteArray command = Ev3DirectCommand::formCommand(14, 0, 0, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::OUTPUT_STOP, command, index);
 	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);

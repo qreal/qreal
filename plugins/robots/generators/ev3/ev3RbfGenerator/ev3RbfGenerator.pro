@@ -26,49 +26,15 @@ DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 includes(plugins/robots/generators/ev3/ev3GeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
+		plugins/robots/common/ev3Kit \
+		plugins/robots/utils \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-ev3-generator-base)
+links(qrkernel qslog qrutils qrrepo qscintilla2 qrgui-text-editor \
+		robots-generator-base robots-ev3-generator-base robots-ev3-kit robots-utils)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3RbfGenerator_ru.ts
-
-#QT += widgets
-
-#CONFIG += c++11
-
-#include(../../../../../global.pri)
-
-#TEMPLATE = lib
-#CONFIG += plugin
-
-#DESTDIR = $$PWD/../../../../../bin/plugins/tools/kitPlugins/
-#TARGET = robots-ev3-rbf-generator
-
-#MOC_DIR = .moc
-#RCC_DIR = .moc
-#OBJECTS_DIR = .obj
-
-#LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
-#		-lrobots-generator-base -lrobots-ev3-generator-base \
-
-#INCLUDEPATH += \
-#	$$PWD/../ev3GeneratorBase/include/ \
-#	$$PWD/../../generatorBase/include/ \
-#	$$PWD/../../../interpreters/interpreterBase/include \
-#	$$PWD/../generatorBase/src/ \
-#	$$PWD/../../../../../ \
-#	$$PWD/../../../../../qrgui \
-#	$$PWD/../../../../../qrtext/include \
-
-## workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-## when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-#!macx {
-#	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../../../bin/
-#	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
-#}
-
-#TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3RbfGenerator_ru.ts
 
 HEADERS += \
 	ev3RbfGeneratorPlugin.h \
@@ -81,3 +47,4 @@ SOURCES += \
 RESOURCES += \
 	ev3RbfGenerator.qrc \
 	templates.qrc \
+	thirdparty.qrc \

@@ -15,23 +15,23 @@
 #pragma once
 
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
-#include <libusb.h>
 
+class QextSerialPort;
 class QTimer;
 
 namespace ev3 {
 namespace communication {
 
-class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
+class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
 {
 	Q_OBJECT
 
 public:
-	UsbRobotCommunicationThread();
-	~UsbRobotCommunicationThread();
+	BluetoothRobotCommunicationThread();
+	~BluetoothRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
+	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
 	void connect();
 	void reconnect();
 	void disconnect();
@@ -39,18 +39,22 @@ public slots:
 	void allowLongJobs(bool allow = true);
 	void checkConsistency();
 
+	/// Uploads file on the local machine to a remote device via Bluetooth.
+	bool uploadFile(const QString &sourceFile, const QString &targetDir);
+
 private slots:
 	/// Checks if robot is connected
 	void checkForConnection();
 
 private:
-	void send(QByteArray const &buffer, unsigned const responseSize
+	void send(const QByteArray &buffer, const unsigned responseSize
 			, QByteArray &outputBuffer);
-	void send(QByteArray const &buffer) const;
+	void send(const QByteArray &buffer) const;
+	void keepAlive();
 
 	QByteArray receive(int size) const;
 
-	libusb_device_handle *mHandle;
+	QextSerialPort *mPort;
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;

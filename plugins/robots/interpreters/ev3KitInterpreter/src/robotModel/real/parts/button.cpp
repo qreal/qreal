@@ -13,13 +13,16 @@
  * limitations under the License. */
 
 #include "button.h"
-#include "src/commandConstants.h"
+
+#include <ev3Kit/communication/commandConstants.h>
+#include <ev3Kit/communication/ev3DirectCommand.h>
 
 const unsigned buttonResponseSize = 6;
 const unsigned buttonPressed = 0x01;
 
 using namespace ev3::robotModel::real;
 using namespace ev3::robotModel::real::parts;
+using namespace ev3::communication;
 using namespace kitBase::robotModel;
 
 Button::Button(const DeviceInfo &info, const PortInfo &port
@@ -31,7 +34,8 @@ Button::Button(const DeviceInfo &info, const PortInfo &port
 
 void Button::read()
 {
-	QByteArray command = Ev3DirectCommand::formCommand(13, 4, 1, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	QByteArray command = Ev3DirectCommand::formCommand(13, 4, 1, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_BUTTON_PRESSED, command, index);
 	Ev3DirectCommand::addByteParameter(parsePort(port().name()), command, index);

@@ -28,15 +28,14 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 )
 
 win32 {
-	LIBS += -L$$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/MinGW32/dll -llibusb-1.0
+	LIBS += -llibusb-1.0
 }
 
 unix {
-	LIBS += -lusb-1.0
+	LIBS += -L /usr/bin -lusb-1.0
 }
 
 HEADERS += \
-	$$PWD/commandConstants.h \
 	$$PWD/ev3AdditionalPreferences.h \
 	$$PWD/ev3KitInterpreterPlugin.h \
 	$$PWD/robotModel/real/realRobotModel.h \
@@ -50,7 +49,6 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/rangeSensor.h \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
-	$$PWD/robotModel/real/ev3DirectCommand.h \
 
 SOURCES += \
 	$$PWD/ev3AdditionalPreferences.cpp \
@@ -66,11 +64,11 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
-	$$PWD/robotModel/real/ev3DirectCommand.cpp \
 
 FORMS += \
 	$$PWD/ev3AdditionalPreferences.ui \
 
-include($$PWD/communication/communication.pri)
-
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3KitInterpreter_ru.ts
+
+RESOURCES += \
+	$$PWD/../ev3KitInterpreter.qrc \

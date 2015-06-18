@@ -13,11 +13,14 @@
  * limitations under the License. */
 
 #include "ev3InputDevice.h"
-#include "src/commandConstants.h"
+
+#include <ev3Kit/communication/commandConstants.h>
+#include <ev3Kit/communication/ev3DirectCommand.h>
 
 #include <utils/tracer.h>
 
 using namespace ev3::robotModel::real::parts;
+using namespace ev3::communication;
 using namespace kitBase::robotModel;
 using namespace utils;
 
@@ -40,7 +43,8 @@ char Ev3InputDevice::lowLevelPort() const
 
 QByteArray Ev3InputDevice::readySiCommand(int port, int sensorMode)
 {
-	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 4, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 4, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::INPUT_DEVICE_READY_SI, command, index);
 	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);
@@ -54,7 +58,8 @@ QByteArray Ev3InputDevice::readySiCommand(int port, int sensorMode)
 
 QByteArray Ev3InputDevice::readyRawCommand(int port, int sensorMode)
 {
-	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 4, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 4, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::INPUT_DEVICE_READY_RAW, command, index);
 	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);
@@ -68,7 +73,8 @@ QByteArray Ev3InputDevice::readyRawCommand(int port, int sensorMode)
 
 QByteArray Ev3InputDevice::readyPercentCommand(int port, int sensorMode)
 {
-	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 1, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	QByteArray command = Ev3DirectCommand::formCommand(21, 2, 1, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::INPUT_DEVICE_READY_RAW, command, index);
 	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);

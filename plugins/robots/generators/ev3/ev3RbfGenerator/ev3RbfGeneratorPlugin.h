@@ -44,8 +44,12 @@ private slots:
 	bool uploadProgram();
 
 private:
-	///Function that checks installed JRE or not
+	/// Function that checks installed JRE or not
 	bool javaInstalled();
+
+	bool copySystemFiles(const QString &destination);
+	bool compile(const QFileInfo &lmsFile);
+	bool upload(const QFileInfo &lmsFile);
 
 	/// Action that launches code generator
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.

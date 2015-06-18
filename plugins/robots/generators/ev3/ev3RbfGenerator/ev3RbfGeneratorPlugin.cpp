@@ -15,12 +15,12 @@
 #include "ev3RbfGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
-#include <QtCore/QDir>
+#include <QtCore/QDirIterator>
+#include <QtCore/QProcess>
+
+#include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
 
 #include "ev3RbfMasterGenerator.h"
-
-#include <QtCore/QProcess>
-#include <QtCore/QDebug>
 
 using namespace ev3::rbf;
 using namespace qReal;
@@ -37,6 +37,14 @@ Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
 	mUploadProgramAction->setText(tr("Upload program"));
 	mUploadProgramAction->setIcon(QIcon(":/ev3/images/uploadProgram.svg"));
 	connect(mUploadProgramAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::uploadProgram);
+
+	text::Languages::registerLanguage(text::LanguageInfo{ "rbf"
+			, tr("EV3 Source Code language")
+			, true
+			, 4
+			, QSharedPointer<QsciLexer>(nullptr)
+			, {}
+	});
 }
 
 QList<ActionInfo> Ev3RbfGeneratorPlugin::customActions()
@@ -51,7 +59,8 @@ QList<HotKeyActionInfo> Ev3RbfGeneratorPlugin::hotKeyActions()
 	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
 	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
 
-	HotKeyActionInfo generateActionInfo("Generator.GenerateEv3Rbf", tr("Generate Ev3 Robot Byte Code File"), mGenerateCodeAction);
+	HotKeyActionInfo generateActionInfo("Generator.GenerateEv3Rbf"
+			, tr("Generate Ev3 Robot Byte Code File"), mGenerateCodeAction);
 	HotKeyActionInfo uploadProgramInfo("Generator.UploadEv3", tr("Upload EV3 Program"), mUploadProgramAction);
 
 	return { generateActionInfo, uploadProgramInfo };
@@ -68,10 +77,9 @@ QString Ev3RbfGeneratorPlugin::defaultFilePath(QString const &projectName) const
 	return QString("ev3-rbf/%1/%1.lms").arg(projectName);
 }
 
-///todo: add info
 text::LanguageInfo Ev3RbfGeneratorPlugin::language() const
 {
-	return text::LanguageInfo();
+	return text::Languages::pickByExtension("rbf");
 }
 
 QString Ev3RbfGeneratorPlugin::generatorName() const
@@ -82,23 +90,80 @@ QString Ev3RbfGeneratorPlugin::generatorName() const
 bool Ev3RbfGeneratorPlugin::uploadProgram()
 {
 	if (!javaInstalled()) {
-		mMainWindowInterface->errorReporter()->addError(tr("Java JRE not found"));
+		mMainWindowInterface->errorReporter()->addError(tr("<a href=\"https://java.com/ru/download/\">Java</a> is "\
+				"not installed. Please download and install it."));
 		return false;
 	}
+
 	QFileInfo const fileInfo = generateCodeForProcessing();
-	qDebug() << fileInfo.absoluteFilePath();
-	qDebug() << fileInfo.absolutePath();
-	qDebug() << fileInfo.absoluteDir();
+	if (!fileInfo.exists()) {
+		return false;
+	}
+
+	if (!copySystemFiles(fileInfo.absolutePath())) {
+		mMainWindowInterface->errorReporter()->addError(tr("Can't write source code files to disk!"));
+	}
+
+	if (!compile(fileInfo)) {
+		mMainWindowInterface->errorReporter()->addError(tr("Compilation error occured."));
+	}
+
+	if (!upload(fileInfo)) {
+		mMainWindowInterface->errorReporter()->addError(tr("Could not upload file to robot. "\
+				"Connect to a robot via Bluetooth."));
+	}
+
 	return true;
 }
 
 bool Ev3RbfGeneratorPlugin::javaInstalled()
 {
-	QProcess myProcess;
-	myProcess.setEnvironment(QProcess::systemEnvironment());
-	myProcess.start("java");
-	myProcess.waitForFinished();
-	return !myProcess.readAllStandardError().isEmpty();
+	QProcess java;
+	java.setEnvironment(QProcess::systemEnvironment());
+
+	java.start("java");
+	java.waitForFinished();
+	return !java.readAllStandardError().isEmpty();
+}
+
+bool Ev3RbfGeneratorPlugin::copySystemFiles(const QString &destination)
+{
+	QDirIterator iterator(":/ev3Rbf/thirdparty");
+	while (iterator.hasNext()) {
+		const QFileInfo fileInfo(iterator.next());
+		const QString destFile = destination + "/" + fileInfo.fileName();
+		if (!QFile::exists(destFile) && !QFile::copy(fileInfo.absoluteFilePath(), destFile)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool Ev3RbfGeneratorPlugin::compile(const QFileInfo &lmsFile)
+{
+	QProcess java;
+	java.setEnvironment(QProcess::systemEnvironment());
+	java.setWorkingDirectory(lmsFile.absolutePath());
+	java.start("cmd /c java -jar assembler.jar " + lmsFile.absolutePath() + "/" + lmsFile.baseName());
+	java.waitForFinished();
+	return true;
+}
+
+bool Ev3RbfGeneratorPlugin::upload(const QFileInfo &lmsFile)
+{
+	const QString targetPath = "../prjs/" + lmsFile.baseName();
+	const QString rbfPath = lmsFile.absolutePath() + "/" + lmsFile.baseName() + ".rbf";
+	bool connected = false;
+	communication::BluetoothRobotCommunicationThread communicator;
+	connect(&communicator, &communication::BluetoothRobotCommunicationThread::connected
+			, [&connected](bool success, const QString &) { connected = success; });
+	communicator.connect();
+	if (connected) {
+		return communicator.uploadFile(rbfPath, targetPath);
+	}
+
+	return false;
 }
 
 generatorBase::MasterGeneratorBase *Ev3RbfGeneratorPlugin::masterGenerator()
