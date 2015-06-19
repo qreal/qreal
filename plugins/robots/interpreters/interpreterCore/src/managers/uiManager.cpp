@@ -53,6 +53,7 @@ UiManager::UiManager(QAction &debugModeAction
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::ensureDiagramVisible, this, &UiManager::ensureDiagramVisible);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
@@ -261,15 +262,29 @@ void UiManager::resetMainWindowCorners() const
 	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
 }
 
+void UiManager::ensureDiagramVisible()
+{
+	if (mCurrentMode == Mode::Editing) {
+		return;
+	}
+
+	// 2D model is placed into smart dock that may hide central widget if docked into TopDockWidgetArea.
+	// If we met such case then switching to editor mode.
+	for (utils::SmartDock * const twoDModel : mMainWindow.windowWidget()->findChildren<utils::SmartDock *>()) {
+		if (twoDModel->isCentral()) {
+			switchToEditorMode();
+			return;
+		}
+	}
+}
+
 void UiManager::hack2dModelDock() const
 {
 	// 2D model is placed into smart dock: it may be embedded into instance of QDialog
 	// that is not influeced by mMainWindow::restoreState. So we must first switch to a docked form
 	// and then restore docks state.
-	if (const QObject *window = dynamic_cast<QObject *>(&mMainWindow)) {
-		if (utils::SmartDock *twoDModel = window->findChild<utils::SmartDock *>()) {
-			twoDModel->switchToDocked();
-		}
+	if (utils::SmartDock * const twoDModel = mMainWindow.windowWidget()->findChild<utils::SmartDock *>()) {
+		twoDModel->switchToDocked();
 	}
 }
 

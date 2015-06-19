@@ -365,6 +365,7 @@ void MainWindow::selectItemWithError(const Id &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	emit mFacade.events().ensureDiagramVisible();
 	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
