@@ -27,35 +27,47 @@ namespace physics {
 class RealisticPhysicsEngine : public PhysicsEngineBase
 {
 public:
-	explicit RealisticPhysicsEngine(const WorldModel &worldModel, const Timeline &timeline);
+	explicit RealisticPhysicsEngine(const WorldModel &worldModel
+			, const QList<RobotModel *> &robots
+			, const Timeline &timeline);
 
-	void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
-			, bool engine1Break, bool engine2Break
-			, const QPointF &rotationCenter, qreal robotAngle
-			, const QPainterPath &robotBoundingPath) override;
+	QVector2D positionShift(RobotModel &robot) const override;
+	qreal rotation(RobotModel &robot) const override;
+	void recalculateParameters(qreal timeInterval) override;
+
+	void addRobot(RobotModel * const robot) override;
+	void removeRobot(RobotModel * const robot) override;
 
 private:
+	/// Recalculates parameters for one robot.
+	void recalculateParameters(qreal timeInterval, RobotModel &robot);
+
 	/// Counts and returns traction force vector taking into consideration engines speed and placement
 	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode
-			, const QPointF &rotationCenter, const QVector2D &direction);
+			, const QVector2D &direction, RobotModel &robot);
 
 	/// Applies all forces currently acting on robot
-	void recalculateVelocity(qreal timeInterval);
-	void applyRotationalFrictionForce(qreal timeInterval, const QVector2D &direction);
+	void recalculateVelocity(qreal timeInterval, RobotModel &robot);
+	void applyRotationalFrictionForce(qreal timeInterval, const QVector2D &direction, RobotModel &robot);
 
 	/// Calculates forces and force moments acting on the robot from the walls
 	void findCollision(const QPainterPath &robotBoundingRegion
-			, const QPainterPath &wallBoundingRegion, const QPointF &rotationCenter);
+			, const QPainterPath &wallBoundingRegion
+			, const QPointF &rotationCenter
+			, RobotModel &robot);
 
-	QVector2D mTractionForce;
-	QVector2D mReactionForce;
-	QVector2D mWallsFrictionForce;
-	QVector2D mGettingOutVector;
-	qreal mForceMomentDecrement;
-	qreal mForceMoment;
+	QMap<RobotModel *, QVector2D> mTractionForce;
+	QMap<RobotModel *, QVector2D> mReactionForce;
+	QMap<RobotModel *, QVector2D> mWallsFrictionForce;
+	QMap<RobotModel *, QVector2D> mGettingOutVector;
+	QMap<RobotModel *, qreal> mForceMomentDecrement;
+	QMap<RobotModel *, qreal> mForceMoment;
 
-	qreal mAngularVelocity;
-	QVector2D mVelocity;
+	QMap<RobotModel *, qreal> mAngularVelocity;
+	QMap<RobotModel *, QVector2D> mVelocity;
+
+	QMap<RobotModel *, QVector2D> mPositionShift;
+	QMap<RobotModel *, qreal> mRotation;
 };
 
 }

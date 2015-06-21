@@ -47,16 +47,17 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
-	setX2(x1() + robotWidth);
-	setY2(y1() + robotHeight);
+	const QSizeF robotSize = mRobotModel.info().size();
+	setX2(x1() + robotSize.width());
+	setY2(y1() + robotSize.height());
 	mMarkerPoint = QPointF(0, y2() / 2);  // Marker is situated behind the robot
 	QPen pen(this->pen());
 	pen.setWidth(defaultTraceWidth);
 	setPen(pen);
 
-	setTransformOriginPoint(rotatePoint);
+	setTransformOriginPoint(mRobotModel.info().rotationCenter());
 	mBeepItem->setParentItem(this);
-	mBeepItem->setPos((robotWidth - beepWavesSize) / 2, (robotHeight - beepWavesSize) / 2);
+	mBeepItem->setPos((robotSize.width() - beepWavesSize) / 2, (robotSize.height() - beepWavesSize) / 2);
 	mBeepItem->setVisible(false);
 
 	RotateItem::init();

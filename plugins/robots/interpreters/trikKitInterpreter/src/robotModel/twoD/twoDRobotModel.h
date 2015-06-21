@@ -37,6 +37,9 @@ public:
 	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> specialDevices() const override;
 	QPair<QPoint, qreal> specialDeviceConfiguration(const kitBase::robotModel::PortInfo &port) const override;
 
+	qreal mass() const override;
+	qreal onePercentAngularVelocity() const override;
+
 	void setWheelPorts(const QString &leftWheelPort, const QString &rightWheelPort);
 
 	QHash<QString, int> buttonCodes() const override;

@@ -170,6 +170,16 @@ QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &
 	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }
 
+qreal TwoDRobotModel::mass() const
+{
+	return 1.05;
+}
+
+qreal TwoDRobotModel::onePercentAngularVelocity() const
+{
+	return 0.0055;
+}
+
 QHash<QString, int> TwoDRobotModel::buttonCodes() const
 {
 	QHash<QString, int> result;

@@ -21,9 +21,6 @@ namespace twoDModel {
 
 const qreal lowPrecision = 0.00001;
 
-const qreal robotWidth = 50;
-const qreal robotHeight = 50;
-const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 const QSize displaySize(200, 300);
 const qreal beepWavesSize = 120;
 
@@ -46,7 +43,6 @@ const qreal spoilSonarDispersion = 1.5;
 const qreal varySpeedDispersion = 0.0125;
 const qreal percentSaltPepperNoise = 20.0;
 
-const qreal robotMass = 800;
 const qreal robotInertialMoment = 20;
 const qreal reactionForceStabilizationCoefficient = 20;
 const qreal floorFrictionCoefficient = 0.2;
@@ -54,7 +50,7 @@ const qreal wallFrictionCoefficient = 0.2;
 const qreal rotationalFrictionFactor = 1500;
 const qreal angularVelocityFrictionFactor = 200;
 
-const qreal onePercentAngularVelocity = 0.0055;
+//const qreal onePercentAngularVelocity = 0.0055;
 const int maxLightSensorValur = 1023;
 const int touchSensorPressedSignal = 1;
 const int touchSensorNotPressedSignal = 0;

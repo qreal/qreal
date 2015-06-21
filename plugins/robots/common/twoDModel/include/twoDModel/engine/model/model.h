@@ -95,6 +95,9 @@ signals:
 	/// @param robotModel Pointer to robot model which was added
 	void robotRemoved(RobotModel *robotModel);
 
+private slots:
+	void resetPhysics();
+
 private:
 	int findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel);
 
@@ -104,6 +107,7 @@ private:
 	QScopedPointer<constraints::ConstraintsChecker> mChecker;
 	QList<RobotModel *> mRobotModels;
 	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn`t take ownership.
+	physics::PhysicsEngineBase *mPhysicsEngine;  // Takes ownership.
 };
 
 }

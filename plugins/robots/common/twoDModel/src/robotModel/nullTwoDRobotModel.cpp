@@ -59,3 +59,13 @@ twoDModel::engine::TwoDModelDisplayWidget *NullTwoDRobotModel::displayWidget() c
 {
 	return mDisplayWidget;
 }
+
+qreal NullTwoDRobotModel::mass() const
+{
+	return 0.3;  // 300 grams
+}
+
+qreal NullTwoDRobotModel::onePercentAngularVelocity() const
+{
+	return 0.005;
+}

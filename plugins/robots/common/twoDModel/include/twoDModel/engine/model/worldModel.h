@@ -36,12 +36,19 @@ class RegionItem;
 
 namespace model {
 
+namespace physics {
+class PhysicsEngineBase;
+}
+
 class TWO_D_MODEL_EXPORT WorldModel : public QObject
 {
 	Q_OBJECT
 
 public:
 	WorldModel();
+
+	/// Returns a number of pixels in 1 cm. This value may change, pixelsInCmChanged() signal will then be emitted.
+	qreal pixelsInCm() const;
 
 	/// Measures the distance between robot and wall
 	int sonarReading(const QPointF &position, qreal direction) const;
@@ -84,6 +91,9 @@ public:
 	QGraphicsItem *findId(const QString &id);
 
 signals:
+	/// Emitted when current metrics system conversion constant has changed.
+	void pixelsInCmChanged(qreal newValue);
+
 	/// Emitted each time when model is appended with some new wall.
 	void wallAdded(items::WallItem *item);
 
@@ -109,6 +119,7 @@ private:
 	QList<items::ColorFieldItem *> mColorFields;
 	QList<QGraphicsLineItem *> mRobotTrace;
 	QList<items::RegionItem *> mRegions;
+	physics::PhysicsEngineBase *mPhysicsEngine;  // Does not take ownership
 };
 
 }

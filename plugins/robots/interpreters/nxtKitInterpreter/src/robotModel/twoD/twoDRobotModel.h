@@ -33,6 +33,9 @@ public:
 	twoDModel::engine::TwoDModelDisplayWidget *displayWidget() const override;
 	QRect sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const;
 
+	qreal mass() const override;
+	qreal onePercentAngularVelocity() const override;
+
 protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port

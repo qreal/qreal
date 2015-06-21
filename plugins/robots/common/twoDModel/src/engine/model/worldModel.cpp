@@ -38,6 +38,11 @@ WorldModel::WorldModel()
 {
 }
 
+qreal WorldModel::pixelsInCm() const
+{
+	return twoDModel::pixelsInCm;
+}
+
 int WorldModel::sonarReading(const QPointF &position, qreal direction) const
 {
 	int maxSonarRangeCms = 255;
@@ -77,7 +82,7 @@ QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, int range)
 QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, qreal direction, int range) const
 {
 	const qreal rayWidthDegrees = 10.0;
-	const qreal rangeInPixels = range * pixelsInCm;
+	const qreal rangeInPixels = range * pixelsInCm();
 
 	QPainterPath rayPath;
 	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
