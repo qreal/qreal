@@ -24,8 +24,12 @@
 using namespace graphicsUtils;
 
 AbstractItem::AbstractItem(QGraphicsItem* parent)
-	: QGraphicsObject(parent), mDragState(None)
-	, mX1(0), mY1(0), mX2(0), mY2(0), mView(nullptr)
+	: QGraphicsObject(parent)
+	, mDragState(None)
+	, mX1(0)
+	, mY1(0)
+	, mX2(0)
+	, mY2(0)
 	, mEditable(true)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
