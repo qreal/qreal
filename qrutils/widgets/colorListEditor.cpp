@@ -30,7 +30,7 @@ ColorListEditor::ColorListEditor(QWidget *widget, bool minimalistic)
 		});
 	}
 
-	connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=]() {
+	connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [=]() {
 		emit colorChanged(color());
 	});
 }
