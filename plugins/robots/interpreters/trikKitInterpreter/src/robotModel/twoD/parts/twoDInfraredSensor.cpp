@@ -31,5 +31,5 @@ TwoDInfraredSensor::TwoDInfraredSensor(const kitBase::robotModel::DeviceInfo &in
 
 void TwoDInfraredSensor::read()
 {
-	emit newData(mEngine.readSonarSensor(port()));
+	emit newData(qBound(0, mEngine.readSonarSensor(port()), 100));
 }
