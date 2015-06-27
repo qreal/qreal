@@ -27,9 +27,9 @@ static const qReal::Id subprogramDiagramType = qReal::Id("RobotsMetamodel", "Rob
 ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelManager &robotModelManager)
 	: mKitPluginManager(kitPluginManager)
 	, mRobotModelManager(robotModelManager)
-	, mRunAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr)
-	, mStopRobotAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr)
-	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
+	, mRunAction(QIcon(":/icons/robots_run.svg"), QObject::tr("Run"), nullptr)
+	, mStopRobotAction(QIcon(":/icons/robots_stop.svg"), QObject::tr("Stop robot"), nullptr)
+	, mConnectToRobotAction(QIcon(":/icons/robots_connect.svg"), QObject::tr("Connect to robot"), nullptr)
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
 	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
 	, mDebugModeAction(QObject::tr("Switch to debug mode"), nullptr)
@@ -86,6 +86,7 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	QList<qReal::HotKeyActionInfo> result;
 
 	result += mPluginHotKeyActionInfos;
+	result += mAdditionalHotKeyInfos;
 
 	result
 			<< qReal::HotKeyActionInfo("Editor.EditMode", mEditModeAction.text(), &mEditModeAction)
@@ -137,6 +138,11 @@ QAction &ActionsManager::debugModeAction()
 QAction &ActionsManager::editModeAction()
 {
 	return mEditModeAction;
+}
+
+void ActionsManager::appendHotKey(const QString &actionId, const QString &label, QAction &action)
+{
+	mAdditionalHotKeyInfos << qReal::HotKeyActionInfo(actionId, label, &action);
 }
 
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)

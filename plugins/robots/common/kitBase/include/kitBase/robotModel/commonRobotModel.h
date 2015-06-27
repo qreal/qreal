@@ -96,12 +96,6 @@ protected:
 	/// Configures devices that can be configured automaticly (non-user configured, such as display and speakers)
 	virtual void configureKnownDevices();
 
-private slots:
-	void onConnected(bool success);
-
-	void onDisconnected();
-
-private:
 	/// Device factory. Shall be reimplemented to create concrete devices on given port by given device info.
 	/// If device is unknown to a model, shall throw exception, as a list of available devices is provided by model
 	/// itself by allowedDevices() method. Implementation must not take ownership on created devices, it will be taken
@@ -109,6 +103,12 @@ private:
 	/// @todo: see what`s with ownership
 	virtual robotParts::Device *createDevice(const PortInfo &port, const DeviceInfo &deviceInfo);
 
+private slots:
+	void onConnected(bool success);
+
+	void onDisconnected();
+
+private:
 	/// Shows which types of devices can be connected to which ports.
 	/// @todo Add a notion of direction.
 	QHash<PortInfo, QList<DeviceInfo>> mAllowedConnections;

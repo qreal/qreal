@@ -17,8 +17,8 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-#include <math.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/mathUtils/geometry.h>
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -241,7 +241,12 @@ void WallItem::recalculateBorders()
 {
 	QPainterPath wallPath;
 	wallPath.moveTo(begin());
-	wallPath.lineTo(end());
+
+	if (mathUtils::Geometry::eq(begin(), end())) {
+		wallPath.lineTo(end().x() + 0.1, end().y());
+	} else {
+		wallPath.lineTo(end());
+	}
 
 	QPainterPathStroker stroker;
 	stroker.setWidth(wallWidth * 3 / 2);

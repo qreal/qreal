@@ -27,10 +27,10 @@ RandomInitGenerator::RandomInitGenerator(const qrRepo::RepoApi &repo
 					, "Variable"
 					, customizer.factory()->functionBlockConverter(id, "Variable"))
 				, Binding::createStaticConverting("@@FROM@@"
-					, repo.property(id, "From").toString()
+					, repo.property(id, "LowerBound").toString()
 					, customizer.factory()->functionBlockConverter(id, "LowerBound"))
 				, Binding::createStaticConverting("@@TO@@"
-					, repo.property(id, "To").toString()
+					, repo.property(id, "UpperBound").toString()
 					, customizer.factory()->functionBlockConverter(id, "UpperBound")) }
 			, parent)
 {

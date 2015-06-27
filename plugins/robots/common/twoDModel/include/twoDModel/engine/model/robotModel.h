@@ -149,6 +149,9 @@ signals:
 	/// Emitted when robot rided himself (moved on motors force, not dragged by user or smth) from one point to other.
 	void robotRided(const QPointF &newPosition, const qreal newRotation);
 
+	/// Same as robotRided(), but emitted each timeline tick (robotRided() emitted each frame).
+	void positionRecalculated(const QPointF &newPosition, const qreal newRotation);
+
 	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.
 	void playingSoundChanged(bool playing);
 

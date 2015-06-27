@@ -189,6 +189,14 @@
     </message>
 </context>
 <context>
+    <name>kitBase::robotModel::robotParts::Shell</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/shell.h" line="28"/>
+        <source>Shell</source>
+        <translation>Консоль</translation>
+    </message>
+</context>
+<context>
     <name>kitBase::robotModel::robotParts::SoundSensor</name>
     <message>
         <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/soundSensor.h" line="30"/>

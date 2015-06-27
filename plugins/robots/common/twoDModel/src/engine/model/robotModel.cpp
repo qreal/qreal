@@ -262,6 +262,7 @@ void RobotModel::nextStep()
 	// Changing position quietly, they must not be caught by UI here.
 	mPos += mPhysicsEngine->positionShift(*this).toPointF();
 	mAngle += mPhysicsEngine->rotation(*this);
+	emit positionRecalculated(mPos, mAngle);
 }
 
 void RobotModel::recalculateParams()

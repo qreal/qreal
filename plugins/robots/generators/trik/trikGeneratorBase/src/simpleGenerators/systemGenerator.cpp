@@ -29,8 +29,11 @@ SystemGenerator::SystemGenerator(const qrRepo::RepoApi &repo
 			, { repo.property(id, "Code").toBool()
 					? Binding::createStatic("@@COMMAND@@"
 							, utils::StringUtils::dequote(repo.property(id, "Command").toString()))
-					: Binding::createConverting("@@COMMAND@@", "Command"
-							, customizer.factory()->stringPropertyConverter(id, "Command"))
+					: repo.property(id, "Evaluate").toBool()
+							? Binding::createConverting("@@COMMAND@@", "Command"
+									, customizer.factory()->stringPropertyConverter(id, "Command"))
+							: Binding::createStatic("@@COMMAND@@"
+									, utils::StringUtils::wrap(repo.property(id, "Command").toString()))
 			}
 			, parent)
 {

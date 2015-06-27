@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,26 @@
 
 #pragma once
 
-#include <trikKit/robotModel/trikRobotModelBase.h>
+#include <trikKit/robotModel/parts/trikShell.h>
 
 namespace trik {
-namespace robotModel {
+namespace qts {
 
-class TrikGeneratorRobotModel : public TrikRobotModelBase
+class EmptyShell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
 
 public:
-	TrikGeneratorRobotModel(const QString &kitId, const QString &robotId
-			, const QString &name, const QString &friendlyName, int priority);
+	EmptyShell(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
 
-	QString name() const override;
-	QString friendlyName() const override;
-
-	bool needsConnection() const override;
-	bool interpretedModel() const override;
-
-	int priority() const override;
-
-private:
-	const QString mName;
-	const QString mFriendlyName;
-	const int mPriority;
+public slots:
+	void print(const QString &text) override;
+	void runCommand(const QString &command) override;
+	void runCode(const QString &code) override;
+	void say(const QString &text) override;
+	void writeToFile(const QString &filePath, const QString &text) override;
+	void removeFile(const QString &filePath) override;
 };
 
 }
