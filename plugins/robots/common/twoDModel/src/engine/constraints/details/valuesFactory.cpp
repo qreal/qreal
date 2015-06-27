@@ -101,7 +101,7 @@ Value ValuesFactory::timestamp(const utils::TimelineInterface &timeline) const
 	return [&timeline]() { return timeline.timestamp(); };
 }
 
-void ValuesFactory::reportError(const QString &message)
+void ValuesFactory::reportError(const QString &message) const
 {
 	emit mStatus.checkerError(message);
 }

@@ -17,6 +17,9 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/widgets/consoleDock.h>
 #include <kitBase/robotModel/portInfo.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelGuiFacade.h>
+#include <twoDModel/robotModel/twoDRobotModel.h>
 
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "src/ui/robotsSettingsPage.h"
@@ -168,6 +171,15 @@ interpreterCore::Customizer &RobotsPluginFacade::customizer()
 ActionsManager &RobotsPluginFacade::actionsManager()
 {
 	return mActionsManager;
+}
+
+QObject *RobotsPluginFacade::guiScriptFacade() const
+{
+	if (auto robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(&mRobotModelManager.model())) {
+		return &robotModel->engine()->guiFacade();
+	}
+
+	return nullptr;
 }
 
 QStringList RobotsPluginFacade::defaultSettingsFiles() const

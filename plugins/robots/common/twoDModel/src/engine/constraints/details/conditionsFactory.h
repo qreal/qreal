@@ -74,7 +74,7 @@ public:
 	Condition timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event) const;
 
 private:
-	void reportError(const QString &message);
+	void reportError(const QString &message) const;
 
 	Events &mEvents;
 	const Variables &mVariables;

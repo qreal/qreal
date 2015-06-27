@@ -117,14 +117,17 @@ QIcon NxtOsekCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::Ro
 
 void NxtOsekCGeneratorPlugin::initActions()
 {
+	mGenerateCodeAction->setObjectName("generateCode");
 	mGenerateCodeAction->setText(tr("Generate code"));
 	mGenerateCodeAction->setIcon(QIcon(":/nxt/osek/images/generateOsekCode.svg"));
 	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
+	mFlashRobotAction->setObjectName("flashRobot");
 	mFlashRobotAction->setText(tr("Flash robot"));
 	mFlashRobotAction->setIcon(QIcon(":/nxt/osek/images/flashRobot.svg"));
 	connect(mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
 
+	mUploadProgramAction->setObjectName("uploadProgram");
 	mUploadProgramAction->setText(tr("Upload program"));
 	mUploadProgramAction->setIcon(QIcon(":/nxt/osek/images/run.png"));
 	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));

@@ -38,6 +38,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mSeparator2(nullptr)
 {
 	initKitPluginActions();
+	giveObjectNames();
 
 	mConnectToRobotAction.setCheckable(true);
 
@@ -57,6 +58,14 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 
 	mStopRobotAction.setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	mRunAction.setShortcut(QKeySequence(Qt::Key_F5));
+}
+
+void ActionsManager::giveObjectNames()
+{
+	mRunAction.setObjectName("runRobot");
+	mStopRobotAction.setObjectName("stopRobot");
+	mConnectToRobotAction.setObjectName("connectToRobot");
+	mRobotSettingsAction.setObjectName("robotSettings");
 }
 
 QList<qReal::ActionInfo> ActionsManager::actions()
