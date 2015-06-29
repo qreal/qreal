@@ -60,6 +60,14 @@ public:
 	/// @param widthFactor ratio of a return area width to width of sensor image.
 	virtual QImage areaUnderSensor(const kitBase::robotModel::PortInfo &port, qreal widthFactor) const = 0;
 
+	/// Starts drawing sound waves of time thus showing that the robot plays some sound.
+	/// They may be cancelled using stopSound() method.
+	virtual void startSound() = 0;
+
+	/// Hides sound waves of the robot if they are currently drawn (even if they were created with playSound() method)
+	/// or otherwise does noting.
+	virtual void stopSound() = 0;
+
 	/// Draws sound waves during the given amount of time thus showing that the robot plays some sound.
 	virtual void playSound(int timeInMs) = 0;
 

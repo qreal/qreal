@@ -13,6 +13,7 @@ cp    $BIN_DIR/robots-trik-kit.dll                                              
 
 
 cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data
+cp    $QT_DIR/bin/Qt5Multimedia.dll                                               $PWD/../data
 
 function checkout_tag_or_warn { { PATTERN=$'\n'$1$'\n'; echo "$'\n'$(git tag)$'\n'" | grep -E $PATTERN; } && git checkout $1 || echo "Warning: TRIKRuntime doesn't have tag "$1; }
 

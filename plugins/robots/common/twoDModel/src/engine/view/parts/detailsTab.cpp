@@ -26,14 +26,17 @@ DetailsTab::DetailsTab(QWidget *parent)
 	, mDevicesRoot(new QTreeWidgetItem(this))
 	, mMotorsRoot(new QTreeWidgetItem(this))
 	, mPhysicsRoot(new QTreeWidgetItem(this))
+	, mSoundRoot(new QTreeWidgetItem(this))
 	, mDisplayItem(new QTreeWidgetItem(mDisplayRoot))
 	, mDevicesItem(new QTreeWidgetItem(mDevicesRoot))
 	, mMotorsItem(new QTreeWidgetItem(mMotorsRoot))
 	, mPhysicsItem(new QTreeWidgetItem(mPhysicsRoot))
+	, mSoundItem(new QTreeWidgetItem(mSoundRoot))
 	, mDisplay(nullptr)
 	, mDevices(nullptr)
 	, mMotors(nullptr)
 	, mPhysics(nullptr)
+	, mSound(nullptr)
 {
 	initWidget();
 
@@ -41,6 +44,7 @@ DetailsTab::DetailsTab(QWidget *parent)
 	initItem(mDevicesRoot, tr("Ports configuration"), true);
 	initItem(mMotorsRoot, tr("Motors"), false);
 	initItem(mPhysicsRoot, tr("Physics"), false);
+	initItem(mSoundRoot, tr("Sound"), false);
 }
 
 DetailsTab::~DetailsTab()
@@ -102,6 +106,12 @@ void DetailsTab::setPhysicsSettings(QWidget *widget)
 {
 	mPhysics = widget;
 	setItemWidget(mPhysicsItem, 0, widget);
+}
+
+void DetailsTab::setSoundSettings(QWidget *widget)
+{
+	mSound = widget;
+	setItemWidget(mSoundItem, 0, widget);
 }
 
 void DetailsTab::setDevicesSectionsVisible(bool visible)

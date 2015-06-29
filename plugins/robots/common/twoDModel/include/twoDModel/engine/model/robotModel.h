@@ -65,6 +65,7 @@ public:
 	void clear();
 	void stopRobot();
 	void playSound(int timeInMs);
+	void stopSound();
 
 	void setNewMotor(int speed, uint degrees, const kitBase::robotModel::PortInfo &port, bool breakMode);
 

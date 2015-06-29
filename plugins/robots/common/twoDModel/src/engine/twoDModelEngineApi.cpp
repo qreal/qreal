@@ -181,6 +181,16 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	return rotated.copy(realImage);
 }
 
+void TwoDModelEngineApi::startSound()
+{
+	playSound(INT_MAX);
+}
+
+void TwoDModelEngineApi::stopSound()
+{
+	mModel.robotModels()[0]->stopSound();
+}
+
 int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
 {
 	if (countsColor.isEmpty()) {

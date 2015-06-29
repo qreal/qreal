@@ -247,7 +247,6 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 
 	if (mRobotModelManager->model().name().contains("TwoD")) {
 		result
-				<< id("TrikPlayTone")
 				<< id("TrikWaitForGyroscope")
 				<< id("TrikWaitForAccelerometer")
 				<< id("TrikSay")

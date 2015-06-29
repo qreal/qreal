@@ -29,7 +29,14 @@ public:
 	TrikSpeaker(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port);
 
+	/// Plays the given sound file asynchroniously. When sound file is played to the end finished() signal
+	/// will be emitted. If something went wrong error() signal will be thrown with message as argument.
+	/// @todo: Implement both asynchronious and synchronious modes?
 	virtual void play(const QString &filePath) = 0;
+
+signals:
+	/// Emitted when currently played sound file has been played to the end.
+	void finished();
 };
 
 }

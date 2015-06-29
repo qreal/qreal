@@ -24,8 +24,13 @@ SpeakerBlock::SpeakerBlock(RobotModelInterface &robotModel)
 
 void SpeakerBlock::doJob(robotModel::parts::TrikSpeaker &speaker)
 {
+	connect(&speaker, &robotModel::parts::TrikSpeaker::finished, this, &SpeakerBlock::jobDone, Qt::UniqueConnection);
+	connect(&speaker, &robotModel::parts::TrikSpeaker::error, this, &SpeakerBlock::error, Qt::UniqueConnection);
 	const QString toSpeak = stringProperty("FileName");
 	speaker.play(toSpeak);
+}
 
+void SpeakerBlock::jobDone()
+{
 	emit done(mNextBlockId);
 }

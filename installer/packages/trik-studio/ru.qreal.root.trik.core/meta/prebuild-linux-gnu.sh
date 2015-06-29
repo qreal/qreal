@@ -10,3 +10,4 @@ cp -pr $BIN_DIR/librobots-trik-generator-base.so*                               
 cp -pr $BIN_DIR/librobots-trik-kit.so*                                                 $PWD/../data/
 
 cp -pr $QT_DIR/lib/libQt5Network.so*                                                   $PWD/../data
+cp -pr $QT_DIR/lib/libQt5Multimedia.so*                                                $PWD/../data
