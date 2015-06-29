@@ -20,7 +20,9 @@ links(qrkernel qrutils qrgui-tool-plugin-interface robots-utils robots-kit-base)
 includes(plugins/robots/common/kitBase)
 includes(plugins/robots/utils qrtext)
 
-TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModel_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModel_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/twoDModel_fr.ts \
 
 HEADERS += \
 	$$PWD/include/twoDModel/twoDModelDeclSpec.h \
