@@ -115,6 +115,11 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	mModel.timeline().setSpeedFactor(speedFactors[defaultSpeedFactorIndex]);
 	checkSpeedButtons();
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
+
+	mUi->horizontalRuler->setScene(mUi->graphicsView);
+	mUi->verticalRuler->setScene(mUi->graphicsView);
+	mUi->horizontalRuler->setPixelsInCm(pixelsInCm);
+	mUi->verticalRuler->setPixelsInCm(pixelsInCm);
 }
 
 TwoDModelWidget::~TwoDModelWidget()
@@ -161,6 +166,19 @@ void TwoDModelWidget::initWidget()
 
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, [=]() {
+		const bool gridVisible = SettingsManager::value("2dShowGrid").toBool();
+		mUi->horizontalRuler->setVisible(gridVisible);
+		mUi->verticalRuler->setVisible(gridVisible);
+	});
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->horizontalRuler, SLOT(update()));
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));
+	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->horizontalRuler, SLOT(update()));
+	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->verticalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->horizontalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->verticalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(contentsRectChanged()), mUi->horizontalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(contentsRectChanged()), mUi->verticalRuler, SLOT(update()));
 }
 
 void TwoDModelWidget::initPalette()

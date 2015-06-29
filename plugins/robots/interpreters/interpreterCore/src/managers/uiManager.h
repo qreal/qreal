@@ -71,6 +71,7 @@ private slots:
 	void reloadDocks() const;
 	void reloadDocksSavingToolbarsAndErrors() const;
 	void resetMainWindowCorners() const;
+	void ensureDiagramVisible();
 
 private:
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
