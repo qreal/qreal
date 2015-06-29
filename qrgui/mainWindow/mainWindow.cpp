@@ -369,6 +369,7 @@ void MainWindow::selectItemWithError(const Id &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	emit mFacade.events().ensureDiagramVisible();
 	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
@@ -2027,7 +2028,7 @@ QByteArray MainWindow::saveState(int version) const
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
 	const bool result = QMainWindow::restoreState(state, version);
-	if (!mUi->errorListWidget->count() > 0) {
+	if (mUi->errorListWidget->count() == 0) {
 		mUi->errorDock->hide();
 	}
 

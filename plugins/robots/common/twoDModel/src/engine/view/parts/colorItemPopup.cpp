@@ -59,7 +59,9 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	// Subsequent setting values to editors will cause theese values loss. Saving it here.
 	const QColor lastColorBackup = mLastColor;
 	const int lastThicknessBackup = mLastThickness;
+
 	blockSignals(true);
+	mSpinBox->blockSignals(true);
 
 	mColorPicker->setColor(dominantPropertyValue("color").value<QColor>());
 	mSpinBox->setValue(dominantPropertyValue("thickness").toInt());
@@ -67,7 +69,9 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	// Restoring values that really were picked by user.
 	mLastColor = lastColorBackup;
 	mLastThickness = lastThicknessBackup;
+
 	blockSignals(false);
+	mSpinBox->blockSignals(false);
 
 	return true;
 }

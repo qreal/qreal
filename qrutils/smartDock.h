@@ -45,6 +45,9 @@ public:
 	SmartDock(const QString &objectName, QWidget *innerWidget, QMainWindow *parent = nullptr);
 	~SmartDock();
 
+	/// Returns true if this widget is currently replacing main window central area.
+	bool isCentral() const;
+
 public slots:
 	/// Embeds inner widget into this dock widget instance, docks it to some panel.
 	void switchToDocked();

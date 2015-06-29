@@ -1,5 +1,5 @@
 ActivateGrid=true
-ActivateAlignment=true
+ActivateAlignment=false
 Antialiasing=true
 arrangeLinks=true
 Autosave=true
@@ -38,7 +38,7 @@ pathToMake=
 pluginExtension=
 pos=@Point(0 0)
 prefix=
-ShowAlignment=true
+ShowAlignment=false
 ShowGrid=true
 size=@Size(1024 800)
 Splashscreen=true

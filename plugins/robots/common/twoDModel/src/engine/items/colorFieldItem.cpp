@@ -32,9 +32,7 @@ QColor ColorFieldItem::color() const
 
 void ColorFieldItem::setColor(const QColor &color)
 {
-	QPen pen(this->pen());
-	pen.setColor(color);
-	setPen(pen);
+	setPenColor(color.name());
 	update();
 }
 
@@ -45,8 +43,6 @@ int ColorFieldItem::thickness() const
 
 void ColorFieldItem::setThickness(int thickness)
 {
-	QPen pen(this->pen());
-	pen.setWidth(thickness);
-	setPen(pen);
+	setPenWidth(thickness);
 	update();
 }

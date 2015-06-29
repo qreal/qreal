@@ -44,6 +44,13 @@ SmartDock::~SmartDock()
 	delete mDialog;
 }
 
+bool SmartDock::isCentral() const
+{
+	return !isFloating() && isVisible()
+			// I know that const_cast is bad, but this is beacuse of bad qt design.
+			&& mMainWindow->dockWidgetArea(const_cast<SmartDock *>(this)) == Qt::TopDockWidgetArea;
+}
+
 void SmartDock::switchToDocked()
 {
 	if (mCurrentMode == Mode::Docked) {
