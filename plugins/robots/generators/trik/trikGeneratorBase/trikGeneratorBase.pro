@@ -33,7 +33,9 @@ links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \

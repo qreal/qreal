@@ -57,7 +57,9 @@ FORMS += \
 
 RESOURCES = $$PWD/qrutils.qrc
 
-TRANSLATIONS = $$PWD/../qrtranslations/ru/qrutils_ru.ts
+TRANSLATIONS = \
+	$$PWD/../qrtranslations/ru/qrutils_ru.ts \
+	$$PWD/../qrtranslations/fr/qrutils_fr.ts \
 
 QT += xml widgets
 

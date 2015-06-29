@@ -106,4 +106,6 @@ FORMS += \
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
-TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikKitInterpreter_fr.ts \
