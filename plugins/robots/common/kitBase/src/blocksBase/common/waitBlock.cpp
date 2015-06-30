@@ -56,7 +56,9 @@ void WaitBlock::processResponce(int reading, int targetValue)
 void WaitBlock::stop()
 {
 	mActiveWaitingTimer.stop();
-	emit done(mNextBlockId);
+	// Emitting done() immediately will switch current block right during SensorVariablesUpdater
+	// doing his job. This may cause bad side effects.
+	QTimer::singleShot(0, [this]() { emit done(mNextBlockId); });
 }
 
 void WaitBlock::failureSlot()
