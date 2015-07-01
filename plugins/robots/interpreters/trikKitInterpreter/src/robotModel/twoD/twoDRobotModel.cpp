@@ -46,6 +46,7 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
 	, mDisplayWidget(new TrikDisplayWidget())
+	, mErrorReporter(nullptr)
 {
 }
 
@@ -60,7 +61,7 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {
-		return new parts::Shell(deviceInfo, port);
+		return new parts::Shell(deviceInfo, port, *mErrorReporter);
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikInfraredSensor>()) {
@@ -181,4 +182,9 @@ QHash<QString, int> TwoDRobotModel::buttonCodes() const
 	result["PowerButton"] = 116;
 	result["EscButton"] = 1;
 	return result;
+}
+
+void TwoDRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
 }

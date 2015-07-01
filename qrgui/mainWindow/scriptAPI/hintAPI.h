@@ -14,7 +14,8 @@
 
 #pragma once
 
-#include <toolPluginInterface/usedInterfaces/hintInterface.h>
+
+#include <QtCore/QObject>
 
 namespace qReal {
 namespace gui {
@@ -25,7 +26,7 @@ class ScriptAPI;
 
 /// This class provides scripting access to hinting features in system API. Allows to show beautiful bubbling messages
 /// and arrows pointing given widgets.
-class HintAPI : public QObject, public HintInterface
+class HintAPI : public QObject
 {
 	Q_OBJECT
 

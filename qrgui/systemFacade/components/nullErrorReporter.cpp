@@ -42,6 +42,12 @@ void NullErrorReporter::addCritical(const QString &message, const Id &position)
 	mWereErrors = true;
 }
 
+void NullErrorReporter::sendBubblingMessage(const QString &message, int duration)
+{
+	Q_UNUSED(message)
+	Q_UNUSED(duration)
+}
+
 bool NullErrorReporter::wereErrors()
 {
 	return mWereErrors;

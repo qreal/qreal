@@ -21,6 +21,7 @@
 #include <qrkernel/exception/exception.h>
 
 #include "mainWindow/errorListWidget.h"
+#include "scriptAPI/hintReporter.h"
 
 using namespace qReal;
 using namespace gui;
@@ -127,6 +128,14 @@ bool ErrorReporter::wereErrors()
 		}
 	}
 	return false;
+}
+
+void ErrorReporter::sendBubblingMessage(const QString &message, int duration)
+{
+	// A bit hacky, but not criminal way to get main window.
+	QWidget * const mainWindow = mErrorListWidget->topLevelWidget();
+	// The message will show and dispose itself.
+	new HintReporter(mainWindow, message, duration);
 }
 
 void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorListWidget) const

@@ -16,11 +16,15 @@
 
 #include <QtCore/QFile>
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 using namespace trik::robotModel::twoD::parts;
 
 Shell::Shell(const kitBase::robotModel::DeviceInfo &info
-		, const kitBase::robotModel::PortInfo &port)
+		, const kitBase::robotModel::PortInfo &port
+		, qReal::ErrorReporterInterface &errorReporter)
 	: robotModel::parts::TrikShell(info, port)
+	, mErrorReporter(errorReporter)
 {
 }
 
@@ -36,7 +40,7 @@ void Shell::runCode(const QString &code)
 
 void Shell::say(const QString &text)
 {
-	Q_UNUSED(text)
+	mErrorReporter.sendBubblingMessage(text, 4000);
 }
 
 void Shell::writeToFile(const QString &filePath, const QString &text)

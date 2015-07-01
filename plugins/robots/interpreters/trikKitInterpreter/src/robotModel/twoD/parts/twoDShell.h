@@ -16,6 +16,10 @@
 
 #include <trikKit/robotModel/parts/trikShell.h>
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
 namespace trik {
 namespace robotModel {
 namespace twoD {
@@ -27,7 +31,8 @@ class Shell : public robotModel::parts::TrikShell
 	Q_OBJECT
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port);
+			, const kitBase::robotModel::PortInfo &port
+			, qReal::ErrorReporterInterface &errorReporter);
 
 	void runCommand(const QString &command) override;
 	void runCode(const QString &code) override;
@@ -35,6 +40,9 @@ public:
 	void writeToFile(const QString &filePath, const QString &text) override;
 	void removeFile(const QString &filePath) override;
 	void print(const QString &text) override;
+
+private:
+	qReal::ErrorReporterInterface &mErrorReporter;
 };
 
 }
