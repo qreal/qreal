@@ -184,6 +184,10 @@ void TouchSupportManager::processGestureState(QGesture *gesture)
 
 bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 {
+	if (event->device()->type() == 1) {
+		return false;
+	}
+
 	event->accept();
 	mGestureIsRunning = event->type() != QEvent::TouchEnd;
 	mEditorView->setDragMode(QGraphicsView::NoDrag);
