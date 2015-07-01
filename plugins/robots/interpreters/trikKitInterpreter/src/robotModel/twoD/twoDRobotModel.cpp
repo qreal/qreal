@@ -46,7 +46,6 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
 	, mDisplayWidget(new TrikDisplayWidget())
-	, mErrorReporter(nullptr)
 {
 }
 
@@ -61,7 +60,11 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {
-		return new parts::Shell(deviceInfo, port, *mErrorReporter);
+		parts::Shell * const shell = new parts::Shell(deviceInfo, port, *engine());
+		// Error reporter will come only after global plugin init() is called. Shell is however
+		// configured even later. So setting error reporter only when everything will be ready.
+		connect(shell, &parts::Shell::configured, [=]() { shell->setErrorReporter(*mErrorReporter); });
+		return shell;
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikInfraredSensor>()) {

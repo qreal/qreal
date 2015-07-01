@@ -17,14 +17,17 @@
 #include <QtCore/QFile>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelGuiFacade.h>
 
 using namespace trik::robotModel::twoD::parts;
 
 Shell::Shell(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port
-		, qReal::ErrorReporterInterface &errorReporter)
+		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikShell(info, port)
-	, mErrorReporter(errorReporter)
+	, mEngine(engine)
+	, mErrorReporter(nullptr)
 {
 }
 
@@ -40,7 +43,9 @@ void Shell::runCode(const QString &code)
 
 void Shell::say(const QString &text)
 {
-	mErrorReporter.sendBubblingMessage(text, 4000);
+	if (mErrorReporter) {
+		mErrorReporter->sendBubblingMessage(text, 4000, mEngine.guiFacade().separateTwoDModelWindow());
+	}
 }
 
 void Shell::writeToFile(const QString &filePath, const QString &text)
@@ -59,4 +64,9 @@ void Shell::removeFile(const QString &filePath)
 void Shell::print(const QString &text)
 {
 	emit textPrinted(text);
+}
+
+void Shell::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
 }

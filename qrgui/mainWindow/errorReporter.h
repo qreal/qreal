@@ -40,7 +40,7 @@ public:
 	void addCritical(const QString &message, const Id &position = Id::rootId()) override;
 	bool wereErrors();
 
-	void sendBubblingMessage(const QString &message, int duration) override;
+	void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) override;
 
 	bool showErrors(ErrorListWidget * const errorListWidget, QDockWidget * const errorList) const;
 	void updateVisibility(bool isVisible);

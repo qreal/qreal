@@ -20,19 +20,26 @@ namespace qReal {
 class ErrorReporterInterface;
 }
 
+namespace twoDModel {
+namespace engine {
+class TwoDModelEngineInterface;
+}
+}
+
 namespace trik {
 namespace robotModel {
 namespace twoD {
 namespace parts {
 
-/// Emulates shell in interpreter. runCommand() and say() methods do nothing, but file operations are supported.
+/// Emulates shell in 2D model. runCommand() methods do nothing, other operations are supported.
 class Shell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
+
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, qReal::ErrorReporterInterface &errorReporter);
+			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void runCommand(const QString &command) override;
 	void runCode(const QString &code) override;
@@ -41,8 +48,12 @@ public:
 	void removeFile(const QString &filePath) override;
 	void print(const QString &text) override;
 
+	/// Sets the error reporter for writing bubbling messages in say().
+	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
+
 private:
-	qReal::ErrorReporterInterface &mErrorReporter;
+	twoDModel::engine::TwoDModelEngineInterface &mEngine;
+	qReal::ErrorReporterInterface *mErrorReporter;
 };
 
 }

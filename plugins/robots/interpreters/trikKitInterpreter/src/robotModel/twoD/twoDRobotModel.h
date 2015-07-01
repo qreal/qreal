@@ -45,7 +45,7 @@ public:
 
 	QHash<QString, int> buttonCodes() const override;
 
-	/// Sets the error reporter for writing bubbling messages, information and error by shell emulator.
+	/// Sets the error reporter for writing bubbling messages by shell emulator.
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
 
 private:

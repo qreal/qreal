@@ -31,7 +31,7 @@ public:
 	void addError(const QString &message, const Id &position = Id::rootId()) override;
 	void addCritical(const QString &message, const Id &position = Id::rootId()) override;
 
-	void sendBubblingMessage(const QString &message, int duration) override;
+	void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) override;
 
 	bool wereErrors() override;
 	void clear() override;
