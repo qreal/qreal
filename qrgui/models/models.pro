@@ -18,7 +18,9 @@ TARGET = qrgui-models
 
 include(../../global.pri)
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_models_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_models_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_models_fr.ts \
 
 DEFINES += QRGUI_MODELS_LIBRARY
 

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <QtCore/QDebug>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "abstractScene.h"
@@ -110,6 +110,22 @@ void AbstractScene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 		if (item && item->editable()) {
 			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
 		}
+	}
+}
+
+void AbstractScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	QGraphicsScene::mousePressEvent(mouseEvent);
+	if (mouseEvent->button() == Qt::LeftButton) {
+		emit leftButtonPressed();
+	}
+}
+
+void AbstractScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	QGraphicsScene::mouseReleaseEvent(mouseEvent);
+	if (mouseEvent->button() == Qt::LeftButton) {
+		emit leftButtonReleased();
 	}
 }
 
@@ -256,6 +272,18 @@ QString AbstractScene::brushColorItems()
 	return mBrushColorItems;
 }
 
+QList<AbstractItem *> AbstractScene::abstractItems(const QPointF &scenePos) const
+{
+	QList<AbstractItem *> result;
+	for (QGraphicsItem * const item : items(scenePos)) {
+		if (AbstractItem * const abstractItem = dynamic_cast<AbstractItem *>(item)) {
+			result << abstractItem;
+		}
+	}
+
+	return result;
+}
+
 void AbstractScene::setPenStyleItems(const QString &text)
 {
 	mPenStyleItems = text;
@@ -279,4 +307,29 @@ void AbstractScene::setBrushStyleItems(const QString &text)
 void AbstractScene::setBrushColorItems(const QString &text)
 {
 	mBrushColorItems = text;
+}
+
+void AbstractScene::addAction(QAction * const action)
+{
+	mActions << action;
+	mView->addAction(action);
+}
+
+void AbstractScene::addActions(const QList<QAction *> &actions)
+{
+	mActions << actions;
+	mView->addActions(actions);
+}
+
+void AbstractScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	if (abstractItems(event->scenePos()).isEmpty()) {
+		QMenu menu;
+		menu.addActions(mActions);
+		if (!menu.isEmpty()) {
+			menu.exec(event->screenPos());
+		}
+	} else {
+		QGraphicsScene::contextMenuEvent(event);
+	}
 }

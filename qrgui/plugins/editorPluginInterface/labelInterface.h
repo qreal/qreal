@@ -26,6 +26,8 @@ class LabelInterface
 public:
 	virtual ~LabelInterface() {}
 
+	/// @todo: Set properties described in qrgui/editor/labels/labelProperties.cpp class directly through it?
+
 	/// Sets label background.
 	virtual void setBackground(const QColor &background) = 0;
 
@@ -54,6 +56,12 @@ public:
 
 	/// Sets unformatted text as the contents of this label.
 	virtual void setPlainText(const QString &text) = 0;
+
+	/// Sets text drawn just before label contents.
+	virtual void setPrefix(const QString &text) = 0;
+
+	/// Sets text drawn just after label contents.
+	virtual void setSuffix(const QString &text) = 0;
 };
 
 }

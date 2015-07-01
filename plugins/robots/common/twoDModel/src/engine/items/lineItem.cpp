@@ -13,8 +13,7 @@
  * limitations under the License. */
 
 #include <QtGui/QPainter>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QAction>
 
 #include <qrkernel/settingsManager.h>
 #include "lineItem.h"
@@ -36,7 +35,6 @@ LineItem::LineItem(const QPointF &begin, const QPointF &end, int cornerRadius)
 	setY1(begin.y());
 	setX2(end.x());
 	setY2(end.y());
-	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
 }
 
@@ -49,6 +47,13 @@ AbstractItem *LineItem::clone() const
 	cloned->mCellNumbX2 = mCellNumbX2;
 	cloned->mCellNumbY2 = mCellNumbY2;
 	return cloned;
+}
+
+QAction *LineItem::lineTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_ruler.png"), tr("Line (L)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_L));
+	return result;
 }
 
 void LineItem::setPrivateData()

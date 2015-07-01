@@ -40,6 +40,10 @@ public:
 	/// Returns a vector that corresponds to a projection of vector 'projection' on a vector 'target'
 	static QVector2D projection(const QVector2D &projected, const QVector2D &target);
 
+	/// Performs vector rotation and returns the resulting vector.
+	/// Vector is rotated by multiplying the rotation matrix.
+	static QVector2D rotateVector(const QVector2D &vector, qreal angleInDegrees);
+
 	/// Returns an intersection point of the given line and a normal to a given line passing through the given point
 	static QPointF normalPoint(const QLineF &line, const QPointF &point);
 

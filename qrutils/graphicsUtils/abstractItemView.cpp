@@ -23,11 +23,13 @@ AbstractView::AbstractView(QWidget * parent) : QGraphicsView(parent)
 void AbstractView::zoomIn()
 {
 	scale(1.5,1.5);
+	emit zoomChanged();
 }
 
 void AbstractView::zoomOut()
 {
 	scale(0.66,0.66);
+	emit zoomChanged();
 }
 
 void AbstractView::wheelEvent(QWheelEvent *event)
@@ -39,6 +41,12 @@ void AbstractView::wheelEvent(QWheelEvent *event)
 		else
 			zoomIn();
 	}
+}
+
+void AbstractView::scrollContentsBy(int dx, int dy)
+{
+	QGraphicsView::scrollContentsBy(dx, dy);
+	emit contentsRectChanged();
 }
 
 void AbstractView::keyPressEvent(QKeyEvent *event)

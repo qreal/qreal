@@ -19,6 +19,7 @@
 
 #include <twoDModel/engine/twoDModelEngineFacade.h>
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 
 using namespace trik;
 using namespace qReal;
@@ -154,6 +155,7 @@ QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
 	};
 	updateQuickPreferences();
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
 	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});

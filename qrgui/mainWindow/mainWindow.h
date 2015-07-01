@@ -163,12 +163,15 @@ public:
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
 	QStatusBar *statusBar() const override;
+	QList<QToolBar *> toolBars() const override;
 
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
 
 	QByteArray saveState(int version = 0) const override;
 	bool restoreState(const QByteArray &state, int version = 0) override;
+
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
 	void setTabText(QWidget *tab, const QString &text) override;
 
@@ -233,15 +236,16 @@ private slots:
 	void showHelp();
 
 	void fullscreen();
+	void hideBottomDocks();
+
 	void openRecentProjectsMenu();
 
 	void saveDiagramAsAPicture();
-
 	void print();
 	void makeSvg();
 	void showGrid(bool isChecked);
 
-	void sceneSelectionChanged();
+	void sceneSelectionChanged(const QList<Element *> &elements);
 
 	void applySettings();
 	void resetToolbarSize(int size);

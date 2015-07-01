@@ -31,11 +31,5 @@ TwoDInfraredSensor::TwoDInfraredSensor(const kitBase::robotModel::DeviceInfo &in
 
 void TwoDInfraredSensor::read()
 {
-	const int sonarDistanceValue = mEngine.readSonarSensor(port());
-	const int linearDistance = 100 - (sonarDistanceValue < 100 ? sonarDistanceValue : 100);
-	const int spoiledDistance = linearDistance <= maxDistance
-			? linearDistance
-			// On small distances IR sensor starts to work non-lineary
-			: 100 - (linearDistance - maxDistance) * 10;
-	emit newData(spoiledDistance);
+	emit newData(qBound(0, mEngine.readSonarSensor(port()), 100));
 }

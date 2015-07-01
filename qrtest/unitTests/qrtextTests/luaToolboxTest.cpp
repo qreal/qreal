@@ -126,3 +126,12 @@ TEST_F(LuaToolboxTest, integerDivision)
 	ASSERT_TRUE(mToolbox->errors().isEmpty());
 	EXPECT_EQ(2, result);
 }
+
+TEST_F(LuaToolboxTest, twoDTables)
+{
+	mToolbox->interpret<int>("a = {{1}}");
+	int result = mToolbox->interpret<int>("a[0][0]");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(1, result);
+}
+

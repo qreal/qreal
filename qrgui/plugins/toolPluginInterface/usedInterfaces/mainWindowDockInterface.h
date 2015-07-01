@@ -17,6 +17,7 @@
 #include <QtWidgets/QDockWidget>
 
 class QStatusBar;
+class QToolBar;
 
 namespace qReal {
 namespace gui {
@@ -25,6 +26,9 @@ class MainWindowDockInterface
 {
 public:
 	virtual ~MainWindowDockInterface() {}
+
+	/// Returns a widget of main window for such operation as appending actions to it and so on.
+	virtual QWidget *windowWidget() = 0;
 
 	/// Returns the pointer to main window`s logical model explorer dock.
 	virtual QDockWidget *logicalModelDock() const = 0;
@@ -44,6 +48,9 @@ public:
 	/// Returns the pointer to main window`s stripe in the bottom of the window.
 	virtual QStatusBar *statusBar() const = 0;
 
+	/// Returns a list of all toolbars on this main window.
+	virtual QList<QToolBar *> toolBars() const = 0;
+
 	/// Moves @param second dock widget on top of @param first dock widget, creating a tabbed dock area
 	/// in the main window.
 	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second) = 0;
@@ -59,6 +66,9 @@ public:
 	/// Restores the @arg state of the main window obtained by saveState() method.
 	/// @param version An integer parameter that will be compared to the one serialized in @arg state.
 	virtual bool restoreState(const QByteArray &state, int version = 0) = 0;
+
+	/// Sets the given dock widget @arg area to occupy the specified @arg corner.
+	virtual void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) = 0;
 };
 
 }

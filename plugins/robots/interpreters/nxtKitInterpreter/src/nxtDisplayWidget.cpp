@@ -16,12 +16,10 @@
 
 #include "ui_nxtDisplayWidget.h"
 
-#include <qrutils/graphicsUtils/painterInterface.h>
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
 
 using namespace nxt;
-using namespace graphicsUtils;
 
 NxtDisplayWidget::NxtDisplayWidget(QWidget *parent)
 	: twoDModel::engine::TwoDModelDisplayWidget(parent)
@@ -53,7 +51,7 @@ bool NxtDisplayWidget::buttonIsDown(const QString &buttonPort) const
 	return false;
 }
 
-void NxtDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
+void NxtDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	TwoDModelDisplayWidget::setPainter(painter);
 	mUi->display->appendPainter(painter);

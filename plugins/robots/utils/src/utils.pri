@@ -41,4 +41,6 @@ SOURCES += \
 	$$PWD/tcpRobotCommunicator.cpp \
 	$$PWD/tcpConnectionHandler.cpp \
 
-TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/robots_utils_fr.ts \

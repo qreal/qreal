@@ -106,7 +106,7 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 	} else if (deviceInfo.isA(gamepadPadPressSensorInfo())) {
 		return new parts::GamepadPadPressSensor(gamepadPadPressSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(buttonInfo())) {
-		return new parts::Button(buttonInfo(), port, *mRobotCommunicator);
+		return new parts::Button(buttonInfo(), port, buttonCodes()[port.name() + "Button"], *mRobotCommunicator);
 	} else if (deviceInfo.isA(powerMotorInfo())) {
 		return new parts::PowerMotor(powerMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(servoMotorInfo())) {

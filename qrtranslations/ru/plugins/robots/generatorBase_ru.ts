@@ -118,7 +118,7 @@
         <translation type="obsolete">Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="71"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="73"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
     </message>
@@ -179,12 +179,16 @@
         <translation>Такой идентификатор уже используется: </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="58"/>
         <source>Device on port %1 is not configured. Please select it on the left-side panel.</source>
-        <translation>Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели слева.</translation>
+        <translation type="vanished">Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели слева.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="58"/>
+        <source>Device on port %1 is not configured. Please select it on the &quot;Configure devices&quot; panel on the right-hand side.</source>
+        <translation>Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели &quot;Настройки сенсоров&quot; справа.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="62"/>
         <source>/* ERROR: SELECT DEVICE TYPE */</source>
         <translation>/* ОШИБКА: ВЫБЕРИТЕ ТИП СЕНСОРА */</translation>
     </message>
@@ -208,17 +212,17 @@
 <context>
     <name>generatorBase::MasterGeneratorBase</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="109"/>
         <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код. Генерирую код с &apos;goto&apos;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="122"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="124"/>
         <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
         <translation>Данная диаграмма не может быть сгенерирована даже в код с &apos;goto&apos;. Обратитесь к разработчикам (что вы там понаписали :)?)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="124"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="126"/>
         <source>This diagram cannot be generated into the structured code.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код.</translation>
     </message>

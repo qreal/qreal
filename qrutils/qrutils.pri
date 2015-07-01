@@ -57,7 +57,9 @@ FORMS += \
 
 RESOURCES = $$PWD/qrutils.qrc
 
-TRANSLATIONS = $$PWD/../qrtranslations/ru/qrutils_ru.ts
+TRANSLATIONS = \
+	$$PWD/../qrtranslations/ru/qrutils_ru.ts \
+	$$PWD/../qrtranslations/fr/qrutils_fr.ts \
 
 QT += xml widgets
 
@@ -90,3 +92,6 @@ include($$PWD/pluginManagers/pluginManagers.pri)
 
 # Tools for interpreting behavioral diagrams
 include($$PWD/interpreter/interpreter.pri)
+
+# The collection of useful widgets
+include($$PWD/widgets/widgets.pri)

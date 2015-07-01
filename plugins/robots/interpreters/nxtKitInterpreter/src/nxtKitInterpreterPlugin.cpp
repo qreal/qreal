@@ -59,7 +59,16 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
+			, [this](const QString &modelName) {
+		mCurrentlySelectedModelName = modelName;
+		if (modelName == mUsbRealRobotModel.name()) {
+			mUsbRealRobotModel.checkConnection();
+		}
+
+		if (modelName == mBluetoothRealRobotModel.name()) {
+			mBluetoothRealRobotModel.checkConnection();
+		}
+	});
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
@@ -71,8 +80,6 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
-	mUsbRealRobotModel.checkConnection();
-	mBluetoothRealRobotModel.checkConnection();
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()

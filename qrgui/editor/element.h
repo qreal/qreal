@@ -30,11 +30,11 @@
 #include <qrgui/controller/controller.h>
 
 #include "qrgui/editor/editorDeclSpec.h"
-#include "qrgui/editor/label.h"
 #include "qrgui/editor/contextMenuAction.h"
 
-
 namespace qReal {
+
+class Label;
 
 /// size of a point port
 const int kvadratik = 10;

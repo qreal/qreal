@@ -44,18 +44,32 @@ SmartDock::~SmartDock()
 	delete mDialog;
 }
 
+bool SmartDock::isCentral() const
+{
+	return !isFloating() && isVisible()
+			// I know that const_cast is bad, but this is beacuse of bad qt design.
+			&& mMainWindow->dockWidgetArea(const_cast<SmartDock *>(this)) == Qt::TopDockWidgetArea;
+}
+
 void SmartDock::switchToDocked()
 {
 	if (mCurrentMode == Mode::Docked) {
 		return;
 	}
 
+	switchToDockedQuietly();
+	show();
+	checkCentralWidget();
+	emit dockedChanged(true);
+}
+
+void SmartDock::switchToDockedQuietly()
+{
 	mCurrentMode = Mode::Docked;
 	mDialog->close();
 	mDialog->layout()->removeWidget(mInnerWidget);
 	setWidget(mInnerWidget);
 	setFloating(false);
-	show();
 }
 
 void SmartDock::switchToFloating()
@@ -64,16 +78,19 @@ void SmartDock::switchToFloating()
 		return;
 	}
 
+	switchToFloatingQuietly();
+	mDialog->show();
+	checkCentralWidget();
+	emit dockedChanged(false);
+}
+
+void SmartDock::switchToFloatingQuietly()
+{
 	mCurrentMode = Mode::Floats;
 	setWidget(nullptr);
 	close();
 	static_cast<QVBoxLayout *>(mDialog->layout())->addWidget(mInnerWidget);
 	mInnerWidget->show();
-	mDialog->show();
-	if (QWidget * const button = mDialog->findChild<QWidget *>("dockSmartDockToMainWindowButton")) {
-		// This button is not in layout and thus can sunk in other widgets.
-		button->raise();
-	}
 }
 
 void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
@@ -87,10 +104,10 @@ void SmartDock::attachToMainWindow(Qt::DockWidgetArea area)
 	mMainWindow->addDockWidget(area, this);
 	if (mCurrentMode == Mode::Docked) {
 		mCurrentMode = Mode::Floats;
-		switchToDocked();
+		switchToDockedQuietly();
 	} else {
 		mCurrentMode = Mode::Docked;
-		switchToFloating();
+		switchToFloatingQuietly();
 	}
 }
 
@@ -113,6 +130,17 @@ void SmartDock::checkFloating()
 	if (isFloating() && !mDragged && !isAnimating()) {
 		switchToFloating();
 	}
+}
+
+void SmartDock::checkCentralWidget()
+{
+	const bool tabsVisible = isFloating() || !isVisible() || mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea;
+	for (QTabWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QTabWidget *>()) {
+		centralWidget->setVisible(tabsVisible);
+	}
+
+	mMainWindow->centralWidget()->setSizePolicy(QSizePolicy::Preferred
+			, tabsVisible ? QSizePolicy::Preferred : QSizePolicy::Maximum);
 }
 
 bool SmartDock::isAnimating()
@@ -163,6 +191,10 @@ bool SmartDock::event(QEvent *event)
 		if (!widget()) {
 			close();
 		}
+		checkCentralWidget();
+		break;
+	case QEvent::Hide:
+		checkCentralWidget();
 		break;
 	default:
 		break;
@@ -181,6 +213,7 @@ void SmartDock::initDock()
 	setWidget(mInnerWidget);
 	setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	connect(this, &QDockWidget::topLevelChanged, this, &SmartDock::checkFloating);
+	connect(this, &QDockWidget::dockLocationChanged, this, &SmartDock::checkCentralWidget);
 }
 
 void SmartDock::initDialog()
@@ -201,16 +234,4 @@ void SmartDock::initDialog()
 			mInnerWidget->close();
 		}
 	});
-	if (mMainWindow) {
-		QPushButton * const button = new QPushButton(mDialog);
-		button->setObjectName("dockSmartDockToMainWindowButton");
-		button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-		const int smallButtonSize = 20;
-		button->setFixedSize(smallButtonSize, smallButtonSize);
-		button->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton));
-		button->setToolTip("Dock window into main");
-		connect(button, &QAbstractButton::clicked, this, &SmartDock::switchToDocked);
-	} else {
-		switchToFloating();
-	}
 }

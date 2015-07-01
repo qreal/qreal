@@ -26,12 +26,13 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(nullptr)
-	, mLogicalModelDock(new QDockWidget)
-	, mGraphicalModelDock(new QDockWidget)
-	, mPropertyEditorDock(new QDockWidget)
-	, mErrorReporterDock(new QDockWidget)
-	, mPaletteDock(new QDockWidget)
-	, mStatusBar(new QStatusBar)
+	, mWindowWidget(new QWidget)
+	, mLogicalModelDock(new QDockWidget(mWindowWidget))
+	, mGraphicalModelDock(new QDockWidget(mWindowWidget))
+	, mPropertyEditorDock(new QDockWidget(mWindowWidget))
+	, mErrorReporterDock(new QDockWidget(mWindowWidget))
+	, mPaletteDock(new QDockWidget(mWindowWidget))
+	, mStatusBar(new QStatusBar(mWindowWidget))
 {
 }
 
@@ -42,24 +43,20 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(&graphicalModel)
-	, mLogicalModelDock(new QDockWidget)
-	, mGraphicalModelDock(new QDockWidget)
-	, mPropertyEditorDock(new QDockWidget)
-	, mErrorReporterDock(new QDockWidget)
-	, mPaletteDock(new QDockWidget)
-	, mStatusBar(new QStatusBar)
+	, mWindowWidget(new QWidget)
+	, mLogicalModelDock(new QDockWidget(mWindowWidget))
+	, mGraphicalModelDock(new QDockWidget(mWindowWidget))
+	, mPropertyEditorDock(new QDockWidget(mWindowWidget))
+	, mErrorReporterDock(new QDockWidget(mWindowWidget))
+	, mPaletteDock(new QDockWidget(mWindowWidget))
+	, mStatusBar(new QStatusBar(mWindowWidget))
 {
 	connect(&projectManager, &ProjectManagementInterface::afterOpen, this, &NullMainWindow::openFirstDiagram);
 }
 
 NullMainWindow::~NullMainWindow()
 {
-	delete mLogicalModelDock;
-	delete mGraphicalModelDock;
-	delete mPropertyEditorDock;
-	delete mErrorReporterDock;
-	delete mPaletteDock;
-	delete mStatusBar;
+	delete mWindowWidget;
 	SettingsManager::instance()->saveData();
 }
 
@@ -111,7 +108,7 @@ void NullMainWindow::reinitModels()
 
 QWidget *NullMainWindow::windowWidget()
 {
-	return nullptr;
+	return mWindowWidget;
 }
 
 bool NullMainWindow::unloadPlugin(const QString &pluginName)
@@ -233,12 +230,16 @@ void NullMainWindow::openFirstDiagram()
 	}
 
 	const Id rootId = mGraphicalModel->rootId();
-	const IdList rootIds = mGraphicalModel->children(rootId);
-	if (rootIds.count() == 0) {
-		return;
+	Id graphicalDiagramId;
+	for (const Id diagram : mGraphicalModel->children(rootId)) {
+		if (mGraphicalModel->isGraphicalId(diagram)) {
+			graphicalDiagramId = diagram;
+		}
 	}
 
-	openTabWithEditor(rootIds[0]);
+	if (!graphicalDiagramId.isNull()) {
+		openTabWithEditor(graphicalDiagramId);
+	}
 }
 
 void NullMainWindow::openTabWithEditor(const Id &id)
@@ -277,6 +278,11 @@ QStatusBar *NullMainWindow::statusBar() const
 	return mStatusBar;
 }
 
+QList<QToolBar *> NullMainWindow::toolBars() const
+{
+	return {};
+}
+
 void NullMainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	Q_UNUSED(first)
@@ -300,6 +306,12 @@ bool NullMainWindow::restoreState(const QByteArray &state, int version)
 	Q_UNUSED(state)
 	Q_UNUSED(version)
 	return true;
+}
+
+void NullMainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
+{
+	Q_UNUSED(corner)
+	Q_UNUSED(area)
 }
 
 void NullMainWindow::emulateClose(int returnCode)

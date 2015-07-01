@@ -30,7 +30,7 @@ public:
 	QString robotImage() const override;
 	kitBase::robotModel::PortInfo defaultLeftWheelPort() const override;
 	kitBase::robotModel::PortInfo defaultRightWheelPort() const override;
-	twoDModel::engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const override;
+	twoDModel::engine::TwoDModelDisplayWidget *displayWidget() const override;
 	QRect sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const;
 
 protected:
@@ -38,6 +38,9 @@ protected:
 			const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &deviceInfo
 			) override;
+
+private:
+	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;
 };
 
 }

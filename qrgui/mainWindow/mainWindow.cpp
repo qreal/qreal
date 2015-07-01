@@ -118,6 +118,8 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
+	mUi->errorDock->toggleViewAction()->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
+	addAction(mUi->errorDock->toggleViewAction());
 
 	mPreferencesDialog.init();
 
@@ -245,6 +247,9 @@ void MainWindow::connectActions()
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
 
+	addAction(mUi->actionHideBottomDocks);
+	connect(mUi->actionHideBottomDocks, &QAction::triggered, this, &MainWindow::hideBottomDocks);
+
 	setDefaultShortcuts();
 }
 
@@ -360,6 +365,7 @@ void MainWindow::selectItemWithError(const Id &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	emit mFacade.events().ensureDiagramVisible();
 	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
@@ -434,38 +440,17 @@ void MainWindow::activateItemOrDiagram(const Id &id, bool setSelected)
 	}
 }
 
-void MainWindow::sceneSelectionChanged()
+void MainWindow::sceneSelectionChanged(const QList<Element *> &elements)
 {
 	if (!getCurrentTab()) {
 		return;
 	}
 
-	QList<Element*> selected;
-	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
-
-	foreach (QGraphicsItem* item, items) {
-		Element* element = dynamic_cast<Element*>(item);
-		if (element) {
-			if (element->isSelected()) {
-				selected.append(element);
-				element->setSelectionState(true);
-			} else {
-				element->setSelectionState(false);
-				element->select(false);
-			}
-		}
-	}
-
-	if (selected.isEmpty()) {
+	if (elements.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.clearModelIndexes();
-	} else if (selected.length() > 1) {
-		foreach(Element* notSingleSelected, selected) {
-			notSingleSelected->select(false);
-		}
-	} else {
-		Element* const singleSelected = selected.at(0);
-		singleSelected->select(true);
+	} else if (elements.length() == 1) {
+		Element * const singleSelected = elements.at(0);
 		setIndexesOfPropertyEditor(singleSelected->id());
 
 		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected->id());
@@ -1072,7 +1057,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->mutableMvIface().setRootIndex(index);
 
 	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
-	connect(tab->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(&tab->editorViewScene(), &EditorViewScene::sceneSelectionChanged, this, &MainWindow::sceneSelectionChanged);
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
 	connect(models().graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, &tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
@@ -1148,6 +1133,8 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
 	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
+	HotKeyManager::setCommand("View.ToggleErrorReporter", tr("Toggle errors panel")
+			, mUi->errorDock->toggleViewAction());
 }
 
 void MainWindow::currentTabChanged(int newIndex)
@@ -1519,7 +1506,7 @@ void MainWindow::applySettings()
 
 void MainWindow::resetToolbarSize(int size)
 {
-	for (QToolBar * const bar : findChildren<QToolBar *>()) {
+	for (QToolBar * const bar : toolBars()) {
 		bar->setIconSize(QSize(size, size));
 	}
 }
@@ -1598,6 +1585,15 @@ void MainWindow::fullscreen()
 			if (mLastTabBarIndexes.contains(bar)) {
 				bar->setCurrentIndex(mLastTabBarIndexes[bar]);
 			}
+		}
+	}
+}
+
+void MainWindow::hideBottomDocks()
+{
+	for (QDockWidget *dock : findChildren<QDockWidget *>()) {
+		if (dockWidgetArea(dock) == Qt::BottomDockWidgetArea) {
+			dock->hide();
 		}
 	}
 }
@@ -1987,6 +1983,11 @@ QStatusBar *MainWindow::statusBar() const
 	return mUi->statusbar;
 }
 
+QList<QToolBar *> MainWindow::toolBars() const
+{
+	return findChildren<QToolBar *>(QString(), Qt::FindDirectChildrenOnly);
+}
+
 void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	QMainWindow::tabifyDockWidget(first, second);
@@ -2005,7 +2006,17 @@ QByteArray MainWindow::saveState(int version) const
 
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
-	return QMainWindow::restoreState(state, version);
+	const bool result = QMainWindow::restoreState(state, version);
+	if (mUi->errorListWidget->count() == 0) {
+		mUi->errorDock->hide();
+	}
+
+	return result;
+}
+
+void MainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
+{
+	QMainWindow::setCorner(corner, area);
 }
 
 void MainWindow::setTabText(QWidget *tab, const QString &text)

@@ -199,7 +199,7 @@ Component.prototype.targetChanged = function (text) {
 		return;
 	}
 
-	if (widget != null) {
+	if (installer.isInstaller() && widget != null) {
 		if (text != "") {
 			widget.complete = true;
 			installer.setValue("TargetDir", text);

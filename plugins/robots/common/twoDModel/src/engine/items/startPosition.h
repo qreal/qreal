@@ -33,6 +33,8 @@ public:
 private:
 	void drawFieldForResizeItem(QPainter* painter) override;
 	void changeDragState(qreal x, qreal y) override;
+
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 };
 
 }

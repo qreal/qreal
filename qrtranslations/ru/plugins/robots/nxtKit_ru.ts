@@ -4,7 +4,7 @@
 <context>
     <name>nxt::robotModel::parts::NxtMotor</name>
     <message>
-        <location filename="../../../../plugins/robots/common/nxtKit/include/nxtKit/robotModel/parts/nxtMotor.h" line="13"/>
+        <location filename="../../../../plugins/robots/common/nxtKit/include/nxtKit/robotModel/parts/nxtMotor.h" line="27"/>
         <source>Motor</source>
         <translation>Мотор</translation>
     </message>

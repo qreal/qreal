@@ -14,12 +14,11 @@
 
 #include "wallItem.h"
 
-#include <QtGui/QVector2D>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include <math.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/mathUtils/geometry.h>
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -55,6 +54,13 @@ AbstractItem *WallItem::clone() const
 	return cloned;
 }
 
+QAction *WallItem::wallTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_wall.png"), tr("Wall (W)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_W));
+	return result;
+}
+
 void WallItem::setPrivateData()
 {
 	setZValue(1);
@@ -79,7 +85,7 @@ QPointF WallItem::end()
 	return QPointF(x2(), y2()) + scenePos();
 }
 
-void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void WallItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
@@ -126,7 +132,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
-	const QRectF oldPos =  QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
+	const QRectF oldPos = QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
 
 	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		const QPointF pos = event->scenePos();
@@ -211,7 +217,12 @@ void WallItem::recalculateBorders()
 {
 	QPainterPath wallPath;
 	wallPath.moveTo(begin());
-	wallPath.lineTo(end());
+
+	if (mathUtils::Geometry::eq(begin(), end())) {
+		wallPath.lineTo(end().x() + 0.1, end().y());
+	} else {
+		wallPath.lineTo(end());
+	}
 
 	QPainterPathStroker stroker;
 	stroker.setWidth(wallWidth * 3 / 2);

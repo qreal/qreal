@@ -20,12 +20,16 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
 #include <qrutils/inFile.h>
 #include <qrutils/smartDock.h>
+#include <qrutils/widgets/consoleDock.h>
+#include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/shell.h>
 
 #include "src/ui/modeStripe.h"
 
@@ -39,21 +43,35 @@ UiManager::UiManager(QAction &debugModeAction
 		, QAction &editModeAction
 		, qReal::gui::MainWindowDockInterface &mainWindow
 		, qReal::SystemEvents &systemEvents
-		, kitBase::EventsForKitPluginInterface &kitPluginEvents)
+		, kitBase::EventsForKitPluginInterface &kitPluginEvents
+		, kitBase::robotModel::RobotModelManagerInterface &robotModelManager)
 	: mDebugModeAction(debugModeAction)
 	, mEditModeAction(editModeAction)
 	, mMainWindow(mainWindow)
+	, mRobotConsole(new qReal::ui::ConsoleDock(tr("Robot console"), mMainWindow.windowWidget()))
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::ensureDiagramVisible, this, &UiManager::ensureDiagramVisible);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
+	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
+			, mRobotConsole, &qReal::ui::ConsoleDock::clear);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocks())); });
+			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocksSavingToolbarsAndErrors())); });
+	connect(&robotModelManager, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this, &UiManager::onRobotModelChanged);
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
+	mRobotConsole->hide();
+	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
+	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
+	mMainWindow.windowWidget()->addAction(mRobotConsole->toggleViewAction());
+	mRobotConsole->toggleViewAction()->setShortcut(Qt::ALT + Qt::Key_2);
+
+	mMainWindow.statusBar()->setAutoFillBackground(true);
 	mMainWindow.statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black; padding: 10px; }");
 	editModeAction.setProperty("modeName", tr("edit mode"));
 	debugModeAction.setProperty("modeName", tr("debug mode"));
@@ -85,6 +103,11 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	reloadDocks();
 }
 
+qReal::ui::ConsoleDock &UiManager::robotConsole()
+{
+	return *mRobotConsole;
+}
+
 void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 {
 	if (tab.type() == mCurrentTab) {
@@ -95,6 +118,22 @@ void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 	mCurrentTab = tab.type();
 	reloadDocks();
 	toggleModeButtons();
+}
+
+void UiManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	auto subscribeShell = [this, &model]() {
+		if (kitBase::robotModel::robotParts::Shell * const shell = kitBase::robotModel::RobotModelUtils::findDevice
+				<kitBase::robotModel::robotParts::Shell>(model, "ShellPort"))
+		{
+			connect(shell, &kitBase::robotModel::robotParts::Shell::textPrinted
+					, mRobotConsole, &qReal::ui::ConsoleDock::print, Qt::UniqueConnection);
+		}
+	};
+
+	// Shell can be already configured or not. However, checking for it now or later, when everything is ready for use.
+	subscribeShell();
+	connect(&model, &kitBase::robotModel::RobotModelInterface::allDevicesConfigured, subscribeShell);
 }
 
 void UiManager::switchToEditorMode()
@@ -115,7 +154,7 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 	saveDocks();
 	mCurrentMode = mode;
-	reloadDocks();
+	reloadDocksSavingToolbarsAndErrors();
 	toggleModeButtons();
 }
 
@@ -129,6 +168,7 @@ void UiManager::toggleModeButtons()
 			: mCurrentMode == Mode::Editing ? editModeColor : debugModeColor;
 	QPalette palette;
 	palette.setColor(QPalette::Background, color);
+	palette.setColor(QPalette::Base, color);
 	mMainWindow.statusBar()->setPalette(palette);
 }
 
@@ -182,6 +222,59 @@ void UiManager::reloadDocks() const
 	const QByteArray state = qReal::SettingsManager::value(currentSettingsKey()).toByteArray();
 	if (!mMainWindow.restoreState(state, currentMode())) {
 		QLOG_ERROR() << "Cannot apply docks state for mode" << currentMode() << ":" << state;
+	} else {
+		resetMainWindowCorners();
+		// Same trick as main window does with error reporter.
+		if (mRobotConsole->isEmpty()) {
+			mRobotConsole->hide();
+		}
+	}
+}
+
+void UiManager::reloadDocksSavingToolbarsAndErrors() const
+{
+	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
+	// will loose some toolbars visibility and error reporter state, so memorizing it here...
+	const bool errorReporterWasVisible = mMainWindow.errorReporterDock()->isVisible();
+	const bool robotConsoleWasVisible = mRobotConsole->isVisible();
+	QMap<QToolBar *, bool> toolBarsVisiblity;
+	for (QToolBar * const toolBar : mMainWindow.toolBars()) {
+		toolBarsVisiblity[toolBar] = toolBar->isVisible();
+	}
+
+	// Now reloading docks, toolbars are in random visibility after this...
+	reloadDocks();
+
+	// And finally restoring old configuration.
+	mMainWindow.errorReporterDock()->setVisible(errorReporterWasVisible);
+	mRobotConsole->setVisible(robotConsoleWasVisible);
+	for (QToolBar * const toolBar : toolBarsVisiblity.keys()) {
+		toolBar->setVisible(toolBarsVisiblity[toolBar]);
+	}
+}
+
+void UiManager::resetMainWindowCorners() const
+{
+	// Seems like on different platforms the default corner occupation is different, so fixing it here...
+	mMainWindow.setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
+	mMainWindow.setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
+}
+
+void UiManager::ensureDiagramVisible()
+{
+	if (mCurrentMode == Mode::Editing) {
+		return;
+	}
+
+	// 2D model is placed into smart dock that may hide central widget if docked into TopDockWidgetArea.
+	// If we met such case then switching to editor mode.
+	for (utils::SmartDock * const twoDModel : mMainWindow.windowWidget()->findChildren<utils::SmartDock *>()) {
+		if (twoDModel->isCentral()) {
+			switchToEditorMode();
+			return;
+		}
 	}
 }
 
@@ -190,10 +283,8 @@ void UiManager::hack2dModelDock() const
 	// 2D model is placed into smart dock: it may be embedded into instance of QDialog
 	// that is not influeced by mMainWindow::restoreState. So we must first switch to a docked form
 	// and then restore docks state.
-	if (const QObject *window = dynamic_cast<QObject *>(&mMainWindow)) {
-		if (utils::SmartDock *twoDModel = window->findChild<utils::SmartDock *>()) {
-			twoDModel->switchToDocked();
-		}
+	if (utils::SmartDock * const twoDModel = mMainWindow.windowWidget()->findChild<utils::SmartDock *>()) {
+		twoDModel->switchToDocked();
 	}
 }
 

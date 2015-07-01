@@ -94,6 +94,20 @@ QString WatchListWindow::toString(const QVariant &value) const
 		return list.isEmpty() ? "" : QString("{ %1 }").arg(list.join(", "));
 	}
 
+	if (value.type() == QVariant::List) {
+		QString result = "{";
+		for (const QVariant &i : value.value<QVariantList>()) {
+			result += toString(i) + ", ";
+		}
+
+		if (result.size() >= 2) {
+			result.chop(2);
+		}
+
+		result += "}";
+		return result;
+	}
+
 	return value.toString();
 }
 

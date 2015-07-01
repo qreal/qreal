@@ -169,6 +169,7 @@ twoDModel::robotModel::TwoDRobotModel &RobotModel::info()
 void RobotModel::stopRobot()
 {
 	mBeepTime = 0;
+	mRobotModel.displayWidget()->reset();
 	emit playingSoundChanged(false);
 	for (Motor * const engine : mMotors) {
 		engine->speed = 0;
@@ -249,6 +250,7 @@ void RobotModel::nextStep()
 	// Changing position quietly, they must not be caught by UI here.
 	mPos += mPhysicsEngine->shift().toPointF();
 	mAngle += mPhysicsEngine->rotation();
+	emit positionRecalculated(mPos, mAngle);
 }
 
 void RobotModel::recalculateParams()

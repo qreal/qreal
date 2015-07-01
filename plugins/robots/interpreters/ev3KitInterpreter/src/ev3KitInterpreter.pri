@@ -62,4 +62,6 @@ FORMS += \
 
 include($$PWD/communication/communication.pri)
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3KitInterpreter_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3KitInterpreter_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/ev3KitInterpreter_fr.ts \

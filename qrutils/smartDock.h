@@ -45,6 +45,10 @@ public:
 	SmartDock(const QString &objectName, QWidget *innerWidget, QMainWindow *parent = nullptr);
 	~SmartDock();
 
+	/// Returns true if this widget is currently replacing main window central area.
+	bool isCentral() const;
+
+public slots:
 	/// Embeds inner widget into this dock widget instance, docks it to some panel.
 	void switchToDocked();
 
@@ -57,9 +61,17 @@ public:
 	/// Hides this dock and removes it from the list of main window`s docks.
 	void detachFromMainWindow();
 
+signals:
+	/// Emitted with 'true' value when this dock is in regular (docked) form.
+	/// Otherwise (when it floats in QDialog form) emitted with 'false' value.
+	void dockedChanged(bool docked);
+
 private slots:
 	/// Overrides default behaviour to float in QDialog shape.
 	void checkFloating();
+
+	/// If this window is docked to the top of main window hides central widget.
+	void checkCentralWidget();
 
 private:
 	QMainWindow *findMainWindow() const;
@@ -70,6 +82,9 @@ private:
 	void initDialog();
 
 	bool isAnimating();
+
+	void switchToDockedQuietly();
+	void switchToFloatingQuietly();
 
 	QMainWindow *mMainWindow;  // Doesn`t take ownerhsip
 	QWidget *mInnerWidget;  // Doesn`t take ownerhsip

@@ -49,8 +49,9 @@ QWidget *DummyMouseMovementManager::producePainter() const
 		}
 	}
 
+	connect(result, &GesturesWidget::currentElementChanged
+			, this, &DummyMouseMovementManager::drawIdealPath, Qt::QueuedConnection);
 	result->setElements(elements);
-	connect(result, &GesturesWidget::currentElementChanged, this, &DummyMouseMovementManager::drawIdealPath);
 	return result;
 }
 

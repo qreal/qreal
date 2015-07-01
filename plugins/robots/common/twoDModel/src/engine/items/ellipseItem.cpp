@@ -14,6 +14,8 @@
 
 #include "ellipseItem.h"
 
+#include <QtWidgets/QAction>
+
 using namespace twoDModel::items;
 using namespace graphicsUtils;
 
@@ -27,7 +29,6 @@ EllipseItem::EllipseItem(const QPointF &begin, const QPointF &end)
 	setY1(begin.y());
 	setX2(end.x());
 	setY2(end.y());
-	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
 }
 
@@ -36,6 +37,13 @@ AbstractItem *EllipseItem::clone() const
 	EllipseItem * const cloned = new EllipseItem({x1(), y1()}, {x2(), y2()});
 	AbstractItem::copyTo(cloned);
 	return cloned;
+}
+
+QAction *EllipseItem::ellipseTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_ellipse.png"), tr("Ellipse (E)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_E));
+	return result;
 }
 
 void EllipseItem::setPrivateData()

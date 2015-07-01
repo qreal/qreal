@@ -119,6 +119,9 @@
         <file>templates/functions/sin.t</file>
         <file>templates/functions/sqrt.t</file>
         <file>templates/functions/time.t</file>
+        <file>templates/functions/min.t</file>
+        <file>templates/functions/max.t</file>
+        <file>templates/functions/print.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/gamepadButton.t</file>
         <file>templates/wait/gamepadConnect.t</file>
@@ -206,5 +209,17 @@
         <file>templates/threads/join.t</file>
         <file>templates/threads/receiveMessage.t</file>
         <file>templates/threads/sendMessage.t</file>
+        <file>templates/files/removeFile.t</file>
+        <file>templates/files/writeFile.t</file>
+        <file>templates/threads/killThread.t</file>
+        <file>templates/variables/randomInitialization.t</file>
+        <file>templates/wait/buttonCode.t</file>
+        <file>templates/buttons/DownButton.t</file>
+        <file>templates/buttons/EnterButton.t</file>
+        <file>templates/buttons/EscButton.t</file>
+        <file>templates/buttons/LeftButton.t</file>
+        <file>templates/buttons/PowerButton.t</file>
+        <file>templates/buttons/RightButton.t</file>
+        <file>templates/buttons/UpButton.t</file>
     </qresource>
 </RCC>

@@ -87,6 +87,9 @@ public:
 	void setSrc(NodeElement *node);
 	void setDst(NodeElement *node);
 
+	/// Returns true if edge is not connected to port from one side (no matter src or dst).
+	bool isHanging() const;
+
 	/// prepare edge to moving from the linker
 	void tuneForLinker();
 
@@ -128,7 +131,7 @@ public:
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
 
-	void highlight(const QColor color = Qt::red);
+	void highlight(const QColor &color = Qt::red);
 
 	EdgeData& data();
 

@@ -19,7 +19,7 @@
 #include <kitBase/interpreterControlInterface.h>
 
 #include "src/engine/constraints/constraintsChecker.h"
-#include "twoDModel/robotModel/nullTwoDRobotModel.h"
+#include "src/robotModel/nullTwoDRobotModel.h"
 
 using namespace twoDModel::model;
 

@@ -213,7 +213,7 @@ void UsbRobotCommunicationThread::checkConsistency()
 	}
 
 	const QString selectedRobotModel = qReal::SettingsManager::value("SelectedModelFor" + selectedKit).toString();
-	if (selectedRobotModel != "NxtRealRobotModel") {
+	if (selectedRobotModel != "NxtUsbRealRobotModel") {
 		return;
 	}
 

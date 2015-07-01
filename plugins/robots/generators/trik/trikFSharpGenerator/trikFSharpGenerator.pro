@@ -36,7 +36,9 @@ links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-tri
 		qrgui-preferences-dialog robots-kit-base \
 )
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpGenerator_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpGenerator_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikFSharpGenerator_fr.ts \
 
 HEADERS += \
 	$$PWD/trikFSharpGeneratorPlugin.h \

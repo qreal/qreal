@@ -30,7 +30,6 @@
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDMotor.h"
-#include "nxtDisplayWidget.h"
 
 using namespace nxt::robotModel;
 using namespace nxt::robotModel::twoD;
@@ -38,6 +37,7 @@ using namespace kitBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
+	, mDisplayWidget(new NxtDisplayWidget())
 {
 }
 
@@ -73,9 +73,9 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo("C", output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget * parent) const
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 {
-	return new NxtDisplayWidget(parent);
+	return mDisplayWidget;
 }
 
 QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const

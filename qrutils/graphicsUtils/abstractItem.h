@@ -140,7 +140,7 @@ signals:
 	void brushChanged(const QBrush &brush);
 
 	/// Emitted when user clicks with right mouse button on this item and selects to remove it.
-	void delettedWithContextMenu();
+	void deletedWithContextMenu();
 
 protected:
 	virtual void serialize(QDomElement &element);
@@ -159,7 +159,6 @@ private:
 	qreal mY1;
 	qreal mX2;
 	qreal mY2;
-	QGraphicsView *mView;
 	QString mId;
 	bool mEditable;
 };
