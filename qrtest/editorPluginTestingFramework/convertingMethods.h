@@ -3,21 +3,17 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore>
-#include "qrkernel/ids.h"
-#include "qrgui/plugins/pluginManager/explosion.h"
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
-
-using namespace qReal;
+#include <qrkernel/ids.h>
+#include <qrgui/plugins/pluginManager/explosion.h>
+#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
 
 namespace editorPluginTestingFramework {
 
 class ConvertingMethods
 {
 public:
-
 	/// converters for methods output converting into string list
-// QList<EditorInterface::ExplosionData>
-	static QStringList convertQListExplosionDataIntoStringList(QList<EditorInterface::ExplosionData> const &explDataList);
+	static QStringList convertQListExplosionDataIntoStringList(QList<qReal::EditorInterface::ExplosionData> const &explDataList);
 	static QStringList convertingQPairListIntoStringList(QList<QPair<QString, QString>>  const &qPairList);
 	static QStringList convertIdListIntoStringList(qReal::IdList const idList);
 	static QStringList convertStringIntoStringList(QString const &string);

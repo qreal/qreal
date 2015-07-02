@@ -141,13 +141,9 @@ SOURCES += \
 	../../qrgui/mainwindow/error.cpp \
 	../../qrgui/mainWindow/errorListWidget.cpp \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
-#        ../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp \
 	../../qrgui/plugins/pluginManager/sdfRenderer.cpp \
 	../../qrgui/plugins/pluginManager/details/interpreterElementImpl.cpp \
 	../../qrgui/plugins/pluginManager/details/interpreterPortImpl.cpp \
-#	../../qrgui/plugins/pluginManager/explosion.cpp \
-#	../../qrgui/plugins/pluginManager/pattern.cpp \
-#	../../qrgui/plugins/pluginManager/editorManager.cpp \
 	../../qrgui/plugins/pluginManager/details/patternParser.cpp \
 	htmlMaker.cpp \
 	convertingMethods.cpp \
@@ -162,8 +158,6 @@ FORMS += \
 	../../qrgui/mainWindow/shapeEdit/shapeEdit.ui \
 	../../qrgui/mainWindow/shapeEdit/visibilityConditionsDialog.ui \
 	../../qrgui/mainwindow/referenceList.ui \	
-#	ui_mainWindow.h  \
-
 
 
 links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qrgui-tool-plugin-interface qscintilla2 qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-facade qslog)                        

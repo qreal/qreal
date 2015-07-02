@@ -1161,38 +1161,20 @@ void MethodsTesterForQrxcAndQrmc::testMethods()
 	fillMethodsToTestList(pathToQrxcQrmcMethodsToTest);
 	mGeneratedList.append(testMethodIfExistsInList(DiagramsStringGenerator(), "diagrams"));
 	mGeneratedList.append(testMethodIfExistsInList(ElementsStringGenerator(), "elements"));
-	mGeneratedList.append(testMethodIfExistsInList(ExplosionsStringGenerator(), "explosions"));
 	mGeneratedList.append(testMethodIfExistsInList(PortTypesStringGenerator(), "getPortTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(EnumValueStringGenerator(), "getEnumValues"));
-
 	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesStringGenerator()
 			, "propertiesWithDefaulValues"));
-	mGeneratedList.append(testMethodIfExistsInList(TypesContainedByStringGenerator(), "typesContanedBy"));
-//	mGeneratedList.append(testMethodIfExistsInList(GetPossibleEdgesStringGenerator(), "getPossibleEdges"));
 	mGeneratedList.append(testMethodIfExistsInList(IsNodeOrEdgeStringGenerator(), "isNodeOrEdge"));
-
 	mGeneratedList.append(testMethodIfExistsInList(GetPropertyNamesStringGenerator(), "getPropertyNames"));
-	mGeneratedList.append(testMethodIfExistsInList(GetReferencePropertiesStringGenerator(), "getReferenceProperties"));
-//	mGeneratedList.append(testMethodIfExistsInList(GetParentsOfStringGenerator(), "getParentsOf"));
-
-//	mGeneratedList.append(testMethodIfExistsInList(GetPropertyTypesStringGenerator(), "getPropertyTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(GetPropertyDefaultValueStringGenerator(), "getPropertyDefaultValue"));
-
 	mGeneratedList.append(testMethodIfExistsInList(DiagramNameStringGenerator(), "diagramName"));
 	mGeneratedList.append(testMethodIfExistsInList(DiagramNodeNameStringGenerator(), "diagramNodeName"));
-
 	mGeneratedList.append(testMethodIfExistsInList(ElementNameStringGenerator(), "elementName"));
 	mGeneratedList.append(testMethodIfExistsInList(ElementMouseGestureStringGenerator(), "elementMouseGesture"));
 	mGeneratedList.append(testMethodIfExistsInList(ElementDescriptionStringGenerator(), "elementDescription"));
-
 	mGeneratedList.append(testMethodIfExistsInList(PropertyDisplayedNameStringGenerator(), "propertyDisplayedName"));
-	//mGeneratedList.append(testMethodIfExistsInList(PropertyDescriptionStringGenerator(), "propertyDescription"));
-
 	mGeneratedList.append(testMethodIfExistsInList(IsParentOfStringGenerator(), "isParentOf"));
-
-//	mGeneratedList.append(testMethodIfExistsInList(DiagramPaletteGroupListStringGenerator(), "diagramPaletteGroup"));
-//	mGeneratedList.append(testMethodIfExistsInList(DiagramPaletteGroupDescriptionStringGenerator()
-//			, "diagramPaletteGroupDescription"));
 }
 
 bool MethodsTesterForQrxcAndQrmc::containsOnly(const QString &string, QChar const &symbol)

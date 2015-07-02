@@ -15,12 +15,11 @@ using namespace editorPluginTestingFramework;
 using namespace utils;
 
 void HtmlMaker::makeHtml(
-			QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
-			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
-			, QList<QPair<QString, QPair<QString, QString> >> timeResult
-			, QList<QPair<QString, QPair<QString, QString> >> timeResultIntertpter
-
-			, QString const &pathToHtml)
+		QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
+		, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
+		, QList<QPair<QString, QPair<QString, QString>>> timeResult
+		, QList<QPair<QString, QPair<QString, QString>>> timeResultIntertpter
+		, QString const &pathToHtml)
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
 

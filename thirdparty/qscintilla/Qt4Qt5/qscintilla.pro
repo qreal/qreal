@@ -32,7 +32,6 @@ TARGET = qscintilla2
 include(../../../global.pri)
 TEMPLATE = lib
 
-
 CONFIG += qt warn_off thread
 
 INCLUDEPATH = . $$PWD/../include $$PWD/../lexlib $$PWD/../src

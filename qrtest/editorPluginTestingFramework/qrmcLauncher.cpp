@@ -29,5 +29,6 @@ void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc
 			}
 		}
 	}
+
 	qDebug() << stringSeparator;
 }

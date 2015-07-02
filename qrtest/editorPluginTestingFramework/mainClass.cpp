@@ -29,8 +29,8 @@ MainClass::MainClass(
 	qDebug() << "configuration file: " << configurationFileName;
 	parseConfigurationFile(configurationFileName);
 
-	//deleteOldBinaries(mGeneratedCodeDirQrxc);
-	//deleteOldBinaries(mGeneratedCodeDirQrmc);
+	deleteOldBinaries(mGeneratedCodeDirQrxc);
+	deleteOldBinaries(mGeneratedCodeDirQrmc);
 
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
@@ -47,8 +47,9 @@ MainClass::MainClass(
 	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrmc + pathToQrmcGeneratedPlugin);
 
 	InterpreterEditorManager interpreterEditorManager(fileName, nullptr);
-	EditorManager qrxcEditorManager("plugins/editors/qrxc/plugins");
-	// we cast qrxc plugin to Editor Manager "plugins/editors/qrxc/plugin
+	QString path = "plugins/editors/qrtest/qrxc/plugins";
+	EditorManager qrxcEditorManager(path);
+	// we cast qrxc plugin to Editor Manager
 
 	MethodsTesterForQrxcAndInterpreter* const interpreterMethodsTester = new MethodsTesterForQrxcAndInterpreter(
 			&qrxcEditorManager
@@ -143,7 +144,6 @@ void MainClass::copyTestMetamodel(QString const &fileName)
 
 void MainClass::setTempValueInSettingsManager()
 {
-//	mApplicationPath.chop(4);
 	SettingsManager::setValue("temp", mApplicationPath + tempValueForSettingsManager);
 }
 
