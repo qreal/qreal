@@ -39,8 +39,8 @@ const QString initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 const QString getContainersLineTag = "@@GetContainedByLine@@";
 const QString getReferencePropertiesLineTag = "@@GetReferencePropertiesLine@@";
 
-const QString getPortTypesLineTag = "@@GetPortTypesLine@@";//oldfix
-const QString portTypesListTag = "@@PortTypesList@@";//oldfix
+const QString getPortTypesLineTag = "@@GetPortTypesLine@@";
+const QString portTypesListTag = "@@PortTypesList@@";
 
 const QString getPropertyNameTag = "@@GetPropertyNamesLine@@";
 const QString getConnectionsLineTag = "@@GetConnectedTypesLine@@";
@@ -87,8 +87,8 @@ const QString propertyDefaultTag = "@@PropertyDefaultValue@@";
 const QString containersListTag = "@@ContainedByList@@";
 const QString connectionsListTag = "@@ConnectedToList@@";
 const QString referencePropertiesListTag = "@@ReferencePropertiesList@@";
-const QString elementDescriptionMapTag = "@@ElementDescriptionMapLine@@";//fix
-const QString descriptionTag = "@@Description@@";//fix
+const QString elementDescriptionMapTag = "@@ElementDescriptionMapLine@@";
+const QString descriptionTag = "@@Description@@";
 const QString propertyNameListTag = "@@PropertiesList@@";
 const QString usagesListTag = "@@UsedTypesList@@";
 const QString isNodeOrEdgeTag = "@@IsNodeOrEdgeValue@@";
@@ -168,6 +168,6 @@ const QString metaEntityAssociation = "MetaEntityAssociation";
 
 const QString nameOfTheDirectory = "name of the directory";
 
-const QString qMakeLineTag = "@@qMakeLine@@";//enumFix
+const QString qMakeLineTag = "@@qMakeLine@@";
 
 

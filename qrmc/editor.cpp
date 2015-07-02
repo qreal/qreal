@@ -154,7 +154,7 @@ Diagram* Editor::findDiagram(const QString &name)
 	return nullptr;
 }
 
-QStringList Editor::getAllPortNames() const//oldfix
+QStringList Editor::getAllPortNames() const
 {
 	QStringList result;
 
@@ -255,7 +255,7 @@ bool Editor::generatePluginSource()
 	generateDiagramNodeNamesMap();
 	generateNamesMap();
 	generatePropertyDisplayedNamesMap();
-	generateElementDescriptionMap();//fix
+	generateElementDescriptionMap();
 	generateMouseGesturesMap();
 	generatePropertiesMap();
 	generatePropertyDefaultsMap();
@@ -263,7 +263,7 @@ bool Editor::generatePluginSource()
 	generateContainers();
 	generatePropertyNames();
 	generateReferenceProperties();
-	generatePortTypes();//oldfix
+	generatePortTypes();
 	generateConnections();
 	generateUsages();
 	generateIsNodeOrEdge();
@@ -460,7 +460,7 @@ public:
 };
 
 class Editor::ElementDescriptionGenerator: public Editor::MethodGenerator {
-public://fix
+public:
 	virtual ~ElementDescriptionGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateElementDescriptionMap(lineTemplate);
@@ -492,7 +492,7 @@ public:
 };
 
 class Editor::PortTypesGenerator: public Editor::MethodGenerator {
-public://oldfix
+public:
 	virtual ~PortTypesGenerator() {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePortTypes(lineTemplate);
@@ -569,7 +569,7 @@ void Editor::generatePropertyDisplayedNamesMap()
 	generatePluginMethod(initPropertyDisplayedNamesTag, PropertyDisplayedNamesGenerator());
 }
 
-void Editor::generateElementDescriptionMap()//fix
+void Editor::generateElementDescriptionMap()
 {
 	generatePluginMethod(elementDescriptionMapTag, ElementDescriptionGenerator());
 }
@@ -604,7 +604,7 @@ void Editor::generateReferenceProperties()
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
 
-void Editor::generatePortTypes()//oldfix
+void Editor::generatePortTypes()
 {
 	generatePluginMethod(getPortTypesLineTag, PortTypesGenerator());
 }

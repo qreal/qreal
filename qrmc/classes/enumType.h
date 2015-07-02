@@ -20,7 +20,6 @@ namespace qrmc {
 
 	private:
 
-		//QStringList mValues;//enfix
 		QMap<QString, QString> mValues;
 	};
 }

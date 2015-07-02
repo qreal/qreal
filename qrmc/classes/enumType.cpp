@@ -16,7 +16,6 @@ bool EnumType::init(const QString &context)
 		if (!mApi->isLogicalElement(child))
 			continue;
 		if (child.element() == metaEntityValue) {
-			//mValues << mApi->stringProperty(child, "valueName");
 			QString name = mApi->stringProperty(child, "valueName");
 			QString displayedName = mApi->stringProperty(child,"displayedName");
 			mValues[name] = displayedName;
@@ -41,25 +40,15 @@ void EnumType::print()
 
 QString EnumType::generateEnums(const QString &lineTemplate) const
 {
-	//QString enums;
 	QString line = lineTemplate;
 	QString lineForWright = "";
-//	foreach(QString value, mValues) {
-//		enums += "<< \"" + value + "\" ";
-//	}
-//	line.replace(enumsListTag, enums).replace(elementNameTag, name());
 	for (const QString &value : mValues.keys()) {
-		//line.replace(enumsListTag, mValues[value]).replace(dispNameTag, value).replace(elementNameTag, name());
-//{ qMakePair(QString("@@DispName@@"), tr("@@EnumValuesList@@")) };
-
-
 		if (!lineForWright.isEmpty()) {
 			lineForWright += ", qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 		else {
 			lineForWright = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
-		//line.replace(qMakeLineTag, lineForWright).replace(elementNameTag, name());
 	}
 	line.replace(qMakeLineTag, lineForWright).replace(elementNameTag, name());
 

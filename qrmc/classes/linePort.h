@@ -15,7 +15,7 @@ namespace qrmc {
 
 		virtual QString generateSdf(MetaCompiler *compiler) const;
 		virtual QString generateInit(MetaCompiler *compiler) const;
-		virtual void generatePortList(const QStringList &portTypes);//oldfix
+		virtual void generatePortList(const QStringList &portTypes);
 
 	private:
 		ScalableCoordinate mStartX;

@@ -15,12 +15,12 @@ namespace qrmc {
 
 		virtual QString generateSdf(MetaCompiler *compiler) const = 0;
 		virtual QString generateInit(MetaCompiler *compiler) const = 0;
-		virtual void generatePortList(const QStringList &portTypes) = 0;//oldfix
+		virtual void generatePortList(const QStringList &portTypes) = 0;
 
-		QString type() const;//oldfix
+		QString type() const;
 
 	protected:
 		MetaCompiler *mCompiler;
-		QString mType;//oldfix
+		QString mType;
 	};
 }

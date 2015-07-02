@@ -42,7 +42,7 @@ QString NonGraphicType::generatePropertyDisplayedNames(const QString &lineTempla
 }
 
 QString NonGraphicType::generateElementDescription(const QString &lineTemplate) const
-{//fix
+{
 	Q_UNUSED(lineTemplate)
 	return "";
 }
@@ -53,7 +53,7 @@ QString NonGraphicType::generateReferenceProperties(const QString &lineTemplate)
 	return "";
 }
 
-QString NonGraphicType::generatePortTypes(const QString &lineTemplate) const//oldfix
+QString NonGraphicType::generatePortTypes(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";

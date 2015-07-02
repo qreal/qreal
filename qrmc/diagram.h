@@ -30,11 +30,11 @@ namespace qrmc {
 		QString generatePropertiesMap(const QString &lineTemplate) const;
 		QString generatePropertyDefaultsMap(const QString &lineTemplate) const;
 		QString generatePropertyDisplayedNamesMap(const QString &lineTemplate) const;
-		QString generateElementDescriptionMap(const QString &lineTemplate) const;//fix
+		QString generateElementDescriptionMap(const QString &lineTemplate) const;
 		QString generateParentsMap(const QString &lineTemplate) const;
 		QString generateContainers(const QString &lineTemplate) const;
 		QString generateReferenceProperties(const QString &lineTemplate) const;
-		QString generatePortTypes(const QString &lineTemplate) const;//oldfix
+		QString generatePortTypes(const QString &lineTemplate) const;
 		QString generatePropertyName(const QString &lineTemplate) const;
 		QString generateConnections(const QString &lineTemplate) const;
 		QString generateUsages(const QString &lineTemplate) const;
@@ -70,7 +70,7 @@ namespace qrmc {
 		class ConnectionsGenerator;
 		class ContainersGenerator;
 		class ReferencePropertiesGenerator;
-		class PortTypesGenerator;//oldfix
+		class PortTypesGenerator;
 		class PropertyNameGenerator;
 		class FactoryGenerator;
 		class IsNodeOrEdgeGenerator;
@@ -84,7 +84,7 @@ namespace qrmc {
 		class PropertyNamesGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
-		class ElementDescriptonGenerator;//fix
+		class ElementDescriptonGenerator;
 		class ParentsMapGenerator;
 		class NodesGenerator;
 		class EdgesGenerator;

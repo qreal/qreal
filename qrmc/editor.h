@@ -7,7 +7,7 @@
 #include <QtCore/QSet>
 
 #include "../qrrepo/repoApi.h"
-#include "classes/port.h" //oldfix//here
+#include "classes/port.h"
 
 namespace qrmc {
 	class MetaCompiler;
@@ -36,7 +36,7 @@ namespace qrmc {
 
 		Type *findType(const QString &name);
 		QSet<EnumType*> getAllEnumTypes();
-		QStringList getAllPortNames() const;//oldfix
+		QStringList getAllPortNames() const;
 		Diagram *findDiagram(const QString &name);
 		QMap<QString, Diagram*> diagrams();
 
@@ -55,13 +55,13 @@ namespace qrmc {
 		void generateMouseGesturesMap();
 		void generatePropertiesMap();
 		void generatePropertyDisplayedNamesMap();
-		void generateElementDescriptionMap();//fix
+		void generateElementDescriptionMap();
 		void generateParentsMap();
 		void generatePropertyDefaultsMap();
 		void generateElementsFactory();
 		void generateContainers();
 		void generateReferenceProperties();
-		void generatePortTypes();//oldfix
+		void generatePortTypes();
 		void generatePropertyNames();
 		void generateConnections();
 		void generateUsages();
@@ -87,7 +87,7 @@ namespace qrmc {
 		class MethodGenerator;
 		class ContainersGenerator;
 		class ReferencePropertiesGenerator;
-		class PortTypesGenerator;//oldfix
+		class PortTypesGenerator;
 		class PropertyNameGenerator;
 		class ConnectionsGenerator;
 		class UsagesGenerator;
@@ -98,7 +98,7 @@ namespace qrmc {
 		class PropertiesGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
-		class ElementDescriptionGenerator;//fix
+		class ElementDescriptionGenerator;
 		class ParentsMapGenerator;
 		class PossibleEdgesGenerator;
 		void generatePluginMethod(const QString &tag, MethodGenerator const &generator);
