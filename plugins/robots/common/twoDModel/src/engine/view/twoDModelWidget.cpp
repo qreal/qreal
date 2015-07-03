@@ -164,13 +164,16 @@ void TwoDModelWidget::initWidget()
 	mDisplay->setMaximumSize(displaySize);
 	mUi->detailsTab->setDisplay(mDisplay);
 
-	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
-	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
-	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, [=]() {
+	auto toggleRulers = [=]() {
 		const bool gridVisible = SettingsManager::value("2dShowGrid").toBool();
 		mUi->horizontalRuler->setVisible(gridVisible);
 		mUi->verticalRuler->setVisible(gridVisible);
-	});
+	};
+	toggleRulers();
+
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, toggleRulers);
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->horizontalRuler, SLOT(update()));
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->horizontalRuler, SLOT(update()));
