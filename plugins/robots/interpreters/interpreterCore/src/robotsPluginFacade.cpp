@@ -175,7 +175,8 @@ ActionsManager &RobotsPluginFacade::actionsManager()
 
 QObject *RobotsPluginFacade::guiScriptFacade() const
 {
-	if (auto robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(&mRobotModelManager.model())) {
+	const auto robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(&mRobotModelManager.model());
+	if (robotModel) {
 		return &robotModel->engine()->guiFacade();
 	}
 

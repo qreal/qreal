@@ -9,7 +9,7 @@ HEADERS += \
 	$$PWD/paletteAPI.h \
 	$$PWD/hintAPI.h \
 	$$PWD/virtualKeyboard.h \
-	$$PWD/sceneAPI.h
+	$$PWD/sceneAPI.h \
 
 SOURCES += \
 	$$PWD/scriptAPI.cpp \
@@ -20,4 +20,4 @@ SOURCES += \
 	$$PWD/paletteAPI.cpp \
 	$$PWD/hintAPI.cpp \
 	$$PWD/virtualKeyboard.cpp \
-	$$PWD/sceneAPI.cpp
+	$$PWD/sceneAPI.cpp \

@@ -85,8 +85,8 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int d
 	const int comboBoxHeight = comboBox->height() / 2;
 	const int rowHeight = (comboBox->view()->height() - comboBoxHeight) / comboBox->count();
 
-	int index;
-	for (index = 1; index <= comboBox->count(); ++index) {
+	int index = 1;
+	for (; index <= comboBox->count(); ++index) {
 		if (comboBox->itemData(index, Qt::DisplayRole).toString() == name) {
 			break;
 		}
@@ -108,14 +108,19 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int d
 			, [this, comboBox]() {
 				mVirtualCursor->moved(comboBox->view()->viewport());
 			});
+
 	timer->start();
 	mVirtualCursor->moveToRect(target, duration);
 	timer->stop();
+
+	delete timer;
+
 	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress
 			,  mVirtualCursor->pos()
 			, Qt::LeftButton
 			, Qt::LeftButton
 			, Qt::NoModifier);
+
 	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease
 			, mVirtualCursor->pos()
 			, Qt::LeftButton

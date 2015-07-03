@@ -15,7 +15,7 @@ TwoDModelGuiFacade::TwoDModelGuiFacade(view::TwoDModelWidget &view)
 {
 }
 
-QWidget *TwoDModelGuiFacade::widget(QString const &type, QString const &name) const
+QWidget *TwoDModelGuiFacade::widget(const QString &type, const QString &name) const
 {
 	return utils::WidgetFinder::widget(&mD2ModelWidget, type, name);
 }

@@ -37,11 +37,11 @@ void SceneAPI::drawLink(const QString &fromElementId, const QString &toElementId
 		return;
 	}
 
-	const EditorViewScene *scene = &mMainWindow.getCurrentTab()->editorViewScene();
-	const EditorView *sceneView = mMainWindow.getCurrentTab();
+	const EditorViewScene * const scene = &mMainWindow.getCurrentTab()->editorViewScene();
+	const EditorView * const sceneView = mMainWindow.getCurrentTab();
 
-	const NodeElement *toNode = scene->getNodeById(Id::loadFromString(toElementId));
-	const NodeElement *fromNode = scene->getNodeById(Id::loadFromString(fromElementId));
+	const NodeElement * const toNode = scene->getNodeById(Id::loadFromString(toElementId));
+	const NodeElement * const fromNode = scene->getNodeById(Id::loadFromString(fromElementId));
 
 	if (toNode && fromNode) {
 		mScriptAPI.virtualCursor().sceneMoveTo(sceneView->viewport()
@@ -60,12 +60,12 @@ void SceneAPI::drawLink(const QString &fromElementId, const QString &toElementId
 	}
 }
 
-QString SceneAPI::createBlockOnScene(const DraggableElement *paletteElement
+QString SceneAPI::createBlockOnScene(const DraggableElement * const paletteElement
 		, int xSceneCoord, int ySceneCoord)
 {
 	if (EditorView * const currentTab = mMainWindow.getCurrentTab()) {
 		const Id elementId(paletteElement->id(), QUuid::createUuid().toString());
-		const QMimeData *mimeData = paletteElement->mimeData(elementId);
+		const QMimeData * const mimeData = paletteElement->mimeData(elementId);
 		currentTab->mutableScene().createElement(
 				paletteElement->mimeData(elementId)
 				, currentTab->mapToScene(QPoint(xSceneCoord, ySceneCoord))
@@ -92,8 +92,8 @@ QStringList SceneAPI::nodeList(const QString &diagram, const QString &element)
 	/// @todo: Rewrite it using models
 	const QList<QGraphicsItem *> items = mMainWindow.getCurrentTab()->editorViewScene().items();
 	QStringList result;
-	for (QGraphicsItem * const item : items) {
-		const NodeElement *node = dynamic_cast<NodeElement*>(item);
+	for (const QGraphicsItem * const item : items) {
+		const NodeElement * const node = dynamic_cast<NodeElement const *>(item);
 		if (node && node->id().diagram() == diagram && node->id().element() == element) {
 			result << node->id().toString();
 		}

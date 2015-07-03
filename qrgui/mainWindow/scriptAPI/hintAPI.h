@@ -14,7 +14,6 @@
 
 #pragma once
 
-
 #include <QtCore/QObject>
 
 namespace qReal {

@@ -2,6 +2,8 @@
 
 #include <QtWidgets/QWidget>
 
+#include "twoDModel/twoDModelDeclSpec.h"
+
 namespace twoDModel {
 
 namespace view {
@@ -12,7 +14,7 @@ namespace engine {
 
 /// Implemented facade pattern. This class allows to search and manage objects of plugin`s user interface
 /// from scripting language by their object names, parents and types.
-class TwoDModelGuiFacade : public QObject
+class TWO_D_MODEL_EXPORT TwoDModelGuiFacade : public QObject
 {
 	Q_OBJECT
 
@@ -20,7 +22,7 @@ public:
 	explicit TwoDModelGuiFacade(view::TwoDModelWidget &d2RobotWidget);
 
 	/// Searches and returns widget by type and object name.
-	Q_INVOKABLE QWidget *widget(QString const &type, QString const &name) const;
+	Q_INVOKABLE QWidget *widget(const QString &type, const QString &name) const;
 
 	/// Returns 2D model window widget.
 	Q_INVOKABLE QWidget *twoDModelWidget() const;
