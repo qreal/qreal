@@ -25,7 +25,7 @@ install:
   - sudo apt-get update
   - sudo apt-get install libboost-system-dev libboost-wave-dev tcl
   - sudo apt-get install vera++
-  - sudo apt-get -f install qt55base qt55svg libgl1-mesa-dev -y
+  - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg libgl1-mesa-dev -y
   - . /opt/qt55/bin/qt55-env.sh
   - sudo apt-get install xvfb
   - Xvfb :0 &
