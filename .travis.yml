@@ -20,7 +20,7 @@ install:
   - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50; fi
   - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe"
   - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty main"
-#  - sudo add-apt-repository ppa:beineri/opt-qt55-beta-trusty -y
+  - sudo add-apt-repository "deb http://ppa.launchpad.net/beineri/opt-qt55-beta-trusty/ubuntu trusty main"
   - sudo add-apt-repository ppa:smspillaz/verapp-latest -y
   - sudo apt-get update
   - sudo apt-get install libboost-system-dev libboost-wave-dev tcl
