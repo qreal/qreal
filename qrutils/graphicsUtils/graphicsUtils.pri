@@ -24,7 +24,7 @@ HEADERS += \
 	$$PWD/stylusImpl.h \
 	$$PWD/itemPopup.h \
 	$$PWD/gridDrawer.h \
-	$$PWD/animatedHighlighter.h \
+	$$PWD/animatedEffects.h \
 
 SOURCES += \
 	$$PWD/abstractItem.cpp \
@@ -38,4 +38,4 @@ SOURCES += \
 	$$PWD/rotateItem.cpp \
 	$$PWD/rotater.cpp \
 	$$PWD/gridDrawer.cpp \
-	$$PWD/animatedHighlighter.cpp \
+	$$PWD/animatedEffects.cpp \

@@ -103,7 +103,7 @@ Trigger TriggersFactory::dropEvent(const QString &id) const
 	};
 }
 
-void TriggersFactory::reportError(const QString &message)
+void TriggersFactory::reportError(const QString &message) const
 {
 	emit mStatus.checkerError(message);
 }

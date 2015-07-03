@@ -55,7 +55,7 @@ public:
 	Value timestamp(const utils::TimelineInterface &timeline) const;
 
 private:
-	void reportError(const QString &message);
+	void reportError(const QString &message) const;
 
 	Variables &mVariables;
 	const Objects &mObjects;

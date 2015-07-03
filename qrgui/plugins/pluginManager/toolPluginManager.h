@@ -63,6 +63,11 @@ public:
 	/// about newly opened tab (or maybe null info in case of last tab is closed).
 	void activeTabChanged(const TabInfo &info);
 
+	/// Returns GUI script facade of the given plugin.
+	/// The resulting object provides a convenient way to work with different elements of plugin graphical user
+	/// interface in scripting language.
+	QObject *pluginGuiFacade(const QString &pluginName) const;
+
 private:
 	/// Asks plugins for custom default settings and merges them with engine`s ones.
 	void loadDefaultSettings();

@@ -46,6 +46,13 @@ void ConsoleErrorReporter::addCritical(const QString &message, const Id &positio
 	emit criticalAdded(message, position);
 }
 
+void ConsoleErrorReporter::sendBubblingMessage(const QString &message, int duration, QWidget *parent)
+{
+	Q_UNUSED(duration)
+	Q_UNUSED(parent)
+	qDebug() << message;
+}
+
 bool ConsoleErrorReporter::wereErrors()
 {
 	return mWereErrors;

@@ -31,6 +31,7 @@ HEADERS += \
 	$$PWD/include/twoDModel/engine/twoDModelDisplayWidget.h \
 	$$PWD/include/twoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/twoDModel/engine/twoDModelEngineInterface.h \
+	$$PWD/include/twoDModel/engine/twoDModelGuiFacade.h \
 	$$PWD/include/twoDModel/engine/view/twoDModelWidget.h \
 	$$PWD/include/twoDModel/engine/model/constants.h \
 	$$PWD/include/twoDModel/engine/model/model.h \
@@ -101,6 +102,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
 	$$PWD/src/engine/twoDModelEngineApi.cpp \
+	$$PWD/src/engine/twoDModelGuiFacade.cpp \
 	$$PWD/src/engine/view/twoDModelWidget.cpp \
 	$$PWD/src/engine/view/twoDModelDisplayWidget.cpp \
 	$$PWD/src/engine/view/nullTwoDModelDisplayWidget.cpp \

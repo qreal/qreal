@@ -56,6 +56,9 @@ public:
 	/// Returns fileName by given object.
 	QString fileName(QObject *plugin) const;
 
+	/// Returns loaded plugin object by name specified in plugin metainformation.
+	QObject *pluginByName(const QString &pluginName) const;
+
 private:
 	/// Directory to loaded plugins.
 	QDir mPluginsDir;
