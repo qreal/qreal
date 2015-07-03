@@ -16,6 +16,8 @@
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
+#include <QtCore/QScopedPointer>
+
 namespace twoDModel {
 
 namespace model {
