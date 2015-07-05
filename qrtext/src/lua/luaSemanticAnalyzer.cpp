@@ -129,23 +129,27 @@ void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &nod
 	} else if (node->is<ast::FieldInitialization>()) {
 		assign(node, type(as<ast::FieldInitialization>(node)->value()));
 	} else if (node->is<ast::TableConstructor>()) {
-		auto tableConstructor = as<ast::TableConstructor>(node);
-		auto elementType = tableConstructor->initializers().isEmpty()
-				? any()
-				: type(tableConstructor->initializers().first());
+		const auto tableConstructor = as<ast::TableConstructor>(node);
+		QSharedPointer<core::types::TypeExpression> elementType;
+		if (tableConstructor->initializers().isEmpty()) {
+			elementType = any();
+		} else {
+			const auto firstInitializer = tableConstructor->initializers().first();
+			elementType = type(as<ast::FieldInitialization>(firstInitializer)->value());
+		}
 
-		auto tableType = core::wrap(new types::Table(elementType, tableConstructor->initializers().size()));
+		const auto tableType = core::wrap(new types::Table(elementType, tableConstructor->initializers().size()));
 
 		assign(node, tableType);
 	} else if (node->is<ast::IndexingExpression>()) {
-		auto indexingExpression = as<ast::IndexingExpression>(node);
-		auto table = indexingExpression->table();
+		const auto indexingExpression = as<ast::IndexingExpression>(node);
+		const auto table = indexingExpression->table();
 		if (type(table)->is<types::Table>()) {
-			auto tableElementType = as<types::Table>(type(table))->elementType();
+			const auto tableElementType = as<types::Table>(type(table))->elementType();
 			assign(node, tableElementType);
 		} else {
 			/// It's a table, but we see it for the first time so know nothing about it.
-			auto elementType = QSharedPointer<core::types::TypeVariable>(new core::types::TypeVariable());
+			const auto elementType = QSharedPointer<core::types::TypeVariable>(new core::types::TypeVariable());
 			constrain(table, table, { core::wrap(new types::Table(elementType, -1)) });
 			assign(node, elementType);
 		}
