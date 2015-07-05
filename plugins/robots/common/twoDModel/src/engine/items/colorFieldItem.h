@@ -27,7 +27,7 @@ class ColorFieldItem : public graphicsUtils::AbstractItem
 	Q_PROPERTY(int thickness READ thickness WRITE setThickness)
 
 public:
-	explicit ColorFieldItem(QGraphicsItem* parent = 0);
+	explicit ColorFieldItem(QGraphicsItem *parent = 0);
 	~ColorFieldItem() override;
 
 	/// Returns a color of this item.
@@ -47,7 +47,7 @@ public:
 	virtual AbstractItem *clone() const = 0;
 
 	virtual QRectF boundingRect() const = 0;
-	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) override = 0;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override = 0;
 
 	virtual QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) = 0;
 };

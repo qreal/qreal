@@ -20,7 +20,9 @@ links(qrkernel qrutils qrgui-tool-plugin-interface robots-utils robots-kit-base)
 includes(plugins/robots/common/kitBase)
 includes(plugins/robots/utils qrtext)
 
-TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModel_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModel_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/twoDModel_fr.ts \
 
 HEADERS += \
 	$$PWD/include/twoDModel/twoDModelDeclSpec.h \
@@ -29,6 +31,7 @@ HEADERS += \
 	$$PWD/include/twoDModel/engine/twoDModelDisplayWidget.h \
 	$$PWD/include/twoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/twoDModel/engine/twoDModelEngineInterface.h \
+	$$PWD/include/twoDModel/engine/twoDModelGuiFacade.h \
 	$$PWD/include/twoDModel/engine/view/twoDModelWidget.h \
 	$$PWD/include/twoDModel/engine/model/constants.h \
 	$$PWD/include/twoDModel/engine/model/model.h \
@@ -71,6 +74,7 @@ HEADERS += \
 	$$PWD/src/engine/view/parts/colorItemPopup.h \
 	$$PWD/src/engine/view/parts/robotItemPopup.h \
 	$$PWD/src/engine/view/parts/speedPopup.h \
+	$$PWD/src/engine/view/parts/ruler.h \
 	$$PWD/src/engine/constraints/constraintsChecker.h \
 	$$PWD/src/engine/constraints/details/defines.h \
 	$$PWD/src/engine/constraints/details/constraintsParser.h \
@@ -98,6 +102,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
 	$$PWD/src/engine/twoDModelEngineApi.cpp \
+	$$PWD/src/engine/twoDModelGuiFacade.cpp \
 	$$PWD/src/engine/view/twoDModelWidget.cpp \
 	$$PWD/src/engine/view/twoDModelDisplayWidget.cpp \
 	$$PWD/src/engine/view/nullTwoDModelDisplayWidget.cpp \
@@ -113,6 +118,7 @@ SOURCES += \
 	$$PWD/src/engine/view/parts/colorItemPopup.cpp \
 	$$PWD/src/engine/view/parts/robotItemPopup.cpp \
 	$$PWD/src/engine/view/parts/speedPopup.cpp \
+	$$PWD/src/engine/view/parts/ruler.cpp \
 	$$PWD/src/engine/model/model.cpp \
 	$$PWD/src/engine/model/settings.cpp \
 	$$PWD/src/engine/model/robotModel.cpp \

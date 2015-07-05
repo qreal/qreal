@@ -29,6 +29,7 @@
 #include "projectManager/projectManagerWrapper.h"
 #include "tabWidget.h"
 #include "startWidget/startWidget.h"
+#include "scriptAPI/scriptAPI.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
@@ -362,6 +363,8 @@ private:
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
+	void initScriptAPI();
+	void initActionWidgetsNames();
 	void openStartTab();
 
 	void setVersion(const QString &version);
@@ -413,6 +416,8 @@ private:
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
+
+	gui::ScriptAPI mScriptAPI;
 };
 
 }

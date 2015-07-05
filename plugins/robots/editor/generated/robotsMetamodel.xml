@@ -335,9 +335,9 @@
 						<image y1="0" name="images/randomizerBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="70" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
-						<label x="20" y="90" textBinded="LowerBound" background="white" prefix="From:"/>
-						<label x="70" y="90" textBinded="UpperBound" background="white" prefix="To:"/>
+						<label x="30" y="60" textBinded="Variable" background="white" prefix="Variable:"/>
+						<label x="30" y="90" textBinded="LowerBound" background="white" prefix="From:"/>
+						<label x="30" y="120" textBinded="UpperBound" background="white" prefix="To:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>

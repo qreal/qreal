@@ -159,7 +159,6 @@ private:
 	qreal mY1;
 	qreal mX2;
 	qreal mY2;
-	QGraphicsView *mView;
 	QString mId;
 	bool mEditable;
 };

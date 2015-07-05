@@ -27,9 +27,9 @@ static const qReal::Id subprogramDiagramType = qReal::Id("RobotsMetamodel", "Rob
 ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelManager &robotModelManager)
 	: mKitPluginManager(kitPluginManager)
 	, mRobotModelManager(robotModelManager)
-	, mRunAction(QIcon(":/icons/robots_run.svg"), QObject::tr("Run"), nullptr)
-	, mStopRobotAction(QIcon(":/icons/robots_stop.svg"), QObject::tr("Stop robot"), nullptr)
-	, mConnectToRobotAction(QIcon(":/icons/robots_connect.svg"), QObject::tr("Connect to robot"), nullptr)
+	, mRunAction(new QAction(QIcon(":/icons/robots_run.svg"), QObject::tr("Run"), nullptr))
+	, mStopRobotAction(new QAction(QIcon(":/icons/robots_stop.svg"), QObject::tr("Stop robot"), nullptr))
+	, mConnectToRobotAction(new QAction(QIcon(":/icons/robots_connect.svg"), QObject::tr("Connect to robot"), nullptr))
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
 	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
 	, mDebugModeAction(QObject::tr("Switch to debug mode"), nullptr)
@@ -38,16 +38,17 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mSeparator2(nullptr)
 {
 	initKitPluginActions();
+	giveObjectNames();
 
-	mConnectToRobotAction.setCheckable(true);
+	mConnectToRobotAction->setCheckable(true);
 
 	mSeparator1.setSeparator(true);
 	mSeparator2.setSeparator(true);
 
 	mActions
-			<< &mConnectToRobotAction
-			<< &mRunAction
-			<< &mStopRobotAction
+			<< mConnectToRobotAction
+			<< mRunAction
+			<< mStopRobotAction
 			<< &mRobotSettingsAction
 			<< &mExportExerciseAction
 			;
@@ -55,8 +56,16 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	mEditModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
 	mDebugModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
 
-	mStopRobotAction.setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
-	mRunAction.setShortcut(QKeySequence(Qt::Key_F5));
+	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
+	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
+}
+
+void ActionsManager::giveObjectNames()
+{
+	mRunAction->setObjectName("runRobot");
+	mStopRobotAction->setObjectName("stopRobot");
+	mConnectToRobotAction->setObjectName("connectToRobot");
+	mRobotSettingsAction.setObjectName("robotSettings");
 }
 
 QList<qReal::ActionInfo> ActionsManager::actions()
@@ -66,9 +75,9 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 	result << mPluginActionInfos;
 
 	result
-			<< qReal::ActionInfo(&mConnectToRobotAction, "interpreters", "tools")
-			<< qReal::ActionInfo(&mRunAction, "interpreters", "tools")
-			<< qReal::ActionInfo(&mStopRobotAction, "interpreters", "tools")
+			<< qReal::ActionInfo(mConnectToRobotAction, "interpreters", "tools")
+			<< qReal::ActionInfo(mRunAction, "interpreters", "tools")
+			<< qReal::ActionInfo(mStopRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mSeparator1, "interpreters", "tools");
 
 	result << mRobotModelActions.values();
@@ -91,8 +100,8 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	result
 			<< qReal::HotKeyActionInfo("Editor.EditMode", mEditModeAction.text(), &mEditModeAction)
 			<< qReal::HotKeyActionInfo("Editor.DebugMode", mDebugModeAction.text(), &mDebugModeAction)
-			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), &mRunAction)
-			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), &mStopRobotAction)
+			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), mRunAction)
+			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), mStopRobotAction)
 			;
 
 	return result;
@@ -100,17 +109,17 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 
 QAction &ActionsManager::runAction()
 {
-	return mRunAction;
+	return *mRunAction;
 }
 
 QAction &ActionsManager::stopRobotAction()
 {
-	return mStopRobotAction;
+	return *mStopRobotAction;
 }
 
 QAction &ActionsManager::connectToRobotAction()
 {
-	return mConnectToRobotAction;
+	return *mConnectToRobotAction;
 }
 
 void ActionsManager::init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface)
@@ -147,9 +156,9 @@ void ActionsManager::appendHotKey(const QString &actionId, const QString &label,
 
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
-	mConnectToRobotAction.setVisible(model.needsConnection());
-	mRunAction.setVisible(model.interpretedModel());
-	mStopRobotAction.setVisible(false);
+	mConnectToRobotAction->setVisible(model.needsConnection());
+	mRunAction->setVisible(model.interpretedModel());
+	mStopRobotAction->setVisible(false);
 	const QString currentKitId = kitIdOf(model);
 
 	/// @todo: this stupid visibility management may show actions with custom avalability logic.
@@ -168,8 +177,8 @@ void ActionsManager::onActiveTabChanged(const qReal::TabInfo &info)
 {
 	updateEnabledActions();
 	const bool isDiagramTab = info.type() == qReal::TabInfo::TabType::editor;
-	mRunAction.setEnabled(isDiagramTab);
-	mStopRobotAction.setEnabled(isDiagramTab);
+	mRunAction->setEnabled(isDiagramTab);
+	mStopRobotAction->setEnabled(isDiagramTab);
 }
 
 void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)

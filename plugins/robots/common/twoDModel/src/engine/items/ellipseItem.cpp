@@ -29,7 +29,6 @@ EllipseItem::EllipseItem(const QPointF &begin, const QPointF &end)
 	setY1(begin.y());
 	setX2(end.x());
 	setY2(end.y());
-	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
 }
 

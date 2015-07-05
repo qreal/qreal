@@ -39,7 +39,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
-#include <qrutils/graphicsUtils/animatedHighlighter.h>
+#include <qrutils/graphicsUtils/animatedEffects.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
 
@@ -74,6 +74,8 @@
 #include "referenceList.h"
 #include "splashScreen.h"
 #include "dotRunner.h"
+
+#include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -310,6 +312,8 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	mScriptAPI.abortEvaluation();
+
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
 		return;
@@ -365,12 +369,13 @@ void MainWindow::selectItemWithError(const Id &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	emit mFacade.events().ensureDiagramVisible();
 	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
 
 	Element * const element = getCurrentTab() ? getCurrentTab()->editorViewScene().getElem(graphicalId) : nullptr;
-	graphicsUtils::AnimatedHighlighter::highlight(element);
+	graphicsUtils::AnimatedEffects::highlight(element);
 }
 
 void MainWindow::selectItem(const Id &id)
@@ -1619,6 +1624,10 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+	if (SettingsManager::value("scriptInterpretation").toBool()) {
+		initActionWidgetsNames();
+		initScriptAPI();
+	}
 
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.setWindowIcon(BrandManager::applicationIcon());
@@ -1629,6 +1638,19 @@ void MainWindow::initPluginsAndStartWidget()
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
 		openStartTab();
+	}
+}
+
+void MainWindow::initActionWidgetsNames()
+{
+	QList<QAction *> const actionList = findChildren<QAction *>();
+
+	for (QAction * const action : actionList) {
+		for (QWidget * const widget : action->associatedWidgets()) {
+			if (widget->objectName().isEmpty()) {
+				widget->setObjectName(action->objectName());
+			}
+		}
 	}
 }
 
@@ -2006,7 +2028,7 @@ QByteArray MainWindow::saveState(int version) const
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
 	const bool result = QMainWindow::restoreState(state, version);
-	if (!mUi->errorListWidget->count() > 0) {
+	if (mUi->errorListWidget->count() == 0) {
 		mUi->errorDock->hide();
 	}
 
@@ -2039,6 +2061,22 @@ void MainWindow::openStartTab()
 	const int index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
 	mUi->tabs->setTabUnclosable(index);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+}
+
+void MainWindow::initScriptAPI()
+{
+	QThread * const scriptAPIthread = new QThread(this);
+	mScriptAPI.init(*this);
+
+	QAction *const evalAction = new QAction(this);
+	// Setting a secret combination to activate script interpretation.
+	evalAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F12));
+	connect(evalAction, &QAction::triggered, &mScriptAPI, &ScriptAPI::evaluate, Qt::DirectConnection);
+	addAction(evalAction);
+
+	connect(&mFacade.events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
+	mScriptAPI.moveToThread(scriptAPIthread);
+	scriptAPIthread->start();
 }
 
 void MainWindow::beginPaletteModification()

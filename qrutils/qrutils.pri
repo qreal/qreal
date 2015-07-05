@@ -32,6 +32,7 @@ HEADERS += \
 	$$PWD/parserErrorReporter.h \
 	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
+	$$PWD/widgetFinder.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -51,13 +52,16 @@ SOURCES += \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
+	$$PWD/widgetFinder.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui
 
 RESOURCES = $$PWD/qrutils.qrc
 
-TRANSLATIONS = $$PWD/../qrtranslations/ru/qrutils_ru.ts
+TRANSLATIONS = \
+	$$PWD/../qrtranslations/ru/qrutils_ru.ts \
+	$$PWD/../qrtranslations/fr/qrutils_fr.ts \
 
 QT += xml widgets
 
