@@ -251,6 +251,24 @@ void LuaSemanticAnalyzer::constrainAssignment(const QSharedPointer<core::ast::No
 		reportError(operation, QObject::tr("Left and right operand have mismatched types."));
 	} else {
 		if (wasCoercion) {
+			if (lhs->is<ast::IndexingExpression>()) {
+				// We need to coerce table itself.
+				const auto table = as<ast::IndexingExpression>(lhs)->table();
+				const auto tableType = typeVariable(table);
+				if (rhsType->isResolved()) {
+					const auto tableTypePattern = QSharedPointer<core::types::TypeVariable>(
+							new core::types::TypeVariable(
+									QSharedPointer<core::types::TypeExpression>(
+										new types::Table(rhsType->finalType(), 1))
+									));
+
+					tableType->constrainAssignment(
+							tableTypePattern
+							, generalizationsTable()
+							, &wasCoercion);
+				}
+			}
+
 			requestRecheck();
 		}
 	}
