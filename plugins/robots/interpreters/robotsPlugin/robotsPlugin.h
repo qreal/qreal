@@ -40,6 +40,7 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::ProjectConverter> projectConverters() override;
 	QStringList defaultSettingsFiles() override;
+	QObject *guiScriptFacade() override;
 
 private:
 	/// Main window interface object, used to call GUI functionality.

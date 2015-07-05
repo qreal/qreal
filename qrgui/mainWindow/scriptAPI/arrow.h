@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,31 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QWidget>
 
-#include "qrutils/utilsDeclSpec.h"
+namespace qReal {
+namespace gui {
 
-namespace graphicsUtils {
-
-/// Highlights the given item animating its opacity.
-class QRUTILS_EXPORT AnimatedHighlighter
+/// An implementation of arrow on the screen for pointing some widgets in help mode. Has animated fade-away effect.
+/// @see qReal::HintAPI.
+class Arrow : public QWidget
 {
+	Q_OBJECT
+
 public:
-	/// Highlights the given item animating its opacity.
-	static void highlight(QGraphicsItem * const item);
+	Arrow(const QPoint &sourcePoint, const QPoint &destPoint, int lifeTime, QWidget *parent);
+
+protected:
+	void paintEvent(QPaintEvent *);
+
+private slots:
+	void disappear();
+
+private:
+	QPoint mSourcePoint;
+	QPoint mDestPoint;
+	int mDuration;
 };
 
+}
 }
