@@ -412,6 +412,10 @@ QString Diagram::generateEnums(const QString &lineTemplate) const
 		isFirstLine = false;
 		result += line + endline;
 	}
+
+	if (result.isEmpty())
+		return "	Q_UNUSED(name);";
+
 	return result;
 }
 
