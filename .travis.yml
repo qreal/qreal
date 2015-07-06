@@ -15,9 +15,9 @@ env:
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get update -qq; fi
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.8; fi
-  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50; fi
-  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50; fi
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.9; fi
+  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50; fi
+  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50; fi
   - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe"
   - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty main"
   - sudo add-apt-repository "deb http://ppa.launchpad.net/beineri/opt-qt55-beta-trusty/ubuntu trusty main"
