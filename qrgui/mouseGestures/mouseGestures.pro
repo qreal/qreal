@@ -25,7 +25,9 @@ QT += widgets
 
 DEFINES += QRGUI_MOUSE_GESTURES_LIBRARY
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mouseGestures_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_mouseGestures_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_mouseGestures_fr.ts \
 
 HEADERS += \
 	$$PWD/mouseGesturesDeclSpec.h \

@@ -230,12 +230,16 @@ void NullMainWindow::openFirstDiagram()
 	}
 
 	const Id rootId = mGraphicalModel->rootId();
-	const IdList rootIds = mGraphicalModel->children(rootId);
-	if (rootIds.count() == 0) {
-		return;
+	Id graphicalDiagramId;
+	for (const Id diagram : mGraphicalModel->children(rootId)) {
+		if (mGraphicalModel->isGraphicalId(diagram)) {
+			graphicalDiagramId = diagram;
+		}
 	}
 
-	openTabWithEditor(rootIds[0]);
+	if (!graphicalDiagramId.isNull()) {
+		openTabWithEditor(graphicalDiagramId);
+	}
 }
 
 void NullMainWindow::openTabWithEditor(const Id &id)

@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QComboBox>
 
 using namespace twoDModel::view;
 
@@ -90,6 +91,11 @@ void DetailsTab::setMotorsConfigurer(QWidget *widget)
 {
 	mMotors = widget;
 	setItemWidget(mMotorsItem, 0, widget);
+	for (QWidget * const child : widget->findChildren<QComboBox *>()) {
+		QPalette palette;
+		palette.setColor(QPalette::Base, Qt::white);
+		child->setPalette(palette);
+	}
 }
 
 void DetailsTab::setPhysicsSettings(QWidget *widget)

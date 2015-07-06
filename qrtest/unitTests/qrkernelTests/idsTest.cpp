@@ -14,6 +14,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QVariant>
+#include <QtCore/QDataStream>
 
 #include <qrkernel/ids.h>
 

@@ -24,7 +24,9 @@ QT += widgets
 
 DEFINES += QRGUI_TEXT_EDITOR_LIBRARY
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_textEditor_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_textEditor_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_textEditor_fr.ts \
 
 INCLUDEPATH = \
 	$$PWD/ \

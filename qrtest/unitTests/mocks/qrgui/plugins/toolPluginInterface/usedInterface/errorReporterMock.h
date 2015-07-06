@@ -24,10 +24,11 @@ namespace qrTest {
 
 class ErrorReporterMock : public qReal::ErrorReporterInterface {
 public:
-	MOCK_METHOD2(addInformation, void(QString const &message, qReal::Id const &position));
-	MOCK_METHOD2(addWarning, void(QString const &message, qReal::Id const &position));
-	MOCK_METHOD2(addError, void(QString const &message, qReal::Id const &position));
-	MOCK_METHOD2(addCritical, void(QString const &message, qReal::Id const &position));
+	MOCK_METHOD2(addInformation, void(const QString &message, const qReal::Id &position));
+	MOCK_METHOD2(addWarning, void(const QString &message, const qReal::Id &position));
+	MOCK_METHOD2(addError, void(const QString &message, const qReal::Id &position));
+	MOCK_METHOD2(addCritical, void(const QString &message, const qReal::Id &position));
+	MOCK_METHOD3(sendBubblingMessage, void(const QString &message, int duration, QWidget *parent));
 
 	MOCK_METHOD0(clear, void());
 	MOCK_METHOD0(clearErrors, void());

@@ -14,6 +14,8 @@
 
 #include "folderCompressor.h"
 
+#include <QtCore/QDataStream>
+
 bool FolderCompressor::compressFolder(const QString &sourceFolder, const QString &destinationFile)
 {
 	if (!QDir(sourceFolder).exists()) {

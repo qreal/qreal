@@ -37,4 +37,6 @@ HEADERS += \
 SOURCES += \
 	$$PWD/robotsPlugin.cpp \
 
-TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/robotsPlugin_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/robotsPlugin_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/robotsPlugin_fr.ts \
