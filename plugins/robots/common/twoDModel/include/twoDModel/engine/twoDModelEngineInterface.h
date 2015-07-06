@@ -23,6 +23,7 @@ namespace twoDModel {
 namespace engine {
 
 class TwoDModelDisplayInterface;
+class TwoDModelGuiFacade;
 
 /// An interface for using 2D model in extensibility components.
 /// Provides some basic engine methods like scanning the field or playing the sound or working with display.
@@ -77,6 +78,9 @@ public:
 
 	/// Returns a pointer to 2D model display emulator.
 	virtual TwoDModelDisplayInterface *display() = 0;
+
+	/// Returns an object for convenient searching and managing widgets of 2D model GUI.
+	virtual engine::TwoDModelGuiFacade &guiFacade() const = 0;
 
 };
 

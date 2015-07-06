@@ -68,7 +68,11 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {
-		return new parts::Shell(deviceInfo, port);
+		parts::Shell * const shell = new parts::Shell(deviceInfo, port, *engine());
+		// Error reporter will come only after global plugin init() is called. Shell is however
+		// configured even later. So setting error reporter only when everything will be ready.
+		connect(shell, &parts::Shell::configured, [=]() { shell->setErrorReporter(*mErrorReporter); });
+		return shell;
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikInfraredSensor>()) {
@@ -188,4 +192,9 @@ QHash<QString, int> TwoDRobotModel::buttonCodes() const
 	result["PowerButton"] = 116;
 	result["EscButton"] = 1;
 	return result;
+}
+
+void TwoDRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
 }

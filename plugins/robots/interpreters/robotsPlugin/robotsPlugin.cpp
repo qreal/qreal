@@ -65,3 +65,8 @@ QStringList RobotsPlugin::defaultSettingsFiles()
 {
 	return mRobotsPluginFacade->defaultSettingsFiles();
 }
+
+QObject *RobotsPlugin::guiScriptFacade()
+{
+	return mRobotsPluginFacade.data()->guiScriptFacade();
+}

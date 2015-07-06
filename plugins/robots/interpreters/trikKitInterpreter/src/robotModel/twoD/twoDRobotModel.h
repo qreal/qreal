@@ -16,6 +16,10 @@
 
 #include <twoDModel/robotModel/twoDRobotModel.h>
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
 namespace trik {
 namespace robotModel {
 namespace twoD {
@@ -41,6 +45,9 @@ public:
 
 	QHash<QString, int> buttonCodes() const override;
 
+	/// Sets the error reporter for writing bubbling messages by shell emulator.
+	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
+
 private:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port
@@ -52,6 +59,7 @@ private:
 	QString mLeftWheelPort;
 	QString mRightWheelPort;
 	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;
+	qReal::ErrorReporterInterface *mErrorReporter;
 };
 
 }

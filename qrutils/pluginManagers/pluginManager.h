@@ -63,6 +63,14 @@ public:
 		return mPluginManagerLoader.fileName(reinterpret_cast<QObject *>(plugin));
 	}
 
+	/// Returns plugin object instance by the name specified plugin metainformation.
+	/// The plugin must be loaded and initialized, otherwise nullptr will be returned.
+	template <class InterfaceType>
+	InterfaceType *plugin(const QString &pluginName) const
+	{
+		return dynamic_cast<InterfaceType *>(mPluginManagerLoader.pluginByName(pluginName));
+	}
+
 private:
 	/// Casts list of objects to list of interfaces.
 	template <class InterfaceType>

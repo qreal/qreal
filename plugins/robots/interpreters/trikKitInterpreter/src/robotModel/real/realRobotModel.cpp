@@ -111,9 +111,9 @@ void RealRobotModel::disconnectFromRobot()
 	mRobotCommunicator->disconnect();
 }
 
-void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
+void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
-	mRobotCommunicator->setErrorReporter(errorReporter);
+	mRobotCommunicator->setErrorReporter(&errorReporter);
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
