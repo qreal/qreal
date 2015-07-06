@@ -27,6 +27,10 @@
 #include "editorGenerator.h"
 #include "xmlParser.h"
 
+#include "qrrepo/repoApi.h"
+#include "qrutils/nameNormalizer.h"
+using namespace qrRepo;
+
 using namespace qReal;
 using namespace metaEditor;
 
@@ -279,19 +283,53 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	}
 
 	progress->setValue(20);
+//	QProcess builder;
+//	QStringList environment = QProcess::systemEnvironment();
+//	builder.setEnvironment(environment);
+	QStringList qmakeArgs;
+	qmakeArgs.append("CONFIG+=" + buildConfiguration);
+	qmakeArgs.append(metamodelName + ".pro");
+
+//	builder.setWorkingDirectory(directoryToCodeToCompile);
+
 
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-	builder.start(commandFirst, {"CONFIG+=" + buildConfiguration});
+
+	QStringList environment = QProcess::systemEnvironment();
+	builder.setEnvironment(environment);
+//	builder.start(commandFirst, {"CONFIG+=" + buildConfiguration});
+//	builder.start(pathToQmake, qmakeArgs);
+	builder.start(commandFirst, qmakeArgs);
+
+
 
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+		qDebug() << "ololo";
+
 		progress->setValue(60);
 		builder.start(commandSecond);
-		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+
+		QByteArray ololo = builder.readAllStandardError();
+		QString ol1 = builder.errorString();
+		QByteArray oooo = builder.readAllStandardOutput();
+		qDebug() << ololo;
+		qDebug() << ol1;
+		qDebug() << oooo;
+		//builder.waitForFinished();
+
+		if (builder.waitForFinished(60000) && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {
-				progress->setValue(100);
+			if (buildConfiguration == "debug") {
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "-d"+ "." + extension, normalizeDirName)) {
+					progress->setValue(100);
+				}
+			}
+			else {
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {
+					progress->setValue(100);
+				}
 			}
 		}
 	}
@@ -305,4 +343,5 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setValue(100);
 	progress->close();
 	delete progress;
+//	mMainWindowInterface->loadPlugin(normalizeDirName, normalizerMetamodelName);
 }
