@@ -70,6 +70,8 @@
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/motion.t</file>
+        <file>templates/sensors/scalar.t</file>
+        <file>templates/sensors/vector.t</file>
         <file>templates/gyroscope/gyroscopeX.t</file>
         <file>templates/gyroscope/gyroscopeY.t</file>
         <file>templates/gyroscope/gyroscopeZ.t</file>
@@ -105,6 +107,8 @@
         <file>templates/functions/sin.t</file>
         <file>templates/functions/sqrt.t</file>
         <file>templates/functions/time.t</file>
+        <file>templates/functions/min.t</file>
+        <file>templates/functions/max.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>

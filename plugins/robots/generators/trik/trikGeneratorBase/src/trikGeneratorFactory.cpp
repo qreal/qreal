@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikGeneratorFactory.h"
 
 #include <generatorBase/converters/regexpMultiConverter.h>
@@ -31,6 +45,8 @@
 #include "simpleGenerators/waitGamepadDisconnectGenerator.h"
 #include "simpleGenerators/waitGamepadWheelGenerator.h"
 #include "simpleGenerators/waitPadPressGenerator.h"
+#include "simpleGenerators/fileWriteGenerator.h"
+#include "simpleGenerators/removeFileGenerator.h"
 #include "parts/trikDeviceVariables.h"
 
 using namespace trik;
@@ -115,6 +131,10 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 		return new WaitGamepadConnectGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitGamepadDisconnect") {
 		return new WaitGamepadDisconnectGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWriteToFile") {
+		return new FileWriteGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikRemoveFile") {
+		return new RemoveFileGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);

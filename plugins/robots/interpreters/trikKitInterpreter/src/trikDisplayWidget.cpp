@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikDisplayWidget.h"
 #include "ui_trikDisplayWidget.h"
 
@@ -19,7 +33,7 @@ TrikDisplayWidget::~TrikDisplayWidget()
 	delete mUi;
 }
 
-void TrikDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
+void TrikDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	TwoDModelDisplayWidget::setPainter(painter);
 	mUi->display->appendPainter(painter);
@@ -67,6 +81,7 @@ void TrikDisplayWidget::setLedColor(const QColor &color)
 {
 	QPalette backgroundPalette(palette());
 	backgroundPalette.setColor(QPalette::Background, color);
+	backgroundPalette.setColor(QPalette::Base, color);
 	mUi->led->setPalette(backgroundPalette);
 	mUi->led->show();
 }
@@ -76,4 +91,15 @@ void TrikDisplayWidget::paintEvent(QPaintEvent *event)
 	QWidget::paintEvent(event);
 	QPainter painter(this);
 	painter.drawImage(QRect(0, 0, width(), height()), mBackground);
+}
+
+void TrikDisplayWidget::reset()
+{
+	TwoDModelDisplayWidget::reset();
+	resetLed();
+}
+
+void TrikDisplayWidget::resetLed()
+{
+	setLedColor("red");
 }

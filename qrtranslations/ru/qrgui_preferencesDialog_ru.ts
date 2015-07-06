@@ -19,17 +19,17 @@
         <translation>Автоматизация</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="91"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="131"/>
         <source>Delay after gesture</source>
         <translation>Задержка после жеста</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="98"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="91"/>
         <source>msec</source>
         <translation>мсек</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="131"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="108"/>
         <source>sec</source>
         <translation>сек</translation>
     </message>
@@ -38,7 +38,7 @@
         <translation type="vanished">Режӥм юзабилити-тестирования</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="74"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="98"/>
         <source>Autosave</source>
         <translation>Автосохранение</translation>
     </message>
@@ -52,17 +52,22 @@
         <translation>Переключение табов в палитре</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="141"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="138"/>
+        <source>Gestures</source>
+        <translation>Жесты мышью</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="148"/>
         <source>Touch</source>
         <translation>Тач</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="157"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="164"/>
         <source>Touch Mode</source>
         <translation>Режим работы на тач-экране</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="84"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="114"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Системный язык&gt;</translation>
     </message>
@@ -241,32 +246,31 @@
         <translation>Разрешить изменять размер</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="540"/>
         <source>Label distance</source>
-        <translation>Расстояние от надписей до элемента</translation>
+        <translation type="vanished">Расстояние от надписей до элемента</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="560"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="543"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="576"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="559"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="583"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="566"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="603"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="586"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="608"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/editorPage.ui" line="591"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
@@ -328,42 +332,40 @@
         <translation>Показывать сплешскрин</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="72"/>
         <source>Color of old line:</source>
-        <translation>Цвет старой линии:</translation>
+        <translation type="vanished">Цвет старой линии:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="95"/>
         <source>Paint the old line</source>
-        <translation>Рисовать старую линию</translation>
+        <translation type="vanished">Рисовать старую линию</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="138"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="92"/>
         <source>Limit recent projects list</source>
         <translation>Длина списка недавних проектов</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="185"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="139"/>
         <source>Images</source>
         <translation>Изображения</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="201"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="155"/>
         <source>Browse</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="214"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="168"/>
         <source>Toolbars</source>
         <translation>Панель инструментов</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="230"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.ui" line="184"/>
         <source>Size</source>
         <translation>Размер панели инструментов</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.cpp" line="45"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/miscellaniousPage.cpp" line="57"/>
         <source>Open Directory</source>
         <translation>Выберите директорию</translation>
     </message>
@@ -371,27 +373,27 @@
 <context>
     <name>qReal::gui::PreferencesDialog</name>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="44"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="58"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="45"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="59"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="46"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="60"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="66"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="80"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="66"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="80"/>
         <source>You should restart the program to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
@@ -400,18 +402,18 @@
         <translation type="vanished">Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="143"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="157"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="143"/>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="154"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="157"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="168"/>
         <source>*.ini</source>
         <translation>*.ini</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="154"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="168"/>
         <source>Open File</source>
         <translation>Открыть файл</translation>
     </message>

@@ -53,7 +53,7 @@
 <context>
     <name>ev3::Ev3KitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="29"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="43"/>
         <source>Lego EV3</source>
         <translation>Лего EV3</translation>
     </message>
@@ -61,7 +61,7 @@
 <context>
     <name>ev3::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/realRobotModel.cpp" line="36"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/realRobotModel.cpp" line="50"/>
         <source>Interpretation (USB, Bluetooth)</source>
         <translation>Интерпретация (USB, Bluetooth)</translation>
     </message>

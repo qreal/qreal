@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "interpreterCore/interpreter/interpreter.h"
 
 #include <QtCore/QCoreApplication>
@@ -37,11 +51,15 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
 	, mLanguageToolbox(languageToolbox)
 {
+	// Other components may want to subscribe to allDevicesConfigured() signal because
+	// it seems to be the only way to perform robot devices additional initialization.
+	// We must let them work out before interpretation starts, so creating queued connection.
 	connect(
 			&mRobotModelManager
 			, &kitBase::robotModel::RobotModelManagerInterface::allDevicesConfigured
 			, this
 			, &Interpreter::devicesConfiguredSlot
+			, Qt::QueuedConnection
 			);
 
 	connect(
@@ -157,11 +175,11 @@ void Interpreter::devicesConfiguredSlot()
 		const Id &currentDiagramId = mInterpretersInterface.activeDiagram();
 
 		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
-				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable);
+				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable, "main");
 
 		emit started();
 
-		addThread(initialThread);
+		addThread(initialThread, "main");
 	}
 }
 
@@ -169,7 +187,7 @@ void Interpreter::threadStopped()
 {
 	qReal::interpretation::Thread * const thread = static_cast<qReal::interpretation::Thread *>(sender());
 
-	mThreads.removeAll(thread);
+	mThreads.remove(thread->id());
 	delete thread;
 
 	if (mThreads.isEmpty()) {
@@ -177,29 +195,53 @@ void Interpreter::threadStopped()
 	}
 }
 
-void Interpreter::newThread(const Id &startBlockId)
+void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 {
-	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
-			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId);
+	if (mThreads.contains(threadId)) {
+		reportError(tr("Cannot create new thread with already occupied id %1").arg(threadId));
+		stopRobot();
+		return;
+	}
 
-	addThread(thread);
+	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
+			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId, threadId);
+
+	addThread(thread, threadId);
 }
 
-void Interpreter::addThread(qReal::interpretation::Thread * const thread)
+void Interpreter::addThread(qReal::interpretation::Thread * const thread, const QString &threadId)
 {
 	if (mThreads.count() >= maxThreadsCount) {
 		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
 		stopRobot();
 	}
 
-	mThreads.append(thread);
+	mThreads[threadId] = thread;
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
 	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
+	connect(thread, &qReal::interpretation::Thread::killThread, this, &Interpreter::killThread);
+	connect(thread, &qReal::interpretation::Thread::sendMessage, this, &Interpreter::sendMessage);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {
 		thread->interpret();
+	}
+}
+
+void Interpreter::killThread(const QString &threadId)
+{
+	if (mThreads.contains(threadId)) {
+		mThreads[threadId]->stop();
+	} else {
+		reportError(tr("Killing non-existent thread %1").arg(threadId));
+	}
+}
+
+void Interpreter::sendMessage(const QString &threadId, const QString &message)
+{
+	if (mThreads.contains(threadId)) {
+		mThreads[threadId]->newMessage(message);
 	}
 }
 

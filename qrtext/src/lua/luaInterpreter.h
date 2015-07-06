@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group, Yurii Litvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <functional>
 #include <QtCore/QHash>
+#include <QtCore/QVariantList>
 
 #include "qrtext/core/error.h"
 #include "qrtext/core/ast/node.h"
@@ -58,7 +73,31 @@ private:
 
 	QVariant operateOnIndexingExpression(const QSharedPointer<core::ast::Node> &indexingExpression
 			, const core::SemanticAnalyzer &semanticAnalyzer
-			, std::function<QVariant(const QString &, QStringList &, int)> const &action);
+			, const std::function<QVariant(const QString &
+					, const QVariantList &
+					, const QVector<int> &
+					, const core::Connection &)> &action);
+
+	QVariant constructTable(const QSharedPointer<core::ast::Node> &tableConstructor
+			, const core::SemanticAnalyzer &semanticAnalyzer);
+
+	void assignToTableElement(const QSharedPointer<core::ast::Node> &variable, const QVariant &interpretedValue
+			, const core::SemanticAnalyzer &semanticAnalyzer);
+
+	QVariantList doAssignToTableElement(const QVariantList &table
+			, const QVariant &value
+			, const QVector<int> &index
+			, const core::Connection &connection);
+
+	QVariant slice(const QSharedPointer<core::ast::Node> &indexingExpression
+			, const core::SemanticAnalyzer &semanticAnalyzer);
+
+	QVariant operateOnIndexingExpressionRecursive(const QSharedPointer<core::ast::Node> &indexingExpression
+			, const QVector<int> &currentIndex, const core::SemanticAnalyzer &semanticAnalyzer
+			, const std::function<QVariant(const QString &
+					, const QVariantList &
+					, const QVector<int> &
+					, const core::Connection &)> &action);
 
 	QHash<QString, QVariant> mIdentifierValues;
 	QHash<QString, std::function<QVariant(const QList<QVariant> &)>> mIntrinsicFunctions;

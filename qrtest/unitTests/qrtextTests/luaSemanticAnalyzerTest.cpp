@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "luaSemanticAnalyzerTest.h"
 
 #include "qrtext/core/types/any.h"
@@ -278,3 +292,14 @@ TEST_F(LuaSemanticAnalyzerTest, unknownIdentifier)
 
 	EXPECT_EQ(1, mErrors.size());
 }
+
+TEST_F(LuaSemanticAnalyzerTest, subarrayAssignment)
+{
+	auto tree = parse("a = {{1}}");
+	mAnalyzer->analyze(tree);
+	tree = parse("a[0] = {2}");
+	mAnalyzer->analyze(tree);
+
+	EXPECT_EQ(0, mErrors.size());
+}
+

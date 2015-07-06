@@ -1,11 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "wallItem.h"
 
-#include <QtGui/QVector2D>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include <math.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/mathUtils/geometry.h>
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -41,6 +54,13 @@ AbstractItem *WallItem::clone() const
 	return cloned;
 }
 
+QAction *WallItem::wallTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_wall.png"), tr("Wall (W)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_W));
+	return result;
+}
+
 void WallItem::setPrivateData()
 {
 	setZValue(1);
@@ -65,7 +85,7 @@ QPointF WallItem::end()
 	return QPointF(x2(), y2()) + scenePos();
 }
 
-void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void WallItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
@@ -112,7 +132,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
-	const QRectF oldPos =  QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
+	const QRectF oldPos = QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
 
 	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		const QPointF pos = event->scenePos();
@@ -160,6 +180,12 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = false;
 }
 
+void WallItem::deserialize(const QDomElement &element)
+{
+	LineItem::deserialize(element);
+	recalculateBorders();
+}
+
 QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement wallNode = document.createElement(mSerializeName);
@@ -191,7 +217,12 @@ void WallItem::recalculateBorders()
 {
 	QPainterPath wallPath;
 	wallPath.moveTo(begin());
-	wallPath.lineTo(end());
+
+	if (mathUtils::Geometry::eq(begin(), end())) {
+		wallPath.lineTo(end().x() + 0.1, end().y());
+	} else {
+		wallPath.lineTo(end());
+	}
 
 	QPainterPathStroker stroker;
 	stroker.setWidth(wallWidth * 3 / 2);

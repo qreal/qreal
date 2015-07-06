@@ -2,6 +2,7 @@
 
 set rules {
   CommaAtTheEnd
+  CopyrightNotice
   IncludeGuards
   LineLength
   NoSpacesAtTheStart

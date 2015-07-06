@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikQtsGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
@@ -5,11 +19,14 @@
 #include <QtCore/QDebug>
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
+#include <trikGeneratorBase/robotModel/trikGeneratorRobotModel.h>
 #include <utils/tcpRobotCommunicator.h>
 
 #include "trikQtsMasterGenerator.h"
+#include "emptyShell.h"
 
 using namespace trik::qts;
+using namespace kitBase::robotModel;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
@@ -32,25 +49,33 @@ void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configur
 	RobotsGeneratorPluginBase::init(configurator);
 	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
 	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
+	const PortInfo shellPort("ShellPort", output);
+	EmptyShell * const shell = new EmptyShell(DeviceInfo::create<trik::robotModel::parts::TrikShell>(), shellPort);
+	connect(mCommunicator, &utils::TcpRobotCommunicator::printText, shell, &EmptyShell::print);
+	mRobotModel->addDevice(shellPort, shell);
 }
 
 QList<ActionInfo> TrikQtsGeneratorPlugin::customActions()
 {
+	mGenerateCodeAction->setObjectName("generateTRIKCode");
 	mGenerateCodeAction->setText(tr("Generate TRIK code"));
 	mGenerateCodeAction->setIcon(QIcon(":/trik/qts/images/generateQtsCode.svg"));
 	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
 	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()), Qt::UniqueConnection);
 
+	mUploadProgramAction->setObjectName("uploadProgram");
 	mUploadProgramAction->setText(tr("Upload program"));
 	mUploadProgramAction->setIcon(QIcon(":/trik/qts/images/uploadProgram.svg"));
 	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
 	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()), Qt::UniqueConnection);
 
+	mRunProgramAction->setObjectName("runProgram");
 	mRunProgramAction->setText(tr("Run program"));
 	mRunProgramAction->setIcon(QIcon(":/trik/qts/images/run.png"));
 	ActionInfo runProgramActionInfo(mRunProgramAction, "interpreters", "tools");
 	connect(mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()), Qt::UniqueConnection);
 
+	mStopRobotAction->setObjectName("stopRobot");
 	mStopRobotAction->setText(tr("Stop robot"));
 	mStopRobotAction->setIcon(QIcon(":/trik/qts/images/stop.png"));
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
@@ -74,7 +99,7 @@ QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
 	return { generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo };
 }
 
-QIcon TrikQtsGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+QIcon TrikQtsGeneratorPlugin::iconForFastSelector(const RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
 	return QIcon(":/trik/qts/images/switch-to-trik-qts.svg");

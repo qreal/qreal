@@ -1,10 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "constraintsChecker.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "details/constraintsParser.h"
 #include "details/event.h"
-#include "src/engine/model/model.h"
+#include "twoDModel/engine/model/model.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
 #include "src/engine/items/regions/regionItem.h"
@@ -105,16 +119,16 @@ void ConstraintsChecker::dropEvent()
 void ConstraintsChecker::bindToWorldModelObjects()
 {
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded
-			, [this](items::WallItem *item) { mObjects[item->id()] = item; });
+			, [this](items::WallItem *item) { bindObject(item->id(), item); });
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded
-			, [this](items::ColorFieldItem *item) { mObjects[item->id()] = item; });
+			, [this](items::ColorFieldItem *item) { bindObject(item->id(), item); });
 	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, [this](QGraphicsItem *graphicsItem) {
 		if (graphicsUtils::AbstractItem *item = dynamic_cast<graphicsUtils::AbstractItem *>(graphicsItem)) {
-			mObjects[item->id()] = item;
+			bindObject(item->id(), item);
 		}
 
 		if (items::RegionItem *item = dynamic_cast<items::RegionItem *>(graphicsItem)) {
-			mObjects[item->id()] = item;
+			bindObject(item->id(), item);
 		}
 	});
 
@@ -144,10 +158,20 @@ void ConstraintsChecker::bindToRobotObjects()
 	});
 }
 
+void ConstraintsChecker::bindObject(const QString &id, QObject * const object)
+{
+	mObjects[id] = object;
+	connect(object, &QObject::destroyed, this, [=]() {
+		for (const QString &key : mObjects.keys(object)) {
+			mObjects.remove(key);
+		}
+	});
+}
+
 void ConstraintsChecker::bindRobotObject(twoDModel::model::RobotModel * const robot)
 {
 	const QString robotId = firstUnusedRobotId();
-	mObjects[robotId] = robot;
+	bindObject(robotId, robot);
 
 	connect(&robot->configuration(), &model::SensorsConfiguration::deviceAdded
 			, [=](const kitBase::robotModel::PortInfo &port, bool isLoading) {

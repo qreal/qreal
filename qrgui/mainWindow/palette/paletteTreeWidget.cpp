@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "paletteTreeWidget.h"
 
 #include <QtGui/QMouseEvent>
@@ -205,6 +219,7 @@ bool PaletteTreeWidget::paletteElementLessThan(const PaletteElement &s1, const P
 void PaletteTreeWidget::setElementVisible(const Id &metatype, bool visible)
 {
 	if (mPaletteItems.contains(metatype)) {
+		mItemsVisible[mPaletteItems[metatype]] = visible;
 		mPaletteItems[metatype]->setHidden(!visible);
 	}
 }
@@ -227,5 +242,40 @@ void PaletteTreeWidget::setEnabledForAllElements(bool enabled)
 {
 	foreach (QWidget * const element, mPaletteElements.values()) {
 		element->setEnabled(enabled);
+	}
+}
+
+void PaletteTreeWidget::filter(const QRegExp &regexp)
+{
+	QHash<QTreeWidgetItem *, int> visibleCount;
+	traverse([this, &regexp, &visibleCount](QTreeWidgetItem *item) {
+		if (DraggableElement * const element = dynamic_cast<DraggableElement *>(itemWidget(item, 0))) {
+			const QString text = element->text();
+			const bool itemDisabledBySystem = mItemsVisible.contains(item) && !mItemsVisible[item];
+			item->setHidden(itemDisabledBySystem || !text.contains(regexp));
+			if (!item->isHidden()) {
+				++visibleCount[item->parent()];
+			}
+		}
+	});
+
+	for (int i = 0; i < topLevelItemCount(); ++i) {
+		QTreeWidgetItem * const item = topLevelItem(i);
+		item->setHidden(visibleCount[item] == 0);
+	}
+}
+
+void PaletteTreeWidget::traverse(const PaletteTreeWidget::Action &action) const
+{
+	for (int i = 0; i < topLevelItemCount(); ++i) {
+		traverse(topLevelItem(i), action);
+	}
+}
+
+void PaletteTreeWidget::traverse(QTreeWidgetItem * const item, const PaletteTreeWidget::Action &action) const
+{
+	action(item);
+	for (int i = 0; i < item->childCount(); ++i) {
+		traverse(item->child(i), action);
 	}
 }

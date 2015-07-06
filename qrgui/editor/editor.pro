@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 TARGET = qrgui-editor
 
 include(../../global.pri)
@@ -16,7 +30,9 @@ QT += widgets
 
 DEFINES += QRGUI_EDITOR_LIBRARY
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_editor_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_editor_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_editor_fr.ts \
 
 HEADERS += \
 	$$PWD/editorDeclSpec.h \
@@ -37,8 +53,9 @@ HEADERS += \
 	$$PWD/edgeElement.h \
 	$$PWD/element.h \
 	$$PWD/nodeElement.h \
-	$$PWD/label.h \
-	$$PWD/labelFactory.h \
+	$$PWD/labels/label.h \
+	$$PWD/labels/labelFactory.h \
+	$$PWD/labels/labelProperties.h \
 	$$PWD/contextMenuAction.h \
 	$$PWD/embedded/linkers/embeddedLinker.h \
 	$$PWD/embedded/linkers/embeddedLinkers.h \
@@ -89,8 +106,9 @@ SOURCES += \
 	$$PWD/edgeElement.cpp \
 	$$PWD/element.cpp \
 	$$PWD/nodeElement.cpp \
-	$$PWD/label.cpp \
-	$$PWD/labelFactory.cpp \
+	$$PWD/labels/label.cpp \
+	$$PWD/labels/labelFactory.cpp \
+	$$PWD/labels/labelProperties.cpp \
 	$$PWD/contextMenuAction.cpp \
 	$$PWD/embedded/linkers/embeddedLinker.cpp \
 	$$PWD/embedded/linkers/embeddedLinkers.cpp \

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtGui/QColor>
@@ -11,7 +25,7 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class Display : public robotModel::parts::TrikDisplay, public graphicsUtils::PainterInterface
+class Display : public robotModel::parts::TrikDisplay, public qReal::ui::PainterInterface
 {
 	Q_OBJECT
 
@@ -32,7 +46,7 @@ public:
 	void drawEllipse(int x, int y, int width, int height) override;
 	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) override;
 	void paint(QPainter *painter) override;
-	void clear() override;
+	void reset() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

@@ -1,4 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "threadsValidator.h"
+
+#include <QtCore/QUuid>
 
 using namespace generatorBase;
 
@@ -202,11 +218,11 @@ void ThreadsValidator::visitForkFirstStage(const qReal::Id &id, QList<LinkInfo> 
 		return;
 	}
 
+	bool foundMain = false;
 	for (const LinkInfo &link : links) {
-		if (mRepo.stringProperty(link.linkId, "Guard").isEmpty()) {
-			error(QObject::tr("All links outgoing from a fork block must have a thread id "
-					"specified in a Guard property"), link.linkId);
-			return;
+		if (mRepo.stringProperty(link.linkId, "Guard") == mBlockThreads[id]) {
+			foundMain = true;
+			break;
 		}
 	}
 
@@ -214,11 +230,14 @@ void ThreadsValidator::visitForkFirstStage(const qReal::Id &id, QList<LinkInfo> 
 	for (const LinkInfo &link : links) {
 		checkForConnected(link);
 
-		QString const threadId = mRepo.stringProperty(link.linkId, "Guard");
+		QString threadId = mRepo.stringProperty(link.linkId, "Guard");
 		if (threadId.isEmpty()) {
-			error(QObject::tr("All links outgoing from a fork block must have a thread id "
-					"specified in a Guard property"), link.linkId);
-			return;
+			if (!foundMain) {
+				threadId = mBlockThreads[id];
+				foundMain = true;
+			} else {
+				threadId = QUuid::createUuid().toString();
+			}
 		}
 
 		if (outgoingThreads.contains(threadId)) {

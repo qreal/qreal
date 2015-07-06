@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "databaseSchemeGenerator.h"
 
 #include "../../../../qrkernel/exception/exception.h"
@@ -63,25 +77,25 @@ QHash<Id, QPair<QString, QString> > DatabaseEditorSchemeGenerator::modelList()
 ErrorReporterInterface& DatabaseEditorSchemeGenerator::generateDatabaseScheme(const Id &modelId, const QString &pathToFile)
 {
 	IdList tableList = mApi.children(modelId);
-	try {
-		OutFile sqlFile(pathToFile + ".sql");
-		foreach (Id tableId, tableList) {
-			QString const tableType = mApi.logicalRepoApi().typeName(tableId);
-			if (tableType == "Table" && mApi.isLogicalId(tableId)) {
-				QString tableName = mApi.logicalRepoApi().stringProperty(tableId, "name");
-				if (isKeyWord(tableName))
-					mErrorReporter.addError(QObject::tr("using reserved key as name of table"), tableId);
-				sqlFile() << QString("CREATE TABLE %1\n").arg(tableName);
-				processingColumns(tableId, sqlFile);
-				sqlFile() <<"\n\n";
-			}
+	bool fileOpened = false;
+	OutFile sqlFile(pathToFile + ".sql", &fileOpened);
+	foreach (Id tableId, tableList) {
+		QString const tableType = mApi.logicalRepoApi().typeName(tableId);
+		if (tableType == "Table" && mApi.isLogicalId(tableId)) {
+			QString tableName = mApi.logicalRepoApi().stringProperty(tableId, "name");
+			if (isKeyWord(tableName))
+				mErrorReporter.addError(QObject::tr("using reserved key as name of table"), tableId);
+			sqlFile() << QString("CREATE TABLE %1\n").arg(tableName);
+			processingColumns(tableId, sqlFile);
+			sqlFile() <<"\n\n";
 		}
-		return mErrorReporter;
 	}
-	catch (qReal::Exception) {
+
+	if (!fileOpened) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file path"));
-		return mErrorReporter;
 	}
+
+	return mErrorReporter;
 }
 
 void DatabaseEditorSchemeGenerator::processingColumns(const Id &tableId, utils::OutFile &outFile)

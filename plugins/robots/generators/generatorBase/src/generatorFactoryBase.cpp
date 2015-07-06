@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/generatorFactoryBase.h"
 #include "generatorBase/generatorCustomizer.h"
 
@@ -11,6 +25,7 @@
 #include "simpleGenerators/whileLoopGenerator.h"
 #include "simpleGenerators/forkCallGenerator.h"
 #include "simpleGenerators/joinGenerator.h"
+#include "simpleGenerators/killThreadGenerator.h"
 #include "simpleGenerators/switchGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
@@ -37,8 +52,10 @@
 #include "simpleGenerators/labelGenerator.h"
 #include "simpleGenerators/gotoSimpleGenerator.h"
 #include "simpleGenerators/variableInitGenerator.h"
+#include "simpleGenerators/randomInitGenerator.h"
 #include "simpleGenerators/sendMessageThreadsGenerator.h"
 #include "simpleGenerators/receiveMessageThreadsGenerator.h"
+#include "simpleGenerators/getButtonCodeGenerator.h"
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
@@ -284,10 +301,16 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(const qReal::Id &
 		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "VariableInit") {
 		return new VariableInitGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Randomizer") {
+		return new RandomInitGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "SendMessageThreads") {
 		return new SendMessageThreadsGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "ReceiveMessageThreads") {
 		return new ReceiveMessageThreadsGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "KillThread") {
+		return new KillThreadGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "GetButtonCode") {
+		return new GetButtonCodeGenerator(mRepo, customizer, id, this);
 	}
 
 	return new NullGenerator(mRepo, customizer, id, this);
@@ -382,7 +405,9 @@ Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 
 Binding::ConverterInterface *GeneratorFactoryBase::portNameConverter() const
 {
-	return new converters::PortNameConverter(pathToTemplates(), mRobotModelManager.model().availablePorts());
+	return new converters::PortNameConverter(pathToTemplates()
+			, mRobotModelManager.model().availablePorts()
+			, mErrorReporter);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const

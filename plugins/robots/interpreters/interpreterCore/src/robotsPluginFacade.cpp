@@ -1,13 +1,32 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "interpreterCore/robotsPluginFacade.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/widgets/consoleDock.h>
 #include <kitBase/robotModel/portInfo.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelGuiFacade.h>
+#include <twoDModel/robotModel/twoDRobotModel.h>
 
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "src/ui/robotsSettingsPage.h"
 #include "interpreterCore/managers/paletteUpdateManager.h"
 #include "interpreterCore/managers/kitAutoSwitcher.h"
 #include "src/managers/exerciseExportManager.h"
+#include "src/managers/uiManager.h"
 
 using namespace interpreterCore;
 
@@ -61,6 +80,13 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			);
 
 	mBlocksFactoryManager.addFactory(coreFactory);
+
+	mUiManager.reset(new UiManager(mActionsManager.debugModeAction()
+			, mActionsManager.editModeAction()
+			, configurer.mainWindowDockInterface()
+			, configurer.systemEvents()
+			, mEventsForKitPlugin
+			, mRobotModelManager));
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
@@ -145,6 +171,16 @@ interpreterCore::Customizer &RobotsPluginFacade::customizer()
 ActionsManager &RobotsPluginFacade::actionsManager()
 {
 	return mActionsManager;
+}
+
+QObject *RobotsPluginFacade::guiScriptFacade() const
+{
+	const auto robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(&mRobotModelManager.model());
+	if (robotModel) {
+		return &robotModel->engine()->guiFacade();
+	}
+
+	return nullptr;
 }
 
 QStringList RobotsPluginFacade::defaultSettingsFiles() const
@@ -240,8 +276,10 @@ void RobotsPluginFacade::initSensorWidgets()
 		mActionsManager.stopRobotAction().setVisible(false);
 	});
 
-	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
-	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
+	mUiManager->placeDevicesConfig(mDockDevicesConfigurer);
+	mUiManager->placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
+	mActionsManager.appendHotKey("View.ToggleRobotConsole", tr("Toggle robot console panel")
+			, *mUiManager->robotConsole().toggleViewAction());
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);

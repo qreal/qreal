@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QScopedPointer>
@@ -55,6 +69,8 @@ public:
 
 	void applyConfiguration() final;
 
+	QHash<QString, int> buttonCodes() const override;
+
 	/// Shall be reimplemented to provide base device classes through which devices are convertable (see description
 	/// of that method in RobotModelInterface for more details). Default implementation returns empty list, so
 	/// no devices are convertable.
@@ -80,12 +96,6 @@ protected:
 	/// Configures devices that can be configured automaticly (non-user configured, such as display and speakers)
 	virtual void configureKnownDevices();
 
-private slots:
-	void onConnected(bool success);
-
-	void onDisconnected();
-
-private:
 	/// Device factory. Shall be reimplemented to create concrete devices on given port by given device info.
 	/// If device is unknown to a model, shall throw exception, as a list of available devices is provided by model
 	/// itself by allowedDevices() method. Implementation must not take ownership on created devices, it will be taken
@@ -93,6 +103,12 @@ private:
 	/// @todo: see what`s with ownership
 	virtual robotParts::Device *createDevice(const PortInfo &port, const DeviceInfo &deviceInfo);
 
+private slots:
+	void onConnected(bool success);
+
+	void onDisconnected();
+
+private:
 	/// Shows which types of devices can be connected to which ports.
 	/// @todo Add a notion of direction.
 	QHash<PortInfo, QList<DeviceInfo>> mAllowedConnections;

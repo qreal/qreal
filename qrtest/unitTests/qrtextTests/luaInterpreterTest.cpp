@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group, Yurii Litvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "luaInterpreterTest.h"
 
 #include "gtest/gtest.h"
@@ -399,4 +413,111 @@ TEST_F(LuaInterpreterTest, operatorsTest)
 	intResult = interpret<int>("#'asdf'");
 	ASSERT_TRUE(mErrors.isEmpty());
 	EXPECT_EQ(4, intResult);
+}
+
+TEST_F(LuaInterpreterTest, twoDArrayConstruction)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, twoDArraySlice)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	EXPECT_EQ(1, interpret<int>("a[0][0]"));
+	EXPECT_EQ(2, interpret<int>("a[0][1]"));
+	EXPECT_EQ(3, interpret<int>("a[1][0]"));
+	EXPECT_EQ(4, interpret<int>("a[1][1]"));
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, twoDArrayAssignment)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	interpret<int>("a[0][1] = 5");
+	EXPECT_EQ(1, interpret<int>("a[0][0]"));
+	EXPECT_EQ(5, interpret<int>("a[0][1]"));
+	EXPECT_EQ(3, interpret<int>("a[1][0]"));
+	EXPECT_EQ(4, interpret<int>("a[1][1]"));
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, subarrayAssignment)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	interpret<int>("a[0] = {5, 6}");
+	EXPECT_EQ(5, interpret<int>("a[0][0]"));
+	EXPECT_EQ(6, interpret<int>("a[0][1]"));
+	EXPECT_EQ(3, interpret<int>("a[1][0]"));
+	EXPECT_EQ(4, interpret<int>("a[1][1]"));
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, outOfRangeSlice)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	EXPECT_EQ(0, interpret<int>("a[2][2]"));
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, outOfRangeAssignment)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	interpret<int>("a[2][2] = 5");
+	EXPECT_EQ(1, interpret<int>("a[0][0]"));
+	EXPECT_EQ(2, interpret<int>("a[0][1]"));
+	EXPECT_EQ(3, interpret<int>("a[1][0]"));
+	EXPECT_EQ(4, interpret<int>("a[1][1]"));
+	EXPECT_EQ(0, interpret<int>("a[2][0]"));
+	EXPECT_EQ(5, interpret<int>("a[2][2]"));
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, doubleOutOfRangeAssignment)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	interpret<int>("a[2][2] = 5");
+	EXPECT_EQ(0, interpret<int>("a[2][0]"));
+	EXPECT_EQ(5, interpret<int>("a[2][2]"));
+	interpret<int>("a[0][2] = 6");
+	EXPECT_EQ(6, interpret<int>("a[0][2]"));
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, threeDArraySanityCheck)
+{
+	interpret<int>("a = {{{1, 2}, {3, 4}}, {{5, 6}, {7, 8}}}");
+	EXPECT_EQ(1, interpret<int>("a[0][0][0]"));
+	EXPECT_EQ(5, interpret<int>("a[1][0][0]"));
+	interpret<int>("a[1][1][0] = 9");
+	EXPECT_EQ(9, interpret<int>("a[1][1][0]"));
+	ASSERT_TRUE(mErrors.isEmpty());
+}
+
+TEST_F(LuaInterpreterTest, negativeOutOfRangeSlice)
+{
+	interpret<int>("a = {1, 2}");
+	EXPECT_EQ(0, interpret<int>("a[-1]"));
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	interpret<int>("b = {{1, 2}, {3, 4}}");
+	EXPECT_EQ(0, interpret<int>("b[-1][0]"));
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	EXPECT_EQ(0, interpret<int>("b[0][-1]"));
+	EXPECT_EQ(1, mErrors.size());
+}
+
+TEST_F(LuaInterpreterTest, negativOutOfRangeAssignment)
+{
+	interpret<int>("a = {{1, 2}, {3, 4}}");
+	interpret<int>("a[-1][0] = 5");
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	interpret<int>("a[0][-1] = 5");
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
+	interpret<int>("a[-1][-1] = 5");
+	EXPECT_EQ(1, mErrors.size());
+	mErrors.clear();
 }

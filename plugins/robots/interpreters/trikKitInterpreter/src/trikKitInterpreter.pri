@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 QT += widgets network
 
 includes(plugins/robots/common/kitBase \
@@ -46,6 +60,7 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDLineSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDObjectSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDColorSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDShell.h
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -82,6 +97,7 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDObjectSensor.cpp \
 	$$PWD/robotModel/twoD/parts/twoDColorSensor.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
+	$$PWD/robotModel/twoD/parts/twoDShell.cpp
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
@@ -90,4 +106,6 @@ FORMS += \
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
-TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikKitInterpreter_fr.ts \

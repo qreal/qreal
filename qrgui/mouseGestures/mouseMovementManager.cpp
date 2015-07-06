@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "mouseMovementManager.h"
 
 #include <qrkernel/logging.h>
@@ -28,6 +42,7 @@ MouseMovementManager::MouseMovementManager(const Id &diagram
 
 QWidget *MouseMovementManager::producePainter() const
 {
+	/// @todo: Remove copy-paste in DummyMouseMovementManager
 	GesturesWidget * const result = new GesturesWidget;
 	QList<QPair<QString, Id> > elements;
 	for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
@@ -36,8 +51,9 @@ QWidget *MouseMovementManager::producePainter() const
 		}
 	}
 
+	connect(result, &GesturesWidget::currentElementChanged
+			, this, &MouseMovementManager::drawIdealPath, Qt::QueuedConnection);
 	result->setElements(elements);
-	connect(result, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
 	return result;
 }
 
@@ -202,35 +218,4 @@ bool MouseMovementManager::isEdgeCandidate()
 bool MouseMovementManager::pathIsEmpty()
 {
 	return mPath.isEmpty();
-}
-
-MouseMovementManager::GestureResult::GestureResult()
-	: mType(invalidGesture)
-{
-}
-
-MouseMovementManager::GestureResult::GestureResult(MouseMovementManager::GestureResultType type, const qReal::Id &id)
-	: mType(type)
-	, mId(id)
-{
-}
-
-MouseMovementManager::GestureResultType MouseMovementManager::GestureResult::type() const
-{
-	return mType;
-}
-
-qReal::Id MouseMovementManager::GestureResult::elementType() const
-{
-	return mId;
-}
-
-void MouseMovementManager::GestureResult::setType(MouseMovementManager::GestureResultType type)
-{
-	mType = type;
-}
-
-void MouseMovementManager::GestureResult::setElementType(const qReal::Id &id)
-{
-	mId = id;
 }

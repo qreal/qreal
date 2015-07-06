@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikKitInterpreterPlugin.h"
 
 #include <QtWidgets/QApplication>
@@ -5,6 +19,7 @@
 
 #include <twoDModel/engine/twoDModelEngineFacade.h>
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 
 using namespace trik;
 using namespace qReal;
@@ -43,9 +58,6 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
-			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
-
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
 
@@ -55,7 +67,8 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, interpretersInterface
 			, configurator.interpreterControl());
 
-	mRealRobotModel.setErrorReporter(interpretersInterface.errorReporter());
+	mRealRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
+	mTwoDRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
@@ -106,17 +119,12 @@ QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
+	return {};
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
-
-	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForTrik", tr("Show 2d model for TRIK")
-			, mTwoDModel->showTwoDModelWidgetActionInfo().action());
-
-	return { d2ModelActionInfo };
+	return {};
 }
 
 QString TrikKitInterpreterPlugin::defaultSettingsFile() const
@@ -139,14 +147,6 @@ kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigur
 	return &mTwoDModel->devicesConfigurationProvider();
 }
 
-void TrikKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
-{
-	const Id type = info.rootDiagramId().type();
-	const bool enabled = type == robotDiagramType || type == subprogramDiagramType;
-	const bool twoDModelEnabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModel.name();
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(twoDModelEnabled);
-}
-
 QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
 {
 	QLineEdit * const quickPreferences = new QLineEdit;
@@ -156,6 +156,7 @@ QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
 	};
 	updateQuickPreferences();
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
 	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});

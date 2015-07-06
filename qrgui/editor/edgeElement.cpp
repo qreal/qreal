@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 /** @file edgeElement.cpp
 *	@brief class for an edge on a diagram
 **/
@@ -13,8 +27,9 @@
 
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
-#include "editor/labelFactory.h"
 #include "editor/editorViewScene.h"
+#include "editor/labels/label.h"
+#include "editor/labels/labelFactory.h"
 
 #include "editor/private/lineFactory.h"
 #include "editor/private/lineHandler.h"
@@ -904,7 +919,7 @@ void EdgeElement::updateData()
 
 	update();
 	updateLongestPart();
-	highlight((mSrc && mDst) ? mPenColor : Qt::red);
+	highlight(isHanging() ? Qt::red : mPenColor);
 }
 
 void EdgeElement::removeLink(const NodeElement *from)
@@ -988,7 +1003,7 @@ void EdgeElement::setColorRect(bool bl) // method is empty
 	Q_UNUSED(bl);
 }
 
-void EdgeElement::highlight(const QColor color)
+void EdgeElement::highlight(const QColor &color)
 {
 	mColor = color;
 	update();
@@ -1068,6 +1083,11 @@ void EdgeElement::setDst(NodeElement *node)
 	if (node) {
 		mDst->addEdge(this);
 	}
+}
+
+bool EdgeElement::isHanging() const
+{
+	return !mSrc || !mDst;
 }
 
 void EdgeElement::tuneForLinker()

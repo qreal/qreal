@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group, Yurii Litvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrtext/src/lua/luaInterpreter.h"
 
 #include "qrtext/lua/types/string.h"
@@ -78,30 +92,7 @@ QVariant LuaInterpreter::interpret(const QSharedPointer<core::ast::Node> &root
 	} else if (root->is<ast::String>()) {
 		return as<ast::String>(root)->string();
 	} else if (root->is<ast::TableConstructor>()) {
-		QStringList temp;
-		for (const auto &node : as<ast::TableConstructor>(root)->initializers()) {
-			if (node->implicitKey()) {
-				temp << interpret(node->value(), semanticAnalyzer).value<QString>();
-			} else {
-				if (semanticAnalyzer.type(node->key())->is<types::Number>()) {
-					const auto index = interpret(node->key(), semanticAnalyzer).toInt();
-					if (temp.size() <= index) {
-						for (int i = 0; index >= temp.size(); ++i) {
-							/// @todo: add proper "nil" value.
-							temp.append("");
-						}
-					}
-
-					temp[index] = interpret(node->value(), semanticAnalyzer).value<QString>();
-				} else {
-					mErrors.append(core::Error(root->start()
-							, QObject::tr("Explicit table indexes of non-integer type are not supported")
-							, core::ErrorType::runtimeError, core::Severity::error));
-				}
-			}
-		}
-
-		return QVariant(temp);
+		return constructTable(root, semanticAnalyzer);
 	} else if (root->is<ast::Assignment>()) {
 		auto variable = as<ast::Assignment>(root)->variable();
 		auto value = as<ast::Assignment>(root)->value();
@@ -120,13 +111,8 @@ QVariant LuaInterpreter::interpret(const QSharedPointer<core::ast::Node> &root
 			mIdentifierValues.insert(name, interpretedValue);
 			return QVariant();
 		} else if (variable->is<ast::IndexingExpression>()) {
-			operateOnIndexingExpression(variable
-					, semanticAnalyzer
-					, [this, &value, &semanticAnalyzer] (const QString &name, QStringList &table, int index) {
-						table[index] = interpret(value, semanticAnalyzer).toString();
-						mIdentifierValues.insert(name, table);
-						return QVariant();
-					});
+			assignToTableElement(variable, interpretedValue, semanticAnalyzer);
+			return QVariant();
 		} else {
 			mErrors.append(core::Error(root->start(), QObject::tr("This construction is not supported by interpreter")
 					, core::ErrorType::runtimeError, core::Severity::error));
@@ -148,12 +134,7 @@ QVariant LuaInterpreter::interpret(const QSharedPointer<core::ast::Node> &root
 
 		return mIntrinsicFunctions[name](actualParameters);
 	} else if (root->is<ast::IndexingExpression>()) {
-		return operateOnIndexingExpression(root
-				, semanticAnalyzer
-				, [] (const QString &name, QStringList &table, int index) {
-					Q_UNUSED(name)
-					return table[index];
-				});
+		return slice(root, semanticAnalyzer);
 	} else if (root->is<ast::UnaryOperator>()) {
 		return interpretUnaryOperator(root, semanticAnalyzer);
 	} else if (root->is<ast::BinaryOperator>()) {
@@ -170,39 +151,6 @@ QVariant LuaInterpreter::interpret(const QSharedPointer<core::ast::Node> &root
 
 		return QVariant();
 	}
-}
-
-QVariant LuaInterpreter::operateOnIndexingExpression(const QSharedPointer<core::ast::Node> &indexingExpression
-		, const core::SemanticAnalyzer &semanticAnalyzer
-		, const std::function<QVariant(const QString &, QStringList &, int)> &action)
-{
-	if (as<ast::IndexingExpression>(indexingExpression)->table()->is<ast::Identifier>()) {
-		auto name = as<ast::Identifier>(as<ast::IndexingExpression>(indexingExpression)->table())->name();
-		if (semanticAnalyzer.type(as<ast::IndexingExpression>(indexingExpression)->indexer())->is<types::Number>()) {
-			auto index = interpret(as<ast::IndexingExpression>(indexingExpression)->indexer(), semanticAnalyzer)
-					.toInt();
-
-			auto table = mIdentifierValues.value(name).value<QStringList>();
-			if (table.size() <= index) {
-				for (int i = 0; index >= table.size(); ++i) {
-					/// @todo: add proper "nil" value.
-					table.append("");
-				}
-			}
-
-			return action(name, table, index);
-		}
-	}
-
-	mErrors.append(core::Error(indexingExpression->start()
-			, QObject::tr("Currently interpreter allows only tables denoted by identifier and "
-					"by integer expression index, as in 'a[1 + 2] = 3'")
-			, core::ErrorType::runtimeError, core::Severity::error));
-
-	/// @todo Support more complex cases of table assignment, like
-	///       "f(x)['a'] = 1". Note that field access in form of "a.x = 1" is parsed as "a['x'] = 1", so
-	///       no special handling is needed for that case.
-	return QVariant();
 }
 
 void LuaInterpreter::addIntrinsicFunction(const QString &name
@@ -373,3 +321,212 @@ QVariant LuaInterpreter::interpretBinaryOperator(const QSharedPointer<core::ast:
 	return QVariant();
 }
 
+
+QVariant LuaInterpreter::operateOnIndexingExpression(const QSharedPointer<core::ast::Node> &indexingExpression
+		, const core::SemanticAnalyzer &semanticAnalyzer
+		, const std::function<QVariant(const QString &
+				, const QVariantList &
+				, const QVector<int> &
+				, const core::Connection &)> &action)
+{
+	return operateOnIndexingExpressionRecursive(indexingExpression, {}, semanticAnalyzer, action);
+}
+
+QVariant LuaInterpreter::operateOnIndexingExpressionRecursive(const QSharedPointer<core::ast::Node> &indexingExpression
+		, const QVector<int> &currentIndex, const core::SemanticAnalyzer &semanticAnalyzer
+		, const std::function<QVariant(const QString &
+				, const QVariantList &
+				, const QVector<int> &
+				, const core::Connection &)> &action)
+{
+	const auto node = as<ast::IndexingExpression>(indexingExpression);
+
+	const auto reportError = [this, &node](){
+		mErrors.append(core::Error(node->start()
+				, QObject::tr("Currently interpreter allows only tables denoted by identifier and "
+						"by integer expression index, as in 'a[1 + 2][3]'")
+				, core::ErrorType::runtimeError, core::Severity::error));
+	};
+
+	if (node->table()->is<ast::Identifier>()) {
+		const auto name = as<ast::Identifier>(node->table())->name();
+		if (semanticAnalyzer.type(node->indexer())->is<types::Number>()) {
+			const auto index = interpret(node->indexer(), semanticAnalyzer).toInt();
+			const auto table = mIdentifierValues.value(name).value<QVariantList>();
+
+			return action(name, table, QVector<int>{index} + currentIndex, node->start());
+		}
+
+		reportError();
+		return QVariant();
+	} else if (node->table()->is<ast::IndexingExpression>()) {
+		if (semanticAnalyzer.type(node->indexer())->is<types::Number>()) {
+			const auto index = interpret(node->indexer(), semanticAnalyzer).toInt();
+			return operateOnIndexingExpressionRecursive(node->table()
+					, QVector<int>{index} + currentIndex, semanticAnalyzer, action);
+		}
+
+		reportError();
+		return QVariant();
+	}
+
+	/// @todo Support more complex cases of table slice, like
+	///       "f(x)['a'] = 1". Note that field access in form of "a.x = 1" is parsed as "a['x'] = 1", so
+	///       no special handling is needed for that case.
+	mErrors.append(core::Error(node->start()
+			, QObject::tr("Tables denoted by something other than identifier (like f(x)[0]) are not allowed")
+			, core::ErrorType::runtimeError, core::Severity::error));
+
+	return QVariant();
+}
+
+QVariant LuaInterpreter::constructTable(const QSharedPointer<core::ast::Node> &tableConstructor
+		, const core::SemanticAnalyzer &semanticAnalyzer)
+{
+	QVariantList temp;
+	for (const auto &node : as<ast::TableConstructor>(tableConstructor)->initializers()) {
+		if (node->implicitKey()) {
+			temp << interpret(node->value(), semanticAnalyzer);
+		} else {
+			if (semanticAnalyzer.type(node->key())->is<types::Number>()) {
+				const auto index = interpret(node->key(), semanticAnalyzer).toInt();
+				if (temp.size() <= index) {
+					for (int i = 0; index >= temp.size(); ++i) {
+						/// @todo: add proper "nil" value.
+						temp.append("");
+					}
+				}
+
+				temp[index] = interpret(node->value(), semanticAnalyzer).value<QString>();
+			} else {
+				mErrors.append(core::Error(tableConstructor->start()
+						, QObject::tr("Explicit table indexes of non-integer type are not supported")
+						, core::ErrorType::runtimeError, core::Severity::error));
+			}
+		}
+	}
+
+	return QVariant(temp);
+}
+
+void LuaInterpreter::assignToTableElement(const QSharedPointer<core::ast::Node> &variable
+		, const QVariant &interpretedValue, const core::SemanticAnalyzer &semanticAnalyzer)
+{
+	const auto action = [this, &interpretedValue] (
+			const QString &name
+			, const QVariantList &table
+			, const QVector<int> &index
+			, const core::Connection &connection)
+	{
+		mIdentifierValues.insert(name, doAssignToTableElement(table, interpretedValue, index, connection));
+		return QVariant();
+	};
+
+	operateOnIndexingExpression(variable, semanticAnalyzer, action);
+}
+
+QVariantList LuaInterpreter::doAssignToTableElement(const QVariantList &table
+		, const QVariant &value
+		, const QVector<int> &index
+		, const core::Connection &connection)
+{
+	QVariantList result;
+	int i = 0;
+	const int currentIndex = index.first();
+	if (currentIndex < 0) {
+		mErrors.append(core::Error(connection
+				, QObject::tr("Negative index for a table")
+				, core::ErrorType::runtimeError, core::Severity::error));
+		return table;
+	}
+
+	const QVector<int> remainingIndex = index.mid(1);
+
+	if (remainingIndex.isEmpty()) {
+		result = table;
+		for (int i = 0; currentIndex >= result.size(); ++i) {
+			result << QVariant();
+		}
+
+		if (currentIndex >= 0) {
+			result[currentIndex] = value;
+		} else {
+			mErrors.append(core::Error(connection
+					, QObject::tr("Negative index for a table")
+					, core::ErrorType::runtimeError, core::Severity::error));
+		}
+
+		return result;
+	}
+
+	for (const auto &element : table) {
+		if (i == currentIndex) {
+			result << QVariant(doAssignToTableElement(element.value<QVariantList>()
+					, value
+					, remainingIndex
+					, connection));
+		} else {
+			result << element;
+		}
+
+		++i;
+	}
+
+	if (currentIndex >= result.size()) {
+		for (int i = 0; currentIndex >= result.size() + 1; ++i) {
+			result << QVariant();
+		}
+
+		result << QVariant(doAssignToTableElement({}, value, remainingIndex, connection));
+	}
+
+	return result;
+}
+
+QVariant LuaInterpreter::slice(const QSharedPointer<core::ast::Node> &indexingExpression
+		, const core::SemanticAnalyzer &semanticAnalyzer)
+{
+	const auto action = [this] (const QString &name
+			, const QVariantList &table
+			, const QVector<int> &index
+			, const core::Connection &connection)
+	{
+		Q_UNUSED(name);
+
+		QVariantList slice = table;
+
+		QVector<int> actualIndex = index;
+		const int lastIndex = index.last();
+		actualIndex.removeLast();
+
+		for (int i : actualIndex) {
+			if (slice.size() <= i) {
+				return QVariant();
+			}
+
+			if (i < 0) {
+				mErrors.append(core::Error(connection
+						, QObject::tr("Negative index for a table")
+						, core::ErrorType::runtimeError, core::Severity::error));
+				return QVariant();
+			}
+
+			slice = slice[i].value<QVariantList>();
+		}
+
+		if (slice.size() <= lastIndex) {
+			return QVariant();
+		}
+
+		if (lastIndex < 0) {
+			mErrors.append(core::Error(connection
+					, QObject::tr("Negative index for a table")
+					, core::ErrorType::runtimeError, core::Severity::error));
+			return QVariant();
+		}
+
+		return slice[lastIndex];
+	};
+
+	return operateOnIndexingExpression(indexingExpression, semanticAnalyzer, action);
+}

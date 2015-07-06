@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "twoDRobotModel.h"
 
 #include <QtGui/QColor>
@@ -8,6 +22,7 @@
 #include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
+#include "robotModel/twoD/parts/twoDShell.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
 #include "robotModel/twoD/parts/twoDLed.h"
 #include "robotModel/twoD/parts/twoDLineSensor.h"
@@ -18,6 +33,7 @@
 #include <trikKit/robotModel/parts/trikColorSensor.h>
 #include <trikKit/robotModel/parts/trikInfraredSensor.h>
 #include <trikKit/robotModel/parts/trikSonarSensor.h>
+#include <trikKit/robotModel/parts/trikShell.h>
 
 #include "trikDisplayWidget.h"
 
@@ -29,6 +45,7 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
+	, mDisplayWidget(new TrikDisplayWidget())
 {
 }
 
@@ -40,6 +57,14 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {
 		return new parts::TwoDSpeaker(deviceInfo, port, *engine());
+	}
+
+	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {
+		parts::Shell * const shell = new parts::Shell(deviceInfo, port, *engine());
+		// Error reporter will come only after global plugin init() is called. Shell is however
+		// configured even later. So setting error reporter only when everything will be ready.
+		connect(shell, &parts::Shell::configured, [=]() { shell->setErrorReporter(*mErrorReporter); });
+		return shell;
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikInfraredSensor>()) {
@@ -92,9 +117,9 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo(mRightWheelPort, output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent) const
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 {
-	return new TrikDisplayWidget(parent);
+	return mDisplayWidget;
 }
 
 QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
@@ -147,4 +172,22 @@ QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
+}
+
+QHash<QString, int> TwoDRobotModel::buttonCodes() const
+{
+	QHash<QString, int> result;
+	result["LeftButton"] = 105;
+	result["RightButton"] = 106;
+	result["UpButton"] = 103;
+	result["DownButton"] = 108;
+	result["EnterButton"] = 28;
+	result["PowerButton"] = 116;
+	result["EscButton"] = 1;
+	return result;
+}
+
+void TwoDRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
 }

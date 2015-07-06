@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "abstractItem.h"
 
 #include <QtGui/QPainter>
@@ -10,8 +24,12 @@
 using namespace graphicsUtils;
 
 AbstractItem::AbstractItem(QGraphicsItem* parent)
-	: QGraphicsObject(parent), mDragState(None)
-	, mX1(0), mY1(0), mX2(0), mY2(0), mView(nullptr)
+	: QGraphicsObject(parent)
+	, mDragState(None)
+	, mX1(0)
+	, mY1(0)
+	, mX2(0)
+	, mY2(0)
 	, mEditable(true)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
@@ -479,12 +497,13 @@ void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		setSelected(true);
 	}
 
+	event->accept();
 	QMenu *menu = new QMenu();
 	QAction *removeAction = menu->addAction(QObject::tr("Remove"));
 	QAction *selectedAction = menu->exec(event->screenPos());
 	delete menu;
 	if (selectedAction == removeAction) {
-		emit delettedWithContextMenu();
+		emit deletedWithContextMenu();
 	}
 }
 

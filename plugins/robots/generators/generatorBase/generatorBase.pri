@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 QT += widgets
 
 includes(plugins/robots/generators/generatorBase \
@@ -10,7 +24,9 @@ links(qrkernel qslog qrutils qrrepo qrtext qrgui-tool-plugin-interface robots-ki
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
-TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/generatorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/generatorBase/robotsGeneratorDeclSpec.h \
@@ -182,8 +198,11 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
+	$$PWD/src/simpleGenerators/randomInitGenerator.h \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.h \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.h \
+	$$PWD/src/simpleGenerators/killThreadGenerator.h \
+	$$PWD/src/simpleGenerators/getButtonCodeGenerator.h \
 	$$PWD/src/lua/luaPrinter.h \
 	$$PWD/src/lua/reservedFunctionsConverter.h \
 
@@ -245,8 +264,11 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/labelGenerator.cpp \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/variableInitGenerator.cpp \
+	$$PWD/src/simpleGenerators/randomInitGenerator.cpp \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
+	$$PWD/src/simpleGenerators/killThreadGenerator.cpp \
+	$$PWD/src/simpleGenerators/getButtonCodeGenerator.cpp \
 	$$PWD/src/lua/luaProcessor.cpp \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \

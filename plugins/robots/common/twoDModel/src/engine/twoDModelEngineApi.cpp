@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "twoDModelEngineApi.h"
 
 #include <QtCore/QDebug>
@@ -5,6 +19,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/mathUtils/math.h>
+#include <qrutils/mathUtils/geometry.h>
 /// @todo: Get rid of it!
 #include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/colorSensorFull.h>
@@ -13,13 +28,14 @@
 #include <kitBase/robotModel/robotParts/colorSensorGreen.h>
 #include <kitBase/robotModel/robotParts/colorSensorBlue.h>
 
-#include "model/model.h"
-#include "model/constants.h"
+#include "twoDModel/engine/twoDModelGuiFacade.h"
+#include "twoDModel/engine/model/model.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/view/twoDModelWidget.h"
 
-#include "twoDModel/engine/view/d2ModelWidget.h"
-#include "view/d2ModelScene.h"
-#include "view/robotItem.h"
-#include "view/fakeScene.h"
+#include "view/scene/twoDModelScene.h"
+#include "view/scene/robotItem.h"
+#include "view/scene/fakeScene.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
@@ -32,10 +48,11 @@ using namespace twoDModel;
 using namespace kitBase::robotModel;
 using namespace twoDModel::model;
 
-TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
+TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view)
 	: mModel(model)
 	, mView(view)
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
+	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
 {
 }
 
@@ -281,6 +298,11 @@ engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
 	return mView.display();
 }
 
+engine::TwoDModelGuiFacade &TwoDModelEngineApi::guiFacade() const
+{
+	return *mGuiFacade;
+}
+
 uint TwoDModelEngineApi::spoilLight(const uint color) const
 {
 	const qreal noise = mathUtils::Math::gaussianNoise(spoilLightDispersion);
@@ -296,9 +318,11 @@ uint TwoDModelEngineApi::spoilLight(const uint color) const
 
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
 {
-	const view::SensorItem *sensor = mView.sensorItem(port);
-	const QPointF position = sensor ? sensor->scenePos() : QPointF();
-	const qreal direction = sensor ? sensor->rotation() + mModel.robotModels()[0]->rotation() : 0;
+	RobotModel * const robotModel = mModel.robotModels()[0];
+	const QVector2D sensorVector = QVector2D(robotModel->configuration().position(port) - rotatePoint);
+	const QPointF rotatedVector = mathUtils::Geometry::rotateVector(sensorVector, robotModel->rotation()).toPointF();
+	const QPointF position = robotModel->position() + rotatePoint + rotatedVector;
+	const qreal direction = robotModel->configuration().direction(port) + robotModel->rotation();
 	return { position, direction };
 }
 

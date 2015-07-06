@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 TARGET = robots-trik-generator-base
 
 include(../../../../../global.pri)
@@ -19,15 +33,17 @@ links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
-	$$PWD/src/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
 	$$PWD/src/converters/backgroundColorConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
@@ -58,6 +74,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.h \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.h \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.h \
+	$$PWD/src/simpleGenerators/fileWriteGenerator.h \
+	$$PWD/src/simpleGenerators/removeFileGenerator.h \
 
 SOURCES += \
 	$$PWD/src/trikGeneratorPluginBase.cpp \
@@ -95,3 +113,5 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.cpp \
+	$$PWD/src/simpleGenerators/fileWriteGenerator.cpp \
+	$$PWD/src/simpleGenerators/removeFileGenerator.cpp \

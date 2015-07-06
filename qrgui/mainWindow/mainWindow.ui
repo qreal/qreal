@@ -41,7 +41,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>19</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -149,7 +149,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>84</width>
+     <width>89</width>
      <height>217</height>
     </size>
    </property>
@@ -306,8 +306,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>102</width>
-     <height>127</height>
+     <width>107</width>
+     <height>132</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -323,7 +323,7 @@
     <bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>Output</string>
+    <string>Errors</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -502,6 +502,9 @@
   <action name="actionHelp">
    <property name="text">
     <string>Small Help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -763,6 +766,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+T</string>
+   </property>
+  </action>
+  <action name="actionHideBottomDocks">
+   <property name="text">
+    <string>Hide bottom docks</string>
+   </property>
+   <property name="toolTip">
+    <string>Hide bottom docks</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
    </property>
   </action>
  </widget>

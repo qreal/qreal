@@ -69,6 +69,8 @@
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/sound.t</file>
         <file>templates/sensors/touch.t</file>
+        <file>templates/sensors/scalar.t</file>
+        <file>templates/sensors/vector.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
@@ -84,6 +86,8 @@
         <file>templates/functions/sin.t</file>
         <file>templates/functions/sqrt.t</file>
         <file>templates/functions/time.t</file>
+        <file>templates/functions/min.t</file>
+        <file>templates/functions/max.t</file>
         <file>templates/engines/nullifyEncoder.t</file>
         <file>templates/wait/color.t</file>
         <file>templates/wait/colorIntensity.t</file>
@@ -184,5 +188,6 @@
         <file>templates/luaPrinting/floatToString.t</file>
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
+        <file>templates/variables/randomInitialization.t</file>
     </qresource>
 </RCC>

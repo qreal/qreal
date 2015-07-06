@@ -1,12 +1,27 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtCore/QSignalMapper>
+#include <QtCore/QScopedPointer>
 
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
-#include <qrgui/mouseGestures/mouseMovementManager.h>
+#include <qrgui/mouseGestures/mouseMovementManagerInterface.h>
 
 #include "qrgui/editor/editorDeclSpec.h"
 #include "qrgui/editor/copyPaste/clipboardHandler.h"
@@ -126,6 +141,9 @@ public:
 	/// Handles deletion of the element from scene.
 	void onElementDeleted(Element *element);
 
+	/// Enable or Disable mousegestures
+	void enableMouseGestures(bool enabled);
+
 public slots:
 	qReal::Id createElement(const QString &type);
 
@@ -161,6 +179,9 @@ signals:
 		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts);
 
+	/// Emitted a set of selected editor elements has changed.
+	void sceneSelectionChanged(const QList<Element *> &elements);
+
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
@@ -188,6 +209,7 @@ private slots:
 	/// Updates repository after the move. Controled by the timer.
 	void updateMovedElements();
 
+	void onSelectionChanged();
 	void deselectLabels();
 
 private:
@@ -243,7 +265,7 @@ private:
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
 
-	gestures::MouseMovementManager mMouseMovementManager;
+	QScopedPointer<gestures::MouseMovementManagerInterface> mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 
@@ -265,6 +287,7 @@ private:
 	QList<QGraphicsItem* > mSelectList;
 
 	bool mIsSelectEvent;
+	bool mMouseGesturesEnabled;
 
 	QMenu mContextMenu;
 

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QTreeWidget>
@@ -17,6 +31,9 @@ class PaletteTreeWidget : public QTreeWidget
 	Q_OBJECT
 
 public:
+	/// A reference to action invoked for each item in traversal.
+	typedef std::function<void(QTreeWidgetItem *)> Action;
+
 	PaletteTreeWidget(PaletteTree &parent, MainWindow &mainWindow
 			, const EditorManagerInterface &editorManagerProxy
 			, bool editable);
@@ -45,6 +62,12 @@ public:
 	void setElementEnabled(const Id &metatype, bool enabled);
 
 	void setEnabledForAllElements(bool enabled);
+
+	/// Filters contents of tree showing only items whoose names matches the given regular expression.
+	void filter(const QRegExp &regexp);
+
+	/// Travels thorough the whole model and calls \a action for each model index.
+	void traverse(const Action &action) const;
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -80,6 +103,9 @@ private:
 	/// Same as idLessThan (compares ids of given operands)
 	static bool paletteElementLessThan(const PaletteElement &s1, const PaletteElement &s2);
 
+	/// Recursive implementation of traverse(Action).
+	void traverse(QTreeWidgetItem * const item, const Action &action) const;
+
 	/// Made static to be used inside idLessThan()
 	static const EditorManagerInterface *mEditorManager;  // Does not take ownership
 	MainWindow &mMainWindow;
@@ -88,7 +114,7 @@ private:
 
 	QHash<Id, DraggableElement *> mPaletteElements;  // Takes ownership.
 	QHash<Id, QTreeWidgetItem *> mPaletteItems;  // Takes ownership.
-
+	QHash<QTreeWidgetItem *, bool> mItemsVisible;
 };
 
 }
