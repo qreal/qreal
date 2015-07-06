@@ -567,6 +567,7 @@ void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 {
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
+	updateWheelComboBoxes();
 }
 
 Model &TwoDModelWidget::model() const
@@ -772,6 +773,18 @@ void TwoDModelWidget::initRunStopButtons()
 	connect(mUi->stopButton, &QPushButton::clicked, this, &TwoDModelWidget::stopButtonPressed);
 }
 
+bool TwoDModelWidget::setSelectedPort(QComboBox * const comboBox, const PortInfo &port)
+{
+	for (int i = 0; i < comboBox->count(); ++i) {
+		if (comboBox->itemData(i).value<PortInfo>() == port) {
+			comboBox->setCurrentIndex(i);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void TwoDModelWidget::updateWheelComboBoxes()
 {
 	if (!mSelectedRobotItem) {
@@ -800,21 +813,10 @@ void TwoDModelWidget::updateWheelComboBoxes()
 		}
 	}
 
-	auto setSelectedPort = [](QComboBox * const comboBox, const PortInfo &port) {
-		for (int i = 0; i < comboBox->count(); ++i) {
-			if (comboBox->itemData(i).value<PortInfo>() == port) {
-				comboBox->setCurrentIndex(i);
-				return true;
-			}
-		}
-
-		return false;
-	};
-
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
 		if (!setSelectedPort(mUi->leftWheelComboBox
 				, mSelectedRobotItem->robotModel().info().defaultLeftWheelPort())) {
-			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
+			qWarning() << "Incorrect defaultLeftWheelPort set in configurer:"
 					<< mSelectedRobotItem->robotModel().info().defaultLeftWheelPort().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
@@ -827,7 +829,7 @@ void TwoDModelWidget::updateWheelComboBoxes()
 		if (!setSelectedPort(mUi->rightWheelComboBox
 				, mSelectedRobotItem->robotModel().info().defaultRightWheelPort())) {
 
-			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
+			qWarning() << "Incorrect defaultRightWheelPort set in configurer:"
 					<< mSelectedRobotItem->robotModel().info().defaultRightWheelPort().toString();
 
 			if (mUi->rightWheelComboBox->count() > 2) {
@@ -862,6 +864,15 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded, checkAndSaveToRepo);
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceRemoved, checkAndSaveToRepo);
+
+		connect(&robotItem->robotModel(), &RobotModel::wheelOnPortChanged
+				, [=](RobotModel::WheelEnum wheel, const PortInfo &port)
+		{
+			if (port.isValid()) {
+				setSelectedPort(wheel == RobotModel::WheelEnum::left
+						? mUi->leftWheelComboBox : mUi->rightWheelComboBox, port);
+			}
+		});
 	}
 }
 
