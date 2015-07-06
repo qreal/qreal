@@ -6,7 +6,7 @@ document.write('\
                 <ul>\
                     <li><a href="interface.html#overview">Обзор</li>\
                     <li><a href="interface.html#settings">Диалог настроек TRIKStudio</li>\
-                    <li><a href="interface.html#d2model">Диалог двумерной модели робота</li>\
+                    <li><a href="interface.html#two-d-model">Диалог двумерной модели робота</li>\
                 </ul>\
             </li>\
             <li><a href="programming.html">Создание программ</a>\
