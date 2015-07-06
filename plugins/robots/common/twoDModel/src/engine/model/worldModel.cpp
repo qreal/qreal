@@ -214,7 +214,7 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement WorldModel::serialize(QDomDocument &document) const
 {
 	QDomElement result = document.createElement("world");
 
@@ -234,14 +234,15 @@ QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeft
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 	for (items::WallItem * const wall : mWalls) {
-		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
+		QDomElement wallNode = document.createElement("wall");
+		wall->serialize(wallNode);
 		walls.appendChild(wallNode);
 	}
 
 	QDomElement colorFields = document.createElement("colorFields");
 	result.appendChild(colorFields);
-	for (items::ColorFieldItem *colorField : mColorFields) {
-		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
+	for (items::ColorFieldItem * const colorField : mColorFields) {
+		QDomElement colorFiedlNode = colorField->serialize(document, QPointF());
 		colorFields.appendChild(colorFiedlNode);
 	}
 

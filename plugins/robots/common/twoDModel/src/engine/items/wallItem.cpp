@@ -27,25 +27,40 @@ using namespace graphicsUtils;
 const int wallWidth = 10;
 
 WallItem::WallItem(const QPointF &begin, const QPointF &end)
-	: LineItem(begin, end)
+	: SolidItem()
 	, mDragged(false)
 	, mImage(":/icons/2d_wall.png")
 	, mOldX1(0)
 	, mOldY1(0)
+	, mCellNumbX1(0)
+	, mCellNumbY1(0)
+	, mCellNumbX2(0)
+	, mCellNumbY2(0)
 {
+	setX1(begin.x());
+	setY1(begin.y());
+	setX2(end.x());
+	setY2(end.y());
+	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
 	setAcceptDrops(true);
 }
 
-AbstractItem *WallItem::clone() const
+WallItem *WallItem::clone() const
 {
-	const auto cloned = new WallItem({x1(), y1()}, {x2(), y2()});
+	WallItem * const cloned = new WallItem({x1(), y1()}, {x2(), y2()});
 	AbstractItem::copyTo(cloned);
 	connect(this, &AbstractItem::positionChanged, cloned, &WallItem::recalculateBorders);
 	connect(this, &AbstractItem::x1Changed, cloned, &WallItem::recalculateBorders);
 	connect(this, &AbstractItem::y1Changed, cloned, &WallItem::recalculateBorders);
 	connect(this, &AbstractItem::x2Changed, cloned, &WallItem::recalculateBorders);
 	connect(this, &AbstractItem::y2Changed, cloned, &WallItem::recalculateBorders);
+
+	cloned->mCellNumbX1 = mCellNumbX1;
+	cloned->mCellNumbY1 = mCellNumbY1;
+	cloned->mCellNumbX2 = mCellNumbX2;
+	cloned->mCellNumbY2 = mCellNumbY2;
+
 	cloned->mOldX1 = mOldX1;
 	cloned->mOldY1 = mOldY1;
 	cloned->mDragged = mDragged;
@@ -72,17 +87,26 @@ void WallItem::setPrivateData()
 	brush.setStyle(Qt::SolidPattern);
 	brush.setTextureImage(mImage);
 	setBrush(brush);
-	mSerializeName = "wall";
 }
 
-QPointF WallItem::begin()
+QPointF WallItem::begin() const
 {
 	return QPointF(x1(), y1()) + scenePos();
 }
 
-QPointF WallItem::end()
+QPointF WallItem::end() const
 {
 	return QPointF(x2(), y2()) + scenePos();
+}
+
+QRectF WallItem::boundingRect() const
+{
+	return mLineImpl.boundingRect(x1(), y1(), x2(), y2(), pen().width(), drift);
+}
+
+QPainterPath WallItem::shape() const
+{
+	return mLineImpl.shape(drift, x1(), y1(), x2(), y2());
 }
 
 void WallItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -180,27 +204,27 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = false;
 }
 
+void WallItem::serialize(QDomElement &wallNode) const
+{
+	wallNode.setTagName("wall");
+	AbstractItem::serialize(wallNode);
+	mLineImpl.serialize(wallNode, x1() + scenePos().x(), y1() + scenePos().y()
+			, x2() + scenePos().x(), y2() + scenePos().y());
+}
+
 void WallItem::deserialize(const QDomElement &element)
 {
-	LineItem::deserialize(element);
+	AbstractItem::deserialize(element);
+	const QPair<QPointF, QPointF> points = mLineImpl.deserialize(element);
+	const QPointF begin = points.first;
+	const QPointF end = points.second;
+
+	setX1(begin.x());
+	setY1(begin.y());
+	setX2(end.x());
+	setY2(end.y());
+
 	recalculateBorders();
-}
-
-QDomElement WallItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
-{
-	QDomElement wallNode = document.createElement(mSerializeName);
-	AbstractItem::serialize(wallNode);
-	wallNode.setAttribute("begin", QString::number(x1() + scenePos().x() - topLeftPicture.x())
-			+ ":" + QString::number(y1() + scenePos().y() - topLeftPicture.y()));
-	wallNode.setAttribute("end", QString::number(x2() + scenePos().x() - topLeftPicture.x())
-			+ ":" + QString::number(y2() + scenePos().y() - topLeftPicture.y()));
-	return wallNode;
-}
-
-void WallItem::deserializePenBrush(const QDomElement &element)
-{
-	Q_UNUSED(element)
-	setPrivateData();
 }
 
 void WallItem::onOverlappedWithRobot(bool overlapped)
@@ -227,4 +251,132 @@ void WallItem::recalculateBorders()
 	QPainterPathStroker stroker;
 	stroker.setWidth(wallWidth * 3 / 2);
 	mPath = stroker.createStroke(wallPath);
+}
+
+void WallItem::resizeItem(QGraphicsSceneMouseEvent *event)
+{
+	if (event->modifiers() & Qt::ShiftModifier) {
+		setX2(event->scenePos().x());
+		setY2(event->scenePos().y());
+		reshapeRectWithShift();
+	} else {
+		if (SettingsManager::value("2dShowGrid").toBool() && (dragState() == TopLeft || dragState() == BottomRight)) {
+			resizeWithGrid(event, SettingsManager::value("2dGridCellSize").toInt());
+		} else {
+			if (dragState() == TopLeft || dragState() == BottomRight) {
+				SolidItem::resizeItem(event);
+			} else {
+				setFlag(QGraphicsItem::ItemIsMovable, true);
+			}
+		}
+	}
+}
+
+void WallItem::resizeWithGrid(QGraphicsSceneMouseEvent *event, int indexGrid)
+{
+	const qreal x = mapFromScene(event->scenePos()).x();
+	const qreal y = mapFromScene(event->scenePos()).y();
+
+	if (dragState() != None) {
+		setFlag(QGraphicsItem::ItemIsMovable, false);
+	}
+
+	if (dragState() == TopLeft) {
+		setX1(x);
+		setY1(y);
+		resizeBeginWithGrid(indexGrid);
+	} else if (dragState() == BottomRight) {
+		setX2(x);
+		setY2(y);
+		reshapeEndWithGrid(indexGrid);
+	}
+}
+
+void WallItem::resizeBeginWithGrid(int indexGrid)
+{
+	const int coefX = static_cast<int>(x1()) / indexGrid;
+	const int coefY = static_cast<int>(y1()) / indexGrid;
+
+	setX1(alignedCoordinate(x1(), coefX, indexGrid));
+	setY1(alignedCoordinate(y1(), coefY, indexGrid));
+
+	mCellNumbX1 = x1() / indexGrid;
+	mCellNumbY1 = y1() / indexGrid;
+}
+
+void WallItem::reshapeEndWithGrid(int indexGrid)
+{
+	const int coefX = static_cast<int>(x2()) / indexGrid;
+	const int coefY = static_cast<int>(y2()) / indexGrid;
+
+	setX2(alignedCoordinate(x2(), coefX, indexGrid));
+	setY2(alignedCoordinate(y2(), coefY, indexGrid));
+
+	mCellNumbX2 = x2() / indexGrid;
+	mCellNumbY2 = y2() / indexGrid;
+}
+
+void WallItem::reshapeBeginWithGrid(int indexGrid)
+{
+	const int coefX = static_cast<int> (x1()) / indexGrid;
+	const int coefY = static_cast<int> (y1()) / indexGrid;
+	setX1(alignedCoordinate(x1(), coefX, indexGrid));
+	setY1(alignedCoordinate(y1(), coefY, indexGrid));
+	mCellNumbX1 = x1() / indexGrid;
+	mCellNumbY1 = y1() / indexGrid;
+}
+
+void WallItem::alignTheWall(int indexGrid)
+{
+	if (x1() != x2() && y1() != y2()) {
+		countCellNumbCoordinates(indexGrid);
+	}
+
+	setBeginCoordinatesWithGrid(indexGrid);
+	setEndCoordinatesWithGrid(indexGrid);
+}
+
+void WallItem::countCellNumbCoordinates(int indexGrid)
+{
+	mCellNumbX1 = x1() / indexGrid;
+	mCellNumbY1 = y1() / indexGrid;
+
+	if (qAbs(y2() - y1()) > qAbs(x2() - x1())) {
+		mCellNumbX2 = mCellNumbX1;
+		mCellNumbY2 = y2() / indexGrid;
+	} else {
+		mCellNumbX2 = x2() / indexGrid;
+		mCellNumbY2 = mCellNumbY1;
+	}
+}
+
+void WallItem::setBeginCoordinatesWithGrid(int indexGrid)
+{
+	setX1(mCellNumbX1 * indexGrid);
+	setY1(mCellNumbY1 * indexGrid);
+}
+
+void WallItem::setEndCoordinatesWithGrid(int indexGrid)
+{
+	setX2(mCellNumbX2 * indexGrid);
+	setY2(mCellNumbY2 * indexGrid);
+}
+
+void WallItem::setDraggedEnd(qreal x, qreal y)
+{
+	setX2(x1() - x);
+	setY2(y1() - y);
+}
+
+qreal WallItem::alignedCoordinate(qreal coord, int coef, const int indexGrid) const
+{
+	const int coefSign = coef ? coef / qAbs(coef) : 0;
+
+	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
+		return coef * indexGrid;
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) <= indexGrid / 2) {
+		return (coef + coefSign) * indexGrid;
+	}
+
+	return coord;
 }
