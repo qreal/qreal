@@ -53,5 +53,7 @@
         <file>icons/switch-real-nxt.svg</file>
         <file>icons/switch-real-trik.svg</file>
         <file>icons/splashscreen.png</file>
+        <file>icons/main_tabbar_edit.svg</file>
+        <file>icons/main_tabbar_debug.svg</file>
     </qresource>
 </RCC>
