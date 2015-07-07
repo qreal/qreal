@@ -6,7 +6,7 @@ document.write('\
                 <ul>\
                     <li><a href="interface.html#overview">Обзор</li>\
                     <li><a href="interface.html#settings">Диалог настроек TRIKStudio</li>\
-                    <li><a href="interface.html#two-d-model">Диалог двумерной модели робота</li>\
+                    <li><a href="interface.html#two-d-model">Окно двумерной модели робота</li>\
                 </ul>\
             </li>\
             <li><a href="programming.html">Создание программ</a>\
@@ -18,6 +18,7 @@ document.write('\
                     <li><a href="programming.html#properties">Редактирование свойств элементов</a></li>\
                     <li><a href="programming.html#graphs">Графики</a></li>\
                     <li><a href="programming.html#text-tab">Программирование на текстовом языке</a></li>\
+                    <li><a href="programming.html#exercises">Упражнения</a></li>\
                 </ul>\
             </li>\
             <li><a href="trik.html">ТРИК</a>\
