@@ -74,6 +74,8 @@ private slots:
 	void ensureDiagramVisible();
 
 private:
+	void initTab();
+
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
 	void produceModeButton(Mode mode, QAction &action, QStatusBar *statusBar) const;
 
@@ -86,6 +88,7 @@ private:
 	QAction &mDebugModeAction;
 	QAction &mEditModeAction;
 	qReal::gui::MainWindowDockInterface &mMainWindow;
+	QToolBar *mTabBar;  // Takes ownership
 	qReal::TabInfo::TabType mCurrentTab = static_cast<qReal::TabInfo::TabType>(-1);
 	Mode mCurrentMode = Mode::Dummy;
 	qReal::ui::ConsoleDock *mRobotConsole;  // Transfers ownership to main window.
