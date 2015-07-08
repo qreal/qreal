@@ -456,8 +456,8 @@ Trigger ConstraintsParser::parseFailTag(const QDomElement &element)
 
 Trigger ConstraintsParser::parseSuccessTag(const QDomElement &element)
 {
-	Q_UNUSED(element)
-	return mTriggers.success();
+	const bool deferred = boolAttribute(element, "deferred", false);
+	return mTriggers.success(deferred);
 }
 
 Trigger ConstraintsParser::parseSetVariableTag(const QDomElement &element)

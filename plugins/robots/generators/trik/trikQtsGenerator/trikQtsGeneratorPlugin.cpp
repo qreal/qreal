@@ -30,7 +30,7 @@ using namespace kitBase::robotModel;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
-	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Generation (QtScript)"), 9 /* After 2D model */)
+	: TrikGeneratorPluginBase("TrikQtsGeneratorRobotModel", tr("Generation (Java Script)"), 9 /* After 2D model */)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
@@ -118,12 +118,12 @@ generatorBase::MasterGeneratorBase *TrikQtsGeneratorPlugin::masterGenerator()
 
 QString TrikQtsGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
-	return QString("trik/%1/%1.qts").arg(projectName);
+	return QString("trik/%1/%1.js").arg(projectName);
 }
 
 text::LanguageInfo TrikQtsGeneratorPlugin::language() const
 {
-	return qReal::text::Languages::qtScript({ "brick" });
+	return qReal::text::Languages::javaScript({ "brick" });
 }
 
 QString TrikQtsGeneratorPlugin::generatorName() const

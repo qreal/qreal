@@ -215,6 +215,11 @@ void CommonRobotModel::addAllowedConnection(const PortInfo &port, QList<DeviceIn
 	mAllowedConnections[port].append(devices);
 }
 
+void CommonRobotModel::removeAllowedConnections(const PortInfo &port)
+{
+	mAllowedConnections.remove(port);
+}
+
 robotParts::Device * CommonRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	Q_UNUSED(port);

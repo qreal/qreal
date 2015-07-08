@@ -33,8 +33,14 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 	, mSuccessTriggered(false)
 	, mFailTriggered(false)
 {
-	connect(&mStatus, &details::StatusReporter::success, [this]() { mSuccessTriggered = true; });
-	connect(&mStatus, &details::StatusReporter::success, this, &ConstraintsChecker::success);
+	connect(&mStatus, &details::StatusReporter::success, [this](bool deferred) {
+		if (deferred) {
+			mDefferedSuccessTriggered = true;
+		} else {
+			mSuccessTriggered = true;
+			emit success();
+		}
+	});
 	connect(&mStatus, &details::StatusReporter::fail, [this]() { mFailTriggered = true; });
 	connect(&mStatus, &details::StatusReporter::fail, this, &ConstraintsChecker::fail);
 	connect(&mStatus, &details::StatusReporter::checkerError, this, &ConstraintsChecker::checkerError);
@@ -226,6 +232,7 @@ void ConstraintsChecker::programStarted()
 
 	// In case of null checker we consider that all is ok.
 	mSuccessTriggered = mCurrentXml.isNull();
+	mDefferedSuccessTriggered = false;
 	mFailTriggered = false;
 	if (mParsedSuccessfully) {
 		prepareEvents();
@@ -235,6 +242,10 @@ void ConstraintsChecker::programStarted()
 void ConstraintsChecker::programFinished()
 {
 	if (!mSuccessTriggered && !mFailTriggered) {
-		fail(tr("Program has finished, but the task is not accomplished."));
+		if (mDefferedSuccessTriggered) {
+			emit success();
+		} else {
+			emit fail(tr("Program has finished, but the task is not accomplished."));
+		}
 	}
 }
