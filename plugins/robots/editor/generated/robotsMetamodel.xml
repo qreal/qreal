@@ -2707,6 +2707,7 @@
 				<element name="SendMessageThreads"/>
 				<element name="TrikWriteToFile"/>
 				<element name="TrikRemoveFile"/>
+				<element name="GetButtonCode"/>
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>
@@ -2736,7 +2737,6 @@
 				<element name="TrikWaitGamepadDisconnect" />
 				<element name="TrikWaitGamepadConnect" />
 				<element name="ReceiveMessageThreads"/>
-				<element name="GetButtonCode"/>
 			</group>
 			<group name="Drawing">
 				<element name="NxtDrawRect"/>
