@@ -2027,6 +2027,11 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 	QMainWindow::addDockWidget(area, dockWidget);
 }
 
+void MainWindow::addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar)
+{
+	QMainWindow::addToolBar(area, toolbar);
+}
+
 QByteArray MainWindow::saveState(int version) const
 {
 	return QMainWindow::saveState(version);
