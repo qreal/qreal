@@ -44,11 +44,6 @@ public:
 	explicit PaletteTree(QWidget *parent = 0);
 	~PaletteTree();
 
-//	void deletePaletteTree();
-
-//	void makeNull();
-
-
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	  @param editor Editor

@@ -27,10 +27,6 @@
 #include "editorGenerator.h"
 #include "xmlParser.h"
 
-#include "qrrepo/repoApi.h"
-#include "qrutils/nameNormalizer.h"
-using namespace qrRepo;
-
 using namespace qReal;
 using namespace metaEditor;
 
@@ -263,6 +259,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	}
 
 	QString const normalizeDirName = metamodelName.at(0).toUpper() + metamodelName.mid(1);
+
 	QProgressBar * const progress = new QProgressBar(mMainWindowInterface->windowWidget());
 	progress->show();
 
