@@ -263,7 +263,6 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	}
 
 	QString const normalizeDirName = metamodelName.at(0).toUpper() + metamodelName.mid(1);
-
 	QProgressBar * const progress = new QProgressBar(mMainWindowInterface->windowWidget());
 	progress->show();
 
@@ -276,6 +275,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
+	bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizeDirName);
 	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
 		progress->close();
 		delete progress;
@@ -283,50 +283,33 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	}
 
 	progress->setValue(20);
-//	QProcess builder;
-//	QStringList environment = QProcess::systemEnvironment();
-//	builder.setEnvironment(environment);
 	QStringList qmakeArgs;
 	qmakeArgs.append("CONFIG+=" + buildConfiguration);
 	qmakeArgs.append(metamodelName + ".pro");
 
-//	builder.setWorkingDirectory(directoryToCodeToCompile);
-
-
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-
 	QStringList environment = QProcess::systemEnvironment();
 	builder.setEnvironment(environment);
-//	builder.start(commandFirst, {"CONFIG+=" + buildConfiguration});
-//	builder.start(pathToQmake, qmakeArgs);
 	builder.start(commandFirst, qmakeArgs);
 
-
-
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
-		qDebug() << "ololo";
-
 		progress->setValue(60);
 		builder.start(commandSecond);
-
-		QByteArray ololo = builder.readAllStandardError();
-		QString ol1 = builder.errorString();
-		QByteArray oooo = builder.readAllStandardOutput();
-		qDebug() << ololo;
-		qDebug() << ol1;
-		qDebug() << oooo;
-		//builder.waitForFinished();
 
 		if (builder.waitForFinished(60000) && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (buildConfiguration == "debug") {
+			if (stateOfLoad) {
+				QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please close QReal."));
+				progress->close();
+				delete progress;
+				return;
+			} else if (buildConfiguration == "debug") {
 				if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "-d"+ "." + extension, normalizeDirName)) {
 					progress->setValue(100);
 				}
-			}
-			else {
+			} else {
 				if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {
 					progress->setValue(100);
 				}
@@ -343,5 +326,4 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setValue(100);
 	progress->close();
 	delete progress;
-//	mMainWindowInterface->loadPlugin(normalizeDirName, normalizerMetamodelName);
 }

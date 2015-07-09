@@ -44,6 +44,11 @@ public:
 	explicit PaletteTree(QWidget *parent = 0);
 	~PaletteTree();
 
+//	void deletePaletteTree();
+
+//	void makeNull();
+
+
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	  @param editor Editor
@@ -61,6 +66,12 @@ public:
 	QComboBox* comboBox() const;
 	QList<QString> editorsNames() const;
 	Id currentEditor() const;
+
+	/// Deletes all PaletteTree widgets.
+	void deletePaletteTree();
+
+	/// Creates all PaletteTree widgets.
+	void createPaletteTree();
 
 	/// Set item with such id as active in ComboBox.
 	void setComboBox(const Id &id);
@@ -135,12 +146,6 @@ private:
 	virtual void resizeEvent(QResizeEvent *);
 
 	void initUi();
-
-	/// Creates all PaletteTree widgets.
-	void createPaletteTree();
-
-	/// Deletes all PaletteTree widgets.
-	void deletePaletteTree();
 
 	/// Fills palette tree by editors.
 	/// @param editorManager Editor manager which all editors with elements are taken from.

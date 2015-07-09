@@ -23,6 +23,12 @@ PluginManager::PluginManager(
 {
 }
 
+QList<QString> PluginManager::namesOfPlugins()
+{
+	return mPluginManagerLoader.namesOfPlugins();
+}
+
+
 QString PluginManager::unloadPlugin(const QString &pluginName)
 {
 	return mPluginManagerLoader.unloadPlugin(pluginName);

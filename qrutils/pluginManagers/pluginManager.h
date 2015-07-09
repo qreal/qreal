@@ -56,6 +56,9 @@ public:
 	/// @returns error message if there was error and empty string otherwise
 	QString unloadPlugin(const QString &pluginName);
 
+	/// Returns names of all plugins.
+	QList<QString> namesOfPlugins();
+
 	/// Returns fileName by given object.
 	template <class InterfaceType>
 	QString fileName(InterfaceType *plugin) const
