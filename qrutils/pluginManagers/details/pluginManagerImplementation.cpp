@@ -131,7 +131,6 @@ QList<QString> PluginManagerImplementation::namesOfPlugins()
 	return listOfNames;
 }
 
-
 QString PluginManagerImplementation::fileName(QObject *plugin) const
 {
 	return mFileNameAndPlugin.key(plugin);
