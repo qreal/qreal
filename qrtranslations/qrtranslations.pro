@@ -27,5 +27,5 @@ unix:!macx {
 }
 
 macx {
-	system(mkdir -p $$DESTDIR/translations/; find ./ -name *.qm -exec rsync -R {} $$DESTDIR/translations \;)
+	system(mkdir -p $$DESTDIR/translations/; find ./ -name *.qm -exec rsync -R {} $$DESTDIR/qreal-d.app/Contents/MacOS/translations \;)
 }

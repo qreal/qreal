@@ -153,4 +153,11 @@ FORMS += \
 	$$PWD/shapeEdit/visibilityConditionsDialog.ui \
 
 RESOURCES = $$PWD/mainWindow.qrc
-RC_FILE = $$PWD/mainWindow.rc
+
+win32 {
+	RC_FILE = $$PWD/mainWindow.rc
+}
+
+macx {
+	ICON = icon.icns
+}

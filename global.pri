@@ -41,9 +41,11 @@ equals(TEMPLATE, app) {
 	!macx {
 		QMAKE_LFLAGS += -Wl,-O1,-rpath,.
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
-	} else {
-		CONFIG -= app_bundle
 	}
+}
+
+macx {
+	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
 OBJECTS_DIR = .build/$$CONFIGURATION/obj
@@ -87,6 +89,7 @@ defineTest(copyToDestdir) {
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {
+
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
 			}
 
@@ -95,7 +98,11 @@ defineTest(copyToDestdir) {
 			}
 
 			macx {
+				if (equals(FILE,"images/") | equals(FILE,"help/"))	{
+					system("cp -R $$FILE $$DESTDIR/qreal-d.app/Contents/MacOS/$$FILE")
+				} else {
 				system("cp -R $$FILE $$DESTDIR/$$FILE")
+				}
 			}
 		}
 	}

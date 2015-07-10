@@ -14,6 +14,8 @@
 
 include(../global.pri)
 
+CONFIG -= app_bundle
+
 HEADERS += association.h \
 	diagram.h \
 	edgeType.h \

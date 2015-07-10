@@ -19,7 +19,6 @@ include(../../../../../global.pri)
 QT += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
 
 includes(plugins/robots/generators/trik/trikGeneratorBase \
 		plugins/robots/generators/generatorBase \
