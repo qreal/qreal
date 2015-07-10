@@ -76,6 +76,9 @@ public:
 	/// Closes variable values dock and maybe 2D model dock.
 	QAction &editModeAction();
 
+	/// Provides a possibility to transfer hotkey configurer to engine.
+	void appendHotKey(const QString &actionId, const QString &label, QAction &action);
+
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
@@ -97,8 +100,11 @@ private:
 	/// Loads actions from kit plugins.
 	void initKitPluginActions();
 
+	/// Sets object names to actions.
+	void giveObjectNames();
+
 	/// Creates action with menu that lets switching between robot models.
-	QAction *produceMenuAction(const QString &kitId, QActionGroup * const subActions) const;
+	QAction *produceMenuAction(const QString &kitId, const QString &name, const QList<QAction *> &subActions) const;
 
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
 	KitPluginManager &mKitPluginManager;
@@ -107,14 +113,14 @@ private:
 	RobotModelManager &mRobotModelManager;
 
 	/// Action that runs program
-	QAction mRunAction;
+	QAction *mRunAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that stops program and also stops robot motors
-	QAction mStopRobotAction;
+	QAction *mStopRobotAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Checkable action that establishes connection to robot. If successful,
 	/// action will be checked, if connection lost, it will uncheck
-	QAction mConnectToRobotAction;
+	QAction *mConnectToRobotAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that shows robots tab in settings dialog
 	QAction mRobotSettingsAction;
@@ -125,12 +131,12 @@ private:
 
 	/// Action that changes current UI mode to debug: hides palette, property editor and so on,
 	/// opens variable values dock and maybe 2D model dock.
-	QAction mDebugModeAction;
+	QAction *mDebugModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that changes current UI mode to edit: show palette and property editor if we are
 	/// editing diagram or variables list if we are editing the code.
 	/// Closess variable values dock and maybe 2D model dock.
-	QAction mEditModeAction;
+	QAction *mEditModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	QAction mSeparator1;
 	QAction mSeparator2;
@@ -142,10 +148,13 @@ private:
 	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Actions that are placed on the panel for quick switching between robot models.
-	QMap<QString, qReal::ActionInfo> mRobotModelActions;
+	QMultiMap<QString, qReal::ActionInfo> mRobotModelActions;
 
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
+
+	/// List of additional hotkey customizations obtained from external environment.
+	QList<qReal::HotKeyActionInfo> mAdditionalHotKeyInfos;  // Does not have ownership over underlying QActions.
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

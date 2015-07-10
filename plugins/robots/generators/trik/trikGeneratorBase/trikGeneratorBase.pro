@@ -32,15 +32,17 @@ links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
-	$$PWD/src/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
 	$$PWD/src/converters/backgroundColorConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
@@ -71,6 +73,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.h \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.h \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.h \
+	$$PWD/src/simpleGenerators/fileWriteGenerator.h \
+	$$PWD/src/simpleGenerators/removeFileGenerator.h \
 
 SOURCES += \
 	$$PWD/src/trikGeneratorPluginBase.cpp \
@@ -108,3 +112,5 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.cpp \
+	$$PWD/src/simpleGenerators/fileWriteGenerator.cpp \
+	$$PWD/src/simpleGenerators/removeFileGenerator.cpp \

@@ -62,7 +62,7 @@ public:
 	virtual kitBase::robotModel::PortInfo defaultRightWheelPort() const = 0;
 
 	/// Returns a pointer to a widget with display emulator for current robot model.
-	virtual engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const = 0;
+	virtual engine::TwoDModelDisplayWidget *displayWidget() const = 0;
 
 	/// Provides path to sensor image by given device type or empty string if default sensor image shall be used.
 	virtual QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const
@@ -95,9 +95,10 @@ public:
 		return qMakePair(QPoint(), 0);
 	}
 
-protected:
+	/// Returns a reference to object providing different parts of 2D model emulator.
 	engine::TwoDModelEngineInterface *engine();
 
+protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &deviceInfo

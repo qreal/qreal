@@ -34,8 +34,6 @@
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
-#include <QtCore/QDebug>
-
 using namespace twoDModel::robotModel;
 using namespace kitBase::robotModel;
 
@@ -52,7 +50,7 @@ TwoDRobotModel::TwoDRobotModel(const RobotModelInterface &realModel)
 }
 
 TwoDRobotModel::TwoDRobotModel(const QString &robotId)
-	:CommonRobotModel("", robotId)
+	: CommonRobotModel("", robotId)
 	, mRealModel(nullptr)
 	, mEngine(nullptr)
 {
@@ -112,7 +110,7 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Button>()) {
-		return new parts::Button(deviceInfo, port, *mEngine);
+		return new parts::Button(deviceInfo, port, buttonCodes()[port.name() + "Button"], *mEngine);
 	}
 
 	if (deviceInfo.isA<robotParts::Motor>()) {

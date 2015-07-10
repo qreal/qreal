@@ -23,6 +23,7 @@
 #include <kitBase/blocksBase/common/waitForLightSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <kitBase/blocksBase/common/waitForButtonBlock.h>
+#include <kitBase/blocksBase/common/getButtonCodeBlock.h>
 
 #include <qrutils/interpreter/blocks/emptyBlock.h>
 #include "details/smileBlock.h"
@@ -50,6 +51,9 @@
 #include "details/waitGamepadDisconnectBlock.h"
 #include "details/waitGamepadWheelBlock.h"
 #include "details/waitPadPressBlock.h"
+
+#include "details/writeToFileBlock.h"
+#include "details/removeFileBlock.h"
 
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 
@@ -148,6 +152,14 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(const qReal::Id &e
 		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadConnect")) {
 		return new qReal::interpretation::blocks::EmptyBlock();
+
+	} else if (elementMetatypeIs(element, "TrikWriteToFile")) {
+		return new WriteToFileBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikRemoveFile")) {
+		return new RemoveFileBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "GetButtonCode")) {
+		return new GetButtonCodeBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -219,6 +231,13 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWaitGamepadConnect")
 			;
 
+	result
+			<< id("TrikWriteToFile")
+			<< id("TrikRemoveFile")
+			;
+
+	result << id("GetButtonCode");
+
 	return result;
 }
 
@@ -231,7 +250,6 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikPlayTone")
 				<< id("TrikWaitForGyroscope")
 				<< id("TrikWaitForAccelerometer")
-				<< id("TrikSay")
 				<< id("TrikSystem")
 				<< id("TrikWaitForMotion")
 				<< id("TrikSendMessage")

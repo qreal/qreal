@@ -36,10 +36,8 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 ProjectConverter SaveConvertionManager::before300Alpha1Converter()
 {
 	return ProjectConverter(editor(), Version(), Version::fromString("3.0.0-a1")
-			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](auto &, auto &)
 	{
-		Q_UNUSED(graphicalApi)
-		Q_UNUSED(logicalApi)
 		return ProjectConverter::VersionTooOld;
 	});
 }
@@ -91,6 +89,7 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 						, {"digitSensor2", "sensorD2"}
 				})
 			}
+			, {}
 			, [] (const Id &block) { return block.element().startsWith("Trik"); }
 			);
 
@@ -118,7 +117,7 @@ qReal::ProjectConverter SaveConvertionManager::from300to301Converter()
 						, {"upButton", "buttonUp"}
 						, {"powerButton", "buttonEsc"}
 				  })
-				, [=] (const Id &block, LogicalModelAssistInterface &logicalApi) {
+				, [=] (const auto &block, auto &logicalApi) {
 						if (block.element().startsWith("Trik")) {
 							return replace({{"buttonEscape", "buttonEsc"}})(block, logicalApi);
 						}
@@ -155,26 +154,32 @@ qReal::ProjectConverter SaveConvertionManager::from301to302Converter()
 
 ProjectConverter SaveConvertionManager::from302to310Converter()
 {
+	const QMap<QString, QString> replacementRules = {
+			{ "interpreterBase", "kitBase"}
+			, { "commonTwoDModel", "twoDModel" }
+			, { "nxtKitInterpreter", "nxt" }
+			, { "ev3KitInterpreter", "ev3" }
+			, { "trikKitInterpreter", "trik" }
+			, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
+			, { "nxtKitRobot", "nxtKitUsbRobot" }
+			, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
+			, { "lineSensorX", "lineSensor[0]"}
+			, { "lineSensorSize", "lineSensor[1]" }
+			, { "lineSensorCross", "lineSensor[2]" }
+	};
+
 	return constructConverter("3.0.2", "3.1.0"
 			, {
-				replace({
-						{ "interpreterBase", "kitBase"}
-						, { "commonTwoDModel", "twoDModel" }
-						, { "nxtKitInterpreter", "nxt" }
-						, { "ev3KitInterpreter", "ev3" }
-						, { "trikKitInterpreter", "trik" }
-						, { "NxtRealRobotModel", "NxtUsbRealRobotModel" }
-						, { "nxtKitRobot", "nxtKitUsbRobot" }
-						, { "TrikRealRobotModelV6", "TrikRealRobotModel" }
-				})
-				, replace({
-						{ "lineSensorX", "lineSensor[0]"}
-						, { "lineSensorSize", "lineSensor[1]" }
-						, { "lineSensorCross", "lineSensor[2]" }
-				})
-				, [] (const Id &block, LogicalModelAssistInterface &logicalApi) {
+				replace(replacementRules)
+				, [=](const auto &block, auto &logicalApi) {
 					if (block.element() == "RobotsDiagramNode") {
-						const auto worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
+						QString worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
+						for (const QString &toReplace : replacementRules.keys()) {
+							if (worldModel.contains(toReplace)) {
+								worldModel.replace(toReplace, replacementRules[toReplace]);
+							}
+						}
+
 						logicalApi.mutableLogicalRepoApi().setMetaInformation("worldModel", worldModel);
 						return true;
 					}
@@ -182,50 +187,97 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 					return false;
 				}
 			}
+			, {
+				// This one repairs labels positions. At some moment a number of labels on scene
+				// reduced a lot, so old saves used wrong partial models. The easiest fix "by hand"
+				// is to cut and paste element. This converter does the same thing.
+				graphicalRecreate([](const auto &block, auto &) { return block.type(); }
+						, [](const auto &newBlock, const auto &oldBlock, auto &model) {
+							model.copyProperties(newBlock, oldBlock);
+				})
+			}
 	);
 }
 
-bool SaveConvertionManager::isRobotsDiagram(const Id &diagram)
+bool SaveConvertionManager::isRobotsDiagram(const Id &element)
 {
 	const QStringList robotsDiagrams = { "RobotsDiagram", "SubprogramDiagram" };
-	return diagram.editor() == editor() && robotsDiagrams.contains(diagram.diagram());
+	return element.editor() == editor() && robotsDiagrams.contains(element.diagram());
+}
+
+bool SaveConvertionManager::isDiagramType(const Id &element)
+{
+	const QStringList robotsDiagrams = { "RobotsDiagramNode", "SubprogramDiagram" };
+	return isRobotsDiagram(element) && robotsDiagrams.contains(element.element());
+}
+
+bool SaveConvertionManager::isEdgeType(const Id &element)
+{
+	return element.element() == "ControlFlow";
 }
 
 IdList SaveConvertionManager::elementsOfRobotsDiagrams(const LogicalModelAssistInterface &logicalApi)
 {
-	IdList result;
-	for (const Id &diagramId : logicalApi.children(Id::rootId())) {
-		if (isRobotsDiagram(diagramId)) {
-			result += diagramId;
-			result += logicalApi.children(diagramId);
+	IdList nodes;
+	IdList edges;
+	for (const Id &blockId : logicalApi.children(Id::rootId())) {
+		if (isRobotsDiagram(blockId)) {
+			if (isEdgeType(blockId)) {
+				edges += blockId;
+			} else {
+				nodes += blockId;
+			}
 		}
 	}
 
-	return result;
+	// When we traverse elements it is important to traverse first nodes and then edges.
+	return nodes + edges;
 }
 
 qReal::ProjectConverter SaveConvertionManager::constructConverter(const QString &oldVersion
 		, const QString &newVersion
-		, const QList<std::function<bool(const Id &, LogicalModelAssistInterface &)>> &filters
+		, const QList<LogicalFilter> &logicalFilters
+			, const QList<GraphicalFilter> &graphicalFilters
 		, const std::function<bool(const qReal::Id &)> &condition
 		)
 {
 	return ProjectConverter(editor(), Version::fromString(oldVersion), Version::fromString(newVersion)
-			, [=](const GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
+			, [=](auto &graphicalApi, auto &logicalApi)
 	{
-		Q_UNUSED(graphicalApi);
-
 		bool modificationsMade = false;
 
-		for (const Id &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
-			const Id block = graphicalApi.logicalId(graphicalBlock);
+		for (const Id &block : elementsOfRobotsDiagrams(logicalApi)) {
+			const Id logicalBlock = graphicalApi.isGraphicalId(block)
+					? graphicalApi.logicalId(block)
+					: block;
 
-			if (!condition(block)) {
+			if (!condition(logicalBlock)) {
 				continue;
 			}
 
-			for (const auto &filter : filters) {
-				modificationsMade |= filter(block, logicalApi);
+			for (const auto &filter : logicalFilters) {
+				modificationsMade |= filter(logicalBlock, logicalApi);
+			}
+
+			if (graphicalFilters.isEmpty()) {
+				// A small optimization not to count graphical id.
+				continue;
+			}
+
+			Id graphicalBlock;
+			if (graphicalApi.isGraphicalId(block)) {
+				graphicalBlock = block;
+			} else {
+				const IdList graphicalIds = graphicalApi.graphicalIdsByLogicalId(logicalBlock);
+				if (graphicalIds.isEmpty()) {
+					continue;
+				}
+
+				graphicalBlock = graphicalIds.first();
+			}
+
+			for (const auto &filter : graphicalFilters) {
+				modificationsMade |= filter(graphicalBlock, graphicalApi);
 			}
 		}
 
@@ -233,18 +285,17 @@ qReal::ProjectConverter SaveConvertionManager::constructConverter(const QString 
 	});
 }
 
-std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> SaveConvertionManager::replace(
-		const QMap<QString, QString> &replacementRules)
+SaveConvertionManager::LogicalFilter SaveConvertionManager::replace(const QMap<QString, QString> &replacementRules)
 {
 	return [=] (const Id &block, LogicalModelAssistInterface &logicalApi) {
 		bool modificationsMade = false;
-		QMapIterator<QString, QVariant> iterator = logicalApi.logicalRepoApi().propertiesIterator(block);
+		auto iterator = logicalApi.logicalRepoApi().propertiesIterator(block);
 		while (iterator.hasNext()) {
 			iterator.next();
-			const QString name = iterator.key();
-			QString value = iterator.value().toString();
+			const auto name = iterator.key();
+			auto value = iterator.value().toString();
 			bool replacementOccured = false;
-			for (const QString &toReplace : replacementRules.keys()) {
+			for (const auto &toReplace : replacementRules.keys()) {
 				if (value.contains(toReplace)) {
 					replacementOccured = true;
 					modificationsMade = true;
@@ -262,8 +313,7 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> Sav
 	};
 }
 
-std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)>
-		SaveConvertionManager::deleteBlocks(const QStringList &blocks)
+SaveConvertionManager::LogicalFilter SaveConvertionManager::deleteBlocks(const QStringList &blocks)
 {
 	return [=] (const Id &block, LogicalModelAssistInterface &logicalApi) {
 		if (blocks.contains(block.element())) {
@@ -275,8 +325,7 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)>
 	};
 }
 
-std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> SaveConvertionManager::quote(
-		const QString &blockType, const QString &property)
+SaveConvertionManager::LogicalFilter SaveConvertionManager::quote(const QString &blockType, const QString &property)
 {
 	return [blockType, property] (const qReal::Id &block, qReal::LogicalModelAssistInterface &logicalApi) {
 		if (block.element() == blockType) {
@@ -288,5 +337,55 @@ std::function<bool(const qReal::Id &, qReal::LogicalModelAssistInterface &)> Sav
 		}
 
 		return false;
+	};
+}
+
+SaveConvertionManager::GraphicalFilter SaveConvertionManager::graphicalRecreate(
+		const SaveConvertionManager::GraphicalReplacer &replacer
+		, const SaveConvertionManager::GraphicalConstructor &constructor)
+{
+	return [replacer, constructor](const Id &block, GraphicalModelAssistInterface &graphicalApi) {
+		// Just iterating throught the elements on some diagram, ignoring the diagram itself.
+		if (isDiagramType(block)) {
+			return false;
+		}
+
+		// For each element trying to find out what to replace it with.
+		const Id newType = replacer(block, graphicalApi);
+		if (newType.isNull()) {
+			// Not every element be replaced, concrete implementation must decide it.
+			return false;
+		}
+
+		// Then creating new element of some type...
+		const Id newBlock = Id::createElementId(newType.editor(), newType.diagram(), newType.element());
+		graphicalApi.createElement(graphicalApi.parent(block)
+				, newBlock
+				, false
+				, graphicalApi.name(block)
+				, graphicalApi.position(block)
+				, graphicalApi.logicalId(block));
+		// And initializing it...
+		constructor(newBlock, block, graphicalApi);
+
+		const bool isEdge = isEdgeType(block);
+		if (isEdge) {
+			// If out element is edge then connecting it to same elements as the old one was connected
+			graphicalApi.setFrom(newBlock, graphicalApi.from(block));
+			graphicalApi.setTo(newBlock, graphicalApi.to(block));
+		} else {
+			// Replacing old node in all incomming and outgoing edges of the old node with the new one.
+			for (const Id &edge : graphicalApi.graphicalRepoApi().outgoingLinks(block)) {
+				graphicalApi.mutableGraphicalRepoApi().setProperty(edge, "from", newBlock.toVariant());
+			}
+
+			for (const Id &edge : graphicalApi.graphicalRepoApi().incomingLinks(block)) {
+				graphicalApi.mutableGraphicalRepoApi().setProperty(edge, "to", newBlock.toVariant());
+			}
+		}
+
+		// And finally disposing of outdated entity.
+		graphicalApi.removeElement(block);
+		return true;
 	};
 }

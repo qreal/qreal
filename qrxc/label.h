@@ -61,4 +61,6 @@ private:
 	bool mIsHard;
 	bool mIsPlainText;
 	qreal mRotation;
+	QString mPrefix;
+	QString mSuffix;
 };

@@ -4,7 +4,7 @@
 <context>
     <name>ev3::robotModel::parts::Ev3Motor</name>
     <message>
-        <location filename="../../../../plugins/robots/common/ev3Kit/include/ev3Kit/robotModel/parts/ev3Motor.h" line="13"/>
+        <location filename="../../../../plugins/robots/common/ev3Kit/include/ev3Kit/robotModel/parts/ev3Motor.h" line="27"/>
         <source>Motor</source>
         <translation>Мотор</translation>
     </message>

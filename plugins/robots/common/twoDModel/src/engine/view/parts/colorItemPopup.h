@@ -18,8 +18,10 @@
 
 class QSpinBox;
 
-namespace graphicsUtils {
+namespace qReal {
+namespace ui {
 class ColorListEditor;
+}
 }
 
 namespace twoDModel {
@@ -55,7 +57,7 @@ private:
 
 	QPen pen() const;
 
-	graphicsUtils::ColorListEditor *mColorPicker;  // Takes ownership
+	qReal::ui::ColorListEditor *mColorPicker;  // Takes ownership
 	QSpinBox *mSpinBox;  // Takes ownership
 	QColor mLastColor;
 	int mLastThickness;

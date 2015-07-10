@@ -38,7 +38,7 @@ public:
 	void stopRobot() override;
 	void disconnectFromRobot() override;
 
-	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
+	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
 
 protected:
 	kitBase::robotModel::robotParts::Device *createDevice(

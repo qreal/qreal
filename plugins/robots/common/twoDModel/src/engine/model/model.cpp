@@ -86,7 +86,7 @@ QDomDocument Model::serialize() const
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
 	save.appendChild(root);
-	root.appendChild(mWorldModel.serialize(save, QPoint(0, 0)));
+	root.appendChild(mWorldModel.serialize(save));
 
 	QDomElement robots = save.createElement("robots");
 	for (RobotModel *robotModel : mRobotModels) {
@@ -106,8 +106,12 @@ void Model::deserialize(const QDomDocument &xml)
 	const QDomNodeList robotsList = xml.elementsByTagName("robots");
 	const QDomElement constraints = xml.documentElement().firstChildElement("constraints");
 
+	if (mChecker) {
+		/// @todo: should we handle if it returned false?
+		mChecker->parseConstraints(constraints);
+	}
+
 	if (worldList.count() != 1) {
-		/// @todo Report error
 		return;
 	}
 
@@ -166,11 +170,6 @@ void Model::deserialize(const QDomDocument &xml)
 			addRobotModel(*robotModel);
 			mRobotModels.last()->deserialize(element);
 		}
-	}
-
-	if (mChecker) {
-		/// @todo: should we handle if it returned false?
-		mChecker->parseConstraints(constraints);
 	}
 }
 

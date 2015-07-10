@@ -39,7 +39,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
-#include <qrutils/graphicsUtils/animatedHighlighter.h>
+#include <qrutils/graphicsUtils/animatedEffects.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
 
@@ -74,6 +74,8 @@
 #include "referenceList.h"
 #include "splashScreen.h"
 #include "dotRunner.h"
+
+#include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -118,6 +120,8 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
+	mUi->errorDock->toggleViewAction()->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
+	addAction(mUi->errorDock->toggleViewAction());
 
 	mPreferencesDialog.init();
 
@@ -209,6 +213,13 @@ void MainWindow::connectActions()
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
+	connect(mUi->actionFullscreen, &QAction::changed, [=]() {
+		const int indexOfFullscreen = mUi->viewToolbar->actions().indexOf(mUi->actionFullscreen);
+		if (indexOfFullscreen > 0) {
+			QAction * const separatorBefore = mUi->viewToolbar->actions()[indexOfFullscreen - 1];
+			separatorBefore->setVisible(mUi->actionFullscreen->isVisible());
+		}
+	});
 
 	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
@@ -244,6 +255,9 @@ void MainWindow::connectActions()
 		mUi->menuPanels->clear();
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
+
+	addAction(mUi->actionHideBottomDocks);
+	connect(mUi->actionHideBottomDocks, &QAction::triggered, this, &MainWindow::hideBottomDocks);
 
 	setDefaultShortcuts();
 }
@@ -305,6 +319,8 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	mScriptAPI.abortEvaluation();
+
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
 		return;
@@ -360,12 +376,13 @@ void MainWindow::selectItemWithError(const Id &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	emit mFacade.events().ensureDiagramVisible();
 	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
 
 	Element * const element = getCurrentTab() ? getCurrentTab()->editorViewScene().getElem(graphicalId) : nullptr;
-	graphicsUtils::AnimatedHighlighter::highlight(element);
+	graphicsUtils::AnimatedEffects::highlight(element);
 }
 
 void MainWindow::selectItem(const Id &id)
@@ -434,38 +451,17 @@ void MainWindow::activateItemOrDiagram(const Id &id, bool setSelected)
 	}
 }
 
-void MainWindow::sceneSelectionChanged()
+void MainWindow::sceneSelectionChanged(const QList<Element *> &elements)
 {
 	if (!getCurrentTab()) {
 		return;
 	}
 
-	QList<Element*> selected;
-	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
-
-	foreach (QGraphicsItem* item, items) {
-		Element* element = dynamic_cast<Element*>(item);
-		if (element) {
-			if (element->isSelected()) {
-				selected.append(element);
-				element->setSelectionState(true);
-			} else {
-				element->setSelectionState(false);
-				element->select(false);
-			}
-		}
-	}
-
-	if (selected.isEmpty()) {
+	if (elements.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.clearModelIndexes();
-	} else if (selected.length() > 1) {
-		foreach(Element* notSingleSelected, selected) {
-			notSingleSelected->select(false);
-		}
-	} else {
-		Element* const singleSelected = selected.at(0);
-		singleSelected->select(true);
+	} else if (elements.length() == 1) {
+		Element * const singleSelected = elements.at(0);
 		setIndexesOfPropertyEditor(singleSelected->id());
 
 		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected->id());
@@ -1072,7 +1068,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->mutableMvIface().setRootIndex(index);
 
 	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
-	connect(tab->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(&tab->editorViewScene(), &EditorViewScene::sceneSelectionChanged, this, &MainWindow::sceneSelectionChanged);
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
 	connect(models().graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, &tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
@@ -1148,6 +1144,8 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
 	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
+	HotKeyManager::setCommand("View.ToggleErrorReporter", tr("Toggle errors panel")
+			, mUi->errorDock->toggleViewAction());
 }
 
 void MainWindow::currentTabChanged(int newIndex)
@@ -1519,7 +1517,7 @@ void MainWindow::applySettings()
 
 void MainWindow::resetToolbarSize(int size)
 {
-	for (QToolBar * const bar : findChildren<QToolBar *>()) {
+	for (QToolBar * const bar : toolBars()) {
 		bar->setIconSize(QSize(size, size));
 	}
 }
@@ -1602,6 +1600,15 @@ void MainWindow::fullscreen()
 	}
 }
 
+void MainWindow::hideBottomDocks()
+{
+	for (QDockWidget *dock : findChildren<QDockWidget *>()) {
+		if (dockWidgetArea(dock) == Qt::BottomDockWidgetArea) {
+			dock->hide();
+		}
+	}
+}
+
 QString MainWindow::getNextDirName(const QString &name)
 {
 	QStringList parts = name.split("_");
@@ -1624,6 +1631,10 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+	if (SettingsManager::value("scriptInterpretation").toBool()) {
+		initActionWidgetsNames();
+		initScriptAPI();
+	}
 
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.setWindowIcon(BrandManager::applicationIcon());
@@ -1634,6 +1645,19 @@ void MainWindow::initPluginsAndStartWidget()
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
 		openStartTab();
+	}
+}
+
+void MainWindow::initActionWidgetsNames()
+{
+	QList<QAction *> const actionList = findChildren<QAction *>();
+
+	for (QAction * const action : actionList) {
+		for (QWidget * const widget : action->associatedWidgets()) {
+			if (widget->objectName().isEmpty()) {
+				widget->setObjectName(action->objectName());
+			}
+		}
 	}
 }
 
@@ -1987,6 +2011,11 @@ QStatusBar *MainWindow::statusBar() const
 	return mUi->statusbar;
 }
 
+QList<QToolBar *> MainWindow::toolBars() const
+{
+	return findChildren<QToolBar *>(QString(), Qt::FindDirectChildrenOnly);
+}
+
 void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 {
 	QMainWindow::tabifyDockWidget(first, second);
@@ -1998,6 +2027,11 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 	QMainWindow::addDockWidget(area, dockWidget);
 }
 
+void MainWindow::addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar)
+{
+	QMainWindow::addToolBar(area, toolbar);
+}
+
 QByteArray MainWindow::saveState(int version) const
 {
 	return QMainWindow::saveState(version);
@@ -2005,7 +2039,12 @@ QByteArray MainWindow::saveState(int version) const
 
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
-	return QMainWindow::restoreState(state, version);
+	const bool result = QMainWindow::restoreState(state, version);
+	if (mUi->errorListWidget->count() == 0) {
+		mUi->errorDock->hide();
+	}
+
+	return result;
 }
 
 void MainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
@@ -2034,6 +2073,22 @@ void MainWindow::openStartTab()
 	const int index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
 	mUi->tabs->setTabUnclosable(index);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+}
+
+void MainWindow::initScriptAPI()
+{
+	QThread * const scriptAPIthread = new QThread(this);
+	mScriptAPI.init(*this);
+
+	QAction *const evalAction = new QAction(this);
+	// Setting a secret combination to activate script interpretation.
+	evalAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F12));
+	connect(evalAction, &QAction::triggered, &mScriptAPI, &ScriptAPI::evaluate, Qt::DirectConnection);
+	addAction(evalAction);
+
+	connect(&mFacade.events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
+	mScriptAPI.moveToThread(scriptAPIthread);
+	scriptAPIthread->start();
 }
 
 void MainWindow::beginPaletteModification()

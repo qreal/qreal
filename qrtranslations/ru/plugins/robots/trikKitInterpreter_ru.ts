@@ -52,21 +52,20 @@
 <context>
     <name>trik::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="74"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="84"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="117"/>
         <source>Show 2d model for TRIK</source>
-        <translation>Открыть 2D модель для TRIK</translation>
+        <translation type="vanished">Открыть 2D модель для TRIK</translation>
     </message>
     <message>
         <source>Show 2d model for TRIK v6</source>
         <translation type="vanished">Открыть 2D модель для TRIK v6</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="153"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="151"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
     </message>
@@ -74,7 +73,7 @@
 <context>
     <name>trik::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="51"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="65"/>
         <source>Interpretation (Wi-Fi)</source>
         <translation>Интерпретация (Wi-Fi)</translation>
     </message>

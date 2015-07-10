@@ -17,6 +17,8 @@
 #include <QtCore/QtMath>
 
 #include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/shell.h>
+
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
 #include <qrtext/lua/types/string.h>
@@ -73,6 +75,13 @@ void RobotsBlockParser::setReservedVariables()
 			markAsSpecial(port.reservedVariable());
 		}
 	}
+
+	const QHash<QString, int> buttons = mRobotModelManager.model().buttonCodes();
+	for (const QString &button : buttons.keys()) {
+		setVariableValue(button, buttons[button]);
+		markAsSpecial(button);
+		mHiddenVariables << button;
+	}
 }
 
 const QStringList &RobotsBlockParser::hiddenVariables() const
@@ -112,25 +121,40 @@ void RobotsBlockParser::addIntrinsicFuctions()
 				});
 	};
 
+	const auto add2aryFunction = [this] (const QString &name
+			, qrtext::core::types::TypeExpression * const returnType
+			, qrtext::core::types::TypeExpression * const argument1Type
+			, qrtext::core::types::TypeExpression * const argument2Type
+			, std::function<QVariant(QVariant, QVariant)> const &function)
+	{
+		addIntrinsicFunction(name, returnType
+				, {argument1Type, argument2Type}
+				, [function] (const QList<QVariant> &params) {
+						Q_ASSERT(params.count() == 2);
+						return function(params.first(), params.last());
+				});
+	};
+
+
 	const auto addFloatFunction = [this, add1aryFunction] (const QString &name
-			, std::function<double(double)> const &function)
+			, std::function<qreal(qreal)> const &function)
 	{
 		add1aryFunction(name, new types::Float, new types::Float
-				, [function](const QVariant &arg) { return function(arg.toDouble()); });
+				, [function](const QVariant &arg) { return function(arg.toReal()); });
 	};
 
 	const auto addIntegerFunction = [this, add1aryFunction] (const QString &name
-			, std::function<double(double)> const &function)
+			, std::function<qreal(qreal)> const &function)
 	{
 		add1aryFunction(name, new types::Integer, new types::Integer
 				, [function](const QVariant &arg) { return function(arg.toInt()); });
 	};
 
 	const auto addFloatToIntegerFunction = [this, add1aryFunction] (const QString &name
-			, std::function<int(double)> const &function)
+			, std::function<int(qreal)> const &function)
 	{
 		add1aryFunction(name, new types::Integer(), new types::Float()
-				, [function](const QVariant &arg) { return function(arg.toDouble()); });
+				, [function](const QVariant &arg) { return function(arg.toReal()); });
 	};
 
 	add0aryFunction("time", new types::Integer(), [this]() { return mTimeComputer(); });
@@ -141,6 +165,17 @@ void RobotsBlockParser::addIntrinsicFuctions()
 		}
 
 		return interpret<int>("sensor" + port.toString());
+	});
+
+
+	add1aryFunction("print", new types::String(), new types::String, [this](const QVariant &text) {
+		kitBase::robotModel::robotParts::Shell *shell = kitBase::robotModel::RobotModelUtils::findDevice
+				<kitBase::robotModel::robotParts::Shell>(mRobotModelManager.model(), "ShellPort");
+		if (shell) {
+			shell->print(text.toString());
+		}
+
+		return text;
 	});
 
 	addFloatFunction("sin", [](qreal x) {return qSin(x); });
@@ -156,4 +191,9 @@ void RobotsBlockParser::addIntrinsicFuctions()
 	addFloatToIntegerFunction("ceil", [](qreal x) {return static_cast<int>(qCeil(x)); });
 	addFloatToIntegerFunction("floor", [](qreal x) {return static_cast<int>(qFloor(x)); });
 	addIntegerFunction("random", [](int x) {return rand() % x; });
+
+	add2aryFunction("min", new types::Float(), new types::Float(), new types::Float()
+			, [](const QVariant &a, const QVariant &b) { return qMin(a.toReal(), b.toReal()); });
+	add2aryFunction("max", new types::Float(), new types::Float(), new types::Float()
+			, [](const QVariant &a, const QVariant &b) { return qMax(a.toReal(), b.toReal()); });
 }

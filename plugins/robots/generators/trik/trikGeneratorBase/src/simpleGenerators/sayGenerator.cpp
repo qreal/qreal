@@ -15,6 +15,7 @@
 #include "sayGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
+#include <qrutils/stringUtils.h>
 
 using namespace trik::simple;
 using namespace generatorBase::simple;
@@ -25,8 +26,10 @@ SayGenerator::SayGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "say.t"
-			, { Binding::createConverting("@@TEXT@@", "Text"
-					, customizer.factory()->stringPropertyConverter(id, "Text"))
+			, { repo.property(id, "Evaluate").toBool()
+					? Binding::createConverting("@@TEXT@@", "Text"
+								, customizer.factory()->stringPropertyConverter(id, "Text"))
+					: Binding::createStatic("@@TEXT@@", utils::StringUtils::wrap(repo.property(id, "Text").toString()))
 			} , parent)
 {
 }

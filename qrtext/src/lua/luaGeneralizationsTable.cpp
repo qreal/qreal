@@ -51,7 +51,7 @@ bool LuaGeneralizationsTable::isStructurallyEquivalent(const QSharedPointer<Type
 		return true;
 	} if (type1->is<Table>() && type2->is<Table>()) {
 		return isStructurallyEquivalent(type1.dynamicCast<Table>()->elementType()
-				, type1.dynamicCast<Table>()->elementType());
+				, type2.dynamicCast<Table>()->elementType());
 	}
 
 	return false;

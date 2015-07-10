@@ -119,3 +119,8 @@ void ToolPluginManager::activeTabChanged(const TabInfo &info)
 {
 	emit mSystemEvents->activeTabChanged(info);
 }
+
+QObject *ToolPluginManager::pluginGuiFacade(const QString &pluginName) const
+{
+	return (mPluginManager.plugin<ToolPluginInterface>(pluginName))->guiScriptFacade();
+}

@@ -28,8 +28,9 @@
 
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
-#include "editor/labelFactory.h"
 #include "editor/editorViewScene.h"
+#include "editor/labels/label.h"
+#include "editor/labels/labelFactory.h"
 
 #include "editor/private/lineFactory.h"
 #include "editor/private/lineHandler.h"
@@ -916,7 +917,7 @@ void EdgeElement::updateData()
 
 	update();
 	updateLongestPart();
-	highlight((mSrc && mDst) ? mPenColor : Qt::red);
+	highlight(isHanging() ? Qt::red : mPenColor);
 }
 
 void EdgeElement::removeLink(const NodeElement *from)
@@ -1000,7 +1001,7 @@ void EdgeElement::setColorRect(bool bl) // method is empty
 	Q_UNUSED(bl);
 }
 
-void EdgeElement::highlight(const QColor color)
+void EdgeElement::highlight(const QColor &color)
 {
 	mColor = color;
 	update();
@@ -1080,6 +1081,11 @@ void EdgeElement::setDst(NodeElement *node)
 	if (node) {
 		mDst->addEdge(this);
 	}
+}
+
+bool EdgeElement::isHanging() const
+{
+	return !mSrc || !mDst;
 }
 
 void EdgeElement::tuneForLinker()

@@ -14,13 +14,13 @@
 
 #pragma once
 
-#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QPainter>
 
 #include "qrutils/utilsDeclSpec.h"
 
-namespace graphicsUtils
-{
+class QDomElement;
+
+namespace graphicsUtils {
 
 class QRUTILS_EXPORT LineImpl
 {
@@ -36,5 +36,14 @@ public:
 	void drawFieldForResizeItem(QPainter* painter, const int resizeDrift, qreal x1, qreal y1, qreal x2, qreal y2);
 	QPair<qreal, qreal> reshapeRectWithShiftForLine(qreal x1, qreal y1, qreal x2, qreal y2, qreal differenceX
 			, qreal differenceY, qreal size);
+
+	/// Serializes line`s begin and end into the given XML element.
+	void serialize(QDomElement &element, qreal x1, qreal y1, qreal x2, qreal y2) const;
+
+	/// Parses contents of the given XML element, returns parsed begin and the end points of the line.
+	QPair<QPointF, QPointF> deserialize(const QDomElement &element) const;
+
+private:
+	QPointF deserializePoint(const QString &string) const;
 };
 }

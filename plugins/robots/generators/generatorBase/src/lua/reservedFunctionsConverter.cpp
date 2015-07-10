@@ -26,11 +26,17 @@ ReservedFunctionsConverter::ReservedFunctionsConverter(const QString &pathToTemp
 QString ReservedFunctionsConverter::convert(const QString &name, const QStringList &args) const
 {
 	const QStringList oneArgumentFloatFunctions = { "sin", "cos", "ln", "exp", "asin", "acos", "atan"
-			, "sgn", "sqrt", "abs", "ceil", "floor", "random" };
-	const int index = oneArgumentFloatFunctions.indexOf(name);
-	if (index >= 0) {
+			, "sgn", "sqrt", "abs", "ceil", "floor", "random", "print" };
+	if (oneArgumentFloatFunctions.contains(name)) {
 		return readTemplate(QString("functions/%1.t").arg(name)).replace("@@ARGUMENT@@"
 				, args.count() ? args[0] : QString());
+	}
+
+	const QStringList twoArgumentsFloatFunctions = { "min", "max" };
+	if (twoArgumentsFloatFunctions.contains(name)) {
+		return readTemplate(QString("functions/%1.t").arg(name))
+				.replace("@@ARGUMENT1@@", args.count() ? args[0] : QString())
+				.replace("@@ARGUMENT2@@", args.count() >= 2 ? args[1] : QString());
 	}
 
 	if (name == "time") {

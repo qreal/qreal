@@ -24,8 +24,12 @@
 using namespace graphicsUtils;
 
 AbstractItem::AbstractItem(QGraphicsItem* parent)
-	: QGraphicsObject(parent), mDragState(None)
-	, mX1(0), mY1(0), mX2(0), mY2(0), mView(nullptr)
+	: QGraphicsObject(parent)
+	, mDragState(None)
+	, mX1(0)
+	, mY1(0)
+	, mX2(0)
+	, mY2(0)
 	, mEditable(true)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
@@ -345,7 +349,7 @@ void AbstractItem::setXandY(QDomElement& dom, const QRectF &rect)
 	dom.setAttribute("x2", rect.right());
 }
 
-QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString &domName)
+QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString &domName) const
 {
 	QDomElement dom = document.createElement(domName);
 	dom.setAttribute("fill", mBrush.color().name());
@@ -472,7 +476,7 @@ bool AbstractItem::editable() const
 	return mEditable;
 }
 
-void AbstractItem::serialize(QDomElement &element)
+void AbstractItem::serialize(QDomElement &element) const
 {
 	element.setAttribute("id", id());
 }

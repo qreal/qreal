@@ -43,3 +43,10 @@ QString StringUtils::capitalizeFirstLetter(const QString &string)
 {
 	return string.at(0).toUpper() + string.mid(1);
 }
+
+QString StringUtils::dequote(const QString &string)
+{
+	return (string.startsWith("'") && string.endsWith("'")) || (string.startsWith("\"") && string.endsWith("\""))
+		? string.mid(1, string.length() - 2)
+		: string;
+}

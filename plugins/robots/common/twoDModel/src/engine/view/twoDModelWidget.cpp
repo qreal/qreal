@@ -37,6 +37,7 @@
 #include "parts/actionsBox.h"
 #include "parts/colorItemPopup.h"
 #include "parts/robotItemPopup.h"
+#include "parts/speedPopup.h"
 
 #include "scene/sensorItem.h"
 #include "scene/sonarSensorItem.h"
@@ -63,7 +64,7 @@ using namespace kitBase::robotModel;
 using namespace robotParts;
 
 const QList<int> speedFactors = { 2, 3, 4, 5, 6, 8, 10, 15, 20 };
-const int defailtSpeedFactorIndex = 3;
+const int defaultSpeedFactorIndex = 3;
 
 TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
@@ -71,7 +72,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
-	, mCurrentSpeed(defailtSpeedFactorIndex)
+	, mCurrentSpeed(defaultSpeedFactorIndex)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -97,16 +98,28 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(&mModel.timeline(), &Timeline::tick, this, &TwoDModelWidget::incrementTimelineCounter);
 	connect(&mModel.timeline(), &Timeline::started, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
+	connect(&mModel.timeline(), &Timeline::speedFactorChanged, [=](int value) {
+		const QPoint downCoords = mUi->speedDownButton->mapTo(this, mUi->speedDownButton->rect().bottomRight());
+		const QPoint upCoords = mUi->speedUpButton->mapTo(this, mUi->speedUpButton->rect().bottomLeft());
+		const QPoint coords((downCoords.x() + upCoords.x() - mSpeedPopup->width()) / 2, downCoords.y() + 10);
+		mSpeedPopup->move(coords);
+		// Setting value in precents
+		mSpeedPopup->setSpeed(100 / speedFactors[defaultSpeedFactorIndex] * value);
+	});
 	setRunStopButtonsVisibility();
 
-	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->palette->unselect();
 
 	setFocus();
 
-	mModel.timeline().setSpeedFactor(speedFactors[defailtSpeedFactorIndex]);
+	mModel.timeline().setSpeedFactor(speedFactors[defaultSpeedFactorIndex]);
 	checkSpeedButtons();
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
+
+	mUi->horizontalRuler->setScene(mUi->graphicsView);
+	mUi->verticalRuler->setScene(mUi->graphicsView);
+	mUi->horizontalRuler->setPixelsInCm(pixelsInCm);
+	mUi->verticalRuler->setPixelsInCm(pixelsInCm);
 }
 
 TwoDModelWidget::~TwoDModelWidget()
@@ -135,17 +148,40 @@ void TwoDModelWidget::initWidget()
 	// Popups will listen to scene events, appear, disappear and free itself.
 	mColorFieldItemPopup = new ColorItemPopup(defaultPen, *mScene, this);
 	mRobotItemPopup = new RobotItemPopup(*mScene, this);
+	mSpeedPopup = new SpeedPopup(this);
+
 	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, Qt::NoBrush);
+	});
+
+	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
+		mCurrentSpeed = defaultSpeedFactorIndex;
+		mModel.timeline().setSpeedFactor(speedFactors[defaultSpeedFactorIndex]);
 	});
 
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
 	mUi->detailsTab->setDisplay(mDisplay);
 
+	auto toggleRulers = [=]() {
+		const bool gridVisible = SettingsManager::value("2dShowGrid").toBool();
+		mUi->horizontalRuler->setVisible(gridVisible);
+		mUi->verticalRuler->setVisible(gridVisible);
+	};
+	toggleRulers();
+
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, toggleRulers);
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->horizontalRuler, SLOT(update()));
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));
+	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->horizontalRuler, SLOT(update()));
+	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->verticalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->horizontalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->verticalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(contentsRectChanged()), mUi->horizontalRuler, SLOT(update()));
+	connect(mScene->mainView(), SIGNAL(contentsRectChanged()), mUi->verticalRuler, SLOT(update()));
 }
 
 void TwoDModelWidget::initPalette()
@@ -206,10 +242,10 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->speedDownButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedDown);
 
 	connect(mRobotItemPopup, &RobotItemPopup::followingChanged, this, &TwoDModelWidget::enableRobotFollowing);
-	connect(&mActions->scrollHandModeAction(), &QAction::toggled
-			, this, &TwoDModelWidget::onHandCursorButtonToggled);
-	connect(&mActions->multiSelectionModeAction(), &QAction::toggled
-			, this, &TwoDModelWidget::onMultiselectionCursorButtonToggled);
+	connect(&mActions->scrollHandModeAction(), &QAction::triggered
+			, this, &TwoDModelWidget::onHandCursorActionTriggered);
+	connect(&mActions->multiSelectionModeAction(), &QAction::triggered
+			, this, &TwoDModelWidget::onMultiselectionCursorActionTriggered);
 
 	connect(mRobotItemPopup, &RobotItemPopup::restoreRobotPositionClicked, this, &TwoDModelWidget::returnToStartMarker);
 	connect(mUi->initialStateButton, &QAbstractButton::clicked, this, &TwoDModelWidget::returnToStartMarker);
@@ -307,6 +343,7 @@ void TwoDModelWidget::showEvent(QShowEvent *e)
 
 void TwoDModelWidget::onFirstShow()
 {
+	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	setDetailsVisibility(SettingsManager::value("2d_detailsVisible").toBool());
 }
@@ -530,6 +567,7 @@ void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 {
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
+	updateWheelComboBoxes();
 }
 
 Model &TwoDModelWidget::model() const
@@ -679,18 +717,16 @@ void TwoDModelWidget::refreshCursor()
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 }
 
-void TwoDModelWidget::onHandCursorButtonToggled(bool on)
+void TwoDModelWidget::onHandCursorActionTriggered()
 {
-	if (on) {
-		setCursorType(hand);
-	}
+	setCursorType(hand);
+	mUi->palette->unselect();
 }
 
-void TwoDModelWidget::onMultiselectionCursorButtonToggled(bool on)
+void TwoDModelWidget::onMultiselectionCursorActionTriggered()
 {
-	if (on) {
-		setCursorType(multiselection);
-	}
+	setCursorType(multiselection);
+	mUi->palette->unselect();
 }
 
 void TwoDModelWidget::syncCursorButtons()
@@ -737,6 +773,18 @@ void TwoDModelWidget::initRunStopButtons()
 	connect(mUi->stopButton, &QPushButton::clicked, this, &TwoDModelWidget::stopButtonPressed);
 }
 
+bool TwoDModelWidget::setSelectedPort(QComboBox * const comboBox, const PortInfo &port)
+{
+	for (int i = 0; i < comboBox->count(); ++i) {
+		if (comboBox->itemData(i).value<PortInfo>() == port) {
+			comboBox->setCurrentIndex(i);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void TwoDModelWidget::updateWheelComboBoxes()
 {
 	if (!mSelectedRobotItem) {
@@ -765,21 +813,10 @@ void TwoDModelWidget::updateWheelComboBoxes()
 		}
 	}
 
-	auto setSelectedPort = [](QComboBox * const comboBox, const PortInfo &port) {
-		for (int i = 0; i < comboBox->count(); ++i) {
-			if (comboBox->itemData(i).value<PortInfo>() == port) {
-				comboBox->setCurrentIndex(i);
-				return true;
-			}
-		}
-
-		return false;
-	};
-
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
 		if (!setSelectedPort(mUi->leftWheelComboBox
 				, mSelectedRobotItem->robotModel().info().defaultLeftWheelPort())) {
-			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
+			qWarning() << "Incorrect defaultLeftWheelPort set in configurer:"
 					<< mSelectedRobotItem->robotModel().info().defaultLeftWheelPort().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
@@ -792,7 +829,7 @@ void TwoDModelWidget::updateWheelComboBoxes()
 		if (!setSelectedPort(mUi->rightWheelComboBox
 				, mSelectedRobotItem->robotModel().info().defaultRightWheelPort())) {
 
-			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
+			qWarning() << "Incorrect defaultRightWheelPort set in configurer:"
 					<< mSelectedRobotItem->robotModel().info().defaultRightWheelPort().toString();
 
 			if (mUi->rightWheelComboBox->count() > 2) {
@@ -827,6 +864,15 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded, checkAndSaveToRepo);
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceRemoved, checkAndSaveToRepo);
+
+		connect(&robotItem->robotModel(), &RobotModel::wheelOnPortChanged
+				, [=](RobotModel::WheelEnum wheel, const PortInfo &port)
+		{
+			if (port.isValid()) {
+				setSelectedPort(wheel == RobotModel::WheelEnum::left
+						? mUi->leftWheelComboBox : mUi->rightWheelComboBox, port);
+			}
+		});
 	}
 }
 
@@ -842,7 +888,8 @@ void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 
 	mUi->detailsTab->setDisplay(nullptr);
 	delete mDisplay;
-	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget(this);
+	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
+	mDisplay->setParent(this);
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
 	mUi->detailsTab->setDisplay(mDisplay);

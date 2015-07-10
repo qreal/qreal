@@ -127,8 +127,14 @@ signals:
 	/// Emitted when robot rided himself (moved on motors force, not dragged by user or smth) from one point to other.
 	void robotRided(const QPointF &newPosition, const qreal newRotation);
 
+	/// Same as robotRided(), but emitted each timeline tick (robotRided() emitted each frame).
+	void positionRecalculated(const QPointF &newPosition, const qreal newRotation);
+
 	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.
 	void playingSoundChanged(bool playing);
+
+	/// Emitted when left or right wheel was reconnected to another port.
+	void wheelOnPortChanged(WheelEnum wheel, const kitBase::robotModel::PortInfo &port);
 
 private:
 	struct Motor
@@ -158,6 +164,9 @@ private:
 	void nextStep();
 
 	int varySpeed(const int speed) const;
+
+	void serializeWheels(QDomElement &robotElement) const;
+	void deserializeWheels(const QDomElement &robotElement);
 
 	/// Simulated robot motors.
 	/// Has ownership.

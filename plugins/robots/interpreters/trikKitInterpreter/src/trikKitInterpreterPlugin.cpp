@@ -19,6 +19,7 @@
 
 #include <twoDModel/engine/twoDModelEngineFacade.h>
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 
 using namespace trik;
 using namespace qReal;
@@ -66,7 +67,8 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, interpretersInterface
 			, configurator.interpreterControl());
 
-	mRealRobotModel.setErrorReporter(interpretersInterface.errorReporter());
+	mRealRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
+	mTwoDRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
@@ -154,6 +156,7 @@ QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
 	};
 	updateQuickPreferences();
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
 	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});

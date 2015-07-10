@@ -22,7 +22,7 @@
 			<region type="rectangle" visible="true" color="red" text="Финиш" x="450" y="-400" width="150" height="150"/>
 
 			<region id="warzone" type="rectangle" visible="false" x="-450" y="-400" width="1050" height="600"/>
-			<region id="factical finish" type="rectangle" visible="false" x="500" y="-350" width="50" height="50"/>
+			<region id="factical finish" type="rectangle" visible="false" x="500" y="-350" width="100" height="150"/>
 		</regions>
 	</world>
 	<robots>
@@ -84,7 +84,17 @@
 		<constraint failMessage="Робот попытался объехать лабиринт!">
 			<inside objectId="robot1" regionId="warzone"/>
 		</constraint>
+
+		<!-- Finish checker should not be setted up initially, else we can drag robot into finish zone and this event will be emitted together with error -->
 		<event settedUpInitially="true">
+			<condition>
+				<timer timeout="100" forceDropOnTimeout="true"/>
+			</condition>
+			<trigger>
+				<setUp id="finish checker"/>
+			</trigger>
+		</event>
+		<event id="finish checker" settedUpInitially="false">
 			<condition>
 				<inside objectId="robot1" regionId="factical finish"/>
 			</condition>

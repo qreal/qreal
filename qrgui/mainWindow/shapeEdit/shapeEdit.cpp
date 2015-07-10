@@ -25,7 +25,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
-#include <qrutils/graphicsUtils/colorListEditor.h>
+#include <qrutils/widgets/colorListEditor.h>
 
 #include "mainWindow/shapeEdit/xmlLoader.h"
 #include "mainWindow/mainWindow.h"

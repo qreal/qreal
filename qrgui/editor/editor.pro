@@ -30,7 +30,9 @@ QT += widgets
 
 DEFINES += QRGUI_EDITOR_LIBRARY
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_editor_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_editor_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_editor_fr.ts \
 
 HEADERS += \
 	$$PWD/editorDeclSpec.h \
@@ -51,8 +53,9 @@ HEADERS += \
 	$$PWD/edgeElement.h \
 	$$PWD/element.h \
 	$$PWD/nodeElement.h \
-	$$PWD/label.h \
-	$$PWD/labelFactory.h \
+	$$PWD/labels/label.h \
+	$$PWD/labels/labelFactory.h \
+	$$PWD/labels/labelProperties.h \
 	$$PWD/contextMenuAction.h \
 	$$PWD/embedded/linkers/embeddedLinker.h \
 	$$PWD/embedded/linkers/embeddedLinkers.h \
@@ -103,8 +106,9 @@ SOURCES += \
 	$$PWD/edgeElement.cpp \
 	$$PWD/element.cpp \
 	$$PWD/nodeElement.cpp \
-	$$PWD/label.cpp \
-	$$PWD/labelFactory.cpp \
+	$$PWD/labels/label.cpp \
+	$$PWD/labels/labelFactory.cpp \
+	$$PWD/labels/labelProperties.cpp \
 	$$PWD/contextMenuAction.cpp \
 	$$PWD/embedded/linkers/embeddedLinker.cpp \
 	$$PWD/embedded/linkers/embeddedLinkers.cpp \

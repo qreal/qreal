@@ -28,10 +28,11 @@
 #include <kitBase/robotModel/robotParts/colorSensorGreen.h>
 #include <kitBase/robotModel/robotParts/colorSensorBlue.h>
 
+#include "twoDModel/engine/twoDModelGuiFacade.h"
 #include "twoDModel/engine/model/model.h"
 #include "twoDModel/engine/model/constants.h"
-
 #include "twoDModel/engine/view/twoDModelWidget.h"
+
 #include "view/scene/twoDModelScene.h"
 #include "view/scene/robotItem.h"
 #include "view/scene/fakeScene.h"
@@ -51,6 +52,7 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidge
 	: mModel(model)
 	, mView(view)
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
+	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
 {
 }
 
@@ -294,6 +296,11 @@ utils::TimelineInterface &TwoDModelEngineApi::modelTimeline()
 engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
 {
 	return mView.display();
+}
+
+engine::TwoDModelGuiFacade &TwoDModelEngineApi::guiFacade() const
+{
+	return *mGuiFacade;
 }
 
 uint TwoDModelEngineApi::spoilLight(const uint color) const

@@ -17,6 +17,7 @@
 #include <QtWidgets/QDockWidget>
 
 class QStatusBar;
+class QToolBar;
 
 namespace qReal {
 namespace gui {
@@ -25,6 +26,9 @@ class MainWindowDockInterface
 {
 public:
 	virtual ~MainWindowDockInterface() {}
+
+	/// Returns a widget of main window for such operation as appending actions to it and so on.
+	virtual QWidget *windowWidget() = 0;
 
 	/// Returns the pointer to main window`s logical model explorer dock.
 	virtual QDockWidget *logicalModelDock() const = 0;
@@ -44,12 +48,20 @@ public:
 	/// Returns the pointer to main window`s stripe in the bottom of the window.
 	virtual QStatusBar *statusBar() const = 0;
 
+	/// Returns a list of all toolbars on this main window.
+	virtual QList<QToolBar *> toolBars() const = 0;
+
 	/// Moves @param second dock widget on top of @param first dock widget, creating a tabbed dock area
 	/// in the main window.
 	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second) = 0;
 
 	/// Adds the given @param dockWidget into the specified @param area.
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) = 0;
+
+	/// Adds the \a toolbar into the specified \a area in this main window.
+	/// The \a toolbar is placed at the end of the current tool bar block (i.e. line).
+	/// If the main window already manages \a toolbar then it will only move the toolbar to \a area.
+	virtual void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) = 0;
 
 	/// Serializes all docks and toolbar placement and returns the resulting data.
 	/// This data can be used for restoring the window state next time.
