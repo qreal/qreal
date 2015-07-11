@@ -27,11 +27,9 @@
 
 using namespace qReal;
 
-EditorManager::EditorManager(QString path)
+EditorManager::EditorManager(const QString &path)
 	: mPluginManager(PluginManager(qApp->applicationDirPath(), path))
 {
-	//mPluginManager =(PluginManager(qApp->applicationDirPath(), "plugins/editors/qrtest/qrxc/plugins"));
-
 	const auto pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
 
 	for (EditorInterface * const iEditor : pluginsList) {
@@ -45,7 +43,6 @@ EditorManager::EditorManager(QString path)
 	}
 
 }
-
 
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
@@ -223,7 +220,7 @@ QString EditorManager::propertyDescription(const Id &id, const QString &property
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4) {
+	if (id.idSize() < 3) {
 		return "";
 	}
 	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
