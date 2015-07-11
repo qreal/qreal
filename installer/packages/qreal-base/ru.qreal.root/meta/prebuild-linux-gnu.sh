@@ -36,6 +36,8 @@ cp -pr $QT_DIR/lib/libQt5Widgets.so*                                    $PWD/../
 cp -pr $QT_DIR/lib/libQt5X11Extras.so*                                  $PWD/../data
 cp -pr $QT_DIR/lib/libQt5Xml.so*                                        $PWD/../data
 cp -pr $QT_DIR/lib/libQt5Script.so*                                     $PWD/../data
+cp -pr $QT_DIR/lib/libQt5Test.so*                                       $PWD/../data
+cp -pr $QT_DIR/lib/libQt5XcbQpa.so*                                     $PWD/../data
 cp -pr $QT_DIR/lib/libicudata.so*                                       $PWD/../data
 cp -pr $QT_DIR/lib/libicui18n.so*                                       $PWD/../data
 cp -pr $QT_DIR/lib/libicuuc.so*                                         $PWD/../data

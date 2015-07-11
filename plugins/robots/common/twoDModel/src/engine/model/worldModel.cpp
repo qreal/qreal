@@ -214,34 +214,22 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement WorldModel::serialize(QDomDocument &document) const
 {
 	QDomElement result = document.createElement("world");
-
-	QDomElement trace = document.createElement("trace");
-	result.appendChild(trace);
-	for (QGraphicsLineItem *line : mRobotTrace) {
-		QDomElement traceSegment = document.createElement("segment");
-		traceSegment.setAttribute("x1", line->line().x1());
-		traceSegment.setAttribute("x2", line->line().x2());
-		traceSegment.setAttribute("y1", line->line().y1());
-		traceSegment.setAttribute("y2", line->line().y2());
-		traceSegment.setAttribute("color", line->pen().color().name());
-		traceSegment.setAttribute("width", line->pen().width());
-		trace.appendChild(traceSegment);
-	}
 
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 	for (items::WallItem * const wall : mWalls) {
-		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
+		QDomElement wallNode = document.createElement("wall");
+		wall->serialize(wallNode);
 		walls.appendChild(wallNode);
 	}
 
 	QDomElement colorFields = document.createElement("colorFields");
 	result.appendChild(colorFields);
-	for (items::ColorFieldItem *colorField : mColorFields) {
-		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
+	for (items::ColorFieldItem * const colorField : mColorFields) {
+		QDomElement colorFiedlNode = colorField->serialize(document, QPointF());
 		colorFields.appendChild(colorFiedlNode);
 	}
 
@@ -252,6 +240,8 @@ QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeft
 		region->serialize(regionElement);
 		regions.appendChild(regionElement);
 	}
+
+	// Robot trace saving is disabled
 
 	return result;
 }

@@ -28,7 +28,6 @@ OTHER_FILES += \
 	help/interface.html \
 	help/nxt.html \
 	help/programming.html \
-	help/run-programs.html \
 	help/style.css \
 	help/trik.html \
 	help/version.js \

@@ -1,4 +1,5 @@
 QT += script testlib
+QT.testlib.CONFIG -= console
 
 HEADERS += \
 	$$PWD/scriptAPI.h \

@@ -85,7 +85,6 @@ PortInfo PortInfo::fromString(const QString &string)
 {
 	const QStringList parts = string.split("###");
 	if (parts.count() != 4) {
-		// Q_ASSERT?
 		return PortInfo();
 	}
 
