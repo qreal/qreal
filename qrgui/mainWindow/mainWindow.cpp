@@ -708,6 +708,8 @@ void MainWindow::toggleShowSplash(bool show)
 bool MainWindow::unloadPlugin(const QString &pluginName)
 {
 	if (editorManager().editors().contains(Id(pluginName))) {
+		/* Delete and create palette tree for correct unloading plugin
+		 * and for correct completion application.*/
 		mUi->paletteTree->deletePaletteTree();
 		mUi->paletteTree->createPaletteTree();
 

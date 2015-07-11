@@ -60,14 +60,14 @@ public:
 	QObject *pluginByName(const QString &pluginName) const;
 
 	/// Returns names of all plugins.
-	QList<QString> namesOfPlugins();
+	QList<QString> namesOfPlugins() const;
 
 private:
 	/// Directory to loaded plugins.
 	QDir mPluginsDir;
 
 	/// List of loaders with names of plugins.
-	QList<QPair<QString, QPluginLoader *>> mNewLoaders;
+	QList<QPair<QString, QPluginLoader *>> mLoaders;
 
 	/// Map from fileName to plugin
 	/// Has ownership.

@@ -272,7 +272,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizeDirName);
+	const bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizeDirName);
 	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
 		progress->close();
 		delete progress;
@@ -286,7 +286,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-	QStringList environment = QProcess::systemEnvironment();
+	const QStringList environment = QProcess::systemEnvironment();
 	builder.setEnvironment(environment);
 	builder.start(commandFirst, qmakeArgs);
 

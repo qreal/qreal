@@ -66,7 +66,7 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const 
 	loader->load();
 	QObject *plugin = loader->instance();
 	QPair<QString, QPluginLoader*> pairOfLoader = qMakePair(pluginName, loader);
-	mNewLoaders.append(pairOfLoader);
+	mLoaders.append(pairOfLoader);
 
 	if (plugin) {
 		mFileNameAndPlugin.insert(loader->metaData()["IID"].toString(), plugin);
@@ -104,15 +104,16 @@ QString PluginManagerImplementation::unloadPlugin(const QString &pluginName)
 	int count = 0;
 	bool stateUnload = true;
 
-	for (auto currentPair : mNewLoaders) {
+	for (const QPair<QString, QPluginLoader *> &currentPair : mLoaders) {
 		if (currentPair.first == pluginName) {
 			stateUnload = currentPair.second->unload();
 		}
+
 		++count;
 	}
 
 	for (int j = 0; j < count; ++j) {
-		mNewLoaders.removeFirst();
+		mLoaders.removeFirst();
 	}
 
 	if (stateUnload) {
@@ -122,10 +123,10 @@ QString PluginManagerImplementation::unloadPlugin(const QString &pluginName)
 	return QString("Plugin was not found");
 }
 
-QList<QString> PluginManagerImplementation::namesOfPlugins()
+QList<QString> PluginManagerImplementation::namesOfPlugins() const
 {
 	QList<QString> listOfNames;
-	for (auto currentPair : mNewLoaders) {
+	for (const QPair<QString, QPluginLoader *> &currentPair : mLoaders) {
 		listOfNames.append(currentPair.first);
 	}
 	return listOfNames;
