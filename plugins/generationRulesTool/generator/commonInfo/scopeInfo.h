@@ -6,7 +6,7 @@
 namespace generationRules {
 namespace generator {
 
-/// Common information about generator that can be changed (in fact, it is a global variable).
+/// Information about current scope.
 class ScopeInfo
 {
 public:

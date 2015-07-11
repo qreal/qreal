@@ -1137,7 +1137,7 @@ void InterpreterEditorManager::addEdgeElement(const Id &diagram, const QString &
 		, const QString &displayedName, const QString &labelText, const QString &labelType
 		, const QString &lineType, const QString &beginType, const QString &endType) const
 {
-	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
+	const QPair<qrRepo::RepoApi*, Id> repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
 	const Id diag = repoAndDiagramPair.second;
 	Id edgeId("MetaEditor", "MetaEditor", "MetaEntityEdge", QUuid::createUuid().toString());
@@ -1161,7 +1161,7 @@ void InterpreterEditorManager::addEdgeElement(const Id &diagram, const QString &
 
 void InterpreterEditorManager::updateGenerationRule(const Id &id, const QString &newRule) const
 {
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	const QPair<qrRepo::RepoApi*, Id> repoAndMetaIdPair = repoAndMetaId(id);
 	if (repoAndMetaIdPair.second.element() == "MetaEntityNode") {
 		repoAndMetaIdPair.first->setProperty(repoAndMetaIdPair.second, "generationRule", newRule);
 	}
@@ -1169,7 +1169,7 @@ void InterpreterEditorManager::updateGenerationRule(const Id &id, const QString 
 
 QString InterpreterEditorManager::generationRule(const Id &id) const
 {
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	const QPair<qrRepo::RepoApi*, Id> repoAndMetaIdPair = repoAndMetaId(id);
 	const qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	const Id metaId = repoAndMetaIdPair.second;
 	if (metaId.element() == "MetaEntityNode") {

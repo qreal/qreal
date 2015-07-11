@@ -77,6 +77,7 @@ public:
 	/// @param id - element id.
 	/// @param newRule - new generation rule.
 	virtual void updateGenerationRule(const Id &id, const QString &newRule) const = 0;
+
 	/// Returns rule for given element.
 	/// @param id - element id.
 	virtual QString generationRule(const Id &id) const = 0;
