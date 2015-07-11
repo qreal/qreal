@@ -392,4 +392,4 @@ bool NodeType::copyPorts(NodeType* parent)
 	}
 
 	return !parent->mPorts.isEmpty();
-} 
+}

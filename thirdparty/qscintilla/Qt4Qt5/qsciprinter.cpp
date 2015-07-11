@@ -26,7 +26,6 @@
 #include "Qsci/qsciprinter.h"
 
 #include <QPrinter>
-
 #include <qpainter.h>
 
 #include <qstack.h>
