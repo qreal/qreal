@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDModel/robotModel/nullTwoDRobotModel.h"
+#include "nullTwoDRobotModel.h"
 
 using namespace twoDModel::robotModel;
 
 NullTwoDRobotModel::NullTwoDRobotModel(const QString &robotId)
 	: TwoDRobotModel(robotId)
+	, mDisplayWidget(new twoDModel::engine::NullTwoDModelDisplayWidget)
 {
 }
 
@@ -54,7 +55,7 @@ kitBase::robotModel::PortInfo NullTwoDRobotModel::defaultRightWheelPort() const
 	return kitBase::robotModel::PortInfo();
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *NullTwoDRobotModel::displayWidget(QWidget * parent) const
+twoDModel::engine::TwoDModelDisplayWidget *NullTwoDRobotModel::displayWidget() const
 {
-	return new twoDModel::engine::NullTwoDModelDisplayWidget(parent);
+	return mDisplayWidget;
 }

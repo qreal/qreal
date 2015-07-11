@@ -60,6 +60,7 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDLineSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDObjectSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDColorSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDShell.h
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -96,6 +97,7 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDObjectSensor.cpp \
 	$$PWD/robotModel/twoD/parts/twoDColorSensor.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
+	$$PWD/robotModel/twoD/parts/twoDShell.cpp
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
@@ -104,4 +106,6 @@ FORMS += \
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
-TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikKitInterpreter_fr.ts \

@@ -16,20 +16,22 @@
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
+#include <QtCore/QScopedPointer>
+
 namespace twoDModel {
 
 namespace model {
 class Model;
 }
 namespace view {
-class D2ModelWidget;
+class TwoDModelWidget;
 class FakeScene;
 }
 
 class TwoDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
-	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view);
+	TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
 	~TwoDModelEngineApi();
 
 	void setNewMotor(int speed, uint degrees
@@ -53,6 +55,7 @@ public:
 
 	utils::TimelineInterface &modelTimeline() override;
 	engine::TwoDModelDisplayInterface *display() override;
+	engine::TwoDModelGuiFacade &guiFacade() const override;
 
 private:
 	QPair<QPointF, qreal> countPositionAndDirection(const kitBase::robotModel::PortInfo &port) const;
@@ -68,8 +71,9 @@ private:
 	void enableBackgroundSceneDebugging();
 
 	model::Model &mModel;
-	view::D2ModelWidget &mView;
+	view::TwoDModelWidget &mView;
 	QScopedPointer<view::FakeScene> mFakeScene;
+	QScopedPointer<engine::TwoDModelGuiFacade> mGuiFacade;
 };
 
 }

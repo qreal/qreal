@@ -17,6 +17,8 @@
 #include <QtWidgets/QApplication>
 #include <qrkernel/settingsManager.h>
 
+#include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
+
 using namespace qReal;
 using namespace interpretation;
 
@@ -26,7 +28,8 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
-		, const Id &initialNode)
+		, const Id &initialNode
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -35,6 +38,7 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
@@ -43,7 +47,8 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, const Id &diagramToInterpret
-		, BlocksTableInterface &blocksTable)
+		, BlocksTableInterface &blocksTable
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -53,6 +58,7 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
@@ -84,6 +90,11 @@ void Thread::interpret()
 	} else {
 		stepInto(mInitialDiagram);
 	}
+}
+
+void Thread::stop()
+{
+	emit stopped();
 }
 
 void Thread::nextBlock(const Id &blockId)
@@ -159,6 +170,8 @@ void Thread::turnOn(BlockInterface * const block)
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
 	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock);
 	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread);
+	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread);
+	connect(mCurrentBlock, &BlockInterface::sendMessage, this, &Thread::sendMessage);
 	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure);
 	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto);
 
@@ -181,7 +194,7 @@ void Thread::turnOn(BlockInterface * const block)
 		mProcessEventsMapper->setMapping(mProcessEventsTimer, mCurrentBlock);
 		mProcessEventsTimer->start();
 	} else {
-		mCurrentBlock->interpret();
+		mCurrentBlock->interpret(this);
 	}
 }
 
@@ -189,7 +202,7 @@ void Thread::interpretAfterEventsProcessing(QObject *blockObject)
 {
 	BlockInterface * const block = dynamic_cast<BlockInterface *>(blockObject);
 	if (block) {
-		block->interpret();
+		block->interpret(this);
 	}
 }
 
@@ -207,4 +220,32 @@ void Thread::turnOff(BlockInterface * const block)
 
 	mStack.pop();
 	mInterpretersInterface.dehighlight(block->id());
+}
+
+void Thread::newMessage(const QString &message)
+{
+	if (mMessages.isEmpty()) {
+		blocks::ReceiveThreadMessageBlock *block = dynamic_cast<blocks::ReceiveThreadMessageBlock *>(mCurrentBlock);
+		if (block) {
+			block->receiveMessage(message);
+			return;
+		}
+	}
+
+	mMessages.enqueue(message);
+}
+
+bool Thread::getMessage(QString &message)
+{
+	if (!mMessages.isEmpty()) {
+		message = mMessages.dequeue();
+		return true;
+	}
+
+	return false;
+}
+
+QString Thread::id() const
+{
+	return mId;
 }

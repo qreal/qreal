@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@
 
 #include "twoDModel/engine/twoDModelEngineFacade.h"
 
+#include <qrkernel/logging.h>
+#include <qrutils/smartDock.h>
 #include <kitBase/readOnly.h>
 
-#include "twoDModel/engine/view/d2ModelWidget.h"
+#include "twoDModel/engine/view/twoDModelWidget.h"
 #include "twoDModel/engine/model/model.h"
 #include "twoDModelEngineApi.h"
 
@@ -24,20 +26,17 @@ using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
-	, mTwoDModelActionInfo(
-			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
-			, "interpreters"
-			, "tools")
 	, mModel(new model::Model())
-	, mView(new view::D2ModelWidget(*mModel.data()))
-	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
+	, mView(new view::TwoDModelWidget(*mModel))
+	, mApi(new TwoDModelEngineApi(*mModel, *mView))
+	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
 	mModel.data()->addRobotModel(robotModel);
-	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 
-	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
-	connect(mView.data(), &view::D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
-	connect(mView.data(), &view::D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mView.data(), &view::TwoDModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
+	connect(mView.data(), &view::TwoDModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mView.data(), &view::TwoDModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mDock, &utils::SmartDock::dockedChanged, mView.data(), &view::TwoDModelWidget::setCompactMode);
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
@@ -109,36 +108,31 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
-	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); });
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); delete mDock; });
 
 	connect(&eventsForKitPlugin
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this, connectTwoDModel, disconnectTwoDModel](const QString &modelName) {
 				const bool isCurrentModel = modelName == mRobotModelName;
-				showTwoDModelWidgetActionInfo().action()->setVisible(isCurrentModel);
 				if (isCurrentModel) {
 					connectTwoDModel();
+					mDock->attachToMainWindow(Qt::TopDockWidgetArea);
 				} else {
 					disconnectTwoDModel();
-					mView->close();
+					mDock->detachFromMainWindow();
 				}
 			}
 			);
 }
 
-qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
-{
-	return mTwoDModelActionInfo;
-}
-
 kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()
 {
-	return *mView.data();
+	return *mView;
 }
 
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
-	return *mApi.data();
+	return *mApi;
 }
 
 void TwoDModelEngineFacade::onStartInterpretation()

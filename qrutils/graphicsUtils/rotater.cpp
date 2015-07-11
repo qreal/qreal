@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
 
 #include "rotater.h"
 
+#include <QtCore/qmath.h>
 #include <QtGui/QCursor>
-#include <qmath.h>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/graphicsUtils/rotateItem.h>
@@ -97,7 +98,7 @@ void Rotater::setPenBrushForExtraction(QPainter *painter, const QStyleOptionGrap
 
 void Rotater::drawExtractionForItem(QPainter *painter)
 {
-	mLineImpl.drawExtractionForItem(painter, x1(), y1(), y2(), y2(), mDrift);
+	mLineImpl.drawExtractionForItem(painter, x1(), y1(), x2(), y2(), mDrift);
 	drawFieldForResizeItem(painter);
 }
 

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <QtCore/QString>
-
 #include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
@@ -30,6 +28,12 @@ public:
 
 	/// Wraps the given string into double quotes and returns the result.
 	static QString wrap(const QString &string);
+
+	/// Returns new instance of string that exactly the same as given but with first letter in upper case.
+	static QString capitalizeFirstLetter(const QString &string);
+
+	/// Removes a pair of quotes if string starts or end with them.
+	static QString dequote(const QString &string);
 };
 
 }

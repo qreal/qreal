@@ -123,6 +123,9 @@ public:
 	/// Lists all available ports for that model.
 	virtual QList<PortInfo> availablePorts() const = 0;
 
+	/// Returns a map of button names to button codes.
+	virtual QHash<QString, int> buttonCodes() const = 0;
+
 	/// Returns a list of ports that are allowed to be configured by user. Recommended implementation shall use
 	/// allowedDevices() and make port configurable only when allowedDevices() allows some choice, but this method
 	/// is provided to allow descendant models to hide some devices that actually can be configured.

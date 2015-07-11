@@ -88,6 +88,11 @@ int Timeline::speedFactor() const
 	return mSpeedFactor;
 }
 
+bool Timeline::isStarted() const
+{
+	return mIsStarted;
+}
+
 quint64 Timeline::timestamp() const
 {
 	return mTimestamp;
@@ -107,5 +112,8 @@ void Timeline::setImmediateMode(bool immediateMode)
 
 void Timeline::setSpeedFactor(int factor)
 {
-	mSpeedFactor = factor;
+	if (mSpeedFactor != factor) {
+		mSpeedFactor = factor;
+		emit speedFactorChanged(factor);
+	}
 }

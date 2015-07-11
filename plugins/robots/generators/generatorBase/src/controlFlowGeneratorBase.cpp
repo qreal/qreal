@@ -14,6 +14,8 @@
 
 #include "generatorBase/controlFlowGeneratorBase.h"
 
+#include <QtCore/QUuid>
+
 #include "generatorBase/semanticTree/semanticTree.h"
 #include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/subprograms.h"
@@ -159,8 +161,25 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 
 	// Determine which thread is the main by examining guards of outgoing links
 	// If there are no guards then a random thread will be chosen as main
+	bool foundMain = false;
+	for (const LinkInfo &thread : links) {
+		if (mRepo.stringProperty(thread.linkId, "Guard") == mThreadId) {
+			foundMain = true;
+			break;
+		}
+	}
+
 	for (const LinkInfo &thread : links) {
 		QString threadId = mRepo.stringProperty(thread.linkId, "Guard");
+		if (threadId.isEmpty()) {
+			if (!foundMain) {
+				threadId = mThreadId;
+				foundMain = true;
+			} else {
+				threadId = QUuid::createUuid().toString();
+			}
+		}
+
 		threadIds[thread.linkId] = threadId;
 		if (threadId == mThreadId) {
 			currentThread = thread;

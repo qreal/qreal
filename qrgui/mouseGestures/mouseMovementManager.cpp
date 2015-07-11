@@ -42,6 +42,7 @@ MouseMovementManager::MouseMovementManager(const Id &diagram
 
 QWidget *MouseMovementManager::producePainter() const
 {
+	/// @todo: Remove copy-paste in DummyMouseMovementManager
 	GesturesWidget * const result = new GesturesWidget;
 	QList<QPair<QString, Id> > elements;
 	for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
@@ -50,8 +51,9 @@ QWidget *MouseMovementManager::producePainter() const
 		}
 	}
 
+	connect(result, &GesturesWidget::currentElementChanged
+			, this, &MouseMovementManager::drawIdealPath, Qt::QueuedConnection);
 	result->setElements(elements);
-	connect(result, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
 	return result;
 }
 

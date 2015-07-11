@@ -14,18 +14,17 @@
 
 #include "motionSensor.h"
 
-#include <utils/tcpRobotCommunicator.h>
 #include <qrutils/inFile.h>
 
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 MotionSensor::MotionSensor(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikMotionSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newScalarSensorData
 			, this, &MotionSensor::onIncomingData);
 }
 

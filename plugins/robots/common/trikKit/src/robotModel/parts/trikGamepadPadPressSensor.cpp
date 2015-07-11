@@ -18,6 +18,6 @@ using namespace trik::robotModel::parts;
 using namespace kitBase::robotModel;
 
 TrikGamepadPadPressSensor::TrikGamepadPadPressSensor(const DeviceInfo &info, const PortInfo &port)
-	: robotParts::Button(info, port)
+	: robotParts::Button(info, port, -1)
 {
 }

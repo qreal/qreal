@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/trikRobotModelBase.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -38,7 +38,7 @@ public:
 	void stopRobot() override;
 	void disconnectFromRobot() override;
 
-	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
+	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
 
 protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
@@ -46,7 +46,7 @@ protected:
 			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;
 
 private:
-	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;
+	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mRobotCommunicator;
 };
 
 }

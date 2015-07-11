@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikServoMotor.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -29,14 +29,14 @@ class ServoMotor : public robotModel::parts::TrikServoMotor
 public:
 	ServoMotor(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void on(int speed) override;
 	void stop() override;
 	void off() override;
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

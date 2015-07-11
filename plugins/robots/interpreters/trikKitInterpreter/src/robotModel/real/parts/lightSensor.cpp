@@ -20,11 +20,11 @@ using namespace kitBase::robotModel;
 const int maxLightValue = 1023;
 
 LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: kitBase::robotModel::robotParts::LightSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newScalarSensorData
 			, this, &LightSensor::onIncomingData);
 }
 

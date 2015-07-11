@@ -89,6 +89,11 @@ Id GraphicalModelAssistApi::copyElement(const Id &source)
 	return mGraphicalModel.mutableApi().copy(source);
 }
 
+Id GraphicalModelAssistApi::parent(const Id &element) const
+{
+	return mGraphicalModel.api().parent(element);
+}
+
 IdList GraphicalModelAssistApi::children(const Id &element) const
 {
 	return mGraphicalModel.api().children(element);

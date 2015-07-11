@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@
 #include "projectManager/projectManagerWrapper.h"
 #include "tabWidget.h"
 #include "startWidget/startWidget.h"
+#include "scriptAPI/scriptAPI.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
@@ -157,14 +158,22 @@ public:
 	/// @param diagram Id of a diagram we need to add elements from.
 	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
 
-	virtual QDockWidget *logicalModelDock() const;
-	virtual QDockWidget *graphicalModelDock() const;
-	virtual QDockWidget *propertyEditorDock() const;
-	virtual QDockWidget *errorReporterDock() const;
-	virtual QDockWidget *paletteDock() const;
+	QDockWidget *logicalModelDock() const override;
+	QDockWidget *graphicalModelDock() const override;
+	QDockWidget *propertyEditorDock() const override;
+	QDockWidget *errorReporterDock() const override;
+	QDockWidget *paletteDock() const override;
+	QStatusBar *statusBar() const override;
+	QList<QToolBar *> toolBars() const override;
 
-	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
-	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
+	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
+	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
+	void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) override;
+
+	QByteArray saveState(int version = 0) const override;
+	bool restoreState(const QByteArray &state, int version = 0) override;
+
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
 	void setTabText(QWidget *tab, const QString &text) override;
 
@@ -215,6 +224,7 @@ private slots:
 	/// Diagram opening must happen after plugins initialization
 	void initPluginsAndStartWidget();
 	void initToolPlugins();
+	void customizeActionsVisibility();
 
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
@@ -228,15 +238,16 @@ private slots:
 	void showHelp();
 
 	void fullscreen();
+	void hideBottomDocks();
+
 	void openRecentProjectsMenu();
 
 	void saveDiagramAsAPicture();
-
 	void print();
 	void makeSvg();
 	void showGrid(bool isChecked);
 
-	void sceneSelectionChanged();
+	void sceneSelectionChanged(const QList<Element *> &elements);
 
 	void applySettings();
 	void resetToolbarSize(int size);
@@ -322,7 +333,7 @@ private:
 
 	/// Traverses list of actions and adds buttons to toolbar.
 	/// @param actions - list of actions to traverse
-	void traverseListOfActions(QList<ActionInfo> const &actions);
+	void traverseListOfActions(const QList<ActionInfo> &actions);
 
 	void setIndexesOfPropertyEditor(const Id &id);
 
@@ -353,6 +364,8 @@ private:
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
+	void initScriptAPI();
+	void initActionWidgetsNames();
 	void openStartTab();
 
 	void setVersion(const QString &version);
@@ -404,6 +417,8 @@ private:
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
+
+	gui::ScriptAPI mScriptAPI;
 };
 
 }

@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikLineSensor.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -30,14 +30,14 @@ class LineSensor : public robotModel::parts::TrikLineSensor
 public:
 	LineSensor(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void init() override;
 	void detectLine() override;
 	void read() override;
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

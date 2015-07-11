@@ -22,7 +22,7 @@
 namespace utils {
 namespace robotCommunication {
 
-/// An interface for each concrete robots communication protocol implementation
+/// An interface for each concrete robot communication protocol implementation
 class ROBOTS_UTILS_EXPORT RobotCommunicationThreadInterface : public QObject
 {
 	Q_OBJECT

@@ -21,17 +21,34 @@ namespace items {
 
 class ColorFieldItem : public graphicsUtils::AbstractItem
 {
+	Q_OBJECT
+
+	Q_PROPERTY(QColor color READ color WRITE setColor)
+	Q_PROPERTY(int thickness READ thickness WRITE setThickness)
+
 public:
-	explicit ColorFieldItem(QGraphicsItem* parent = 0);
+	explicit ColorFieldItem(QGraphicsItem *parent = 0);
 	~ColorFieldItem() override;
+
+	/// Returns a color of this item.
+	QColor color() const;
+
+	/// Sets a color of this item.
+	void setColor(const QColor &color);
+
+	/// Returns a thickness of this item in px.
+	int thickness() const;
+
+	/// Sets a thickness of this item.
+	/// @param The thickness value in px.
+	void setThickness(int thickness);
 
 	/// Creates a copy of this graphical item. Transfers ownership to the caller.
 	virtual AbstractItem *clone() const = 0;
 
-	virtual QRectF boundingRect() const = 0;
-	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) override = 0;
+	virtual QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const = 0;
 
-	virtual QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) = 0;
+	virtual QRectF boundingRect() const = 0;
 };
 
 }

@@ -38,6 +38,9 @@ void myMessageOutput(QtMsgType type, QMessageLogContext const &context, QString 
 		case QtFatalMsg:
 			fprintf(stderr, "Fatal: %s\n", localMsg.constData());
 			abort();
+		default:
+			fprintf(stderr, "Info: %s\n", localMsg.constData());
+			break;
 	}
 }
 

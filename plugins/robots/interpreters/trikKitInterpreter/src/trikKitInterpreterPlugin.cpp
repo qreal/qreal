@@ -19,6 +19,7 @@
 
 #include <twoDModel/engine/twoDModelEngineFacade.h>
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 
 using namespace trik;
 using namespace qReal;
@@ -57,9 +58,6 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&configurator.qRealConfigurator().systemEvents(), &qReal::SystemEvents::activeTabChanged
-			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
-
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
 
@@ -69,7 +67,8 @@ void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &config
 			, interpretersInterface
 			, configurator.interpreterControl());
 
-	mRealRobotModel.setErrorReporter(interpretersInterface.errorReporter());
+	mRealRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
+	mTwoDRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
@@ -120,17 +119,12 @@ QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
+	return {};
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
-
-	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForTrik", tr("Show 2d model for TRIK")
-			, mTwoDModel->showTwoDModelWidgetActionInfo().action());
-
-	return { d2ModelActionInfo };
+	return {};
 }
 
 QString TrikKitInterpreterPlugin::defaultSettingsFile() const
@@ -153,14 +147,6 @@ kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigur
 	return &mTwoDModel->devicesConfigurationProvider();
 }
 
-void TrikKitInterpreterPlugin::onActiveTabChanged(const TabInfo &info)
-{
-	const Id type = info.rootDiagramId().type();
-	const bool enabled = type == robotDiagramType || type == subprogramDiagramType;
-	const bool twoDModelEnabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModel.name();
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(twoDModelEnabled);
-}
-
 QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
 {
 	QLineEdit * const quickPreferences = new QLineEdit;
@@ -170,6 +156,7 @@ QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
 	};
 	updateQuickPreferences();
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
 	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});

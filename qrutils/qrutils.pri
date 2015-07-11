@@ -26,11 +26,13 @@ HEADERS += \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \
+	$$PWD/smartDock.h \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
 	$$PWD/parserErrorReporter.h \
 	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
+	$$PWD/widgetFinder.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -45,17 +47,21 @@ SOURCES += \
 	$$PWD/stringUtils.cpp \
 	$$PWD/qRealDialog.cpp \
 	$$PWD/qRealFileDialog.cpp \
+	$$PWD/smartDock.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
+	$$PWD/widgetFinder.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui
 
 RESOURCES = $$PWD/qrutils.qrc
 
-TRANSLATIONS = $$PWD/../qrtranslations/ru/qrutils_ru.ts
+TRANSLATIONS = \
+	$$PWD/../qrtranslations/ru/qrutils_ru.ts \
+	$$PWD/../qrtranslations/fr/qrutils_fr.ts \
 
 QT += xml widgets
 
@@ -88,3 +94,6 @@ include($$PWD/pluginManagers/pluginManagers.pri)
 
 # Tools for interpreting behavioral diagrams
 include($$PWD/interpreter/interpreter.pri)
+
+# The collection of useful widgets
+include($$PWD/widgets/widgets.pri)

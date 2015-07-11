@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikShell.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -29,14 +29,17 @@ class Shell : public robotModel::parts::TrikShell
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void runCommand(const QString &command) override;
-
+	void runCode(const QString &code) override;
 	void say(const QString &text) override;
+	void writeToFile(const QString &filePath, const QString &text) override;
+	void removeFile(const QString &filePath) override;
+	void print(const QString &text) override;
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

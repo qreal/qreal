@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikDisplay.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -29,7 +29,7 @@ class Display : public robotModel::parts::TrikDisplay
 public:
 	Display(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void drawSmile(bool sad) override;
 	/// @todo: color enum here?
@@ -46,7 +46,7 @@ public:
 	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)  override;
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

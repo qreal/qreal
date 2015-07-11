@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,4 +37,16 @@ QString StringUtils::addIndent(const QString &code, int indent, const QString &o
 QString StringUtils::wrap(const QString &string)
 {
 	return "\"" + string + "\"";
+}
+
+QString StringUtils::capitalizeFirstLetter(const QString &string)
+{
+	return string.at(0).toUpper() + string.mid(1);
+}
+
+QString StringUtils::dequote(const QString &string)
+{
+	return (string.startsWith("'") && string.endsWith("'")) || (string.startsWith("\"") && string.endsWith("\""))
+		? string.mid(1, string.length() - 2)
+		: string;
 }

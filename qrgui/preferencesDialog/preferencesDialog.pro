@@ -18,15 +18,15 @@ include(../../global.pri)
 
 TEMPLATE = lib
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/preferencesDialog_ru.ts
-
 QT += widgets
 
 links(qrkernel qrutils)
 
 DEFINES += QRGUI_PREFERENCES_DIALOG_LIBRARY
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_preferencesDialog_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_preferencesDialog_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_preferencesDialog_fr.ts \
 
 HEADERS += \
 	$$PWD/preferencesDialogDeclSpec.h \

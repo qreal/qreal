@@ -14,11 +14,6 @@
 
 #include "bpmnCustomizer.h"
 
-void BpmnCustomizer::customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface)
-{
-	dockInterface->logicalModelDock()->hide();
-}
-
 bool BpmnCustomizer::showInterpeterButton() const
 {
 	return false;

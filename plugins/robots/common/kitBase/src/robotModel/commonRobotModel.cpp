@@ -187,6 +187,11 @@ void CommonRobotModel::applyConfiguration()
 	}
 }
 
+QHash<QString, int> CommonRobotModel::buttonCodes() const
+{
+	return QHash<QString, int>();
+}
+
 QList<DeviceInfo> CommonRobotModel::convertibleBases() const
 {
 	return {};
@@ -208,6 +213,11 @@ void CommonRobotModel::onInterpretationStarted()
 void CommonRobotModel::addAllowedConnection(const PortInfo &port, QList<DeviceInfo> const &devices)
 {
 	mAllowedConnections[port].append(devices);
+}
+
+void CommonRobotModel::removeAllowedConnections(const PortInfo &port)
+{
+	mAllowedConnections.remove(port);
 }
 
 robotParts::Device * CommonRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)

@@ -82,6 +82,7 @@ bool TcpRobotCommunicator::runProgram(const QString &programName)
 	}
 
 	mControlConnection->send("run:" + programName);
+	emit startedRunning();
 
 	return true;
 }
@@ -128,6 +129,7 @@ void TcpRobotCommunicator::processControlMessage(const QString &message)
 	const QString errorMarker("error: ");
 	const QString infoMarker("info: ");
 	const QString versionMarker("version: ");
+	const QString printMarker("print: ");
 
 	const QString fromRobotString(tr("From robot: "));
 
@@ -142,6 +144,8 @@ void TcpRobotCommunicator::processControlMessage(const QString &message)
 		mErrorReporter->addError(fromRobotString + message.mid(errorMarker.length()));
 	} else if (message.startsWith(infoMarker) && mErrorReporter) {
 		mErrorReporter->addInformation(fromRobotString + message.mid(infoMarker.length()));
+	} else if (message.startsWith(printMarker)) {
+		emit printText(message.mid(printMarker.length()));
 	} else {
 		QLOG_INFO() << "Incoming message of unknown type: " << message;
 	}

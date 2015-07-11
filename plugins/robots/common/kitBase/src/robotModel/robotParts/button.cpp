@@ -16,7 +16,13 @@
 
 using namespace kitBase::robotModel::robotParts;
 
-Button::Button(const DeviceInfo &info, const PortInfo &port)
+Button::Button(const DeviceInfo &info, const PortInfo &port, int code)
 	: ScalarSensor(info, port)
+	, mCode(code)
 {
+}
+
+int Button::code() const
+{
+	return mCode;
 }

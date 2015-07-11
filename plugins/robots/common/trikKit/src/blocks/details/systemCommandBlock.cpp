@@ -14,6 +14,8 @@
 
 #include "systemCommandBlock.h"
 
+#include <qrutils/stringUtils.h>
+
 using namespace trik::blocks::details;
 using namespace kitBase::robotModel;
 
@@ -24,8 +26,15 @@ SystemCommandBlock::SystemCommandBlock(RobotModelInterface &robotModel)
 
 void SystemCommandBlock::doJob(robotModel::parts::TrikShell &shell)
 {
-	const QString command = stringProperty("Command").replace("\"", "\\\"");
-	shell.runCommand(command);
+	if (boolProperty("Code")) {
+		const QString code = utils::StringUtils::dequote(stringProperty("Command").replace("\"", "\\\""));
+		shell.runCode(code);
+	} else {
+		const QString command = utils::StringUtils::wrap(boolProperty("Evaluate")
+				? eval<QString>("Command")
+				: stringProperty("Command").replace("\"", "\\\""));
+		shell.runCommand(command);
+	}
 
 	emit done(mNextBlockId);
 }

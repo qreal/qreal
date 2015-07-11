@@ -344,8 +344,15 @@ void StartWidget::createInterpretedDiagram()
 
 void StartWidget::setVisibleForInterpreterButton(const bool visible)
 {
-	mOpenInterpreterButton->setVisible(visible);
-	mCreateInterpreterButton->setVisible(visible);
+	if (!visible) {
+		/// @todo: For some reason setVisible on interpreter buttons still leaves them visible.
+		/// This surely can be fixed and then setVisible(visible) call must be restored,
+		/// but for now working it arround...
+		delete mOpenInterpreterButton;
+		delete mCreateInterpreterButton;
+		mOpenInterpreterButton = nullptr;
+		mCreateInterpreterButton = nullptr;
+	}
 
 	const int editorsCount = mMainWindow->editorManager().editors().count();
 	QList<QPushButton *> toCentralize;

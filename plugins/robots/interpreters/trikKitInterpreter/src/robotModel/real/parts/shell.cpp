@@ -20,10 +20,11 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 Shell::Shell(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikShell(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::printText, this, &Shell::textPrinted);
 }
 
 void Shell::say(const QString &text)
@@ -40,6 +41,38 @@ void Shell::runCommand(const QString &command)
 	const QString pathToCommand = ":/trikQts/templates/system.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COMMAND@@", command) + "script.run();";
+
+	mRobotCommunicator.runDirectCommand(directCommand);
+}
+
+void Shell::runCode(const QString &code)
+{
+	mRobotCommunicator.runDirectCommand(code);
+}
+
+void Shell::writeToFile(const QString &filePath, const QString &text)
+{
+	const QString pathToCommand = ":/trikQts/templates/files/writeFile.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@FILE@@", filePath).replace("@@TEXT@@", "\"" + text + "\"") + "script.run();";
+
+	mRobotCommunicator.runDirectCommand(directCommand);
+}
+
+void Shell::removeFile(const QString &filePath)
+{
+	const QString pathToCommand = ":/trikQts/templates/files/removeFile.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@FILE@@", filePath) + "script.run();";
+
+	mRobotCommunicator.runDirectCommand(directCommand);
+}
+
+void Shell::print(const QString &text)
+{
+	const QString pathToCommand = ":/trikQts/templates/functions/print.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@ARGUMENT@@", "\"" + text + "\"") + ";script.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

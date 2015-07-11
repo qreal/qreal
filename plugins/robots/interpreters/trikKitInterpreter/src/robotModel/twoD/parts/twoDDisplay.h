@@ -25,7 +25,7 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class Display : public robotModel::parts::TrikDisplay, public graphicsUtils::PainterInterface
+class Display : public robotModel::parts::TrikDisplay, public qReal::ui::PainterInterface
 {
 	Q_OBJECT
 
@@ -46,7 +46,7 @@ public:
 	void drawEllipse(int x, int y, int width, int height) override;
 	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) override;
 	void paint(QPainter *painter) override;
-	void clear() override;
+	void reset() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

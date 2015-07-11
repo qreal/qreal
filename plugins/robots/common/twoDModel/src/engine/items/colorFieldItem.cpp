@@ -24,3 +24,25 @@ ColorFieldItem::ColorFieldItem(QGraphicsItem* parent)
 ColorFieldItem::~ColorFieldItem()
 {
 }
+
+QColor ColorFieldItem::color() const
+{
+	return pen().color();
+}
+
+void ColorFieldItem::setColor(const QColor &color)
+{
+	setPenColor(color.name());
+	update();
+}
+
+int ColorFieldItem::thickness() const
+{
+	return pen().width();
+}
+
+void ColorFieldItem::setThickness(int thickness)
+{
+	setPenWidth(thickness);
+	update();
+}

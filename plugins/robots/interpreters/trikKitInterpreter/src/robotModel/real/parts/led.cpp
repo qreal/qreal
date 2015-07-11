@@ -19,7 +19,7 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 Led::Led(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikLed(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {

@@ -91,6 +91,8 @@ FORMS += \
 
 include($$PWD/communication/communication.pri)
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtKitInterpreter_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtKitInterpreter_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/nxtKitInterpreter_fr.ts \
 
 RESOURCES += $$PWD/../nxtKitInterpreter.qrc

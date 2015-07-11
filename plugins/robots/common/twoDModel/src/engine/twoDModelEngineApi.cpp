@@ -19,6 +19,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/mathUtils/math.h>
+#include <qrutils/mathUtils/geometry.h>
 /// @todo: Get rid of it!
 #include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/colorSensorFull.h>
@@ -27,13 +28,14 @@
 #include <kitBase/robotModel/robotParts/colorSensorGreen.h>
 #include <kitBase/robotModel/robotParts/colorSensorBlue.h>
 
+#include "twoDModel/engine/twoDModelGuiFacade.h"
 #include "twoDModel/engine/model/model.h"
 #include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/view/twoDModelWidget.h"
 
-#include "twoDModel/engine/view/d2ModelWidget.h"
-#include "view/d2ModelScene.h"
-#include "view/robotItem.h"
-#include "view/fakeScene.h"
+#include "view/scene/twoDModelScene.h"
+#include "view/scene/robotItem.h"
+#include "view/scene/fakeScene.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
@@ -46,10 +48,11 @@ using namespace twoDModel;
 using namespace kitBase::robotModel;
 using namespace twoDModel::model;
 
-TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
+TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view)
 	: mModel(model)
 	, mView(view)
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
+	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
 {
 }
 
@@ -295,6 +298,11 @@ engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
 	return mView.display();
 }
 
+engine::TwoDModelGuiFacade &TwoDModelEngineApi::guiFacade() const
+{
+	return *mGuiFacade;
+}
+
 uint TwoDModelEngineApi::spoilLight(const uint color) const
 {
 	const qreal noise = mathUtils::Math::gaussianNoise(spoilLightDispersion);
@@ -311,7 +319,9 @@ uint TwoDModelEngineApi::spoilLight(const uint color) const
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
 {
 	RobotModel * const robotModel = mModel.robotModels()[0];
-	const QPointF position = robotModel->configuration().position(port) + robotModel->position();
+	const QVector2D sensorVector = QVector2D(robotModel->configuration().position(port) - rotatePoint);
+	const QPointF rotatedVector = mathUtils::Geometry::rotateVector(sensorVector, robotModel->rotation()).toPointF();
+	const QPointF position = robotModel->position() + rotatePoint + rotatedVector;
 	const qreal direction = robotModel->configuration().direction(port) + robotModel->rotation();
 	return { position, direction };
 }

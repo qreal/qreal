@@ -110,7 +110,7 @@ void Display::paint(QPainter *painter)
 	}
 }
 
-void Display::clear()
+void Display::reset()
 {
 	clearScreen();
 }

@@ -19,7 +19,7 @@
 #include <QtCore/QProcess>
 
 #include <qrkernel/settingsManager.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikFSharpMasterGenerator.h"
 
@@ -185,7 +185,7 @@ void TrikFSharpGeneratorPlugin::runProgram()
 		tr("Attention, the robot starts about a half-minute")
 	);
 
-	utils::TcpRobotCommunicator communicator("TrikTcpServer");
+	utils::robotCommunication::TcpRobotCommunicator communicator("TrikTcpServer");
 
 	communicator.runDirectCommand(
 			"script.system(\"mono FSharp/Environment/example0.exe\"); "
@@ -194,7 +194,7 @@ void TrikFSharpGeneratorPlugin::runProgram()
 
 void TrikFSharpGeneratorPlugin::stopRobot()
 {
-	utils::TcpRobotCommunicator communicator("TrikTcpServer");
+	utils::robotCommunication::TcpRobotCommunicator communicator("TrikTcpServer");
 
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));

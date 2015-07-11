@@ -18,11 +18,11 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 GamepadWheel::GamepadWheel(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikGamepadWheel(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newScalarSensorData
 			, this, &GamepadWheel::onIncomingData);
 }
 

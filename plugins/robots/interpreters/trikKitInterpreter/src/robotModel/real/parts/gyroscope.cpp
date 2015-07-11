@@ -17,11 +17,11 @@
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Gyroscope::Gyroscope(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+Gyroscope::Gyroscope(const DeviceInfo &info, const PortInfo &port, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: kitBase::robotModel::robotParts::GyroscopeSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newScalarSensorData
 			, this, &Gyroscope::onIncomingData);
 }
 

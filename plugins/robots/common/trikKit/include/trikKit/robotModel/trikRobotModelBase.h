@@ -29,6 +29,8 @@ public:
 	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<kitBase::robotModel::DeviceInfo> convertibleBases() const override;
 
+	QHash<QString, int> buttonCodes() const override;
+
 protected:
 	virtual kitBase::robotModel::DeviceInfo displayInfo() const;
 	virtual kitBase::robotModel::DeviceInfo speakerInfo() const;

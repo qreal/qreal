@@ -191,7 +191,7 @@ Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const V
 	};
 }
 
-void ConditionsFactory::reportError(const QString &message)
+void ConditionsFactory::reportError(const QString &message) const
 {
 	emit mStatus.checkerError(message);
 }

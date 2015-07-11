@@ -30,6 +30,10 @@ public:
 
 	AbstractItem *clone() const override;
 
+	/// Creates and returns colored stylus item for 2D model palette.
+	/// Transfers ownership.
+	static QAction *stylusTool();
+
 	void addLine(qreal x2, qreal y2);
 
 	QRectF boundingRect() const override;
@@ -47,7 +51,7 @@ public:
 	void setBrushColor(const QString &text) override;
 
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
-	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
+	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const override;
 	void deserialize(const QDomElement &element) override;
 
 signals:

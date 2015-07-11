@@ -39,6 +39,7 @@ void RulesPlugin::init(PluginConfigurator const &configurator)
 	QObject::connect(mRunAllDiagram, SIGNAL(triggered()), mChecker, SLOT(checkAllDiagrams()));
 	QObject::connect(mRunCurrentDiagram, SIGNAL(triggered()), mChecker, SLOT(checkCurrentDiagram()));
 	QObject::connect(mExportToXml, SIGNAL(triggered()), mChecker, SLOT(exportToXml()));
+	configurator.mainWindowDockInterface().logicalModelDock()->hide();
 }
 
 QList<ActionInfo> RulesPlugin::actions()

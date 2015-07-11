@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Yurii Litvinov
+/* Copyright 2015 Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 namespace utils {
 namespace robotCommunication {
 
-/// Represents abstract communication protocol. Represents sequential communication which has a possibility of
+/// Abstract communication protocol. Represents sequential communication which has a possibility of
 /// failure and consists of several elementary actions like sendings and receivings of messages. It is responsible
 /// only for correct order and overall sanity of communications, actual sending and receiving of data left to
 /// concrete actions.

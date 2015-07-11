@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,9 +95,17 @@ public:
 	QDockWidget *propertyEditorDock() const override;
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
+	QStatusBar *statusBar() const override;
+	QList<QToolBar *> toolBars() const override;
 
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
+	void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) override;
+
+	QByteArray saveState(int version = 0) const override;
+	bool restoreState(const QByteArray &state, int version = 0) override;
+
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
 	/// Sends close event via SystemEvents.
 	void emulateClose(int returnCode = 0);
@@ -110,11 +118,13 @@ private:
 	SystemEvents &mEvents;
 	const GraphicalModelAssistInterface *mGraphicalModel;
 	Id mActiveId;
+	QWidget *mWindowWidget;  // Takes ownership
 	QDockWidget *mLogicalModelDock;  // Takes ownership
 	QDockWidget *mGraphicalModelDock;  // Takes ownership
 	QDockWidget *mPropertyEditorDock;  // Takes ownership
 	QDockWidget *mErrorReporterDock;  // Takes ownership
 	QDockWidget *mPaletteDock;  // Takes ownership
+	QStatusBar *mStatusBar;  // Takes ownership
 	bool mClosed = false;
 };
 

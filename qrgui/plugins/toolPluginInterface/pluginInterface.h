@@ -68,6 +68,12 @@ public:
 		return {};
 	}
 
+	/// Shall be overriden to return facade for access to plugin`s user interface from scripting language.
+	virtual QObject *guiScriptFacade()
+	{
+		return nullptr;
+	}
+
 	/// Returns a list of project converters provided by this plugin.
 	/// Convereters are applied to save containing corresponding diagrams
 	/// sequentially moving from save`s version to system one.

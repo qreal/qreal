@@ -131,7 +131,9 @@ SOURCES += \
 	$$PWD/src/lua/luaSemanticAnalyzer.cpp \
 	$$PWD/src/lua/luaToolbox.cpp \
 
-TRANSLATIONS = $$PWD/../qrtranslations/ru/qrtext_ru.ts
+TRANSLATIONS = \
+	$$PWD/../qrtranslations/ru/qrtext_ru.ts \
+	$$PWD/../qrtranslations/fr/qrtext_fr.ts \
 
 includes(qrkernel thirdparty/qslog)
 links(qrkernel qslog)

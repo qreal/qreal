@@ -169,6 +169,7 @@ twoDModel::robotModel::TwoDRobotModel &RobotModel::info()
 void RobotModel::stopRobot()
 {
 	mBeepTime = 0;
+	mRobotModel.displayWidget()->reset();
 	emit playingSoundChanged(false);
 	for (Motor * const engine : mMotors) {
 		engine->speed = 0;
@@ -249,6 +250,7 @@ void RobotModel::nextStep()
 	// Changing position quietly, they must not be caught by UI here.
 	mPos += mPhysicsEngine->shift().toPointF();
 	mAngle += mPhysicsEngine->rotation();
+	emit positionRecalculated(mPos, mAngle);
 }
 
 void RobotModel::recalculateParams()
@@ -341,6 +343,7 @@ QDomElement RobotModel::serialize(QDomDocument &target) const
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);
 	mStartPositionMarker->serialize(robot, target);
+	serializeWheels(robot);
 	return robot;
 }
 
@@ -354,6 +357,7 @@ void RobotModel::deserialize(const QDomElement &robotElement)
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
 	mStartPositionMarker->deserialize(robotElement);
+	deserializeWheels(robotElement);
 	nextFragment();
 }
 
@@ -369,7 +373,10 @@ void RobotModel::onRobotReturnedOnGround()
 
 void RobotModel::setMotorPortOnWheel(WheelEnum wheel, const kitBase::robotModel::PortInfo &port)
 {
-	mWheelsToMotorPortsMap[wheel] = port;
+	if (mWheelsToMotorPortsMap[wheel] != port) {
+		mWheelsToMotorPortsMap[wheel] = port;
+		emit wheelOnPortChanged(wheel, port);
+	}
 }
 
 void RobotModel::resetPhysics(const WorldModel &worldModel, const Timeline &timeline)
@@ -388,6 +395,25 @@ int RobotModel::varySpeed(const int speed) const
 {
 	const qreal ran = mathUtils::Math::gaussianNoise(varySpeedDispersion);
 	return mathUtils::Math::truncateToInterval(-100, 100, round(speed * (1 + ran)));
+}
+
+void RobotModel::serializeWheels(QDomElement &robotElement) const
+{
+	QDomElement wheels = robotElement.ownerDocument().createElement("wheels");
+	wheels.setAttribute("left", mWheelsToMotorPortsMap[WheelEnum::left].toString());
+	wheels.setAttribute("right", mWheelsToMotorPortsMap[WheelEnum::right].toString());
+	robotElement.appendChild(wheels);
+}
+
+void RobotModel::deserializeWheels(const QDomElement &robotElement)
+{
+	const QDomElement wheels = robotElement.firstChildElement("wheels");
+	if (wheels.isNull()) {
+		return;
+	}
+
+	setMotorPortOnWheel(WheelEnum::left, PortInfo::fromString(wheels.attribute("left")));
+	setMotorPortOnWheel(WheelEnum::right, PortInfo::fromString(wheels.attribute("right")));
 }
 
 QGraphicsItem *RobotModel::startPositionMarker() const

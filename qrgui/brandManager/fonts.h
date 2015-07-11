@@ -36,7 +36,7 @@ public:
 	/// Returns font for inline labels on scene
 	QFont sceneLabelsFont() const
 	{
-		return mTitlesFont;
+		return mLabelsFont;
 	}
 
 	/// Returns a path to a font for inline labels on scene if other was not selected by user
@@ -61,16 +61,16 @@ private:
 	void initTitlesFont()
 	{
 		if (SettingsManager::value("CustomFont").toBool()) {
-			mTitlesFont.fromString(SettingsManager::value("CurrentFont").toString());
+			mLabelsFont.fromString(SettingsManager::value("CurrentFont").toString());
 		} else {
 			const int fontId = QFontDatabase::addApplicationFont(defaultSceneLabelsFont());
 			if (fontId != -1) {
-				mTitlesFont.fromString(QFontDatabase::applicationFontFamilies(fontId).at(0) + ",11,-1,5,50,0,0,0,0,0");
+				mLabelsFont.fromString(QFontDatabase::applicationFontFamilies(fontId).at(0) + ",11,-1,5,50,0,0,0,0,0");
 			}
 		}
 	}
 
-	QFont mTitlesFont;
+	QFont mLabelsFont;
 
 };
 

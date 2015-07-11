@@ -16,7 +16,7 @@
 
 #include <QtWidgets/QApplication>
 
-#include <twoDModel/engine/view/d2ModelWidget.h>
+#include <twoDModel/engine/view/twoDModelWidget.h>
 #include <twoDModel/engine/model/model.h>
 
 using namespace twoDModel;
@@ -29,13 +29,13 @@ Runner::Runner(const QString &report, const QString &trajectory)
 			, mQRealFacade.models().graphicalModelAssistApi()
 			, mQRealFacade.models().logicalModelAssistApi()
 			, mMainWindow
+			, mMainWindow
 			, mProjectManager
 			, mSceneCustomizer
 			, mQRealFacade.events()
 			, mTextManager)
 	, mReporter(report, trajectory)
 {
-	mPluginFacade.customizer().customizeDocks(&mMainWindow);
 	mPluginFacade.init(mConfigurator);
 	for (const QString &defaultSettingsFile : mPluginFacade.defaultSettingsFiles()) {
 		qReal::SettingsManager::loadDefaultSettings(defaultSettingsFile);
@@ -59,23 +59,27 @@ void Runner::interpret(const QString &saveFile, bool background)
 
 	/// @todo: A bit hacky way to get 2D model window. Actually we must not have need in this.
 	/// GUI must be separated from logic and not appear here at all.
-	QList<view::D2ModelWidget *> twoDModelWindows;
-	for (QWidget * const widget : QApplication::topLevelWidgets()) {
-		if (view::D2ModelWidget * const twoDModelWindow = dynamic_cast<view::D2ModelWidget *>(widget)) {
+	QList<view::TwoDModelWidget *> twoDModelWindows;
+	for (QWidget * const widget : QApplication::allWidgets()) {
+		if (view::TwoDModelWidget * const twoDModelWindow = dynamic_cast<view::TwoDModelWidget *>(widget)) {
 			twoDModelWindows << twoDModelWindow;
 		}
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped
-				, [=]() { mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0); });
+		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [=]() {
+			QTimer::singleShot(0, [=]() {
+				mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0);
+			});
+		});
 	}
 
-	for (view::D2ModelWidget * const  twoDModelWindow : twoDModelWindows) {
-		connect(twoDModelWindow, &view::D2ModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
+	for (view::TwoDModelWidget * const  twoDModelWindow : twoDModelWindows) {
+		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
 		for (model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
-			connect(robotModel, &model::RobotModel::robotRided, this, &Runner::onRobotRided, Qt::UniqueConnection);
+			connect(robotModel, &model::RobotModel::positionRecalculated
+					, this, &Runner::onRobotRided, Qt::UniqueConnection);
 		}
 	}
 

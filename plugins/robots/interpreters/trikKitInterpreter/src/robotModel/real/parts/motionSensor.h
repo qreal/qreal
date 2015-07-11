@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikMotionSensor.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -29,7 +29,7 @@ class MotionSensor : public robotModel::parts::TrikMotionSensor
 public:
 	MotionSensor(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
 
@@ -37,7 +37,7 @@ public slots:
 	void onIncomingData(const QString &portName, int value);
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

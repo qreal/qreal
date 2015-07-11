@@ -30,6 +30,10 @@ public:
 
 	AbstractItem *clone() const override;
 
+	/// Creates and returns colored line item for 2D model palette.
+	/// Transfers ownership.
+	static QAction *lineTool();
+
 	QPainterPath shape() const override;
 
 	QRectF boundingRect() const override;
@@ -38,15 +42,8 @@ public:
 
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 	void reshapeRectWithShift() override;
-	void calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid);
 
-	void resizeBeginWithGrid(int indexGrid);
-	void reshapeEndWithGrid(int indexGrid);
-	void reshapeBeginWithGrid(int indexGrid);
-	void setDraggedEnd(qreal x, qreal y);
-	void alignTheWall(int indexGrid);
-
-	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
+	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const override;
 	void deserialize(const QDomElement &element) override;
 
 	void deserializePenBrush(const QDomElement &element);
@@ -54,18 +51,10 @@ public:
 
 protected:
 	void setPrivateData();
-	qreal alignedCoordinate(qreal coord, int coef, const int indexGrid) const;
-	void setBeginCoordinatesWithGrid(int indexGrid);
-	void setEndCoordinatesWithGrid(int indexGrid);
-	void countCellNumbCoordinates(int indexGrid);
 
 	graphicsUtils::LineImpl mLineImpl;
 	QString mSerializeName;
 	int mCornerRadius;
-	int mCellNumbX1;
-	int mCellNumbY1;
-	int mCellNumbX2;
-	int mCellNumbY2;
 };
 
 }

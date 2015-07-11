@@ -25,14 +25,16 @@ namespace qReal {
 class QRGUI_SYSTEM_FACADE_EXPORT NullErrorReporter : public ErrorReporterInterface
 {
 public:
-	virtual void addInformation(const QString &message, const Id &position = Id::rootId());
-	virtual void addWarning(const QString &message, const Id &position = Id::rootId());
-	virtual void addError(const QString &message, const Id &position = Id::rootId());
-	virtual void addCritical(const QString &message, const Id &position = Id::rootId());
+	void addInformation(const QString &message, const Id &position = Id::rootId()) override;
+	void addWarning(const QString &message, const Id &position = Id::rootId()) override;
+	void addError(const QString &message, const Id &position = Id::rootId()) override;
+	void addCritical(const QString &message, const Id &position = Id::rootId()) override;
 
-	virtual bool wereErrors();
-	virtual void clear();
-	virtual void clearErrors();
+	void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) override;
+
+	bool wereErrors() override;
+	void clear() override;
+	void clearErrors() override;
 
 private:
 	bool mWereErrors = false;

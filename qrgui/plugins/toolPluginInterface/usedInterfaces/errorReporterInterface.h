@@ -28,6 +28,12 @@ public:
 	virtual void addError(const QString &message, const Id &position = Id::rootId()) = 0;
 	virtual void addCritical(const QString &message, const Id &position = Id::rootId()) = 0;
 
+	/// Shows beautifully bubbling \a message in the top-right corner of \a parent for
+	/// \a duration / 2 milliseconds, then the message fades away for the same time.
+	/// @param parent The widget in top-right corner of which the message is shown.
+	/// If nullptr is passed then main window will be used.
+	virtual void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) = 0;
+
 	virtual void clear() = 0;
 	virtual void clearErrors() = 0;
 
