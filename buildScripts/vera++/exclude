@@ -3,6 +3,5 @@ installer
 docs
 umlDocumentation
 thirdparty
-plugins
-qrtest
 qrmc
+qrtest

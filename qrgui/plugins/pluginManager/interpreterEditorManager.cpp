@@ -810,8 +810,9 @@ IdList InterpreterEditorManager::elementsWithTheSameName(
 	for (const auto &element: repo->children(diag)) {
 		if (repo->stringProperty(element, "displayedName") == name && element.element() == type
 				&& repo->isLogicalElement(element)) {
-			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, element);
-			result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(element));
+			const QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, element);
+			result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second)
+					, repo->name(element));
 		}
 	}
 
@@ -829,11 +830,11 @@ IdList InterpreterEditorManager::propertiesWithTheSameName(
 	}
 
 	IdList result;
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	const QPair<qrRepo::RepoApi*, Id> repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	const Id metaId = repoAndMetaIdPair.second;
 
-	foreach (const Id &idProperty, repo->children(metaId)) {
+	for (const Id &idProperty : repo->children(metaId)) {
 		if (idProperty.element() == "MetaEntity_Attribute") {
 			if (repo->hasProperty(idProperty, "maskedNames")) {
 				if (repo->property(idProperty, "maskedNames").toStringList().contains(propertyNewName)) {
