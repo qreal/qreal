@@ -43,7 +43,6 @@ class QRGUI_PLUGINS_MANAGER_EXPORT EditorManager : public QObject, public Editor
 public:
 	explicit EditorManager(const QString &path);
 	explicit EditorManager(QObject *parent = nullptr);
-
 	~EditorManager() override;
 
 	IdList editors() const override;

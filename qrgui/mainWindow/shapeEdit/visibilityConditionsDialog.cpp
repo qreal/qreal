@@ -13,7 +13,7 @@
  * limitations under the License. */
 
 #include "visibilityConditionsDialog.h"
-#include "ui_visibilityConditionsDialog.h"		
+#include "ui_visibilityConditionsDialog.h"
 
 #include <QtWidgets/QPushButton>
 

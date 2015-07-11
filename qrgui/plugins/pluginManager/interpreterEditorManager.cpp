@@ -33,8 +33,8 @@ using namespace qReal;
 using namespace utils;
 
 InterpreterEditorManager::InterpreterEditorManager(const QString &fileName, QObject *parent)
-	: QObject(parent)
-	, mMetamodelFile(fileName)
+				: QObject(parent)
+				, mMetamodelFile(fileName)
 {
 	qrRepo::RepoApi * const repo = new qrRepo::RepoApi(fileName);
 	mEditorRepoApi.insert("test", repo);
@@ -301,7 +301,7 @@ class InterpreterEditorManager::CompareProperty: public InterpreterEditorManager
 {
 public:
 	CompareProperty(QString value)
-		: mValue(value)
+					: mValue(value)
 	{
 	}
 
@@ -517,7 +517,7 @@ IdList InterpreterEditorManager::containedTypes(const Id &id) const
 			const Id metaIdTo = repo->otherEntityFromLink(link, metaId);
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaIdTo);
 			containedTypes << Id(repo->name(editorAndDiagramPair.first)
-					, repo->name(editorAndDiagramPair.second), repo->name(metaIdTo));
+								, repo->name(editorAndDiagramPair.second), repo->name(metaIdTo));
 		}
 	}
 
@@ -791,7 +791,7 @@ bool InterpreterEditorManager::isParentProperty(const Id &id, const QString &pro
 }
 
 void InterpreterEditorManager::deletePropertyInElement(qrRepo::RepoApi *repo
-													   , const Id &diagram, const QString &propertyName) const
+				, const Id &diagram, const QString &propertyName) const
 {
 	foreach (const Id &element, repo->children(diagram)) {
 		foreach (const Id &property, repo->children(element)) {
@@ -822,7 +822,7 @@ void InterpreterEditorManager::addProperty(const Id &id, const QString &propDisp
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	const Id newId = Id(repoAndMetaIdPair.second.editor(), repoAndMetaIdPair.second.diagram()
-						, "MetaEntity_Attribute", QUuid::createUuid().toString());
+					, "MetaEntity_Attribute", QUuid::createUuid().toString());
 	repoAndMetaIdPair.first->addChild(repoAndMetaIdPair.second, newId);
 	repoAndMetaIdPair.first->setProperty(newId, "name", propDisplayedName);
 	repoAndMetaIdPair.first->setProperty(newId, "displayedName", propDisplayedName);
@@ -845,7 +845,7 @@ IdList InterpreterEditorManager::elementsWithTheSameName(
 
 	for (const auto &element: repo->children(diag)) {
 		if (repo->stringProperty(element, "displayedName") == name && element.element() == type
-			&& repo->isLogicalElement(element)) {
+				&& repo->isLogicalElement(element)) {
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, element);
 			result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(element));
 		}
@@ -975,13 +975,13 @@ QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() con
 }
 
 void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, const Id &id
-										   , const QString &property, const QVariant &propertyValue) const
+				, const QString &property, const QVariant &propertyValue) const
 {
 	repo->setProperty(id, property, propertyValue);
 }
 
 void InterpreterEditorManager::updateProperties(const Id &id, const QString &property, const QString &propertyType
-												, const QString &propertyDefaultValue, const QString &propertyDisplayedName) const
+				, const QString &propertyDefaultValue, const QString &propertyDisplayedName) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
@@ -1034,7 +1034,7 @@ IdList InterpreterEditorManager::children(const Id &parent) const {
 			const Id metaChild = repo->otherEntityFromLink(link, metaId);
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaChild);
 			const Id child = Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second)
-								, repo->name(metaChild));
+							, repo->name(metaChild));
 			result << child;
 			result << children(child);
 		}
@@ -1095,7 +1095,7 @@ bool InterpreterEditorManager::isRootDiagramNode(const Id &id) const
 }
 
 void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, const Id &id, const Id &parent
-														 , const QString &name) const
+				, const QString &name) const
 {
 	repo->addChild(parent, id);
 	repo->setProperty(id, "name", name);
@@ -1115,7 +1115,7 @@ void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, 
 
 
 void InterpreterEditorManager::addNodeElement(const Id &diagram, const QString &name
-											  , const QString &displayedName, bool isRootDiagramNode) const
+				, const QString &displayedName, bool isRootDiagramNode) const
 {
 	const QString shape =
 			"<graphics>\n"
@@ -1169,8 +1169,8 @@ void InterpreterEditorManager::addNodeElement(const Id &diagram, const QString &
 }
 
 void InterpreterEditorManager::addEdgeElement(const Id &diagram, const QString &name
-											  , const QString &displayedName, const QString &labelText, const QString &labelType
-											  , const QString &lineType, const QString &beginType, const QString &endType) const
+				, const QString &displayedName, const QString &labelText, const QString &labelType
+				, const QString &lineType, const QString &beginType, const QString &endType) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
@@ -1258,7 +1258,7 @@ QStringList InterpreterEditorManager::referenceProperties(const Id &id) const
 }
 
 QString InterpreterEditorManager::paletteGroupDescription(const Id &editor, const Id &diagram
-														  , const QString &group) const
+				, const QString &group) const
 {
 	Q_UNUSED(editor);
 	Q_UNUSED(diagram);
