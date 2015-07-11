@@ -17,7 +17,9 @@
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 
 namespace utils {
+namespace robotCommunication {
 class TcpRobotCommunicator;
+}
 }
 
 namespace trik {
@@ -73,7 +75,7 @@ private:
 	/// Action that stops script execution and turns off motors.
 	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
 
-	utils::TcpRobotCommunicator *mCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator *mCommunicator;
 };
 
 }

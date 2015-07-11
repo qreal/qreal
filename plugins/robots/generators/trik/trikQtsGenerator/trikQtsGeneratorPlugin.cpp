@@ -19,7 +19,7 @@
 #include <QtCore/QDebug>
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikQtsMasterGenerator.h"
 
@@ -44,7 +44,7 @@ TrikQtsGeneratorPlugin::~TrikQtsGeneratorPlugin()
 void TrikQtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	RobotsGeneratorPluginBase::init(configurator);
-	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
+	mCommunicator = new utils::robotCommunication::TcpRobotCommunicator("TrikTcpServer");
 	mCommunicator->setErrorReporter(configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
 }
 

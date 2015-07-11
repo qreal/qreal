@@ -16,11 +16,10 @@
 
 #include <QtNetwork/QTcpSocket>
 
-#include "utilsDeclSpec.h"
-
 namespace utils {
+namespace robotCommunication {
 
-class ROBOTS_UTILS_EXPORT TcpConnectionHandler : public QObject
+class TcpConnectionHandler : public QObject
 {
 	Q_OBJECT
 
@@ -35,7 +34,7 @@ public:
 
 	void send(const QString &data);
 
-public slots:
+private slots:
 	void onIncomingData();
 
 signals:
@@ -48,4 +47,5 @@ private:
 	int mPort;
 };
 
+}
 }

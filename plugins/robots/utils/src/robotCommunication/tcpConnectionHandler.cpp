@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <utils/tcpConnectionHandler.h>
+#include "tcpConnectionHandler.h"
 
 #include <QtNetwork/QHostAddress>
 
 #include <qrkernel/logging.h>
 
-using namespace utils;
+using namespace utils::robotCommunication;
 
 TcpConnectionHandler::TcpConnectionHandler(int port)
 	: mPort(port)

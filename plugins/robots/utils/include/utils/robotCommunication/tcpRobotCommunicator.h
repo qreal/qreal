@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 
 #include <QtNetwork/QTcpSocket>
 #include <QtCore/QTimer>
-#include "utilsDeclSpec.h"
+#include <QtCore/QScopedPointer>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-#include <utils/tcpConnectionHandler.h>
+
+#include "utils/utilsDeclSpec.h"
 
 namespace utils {
+namespace robotCommunication {
+
+class TcpConnectionHandler;
 
 /// Class that handles connection to robot and sends commands to it.
 class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
@@ -89,8 +93,8 @@ private:
 	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
 
 	QString mCurrentIP;
-	TcpConnectionHandler mControlConnection;
-	TcpConnectionHandler mTelemetryConnection;
+	QScopedPointer<TcpConnectionHandler> mControlConnection;
+	QScopedPointer<TcpConnectionHandler> mTelemetryConnection;
 
 	bool mIsConnected;
 	const QString mServerIpSettingsKey;
@@ -99,4 +103,5 @@ private:
 	QTimer mVersionTimer;
 };
 
+}
 }

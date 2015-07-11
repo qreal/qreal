@@ -20,8 +20,6 @@
 #include "utils/utilsDeclSpec.h"
 #include "robotCommunicationThreadInterface.h"
 
-class QextSerialPort;
-
 namespace utils {
 namespace robotCommunication {
 

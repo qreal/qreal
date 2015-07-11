@@ -12,8 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "utils/tcpRobotCommunicator.h"
-#include <utils/requiredVersion.h>
+#include "utils/robotCommunication/tcpRobotCommunicator.h"
 
 #include <QtNetwork/QHostAddress>
 #include <QtCore/QFileInfo>
@@ -23,21 +22,24 @@
 #include <qrkernel/logging.h>
 #include <qrutils/inFile.h>
 
-using namespace utils;
+#include "utils/requiredVersion.h"
+#include "src/robotCommunication/tcpConnectionHandler.h"
+
+using namespace utils::robotCommunication;
 
 static const uint controlPort = 8888;
 static const uint telemetryPort = 9000;
 
 TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	: mErrorReporter(nullptr)
-	, mControlConnection(controlPort)
-	, mTelemetryConnection(telemetryPort)
+	, mControlConnection(new TcpConnectionHandler(controlPort))
+	, mTelemetryConnection(new TcpConnectionHandler(telemetryPort))
 	, mIsConnected(false)
 	, mServerIpSettingsKey(serverIpSettingsKey)
 {
-	QObject::connect(&mControlConnection, &TcpConnectionHandler::messageReceived
+	QObject::connect(mControlConnection.data(), &TcpConnectionHandler::messageReceived
 			, this, &TcpRobotCommunicator::processControlMessage);
-	QObject::connect(&mTelemetryConnection, &TcpConnectionHandler::messageReceived
+	QObject::connect(mTelemetryConnection.data(), &TcpConnectionHandler::messageReceived
 			, this, &TcpRobotCommunicator::processTelemetryMessage);
 	QObject::connect(&mVersionTimer, &QTimer::timeout, this, &TcpRobotCommunicator::versionTimeOut);
 }
@@ -61,13 +63,13 @@ bool TcpRobotCommunicator::uploadProgram(const QString &programName)
 	}
 
 	connect();
-	if (!mControlConnection.isConnected()) {
+	if (!mControlConnection->isConnected()) {
 		return false;
 	}
 
 	const QString &fileNameOnARobot = QFileInfo(programName).fileName();
 
-	mControlConnection.send("file:" + fileNameOnARobot + ":" + fileContents);
+	mControlConnection->send("file:" + fileNameOnARobot + ":" + fileContents);
 
 	return true;
 }
@@ -75,45 +77,45 @@ bool TcpRobotCommunicator::uploadProgram(const QString &programName)
 bool TcpRobotCommunicator::runProgram(const QString &programName)
 {
 	connect();
-	if (!mControlConnection.isConnected()) {
+	if (!mControlConnection->isConnected()) {
 		return false;
 	}
 
-	mControlConnection.send("run:" + programName);
+	mControlConnection->send("run:" + programName);
 
 	return true;
 }
 
 bool TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool asScript)
 {
-	if (!mControlConnection.isConnected()) {
+	if (!mControlConnection->isConnected()) {
 		return false;
 	}
 
 	const QString command = asScript ? "directScript" : "direct";
-	mControlConnection.send(command + ":" + directCommand);
+	mControlConnection->send(command + ":" + directCommand);
 
 	return true;
 }
 
 bool TcpRobotCommunicator::stopRobot()
 {
-	if (!mControlConnection.isConnected()) {
+	if (!mControlConnection->isConnected()) {
 		return false;
 	}
 
-	mControlConnection.send("stop");
+	mControlConnection->send("stop");
 
 	return true;
 }
 
 void TcpRobotCommunicator::requestData(const QString &sensor)
 {
-	if (!mTelemetryConnection.isConnected()) {
+	if (!mTelemetryConnection->isConnected()) {
 		return;
 	}
 
-	mTelemetryConnection.send("sensor:" + sensor);
+	mTelemetryConnection->send("sensor:" + sensor);
 }
 
 void TcpRobotCommunicator::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
@@ -179,7 +181,7 @@ void TcpRobotCommunicator::versionTimeOut()
 
 void TcpRobotCommunicator::versionRequest()
 {
-	mControlConnection.send("version");
+	mControlConnection->send("version");
 	mVersionTimer.start(3000);
 }
 
@@ -192,7 +194,7 @@ void TcpRobotCommunicator::connect()
 		return;
 	}
 
-	if (mControlConnection.isConnected() && mTelemetryConnection.isConnected()) {
+	if (mControlConnection->isConnected() && mTelemetryConnection->isConnected()) {
 		if (mCurrentIP == server) {
 			return;
 		}
@@ -201,15 +203,15 @@ void TcpRobotCommunicator::connect()
 	}
 
 	mCurrentIP = server;
-	const bool result = mControlConnection.connect(hostAddress) && mTelemetryConnection.connect(hostAddress);
+	const bool result = mControlConnection->connect(hostAddress) && mTelemetryConnection->connect(hostAddress);
 	versionRequest();
 	emit connected(result, QString());
 }
 
 void TcpRobotCommunicator::disconnect()
 {
-	mControlConnection.disconnect();
-	mTelemetryConnection.disconnect();
+	mControlConnection->disconnect();
+	mTelemetryConnection->disconnect();
 
 	emit disconnected();
 }
