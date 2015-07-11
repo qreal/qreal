@@ -199,6 +199,7 @@
 							<default>true</default>
 						</property>
 						<property type="bool" name="createChildrenFromMenu"/>
+						<property type="string" name="generationRule"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
