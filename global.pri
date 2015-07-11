@@ -45,6 +45,7 @@ equals(TEMPLATE, app) {
 }
 
 macx {
+	QMAKE_CXXFLAGS += -stdlib=libc++
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
@@ -80,7 +81,7 @@ defineTest(copyToDestdir) {
 		win32:FILE ~= s,/$,,g
 
 		win32:FILE ~= s,/,\,g
-		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/
+		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
 		win32:DDIR ~= s,/,\,g
 
 		isEmpty(NOW) {
@@ -108,6 +109,12 @@ defineTest(copyToDestdir) {
 	}
 
 	export(QMAKE_POST_LINK)
+}
+
+macx {
+	defineTest(copyToBundleDir) {
+		copyToDestdir($$1 $$2 Contents/MacOS/)
+	}
 }
 
 defineTest(includes) {
