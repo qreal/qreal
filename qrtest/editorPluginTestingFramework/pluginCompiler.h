@@ -11,10 +11,10 @@ public:
 
 	/// compiles code that is generated in qrmcLauncher and qrxcLauncher
 	void compilePlugin(const QString &fileName,
-		QString const &directoryToCodeToCompile
-		, QString const &pathToQmake
-		, QString const &pathToMake
-		, QString const &configurationParameter
+		const QString &directoryToCodeToCompile
+		, const QString &pathToQmake
+		, const QString &pathToMake
+		, const QString &configurationParameter
 		);
 };
 

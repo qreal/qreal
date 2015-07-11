@@ -37,7 +37,7 @@ QStringList ConvertingMethods::convertIdListIntoStringList(IdList const idList)
 	return resultList;
 }
 
-QStringList ConvertingMethods::convertStringIntoStringList(QString const &string)
+QStringList ConvertingMethods::convertStringIntoStringList(const QString &string)
 {
 	QStringList result;
 	result.append(string);
@@ -66,7 +66,7 @@ QStringList ConvertingMethods::convertExplosionListIntoStringList(QList<Explosio
 {
 	QStringList result;
 	foreach (Explosion const &explosion, explosionList) {
-		QString const &target = explosion.target().toString();
+		const QString &target = explosion.target().toString();
 		result.append(target);
 	}
 	return result;
@@ -75,7 +75,7 @@ QStringList ConvertingMethods::convertExplosionListIntoStringList(QList<Explosio
 QString ConvertingMethods::transformateOutput(
 		QStringList const &output
 		, Id const &id
-		, QString const &name
+		, const QString &name
 		)
 {
 	QString result;
@@ -85,19 +85,19 @@ QString ConvertingMethods::transformateOutput(
 		result.append(name + "-");
 	}
 
-	for (auto &outputElement : output) {
+	for (const auto &outputElement : output) {
 		result.append(outputElement + ",");
 	}
 
 	return result;
 }
 
-QSet<QString> ConvertingMethods::resultToCompare(QString const &method)
+QSet<QString> ConvertingMethods::resultToCompare(const QString &method)
 {
 	QStringList methodOutput = method.split("|");
 
 	QStringList result;
-	foreach (QString const &string, methodOutput) {
+	for (const QString &string : methodOutput) {
 		QString output = string.split("-").last();
 		QStringList outputToList = output.split(",");
 

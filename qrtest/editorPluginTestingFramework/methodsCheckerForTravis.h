@@ -20,7 +20,7 @@ private:
 	static bool calculateResultForOneList(QList<QPair<QString, QPair<QString, QString> > > listOfResults);
 
 	/// takes two strings and returns 0, if they are equal, and 1, if they are not equal
-	static bool calculateResultForOneMethod(QString const &firstResult, QString const &secondResult);
+	static bool calculateResultForOneMethod(const QString &firstResult, const QString &secondResult);
 };
 
 }

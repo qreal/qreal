@@ -11,10 +11,10 @@ using namespace utils;
 using namespace qrRepo;
 
 EditorInterface* PluginLoader::loadedPlugin(
-		QString const &fileName
-		, QString const &pathToFile
-		, QString const &pluginExtension
-		, QString const &prefix)
+		const QString &fileName
+		, const QString &pathToFile
+		, const QString &pluginExtension
+		, const QString &prefix)
 {
 	qDebug() << "STARTING PLUGIN LOADING";
 	QDir mPluginDir = QDir(pathToFile);
@@ -30,8 +30,8 @@ EditorInterface* PluginLoader::loadedPlugin(
 
 	foreach (Id const &key, metamodels) {
 		if (mRepoApi->isLogicalElement(key)) {
-			QString const &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
-			QString const &pluginName = prefix + normalizedMetamodelName + "-d" + "." + pluginExtension;
+			const QString &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
+			const QString &pluginName = prefix + normalizedMetamodelName + "-d" + "." + pluginExtension;
 			mPluginNames.append(pluginName);
 
 			QPluginLoader * const loader = new QPluginLoader(mPluginDir.absoluteFilePath(pluginName));

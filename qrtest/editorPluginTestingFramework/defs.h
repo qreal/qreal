@@ -2,30 +2,30 @@
 #include <QtCore/QString>
 
 namespace editorPluginTestingFramework {
-QString const sourcesDir = "/sources";
-QString const pluginsDir = "/plugins";
+const QString sourcesDir = "/sources";
+const QString pluginsDir = "/plugins";
 
-QString const pathToQrmcGeneratedCode = "";
-QString const pathToQrxcGeneratedCode = "";
+const QString pathToQrmcGeneratedCode = "";
+const QString pathToQrxcGeneratedCode = "";
 
-QString const pathToQrmcGeneratedPlugin = "/plugins";
-QString const pathToQrxcGeneratedPlugin = "/plugins";
+const QString pathToQrmcGeneratedPlugin = "/plugins";
+const QString pathToQrxcGeneratedPlugin = "/plugins";
 
-QString const pathToQRealRootFromQrmc = "../";
-QString const pathToQRealRootFromQrxc = "../../";
+const QString pathToQRealRootFromQrmc = "../";
+const QString pathToQRealRootFromQrxc = "../../";
 
-QString const destDirForQrmc = "";
-QString const destDirForQrxc = "";
+const QString destDirForQrmc = "";
+const QString destDirForQrxc = "";
 
-QString const pathToQrxcQrmcMethodsToTest = "methodsToTestQrxcQrmc.txt";
-QString const pathToQrxcInterpreterMethodsToTest = "methodsToTestInterpQrxc.txt";
+const QString pathToQrxcQrmcMethodsToTest = "methodsToTestQrxcQrmc.txt";
+const QString pathToQrxcInterpreterMethodsToTest = "methodsToTestInterpQrxc.txt";
 
-QString const configurationFileName = "configurationParameters.xml";
-QString const travisConfigurationFileName = "travisConfigurationParameters.xml";
+const QString configurationFileName = "configurationParameters.xml";
+const QString travisConfigurationFileName = "travisConfigurationParameters.xml";
 
-QString const pathToTestMetamodel = "../qrtest/editorPluginTestingFramework/fileToTestWithTravis";
+const QString pathToTestMetamodel = "../qrtest/editorPluginTestingFramework/fileToTestWithTravis";
 
-QString const tempValueForSettingsManager = "/unsaved";
+const QString tempValueForSettingsManager = "/unsaved";
 
-QString const stringSeparator = "-----------------------------------";
+const QString stringSeparator = "-----------------------------------";
 }

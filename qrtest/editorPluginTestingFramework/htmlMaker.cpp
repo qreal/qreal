@@ -9,7 +9,7 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QStringList>
 
-#include "qrutils/outFile.h"
+#include <qrutils/outFile.h>
 
 using namespace editorPluginTestingFramework;
 using namespace utils;
@@ -19,7 +19,7 @@ void HtmlMaker::makeHtml(
 		, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
 		, QList<QPair<QString, QPair<QString, QString>>> timeResult
 		, QList<QPair<QString, QPair<QString, QString>>> timeResultIntertpter
-		, QString const &pathToHtml)
+		, const QString &pathToHtml)
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
 
@@ -30,7 +30,7 @@ void HtmlMaker::makeHtml(
 	QDomElement head = newElement(root, "head");
 	QDomElement meta = newElement(head, "meta");
 
-	QString const &charset = "utf-8";
+	const QString &charset = "utf-8";
 	meta.setAttribute("charset", charset);
 
 	QDomElement body = newElement(root, "body");
@@ -45,13 +45,13 @@ void HtmlMaker::makeHtml(
 	addTable(body, timeResultIntertpter, QObject::tr("Table with results of time qrxc and interpreter")
 			, QObject::tr("Method name"), "qrxc", "interpreter");
 
-	QString const &fileName = pathToHtml + "/output.html";
+	const QString &fileName = pathToHtml + "/output.html";
 	OutFile outHtml(fileName);
 	mHtml.save(outHtml(), 4);
 	qDebug() << "output.html generated";
 }
 
-QDomElement HtmlMaker::newElement(QDomElement &parent, QString const &newElementName)
+QDomElement HtmlMaker::newElement(QDomElement &parent, const QString &newElementName)
 {
 	QDomElement newElement = mHtml.createElement(newElementName);
 	parent.appendChild(newElement);
@@ -62,10 +62,10 @@ QDomElement HtmlMaker::newElement(QDomElement &parent, QString const &newElement
 void HtmlMaker::addTable(
 		QDomElement parent
 		, QList<QPair<QString, QPair<QString, QString> > > listOfLines
-		, QString const &text
-		, QString const &firstColumnTitle
-		, QString const &secondColumnTitle
-		, QString const &thirdColumnTitle
+		, const QString &text
+		, const QString &firstColumnTitle
+		, const QString &secondColumnTitle
+		, const QString &thirdColumnTitle
 		)
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
@@ -77,7 +77,7 @@ void HtmlMaker::addTable(
 
 	QDomElement table = newElement(parent, "table");
 
-	QString const &styleLine = "border:4px solid black;";
+	const QString &styleLine = "border:4px solid black;";
 
 	table.setAttribute("rules", "all");
 	table.setAttribute("style", styleLine);
@@ -85,24 +85,24 @@ void HtmlMaker::addTable(
 	addLineToTable(table, firstColumnTitle, secondColumnTitle, thirdColumnTitle, true);
 
 	foreach (StringTriplet const &pair, listOfLines) {
-		QString const &methodName = pair.first;
-		QString const &firstResult = pair.second.first;
-		QString const &secondResult = pair.second.second;
+		const QString &methodName = pair.first;
+		const QString &firstResult = pair.second.first;
+		const QString &secondResult = pair.second.second;
 
 		addLineToTable(table, methodName, firstResult, secondResult, false);
 	}
 }
 
 void HtmlMaker::addLineToTable(QDomElement parent
-			, QString const &methodName
-			, QString const &firstResult
-			, QString const &secondResult
+			, const QString &methodName
+			, const QString &firstResult
+			, const QString &secondResult
 			, bool const &isTitle)
 {
 	QDomElement newLine = newElement(parent, "tr");
 
 	if (!isTitle) {
-		QString const color = lineColor(firstResult, secondResult);
+		const QString color = lineColor(firstResult, secondResult);
 		newLine.setAttribute("bgcolor", color);
 	}
 
@@ -111,7 +111,7 @@ void HtmlMaker::addLineToTable(QDomElement parent
 	addColumnToLine(newLine, secondResult, isTitle, false);
 }
 
-bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &secondMethod)
+bool HtmlMaker::resultsAreTheSame(const QString &firstMethod, const QString &secondMethod)
 {
 	if (firstMethod == secondMethod) {
 		return true;
@@ -152,7 +152,7 @@ bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &sec
 	return true;
 }
 
-QString HtmlMaker::lineColor(QString const &firstResult, QString const &secondResult)
+QString HtmlMaker::lineColor(const QString &firstResult, const QString &secondResult)
 {
 	QString color = "";
 
@@ -173,12 +173,12 @@ QString HtmlMaker::lineColor(QString const &firstResult, QString const &secondRe
 	return color;
 }
 
-bool HtmlMaker::methodFailed(QString const &firstResult, QString const &secondResult)
+bool HtmlMaker::methodFailed(const QString &firstResult, const QString &secondResult)
 {
 	return (firstResult.contains("method failed") || (secondResult.contains("method failed")));
 }
 
-bool HtmlMaker::containsOnly(QString const &string, QChar const &symbol)
+bool HtmlMaker::containsOnly(const QString &string, QChar const &symbol)
 {
 	bool containsOnlyThisSymbol = true;
 
@@ -191,13 +191,13 @@ bool HtmlMaker::containsOnly(QString const &string, QChar const &symbol)
 	return containsOnlyThisSymbol;
 }
 
-void HtmlMaker::addColumnToLine(QDomElement parent, QString const &value, bool const &isTitle, bool const &isMethodName)
+void HtmlMaker::addColumnToLine(QDomElement parent, const QString &value, bool const &isTitle, bool const &isMethodName)
 {
 	QDomElement newColumn = newElement(parent, "td");
 
 	QStringList listOfMethodTestingResults = parseOutput(value);
 
-	foreach (QString const &elementOfOutput, listOfMethodTestingResults) {
+	foreach (const QString &elementOfOutput, listOfMethodTestingResults) {
 
 		if (isTitle || isMethodName) {
 			QDomText name = mHtml.createTextNode(elementOfOutput);
@@ -217,12 +217,12 @@ void HtmlMaker::addTableToColumn(QDomElement &parent, QPair<QString, QStringList
 {
 	QDomElement table = newElement(parent, "table");
 
-	QString const &align = "center";
-	QString const &border = "1";
-	QString const &cellspacing = "5";
-	QString const &width = "100%";
-	QString const &height = "100%";
-	QString const &styleLine = "border:0.2px solid black;";
+	const QString &align = "center";
+	const QString &border = "1";
+	const QString &cellspacing = "5";
+	const QString &width = "100%";
+	const QString &height = "100%";
+	const QString &styleLine = "border:0.2px solid black;";
 
 	table.setAttribute("rules", "all");
 	table.setAttribute("width", width);
@@ -235,10 +235,10 @@ void HtmlMaker::addTableToColumn(QDomElement &parent, QPair<QString, QStringList
 	addLineToResultTable(table, tableElements.first, tableElements.second);
 }
 
-void HtmlMaker::addLineToResultTable(QDomElement &parent, QString const &firstColumn, QStringList const &secondColumn)
+void HtmlMaker::addLineToResultTable(QDomElement &parent, const QString &firstColumn, QStringList const &secondColumn)
 {
 	QDomElement newLine = newElement(parent, "tr");
-	QString const &columnWidth = "50%";
+	const QString &columnWidth = "50%";
 
 	QDomElement firstColumnNode = newElement(newLine, "td");
 	firstColumnNode.setAttribute("width", columnWidth);
@@ -249,7 +249,7 @@ void HtmlMaker::addLineToResultTable(QDomElement &parent, QString const &firstCo
 	QDomElement secondColumnNode = newElement(newLine, "td");
 	secondColumnNode.setAttribute("width", columnWidth);
 
-	foreach (QString const &secondColumnElement, secondColumn) {
+	foreach (const QString &secondColumnElement, secondColumn) {
 		QDomNode newString = mHtml.createTextNode(secondColumnElement);
 		secondColumnNode.appendChild(newString);
 
@@ -257,13 +257,13 @@ void HtmlMaker::addLineToResultTable(QDomElement &parent, QString const &firstCo
 	}
 }
 
-QStringList HtmlMaker::parseOutput(QString const &methodOutput)
+QStringList HtmlMaker::parseOutput(const QString &methodOutput)
 {
 	QStringList const list = methodOutput.split("|");
 
 	QStringList listWithoutEmptyElements;
 
-	foreach (QString const &element, list) {
+	foreach (const QString &element, list) {
 		if (!containsOnly(element, ' ')) {
 			listWithoutEmptyElements.append(element);
 		}
@@ -272,11 +272,11 @@ QStringList HtmlMaker::parseOutput(QString const &methodOutput)
 	return listWithoutEmptyElements;
 }
 
-QPair<QString, QStringList> HtmlMaker::parseOneElementResult(QString const &oneElementOutput)
+QPair<QString, QStringList> HtmlMaker::parseOneElementResult(const QString &oneElementOutput)
 {
 	QStringList const elementAndResult = oneElementOutput.split("-");
-	QString const &element = elementAndResult.first();
-	QString const &result = elementAndResult.last();
+	const QString &element = elementAndResult.first();
+	const QString &result = elementAndResult.last();
 
 	QStringList const parsedResult = result.split(",");
 	QPair<QString, QStringList> resultPair = qMakePair(element, parsedResult);
@@ -284,18 +284,18 @@ QPair<QString, QStringList> HtmlMaker::parseOneElementResult(QString const &oneE
 	return resultPair;
 }
 
-bool HtmlMaker::resultsAreEmpty(QString const &firstMethod, QString const &secondMethod)
+bool HtmlMaker::resultsAreEmpty(const QString &firstMethod, const QString &secondMethod)
 {
 	QList<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod).toList();
 	QList<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod).toList();
 
-	foreach (QString const &element, firstMethodParsed) {
+	foreach (const QString &element, firstMethodParsed) {
 		if (!containsOnly(element, ' ')) {
 			return false;
 		}
 	}
 
-	foreach (QString const &element, secondMethodParsed) {
+	foreach (const QString &element, secondMethodParsed) {
 		if (!containsOnly(element, ' ')) {
 			return false;
 		}

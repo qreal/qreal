@@ -13,35 +13,35 @@ public:
 	/// creates .html-file with results of testing
 	void makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
-			, QList<QPair<QString, QPair<QString, QString> > > timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultIntertpter, QString const &pathToHtml);
+			, QList<QPair<QString, QPair<QString, QString> > > timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultIntertpter, const QString &pathToHtml);
 
 private:
 	/// adds one table with results of testing for qrxc-qrmc or qrxc-interpreter
 	void addTable(
 			QDomElement parent
 			, QList<QPair<QString, QPair<QString, QString> > > listOfLines
-			, QString const &text
-			, QString const &firstColumnTitle
-			, QString const &secondColumnTitle
-			, QString const &thirdColumnTitle
+			, const QString &text
+			, const QString &firstColumnTitle
+			, const QString &secondColumnTitle
+			, const QString &thirdColumnTitle
 			);
 
 	/// adds one line to table
 	void addLineToTable(
 			QDomElement parent
-			, QString const &methodName
-			, QString const &firstResult
-			, QString const &secondResult
+			, const QString &methodName
+			, const QString &firstResult
+			, const QString &secondResult
 			, bool const &isTitle
 			);
 
 	/// creates new qDomElement
-	QDomElement newElement(QDomElement &parent, QString const &newElementName);
+	QDomElement newElement(QDomElement &parent, const QString &newElementName);
 
 	/// adds column to line
 	void addColumnToLine(
 			QDomElement parent
-			, QString const &value
+			, const QString &value
 			, bool const &isTitle
 			, bool const &isMethodName);
 
@@ -54,28 +54,28 @@ private:
 	/// adds line to inner table
 	void addLineToResultTable(
 			QDomElement &parent
-			, QString const &firstColumn
+			, const QString &firstColumn
 			, QStringList const &secondColumn
 			);
 
 	/// finds out if string consists only of given symbol (for example, "aaa" consists only of symbol 'a')
-	static bool containsOnly(QString const &string, QChar const &symbol);
+	static bool containsOnly(const QString &string, QChar const &symbol);
 	/// finds out if results of testing are equivalent
-	static bool resultsAreTheSame(QString const &firstMethod, QString const &secondMethod);
+	static bool resultsAreTheSame(const QString &firstMethod, const QString &secondMethod);
 	/// checks if results are empty
-	static bool resultsAreEmpty(QString const &firstMethod, QString const &secondMethod);
+	static bool resultsAreEmpty(const QString &firstMethod, const QString &secondMethod);
 
 	/// checks if method failed
-	static bool methodFailed(QString const &firstResult, QString const &secondResult);
+	static bool methodFailed(const QString &firstResult, const QString &secondResult);
 
 	/// parses results of methods testing
-	static QStringList parseOutput(QString const &methodOutput);
+	static QStringList parseOutput(const QString &methodOutput);
 
 	/// parses given result of testing for further adding to table
-	static QPair<QString, QStringList> parseOneElementResult(QString const &oneElementOutput);
+	static QPair<QString, QStringList> parseOneElementResult(const QString &oneElementOutput);
 
 	/// returns color of line (red, green or red, depending on methods result concurrence)
-	static QString lineColor(QString const &firstResult, QString const &secondResult);
+	static QString lineColor(const QString &firstResult, const QString &secondResult);
 
 	QDomDocument mHtml;
 };

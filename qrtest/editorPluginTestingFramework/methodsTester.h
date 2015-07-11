@@ -22,11 +22,11 @@ protected:
 	/// tests given method if it exists in list of methods to be tested
 	QPair<QString, QPair<QString, QString> > testMethodIfExistsInList(
 			AbstractStringGenerator const &stringGenerator
-			, QString const &method
+			, const QString &method
 			);
 
 	/// fills list of methods to test with methods from given .txt-file
-	void fillMethodsToTestList(QString const &fileName);
+	void fillMethodsToTestList(const QString &fileName);
 
 
 private:

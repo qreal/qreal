@@ -8,7 +8,7 @@
 
 using namespace editorPluginTestingFramework;
 
-void ConfigurationFileParser::parseConfigurationFile(QString const &configurationFile)
+void ConfigurationFileParser::parseConfigurationFile(const QString &configurationFile)
 {
 	mXml = utils::xmlUtils::loadDocument(configurationFile);
 
@@ -24,10 +24,10 @@ void ConfigurationFileParser::parseConfigurationFile(QString const &configuratio
 	mGeneratedDirHtml = valueByTag("generatedDirHtml");
 }
 
-QString ConfigurationFileParser::valueByTag(QString const &tag) const
+QString ConfigurationFileParser::valueByTag(const QString &tag) const
 {
 	QDomNode node = mXml.elementsByTagName(tag).at(0);
-	QString const &value = node.toElement().text();
+	const QString &value = node.toElement().text();
 
 	return value;
 }

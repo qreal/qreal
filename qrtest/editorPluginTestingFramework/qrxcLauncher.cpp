@@ -13,7 +13,7 @@ using namespace metaEditor;
 using namespace gui;
 using namespace editorPluginTestingFramework;
 
-void QrxcLauncher::launchQrxc(QString const &fileName, QString const &pathToQRealSources, QString const &pathToGeneratedCode)
+void QrxcLauncher::launchQrxc(const QString &fileName, const QString &pathToQRealSources, const QString &pathToGeneratedCode)
 {
 	qDebug() << "STARTING QRXC LAUNCHING";
 	QString normalizedFileName = fileName;
@@ -33,7 +33,7 @@ void QrxcLauncher::launchQrxc(QString const &fileName, QString const &pathToQRea
 	dir.mkpath(pathToGeneratedCode + pathToQrxcGeneratedCode);
 	foreach (Id const &key, metamodelList.keys()) {
 		if (mRepoApi->isLogicalElement(key)) {
-			QString const &directoryToGeneratedCode = generatePathToPlugin(pathToGeneratedCode);
+			const QString &directoryToGeneratedCode = generatePathToPlugin(pathToGeneratedCode);
 
 			if (!dir.exists(directoryToGeneratedCode)) {
 				dir.mkdir(directoryToGeneratedCode);
@@ -47,7 +47,7 @@ void QrxcLauncher::launchQrxc(QString const &fileName, QString const &pathToQRea
 	qDebug() << stringSeparator;
 }
 
-QString QrxcLauncher::generatePathToPlugin(QString const &pathToGeneratedCode)
+QString QrxcLauncher::generatePathToPlugin(const QString &pathToGeneratedCode)
 {
 	QString result;
 

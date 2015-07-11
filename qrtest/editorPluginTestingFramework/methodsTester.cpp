@@ -4,7 +4,7 @@
 using namespace editorPluginTestingFramework;
 using namespace qReal;
 
-void MethodsTester::fillMethodsToTestList(QString const &fileName)
+void MethodsTester::fillMethodsToTestList(const QString &fileName)
 {
 	QFile methodsToTest(fileName);
 	if (!methodsToTest.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -14,14 +14,14 @@ void MethodsTester::fillMethodsToTestList(QString const &fileName)
 	QTextStream methodsToTestStream(&methodsToTest);
 
 	while (!methodsToTestStream.atEnd()) {
-		QString const &method = methodsToTestStream.readLine();
+		const QString &method = methodsToTestStream.readLine();
 		mMethodsToTest.append(method);
 	}
 }
 
 QPair<QString, QPair<QString, QString> > MethodsTester::testMethodIfExistsInList(
 		AbstractStringGenerator const &stringGenerator
-		, QString const &method)
+		, const QString &method)
 {
 	QPair<QString, QPair<QString, QString> > resultPair;
 
@@ -40,13 +40,13 @@ QList<QPair<QString, QPair<QString, QString> >> MethodsTester::generateTimeResul
 QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator)
 {
 	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
-	QString const &methodName = firstGenerator->methodName();
-	QString const &firstResult = firstGenerator->generateString();
-	QString const &firstResultTime = firstGenerator->generateStringTime();
+	const QString &methodName = firstGenerator->methodName();
+	const QString &firstResult = firstGenerator->generateString();
+	const QString &firstResultTime = firstGenerator->generateStringTime();
 
 	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
-	QString const &secondResult = secondGenerator->generateString();
-	QString const &secondResultTime = secondGenerator->generateStringTime();
+	const QString &secondResult = secondGenerator->generateString();
+	const QString &secondResultTime = secondGenerator->generateStringTime();
 	QPair<QString, QString> methodsPairTime = qMakePair(firstResultTime, secondResultTime);
 	QPair<QString, QPair<QString, QString> > resultPairTime = qMakePair(methodName, methodsPairTime);
 	mTimeResult.append(resultPairTime);

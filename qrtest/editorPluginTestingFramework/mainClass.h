@@ -21,10 +21,10 @@ class MainClass
 public:
 	/// gets name of qrs-file and path to qrmc, launches all processes for testing
 	MainClass(
-			QString const &fileName
-			, QString const &pathToQrmc
-			, QString const &applicationPath
-			, QString const &configurationFileName
+			const QString &fileName
+			, const QString &pathToQrmc
+			, const QString &applicationPath
+			, const QString &configurationFileName
 		);
 
 	/// returns result of comparison - 0, if all results are correct, and 1 otherwise
@@ -32,25 +32,25 @@ public:
 
 private:
 	/// returns normalized name (without extension)
-	static QString normalizedName(QString const &fileName);
+	static QString normalizedName(const QString &fileName);
 	/// deletes old qrtest/binaries and all inner folders and files
-	static void deleteOldBinaries(QString const &directory);
+	static void deleteOldBinaries(const QString &directory);
 	/// creates one folder
-	void createFolder(QString const &path);
+	void createFolder(const QString &path);
 	/// creates qrtest/binaries and all inner folders
 	void createNewFolders();
 
 	/// copies testMetamodel.qrs from qrtest/editorPluginTestingFramework/fileToTestWithTravis to bin
-	static void copyTestMetamodel(QString const &fileName);
+	static void copyTestMetamodel(const QString &fileName);
 
 	/// sets value of tamp variable
 	void setTempValueInSettingsManager();
 	/// returns old value
 	void returnOldValueOfTemp() const;
 
-	void launchQrmc(QString const &fileName, QString const &pathToQrmc);
-	void compilePlugin(QString const &directoryToCodeToCompile, const QString &fileName);
-	void launchQrxc(QString const &fileName);
+	void launchQrmc(const QString &fileName, const QString &pathToQrmc);
+	void compilePlugin(const QString &directoryToCodeToCompile, const QString &fileName);
+	void launchQrxc(const QString &fileName);
 	void createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
 			, QList<QPair<QString, QPair<QString, QString> > > timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultInterpter);
@@ -59,10 +59,10 @@ private:
 	void appendPluginNames();
 
 	/// parses file with configuration settings
-	void parseConfigurationFile(QString const &fileName);
+	void parseConfigurationFile(const QString &fileName);
 
 	/// returns loaded editorInterface
-	qReal::EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToFile);
+	qReal::EditorInterface* loadedPlugin(const QString &fileName, const QString &pathToFile);
 
 	QrmcLauncher mQrmcLauncher;
 	PluginCompiler mPluginCompiler;

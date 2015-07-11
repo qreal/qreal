@@ -73,7 +73,7 @@ private:
 	void testMethods();
 
 	/// finds out if string contains only of given symbol (for example, "aaa" contains only of symbol 'a')
-	static bool containsOnly(QString const &string, QChar const &symbol);
+	static bool containsOnly(const QString &string, QChar const &symbol);
 
 	qReal::EditorInterface* mQrmcGeneratedPlugin;
 	qReal::EditorInterface* mQrxcGeneratedPlugin;

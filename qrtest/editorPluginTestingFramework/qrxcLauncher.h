@@ -10,12 +10,12 @@ class QrxcLauncher
 public:
 
 	/// launches qrxc (gets fileName, generates .xml-file and code)
-	void launchQrxc(QString const &fileName, QString const &pathToQRealSources, QString const &pathToGeneratedCode);
+	void launchQrxc(const QString &fileName, const QString &pathToQRealSources, const QString &pathToGeneratedCode);
 
 private:
 
 	/// generates path to plugin from .pro
-	static QString generatePathToPlugin(QString const &pathToGeneratedCode);
+	static QString generatePathToPlugin(const QString &pathToGeneratedCode);
 
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;
 };

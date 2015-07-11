@@ -11,10 +11,10 @@ public:
 
 	/// gets name of dynamic library and returns loaded plugin
 	qReal::EditorInterface* loadedPlugin(
-			QString const &fileName
-			, QString const &pathToFile
-			, QString const &pluginExtension
-			, QString const &prefix);
+			const QString &fileName
+			, const QString &pathToFile
+			, const QString &pluginExtension
+			, const QString &prefix);
 
 	/// returns generated plugins names
 	QStringList pluginNames();

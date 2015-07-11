@@ -7,7 +7,7 @@ using namespace qrmc;
 using namespace qrRepo;
 using namespace editorPluginTestingFramework;
 
-void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc, QString const &pathToGeneratedCode)
+void QrmcLauncher::launchQrmc(const QString &fileName, const QString &pathToQrmc, const QString &pathToGeneratedCode)
 {
 	qDebug() << "STARTING QRMC LAUNCHING";
 	QString normalizedFileName = fileName;
@@ -20,9 +20,9 @@ void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc
 	IdList const metamodels = mRepoApi->children(Id::rootId());
 
 	foreach (Id const &key, metamodels) {
-		QString const &objectType = key.element();
+		const QString &objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mRepoApi->isLogicalElement(key)) {
-			QString const &nameOfMetamodel = mRepoApi->stringProperty(key, "name");
+			const QString &nameOfMetamodel = mRepoApi->stringProperty(key, "name");
 
 			if (!metaCompiler.compile(nameOfMetamodel)) {
 				qDebug() << "compilation failed";

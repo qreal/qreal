@@ -8,7 +8,7 @@ class ConfigurationFileParser
 {
 public:
 	/// parses configuration file
-	void parseConfigurationFile(QString const &configurationFile);
+	void parseConfigurationFile(const QString &configurationFile);
 
 	/// returns qmake parameter from configuration file
 	QString qmakeParameter() const;
@@ -33,7 +33,7 @@ public:
 
 private:
 	/// given tag, returns tag value from configuration file
-	QString valueByTag(QString const &tag) const;
+	QString valueByTag(const QString &tag) const;
 
 	QString mQmakeParameter;
 	QString mMakeParameter;

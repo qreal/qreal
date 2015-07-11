@@ -17,10 +17,10 @@ using namespace editorPluginTestingFramework;
 using namespace utils;
 
 void PluginCompiler::compilePlugin(const QString &fileName
-		, QString const &directoryToCodeToCompile
-		, QString const &pathToQmake
-		, QString const &pathToMake
-		, QString const &configurationParameter
+		, const QString &directoryToCodeToCompile
+		, const QString &pathToQmake
+		, const QString &pathToMake
+		, const QString &configurationParameter
 		)
 {
 	qDebug() << "STARTING PLUGIN COMPILING";
@@ -36,7 +36,7 @@ void PluginCompiler::compilePlugin(const QString &fileName
 
 	foreach (Id const &key, metamodels) {
 		if (mRepoApi->isLogicalElement(key)) {
-			QString const &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
+			const QString &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
 			pluginName = normalizedMetamodelName;
 			qDebug() << pluginName;
 			break;

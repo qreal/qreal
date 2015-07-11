@@ -26,15 +26,15 @@ bool MethodsCheckerForTravis::calculateResultForOneList(QList<QPair<QString, QPa
 
 	bool result = true;
 	foreach (StringTriplet const &stringTriplet, listOfResults) {
-		QString const &firstResult = stringTriplet.second.first;
-		QString const &secondResult = stringTriplet.second.second;
+		const QString &firstResult = stringTriplet.second.first;
+		const QString &secondResult = stringTriplet.second.second;
 		bool currentMethodResult = calculateResultForOneMethod(firstResult, secondResult);
 		result = (result && currentMethodResult);
 	}
 	return result;
 }
 
-bool MethodsCheckerForTravis::calculateResultForOneMethod(QString const &firstResult, QString const &secondResult)
+bool MethodsCheckerForTravis::calculateResultForOneMethod(const QString &firstResult, const QString &secondResult)
 {
 	QSet<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstResult);
 	QSet<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondResult);
