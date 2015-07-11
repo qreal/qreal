@@ -14,6 +14,8 @@
 
 #include "shellWidget.h"
 
+#include <QtWidgets/QPushButton>
+
 using namespace deployment;
 
 ShellWidget::ShellWidget(QWidget *parent)
@@ -24,4 +26,9 @@ ShellWidget::ShellWidget(QWidget *parent)
 	setPalette(pal);
 	setTextColor(Qt::white);
 	setReadOnly(true);
+
+	QPushButton * const button = new QPushButton(tr("Clear"), this);
+	button->move(0, 0);
+	button->setFixedHeight(15);
+	connect(button, &QPushButton::clicked, this, &QTextEdit::clear);
 }

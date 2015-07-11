@@ -22,7 +22,7 @@
 namespace twoDModel {
 namespace engine {
 
-/// Base class for all widgets that emulate diaplay`s behaviour. Implements 'clear' function.
+/// Base class for all widgets that emulate display`s behaviour. Implements 'clear' function.
 class TWO_D_MODEL_EXPORT TwoDModelDisplayWidget : public QWidget, public TwoDModelDisplayInterface
 {
 	Q_OBJECT

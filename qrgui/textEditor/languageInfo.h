@@ -124,6 +124,18 @@ public:
 		};
 	}
 
+	/// The information about the java script language.
+	static LanguageInfo javaScript(const QStringList &additionalTokens = QStringList())
+	{
+		return LanguageInfo{"js"                                             /* extension */
+				, QObject::tr("Java Script Language Source File")            /* extension description */
+				, true                                                       /* tabs indentation */
+				, 8                                                          /* tab size */
+				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, additionalTokens                                           /* additional autocompletion tokens */
+		};
+	}
+
 	/// The information about the qt-script language.
 	static LanguageInfo qtScript(const QStringList &additionalTokens = QStringList())
 	{

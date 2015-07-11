@@ -67,8 +67,11 @@ void Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped
-				, [=]() { mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0); });
+		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [=]() {
+			QTimer::singleShot(0, [=]() {
+				mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0);
+			});
+		});
 	}
 
 	for (view::TwoDModelWidget * const  twoDModelWindow : twoDModelWindows) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>QObject</name>
     <message>
@@ -68,53 +68,57 @@
 <context>
     <name>trik::qts::TrikQtsGeneratorPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="30"/>
         <source>Generation (QtScript)</source>
-        <translation>Génération (QtScript)</translation>
+        <translation type="vanished">Génération (QtScript)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="53"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="33"/>
+        <source>Generation (Java Script)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="61"/>
         <source>Generate TRIK code</source>
         <translation>Générer le code TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="58"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="67"/>
         <source>Upload program</source>
         <translation>Téléverser le programme</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="63"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="73"/>
         <source>Run program</source>
         <translation>Executer le programme</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="68"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="79"/>
         <source>Stop robot</source>
         <translation>Arrêter le robot</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="83"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="94"/>
         <source>Generate TRIK Code</source>
         <translation>Générer le code Trike</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="84"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="95"/>
         <source>Upload TRIK Program</source>
         <translation>Téléverser le programme TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="85"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="96"/>
         <source>Run TRIK Program</source>
         <translation>Executer le programme TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="86"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="97"/>
         <source>Stop TRIK Robot</source>
         <translation>Arrêter le robot TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="130"/>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="153"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="141"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGenerator/trikQtsGeneratorPlugin.cpp" line="164"/>
         <source>No connection to robot</source>
         <translation>Pas de connexion au robot</translation>
     </message>
