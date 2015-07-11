@@ -1095,7 +1095,7 @@ bool InterpreterEditorManager::isRootDiagramNode(const Id &id) const
 }
 
 void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, const Id &id, const Id &parent
-				, const QString &name) const
+		, const QString &name) const
 {
 	repo->addChild(parent, id);
 	repo->setProperty(id, "name", name);
