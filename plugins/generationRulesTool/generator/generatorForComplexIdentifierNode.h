@@ -12,6 +12,7 @@
 
 #include "commonInfo/variablesTable.h"
 #include "commonInfo/generatorConfigurer.h"
+#include "commonInfo/scopeInfo.h"
 
 namespace generationRules {
 namespace generator {
@@ -22,8 +23,10 @@ class GeneratorForComplexIdentifierNode
 public:
 	/// @param complexIdentifier - identifier node.
 	/// @param generatorConfigurer - all information about generator.
+	/// @param scopeInfo - information about current scope.
 	static QVariant generatedResult(const QSharedPointer<simpleParser::ast::ComplexIdentifier> &complexIdentifierNode
-			, const GeneratorConfigurer &generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer
+			, ScopeInfo &scopeInfo);
 };
 
 }

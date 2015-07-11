@@ -22,6 +22,7 @@ public:
 	/// @param linksTypeNode - second part (SpecificType in previous example).
 	/// @param logicalModelInterface - information about model.
 	/// @param variablesTable - table of variables.
+	/// @param currentScope - information about current scope.
 	static qReal::IdList generatedList(const QSharedPointer<simpleParser::ast::Node> &linksIdentifierNode
 			, const QSharedPointer<simpleParser::ast::Identifier> &linksTypeNode
 			, qReal::LogicalModelAssistInterface *logicalModelInterface

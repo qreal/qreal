@@ -23,51 +23,43 @@ using namespace generationRules::generator;
 using namespace simpleParser;
 
 QString CommonGenerator::generatedResult(const QSharedPointer<ast::Node> &node
-		, const GeneratorConfigurer &generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	QString result = "";
 
 	if (node->is<ast::Program>()) {
 		QSharedPointer<ast::Program> program = qrtext::as<ast::Program>(node);
-		result = GeneratorForProgramNode::generatedResult(program, generatorConfigurer);
-	}
-	else if (node->is<ast::ComplexIdentifier>()) {
+		result = GeneratorForProgramNode::generatedResult(program, generatorConfigurer, scopeInfo);
+	} else if (node->is<ast::ComplexIdentifier>()) {
 		QSharedPointer<ast::ComplexIdentifier> complexIdentifier = qrtext::as<ast::ComplexIdentifier>(node);
-		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, generatorConfigurer).toString();
-	}
-	else if (node->is<ast::Foreach>()) {
+		result = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifier, generatorConfigurer
+				, scopeInfo).toString();
+	} else if (node->is<ast::Foreach>()) {
 		QSharedPointer<ast::Foreach> foreachNode = qrtext::as<ast::Foreach>(node);
-		result = GeneratorForForeachNode::generatedResult(foreachNode, generatorConfigurer);
-	}
-	else if (node->is<ast::CallGeneratorFor>()) {
+		result = GeneratorForForeachNode::generatedResult(foreachNode, generatorConfigurer, scopeInfo);
+	} else if (node->is<ast::CallGeneratorFor>()) {
 		QSharedPointer<ast::CallGeneratorFor> callGeneratorNode = qrtext::as<ast::CallGeneratorFor>(node);
-		result = GeneratorForCallGenerator::generatedResult(callGeneratorNode, generatorConfigurer);
-	}
-	else if (node->is<ast::GenerateToFile>()) {
+		result = GeneratorForCallGenerator::generatedResult(callGeneratorNode, generatorConfigurer, scopeInfo);
+	} else if (node->is<ast::GenerateToFile>()) {
 		QSharedPointer<ast::GenerateToFile> generateToFileNode = qrtext::as<ast::GenerateToFile>(node);
-		result = GeneratorForGenerateToFile::generatedResult(generateToFileNode, generatorConfigurer);
-	}
-	else if (node->is<ast::Generator>()) {
+		result = GeneratorForGenerateToFile::generatedResult(generateToFileNode, generatorConfigurer, scopeInfo);
+	} else if (node->is<ast::Generator>()) {
 		QSharedPointer<ast::Generator> generatorNode = qrtext::as<ast::Generator>(node);
-		result = GeneratorForGeneratorNode::generatedResult(generatorNode, generatorConfigurer);
-	}
-	else if (node->is<ast::IfNode>()) {
+		result = GeneratorForGeneratorNode::generatedResult(generatorNode, generatorConfigurer, scopeInfo);
+	} else if (node->is<ast::IfNode>()) {
 		QSharedPointer<ast::IfNode> ifNode = qrtext::as<ast::IfNode>(node);
-		result = GeneratorForIfNode::generatedResult(ifNode, generatorConfigurer);
-	}
-	else if (node->is<ast::Newline>()) {
+		result = GeneratorForIfNode::generatedResult(ifNode, generatorConfigurer, scopeInfo);
+	} else if (node->is<ast::Newline>()) {
 		result = "\n";
-	}
-	else if (node->is<ast::Text>()) {
+	} else if (node->is<ast::Text>()) {
 		QSharedPointer<ast::Text> text = qrtext::as<ast::Text>(node);
-		if (generatorConfigurer.excludedText() != text->text()) {
+		if (scopeInfo.excludedText() != text->text()) {
 			result = text->text();
 		}
-	}
-	else if (node->is<ast::Tab>()) {
+	} else if (node->is<ast::Tab>()) {
 		result = "\t";
-	}
-	else {
+	} else {
 		qDebug() << "Something went wrong";
 	}
 

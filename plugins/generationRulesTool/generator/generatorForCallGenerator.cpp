@@ -13,20 +13,25 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForCallGenerator::generatedResult(const QSharedPointer<CallGeneratorFor> &callGeneratorForNode
-		, const GeneratorConfigurer &generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	const auto calledIdentifier = qrtext::as<ElementIdentifier>(callGeneratorForNode->identifier());
 	const auto generatorNameNode = qrtext::as<Identifier>(callGeneratorForNode->generatorName());
 
-	return commonGeneratedString(calledIdentifier, generatorNameNode, generatorConfigurer);
+	return commonGeneratedString(calledIdentifier, generatorNameNode
+			, generatorConfigurer, scopeInfo);
 }
 
 QString GeneratorForCallGenerator::commonGeneratedString(const QSharedPointer<ElementIdentifier> &calledIdentifier
 		, const QSharedPointer<Identifier> &generatorNameNode
-		, const GeneratorConfigurer &generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
-	const auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier, generatorConfigurer);
-	const auto currentElementType = TypeQualifier::elementIdentifierType(calledIdentifier, generatorConfigurer);
+	const auto currentElementId = GeneratorForElementIdentifierNode::neededElementId(calledIdentifier
+			, generatorConfigurer, scopeInfo);
+	const auto currentElementType = TypeQualifier::elementIdentifierType(calledIdentifier
+			, generatorConfigurer, scopeInfo);
 
 	const auto diagramId = generatorConfigurer.diagramId();
 	const auto editorManagerInterface = generatorConfigurer.editorManagerInterface();
@@ -36,19 +41,19 @@ QString GeneratorForCallGenerator::commonGeneratedString(const QSharedPointer<El
 	const auto generationRuleForCurrentElement = editorManagerInterface->generationRule(elementIdInMetamodel);
 	QSharedPointer<Node> generatedTree = TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
 
-	generatorConfigurer.currentScope().changeCurrentId(currentElementId);
+	scopeInfo.currentScope().changeCurrentId(currentElementId);
 
 	QString resultOfGeneration = "";
 	if (!generatorNameNode) {
-		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
+		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer, scopeInfo);
 	} else {
 		QString generatorName = generatorNameNode->name();
-		generatorConfigurer.currentScope().changeCurrentGeneratorName(generatorName);
+		scopeInfo.currentScope().changeCurrentGeneratorName(generatorName);
 
-		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer);
+		resultOfGeneration = CommonGenerator::generatedResult(generatedTree, generatorConfigurer, scopeInfo);
 	}
 
-	generatorConfigurer.currentScope().removeLastCurrentId();
+	scopeInfo.currentScope().removeLastCurrentId();
 
 	return resultOfGeneration;
 }

@@ -87,6 +87,7 @@ public:
 	/// @param type - variable type.
 	/// @param listOfIdds - list of ids to iterate.
 	void addNewVariable(const QString &name, const QString &type, const qReal::IdList &listOfIds);
+
 	/// Removes variable from the table.
 	/// @param name - variable name.
 	void removeVariable(const QString &name);
@@ -100,6 +101,7 @@ public:
 	/// Returns true if variable with given name exists.
 	/// @param name - variable name.
 	bool containsVariable(const QString &name) const;
+
 	/// Returns type of variable.
 	/// @param name - variable name.
 	QString typeByName(const QString &name) const;
@@ -107,9 +109,11 @@ public:
 	/// Returns current id in iterated list.
 	/// @param variableName - variable name.
 	qReal::Id currentId(const QString &variableName);
+
 	/// Moves pointer in ids list to next id.
 	/// @param variableName - variable name.
 	void movePointer(const QString &variableName);
+
 	/// Returns true if next element in list exists.
 	/// @param variableName - variable name.
 	bool nextIdExists(const QString &variableName);

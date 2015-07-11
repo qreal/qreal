@@ -7,7 +7,10 @@
 using namespace simpleParser::ast;
 using namespace generationRules::generator;
 
-QString TypeQualifier::elementIdentifierType(const QSharedPointer<ElementIdentifier> &elementIdentifier, const GeneratorConfigurer &generatorConfigurer)
+QString TypeQualifier::elementIdentifierType(
+		const QSharedPointer<ElementIdentifier> &elementIdentifier
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	const auto identifierPart = qrtext::as<Identifier>(elementIdentifier->identifierPart());
 	const auto optionalLinkPart = elementIdentifier->optionalTransitionPart();
@@ -15,9 +18,9 @@ QString TypeQualifier::elementIdentifierType(const QSharedPointer<ElementIdentif
 	const auto identifierName = identifierPart->name();
 
 	if (!optionalLinkPart) {
-		return generatorConfigurer.variablesTable().typeByName(identifierName);
+		return scopeInfo.variablesTable().typeByName(identifierName);
 	} else {
-		auto linkId = generatorConfigurer.variablesTable().currentId(identifierName);
+		auto linkId = scopeInfo.variablesTable().currentId(identifierName);
 
 		if (optionalLinkPart->is<TransitionEnd>()) {
 			const auto transitionEndId = generatorConfigurer.logicalModelInterface()->to(linkId);

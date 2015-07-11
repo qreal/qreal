@@ -35,6 +35,7 @@
 #include "generator/commonInfo/variablesTable.h"
 #include "generator/commonGenerator.h"
 #include "generator/commonInfo/generatorConfigurer.h"
+#include "generator/commonInfo/scopeInfo.h"
 
 #include "treeGeneratorFromString.h"
 
@@ -109,10 +110,11 @@ void GenerationRulesPlugin::generateCode(
 	generationRules::generator::CurrentScope scope;
 
 	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface, mEditorManagerInterface
-			, table, scope, editorId, diagramId, mPathToGeneratedCode);
+			, editorId, diagramId, mPathToGeneratedCode);
+	generationRules::generator::ScopeInfo scopeInfo(table, scope);
 
 	const auto resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
-			, generatorConfigurer);
+			, generatorConfigurer, scopeInfo);
 
 	if (!resultOfGenerationForRoot.isEmpty()) {
 		qDebug() << mPathToGeneratedCode << mMainFileName;

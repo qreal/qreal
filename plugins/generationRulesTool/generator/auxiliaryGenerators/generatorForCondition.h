@@ -6,6 +6,7 @@
 #include "ast/condition.h"
 
 #include "generator/commonInfo/generatorConfigurer.h"
+#include "generator/commonInfo/scopeInfo.h"
 
 namespace generationRules {
 namespace generator {
@@ -16,9 +17,11 @@ class ConditionGenerator
 public:
 	/// Returns true if condition from conditionNode is satisfied, false otherwise.
 	/// @param conditionNode - node with condition to check.
-	/// @generatorConfigurer - information about model and metamodel.
+	/// @param generatorConfigurer - information about model and metamodel.
+	/// @param scopeInfo - information about current scope.
 	static bool conditionSatisfied(const QSharedPointer<simpleParser::ast::Condition> &conditionNode
-			, const GeneratorConfigurer &generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer
+			, ScopeInfo &scopeInfo);
 };
 
 }

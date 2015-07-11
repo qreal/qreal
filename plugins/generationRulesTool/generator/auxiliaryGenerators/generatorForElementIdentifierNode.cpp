@@ -8,8 +8,10 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-qReal::Id GeneratorForElementIdentifierNode::neededElementId(const QSharedPointer<ElementIdentifier> &elementIdentifierNode
-		, const GeneratorConfigurer &generatorConfigurer)
+qReal::Id GeneratorForElementIdentifierNode::neededElementId(
+		const QSharedPointer<ElementIdentifier> &elementIdentifierNode
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	const auto identifierPart = elementIdentifierNode->identifierPart();
 	const auto optionalTransitionPart = elementIdentifierNode->optionalTransitionPart();
@@ -18,9 +20,9 @@ qReal::Id GeneratorForElementIdentifierNode::neededElementId(const QSharedPointe
 
 	qReal::Id elementId;
 	if (identifierPart->is<Identifier>()) {
-		elementId = generatorConfigurer.variablesTable().currentId(qrtext::as<Identifier>(identifierPart)->name());
+		elementId = scopeInfo.variablesTable().currentId(qrtext::as<Identifier>(identifierPart)->name());
 	} else {
-		elementId = generatorConfigurer.currentScope().currentId();
+		elementId = scopeInfo.currentScope().currentId();
 	}
 
 	if (optionalTransitionPart) {

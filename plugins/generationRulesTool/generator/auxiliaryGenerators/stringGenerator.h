@@ -4,6 +4,7 @@
 #include <QtCore/QSharedPointer>
 
 #include "generator/commonInfo/generatorConfigurer.h"
+#include "generator/commonInfo/scopeInfo.h"
 
 #include "ast/string.h"
 
@@ -17,8 +18,10 @@ public:
 	/// Returns generated string.
 	/// @param stringNode - string node.
 	/// @param generatorConfigurer - information about model and metamodel.
+	/// @param scopeInfo - information about current scope.
 	static QString generatedString(const QSharedPointer<simpleParser::ast::String> &stringNode
-			, const GeneratorConfigurer &generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer
+			, ScopeInfo &scopeInfo);
 };
 
 }

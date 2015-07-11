@@ -11,6 +11,7 @@
 
 #include "generator/commonInfo/variablesTable.h"
 #include "generator/commonInfo/generatorConfigurer.h"
+#include "generator/commonInfo/scopeInfo.h"
 
 namespace generationRules {
 namespace generator {
@@ -21,9 +22,11 @@ class GeneratorForElementIdentifierNode
 public:
 	/// Returns id of element identifier.
 	/// @param elementIdentifierNode - element identifier node.
-	/// @generatorConfigurer - information about model and metamodel.
+	/// @param generatorConfigurer - information about model and metamodel.
+	/// @param scopeInfo - information about current scope.
 	static qReal::Id neededElementId(const QSharedPointer<simpleParser::ast::ElementIdentifier> &elementIdentifierNode
 			, const GeneratorConfigurer &generatorConfigurer
+			, ScopeInfo &scopeInfo
 			);
 };
 

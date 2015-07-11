@@ -79,6 +79,7 @@ HEADERS += \
 	$$PWD/generator/generatorForGenerateToFile.h \
 	$$PWD/appearance/ruleHighlighter.h \
 	$$PWD/appearance/keywords.h \
+	$$PWD/generator/commonInfo/scopeInfo.h \
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \

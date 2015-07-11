@@ -9,6 +9,7 @@
 
 #include "commonInfo/variablesTable.h"
 #include "commonInfo/generatorConfigurer.h"
+#include "commonInfo/scopeInfo.h"
 
 namespace generationRules {
 namespace generator {
@@ -20,8 +21,11 @@ public:
 	/// Returns generated string.
 	/// @param generatorNode - node to generate code for.
 	/// @param generatorConfigurer - information about model and metamodel.
-	static QString generatedResult(const QSharedPointer<simpleParser::ast::Generator> &generatorNode
-			, const GeneratorConfigurer &generatorConfigurer);
+	/// @param scopeInfo - information about current scope.
+	static QString generatedResult(
+			const QSharedPointer<simpleParser::ast::Generator> &generatorNode
+			, const GeneratorConfigurer &generatorConfigurer
+			, ScopeInfo &scopeInfo);
 };
 
 }

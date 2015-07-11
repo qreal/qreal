@@ -6,6 +6,7 @@
 #include "ast/elementIdentifier.h"
 
 #include "generatorConfigurer.h"
+#include "scopeInfo.h"
 
 namespace generationRules {
 namespace generator {
@@ -17,8 +18,10 @@ public:
 	/// Returns element type.
 	/// @param elementIdentifier - element identifier node.
 	/// @param generatorConfigurer - information about model and metamodel.
+	/// @param scopeInfo - information about current scope.
 	static QString elementIdentifierType(const QSharedPointer<simpleParser::ast::ElementIdentifier> &elementIdentifier
-		, const GeneratorConfigurer &generatorConfigurer);
+			, const GeneratorConfigurer &generatorConfigurer
+			, ScopeInfo &scopeInfo);
 };
 
 }

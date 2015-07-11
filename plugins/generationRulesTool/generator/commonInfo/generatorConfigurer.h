@@ -19,24 +19,19 @@ public:
 	/// Constructor.
 	/// @param logicalModelInterface - data about model.
 	/// @param editorManagerInterface - data about metamodel.
-	/// @param variablesTable - table of variables.
 	/// @param editorId - current editor id.
 	/// @param diagramID - current diagram id.
+	/// @param pathToGeneratedCode - path to folder with generated code.
 	GeneratorConfigurer(qReal::LogicalModelAssistInterface *logicalModelInterface
 			, qReal::EditorManagerInterface *editorManagerInterface
-			, VariablesTable &variablesTable
-			, CurrentScope &currentScope
 			, const qReal::Id &editorId
 			, const qReal::Id &diagramId
 			, const QString &pathToGeneratedCode)
 		: mLogicalModelAssistInterface(logicalModelInterface)
 		, mEditorManagerInterface(editorManagerInterface)
-		, mVariablesTable(variablesTable)
-		, mCurrentScope(currentScope)
 		, mEditorId(editorId)
 		, mDiagramId(diagramId)
 		, mPathToGeneratedCode(pathToGeneratedCode)
-		, mExcludedText(QString())
 	{}
 
 	/// Returns logical model interface (data about model).
@@ -49,18 +44,6 @@ public:
 	qReal::EditorManagerInterface *editorManagerInterface() const
 	{
 		return mEditorManagerInterface;
-	}
-
-	/// Returns table of variables.
-	VariablesTable &variablesTable() const
-	{
-		return mVariablesTable;
-	}
-
-	/// Returns information about current scope (generator name, "this").
-	CurrentScope &currentScope() const
-	{
-		return mCurrentScope;
 	}
 
 	/// Returns current editor id.
@@ -81,27 +64,12 @@ public:
 		return mPathToGeneratedCode;
 	}
 
-	/// Returns true if we have to exclude text.
-	const QString &excludedText() const
-	{
-		return mExcludedText;
-	}
-
-	/// Updates exclude text flag.
-	void setExcludedText(const QString &excludedText)
-	{
-		mExcludedText = excludedText;
-	}
-
 private:
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // doesn't have ownership
 	qReal::EditorManagerInterface *mEditorManagerInterface;  // doesn't have ownership
-	VariablesTable &mVariablesTable;
-	CurrentScope &mCurrentScope;
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
 	const QString &mPathToGeneratedCode;
-	QString mExcludedText;
 };
 
 }

@@ -18,13 +18,16 @@ public:
 	/// Changes current "this" id (when callGeneratorFor is called, "this" changes).
 	/// @param newCurrentVariableId - new "this" id.
 	void changeCurrentId(const qReal::Id &newCurrentVariableId);
+
 	/// Returns current variable ("this").
 	qReal::Id currentId() const;
+
 	/// Removes last added id from stack of ids.
 	void removeLastCurrentId();
 
 	/// Changes current generator name.
 	void changeCurrentGeneratorName(const QString &newGeneratorName);
+
 	/// Returns current generator name.
 	QString currentGeneratorName() const;
 

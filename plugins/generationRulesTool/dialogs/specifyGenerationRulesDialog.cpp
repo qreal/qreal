@@ -106,10 +106,11 @@ void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, cons
 
 	QList<QTreeWidgetItem*> templatesItems;
 	for (const auto &templateName : listOfTemplates) {
-		QTreeWidgetItem *treeItem = new QTreeWidgetItem();
+		auto * const treeItem = new QTreeWidgetItem();
 		treeItem->setText(0, templateName);
 		templatesItems.append(treeItem);
 	}
+
 	oneTypeTempatesList->insertChildren(0, templatesItems);
 
 	mUi->templatesWidget->insertTopLevelItem(0, oneTypeTempatesList);

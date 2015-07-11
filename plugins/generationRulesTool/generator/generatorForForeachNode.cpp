@@ -18,7 +18,8 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QString GeneratorForForeachNode::generatedResult(const QSharedPointer<Foreach> &foreachNode
-			, GeneratorConfigurer generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	const auto identifierPart = qrtext::as<Identifier>(foreachNode->identifier());
 	const auto identifierName = identifierPart->name();
@@ -29,40 +30,44 @@ QString GeneratorForForeachNode::generatedResult(const QSharedPointer<Foreach> &
 	const auto identifierType = IdentifierTypeGenerator::variableType(listPart);
 
 	qReal::IdList listOfElements = ListGenerator::listOfIds(listPart, logicalModelInterface
-			, generatorConfigurer.variablesTable(), generatorConfigurer.currentScope());
+			, scopeInfo.variablesTable(), scopeInfo.currentScope());
 
 	QString result;
-	generatorConfigurer.variablesTable().addNewVariable(identifierName, identifierType, listOfElements);
+	scopeInfo.variablesTable().addNewVariable(identifierName, identifierType, listOfElements);
 
 	const auto actionNode = foreachNode->program();
 
-	while (generatorConfigurer.variablesTable().nextIdExists(identifierName)) {
-		result += resultForOneIteration(actionNode, generatorConfigurer);
-		generatorConfigurer.variablesTable().movePointer(identifierName);
+	while (scopeInfo.variablesTable().nextIdExists(identifierName)) {
+		result += resultForOneIteration(actionNode, generatorConfigurer, scopeInfo);
+		scopeInfo.variablesTable().movePointer(identifierName);
 	}
 
 	const auto excludedText = qrtext::as<Text>(foreachNode->excludedText());
 	if (excludedText) {
-		generatorConfigurer.setExcludedText(excludedText->text());
+		scopeInfo.setExcludedText(excludedText->text());
 	}
-	generatorConfigurer.variablesTable().movePointer(identifierName);
-	result += resultForOneIteration(actionNode, generatorConfigurer);
-	generatorConfigurer.setExcludedText(QString());
 
-	generatorConfigurer.variablesTable().removeVariable(identifierName);
+	scopeInfo.variablesTable().movePointer(identifierName);
+	result += resultForOneIteration(actionNode, generatorConfigurer, scopeInfo);
+	scopeInfo.setExcludedText(QString());
+
+	scopeInfo.variablesTable().removeVariable(identifierName);
 
 	return result;
 }
 
 QString GeneratorForForeachNode::resultForOneIteration(const QSharedPointer<Node> &actionNode
-		, const GeneratorConfigurer &generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	QString result = "";
 	if (actionNode->is<Program>()) {
-		result = GeneratorForProgramNode::generatedResult(qrtext::as<Program>(actionNode), generatorConfigurer);
+		result = GeneratorForProgramNode::generatedResult(qrtext::as<Program>(actionNode)
+				, generatorConfigurer, scopeInfo);
 	} else {
 		if (actionNode->is<CallGeneratorFor>()) {
-			result = GeneratorForCallGenerator::generatedResult(qrtext::as<CallGeneratorFor>(actionNode), generatorConfigurer);
+			result = GeneratorForCallGenerator::generatedResult(qrtext::as<CallGeneratorFor>(actionNode)
+				, generatorConfigurer, scopeInfo);
 		}
 	}
 

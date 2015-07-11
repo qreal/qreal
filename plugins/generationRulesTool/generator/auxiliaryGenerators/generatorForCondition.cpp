@@ -12,12 +12,14 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 bool ConditionGenerator::conditionSatisfied(const QSharedPointer<Condition> &conditionNode
-		, const GeneratorConfigurer &generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	const auto complexIdentifierNode = qrtext::as<ComplexIdentifier>(conditionNode->firstPart());
 
 	// TODO: find property type in metamodel and convert from QVariant into this type.
-	const auto generatedResultForComplexIdentifier = GeneratorForComplexIdentifierNode::generatedResult(complexIdentifierNode, generatorConfigurer);
+	const auto generatedResultForComplexIdentifier = GeneratorForComplexIdentifierNode::generatedResult(
+				complexIdentifierNode, generatorConfigurer, scopeInfo);
 	const auto comparedTextNode = qrtext::as<Text>(conditionNode->secondPart());
 
 	// it is bool identifier

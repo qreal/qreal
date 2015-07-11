@@ -13,7 +13,7 @@ public:
 	/// Constructor.
 	/// @param identifier - identifier part (for example, element in element.outcomingLinks).
 	/// @param optionalLinkPart - link part (outcomingLinks in previous example).
-	List(const QSharedPointer<Node> &identifier
+	explicit List(const QSharedPointer<Node> &identifier
 			, const QSharedPointer<Node> &optionalLinkPart = QSharedPointer<Node>())
 		: mIdentifier(identifier)
 		, mOptionalLinkPart(optionalLinkPart)

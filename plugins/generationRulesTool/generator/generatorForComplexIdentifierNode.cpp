@@ -9,10 +9,12 @@ using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
 QVariant GeneratorForComplexIdentifierNode::generatedResult(const QSharedPointer<ComplexIdentifier> &complexIdentifierNode
-		, const GeneratorConfigurer &generatorConfigurer)
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	const auto identifierPart = qrtext::as<ElementIdentifier>(complexIdentifierNode->identifierPart());
-	const auto elementId = GeneratorForElementIdentifierNode::neededElementId(identifierPart, generatorConfigurer);
+	const auto elementId = GeneratorForElementIdentifierNode::neededElementId(identifierPart
+			, generatorConfigurer, scopeInfo);
 	const auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
 
 	const auto logicalModelInterface = generatorConfigurer.logicalModelInterface();

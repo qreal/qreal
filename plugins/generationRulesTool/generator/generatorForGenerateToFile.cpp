@@ -19,22 +19,26 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QString GeneratorForGenerateToFile::generatedResult(const QSharedPointer<GenerateToFile> &generateToFileNode
-		, const GeneratorConfigurer &generatorConfigurer)
+QString GeneratorForGenerateToFile::generatedResult(
+		const QSharedPointer<GenerateToFile> &generateToFileNode
+		, const GeneratorConfigurer &generatorConfigurer
+		, ScopeInfo &scopeInfo)
 {
 	const auto programNode = qrtext::as<Program>(generateToFileNode->program());
 	const auto fileNameNode = generateToFileNode->fileName();
 
 	QString fileName;
 	if (fileNameNode->is<String>()) {
-		fileName = StringGenerator::generatedString(qrtext::as<String>(fileNameNode), generatorConfigurer);
+		fileName = StringGenerator::generatedString(qrtext::as<String>(fileNameNode), generatorConfigurer
+				, scopeInfo);
 	} else {
 		fileName = qrtext::as<Text>(fileNameNode)->text();
 	}
 
 	const auto pathToCode = generatorConfigurer.pathToGeneratedCode();
 
-	const auto resultOfGeneration = GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer);
+	const auto resultOfGeneration = GeneratorForProgramNode::generatedResult(programNode, generatorConfigurer
+			, scopeInfo);
 
 	writeToFile(resultOfGeneration, fileName, pathToCode);
 
