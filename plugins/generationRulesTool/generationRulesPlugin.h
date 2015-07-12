@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#pragma once
+
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
