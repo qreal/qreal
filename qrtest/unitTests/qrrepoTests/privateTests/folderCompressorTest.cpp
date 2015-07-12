@@ -36,7 +36,8 @@ void FolderCompressorTest::removeDirectory(QString const &dirName)
 	dir.rmdir(dir.absolutePath());
 }
 
-void FolderCompressorTest::SetUp() {
+void FolderCompressorTest::SetUp()
+{
 	QDir().mkpath("temp/dir1/dir2");
 	QDir().mkdir("temp/dir3");
 
@@ -53,13 +54,15 @@ void FolderCompressorTest::SetUp() {
 	file3.write("text3");
 }
 
-void FolderCompressorTest::TearDown() {
+void FolderCompressorTest::TearDown()
+{
 	removeDirectory("temp");
 	removeDirectory("temp_decompessed");
 	QFile::remove("compressed");
 }
 
-TEST_F(FolderCompressorTest, decompressTest) {
+TEST_F(FolderCompressorTest, decompressTest)
+{
 	FolderCompressor::compressFolder("temp", "compressed");
 	FolderCompressor::decompressFolder("compressed", "temp_decompessed");
 

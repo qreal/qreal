@@ -22,7 +22,8 @@
 
 namespace qrTest {
 
-class SceneCustomizationInterfaceMock : public qReal::SceneCustomizationInterface {
+class SceneCustomizationInterfaceMock : public qReal::SceneCustomizationInterface
+{
 public:
 };
 

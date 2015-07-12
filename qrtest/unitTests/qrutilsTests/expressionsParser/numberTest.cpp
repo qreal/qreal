@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "../../../../qrutils/expressionsParser/number.h"
+#include <qrutils/expressionsParser/number.h>
 
 #include "gtest/gtest.h"
 
 using namespace utils;
 
-TEST(NumberTest, ariphmeticsIntTest) {
+TEST(NumberTest, ariphmeticsIntTest)
+{
 	Number n1(2, Number::intType);
 	Number n2(3, Number::intType);
 
@@ -41,7 +42,8 @@ TEST(NumberTest, ariphmeticsIntTest) {
 	EXPECT_EQ(n1.value().toInt(), -3);
 }
 
-TEST(NumberTest, ariphmeticsDoubleTest) {
+TEST(NumberTest, ariphmeticsDoubleTest)
+{
 	Number n1(2.3, Number::doubleType);
 	Number n2(2.2, Number::doubleType);
 
@@ -61,7 +63,8 @@ TEST(NumberTest, ariphmeticsDoubleTest) {
 	EXPECT_EQ(n2.value().toDouble(), -2.3);
 }
 
-TEST(NumberTest, ariphmeticsBothTypesTest) {
+TEST(NumberTest, ariphmeticsBothTypesTest)
+{
 	Number n1(2, Number::intType);
 	Number n2(2.5, Number::doubleType);
 
@@ -85,7 +88,8 @@ TEST(NumberTest, ariphmeticsBothTypesTest) {
 	EXPECT_EQ(n1.value().toDouble(), 2.0);
 }
 
-TEST(NumberTest, comparisonTest) {
+TEST(NumberTest, comparisonTest)
+{
 	Number n1(2, Number::intType);
 	Number n2(3, Number::intType);
 	Number n3(2.5, Number::doubleType);

@@ -14,18 +14,18 @@
 
 #pragma once
 
-#include "../../../qrutils/metamodelGeneratorSupport.h"
+#include <qrutils/metamodelGeneratorSupport.h>
 
 #include "gtest/gtest.h"
 
 namespace qrTest {
 
-class MetamodelGeneratorSupportTest : public testing::Test {
-
+class MetamodelGeneratorSupportTest : public testing::Test
+{
 protected:
-	virtual void SetUp();
+	void SetUp() override;
 
-	virtual void TearDown();
+	void TearDown() override;
 
 	utils::MetamodelGeneratorSupport *mGenerator;
 	QDomDocument mDocument;

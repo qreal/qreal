@@ -16,9 +16,9 @@
 #include <QtCore/QDir>
 
 #include "repositoryTest.h"
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrkernel/exception/exception.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/settingsManager.h>
 
 using namespace qrRepo;
 using namespace details;

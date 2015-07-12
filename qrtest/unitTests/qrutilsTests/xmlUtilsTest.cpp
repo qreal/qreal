@@ -14,11 +14,12 @@
 
 #include <QtCore/QFile>
 
-#include "../../../qrutils/xmlUtils.h"
+#include <qrutils/xmlUtils.h>
 
 #include "gtest/gtest.h"
 
-TEST(XmlUtilsTest, loadDocumentTest) {
+TEST(XmlUtilsTest, loadDocumentTest)
+{
 	QFile file("testMetamodelFile");
 	file.open(QIODevice::ReadWrite);
 

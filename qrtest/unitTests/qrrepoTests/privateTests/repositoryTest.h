@@ -16,19 +16,19 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../qrrepo/private/repository.h"
-#include "../../../qrrepo/private/serializer.h"
+#include <qrrepo/private/repository.h>
+#include <qrrepo/private/serializer.h>
 
 namespace qrTest {
 
-class RepositoryTest : public testing::Test {
-
+class RepositoryTest : public testing::Test
+{
 protected:
-	virtual void SetUp();
+	void SetUp() override;
 
-	virtual void TearDown();
+	void TearDown() override;
 
-	void removeDirectory(QString const &dirName);
+	void removeDirectory(const QString &dirName);
 
 	qrRepo::details::Repository *mRepository;
 };

@@ -16,16 +16,16 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../qrrepo/repoApi.h"
+#include <qrrepo/repoApi.h>
 
 namespace qrTest {
 
-class RepoApiTest : public testing::Test {
-
+class RepoApiTest : public testing::Test
+{
 protected:
-	virtual void SetUp();
+	void SetUp() override;
 
-	virtual void TearDown();
+	void TearDown() override;
 
 protected:
 	qrRepo::RepoApi *mRepoApi;

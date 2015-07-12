@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "../../../qrrepo/private/classes/object.h"
+#include <qrrepo/private/classes/object.h>
 
 #include <gtest/gtest.h>
 
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrrepo/private/classes/graphicalObject.h"
-#include "../../../qrkernel/exception/exception.h"
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrrepo/private/classes/graphicalObject.h>
+#include <qrkernel/exception/exception.h>
 
 using namespace qReal;
 using namespace qrRepo::details;

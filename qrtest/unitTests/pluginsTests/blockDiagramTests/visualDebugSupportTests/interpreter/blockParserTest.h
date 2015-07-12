@@ -21,8 +21,8 @@
 
 namespace qrTest {
 
-class BlockParserTest : public testing::Test {
-
+class BlockParserTest : public testing::Test
+{
 protected:
 	virtual void SetUp();
 

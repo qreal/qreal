@@ -14,11 +14,12 @@
 
 #include <QtCore/QFile>
 
-#include "../../../qrutils/inFile.h"
+#include <qrutils/inFile.h>
 
 #include "gtest/gtest.h"
 
-TEST(InFileTest, readAllTest) {
+TEST(InFileTest, readAllTest)
+{
 	QFile file("testFile");
 	file.open(QIODevice::ReadWrite);
 
@@ -27,7 +28,7 @@ TEST(InFileTest, readAllTest) {
 	file.write("text3\n");
 	file.close();
 
-	QString dataRead = utils::InFile::readAll("testFile");
+	const QString dataRead = utils::InFile::readAll("testFile");
 
 	EXPECT_EQ(dataRead, "text1\ntext2\ntext3\n");
 

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "../../../qrrepo/private/classes/graphicalObject.h"
+#include <qrrepo/private/classes/graphicalObject.h>
 
 #include <QtCore/QPointF>
 #include <gtest/gtest.h>
@@ -37,7 +37,7 @@ TEST(GraphicalObjectTest, graphicalPartsCloneTest)
 
 	GraphicalObject const * const graphicalClone = dynamic_cast<GraphicalObject const *>(cloned);
 
-	ASSERT_TRUE(graphicalClone != NULL);
+	ASSERT_TRUE(graphicalClone != nullptr);
 	ASSERT_EQ(QPointF(10, 20), graphicalClone->graphicalPartProperty(0, "Coord"));
 }
 

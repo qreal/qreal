@@ -22,7 +22,8 @@
 
 namespace qrTest {
 
-class ErrorReporterMock : public qReal::ErrorReporterInterface {
+class ErrorReporterMock : public qReal::ErrorReporterInterface
+{
 public:
 	MOCK_METHOD2(addInformation, void(const QString &message, const qReal::Id &position));
 	MOCK_METHOD2(addWarning, void(const QString &message, const qReal::Id &position));

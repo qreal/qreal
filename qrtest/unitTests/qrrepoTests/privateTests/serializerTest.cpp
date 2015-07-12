@@ -17,9 +17,9 @@
 #include <QtCore/QPointF>
 
 #include "serializerTest.h"
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrrepo/private/classes/graphicalObject.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrrepo/private/classes/graphicalObject.h>
+#include <qrkernel/settingsManager.h>
 
 using namespace qrRepo;
 using namespace details;

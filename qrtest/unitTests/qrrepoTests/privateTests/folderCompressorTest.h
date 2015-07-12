@@ -14,18 +14,18 @@
 
 #pragma once
 
-#include "../../../qrrepo/private/folderCompressor.h"
+#include <qrrepo/private/folderCompressor.h>
 
 #include "gtest/gtest.h"
 
 namespace qrTest {
 
-class FolderCompressorTest : public testing::Test {
-
+class FolderCompressorTest : public testing::Test
+{
 protected:
-	virtual void SetUp();
+	void SetUp() override;
 
-	virtual void TearDown();
+	void TearDown() override;
 
 	void removeDirectory(QString const &dirName);
 };

@@ -15,7 +15,7 @@
 #include <QtCore/QFile>
 
 #include "metamodelGeneratorSupportTest.h"
-#include "../../../qrutils/inFile.h"
+#include <qrutils/inFile.h>
 
 #include "gtest/gtest.h"
 
@@ -23,7 +23,7 @@ using namespace utils;
 using namespace qrTest;
 
 void MetamodelGeneratorSupportTest::SetUp() {
-	mGenerator = new MetamodelGeneratorSupport(NULL, NULL);
+	mGenerator = new MetamodelGeneratorSupport(nullptr, nullptr);
 
 	QString const elementsXml =
 	"<diagram>"
