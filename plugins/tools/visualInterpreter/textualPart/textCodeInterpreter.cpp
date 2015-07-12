@@ -32,7 +32,8 @@ QHash<QPair<QString, QString>, QString> &TextCodeInterpreter::parseOutput(QStrin
 	return *res;
 }
 
-void TextCodeInterpreter::parseOutput(QHash<QPair<QString, QString>, QString> &res, QString const &output, int &pos) const
+void TextCodeInterpreter::parseOutput(QHash<QPair<QString, QString>, QString> &res, QString const &output
+		, int &pos) const
 {
 	int const delimeterIndex = output.indexOf(TextCodeGenerator::delimeter, pos);
 	if (delimeterIndex == -1 || output.indexOf("';") == -1) {

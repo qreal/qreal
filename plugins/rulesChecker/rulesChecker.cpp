@@ -15,7 +15,7 @@
 #include "rulesChecker.h"
 #include <QtWidgets/QFileDialog>
 
-#include "../../qrrepo/repoApi.h"
+#include <qrrepo/repoApi.h>
 
 using namespace qReal::rulesChecker;
 
