@@ -32,9 +32,7 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-
-#ifndef   BYTECODES_H_
-#define   BYTECODES_H_
+#pragma once
 
 #define   BYTECODE_VERSION              1.04
 
@@ -71,19 +69,33 @@
 #define   vmFG_COLOR                    1                             //!<  Forground color
 #define   vmBG_COLOR                    0                             //!<  Background color
 
-#define   vmCHAIN_DEPT                  4                             //!< Number of bricks in the USB daisy chain (master + slaves)
+/// Number of bricks in the USB daisy chain (master + slaves)
+#define   vmCHAIN_DEPT                  4
 
 #define   FILEPERMISSIONS               (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
 #define   DIRPERMISSIONS                (S_IRWXU | S_IRWXG | S_IRWXO)
 #define   SYSPERMISSIONS                (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
-#define   vmPATHSIZE                    84                            //!< Max path size excluding trailing forward slash including zero termination
-#define   vmNAMESIZE                    32                            //!< Max name size including zero termination (must be divideable by 4)
-#define   vmEXTSIZE                     5                             //!< Max extension size including dot and zero termination
-#define   vmFILENAMESIZE                120                           //!< Max filename size including path, name, extension and termination (must be divideable by 4)
-#define   vmMACSIZE                     18                            //!< Max WIFI MAC size including zero termination
-#define   vmIPSIZE                      16                            //!< Max WIFI IP size including zero termination
-#define   vmBTADRSIZE                   13                            //!< Max bluetooth address size including zero termination
+/// Max path size excluding trailing forward slash including zero termination
+#define   vmPATHSIZE                    84
+
+/// Max name size including zero termination (must be divideable by 4)
+#define   vmNAMESIZE                    32
+
+/// Max extension size including dot and zero termination
+#define   vmEXTSIZE                     5
+
+/// Max filename size including path, name, extension and termination (must be divideable by 4)
+#define   vmFILENAMESIZE                120
+
+/// Max WIFI MAC size including zero termination
+#define   vmMACSIZE                     18
+
+/// Max WIFI IP size including zero termination
+#define   vmIPSIZE                      16
+
+/// Max bluetooth address size including zero termination
+#define   vmBTADRSIZE                   13
 
 #define   vmERR_STRING_SIZE             32                            // Inclusive zero termination
 
@@ -107,7 +119,8 @@
 
 #define   vmSETTINGS_DIR                "../sys/settings"             //!< Folder for non volatile settings
 
-#define   vmDIR_DEEPT                   127                           //!< Max directory items allocated including "." and ".."
+/// Max directory items allocated including "." and ".."
+#define   vmDIR_DEEPT                   127
 
 // FILES USED IN APPLICATION
 
@@ -134,13 +147,19 @@
 
 // NAME LENGTHs
 
-#define   vmBRICKNAMESIZE               120                           //!< Brick name maximal size (including zero termination)
-#define   vmBTPASSKEYSIZE               7                             //!< Bluetooth pass key size (including zero termination)
-#define   vmWIFIPASSKEYSIZE             33                            //!< WiFi pass key size (including zero termination)
+/// Brick name maximal size (including zero termination)
+#define   vmBRICKNAMESIZE               120
+
+/// Bluetooth pass key size (including zero termination)
+#define   vmBTPASSKEYSIZE               7
+
+/// WiFi pass key size (including zero termination)
+#define   vmWIFIPASSKEYSIZE             33
 
 // VALID CHARACTERS
 
-#define   vmCHARSET_NAME                0x01                          //!< Character set allowed in brick name and raw filenames
+/// Character set allowed in brick name and raw filenames
+#define   vmCHARSET_NAME                0x01
 #define   vmCHARSET_FILENAME            0x02                          //!< Character set allowed in file names
 #define   vmCHARSET_BTPASSKEY           0x04                          //!< Character set allowed in bluetooth pass key
 #define   vmCHARSET_WIFIPASSKEY         0x08                          //!< Character set allowed in WiFi pass key
@@ -1599,21 +1618,26 @@ enum SensorTypeEnum {
 #define   vmPOP3_ABS_WARN_LINE_ENDX     155
 
 
-#define   LONGToBytes(_x)               (UBYTE)((_x) & 0xFF),(UBYTE)((_x >> 8) & 0xFF),(UBYTE)((_x >> 16) & 0xFF),(UBYTE)((_x >> 24) & 0xFF)
-#define   WORDToBytes(_x)               (UBYTE)((_x) & 0xFF),(UBYTE)((_x >> 8) & 0xFF)
+#define   LONGToBytes(_x)               \
+		(UBYTE)((_x) & 0xFF),(UBYTE)((_x >> 8) & 0xFF),(UBYTE)((_x >> 16) & 0xFF),(UBYTE)((_x >> 24) & 0xFF)
+
+#define   WORDToBytes(_x)               \
+		(UBYTE)((_x) & 0xFF),(UBYTE)((_x >> 8) & 0xFF)
+
 #define   BYTEToBytes(_x)               (UBYTE)((_x) & 0xFF)
 
 #define   PROGRAMHeader(VersionInfo,NumberOfObjects,GlobalBytes)\
-										'L','E','G','O',LONGToBytes(0),WORDToBytes((UWORD)(BYTECODE_VERSION * 100.0)),WORDToBytes(NumberOfObjects),LONGToBytes(GlobalBytes)
+		'L','E','G','O',LONGToBytes(0),WORDToBytes((UWORD)(BYTECODE_VERSION * 100.0))\
+		,WORDToBytes(NumberOfObjects),LONGToBytes(GlobalBytes)
 
 #define   VMTHREADHeader(OffsetToInstructions,LocalBytes)\
-										LONGToBytes(OffsetToInstructions),0,0,0,0,LONGToBytes(LocalBytes)
+		LONGToBytes(OffsetToInstructions),0,0,0,0,LONGToBytes(LocalBytes)
 
 #define   SUBCALLHeader(OffsetToInstructions,LocalBytes)\
-										LONGToBytes(OffsetToInstructions),0,0,1,0,LONGToBytes(LocalBytes)
+		LONGToBytes(OffsetToInstructions),0,0,1,0,LONGToBytes(LocalBytes)
 
 #define   BLOCKHeader(OffsetToInstructions,OwnerObjectId,TriggerCount)\
-										LONGToBytes(OffsetToInstructions),WORDToBytes(OwnerObjectId),WORDToBytes(TriggerCount),LONGToBytes(0)
+		LONGToBytes(OffsetToInstructions),WORDToBytes(OwnerObjectId),WORDToBytes(TriggerCount),LONGToBytes(0)
 
 //        MACROS FOR PRIMITIVES AND SYSTEM CALLS
 
@@ -1651,20 +1675,33 @@ enum SensorTypeEnum {
 #define   LC0(v)                        ((v & PRIMPAR_VALUE) | PRIMPAR_SHORT | PRIMPAR_CONST)
 #define   LC1(v)                        (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_1_BYTE),(v & 0xFF)
 #define   LC2(v)                        (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES),(v & 0xFF),((v >> 8) & 0xFF)
-#define   LC4(v)                        (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_4_BYTES),((ULONG)v & 0xFF),(((ULONG)v >> (ULONG)8) & 0xFF),(((ULONG)v >> (ULONG)16) & 0xFF),(((ULONG)v >> (ULONG)24) & 0xFF)
+
+#define   LC4(v)                        (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_4_BYTES),((ULONG)v & 0xFF),\
+		(((ULONG)v >> (ULONG)8) & 0xFF),(((ULONG)v >> (ULONG)16) & 0xFF),(((ULONG)v >> (ULONG)24) & 0xFF)
+
 #define   LCA(h)                        (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_1_BYTE | PRIMPAR_ARRAY),(i & 0xFF)
 
 #define   LV0(i)                        ((i & PRIMPAR_INDEX) | PRIMPAR_SHORT | PRIMPAR_VARIABEL | PRIMPAR_LOCAL)
 #define   LV1(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_LOCAL | PRIMPAR_1_BYTE),(i & 0xFF)
-#define   LV2(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_LOCAL | PRIMPAR_2_BYTES),(i & 0xFF),((i >> 8) & 0xFF)
-#define   LV4(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_LOCAL | PRIMPAR_4_BYTES),(i & 0xFF),((i >> 8) & 0xFF),((i >> 16) & 0xFF),((i >> 24) & 0xFF)
-#define   LVA(h)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_LOCAL | PRIMPAR_1_BYTE | PRIMPAR_ARRAY),(i & 0xFF)
+
+#define   LV2(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_LOCAL | PRIMPAR_2_BYTES)\
+		,(i & 0xFF),((i >> 8) & 0xFF)
+
+#define   LV4(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_LOCAL | PRIMPAR_4_BYTES)\
+		,(i & 0xFF),((i >> 8) & 0xFF),((i >> 16) & 0xFF),((i >> 24) & 0xFF)
+
+#define   LVA(h)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_LOCAL | PRIMPAR_1_BYTE\
+		| PRIMPAR_ARRAY),(i & 0xFF)
 
 #define   GV0(i)                        ((i & PRIMPAR_INDEX) | PRIMPAR_SHORT | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL)
-#define   GV1(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_1_BYTE),(i & 0xFF)
-#define   GV2(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_2_BYTES),(i & 0xFF),((i >> 8) & 0xFF)
-#define   GV4(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_4_BYTES),(i & 0xFF),((i >> 8) & 0xFF),((i >> 16) & 0xFF),((i >> 24) & 0xFF)
-#define   GVA(h)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_1_BYTE | PRIMPAR_ARRAY),(i & 0xFF)
+#define   GV1(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_1_BYTE)\
+		,(i & 0xFF)
+#define   GV2(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_2_BYTES)\
+		,(i & 0xFF),((i >> 8) & 0xFF)
+#define   GV4(i)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_4_BYTES)\
+		,(i & 0xFF),((i >> 8) & 0xFF),((i >> 16) & 0xFF),((i >> 24) & 0xFF)
+#define   GVA(h)                        (PRIMPAR_LONG  | PRIMPAR_VARIABEL | PRIMPAR_GLOBAL | PRIMPAR_1_BYTE \
+		| PRIMPAR_ARRAY),(i & 0xFF)
 
 //        MACROS FOR SUB CALLS
 
@@ -1695,6 +1732,3 @@ enum SensorTypeEnum {
 #define   IO_32                         IN_32 | OUT_32
 #define   IO_F                          IN_F  | OUT_F
 #define   IO_S                          IN_S  | OUT_S
-
-
-#endif /* BYTECODES_H_ */

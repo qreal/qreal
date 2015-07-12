@@ -135,5 +135,6 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 	//	return new parts::TouchSensor(accelerometerSensorInfo(), port, *mRobotCommunicator);
 	//}
 
-	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.userFriendlyName());
+	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port "
+			+ port.userFriendlyName());
 }
