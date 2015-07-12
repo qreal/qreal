@@ -38,7 +38,11 @@ public:
 
 	/// Produces new trigger that sends back to the environment sucess signal (i.e. that the program worked correctly
 	/// and all conditions were satisfied).
-	Trigger success() const;
+	/// @param deferred If true then the program execution will not be stopped immediately.
+	/// Instead the success trigger will be emitted just when program execution is stopped.
+	/// However this will not be done if during the period between deferred success event and
+	/// program finish fail event will be fired. Then the program will just be considered failed.
+	Trigger success(bool deferred) const;
 
 	/// Produces new trigger that assigns to the given variable the given value. Declares new variable
 	/// if it does not exist.

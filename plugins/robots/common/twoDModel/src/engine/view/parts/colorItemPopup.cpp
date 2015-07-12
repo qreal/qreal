@@ -19,7 +19,7 @@
 
 #include <qrutils/widgets/colorListEditor.h>
 
-#include "src/engine/items/wallItem.h"
+#include "src/engine/items/colorFieldItem.h"
 
 using namespace twoDModel::view;
 
@@ -48,8 +48,7 @@ int ColorItemPopup::lastThickness() const
 bool ColorItemPopup::suits(QGraphicsItem *item)
 {
 	/// @todo: Make wall not inheriting from ColorFieldItem.
-	return dynamic_cast<items::ColorFieldItem *>(item) != nullptr
-			&& dynamic_cast<items::WallItem *>(item) == nullptr;
+	return dynamic_cast<items::ColorFieldItem *>(item) != nullptr;
 }
 
 bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)

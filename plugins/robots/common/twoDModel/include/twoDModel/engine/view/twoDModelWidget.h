@@ -191,6 +191,7 @@ private:
 
 	void initRunStopButtons();
 
+	bool setSelectedPort(QComboBox * const comboBox, const kitBase::robotModel::PortInfo &port);
 	void updateWheelComboBoxes();
 
 	void onRobotListChange(RobotItem *robotItem);

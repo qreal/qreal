@@ -213,6 +213,13 @@ void MainWindow::connectActions()
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
+	connect(mUi->actionFullscreen, &QAction::changed, [=]() {
+		const int indexOfFullscreen = mUi->viewToolbar->actions().indexOf(mUi->actionFullscreen);
+		if (indexOfFullscreen > 0) {
+			QAction * const separatorBefore = mUi->viewToolbar->actions()[indexOfFullscreen - 1];
+			separatorBefore->setVisible(mUi->actionFullscreen->isVisible());
+		}
+	});
 
 	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
@@ -2017,6 +2024,11 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
 	mAdditionalDocks << dockWidget;
 	QMainWindow::addDockWidget(area, dockWidget);
+}
+
+void MainWindow::addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar)
+{
+	QMainWindow::addToolBar(area, toolbar);
 }
 
 QByteArray MainWindow::saveState(int version) const

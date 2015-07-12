@@ -72,7 +72,7 @@ void EllipseItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	mEllipseImpl.drawEllipseItem(painter, x1(), y1(), x2(), y2());
 }
 
-QDomElement EllipseItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
+QDomElement EllipseItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
 {
 	QDomElement ellipseNode = setPenBrushToDoc(document, "ellipse");
 	AbstractItem::serialize(ellipseNode);

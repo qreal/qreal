@@ -295,6 +295,12 @@ void NullMainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWid
 	Q_UNUSED(dockWidget)
 }
 
+void NullMainWindow::addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar)
+{
+	Q_UNUSED(area)
+	Q_UNUSED(toolbar)
+}
+
 QByteArray NullMainWindow::saveState(int version) const
 {
 	Q_UNUSED(version)

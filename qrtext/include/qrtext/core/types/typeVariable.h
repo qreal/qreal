@@ -55,8 +55,8 @@ public:
 			, const GeneralizationsTableInterface &generalizationsTable);
 
 	/// Constrains an assignment with respect of given generalizations table.
-	/// If a variable can not contain any of other variable's types, then it will be generalized to less general type
-	/// that can. For example, in "a<int> = 0.5<float>;" identifier "a" will be generalized to type "float".
+	/// If a variable can not contain any of other variable's types, then it will be generalized to closest more general
+	/// type that can. For example, in "a<int> = 0.5<float>;" identifier "a" will be generalized to type "float".
 	void constrainAssignment(const QSharedPointer<TypeVariable> &other
 			, const GeneralizationsTableInterface &generalizationsTable
 			, bool *wasCoercion);

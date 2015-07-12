@@ -680,6 +680,18 @@ IdList EditorManager::propertiesWithTheSameName(const Id &id, const QString &pro
 	return IdList();
 }
 
+void EditorManager::updateGenerationRule(const Id &id, const QString &newRule) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(newRule);
+}
+
+QString EditorManager::generationRule(const Id &id) const
+{
+	Q_UNUSED(id);
+	return QString();
+}
+
 QStringList EditorManager::getPropertiesInformation(const Id &id) const
 {
 	Q_UNUSED(id);

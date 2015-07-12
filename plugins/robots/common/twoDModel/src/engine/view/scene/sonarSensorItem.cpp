@@ -14,6 +14,8 @@
 
 #include "sonarSensorItem.h"
 
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+
 using namespace twoDModel::view;
 using namespace kitBase::robotModel;
 

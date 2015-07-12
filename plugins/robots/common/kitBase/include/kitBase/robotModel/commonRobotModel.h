@@ -90,6 +90,9 @@ protected:
 	/// Adds to a model list of devices that can be connected to given port.
 	void addAllowedConnection(const PortInfo &port, QList<DeviceInfo> const &devices);
 
+	/// Restricts all devices be connected to the given port.
+	void removeAllowedConnections(const PortInfo &port);
+
 	/// Configuration that can be changed by descendants to register their devices.
 	ConfigurationInterface &mutableConfiguration();
 

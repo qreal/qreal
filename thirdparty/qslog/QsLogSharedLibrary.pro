@@ -8,7 +8,7 @@ include(../../global.pri)
 QT -= gui
 CONFIG -= console
 CONFIG -= app_bundle
-CONFIG += shared c++11
+CONFIG += shared c++14
 
 TEMPLATE = lib
 
