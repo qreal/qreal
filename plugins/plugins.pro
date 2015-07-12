@@ -18,6 +18,7 @@ include(common.pri)
 
 # editor plugins
 SUBDIRS += \
+	$$PWD/ains/ains.pro \
 	$$PWD/dragonDiagram/dragonDiagram.pro \
 	$$PWD/blockDiagram/blockDiagram.pro \
 #	$$PWD/hascol/hascol.pro \

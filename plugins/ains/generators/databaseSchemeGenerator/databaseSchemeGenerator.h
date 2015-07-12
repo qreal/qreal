@@ -15,19 +15,22 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QHash>
+#include <QtCore/QHash>
 
-#include "../../../../qrkernel/ids.h"
-#include "../../../../qrutils/outFile.h"
-#include "../../../../qrgui/mainwindow/errorReporter.h"
-#include "../../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrutils/outFile.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrrepo/logicalRepoApi.h>
 
 namespace qReal {
 
 class DatabaseEditorSchemeGenerator
 {
 public:
-	explicit DatabaseEditorSchemeGenerator(LogicalModelAssistInterface const &api, ErrorReporterInterface& errorReporter);
+	explicit DatabaseEditorSchemeGenerator(LogicalModelAssistInterface const &api
+			, ErrorReporterInterface& errorReporter);
+
 	ErrorReporterInterface& generateDatabaseScheme(Id const &modelId, QString const &pathToFile);
 	QHash<Id, QPair<QString, QString> > modelList();
 
