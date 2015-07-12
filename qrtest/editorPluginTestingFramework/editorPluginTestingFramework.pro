@@ -1,4 +1,5 @@
 include(../../global.pri)
+include(../../qrgui/mainWindow/scriptAPI/scriptAPI.pri)
 QT += xml widgets svg printsupport
 
 CONFIG += console c++11
@@ -7,12 +8,17 @@ TARGET = editorPluginTestFramework
 INCLUDEPATH += \
 	$$PWD/../.. \
 	$$PWD/../../qrgui/ \
+	$$PWD/../../qrgui/mainWindow/ \
+
 
 DESTDIR = ../../bin/debug
 
 !macx {
 	CONFIG += rpath_libdirs
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../../bin"
+#		QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+#		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
+
 }
 
 RESOURCES = editorPluginTestingFramework.qrc
@@ -64,7 +70,7 @@ HEADERS += \
 	../../qrgui/mainWindow/startWidget/styledButton.h \
 	../../qrgui/mainWindow/tabWidget.h \
 	../../qrgui/mainwindow/findManager.h \
-	../../qrgui/mainwindow/palette/draggableElement.h \
+#	../../qrgui/mainwindow/palette/draggableElement.h \
 	../../qrgui/mainwindow/modelExplorer.h \
 	../../qrgui/mainwindow/qrealApplication.h  \
 	../../qrgui/mainwindow/projectManager/versionsConverterManager.h \
@@ -103,7 +109,7 @@ SOURCES += \
 	../../qrgui/mainwindow/palette/paletteTreeWidgets.cpp\
 	../../qrgui/mainwindow/palette/paletteTreeWidget.cpp\
 	../../qrgui/mainwindow/palette/paletteElement.cpp\
-	../../qrgui/mainwindow/palette/draggableElement.cpp \
+#	../../qrgui/mainwindow/palette/draggableElement.cpp \
 	../../qrgui/mainwindow/qrealApplication.cpp  \
 	../../qrgui/mainWindow/shapeEdit/shapeEdit.cpp \
 	../../qrgui/mainWindow/shapeEdit/scene.cpp \
