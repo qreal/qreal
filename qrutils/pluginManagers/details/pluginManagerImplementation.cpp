@@ -30,6 +30,10 @@ PluginManagerImplementation::PluginManagerImplementation(const QString &applicat
 
 PluginManagerImplementation::~PluginManagerImplementation()
 {
+	const int count = mLoaders.length();
+	for (int i = 0; i < count; ++i) {
+		mLoaders.removeFirst();
+	}
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
@@ -110,10 +114,6 @@ QString PluginManagerImplementation::unloadPlugin(const QString &pluginName)
 		}
 
 		++count;
-	}
-
-	for (int j = 0; j < count; ++j) {
-		mLoaders.removeFirst();
 	}
 
 	if (stateUnload) {
