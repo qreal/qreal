@@ -214,6 +214,10 @@ void TextManager::showInTextEditor(const QFileInfo &fileInfo, const text::Langua
 
 	openFile(filePath, QString(), language);
 	QScintillaTextEdit *area = code(filePath);
+	if (!area) {
+		return;
+	}
+
 	area->show();
 
 	mMainWindow.openTab(area,  fileInfo.fileName());

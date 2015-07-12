@@ -30,7 +30,7 @@ VERSION=$2
 SSH_KEY=$3
 TOOLS_DIR=$PWD/temp_tools_clone
 DOWNLOADS_COUNTER=$TOOLS_DIR/siteScripts/downloadCounter.html
-REMOTE_SERVER=hosting_jzuken@neon.locum.ru:/home/hosting_jzuken/projects/qreal/htdocs
+REMOTE_SERVER=hosting_jzuken@titanium.locum.ru:/home/hosting_jzuken/projects/qreal/htdocs
 
 shift 3
 

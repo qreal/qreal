@@ -14,6 +14,8 @@
 
 #include "lineImpl.h"
 
+#include <QtXml/QDomElement>
+
 #include <qrutils/mathUtils/math.h>
 
 using namespace graphicsUtils;
@@ -95,4 +97,25 @@ QPair<qreal, qreal> LineImpl::reshapeRectWithShiftForLine(qreal x1, qreal y1, qr
 		else
 			return QPair<qreal, qreal>(x1, y1 - size);
 	}
+}
+
+void LineImpl::serialize(QDomElement &element, qreal x1, qreal y1, qreal x2, qreal y2) const
+{
+	element.setAttribute("begin", QString::number(x1) + ":" + QString::number(y1));
+	element.setAttribute("end", QString::number(x2) + ":" + QString::number(y2));
+}
+
+QPair<QPointF, QPointF> LineImpl::deserialize(const QDomElement &element) const
+{
+	const QPointF begin = deserializePoint(element.attribute("begin", "0:0"));
+	const QPointF end = deserializePoint(element.attribute("end", "0:0"));
+	return qMakePair(begin, end);
+}
+
+QPointF LineImpl::deserializePoint(const QString &string) const
+{
+	const QStringList splittedStr = string.split(":");
+	const int x = splittedStr[0].toInt();
+	const int y = splittedStr[1].toInt();
+	return QPointF(x, y);
 }

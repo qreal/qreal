@@ -25,4 +25,6 @@ SOURCES += \
 	$$PWD/nullKitInterpreterPlugin.cpp \
 	$$PWD/nullRobotModel.cpp \
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nullKitInterpreter_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/nullKitInterpreter_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/nullKitInterpreter_fr.ts \

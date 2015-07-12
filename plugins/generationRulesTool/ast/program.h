@@ -20,7 +20,7 @@
 namespace simpleParser {
 namespace ast {
 
-/// Class that representis program node.
+/// Class that represents program node.
 class Program : public Node
 {
 public:

@@ -118,4 +118,6 @@ SOURCES += \
 	$$PWD/src/blocks/details/writeToFileBlock.cpp \
 	$$PWD/src/blocks/details/removeFileBlock.cpp \
 
-TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/trikKit_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/trikKit_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/trikKit_fr.ts \

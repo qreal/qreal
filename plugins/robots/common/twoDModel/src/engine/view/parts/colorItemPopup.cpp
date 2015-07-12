@@ -19,7 +19,7 @@
 
 #include <qrutils/widgets/colorListEditor.h>
 
-#include "src/engine/items/wallItem.h"
+#include "src/engine/items/colorFieldItem.h"
 
 using namespace twoDModel::view;
 
@@ -48,8 +48,7 @@ int ColorItemPopup::lastThickness() const
 bool ColorItemPopup::suits(QGraphicsItem *item)
 {
 	/// @todo: Make wall not inheriting from ColorFieldItem.
-	return dynamic_cast<items::ColorFieldItem *>(item) != nullptr
-			&& dynamic_cast<items::WallItem *>(item) == nullptr;
+	return dynamic_cast<items::ColorFieldItem *>(item) != nullptr;
 }
 
 bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
@@ -59,7 +58,9 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	// Subsequent setting values to editors will cause theese values loss. Saving it here.
 	const QColor lastColorBackup = mLastColor;
 	const int lastThicknessBackup = mLastThickness;
+
 	blockSignals(true);
+	mSpinBox->blockSignals(true);
 
 	mColorPicker->setColor(dominantPropertyValue("color").value<QColor>());
 	mSpinBox->setValue(dominantPropertyValue("thickness").toInt());
@@ -67,7 +68,9 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	// Restoring values that really were picked by user.
 	mLastColor = lastColorBackup;
 	mLastThickness = lastThicknessBackup;
+
 	blockSignals(false);
+	mSpinBox->blockSignals(false);
 
 	return true;
 }

@@ -32,7 +32,9 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 
 links(qrkernel qslog qrutils qrrepo robots-generator-base robots-trik-generator-base)
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikRuntimeUploaderPlugin_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikRuntimeUploaderPlugin_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikRuntimeUploaderPlugin_fr.ts \
 
 HEADERS += \
 	$$PWD/trikRuntimeUploaderPlugin.h \

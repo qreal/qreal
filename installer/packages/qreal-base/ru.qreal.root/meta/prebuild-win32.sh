@@ -34,6 +34,8 @@ cp    $QT_DIR/bin/Qt5PrintSupport.dll                               $PWD/../data
 cp    $QT_DIR/bin/Qt5Svg.dll                                        $PWD/../data
 cp    $QT_DIR/bin/Qt5Widgets.dll                                    $PWD/../data
 cp    $QT_DIR/bin/Qt5Xml.dll                                        $PWD/../data
+cp    $QT_DIR/bin/Qt5Script.dll                                     $PWD/../data
+cp    $QT_DIR/bin/Qt5Test.dll                                       $PWD/../data
 
 cp    $QT_DIR/bin/icudt5*.dll                                       $PWD/../data   
 cp    $QT_DIR/bin/icuin5*.dll                                       $PWD/../data

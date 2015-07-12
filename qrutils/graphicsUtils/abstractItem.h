@@ -102,7 +102,7 @@ public:
 
 	//for save to xml
 	virtual void setXandY(QDomElement& dom, const QRectF &rect);
-	QDomElement setPenBrushToDoc(QDomDocument &document, const QString &domName);
+	QDomElement setPenBrushToDoc(QDomDocument &document, const QString &domName) const;
 	virtual QRectF sceneBoundingRectCoord(const QPoint &topLeftPicture);
 	void readPenBrush(const QDomElement &docItem);
 
@@ -143,7 +143,7 @@ signals:
 	void deletedWithContextMenu();
 
 protected:
-	virtual void serialize(QDomElement &element);
+	virtual void serialize(QDomElement &element) const;
 	virtual void deserialize(const QDomElement &element);
 
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -159,7 +159,6 @@ private:
 	qreal mY1;
 	qreal mX2;
 	qreal mY2;
-	QGraphicsView *mView;
 	QString mId;
 	bool mEditable;
 };

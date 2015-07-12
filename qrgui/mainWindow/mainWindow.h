@@ -29,6 +29,7 @@
 #include "projectManager/projectManagerWrapper.h"
 #include "tabWidget.h"
 #include "startWidget/startWidget.h"
+#include "scriptAPI/scriptAPI.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
@@ -167,6 +168,7 @@ public:
 
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
+	void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) override;
 
 	QByteArray saveState(int version = 0) const override;
 	bool restoreState(const QByteArray &state, int version = 0) override;
@@ -331,7 +333,7 @@ private:
 
 	/// Traverses list of actions and adds buttons to toolbar.
 	/// @param actions - list of actions to traverse
-	void traverseListOfActions(QList<ActionInfo> const &actions);
+	void traverseListOfActions(const QList<ActionInfo> &actions);
 
 	void setIndexesOfPropertyEditor(const Id &id);
 
@@ -362,6 +364,8 @@ private:
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
+	void initScriptAPI();
+	void initActionWidgetsNames();
 	void openStartTab();
 
 	void setVersion(const QString &version);
@@ -413,6 +417,8 @@ private:
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
+
+	gui::ScriptAPI mScriptAPI;
 };
 
 }

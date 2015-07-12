@@ -31,7 +31,8 @@ public:
 	}
 
 	/// Returns identifier name.
-	const QString &name() const {
+	const QString &name() const
+	{
 		return mName;
 	}
 

@@ -47,6 +47,14 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	, mRightWheelPort("M4")
 	, mDisplayWidget(new TrikDisplayWidget())
 {
+	/// @todo: One day we will support gamepad in 2D model and there will be piece.
+	/// But till that day gamepad ports must be killed cause they spam logs.
+	const QList<PortInfo> realRobotPorts = CommonRobotModel::availablePorts();
+	for (const PortInfo &port : realRobotPorts) {
+		if (port.name().contains("Gamepad", Qt::CaseInsensitive)) {
+			removeAllowedConnections(port);
+		}
+	}
 }
 
 robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
@@ -60,7 +68,11 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {
-		return new parts::Shell(deviceInfo, port);
+		parts::Shell * const shell = new parts::Shell(deviceInfo, port, *engine());
+		// Error reporter will come only after global plugin init() is called. Shell is however
+		// configured even later. So setting error reporter only when everything will be ready.
+		connect(shell, &parts::Shell::configured, [=]() { shell->setErrorReporter(*mErrorReporter); });
+		return shell;
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikInfraredSensor>()) {
@@ -160,7 +172,6 @@ QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TwoDRobotM
 	return result;
 }
 
-
 QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &port) const
 {
 	if (port == PortInfo("LineSensorPort", input)) {
@@ -181,4 +192,9 @@ QHash<QString, int> TwoDRobotModel::buttonCodes() const
 	result["PowerButton"] = 116;
 	result["EscButton"] = 1;
 	return result;
+}
+
+void TwoDRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
 }

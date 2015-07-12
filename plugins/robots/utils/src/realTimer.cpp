@@ -21,6 +21,11 @@ RealTimer::RealTimer()
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 }
 
+bool RealTimer::isTicking() const
+{
+	return mTimer.isActive();
+}
+
 void RealTimer::start(int ms)
 {
 	mTimer.setInterval(ms);

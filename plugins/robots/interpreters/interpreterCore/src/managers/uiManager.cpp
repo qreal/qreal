@@ -53,6 +53,7 @@ UiManager::UiManager(QAction &debugModeAction
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::ensureDiagramVisible, this, &UiManager::ensureDiagramVisible);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
@@ -65,6 +66,7 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
 	mRobotConsole->hide();
+	initTab();
 	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
 	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
 	mMainWindow.windowWidget()->addAction(mRobotConsole->toggleViewAction());
@@ -159,8 +161,11 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 void UiManager::toggleModeButtons()
 {
-	mEditModeAction.setVisible(mCurrentMode == Mode::Debugging && mCurrentTab != qReal::TabInfo::TabType::other);
-	mDebugModeAction.setVisible(mCurrentMode == Mode::Editing && mCurrentTab != qReal::TabInfo::TabType::other);
+	mTabBar->setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mEditModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mDebugModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mEditModeAction.setChecked(mCurrentMode == Mode::Editing);
+	mDebugModeAction.setChecked(mCurrentMode == Mode::Debugging);
 
 	const QColor color = mCurrentTab == qReal::TabInfo::TabType::other
 			? backgrondColor
@@ -261,15 +266,43 @@ void UiManager::resetMainWindowCorners() const
 	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
 }
 
+void UiManager::ensureDiagramVisible()
+{
+	if (mCurrentMode == Mode::Editing) {
+		return;
+	}
+
+	// 2D model is placed into smart dock that may hide central widget if docked into TopDockWidgetArea.
+	// If we met such case then switching to editor mode.
+	for (utils::SmartDock * const twoDModel : mMainWindow.windowWidget()->findChildren<utils::SmartDock *>()) {
+		if (twoDModel->isCentral()) {
+			switchToEditorMode();
+			return;
+		}
+	}
+}
+
+void UiManager::initTab()
+{
+	mTabBar = new QToolBar(mMainWindow.windowWidget());
+	mTabBar->setObjectName("largeTabsBar");
+	mTabBar->setIconSize(QSize(32, 32));
+	mTabBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	mMainWindow.addToolBar(Qt::LeftToolBarArea, mTabBar);
+	mTabBar->addAction(&mEditModeAction);
+	mTabBar->addAction(&mDebugModeAction);
+
+	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
+	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
+}
+
 void UiManager::hack2dModelDock() const
 {
 	// 2D model is placed into smart dock: it may be embedded into instance of QDialog
 	// that is not influeced by mMainWindow::restoreState. So we must first switch to a docked form
 	// and then restore docks state.
-	if (const QObject *window = dynamic_cast<QObject *>(&mMainWindow)) {
-		if (utils::SmartDock *twoDModel = window->findChild<utils::SmartDock *>()) {
-			twoDModel->switchToDocked();
-		}
+	if (utils::SmartDock * const twoDModel = mMainWindow.windowWidget()->findChild<utils::SmartDock *>()) {
+		twoDModel->switchToDocked();
 	}
 }
 
