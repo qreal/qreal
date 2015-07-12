@@ -38,13 +38,45 @@ TokenPatterns<TokenTypes> simpleParser::Lexer::initPatterns()
 	tokenDefinitions.defineToken(TokenTypes::closingCurlyBracket, QRegularExpression("}"), "}");
 
 	tokenDefinitions.defineToken(TokenTypes::dot, QRegularExpression("\\."), ".");
+	tokenDefinitions.defineToken(TokenTypes::comma, QRegularExpression("\\,"), ",");
+	tokenDefinitions.defineToken(TokenTypes::doubleColon, QRegularExpression("::"), "::");
+	tokenDefinitions.defineToken(TokenTypes::arrow, QRegularExpression("->"), "->");
+
+	tokenDefinitions.defineToken(TokenTypes::plus, QRegularExpression("\\+"), "+");
+
+	tokenDefinitions.defineToken(TokenTypes::greater, QRegularExpression("\\>"), ">");
+	tokenDefinitions.defineToken(TokenTypes::less, QRegularExpression("\\<"), ",");
+	tokenDefinitions.defineToken(TokenTypes::equal, QRegularExpression("=="), "==");
+	tokenDefinitions.defineToken(TokenTypes::notEqual, QRegularExpression("!="), "!=");
+
+	tokenDefinitions.defineKeyword(TokenTypes::ifKeyword, "if");
+	tokenDefinitions.defineKeyword(TokenTypes::elseKeyword, "else");
 
 	tokenDefinitions.defineKeyword(TokenTypes::newlineKeyword, "newline");
 	tokenDefinitions.defineKeyword(TokenTypes::foreachKeyword, "foreach");
+	tokenDefinitions.defineKeyword(TokenTypes::foreachExcludeKeyword, "foreach_excludeLast");
+	tokenDefinitions.defineKeyword(TokenTypes::excludeKeyword, "exclude");
+
+	tokenDefinitions.defineKeyword(TokenTypes::tabKeyword, "tab");
+	tokenDefinitions.defineKeyword(TokenTypes::inKeyword, "in");
+
+	tokenDefinitions.defineKeyword(TokenTypes::thisKeyword, "this");
+
+	tokenDefinitions.defineKeyword(TokenTypes::callGeneratorForKeyword, "callGeneratorFor");
+	tokenDefinitions.defineKeyword(TokenTypes::generatorKeyword, "Generator");
+
+	tokenDefinitions.defineKeyword(TokenTypes::generateToFileKeyword, "generateToFile");
 
 	tokenDefinitions.defineToken(TokenTypes::text,
 			QRegularExpression(R"(('[^'\\]*(\\(.|\n)[^'\\]*)*'))")
 			, QObject::tr("text"));
+
+	tokenDefinitions.defineKeyword(TokenTypes::outcomingLinksKeyword, "outcomingLinks");
+	tokenDefinitions.defineKeyword(TokenTypes::incomingLinksKeyword, "incomingLinks");
+	tokenDefinitions.defineKeyword(TokenTypes::linksKeyword, "links");
+
+	tokenDefinitions.defineKeyword(TokenTypes::transitionEndKeyword, "transitionEnd");
+	tokenDefinitions.defineKeyword(TokenTypes::transitionStartKeyword, "transitionStart");
 
 	return tokenDefinitions;
 }
