@@ -13,8 +13,8 @@
 # limitations under the License.
 
 QREAL_XML = blockDiagramMetamodel.xml
-QREAL_XML_DEPENDS = $PWD/../../commonMetamodels/basicBehaviorsMetamodel.xml
+QREAL_XML_DEPENDS = $$PWD/../../commonMetamodels/basicBehaviorsMetamodel.xml
 QREAL_EDITOR_PATH = blockDiagram/editor
-ROOT = $PWD/../../..
+ROOT = ../../..
 
 include (../../editorsSdk/editorsCommon.pri)
