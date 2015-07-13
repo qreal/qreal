@@ -69,9 +69,9 @@ QString EditorManager::loadPlugin(const QString &pluginName)
 QString EditorManager::unloadPlugin(const QString &pluginName)
 {
 	QString resultOfUnloading = "";
-	if (!mPluginFileName[pluginName].isEmpty())
+	if (!mPluginFileName[pluginName].isEmpty()) {
 		resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
-	else {
+	} else {
 		const QList<QString> namesOfPlugins = mPluginManager.namesOfPlugins();
 		const QString tempName = pluginName.toLower();
 		QString newPluginName = "";
