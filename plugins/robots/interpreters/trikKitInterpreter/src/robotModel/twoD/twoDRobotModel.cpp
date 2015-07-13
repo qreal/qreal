@@ -47,6 +47,14 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	, mRightWheelPort("M4")
 	, mDisplayWidget(new TrikDisplayWidget())
 {
+	/// @todo: One day we will support gamepad in 2D model and there will be piece.
+	/// But till that day gamepad ports must be killed cause they spam logs.
+	const QList<PortInfo> realRobotPorts = CommonRobotModel::availablePorts();
+	for (const PortInfo &port : realRobotPorts) {
+		if (port.name().contains("Gamepad", Qt::CaseInsensitive)) {
+			removeAllowedConnections(port);
+		}
+	}
 }
 
 robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
@@ -163,7 +171,6 @@ QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TwoDRobotM
 	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::TwoDRobotModel::specialDevices());
 	return result;
 }
-
 
 QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &port) const
 {

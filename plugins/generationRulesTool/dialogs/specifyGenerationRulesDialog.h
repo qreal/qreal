@@ -37,18 +37,39 @@ public:
 	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of metamodel element we are specifying generation rules for.
-	SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager, const Id &id, QWidget *parent = 0);
+	SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager
+			, const Id &id
+			, qrRepo::LogicalRepoApi *metamodelRepoApi
+			, QWidget *parent = 0);
 
 	~SpecifyGenerationRulesDialog() override;
 
 private slots:
 	/// Inserts property into the code.
-	/// @param propertyName Property to insert.
+	/// @param property - Property to insert.
 	void insertPropertyIntoCode(QListWidgetItem* property);
+
+	/// Inserts template into the code.
+	/// @param templateItem - Template clicked.
+	void insertTemplateIntoCode(QTreeWidgetItem* templateItem);
+
+	/// Saves generation rule into metamodel.
+	void saveGenerationRule();
 
 private:
 	/// Adds properties to the properties list.
 	void addPropertiesList();
+
+	/// Adds list of templates.
+	void addTemplatesList();
+
+	/// Add templates of one type.
+	/// @param type - template type.
+	/// @param listOfTemplates - list of templates of this type.
+	void addOneTypeTemplates(const QString &type, const QStringList &listOfTemplates);
+
+	/// Adds previously added rule.
+	void addOldRule();
 
 	/// Returns properties displayed names list.
 	/// @param propertiesNames List of properties.
@@ -58,6 +79,7 @@ private:
 	EditorManagerInterface *mInterpreterEditorManager;  // doesn't have ownership
 	const Id mId;
 	QStringList mPropertiesNames;
+	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // doesn't have ownership
 };
 
 }

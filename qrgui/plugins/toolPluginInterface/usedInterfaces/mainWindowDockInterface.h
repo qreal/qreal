@@ -58,6 +58,11 @@ public:
 	/// Adds the given @param dockWidget into the specified @param area.
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) = 0;
 
+	/// Adds the \a toolbar into the specified \a area in this main window.
+	/// The \a toolbar is placed at the end of the current tool bar block (i.e. line).
+	/// If the main window already manages \a toolbar then it will only move the toolbar to \a area.
+	virtual void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) = 0;
+
 	/// Serializes all docks and toolbar placement and returns the resulting data.
 	/// This data can be used for restoring the window state next time.
 	/// @param version An integer parameter that will be also serialized into state.

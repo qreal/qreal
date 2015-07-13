@@ -32,8 +32,8 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mConnectToRobotAction(new QAction(QIcon(":/icons/robots_connect.svg"), QObject::tr("Connect to robot"), nullptr))
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
 	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
-	, mDebugModeAction(QObject::tr("Switch to debug mode"), nullptr)
-	, mEditModeAction(QObject::tr("Switch to edit mode"), nullptr)
+	, mDebugModeAction(new QAction(QIcon(":/icons/main_tabbar_debug.svg"), QObject::tr("Debug"), nullptr))
+	, mEditModeAction(new QAction(QIcon(":/icons/main_tabbar_edit.svg"), QObject::tr("Edit"), nullptr))
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
@@ -53,8 +53,10 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 			<< &mExportExerciseAction
 			;
 
-	mEditModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
-	mDebugModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mEditModeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
+	mEditModeAction->setCheckable(true);
+	mDebugModeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mDebugModeAction->setCheckable(true);
 
 	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
@@ -98,8 +100,8 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	result += mAdditionalHotKeyInfos;
 
 	result
-			<< qReal::HotKeyActionInfo("Editor.EditMode", mEditModeAction.text(), &mEditModeAction)
-			<< qReal::HotKeyActionInfo("Editor.DebugMode", mDebugModeAction.text(), &mDebugModeAction)
+			<< qReal::HotKeyActionInfo("Editor.EditMode", QObject::tr("Switch to edit mode"), mEditModeAction)
+			<< qReal::HotKeyActionInfo("Editor.DebugMode", QObject::tr("Switch to debug mode"), mDebugModeAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), mRunAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), mStopRobotAction)
 			;
@@ -141,12 +143,12 @@ QAction &ActionsManager::exportExerciseAction()
 
 QAction &ActionsManager::debugModeAction()
 {
-	return mDebugModeAction;
+	return *mDebugModeAction;
 }
 
 QAction &ActionsManager::editModeAction()
 {
-	return mEditModeAction;
+	return *mEditModeAction;
 }
 
 void ActionsManager::appendHotKey(const QString &actionId, const QString &label, QAction &action)

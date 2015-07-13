@@ -91,7 +91,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 		}
 
 		return openProject(dequotedFileName);
-	} else {
+	} else if (fileInfo.exists()) {
 		mMainWindow->closeStartTab();
 		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
 	}

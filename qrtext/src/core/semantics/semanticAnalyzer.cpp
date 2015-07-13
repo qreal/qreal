@@ -56,12 +56,12 @@ void SemanticAnalyzer::collect(QSharedPointer<ast::Node> const &node)
 	analyzeNode(node);
 }
 
-void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
+void SemanticAnalyzer::finalizeResolve(const QSharedPointer<ast::Node> &node)
 {
 	if (node->is<ast::Expression>()) {
-		auto expression = as<ast::Expression>(node);
+		const auto expression = as<ast::Expression>(node);
 		if (mTypes.contains(expression)) {
-			QSharedPointer<types::TypeVariable> const &typeVariable = mTypes.value(expression);
+			const QSharedPointer<types::TypeVariable> &typeVariable = mTypes.value(expression);
 			if (typeVariable->isEmpty()) {
 				reportError(expression, QObject::tr("Type mismatch"));
 			} else if (!typeVariable->isResolved()) {
@@ -114,7 +114,7 @@ void SemanticAnalyzer::clear()
 	mIdentifierDeclarations.clear();
 }
 
-void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
+void SemanticAnalyzer::forget(const QSharedPointer<ast::Node> &root)
 {
 	if (!root) {
 		return;
@@ -134,14 +134,24 @@ void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
 	}
 }
 
-void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
+void SemanticAnalyzer::assign(const QSharedPointer<ast::Node> &expression
 		, const QSharedPointer<types::TypeExpression> &type)
 {
+	const auto castExpression = as<ast::Expression>(expression);
+
 	if (!type->is<types::TypeVariable>()) {
-		mTypes.insert(as<ast::Expression>(expression)
-				, QSharedPointer<types::TypeVariable>(new types::TypeVariable(type)));
+		if (mTypes.contains(castExpression)) {
+			// If type variable for that expression already exists, we must constrain it rather than create
+			// new variable. Else it doesn't play well with coercion --- variable gets created, then coerced,
+			// then program is rechecked to verify coercion results, new variable is created during recheck,
+			// gets coerced and so on, infinitely.
+			mTypes[castExpression]->constrain(QList<QSharedPointer<types::TypeExpression>>{type}
+					, *mGeneralizationsTable);
+		} else {
+			mTypes.insert(castExpression, QSharedPointer<types::TypeVariable>(new types::TypeVariable(type)));
+		}
 	} else {
-		mTypes.insert(as<ast::Expression>(expression), type.dynamicCast<types::TypeVariable>());
+		mTypes.insert(castExpression, type.dynamicCast<types::TypeVariable>());
 	}
 }
 

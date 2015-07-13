@@ -34,8 +34,6 @@
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
-#include <QtCore/QDebug>
-
 using namespace twoDModel::robotModel;
 using namespace kitBase::robotModel;
 
@@ -52,7 +50,7 @@ TwoDRobotModel::TwoDRobotModel(const RobotModelInterface &realModel)
 }
 
 TwoDRobotModel::TwoDRobotModel(const QString &robotId)
-	:CommonRobotModel("", robotId)
+	: CommonRobotModel("", robotId)
 	, mRealModel(nullptr)
 	, mEngine(nullptr)
 {

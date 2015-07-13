@@ -18,4 +18,6 @@ TEMPLATE = lib
 CONFIG += plugin 
 DESTDIR = $$DESTDIR/plugins/interpreted/
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/plugins/generationRulesTool_ru.ts
+
 include(generationRulesTool.pri)
