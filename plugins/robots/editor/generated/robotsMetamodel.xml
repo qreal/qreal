@@ -1961,6 +1961,7 @@
 						<label x="30" y="60" textBinded="Variable" hard="true" prefix="Variable:"/>
 						<label x="30" y="90" textBinded="Wait" hard="true" prefix="Wait:"/>
 					</labels>
+					<nonResizeable/>
 				</graphics>
 				<logic>
 					<container/>
