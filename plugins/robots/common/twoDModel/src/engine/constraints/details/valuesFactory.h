@@ -33,6 +33,9 @@ public:
 	/// Produces functor that always returns QVariant().
 	Value invalidValue() const;
 
+	/// Produces functor that always returns bool-type QVariant with the specified value.
+	Value boolValue(bool value) const;
+
 	/// Produces functor that always returns integer-type QVariant with the specified value.
 	Value intValue(int value) const;
 
@@ -53,6 +56,30 @@ public:
 
 	/// Produces functor that returns a number of milliseconds passed from some point (no matter what point).
 	Value timestamp(const utils::TimelineInterface &timeline) const;
+
+	/// Produces functor that returns a negated integer \a value.
+	/// If \a value cannot be implicitly converted to integer 0 will be returned.
+	Value unaryMinus(const Value &value) const;
+
+	/// Produces functor that returns an absolute value of \a value.
+	/// If \a value cannot be implicitly converted to numerics 0 will be returned.
+	Value abs(const Value &value) const;
+
+	/// Produces functor that returns a sum of two given integer values
+	/// If values cannot be implicitly converted to integers 0 will be returned.
+	Value sum(const Value &left, const Value &right) const;
+
+	/// Produces functor that returns a difference of two given numeric values.
+	/// If values cannot be implicitly converted to integers 0 will be returned.
+	Value difference(const Value &left, const Value &right) const;
+
+	/// Produces functor that returns a maximal of two given numeric values.
+	/// If values cannot be implicitly converted to integers 0 will be returned.
+	Value max(const Value &left, const Value &right) const;
+
+	/// Produces functor that returns a minimal of two given numeric values.
+	/// If values cannot be implicitly converted to integers 0 will be returned.
+	Value min(const Value &left, const Value &right) const;
 
 private:
 	void reportError(const QString &message) const;

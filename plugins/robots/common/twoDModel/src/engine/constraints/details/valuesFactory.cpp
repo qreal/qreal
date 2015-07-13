@@ -32,6 +32,11 @@ Value ValuesFactory::invalidValue() const
 	return []() { return QVariant(); };
 }
 
+Value ValuesFactory::boolValue(bool value) const
+{
+	return [value]() { return value; };
+}
+
 Value ValuesFactory::intValue(int value) const
 {
 	return [value]() { return value; };
@@ -99,6 +104,36 @@ Value ValuesFactory::objectState(const QString &objectId, const QString &propert
 Value ValuesFactory::timestamp(const utils::TimelineInterface &timeline) const
 {
 	return [&timeline]() { return timeline.timestamp(); };
+}
+
+Value ValuesFactory::unaryMinus(const Value &value) const
+{
+	return [value]() { return -value().toInt(); };
+}
+
+Value ValuesFactory::abs(const Value &value) const
+{
+	return [value]() { return qAbs(value().toInt()); };
+}
+
+Value ValuesFactory::sum(const Value &left, const Value &right) const
+{
+	return [left, right]() { return left().toInt() + right().toInt(); };
+}
+
+Value ValuesFactory::difference(const Value &left, const Value &right) const
+{
+	return [left, right]() { return left().toInt() - right().toInt(); };
+}
+
+Value ValuesFactory::max(const Value &left, const Value &right) const
+{
+	return [left, right]() { return qMax(left().toInt(), right().toInt()); };
+}
+
+Value ValuesFactory::min(const Value &left, const Value &right) const
+{
+	return [left, right]() { return qMin(left().toInt(), right().toInt()); };
 }
 
 void ValuesFactory::reportError(const QString &message) const

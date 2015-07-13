@@ -46,12 +46,7 @@ public:
 
 	/// Produces new trigger that assigns to the given variable the given value. Declares new variable
 	/// if it does not exist.
-	Trigger setVariable(const QString &name, const QVariant &value) const;
-
-	/// Produces new trigger that adds the given value to the given variable.
-	/// Type of the passed value may differ from the old one. Then best addition overload will be selected.
-	/// That means if values can`t be added like numbers then the result will be a concatenation of two strings.
-	Trigger addToVariable(const QString &name, const QVariant &value) const;
+	Trigger setVariable(const QString &name, const Value &value) const;
 
 	/// Enables the event with the given id i.e. it will listen for its condition to satisfy and fire then.
 	Trigger setUpEvent(const QString &id) const;

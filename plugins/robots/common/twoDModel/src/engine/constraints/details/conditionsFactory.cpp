@@ -43,11 +43,13 @@ Condition ConditionsFactory::combined(const QList<Condition> &conditions, Glue g
 {
 	return [conditions, glue]() {
 		for (const Condition &condition : conditions) {
-			if (glue == Glue::And && !condition()) {
+			const bool value = condition();
+
+			if (glue == Glue::And && !value) {
 				return false;
 			}
 
-			if (glue == Glue::Or && condition()) {
+			if (glue == Glue::Or && value) {
 				return true;
 			}
 		}
@@ -188,6 +190,14 @@ Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const V
 		}
 
 		return timeElapsed;
+	};
+}
+
+Condition ConditionsFactory::usingCondition(const Condition &returns, const Trigger &trigger) const
+{
+	return [returns, trigger]() {
+		trigger();
+		return returns();
 	};
 }
 

@@ -59,7 +59,9 @@
 			</condition>
 			<triggers>
 				<setUp id="Touching wall"/>
-				<setVariable name="counter" value="0"/>
+				<setter name="counter" value="0">
+					<int value="0"/>
+				</setter>
 			</triggers>
 		</event>
 
@@ -94,7 +96,12 @@
 					<setUp id="Touching wall"/>
 				</trigger>
 				<trigger>
-					<addToVariable name="counter" value="1"/>
+					<setter name="counter">
+						<sum>
+							<variableValue name="counter"/>
+							<int value="1"/>
+						</sum>
+					</setter>
 				</trigger>
 				<trigger>
 					<setUp id="Done?"/>
