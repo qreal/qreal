@@ -30,8 +30,8 @@ bool EnumType::init(const QString &context)
 		if (!mApi->isLogicalElement(child))
 			continue;
 		if (child.element() == metaEntityValue) {
-			QString name = mApi->stringProperty(child, "valueName");
-			QString displayedName = mApi->stringProperty(child,"displayedName");
+            const QString name = mApi->stringProperty(child, "valueName");
+            const QString displayedName = mApi->stringProperty(child,"displayedName");
 			mValues[name] = displayedName;
 		}
 	}
@@ -55,13 +55,13 @@ void EnumType::print()
 QString EnumType::generateEnums(const QString &lineTemplate) const
 {
 	QString line = lineTemplate;
-	QString lineForWright = "";
+    QString lineForWrite = "";
 	for (const QString &value : mValues.keys()) {
 		if (!lineForWright.isEmpty()) {
-			lineForWright += ", qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
+            lineForWrite += ", qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 		else {
-			lineForWright = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
+            lineForWrite = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 	}
 	line.replace(qMakeLineTag, lineForWright).replace(elementNameTag, name());

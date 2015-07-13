@@ -245,8 +245,9 @@ QString EdgeType::generatePorts(const QStringList &portTypes) const
 		typeForReturning += type;
 	}
 
-	if (typeForReturning.isEmpty())
+    if (typeForReturning.isEmpty()) {
 		typeForReturning = "NonTyped";
+    }
 
 	return typeForReturning;
 }
