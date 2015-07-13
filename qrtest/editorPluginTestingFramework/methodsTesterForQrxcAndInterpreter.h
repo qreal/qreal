@@ -13,6 +13,7 @@ namespace editorPluginTestingFramework {
 class MethodsTesterForQrxcAndInterpreter : public MethodsTester
 {
 public:
+	virtual ~MethodsTesterForQrxcAndInterpreter() {}
 
 	/// gets qrxc generated plugin and interpreter generated plugin from main class
 	MethodsTesterForQrxcAndInterpreter(

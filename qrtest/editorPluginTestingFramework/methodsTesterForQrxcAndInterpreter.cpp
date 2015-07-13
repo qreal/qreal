@@ -245,7 +245,7 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 		Q_UNUSED(propertyName);
 		Q_UNUSED(editorManagerInterface);
 
-		mResult = callFunction( [editorId] () { editorId; });
+		mResult = callFunction( [editorId]() {return editorId; });
 		return ConvertingMethods::convertIdIntoStringList(editorId);
 	}
 
@@ -284,7 +284,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
 
-		mResult = callFunction( [editorManagerInterface, editorId] () { editorManagerInterface->diagrams(editorId); });
+		mResult = callFunction( [editorManagerInterface, editorId] () {return editorManagerInterface->diagrams(editorId); });
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->diagrams(editorId));
 	}
 
@@ -323,7 +323,7 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithIdParameter
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
 
-		mResult = callFunction( [editorManagerInterface, diagramId] () { editorManagerInterface->elements(diagramId); });
+		mResult = callFunction( [editorManagerInterface, diagramId] () { return editorManagerInterface->elements(diagramId); });
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
 	}
 
@@ -365,7 +365,7 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParame
 		const QString &diagramName = diagramId.diagram();
 
 		mResult = callFunction( [editorManagerInterface, editorName, diagramName ]
-				() { editorManagerInterface->elements(editorName, diagramName);});
+				() { return editorManagerInterface->elements(editorName, diagramName);});
 
 		return editorManagerInterface->elements(editorName, diagramName);
 	}
@@ -405,7 +405,7 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->mouseGesture(elementId);} );
+				() { return editorManagerInterface->mouseGesture(elementId);} );
 
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->mouseGesture(elementId));
 	}
@@ -453,8 +453,9 @@ class MethodsTesterForQrxcAndInterpreter::IsParentOfGenerator
 			, const QString &propertyName
 			) const
 	{
+		Q_UNUSED(propertyName);
 		mResult = callFunction( [this, editorManagerInterface, editorId, diagramId, elementId]
-						() { callIsParent(editorManagerInterface, editorId, diagramId, elementId);} );
+						() { return callIsParent(editorManagerInterface, editorId, diagramId, elementId);} );
 
 		QStringList result;
 		foreach (Id const &parentDiagram, editorManagerInterface->diagrams(editorId)) {
@@ -508,7 +509,7 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->friendlyName(elementId); } );
+				() { return editorManagerInterface->friendlyName(elementId); } );
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->friendlyName(elementId));
 	}
 
@@ -548,7 +549,7 @@ class MethodsTesterForQrxcAndInterpreter::DescriptionListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->description(elementId); } );
+				() { return editorManagerInterface->description(elementId); } );
 
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->description(elementId));
 	}
@@ -588,7 +589,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator
 		Q_UNUSED(diagramId);
 
 		mResult = callFunction( [editorManagerInterface, elementId, propertyName]
-				() { editorManagerInterface->propertyDescription(elementId, propertyName); } );
+				() { return editorManagerInterface->propertyDescription(elementId, propertyName); } );
 
 		QStringList resultList;
 		try {
@@ -634,7 +635,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDisplayedNameListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		mResult = callFunction( [editorManagerInterface, elementId, propertyName]
-				() { editorManagerInterface->propertyDisplayedName(elementId, propertyName); } );
+				() { return editorManagerInterface->propertyDisplayedName(elementId, propertyName); } );
 
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->propertyDisplayedName(elementId,propertyName));
@@ -676,7 +677,7 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->containedTypes(elementId); } );
+				() { return editorManagerInterface->containedTypes(elementId); } );
 
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->containedTypes(elementId));
 	}
@@ -717,7 +718,7 @@ class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->explosions(elementId); } );
+				() { return editorManagerInterface->explosions(elementId); } );
 
 		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
 	}
@@ -767,7 +768,7 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [this, editorManagerInterface, elementId]
-				() { callEnum(editorManagerInterface, elementId); } );
+				() { return callEnum(editorManagerInterface, elementId); } );
 
 		QStringList nameList =  editorManagerInterface->propertyNames(elementId);
 
@@ -816,7 +817,7 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 		Q_UNUSED(propertyName);
 		const QString &name = elementId.element();
 		mResult = callFunction( [editorManagerInterface, elementId, name]
-				() { editorManagerInterface->typeName(elementId, name); } );
+				() { return editorManagerInterface->typeName(elementId, name); } );
 
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->typeName(elementId, name));
 	}
@@ -857,7 +858,7 @@ class MethodsTesterForQrxcAndInterpreter::ReferencePropertiesGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->referenceProperties(elementId); } );
+				() { return editorManagerInterface->referenceProperties(elementId); } );
 
 		return (editorManagerInterface->referenceProperties(elementId));
 	}
@@ -939,7 +940,7 @@ class MethodsTesterForQrxcAndInterpreter::IsEditorListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, editorId]
-				() { editorManagerInterface->isEditor(editorId); } );
+				() { return editorManagerInterface->isEditor(editorId); } );
 
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isEditor(editorId));
 	}
@@ -979,7 +980,7 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, diagramId]
-				() { editorManagerInterface->isDiagram(diagramId); } );
+				() { return editorManagerInterface->isDiagram(diagramId); } );
 
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isDiagram(diagramId));
 	}
@@ -1021,7 +1022,7 @@ class MethodsTesterForQrxcAndInterpreter::IsElementListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->isElement(elementId); } );
+				() { return editorManagerInterface->isElement(elementId); } );
 
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isElement(elementId));
 	}
@@ -1061,7 +1062,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->propertyNames(elementId); } );
+				() { return editorManagerInterface->propertyNames(elementId); } );
 
 		return (editorManagerInterface->propertyNames(elementId));
 	}
@@ -1101,7 +1102,7 @@ class MethodsTesterForQrxcAndInterpreter::PortTypesListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->portTypes(elementId); } );
+				() { return editorManagerInterface->portTypes(elementId); } );
 
 		return editorManagerInterface->portTypes(elementId);
 	}
@@ -1142,7 +1143,7 @@ class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 		Q_UNUSED(diagramId);
 
 		mResult = callFunction( [editorManagerInterface, elementId, propertyName]
-				() { editorManagerInterface->defaultPropertyValue(elementId, propertyName); } );
+				() { return editorManagerInterface->defaultPropertyValue(elementId, propertyName); } );
 
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->defaultPropertyValue(elementId, propertyName));
@@ -1183,7 +1184,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->propertiesWithDefaultValues(elementId); } );
+				() { return editorManagerInterface->propertiesWithDefaultValues(elementId); } );
 
 		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
 	}
@@ -1224,7 +1225,7 @@ class MethodsTesterForQrxcAndInterpreter::HasElementListGenerator
 		Q_UNUSED(propertyName);
 
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->hasElement(elementId); } );
+				() { return editorManagerInterface->hasElement(elementId); } );
 
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->hasElement(elementId));
 	}
@@ -1265,7 +1266,7 @@ class MethodsTesterForQrxcAndInterpreter::FindElementByTypeListGenerator
 		Q_UNUSED(propertyName);
 		const QString &type = elementId.element();
 		mResult = callFunction( [editorManagerInterface, type]
-				() { editorManagerInterface->findElementByType(type); } );
+				() { return editorManagerInterface->findElementByType(type); } );
 
 		return ConvertingMethods::convertIdIntoStringList(editorManagerInterface->findElementByType(type));
 	}
@@ -1305,7 +1306,7 @@ class MethodsTesterForQrxcAndInterpreter::IsGraphicalElementListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->isGraphicalElementNode(elementId); } );
+				() { return editorManagerInterface->isGraphicalElementNode(elementId); } );
 
 		return ConvertingMethods::convertBoolIntoStringList(
 				editorManagerInterface->isGraphicalElementNode(elementId));
@@ -1347,7 +1348,7 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 		const QString &editorName = editorId.editor();
 		const QString &elementName = elementId.element();
 		mResult = callFunction( [editorManagerInterface, editorName, elementName]
-				() { editorManagerInterface->isNodeOrEdge(editorName, elementName); } );
+				() { return editorManagerInterface->isNodeOrEdge(editorName, elementName); } );
 
 		return ConvertingMethods::convertIntIntoStringList(
 				editorManagerInterface->isNodeOrEdge(editorName, elementName));
@@ -1389,7 +1390,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNameListGenerator
 		const QString &editorName = editorId.editor();
 		const QString &diagramName = diagramId.diagram();
 		mResult = callFunction( [editorManagerInterface, editorName, diagramName]
-				() { editorManagerInterface->diagramName(editorName, diagramName); } );
+				() { return editorManagerInterface->diagramName(editorName, diagramName); } );
 
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->diagramName(editorName, diagramName));
@@ -1432,7 +1433,7 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNodeNameListGenerator
 		const QString &diagramName = diagramId.diagram();
 
 		mResult = callFunction( [editorManagerInterface, editorName, diagramName]
-				() { editorManagerInterface->diagramNodeName(editorName, diagramName); } );
+				() { return editorManagerInterface->diagramNodeName(editorName, diagramName); } );
 
 		return ConvertingMethods::convertStringIntoStringList(
 				editorManagerInterface->diagramNodeName(editorName, diagramName));
@@ -1472,7 +1473,7 @@ class MethodsTesterForQrxcAndInterpreter::IsParentPropertyListGenerator
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		mResult = callFunction( [editorManagerInterface, elementId, propertyName]
-				() { editorManagerInterface->isParentProperty(elementId, propertyName); } );
+				() { return editorManagerInterface->isParentProperty(elementId, propertyName); } );
 
 		return ConvertingMethods::convertBoolIntoStringList(
 				editorManagerInterface->isParentProperty(elementId, propertyName));
@@ -1513,7 +1514,7 @@ class MethodsTesterForQrxcAndInterpreter::ChildrenListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->children(elementId); } );
+				() { return editorManagerInterface->children(elementId); } );
 
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->children(elementId));
 	}
@@ -1553,7 +1554,7 @@ class MethodsTesterForQrxcAndInterpreter::ShapeListGenerator
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
 		mResult = callFunction( [editorManagerInterface, elementId]
-				() { editorManagerInterface->shape(elementId); } );
+				() { return editorManagerInterface->shape(elementId); } );
 
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->shape(elementId));
 	}
@@ -1590,8 +1591,9 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsGenerator
 			) const
 	{
 		Q_UNUSED(propertyName);
+		Q_UNUSED(elementId);
 		mResult = callFunction( [editorManagerInterface, editorId, diagramId]
-				() { editorManagerInterface->paletteGroups(editorId, diagramId); } );
+				() { return editorManagerInterface->paletteGroups(editorId, diagramId); } );
 
 		return editorManagerInterface->paletteGroups(editorId, diagramId);
 	}
@@ -1627,8 +1629,10 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupsListGenerator
 			, const QString &group
 			) const
 	{
+		Q_UNUSED(elementId);
+
 		mResult = callFunction( [editorManagerInterface, editorId, diagramId, group]
-				() { editorManagerInterface->paletteGroupList(editorId, diagramId, group); } );
+				() { return editorManagerInterface->paletteGroupList(editorId, diagramId, group); } );
 
 		return editorManagerInterface->paletteGroupList(editorId, diagramId, group);
 	}
@@ -1664,8 +1668,10 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 			, const QString &group
 			) const
 	{
+		Q_UNUSED(elementId);
+
 		mResult = callFunction( [editorManagerInterface, editorId, diagramId, group]
-				() { editorManagerInterface->paletteGroupDescription(editorId, diagramId, group); } );
+				() { return editorManagerInterface->paletteGroupDescription(editorId, diagramId, group); } );
 
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->paletteGroupDescription(editorId, diagramId, group));
 	}

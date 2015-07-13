@@ -21,6 +21,7 @@ public:
 
 	/// generates name of tested method
 	virtual QString methodName() const = 0;
+	virtual ~AbstractStringGenerator() {}
 };
 
 }

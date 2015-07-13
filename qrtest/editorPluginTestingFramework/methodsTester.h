@@ -13,6 +13,7 @@ class MethodsTester
 {
 public:
 	QList<QPair<QString, QPair<QString, QString> >> generateTimeResult();
+	virtual ~MethodsTester() {}
 
 protected:
 
