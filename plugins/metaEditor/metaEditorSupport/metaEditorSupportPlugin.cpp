@@ -111,98 +111,105 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 void MetaEditorSupportPlugin::generateEditorWithQrmc()
 {
-	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../../qrmc", mLogicalRepoApi);
+    QString path = qApp->applicationDirPath();
+    qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../../qrmc", mLogicalRepoApi);
 
-	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
+    IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
 
-	QProgressBar *progress = new QProgressBar(mMainWindowInterface->windowWidget());
-	progress->show();
-	int const progressBarWidth = 240;
-	int const progressBarHeight = 20;
+    QProgressBar *progress = new QProgressBar(mMainWindowInterface->windowWidget());
+    progress->show();
+    int const progressBarWidth = 240;
+    int const progressBarHeight = 20;
 
-	QApplication::processEvents();
-	QRect const screenRect = qApp->desktop()->availableGeometry();
-	progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
-	progress->setFixedWidth(progressBarWidth);
-	progress->setFixedHeight(progressBarHeight);
-	progress->setRange(0, 100);
+    QApplication::processEvents();
+    QRect const screenRect = qApp->desktop()->availableGeometry();
+    progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
+    progress->setFixedWidth(progressBarWidth);
+    progress->setFixedHeight(progressBarHeight);
+    progress->setRange(0, 100);
 
-	int forEditor = 60 / metamodels.size();
+    int forEditor = 60 / metamodels.size();
 
-	foreach (Id const &key, metamodels) {
-		QString const objectType = key.element();
-		if (objectType == "MetamodelDiagram" && mLogicalRepoApi->isLogicalElement(key)) {
-			QString nameOfTheDirectory = mLogicalRepoApi->stringProperty(key, "name of the directory");
-			QString nameOfMetamodel = mLogicalRepoApi->stringProperty(key, "name");
-			QString nameOfPlugin = nameOfTheDirectory.split("/").last();
+    foreach (Id const &key, metamodels) {
+        QString const objectType = key.element();
+        if (objectType == "MetamodelDiagram" && mLogicalRepoApi->isLogicalElement(key)) {
+            QString nameOfTheDirectory = mLogicalRepoApi->stringProperty(key, "name of the directory");
+            QString nameOfMetamodel = mLogicalRepoApi->stringProperty(key, "name");
+            QString nameOfPlugin = nameOfTheDirectory.split("/").last();
 
-			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-					, tr("loading..")
-					, QString(tr("Do you want to compile and load editor %1?")).arg(nameOfPlugin)
-					, QMessageBox::Yes, QMessageBox::No)
-					== QMessageBox::No)
-			{
-				continue;
-			}
+            if (QMessageBox::question(mMainWindowInterface->windowWidget()
+                    , tr("loading..")
+                    , QString(tr("Do you want to compile and load editor %1?")).arg(nameOfPlugin)
+                    , QMessageBox::Yes, QMessageBox::No)
+                    == QMessageBox::No)
+            {
+                continue;
+            }
 
-			progress->setValue(5);
+            progress->setValue(5);
 
-			if (!metaCompiler.compile(nameOfMetamodel)) { // generating source code for all metamodels
-				QMessageBox::warning(mMainWindowInterface->windowWidget()
-						, tr("error")
-						, tr("Cannot generate source code for editor ") + nameOfPlugin);
-				continue;
-			}
-			progress->setValue(20);
+            if (!metaCompiler.compile(nameOfMetamodel)) { // generating source code for all metamodels
+                QMessageBox::warning(mMainWindowInterface->windowWidget()
+                        , tr("error")
+                        , tr("Cannot generate source code for editor ") + nameOfPlugin);
+                continue;
+            }
+            progress->setValue(20);
 
-			QProcess builder;
-			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(SettingsManager::value("pathToQmake").toString());
-			qDebug()  << "qmake";
-			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
-				progress->setValue(40);
+            QStringList qmakeArgs;
+            qmakeArgs.append("CONFIG+=" + mLogicalRepoApi->stringProperty(key, "buildConfiguration"));
+            qmakeArgs.append(nameOfMetamodel + ".pro");
 
-				builder.start(SettingsManager::value("pathToMake").toString());
+            QProcess builder;
+            builder.setWorkingDirectory(nameOfTheDirectory);
+            const QStringList environment = QProcess::systemEnvironment();
+            builder.setEnvironment(environment);
+            builder.start(SettingsManager::value("pathToQmake").toString(), qmakeArgs);
 
-				bool finished = builder.waitForFinished(100000);
-				qDebug()  << "make";
-				if (finished && (builder.exitCode() == 0)) {
-					qDebug()  << "make ok";
+            qDebug()  << "qmake";
+            if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+                progress->setValue(40);
+                builder.start(SettingsManager::value("pathToMake").toString());
 
-					progress->setValue(progress->value() + forEditor / 2);
+                bool finished = builder.waitForFinished(100000);
+                qDebug()  << "make";
 
-					QString normalizedName = nameOfPlugin.at(0).toUpper() + nameOfPlugin.mid(1);
-					if (!nameOfPlugin.isEmpty()) {
-						if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
-							QMessageBox::warning(mMainWindowInterface->windowWidget()
-									, tr("error")
-									, tr("cannot unload plugin ") + normalizedName);
-							progress->close();
-							delete progress;
-							continue;
-						}
-					}
+                if (finished && (builder.exitCode() == 0)) {
+                    qDebug()  << "make ok";
+                    progress->setValue(progress->value() + forEditor / 2);
 
-					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
-							+ nameOfPlugin
-							+ "."
-							+ SettingsManager::value("pluginExtension").toString()
-							;
+                    QString normalizedName = nameOfPlugin.at(0).toUpper() + nameOfPlugin.mid(1);
+                    if (!nameOfPlugin.isEmpty()) {
+                        if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
+                            QMessageBox::warning(mMainWindowInterface->windowWidget()
+                                    , tr("error")
+                                    , tr("cannot unload plugin ") + normalizedName);
+                            progress->close();
+                            delete progress;
+                            continue;
+                        }
+                    }
 
-					if (mMainWindowInterface->loadPlugin(generatedPluginFileName, normalizedName)) {
-						progress->setValue(progress->value() + forEditor / 2);
-					}
-				}
-				progress->setValue(100);
-			}
-		}
-	}
-	if (progress->value() != 100) {
-		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
-	}
-	progress->setValue(100);
-	progress->close();
-	delete progress;
+                    QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
+                            + nameOfPlugin
+                            + "."
+                            + SettingsManager::value("pluginExtension").toString()
+                            ;
+
+                    if (mMainWindowInterface->loadPlugin(generatedPluginFileName, normalizedName)) {
+                        progress->setValue(progress->value() + forEditor / 2);
+                    }
+                }
+                progress->setValue(100);
+            }
+        }
+    }
+    if (progress->value() != 100) {
+        QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
+    }
+    progress->setValue(100);
+    progress->close();
+    delete progress;
 }
 
 void MetaEditorSupportPlugin::parseEditorXml()
