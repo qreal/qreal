@@ -26,10 +26,8 @@ FakeScene::FakeScene(const WorldModel &world)
 {
 	connect(&world, &WorldModel::wallAdded, [=](items::WallItem *wall) { addClone(wall, wall->clone()); });
 	connect(&world, &WorldModel::colorItemAdded, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
-	connect(&world, &WorldModel::otherItemAdded, [=](QGraphicsItem *item) {
-		if (QGraphicsLineItem * const trace = dynamic_cast<QGraphicsLineItem *>(item)) {
-			addClone(item, new QGraphicsLineItem(trace->line()));
-		}
+	connect(&world, &WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) {
+		addClone(item, new QGraphicsLineItem(item->line()));
 	});
 	connect(&world, &WorldModel::itemRemoved, this, &FakeScene::deleteItem);
 }

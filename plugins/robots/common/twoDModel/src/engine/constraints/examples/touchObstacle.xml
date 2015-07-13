@@ -27,7 +27,7 @@
 
 		<constraint failMessage="На порту 1 должен быть выставлен сенсор касания, стерва!" checkOnce="true">
 			<equals>
-				<typeof objectId="robot1.1_in"/>
+				<typeof objectId="robot1.1"/>
 				<string value="twoDModel::robotModel::parts::TouchSensor"/>
 			</equals>
 		</constraint>
@@ -78,7 +78,7 @@
 		<event id="Touching wall">
 			<condition>
 				<equals>
-					<objectState objectId="robot1.1_in" property="value"/>
+					<objectState objectId="robot1.1" property="value"/>
 					<int value="1"/>
 				</equals>
 			</condition>

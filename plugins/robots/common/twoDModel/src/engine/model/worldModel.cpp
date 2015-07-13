@@ -188,7 +188,7 @@ void WorldModel::appendRobotTrace(const QPen &pen, const QPointF &begin, const Q
 	}
 
 	mRobotTrace << traceItem;
-	emit otherItemAdded(traceItem);
+	emit traceItemAdded(traceItem);
 }
 
 void WorldModel::clearRobotTrace()
@@ -323,7 +323,7 @@ void WorldModel::deserialize(const QDomElement &element)
 		if (item) {
 			item->deserialize(regionNode);
 			mRegions.append(item);
-			emit otherItemAdded(item);
+			emit regionItemAdded(item);
 		}
 	}
 }

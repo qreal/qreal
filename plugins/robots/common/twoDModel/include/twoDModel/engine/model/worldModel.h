@@ -91,7 +91,10 @@ signals:
 	void colorItemAdded(items::ColorFieldItem *item);
 
 	/// Emitted each time when model is appended with some new item.
-	void otherItemAdded(QGraphicsItem *item);
+	void regionItemAdded(items::RegionItem *item);
+
+	/// Emitted each time when model is appended with some new item.
+	void traceItemAdded(QGraphicsLineItem *item);
 
 	/// Emitted each time when some item was removed from the 2D model world.
 	void itemRemoved(QGraphicsItem *item);
