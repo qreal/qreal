@@ -23,7 +23,7 @@ PluginManager::PluginManager(
 {
 }
 
-QList<QString> PluginManager::namesOfPlugins()
+QList<QString> PluginManager::namesOfPlugins() const
 {
 	return mPluginManagerLoader.namesOfPlugins();
 }

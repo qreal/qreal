@@ -57,7 +57,7 @@ public:
 	QString unloadPlugin(const QString &pluginName);
 
 	/// Returns names of all plugins.
-	QList<QString> namesOfPlugins();
+	QList<QString> namesOfPlugins() const;
 
 	/// Returns fileName by given object.
 	template <class InterfaceType>

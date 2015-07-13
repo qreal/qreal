@@ -30,9 +30,8 @@ PluginManagerImplementation::PluginManagerImplementation(const QString &applicat
 
 PluginManagerImplementation::~PluginManagerImplementation()
 {
-	const int count = mLoaders.length();
-	for (int i = 0; i < count; ++i) {
-		mLoaders.removeFirst();
+	for (auto &pair : mLoaders) {
+		delete pair.second;
 	}
 }
 
