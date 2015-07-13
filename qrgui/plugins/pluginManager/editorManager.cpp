@@ -68,7 +68,23 @@ QString EditorManager::loadPlugin(const QString &pluginName)
 
 QString EditorManager::unloadPlugin(const QString &pluginName)
 {
-	const QString resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
+	QString resultOfUnloading = "";
+	if (!mPluginFileName[pluginName].isEmpty()) {
+		resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
+	} else {
+		const QList<QString> namesOfPlugins = mPluginManager.namesOfPlugins();
+		const QString tempName = pluginName.toLower();
+		QString newPluginName = "";
+
+		for (const QString &element : namesOfPlugins) {
+			if (element.contains(tempName) && !element.contains(".a")) {
+				newPluginName = element;
+				break;
+			}
+		}
+
+		resultOfUnloading = mPluginManager.unloadPlugin(newPluginName);
+	}
 
 	if (mPluginIface.keys().contains(pluginName)) {
 		mPluginIface.remove(pluginName);

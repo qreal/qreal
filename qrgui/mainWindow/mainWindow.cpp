@@ -715,16 +715,15 @@ void MainWindow::toggleShowSplash(bool show)
 bool MainWindow::unloadPlugin(const QString &pluginName)
 {
 	if (editorManager().editors().contains(Id(pluginName))) {
-		const IdList diagrams = editorManager().diagrams(Id(pluginName));
+		/* Delete and create palette tree for correct unloading plugin
+		 * and for correct completion application.*/
+		mUi->paletteTree->deletePaletteTree();
+		mUi->paletteTree->createPaletteTree();
 
 		const QString error = editorManager().unloadPlugin(pluginName);
 		if (!error.isEmpty()) {
 			QMessageBox::warning(this, tr("Error"), tr("Plugin unloading failed: ") + error);
 			return false;
-		}
-
-		foreach (const Id &diagram, diagrams) {
-			mUi->paletteTree->deleteEditor(diagram);
 		}
 	}
 	return true;
