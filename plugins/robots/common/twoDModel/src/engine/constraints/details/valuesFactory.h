@@ -51,8 +51,13 @@ public:
 	/// Produces functor that returns Qt meta-type id of the object with the specified id.
 	Value typeOf(const QString &objectId) const;
 
-	/// Produces functor that returns Qt-property value of the object with the specified id.
-	Value objectState(const QString &objectId, const QString &property) const;
+	/// Produces functor that returns value of the object with the specified address.
+	/// The \a path is splitted with dots. Then the most long prefix of the path will be searched in
+	/// global objects map. The remaining paths will be translated into the chain of Qt properties calls
+	/// via Qt reflection.
+	/// If no object found in global map or on some stage object does not contain desired property
+	/// checker error will be emitted.
+	Value objectState(const QString &path) const;
 
 	/// Produces functor that returns a number of milliseconds passed from some point (no matter what point).
 	Value timestamp(const utils::TimelineInterface &timeline) const;
@@ -82,6 +87,10 @@ public:
 	Value min(const Value &left, const Value &right) const;
 
 private:
+	QVariant propertyChain(const QVariant &value, const QStringList &properties, const QString &objectAlias) const;
+	QVariant propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const;
+	QVariant propertyOf(const QObject *object, const QString &property, bool *ok = 0) const;
+	QVariant propertyOf(const QRect &rect, const QString &property, bool *ok = 0) const;
 	void reportError(const QString &message) const;
 
 	Variables &mVariables;

@@ -669,11 +669,11 @@ Value ConstraintsParser::parseTypeOfTag(const QDomElement &element)
 
 Value ConstraintsParser::parseObjectStateTag(const QDomElement &element)
 {
-	if (!assertAttributeNonEmpty(element, "objectId") || !assertAttributeNonEmpty(element, "property")) {
+	if (!assertAttributeNonEmpty(element, "object")) {
 		return mValues.invalidValue();
 	}
 
-	return mValues.objectState(element.attribute("objectId"), element.attribute("property"));
+	return mValues.objectState(element.attribute("object"));
 }
 
 QString ConstraintsParser::id(const QDomElement &element) const

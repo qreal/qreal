@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtCore/QRect>
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -24,6 +26,40 @@
 namespace qrTest {
 namespace robotsTests {
 namespace commonTwoDModelTests {
+
+class TestObjectA : public QObject
+{
+	Q_OBJECT
+	Q_PROPERTY(int intProperty READ intProperty WRITE setIntProperty)
+	Q_PROPERTY(QString stringProperty READ stringProperty WRITE setStringProperty)
+	Q_PROPERTY(QRect rectProperty READ rectProperty WRITE setRectProperty)
+
+public:
+	int intProperty() const;
+	QString stringProperty() const;
+	QRect rectProperty() const;
+
+	void setIntProperty(int value);
+	void setStringProperty(const QString &value);
+	void setRectProperty(const QRect &value);
+
+private:
+	int mIntValue;
+	QString mStringValue;
+	QRect mRectValue;
+};
+
+class TestObjectB : public QObject
+{
+	Q_OBJECT
+	Q_PROPERTY(TestObjectA *otherObject READ otherObject)
+
+public:
+	TestObjectA *otherObject();
+
+private:
+	TestObjectA mOtherObject;
+};
 
 /// Tests for ConstraintsParser.
 class ConstraintsParserTests : public testing::Test

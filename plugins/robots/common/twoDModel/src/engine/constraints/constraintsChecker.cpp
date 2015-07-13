@@ -132,7 +132,7 @@ void ConstraintsChecker::bindToWorldModelObjects()
 		bindObject(item->id(), item);
 	});
 	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [this](QGraphicsItem *item) {
-		/// @todo
+
 	});
 
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [this](QGraphicsItem *item) {
@@ -192,7 +192,6 @@ void ConstraintsChecker::bindRobotObject(twoDModel::model::RobotModel * const ro
 void ConstraintsChecker::bindDeviceObject(const QString &robotId
 		, model::RobotModel * const robot, const kitBase::robotModel::PortInfo &port)
 {
-	qDebug() << "binding" << robotId << port.name();
 	mObjects[portName(robotId, robot, port)] = robot->info().configuration().device(port);
 }
 
@@ -218,7 +217,7 @@ QString ConstraintsChecker::portName(const QString &robotId
 	}
 
 	// Making user write "robot1.DisplayPort_out.ellipses" or "robot1.MarkerPort_out" is non-humanistic.
-	// So letting him write "robot1.Display" or "robot1.Marker".
+	// So letting him write "robot1.Display.ellipses" or "robot1.Marker".
 	QRegExp portRegExp("^(\\w+)Port$");
 	const QString readablePortName = portRegExp.exactMatch(port.name())
 			? portRegExp.cap(1)

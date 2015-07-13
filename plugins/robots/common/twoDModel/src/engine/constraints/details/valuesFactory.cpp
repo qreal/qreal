@@ -14,6 +14,8 @@
 
 #include "valuesFactory.h"
 
+#include <QtCore/QRect>
+
 #include <utils/timelineInterface.h>
 
 using namespace twoDModel::constraints::details;
@@ -55,14 +57,20 @@ Value ValuesFactory::stringValue(const QString &value) const
 Value ValuesFactory::variableValue(const QString &name) const
 {
 	return [this, name]() {
-		if (!mVariables.contains(name)) {
+		const QStringList parts = name.split('.');
+		if (parts.isEmpty()) {
+			reportError(QObject::tr("Requesting variable value with empty name"));
+			return QVariant();
+		}
+
+		if (!mVariables.contains(parts.first())) {
 			// We do not mind the situation when trying to read non-declared varible
 			// because really can`t manage the order in which Qt will call event checking,
 			// so some variables (for example counters) can be checked before setted.
 			return QVariant();
 		}
 
-		return mVariables[name];
+		return propertyChain(mVariables[parts.first()], parts.mid(1), parts.first());
 	};
 }
 
@@ -78,26 +86,28 @@ Value ValuesFactory::typeOf(const QString &objectId) const
 	};
 }
 
-Value ValuesFactory::objectState(const QString &objectId, const QString &property) const
+Value ValuesFactory::objectState(const QString &path) const
 {
-	return [this, objectId, property]() {
+	return [this, path]() {
+		const QStringList parts = path.split('.', QString::SkipEmptyParts);
+		if (parts.isEmpty()) {
+			reportError(QObject::tr("Object path is empty!"));
+			return QVariant();
+		}
+
+		QString objectId = parts.first();
 		if (!mObjects.contains(objectId)) {
 			reportError(QObject::tr("No such object: %1").arg(objectId));
 			return QVariant();
 		}
 
-		QObject const *object = mObjects[objectId];
-		if (!object) {
-			return QVariant();
+		int lastObjectPart = 1;
+		while (lastObjectPart < parts.count() && mObjects.contains(objectId + "." + parts[lastObjectPart])) {
+			objectId += "." + parts[lastObjectPart];
+			++lastObjectPart;
 		}
 
-		const int index = object->metaObject()->indexOfProperty(qPrintable(property));
-		if (index < 0) {
-			reportError(QObject::tr("Object \"%1\" has no property \"%2\"").arg(objectId, property));
-			return QVariant();
-		}
-
-		return object->property(qPrintable(property));
+		return propertyChain(QVariant::fromValue<QObject *>(mObjects[objectId]), parts.mid(lastObjectPart), objectId);
 	};
 }
 
@@ -134,6 +144,84 @@ Value ValuesFactory::max(const Value &left, const Value &right) const
 Value ValuesFactory::min(const Value &left, const Value &right) const
 {
 	return [left, right]() { return qMin(left().toInt(), right().toInt()); };
+}
+
+QVariant ValuesFactory::propertyChain(const QVariant &value
+		, const QStringList &propertyChain, const QString &objectAlias) const
+{
+	QVariant currentValue = value;
+	QString currentObjectAlias = objectAlias;
+	for (const QString &property : propertyChain) {
+		currentValue = propertyOf(currentValue, property, currentObjectAlias);
+		currentObjectAlias += "." + property;
+		if (!currentValue.isValid()) {
+			return QVariant();
+		}
+	}
+
+	return currentValue;
+}
+
+QVariant ValuesFactory::propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const
+{
+	bool ok;
+	QVariant result;
+
+	// Here must be enumerated all types whoose properties we can obtain.
+	if (value.canConvert<QObject *>()) {
+		result = propertyOf(value.value<QObject *>(), property, &ok);
+	} else if (value.canConvert<QRect>()) {
+		result = propertyOf(value.value<QRect>(), property, &ok);
+	} else {
+		reportError(QObject::tr("Unknown type of object \"%1\"").arg(objectAlias));
+		return QVariant();
+	}
+
+	if (!ok) {
+		reportError(QObject::tr("Object \"%1\" has no property \"%2\"").arg(objectAlias, property));
+		return QVariant();
+	}
+
+	return result;
+}
+
+QVariant ValuesFactory::propertyOf(const QObject *object, const QString &property, bool *ok) const
+{
+	ok && (*ok = true);
+	if (!object) {
+		return QVariant();
+	}
+
+	const int index = object->metaObject()->indexOfProperty(qPrintable(property));
+	if (index < 0) {
+		ok && (*ok = false);
+		return QVariant();
+	}
+
+	return object->property(qPrintable(property));
+}
+
+QVariant ValuesFactory::propertyOf(const QRect &rect, const QString &property, bool *ok) const
+{
+	ok && (*ok = true);
+	if (property == "x") {
+		return rect.x();
+	}
+
+	if (property == "y") {
+		return rect.y();
+	}
+
+	if (property == "width") {
+		return rect.width();
+	}
+
+	if (property == "height") {
+		return rect.height();
+	}
+
+	ok && (*ok = false);
+	return QVariant();
 }
 
 void ValuesFactory::reportError(const QString &message) const

@@ -208,7 +208,7 @@ TEST_F(ConstraintsParserTests, comparisonTest)
 				"	<event id=\"event\" settedUpInitially=\"true\">"\
 				"		<condition>"\
 				"			<%1>"\
-				"				<objectState objectId=\"testObject\" property=\"%2Property\"/>"\
+				"				<objectState object=\"testObject.%2Property\"/>"\
 				"				<%2 value=\"100\"/>"\
 				"			</%1>"\
 				"		</condition>"\
@@ -425,7 +425,7 @@ TEST_F(ConstraintsParserTests, arithmeticTest)
 
 TEST_F(ConstraintsParserTests, variableValueTest)
 {
-	auto testCase = [this](const QString &value, const QString &type) {
+	auto testCase = [this](const QString &variable, const QString &value, const QString &type) {
 		mEvents.clear();
 		const QString xml = QString(
 				"<constraints>"\
@@ -433,15 +433,15 @@ TEST_F(ConstraintsParserTests, variableValueTest)
 				"	<event id=\"event\" settedUpInitially=\"true\">"\
 				"		<condition>"\
 				"			<equals>"
-				"				<variableValue name=\"x\"/>"
-				"				<%1 value=\"%2\"/>"
+				"				<variableValue name=\"%1\"/>"
+				"				<%2 value=\"%3\"/>"
 				"			</equals>"
 				"		</condition>"\
 				"		<trigger>"\
 				"			<success/>"
 				"		</trigger>"\
 				"	</event>"\
-				"</constraints>").arg(type, value);
+				"</constraints>").arg(variable, type, value);
 		ASSERT_TRUE(mParser.parse(xml));
 		ASSERT_EQ(mEvents.count(), 2);
 		Event * const event = mEvents["event"];
@@ -455,13 +455,64 @@ TEST_F(ConstraintsParserTests, variableValueTest)
 	};
 
 	mVariables["x"] = -1;
-	testCase("-1", "int");
+	testCase("x", "-1", "int");
 
 	mVariables["x"] = -1.2;
-	testCase("-1.2", "double");
+	testCase("x", "-1.2", "double");
 
 	mVariables["x"] = "test";
-	testCase("test", "string");
+	testCase("x", "test", "string");
+
+	mVariables["x"] = QRect(1, 2, 3, 4);
+	testCase("x.x", "1", "int");
+	testCase("x.y", "2", "int");
+	testCase("x.width", "3", "int");
+	testCase("x.height", "4", "int");
+}
+
+TEST_F(ConstraintsParserTests, objectStateTest)
+{
+	auto testCase = [this](const QString &object, const QString &value, const QString &type) {
+		mEvents.clear();
+		const QString xml = QString(
+				"<constraints>"\
+				"	<timelimit value=\"2000\"/>"\
+				"	<event id=\"event\" settedUpInitially=\"true\">"\
+				"		<condition>"\
+				"			<equals>"
+				"				<objectState object=\"%1\"/>"
+				"				<%2 value=\"%3\"/>"
+				"			</equals>"
+				"		</condition>"\
+				"		<trigger>"\
+				"			<success/>"
+				"		</trigger>"\
+				"	</event>"\
+				"</constraints>").arg(object, type, value);
+		ASSERT_TRUE(mParser.parse(xml));
+		ASSERT_EQ(mEvents.count(), 2);
+		Event * const event = mEvents["event"];
+		ASSERT_NE(event, nullptr);
+
+		bool eventFired = false;
+		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+		event->check();
+		ASSERT_TRUE(eventFired);
+	};
+
+	TestObjectB *objB = new TestObjectB;
+	objB->otherObject()->setIntProperty(100500);
+	objB->otherObject()->setStringProperty("abc");
+	objB->otherObject()->setRectProperty(QRect(1, 2, 3, 4));
+	mObjects["object"] = objB;
+
+	testCase("object.otherObject.intProperty", "100500", "int");
+	testCase("object.otherObject.stringProperty", "abc", "string");
+	testCase("object.otherObject.rectProperty.x", "1", "int");
+	testCase("object.otherObject.rectProperty.y", "2", "int");
+	testCase("object.otherObject.rectProperty.width", "3", "int");
+	testCase("object.otherObject.rectProperty.height", "4", "int");
 }
 
 TEST_F(ConstraintsParserTests, usingTest)
@@ -660,4 +711,39 @@ TEST_F(ConstraintsParserTests, communicationTest)
 	ASSERT_EQ(fireCounters["Increment 2"], 10);
 	ASSERT_EQ(fireCounters["Decrement 1"], 11);
 	ASSERT_EQ(fireCounters["Set Initial Value"], 1);
+}
+
+int TestObjectA::intProperty() const
+{
+	return mIntValue;
+}
+
+QString TestObjectA::stringProperty() const
+{
+	return mStringValue;
+}
+
+QRect TestObjectA::rectProperty() const
+{
+	return mRectValue;
+}
+
+void TestObjectA::setIntProperty(int value)
+{
+	mIntValue = value;
+}
+
+void TestObjectA::setStringProperty(const QString &value)
+{
+	mStringValue = value;
+}
+
+void TestObjectA::setRectProperty(const QRect &value)
+{
+	mRectValue = value;
+}
+
+TestObjectA *TestObjectB::otherObject()
+{
+	return &mOtherObject;
 }

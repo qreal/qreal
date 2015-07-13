@@ -53,7 +53,7 @@
 		<event id="We are alive, first move" settedUpInitially="true">
 			<condition>
 				<greater>
-					<objectState objectId="robot1.B_out" property="power"/>
+					<objectState object="robot1.B_out.power"/>
 					<int value="0"/>
 				</greater>
 			</condition>
@@ -78,7 +78,7 @@
 		<event id="Touching wall">
 			<condition>
 				<equals>
-					<objectState objectId="robot1.1" property="value"/>
+					<objectState object="robot1.1.value"/>
 					<int value="1"/>
 				</equals>
 			</condition>
