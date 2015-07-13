@@ -1,5 +1,4 @@
 #include "pluginInterface.h"
-//#include "../../../qrgui/editorPluginInterface/elementImpl.h"
 #include "../../../qrgui/plugins/editorPluginInterface/elementImpl.h"
 #include "elements.h"
 

@@ -212,7 +212,6 @@ void Editor::generate(const QString &headerTemplate, const QString &sourceTempla
 	mElementsHeaderTemplate = elementsHeaderTemplate;
 
 	generatePluginHeader(headerTemplate);
-	//generatePluginSource();
 	generateElementsClasses();
 	generatePluginSource();
 	generateResourceFile(resourceTemplate);
@@ -382,7 +381,7 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 		dir.mkdir(mName);
 	dir.cd(mName);
 	QString nameOfMetamodel = mApi->stringProperty(mId, "name");
-	QString fileName = dir.absoluteFilePath(/*nName*/nameOfMetamodel + ".pro");
+	QString fileName = dir.absoluteFilePath(nameOfMetamodel + ".pro");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";

@@ -289,9 +289,9 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 
 QString GraphicType::generateElementDescription(const QString &lineTemplate) const
 {
-    if (mDescription.isEmpty()) {
+	if (mDescription.isEmpty()) {
 		return "";
-    }
+	}
 
 	QString displayedNamesString;
 	QString temp = this->generateElementDescriptionLine(lineTemplate);
@@ -335,9 +335,9 @@ QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 
 	QList<Port*> getPortTypes = this->mShape.getPorts();
 	QSet<QString> portTypes;
-    for (Port *port : getPortTypes) {
+	for (Port *port : getPortTypes) {
 			portTypes.insert(port->type());
-    }
+	}
 
 	if (!portTypes.empty()) {
 		foreach (const QString &type, portTypes) {

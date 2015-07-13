@@ -177,7 +177,7 @@ void Shape::generate(QString &classTemplate) const
 							.replace(nodeWidthTag, QString::number(mWidth))
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
-    for (Port *port : mPorts) {
+	for (Port *port : mPorts) {
 		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());
 		portsInitLine += port->generateInit(compiler) + endline;
 	}

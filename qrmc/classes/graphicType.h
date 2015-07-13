@@ -33,7 +33,7 @@ namespace qrmc {
 		GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 		virtual ~GraphicType();
 		virtual bool init(const QString &context);
-        virtual bool resolve();
+		virtual bool resolve();
 
 		virtual bool isGraphicalType() const;
 		virtual QString generateProperties(const QString &lineTemplate) const;

@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "../../../qrgui/editorPluginInterface/elementImpl.h"
-//#include "../../../qrgui/editorPluginInterface/sdfRendererInterface.h"
 #include "../../../qrgui/plugins/editorPluginInterface/elementImpl.h"
 #include "../../../qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
 
@@ -9,7 +7,6 @@
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
 #include <QPair>
-//#include "../../../qrgui/editorPluginInterface/editorInterface.h"
 #include "../../../qrgui/plugins/editorPluginInterface/editorInterface.h"
 
 class @@MetamodelName@@Plugin : public QObject, public qReal::EditorInterface
