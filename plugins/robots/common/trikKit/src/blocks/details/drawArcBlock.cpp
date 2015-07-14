@@ -36,7 +36,11 @@ void DrawArcBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int startAngle = eval<int>("StartAngle") * 16;
 	const int spanAngle = eval<int>("SpanAngle") * 16;
 	if (!errorsOccured()) {
-		trikDisplay->drawArc(x, y, width, height, startAngle, spanAngle, redraw);
+		trikDisplay->drawArc(x, y, width, height, startAngle, spanAngle);
+		if (redraw) {
+			trikDisplay->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

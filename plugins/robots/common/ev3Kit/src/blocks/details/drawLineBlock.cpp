@@ -33,7 +33,11 @@ void DrawLineBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const bool redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		ev3Display->drawLine(x1, y1, x2, y2, redraw);
+		ev3Display->drawLine(x1, y1, x2, y2);
+		if (redraw) {
+			ev3Display->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

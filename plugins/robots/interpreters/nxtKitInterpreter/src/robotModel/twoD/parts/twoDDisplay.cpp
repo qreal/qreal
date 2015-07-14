@@ -26,48 +26,38 @@ Display::Display(const DeviceInfo &info
 	mEngine.display()->setPainter(this);
 }
 
-void Display::drawPixel(int x, int y, bool redraw)
+void Display::redraw()
+{
+	mEngine.display()->repaintDisplay();
+}
+
+void Display::drawPixel(int x, int y)
 {
 	mPoints << QPoint(x, y);
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
+void Display::drawLine(int x1, int y1, int x2, int y2)
 {
 	mLines << QLine(x1, y1, x2, y2);
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
 }
 
-void Display::drawRect(int x, int y, int width, int height, bool redraw)
+void Display::drawRect(int x, int y, int width, int height)
 {
 	mRects << QRect(x, y, width, height);
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
 }
 
-void Display::drawCircle(int x, int y, int radius, bool redraw)
+void Display::drawCircle(int x, int y, int radius)
 {
 	mCircles << QRect(x - radius, y - radius, 2 * radius, 2 * radius);
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
 }
 
-void Display::printText(int x, int y, const QString &text, bool redraw)
+void Display::printText(int x, int y, const QString &text)
 {
 	mStringPlaces << QPoint(x, y);
 	mStrings << text;
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
 }
 
-void Display::clearScreen(bool redraw)
+void Display::clearScreen()
 {
 	mPoints.clear();
 	mLines.clear();
@@ -75,9 +65,6 @@ void Display::clearScreen(bool redraw)
 	mCircles.clear();
 	mStrings.clear();
 	mStringPlaces.clear();
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
 }
 
 void Display::paint(QPainter *painter)
@@ -124,5 +111,6 @@ void Display::paint(QPainter *painter)
 
 void Display::reset()
 {
-	clearScreen(true);
+	clearScreen();
+	redraw();
 }

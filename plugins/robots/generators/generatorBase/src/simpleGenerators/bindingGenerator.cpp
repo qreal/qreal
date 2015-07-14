@@ -45,3 +45,8 @@ QString BindingGenerator::generate()
 
 	return input;
 }
+
+void BindingGenerator::addBinding(Binding * const binding)
+{
+	mBindings << binding;
+}

@@ -28,10 +28,8 @@ Display::Display(const DeviceInfo &info, const PortInfo &port, RobotCommunicator
 {
 }
 
-void Display::drawPixel(int x, int y, bool redraw)
+void Display::drawPixel(int x, int y)
 {
-	Q_UNUSED(redraw)
-
 	QByteArray command(18, 0);
 	command[0] = 16;
 	command[1] = 0x00;
@@ -58,10 +56,8 @@ void Display::drawPixel(int x, int y, bool redraw)
 	mRobotCommunicator.send(this, command, 3);
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
+void Display::drawLine(int x1, int y1, int x2, int y2)
 {
-	Q_UNUSED(redraw)
-
 	QByteArray command(24, 0);
 	command[0] = 22;
 	command[1] = 0x00;
@@ -96,10 +92,8 @@ void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
 	mRobotCommunicator.send(this, command, 3);
 }
 
-void Display::drawRect(int x, int y, int width, int height, bool filled, bool redraw)
+void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
-	Q_UNUSED(redraw)
-
 	QByteArray command(24, 0);
 	command[0] = 22;
 	command[1] = 0x00;
@@ -139,19 +133,16 @@ void Display::drawRect(int x, int y, int width, int height, bool filled, bool re
 	mRobotCommunicator.send(this, command, 3);
 }
 
-void Display::drawRect(int x, int y, int width, int height, bool redraw)
+void Display::drawRect(int x, int y, int width, int height)
 {
-	Q_UNUSED(x);
-	Q_UNUSED(y);
-	Q_UNUSED(width);
-	Q_UNUSED(height);
-	Q_UNUSED(redraw);
+	Q_UNUSED(x)
+	Q_UNUSED(y)
+	Q_UNUSED(width)
+	Q_UNUSED(height)
 }
 
-void Display::drawCircle(int x, int y, int radius, bool filled, bool redraw)
+void Display::drawCircle(int x, int y, int radius, bool filled)
 {
-	Q_UNUSED(redraw)
-
 	QByteArray command(21, 0);
 	command[0] = 19;
 	command[1] = 0x00;
@@ -188,10 +179,8 @@ void Display::drawCircle(int x, int y, int radius, bool filled, bool redraw)
 }
 
 
-void Display::printText(int x, int y, const QString &text, bool redraw)
+void Display::printText(int x, int y, const QString &text)
 {
-	Q_UNUSED(redraw)
-
 	const int size = 20 + text.length();
 	QByteArray textBytes = text.toLocal8Bit();
 	QByteArray command(size, 0);
@@ -228,10 +217,8 @@ void Display::printText(int x, int y, const QString &text, bool redraw)
 	mRobotCommunicator.send(this, command, 3);
 }
 
-void Display::clearScreen(bool redraw)
+void Display::clearScreen()
 {
-	Q_UNUSED(redraw)
-
 	QByteArray command(11, 0);
 	command[0] = 9;
 	command[1] = 0x00;
@@ -247,4 +234,8 @@ void Display::clearScreen(bool redraw)
 	command[9] = opUI_DRAW;
 	command[10] = LC0(UPDATE);
 	mRobotCommunicator.send(this, command, 3);
+}
+
+void Display::redraw()
+{
 }
