@@ -330,8 +330,8 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 
 QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 {
-	QString portTypesString = lineTemplate;
-	QString portTypesList = "";
+	const QString portTypesString = lineTemplate;
+	const QString portTypesList = "";
 
 	QList<Port*> getPortTypes = this->mShape.getPorts();
 	QSet<QString> portTypes;
@@ -349,6 +349,7 @@ QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 		} else {
 			portTypesString.replace(portTypesListTag, portTypesList).replace(elementNameTag, name());
 		}
+
 	} else {
 		return "";
 	}
@@ -357,17 +358,19 @@ QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 
 QString GraphicType::generatePropertyName(const QString &lineTemplate) const
 {
-	if (!mIsVisible)
+	if (!mIsVisible) {
 		return "";
+	}
+
 	QString propertyNameString = lineTemplate;
 	QString propertyNameList = "";
+
 	for (Property *property: mProperties) {
 		if (!property->isReferenceProperty()) {
 			if (!propertyNameList.isEmpty()) {
 				propertyNameList = propertyNameList + " << " + + "\"" + property->name() + "\"";
-			}
-			else {
-			propertyNameList = propertyNameList + "\"" + property->name() + "\"";
+			} else {
+				propertyNameList = propertyNameList + "\"" + property->name() + "\"";
 			}
 		}
 	}

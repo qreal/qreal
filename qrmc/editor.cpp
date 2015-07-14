@@ -172,7 +172,7 @@ QStringList Editor::getAllPortNames() const
 {
 	QStringList result;
 
-	foreach (const Diagram * const diagram, mDiagrams.values()) {
+	for (const Diagram * const diagram : mDiagrams.values()) {
 		foreach (const Type * const type, diagram->types()) {
 			if (dynamic_cast<const Port * const>(type)) {
 				result << type->name();
@@ -434,7 +434,7 @@ public:
 
 class Editor::NamesGenerator: public Editor::MethodGenerator {
 public:
-	virtual ~NamesGenerator() {}
+	~NamesGenerator() override {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateNamesMap(lineTemplate);
 	}

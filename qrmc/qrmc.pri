@@ -18,8 +18,6 @@ include(../global.pri)
 include (classes/classes.pri)
 include (utils/utils.pri)
 
-#TEMPLATE = lib
-
 QT += xml
 
 CONFIG += c++11
@@ -37,7 +35,6 @@ HEADERS += \
 	../qrkernel/definitions.h \
 	../qrkernel/ids.h \
 	../qrrepo/repoApi.h \
-	
 
 SOURCES += \
 	metaCompiler.cpp \
@@ -55,4 +52,4 @@ OTHER_FILES += \
 	templates/plugin.qrc.template \
 	templates/plugins.pro.template \
 	templates/pro.template \
-	templates/utils.template
+	templates/utils.template \
