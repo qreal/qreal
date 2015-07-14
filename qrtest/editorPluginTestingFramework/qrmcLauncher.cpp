@@ -15,11 +15,11 @@ void QrmcLauncher::launchQrmc(const QString &fileName, const QString &pathToQrmc
 		normalizedFileName += ".qrs";
 	}
 
-	RepoApi *const mRepoApi = new RepoApi(normalizedFileName);
+	RepoApi * const mRepoApi = new RepoApi(normalizedFileName);
 	MetaCompiler metaCompiler(pathToQrmc, mRepoApi);
-	IdList const metamodels = mRepoApi->children(Id::rootId());
+	const IdList metamodels = mRepoApi->children(Id::rootId());
 
-	foreach (Id const &key, metamodels) {
+	for (Id const &key : metamodels) {
 		const QString &objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mRepoApi->isLogicalElement(key)) {
 			const QString &nameOfMetamodel = mRepoApi->stringProperty(key, "name");

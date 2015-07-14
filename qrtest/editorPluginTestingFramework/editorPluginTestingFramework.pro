@@ -165,14 +165,7 @@ FORMS += \
 
 links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qrgui-tool-plugin-interface qscintilla2 qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-facade qslog)
 
-win32 {
-	QMAKE_POST_LINK = "cmd /C "xcopy methodsToTest ..\\..\\bin\debug /s /e /q /y /i &&"\
-						" copy configurationParameters.xml ..\\..\\bin\debug /y &&"\
-						" copy travisConfigurationParameters.xml ..\\..\\bin\debug /y""
-
-}
-else {
-	QMAKE_POST_LINK = " cp -r methodsToTest/* ../../bin/debug &&"\
-						" cp configurationParameters.xml ../../bin/debug &&"\
-						" cp travisConfigurationParameters.xml ../../bin/debug"
-}
+copyToDestdir($$PWD/methodsToTest, $$DESTDIR)
+copyToDestdir($$PWD/configurationParameters.xml, $$DESTDIR)
+copyToDestdir($$PWD/travisConfigurationParameters.xml, $$DESTDIR) 		
+                        

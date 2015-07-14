@@ -24,11 +24,11 @@ EditorInterface* PluginLoader::loadedPlugin(
 		normalizedFileName += ".qrs";
 	}
 
-	RepoApi *const mRepoApi = new RepoApi(normalizedFileName);
+	const RepoApi *mRepoApi = new RepoApi(normalizedFileName);
 
-	IdList const metamodels = mRepoApi->children(Id::rootId());
+	const IdList metamodels = mRepoApi->children(Id::rootId());
 
-	foreach (Id const &key, metamodels) {
+	for (Id const &key : metamodels) {
 		if (mRepoApi->isLogicalElement(key)) {
 			const QString &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
 			const QString &pluginName = prefix + normalizedMetamodelName + "-d" + "." + pluginExtension;

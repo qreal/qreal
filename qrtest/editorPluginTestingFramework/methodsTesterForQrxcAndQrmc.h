@@ -21,13 +21,13 @@ public:
 			);
 
 	/// returns list of generated output to main class
-	QList<QPair<QString, QPair<QString, QString> > > generatedOutput();
+	QList<QPair<QString, QPair<QString, QString>>> generatedOutput();
 
 	/// clones generator, initializes it with qrxcGeneratedPlugin and returns it to methodsTester
-	AbstractStringGenerator * initGeneratorWithFirstInterface(AbstractStringGenerator const &generator) const;
+	AbstractStringGenerator * initGeneratorWithFirstInterface(const AbstractStringGenerator &generator) const;
 
 	/// clones generator, initializes it with qrmcGeneratedPlugin and returns it to methodsTester
-	AbstractStringGenerator * initGeneratorWithSecondInterface(AbstractStringGenerator const &generator) const;
+	AbstractStringGenerator * initGeneratorWithSecondInterface(const AbstractStringGenerator &generator) const;
 
 private:
 	class StringGenerator;

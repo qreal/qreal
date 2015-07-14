@@ -58,11 +58,9 @@ public:
 		qint64 expectedValue = 0;
 		qint64 variance = 0;
 
-		for (int i = 0; i < 20; ++i)
-		{
+		for (int i = 0; i < 20; ++i) {
 			timer.start();
-			for (int i = 0; i < 20; ++i)
-			{
+			for (int i = 0; i < 20; ++i) {
 				functionToCall();
 			}
 
@@ -72,8 +70,7 @@ public:
 
 		expectedValue = time / 20;
 
-		for (int t = 0; t < 20; ++t)
-		{
+		for (int t = 0; t < 20; ++t) {
 			variance +=qPow ((array[t] - expectedValue), 2);
 		}
 
@@ -111,7 +108,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForDiagrams : public MethodsTe
 		for (const QString &diagram : editorInterface->diagrams()) {
 			const QString additionalString = ConvertingMethods::transformateOutput(
 					callMethod(editorInterface, diagram, "", ""), Id::rootId(), diagram);
-			QPair<qint64, double> additional = dataOfTime();
+			const QPair<qint64, double> additional = dataOfTime();
 			mListOfTime.append(QString::number(additional.first));
 			mListOfTime.append(" ");
 			mListOfTime.append(QString::number(additional.second));
@@ -132,7 +129,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForElements : public MethodsTe
 			for (const QString &element : editorInterface->elements(diagram)) {
 				const QString additionalString = ConvertingMethods::transformateOutput(
 						callMethod(editorInterface, diagram, element, ""), Id::rootId(), element);
-				QPair<qint64, double> additional = dataOfTime();
+				const QPair<qint64, double> additional = dataOfTime();
 				mListOfTime.append(QString::number(additional.first));
 				mListOfTime.append(" ");
 				mListOfTime.append(QString::number(additional.second));
@@ -155,7 +152,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForProperties : public Methods
 				for (const QString &property : editorInterface->getPropertyNames(diagram, element)) {
 					const QString additionalString = ConvertingMethods::transformateOutput(callMethod(
 							editorInterface, diagram, element, property), Id::rootId(), property + "(" + element + ")");
-					QPair<qint64, double> additional = dataOfTime();
+					const QPair<qint64, double> additional = dataOfTime();
 					mListOfTime.append(QString::number(additional.first));
 					mListOfTime.append(" ");
 					mListOfTime.append(QString::number(additional.second));
@@ -179,7 +176,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForGroups : public MethodsTest
 			for (const QString &group: editorInterface->diagramPaletteGroups(diagram)) {
 				const QString &additionalString = ConvertingMethods::transformateOutput(
 						callMethod(editorInterface, diagram, group), Id::rootId(), group);
-				QPair<qint64, double> additional = dataOfTime();
+				const QPair<qint64, double> additional = dataOfTime();
 				mListOfTime.append(QString::number(additional.first));
 				mListOfTime.append(" ");
 				mListOfTime.append(QString::number(additional.second));
@@ -406,7 +403,7 @@ class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 						() { return editorInterface->getPossibleEdges(element); });
 
 		QStringList result;
-		for (PossibleEdgesType const &pair: editorInterface->getPossibleEdges(element)) {
+		for (const PossibleEdgesType &pair: editorInterface->getPossibleEdges(element)) {
 			const QString &firstElement = pair.first.first;
 			const QString &secondElement = pair.first.second;
 
@@ -650,7 +647,7 @@ class MethodsTesterForQrxcAndQrmc::EnumValueStringGenerator
 		Q_UNUSED(diagram);
 		Q_UNUSED(property);
 		mResult = callFunction( [this, editorInterface, diagram, element]
-						() { return callEnum(editorInterface, diagram, element); } );
+				() { return callEnum(editorInterface, diagram, element); } );
 
 		QStringList propertyNames = editorInterface->getPropertyNames(diagram, element);
 		QList<QPair<QString, QString>> result;
@@ -697,12 +694,12 @@ class MethodsTesterForQrxcAndQrmc::GetParentsOfStringGenerator
 	{
 		Q_UNUSED(property);
 		mResult = callFunction( [editorInterface, diagram, element]
-						() { return editorInterface->getParentsOf(diagram, element); });
+				() { return editorInterface->getParentsOf(diagram, element); });
 
 		QStringList result;
 
 		result << element << ": ";
-		for (ParentsOfType const &pair: editorInterface->getParentsOf(diagram, element)) {
+		for (const ParentsOfType &pair: editorInterface->getParentsOf(diagram, element)) {
 			const QString &firstElement = pair.first;
 			const QString &secondElement = pair.second;
 
@@ -744,8 +741,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramsStringGenerator
 		Q_UNUSED(property);
 		Q_UNUSED(element);
 		Q_UNUSED(diagram);
-		mResult = callFunction( [editorInterface]
-						() { return editorInterface->diagrams(); });
+		mResult = callFunction( [editorInterface] () { return editorInterface->diagrams(); });
 
 		return editorInterface->diagrams();
 	}
@@ -782,8 +778,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNameStringGenerator
 	{
 		Q_UNUSED(property);
 		Q_UNUSED(element);
-		mResult = callFunction( [editorInterface, diagram]
-						() { return editorInterface->diagramName(diagram); });
+		mResult = callFunction( [editorInterface, diagram] () { return editorInterface->diagramName(diagram); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramName(diagram));
 	}
@@ -821,7 +816,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNodeNameStringGenerator
 		Q_UNUSED(property);
 		Q_UNUSED(element);
 		mResult = callFunction( [editorInterface, diagram]
-						() { return editorInterface->diagramNodeName(diagram); });
+				() { return editorInterface->diagramNodeName(diagram); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramNodeName(diagram));
 	}
@@ -858,7 +853,7 @@ class MethodsTesterForQrxcAndQrmc::ElementNameStringGenerator
 	{
 		Q_UNUSED(property);
 		mResult = callFunction( [editorInterface, diagram, element]
-						() { return editorInterface->elementName(diagram, element); });
+				() { return editorInterface->elementName(diagram, element); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementName(diagram, element));
 	}
@@ -894,7 +889,7 @@ class MethodsTesterForQrxcAndQrmc::ElementMouseGestureStringGenerator
 	{
 		Q_UNUSED(property);
 		mResult = callFunction( [editorInterface, diagram, element]
-						() { return editorInterface->elementMouseGesture(diagram, element); });
+				() { return editorInterface->elementMouseGesture(diagram, element); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementMouseGesture(diagram, element));
 	}
@@ -931,7 +926,7 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 	{
 		Q_UNUSED(property);
 		mResult = callFunction( [editorInterface, diagram, element]
-						() { return editorInterface->elementDescription(diagram, element); });
+				() { return editorInterface->elementDescription(diagram, element); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->elementDescription(diagram, element));
 	}
@@ -946,6 +941,7 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 	{
 		return mResult;
 	}
+
 private:
 	mutable QPair<qint64, double> mResult = qMakePair(0, 0.0);
 };
@@ -966,7 +962,7 @@ class MethodsTesterForQrxcAndQrmc::PropertyDescriptionStringGenerator
 			) const
 	{
 		mResult = callFunction( [editorInterface, diagram, element, property]
-						() { return editorInterface->propertyDescription(diagram, element, property); });
+				() { return editorInterface->propertyDescription(diagram, element, property); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDescription(diagram, element, property));
 	}
@@ -1002,7 +998,7 @@ class MethodsTesterForQrxcAndQrmc::PropertyDisplayedNameStringGenerator
 			) const
 	{
 		mResult = callFunction( [editorInterface, diagram, element, property]
-						() { return editorInterface->propertyDisplayedName(diagram, element, property); });
+				() { return editorInterface->propertyDisplayedName(diagram, element, property); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDisplayedName(diagram, element, property));
 	}
@@ -1017,6 +1013,7 @@ class MethodsTesterForQrxcAndQrmc::PropertyDisplayedNameStringGenerator
 	{
 		return mResult;
 	}
+
 private:
 	mutable QPair<qint64, double> mResult = qMakePair(0, 0.0);
 };
@@ -1030,7 +1027,7 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 	}
 
 	virtual void callIsParent(EditorInterface *editorInterface, const QString &diagram
-							, const QString &element) const
+			, const QString &element) const
 	{
 		for (const QString &parentDiagram: editorInterface->diagrams()) {
 			for (const QString &parentElement: editorInterface->elements(diagram)) {
@@ -1047,12 +1044,12 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 			) const
 	{
 		mResult = callFunction( [this, editorInterface, diagram, element]
-						() { callIsParent(editorInterface, diagram, element); });
+				() { callIsParent(editorInterface, diagram, element); });
 
 		Q_UNUSED(property);
 		QStringList result;
-		for (const QString &parentDiagram: editorInterface->diagrams()) {
-			for (const QString &parentElement: editorInterface->elements(diagram)) {
+		for (const QString &parentDiagram : editorInterface->diagrams()) {
+			for (const QString &parentElement : editorInterface->elements(diagram)) {
 				bool isParent = editorInterface->isParentOf(parentDiagram, parentElement, diagram, element);
 				if (isParent) {
 					result << parentElement << " is parent of " << element << "\n";
@@ -1095,7 +1092,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupListStringGenerator
 	{
 		Q_UNUSED(property);
 		mResult = callFunction( [editorInterface, diagram, element]
-						() { return editorInterface->diagramPaletteGroupList(diagram, element); });
+				() { return editorInterface->diagramPaletteGroupList(diagram, element); });
 
 		return editorInterface->diagramPaletteGroupList(diagram, element);
 	}
@@ -1132,7 +1129,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 	{
 		Q_UNUSED(property);
 		mResult = callFunction( [editorInterface, diagram, element]
-						() { return editorInterface->diagramPaletteGroupDescription(diagram, element); });
+				() { return editorInterface->diagramPaletteGroupDescription(diagram, element); });
 
 		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramPaletteGroupDescription(diagram, element));
 	}
@@ -1147,6 +1144,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 	{
 		return mResult;
 	}
+
 private:
 	mutable QPair<qint64, double> mResult = qMakePair(0, 0.0);
 };

@@ -22,7 +22,7 @@ void QrxcLauncher::launchQrxc(const QString &fileName, const QString &pathToQRea
 		normalizedFileName += ".qrs";
 	}
 
-	RepoApi const *mRepoApi = new RepoApi(normalizedFileName);
+	const RepoApi *mRepoApi = new RepoApi(normalizedFileName);
 	ErrorReporter * const reporter = new ErrorReporter();
 	EditorGenerator editorGenerator(*mRepoApi, *reporter);
 
@@ -31,7 +31,7 @@ void QrxcLauncher::launchQrxc(const QString &fileName, const QString &pathToQRea
 	QHash<qReal::Id, QPair<QString, QString>> metamodelList = editorGenerator.getMetamodelList();
 
 	dir.mkpath(pathToGeneratedCode + pathToQrxcGeneratedCode);
-	foreach (Id const &key, metamodelList.keys()) {
+	for (const Id &key : metamodelList.keys()) {
 		if (mRepoApi->isLogicalElement(key)) {
 			const QString &directoryToGeneratedCode = generatePathToPlugin(pathToGeneratedCode);
 

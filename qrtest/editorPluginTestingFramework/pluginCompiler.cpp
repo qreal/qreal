@@ -10,8 +10,8 @@
 
 #include "qrrepo/repoApi.h"
 #include "qrutils/nameNormalizer.h"
-using namespace qrRepo;
 
+using namespace qrRepo;
 using namespace qReal;
 using namespace editorPluginTestingFramework;
 using namespace utils;
@@ -30,11 +30,11 @@ void PluginCompiler::compilePlugin(const QString &fileName
 	QStringList qmakeArgs;
 	qmakeArgs.append("CONFIG+=" + configurationParameter);
 
-	RepoApi *const mRepoApi = new RepoApi(fileName + ".qrs");
+	const RepoApi *mRepoApi = new RepoApi(fileName + ".qrs");
 	QString pluginName = "";
-	IdList const metamodels = mRepoApi->children(Id::rootId());
+	const IdList metamodels = mRepoApi->children(Id::rootId());
 
-	foreach (Id const &key, metamodels) {
+	for (Id const &key : metamodels) {
 		if (mRepoApi->isLogicalElement(key)) {
 			const QString &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
 			pluginName = normalizedMetamodelName;
