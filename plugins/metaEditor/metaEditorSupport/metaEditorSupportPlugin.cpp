@@ -177,8 +177,8 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 					qDebug()  << "make ok";
 					progress->setValue(progress->value() + forEditor / 2);
 
-					QString normalizedName = nameOfPlugin.at(0).toUpper() + nameOfPlugin.mid(1);
-					if (!nameOfPlugin.isEmpty()) {
+					QString normalizedName = nameOfMetamodel.at(0).toUpper() + nameOfMetamodel.mid(1);
+					if (!nameOfMetamodel.isEmpty()) {
 						if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
 							QMessageBox::warning(mMainWindowInterface->windowWidget()
 									, tr("error")
@@ -193,9 +193,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 					if (mLogicalRepoApi->stringProperty(key, "buildConfiguration") == "debug") {
 						suffix = "-d";
 					}
-
 					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
-							//+ nameOfPlugin
 							+ nameOfMetamodel
 							+ suffix
 							+ "."
