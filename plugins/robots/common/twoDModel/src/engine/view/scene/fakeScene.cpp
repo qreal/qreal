@@ -45,12 +45,13 @@ void FakeScene::addClone(QGraphicsItem * const original, QGraphicsItem * const c
 	// that the nature of this phenomenon is somewhere deeply in Qt (or we just do something wrong, but
 	// then some very unobvious thing is wrong). One way to fix that is simply to move item when we
 	// change its corners.
-	auto hack = [=]() { cloned->moveBy(1, 1); cloned->moveBy(-1, -1); };
-	graphicsUtils::AbstractItem *orit = dynamic_cast<graphicsUtils::AbstractItem *>(original);
-	connect(orit, &graphicsUtils::AbstractItem::x1Changed, hack);
-	connect(orit, &graphicsUtils::AbstractItem::y1Changed, hack);
-	connect(orit, &graphicsUtils::AbstractItem::x2Changed, hack);
-	connect(orit, &graphicsUtils::AbstractItem::y2Changed, hack);
+	if (graphicsUtils::AbstractItem *orit = dynamic_cast<graphicsUtils::AbstractItem *>(original)) {
+		auto hack = [=]() { cloned->moveBy(1, 1); cloned->moveBy(-1, -1); };
+		connect(orit, &graphicsUtils::AbstractItem::x1Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y1Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::x2Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y2Changed, hack);
+	}
 }
 
 void FakeScene::deleteItem(QGraphicsItem * const original)

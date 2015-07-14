@@ -18,6 +18,7 @@
 
 #include <src/engine/constraints/constraintsChecker.h>
 #include <src/engine/constraints/details/event.h>
+#include <src/engine/constraints/details/objectsSet.h>
 
 using namespace qrTest::robotsTests::commonTwoDModelTests;
 using namespace twoDModel::constraints::details;
@@ -513,6 +514,54 @@ TEST_F(ConstraintsParserTests, objectStateTest)
 	testCase("object.otherObject.rectProperty.y", "2", "int");
 	testCase("object.otherObject.rectProperty.width", "3", "int");
 	testCase("object.otherObject.rectProperty.height", "4", "int");
+}
+
+
+TEST_F(ConstraintsParserTests, objectsSetTest)
+{
+	const QString xml =
+			"<constraints>"\
+			"	<timelimit value=\"2000\"/>"\
+			"	<event id=\"event\" settedUpInitially=\"true\">"\
+			"		<conditions glue=\"and\">"\
+			"			<equals>"
+			"				<objectState object=\"set.size\"/>"
+			"				<int value=\"3\"/>"
+			"			</equals>"
+			"			<equals>"
+			"				<objectState object=\"set.first\"/>"
+			"				<int value=\"10\"/>"
+			"			</equals>"
+			"			<equals>"
+			"				<objectState object=\"set.last\"/>"
+			"				<int value=\"30\"/>"
+			"			</equals>"
+			"			<equals>"
+			"				<objectState object=\"set.isEmpty\"/>"
+			"				<bool value=\"false\"/>"
+			"			</equals>"
+			"		</conditions>"\
+			"		<trigger>"\
+			"			<success/>"
+			"		</trigger>"\
+			"	</event>"\
+			"</constraints>";
+	ASSERT_TRUE(mParser.parse(xml));
+	ASSERT_EQ(mEvents.count(), 2);
+	Event * const event = mEvents["event"];
+	ASSERT_NE(event, nullptr);
+
+	bool eventFired = false;
+	QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+	ObjectsSet *set = new ObjectsSet;
+	set->add(10);
+	set->add(20);
+	set->add(30);
+	mObjects["set"] = set;
+
+	event->check();
+	ASSERT_TRUE(eventFired);
 }
 
 TEST_F(ConstraintsParserTests, usingTest)

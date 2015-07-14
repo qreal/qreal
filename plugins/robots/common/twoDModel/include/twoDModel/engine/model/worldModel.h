@@ -116,3 +116,5 @@ private:
 
 }
 }
+
+Q_DECLARE_METATYPE(QGraphicsLineItem *)

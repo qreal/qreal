@@ -18,6 +18,7 @@
 
 #include "details/constraintsParser.h"
 #include "details/event.h"
+#include "details/objectsSet.h"
 #include "twoDModel/engine/model/model.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
@@ -51,6 +52,12 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 
 	bindToWorldModelObjects();
 	bindToRobotObjects();
+	mObjects["trace"] = new details::ObjectsSet(this);
+	connect(&mModel.worldModel(), &model::WorldModel::robotTraceAppearedOrDisappeared, [=](bool appeared) {
+		if (!appeared) {
+			dynamic_cast<details::ObjectsSet *>(mObjects["trace"])->clear();
+		}
+	});
 }
 
 ConstraintsChecker::~ConstraintsChecker()
@@ -131,8 +138,8 @@ void ConstraintsChecker::bindToWorldModelObjects()
 	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [this](items::RegionItem *item) {
 		bindObject(item->id(), item);
 	});
-	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [this](QGraphicsItem *item) {
-
+	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [this](QGraphicsLineItem *item) {
+		static_cast<details::ObjectsSet *>(mObjects["trace"])->add(QVariant::fromValue<QGraphicsLineItem *>(item));
 	});
 
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [this](QGraphicsItem *item) {
