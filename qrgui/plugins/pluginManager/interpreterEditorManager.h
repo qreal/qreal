@@ -54,6 +54,7 @@ public:
 	QString unloadPlugin(const QString &pluginName) override;
 
 	QString mouseGesture(const Id &id) const override;
+    QString hotKey(const Id &id) const override;
 	QString friendlyName(const Id &id) const override;
 	QString description(const Id &id) const override;
 	QString propertyDescription(const Id &id, const QString &propertyName) const override;
@@ -126,9 +127,6 @@ public:
 			, const QString &beginType
 			, const QString &endType
 			) const override;
-
-	void updateGenerationRule(const Id &id, const QString &newRule) const override;
-	QString generationRule(const Id &id) const override;
 
 	QPair<Id, Id> createEditorAndDiagram(const QString &name) const override;
 	void saveMetamodel(const QString &newMetamodelFileName) override;
