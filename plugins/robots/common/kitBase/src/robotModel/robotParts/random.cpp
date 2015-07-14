@@ -23,9 +23,31 @@ Random::Random(const kitBase::robotModel::DeviceInfo &info, const kitBase::robot
 
 int Random::random(int from, int to)
 {
+	++mCallsCount;
+
+	if (mIsFixed) {
+		return mFixedValue;
+	}
+
 	if (from > to) {
 		qSwap(from, to);
 	}
 
 	return from + qrand() % (to - from + 1);
+}
+
+void Random::setFixedValue(int value)
+{
+	mIsFixed = true;
+	mFixedValue = value;
+}
+
+int Random::fixedValue() const
+{
+	return mFixedValue;
+}
+
+int Random::callsCount() const
+{
+	return mCallsCount;
 }

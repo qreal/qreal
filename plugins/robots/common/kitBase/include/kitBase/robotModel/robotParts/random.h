@@ -30,12 +30,41 @@ class ROBOTS_KIT_BASE_EXPORT Random : public Device
 	Q_CLASSINFO("friendlyName", tr("Random"))
 	Q_CLASSINFO("direction", "input")
 
+	Q_PROPERTY(int fixedValue READ fixedValue WRITE setFixedValue)
+	Q_PROPERTY(int callsCount READ callsCount)
+
 public:
+	/// Constructor.
+	/// @param info --- device info describing this device.
+	/// @param port --- port on which this device is configured.
 	Random(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port);
 
-	/// Provides integer random number in a given interval.
+	/// Provides integer random number in a given interval. It also counts calls, to be able to check that user
+	/// actually used RNG.
 	virtual int random(int from, int to);
+
+	/// Sets given value as a value always returned by "random", as in
+	/// "return 4;  // Absolutely random, checked with dice"
+	/// It will be returned even when it is out of [from; to] range, to avoid cheating with "from" and "to" parameters
+	/// when solving exercise.
+	void setFixedValue(int value);
+
+	/// Getter for fixed value of random number generator if it is set.
+	int fixedValue() const;
+
+	/// Returns calls count of "random" method.
+	int callsCount() const;
+
+private:
+	/// Calls count of "random" method.
+	int mCallsCount = 0;
+
+	/// Fixed value which shall be returned by "random" method if generator is in fixed mode.
+	int mFixedValue = 0;
+
+	/// Shall or shall not this generator return fixed value every time "random" is called.
+	bool mIsFixed = false;
 };
 
 }
