@@ -31,8 +31,10 @@ void DrawRectBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int width = eval<int>("WidthRect");
 	const int height = eval<int>("HeightRect");
 	const bool filled = boolProperty("Filled");
+	const bool redraw = boolProperty("Redraw");
+
 	if (!errorsOccured()) {
-		ev3Display->drawRect(x, y, width, height, filled);
+		ev3Display->drawRect(x, y, width, height, filled, redraw);
 		emit done(mNextBlockId);
 	}
 }

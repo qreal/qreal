@@ -29,8 +29,10 @@ void DrawCircleBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int x = eval<int>("XCoordinateCircle");
 	const int y = eval<int>("YCoordinateCircle");
 	const int radius = eval<int>("CircleRadius");
+	const bool redraw = boolProperty("Redraw");
+
 	if (!errorsOccured()) {
-		nxtDisplay->drawCircle(x, y, radius);
+		nxtDisplay->drawCircle(x, y, radius, redraw);
 		emit done(mNextBlockId);
 	}
 }

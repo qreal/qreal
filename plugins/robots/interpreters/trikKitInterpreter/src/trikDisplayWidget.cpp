@@ -36,7 +36,7 @@ TrikDisplayWidget::~TrikDisplayWidget()
 void TrikDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	TwoDModelDisplayWidget::setPainter(painter);
-	mUi->display->appendPainter(painter);
+	mUi->display->setPainter(painter);
 }
 
 void TrikDisplayWidget::repaintDisplay()

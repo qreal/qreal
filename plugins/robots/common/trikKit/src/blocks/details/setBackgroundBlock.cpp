@@ -29,6 +29,6 @@ SetBackgroundBlock::SetBackgroundBlock(kitBase::robotModel::RobotModelInterface 
 void SetBackgroundBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 {
 	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
-	trikDisplay->setBackground(propertyToColor(stringProperty("Color")));
+	trikDisplay->setBackground(propertyToColor(stringProperty("Color")), boolProperty("Redraw"));
 	emit done(mNextBlockId);
 }

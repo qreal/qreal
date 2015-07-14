@@ -30,8 +30,9 @@ void DrawCircleBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int y = eval<int>("YCoordinateCircle");
 	const int radius = eval<int>("CircleRadius");
 	const bool filled = boolProperty("Filled");
+	const bool redraw = boolProperty("Redraw");
 	if (!errorsOccured()) {
-		ev3Display->drawCircle(x, y, radius, filled);
+		ev3Display->drawCircle(x, y, radius, filled, redraw);
 		emit done(mNextBlockId);
 	}
 }

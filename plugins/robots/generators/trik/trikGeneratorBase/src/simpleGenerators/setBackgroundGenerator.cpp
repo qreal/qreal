@@ -27,12 +27,10 @@ SetBackgroundGenerator::SetBackgroundGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "drawing/setBackground.t"
-			, QList<Binding *>()
-					<< Binding::createConverting(
-							"@@COLOR@@"
-							, "Color"
-							, new BackgroundColorConverter(customizer.factory()->pathToTemplates())
-					)
+			, { Binding::createConverting("@@COLOR@@", "Color"
+						, new BackgroundColorConverter(customizer.factory()->pathToTemplates()))
+				, Binding::createConverting("@@REDRAW@@", "Redraw"
+						, customizer.factory()->boolPropertyConverter(id, "Redraw", false)) }
 			, parent)
 {
 }

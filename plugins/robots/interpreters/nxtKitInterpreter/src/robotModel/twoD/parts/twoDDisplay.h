@@ -39,12 +39,12 @@ public:
 			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
-	void drawPixel(int x, int y) override;
-	void drawLine(int x1, int y1, int x2, int y2) override;
-	void drawRect(int x, int y, int width, int height) override;
-	void drawCircle(int x, int y, int radius) override;
-	void printText(int x, int y, const QString &text) override;
-	void clearScreen() override;
+	void drawPixel(int x, int y, bool redraw) override;
+	void drawLine(int x1, int y1, int x2, int y2, bool redraw) override;
+	void drawRect(int x, int y, int width, int height, bool redraw) override;
+	void drawCircle(int x, int y, int radius, bool redraw) override;
+	void printText(int x, int y, const QString &text, bool redraw) override;
+	void clearScreen(bool redraw) override;
 
 	void paint(QPainter *painter) override;
 	void reset() override;

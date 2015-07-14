@@ -30,8 +30,10 @@ void DrawLineBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int y1 = eval<int>("Y1CoordinateLine");
 	const int x2 = eval<int>("X2CoordinateLine");
 	const int y2 = eval<int>("Y2CoordinateLine");
+	const bool redraw = boolProperty("Redraw");
+
 	if (!errorsOccured()) {
-		ev3Display->drawLine(x1, y1, x2, y2);
+		ev3Display->drawLine(x1, y1, x2, y2, redraw);
 		emit done(mNextBlockId);
 	}
 }
