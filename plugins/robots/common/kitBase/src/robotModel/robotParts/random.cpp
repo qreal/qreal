@@ -26,6 +26,7 @@ int Random::random(int from, int to)
 	++mCallsCount;
 
 	if (mIsFixed) {
+		mLastValue = mFixedValue;
 		return mFixedValue;
 	}
 
@@ -33,7 +34,8 @@ int Random::random(int from, int to)
 		qSwap(from, to);
 	}
 
-	return from + qrand() % (to - from + 1);
+	mLastValue = from + qrand() % (to - from + 1);
+	return mLastValue;
 }
 
 void Random::setFixedValue(int value)
@@ -50,4 +52,9 @@ int Random::fixedValue() const
 int Random::callsCount() const
 {
 	return mCallsCount;
+}
+
+int Random::lastValue() const
+{
+	return mLastValue;
 }
