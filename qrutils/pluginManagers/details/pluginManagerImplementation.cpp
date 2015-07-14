@@ -30,9 +30,10 @@ PluginManagerImplementation::PluginManagerImplementation(const QString &applicat
 
 PluginManagerImplementation::~PluginManagerImplementation()
 {
-	for (auto &pair : mLoaders) {
-		delete pair.second;
-	}
+	/// @todo Fix plugins removal.
+//	for (auto &pair : mLoaders) {
+//		delete pair.second;
+//	}
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
