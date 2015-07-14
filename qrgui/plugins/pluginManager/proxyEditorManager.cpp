@@ -58,7 +58,12 @@ QString ProxyEditorManager::unloadPlugin(const QString &pluginName)
 
 QString ProxyEditorManager::mouseGesture(const Id &id) const
 {
-	return mProxiedEditorManager->mouseGesture(id);
+    return mProxiedEditorManager->mouseGesture(id);
+}
+
+QString ProxyEditorManager::hotKey(const Id &id) const
+{
+    return mProxiedEditorManager->hotKey(id);
 }
 
 QString ProxyEditorManager::friendlyName(const Id &id) const
@@ -311,16 +316,6 @@ void ProxyEditorManager::addEdgeElement(const Id &diagram, const QString &name
 {
 	mProxiedEditorManager->addEdgeElement(diagram, name, displayedName, labelText, labelType
 			, lineType, beginType, endType);
-}
-
-void ProxyEditorManager::updateGenerationRule(const Id &id, const QString &newRule) const
-{
-	mProxiedEditorManager->updateGenerationRule(id, newRule);
-}
-
-QString ProxyEditorManager::generationRule(const Id &id) const
-{
-	return mProxiedEditorManager->generationRule(id);
 }
 
 QPair<Id, Id> ProxyEditorManager::createEditorAndDiagram(const QString &name) const

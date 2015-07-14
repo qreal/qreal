@@ -44,6 +44,7 @@ private:
 	void generateInitPlugin(utils::OutFile &out);
 	void generateNameMappings(utils::OutFile &out);
 	void generateMouseGestureMap(utils::OutFile &out);
+    void generateHotKeyMap(utils::OutFile &out);
 	void generatePropertyMap(utils::OutFile &out);
 	void generatePropertyDefaultsMap(utils::OutFile &out);
 	void generateDescriptionMappings(utils::OutFile &out);

@@ -68,23 +68,7 @@ QString EditorManager::loadPlugin(const QString &pluginName)
 
 QString EditorManager::unloadPlugin(const QString &pluginName)
 {
-	QString resultOfUnloading = "";
-	if (!mPluginFileName[pluginName].isEmpty()) {
-		resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
-	} else {
-		const QList<QString> namesOfPlugins = mPluginManager.namesOfPlugins();
-		const QString tempName = pluginName.toLower();
-		QString newPluginName = "";
-
-		for (const QString &element : namesOfPlugins) {
-			if (element.contains(tempName) && !element.contains(".a")) {
-				newPluginName = element;
-				break;
-			}
-		}
-
-		resultOfUnloading = mPluginManager.unloadPlugin(newPluginName);
-	}
+	const QString resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
 
 	if (mPluginIface.keys().contains(pluginName)) {
 		mPluginIface.remove(pluginName);
@@ -241,7 +225,16 @@ QString EditorManager::mouseGesture(const Id &id) const
 	if (id.idSize() != 3) {
 		return "";
 	}
-	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
+    return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
+}
+
+QString EditorManager::hotKey(const Id &id) const
+{
+    Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+    if (id.idSize() != 3) {
+        return "";
+    }
+    return mPluginIface[id.editor()]->elementHotKey(id.diagram(), id.element());
 }
 
 QIcon EditorManager::icon(const Id &id) const
@@ -678,18 +671,6 @@ IdList EditorManager::propertiesWithTheSameName(const Id &id, const QString &pro
 	Q_UNUSED(propertyCurrentName);
 	Q_UNUSED(propertyNewName);
 	return IdList();
-}
-
-void EditorManager::updateGenerationRule(const Id &id, const QString &newRule) const
-{
-	Q_UNUSED(id);
-	Q_UNUSED(newRule);
-}
-
-QString EditorManager::generationRule(const Id &id) const
-{
-	Q_UNUSED(id);
-	return QString();
 }
 
 QStringList EditorManager::getPropertiesInformation(const Id &id) const

@@ -55,6 +55,7 @@ public:
 	virtual QString unloadPlugin(const QString &pluginName) = 0;
 
 	virtual QString mouseGesture(const Id &id) const = 0;
+    virtual QString hotKey(const Id &id) const = 0;
 	virtual QString friendlyName(const Id &id) const = 0;
 	virtual QString description(const Id &id) const = 0;
 	virtual QString propertyDescription(const Id &id, const QString &propertyName) const = 0;
@@ -72,15 +73,6 @@ public:
 	virtual bool isEditor(const Id &id) const = 0;
 	virtual bool isDiagram(const Id &id) const = 0;
 	virtual bool isElement(const Id &id) const = 0;
-
-	/// Updates generation rule for given element.
-	/// @param id - element id.
-	/// @param newRule - new generation rule.
-	virtual void updateGenerationRule(const Id &id, const QString &newRule) const = 0;
-
-	/// Returns rule for given element.
-	/// @param id - element id.
-	virtual QString generationRule(const Id &id) const = 0;
 
 	virtual QStringList propertyNames(const Id &id) const = 0;
 	virtual QStringList portTypes(const Id &id) const = 0;
