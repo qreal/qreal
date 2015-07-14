@@ -111,7 +111,6 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 void MetaEditorSupportPlugin::generateEditorWithQrmc()
 {
-	QString path = qApp->applicationDirPath();
 	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../../qrmc", mLogicalRepoApi);
 
 	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
@@ -190,8 +189,15 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 						}
 					}
 
+					QString suffix = "";
+					if (mLogicalRepoApi->stringProperty(key, "buildConfiguration") == "debug") {
+						suffix = "-d";
+					}
+
 					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
-							+ nameOfPlugin
+							//+ nameOfPlugin
+							+ nameOfMetamodel
+							+ suffix
 							+ "."
 							+ SettingsManager::value("pluginExtension").toString()
 							;

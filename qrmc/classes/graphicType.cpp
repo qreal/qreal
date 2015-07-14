@@ -330,8 +330,8 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 
 QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 {
-	const QString portTypesString = lineTemplate;
-	const QString portTypesList = "";
+	QString portTypesString = lineTemplate;
+	QString portTypesList = "";
 
 	QList<Port*> getPortTypes = this->mShape.getPorts();
 	QSet<QString> portTypes;

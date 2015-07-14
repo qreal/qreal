@@ -57,14 +57,14 @@ QString EnumType::generateEnums(const QString &lineTemplate) const
 	QString line = lineTemplate;
 	QString lineForWrite = "";
 	for (const QString &value : mValues.keys()) {
-		if (!lineForWright.isEmpty()) {
+		if (!lineForWrite.isEmpty()) {
 			lineForWrite += ", qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 		else {
 			lineForWrite = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 	}
-	line.replace(qMakeLineTag, lineForWright).replace(elementNameTag, name());
+	line.replace(qMakeLineTag, lineForWrite).replace(elementNameTag, name());
 
 	return line;
 }
