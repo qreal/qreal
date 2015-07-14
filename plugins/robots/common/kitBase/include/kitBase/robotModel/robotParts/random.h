@@ -32,6 +32,7 @@ class ROBOTS_KIT_BASE_EXPORT Random : public Device
 
 	Q_PROPERTY(int fixedValue READ fixedValue WRITE setFixedValue)
 	Q_PROPERTY(int callsCount READ callsCount)
+	Q_PROPERTY(int lastValue READ lastValue)
 
 public:
 	/// Constructor.
@@ -56,6 +57,9 @@ public:
 	/// Returns calls count of "random" method.
 	int callsCount() const;
 
+	/// Returns last value returned by "random" method if it has been called, 0 otherwise.
+	int lastValue() const;
+
 private:
 	/// Calls count of "random" method.
 	int mCallsCount = 0;
@@ -65,6 +69,8 @@ private:
 
 	/// Shall or shall not this generator return fixed value every time "random" is called.
 	bool mIsFixed = false;
+
+	int mLastValue = 0;
 };
 
 }
