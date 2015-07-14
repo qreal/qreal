@@ -23,6 +23,9 @@ ClearScreenBlockGenerator::ClearScreenBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
 		, const Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "drawing/clearScreen.t", {}, parent)
+	: BindingGenerator(repo, customizer, id, "drawing/clearScreen.t"
+			, { Binding::createConverting("@@REDRAW@@", "Redraw"
+					, customizer.factory()->boolPropertyConverter(id, "Redraw", false)) }
+			, parent)
 {
 }

@@ -54,7 +54,7 @@ bool NxtDisplayWidget::buttonIsDown(const QString &buttonPort) const
 void NxtDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	TwoDModelDisplayWidget::setPainter(painter);
-	mUi->display->appendPainter(painter);
+	mUi->display->setPainter(painter);
 }
 
 void NxtDisplayWidget::repaintDisplay()

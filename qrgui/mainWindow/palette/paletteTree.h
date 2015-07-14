@@ -62,6 +62,12 @@ public:
 	QList<QString> editorsNames() const;
 	Id currentEditor() const;
 
+	/// Deletes all PaletteTree widgets.
+	void deletePaletteTree();
+
+	/// Creates all PaletteTree widgets.
+	void createPaletteTree();
+
 	/// Set item with such id as active in ComboBox.
 	void setComboBox(const Id &id);
 	void setIconsView(bool iconsView);
@@ -135,12 +141,6 @@ private:
 	virtual void resizeEvent(QResizeEvent *);
 
 	void initUi();
-
-	/// Creates all PaletteTree widgets.
-	void createPaletteTree();
-
-	/// Deletes all PaletteTree widgets.
-	void deletePaletteTree();
 
 	/// Fills palette tree by editors.
 	/// @param editorManager Editor manager which all editors with elements are taken from.

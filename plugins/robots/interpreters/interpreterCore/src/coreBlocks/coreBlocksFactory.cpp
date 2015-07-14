@@ -40,6 +40,8 @@
 #include <twoDModel/blocks/markerDownBlock.h>
 #include <twoDModel/blocks/markerUpBlock.h>
 
+#include <kitBase/blocksBase/common/randomInitBlock.h>
+
 using namespace interpreterCore::coreBlocks;
 
 qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &element)
@@ -77,7 +79,7 @@ qReal::interpretation::Block *CoreBlocksFactory::produceBlock(const qReal::Id &e
 	} else if (elementMetatypeIs(element, "VariableInit")) {
 		return new qReal::interpretation::blocks::VariableInitBlock();
 	} else if (elementMetatypeIs(element, "Randomizer")) {
-		return new qReal::interpretation::blocks::RandomInitBlock();
+		return new kitBase::blocksBase::common::RandomInitBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "PrintText")) {
 		return new details::PrintTextBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "ClearScreen")) {

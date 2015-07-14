@@ -34,6 +34,8 @@ PrintTextBlockGenerator::PrintTextBlockGenerator(const qrRepo::RepoApi &repo
 							, customizer.factory()->stringPropertyConverter(id, "PrintText"))
 					: Binding::createStatic("@@TEXT@@"
 							, utils::StringUtils::wrap(repo.stringProperty(id, "PrintText"))))
+			<< Binding::createConverting("@@REDRAW@@", "Redraw"
+					, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			, parent)
 {
 }

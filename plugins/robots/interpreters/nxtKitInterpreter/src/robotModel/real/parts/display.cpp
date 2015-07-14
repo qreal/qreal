@@ -22,42 +22,48 @@ Display::Display(const DeviceInfo &info, const PortInfo &port)
 {
 }
 
-void Display::drawPixel(int x, int y)
+void Display::drawPixel(int x, int y, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
+	Q_UNUSED(redraw)
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2)
+void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
 {
 	Q_UNUSED(x1)
 	Q_UNUSED(y1)
 	Q_UNUSED(x2)
 	Q_UNUSED(y2)
+	Q_UNUSED(redraw)
 }
 
-void Display::drawRect(int x, int y, int width, int height)
+void Display::drawRect(int x, int y, int width, int height, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(width)
 	Q_UNUSED(height)
+	Q_UNUSED(redraw)
 }
 
-void Display::drawCircle(int x, int y, int radius)
+void Display::drawCircle(int x, int y, int radius, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(radius)
+	Q_UNUSED(redraw)
 }
 
-void Display::printText(int x, int y, const QString &text)
+void Display::printText(int x, int y, const QString &text, bool redraw)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(text)
+	Q_UNUSED(redraw)
 }
 
-void Display::clearScreen()
+void Display::clearScreen(bool redraw)
 {
+	Q_UNUSED(redraw)
 }
