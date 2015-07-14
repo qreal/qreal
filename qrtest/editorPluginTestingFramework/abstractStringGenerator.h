@@ -4,6 +4,7 @@
 
 namespace editorPluginTestingFramework {
 
+/// Class for generating results and names for methods of one interface.
 class AbstractStringGenerator
 {
 public:

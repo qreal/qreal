@@ -55,7 +55,7 @@ MainClass::MainClass(
 			&qrxcEditorManager
 			,&interpreterEditorManager);
 
-	QList<QPair<QString, QPair<QString, QString> > > interpreterMethodsTesterOutput =
+	QList<QPair<QString, QPair<QString, QString>>> interpreterMethodsTesterOutput =
 			interpreterMethodsTester->generatedResult();
 	QList<QPair<QString, QPair<QString, QString> > > methodsTimeOutputInterpreter = interpreterMethodsTester->generateTimeResult();
 
@@ -64,8 +64,8 @@ MainClass::MainClass(
 		MethodsTesterForQrxcAndQrmc* const methodsTester = new MethodsTesterForQrxcAndQrmc(
 				qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
-		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generatedOutput();
-		QList<QPair<QString, QPair<QString, QString> > > methodsTimeOutput = methodsTester->generateTimeResult();
+		QList<QPair<QString, QPair<QString, QString>>> methodsTesterOutput = methodsTester->generatedOutput();
+		QList<QPair<QString, QPair<QString, QString>>> methodsTimeOutput = methodsTester->generateTimeResult();
 
 		if (mGenerateHtml == "yes") {
 			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput, methodsTimeOutput, methodsTimeOutputInterpreter);
@@ -121,7 +121,7 @@ void MainClass::deleteOldBinaries(const QString &directory)
 		return;
 	}
 
-	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+	for (QFileInfo const &fileInfo : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
 			deleteOldBinaries(fileInfo.filePath());
 			dir.rmdir(fileInfo.fileName());
@@ -136,7 +136,7 @@ void MainClass::copyTestMetamodel(const QString &fileName)
 	const QString workingDirName = pathToTestMetamodel;
 	QDir sourceDir(workingDirName);
 
-	QFileInfo const destDirInfo;
+	const QFileInfo destDirInfo;
 	QDir destDir = destDirInfo.dir();
 
 	QFile::copy(sourceDir.absolutePath() + "/" + fileName, destDir.absolutePath() + "/" + fileName);
@@ -179,10 +179,10 @@ EditorInterface* MainClass::loadedPlugin(const QString &fileName, const QString 
 	return mPluginLoader.loadedPlugin(fileName, pathToFile, mPluginExtension, mPrefix);
 }
 
-void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
-		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
-		, QList<QPair<QString, QPair<QString, QString> > > timeResult
-		, QList<QPair<QString, QPair<QString, QString> > > timeResultInterpter)
+void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
+		, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
+		, QList<QPair<QString, QPair<QString, QString>>> timeResult
+		, QList<QPair<QString, QPair<QString, QString>>> timeResultInterpter)
 {
 	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, timeResult, timeResultInterpter, mGeneratedDirHtml);
 }

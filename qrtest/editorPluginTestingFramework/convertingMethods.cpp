@@ -3,22 +3,20 @@
 using namespace editorPluginTestingFramework;
 using namespace qReal;
 
-QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(QList<EditorInterface::ExplosionData> const &explDataList)
+QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(const QList<EditorInterface::ExplosionData> &explDataList)
 {
 	QStringList resultList;
-	for (EditorInterface::ExplosionData const & element : explDataList)
-	{
+	for (const EditorInterface::ExplosionData &element : explDataList) {
 		resultList.append(element.targetElement);
 	}
 
 	return resultList;
 }
 
-QStringList ConvertingMethods::convertingQPairListIntoStringList(const QList<QPair<QString, QString> > &qPairList)
+QStringList ConvertingMethods::convertingQPairListIntoStringList(const QList<QPair<QString, QString>> &qPairList)
 {
 	QStringList resultList;
-	for (auto const & element : qPairList )
-	{
+	for (const auto &element : qPairList ) {
 		resultList.append(element.first);
 		resultList.append(element.second);
 	}
@@ -26,11 +24,11 @@ QStringList ConvertingMethods::convertingQPairListIntoStringList(const QList<QPa
 	return resultList;
 }
 
-QStringList ConvertingMethods::convertIdListIntoStringList(IdList const idList)
+QStringList ConvertingMethods::convertIdListIntoStringList(const IdList &idList)
 {
 	QStringList resultList;
 
-	foreach (Id const &id, idList) {
+	for (const Id &id : idList) {
 		resultList += id.toString();
 	}
 
@@ -44,13 +42,13 @@ QStringList ConvertingMethods::convertStringIntoStringList(const QString &string
 	return result;
 }
 
-QStringList ConvertingMethods::convertBoolIntoStringList(bool const &boolValue)
+QStringList ConvertingMethods::convertBoolIntoStringList(const bool &boolValue)
 {
 	QString stringRepresentation = (boolValue) ? "true" : "false";
 	return convertStringIntoStringList(stringRepresentation);
 }
 
-QStringList ConvertingMethods::convertIdIntoStringList(Id const &id)
+QStringList ConvertingMethods::convertIdIntoStringList(const Id &id)
 {
 	QString stringRepresentation = id.toString();
 	return convertStringIntoStringList(stringRepresentation);
@@ -62,10 +60,10 @@ QStringList ConvertingMethods::convertIntIntoStringList(int const &integer)
 	return convertStringIntoStringList(stringRepresentation);
 }
 
-QStringList ConvertingMethods::convertExplosionListIntoStringList(QList<Explosion> explosionList)
+QStringList ConvertingMethods::convertExplosionListIntoStringList(const QList<Explosion> &explosionList)
 {
 	QStringList result;
-	foreach (Explosion const &explosion, explosionList) {
+	for (const Explosion &explosion : explosionList) {
 		const QString &target = explosion.target().toString();
 		result.append(target);
 	}
@@ -73,8 +71,8 @@ QStringList ConvertingMethods::convertExplosionListIntoStringList(QList<Explosio
 }
 
 QString ConvertingMethods::transformateOutput(
-		QStringList const &output
-		, Id const &id
+		const QStringList &output
+		, const Id &id
 		, const QString &name
 		)
 {

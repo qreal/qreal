@@ -6,8 +6,8 @@
 using namespace editorPluginTestingFramework;
 
 int MethodsCheckerForTravis::calculateResult(
-		QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
-		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult)
+		QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
+		, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult)
 {
 	bool resultForQrxcAndQrmc = calculateResultForOneList(qrxcAndQrmcResult);
 	bool resultForQrxcAndInterpreter = calculateResultForOneList(qrxcAndInterpreterResult);
@@ -20,12 +20,12 @@ int MethodsCheckerForTravis::calculateResult(
 	return result;
 }
 
-bool MethodsCheckerForTravis::calculateResultForOneList(QList<QPair<QString, QPair<QString, QString> > > listOfResults)
+bool MethodsCheckerForTravis::calculateResultForOneList(QList<QPair<QString, QPair<QString, QString>>> listOfResults)
 {
-	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
+	typedef QPair<QString, QPair<QString, QString>> StringTriplet;
 
 	bool result = true;
-	foreach (StringTriplet const &stringTriplet, listOfResults) {
+	for (const StringTriplet &stringTriplet : listOfResults) {
 		const QString &firstResult = stringTriplet.second.first;
 		const QString &secondResult = stringTriplet.second.second;
 		bool currentMethodResult = calculateResultForOneMethod(firstResult, secondResult);

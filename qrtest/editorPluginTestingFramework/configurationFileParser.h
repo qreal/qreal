@@ -4,6 +4,8 @@
 #include <QtXml/QDomDocument>
 
 namespace editorPluginTestingFramework {
+
+/// Class for parse file with configuration.
 class ConfigurationFileParser
 {
 public:
@@ -28,8 +30,8 @@ public:
 	QString generatedCodeDirQrxc() const;
 	QString generatedCodeDirQrmc() const;
 
+	/// returns path to generated result
 	QString generatedDirHtml() const;
-
 
 private:
 	/// given tag, returns tag value from configuration file

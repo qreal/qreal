@@ -21,7 +21,7 @@ void HtmlMaker::makeHtml(
 		, QList<QPair<QString, QPair<QString, QString>>> timeResultIntertpter
 		, const QString &pathToHtml)
 {
-	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
+	typedef QPair<QString, QPair<QString, QString>> StringTriplet;
 
 	qDebug() << "STARTING HTML GENERATING";
 	QDomElement root = mHtml.createElement("html");
@@ -61,7 +61,7 @@ QDomElement HtmlMaker::newElement(QDomElement &parent, const QString &newElement
 
 void HtmlMaker::addTable(
 		QDomElement parent
-		, QList<QPair<QString, QPair<QString, QString> > > listOfLines
+		, QList<QPair<QString, QPair<QString, QString>>> listOfLines
 		, const QString &text
 		, const QString &firstColumnTitle
 		, const QString &secondColumnTitle
@@ -84,7 +84,7 @@ void HtmlMaker::addTable(
 
 	addLineToTable(table, firstColumnTitle, secondColumnTitle, thirdColumnTitle, true);
 
-	foreach (StringTriplet const &pair, listOfLines) {
+	for (const StringTriplet &pair : listOfLines) {
 		const QString &methodName = pair.first;
 		const QString &firstResult = pair.second.first;
 		const QString &secondResult = pair.second.second;
@@ -97,7 +97,7 @@ void HtmlMaker::addLineToTable(QDomElement parent
 			, const QString &methodName
 			, const QString &firstResult
 			, const QString &secondResult
-			, bool const &isTitle)
+			, const bool &isTitle)
 {
 	QDomElement newLine = newElement(parent, "tr");
 
@@ -125,28 +125,27 @@ bool HtmlMaker::resultsAreTheSame(const QString &firstMethod, const QString &sec
 
 	QStringList second = secondMethodParsed.values();
 	QStringList secondResult;
-	for (const QString &element : first)
-	{
+
+	for (const QString &element : first) {
 		firstResult.append(element.toLower());
 	}
 
-	for (QString element : second)
-	{
+	for (const QString &element : second) {
 		secondResult.append(element.toLower());
 	}
 
-	for (QString element : firstResult)
-	{
+	for (const QString &element : firstResult) {
 		bool result = secondResult.contains(element);
-		if (!result)
+		if (!result) {
 			return false;
+		}
 	}
 
-	for (QString element : secondResult)
-	{
+	for (const QString &element : secondResult) {
 		bool result = firstResult.contains(element);
-		if (!result)
+		if (!result) {
 			return false;
+		}
 	}
 
 	return true;
@@ -184,20 +183,20 @@ bool HtmlMaker::containsOnly(const QString &string, QChar const &symbol)
 
 	for (int i = 0; i < string.length(); i++) {
 		if (string[i] != symbol) {
-				containsOnlyThisSymbol = false;
+			containsOnlyThisSymbol = false;
 		}
 	}
 
 	return containsOnlyThisSymbol;
 }
 
-void HtmlMaker::addColumnToLine(QDomElement parent, const QString &value, bool const &isTitle, bool const &isMethodName)
+void HtmlMaker::addColumnToLine(QDomElement parent, const QString &value, const bool &isTitle, const bool &isMethodName)
 {
 	QDomElement newColumn = newElement(parent, "td");
 
 	QStringList listOfMethodTestingResults = parseOutput(value);
 
-	foreach (const QString &elementOfOutput, listOfMethodTestingResults) {
+	for (const QString &elementOfOutput : listOfMethodTestingResults) {
 
 		if (isTitle || isMethodName) {
 			QDomText name = mHtml.createTextNode(elementOfOutput);
@@ -205,7 +204,6 @@ void HtmlMaker::addColumnToLine(QDomElement parent, const QString &value, bool c
 			bold.appendChild(name);
 		} else {
 			QPair<QString, QStringList> parsedOutput = parseOneElementResult(elementOfOutput);
-
 			addTableToColumn(newColumn, parsedOutput);
 		}
 
@@ -213,7 +211,7 @@ void HtmlMaker::addColumnToLine(QDomElement parent, const QString &value, bool c
 	}
 }
 
-void HtmlMaker::addTableToColumn(QDomElement &parent, QPair<QString, QStringList> const &tableElements)
+void HtmlMaker::addTableToColumn(QDomElement &parent, const QPair<QString, QStringList> &tableElements)
 {
 	QDomElement table = newElement(parent, "table");
 
@@ -235,7 +233,7 @@ void HtmlMaker::addTableToColumn(QDomElement &parent, QPair<QString, QStringList
 	addLineToResultTable(table, tableElements.first, tableElements.second);
 }
 
-void HtmlMaker::addLineToResultTable(QDomElement &parent, const QString &firstColumn, QStringList const &secondColumn)
+void HtmlMaker::addLineToResultTable(QDomElement &parent, const QString &firstColumn, const QStringList &secondColumn)
 {
 	QDomElement newLine = newElement(parent, "tr");
 	const QString &columnWidth = "50%";
@@ -249,7 +247,7 @@ void HtmlMaker::addLineToResultTable(QDomElement &parent, const QString &firstCo
 	QDomElement secondColumnNode = newElement(newLine, "td");
 	secondColumnNode.setAttribute("width", columnWidth);
 
-	foreach (const QString &secondColumnElement, secondColumn) {
+	for (const QString &secondColumnElement : secondColumn) {
 		QDomNode newString = mHtml.createTextNode(secondColumnElement);
 		secondColumnNode.appendChild(newString);
 
@@ -259,11 +257,11 @@ void HtmlMaker::addLineToResultTable(QDomElement &parent, const QString &firstCo
 
 QStringList HtmlMaker::parseOutput(const QString &methodOutput)
 {
-	QStringList const list = methodOutput.split("|");
+	const QStringList list = methodOutput.split("|");
 
 	QStringList listWithoutEmptyElements;
 
-	foreach (const QString &element, list) {
+	for (const QString &element : list) {
 		if (!containsOnly(element, ' ')) {
 			listWithoutEmptyElements.append(element);
 		}
@@ -274,11 +272,11 @@ QStringList HtmlMaker::parseOutput(const QString &methodOutput)
 
 QPair<QString, QStringList> HtmlMaker::parseOneElementResult(const QString &oneElementOutput)
 {
-	QStringList const elementAndResult = oneElementOutput.split("-");
+	const QStringList elementAndResult = oneElementOutput.split("-");
 	const QString &element = elementAndResult.first();
 	const QString &result = elementAndResult.last();
 
-	QStringList const parsedResult = result.split(",");
+	const QStringList parsedResult = result.split(",");
 	QPair<QString, QStringList> resultPair = qMakePair(element, parsedResult);
 
 	return resultPair;
@@ -289,13 +287,13 @@ bool HtmlMaker::resultsAreEmpty(const QString &firstMethod, const QString &secon
 	QList<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod).toList();
 	QList<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod).toList();
 
-	foreach (const QString &element, firstMethodParsed) {
+	for (const QString &element : firstMethodParsed) {
 		if (!containsOnly(element, ' ')) {
 			return false;
 		}
 	}
 
-	foreach (const QString &element, secondMethodParsed) {
+	for (const QString &element : secondMethodParsed) {
 		if (!containsOnly(element, ' ')) {
 			return false;
 		}

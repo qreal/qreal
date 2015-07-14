@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
 #include <QtCore>
 #include <qrkernel/ids.h>
 #include <qrgui/plugins/pluginManager/explosion.h>
@@ -13,18 +11,18 @@ class ConvertingMethods
 {
 public:
 	/// converters for methods output converting into string list
-	static QStringList convertQListExplosionDataIntoStringList(QList<qReal::EditorInterface::ExplosionData> const &explDataList);
-	static QStringList convertingQPairListIntoStringList(QList<QPair<QString, QString>>  const &qPairList);
-	static QStringList convertIdListIntoStringList(qReal::IdList const idList);
+	static QStringList convertQListExplosionDataIntoStringList(const QList<qReal::EditorInterface::ExplosionData> &explDataList);
+	static QStringList convertingQPairListIntoStringList(const QList<QPair<QString, QString>> &qPairList);
+	static QStringList convertIdListIntoStringList(const qReal::IdList &idList);
 	static QStringList convertStringIntoStringList(const QString &string);
-	static QStringList convertBoolIntoStringList(bool const &boolValue);
-	static QStringList convertIdIntoStringList(qReal::Id const &id);
-	static QStringList convertIntIntoStringList(int const &integer);
-	static QStringList convertExplosionListIntoStringList(QList<qReal::Explosion> explosion);
+	static QStringList convertBoolIntoStringList(const bool &boolValue);
+	static QStringList convertIdIntoStringList(const qReal::Id &id);
+	static QStringList convertIntIntoStringList(const int &integer);
+	static QStringList convertExplosionListIntoStringList(const QList<qReal::Explosion> &explosion);
 
 	/// converter to string with special symbols to parse in html
 	static QString transformateOutput(const QStringList &output
-			, qReal::Id const &id = qReal::Id::rootId()
+			, const qReal::Id &id = qReal::Id::rootId()
 			, const QString &name = ""
 			);
 

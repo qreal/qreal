@@ -540,18 +540,18 @@ QList<QPair<QString, QString>> InterpreterEditorManager::enumValues(const Id &id
 	const Id metaId = repoAndMetaIdPair.second;
 
 	IdList listOfEnum =  repo->elementsByType("MetaEntityEnum");
-	for (Id const &currentEnum : listOfEnum) {
+	for (const Id &currentEnum : listOfEnum) {
 		for (const Id &property: repo->children(metaId)) {
 			if (repo->name(property) == name && repo->isLogicalElement(property)) {
 				const QString nameOfEnum = repo->name(currentEnum);
 				const QString attributeType = repo->stringProperty(property, "attributeType");
 				if (nameOfEnum == attributeType) {
 					IdList children = repo->children(currentEnum);
-					for (Id const current : children) {
+					for (const Id &current : children) {
 						if (repo->isLogicalElement(current)) {
 							if (repo->hasProperty(current, "valueName")) {
-								QString valueName = repo->stringProperty(current, "valueName");
-								QString displayedName = repo->stringProperty(current, "displayedName");
+								const QString valueName = repo->stringProperty(current, "valueName");
+								const QString displayedName = repo->stringProperty(current, "displayedName");
 								result.append(qMakePair(valueName, displayedName));
 							}
 						}

@@ -11,15 +11,17 @@ class HtmlMaker
 {
 public:
 	/// creates .html-file with results of testing
-	void makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
-			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
-			, QList<QPair<QString, QPair<QString, QString> > > timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultIntertpter, const QString &pathToHtml);
+	void makeHtml(QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
+			, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
+			, QList<QPair<QString, QPair<QString, QString>>> timeResult
+			, QList<QPair<QString, QPair<QString, QString>>> timeResultIntertpter
+			, const QString &pathToHtml);
 
 private:
 	/// adds one table with results of testing for qrxc-qrmc or qrxc-interpreter
 	void addTable(
 			QDomElement parent
-			, QList<QPair<QString, QPair<QString, QString> > > listOfLines
+			, QList<QPair<QString, QPair<QString, QString>>> listOfLines
 			, const QString &text
 			, const QString &firstColumnTitle
 			, const QString &secondColumnTitle
@@ -32,7 +34,7 @@ private:
 			, const QString &methodName
 			, const QString &firstResult
 			, const QString &secondResult
-			, bool const &isTitle
+			, const bool &isTitle
 			);
 
 	/// creates new qDomElement
@@ -42,26 +44,28 @@ private:
 	void addColumnToLine(
 			QDomElement parent
 			, const QString &value
-			, bool const &isTitle
-			, bool const &isMethodName);
+			, const bool &isTitle
+			, const bool &isMethodName);
 
 	/// adds inner table into column (table for results of testing one method of one interface)
 	void addTableToColumn(
 			QDomElement &parent
-			, QPair<QString, QStringList> const &tableElements
+			, const QPair<QString, QStringList> &tableElements
 			);
 
 	/// adds line to inner table
 	void addLineToResultTable(
 			QDomElement &parent
 			, const QString &firstColumn
-			, QStringList const &secondColumn
+			, const QStringList &secondColumn
 			);
 
 	/// finds out if string consists only of given symbol (for example, "aaa" consists only of symbol 'a')
-	static bool containsOnly(const QString &string, QChar const &symbol);
+	static bool containsOnly(const QString &string, const QChar &symbol);
+
 	/// finds out if results of testing are equivalent
 	static bool resultsAreTheSame(const QString &firstMethod, const QString &secondMethod);
+
 	/// checks if results are empty
 	static bool resultsAreEmpty(const QString &firstMethod, const QString &secondMethod);
 

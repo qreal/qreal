@@ -51,9 +51,9 @@ private:
 	void launchQrmc(const QString &fileName, const QString &pathToQrmc);
 	void compilePlugin(const QString &directoryToCodeToCompile, const QString &fileName);
 	void launchQrxc(const QString &fileName);
-	void createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
-			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
-			, QList<QPair<QString, QPair<QString, QString> > > timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultInterpter);
+	void createHtml(QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
+			, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
+			, QList<QPair<QString, QPair<QString, QString>>> timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultInterpter);
 
 	/// puts names of generated plugins into mQrxcGeneratedPluginList (for further creation of EditorManager)
 	void appendPluginNames();
@@ -89,11 +89,9 @@ private:
 	/// "yes" if we want to generate html and "no" otherwise
 	QString mGenerateHtml;
 	/// path to generated code (from root)
-	//QString mGeneratedCodeDir;
 	QString mGeneratedCodeDirQrxc;
 	QString mGeneratedCodeDirQrmc;
 	QString mGeneratedDirHtml;
-
 
 	/// result of testing for travis
 	int mResultOfTesting;
