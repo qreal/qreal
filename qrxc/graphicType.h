@@ -48,7 +48,7 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
-    virtual void generateHotKeyMap(utils::OutFile &out);
+	virtual void generateHotKeyMap(utils::OutFile &out);
 	virtual void generateParentsMapping(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
 	virtual bool copyPorts(NodeType *parent) = 0;

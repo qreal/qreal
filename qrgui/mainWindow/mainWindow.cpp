@@ -341,7 +341,7 @@ void MainWindow::loadPlugins()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
 			, &editorManager());
 	SettingsManager::setValue("EditorsLoadedCount", editorManager().editors().count());
-    loadElementsShortcuts();
+	loadElementsShortcuts();
 }
 
 void MainWindow::clearSelectionOnTabs()
