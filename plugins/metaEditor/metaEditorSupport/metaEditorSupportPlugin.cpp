@@ -147,6 +147,14 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 			progress->setValue(5);
 
+			QString normalizedName = nameOfMetamodel.at(0).toUpper() + nameOfMetamodel.mid(1);
+			const bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizedName);
+			if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
+				progress->close();
+				delete progress;
+				return;
+			}
+
 			if (!metaCompiler.compile(nameOfMetamodel)) { // generating source code for all metamodels
 				QMessageBox::warning(mMainWindowInterface->windowWidget()
 						, tr("error")
@@ -174,10 +182,16 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 				qDebug()  << "make";
 
 				if (finished && (builder.exitCode() == 0)) {
+					if (stateOfLoad) {
+						QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please close QReal."));
+						progress->close();
+						delete progress;
+						return;
+					}
+
 					qDebug()  << "make ok";
 					progress->setValue(progress->value() + forEditor / 2);
 
-					QString normalizedName = nameOfMetamodel.at(0).toUpper() + nameOfMetamodel.mid(1);
 					if (!nameOfMetamodel.isEmpty()) {
 						if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
 							QMessageBox::warning(mMainWindowInterface->windowWidget()
