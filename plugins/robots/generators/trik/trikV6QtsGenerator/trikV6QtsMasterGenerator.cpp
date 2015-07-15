@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikQtsMasterGenerator.h"
+#include "trikV6QtsMasterGenerator.h"
 
-#include "trikQtsControlFlowValidator.h"
+#include "trikV6QtsControlFlowValidator.h"
 
 using namespace trik::qts;
 

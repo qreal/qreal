@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-trik-f-sharp-generator
+TARGET = robots-trik-v6-f-sharp-generator
 
 include(../../../../../global.pri)
 
@@ -25,19 +25,19 @@ copyToDestdir($$PWD/lib/Trik.Core.dll)
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
+includes(plugins/robots/generators/trik/trikV6GeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base robots-utils \
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-v6-generator-base robots-utils \
 		qrgui-preferences-dialog robots-kit-base \
 )
 
 TRANSLATIONS = \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpGenerator_ru.ts \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6FSharpGenerator_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikFSharpGenerator_fr.ts \
 
 HEADERS += \
@@ -56,5 +56,5 @@ FORMS += \
 	$$PWD/trikFSharpAdditionalPreferences.ui \
 
 RESOURCES = \
-	$$PWD/trikFSharpGenerator.qrc \
+	$$PWD/trikV6FSharpGenerator.qrc \
 	$$PWD/templates.qrc \

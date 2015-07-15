@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-trik-generator-base
+TARGET = robots-trik-v62-generator-base
 
 include(../../../../../global.pri)
 
@@ -21,8 +21,7 @@ QT += widgets
 TEMPLATE = lib
 CONFIG += plugin
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
-		plugins/robots/generators/generatorBase \
+includes(plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
@@ -31,17 +30,17 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 
 links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots-trik-kit)
 
-DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
+DEFINES += ROBOTS_TRIK_V62_GENERATOR_BASE_LIBRARY
 
 TRANSLATIONS = \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62GeneratorBase_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
-	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
-	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
-	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
-	$$PWD/include/trikGeneratorBase/robotModel/trikGeneratorRobotModel.h \
+	$$PWD/include/trikV62GeneratorBase/trikGeneratorBaseDeclSpec.h \
+	$$PWD/include/trikV62GeneratorBase/trikGeneratorPluginBase.h \
+	$$PWD/include/trikV62GeneratorBase/trikMasterGeneratorBase.h \
+	$$PWD/include/trikV62GeneratorBase/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
 	$$PWD/src/parts/trikDeviceVariables.h \

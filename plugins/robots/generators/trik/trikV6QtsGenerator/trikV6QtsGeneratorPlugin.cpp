@@ -12,17 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikQtsGeneratorPlugin.h"
+#include "trikV6QtsGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDebug>
 
-#include <trikGeneratorBase/trikGeneratorPluginBase.h>
-#include <trikGeneratorBase/robotModel/trikGeneratorRobotModel.h>
+#include <trikV6GeneratorBase/trikGeneratorPluginBase.h>
+#include <trikV6GeneratorBase/robotModel/trikGeneratorRobotModel.h>
 #include <utils/tcpRobotCommunicator.h>
 
-#include "trikQtsMasterGenerator.h"
+#include "trikV6QtsMasterGenerator.h"
 #include "emptyShell.h"
 
 using namespace trik::qts;

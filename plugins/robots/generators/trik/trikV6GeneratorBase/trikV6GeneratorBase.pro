@@ -21,8 +21,7 @@ QT += widgets
 TEMPLATE = lib
 CONFIG += plugin
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
-		plugins/robots/generators/generatorBase \
+includes(plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
@@ -31,17 +30,17 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 
 links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots-trik-kit)
 
-DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
+DEFINES += ROBOTS_TRIK_V6_GENERATOR_BASE_LIBRARY
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
-	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
-	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
-	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
-	$$PWD/include/trikGeneratorBase/robotModel/trikGeneratorRobotModel.h \
+	$$PWD/include/trikV6GeneratorBase/trikGeneratorBaseDeclSpec.h \
+	$$PWD/include/trikV6GeneratorBase/trikGeneratorPluginBase.h \
+	$$PWD/include/trikV6GeneratorBase/trikMasterGeneratorBase.h \
+	$$PWD/include/trikV6GeneratorBase/robotModel/trikGeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
 	$$PWD/src/parts/trikDeviceVariables.h \

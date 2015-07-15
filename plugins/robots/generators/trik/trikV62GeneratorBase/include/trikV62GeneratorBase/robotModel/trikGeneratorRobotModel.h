@@ -14,14 +14,14 @@
 
 #pragma once
 
-#include <trikKit/robotModel/trikRobotModelBase.h>
+#include <trikKit/robotModel/trikRobotModelV62.h>
 
-#include "trikGeneratorBase/trikGeneratorBaseDeclSpec.h"
+#include "trikV62GeneratorBase/trikGeneratorBaseDeclSpec.h"
 
 namespace trik {
 namespace robotModel {
 
-class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikGeneratorRobotModel : public TrikRobotModelBase
+class ROBOTS_TRIK_V62_GENERATOR_BASE_EXPORT TrikGeneratorRobotModel : public TrikRobotModelV62
 {
 	Q_OBJECT
 

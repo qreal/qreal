@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-trik-qts-generator
+TARGET = robots-trik-v62-qts-generator
 
 include(../../../../../global.pri)
 
@@ -23,7 +23,7 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
+includes(plugins/robots/generators/trik/trikV62GeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
@@ -31,7 +31,7 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base \
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-v62-generator-base \
 		robots-kit-base robots-trik-kit robots-utils \
 )
 

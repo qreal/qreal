@@ -16,7 +16,7 @@
 
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
-#include "trikGeneratorBase/trikGeneratorBaseDeclSpec.h"
+#include "trikV62GeneratorBase/trikGeneratorBaseDeclSpec.h"
 
 namespace trik {
 
@@ -25,11 +25,11 @@ class TrikGeneratorRobotModel;
 }
 
 namespace blocks {
-class TrikBlocksFactory;
+class TrikV62BlocksFactory;
 }
 
 /// A base class for every generator from the TRIK kit.
-class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikGeneratorPluginBase : public generatorBase::RobotsGeneratorPluginBase
+class ROBOTS_TRIK_V62_GENERATOR_BASE_EXPORT TrikGeneratorPluginBase : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
 
@@ -51,7 +51,7 @@ protected:
 	QScopedPointer<robotModel::TrikGeneratorRobotModel> mRobotModel;
 
 private:
-	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
+	blocks::TrikV62BlocksFactory *mBlocksFactory;  // Transfers ownership
 };
 
 }

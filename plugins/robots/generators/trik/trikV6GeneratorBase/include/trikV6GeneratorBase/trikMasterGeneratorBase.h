@@ -16,12 +16,12 @@
 
 #include <generatorBase/masterGeneratorBase.h>
 
-#include "trikGeneratorBase/trikGeneratorBaseDeclSpec.h"
+#include "trikV6GeneratorBase/trikGeneratorBaseDeclSpec.h"
 
 namespace trik {
 
 /// Master generator base implementation for every generator from TRIK kit
-class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikMasterGeneratorBase : public generatorBase::MasterGeneratorBase
+class ROBOTS_TRIK_V6_GENERATOR_BASE_EXPORT TrikMasterGeneratorBase : public generatorBase::MasterGeneratorBase
 {
 public:
 	TrikMasterGeneratorBase(const qrRepo::RepoApi &repo

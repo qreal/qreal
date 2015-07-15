@@ -12,11 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikGeneratorBase/trikGeneratorPluginBase.h"
+#include "trikV62GeneratorBase/trikGeneratorPluginBase.h"
 
-#include <trikKit/blocks/trikBlocksFactory.h>
+#include <trikKit/blocks/trikV62BlocksFactory.h>
 
-#include "trikGeneratorBase/robotModel/trikGeneratorRobotModel.h"
+#include "trikV62GeneratorBase/robotModel/trikGeneratorRobotModel.h"
 
 using namespace trik;
 
@@ -25,7 +25,7 @@ TrikGeneratorPluginBase::TrikGeneratorPluginBase(const QString &robotName
 		, int priority)
 	: mRobotModel(new robotModel::TrikGeneratorRobotModel(kitId()
 			, "trikGeneratorRobotOf" + robotName, robotName, robotFriendlyName, priority))
-	, mBlocksFactory(new blocks::TrikBlocksFactory)
+	, mBlocksFactory(new blocks::TrikV62BlocksFactory)
 {
 }
 

@@ -13,7 +13,7 @@
  * limitations under the License. */
 
 #include "trikV62DisplayWidget.h"
-#include "ui_trikDisplayWidget.h"
+#include "ui_trikV62DisplayWidget.h"
 
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <trikGeneratorBase/trikMasterGeneratorBase.h>
+#include <trikV62GeneratorBase/trikMasterGeneratorBase.h>
 
 namespace trik {
 namespace fSharp {

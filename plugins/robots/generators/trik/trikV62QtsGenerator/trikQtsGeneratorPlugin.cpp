@@ -18,8 +18,8 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDebug>
 
-#include <trikGeneratorBase/trikGeneratorPluginBase.h>
-#include <trikGeneratorBase/robotModel/trikGeneratorRobotModel.h>
+#include <trikV62GeneratorBase/trikGeneratorPluginBase.h>
+#include <trikV62GeneratorBase/robotModel/trikGeneratorRobotModel.h>
 #include <utils/tcpRobotCommunicator.h>
 
 #include "trikQtsMasterGenerator.h"

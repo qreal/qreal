@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <trikGeneratorBase/trikGeneratorPluginBase.h>
+#include <trikV6GeneratorBase/trikGeneratorPluginBase.h>
 
 namespace utils {
 class TcpRobotCommunicator;

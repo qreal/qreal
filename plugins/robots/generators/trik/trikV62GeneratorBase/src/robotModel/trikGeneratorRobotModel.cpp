@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikGeneratorBase/robotModel/trikGeneratorRobotModel.h"
+#include "trikV62GeneratorBase/robotModel/trikGeneratorRobotModel.h"
 
 using namespace trik::robotModel;
 
@@ -21,7 +21,7 @@ TrikGeneratorRobotModel::TrikGeneratorRobotModel(const QString &kitId
 		, const QString &name
 		, const QString &friendlyName
 		, int priority)
-	: TrikRobotModelBase(kitId, robotId)
+	: TrikRobotModelV62(kitId, robotId)
 	, mName(name)
 	, mFriendlyName(friendlyName)
 	, mPriority(priority)

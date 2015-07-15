@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-trik-qts-generator
+TARGET = robots-trik-v6-qts-generator
 
 include(../../../../../global.pri)
 
@@ -23,7 +23,7 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
+includes(plugins/robots/generators/trik/trikV6GeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
@@ -31,28 +31,28 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base \
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-v6-generator-base \
 		robots-kit-base robots-trik-kit robots-utils \
 )
 
 TRANSLATIONS = \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikQtsGenerator_ru.ts \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6QtsGenerator_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikQtsGenerator_fr.ts \
 
 HEADERS += \
-	$$PWD/trikQtsGeneratorPlugin.h \
-	$$PWD/trikQtsMasterGenerator.h \
-	$$PWD/trikQtsControlFlowValidator.h \
+	$$PWD/trikV6QtsGeneratorPlugin.h \
+	$$PWD/trikV6QtsMasterGenerator.h \
+	$$PWD/trikV6QtsControlFlowValidator.h \
 	$$PWD/threadsValidator.h \
 	$$PWD/emptyShell.h \
 
 SOURCES += \
-	$$PWD/trikQtsGeneratorPlugin.cpp \
-	$$PWD/trikQtsMasterGenerator.cpp \
-	$$PWD/trikQtsControlFlowValidator.cpp \
+	$$PWD/trikV6QtsGeneratorPlugin.cpp \
+	$$PWD/trikV6QtsMasterGenerator.cpp \
+	$$PWD/trikV6QtsControlFlowValidator.cpp \
 	$$PWD/threadsValidator.cpp \
 	$$PWD/emptyShell.cpp \
 
 RESOURCES = \
-	$$PWD/trikQtsGenerator.qrc \
+	$$PWD/trikV6QtsGenerator.qrc \
 	$$PWD/templates.qrc \

@@ -26,7 +26,7 @@
 using namespace trik::fSharp;
 using namespace qReal;
 
-const QString robotModelName = "TrikFSharpGeneratorRobotModel";
+const QString robotModelName = "TrikV62FSharpGeneratorRobotModel";
 
 TrikFSharpGeneratorPlugin::TrikFSharpGeneratorPlugin()
 	: TrikGeneratorPluginBase(robotModelName, tr("Generation (F#)"), 7 /* Last order */)
@@ -119,7 +119,7 @@ text::LanguageInfo TrikFSharpGeneratorPlugin::language() const
 
 QString TrikFSharpGeneratorPlugin::generatorName() const
 {
-	return "trikFSharp";
+	return "trikFSharpV62";
 }
 
 bool TrikFSharpGeneratorPlugin::uploadProgram()

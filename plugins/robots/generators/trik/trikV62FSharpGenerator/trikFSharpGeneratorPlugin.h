@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <trikGeneratorBase/trikGeneratorPluginBase.h>
+#include <trikV62GeneratorBase/trikGeneratorPluginBase.h>
 #include "trikFSharpAdditionalPreferences.h"
 
 namespace trik {

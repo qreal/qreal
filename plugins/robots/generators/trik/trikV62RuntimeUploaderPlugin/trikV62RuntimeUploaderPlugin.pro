@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-trik-runtime-uploader-plugin
+TARGET = robots-trik-v62-runtime-uploader-plugin
 
 include(../../../../../global.pri)
 
@@ -23,17 +23,17 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
+includes(plugins/robots/generators/trik/trikV62GeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo robots-generator-base robots-trik-generator-base)
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-trik-v62-generator-base)
 
 TRANSLATIONS = \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikRuntimeUploaderPlugin_ru.ts \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62RuntimeUploaderPlugin_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikRuntimeUploaderPlugin_fr.ts \
 
 HEADERS += \
