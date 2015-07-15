@@ -77,7 +77,7 @@ QString ConvertingMethods::transformateOutput(
 		)
 {
 	QString result;
-	if (name == "") {
+	if (name.isEmpty()) {
 		result.append(id.toString() + "-");
 	} else {
 		result.append(name + "-");
@@ -92,7 +92,7 @@ QString ConvertingMethods::transformateOutput(
 
 QSet<QString> ConvertingMethods::resultToCompare(const QString &method)
 {
-	QStringList methodOutput = method.split("|");
+	const QStringList methodOutput = method.split("|");
 
 	QStringList result;
 	for (const QString &string : methodOutput) {
@@ -102,6 +102,6 @@ QSet<QString> ConvertingMethods::resultToCompare(const QString &method)
 		result.append(outputToList);
 	}
 
-	QSet<QString> methodParsed = result.toSet();
+	const QSet<QString> methodParsed = result.toSet();
 	return methodParsed;
 }
