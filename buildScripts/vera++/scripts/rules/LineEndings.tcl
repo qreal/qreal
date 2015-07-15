@@ -40,7 +40,7 @@ foreach fileName [getSourceFileNames] {
         if {[regexp {\r} $line] || [regexp {\n} $line] || [regexp {\r\n} $line]}  {
             report $fileName $lineNumber "Incorrect line ending detected, check your git settings (Auto CrLf must be true on Windows, or checkout platform-specific, commit linux-style)"
             report $fileName $lineNumber "Use 'git config --global core.autocrlf true' or 'git config --global core.autocrlf input' command or equivalent in your favorite git client"
-            return
+            break
         }
 
         incr lineNumber
