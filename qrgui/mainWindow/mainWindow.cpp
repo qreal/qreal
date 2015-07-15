@@ -1112,9 +1112,10 @@ void MainWindow::loadElementsShortcuts()
 				action->setShortcuts(hotKeyList);
 				connect(action, &QAction::triggered, [=]()
 				{
-					if (editorManager().isElementEnabled(element))
-						getCurrentTab()->mutableScene().createElement(element.type().toString()
-						, getCurrentTab()->mutableScene().getMousePos());
+					if (getCurrentTab())
+						if (editorManager().isElementEnabled(element))
+							getCurrentTab()->mutableScene().createElement(element.type().toString()
+							, getCurrentTab()->mutableScene().getMousePos());
 				});
 				this->addAction(action);
 				HotKeyManager::setCommand("Scene." + element.element(), "Create " + element.element(), action);
