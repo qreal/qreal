@@ -218,6 +218,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQString propertyDisplayedName(const QString &diagram, const QString &element, const QString "
 				"&property) const override;\n"
 		<< "\tQString elementMouseGesture(const QString &digram, const QString &element) const override;\n"
+           "\tQString elementHotKey(const QString &diagram, const QString &element) const override;\n"
 		<< "\n"
 		<< "\tQList<qReal::ListenerInterface*> listeners() const override;\n"
 		<< "\n"
@@ -232,6 +233,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "private:\n"
 		<< "\tvirtual void initPlugin();\n"
 		<< "\tvirtual void initMouseGestureMap();\n"
+        << "\tvirtual void initHotKeyMap();\n"
 		<< "\tvirtual void initNameMap();\n"
 		<< "\tvirtual void initPropertyMap();\n"
 		<< "\tvirtual void initPropertyDefaultsMap();\n"
@@ -252,6 +254,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QMap<QString, QString>>> mPropertiesDescriptionMap;\n"
 		<< "\tQMap<QString, QMap<QString, QMap<QString, QString>>> mPropertiesDisplayedNamesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mElementMouseGesturesMap;\n"
+        << "\tQMap<QString, QMap<QString, QString>> mElementHotKeyMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString>>>> mParentsMap;  // Maps diagram and element"
 				" to a list of diagram-element pairs of parents (generalization relation).\n"
 		<< "\tQMap<QString, QList<QPair<QString, QStringList>>> mPaletteGroupsMap;  // Maps element`s lists of all "
@@ -313,6 +316,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initPlugin()\n{\n"
 		<< "\tinitNameMap();\n"
 		<< "\tinitMouseGestureMap();\n"
+        << "\tinitHotKeyMap();\n"
 		<< "\tinitPropertyMap();\n"
 		<< "\tinitPropertyDefaultsMap();\n"
 		<< "\tinitDescriptionMap();\n"
@@ -327,6 +331,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generatePaletteGroupsLists(out);
 	generatePaletteGroupsDescriptions(out);
 	generateMouseGestureMap(out);
+    generateHotKeyMap(out);
 	generatePropertyMap(out);
 	generatePropertyDefaultsMap(out);
 	generateDescriptionMappings(out);
@@ -471,7 +476,18 @@ void XmlCompiler::generateMouseGestureMap(OutFile &out)
 			type->generateMouseGesturesMap(out);
 		}
 	}
-	out() << "}\n\n";
+    out() << "}\n\n";
+}
+
+void XmlCompiler::generateHotKeyMap(OutFile &out)
+{
+    out() << "void " << mPluginName << "Plugin::initHotKeyMap()\n{\n";
+    foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+        foreach (Type *type, diagram->types().values()) {
+            type->generateHotKeyMap(out);
+        }
+    }
+    out() << "}\n\n";
 }
 
 void XmlCompiler::generatePropertyMap(OutFile &out)
@@ -604,6 +620,11 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "const\n{\n"
 		<< "\treturn mElementMouseGesturesMap[diagram][element];\n"
 		<< "}\n\n"
+
+        << "QString " << mPluginName << "Plugin::elementHotKey(const QString &diagram, const QString &element) "
+        << "const\n{\n"
+        << "\treturn mElementHotKeyMap[diagram][element];\n"
+        << "}\n\n"
 
 		<< "QList<qReal::EditorInterface::ExplosionData>" << mPluginName
 				<< "Plugin::explosions(const QString &diagram, "

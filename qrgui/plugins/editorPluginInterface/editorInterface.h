@@ -79,6 +79,7 @@ public:
 	virtual QString diagramNodeName(const QString &diagram) const = 0;
 	virtual QString elementName(const QString &diagram, const QString &element) const = 0;
 	virtual QString elementMouseGesture(const QString &diagram, const QString &element) const = 0;
+    virtual QString elementHotKey(const QString &diagram, const QString &element) const = 0;
 	virtual QString elementDescription(const QString &diagram, const QString &element) const = 0;
 	virtual QString propertyDescription(const QString &diagram, const QString &element
 			, const QString &property) const = 0;

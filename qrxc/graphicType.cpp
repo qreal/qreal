@@ -568,7 +568,16 @@ void GraphicType::generateMouseGesturesMap(OutFile &out)
 			out() << "\"" << pathStr;
 		}
 		out() << "\";\n";
-	}
+    }
+}
+
+void GraphicType::generateHotKeyMap(OutFile &out)
+{
+    QString hotKeyStr = hotKey();
+
+    out() <<  "\tmElementHotKeyMap[\"" << NameNormalizer::normalize(mDiagram->name()) << "\"][\""
+            << NameNormalizer::normalize(qualifiedName()) << "\"] = \"" << hotKeyStr << "\"";
+    out() << ";\n";
 }
 
 bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)

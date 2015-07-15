@@ -61,6 +61,7 @@ public:
 	QString unloadPlugin(const QString &pluginName) override;
 
 	QString mouseGesture(const Id &id) const override;
+    QString hotKey(const Id &id) const override;
 	QString friendlyName(const Id &id) const override;
 	QString description(const Id &id) const override;
 	QString propertyDescription(const Id &id, const QString &propertyName) const override;
@@ -133,9 +134,6 @@ public:
 	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const override;
 	IdList propertiesWithTheSameName(const Id &id
 			, const QString &propertyCurrentName, const QString &propertyNewName) const override;
-
-	void updateGenerationRule(const Id &id, const QString &newRule) const override;
-	QString generationRule(const Id &id) const override;
 
 	QStringList getPropertiesInformation(const Id &id) const override;
 	QStringList getSameNamePropertyParams(const Id &propertyId, const QString &propertyName) const override;
