@@ -1,0 +1,3 @@
+do {
+@@BODY@@
+} while (@@CONDITION@@);

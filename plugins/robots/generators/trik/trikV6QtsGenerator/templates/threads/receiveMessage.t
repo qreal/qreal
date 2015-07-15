@@ -1,0 +1,1 @@
+@@VARIABLE@@ = Threading.receiveMessage(@@SYNCHRONIZED@@);

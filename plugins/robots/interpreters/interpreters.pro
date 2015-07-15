@@ -18,7 +18,8 @@ SUBDIRS = \
 	interpreterCore \
 	nullKitInterpreter \
 	nxtKitInterpreter \
-	trikKitInterpreter \
+	trikV6KitInterpreter \
+	trikV62KitInterpreter \
 	ev3KitInterpreter \
 	robotsPlugin \
 	twoDModelRunner \

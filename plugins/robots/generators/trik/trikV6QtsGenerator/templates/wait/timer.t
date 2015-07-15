@@ -1,0 +1,1 @@
+script.wait(@@DELAY@@);

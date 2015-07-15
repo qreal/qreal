@@ -2711,6 +2711,134 @@
 					</generalizations>
 				</logic>
 			</node>
+
+			<!-- TRIK version 6.2 (new case) specifics -->
+			<node name="TrikV62EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports" >
+							<default>M3, M4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Motors Backward" name="TrikV62EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usual mode.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikV6EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Motors Forward" name="TrikV62EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:" />
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%" />
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikV6EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Angular Servo" name="TrikV62AngularServo" description="Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Angle:" suffix="°"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>E1</default>
+						</property>
+						<property displayedName="Angle (degrees)" type="string" name="Power">
+							<default>0</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Clear Encoder" name="TrikV62ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>B1, B2, B3, B4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Encoder" name="TrikV62WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
+						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="string" name="Port">
+							<default>B1</default>
+						</property>
+						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 		</graphicTypes>
 
 		<palette sorted="false">
@@ -2744,10 +2872,14 @@
 				<element name="Ev3EnginesStop"/>
 				<element name="TrikPlayTone"/>
 				<element name="TrikV6EnginesForward"/>
+				<element name="TrikV62EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
+				<element name="TrikV62EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>
 				<element name="TrikV6ClearEncoder"/>
+				<element name="TrikV62ClearEncoder"/>
 				<element name="TrikAngularServo"/>
+				<element name="TrikV62AngularServo"/>
 				<element name="TrikSay"/>
 				<element name="TrikLed" />
 				<element name="TrikSystem" />
@@ -2780,6 +2912,7 @@
 				<element name="TrikWaitForIRDistance"/>
 				<!-- <element name="TrikWaitForMotion"/> -->
 				<element name="TrikWaitForEncoder"/>
+				<element name="TrikV62WaitForEncoder"/>
 				<element name="TrikWaitForButton"/>
 				<element name="TrikWaitForMessage" />
 				<element name="TrikWaitGamepadButton" />
