@@ -940,7 +940,13 @@ void InterpreterEditorManager::restoreRenamedProperty(const Id &propertyId, cons
 void InterpreterEditorManager::setElementEnabled(const Id &type, bool enabled)
 {
 	Q_UNUSED(type)
-	Q_UNUSED(enabled)
+    Q_UNUSED(enabled)
+}
+
+bool InterpreterEditorManager::isElementEnabled(const Id &element)
+{
+    Q_UNUSED(element);
+    return bool();
 }
 
 QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() const

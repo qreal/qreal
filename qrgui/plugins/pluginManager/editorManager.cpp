@@ -703,5 +703,10 @@ void EditorManager::setElementEnabled(const Id &type, bool enabled)
 		mDisabledElements.remove(type);
 	} else {
 		mDisabledElements.insert(type);
-	}
+    }
+}
+
+bool EditorManager::isElementEnabled(const Id &element)
+{
+    return !mDisabledElements.contains(element);
 }

@@ -411,7 +411,12 @@ void ProxyEditorManager::restoreRenamedProperty(const Id &propertyId, const QStr
 
 void ProxyEditorManager::setElementEnabled(const Id &type, bool enabled)
 {
-	mProxiedEditorManager->setElementEnabled(type, enabled);
+    mProxiedEditorManager->setElementEnabled(type, enabled);
+}
+
+bool ProxyEditorManager::isElementEnabled(const Id &element)
+{
+    return mProxiedEditorManager->isElementEnabled(element);
 }
 
 EditorManagerInterface* ProxyEditorManager::proxiedEditorManager() const

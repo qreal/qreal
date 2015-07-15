@@ -143,6 +143,8 @@ public:
 
 	/// Includes or excludes element from metamodel.
 	virtual void setElementEnabled(const Id &type, bool enabled) = 0;
+
+    virtual bool isElementEnabled(const Id &element) = 0;
 };
 
 

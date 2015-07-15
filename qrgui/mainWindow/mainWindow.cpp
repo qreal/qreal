@@ -753,7 +753,7 @@ bool MainWindow::pluginLoaded(const QString &pluginName)
 
 EditorView * MainWindow::getCurrentTab() const
 {
-	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
+    return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
 bool MainWindow::isCurrentTabShapeEdit() const
@@ -1113,8 +1113,11 @@ void MainWindow::loadElementsShortcuts()
                 connect(action, &QAction::triggered, [=]()
                 {
                         // TODO: add check for whether it is legit to create element on current tab
-                       getCurrentTab()->mutableScene().createElement(element.type().toString()
-                                                                  , getCurrentTab()->mutableScene().getMousePos());
+
+
+                    if (editorManager().isElementEnabled(element))
+                        getCurrentTab()->mutableScene().createElement(element.type().toString()
+                        , getCurrentTab()->mutableScene().getMousePos());
                 });
                 this->addAction(action);
                 HotKeyManager::setCommand("Scene." + element.element(), "Create " + element.element(), action);

@@ -154,6 +154,8 @@ public:
 
 	void setElementEnabled(const Id &type, bool enabled) override;
 
+    bool isElementEnabled(const Id &element) override;
+
 	/// Returns list of metamodels for interpreted plugins.
 	QMap<QString, qrRepo::RepoApi*> listOfMetamodels() const;
 

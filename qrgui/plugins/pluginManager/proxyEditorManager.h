@@ -148,6 +148,8 @@ public:
 
 	void setElementEnabled(const Id &type, bool enabled) override;
 
+    bool isElementEnabled(const Id &element) override;
+
 	/// Returns proxied editor manager.
 	EditorManagerInterface *proxiedEditorManager() const;  // doesn't transfer ownership
 
