@@ -58,12 +58,12 @@ QString ProxyEditorManager::unloadPlugin(const QString &pluginName)
 
 QString ProxyEditorManager::mouseGesture(const Id &id) const
 {
-    return mProxiedEditorManager->mouseGesture(id);
+	return mProxiedEditorManager->mouseGesture(id);
 }
 
 QString ProxyEditorManager::hotKey(const Id &id) const
 {
-    return mProxiedEditorManager->hotKey(id);
+	return mProxiedEditorManager->hotKey(id);
 }
 
 QString ProxyEditorManager::friendlyName(const Id &id) const
@@ -411,12 +411,12 @@ void ProxyEditorManager::restoreRenamedProperty(const Id &propertyId, const QStr
 
 void ProxyEditorManager::setElementEnabled(const Id &type, bool enabled)
 {
-    mProxiedEditorManager->setElementEnabled(type, enabled);
+	mProxiedEditorManager->setElementEnabled(type, enabled);
 }
 
 bool ProxyEditorManager::isElementEnabled(const Id &element)
 {
-    return mProxiedEditorManager->isElementEnabled(element);
+	return mProxiedEditorManager->isElementEnabled(element);
 }
 
 EditorManagerInterface* ProxyEditorManager::proxiedEditorManager() const

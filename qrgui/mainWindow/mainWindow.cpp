@@ -753,7 +753,7 @@ bool MainWindow::pluginLoaded(const QString &pluginName)
 
 EditorView * MainWindow::getCurrentTab() const
 {
-    return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
+	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
 bool MainWindow::isCurrentTabShapeEdit() const
@@ -1097,32 +1097,28 @@ void MainWindow::setShortcuts(EditorView * const tab)
 	QAction *selectAction = new QAction(tab);
 	selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
 	connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
-    tab->addAction(selectAction);
+	tab->addAction(selectAction);
 }
 
 void MainWindow::loadElementsShortcuts()
 {
-    foreach (Id editor, editorManager().editors())
-        foreach (Id diagram, editorManager().diagrams(editor))
-            foreach(Id element, editorManager().elements(diagram)) {
-                QAction *action = new QAction(this);
-                QList<QKeySequence> hotKeyList;
-                foreach (QString string, editorManager().hotKey(element).split(", "))
-                    hotKeyList << QKeySequence(string);
-                action->setShortcuts(hotKeyList);
-                connect(action, &QAction::triggered, [=]()
-                {
-                        // TODO: add check for whether it is legit to create element on current tab
-
-
-                    if (editorManager().isElementEnabled(element))
-                        getCurrentTab()->mutableScene().createElement(element.type().toString()
-                        , getCurrentTab()->mutableScene().getMousePos());
-                });
-                this->addAction(action);
-                HotKeyManager::setCommand("Scene." + element.element(), "Create " + element.element(), action);
-
-            }
+	foreach (Id editor, editorManager().editors())
+		foreach (Id diagram, editorManager().diagrams(editor))
+			foreach(Id element, editorManager().elements(diagram)) {
+				QAction *action = new QAction(this);
+				QList<QKeySequence> hotKeyList;
+				foreach (QString string, editorManager().hotKey(element).split(", "))
+					hotKeyList << QKeySequence(string);
+				action->setShortcuts(hotKeyList);
+				connect(action, &QAction::triggered, [=]()
+				{
+					if (editorManager().isElementEnabled(element))
+						getCurrentTab()->mutableScene().createElement(element.type().toString()
+						, getCurrentTab()->mutableScene().getMousePos());
+				});
+				this->addAction(action);
+				HotKeyManager::setCommand("Scene." + element.element(), "Create " + element.element(), action);
+			}
 }
 
 void MainWindow::setDefaultShortcuts()

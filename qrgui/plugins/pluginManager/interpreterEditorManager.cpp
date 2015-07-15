@@ -270,17 +270,17 @@ QString InterpreterEditorManager::mouseGesture(const Id &id) const
 		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "path");
 	}
 
-    return "";
+	return "";
 }
 
 QString InterpreterEditorManager::hotKey(const Id &id) const
 {
-    QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-    if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "hotKey")) {
-        return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "hotKey");
-    }
+	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "hotKey")) {
+		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "hotKey");
+	}
 
-    return "";
+	return "";
 }
 
 
@@ -940,13 +940,13 @@ void InterpreterEditorManager::restoreRenamedProperty(const Id &propertyId, cons
 void InterpreterEditorManager::setElementEnabled(const Id &type, bool enabled)
 {
 	Q_UNUSED(type)
-    Q_UNUSED(enabled)
+	Q_UNUSED(enabled)
 }
 
 bool InterpreterEditorManager::isElementEnabled(const Id &element)
 {
-    Q_UNUSED(element);
-    return bool();
+	Q_UNUSED(element);
+	return bool();
 }
 
 QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() const

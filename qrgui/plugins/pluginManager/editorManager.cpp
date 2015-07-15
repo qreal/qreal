@@ -225,16 +225,16 @@ QString EditorManager::mouseGesture(const Id &id) const
 	if (id.idSize() != 3) {
 		return "";
 	}
-    return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
+	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
 }
 
 QString EditorManager::hotKey(const Id &id) const
 {
-    Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-    if (id.idSize() != 3) {
-        return "";
-    }
-    return mPluginIface[id.editor()]->elementHotKey(id.diagram(), id.element());
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	if (id.idSize() != 3) {
+		return "";
+	}
+	return mPluginIface[id.editor()]->elementHotKey(id.diagram(), id.element());
 }
 
 QIcon EditorManager::icon(const Id &id) const
@@ -703,10 +703,10 @@ void EditorManager::setElementEnabled(const Id &type, bool enabled)
 		mDisabledElements.remove(type);
 	} else {
 		mDisabledElements.insert(type);
-    }
+	}
 }
 
 bool EditorManager::isElementEnabled(const Id &element)
 {
-    return !mDisabledElements.contains(element);
+	return !mDisabledElements.contains(element);
 }

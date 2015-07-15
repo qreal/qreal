@@ -298,8 +298,8 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-    /// Loads shortcuts for each element given from language metamodels xmls.
-    void loadElementsShortcuts();
+	/// Loads shortcuts for each element given from language metamodels xmls.
+	void loadElementsShortcuts();
 
 	void setDefaultShortcuts();
 

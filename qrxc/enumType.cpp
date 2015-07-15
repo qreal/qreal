@@ -94,12 +94,12 @@ void EnumType::generatePropertyDefaults(utils::OutFile &out)
 
 void EnumType::generateMouseGesturesMap(utils::OutFile &out)
 {
-    Q_UNUSED(out);
+	Q_UNUSED(out);
 }
 
 void EnumType::generateHotKeyMap(utils::OutFile &out)
 {
-    Q_UNUSED(out);
+	Q_UNUSED(out);
 }
 
 void EnumType::generateExplosionsMap(utils::OutFile &out)
