@@ -65,24 +65,10 @@ qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::I
 {
 	if (elementMetatypeIs(element, "TrikPlayTone")) {
 		return new SpeakerBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikV4EnginesBackward")
-			|| elementMetatypeIs(element, "TrikV6EnginesBackward"))
-	{
-		return new details::TrikEnginesBackwardBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikV4EnginesForward")
-			|| elementMetatypeIs(element, "TrikV6EnginesForward")
-			|| elementMetatypeIs(element, "TrikAngularServo"))
-	{
-		// AngularServo and EnginesForward are synonyms since angular and radial servos are controlled the same way.
-		return new details::TrikEnginesForwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikV4EnginesStop")
 			|| elementMetatypeIs(element, "TrikV6EnginesStop"))
 	{
 		return new EnginesStopBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikV4ClearEncoder")
-			|| elementMetatypeIs(element, "TrikV6ClearEncoder"))
-	{
-		return new ClearEncoderBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "TrikSay")) {
 		return new SayBlock(mRobotModelManager->model());
@@ -116,8 +102,6 @@ qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::I
 		return new WaitForAccelerometerSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForMotion")) {
 		return new WaitForMotionBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikWaitForEncoder")) {
-		return new WaitForEncoderBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "TrikWaitForButton")) {
 		return new WaitForButtonBlock(mRobotModelManager->model());
@@ -171,24 +155,7 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 
 	result << id("TrikPlayTone");
 
-	if (mRobotModelManager->model().name().contains("V4")) {
-		result
-				<< id("TrikV4EnginesBackward")
-				<< id("TrikV4EnginesForward")
-				<< id("TrikV4EnginesStop")
-				<< id("TrikV4ClearEncoder")
-				;
-	} else {
-		result
-				<< id("TrikV6EnginesBackward")
-				<< id("TrikV6EnginesForward")
-				<< id("TrikV6EnginesStop")
-				<< id("TrikV6ClearEncoder")
-				;
-	}
-
 	result
-			<< id("TrikAngularServo")
 			<< id("TrikSay")
 			<< id("TrikLed")
 			<< id("TrikSystem")
@@ -206,7 +173,6 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 			<< id("TrikWaitForGyroscope")
 			<< id("TrikWaitForAccelerometer")
 			<< id("TrikWaitForMotion")
-			<< id("TrikWaitForEncoder")
 			<< id("TrikWaitForButton")
 			;
 

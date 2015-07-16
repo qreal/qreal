@@ -22,23 +22,22 @@ using namespace kitBase::robotModel;
 TrikRobotModelV62::TrikRobotModelV62(const QString &kitId, const QString &robotId)
 	: TrikRobotModelBase(kitId, robotId)
 {
-	addAllowedConnection(PortInfo("C1", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("C2", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("C3", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E1", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E2", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E3", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E4", output, {}), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("S1", output, {}), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("S2", output, {}), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("S3", output, {}), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("S4", output, {}), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("S4", output, {}), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("S6", output, {}), { servoMotorInfo() });
 
 	addAllowedConnection(PortInfo("M1", output, {}), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M2", output, {}), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M3", output, {}), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M4", output, {}), { powerMotorInfo() });
 
-	addAllowedConnection(PortInfo("B1", input, {"M1"}, "encoder1"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B2", input, {"M2"}, "encoder2"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B3", input, {"M3"}, "encoder3"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B4", input, {"M4"}, "encoder4"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E1", input, {"M1"}, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E2", input, {"M2"}, "encoder2"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E3", input, {"M3"}, "encoder3"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E4", input, {"M4"}, "encoder4"), { encoderInfo() });
 }
 
 QList<PortInfo> TrikRobotModelV62::configurablePorts() const

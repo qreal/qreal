@@ -27,9 +27,6 @@ public:
 	TrikRobotModelV6(const QString &kitId, const QString &robotId);
 
 	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
-
-	void f() override {}
-
 };
 
 }

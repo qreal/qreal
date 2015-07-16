@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikGeneratorBase/trikMasterGeneratorBase.h"
+#include "trikV6GeneratorBase/trikMasterGeneratorBase.h"
 #include "trikGeneratorCustomizer.h"
 
 using namespace trik;

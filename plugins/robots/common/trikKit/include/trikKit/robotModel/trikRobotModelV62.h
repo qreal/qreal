@@ -23,8 +23,6 @@ class TrikRobotModelV62 : public TrikRobotModelBase
 {
 	Q_OBJECT
 
-	void f() override {}
-
 public:
 	TrikRobotModelV62(const QString &kitId, const QString &robotId);
 

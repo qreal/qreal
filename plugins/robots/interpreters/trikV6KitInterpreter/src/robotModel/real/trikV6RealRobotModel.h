@@ -39,8 +39,6 @@ public:
 
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
 
-	void f() override {}
-
 protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port

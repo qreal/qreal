@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikGeneratorBase/robotModel/trikGeneratorRobotModel.h"
+#include "trikV6GeneratorBase/robotModel/trikGeneratorRobotModel.h"
 
 using namespace trik::robotModel;
 

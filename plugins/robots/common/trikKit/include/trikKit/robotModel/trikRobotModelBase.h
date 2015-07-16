@@ -31,8 +31,6 @@ public:
 
 	QHash<QString, int> buttonCodes() const override;
 
-	virtual void f() = 0;
-
 protected:
 	virtual kitBase::robotModel::DeviceInfo displayInfo() const;
 	virtual kitBase::robotModel::DeviceInfo speakerInfo() const;

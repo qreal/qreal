@@ -2780,7 +2780,7 @@
 					</generalizations>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>E1</default>
+							<default>S1</default>
 						</property>
 						<property displayedName="Angle (degrees)" type="string" name="Power">
 							<default>0</default>
@@ -2802,7 +2802,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>B1, B2, B3, B4</default>
+							<default>E1, E2, E3, E4</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2826,7 +2826,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="string" name="Port">
-							<default>B1</default>
+							<default>E1</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
 						<property displayedName="Sign" type="DistanceSign" name="Sign">

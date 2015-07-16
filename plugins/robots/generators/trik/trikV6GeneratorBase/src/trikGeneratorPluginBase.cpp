@@ -12,11 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikGeneratorBase/trikGeneratorPluginBase.h"
+#include "trikV6GeneratorBase/trikGeneratorPluginBase.h"
 
 #include <trikKit/blocks/trikV6BlocksFactory.h>
 
-#include "trikGeneratorBase/robotModel/trikGeneratorRobotModel.h"
+#include "trikV6GeneratorBase/robotModel/trikGeneratorRobotModel.h"
 
 using namespace trik;
 

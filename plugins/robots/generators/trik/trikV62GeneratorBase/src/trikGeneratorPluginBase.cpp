@@ -35,7 +35,7 @@ TrikGeneratorPluginBase::~TrikGeneratorPluginBase()
 
 QString TrikGeneratorPluginBase::kitId() const
 {
-	return "trikKit";
+	return "trikV62Kit";
 }
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikGeneratorPluginBase::robotModels()
