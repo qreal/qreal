@@ -506,6 +506,7 @@ TEST_F(ConstraintsParserTests, objectStateTest)
 	objB->otherObject()->setIntProperty(100500);
 	objB->otherObject()->setStringProperty("abc");
 	objB->otherObject()->setRectProperty(QRect(1, 2, 3, 4));
+	objB->otherObject()->setPointProperty(QPoint(10, 20));
 	mObjects["object"] = objB;
 
 	testCase("object.otherObject.intProperty", "100500", "int");
@@ -514,54 +515,67 @@ TEST_F(ConstraintsParserTests, objectStateTest)
 	testCase("object.otherObject.rectProperty.y", "2", "int");
 	testCase("object.otherObject.rectProperty.width", "3", "int");
 	testCase("object.otherObject.rectProperty.height", "4", "int");
+	testCase("object.otherObject.pointProperty.x", "10", "int");
+	testCase("object.otherObject.pointProperty.y", "20", "int");
 }
 
 
 TEST_F(ConstraintsParserTests, objectsSetTest)
 {
-	const QString xml =
-			"<constraints>"\
-			"	<timelimit value=\"2000\"/>"\
-			"	<event id=\"event\" settedUpInitially=\"true\">"\
-			"		<conditions glue=\"and\">"\
-			"			<equals>"
-			"				<objectState object=\"set.size\"/>"
-			"				<int value=\"3\"/>"
-			"			</equals>"
-			"			<equals>"
-			"				<objectState object=\"set.first\"/>"
-			"				<int value=\"10\"/>"
-			"			</equals>"
-			"			<equals>"
-			"				<objectState object=\"set.last\"/>"
-			"				<int value=\"30\"/>"
-			"			</equals>"
-			"			<equals>"
-			"				<objectState object=\"set.isEmpty\"/>"
-			"				<bool value=\"false\"/>"
-			"			</equals>"
-			"		</conditions>"\
-			"		<trigger>"\
-			"			<success/>"
-			"		</trigger>"\
-			"	</event>"\
-			"</constraints>";
-	ASSERT_TRUE(mParser.parse(xml));
-	ASSERT_EQ(mEvents.count(), 2);
-	Event * const event = mEvents["event"];
-	ASSERT_NE(event, nullptr);
+	auto testCase = [this](const QString &object, int size, int first, int last) {
+		mEvents.clear();
+		const QString xml = QString(
+				"<constraints>"\
+				"	<timelimit value=\"2000\"/>"\
+				"	<event id=\"event\" settedUpInitially=\"true\">"\
+				"		<conditions glue=\"and\">"\
+				"			<equals>"
+				"				<objectState object=\"%1.size\"/>"
+				"				<int value=\"%2\"/>"
+				"			</equals>"
+				"			<equals>"
+				"				<objectState object=\"%1.first\"/>"
+				"				<int value=\"%3\"/>"
+				"			</equals>"
+				"			<equals>"
+				"				<objectState object=\"%1.last\"/>"
+				"				<int value=\"%4\"/>"
+				"			</equals>"
+				"			<equals>"
+				"				<objectState object=\"%1.isEmpty\"/>"
+				"				<bool value=\"false\"/>"
+				"			</equals>"
+				"		</conditions>"\
+				"		<trigger>"\
+				"			<success/>"
+				"		</trigger>"\
+				"	</event>"\
+				"</constraints>").arg(object, QString::number(size), QString::number(first), QString::number(last));
+		ASSERT_TRUE(mParser.parse(xml));
+		ASSERT_EQ(mEvents.count(), 2);
+		Event * const event = mEvents["event"];
+		ASSERT_NE(event, nullptr);
 
-	bool eventFired = false;
-	QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+		bool eventFired = false;
+		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
 
-	ObjectsSet *set = new ObjectsSet;
+		event->check();
+		ASSERT_TRUE(eventFired);
+	};
+
+	ObjectsSet * const set = new ObjectsSet;
 	set->add(10);
 	set->add(20);
 	set->add(30);
 	mObjects["set"] = set;
+	testCase("set", set->size(), set->first().toInt(), set->last().toInt());
+	delete set;
 
-	event->check();
-	ASSERT_TRUE(eventFired);
+	TestObjectA * const object = new TestObjectA();
+	object->setIntListProperty({10, 9, 8, 7, 6, 5, 4, 3, 2, 1});
+	mObjects["object"] = object;
+	testCase("object.intListProperty", object->intListProperty().size()
+			, object->intListProperty().first(), object->intListProperty().last());
 }
 
 TEST_F(ConstraintsParserTests, usingTest)
@@ -777,6 +791,16 @@ QRect TestObjectA::rectProperty() const
 	return mRectValue;
 }
 
+QPoint TestObjectA::pointProperty() const
+{
+	return mPointValue;
+}
+
+QList<int> TestObjectA::intListProperty() const
+{
+	return mIntListValue;
+}
+
 void TestObjectA::setIntProperty(int value)
 {
 	mIntValue = value;
@@ -790,6 +814,16 @@ void TestObjectA::setStringProperty(const QString &value)
 void TestObjectA::setRectProperty(const QRect &value)
 {
 	mRectValue = value;
+}
+
+void TestObjectA::setPointProperty(const QPoint &value)
+{
+	mPointValue = value;
+}
+
+void TestObjectA::setIntListProperty(const QList<int> &value)
+{
+	mIntListValue = value;
 }
 
 TestObjectA *TestObjectB::otherObject()

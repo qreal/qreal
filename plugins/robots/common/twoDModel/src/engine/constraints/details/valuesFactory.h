@@ -90,7 +90,9 @@ private:
 	QVariant propertyChain(const QVariant &value, const QStringList &properties, const QString &objectAlias) const;
 	QVariant propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const;
 	QVariant propertyOf(const QObject *object, const QString &property, bool *ok = 0) const;
+	QVariant propertyOf(const QPoint &point, const QString &property, bool *ok = 0) const;
 	QVariant propertyOf(const QRect &rect, const QString &property, bool *ok = 0) const;
+	QVariant propertyOf(const QVariantList &list, const QString &property, bool *ok = 0) const;
 	void reportError(const QString &message) const;
 
 	Variables &mVariables;

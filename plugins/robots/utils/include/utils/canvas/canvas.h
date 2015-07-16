@@ -41,7 +41,7 @@ public:
 	const QList<PointObject *> &pixels() const;
 
 	/// Returns a list of segments drawn on the canvas.
-	const QList<LineObject *> &line() const;
+	const QList<LineObject *> &segments() const;
 
 	/// Returns a list of rectangles drawn on the canvas.
 	const QList<RectangleObject *> &rectangles() const;

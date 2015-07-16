@@ -25,8 +25,8 @@ class ROBOTS_UTILS_EXPORT EllipseObject : public CanvasObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QPoint center READ center WRITE setCenter)
-	Q_PROPERTY(int semiDiameterX READ semiDiameterX WRITE setSemiDiameterX)
-	Q_PROPERTY(int semiDiameterY READ semiDiameterY WRITE setSemiDiameterY)
+	Q_PROPERTY(int w READ semiDiameterX WRITE setSemiDiameterX)
+	Q_PROPERTY(int h READ semiDiameterY WRITE setSemiDiameterY)
 	Q_PROPERTY(QRect rect READ rect)
 
 public:

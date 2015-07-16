@@ -27,6 +27,13 @@ Canvas::Canvas()
 	: mCurrentPenWidth(1)
 	, mCurrentPenColor(Qt::black)
 {
+	qRegisterMetaType<QList<utils::CanvasObject *>>();
+	qRegisterMetaType<QList<utils::PointObject *>>();
+	qRegisterMetaType<QList<utils::LineObject *>>();
+	qRegisterMetaType<QList<utils::RectangleObject *>>();
+	qRegisterMetaType<QList<utils::EllipseObject *>>();
+	qRegisterMetaType<QList<utils::ArcObject *>>();
+	qRegisterMetaType<QList<utils::TextObject *>>();
 }
 
 void Canvas::reset()
@@ -53,7 +60,7 @@ const QList<PointObject *> &Canvas::pixels() const
 	return mPixels;
 }
 
-const QList<LineObject *> &Canvas::line() const
+const QList<LineObject *> &Canvas::segments() const
 {
 	return mLines;
 }

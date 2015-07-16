@@ -14,6 +14,7 @@
 
 #include "constraintsChecker.h"
 
+#include <qrutils/stringUtils.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "details/constraintsParser.h"
@@ -224,10 +225,10 @@ QString ConstraintsChecker::portName(const QString &robotId
 	}
 
 	// Making user write "robot1.DisplayPort_out.ellipses" or "robot1.MarkerPort_out" is non-humanistic.
-	// So letting him write "robot1.Display.ellipses" or "robot1.Marker".
+	// So letting him write "robot1.display.ellipses" or "robot1.marker".
 	QRegExp portRegExp("^(\\w+)Port$");
 	const QString readablePortName = portRegExp.exactMatch(port.name())
-			? portRegExp.cap(1)
+			? utils::StringUtils::lowercaseFirstLetter(portRegExp.cap(1))
 			: port.name();
 
 	return portsWithSuchName > 1

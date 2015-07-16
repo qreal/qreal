@@ -31,7 +31,7 @@ class Display : public robotModel::parts::NxtDisplay, public utils::Canvas
 	// Canvas cannot be QObject because of ambiguous base so we are forced to copy properties here.
 	Q_PROPERTY(QList<utils::CanvasObject *> objects READ objects)
 	Q_PROPERTY(QList<utils::PointObject *> pixels READ pixels)
-	Q_PROPERTY(QList<utils::LineObject *> line READ line)
+	Q_PROPERTY(QList<utils::LineObject *> segments READ segments)
 	Q_PROPERTY(QList<utils::RectangleObject *> rectangles READ rectangles)
 	Q_PROPERTY(QList<utils::EllipseObject *> ellipses READ ellipses)
 	Q_PROPERTY(QList<utils::ArcObject *> arcs READ arcs)

@@ -170,8 +170,12 @@ QVariant ValuesFactory::propertyOf(const QVariant &value, const QString &propert
 	// Here must be enumerated all types whoose properties we can obtain.
 	if (value.canConvert<QObject *>()) {
 		result = propertyOf(value.value<QObject *>(), property, &ok);
+	} else if (value.canConvert<QPoint>()) {
+		result = propertyOf(value.value<QPoint>(), property, &ok);
 	} else if (value.canConvert<QRect>()) {
 		result = propertyOf(value.value<QRect>(), property, &ok);
+	} else if (value.canConvert<QVariantList>()) {
+		result = propertyOf(value.value<QVariantList>(), property, &ok);
 	} else {
 		reportError(QObject::tr("Unknown type of object \"%1\"").arg(objectAlias));
 		return QVariant();
@@ -201,6 +205,21 @@ QVariant ValuesFactory::propertyOf(const QObject *object, const QString &propert
 	return object->property(qPrintable(property));
 }
 
+QVariant ValuesFactory::propertyOf(const QPoint &point, const QString &property, bool *ok) const
+{
+	ok && (*ok = true);
+	if (property == "x") {
+		return point.x();
+	}
+
+	if (property == "y") {
+		return point.y();
+	}
+
+	ok && (*ok = false);
+	return QVariant();
+}
+
 QVariant ValuesFactory::propertyOf(const QRect &rect, const QString &property, bool *ok) const
 {
 	ok && (*ok = true);
@@ -218,6 +237,29 @@ QVariant ValuesFactory::propertyOf(const QRect &rect, const QString &property, b
 
 	if (property == "height") {
 		return rect.height();
+	}
+
+	ok && (*ok = false);
+	return QVariant();
+}
+
+QVariant ValuesFactory::propertyOf(const QVariantList &list, const QString &property, bool *ok) const
+{
+	ok && (*ok = true);
+	if (property == "first") {
+		return list.first();
+	}
+
+	if (property == "last") {
+		return list.last();
+	}
+
+	if (property == "size") {
+		return list.size();
+	}
+
+	if (property == "isEmpty") {
+		return list.isEmpty();
 	}
 
 	ok && (*ok = false);
