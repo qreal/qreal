@@ -4,7 +4,7 @@
     <DisplayName xml:lang="ru_ru">Поддержка ТРИК</DisplayName>
     <Description>Enables support of TRIK in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Поддержка конструктора ТРИК</Description>
-    <Version>3.1.0-5</Version>
+    <Version>3.1.1-1</Version>
     <ReleaseDate>2015-07-16</ReleaseDate>
     <Licenses>
         <License name="WinScp Component License" file="WinScp-license.txt" />
