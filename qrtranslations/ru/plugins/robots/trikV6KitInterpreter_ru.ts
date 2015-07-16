@@ -4,17 +4,17 @@
 <context>
     <name>TrikAdditionalPreferences</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikAdditionalPreferences.ui" line="14"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6AdditionalPreferences.ui" line="14"/>
         <source>Form</source>
         <translation>Настройки TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikAdditionalPreferences.ui" line="32"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6AdditionalPreferences.ui" line="32"/>
         <source>TCP Settings</source>
         <translation>Настройки TCP</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikAdditionalPreferences.ui" line="38"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6AdditionalPreferences.ui" line="38"/>
         <source>Enter robot IP-address here</source>
         <translation>Введите IP-адрес робота</translation>
     </message>
@@ -22,7 +22,7 @@
 <context>
     <name>TrikDisplayWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikDisplayWidget.ui" line="14"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6DisplayWidget.ui" line="14"/>
         <source>Trik Display</source>
         <translation>Дисплей TRIK</translation>
     </message>
@@ -52,9 +52,8 @@
 <context>
     <name>trik::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="84"/>
         <source>TRIK</source>
-        <translation>ТРИК</translation>
+        <translation type="vanished">ТРИК</translation>
     </message>
     <message>
         <source>Show 2d model for TRIK</source>
@@ -65,7 +64,12 @@
         <translation type="vanished">Открыть 2D модель для TRIK v6</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="151"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6KitInterpreterPlugin.cpp" line="86"/>
+        <source>TRIK (old case)</source>
+        <translation type="unfinished">ТРИК (старый корпус)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6KitInterpreterPlugin.cpp" line="153"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
     </message>
@@ -73,7 +77,7 @@
 <context>
     <name>trik::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/real/realRobotModel.cpp" line="65"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/robotModel/real/trikV6RealRobotModel.cpp" line="86"/>
         <source>Interpretation (Wi-Fi)</source>
         <translation>Интерпретация (Wi-Fi)</translation>
     </message>
