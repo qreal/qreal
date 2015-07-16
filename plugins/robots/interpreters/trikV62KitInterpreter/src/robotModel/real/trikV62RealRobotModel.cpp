@@ -78,7 +78,7 @@ RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 
 QString RealRobotModel::name() const
 {
-	return "TrikRealRobotModel";
+	return "TrikV62RealRobotModel";
 }
 
 QString RealRobotModel::friendlyName() const

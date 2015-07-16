@@ -32,7 +32,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	, mTwoDRobotModel(mRealRobotModel)
 	, mBlocksFactory(new blocks::TrikV62BlocksFactory)
 {
-	mTwoDRobotModel.setWheelPorts("M3", "M4");
+	mTwoDRobotModel.setWheelPorts("M4", "M3");
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
 	mTwoDRobotModel.setEngine(modelEngine->engine());
