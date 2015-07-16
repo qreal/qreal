@@ -33,6 +33,21 @@ Display::Display(const DeviceInfo &info
 	mEngine.display()->setPainter(this);
 }
 
+QString Display::background() const
+{
+	return mBackground.name();
+}
+
+bool Display::smiles() const
+{
+	return mSmiles;
+}
+
+bool Display::sadSmiles() const
+{
+	return mSadSmiles;
+}
+
 void Display::drawPixel(int x, int y)
 {
 	Canvas::drawPixel(x, y);
@@ -61,6 +76,8 @@ void Display::drawArc(int x, int y, int width, int height, int startAngle, int s
 void Display::drawSmile(bool sad)
 {
 	mCurrentImage = QImage(sad ? ":/icons/sadSmile.png" : ":/icons/smile.png");
+	mSmiles = !sad;
+	mSadSmiles = sad;
 	mEngine.display()->repaintDisplay();
 }
 
@@ -86,6 +103,8 @@ void Display::clearScreen()
 {
 	// Background color is not cleared
 	mCurrentImage = QImage();
+	mSmiles = false;
+	mSadSmiles = false;
 	mLabelsMap.clear();
 	Canvas::reset();
 }

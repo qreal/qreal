@@ -37,11 +37,23 @@ class Display : public robotModel::parts::TrikDisplay, public utils::Canvas
 	Q_PROPERTY(QList<utils::EllipseObject *> ellipses READ ellipses)
 	Q_PROPERTY(QList<utils::ArcObject *> arcs READ arcs)
 	Q_PROPERTY(QList<utils::TextObject *> labels READ labels)
+	Q_PROPERTY(QString background READ background WRITE setBackground)
+	Q_PROPERTY(bool smiles READ smiles)
+	Q_PROPERTY(bool sadSmiles READ sadSmiles)
 
 public:
 	Display(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
+
+	/// Returns the name of the current background color.
+	QString background() const;
+
+	/// Returns true if robot draws happy smile at the moment.
+	bool smiles() const;
+
+	/// Returns true if robot draws sad smile at the moment.
+	bool sadSmiles() const;
 
 	void drawSmile(bool sad) override;
 	void setBackground(const QColor &color) override;
@@ -62,6 +74,8 @@ private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 	QColor mBackground;
 	QImage mCurrentImage;
+	bool mSmiles;
+	bool mSadSmiles;
 	/// @todo: QPoint can`t be used in map without operators declaration.
 	QHash<QPair<int, int>, utils::TextObject *> mLabelsMap;
 };
