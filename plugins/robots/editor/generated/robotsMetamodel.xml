@@ -1019,7 +1019,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="File Name" type="string" name="FileName">
+						<property displayedName="File Name" type="FilePath" name="FileName">
 							<default>media/beep.wav</default>
 						</property>
 					</properties>

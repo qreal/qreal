@@ -48,6 +48,8 @@ public:
 
 	QImage areaUnderSensor(const kitBase::robotModel::PortInfo &port, qreal widthFactor) const override;
 
+	void startSound() override;
+	void stopSound() override;
 	void playSound(int timeInMs) override;
 
 	void markerDown(const QColor &color) override;

@@ -41,6 +41,9 @@ public slots:
 	/// Shows physics settings widget in corresponding section.
 	void setPhysicsSettings(QWidget *widget);
 
+	/// Shows sound settings widget in corresponding section.
+	void setSoundSettings(QWidget *widget);
+
 	/// Shows or hides all sections related to robot`s devices configuration (not motors).
 	void setDevicesSectionsVisible(bool visible);
 
@@ -58,14 +61,17 @@ private:
 	QTreeWidgetItem *mDevicesRoot;  // Takes ownership
 	QTreeWidgetItem *mMotorsRoot;   // Takes ownership
 	QTreeWidgetItem *mPhysicsRoot;  // Takes ownership
+	QTreeWidgetItem *mSoundRoot;    // Takes ownership
 	QTreeWidgetItem *mDisplayItem;  // Takes ownership
 	QTreeWidgetItem *mDevicesItem;  // Takes ownership
 	QTreeWidgetItem *mMotorsItem;   // Takes ownership
 	QTreeWidgetItem *mPhysicsItem;  // Takes ownership
+	QTreeWidgetItem *mSoundItem;    // Takes ownership
 	QWidget *mDisplay;  // Doesn`t take ownership
 	QWidget *mDevices;  // Doesn`t take ownership
 	QWidget *mMotors;   // Doesn`t take ownership
 	QWidget *mPhysics;  // Doesn`t take ownership
+	QWidget *mSound;    // Doesn`t take ownership
 };
 
 }

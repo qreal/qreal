@@ -14,9 +14,9 @@
 
 #include "twoDSpeaker.h"
 
-using namespace trik::robotModel::twoD::parts;
+#include <utils/soundPlayer.h>
 
-const int duration = 1000;
+using namespace trik::robotModel::twoD::parts;
 
 TwoDSpeaker::TwoDSpeaker(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port
@@ -24,10 +24,16 @@ TwoDSpeaker::TwoDSpeaker(const kitBase::robotModel::DeviceInfo &info
 	: robotModel::parts::TrikSpeaker(info, port)
 	, mEngine(engine)
 {
+	connect(utils::SoundPlayer::instance(), &utils::SoundPlayer::finished, [this]() { mEngine.stopSound(); });
+	connect(utils::SoundPlayer::instance(), &utils::SoundPlayer::finished, this, &TwoDSpeaker::finished);
+	connect(utils::SoundPlayer::instance(), &utils::SoundPlayer::error, [this](const QString &message) {
+		mEngine.stopSound();
+		emit error(message);
+	});
 }
 
 void TwoDSpeaker::play(const QString &filePath)
 {
-	Q_UNUSED(filePath)
-	mEngine.playSound(duration);
+	utils::SoundPlayer::startPlaying(filePath);
+	mEngine.startSound();
 }

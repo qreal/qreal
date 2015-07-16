@@ -29,6 +29,9 @@ class SpeakerBlock : public kitBase::blocksBase::common::DeviceBlock<robotModel:
 public:
 	explicit SpeakerBlock(kitBase::robotModel::RobotModelInterface &robotModel);
 
+private slots:
+	void jobDone();
+
 private:
 	void doJob(robotModel::parts::TrikSpeaker &shell) override;
 };

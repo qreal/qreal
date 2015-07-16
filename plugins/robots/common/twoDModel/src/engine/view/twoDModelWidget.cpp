@@ -20,6 +20,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 #include <qrkernel/exception/exception.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
@@ -78,14 +79,9 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 
 	initWidget();
 	initPalette();
-
 	connectUiButtons();
-
-	mUi->detailsTab->setPhysicsSettings(mUi->physicsFrame);
-	mUi->realisticPhysicsCheckBox->setChecked(mModel.settings().realisticPhysics());
-	mUi->enableSensorNoiseCheckBox->setChecked(mModel.settings().realisticSensors());
-	mUi->enableMotorNoiseCheckBox->setChecked(mModel.settings().realisticMotors());
-	changePhysicsSettings();
+	initPhysicsSettings();
+	initSoundSetting();
 
 	connect(mScene, &TwoDModelScene::selectionChanged, this, &TwoDModelWidget::onSelectionChange);
 	connect(mScene, &TwoDModelScene::mousePressed, this, &TwoDModelWidget::refreshCursor);
@@ -209,8 +205,36 @@ void TwoDModelWidget::initPalette()
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 }
 
-void TwoDModelWidget::initDetailsTab()
+void TwoDModelWidget::initPhysicsSettings()
 {
+	mUi->detailsTab->setPhysicsSettings(mUi->physicsFrame);
+	mUi->realisticPhysicsCheckBox->setChecked(mModel.settings().realisticPhysics());
+	mUi->enableSensorNoiseCheckBox->setChecked(mModel.settings().realisticSensors());
+	mUi->enableMotorNoiseCheckBox->setChecked(mModel.settings().realisticMotors());
+	changePhysicsSettings();
+}
+
+void TwoDModelWidget::initSoundSetting()
+{
+	mUi->detailsTab->setSoundSettings(mUi->soundFrame);
+	auto toggleMute = [this](bool muted) {
+		qReal::SettingsManager::setValue("soundPlayerMuted", muted);
+		mUi->muteButton->setIcon(style()->standardIcon(muted ? QStyle::SP_MediaVolumeMuted : QStyle::SP_MediaVolume));
+		mUi->muteButton->setToolTip(muted ? tr("Unmute") : tr("Mute"));
+	};
+	auto setVolume = [this, toggleMute](int volume) {
+		qReal::SettingsManager::setValue("soundPlayerVolume", volume);
+		mUi->volumeSlider->setValue(volume);
+		toggleMute(volume == 0);
+	};
+
+	qReal::SettingsListener::listen("soundPlayerMuted", toggleMute);
+	qReal::SettingsListener::listen("soundPlayerVolume", setVolume);
+	connect(mUi->muteButton, &QAbstractButton::clicked, [=]() {
+		const bool muted = qReal::SettingsManager::value("soundPlayerMuted").toBool();
+		qReal::SettingsManager::setValue("soundPlayerMuted", !muted);
+	});
+	connect(mUi->volumeSlider, &QSlider::valueChanged, setVolume);
 }
 
 void TwoDModelWidget::connectUiButtons()

@@ -125,9 +125,8 @@
 <context>
     <name>trik::robotModel::parts::TrikShell</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikShell.h" line="28"/>
         <source>Shell</source>
-        <translation>Командный интерпретатор</translation>
+        <translation type="vanished">Командный интерпретатор</translation>
     </message>
 </context>
 <context>

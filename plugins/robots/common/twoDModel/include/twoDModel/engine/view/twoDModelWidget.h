@@ -176,7 +176,6 @@ private:
 
 	void initWidget();
 	void initPalette();
-	void initDetailsTab();
 
 	QList<graphicsUtils::AbstractItem *> selectedColorItems() const;
 	bool isColorItem(graphicsUtils::AbstractItem * const item) const;
@@ -190,6 +189,8 @@ private:
 	void onFirstShow();
 
 	void initRunStopButtons();
+	void initPhysicsSettings();
+	void initSoundSetting();
 
 	bool setSelectedPort(QComboBox * const comboBox, const kitBase::robotModel::PortInfo &port);
 	void updateWheelComboBoxes();

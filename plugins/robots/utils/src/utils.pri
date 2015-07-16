@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QT += widgets network
+QT += widgets network multimedia
 
 links(qslog qrkernel qrutils)
 
@@ -30,6 +30,7 @@ HEADERS += \
 	$$PWD/../include/utils/requiredVersion.h \
 	$$PWD/../include/utils/tcpRobotCommunicator.h \
 	$$PWD/../include/utils/tcpConnectionHandler.h \
+	$$PWD/../include/utils/soundPlayer.h \
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
 	$$PWD/tcpRobotCommunicator.cpp \
 	$$PWD/tcpConnectionHandler.cpp \
+	$$PWD/soundPlayer.cpp \
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \

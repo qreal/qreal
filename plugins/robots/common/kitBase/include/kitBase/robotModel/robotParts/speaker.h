@@ -32,6 +32,10 @@ class ROBOTS_KIT_BASE_EXPORT Speaker : public Device
 public:
 	/// Constructor, takes device type info and port on which this device is configured.
 	Speaker(const DeviceInfo &info, const PortInfo &port);
+
+signals:
+	/// Emitted when some error occured during sound playing process.
+	void error(const QString &message);
 };
 
 }
