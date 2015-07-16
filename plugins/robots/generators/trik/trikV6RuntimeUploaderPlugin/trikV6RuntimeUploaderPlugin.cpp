@@ -23,7 +23,7 @@
 using namespace trik;
 
 TrikRuntimeUploaderPlugin::TrikRuntimeUploaderPlugin()
-	: mAction(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime"), nullptr))
+	: mAction(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime (old case)"), nullptr))
 {
 	connect(mAction, &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
 	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == "trikKit");
@@ -51,6 +51,8 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 	const QString createTrikDirectory = "call mkdir -p /home/root/trik";
 	const QString removePermissions = "call chmod a-x trik/trik*";
 	const QString restorePermissions = "call chmod a+x trik/trik*";
+	const QString replaceSystemConfig = "call mv trik/system-config-v6.xml trik/system-config.xml";
+	const QString replaceModelConfig = "call mv trik/model-config-v6.xml trik/model-config.xml";
 	const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
 
 	const QString moveCommand = "synchronize remote trikRuntime /home/root/trik";
@@ -68,6 +70,8 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 			, killTrikGui
 			, moveCommand
 			, restorePermissions
+			, replaceSystemConfig
+			, replaceModelConfig
 			, restartTrikGui
 			, "exit"
 	};

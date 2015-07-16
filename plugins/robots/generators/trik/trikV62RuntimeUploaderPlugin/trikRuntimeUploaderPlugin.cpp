@@ -26,9 +26,9 @@ TrikRuntimeUploaderPlugin::TrikRuntimeUploaderPlugin()
 	: mAction(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime"), nullptr))
 {
 	connect(mAction, &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
-	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == "trikKit");
+	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == "trikV62Kit");
 	qReal::SettingsListener::listen("SelectedRobotKit", [this](const QString selectedKit) {
-		mAction->setVisible(selectedKit == "trikKit");
+		mAction->setVisible(selectedKit == "trikV62Kit");
 	});
 }
 

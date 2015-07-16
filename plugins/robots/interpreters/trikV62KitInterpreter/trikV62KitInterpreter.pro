@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-trik-interpreter
+TARGET = robots-trik-v62-interpreter
 
 include(../../../../global.pri)
 
