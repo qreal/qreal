@@ -11,13 +11,28 @@ class ConvertingMethods
 {
 public:
 	/// converters for methods output converting into string list
+	/// from QListExplosionData
 	static QStringList convertQListExplosionDataIntoStringList(const QList<qReal::EditorInterface::ExplosionData> &explDataList);
+
+	/// from QPairList
 	static QStringList convertingQPairListIntoStringList(const QList<QPair<QString, QString>> &qPairList);
+
+	/// from IdList
 	static QStringList convertIdListIntoStringList(const qReal::IdList &idList);
+
+	/// from String
 	static QStringList convertStringIntoStringList(const QString &string);
+
+	/// from Bool
 	static QStringList convertBoolIntoStringList(const bool &boolValue);
+
+	/// from Id
 	static QStringList convertIdIntoStringList(const qReal::Id &id);
+
+	/// from Int
 	static QStringList convertIntIntoStringList(const int &integer);
+
+	/// from ExplosionList
 	static QStringList convertExplosionListIntoStringList(const QList<qReal::Explosion> &explosion);
 
 	/// converter to string with special symbols to parse in html
