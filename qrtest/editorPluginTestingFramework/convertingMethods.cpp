@@ -54,7 +54,7 @@ QStringList ConvertingMethods::convertIdIntoStringList(const Id &id)
 	return convertStringIntoStringList(stringRepresentation);
 }
 
-QStringList ConvertingMethods::convertIntIntoStringList(int const &integer)
+QStringList ConvertingMethods::convertIntIntoStringList(const int &integer)
 {
 	QString stringRepresentation = (integer == 1) ? "1" : "0";
 	return convertStringIntoStringList(stringRepresentation);
@@ -96,8 +96,8 @@ QSet<QString> ConvertingMethods::resultToCompare(const QString &method)
 
 	QStringList result;
 	for (const QString &string : methodOutput) {
-		QString output = string.split("-").last();
-		QStringList outputToList = output.split(",");
+		const QString output = string.split("-").last();
+		const QStringList outputToList = output.split(",");
 
 		result.append(outputToList);
 	}

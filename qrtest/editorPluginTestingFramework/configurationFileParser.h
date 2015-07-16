@@ -14,20 +14,29 @@ public:
 
 	/// returns qmake parameter from configuration file
 	QString qmakeParameter() const;
+
 	/// returns make parameter from configuration file
 	QString makeParameter() const;
+
 	/// returns configuration parameter (release or debug)
 	QString configurationParameter() const;
+
 	/// returns generated plugin extension (dll, so...)
 	QString pluginExtension() const;
+
 	/// returns prefix for generated plugin name (lib)
 	QString prefix() const;
+
 	/// returns path to QReal root
 	QString qRealRootPath() const;
+
 	/// returns "yes" if we want to generate html with testing results and "no" otherwise
 	QString htmlGenerationParameter() const;
-	/// returns path to generated binaries and plugins
+
+	/// returns path to generated binaries and plugins for qrxc
 	QString generatedCodeDirQrxc() const;
+
+	/// returns path to generated binaries and plugins for qrmc
 	QString generatedCodeDirQrmc() const;
 
 	/// returns path to generated result

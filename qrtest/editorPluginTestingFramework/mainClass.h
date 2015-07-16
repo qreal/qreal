@@ -6,6 +6,7 @@
 #include "qrxcLauncher.h"
 #include "htmlMaker.h"
 #include "configurationFileParser.h"
+#include "methodsTester.h"
 
 #include "qrrepo/repoApi.h"
 #include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
@@ -33,10 +34,13 @@ public:
 private:
 	/// returns normalized name (without extension)
 	static QString normalizedName(const QString &fileName);
+
 	/// deletes old qrtest/binaries and all inner folders and files
 	static void deleteOldBinaries(const QString &directory);
+
 	/// creates one folder
 	void createFolder(const QString &path);
+
 	/// creates qrtest/binaries and all inner folders
 	void createNewFolders();
 
@@ -45,15 +49,20 @@ private:
 
 	/// sets value of tamp variable
 	void setTempValueInSettingsManager();
+
 	/// returns old value
 	void returnOldValueOfTemp() const;
 
 	void launchQrmc(const QString &fileName, const QString &pathToQrmc);
+
 	void compilePlugin(const QString &directoryToCodeToCompile, const QString &fileName);
+
 	void launchQrxc(const QString &fileName);
-	void createHtml(QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
-			, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
-			, QList<QPair<QString, QPair<QString, QString>>> timeResult, QList<QPair<QString, QPair<QString, QString> > > timeResultInterpter);
+
+	void createHtml(QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcResult
+			, QList<MethodsTester::ResultOfGenerating> qrxcAndInterpreterResult
+			, QList<MethodsTester::ResultOfGenerating> timeResult
+			, QList<MethodsTester::ResultOfGenerating> timeResultInterpter);
 
 	/// puts names of generated plugins into mQrxcGeneratedPluginList (for further creation of EditorManager)
 	void appendPluginNames();
@@ -65,29 +74,40 @@ private:
 	qReal::EditorInterface* loadedPlugin(const QString &fileName, const QString &pathToFile);
 
 	QrmcLauncher mQrmcLauncher;
+
 	PluginCompiler mPluginCompiler;
+
 	PluginLoader mPluginLoader;
+
 	QrxcLauncher mQrxcLauncher;
 
 	QStringList mQrxcGeneratedPluginsList;
 
 	HtmlMaker mHtmlMaker;
+
 	ConfigurationFileParser mConfigurationFileParser;
 
 	/// path to qmake
 	QString mQmakeParameter;
+
 	/// path to make
 	QString mMakeParameter;
+
 	/// configuration: debug or release
 	QString mConfigurationParameter;
+
 	/// plugin extension (.dll for windows, .so for linux, etc.)
 	QString mPluginExtension;
+
 	/// prefix (none for Windows, lib for linux)
 	QString mPrefix;
+
 	/// path to qreal root (from bin)
 	QString mQRealRootPath;
+
 	/// "yes" if we want to generate html and "no" otherwise
 	QString mGenerateHtml;
+
 	/// path to generated code (from root)
 	QString mGeneratedCodeDirQrxc;
 	QString mGeneratedCodeDirQrmc;
@@ -98,6 +118,7 @@ private:
 
 	/// old value of "temp" variable
 	QString mTempOldValue;
+
 	/// path to QReal sources
 	QString mApplicationPath;
 };

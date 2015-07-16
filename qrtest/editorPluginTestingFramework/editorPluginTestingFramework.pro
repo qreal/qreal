@@ -2,28 +2,21 @@ include(../../global.pri)
 include(../../qrgui/mainWindow/scriptAPI/scriptAPI.pri)
 QT += xml widgets svg printsupport
 
-CONFIG += console c++11
-TARGET = editorPluginTestFramework
+CONFIG += console
+TEMPLATE = app
 
 INCLUDEPATH += \
 	$$PWD/../.. \
 	$$PWD/../../qrgui/ \
 	$$PWD/../../qrgui/mainWindow/ \
-
-DESTDIR = ../../bin/debug
-
+ 
 !macx {
-		QMAKE_LFLAGS += -Wl,-O1,-rpath,.
-		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
+	QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+	QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
 }
 
 RESOURCES = editorPluginTestingFramework.qrc
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
-
+                
 TRANSLATIONS = editorPluginTestingFramework_ru.ts
 
 HEADERS += \
@@ -165,7 +158,7 @@ FORMS += \
 
 links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qrgui-tool-plugin-interface qscintilla2 qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-facade qslog)
 
-copyToDestdir($$PWD/methodsToTest, $$DESTDIR)
-copyToDestdir($$PWD/configurationParameters.xml, $$DESTDIR)
-copyToDestdir($$PWD/travisConfigurationParameters.xml, $$DESTDIR) 		
+copyToDestdir(methodsToTest)
+copyToDestdir(configurationParameters.xml)
+copyToDestdir(travisConfigurationParameters.xml) 		
                         

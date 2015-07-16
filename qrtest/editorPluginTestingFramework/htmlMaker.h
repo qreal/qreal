@@ -4,6 +4,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include <QtCore/QPair>
+#include "methodsTester.h"
 
 namespace editorPluginTestingFramework {
 
@@ -11,17 +12,16 @@ class HtmlMaker
 {
 public:
 	/// creates .html-file with results of testing
-	void makeHtml(QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
-			, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
-			, QList<QPair<QString, QPair<QString, QString>>> timeResult
-			, QList<QPair<QString, QPair<QString, QString>>> timeResultIntertpter
+	void makeHtml(QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcResult
+			, QList<MethodsTester::ResultOfGenerating> qrxcAndInterpreterResult
+			, QList<MethodsTester::ResultOfGenerating> timeResult
+			, QList<MethodsTester::ResultOfGenerating> timeResultIntertpter
 			, const QString &pathToHtml);
 
 private:
 	/// adds one table with results of testing for qrxc-qrmc or qrxc-interpreter
-	void addTable(
-			QDomElement parent
-			, QList<QPair<QString, QPair<QString, QString>>> listOfLines
+	void addTable(QDomElement parent
+			, QList<MethodsTester::ResultOfGenerating> listOfLines
 			, const QString &text
 			, const QString &firstColumnTitle
 			, const QString &secondColumnTitle

@@ -13,8 +13,16 @@ class MethodsTester
 {
 public:
 
-	QList<QPair<QString, QPair<QString, QString>>> generateTimeResult();
 	virtual ~MethodsTester() {}
+	struct ResultOfGenerating {
+		ResultOfGenerating(const QString &name, const QString &first, const QString &second);
+		QString methodName;
+		QString firstResult;
+		QString secondResult;
+
+	};
+
+	QList<ResultOfGenerating> generateTimeResult();
 
 protected:
 
@@ -22,7 +30,7 @@ protected:
 	virtual AbstractStringGenerator * initGeneratorWithSecondInterface(const AbstractStringGenerator &generator) const = 0;
 
 	/// tests given method if it exists in list of methods to be tested
-	QPair<QString, QPair<QString, QString>> testMethodIfExistsInList(
+	ResultOfGenerating testMethodIfExistsInList(
 			const AbstractStringGenerator &stringGenerator
 			, const QString &method
 			);
@@ -35,11 +43,11 @@ private:
 	void generateOutputTimeForOneMethod(const AbstractStringGenerator &stringGenerator);
 
 	/// generated method name and results for two interfaces, returns triplet of strings
-	QPair<QString, QPair<QString, QString> > generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator);
+	MethodsTester::ResultOfGenerating generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator);
 
 	/// list of methods to be tested, is filled from files
 	QStringList mMethodsToTest;
-	QList<QPair<QString, QPair<QString, QString>>> mTimeResult;
+	QList<ResultOfGenerating> mTimeResult;
 
 };
 

@@ -38,7 +38,6 @@ void PluginCompiler::compilePlugin(const QString &fileName
 		if (mRepoApi->isLogicalElement(key)) {
 			const QString &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
 			pluginName = normalizedMetamodelName;
-			qDebug() << pluginName;
 			break;
 		}
 	}

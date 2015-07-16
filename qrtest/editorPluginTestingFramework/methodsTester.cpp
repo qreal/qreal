@@ -4,6 +4,13 @@
 using namespace editorPluginTestingFramework;
 using namespace qReal;
 
+
+MethodsTester::ResultOfGenerating::ResultOfGenerating(
+		const QString &name, const QString &first, const QString &second)
+		: methodName(name), firstResult(first), secondResult(second)
+{
+}
+
 void MethodsTester::fillMethodsToTestList(const QString &fileName)
 {
 	QFile methodsToTest(fileName);
@@ -19,40 +26,36 @@ void MethodsTester::fillMethodsToTestList(const QString &fileName)
 	}
 }
 
-QPair<QString, QPair<QString, QString>> MethodsTester::testMethodIfExistsInList(
+MethodsTester::ResultOfGenerating MethodsTester::testMethodIfExistsInList(
 		const AbstractStringGenerator &stringGenerator
 		, const QString &method)
 {
-	QPair<QString, QPair<QString, QString>> resultPair;
-
+	MethodsTester::ResultOfGenerating result = MethodsTester::ResultOfGenerating("", "", "");
 	if (mMethodsToTest.contains(method)) {
-		resultPair = generateOutputForOneMethod(stringGenerator);
+		result = generateOutputForOneMethod(stringGenerator);
 	}
 
-	return resultPair;
+	return result;
 }
 
-QList<QPair<QString, QPair<QString, QString> >> MethodsTester::generateTimeResult()
+QList<MethodsTester::ResultOfGenerating> MethodsTester::generateTimeResult()
 {
 	return mTimeResult;
 }
 
-QPair<QString, QPair<QString, QString>> MethodsTester::generateOutputForOneMethod(const AbstractStringGenerator &stringGenerator)
+MethodsTester::ResultOfGenerating MethodsTester::generateOutputForOneMethod(const AbstractStringGenerator &stringGenerator)
 {
 	AbstractStringGenerator *firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
-	const QString &methodName = firstGenerator->methodName();
-	const QString &firstResult = firstGenerator->generateString();
-	const QString &firstResultTime = firstGenerator->generateStringTime();
+	const QString methodName = firstGenerator->methodName();
+	const QString firstResult = firstGenerator->generateString();
+	const QString firstResultTime = firstGenerator->generateStringTime();
 
 	AbstractStringGenerator *secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
-	const QString &secondResult = secondGenerator->generateString();
-	const QString &secondResultTime = secondGenerator->generateStringTime();
-	QPair<QString, QString> methodsPairTime = qMakePair(firstResultTime, secondResultTime);
-	QPair<QString, QPair<QString, QString>> resultPairTime = qMakePair(methodName, methodsPairTime);
-	mTimeResult.append(resultPairTime);
+	const QString secondResult = secondGenerator->generateString();
+	const QString secondResultTime = secondGenerator->generateStringTime();
 
-	QPair<QString, QString> methodsPair = qMakePair(firstResult, secondResult);
-	QPair<QString, QPair<QString, QString>> resultPair = qMakePair(methodName, methodsPair);
-
-	return resultPair;
+	ResultOfGenerating result = ResultOfGenerating(methodName, firstResult, secondResult);
+	ResultOfGenerating resultOfTime = ResultOfGenerating(methodName, firstResultTime, secondResultTime);
+	mTimeResult.append(resultOfTime);
+	return result;
 }

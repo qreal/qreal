@@ -21,7 +21,7 @@ public:
 			);
 
 	/// returns list of generated output to main class
-	QList<QPair<QString, QPair<QString, QString>>> generatedOutput();
+	QList<MethodsTester::ResultOfGenerating> generatedOutput();
 
 	/// clones generator, initializes it with qrxcGeneratedPlugin and returns it to methodsTester
 	AbstractStringGenerator * initGeneratorWithFirstInterface(const AbstractStringGenerator &generator) const;
@@ -81,7 +81,7 @@ private:
 
 	qReal::InterpreterEditorManager* mInterpreterGeneratedPlugin;
 
-	QList<QPair<QString, QPair<QString, QString> > > mGeneratedList;
+	QList<MethodsTester::ResultOfGenerating> mGeneratedList;
 };
 
 }

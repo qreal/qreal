@@ -25,7 +25,6 @@ EditorInterface* PluginLoader::loadedPlugin(
 	}
 
 	const RepoApi *mRepoApi = new RepoApi(normalizedFileName);
-
 	const IdList metamodels = mRepoApi->children(Id::rootId());
 
 	for (Id const &key : metamodels) {
@@ -43,9 +42,11 @@ EditorInterface* PluginLoader::loadedPlugin(
 				EditorInterface * const iEditor = qobject_cast<EditorInterface *>(plugin);
 				return iEditor;
 			}
+
 			qDebug() << "plugin is NOT loaded";
 		}
 	}
+
 	return NULL;
 }
 

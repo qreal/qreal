@@ -55,17 +55,17 @@ MainClass::MainClass(
 			&qrxcEditorManager
 			,&interpreterEditorManager);
 
-	QList<QPair<QString, QPair<QString, QString>>> interpreterMethodsTesterOutput =
+	QList<MethodsTester::ResultOfGenerating> interpreterMethodsTesterOutput =
 			interpreterMethodsTester->generatedResult();
-	QList<QPair<QString, QPair<QString, QString> > > methodsTimeOutputInterpreter = interpreterMethodsTester->generateTimeResult();
+	QList<MethodsTester::ResultOfGenerating> methodsTimeOutputInterpreter = interpreterMethodsTester->generateTimeResult();
 
 
 	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
 		MethodsTesterForQrxcAndQrmc* const methodsTester = new MethodsTesterForQrxcAndQrmc(
 				qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
-		QList<QPair<QString, QPair<QString, QString>>> methodsTesterOutput = methodsTester->generatedOutput();
-		QList<QPair<QString, QPair<QString, QString>>> methodsTimeOutput = methodsTester->generateTimeResult();
+		QList<MethodsTester::ResultOfGenerating> methodsTesterOutput = methodsTester->generatedOutput();
+		QList<MethodsTester::ResultOfGenerating> methodsTimeOutput = methodsTester->generateTimeResult();
 
 		if (mGenerateHtml == "yes") {
 			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput, methodsTimeOutput, methodsTimeOutputInterpreter);
@@ -108,9 +108,11 @@ QString MainClass::normalizedName(const QString &fileName)
 		QStringList splittedName = normalizedName.split("/");
 		normalizedName = splittedName.last();
 	}
+
 	if (normalizedName.contains(".qrs")) {
 		normalizedName.chop(4);
 	}
+
 	return normalizedName;
 }
 
@@ -121,7 +123,7 @@ void MainClass::deleteOldBinaries(const QString &directory)
 		return;
 	}
 
-	for (QFileInfo const &fileInfo : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+	for (const QFileInfo &fileInfo : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
 			deleteOldBinaries(fileInfo.filePath());
 			dir.rmdir(fileInfo.fileName());
@@ -179,10 +181,10 @@ EditorInterface* MainClass::loadedPlugin(const QString &fileName, const QString 
 	return mPluginLoader.loadedPlugin(fileName, pathToFile, mPluginExtension, mPrefix);
 }
 
-void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
-		, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
-		, QList<QPair<QString, QPair<QString, QString>>> timeResult
-		, QList<QPair<QString, QPair<QString, QString>>> timeResultInterpter)
+void MainClass::createHtml(QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcResult
+		, QList<MethodsTester::ResultOfGenerating> qrxcAndInterpreterResult
+		, QList<MethodsTester::ResultOfGenerating> timeResult
+		, QList<MethodsTester::ResultOfGenerating> timeResultInterpter)
 {
 	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, timeResult, timeResultInterpter, mGeneratedDirHtml);
 }

@@ -15,10 +15,10 @@ using namespace editorPluginTestingFramework;
 using namespace utils;
 
 void HtmlMaker::makeHtml(
-		QList<QPair<QString, QPair<QString, QString>>> qrxcAndQrmcResult
-		, QList<QPair<QString, QPair<QString, QString>>> qrxcAndInterpreterResult
-		, QList<QPair<QString, QPair<QString, QString>>> timeResult
-		, QList<QPair<QString, QPair<QString, QString>>> timeResultIntertpter
+		QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcResult
+		, QList<MethodsTester::ResultOfGenerating> qrxcAndInterpreterResult
+		, QList<MethodsTester::ResultOfGenerating> timeResult
+		, QList<MethodsTester::ResultOfGenerating> timeResultIntertpter
 		, const QString &pathToHtml)
 {
 	typedef QPair<QString, QPair<QString, QString>> StringTriplet;
@@ -61,7 +61,7 @@ QDomElement HtmlMaker::newElement(QDomElement &parent, const QString &newElement
 
 void HtmlMaker::addTable(
 		QDomElement parent
-		, QList<QPair<QString, QPair<QString, QString>>> listOfLines
+		, QList<MethodsTester::ResultOfGenerating> listOfLines
 		, const QString &text
 		, const QString &firstColumnTitle
 		, const QString &secondColumnTitle
@@ -84,10 +84,10 @@ void HtmlMaker::addTable(
 
 	addLineToTable(table, firstColumnTitle, secondColumnTitle, thirdColumnTitle, true);
 
-	for (const StringTriplet &pair : listOfLines) {
-		const QString &methodName = pair.first;
-		const QString &firstResult = pair.second.first;
-		const QString &secondResult = pair.second.second;
+	for (const MethodsTester::ResultOfGenerating &element : listOfLines) {
+		const QString &methodName = element.methodName;
+		const QString &firstResult = element.firstResult;
+		const QString &secondResult = element.secondResult;
 
 		addLineToTable(table, methodName, firstResult, secondResult, false);
 	}
@@ -117,8 +117,8 @@ bool HtmlMaker::resultsAreTheSame(const QString &firstMethod, const QString &sec
 		return true;
 	}
 
-	QSet<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod);
-	QSet<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod);
+	const QSet<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod);
+	const QSet<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod);
 
 	QStringList first = firstMethodParsed.values();
 	QStringList firstResult;
@@ -215,12 +215,12 @@ void HtmlMaker::addTableToColumn(QDomElement &parent, const QPair<QString, QStri
 {
 	QDomElement table = newElement(parent, "table");
 
-	const QString &align = "center";
-	const QString &border = "1";
-	const QString &cellspacing = "5";
-	const QString &width = "100%";
-	const QString &height = "100%";
-	const QString &styleLine = "border:0.2px solid black;";
+	const QString align = "center";
+	const QString border = "1";
+	const QString cellspacing = "5";
+	const QString width = "100%";
+	const QString height = "100%";
+	const QString styleLine = "border:0.2px solid black;";
 
 	table.setAttribute("rules", "all");
 	table.setAttribute("width", width);
@@ -236,7 +236,7 @@ void HtmlMaker::addTableToColumn(QDomElement &parent, const QPair<QString, QStri
 void HtmlMaker::addLineToResultTable(QDomElement &parent, const QString &firstColumn, const QStringList &secondColumn)
 {
 	QDomElement newLine = newElement(parent, "tr");
-	const QString &columnWidth = "50%";
+	const QString columnWidth = "50%";
 
 	QDomElement firstColumnNode = newElement(newLine, "td");
 	firstColumnNode.setAttribute("width", columnWidth);
@@ -284,8 +284,8 @@ QPair<QString, QStringList> HtmlMaker::parseOneElementResult(const QString &oneE
 
 bool HtmlMaker::resultsAreEmpty(const QString &firstMethod, const QString &secondMethod)
 {
-	QList<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod).toList();
-	QList<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod).toList();
+	const QList<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod).toList();
+	const QList<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod).toList();
 
 	for (const QString &element : firstMethodParsed) {
 		if (!containsOnly(element, ' ')) {
