@@ -155,6 +155,8 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 
 	result << id("TrikPlayTone");
 
+	result << id("TrikV6EnginesStop");
+
 	result
 			<< id("TrikSay")
 			<< id("TrikLed")

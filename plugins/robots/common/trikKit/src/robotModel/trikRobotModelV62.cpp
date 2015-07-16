@@ -45,7 +45,7 @@ QList<PortInfo> TrikRobotModelV62::configurablePorts() const
 	QList<PortInfo> const digitalPorts = {
 			  PortInfo("D1", input, {}, "sensorD1")
 			, PortInfo("D2", input, {}, "sensorD2")
-			, PortInfo("F1", input, {}, "sensorF1") };
+			, PortInfo("D3", input, {}, "sensorD3") };
 
 	return CommonRobotModel::configurablePorts() + digitalPorts + QList<PortInfo>{PortInfo("LineSensorPort"
 			, tr("Line sensor"), input, { "TrikLineSensorPort" }, "lineSensor"

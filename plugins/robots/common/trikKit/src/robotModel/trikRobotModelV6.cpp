@@ -33,7 +33,6 @@ TrikRobotModelV6::TrikRobotModelV6(const QString &kitId, const QString &robotId)
 	addAllowedConnection(PortInfo("E1", output, {}), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("E2", output, {}), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("E3", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E4", output, {}), { servoMotorInfo() });
 
 	addAllowedConnection(PortInfo("M1", output, {}), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M2", output, {}), { powerMotorInfo() });
