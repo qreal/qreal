@@ -86,6 +86,10 @@ public:
 	/// If values cannot be implicitly converted to integers 0 will be returned.
 	Value min(const Value &left, const Value &right) const;
 
+	/// Produces functor that returns a between two given points.
+	/// If values cannot be implicitly converted to points 0 will be returned.
+	Value distance(const Value &point1, const Value &point2) const;
+
 private:
 	QVariant propertyChain(const QVariant &value, const QStringList &properties, const QString &objectAlias) const;
 	QVariant propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const;

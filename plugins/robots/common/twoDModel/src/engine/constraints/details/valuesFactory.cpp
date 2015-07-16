@@ -16,6 +16,7 @@
 
 #include <QtCore/QRect>
 
+#include <qrutils/mathUtils/geometry.h>
 #include <utils/timelineInterface.h>
 
 using namespace twoDModel::constraints::details;
@@ -144,6 +145,11 @@ Value ValuesFactory::max(const Value &left, const Value &right) const
 Value ValuesFactory::min(const Value &left, const Value &right) const
 {
 	return [left, right]() { return qMin(left().toInt(), right().toInt()); };
+}
+
+Value ValuesFactory::distance(const Value &point1, const Value &point2) const
+{
+	return [point1, point2]() { return mathUtils::Geometry::distance(point1().toPoint(), point2().toPoint()); };
 }
 
 QVariant ValuesFactory::propertyChain(const QVariant &value
