@@ -37,7 +37,7 @@ links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-tri
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6QtsGenerator_ru.ts \
-	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikQtsGenerator_fr.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV6QtsGenerator_fr.ts \
 
 HEADERS += \
 	$$PWD/trikV6QtsGeneratorPlugin.h \

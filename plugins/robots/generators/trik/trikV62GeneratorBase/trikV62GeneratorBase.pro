@@ -34,7 +34,7 @@ DEFINES += ROBOTS_TRIK_V62_GENERATOR_BASE_LIBRARY
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62GeneratorBase_ru.ts \
-	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV62GeneratorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/trikV62GeneratorBase/trikGeneratorBaseDeclSpec.h \

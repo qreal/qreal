@@ -34,7 +34,7 @@ links(qrkernel qslog qrutils qrrepo robots-generator-base robots-trik-v62-genera
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62RuntimeUploaderPlugin_ru.ts \
-	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikRuntimeUploaderPlugin_fr.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV62RuntimeUploaderPlugin_fr.ts \
 
 HEADERS += \
 	$$PWD/trikRuntimeUploaderPlugin.h \
