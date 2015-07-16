@@ -1102,24 +1102,32 @@ void MainWindow::setShortcuts(EditorView * const tab)
 
 void MainWindow::loadElementsShortcuts()
 {
-	foreach (Id editor, editorManager().editors())
-		foreach (Id diagram, editorManager().diagrams(editor))
-			foreach(Id element, editorManager().elements(diagram)) {
+	for (const Id &editor : editorManager().editors()){
+		for (const Id &diagram : editorManager().diagrams(editor)){
+			for (const Id &element : editorManager().elements(diagram)) {
 				QAction *action = new QAction(this);
 				QList<QKeySequence> hotKeyList;
-				foreach (QString string, editorManager().hotKey(element).split(", "))
-					hotKeyList << QKeySequence(string);
+				for (QString string : editorManager().hotKey(element).split(", ")){
+					if (!HotKeyManager::contains(string)){
+						hotKeyList << QKeySequence(string);
+					}
+				}
+
 				action->setShortcuts(hotKeyList);
 				connect(action, &QAction::triggered, [=]()
 				{
-					if (getCurrentTab())
-						if (editorManager().isElementEnabled(element))
+					if (getCurrentTab()){
+						if (editorManager().isElementEnabled(element)){
 							getCurrentTab()->mutableScene().createElement(element.type().toString()
 							, getCurrentTab()->mutableScene().getMousePos());
+						}
+					}
 				});
 				this->addAction(action);
 				HotKeyManager::setCommand("Scene." + element.element(), "Create " + element.element(), action);
 			}
+		}
+	}
 }
 
 void MainWindow::setDefaultShortcuts()
