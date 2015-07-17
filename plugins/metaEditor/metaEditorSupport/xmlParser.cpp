@@ -133,7 +133,9 @@ void XmlParser::loadIncludeList(const QString &fileName)
 	QStringList includeList = getIncludeList(fileName);
 	if (includeList.isEmpty())
 		return;
-	if (QMessageBox::question(NULL, QObject::tr("loading.."),"Do you want to load connected metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+	if (QMessageBox::question(nullptr, QObject::tr("loading.."),"Do you want to load connected metamodels?"
+			, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+	{
 		foreach (QString const &include, includeList) {
 			if (!containsName(include))
 				parseFile(include);
@@ -148,6 +150,7 @@ bool XmlParser::containsName(const QString &name)
 		if (mApi.name(id) == name)
 			return true;
 	}
+
 	return false;
 }
 
@@ -164,7 +167,8 @@ Id XmlParser::getPackageId()
 	return packageId;
 }
 
-void XmlParser::initMetamodel(const QDomDocument &document, const QString &directoryName, const QString &baseName, const QString &pathToRoot, const Id &id)
+void XmlParser::initMetamodel(const QDomDocument &document, const QString &directoryName, const QString &baseName
+		, const QString &pathToRoot, const Id &id)
 {
 	QString fileBaseName = baseName;
 

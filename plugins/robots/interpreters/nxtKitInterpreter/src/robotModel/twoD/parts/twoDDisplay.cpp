@@ -105,11 +105,13 @@ void Display::paint(QPainter *painter)
 	}
 
 	foreach (const QRect &circle, mCircles) {
-		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
+		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth
+				, circle.height() * pixHeight);
 	}
 
 	foreach (const QRect &rect, mRects) {
-		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
+		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth
+				, rect.height() * pixHeight);
 	}
 
 	QListIterator<QString> strings(mStrings);

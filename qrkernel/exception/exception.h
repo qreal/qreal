@@ -20,8 +20,7 @@
 
 namespace qReal {
 
-/// Base class for all QReal exceptions. Thrown when "something is wrong"
-/// in QReal code.
+/// Base class for all QReal exceptions. Thrown when "something is wrong" in QReal code.
 class QRKERNEL_EXPORT Exception
 {
 public:

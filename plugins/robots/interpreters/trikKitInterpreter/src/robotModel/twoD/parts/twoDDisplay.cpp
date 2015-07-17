@@ -162,8 +162,9 @@ void Display::paint(QPainter *painter)
 	}
 
 	for (int i = 0; i < mEllipses.length(); ++i) {
-		painter->setPen(QPen(mEllipses.at(i).color, mEllipses.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawEllipse(QPointF(mEllipses.at(i).ellipse.x(), mEllipses.at(i).ellipse.y())
+		painter->setPen(QPen(mEllipses.at(i).color, mEllipses.at(i).penWidth
+				, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+		painter->drawEllipse(mEllipses.at(i).ellipse.x(), mEllipses.at(i).ellipse.y()
 				, mEllipses.at(i).ellipse.width(), mEllipses.at(i).ellipse.height());
 	}
 

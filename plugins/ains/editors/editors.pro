@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2015 Yurii Litvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,18 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../../../global.pri)
+TEMPLATE = subdirs
 
-TEMPLATE = lib
-
-CONFIG += plugin
-
-QT += widgets
-
-DESTDIR = $$DESTDIR/plugins/tools
-
-HEADERS += \
-	testInvocationPlugin.h \
-
-SOURCES += \
-	testInvocationPlugin.cpp \
+SUBDIRS = \
+	ainsEditor \
+	databaseEditor \
+	usecaseDiagram \
