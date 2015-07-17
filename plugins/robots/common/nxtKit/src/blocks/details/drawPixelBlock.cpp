@@ -31,7 +31,11 @@ void DrawPixelBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const bool redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		nxtDisplay->drawPixel(x, y, redraw);
+		nxtDisplay->drawPixel(x, y);
+		if (redraw) {
+			nxtDisplay->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

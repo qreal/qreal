@@ -32,7 +32,11 @@ void PrintTextBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const bool redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		display.printText(x, y, result, redraw);
+		display.printText(x, y, result);
+		if (redraw) {
+			display.redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

@@ -1,1 +1,2 @@
 brick.display().clear();
+@@REDRAW@@

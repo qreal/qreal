@@ -26,10 +26,8 @@ FakeScene::FakeScene(const WorldModel &world)
 {
 	connect(&world, &WorldModel::wallAdded, [=](items::WallItem *wall) { addClone(wall, wall->clone()); });
 	connect(&world, &WorldModel::colorItemAdded, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
-	connect(&world, &WorldModel::otherItemAdded, [=](QGraphicsItem *item) {
-		if (QGraphicsLineItem * const trace = dynamic_cast<QGraphicsLineItem *>(item)) {
-			addClone(item, new QGraphicsLineItem(trace->line()));
-		}
+	connect(&world, &WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) {
+		addClone(item, new QGraphicsLineItem(item->line()));
 	});
 	connect(&world, &WorldModel::itemRemoved, this, &FakeScene::deleteItem);
 }
@@ -47,12 +45,13 @@ void FakeScene::addClone(QGraphicsItem * const original, QGraphicsItem * const c
 	// that the nature of this phenomenon is somewhere deeply in Qt (or we just do something wrong, but
 	// then some very unobvious thing is wrong). One way to fix that is simply to move item when we
 	// change its corners.
-	auto hack = [=]() { cloned->moveBy(1, 1); cloned->moveBy(-1, -1); };
-	graphicsUtils::AbstractItem *orit = dynamic_cast<graphicsUtils::AbstractItem *>(original);
-	connect(orit, &graphicsUtils::AbstractItem::x1Changed, hack);
-	connect(orit, &graphicsUtils::AbstractItem::y1Changed, hack);
-	connect(orit, &graphicsUtils::AbstractItem::x2Changed, hack);
-	connect(orit, &graphicsUtils::AbstractItem::y2Changed, hack);
+	if (graphicsUtils::AbstractItem *orit = dynamic_cast<graphicsUtils::AbstractItem *>(original)) {
+		auto hack = [=]() { cloned->moveBy(1, 1); cloned->moveBy(-1, -1); };
+		connect(orit, &graphicsUtils::AbstractItem::x1Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y1Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::x2Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y2Changed, hack);
+	}
 }
 
 void FakeScene::deleteItem(QGraphicsItem * const original)

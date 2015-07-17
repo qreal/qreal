@@ -32,9 +32,10 @@ DrawRectGenerator::DrawRectGenerator(const qrRepo::RepoApi &repo
 							, customizer.factory()->intPropertyConverter(id, "WidthRect"))
 					, Binding::createConverting("@@HeightRect@@", "HeightRect"
 							, customizer.factory()->intPropertyConverter(id, "HeightRect"))
-					, Binding::createConverting("@@REDRAW@@", "Redraw"
-							, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			}
 			, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

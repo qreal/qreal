@@ -32,9 +32,10 @@ DrawLineGenerator::DrawLineGenerator(const qrRepo::RepoApi &repo
 							, customizer.factory()->intPropertyConverter(id, "X2CoordinateLine"))
 					, Binding::createConverting("@@Y2CoordinateLine@@", "Y2CoordinateLine"
 							, customizer.factory()->intPropertyConverter(id, "Y2CoordinateLine"))
-					, Binding::createConverting("@@REDRAW@@", "Redraw"
-							, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			}
 			, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

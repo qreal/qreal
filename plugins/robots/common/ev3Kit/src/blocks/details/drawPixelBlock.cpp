@@ -31,7 +31,11 @@ void DrawPixelBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const bool redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		ev3Display->drawPixel(x, y, redraw);
+		ev3Display->drawPixel(x, y);
+		if (redraw) {
+			ev3Display->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

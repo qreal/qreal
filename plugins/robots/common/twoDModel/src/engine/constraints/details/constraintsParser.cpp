@@ -301,6 +301,10 @@ Condition ConstraintsParser::parseConditionContents(const QDomElement &element, 
 		return parseTimerTag(element, event);
 	}
 
+	if (tag == "using") {
+		return parseUsingTag(element, event);
+	}
+
 	error(QObject::tr("Unknown tag \"%1\".").arg(element.tagName()));
 	return mConditions.constant(true);
 }
@@ -381,6 +385,40 @@ Condition ConstraintsParser::parseTimerTag(const QDomElement &element, Event &ev
 	return mConditions.timerCondition(timeout, forceDrop, timestamp, event);
 }
 
+Condition ConstraintsParser::parseUsingTag(const QDomElement &element, Event &event)
+{
+	if (!assertChildrenMoreThan(element, 1)) {
+		return mConditions.constant(true);
+	}
+
+	QList<Trigger> triggers;
+	Condition result;
+	bool resultFound = false;
+	for (QDomElement trigger = element.firstChildElement()
+			; !trigger.isNull()
+			; trigger = trigger.nextSiblingElement())
+	{
+		if (trigger.tagName().toLower() == "return") {
+			if (resultFound) {
+				error(QObject::tr("There must be only one tag \"return\" in \"using\" expression."));
+				return mConditions.constant(true);
+			}
+
+			result = parseConditionsAlternative(trigger.firstChildElement(), event);
+			resultFound = true;
+		} else {
+			triggers << parseTriggersAlternative(trigger);
+		}
+	}
+
+	if (!resultFound) {
+		error(QObject::tr("There must be \"return\" tag in \"using\" expression."));
+		return mConditions.constant(true);
+	}
+
+	return mConditions.usingCondition(result, mTriggers.combined(triggers));
+}
+
 Trigger ConstraintsParser::parseTriggersAlternative(const QDomElement &element)
 {
 	const QString name = element.tagName().toLower();
@@ -429,16 +467,16 @@ Trigger ConstraintsParser::parseTriggerContents(const QDomElement &element)
 		return parseSuccessTag(element);
 	}
 
-	if (tag == "setvariable") {
-		return parseSetVariableTag(element);
-	}
-
-	if (tag == "addtovariable") {
-		return parseAddToVariableTag(element);
+	if (tag == "setter") {
+		return parseSetterTag(element);
 	}
 
 	if (tag == "setup" || tag == "drop") {
 		return parseEventSetDropTag(element);
+	}
+
+	if (tag == "setstate") {
+		return parseSetObjectStateTag(element);
 	}
 
 	error(QObject::tr("Unknown tag \"%1\".").arg(element.tagName()));
@@ -460,28 +498,75 @@ Trigger ConstraintsParser::parseSuccessTag(const QDomElement &element)
 	return mTriggers.success(deferred);
 }
 
-Trigger ConstraintsParser::parseSetVariableTag(const QDomElement &element)
+Trigger ConstraintsParser::parseSetterTag(const QDomElement &element)
 {
-	if (!assertAttributeNonEmpty(element, "name") || !assertHasAttribute(element, "value")) {
+	if (!assertAttributeNonEmpty(element, "name") || !assertChildrenExactly(element, 1)) {
 		return mTriggers.doNothing();
 	}
 
 	const QString name = element.attribute("name");
-	const QVariant value = bestVariant(element.attribute("value"));
+	const Value value = parseValue(element.firstChildElement());
 
 	return mTriggers.setVariable(name, value);
 }
 
-Trigger ConstraintsParser::parseAddToVariableTag(const QDomElement &element)
+Value ConstraintsParser::parseUnaryValueTag(const QDomElement &element)
 {
-	if (!assertAttributeNonEmpty(element, "name") || !assertHasAttribute(element, "value")) {
-		return mTriggers.doNothing();
+	if (!assertChildrenExactly(element, 1)) {
+		return mConditions.constant(true);
 	}
 
-	const QString name = element.attribute("name");
-	const QVariant value = bestVariant(element.attribute("value"));
+	const QString operation = element.tagName().toLower();
 
-	return mTriggers.addToVariable(name, value);
+	const Value value = parseValue(element.firstChildElement());
+
+	if (operation == "minus") {
+		return mValues.unaryMinus(value);
+	}
+
+	if (operation.startsWith("abs")) {
+		return mValues.abs(value);
+	}
+
+	if (operation == "boundingrect") {
+		return mValues.boundingRect(value);
+	}
+
+	return value;
+}
+
+Value ConstraintsParser::parseBinaryValueTag(const QDomElement &element)
+{
+	if (!assertChildrenExactly(element, 2)) {
+		return mConditions.constant(true);
+	}
+
+	const QString operation = element.tagName().toLower();
+
+	const Value leftValue = parseValue(element.firstChildElement());
+	const Value rightValue = parseValue(element.firstChildElement().nextSiblingElement());
+
+	if (operation == "sum") {
+		return mValues.sum(leftValue, rightValue);
+	}
+
+	if (operation.startsWith("difference")) {
+		return mValues.difference(leftValue, rightValue);
+	}
+
+	if (operation == "min") {
+		return mValues.min(leftValue, rightValue);
+	}
+
+	if (operation == "max") {
+		return mValues.max(leftValue, rightValue);
+	}
+
+	if (operation == "distance") {
+		return mValues.distance(leftValue, rightValue);
+	}
+
+	return mValues.sum(leftValue, rightValue);
 }
 
 Trigger ConstraintsParser::parseEventSetDropTag(const QDomElement &element)
@@ -496,9 +581,27 @@ Trigger ConstraintsParser::parseEventSetDropTag(const QDomElement &element)
 			: mTriggers.dropEvent(id);
 }
 
+Trigger ConstraintsParser::parseSetObjectStateTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "object")
+			|| !assertAttributeNonEmpty(element, "property")
+			|| !assertChildrenExactly(element, 1)) {
+		return mTriggers.doNothing();
+	}
+
+	const Value object = mValues.objectState(element.attribute("object"));
+	const QString property = element.attribute("property");
+	const Value value = parseValue(element.firstChildElement());
+	return mTriggers.setObjectState(object, property, value);
+}
+
 Value ConstraintsParser::parseValue(const QDomElement &element)
 {
 	const QString tag = element.tagName().toLower();
+
+	if (tag == "bool") {
+		return parseBoolTag(element);
+	}
 
 	if (tag == "int") {
 		return parseIntTag(element);
@@ -524,8 +627,25 @@ Value ConstraintsParser::parseValue(const QDomElement &element)
 		return parseObjectStateTag(element);
 	}
 
+	if (tag == "minus" || tag == "abs" || tag == "boundingrect") {
+		return parseUnaryValueTag(element);
+	}
+
+	if (tag == "sum" || tag == "difference" || tag == "min" || tag == "max" || tag == "distance") {
+		return parseBinaryValueTag(element);
+	}
+
 	error(QObject::tr("Unknown value \"%1\".").arg(element.tagName()));
 	return mValues.invalidValue();
+}
+
+Value ConstraintsParser::parseBoolTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "value")) {
+		return mValues.invalidValue();
+	}
+
+	return mValues.boolValue(boolAttribute(element, "value"));
 }
 
 Value ConstraintsParser::parseIntTag(const QDomElement &element)
@@ -575,11 +695,11 @@ Value ConstraintsParser::parseTypeOfTag(const QDomElement &element)
 
 Value ConstraintsParser::parseObjectStateTag(const QDomElement &element)
 {
-	if (!assertAttributeNonEmpty(element, "objectId") || !assertAttributeNonEmpty(element, "property")) {
+	if (!assertAttributeNonEmpty(element, "object")) {
 		return mValues.invalidValue();
 	}
 
-	return mValues.objectState(element.attribute("objectId"), element.attribute("property"));
+	return mValues.objectState(element.attribute("object"));
 }
 
 QString ConstraintsParser::id(const QDomElement &element) const
@@ -631,23 +751,6 @@ bool ConstraintsParser::boolAttribute(const QDomElement &element, const QString 
 	return stringValue == "true";
 }
 
-QVariant ConstraintsParser::bestVariant(const QString &value) const
-{
-	bool ok = false;
-
-	const int intValue = value.toInt(&ok);
-	if (ok) {
-		return intValue;
-	}
-
-	const qreal doubleValue = value.toDouble(&ok);
-	if (ok) {
-		return doubleValue;
-	}
-
-	return value;
-}
-
 bool ConstraintsParser::addToEvents(Event * const event)
 {
 	if (!event) {
@@ -665,6 +768,7 @@ bool ConstraintsParser::addToEvents(Event * const event)
 
 bool ConstraintsParser::assertChildrenExactly(const QDomElement &element, int count)
 {
+	/// @todo: Ignore comment nodes
 	if (element.childNodes().count() != count) {
 		return error(QObject::tr("%1 tag must have exactly %2 child tag(s)")
 				.arg(element.tagName(), QString::number(count)));
@@ -675,6 +779,7 @@ bool ConstraintsParser::assertChildrenExactly(const QDomElement &element, int co
 
 bool ConstraintsParser::assertChildrenMoreThan(const QDomElement &element, int count)
 {
+	/// @todo: Ignore comment nodes
 	if (element.childNodes().count() <= count) {
 		return error(QObject::tr("%1 tag must have at least %2 child tag(s)")
 				.arg(element.tagName(), QString::number(count + 1)));
