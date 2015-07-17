@@ -133,6 +133,11 @@ QList<items::ColorFieldItem *> const &WorldModel::colorFields() const
 	return mColorFields;
 }
 
+const QList<QGraphicsLineItem *> &WorldModel::trace() const
+{
+	return mRobotTrace;
+}
+
 int WorldModel::wallsCount() const
 {
 	return mWalls.count();

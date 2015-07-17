@@ -79,7 +79,6 @@ HEADERS += \
 	$$PWD/src/engine/constraints/details/defines.h \
 	$$PWD/src/engine/constraints/details/constraintsParser.h \
 	$$PWD/src/engine/constraints/details/event.h \
-	$$PWD/src/engine/constraints/details/objectsSet.h \
 	$$PWD/src/engine/constraints/details/conditionsFactory.h \
 	$$PWD/src/engine/constraints/details/triggersFactory.h \
 	$$PWD/src/engine/constraints/details/valuesFactory.h \
@@ -146,7 +145,6 @@ SOURCES += \
 	$$PWD/src/engine/constraints/constraintsChecker.cpp \
 	$$PWD/src/engine/constraints/details/constraintsParser.cpp \
 	$$PWD/src/engine/constraints/details/event.cpp \
-	$$PWD/src/engine/constraints/details/objectsSet.cpp \
 	$$PWD/src/engine/constraints/details/conditionsFactory.cpp \
 	$$PWD/src/engine/constraints/details/triggersFactory.cpp \
 	$$PWD/src/engine/constraints/details/valuesFactory.cpp \

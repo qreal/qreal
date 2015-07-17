@@ -99,8 +99,8 @@ private:
 	Value parseVariableValueTag(const QDomElement &element);
 	Value parseTypeOfTag(const QDomElement &element);
 	Value parseObjectStateTag(const QDomElement &element);
-	Value parseUnaryArithmeticTag(const QDomElement &element);
-	Value parseBinaryArithmeticTag(const QDomElement &element);
+	Value parseUnaryValueTag(const QDomElement &element);
+	Value parseBinaryValueTag(const QDomElement &element);
 
 	QString id(const QDomElement &element) const;
 	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);

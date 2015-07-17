@@ -506,7 +506,7 @@ Trigger ConstraintsParser::parseSetterTag(const QDomElement &element)
 	return mTriggers.setVariable(name, value);
 }
 
-Value ConstraintsParser::parseUnaryArithmeticTag(const QDomElement &element)
+Value ConstraintsParser::parseUnaryValueTag(const QDomElement &element)
 {
 	if (!assertChildrenExactly(element, 1)) {
 		return mConditions.constant(true);
@@ -524,10 +524,14 @@ Value ConstraintsParser::parseUnaryArithmeticTag(const QDomElement &element)
 		return mValues.abs(value);
 	}
 
+	if (operation == "boundingrect") {
+		return mValues.boundingRect(value);
+	}
+
 	return value;
 }
 
-Value ConstraintsParser::parseBinaryArithmeticTag(const QDomElement &element)
+Value ConstraintsParser::parseBinaryValueTag(const QDomElement &element)
 {
 	if (!assertChildrenExactly(element, 2)) {
 		return mConditions.constant(true);
@@ -605,12 +609,12 @@ Value ConstraintsParser::parseValue(const QDomElement &element)
 		return parseObjectStateTag(element);
 	}
 
-	if (tag == "minus" || tag == "abs") {
-		return parseUnaryArithmeticTag(element);
+	if (tag == "minus" || tag == "abs" || tag == "boundingrect") {
+		return parseUnaryValueTag(element);
 	}
 
 	if (tag == "sum" || tag == "difference" || tag == "min" || tag == "max" || tag == "distance") {
-		return parseBinaryArithmeticTag(element);
+		return parseBinaryValueTag(element);
 	}
 
 	error(QObject::tr("Unknown value \"%1\".").arg(element.tagName()));

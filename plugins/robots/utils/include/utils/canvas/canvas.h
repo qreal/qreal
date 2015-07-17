@@ -27,7 +27,7 @@ class ArcObject;
 class TextObject;
 
 /// Represent a field  for drawing shapes on it, something like QGraphicsScene but far more primitive.
-class ROBOTS_UTILS_EXPORT Canvas : /*public QObject, */public qReal::ui::PainterInterface
+class ROBOTS_UTILS_EXPORT Canvas : public qReal::ui::PainterInterface
 {
 public:
 	Canvas();

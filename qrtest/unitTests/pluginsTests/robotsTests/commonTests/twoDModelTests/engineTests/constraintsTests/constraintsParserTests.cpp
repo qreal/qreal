@@ -16,12 +16,17 @@
 
 #include <QtCore/QDebug>
 
+#include <utils/objectsSet.h>
+#include <utils/canvas/pointObject.h>
+#include <utils/canvas/rectangleObject.h>
+#include <utils/canvas/lineObject.h>
+#include <utils/canvas/ellipseObject.h>
 #include <src/engine/constraints/constraintsChecker.h>
 #include <src/engine/constraints/details/event.h>
-#include <src/engine/constraints/details/objectsSet.h>
 
 using namespace qrTest::robotsTests::commonTwoDModelTests;
 using namespace twoDModel::constraints::details;
+using namespace utils;
 
 ConstraintsParserTests::ConstraintsParserTests()
 	: mParser(mEvents, mVariables, mObjects, mTimeline, mStatus)
@@ -562,7 +567,7 @@ TEST_F(ConstraintsParserTests, objectsSetTest)
 		ASSERT_TRUE(eventFired);
 	};
 
-	ObjectsSet * const set = new ObjectsSet;
+	VariantSet * const set = new VariantSet;
 	set->add(10);
 	set->add(20);
 	set->add(30);
@@ -575,6 +580,83 @@ TEST_F(ConstraintsParserTests, objectsSetTest)
 	mObjects["object"] = object;
 	testCase("object.intListProperty", object->intListProperty().size()
 			, object->intListProperty().first(), object->intListProperty().last());
+}
+
+TEST_F(ConstraintsParserTests, boundingRectTest)
+{
+	auto testCase = [this](const QString &prefix, int x, int y, int width, int height) {
+		mEvents.clear();
+		const QString xml = QString(
+				"<constraints>"
+				"	<timelimit value=\"2000\"/>"
+				"	<event id=\"event\" settedUpInitially=\"true\">"
+				"		<condition>"
+				"			<using>"
+				"				<setter name=\"boundingRect\">"
+				"					<boundingRect>"
+				"						<%1=\"items\"/>"
+				"					</boundingRect>"
+				"				</setter>"
+				"				<return>"
+				"					<conditions glue=\"and\">"
+				"						<equals>"
+				"							<variableValue name=\"boundingRect.x\"/>"
+				"							<int value=\"%2\"/>"
+				"						</equals>"
+				"						<equals>"
+				"							<variableValue name=\"boundingRect.y\"/>"
+				"							<int value=\"%3\"/>"
+				"						</equals>"
+				"						<equals>"
+				"							<variableValue name=\"boundingRect.width\"/>"
+				"							<int value=\"%4\"/>"
+				"						</equals>"
+				"						<equals>"
+				"							<variableValue name=\"boundingRect.height\"/>"
+				"							<int value=\"%5\"/>"
+				"						</equals>"
+				"					</conditions>"
+				"				</return>"
+				"			</using>"
+				"		</condition>"
+				"		<trigger>"
+				"			<success/>"
+				"		</trigger>"
+				"	</event>"
+				"</constraints>").arg(prefix
+						, QString::number(x)
+						, QString::number(y)
+						, QString::number(width)
+						, QString::number(height));
+		ASSERT_TRUE(mParser.parse(xml));
+		ASSERT_EQ(mEvents.count(), 2);
+		Event * const event = mEvents["event"];
+		ASSERT_NE(event, nullptr);
+
+		bool eventFired = false;
+		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+		event->check();
+		ASSERT_TRUE(eventFired);
+	};
+
+	const QList<CanvasObject *> shapes = {
+			new EllipseObject(QPoint(0, 0), 50, 50)
+			, new RectangleObject(QRect(0, 0, 200, 200))
+			, new LineObject(QPoint(-120, -130), QPoint(-80, -70))
+			, new PointObject(201, 201) };
+	const QRect correctRect(QPoint(-120, -130), QPoint(201, 201));
+
+	ObjectsSet<CanvasObject *> set(shapes);
+	mObjects["items"] = &set;
+	testCase("objectState object", correctRect.left(), correctRect.top(), correctRect.width(), correctRect.height());
+
+	VariantSet emptySet;
+	mObjects["items"] = &emptySet;
+	testCase("objectState object", 0, 0, 0, 0);
+
+	mVariables["items"] = QVariant::fromValue<QList<CanvasObject *>>(shapes);
+	testCase("variableValue name", correctRect.left(), correctRect.top(), correctRect.width(), correctRect.height());
 }
 
 TEST_F(ConstraintsParserTests, distanceTest)

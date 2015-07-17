@@ -26,6 +26,7 @@ class ROBOTS_UTILS_EXPORT LineObject : public CanvasObject
 	Q_OBJECT
 	Q_PROPERTY(QPoint begin READ begin WRITE setBegin)
 	Q_PROPERTY(QPoint end READ end WRITE setEnd)
+	Q_PROPERTY(QRect boundingRect READ boundingRect)
 
 public:
 	explicit LineObject(QObject *parent = 0);
@@ -46,6 +47,9 @@ public:
 
 	/// Sets the second end of the segment.
 	void setEnd(const QPoint &end);
+
+	/// Returns the bounding box of this line.
+	QRect boundingRect() const;
 
 	void paint(QPainter *painter) override;
 

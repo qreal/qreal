@@ -27,7 +27,7 @@ class ROBOTS_UTILS_EXPORT EllipseObject : public CanvasObject
 	Q_PROPERTY(QPoint center READ center WRITE setCenter)
 	Q_PROPERTY(int w READ semiDiameterX WRITE setSemiDiameterX)
 	Q_PROPERTY(int h READ semiDiameterY WRITE setSemiDiameterY)
-	Q_PROPERTY(QRect rect READ rect)
+	Q_PROPERTY(QRect boundingRect READ boundingRect)
 
 public:
 	explicit EllipseObject(QObject *parent = 0);
@@ -56,8 +56,8 @@ public:
 	/// Sets the semi-axis length by the y-dimension of the ellipse.
 	void setSemiDiameterY(int b);
 
-	/// Returns the bounding rectangle of this ellipse.
-	QRect rect() const;
+	/// Returns the bounding box of this ellipse.
+	QRect boundingRect() const;
 
 	void paint(QPainter *painter) override;
 

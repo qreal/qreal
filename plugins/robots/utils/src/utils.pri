@@ -24,6 +24,7 @@ HEADERS += \
 	$$PWD/../include/utils/realTimeline.h \
 	$$PWD/../include/utils/realTimer.h \
 	$$PWD/../include/utils/tracer.h \
+	$$PWD/../include/utils/objectsSet.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
@@ -44,6 +45,7 @@ SOURCES += \
 	$$PWD/realTimeline.cpp \
 	$$PWD/realTimer.cpp \
 	$$PWD/tracer.cpp \
+	$$PWD/objectsSet.cpp \
 	$$PWD/robotCommunication/robotCommunicator.cpp \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
 	$$PWD/tcpRobotCommunicator.cpp \

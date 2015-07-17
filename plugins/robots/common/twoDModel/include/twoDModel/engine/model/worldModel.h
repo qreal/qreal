@@ -56,9 +56,13 @@ public:
 	bool checkCollision(const QPainterPath &path) const;
 
 	/// Returns a list of walls in the world model.
-	QList<items::WallItem *> const &walls() const;
+	const QList<items::WallItem *> &walls() const;
 
-	QList<items::ColorFieldItem *> const &colorFields() const;
+	/// Returns a list of color field items in the world model.
+	const QList<items::ColorFieldItem *> &colorFields() const;
+
+	/// Returns a list of trace items on the floor.
+	const QList<QGraphicsLineItem *> &trace() const;
 
 	int wallsCount() const;
 	items::WallItem *wallAt(int index) const;

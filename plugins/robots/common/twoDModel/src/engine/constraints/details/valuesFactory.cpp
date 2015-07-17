@@ -17,6 +17,7 @@
 #include <QtCore/QRect>
 
 #include <qrutils/mathUtils/geometry.h>
+#include <utils/objectsSet.h>
 #include <utils/timelineInterface.h>
 
 using namespace twoDModel::constraints::details;
@@ -152,6 +153,42 @@ Value ValuesFactory::distance(const Value &point1, const Value &point2) const
 	return [point1, point2]() { return mathUtils::Geometry::distance(point1().toPoint(), point2().toPoint()); };
 }
 
+Value ValuesFactory::boundingRect(const Value &items) const
+{
+	return [this, items]() {
+		bool empty = true;
+		int xMin = INT_MAX;
+		int yMin = INT_MAX;
+		int xMax = INT_MIN;
+		int yMax = INT_MIN;
+		iterate(items(), [this, &xMin, &yMin, &xMax, &yMax, &empty](const QVariant &item) {
+			bool hasBoundingRect;
+			const QRect boundingRect = propertyOf(item, "boundingRect", &hasBoundingRect).toRect();
+			if (hasBoundingRect) {
+				empty = false;
+				xMin = qMin(xMin, boundingRect.left());
+				yMin = qMin(yMin, boundingRect.top());
+				xMax = qMax(xMax, boundingRect.right());
+				yMax = qMax(yMax, boundingRect.bottom());
+				return;
+			}
+
+			bool hasX, hasY;
+			const int x = propertyOf(item, "x", &hasX).toInt();
+			const int y = propertyOf(item, "y", &hasY).toInt();
+			if (hasX && hasY) {
+				empty = false;
+				xMin = qMin(xMin, x);
+				yMin = qMin(yMin, y);
+				xMax = qMax(xMax, x);
+				yMax = qMax(yMax, y);
+			}
+		});
+
+		return empty ? QRect() : QRect(QPoint(xMin, yMin), QPoint(xMax, yMax));
+	};
+}
+
 QVariant ValuesFactory::propertyChain(const QVariant &value
 		, const QStringList &propertyChain, const QString &objectAlias) const
 {
@@ -170,26 +207,41 @@ QVariant ValuesFactory::propertyChain(const QVariant &value
 
 QVariant ValuesFactory::propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const
 {
-	bool ok;
-	QVariant result;
+	bool hasProperty, unknownType;
+	const QVariant result = propertyOf(value, property, &hasProperty, &unknownType);
 
-	// Here must be enumerated all types whoose properties we can obtain.
-	if (value.canConvert<QObject *>()) {
-		result = propertyOf(value.value<QObject *>(), property, &ok);
-	} else if (value.canConvert<QPoint>()) {
-		result = propertyOf(value.value<QPoint>(), property, &ok);
-	} else if (value.canConvert<QRect>()) {
-		result = propertyOf(value.value<QRect>(), property, &ok);
-	} else if (value.canConvert<QVariantList>()) {
-		result = propertyOf(value.value<QVariantList>(), property, &ok);
-	} else {
+	if (unknownType) {
 		reportError(QObject::tr("Unknown type of object \"%1\"").arg(objectAlias));
 		return QVariant();
 	}
 
-	if (!ok) {
+	if (!hasProperty) {
 		reportError(QObject::tr("Object \"%1\" has no property \"%2\"").arg(objectAlias, property));
 		return QVariant();
+	}
+
+	return result;
+}
+
+QVariant ValuesFactory::propertyOf(const QVariant &value, const QString &property
+		, bool *hasProperty, bool *unknownType) const
+{
+	QVariant result;
+
+	hasProperty && (*hasProperty = false);
+	unknownType && (*unknownType = false);
+
+	// Here must be enumerated all types whoose properties we can obtain.
+	if (value.canConvert<QObject *>()) {
+		result = propertyOf(value.value<QObject *>(), property, hasProperty);
+	} else if (value.canConvert<QPoint>()) {
+		result = propertyOf(value.value<QPoint>(), property, hasProperty);
+	} else if (value.canConvert<QRect>()) {
+		result = propertyOf(value.value<QRect>(), property, hasProperty);
+	} else if (value.canConvert<QVariantList>()) {
+		result = propertyOf(value.value<QVariantList>(), property, hasProperty);
+	} else {
+		unknownType && (*unknownType = true);
 	}
 
 	return result;
@@ -270,6 +322,22 @@ QVariant ValuesFactory::propertyOf(const QVariantList &list, const QString &prop
 
 	ok && (*ok = false);
 	return QVariant();
+}
+
+void ValuesFactory::iterate(const QVariant &collection, const std::function<void (const QVariant &)> &visitor) const
+{
+	if (collection.canConvert<utils::ObjectsSetBase *>()) {
+		// A good iteration, without copying. Object sets are good for large collections.
+		collection.value<utils::ObjectsSetBase *>()->iterate(visitor);
+	} else if (collection.canConvert<QVariantList>()) {
+		// Warning: the whole list will be copied here!
+		for (const QVariant &item : collection.value<QVariantList>()) {
+			visitor(item);
+		}
+	} else {
+		// Fallback case. This is not very nice situation is we get here, but it still can work.
+		visitor(collection);
+	}
 }
 
 void ValuesFactory::reportError(const QString &message) const

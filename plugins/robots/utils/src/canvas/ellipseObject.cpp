@@ -64,7 +64,7 @@ void EllipseObject::setSemiDiameterY(int b)
 	mSemiDiameterY = b;
 }
 
-QRect EllipseObject::rect() const
+QRect EllipseObject::boundingRect() const
 {
 	return QRect(center() - QPoint(semiDiameterX(), semiDiameterY()), QSize(2 * semiDiameterX(), 2 * semiDiameterY()));
 }

@@ -28,6 +28,7 @@ class ROBOTS_UTILS_EXPORT ArcObject : public CanvasObject
 	Q_PROPERTY(QRect ellipseRect READ ellipseRect WRITE setEllipseRect)
 	Q_PROPERTY(int startAngle READ startAngle WRITE setStartAngle)
 	Q_PROPERTY(int spanAngle READ spanAngle WRITE setSpanAngle)
+	Q_PROPERTY(QRect boundingRect READ boundingRect)
 
 public:
 	explicit ArcObject(QObject *parent = 0);
@@ -61,6 +62,10 @@ public:
 
 	/// Sets the count of degrees that this arc occupies on ellipse.
 	void setSpanAngle(int angle);
+
+	/// Returns the bounding box of the whole ellipse of this arc.
+	/// @warning This is not the exact bounding rectangle of the arc.
+	QRect boundingRect() const;
 
 	void paint(QPainter *painter) override;
 

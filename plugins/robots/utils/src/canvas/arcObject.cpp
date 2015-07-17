@@ -72,6 +72,11 @@ void ArcObject::setSpanAngle(int angle)
 	mSpanAngle = angle;
 }
 
+QRect ArcObject::boundingRect() const
+{
+	return mRect;
+}
+
 void ArcObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);

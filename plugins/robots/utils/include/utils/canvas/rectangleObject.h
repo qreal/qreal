@@ -25,6 +25,7 @@ class ROBOTS_UTILS_EXPORT RectangleObject : public CanvasObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QRect shape READ shape)
+	Q_PROPERTY(QRect boundingRect READ boundingRect)
 
 public:
 	explicit RectangleObject(QObject *parent = 0);
@@ -32,6 +33,9 @@ public:
 
 	/// Returns the coordinates of this rectangle.
 	QRect shape() const;
+
+	/// Returns the coordinates of this rectangle.
+	QRect boundingRect() const;
 
 	void paint(QPainter *painter) override;
 

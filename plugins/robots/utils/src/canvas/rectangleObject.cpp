@@ -34,6 +34,11 @@ QRect RectangleObject::shape() const
 	return mShape;
 }
 
+QRect RectangleObject::boundingRect() const
+{
+	return mShape;
+}
+
 void RectangleObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);
