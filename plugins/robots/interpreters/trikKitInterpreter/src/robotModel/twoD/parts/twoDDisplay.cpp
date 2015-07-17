@@ -138,7 +138,6 @@ void Display::paint(QPainter *painter)
 	painter->scale(displayRect.width() / realWidth, displayRect.height() / realHeight);
 
 	Canvas::paint(painter);
-
 	painter->restore();
 }
 

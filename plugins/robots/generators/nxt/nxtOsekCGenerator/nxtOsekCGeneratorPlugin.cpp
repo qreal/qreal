@@ -199,7 +199,8 @@ void NxtOsekCGeneratorPlugin::flashRobot()
 void NxtOsekCGeneratorPlugin::uploadProgram()
 {
 	if (!mNxtToolsPresent) {
-		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
+		mMainWindowInterface->errorReporter()->addError(
+				tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
 		const QFileInfo fileInfo = generateCodeForProcessing();
 
@@ -226,13 +227,15 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 		QFile upload1(dir.absolutePath() + "/upload.bat");
 		QFile upload2(dir.absolutePath() + "/upload.sh");
 
-		mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload1.exists() && upload2.exists();
+		mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists()
+				&& upload1.exists() && upload2.exists();
 #else
 		QDir libnxt(dir.absolutePath() + "/libnxt");
 		QFile flash(dir.absolutePath() + "/flash.sh");
 		QFile upload(dir.absolutePath() + "/upload.sh");
 
-		mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
+		mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists()
+				&& flash.exists() && upload.exists();
 #endif
 	}
 }

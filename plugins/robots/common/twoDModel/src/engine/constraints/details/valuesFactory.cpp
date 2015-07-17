@@ -173,7 +173,7 @@ Value ValuesFactory::boundingRect(const Value &items) const
 				return;
 			}
 
-			bool hasX{}
+			bool hasX{};
 			bool hasY{};
 			const int x = propertyOf(item, "x", &hasX).toInt();
 			const int y = propertyOf(item, "y", &hasY).toInt();

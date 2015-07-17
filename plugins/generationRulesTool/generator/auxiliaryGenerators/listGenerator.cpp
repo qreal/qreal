@@ -44,11 +44,13 @@ qReal::IdList ListGenerator::listOfIds(const QSharedPointer<List> &listNode
 		if (optionalLinkPart->is<IncomingLinks>()) {
 			const auto linkType = qrtext::as<Identifier>(qrtext::as<IncomingLinks>(optionalLinkPart)->linkType());
 
-			return IncomingLinksListGenerator::generatedList(firstPart, linkType, logicalModelInterface, variablesTable, currentScope);
+			return IncomingLinksListGenerator::generatedList(firstPart, linkType, logicalModelInterface
+					, variablesTable, currentScope);
 		} else {
 			const auto linkType = qrtext::as<Identifier>(qrtext::as<OutcomingLinks>(optionalLinkPart)->linkType());
 
-			return OutcomingLinksListGenerator::generatedList(firstPart, linkType, logicalModelInterface, variablesTable, currentScope);
+			return OutcomingLinksListGenerator::generatedList(firstPart, linkType, logicalModelInterface
+					, variablesTable, currentScope);
 		}
 	}
 }
