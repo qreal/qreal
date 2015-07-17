@@ -5,7 +5,7 @@
     <name>QObject</name>
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="100"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="85"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="102"/>
         <source>No such object: %1</source>
         <translation>Objet inexistant : %1</translation>
     </message>
@@ -27,8 +27,8 @@
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="154"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="166"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="61"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="73"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="80"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="92"/>
         <source>No such event: %1</source>
         <translation>événement inexistant : %1</translation>
     </message>
@@ -69,7 +69,7 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="308"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="478"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="482"/>
         <source>Unknown tag &quot;%1&quot;.</source>
         <translation>Balise inconnue &quot;%1&quot;.</translation>
     </message>
@@ -84,57 +84,72 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="612"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="638"/>
         <source>Unknown value &quot;%1&quot;.</source>
         <translation>Valeur inconnue &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="693"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="719"/>
         <source>Invalid integer value &quot;%1&quot;</source>
         <translation>Valeur entière invalide &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="707"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="733"/>
         <source>Invalid floating point value &quot;%1&quot;</source>
         <translation>Nombre avec un point flottant invalide &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="720"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="746"/>
         <source>Invalid boolean value &quot;%1&quot; (expected &quot;true&quot; or &quot;false&quot;)</source>
         <translation>Une valeur booléenne invalide &quot;%1&quot; (&quot;true&quot; ou &quot;false&quot; sont attendues)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="736"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="762"/>
         <source>Duplicate id: &quot;%1&quot;</source>
         <translation>Un id non unique : &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="747"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="773"/>
         <source>%1 tag must have exactly %2 child tag(s)</source>
         <translation>Balise %1 doit avoir exactement %2 balise(s) enfant(s) </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="758"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="784"/>
         <source>%1 tag must have at least %2 child tag(s)</source>
         <translation>Balise %1 doit avoir au moins %2 balise(s) enfant(s)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="768"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="794"/>
         <source>&quot;%1&quot; tag must have &quot;%2&quot; attribute.</source>
         <translation>Balise %1 doit avoir un attribut %2.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="778"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="804"/>
         <source>Expected &quot;%1&quot; tag, got &quot;%2&quot;.</source>
         <translation>Une balise &quot;%1&quot; est attendue et non pas &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="792"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="818"/>
         <source>Attribute &quot;%1&quot; of the tag &quot;%2&quot; must not be empty.</source>
         <translation>L&apos;attribut &quot;%1&quot; de la balise &quot;%2&quot; ne doit pas être vide.</translation>
     </message>
     <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="64"/>
+        <source>Requesting variable value with empty name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="96"/>
+        <source>Object path is empty!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="214"/>
+        <source>Unknown type of object &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="219"/>
         <source>Object &quot;%1&quot; has no property &quot;%2&quot;</source>
         <translation>L&apos;objet &quot;%1&quot; n&apos;a pas de propriété &quot;%2&quot;</translation>
     </message>
@@ -142,6 +157,16 @@
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/speedPopup.cpp" line="25"/>
         <source>Speed:&amp;nbsp;&amp;nbsp;&lt;b&gt;%1%&lt;/b&gt;</source>
         <translation>Vitesse :&amp;nbsp;&amp;nbsp;&lt;b&gt;%1%&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="62"/>
+        <source>Invalid &lt;setState&gt; object type %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="68"/>
+        <source>Object %1 has no property %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -210,12 +235,12 @@
 <context>
     <name>twoDModel::constraints::ConstraintsChecker</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="92"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="95"/>
         <source>Error while parsing constraints: %1</source>
         <translation>Une erreur lors de l&apos;analyse des contraints est survenue : %1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="248"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="263"/>
         <source>Program has finished, but the task is not accomplished.</source>
         <translation>Le programme est terminé, mais la tache n&apos;est pas accomplie.</translation>
     </message>

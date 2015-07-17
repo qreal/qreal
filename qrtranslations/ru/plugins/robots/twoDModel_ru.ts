@@ -238,7 +238,7 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="308"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="478"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="482"/>
         <source>Unknown tag &quot;%1&quot;.</source>
         <translation>Неизвестный тэг &quot;%1&quot;.</translation>
     </message>
@@ -253,52 +253,52 @@
         <translation>В выражении &quot;using&quot; должен иметься тэг &quot;return&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="612"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="638"/>
         <source>Unknown value &quot;%1&quot;.</source>
         <translation>Неизвестное значение &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="693"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="719"/>
         <source>Invalid integer value &quot;%1&quot;</source>
         <translation>&quot;%1&quot; - не целое число</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="707"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="733"/>
         <source>Invalid floating point value &quot;%1&quot;</source>
         <translation>&quot;%1&quot; - не число</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="720"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="746"/>
         <source>Invalid boolean value &quot;%1&quot; (expected &quot;true&quot; or &quot;false&quot;)</source>
         <translation>&quot;%1&quot; - не логическое значение (ожидалось &quot;true&quot; или &quot;false&quot;)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="736"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="762"/>
         <source>Duplicate id: &quot;%1&quot;</source>
         <translation>Переобъявление события &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="747"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="773"/>
         <source>%1 tag must have exactly %2 child tag(s)</source>
         <translation>У тэга &quot;%1&quot; должно быть ровно %2 дочерних(ий) тэг(а)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="758"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="784"/>
         <source>%1 tag must have at least %2 child tag(s)</source>
         <translation>У тэга &quot;%1&quot; должно быть как минимум %2 дочерних(ий) тэг(а)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="768"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="794"/>
         <source>&quot;%1&quot; tag must have &quot;%2&quot; attribute.</source>
         <translation>У тэга &quot;%1&quot; должен быть аттрибут &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="778"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="804"/>
         <source>Expected &quot;%1&quot; tag, got &quot;%2&quot;.</source>
         <translation>Ожидался тэг &quot;%1&quot;, найден - &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="792"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/constraintsParser.cpp" line="818"/>
         <source>Attribute &quot;%1&quot; of the tag &quot;%2&quot; must not be empty.</source>
         <translation>Атрибут &quot;%1&quot; тэга &quot;%2&quot; не может быть пустым.</translation>
     </message>
@@ -324,14 +324,14 @@
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="154"/>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="166"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="61"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="73"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="80"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="92"/>
         <source>No such event: %1</source>
         <translation>Нет такого события: %1</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/conditionsFactory.cpp" line="100"/>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="85"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="102"/>
         <source>No such object: %1</source>
         <translation>Нет такого объекта: %1</translation>
     </message>
@@ -340,7 +340,22 @@
         <translation type="vanished">У объекта &quot;%1&quot; нет свойства &quot;%1&quot;</translation>
     </message>
     <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="64"/>
+        <source>Requesting variable value with empty name</source>
+        <translation>Запрашивается переменная с пустым именем</translation>
+    </message>
+    <message>
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="96"/>
+        <source>Object path is empty!</source>
+        <translation>Путь до объекта пуст!</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="214"/>
+        <source>Unknown type of object &quot;%1&quot;</source>
+        <translation>Неизвестный тип объекта &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/valuesFactory.cpp" line="219"/>
         <source>Object &quot;%1&quot; has no property &quot;%2&quot;</source>
         <translation>У объекта &quot;%1&quot; нет свойства &quot;%2&quot;</translation>
     </message>
@@ -348,6 +363,16 @@
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/parts/speedPopup.cpp" line="25"/>
         <source>Speed:&amp;nbsp;&amp;nbsp;&lt;b&gt;%1%&lt;/b&gt;</source>
         <translation>Скорость:&amp;nbsp;&amp;nbsp;&lt;b&gt;%1%&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="62"/>
+        <source>Invalid &lt;setState&gt; object type %1</source>
+        <translation>Неверный тип объекта %1 в элементе &lt;setState&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/details/triggersFactory.cpp" line="68"/>
+        <source>Object %1 has no property %2</source>
+        <translation>Объект %1 не имеет свойства %2</translation>
     </message>
 </context>
 <context>
@@ -482,12 +507,12 @@
 <context>
     <name>twoDModel::constraints::ConstraintsChecker</name>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="92"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="95"/>
         <source>Error while parsing constraints: %1</source>
         <translation>Ошибка чтения ограничений: %1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="248"/>
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/constraints/constraintsChecker.cpp" line="263"/>
         <source>Program has finished, but the task is not accomplished.</source>
         <translation>Программа отработала, но задание не выполнено.</translation>
     </message>
