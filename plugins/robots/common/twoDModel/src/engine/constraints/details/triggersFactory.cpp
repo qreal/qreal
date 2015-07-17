@@ -54,6 +54,25 @@ Trigger TriggersFactory::setVariable(const QString &name, const Value &value) co
 	return [this, name, value]() { mVariables[name] = value(); };
 }
 
+Trigger TriggersFactory::setObjectState(const Value &object, const QString &property, const Value &value) const
+{
+	return [this, object, property, value] {
+		const QVariant variantObject = object();
+		if (!variantObject.canConvert<QObject *>()) {
+			reportError(QObject::tr("Invalid <setState> object type %1").arg(variantObject.typeName()));
+		}
+
+		QObject * const objectInstance = variantObject.value<QObject *>();
+		const int index = objectInstance->metaObject()->indexOfProperty(qPrintable(property));
+		if (index < 0) {
+			reportError(QObject::tr("Object %1 has no property %2").arg(variantObject.typeName(), property));
+			return;
+		}
+
+		objectInstance->setProperty(qPrintable(property), value());
+	};
+}
+
 Trigger TriggersFactory::setUpEvent(const QString &id) const
 {
 	return [this, id]() {

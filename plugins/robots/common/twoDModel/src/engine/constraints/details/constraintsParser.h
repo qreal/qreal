@@ -90,6 +90,7 @@ private:
 	Trigger parseSuccessTag(const QDomElement &element);
 	Trigger parseSetterTag(const QDomElement &element);
 	Trigger parseEventSetDropTag(const QDomElement &element);
+	Trigger parseSetObjectStateTag(const QDomElement &element);
 
 	Value parseValue(const QDomElement &element);
 	Value parseBoolTag(const QDomElement &element);

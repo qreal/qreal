@@ -524,6 +524,55 @@ TEST_F(ConstraintsParserTests, objectStateTest)
 	testCase("object.otherObject.pointProperty.y", "20", "int");
 }
 
+TEST_F(ConstraintsParserTests, setObjectStateTest)
+{
+	auto testCase = [this](const QString &object, const QString &property, const QString &valueXml) {
+		mEvents.clear();
+		const QString xml = QString(
+				"<constraints>"
+				"	<timelimit value=\"2000\"/>"
+				"	<event id=\"event\" settedUpInitially=\"true\">"
+				"		<condition>"
+				"			<greater>"
+				"				<int value=\"2\"/>"
+				"				<int value=\"1\"/>"
+				"			</greater>"
+				"		</condition>"
+				"		<trigger>"
+				"			<setState object=\"%1\" property=\"%2\">"
+				"				%3"
+				"			</setState>"
+				"		</trigger>"
+				"	</event>"
+				"</constraints>").arg(object, property, valueXml);
+		ASSERT_TRUE(mParser.parse(xml));
+		ASSERT_EQ(mEvents.count(), 2);
+		Event * const event = mEvents["event"];
+		ASSERT_NE(event, nullptr);
+
+		bool eventFired = false;
+		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+		event->check();
+		ASSERT_TRUE(eventFired);
+	};
+
+	TestObjectB *objB = new TestObjectB;
+	objB->otherObject()->setIntProperty(100500);
+	objB->otherObject()->setStringProperty("abc");
+	mObjects["object"] = objB;
+
+	const QString increment11Xml =
+			"<sum>"
+			"	<objectState object=\"object.otherObject.intProperty\"/>"
+			"	<int value=\"11\"/>"
+			"</sum>";
+	testCase("object.otherObject", "intProperty", increment11Xml);
+	ASSERT_EQ(objB->otherObject()->intProperty(), 100511);
+	testCase("object.otherObject", "stringProperty", "<string value=\"abc123\"/>");
+	ASSERT_EQ(objB->otherObject()->stringProperty(), "abc123");
+}
+
 TEST_F(ConstraintsParserTests, objectsSetTest)
 {
 	auto testCase = [this](const QString &object, int size, int first, int last) {

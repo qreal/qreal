@@ -475,6 +475,10 @@ Trigger ConstraintsParser::parseTriggerContents(const QDomElement &element)
 		return parseEventSetDropTag(element);
 	}
 
+	if (tag == "setstate") {
+		return parseSetObjectStateTag(element);
+	}
+
 	error(QObject::tr("Unknown tag \"%1\".").arg(element.tagName()));
 	return mTriggers.doNothing();
 }
@@ -575,6 +579,20 @@ Trigger ConstraintsParser::parseEventSetDropTag(const QDomElement &element)
 	return element.tagName().toLower() == "setup"
 			? mTriggers.setUpEvent(id)
 			: mTriggers.dropEvent(id);
+}
+
+Trigger ConstraintsParser::parseSetObjectStateTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "object")
+			|| !assertAttributeNonEmpty(element, "property")
+			|| !assertChildrenExactly(element, 1)) {
+		return mTriggers.doNothing();
+	}
+
+	const Value object = mValues.objectState(element.attribute("object"));
+	const QString property = element.attribute("property");
+	const Value value = parseValue(element.firstChildElement());
+	return mTriggers.setObjectState(object, property, value);
 }
 
 Value ConstraintsParser::parseValue(const QDomElement &element)

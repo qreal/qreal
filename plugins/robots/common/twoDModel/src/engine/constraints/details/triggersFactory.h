@@ -48,6 +48,9 @@ public:
 	/// if it does not exist.
 	Trigger setVariable(const QString &name, const Value &value) const;
 
+	/// Produces new trigger that assigns to the Qt property with the name \a property of the \a object the \a value.
+	Trigger setObjectState(const Value &object, const QString &property, const Value &value) const;
+
 	/// Enables the event with the given id i.e. it will listen for its condition to satisfy and fire then.
 	Trigger setUpEvent(const QString &id) const;
 
