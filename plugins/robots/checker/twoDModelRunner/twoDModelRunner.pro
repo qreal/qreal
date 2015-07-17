@@ -44,3 +44,6 @@ SOURCES += \
 	$$PWD/main.cpp \
 	$$PWD/runner.cpp \
 	$$PWD/reporter.cpp \
+
+OTHER_FILES += \
+	$$PWD/launchScript.sh \

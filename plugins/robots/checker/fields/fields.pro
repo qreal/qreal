@@ -14,7 +14,10 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = \
-	twoDModelRunner \
-	compressor \
-	fields \
+include(../../../../global.pri)
+
+copyToDestdir(fields/, now)
+
+OTHER_FILES += \
+	$$PWD/fields/randomizer/finish1-test.xml \
+	$$PWD/fields/randomizer/finish2-test.xml \
