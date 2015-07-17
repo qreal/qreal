@@ -14,20 +14,34 @@
 
 #pragma once
 
-#include "trikBlocksFactoryBase.h"
+#include <kitBase/additionalPreferences.h>
+
+#include "declSpec.h"
+
+namespace Ui {
+class TrikAdditionalPreferences;
+}
 
 namespace trik {
-namespace blocks {
 
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+class TrikAdditionalPreferences : public kitBase::AdditionalPreferences
 {
-public:
-	TrikV62BlocksFactory() = default;
+	Q_OBJECT
 
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
+public:
+	explicit TrikAdditionalPreferences(const QStringList &realRobotNames, QWidget *parent = 0);
+	~TrikAdditionalPreferences();
+
+	void save() override;
+	void restoreSettings() override;
+	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel) override;
+
+signals:
+	void settingsChanged();
+
+private:
+	Ui::TrikAdditionalPreferences *mUi;
+	const QStringList mRealRobotNames;
 };
 
-}
 }

@@ -18,6 +18,7 @@ SUBDIRS = \
 	interpreterCore \
 	nullKitInterpreter \
 	nxtKitInterpreter \
+	trikKitInterpreterCommon \
 	trikV6KitInterpreter \
 	trikV62KitInterpreter \
 	ev3KitInterpreter \

@@ -12,22 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDSpeaker.h"
 
-#include "trikBlocksFactoryBase.h"
+using namespace trik::robotModel::twoD::parts;
 
-namespace trik {
-namespace blocks {
+const int duration = 1000;
 
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+TwoDSpeaker::TwoDSpeaker(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
+		, twoDModel::engine::TwoDModelEngineInterface &engine)
+	: robotModel::parts::TrikSpeaker(info, port)
+	, mEngine(engine)
 {
-public:
-	TrikV62BlocksFactory() = default;
-
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
-};
-
 }
+
+void TwoDSpeaker::play(const QString &filePath)
+{
+	Q_UNUSED(filePath)
+	mEngine.playSound(duration);
 }

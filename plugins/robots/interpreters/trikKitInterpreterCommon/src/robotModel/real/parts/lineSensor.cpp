@@ -12,22 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "trikKitInterpreterCommon/robotModel/real/parts/lineSensor.h"
 
-#include "trikBlocksFactoryBase.h"
+using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
-namespace trik {
-namespace blocks {
-
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+LineSensor::LineSensor(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+	: robotModel::parts::TrikLineSensor(info, port), mRobotCommunicator(tcpRobotCommunicator)
 {
-public:
-	TrikV62BlocksFactory() = default;
-
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
-};
-
 }
+
+void LineSensor::init()
+{
+}
+
+void LineSensor::detectLine()
+{
+}
+
+void LineSensor::read()
+{
+	emit newData({});
 }

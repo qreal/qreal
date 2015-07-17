@@ -14,20 +14,31 @@
 
 #pragma once
 
-#include "trikBlocksFactoryBase.h"
+#include <trikKit/robotModel/parts/trikObjectSensor.h>
+
+#include "trikKitInterpreterCommon/declSpec.h"
 
 namespace trik {
-namespace blocks {
+namespace robotModel {
+namespace twoD {
+namespace parts {
 
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+/// Stub for TRIK color sensor for interpreter.
+/// Does nothing until object sensor emulation will be requested for 2D model.
+class ObjectSensor : public robotModel::parts::TrikObjectSensor
 {
-public:
-	TrikV62BlocksFactory() = default;
+	Q_OBJECT
 
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
+public:
+	ObjectSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
+
+	void init() override;
+	void detect() override;
+	void read() override;
 };
 
+}
+}
 }
 }

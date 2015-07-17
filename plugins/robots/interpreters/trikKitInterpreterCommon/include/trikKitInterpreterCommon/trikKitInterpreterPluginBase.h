@@ -17,25 +17,25 @@
 #include <QtCore/QScopedPointer>
 
 #include <kitBase/kitPluginInterface.h>
+#include <twoDModel/robotModel/twoDRobotModel.h>
 #include <twoDModel/engine/twoDModelControlInterface.h>
-#include <trikKit/blocks/trikV62BlocksFactory.h>
-#include <trikKitInterpreterCommon/trikKitInterpreterPluginBase.h>
 
-#include "trikV62AdditionalPreferences.h"
-//#include "robotModel/real/trikV62RealRobotModel.h"
-//#include "robotModel/twoD/trikV62TwoDRobotModel.h"
+#include <trikKit/blocks/trikBlocksFactoryBase.h>
+#include <trikKit/robotModel/trikRobotModelBase.h>
+
+#include "trikAdditionalPreferences.h"
+
+#include "declSpec.h"
 
 namespace trik {
 
-class TrikV62KitInterpreterPlugin : public TrikKitInterpreterPluginBase
+class TrikKitInterpreterPluginBase : public QObject, public kitBase::KitPluginInterface
 {
-	Q_OBJECT
-	Q_INTERFACES(kitBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "trik.TrikV62KitInterpreterPlugin")
-
 public:
-	TrikV62KitInterpreterPlugin();
-//	~TrikV62KitInterpreterPlugin() override;
+	TrikKitInterpreterPluginBase();
+	virtual ~TrikKitInterpreterPluginBase();
+
+
 
 //	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
@@ -61,18 +61,27 @@ public:
 //private slots:
 //	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
+protected:
+	/// Takes ownership over all supplied pointers.
+	void initKitInterpreterPluginBase(
+			robotModel::TrikRobotModelBase * const realRobotModel
+			, twoDModel::robotModel::TwoDRobotModel * const twoDRobotModel
+			, blocks::TrikBlocksFactoryBase * const blocksFactory
+			);
+
 private:
-//	TrikKitInterpreterPluginBase mPluginImpl;
-//	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
-//	robotModel::real::RealRobotModel mRealRobotModel;
-//	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
+	QScopedPointer<twoDModel::robotModel::TwoDRobotModel> mTwoDRobotModel;
 
-//	/// @todo Use shared pointers instead of this sh~.
-//	blocks::TrikV62BlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
-//	bool mOwnsBlocksFactory = true;
+	/// @todo Use shared pointers instead of this sh~.
+	/// Ownership depends on mOwnsBlocksFactory flag.
+	blocks::TrikBlocksFactoryBase *mBlocksFactory = nullptr;
+	bool mOwnsBlocksFactory = true;
 
-//	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
-//	bool mOwnsAdditionalPreferences = true;
+	/// Ownership depends on mOwnsAdditionalPreferences flag.
+	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;
+	bool mOwnsAdditionalPreferences = true;
 
 //	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 //	QString mCurrentlySelectedModelName;

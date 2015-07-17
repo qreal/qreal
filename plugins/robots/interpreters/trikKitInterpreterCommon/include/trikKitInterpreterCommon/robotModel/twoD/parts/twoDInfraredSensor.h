@@ -14,20 +14,28 @@
 
 #pragma once
 
-#include "trikBlocksFactoryBase.h"
+#include <twoDModel/robotModel/parts/rangeSensor.h>
+
+#include "trikKitInterpreterCommon/declSpec.h"
 
 namespace trik {
-namespace blocks {
+namespace robotModel {
+namespace twoD {
+namespace parts {
 
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+class TwoDInfraredSensor : public twoDModel::robotModel::parts::RangeSensor
 {
-public:
-	TrikV62BlocksFactory() = default;
+	Q_OBJECT
 
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
+public:
+	TwoDInfraredSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
+			, twoDModel::engine::TwoDModelEngineInterface &engine);
+
+	void read() override;
 };
 
+}
+}
 }
 }

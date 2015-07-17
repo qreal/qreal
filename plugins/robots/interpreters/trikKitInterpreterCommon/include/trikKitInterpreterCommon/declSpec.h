@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,12 @@
 
 #pragma once
 
-#include "trikBlocksFactoryBase.h"
+#include <QtCore/qglobal.h>
 
-namespace trik {
-namespace blocks {
-
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
-{
-public:
-	TrikV62BlocksFactory() = default;
-
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
-};
-
-}
-}
+#ifndef ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT
+#  if defined(ROBOTS_TRIK_KIT_INTERPRETER_COMMON_LIBRARY)
+#    define ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Q_DECL_EXPORT
+#  else
+#    define ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Q_DECL_IMPORT
+#  endif
+#endif

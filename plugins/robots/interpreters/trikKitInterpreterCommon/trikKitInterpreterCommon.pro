@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2015 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-HEADERS += \
-	robotCommunication/tcpRobotCommunicator.h \
+TARGET = trik-kit-interpreter-common
+TEMPLATE = lib
 
-SOURCES += \
-	robotCommunication/tcpRobotCommunicator.cpp \
+include(../../../../global.pri)
+
+DEFINES += ROBOTS_TRIK_KIT_INTERPRETER_COMMON_LIBRARY
+
+include(trikKitInterpreterCommon.pri)

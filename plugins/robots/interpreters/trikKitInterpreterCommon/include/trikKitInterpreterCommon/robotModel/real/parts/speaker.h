@@ -14,20 +14,32 @@
 
 #pragma once
 
-#include "trikBlocksFactoryBase.h"
+#include <trikKit/robotModel/parts/trikSpeaker.h>
+#include <utils/tcpRobotCommunicator.h>
+
+#include "trikKitInterpreterCommon/declSpec.h"
 
 namespace trik {
-namespace blocks {
+namespace robotModel {
+namespace real {
+namespace parts {
 
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Speaker : public robotModel::parts::TrikSpeaker
 {
-public:
-	TrikV62BlocksFactory() = default;
+	Q_OBJECT
 
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
+public:
+	Speaker(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+
+	void play(const QString &filePath) override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
+}
+}
 }
 }

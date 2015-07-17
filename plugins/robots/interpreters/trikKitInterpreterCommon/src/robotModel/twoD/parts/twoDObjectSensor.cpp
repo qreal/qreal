@@ -12,22 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDObjectSensor.h"
 
-#include "trikBlocksFactoryBase.h"
+using namespace trik::robotModel::twoD::parts;
+using namespace kitBase::robotModel;
 
-namespace trik {
-namespace blocks {
-
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+ObjectSensor::ObjectSensor(const DeviceInfo &info, const PortInfo &port)
+	: robotModel::parts::TrikObjectSensor(info, port)
 {
-public:
-	TrikV62BlocksFactory() = default;
-
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
-};
-
 }
+
+void ObjectSensor::init()
+{
+}
+
+void ObjectSensor::detect()
+{
+}
+
+void ObjectSensor::read()
+{
+	emit newData({});
 }

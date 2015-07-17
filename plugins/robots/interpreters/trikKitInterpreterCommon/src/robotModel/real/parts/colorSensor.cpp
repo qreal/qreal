@@ -12,22 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "trikKitInterpreterCommon/robotModel/real/parts/colorSensor.h"
 
-#include "trikBlocksFactoryBase.h"
+using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
-namespace trik {
-namespace blocks {
-
-/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
-class TrikV62BlocksFactory : public TrikBlocksFactoryBase
+ColorSensor::ColorSensor(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &robotCommunicator)
+	: robotModel::parts::TrikColorSensor(info, port)
+	, mRobotCommunicator(robotCommunicator)
 {
-public:
-	TrikV62BlocksFactory() = default;
-
-	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
-	qReal::IdList providedBlocks() const override;
-};
-
 }
+
+void ColorSensor::init()
+{
+}
+
+void ColorSensor::read()
+{
+	emit newData({});
 }

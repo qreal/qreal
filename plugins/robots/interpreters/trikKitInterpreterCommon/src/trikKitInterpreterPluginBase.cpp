@@ -12,37 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikV62KitInterpreterPlugin.h"
+#include "trikKitInterpreterCommon/trikKitInterpreterPluginBase.h"
 
-//#include <QtWidgets/QApplication>
-//#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLineEdit>
 
-//#include <twoDModel/engine/twoDModelEngineFacade.h>
-//#include <qrkernel/settingsManager.h>
-//#include <qrkernel/settingsListener.h>
+#include <twoDModel/engine/twoDModelEngineFacade.h>
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 
 using namespace trik;
-//using namespace qReal;
+using namespace qReal;
 
-//const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-//const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
-#include "robotModel/real/trikV62RealRobotModel.h"
-#include "robotModel/twoD/trikV62TwoDRobotModel.h"
-
-TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
-	: TrikKitInterpreterPluginBase()
+TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase()
 {
-	const auto realRobotModel = new robotModel::real::RealRobotModel(kitId(), "trikKitRobot");
-	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
-	const auto blocksFactory = new blocks::TrikV62BlocksFactory();
-	initKitInterpreterPluginBase(realRobotModel, twoDRobotModel, blocksFactory);
-}
-
-//	  mRealRobotModel(kitId(), "trikKitRobot") // todo: somewhere generate robotId for each robot
-//	, mTwoDRobotModel(mRealRobotModel)
-//	, mBlocksFactory(new blocks::TrikV62BlocksFactory)
-//{
 //	mTwoDRobotModel.setWheelPorts("M4", "M3");
 //	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
@@ -50,9 +36,27 @@ TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 //	mTwoDModel.reset(modelEngine);
 
 //	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel.name() });
-//}
+}
 
-//TrikV62KitInterpreterPlugin::~TrikV62KitInterpreterPlugin()
+void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase(
+		robotModel::TrikRobotModelBase * const realRobotModel
+		, twoDModel::robotModel::TwoDRobotModel * const twoDRobotModel
+		, blocks::TrikBlocksFactoryBase * const blocksFactory
+		)
+{
+	mRealRobotModel.reset(realRobotModel);
+	mTwoDRobotModel.reset(twoDRobotModel);
+	mBlocksFactory = blocksFactory;
+
+	mTwoDModel.reset(new twoDModel::engine::TwoDModelEngineFacade(*mTwoDRobotModel));
+
+	mTwoDRobotModel->setEngine(mTwoDModel->engine());
+
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel.name() });
+}
+
+
+//TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 //{
 //	if (mOwnsAdditionalPreferences) {
 //		delete mAdditionalPreferences;
@@ -63,7 +67,7 @@ TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 //	}
 //}
 
-//void TrikV62KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
+//void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 //{
 //	connect(&configurator.eventsForKitPlugin()
 //			, &kitBase::EventsForKitPluginInterface::robotModelChanged
@@ -87,22 +91,22 @@ TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 //			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 //}
 
-//QString TrikV62KitInterpreterPlugin::kitId() const
+//QString TrikKitInterpreterPlugin::kitId() const
 //{
 //	return "trikV62Kit";
 //}
 
-//QString TrikV62KitInterpreterPlugin::friendlyKitName() const
+//QString TrikKitInterpreterPlugin::friendlyKitName() const
 //{
 //	return tr("TRIK (new case)");
 //}
 
-//QList<kitBase::robotModel::RobotModelInterface *> TrikV62KitInterpreterPlugin::robotModels()
+//QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 //{
 //	return {&mRealRobotModel, &mTwoDRobotModel};
 //}
 
-//kitBase::blocksBase::BlocksFactoryInterface *TrikV62KitInterpreterPlugin::blocksFactoryFor(
+//kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
 //		const kitBase::robotModel::RobotModelInterface *model)
 //{
 //	Q_UNUSED(model);
@@ -110,40 +114,40 @@ TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 //	return mBlocksFactory;
 //}
 
-//kitBase::robotModel::RobotModelInterface *TrikV62KitInterpreterPlugin::defaultRobotModel()
+//kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
 //{
 //	return &mTwoDRobotModel;
 //}
 
-//QList<kitBase::AdditionalPreferences *> TrikV62KitInterpreterPlugin::settingsWidgets()
+//QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 //{
 //	mOwnsAdditionalPreferences = false;
 //	return {mAdditionalPreferences};
 //}
 
-//QWidget *TrikV62KitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
+//QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
 //{
 //	return model.name().toLower().contains("twod")
 //			? nullptr
 //			: produceIpAddressConfigurer();
 //}
 
-//QList<qReal::ActionInfo> TrikV62KitInterpreterPlugin::customActions()
+//QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 //{
 //	return {};
 //}
 
-//QList<HotKeyActionInfo> TrikV62KitInterpreterPlugin::hotKeyActions()
+//QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
 //{
 //	return {};
 //}
 
-//QString TrikV62KitInterpreterPlugin::defaultSettingsFile() const
+//QString TrikKitInterpreterPlugin::defaultSettingsFile() const
 //{
 //	return ":/trikDefaultSettings.ini";
 //}
 
-//QIcon TrikV62KitInterpreterPlugin::iconForFastSelector(
+//QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 //		const kitBase::robotModel::RobotModelInterface &robotModel) const
 //{
 //	return &robotModel == &mRealRobotModel
@@ -153,12 +157,12 @@ TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 //					: QIcon();
 //}
 
-//kitBase::DevicesConfigurationProvider *TrikV62KitInterpreterPlugin::devicesConfigurationProvider()
+//kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 //{
 //	return &mTwoDModel->devicesConfigurationProvider();
 //}
 
-//QWidget *TrikV62KitInterpreterPlugin::produceIpAddressConfigurer()
+//QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
 //{
 //	QLineEdit * const quickPreferences = new QLineEdit;
 //	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));

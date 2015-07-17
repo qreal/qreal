@@ -14,11 +14,11 @@
 
 TARGET = robots-trik-v62-interpreter
 
-include(../../../../global.pri)
-
 TEMPLATE = lib
 CONFIG += plugin
 
+include(../../../../global.pri)
+
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-include(src/trikKitInterpreter.pri)
+include(trikV62KitInterpreter.pri)
