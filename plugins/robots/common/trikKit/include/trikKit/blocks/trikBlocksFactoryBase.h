@@ -19,6 +19,7 @@
 namespace trik {
 namespace blocks {
 
+/// Base class for block factory for all TRIK variants, creates common blocks.
 class TrikBlocksFactoryBase : public kitBase::blocksBase::CommonBlocksFactory
 {
 public:

@@ -19,6 +19,7 @@
 namespace trik {
 namespace blocks {
 
+/// Blocks factory for a 6.2 TRIK case (with encoders marked as E1 - E4).
 class TrikV62BlocksFactory : public TrikBlocksFactoryBase
 {
 public:

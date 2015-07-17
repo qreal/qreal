@@ -25,9 +25,6 @@ class TrikRobotModelV62 : public TrikRobotModelBase
 
 public:
 	TrikRobotModelV62(const QString &kitId, const QString &robotId);
-
-	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
-
 };
 
 }

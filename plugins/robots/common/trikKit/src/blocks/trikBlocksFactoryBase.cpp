@@ -15,10 +15,8 @@
 #include "trikKit/blocks/trikBlocksFactoryBase.h"
 
 #include <kitBase/blocksBase/common/enginesStopBlock.h>
-#include <kitBase/blocksBase/common/clearEncoderBlock.h>
 
 #include <kitBase/blocksBase/common/waitForAccelerometerBlock.h>
-#include <kitBase/blocksBase/common/waitForEncoderBlock.h>
 #include <kitBase/blocksBase/common/waitForGyroscopeSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForLightSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
@@ -26,6 +24,7 @@
 #include <kitBase/blocksBase/common/getButtonCodeBlock.h>
 
 #include <qrutils/interpreter/blocks/emptyBlock.h>
+
 #include "details/smileBlock.h"
 #include "details/drawPixelBlock.h"
 #include "details/drawLineBlock.h"
@@ -35,8 +34,6 @@
 #include "details/setPainterWidthBlock.h"
 #include "details/setPainterColorBlock.h"
 #include "details/setBackgroundBlock.h"
-#include "details/trikEnginesBackwardBlock.h"
-#include "details/trikEnginesForwardBlock.h"
 #include "details/initCameraBlock.h"
 #include "details/detectLineBlock.h"
 #include "details/lineDetectorToVariable.h"

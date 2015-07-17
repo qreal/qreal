@@ -29,25 +29,8 @@ TrikRobotModelV62::TrikRobotModelV62(const QString &kitId, const QString &robotI
 	addAllowedConnection(PortInfo("S4", output, {}), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("S6", output, {}), { servoMotorInfo() });
 
-	addAllowedConnection(PortInfo("M1", output, {}), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M2", output, {}), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M3", output, {}), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M4", output, {}), { powerMotorInfo() });
-
 	addAllowedConnection(PortInfo("E1", input, {"M1"}, "encoder1"), { encoderInfo() });
 	addAllowedConnection(PortInfo("E2", input, {"M2"}, "encoder2"), { encoderInfo() });
 	addAllowedConnection(PortInfo("E3", input, {"M3"}, "encoder3"), { encoderInfo() });
 	addAllowedConnection(PortInfo("E4", input, {"M4"}, "encoder4"), { encoderInfo() });
-}
-
-QList<PortInfo> TrikRobotModelV62::configurablePorts() const
-{
-	QList<PortInfo> const digitalPorts = {
-			  PortInfo("D1", input, {}, "sensorD1")
-			, PortInfo("D2", input, {}, "sensorD2")
-			, PortInfo("D3", input, {}, "sensorD3") };
-
-	return CommonRobotModel::configurablePorts() + digitalPorts + QList<PortInfo>{PortInfo("LineSensorPort"
-			, tr("Line sensor"), input, { "TrikLineSensorPort" }, "lineSensor"
-			, PortInfo::ReservedVariableType::vector)};
 }
