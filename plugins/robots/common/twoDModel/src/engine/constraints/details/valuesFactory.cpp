@@ -162,7 +162,7 @@ Value ValuesFactory::boundingRect(const Value &items) const
 		int xMax = INT_MIN;
 		int yMax = INT_MIN;
 		iterate(items(), [this, &xMin, &yMin, &xMax, &yMax, &empty](const QVariant &item) {
-			bool hasBoundingRect;
+			bool hasBoundingRect{};
 			const QRect boundingRect = propertyOf(item, "boundingRect", &hasBoundingRect).toRect();
 			if (hasBoundingRect) {
 				empty = false;
@@ -173,7 +173,8 @@ Value ValuesFactory::boundingRect(const Value &items) const
 				return;
 			}
 
-			bool hasX, hasY;
+			bool hasX{}
+			bool hasY{};
 			const int x = propertyOf(item, "x", &hasX).toInt();
 			const int y = propertyOf(item, "y", &hasY).toInt();
 			if (hasX && hasY) {
@@ -207,7 +208,8 @@ QVariant ValuesFactory::propertyChain(const QVariant &value
 
 QVariant ValuesFactory::propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const
 {
-	bool hasProperty, unknownType;
+	bool hasProperty{};
+	bool unknownType{};
 	const QVariant result = propertyOf(value, property, &hasProperty, &unknownType);
 
 	if (unknownType) {
@@ -228,6 +230,7 @@ QVariant ValuesFactory::propertyOf(const QVariant &value, const QString &propert
 {
 	QVariant result;
 
+	/// This code is here just because Dmitry can. And everyone else is lazy enough.
 	hasProperty && (*hasProperty = false);
 	unknownType && (*unknownType = false);
 

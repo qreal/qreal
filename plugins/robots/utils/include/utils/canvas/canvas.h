@@ -106,16 +106,29 @@ public:
 	void paint(QPainter *painter) override;
 
 protected:
-	QList<PointObject *> mPixels;          // Takes ownership
-	QList<LineObject *> mLines;            // Takes ownership
-	QList<RectangleObject *> mRectangles;  // Takes ownership
-	QList<EllipseObject *> mEllipses;      // Takes ownership
-	QList<TextObject *> mLabels;           // Takes ownership
-	QList<ArcObject *> mArcs;              // Takes ownership
-	// We need duplicating objects map due to performance reasons:
-	// when someone requests all objects on the canvas sorted by their creation time
-	// it is much quicker to return ready list then to collect it each time from 7 lists and then sort.
-	QList<CanvasObject *> mObjects;        // Takes ownership
+	/// Has ownership
+	QList<PointObject *> mPixels;
+
+	/// Has ownership
+	QList<LineObject *> mLines;
+
+	/// Has ownership
+	QList<RectangleObject *> mRectangles;
+
+	/// Has ownership
+	QList<EllipseObject *> mEllipses;
+
+	/// Has ownership
+	QList<TextObject *> mLabels;
+
+	/// Has ownership
+	QList<ArcObject *> mArcs;
+
+	/// We need duplicating objects map due to performance reasons:
+	/// when someone requests all objects on the canvas sorted by their creation time
+	/// it is much quicker to return ready list than to collect it each time from 7 lists and then sort.
+	/// Has ownership
+	QList<CanvasObject *> mObjects;
 
 	int mCurrentPenWidth;
 	QColor mCurrentPenColor;

@@ -41,19 +41,19 @@ public:
 	/// Clears everything on a display without redrawing it.
 	virtual void clearScreen() = 0;
 
-	/// Draw point on the widget without redrawing it.
+	/// Draw point on the widget without redrawing display.
 	/// @param x - x coordinate.
 	/// @param y - y coordinate.
 	virtual void drawPixel(int x, int y) = 0;
 
-	/// Draw line on the widget without redrawing it.
+	/// Draw line on the widget without redrawing display.
 	/// @param x1 - first point's x coordinate.
 	/// @param y1 - first point's y coordinate.
 	/// @param x1 - second point's x coordinate.
 	/// @param y1 - second point's y coordinate.
 	virtual void drawLine(int x1, int y1, int x2, int y2) = 0;
 
-	/// Draw rect on the widget without redrawing it.
+	/// Draw rect on the widget without redrawing display.
 	/// @param x - x coordinate.
 	/// @param y - y coordinate.
 	/// @param width - rect's width.

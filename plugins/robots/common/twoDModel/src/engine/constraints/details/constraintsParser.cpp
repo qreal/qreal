@@ -585,7 +585,8 @@ Trigger ConstraintsParser::parseSetObjectStateTag(const QDomElement &element)
 {
 	if (!assertAttributeNonEmpty(element, "object")
 			|| !assertAttributeNonEmpty(element, "property")
-			|| !assertChildrenExactly(element, 1)) {
+			|| !assertChildrenExactly(element, 1))
+	{
 		return mTriggers.doNothing();
 	}
 

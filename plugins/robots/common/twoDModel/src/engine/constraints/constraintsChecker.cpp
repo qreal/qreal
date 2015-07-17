@@ -178,12 +178,14 @@ void ConstraintsChecker::bindRobotObject(twoDModel::model::RobotModel * const ro
 
 	// Led, display, marker, all such devices will be also caught here.
 	connect(&robot->info().configuration(), &kitBase::robotModel::ConfigurationInterface::deviceConfigured
-			, [=](const kitBase::robotModel::robotParts::Device *device) {
+			, [=](const kitBase::robotModel::robotParts::Device *device)
+	{
 		bindDeviceObject(robotId, robot, device->port());
 	});
 
 	connect(&robot->configuration(), &model::SensorsConfiguration::deviceRemoved
-			, [=](const kitBase::robotModel::PortInfo &port, bool isLoading) {
+			, [=](const kitBase::robotModel::PortInfo &port, bool isLoading)
+	{
 		Q_UNUSED(isLoading)
 		mObjects.remove(portName(robotId, robot, port));
 	});
@@ -224,7 +226,7 @@ QString ConstraintsChecker::portName(const QString &robotId
 			: port.name();
 
 	return portsWithSuchName > 1
-			// If collision in name exists then user must specify what exactly port he wishes to process.
+			// If collision in name exists then user must specify what port exactly he wishes to process.
 			? QString("%1.%2_%3").arg(robotId, readablePortName
 					, port.direction() == kitBase::robotModel::input ? "in" : "out")
 			: QString("%1.%2").arg(robotId, readablePortName);
