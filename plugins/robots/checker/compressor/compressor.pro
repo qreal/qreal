@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group and Dmitry Mordvinov
+# Copyright 2015 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,20 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+TARGET = compressor
 
-SUBDIRS = \
-	editor \
-	examples \
-	common \
-	interpreters \
-	generators \
-	qextserialport \
-	utils \
-	checker \
+include(../../../../global.pri)
 
-qextserialport.subdir = $$PWD/thirdparty/qextserialport
-common.depends = qextserialport utils
-interpreters.depends = common qextserialport utils
-generators.depends = common
-checker.depends = interpreters
+TEMPLATE = app
+
+QT -= gui
+
+CONFIG += console
+
+SOURCES += \
+	main.cpp \
+	folderCompressor.cpp \
+
+HEADERS += \
+	folderCompressor.h \

@@ -232,8 +232,9 @@ void NullMainWindow::openFirstDiagram()
 	const Id rootId = mGraphicalModel->rootId();
 	Id graphicalDiagramId;
 	for (const Id diagram : mGraphicalModel->children(rootId)) {
-		if (mGraphicalModel->isGraphicalId(diagram)) {
+		if (mGraphicalModel->graphicalRepoApi().isGraphicalElement(diagram)) {
 			graphicalDiagramId = diagram;
+			break;
 		}
 	}
 
