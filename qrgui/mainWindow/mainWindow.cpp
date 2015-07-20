@@ -2079,6 +2079,21 @@ void MainWindow::initScriptAPI()
 	scriptAPIthread->start();
 }
 
+void MainWindow::evaluateInFileScript(const QString &fileName) // надо ли помещать в этом случае в отдельный поток?
+{
+	mScriptAPI.evaluateInFileScript(fileName);
+}
+
+void MainWindow::evaluateScript(const QString &script)
+{
+	mScriptAPI.evaluateScript(script);
+}
+
+void MainWindow::registerNewFunction(QScriptEngine::FunctionSignature fun, int length)
+{
+	mScriptAPI.regNewFunct(fun, length);
+}
+
 void MainWindow::beginPaletteModification()
 {
 }

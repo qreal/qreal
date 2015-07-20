@@ -75,9 +75,34 @@ void ScriptAPI::evaluate()
 	mVirtualCursor->raise();
 
 	mScriptEngine.setProcessEventsInterval(20);
-	mScriptEngine.evaluate(fileContent, fileName);
+	mScriptEngine.evaluate(fileContent, fileName); // вообще fileName используется на error reporting. и как-то странно писать их в fileName
 
 	abortEvaluation();
+}
+
+void ScriptAPI::evaluateScript(const QString &script)
+{
+	mScriptEngine.setProcessEventsInterval(20);
+	mScriptEngine.evaluate(script); // надо ли писать об ошибках в файл?
+
+	abortEvaluation();
+}
+
+void ScriptAPI::evaluateInFileScript(const QString &fileName)
+{
+	const QString fileContent = InFile::readAll(fileName);
+	mScriptEngine.setProcessEventsInterval(20);
+	mScriptEngine.evaluate(fileContent); // надо ли писать об ошибках в файл?
+
+	abortEvaluation();
+}
+
+void ScriptAPI::regNewFunct(QScriptEngine::FunctionSignature fun, int length)
+{
+	Q_UNUSED(length);
+
+	QScriptValue functionValue = mScriptEngine.newFunction(fun);
+	mScriptEngine.globalObject().setProperty("assert", functionValue);
 }
 
 void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration)

@@ -54,6 +54,15 @@ public:
 	/// Starts evaluatiion of the script with script engine.
 	void evaluate();
 
+	/// Starts evaluatiion of the script "script" with script engine.
+	void evaluateScript(const QString &script);
+
+	/// Starts evaluatiion of the script with script engine located in "fileName".
+	void evaluateInFileScript(const QString &fileName);
+
+	/// Registres new function fun in QScriptEngine for using fun in scripts
+	void regNewFunct(QScriptEngine::FunctionSignature fun, int length = 0);
+
 	/// Freezes execution for duration. Starting event loop breaking when duration time ellapsed.
 	Q_INVOKABLE void wait(int duration);
 

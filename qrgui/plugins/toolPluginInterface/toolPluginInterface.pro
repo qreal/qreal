@@ -41,6 +41,7 @@ HEADERS += \
 	$$PWD/usedInterfaces/projectManagementInterface.h \
 	$$PWD/usedInterfaces/mainWindowInterpretersInterface.h \
 	$$PWD/usedInterfaces/mainWindowDockInterface.h \
+	$$PWD/usedInterfaces/mainWindowScriptAPIInterface.h \
 	$$PWD/projectConverter.h \
 	$$PWD/hotKeyActionInfo.h \
 	$$PWD/systemEvents.h \

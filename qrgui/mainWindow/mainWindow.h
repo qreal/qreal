@@ -30,6 +30,7 @@
 #include "tabWidget.h"
 #include "startWidget/startWidget.h"
 #include "scriptAPI/scriptAPI.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
@@ -75,6 +76,7 @@ class TextManager;
 class MainWindow : public QMainWindow
 		, public qReal::gui::MainWindowInterpretersInterface
 		, public qReal::gui::MainWindowDockInterface
+		, public MainWidnowScriptAPIInterface
 {
 	Q_OBJECT
 
@@ -182,6 +184,11 @@ public:
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
 	void setEnabledForAllElementsInPalette(bool enabled) override;
 	void endPaletteModification() override;
+
+	// методы интрефейса MainWindowScriptAPIInterface
+	void evaluateScript(const QString &script) override;
+	void evaluateInFileScript(const QString &fileName) override;
+	void registerNewFunction(QScriptEngine::FunctionSignature fun, int length) override;
 
 	/// Additional actions for interpreter palette.
 	QList<QAction *> optionalMenuActionsForInterpretedPlugins();
