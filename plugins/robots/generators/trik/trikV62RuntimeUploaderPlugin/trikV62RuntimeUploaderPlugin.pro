@@ -30,17 +30,17 @@ includes(plugins/robots/generators/trik/trikV62GeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo robots-generator-base robots-trik-v62-generator-base)
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-trik-v62-generator-base robots-utils)
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62RuntimeUploaderPlugin_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV62RuntimeUploaderPlugin_fr.ts \
 
 HEADERS += \
-	$$PWD/trikRuntimeUploaderPlugin.h \
+	$$PWD/trikV62RuntimeUploaderPlugin.h \
 
 SOURCES += \
-	$$PWD/trikRuntimeUploaderPlugin.cpp \
+	$$PWD/trikV62RuntimeUploaderPlugin.cpp \
 
 RESOURCES = \
-	$$PWD/trikRuntimeUploaderPlugin.qrc \
+	$$PWD/trikV62RuntimeUploaderPlugin.qrc \

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,25 @@
 #pragma once
 
 #include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <utils/uploaderTool.h>
 
 namespace trik {
 
-class TrikRuntimeUploaderPlugin : public QObject, public qReal::ToolPluginInterface
+/// Uploader for trikRuntime (old case).
+class TrikV6RuntimeUploaderPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
-	Q_PLUGIN_METADATA(IID "trik.TrikRuntimeUploaderPlugin")
+	Q_PLUGIN_METADATA(IID "trik.TrikV6RuntimeUploaderPlugin")
 
 public:
-	TrikRuntimeUploaderPlugin();
+	TrikV6RuntimeUploaderPlugin();
 
 	void init(const qReal::PluginConfigurator &configurator) override;
 	QList<qReal::ActionInfo> actions() override;  // Transfers ownership of QAction objects.
 
-private slots:
-	void uploadRuntime();
-
 private:
-	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
-	QAction *mAction;  // Doesn't have ownership; may be disposed by GUI.
+	UploaderTool mUploaderTool;
 };
 
 }

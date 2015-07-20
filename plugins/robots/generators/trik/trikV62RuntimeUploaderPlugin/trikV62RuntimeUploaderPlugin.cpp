@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, CyberTech Labs Ltd.
+/* Copyright 2007-2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikV6RuntimeUploaderPlugin.h"
+#include "trikV62RuntimeUploaderPlugin.h"
 
 #include <qrkernel/settingsManager.h>
 
@@ -23,26 +23,19 @@ const QString removePermissions = "call chmod a-x trik/trik*";
 const QString killTrikGui = "call killall trikGui";
 const QString moveCommand = "synchronize remote trikRuntime /home/root/trik";
 const QString restorePermissions = "call chmod a+x trik/trik*";
-
-// To make trikRuntime work with old case we use old configs supplied with trikRuntime itself.
-const QString replaceSystemConfig = "call mv trik/system-config-v6.xml trik/system-config.xml";
-const QString replaceModelConfig = "call mv trik/model-config-v6.xml trik/model-config.xml";
-
 const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
 
 TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 	: mUploaderTool(
-			tr("Upload Runtime (old case)")
+			tr("Upload Runtime")
 			, ":/trik/images/flashRobot.svg"
-			, "trikKit"
+			, "trikV62Kit"
 			, {
 					createTrikDirectory
 					, removePermissions
 					, killTrikGui
 					, moveCommand
 					, restorePermissions
-					, replaceSystemConfig
-					, replaceModelConfig
 					, restartTrikGui
 					}
 			, tr("Attention! Started to download the runtime. Please do not turn off the robot.")

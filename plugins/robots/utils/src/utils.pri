@@ -30,6 +30,7 @@ HEADERS += \
 	$$PWD/../include/utils/requiredVersion.h \
 	$$PWD/../include/utils/tcpRobotCommunicator.h \
 	$$PWD/../include/utils/tcpConnectionHandler.h \
+	$$PWD/../include/utils/uploaderTool.h \
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
 	$$PWD/tcpRobotCommunicator.cpp \
 	$$PWD/tcpConnectionHandler.cpp \
+	$$PWD/uploaderTool.cpp \
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \
