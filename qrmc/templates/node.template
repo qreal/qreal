@@ -1,0 +1,115 @@
+	class @@ElementName@@ : public ElementImpl
+	{
+	public:
+@@NodeConstructor@@
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+				SdfRendererInterface *portRenderer)
+		{
+@@NodeUnusedArgs@@
+			mRenderer = renderer;
+@@NodeLoadShapeRenderer@@
+@@NodeLoadPortsRenderer@@
+@@NodeSetContents@@
+@@NodeInitPorts@@
+@@NodeInit@@
+		}
+
+		~@@ElementName@@() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		
+		void updateData(ElementRepoInterface *repo) const
+		{
+@@UpdateData@@
+		}
+
+		bool isNode() const
+		{
+			return @@IsNode@@;
+		}
+
+		bool isContainer() const
+		{
+			return @@IsContainer@@;
+		}
+
+		bool isSortingContainer() const
+		{
+			return @@IsSortContainer@@;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return @@SizeOfForestalling@@;
+		}       
+
+		int sizeOfChildrenForestalling() const
+		{
+			return @@SizeOfChildrenForestalling@@;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return @@MinimizesToChildren@@;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return @@HasMovableChildren@@;
+		}
+
+		bool maximizesChildren() const
+		{
+			return @@MaximizesChildren@@;
+		}
+                
+		QList<double> border() const
+		{
+			QList<double> list;
+@@NodeBorder@@
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return @@ItemsList@@;
+		}
+
+		bool isResizeable() const
+		{
+			return @@IsResizeable@@;
+		}
+
+		int getPenWidth() const
+		{ 
+			return 0; 
+		}
+
+		QColor getPenColor() const 
+		{ 
+			return QColor(); 
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+		QStringList mBonusContextMenuFields;
+@@LabelDefinition@@
+	};
+
