@@ -14,15 +14,14 @@
 
 #pragma once
 
-#include "../../../qrutils/generator/abstractGenerator.h"
+#include <qrutils/generator/abstractGenerator.h>
 
 namespace ubiq {
 namespace generator {
 
-/** Generator for server-side part of an Ubiq application, Dispatcher class.
-  It is able to receive messages from various sources, process them and send the result
-  back. It doesn't have state, so is not able to support multiphase protocols.
-  */
+/// Generator for server-side part of an Ubiq application, Dispatcher class.
+/// It is able to receive messages from various sources, process them and send the result
+/// back. It doesn't have state, so is not able to support multiphase protocols.
 class DispatcherGenerator : public utils::AbstractGenerator
 {
 public:

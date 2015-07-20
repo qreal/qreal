@@ -21,15 +21,15 @@ CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools
 
 INCLUDEPATH += \
-        $$PWD/../../.. \
-        $$PWD/../../../qrgui/ \
+	$$PWD/../../.. \
+	$$PWD/../../../qrgui/ \
 
 links(qrkernel qrutils qrmc qrrepo)
 
 
 HEADERS += \
-        generator.h \
+	generator.h \
 
 SOURCES += \
-        generator.cpp \
+	generator.cpp \
 

@@ -7,7 +7,9 @@ proc getFiles { folder dirList } {
   set matched 0
   foreach path $dirList {
     if {[string match *$path* $folder] == 1} { 
-      set matched 1 
+      if {$path != ""} {
+        set matched 1 
+      }
     }
   }
   if {$matched == 1} { 

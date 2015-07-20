@@ -119,26 +119,12 @@ void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
 
 void BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
 {
-	//utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::send", "Sending:");
-	//for (int i = 0; i < buffer.size(); ++i) {
-	//	utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::send"
-	//			, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(buffer[i])));
-	//}
-
 	mPort->write(buffer);
 }
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 {
-	const QByteArray result = mPort->read(size);
-
-	//utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive", "Received:");
-	//for (int i = 0; i < result.size(); ++i) {
-	//	utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive"
-	//			, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(result[i])));
-	//}
-
-	return result;
+	return mPort->read(size);
 }
 
 void BluetoothRobotCommunicationThread::checkForConnection()

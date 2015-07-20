@@ -38,7 +38,8 @@ public:
 	virtual void configureDevice(robotParts::Device * const device) = 0;
 
 	/// Uploads current configuration to a robot.
-	/// Guaranteed to emit allDevicesConfigured() if all devices respond about their configuration status.
+	/// Guaranteed to emit deviceConfigured() and allDevicesConfigured() if all devices respond
+	/// about their configuration status.
 	virtual void applyConfiguration() = 0;
 
 	/// Returns all configured devices. Allows to enumerate configured devices.
@@ -51,6 +52,10 @@ public:
 
 	/// Removes device on a given port from configuration.
 	virtual void clearDevice(const PortInfo &port) = 0;
+
+signals:
+	/// Emitted when some device is ready to be used.
+	void deviceConfigured(robotParts::Device *device);
 };
 
 }

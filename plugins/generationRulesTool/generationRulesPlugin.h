@@ -12,10 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#pragma once
+
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+
+#include "ast/node.h"
 
 #include "dialogs/specifyGenerationRulesDialog.h"
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include "dialogs/specifyPathToGeneratedCodeDialog.h"
 
 namespace generationRules {
 
@@ -39,7 +44,13 @@ public:
 			, qReal::EditorManagerInterface *editorManagerInterface) override;
 
 private slots:
-	void generateCode();
+	void openWindowForPathsSpecifying();
+
+	void generateCodeForAllElements();
+
+	void generateCode(
+			const qReal::Id &editorId
+			, const qReal::Id &diagramId);
 
 	void openGenerationRulesWindow();
 
@@ -50,12 +61,19 @@ private:
 	/// To syncronize logical and graphical models with repository.
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Doesn't have ownership
 
+	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // Doesn't have ownership.
+
 	/// Metamodel repo api.
 	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
 
-	qReal::gui::SpecifyGenerationRulesDialog *mSpecifyGenerationRulesDialog;  // Doesn't have ownership
-
 	qReal::EditorManagerInterface *mEditorManagerInterface;  // Doesn't have ownership
+
+	qReal::Id mRootId;
+
+	qReal::gui::SpecifyPathToGeneratedCodeDialog *mSpecifyPathsDialog;  // Doesn't have ownership.
+
+	QString mPathToGeneratedCode;
+	QString mMainFileName;
 };
 
 }

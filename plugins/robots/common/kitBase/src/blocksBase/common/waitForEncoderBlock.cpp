@@ -24,6 +24,7 @@ using namespace robotModel;
 WaitForEncoderBlock::WaitForEncoderBlock(RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
 {
+	mActiveWaitingTimer.setInterval(1);
 }
 
 void WaitForEncoderBlock::responseSlot(int reading)
