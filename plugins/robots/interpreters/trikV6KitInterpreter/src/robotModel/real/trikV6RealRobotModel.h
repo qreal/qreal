@@ -21,12 +21,12 @@ namespace trik {
 namespace robotModel {
 namespace real {
 
-class RealRobotModel : public TrikRobotModelV6
+class TrikV6RealRobotModel : public TrikRobotModelV6
 {
 	Q_OBJECT
 
 public:
-	RealRobotModel(const QString &kitId, const QString &robotId);
+	TrikV6RealRobotModel(const QString &kitId, const QString &robotId);
 
 	QString name() const override;
 	QString friendlyName() const override;

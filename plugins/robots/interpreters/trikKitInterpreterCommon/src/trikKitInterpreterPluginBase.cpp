@@ -29,18 +29,22 @@ const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "Subprog
 
 TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase()
 {
-//	mTwoDRobotModel.setWheelPorts("M4", "M3");
-//	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
-
-//	mTwoDRobotModel.setEngine(modelEngine->engine());
-//	mTwoDModel.reset(modelEngine);
-
-//	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel.name() });
 }
 
-void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase(
-		robotModel::TrikRobotModelBase * const realRobotModel
-		, twoDModel::robotModel::TwoDRobotModel * const twoDRobotModel
+TrikKitInterpreterPluginBase::~TrikKitInterpreterPluginBase()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+
+	if (mOwnsBlocksFactory) {
+		delete mBlocksFactory;
+	}
+}
+
+void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
+		(robotModel::TrikRobotModelBase * const realRobotModel
+		, robotModel::twoD::TrikTwoDRobotModel * const twoDRobotModel
 		, blocks::TrikBlocksFactoryBase * const blocksFactory
 		)
 {
@@ -48,132 +52,115 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase(
 	mTwoDRobotModel.reset(twoDRobotModel);
 	mBlocksFactory = blocksFactory;
 
-	mTwoDModel.reset(new twoDModel::engine::TwoDModelEngineFacade(*mTwoDRobotModel));
+	const auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(*mTwoDRobotModel);
 
-	mTwoDRobotModel->setEngine(mTwoDModel->engine());
+	mTwoDRobotModel->setEngine(modelEngine->engine());
+	mTwoDModel.reset(modelEngine);
 
-	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel.name() });
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel->name() });
 }
 
+void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &configurer)
+{
+	connect(&configurer.eventsForKitPlugin()
+			, &kitBase::EventsForKitPluginInterface::robotModelChanged
+			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
 
-//TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
-//{
-//	if (mOwnsAdditionalPreferences) {
-//		delete mAdditionalPreferences;
-//	}
+	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			= configurer.qRealConfigurator().mainWindowInterpretersInterface();
 
-//	if (mOwnsBlocksFactory) {
-//		delete mBlocksFactory;
-//	}
-//}
+	mTwoDModel->init(configurer.eventsForKitPlugin()
+			, configurer.qRealConfigurator().systemEvents()
+			, configurer.qRealConfigurator().logicalModelApi()
+			, interpretersInterface
+			, configurer.interpreterControl());
 
-//void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
-//{
-//	connect(&configurator.eventsForKitPlugin()
-//			, &kitBase::EventsForKitPluginInterface::robotModelChanged
-//			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
+	mRealRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
+	mTwoDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 
-//	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-//			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, mRealRobotModel.data(), &robotModel::TrikRobotModelBase::rereadSettings);
 
-//	mTwoDModel->init(configurator.eventsForKitPlugin()
-//			, configurator.qRealConfigurator().systemEvents()
-//			, configurator.qRealConfigurator().logicalModelApi()
-//			, interpretersInterface
-//			, configurator.interpreterControl());
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
+}
 
-//	mRealRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
-//	mTwoDRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
+QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPluginBase::robotModels()
+{
+	return {mRealRobotModel.data(), mTwoDRobotModel.data()};
+}
 
-//	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-//			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
-//	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-//			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
-//}
+kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPluginBase::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
+{
+	Q_UNUSED(model);
 
-//QString TrikKitInterpreterPlugin::kitId() const
-//{
-//	return "trikV62Kit";
-//}
+	mOwnsBlocksFactory = false;
+	return mBlocksFactory;
+}
 
-//QString TrikKitInterpreterPlugin::friendlyKitName() const
-//{
-//	return tr("TRIK (new case)");
-//}
+kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPluginBase::defaultRobotModel()
+{
+	return mTwoDRobotModel.data();
+}
 
-//QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
-//{
-//	return {&mRealRobotModel, &mTwoDRobotModel};
-//}
+QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPluginBase::settingsWidgets()
+{
+	mOwnsAdditionalPreferences = false;
+	return {mAdditionalPreferences};
+}
 
-//kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
-//		const kitBase::robotModel::RobotModelInterface *model)
-//{
-//	Q_UNUSED(model);
-//	mOwnsBlocksFactory = false;
-//	return mBlocksFactory;
-//}
+QWidget *TrikKitInterpreterPluginBase::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
+{
+	return model.name().toLower().contains("twod")
+			? nullptr
+			: produceIpAddressConfigurer();
+}
 
-//kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
-//{
-//	return &mTwoDRobotModel;
-//}
+QList<qReal::ActionInfo> TrikKitInterpreterPluginBase::customActions()
+{
+	return {};
+}
 
-//QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
-//{
-//	mOwnsAdditionalPreferences = false;
-//	return {mAdditionalPreferences};
-//}
+QList<HotKeyActionInfo> TrikKitInterpreterPluginBase::hotKeyActions()
+{
+	return {};
+}
 
-//QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
-//{
-//	return model.name().toLower().contains("twod")
-//			? nullptr
-//			: produceIpAddressConfigurer();
-//}
+QString TrikKitInterpreterPluginBase::defaultSettingsFile() const
+{
+	return ":/trikDefaultSettings.ini";
+}
 
-//QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
-//{
-//	return {};
-//}
+QIcon TrikKitInterpreterPluginBase::iconForFastSelector(
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	return &robotModel == mRealRobotModel.data()
+			? QIcon(":/icons/switch-real-trik.svg")
+			: &robotModel == mTwoDRobotModel.data()
+					? QIcon(":/icons/switch-2d.svg")
+					: QIcon();
+}
 
-//QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
-//{
-//	return {};
-//}
+kitBase::DevicesConfigurationProvider *TrikKitInterpreterPluginBase::devicesConfigurationProvider()
+{
+	return &mTwoDModel->devicesConfigurationProvider();
+}
 
-//QString TrikKitInterpreterPlugin::defaultSettingsFile() const
-//{
-//	return ":/trikDefaultSettings.ini";
-//}
+QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
+{
+	QLineEdit * const quickPreferences = new QLineEdit;
+	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
+	const auto updateQuickPreferences = [quickPreferences]() {
+		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
+	};
 
-//QIcon TrikKitInterpreterPlugin::iconForFastSelector(
-//		const kitBase::robotModel::RobotModelInterface &robotModel) const
-//{
-//	return &robotModel == &mRealRobotModel
-//			? QIcon(":/icons/switch-real-trik.svg")
-//			: &robotModel == &mTwoDRobotModel
-//					? QIcon(":/icons/switch-2d.svg")
-//					: QIcon();
-//}
+	updateQuickPreferences();
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
+	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
+		qReal::SettingsManager::setValue("TrikTcpServer", text);
+	});
 
-//kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
-//{
-//	return &mTwoDModel->devicesConfigurationProvider();
-//}
-
-//QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
-//{
-//	QLineEdit * const quickPreferences = new QLineEdit;
-//	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
-//	auto updateQuickPreferences = [quickPreferences]() {
-//		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
-//	};
-//	updateQuickPreferences();
-//	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
-//	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
-//	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
-//		qReal::SettingsManager::setValue("TrikTcpServer", text);
-//	});
-//	return quickPreferences;
-//}
+	return quickPreferences;
+}

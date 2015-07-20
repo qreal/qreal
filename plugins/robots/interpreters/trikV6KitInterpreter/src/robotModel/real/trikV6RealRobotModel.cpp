@@ -45,14 +45,14 @@
 using namespace trik::robotModel::real;
 using namespace kitBase::robotModel;
 
-RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
+TrikV6RealRobotModel::TrikV6RealRobotModel(const QString &kitId, const QString &robotId)
 	: TrikRobotModelV6(kitId, robotId)
 	, mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
 {
 	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::connected
-			, this, &RealRobotModel::connected);
+			, this, &TrikV6RealRobotModel::connected);
 	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::disconnected
-			, this, &RealRobotModel::disconnected);
+			, this, &TrikV6RealRobotModel::disconnected);
 
 	addAllowedConnection(PortInfo("GamepadPad1PosPort", input, {}, "gamepadPad1"
 			, PortInfo::ReservedVariableType::vector), { gamepadPadInfo() });
@@ -76,47 +76,47 @@ RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 			, { gamepadConnectionIndicatorInfo() });
 }
 
-QString RealRobotModel::name() const
+QString TrikV6RealRobotModel::name() const
 {
 	return "TrikRealRobotModel";
 }
 
-QString RealRobotModel::friendlyName() const
+QString TrikV6RealRobotModel::friendlyName() const
 {
 	return tr("Interpretation (Wi-Fi)");
 }
 
-int RealRobotModel::priority() const
+int TrikV6RealRobotModel::priority() const
 {
 	return 8;  // Right after qts generator
 }
 
-bool RealRobotModel::needsConnection() const
+bool TrikV6RealRobotModel::needsConnection() const
 {
 	return true;
 }
 
-void RealRobotModel::connectToRobot()
+void TrikV6RealRobotModel::connectToRobot()
 {
 	mRobotCommunicator->connect();
 }
 
-void RealRobotModel::stopRobot()
+void TrikV6RealRobotModel::stopRobot()
 {
 	mRobotCommunicator->stopRobot();
 }
 
-void RealRobotModel::disconnectFromRobot()
+void TrikV6RealRobotModel::disconnectFromRobot()
 {
 	mRobotCommunicator->disconnect();
 }
 
-void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+void TrikV6RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
 	mRobotCommunicator->setErrorReporter(&errorReporter);
 }
 
-robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
+robotParts::Device *TrikV6RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port, *mRobotCommunicator);

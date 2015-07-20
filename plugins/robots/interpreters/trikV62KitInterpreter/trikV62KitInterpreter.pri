@@ -27,21 +27,14 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		)
 
 HEADERS += \
-	$$PWD/src/trikV62AdditionalPreferences.h \
 	$$PWD/src/trikV62KitInterpreterPlugin.h \
-	$$PWD/src/trikV62DisplayWidget.h \
 	$$PWD/src/robotModel/real/trikV62RealRobotModel.h \
 	$$PWD/src/robotModel/twoD/trikV62TwoDRobotModel.h \
 
 SOURCES += \
-	$$PWD/src/trikV62AdditionalPreferences.cpp \
-	$$PWD/src/trikV62DisplayWidget.cpp \
 	$$PWD/src/trikV62KitInterpreterPlugin.cpp \
 	$$PWD/src/robotModel/real/trikV62RealRobotModel.cpp \
 	$$PWD/src/robotModel/twoD/trikV62TwoDRobotModel.cpp \
-
-RESOURCES += \
-	$$PWD/../trikV62KitInterpreter.qrc \
 
 TRANSLATIONS += \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62KitInterpreter_ru.ts \

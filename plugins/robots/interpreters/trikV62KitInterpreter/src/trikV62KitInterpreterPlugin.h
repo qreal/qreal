@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd., Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,7 @@
 
 #pragma once
 
-#include <QtCore/QScopedPointer>
-
-#include <kitBase/kitPluginInterface.h>
-#include <twoDModel/engine/twoDModelControlInterface.h>
-#include <trikKit/blocks/trikV62BlocksFactory.h>
 #include <trikKitInterpreterCommon/trikKitInterpreterPluginBase.h>
-
-#include "trikV62AdditionalPreferences.h"
-//#include "robotModel/real/trikV62RealRobotModel.h"
-//#include "robotModel/twoD/trikV62TwoDRobotModel.h"
 
 namespace trik {
 
@@ -35,47 +26,9 @@ class TrikV62KitInterpreterPlugin : public TrikKitInterpreterPluginBase
 
 public:
 	TrikV62KitInterpreterPlugin();
-//	~TrikV62KitInterpreterPlugin() override;
 
-//	void init(const kitBase::KitPluginConfigurator &configurator) override;
-
-//	QString kitId() const override;
-//	QString friendlyKitName() const override;
-
-//	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
-//	kitBase::robotModel::RobotModelInterface *defaultRobotModel() override;
-
-//	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-//			const kitBase::robotModel::RobotModelInterface *model) override;
-
-//	// Transfers ownership.
-//	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
-//	QWidget *quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model) override;
-//	QString defaultSettingsFile() const override;
-//	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
-//	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
-
-//	QList<qReal::ActionInfo> customActions() override;
-//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
-
-//private slots:
-//	QWidget *produceIpAddressConfigurer();  // Transfers ownership
-
-private:
-//	TrikKitInterpreterPluginBase mPluginImpl;
-//	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
-//	robotModel::real::RealRobotModel mRealRobotModel;
-//	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
-
-//	/// @todo Use shared pointers instead of this sh~.
-//	blocks::TrikV62BlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
-//	bool mOwnsBlocksFactory = true;
-
-//	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
-//	bool mOwnsAdditionalPreferences = true;
-
-//	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
-//	QString mCurrentlySelectedModelName;
+	QString kitId() const override;
+	QString friendlyKitName() const override;
 };
 
 }

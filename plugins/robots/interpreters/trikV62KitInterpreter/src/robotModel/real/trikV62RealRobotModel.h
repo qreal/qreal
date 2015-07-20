@@ -33,9 +33,9 @@ class RealRobotModel : public TrikRobotModelV62
 public:
 	RealRobotModel(const QString &kitId, const QString &robotId);
 
-	QString name() const;
-	QString friendlyName() const;
-	int priority() const;
+	QString name() const override;
+	QString friendlyName() const override;
+	int priority() const override;
 
 	bool needsConnection() const override;
 	void connectToRobot() override;

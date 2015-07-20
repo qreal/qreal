@@ -40,6 +40,8 @@ public:
 	/// Adds pre-configured device to the given port.
 	void addDevice(const kitBase::robotModel::PortInfo &port, kitBase::robotModel::robotParts::Device *device);
 
+	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
+
 private:
 	kitBase::robotModel::robotParts::Device *createDevice(const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;

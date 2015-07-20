@@ -28,6 +28,11 @@ TrikGeneratorRobotModel::TrikGeneratorRobotModel(const QString &kitId
 {
 }
 
+void TrikGeneratorRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+{
+	Q_UNUSED(errorReporter)
+}
+
 QString TrikGeneratorRobotModel::name() const
 {
 	return mName;

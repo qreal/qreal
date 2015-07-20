@@ -23,56 +23,60 @@
 #include <trikKit/blocks/trikBlocksFactoryBase.h>
 #include <trikKit/robotModel/trikRobotModelBase.h>
 
+#include "robotModel/twoD/trikTwoDRobotModel.h"
 #include "trikAdditionalPreferences.h"
 
 #include "declSpec.h"
 
 namespace trik {
 
-class TrikKitInterpreterPluginBase : public QObject, public kitBase::KitPluginInterface
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikKitInterpreterPluginBase
+		: public QObject, public kitBase::KitPluginInterface
 {
+	Q_OBJECT
+
 public:
 	TrikKitInterpreterPluginBase();
-	virtual ~TrikKitInterpreterPluginBase();
+	~TrikKitInterpreterPluginBase() override;
 
+	void init(const kitBase::KitPluginConfigurator &configurer) override;
 
+	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
 
-//	void init(const kitBase::KitPluginConfigurator &configurator) override;
+	kitBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
-//	QString kitId() const override;
-//	QString friendlyKitName() const override;
+	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
+			const kitBase::robotModel::RobotModelInterface *model) override;
 
-//	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
-//	kitBase::robotModel::RobotModelInterface *defaultRobotModel() override;
+	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 
-//	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-//			const kitBase::robotModel::RobotModelInterface *model) override;
+	QWidget *quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model) override;
 
-//	// Transfers ownership.
-//	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
-//	QWidget *quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model) override;
-//	QString defaultSettingsFile() const override;
-//	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
-//	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
+	QString defaultSettingsFile() const override;
 
-//	QList<qReal::ActionInfo> customActions() override;
-//	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
-//private slots:
-//	QWidget *produceIpAddressConfigurer();  // Transfers ownership
+	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
+
+	QList<qReal::ActionInfo> customActions() override;
+
+	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+
+private slots:
+	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
 protected:
 	/// Takes ownership over all supplied pointers.
 	void initKitInterpreterPluginBase(
 			robotModel::TrikRobotModelBase * const realRobotModel
-			, twoDModel::robotModel::TwoDRobotModel * const twoDRobotModel
+			, robotModel::twoD::TrikTwoDRobotModel * const twoDRobotModel
 			, blocks::TrikBlocksFactoryBase * const blocksFactory
 			);
 
 private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
-	QScopedPointer<twoDModel::robotModel::TwoDRobotModel> mTwoDRobotModel;
+	QScopedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 
 	/// @todo Use shared pointers instead of this sh~.
 	/// Ownership depends on mOwnsBlocksFactory flag.
@@ -83,8 +87,8 @@ private:
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;
 	bool mOwnsAdditionalPreferences = true;
 
-//	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
-//	QString mCurrentlySelectedModelName;
+	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	QString mCurrentlySelectedModelName;
 };
 
 }

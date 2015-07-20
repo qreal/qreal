@@ -57,6 +57,7 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDObjectSensor.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDColorSensor.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDShell.h \
+	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h \
 	$$PWD/include/trikKitInterpreterCommon/trikAdditionalPreferences.h \
 	$$PWD/include/trikKitInterpreterCommon/trikDisplayWidget.h \
 	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h \
@@ -92,6 +93,7 @@ SOURCES += \
 	$$PWD/src/robotModel/twoD/parts/twoDColorSensor.cpp \
 	$$PWD/src/robotModel/twoD/parts/twoDLed.cpp \
 	$$PWD/src/robotModel/twoD/parts/twoDShell.cpp \
+	$$PWD/src/robotModel/twoD/trikTwoDRobotModel.cpp \
 	$$PWD/src/trikAdditionalPreferences.cpp \
 	$$PWD/src/trikDisplayWidget.cpp \
 	$$PWD/src/trikKitInterpreterPluginBase.cpp \
@@ -100,6 +102,12 @@ FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \
 	$$PWD/src/trikDisplayWidget.ui \
 
+RESOURCES += \
+	$$PWD/trikKitInterpreterCommon.qrc \
+
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/trikKitInterpreterCommon_ru.ts \
 	$$PWD/../../../../qrtranslations/fr/plugins/robots/trikKitInterpreterCommon_fr.ts \
+
+OTHER_FILES += \
+	$$PWD/trikDefaultSettings.ini \
