@@ -70,6 +70,7 @@ MainClass::MainClass(
 		if (mGenerateHtml == "yes") {
 			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput, methodsTimeOutput, methodsTimeOutputInterpreter);
 		}
+
 		mResultOfTesting = MethodsCheckerForTravis::calculateResult(methodsTesterOutput
 				, interpreterMethodsTesterOutput);
 	} else {

@@ -2,7 +2,6 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 
-
 #include <QtCore/QProcess>
 #include <QtCore/QDebug>
 

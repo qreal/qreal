@@ -22,6 +22,9 @@ void myMessageOutput(QtMsgType type, const char *msg)
 		case QtFatalMsg:
 			fprintf(stderr, "Fatal: %s\n", msg);
 			abort();
+		case QtInfoMsg:
+			fprintf(stderr, "Warning: %s\n", msg);
+			break;
 	}
 }
 
@@ -39,6 +42,7 @@ int main(int argc, char *argv[])
 		qDebug() << "Usage: editorPluginTestTool fileName.qrs configurationFile.xml";
 		return 1;
 	}
+
 	const QString workingCopyDir = argv[1];
 	const QString &configurationFileName = argv[2];
 	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../../qrmc/"

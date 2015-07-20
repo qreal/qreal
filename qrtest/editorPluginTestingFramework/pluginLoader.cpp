@@ -47,7 +47,7 @@ EditorInterface* PluginLoader::loadedPlugin(
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 QStringList PluginLoader::pluginNames()

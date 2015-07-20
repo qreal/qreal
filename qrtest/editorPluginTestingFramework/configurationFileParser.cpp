@@ -27,9 +27,7 @@ void ConfigurationFileParser::parseConfigurationFile(const QString &configuratio
 QString ConfigurationFileParser::valueByTag(const QString &tag) const
 {
 	QDomNode node = mXml.elementsByTagName(tag).at(0);
-	const QString &value = node.toElement().text();
-
-	return value;
+	return node.toElement().text();
 }
 
 QString ConfigurationFileParser::qmakeParameter() const

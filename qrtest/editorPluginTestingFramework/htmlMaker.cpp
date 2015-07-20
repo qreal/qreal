@@ -85,11 +85,7 @@ void HtmlMaker::addTable(
 	addLineToTable(table, firstColumnTitle, secondColumnTitle, thirdColumnTitle, true);
 
 	for (const MethodsTester::ResultOfGenerating &element : listOfLines) {
-		const QString &methodName = element.methodName;
-		const QString &firstResult = element.firstResult;
-		const QString &secondResult = element.secondResult;
-
-		addLineToTable(table, methodName, firstResult, secondResult, false);
+		addLineToTable(table, element.methodName, element.firstResult, element.secondResult, false);
 	}
 }
 
@@ -197,7 +193,6 @@ void HtmlMaker::addColumnToLine(QDomElement parent, const QString &value, const 
 	QStringList listOfMethodTestingResults = parseOutput(value);
 
 	for (const QString &elementOfOutput : listOfMethodTestingResults) {
-
 		if (isTitle || isMethodName) {
 			QDomText name = mHtml.createTextNode(elementOfOutput);
 			QDomElement bold = newElement(newColumn, "b");

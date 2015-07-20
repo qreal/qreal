@@ -204,17 +204,17 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups : public Meth
 		QStringList resultList;
 		for (const Id &editor : editorManagerInterface->editors()) {
 			for (const Id &diagram : editorManagerInterface->diagrams(editor)) {
-					for (const QString &group : editorManagerInterface->paletteGroups(editor, diagram)) {
-						const QString additionalString = ConvertingMethods::transformateOutput(
-								callMethod(editorManagerInterface, editor, diagram, diagram, group), Id::rootId(), group);
-						const QPair<qint64, double> additional = dataOfTime();
-						mListOfTime.append(QString::number(additional.first));
-						mListOfTime.append(" ");
-						mListOfTime.append(QString::number(additional.second));
-						mListOfTime.append("|");
-						resultList.append(additionalString);
-						resultList.append("|");
-					}
+				for (const QString &group : editorManagerInterface->paletteGroups(editor, diagram)) {
+					const QString additionalString = ConvertingMethods::transformateOutput(
+							callMethod(editorManagerInterface, editor, diagram, diagram, group), Id::rootId(), group);
+					const QPair<qint64, double> additional = dataOfTime();
+					mListOfTime.append(QString::number(additional.first));
+					mListOfTime.append(" ");
+					mListOfTime.append(QString::number(additional.second));
+					mListOfTime.append("|");
+					resultList.append(additionalString);
+					resultList.append("|");
+				}
 			}
 		}
 
