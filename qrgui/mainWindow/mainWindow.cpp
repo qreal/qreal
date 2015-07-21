@@ -1102,12 +1102,12 @@ void MainWindow::setShortcuts(EditorView * const tab)
 
 void MainWindow::loadElementsShortcuts()
 {
-	for (const Id &editor : editorManager().editors()){
-		for (const Id &diagram : editorManager().diagrams(editor)){
+	for (const Id &editor : editorManager().editors()) {
+		for (const Id &diagram : editorManager().diagrams(editor)) {
 			for (const Id &element : editorManager().elements(diagram)) {
-				QAction *action = new QAction(this);
+				QAction * const action = new QAction(this);
 				QList<QKeySequence> hotKeyList;
-				for (QString string : editorManager().hotKey(element).split(", ")){
+				for (const QString &string : editorManager().hotKey(element).split(", ")){
 					if (!HotKeyManager::contains(string)){
 						hotKeyList << QKeySequence(string);
 					}

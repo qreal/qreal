@@ -250,6 +250,7 @@ QString EditorManager::hotKey(const Id &id) const
 	if (id.idSize() != 3) {
 		return "";
 	}
+
 	return mPluginIface[id.editor()]->elementHotKey(id.diagram(), id.element());
 }
 
@@ -734,7 +735,7 @@ void EditorManager::setElementEnabled(const Id &type, bool enabled)
 	}
 }
 
-bool EditorManager::isElementEnabled(const Id &element)
+bool EditorManager::isElementEnabled(const Id &element) const
 {
 	return !mDisabledElements.contains(element);
 }

@@ -424,7 +424,7 @@ void ProxyEditorManager::setElementEnabled(const Id &type, bool enabled)
 	mProxiedEditorManager->setElementEnabled(type, enabled);
 }
 
-bool ProxyEditorManager::isElementEnabled(const Id &element)
+bool ProxyEditorManager::isElementEnabled(const Id &element) const
 {
 	return mProxiedEditorManager->isElementEnabled(element);
 }

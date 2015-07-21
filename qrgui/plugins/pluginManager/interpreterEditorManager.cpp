@@ -943,10 +943,10 @@ void InterpreterEditorManager::setElementEnabled(const Id &type, bool enabled)
 	Q_UNUSED(enabled)
 }
 
-bool InterpreterEditorManager::isElementEnabled(const Id &element)
+bool InterpreterEditorManager::isElementEnabled(const Id &element) const
 {
 	Q_UNUSED(element);
-	return bool();
+	return false;
 }
 
 QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() const
@@ -1133,6 +1133,7 @@ void InterpreterEditorManager::addNodeElement(const Id &diagram, const QString &
 	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
 	repo->setProperty(nodeId, "createChildrenFromMenu", "false");
 	repo->setProperty(nodeId, "isHidden", "false");
+
 	foreach (const Id &elem, repo->children(diag)) {
 		if (repo->name(elem) == "AbstractNode" && repo->isLogicalElement(elem)) {
 			const Id inheritanceLink("MetaEditor", "MetaEditor", "Inheritance", QUuid::createUuid().toString());

@@ -145,7 +145,7 @@ public:
 
 	void setElementEnabled(const Id &type, bool enabled) override;
 
-	bool isElementEnabled(const Id &element) override;
+	bool isElementEnabled(const Id &element) const override;
 
 private:
 	EditorInterface *editorInterface(const QString &editor) const;
