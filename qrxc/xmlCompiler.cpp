@@ -474,6 +474,17 @@ void XmlCompiler::generateMouseGestureMap(OutFile &out)
 	out() << "}\n\n";
 }
 
+void XmlCompiler::generateHotKeyMap(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initHotKeyMap()\n{\n";
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
+			type->generateHotKeyMap(out);
+		}
+	}
+	out() << "}\n\n";
+}
+
 void XmlCompiler::generatePropertyMap(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPropertyMap()\n{\n";
