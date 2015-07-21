@@ -9,19 +9,19 @@
 							 qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
 
 		{
-//@@NodeUnusedArgs@@ //hardcode begins
+//It needs to be fixed. Probably in correct interpretation should be used: @@NodeUnusedArgs@@.
+//But for now we use hardcode to be able to compile it
 			Q_UNUSED(portFactory);
 			Q_UNUSED(ports);
-//hardcode ends
 
 			mRenderer = renderer;
 @@NodeLoadShapeRenderer@@
-@@NodeLoadPortsRenderer@@ //SUPER HARDCODE (shape.cpp(162))
+@@NodeLoadPortsRenderer@@ //There is something wrong. But I don't know what and why. I thought that hardcode is here: (shape.cpp(162). But now I'm not sure.
 @@NodeSetContents@@
 @@NodeInitPorts@@
 @@NodeInit@@
 
-//extremely temporary fixing
+//It needs to be fixed properly, but for now we use hardcode to be able to compile it.
 		ports << portFactory.createPort(QPointF(0.994424, 0.54334), false, false, 538, 473, new NonTyped());
 				mRenderer->setElementRepo(elementRepo);
 
@@ -62,7 +62,7 @@
 			return @@IsSortContainer@@;
 		}
 
-				QVector<int> sizeOfForestalling() const
+		QVector<int> sizeOfForestalling() const
 		{
 			return @@SizeOfForestalling@@;
 		}
@@ -87,7 +87,7 @@
 			return @@MaximizesChildren@@;
 		}
 
-//temporary fixing
+//It needs to be fixed properly, but for now we use hardcode to be able to compile it.
 		bool createChildrenFromMenu() const
 		{
 			return true;
@@ -111,19 +111,16 @@
 		}
 
 
-//temporary fixing
 		QStringList fromPortTypes() const
 		{
 			return QStringList("NonTyped");
 		}
 
-//temporary fixing
 		QStringList toPortTypes() const
 		{
 			return QStringList("NonTyped");
 		}
 
-//temporary fixing
 		enums::linkShape::LinkShape shapeType() const
 		{
 			return enums::linkShape::square;

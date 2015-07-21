@@ -21,11 +21,11 @@
 		bool minimizesToChildren() const { return false; }
 		bool maximizesChildren() const { return false; }
 		bool isResizeable() const { return true; }
-		bool isDividable() const { return false; }
-		qReal::ElementImpl *clone() { return NULL; }
+		bool isDividable() const { return false; }  
+		qReal::ElementImpl *clone() { return nullptr; }
 		bool createChildrenFromMenu() const { return false; }
 
-		QList<double> border () const
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
@@ -34,10 +34,9 @@
 
 		int getPenWidth() const { return 1; }
 
-//temporary fixing
+//It needs to be fixed properly, but for now we use hardcode to be able to compile it
 		QColor getPenColor() const { return QColor(0,0,0); }
 
-//temporary fixing
 		QStringList fromPortTypes() const
 		{
 			QStringList result;
@@ -45,7 +44,7 @@
 			return result;
 		}
 
-//temporary fixing
+//It needs to be fixed properly, but for now we use hardcode to be able to compile it
 		QStringList toPortTypes() const
 		{
 			QStringList result;
@@ -53,12 +52,15 @@
 			return result;
 		}
 
-//temporary fixing
+//It needs to be fixed properly, but for now "square" is a hardcode that helps compile it. 
 		enums::linkShape::LinkShape shapeType() const
 		{
 			return enums::linkShape::square;
 		}
+
 		Qt::PenStyle getPenStyle() const { return @@LineType@@; }
+
+//It needs to be fixed properly, but for now we use hardcode to be able to compile it
 		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();

@@ -28,7 +28,7 @@ public:
 
 	virtual QString id() const { return "@@MetamodelName@@"; }
 
-//temporary fixing
+//It needs to be fixed properly, but for now we use hardcode to be able to compile it.
 	QString version() const { return "1.0.0"; };
 
 	virtual QStringList diagrams() const;
@@ -61,17 +61,15 @@ public:
 	virtual QString diagramNodeName(const QString &diagram) const;
 	virtual QString elementName(const QString &diagram, const QString &element) const;
 	virtual QString elementMouseGesture(const QString &digram, const QString &element) const;
-        virtual void initDescriptionMap();//fix
+        virtual void initDescriptionMap();
 	virtual QList<qReal::ListenerInterface*> listeners() const;
 
-//Are these right corrections?
 	QList<qReal::EditorInterface::ExplosionData> explosions(const QString &diagram, const QString &element) const override;
 	QStringList getPortTypes(const QString &diagram, const QString &element) const override;
 	QList<QPair<QString, QString>> getEnumValues(const QString &name) const override;
 	bool isEnumEditable(const QString &name) const override;
 	QString getGroupsXML() const override;
 
-//NEW CORRECTIONS
 	bool shallPaletteBeSorted(const QString &diagram) const override;
 
 private:
@@ -88,8 +86,6 @@ private:
 	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;
 	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;
 	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap;
-
-//?
 	QMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;
 	QMap<QString, bool> mShallPaletteBeSortedMap;
 };

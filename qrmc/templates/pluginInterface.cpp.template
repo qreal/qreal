@@ -70,7 +70,7 @@ QString @@MetamodelName@@Plugin::propertyDisplayedName(const QString &diagram, c
 	return propertiesDisplayedNamesMap[diagram][element][property];
 }
 
-void @@MetamodelName@@Plugin::initDescriptionMap()   //fix
+void @@MetamodelName@@Plugin::initDescriptionMap()
 {
 @@ElementDescriptionMapLine@@
 }
@@ -221,13 +221,12 @@ QStringList @@MetamodelName@@Plugin::getPortTypes(const QString &/*diagram*/, co
 	QStringList result;
 @@GetPortTypesLine@@
 	return result;
-
 }
 
 QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(const QString &name) const
 {
 @@GetEnumValuesLine@@
-	return{};
+	return {};
 }
 
 bool @@MetamodelName@@Plugin::isEnumEditable(const QString &name) const

@@ -173,7 +173,7 @@ QStringList Editor::getAllPortNames() const
 	QStringList result;
 
 	for (const Diagram * const diagram : mDiagrams.values()) {
-		foreach (const Type * const type, diagram->types()) {
+		for (const Type * const type : diagram->types()) {
 			if (dynamic_cast<const Port * const>(type)) {
 				result << type->name();
 			}
@@ -442,7 +442,7 @@ public:
 
 class Editor::MouseGesturesGenerator: public Editor::MethodGenerator {
 public:
-	virtual ~MouseGesturesGenerator() {}
+	~MouseGesturesGenerator() override {}
 	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateMouseGesturesMap(lineTemplate);
 	}

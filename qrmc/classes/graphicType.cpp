@@ -336,7 +336,7 @@ QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 	QList<Port*> getPortTypes = this->mShape.getPorts();
 	QSet<QString> portTypes;
 	for (Port *port : getPortTypes) {
-			portTypes.insert(port->type());
+		portTypes.insert(port->type());
 	}
 
 	if (!portTypes.empty()) {

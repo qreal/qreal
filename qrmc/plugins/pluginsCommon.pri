@@ -13,15 +13,11 @@
 # limitations under the License.
 
 include(../../global.pri)
-TEMPLATE =  lib
+
+DESTDIR = $$DESTDIR/plugins/editors
+
+TEMPLATE = lib
 CONFIG += plugin
-
-#DESTDIR = ../../../bin/plugins/editors
-DESTDIR = ../../../bin/debug/plugins/editors
-
-MOC_DIR = .moc
-RCC_DIR = .moc
-OBJECTS_DIR = .obj
 
 isEmpty(QREAL_EDITOR_NAME) {
 	error(Please set QREAL_EDITOR_NAME variable in a .pro file of your editor as a folder name of that editor)

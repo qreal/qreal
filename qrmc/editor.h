@@ -115,7 +115,7 @@ namespace qrmc {
 		class ElementDescriptionGenerator;
 		class ParentsMapGenerator;
 		class PossibleEdgesGenerator;
-		void generatePluginMethod(const QString &tag, MethodGenerator const &generator);
+		void generatePluginMethod(const QString &tag, const MethodGenerator &generator);
 	};
 
 }

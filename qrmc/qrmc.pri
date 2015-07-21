@@ -45,7 +45,6 @@ SOURCES += \
 links(qrkernel qrutils qrrepo)
 includes(qrkernel)
 
-
 OTHER_FILES += \
 	templates/edge.template \
 	templates/node.template \
