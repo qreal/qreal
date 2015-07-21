@@ -1,1 +1,0 @@
-script.writeToFile("@@FILE@@", @@TEXT@@);

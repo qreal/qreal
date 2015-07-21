@@ -1,1 +1,0 @@
-brick.led().@@COLOR@@();

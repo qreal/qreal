@@ -1,1 +1,0 @@
-brick.sensor(@@PORT@@).read()

@@ -1,1 +1,0 @@
-[gamepad.padX(@@PORT@@), gamepad.padY(@@PORT@@)]

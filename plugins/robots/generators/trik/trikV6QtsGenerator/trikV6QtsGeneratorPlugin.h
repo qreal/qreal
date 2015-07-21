@@ -14,66 +14,35 @@
 
 #pragma once
 
-#include <trikV6GeneratorBase/trikGeneratorPluginBase.h>
-
-namespace utils {
-class TcpRobotCommunicator;
-}
+#include <trikQtsGeneratorLibrary/trikQtsGeneratorPluginBase.h>
 
 namespace trik {
+
+namespace robotModel {
+class TrikV6GeneratorRobotModel;
+}
+
 namespace qts {
 
-/// Generation of QtScript program for TRIK, uploading and execution of a program.
-/// Uses setting "tcpServer" from RobotsInterpreter.
-class TrikQtsGeneratorPlugin : public TrikGeneratorPluginBase
+/// Javascript generator specialization for TRIK 6 ("old case", with encoders marked as B1 - B4).
+class TrikV6QtsGeneratorPlugin : public TrikQtsGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "trik.TrikQtsGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "trik.TrikV6QtsGeneratorPlugin")
 
 public:
-	TrikQtsGeneratorPlugin();
-	~TrikQtsGeneratorPlugin() override;
+	TrikV6QtsGeneratorPlugin();
+
+	QString kitId() const override;
 
 	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
-	QList<qReal::ActionInfo> customActions() override;
-	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
-	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
-
-protected:
-	generatorBase::MasterGeneratorBase *masterGenerator() override;
-	QString defaultFilePath(const QString &projectName) const override;
-	qReal::text::LanguageInfo language() const override;
-	QString generatorName() const override;
-
-private slots:
-
-	/// Generates and uploads script to a robot. Program then can be launched manually or remotely
-	/// by runCommand. Program is stored on robot as a file next to scriptRunner and named
-	/// as <qReal save name>.qts.
-	/// @returns True, if successful.
-	bool uploadProgram();
-
-	/// Runs currently opened program on a robot. Uploads it first.
-	void runProgram();
-
-	/// Tries to remotely abort script execution and stop robot.
-	void stopRobot();
-
 private:
-	/// Action that launches code generator
-	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
+	robotModel::TrikV6GeneratorRobotModel *initModel(robotModel::TrikV6GeneratorRobotModel * const model);
 
-	/// Action that generates and uploads program on a robot
-	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
-
-	/// Action that generates and uploads program on a robot
-	QAction *mRunProgramAction;  // Doesn't have ownership; may be disposed by GUI.
-
-	/// Action that stops script execution and turns off motors.
-	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
-
-	utils::TcpRobotCommunicator *mCommunicator;
+	/// Temporary storage for robot model to be able to correctly initialize it.
+	/// Does not have ownership.
+	robotModel::TrikV6GeneratorRobotModel *mModel;
 };
 
 }

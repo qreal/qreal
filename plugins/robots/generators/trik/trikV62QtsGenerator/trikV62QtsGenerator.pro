@@ -23,7 +23,9 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-includes(plugins/robots/generators/trik/trikV62GeneratorBase \
+includes( \
+		plugins/robots/generators/trik/trikQtsGeneratorLibrary \
+		plugins/robots/generators/trik/trikGeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
@@ -31,8 +33,8 @@ includes(plugins/robots/generators/trik/trikV62GeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-v62-generator-base \
-		robots-kit-base robots-trik-kit robots-utils \
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base \
+		robots-kit-base robots-trik-kit robots-utils robots-trik-qts-generator-library \
 )
 
 TRANSLATIONS = \
@@ -40,19 +42,19 @@ TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV62QtsGenerator_fr.ts \
 
 HEADERS += \
-	$$PWD/trikQtsGeneratorPlugin.h \
-	$$PWD/trikQtsMasterGenerator.h \
-	$$PWD/trikQtsControlFlowValidator.h \
-	$$PWD/threadsValidator.h \
-	$$PWD/emptyShell.h \
+	$$PWD/trikV62QtsGeneratorPlugin.h \
+#	$$PWD/trikQtsMasterGenerator.h \
+#	$$PWD/trikQtsControlFlowValidator.h \
+#	$$PWD/threadsValidator.h \
+#	$$PWD/emptyShell.h \
 
 SOURCES += \
-	$$PWD/trikQtsGeneratorPlugin.cpp \
-	$$PWD/trikQtsMasterGenerator.cpp \
-	$$PWD/trikQtsControlFlowValidator.cpp \
-	$$PWD/threadsValidator.cpp \
-	$$PWD/emptyShell.cpp \
+	$$PWD/trikV62QtsGeneratorPlugin.cpp \
+#	$$PWD/trikQtsMasterGenerator.cpp \
+#	$$PWD/trikQtsControlFlowValidator.cpp \
+#	$$PWD/threadsValidator.cpp \
+#	$$PWD/emptyShell.cpp \
 
-RESOURCES = \
-	$$PWD/trikQtsGenerator.qrc \
-	$$PWD/templates.qrc \
+#RESOURCES = \
+#	$$PWD/trikQtsGenerator.qrc \
+#	$$PWD/templates.qrc \

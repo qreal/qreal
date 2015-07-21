@@ -1,1 +1,0 @@
-Math.cos(@@ARGUMENT@@)

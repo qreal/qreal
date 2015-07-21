@@ -34,6 +34,7 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikKitInterpreterPluginBase
 		: public QObject, public kitBase::KitPluginInterface
 {
 	Q_OBJECT
+	Q_INTERFACES(kitBase::KitPluginInterface)
 
 public:
 	TrikKitInterpreterPluginBase();

@@ -1,3 +1,0 @@
-do {
-@@BODY@@
-} while (@@CONDITION@@);

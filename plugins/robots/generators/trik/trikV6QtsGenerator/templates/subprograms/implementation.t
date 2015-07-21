@@ -1,4 +1,0 @@
-@@NAME@@ = function()
-{
-@@BODY@@
-}

@@ -1,1 +1,0 @@
-var TASK_@@NAME@@;

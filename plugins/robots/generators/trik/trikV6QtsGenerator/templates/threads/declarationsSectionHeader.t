@@ -1,1 +1,0 @@
-/* Threads declarations */

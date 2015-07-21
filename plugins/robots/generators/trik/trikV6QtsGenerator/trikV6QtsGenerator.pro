@@ -23,7 +23,9 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-includes(plugins/robots/generators/trik/trikV6GeneratorBase \
+includes( \
+		plugins/robots/generators/trik/trikQtsGeneratorLibrary \
+		plugins/robots/generators/trik/trikGeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
@@ -31,8 +33,8 @@ includes(plugins/robots/generators/trik/trikV6GeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-v6-generator-base \
-		robots-kit-base robots-trik-kit robots-utils \
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base \
+		robots-kit-base robots-trik-kit robots-utils robots-trik-qts-generator-library \
 )
 
 TRANSLATIONS = \
@@ -41,18 +43,6 @@ TRANSLATIONS = \
 
 HEADERS += \
 	$$PWD/trikV6QtsGeneratorPlugin.h \
-	$$PWD/trikV6QtsMasterGenerator.h \
-	$$PWD/trikV6QtsControlFlowValidator.h \
-	$$PWD/threadsValidator.h \
-	$$PWD/emptyShell.h \
 
 SOURCES += \
 	$$PWD/trikV6QtsGeneratorPlugin.cpp \
-	$$PWD/trikV6QtsMasterGenerator.cpp \
-	$$PWD/trikV6QtsControlFlowValidator.cpp \
-	$$PWD/threadsValidator.cpp \
-	$$PWD/emptyShell.cpp \
-
-RESOURCES = \
-	$$PWD/trikV6QtsGenerator.qrc \
-	$$PWD/templates.qrc \
