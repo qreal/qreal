@@ -21,7 +21,7 @@
 		bool minimizesToChildren() const { return false; }
 		bool maximizesChildren() const { return false; }
 		bool isResizeable() const { return true; }
-		bool isDividable() const { return false; }  
+		bool isDividable() const { return false; }
 		qReal::ElementImpl *clone() { return nullptr; }
 		bool createChildrenFromMenu() const { return false; }
 

@@ -31,7 +31,7 @@ bool EnumType::init(const QString &context)
 			continue;
 		if (child.element() == metaEntityValue) {
 			const QString name = mApi->stringProperty(child, "valueName");
-			const QString displayedName = mApi->stringProperty(child,"displayedName");
+			const QString displayedName = mApi->stringProperty(child, "displayedName");
 			mValues[name] = displayedName;
 		}
 	}

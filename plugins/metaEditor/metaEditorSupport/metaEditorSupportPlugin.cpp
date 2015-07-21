@@ -147,7 +147,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 			progress->setValue(5);
 
-			QString normalizedName = nameOfMetamodel.at(0).toUpper() + nameOfMetamodel.mid(1);
+			const QString normalizedName = nameOfMetamodel.at(0).toUpper() + nameOfMetamodel.mid(1);
 			const bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizedName);
 			if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
 				progress->close();
@@ -183,7 +183,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 				if (finished && (builder.exitCode() == 0)) {
 					if (stateOfLoad) {
-						QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please close QReal."));
+						QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please restart QReal."));
 						progress->close();
 						delete progress;
 						return;
@@ -207,6 +207,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 					if (mLogicalRepoApi->stringProperty(key, "buildConfiguration") == "debug") {
 						suffix = "-d";
 					}
+
 					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
 							+ nameOfMetamodel
 							+ suffix
@@ -323,7 +324,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 			progress->setValue(80);
 
 			if (stateOfLoad) {
-				QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please close QReal."));
+				QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please restart QReal."));
 				progress->close();
 				delete progress;
 				return;
