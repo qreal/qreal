@@ -1,1 +1,1 @@
-brick.colorSensor("video0").read(2, 2)[2]
+brick.colorSensor("video1").read(2, 2)[2]

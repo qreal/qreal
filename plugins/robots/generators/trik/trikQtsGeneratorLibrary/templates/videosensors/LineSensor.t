@@ -1,1 +1,1 @@
-brick.lineSensor("video0").read()
+brick.lineSensor("video1").read()

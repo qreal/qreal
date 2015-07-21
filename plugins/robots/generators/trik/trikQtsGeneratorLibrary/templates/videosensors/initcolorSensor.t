@@ -1,2 +1,2 @@
-brick.configure("video0", "colorSensor");
-brick.colorSensor("video0").init(true);
+brick.configure("video1", "colorSensor");
+brick.colorSensor("video1").init(true);

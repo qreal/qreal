@@ -46,3 +46,6 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/trikV6QtsGeneratorPlugin.cpp \
+
+RESOURCES = \
+	$$PWD/templates.qrc \

@@ -1,2 +1,2 @@
-brick.configure("video0", "lineSensor");
-brick.lineSensor("video0").init(true);
+brick.configure("video1", "lineSensor");
+brick.lineSensor("video1").init(true);
