@@ -767,7 +767,7 @@
 					</picture>
 					<labels>
 						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1961,6 +1961,7 @@
 						<label x="30" y="60" textBinded="Variable" hard="true" prefix="Variable:"/>
 						<label x="30" y="90" textBinded="Wait" hard="true" prefix="Wait:"/>
 					</labels>
+					<nonResizeable/>
 				</graphics>
 				<logic>
 					<container/>
@@ -1989,6 +1990,11 @@
 				</graphics>
 				<logic>
 					<container/>
+					<properties>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -2020,6 +2026,9 @@
 						</property>
 						<property displayedName="Evaluate" type="bool" name="Evaluate">
 							<default>false</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2085,6 +2094,9 @@
 						<property displayedName="Y" type="int" name="YCoordinatePix">
 							<default>0</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2118,6 +2130,9 @@
 						</property>
 						<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 							<default>10</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2153,6 +2168,9 @@
 						<property displayedName="Height" type="int" name="HeightRect">
 							<default>5</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2183,6 +2201,9 @@
 						<property displayedName="Radius" type="int" name="CircleRadius">
 							<default>5</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2210,6 +2231,9 @@
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinatePix">
 							<default>0</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 				<generalizations>
@@ -2244,6 +2268,9 @@
 					</property>
 					<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 						<default>10</default>
+					</property>
+					<property displayedName="Redraw" type="bool" name="Redraw">
+						<default>true</default>
 					</property>
 				</properties>
 				<generalizations>
@@ -2283,6 +2310,9 @@
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
 						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2316,6 +2346,9 @@
 						</property>
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2360,7 +2393,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Width" type="int" name="Width">
+						<property displayedName="Width" type="string" name="Width">
 							<default>1</default>
 						</property>
 					</properties>
@@ -2383,11 +2416,14 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X" type="int" name="XCoordinatePix">
+						<property displayedName="X" type="string" name="XCoordinatePix">
 							<default>5</default>
 						</property>
-						<property displayedName="Y" type="int" name="YCoordinatePix">
+						<property displayedName="Y" type="string" name="YCoordinatePix">
 							<default>5</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2411,17 +2447,20 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X1" type="int" name="X1CoordinateLine">
+						<property displayedName="X1" type="string" name="X1CoordinateLine">
 							<default>0</default>
 						</property>
-						<property displayedName="Y1" type="int" name="Y1CoordinateLine">
+						<property displayedName="Y1" type="string" name="Y1CoordinateLine">
 							<default>0</default>
 						</property>
-						<property displayedName="X2" type="int" name="X2CoordinateLine">
+						<property displayedName="X2" type="string" name="X2CoordinateLine">
 							<default>10</default>
 						</property>
-						<property displayedName="Y2" type="int" name="Y2CoordinateLine">
+						<property displayedName="Y2" type="string" name="Y2CoordinateLine">
 							<default>10</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2445,17 +2484,20 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X" type="int" name="XCoordinateRect">
+						<property displayedName="X" type="string" name="XCoordinateRect">
 							<default>0</default>
 						</property>
-						<property displayedName="Y" type="int" name="YCoordinateRect">
+						<property displayedName="Y" type="string" name="YCoordinateRect">
 							<default>0</default>
 						</property>
-						<property displayedName="Width" type="int" name="WidthRect">
+						<property displayedName="Width" type="string" name="WidthRect">
 							<default>5</default>
 						</property>
-						<property displayedName="Height" type="int" name="HeightRect">
+						<property displayedName="Height" type="string" name="HeightRect">
 							<default>5</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2479,17 +2521,20 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X" type="int" name="XCoordinateEllipse">
+						<property displayedName="X" type="string" name="XCoordinateEllipse">
 							<default>0</default>
 						</property>
-						<property displayedName="Y" type="int" name="YCoordinateEllipse">
+						<property displayedName="Y" type="string" name="YCoordinateEllipse">
 							<default>0</default>
 						</property>
-						<property displayedName="Width" type="int" name="WidthEllipse">
+						<property displayedName="Width" type="string" name="WidthEllipse">
 							<default>5</default>
 						</property>
-						<property displayedName="Height" type="int" name="HeightEllipse">
+						<property displayedName="Height" type="string" name="HeightEllipse">
 							<default>5</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2515,16 +2560,16 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X" type="int" name="XCoordinateArc">
+						<property displayedName="X" type="string" name="XCoordinateArc">
 							<default>0</default>
 						</property>
-						<property displayedName="Y" type="int" name="YCoordinateArc">
+						<property displayedName="Y" type="string" name="YCoordinateArc">
 							<default>0</default>
 						</property>
-						<property displayedName="Width" type="int" name="WidthArc">
+						<property displayedName="Width" type="string" name="WidthArc">
 							<default>5</default>
 						</property>
-						<property displayedName="Height" type="int" name="HeightArc">
+						<property displayedName="Height" type="string" name="HeightArc">
 							<default>5</default>
 						</property>
 						<property displayedName="StartAngle" type="int" name="StartAngle">
@@ -2532,6 +2577,9 @@
 						</property>
 						<property displayedName="SpanAngle" type="int" name="SpanAngle">
 							<default>20</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2581,6 +2629,9 @@
 					<properties>
 						<property displayedName="Color" type="BackgroundColor" name="Color">
 							<default>white</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<container/>
@@ -2707,6 +2758,7 @@
 				<element name="SendMessageThreads"/>
 				<element name="TrikWriteToFile"/>
 				<element name="TrikRemoveFile"/>
+				<element name="GetButtonCode"/>
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>
@@ -2736,7 +2788,6 @@
 				<element name="TrikWaitGamepadDisconnect" />
 				<element name="TrikWaitGamepadConnect" />
 				<element name="ReceiveMessageThreads"/>
-				<element name="GetButtonCode"/>
 			</group>
 			<group name="Drawing">
 				<element name="NxtDrawRect"/>
