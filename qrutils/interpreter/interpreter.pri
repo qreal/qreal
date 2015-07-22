@@ -30,7 +30,12 @@ HEADERS += \
 	$$PWD/blocks/forkBlock.h \
 	$$PWD/blocks/functionBlock.h \
 	$$PWD/blocks/variableInitBlock.h \
-	$$PWD/blocks/unsupportedBlock.h
+	$$PWD/blocks/unsupportedBlock.h \
+	$$PWD/blocks/joinBlock.h \
+	$$PWD/blocks/killThreadBlock.h \
+	$$PWD/blocks/sendThreadMessageBlock.h \
+	$$PWD/blocks/receiveThreadMessageBlock.h \
+	$$PWD/blocks/randomInitBlock.h \
 
 SOURCES += \
 	$$PWD/interpreter.cpp \
@@ -48,4 +53,9 @@ SOURCES += \
 	$$PWD/blocks/forkBlock.cpp \
 	$$PWD/blocks/functionBlock.cpp \
 	$$PWD/blocks/variableInitBlock.cpp \
-	$$PWD/blocks/unsupportedBlock.cpp
+	$$PWD/blocks/unsupportedBlock.cpp \
+	$$PWD/blocks/randomInitBlock.cpp \
+	$$PWD/blocks/joinBlock.cpp \
+	$$PWD/blocks/killThreadBlock.cpp \
+	$$PWD/blocks/sendThreadMessageBlock.cpp \
+	$$PWD/blocks/receiveThreadMessageBlock.cpp \

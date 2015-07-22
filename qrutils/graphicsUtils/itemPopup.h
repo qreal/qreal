@@ -68,10 +68,14 @@ protected slots:
 	/// Default implementation clears items memorized last time.
 	virtual void detach();
 
+private slots:
 	void onMousePressedScene();
 	void onMouseReleasedScene();
 
+	void checkSelection();
+
 protected:
+
 	/// Searches for the given property value that is met most oftenly among items memorized in last attachTo() call.
 	/// Items that are not QObjects are ignored. Obtaining property values is performed with Qt reflection.
 	QVariant dominantPropertyValue(const QString &property);
@@ -81,6 +85,7 @@ protected:
 	AbstractScene &mScene;
 	QList<QGraphicsItem *> mCurrentItems;
 	bool mEnabled = true;
+	bool mMousePressed = false;
 };
 
 }

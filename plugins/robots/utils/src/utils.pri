@@ -24,21 +24,41 @@ HEADERS += \
 	$$PWD/../include/utils/realTimeline.h \
 	$$PWD/../include/utils/realTimer.h \
 	$$PWD/../include/utils/tracer.h \
+	$$PWD/../include/utils/objectsSet.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
 	$$PWD/../include/utils/requiredVersion.h \
 	$$PWD/../include/utils/tcpRobotCommunicator.h \
 	$$PWD/../include/utils/tcpConnectionHandler.h \
+	$$PWD/../include/utils/canvas/canvas.h \
+	$$PWD/../include/utils/canvas/canvasObject.h \
+	$$PWD/../include/utils/canvas/pointObject.h \
+	$$PWD/../include/utils/canvas/lineObject.h \
+	$$PWD/../include/utils/canvas/rectangleObject.h \
+	$$PWD/../include/utils/canvas/ellipseObject.h \
+	$$PWD/../include/utils/canvas/arcObject.h \
+	$$PWD/../include/utils/canvas/textObject.h \
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
 	$$PWD/realTimeline.cpp \
 	$$PWD/realTimer.cpp \
 	$$PWD/tracer.cpp \
+	$$PWD/objectsSet.cpp \
 	$$PWD/robotCommunication/robotCommunicator.cpp \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
 	$$PWD/tcpRobotCommunicator.cpp \
 	$$PWD/tcpConnectionHandler.cpp \
+	$$PWD/canvas/canvas.cpp \
+	$$PWD/canvas/canvasObject.cpp \
+	$$PWD/canvas/pointObject.cpp \
+	$$PWD/canvas/lineObject.cpp \
+	$$PWD/canvas/rectangleObject.cpp \
+	$$PWD/canvas/ellipseObject.cpp \
+	$$PWD/canvas/arcObject.cpp \
+	$$PWD/canvas/textObject.cpp \
 
-TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/robots_utils_fr.ts \

@@ -135,11 +135,10 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 
 void Display::drawRect(int x, int y, int width, int height)
 {
-	Q_UNUSED(x);
-	Q_UNUSED(y);
-	Q_UNUSED(width);
-	Q_UNUSED(height);
-
+	Q_UNUSED(x)
+	Q_UNUSED(y)
+	Q_UNUSED(width)
+	Q_UNUSED(height)
 }
 
 void Display::drawCircle(int x, int y, int radius, bool filled)
@@ -235,4 +234,8 @@ void Display::clearScreen()
 	command[9] = opUI_DRAW;
 	command[10] = LC0(UPDATE);
 	mRobotCommunicator.send(this, command, 3);
+}
+
+void Display::redraw()
+{
 }

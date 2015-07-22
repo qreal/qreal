@@ -25,7 +25,9 @@ WaitForMessageGenerator::WaitForMessageGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "messages/waitForMessage.t"
-			, { Binding::createDirect("@@VARIABLE@@", "Variable") }
+			, { Binding::createDirect("@@VARIABLE@@", "Variable")
+				, Binding::createConverting("@@WAIT@@", "Synchronized"
+						, customizer.factory()->boolPropertyConverter(id, "Synchronized", false)) }
 			, parent)
 {
 }

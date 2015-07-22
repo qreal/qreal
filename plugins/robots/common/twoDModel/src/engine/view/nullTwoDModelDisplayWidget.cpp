@@ -25,7 +25,7 @@ NullTwoDModelDisplayWidget::~NullTwoDModelDisplayWidget()
 {
 }
 
-void NullTwoDModelDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
+void NullTwoDModelDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	TwoDModelDisplayWidget::setPainter(painter);
 }

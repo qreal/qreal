@@ -27,7 +27,9 @@ links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor
 
 includes(qrgui)
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_mainWindow_fr.ts \
 
 !macx {
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,."
@@ -154,3 +156,5 @@ FORMS += \
 
 RESOURCES = $$PWD/mainWindow.qrc
 RC_FILE = $$PWD/mainWindow.rc
+
+include(scriptAPI/scriptAPI.pri)

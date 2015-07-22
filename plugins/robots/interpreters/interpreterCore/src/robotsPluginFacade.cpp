@@ -15,7 +15,11 @@
 #include "interpreterCore/robotsPluginFacade.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/widgets/consoleDock.h>
 #include <kitBase/robotModel/portInfo.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelGuiFacade.h>
+#include <twoDModel/robotModel/twoDRobotModel.h>
 
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "src/ui/robotsSettingsPage.h"
@@ -81,7 +85,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mActionsManager.editModeAction()
 			, configurer.mainWindowDockInterface()
 			, configurer.systemEvents()
-			, mEventsForKitPlugin));
+			, mEventsForKitPlugin
+			, mRobotModelManager));
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
@@ -166,6 +171,16 @@ interpreterCore::Customizer &RobotsPluginFacade::customizer()
 ActionsManager &RobotsPluginFacade::actionsManager()
 {
 	return mActionsManager;
+}
+
+QObject *RobotsPluginFacade::guiScriptFacade() const
+{
+	const auto robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(&mRobotModelManager.model());
+	if (robotModel) {
+		return &robotModel->engine()->guiFacade();
+	}
+
+	return nullptr;
 }
 
 QStringList RobotsPluginFacade::defaultSettingsFiles() const
@@ -263,6 +278,8 @@ void RobotsPluginFacade::initSensorWidgets()
 
 	mUiManager->placeDevicesConfig(mDockDevicesConfigurer);
 	mUiManager->placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
+	mActionsManager.appendHotKey("View.ToggleRobotConsole", tr("Toggle robot console panel")
+			, *mUiManager->robotConsole().toggleViewAction());
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);

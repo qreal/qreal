@@ -56,11 +56,22 @@ public:
 	/// @returns error message if there was error and empty string otherwise
 	QString unloadPlugin(const QString &pluginName);
 
+	/// Returns names of all plugins.
+	QList<QString> namesOfPlugins() const;
+
 	/// Returns fileName by given object.
 	template <class InterfaceType>
 	QString fileName(InterfaceType *plugin) const
 	{
 		return mPluginManagerLoader.fileName(reinterpret_cast<QObject *>(plugin));
+	}
+
+	/// Returns plugin object instance by the name specified plugin metainformation.
+	/// The plugin must be loaded and initialized, otherwise nullptr will be returned.
+	template <class InterfaceType>
+	InterfaceType *plugin(const QString &pluginName) const
+	{
+		return dynamic_cast<InterfaceType *>(mPluginManagerLoader.pluginByName(pluginName));
 	}
 
 private:

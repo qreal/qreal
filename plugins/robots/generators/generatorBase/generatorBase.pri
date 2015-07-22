@@ -24,7 +24,9 @@ links(qrkernel qslog qrutils qrrepo qrtext qrgui-tool-plugin-interface qrgui-tex
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
-TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/generatorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/generatorBase/robotsGeneratorDeclSpec.h \
@@ -196,8 +198,11 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
+	$$PWD/src/simpleGenerators/randomInitGenerator.h \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.h \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.h \
+	$$PWD/src/simpleGenerators/killThreadGenerator.h \
+	$$PWD/src/simpleGenerators/getButtonCodeGenerator.h \
 	$$PWD/src/lua/luaPrinter.h \
 	$$PWD/src/lua/reservedFunctionsConverter.h \
 
@@ -259,8 +264,11 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/labelGenerator.cpp \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/variableInitGenerator.cpp \
+	$$PWD/src/simpleGenerators/randomInitGenerator.cpp \
 	$$PWD/src/simpleGenerators/sendMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
+	$$PWD/src/simpleGenerators/killThreadGenerator.cpp \
+	$$PWD/src/simpleGenerators/getButtonCodeGenerator.cpp \
 	$$PWD/src/lua/luaProcessor.cpp \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \

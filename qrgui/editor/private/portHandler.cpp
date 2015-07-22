@@ -122,10 +122,12 @@ void PortHandler::connectTemporaryRemovedLinksToPort(const IdList &temporaryRemo
 		}
 
 		if (direction == "from") {
-			const QPointF startPos = edge->mapFromItem(mNode, nearestPort(edge->line().first(), edge->fromPortTypes()));
+			const QPointF startPos = edge->mapFromItem(mNode
+					, nearestPort(edge->mapToScene(edge->line().first()), edge->fromPortTypes()));
 			edge->placeStartTo(startPos);
 		} else {
-			const QPointF endPos = edge->mapFromItem(mNode, nearestPort(edge->line().last(), edge->toPortTypes()));
+			const QPointF endPos = edge->mapFromItem(mNode
+					, nearestPort(edge->mapToScene(edge->line().last()), edge->toPortTypes()));
 			edge->placeEndTo(endPos);
 		}
 		edge->connectToPort();
@@ -328,10 +330,10 @@ int PortHandler::numberOfPorts() const
 
 void PortHandler::connectLinksToPorts()
 {
-	const QList<QGraphicsItem *> items = mNode->scene()->items(mNode->scenePos());
-	foreach (QGraphicsItem *item, items) {
-		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
-		if (edge) {
+	const QList<QGraphicsItem *> items = mNode->scene()->items(mNode->boundingRect().translated(mNode->pos()));
+	for (QGraphicsItem * const item : items) {
+		EdgeElement * const edge = dynamic_cast<EdgeElement *>(item);
+		if (edge && edge->isHanging()) {
 			edge->connectToPort();
 			return;
 		}

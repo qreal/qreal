@@ -22,7 +22,7 @@
 namespace twoDModel {
 namespace engine {
 
-/// Base class for all widgets that emulate diaplay`s behaviour. Implements 'clear' function.
+/// Base class for all widgets that emulate display`s behaviour. Implements 'clear' function.
 class TWO_D_MODEL_EXPORT TwoDModelDisplayWidget : public QWidget, public TwoDModelDisplayInterface
 {
 	Q_OBJECT
@@ -30,11 +30,11 @@ class TWO_D_MODEL_EXPORT TwoDModelDisplayWidget : public QWidget, public TwoDMod
 public:
 	explicit TwoDModelDisplayWidget(QWidget *parent = nullptr);
 
-	void setPainter(graphicsUtils::PainterInterface *painter) override;
-	void clear() const override;
+	void setPainter(qReal::ui::PainterInterface *painter) override;
+	void reset() override;
 
 private:
-	graphicsUtils::PainterInterface *mPainter;
+	qReal::ui::PainterInterface *mPainter;
 };
 
 }

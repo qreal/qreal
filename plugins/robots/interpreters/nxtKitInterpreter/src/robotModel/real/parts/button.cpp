@@ -18,7 +18,7 @@ using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 Button::Button(const DeviceInfo &info, const PortInfo &port)
-	: robotParts::Button(info, port)
+	: robotParts::Button(info, port, -1)
 {
 }
 

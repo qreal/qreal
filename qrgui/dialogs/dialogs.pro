@@ -25,7 +25,9 @@ includes(qrgui)
 
 DEFINES += QRGUI_DIALOGS_LIBRARY
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_dialogs_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_dialogs_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_dialogs_fr.ts \
 
 HEADERS += \
 	$$PWD/dialogsDeclSpec.h \

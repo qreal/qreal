@@ -56,6 +56,11 @@ signals:
 	/// application`s event propagation subsystem. This is very powerful and dangerous tool, use it with care,
 	/// it can strongly harm application`s performance.
 	void lowLevelEvent(QObject *obj, QEvent *e);
+
+	/// This event is emitted for all components modifying main window UI. All those components must
+	/// ensure that diagram widget is visible when this signal is emitted. That will be useful for
+	/// example when user wants to see an element containing error in error reporter.
+	void ensureDiagramVisible();
 };
 
 }

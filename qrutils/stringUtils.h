@@ -31,6 +31,12 @@ public:
 
 	/// Returns new instance of string that exactly the same as given but with first letter in upper case.
 	static QString capitalizeFirstLetter(const QString &string);
+
+	/// Returns new instance of string that exactly the same as given but with first letter in lower case.
+	static QString lowercaseFirstLetter(const QString &string);
+
+	/// Removes a pair of quotes if string starts or end with them.
+	static QString dequote(const QString &string);
 };
 
 }

@@ -90,9 +90,9 @@ void RealRobotModel::disconnectFromRobot()
 	mRobotCommunicator->disconnect();
 }
 
-void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
+void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
-	mRobotCommunicator->setErrorReporter(errorReporter);
+	mRobotCommunicator->setErrorReporter(&errorReporter);
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
@@ -106,7 +106,7 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 	} else if (deviceInfo.isA(gamepadPadPressSensorInfo())) {
 		return new parts::GamepadPadPressSensor(gamepadPadPressSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(buttonInfo())) {
-		return new parts::Button(buttonInfo(), port, *mRobotCommunicator);
+		return new parts::Button(buttonInfo(), port, buttonCodes()[port.name() + "Button"], *mRobotCommunicator);
 	} else if (deviceInfo.isA(powerMotorInfo())) {
 		return new parts::PowerMotor(powerMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(servoMotorInfo())) {
@@ -143,5 +143,5 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 		return new parts::GamepadWheel(gamepadWheelInfo(), port, *mRobotCommunicator);
 	}
 
-	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
+	return TrikRobotModelBase::createDevice(port, deviceInfo);
 }

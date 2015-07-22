@@ -40,7 +40,7 @@ void Display::setBackground(const QColor &color)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/setBackground.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@COLOR@@", color.name());
+			.replace("@@COLOR@@", color.name()).replace("@@REDRAW@@", QString());
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
@@ -48,7 +48,7 @@ void Display::setBackground(const QColor &color)
 void Display::clearScreen()
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/clearScreen.t";
-	const QString directCommand = utils::InFile::readAll(pathToCommand);
+	const QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@REDRAW@@", QString());
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
@@ -56,7 +56,8 @@ void Display::printText(int x, int y, const QString &text)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/printText.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
-			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "script.run();";
+			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y))
+			.replace("@@REDRAW@@", QString());
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
@@ -109,4 +110,11 @@ void Display::drawArc(int x, int y, int width, int height, int startAngle, int s
 	Q_UNUSED(height)
 	Q_UNUSED(startAngle)
 	Q_UNUSED(spanAngle)
+}
+
+void Display::redraw()
+{
+	const QString pathToCommand = ":/trikQts/templates/drawing/redraw.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }

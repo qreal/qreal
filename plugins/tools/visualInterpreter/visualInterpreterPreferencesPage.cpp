@@ -13,11 +13,10 @@
  * limitations under the License. */
 
 #include <QtWidgets/QFileDialog>
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 #include "visualInterpreterPreferencesPage.h"
 #include "ui_visualInterpreterPreferencePage.h"
-
 
 using namespace qReal;
 

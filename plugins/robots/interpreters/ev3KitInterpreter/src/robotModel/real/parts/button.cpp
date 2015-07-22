@@ -23,7 +23,7 @@ using namespace kitBase::robotModel;
 
 Button::Button(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: robotParts::Button(info, port)
+	: robotParts::Button(info, port, -1)
 	, mRobotCommunicator(robotCommunicator)
 {
 }

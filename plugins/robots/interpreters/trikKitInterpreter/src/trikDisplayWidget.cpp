@@ -33,10 +33,10 @@ TrikDisplayWidget::~TrikDisplayWidget()
 	delete mUi;
 }
 
-void TrikDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
+void TrikDisplayWidget::setPainter(qReal::ui::PainterInterface *painter)
 {
 	TwoDModelDisplayWidget::setPainter(painter);
-	mUi->display->appendPainter(painter);
+	mUi->display->setPainter(painter);
 }
 
 void TrikDisplayWidget::repaintDisplay()
@@ -81,6 +81,7 @@ void TrikDisplayWidget::setLedColor(const QColor &color)
 {
 	QPalette backgroundPalette(palette());
 	backgroundPalette.setColor(QPalette::Background, color);
+	backgroundPalette.setColor(QPalette::Base, color);
 	mUi->led->setPalette(backgroundPalette);
 	mUi->led->show();
 }
@@ -90,4 +91,15 @@ void TrikDisplayWidget::paintEvent(QPaintEvent *event)
 	QWidget::paintEvent(event);
 	QPainter painter(this);
 	painter.drawImage(QRect(0, 0, width(), height()), mBackground);
+}
+
+void TrikDisplayWidget::reset()
+{
+	TwoDModelDisplayWidget::reset();
+	resetLed();
+}
+
+void TrikDisplayWidget::resetLed()
+{
+	setLedColor("red");
 }

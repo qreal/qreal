@@ -64,7 +64,9 @@ signals:
 
 private slots:
 	void threadStopped();
-	void newThread(const qReal::Id &startBlockId);
+	void newThread(const qReal::Id &startBlockId, const QString &threadId);
+	void killThread(const QString &threadId);
+	void sendMessage(const QString &threadId, const QString &message);
 
 private:
 	enum InterpreterState {
@@ -72,7 +74,7 @@ private:
 		, idle
 	};
 
-	void addThread(Thread * const thread);
+	void addThread(Thread * const thread, const QString &threadId);
 
 	void reportError(const QString &message);
 
@@ -81,7 +83,7 @@ private:
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
 	InterpreterState mState;
-	QList<Thread *> mThreads;  // Has ownership
+	QHash<QString, Thread *> mThreads;  // Has ownership
 	BlocksTableInterface &mBlocksTable;  // Has ownership
 
 	/// Reference to a parser to be able to clear parser state when starting interpretation.

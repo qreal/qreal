@@ -101,7 +101,7 @@ QVariant LuaInterpreter::interpret(const QSharedPointer<core::ast::Node> &root
 		auto interpretedValue = interpret(value, semanticAnalyzer);
 
 		if (variable->is<ast::Identifier>()) {
-			auto name = as<ast::Identifier>(variable)->name();
+			const auto name = as<ast::Identifier>(variable)->name();
 
 			if (mReadOnlyVariables.contains(name)) {
 				mErrors.append(core::Error(root->start(), QObject::tr("Variable %1 is read-only")

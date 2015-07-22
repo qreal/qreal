@@ -31,9 +31,10 @@ public:
 	{
 	}
 
-	/// Returns value of a string (with quotes).
-	const QString &text() const {
-		return mText;
+	/// Returns value of a string (without quotes).
+	const QString &text()
+	{
+		return mText.remove('\'');
 	}
 
 private:

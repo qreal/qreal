@@ -27,8 +27,8 @@ using namespace twoDModel::engine;
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
-	, mView(new view::TwoDModelWidget(*mModel.data()))
-	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
+	, mView(new view::TwoDModelWidget(*mModel))
+	, mApi(new TwoDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
 	mModel.data()->addRobotModel(robotModel);
@@ -127,12 +127,12 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 
 kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()
 {
-	return *mView.data();
+	return *mView;
 }
 
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
-	return *mApi.data();
+	return *mApi;
 }
 
 void TwoDModelEngineFacade::onStartInterpretation()

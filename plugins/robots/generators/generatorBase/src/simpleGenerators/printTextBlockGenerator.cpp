@@ -15,6 +15,8 @@
 #include "printTextBlockGenerator.h"
 #include "generatorBase/generatorCustomizer.h"
 
+#include <qrutils/stringUtils.h>
+
 using namespace generatorBase::simple;
 using namespace qReal;
 
@@ -22,13 +24,19 @@ PrintTextBlockGenerator::PrintTextBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
 		, const Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "drawing/printText.t", QList<Binding *>()
-			<< Binding::createConverting("@@X@@", "XCoordinateText"
+	: BindingGenerator(repo, customizer, id, "drawing/printText.t", {
+			Binding::createConverting("@@X@@", "XCoordinateText"
 					, customizer.factory()->intPropertyConverter(id, "XCoordinateText"))
-			<< Binding::createConverting("@@Y@@", "YCoordinateText"
+			, Binding::createConverting("@@Y@@", "YCoordinateText"
 					, customizer.factory()->intPropertyConverter(id, "YCoordinateText"))
-			<< Binding::createConverting("@@TEXT@@", "PrintText"
-					, customizer.factory()->stringPropertyConverter(id, "PrintText"))
-			, parent)
+			, (repo.property(id, "Evaluate").toBool()
+					? Binding::createConverting("@@TEXT@@", "PrintText"
+							, customizer.factory()->stringPropertyConverter(id, "PrintText"))
+					: Binding::createStatic("@@TEXT@@"
+							, utils::StringUtils::wrap(repo.stringProperty(id, "PrintText"))))
+			}, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

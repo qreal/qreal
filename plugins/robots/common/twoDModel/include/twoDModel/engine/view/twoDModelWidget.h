@@ -55,6 +55,7 @@ class RobotItem;
 class ActionsBox;
 class ColorItemPopup;
 class RobotItemPopup;
+class SpeedPopup;
 
 class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
 {
@@ -128,8 +129,8 @@ private slots:
 	void checkSpeedButtons();
 
 	void enableRobotFollowing(bool on);
-	void onHandCursorButtonToggled(bool on);
-	void onMultiselectionCursorButtonToggled(bool on);
+	void onHandCursorActionTriggered();
+	void onMultiselectionCursorActionTriggered();
 
 	void changePhysicsSettings();
 
@@ -190,6 +191,7 @@ private:
 
 	void initRunStopButtons();
 
+	bool setSelectedPort(QComboBox * const comboBox, const kitBase::robotModel::PortInfo &port);
 	void updateWheelComboBoxes();
 
 	void onRobotListChange(RobotItem *robotItem);
@@ -204,6 +206,7 @@ private:
 	QScopedPointer<ActionsBox> mActions;
 	ColorItemPopup *mColorFieldItemPopup;  // Takes ownership
 	RobotItemPopup *mRobotItemPopup;  // Takes ownership
+	SpeedPopup *mSpeedPopup;  // Takes owneship
 
 	RobotItem *mSelectedRobotItem = nullptr;
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;

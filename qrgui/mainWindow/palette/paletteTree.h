@@ -30,6 +30,8 @@
 #include "mainWindow/palette/paletteTreeWidgets.h"
 #include "plugins/pluginManager/proxyEditorManager.h"
 
+class QLineEdit;
+
 namespace  qReal {
 namespace gui {
 
@@ -59,6 +61,12 @@ public:
 	QComboBox* comboBox() const;
 	QList<QString> editorsNames() const;
 	Id currentEditor() const;
+
+	/// Deletes all PaletteTree widgets.
+	void deletePaletteTree();
+
+	/// Creates all PaletteTree widgets.
+	void createPaletteTree();
 
 	/// Set item with such id as active in ComboBox.
 	void setComboBox(const Id &id);
@@ -101,9 +109,6 @@ signals:
 	void paletteParametersChanged();
 
 public slots:
-	/// Change expanded/collapsed state of current tree.
-	void changeExpansionState();
-
 	/// Expand all nodes of current tree.
 	void expand();
 
@@ -123,11 +128,11 @@ public slots:
 	void refreshUserPalettes();
 
 private:
-	/// Change icon and tooltip
-	void setExpansionButtonAppearance();
-
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
+
+private slots:
+	void onSearchTextChanged(const QRegExp &searchText);
 
 private:
 	/// Forbids to make copies of the object.
@@ -136,12 +141,6 @@ private:
 	virtual void resizeEvent(QResizeEvent *);
 
 	void initUi();
-
-	/// Creates all PaletteTree widgets.
-	void createPaletteTree();
-
-	/// Deletes all PaletteTree widgets.
-	void deletePaletteTree();
 
 	/// Fills palette tree by editors.
 	/// @param editorManager Editor manager which all editors with elements are taken from.
@@ -156,12 +155,6 @@ private:
 
 	/// Pointer to current tree.
 	PaletteTreeWidgets *mTree;
-
-	/// Button that changes expansion state of current tree
-	QToolButton *mChangeExpansionState;
-
-	/// Button that changes palette representation.
-	QToolButton *mChangeRepresentation;
 
 	/// List with all editor's trees.
 	QList<PaletteTreeWidgets *> mEditorsTrees;
@@ -180,9 +173,6 @@ private:
 
 	/// Representation flag
 	bool mIconsView;
-
-	/// Whether expand/collapse button expands tree
-	bool mNodesStateButtonExpands;
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;

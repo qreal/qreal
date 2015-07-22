@@ -14,7 +14,7 @@
 
 #include "messageGenerator.h"
 
-#include "../../../qrutils/nameNormalizer.h"
+#include <qrutils/nameNormalizer.h>
 
 #include <QtCore/QFile>
 

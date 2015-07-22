@@ -14,6 +14,10 @@
 
 #include "lineImpl.h"
 
+#include <QtXml/QDomElement>
+
+#include <qrutils/mathUtils/math.h>
+
 using namespace graphicsUtils;
 
 LineImpl::LineImpl()
@@ -68,7 +72,12 @@ QPainterPath LineImpl::shape(const int drift, qreal x1, qreal y1, qreal x2, qrea
 	ps.setWidth(drift);
 
 	path.moveTo(x1, y1);
-	path.lineTo(x2, y2);
+	if (mathUtils::Math::eq(x1, x2) && mathUtils::Math::eq(y1, y2)) {
+		path.lineTo(x2 + 0.1, y2);
+	} else {
+		path.lineTo(x2, y2);
+	}
+
 	path = ps.createStroke(path);
 
 	return path;
@@ -88,4 +97,25 @@ QPair<qreal, qreal> LineImpl::reshapeRectWithShiftForLine(qreal x1, qreal y1, qr
 		else
 			return QPair<qreal, qreal>(x1, y1 - size);
 	}
+}
+
+void LineImpl::serialize(QDomElement &element, qreal x1, qreal y1, qreal x2, qreal y2) const
+{
+	element.setAttribute("begin", QString::number(x1) + ":" + QString::number(y1));
+	element.setAttribute("end", QString::number(x2) + ":" + QString::number(y2));
+}
+
+QPair<QPointF, QPointF> LineImpl::deserialize(const QDomElement &element) const
+{
+	const QPointF begin = deserializePoint(element.attribute("begin", "0:0"));
+	const QPointF end = deserializePoint(element.attribute("end", "0:0"));
+	return qMakePair(begin, end);
+}
+
+QPointF LineImpl::deserializePoint(const QString &string) const
+{
+	const QStringList splittedStr = string.split(":");
+	const int x = splittedStr[0].toInt();
+	const int y = splittedStr[1].toInt();
+	return QPointF(x, y);
 }

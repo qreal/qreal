@@ -22,6 +22,7 @@
 #include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
+#include "robotModel/twoD/parts/twoDShell.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
 #include "robotModel/twoD/parts/twoDLed.h"
 #include "robotModel/twoD/parts/twoDLineSensor.h"
@@ -32,6 +33,7 @@
 #include <trikKit/robotModel/parts/trikColorSensor.h>
 #include <trikKit/robotModel/parts/trikInfraredSensor.h>
 #include <trikKit/robotModel/parts/trikSonarSensor.h>
+#include <trikKit/robotModel/parts/trikShell.h>
 
 #include "trikDisplayWidget.h"
 
@@ -43,7 +45,16 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
+	, mDisplayWidget(new TrikDisplayWidget())
 {
+	/// @todo: One day we will support gamepad in 2D model and there will be piece.
+	/// But till that day gamepad ports must be killed cause they spam logs.
+	const QList<PortInfo> realRobotPorts = CommonRobotModel::availablePorts();
+	for (const PortInfo &port : realRobotPorts) {
+		if (port.name().contains("Gamepad", Qt::CaseInsensitive)) {
+			removeAllowedConnections(port);
+		}
+	}
 }
 
 robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
@@ -54,6 +65,14 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {
 		return new parts::TwoDSpeaker(deviceInfo, port, *engine());
+	}
+
+	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {
+		parts::Shell * const shell = new parts::Shell(deviceInfo, port, *engine());
+		// Error reporter will come only after global plugin init() is called. Shell is however
+		// configured even later. So setting error reporter only when everything will be ready.
+		connect(shell, &parts::Shell::configured, [=]() { shell->setErrorReporter(*mErrorReporter); });
+		return shell;
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikInfraredSensor>()) {
@@ -86,6 +105,7 @@ void TwoDRobotModel::onInterpretationStarted()
 	if (display) {
 		display->clearScreen();
 		display->setBackground(QColor(Qt::gray));
+		display->redraw();
 	} else {
 		/// @todo: if we get here it is wrong because display is not configured before the interpretation!
 	}
@@ -106,9 +126,9 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo(mRightWheelPort, output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent) const
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 {
-	return new TrikDisplayWidget(parent);
+	return mDisplayWidget;
 }
 
 QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
@@ -153,7 +173,6 @@ QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TwoDRobotM
 	return result;
 }
 
-
 QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &port) const
 {
 	if (port == PortInfo("LineSensorPort", input)) {
@@ -161,4 +180,22 @@ QPair<QPoint, qreal> TwoDRobotModel::specialDeviceConfiguration(const PortInfo &
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
+}
+
+QHash<QString, int> TwoDRobotModel::buttonCodes() const
+{
+	QHash<QString, int> result;
+	result["LeftButton"] = 105;
+	result["RightButton"] = 106;
+	result["UpButton"] = 103;
+	result["DownButton"] = 108;
+	result["EnterButton"] = 28;
+	result["PowerButton"] = 116;
+	result["EscButton"] = 1;
+	return result;
+}
+
+void TwoDRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
 }

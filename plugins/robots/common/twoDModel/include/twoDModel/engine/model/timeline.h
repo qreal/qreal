@@ -65,6 +65,9 @@ signals:
 	void started();
 	void stopped();
 
+	/// Emitted when timeline speed factor value changes.
+	void speedFactorChanged(int value);
+
 private slots:
 	void onTimer();
 	void gotoNextFrame();

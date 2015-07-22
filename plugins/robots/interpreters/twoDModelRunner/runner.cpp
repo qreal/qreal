@@ -67,15 +67,19 @@ void Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped
-				, [=]() { mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0); });
+		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [=]() {
+			QTimer::singleShot(0, [=]() {
+				mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0);
+			});
+		});
 	}
 
 	for (view::TwoDModelWidget * const  twoDModelWindow : twoDModelWindows) {
 		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
 		for (model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
-			connect(robotModel, &model::RobotModel::robotRided, this, &Runner::onRobotRided, Qt::UniqueConnection);
+			connect(robotModel, &model::RobotModel::positionRecalculated
+					, this, &Runner::onRobotRided, Qt::UniqueConnection);
 		}
 	}
 

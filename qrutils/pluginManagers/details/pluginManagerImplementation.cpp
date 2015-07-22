@@ -30,7 +30,10 @@ PluginManagerImplementation::PluginManagerImplementation(const QString &applicat
 
 PluginManagerImplementation::~PluginManagerImplementation()
 {
-	qDeleteAll(mLoaders);
+	/// @todo Fix plugins removal.
+//	for (auto &pair : mLoaders) {
+//		delete pair.second;
+//	}
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
@@ -66,9 +69,11 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const 
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
 	loader->load();
 	QObject *plugin = loader->instance();
+	QPair<QString, QPluginLoader*> pairOfLoader = qMakePair(pluginName, loader);
+	mLoaders.append(pairOfLoader);
 
 	if (plugin) {
-		mFileNameAndPlugin.insert(pluginName, plugin);
+		mFileNameAndPlugin.insert(loader->metaData()["IID"].toString(), plugin);
 		return qMakePair(plugin, QString());
 	}
 
@@ -100,25 +105,39 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const 
 
 QString PluginManagerImplementation::unloadPlugin(const QString &pluginName)
 {
-	QPluginLoader *loader = mLoaders[pluginName];
+	int count = 0;
+	bool stateUnload = true;
 
-	if (loader) {
-		mLoaders.remove(pluginName);
-
-		if (!loader->unload()) {
-			const QString error = loader->errorString();
-			delete loader;
-			return error;
+	for (const QPair<QString, QPluginLoader *> &currentPair : mLoaders) {
+		if (currentPair.first == pluginName) {
+			stateUnload = currentPair.second->unload();
 		}
 
-		delete loader;
+		++count;
+	}
+
+	if (stateUnload) {
 		return QString();
 	}
 
 	return QString("Plugin was not found");
 }
 
+QList<QString> PluginManagerImplementation::namesOfPlugins() const
+{
+	QList<QString> listOfNames;
+	for (const QPair<QString, QPluginLoader *> &currentPair : mLoaders) {
+		listOfNames.append(currentPair.first);
+	}
+	return listOfNames;
+}
+
 QString PluginManagerImplementation::fileName(QObject *plugin) const
 {
 	return mFileNameAndPlugin.key(plugin);
+}
+
+QObject *PluginManagerImplementation::pluginByName(const QString &pluginName) const
+{
+	return mFileNameAndPlugin[pluginName];
 }

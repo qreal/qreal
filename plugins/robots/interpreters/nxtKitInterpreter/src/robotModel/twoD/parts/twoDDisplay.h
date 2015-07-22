@@ -16,6 +16,7 @@
 
 #include <nxtKit/robotModel/parts/nxtDisplay.h>
 
+#include <utils/canvas/canvas.h>
 #include <twoDModel/engine/twoDModelEngineInterface.h>
 #include <twoDModel/engine/twoDModelDisplayInterface.h>
 
@@ -24,39 +25,37 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-/// @todo Move this somewhere.
-const int textPixelHeight = 8;
-const int textPixelWidth = 16;
-const int nxtDisplayHeight = 64;
-const int nxtDisplayWidth = 100;
-
-class Display : public robotModel::parts::NxtDisplay, public graphicsUtils::PainterInterface
+class Display : public robotModel::parts::NxtDisplay, public utils::Canvas
 {
 	Q_OBJECT
+	// Canvas cannot be QObject because of ambiguous base so we are forced to copy properties here.
+	Q_PROPERTY(QList<utils::CanvasObject *> objects READ objects)
+	Q_PROPERTY(QList<utils::PointObject *> pixels READ pixels)
+	Q_PROPERTY(QList<utils::LineObject *> segments READ segments)
+	Q_PROPERTY(QList<utils::RectangleObject *> rectangles READ rectangles)
+	Q_PROPERTY(QList<utils::EllipseObject *> ellipses READ ellipses)
+	Q_PROPERTY(QList<utils::ArcObject *> arcs READ arcs)
+	Q_PROPERTY(QList<utils::TextObject *> labels READ labels)
 
 public:
 	Display(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
+	void clearScreen() override;
+	void redraw() override;
+	void reset() override;
+
 	void drawPixel(int x, int y) override;
 	void drawLine(int x1, int y1, int x2, int y2) override;
 	void drawRect(int x, int y, int width, int height) override;
 	void drawCircle(int x, int y, int radius) override;
 	void printText(int x, int y, const QString &text) override;
-	void clearScreen() override;
 
 	void paint(QPainter *painter) override;
-	void clear() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
-	QList<QLine> mLines;
-	QList<QPoint> mPoints;
-	QList<QRect> mCircles;
-	QList<QRect> mRects;
-	QList<QString> mStrings;
-	QList<QPoint> mStringPlaces;
 };
 
 }

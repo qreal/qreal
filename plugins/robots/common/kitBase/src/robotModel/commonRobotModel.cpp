@@ -19,6 +19,7 @@
 #include <utils/realTimeline.h>
 
 #include "kitBase/robotModel/robotParts/motor.h"
+#include "kitBase/robotModel/robotParts/random.h"
 
 using namespace kitBase::robotModel;
 
@@ -33,6 +34,8 @@ CommonRobotModel::CommonRobotModel(const QString &kitId, const QString &robotId)
 
 	connect(this, &CommonRobotModel::connected, this, &CommonRobotModel::onConnected);
 	connect(this, &CommonRobotModel::disconnected, this, &CommonRobotModel::onDisconnected);
+
+	addAllowedConnection(PortInfo("RandomPort", input), { DeviceInfo::create<robotParts::Random>() });
 }
 
 CommonRobotModel::~CommonRobotModel()
@@ -187,6 +190,11 @@ void CommonRobotModel::applyConfiguration()
 	}
 }
 
+QHash<QString, int> CommonRobotModel::buttonCodes() const
+{
+	return QHash<QString, int>();
+}
+
 QList<DeviceInfo> CommonRobotModel::convertibleBases() const
 {
 	return {};
@@ -210,10 +218,16 @@ void CommonRobotModel::addAllowedConnection(const PortInfo &port, QList<DeviceIn
 	mAllowedConnections[port].append(devices);
 }
 
+void CommonRobotModel::removeAllowedConnections(const PortInfo &port)
+{
+	mAllowedConnections.remove(port);
+}
+
 robotParts::Device * CommonRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
-	Q_UNUSED(port);
-	Q_UNUSED(deviceInfo);
+	if (deviceInfo.isA<robotParts::Random>()) {
+		return new robotParts::Random(deviceInfo, port);
+	}
 
 	/// @todo Handle error?
 	return nullptr;

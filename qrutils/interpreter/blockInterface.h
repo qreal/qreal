@@ -23,6 +23,8 @@
 namespace qReal {
 namespace interpretation {
 
+class Thread;
+
 /// An interface of the block`s implementation used in the interprer for executing it.
 class QRUTILS_EXPORT BlockInterface : public QObject
 {
@@ -31,8 +33,8 @@ class QRUTILS_EXPORT BlockInterface : public QObject
 public:
 	~BlockInterface() override {}
 
-	/// Starts block execution.
-	virtual void interpret() = 0;
+	/// Starts block execution inside a given thread.
+	virtual void interpret(Thread *thread) = 0;
 
 	/// Called each time when the interpretation process fails for some reason.
 	/// Block must deinitialize its recources here.
@@ -51,7 +53,13 @@ signals:
 
 	/// Emitted each time when the block has requested new thread. Useful for fork blocks.
 	/// @param startBlock - an id of the block that was decided to start the thread execution.
-	void newThread(const qReal::Id &startBlock);
+	void newThread(const qReal::Id &startBlock, const QString &threadId);
+
+	/// Emitted when the block requests stopping execution of some thread.
+	void killThread(const QString &threadId);
+
+	/// Emitted when the block wants to send a message to another thread.
+	void sendMessage(const QString &threadId, const QString &message);
 
 	/// Emitted each time when the block stops its execution due to some error.
 	void failure();

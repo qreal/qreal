@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtCore/QScopedPointer>
+#include <QtCore/QEventLoop>
 #include <QtWidgets/QAction>
 
 #include <gtest/gtest.h>
@@ -50,6 +51,8 @@ protected:
 	BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
 	ConfigurationInterfaceMock mConfigurationInterfaceMock;
 	QScopedPointer<interpreterCore::textLanguage::RobotsBlockParser> mParser;
+	QEventLoop mEventLoop;
+	bool mInterpreterStopped = false;
 };
 
 }
