@@ -43,7 +43,9 @@ TwoDRobotModel::TwoDRobotModel(const RobotModelInterface &realModel)
 	, mEngine(nullptr)
 {
 	for (const PortInfo &port : realModel.availablePorts()) {
-		addAllowedConnection(port, realModel.allowedDevices(port));
+		if (!port.name().toLower().contains("gamepad")) {
+			addAllowedConnection(port, realModel.allowedDevices(port));
+		}
 	}
 
 	addAllowedConnection(PortInfo("MarkerPort", output), { markerInfo() });
