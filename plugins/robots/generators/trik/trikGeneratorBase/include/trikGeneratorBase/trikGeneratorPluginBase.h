@@ -37,7 +37,8 @@ class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikGeneratorPluginBase : public generat
 
 public:
 	TrikGeneratorPluginBase(kitBase::robotModel::RobotModelInterface * const robotModel
-			, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory);
+			, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory
+			);
 
 	~TrikGeneratorPluginBase() override;
 

@@ -27,3 +27,5 @@ SUBDIRS = \
 
 robotsPlugin.depends = interpreterCore
 twoDModelRunner.depends = interpreterCore
+trikV6KitInterpreter.depends = trikKitInterpreterCommon
+trikV62KitInterpreter.depends = trikKitInterpreterCommon

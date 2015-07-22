@@ -24,9 +24,9 @@ TrikQtsMasterGenerator::TrikQtsMasterGenerator(const qrRepo::RepoApi &repo
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const qReal::Id &diagramId
-		, const QString &generatorName)
+		, const QStringList &pathsToTemplates)
 	: TrikMasterGeneratorBase(repo, errorReporter, parserErrorReporter, robotModelManager, textLanguage
-			, diagramId, generatorName)
+			, diagramId, pathsToTemplates)
 {
 }
 

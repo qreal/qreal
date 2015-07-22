@@ -28,7 +28,7 @@ SetBackgroundGenerator::SetBackgroundGenerator(const qrRepo::RepoApi &repo
 	: BindingGenerator(repo, customizer, id
 			, "drawing/setBackground.t"
 			, { Binding::createConverting("@@COLOR@@", "Color"
-						, new BackgroundColorConverter(customizer.factory()->pathToTemplates()))
+						, new BackgroundColorConverter(customizer.factory()->pathsToTemplates()))
 				, Binding::createConverting("@@REDRAW@@", "Redraw"
 						, customizer.factory()->boolPropertyConverter(id, "Redraw", false)) }
 			, parent)

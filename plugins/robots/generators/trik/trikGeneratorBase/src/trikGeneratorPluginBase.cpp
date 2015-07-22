@@ -14,6 +14,8 @@
 
 #include "trikGeneratorBase/trikGeneratorPluginBase.h"
 
+#include <qrutils/inFile.h>
+
 using namespace trik;
 
 TrikGeneratorPluginBase::TrikGeneratorPluginBase(kitBase::robotModel::RobotModelInterface * const robotModel

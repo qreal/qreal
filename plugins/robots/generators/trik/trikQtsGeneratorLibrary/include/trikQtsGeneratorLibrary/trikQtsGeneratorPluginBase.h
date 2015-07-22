@@ -32,7 +32,8 @@ class TrikQtsGeneratorPluginBase : public TrikGeneratorPluginBase
 
 public:
 	TrikQtsGeneratorPluginBase(kitBase::robotModel::RobotModelInterface * const robotModel
-			, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory);
+			, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory
+			, const QStringList &pathsToTemplates);
 
 	~TrikQtsGeneratorPluginBase() override;
 
@@ -77,6 +78,8 @@ private:
 	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	utils::TcpRobotCommunicator *mCommunicator;
+
+	QStringList mPathsToTemplates;
 };
 
 }

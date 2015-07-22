@@ -29,14 +29,17 @@ using namespace trik::qts;
 using namespace kitBase::robotModel;
 using namespace qReal;
 
-TrikQtsGeneratorPluginBase::TrikQtsGeneratorPluginBase(kitBase::robotModel::RobotModelInterface * const robotModel
-		, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory)
+TrikQtsGeneratorPluginBase::TrikQtsGeneratorPluginBase(
+		kitBase::robotModel::RobotModelInterface * const robotModel
+		, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory
+		, const QStringList &pathsToTemplates)
 	: TrikGeneratorPluginBase(robotModel, blocksFactory)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
 	, mCommunicator(nullptr)
+	, mPathsToTemplates(pathsToTemplates)
 {
 }
 
@@ -111,7 +114,7 @@ generatorBase::MasterGeneratorBase *TrikQtsGeneratorPluginBase::masterGenerator(
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()
-			, generatorName());
+			, mPathsToTemplates);
 }
 
 QString TrikQtsGeneratorPluginBase::defaultFilePath(const QString &projectName) const

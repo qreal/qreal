@@ -154,9 +154,11 @@ public:
 	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer, bool fromMainGenerator);
 
-	/// Implementation must return a path to a folder containing templates for
-	/// customizing concrete generator
-	virtual QString pathToTemplates() const = 0;
+	/// Implementation must return a list of paths to folders containing templates for
+	/// customizing concrete generator. List must be sorted by folder priority --- generator looks for template
+	/// in a first folder, then, if there is no template with such name, it looks in a next folder and so on.
+	/// It is needed to be able to redefine only part of templates in different generator plugins.
+	virtual QStringList pathsToTemplates() const = 0;
 
 	// ----------------------------- Converters --------------------------------
 

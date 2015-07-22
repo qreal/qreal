@@ -57,7 +57,7 @@ void MasterGeneratorBase::initialize()
 {
 	mCustomizer = createCustomizer();
 	mCustomizer->factory()->initialize();
-	setPathToTemplates(mCustomizer->factory()->pathToTemplates());
+	setPathsToTemplates(mCustomizer->factory()->pathsToTemplates());
 
 	mValidator = createValidator();
 

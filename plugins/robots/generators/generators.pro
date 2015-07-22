@@ -40,6 +40,7 @@ nxtGeneratorBase.subdir = $$PWD/nxt/nxtGeneratorBase
 nxtOsekCGenerator.subdir = $$PWD/nxt/nxtOsekCGenerator
 nxtRussianCGenerator.subdir = $$PWD/nxt/nxtRussianCGenerator
 
+trikGeneratorBase.depends = generatorBase
 trikQtsGeneratorLibrary.depends = trikGeneratorBase
 trikV6QtsGenerator.depends = trikQtsGeneratorLibrary
 #trikV6FSharpGenerator.depends = trikV6GeneratorBase

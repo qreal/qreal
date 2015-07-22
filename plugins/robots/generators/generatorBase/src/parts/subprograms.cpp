@@ -21,9 +21,9 @@ using namespace qReal;
 
 Subprograms::Subprograms(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
-		, const QString &pathToTemplates
+		, const QStringList &pathsToTemplates
 		, const simple::Binding::ConverterInterface *nameNormalizer)
-	: TemplateParametrizedEntity(pathToTemplates)
+	: TemplateParametrizedEntity(pathsToTemplates)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mNameNormalizer(nameNormalizer)

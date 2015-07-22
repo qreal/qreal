@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/trikQts">
+    <qresource prefix="/trikV6Qts">
         <file>templates/videosensors/LineSensor.t</file>
         <file>templates/videosensors/ObjectSensorX.t</file>
         <file>templates/videosensors/ObjectSensorY.t</file>

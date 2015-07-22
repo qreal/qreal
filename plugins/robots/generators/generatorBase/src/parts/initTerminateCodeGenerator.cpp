@@ -16,8 +16,8 @@
 
 using namespace generatorBase::parts;
 
-InitTerminateCodeGenerator::InitTerminateCodeGenerator(const QString &pathToTemplates)
-	: TemplateParametrizedEntity(pathToTemplates)
+InitTerminateCodeGenerator::InitTerminateCodeGenerator(const QStringList &pathsToTemplates)
+	: TemplateParametrizedEntity(pathsToTemplates)
 {
 }
 

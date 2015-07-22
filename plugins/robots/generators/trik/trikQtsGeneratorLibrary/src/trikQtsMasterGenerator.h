@@ -29,7 +29,7 @@ public:
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const qReal::Id &diagramId
-			, const QString &generatorName);
+			, const QStringList &pathsToTemplates);
 
 protected:
 	QString targetPath() override;
