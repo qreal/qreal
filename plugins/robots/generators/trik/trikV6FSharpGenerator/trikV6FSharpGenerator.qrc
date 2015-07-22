@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/fSharp">
+        <file>images/generateFsCode.svg</file>
+        <file>images/stopRobot.svg</file>
+        <file>images/uploadAndExecuteProgram.svg</file>
+        <file>images/uploadProgram.svg</file>
+        <file>images/switch-to-trik-f-sharp.svg</file>
+        <file>images/run.png</file>
+        <file>images/stop.png</file>
+    </qresource>
+</RCC>

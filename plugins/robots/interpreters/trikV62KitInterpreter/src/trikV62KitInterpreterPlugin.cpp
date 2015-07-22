@@ -1,0 +1,164 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "trikV62KitInterpreterPlugin.h"
+
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLineEdit>
+
+#include <twoDModel/engine/twoDModelEngineFacade.h>
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
+
+using namespace trik;
+using namespace qReal;
+
+const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+
+TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
+	: mRealRobotModel(kitId(), "trikKitRobot") // todo: somewhere generate robotId for each robot
+	, mTwoDRobotModel(mRealRobotModel)
+	, mBlocksFactory(new blocks::TrikV62BlocksFactory)
+{
+	mTwoDRobotModel.setWheelPorts("M4", "M3");
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
+
+	mTwoDRobotModel.setEngine(modelEngine->engine());
+	mTwoDModel.reset(modelEngine);
+
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel.name() });
+}
+
+TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+
+	if (mOwnsBlocksFactory) {
+		delete mBlocksFactory;
+	}
+}
+
+void TrikKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
+{
+	connect(&configurator.eventsForKitPlugin()
+			, &kitBase::EventsForKitPluginInterface::robotModelChanged
+			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
+
+	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
+
+	mTwoDModel->init(configurator.eventsForKitPlugin()
+			, configurator.qRealConfigurator().systemEvents()
+			, configurator.qRealConfigurator().logicalModelApi()
+			, interpretersInterface
+			, configurator.interpreterControl());
+
+	mRealRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
+	mTwoDRobotModel.setErrorReporter(*interpretersInterface.errorReporter());
+
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
+}
+
+QString TrikKitInterpreterPlugin::kitId() const
+{
+	return "trikV62Kit";
+}
+
+QString TrikKitInterpreterPlugin::friendlyKitName() const
+{
+	return tr("TRIK (new case)");
+}
+
+QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
+{
+	return {&mRealRobotModel, &mTwoDRobotModel};
+}
+
+kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
+		const kitBase::robotModel::RobotModelInterface *model)
+{
+	Q_UNUSED(model);
+	mOwnsBlocksFactory = false;
+	return mBlocksFactory;
+}
+
+kitBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
+{
+	return &mTwoDRobotModel;
+}
+
+QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
+{
+	mOwnsAdditionalPreferences = false;
+	return {mAdditionalPreferences};
+}
+
+QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
+{
+	return model.name().toLower().contains("twod")
+			? nullptr
+			: produceIpAddressConfigurer();
+}
+
+QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
+{
+	return {};
+}
+
+QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
+{
+	return {};
+}
+
+QString TrikKitInterpreterPlugin::defaultSettingsFile() const
+{
+	return ":/trikDefaultSettings.ini";
+}
+
+QIcon TrikKitInterpreterPlugin::iconForFastSelector(
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
+{
+	return &robotModel == &mRealRobotModel
+			? QIcon(":/icons/switch-real-trik.svg")
+			: &robotModel == &mTwoDRobotModel
+					? QIcon(":/icons/switch-2d.svg")
+					: QIcon();
+}
+
+kitBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
+{
+	return &mTwoDModel->devicesConfigurationProvider();
+}
+
+QWidget *TrikKitInterpreterPlugin::produceIpAddressConfigurer()
+{
+	QLineEdit * const quickPreferences = new QLineEdit;
+	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
+	auto updateQuickPreferences = [quickPreferences]() {
+		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
+	};
+	updateQuickPreferences();
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
+	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
+		qReal::SettingsManager::setValue("TrikTcpServer", text);
+	});
+	return quickPreferences;
+}

@@ -4,4 +4,4 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-f-sharp-generator.so               $PWD/../data/plugins/tools/kitPlugins/
+cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-f-sharp-generator.so               $PWD/../data/plugins/tools/kitPlugins/

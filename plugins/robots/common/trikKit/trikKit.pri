@@ -26,6 +26,8 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 
 HEADERS += \
 	$$PWD/include/trikKit/robotModel/trikRobotModelBase.h \
+	$$PWD/include/trikKit/robotModel/trikRobotModelV6.h \
+	$$PWD/include/trikKit/robotModel/trikRobotModelV62.h \
 	$$PWD/include/trikKit/robotModel/parts/trikColorSensor.h \
 	$$PWD/include/trikKit/robotModel/parts/trikDisplay.h \
 	$$PWD/include/trikKit/robotModel/parts/trikGamepadButton.h \
@@ -43,7 +45,9 @@ HEADERS += \
 	$$PWD/include/trikKit/robotModel/parts/trikSonarSensor.h \
 	$$PWD/include/trikKit/robotModel/parts/trikObjectSensor.h \
 	$$PWD/include/trikKit/robotModel/parts/trikShell.h \
-	$$PWD/include/trikKit/blocks/trikBlocksFactory.h \
+	$$PWD/include/trikKit/blocks/trikBlocksFactoryBase.h \
+	$$PWD/include/trikKit/blocks/trikV6BlocksFactory.h \
+	$$PWD/include/trikKit/blocks/trikV62BlocksFactory.h \
 	$$PWD/src/blocks/details/setBackgroundBlock.h \
 	$$PWD/src/blocks/details/smileBlock.h \
 	$$PWD/src/blocks/details/trikEnginesForwardBlock.h \
@@ -73,6 +77,8 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/src/robotModel/trikRobotModelBase.cpp \
+	$$PWD/src/robotModel/trikRobotModelV6.cpp \
+	$$PWD/src/robotModel/trikRobotModelV62.cpp \
 	$$PWD/src/robotModel/parts/trikColorSensor.cpp \
 	$$PWD/src/robotModel/parts/trikDisplay.cpp \
 	$$PWD/src/robotModel/parts/trikGamepadButton.cpp \
@@ -90,7 +96,9 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/trikSonarSensor.cpp \
 	$$PWD/src/robotModel/parts/trikSpeaker.cpp \
 	$$PWD/src/robotModel/parts/trikShell.cpp \
-	$$PWD/src/blocks/trikBlocksFactory.cpp \
+	$$PWD/src/blocks/trikBlocksFactoryBase.cpp \
+	$$PWD/src/blocks/trikV6BlocksFactory.cpp \
+	$$PWD/src/blocks/trikV62BlocksFactory.cpp \
 	$$PWD/src/blocks/details/setBackgroundBlock.cpp \
 	$$PWD/src/blocks/details/smileBlock.cpp \
 	$$PWD/src/blocks/details/trikEnginesForwardBlock.cpp \
