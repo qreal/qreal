@@ -43,7 +43,7 @@ VisualDebugger::VisualDebugger(qReal::LogicalModelAssistInterface const &logical
 		, mCodeFileName("code.c")
 		, mWorkDir("")
 {
-	if (blockParser == NULL) {
+	if (!blockParser) {
 		mBlockParser = new BlockParser(interpretersInterface.errorReporter());
 	}
 }
@@ -466,7 +466,7 @@ void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 			if (mHasCodeGenerationError) {
 				return;
 			}
-			
+
 			if (trueEdge == trueEdge.rootId()) {
 				error(VisualDebugger::missingValidLink);
 				error(codeGenerationError);
@@ -530,7 +530,7 @@ void VisualDebugger::createIdByLineCorrelation(Id const &id, int& line)
 		Id trueEdge = trueEdge.rootId();
 
 		getConditionLinks(outLinks, falseEdge, trueEdge);
-		
+
 		if (mHasCodeGenerationError) {
 			return;
 		}

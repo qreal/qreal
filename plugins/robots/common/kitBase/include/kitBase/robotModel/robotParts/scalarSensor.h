@@ -27,7 +27,7 @@ class ROBOTS_KIT_BASE_EXPORT ScalarSensor : public AbstractSensor
 {
 	Q_OBJECT
 
-	Q_PROPERTY(int value READ lastData)
+	Q_PROPERTY(int value READ lastData WRITE setLastData)
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
@@ -35,6 +35,9 @@ public:
 
 	/// Returns last value passed to 'newData' signal parameter, i.e. the last obtained value from the sensor.
 	int lastData() const;
+
+	/// Forces system think that last returned by sensor value was the given one.
+	void setLastData(int data);
 
 signals:
 	/// Emitted when new data is ready. Note that concrete sensors may work in "pull" and in "push" mode. In "pull"

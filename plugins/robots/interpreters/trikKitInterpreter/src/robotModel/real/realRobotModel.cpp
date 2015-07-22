@@ -143,5 +143,5 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 		return new parts::GamepadWheel(gamepadWheelInfo(), port, *mRobotCommunicator);
 	}
 
-	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
+	return TrikRobotModelBase::createDevice(port, deviceInfo);
 }

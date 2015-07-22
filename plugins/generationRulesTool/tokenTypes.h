@@ -33,11 +33,42 @@ enum class TokenTypes {
 	, closingCurlyBracket
 
 	, dot
+	, comma
+	, doubleColon
+	, arrow
+
+	, plus
+
+	, greater
+	, less
+	, equal
+	, notEqual
+
+	, ifKeyword
+	, elseKeyword
 
 	, foreachKeyword
+	, foreachExcludeKeyword
+	, excludeKeyword
 	, newlineKeyword
+	, tabKeyword
+	, inKeyword
+
+	, thisKeyword
+
+	, callGeneratorForKeyword
+	, generatorKeyword
+
+	, generateToFileKeyword
 
 	, text
+
+	, outcomingLinksKeyword
+	, incomingLinksKeyword
+	, linksKeyword
+
+	, transitionEndKeyword
+	, transitionStartKeyword
 
 	, comment
 	, string
@@ -86,16 +117,108 @@ inline QDebug operator <<(QDebug debug, TokenTypes const &token)
 		debug << "dot ";
 		break;
 
+	case TokenTypes::comma:
+		debug << "comma";
+		break;
+
+	case TokenTypes::doubleColon:
+		debug << "doubleColon";
+		break;
+
+	case TokenTypes::arrow:
+		debug << "arrow";
+		break;
+
+	case TokenTypes::plus:
+		debug << "plus";
+		break;
+
+	case TokenTypes::greater:
+		debug << "greater";
+		break;
+
+	case TokenTypes::less:
+		debug << "less";
+		break;
+
+	case TokenTypes::equal:
+		debug << "equal";
+		break;
+
+	case TokenTypes::notEqual:
+		debug << "notEqual";
+		break;
+
+	case TokenTypes::ifKeyword:
+		debug << "ifKeyword";
+		break;
+
+	case TokenTypes::elseKeyword:
+		debug << "elseKeyword";
+		break;
+
 	case TokenTypes::foreachKeyword:
 		debug << "foreachKeyword ";
+		break;
+
+	case TokenTypes::foreachExcludeKeyword:
+		debug << "foreachExcludeKeyword";
+		break;
+
+	case TokenTypes::excludeKeyword:
+		debug << "excludeKeyword";
 		break;
 
 	case TokenTypes::newlineKeyword:
 		debug << "newlineKeyword ";
 		break;
 
+	case TokenTypes::tabKeyword:
+		debug << "tabKeyword ";
+		break;
+
+	case TokenTypes::inKeyword:
+		debug << "inKeyword ";
+		break;
+
+	case TokenTypes::thisKeyword:
+		debug << "thisKeyword ";
+		break;
+
+	case TokenTypes::callGeneratorForKeyword:
+		debug << "callGeneratorForKeyword ";
+		break;
+
+	case TokenTypes::generatorKeyword:
+		debug << "generatorKeyword ";
+		break;
+
+	case TokenTypes::generateToFileKeyword:
+		debug << "generateToFileKeyword ";
+		break;
+
 	case TokenTypes::text:
 		debug << "text ";
+		break;
+
+	case TokenTypes::outcomingLinksKeyword:
+		debug << "outcomingLinksKeyword ";
+		break;
+
+	case TokenTypes::incomingLinksKeyword:
+		debug << "incomingLinksKeyword ";
+		break;
+
+	case TokenTypes::linksKeyword:
+		debug << "linksKeyword ";
+		break;
+
+	case TokenTypes::transitionEndKeyword:
+		debug << "transitionEndKeyword ";
+		break;
+
+	case TokenTypes::transitionStartKeyword:
+		debug << "transitionStartKeyword ";
 		break;
 
 	default:

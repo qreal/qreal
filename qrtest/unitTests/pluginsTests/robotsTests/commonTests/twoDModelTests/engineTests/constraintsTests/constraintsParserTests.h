@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtCore/QRect>
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -24,6 +26,48 @@
 namespace qrTest {
 namespace robotsTests {
 namespace commonTwoDModelTests {
+
+class TestObjectA : public QObject
+{
+	Q_OBJECT
+	Q_PROPERTY(int intProperty READ intProperty WRITE setIntProperty)
+	Q_PROPERTY(QString stringProperty READ stringProperty WRITE setStringProperty)
+	Q_PROPERTY(QRect rectProperty READ rectProperty WRITE setRectProperty)
+	Q_PROPERTY(QPoint pointProperty READ pointProperty WRITE setPointProperty)
+	Q_PROPERTY(QList<int> intListProperty READ intListProperty WRITE setIntListProperty)
+
+public:
+	int intProperty() const;
+	QString stringProperty() const;
+	QRect rectProperty() const;
+	QPoint pointProperty() const;
+	QList<int> intListProperty() const;
+
+	void setIntProperty(int value);
+	void setStringProperty(const QString &value);
+	void setRectProperty(const QRect &value);
+	void setPointProperty(const QPoint &value);
+	void setIntListProperty(const QList<int> &value);
+
+private:
+	int mIntValue;
+	QString mStringValue;
+	QRect mRectValue;
+	QPoint mPointValue;
+	QList<int> mIntListValue;
+};
+
+class TestObjectB : public QObject
+{
+	Q_OBJECT
+	Q_PROPERTY(TestObjectA *otherObject READ otherObject)
+
+public:
+	TestObjectA *otherObject();
+
+private:
+	TestObjectA mOtherObject;
+};
 
 /// Tests for ConstraintsParser.
 class ConstraintsParserTests : public testing::Test

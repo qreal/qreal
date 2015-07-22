@@ -17,7 +17,7 @@
 #include "visualDebuggerPreferencesPage.h"
 #include "ui_visualDebuggerPreferencesPage.h"
 
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 

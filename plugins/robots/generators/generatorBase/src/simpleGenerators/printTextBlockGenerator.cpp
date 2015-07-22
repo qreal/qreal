@@ -24,16 +24,19 @@ PrintTextBlockGenerator::PrintTextBlockGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
 		, const Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "drawing/printText.t", QList<Binding *>()
-			<< Binding::createConverting("@@X@@", "XCoordinateText"
+	: BindingGenerator(repo, customizer, id, "drawing/printText.t", {
+			Binding::createConverting("@@X@@", "XCoordinateText"
 					, customizer.factory()->intPropertyConverter(id, "XCoordinateText"))
-			<< Binding::createConverting("@@Y@@", "YCoordinateText"
+			, Binding::createConverting("@@Y@@", "YCoordinateText"
 					, customizer.factory()->intPropertyConverter(id, "YCoordinateText"))
-			<< (repo.property(id, "Evaluate").toBool()
+			, (repo.property(id, "Evaluate").toBool()
 					? Binding::createConverting("@@TEXT@@", "PrintText"
 							, customizer.factory()->stringPropertyConverter(id, "PrintText"))
 					: Binding::createStatic("@@TEXT@@"
 							, utils::StringUtils::wrap(repo.stringProperty(id, "PrintText"))))
-			, parent)
+			}, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

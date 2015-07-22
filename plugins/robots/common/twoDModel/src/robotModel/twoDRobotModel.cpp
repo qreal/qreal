@@ -167,7 +167,7 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 		return new parts::Marker(deviceInfo, port, *mEngine);
 	}
 
-	return nullptr;
+	return CommonRobotModel::createDevice(port, deviceInfo);
 }
 
 DeviceInfo TwoDRobotModel::markerInfo() const

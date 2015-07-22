@@ -35,4 +35,7 @@ DrawLineGenerator::DrawLineGenerator(const qrRepo::RepoApi &repo
 			}
 			, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

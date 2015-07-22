@@ -105,6 +105,7 @@ void TwoDRobotModel::onInterpretationStarted()
 	if (display) {
 		display->clearScreen();
 		display->setBackground(QColor(Qt::gray));
+		display->redraw();
 	} else {
 		/// @todo: if we get here it is wrong because display is not configured before the interpretation!
 	}

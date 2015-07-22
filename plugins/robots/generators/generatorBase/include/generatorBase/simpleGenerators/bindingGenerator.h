@@ -36,9 +36,14 @@ public:
 
 	virtual QString generate();
 
+protected:
+	/// Useful for calling binding depending on virtual method not to do it in constructor.
+	/// Takes ownership on binding.
+	void addBinding(Binding * const binding);
+
 private:
 	const QString mPathToTemplate;
-	QList<Binding *> const mBindings;  // Takes ownership
+	QList<Binding *> mBindings;  // Takes ownership
 };
 
 }

@@ -27,7 +27,9 @@ ModeStripe::ModeStripe(QAction &modeAction, const QString &text, QWidget *parent
 	setFrameShadow(QFrame::Plain);
 	setLineWidth(0);
 	addAction(&modeAction);
-	connect(&modeAction, &QAction::changed, this, [&modeAction, this]() { setVisible(modeAction.isVisible()); });
+	connect(&modeAction, &QAction::changed, this, [&modeAction, this]() {
+		setVisible(modeAction.isVisible() && !modeAction.isChecked());
+	});
 }
 
 void ModeStripe::mousePressEvent(QMouseEvent *event)

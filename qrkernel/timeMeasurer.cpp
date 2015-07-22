@@ -19,16 +19,15 @@
 using namespace qReal;
 
 TimeMeasurer::TimeMeasurer(const QString &methodName)
-		: mStartTime(QDateTime::currentDateTime())
-		, mMethodName(methodName)
+		: mMethodName{methodName}
 {
+	mTimer.start();
 }
 
 TimeMeasurer::~TimeMeasurer()
 {
-	QDateTime currentTime = QDateTime::currentDateTime();
 	qDebug() << QString("TimeMeasurer %1: The operation lasted for %2 mseconds")
-			.arg(mMethodName, QString::number(static_cast<qlonglong>(mStartTime.msecsTo(currentTime))));
+			.arg(mMethodName, QString::number(mTimer.elapsed()));
 }
 
 void TimeMeasurer::doNothing() const

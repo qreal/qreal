@@ -59,7 +59,8 @@ void GraphicsWatcherManager::updateSensorsList(const QString &currentRobotModel)
 		/// @todo It must depend on port, port must return its variable
 		const QString variableName = port.reservedVariable();
 		if (!device.isNull() && !variableName.isEmpty()) {
-			mWatcher->addTrackingObject(index, variableName, QString("%1: %2").arg(port.name(), device.friendlyName()));
+			mWatcher->addTrackingObject(index, variableName, QString("%1: %2").arg(port.name()
+					, device.friendlyName()));
 			++index;
 		}
 	}

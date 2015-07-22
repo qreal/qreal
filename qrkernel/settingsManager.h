@@ -79,7 +79,7 @@ signals:
 private:
 	/// Private constructor.
 	SettingsManager();
-	~SettingsManager();
+	~SettingsManager() override;
 
 	void set(const QString &name, const QVariant &value);
 	QVariant get(const QString &key, const QVariant &defaultValue = QVariant()) const;
@@ -95,6 +95,7 @@ private:
 	/// In-memory settings storage.
 	QHash<QString, QVariant> mData;
 	QHash<QString, QVariant> mDefaultValues;
+
 	/// Persistent settings storage.
 	QSettings mSettings;
 };

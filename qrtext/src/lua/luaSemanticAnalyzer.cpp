@@ -103,7 +103,12 @@ void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &nod
 		constrainAssignment(assignment, assignment->variable(), assignment->value());
 		checkForUndeclaredIdentifiers(assignment->value());
 	} else if (node->is<ast::Identifier>()) {
-		auto identifier = as<ast::Identifier>(node);
+		const auto identifier = as<ast::Identifier>(node);
+		if (mIntrinsicFunctions.contains(identifier->name())) {
+			// Ignore function names.
+			return;
+		}
+
 		if (hasDeclaration(identifier->name())) {
 			unify(identifier, declaration(identifier->name()));
 		} else {
@@ -280,8 +285,8 @@ void LuaSemanticAnalyzer::constrainAssignment(const QSharedPointer<core::ast::No
 
 void LuaSemanticAnalyzer::analyzeFunctionCall(const QSharedPointer<core::ast::Node> &node)
 {
-	auto functionCall = as<ast::FunctionCall>(node);
-	auto function = functionCall->function();
+	const auto functionCall = as<ast::FunctionCall>(node);
+	const auto function = functionCall->function();
 	if (!function->is<ast::Identifier>()) {
 		reportError(node, QObject::tr("Indirect function calls are not supported"));
 		assign(function, any());
@@ -289,7 +294,7 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(const QSharedPointer<core::ast::No
 		return;
 	}
 
-	auto name = as<ast::Identifier>(function)->name();
+	const auto name = as<ast::Identifier>(function)->name();
 	if (!mIntrinsicFunctions.contains(name)) {
 		reportError(node, QObject::tr("Unknown function"));
 		assign(function, any());
@@ -300,8 +305,8 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(const QSharedPointer<core::ast::No
 	assign(function, mIntrinsicFunctions.value(name));
 	assign(node, mIntrinsicFunctions.value(name)->returnType());
 
-	auto formalParameters = mIntrinsicFunctions.value(name)->formalParameters();
-	auto actualParameters = functionCall->arguments();
+	const auto formalParameters = mIntrinsicFunctions.value(name)->formalParameters();
+	const auto actualParameters = functionCall->arguments();
 	if (formalParameters.size() < actualParameters.size()) {
 		reportError(node, QObject::tr("Too many parameters, %1 expected").arg(formalParameters.size()));
 		return;

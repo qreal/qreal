@@ -40,6 +40,7 @@ public:
 
 	void printText(int x, int y, const QString &text) override;
 	void clearScreen() override;
+	void redraw() override;
 
 private:
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
