@@ -15,8 +15,9 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include <trikKit/robotModel/parts/trikDisplay.h>
 
+#include <utils/canvas/canvas.h>
+#include <trikKit/robotModel/parts/trikDisplay.h>
 #include <twoDModel/engine/twoDModelEngineInterface.h>
 #include <twoDModel/engine/twoDModelDisplayInterface.h>
 
@@ -25,127 +26,58 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class Display : public robotModel::parts::TrikDisplay, public qReal::ui::PainterInterface
+class Display : public robotModel::parts::TrikDisplay, public utils::Canvas
 {
 	Q_OBJECT
+	// Canvas cannot be QObject because of ambiguous base so we are forced to copy properties here.
+	Q_PROPERTY(QList<utils::CanvasObject *> objects READ objects)
+	Q_PROPERTY(QList<utils::PointObject *> pixels READ pixels)
+	Q_PROPERTY(QList<utils::LineObject *> segments READ segments)
+	Q_PROPERTY(QList<utils::RectangleObject *> rectangles READ rectangles)
+	Q_PROPERTY(QList<utils::EllipseObject *> ellipses READ ellipses)
+	Q_PROPERTY(QList<utils::ArcObject *> arcs READ arcs)
+	Q_PROPERTY(QList<utils::TextObject *> labels READ labels)
+	Q_PROPERTY(QString background READ background WRITE setBackground)
+	Q_PROPERTY(bool smiles READ smiles)
+	Q_PROPERTY(bool sadSmiles READ sadSmiles)
 
 public:
 	Display(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
+	/// Returns the name of the current background color.
+	QString background() const;
+
+	/// Returns true if robot draws happy smile at the moment.
+	bool smiles() const;
+
+	/// Returns true if robot draws sad smile at the moment.
+	bool sadSmiles() const;
+
 	void drawSmile(bool sad) override;
-	void setBackground(const QColor &color, bool redraw) override;
-	void printText(int x, int y, const QString &text, bool redraw) override;
-	void clearScreen(bool redraw) override;
+	void setBackground(const QColor &color) override;
+	void clearScreen() override;
 	void setPainterColor(const QColor &color) override;
 	void setPainterWidth(int penWidth) override;
-	void drawPixel(int x, int y, bool redraw) override;
-	void drawLine(int x1, int y1, int x2, int y2, bool redraw) override;
-	void drawRect(int x, int y, int width, int height, bool redraw)  override;
-	void drawEllipse(int x, int y, int width, int height, bool redraw) override;
-	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle, bool redraw) override;
+	void drawPixel(int x, int y) override;
+	void drawLine(int x1, int y1, int x2, int y2) override;
+	void drawRect(int x, int y, int width, int height)  override;
+	void drawEllipse(int x, int y, int width, int height) override;
+	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) override;
+	void printText(int x, int y, const QString &text) override;
 	void paint(QPainter *painter) override;
 	void reset() override;
+	void redraw() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 	QColor mBackground;
 	QImage mCurrentImage;
+	bool mSmiles;
+	bool mSadSmiles;
 	/// @todo: QPoint can`t be used in map without operators declaration.
-	QHash<QPair<int, int>, QPair<QString, QColor>> mLabels;
-
-	/// Information about pixel.
-	struct PixelCoordinates
-	{
-		PixelCoordinates(int x, int y, QColor color, int penWidth)
-				: coord(QPoint(x, y)), color(color), penWidth(penWidth)
-		{
-		}
-
-		QPoint coord;
-		QColor color;
-		int penWidth;
-	};
-
-	/// Information about line.
-	struct LineCoordinates
-	{
-		LineCoordinates(int x1, int y1, int x2, int y2, QColor color, int penWidth)
-			: line(x1, y1, x2, y2), color(color), penWidth(penWidth)
-		{
-		}
-
-		QLine line;
-		QColor color;
-		int penWidth;
-	};
-
-	/// Information about rect.
-	struct RectCoordinates
-	{
-		RectCoordinates(int x, int y, int width, int height, QColor color, int penWidth)
-			: rect(QRect(x, y, width, height)), color(color), penWidth(penWidth)
-		{
-		}
-
-		QRect rect;
-		QColor color;
-		int penWidth;
-	};
-
-	/// Information about ellipse.
-	struct EllipseCoordinates
-	{
-		EllipseCoordinates(int x, int y, int width, int height, QColor color, int penWidth)
-			: ellipse(QRect(x, y, width, height)), color(color), penWidth(penWidth)
-		{
-		}
-
-		QRect ellipse;
-		QColor color;
-		int penWidth;
-	};
-
-	/// Information about arc.
-	struct ArcCoordinates
-	{
-		ArcCoordinates(int x, int y, int width, int height, int startAngle, int spanAngle, QColor color, int penWidth)
-			: arc(QRect(x, y, width, height))
-			, startAngle(startAngle)
-			, spanAngle(spanAngle)
-			, color(color)
-			, penWidth(penWidth)
-		{
-		}
-
-		QRect arc;
-		int startAngle;
-		int spanAngle;
-		QColor color;
-		int penWidth;
-	};
-
-	/// List of all points.
-	QList<PixelCoordinates> mPixels;
-
-	/// List of all lines.
-	QList<LineCoordinates> mLines;
-
-	/// List of all rectangles.
-	QList<RectCoordinates> mRects;
-
-	/// List of all ellipses.
-	QList<EllipseCoordinates> mEllipses;
-
-	/// List of all arcs.
-	QList<ArcCoordinates> mArcs;
-
-	/// Current pen width.
-	int mCurrentPenWidth;
-
-	/// Current pen color.
-	QColor mCurrentPenColor;
+	QHash<QPair<int, int>, utils::TextObject *> mLabelsMap;
 };
 
 }

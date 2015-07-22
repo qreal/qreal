@@ -17,10 +17,12 @@
 #include <QtCore/QVariant>
 #include <functional>
 
+#include "utils/utilsDeclSpec.h"
+
 namespace utils {
 
 /// A base for QVariantList wrappers.
-class ObjectsSetBase : public QObject
+class ROBOTS_UTILS_EXPORT ObjectsSetBase : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QVariant first READ first)
@@ -105,7 +107,7 @@ private:
 };
 
 /// A wrapper arround the QVariantList for getting its properties and elements via Qt reflection.
-class VariantSet : public ObjectsSetBase
+class ROBOTS_UTILS_EXPORT VariantSet : public ObjectsSetBase
 {
 public:
 	explicit VariantSet(QObject *parent = 0);

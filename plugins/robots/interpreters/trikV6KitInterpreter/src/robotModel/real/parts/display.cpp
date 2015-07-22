@@ -36,29 +36,28 @@ void Display::drawSmile(bool sad)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::setBackground(const QColor &color, bool redraw)
+void Display::setBackground(const QColor &color)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/setBackground.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@COLOR@@", color.name()).replace("@@REDRAW@@", redraw ? "true" : "false");
+			.replace("@@COLOR@@", color.name()).replace("@@REDRAW@@", QString());
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::clearScreen(bool redraw)
+void Display::clearScreen()
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/clearScreen.t";
-	const QString directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@REDRAW@@", redraw ? "true" : "false");
+	const QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@REDRAW@@", QString());
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Display::printText(int x, int y, const QString &text, bool redraw)
+void Display::printText(int x, int y, const QString &text)
 {
 	const QString pathToCommand = ":/trikQts/templates/drawing/printText.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
 			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y))
-			.replace("@@REDRAW@@", redraw ? "true" : "false") + "script.run();";
+			.replace("@@REDRAW@@", QString());
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
@@ -73,41 +72,37 @@ void Display::setPainterWidth(int penWidth)
 	Q_UNUSED(penWidth)
 }
 
-void Display::drawPixel(int x, int y, bool redraw)
+void Display::drawPixel(int x, int y)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
-	Q_UNUSED(redraw)
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
+void Display::drawLine(int x1, int y1, int x2, int y2)
 {
 	Q_UNUSED(x1)
 	Q_UNUSED(y1)
 	Q_UNUSED(x2)
 	Q_UNUSED(y2)
-	Q_UNUSED(redraw)
 }
 
-void Display::drawRect(int x, int y, int width, int height, bool redraw)
+void Display::drawRect(int x, int y, int width, int height)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(width)
 	Q_UNUSED(height)
-	Q_UNUSED(redraw)
 }
 
-void Display::drawEllipse(int x, int y, int width, int height, bool redraw)
+void Display::drawEllipse(int x, int y, int width, int height)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(width)
 	Q_UNUSED(height)
-	Q_UNUSED(redraw)
 }
 
-void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle, bool redraw)
+void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
@@ -115,5 +110,11 @@ void Display::drawArc(int x, int y, int width, int height, int startAngle, int s
 	Q_UNUSED(height)
 	Q_UNUSED(startAngle)
 	Q_UNUSED(spanAngle)
-	Q_UNUSED(redraw)
+}
+
+void Display::redraw()
+{
+	const QString pathToCommand = ":/trikQts/templates/drawing/redraw.t";
+	const QString directCommand = utils::InFile::readAll(pathToCommand);
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
