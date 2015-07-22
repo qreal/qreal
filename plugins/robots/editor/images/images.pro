@@ -16,4 +16,8 @@ TEMPLATE = subdirs
 
 include(../../../../global.pri)
 
-copyToDestdir(images/, now)
+macx {
+	copyToBundleDir(images/, now)
+} else {
+	copyToDestdir(images/, now)
+}

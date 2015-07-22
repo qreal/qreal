@@ -14,6 +14,7 @@
 
 include(../global.pri)
 
+
 HEADERS += association.h \
 	diagram.h \
 	edgeType.h \

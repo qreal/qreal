@@ -30,7 +30,7 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo robots-generator-base robots-trik-generator-base)
+links(qrkernel qslog qrutils qrgui-tool-plugin-interface)
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikRuntimeUploaderPlugin_ru.ts \
