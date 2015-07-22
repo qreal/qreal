@@ -55,7 +55,8 @@ protected:
 	QScopedPointer<kitBase::robotModel::RobotModelInterface> mRobotModel;
 
 private:
-	QScopedPointer<kitBase::blocksBase::BlocksFactoryInterface> mBlocksFactory;
+	/// Does not have ownership.
+	kitBase::blocksBase::BlocksFactoryInterface *mBlocksFactory;
 };
 
 }

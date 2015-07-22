@@ -31,7 +31,7 @@ namespace blocksBase {
 class BlocksFactoryInterface
 {
 public:
-	virtual ~BlocksFactoryInterface() {}
+	virtual ~BlocksFactoryInterface() { }
 
 	/// Creates a new block by given id.
 	/// Transfers block ownership to caller.

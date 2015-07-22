@@ -38,7 +38,7 @@ kitBase::blocksBase::BlocksFactoryInterface *TrikGeneratorPluginBase::blocksFact
 		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model)
-	return mBlocksFactory.data();
+	return mBlocksFactory;
 }
 
 QList<kitBase::AdditionalPreferences *> TrikGeneratorPluginBase::settingsWidgets()
