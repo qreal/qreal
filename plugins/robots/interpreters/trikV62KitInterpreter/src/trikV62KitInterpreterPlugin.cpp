@@ -112,9 +112,13 @@ QList<kitBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidget
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
 {
-	return model.name().toLower().contains("twod")
-			? nullptr
-			: produceIpAddressConfigurer();
+	/// @todo: TRIK v6 and this kit plugin produce two identical configurers and both of them are shown in configurer.
+	/// This must be fixed in interpreterCore as soon as possible, but for now disabling this.
+	Q_UNUSED(model)
+	return nullptr;
+//	return model.name().toLower().contains("twod")
+//			? nullptr
+//			: produceIpAddressConfigurer();
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
