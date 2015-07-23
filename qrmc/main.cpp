@@ -20,11 +20,10 @@
 
 using namespace qrmc;
 
-void myMessageOutput(QtMsgType type, QMessageLogContext const &context, QString const &msg)
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
 	Q_UNUSED(context)
-
-	QByteArray localMsg = msg.toLocal8Bit();
+	QByteArray localMsg = message.toLocal8Bit();
 	switch (type) {
 		case QtDebugMsg:
 			fprintf(stdout, "Debug: %s\n", localMsg.constData());
@@ -60,7 +59,7 @@ int main(int argc, char *argv[])
 //	QString workingCopyDir = "../qrgui/save";
 
 	qrRepo::RepoApi *mRepoApi = new qrRepo::RepoApi(workingCopyDir);
-	MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc/", mRepoApi);
+	MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../../qrmc/", mRepoApi);
 	if (!metaCompiler.compile()) {
 		qDebug() << "compilation failed";
 		return 1;

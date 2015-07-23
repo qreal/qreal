@@ -111,7 +111,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 void MetaEditorSupportPlugin::generateEditorWithQrmc()
 {
-	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc", mLogicalRepoApi);
+	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../../qrmc", mLogicalRepoApi);
 
 	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
 
@@ -131,7 +131,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 	foreach (Id const &key, metamodels) {
 		QString const objectType = key.element();
-		if (objectType == "MetamodelDiagram" && mLogicalRepoApi->isLogicalElement(key)) {
+	if (objectType == "MetamodelDiagram" && mLogicalRepoApi->isLogicalElement(key)) {
 			QString nameOfTheDirectory = mLogicalRepoApi->stringProperty(key, "name of the directory");
 			QString nameOfMetamodel = mLogicalRepoApi->stringProperty(key, "name");
 			QString nameOfPlugin = nameOfTheDirectory.split("/").last();
@@ -147,6 +147,14 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 			progress->setValue(5);
 
+			const QString normalizedName = nameOfMetamodel.at(0).toUpper() + nameOfMetamodel.mid(1);
+			const bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizedName);
+			if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
+				progress->close();
+				delete progress;
+				return;
+			}
+
 			if (!metaCompiler.compile(nameOfMetamodel)) { // generating source code for all metamodels
 				QMessageBox::warning(mMainWindowInterface->windowWidget()
 						, tr("error")
@@ -155,24 +163,36 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 			}
 			progress->setValue(20);
 
+			QStringList qmakeArgs;
+			qmakeArgs.append("CONFIG+=" + mLogicalRepoApi->stringProperty(key, "buildConfiguration"));
+			qmakeArgs.append(nameOfMetamodel + ".pro");
+
 			QProcess builder;
-			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(SettingsManager::value("pathToQmake").toString());
+			builder.setWorkingDirectory(nameOfTheDirectory);
+			const QStringList environment = QProcess::systemEnvironment();
+			builder.setEnvironment(environment);
+			builder.start(SettingsManager::value("pathToQmake").toString(), qmakeArgs);
+
 			qDebug()  << "qmake";
 			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 				progress->setValue(40);
-
 				builder.start(SettingsManager::value("pathToMake").toString());
 
 				bool finished = builder.waitForFinished(100000);
 				qDebug()  << "make";
-				if (finished && (builder.exitCode() == 0)) {
-					qDebug()  << "make ok";
 
+				if (finished && (builder.exitCode() == 0)) {
+					if (stateOfLoad) {
+						QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please restart QReal."));
+						progress->close();
+						delete progress;
+						return;
+					}
+
+					qDebug()  << "make ok";
 					progress->setValue(progress->value() + forEditor / 2);
 
-					QString normalizedName = nameOfPlugin.at(0).toUpper() + nameOfPlugin.mid(1);
-					if (!nameOfPlugin.isEmpty()) {
+					if (!nameOfMetamodel.isEmpty()) {
 						if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
 							QMessageBox::warning(mMainWindowInterface->windowWidget()
 									, tr("error")
@@ -183,8 +203,14 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 						}
 					}
 
+					QString suffix = "";
+					if (mLogicalRepoApi->stringProperty(key, "buildConfiguration") == "debug") {
+						suffix = "-d";
+					}
+
 					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
-							+ nameOfPlugin
+							+ nameOfMetamodel
+							+ suffix
 							+ "."
 							+ SettingsManager::value("pluginExtension").toString()
 							;
@@ -298,7 +324,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 			progress->setValue(80);
 
 			if (stateOfLoad) {
-				QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please close QReal."));
+				QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please restart QReal."));
 				progress->close();
 				delete progress;
 				return;
