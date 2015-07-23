@@ -17,9 +17,9 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtWidgets/QApplication>
 
-#include "mainWindow.h"
-#include "palette/draggableElement.h"
-#include "scriptAPI.h"
+#include "./qrgui/mainWindow/mainWindow.h"
+#include "./qrgui/mainWindow/palette/draggableElement.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace gui;

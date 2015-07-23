@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "scriptAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
 
 #include <QtCore/QPropertyAnimation>
 #include <QtGui/QWidgetList>
@@ -26,12 +26,12 @@
 
 #include "qrgui/mainWindow/mainWindow.h"
 
-#include "guiFacade.h"
-#include "virtualCursor.h"
-#include "virtualKeyboard.h"
-#include "hintAPI.h"
-#include "sceneAPI.h"
-#include "paletteAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/guiFacade.h"
+#include "./qrgui/mainWindow/scriptAPI/virtualCursor.h"
+#include "./qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
+#include "./qrgui/mainWindow/scriptAPI/hintAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/sceneAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/paletteAPI.h"
 
 using namespace qReal;
 using namespace gui;
@@ -97,12 +97,32 @@ void ScriptAPI::evaluateInFileScript(const QString &fileName)
 	abortEvaluation();
 }
 
-void ScriptAPI::regNewFunct(QScriptEngine::FunctionSignature fun, int length)
+void ScriptAPI::regNewFunct(QScriptEngine::FunctionSignature fun, const QString &QScriptName,int length)
 {
 	Q_UNUSED(length);
 
 	QScriptValue functionValue = mScriptEngine.newFunction(fun);
-	mScriptEngine.globalObject().setProperty("assert", functionValue);
+	mScriptEngine.globalObject().setProperty(QScriptName, functionValue);
+}
+
+QScriptSyntaxCheckResult ScriptAPI::checkSyntax(const QString &script)
+{
+	return mScriptEngine.checkSyntax(script);
+}
+
+bool ScriptAPI::hasUncaughtException()
+{
+	return mScriptEngine.hasUncaughtException();
+}
+
+void ScriptAPI::clearExceptions()
+{
+	return mScriptEngine.clearExceptions();
+}
+
+QStringList ScriptAPI::uncaughtExceptionBacktrace()
+{
+	return mScriptEngine.uncaughtExceptionBacktrace();
 }
 
 void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration)

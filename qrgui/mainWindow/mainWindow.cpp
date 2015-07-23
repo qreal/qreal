@@ -2089,9 +2089,29 @@ void MainWindow::evaluateScript(const QString &script)
 	mScriptAPI.evaluateScript(script);
 }
 
-void MainWindow::registerNewFunction(QScriptEngine::FunctionSignature fun, int length)
+void MainWindow::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length)
 {
-	mScriptAPI.regNewFunct(fun, length);
+	mScriptAPI.regNewFunct(fun, QScriptName, length);
+}
+
+QScriptSyntaxCheckResult MainWindow::checkSyntax(const QString &script)
+{
+	return mScriptAPI.checkSyntax(script);
+}
+
+bool MainWindow::hasUncaughtException()
+{
+	return mScriptAPI.hasUncaughtException();
+}
+
+void MainWindow::clearExceptions()
+{
+	mScriptAPI.clearExceptions();
+}
+
+QStringList MainWindow::uncaughtExceptionBacktrace()
+{
+	return mScriptAPI.uncaughtExceptionBacktrace();
 }
 
 void MainWindow::beginPaletteModification()

@@ -188,7 +188,11 @@ public:
 	// методы интрефейса MainWindowScriptAPIInterface
 	void evaluateScript(const QString &script) override;
 	void evaluateInFileScript(const QString &fileName) override;
-	void registerNewFunction(QScriptEngine::FunctionSignature fun, int length) override;
+	void registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length) override;
+	QScriptSyntaxCheckResult checkSyntax(const QString &script) override;
+	bool hasUncaughtException() override;
+	void clearExceptions() override;
+	QStringList uncaughtExceptionBacktrace() override;
 
 	/// Additional actions for interpreter palette.
 	QList<QAction *> optionalMenuActionsForInterpretedPlugins();

@@ -24,7 +24,9 @@ SUBDIRS += \
 	$$PWD/metaEditor/metaEditor.pro \
 	$$PWD/requirements/requirements.pro \
 	$$PWD/domainAnalysis/domainAnalysis.pro \
-	$$PWD/deployment/deploymentEditor.pro \
+#	$$PWD/deployment/deploymentEditor.pro \
+	$$PWD/robots/robots.pro \
+
 
 # interpreted plugins
 SUBDIRS += \

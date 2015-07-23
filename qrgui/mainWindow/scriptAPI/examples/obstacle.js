@@ -1,11 +1,14 @@
-var mainWindow = api.ui().mainWindow();
+﻿var mainWindow = api.ui().mainWindow();
 api.changeWindow(mainWindow);
 api.hints().addHint("Добро пожаловать в среду визуального программирования QReal:Robots!", 1300, mainWindow);//api.hints() -> 'ui'
 api.wait(1500);
 api.hints().addHint("Сейчас мы нарисуем одну диаграмму за вас, чтобы показать, как все работает.", 1300, mainWindow);
 api.wait(1500);
-var newDiagram = api.ui().widget("QToolButton", "actionNew_Diagram");
+var newDiagram = api.ui().widget("QToolButton", "actionNewProject");
 api.hints().addHint("Сперва создадим новую диаграмму...", 2000, mainWindow);
+// надо создать 2 метода: получить на основном окне actionbuttons и получить в определенном actionbutton определенное действие. 
+// для того, чтоб не только пользоваться виджетами и дейтсвиями, которые видны на toolbare но и остальными.
+// плюс надо разобраться с Юриными исходниками насчет assert
 api.cursor().moveTo(newDiagram, 1000);
 api.cursor().leftButtonPress(newDiagram);
 api.cursor().leftButtonRelease(newDiagram, 400);

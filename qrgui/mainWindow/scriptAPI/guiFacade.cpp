@@ -12,14 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "guiFacade.h"
+#include "./qrgui/mainWindow/scriptAPI/guiFacade.h"
 
 #include <plugins/toolPluginInterface/toolPluginInterface.h>
 #include <editor/editorView.h>
 #include <qrutils/widgetFinder.h>
 
-#include "mainWindow.h"
-#include "palette/draggableElement.h"
+#include "./qrgui/mainWindow/mainWindow.h"
+#include "./qrgui/mainWindow/palette/draggableElement.h"
 
 using namespace qReal;
 using namespace gui;

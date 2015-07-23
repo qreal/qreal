@@ -1,4 +1,4 @@
-/* Copyright 2014 - 2015 CyberTech Labs Ltd.
+/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@
 #include <QProcess>
 #include "qrgui/mainWindow/qrealApplication.h"
 #include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
+#include "./qrgui/mainWindow/mainWindow.h"
 
 namespace guiTesting {
 
 /// Test suite for GUI
 class guiTests : public testing::Test
 {
+
 protected:
 	void SetUp() override;
 	void TearDown() override;
@@ -33,9 +35,10 @@ protected:
 
 
 private:
-	QProcess* mQrealInstance;
-	MainWidnowScriptAPIInterface* mMainWidnowScriptAPIInterface;
-	//qReal::QRealApplication* mApp;
+//	QProcess* mQrealInstance;
+	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
+	qReal::QRealApplication* mApp;
+	qReal::MainWindow* mWindow;
 };
 
 }

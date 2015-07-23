@@ -29,6 +29,7 @@ SUBDIRS = \
 	qrtext \
 	thirdparty \
 	qrtranslations \
+	qrtest \
 
 qrkernel.depends = thirdparty
 qrutils.depends = qrkernel qrtext

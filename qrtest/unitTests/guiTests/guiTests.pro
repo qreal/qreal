@@ -21,10 +21,11 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/guiTests.cpp \
+	$$PWD/startQreal.cpp \
 
 OTHER_FILES += \
 	$$PWD/testScripts/guiTestExample.js \
 
 copyToDestdir($$PWD/testScripts/, now) # зачем?
 
-#include(../../../qrgui/mainWindow/scriptAPI/scriptAPI.pri)
+include(../../../qrgui/mainWindow/mainWindowForTests.pri)

@@ -61,7 +61,19 @@ public:
 	void evaluateInFileScript(const QString &fileName);
 
 	/// Registres new function fun in QScriptEngine for using fun in scripts
-	void regNewFunct(QScriptEngine::FunctionSignature fun, int length = 0);
+	void regNewFunct(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length = 0);
+
+	/// Checks the syntax of the given script.
+	QScriptSyntaxCheckResult checkSyntax(const QString &script);
+
+	/// Checks UncaughtException
+	bool hasUncaughtException();
+
+	/// Clears any uncaught exceptions in corresponding engine.
+	void clearExceptions();
+
+	/// Returns a human-readable backtrace of the last uncaught exception.
+	QStringList uncaughtExceptionBacktrace();
 
 	/// Freezes execution for duration. Starting event loop breaking when duration time ellapsed.
 	Q_INVOKABLE void wait(int duration);
