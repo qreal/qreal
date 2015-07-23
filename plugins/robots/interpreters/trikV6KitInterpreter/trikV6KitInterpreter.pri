@@ -27,17 +27,15 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		)
 
 HEADERS += \
-	$$PWD/trikV6KitInterpreterPlugin.h \
-	$$PWD/robotModel/real/trikV6RealRobotModel.h \
-	$$PWD/robotModel/twoD/trikV6TwoDRobotModel.h \
+	$$PWD/src/trikV6KitInterpreterPlugin.h \
+	$$PWD/src/robotModel/real/trikV6RealRobotModel.h \
+	$$PWD/src/robotModel/twoD/trikV6TwoDRobotModel.h \
 
 SOURCES += \
-	$$PWD/trikV6KitInterpreterPlugin.cpp \
-	$$PWD/robotModel/real/trikV6RealRobotModel.cpp \
-	$$PWD/robotModel/twoD/trikV6TwoDRobotModel.cpp \
-
-FORMS += \
+	$$PWD/src/trikV6KitInterpreterPlugin.cpp \
+	$$PWD/src/robotModel/real/trikV6RealRobotModel.cpp \
+	$$PWD/src/robotModel/twoD/trikV6TwoDRobotModel.cpp \
 
 TRANSLATIONS += \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6KitInterpreter_ru.ts \
-	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV6KitInterpreter_fr.ts \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/trikV6KitInterpreter_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/trikV6KitInterpreter_fr.ts \
