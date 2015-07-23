@@ -21,4 +21,4 @@ include(../../../../global.pri)
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-include(src/trikV6KitInterpreter.pri)
+include(trikV6KitInterpreter.pri)

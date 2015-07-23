@@ -37,5 +37,5 @@ SOURCES += \
 	$$PWD/src/robotModel/twoD/trikV62TwoDRobotModel.cpp \
 
 TRANSLATIONS += \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62KitInterpreter_ru.ts \
-	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV62KitInterpreter_fr.ts \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/trikV62KitInterpreter_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/trikV62KitInterpreter_fr.ts \

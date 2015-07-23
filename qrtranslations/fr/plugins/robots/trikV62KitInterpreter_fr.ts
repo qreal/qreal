@@ -4,27 +4,23 @@
 <context>
     <name>TrikAdditionalPreferences</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62AdditionalPreferences.ui" line="14"/>
         <source>Form</source>
-        <translation>Préférences TRIK</translation>
+        <translation type="vanished">Préférences TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62AdditionalPreferences.ui" line="32"/>
         <source>TCP Settings</source>
-        <translation>Configuration de TCP</translation>
+        <translation type="vanished">Configuration de TCP</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62AdditionalPreferences.ui" line="38"/>
         <source>Enter robot IP-address here</source>
-        <translation>Tapez l&apos;adresse IP du robot ici</translation>
+        <translation type="vanished">Tapez l&apos;adresse IP du robot ici</translation>
     </message>
 </context>
 <context>
     <name>TrikDisplayWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62DisplayWidget.ui" line="14"/>
         <source>Trik Display</source>
-        <translation>L&apos;écran Trik</translation>
+        <translation type="vanished">L&apos;écran Trik</translation>
     </message>
 </context>
 <context>
@@ -34,20 +30,22 @@
         <translation type="vanished">TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="86"/>
+        <source>Enter robot`s IP-address here...</source>
+        <translation type="vanished">Tapez l&apos;adresse IP du robot ici...</translation>
+    </message>
+</context>
+<context>
+    <name>trik::TrikV62KitInterpreterPlugin</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="42"/>
         <source>TRIK (new case)</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="153"/>
-        <source>Enter robot`s IP-address here...</source>
-        <translation>Tapez l&apos;adresse IP du robot ici...</translation>
     </message>
 </context>
 <context>
     <name>trik::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/robotModel/real/trikV62RealRobotModel.cpp" line="86"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/robotModel/real/trikV62RealRobotModel.cpp" line="65"/>
         <source>Interpretation (Wi-Fi)</source>
         <translation>Intérprétation (Wi-Fi)</translation>
     </message>
