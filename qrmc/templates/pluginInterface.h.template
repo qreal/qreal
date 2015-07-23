@@ -21,7 +21,7 @@ public:
 
 	virtual void initPlugin();
 	virtual void initMouseGestureMap();
-	virtual void initHotKeysMap();
+	virtual void initHotKeyMap();
 	virtual void initNameMap();
 	virtual void initPropertyMap();
 	virtual void initPropertyDefaultsMap();
