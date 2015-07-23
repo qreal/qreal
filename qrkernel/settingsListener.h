@@ -72,7 +72,7 @@ public:
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in lambda case. The lambda must be parameterless.
-	static void listen(const QString &key, std::function<void()> const &lambda)
+	static void listen(const QString &key, const std::function<void()> &lambda)
 	{
 		instance().mListeners.insertMulti(key, new LambdaListener0(lambda));
 	}

@@ -33,7 +33,11 @@ void DrawLineBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const bool redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		trikDisplay->drawLine(x1, y1, x2, y2, redraw);
+		trikDisplay->drawLine(x1, y1, x2, y2);
+		if (redraw) {
+			trikDisplay->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../../../../global.pri)
+include(../../../global.pri)
 
 TEMPLATE = lib
 
 CONFIG += plugin
+
+QT += widgets
 
 DESTDIR = $$DESTDIR/plugins/tools
 

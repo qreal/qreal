@@ -100,6 +100,7 @@ void Configuration::onDeviceConfigured(bool success)
 
 	mConfiguredDevices.insert(device->port(), device);
 
+	emit deviceConfigured(device);
 	checkAllDevicesConfigured();
 }
 

@@ -17,7 +17,7 @@
 #include <QtCore/QObject>
 
 #include <qrrepo/repoApi.h>
-#include "../templateParametrizedEntity.h"
+#include "generatorBase/templateParametrizedEntity.h"
 
 namespace generatorBase {
 

@@ -79,8 +79,8 @@ private:
 		/// Selects "best available" image file, using following rules:
 		/// - if there is .svg file with given name in a directory from filePath, it is used as actual image file.
 		/// - else if there is a file with other extension but with correct name, it is used.
-		/// - else, if there is no such file, it tries to select a file with name "default" in given directory, using the
-		///   rules above.
+		/// - else, if there is no such file, it tries to select a file with name "default" in given directory, using
+		///   the rules above.
 		/// - if everything above fails, system default image file, from qrgui/icons (or, when compiled,
 		///   from ":/icons/default.svg"), is used.
 		static QFileInfo selectBestImageFile(const QString &filePath);

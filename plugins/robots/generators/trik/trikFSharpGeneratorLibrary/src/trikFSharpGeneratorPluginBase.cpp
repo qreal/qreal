@@ -89,7 +89,8 @@ QList<HotKeyActionInfo> TrikFSharpGeneratorPluginBase::hotKeyActions()
 	return {generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo};
 }
 
-QIcon TrikFSharpGeneratorPluginBase::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
+QIcon TrikFSharpGeneratorPluginBase::iconForFastSelector(
+		const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
 	return QIcon(":/fSharp/images/switch-to-trik-f-sharp.svg");

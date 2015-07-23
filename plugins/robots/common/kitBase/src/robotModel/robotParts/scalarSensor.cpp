@@ -27,3 +27,8 @@ int ScalarSensor::lastData() const
 {
 	return mLastValue;
 }
+
+void ScalarSensor::setLastData(int data)
+{
+	emit newData(data);
+}

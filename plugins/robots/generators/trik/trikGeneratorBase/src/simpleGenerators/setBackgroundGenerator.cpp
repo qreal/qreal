@@ -28,9 +28,10 @@ SetBackgroundGenerator::SetBackgroundGenerator(const qrRepo::RepoApi &repo
 	: BindingGenerator(repo, customizer, id
 			, "drawing/setBackground.t"
 			, { Binding::createConverting("@@COLOR@@", "Color"
-						, new BackgroundColorConverter(customizer.factory()->pathsToTemplates()))
-				, Binding::createConverting("@@REDRAW@@", "Redraw"
-						, customizer.factory()->boolPropertyConverter(id, "Redraw", false)) }
-			, parent)
+					, new BackgroundColorConverter(customizer.factory()->pathsToTemplates()))
+			}, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

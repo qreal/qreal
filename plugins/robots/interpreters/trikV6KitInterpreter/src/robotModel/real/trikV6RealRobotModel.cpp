@@ -17,30 +17,30 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 
-#include "parts/display.h"
-#include "parts/speaker.h"
-#include "parts/button.h"
+#include <trikKitInterpreterCommon/robotModel/real/parts/display.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/speaker.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/button.h>
 
-#include "parts/powerMotor.h"
-#include "parts/servoMotor.h"
-#include "parts/encoderSensor.h"
+#include <trikKitInterpreterCommon/robotModel/real/parts/powerMotor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/servoMotor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/encoderSensor.h>
 
-#include "parts/lightSensor.h"
-#include "parts/infraredSensor.h"
-#include "parts/sonarSensor.h"
-#include "parts/motionSensor.h"
-#include "parts/gyroscope.h"
-#include "parts/accelerometer.h"
-#include "parts/colorSensor.h"
-#include "parts/led.h"
-#include "parts/lineSensor.h"
-#include "parts/objectSensor.h"
-#include "parts/shell.h"
-#include "parts/gamepadButton.h"
-#include "parts/gamepadConnectionIndicator.h"
-#include "parts/gamepadPad.h"
-#include "parts/gamepadPadPressSensor.h"
-#include "parts/gamepadWheel.h"
+#include <trikKitInterpreterCommon/robotModel/real/parts/lightSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/infraredSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/sonarSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/motionSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/gyroscope.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/accelerometer.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/colorSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/led.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/lineSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/objectSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/shell.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/gamepadButton.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/gamepadConnectionIndicator.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/gamepadPad.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/gamepadPadPressSensor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/gamepadWheel.h>
 
 using namespace trik::robotModel::real;
 using namespace kitBase::robotModel;

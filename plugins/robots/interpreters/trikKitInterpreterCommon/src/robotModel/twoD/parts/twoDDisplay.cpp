@@ -14,13 +14,14 @@
 
 #include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h"
 
+#include <utils/canvas/textObject.h>
+
 using namespace trik::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
-/// @todo: This constant adjusts screen coordinates shift. It must be 0.
-const int yDisplayShift = 8;
 const qreal realWidth = 218;
 const qreal realHeight = 274;
+const int textPixelSize = 14;
 
 Display::Display(const DeviceInfo &info
 		, const PortInfo &port
@@ -28,105 +29,103 @@ Display::Display(const DeviceInfo &info
 	: robotModel::parts::TrikDisplay(info, port)
 	, mEngine(engine)
 	, mBackground(Qt::transparent)
-	, mCurrentPenWidth(0)
-	, mCurrentPenColor(Qt::black)
 {
 	mEngine.display()->setPainter(this);
 }
 
-void Display::setPainterColor(const QColor &color)
+QString Display::background() const
 {
-	mCurrentPenColor = color;
+	return mBackground.name();
 }
 
-void Display::setPainterWidth(int penWidth)
+bool Display::smiles() const
 {
-	mCurrentPenWidth = penWidth;
+	return mSmiles;
 }
 
-void Display::drawPixel(int x, int y, bool redraw)
+bool Display::sadSmiles() const
 {
-	mPixels << PixelCoordinates(x, y, mCurrentPenColor, mCurrentPenWidth);
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
+	return mSadSmiles;
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2, bool redraw)
+void Display::drawPixel(int x, int y)
 {
-	mLines << LineCoordinates(x1, y1, x2, y2, mCurrentPenColor, mCurrentPenWidth);
-	if (redraw)	{
-		mEngine.display()->repaintDisplay();
-	}
+	Canvas::drawPixel(x, y);
 }
 
-void Display::drawRect(int x, int y, int width, int height, bool redraw)
+void Display::drawLine(int x1, int y1, int x2, int y2)
 {
-	mRects << RectCoordinates(x, y, width, height, mCurrentPenColor, mCurrentPenWidth);
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
+	Canvas::drawLine(x1, y1, x2, y2);
 }
 
-void Display::drawEllipse(int x, int y, int width, int height, bool redraw)
+void Display::drawRect(int x, int y, int width, int height)
 {
-	mEllipses << EllipseCoordinates(x, y, width, height, mCurrentPenColor, mCurrentPenWidth);
-	if (redraw)	{
-		mEngine.display()->repaintDisplay();
-	}
+	Canvas::drawRect(x, y, width, height);
 }
 
-void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle, bool redraw)
+void Display::drawEllipse(int x, int y, int width, int height)
 {
-	mArcs << ArcCoordinates(x, y, width, height, startAngle, spanAngle, mCurrentPenColor, mCurrentPenWidth);
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
+	Canvas::drawEllipse(x, y, width, height);
+}
+
+void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)
+{
+	Canvas::drawArc(x, y, width, height, startAngle, spanAngle);
 }
 
 void Display::drawSmile(bool sad)
 {
 	mCurrentImage = QImage(sad ? ":/icons/sadSmile.png" : ":/icons/smile.png");
+	mSmiles = !sad;
+	mSadSmiles = sad;
 	mEngine.display()->repaintDisplay();
 }
 
-void Display::setBackground(const QColor &color, bool redraw)
+void Display::setBackground(const QColor &color)
 {
 	mBackground = color;
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
-	}
 }
 
-void Display::printText(int x, int y, const QString &text, bool redraw)
+void Display::printText(int x, int y, const QString &text)
 {
-	mLabels[qMakePair(x, y + yDisplayShift)] = {text, mCurrentPenColor};
-	if (redraw) {
-		mEngine.display()->repaintDisplay();
+	const QPair<int, int> coords(x, y);
+	if (mLabelsMap.contains(coords)) {
+		mLabelsMap[coords]->setText(text);
+	} else {
+		utils::TextObject * const textObject = new utils::TextObject(x, y, text, mCurrentPenColor, mCurrentPenWidth);
+		mObjects << textObject;
+		mLabelsMap[coords] = textObject;
+		mLabels << textObject;
 	}
 }
 
-void Display::clearScreen(bool redraw)
+void Display::clearScreen()
 {
 	// Background color is not cleared
 	mCurrentImage = QImage();
-	mLabels.clear();
-	mPixels.clear();
-	mLines.clear();
-	mRects.clear();
-	mEllipses.clear();
-	mArcs.clear();
-	mCurrentPenWidth = 0;
-	mCurrentPenColor = Qt::black;
-	if (mEngine.display() && redraw) {
-		mEngine.display()->repaintDisplay();
-	}
+	mSmiles = false;
+	mSadSmiles = false;
+	mLabelsMap.clear();
+	Canvas::reset();
+}
+
+void Display::setPainterColor(const QColor &color)
+{
+	Canvas::setPainterColor(color);
+}
+
+void Display::setPainterWidth(int penWidth)
+{
+	Canvas::setPainterWidth(penWidth);
 }
 
 void Display::paint(QPainter *painter)
 {
 	const QRect displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
 	painter->save();
+	QFont font;
+	font.setPixelSize(textPixelSize);
+	painter->setFont(font);
 	painter->setPen(mBackground);
 	painter->setBrush(mBackground);
 	painter->drawRect(displayRect);
@@ -138,47 +137,20 @@ void Display::paint(QPainter *painter)
 	painter->setPen(Qt::black);
 	painter->scale(displayRect.width() / realWidth, displayRect.height() / realHeight);
 
-	for (QPair<int, int> const &point : mLabels.keys()) {
-		/// @todo: Honest labels must be here, without text overlapping.
-		painter->setPen(QPen(mLabels[point].second, 0, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawText(QPoint(point.first, point.second), mLabels[point].first);
-	}
-
-	for (int i = 0; i < mPixels.length(); ++i) {
-		painter->setPen(QPen(mPixels.at(i).color, mPixels.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawPoint(mPixels.at(i).coord.x(), mPixels.at(i).coord.y());
-	}
-
-	for (int i = 0; i < mLines.length(); ++i) {
-		painter->setPen(QPen(mLines.at(i).color, mLines.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawLine(mLines.at(i).line.x1(), mLines.at(i).line.y1()
-				, mLines.at(i).line.x2(), mLines.at(i).line.y2());
-	}
-
-	for (int i = 0; i < mRects.length(); ++i) {
-		painter->setPen(QPen(mRects.at(i).color, mRects.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawRect(mRects.at(i).rect.x(), mRects.at(i).rect.y()
-				, mRects.at(i).rect.width(), mRects.at(i).rect.height());
-	}
-
-	for (int i = 0; i < mEllipses.length(); ++i) {
-		painter->setPen(QPen(mEllipses.at(i).color, mEllipses.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawEllipse(QPointF(mEllipses.at(i).ellipse.x(), mEllipses.at(i).ellipse.y())
-				, mEllipses.at(i).ellipse.width(), mEllipses.at(i).ellipse.height());
-	}
-
-	for (int i = 0; i < mArcs.length(); ++i) {
-		painter->setPen(QPen(mArcs.at(i).color, mArcs.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawArc(mArcs.at(i).arc.x(), mArcs.at(i).arc.y()
-				, mArcs.at(i).arc.width(), mArcs.at(i).arc.height()
-				, mArcs.at(i).startAngle, mArcs.at(i).spanAngle);
-	}
-
+	Canvas::paint(painter);
 	painter->restore();
 }
 
 void Display::reset()
 {
-	clearScreen(true);
-	setBackground(Qt::transparent, true);
+	clearScreen();
+	setBackground(Qt::transparent);
+	redraw();
+}
+
+void Display::redraw()
+{
+	if (mEngine.display()) {
+		mEngine.display()->repaintDisplay();
+	}
 }

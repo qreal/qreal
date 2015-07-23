@@ -53,27 +53,6 @@ RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 			, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::disconnected
 			, this, &RealRobotModel::disconnected);
-
-	addAllowedConnection(PortInfo("GamepadPad1PosPort", input, {}, "gamepadPad1"
-			, PortInfo::ReservedVariableType::vector), { gamepadPadInfo() });
-	addAllowedConnection(PortInfo("GamepadPad2PosPort", input, {}, "gamepadPad2"
-			, PortInfo::ReservedVariableType::vector), { gamepadPadInfo() });
-
-	addAllowedConnection(PortInfo("GamepadPad1PressedPort", input, {}, "gamepadPad1Pressed")
-			, { gamepadPadPressSensorInfo() });
-	addAllowedConnection(PortInfo("GamepadPad2PressedPort", input, {}, "gamepadPad2Pressed")
-			, { gamepadPadPressSensorInfo() });
-
-	addAllowedConnection(PortInfo("GamepadWheelPort", input, {}, "gamepadWheel"), { gamepadWheelInfo() });
-
-	addAllowedConnection(PortInfo("GamepadButton1Port", input, {}, "gamepadButton1"), { gamepadButtonInfo() });
-	addAllowedConnection(PortInfo("GamepadButton2Port", input, {}, "gamepadButton2"), { gamepadButtonInfo() });
-	addAllowedConnection(PortInfo("GamepadButton3Port", input, {}, "gamepadButton3"), { gamepadButtonInfo() });
-	addAllowedConnection(PortInfo("GamepadButton4Port", input, {}, "gamepadButton4"), { gamepadButtonInfo() });
-	addAllowedConnection(PortInfo("GamepadButton5Port", input, {}, "gamepadButton5"), { gamepadButtonInfo() });
-
-	addAllowedConnection(PortInfo("GamepadConnectionIndicatorPort", input, {}, "gamepadConnected")
-			, { gamepadConnectionIndicatorInfo() });
 }
 
 QString RealRobotModel::name() const

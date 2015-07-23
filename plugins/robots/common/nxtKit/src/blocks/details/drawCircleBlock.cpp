@@ -32,7 +32,11 @@ void DrawCircleBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const bool redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		nxtDisplay->drawCircle(x, y, radius, redraw);
+		nxtDisplay->drawCircle(x, y, radius);
+		if (redraw) {
+			nxtDisplay->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

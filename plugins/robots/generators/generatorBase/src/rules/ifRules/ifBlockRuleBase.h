@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "../semanticTransformationRule.h"
+#include "src/rules/semanticTransformationRule.h"
 
 namespace generatorBase {
 namespace semantics {

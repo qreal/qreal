@@ -24,7 +24,8 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Accelerometer : public kitBase::robotModel::robotParts::AccelerometerSensor
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Accelerometer
+		: public kitBase::robotModel::robotParts::AccelerometerSensor
 {
 	Q_OBJECT
 

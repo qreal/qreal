@@ -33,28 +33,30 @@ public:
 	virtual void drawSmile(bool sad) = 0;
 
 	/// @todo: color enum here?
-	virtual void setBackground(const QColor &color, bool redraw) = 0;
+	virtual void setBackground(const QColor &color) = 0;
 
-	/// Draw ellipse.
+	/// Draw ellipse without redrawing display.
 	/// @param x - x coordinate.
 	/// @param y - y coordinate.
 	/// @param width - width of ellipse.
 	/// @param height - height of ellipse.
-	virtual void drawEllipse(int x, int y, int width, int height, bool redraw) = 0;
+	virtual void drawEllipse(int x, int y, int width, int height) = 0;
 
-	/// Draw arc on the widget.
+	/// Draw arc on the widget without redrawing it.
 	/// @param x - x coordinate.
 	/// @param y - y coordinate.
 	/// @param width - width rect forming an arc.
 	/// @param height - height rect forming an arc.
 	/// @param startAngle - start angle.
 	/// @param spanAngle - end angle.
-	virtual void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle, bool redraw) = 0;
+	virtual void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) = 0;
 
-	/// Set painter width.
+	/// Set painter pen width. The \a penWidth will be used for painting of all next shapes till the next
+	/// call of setPainterColor.
 	virtual void setPainterWidth(int penWidth) = 0;
 
-	/// Set painter color.
+	/// Sets painter`s pen \a color. The \a color will be used for painting of all next shapes till the next
+	/// call of setPainterColor.
 	/// @param color - color of painter.
 	virtual void setPainterColor(const QColor &color) = 0;
 };

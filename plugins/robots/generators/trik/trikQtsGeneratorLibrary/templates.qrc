@@ -155,6 +155,7 @@
         <file>templates/drawing/drawArc.t</file>
         <file>templates/drawing/setPainterWidth.t</file>
         <file>templates/drawing/setPainterColor.t</file>
+        <file>templates/drawing/redraw.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
         <file>templates/engines/backward.t</file>

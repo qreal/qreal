@@ -29,21 +29,22 @@ AinsPlugin::~AinsPlugin()
 
 void AinsPlugin::init(PluginConfigurator const &configurator)
 {
-	mDatabaseEditorGenerator = new DatabaseEditorSchemeGenerator(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
+	mDatabaseEditorGenerator = new DatabaseEditorSchemeGenerator(configurator.logicalModelApi()
+			, *configurator.mainWindowInterpretersInterface().errorReporter());
 }
 
 qReal::Customizer* AinsPlugin::customizationInterface()
 {
-	return NULL;
+	return nullptr;
 }
 
 QList<ActionInfo> AinsPlugin::actions()
 {
-	mGenerateDatabaseSchemeAction = new QAction (QObject::tr("generate Database Scheme"), NULL);
+	mGenerateDatabaseSchemeAction = new QAction (QObject::tr("generate Database Scheme"), nullptr);
 	ActionInfo DatabaseSchemeActionInfo(mGenerateDatabaseSchemeAction, "interpreters", "tools");
 	QObject::connect(mGenerateDatabaseSchemeAction, SIGNAL(triggered()), this, SLOT(generateDatabaseScheme()));
 
-	QAction *separator = new QAction(NULL);
+	QAction *separator = new QAction(nullptr);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
 
@@ -52,9 +53,9 @@ QList<ActionInfo> AinsPlugin::actions()
 	return QList<ActionInfo>() << DatabaseSchemeActionInfo << separatorActionInfo;
 }
 
-QPair<QString, PreferencesPage *> AinsPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> AinsPlugin::preferencesPage()
 {
-	return QPair<QString, PreferencesPage *>(QString(), NULL);
+	return {QString(), nullptr};
 }
 
 void AinsPlugin::updateSettings()
