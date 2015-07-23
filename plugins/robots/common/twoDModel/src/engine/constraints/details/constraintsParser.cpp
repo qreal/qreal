@@ -315,7 +315,7 @@ Condition ConstraintsParser::parseNegationTag(const QDomElement &element, Event 
 		return mConditions.constant(true);
 	}
 
-	return parseConditionsAlternative(element.firstChildElement(), event);
+	return mConditions.negation(parseConditionsAlternative(element.firstChildElement(), event));
 }
 
 Condition ConstraintsParser::parseComparisonTag(const QDomElement &element)
