@@ -1,2 +1,0 @@
-while @@CONDITION@@ do
-@@BODY@@

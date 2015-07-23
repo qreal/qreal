@@ -21,40 +21,26 @@ QT += widgets network
 TEMPLATE = lib
 CONFIG += plugin
 
-copyToDestdir($$PWD/lib/Trik.Core.dll)
-
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-includes(plugins/robots/generators/trik/trikV62GeneratorBase \
+includes(\
+		plugins/robots/generators/trik/trikFSharpGeneratorLibrary \
+		plugins/robots/generators/trik/trikGeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
+		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-v62-generator-base robots-utils \
-		qrgui-preferences-dialog robots-kit-base \
-)
+links(robots-trik-f-sharp-generator-library)
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62FSharpGenerator_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV62FSharpGenerator_fr.ts \
 
 HEADERS += \
-	$$PWD/trikFSharpGeneratorPlugin.h \
-	$$PWD/trikFSharpMasterGenerator.h \
-	$$PWD/trikFSharpAdditionalPreferences.h \
-	$$PWD/trikFSharpControlFlowValidator.h \
+	$$PWD/trikV62FSharpGeneratorPlugin.h \
 
 SOURCES += \
-	$$PWD/trikFSharpGeneratorPlugin.cpp \
-	$$PWD/trikFSharpMasterGenerator.cpp \
-	$$PWD/trikFSharpAdditionalPreferences.cpp \
-	$$PWD/trikFSharpControlFlowValidator.cpp \
-
-FORMS += \
-	$$PWD/trikFSharpAdditionalPreferences.ui \
-
-RESOURCES = \
-	$$PWD/trikFSharpGenerator.qrc \
-	$$PWD/templates.qrc \
+	$$PWD/trikV62FSharpGeneratorPlugin.cpp \

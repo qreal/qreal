@@ -12,49 +12,50 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-trik-v6-f-sharp-generator
+TARGET = robots-trik-f-sharp-generator-library
 
 include(../../../../../global.pri)
 
 QT += widgets network
 
 TEMPLATE = lib
-CONFIG += plugin
 
 copyToDestdir($$PWD/lib/Trik.Core.dll)
 
-DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
+DEFINES += ROBOTS_TRIK_FSHARP_GENERATOR_LIBRARY
 
-includes(plugins/robots/generators/trik/trikV6GeneratorBase \
+includes( \
+		plugins/robots/generators/trik/trikGeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-v6-generator-base robots-utils \
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base robots-utils \
 		qrgui-preferences-dialog robots-kit-base \
 )
 
 TRANSLATIONS = \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6FSharpGenerator_ru.ts \
-	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV6FSharpGenerator_fr.ts \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikFSharpGeneratorLibrary_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikFSharpGeneratorLibrary_fr.ts \
 
 HEADERS += \
-	$$PWD/trikFSharpGeneratorPlugin.h \
-	$$PWD/trikFSharpMasterGenerator.h \
-	$$PWD/trikFSharpAdditionalPreferences.h \
-	$$PWD/trikFSharpControlFlowValidator.h \
+	$$PWD/include/trikFSharpGeneratorLibrary/trikFSharpGeneratorPluginBase.h \
+	$$PWD/include/trikFSharpGeneratorLibrary/declSpec.h \
+	$$PWD/src/trikFSharpMasterGenerator.h \
+	$$PWD/src/trikFSharpAdditionalPreferences.h \
+	$$PWD/src/trikFSharpControlFlowValidator.h \
 
 SOURCES += \
-	$$PWD/trikFSharpGeneratorPlugin.cpp \
-	$$PWD/trikFSharpMasterGenerator.cpp \
-	$$PWD/trikFSharpAdditionalPreferences.cpp \
-	$$PWD/trikFSharpControlFlowValidator.cpp \
+	$$PWD/src/trikFSharpGeneratorPluginBase.cpp \
+	$$PWD/src/trikFSharpMasterGenerator.cpp \
+	$$PWD/src/trikFSharpAdditionalPreferences.cpp \
+	$$PWD/src/trikFSharpControlFlowValidator.cpp \
 
 FORMS += \
-	$$PWD/trikFSharpAdditionalPreferences.ui \
+	$$PWD/src/trikFSharpAdditionalPreferences.ui \
 
 RESOURCES = \
-	$$PWD/trikV6FSharpGenerator.qrc \
+	$$PWD/trikFSharpGeneratorLibrary.qrc \
 	$$PWD/templates.qrc \

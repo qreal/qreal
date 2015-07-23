@@ -1,3 +1,0 @@
-@@BODY@@
-while @@CONDITION@@
-@@BODY@@

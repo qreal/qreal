@@ -19,10 +19,11 @@ SUBDIRS = \
 	trikGeneratorBase \
 	trikQtsGeneratorLibrary \
 	trikV6QtsGenerator \
-#	trikV6FSharpGenerator \
-	trikV6RuntimeUploaderPlugin \
 	trikV62QtsGenerator \
-#	trikV62FSharpGenerator \
+	trikFSharpGeneratorLibrary \
+	trikV6FSharpGenerator \
+	trikV62FSharpGenerator \
+	trikV6RuntimeUploaderPlugin \
 	trikV62RuntimeUploaderPlugin \
 	nxtGeneratorBase \
 	nxtOsekCGenerator \
@@ -31,10 +32,11 @@ SUBDIRS = \
 trikGeneratorBase.subdir = $$PWD/trik/trikGeneratorBase
 trikQtsGeneratorLibrary.subdir = $$PWD/trik/trikQtsGeneratorLibrary
 trikV6QtsGenerator.subdir = $$PWD/trik/trikV6QtsGenerator
-#trikV6FSharpGenerator.subdir = $$PWD/trik/trikV6FSharpGenerator
-trikV6RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV6RuntimeUploaderPlugin
 trikV62QtsGenerator.subdir = $$PWD/trik/trikV62QtsGenerator
-#trikV62FSharpGenerator.subdir = $$PWD/trik/trikV62FSharpGenerator
+trikFSharpGeneratorLibrary.subdir = $$PWD/trik/trikFSharpGeneratorLibrary
+trikV6FSharpGenerator.subdir = $$PWD/trik/trikV6FSharpGenerator
+trikV62FSharpGenerator.subdir = $$PWD/trik/trikV62FSharpGenerator
+trikV6RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV6RuntimeUploaderPlugin
 trikV62RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV62RuntimeUploaderPlugin
 nxtGeneratorBase.subdir = $$PWD/nxt/nxtGeneratorBase
 nxtOsekCGenerator.subdir = $$PWD/nxt/nxtOsekCGenerator
@@ -43,9 +45,10 @@ nxtRussianCGenerator.subdir = $$PWD/nxt/nxtRussianCGenerator
 trikGeneratorBase.depends = generatorBase
 trikQtsGeneratorLibrary.depends = trikGeneratorBase
 trikV6QtsGenerator.depends = trikQtsGeneratorLibrary
-#trikV6FSharpGenerator.depends = trikV6GeneratorBase
 trikV62QtsGenerator.depends = trikQtsGeneratorLibrary
-#trikV62FSharpGenerator.depends = trikV62GeneratorBase
+trikFSharpGeneratorLibrary.depends = trikGeneratorBase
+trikV6FSharpGenerator.depends = trikFSharpGeneratorLibrary
+trikV62FSharpGenerator.depends = trikFSharpGeneratorLibrary
 nxtGeneratorBase.depends = generatorBase
 nxtOsekCGenerator.depends = nxtGeneratorBase
 nxtRussianCGenerator.depends = nxtGeneratorBase

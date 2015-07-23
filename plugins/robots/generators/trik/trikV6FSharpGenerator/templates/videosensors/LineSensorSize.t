@@ -1,1 +1,0 @@
-model.LineSensor.Read().Mass

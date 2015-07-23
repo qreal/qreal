@@ -1,1 +1,0 @@
-model.ObjectSensor.Start()

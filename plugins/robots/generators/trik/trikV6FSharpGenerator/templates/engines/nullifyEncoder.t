@@ -1,1 +1,0 @@
-model.Encoder.["@PORT@"].Reset
