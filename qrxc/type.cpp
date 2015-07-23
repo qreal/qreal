@@ -40,6 +40,7 @@ bool Type::init(const QDomElement &element, const QString &context)
 	}
 	mDisplayedName = element.attribute("displayedName", mName);
 	mPath = element.attribute("path", "");
+	mHotKey = element.attribute("hotKey");
 	return true;
 }
 
@@ -86,6 +87,11 @@ void Type::setName(const QString &name)
 QString Type::displayedName() const
 {
 	return mDisplayedName;
+}
+
+QString Type::hotKey() const
+{
+	return mHotKey;
 }
 
 void Type::setDisplayedName(const QString &displayedName)

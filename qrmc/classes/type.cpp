@@ -52,6 +52,11 @@ QString Type::path() const
 	return mPath;
 }
 
+QString Type::hotKey() const
+{
+	return mHotKey;
+}
+
 QString Type::qualifiedName() const
 {
 	return NameNormalizer::normalize(mContext) + "::" + mName;
@@ -125,6 +130,8 @@ bool Type::init(const QString &context)
 	}
 	if (mApi->hasProperty(mId, "path"))
 		mPath = mApi->stringProperty(mId, "path");
+	if (mApi->hasProperty(mId, "hotKey"))
+		mHotKey = mApi->stringProperty(mId, "hotKey");
 	return true;
 }
 
@@ -143,6 +150,15 @@ QString Type::generateMouseGestures(const QString &lineTemplate) const
 		return "";
 	QString result = lineTemplate;
 	result.replace(elementNameTag, name()).replace(gesturePathTag, mPath).replace(diagramNameTag, mContext);
+	return result;
+}
+
+QString Type::generateHotKeys(const QString &lineTemplate) const
+{
+	if (mHotKey.isEmpty())
+		return "";
+	QString result = lineTemplate;
+	result.replace(elementNameTag, name()).replace(hotHeyTag, mHotKey).replace(diagramNameTag, mContext);
 	return result;
 }
 

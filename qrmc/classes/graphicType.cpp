@@ -16,6 +16,7 @@
 #include "property.h"
 #include "../diagram.h"
 #include "../utils/nameNormalizer.h"
+#include "shape.h"
 
 #include <QDebug>
 
@@ -44,6 +45,7 @@ GraphicType::~GraphicType()
 bool GraphicType::init(const QString &context)
 {
 	Type::init(context);
+	mDescription = mApi->stringProperty(mId, "description");
 
 	mIsVisible = false;
 	if (mApi->hasProperty(mId, "shape"))
@@ -285,6 +287,28 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 	return displayedNamesString;
 }
 
+QString GraphicType::generateElementDescription(const QString &lineTemplate) const
+{
+	if (mDescription.isEmpty()) {
+		return "";
+	}
+
+	QString displayedNamesString;
+	QString temp = this->generateElementDescriptionLine(lineTemplate);
+	if (!temp.isEmpty()) {
+		displayedNamesString += temp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
+	}
+
+	return displayedNamesString;
+}
+
+QString GraphicType::generateElementDescriptionLine(const QString &lineTemplate) const
+{
+	QString result = lineTemplate;
+	result.replace(descriptionTag, mDescription);
+	return result;
+}
+
 QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
@@ -297,11 +321,67 @@ QString GraphicType::generateReferenceProperties(const QString &lineTemplate) co
 		}
 	}
 	if (referencePropertiesList.isEmpty()) {
-		return "";
+		referencePropertiesString.replace(referencePropertiesListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
 	} else {
 		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
-		return referencePropertiesString;
 	}
+	return referencePropertiesString;
+}
+
+QString GraphicType::generatePortTypes(const QString &lineTemplate) const
+{
+	QString portTypesString = lineTemplate;
+	QString portTypesList = "";
+
+	const QList<Port*> getPortTypes = this->mShape.getPorts();
+	QSet<QString> portTypes;
+	for (Port *port : getPortTypes) {
+		portTypes.insert(port->type());
+	}
+
+	if (!portTypes.empty()) {
+		foreach (const QString &type, portTypes) {
+			portTypesList = portTypesList + "\"" + type + "\"";
+		}
+
+		if (portTypesList.isEmpty()) {
+			portTypesString.replace(portTypesListTag, "*/}//").replace(elementNameTag, name());;
+		} else {
+			portTypesString.replace(portTypesListTag, portTypesList).replace(elementNameTag, name());
+		}
+
+	} else {
+		return "";
+	}
+	return portTypesString;
+}
+
+QString GraphicType::generatePropertyName(const QString &lineTemplate) const
+{
+	if (!mIsVisible) {
+		return "";
+	}
+
+	QString propertyNameString = lineTemplate;
+	QString propertyNameList = "";
+
+	for (Property *property: mProperties) {
+		if (!property->isReferenceProperty()) {
+			if (!propertyNameList.isEmpty()) {
+				propertyNameList = propertyNameList + " << " + + "\"" + property->name() + "\"";
+			} else {
+				propertyNameList = propertyNameList + "\"" + property->name() + "\"";
+			}
+		}
+	}
+
+	if (propertyNameList.isEmpty()) {
+		propertyNameString.replace(propertyNameListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
+	} else {
+		propertyNameString.replace(propertyNameListTag, propertyNameList + ";\n	}//").replace(elementNameTag, name() + "\"){//");
+	}
+
+	return propertyNameString;
 }
 
 QString GraphicType::generateParents(const QString &lineTemplate) const

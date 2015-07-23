@@ -29,6 +29,7 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+	virtual void generateHotKeyMap(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
 
 	/// Returns true if enum was marked as editable in metamodel.

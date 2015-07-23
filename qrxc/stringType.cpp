@@ -58,6 +58,11 @@ void StringType::generateMouseGesturesMap(utils::OutFile &out)
 	Q_UNUSED(out);
 }
 
+void StringType::generateHotKeyMap(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
+
 void StringType::generateExplosionsMap(utils::OutFile &out)
 {
 	Q_UNUSED(out)

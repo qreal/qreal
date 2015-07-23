@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+TARGET = qrmc
+
 include(../global.pri)
+include (classes/classes.pri)
+include (utils/utils.pri)
 
 QT += xml
+
+CONFIG += c++11
+
+CONFIG += console
 
 DEPENDPATH += \
 	. \
@@ -24,6 +32,9 @@ HEADERS += \
 	metaCompiler.h \
 	diagram.h \
 	editor.h \
+	../qrkernel/definitions.h \
+	../qrkernel/ids.h \
+	../qrrepo/repoApi.h \
 
 SOURCES += \
 	metaCompiler.cpp \
@@ -31,8 +42,13 @@ SOURCES += \
 	editor.cpp \
 	main.cpp \
 
-include (classes/classes.pri)
-include (utils/utils.pri)
-
 links(qrkernel qrutils qrrepo)
 includes(qrkernel)
+
+OTHER_FILES += \
+	templates/edge.template \
+	templates/node.template \
+	templates/plugin.qrc.template \
+	templates/plugins.pro.template \
+	templates/pro.template \
+	templates/utils.template \

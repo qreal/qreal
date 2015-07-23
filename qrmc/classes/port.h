@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QDomElement>
+#include <QtCore/QStringList>
 
 namespace qrmc {
 	class MetaCompiler;
@@ -28,7 +29,12 @@ namespace qrmc {
 
 		virtual QString generateSdf(MetaCompiler *compiler) const = 0;
 		virtual QString generateInit(MetaCompiler *compiler) const = 0;
+		virtual void generatePortList(const QStringList &portTypes) = 0;
+
+		QString type() const;
+
 	protected:
 		MetaCompiler *mCompiler;
+		QString mType;
 	};
 }

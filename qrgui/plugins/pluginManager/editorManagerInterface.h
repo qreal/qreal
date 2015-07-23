@@ -55,6 +55,7 @@ public:
 	virtual QString unloadPlugin(const QString &pluginName) = 0;
 
 	virtual QString mouseGesture(const Id &id) const = 0;
+	virtual QString hotKey(const Id &id) const = 0;
 	virtual QString friendlyName(const Id &id) const = 0;
 	virtual QString description(const Id &id) const = 0;
 	virtual QString propertyDescription(const Id &id, const QString &propertyName) const = 0;
@@ -151,6 +152,8 @@ public:
 
 	/// Includes or excludes element from metamodel.
 	virtual void setElementEnabled(const Id &type, bool enabled) = 0;
+
+	virtual bool isElementEnabled(const Id &element) const = 0;
 };
 
 

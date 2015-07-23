@@ -66,6 +66,11 @@ void NumericType::generateMouseGesturesMap(utils::OutFile &out)
 	Q_UNUSED(out);
 }
 
+void NumericType::generateHotkeyMap(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
+
 void NumericType::generateExplosionsMap(utils::OutFile &out)
 {
 	Q_UNUSED(out)

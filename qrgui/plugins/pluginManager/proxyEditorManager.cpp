@@ -61,6 +61,11 @@ QString ProxyEditorManager::mouseGesture(const Id &id) const
 	return mProxiedEditorManager->mouseGesture(id);
 }
 
+QString ProxyEditorManager::hotKey(const Id &id) const
+{
+	return mProxiedEditorManager->hotKey(id);
+}
+
 QString ProxyEditorManager::friendlyName(const Id &id) const
 {
 	return mProxiedEditorManager->friendlyName(id);
@@ -417,6 +422,11 @@ void ProxyEditorManager::restoreRenamedProperty(const Id &propertyId, const QStr
 void ProxyEditorManager::setElementEnabled(const Id &type, bool enabled)
 {
 	mProxiedEditorManager->setElementEnabled(type, enabled);
+}
+
+bool ProxyEditorManager::isElementEnabled(const Id &element) const
+{
+	return mProxiedEditorManager->isElementEnabled(element);
 }
 
 EditorManagerInterface* ProxyEditorManager::proxiedEditorManager() const

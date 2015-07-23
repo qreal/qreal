@@ -42,6 +42,7 @@ namespace qrmc {
 
 		virtual QString name() const;
 		virtual QString path() const;
+		virtual QString hotKey() const;
 		virtual QString qualifiedName() const;
 		virtual QString displayedName() const;
 		virtual QString nativeContext() const;
@@ -57,10 +58,14 @@ namespace qrmc {
 
 		virtual QString generateNames(const QString &lineTemplate) const;
 		virtual QString generateMouseGestures(const QString &lineTemplate) const;
+		virtual QString generateHotKeys(const QString &lineTemplate) const;
 		virtual QString generateProperties(const QString &lineTemplate) const = 0;
 		virtual QString generatePropertyDefaults(const QString &lineTemplate) const = 0;
 		virtual QString generatePropertyDisplayedNames(const QString &lineTemplate) const = 0;
+		virtual QString generateElementDescription(const QString &lineTemplate) const = 0;
 		virtual QString generateReferenceProperties(const QString &lineTemplate) const = 0;
+		virtual QString generatePortTypes(const QString &lineTemplate) const = 0;
+		virtual QString generatePropertyName(const QString &lineTemplate) const = 0;
 		virtual QString generateParents(const QString &lineTemplate) const = 0;
 		virtual QString generateContainers(const QString &lineTemplate) const = 0;
 		virtual QString generateConnections(const QString &lineTemplate) const = 0;
@@ -87,5 +92,6 @@ namespace qrmc {
 		QString mNativeContext;  // native context, doesn't change on import and is used for element resolving
 		QString mDisplayedName;
 		QString mPath;
+		QString mHotKey;
 	};
 }
