@@ -12,6 +12,7 @@ void @@MetamodelName@@Plugin::initPlugin()
 {
 	initNameMap();
 	initMouseGestureMap();
+	initHotKeyMap();
 	initPropertyMap();
 	initPropertyDefaultsMap();
 	initDescriptionMap();
@@ -28,6 +29,11 @@ void @@MetamodelName@@Plugin::initNameMap()
 void @@MetamodelName@@Plugin::initMouseGestureMap()
 {
 @@InitMouseGesturesMapLine@@
+}
+
+void @@MetamodelName@@Plugin::initHotKeyMap()
+{
+@@InitHotKeysMapLine@@
 }
 
 void @@MetamodelName@@Plugin::initPropertyMap()
@@ -136,6 +142,11 @@ QString @@MetamodelName@@Plugin::elementName(const QString &diagram, const QStri
 QString @@MetamodelName@@Plugin::elementMouseGesture(const QString &diagram, const QString &element) const
 {
 	return elementMouseGesturesMap[diagram][element];
+}
+
+QString @@MetamodelName@@Plugin::elementHotKey(const QString &diagram, const QString &element) const
+{
+	return elementHotKeysMap[diagram][element];
 }
 
 qReal::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(const QString &/*diagram*/, const QString &element) const

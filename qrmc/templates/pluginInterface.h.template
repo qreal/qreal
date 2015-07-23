@@ -21,6 +21,7 @@ public:
 
 	virtual void initPlugin();
 	virtual void initMouseGestureMap();
+	virtual void initHotKeysMap();
 	virtual void initNameMap();
 	virtual void initPropertyMap();
 	virtual void initPropertyDefaultsMap();
@@ -61,6 +62,7 @@ public:
 	virtual QString diagramNodeName(const QString &diagram) const;
 	virtual QString elementName(const QString &diagram, const QString &element) const;
 	virtual QString elementMouseGesture(const QString &digram, const QString &element) const;
+	virtual QString elementHotKey(const QString &diagram, const QString &element) const;
         virtual void initDescriptionMap();
 	virtual QList<qReal::ListenerInterface*> listeners() const;
 
@@ -80,6 +82,7 @@ private:
 	QMap<QString, QMap<QString, QString> > propertyDefault;
 	QMap<QString, QMap<QString, QString> > elementsNameMap;
 	QMap<QString, QMap<QString, QString> > elementMouseGesturesMap;
+	QMap<QString, QMap<QString, QString> > elementHotKeysMap;
 	QMap<QString, QMap<QString, QString> > elementsDescriptionMap;
 	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDescriptionMap;
 	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;
