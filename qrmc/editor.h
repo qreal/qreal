@@ -67,6 +67,7 @@ namespace qrmc {
 		void generateDiagramNodeNamesMap();
 		void generateNamesMap();
 		void generateMouseGesturesMap();
+		void generateHotKeysMap();
 		void generatePropertiesMap();
 		void generatePropertyDisplayedNamesMap();
 		void generateElementDescriptionMap();
@@ -109,6 +110,7 @@ namespace qrmc {
 		class IsNodeOrEdgeGenerator;
 		class NamesGenerator;
 		class MouseGesturesGenerator;
+		class HotKeysGenerator;
 		class PropertiesGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;

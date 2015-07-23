@@ -270,6 +270,7 @@ bool Editor::generatePluginSource()
 	generatePropertyDisplayedNamesMap();
 	generateElementDescriptionMap();
 	generateMouseGesturesMap();
+	generateHotKeysMap();
 	generatePropertiesMap();
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
@@ -448,6 +449,14 @@ public:
 	}
 };
 
+class Editor::HotKeysGenerator: public Editor::MethodGenerator {
+public:
+	~HotKeysGenerator() override {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generateHotKeysMap(lineTemplate);
+	}
+};
+
 class Editor::PropertiesGenerator: public Editor::MethodGenerator {
 public:
 	virtual ~PropertiesGenerator() {}
@@ -595,6 +604,11 @@ void Editor::generateParentsMap()
 void Editor::generateMouseGesturesMap()
 {
 	generatePluginMethod(initMouseGesturesMapLineTag, MouseGesturesGenerator());
+}
+
+void Editor::generateHotKeysMap()
+{
+	generatePluginMethod(initHotKeysMapLineTag, HotKeysGenerator());
 }
 
 void Editor::generatePropertiesMap()

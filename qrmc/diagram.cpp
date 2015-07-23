@@ -170,6 +170,13 @@ public:
 	}
 };
 
+class Diagram::HotKeysGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generateHotKeys(lineTemplate);
+	}
+};
+
 class Diagram::PropertyNamesGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, const QString &lineTemplate) const {
@@ -245,6 +252,11 @@ QString Diagram::generateNamesMap(const QString& lineTemplate) const
 QString Diagram::generateMouseGesturesMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, MouseGesturesGenerator());
+}
+
+QString Diagram::generateHotKeysMap(const QString &lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, HotKeysGenerator());
 }
 
 QString Diagram::generatePropertiesMap(const QString &lineTemplate) const

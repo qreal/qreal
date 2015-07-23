@@ -41,6 +41,7 @@ namespace qrmc {
 
 		QString generateNamesMap(const QString &lineTemplate) const;
 		QString generateMouseGesturesMap(const QString &lineTemplate) const;
+		QString generateHotKeysMap(const QString &lineTemplate) const;
 		QString generatePropertiesMap(const QString &lineTemplate) const;
 		QString generatePropertyDefaultsMap(const QString &lineTemplate) const;
 		QString generatePropertyDisplayedNamesMap(const QString &lineTemplate) const;
@@ -95,6 +96,7 @@ namespace qrmc {
 		class MapMethodGenerator;
 		class NamesGenerator;
 		class MouseGesturesGenerator;
+		class HotKeysGenerator;
 		class PropertyNamesGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
