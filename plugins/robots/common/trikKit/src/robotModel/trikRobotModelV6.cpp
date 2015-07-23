@@ -22,11 +22,6 @@ using namespace kitBase::robotModel;
 TrikRobotModelV6::TrikRobotModelV6(const QString &kitId, const QString &robotId)
 	: TrikRobotModelBase(kitId, robotId)
 {
-	QList<DeviceInfo> const analogPortConnections = {
-		lightSensorInfo()
-		, infraredSensorInfo()
-	};
-
 	addAllowedConnection(PortInfo("C1", output, {}), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("C2", output, {}), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("C3", output, {}), { servoMotorInfo() });
@@ -43,13 +38,6 @@ TrikRobotModelV6::TrikRobotModelV6(const QString &kitId, const QString &robotId)
 	addAllowedConnection(PortInfo("B2", input, {"M2"}, "encoder2"), { encoderInfo() });
 	addAllowedConnection(PortInfo("B3", input, {"M3"}, "encoder3"), { encoderInfo() });
 	addAllowedConnection(PortInfo("B4", input, {"M4"}, "encoder4"), { encoderInfo() });
-
-	addAllowedConnection(PortInfo("A1", input, {}, "sensorA1"), analogPortConnections);
-	addAllowedConnection(PortInfo("A2", input, {}, "sensorA2"), analogPortConnections);
-	addAllowedConnection(PortInfo("A3", input, {}, "sensorA3"), analogPortConnections);
-	addAllowedConnection(PortInfo("A4", input, {}, "sensorA4"), analogPortConnections);
-	addAllowedConnection(PortInfo("A5", input, {}, "sensorA5"), analogPortConnections);
-	addAllowedConnection(PortInfo("A6", input, {}, "sensorA6"), analogPortConnections);
 
 	addAllowedConnection(PortInfo("D1", input, {}, "sensorD1"), { sonarSensorInfo() });
 	addAllowedConnection(PortInfo("D2", input, {}, "sensorD2"), { sonarSensorInfo() });
