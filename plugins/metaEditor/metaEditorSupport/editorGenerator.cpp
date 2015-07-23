@@ -303,6 +303,9 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	if (!mApi.stringProperty(id, "description").isEmpty()) {
 		node.setAttribute("description", mApi.stringProperty(id, "description"));
 	}
+	if (!mApi.stringProperty(id, "hotKey").isEmpty()) {
+		node.setAttribute("hotKey", mApi.stringProperty(id, "hotKey"));
+	}
 
 	if (!mApi.stringProperty(id, "abstract").isEmpty()) {
 		node.setAttribute("abstract", mApi.stringProperty(id, "abstract"));
@@ -339,6 +342,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	ensureCorrectness(id, edge, "displayedName", mApi.stringProperty(id, "displayedName"));
 	ensureCorrectness(id, edge, "description", mApi.stringProperty(id, "description"));
 	ensureCorrectness(id, edge, "path", mApi.stringProperty(id, "path"));
+	ensureCorrectness(id, edge, "hotKey", mApi.stringProperty(id, "hotKey"));
 
 	parent.appendChild(edge);
 

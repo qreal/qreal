@@ -288,6 +288,7 @@ void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
 				node.attribute("displayedName", ""));
 		mApi.setProperty(nodeId, "path", node.attribute("path", ""));
 		mApi.setProperty(nodeId, "description", node.attribute("description", ""));
+		mApi.setProperty(nodeId, "hotKey", node.attribute("hotKey", ""));
 
 		setNodeAttributes(node, nodeId);
 	}
@@ -304,6 +305,7 @@ void XmlParser::initEdge(const QDomElement &edge, const Id &diagramId)
 
 		setStandartConfigurations(edgeId, diagramId, edgeName,
 				edge.attribute("displayedName", ""));
+		mApi.setProperty(edgeId, "hotKey", edge.attribute("hotKey", ""));
 
 		setEdgeAttributes(edge, edgeId);
 	}

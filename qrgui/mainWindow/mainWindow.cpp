@@ -341,6 +341,7 @@ void MainWindow::loadPlugins()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
 			, &editorManager());
 	SettingsManager::setValue("EditorsLoadedCount", editorManager().editors().count());
+	loadElementsShortcuts();
 }
 
 void MainWindow::clearSelectionOnTabs()
@@ -1097,6 +1098,36 @@ void MainWindow::setShortcuts(EditorView * const tab)
 	selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
 	connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
 	tab->addAction(selectAction);
+}
+
+void MainWindow::loadElementsShortcuts()
+{
+	for (const Id &editor : editorManager().editors()){
+		for (const Id &diagram : editorManager().diagrams(editor)){
+			for (const Id &element : editorManager().elements(diagram)) {
+				QAction *action = new QAction(this);
+				QList<QKeySequence> hotKeyList;
+				for (QString string : editorManager().hotKey(element).split(", ")){
+					if (!HotKeyManager::contains(string)){
+						hotKeyList << QKeySequence(string);
+					}
+				}
+
+				action->setShortcuts(hotKeyList);
+				connect(action, &QAction::triggered, [=]()
+				{
+					if (getCurrentTab()){
+						if (editorManager().isElementEnabled(element)){
+							getCurrentTab()->mutableScene().createElement(element.type().toString()
+							, getCurrentTab()->mutableScene().getMousePos());
+						}
+					}
+				});
+				this->addAction(action);
+				HotKeyManager::setCommand("Scene." + element.element(), "Create " + element.element(), action);
+			}
+		}
+	}
 }
 
 void MainWindow::setDefaultShortcuts()

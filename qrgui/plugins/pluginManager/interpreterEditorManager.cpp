@@ -273,6 +273,16 @@ QString InterpreterEditorManager::mouseGesture(const Id &id) const
 	return "";
 }
 
+QString InterpreterEditorManager::hotKey(const Id &id) const
+{
+	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "hotKey")) {
+		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "hotKey");
+	}
+
+	return "";
+}
+
 
 /// @todo Replace this with lambdas.
 class InterpreterEditorManager::CheckPropertyForParent
@@ -934,6 +944,12 @@ void InterpreterEditorManager::setElementEnabled(const Id &type, bool enabled)
 	Q_UNUSED(enabled)
 }
 
+bool InterpreterEditorManager::isElementEnabled(const Id &element)
+{
+	Q_UNUSED(element);
+	return bool();
+}
+
 QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() const
 {
 	return mEditorRepoApi;
@@ -1118,7 +1134,6 @@ void InterpreterEditorManager::addNodeElement(const Id &diagram, const QString &
 	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
 	repo->setProperty(nodeId, "createChildrenFromMenu", "false");
 	repo->setProperty(nodeId, "isHidden", "false");
-
 	foreach (const Id &elem, repo->children(diag)) {
 		if (repo->name(elem) == "AbstractNode" && repo->isLogicalElement(elem)) {
 			const Id inheritanceLink("MetaEditor", "MetaEditor", "Inheritance", QUuid::createUuid().toString());

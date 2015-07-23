@@ -56,6 +56,8 @@ public:
 	static void resetAllShortcuts();
 	static void deleteShortcut(const QString &id, const QString &shortcut);
 
+	static bool contains(const QString &shortcut);
+
 	static QHash<QString, QAction *> commands();
 	static QHash<QString, QString> shortcuts();
 

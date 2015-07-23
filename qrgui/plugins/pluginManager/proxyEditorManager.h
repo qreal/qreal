@@ -52,6 +52,7 @@ public:
 	QString unloadPlugin(const QString &pluginName) override;
 
 	QString mouseGesture(const Id &id) const override;
+	QString hotKey(const Id &id) const override;
 	QString friendlyName(const Id &id) const override;
 	QString description(const Id &id) const override;
 	QString propertyDescription(const Id &id, const QString &propertyName) const override;
@@ -149,6 +150,8 @@ public:
 	void restoreRenamedProperty(const Id &propertyId, const QString &previousName) const override;
 
 	void setElementEnabled(const Id &type, bool enabled) override;
+
+	bool isElementEnabled(const Id &element) override;
 
 	/// Returns proxied editor manager.
 	EditorManagerInterface *proxiedEditorManager() const;  // doesn't transfer ownership

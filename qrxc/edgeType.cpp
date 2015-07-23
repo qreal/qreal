@@ -473,7 +473,7 @@ void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 		if (style == "error") {
 			out() << "\t\t\tstatic const QPointF points[] = {"
 					 "\n\t\t\t\tQPointF(-10, 28),\n\t\t\t\tQPointF(-4, 10),"
-					 "\n\t\t\t\tQPointF(3, 20),\n\t\t\t\tQPointF(10, 12),"
+				 "\n\t\t\t\tQPointF(3, 20),\n\t\t\t\tQPointF(10, 12),"
 					 "\n\t\t\t\tQPointF(4, 30),\n\t\t\t\tQPointF(-3, 20),"
 					 "\n\t\t\t\tQPointF(-10, 28)\n\t\t\t};\n"
 					 "\t\t\tpainter->drawPolyline(points, 7);\n";

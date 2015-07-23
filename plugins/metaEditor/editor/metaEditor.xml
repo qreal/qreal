@@ -195,6 +195,7 @@
 							<default>false</default>
 						</property>
 						<property type="string" name="path"/>
+						<property type="string" name="hotKey"/>
 						<property type="bool" name="isResizeable">
 							<default>true</default>
 						</property>
@@ -273,6 +274,7 @@
 						<property type="string" name="displayedName"/>
 						<property type="string" name="description"/>
 						<property type="string" name="path"/>
+						<property type="string" name="hotKey"/>
 						<property type="bool" name="isDividable">
 							<default>false</default>
 						</property>

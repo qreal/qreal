@@ -244,6 +244,15 @@ QString EditorManager::mouseGesture(const Id &id) const
 	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
 }
 
+QString EditorManager::hotKey(const Id &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	if (id.idSize() != 3) {
+		return "";
+	}
+	return mPluginIface[id.editor()]->elementHotKey(id.diagram(), id.element());
+}
+
 QIcon EditorManager::icon(const Id &id) const
 {
 	if (!mPluginsLoaded.contains(id.editor())) {
@@ -723,4 +732,9 @@ void EditorManager::setElementEnabled(const Id &type, bool enabled)
 	} else {
 		mDisabledElements.insert(type);
 	}
+}
+
+bool EditorManager::isElementEnabled(const Id &element)
+{
+	return !mDisabledElements.contains(element);
 }

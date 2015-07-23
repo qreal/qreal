@@ -92,3 +92,8 @@ void NonGraphicType::generateMouseGesturesMap(utils::OutFile &out)
 {
 	Q_UNUSED(out);
 }
+
+void NonGraphicType::generateHotKeyMap(OutFile &out)
+{
+	Q_UNUSED(out);
+}

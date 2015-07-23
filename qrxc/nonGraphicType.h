@@ -32,6 +32,7 @@ public:
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+	virtual void generateHotKeyMap(utils::OutFile &out);
 	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
 	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
