@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = trik-kit-interpreter-common
+TARGET = robots-trik-kit-interpreter-common
 TEMPLATE = lib
 
 include(../../../../global.pri)

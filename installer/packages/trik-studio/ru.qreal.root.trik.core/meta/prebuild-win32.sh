@@ -4,15 +4,12 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-
-cp    $BIN_DIR/plugins/tools/kitPlugins/robots-trik-v62-interpreter.dll           $PWD/../data/plugins/tools/kitPlugins/
-cp    $BIN_DIR/plugins/tools/kitPlugins/robots-trik-v62-qts-generator.dll         $PWD/../data/plugins/tools/kitPlugins/
-cp    $BIN_DIR/plugins/tools/robots-trik-v62-runtime-uploader-plugin.dll          $PWD/../data/plugins/tools/
-cp    $BIN_DIR/robots-trik-v62-generator-base.dll                                 $PWD/../data/
+cp    $BIN_DIR/robots-trik-qts-generator-library.dll                              $PWD/../data/
+cp    $BIN_DIR/robots-trik-generator-base.dll                                     $PWD/../data/
 cp    $BIN_DIR/robots-trik-kit.dll                                                $PWD/../data/
+cp    $BIN_DIR/robots-trik-kit-interpreter-common.dll                             $PWD/../data/
 
-
-cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data
+cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data/
 
 function checkout_tag_or_warn { { PATTERN=$'\n'$1$'\n'; echo "$'\n'$(git tag)$'\n'" | grep -E $PATTERN; } && git checkout $1 || echo "Warning: TRIKRuntime doesn't have tag "$1; }
 

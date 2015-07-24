@@ -4,6 +4,6 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-cp     $INSTALLER_ROOT/licenses/WinScp-license.txt                        $PWD
+mkdir -p $PWD/../data/
 
-mkdir -p $PWD/../data/plugins/tools/kitPlugins
+cp     $INSTALLER_ROOT/licenses/WinScp-license.txt                        $PWD
