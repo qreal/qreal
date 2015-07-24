@@ -24,7 +24,7 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class TwoDSpeaker : public robotModel::parts::TrikSpeaker
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TwoDSpeaker : public robotModel::parts::TrikSpeaker
 {
 	Q_OBJECT
 

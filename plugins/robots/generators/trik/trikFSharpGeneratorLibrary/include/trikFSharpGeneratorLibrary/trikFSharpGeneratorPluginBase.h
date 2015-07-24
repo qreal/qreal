@@ -16,6 +16,8 @@
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 
+#include "declSpec.h"
+
 namespace trik {
 namespace fSharp {
 
@@ -23,7 +25,7 @@ class TrikFSharpAdditionalPreferences;
 
 /// Generation of F# program for TRIK, uploading and execution of a program.
 /// Uses setting "tcpServer" from RobotsInterpreter.
-class TrikFSharpGeneratorPluginBase : public TrikGeneratorPluginBase
+class ROBOTS_TRIK_FSHARP_GENERATOR_LIBRARY_EXPORT TrikFSharpGeneratorPluginBase : public TrikGeneratorPluginBase
 {
 	Q_OBJECT
 

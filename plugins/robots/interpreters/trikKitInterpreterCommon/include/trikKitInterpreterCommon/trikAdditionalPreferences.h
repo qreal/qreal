@@ -24,7 +24,7 @@ class TrikAdditionalPreferences;
 
 namespace trik {
 
-class TrikAdditionalPreferences : public kitBase::AdditionalPreferences
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikAdditionalPreferences : public kitBase::AdditionalPreferences
 {
 	Q_OBJECT
 

@@ -28,7 +28,7 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class Display : public robotModel::parts::TrikDisplay, public utils::Canvas
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Display : public robotModel::parts::TrikDisplay, public utils::Canvas
 {
 	Q_OBJECT
 	// Canvas cannot be QObject because of ambiguous base so we are forced to copy properties here.

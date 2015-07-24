@@ -25,7 +25,7 @@ namespace parts {
 
 /// Stub for TRIK color sensor for interpreter.
 /// Does nothing until object sensor emulation will be requested for 2D model.
-class ObjectSensor : public robotModel::parts::TrikObjectSensor
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT ObjectSensor : public robotModel::parts::TrikObjectSensor
 {
 	Q_OBJECT
 

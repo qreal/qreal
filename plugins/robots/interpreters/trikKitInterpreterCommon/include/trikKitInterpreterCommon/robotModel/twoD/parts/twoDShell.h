@@ -34,7 +34,7 @@ namespace twoD {
 namespace parts {
 
 /// Emulates shell in 2D model. runCommand() methods do nothing, other operations are supported.
-class Shell : public robotModel::parts::TrikShell
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Shell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
 

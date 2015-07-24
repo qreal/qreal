@@ -23,7 +23,7 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class TwoDInfraredSensor : public twoDModel::robotModel::parts::RangeSensor
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TwoDInfraredSensor : public twoDModel::robotModel::parts::RangeSensor
 {
 	Q_OBJECT
 

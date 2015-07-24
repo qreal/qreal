@@ -27,7 +27,7 @@ class TrikDisplayWidget;
 
 namespace trik {
 
-class TrikDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 {
 	Q_OBJECT
 

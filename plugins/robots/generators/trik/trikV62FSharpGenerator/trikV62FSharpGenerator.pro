@@ -33,7 +33,9 @@ includes(\
 		qrtext \
 )
 
-links(robots-trik-f-sharp-generator-library)
+links(robots-trik-f-sharp-generator-library robots-trik-generator-base robots-generator-base robots-trik-kit \
+		robots-kit-base \
+)
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62FSharpGenerator_ru.ts \
