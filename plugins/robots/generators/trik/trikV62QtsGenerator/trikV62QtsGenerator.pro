@@ -43,18 +43,6 @@ TRANSLATIONS = \
 
 HEADERS += \
 	$$PWD/trikV62QtsGeneratorPlugin.h \
-#	$$PWD/trikQtsMasterGenerator.h \
-#	$$PWD/trikQtsControlFlowValidator.h \
-#	$$PWD/threadsValidator.h \
-#	$$PWD/emptyShell.h \
 
 SOURCES += \
 	$$PWD/trikV62QtsGeneratorPlugin.cpp \
-#	$$PWD/trikQtsMasterGenerator.cpp \
-#	$$PWD/trikQtsControlFlowValidator.cpp \
-#	$$PWD/threadsValidator.cpp \
-#	$$PWD/emptyShell.cpp \
-
-#RESOURCES = \
-#	$$PWD/trikQtsGenerator.qrc \
-#	$$PWD/templates.qrc \
