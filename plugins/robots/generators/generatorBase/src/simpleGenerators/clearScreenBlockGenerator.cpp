@@ -24,8 +24,10 @@ ClearScreenBlockGenerator::ClearScreenBlockGenerator(const qrRepo::RepoApi &repo
 		, const Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "drawing/clearScreen.t"
-			, { Binding::createConverting("@@REDRAW@@", "Redraw"
-					, customizer.factory()->boolPropertyConverter(id, "Redraw", false)) }
+			, {}
 			, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

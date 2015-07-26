@@ -53,7 +53,8 @@ QString GeneratorForCallGenerator::commonGeneratedString(const QSharedPointer<El
 	const auto elementIdInMetamodel = idInMetamodel(editorManagerInterface, currentElementType, diagramId);
 
 	const auto generationRuleForCurrentElement = editorManagerInterface->generationRule(elementIdInMetamodel);
-	QSharedPointer<Node> generatedTree = TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
+	QSharedPointer<Node> generatedTree =
+			TreeGeneratorFromString::generatedTreeFromString(generationRuleForCurrentElement);
 
 	scopeInfo.currentScope().changeCurrentId(currentElementId);
 
@@ -82,7 +83,8 @@ qReal::Id GeneratorForCallGenerator::idInMetamodel(qReal::EditorManagerInterface
 		elementId = editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityNode").first();
 	} else {
 		if (!editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityEdge").isEmpty()) {
-			elementId = editorManagerInterface->elementsWithTheSameName(diagramId, elementName, "MetaEntityEdge").first();
+			elementId = editorManagerInterface->elementsWithTheSameName(diagramId, elementName
+					, "MetaEntityEdge").first();
 		} else {
 			qDebug() << "Element " + elementName + " in metamodel for callGeneratorFor not found!";
 			elementId = qReal::Id::rootId();

@@ -22,7 +22,8 @@
 using namespace generationRules::generator;
 using namespace simpleParser::ast;
 
-QVariant GeneratorForComplexIdentifierNode::generatedResult(const QSharedPointer<ComplexIdentifier> &complexIdentifierNode
+QVariant GeneratorForComplexIdentifierNode::generatedResult(
+		const QSharedPointer<ComplexIdentifier> &complexIdentifierNode
 		, const GeneratorConfigurer &generatorConfigurer
 		, ScopeInfo &scopeInfo)
 {

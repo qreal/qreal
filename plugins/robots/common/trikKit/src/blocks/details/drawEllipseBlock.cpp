@@ -33,7 +33,11 @@ void DrawEllipseBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		trikDisplay->drawEllipse(x, y, width, height, redraw);
+		trikDisplay->drawEllipse(x, y, width, height);
+		if (redraw) {
+			trikDisplay->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

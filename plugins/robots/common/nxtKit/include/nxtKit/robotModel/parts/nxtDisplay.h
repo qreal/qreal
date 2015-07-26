@@ -27,7 +27,7 @@ class NxtDisplay : public kitBase::robotModel::robotParts::Display
 public:
 	NxtDisplay(const kitBase::robotModel::DeviceInfo &info, const kitBase::robotModel::PortInfo &port);
 
-	virtual void drawCircle(int x, int y, int radius, bool redraw) = 0;
+	virtual void drawCircle(int x, int y, int radius) = 0;
 };
 
 }

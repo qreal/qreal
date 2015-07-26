@@ -21,7 +21,8 @@
 
 namespace qReal {
 
-/// Generates QtScript script file for reaction on the rule application specified in "procedure" attribute of "Rule" element
+/// Generates QtScript script file for reaction on the rule application specified in "procedure" attribute of
+/// "Rule" element.
 class QtScriptGenerator : public TextCodeGenerator
 {
 	Q_OBJECT

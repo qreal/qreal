@@ -36,29 +36,33 @@ public:
 	/// Prints the given text on the robot`s screen in the given coordinates.
 	/// The collision behaviour depends on concrete kit: the text may be replaced
 	/// (like in TRIK) or intersect (like in NXT).
-	virtual void printText(int x, int y, const QString &text, bool redraw) = 0;
+	virtual void printText(int x, int y, const QString &text) = 0;
 
-	/// Clears everything on a display.
-	virtual void clearScreen(bool redraw) = 0;
+	/// Clears everything on a display without redrawing it.
+	virtual void clearScreen() = 0;
 
-	/// Draw point on the widget.
+	/// Draw point on the widget without redrawing display.
 	/// @param x - x coordinate.
 	/// @param y - y coordinate.
-	virtual void drawPixel(int x, int y, bool redraw) = 0;
+	virtual void drawPixel(int x, int y) = 0;
 
-	/// Draw line on the widget.
+	/// Draw line on the widget without redrawing display.
 	/// @param x1 - first point's x coordinate.
 	/// @param y1 - first point's y coordinate.
 	/// @param x1 - second point's x coordinate.
 	/// @param y1 - second point's y coordinate.
-	virtual void drawLine(int x1, int y1, int x2, int y2, bool redraw) = 0;
+	virtual void drawLine(int x1, int y1, int x2, int y2) = 0;
 
-	/// Draw rect on the widget.
+	/// Draw rect on the widget without redrawing display.
 	/// @param x - x coordinate.
 	/// @param y - y coordinate.
 	/// @param width - rect's width.
 	/// @param height - rect's height.
-	virtual void drawRect(int x, int y, int width, int height, bool redraw) = 0;
+	virtual void drawRect(int x, int y, int width, int height) = 0;
+
+	/// Redraws all the contents on the screen.
+	/// @warning This opeartion is pretty slow, so it shouldn`t be called without need.
+	virtual void redraw() = 0;
 };
 
 }

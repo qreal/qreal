@@ -17,11 +17,9 @@
 #include <QtCore/QMutex>
 
 #include "testInvocationPlugin.h"
-#include "../../qrutils/invocationUtils/functorOperation.h"
+#include <qrutils/invocationUtils/functorOperation.h>
 
 using namespace testInvocation;
-
-Q_EXPORT_PLUGIN2("TestInvocationPlugin", testInvocation::TestInvocationPlugin)
 
 void TestInvocationPlugin::init(const qReal::PluginConfigurator &configurator)
 {
@@ -54,7 +52,9 @@ void TestInvocationPlugin::asyncWithoutProgress()
 	qDebug() << "async no progress";
 
 	invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>(2000);
-	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
+	connect(operation, SIGNAL(finished(invocation::InvocationState)), this
+			, SLOT(onOpertionFinished(invocation::InvocationState)));
+
 	operation->setInvocationTarget(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
 	operation->invoceAsync();
@@ -65,7 +65,9 @@ void TestInvocationPlugin::asyncWithProgress()
 	qDebug() << "async with progress";
 
 	invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>;
-	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
+	connect(operation, SIGNAL(finished(invocation::InvocationState)), this
+			, SLOT(onOpertionFinished(invocation::InvocationState)));
+
 	operation->setInvocationTargetWithProgress(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
 	operation->invoceAsync();
@@ -76,7 +78,9 @@ void TestInvocationPlugin::syncWithoutProgress()
 	qDebug() << "sync no progress";
 
 	invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>;
-	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
+	connect(operation, SIGNAL(finished(invocation::InvocationState)), this
+			, SLOT(onOpertionFinished(invocation::InvocationState)));
+
 	operation->setInvocationTarget(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
 	operation->invoceSync();
@@ -87,7 +91,9 @@ void TestInvocationPlugin::syncWithProgress()
 	qDebug() << "sync with progress";
 
 	invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>(2000);
-	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
+	connect(operation, SIGNAL(finished(invocation::InvocationState)), this
+			, SLOT(onOpertionFinished(invocation::InvocationState)));
+
 	operation->setInvocationTargetWithProgress(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
 	operation->invoceSync();

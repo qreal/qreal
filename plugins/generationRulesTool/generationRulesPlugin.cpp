@@ -109,8 +109,8 @@ void GenerationRulesPlugin::generateCode(
 	generationRules::generator::VariablesTable table;
 	generationRules::generator::CurrentScope scope;
 
-	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface, mEditorManagerInterface
-			, editorId, diagramId, mPathToGeneratedCode);
+	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface
+			, mEditorManagerInterface, editorId, diagramId, mPathToGeneratedCode);
 	generationRules::generator::ScopeInfo scopeInfo(table, scope);
 
 	const auto resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
@@ -128,7 +128,8 @@ void GenerationRulesPlugin::generateCode(
 		}
 	}
 
-	QMessageBox::information(nullptr, tr("Files generated"), tr("All files have been generated to ") + mPathToGeneratedCode + ("."));
+	QMessageBox::information(nullptr, tr("Files generated"), tr("All files have been generated to ")
+			+ mPathToGeneratedCode + ("."));
 
 	table.clear();
 }
@@ -137,7 +138,9 @@ void GenerationRulesPlugin::openGenerationRulesWindow()
 {
 	const auto * const action = static_cast<QAction *>(sender());
 	const auto id = action->data().value<qReal::Id>();
-	const auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id, mMetamodelRepoApi);
+	const auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface
+			, id, mMetamodelRepoApi);
+
 	Q_UNUSED(specifyGenerationRulesDialog);
 }
 

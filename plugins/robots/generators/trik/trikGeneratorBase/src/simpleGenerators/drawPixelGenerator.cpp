@@ -28,9 +28,10 @@ DrawPixelGenerator::DrawPixelGenerator(const qrRepo::RepoApi &repo
 					, customizer.factory()->intPropertyConverter(id, "XCoordinatePix"))
 			, Binding::createConverting("@@YCoordinatePix@@", "YCoordinatePix"
 					, customizer.factory()->intPropertyConverter(id, "YCoordinatePix"))
-			, Binding::createConverting("@@REDRAW@@", "Redraw"
-					, customizer.factory()->boolPropertyConverter(id, "Redraw", false))
 			}
 			, parent)
 {
+	// Calling virtual readTemplate() before base class constructor will cause segfault.
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }

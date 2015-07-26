@@ -118,7 +118,8 @@ void UXInfo::reportCreationOfElements(const QString &editorName, const QString e
 	mCreationNumber++;
 }
 
-void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorName, const QString &elementName, const QString &message)
+void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorName, const QString &elementName
+		, const QString &message)
 {
 	if (!writeData(mErrorReporterStream)) {
 		return;

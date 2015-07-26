@@ -14,14 +14,14 @@
 
 #include "exception.h"
 
-#include <QtCore/QDebug>
+#include <thirdparty/qslog/QsLog.h>
 
 using namespace qReal;
 
 Exception::Exception(const QString &message)
 		: mMessage(message)
 {
-	qDebug() << "QReal exception: " << message;
+	QLOG_FATAL() << "QReal exception: " << message;
 }
 
 QString Exception::message() const

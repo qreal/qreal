@@ -234,6 +234,7 @@ void NullMainWindow::openFirstDiagram()
 	for (const Id diagram : mGraphicalModel->children(rootId)) {
 		if (mGraphicalModel->isGraphicalId(diagram)) {
 			graphicalDiagramId = diagram;
+			break;
 		}
 	}
 

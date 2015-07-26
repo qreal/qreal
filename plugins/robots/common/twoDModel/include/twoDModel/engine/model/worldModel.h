@@ -56,9 +56,13 @@ public:
 	bool checkCollision(const QPainterPath &path) const;
 
 	/// Returns a list of walls in the world model.
-	QList<items::WallItem *> const &walls() const;
+	const QList<items::WallItem *> &walls() const;
 
-	QList<items::ColorFieldItem *> const &colorFields() const;
+	/// Returns a list of color field items in the world model.
+	const QList<items::ColorFieldItem *> &colorFields() const;
+
+	/// Returns a list of trace items on the floor.
+	const QList<QGraphicsLineItem *> &trace() const;
 
 	int wallsCount() const;
 	items::WallItem *wallAt(int index) const;
@@ -91,7 +95,10 @@ signals:
 	void colorItemAdded(items::ColorFieldItem *item);
 
 	/// Emitted each time when model is appended with some new item.
-	void otherItemAdded(QGraphicsItem *item);
+	void regionItemAdded(items::RegionItem *item);
+
+	/// Emitted each time when model is appended with some new item.
+	void traceItemAdded(QGraphicsLineItem *item);
 
 	/// Emitted each time when some item was removed from the 2D model world.
 	void itemRemoved(QGraphicsItem *item);
@@ -113,3 +120,5 @@ private:
 
 }
 }
+
+Q_DECLARE_METATYPE(QGraphicsLineItem *)

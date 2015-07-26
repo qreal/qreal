@@ -34,7 +34,11 @@ void DrawRectBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const bool redraw = boolProperty("Redraw");
 
 	if (!errorsOccured()) {
-		ev3Display->drawRect(x, y, width, height, filled, redraw);
+		ev3Display->drawRect(x, y, width, height, filled);
+		if (redraw) {
+			ev3Display->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }
