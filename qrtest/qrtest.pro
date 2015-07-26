@@ -19,8 +19,9 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	gmock \
 	unitTests \
-#	editorPluginTestingFramework \
+	editorPluginTestingFramework/editorPluginTestingFramework.pro \
 
 unitTests.depends = gmock
 
 gmock.file = thirdparty/gmock-1.6.0/gmock.pro
+

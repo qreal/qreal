@@ -25,12 +25,12 @@ HEADERS += \
 	pluginCompiler.h \
 	pluginLoader.h \
 	qrxcLauncher.h \
-	../../qrgui/mainwindow/projectManager/projectManagerWrapper.h\
-	../../qrgui/mainwindow/palette/paletteTree.h\
-	../../qrgui/mainwindow/palette/paletteTreeWidgets.h\
-	../../qrgui/mainwindow/palette/paletteTreeWidget.h\
-	../../qrgui/mainwindow/palette/paletteElement.h\
-	../../qrgui/mainwindow/splashScreen.h \
+	../../qrgui/mainWindow/projectManager/projectManagerWrapper.h\
+	../../qrgui/mainWindow/palette/paletteTree.h\
+	../../qrgui/mainWindow/palette/paletteTreeWidgets.h\
+	../../qrgui/mainWindow/palette/paletteTreeWidget.h\
+	../../qrgui/mainWindow/palette/paletteElement.h\
+	../../qrgui/mainWindow/splashScreen.h \
 	../../qrgui/mainWindow/shapeEdit/shapeEdit.h \
 	../../qrgui/mainWindow/shapeEdit/scene.h \
 	../../qrgui/mainWindow/shapeEdit/arch.h \
@@ -58,14 +58,14 @@ HEADERS += \
 	../../qrgui/mainWindow/startWidget/circleWidget.h \
 	../../qrgui/mainWindow/startWidget/styledButton.h \
 	../../qrgui/mainWindow/tabWidget.h \
-	../../qrgui/mainwindow/findManager.h \
-	../../qrgui/mainwindow/palette/draggableElement.h \
-	../../qrgui/mainwindow/modelExplorer.h \
-	../../qrgui/mainwindow/qrealApplication.h  \
-	../../qrgui/mainwindow/projectManager/versionsConverterManager.h \
-	../../qrgui/mainwindow/mainWindow.h \
-	../../qrgui/mainwindow/errorReporter.h \
-	../../qrgui/mainwindow/error.h \
+	../../qrgui/mainWindow/findManager.h \
+	../../qrgui/mainWindow/palette/draggableElement.h \
+	../../qrgui/mainWindow/modelExplorer.h \
+	../../qrgui/mainWindow/qrealApplication.h  \
+	../../qrgui/mainWindow/projectManager/versionsConverterManager.h \
+	../../qrgui/mainWindow/mainWindow.h \
+	../../qrgui/mainWindow/errorReporter.h \
+	../../qrgui/mainWindow/error.h \
 	../../qrgui/mainWindow/errorListWidget.h \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.h \
 	../../qrgui/plugins/pluginManager/interpreterEditorManager.h \
@@ -94,13 +94,13 @@ SOURCES += \
 	pluginCompiler.cpp \
 	pluginLoader.cpp \
 	qrxcLauncher.cpp \
-	../../qrgui/mainwindow/projectManager/projectManagerWrapper.cpp\
-	../../qrgui/mainwindow/palette/paletteTree.cpp\
-	../../qrgui/mainwindow/palette/paletteTreeWidgets.cpp\
-	../../qrgui/mainwindow/palette/paletteTreeWidget.cpp\
-	../../qrgui/mainwindow/palette/paletteElement.cpp\
-	../../qrgui/mainwindow/palette/draggableElement.cpp \
-	../../qrgui/mainwindow/qrealApplication.cpp  \
+	../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp\
+	../../qrgui/mainWindow/palette/paletteTree.cpp\
+	../../qrgui/mainWindow/palette/paletteTreeWidgets.cpp\
+	../../qrgui/mainWindow/palette/paletteTreeWidget.cpp\
+	../../qrgui/mainWindow/palette/paletteElement.cpp\
+	../../qrgui/mainWindow/palette/draggableElement.cpp \
+	../../qrgui/mainWindow/qrealApplication.cpp  \
 	../../qrgui/mainWindow/shapeEdit/shapeEdit.cpp \
 	../../qrgui/mainWindow/shapeEdit/scene.cpp \
 	../../qrgui/mainWindow/shapeEdit/arch.cpp \
@@ -126,15 +126,15 @@ SOURCES += \
 	../../qrgui/mainWindow/dotRunner.cpp \
 	../../qrgui/mainWindow/startWidget/startWidget.cpp \
 	../../qrgui/mainWindow/startWidget/circleWidget.cpp \
-	../../qrgui/mainwindow/splashScreen.cpp \
+	../../qrgui/mainWindow/splashScreen.cpp \
 	../../qrgui/mainWindow/startWidget/styledButton.cpp \
 	../../qrgui/mainWindow/tabWidget.cpp \
-	../../qrgui/mainwindow/findManager.cpp \
-	../../qrgui/mainwindow/modelExplorer.cpp \
-	../../qrgui/mainwindow/projectManager/versionsConverterManager.cpp \
-	../../qrgui/mainwindow/mainWindow.cpp \
-	../../qrgui/mainwindow/errorReporter.cpp \
-	../../qrgui/mainwindow/error.cpp \
+	../../qrgui/mainWindow/findManager.cpp \
+	../../qrgui/mainWindow/modelExplorer.cpp \
+	../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp \
+	../../qrgui/mainWindow/mainWindow.cpp \
+	../../qrgui/mainWindow/errorReporter.cpp \
+	../../qrgui/mainWindow/error.cpp \
 	../../qrgui/mainWindow/errorListWidget.cpp \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
 	../../qrgui/plugins/pluginManager/sdfRenderer.cpp \
@@ -150,15 +150,14 @@ SOURCES += \
 	methodsCheckerForTravis.cpp
 
 FORMS += \
-	../../qrgui/mainwindow/mainwindow.ui \
+	../../qrgui/mainWindow/mainWindow.ui \
 	../../qrgui/mainWindow/shapeEdit/shapeEdit.ui \
 	../../qrgui/mainWindow/shapeEdit/visibilityConditionsDialog.ui \
-	../../qrgui/mainwindow/referenceList.ui \
+	../../qrgui/mainWindow/referenceList.ui \
 
 
 links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qrgui-tool-plugin-interface qscintilla2 qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-facade qslog)
 
 copyToDestdir(methodsToTest)
 copyToDestdir(configurationParameters.xml)
-copyToDestdir(travisConfigurationParameters.xml) 		
-                        
+copyToDestdir(travisConfigurationParameters.xml) 
