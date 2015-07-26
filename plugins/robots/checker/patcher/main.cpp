@@ -14,51 +14,49 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCommandLineParser>
-#include <QtCore/QFileInfo>
-#include <QtCore/QDebug>
+#include <QtCore/QFile>
 
-#include "folderCompressor.h"
+#include <qrrepo/repoApi.h>
 
-using namespace compressor;
-
-const QString description = QObject::tr("Utility for decompression or compression of QReal save files.");
+const QString description = QObject::tr("Patcher for save files, replaces world model"
+		"with contents of a given XML world model");
 
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
-	QCoreApplication::setApplicationName("Compressor");
+	QCoreApplication::setApplicationName("Patcher");
 	QCoreApplication::setApplicationVersion("1.0");
 
 	QCommandLineParser parser;
 	parser.setApplicationDescription(description);
 	parser.addHelpOption();
 	parser.addVersionOption();
-
-	parser.addPositionalArgument("source"
-			, QObject::tr("Source file to be decompressed or directory to be compressed."));
+	parser.addPositionalArgument("save-file", QObject::tr("TRIK Studio save file to be patched."));
+	parser.addPositionalArgument("field", QObject::tr("XML file with prepared 2D model field."));
 
 	parser.process(app);
 
 	const QStringList positionalArgs = parser.positionalArguments();
-	if (positionalArgs.size() != 1) {
+	if (positionalArgs.size() != 2) {
 		parser.showHelp();
 	}
 
-	const QString source = positionalArgs[0];
+	const QString saveFile = positionalArgs[0];
+	const QString field = positionalArgs[1];
 
-	QFileInfo sourceFileInfo(source);
+	qrRepo::RepoApi repo(saveFile);
 
-	bool success = false;
-
-	if (sourceFileInfo.isDir()) {
-		const QString target = sourceFileInfo.fileName() + ".qrs";
-		success = FolderCompressor::compressFolder(source, target);
-	} else if (sourceFileInfo.isFile()) {
-		const QString target = sourceFileInfo.baseName();
-		success = FolderCompressor::decompressFolder(source, target);
-	} else {
-		qDebug() << QObject::tr("Incorrect argument.");
+	QFile fieldFile(field);
+	if (!fieldFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		return 1;
 	}
 
-	return success ? 0 : 1;
+	const QString fieldContents = fieldFile.readAll();
+
+	fieldFile.close();
+
+	repo.setMetaInformation("worldModel", fieldContents);
+	repo.saveAll();
+
+	return 0;
 }

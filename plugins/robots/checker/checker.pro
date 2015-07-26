@@ -16,5 +16,5 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	twoDModelRunner \
-	compressor \
+	patcher \
 	fields \

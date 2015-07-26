@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = compressor
+TARGET = patcher
 
 include(../../../../global.pri)
+
+links(qrrepo)
+
+includes(qrrepo)
 
 TEMPLATE = app
 
@@ -24,7 +28,3 @@ CONFIG += console
 
 SOURCES += \
 	main.cpp \
-	folderCompressor.cpp \
-
-HEADERS += \
-	folderCompressor.h \

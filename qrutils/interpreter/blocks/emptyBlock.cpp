@@ -14,8 +14,6 @@
 
 #include "emptyBlock.h"
 
-#include <QDebug>
-
 using namespace qReal::interpretation::blocks;
 
 void EmptyBlock::run()
