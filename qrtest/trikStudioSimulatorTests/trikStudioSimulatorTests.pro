@@ -14,10 +14,14 @@
 
 TEMPLATE = subdirs
 
-include(../../../../global.pri)
+SUBDIRS = \
+	fields \
 
-copyToDestdir(fields/, now)
+include(../../global.pri)
+
+copyToDestdir(solutions/, now)
 
 OTHER_FILES += \
-	$$PWD/fields/randomizer/finish1-test.xml \
-	$$PWD/fields/randomizer/finish2-test.xml \
+	$$PWD/run-tests.sh \
+
+copyToDestdir(run-tests.sh, now)

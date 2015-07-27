@@ -17,4 +17,4 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	twoDModelRunner \
 	patcher \
-	fields \
+
