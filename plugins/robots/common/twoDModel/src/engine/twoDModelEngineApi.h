@@ -50,6 +50,7 @@ public:
 
 	void playSound(int timeInMs) override;
 
+	bool isMarkerDown() const override;
 	void markerDown(const QColor &color) override;
 	void markerUp() override;
 

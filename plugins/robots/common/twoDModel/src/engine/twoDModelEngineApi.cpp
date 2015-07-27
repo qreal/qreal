@@ -278,6 +278,11 @@ void TwoDModelEngineApi::playSound(int timeInMs)
 	mModel.robotModels()[0]->playSound(timeInMs);
 }
 
+bool TwoDModelEngineApi::isMarkerDown() const
+{
+	return mModel.robotModels()[0]->markerColor() != Qt::transparent;
+}
+
 void TwoDModelEngineApi::markerDown(const QColor &color)
 {
 	mModel.robotModels()[0]->markerDown(color);
