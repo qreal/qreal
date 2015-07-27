@@ -61,3 +61,7 @@ void Display::printText(int x, int y, const QString &text)
 void Display::clearScreen()
 {
 }
+
+void Display::redraw()
+{
+}

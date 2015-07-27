@@ -17,7 +17,7 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-TypeConverter::TypeConverter(const QString &pathToTemplates)
-	: DynamicPathConverter(pathToTemplates, "types/@@DATA@@.t")
+TypeConverter::TypeConverter(const QStringList &pathsToTemplates)
+	: DynamicPathConverter(pathsToTemplates, "types/@@DATA@@.t")
 {
 }

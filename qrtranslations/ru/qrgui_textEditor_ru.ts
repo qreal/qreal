@@ -4,28 +4,39 @@
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../../qrgui/textEditor/languageInfo.h" line="82"/>
         <source>Text File</source>
-        <translation type="vanished">Текстовый файл</translation>
+        <translation>Текстовый файл</translation>
     </message>
     <message>
+        <location filename="../../qrgui/textEditor/languageInfo.h" line="94"/>
         <source>C Language Source File</source>
-        <translation type="vanished">Файл с исходным кодом на C</translation>
+        <translation>Файл с исходным кодом на C</translation>
     </message>
     <message>
+        <location filename="../../qrgui/textEditor/languageInfo.h" line="106"/>
         <source>Russian Algorithmic Language Source File</source>
-        <translation type="vanished">Файл с исходным кодом на ШАЯ</translation>
+        <translation>Файл с исходным кодом на ШАЯ</translation>
     </message>
     <message>
+        <location filename="../../qrgui/textEditor/languageInfo.h" line="119"/>
         <source>Python Source File</source>
-        <translation type="vanished">Файл с исходным кодом на Python</translation>
+        <translation>Файл с исходным кодом на Python</translation>
     </message>
     <message>
+        <location filename="../../qrgui/textEditor/languageInfo.h" line="131"/>
+        <source>Java Script Language Source File</source>
+        <translation>Файл с исходным кодом на Java Script</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/textEditor/languageInfo.h" line="143"/>
         <source>QtScript Language Source File</source>
-        <translation type="vanished">Файл с исходным кодом на QtScript</translation>
+        <translation>Файл с исходным кодом на QtScript</translation>
     </message>
     <message>
+        <location filename="../../qrgui/textEditor/languageInfo.h" line="155"/>
         <source>F# Language Source File</source>
-        <translation type="vanished">Файл с исходным кодом на F#</translation>
+        <translation>Файл с исходным кодом на F#</translation>
     </message>
 </context>
 <context>

@@ -23,6 +23,11 @@ ModelTimer::ModelTimer(const Timeline *timeline)
 	connect(timeline, SIGNAL(tick()), this, SLOT(onTick()));
 }
 
+bool ModelTimer::isTicking() const
+{
+	return mListening;
+}
+
 void ModelTimer::start(int ms)
 {
 	mTimeToWait = ms;

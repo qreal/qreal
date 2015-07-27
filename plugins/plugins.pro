@@ -18,15 +18,17 @@ include(common.pri)
 
 # editor plugins
 SUBDIRS += \
-	$$PWD/dragonDiagram/dragonDiagram.pro \
+	$$PWD/ains/ains.pro \
 	$$PWD/blockDiagram/blockDiagram.pro \
-#	$$PWD/hascol/hascol.pro \
+	$$PWD/deployment/deploymentEditor.pro \
+	$$PWD/domainAnalysis/domainAnalysis.pro \
+	$$PWD/dragonDiagram/dragonDiagram.pro \
+	$$PWD/hascol/hascol.pro \
 	$$PWD/metaEditor/metaEditor.pro \
 	$$PWD/requirements/requirements.pro \
 	$$PWD/domainAnalysis/domainAnalysis.pro \
 #	$$PWD/deployment/deploymentEditor.pro \
 	$$PWD/robots/robots.pro \
-
 
 # interpreted plugins
 SUBDIRS += \
@@ -37,7 +39,7 @@ SUBDIRS += \
 	$$PWD/tools/exterminatus/exterminatus.pro \
 	$$PWD/tools/visualInterpreter/visualInterpreter.pro \
 	$$PWD/tools/refactoring/refactoring.pro \
-#	$$PWD/tools/testInvocation/testInvocation.pro \
+	$$PWD/tools/testInvocation/testInvocation.pro \
 	$$PWD/tools/uxInfo/uxInfo.pro \
 
 

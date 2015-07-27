@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "../../../qrutils/generator/abstractGenerator.h"
+#include <qrutils/generator/abstractGenerator.h>
 
 using namespace utils;
 

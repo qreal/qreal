@@ -27,7 +27,7 @@ namespace parts {
 class Sensors : public InitTerminateCodeGenerator
 {
 public:
-	Sensors(const QString &pathToTemplates, const simple::Binding::ConverterInterface *inputPortConverter);
+	Sensors(const QStringList &pathsToTemplates, const simple::Binding::ConverterInterface *inputPortConverter);
 	virtual ~Sensors();
 
 	virtual void reinit(const QMap<kitBase::robotModel::PortInfo

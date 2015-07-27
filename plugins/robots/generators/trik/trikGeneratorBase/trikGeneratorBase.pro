@@ -19,10 +19,8 @@ include(../../../../../global.pri)
 QT += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
-		plugins/robots/generators/generatorBase \
+includes(plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
@@ -41,7 +39,9 @@ HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
-	$$PWD/include/trikGeneratorBase/robotModel/trikGeneratorRobotModel.h \
+	$$PWD/include/trikGeneratorBase/robotModel/generatorModelExtensionInterface.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikV62GeneratorRobotModel.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikV6GeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
@@ -82,7 +82,8 @@ SOURCES += \
 	$$PWD/src/trikMasterGeneratorBase.cpp \
 	$$PWD/src/trikGeneratorCustomizer.cpp \
 	$$PWD/src/trikGeneratorFactory.cpp \
-	$$PWD/src/robotModel/trikGeneratorRobotModel.cpp \
+	$$PWD/src/robotModel/trikV62GeneratorRobotModel.cpp \
+	$$PWD/src/robotModel/trikV6GeneratorRobotModel.cpp \
 	$$PWD/src/parts/trikDeviceVariables.cpp \
 	$$PWD/src/converters/backgroundColorConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \

@@ -44,39 +44,39 @@
 		<constraint checkOnce="true" failMessage="У робота не должно быть датчиков">
 			<conditions glue="and">
 				<equals>
-					<typeOf objectId="robot1.A1_in"/>
+					<typeOf objectId="robot1.A1"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A2_in"/>
+					<typeOf objectId="robot1.A2"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A3_in"/>
+					<typeOf objectId="robot1.A3"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A4_in"/>
+					<typeOf objectId="robot1.A4"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A5_in"/>
+					<typeOf objectId="robot1.A5"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A6_in"/>
+					<typeOf objectId="robot1.A6"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.D1_in"/>
+					<typeOf objectId="robot1.D1"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.D2_in"/>
+					<typeOf objectId="robot1.D2"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.F1_in"/>
+					<typeOf objectId="robot1.F1"/>
 					<string value="undefined"/>
 				</equals>
 			</conditions>

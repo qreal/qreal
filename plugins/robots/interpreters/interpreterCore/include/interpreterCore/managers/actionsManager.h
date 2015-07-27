@@ -131,12 +131,12 @@ private:
 
 	/// Action that changes current UI mode to debug: hides palette, property editor and so on,
 	/// opens variable values dock and maybe 2D model dock.
-	QAction mDebugModeAction;
+	QAction *mDebugModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that changes current UI mode to edit: show palette and property editor if we are
 	/// editing diagram or variables list if we are editing the code.
 	/// Closess variable values dock and maybe 2D model dock.
-	QAction mEditModeAction;
+	QAction *mEditModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	QAction mSeparator1;
 	QAction mSeparator2;

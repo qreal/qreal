@@ -25,7 +25,7 @@ namespace converters {
 class ROBOTS_GENERATOR_EXPORT EnumConverterBase : public TemplateParametrizedConverter
 {
 public:
-	EnumConverterBase(const QString &pathToTemplatesDir
+	EnumConverterBase(const QStringList &pathsToTemplates
 			, QMap<QString, QString> const &valuesToTemplatePaths = QMap<QString, QString>());
 
 	QString convert(const QString &data) const override;

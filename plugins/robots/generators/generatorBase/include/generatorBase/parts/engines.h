@@ -27,7 +27,7 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Engines : public InitTerminateCodeGenerator
 {
 public:
-	Engines(const QString &pathToTemplates
+	Engines(const QStringList &pathsToTemplates
 			, const simple::Binding::ConverterInterface *outputPortConverter
 			, const simple::Binding::MultiConverterInterface *outputPortsConverter);
 	virtual ~Engines();

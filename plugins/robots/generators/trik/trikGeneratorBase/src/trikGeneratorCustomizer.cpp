@@ -20,8 +20,8 @@ TrikGeneratorCustomizer::TrikGeneratorCustomizer(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, const QString &generatorName)
-	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
+		, const QStringList &pathsToTemplates)
+	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, pathsToTemplates)
 {
 }
 

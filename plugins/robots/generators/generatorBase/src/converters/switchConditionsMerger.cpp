@@ -16,10 +16,10 @@
 
 using namespace generatorBase::converters;
 
-SwitchConditionsMerger::SwitchConditionsMerger(const QString &pathToTemplates
+SwitchConditionsMerger::SwitchConditionsMerger(const QStringList &pathsToTemplates
 		, const ConverterInterface * const systemVariablesConverter
 		, const QStringList &values)
-	: TemplateParametrizedConverter(pathToTemplates)
+	: TemplateParametrizedConverter(pathsToTemplates)
 	, mSystemVariablesConverter(systemVariablesConverter)
 	, mValues(values)
 {

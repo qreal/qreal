@@ -1,1 +1,0 @@
-brick.display().setBackground("@@COLOR@@");

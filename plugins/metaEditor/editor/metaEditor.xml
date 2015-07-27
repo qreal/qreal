@@ -199,6 +199,7 @@
 							<default>true</default>
 						</property>
 						<property type="bool" name="createChildrenFromMenu"/>
+						<property type="string" name="generationRule"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
@@ -573,7 +574,7 @@
 						<association beginName="Inheritance1" endName="Inheritance2"/>
 					</associations>
 					<generalizations>
-						<parent parentName="KernelDiagram::Relationship"/>
+						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
 					<properties>
 					        <property type="string" name="overrides"/>
@@ -589,7 +590,7 @@
 						<association beginName="Container1" endName="Container2"/>
 					</associations>
 					<generalizations>
-						<parent parentName="KernelDiagram::Relationship"/>
+						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
 				</logic>
 			</edge>
@@ -602,7 +603,7 @@
 						<association beginName="Explosion1" endName="Explosion2"/>
 					</associations>
 					<generalizations>
-						<parent parentName="KernelDiagram::Relationship"/>
+						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
 					<properties>
 						<property type="bool" name="makeReusable" />

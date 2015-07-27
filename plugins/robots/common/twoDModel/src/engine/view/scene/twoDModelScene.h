@@ -122,9 +122,6 @@ private slots:
 	/// Called after new color field item is added to a world model.
 	void onColorItemAdded(graphicsUtils::AbstractItem *item);
 
-	/// Called after new other item is added to a world model.
-	void onOtherItemAdded(QGraphicsItem *item);
-
 	void onItemRemoved(QGraphicsItem *item);
 
 private:

@@ -1,4 +1,5 @@
 QT += script testlib
+QT.testlib.CONFIG -= console
 
 #методы внутри некоторых классов делятся условно на функциональные методы и методы проверки. например:
 #Q_INVOKABLE QRect propertyRect(const QString &name) const; - получаем QRect, по которому будем кликать для изменения свойства name.

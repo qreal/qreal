@@ -23,7 +23,7 @@ PythonInterpreter::PythonInterpreter(QObject *parent
 		, QString const &tempScriptPath)
 		: TextCodeInterpreter(parent)
 		, mThread(new QThread())
-		, mInterpreterProcess(new QProcess(NULL))
+		, mInterpreterProcess(new QProcess(nullptr))
 		, mPythonPath(pythonPath)
 		, mTempScriptPath(tempScriptPath)
 		, mPythonCodeProcessed(false)
@@ -172,7 +172,9 @@ void PythonInterpreter::readOutput()
 		if (!output.isEmpty()) {
 			emit readyReadStdOutput(output, TextCodeInterpreter::python);
 		} else {
-			if (!reducedOutput.isEmpty() && reducedOutput.indexOf("Python") == -1 && reducedOutput.indexOf("copyright") == -1) {
+			if (!reducedOutput.isEmpty() && reducedOutput.indexOf("Python") == -1
+					&& reducedOutput.indexOf("copyright") == -1)
+			{
 				mErrorOccured = true;
 				emit readyReadErrOutput(reducedOutput);
 			}

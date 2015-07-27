@@ -40,7 +40,7 @@ QString LuaProcessor::translate(const QString &data
 		, const simple::Binding::ConverterInterface *reservedVariablesConverter)
 {
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
-	return lua::LuaPrinter(pathToRoot(), mTextLanguage
+	return lua::LuaPrinter(pathsToRoot(), mTextLanguage
 			, precedenceConverter(), reservedVariablesConverter).print(tree);
 }
 
@@ -51,7 +51,7 @@ QString LuaProcessor::castToString(const QString &data
 		, const simple::Binding::ConverterInterface *reservedVariablesConverter)
 {
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
-	return lua::LuaPrinter(pathToRoot(), mTextLanguage
+	return lua::LuaPrinter(pathsToRoot(), mTextLanguage
 			, precedenceConverter(), reservedVariablesConverter).castToString(tree);
 }
 

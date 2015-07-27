@@ -31,7 +31,11 @@ class StatusReporter : public QObject
 
 signals:
 	/// Emitted when <success> tag triggered.
-	void success();
+	/// @param deferred If true then the program execution will not be stopped immediately.
+	/// Instead the success trigger will be emitted just when program execution is stopped.
+	/// However this will not be done if during the period between deferred success event and
+	/// program finish fail event will be fired. Then the program will just be considered failed.
+	void success(bool deferred);
 
 	/// Emitted when <fail> tag triggered.
 	void fail(const QString &message);
@@ -43,7 +47,9 @@ signals:
 /// Represents logical operations that can be used for concatenating conditions.
 enum class Glue
 {
+	/// Logical 'and'
 	And = 0
+	/// Logical 'or'
 	, Or
 };
 

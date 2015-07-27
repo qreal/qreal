@@ -19,13 +19,13 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-ReservedVariablesConverter::ReservedVariablesConverter(const QString &pathToTemplates
+ReservedVariablesConverter::ReservedVariablesConverter(const QStringList &pathsToTemplates
 		, qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelInterface &robotModel
 		, QMap<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> const &devices
 		, const simple::Binding::ConverterInterface *inputPortConverter
 		, const parts::DeviceVariables &deviceVariables)
-	: TemplateParametrizedConverter(pathToTemplates)
+	: TemplateParametrizedConverter(pathsToTemplates)
 	, mErrorReporter(errorReporter)
 	, mRobotModel(robotModel)
 	, mDevices(devices)

@@ -26,19 +26,19 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, const QString &generatorName);
+			, const QStringList &pathsToTemplates);
 
 	~TrikGeneratorFactory() override;
 
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
-	QString pathToTemplates() const override;
+	QStringList pathsToTemplates() const override;
 
 	generatorBase::parts::DeviceVariables *deviceVariables() const override;
 
 private:
-	const QString mGeneratorName;
+	const QStringList mPathsToTemplates;
 };
 
 }

@@ -24,8 +24,8 @@ using namespace qReal;
 using namespace hascol;
 
 HascolSupportPlugin::HascolSupportPlugin()
-		: mGenerateCodeAction(NULL)
-		, mParseSourcesAction(NULL)
+		: mGenerateCodeAction(nullptr)
+		, mParseSourcesAction(nullptr)
 {
 }
 
@@ -60,7 +60,9 @@ void HascolSupportPlugin::generateHascolSourceCode()
 
 void HascolSupportPlugin::parseHascolSources()
 {
-	QStringList const fileNames = QFileDialog::getOpenFileNames(NULL, tr("Select Hascol files to parse"), ".", "*.md;;*.*");
+	QStringList const fileNames = QFileDialog::getOpenFileNames(nullptr, tr("Select Hascol files to parse")
+			, ".", "*.md;;*.*");
+
 	if (fileNames.empty())
 		return;
 

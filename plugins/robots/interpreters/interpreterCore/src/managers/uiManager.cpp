@@ -66,6 +66,7 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
 	mRobotConsole->hide();
+	initTab();
 	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
 	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
 	mMainWindow.windowWidget()->addAction(mRobotConsole->toggleViewAction());
@@ -160,8 +161,11 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 void UiManager::toggleModeButtons()
 {
-	mEditModeAction.setVisible(mCurrentMode == Mode::Debugging && mCurrentTab != qReal::TabInfo::TabType::other);
-	mDebugModeAction.setVisible(mCurrentMode == Mode::Editing && mCurrentTab != qReal::TabInfo::TabType::other);
+	mTabBar->setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mEditModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mDebugModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mEditModeAction.setChecked(mCurrentMode == Mode::Editing);
+	mDebugModeAction.setChecked(mCurrentMode == Mode::Debugging);
 
 	const QColor color = mCurrentTab == qReal::TabInfo::TabType::other
 			? backgrondColor
@@ -276,6 +280,20 @@ void UiManager::ensureDiagramVisible()
 			return;
 		}
 	}
+}
+
+void UiManager::initTab()
+{
+	mTabBar = new QToolBar(mMainWindow.windowWidget());
+	mTabBar->setObjectName("largeTabsBar");
+	mTabBar->setIconSize(QSize(32, 32));
+	mTabBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	mMainWindow.addToolBar(Qt::LeftToolBarArea, mTabBar);
+	mTabBar->addAction(&mEditModeAction);
+	mTabBar->addAction(&mDebugModeAction);
+
+	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
+	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 }
 
 void UiManager::hack2dModelDock() const
