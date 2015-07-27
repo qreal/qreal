@@ -82,7 +82,7 @@ void PluginCompiler::compilePlugin(const QString &fileName
 	builder.start(pathToQmake, qmakeArgs);
 
 	if (builder.waitForFinished() && builder.exitCode() == 0) {
-		builder.start("mingw32-make");
+		builder.start(pathToMake);
 
 		bool const finished = builder.waitForFinished(100000);
 		qDebug()  << "make";
