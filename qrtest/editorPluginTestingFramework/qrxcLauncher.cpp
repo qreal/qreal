@@ -3,7 +3,7 @@
 #include "plugins/metaEditor/metaEditorSupport/editorGenerator.h"
 #include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h"
 #include "qrrepo/repoApi.h"
-#include "qrgui/mainwindow/errorReporter.h"
+#include "qrgui/mainWindow/errorReporter.h"
 #include "qrxc/xmlCompiler.h"
 #include "defs.h"
 
