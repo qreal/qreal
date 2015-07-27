@@ -30,24 +30,23 @@ using namespace qReal;
 EditorManager::EditorManager(const QString &path)
 	: mPluginManager(PluginManager(qApp->applicationDirPath(), path))
 {
-	const auto pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
-
-	for (EditorInterface * const iEditor : pluginsList) {
-		const QString pluginName = mPluginManager.fileName(iEditor);
-
-		if (iEditor) {
-			mPluginsLoaded += iEditor->id();
-			mPluginFileName.insert(iEditor->id(), pluginName);
-			mPluginIface[iEditor->id()] = iEditor;
-		}
-	}
-
+	init();
 }
 
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
 	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors"))
 {
+	 init();
+}
+
+EditorManager::~EditorManager()
+{
+	qDeleteAll(mPluginIface);
+}
+
+void EditorManager::init()
+{
 	const auto pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
 
 	for (EditorInterface * const iEditor : pluginsList) {
@@ -59,11 +58,6 @@ EditorManager::EditorManager(QObject *parent)
 			mPluginIface[iEditor->id()] = iEditor;
 		}
 	}
-}
-
-EditorManager::~EditorManager()
-{
-	qDeleteAll(mPluginIface);
 }
 
 QString EditorManager::loadPlugin(const QString &pluginName)

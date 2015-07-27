@@ -148,6 +148,8 @@ public:
 private:
 	EditorInterface *editorInterface(const QString &editor) const;
 
+	void init();
+
 	bool isParentOf(const EditorInterface *plugin, const QString &childDiagram, const QString &child
 			, const QString &parentDiagram, const QString &parent) const;
 
