@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Package>
-    <DisplayName>F# Generator</DisplayName>
+    <DisplayName>F# generator</DisplayName>
     <DisplayName xml:lang="ru_ru">Генератор в F#</DisplayName>
     <Description>Install it for working with TRIK in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это и хотя бы один из компонентов ниже для работы с конструктором ТРИК на языке F#</Description>

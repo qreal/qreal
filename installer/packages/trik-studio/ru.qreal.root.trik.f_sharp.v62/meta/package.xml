@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Package>
-    <DisplayName>F# Generator</DisplayName>
+    <DisplayName>F# generator (new case)</DisplayName>
     <DisplayName xml:lang="ru_ru">Генератор в F# (новый корпус)</DisplayName>
     <Description>Install it for generation of F# code for TRIK</Description>
     <Description xml:lang="ru_ru">Установите это для генерации кода на F# для конструктора ТРИК (новый корпус, с портами энкодеров E1 - E4)</Description>
