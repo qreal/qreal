@@ -292,6 +292,7 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
+	qDebug() << "~MainWindow()";
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -2075,7 +2076,9 @@ void MainWindow::initScriptAPI()
 	addAction(evalAction);
 
 	connect(&mFacade.events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
+	qDebug() << "here moveTothred will4";
 	mScriptAPI.moveToThread(scriptAPIthread);
+	qDebug() << "here moveTothred done4";
 	scriptAPIthread->start();
 }
 

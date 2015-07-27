@@ -48,12 +48,28 @@ QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 	}
 
 	if (!context->argument(0).toBool()) {
-		QString exception("Fail at\n");
-		exception += QStringList(context->backtrace().mid(1)).join("\n");
 		ADD_FAILURE() << "Fail at\n" // FAIL() должен быть, можно бросать исключение!!!
 				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
 	}
 
+	return {};
+}
+
+QScriptValue addFailure(QScriptContext *context, QScriptEngine *engine)
+{
+	Q_UNUSED(engine);
+
+	if (context->argumentCount() != 1) {
+		ADD_FAILURE() << "'failure' shall have exactly one argument";
+		return {};
+	}
+
+	if (!(context->argument(0).isValid() && context->argument(0).isString())) {
+		ADD_FAILURE() << "Assertion failure at\n"
+				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString()
+				<< "with the message:\n" << context->argument(0).toString().toStdString();
+	}
+	// TODO: надо аборт написать и закрыть все окна, выйти из приложения.
 	return {};
 }
 
@@ -171,6 +187,7 @@ QScriptValue scriptExpectDialog(QScriptContext *context, QScriptEngine *engine)
 							}
 							if (m == suggestWidget->getQListWidget()->count() - 1) {
 								FAIL() << "doesnt exist " << diagramName.toStdString() << " diagram";
+								// TODO: в подобных местах надо закрывать диалог, чтоб не зависало. можно в самом начали сделать сингшот на закрытие всех окон приложения.
 							}
 						}
 						break;
@@ -187,7 +204,6 @@ QScriptValue scriptExpectDialog(QScriptContext *context, QScriptEngine *engine)
 	return {};
 }
 
-
 void wait(int duration) // а надо ли копипастить?
 {
 	QEventLoop eventLoop;
@@ -197,7 +213,6 @@ void wait(int duration) // а надо ли копипастить?
 
 	eventLoop.exec();
 }
-
 
 void guiTests::SetUp() // возможно эти строчки следует поместить для сетапа для всех тестов
 // возможно стоит вставить проверку на некорректно составленный тест в скрипте с помощью QScriptSyntaxCheckResult
@@ -209,10 +224,18 @@ void guiTests::SetUp() // возможно эти строчки следует 
 //	qrealInstance->start(program, arguments);
 
 	int argc = 1;
-	char *argv[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/qreal-d.exe"};
+	char *argv[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/guiTests-d.exe", "\0"};
 
+//	qDebug() << QApplication::instance() << "сетап";
+//	if (QApplication::instance() == nullptr) {
+//		QApplication app(argc, argv);
+//		qDebug() << "я внутри в сетапе" << QApplication::instance();
+//	}
 	MainWindow *window = start(argc, argv);
+	//window->activateWindow();
+	//QApplication::setActiveWindow(window);
 	mWindow = window;
+	mWindow->setAttribute(Qt::WA_DeleteOnClose);
 //mApp = qrealPointer;
 	//wait(10000);
 	mMainWindowScriptAPIInterface = dynamic_cast<MainWidnowScriptAPIInterface *>(window);
@@ -228,16 +251,16 @@ void guiTests::SetUp() // возможно эти строчки следует 
 
 	// app.setAttribute(Qt::AA_Use96Dpi, true); // может понадобится на Xdisplay?
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
+	mMainWindowScriptAPIInterface->registerNewFunction(addFailure, "failure");
 //	mMainWidnowScriptAPIInterface->registerNewFunction(scriptAssertIsNotNull, "assertNotNull");
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect");
 //	mMainWidnowScriptAPIInterface->registerNewFunction(scriptExpectIsNotNull, "expectNotNull");
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "expectDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
-
-
 }
 
 void guiTests::TearDown()
 {
+//	delete mWindow;
 	  // или deletelater?
 //	delete mMainWidnowScriptAPIInterface;
 
@@ -257,14 +280,6 @@ void guiTests::run(const QString &script)
 		QApplication::closeAllWindows();
 		FAIL() << "Failed coz code is invalide\n" << checkResult.errorMessage().toStdString();
 	}
-//	QApplication::instance()->~QCoreApplication();
-//	qDebug() << QApplication::instance();
-//	if (QApplication::instance() == nullptr) {
-//		int argc = 1;
-//		char *argv[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/qreal-d.exe"};
-//		QApplication app(argc, argv);
-//		qDebug() << "я внутри" << QApplication::instance();
-//	}
 	QTimer::singleShot(8000, [=]() { // возможно, фейлы тут работают не так, как должны
 			mMainWindowScriptAPIInterface->evaluateScript(script);
 			if (mMainWindowScriptAPIInterface->hasUncaughtException()) {
@@ -274,9 +289,8 @@ void guiTests::run(const QString &script)
 				FAIL() << "Failed coz uncaughtException of the last evaluating exists\n" << backtrace;
 			}
 
-		//QApplication::quit();
-		//QApplication::setQuitOnLastWindowClosed(false);
 		QApplication::closeAllWindows();
+	//	QApplication::quit();
 	});
 	QApplication::exec();
 }
@@ -296,11 +310,12 @@ void guiTests::runFromFile(const QString &fileName1)
 	run(contents);
 }
 
-//TEST_F(guiTests, sanityCheck)
-//{
+TEST_F(guiTests, sanityCheck)
+{
+	runFromFile("mainElementsExistence.js"); // мб qs?
 //	run("assert(true);");
 //	ASSERT_EQ(2, 1 + 1);
-//}
+}
 
 //TEST_F(guiTests, sanityCheck1r)
 //{
@@ -308,10 +323,9 @@ void guiTests::runFromFile(const QString &fileName1)
 //	ASSERT_EQ(2, 1 + 1);
 //}
 
-TEST_F(guiTests, guiTestExample)
+TEST_F(guiTests, mainElementsExistence)
 {
-	runFromFile("guiTestExample.js"); // мб qs?
-//	run (QString("var11 mainWindow = api.ui().mainWindow(); assert(mainWindow != null);"));
+	runFromFile("mainElementsExistence.js"); // мб qs?
 }
 
 //TEST_F(guiTests, guiTestExampleInvalid)

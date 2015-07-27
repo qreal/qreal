@@ -25,7 +25,7 @@ using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
-	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/tools"))
+	, mPluginManager(qApp->applicationDirPath(), "plugins/tools")
 {
 	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 
@@ -34,6 +34,7 @@ ToolPluginManager::ToolPluginManager()
 
 ToolPluginManager::~ToolPluginManager()
 {
+	qDebug() << "~ToolPluginManager()";
 }
 
 void ToolPluginManager::init(const PluginConfigurator &configurator)

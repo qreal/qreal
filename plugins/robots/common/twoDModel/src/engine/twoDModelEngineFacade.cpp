@@ -41,6 +41,7 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
 {
+	int a = 0;
 }
 
 void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin

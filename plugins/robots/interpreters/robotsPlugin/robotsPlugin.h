@@ -32,6 +32,7 @@ class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 public:
 	/// Constructor. Creates plugin in uninitialized state, "init" shall be called before plugin can do anything useful.
 	RobotsPlugin();
+	~RobotsPlugin();
 
 	void init(const qReal::PluginConfigurator &configurator) override;
 	qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.

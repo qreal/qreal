@@ -30,7 +30,12 @@ PluginManagerImplementation::PluginManagerImplementation(const QString &applicat
 
 PluginManagerImplementation::~PluginManagerImplementation()
 {
-	qDeleteAll(mLoaders);
+	qDebug() << "::~PluginManagerImplementation()";
+	for (QPluginLoader *loader : mLoaders) {
+		qDebug() << "unloading" << loader->fileName();
+		loader->unload();
+		delete loader;
+	}
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()

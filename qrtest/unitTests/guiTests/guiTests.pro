@@ -24,7 +24,7 @@ SOURCES += \
 	$$PWD/startQreal.cpp \
 
 OTHER_FILES += \
-	$$PWD/testScripts/guiTestExample.js \
+	$$PWD/testScripts/mainElementsExistence.js \
 
 copyToDestdir($$PWD/testScripts/, now) # зачем?
 

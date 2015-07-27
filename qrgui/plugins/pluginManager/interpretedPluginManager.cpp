@@ -20,7 +20,7 @@ using namespace qReal;
 
 InterpretedPluginManager::InterpretedPluginManager()
 	: mCustomizer()
-	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/interpreted"))
+	, mPluginManager(qApp->applicationDirPath(), "plugins/interpreted")
 {
 	mPlugins = mPluginManager.loadAllPlugins<InterpretedPluginInterface>();
 }

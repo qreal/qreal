@@ -30,6 +30,11 @@ RobotsPlugin::RobotsPlugin()
 	mRobotsPluginFacade.reset(new interpreterCore::RobotsPluginFacade);
 }
 
+RobotsPlugin::~RobotsPlugin()
+{
+	qDebug() << "~RobotsPlugin()";
+}
+
 void RobotsPlugin::init(const PluginConfigurator &configurator)
 {
 	mRobotsPluginFacade->init(configurator);

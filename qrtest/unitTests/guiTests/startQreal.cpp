@@ -114,6 +114,14 @@ MainWindow * start(int argc, char *argv[])
 #endif
 */
 	QString fileToOpen;
+
+//	if (QApplication::instance() != nullptr) {
+//		QApplication::instance()->~QCoreApplication();
+//	}
+//	int argc1 = 1;
+//	char *argv1[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/guiTests-d.exe\0", "\0"};
+//	QApplication *app = new QApplication(argc1, argv1);
+//	Q_UNUSED(app);
 	MainWindow *window = new MainWindow(fileToOpen);
 
 	int exitCode = 0; // The window decided to not show itself, exiting now.

@@ -28,7 +28,9 @@ PythonInterpreter::PythonInterpreter(QObject *parent
 		, mTempScriptPath(tempScriptPath)
 		, mPythonCodeProcessed(false)
 {
+	qDebug() << "here moveTothred will3";
 	moveToThread(mThread);
+	qDebug() << "here moveTothred done3";
 	connect(mInterpreterProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
 }
 
