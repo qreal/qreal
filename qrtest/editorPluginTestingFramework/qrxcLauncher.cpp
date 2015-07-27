@@ -53,9 +53,7 @@ void QrxcLauncher::launchQrxc(const QString &fileName, const QString &pathToQRea
 				dir.mkdir(directoryToGeneratedCode);
 			}
 
-			QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key
-					, pathToGeneratedCode + pathToQrxcGeneratedCode
-					, pathToQRealSources);
+			editorGenerator.generateEditor(key, pathToGeneratedCode + pathToQrxcGeneratedCode, pathToQRealSources);
 		}
 	}
 	qDebug() << stringSeparator;
