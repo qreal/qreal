@@ -22,6 +22,6 @@ include(../../global.pri)
 copyToDestdir(solutions/, now)
 
 OTHER_FILES += \
-	$$PWD/run-tests.sh \
+	$$PWD/run-simulator-tests.sh \
 
-copyToDestdir(run-tests.sh, now)
+copyToDestdir(run-simulator-tests.sh, now)
