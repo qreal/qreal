@@ -188,7 +188,6 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 						delete progress;
 						return;
 					}
-
 					qDebug()  << "make ok";
 					progress->setValue(progress->value() + forEditor / 2);
 
