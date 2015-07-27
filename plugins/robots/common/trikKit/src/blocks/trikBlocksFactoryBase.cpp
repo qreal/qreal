@@ -18,12 +18,15 @@
 
 #include <kitBase/blocksBase/common/waitForAccelerometerBlock.h>
 #include <kitBase/blocksBase/common/waitForGyroscopeSensorBlock.h>
-#include <kitBase/blocksBase/common/waitForLightSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <kitBase/blocksBase/common/waitForButtonBlock.h>
 #include <kitBase/blocksBase/common/getButtonCodeBlock.h>
+#include <kitBase/robotModel/robotParts/rangeSensor.h>
 
 #include <qrutils/interpreter/blocks/emptyBlock.h>
+
+#include "details/trikEnginesBackwardBlock.h"
+#include "details/trikEnginesForwardBlock.h"
 
 #include "details/smileBlock.h"
 #include "details/drawPixelBlock.h"
@@ -52,15 +55,17 @@
 #include "details/writeToFileBlock.h"
 #include "details/removeFileBlock.h"
 
-#include "trikKit/robotModel/parts/trikInfraredSensor.h"
-
 using namespace trik::blocks;
 using namespace trik::blocks::details;
 using namespace kitBase::blocksBase::common;
 
 qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::Id &element)
 {
-	if (elementMetatypeIs(element, "TrikPlayTone")) {
+	if (elementMetatypeIs(element, "TrikV6EnginesBackward")) {
+		return new details::TrikEnginesBackwardBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikV6EnginesForward")) {
+		return new details::TrikEnginesForwardBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikPlayTone")) {
 		return new SpeakerBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikV4EnginesStop")
 			|| elementMetatypeIs(element, "TrikV6EnginesStop"))
@@ -84,15 +89,10 @@ qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::I
 
 	} else if (elementMetatypeIs(element, "TrikLed")) {
 		return new LedBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
-		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
 		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
 				, kitBase::robotModel::DeviceInfo::create<
 						kitBase::robotModel::robotParts::RangeSensor>());
-	} else if (elementMetatypeIs(element, "TrikWaitForIRDistance")) {
-		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
-				, kitBase::robotModel::DeviceInfo::create<robotModel::parts::TrikInfraredSensor>());
 	} else if (elementMetatypeIs(element, "TrikWaitForGyroscope")) {
 		return new WaitForGyroscopeSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForAccelerometer")) {
@@ -152,7 +152,11 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 
 	result << id("TrikPlayTone");
 
-	result << id("TrikV6EnginesStop");
+	result
+			<< id("TrikV6EnginesBackward")
+			<< id("TrikV6EnginesForward")
+			<< id("TrikV6EnginesStop")
+			;
 
 	result
 			<< id("TrikSay")
@@ -166,9 +170,7 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 			;
 
 	result
-			<< id("TrikWaitForLight")
 			<< id("TrikWaitForSonarDistance")
-			<< id("TrikWaitForIRDistance")
 			<< id("TrikWaitForGyroscope")
 			<< id("TrikWaitForAccelerometer")
 			<< id("TrikWaitForMotion")

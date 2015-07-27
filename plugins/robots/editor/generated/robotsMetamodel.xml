@@ -12,17 +12,6 @@
 				<value name="3" displayedName="3"/>
 				<value name="4" displayedName="4"/>
 			</enum>
-			<enum name="TrikV6SensorPort">
-				<value name="A1"/>
-				<value name="A2"/>
-				<value name="A3"/>
-				<value name="A4"/>
-				<value name="A5"/>
-				<value name="A6"/>
-				<value name="D1"/>
-				<value name="D2"/>
-				<value name="F1"/>
-			</enum>
 			<enum name="TrikV6DigitalSensorPort">
 				<value name="D1"/>
 				<value name="D2"/>
@@ -34,6 +23,26 @@
 				<value name="A4"/>
 				<value name="A5"/>
 				<value name="A6"/>
+			</enum>
+			<enum name="TrikV62AnalogSensorPort">
+				<value name="S1"/>
+				<value name="S2"/>
+				<value name="S3"/>
+				<value name="S4"/>
+				<value name="S5"/>
+				<value name="S6"/>
+			</enum>
+			<enum name="TrikV6EncoderPort">
+				<value name="B1"/>
+				<value name="B2"/>
+				<value name="B3"/>
+				<value name="B4"/>
+			</enum>
+			<enum name="TrikV62EncoderPort">
+				<value name="E1"/>
+				<value name="E2"/>
+				<value name="E3"/>
+				<value name="E4"/>
 			</enum>
 			<enum name="GuardType" editable="true">
 				<value name="iteration" displayedName="body"/>
@@ -599,7 +608,6 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Ports" type="string" name="Ports" />
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -1579,7 +1587,7 @@
 				</logic>
 			</node>
 
-			<!-- Waiting for sensors blocks, TRIK -->
+			<!-- Waiting for sensors blocks, TRIK v6 -->
 			<node name="TrikSensorBlock">
 				<logic>
 					<container/>
@@ -1784,7 +1792,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Port" type="string" name="Port">
+						<property displayedName="Port" type="TrikV6EncoderPort" name="Port">
 							<default>B1</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
@@ -2726,42 +2734,6 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Motors Backward" name="TrikV62EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usual mode.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
-					</labels>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="TrikV6EngineMovementCommand"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Motors Forward" name="TrikV62EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:" />
-						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%" />
-					</labels>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="TrikV6EngineMovementCommand"/>
-					</generalizations>
-				</logic>
-			</node>
 			<node displayedName="Angular Servo" name="TrikV62AngularServo" description="Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2825,7 +2797,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Port" type="string" name="Port">
+						<property displayedName="Port" type="TrikV62EncoderPort" name="Port">
 							<default>E1</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
@@ -2835,6 +2807,73 @@
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="TrikV62AnalogSensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV62AnalogSensorPort" name="Port">
+							<default>S1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Light" name="TrikV62WaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or less than the given in the 'Percents' parameter value (0 to 100).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Percents" prefix="Percents:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Percents" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikV62AnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Infrared Distance" name="TrikV62WaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Distance" prefix="Distance:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Distance" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikV62AnalogSensorBlock"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -2872,9 +2911,7 @@
 				<element name="Ev3EnginesStop"/>
 				<element name="TrikPlayTone"/>
 				<element name="TrikV6EnginesForward"/>
-				<element name="TrikV62EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
-				<element name="TrikV62EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>
 				<element name="TrikV6ClearEncoder"/>
 				<element name="TrikV62ClearEncoder"/>
@@ -2908,8 +2945,10 @@
 				<element name="NxtWaitForSound"/>
 				<element name="NxtWaitForButton"/>
 				<element name="TrikWaitForLight"/>
+				<element name="TrikV62WaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>
+				<element name="TrikV62WaitForIRDistance"/>
 				<!-- <element name="TrikWaitForMotion"/> -->
 				<element name="TrikWaitForEncoder"/>
 				<element name="TrikV62WaitForEncoder"/>
