@@ -5,6 +5,7 @@ set rules {
   CopyrightNotice
   IncludeGuards
   LineLength
+  LineEndings
   NoSpacesAtTheStart
   NoRelativePathsInIncludes
   OpeningParethesisForClass

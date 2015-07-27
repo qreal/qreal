@@ -35,7 +35,7 @@ NxtGeneratorFactory::NxtGeneratorFactory(const qrRepo::RepoApi &repo
 		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
-	, mImages(pathToTemplates())
+	, mImages(pathsToTemplates())
 {
 }
 
@@ -71,12 +71,12 @@ generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGener
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
-QString NxtGeneratorFactory::pathToTemplates() const
+QStringList NxtGeneratorFactory::pathsToTemplates() const
 {
-	return ":/" + mGeneratorName + "/templates";
+	return {":/" + mGeneratorName + "/templates"};
 }
 
 Binding::ConverterInterface *NxtGeneratorFactory::colorConverter() const
 {
-	return new converters::ColorConverter(pathToTemplates());
+	return new converters::ColorConverter(pathsToTemplates());
 }

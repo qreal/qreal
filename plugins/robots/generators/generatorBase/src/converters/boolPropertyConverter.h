@@ -26,7 +26,7 @@ namespace converters {
 class BoolPropertyConverter : public CodeConverterBase, public TemplateParametrizedEntity
 {
 public:
-	BoolPropertyConverter(const QString &pathToTemplates
+	BoolPropertyConverter(const QStringList &pathsToTemplates
 			, lua::LuaProcessor &luaTranslator
 			, const qReal::Id &id
 			, const QString &propertyName

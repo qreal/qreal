@@ -39,7 +39,7 @@ class ROBOTS_GENERATOR_EXPORT Subprograms : public TemplateParametrizedEntity
 public:
 	Subprograms(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, const QString &pathToTemplates
+			, const QStringList &pathsToTemplates
 			, const simple::Binding::ConverterInterface *nameNormalizer);
 
 	~Subprograms() override;

@@ -24,7 +24,7 @@ namespace converters {
 class ColorConverter : public generatorBase::converters::DynamicPathConverter
 {
 public:
-	explicit ColorConverter(const QString &pathToTemplates);
+	explicit ColorConverter(const QStringList &pathsToTemplates);
 };
 
 }

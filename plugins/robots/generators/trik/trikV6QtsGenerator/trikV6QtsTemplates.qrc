@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/trikV6Qts">
+        <file>templates/videosensors/LineSensor.t</file>
+        <file>templates/videosensors/ObjectSensorX.t</file>
+        <file>templates/videosensors/ObjectSensorY.t</file>
+        <file>templates/videosensors/ObjectSensorSize.t</file>
+        <file>templates/videosensors/ColorSensorR.t</file>
+        <file>templates/videosensors/ColorSensorG.t</file>
+        <file>templates/videosensors/ColorSensorB.t</file>
+        <file>templates/videosensors/detectline.t</file>
+        <file>templates/videosensors/detectobject.t</file>
+        <file>templates/videosensors/initlineSensor.t</file>
+        <file>templates/videosensors/initobjectSensor.t</file>
+        <file>templates/videosensors/initcolorSensor.t</file>
+    </qresource>
+</RCC>

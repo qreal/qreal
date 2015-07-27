@@ -23,7 +23,7 @@ AbstractSimpleGenerator::AbstractSimpleGenerator(const qrRepo::RepoApi &repo
 		, const Id &id
 		, QObject *parent)
 	: QObject(parent)
-	, TemplateParametrizedEntity(customizer.factory()->pathToTemplates())
+	, TemplateParametrizedEntity(customizer.factory()->pathsToTemplates())
 	, mRepo(repo)
 	, mCustomizer(customizer)
 	, mId(id)

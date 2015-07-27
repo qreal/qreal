@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <kitBase/robotModel/commonRobotModel.h>
 
 namespace trik {
@@ -30,6 +31,8 @@ public:
 	QList<kitBase::robotModel::DeviceInfo> convertibleBases() const override;
 
 	QHash<QString, int> buttonCodes() const override;
+
+	virtual void setErrorReporter(qReal::ErrorReporterInterface &errorReporter) = 0;
 
 protected:
 	virtual kitBase::robotModel::DeviceInfo displayInfo() const;

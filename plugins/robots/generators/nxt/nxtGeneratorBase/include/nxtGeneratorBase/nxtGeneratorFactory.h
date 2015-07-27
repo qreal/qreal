@@ -37,7 +37,7 @@ public:
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
-	QString pathToTemplates() const override;
+	QStringList pathsToTemplates() const override;
 
 	/// Produces converter for color specification without taking ownership on it
 	generatorBase::simple::Binding::ConverterInterface *colorConverter() const;

@@ -17,10 +17,10 @@
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Engines::Engines(const QString &pathToTemplates
+Engines::Engines(const QStringList &pathsToTemplates
 		, const simple::Binding::ConverterInterface *outputPortConverter
 		, const simple::Binding::MultiConverterInterface *outputPortsConverter)
-	: InitTerminateCodeGenerator(pathToTemplates)
+	: InitTerminateCodeGenerator(pathsToTemplates)
 	, mOutputPortConverter(outputPortConverter)
 	, mOutputPortsConverter(outputPortsConverter)
 {
