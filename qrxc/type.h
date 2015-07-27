@@ -39,6 +39,7 @@ public:
 	QString path() const;
 	QString qualifiedName() const;
 	QString displayedName() const;
+	QString hotKey() const;
 
 	QMap<QString, Property*> properties() const;
 
@@ -58,6 +59,7 @@ public:
 	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
 	virtual void generatePropertyDescriptionMapping(utils::OutFile &out) = 0;
 	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;
+	virtual void generateHotKeyMap(utils::OutFile &out) = 0;
 	virtual void generateExplosionsMap(utils::OutFile &out) = 0;
 
 protected:
@@ -77,4 +79,5 @@ private:
 	QString mNativeContext;
 	QString mDisplayedName;
 	QString mPath;
+	QString mHotKey;
 };

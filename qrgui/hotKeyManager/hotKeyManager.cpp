@@ -71,6 +71,11 @@ void HotKeyManager::deleteShortcut(const QString &id, const QString &shortcut)
 	instance().deleteShortcutPrivate(id, shortcut);
 }
 
+bool HotKeyManager::contains(const QString &shortcut)
+{
+	return !instance().shortcutsPrivate()[shortcut].isEmpty();
+}
+
 QHash<QString, QAction *> HotKeyManager::commands()
 {
 	return instance().commandsPrivate();

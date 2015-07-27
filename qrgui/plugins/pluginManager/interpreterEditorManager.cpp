@@ -273,6 +273,16 @@ QString InterpreterEditorManager::mouseGesture(const Id &id) const
 	return "";
 }
 
+QString InterpreterEditorManager::hotKey(const Id &id) const
+{
+	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "hotKey")) {
+		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "hotKey");
+	}
+
+	return "";
+}
+
 
 /// @todo Replace this with lambdas.
 class InterpreterEditorManager::CheckPropertyForParent
@@ -932,6 +942,12 @@ void InterpreterEditorManager::setElementEnabled(const Id &type, bool enabled)
 {
 	Q_UNUSED(type)
 	Q_UNUSED(enabled)
+}
+
+bool InterpreterEditorManager::isElementEnabled(const Id &element) const
+{
+	Q_UNUSED(element);
+	return false;
 }
 
 QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() const
