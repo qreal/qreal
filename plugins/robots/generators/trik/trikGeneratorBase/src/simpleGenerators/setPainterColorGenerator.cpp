@@ -27,7 +27,7 @@ SetPainterColorGenerator::SetPainterColorGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "drawing/setPainterColor.t", QList<Binding *>()
 			<< Binding::createConverting("@@Color@@", "Color"
-					, new BackgroundColorConverter(customizer.factory()->pathToTemplates()))
+					, new BackgroundColorConverter(customizer.factory()->pathsToTemplates()))
 			, parent)
 {
 }

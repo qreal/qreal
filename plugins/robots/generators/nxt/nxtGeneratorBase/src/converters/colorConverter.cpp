@@ -16,7 +16,7 @@
 
 using namespace nxt::converters;
 
-ColorConverter::ColorConverter(const QString &pathToTemplates)
-	: generatorBase::converters::DynamicPathConverter(pathToTemplates, "colors/@@DATA@@.t")
+ColorConverter::ColorConverter(const QStringList &pathsToTemplates)
+	: generatorBase::converters::DynamicPathConverter(pathsToTemplates, "colors/@@DATA@@.t")
 {
 }

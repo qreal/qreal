@@ -41,6 +41,7 @@ class QRGUI_PLUGINS_MANAGER_EXPORT EditorManager : public QObject, public Editor
 	Q_OBJECT
 
 public:
+	explicit EditorManager(const QString &path);
 	explicit EditorManager(QObject *parent = nullptr);
 	~EditorManager() override;
 
@@ -146,6 +147,8 @@ public:
 
 private:
 	EditorInterface *editorInterface(const QString &editor) const;
+
+	void init();
 
 	bool isParentOf(const EditorInterface *plugin, const QString &childDiagram, const QString &child
 			, const QString &parentDiagram, const QString &parent) const;

@@ -64,8 +64,11 @@ public:
 	/// Draws sound waves during the given amount of time thus showing that the robot plays some sound.
 	virtual void playSound(int timeInMs) = 0;
 
+	/// Return true if robot currently draws the trace on the floor behind it.
+	virtual bool isMarkerDown() const = 0;
+
 	/// Moves the marker of the 2D model robot down to the floor.
-	/// The robot will draw its trace on the floor after that.
+	/// The robot will draw the trace on the floor behind it.
 	/// If the marker of another color is already drawing at the moment it will be replaced.
 	virtual void markerDown(const QColor &color) = 0;
 

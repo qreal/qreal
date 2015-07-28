@@ -17,7 +17,7 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-TemplateParametrizedConverter::TemplateParametrizedConverter(const QString &pathToTemplates)
-	: TemplateParametrizedEntity(pathToTemplates)
+TemplateParametrizedConverter::TemplateParametrizedConverter(const QStringList &pathsToTemplates)
+	: TemplateParametrizedEntity(pathsToTemplates)
 {
 }

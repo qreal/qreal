@@ -17,8 +17,8 @@
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Functions::Functions(const QString &pathToTemplates)
-	: InitTerminateCodeGenerator(pathToTemplates)
+Functions::Functions(const QStringList &pathsToTemplates)
+	: InitTerminateCodeGenerator(pathsToTemplates)
 {
 }
 

@@ -858,6 +858,49 @@ TEST_F(ConstraintsParserTests, forgottenReturnInUsingTest)
 	ASSERT_EQ(mParser.errors().count(), 2);
 }
 
+TEST_F(ConstraintsParserTests, initializationTagTest)
+{
+	const QString xml =
+			"<constraints>"
+			"	<timelimit value=\"2000\"/>"
+			"	<init>"
+			"		<setter name=\"x\"><int value=\"123\"/></setter>"
+			"	</init>"
+			"	<event id=\"event\" settedUpInitially=\"true\">"
+			"		<conditions glue=\"and\">"
+			"			<timer timeout=\"1000\"/>"
+			"			<equals>"
+			"				<variableValue name=\"x\"/>"
+			"				<int value=\"123\"/>"
+			"			</equals>"
+			"		</conditions>"
+			"		<trigger>"
+			"			<success/>"
+			"		</trigger>"
+			"	</event>"
+			"</constraints>";
+	ASSERT_TRUE(mParser.parse(xml));
+	ASSERT_EQ(mEvents.count(), 3);
+
+	for (Event * const event : mEvents.values()) {
+		ASSERT_NE(event, nullptr);
+		event->setUp();
+		event->check();
+	}
+
+	Event * const event = mEvents["event"];
+	bool eventFired = false;
+	QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+	mTimeline.setTimestamp(1000);
+	event->check();
+	ASSERT_TRUE(eventFired);
+
+	ASSERT_TRUE(mVariables.contains("x"));
+	ASSERT_TRUE(mVariables["x"].type() == QVariant::Int);
+	ASSERT_EQ(mVariables["x"].toInt(), 123);
+}
+
 TEST_F(ConstraintsParserTests, communicationTest)
 {
 	// This program will iteratively add 2 to 'counter', then subtract 1, then again add 2 and so on...
@@ -879,10 +922,12 @@ TEST_F(ConstraintsParserTests, communicationTest)
 			"	</event>"
 			"	<event id=\"Check Done\" settedUpInitially=\"true\">"
 			"		<condition>"
-			"			<notLess>"
-			"				<variableValue name=\"counter\"/>"
-			"				<int value=\"10\"/>"
-			"			</notLess>"
+			"			<not>"
+			"				<less>"
+			"					<variableValue name=\"counter\"/>"
+			"					<int value=\"10\"/>"
+			"				</less>"
+			"			</not>"
 			"		</condition>"
 			"		<trigger>"
 			"			<success/>"

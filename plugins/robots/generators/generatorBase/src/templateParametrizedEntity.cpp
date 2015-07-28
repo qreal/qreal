@@ -25,8 +25,8 @@ TemplateParametrizedEntity::TemplateParametrizedEntity()
 {
 }
 
-TemplateParametrizedEntity::TemplateParametrizedEntity(const QString &pathToTemplates)
-	: mPathToRoot(pathToTemplates)
+TemplateParametrizedEntity::TemplateParametrizedEntity(const QStringList &pathsToTemplates)
+	: mPathsToRoot(pathsToTemplates)
 {
 }
 
@@ -36,35 +36,51 @@ TemplateParametrizedEntity::~TemplateParametrizedEntity()
 
 QString TemplateParametrizedEntity::readTemplate(const QString &pathFromRoot) const
 {
-	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
-	QString errorMessage;
-	const QString result = utils::InFile::readAll(fullPath, &errorMessage);
-	if (!errorMessage.isEmpty()) {
-		QLOG_ERROR() << "Reading from template while generating code failed";
-		qWarning() << errorMessage;
+	for (const QString &path: mPathsToRoot) {
+		const QString fullPath = path + '/' + pathFromRoot;
+		if (QFile::exists(fullPath)) {
+			QString errorMessage;
+			const QString result = utils::InFile::readAll(fullPath, &errorMessage);
+			if (!errorMessage.isEmpty()) {
+				QLOG_ERROR() << "Reading from template while generating code failed";
+				qWarning() << "TemplateParametrizedEntity::readTemplate" << errorMessage;
+			}
+
+			return result;
+		}
 	}
 
-	return result;
+	QLOG_ERROR() << "Template" << pathFromRoot << "not found in" << mPathsToRoot;
+	qWarning() << "Template" << pathFromRoot << "not found in" << mPathsToRoot;
+
+	return "";
 }
 
 QString TemplateParametrizedEntity::readTemplateIfExists(const QString &pathFromRoot, const QString &fallback) const
 {
-	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
-	QString errorMessage;
-	const QString result = utils::InFile::readAll(fullPath, &errorMessage);
-	if (!errorMessage.isEmpty()) {
-		return fallback;
+	for (const QString &path: mPathsToRoot) {
+		const QString fullPath = path + '/' + pathFromRoot;
+		if (QFile::exists(fullPath)) {
+			QString errorMessage;
+			const QString result = utils::InFile::readAll(fullPath, &errorMessage);
+			if (!errorMessage.isEmpty()) {
+				QLOG_ERROR() << "Reading from template while generating code failed";
+				qWarning() << "TemplateParametrizedEntity::readTemplate" << errorMessage;
+			} else {
+				return result;
+			}
+		}
 	}
 
-	return result;
+	return fallback;
 }
 
-QString TemplateParametrizedEntity::pathToRoot() const
+QStringList TemplateParametrizedEntity::pathsToRoot() const
 {
-	return mPathToRoot;
+	return mPathsToRoot;
 }
 
-void TemplateParametrizedEntity::setPathToTemplates(const QString &pathTemplates)
+void TemplateParametrizedEntity::setPathsToTemplates(const QStringList &pathsTemplates)
 {
-	mPathToRoot = pathTemplates;
+	mPathsToRoot = pathsTemplates;
 }

@@ -23,7 +23,7 @@ namespace lua {
 class ReservedFunctionsConverter : public TemplateParametrizedEntity
 {
 public:
-	explicit ReservedFunctionsConverter(const QString &pathToTemplates);
+	explicit ReservedFunctionsConverter(const QStringList &pathsToTemplates);
 
 	QString convert(const QString &name, const QStringList &args) const;
 };

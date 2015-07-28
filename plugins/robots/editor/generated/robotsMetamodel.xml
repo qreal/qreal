@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.1.0">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.1.1-a3">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -12,17 +12,6 @@
 				<value name="3" displayedName="3"/>
 				<value name="4" displayedName="4"/>
 			</enum>
-			<enum name="TrikV6SensorPort">
-				<value name="A1"/>
-				<value name="A2"/>
-				<value name="A3"/>
-				<value name="A4"/>
-				<value name="A5"/>
-				<value name="A6"/>
-				<value name="D1"/>
-				<value name="D2"/>
-				<value name="F1"/>
-			</enum>
 			<enum name="TrikV6DigitalSensorPort">
 				<value name="D1"/>
 				<value name="D2"/>
@@ -34,6 +23,26 @@
 				<value name="A4"/>
 				<value name="A5"/>
 				<value name="A6"/>
+			</enum>
+			<enum name="TrikV62AnalogSensorPort">
+				<value name="S1"/>
+				<value name="S2"/>
+				<value name="S3"/>
+				<value name="S4"/>
+				<value name="S5"/>
+				<value name="S6"/>
+			</enum>
+			<enum name="TrikV6EncoderPort">
+				<value name="B1"/>
+				<value name="B2"/>
+				<value name="B3"/>
+				<value name="B4"/>
+			</enum>
+			<enum name="TrikV62EncoderPort">
+				<value name="E1"/>
+				<value name="E2"/>
+				<value name="E3"/>
+				<value name="E4"/>
 			</enum>
 			<enum name="GuardType" editable="true">
 				<value name="iteration" displayedName="body"/>
@@ -599,7 +608,6 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Ports" type="string" name="Ports" />
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -1579,7 +1587,7 @@
 				</logic>
 			</node>
 
-			<!-- Waiting for sensors blocks, TRIK -->
+			<!-- Waiting for sensors blocks, TRIK v6 -->
 			<node name="TrikSensorBlock">
 				<logic>
 					<container/>
@@ -1784,7 +1792,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Port" type="string" name="Port">
+						<property displayedName="Port" type="TrikV6EncoderPort" name="Port">
 							<default>B1</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
@@ -2711,6 +2719,165 @@
 					</generalizations>
 				</logic>
 			</node>
+
+			<!-- TRIK version 6.2 (new case) specifics -->
+			<node name="TrikV62EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports" >
+							<default>M3, M4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Angular Servo" name="TrikV62AngularServo" description="Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Angle:" suffix="°"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>S1</default>
+						</property>
+						<property displayedName="Angle (degrees)" type="string" name="Power">
+							<default>0</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Clear Encoder" name="TrikV62ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>E1, E2, E3, E4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Encoder" name="TrikV62WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
+						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV62EncoderPort" name="Port">
+							<default>E1</default>
+						</property>
+						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="TrikV62AnalogSensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV62AnalogSensorPort" name="Port">
+							<default>S1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Light" name="TrikV62WaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or less than the given in the 'Percents' parameter value (0 to 100).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Percents" prefix="Percents:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Percents" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikV62AnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Infrared Distance" name="TrikV62WaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Distance" prefix="Distance:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Distance" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikV62AnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+
 		</graphicTypes>
 
 		<palette sorted="false">
@@ -2747,7 +2914,9 @@
 				<element name="TrikV6EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>
 				<element name="TrikV6ClearEncoder"/>
+				<element name="TrikV62ClearEncoder"/>
 				<element name="TrikAngularServo"/>
+				<element name="TrikV62AngularServo"/>
 				<element name="TrikSay"/>
 				<element name="TrikLed" />
 				<element name="TrikSystem" />
@@ -2776,10 +2945,13 @@
 				<element name="NxtWaitForSound"/>
 				<element name="NxtWaitForButton"/>
 				<element name="TrikWaitForLight"/>
+				<element name="TrikV62WaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>
+				<element name="TrikV62WaitForIRDistance"/>
 				<!-- <element name="TrikWaitForMotion"/> -->
 				<element name="TrikWaitForEncoder"/>
+				<element name="TrikV62WaitForEncoder"/>
 				<element name="TrikWaitForButton"/>
 				<element name="TrikWaitForMessage" />
 				<element name="TrikWaitGamepadButton" />

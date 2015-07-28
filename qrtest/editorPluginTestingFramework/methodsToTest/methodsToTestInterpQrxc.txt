@@ -1,0 +1,17 @@
+//qrxc and interpreter
+diagrams
+elements(Id)
+elements(QString, QString)
+mouseGestures
+friendlyName
+description
+propertyDisplayedName
+enumValues
+propertyNames
+portTypes
+defaultPropertyValues
+propertiesWithDefaultValues
+isNodeOrEdge
+diagramName
+diagramNodeName
+isParentOf

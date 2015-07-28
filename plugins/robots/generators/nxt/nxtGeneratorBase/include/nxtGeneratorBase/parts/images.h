@@ -32,7 +32,7 @@ namespace parts {
 class ROBOTS_NXT_GENERATOR_BASE_EXPORT Images : public generatorBase::TemplateParametrizedEntity
 {
 public:
-	explicit Images(const QString &pathToTemplates);
+	explicit Images(const QStringList &pathsToTemplates);
 
 	/// Returns target robot display width in pixels
 	int displayWidth() const;

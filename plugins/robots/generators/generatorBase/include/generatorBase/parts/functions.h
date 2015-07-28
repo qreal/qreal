@@ -27,7 +27,7 @@ namespace parts {
 class Functions : public InitTerminateCodeGenerator
 {
 public:
-	explicit Functions(const QString &pathToTemplates);
+	explicit Functions(const QStringList &pathsToTemplates);
 
 	void reinit() override;
 	QString initCode() override;

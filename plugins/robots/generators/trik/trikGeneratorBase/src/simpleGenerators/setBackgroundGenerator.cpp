@@ -28,7 +28,7 @@ SetBackgroundGenerator::SetBackgroundGenerator(const qrRepo::RepoApi &repo
 	: BindingGenerator(repo, customizer, id
 			, "drawing/setBackground.t"
 			, { Binding::createConverting("@@COLOR@@", "Color"
-						, new BackgroundColorConverter(customizer.factory()->pathToTemplates()))
+					, new BackgroundColorConverter(customizer.factory()->pathsToTemplates()))
 			}, parent)
 {
 	// Calling virtual readTemplate() before base class constructor will cause segfault.

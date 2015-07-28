@@ -18,8 +18,13 @@ SUBDIRS = \
 	interpreterCore \
 	nullKitInterpreter \
 	nxtKitInterpreter \
-	trikKitInterpreter \
+	trikKitInterpreterCommon \
+	trikV6KitInterpreter \
+	trikV62KitInterpreter \
 	ev3KitInterpreter \
 	robotsPlugin \
 
 robotsPlugin.depends = interpreterCore
+twoDModelRunner.depends = interpreterCore
+trikV6KitInterpreter.depends = trikKitInterpreterCommon
+trikV62KitInterpreter.depends = trikKitInterpreterCommon

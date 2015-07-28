@@ -23,7 +23,7 @@ foreach fileName [getSourceFileNames] {
     foreach line [getAllLines $fileName] {
         set line [string map {"\t" "    "} $line]
         if {[string length $line] > $maxLength && ![regexp {http://} $line]} {
-            report $fileName $lineNumber "line is longer than $maxLength characters"
+            report $fileName $lineNumber "Line is longer than $maxLength characters"
         }
         incr lineNumber
     }
