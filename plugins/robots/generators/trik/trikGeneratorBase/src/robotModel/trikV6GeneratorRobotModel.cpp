@@ -62,6 +62,8 @@ void TrikV6GeneratorRobotModel::addDevice(const kitBase::robotModel::PortInfo &p
 		, kitBase::robotModel::robotParts::Device *device)
 {
 	mPreConfiguredDevices[port] = device;
+	configureDevice(port, device->deviceInfo());
+	applyConfiguration();
 }
 
 kitBase::robotModel::robotParts::Device *TrikV6GeneratorRobotModel::createDevice(

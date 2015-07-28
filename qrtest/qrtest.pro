@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include(../global.pri)
+
 TEMPLATE = subdirs
 
 SUBDIRS = \
 	gmock \
 	unitTests \
-#	editorPluginTestingFramework \
+	editorPluginTestingFramework/editorPluginTestingFramework.pro \
 
 unitTests.depends = gmock
 
 gmock.file = thirdparty/gmock-1.6.0/gmock.pro
+

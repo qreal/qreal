@@ -1,0 +1,12 @@
+<xml>
+	<qmake>qmake</qmake>
+	<make>mingw32-make</make>
+	<configuration>debug</configuration>
+	<pluginExtension>dll</pluginExtension>
+	<prefix></prefix>
+	<qrealRoot>../../</qrealRoot>
+	<generateHtml>yes</generateHtml>
+	<generatedCodeDirQrxc>./plugins/editors/qrtest/qrxc</generatedCodeDirQrxc>
+	<generatedCodeDirQrmc>./plugins/editors/qrtest/qrmc</generatedCodeDirQrmc>
+	<generatedDirHtml>./plugins/editors/qrtest</generatedDirHtml>
+</xml>

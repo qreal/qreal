@@ -1,0 +1,16 @@
+//qrxc and qrmc
+diagrams
+elements
+getPortTypes
+getEnumValues
+propertiesWithDefaulValues
+isNodeOrEdge
+getPropertyNames
+getPropertyDefaultValue
+diagramName
+diagramNodeName
+elementName
+elementMouseGesture
+elementDescription
+propertyDisplayedName
+isParentOf
