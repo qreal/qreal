@@ -41,3 +41,8 @@ QString TrikV6KitInterpreterPlugin::friendlyKitName() const
 {
 	return tr("TRIK (old case)");
 }
+
+int TrikV6KitInterpreterPlugin::priority() const
+{
+	return 10;  // Old case is more likely will be met for now.
+}

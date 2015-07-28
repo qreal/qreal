@@ -26,7 +26,6 @@ namespace robotParts {
 class ROBOTS_KIT_BASE_EXPORT ScalarSensor : public AbstractSensor
 {
 	Q_OBJECT
-
 	Q_PROPERTY(int value READ lastData WRITE setLastData)
 
 public:

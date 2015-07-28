@@ -160,7 +160,7 @@ void ScriptAPI::changeWindow(QWidget *parent)
 
 QScriptValue ScriptAPI::pluginUi(const QString &pluginName)
 {
-	return mScriptEngine.newQObject(mGuiFacade->pluginGuiFacade(pluginName), QScriptEngine::ScriptOwnership);
+	return mScriptEngine.newQObject(mGuiFacade->pluginGuiFacade(pluginName), QScriptEngine::QtOwnership);
 }
 
 void ScriptAPI::abortEvaluation()
@@ -208,30 +208,30 @@ void ScriptAPI::scroll(QAbstractScrollArea *area, QWidget *widget, int duration)
 
 QScriptValue ScriptAPI::ui()
 {
-	return mScriptEngine.newQObject(mGuiFacade.data(), QScriptEngine::ScriptOwnership);
+	return mScriptEngine.newQObject(mGuiFacade.data(), QScriptEngine::QtOwnership);
 }
 
 QScriptValue ScriptAPI::hints()
 {
-	return mScriptEngine.newQObject(mHintAPI.data(), QScriptEngine::ScriptOwnership);
+	return mScriptEngine.newQObject(mHintAPI.data(), QScriptEngine::QtOwnership);
 }
 
 QScriptValue ScriptAPI::palette()
 {
-	return mScriptEngine.newQObject(mPaletteAPI.data(), QScriptEngine::ScriptOwnership);
+	return mScriptEngine.newQObject(mPaletteAPI.data(), QScriptEngine::QtOwnership);
 }
 
 QScriptValue ScriptAPI::scene()
 {
-	return mScriptEngine.newQObject(mSceneAPI.data(), QScriptEngine::ScriptOwnership);
+	return mScriptEngine.newQObject(mSceneAPI.data(), QScriptEngine::QtOwnership);
 }
 
 QScriptValue ScriptAPI::cursor()
 {
-	return mScriptEngine.newQObject(mVirtualCursor.data(), QScriptEngine::ScriptOwnership);
+	return mScriptEngine.newQObject(mVirtualCursor.data(), QScriptEngine::QtOwnership);
 }
 
 QScriptValue ScriptAPI::keyboard()
 {
-	return mScriptEngine.newQObject(mVirtualKeyboard.data(), QScriptEngine::ScriptOwnership);
+	return mScriptEngine.newQObject(mVirtualKeyboard.data(), QScriptEngine::QtOwnership);
 }

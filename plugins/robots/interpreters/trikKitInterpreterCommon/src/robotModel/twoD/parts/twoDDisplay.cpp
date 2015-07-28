@@ -21,7 +21,7 @@ using namespace kitBase::robotModel;
 
 const qreal realWidth = 218;
 const qreal realHeight = 274;
-const int textPixelSize = 14;
+const int textSize = 20;
 
 Display::Display(const DeviceInfo &info
 		, const PortInfo &port
@@ -92,7 +92,8 @@ void Display::printText(int x, int y, const QString &text)
 	if (mLabelsMap.contains(coords)) {
 		mLabelsMap[coords]->setText(text);
 	} else {
-		utils::TextObject * const textObject = new utils::TextObject(x, y, text, mCurrentPenColor, mCurrentPenWidth);
+		utils::TextObject * const textObject = new utils::TextObject(x, y + textSize, text
+			, mCurrentPenColor, mCurrentPenWidth);
 		mObjects << textObject;
 		mLabelsMap[coords] = textObject;
 		mLabels << textObject;
@@ -122,21 +123,20 @@ void Display::setPainterWidth(int penWidth)
 void Display::paint(QPainter *painter)
 {
 	const QRect displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
+
 	painter->save();
-	QFont font;
-	font.setPixelSize(textPixelSize);
-	painter->setFont(font);
 	painter->setPen(mBackground);
 	painter->setBrush(mBackground);
 	painter->drawRect(displayRect);
 	painter->drawImage(displayRect, mCurrentImage);
-
 	painter->restore();
 
 	painter->save();
+	QFont font;
+	font.setPixelSize(textSize);
+	painter->setFont(font);
 	painter->setPen(Qt::black);
 	painter->scale(displayRect.width() / realWidth, displayRect.height() / realHeight);
-
 	Canvas::paint(painter);
 	painter->restore();
 }

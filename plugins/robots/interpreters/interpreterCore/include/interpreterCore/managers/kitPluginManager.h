@@ -44,6 +44,9 @@ public:
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
 	QList<kitBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
+	/// Returns the priority of the kit with the given id. The priority is the maximum of KitPluginInterface::priority.
+	int priority(const QString &kitId) const;
+
 private:
 	void tryToLoadKitPlugins();
 
