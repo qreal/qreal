@@ -19,10 +19,10 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-PortNameConverter::PortNameConverter(const QString &pathToTemplates
+PortNameConverter::PortNameConverter(const QStringList &pathsToTemplates
 		, QList<kitBase::robotModel::PortInfo> const &ports
 		, qReal::ErrorReporterInterface &errorReporter)
-	: TemplateParametrizedConverter(pathToTemplates)
+	: TemplateParametrizedConverter(pathsToTemplates)
 	, mPorts(ports)
 	, mErrorReporter(errorReporter)
 {

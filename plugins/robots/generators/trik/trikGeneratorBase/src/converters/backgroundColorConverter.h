@@ -23,7 +23,7 @@ namespace converters {
 class BackgroundColorConverter : public generatorBase::converters::DynamicPathConverter
 {
 public:
-	explicit BackgroundColorConverter(const QString &pathToTemplates);
+	explicit BackgroundColorConverter(const QStringList &pathsToTemplates);
 };
 
 }

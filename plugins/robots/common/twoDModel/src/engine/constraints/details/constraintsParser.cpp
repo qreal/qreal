@@ -119,6 +119,10 @@ Event *ConstraintsParser::parseConstraint(const QDomElement &constraint)
 		return parseTimeLimitTag(constraint);
 	}
 
+	if (name == "init" || name == "initialization") {
+		return parseInitializationTag(constraint);
+	}
+
 	/// @todo: Display unknown tag errors
 	return nullptr;
 }
@@ -227,6 +231,12 @@ Event *ConstraintsParser::parseTimeLimitTag(const QDomElement &element)
 	return event;
 }
 
+Event *ConstraintsParser::parseInitializationTag(const QDomElement &element)
+{
+	const Trigger hooks = parseTriggersTag(element);
+	return new Event(QString(), mConditions.constant(true), hooks, true, true);
+}
+
 Condition ConstraintsParser::parseConditionsAlternative(const QDomElement &element, Event &event)
 {
 	const QString name = element.tagName().toLower();
@@ -315,7 +325,7 @@ Condition ConstraintsParser::parseNegationTag(const QDomElement &element, Event 
 		return mConditions.constant(true);
 	}
 
-	return parseConditionsAlternative(element.firstChildElement(), event);
+	return mConditions.negation(parseConditionsAlternative(element.firstChildElement(), event));
 }
 
 Condition ConstraintsParser::parseComparisonTag(const QDomElement &element)

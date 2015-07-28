@@ -31,6 +31,7 @@ HEADERS += \
 	$$PWD/../include/utils/requiredVersion.h \
 	$$PWD/../include/utils/tcpRobotCommunicator.h \
 	$$PWD/../include/utils/tcpConnectionHandler.h \
+	$$PWD/../include/utils/uploaderTool.h \
 	$$PWD/../include/utils/canvas/canvas.h \
 	$$PWD/../include/utils/canvas/canvasObject.h \
 	$$PWD/../include/utils/canvas/pointObject.h \
@@ -50,6 +51,7 @@ SOURCES += \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
 	$$PWD/tcpRobotCommunicator.cpp \
 	$$PWD/tcpConnectionHandler.cpp \
+	$$PWD/uploaderTool.cpp \
 	$$PWD/canvas/canvas.cpp \
 	$$PWD/canvas/canvasObject.cpp \
 	$$PWD/canvas/pointObject.cpp \

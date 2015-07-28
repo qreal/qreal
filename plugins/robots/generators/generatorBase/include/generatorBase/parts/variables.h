@@ -36,7 +36,7 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
-	Variables(const QString &pathToTemplates
+	Variables(const QStringList &pathsToTemplates
 			, const kitBase::robotModel::RobotModelInterface &robotModel
 			, qrtext::LanguageToolboxInterface &luaToolbox);
 
