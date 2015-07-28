@@ -98,7 +98,7 @@ public:
 	Value boundingRect(const Value &items) const;
 
 private:
-	QVariant propertyChain(const QVariant &value, const QStringList &properties, const QString &objectAlias) const;
+	QVariant propertyChain(const QVariant &value, const QStringList &properties, const QString &objectAlias) const;
 	QVariant propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const;
 	QVariant propertyOf(const QVariant &value, const QString &property
 			, bool *hasProperty = 0, bool *unknownType = 0) const;
@@ -108,7 +108,7 @@ private:
 	QVariant propertyOf(const QVariantList &list, const QString &property, bool *ok = 0) const;
 	void iterate(const QVariant &collection, const std::function<void(const QVariant &)> &visitor) const;
 
-	void reportError(const QString &message) const;
+	void reportError(const QString &message) const;
 
 	Variables &mVariables;
 	const Objects &mObjects;

@@ -90,20 +90,15 @@ defineTest(copyToDestdir) {
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {
-
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
 			}
 
 			unix:!macx {
-				system("cp -r $$FILE $$DESTDIR")
+				system("cp -r $$FILE $$DDIR")
 			}
 
 			macx {
-				if (equals(FILE,"images/") | equals(FILE,"help/"))	{
-					system("cp -R $$FILE $$DESTDIR/qreal-d.app/Contents/MacOS/$$FILE")
-				} else {
-				system("cp -R $$FILE $$DESTDIR/$$FILE")
-				}
+				system("cp -R $$FILE $$DDIR/$$FILE")
 			}
 		}
 	}
@@ -113,7 +108,7 @@ defineTest(copyToDestdir) {
 
 macx {
 	defineTest(copyToBundleDir) {
-		copyToDestdir($$1 $$2 Contents/MacOS/)
+		copyToDestdir($$1, now, qreal$${CONFIGURATION_SUFFIX}.app/Contents/MacOS/)
 	}
 }
 

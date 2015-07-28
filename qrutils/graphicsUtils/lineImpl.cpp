@@ -26,7 +26,7 @@ LineImpl::LineImpl()
 
 QRectF LineImpl::boundingRect(qreal x1, qreal y1, qreal x2, qreal y2, qreal penWidth, const int drift) const
 {
-	return (QRectF(qMin(x1, x2) - penWidth, qMin(y1, y2) - penWidth, abs(x2 - x1) + penWidth, abs(y2 - y1) + penWidth)
+	return (QRectF(qMin(x1, x2) - penWidth, qMin(y1, y2) - penWidth, qAbs(x2 - x1) + penWidth, qAbs(y2 - y1) + penWidth)
 			.adjusted(-drift, -drift, drift, drift));
 }
 

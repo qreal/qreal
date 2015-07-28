@@ -17,7 +17,7 @@ TEMPLATE = subdirs
 include(../../../../global.pri)
 
 mac {
-	copyToBundleDir(help/ changelog.txt, now)
+	copyToBundleDir(help/ changelog.txt)
 } else {
 	copyToDestdir(help/ changelog.txt, now)
 }

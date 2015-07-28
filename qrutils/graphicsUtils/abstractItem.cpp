@@ -142,7 +142,7 @@ void AbstractItem::setCoordinates(const QRectF &pos)
 
 void AbstractItem::reshapeRectWithShift()
 {
-	const qreal size = qMax(abs(x2() - x1()), abs(y2() - y1()));
+	const qreal size = qMax(qAbs(x2() - x1()), qAbs(y2() - y1()));
 	setX2(x2() > x1() ? x1() + size : x1() - size);
 	setY2(y2() > y1() ? y1() + size : y1() - size);
 }
