@@ -68,6 +68,7 @@ private:
 	Event *parseEventTag(const QDomElement &element);
 	Event *parseConstraintTag(const QDomElement &element);
 	Event *parseTimeLimitTag(const QDomElement &element);
+	Event *parseInitializationTag(const QDomElement &element);
 
 	Condition parseConditionsAlternative(const QDomElement &element, Event &event);
 	Condition parseConditionsTag(const QDomElement &element, Event &event);
