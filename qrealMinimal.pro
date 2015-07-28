@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+contains(QT_VERSION, ^4.*){
+	message("Cannot build qreal using Qt version $${QT_VERSION}")
+	error("Use at least Qt 5.5")
+}
+
 TEMPLATE = subdirs
 
 SUBDIRS = \
@@ -21,7 +26,9 @@ SUBDIRS = \
 	qrutils \
 	qrtext \
 	thirdparty \
+	qrtranslations \
 
+qrkernel.depends = thirdparty
 qrutils.depends = qrkernel qrtext
 qrrepo.depends = qrkernel qrutils
 qrtext.depends = qrkernel

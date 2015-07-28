@@ -46,7 +46,7 @@ public:
 	/// and error message, if failed.
 	/// @param pluginName - name of plugin to load
 	/// @returns loaded plugin and error message
-	QPair<QObject *, QString> pluginLoadedByName(const QString &pluginName);
+	QPair<QObject *, QString> loadPluginByName(const QString &pluginName);
 
 	/// Unloads plugins, given filename
 	/// @param pluginName - name of plugin
