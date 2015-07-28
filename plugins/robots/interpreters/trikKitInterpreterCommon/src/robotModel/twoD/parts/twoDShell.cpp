@@ -43,6 +43,7 @@ void Shell::runCode(const QString &code)
 
 void Shell::say(const QString &text)
 {
+	mLastPhrase = text;
 	if (mErrorReporter) {
 		mErrorReporter->sendBubblingMessage(text, 4000, mEngine.guiFacade().separateTwoDModelWindow());
 	}
@@ -69,4 +70,9 @@ void Shell::print(const QString &text)
 void Shell::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
 	mErrorReporter = &errorReporter;
+}
+
+QString Shell::lastPhrase() const
+{
+	return mLastPhrase;
 }
