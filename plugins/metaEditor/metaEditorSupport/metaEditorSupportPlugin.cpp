@@ -183,7 +183,8 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 				if (finished && (builder.exitCode() == 0)) {
 					if (stateOfLoad) {
-						QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please restart QReal."));
+						QMessageBox::warning(mMainWindowInterface->windowWidget()
+								, tr("Attention!"), tr("Please restart QReal."));
 						progress->close();
 						delete progress;
 						return;
@@ -323,12 +324,14 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 			progress->setValue(80);
 
 			if (stateOfLoad) {
-				QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("Attention!"), tr("Please restart QReal."));
+				QMessageBox::warning(mMainWindowInterface->windowWidget()
+						, tr("Attention!"), tr("Please restart QReal."));
 				progress->close();
 				delete progress;
 				return;
 			} else if (buildConfiguration == "debug") {
-				if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "-d"+ "." + extension, normalizeDirName)) {
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName
+						+ "-d"+ "." + extension, normalizeDirName)) {
 					progress->setValue(100);
 				}
 			} else {
