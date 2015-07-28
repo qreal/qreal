@@ -17,4 +17,3 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	commonTests \
 	interpretersTests \
-	trikStudioSimulatorTests \
