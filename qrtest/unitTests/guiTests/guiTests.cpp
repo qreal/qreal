@@ -55,7 +55,7 @@ QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 	return {};
 }
 
-QScriptValue addFailure(QScriptContext *context, QScriptEngine *engine)
+QScriptValue scriptAddFailure(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
 
@@ -73,12 +73,12 @@ QScriptValue addFailure(QScriptContext *context, QScriptEngine *engine)
 	return {};
 }
 
-//QScriptValue scriptAssertIsNotNull(QScriptContext *context, QScriptEngine *engine)
+//QScriptValue scriptExist(QScriptContext *context, QScriptEngine *engine) // q_script_cast?
 //{
 //	Q_UNUSED(engine);
 
 //	if (context->argumentCount() != 1) {
-//		ADD_FAILURE() << "'assertNotNull' shall have exactly one argument";
+//		ADD_FAILURE() << "'exist' shall have exactly one argument";
 //		return {};
 //	}
 
@@ -204,6 +204,53 @@ QScriptValue scriptExpectDialog(QScriptContext *context, QScriptEngine *engine)
 	return {};
 }
 
+QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *engine)
+{
+	Q_UNUSED(engine);
+
+	if (context->argumentCount() != 3) {
+		ADD_FAILURE() << "'expectDialog' shall have exactly 4 arguments";
+		return {};
+	}
+
+	if (!(context->argument(0).isValid() && !context->argument(0).isNull())) {
+		ADD_FAILURE() << "Assertion failure at\n"
+				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+	}
+
+	if (!(context->argument(1).isValid() && context->argument(1).isString())) {
+		ADD_FAILURE() << "Assertion failure at\n"
+				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+	}
+
+	if (!(context->argument(2).isValid() && context->argument(2).isNumber())) {
+		ADD_FAILURE() << "Assertion failure at\n"
+				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+	}
+
+	QString dialogTitle = context->argument(1).toString();
+	int mces = context->argument(2).toInt32();
+	MainWindow *mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
+	EXPECT_TRUE(mainWindow != nullptr);
+	QTimer::singleShot(mces, [=]() {
+		EXPECT_GT(mces, 0);
+		ASSERT_TRUE(mainWindow != NULL);
+		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
+		ASSERT_FALSE(allDialogs.isEmpty());
+		for (int i = 0; i < allDialogs.length(); ++i) {
+			if (allDialogs.at(i)->windowTitle() == dialogTitle) {
+				allDialogs.at(i)->close();
+				break;
+			}
+			if (i == allDialogs.length() - 1) {
+				FAIL() << "doesnt exist " << dialogTitle.toStdString() << " dialog";
+			}
+		}
+	});
+
+	return {};
+}
+
 void wait(int duration) // а надо ли копипастить?
 {
 	QEventLoop eventLoop;
@@ -251,14 +298,16 @@ void guiTests::SetUp() // возможно эти строчки следует 
 
 	// app.setAttribute(Qt::AA_Use96Dpi, true); // может понадобится на Xdisplay?
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
-	mMainWindowScriptAPIInterface->registerNewFunction(addFailure, "failure");
-//	mMainWidnowScriptAPIInterface->registerNewFunction(scriptAssertIsNotNull, "assertNotNull");
+	mMainWindowScriptAPIInterface->registerNewFunction(scriptAddFailure, "failure");
+//	mMainWidnowScriptAPIInterface->registerNewFunction(scriptExist, "exist");
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect");
+	mMainWindowScriptAPIInterface->registerNewFunction(scriptCloseExpectedDialog, "closeExpectedDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов TODO: то же самое, что и лля другой
 //	mMainWidnowScriptAPIInterface->registerNewFunction(scriptExpectIsNotNull, "expectNotNull");
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "expectDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
+	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "chooseExpectedDialogDiagram"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
 }
 
-void guiTests::TearDown()
+void guiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
+// а для скриптов можно выполнять действия с известными моделями типа езды по линии.
 {
 //	delete mWindow;
 	  // или deletelater?
@@ -297,7 +346,7 @@ void guiTests::run(const QString &script)
 
 void guiTests::runFromFile(const QString &fileName1)
 {	
-	QString fileName = /*QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/"*/ "C:/Users/Kirill/Desktop/qreal/qrtest/unitTests/guiTests/testScripts/" + fileName1;
+	QString fileName = /*QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/"*/ "C:/Users/Kirill/Desktop/qreal/qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		// handle error
@@ -312,24 +361,182 @@ void guiTests::runFromFile(const QString &fileName1)
 
 TEST_F(guiTests, sanityCheck)
 {
-	runFromFile("mainElementsExistence.js"); // мб qs?
+	runFromFile("editActionsExistence.js"); // мб qs?
 //	run("assert(true);");
 //	ASSERT_EQ(2, 1 + 1);
 }
 
-//TEST_F(guiTests, sanityCheck1r)
-//{
-////	run("assert(true);");
-//	ASSERT_EQ(2, 1 + 1);
-//}
-
-TEST_F(guiTests, mainElementsExistence)
+TEST_F(guiTests, editActionsExistence)
 {
-	runFromFile("mainElementsExistence.js"); // мб qs?
+	runFromFile("editActionsExistence.js");
 }
 
-//TEST_F(guiTests, guiTestExampleInvalid)
+//TEST_F(guiTests, viewActionsExistence)
 //{
-//	runFromFile("guiTestExampleInvalid.js");
-//	run (QString("var mainWindow = api.ui().mainWindow(); assert(true);"));
+//	runFromFile("viewActionsExistence.js");
+//}
+
+//TEST_F(guiTests, findDialogElementsExistence)
+//{
+//	runFromFile("findDialogElementsExistence.js");
+//}
+
+//TEST_F(guiTests, helpActionsExistence)
+//{
+//	runFromFile("helpActionsExistence.js");
+//}
+
+//TEST_F(guiTests, mainPanelsElementsExistence)
+//{
+//	runFromFile("mainPanelsElementsExistence.js");
+//}
+
+//TEST_F(guiTests, mouseGesturesElementsExistence)
+//{
+//	runFromFile("mouseGesturesElementsExistence.js");
+//}
+
+//TEST_F(guiTests, preferenceDialogElementsExistence)
+//{
+//	runFromFile("preferenceDialogElementsExistence.js");
+//}
+
+//TEST_F(guiTests, settingsActionsExistence)
+//{
+//	runFromFile("settingsActionsExistence.js");
+//}
+
+//TEST_F(guiTests, tabSceneExistence)
+//{
+//	runFromFile("tabSceneExistence.js");
+//}
+
+//TEST_F(guiTests, toolbarsElementsExistence)
+//{
+//	runFromFile("toolbarsElementsExistence.js");
+//}
+
+//TEST_F(guiTests, toolsActionsExistence)
+//{
+//	runFromFile("toolsActionsExistence.js");
+//}
+
+//TEST_F(guiTests, fileActionsExistence)
+//{
+//	runFromFile("fileActionsExistence.js");
+//}
+
+//TEST_F(guiTests, fileActionsFunctioning)
+//{
+//	runFromFile("fileActionsFunctioning.js");
+//}
+
+//TEST_F(guiTests, findDialogElementsFunctioning)
+//{
+//	runFromFile("findDialogElementsFunctioning.js");
+//}
+
+//TEST_F(guiTests, helpActionsFunctioning)
+//{
+//	runFromFile("helpActionsFunctioning.js");
+//}
+
+//TEST_F(guiTests, mainPanelsElementsFunctioning)
+//{
+//	runFromFile("mainPanelsElementsFunctioning.js");
+//}
+
+//TEST_F(guiTests, mouseGesturesElementsFunctioning)
+//{
+//	runFromFile("mouseGesturesElementsFunctioning.js");
+//}
+
+//TEST_F(guiTests, preferenceDialogElementsFunctioning)
+//{
+//	runFromFile("preferenceDialogElementsFunctioning.js");
+//}
+
+//TEST_F(guiTests, settingsActionsFunctioning)
+//{
+//	runFromFile("settingsActionsFunctioning.js");
+//}
+
+//TEST_F(guiTests, tabSceneFunctioning)
+//{
+//	runFromFile("tabSceneFunctioning.js");
+//}
+
+//TEST_F(guiTests, toolbarsElementsFunctioning)
+//{
+//	runFromFile("toolbarsElementsFunctioning.js");
+//}
+
+//TEST_F(guiTests, toolsActionsFunctioning)
+//{
+//	runFromFile("toolsActionsFunctioning.js");
+//}
+
+//TEST_F(guiTests, viewActionsFunctioning)
+//{
+//	runFromFile("viewActionsFunctioning.js");
+//}
+
+//TEST_F(guiTests, editActionsFunctioning)
+//{
+//	runFromFile("editActionsFunctioning.js");
+//}
+
+//TEST_F(guiTests, hotKeysExistanceAndFunctioning)
+//{
+//	runFromFile("hotKeysExistanceAndFunctioning.js");
+//}
+
+//TEST_F(guiTests, script1)
+//{
+//	runFromFile("script1.js");
+//}
+
+//TEST_F(guiTests, script2)
+//{
+//	runFromFile("script2.js");
+//}
+
+//TEST_F(guiTests, script3)
+//{
+//	runFromFile("script3.js");
+//}
+
+//TEST_F(guiTests, script4)
+//{
+//	runFromFile("script4.js");
+//}
+
+//TEST_F(guiTests, script5)
+//{
+//	runFromFile("script5.js");
+//}
+
+//TEST_F(guiTests, script6)
+//{
+//	runFromFile("script6.js");
+//}
+
+//TEST_F(guiTests, script7)
+//{
+//	runFromFile("script7.js");
+//}
+
+//TEST_F(guiTests, script8)
+//{
+//	runFromFile("script8.js");
+//}
+
+//TEST_F(guiTests, script9)
+//{
+//	runFromFile("script9.js");
+//}
+
+//TEST_F(guiTests, script10)
+//{
+//	runFromFile("script10.js");
 //}
