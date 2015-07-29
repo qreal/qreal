@@ -43,6 +43,7 @@ const QString metamodelNameTag = "@@MetamodelName@@";
 const QString initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
 const QString initDiagramNodeNameMapLineTag = "@@InitDiagramNodeNameMapLine@@";
 const QString initPropertyDisplayedNamesTag = "@@InitPropertyNamesMapLine@@";
+const QString dispNameTag = "@@DispName@@";
 const QString initElementNameMapLineTag = "@@InitElementNameMapLine@@";
 const QString initParentsMapLineTag = "@@InitParentsMapLine@@";
 const QString initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";
@@ -51,6 +52,11 @@ const QString getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
 const QString initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 const QString getContainersLineTag = "@@GetContainedByLine@@";
 const QString getReferencePropertiesLineTag = "@@GetReferencePropertiesLine@@";
+
+const QString getPortTypesLineTag = "@@GetPortTypesLine@@";
+const QString portTypesListTag = "@@PortTypesList@@";
+
+const QString getPropertyNameTag = "@@GetPropertyNamesLine@@";
 const QString getConnectionsLineTag = "@@GetConnectedTypesLine@@";
 const QString getUsagesLineTag = "@@GetUsedTypesLine@@";
 const QString getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";
@@ -95,6 +101,9 @@ const QString propertyDefaultTag = "@@PropertyDefaultValue@@";
 const QString containersListTag = "@@ContainedByList@@";
 const QString connectionsListTag = "@@ConnectedToList@@";
 const QString referencePropertiesListTag = "@@ReferencePropertiesList@@";
+const QString elementDescriptionMapTag = "@@ElementDescriptionMapLine@@";
+const QString descriptionTag = "@@Description@@";
+const QString propertyNameListTag = "@@PropertiesList@@";
 const QString usagesListTag = "@@UsedTypesList@@";
 const QString isNodeOrEdgeTag = "@@IsNodeOrEdgeValue@@";
 const QString enumsListTag = "@@EnumValuesList@@";
@@ -111,6 +120,8 @@ const QString startXScalabilityTag = "@@NodeLinePortStartXScalable@@";
 const QString startYScalabilityTag = "@@NodeLinePortStartYScalable@@";
 const QString endXScalabilityTag = "@@NodeLinePortEndXScalable@@";
 const QString endYScalabilityTag = "@@NodeLinePortEndYScalable@@";
+const QString labelRotationTag = "@@Rotation@@";
+const QString portsForFromPortTypesTag = "@@PortsForFromPortTypes@@";
 const QString labelXTag = "@@LabelX@@";
 const QString labelYTag = "@@LabelY@@";
 const QString labelNameTag = "@@LabelName@@";
@@ -170,5 +181,7 @@ const QString metaEntityContextMenuField = "MetaEntityContextMenuField";
 const QString metaEntityAssociation = "MetaEntityAssociation";
 
 const QString nameOfTheDirectory = "name of the directory";
+
+const QString qMakeLineTag = "@@qMakeLine@@";
 
 

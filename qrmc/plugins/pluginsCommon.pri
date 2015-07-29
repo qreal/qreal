@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE =  lib
+include(../../global.pri)
+
+DESTDIR = $$DESTDIR/plugins/editors
+
+TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../bin/plugins/
-MOC_DIR = .moc
-RCC_DIR = .moc
-OBJECTS_DIR = .obj
 
 isEmpty(QREAL_EDITOR_NAME) {
 	error(Please set QREAL_EDITOR_NAME variable in a .pro file of your editor as a folder name of that editor)
@@ -30,3 +30,5 @@ if (equals(QMAKE_CXX, "g++")) {
 QRMC_ROOT = ..
 
 include(pluginsSdk.pri)
+
+includes(qrgui)
