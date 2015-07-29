@@ -32,7 +32,7 @@ public:
 	/// Constructor.
 	/// @param serverIpSettingsKey - where to find server ip setting in a registry.
 	explicit TcpRobotCommunicator(const QString &serverIpSettingsKey);
-	~TcpRobotCommunicator();
+	~TcpRobotCommunicator() override;
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
 	bool uploadProgram(const QString &programName);

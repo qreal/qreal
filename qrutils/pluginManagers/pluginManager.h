@@ -43,7 +43,7 @@ public:
 	template <class InterfaceType>
 	QPair<InterfaceType *, QString> pluginLoadedByName(const QString &pluginName)
 	{
-		QPair<QObject *, QString> resultOfLoading = mPluginManagerLoader.pluginLoadedByName(pluginName);
+		QPair<QObject *, QString> resultOfLoading = mPluginManagerLoader.loadPluginByName(pluginName);
 
 		const QObject *loadedPlugin = resultOfLoading.first;
 		const QString errorMessage = resultOfLoading.second;
