@@ -24,6 +24,21 @@ function show_help {
 	exit 0;
 }
 
+logFile=./checker-log.txt
+
+function log {
+	echo $1 >> $logFile
+}
+
+log "$( date "+%F %T" ): Check started ================================================================================"
+
+reportFile=./report
+trajectoryFile=./trajectory
+
+internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
+solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
+solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение неправильно работает на одном из тестовых полей\" } ]"
+
 [ "$#" -lt 1 ] && show_help || :
 
 cd "$(dirname "$0")"
@@ -33,8 +48,9 @@ fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
 
 if ! [ -f $fileWithPath ]; then
-	echo "File $fileWithPath does not exist, aborting"
-	exit 1
+	echo $internalErrorMessage
+	log "File $fileWithPath does not exist, aborting"
+	exit 2
 fi
 
 if [ -f ./2D-model ]; then
@@ -50,44 +66,64 @@ chmod +x $patcher
 
 export LD_LIBRARY_PATH=.
 
-echo "Looking for prepared testing fields..."
+log "Running save with its own field"
+
+rm -rf reports/$fileNameWithoutExtension
+rm -rf trajectories/$fileNameWithoutExtension
+
+rm $reportFile
+rm $trajectory
+
+mkdir -p reports/$fileNameWithoutExtension
+mkdir -p trajectories/$fileNameWithoutExtension
+
+$twoDModel --platform minimal -b "$fileWithPath" \
+		--report "reports/$fileNameWithoutExtension/$fileNameWithoutExtension" \
+		--trajectory "trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension"
+
+cat reports/$fileNameWithoutExtension/$fileNameWithoutExtension > $reportFile
+cat trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension > $trajectoryFile
+
+if [ $? -ne 0 ]; then
+	log "Solution failed on its own field, aborting"
+	echo $solutionFailedOnOwnFieldMessage
+	cat $reportFile
+	exit 1
+fi
+
+log "Looking for prepared testing fields..."
 
 if [ -d fields/$fileNameWithoutExtension ]; then
-	echo "Found  fields/$fileNameWithoutExtension folder"
+	log "Found  fields/$fileNameWithoutExtension folder"
 
-	rm -rf reports/$fileNameWithoutExtension
-	rm -rf trajectories/$fileNameWithoutExtension
-
-	mkdir -p reports/$fileNameWithoutExtension
-	mkdir -p trajectories/$fileNameWithoutExtension
 	for i in $( ls fields/$fileNameWithoutExtension ); do
-		echo "Field: $i, running $patcher $fileWithPath fields/$fileNameWithoutExtension/$i..."
+		log "Field: $i, running $patcher $fileWithPath fields/$fileNameWithoutExtension/$i..."
 		$patcher "$fileWithPath" "fields/$fileNameWithoutExtension/$i"
 		if [ $? -ne 0 ]; then
-			echo "Patching failed, aborting"
-			exit 1
+			echo $internalErrorMessage
+			log "Patching failed, aborting"
+			exit 2
 		fi
 
-		echo "Running Checker"
+		log "Running Checker"
 		currentField="${i%.*}"
 		$twoDModel --platform minimal -b "$fileWithPath" --report "reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "trajectories/$fileNameWithoutExtension/$currentField"
 
 		if [ $? -ne 0 ]; then
-			echo "Test $currentField failed, aborting"
+			echo ;solutionFailedOnOtherFieldMessage
+			log "Test $currentField failed, aborting"
+			cat reports/$fileNameWithoutExtension/$currentField > $reportFile
+			cat trajectories/$fileNameWithoutExtension/$currentField > $trajectoryFile
+			cat $reportFile
 			exit 1
 		fi
 
-		echo "Checker is done"
+		log "Checker is done"
 	done
 else
-	echo "No testing fields found, running on a field from save file itself"
-	mkdir -p reports
-	mkdir -p trajectories
-	$twoDModel --platform minimal -b "$fileWithPath" --report "reports/$fileNameWithoutExtension" \
-			--trajectory "trajectories/$fileNameWithoutExtension"
-
-	exit $?
+	log "No testing fields found"
 fi
 
+cat $reportFile
 exit 0

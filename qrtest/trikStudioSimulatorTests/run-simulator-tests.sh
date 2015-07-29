@@ -30,11 +30,8 @@ for i in $( ls solutions ); do
 	(. ./check-solution.sh "solutions/$i")
 	if [ $? -ne 0 ]; then
 		fileNameWithoutExtension="${i%.*}"
-		echo "Test $i failed, run logs are as follows:"
-		for report in $( ls reports/$fileNameWithoutExtension ); do
-			echo "$report:"
-			cat reports/$fileNameWithoutExtension/$report
-		done
+		echo "Test $i failed, failed log is:"
+		cat report
 		exit 1
 	fi
 done
