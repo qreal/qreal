@@ -31,8 +31,6 @@ using namespace qReal;
 
 const int maxLogSize = 10 * 1024 * 1024;  // 10 MB
 
-//QRealApplication *qrealPointer;
-
 void clearConfig()
 {
 	SettingsManager::clearSettings();
