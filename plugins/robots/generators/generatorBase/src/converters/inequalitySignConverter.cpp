@@ -17,7 +17,7 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-InequalitySignConverter::InequalitySignConverter(const QString &pathToTemplates)
-	: DynamicPathConverter(pathToTemplates, "signs/@@DATA@@.t")
+InequalitySignConverter::InequalitySignConverter(const QStringList &pathsToTemplates)
+	: DynamicPathConverter(pathsToTemplates, "signs/@@DATA@@.t")
 {
 }

@@ -26,10 +26,10 @@ using namespace generatorBase;
 using namespace parts;
 using namespace qReal;
 
-Variables::Variables(const QString &pathToTemplates
+Variables::Variables(const QStringList &pathsToTemplates
 		, const kitBase::robotModel::RobotModelInterface &robotModel
 		, qrtext::LanguageToolboxInterface &luaToolbox)
-	: TemplateParametrizedEntity(pathToTemplates)
+	: TemplateParametrizedEntity(pathsToTemplates)
 	, mRobotModel(robotModel)
 	, mLuaToolbox(luaToolbox)
 {

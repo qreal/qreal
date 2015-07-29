@@ -1,8 +1,4 @@
-TEMPLATE = subdirs                                   
-
-INCLUDEPATH += ../../../qrgui \
-#               ../../../qrgui/editorPluginInterface \
-		../../../qrgui/plugins/editorPluginInterface \
+TEMPLATE = subdirs
 
 SUBDIRS	= \
 @@Subdirs@@

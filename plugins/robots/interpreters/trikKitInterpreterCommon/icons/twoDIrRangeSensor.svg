@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="50px" height="50px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 150 150"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str1 {stroke:#990000;stroke-width:0.79}
+    .str0 {stroke:#1A1A1A;stroke-width:1.27}
+    .str2 {stroke:#333333;stroke-width:1.27}
+    .fil4 {fill:#999999}
+    .fil1 {fill:#FFC3B8}
+    .fil3 {fill:url(#id0)}
+    .fil0 {fill:url(#id1)}
+    .fil2 {fill:url(#id2)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="39.08" y1="101.76" x2="39.08" y2="48.80">
+   <stop offset="0" style="stop-color:#4D4D4D"/>
+   <stop offset="1" style="stop-color:#999999"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="20.92" y1="105.45" x2="20.92" y2="44.17">
+   <stop offset="0" style="stop-color:#333333"/>
+   <stop offset="0.301961" style="stop-color:#999999"/>
+   <stop offset="0.501961" style="stop-color:#B3B3B3"/>
+   <stop offset="0.701961" style="stop-color:#999999"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+  <radialGradient id="id2" gradientUnits="objectBoundingBox" cx="71.9999%" cy="30.0001%" r="50%" fx="71.9999%" fy="30.0001%">
+   <stop offset="0" style="stop-color:#FFCC99"/>
+   <stop offset="0.231373" style="stop-color:#FF664C"/>
+   <stop offset="1" style="stop-color:red"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect class="fil0 str0" x="6.17" y="44.17" width="29.51" height="61.28" rx="1.77" ry="1.77"/>
+  <polygon class="fil1" points="47.92,63.87 47.92,55.57 135.48,46.30 135.80,68.74 "/>
+  <polygon class="fil1" points="47.92,94.51 47.92,86.21 136.35,77.22 136.37,99.94 "/>
+  <ellipse class="fil2 str1" cx="42.77" cy="59.97" rx="6.05" ry="7.00"/>
+  <ellipse class="fil2 str1" cx="42.77" cy="90.61" rx="6.05" ry="7.00"/>
+  <rect class="fil3 str0" x="35.77" y="48.81" width="6.62" height="52.96"/>
+ </g>
+</svg>

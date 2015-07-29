@@ -22,14 +22,14 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-IntPropertyConverter::IntPropertyConverter(const QString &pathToTemplates
+IntPropertyConverter::IntPropertyConverter(const QStringList &pathsToTemplates
 		, lua::LuaProcessor &luaTranslator
 		, const qReal::Id &id
 		, const QString &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter
 		, simple::Binding::ConverterInterface *typeConverter)
 	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
-	, TemplateParametrizedEntity(pathToTemplates)
+	, TemplateParametrizedEntity(pathsToTemplates)
 	, mTypeConverter(typeConverter)
 {
 }

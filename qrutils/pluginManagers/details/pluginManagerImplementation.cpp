@@ -31,47 +31,48 @@ PluginManagerImplementation::PluginManagerImplementation(const QString &applicat
 PluginManagerImplementation::~PluginManagerImplementation()
 {
 	for (auto &pair : mLoaders) {
+		pair.second->unload();
 		delete pair.second;
 	}
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 {
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
-
 	QList<QString> splittedDir = mAdditionalPart.split('/');
 	for (const QString &partOfDirectory : splittedDir) {
+		if (!mPluginsDir.exists()) {
+			QLOG_INFO() << "Plugins directory" << mPluginsDir.path()
+					<< "does not exist, maybe we are in 'metamodeling on fly' mode";
+			return {};
+		}
+
 		mPluginsDir.cd(partOfDirectory);
 	}
 
 	QList<QObject *> listOfPlugins;
 
 	for (const QString &fileName : mPluginsDir.entryList(QDir::Files)) {
-		QPair<QObject *, QString> const pluginAndError =  pluginLoadedByName(fileName);
+		QPair<QObject *, QString> const pluginAndError =  loadPluginByName(fileName);
 		QObject * const pluginByName = pluginAndError.first;
 		if (pluginByName) {
 			listOfPlugins.append(pluginByName);
 			mFileNameAndPlugin.insert(fileName, pluginByName);
 		} else {
 			QLOG_ERROR() << "Plugin loading failed:" << pluginAndError.second;
-			qDebug() << "Plugin loading failed:" << pluginAndError.second;
 		}
 	}
 
 	return listOfPlugins;
 }
 
-QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const QString &pluginName)
+QPair<QObject *, QString> PluginManagerImplementation::loadPluginByName(const QString &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
+	QPluginLoader * const loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
 	loader->load();
-	QObject *plugin = loader->instance();
-	QPair<QString, QPluginLoader*> pairOfLoader = qMakePair(pluginName, loader);
-	mLoaders.append(pairOfLoader);
+	QObject * const plugin = loader->instance();
 
 	if (plugin) {
+		mLoaders.append(qMakePair(pluginName, loader));
 		mFileNameAndPlugin.insert(loader->metaData()["IID"].toString(), plugin);
 		return qMakePair(plugin, QString());
 	}

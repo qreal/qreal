@@ -253,7 +253,8 @@ QSharedPointer<qrtext::core::ParserInterface<TokenTypes>> simpleParser::Parser::
 
 	auto ifExpression = (-TokenTypes::ifKeyword & -TokenTypes::openingBracket & condition & -TokenTypes::closingBracket
 				& -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket
-				& ~(-TokenTypes::elseKeyword & -TokenTypes::openingCurlyBracket & program & -TokenTypes::closingCurlyBracket))
+				& ~(-TokenTypes::elseKeyword & -TokenTypes::openingCurlyBracket & program
+				& -TokenTypes::closingCurlyBracket))
 			>> [] (QSharedPointer<TemporaryPair> temporaryPair) {
 					auto leftPart = temporaryPair->left();
 					auto rightPart = temporaryPair->right();

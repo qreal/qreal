@@ -97,7 +97,6 @@ void TcpConnectionHandler::onIncomingData()
 			if (mBuffer.size() >= mExpectedBytes) {
 				const QByteArray message = mBuffer.left(mExpectedBytes);
 				mBuffer = mBuffer.mid(mExpectedBytes);
-
 				emit messageReceived(message);
 
 				mExpectedBytes = 0;

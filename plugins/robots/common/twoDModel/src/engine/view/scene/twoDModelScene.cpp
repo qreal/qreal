@@ -27,6 +27,7 @@
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/regions/regionItem.h"
 #include "src/engine/items/startPosition.h"
 
 using namespace twoDModel;
@@ -50,7 +51,8 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
-	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &TwoDModelScene::onOtherItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
+	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &TwoDModelScene::onItemRemoved);
 
 	connect(&mModel, &model::Model::robotAdded, this, &TwoDModelScene::onRobotAdd);
@@ -142,11 +144,6 @@ void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 	addItem(item);
 	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	item->setEditable(!mWorldReadOnly);
-}
-
-void TwoDModelScene::onOtherItemAdded(QGraphicsItem *item)
-{
-	addItem(item);
 }
 
 void TwoDModelScene::onItemRemoved(QGraphicsItem *item)

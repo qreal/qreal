@@ -30,3 +30,5 @@ if (equals(QMAKE_CXX, "g++")) {
 QRMC_ROOT = ..
 
 include(pluginsSdk.pri)
+
+includes(qrgui)

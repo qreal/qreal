@@ -25,10 +25,11 @@ namespace converters {
 class SwitchConditionsMerger : public TemplateParametrizedConverter
 {
 public:
-	SwitchConditionsMerger(const QString &pathToTemplates
+	SwitchConditionsMerger(const QStringList &pathsToTemplates
 			, const ConverterInterface * const systemVariablesConverter
 			, const QStringList &values);
-	~SwitchConditionsMerger();
+
+	~SwitchConditionsMerger() override;
 
 	QString convert(const QString &expression) const override;
 

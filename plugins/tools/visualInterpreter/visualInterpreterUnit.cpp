@@ -38,13 +38,15 @@ VisualInterpreterUnit::VisualInterpreterUnit(
 	connect(mPythonInterpreter
 			, SIGNAL(readyReadStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage))
 			, this
-			, SLOT(processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage)));
+			, SLOT(processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString>
+					, TextCodeInterpreter::CodeLanguage)));
 	connect(mPythonInterpreter, SIGNAL(readyReadErrOutput(QString))
 			, this, SLOT(processTextCodeInterpreterErrOutput(QString)));
 	connect(mQtScriptInterpreter
 			, SIGNAL(readyReadStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage))
 			, this
-			, SLOT(processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage)));
+			, SLOT(processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString>
+					, TextCodeInterpreter::CodeLanguage)));
 	connect(mQtScriptInterpreter, SIGNAL(readyReadErrOutput(QString))
 			, this, SLOT(processTextCodeInterpreterErrOutput(QString)));
 }
@@ -371,7 +373,8 @@ bool VisualInterpreterUnit::checkApplicationConditionPython(QHash<Id, Id> const 
 	mPythonGenerator->setRule(mRules.value(ruleName));
 	mPythonGenerator->setMatch(match);
 
-	return mPythonInterpreter->interpret(mPythonGenerator->generateScript(true), PythonInterpreter::applicationCondition);
+	return mPythonInterpreter->interpret(mPythonGenerator->generateScript(true)
+			, PythonInterpreter::applicationCondition);
 }
 
 Id VisualInterpreterUnit::startElement() const

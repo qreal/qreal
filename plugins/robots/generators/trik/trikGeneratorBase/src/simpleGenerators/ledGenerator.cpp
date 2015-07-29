@@ -31,7 +31,7 @@ LedGenerator::LedGenerator(const qrRepo::RepoApi &repo
 					<< Binding::createConverting(
 								"@@COLOR@@"
 								, "Color"
-								, new LedColorConverter(customizer.factory()->pathToTemplates())
+								, new LedColorConverter(customizer.factory()->pathsToTemplates())
 						)
 			, parent)
 {

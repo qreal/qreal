@@ -138,9 +138,7 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 				}
 
 				foreach (const Id &diagramChild, repo->children(editorChild)) {
-					if (diagramChild.element() == "MetaEntityEdge"
-							|| !repo->stringProperty(diagramChild, "shape").isEmpty())
-					{
+					if (diagramChild.element() == "MetaEntityEdge") {
 						if (repo->hasProperty(diagramChild,"abstract")) {
 							if (repo->stringProperty(diagramChild, "abstract") == "true") {
 								repo->setProperty(diagramChild, "isHidden", "true");
@@ -153,6 +151,22 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 
 						if (repo->stringProperty(diagramChild, "isHidden") != "true") {
 							result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
+						}
+					} else if (repo->hasProperty(diagramChild, "shape")) {
+						if (!repo->stringProperty(diagramChild, "shape").isEmpty()) {
+							if (repo->hasProperty(diagramChild,"abstract")) {
+								if (repo->stringProperty(diagramChild, "abstract") == "true") {
+									repo->setProperty(diagramChild, "isHidden", "true");
+								}
+							}
+
+							if (!repo->hasProperty(diagramChild, "isHidden")) {
+								repo->setProperty(diagramChild, "isHidden", "false");
+							}
+
+							if (repo->stringProperty(diagramChild, "isHidden") != "true") {
+								result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
+							}
 						}
 					}
 				}
@@ -503,7 +517,7 @@ IdList InterpreterEditorManager::containedTypes(const Id &id) const
 			const Id metaIdTo = repo->otherEntityFromLink(link, metaId);
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaIdTo);
 			containedTypes << Id(repo->name(editorAndDiagramPair.first)
-					 , repo->name(editorAndDiagramPair.second), repo->name(metaIdTo));
+					, repo->name(editorAndDiagramPair.second), repo->name(metaIdTo));
 		}
 	}
 
@@ -524,11 +538,25 @@ QList<QPair<QString, QString>> InterpreterEditorManager::enumValues(const Id &id
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	const qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	const Id metaId = repoAndMetaIdPair.second;
-	foreach (const Id &property, repo->children(metaId)) {
-		if (repo->name(property) == name) {
-			foreach (const Id &propertyChild, repo->children(property)) {
-				/// @todo: support friendly enum names
-				result.append(qMakePair(repo->name(propertyChild), repo->name(propertyChild)));
+
+	IdList listOfEnum =  repo->elementsByType("MetaEntityEnum");
+	for (const Id &currentEnum : listOfEnum) {
+		for (const Id &property: repo->children(metaId)) {
+			if (repo->name(property) == name && repo->isLogicalElement(property)) {
+				const QString nameOfEnum = repo->name(currentEnum);
+				const QString attributeType = repo->stringProperty(property, "attributeType");
+				if (nameOfEnum == attributeType) {
+					IdList children = repo->children(currentEnum);
+					for (const Id &current : children) {
+						if (repo->isLogicalElement(current)) {
+							if (repo->hasProperty(current, "valueName")) {
+								const QString valueName = repo->stringProperty(current, "valueName");
+								const QString displayedName = repo->stringProperty(current, "displayedName");
+								result.append(qMakePair(valueName, displayedName));
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -579,8 +607,14 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(const Id &id) 
 		result << parentsPropertiesWithDefaultValues;
 	}
 
-	foreach (const Id &property, repo->children(metaId)) {
+	for (const Id &property : repo->children(metaId)) {
 		if (repo->hasProperty(property, "defaultName")) {
+			result << repo->name(property);
+		}
+	}
+
+	for (const Id &property : repo->children(metaId)) {
+		if (repo->hasProperty(property, "name")) {
 			result << repo->name(property);
 		}
 	}
@@ -703,7 +737,9 @@ QStringList InterpreterEditorManager::elements(const QString &editor, const QStr
 	const qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
 	const Id diag = repoAndDiagramPair.second;
 	for (const auto &element: repo->children(diag)) {
-		result.append(repo->name(element));
+		if (element.element() != "MetaEntityEnum") {
+			result.append(repo->name(element));
+		}
 	}
 
 	return result;
@@ -810,8 +846,9 @@ IdList InterpreterEditorManager::elementsWithTheSameName(
 	for (const auto &element: repo->children(diag)) {
 		if (repo->stringProperty(element, "displayedName") == name && element.element() == type
 				&& repo->isLogicalElement(element)) {
-			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, element);
-			result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(element));
+			const QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, element);
+			result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second)
+					, repo->name(element));
 		}
 	}
 
@@ -829,11 +866,11 @@ IdList InterpreterEditorManager::propertiesWithTheSameName(
 	}
 
 	IdList result;
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	const QPair<qrRepo::RepoApi*, Id> repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	const Id metaId = repoAndMetaIdPair.second;
 
-	foreach (const Id &idProperty, repo->children(metaId)) {
+	for (const Id &idProperty : repo->children(metaId)) {
 		if (idProperty.element() == "MetaEntity_Attribute") {
 			if (repo->hasProperty(idProperty, "maskedNames")) {
 				if (repo->property(idProperty, "maskedNames").toStringList().contains(propertyNewName)) {

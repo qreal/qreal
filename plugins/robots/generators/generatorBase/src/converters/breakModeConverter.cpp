@@ -17,8 +17,8 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-BreakModeConverter::BreakModeConverter(const QString &pathToTemplates)
-	: EnumConverterBase(pathToTemplates)
+BreakModeConverter::BreakModeConverter(const QStringList &pathsToTemplates)
+	: EnumConverterBase(pathsToTemplates)
 {
 	addMapping("", "engines/breakMode/break.t");
 	addMapping("break", "engines/breakMode/break.t");

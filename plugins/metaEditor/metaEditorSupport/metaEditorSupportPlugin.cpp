@@ -31,10 +31,10 @@ using namespace qReal;
 using namespace metaEditor;
 
 MetaEditorSupportPlugin::MetaEditorSupportPlugin()
-		: mGenerateEditorForQrxcAction(NULL)
-		, mGenerateEditorWithQrmcAction(NULL)
-		, mParseEditorXmlAction(NULL)
-		, mRepoControlApi(NULL)
+		: mGenerateEditorForQrxcAction(nullptr)
+		, mGenerateEditorWithQrmcAction(nullptr)
+		, mParseEditorXmlAction(nullptr)
+		, mRepoControlApi(nullptr)
 		, mCompilerSettingsPage(new PreferencesCompilerPage())
 {
 }
@@ -87,15 +87,19 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 		QString const nameOfTheDirectory = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
 		dir.mkpath(nameOfTheDirectory);
-		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQRealRoot);
+		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory
+				, pathToQRealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelNames.first),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+					, tr("loading..")
+					, QString(tr("Do you want to load generated editor %1?"))
+							.arg(metamodelNames.first)
+					, QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
 				return;
 			}
+
 			loadNewEditor(nameOfTheDirectory, metamodelNames
 					, SettingsManager::value("pathToQmake").toString()
 					, SettingsManager::value("pathToMake").toString()
@@ -104,6 +108,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 					, mLogicalRepoApi->stringProperty(key, "buildConfiguration"));
 		}
 	}
+
 	if (metamodelList.isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(tr("There is nothing to generate"));
 	}
@@ -234,7 +239,9 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 void MetaEditorSupportPlugin::parseEditorXml()
 {
 	if (!mMainWindowInterface->pluginLoaded("MetaEditor")) {
-		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("required plugin (MetaEditor) is not loaded"));
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error")
+				, tr("required plugin (MetaEditor) is not loaded"));
+
 		return;
 	}
 	QDir dir(".");
@@ -330,8 +337,9 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 				delete progress;
 				return;
 			} else if (buildConfiguration == "debug") {
-				if (mMainWindowInterface->loadPlugin(prefix + metamodelName
-						+ "-d"+ "." + extension, normalizeDirName)) {
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName 
+						+ "-d"+ "." + extension, normalizeDirName)) 
+				{
 					progress->setValue(100);
 				}
 			} else {

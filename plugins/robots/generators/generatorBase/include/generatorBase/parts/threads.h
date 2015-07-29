@@ -26,7 +26,7 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Threads : public TemplateParametrizedEntity
 {
 public:
-	explicit Threads(const QString &pathToTemplates);
+	explicit Threads(const QStringList &pathsToTemplates);
 
 	/// Must be called each time when generator gets into the block with the
 	/// fork semantics for every block that start new thread.

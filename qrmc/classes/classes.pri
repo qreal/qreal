@@ -38,6 +38,6 @@ SOURCES += \
 	$$PWD/shape.cpp \
 	$$PWD/label.cpp \
 	$$PWD/linePort.cpp \
-	$$PWD/pointPort.cpp \
 	$$PWD/port.cpp \
+	$$PWD/pointPort.cpp \
 	$$PWD/scalableCoordinate.cpp \

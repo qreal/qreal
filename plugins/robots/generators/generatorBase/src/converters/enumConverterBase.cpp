@@ -17,9 +17,9 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-EnumConverterBase::EnumConverterBase(const QString &pathToTemplatesDir
+EnumConverterBase::EnumConverterBase(const QStringList &pathsToTemplates
 		, QMap<QString, QString> const &valuesToTemplatePaths)
-	: TemplateParametrizedConverter(pathToTemplatesDir)
+	: TemplateParametrizedConverter(pathsToTemplates)
 	, mValuesToTemplates(valuesToTemplatePaths)
 {
 }

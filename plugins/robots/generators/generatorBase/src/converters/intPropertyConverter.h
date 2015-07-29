@@ -27,7 +27,7 @@ namespace converters {
 class IntPropertyConverter : public CodeConverterBase, public TemplateParametrizedEntity
 {
 public:
-	IntPropertyConverter(const QString &pathToTemplates
+	IntPropertyConverter(const QStringList &pathsToTemplates
 			, lua::LuaProcessor &luaTranslator
 			, const qReal::Id &id
 			, const QString &propertyName

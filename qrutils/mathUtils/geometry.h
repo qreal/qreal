@@ -24,7 +24,7 @@
 
 namespace mathUtils {
 
-/// Contains some useful methods for working with vectors, lines, pathes, etc.
+/// Contains some useful methods for working with vectors, lines, paths, etc.
 class QRUTILS_EXPORT Geometry
 {
 public:

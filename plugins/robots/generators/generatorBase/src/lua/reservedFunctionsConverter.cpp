@@ -18,8 +18,8 @@
 
 using namespace generatorBase::lua;
 
-ReservedFunctionsConverter::ReservedFunctionsConverter(const QString &pathToTemplates)
-	: TemplateParametrizedEntity(pathToTemplates)
+ReservedFunctionsConverter::ReservedFunctionsConverter(const QStringList &pathsToTemplates)
+	: TemplateParametrizedEntity(pathsToTemplates)
 {
 }
 

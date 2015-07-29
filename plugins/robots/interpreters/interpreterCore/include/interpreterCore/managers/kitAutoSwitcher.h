@@ -32,7 +32,7 @@ class KitAutoSwitcher : public QObject
 
 public:
 	KitAutoSwitcher(const qReal::ProjectManagementInterface &projectManager
-			, const qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::LogicalModelAssistInterface &logicalModel
 			, const BlocksFactoryManagerInterface &factoryManager
 			, const KitPluginManager &kitPluginManager
 			, RobotModelManager &robotModelManager
@@ -40,13 +40,14 @@ public:
 
 private slots:
 	void onProjectOpened();
-	void switchTo(const QString &kitId);
+	bool tryToRestoreFromMetaInformation();
+	bool switchTo(const QString &kitId);
 
 	QMap<QString, int> countKitSpecificBlocks() const;
-	QMap<qReal::Id, QString> kitSpecificBlocks() const;
+	QMultiMap<qReal::Id, QString> kitSpecificBlocks() const;
 
 private:
-	const qReal::LogicalModelAssistInterface &mLogicalModel;
+	qReal::LogicalModelAssistInterface &mLogicalModel;
 	const BlocksFactoryManagerInterface &mFactoryManager;
 	const KitPluginManager &mKitPluginManager;
 	RobotModelManager &mRobotModelManager;
