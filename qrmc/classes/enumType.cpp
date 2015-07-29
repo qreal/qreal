@@ -59,8 +59,7 @@ QString EnumType::generateEnums(const QString &lineTemplate) const
 	for (const QString &value : mValues.keys()) {
 		if (!lineForWrite.isEmpty()) {
 			lineForWrite += ", qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
-		}
-		else {
+		} else {
 			lineForWrite = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 	}

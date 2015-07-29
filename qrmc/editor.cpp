@@ -180,7 +180,7 @@ QStringList Editor::getAllPortNames() const
 		}
 	}
 
-	foreach (const Editor * const editor, mIncludes) {
+	for (const Editor * const editor : mIncludes) {
 		result += editor->getAllPortNames();
 	}
 

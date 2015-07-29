@@ -340,7 +340,7 @@ QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 	}
 
 	if (!portTypes.empty()) {
-		foreach (const QString &type, portTypes) {
+		for (const QString &type : portTypes) {
 			portTypesList = portTypesList + "\"" + type + "\"";
 		}
 
@@ -349,7 +349,6 @@ QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 		} else {
 			portTypesString.replace(portTypesListTag, portTypesList).replace(elementNameTag, name());
 		}
-
 	} else {
 		return "";
 	}
