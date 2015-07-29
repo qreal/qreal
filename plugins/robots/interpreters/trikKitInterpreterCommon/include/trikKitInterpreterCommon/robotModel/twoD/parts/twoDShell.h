@@ -37,6 +37,7 @@ namespace parts {
 class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Shell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
+	Q_PROPERTY(QString lastPhrase READ lastPhrase WRITE say)
 
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
@@ -53,9 +54,13 @@ public:
 	/// Sets the error reporter for writing bubbling messages in say().
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
 
+	/// Returns the value passed to say() method last time or empty string if it was not called at the moment.
+	QString lastPhrase() const;
+
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 	qReal::ErrorReporterInterface *mErrorReporter;
+	QString mLastPhrase;
 };
 
 }

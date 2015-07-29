@@ -44,3 +44,8 @@ SOURCES += \
 	$$PWD/main.cpp \
 	$$PWD/runner.cpp \
 	$$PWD/reporter.cpp \
+
+OTHER_FILES += \
+	$$PWD/check-solution.sh \
+
+copyToDestdir(check-solution.sh, now)

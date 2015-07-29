@@ -27,9 +27,25 @@
 
 using namespace qReal;
 
+EditorManager::EditorManager(const QString &path)
+	: mPluginManager(PluginManager(qApp->applicationDirPath(), path))
+{
+	init();
+}
+
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
 	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors"))
+{
+	 init();
+}
+
+EditorManager::~EditorManager()
+{
+	qDeleteAll(mPluginIface);
+}
+
+void EditorManager::init()
 {
 	const auto pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
 
@@ -42,11 +58,6 @@ EditorManager::EditorManager(QObject *parent)
 			mPluginIface[iEditor->id()] = iEditor;
 		}
 	}
-}
-
-EditorManager::~EditorManager()
-{
-	qDeleteAll(mPluginIface);
 }
 
 QString EditorManager::loadPlugin(const QString &pluginName)
@@ -219,7 +230,7 @@ QString EditorManager::propertyDescription(const Id &id, const QString &property
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4) {
+	if (id.idSize() < 3) {
 		return "";
 	}
 	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);

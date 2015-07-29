@@ -16,7 +16,6 @@
 #include "ui_twoDModelWidget.h"
 
 #include <QtCore/qmath.h>
-#include <QtCore/QDebug>
 #include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>

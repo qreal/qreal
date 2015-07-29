@@ -57,6 +57,16 @@ QList<kitBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotMode
 	return result;
 }
 
+int KitPluginManager::priority(const QString &kitId) const
+{
+	int result = 0;
+	for (kitBase::KitPluginInterface * const kit : kitsById(kitId)) {
+		result = qMax(result, kit->priority());
+	}
+
+	return result;
+}
+
 void KitPluginManager::tryToLoadKitPlugins()
 {
 	QList<kitBase::KitPluginInterface *> const loadedInterpreterPlugins =

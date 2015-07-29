@@ -1,0 +1,10 @@
+<xml>
+	<qmake>qmake</qmake>
+	<make>make</make>
+	<configuration>release</configuration>
+	<pluginExtension>so</pluginExtension>
+	<prefix>lib</prefix>
+	<qrealRoot>../</qrealRoot>
+	<generateHtml>no</generateHtml>
+	<generatedCodeDir>../qrtest/binaries</generatedCodeDir>
+</xml>
