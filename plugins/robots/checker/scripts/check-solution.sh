@@ -81,11 +81,11 @@ mkdir -p $savedPwd/reports/$fileNameWithoutExtension
 mkdir -p $savedPwd/trajectories/$fileNameWithoutExtension
 
 $twoDModel --platform minimal -b "$fileWithPath" \
-		--report "$savedPwd/reports/$fileNameWithoutExtension/$fileNameWithoutExtension" \
-		--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension"
+		--report "$savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
+		--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
 
-cat $savedPwd/reports/$fileNameWithoutExtension/$fileNameWithoutExtension > $reportFile
-cat $savedPwd/trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension > $trajectoryFile
+cat $savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension > $reportFile
+cat $savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension > $trajectoryFile
 
 if [ $? -ne 0 ]; then
 	log "Solution failed on its own field, aborting"
