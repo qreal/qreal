@@ -14,8 +14,14 @@
 
 win32 {
 	PLATFORM = windows
-} else {
+}
+
+unix:!macx {
 	PLATFORM = linux
+}
+
+macx {
+	PLATFORM = mac
 }
 
 CONFIG(debug, debug | release) {
