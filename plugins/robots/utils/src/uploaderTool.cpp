@@ -19,6 +19,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace trik;
 
@@ -58,7 +59,7 @@ void UploaderTool::uploadRuntime()
 
 	const QString rawWinscpPath = qReal::SettingsManager::value("WinScpPath").toString();
 	const QString winscpPath = rawWinscpPath.startsWith("./")
-			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
+			? qReal::PlatformInfo::applicationDirPath() + rawWinscpPath.mid(1)
 			: rawWinscpPath;
 
 	QStringList args = {"/command", openConnection};
@@ -67,7 +68,7 @@ void UploaderTool::uploadRuntime()
 
 	args << "exit";
 
-	if (!QProcess::startDetached(winscpPath, args, QApplication::applicationDirPath())) {
+	if (!QProcess::startDetached(winscpPath, args, qReal::PlatformInfo::applicationDirPath())) {
 		mMainWindowInterface->errorReporter()->addError(
 			tr("WinSCP process failed to launch, check path in settings.")
 		);

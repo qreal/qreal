@@ -36,6 +36,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
@@ -703,7 +704,7 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	const QString url = QString("file:///%1/help/index.html").arg(QApplication::applicationDirPath());
+	const QString url = QString("file:///%1/help/index.html").arg(PlatformInfo::applicationDirPath());
 	QDesktopServices::openUrl(QUrl(url));
 }
 

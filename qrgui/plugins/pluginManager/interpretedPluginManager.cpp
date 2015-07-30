@@ -16,11 +16,13 @@
 
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/platformInfo.h>
+
 using namespace qReal;
 
 InterpretedPluginManager::InterpretedPluginManager()
 	: mCustomizer()
-	, mPluginManager(qApp->applicationDirPath(), "plugins/interpreted")
+	, mPluginManager(PlatformInfo::applicationDirPath(), "plugins/interpreted")
 {
 	mPlugins = mPluginManager.loadAllPlugins<InterpretedPluginInterface>();
 }

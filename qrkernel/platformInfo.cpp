@@ -14,7 +14,8 @@
 
 #include "platformInfo.h"
 
-#include <QtCore/QString>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 
 using namespace qReal;
 
@@ -68,5 +69,22 @@ QString PlatformInfo::prettyOsVersion()
 	return "Linux";
 #elif defined Q_OS_MAC
 	return QString("Mac ") + QSysInfo().macVersion();
+#endif
+}
+
+QString PlatformInfo::applicationDirPath()
+{
+#if defined Q_OS_MAC
+	if (QDir(QCoreApplication::applicationDirPath() + "/plugins").exists()) {
+		return QCoreApplication::applicationDirPath();
+	}
+
+	QDir result(QCoreApplication::applicationDirPath());  // ../bin/debug/qreal-d.app/Contents/MacOS/ or ../bin/debug
+	result.cdUp();                                        // ../bin/debug/qreal-d.app/Contents/
+	result.cdUp();                                        // ../bin/debug/qreal-d.app/
+	result.cdUp();                                        // ../bin/debug/
+	return result.absolutePath();
+#elif
+	return QCoreApplication::applicationDirPath();
 #endif
 }

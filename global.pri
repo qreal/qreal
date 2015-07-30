@@ -106,12 +106,6 @@ defineTest(copyToDestdir) {
 	export(QMAKE_POST_LINK)
 }
 
-macx {
-	defineTest(copyToBundleDir) {
-		copyToDestdir($$1, now, qreal$${CONFIGURATION_SUFFIX}.app/Contents/MacOS/)
-	}
-}
-
 defineTest(includes) {
 	PROJECTS = $$1
 

@@ -54,9 +54,6 @@ private:
 	/// Doesn't have ownership, objects are owned by mLoaders.
 	QMap<QString, kitBase::KitPluginInterface *> mPluginInterfaces;  // Has ownership
 
-	/// Directory from which plugins shall be loaded.
-	QDir mPluginsDir;
-
 	/// Common part of plugins loading
 	qReal::PluginManager mPluginManager;
 };

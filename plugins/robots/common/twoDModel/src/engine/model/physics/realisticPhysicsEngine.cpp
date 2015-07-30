@@ -179,7 +179,7 @@ void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegi
 		const QLineF currentLine(startPoint, endPoint);
 
 		// Checking that current segment belongs to the wall path, not the robot one
-		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPrecision), false) {
+		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPrecision)) {
 			continue;
 		}
 
