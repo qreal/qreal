@@ -89,7 +89,6 @@ defineTest(copyToDestdir) {
 			win32 {
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
 			} else {
-				message(cp -r -f $$FILE $$DESTDIR/)
 				system("cp -r -f $$FILE $$DESTDIR/")
 			}
 		}
