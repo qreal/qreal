@@ -38,6 +38,7 @@ log "$( date "+%F %T" ): Check started =========================================
 
 reportFile=$savedPwd/report
 trajectoryFile=$savedPwd/trajectory
+failedFieldFile=$savedPwd/failed-field
 
 internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
 solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
@@ -121,6 +122,7 @@ if [ -d $savedPwd/fields/$fileNameWithoutExtension ]; then
 			log "Test $currentField failed, aborting"
 			cat $savedPwd/reports/$fileNameWithoutExtension/$currentField > $reportFile
 			cat $savedPwd/trajectories/$fileNameWithoutExtension/$currentField > $trajectoryFile
+			echo "$savedPwd/fields/$fileNameWithoutExtension/$i" > $failedFieldFile
 			cat $reportFile
 			rm -f $solutionCopy
 			exit 1
