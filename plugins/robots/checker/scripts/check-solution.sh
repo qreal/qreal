@@ -24,7 +24,11 @@ function show_help {
 	exit 0;
 }
 
-logFile=./checker-log.txt
+savedPwd=$(pwd)
+
+cd "$(dirname "$0")"
+
+logFile=$savedPwd/checker-log.txt
 
 function log {
 	echo $1 >> $logFile
@@ -32,16 +36,14 @@ function log {
 
 log "$( date "+%F %T" ): Check started ================================================================================"
 
-reportFile=./report
-trajectoryFile=./trajectory
+reportFile=$savedPwd/report
+trajectoryFile=$savedPwd/trajectory
 
 internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
 solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
 solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение неправильно работает на одном из тестовых полей\" } ]"
 
 [ "$#" -lt 1 ] && show_help || :
-
-cd "$(dirname "$0")"
 
 fileWithPath=$1
 fileName="${fileWithPath##*/}"
@@ -68,21 +70,21 @@ export LD_LIBRARY_PATH=.
 
 log "Running save with its own field"
 
-rm -rf reports/$fileNameWithoutExtension
-rm -rf trajectories/$fileNameWithoutExtension
+rm -rf $savedPwd/reports/$fileNameWithoutExtension
+rm -rf $savedPwd/trajectories/$fileNameWithoutExtension
 
-rm $reportFile
-rm $trajectory
+rm -f $reportFile
+rm -f $trajectory
 
-mkdir -p reports/$fileNameWithoutExtension
-mkdir -p trajectories/$fileNameWithoutExtension
+mkdir -p $savedPwd/reports/$fileNameWithoutExtension
+mkdir -p $savedPwd/trajectories/$fileNameWithoutExtension
 
 $twoDModel --platform minimal -b "$fileWithPath" \
-		--report "reports/$fileNameWithoutExtension/$fileNameWithoutExtension" \
-		--trajectory "trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension"
+		--report "$savedPwd/reports/$fileNameWithoutExtension/$fileNameWithoutExtension" \
+		--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension"
 
-cat reports/$fileNameWithoutExtension/$fileNameWithoutExtension > $reportFile
-cat trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension > $trajectoryFile
+cat $savedPwd/reports/$fileNameWithoutExtension/$fileNameWithoutExtension > $reportFile
+cat $savedPwd/trajectories/$fileNameWithoutExtension/$fileNameWithoutExtension > $trajectoryFile
 
 if [ $? -ne 0 ]; then
 	log "Solution failed on its own field, aborting"
@@ -93,12 +95,15 @@ fi
 
 log "Looking for prepared testing fields..."
 
-if [ -d fields/$fileNameWithoutExtension ]; then
-	log "Found  fields/$fileNameWithoutExtension folder"
+if [ -d $savedPwd/fields/$fileNameWithoutExtension ]; then
+	log "Found $savedPwd/fields/$fileNameWithoutExtension folder"
 
-	for i in $( ls fields/$fileNameWithoutExtension ); do
-		log "Field: $i, running $patcher $fileWithPath fields/$fileNameWithoutExtension/$i..."
-		$patcher "$fileWithPath" "fields/$fileNameWithoutExtension/$i"
+	solutionCopy=$fileNameWithoutExtension-copy.qrs
+	cp -f $fileWithPath ./$solutionCopy
+
+	for i in $( ls $savedPwd/fields/$fileNameWithoutExtension ); do
+		log "Field: $i, running $patcher $solutionCopy $savedPwd/fields/$fileNameWithoutExtension/$i..."
+		$patcher "$solutionCopy" "$savedPwd/fields/$fileNameWithoutExtension/$i"
 		if [ $? -ne 0 ]; then
 			echo $internalErrorMessage
 			log "Patching failed, aborting"
@@ -107,20 +112,24 @@ if [ -d fields/$fileNameWithoutExtension ]; then
 
 		log "Running Checker"
 		currentField="${i%.*}"
-		$twoDModel --platform minimal -b "$fileWithPath" --report "reports/$fileNameWithoutExtension/$currentField" \
-				--trajectory "trajectories/$fileNameWithoutExtension/$currentField"
+		$twoDModel --platform minimal -b "./$solutionCopy" \
+				--report "$savedPwd/reports/$fileNameWithoutExtension/$currentField" \
+				--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/$currentField"
 
 		if [ $? -ne 0 ]; then
-			echo ;solutionFailedOnOtherFieldMessage
+			echo $solutionFailedOnOtherFieldMessage
 			log "Test $currentField failed, aborting"
-			cat reports/$fileNameWithoutExtension/$currentField > $reportFile
-			cat trajectories/$fileNameWithoutExtension/$currentField > $trajectoryFile
+			cat $savedPwd/reports/$fileNameWithoutExtension/$currentField > $reportFile
+			cat $savedPwd/trajectories/$fileNameWithoutExtension/$currentField > $trajectoryFile
 			cat $reportFile
+			rm -f $solutionCopy
 			exit 1
 		fi
 
 		log "Checker is done"
 	done
+
+	rm -f $solutionCopy
 else
 	log "No testing fields found"
 fi
