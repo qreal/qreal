@@ -76,6 +76,7 @@ cp -f $qtDir/5.5/gcc_64/lib/libQt5Script.so* .
 cp -f $qtDir/5.5/gcc_64/lib/libQt5Svg.so* .
 cp -f $qtDir/5.5/gcc_64/lib/libQt5Widgets.so* .
 cp -f $qtDir/5.5/gcc_64/lib/libQt5Xml.so* .
+cp -f $qtDir/5.5/gcc_64/lib/libQt5DBus.so* .
 
 # Copying QReal librariesbuild-checker-installer
 cp -f $qRealDir/bin/release/changelog.txt .
