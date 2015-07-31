@@ -34,6 +34,6 @@ namespace qrmc {
 
 	private:
 
-		QStringList mValues;
+		QMap<QString, QString> mValues;
 	};
 }

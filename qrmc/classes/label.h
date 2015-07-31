@@ -47,5 +47,6 @@ namespace qrmc {
 		QString mCenter;
 		QString scalingX;
 		QString scalingY;
+		qreal mRotation;
 	};
 }

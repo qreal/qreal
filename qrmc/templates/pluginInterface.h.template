@@ -1,15 +1,19 @@
 #pragma once
 
+#include "../../../qrgui/plugins/editorPluginInterface/elementImpl.h"
+#include "../../../qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
+
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
 #include <QPair>
-#include "../../../qrgui/editorPluginInterface/editorInterface.h"
+#include "../../../qrgui/plugins/editorPluginInterface/editorInterface.h"
 
 class @@MetamodelName@@Plugin : public QObject, public qReal::EditorInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::EditorInterface)
+	Q_PLUGIN_METADATA(IID "RobotsMetamodel")
 
 public:
 
@@ -24,40 +28,49 @@ public:
 
 	virtual QString id() const { return "@@MetamodelName@@"; }
 
+//It needs to be fixed properly, but for now we use hardcode to be able to compile it.
+	QString version() const { return "1.0.0"; };
+
 	virtual QStringList diagrams() const;
-	virtual QStringList elements(QString const &diagram) const;
-	virtual QString elementDescription(QString const &diagram, QString const &element) const;
-	virtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const;
-	virtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const;
-	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;
-	virtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const;
-	virtual QStringList diagramPaletteGroups(QString const &diagram) const;
-	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;
-	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;
-	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const;
+	virtual QStringList elements(const QString &diagram) const;
+	virtual QString elementDescription(const QString &diagram, const QString &element) const;
+	virtual QString propertyDescription(const QString &diagram, const QString &element, const QString &property) const;
+	virtual QString propertyDisplayedName(const QString &diagram, const QString &element, const QString &property) const;
+	virtual bool isParentOf(const QString &parentDiagram, const QString &parentElement, const QString &childDiagram, const QString &childElement) const;
+	virtual QList<QPair<QString, QString> > getParentsOf(const QString &diagram, const QString &element) const;
+	virtual QStringList diagramPaletteGroups(const QString &diagram) const;
+	virtual QStringList diagramPaletteGroupList(const QString &diagram, const QString &group) const;
+	virtual QString diagramPaletteGroupDescription(const QString &diagram, const QString &group) const;
+	virtual QStringList getPropertiesWithDefaultValues(const QString &element) const;
 
-	virtual QStringList getTypesContainedBy(QString const &element) const;
-	virtual QStringList getConnectedTypes(QString const &element) const;
-	virtual QStringList getUsedTypes(QString const &element) const;
-	virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;
+	virtual QStringList getTypesContainedBy(const QString &element) const;
+	virtual QStringList getConnectedTypes(const QString &element) const;
+	virtual QStringList getUsedTypes(const QString &element) const;
+	virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(const QString &element) const;
 
-	virtual int isNodeOrEdge(QString const &element) const; 
+	virtual int isNodeOrEdge(const QString &element) const;
 
-	virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;
-	virtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
-	virtual QString getPropertyType(QString const &element, QString const &property) const;
-	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
-	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
-	virtual QStringList getReferenceProperties(QString const &/*diagram*/, QString const &element) const;
-	virtual QStringList getEnumValues(QString name) const;
+	virtual qReal::ElementImpl* getGraphicalObject(const QString &diagram, const QString &element) const;
+	virtual QString getPropertyType(const QString &element, const QString &property) const;
+	virtual QString getPropertyDefaultValue(const QString &element, const QString &property) const;
+	virtual QStringList getPropertyNames(const QString &diagram, const QString &element) const;
+	virtual QStringList getReferenceProperties(const QString &/*diagram*/, const QString &element) const;
 
 	virtual QString editorName() const;
-	virtual QString diagramName(QString const &diagram) const;
-	virtual QString diagramNodeName(QString const &diagram) const;
-	virtual QString elementName(QString const &diagram, QString const &element) const;
-	virtual QString elementMouseGesture(QString const &digram, QString const &element) const;
-
+	virtual QString diagramName(const QString &diagram) const;
+	virtual QString diagramNodeName(const QString &diagram) const;
+	virtual QString elementName(const QString &diagram, const QString &element) const;
+	virtual QString elementMouseGesture(const QString &digram, const QString &element) const;
+        virtual void initDescriptionMap();
 	virtual QList<qReal::ListenerInterface*> listeners() const;
+
+	QList<qReal::EditorInterface::ExplosionData> explosions(const QString &diagram, const QString &element) const override;
+	QStringList getPortTypes(const QString &diagram, const QString &element) const override;
+	QList<QPair<QString, QString>> getEnumValues(const QString &name) const override;
+	bool isEnumEditable(const QString &name) const override;
+	QString getGroupsXML() const override;
+
+	bool shallPaletteBeSorted(const QString &diagram) const override;
 
 private:
 	QMap<QString, QIcon> iconMap;
@@ -73,5 +86,7 @@ private:
 	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;
 	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;
 	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap;
+	QMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;
+	QMap<QString, bool> mShallPaletteBeSortedMap;
 };
 
