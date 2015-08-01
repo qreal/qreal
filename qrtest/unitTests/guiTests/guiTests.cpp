@@ -367,7 +367,8 @@ TEST_F(guiTests, sanityCheck)
 
 TEST_F(guiTests, editActionsExistence)
 {
-	runFromFile("editActionsExistence.js"); // мб qs?
+//	runFromFile("editActionsExistence.js"); // мб qs?
+	run("var mainWindow = api.ui().mainWindow();assert(mainWindow != null);api.changeWindow(mainWindow);api.wait(500);var newProject = api.ui().widget(\"QToolButton\", \"actionNewProject\");assert(newProject != null);closeExpectedDialog(mainWindow, \"Create project\", 3000);	api.cursor().moveTo(newProject, 400);api.cursor().leftButtonPress(newProject);api.cursor().leftButtonRelease(newProject, 400);");
 }
 
 TEST_F(guiTests, viewActionsExistence)
