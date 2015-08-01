@@ -346,7 +346,7 @@ void guiTests::run(const QString &script)
 void guiTests::runFromFile(const QString &fileName1)
 {	
 	QString fileName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
+			"/../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		// handle error
@@ -361,14 +361,14 @@ void guiTests::runFromFile(const QString &fileName1)
 
 TEST_F(guiTests, sanityCheck)
 {
-	run("assert(true);");
-	ASSERT_EQ(2, 1 + 1);
+//	runFromFile("editActionsExistence.js"); // мб qs?
+	run("var mainWindow = api.ui().mainWindow();\nassert(mainWindow != null);\napi.changeWindow(mainWindow);\napi.wait(500);\nvar newProject = api.ui().widget(\"QToolButton\", \"actionNewProject\");\nassert(newProject != null);\ncloseExpectedDialog(mainWindow, \"Create project\", 3000);\napi.cursor().moveTo(newProject, 400);\napi.cursor().leftButtonPress(newProject);\napi.cursor().leftButtonRelease(newProject, 400);");
 }
 
 TEST_F(guiTests, editActionsExistence)
 {
-//	runFromFile("editActionsExistence.js"); // мб qs?
-	run("var mainWindow = api.ui().mainWindow();assert(mainWindow != null);api.changeWindow(mainWindow);api.wait(500);var newProject = api.ui().widget(\"QToolButton\", \"actionNewProject\");assert(newProject != null);closeExpectedDialog(mainWindow, \"Create project\", 3000);	api.cursor().moveTo(newProject, 400);api.cursor().leftButtonPress(newProject);api.cursor().leftButtonRelease(newProject, 400);");
+	run("assert(true);");
+	ASSERT_EQ(2, 1 + 1);
 }
 
 TEST_F(guiTests, viewActionsExistence)
