@@ -75,7 +75,8 @@ void ScriptAPI::evaluate()
 	mVirtualCursor->raise();
 
 	mScriptEngine.setProcessEventsInterval(20);
-	mScriptEngine.evaluate(fileContent, fileName); // вообще fileName используется на error reporting. и как-то странно писать их в fileName
+	// вообще fileName используется на error reporting. и как-то странно писать их в fileName
+	mScriptEngine.evaluate(fileContent, fileName);
 
 	abortEvaluation();
 }

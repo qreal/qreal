@@ -262,7 +262,6 @@ void wait(int duration) // а надо ли копипастить?
 }
 
 void guiTests::SetUp() // возможно эти строчки следует поместить для сетапа для всех тестов
-// возможно стоит вставить проверку на некорректно составленный тест в скрипте с помощью QScriptSyntaxCheckResult
 {
 //	QString program = QApplication::applicationFilePath() + "/../qreal-d.exe";
 //	QStringList arguments;
@@ -346,7 +345,8 @@ void guiTests::run(const QString &script)
 
 void guiTests::runFromFile(const QString &fileName1)
 {	
-	QString fileName = /*QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/"*/ "C:/Users/Kirill/Desktop/qreal/qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
+	QString fileName = QApplication::applicationFilePath() +
+			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		// handle error
@@ -361,20 +361,20 @@ void guiTests::runFromFile(const QString &fileName1)
 
 TEST_F(guiTests, sanityCheck)
 {
-	runFromFile("editActionsExistence.js"); // мб qs?
-//	run("assert(true);");
-//	ASSERT_EQ(2, 1 + 1);
+	run("assert(true);");
+	ASSERT_EQ(2, 1 + 1);
 }
 
 TEST_F(guiTests, editActionsExistence)
 {
-	runFromFile("editActionsExistence.js");
+	runFromFile("editActionsExistence.js"); // мб qs?
 }
 
-//TEST_F(guiTests, viewActionsExistence)
-//{
+TEST_F(guiTests, viewActionsExistence)
+{
+	runFromFile("editActionsExistence.js");
 //	runFromFile("viewActionsExistence.js");
-//}
+}
 
 //TEST_F(guiTests, findDialogElementsExistence)
 //{
