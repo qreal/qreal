@@ -19,7 +19,6 @@ install:
   - sudo apt-get install libboost-system-dev libboost-wave-dev tcl
   - sudo apt-get install vera++
   - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script libgl1-mesa-dev -y
-  - sudo apt-get install system-config-printer
   - . /opt/qt55/bin/qt55-env.sh
   - sudo apt-get install xvfb
   - Xvfb :0 &
@@ -35,7 +34,6 @@ script:
   - cd ./bin/$CONFIG
   - ls -A
   - sh -c "$TESTS"
-  - lpr log0.html
 
 notifications:
   email:
