@@ -3,7 +3,7 @@ compiler: gcc
 
 env:
   - CONFIG=debug   PROJECT=qreal           VERA=true  TESTS=true
-  - CONFIG=debug   PROJECT=qrealGuiTest    VERA=false TESTS="./guiTests-d"
+  - CONFIG=debug   PROJECT=qrealTest    VERA=false TESTS="./guiTests-d"
   - CONFIG=release PROJECT=qreal           VERA=false TESTS=true
   - CONFIG=debug   PROJECT=qrealRobots     VERA=false TESTS=true
   - CONFIG=release PROJECT=qrealRobots     VERA=false TESTS=true
@@ -46,4 +46,4 @@ script:
 notifications:
   email:
     recipients:
-      - qreal-build-reports@googlegroups.com
+      - nikolskiy.kirill.andreevich@gmail.com
