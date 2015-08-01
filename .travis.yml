@@ -20,9 +20,6 @@ install:
   - sudo apt-get install vera++
   - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script libgl1-mesa-dev -y
   - . /opt/qt55/bin/qt55-env.sh
-  - sudo apt-get install xvfb
-  - Xvfb :0 &
-  - export DISPLAY=:0
 
 script:
   - gcc --version
