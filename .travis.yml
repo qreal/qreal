@@ -2,7 +2,7 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug   PROJECT=qreal           VERA=true  TESTS=true
+  - CONFIG=debug   PROJECT=qreal        VERA=true  TESTS=true
   - CONFIG=debug   PROJECT=qrealTest    VERA=false TESTS="./guiTests-d"
 
 install:
@@ -22,7 +22,7 @@ install:
   - sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
   - . /opt/qt55/bin/qt55-env.sh
   - sudo apt-get install xvfb
-  - Xvfb :0 -screen 0 1366x768x16 &
+  - Xvfb :0 -ac -screen 0 1366x768x32 &
   - export DISPLAY=:0
 
 script:
@@ -35,9 +35,9 @@ script:
   - cd ./bin/$CONFIG
   - ls -A
   - sh -c "$TESTS"
-  - cd ./testScripts/qrealScripts
-  - ls -A
-  - cat script1
+  - if [ "$TESTS" = "./guiTests-d" ]; then cd ./testScripts/qrealScripts; fi
+  - if [ "$TESTS" = "./guiTests-d" ]; then ls -A; fi
+  - if [ "$TESTS" = "./guiTests-d" ]; then cat script1.js; fi
 
 notifications:
   email:
