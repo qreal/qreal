@@ -17,7 +17,7 @@ set -o nounset
 set -o errexit
 
 function show_help {
-	echo "Usage: build-checker-installer.sh <path to Qt> [<path to QReal>] [<path to directory with fields>] [<path to directory with examples>]"
+	echo "Usage: build-checker-installer.sh <path to Qt> [<path to QReal>] [<path to directory with fields>] [<path to directory with examples>] [<path to directory with tasks>]"
 	echo "<path to Qt> --- root of your Qt 5.5 installation"
 	echo "<path to QReal> --- path to QReal sources root (with completed release build of qrealRobots.pro)."
 	echo "                    Defaults to \"../..\""
@@ -53,6 +53,12 @@ if [ "$#" -gt 3 ]; then
 	examplesDir=$(readlink -f $4)
 else
 	examplesDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/solutions)
+fi
+
+if [ "$#" -gt 4 ]; then
+	tasksDir=$(readlink -f $5)
+else
+	tasksDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/tasks)
 fi
 
 mkdir -p trikStudio-checker/bin
@@ -158,10 +164,12 @@ cp -f $qRealDir/bin/release/check-solution.sh .
 cd ..
 cp -f $qRealDir/bin/release/checker.sh .
 
-# Copying fields and examples
+# Copying fields, examples and tasks
 cp -r $fieldsDir ./fields
 cp -r $examplesDir ./examples
+cp -r $tasksDir ./tasks
 
+# Packing
 cd ..
 
 tar cvfzh checker.tar.gz trikStudio-checker

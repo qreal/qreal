@@ -86,10 +86,12 @@ if [ ! -f $savedPwd/fields/$fileNameWithoutExtension/no-check-self ]; then
 			--report "$savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
 
+	exitCode=$?
+
 	cat $savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension > $reportFile
 	cat $savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension > $trajectoryFile
 
-	if [ $? -ne 0 ]; then
+	if [ $exitCode -ne 0 ]; then
 		log "Solution failed on its own field, aborting"
 		echo $solutionFailedOnOwnFieldMessage
 		cat $reportFile
@@ -124,7 +126,13 @@ if [ -d $savedPwd/fields/$fileNameWithoutExtension ]; then
 				--report "$savedPwd/reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/$currentField"
 
-		if [ $? -ne 0 ]; then
+		exitCode=$?
+		if [ ! -f $reportFile ]; then
+			cat $savedPwd/reports/$fileNameWithoutExtension/$currentField > $reportFile
+			cat $savedPwd/trajectories/$fileNameWithoutExtension/$currentField > $trajectoryFile
+		fi
+
+		if [ $exitCode -ne 0 ]; then
 			echo $solutionFailedOnOtherFieldMessage
 			log "Test $currentField failed, aborting"
 			cat $savedPwd/reports/$fileNameWithoutExtension/$currentField > $reportFile

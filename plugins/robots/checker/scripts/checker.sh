@@ -29,4 +29,4 @@ function show_help {
 cd "$(dirname "$0")"
 
 chmod +x bin/check-solution.sh
-bin/check-solution.sh "$(readlink -f $1)"
+bin/check-solution.sh "$1"

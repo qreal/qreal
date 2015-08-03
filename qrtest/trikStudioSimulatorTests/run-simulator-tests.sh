@@ -15,6 +15,8 @@
 
 cd "$(dirname "$0")"
 
+rm -f failed-tests
+
 if ! [ -f ./check-solution.sh ]; then
 	echo "No 'check-solution.sh' script in current directory, tests can not run. Check your build configuration."
 	exit 1
@@ -25,6 +27,8 @@ if ! [ -d solutions ]; then
 	exit 1
 fi
 
+status=0
+
 for i in $( ls solutions ); do
 	echo "Running tests on: $i..."
 	(. ./check-solution.sh "solutions/$i")
@@ -32,8 +36,15 @@ for i in $( ls solutions ); do
 		fileNameWithoutExtension="${i%.*}"
 		echo "Test $i failed, failed log is:"
 		cat report
-		exit 1
+		echo $i >> failed-tests
+		cat report >> failed-tests
+		echo "==================" >> failed-tests
+		status=1
 	fi
 done
 
-exit 0
+if [ $status -ne 0 ]; then
+	cat failed-tests
+fi
+
+exit $status
