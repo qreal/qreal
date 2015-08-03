@@ -16,6 +16,8 @@
 
 #include <QtCore/QTimer>
 #include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -33,6 +35,9 @@
 
 #include "src/ui/modeStripe.h"
 
+const int lowerMediumResolutionBorder = 1024;
+const int upperMediumResolutionBorder = 1280;
+
 using namespace interpreterCore;
 
 static const QColor backgrondColor = QPalette().color(QPalette::Background);
@@ -48,6 +53,7 @@ UiManager::UiManager(QAction &debugModeAction
 	: mDebugModeAction(debugModeAction)
 	, mEditModeAction(editModeAction)
 	, mMainWindow(mainWindow)
+	, mTabBar(nullptr)
 	, mRobotConsole(new qReal::ui::ConsoleDock(tr("Robot console"), mMainWindow.windowWidget()))
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
@@ -161,11 +167,13 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 void UiManager::toggleModeButtons()
 {
-	mTabBar->setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
 	mEditModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
 	mDebugModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
 	mEditModeAction.setChecked(mCurrentMode == Mode::Editing);
 	mDebugModeAction.setChecked(mCurrentMode == Mode::Debugging);
+	if (mTabBar) {
+		mTabBar->setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	}
 
 	const QColor color = mCurrentTab == qReal::TabInfo::TabType::other
 			? backgrondColor
@@ -284,16 +292,26 @@ void UiManager::ensureDiagramVisible()
 
 void UiManager::initTab()
 {
+	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
+	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
+
+	const QSize resolution = QApplication::desktop()->screenGeometry().size();
+	if (resolution.width() < lowerMediumResolutionBorder) {
+		// The screen is super-small, do not show tab bar at all
+		mMainWindow.statusBar()->addAction(&mEditModeAction);
+		mMainWindow.statusBar()->addAction(&mDebugModeAction);
+		return;
+	}
+
 	mTabBar = new QToolBar(mMainWindow.windowWidget());
 	mTabBar->setObjectName("largeTabsBar");
 	mTabBar->setIconSize(QSize(32, 32));
-	mTabBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	mTabBar->setToolButtonStyle(resolution.width() < upperMediumResolutionBorder
+			? Qt::ToolButtonIconOnly // On small resolutions in some locales text may be too wide.
+			: Qt::ToolButtonTextUnderIcon);
 	mMainWindow.addToolBar(Qt::LeftToolBarArea, mTabBar);
 	mTabBar->addAction(&mEditModeAction);
 	mTabBar->addAction(&mDebugModeAction);
-
-	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
-	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
 }
 
 void UiManager::hack2dModelDock() const
