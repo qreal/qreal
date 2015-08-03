@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+﻿/* Copyright 2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -362,7 +362,7 @@ void guiTests::runFromFile(const QString &fileName1)
 TEST_F(guiTests, sanityCheck)
 {
 //	runFromFile("editActionsExistence.js"); // мб qs?
-	run("var mainWindow = api.ui().mainWindow();\nassert(mainWindow != null);\napi.changeWindow(mainWindow);\napi.wait(500);\nvar newProject = api.ui().widget(\"QToolButton\", \"actionNewProject\");\nassert(newProject != null);\ncloseExpectedDialog(mainWindow, \"Create project\", 3000);\napi.cursor().moveTo(newProject, 400);\napi.cursor().leftButtonPress(newProject);\napi.cursor().leftButtonRelease(newProject, 400);");
+	run("var mainWindow = api.ui().mainWindow();\nassert(mainWindow != null);");
 }
 
 TEST_F(guiTests, editActionsExistence)
