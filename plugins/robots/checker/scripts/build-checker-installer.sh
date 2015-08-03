@@ -20,12 +20,14 @@ function show_help {
 	echo "Usage: build-checker-installer.sh <path to Qt> [<path to QReal>] [<path to directory with fields>] [<path to directory with examples>]"
 	echo "<path to Qt> --- root of your Qt 5.5 installation"
 	echo "<path to QReal> --- path to QReal sources root (with completed release build of qrealRobots.pro)."
-	echo "                                   Defaults to \"../..\""
+	echo "                    Defaults to \"../..\""
 	echo "<path to \"fields\" directory> --- path to directory with prepared fields."
 	echo "                                   Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/fields/fields>.\""
 	echo "<path to \"examples\" directory> --- path to directory with example saves."
-	echo "                                   Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/solutions>.\""
-	echo "Example: ./build-checker-installer.sh ~/Qt ~/stepic-examples ~/qreal"
+	echo "                                     Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/solutions>.\""
+	echo "<path to \"tasks\" directory> --- path to directory with saves with tasks."
+	echo "                                  Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/tasks>.\""
+	echo "Example: ./build-checker-installer.sh ~/Qt ~/stepic-examples"
 	exit 0
 }
 

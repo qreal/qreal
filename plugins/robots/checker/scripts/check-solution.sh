@@ -46,7 +46,7 @@ solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Ре
 
 [ "$#" -lt 1 ] && show_help || :
 
-fileWithPath=$1
+fileWithPath=$savedPwd/$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
 
@@ -69,29 +69,32 @@ chmod +x $patcher
 
 export LD_LIBRARY_PATH=.
 
-log "Running save with its own field"
-
 rm -rf $savedPwd/reports/$fileNameWithoutExtension
 rm -rf $savedPwd/trajectories/$fileNameWithoutExtension
 
 rm -f $reportFile
 rm -f $trajectory
+rm -f $failedFieldFile
 
 mkdir -p $savedPwd/reports/$fileNameWithoutExtension
 mkdir -p $savedPwd/trajectories/$fileNameWithoutExtension
 
-$twoDModel --platform minimal -b "$fileWithPath" \
-		--report "$savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-		--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
+if [ ! -f $savedPwd/fields/$fileNameWithoutExtension/no-check-self ]; then
+	log "Running save with its own field"
 
-cat $savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension > $reportFile
-cat $savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension > $trajectoryFile
+	$twoDModel --platform minimal -b "$fileWithPath" \
+			--report "$savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
+			--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
 
-if [ $? -ne 0 ]; then
-	log "Solution failed on its own field, aborting"
-	echo $solutionFailedOnOwnFieldMessage
-	cat $reportFile
-	exit 1
+	cat $savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension > $reportFile
+	cat $savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension > $trajectoryFile
+
+	if [ $? -ne 0 ]; then
+		log "Solution failed on its own field, aborting"
+		echo $solutionFailedOnOwnFieldMessage
+		cat $reportFile
+		exit 1
+	fi
 fi
 
 log "Looking for prepared testing fields..."
@@ -103,6 +106,10 @@ if [ -d $savedPwd/fields/$fileNameWithoutExtension ]; then
 	cp -f $fileWithPath ./$solutionCopy
 
 	for i in $( ls $savedPwd/fields/$fileNameWithoutExtension ); do
+		if [ "$i" == "no-check-self" ]; then
+			continue
+		fi
+
 		log "Field: $i, running $patcher $solutionCopy $savedPwd/fields/$fileNameWithoutExtension/$i..."
 		$patcher "$solutionCopy" "$savedPwd/fields/$fileNameWithoutExtension/$i"
 		if [ $? -ne 0 ]; then
