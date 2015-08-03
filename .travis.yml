@@ -19,10 +19,13 @@ install:
   - sudo apt-get install libboost-system-dev libboost-wave-dev tcl
   - sudo apt-get install vera++
   - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script libgl1-mesa-dev -y
+  - sudo apt-get install x11-xkb-utils
+  - sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
+  - sudo apt-get install xserver-xorg-core
   - . /opt/qt55/bin/qt55-env.sh
   - sudo apt-get install xvfb
-  - Xvfb :0.0 -ac -screen 0 1366x768x16
-  - export DISPLAY=:0.0
+  - Xvfb :0 -ac -screen 0 1366x768x16 &
+  - export DISPLAY=:0
 
 script:
   - gcc --version
