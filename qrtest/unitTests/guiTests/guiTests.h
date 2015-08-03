@@ -39,6 +39,7 @@ private:
 	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
 	qReal::QRealApplication* mApp;
 	qReal::MainWindow* mWindow;
+	bool scriptInterpretationDefaultValue = SettingsManager::value("scriptInterpretation").toBool();
 };
 
 }

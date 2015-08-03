@@ -279,6 +279,9 @@ void guiTests::SetUp() // возможно эти строчки следует 
 //		QApplication app(argc, argv);
 //		qDebug() << "я внутри в сетапе" << QApplication::instance();
 //	}
+
+	SettingsManager::setValue("scriptInterpretation", true);
+
 	MainWindow *window = start(argc, argv);
 	//window->activateWindow();
 	//QApplication::setActiveWindow(window);
@@ -310,6 +313,7 @@ void guiTests::SetUp() // возможно эти строчки следует 
 void guiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
 // а для скриптов можно выполнять действия с известными моделями типа езды по линии.
 {
+	SettingsManager::setValue("scriptInterpretation", scriptInterpretationDefaultValue);
 //	delete mWindow;
 	  // или deletelater?
 //	delete mMainWidnowScriptAPIInterface;
