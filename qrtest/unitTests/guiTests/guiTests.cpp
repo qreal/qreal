@@ -371,177 +371,175 @@ TEST_F(guiTests, sanityCheck)
 
 TEST_F(guiTests, editActionsExistence)
 {
-//	runFromFile("editActionsExistence.js"); // мб qs?
-	run("var mainWindow = api.ui().mainWindow();\nassert(mainWindow != null);");
+	runFromFile("editActionsExistence.js"); // мб qs?
 }
 
 TEST_F(guiTests, viewActionsExistence)
 {
-	runFromFile("editActionsExistence.js");
-//	runFromFile("viewActionsExistence.js");
+	runFromFile("viewActionsExistence.js");
 }
 
-//TEST_F(guiTests, findDialogElementsExistence)
-//{
-//	runFromFile("findDialogElementsExistence.js");
-//}
+TEST_F(guiTests, findDialogElementsExistence)
+{
+	runFromFile("findDialogElementsExistence.js");
+}
 
-//TEST_F(guiTests, helpActionsExistence)
-//{
-//	runFromFile("helpActionsExistence.js");
-//}
+TEST_F(guiTests, helpActionsExistence)
+{
+	runFromFile("helpActionsExistence.js");
+}
 
-//TEST_F(guiTests, mainPanelsElementsExistence)
-//{
-//	runFromFile("mainPanelsElementsExistence.js");
-//}
+TEST_F(guiTests, mainPanelsElementsExistence)
+{
+	runFromFile("mainPanelsElementsExistence.js");
+}
 
-//TEST_F(guiTests, mouseGesturesElementsExistence)
-//{
-//	runFromFile("mouseGesturesElementsExistence.js");
-//}
+TEST_F(guiTests, mouseGesturesElementsExistence)
+{
+	runFromFile("mouseGesturesElementsExistence.js");
+}
 
-//TEST_F(guiTests, preferenceDialogElementsExistence)
-//{
-//	runFromFile("preferenceDialogElementsExistence.js");
-//}
+TEST_F(guiTests, preferenceDialogElementsExistence)
+{
+	runFromFile("preferenceDialogElementsExistence.js");
+}
 
-//TEST_F(guiTests, settingsActionsExistence)
-//{
-//	runFromFile("settingsActionsExistence.js");
-//}
+TEST_F(guiTests, settingsActionsExistence)
+{
+	runFromFile("settingsActionsExistence.js");
+}
 
-//TEST_F(guiTests, tabSceneExistence)
-//{
-//	runFromFile("tabSceneExistence.js");
-//}
+TEST_F(guiTests, tabSceneExistence)
+{
+	runFromFile("tabSceneExistence.js");
+}
 
-//TEST_F(guiTests, toolbarsElementsExistence)
-//{
-//	runFromFile("toolbarsElementsExistence.js");
-//}
+TEST_F(guiTests, toolbarsElementsExistence)
+{
+	runFromFile("toolbarsElementsExistence.js");
+}
 
-//TEST_F(guiTests, toolsActionsExistence)
-//{
-//	runFromFile("toolsActionsExistence.js");
-//}
+TEST_F(guiTests, toolsActionsExistence)
+{
+	runFromFile("toolsActionsExistence.js");
+}
 
-//TEST_F(guiTests, fileActionsExistence)
-//{
-//	runFromFile("fileActionsExistence.js");
-//}
+TEST_F(guiTests, fileActionsExistence)
+{
+	runFromFile("fileActionsExistence.js");
+}
 
-//TEST_F(guiTests, fileActionsFunctioning)
-//{
-//	runFromFile("fileActionsFunctioning.js");
-//}
+TEST_F(guiTests, fileActionsFunctioning)
+{
+	runFromFile("fileActionsFunctioning.js");
+}
 
-//TEST_F(guiTests, findDialogElementsFunctioning)
-//{
-//	runFromFile("findDialogElementsFunctioning.js");
-//}
+TEST_F(guiTests, findDialogElementsFunctioning)
+{
+	runFromFile("findDialogElementsFunctioning.js");
+}
 
-//TEST_F(guiTests, helpActionsFunctioning)
-//{
-//	runFromFile("helpActionsFunctioning.js");
-//}
+TEST_F(guiTests, helpActionsFunctioning)
+{
+	runFromFile("helpActionsFunctioning.js");
+}
 
-//TEST_F(guiTests, mainPanelsElementsFunctioning)
-//{
-//	runFromFile("mainPanelsElementsFunctioning.js");
-//}
+TEST_F(guiTests, mainPanelsElementsFunctioning)
+{
+	runFromFile("mainPanelsElementsFunctioning.js");
+}
 
-//TEST_F(guiTests, mouseGesturesElementsFunctioning)
-//{
-//	runFromFile("mouseGesturesElementsFunctioning.js");
-//}
+TEST_F(guiTests, mouseGesturesElementsFunctioning)
+{
+	runFromFile("mouseGesturesElementsFunctioning.js");
+}
 
-//TEST_F(guiTests, preferenceDialogElementsFunctioning)
-//{
-//	runFromFile("preferenceDialogElementsFunctioning.js");
-//}
+TEST_F(guiTests, preferenceDialogElementsFunctioning)
+{
+	runFromFile("preferenceDialogElementsFunctioning.js");
+}
 
-//TEST_F(guiTests, settingsActionsFunctioning)
-//{
-//	runFromFile("settingsActionsFunctioning.js");
-//}
+TEST_F(guiTests, settingsActionsFunctioning)
+{
+	runFromFile("settingsActionsFunctioning.js");
+}
 
-//TEST_F(guiTests, tabSceneFunctioning)
-//{
-//	runFromFile("tabSceneFunctioning.js");
-//}
+TEST_F(guiTests, tabSceneFunctioning)
+{
+	runFromFile("tabSceneFunctioning.js");
+}
 
-//TEST_F(guiTests, toolbarsElementsFunctioning)
-//{
-//	runFromFile("toolbarsElementsFunctioning.js");
-//}
+TEST_F(guiTests, toolbarsElementsFunctioning)
+{
+	runFromFile("toolbarsElementsFunctioning.js");
+}
 
-//TEST_F(guiTests, toolsActionsFunctioning)
-//{
-//	runFromFile("toolsActionsFunctioning.js");
-//}
+TEST_F(guiTests, toolsActionsFunctioning)
+{
+	runFromFile("toolsActionsFunctioning.js");
+}
 
-//TEST_F(guiTests, viewActionsFunctioning)
-//{
-//	runFromFile("viewActionsFunctioning.js");
-//}
+TEST_F(guiTests, viewActionsFunctioning)
+{
+	runFromFile("viewActionsFunctioning.js");
+}
 
-//TEST_F(guiTests, editActionsFunctioning)
-//{
-//	runFromFile("editActionsFunctioning.js");
-//}
+TEST_F(guiTests, editActionsFunctioning)
+{
+	runFromFile("editActionsFunctioning.js");
+}
 
-//TEST_F(guiTests, hotKeysExistanceAndFunctioning)
-//{
-//	runFromFile("hotKeysExistanceAndFunctioning.js");
-//}
+TEST_F(guiTests, hotKeysExistanceAndFunctioning)
+{
+	runFromFile("hotKeysExistanceAndFunctioning.js");
+}
 
-//TEST_F(guiTests, script1)
-//{
-//	runFromFile("script1.js");
-//}
+TEST_F(guiTests, script1)
+{
+	runFromFile("script1.js");
+}
 
-//TEST_F(guiTests, script2)
-//{
-//	runFromFile("script2.js");
-//}
+TEST_F(guiTests, script2)
+{
+	runFromFile("script2.js");
+}
 
-//TEST_F(guiTests, script3)
-//{
-//	runFromFile("script3.js");
-//}
+TEST_F(guiTests, script3)
+{
+	runFromFile("script3.js");
+}
 
-//TEST_F(guiTests, script4)
-//{
-//	runFromFile("script4.js");
-//}
+TEST_F(guiTests, script4)
+{
+	runFromFile("script4.js");
+}
 
-//TEST_F(guiTests, script5)
-//{
-//	runFromFile("script5.js");
-//}
+TEST_F(guiTests, script5)
+{
+	runFromFile("script5.js");
+}
 
-//TEST_F(guiTests, script6)
-//{
-//	runFromFile("script6.js");
-//}
+TEST_F(guiTests, script6)
+{
+	runFromFile("script6.js");
+}
 
-//TEST_F(guiTests, script7)
-//{
-//	runFromFile("script7.js");
-//}
+TEST_F(guiTests, script7)
+{
+	runFromFile("script7.js");
+}
 
-//TEST_F(guiTests, script8)
-//{
-//	runFromFile("script8.js");
-//}
+TEST_F(guiTests, script8)
+{
+	runFromFile("script8.js");
+}
 
-//TEST_F(guiTests, script9)
-//{
-//	runFromFile("script9.js");
-//}
+TEST_F(guiTests, script9)
+{
+	runFromFile("script9.js");
+}
 
-//TEST_F(guiTests, script10)
-//{
-//	runFromFile("script10.js");
-//}
+TEST_F(guiTests, script10)
+{
+	runFromFile("script10.js");
+}

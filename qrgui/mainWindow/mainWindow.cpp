@@ -1633,6 +1633,7 @@ void MainWindow::initPluginsAndStartWidget()
 	qDebug() << "initPluginsAndStartWidget";
 	initToolPlugins();
 	if (true) {
+		qDebug() << "Meta Editor = " << SettingsManager::value("Meta Editor").toBool();
 		initActionWidgetsNames();
 		initScriptAPI();
 	}
