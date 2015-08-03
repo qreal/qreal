@@ -351,10 +351,9 @@ void guiTests::run(const QString &script)
 
 void guiTests::runFromFile(const QString &fileName1)
 {	
-	//если запускается на xvfb, то такой путь, если на windows, то другой путь
-//	QString fileName = QApplication::applicationFilePath() +
-//			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
-	QString fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + fileName1;
+	QString fileName = QApplication::applicationFilePath() +
+			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
+//	QString fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + fileName1;
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		// handle error
