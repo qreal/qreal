@@ -365,7 +365,7 @@ void guiTests::runFromFile(const QString &fileName1)
 
 TEST_F(guiTests, sanityCheck)
 {
-	run("assert(true);");
+	run("assertius(true);");
 	ASSERT_EQ(2, 1 + 1);
 }
 
