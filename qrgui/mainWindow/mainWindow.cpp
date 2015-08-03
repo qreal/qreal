@@ -1630,6 +1630,7 @@ Id MainWindow::activeDiagram() const
 
 void MainWindow::initPluginsAndStartWidget()
 {
+	qDebug() << "initPluginsAndStartWidget";
 	initToolPlugins();
 	if (SettingsManager::value("scriptInterpretation").toBool()) {
 		initActionWidgetsNames();
@@ -2077,6 +2078,7 @@ void MainWindow::openStartTab()
 
 void MainWindow::initScriptAPI()
 {
+	qDebug() << "MainWindow::initScriptAPI()";
 	QThread * const scriptAPIthread = new QThread(this);
 	mScriptAPI.init(*this);
 
