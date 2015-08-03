@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+//vera++ проверяет тут? проверить, добавить если чо. включить в PROJECT с VERA = TRUE
+
 #include "guiTests.h"
 #include "startQreal.cpp"
 
@@ -345,8 +347,10 @@ void guiTests::run(const QString &script)
 
 void guiTests::runFromFile(const QString &fileName1)
 {	
-	QString fileName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
+	//если запускается на xvfb, то такой путь, если на windows, то другой путь
+//	QString fileName = QApplication::applicationFilePath() +
+//			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
+	QString fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + fileName1;
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		// handle error
@@ -361,14 +365,14 @@ void guiTests::runFromFile(const QString &fileName1)
 
 TEST_F(guiTests, sanityCheck)
 {
-//	runFromFile("editActionsExistence.js"); // мб qs?
-	run("var mainWindow = api.ui().mainWindow();\nassert(mainWindow != null);");
+	run("assert(true);");
+	ASSERT_EQ(2, 1 + 1);
 }
 
 TEST_F(guiTests, editActionsExistence)
 {
-	run("assert(true);");
-	ASSERT_EQ(2, 1 + 1);
+//	runFromFile("editActionsExistence.js"); // мб qs?
+	run("var mainWindow = api.ui().mainWindow();\nassert(mainWindow != null);");
 }
 
 TEST_F(guiTests, viewActionsExistence)
