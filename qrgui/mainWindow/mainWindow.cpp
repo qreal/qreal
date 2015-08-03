@@ -1632,7 +1632,7 @@ void MainWindow::initPluginsAndStartWidget()
 {
 	qDebug() << "initPluginsAndStartWidget";
 	initToolPlugins();
-	if (SettingsManager::value("scriptInterpretation").toBool()) {
+	if (true) {
 		initActionWidgetsNames();
 		initScriptAPI();
 	}
