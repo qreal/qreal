@@ -22,7 +22,7 @@ install:
   - sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
   - . /opt/qt55/bin/qt55-env.sh
   - sudo apt-get install xvfb
-  - Xvfb :0 -ac -screen 0 1366x768x32 &
+  - Xvfb :0 -ac -screen 0 1366x768x16 &
   - export DISPLAY=:0
 
 script:
