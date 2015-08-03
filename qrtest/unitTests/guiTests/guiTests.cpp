@@ -346,7 +346,7 @@ void guiTests::run(const QString &script)
 void guiTests::runFromFile(const QString &fileName1)
 {	
 	QString fileName = QApplication::applicationFilePath() +
-			"/../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
+			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		// handle error
