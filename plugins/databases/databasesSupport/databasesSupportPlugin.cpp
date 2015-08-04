@@ -22,7 +22,6 @@ DatabasesSupportPlugin::~DatabasesSupportPlugin()
 	delete mPreferencesPage;
 }
 
-
 void DatabasesSupportPlugin::init(PluginConfigurator const &configurator)
 {
 	mDatabasesGenerator = new DatabasesGenerator(configurator, mPreferencesPage);

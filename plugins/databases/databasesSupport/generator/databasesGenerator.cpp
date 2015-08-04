@@ -6,7 +6,8 @@ namespace databasesSupport {
 
 QString const databases = "Databases";
 
-DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator, DatabasesPreferencesPage const *preferencesPage)
+DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator
+		, DatabasesPreferencesPage const *preferencesPage)
 	: mCurrentDiagram(Id::rootId())
 	, mCodeFileName("code.txt")
 	, mWorkDir("")
@@ -14,14 +15,11 @@ DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator, Da
 	, mGraphicalModelApi(configurator.graphicalModelApi())
 	, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 	, mErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter())
-	, mDbms(QString("Sql_server_2008"))
+	, mDbms(QString("sqlServer2008"))
 	, mPreferencesPage(preferencesPage)
 	, mMainWindowInterface(configurator.mainWindowInterpretersInterface())
 {
 	connect(mPreferencesPage, SIGNAL(dbmsChanged(QString)), this, SLOT(changeEditor(QString)));
-	mMainWindowInterface.loadPlugin("sqlServer2008.xml", "sqlServer2008");
-	configurator.mainWindowInterpretersInterface().unloadPlugin("sqlite");
-	configurator.mainWindowInterpretersInterface().unloadPlugin("mySql5");
 }
 
 DatabasesGenerator::~DatabasesGenerator()
@@ -121,7 +119,7 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 	return boundedEntities;
 }
 
-void DatabasesGenerator::error(QString error, bool isCritical)
+void DatabasesGenerator::error(QString const &error, bool isCritical)
 {
 	if (isCritical) {
 		mInterpretersInterface.errorReporter()->addCritical(error);
@@ -168,7 +166,7 @@ QString DatabasesGenerator::getPrimaryKeyNameOfSet(IdList const &entitySet)
 	return("PrimaryKeyOfTable" + getProperty(entitySet.at(0), "Name").toByteArray());
 }
 
-int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> set)
+int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> const &set)
 {
 	int listCounter = 0;
 	foreach (IdList const &list, set) {
@@ -266,7 +264,10 @@ bool DatabasesGenerator::checkCorrectness()
 
 
 
-qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName, QPointF coord, Id const &parentLogicalId, bool coordByParent)
+qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName
+		, QPointF coord
+		, Id const &parentLogicalId
+		, bool coordByParent)
 {
 	Id id = Id::loadFromString(QString("qrm:/" + mDbms
 			+ "/DatabasesPhysicalModelMetamodel/" + elemName));
@@ -486,6 +487,10 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 
 void DatabasesGenerator::generatePhysicalModel()
 {
+	QString curEditorName = mDbms;
+	mDbms = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
+
+
 	clearPhysicalModel();
 	mErrorReporter->clear();
 
@@ -509,7 +514,9 @@ void DatabasesGenerator::generatePhysicalModel()
 	// 2 - many-to-many relationship
 	// 3 - one-to-one relationship
 	int oneToOneSetsSize = oneToOneBoundedEntitiesSets.size();
+	mRelMatrix = new int*[oneToOneSetsSize];
 	for (int i = 0; i < oneToOneSetsSize; i++) {
+		mRelMatrix[i] = new int[oneToOneSetsSize];
 		for (int k = 0; k < oneToOneSetsSize; k++)
 			mRelMatrix[i][k] = 0;
 		mRelMatrix[i][i] = 3;
@@ -528,16 +535,17 @@ void DatabasesGenerator::generatePhysicalModel()
 		delete[] mRelMatrix[i];
 	}
 	delete[] mRelMatrix;
+	mDbms = curEditorName;
 	mErrorReporter->addInformation(tr("Physical model was generated successfully"));
 }
 
 void DatabasesGenerator::generateSQLCode()
 {
-	if (mDbms == "SqlServer2008")
+	if (mDbms == "sqlServer2008")
 		generateWithSqlServer2008();
-	if (mDbms == "MySql5")
+	if (mDbms == "mySql5")
 		generateWithMySql5();
-	if (mDbms == "Sqlite")
+	if (mDbms == "sqlite")
 		generateWithSqlite();
 }
 
@@ -745,26 +753,13 @@ void DatabasesGenerator::generateWithSqlite()
 
 void DatabasesGenerator::changeEditor(QString const &dbmsName)
 {
-	if (mDbms =="SqlServer2008")
-		mMainWindowInterface.unloadPlugin("sqlServer2008");
-	else if (mDbms == "MySql5")
-		mMainWindowInterface.unloadPlugin("mySql5");
-	else if (mDbms =="Sqlite")
-		mMainWindowInterface.unloadPlugin("sqlite");
-
-	if  (dbmsName =="Sql_server_2008")
-	{
-		mDbms = "Sql_server_2008";
-		mMainWindowInterface.loadPlugin("sqlServer2008.xml", "sqlServer2008");
-	} else if (mDbms =="My_sql_5")
-	{
-		mDbms = "My_sql_5";
-		mMainWindowInterface.loadPlugin("mySql5.xml", "mySql5");
-	} else if (mDbms == "Sqlite")
-	{
-		mDbms = "Sqlite";
-		mMainWindowInterface.loadPlugin("sqlite.xml", "sqlite");
-	}
+	QString editorName = dbmsName;
+	editorName = QString(dbmsName.at(0).toUpper()) + editorName.remove(0,1);
+	QString curEditorName = mDbms;
+	curEditorName = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
+	//bool s = mMainWindowInterface.unloadPlugin(curEditorName);
+	//bool s2 = mMainWindowInterface.loadPlugin(dbmsName + QString(".dll"), editorName);
+	mDbms = dbmsName;
 }
 
 }

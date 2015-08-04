@@ -87,13 +87,13 @@ private:
 	Id getParent(Id const &id);
 	IdList getChildren(Id const &id);
 	IdList getBoundedWithOneToOneRealationship(Id const &id);
-	void error(QString error, bool isCritical);
+	void error(QString const &error, bool isCritical);
 	Id getPrimaryKey(Id const &entityId);
 	void clearPhysicalModel();
 
 	Id getPrimaryKeyOfSet(IdList const &entitySet);
 	QString getPrimaryKeyNameOfSet(IdList const &entitySet);
-	int getParentList(Id const &childEntity,QList<IdList> set);
+	int getParentList(Id const &childEntity, QList<IdList> const &set);
 	QString getListTableName(IdList const &list);
 	bool checkEntities();
 	bool checkAttributes();

@@ -33,11 +33,11 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 public slots:
-	/// Checks simple rules of correctnes (regirection to generator)
+	/// Checks simple rules of correctnes (redirection to generator)
 	void checkCorrectness();
-	/// Generates physical model from logical model (regirection to generator)
+	/// Generates physical model from logical model (redirection to generator)
 	void generateCode();
-	/// Checks SQL-code from physical model(regirection to generator)
+	/// Checks SQL-code from physical model(redirection to generator)
 	void generatePhysicalModel();
 
 private:

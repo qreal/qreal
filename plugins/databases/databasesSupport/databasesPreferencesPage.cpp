@@ -22,7 +22,12 @@ DatabasesPreferencesPage::~DatabasesPreferencesPage()
 
 void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 {
-	emit dbmsChanged(dbmsName);
+	if (dbmsName == "SQLite")
+		emit dbmsChanged("sqlite");
+	else if (dbmsName == "Microsoft SQL Server 2008")
+		emit dbmsChanged("sqlServer2008");
+	else if (dbmsName == "MySQL 5")
+		emit dbmsChanged("mySql5");
 }
 
 void DatabasesPreferencesPage::save()
