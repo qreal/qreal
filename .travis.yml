@@ -2,8 +2,7 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./guiTests-d"
-  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./guiTests-d"
+  - CONFIG=debug   PROJECT=qreal   	 VERA=false	TESTS=true
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
@@ -24,6 +23,9 @@ install:
   - sudo apt-get install xvfb
   - Xvfb :0 -ac -screen 0 1366x768x16 &
   - export DISPLAY=:0
+  - ls -A
+  - cd ./qrtest/unitTests/guiTests/testScripts/qrealScripts
+  - ls -A
 
 script:
   - gcc --version
@@ -32,12 +34,7 @@ script:
   - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
   - qmake $PROJECT.pro CONFIG+=$CONFIG
   - make -j2
-  - cd ./bin/$CONFIG
   - ls -A
-  - sh -c "$TESTS"
-  - if [ "$TESTS" = "./guiTests-d" ]; then cd ./testScripts/qrealScripts; fi
-  - if [ "$TESTS" = "./guiTests-d" ]; then ls -A; fi
-  - if [ "$TESTS" = "./guiTests-d" ]; then cat script1.js; fi
 
 notifications:
   email:
