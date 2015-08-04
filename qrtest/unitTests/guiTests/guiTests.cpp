@@ -347,7 +347,7 @@ void guiTests::run(const QString &script)
 void guiTests::runFromFile(const QString &relativeFileName)
 {
 	QString scriptDirName = QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/";
-	QString fileName = QDir::cleanPath(scriptDirName) + relativeFileName;
+	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
 //	QString fileName; // этот код пока что можно оставить, так как вдруг теневая сборка.
 //	QDir scriptDir(scriptDirName);
 //	if (scriptDir.exists()) {

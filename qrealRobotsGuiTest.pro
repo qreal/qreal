@@ -75,6 +75,3 @@ qrtest.depends = \
 qrtest.file = $$PWD/qrtest/qrrobotsguitest.pro
 
 plugins.file = $$PWD/plugins/robots.pro
-
-RESOURCES += \
-	qrgui/mainwindow/qrgui.qrc
