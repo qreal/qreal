@@ -72,7 +72,7 @@ qrtest.depends = \
 	thirdparty \
 	plugins \
 
-qrtest.file = $$PWD/qtest/qrrobotsguitest.pro
+qrtest.file = $$PWD/qrtest/qrrobotsguitest.pro
 
 plugins.file = $$PWD/plugins/robots.pro
 

@@ -61,4 +61,4 @@ qrtest.depends = \
 	qrutils \
 	thirdparty \
 
-qrtest.file = $$PWD/qtest/qrguitest.pro
+qrtest.file = $$PWD/qrtest/qrguitest.pro
