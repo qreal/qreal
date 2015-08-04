@@ -65,7 +65,7 @@ void setDefaultLocale(bool localizationDisabled)
 	}
 }
 
-void initLogging()
+void initLogging() // с логами возможна проблема
 {
 	const QDir logsDir(QApplication::applicationDirPath() + "/logs");
 	if (logsDir.mkpath(logsDir.absolutePath())) {

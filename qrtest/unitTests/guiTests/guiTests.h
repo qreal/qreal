@@ -19,6 +19,7 @@
 #include "qrgui/mainWindow/qrealApplication.h"
 #include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
 #include "./qrgui/mainWindow/mainWindow.h"
+#include <qrkernel/settingsManager.h>
 
 namespace guiTesting {
 
@@ -37,7 +38,7 @@ private:
 	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
 	qReal::QRealApplication* mApp;
 	qReal::MainWindow* mWindow;
-	bool scriptInterpretationDefaultValue = SettingsManager::value("scriptInterpretation").toBool();
+	bool mScriptInterpretationDefaultValue = qReal::SettingsManager::value("scriptInterpretation").toBool();
 	// это надо изменить глобально на savedata() и loaddata, мб? например, если мы изменяем путь до чего-то и хотим проверить, сохранились
 	// ли в регистре эти изменения правильно, а потом всё вернуть.
 	int mReturnCode;

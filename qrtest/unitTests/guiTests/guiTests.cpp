@@ -13,7 +13,7 @@
  * limitations under the License. */
 
 //vera++ проверяет тут? проверить, добавить если чо. включить в PROJECT с VERA = TRUE
-#define errorCode -1 // если exec ничего не возвратить, а такое бывает?
+#define CRASHCODE -1 // если exec ничего не возвратить, а такое бывает?
 
 #include "guiTests.h"
 #include "startQreal.cpp"
@@ -266,7 +266,7 @@ void wait(int duration) // а надо ли копипастить?
 
 void guiTests::SetUp() // возможно эти строчки следует поместить для сетапа для всех тестов
 {
-	mReturnCode = errorCode;
+	mReturnCode = CRASHCODE;
 //	QString program = QApplication::applicationFilePath() + "/../qreal-d.exe";
 //	QStringList arguments;
 //	QProcess *qrealInstance = new QProcess();
@@ -316,7 +316,7 @@ void guiTests::SetUp() // возможно эти строчки следует 
 void guiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
 // а для скриптов можно выполнять действия с известными моделями типа езды по линии.
 {
-	SettingsManager::setValue("scriptInterpretation", scriptInterpretationDefaultValue);
+	SettingsManager::setValue("scriptInterpretation", mScriptInterpretationDefaultValue);
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
 	if (mReturnCode) {
 		FAIL() << "Failed coz returnCode of app = \n" << std::to_string(mReturnCode);
