@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtGui/QColor>
+
 #include <trikKit/robotModel/parts/trikLed.h>
 #include <twoDModel/engine/twoDModelEngineInterface.h>
 
@@ -27,13 +29,21 @@ namespace parts {
 class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TwoDLed : public robotModel::parts::TrikLed
 {
 	Q_OBJECT
+	Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
 	TwoDLed(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
-	/// sets LED widget's color in 2D model.
+	/// Returns the current color of led emulator in 2D model.
+	QColor color() const;
+
+	/// Sets the \a color of led emulator in 2D model.
+	void setColor(const QColor &color);
+
+	/// Sets the \a color of led emulator in 2D model.
+	/// If "off" passed then led becomes gray.
 	void setColor(const QString &color) override;
 
 private:

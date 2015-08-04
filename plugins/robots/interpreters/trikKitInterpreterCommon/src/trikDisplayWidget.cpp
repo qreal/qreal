@@ -26,6 +26,7 @@ TrikDisplayWidget::TrikDisplayWidget(QWidget *parent)
 	, mBackground(":/icons/controller.png", "PNG")
 {
 	mUi->setupUi(this);
+	resetLed();
 }
 
 TrikDisplayWidget::~TrikDisplayWidget()
@@ -75,6 +76,11 @@ bool TrikDisplayWidget::buttonIsDown(const QString &buttonPort) const
 	QLOG_WARN() << "Button on port" << buttonPort << "is not supported by 2d model";
 
 	return false;
+}
+
+QColor TrikDisplayWidget::ledColor() const
+{
+	return mUi->led->palette().color(QPalette::Background);
 }
 
 void TrikDisplayWidget::setLedColor(const QColor &color)
