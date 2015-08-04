@@ -346,14 +346,15 @@ void guiTests::run(const QString &script)
 
 void guiTests::runFromFile(const QString &relativeFileName)
 {
-	QString fileName;
 	QString scriptDirName = QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/";
-	QDir scriptDir(scriptDirName);
-	if (scriptDir.exists()) {
-		fileName = scriptDirName + relativeFileName;
-	} else {
-		fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + relativeFileName;
-	}
+	QString fileName = QDir::cleanPath(scriptDirName) + relativeFileName;
+//	QString fileName; // этот код пока что можно оставить, так как вдруг теневая сборка.
+//	QDir scriptDir(scriptDirName);
+//	if (scriptDir.exists()) {
+//		fileName = scriptDirName + relativeFileName;
+//	} else {
+//		fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + relativeFileName;
+//	}
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		ADD_FAILURE() << "Cant open file for reading for gui test: " << fileName.toStdString();
