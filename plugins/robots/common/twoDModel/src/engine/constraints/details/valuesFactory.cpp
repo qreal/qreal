@@ -307,11 +307,11 @@ QVariant ValuesFactory::propertyOf(const QRect &rect, const QString &property, b
 QVariant ValuesFactory::propertyOf(const QVariantList &list, const QString &property, bool *ok) const
 {
 	ok && (*ok = true);
-	if (property == "first") {
+	if (property == "first" && !list.isEmpty()) {
 		return list.first();
 	}
 
-	if (property == "last") {
+	if (property == "last" && !list.isEmpty()) {
 		return list.last();
 	}
 
