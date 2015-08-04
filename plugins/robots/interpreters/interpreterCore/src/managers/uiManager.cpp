@@ -303,7 +303,7 @@ void UiManager::initTab()
 		return;
 	}
 
-	mTabBar = new QToolBar(mMainWindow.windowWidget());
+	mTabBar = new QToolBar(tr("Modes"), mMainWindow.windowWidget());
 	mTabBar->setObjectName("largeTabsBar");
 	mTabBar->setIconSize(QSize(32, 32));
 	mTabBar->setToolButtonStyle(resolution.width() < upperMediumResolutionBorder
