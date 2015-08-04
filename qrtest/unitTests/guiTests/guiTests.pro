@@ -60,12 +60,6 @@ OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/script10.js \
 	$$PWD/testScripts/qrealScripts/hotKeysExistanceAndFunctioning.js \
 
-oldDDIR = $$DESTDIR
-
-DESTDIR = $$PWD/../../qrtest/unitTests/guiTests/testScripts
-
 copyToDestdir($$PWD/testScripts/, now)
-
-DESTDIR = $$oldDDIR
 
 include(../../../qrgui/mainWindow/mainWindowForTests.pri)

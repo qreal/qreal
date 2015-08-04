@@ -74,31 +74,35 @@ void initLogging()
 	}
 }
 
-MainWindow * start(int argc, char *argv[])
+MainWindow * start() // пока что у меня старуется обычное приложение, мне нУжно qrealapplication?
 {
-	/*QRealApplication app(argc, argv);
+	QCoreApplication *coreApp = QApplication::instance();
+	QApplication *app = qobject_cast<QApplication *> (coreApp);
+	if (!app) {
+		return nullptr;
+	}
 	qsrand(time(0));
-	setDefaultLocale(app.arguments().contains("--no-locale"));
+	setDefaultLocale(app->arguments().contains("--no-locale"));
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
 	QLOG_INFO() << "Running on" << PlatformInfo::prettyOsVersion();
-	QLOG_INFO() << "Arguments:" << app.arguments();
+	QLOG_INFO() << "Arguments:" << app->arguments();
 	QLOG_INFO() << "Setting default locale to" << QLocale().name();
 
 	QString fileToOpen;
-	if (app.arguments().count() > 1) {
-		if (app.arguments().contains("--clear-conf")) {
+	if (app->arguments().count() > 1) {
+		if (app->arguments().contains("--clear-conf")) {
 			clearConfig();
 			return 0;
 		} else {
-			const int setIndex = app.arguments().indexOf("--config");
+			const int setIndex = app->arguments().indexOf("--config");
 			if (setIndex > -1) {
-				const QString settingsFileName = app.arguments().at(setIndex + 1);
+				const QString settingsFileName = app->arguments().at(setIndex + 1);
 				SettingsManager::instance()->loadSettings(settingsFileName);
 			}
 
-			for (const QString &argument : app.arguments()) {
+			for (const QString &argument : app->arguments()) {
 				if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
 					fileToOpen = argument;
 					break;
@@ -107,30 +111,14 @@ MainWindow * start(int argc, char *argv[])
 		}
 	}
 
-#ifndef NO_STYLE_WINDOWSMODERN
-	app.setStyle(new WindowsModernStyle());
-#endif
-*/
-	QString fileToOpen;
+	#ifndef NO_STYLE_WINDOWSMODERN
+		app->setStyle(new WindowsModernStyle());
+	#endif
 
-//	if (QApplication::instance() != nullptr) {
-//		QApplication::instance()->~QCoreApplication();
-//	}
-//	int argc1 = 1;
-//	char *argv1[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/guiTests-d.exe\0", "\0"};
-//	QApplication *app = new QApplication(argc1, argv1);
-//	Q_UNUSED(app);
 	MainWindow *window = new MainWindow(fileToOpen);
 
-	int exitCode = 0; // The window decided to not show itself, exiting now.
-
-	if (window->isVisible()) {
-	//	app.exec();
-//		exitCode = app.exec();
+	if (!window->isVisible()) {
+		return nullptr;
 	}
-
-	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
-	//return exitCode;
-	//qrealPointer = &app;
 	return window;
 }

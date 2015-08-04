@@ -31,17 +31,16 @@ protected:
 	void TearDown() override;
 
 	void run(const QString &script);
-	void runFromFile(const QString &fileName);
-
+	void runFromFile(const QString &relativeFileName);
 
 private:
-//	QProcess* mQrealInstance;
 	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
 	qReal::QRealApplication* mApp;
 	qReal::MainWindow* mWindow;
 	bool scriptInterpretationDefaultValue = SettingsManager::value("scriptInterpretation").toBool();
 	// это надо изменить глобально на savedata() и loaddata, мб? например, если мы изменяем путь до чего-то и хотим проверить, сохранились
 	// ли в регистре эти изменения правильно, а потом всё вернуть.
+	int mReturnCode;
 };
 
 }

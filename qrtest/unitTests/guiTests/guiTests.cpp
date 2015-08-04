@@ -13,6 +13,7 @@
  * limitations under the License. */
 
 //vera++ проверяет тут? проверить, добавить если чо. включить в PROJECT с VERA = TRUE
+#define errorCode -1 // если exec ничего не возвратить, а такое бывает?
 
 #include "guiTests.h"
 #include "startQreal.cpp"
@@ -265,14 +266,16 @@ void wait(int duration) // а надо ли копипастить?
 
 void guiTests::SetUp() // возможно эти строчки следует поместить для сетапа для всех тестов
 {
+	mReturnCode = errorCode;
 //	QString program = QApplication::applicationFilePath() + "/../qreal-d.exe";
 //	QStringList arguments;
 //	QProcess *qrealInstance = new QProcess();
 //	// qrealInstance->waitForStarted(30000); // надо ли блокировать сигналы?
 //	qrealInstance->start(program, arguments);
 
-	int argc = 1;
-	char *argv[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/guiTests-d.exe", "\0"};
+//	int argc = 1;
+//	char *argv[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/guiTests-d.exe", "\0"};
+
 
 //	qDebug() << QApplication::instance() << "сетап";
 //	if (QApplication::instance() == nullptr) {
@@ -282,7 +285,7 @@ void guiTests::SetUp() // возможно эти строчки следует 
 
 	SettingsManager::setValue("scriptInterpretation", true);
 
-	MainWindow *window = start(argc, argv);
+	MainWindow *window = start();
 	//window->activateWindow();
 	//QApplication::setActiveWindow(window);
 	mWindow = window;
@@ -314,17 +317,10 @@ void guiTests::TearDown() // возможно стоит смотреть инф
 // а для скриптов можно выполнять действия с известными моделями типа езды по линии.
 {
 	SettingsManager::setValue("scriptInterpretation", scriptInterpretationDefaultValue);
-//	delete mWindow;
-	  // или deletelater?
-//	delete mMainWidnowScriptAPIInterface;
-
-	//mApp->exit();
-//	mQrealInstance->terminate();
-	// ниже надо написать блок об обработке ошибки выхода
-//	if (mQrealInstance->exitStatus() != QProcess::NormalExit) {
-//		ADD_FAILURE() << "Error code of creshed process: " << mQrealInstance->error(); // можно ли писать fail в teardown
-//	}
-//	delete mQrealInstance; // или deletelater?
+	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
+	if (mReturnCode) {
+		FAIL() << "Failed coz returnCode of app = \n" << std::to_string(mReturnCode);
+	}
 }
 
 void guiTests::run(const QString &script)
@@ -344,20 +340,22 @@ void guiTests::run(const QString &script)
 			}
 
 		QApplication::closeAllWindows();
-	//	QApplication::quit();
 	});
-	QApplication::exec();
+	mReturnCode = QApplication::exec();
 }
 
-void guiTests::runFromFile(const QString &fileName1)
-{	
-	QString fileName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/" + fileName1;
-//	QString fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + fileName1;
+void guiTests::runFromFile(const QString &relativeFileName)
+{
+	QString fileName;
+	QString scriptDirName = QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/";
+	QDir scriptDir(scriptDirName);
+	if (scriptDir.exists()) {
+		fileName = scriptDirName + relativeFileName;
+	} else {
+		fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + relativeFileName;
+	}
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
-		// handle error
-		// qDebug() << "Cant open file for reading for gui test: " << fileName.toStdString(); // может убрать?
 		ADD_FAILURE() << "Cant open file for reading for gui test: " << fileName.toStdString();
 	}
 	QTextStream stream(&scriptFile);
