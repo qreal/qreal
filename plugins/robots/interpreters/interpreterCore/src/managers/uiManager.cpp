@@ -294,6 +294,8 @@ void UiManager::initTab()
 {
 	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
+	connect(&mEditModeAction, &QAction::toggled, this, &UiManager::toggleModeButtons);
+	connect(&mDebugModeAction, &QAction::toggled, this, &UiManager::toggleModeButtons);
 
 	const QSize resolution = QApplication::desktop()->screenGeometry().size();
 	if (resolution.width() < lowerMediumResolutionBorder) {
