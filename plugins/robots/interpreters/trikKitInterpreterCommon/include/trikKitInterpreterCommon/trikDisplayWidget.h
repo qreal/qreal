@@ -44,7 +44,11 @@ public:
 	int displayHeight() const override;
 
 	bool buttonIsDown(const QString &buttonId) const override;
-	/// sets LED widget's color on 2D model display.
+
+	/// Returns the current color of led emulator in 2D model.
+	QColor ledColor() const;
+
+	/// Sets the color of led emulator in 2D model.
 	void setLedColor(const QColor &color);
 
 protected:
