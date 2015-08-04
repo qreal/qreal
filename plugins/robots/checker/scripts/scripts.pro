@@ -12,9 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include(../../../../global.pri)
+
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	twoDModelRunner \
-	patcher \
-	scripts \
+
+OTHER_FILES += \
+	$$PWD/check-solution.sh \
+	$$PWD/build-checker-installer.sh \
+	$$PWD/checker.sh \
+
+copyToDestdir($$OTHER_FILES, now)

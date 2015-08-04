@@ -18,7 +18,7 @@
 
 #include <qrrepo/repoApi.h>
 
-const QString description = QObject::tr("Patcher for save files, replaces world model"
+const QString description = QObject::tr("Patcher for save files, replaces world model "
 		"with contents of a given XML world model");
 
 int main(int argc, char *argv[])
