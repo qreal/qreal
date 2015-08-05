@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>QObject</name>
     <message>
@@ -67,29 +67,29 @@
         <translation>nil</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="66"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="68"/>
         <source>Type mismatch</source>
         <translation>Incompatibilité de type</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="71"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="73"/>
         <source>Can not deduce type, expression can be of following types: %1</source>
         <translation>Le type ne peut pas être déduit, l&apos;expression peut être de types suivants : %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="158"/>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="155"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="170"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="188"/>
         <source>This construction is not supported by semantic analysis</source>
         <translation>Cette construction n&apos;est pas supportée par l&apos;analyse sémantique</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="164"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="176"/>
         <source>Type mismatch.</source>
         <translation>Incompatibilité de type.</translation>
     </message>
     <message>
         <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="105"/>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="317"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="373"/>
         <source>Variable %1 is read-only</source>
         <translation>Variable %1 est en lecture seule</translation>
     </message>
@@ -145,6 +145,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/string.h" line="28"/>
         <location filename="../../qrtext/src/lua/luaLexer.cpp" line="101"/>
         <source>string</source>
         <translation type="unfinished"></translation>
@@ -195,39 +196,69 @@
         <translation>Le nœud d&apos;une action sémantique &apos;field&apos; est de type inattendu</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="237"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="108"/>
+        <source>Intrinsic function used as an identifier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="275"/>
         <source>Incorrect assignment, only variables and tables can be assigned to.</source>
         <translation>Affectation erronée, seules les variables et les tableaux peuvent être affectés.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="251"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="289"/>
         <source>Left and right operand have mismatched types.</source>
         <translation>Les operandes gauche et droite ont des types incompatibles.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="264"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="320"/>
         <source>Indirect function calls are not supported</source>
         <translation>Appels de fonction indirects ne sont pas supportés</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="272"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="328"/>
         <source>Unknown function</source>
         <translation>Fonction inconnue</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="284"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="340"/>
         <source>Too many parameters, %1 expected</source>
         <translation>Trop de paramètres , %1 attendu(s)</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="287"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="343"/>
         <source>Not enough parameters, %1 expected</source>
         <translation>Pas assez de paramètres , %1 attendu(s)</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="307"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="363"/>
         <source>Undeclared identifier: %1</source>
         <translation>Identificateur non déclaré : %1</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/boolean.h" line="28"/>
+        <source>boolean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/float.h" line="28"/>
+        <source>float</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/integer.h" line="28"/>
+        <source>integer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/number.h" line="28"/>
+        <source>number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/table.h" line="44"/>
+        <source>table[%1]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

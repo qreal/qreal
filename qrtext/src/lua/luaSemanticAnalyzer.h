@@ -47,7 +47,9 @@ public:
 	void clear() override;
 
 private:
+	void precheck(QSharedPointer<core::ast::Node> const &node) override;
 	void analyzeNode(const QSharedPointer<core::ast::Node> &node) override;
+
 	void analyzeUnaryOperator(const QSharedPointer<core::ast::Node> &node);
 	void analyzeBinaryOperator(const QSharedPointer<core::ast::Node> &node);
 
@@ -66,6 +68,10 @@ private:
 	/// Reports errors about all read-only variables. Supposed to be called on left side of assignment.
 	/// @returns true, if everything is ok.
 	bool checkForReadOnlyVariables(const QSharedPointer<core::ast::Node> &node);
+
+	/// Checks that intrinsic functions are used as functions and not as some identifiers.
+	void checkReservedIdentifiersUsage(const QSharedPointer<core::ast::Node> &node
+			, const QSharedPointer<core::ast::Node> &parent);
 
 	QSharedPointer<core::types::TypeExpression> mBoolean;
 	QSharedPointer<core::types::TypeExpression> mFloat;
