@@ -207,7 +207,7 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 	}
 
 	if (change == ItemRotationHasChanged) {
-		mRobotModel.setRotation(value.toDouble());
+		mRobotModel.setRotation(value.toReal());
 	}
 
 	return RotateItem::itemChange(change, value);
