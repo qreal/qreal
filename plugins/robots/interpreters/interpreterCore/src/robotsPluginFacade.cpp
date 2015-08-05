@@ -133,6 +133,23 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
 
+	// Just to capture them, not configurer.
+	qReal::ProjectManagementInterface &projectManager = configurer.projectManager();
+	qReal::gui::MainWindowInterpretersInterface &mainWindow = configurer.mainWindowInterpretersInterface();
+	qReal::GraphicalModelAssistInterface &graphicalModel = configurer.graphicalModelApi();
+	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &mainWindow, &graphicalModel]() {
+		if (projectManager.somethingOpened()) {
+			for (const qReal::Id &diagram : graphicalModel.children(qReal::Id::rootId())) {
+				if (diagram.type() == qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")) {
+					mainWindow.activateItemOrDiagram(diagram);
+					return;
+				}
+			}
+		} else {
+			mainWindow.openStartTab();
+		}
+	});
+
 	const qrRepo::LogicalRepoApi &repoApi = configurer.logicalModelApi().logicalRepoApi();
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged

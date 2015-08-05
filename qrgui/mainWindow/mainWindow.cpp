@@ -1204,7 +1204,6 @@ void MainWindow::switchToTab(int index)
 		mUi->tabs->setEnabled(false);
 		mController->setActiveDiagram(Id());
 	}
-
 }
 
 void MainWindow::updateTabName(const Id &id)
@@ -1691,8 +1690,13 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	}
 
 	for (const ActionInfo &action : actions) {
-		const QString menuName = "menu" + utils::StringUtils::capitalizeFirstLetter(action.menuName());
-		QMenu * const menu = findChild<QMenu *>(menuName);
+		/// @todo: We should somehow assert that all menus have names in such format.
+		const QString capitalizedName = utils::StringUtils::capitalizeFirstLetter(action.menuName());
+		QMenu *menu = findChild<QMenu *>("menu" + capitalizedName);
+		if (!menu) {
+			menu = findChild<QMenu *>("menu_" + capitalizedName);
+		}
+
 		if (menu) {
 			addActionOrSubmenu(menu, action);
 		}
@@ -2068,9 +2072,17 @@ void MainWindow::setVersion(const QString &version)
 
 void MainWindow::openStartTab()
 {
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		if (dynamic_cast<StartWidget *>(mUi->tabs->widget(i))) {
+			mUi->tabs->setCurrentIndex(i);
+			return;
+		}
+	}
+
 	mStartWidget = new StartWidget(this, mProjectManager);
-	const int index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
-	mUi->tabs->setTabUnclosable(index);
+	const bool hadTabs = mUi->tabs->count() > 0;
+	mUi->tabs->insertTab(0, mStartWidget, tr("Getting Started"));
+	mUi->tabs->setTabUnclosable(hadTabs);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 }
 

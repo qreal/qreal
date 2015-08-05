@@ -559,12 +559,12 @@ p, li { white-space: pre-wrap; }
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="104"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="106"/>
         <source>Switch to debug mode</source>
         <translation>Переключиться в режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="105"/>
         <source>Switch to edit mode</source>
         <translation>Переключиться в режим редактирования</translation>
     </message>
@@ -573,12 +573,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="107"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="106"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="108"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
@@ -736,12 +736,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="262"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="37"/>
+        <source>To main page</source>
+        <translation>На главную</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="269"/>
         <source>Real robot</source>
         <translation>Реальный робот</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="263"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="270"/>
         <source>2D model</source>
         <translation>2D модель</translation>
     </message>
@@ -769,7 +774,7 @@ p, li { white-space: pre-wrap; }
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="281"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="298"/>
         <source>Toggle robot console panel</source>
         <translation>Показать/спрятать панель консоли</translation>
     </message>
@@ -802,7 +807,7 @@ p, li { white-space: pre-wrap; }
         <translation>Режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="306"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="308"/>
         <source>Modes</source>
         <translation>Режимы</translation>
     </message>
