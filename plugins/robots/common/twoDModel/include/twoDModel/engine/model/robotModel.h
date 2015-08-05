@@ -110,6 +110,7 @@ public:
 
 	/// Returns a position of the center of the robot in scene coordinates.
 	QPointF rotationCenter() const;
+
 	/// Returns the item whose scene position will determine robot`s start position.
 	/// Transfers ownership.
 	QGraphicsItem *startPositionMarker() const;

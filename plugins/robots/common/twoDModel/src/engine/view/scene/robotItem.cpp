@@ -203,11 +203,11 @@ void RobotItem::setNeededBeep(bool isNeededBeep)
 QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionHasChanged) {
-		mRobotModel.setPosition(pos());
+		mRobotModel.setPosition(value.value<QPointF>());
 	}
 
 	if (change == ItemRotationHasChanged) {
-		mRobotModel.setRotation(rotation());
+		mRobotModel.setRotation(value.toDouble());
 	}
 
 	return RotateItem::itemChange(change, value);

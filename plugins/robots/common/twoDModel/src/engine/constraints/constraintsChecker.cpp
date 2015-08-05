@@ -84,7 +84,9 @@ void ConstraintsChecker::serializeConstraints(QDomElement &parent) const
 
 void ConstraintsChecker::checkConstraints()
 {
-	QSetIterator<details::Event *> iterator(mActiveEvents);
+	QList<details::Event *> sortedEvents = mActiveEvents.toList();
+	std::sort(sortedEvents.begin(), sortedEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
+	QListIterator<details::Event *> iterator(sortedEvents);
 	while (iterator.hasNext()) {
 		iterator.next()->check();
 	}

@@ -75,7 +75,7 @@ Thread::~Thread()
 void Thread::initTimer()
 {
 	mProcessEventsTimer->setSingleShot(true);
-	mProcessEventsTimer->setInterval(true);
+	mProcessEventsTimer->setInterval(0);
 	connect(mProcessEventsTimer, SIGNAL(timeout())
 			, mProcessEventsMapper, SLOT(map()));
 
