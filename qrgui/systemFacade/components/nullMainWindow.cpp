@@ -188,6 +188,10 @@ void NullMainWindow::setTabText(QWidget *tab, const QString &text)
 	Q_UNUSED(text)
 }
 
+void NullMainWindow::openStartTab()
+{
+}
+
 void NullMainWindow::beginPaletteModification()
 {
 }

@@ -59,6 +59,9 @@ public slots:
 	virtual bool saveOrSuggestToSaveAs() = 0;
 
 public:
+	/// Returns true if some .qrs project is currently opened in system. Otherwise returns false.
+	virtual bool somethingOpened() const = 0;
+
 	/// Create an empty project
 	virtual bool openEmptyWithSuggestToSaveChanges() = 0;
 
