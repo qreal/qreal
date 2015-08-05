@@ -234,7 +234,7 @@ QVariant ValuesFactory::propertyOf(const QVariant &value, const QString &propert
 	hasProperty && (*hasProperty = false);
 	unknownType && (*unknownType = false);
 
-	// Here must be enumerated all types whoose properties we can obtain.
+	// Here must be enumerated all types whose properties we can obtain.
 	if (value.canConvert<QObject *>()) {
 		result = propertyOf(value.value<QObject *>(), property, hasProperty);
 	} else if (value.canConvert<QPoint>()) {
@@ -307,11 +307,11 @@ QVariant ValuesFactory::propertyOf(const QRect &rect, const QString &property, b
 QVariant ValuesFactory::propertyOf(const QVariantList &list, const QString &property, bool *ok) const
 {
 	ok && (*ok = true);
-	if (property == "first") {
+	if (property == "first" && !list.isEmpty()) {
 		return list.first();
 	}
 
-	if (property == "last") {
+	if (property == "last" && !list.isEmpty()) {
 		return list.last();
 	}
 

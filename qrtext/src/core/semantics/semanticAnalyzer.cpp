@@ -34,6 +34,8 @@ QSharedPointer<ast::Node> SemanticAnalyzer::analyze(QSharedPointer<ast::Node> co
 		return root;
 	}
 
+	precheck(root);
+
 	mRecheckNeeded = true;
 
 	while (mRecheckNeeded) {
@@ -213,4 +215,9 @@ QSharedPointer<types::TypeVariable> SemanticAnalyzer::typeVariable(QSharedPointe
 void SemanticAnalyzer::requestRecheck()
 {
 	mRecheckNeeded = true;
+}
+
+void SemanticAnalyzer::precheck(QSharedPointer<ast::Node> const &node)
+{
+	Q_UNUSED(node)
 }

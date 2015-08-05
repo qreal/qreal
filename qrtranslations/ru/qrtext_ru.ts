@@ -44,7 +44,7 @@
         <translation type="vanished">Не удалось вывести тип</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="66"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="68"/>
         <source>Type mismatch</source>
         <translation>Несоответствие типов</translation>
     </message>
@@ -53,12 +53,12 @@
         <translation type="vanished">Не могу вывести тип, это выражение может быть любого типа</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="71"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="73"/>
         <source>Can not deduce type, expression can be of following types: %1</source>
         <translation>Не могу вывести тип, это выражение может быть следующих типов: %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="164"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="176"/>
         <source>Type mismatch.</source>
         <translation>Несоответствие типов.</translation>
     </message>
@@ -73,7 +73,7 @@
     </message>
     <message>
         <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="105"/>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="317"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="373"/>
         <source>Variable %1 is read-only</source>
         <translation>Переменная %1 только для чтения</translation>
     </message>
@@ -143,43 +143,48 @@
         <translation>Узел в семантическом действии &apos;field&apos; неправильного типа</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="158"/>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="155"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="170"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="188"/>
         <source>This construction is not supported by semantic analysis</source>
         <translation>Конструкция не поддерживается семантическим анализатором</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="237"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="108"/>
+        <source>Intrinsic function used as an identifier</source>
+        <translation>Встроенная функция не может использоваться как идентификатор</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="275"/>
         <source>Incorrect assignment, only variables and tables can be assigned to.</source>
         <translation>Неправильное присваивание, присваивать можно только переменным и таблицам.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="251"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="289"/>
         <source>Left and right operand have mismatched types.</source>
         <translation>Левый и правый операнд имеют несовпадающие типы.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="264"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="320"/>
         <source>Indirect function calls are not supported</source>
         <translation>Непрямые вызовы функций не поддержаны</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="272"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="328"/>
         <source>Unknown function</source>
         <translation>Неизвестная функция</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="284"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="340"/>
         <source>Too many parameters, %1 expected</source>
         <translation>Слишком много параметров, ожидается %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="287"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="343"/>
         <source>Not enough parameters, %1 expected</source>
         <translation>Недостаточно параметров, ожидалось %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="307"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="363"/>
         <source>Undeclared identifier: %1</source>
         <translation>Неизвестная переменная: %1</translation>
     </message>
@@ -214,6 +219,7 @@
         <translation>идентификатор</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/string.h" line="28"/>
         <location filename="../../qrtext/src/lua/luaLexer.cpp" line="101"/>
         <source>string</source>
         <translation>строка</translation>
@@ -239,16 +245,19 @@
         <translation>любой</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/boolean.h" line="28"/>
         <source>boolean</source>
-        <translation type="vanished">логический</translation>
+        <translation>логический</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/float.h" line="28"/>
         <source>float</source>
-        <translation type="vanished">вещественный</translation>
+        <translation>вещественный</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/integer.h" line="28"/>
         <source>integer</source>
-        <translation type="vanished">целый</translation>
+        <translation>целый</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/lua/types/nil.h" line="28"/>
@@ -256,12 +265,14 @@
         <translation>нулевой</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/number.h" line="28"/>
         <source>number</source>
-        <translation type="vanished">число</translation>
+        <translation>число</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/table.h" line="44"/>
         <source>table[%1]</source>
-        <translation type="vanished">массив[%1]</translation>
+        <translation>массив[%1]</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/core/parser/operators/simpleParser.h" line="51"/>

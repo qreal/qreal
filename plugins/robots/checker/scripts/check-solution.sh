@@ -31,7 +31,7 @@ cd "$(dirname "$0")"
 logFile=$savedPwd/checker-log.txt
 
 function log {
-	echo $1 >> $logFile
+	echo $1 >> "$logFile"
 }
 
 log "$( date "+%F %T" ): Check started ================================================================================"
@@ -50,7 +50,7 @@ fileWithPath=$savedPwd/$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
 
-if ! [ -f $fileWithPath ]; then
+if ! [ -f "$fileWithPath" ]; then
 	echo $internalErrorMessage
 	log "File $fileWithPath does not exist, aborting"
 	exit 2
@@ -64,22 +64,22 @@ else
 	patcher=./patcher-d
 fi
 
-chmod +x $twoDModel
-chmod +x $patcher
+chmod +x "$twoDModel"
+chmod +x "$patcher"
 
 export LD_LIBRARY_PATH=.
 
-rm -rf $savedPwd/reports/$fileNameWithoutExtension
-rm -rf $savedPwd/trajectories/$fileNameWithoutExtension
+rm -rf "$savedPwd/reports/$fileNameWithoutExtension"
+rm -rf "$savedPwd/trajectories/$fileNameWithoutExtension"
 
-rm -f $reportFile
-rm -f $trajectory
-rm -f $failedFieldFile
+rm -f "$reportFile"
+rm -f "$trajectory"
+rm -f "$failedFieldFile"
 
-mkdir -p $savedPwd/reports/$fileNameWithoutExtension
-mkdir -p $savedPwd/trajectories/$fileNameWithoutExtension
+mkdir -p "$savedPwd/reports/$fileNameWithoutExtension"
+mkdir -p "$savedPwd/trajectories/$fileNameWithoutExtension"
 
-if [ ! -f $savedPwd/fields/$fileNameWithoutExtension/no-check-self ]; then
+if [ ! -f "$savedPwd/fields/$fileNameWithoutExtension/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
@@ -88,26 +88,26 @@ if [ ! -f $savedPwd/fields/$fileNameWithoutExtension/no-check-self ]; then
 
 	exitCode=$?
 
-	cat $savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension > $reportFile
-	cat $savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension > $trajectoryFile
+	cat "$savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" > "$reportFile"
+	cat "$savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" > "$trajectoryFile"
 
 	if [ $exitCode -ne 0 ]; then
 		log "Solution failed on its own field, aborting"
 		echo $solutionFailedOnOwnFieldMessage
-		cat $reportFile
+		cat "$reportFile"
 		exit 1
 	fi
 fi
 
 log "Looking for prepared testing fields..."
 
-if [ -d $savedPwd/fields/$fileNameWithoutExtension ]; then
+if [ -d "$savedPwd/fields/$fileNameWithoutExtension" ]; then
 	log "Found $savedPwd/fields/$fileNameWithoutExtension folder"
 
 	solutionCopy=$fileNameWithoutExtension-copy.qrs
 	cp -f $fileWithPath ./$solutionCopy
 
-	for i in $( ls $savedPwd/fields/$fileNameWithoutExtension ); do
+	for i in $( ls "$savedPwd/fields/$fileNameWithoutExtension" ); do
 		if [ "$i" == "no-check-self" ]; then
 			continue
 		fi
@@ -128,28 +128,28 @@ if [ -d $savedPwd/fields/$fileNameWithoutExtension ]; then
 
 		exitCode=$?
 		if [ ! -f $reportFile ]; then
-			cat $savedPwd/reports/$fileNameWithoutExtension/$currentField > $reportFile
-			cat $savedPwd/trajectories/$fileNameWithoutExtension/$currentField > $trajectoryFile
+			cat "$savedPwd/reports/$fileNameWithoutExtension/$currentField" > "$reportFile"
+			cat "$savedPwd/trajectories/$fileNameWithoutExtension/$currentField" > "$trajectoryFile"
 		fi
 
 		if [ $exitCode -ne 0 ]; then
 			echo $solutionFailedOnOtherFieldMessage
 			log "Test $currentField failed, aborting"
-			cat $savedPwd/reports/$fileNameWithoutExtension/$currentField > $reportFile
-			cat $savedPwd/trajectories/$fileNameWithoutExtension/$currentField > $trajectoryFile
-			echo "$savedPwd/fields/$fileNameWithoutExtension/$i" > $failedFieldFile
-			cat $reportFile
-			rm -f $solutionCopy
+			cat "$savedPwd/reports/$fileNameWithoutExtension/$currentField" > "$reportFile"
+			cat "$savedPwd/trajectories/$fileNameWithoutExtension/$currentField" > "$trajectoryFile"
+			echo "$savedPwd/fields/$fileNameWithoutExtension/$i" > "$failedFieldFile"
+			cat "$reportFile"
+			rm -f "$solutionCopy"
 			exit 1
 		fi
 
 		log "Checker is done"
 	done
 
-	rm -f $solutionCopy
+	rm -f "$solutionCopy"
 else
 	log "No testing fields found"
 fi
 
-cat $reportFile
+cat "$reportFile"
 exit 0
