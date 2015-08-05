@@ -54,6 +54,7 @@ UiManager::UiManager(QAction &debugModeAction
 	, mEditModeAction(editModeAction)
 	, mMainWindow(mainWindow)
 	, mTabBar(nullptr)
+	, mCustomWidgetsBar(new QToolBar(tr("Miscellaneous"), mMainWindow.windowWidget()))
 	, mRobotConsole(new qReal::ui::ConsoleDock(tr("Robot console"), mMainWindow.windowWidget()))
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
@@ -73,6 +74,8 @@ UiManager::UiManager(QAction &debugModeAction
 
 	mRobotConsole->hide();
 	initTab();
+	mCustomWidgetsBar->setObjectName("robotsMiscellaneousBar");
+	mMainWindow.addToolBar(Qt::TopToolBarArea, mCustomWidgetsBar);
 	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
 	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
 	mMainWindow.windowWidget()->addAction(mRobotConsole->toggleViewAction());
@@ -110,6 +113,27 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	reloadDocks();
 }
 
+void UiManager::addWidgetToToolbar(kitBase::robotModel::RobotModelInterface &robotModel, QWidget * const widget)
+{
+	if (!widget) {
+		return;
+	}
+
+	QAction * const action = mCustomWidgetsBar->addWidget(widget);  // Toolbar will take ownership on widget and resulting action.
+	mToolBarWidgets[action] = &robotModel;
+
+	connect(action, &QAction::changed, [this]() {
+		for (QAction * const action : mCustomWidgetsBar->actions()) {
+			if (action->isVisible()) {
+				mCustomWidgetsBar->setVisible(true);
+				return;
+			}
+		}
+
+		mCustomWidgetsBar->hide();
+	});
+}
+
 qReal::ui::ConsoleDock &UiManager::robotConsole()
 {
 	return *mRobotConsole;
@@ -129,6 +153,11 @@ void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 
 void UiManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
+	for (QAction * const action : mToolBarWidgets.keys()) {
+		const kitBase::robotModel::RobotModelInterface *bindedModel = mToolBarWidgets[action];
+		action->setVisible(!bindedModel || bindedModel == &model);
+	}
+
 	auto subscribeShell = [this, &model]() {
 		if (kitBase::robotModel::robotParts::Shell * const shell = kitBase::robotModel::RobotModelUtils::findDevice
 				<kitBase::robotModel::robotParts::Shell>(model, "ShellPort"))

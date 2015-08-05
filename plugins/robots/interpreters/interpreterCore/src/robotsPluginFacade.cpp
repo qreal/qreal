@@ -267,11 +267,6 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mDockDevicesConfigurer, &kitBase::DevicesConfigurationWidget::selectRobotModel);
-	for (kitBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
-		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
-			mDockDevicesConfigurer->prependCustomWidget(*model, kit->quickPreferencesFor(*model));
-		}
-	}
 
 	mWatchListWindow = new utils::WatchListWindow(*mParser);
 
@@ -297,6 +292,11 @@ void RobotsPluginFacade::initSensorWidgets()
 	mUiManager->placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
 	mActionsManager.appendHotKey("View.ToggleRobotConsole", tr("Toggle robot console panel")
 			, *mUiManager->robotConsole().toggleViewAction());
+	for (kitBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
+		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
+			mUiManager->addWidgetToToolbar(*model, kit->quickPreferencesFor(*model));
+		}
+	}
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);

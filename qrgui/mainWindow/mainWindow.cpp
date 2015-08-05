@@ -1668,7 +1668,7 @@ void MainWindow::addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMen
 	}
 }
 
-void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
+void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 {
 	for (const ActionInfo &action : actions) {
 		if (action.isAction()) {

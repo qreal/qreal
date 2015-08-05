@@ -454,17 +454,17 @@ p, li { white-space: pre-wrap; }
         <translation>TRIK Studio</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="59"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="60"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="94"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="97"/>
         <source>Configure devices</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="108"/>
         <source>Sensors state</source>
         <translation>Графики</translation>
     </message>
@@ -774,7 +774,7 @@ p, li { white-space: pre-wrap; }
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="298"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="293"/>
         <source>Toggle robot console panel</source>
         <translation>Показать/спрятать панель консоли</translation>
     </message>
@@ -783,31 +783,36 @@ p, li { white-space: pre-wrap; }
     <name>interpreterCore::UiManager</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="57"/>
+        <source>Miscellaneous</source>
+        <translation>Прочее</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="58"/>
         <source>Robot console</source>
         <translation>Консоль робота</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="83"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="86"/>
         <source>edit mode</source>
         <translation>режим редактирования</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="84"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="87"/>
         <source>debug mode</source>
         <translation>режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="201"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="230"/>
         <source>Edit mode</source>
         <translation>Режим редактирования</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="204"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="233"/>
         <source>Debug mode</source>
         <translation>Режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="308"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="337"/>
         <source>Modes</source>
         <translation>Режимы</translation>
     </message>
