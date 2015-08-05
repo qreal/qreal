@@ -84,9 +84,7 @@ void ConstraintsChecker::serializeConstraints(QDomElement &parent) const
 
 void ConstraintsChecker::checkConstraints()
 {
-	QList<details::Event *> sortedEvents = mActiveEvents.toList();
-	std::sort(sortedEvents.begin(), sortedEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
-	QListIterator<details::Event *> iterator(sortedEvents);
+	QListIterator<details::Event *> iterator(mActiveEvents);
 	while (iterator.hasNext()) {
 		iterator.next()->check();
 	}
@@ -111,19 +109,25 @@ void ConstraintsChecker::prepareEvents()
 			event->drop();
 		}
 	}
+
+	std::sort(mActiveEvents.begin(), mActiveEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
 }
 
 void ConstraintsChecker::setUpEvent()
 {
 	if (details::Event * const event = dynamic_cast<details::Event *>(sender())) {
-		mActiveEvents << event;
+		if (!mActiveEvents.contains(event)) {
+			mActiveEvents << event;
+		}
 	}
+
+	std::sort(mActiveEvents.begin(), mActiveEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
 }
 
 void ConstraintsChecker::dropEvent()
 {
 	if (details::Event * const event = dynamic_cast<details::Event *>(sender())) {
-		mActiveEvents.remove(event);
+		mActiveEvents.removeAll(event);
 	}
 }
 
