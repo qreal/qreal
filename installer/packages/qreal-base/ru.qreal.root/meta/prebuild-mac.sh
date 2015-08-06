@@ -3,6 +3,30 @@ set -o nounset
 set -o errexit
 
 cd "$(dirname "$0")"
+source $INSTALLER_ROOT/utils/mac_utils.sh
+
+
+fix_dependencies $BIN_DIR/libqrkernel.1.0.0.dylib                     $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrrepo.1.0.0.dylib                       $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrutils.1.0.0.dylib                      $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrtext.1.0.0.dylib                       $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqscintilla2.8.0.2.dylib                  $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqslog.1.0.0.dylib                        $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-brand-manager.1.0.0.dylib          $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-controller.1.0.0.dylib             $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-dialogs.1.0.0.dylib                $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-editor.1.0.0.dylib                 $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-hotkey-manager.1.0.0.dylib         $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-mouse-gestures.1.0.0.dylib         $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-models.1.0.0.dylib                 $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-plugin-manager.1.0.0.dylib         $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-preferences-dialog.1.0.0.dylib     $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-text-editor.1.0.0.dylib            $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-thirdparty.1.0.0.dylib             $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-tool-plugin-interface.1.0.0.dylib  $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/libqrgui-facade.1.0.0.dylib                 $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/plugins/tools/libupdatesChecker.dylib       $QT_DIR/lib @executable_path/../../..
+fix_dependencies $BIN_DIR/qreal.app/Contents/MacOS/qreal              $QT_DIR/lib @executable_path/../../..
 
 cp -pr $BIN_DIR/libqrkernel*.dylib                                         $PWD/../data
 cp -pr $BIN_DIR/libqrrepo*.dylib                                           $PWD/../data
@@ -23,8 +47,8 @@ cp -pr $BIN_DIR/libqrgui-text-editor*.dylib                                $PWD/
 cp -pr $BIN_DIR/libqrgui-thirdparty*.dylib                                 $PWD/../data
 cp -pr $BIN_DIR/libqrgui-tool-plugin-interface*.dylib                      $PWD/../data
 cp -pr $BIN_DIR/libqrgui-facade*.dylib                                     $PWD/../data
-cp -pr $BIN_DIR/qreal.app                                                  "$PWD/../data/$PRODUCT_DISPLAYED_NAME.app"
 cp     $BIN_DIR/plugins/tools/libupdatesChecker.dylib                      $PWD/../data/plugins/tools
+cp -pr $BIN_DIR/qreal.app                                                 "$PWD/../data/$PRODUCT_DISPLAYED_NAME.app"
 
 
 BUNDLE_CONTENTS=$PWD/../data/$PRODUCT_DISPLAYED_NAME.app/Contents
@@ -33,25 +57,24 @@ sed -i.bak s/qreal/trik-studio/g "$BUNDLE_CONTENTS/Info.plist"
 sed -i.bak s/yourcompany/cybertech/g "$BUNDLE_CONTENTS/Info.plist"
 rm -f "$BUNDLE_CONTENTS/Info.plist.bak"
 
-function copyQtLib {
-	PATH_TO_QT_LIB=$QT_DIR/lib/$1.framework/Versions/5/$1
-	OLD_PATH=`pwd`
-	cd `dirname $PATH_TO_QT_LIB`
-	NORMALIZED_PATH_TO_QT_LIB=`pwd`/$1
-	cd $OLD_PATH
-	cp -pr $PATH_TO_QT_LIB $PWD/../data/$1.dylib
-	install_name_tool -change $NORMALIZED_PATH_TO_QT_LIB $PWD/../data/$1.dylib "$BUNDLE_CONTENTS/MacOS/$PRODUCT"
-}
+copy_qt_lib QtCore
+copy_qt_lib QtDBus
+copy_qt_lib QtGui
+copy_qt_lib QtPrintSupport
+copy_qt_lib QtSvg
+copy_qt_lib QtWidgets
+copy_qt_lib QtXml
+copy_qt_lib QtScript
+copy_qt_lib QtTest
 
-copyQtLib QtCore
-copyQtLib QtDBus
-copyQtLib QtGui
-copyQtLib QtPrintSupport
-copyQtLib QtSvg
-copyQtLib QtWidgets
-copyQtLib QtXml
-copyQtLib QtScript
-copyQtLib QtTest
+mkdir "$BUNDLE_CONTENTS/MacOS/platforms"
+mkdir "$BUNDLE_CONTENTS/MacOS/imageformats"
+mkdir "$BUNDLE_CONTENTS/MacOS/iconengines"
 
-cp     $QT_DIR/plugins/imageformats/libqsvg.dylib                          $PWD/../data/imageformats
-cp     $QT_DIR/plugins/iconengines/libqsvgicon.dylib                       $PWD/../data/iconengines
+cp     $QT_DIR/plugins/platforms/libqcocoa.dylib                           "$BUNDLE_CONTENTS/MacOS/platforms"
+cp     $QT_DIR/plugins/imageformats/libqsvg.dylib                          "$BUNDLE_CONTENTS/MacOS/imageformats"
+cp     $QT_DIR/plugins/iconengines/libqsvgicon.dylib                       "$BUNDLE_CONTENTS/MacOS/iconengines"
+
+fix_dependencies "$BUNDLE_CONTENTS/MacOS/platforms/libqcocoa.dylib"     $QT_DIR/lib @executable_path/../../..
+fix_dependencies "$BUNDLE_CONTENTS/MacOS/imageformats/libqsvg.dylib"    $QT_DIR/lib @executable_path/../../..
+fix_dependencies "$BUNDLE_CONTENTS/MacOS/iconengines/libqsvgicon.dylib" $QT_DIR/lib @executable_path/../../..
