@@ -119,7 +119,8 @@ void UiManager::addWidgetToToolbar(kitBase::robotModel::RobotModelInterface &rob
 		return;
 	}
 
-	QAction * const action = mCustomWidgetsBar->addWidget(widget);  // Toolbar will take ownership on widget and resulting action.
+	// Toolbar will take ownership on widget and resulting action.
+	QAction * const action = mCustomWidgetsBar->addWidget(widget);
 	mToolBarWidgets[action] = &robotModel;
 
 	connect(action, &QAction::changed, [this]() {
