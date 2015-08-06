@@ -23,8 +23,8 @@
 
 namespace guiTesting {
 
-/// Test suite for GUI
-class guiTests : public testing::Test
+/// Test suite for standard qReal GUI
+class QRealGuiTests : public testing::Test
 {
 
 protected:
@@ -36,8 +36,8 @@ protected:
 
 private:
 	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
-	qReal::QRealApplication* mApp;
 	qReal::MainWindow* mWindow;
+
 	bool mScriptInterpretationDefaultValue = qReal::SettingsManager::value("scriptInterpretation").toBool();
 	// это надо изменить глобально на savedata() и loaddata, мб? например, если мы изменяем путь до чего-то и хотим проверить, сохранились
 	// ли в регистре эти изменения правильно, а потом всё вернуть.

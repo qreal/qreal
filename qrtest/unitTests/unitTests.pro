@@ -23,3 +23,5 @@ SUBDIRS = \
 	qrutilsTests \
 	qrtextTests \
 	guiTests\
+
+guiTests.file = $$PWD/guiTests/qRealRobotsGuiTests.pro

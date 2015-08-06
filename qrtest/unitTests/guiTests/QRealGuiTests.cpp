@@ -12,10 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-//vera++ проверяет тут? проверить, добавить если чо. включить в PROJECT с VERA = TRUE
 #define CRASHCODE -1 // если exec ничего не возвратить, а такое бывает?
 
-#include "guiTests.h"
+#include "QRealGuiTests.h"
 #include "startQreal.cpp"
 
 #include <qrutils/widgetFinder.h>
@@ -39,8 +38,6 @@
 using namespace guiTesting;
 using namespace qReal;
 
-// мб добавить assertnotnull для объектов в скрипте
-
 QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
@@ -51,7 +48,7 @@ QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 	}
 
 	if (!context->argument(0).toBool()) {
-		ADD_FAILURE() << "Fail at\n" // FAIL() должен быть, можно бросать исключение!!!
+		ADD_FAILURE() << "Fail at\n" // FAIL() должен быть, можно бросать исключение!!! // TODO! надо проверить, что будет, если просто бросать исключения. как тесты пойдут
 				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
 	}
 
@@ -76,23 +73,6 @@ QScriptValue scriptAddFailure(QScriptContext *context, QScriptEngine *engine)
 	return {};
 }
 
-//QScriptValue scriptExist(QScriptContext *context, QScriptEngine *engine) // q_script_cast?
-//{
-//	Q_UNUSED(engine);
-
-//	if (context->argumentCount() != 1) {
-//		ADD_FAILURE() << "'exist' shall have exactly one argument";
-//		return {};
-//	}
-
-//	if (context->argument(0).isNull()) {
-//		ADD_FAILURE() << "Fail at\n" // FAIL() должен быть
-//				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-//	}
-
-//	return {};
-//}
-
 QScriptValue scriptExpect(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
@@ -109,23 +89,6 @@ QScriptValue scriptExpect(QScriptContext *context, QScriptEngine *engine)
 
 	return {};
 }
-
-//QScriptValue scriptExpectIsNotNull(QScriptContext *context, QScriptEngine *engine)
-//{
-//	Q_UNUSED(engine);
-
-//	if (context->argumentCount() != 1) {
-//		ADD_FAILURE() << "'expectNotNull' shall have exactly one argument";
-//		return {};
-//	}
-
-//	if (context->argument(0).isNull()) {
-//		ADD_FAILURE() << "Expecting failure at\n"
-//				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-//	}
-
-//	return {};
-//}
 
 // mainwindow, имя диалога, название диаграммы, время
 QScriptValue scriptExpectDialog(QScriptContext *context, QScriptEngine *engine)
@@ -204,7 +167,7 @@ QScriptValue scriptExpectDialog(QScriptContext *context, QScriptEngine *engine)
 		}
 	});
 
-	return {};
+	return {}; // что делает этот код?
 }
 
 QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *engine)
@@ -254,66 +217,29 @@ QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *e
 	return {};
 }
 
-void wait(int duration) // а надо ли копипастить?
-{
-	QEventLoop eventLoop;
-	if (duration != -1) {
-		QTimer::singleShot(duration, &eventLoop, SLOT(quit()));
-	}
-
-	eventLoop.exec();
-}
-
-void guiTests::SetUp() // возможно эти строчки следует поместить для сетапа для всех тестов
+void QRealGuiTests::SetUp() // возможно эти строчки следует поместить для сетапа для всех тестов
 {
 	mReturnCode = CRASHCODE;
-//	QString program = QApplication::applicationFilePath() + "/../qreal-d.exe";
-//	QStringList arguments;
-//	QProcess *qrealInstance = new QProcess();
-//	// qrealInstance->waitForStarted(30000); // надо ли блокировать сигналы?
-//	qrealInstance->start(program, arguments);
-
-//	int argc = 1;
-//	char *argv[] = {"C:/Users/Kirill/Desktop/qreal/bin/debug/guiTests-d.exe", "\0"};
-
-
-//	qDebug() << QApplication::instance() << "сетап";
-//	if (QApplication::instance() == nullptr) {
-//		QApplication app(argc, argv);
-//		qDebug() << "я внутри в сетапе" << QApplication::instance();
-//	}
 
 	SettingsManager::setValue("scriptInterpretation", true);
 
 	MainWindow *window = start();
-	//window->activateWindow();
-	//QApplication::setActiveWindow(window);
 	mWindow = window;
 	mWindow->setAttribute(Qt::WA_DeleteOnClose);
-//mApp = qrealPointer;
-	//wait(10000);
-	mMainWindowScriptAPIInterface = dynamic_cast<MainWidnowScriptAPIInterface *>(window);
-	//if (mMainWidnowScriptAPIInterface == nullptr) {
-	//	ADD_FAILURE() << "MainWindow is not found"; // можно ли сюда добавлять ассерты? (в сетап)
-	//}
-	//qrealInstance->dumpObjectTree();
-	//while(qrealInstance->state() != 2){}; // костыль, надо бы и время учитывать
-	// if (!qrealInstance->waitForStarted(10000)) {
-	//	// как-то обработать (на случай если программа не запустилась или путь неверный)
-	//}
-//	mQrealInstance = qrealInstance;
 
-	// app.setAttribute(Qt::AA_Use96Dpi, true); // может понадобится на Xdisplay?
+	mMainWindowScriptAPIInterface = dynamic_cast<MainWidnowScriptAPIInterface *>(window);
+	if (mMainWidnowScriptAPIInterface == nullptr) {
+		FAIL() << "MainWindow is not found";
+	}
+
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptAddFailure, "failure");
-//	mMainWidnowScriptAPIInterface->registerNewFunction(scriptExist, "exist");
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect");
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptCloseExpectedDialog, "closeExpectedDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов TODO: то же самое, что и лля другой
-//	mMainWidnowScriptAPIInterface->registerNewFunction(scriptExpectIsNotNull, "expectNotNull");
 	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "chooseExpectedDialogDiagram"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
 }
 
-void guiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
+void QRealGuiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
 // а для скриптов можно выполнять действия с известными моделями типа езды по линии.
 {
 	SettingsManager::setValue("scriptInterpretation", mScriptInterpretationDefaultValue);
@@ -323,7 +249,7 @@ void guiTests::TearDown() // возможно стоит смотреть инф
 	}
 }
 
-void guiTests::run(const QString &script)
+void QRealGuiTests::run(const QString &script)
 {
 	QScriptSyntaxCheckResult checkResult = mMainWindowScriptAPIInterface->checkSyntax(script);
 	if (checkResult.state() != QScriptSyntaxCheckResult::Valid) {
@@ -344,10 +270,12 @@ void guiTests::run(const QString &script)
 	mReturnCode = QApplication::exec();
 }
 
-void guiTests::runFromFile(const QString &relativeFileName)
+void QRealGuiTests::runFromFile(const QString &relativeFileName)
 {
-	QString scriptDirName = QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/";
+	QString scriptDirName = QApplication::applicationFilePath() +
+			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/";
 	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
+
 //	QString fileName; // этот код пока что можно оставить, так как вдруг теневая сборка.
 //	QDir scriptDir(scriptDirName);
 //	if (scriptDir.exists()) {
@@ -355,6 +283,7 @@ void guiTests::runFromFile(const QString &relativeFileName)
 //	} else {
 //		fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + relativeFileName;
 //	}
+
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		ADD_FAILURE() << "Cant open file for reading for gui test: " << fileName.toStdString();
@@ -365,183 +294,183 @@ void guiTests::runFromFile(const QString &relativeFileName)
 	run(contents);
 }
 
-TEST_F(guiTests, sanityCheck)
+TEST_F(QRealGuiTests, sanityCheck)
 {
 	run("assert(true);");
 	ASSERT_EQ(2, 1 + 1);
 }
 
-TEST_F(guiTests, editActionsExistence)
+TEST_F(QRealGuiTests, editActionsExistence)
 {
 	runFromFile("editActionsExistence.js"); // мб qs?
 }
 
-TEST_F(guiTests, viewActionsExistence)
+TEST_F(QRealGuiTests, viewActionsExistence)
 {
 	runFromFile("viewActionsExistence.js");
 }
 
-TEST_F(guiTests, findDialogElementsExistence)
+TEST_F(QRealGuiTests, findDialogElementsExistence)
 {
 	runFromFile("findDialogElementsExistence.js");
 }
 
-TEST_F(guiTests, helpActionsExistence)
+TEST_F(QRealGuiTests, helpActionsExistence)
 {
 	runFromFile("helpActionsExistence.js");
 }
 
-TEST_F(guiTests, mainPanelsElementsExistence)
+TEST_F(QRealGuiTests, mainPanelsElementsExistence)
 {
 	runFromFile("mainPanelsElementsExistence.js");
 }
 
-TEST_F(guiTests, mouseGesturesElementsExistence)
+TEST_F(QRealGuiTests, mouseGesturesElementsExistence)
 {
 	runFromFile("mouseGesturesElementsExistence.js");
 }
 
-TEST_F(guiTests, preferenceDialogElementsExistence)
+TEST_F(QRealGuiTests, preferenceDialogElementsExistence)
 {
 	runFromFile("preferenceDialogElementsExistence.js");
 }
 
-TEST_F(guiTests, settingsActionsExistence)
+TEST_F(QRealGuiTests, settingsActionsExistence)
 {
 	runFromFile("settingsActionsExistence.js");
 }
 
-TEST_F(guiTests, tabSceneExistence)
+TEST_F(QRealGuiTests, tabSceneExistence)
 {
 	runFromFile("tabSceneExistence.js");
 }
 
-TEST_F(guiTests, toolbarsElementsExistence)
+TEST_F(QRealGuiTests, toolbarsElementsExistence)
 {
 	runFromFile("toolbarsElementsExistence.js");
 }
 
-TEST_F(guiTests, toolsActionsExistence)
+TEST_F(QRealGuiTests, toolsActionsExistence)
 {
 	runFromFile("toolsActionsExistence.js");
 }
 
-TEST_F(guiTests, fileActionsExistence)
+TEST_F(QRealGuiTests, fileActionsExistence)
 {
 	runFromFile("fileActionsExistence.js");
 }
 
-TEST_F(guiTests, fileActionsFunctioning)
+TEST_F(QRealGuiTests, fileActionsFunctioning)
 {
 	runFromFile("fileActionsFunctioning.js");
 }
 
-TEST_F(guiTests, findDialogElementsFunctioning)
+TEST_F(QRealGuiTests, findDialogElementsFunctioning)
 {
 	runFromFile("findDialogElementsFunctioning.js");
 }
 
-TEST_F(guiTests, helpActionsFunctioning)
+TEST_F(QRealGuiTests, helpActionsFunctioning)
 {
 	runFromFile("helpActionsFunctioning.js");
 }
 
-TEST_F(guiTests, mainPanelsElementsFunctioning)
+TEST_F(QRealGuiTests, mainPanelsElementsFunctioning)
 {
 	runFromFile("mainPanelsElementsFunctioning.js");
 }
 
-TEST_F(guiTests, mouseGesturesElementsFunctioning)
+TEST_F(QRealGuiTests, mouseGesturesElementsFunctioning)
 {
 	runFromFile("mouseGesturesElementsFunctioning.js");
 }
 
-TEST_F(guiTests, preferenceDialogElementsFunctioning)
+TEST_F(QRealGuiTests, preferenceDialogElementsFunctioning)
 {
 	runFromFile("preferenceDialogElementsFunctioning.js");
 }
 
-TEST_F(guiTests, settingsActionsFunctioning)
+TEST_F(QRealGuiTests, settingsActionsFunctioning)
 {
 	runFromFile("settingsActionsFunctioning.js");
 }
 
-TEST_F(guiTests, tabSceneFunctioning)
+TEST_F(QRealGuiTests, tabSceneFunctioning)
 {
 	runFromFile("tabSceneFunctioning.js");
 }
 
-TEST_F(guiTests, toolbarsElementsFunctioning)
+TEST_F(QRealGuiTests, toolbarsElementsFunctioning)
 {
 	runFromFile("toolbarsElementsFunctioning.js");
 }
 
-TEST_F(guiTests, toolsActionsFunctioning)
+TEST_F(QRealGuiTests, toolsActionsFunctioning)
 {
 	runFromFile("toolsActionsFunctioning.js");
 }
 
-TEST_F(guiTests, viewActionsFunctioning)
+TEST_F(QRealGuiTests, viewActionsFunctioning)
 {
 	runFromFile("viewActionsFunctioning.js");
 }
 
-TEST_F(guiTests, editActionsFunctioning)
+TEST_F(QRealGuiTests, editActionsFunctioning)
 {
 	runFromFile("editActionsFunctioning.js");
 }
 
-TEST_F(guiTests, hotKeysExistanceAndFunctioning)
+TEST_F(QRealGuiTests, hotKeysExistanceAndFunctioning)
 {
 	runFromFile("hotKeysExistanceAndFunctioning.js");
 }
 
-TEST_F(guiTests, script1)
+TEST_F(QRealGuiTests, script1)
 {
 	runFromFile("script1.js");
 }
 
-TEST_F(guiTests, script2)
+TEST_F(QRealGuiTests, script2)
 {
 	runFromFile("script2.js");
 }
 
-TEST_F(guiTests, script3)
+TEST_F(QRealGuiTests, script3)
 {
 	runFromFile("script3.js");
 }
 
-TEST_F(guiTests, script4)
+TEST_F(QRealGuiTests, script4)
 {
 	runFromFile("script4.js");
 }
 
-TEST_F(guiTests, script5)
+TEST_F(QRealGuiTests, script5)
 {
 	runFromFile("script5.js");
 }
 
-TEST_F(guiTests, script6)
+TEST_F(QRealGuiTests, script6)
 {
 	runFromFile("script6.js");
 }
 
-TEST_F(guiTests, script7)
+TEST_F(QRealGuiTests, script7)
 {
 	runFromFile("script7.js");
 }
 
-TEST_F(guiTests, script8)
+TEST_F(QRealGuiTests, script8)
 {
 	runFromFile("script8.js");
 }
 
-TEST_F(guiTests, script9)
+TEST_F(QRealGuiTests, script9)
 {
 	runFromFile("script9.js");
 }
 
-TEST_F(guiTests, script10)
+TEST_F(QRealGuiTests, script10)
 {
 	runFromFile("script10.js");
 }

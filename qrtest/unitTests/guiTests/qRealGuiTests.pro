@@ -17,11 +17,13 @@ include(../common.pri)
 QT += script
 
 HEADERS += \
-	$$PWD/guiTests.h \
+	$$PWD/QRealGuiTests.h \
+	$$PWD/QRealRobotsGuiTests.h \
 
 SOURCES += \
-	$$PWD/guiTests.cpp \
+	$$PWD/QRealGuiTests.cpp \
 	$$PWD/startQreal.cpp \
+	$$PWD/QRealRobotsGuiTests.cpp \
 
 OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/editActionsExistence.js \

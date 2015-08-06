@@ -65,7 +65,7 @@ void setDefaultLocale(bool localizationDisabled)
 	}
 }
 
-void initLogging() // с логами возможна проблема
+void initLogging() // с логами возможна проблема, так как qapp;
 {
 	const QDir logsDir(QApplication::applicationDirPath() + "/logs");
 	if (logsDir.mkpath(logsDir.absolutePath())) {
@@ -74,13 +74,23 @@ void initLogging() // с логами возможна проблема
 	}
 }
 
-MainWindow * start() // пока что у меня старуется обычное приложение, мне нУжно qrealapplication?
+MainWindow* start()
 {
+	// может код ниже вынести отдельно? (который связан с instance())
 	QCoreApplication *coreApp = QApplication::instance();
 	QApplication *app = qobject_cast<QApplication *> (coreApp);
-	if (!app) {
+
+/*	QRealApplication *app = qobject_cast<QRealApplication *> (aApp);
+	if (!aApp) {
 		return nullptr;
 	}
+	if (!app) {
+		int argc = aApp->arguments().count();
+		char **argv = aApp->arguments().first();
+		aApp->~QCoreApplication();
+		app = new QRealApplication(argc, argv);
+	}*/
+
 	qsrand(time(0));
 	setDefaultLocale(app->arguments().contains("--no-locale"));
 

@@ -21,7 +21,7 @@ SUBDIRS = \
 	unitTests \
 
 unitTests.depends = gmock
-unitTests.file = $$PWD/unitTests/guiTests/guiTests.pro
+unitTests.file = $$PWD/unitTests/guiTests/qRealRobotsGuiTests.pro
 
 gmock.file = thirdparty/gmock-1.6.0/gmock.pro
 
