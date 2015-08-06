@@ -34,6 +34,9 @@ KitAutoSwitcher::KitAutoSwitcher(const qReal::ProjectManagementInterface &projec
 	, mRobotModelManager(robotModelManager)
 {
 	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, this, &KitAutoSwitcher::onProjectOpened);
+	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, [this, &robotModelManager]() {
+		mLogicalModel.mutableLogicalRepoApi().setMetaInformation("lastKitId", robotModelManager.model().kitId());
+	});
 	connect(&robotModelManager, &RobotModelManager::robotModelChanged, [this](RobotModelInterface &model) {
 		mLogicalModel.mutableLogicalRepoApi().setMetaInformation("lastKitId", model.kitId());
 	});

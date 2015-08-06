@@ -75,7 +75,7 @@ Thread::~Thread()
 void Thread::initTimer()
 {
 	mProcessEventsTimer->setSingleShot(true);
-	mProcessEventsTimer->setInterval(true);
+	mProcessEventsTimer->setInterval(0);
 	connect(mProcessEventsTimer, SIGNAL(timeout())
 			, mProcessEventsMapper, SLOT(map()));
 
@@ -168,12 +168,12 @@ void Thread::turnOn(BlockInterface * const block)
 	}
 
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
-	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock);
-	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread);
-	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread);
-	connect(mCurrentBlock, &BlockInterface::sendMessage, this, &Thread::sendMessage);
-	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure);
-	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto);
+	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::sendMessage, this, &Thread::sendMessage, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
 
 	mStack.push(mCurrentBlock);
 

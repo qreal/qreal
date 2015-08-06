@@ -19,9 +19,11 @@ plugins.file = $$PWD/plugins/robots.pro
 SUBDIRS += \
 	gmock \
 	robotsTests \
+	trikStudioSimulatorTests \
 
 gmock.file = $$PWD/qrtest/thirdparty/gmock-1.6.0/gmock.pro
 robotsTests.subdir = $$PWD/qrtest/unitTests/pluginsTests/robotsTests
+trikStudioSimulatorTests.subdir = $$PWD/qrtest/trikStudioSimulatorTests
 
 robotsTests.depends = \
 	qrxc \
@@ -31,4 +33,3 @@ robotsTests.depends = \
 	qrkernel \
 	qrutils \
 	thirdparty \
-

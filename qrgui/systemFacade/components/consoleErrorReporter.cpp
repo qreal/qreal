@@ -19,21 +19,21 @@ using namespace qReal;
 void ConsoleErrorReporter::addInformation(const QString &message, const Id &position)
 {
 	Q_UNUSED(position)
-	qDebug() << message;
+	qDebug() << qUtf8Printable(message);
 	emit informationAdded(message, position);
 }
 
 void ConsoleErrorReporter::addWarning(const QString &message, const Id &position)
 {
 	Q_UNUSED(position)
-	qWarning() << message;
+	qWarning() << qUtf8Printable(message);
 	emit warningAdded(message, position);
 }
 
 void ConsoleErrorReporter::addError(const QString &message, const Id &position)
 {
 	Q_UNUSED(position)
-	qDebug() << QObject::tr("Error:") << message;
+	qDebug() << QObject::tr("Error:") << qUtf8Printable(message);
 	mWereErrors = true;
 	emit errorAdded(message, position);
 }
@@ -41,7 +41,7 @@ void ConsoleErrorReporter::addError(const QString &message, const Id &position)
 void ConsoleErrorReporter::addCritical(const QString &message, const Id &position)
 {
 	Q_UNUSED(position)
-	qCritical() << message;
+	qCritical() << qUtf8Printable(message);
 	mWereErrors = true;
 	emit criticalAdded(message, position);
 }
@@ -50,7 +50,7 @@ void ConsoleErrorReporter::sendBubblingMessage(const QString &message, int durat
 {
 	Q_UNUSED(duration)
 	Q_UNUSED(parent)
-	qDebug() << message;
+	qDebug() << qUtf8Printable(message);
 }
 
 bool ConsoleErrorReporter::wereErrors()

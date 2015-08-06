@@ -78,7 +78,7 @@ defineTest(copyToDestdir) {
 	NOW = $$2
 
 	for(FILE, FILES) {
-		DESTDIR_SUFFIX = 
+		DESTDIR_SUFFIX =
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
 		win32:AFTER_SLASH = $$section(FILE, "/", -1, -1)
 		win32:BASE_NAME = $$section(FILE, "/", -2, -2)
@@ -100,7 +100,7 @@ defineTest(copyToDestdir) {
 			}
 
 			unix:!macx {
-				system("cp -r $$FILE $$DDIR")
+				system("cp -r -f $$FILE $$DDIR")
 			}
 
 			macx {

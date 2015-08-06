@@ -92,6 +92,30 @@ void LuaSemanticAnalyzer::addReadOnlyVariable(const QString &name)
 	mReadOnlyVariables.insert(name);
 }
 
+void LuaSemanticAnalyzer::precheck(QSharedPointer<ast::Node> const &node)
+{
+	checkReservedIdentifiersUsage(node, {});
+}
+
+void LuaSemanticAnalyzer::checkReservedIdentifiersUsage(const QSharedPointer<core::ast::Node> &node
+		, const QSharedPointer<core::ast::Node> &parent)
+{
+	if (node->is<ast::Identifier>()) {
+		const auto identifier = as<ast::Identifier>(node);
+		if (mIntrinsicFunctions.contains(identifier->name())
+				&& (!parent->is<ast::FunctionCall>() || as<ast::FunctionCall>(parent)->function() != node))
+		{
+			reportError(node, QObject::tr("Intrinsic function used as an identifier"));
+		}
+	}
+
+	for (const auto &child : node->children()) {
+		if (!child.isNull()) {
+			checkReservedIdentifiersUsage(child, node);
+		}
+	}
+}
+
 void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &node)
 {
 	if (node->is<ast::Assignment>()) {
@@ -191,6 +215,11 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(const QSharedPointer<core::ast::
 	if (node->is<ast::Addition>() || node->is<ast::Subtraction>() || node->is<ast::Multiplication>()) {
 		constrain(node, left, {mInteger, mFloat});
 		constrain(node, right, {mInteger, mFloat});
+
+		if (typeVariable(left).isNull() || typeVariable(right).isNull()) {
+			// Error is already reported somewhere.
+			return;
+		}
 
 		/// @todo "If both operands are integers, the operation is performed over integers and the result is an integer.
 		///       Otherwise, if both operands are numbers or strings that can be converted to numbers (see §3.4.3), then

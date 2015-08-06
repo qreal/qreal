@@ -454,17 +454,17 @@ p, li { white-space: pre-wrap; }
         <translation>TRIK Studio</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="53"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="60"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="88"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="97"/>
         <source>Configure devices</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="99"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="108"/>
         <source>Sensors state</source>
         <translation>Графики</translation>
     </message>
@@ -559,12 +559,12 @@ p, li { white-space: pre-wrap; }
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="104"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="106"/>
         <source>Switch to debug mode</source>
         <translation>Переключиться в режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="105"/>
         <source>Switch to edit mode</source>
         <translation>Переключиться в режим редактирования</translation>
     </message>
@@ -573,12 +573,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="107"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="106"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="108"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
@@ -736,12 +736,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="262"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="37"/>
+        <source>To main page</source>
+        <translation>На главную</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="269"/>
         <source>Real robot</source>
         <translation>Реальный робот</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="263"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="270"/>
         <source>2D model</source>
         <translation>2D модель</translation>
     </message>
@@ -769,7 +774,7 @@ p, li { white-space: pre-wrap; }
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="281"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="293"/>
         <source>Toggle robot console panel</source>
         <translation>Показать/спрятать панель консоли</translation>
     </message>
@@ -777,29 +782,39 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::UiManager</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="51"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="57"/>
+        <source>Miscellaneous</source>
+        <translation>Прочее</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="58"/>
         <source>Robot console</source>
         <translation>Консоль робота</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="77"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="86"/>
         <source>edit mode</source>
         <translation>режим редактирования</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="78"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="87"/>
         <source>debug mode</source>
         <translation>режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="193"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="230"/>
         <source>Edit mode</source>
         <translation>Режим редактирования</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="196"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="233"/>
         <source>Debug mode</source>
         <translation>Режим отладки</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="337"/>
+        <source>Modes</source>
+        <translation>Режимы</translation>
     </message>
 </context>
 <context>
@@ -940,38 +955,38 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="88"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="161"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="87"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="160"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="93"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="92"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="140"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="139"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="146"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="145"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="201"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="200"/>
         <source>Cannot create new thread with already occupied id %1</source>
         <translation>Идентификатор потока %1 уже занят</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="215"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="214"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="237"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="236"/>
         <source>Killing non-existent thread %1</source>
         <translation>Попытка завершить несуществующий поток %1</translation>
     </message>

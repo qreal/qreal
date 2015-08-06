@@ -4,9 +4,20 @@
 <context>
     <name>trik::UploaderTool</name>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="72"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="100"/>
         <source>WinSCP process failed to launch, check path in settings.</source>
         <translation>Не удалось запустить WinSCP, проверьте, что папка winscp есть в папке с TRIK Studio и в ней есть WinSCP.exe.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="114"/>
+        <source>Uploading failed, check connection and try again.</source>
+        <translation>Загрузка ПО не удалась, проверьте соединение и попробуйте еще раз.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="111"/>
+        <source>Uploaded successfully!</source>
+        <translation>Загрузка успешно завершена!</translation>
     </message>
 </context>
 <context>

@@ -163,9 +163,6 @@ void Shape::generate(QString &classTemplate) const
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
 	}
-	if (!hasLinePorts()) {
-		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
-	}
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
 	}
@@ -175,13 +172,15 @@ void Shape::generate(QString &classTemplate) const
 								: "";
 	QString portRendererLine = (hasLinePorts() || hasPointPorts())
 								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
-								: nodeIndent + "Q_UNUSED(portRenderer)";
+								: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
 	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
 							.replace(nodeWidthTag, QString::number(mWidth))
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
-	foreach(Port *port, mPorts)
+	for (Port *port : mPorts) {
+		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());
 		portsInitLine += port->generateInit(compiler) + endline;
+	}
 
 	QString labelsInitLine;
 	QString labelsUpdateLine;
@@ -204,6 +203,11 @@ void Shape::generate(QString &classTemplate) const
 			.replace(nodeInitTag, labelsInitLine)
 			.replace(updateDataTag, labelsUpdateLine)
 			.replace(labelDefinitionTag, labelsDefinitionLine);
+}
+
+QList<Port*> Shape::getPorts() const
+{
+	return mPorts;
 }
 
 void Shape::generateSdf() const

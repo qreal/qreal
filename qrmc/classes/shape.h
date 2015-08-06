@@ -37,6 +37,7 @@ namespace qrmc {
 		void generate(QString &classTemplate) const;
 
 		QString generateResourceLine(const QString &resourceTemplate) const;
+		QList<Port*> getPorts() const;
 
 	private:
 		void initLabels(const QDomElement &graphics);

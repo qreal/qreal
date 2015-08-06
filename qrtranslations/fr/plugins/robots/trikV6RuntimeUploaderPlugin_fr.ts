@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikV6RuntimeUploaderPlugin/trikV6RuntimeUploaderPlugin.cpp" line="48"/>
+        <source>Attention! Started to download the runtime. This can take a minute or two. Please do not turn off the robot.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>trik::TrikRuntimeUploaderPlugin</name>
     <message>
         <source>Upload Runtime</source>

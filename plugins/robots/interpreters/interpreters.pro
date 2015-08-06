@@ -23,7 +23,6 @@ SUBDIRS = \
 	trikV62KitInterpreter \
 	ev3KitInterpreter \
 	robotsPlugin \
-	twoDModelRunner \
 
 robotsPlugin.depends = interpreterCore
 twoDModelRunner.depends = interpreterCore

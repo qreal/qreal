@@ -20,7 +20,7 @@ using namespace trik;
 
 const QString createTrikDirectory = "call mkdir -p /home/root/trik";
 const QString removePermissions = "call chmod a-x trik/trik*";
-const QString killTrikGui = "call killall trikGui";
+const QString killTrikGui = "call killall -q trikGui || :";
 const QString moveCommand = "synchronize remote trikRuntime /home/root/trik";
 const QString restorePermissions = "call chmod a+x trik/trik*";
 
@@ -45,7 +45,8 @@ TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 					, replaceModelConfig
 					, restartTrikGui
 					}
-			, tr("Attention! Started to download the runtime. Please do not turn off the robot.")
+			, QObject::tr("Attention! Started to download the runtime. This can take a minute or two."
+					" Please do not turn off the robot.")
 			, [](){ return qReal::SettingsManager::value("TrikTcpServer").toString(); }
 			)
 {

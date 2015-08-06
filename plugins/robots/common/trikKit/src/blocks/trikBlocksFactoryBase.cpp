@@ -16,6 +16,7 @@
 
 #include <kitBase/blocksBase/common/enginesStopBlock.h>
 
+#include <kitBase/blocksBase/common/waitForLightSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForAccelerometerBlock.h>
 #include <kitBase/blocksBase/common/waitForGyroscopeSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
@@ -55,6 +56,8 @@
 #include "details/writeToFileBlock.h"
 #include "details/removeFileBlock.h"
 
+#include "trikKit/robotModel/parts/trikInfraredSensor.h"
+
 using namespace trik::blocks;
 using namespace trik::blocks::details;
 using namespace kitBase::blocksBase::common;
@@ -86,9 +89,14 @@ qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::I
 		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitForMessage")) {
 		return new qReal::interpretation::blocks::EmptyBlock();
-
 	} else if (elementMetatypeIs(element, "TrikLed")) {
 		return new LedBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "TrikWaitForIRDistance")) {
+		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
+				, kitBase::robotModel::DeviceInfo::create<robotModel::parts::TrikInfraredSensor>());
+	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
+		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
 		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
 				, kitBase::robotModel::DeviceInfo::create<
@@ -170,6 +178,8 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 			;
 
 	result
+			<< id("TrikWaitForLight")
+			<< id("TrikWaitForIRDistance")
 			<< id("TrikWaitForSonarDistance")
 			<< id("TrikWaitForGyroscope")
 			<< id("TrikWaitForAccelerometer")

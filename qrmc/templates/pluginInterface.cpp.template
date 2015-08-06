@@ -1,9 +1,7 @@
 #include "pluginInterface.h"
-
+#include "../../../qrgui/plugins/editorPluginInterface/elementImpl.h"
 #include "elements.h"
 
-
-Q_EXPORT_PLUGIN2(qreal_editors, @@MetamodelName@@Plugin)
 
 @@MetamodelName@@Plugin::@@MetamodelName@@Plugin()
 {
@@ -16,6 +14,7 @@ void @@MetamodelName@@Plugin::initPlugin()
 	initMouseGestureMap();
 	initPropertyMap();
 	initPropertyDefaultsMap();
+	initDescriptionMap();
 }
 
 void @@MetamodelName@@Plugin::initNameMap()
@@ -51,27 +50,32 @@ QStringList @@MetamodelName@@Plugin::diagrams() const
 	return diagramNameMap.keys();
 }
 
-QStringList @@MetamodelName@@Plugin::elements(QString const &diagram) const
+QStringList @@MetamodelName@@Plugin::elements(const QString &diagram) const
 {
 	return elementsNameMap[diagram].keys();
 }
 
-QString @@MetamodelName@@Plugin::elementDescription(QString const &diagram, QString const &element) const
+QString @@MetamodelName@@Plugin::elementDescription(const QString &diagram, const QString &element) const
 {
 	return elementsDescriptionMap[diagram][element];
 }
 
-QString @@MetamodelName@@Plugin::propertyDescription(QString const &diagram, QString const &element, QString const &property) const
+QString @@MetamodelName@@Plugin::propertyDescription(const QString &diagram, const QString &element, const QString &property) const
 {
 	return propertiesDescriptionMap[diagram][element][property];
 }
 
-QString @@MetamodelName@@Plugin::propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const
+QString @@MetamodelName@@Plugin::propertyDisplayedName(const QString &diagram, const QString &element, const QString &property) const
 {
 	return propertiesDisplayedNamesMap[diagram][element][property];
 }
 
-bool @@MetamodelName@@Plugin::isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const
+void @@MetamodelName@@Plugin::initDescriptionMap()
+{
+@@ElementDescriptionMapLine@@
+}
+
+bool @@MetamodelName@@Plugin::isParentOf(const QString &parentDiagram, const QString &parentElement, const QString &childDiagram, const QString &childElement) const
 {
 	if (childDiagram == parentDiagram && childElement == parentElement)
 		return true;
@@ -84,34 +88,29 @@ bool @@MetamodelName@@Plugin::isParentOf(QString const &parentDiagram, QString c
 	return false;
 }
 
-QList<QPair<QString, QString> > @@MetamodelName@@Plugin::getParentsOf(QString const &diagram, QString const &element) const
+QList<QPair<QString, QString> > @@MetamodelName@@Plugin::getParentsOf(const QString &diagram, const QString &element) const
 {
 	return parentsMap[diagram][element];
 }
 
-QStringList @@MetamodelName@@Plugin::diagramPaletteGroups(QString const &diagram) const
+QStringList @@MetamodelName@@Plugin::diagramPaletteGroups(const QString &diagram) const
 {
 	return paletteGroupsMap[diagram].keys();
 }
 
-QStringList @@MetamodelName@@Plugin::diagramPaletteGroupList(QString const &diagram, QString const &group) const
+QStringList @@MetamodelName@@Plugin::diagramPaletteGroupList(const QString &diagram, const QString &group) const
 {
 	return paletteGroupsMap[diagram][group];
-} 
+}
 
-QStringList @@MetamodelName@@Plugin::getPropertiesWithDefaultValues(QString const &element) const
+QStringList @@MetamodelName@@Plugin::getPropertiesWithDefaultValues(const QString &element) const
 {
 	return propertyDefault[element].keys();
 }
 
-QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(QString const &diagram, QString const &group) const
+QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(const QString &diagram, const QString &group) const
 {
 	return paletteGroupsDescriptionMap[diagram][group];
-}
-
-QIcon @@MetamodelName@@Plugin::getIcon(SdfIconEngineV2Interface *engine) const
-{
-	return QIcon(engine);
 }
 
 QString @@MetamodelName@@Plugin::editorName() const
@@ -119,27 +118,27 @@ QString @@MetamodelName@@Plugin::editorName() const
 	 return "@@MetamodelName@@ Editor";
 }
 
-QString @@MetamodelName@@Plugin::diagramName(QString const &diagram) const
+QString @@MetamodelName@@Plugin::diagramName(const QString &diagram) const
 {
 	return diagramNameMap[diagram];
 }
 
-QString @@MetamodelName@@Plugin::diagramNodeName(QString const &diagram) const
+QString @@MetamodelName@@Plugin::diagramNodeName(const QString &diagram) const
 {
 	return diagramNodeNameMap[diagram];
 }
 
-QString @@MetamodelName@@Plugin::elementName(QString const &diagram, QString const &element) const
+QString @@MetamodelName@@Plugin::elementName(const QString &diagram, const QString &element) const
 {
 	return elementsNameMap[diagram][element];
 }
 
-QString @@MetamodelName@@Plugin::elementMouseGesture(QString const &diagram, QString const &element) const
+QString @@MetamodelName@@Plugin::elementMouseGesture(const QString &diagram, const QString &element) const
 {
 	return elementMouseGesturesMap[diagram][element];
 }
 
-ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const
+qReal::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(const QString &/*diagram*/, const QString &element) const
 {
 @@GetGraphicalObjectLine@@
 
@@ -147,40 +146,42 @@ ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagra
 	return NULL;
 }
 
-QStringList @@MetamodelName@@Plugin::getPropertyNames(QString const &/*diagram*/, QString const &element) const
+QStringList @@MetamodelName@@Plugin::getPropertyNames(const QString &/*diagram*/, const QString &element) const
 {
-	return propertyTypes[element].keys();
+	QStringList result;
+@@GetPropertyNamesLine@@
+	return result;
 }
 
-QStringList @@MetamodelName@@Plugin::getReferenceProperties(QString const &/*diagram*/, QString const &element) const
+QStringList @@MetamodelName@@Plugin::getReferenceProperties(const QString &/*diagram*/, const QString &element) const
 {
 	QStringList result;
 @@GetReferencePropertiesLine@@
 	return result;
 }
 
-QStringList @@MetamodelName@@Plugin::getTypesContainedBy(QString const &element) const
+QStringList @@MetamodelName@@Plugin::getTypesContainedBy(const QString &element) const
 {
 	QStringList result;
 @@GetContainedByLine@@
 	return result;
 }
 
-QStringList @@MetamodelName@@Plugin::getConnectedTypes(QString const &element) const
+QStringList @@MetamodelName@@Plugin::getConnectedTypes(const QString &element) const
 {
 	QStringList result;
 @@GetConnectedTypesLine@@
 	return result;
 }
 
-QStringList @@MetamodelName@@Plugin::getUsedTypes(QString const &element) const
+QStringList @@MetamodelName@@Plugin::getUsedTypes(const QString &element) const
 {
 	QStringList result;
 @@GetUsedTypesLine@@
 	return result;
 }
 
-QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > @@MetamodelName@@Plugin::getPossibleEdges(QString const &element) const
+QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > @@MetamodelName@@Plugin::getPossibleEdges(const QString &element) const
 {
 	QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;
 @@GetPossibleEdgesLine@@
@@ -188,24 +189,18 @@ QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > @@MetamodelName@@Plug
 }
 
 //(-1) means "edge", (+1) means "node"
-int @@MetamodelName@@Plugin::isNodeOrEdge(QString const &element) const
+int @@MetamodelName@@Plugin::isNodeOrEdge(const QString &element) const
 {
 @@IsNodeOrEdgeLine@@
 	return 0;
 }
-QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
-{
-	QStringList result;
-@@GetEnumValuesLine@@
-	return result;
-}
 
-QString @@MetamodelName@@Plugin::getPropertyType(QString const &element, QString const &property) const
+QString @@MetamodelName@@Plugin::getPropertyType(const QString &element, const QString &property) const
 {
 	return propertyTypes[element][property];
 }
 
-QString @@MetamodelName@@Plugin::getPropertyDefaultValue(QString const &element, QString const &property) const
+QString @@MetamodelName@@Plugin::getPropertyDefaultValue(const QString &element, const QString &property) const
 {
 	return propertyDefault[element][property];
 }
@@ -214,4 +209,38 @@ QList<qReal::ListenerInterface*> @@MetamodelName@@Plugin::listeners() const
 {
 	QList<qReal::ListenerInterface*> result;
 	return result;
+}
+
+QList<qReal::EditorInterface::ExplosionData>@@MetamodelName@@Plugin::explosions(const QString &diagram, const QString &element) const
+{
+	return mExplosionsMap[diagram][element];
+}
+
+QStringList @@MetamodelName@@Plugin::getPortTypes(const QString &/*diagram*/, const QString &element) const
+{
+	QStringList result;
+@@GetPortTypesLine@@
+	return result;
+}
+
+QList<QPair<QString, QString>> @@MetamodelName@@Plugin::getEnumValues(const QString &name) const
+{
+@@GetEnumValuesLine@@
+	return {};
+}
+
+bool @@MetamodelName@@Plugin::isEnumEditable(const QString &name) const
+{
+	const QStringList editableEnums = {  };
+	return editableEnums.contains(name);
+}
+
+QString @@MetamodelName@@Plugin::getGroupsXML() const
+{
+	return QString::fromUtf8("");
+}
+
+bool @@MetamodelName@@Plugin::shallPaletteBeSorted(const QString &diagram) const
+{
+	return mShallPaletteBeSortedMap[diagram];
 }

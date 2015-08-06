@@ -16,7 +16,6 @@
 #include "ui_twoDModelWidget.h"
 
 #include <QtCore/qmath.h>
-#include <QtCore/QDebug>
 #include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
@@ -172,7 +171,6 @@ void TwoDModelWidget::initWidget()
 	toggleRulers();
 
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
-	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, mScene, &TwoDModelScene::alignWalls);
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, toggleRulers);
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->horizontalRuler, SLOT(update()));
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));

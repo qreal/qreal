@@ -76,6 +76,9 @@ public:
 	/// Closes variable values dock and maybe 2D model dock.
 	QAction &editModeAction();
 
+	/// Action that opens first robot behaviour diagram in current model or start page if no save opened.
+	QAction &homeAction();
+
 	/// Provides a possibility to transfer hotkey configurer to engine.
 	void appendHotKey(const QString &actionId, const QString &label, QAction &action);
 
@@ -137,6 +140,9 @@ private:
 	/// editing diagram or variables list if we are editing the code.
 	/// Closess variable values dock and maybe 2D model dock.
 	QAction *mEditModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
+
+	/// Action that opens first robot behaviour diagram in current model or start page if no save opened.
+	QAction *mHomeAction;
 
 	QAction mSeparator1;
 	QAction mSeparator2;
