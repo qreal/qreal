@@ -77,32 +77,11 @@ void initLogging() // с логами возможна проблема, так 
 MainWindow* start()
 {
 	QCoreApplication *coreApp = QApplication::instance();
-	QApplication *app = qobject_cast<QApplication *> (coreApp);
-//	// может код ниже вынести отдельно? (который связан с instance())
-//	QRealApplication *app = qobject_cast<QRealApplication *> (aApp);
+	QApplication *aApp = qobject_cast<QApplication *> (coreApp);
+	QRealApplication *app = qobject_cast<QRealApplication *> (aApp);
 	if (!app) {
 		return nullptr;
 	}
-//	if (!app) {
-//		qDebug() << aApp->arguments().count() << "\n" << aApp->arguments().join("\n");
-//		int argc = aApp->arguments().count();
-//		QStringList argv(aApp->arguments());
-//		aApp->~QCoreApplication();
-//		char *argChars[argc];
-//		int i = 0;
-//		foreach(QString argument, argv)
-//		{
-//			argChars[i] = new char[argument.toLocal8Bit().size() + 1];
-//			strcpy(argChars[i], argument.toLocal8Bit().constData()); // chcp 866, мб toUtf8?
-//			argChars[strlen(argChars[i])] = '\0';
-//			++i;
-//		}
-//		app = new QRealApplication(argc, argChars);
-//		for (; i > 0; --i) {
-//			delete []argChars[i - 1];
-//		}
-//		qDebug() << app->arguments().count() << "\n" << app->arguments().join("\n");
-//	}
 
 	qsrand(time(0));
 	setDefaultLocale(app->arguments().contains("--no-locale"));

@@ -12,16 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+TEMPLATE = app
+CONFIG += console
 
-SUBDIRS = \
-	exampleTests \
-	pluginsTests \
-	qrguiTests \
-	qrkernelTests \
-	qrrepoTests \
-	qrutilsTests \
-	qrtextTests \
-	guiTests\
+include(../../global.pri)
 
-guiTests.file = $$PWD/guiTests/qRealGuiTests.pro
+QT += widgets
+
+if (equals(QMAKE_CXX, "g++") : !macx) {
+	QMAKE_LFLAGS += -Wl,-E
+	# For gmock
+	QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
+}
+
+INCLUDEPATH += \
+	$$PWD/ \
+	$$PWD/../../ \
+	$$PWD/../thirdparty/gmock-1.6.0/include \
+	$$PWD/../thirdparty/gmock-1.6.0/gtest/include \
+
+links(gmock)
+
+include($$PWD/utils/utils.pri)

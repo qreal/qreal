@@ -247,7 +247,7 @@ void QRealGuiTests::TearDown() // возможно стоит смотреть �
 	}
 }
 
-void QRealGuiTests::run(const QString &script)
+void QRealGuiTests::run(const QString &script) // мб добавить функцию максимального ожидания сюда или вообще?
 {
 	QScriptSyntaxCheckResult checkResult = mainWindowScriptAPIInterface->checkSyntax(script);
 	if (checkResult.state() != QScriptSyntaxCheckResult::Valid) {
