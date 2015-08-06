@@ -16,7 +16,7 @@ QT += widgets xml
 
 DEFINES += TWO_D_MODEL_LIBRARY
 
-links(qrkernel qrutils qrgui-tool-plugin-interface robots-utils robots-kit-base)
+links(qrkernel qslog qrutils qrgui-tool-plugin-interface robots-utils robots-kit-base)
 includes(plugins/robots/common/kitBase)
 includes(plugins/robots/utils qrtext)
 
