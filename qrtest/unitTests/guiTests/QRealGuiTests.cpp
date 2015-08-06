@@ -16,6 +16,8 @@
 
 #include "QRealGuiTests.h"
 #include "startQreal.cpp"
+#include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
+#include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
 
 #include <qrutils/widgetFinder.h>
 #include <QtScript/QScriptContext>
@@ -31,9 +33,6 @@
 #include <QDebug>
 #include <QToolButton>
 #include <QListWidget>
-
-#include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
-#include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
 
 using namespace guiTesting;
 using namespace qReal;
@@ -197,10 +196,9 @@ QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *e
 	QString dialogTitle = context->argument(1).toString();
 	int mces = context->argument(2).toInt32();
 	MainWindow *mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
-	EXPECT_TRUE(mainWindow != nullptr);
 	QTimer::singleShot(mces, [=]() {
 		EXPECT_GT(mces, 0);
-		ASSERT_TRUE(mainWindow != NULL);
+		ASSERT_TRUE(mainWindow != nullptr);
 		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
 		ASSERT_FALSE(allDialogs.isEmpty());
 		for (int i = 0; i < allDialogs.length(); ++i) {
@@ -227,16 +225,16 @@ void QRealGuiTests::SetUp() // возможно эти строчки следу
 	mWindow = window;
 	mWindow->setAttribute(Qt::WA_DeleteOnClose);
 
-	mMainWindowScriptAPIInterface = dynamic_cast<MainWidnowScriptAPIInterface *>(window);
-	if (mMainWidnowScriptAPIInterface == nullptr) {
+	mainWindowScriptAPIInterface = dynamic_cast<MainWidnowScriptAPIInterface *>(window);
+	if (mainWindowScriptAPIInterface == nullptr) {
 		FAIL() << "MainWindow is not found";
 	}
 
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptAddFailure, "failure");
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect");
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptCloseExpectedDialog, "closeExpectedDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов TODO: то же самое, что и лля другой
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "chooseExpectedDialogDiagram"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
+	mainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptAddFailure, "failure");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptCloseExpectedDialog, "closeExpectedDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов TODO: то же самое, что и лля другой
+	mainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "chooseExpectedDialogDiagram"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
 }
 
 void QRealGuiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
@@ -251,16 +249,16 @@ void QRealGuiTests::TearDown() // возможно стоит смотреть �
 
 void QRealGuiTests::run(const QString &script)
 {
-	QScriptSyntaxCheckResult checkResult = mMainWindowScriptAPIInterface->checkSyntax(script);
+	QScriptSyntaxCheckResult checkResult = mainWindowScriptAPIInterface->checkSyntax(script);
 	if (checkResult.state() != QScriptSyntaxCheckResult::Valid) {
 		QApplication::closeAllWindows();
 		FAIL() << "Failed coz code is invalide\n" << checkResult.errorMessage().toStdString();
 	}
 	QTimer::singleShot(8000, [=]() { // возможно, фейлы тут работают не так, как должны
-			mMainWindowScriptAPIInterface->evaluateScript(script);
-			if (mMainWindowScriptAPIInterface->hasUncaughtException()) {
-				std::string backtrace = mMainWindowScriptAPIInterface->uncaughtExceptionBacktrace().join('\n').toStdString();
-				mMainWindowScriptAPIInterface->clearExceptions();
+			mainWindowScriptAPIInterface->evaluateScript(script);
+			if (mainWindowScriptAPIInterface->hasUncaughtException()) {
+				std::string backtrace = mainWindowScriptAPIInterface->uncaughtExceptionBacktrace().join('\n').toStdString();
+				mainWindowScriptAPIInterface->clearExceptions();
 				QApplication::closeAllWindows();
 				FAIL() << "Failed coz uncaughtException of the last evaluating exists\n" << backtrace;
 			}
@@ -273,7 +271,7 @@ void QRealGuiTests::run(const QString &script)
 void QRealGuiTests::runFromFile(const QString &relativeFileName)
 {
 	QString scriptDirName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/qrealScripts/";
+			"/../../../qrtest/unitTests/guiTests/testScripts/" + scriptFolderName + "/";
 	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
 
 //	QString fileName; // этот код пока что можно оставить, так как вдруг теневая сборка.

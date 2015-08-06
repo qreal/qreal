@@ -34,10 +34,11 @@ protected:
 	void run(const QString &script);
 	void runFromFile(const QString &relativeFileName);
 
-private:
-	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
-	qReal::MainWindow* mWindow;
+	QString scriptFolderName = "qrealScripts"; // или лучше добавить геттеры сеттеры?
+	MainWidnowScriptAPIInterface* mainWindowScriptAPIInterface; //  может стоит поместить в конструктор?
 
+private:
+	qReal::MainWindow* mWindow;
 	bool mScriptInterpretationDefaultValue = qReal::SettingsManager::value("scriptInterpretation").toBool();
 	// это надо изменить глобально на savedata() и loaddata, мб? например, если мы изменяем путь до чего-то и хотим проверить, сохранились
 	// ли в регистре эти изменения правильно, а потом всё вернуть.

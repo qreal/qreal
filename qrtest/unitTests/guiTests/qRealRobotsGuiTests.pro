@@ -17,11 +17,11 @@ include(../common.pri)
 QT += script
 
 HEADERS += \
-#	$$PWD/QRealGuiTests.h \
+	$$PWD/QRealGuiTests.h \
 	$$PWD/QRealRobotsGuiTests.h \
 
 SOURCES += \
-#	$$PWD/QRealGuiTests.cpp \
+	$$PWD/QRealGuiTests.cpp \
 	$$PWD/startQreal.cpp \
 	$$PWD/QRealRobotsGuiTests.cpp \
 

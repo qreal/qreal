@@ -19,6 +19,21 @@
 using namespace guiTesting;
 using namespace qReal;
 
+QRealRobotsGuiTests::QRealRobotsGuiTests()
+{
+	scriptFolderName = "qrealRobotsScripts";
+}
+
+void QRealRobotsGuiTests::SetUp()
+{
+	QRealGuiTests::SetUp();
+}
+
+void QRealRobotsGuiTests::TearDown()
+{
+	QRealGuiTests::TearDown();
+}
+
 TEST_F(QRealRobotsGuiTests, sanityCheck)
 {
 	run("assert(true);");
@@ -27,7 +42,7 @@ TEST_F(QRealRobotsGuiTests, sanityCheck)
 
 TEST_F(QRealRobotsGuiTests, editActionsExistence)
 {
-	runFromFile("editActionsExistence.js"); // мб qs?
+	runFromFile("editActionsExistence.js");
 }
 
 TEST_F(QRealRobotsGuiTests, viewActionsExistence)

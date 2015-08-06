@@ -20,6 +20,12 @@ namespace guiTesting {
 
 class QRealRobotsGuiTests : public QRealGuiTests
 {
+public:
+	QRealRobotsGuiTests();
+
+protected:
+	void SetUp() override;
+	void TearDown() override;
 
 };
 

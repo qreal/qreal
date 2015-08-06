@@ -18,12 +18,10 @@ QT += script
 
 HEADERS += \
 	$$PWD/QRealGuiTests.h \
-	$$PWD/QRealRobotsGuiTests.h \
 
 SOURCES += \
 	$$PWD/QRealGuiTests.cpp \
 	$$PWD/startQreal.cpp \
-	$$PWD/QRealRobotsGuiTests.cpp \
 
 OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/editActionsExistence.js \
