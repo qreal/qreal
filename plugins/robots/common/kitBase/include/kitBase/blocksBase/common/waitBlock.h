@@ -14,7 +14,13 @@
 
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <kitBase/blocksBase/robotsBlock.h>
+
+namespace utils {
+class AbstractTimer;
+}
 
 namespace kitBase {
 namespace blocksBase {
@@ -58,7 +64,7 @@ protected:
 
 	/// @todo Make it private.
 	robotModel::RobotModelInterface &mRobotModel;
-	QTimer mActiveWaitingTimer;
+	QScopedPointer<utils::AbstractTimer> mActiveWaitingTimer;
 
 private slots:
 	/// Shall be redefined in subclasses to request for a sensor or button to read its value.

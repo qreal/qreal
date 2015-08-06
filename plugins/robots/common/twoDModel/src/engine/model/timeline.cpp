@@ -69,6 +69,7 @@ void Timeline::onTimer()
 			} else {
 				gotoNextFrame();
 			}
+
 			return;
 		}
 	}

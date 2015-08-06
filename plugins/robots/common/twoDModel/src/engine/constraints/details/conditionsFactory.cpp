@@ -139,10 +139,11 @@ Condition ConditionsFactory::inside(const QString &objectId, const QString &regi
 
 			if (model::RobotModel * const robotModel = dynamic_cast<model::RobotModel *>(mObjects[robotId])) {
 				const QPointF devicePosition = robotModel->configuration().position(device->port());
-				const QPointF deviceRalativeToCenter = devicePosition
+				const QPointF deviceRelativeToCenter = devicePosition
 						+ robotModel->position() - robotModel->rotationCenter();
 				const QPointF realDevicePosition = QTransform().rotate(robotModel->rotation())
-						.map(deviceRalativeToCenter) + robotModel->rotationCenter();
+						.map(deviceRelativeToCenter) + robotModel->rotationCenter();
+
 				return region->containsPoint(realDevicePosition);
 			}
 
