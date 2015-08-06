@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../common.pri) #because "SOURCES -=" doesnt work. (bug)
+include(../commonGui.pri) #because "SOURCES -=" doesnt work. (bug)
 
-
-SOURCES -= $$PWD/../mainTest.cpp
 SOURCES += $$PWD/mainGuiTest.cpp
 
 QT += script

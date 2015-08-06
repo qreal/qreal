@@ -3,6 +3,7 @@ compiler: gcc
 
 env:
   - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./qRealGuiTests-d"
+  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./qRealRobotsGuiTests-d"
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
