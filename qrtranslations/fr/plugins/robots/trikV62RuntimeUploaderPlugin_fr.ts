@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikV62RuntimeUploaderPlugin/trikV62RuntimeUploaderPlugin.cpp" line="41"/>
+        <source>Attention! Started to download the runtime. This can take a minute or two. Please do not turn off the robot.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>trik::TrikRuntimeUploaderPlugin</name>
     <message>
         <source>Upload Runtime</source>
@@ -17,11 +25,18 @@
     </message>
 </context>
 <context>
-    <name>trik::TrikV6RuntimeUploaderPlugin</name>
+    <name>trik::TrikV62RuntimeUploaderPlugin</name>
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikV62RuntimeUploaderPlugin/trikV62RuntimeUploaderPlugin.cpp" line="30"/>
         <source>Upload Runtime</source>
         <translation type="unfinished">Téléverser le système sur le robot</translation>
+    </message>
+</context>
+<context>
+    <name>trik::TrikV6RuntimeUploaderPlugin</name>
+    <message>
+        <source>Upload Runtime</source>
+        <translation type="obsolete">Téléverser le système sur le robot</translation>
     </message>
 </context>
 </TS>

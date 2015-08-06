@@ -74,7 +74,7 @@ void ItemPopup::updateDueToLayout()
 	setFixedSize(layout()->sizeHint());
 }
 
-QVariant ItemPopup::dominantPropertyValue(const QString &property)
+QVariant ItemPopup::dominantPropertyValue(const QString &property) const
 {
 	QMap<QVariant, int> valuesCounts;
 	for (QGraphicsItem * const item : mCurrentItems) {
@@ -153,6 +153,19 @@ void ItemPopup::checkSelection()
 	const QPoint moveAbove = view->viewport()->mapToGlobal(view->mapFromScene(scenePos));
 	const QPoint globalPoint{moveAbove.x() - size().width() / 2, moveAbove.y() - size().height() - 10};
 	move(parentWidget()->mapFromGlobal(globalPoint));
+}
+
+bool ItemPopup::hasProperty(const QString &property) const
+{
+	for (QGraphicsItem * const item : mCurrentItems) {
+		if (QObject * const object = dynamic_cast<QObject *>(item)) {
+			if (object->metaObject()->indexOfProperty(property.toLocal8Bit()) >= 0) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 QPointF ItemPopup::leftmostTopmost(const QList<QGraphicsItem *> &items)

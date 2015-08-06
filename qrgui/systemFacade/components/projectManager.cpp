@@ -45,6 +45,11 @@ QString ProjectManager::saveFilePath() const
 	return mAutosaver.isTempFile(mSaveFilePath) ? QString() : mSaveFilePath;
 }
 
+bool ProjectManager::somethingOpened() const
+{
+	return mSomeProjectOpened;
+}
+
 void ProjectManager::reinitAutosaver()
 {
 	mAutosaver.reinit();

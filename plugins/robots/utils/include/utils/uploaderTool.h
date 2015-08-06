@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <QtCore/QProcess>
 #include <functional>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
@@ -56,6 +57,11 @@ public:
 
 private slots:
 	void uploadRuntime();
+	void onUploadStarted();
+	void onUploadError(QProcess::ProcessError reason);
+	void onUploadFinished(int exitCode);
+	void onUploadStdOut();
+	void onUploadStdErr();
 
 private:
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
@@ -63,6 +69,7 @@ private:
 	QStringList mCommands;
 	QString mStartedMessage;
 	std::function<QString()> mRobotIpGetter;
+	QProcess mProcess;
 };
 
 }

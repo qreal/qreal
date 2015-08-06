@@ -33,6 +33,7 @@ QColor ColorFieldItem::color() const
 void ColorFieldItem::setColor(const QColor &color)
 {
 	setPenColor(color.name());
+	setBrushColor(color.name());
 	update();
 }
 

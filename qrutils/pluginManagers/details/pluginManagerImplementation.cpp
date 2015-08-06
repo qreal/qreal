@@ -30,10 +30,11 @@ PluginManagerImplementation::PluginManagerImplementation(const QString &applicat
 
 PluginManagerImplementation::~PluginManagerImplementation()
 {
-	for (auto &pair : mLoaders) {
-		pair.second->unload();
-		delete pair.second;
-	}
+/// @todo: Repair plugins unloading
+//	for (auto &pair : mLoaders) {
+//		pair.second->unload();
+//		delete pair.second;
+//	}
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
