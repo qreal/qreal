@@ -62,6 +62,6 @@ OTHER_FILES += \
 	$$PWD/testScripts/qrealRobotsScripts/script10.js \
 	$$PWD/testScripts/qrealRobotsScripts/hotKeysExistanceAndFunctioning.js \
 
-copyToDestdir($$PWD/testScripts/, now)
+copyToDestdir($$PWD/testScripts/qrealRobotsScripts/, now)
 
 include(../../../qrgui/mainWindow/mainWindowForTests.pri)
