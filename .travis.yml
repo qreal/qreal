@@ -2,8 +2,8 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./guiTests-d"
-  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./guiTests-d"
+  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./qRealGuiTests-d.exe"
+  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./qRealRobotsGuiTests-d.exe"
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
@@ -35,9 +35,6 @@ script:
   - cd ./bin/$CONFIG
   - ls -A
   - sh -c "$TESTS"
-  - if [ "$TESTS" = "./guiTests-d" ]; then cd ./testScripts/qrealScripts; fi
-  - if [ "$TESTS" = "./guiTests-d" ]; then ls -A; fi
-  - if [ "$TESTS" = "./guiTests-d" ]; then cat script1.js; fi
 
 notifications:
   email:
