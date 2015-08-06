@@ -116,7 +116,7 @@ private:
 	details::Variables mVariables;
 	details::Objects mObjects;
 
-	QSet<details::Event *> mActiveEvents;
+	QList<details::Event *> mActiveEvents;
 
 	QDomElement mCurrentXml;
 };
