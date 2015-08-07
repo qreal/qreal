@@ -16,7 +16,7 @@
 
 #include <QtCore/QObject>
 
-#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
 namespace testInvocation
 {
@@ -26,6 +26,7 @@ class TestInvocationPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "testInvocation.TestInvocationPlugin")
 
 public:
 	virtual QList<qReal::ActionInfo> actions();

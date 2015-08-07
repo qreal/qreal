@@ -19,8 +19,8 @@
 #include <QtCore/QString>
 #include <QtXml/QDomElement>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrrepo/logicalRepoApi.h>
 
 namespace metaEditor {
 

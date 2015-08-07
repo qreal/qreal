@@ -155,6 +155,9 @@ signals:
 	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.
 	void playingSoundChanged(bool playing);
 
+	/// Emitted when left or right wheel was reconnected to another port.
+	void wheelOnPortChanged(WheelEnum wheel, const kitBase::robotModel::PortInfo &port);
+
 private:
 	QVector2D robotDirectionVector() const;
 
@@ -171,6 +174,9 @@ private:
 	void nextStep();
 
 	int varySpeed(const int speed) const;
+
+	void serializeWheels(QDomElement &robotElement) const;
+	void deserializeWheels(const QDomElement &robotElement);
 
 	/// Simulated robot motors.
 	/// Has ownership.

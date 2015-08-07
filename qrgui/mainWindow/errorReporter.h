@@ -34,11 +34,13 @@ public:
 	ErrorReporter();
 	ErrorReporter(ErrorListWidget * const errorListWidget, QDockWidget * const errorList);
 
-	virtual void addInformation(const QString &message, const Id &position = Id::rootId());
-	virtual void addWarning(const QString &message, const Id &position = Id::rootId());
-	virtual void addError(const QString &message, const Id &position = Id::rootId());
-	virtual void addCritical(const QString &message, const Id &position = Id::rootId());
-	virtual bool wereErrors();
+	void addInformation(const QString &message, const Id &position = Id::rootId()) override;
+	void addWarning(const QString &message, const Id &position = Id::rootId()) override;
+	void addError(const QString &message, const Id &position = Id::rootId()) override;
+	void addCritical(const QString &message, const Id &position = Id::rootId()) override;
+	bool wereErrors();
+
+	void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) override;
 
 	bool showErrors(ErrorListWidget * const errorListWidget, QDockWidget * const errorList) const;
 	void updateVisibility(bool isVisible);

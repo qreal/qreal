@@ -16,7 +16,6 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtWidgets/QAction>
-#include <QtCore/QDebug>
 
 #include <qrtext/languageToolboxInterface.h>
 

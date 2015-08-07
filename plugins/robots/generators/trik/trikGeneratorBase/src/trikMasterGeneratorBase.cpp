@@ -23,14 +23,14 @@ TrikMasterGeneratorBase::TrikMasterGeneratorBase(const qrRepo::RepoApi &repo
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const qReal::Id &diagramId
-		, const QString &generatorName)
+		, const QStringList &pathsToTemplates)
 	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, parserErrorReporter, diagramId)
-	, mGeneratorName(generatorName)
+	, mPathsToTemplates(pathsToTemplates)
 {
 }
 
 generatorBase::GeneratorCustomizer *TrikMasterGeneratorBase::createCustomizer()
 {
 	return new TrikGeneratorCustomizer(mRepo, mErrorReporter
-			, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
+			, mRobotModelManager, *createLuaProcessor(), mPathsToTemplates);
 }

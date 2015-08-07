@@ -92,6 +92,30 @@ void LuaSemanticAnalyzer::addReadOnlyVariable(const QString &name)
 	mReadOnlyVariables.insert(name);
 }
 
+void LuaSemanticAnalyzer::precheck(QSharedPointer<ast::Node> const &node)
+{
+	checkReservedIdentifiersUsage(node, {});
+}
+
+void LuaSemanticAnalyzer::checkReservedIdentifiersUsage(const QSharedPointer<core::ast::Node> &node
+		, const QSharedPointer<core::ast::Node> &parent)
+{
+	if (node->is<ast::Identifier>()) {
+		const auto identifier = as<ast::Identifier>(node);
+		if (mIntrinsicFunctions.contains(identifier->name())
+				&& (!parent->is<ast::FunctionCall>() || as<ast::FunctionCall>(parent)->function() != node))
+		{
+			reportError(node, QObject::tr("Intrinsic function used as an identifier"));
+		}
+	}
+
+	for (const auto &child : node->children()) {
+		if (!child.isNull()) {
+			checkReservedIdentifiersUsage(child, node);
+		}
+	}
+}
+
 void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &node)
 {
 	if (node->is<ast::Assignment>()) {
@@ -103,7 +127,12 @@ void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &nod
 		constrainAssignment(assignment, assignment->variable(), assignment->value());
 		checkForUndeclaredIdentifiers(assignment->value());
 	} else if (node->is<ast::Identifier>()) {
-		auto identifier = as<ast::Identifier>(node);
+		const auto identifier = as<ast::Identifier>(node);
+		if (mIntrinsicFunctions.contains(identifier->name())) {
+			// Ignore function names.
+			return;
+		}
+
 		if (hasDeclaration(identifier->name())) {
 			unify(identifier, declaration(identifier->name()));
 		} else {
@@ -129,23 +158,27 @@ void LuaSemanticAnalyzer::analyzeNode(const QSharedPointer<core::ast::Node> &nod
 	} else if (node->is<ast::FieldInitialization>()) {
 		assign(node, type(as<ast::FieldInitialization>(node)->value()));
 	} else if (node->is<ast::TableConstructor>()) {
-		auto tableConstructor = as<ast::TableConstructor>(node);
-		auto elementType = tableConstructor->initializers().isEmpty()
-				? any()
-				: type(tableConstructor->initializers().first());
+		const auto tableConstructor = as<ast::TableConstructor>(node);
+		QSharedPointer<core::types::TypeExpression> elementType;
+		if (tableConstructor->initializers().isEmpty()) {
+			elementType = any();
+		} else {
+			const auto firstInitializer = tableConstructor->initializers().first();
+			elementType = type(as<ast::FieldInitialization>(firstInitializer)->value());
+		}
 
-		auto tableType = core::wrap(new types::Table(elementType, tableConstructor->initializers().size()));
+		const auto tableType = core::wrap(new types::Table(elementType, tableConstructor->initializers().size()));
 
 		assign(node, tableType);
 	} else if (node->is<ast::IndexingExpression>()) {
-		auto indexingExpression = as<ast::IndexingExpression>(node);
-		auto table = indexingExpression->table();
+		const auto indexingExpression = as<ast::IndexingExpression>(node);
+		const auto table = indexingExpression->table();
 		if (type(table)->is<types::Table>()) {
-			auto tableElementType = as<types::Table>(type(table))->elementType();
+			const auto tableElementType = as<types::Table>(type(table))->elementType();
 			assign(node, tableElementType);
 		} else {
 			/// It's a table, but we see it for the first time so know nothing about it.
-			auto elementType = QSharedPointer<core::types::TypeVariable>(new core::types::TypeVariable());
+			const auto elementType = QSharedPointer<core::types::TypeVariable>(new core::types::TypeVariable());
 			constrain(table, table, { core::wrap(new types::Table(elementType, -1)) });
 			assign(node, elementType);
 		}
@@ -182,6 +215,11 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(const QSharedPointer<core::ast::
 	if (node->is<ast::Addition>() || node->is<ast::Subtraction>() || node->is<ast::Multiplication>()) {
 		constrain(node, left, {mInteger, mFloat});
 		constrain(node, right, {mInteger, mFloat});
+
+		if (typeVariable(left).isNull() || typeVariable(right).isNull()) {
+			// Error is already reported somewhere.
+			return;
+		}
 
 		/// @todo "If both operands are integers, the operation is performed over integers and the result is an integer.
 		///       Otherwise, if both operands are numbers or strings that can be converted to numbers (see §3.4.3), then
@@ -251,6 +289,24 @@ void LuaSemanticAnalyzer::constrainAssignment(const QSharedPointer<core::ast::No
 		reportError(operation, QObject::tr("Left and right operand have mismatched types."));
 	} else {
 		if (wasCoercion) {
+			if (lhs->is<ast::IndexingExpression>()) {
+				// We need to coerce table itself.
+				const auto table = as<ast::IndexingExpression>(lhs)->table();
+				const auto tableType = typeVariable(table);
+				if (rhsType->isResolved()) {
+					const auto tableTypePattern = QSharedPointer<core::types::TypeVariable>(
+							new core::types::TypeVariable(
+									QSharedPointer<core::types::TypeExpression>(
+										new types::Table(rhsType->finalType(), 1))
+									));
+
+					tableType->constrainAssignment(
+							tableTypePattern
+							, generalizationsTable()
+							, &wasCoercion);
+				}
+			}
+
 			requestRecheck();
 		}
 	}
@@ -258,8 +314,8 @@ void LuaSemanticAnalyzer::constrainAssignment(const QSharedPointer<core::ast::No
 
 void LuaSemanticAnalyzer::analyzeFunctionCall(const QSharedPointer<core::ast::Node> &node)
 {
-	auto functionCall = as<ast::FunctionCall>(node);
-	auto function = functionCall->function();
+	const auto functionCall = as<ast::FunctionCall>(node);
+	const auto function = functionCall->function();
 	if (!function->is<ast::Identifier>()) {
 		reportError(node, QObject::tr("Indirect function calls are not supported"));
 		assign(function, any());
@@ -267,7 +323,7 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(const QSharedPointer<core::ast::No
 		return;
 	}
 
-	auto name = as<ast::Identifier>(function)->name();
+	const auto name = as<ast::Identifier>(function)->name();
 	if (!mIntrinsicFunctions.contains(name)) {
 		reportError(node, QObject::tr("Unknown function"));
 		assign(function, any());
@@ -278,8 +334,8 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(const QSharedPointer<core::ast::No
 	assign(function, mIntrinsicFunctions.value(name));
 	assign(node, mIntrinsicFunctions.value(name)->returnType());
 
-	auto formalParameters = mIntrinsicFunctions.value(name)->formalParameters();
-	auto actualParameters = functionCall->arguments();
+	const auto formalParameters = mIntrinsicFunctions.value(name)->formalParameters();
+	const auto actualParameters = functionCall->arguments();
 	if (formalParameters.size() < actualParameters.size()) {
 		reportError(node, QObject::tr("Too many parameters, %1 expected").arg(formalParameters.size()));
 		return;

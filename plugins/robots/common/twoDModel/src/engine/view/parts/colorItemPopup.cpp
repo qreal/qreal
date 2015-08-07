@@ -14,8 +14,9 @@
 
 #include "colorItemPopup.h"
 
-#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QSpinBox>
+#include <QtWidgets/QCheckBox>
 
 #include <qrutils/widgets/colorListEditor.h>
 
@@ -58,15 +59,21 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	// Subsequent setting values to editors will cause theese values loss. Saving it here.
 	const QColor lastColorBackup = mLastColor;
 	const int lastThicknessBackup = mLastThickness;
+
 	blockSignals(true);
+	mSpinBox->blockSignals(true);
 
 	mColorPicker->setColor(dominantPropertyValue("color").value<QColor>());
+	mBrushPicker->setVisible(hasProperty("filled"));
+	mBrushPicker->setChecked(dominantPropertyValue("filled").toBool());
 	mSpinBox->setValue(dominantPropertyValue("thickness").toInt());
 
 	// Restoring values that really were picked by user.
 	mLastColor = lastColorBackup;
 	mLastThickness = lastThicknessBackup;
+
 	blockSignals(false);
+	mSpinBox->blockSignals(false);
 
 	return true;
 }
@@ -74,7 +81,10 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 void twoDModel::view::ColorItemPopup::initWidget()
 {
 	QVBoxLayout * const layout = new QVBoxLayout(this);
-	layout->addWidget(initColorPicker());
+	QHBoxLayout * const firstRow = new QHBoxLayout;
+	firstRow->addWidget(initColorPicker());
+	firstRow->addWidget(initBrushPicker());
+	layout->addLayout(firstRow);
 	layout->addWidget(initSpinBox());
 
 	updateDueToLayout();
@@ -99,6 +109,26 @@ QWidget *ColorItemPopup::initColorPicker()
 	return editor;
 }
 
+QWidget *ColorItemPopup::initBrushPicker()
+{
+	QCheckBox * const editor = new QCheckBox(this);
+	editor->setFocusPolicy(Qt::NoFocus);
+	mBrushPicker = editor;
+	connect(mColorPicker, &qReal::ui::ColorListEditor::colorChanged, this, &ColorItemPopup::setBrushPickerColor);
+	setBrushPickerColor(mColorPicker->color());
+
+	connect(editor, &QCheckBox::toggled, [this, editor](bool checked) {
+		editor->setToolTip(checked ? tr("Disable filling") : tr("Enable filling"));
+		setPropertyMassively("filled", checked);
+		if (mLastFilled != checked) {
+			mLastFilled = checked;
+			emit isFilledChanged(mLastFilled);
+		}
+	});
+
+	return editor;
+}
+
 QWidget *ColorItemPopup::initSpinBox()
 {
 	QSpinBox * const spinBox = new QSpinBox(this);
@@ -118,6 +148,16 @@ QWidget *ColorItemPopup::initSpinBox()
 
 	mSpinBox = spinBox;
 	return spinBox;
+}
+
+void ColorItemPopup::setBrushPickerColor(const QColor &color)
+{
+	mBrushPicker->setStyleSheet(QString(
+			"QCheckBox { spacing: 0 }"
+			"QCheckBox::indicator { width: 12px; height: 12px; }"
+			"QCheckBox::indicator::checked { background: %1; border: 1px solid %1; border-radius: 6px; }"
+			"QCheckBox::indicator::unchecked { background: white; border: 1px solid %1; border-radius: 6px; }"
+	).arg(color.name()));
 }
 
 QPen ColorItemPopup::pen() const

@@ -82,8 +82,6 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 {
 	out() << "begin\n";
 
-	out.incIndent();
-
 	foreach (Id const &child, mApi.children(id)) {
 		if (child.element() == "ProcessOperation") {
 			generateProcessOperation(child, out);
@@ -95,15 +93,14 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		if (child.element() == "Resource") {
 			if (firstResource) {
 				out() << "data\n";
-				out.incIndent();
 			}
+
 			generateResource(child, firstResource, out);
 			firstResource = false;
 		}
 	}
 
 	if (!firstResource) {
-		out.decIndent();
 		out() << ";\n";
 	}
 
@@ -137,8 +134,6 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		}
 	}
 
-	out.decIndent();
-
 	out() << "end;\n";
 }
 
@@ -151,7 +146,6 @@ void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 						|| instanceChild.element() == "ProcessInstance")
 				{
 					out() << "process " << mApi.name(instanceChild).replace(":", "=") << " with\n";
-					out.incIndent();
 					bool first = true;
 					foreach (Id const &port, mApi.children(instanceChild)) {
 						if (port.element() == "Port") {
@@ -180,11 +174,12 @@ void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 								QString comma = !first ? ", " : "";
 								first = false;
 
-								out() << comma << mApi.name(port) << " = " << parentName << mApi.name(mappedPort) << "\n";
+								out() << comma << mApi.name(port) << " = "
+										<< parentName << mApi.name(mappedPort) << "\n";
 							}
 						}
 					}
-					out.decIndent();
+
 					out() << ";\n";
 				}
 			}
@@ -196,15 +191,11 @@ void HascolGenerator::generateFunctor(Id const &id, OutFile &out)
 {
 	out() << "process " << mApi.name(id) << " (\n";
 
-	out.incIndent();
-
 	foreach (Id const &child, mApi.children(id)) {
 		if (child.element() == "FunctorFormalParameter") {
 			generateFunctorFormalParameter(child, out);
 		}
 	}
-
-	out.decIndent();
 
 	out() << "\t) =\n";
 	generateProcessTypeBody(id, out);
@@ -219,9 +210,7 @@ void HascolGenerator::generateFunctorFormalParameter(Id const &id, utils::OutFil
 			out() << mApi.name(parameterType);
 		} else {
 			out() << "\n";
-			out.incIndent();
 			generateProcessTypeBody(parameterType, out);
-			out.decIndent();
 		}
 	} else {
 		out() << mApi.name(id) << "\n";
@@ -249,9 +238,7 @@ void HascolGenerator::generateActivity(Id const &id, utils::OutFile &out)
 	foreach (Id const &element, mApi.children(id)) {
 		if (element.element() == "Group") {
 			out() << "group {\n";
-			out.incIndent();
 			generateActivity(element, out);
-			out.decIndent();
 			out() << "}\n";
 		} else if (element.element() == "HandlerStart")
 			generateHandler(element, out);
@@ -263,9 +250,7 @@ void HascolGenerator::generateHandler(Id const &id, utils::OutFile &out)
 	out() << mApi.stringProperty(id, "trigger") << "\n";
 	out() << "{\n";
 
-	out.incIndent();
 	generateChain(id, out);
-	out.decIndent();
 
 	out() << "}\n";
 }
@@ -303,6 +288,7 @@ Id HascolGenerator::generateChain(Id const &startNode, utils::OutFile &out)
 			currentId = mApi.otherEntityFromLink(link, currentId);
 		}
 	}
+
 	return currentId;
 }
 
@@ -321,17 +307,14 @@ Id HascolGenerator::generateIf(Id const &id, utils::OutFile &out)
 {
 	Id const thenLink = mApi.outgoingLinks(id)[0];
 	out() << "if " << mApi.stringProperty(thenLink, "guard") << " then {\n";
-	out.incIndent();
 	Id const thenChainEnd = generateChain(mApi.otherEntityFromLink(thenLink, id), out);
 	Id const elseLink = mApi.outgoingLinks(id)[1];
 	Id const elseNode = mApi.otherEntityFromLink(elseLink, id);
 	if (elseNode != thenChainEnd) {
-		out.decIndent();
 		out() << "} else {\n";
-		out.incIndent();
 		generateChain(elseNode, out);
 	}
-	out.decIndent();
+
 	out() << "} fi\n";
 	return thenChainEnd;
 }

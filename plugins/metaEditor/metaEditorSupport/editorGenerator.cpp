@@ -21,12 +21,12 @@
 
 #include <QtWidgets/QMessageBox>
 
-#include "../../../qrkernel/roles.h"
+#include <qrkernel/roles.h>
 
-#include "../../../qrutils/outFile.h"
-#include "../../../qrutils/nameNormalizer.h"
+#include <qrutils/outFile.h>
+#include <qrutils/nameNormalizer.h>
 
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 using namespace metaEditor;
@@ -430,7 +430,8 @@ void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
 			{
 				QDomElement generalization = mDocument.createElement("parent");
 				ensureCorrectness(parentId, generalization, "parentName", mApi.stringProperty(parentId, "name"));
-				generalization.setAttribute("overrides", generalizations.attribute("overrides", mApi.stringProperty(inLink, "overrides")));
+				generalization.setAttribute("overrides", generalizations.attribute("overrides"
+						, mApi.stringProperty(inLink, "overrides")));
 				generalizations.appendChild(generalization);
 			}
 		}
@@ -641,7 +642,8 @@ void EditorGenerator::setContainer(QDomElement &parent, Id const &id)
 				container.appendChild(contains);
 			} else if (typeName == "MetaEntityImport") {
 				QDomElement contains = mDocument.createElement("contains");
-				ensureCorrectness(elementId, contains, "type", mApi.stringProperty(elementId, "importedFrom") + "::" + mApi.name(elementId));
+				ensureCorrectness(elementId, contains, "type", mApi.stringProperty(elementId, "importedFrom")
+						+ "::" + mApi.name(elementId));
 				container.appendChild(contains);
 			}
 		}

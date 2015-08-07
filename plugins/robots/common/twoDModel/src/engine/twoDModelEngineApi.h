@@ -16,6 +16,8 @@
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
+#include <QtCore/QScopedPointer>
+
 namespace twoDModel {
 
 namespace model {
@@ -48,11 +50,13 @@ public:
 
 	void playSound(int timeInMs) override;
 
+	bool isMarkerDown() const override;
 	void markerDown(const QColor &color) override;
 	void markerUp() override;
 
 	utils::TimelineInterface &modelTimeline() override;
 	engine::TwoDModelDisplayInterface *display() override;
+	engine::TwoDModelGuiFacade &guiFacade() const override;
 
 private:
 	QPair<QPointF, qreal> countPositionAndDirection(const kitBase::robotModel::PortInfo &port) const;
@@ -70,6 +74,7 @@ private:
 	model::Model &mModel;
 	view::TwoDModelWidget &mView;
 	QScopedPointer<view::FakeScene> mFakeScene;
+	QScopedPointer<engine::TwoDModelGuiFacade> mGuiFacade;
 };
 
 }

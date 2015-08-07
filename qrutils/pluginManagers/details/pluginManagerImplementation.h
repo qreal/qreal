@@ -46,7 +46,7 @@ public:
 	/// and error message, if failed.
 	/// @param pluginName - name of plugin to load
 	/// @returns loaded plugin and error message
-	QPair<QObject *, QString> pluginLoadedByName(const QString &pluginName);
+	QPair<QObject *, QString> loadPluginByName(const QString &pluginName);
 
 	/// Unloads plugins, given filename
 	/// @param pluginName - name of plugin
@@ -56,13 +56,18 @@ public:
 	/// Returns fileName by given object.
 	QString fileName(QObject *plugin) const;
 
+	/// Returns loaded plugin object by name specified in plugin metainformation.
+	QObject *pluginByName(const QString &pluginName) const;
+
+	/// Returns names of all plugins.
+	QList<QString> namesOfPlugins() const;
+
 private:
 	/// Directory to loaded plugins.
 	QDir mPluginsDir;
 
-	/// Map from name to loader
-	/// Has ownership.
-	QMap<QString, QPluginLoader *> mLoaders;
+	/// List of loaders with names of plugins.
+	QList<QPair<QString, QPluginLoader *>> mLoaders;
 
 	/// Map from fileName to plugin
 	/// Has ownership.

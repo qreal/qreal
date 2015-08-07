@@ -63,8 +63,11 @@ public:
 	ActionsManager &actionsManager();
 
 	/// A convenience method that travels around all loaded kit plugins,
-	/// collects all non-empty default settings file pathes and returns them.
+	/// collects all non-empty default settings file paths and returns them.
 	QStringList defaultSettingsFiles() const;
+
+	/// Returns a helper object for convenient 2D model interface scripting.
+	QObject *guiScriptFacade() const;
 
 	/// Returns diagram interpter`s management interface.
 	interpreter::InterpreterInterface &interpreter() const;

@@ -15,7 +15,7 @@
 #include <QtCore/QFile>
 
 #include "customClassGenerator.h"
-#include "../../../qrutils/nameNormalizer.h"
+#include <qrutils/nameNormalizer.h>
 
 using namespace ubiq::generator;
 using namespace qReal;

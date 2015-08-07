@@ -25,8 +25,12 @@ class ROBOTS_UTILS_EXPORT AbstractTimer : public QObject
 	Q_OBJECT
 
 public:
+	/// Returns true if the timer is working now or false otherwise
+	virtual bool isTicking() const = 0;
+	virtual void start() = 0;
 	virtual void start(int ms) = 0;
 	virtual void stop() = 0;
+	virtual void setInterval(int ms) = 0;
 
 signals:
 	void timeout();

@@ -25,7 +25,7 @@ using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
-	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/tools"))
+	, mPluginManager(qApp->applicationDirPath(), "plugins/tools")
 {
 	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 
@@ -118,4 +118,9 @@ void ToolPluginManager::updateSettings()
 void ToolPluginManager::activeTabChanged(const TabInfo &info)
 {
 	emit mSystemEvents->activeTabChanged(info);
+}
+
+QObject *ToolPluginManager::pluginGuiFacade(const QString &pluginName) const
+{
+	return (mPluginManager.plugin<ToolPluginInterface>(pluginName))->guiScriptFacade();
 }

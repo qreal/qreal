@@ -39,7 +39,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
-#include <qrutils/graphicsUtils/animatedHighlighter.h>
+#include <qrutils/graphicsUtils/animatedEffects.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
 
@@ -74,6 +74,8 @@
 #include "referenceList.h"
 #include "splashScreen.h"
 #include "dotRunner.h"
+
+#include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -211,6 +213,13 @@ void MainWindow::connectActions()
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
+	connect(mUi->actionFullscreen, &QAction::changed, [=]() {
+		const int indexOfFullscreen = mUi->viewToolbar->actions().indexOf(mUi->actionFullscreen);
+		if (indexOfFullscreen > 0) {
+			QAction * const separatorBefore = mUi->viewToolbar->actions()[indexOfFullscreen - 1];
+			separatorBefore->setVisible(mUi->actionFullscreen->isVisible());
+		}
+	});
 
 	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
@@ -310,6 +319,8 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	mScriptAPI.abortEvaluation();
+
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
 		return;
@@ -365,12 +376,13 @@ void MainWindow::selectItemWithError(const Id &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	emit mFacade.events().ensureDiagramVisible();
 	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
 
 	Element * const element = getCurrentTab() ? getCurrentTab()->editorViewScene().getElem(graphicalId) : nullptr;
-	graphicsUtils::AnimatedHighlighter::highlight(element);
+	graphicsUtils::AnimatedEffects::highlight(element);
 }
 
 void MainWindow::selectItem(const Id &id)
@@ -703,16 +715,15 @@ void MainWindow::toggleShowSplash(bool show)
 bool MainWindow::unloadPlugin(const QString &pluginName)
 {
 	if (editorManager().editors().contains(Id(pluginName))) {
-		const IdList diagrams = editorManager().diagrams(Id(pluginName));
+		/* Delete and create palette tree for correct unloading plugin
+		 * and for correct completion application.*/
+		mUi->paletteTree->deletePaletteTree();
+		mUi->paletteTree->createPaletteTree();
 
 		const QString error = editorManager().unloadPlugin(pluginName);
 		if (!error.isEmpty()) {
 			QMessageBox::warning(this, tr("Error"), tr("Plugin unloading failed: ") + error);
 			return false;
-		}
-
-		foreach (const Id &diagram, diagrams) {
-			mUi->paletteTree->deleteEditor(diagram);
 		}
 	}
 	return true;
@@ -1193,7 +1204,6 @@ void MainWindow::switchToTab(int index)
 		mUi->tabs->setEnabled(false);
 		mController->setActiveDiagram(Id());
 	}
-
 }
 
 void MainWindow::updateTabName(const Id &id)
@@ -1619,6 +1629,10 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+	if (SettingsManager::value("scriptInterpretation").toBool()) {
+		initActionWidgetsNames();
+		initScriptAPI();
+	}
 
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.setWindowIcon(BrandManager::applicationIcon());
@@ -1632,6 +1646,19 @@ void MainWindow::initPluginsAndStartWidget()
 	}
 }
 
+void MainWindow::initActionWidgetsNames()
+{
+	QList<QAction *> const actionList = findChildren<QAction *>();
+
+	for (QAction * const action : actionList) {
+		for (QWidget * const widget : action->associatedWidgets()) {
+			if (widget->objectName().isEmpty()) {
+				widget->setObjectName(action->objectName());
+			}
+		}
+	}
+}
+
 void MainWindow::addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMenu)
 {
 	if (actionOrMenu.isAction()) {
@@ -1641,7 +1668,7 @@ void MainWindow::addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMen
 	}
 }
 
-void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
+void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 {
 	for (const ActionInfo &action : actions) {
 		if (action.isAction()) {
@@ -1663,8 +1690,13 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	}
 
 	for (const ActionInfo &action : actions) {
-		const QString menuName = "menu" + utils::StringUtils::capitalizeFirstLetter(action.menuName());
-		QMenu * const menu = findChild<QMenu *>(menuName);
+		/// @todo: We should somehow assert that all menus have names in such format.
+		const QString capitalizedName = utils::StringUtils::capitalizeFirstLetter(action.menuName());
+		QMenu *menu = findChild<QMenu *>("menu" + capitalizedName);
+		if (!menu) {
+			menu = findChild<QMenu *>("menu_" + capitalizedName);
+		}
+
 		if (menu) {
 			addActionOrSubmenu(menu, action);
 		}
@@ -1998,6 +2030,11 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 	QMainWindow::addDockWidget(area, dockWidget);
 }
 
+void MainWindow::addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar)
+{
+	QMainWindow::addToolBar(area, toolbar);
+}
+
 QByteArray MainWindow::saveState(int version) const
 {
 	return QMainWindow::saveState(version);
@@ -2006,7 +2043,7 @@ QByteArray MainWindow::saveState(int version) const
 bool MainWindow::restoreState(const QByteArray &state, int version)
 {
 	const bool result = QMainWindow::restoreState(state, version);
-	if (!mUi->errorListWidget->count() > 0) {
+	if (mUi->errorListWidget->count() == 0) {
 		mUi->errorDock->hide();
 	}
 
@@ -2035,10 +2072,34 @@ void MainWindow::setVersion(const QString &version)
 
 void MainWindow::openStartTab()
 {
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		if (dynamic_cast<StartWidget *>(mUi->tabs->widget(i))) {
+			mUi->tabs->setCurrentIndex(i);
+			return;
+		}
+	}
+
 	mStartWidget = new StartWidget(this, mProjectManager);
-	const int index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
-	mUi->tabs->setTabUnclosable(index);
+	const bool hadTabs = mUi->tabs->count() > 0;
+	mUi->tabs->insertTab(0, mStartWidget, tr("Getting Started"));
+	mUi->tabs->setTabUnclosable(hadTabs);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+}
+
+void MainWindow::initScriptAPI()
+{
+	QThread * const scriptAPIthread = new QThread(this);
+	mScriptAPI.init(*this);
+
+	QAction *const evalAction = new QAction(this);
+	// Setting a secret combination to activate script interpretation.
+	evalAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F12));
+	connect(evalAction, &QAction::triggered, &mScriptAPI, &ScriptAPI::evaluate, Qt::DirectConnection);
+	addAction(evalAction);
+
+	connect(&mFacade.events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
+	mScriptAPI.moveToThread(scriptAPIthread);
+	scriptAPIthread->start();
 }
 
 void MainWindow::beginPaletteModification()

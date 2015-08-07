@@ -14,6 +14,8 @@
 
 #include "kitBase/blocksBase/common/waitForSensorBlock.h"
 
+#include <utils/abstractTimer.h>
+
 #include "kitBase/robotModel/robotParts/scalarSensor.h"
 #include "kitBase/robotModel/robotModelUtils.h"
 
@@ -37,9 +39,9 @@ void WaitForSensorBlock::run()
 		connect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
 		connect(sensor, &robotParts::AbstractSensor::failure, this, &WaitForSensorBlock::failureSlot);
 		sensor->read();
-		mActiveWaitingTimer.start();
+		mActiveWaitingTimer->start();
 	} else {
-		mActiveWaitingTimer.stop();
+		mActiveWaitingTimer->stop();
 		error(tr("%1 is not configured on port %2").arg(device().friendlyName(), mPort.userFriendlyName()));
 	}
 }

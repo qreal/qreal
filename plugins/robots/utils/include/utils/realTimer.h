@@ -27,8 +27,11 @@ class ROBOTS_UTILS_EXPORT RealTimer : public AbstractTimer
 public:
 	RealTimer();
 
+	bool isTicking() const override;
+	void start() override;
 	void start(int ms) override;
 	void stop() override;
+	void setInterval(int ms) override;
 
 private:
 	QTimer mTimer;

@@ -29,10 +29,11 @@ void ReceiveThreadMessageBlock::run()
 	QString message;
 	if (mThread->getMessage(message)) {
 		receiveMessage(message);
+		return;
 	}
 
 	if (!boolProperty("Synchronized")) {
-		receiveMessage("\"\"");
+		emit done(mNextBlockId);
 	}
 }
 

@@ -43,7 +43,7 @@ public:
 		Q_UNUSED(configurator)
 	}
 
-	/// An identifier of constructor kit. Kit plugins with same kitId are automaticly groupped
+	/// An identifier of constructor kit. Kit plugins with same kitId are automaticly grouped
 	/// together extending each other.
 	virtual QString kitId() const = 0;
 
@@ -106,6 +106,14 @@ public:
 	virtual kitBase::DevicesConfigurationProvider * devicesConfigurationProvider()
 	{
 		return nullptr;
+	}
+
+	/// Returns kit plugin priority over other plugins. Priority will be used by kits auto switching system
+	/// when switching can be performed to multiple kits. If priorities are equal the selected kit is undefined.
+	/// Returns 0 if not overrided.
+	virtual int priority() const
+	{
+		return 0;
 	}
 };
 

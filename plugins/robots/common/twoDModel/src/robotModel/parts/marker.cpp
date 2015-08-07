@@ -14,6 +14,8 @@
 
 #include "twoDModel/robotModel/parts/marker.h"
 
+#include <QtGui/QColor>
+
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
 using namespace twoDModel::robotModel::parts;
@@ -34,4 +36,18 @@ void Marker::down(const QColor &color)
 void Marker::up()
 {
 	mEngine.markerUp();
+}
+
+bool Marker::isDown() const
+{
+	return mEngine.isMarkerDown();
+}
+
+void Marker::setDown(bool isDown)
+{
+	if (isDown) {
+		down(Qt::black);
+	} else {
+		up();
+	}
 }

@@ -39,7 +39,10 @@ namespace qrmc {
 		virtual QString generateProperties(const QString &lineTemplate) const;
 		virtual QString generatePropertyDefaults(const QString &namesTemplate) const;
 		virtual QString generatePropertyDisplayedNames(const QString &lineTemplate) const;
+		virtual QString generateElementDescription(const QString &lineTemplate) const;
 		virtual QString generateReferenceProperties(const QString &lineTemplate) const;
+		virtual QString generatePortTypes(const QString &lineTemplate) const;
+		virtual QString generatePropertyName(const QString &lineTemplate) const;
 		virtual QString generateParents(const QString &lineTemplate) const;
 		virtual QString generateContainers(const QString &lineTemplate) const;
 		virtual QString generateConnections(const QString &lineTemplate) const;
@@ -48,6 +51,7 @@ namespace qrmc {
 		virtual QString generatePossibleEdges(const QString &lineTemplate) const;
 
 		bool isResolving() const;
+		QString generateElementDescriptionLine(const QString &lineTemplate) const;
 
 	protected:
 		typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
@@ -95,5 +99,6 @@ namespace qrmc {
 		void initShape();
 
 		bool mResolving;
+		QString mDescription;
 	};
 }

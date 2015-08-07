@@ -18,5 +18,16 @@ using namespace kitBase::robotModel::robotParts;
 
 AbstractSensor::AbstractSensor(const DeviceInfo &info, const PortInfo &port)
 	: Device(info, port)
+	, mIsLocked(false)
 {
+}
+
+bool AbstractSensor::isLocked() const
+{
+	return mIsLocked;
+}
+
+void AbstractSensor::setLocked(bool locked)
+{
+	mIsLocked = locked;
 }

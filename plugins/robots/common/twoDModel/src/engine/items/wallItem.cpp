@@ -328,10 +328,7 @@ void WallItem::reshapeBeginWithGrid(int indexGrid)
 
 void WallItem::alignTheWall(int indexGrid)
 {
-	if (x1() != x2() && y1() != y2()) {
-		countCellNumbCoordinates(indexGrid);
-	}
-
+	countCellNumbCoordinates(indexGrid);
 	setBeginCoordinatesWithGrid(indexGrid);
 	setEndCoordinatesWithGrid(indexGrid);
 }

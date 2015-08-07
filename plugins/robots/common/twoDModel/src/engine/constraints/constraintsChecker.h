@@ -96,7 +96,9 @@ private:
 			, model::RobotModel * const robot
 			, const kitBase::robotModel::PortInfo &port);
 	QString firstUnusedRobotId() const;
-	QString portName(const QString &robotId, const kitBase::robotModel::PortInfo &port) const;
+	QString portName(const QString &robotId
+			, model::RobotModel * const robot
+			, const kitBase::robotModel::PortInfo &port) const;
 
 	void programStarted();
 	void programFinished();
@@ -107,13 +109,14 @@ private:
 	QScopedPointer<details::ConstraintsParser> mParser;
 	bool mParsedSuccessfully;
 	bool mSuccessTriggered;
+	bool mDefferedSuccessTriggered;
 	bool mFailTriggered;
 
 	details::Events mEvents;
 	details::Variables mVariables;
 	details::Objects mObjects;
 
-	QSet<details::Event *> mActiveEvents;
+	QList<details::Event *> mActiveEvents;
 
 	QDomElement mCurrentXml;
 };

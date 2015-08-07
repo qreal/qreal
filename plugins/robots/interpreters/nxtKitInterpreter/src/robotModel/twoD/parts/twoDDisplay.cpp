@@ -14,6 +14,11 @@
 
 #include "twoDDisplay.h"
 
+const int textPixelHeight = 8;
+const int textPixelWidth = 16;
+const int nxtDisplayHeight = 64;
+const int nxtDisplayWidth = 100;
+
 using namespace nxt::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
@@ -26,91 +31,62 @@ Display::Display(const DeviceInfo &info
 	mEngine.display()->setPainter(this);
 }
 
+void Display::redraw()
+{
+	mEngine.display()->repaintDisplay();
+}
+
 void Display::drawPixel(int x, int y)
 {
-	mPoints << QPoint(x, y);
-	mEngine.display()->repaintDisplay();
+	Canvas::drawPixel(x, y);
 }
 
 void Display::drawLine(int x1, int y1, int x2, int y2)
 {
-	mLines << QLine(x1, y1, x2, y2);
-	mEngine.display()->repaintDisplay();
+	Canvas::drawLine(x1, y1, x2, y2);
 }
 
 void Display::drawRect(int x, int y, int width, int height)
 {
-	mRects << QRect(x, y, width, height);
-	mEngine.display()->repaintDisplay();
+	Canvas::drawRect(x, y, width, height);
 }
 
 void Display::drawCircle(int x, int y, int radius)
 {
-	mCircles << QRect(x - radius, y - radius, 2 * radius, 2 * radius);
-	mEngine.display()->repaintDisplay();
+	Canvas::drawEllipse(x, y, radius, radius);
 }
 
 void Display::printText(int x, int y, const QString &text)
 {
-	mStringPlaces << QPoint(x, y);
-	mStrings << text;
-	mEngine.display()->repaintDisplay();
+	Canvas::printText(x * textPixelWidth, y * textPixelHeight, text);
 }
 
 void Display::clearScreen()
 {
-	mPoints.clear();
-	mLines.clear();
-	mRects.clear();
-	mCircles.clear();
-	mStrings.clear();
-	mStringPlaces.clear();
-	mEngine.display()->repaintDisplay();
+	Canvas::reset();
 }
 
 void Display::paint(QPainter *painter)
 {
-	/// @todo ZOMG.
-	const qreal pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
-	const qreal pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
+	painter->save();
+	painter->scale(static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth
+			, static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight);
 
 	QPen pen;
 	QFont font;
-	font.setPixelSize(pixHeight * textPixelHeight);
+	font.setPixelSize(textPixelHeight);
 
-	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
-	foreach (const QPoint &point, mPoints) {
-		painter->drawRect(point.x() * pixWidth, point.y() * pixHeight, pixWidth, pixHeight);
-	}
-
-	pen.setWidth((pixWidth + pixHeight) / 2);
 	painter->setPen(pen);
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
 
-	foreach (const QLine &line, mLines) {
-		painter->drawLine(line.x1() * pixWidth, line.y1() * pixHeight, line.x2() * pixWidth, line.y2() * pixHeight);
-	}
+	Canvas::paint(painter);
 
-	foreach (const QRect &circle, mCircles) {
-		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
-	}
-
-	foreach (const QRect &rect, mRects) {
-		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
-	}
-
-	QListIterator<QString> strings(mStrings);
-	QListIterator<QPoint> strPlaces(mStringPlaces);
-	while (strings.hasNext() && strPlaces.hasNext()) {
-		const QString str = strings.next();
-		const QPoint place = strPlaces.next();
-		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
-				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
-	}
+	painter->restore();
 }
 
 void Display::reset()
 {
 	clearScreen();
+	redraw();
 }

@@ -22,7 +22,7 @@ using namespace kitBase;
 using namespace robotModel;
 
 KitAutoSwitcher::KitAutoSwitcher(const qReal::ProjectManagementInterface &projectManager
-		, const qReal::LogicalModelAssistInterface &logicalModel
+		, qReal::LogicalModelAssistInterface &logicalModel
 		, const BlocksFactoryManagerInterface &factoryManager
 		, const KitPluginManager &kitPluginManager
 		, RobotModelManager &robotModelManager
@@ -34,42 +34,69 @@ KitAutoSwitcher::KitAutoSwitcher(const qReal::ProjectManagementInterface &projec
 	, mRobotModelManager(robotModelManager)
 {
 	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, this, &KitAutoSwitcher::onProjectOpened);
+	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, [this, &robotModelManager]() {
+		mLogicalModel.mutableLogicalRepoApi().setMetaInformation("lastKitId", robotModelManager.model().kitId());
+	});
+	connect(&robotModelManager, &RobotModelManager::robotModelChanged, [this](RobotModelInterface &model) {
+		mLogicalModel.mutableLogicalRepoApi().setMetaInformation("lastKitId", model.kitId());
+	});
 }
 
 void KitAutoSwitcher::onProjectOpened()
 {
+	if (tryToRestoreFromMetaInformation()) {
+		return;
+	}
+
 	const QString selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
 	QMap<QString, int> const blocksCount = countKitSpecificBlocks();
 	if (!selectedKit.isEmpty() && blocksCount[selectedKit] > 0) {
 		// If user opens save that contains blocks specific for this kit we do not want
-		// to swith kit even if it contains more blocks specific to other kits.
+		// to switсh kit even if it contains more blocks specific to other kits.
 		return;
 	}
 
 	int majority = 0;
-	QString majorityKit;
-
 	for (const QString &kit : blocksCount.keys()) {
-		if (blocksCount[kit] > majority)  {
-			majority = blocksCount[kit];
-			majorityKit = kit;
+		majority = qMax(blocksCount[kit], majority);
+	}
+
+	if (majority == 0) {
+		return;
+	}
+
+	int bestPriority = -1;
+	QString bestKit;
+	for (const QString &kit : blocksCount.keys()) {
+		if (blocksCount[kit] == majority && mKitPluginManager.priority(kit) > bestPriority) {
+			bestPriority = mKitPluginManager.priority(kit);
+			bestKit = kit;
 		}
 	}
 
-	if (majority > 0 && selectedKit != majorityKit) {
-		switchTo(majorityKit);
+	if (selectedKit != bestKit) {
+		switchTo(bestKit);
 	}
 	// Else save contains only common blocks. Ignoring it.
+}
+
+bool KitAutoSwitcher::tryToRestoreFromMetaInformation()
+{
+	const QString kit = mLogicalModel.logicalRepoApi().metaInformation("lastKitId").toString();
+	if (!kit.isEmpty() && mKitPluginManager.kitIds().contains(kit)) {
+		return switchTo(kit);
+	}
+
+	return false;
 }
 
 QMap<QString, int> KitAutoSwitcher::countKitSpecificBlocks() const
 {
 	QMap<QString, int> result;
-	QMap<qReal::Id, QString> kitBlocks = kitSpecificBlocks();
+	QMultiMap<qReal::Id, QString> kitBlocks = kitSpecificBlocks();
 
 	for (const qReal::Id &block : mLogicalModel.children(qReal::Id::rootId())) {
-		const QString kit = kitBlocks[block.type()];
-		if (!kit.isEmpty()) {
+		for (const QString &kit : kitBlocks.values(block.type())) {
 			++result[kit];
 		}
 	}
@@ -77,7 +104,7 @@ QMap<QString, int> KitAutoSwitcher::countKitSpecificBlocks() const
 	return result;
 }
 
-QMap<qReal::Id, QString> KitAutoSwitcher::kitSpecificBlocks() const
+QMultiMap<qReal::Id, QString> KitAutoSwitcher::kitSpecificBlocks() const
 {
 	QMap<QString, QSet<qReal::Id>> kitsToBlocksMap;
 	for (const QString &kitId : mKitPluginManager.kitIds()) {
@@ -91,21 +118,24 @@ QMap<qReal::Id, QString> KitAutoSwitcher::kitSpecificBlocks() const
 		kitsToBlocksMap[kitId] = specificBlocks - mFactoryManager.commonBlocks();
 	}
 
-	QMap<qReal::Id, QString> blocksToKitsMap;
+	QMultiMap<qReal::Id, QString> blocksToKitsMap;
 	for (const QString &kitId : kitsToBlocksMap.keys()) {
 		for (const qReal::Id &id: kitsToBlocksMap[kitId]) {
-			blocksToKitsMap[id] = kitId;
+			blocksToKitsMap.insertMulti(id, kitId);
 		}
 	}
 
 	return blocksToKitsMap;
 }
 
-void interpreterCore::KitAutoSwitcher::switchTo(const QString &kitId)
+bool interpreterCore::KitAutoSwitcher::switchTo(const QString &kitId)
 {
 	if (RobotModelInterface * const robotModel
 			= RobotModelUtils::selectedRobotModelFor(mKitPluginManager.kitsById(kitId)))
 	{
 		mRobotModelManager.setModel(robotModel);
+		return true;
 	}
+
+	return false;
 }

@@ -30,13 +30,13 @@ public:
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const qReal::Id &diagramId
-			, const QString &generatorName);
+			, const QStringList &pathsToTemplates);
 
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 
 private:
-	const QString mGeneratorName;
+	const QStringList mPathsToTemplates;
 };
 
 }

@@ -24,7 +24,7 @@ namespace converters {
 class TypeConverter : public DynamicPathConverter
 {
 public:
-	explicit TypeConverter(const QString &pathToTemplates);
+	explicit TypeConverter(const QStringList &pathsToTemplates);
 };
 
 }

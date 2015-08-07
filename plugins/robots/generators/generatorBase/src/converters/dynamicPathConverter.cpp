@@ -16,8 +16,8 @@
 
 using namespace generatorBase::converters;
 
-DynamicPathConverter::DynamicPathConverter(const QString &pathToTemplates, const QString &pathFromRoot)
-	: TemplateParametrizedConverter(pathToTemplates)
+DynamicPathConverter::DynamicPathConverter(const QStringList &pathsToTemplates, const QString &pathFromRoot)
+	: TemplateParametrizedConverter(pathsToTemplates)
 	, mPathFromRoot(pathFromRoot)
 {
 }

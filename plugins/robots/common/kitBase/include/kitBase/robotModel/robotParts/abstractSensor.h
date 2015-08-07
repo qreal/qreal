@@ -30,6 +30,7 @@ class ROBOTS_KIT_BASE_EXPORT AbstractSensor : public Device
 {
 	Q_OBJECT
 	Q_CLASSINFO("direction", "input")
+	Q_PROPERTY(bool locked READ isLocked WRITE setLocked)
 
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
@@ -41,11 +42,22 @@ public:
 	/// If more than one call of "read" was made before sensor returned values, subsequent calls are ignored.
 	virtual void read() = 0;
 
+	/// Returns true if sensor state was locked for writing. That means that last obtained sensor value
+	/// will not be refreshed until setLocked(true) will be called.
+	bool isLocked() const;
+
+	/// Locks or unlocks sensor state for writing. If true is passed last obtained sensor value will be frozen.
+	/// If false values will be refreshed again. Ideologically lock must be removed before interpretation starts.
+	void setLocked(bool locked);
+
 signals:
 	/// Emitted when sensor reading is failed for some reason. Note that it is possible that sensor will not emit any
 	/// signal in case of a failure, so if "failure()" is emitted, the sensor is failed, but if not, sensor may be still
 	/// preparing readings and it can take some time, or simply failed silently.
 	void failure();
+
+private:
+	bool mIsLocked;
 };
 
 }

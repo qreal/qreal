@@ -19,8 +19,8 @@
 using namespace generatorBase;
 using namespace parts;
 
-Threads::Threads(const QString &pathToTemplates)
-	: TemplateParametrizedEntity(pathToTemplates)
+Threads::Threads(const QStringList &pathsToTemplates)
+	: TemplateParametrizedEntity(pathsToTemplates)
 {
 }
 

@@ -24,14 +24,12 @@ PaintWidget::PaintWidget(QWidget *parent)
 void PaintWidget::paintEvent(QPaintEvent *event)
 {
 	QWidget::paintEvent(event);
-	QPainter painter(this);
 
-	for (PainterInterface * const painterIface : mPainters) {
-		painterIface->paint(&painter);
-	}
+	QPainter painter(this);
+	mPainter->paint(&painter);
 }
 
-void PaintWidget::appendPainter(PainterInterface *painter)
+void PaintWidget::setPainter(PainterInterface *painter)
 {
-	mPainters << painter;
+	mPainter = painter;
 }

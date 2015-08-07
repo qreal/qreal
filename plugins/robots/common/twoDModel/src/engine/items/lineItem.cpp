@@ -32,7 +32,6 @@ LineItem::LineItem(const QPointF &begin, const QPointF &end, int cornerRadius)
 	setY1(begin.y());
 	setX2(end.x());
 	setY2(end.y());
-	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
 }
 

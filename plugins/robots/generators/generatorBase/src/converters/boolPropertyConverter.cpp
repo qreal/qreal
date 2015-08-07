@@ -17,14 +17,14 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-BoolPropertyConverter::BoolPropertyConverter(const QString &pathToTemplates
+BoolPropertyConverter::BoolPropertyConverter(const QStringList &pathsToTemplates
 		, lua::LuaProcessor &luaTranslator
 		, const qReal::Id &id
 		, const QString &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter
 		, bool needInverting)
 	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
-	, TemplateParametrizedEntity(pathToTemplates)
+	, TemplateParametrizedEntity(pathsToTemplates)
 	, mNeedInverting(needInverting)
 {
 }

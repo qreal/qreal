@@ -16,6 +16,8 @@
 
 #include <QtCore/QTimer>
 #include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -33,6 +35,9 @@
 
 #include "src/ui/modeStripe.h"
 
+const int lowerMediumResolutionBorder = 1024;
+const int upperMediumResolutionBorder = 1280;
+
 using namespace interpreterCore;
 
 static const QColor backgrondColor = QPalette().color(QPalette::Background);
@@ -48,11 +53,14 @@ UiManager::UiManager(QAction &debugModeAction
 	: mDebugModeAction(debugModeAction)
 	, mEditModeAction(editModeAction)
 	, mMainWindow(mainWindow)
+	, mTabBar(nullptr)
+	, mCustomWidgetsBar(new QToolBar(tr("Miscellaneous"), mMainWindow.windowWidget()))
 	, mRobotConsole(new qReal::ui::ConsoleDock(tr("Robot console"), mMainWindow.windowWidget()))
 {
 	mMainWindow.graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, &UiManager::onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::ensureDiagramVisible, this, &UiManager::ensureDiagramVisible);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this, &UiManager::switchToDebuggerMode);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
@@ -65,6 +73,9 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&editModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
 
 	mRobotConsole->hide();
+	initTab();
+	mCustomWidgetsBar->setObjectName("robotsMiscellaneousBar");
+	mMainWindow.addToolBar(Qt::TopToolBarArea, mCustomWidgetsBar);
 	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
 	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
 	mMainWindow.windowWidget()->addAction(mRobotConsole->toggleViewAction());
@@ -102,6 +113,28 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	reloadDocks();
 }
 
+void UiManager::addWidgetToToolbar(kitBase::robotModel::RobotModelInterface &robotModel, QWidget * const widget)
+{
+	if (!widget) {
+		return;
+	}
+
+	// Toolbar will take ownership on widget and resulting action.
+	QAction * const action = mCustomWidgetsBar->addWidget(widget);
+	mToolBarWidgets[action] = &robotModel;
+
+	connect(action, &QAction::changed, [this]() {
+		for (QAction * const action : mCustomWidgetsBar->actions()) {
+			if (action->isVisible()) {
+				mCustomWidgetsBar->setVisible(true);
+				return;
+			}
+		}
+
+		mCustomWidgetsBar->hide();
+	});
+}
+
 qReal::ui::ConsoleDock &UiManager::robotConsole()
 {
 	return *mRobotConsole;
@@ -121,6 +154,11 @@ void UiManager::onActiveTabChanged(const qReal::TabInfo &tab)
 
 void UiManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
+	for (QAction * const action : mToolBarWidgets.keys()) {
+		const kitBase::robotModel::RobotModelInterface *bindedModel = mToolBarWidgets[action];
+		action->setVisible(!bindedModel || bindedModel == &model);
+	}
+
 	auto subscribeShell = [this, &model]() {
 		if (kitBase::robotModel::robotParts::Shell * const shell = kitBase::robotModel::RobotModelUtils::findDevice
 				<kitBase::robotModel::robotParts::Shell>(model, "ShellPort"))
@@ -159,8 +197,13 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 void UiManager::toggleModeButtons()
 {
-	mEditModeAction.setVisible(mCurrentMode == Mode::Debugging && mCurrentTab != qReal::TabInfo::TabType::other);
-	mDebugModeAction.setVisible(mCurrentMode == Mode::Editing && mCurrentTab != qReal::TabInfo::TabType::other);
+	mEditModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mDebugModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	mEditModeAction.setChecked(mCurrentMode == Mode::Editing);
+	mDebugModeAction.setChecked(mCurrentMode == Mode::Debugging);
+	if (mTabBar) {
+		mTabBar->setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
+	}
 
 	const QColor color = mCurrentTab == qReal::TabInfo::TabType::other
 			? backgrondColor
@@ -261,15 +304,55 @@ void UiManager::resetMainWindowCorners() const
 	mMainWindow.setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
 }
 
+void UiManager::ensureDiagramVisible()
+{
+	if (mCurrentMode == Mode::Editing) {
+		return;
+	}
+
+	// 2D model is placed into smart dock that may hide central widget if docked into TopDockWidgetArea.
+	// If we met such case then switching to editor mode.
+	for (utils::SmartDock * const twoDModel : mMainWindow.windowWidget()->findChildren<utils::SmartDock *>()) {
+		if (twoDModel->isCentral()) {
+			switchToEditorMode();
+			return;
+		}
+	}
+}
+
+void UiManager::initTab()
+{
+	connect(&mEditModeAction, &QAction::triggered, this, &UiManager::switchToEditorMode);
+	connect(&mDebugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
+	connect(&mEditModeAction, &QAction::toggled, this, &UiManager::toggleModeButtons);
+	connect(&mDebugModeAction, &QAction::toggled, this, &UiManager::toggleModeButtons);
+
+	const QSize resolution = QApplication::desktop()->screenGeometry().size();
+	if (resolution.width() < lowerMediumResolutionBorder) {
+		// The screen is super-small, do not show tab bar at all
+		mMainWindow.statusBar()->addAction(&mEditModeAction);
+		mMainWindow.statusBar()->addAction(&mDebugModeAction);
+		return;
+	}
+
+	mTabBar = new QToolBar(tr("Modes"), mMainWindow.windowWidget());
+	mTabBar->setObjectName("largeTabsBar");
+	mTabBar->setIconSize(QSize(32, 32));
+	mTabBar->setToolButtonStyle(resolution.width() < upperMediumResolutionBorder
+			? Qt::ToolButtonIconOnly // On small resolutions in some locales text may be too wide.
+			: Qt::ToolButtonTextUnderIcon);
+	mMainWindow.addToolBar(Qt::LeftToolBarArea, mTabBar);
+	mTabBar->addAction(&mEditModeAction);
+	mTabBar->addAction(&mDebugModeAction);
+}
+
 void UiManager::hack2dModelDock() const
 {
 	// 2D model is placed into smart dock: it may be embedded into instance of QDialog
 	// that is not influeced by mMainWindow::restoreState. So we must first switch to a docked form
 	// and then restore docks state.
-	if (const QObject *window = dynamic_cast<QObject *>(&mMainWindow)) {
-		if (utils::SmartDock *twoDModel = window->findChild<utils::SmartDock *>()) {
-			twoDModel->switchToDocked();
-		}
+	if (utils::SmartDock * const twoDModel = mMainWindow.windowWidget()->findChild<utils::SmartDock *>()) {
+		twoDModel->switchToDocked();
 	}
 }
 

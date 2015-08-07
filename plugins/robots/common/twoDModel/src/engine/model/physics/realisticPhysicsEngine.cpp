@@ -243,9 +243,11 @@ void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegi
 			const QLineF normalLine = Geometry::veryLongLine(currentSegmentationPoint, orthogonalDirectionVector);
 
 			// For each point on that segments calculating reaction force vector acting from that point
-			const QList<QPointF> intersectionsWithRobot = Geometry::intersection(normalLine, robotBoundingRegion, lowPrecision);
+			const QList<QPointF> intersectionsWithRobot = Geometry::intersection(normalLine, robotBoundingRegion
+					, lowPrecision);
+
 			QList<QPointF> intersectionsWithRobotAndWall;
-			foreach (const QPointF &point, intersectionsWithRobot) {
+			for (const QPointF &point : intersectionsWithRobot) {
 				if (Geometry::belongs(point, intersectionRegion, lowPrecision)) {
 					intersectionsWithRobotAndWall << point;
 				}

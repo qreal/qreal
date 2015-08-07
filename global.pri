@@ -57,7 +57,7 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-CONFIG += c++11
+CONFIG += c++14
 QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
 
 GLOBAL_PWD = $$PWD
@@ -69,7 +69,7 @@ defineTest(copyToDestdir) {
 	NOW = $$2
 
 	for(FILE, FILES) {
-		DESTDIR_SUFFIX = 
+		DESTDIR_SUFFIX =
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
 		win32:AFTER_SLASH = $$section(FILE, "/", -1, -1)
 		win32:BASE_NAME = $$section(FILE, "/", -2, -2)
@@ -89,7 +89,7 @@ defineTest(copyToDestdir) {
 			win32 {
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
 			} else {
-				system("cp -r $$FILE $$DESTDIR")
+				system("cp -r -f $$FILE $$DESTDIR/")
 			}
 		}
 	}

@@ -14,6 +14,8 @@
 
 #include "kitBase/blocksBase/common/waitForEncoderBlock.h"
 
+#include <utils/abstractTimer.h>
+
 #include "kitBase/robotModel/robotParts/encoderSensor.h"
 #include "kitBase/robotModel/robotModelUtils.h"
 
@@ -24,6 +26,7 @@ using namespace robotModel;
 WaitForEncoderBlock::WaitForEncoderBlock(RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
 {
+	mActiveWaitingTimer->setInterval(1);
 }
 
 void WaitForEncoderBlock::responseSlot(int reading)

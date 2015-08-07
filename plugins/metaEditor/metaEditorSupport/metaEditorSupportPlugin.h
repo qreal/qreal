@@ -52,13 +52,20 @@ private slots:
 private:
 	/// Compiles and loads to QReal new editor plugin
 	void loadNewEditor(
-			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that editor)
-			, QPair<QString, QString> const &metamodelNames  ///< Metamodel name as set in metamodel
-			, QString const &commandFirst  ///< qmake command
-			, QString const &commandSecond  ///< make command
-			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
-			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
-			, QString const &buildConfiguration  ///< debug or release, passed to CONFIG variable of qmake
+			/// Directory where editor was generated (containing .pro file of that editor)
+			QString const &directoryName
+			/// Metamodel name as set in metamodel
+			, QPair<QString, QString> const &metamodelNames
+			/// qmake command
+			, QString const &commandFirst
+			/// make command
+			, QString const &commandSecond
+			/// Extension of the resulting binary file with editor plugin (.dll/.so)
+			, QString const &extension
+			/// Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
+			, QString const &prefix
+			/// debug or release, passed to CONFIG variable of qmake
+			, QString const &buildConfiguration
 			);
 
 	/// Action that starts generation of .xml file with metamodel for qrxc

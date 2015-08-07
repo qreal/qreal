@@ -14,6 +14,7 @@
 
 #include "kitBase/blocksBase/common/getButtonCodeBlock.h"
 
+#include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotParts/button.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 
@@ -34,7 +35,7 @@ void GetButtonCodeBlock::run()
 		}
 	}
 
-	mActiveWaitingTimer.start();
+	mActiveWaitingTimer->start();
 }
 
 void GetButtonCodeBlock::timerTimeout()

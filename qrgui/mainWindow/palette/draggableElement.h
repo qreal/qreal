@@ -63,6 +63,9 @@ public:
 
 	QSize iconsPreferredSize() const;
 
+	/// Returns a mime data instance binded with object during drag-and-drop.
+	QMimeData *mimeData(const Id &elementId) const;
+
 private slots:
 	void changePropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();

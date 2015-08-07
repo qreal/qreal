@@ -21,7 +21,8 @@
 
 namespace qReal {
 
-/// Generates python script file for reaction on the rule application specified in "procedure" attribute of "Rule" element
+/// Generates python script file for reaction on the rule application specified in "procedure" attribute of
+/// "Rule" element.
 class PythonGenerator : public TextCodeGenerator
 {
 	Q_OBJECT

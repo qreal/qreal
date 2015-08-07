@@ -56,6 +56,10 @@ public:
 	/// Embeds the given widgets into main window`s left dock panel tabifying them together.
 	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
 
+	/// Appends the \a widget to the end of the custom toolbar. The widget becomes binded to the \robotModel.
+	/// It means that \a widget will be shown on the toolbar only when \a robotModel is selected.
+	void addWidgetToToolbar(kitBase::robotModel::RobotModelInterface &robotModel, QWidget * const widget);
+
 	/// Returns a pointer to widget where robot standard output is displayed.
 	qReal::ui::ConsoleDock &robotConsole();
 
@@ -71,8 +75,11 @@ private slots:
 	void reloadDocks() const;
 	void reloadDocksSavingToolbarsAndErrors() const;
 	void resetMainWindowCorners() const;
+	void ensureDiagramVisible();
 
 private:
+	void initTab();
+
 	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
 	void produceModeButton(Mode mode, QAction &action, QStatusBar *statusBar) const;
 
@@ -85,9 +92,14 @@ private:
 	QAction &mDebugModeAction;
 	QAction &mEditModeAction;
 	qReal::gui::MainWindowDockInterface &mMainWindow;
+	QToolBar *mTabBar;  // Takes ownership
+	QToolBar *mCustomWidgetsBar;  // Takes ownership.
 	qReal::TabInfo::TabType mCurrentTab = static_cast<qReal::TabInfo::TabType>(-1);
 	Mode mCurrentMode = Mode::Dummy;
 	qReal::ui::ConsoleDock *mRobotConsole;  // Transfers ownership to main window.
+	// Takes ownership on keys, doesn`t take on values.
+	// QAction manages underlying widgets visibility.
+	QMap<QAction *, kitBase::robotModel::RobotModelInterface *> mToolBarWidgets;
 };
 
 }
