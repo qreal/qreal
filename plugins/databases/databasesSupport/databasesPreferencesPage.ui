@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DatabasesPreferencesPage</class>
+ <widget class="QWidget" name="DatabasesPreferencesPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>629</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>30</y>
+     <width>361</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="dialectLabel">
+      <property name="text">
+       <string>Choose Database management system:</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="dbmsBox">
+      <item>
+       <property name="text">
+        <string>Microsoft SQL Server 2008</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MySQL 5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Oracle SQL Developer</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SQLite</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Microsoft Access</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>PostgreSQL</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Informix</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Progress</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>IBM DB2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ingres</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Sybase</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Teradata</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SQL Anywhere</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Firebird</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>InterBase</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>NexusDB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MariaDB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Paradox</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Hitachi HiRDB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Netezza</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>100</y>
+     <width>361</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QLabel" name="oneToOneRepresentationLabel">
+      <property name="text">
+       <string>Type of representation one-to-one relationship:</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="oneToOneRepresentationBox">
+      <item>
+       <property name="text">
+        <string>One table</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
