@@ -35,8 +35,8 @@ DevicesConfigurationManager::DevicesConfigurationManager(
 	, mLogicalModelAssistInterface(logicalModelAssistInterface)
 	, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 {
-	QObject::connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
-			, [&] (const TabInfo &info) { this->onActiveTabChanged(info); });
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
+			, this, DevicesConfigurationManager::onActiveTabChanged);
 }
 
 QString DevicesConfigurationManager::save() const

@@ -102,13 +102,13 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, &interpreterControl, &kitBase::InterpreterControlInterface::stopRobot);
 	};
 
-	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, onActiveTabChanged);
 
 	connect(mModel.data(), &model::Model::modelChanged, [this, &logicalModel] (const QDomDocument &xml) {
 		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
-	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); delete mDock; });
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, this, [=](){ mView.reset(); delete mDock; });
 
 	connect(&eventsForKitPlugin
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
