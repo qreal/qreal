@@ -40,7 +40,7 @@ UploaderTool::UploaderTool(
 	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == kit);
 	qReal::SettingsListener::listen("SelectedRobotKit", [this, kit](const QString selectedKit) {
 		mAction->setVisible(selectedKit == kit);
-	});
+	}, this);
 
 	mProcess.setWorkingDirectory(QApplication::applicationDirPath());
 	connect(&mProcess, &QProcess::started, this, &UploaderTool::onUploadStarted);
