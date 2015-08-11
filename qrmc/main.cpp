@@ -16,7 +16,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
 
-#include <qrkernel/platformInfo.h>¡
+#include <qrkernel/platformInfo.h>
 
 #include "metaCompiler.h"
 

@@ -75,6 +75,7 @@ UiManager::UiManager(QAction &debugModeAction
 	mRobotConsole->hide();
 	initTab();
 	mCustomWidgetsBar->setObjectName("robotsMiscellaneousBar");
+	connect(this, &QObject::destroyed, [this]() { mCustomWidgetsBar->setParent(nullptr); });
 	mMainWindow.addToolBar(Qt::TopToolBarArea, mCustomWidgetsBar);
 	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
 	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
@@ -82,7 +83,10 @@ UiManager::UiManager(QAction &debugModeAction
 	mRobotConsole->toggleViewAction()->setShortcut(Qt::ALT + Qt::Key_2);
 
 	mMainWindow.statusBar()->setAutoFillBackground(true);
+#ifndef Q_OS_MAC
+	// On Mac this stylesheet is not needed and also causes segfault
 	mMainWindow.statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black; padding: 10px; }");
+#endif
 	editModeAction.setProperty("modeName", tr("edit mode"));
 	debugModeAction.setProperty("modeName", tr("debug mode"));
 	produceModeButton(Mode::Editing, debugModeAction, mMainWindow.statusBar());
@@ -96,6 +100,7 @@ void UiManager::placeDevicesConfig(QWidget *devicesWidget)
 {
 	QDockWidget * const devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
 	devicesDock->setObjectName("devicesConfigurationDock");
+	connect(this, &QObject::destroyed, [devicesDock](){ devicesDock->setParent(nullptr); });
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, devicesDock);
 }
 
@@ -108,6 +113,9 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	QDockWidget * const graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
 	graphWatchDock->setObjectName("graphicsWatcherDock");
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
+
+	connect(this, &QObject::destroyed, [watchWindow](){ watchWindow->setParent(nullptr); });
+	connect(this, &QObject::destroyed, [graphWatchDock](){ graphWatchDock->setParent(nullptr); });
 
 	mMainWindow.tabifyDockWidget(watchWindow, graphWatchDock);
 	reloadDocks();
@@ -241,6 +249,7 @@ void UiManager::produceModeButton(UiManager::Mode mode, QAction &action, QStatus
 	}
 
 	statusBar->addWidget(result, 10);
+	connect(this, &QObject::destroyed, [result]() { result->setParent(nullptr); });
 }
 
 int UiManager::currentMode() const
