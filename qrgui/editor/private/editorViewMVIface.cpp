@@ -338,7 +338,8 @@ void EditorViewMViface::rowsMoved(const QModelIndex &sourceParent, int sourceSta
 	movedElement->updateData();
 }
 
-void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+		, const QVector<int> &roles)
 {
 	Q_UNUSED(roles)
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {

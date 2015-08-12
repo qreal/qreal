@@ -72,7 +72,8 @@ public slots:
 			, const QModelIndex &destinationParent, int destinationRow);
 
 private slots:
-	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>()) override;
+	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+			, const QVector<int> &roles = QVector<int>()) override;
 	void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 	void rowsInserted(const QModelIndex &parent, int start, int end);
 	void logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);

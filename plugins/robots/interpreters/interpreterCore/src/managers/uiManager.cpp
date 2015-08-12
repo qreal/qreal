@@ -83,8 +83,8 @@ UiManager::UiManager(QAction &debugModeAction
 	mRobotConsole->toggleViewAction()->setShortcut(Qt::ALT + Qt::Key_2);
 
 	mMainWindow.statusBar()->setAutoFillBackground(true);
-#ifndef Q_OS_MAC
-	// On Mac this stylesheet is not needed and also causes segfault
+#ifdef Q_OS_LINUX
+	// On Windows and Mac this stylesheet is not needed and will cause segfault on program close.
 	mMainWindow.statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black; padding: 10px; }");
 #endif
 	editModeAction.setProperty("modeName", tr("edit mode"));
