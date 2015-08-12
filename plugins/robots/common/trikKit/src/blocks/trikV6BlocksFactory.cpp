@@ -15,14 +15,10 @@
 #include "trikKit/blocks/trikV6BlocksFactory.h"
 
 #include <kitBase/blocksBase/common/clearEncoderBlock.h>
-#include <kitBase/blocksBase/common/waitForLightSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForEncoderBlock.h>
-#include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
 
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
-
-#include "trikKit/robotModel/parts/trikInfraredSensor.h"
 
 using namespace trik::blocks;
 using namespace trik::blocks::details;
@@ -39,11 +35,6 @@ qReal::interpretation::Block *TrikV6BlocksFactory::produceBlock(const qReal::Id 
 		return new ClearEncoderBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForEncoder")) {
 		return new WaitForEncoderBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "TrikWaitForIRDistance")) {
-		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
-				, kitBase::robotModel::DeviceInfo::create<robotModel::parts::TrikInfraredSensor>());
-	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
-		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	}
 
 	return TrikBlocksFactoryBase::produceBlock(element);
@@ -59,8 +50,6 @@ qReal::IdList TrikV6BlocksFactory::providedBlocks() const
 			<< id("TrikV6ClearEncoder")
 			<< id("TrikAngularServo")
 			<< id("TrikWaitForEncoder")
-			<< id("TrikWaitForLight")
-			<< id("TrikWaitForIRDistance")
 	;
 
 	return result;

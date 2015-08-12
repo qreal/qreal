@@ -133,6 +133,23 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
 
+	// Just to capture them, not configurer.
+	qReal::ProjectManagementInterface &projectManager = configurer.projectManager();
+	qReal::gui::MainWindowInterpretersInterface &mainWindow = configurer.mainWindowInterpretersInterface();
+	qReal::GraphicalModelAssistInterface &graphicalModel = configurer.graphicalModelApi();
+	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &mainWindow, &graphicalModel]() {
+		if (projectManager.somethingOpened()) {
+			for (const qReal::Id &diagram : graphicalModel.children(qReal::Id::rootId())) {
+				if (diagram.type() == qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")) {
+					mainWindow.activateItemOrDiagram(diagram);
+					return;
+				}
+			}
+		} else {
+			mainWindow.openStartTab();
+		}
+	});
+
 	const qrRepo::LogicalRepoApi &repoApi = configurer.logicalModelApi().logicalRepoApi();
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
@@ -250,11 +267,6 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mDockDevicesConfigurer, &kitBase::DevicesConfigurationWidget::selectRobotModel);
-	for (kitBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
-		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
-			mDockDevicesConfigurer->prependCustomWidget(*model, kit->quickPreferencesFor(*model));
-		}
-	}
 
 	mWatchListWindow = new utils::WatchListWindow(*mParser);
 
@@ -280,6 +292,11 @@ void RobotsPluginFacade::initSensorWidgets()
 	mUiManager->placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
 	mActionsManager.appendHotKey("View.ToggleRobotConsole", tr("Toggle robot console panel")
 			, *mUiManager->robotConsole().toggleViewAction());
+	for (kitBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
+		for (kitBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
+			mUiManager->addWidgetToToolbar(*model, kit->quickPreferencesFor(*model));
+		}
+	}
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);

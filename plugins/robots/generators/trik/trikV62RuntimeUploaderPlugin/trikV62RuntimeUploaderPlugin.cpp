@@ -20,12 +20,12 @@ using namespace trik;
 
 const QString createTrikDirectory = "call mkdir -p /home/root/trik";
 const QString removePermissions = "call chmod a-x trik/trik*";
-const QString killTrikGui = "call killall trikGui";
+const QString killTrikGui = "call killall -q trikGui || :";
 const QString moveCommand = "synchronize remote trikRuntime /home/root/trik";
 const QString restorePermissions = "call chmod a+x trik/trik*";
 const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
 
-TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
+TrikV62RuntimeUploaderPlugin::TrikV62RuntimeUploaderPlugin()
 	: mUploaderTool(
 			tr("Upload Runtime")
 			, ":/trik/images/flashRobot.svg"
@@ -38,18 +38,19 @@ TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 					, restorePermissions
 					, restartTrikGui
 					}
-			, tr("Attention! Started to download the runtime. Please do not turn off the robot.")
+			, QObject::tr("Attention! Started to download the runtime. This can take a minute or two."
+					" Please do not turn off the robot.")
 			, [](){ return qReal::SettingsManager::value("TrikTcpServer").toString(); }
 			)
 {
 }
 
-void TrikV6RuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurator)
+void TrikV62RuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurator)
 {
 	mUploaderTool.init(configurator.mainWindowInterpretersInterface());
 }
 
-QList<qReal::ActionInfo> TrikV6RuntimeUploaderPlugin::actions()
+QList<qReal::ActionInfo> TrikV62RuntimeUploaderPlugin::actions()
 {
 	return {mUploaderTool.action()};
 }

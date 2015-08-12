@@ -14,6 +14,7 @@
 
 #include "waitGamepadButtonBlock.h"
 
+#include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotModelInterface.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 
@@ -25,7 +26,7 @@ using namespace kitBase::robotModel;
 WaitGamepadButtonBlock::WaitGamepadButtonBlock(kitBase::robotModel::RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)
 {
-	mActiveWaitingTimer.setInterval(200);
+	mActiveWaitingTimer->setInterval(200);
 }
 
 void WaitGamepadButtonBlock::run()
@@ -36,7 +37,7 @@ void WaitGamepadButtonBlock::run()
 	mButton = RobotModelUtils::findDevice<robotModel::parts::TrikGamepadButton>(mRobotModel, portName);
 
 	if (!mButton) {
-		mActiveWaitingTimer.stop();
+		mActiveWaitingTimer->stop();
 		error(tr("Incorrect port for gamepad button %1").arg(port));
 		return;
 	}
@@ -44,7 +45,7 @@ void WaitGamepadButtonBlock::run()
 	connect(mButton, &robotModel::parts::TrikGamepadButton::newData, this, &WaitGamepadButtonBlock::responseSlot);
 
 	mButton->read();
-	mActiveWaitingTimer.start();
+	mActiveWaitingTimer->start();
 }
 
 void WaitGamepadButtonBlock::timerTimeout()

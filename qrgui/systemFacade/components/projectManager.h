@@ -55,6 +55,7 @@ public:
 	bool open(const QString &fileName = QString()) override;
 	bool suggestToSaveChangesOrCancel() override;
 	void reinitAutosaver();
+	bool somethingOpened() const override;
 	QString saveFilePath() const override;
 	void setSaveFilePath(const QString &filePath = QString());
 

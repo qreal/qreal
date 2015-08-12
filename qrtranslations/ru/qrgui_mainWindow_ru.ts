@@ -457,7 +457,7 @@
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="768"/>
         <source>Ctrl+Shift+T</source>
-        <translation>Ctrl-Shift-T</translation>
+        <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="773"/>
