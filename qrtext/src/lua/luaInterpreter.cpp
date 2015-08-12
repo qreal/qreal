@@ -14,6 +14,8 @@
 
 #include "qrtext/src/lua/luaInterpreter.h"
 
+#include <QtCore/QtMath>
+
 #include "qrtext/lua/types/string.h"
 #include "qrtext/lua/types/integer.h"
 
@@ -261,7 +263,7 @@ QVariant LuaInterpreter::interpretBinaryOperator(const QSharedPointer<core::ast:
 			return 0;
 		}
 	} else if (root->is<ast::Exponentiation>()) {
-		return pow(interpret(leftOperand, semanticAnalyzer).toDouble()
+		return qPow(interpret(leftOperand, semanticAnalyzer).toDouble()
 				, interpret(rightOperand, semanticAnalyzer).toDouble());
 	} else if (root->is<ast::Modulo>()) {
 		const auto leftOperandValue = interpret(leftOperand, semanticAnalyzer).toInt();

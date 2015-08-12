@@ -19,7 +19,6 @@ include(../../../../../global.pri)
 QT += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
 
 includes(plugins/robots/generators/nxt/nxtGeneratorBase \
 		plugins/robots/generators/generatorBase \

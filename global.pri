@@ -14,8 +14,14 @@
 
 win32 {
 	PLATFORM = windows
-} else {
+}
+
+unix:!macx {
 	PLATFORM = linux
+}
+
+macx {
+	PLATFORM = mac
 }
 
 CONFIG(debug, debug | release) {
@@ -41,9 +47,12 @@ equals(TEMPLATE, app) {
 	!macx {
 		QMAKE_LFLAGS += -Wl,-O1,-rpath,.
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
-	} else {
-		CONFIG -= app_bundle
 	}
+}
+
+macx {
+	QMAKE_CXXFLAGS += -stdlib=libc++
+	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
 OBJECTS_DIR = .build/$$CONFIGURATION/obj
@@ -78,7 +87,7 @@ defineTest(copyToDestdir) {
 		win32:FILE ~= s,/$,,g
 
 		win32:FILE ~= s,/,\,g
-		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/
+		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
 		win32:DDIR ~= s,/,\,g
 
 		isEmpty(NOW) {
@@ -88,8 +97,14 @@ defineTest(copyToDestdir) {
 		} else {
 			win32 {
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
-			} else {
-				system("cp -r -f $$FILE $$DESTDIR/")
+			}
+
+			unix:!macx {
+				system("cp -r -f $$FILE $$DDIR")
+			}
+
+			macx {
+				system("cp -R $$FILE $$DDIR/$$FILE")
 			}
 		}
 	}

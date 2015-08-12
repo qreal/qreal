@@ -191,9 +191,9 @@ void Line::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void Line::reshapeRectWithShift()
 {
-	qreal differenceX = abs(x2() - x1());
-	qreal differenceY = abs(y2() - y1());
-	qreal differenceXY = abs(differenceX - differenceY);
+	qreal differenceX = qAbs(x2() - x1());
+	qreal differenceY = qAbs(y2() - y1());
+	qreal differenceXY = qAbs(differenceX - differenceY);
 	qreal size = qMax(differenceX, differenceY);
 	const int delta = size / 2;
 	if (differenceXY > delta) {
@@ -244,7 +244,7 @@ QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(co
 			, QPair<QString, QString>(x2, y2));
 }
 
-void Line::setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair)
+void Line::setDomXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair)
 {
 	dom.setAttribute("y1", pair.first.second);
 	dom.setAttribute("x1", pair.first.first);
@@ -260,7 +260,7 @@ QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &docum
 	const qreal y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
 	QDomElement line = setPenBrushToDoc(document, "line");
-	setXandY(line, setXandYBefore(QRectF(x1, y1, x2 - x1 + 1, y2 - y1 + 1).normalized().toRect()));
+	setDomXandY(line, setXandYBefore(QRectF(x1, y1, x2 - x1 + 1, y2 - y1 + 1).normalized().toRect()));
 
 	return QPair<QDomElement, Item::DomElementTypes>(line, mDomElementType);
 }

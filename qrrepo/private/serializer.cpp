@@ -21,6 +21,7 @@
 #include <QtCore/QUuid>
 #include <QtGui/QPolygon>
 
+#include <qrkernel/platformInfo.h>
 #include <qrkernel/exception/exception.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
@@ -40,11 +41,11 @@ const QString unsavedDir = "%1/unsaved/%2";
 Serializer::Serializer(const QString &saveDirName)
 	// Syncroniously running instances of QReal can clear temp dirs of each other.
 	// So generating new UUID as temp dir name.
-	: mWorkingDir(unsavedDir.arg(QCoreApplication::applicationDirPath(), QUuid::createUuid().toString()))
+	: mWorkingDir(unsavedDir.arg(PlatformInfo::applicationDirPath(), QUuid::createUuid().toString()))
 	, mWorkingFile(saveDirName)
 {
 	clearWorkingDir();
-	QDir dir(QCoreApplication::applicationDirPath());
+	QDir dir(PlatformInfo::applicationDirPath());
 	if (!dir.cd(mWorkingDir)) {
 		QDir().mkdir(mWorkingDir);
 	}

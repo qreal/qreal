@@ -23,6 +23,5 @@
 #endif
 
 #ifdef Q_OS_MAC
-#pragma message ("Mac OS is not needed, use Windows or Linux instead")
 #include "macFantom.h"
 #endif

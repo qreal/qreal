@@ -14,6 +14,8 @@
 
 #include "geometry.h"
 
+#include <QtCore/QtMath>
+
 using namespace mathUtils;
 
 bool Geometry::eq(const QPointF &point1, const QPointF &point2, qreal eps)
@@ -41,7 +43,7 @@ QVector2D Geometry::projection(const QVector2D &projected, const QVector2D &targ
 QVector2D Geometry::rotateVector(const QVector2D &vector, qreal angleInDegrees)
 {
 	const qreal angle = angleInDegrees * pi / 180;
-	return QVector2D(vector.x() * cos(angle) - vector.y() * sin(angle)
+	return QVector2D(vector.x() * qCos(angle) - vector.y() * sin(angle)
 			, vector.x() * sin(angle) + vector.y() * cos(angle));
 }
 
@@ -264,7 +266,7 @@ bool Geometry::belongs(const QLineF &line, const QPainterPath &path, qreal eps)
 	const int pointsToCheck = 5;
 	const QVector2D shift = QVector2D(line.p2() - line.p1()) / (pointsToCheck - 1);
 	for (int i = 0; i < pointsToCheck; ++i) {
-		if (!belongs(line.p1() + i * shift.toPointF(), path), eps) {
+		if (!belongs(line.p1() + i * shift.toPointF(), path, eps)) {
 			return false;
 		}
 	}
