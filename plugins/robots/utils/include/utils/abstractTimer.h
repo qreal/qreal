@@ -32,11 +32,15 @@ public:
 	virtual void stop() = 0;
 	virtual void setInterval(int ms) = 0;
 
+	/// If \a repeatable then the timer will set itself up again when timeout reached.
+	/// By default timers are not repeatable.
+	virtual void setRepeatable(bool repeatable) = 0;
+
 signals:
 	void timeout();
 
 protected slots:
-	void onTimeout();
+	virtual void onTimeout();
 };
 
 }

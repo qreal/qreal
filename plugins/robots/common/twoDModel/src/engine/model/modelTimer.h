@@ -34,8 +34,10 @@ public:
 	void start(int ms) override;
 	void stop() override;
 	void setInterval(int ms) override;
+	void setRepeatable(bool repeatable) override;
 
 private slots:
+	void onTimeout() override;
 	void onTick();
 
 private:
@@ -44,6 +46,7 @@ private:
 	bool mListening;
 	int mTimePast;
 	int mInterval;
+	bool mRepeatable;
 };
 
 }

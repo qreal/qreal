@@ -144,8 +144,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	splashScreen.setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
-		resize(SettingsManager::value("size").toSize());
-		move(SettingsManager::value("pos").toPoint());
+		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
 	} else {
 		showMaximized();
 	}
@@ -329,8 +328,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
-	SettingsManager::setValue("size", size());
-	SettingsManager::setValue("pos", pos());
+	SettingsManager::setValue("mainWindowGeometry", saveGeometry());
 
 	QLOG_INFO() << "Closing main window...";
 	emit mFacade.events().closedMainWindow();

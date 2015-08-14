@@ -985,7 +985,7 @@ void EditorViewScene::getObjectByGesture()
 		break;
 	}
 	case gestures::MouseMovementManager::deleteGesture:
-		// Deletting element under the gesture center
+		// Deleting element under the gesture center
 		const QPointF gestureCenter = mMouseMovementManager->pos();
 		for (QGraphicsItem * const item : items(gestureCenter)) {
 			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {

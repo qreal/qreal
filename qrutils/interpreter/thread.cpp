@@ -162,7 +162,6 @@ void Thread::turnOn(BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
-		/// @todo: report error if we met unknown block type?
 		finishedSteppingInto();
 		return;
 	}

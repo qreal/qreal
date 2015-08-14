@@ -266,7 +266,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 		if (curr == rootIndex()) {
 			// Root id was removed, time to close current tab.
 			emit rootElementRemoved(curr);
-			// Now we will be deletted, nipping off...
+			// Now we will be deleted, nipping off...
 			return;
 		}
 
