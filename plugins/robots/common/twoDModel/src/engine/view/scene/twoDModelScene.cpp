@@ -387,14 +387,15 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
 		for (QGraphicsItem * const item : selectedItems()) {
-			auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
-			auto robotItem = dynamic_cast<RobotItem *>(item);
-			auto sensorItem = dynamic_cast<SensorItem *>(item);
-			if (worldItem && mWorldReadOnly) {
+			const bool isWorldItem = dynamic_cast<items::ColorFieldItem *>(item)
+					|| dynamic_cast<items::WallItem *>(item);
+			const bool isRobotItem = dynamic_cast<RobotItem *>(item) != nullptr;
+			const bool isSensorItem = dynamic_cast<SensorItem *>(item) != nullptr;
+			if (isWorldItem && mWorldReadOnly) {
 				return;
-			} else if (robotItem && mRobotReadOnly) {
+			} else if (isRobotItem && mRobotReadOnly) {
 				return;
-			} else if (sensorItem && mSensorsReadOnly) {
+			} else if (isSensorItem && mSensorsReadOnly) {
 				return;
 			}
 
