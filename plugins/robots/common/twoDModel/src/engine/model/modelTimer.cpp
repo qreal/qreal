@@ -17,8 +17,12 @@
 using namespace twoDModel::model;
 
 ModelTimer::ModelTimer(const Timeline *timeline)
-	: mTimeline(timeline), mTimeToWait(0)
-	, mListening(false), mTimePast(0), mInterval(0)
+	: mTimeline(timeline)
+	, mTimeToWait(0)
+	, mListening(false)
+	, mTimePast(0)
+	, mInterval(0)
+	, mRepeatable(false)
 {
 	connect(timeline, SIGNAL(tick()), this, SLOT(onTick()));
 }
@@ -64,5 +68,18 @@ void ModelTimer::onTick()
 void ModelTimer::setInterval(int ms)
 {
 	mInterval = ms;
+}
+
+void ModelTimer::setRepeatable(bool repeatable)
+{
+	mRepeatable = repeatable;
+}
+
+void ModelTimer::onTimeout()
+{
+	AbstractTimer::onTimeout();
+	if (mRepeatable) {
+		start();
+	}
 }
 

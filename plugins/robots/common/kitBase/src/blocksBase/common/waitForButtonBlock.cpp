@@ -39,14 +39,20 @@ void WaitForButtonBlock::run()
 	}
 
 	connect(mButton, &robotModel::robotParts::Button::newData, this, &WaitForButtonBlock::responseSlot);
+	if (mButton->port().reservedVariable().isEmpty()) {
+		// Buttons with non-empty reserved variables will be updated in background themselves.
+		mButton->read();
+	}
 
-	mButton->read();
 	mActiveWaitingTimer->start();
 }
 
 void WaitForButtonBlock::timerTimeout()
 {
-	mButton->read();
+	if (mButton->port().reservedVariable().isEmpty()) {
+		// Buttons with non-empty reserved variables will be updated in background themselves.
+		mButton->read();
+	}
 }
 
 void WaitForButtonBlock::responseSlot(int isPressed)
