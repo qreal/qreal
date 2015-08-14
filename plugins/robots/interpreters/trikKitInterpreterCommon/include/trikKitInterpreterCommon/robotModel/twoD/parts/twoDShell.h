@@ -57,6 +57,9 @@ public:
 	/// Returns the value passed to say() method last time or empty string if it was not called at the moment.
 	QString lastPhrase() const;
 
+	/// Resets shell instance preparing it to new interpretation time.
+	void reset();
+
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 	qReal::ErrorReporterInterface *mErrorReporter;
