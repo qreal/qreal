@@ -13,7 +13,6 @@
 # limitations under the License.
 
 DEFINES += QRKERNEL_LIBRARY
-
 HEADERS += \
 	$$PWD/ids.h \
 	$$PWD/definitions.h \

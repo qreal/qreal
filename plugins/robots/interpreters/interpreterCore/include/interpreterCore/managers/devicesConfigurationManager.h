@@ -34,8 +34,10 @@ namespace interpreterCore {
 /// DevicesConfigurationProvider-s so they are kept in sync with each other.
 /// DevicesConfigurationManager is a center of this network and is the one place which saves sensor settings
 /// in a registry.
-class DevicesConfigurationManager : public kitBase::DevicesConfigurationProvider
+class DevicesConfigurationManager : public QObject, public kitBase::DevicesConfigurationProvider
 {
+	Q_OBJECT
+
 public:
 	/// Constructor.
 	/// @param graphicalModelAssistInterface - graphical model, needed to save settings as property of current diagram.

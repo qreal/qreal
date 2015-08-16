@@ -16,8 +16,10 @@ EDITOR_PATH = $$PWD/../$$QREAL_EDITOR_PATH
 
 win32 {
 	QRXC_COMMAND = cd $$EDITOR_PATH && $$QRXC
-} else {
+} else:!macx {
 	QRXC_COMMAND = export LD_LIBRARY_PATH=$$QRXC_DIR && cd $$EDITOR_PATH && $$QRXC
+} else {
+	QRXC_COMMAND = export DYLD_LIBRARY_PATH=$$QRXC_DIR && cd $$EDITOR_PATH && $$QRXC
 }
 
 qrxc_source.commands = $$QRXC_COMMAND $$QREAL_XML $$ROOT

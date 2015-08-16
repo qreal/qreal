@@ -49,6 +49,7 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 
 	connect(&mModel.timeline(), &model::Timeline::started, this, &ConstraintsChecker::programStarted);
 	connect(&mModel.timeline(), &model::Timeline::stopped, this, &ConstraintsChecker::programFinished);
+	connect(&mModel.timeline(), &model::Timeline::beforeStop, this, &ConstraintsChecker::checkConstraints);
 	connect(&mModel.timeline(), &model::Timeline::tick, this, &ConstraintsChecker::checkConstraints);
 
 	bindToWorldModelObjects();

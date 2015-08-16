@@ -158,7 +158,7 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 
 	updateQuickPreferences();
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
-	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences);
+	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences, this);
 	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});

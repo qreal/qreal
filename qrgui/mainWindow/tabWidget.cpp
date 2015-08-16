@@ -26,7 +26,14 @@ TabWidget::TabWidget(QWidget *parent)
 
 void TabWidget::setTabUnclosable(int index)
 {
-	tabBar()->tabButton(index, QTabBar::RightSide)->resize(0, 0);
+	QWidget *tabButton = tabBar()->tabButton(index, QTabBar::RightSide);
+	if (!tabButton) {
+		tabButton = tabBar()->tabButton(index, QTabBar::LeftSide);
+	}
+
+	if (tabButton) {
+		tabButton->resize(0, 0);
+	}
 }
 
 void TabWidget::mousePressEvent(QMouseEvent *event)
@@ -35,4 +42,3 @@ void TabWidget::mousePressEvent(QMouseEvent *event)
 		removeTab(tabBar()->tabAt(event->pos()));
 	}
 }
-

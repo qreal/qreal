@@ -17,14 +17,14 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QCoreApplication>
 
+#include <qrkernel/platformInfo.h>
 #include <qrkernel/exception/exception.h>
 
 using namespace interpreterCore;
 using namespace qReal;
 
 KitPluginManager::KitPluginManager(const QString &pluginDirectory)
-	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
-	, mPluginManager(PluginManager(QCoreApplication::applicationDirPath(), pluginDirectory))
+	: mPluginManager(PlatformInfo::applicationDirPath(), pluginDirectory)
 {
 	tryToLoadKitPlugins();
 }

@@ -171,9 +171,8 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	const QRect imageRect = mModel.robotModels()[0]->info().sensorImageRect(device);
 	const qreal width = imageRect.width() * widthFactor / 2.0;
 
-	QGraphicsRectItem sensorRectangle(imageRect);
-	sensorRectangle.setRotation(direction);
-	const qreal rotationFactor = sensorRectangle.boundingRect().width() / imageRect.width();
+	const QRectF sensorRectangle = QTransform().rotate(direction).map(QPolygonF(QRectF(imageRect))).boundingRect();
+	const qreal rotationFactor = sensorRectangle.width() / imageRect.width();
 
 	const qreal realWidth = width * rotationFactor;
 	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth

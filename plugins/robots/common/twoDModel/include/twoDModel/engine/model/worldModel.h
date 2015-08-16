@@ -85,7 +85,7 @@ public:
 	void deserialize(const QDomElement &element);
 
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
-	QGraphicsItem *findId(const QString &id);
+	QGraphicsObject *findId(const QString &id) const;
 
 signals:
 	/// Emitted each time when model is appended with some new wall.

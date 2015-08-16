@@ -42,8 +42,8 @@ qreal NearestPosGridGesturesManager::getDistance(qreal * const &key1, qreal * co
 	qreal norm = 0;
 	qreal sum = 0;
 	for (int i = 0; i < gridSize * gridSize; i++) {
-		sum += std::abs(key1[i] - key2[i]);
-		norm = std::max(norm, std::abs(key1[i] - key2[i]));
+		sum += qAbs(key1[i] - key2[i]);
+		norm = qMax(norm, qAbs(key1[i] - key2[i]));
 	}
 
 	return norm + sum / (gridSize * gridSize);

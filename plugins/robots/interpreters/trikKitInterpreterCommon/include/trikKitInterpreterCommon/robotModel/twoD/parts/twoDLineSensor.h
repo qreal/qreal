@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <QtGui/QColor>
+#include <QtGui/QRgb>
 
 #include <twoDModel/engine/twoDModelEngineInterface.h>
 #include <trikKit/robotModel/parts/trikLineSensor.h>
@@ -41,10 +41,10 @@ public:
 	void read() override;
 
 private:
-	bool closeEnough(const QColor &color) const;
+	bool closeEnough(QRgb color) const;
 
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
-	QColor mLineColor;
+	QRgb mLineColor;
 };
 
 }

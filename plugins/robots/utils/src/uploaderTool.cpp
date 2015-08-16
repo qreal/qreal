@@ -17,9 +17,10 @@
 #include <QtCore/QProcess>
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
-#include <qrkernel/logging.h>
 
 using namespace trik;
 
@@ -40,9 +41,9 @@ UploaderTool::UploaderTool(
 	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == kit);
 	qReal::SettingsListener::listen("SelectedRobotKit", [this, kit](const QString selectedKit) {
 		mAction->setVisible(selectedKit == kit);
-	});
+	}, this);
 
-	mProcess.setWorkingDirectory(QApplication::applicationDirPath());
+	mProcess.setWorkingDirectory(qReal::PlatformInfo::applicationDirPath());
 	connect(&mProcess, &QProcess::started, this, &UploaderTool::onUploadStarted);
 	connect(&mProcess, static_cast<void(QProcess::*)(QProcess::ProcessError)>(&QProcess::error)
 			, this, &UploaderTool::onUploadError);
@@ -74,7 +75,7 @@ void UploaderTool::uploadRuntime()
 
 	const QString rawWinscpPath = qReal::SettingsManager::value("WinScpPath").toString();
 	const QString winscpPath = rawWinscpPath.startsWith("./")
-			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
+			? qReal::PlatformInfo::applicationDirPath() + rawWinscpPath.mid(1)
 			: rawWinscpPath;
 
 	QStringList args = {"/command", openConnection};

@@ -31,7 +31,7 @@ includes(plugins/robots/generators/trik/trikV6GeneratorBase \
 )
 
 links(qrkernel qslog qrutils qrrepo robots-utils)
-
+
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6RuntimeUploaderPlugin_ru.ts \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV6RuntimeUploaderPlugin_fr.ts \
