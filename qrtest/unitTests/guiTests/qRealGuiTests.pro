@@ -26,6 +26,7 @@ SOURCES += \
 	$$PWD/startQreal.cpp \
 
 OTHER_FILES += \
+	$$PWD/testScripts/qrealScripts/startElementsStateChecking.js \
 	$$PWD/testScripts/qrealScripts/editActionsExistence.js \
 	$$PWD/testScripts/qrealScripts/editActionsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/fileActionsExistence.js \

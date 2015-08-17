@@ -14,7 +14,6 @@
 
 #include "./qrgui/mainWindow/qrealApplication.h"
 #include <gtest/gtest.h>
-#include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {
