@@ -34,7 +34,7 @@ script:
   - make -j2
   - cd ./bin/$CONFIG
   - ls -A
-  - sh -c "$TESTS"
+  - sh -c "$TESTS --no-locale"
 
 notifications:
   email:
