@@ -14,6 +14,9 @@
 
 #include "utils/canvas/canvas.h"
 
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
+
 #include "utils/canvas/pointObject.h"
 #include "utils/canvas/lineObject.h"
 #include "utils/canvas/rectangleObject.h"
@@ -138,6 +141,16 @@ void Canvas::setPainterColor(const QColor &color)
 void Canvas::setPainterWidth(int penWidth)
 {
 	mCurrentPenWidth = penWidth;
+}
+
+QJsonArray Canvas::toJson() const
+{
+	QJsonArray result;
+	for (const CanvasObject *object : mObjects) {
+		result << object->toJson();
+	}
+
+	return result;
 }
 
 void Canvas::paint(QPainter *painter)

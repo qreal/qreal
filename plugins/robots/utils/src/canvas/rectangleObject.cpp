@@ -14,6 +14,7 @@
 
 #include "utils/canvas/rectangleObject.h"
 
+#include <QtCore/QJsonObject>
 #include <QtGui/QPainter>
 
 using namespace utils;
@@ -43,4 +44,17 @@ void RectangleObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);
 	painter->drawRect(mShape);
+}
+
+QJsonObject RectangleObject::toJson() const
+{
+	return QJsonObject({
+		{ "type", "rectangle" }
+		, { "x", mShape.x() }
+		, { "y", mShape.y() }
+		, { "width", mShape.width() }
+		, { "height", mShape.height() }
+		, { "color", color().name() }
+		, { "thickness", thickness() }
+	});
 }

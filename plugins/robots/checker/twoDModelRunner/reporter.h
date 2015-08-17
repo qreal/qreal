@@ -58,13 +58,29 @@ public slots:
 	void addError(const QString &message);
 
 	/// Writes an information abount the new trajectory point into the given in constructor file.
+	/// @param robotId The id of the moved robot.
+	/// @param timestamp Count of milliseconds passed from the interpretation start when the event happened.
+	/// @param timestamp The position of the robot in scene coordinates.
+	/// @param rotation The rotation angle of the robot in degrees.
 	void newTrajectoryPoint(const QString &robotId, int timestamp, const QPointF &position, qreal rotation);
+
+	/// Writes JSON object representing modification of some robot`s device property into the trajectory stream.
+	/// @param robotId The id of the robot owning the device.
+	/// @param timestamp Count of milliseconds passed from the interpretation start when the event happened.
+	/// @param deviceType The type name of the device obtained by DeviceInfo::name().
+	/// @param devicePort The name of the port the device is plugged into, obtained by PortInfo::name().
+	/// @param property The name of the modified Q_PROPERTY.
+	/// @param value The new value of the property.
+	void newDeviceState(const QString &robotId, int timestamp, const QString &deviceType
+			, const QString &devicePort, const QString &property, const QVariant &value);
 
 	/// Writes an information about all messages shown to user during the interpretation process into the specified
 	/// in constructor file in XML format.
 	void reportMessages();
 
 private:
+	QJsonValue variantToJson(const QVariant &value) const;
+
 	QList<QPair<Level, QString>> mMessages;
 	const QScopedPointer<utils::OutFile> mMessagesFile;
 	const QScopedPointer<utils::OutFile> mTrajectoryFile;

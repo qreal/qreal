@@ -51,11 +51,37 @@ void Reporter::addError(const QString &message)
 void Reporter::newTrajectoryPoint(const QString &robotId, int timestamp, const QPointF &position, qreal rotation)
 {
 	if (!mTrajectoryFile.isNull()) {
-		(*mTrajectoryFile)() << QString("%1 %2 %3 %4 %5\n").arg(robotId
-				, QString::number(timestamp)
-				, QString::number(position.x())
-				, QString::number(position.y())
-				, QString::number(rotation));
+		QJsonObject transition({
+			{ "robotId", robotId }
+			, { "timestamp", timestamp }
+			, { "x", position.x() }
+			, { "y", position.y() }
+			, { "rotation", rotation }
+		});
+
+		QJsonDocument document;
+		document.setObject(transition);
+		(*mTrajectoryFile)() << document.toJson();
+		mTrajectoryFile->flush();
+	}
+}
+
+void Reporter::newDeviceState(const QString &robotId, int timestamp, const QString &deviceType
+		, const QString &devicePort, const QString &property, const QVariant &value)
+{
+	if (!mTrajectoryFile.isNull()) {
+		QJsonObject modification({
+			{ "robotId", robotId }
+			, { "timestamp", timestamp }
+			, { "device", deviceType }
+			, { "port", devicePort }
+			, { "property", property }
+			, { "value", variantToJson(value) }
+		});
+
+		QJsonDocument document;
+		document.setObject(modification);
+		(*mTrajectoryFile)() << document.toJson();
 		mTrajectoryFile->flush();
 	}
 }
@@ -77,4 +103,15 @@ void Reporter::reportMessages()
 	QJsonDocument document;
 	document.setArray(messages);
 	(*mMessagesFile)() << document.toJson();
+}
+
+QJsonValue Reporter::variantToJson(const QVariant &value) const
+{
+	if (value.canConvert<QJsonArray>()) {
+		return value.value<QJsonArray>();
+	} else if (value.canConvert<QJsonObject>()) {
+		return value.value<QJsonObject>();
+	} else {
+		return QJsonValue::fromVariant(value);
+	}
 }

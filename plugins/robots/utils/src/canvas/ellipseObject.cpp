@@ -14,6 +14,7 @@
 
 #include "utils/canvas/ellipseObject.h"
 
+#include <QtCore/QJsonObject>
 #include <QtGui/QPainter>
 
 using namespace utils;
@@ -73,4 +74,17 @@ void EllipseObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);
 	painter->drawEllipse(mCenter, mSemiDiameterX, mSemiDiameterY);
+}
+
+QJsonObject EllipseObject::toJson() const
+{
+	return QJsonObject({
+		{ "type", "ellipse" }
+		, { "x", mCenter.x() }
+		, { "y", mCenter.y() }
+		, { "a", mSemiDiameterX }
+		, { "b", mSemiDiameterY }
+		, { "color", color().name() }
+		, { "thickness", thickness() }
+	});
 }
