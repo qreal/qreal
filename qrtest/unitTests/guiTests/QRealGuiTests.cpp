@@ -169,6 +169,8 @@ QScriptValue scriptExpectDialog(QScriptContext *context, QScriptEngine *engine)
 	return {}; // что делает этот код?
 }
 
+
+// mainwindow, имя диалога, время
 QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
@@ -215,7 +217,7 @@ QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *e
 	return {};
 }
 
-void QRealGuiTests::SetUp() // возможно эти строчки следует поместить для сетапа для всех тестов
+void QRealGuiTests::SetUp()
 {
 	mReturnCode = CRASHCODE;
 
@@ -238,7 +240,6 @@ void QRealGuiTests::SetUp() // возможно эти строчки следу
 }
 
 void QRealGuiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
-// а для скриптов можно выполнять действия с известными моделями типа езды по линии.
 {
 	SettingsManager::setValue("scriptInterpretation", mScriptInterpretationDefaultValue);
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
@@ -292,183 +293,183 @@ void QRealGuiTests::runFromFile(const QString &relativeFileName)
 	run(contents);
 }
 
-TEST_F(QRealGuiTests, sanityCheck)
-{
-	run("assert(true);");
-	ASSERT_EQ(2, 1 + 1);
-}
+//TEST_F(QRealGuiTests, sanityCheck)
+//{
+//	run("assert(true);");
+//	ASSERT_EQ(2, 1 + 1);
+//}
 
-TEST_F(QRealGuiTests, editActionsExistence)
-{
-	runFromFile("editActionsExistence.js"); // мб qs?
-}
+//TEST_F(QRealGuiTests, editActionsExistence)
+//{
+//	runFromFile("editActionsExistence.js"); // мб qs?
+//}
 
-TEST_F(QRealGuiTests, viewActionsExistence)
-{
-	runFromFile("viewActionsExistence.js");
-}
+//TEST_F(QRealGuiTests, viewActionsExistence)
+//{
+//	runFromFile("viewActionsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, findDialogElementsExistence)
-{
-	runFromFile("findDialogElementsExistence.js");
-}
+//TEST_F(QRealGuiTests, findDialogElementsExistence)
+//{
+//	runFromFile("findDialogElementsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, helpActionsExistence)
-{
-	runFromFile("helpActionsExistence.js");
-}
+//TEST_F(QRealGuiTests, helpActionsExistence)
+//{
+//	runFromFile("helpActionsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, mainPanelsElementsExistence)
-{
-	runFromFile("mainPanelsElementsExistence.js");
-}
+//TEST_F(QRealGuiTests, mainPanelsElementsExistence)
+//{
+//	runFromFile("mainPanelsElementsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, mouseGesturesElementsExistence)
-{
-	runFromFile("mouseGesturesElementsExistence.js");
-}
+//TEST_F(QRealGuiTests, mouseGesturesElementsExistence)
+//{
+//	runFromFile("mouseGesturesElementsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, preferenceDialogElementsExistence)
-{
-	runFromFile("preferenceDialogElementsExistence.js");
-}
+//TEST_F(QRealGuiTests, preferenceDialogElementsExistence)
+//{
+//	runFromFile("preferenceDialogElementsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, settingsActionsExistence)
-{
-	runFromFile("settingsActionsExistence.js");
-}
+//TEST_F(QRealGuiTests, settingsActionsExistence)
+//{
+//	runFromFile("settingsActionsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, tabSceneExistence)
-{
-	runFromFile("tabSceneExistence.js");
-}
+//TEST_F(QRealGuiTests, tabSceneExistence)
+//{
+//	runFromFile("tabSceneExistence.js");
+//}
 
-TEST_F(QRealGuiTests, toolbarsElementsExistence)
-{
-	runFromFile("toolbarsElementsExistence.js");
-}
+//TEST_F(QRealGuiTests, toolbarsElementsExistence)
+//{
+//	runFromFile("toolbarsElementsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, toolsActionsExistence)
-{
-	runFromFile("toolsActionsExistence.js");
-}
+//TEST_F(QRealGuiTests, toolsActionsExistence)
+//{
+//	runFromFile("toolsActionsExistence.js");
+//}
 
 TEST_F(QRealGuiTests, fileActionsExistence)
 {
 	runFromFile("fileActionsExistence.js");
 }
 
-TEST_F(QRealGuiTests, fileActionsFunctioning)
-{
-	runFromFile("fileActionsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, fileActionsFunctioning)
+//{
+//	runFromFile("fileActionsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, findDialogElementsFunctioning)
-{
-	runFromFile("findDialogElementsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, findDialogElementsFunctioning)
+//{
+//	runFromFile("findDialogElementsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, helpActionsFunctioning)
-{
-	runFromFile("helpActionsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, helpActionsFunctioning)
+//{
+//	runFromFile("helpActionsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, mainPanelsElementsFunctioning)
-{
-	runFromFile("mainPanelsElementsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, mainPanelsElementsFunctioning)
+//{
+//	runFromFile("mainPanelsElementsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, mouseGesturesElementsFunctioning)
-{
-	runFromFile("mouseGesturesElementsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, mouseGesturesElementsFunctioning)
+//{
+//	runFromFile("mouseGesturesElementsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, preferenceDialogElementsFunctioning)
-{
-	runFromFile("preferenceDialogElementsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, preferenceDialogElementsFunctioning)
+//{
+//	runFromFile("preferenceDialogElementsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, settingsActionsFunctioning)
-{
-	runFromFile("settingsActionsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, settingsActionsFunctioning)
+//{
+//	runFromFile("settingsActionsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, tabSceneFunctioning)
-{
-	runFromFile("tabSceneFunctioning.js");
-}
+//TEST_F(QRealGuiTests, tabSceneFunctioning)
+//{
+//	runFromFile("tabSceneFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, toolbarsElementsFunctioning)
-{
-	runFromFile("toolbarsElementsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, toolbarsElementsFunctioning)
+//{
+//	runFromFile("toolbarsElementsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, toolsActionsFunctioning)
-{
-	runFromFile("toolsActionsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, toolsActionsFunctioning)
+//{
+//	runFromFile("toolsActionsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, viewActionsFunctioning)
-{
-	runFromFile("viewActionsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, viewActionsFunctioning)
+//{
+//	runFromFile("viewActionsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, editActionsFunctioning)
-{
-	runFromFile("editActionsFunctioning.js");
-}
+//TEST_F(QRealGuiTests, editActionsFunctioning)
+//{
+//	runFromFile("editActionsFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, hotKeysExistanceAndFunctioning)
-{
-	runFromFile("hotKeysExistanceAndFunctioning.js");
-}
+//TEST_F(QRealGuiTests, hotKeysExistanceAndFunctioning)
+//{
+//	runFromFile("hotKeysExistanceAndFunctioning.js");
+//}
 
-TEST_F(QRealGuiTests, script1)
-{
-	runFromFile("script1.js");
-}
+//TEST_F(QRealGuiTests, script1)
+//{
+//	runFromFile("script1.js");
+//}
 
-TEST_F(QRealGuiTests, script2)
-{
-	runFromFile("script2.js");
-}
+//TEST_F(QRealGuiTests, script2)
+//{
+//	runFromFile("script2.js");
+//}
 
-TEST_F(QRealGuiTests, script3)
-{
-	runFromFile("script3.js");
-}
+//TEST_F(QRealGuiTests, script3)
+//{
+//	runFromFile("script3.js");
+//}
 
-TEST_F(QRealGuiTests, script4)
-{
-	runFromFile("script4.js");
-}
+//TEST_F(QRealGuiTests, script4)
+//{
+//	runFromFile("script4.js");
+//}
 
-TEST_F(QRealGuiTests, script5)
-{
-	runFromFile("script5.js");
-}
+//TEST_F(QRealGuiTests, script5)
+//{
+//	runFromFile("script5.js");
+//}
 
-TEST_F(QRealGuiTests, script6)
-{
-	runFromFile("script6.js");
-}
+//TEST_F(QRealGuiTests, script6)
+//{
+//	runFromFile("script6.js");
+//}
 
-TEST_F(QRealGuiTests, script7)
-{
-	runFromFile("script7.js");
-}
+//TEST_F(QRealGuiTests, script7)
+//{
+//	runFromFile("script7.js");
+//}
 
-TEST_F(QRealGuiTests, script8)
-{
-	runFromFile("script8.js");
-}
+//TEST_F(QRealGuiTests, script8)
+//{
+//	runFromFile("script8.js");
+//}
 
-TEST_F(QRealGuiTests, script9)
-{
-	runFromFile("script9.js");
-}
+//TEST_F(QRealGuiTests, script9)
+//{
+//	runFromFile("script9.js");
+//}
 
-TEST_F(QRealGuiTests, script10)
-{
-	runFromFile("script10.js");
-}
+//TEST_F(QRealGuiTests, script10)
+//{
+//	runFromFile("script10.js");
+//}

@@ -37,6 +37,7 @@ public:
 	explicit GuiFacade(MainWindow &mainWindow);
 
 	/// Returns main window child widget by its type (class name) and QObject name.
+	/// Doesnt work with QMenu. Use activateMenu
 	Q_INVOKABLE QWidget *widget(const QString &type, const QString &name = QString()) const;
 
 	/// Returns a widget of some action on the toolbar panel.
@@ -68,6 +69,28 @@ public:
 	/// Returns facade object of some tool plugin. This object will provide plugin`s parts in plugin`s terms.
 	/// @param: pluginName The name of the plugin specified in its metadata in IID section.
 	QObject *pluginGuiFacade(const QString &pluginName) const;
+
+// ниже идут методы, которые я писал специально для тестов: (потом стоит расположить по порядку в .h и .cpp)
+
+	Q_INVOKABLE bool isEnabledAndVisible(QObject *obj) const;
+
+	// TODO: надо сделать, чтоб возвращал не QObject , а именно QAction
+	// Может быть лучше "как-то зарегистрировать" полностью QAction, чтоб был доступ из скрипта ко всем методам?
+	Q_INVOKABLE QObject *getActionInMenu(QMenu *menu, const QString &actionName) const;
+
+	Q_INVOKABLE QObject *getMenuContainedByAction(QAction *action) const;
+
+	Q_INVOKABLE bool isSubMenuInMenu(QMenu *menu, QAction *action) const;
+
+	Q_INVOKABLE QWidget *getMenu(const QString &menuName) const;
+
+	// НАСКОЛЬКО УМЕСТНО В ЭТОМ КЛАССЕ ПИСАТЬ МЕТОДЫ, КОТОРЫЕ КЛИКАЮТ ЧТО-ЛИБО?
+	Q_INVOKABLE void activateMenu(QMenu *menu);
+	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *action);
+
+	Q_INVOKABLE bool actionIsChecked(QAction *action) const;
+
+	Q_INVOKABLE bool actionIsCheckable(QAction *action) const;
 
 private:
 	QTreeWidgetItem *propertyTreeWidgetItem(const QString &name) const;

@@ -17,6 +17,10 @@
 #include <plugins/toolPluginInterface/toolPluginInterface.h>
 #include <editor/editorView.h>
 #include <qrutils/widgetFinder.h>
+#include <QMenuBar>
+#include <QMenu>
+#include <QtTest/QTest>
+#include <QtCore/QEvent>
 
 #include "./qrgui/mainWindow/mainWindow.h"
 #include "./qrgui/mainWindow/palette/draggableElement.h"
@@ -125,3 +129,88 @@ QTreeWidgetItem *GuiFacade::propertyTreeWidgetItem(const QString &name) const
 
 	return nullptr;
 }
+
+bool GuiFacade::isEnabledAndVisible(QObject *obj) const
+// а если создать два мметода с одинаковыми названиями, но принимающие разные типы аргементов, какая функция вызовется?
+{
+	QWidget *widget = dynamic_cast<QWidget *>(obj);
+	if (widget) {
+		return widget->isEnabled();
+	}
+	QAction *action = dynamic_cast<QAction *>(obj);
+	return action->isEnabled();
+}
+
+// тут сравниваются не только object names, но и или text() может так делать всегда?
+QObject *GuiFacade::getActionInMenu(QMenu *menu, const QString &actionName) const
+{
+	QList<QAction *> actions = menu->actions();
+	for (QAction * const action: actions) {
+		if (action->objectName() == actionName || action->text() == actionName) {
+			return dynamic_cast<QObject *>(action);
+		}
+	}
+	return nullptr;
+}
+
+bool GuiFacade::isSubMenuInMenu(QMenu *menu, QAction *action) const
+{
+	return menu->children().contains(action->menu());
+}
+
+QObject *GuiFacade::getMenuContainedByAction(QAction *action) const
+{
+	return dynamic_cast<QObject *>(action->menu());
+}
+
+// Для корректной работы QTest::keyClick в qt 5.5 необходимо вводить char (русские символы не работают)
+// ASSERT: "false" in file qasciikey.cpp, line 222
+// в будущем, если придется через гуи тестить русский С, то придется с этим что-то придумать
+// сейчас в настройках запуска для тестов устанавливается параметр --no-locale
+QWidget *GuiFacade::getMenu(const QString &menuName) const
+{
+	QMenuBar *menuBar = mMainWindow.findChild<QMenuBar *>();
+	QMenu *menu = menuBar->findChild<QMenu *>(menuName, Qt::FindDirectChildrenOnly);
+	return dynamic_cast<QWidget *>(menu);
+}
+
+void GuiFacade::activateMenu(QMenu *menu)
+{
+	QTest::keyClick(&mMainWindow, menu->title().at(1).toLatin1(), Qt::AltModifier);
+}
+
+void GuiFacade::activateMenuAction(QMenu *menu, QAction *action)
+{
+	for (const QAction *a : menu->actions()) {
+		if (a == action) {
+			QTest::keyClick(menu, Qt::Key_Enter);
+			return;
+		}
+		if (!action->isSeparator()) {
+			QTest::qWait(200);
+			QTest::keyClick(menu, Qt::Key_Down);
+		}
+	}
+
+//	QRect actionRect = menu->actionGeometry(action);
+//	QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonDblClick
+//											  , menu->mapFrom(menu->parentWidget(), actionRect.topLeft())
+//											  , Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+//	QApplication::postEvent(&mMainWindow, mouseEvent);
+}
+
+//QRect GuiFacade::actionRect(QMenu *menu, QAction *action) const // быть может понадобится, если я буду выносить отдельно кликание
+//{
+//	return menu->setAct
+//}
+
+bool GuiFacade::actionIsChecked(QAction *action) const
+{
+	return action->isChecked();
+}
+
+bool GuiFacade::actionIsCheckable(QAction *action) const
+{
+	return action->isCheckable();
+}
+

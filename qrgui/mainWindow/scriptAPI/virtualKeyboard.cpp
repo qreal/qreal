@@ -49,3 +49,8 @@ void VirtualKeyboard::printValue(const QString &value, int duration)
 		QTest::keyClicks(nullptr, ch.toLower(), Qt::NoModifier, 0);
 	}
 }
+
+void VirtualKeyboard::clickKey(char c, Qt::KeyboardModifiers modifier)
+{
+	QTest::keyClick(QApplication::focusWidget(), c, modifier);
+}
