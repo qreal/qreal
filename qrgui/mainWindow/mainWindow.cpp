@@ -36,6 +36,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
@@ -143,8 +144,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	splashScreen.setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
-		resize(SettingsManager::value("size").toSize());
-		move(SettingsManager::value("pos").toPoint());
+		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
 	} else {
 		showMaximized();
 	}
@@ -329,8 +329,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
-	SettingsManager::setValue("size", size());
-	SettingsManager::setValue("pos", pos());
+	SettingsManager::setValue("mainWindowGeometry", saveGeometry());
 
 	QLOG_INFO() << "Closing main window...";
 	emit mFacade.events().closedMainWindow();
@@ -704,7 +703,7 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	const QString url = QString("file:///%1/help/index.html").arg(QApplication::applicationDirPath());
+	const QString url = QString("file:///%1/help/index.html").arg(PlatformInfo::applicationDirPath());
 	QDesktopServices::openUrl(QUrl(url));
 }
 
@@ -1205,7 +1204,6 @@ void MainWindow::switchToTab(int index)
 		mUi->tabs->setEnabled(false);
 		mController->setActiveDiagram(Id());
 	}
-
 }
 
 void MainWindow::updateTabName(const Id &id)
@@ -1671,7 +1669,7 @@ void MainWindow::addActionOrSubmenu(QMenu *target, const ActionInfo &actionOrMen
 	}
 }
 
-void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
+void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 {
 	for (const ActionInfo &action : actions) {
 		if (action.isAction()) {
@@ -1693,8 +1691,13 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	}
 
 	for (const ActionInfo &action : actions) {
-		const QString menuName = "menu" + utils::StringUtils::capitalizeFirstLetter(action.menuName());
-		QMenu * const menu = findChild<QMenu *>(menuName);
+		/// @todo: We should somehow assert that all menus have names in such format.
+		const QString capitalizedName = utils::StringUtils::capitalizeFirstLetter(action.menuName());
+		QMenu *menu = findChild<QMenu *>("menu" + capitalizedName);
+		if (!menu) {
+			menu = findChild<QMenu *>("menu_" + capitalizedName);
+		}
+
 		if (menu) {
 			addActionOrSubmenu(menu, action);
 		}
@@ -2070,9 +2073,17 @@ void MainWindow::setVersion(const QString &version)
 
 void MainWindow::openStartTab()
 {
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		if (dynamic_cast<StartWidget *>(mUi->tabs->widget(i))) {
+			mUi->tabs->setCurrentIndex(i);
+			return;
+		}
+	}
+
 	mStartWidget = new StartWidget(this, mProjectManager);
-	const int index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
-	mUi->tabs->setTabUnclosable(index);
+	const bool hadTabs = mUi->tabs->count() > 0;
+	mUi->tabs->insertTab(0, mStartWidget, tr("Getting Started"));
+	mUi->tabs->setTabUnclosable(hadTabs);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 }
 

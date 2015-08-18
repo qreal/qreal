@@ -27,10 +27,22 @@ TwoDLed::TwoDLed(const DeviceInfo &info
 {
 }
 
+QColor TwoDLed::color() const
+{
+	const auto display = dynamic_cast<TrikDisplayWidget *>(mEngine.display());
+	Q_ASSERT(display);
+	return display->ledColor();
+}
+
+void TwoDLed::setColor(const QColor &color)
+{
+	auto display = dynamic_cast<TrikDisplayWidget *>(mEngine.display());
+	Q_ASSERT(display);
+	display->setLedColor(color);
+}
+
 void TwoDLed::setColor(const QString &color)
 {
 	const QColor newColor = color == "off" ? QColor(Qt::gray) : QColor(color);
-	auto display = dynamic_cast<TrikDisplayWidget *>(mEngine.display());
-	Q_ASSERT(display);
-	display->setLedColor(newColor);
+	setColor(newColor);
 }

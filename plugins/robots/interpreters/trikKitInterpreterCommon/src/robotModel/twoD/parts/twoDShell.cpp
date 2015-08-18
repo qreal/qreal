@@ -76,3 +76,8 @@ QString Shell::lastPhrase() const
 {
 	return mLastPhrase;
 }
+
+void Shell::reset()
+{
+	mLastPhrase = QString();
+}

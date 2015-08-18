@@ -14,6 +14,7 @@
 
 #include <kitBase/blocksBase/common/waitForButtonBlock.h>
 
+#include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotModelInterface.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 
@@ -32,20 +33,26 @@ void WaitForButtonBlock::run()
 	mButton = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, port);
 
 	if (!mButton) {
-		mActiveWaitingTimer.stop();
+		mActiveWaitingTimer->stop();
 		error(tr("Incorrect button port %1").arg(port));
 		return;
 	}
 
 	connect(mButton, &robotModel::robotParts::Button::newData, this, &WaitForButtonBlock::responseSlot);
+	if (mButton->port().reservedVariable().isEmpty()) {
+		// Buttons with non-empty reserved variables will be updated in background themselves.
+		mButton->read();
+	}
 
-	mButton->read();
-	mActiveWaitingTimer.start();
+	mActiveWaitingTimer->start();
 }
 
 void WaitForButtonBlock::timerTimeout()
 {
-	mButton->read();
+	if (mButton->port().reservedVariable().isEmpty()) {
+		// Buttons with non-empty reserved variables will be updated in background themselves.
+		mButton->read();
+	}
 }
 
 void WaitForButtonBlock::responseSlot(int isPressed)

@@ -22,7 +22,7 @@ RectangleImpl::RectangleImpl()
 
 QRectF RectangleImpl::boundingRect(qreal x1, qreal y1, qreal x2, qreal y2, const int scalingDrift) const
 {
-	return QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 - y1)).adjusted(-scalingDrift, -scalingDrift
+	return QRectF(qMin(x1, x2), qMin(y1, y2), qAbs(x2 - x1), qAbs(y2 - y1)).adjusted(-scalingDrift, -scalingDrift
 			, scalingDrift, scalingDrift);
 }
 
@@ -78,10 +78,10 @@ void RectangleImpl::drawImageItemWithMirrored(QPainter *painter, qreal x1, qreal
 		else
 			image = myImage.mirrored(true, true);
 	}
-	painter->drawImage(QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 - y1)), image);
+	painter->drawImage(QRectF(qMin(x1, x2), qMin(y1, y2), qAbs(x2 - x1), qAbs(y2 - y1)), image);
 }
 
 void RectangleImpl::drawImageItem(QPainter *painter, qreal x1, qreal y1, qreal x2, qreal y2, const QImage &myImage)
 {
-	painter->drawImage(QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 - y1)), myImage);
+	painter->drawImage(QRectF(qMin(x1, x2), qMin(y1, y2), qAbs(x2 - x1), qAbs(y2 - y1)), myImage);
 }

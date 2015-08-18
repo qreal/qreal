@@ -49,6 +49,7 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 
 	connect(&mModel.timeline(), &model::Timeline::started, this, &ConstraintsChecker::programStarted);
 	connect(&mModel.timeline(), &model::Timeline::stopped, this, &ConstraintsChecker::programFinished);
+	connect(&mModel.timeline(), &model::Timeline::beforeStop, this, &ConstraintsChecker::checkConstraints);
 	connect(&mModel.timeline(), &model::Timeline::tick, this, &ConstraintsChecker::checkConstraints);
 
 	bindToWorldModelObjects();
@@ -84,7 +85,7 @@ void ConstraintsChecker::serializeConstraints(QDomElement &parent) const
 
 void ConstraintsChecker::checkConstraints()
 {
-	QSetIterator<details::Event *> iterator(mActiveEvents);
+	QListIterator<details::Event *> iterator(mActiveEvents);
 	while (iterator.hasNext()) {
 		iterator.next()->check();
 	}
@@ -109,19 +110,25 @@ void ConstraintsChecker::prepareEvents()
 			event->drop();
 		}
 	}
+
+	std::sort(mActiveEvents.begin(), mActiveEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
 }
 
 void ConstraintsChecker::setUpEvent()
 {
 	if (details::Event * const event = dynamic_cast<details::Event *>(sender())) {
-		mActiveEvents << event;
+		if (!mActiveEvents.contains(event)) {
+			mActiveEvents << event;
+		}
 	}
+
+	std::sort(mActiveEvents.begin(), mActiveEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
 }
 
 void ConstraintsChecker::dropEvent()
 {
 	if (details::Event * const event = dynamic_cast<details::Event *>(sender())) {
-		mActiveEvents.remove(event);
+		mActiveEvents.removeAll(event);
 	}
 }
 

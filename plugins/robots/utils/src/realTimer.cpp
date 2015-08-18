@@ -18,6 +18,7 @@ using namespace utils;
 
 RealTimer::RealTimer()
 {
+	setRepeatable(false);
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 }
 
@@ -26,14 +27,28 @@ bool RealTimer::isTicking() const
 	return mTimer.isActive();
 }
 
+void RealTimer::start()
+{
+	start(mTimer.interval());
+}
+
 void RealTimer::start(int ms)
 {
 	mTimer.setInterval(ms);
-	mTimer.setSingleShot(true);
 	mTimer.start();
 }
 
 void RealTimer::stop()
 {
 	mTimer.stop();
+}
+
+void RealTimer::setInterval(int ms)
+{
+	mTimer.setInterval(ms);
+}
+
+void RealTimer::setRepeatable(bool repeatable)
+{
+	mTimer.setSingleShot(!repeatable);
 }

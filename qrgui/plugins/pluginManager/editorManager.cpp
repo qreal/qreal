@@ -19,6 +19,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 #include <qrkernel/exception/exception.h>
 #include <qrrepo/repoApi.h>
 
@@ -28,14 +29,14 @@
 using namespace qReal;
 
 EditorManager::EditorManager(const QString &path)
-	: mPluginManager(PluginManager(qApp->applicationDirPath(), path))
+	: mPluginManager(PlatformInfo::applicationDirPath(), path)
 {
 	init();
 }
 
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
-	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors"))
+	, mPluginManager(PlatformInfo::applicationDirPath(), "plugins/editors")
 {
 	 init();
 }

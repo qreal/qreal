@@ -141,6 +141,11 @@ private:
 	/// using methods like constrain() and unify(). Shall be defined in concrete analyzers.
 	virtual void analyzeNode(QSharedPointer<ast::Node> const &node) = 0;
 
+	/// Called for entire tree to be analyzed, shall be redefined in concrete analyzers if they wish
+	/// to do some context-sensitive checks before main "analyzeNode" pass. Default implementation
+	/// does nothing.
+	virtual void precheck(QSharedPointer<ast::Node> const &node);
+
 	/// Contains mapping from expression to its type. Type is always stored as type variable to make further analysis
 	/// more convenient.
 	QHash<QSharedPointer<ast::Expression>, QSharedPointer<types::TypeVariable>> mTypes;

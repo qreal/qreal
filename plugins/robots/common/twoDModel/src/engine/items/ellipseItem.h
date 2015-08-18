@@ -24,6 +24,7 @@ namespace items {
 class EllipseItem : public ColorFieldItem
 {
 	Q_OBJECT
+	Q_PROPERTY(bool filled READ filled WRITE setFilled)
 
 public:
 	EllipseItem(const QPointF &begin, const QPointF &end);
@@ -42,6 +43,12 @@ public:
 	void deserialize(const QDomElement &element) override;
 
 	QPainterPath shape() const override;
+
+	/// Returns true if ellipse is filled with its pen color or false if it is "empty".
+	bool filled() const;
+
+	/// Fills ellipse with its pen color if true is passed or makes it "empty".
+	void setFilled(bool filled);
 
 private:
 	void setPrivateData();

@@ -266,7 +266,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 		if (curr == rootIndex()) {
 			// Root id was removed, time to close current tab.
 			emit rootElementRemoved(curr);
-			// Now we will be deletted, nipping off...
+			// Now we will be deleted, nipping off...
 			return;
 		}
 
@@ -338,8 +338,10 @@ void EditorViewMViface::rowsMoved(const QModelIndex &sourceParent, int sourceSta
 	movedElement->updateData();
 }
 
-void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+		, const QVector<int> &roles)
 {
+	Q_UNUSED(roles)
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		const QModelIndex curr = topLeft.sibling(row, 0);
 		Element *element = item(curr);

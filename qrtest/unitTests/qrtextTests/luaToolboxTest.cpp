@@ -64,6 +64,19 @@ TEST_F(LuaToolboxTest, intrinsicFunction)
 	EXPECT_EQ(3, result);
 }
 
+TEST_F(LuaToolboxTest, intrinsicFunctionAsIdentifier)
+{
+	mToolbox->addIntrinsicFunction("f", new types::Integer(), {new types::Integer()}
+			, [] (QList<QVariant> params) { return params[0].toInt() + 2; }
+			);
+
+	qReal::Id const testId = qReal::Id("1", "2", "3", "test");
+
+	mToolbox->interpret<int>(testId, "test", "f = 1");
+
+	EXPECT_EQ(2, mToolbox->errors().size());
+}
+
 TEST_F(LuaToolboxTest, errorProcessingSanityCheck)
 {
 	mToolbox->interpret<int>("true ||| false");

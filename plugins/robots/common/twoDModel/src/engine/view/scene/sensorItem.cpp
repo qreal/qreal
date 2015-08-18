@@ -173,11 +173,11 @@ void SensorItem::resizeItem(QGraphicsSceneMouseEvent *event)
 QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionHasChanged) {
-		mConfiguration.setPosition(mPort, pos().toPoint());
+		mConfiguration.setPosition(mPort, value.toPointF());
 	}
 
 	if (change == ItemRotationHasChanged) {
-		mConfiguration.setDirection(mPort, rotation());
+		mConfiguration.setDirection(mPort, value.toReal());
 	}
 
 	return RotateItem::itemChange(change, value);

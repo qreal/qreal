@@ -228,7 +228,7 @@ bool QextSerialEnumeratorPrivate::setUpNotifications_sys(bool /*setup*/)
     CFMutableDictionaryRef cdcClassesToMatch;
     io_iterator_t portIterator;
 
-    kernResult = IOMasterPort(MACH_PORT_nullptr, &masterPort);
+    kernResult = IOMasterPort(MACH_PORT_NULL, &masterPort);
     if (KERN_SUCCESS != kernResult) {
         qDebug() << "IOMasterPort returned:" << kernResult;
         return false;

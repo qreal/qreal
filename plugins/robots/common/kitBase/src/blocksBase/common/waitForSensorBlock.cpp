@@ -14,6 +14,8 @@
 
 #include "kitBase/blocksBase/common/waitForSensorBlock.h"
 
+#include <utils/abstractTimer.h>
+
 #include "kitBase/robotModel/robotParts/scalarSensor.h"
 #include "kitBase/robotModel/robotModelUtils.h"
 
@@ -36,10 +38,13 @@ void WaitForSensorBlock::run()
 	if (sensor) {
 		connect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
 		connect(sensor, &robotParts::AbstractSensor::failure, this, &WaitForSensorBlock::failureSlot);
-		sensor->read();
-		mActiveWaitingTimer.start();
+		mActiveWaitingTimer->start();
+		if (sensor->port().reservedVariable().isEmpty()) {
+			// Sensors with non-empty reserved variables will be updated in background themselves.
+			sensor->read();
+		}
 	} else {
-		mActiveWaitingTimer.stop();
+		mActiveWaitingTimer->stop();
 		error(tr("%1 is not configured on port %2").arg(device().friendlyName(), mPort.userFriendlyName()));
 	}
 }
@@ -49,7 +54,8 @@ void WaitForSensorBlock::timerTimeout()
 	/// @todo True horror.
 	robotParts::Device * const device = mRobotModel.configuration().device(mPort);
 	robotParts::ScalarSensor *sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
-	if (sensor) {
+	if (sensor && sensor->port().reservedVariable().isEmpty()) {
+		// Sensors with non-empty reserved variables will be updated in background themselves.
 		sensor->read();
 	}
 }

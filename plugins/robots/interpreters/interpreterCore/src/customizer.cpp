@@ -17,6 +17,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace interpreterCore;
 
@@ -38,7 +39,7 @@ QImage Customizer::applicationLogo() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.1.1-a3";
+	return "3.1.1";
 }
 
 QString Customizer::aboutText() const
@@ -48,7 +49,7 @@ QString Customizer::aboutText() const
 
 QString Customizer::examplesDirectory() const
 {
-	return QApplication::applicationDirPath() + "/examples";
+	return qReal::PlatformInfo::applicationDirPath() + "/examples";
 }
 
 QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() const

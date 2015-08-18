@@ -30,10 +30,14 @@ public:
 	explicit ModelTimer(const Timeline *timeline /* Doesn`t take ownership */);
 
 	bool isTicking() const override;
+	void start() override;
 	void start(int ms) override;
 	void stop() override;
+	void setInterval(int ms) override;
+	void setRepeatable(bool repeatable) override;
 
 private slots:
+	void onTimeout() override;
 	void onTick();
 
 private:
@@ -41,6 +45,8 @@ private:
 	int mTimeToWait;
 	bool mListening;
 	int mTimePast;
+	int mInterval;
+	bool mRepeatable;
 };
 
 }

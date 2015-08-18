@@ -75,10 +75,12 @@ private slots:
 	void checkSelection();
 
 protected:
-
 	/// Searches for the given property value that is met most oftenly among items memorized in last attachTo() call.
 	/// Items that are not QObjects are ignored. Obtaining property values is performed with Qt reflection.
-	QVariant dominantPropertyValue(const QString &property);
+	QVariant dominantPropertyValue(const QString &property) const;
+
+	/// Returns true if at least one of currently selected items has \a property. Otherwise returns false.
+	bool hasProperty(const QString &property) const;
 
 	QPointF leftmostTopmost(const QList<QGraphicsItem *> &items);
 

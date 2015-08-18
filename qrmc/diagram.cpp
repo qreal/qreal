@@ -191,6 +191,13 @@ public:
 	}
 };
 
+class Diagram::ElementDescriptonGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generateElementDescription(lineTemplate);
+	}
+};
+
 class Diagram::ParentsMapGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, const QString &lineTemplate) const {
@@ -255,6 +262,11 @@ QString Diagram::generatePropertyDisplayedNamesMap(const QString &lineTemplate) 
 	return generateMapMethod(lineTemplate, PropertyDisplayedNamesGenerator());
 }
 
+QString Diagram::generateElementDescriptionMap(const QString &lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, ElementDescriptonGenerator());
+}
+
 QString Diagram::generateParentsMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, ParentsMapGenerator());
@@ -284,6 +296,20 @@ class Diagram::ReferencePropertiesGenerator: public Diagram::ListMethodGenerator
 public:
 	virtual QString generate(Type *type, const QString &lineTemplate) const {
 		return type->generateReferenceProperties(lineTemplate);
+	}
+};
+
+class Diagram::PortTypesGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generatePortTypes(lineTemplate);
+	}
+};
+
+class Diagram::PropertyNameGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generatePropertyName(lineTemplate);
 	}
 };
 
@@ -335,6 +361,16 @@ QString Diagram::generateConnections(const QString &lineTemplate) const
 QString Diagram::generateReferenceProperties(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, ReferencePropertiesGenerator());
+}
+
+QString Diagram::generatePortTypes(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, PortTypesGenerator());
+}
+
+QString Diagram::generatePropertyName(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, PropertyNameGenerator());
 }
 
 QString Diagram::generateContainers(const QString &lineTemplate) const
@@ -390,6 +426,10 @@ QString Diagram::generateEnums(const QString &lineTemplate) const
 		isFirstLine = false;
 		result += line + endline;
 	}
+
+	if (result.isEmpty())
+		return "	Q_UNUSED(name);";
+
 	return result;
 }
 

@@ -132,6 +132,7 @@ void Display::paint(QPainter *painter)
 	painter->restore();
 
 	painter->save();
+	painter->setRenderHint(QPainter::HighQualityAntialiasing);
 	QFont font;
 	font.setPixelSize(textSize);
 	painter->setFont(font);

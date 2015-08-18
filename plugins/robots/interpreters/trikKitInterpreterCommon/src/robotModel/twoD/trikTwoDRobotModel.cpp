@@ -16,6 +16,8 @@
 
 #include <QtGui/QColor>
 
+#include <qrkernel/logging.h>
+
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
 
@@ -106,7 +108,14 @@ void TrikTwoDRobotModel::onInterpretationStarted()
 		display->setBackground(QColor(Qt::gray));
 		display->redraw();
 	} else {
-		/// @todo: if we get here it is wrong because display is not configured before the interpretation!
+		QLOG_WARN() << "TRIK display is not configured before intepretation start!";
+	}
+
+	parts::Shell * const shell = RobotModelUtils::findDevice<parts::Shell>(*this, "ShellPort");
+	if (shell) {
+		shell->reset();
+	} else {
+		QLOG_WARN() << "TRIK shell is not configured before intepretation start!";
 	}
 }
 

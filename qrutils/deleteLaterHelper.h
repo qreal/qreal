@@ -18,14 +18,14 @@
 
 namespace utils {
 
-/// A helper class that shedules deletion for the given object instead of deletting in immediately.
+/// A helper class that shedules deletion for the given object instead of deleting it immediately.
 /// An analogue of QObject::deleteLater, but can be use for arbitrary type, not only QObject subtypes.
 template<typename T>
 class DeleteLaterHelper : public QObject
 {
 public:
 	/// Shedules deletion for the given object and deletes when Qt event loop will process this event
-	/// instead of deletting in immediately.
+	/// instead of deleting in immediately.
 	/// An analogue of QObject::deleteLater, but can be use for arbitrary type, not only QObject subtypes.
 	static void deleteLater(T *toDelete)
 	{

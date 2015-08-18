@@ -75,6 +75,7 @@ public:
 	void openTab(QWidget *tab, const QString &title) override;
 	void closeTab(QWidget *tab) override;
 	void setTabText(QWidget *tab, const QString &text) override;
+	void openStartTab() override;
 
 	void beginPaletteModification() override;
 

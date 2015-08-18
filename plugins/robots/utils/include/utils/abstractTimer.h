@@ -27,14 +27,20 @@ class ROBOTS_UTILS_EXPORT AbstractTimer : public QObject
 public:
 	/// Returns true if the timer is working now or false otherwise
 	virtual bool isTicking() const = 0;
+	virtual void start() = 0;
 	virtual void start(int ms) = 0;
 	virtual void stop() = 0;
+	virtual void setInterval(int ms) = 0;
+
+	/// If \a repeatable then the timer will set itself up again when timeout reached.
+	/// By default timers are not repeatable.
+	virtual void setRepeatable(bool repeatable) = 0;
 
 signals:
 	void timeout();
 
 protected slots:
-	void onTimeout();
+	virtual void onTimeout();
 };
 
 }

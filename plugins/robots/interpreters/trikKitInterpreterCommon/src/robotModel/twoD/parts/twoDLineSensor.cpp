@@ -19,11 +19,14 @@
 using namespace trik::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
+// The color of the pixel
+const int tolerance = 10;
+
 LineSensor::LineSensor(const DeviceInfo &info, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikLineSensor(info, port)
 	, mEngine(engine)
-	, mLineColor(Qt::black)
+	, mLineColor(qRgb(0, 0, 0))  // default line color is black
 {
 }
 
@@ -33,24 +36,25 @@ void LineSensor::init()
 
 void LineSensor::detectLine()
 {
-	QImage image = mEngine.areaUnderSensor(port(), 0.2);
+	const QImage image = mEngine.areaUnderSensor(port(), 0.2);
 
-	const int size = image.width() * image.height();
+	int size = 0;
 	int red = 0;
 	int green = 0;
 	int blue = 0;
 	for (int x = 0; x < image.width(); ++x) {
 		for (int y = 0; y < image.height(); ++y) {
-			QRgb pixelColor(image.pixel(x, y));
-			red += qRed(pixelColor);
-			green += qGreen(pixelColor);
-			blue += qBlue(pixelColor);
+			const QRgb pixelColor = image.pixel(x, y);
+			if (qAlpha(pixelColor) > 0) {
+				++size;
+				red += qRed(pixelColor);
+				green += qGreen(pixelColor);
+				blue += qBlue(pixelColor);
+			}
 		}
 	}
 
-	mLineColor.setRed(red / size);
-	mLineColor.setGreen(green / size);
-	mLineColor.setBlue(blue / size);
+	mLineColor = qRgb(red / size, green / size, blue / size);
 }
 
 void LineSensor::read()
@@ -62,6 +66,7 @@ void LineSensor::read()
 
 	int blacks = 0;
 	int crossBlacks = 0;
+	int usefulRows = 0;
 	int horizontalLineWidth = image.height() * 0.2;
 	qreal xCoordinates = 0;
 	for (int i = 0; i < height; ++i) {
@@ -71,25 +76,27 @@ void LineSensor::read()
 		for (int j = 0; j < width; ++j) {
 			if (closeEnough(image.pixel(j, i))) {
 				++blacksInRow;
-				xSum += (j + 1) * 100.0 / (width / 2.0) - 100;
+				xSum += j - width / 2.0;
 			}
 		}
 
-		xCoordinates += (blacksInRow ? xSum / blacksInRow : 0);
+		xCoordinates += (blacksInRow ? xSum * 100 / (width / 2.0) / blacksInRow : 0);
 		blacks += blacksInRow;
+		usefulRows += blacksInRow ? 1 : 0;
 		if (((height - horizontalLineWidth) / 2 < i) && (i < (height + horizontalLineWidth) / 2)) {
 			crossBlacks += blacksInRow;
 		}
 	}
 
-	const int x = qRound(xCoordinates / height);
+	const int x = qRound(xCoordinates / usefulRows);
 	const int lineWidth = blacks / height;
 	const int cross = qRound(crossBlacks * 100.0 / (height * horizontalLineWidth));
 	emit newData({ x, lineWidth, cross });
 }
 
-bool LineSensor::closeEnough(const QColor &color) const
+bool LineSensor::closeEnough(QRgb color) const
 {
-	return qMax(abs(color.red() - mLineColor.red()), qMax(abs(color.green() - mLineColor.green())
-		, abs(color.blue() - mLineColor.blue()))) < 10;
+	return qAlpha(color) > 0 && qMax(qAbs(qRed(color) - qRed(mLineColor))
+		, qMax(qAbs(qGreen(color) - qGreen(mLineColor))
+		, qAbs(qBlue(color) - qBlue(mLineColor)))) < tolerance;
 }

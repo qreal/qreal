@@ -14,6 +14,7 @@
 
 #include "kitBase/blocksBase/common/getButtonCodeBlock.h"
 
+#include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotParts/button.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 
@@ -27,22 +28,23 @@ GetButtonCodeBlock::GetButtonCodeBlock(RobotModelInterface &robotModel)
 
 void GetButtonCodeBlock::run()
 {
+	mButtons.clear();
 	for (const PortInfo &port : mRobotModel.availablePorts()) {
-		robotParts::Button *button = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, port.name());
+		const robotParts::Button *button = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, port.name());
 		if (button) {
-			mButtons << port.name();
+			mButtons << button;
 		}
 	}
 
-	mActiveWaitingTimer.start();
+	mActiveWaitingTimer->start();
 }
 
 void GetButtonCodeBlock::timerTimeout()
 {
-	for (const QString &buttonPort : mButtons) {
-		robotParts::Button *button = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, buttonPort);
-		if (evalCode<bool>(button->port().reservedVariable())) {
+	for (const robotParts::Button *button : mButtons) {
+		if (button->lastData()) {
 			returnCode(button->code());
+			return;
 		}
 	}
 

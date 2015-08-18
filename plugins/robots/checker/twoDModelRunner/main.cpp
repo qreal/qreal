@@ -35,7 +35,7 @@ const QString description = QObject::tr(
 
 void initLogging()
 {
-	const QDir logsDir(QApplication::applicationDirPath() + "/logs");
+	const QDir logsDir(qReal::PlatformInfo::applicationDirPath() + "/logs");
 	if (logsDir.mkpath(logsDir.absolutePath())) {
 		qReal::Logger::addLogTarget(logsDir.filePath("2d-model.log"), maxLogSize, 2, QsLogging::DebugLevel);
 	}

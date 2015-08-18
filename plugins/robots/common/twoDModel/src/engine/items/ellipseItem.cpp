@@ -52,7 +52,6 @@ void EllipseItem::setPrivateData()
 	pen.setColor(Qt::blue);
 	pen.setStyle(Qt::SolidLine);
 	setPen(pen);
-	setBrush(QBrush(Qt::white, Qt::NoBrush));
 }
 
 QRectF EllipseItem::calcNecessaryBoundingRect() const
@@ -110,4 +109,15 @@ QPainterPath EllipseItem::shape() const
 	QPainterPath result;
 	result.addEllipse(boundingRect());
 	return result;
+}
+
+bool EllipseItem::filled() const
+{
+	return brush().style() != Qt::NoBrush;
+}
+
+void EllipseItem::setFilled(bool filled)
+{
+	setBrushStyle(filled ? "Solid" : "None");
+	update();
 }

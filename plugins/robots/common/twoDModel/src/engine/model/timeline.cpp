@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
 
 #include "twoDModel/engine/model/timeline.h"
@@ -43,6 +44,8 @@ void Timeline::stop()
 {
 	if (mIsStarted) {
 		mIsStarted = false;
+		QCoreApplication::processEvents();
+		emit beforeStop();
 		mTimer.stop();
 		emit stopped();
 	}
@@ -69,6 +72,7 @@ void Timeline::onTimer()
 			} else {
 				gotoNextFrame();
 			}
+
 			return;
 		}
 	}

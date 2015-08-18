@@ -20,14 +20,14 @@
 namespace trik {
 
 /// Uploader for trikRuntime (for new case).
-class TrikV6RuntimeUploaderPlugin : public QObject, public qReal::ToolPluginInterface
+class TrikV62RuntimeUploaderPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
 	Q_PLUGIN_METADATA(IID "trik.TrikV62RuntimeUploaderPlugin")
 
 public:
-	TrikV6RuntimeUploaderPlugin();
+	TrikV62RuntimeUploaderPlugin();
 
 	void init(const qReal::PluginConfigurator &configurator) override;
 	QList<qReal::ActionInfo> actions() override;  // Transfers ownership of QAction objects.

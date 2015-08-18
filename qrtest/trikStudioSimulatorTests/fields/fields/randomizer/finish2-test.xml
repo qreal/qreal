@@ -38,19 +38,11 @@
 		<!-- Лимит времени -->
 		<timelimit value="7000"/>
 		<!-- Инициализируем датчик случайных чисел фиксированным значением -->
-		<event id="Setup" settedUpInitially="true">
-			<condition>
-				<greater>
-					<int value="1" />
-					<int value="0" />
-				</greater>
-			</condition>
-			<trigger>
-				<setState object="robot1.random" property="fixedValue" >
-					<int value="2" />
-				</setState>
-			</trigger>
-		</event>
+		<init>
+			<setState object="robot1.random" property="fixedValue" >
+				<int value="2" />
+			</setState>
+		</init>
 		<!-- Событие, которое говорит о том, что робот вообще поехал и стартует цепочку проверки -->
 		<event id="We are alive, first move" settedUpInitially="true">
 			<condition>

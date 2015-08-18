@@ -34,6 +34,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
 	, mDebugModeAction(new QAction(QIcon(":/icons/main_tabbar_debug.svg"), QObject::tr("Debug"), nullptr))
 	, mEditModeAction(new QAction(QIcon(":/icons/main_tabbar_edit.svg"), QObject::tr("Edit"), nullptr))
+	, mHomeAction(new QAction(QIcon(":/icons/home.svg"), tr("To main page"), nullptr))
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
@@ -77,6 +78,7 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 	result << mPluginActionInfos;
 
 	result
+			<< qReal::ActionInfo(mHomeAction, QString(), "view")
 			<< qReal::ActionInfo(mConnectToRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(mRunAction, "interpreters", "tools")
 			<< qReal::ActionInfo(mStopRobotAction, "interpreters", "tools")
@@ -151,6 +153,11 @@ QAction &ActionsManager::editModeAction()
 	return *mEditModeAction;
 }
 
+QAction &ActionsManager::homeAction()
+{
+	return *mHomeAction;
+}
+
 void ActionsManager::appendHotKey(const QString &actionId, const QString &label, QAction &action)
 {
 	mAdditionalHotKeyInfos << qReal::HotKeyActionInfo(actionId, label, &action);
@@ -187,7 +194,6 @@ void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)
 {
 	const auto robotModel = dynamic_cast<kitBase::robotModel::RobotModelInterface *>(robotModelObject);
 	mRobotModelManager.setModel(robotModel);
-	onRobotModelChanged(*robotModel);
 }
 
 QString ActionsManager::kitIdOf(kitBase::robotModel::RobotModelInterface &model) const

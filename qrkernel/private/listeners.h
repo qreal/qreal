@@ -65,8 +65,9 @@ private:
 class LambdaListener0 : public AbstractListener
 {
 public:
-	LambdaListener0(std::function<void()> const & lambda)
+	LambdaListener0(std::function<void()> const & lambda, QObject *owner = 0)
 		: mLambda(lambda)
+		, mOwner(owner)
 	{
 	}
 
@@ -78,11 +79,12 @@ public:
 
 	const QObject *object() const override
 	{
-		return nullptr;
+		return mOwner;
 	}
 
 private:
 	std::function<void()> mLambda;
+	QObject *mOwner;
 };
 
 /// Useful class that calls the given slot with one parameter of the given type.
@@ -116,8 +118,9 @@ template <typename Type>
 class LambdaListener1 : public AbstractListener
 {
 public:
-	LambdaListener1(std::function<void(Type)> lambda)
+	LambdaListener1(std::function<void(Type)> lambda, QObject *owner = 0)
 		: mLambda(lambda)
+		, mOwner(owner)
 	{
 	}
 
@@ -128,11 +131,12 @@ public:
 
 	const QObject *object() const override
 	{
-		return nullptr;
+		return mOwner;
 	}
 
 private:
 	std::function<void(Type)> mLambda;
+	QObject *mOwner;
 };
 
 }
