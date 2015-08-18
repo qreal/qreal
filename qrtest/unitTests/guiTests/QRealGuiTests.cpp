@@ -292,32 +292,32 @@ void QRealGuiTests::runFromFile(const QString &relativeFileName)
 	scriptFile.close();
 	run(contents);
 }
+// TODO: необходимо сменить ассерты на эксепты в нужных местах
+TEST_F(QRealGuiTests, sanityCheck)
+{
+	run("assert(true);");
+	ASSERT_EQ(2, 1 + 1);
+}
 
-//TEST_F(QRealGuiTests, sanityCheck)
-//{
-//	run("assert(true);");
-//	ASSERT_EQ(2, 1 + 1);
-//}
+TEST_F(QRealGuiTests, editActionsExistence)
+{
+	runFromFile("editActionsExistence.js"); // мб qs?
+}
 
-//TEST_F(QRealGuiTests, editActionsExistence)
-//{
-//	runFromFile("editActionsExistence.js"); // мб qs?
-//}
-
-//TEST_F(QRealGuiTests, viewActionsExistence)
-//{
-//	runFromFile("viewActionsExistence.js");
-//}
+TEST_F(QRealGuiTests, viewActionsExistence)
+{
+	runFromFile("viewActionsExistence.js");
+}
 
 //TEST_F(QRealGuiTests, findDialogElementsExistence)
 //{
 //	runFromFile("findDialogElementsExistence.js");
 //}
 
-//TEST_F(QRealGuiTests, helpActionsExistence)
-//{
-//	runFromFile("helpActionsExistence.js");
-//}
+TEST_F(QRealGuiTests, helpActionsExistence)
+{
+	runFromFile("helpActionsExistence.js");
+}
 
 //TEST_F(QRealGuiTests, mainPanelsElementsExistence)
 //{
@@ -334,10 +334,10 @@ void QRealGuiTests::runFromFile(const QString &relativeFileName)
 //	runFromFile("preferenceDialogElementsExistence.js");
 //}
 
-//TEST_F(QRealGuiTests, settingsActionsExistence)
-//{
-//	runFromFile("settingsActionsExistence.js");
-//}
+TEST_F(QRealGuiTests, settingsActionsExistence)
+{
+	runFromFile("settingsActionsExistence.js");
+}
 
 //TEST_F(QRealGuiTests, tabSceneExistence)
 //{
@@ -349,10 +349,10 @@ void QRealGuiTests::runFromFile(const QString &relativeFileName)
 //	runFromFile("toolbarsElementsExistence.js");
 //}
 
-//TEST_F(QRealGuiTests, toolsActionsExistence)
-//{
-//	runFromFile("toolsActionsExistence.js");
-//}
+TEST_F(QRealGuiTests, toolsActionsExistence)
+{
+	runFromFile("toolsActionsExistence.js");
+}
 
 TEST_F(QRealGuiTests, fileActionsExistence)
 {

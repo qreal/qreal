@@ -179,10 +179,10 @@ void GuiFacade::activateMenu(QMenu *menu)
 	QTest::keyClick(&mMainWindow, menu->title().at(1).toLatin1(), Qt::AltModifier);
 }
 
-void GuiFacade::activateMenuAction(QMenu *menu, QAction *action)
+void GuiFacade::activateMenuAction(QMenu *menu, QAction *actionForExec)
 {
-	for (const QAction *a : menu->actions()) {
-		if (a == action) {
+	for (const QAction *action : menu->actions()) {
+		if (action == actionForExec) {
 			QTest::keyClick(menu, Qt::Key_Enter);
 			return;
 		}
@@ -192,6 +192,7 @@ void GuiFacade::activateMenuAction(QMenu *menu, QAction *action)
 		}
 	}
 
+// тут наброски кода для нажатия мышкой, а надо это вообще? (может, в отдельный метод)
 //	QRect actionRect = menu->actionGeometry(action);
 //	QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonDblClick
 //											  , menu->mapFrom(menu->parentWidget(), actionRect.topLeft())

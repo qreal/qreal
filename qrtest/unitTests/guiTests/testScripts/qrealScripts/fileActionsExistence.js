@@ -3,9 +3,10 @@ assert(mainWindow != null);
 api.changeWindow(mainWindow);
 api.wait(500);
 var menuFile = api.ui().getMenu("menu_File");
-api.ui().activateMenu(menuFile);
 assert(menuFile != null);
-api.wait(5000);
+
+api.ui().activateMenu(menuFile);
+api.wait(200);
 
 var actionNewProject = api.ui().getActionInMenu(menuFile, "actionNewProject");
 assert(actionNewProject != null);
@@ -29,8 +30,6 @@ assert(!api.ui().actionIsChecked(actionRecentProjects));
 assert(api.ui().isSubMenuInMenu(menuFile, actionRecentProjects));
 var subMenuRecentProject = api.ui().getMenuContainedByAction(actionRecentProjects);
 assert(subMenuRecentProject != null);
-api.ui().activateMenuAction(menuFile, actionRecentProjects);
-api.wait(500);
 
 var actionOpen = api.ui().getActionInMenu(menuFile, "actionOpen");
 assert(actionOpen != null);
@@ -74,3 +73,5 @@ assert(!api.ui().actionIsCheckable(actionQuit));
 assert(!api.ui().actionIsChecked(actionQuit));
 assert(!api.ui().isSubMenuInMenu(menuFile, actionQuit));
 
+//api.ui().activateMenuAction(menuFile, actionQuit);
+//api.wait(200);

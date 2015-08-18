@@ -2,10 +2,19 @@ var mainWindow = api.ui().mainWindow();
 assert(mainWindow != null);
 api.changeWindow(mainWindow);
 api.wait(500);
-var newProject = api.ui().widget("QToolButton", "actionNewProject");
-assert(newProject != null);
-closeExpectedDialog(mainWindow, "Create project", 3000);
-//chooseExpectedDialogDiagram(mainWindow, "Create project", "Robot`s Behaviour Diagram", 3000);
-api.cursor().moveTo(newProject, 400);
-api.cursor().leftButtonPress(newProject);
-api.cursor().leftButtonRelease(newProject, 400);
+var menuTools = api.ui().getMenu("menuTools");
+assert(menuTools != null);
+
+api.ui().activateMenu(menuTools);
+api.wait(200);
+
+var actionGesturesShow = api.ui().getActionInMenu(menuTools, "actionGesturesShow");
+assert(actionGesturesShow != null);
+assert(api.ui().isEnabledAndVisible(actionGesturesShow));
+assert(!api.ui().actionIsCheckable(actionGesturesShow));
+assert(!api.ui().actionIsChecked(actionGesturesShow));
+assert(!api.ui().isSubMenuInMenu(menuTools, actionGesturesShow));
+
+//closeExpectedDialog(mainWindow, "Gestures Show", 3000); ?
+//api.ui().activateMenuAction(menuTools, actionGesturesShow);
+//api.wait(500);
