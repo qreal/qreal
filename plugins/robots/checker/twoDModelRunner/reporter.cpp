@@ -48,6 +48,17 @@ void Reporter::addError(const QString &message)
 	mMessages << qMakePair(Level::error, message);
 }
 
+void Reporter::onInterpretationStart()
+{
+	mFirstMessage = true;
+	report("[\n", mTrajectoryFile);
+}
+
+void Reporter::onInterpretationEnd()
+{
+	report("]\n", mTrajectoryFile);
+}
+
 void Reporter::newTrajectoryPoint(const QString &robotId, int timestamp, const QPointF &position, qreal rotation)
 {
 	if (!mTrajectoryFile.isNull()) {
@@ -61,8 +72,8 @@ void Reporter::newTrajectoryPoint(const QString &robotId, int timestamp, const Q
 
 		QJsonDocument document;
 		document.setObject(transition);
-		(*mTrajectoryFile)() << document.toJson();
-		mTrajectoryFile->flush();
+		report((mFirstMessage ? "" : ", ") + document.toJson(), mTrajectoryFile);
+		mFirstMessage = false;
 	}
 }
 
@@ -81,8 +92,8 @@ void Reporter::newDeviceState(const QString &robotId, int timestamp, const QStri
 
 		QJsonDocument document;
 		document.setObject(modification);
-		(*mTrajectoryFile)() << document.toJson();
-		mTrajectoryFile->flush();
+		report((mFirstMessage ? "" : ", ") + document.toJson(), mTrajectoryFile);
+		mFirstMessage = false;
 	}
 }
 
@@ -102,7 +113,7 @@ void Reporter::reportMessages()
 
 	QJsonDocument document;
 	document.setArray(messages);
-	(*mMessagesFile)() << document.toJson();
+	report(document.toJson(), mMessagesFile);
 }
 
 QJsonValue Reporter::variantToJson(const QVariant &value) const
@@ -113,5 +124,13 @@ QJsonValue Reporter::variantToJson(const QVariant &value) const
 		return value.value<QJsonObject>();
 	} else {
 		return QJsonValue::fromVariant(value);
+	}
+}
+
+void Reporter::report(const QString &message, const QScopedPointer<utils::OutFile> &file)
+{
+	if (!file.isNull()) {
+		(*file)() << message;
+		file->flush();
 	}
 }

@@ -48,6 +48,7 @@ Runner::Runner(const QString &report, const QString &trajectory)
 
 Runner::~Runner()
 {
+	mReporter.onInterpretationEnd();
 	mReporter.reportMessages();
 }
 
@@ -82,6 +83,7 @@ void Runner::interpret(const QString &saveFile, bool background)
 		}
 	}
 
+	mReporter.onInterpretationStart();
 	mPluginFacade.actionsManager().runAction().trigger();
 }
 

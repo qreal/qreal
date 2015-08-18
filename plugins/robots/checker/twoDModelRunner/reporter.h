@@ -57,6 +57,12 @@ public slots:
 	/// Reports the error message reported to user during the interpretation process.
 	void addError(const QString &message);
 
+	/// Resets inner state for new interpretation instance.
+	void onInterpretationStart();
+
+	/// Finalizes reports when interpretation has finished.
+	void onInterpretationEnd();
+
 	/// Writes an information abount the new trajectory point into the given in constructor file.
 	/// @param robotId The id of the moved robot.
 	/// @param timestamp Count of milliseconds passed from the interpretation start when the event happened.
@@ -80,10 +86,12 @@ public slots:
 
 private:
 	QJsonValue variantToJson(const QVariant &value) const;
+	void report(const QString &message, const QScopedPointer<utils::OutFile> &file);
 
 	QList<QPair<Level, QString>> mMessages;
 	const QScopedPointer<utils::OutFile> mMessagesFile;
 	const QScopedPointer<utils::OutFile> mTrajectoryFile;
+	bool mFirstMessage;
 };
 
 }
