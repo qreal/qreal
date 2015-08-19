@@ -39,10 +39,7 @@ void WaitForSensorBlock::run()
 		connect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
 		connect(sensor, &robotParts::AbstractSensor::failure, this, &WaitForSensorBlock::failureSlot);
 		mActiveWaitingTimer->start();
-		if (sensor->port().reservedVariable().isEmpty()) {
-			// Sensors with non-empty reserved variables will be updated in background themselves.
-			sensor->read();
-		}
+		sensor->read();
 	} else {
 		mActiveWaitingTimer->stop();
 		error(tr("%1 is not configured on port %2").arg(device().friendlyName(), mPort.userFriendlyName()));
@@ -53,9 +50,8 @@ void WaitForSensorBlock::timerTimeout()
 {
 	/// @todo True horror.
 	robotParts::Device * const device = mRobotModel.configuration().device(mPort);
-	robotParts::ScalarSensor *sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
-	if (sensor && sensor->port().reservedVariable().isEmpty()) {
-		// Sensors with non-empty reserved variables will be updated in background themselves.
+	robotParts::ScalarSensor * const sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
+	if (sensor) {
 		sensor->read();
 	}
 }

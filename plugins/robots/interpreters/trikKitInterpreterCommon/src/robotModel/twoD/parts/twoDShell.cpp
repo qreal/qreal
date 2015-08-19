@@ -29,6 +29,7 @@ Shell::Shell(const kitBase::robotModel::DeviceInfo &info
 	, mEngine(engine)
 	, mErrorReporter(nullptr)
 {
+	connect(this, &Shell::phraseTold, this, [=](const QString &text) { emit propertyChanged("lastPhrase", text); });
 }
 
 void Shell::runCommand(const QString &command)
@@ -47,6 +48,8 @@ void Shell::say(const QString &text)
 	if (mErrorReporter) {
 		mErrorReporter->sendBubblingMessage(text, 4000, mEngine.guiFacade().separateTwoDModelWindow());
 	}
+
+	emit phraseTold(text);
 }
 
 void Shell::writeToFile(const QString &filePath, const QString &text)

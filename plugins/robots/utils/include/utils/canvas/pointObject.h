@@ -48,6 +48,7 @@ public:
 	QPoint pos() const;
 
 	void paint(QPainter *painter) override;
+	QJsonObject toJson() const override;
 
 private:
 	int mX;

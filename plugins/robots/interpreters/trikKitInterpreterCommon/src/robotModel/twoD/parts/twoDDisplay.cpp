@@ -14,7 +14,10 @@
 
 #include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h"
 
+#include <QtCore/QJsonArray>
+
 #include <utils/canvas/textObject.h>
+
 
 using namespace trik::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
@@ -31,6 +34,21 @@ Display::Display(const DeviceInfo &info
 	, mBackground(Qt::transparent)
 {
 	mEngine.display()->setPainter(this);
+
+	connect(this, &Display::backgroundChanged, this, [=](const QColor &color) {
+		emit propertyChanged("background", color);
+	});
+	connect(this, &Display::smileChanged, this, [=](bool smiles, bool happy) {
+		emit propertyChanged("smiles", smiles && happy);
+		emit propertyChanged("sadSmiles", smiles && !happy);
+	});
+	connect(this, &Display::shapesSetChanged, this, [=]() {
+		// This is a bit hacky, but shapes set may be modified pretty often, can be pretty large
+		// and its serialization to JSON may take notable time, so we don't want to do it without real need.
+		if (receivers(SIGNAL(propertyChanged(QString, QVariant)))) {
+			emit propertyChanged("objects", toJson());
+		}
+	});
 }
 
 QString Display::background() const
@@ -51,26 +69,31 @@ bool Display::sadSmiles() const
 void Display::drawPixel(int x, int y)
 {
 	Canvas::drawPixel(x, y);
+	emit shapesSetChanged();
 }
 
 void Display::drawLine(int x1, int y1, int x2, int y2)
 {
 	Canvas::drawLine(x1, y1, x2, y2);
+	emit shapesSetChanged();
 }
 
 void Display::drawRect(int x, int y, int width, int height)
 {
 	Canvas::drawRect(x, y, width, height);
+	emit shapesSetChanged();
 }
 
 void Display::drawEllipse(int x, int y, int width, int height)
 {
 	Canvas::drawEllipse(x, y, width, height);
+	emit shapesSetChanged();
 }
 
 void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)
 {
 	Canvas::drawArc(x, y, width, height, startAngle, spanAngle);
+	emit shapesSetChanged();
 }
 
 void Display::drawSmile(bool sad)
@@ -79,11 +102,13 @@ void Display::drawSmile(bool sad)
 	mSmiles = !sad;
 	mSadSmiles = sad;
 	mEngine.display()->repaintDisplay();
+	emit smileChanged(true, !sad);
 }
 
 void Display::setBackground(const QColor &color)
 {
 	mBackground = color;
+	emit backgroundChanged(color);
 }
 
 void Display::printText(int x, int y, const QString &text)
@@ -98,6 +123,8 @@ void Display::printText(int x, int y, const QString &text)
 		mLabelsMap[coords] = textObject;
 		mLabels << textObject;
 	}
+
+	emit shapesSetChanged();
 }
 
 void Display::clearScreen()
@@ -108,6 +135,9 @@ void Display::clearScreen()
 	mSadSmiles = false;
 	mLabelsMap.clear();
 	Canvas::reset();
+
+	emit smileChanged(false, false);
+	emit shapesSetChanged();
 }
 
 void Display::setPainterColor(const QColor &color)

@@ -14,6 +14,7 @@
 
 #include "utils/canvas/lineObject.h"
 
+#include <QtCore/QJsonObject>
 #include <QtGui/QPainter>
 
 using namespace utils;
@@ -60,4 +61,17 @@ void LineObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);
 	painter->drawLine(mBegin, mEnd);
+}
+
+QJsonObject LineObject::toJson() const
+{
+	return QJsonObject({
+		{ "type", "line" }
+		, { "x1", mBegin.x() }
+		, { "y1", mBegin.y() }
+		, { "x2", mEnd.x() }
+		, { "y2", mEnd.y() }
+		, { "color", color().name() }
+		, { "thickness", thickness() }
+	});
 }
