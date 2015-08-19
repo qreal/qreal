@@ -160,6 +160,7 @@ bool GuiFacade::isSubMenuInMenu(QMenu *menu, QAction *action) const
 
 QObject *GuiFacade::getMenuContainedByAction(QAction *action) const
 {
+	// it need because the bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373
 	emit action->menu()->aboutToShow();
 	return dynamic_cast<QObject *>(action->menu());
 }
@@ -201,7 +202,8 @@ void GuiFacade::activateMenuAction(QMenu *menu, QAction *actionForExec)
 //	QApplication::postEvent(&mMainWindow, mouseEvent);
 }
 
-//QRect GuiFacade::actionRect(QMenu *menu, QAction *action) const // быть может понадобится, если я буду выносить отдельно кликание
+// быть может понадобится, если я буду выносить отдельно кликание
+//QRect GuiFacade::actionRect(QMenu *menu, QAction *action) const
 //{
 //	return menu->setAct
 //}

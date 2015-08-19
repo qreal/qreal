@@ -86,7 +86,9 @@ public:
 
 	// НАСКОЛЬКО УМЕСТНО В ЭТОМ КЛАССЕ ПИСАТЬ МЕТОДЫ, КОТОРЫЕ КЛИКАЮТ ЧТО-ЛИБО?
 	Q_INVOKABLE void activateMenu(QMenu *menu);
-	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec); /// Use this method after opening of the assigned menu
+	/// Use this method after opening of the assigned menu
+	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec);
+
 
 	Q_INVOKABLE bool actionIsChecked(QAction *action) const;
 

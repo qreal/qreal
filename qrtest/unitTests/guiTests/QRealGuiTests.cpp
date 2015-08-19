@@ -424,10 +424,10 @@ TEST_F(QRealGuiTests, fileActionsExistence)
 //	runFromFile("hotKeysExistanceAndFunctioning.js");
 //}
 
-//TEST_F(QRealGuiTests, script1)
-//{
-//	runFromFile("script1.js");
-//}
+TEST_F(QRealGuiTests, script1)
+{
+	runFromFile("script1.js");
+}
 
 //TEST_F(QRealGuiTests, script2)
 //{
