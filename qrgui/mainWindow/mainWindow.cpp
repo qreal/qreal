@@ -251,8 +251,12 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
+	qDebug() << "calling connect with menuPanels";
 	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() {
 		mUi->menuPanels->clear();
+		for (const QAction *action : createPopupMenu()->actions()) {
+			qDebug() << action->text() << " " << action->objectName() << endl;
+		}
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
 

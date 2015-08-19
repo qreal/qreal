@@ -160,6 +160,7 @@ bool GuiFacade::isSubMenuInMenu(QMenu *menu, QAction *action) const
 
 QObject *GuiFacade::getMenuContainedByAction(QAction *action) const
 {
+	emit action->menu()->aboutToShow();
 	return dynamic_cast<QObject *>(action->menu());
 }
 
