@@ -57,7 +57,6 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 NullMainWindow::~NullMainWindow()
 {
 	delete mWindowWidget;
-	SettingsManager::instance()->saveData();
 }
 
 
