@@ -73,6 +73,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, configurer.qRealConfigurator().systemEvents()
 			, configurer.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
+			, configurer.qRealConfigurator().projectManager()
 			, configurer.interpreterControl());
 
 	mRealRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
