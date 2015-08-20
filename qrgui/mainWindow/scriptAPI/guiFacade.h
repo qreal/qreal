@@ -78,6 +78,7 @@ public:
 	// Может быть лучше "как-то зарегистрировать" полностью QAction, чтоб был доступ из скрипта ко всем методам?
 	Q_INVOKABLE QObject *getActionInMenu(QMenu *menu, const QString &actionName) const;
 
+	/// Need repeatedly to call this method (if again opens the menu) coz there the necessary signal is emitting
 	Q_INVOKABLE QObject *getMenuContainedByAction(QAction *action) const;
 
 	Q_INVOKABLE bool isSubMenuInMenu(QMenu *menu, QAction *action) const;

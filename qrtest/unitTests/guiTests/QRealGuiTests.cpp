@@ -47,7 +47,9 @@ QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 	}
 
 	if (!context->argument(0).toBool()) {
-		ADD_FAILURE() << "Fail at\n" // FAIL() должен быть, можно бросать исключение!!! // TODO! надо проверить, что будет, если просто бросать исключения. как тесты пойдут
+		ADD_FAILURE() << "Fail at\n" // FAIL() должен быть, можно бросать исключение!!!
+						 // TODO! надо проверить, что будет, если просто бросать исключения. как тесты пойдут
+						 // надо регистрировать исключения в engine походу
 				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
 	}
 
@@ -201,6 +203,7 @@ QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *e
 	QTimer::singleShot(mces, [=]() {
 		EXPECT_GT(mces, 0);
 		ASSERT_TRUE(mainWindow != nullptr);
+		// Может сделать более узко: QDialog?
 		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
 		ASSERT_FALSE(allDialogs.isEmpty());
 		for (int i = 0; i < allDialogs.length(); ++i) {
@@ -234,7 +237,7 @@ void QRealGuiTests::SetUp()
 
 	mainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
 	mainWindowScriptAPIInterface->registerNewFunction(scriptAddFailure, "failure");
-	mainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect"); // может стоит использовать? Kappa
 	mainWindowScriptAPIInterface->registerNewFunction(scriptCloseExpectedDialog, "closeExpectedDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов TODO: то же самое, что и лля другой
 	mainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "chooseExpectedDialogDiagram"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
 }
@@ -292,6 +295,7 @@ void QRealGuiTests::runFromFile(const QString &relativeFileName)
 	scriptFile.close();
 	run(contents);
 }
+
 // TODO: необходимо сменить ассерты на эксепты в нужных местах
 TEST_F(QRealGuiTests, sanityCheck)
 {
@@ -344,10 +348,10 @@ TEST_F(QRealGuiTests, settingsActionsExistence)
 //	runFromFile("tabSceneExistence.js");
 //}
 
-//TEST_F(QRealGuiTests, toolbarsElementsExistence)
-//{
-//	runFromFile("toolbarsElementsExistence.js");
-//}
+TEST_F(QRealGuiTests, toolbarsElementsExistence)
+{
+	runFromFile("toolbarsElementsExistence.js");
+}
 
 TEST_F(QRealGuiTests, toolsActionsExistence)
 {

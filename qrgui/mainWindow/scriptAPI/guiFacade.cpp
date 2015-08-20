@@ -135,10 +135,10 @@ bool GuiFacade::isEnabledAndVisible(QObject *obj) const
 {
 	QWidget *widget = dynamic_cast<QWidget *>(obj);
 	if (widget) {
-		return widget->isEnabled();
+		return widget->isEnabled() && widget->isVisible();
 	}
 	QAction *action = dynamic_cast<QAction *>(obj);
-	return action->isEnabled();
+	return action->isEnabled() && action->isVisible();
 }
 
 // тут сравниваются не только object names, но и или text() может так делать всегда?
