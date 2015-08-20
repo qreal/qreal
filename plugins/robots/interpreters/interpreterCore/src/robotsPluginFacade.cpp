@@ -152,7 +152,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	const qrRepo::LogicalRepoApi &repoApi = configurer.logicalModelApi().logicalRepoApi();
 
-	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged, this
 			, [this, &repoApi] (const qReal::TabInfo &info) {
 				Q_UNUSED(info);
 

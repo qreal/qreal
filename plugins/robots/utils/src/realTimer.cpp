@@ -18,6 +18,7 @@ using namespace utils;
 
 RealTimer::RealTimer()
 {
+	setRepeatable(false);
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 }
 
@@ -34,7 +35,6 @@ void RealTimer::start()
 void RealTimer::start(int ms)
 {
 	mTimer.setInterval(ms);
-	mTimer.setSingleShot(true);
 	mTimer.start();
 }
 
@@ -46,4 +46,9 @@ void RealTimer::stop()
 void RealTimer::setInterval(int ms)
 {
 	mTimer.setInterval(ms);
+}
+
+void RealTimer::setRepeatable(bool repeatable)
+{
+	mTimer.setSingleShot(!repeatable);
 }

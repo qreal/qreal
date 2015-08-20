@@ -32,16 +32,16 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Display : public robotModel::par
 {
 	Q_OBJECT
 	// Canvas cannot be QObject because of ambiguous base so we are forced to copy properties here.
-	Q_PROPERTY(QList<utils::CanvasObject *> objects READ objects)
-	Q_PROPERTY(QList<utils::PointObject *> pixels READ pixels)
-	Q_PROPERTY(QList<utils::LineObject *> segments READ segments)
-	Q_PROPERTY(QList<utils::RectangleObject *> rectangles READ rectangles)
-	Q_PROPERTY(QList<utils::EllipseObject *> ellipses READ ellipses)
-	Q_PROPERTY(QList<utils::ArcObject *> arcs READ arcs)
-	Q_PROPERTY(QList<utils::TextObject *> labels READ labels)
-	Q_PROPERTY(QString background READ background WRITE setBackground)
-	Q_PROPERTY(bool smiles READ smiles)
-	Q_PROPERTY(bool sadSmiles READ sadSmiles)
+	Q_PROPERTY(QList<utils::CanvasObject *> objects READ objects NOTIFY shapesSetChanged)
+	Q_PROPERTY(QList<utils::PointObject *> pixels READ pixels NOTIFY shapesSetChanged)
+	Q_PROPERTY(QList<utils::LineObject *> segments READ segments NOTIFY shapesSetChanged)
+	Q_PROPERTY(QList<utils::RectangleObject *> rectangles READ rectangles NOTIFY shapesSetChanged)
+	Q_PROPERTY(QList<utils::EllipseObject *> ellipses READ ellipses NOTIFY shapesSetChanged)
+	Q_PROPERTY(QList<utils::ArcObject *> arcs READ arcs NOTIFY shapesSetChanged)
+	Q_PROPERTY(QList<utils::TextObject *> labels READ labels NOTIFY shapesSetChanged)
+	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
+	Q_PROPERTY(bool smiles READ smiles NOTIFY smileChanged)
+	Q_PROPERTY(bool sadSmiles READ sadSmiles NOTIFY smileChanged)
 
 public:
 	Display(const kitBase::robotModel::DeviceInfo &info
@@ -71,6 +71,20 @@ public:
 	void paint(QPainter *painter) override;
 	void reset() override;
 	void redraw() override;
+
+signals:
+	/// Emitted when bacground color has changed.
+	/// @param color The current (new) color of the background, may be transparent.
+	void backgroundChanged(const QColor &color);
+
+	/// Emitted when smile appeared or disappeared on the robot`s screen.
+	/// @param smiles If true then some smile (sad or happy) is currently drawn on the screen.
+	/// If false -- there is no smile currently drawn.
+	/// @param happy False if sad smile is drawn, true if happy. If \a smiles argument is false then value is undefined.
+	void smileChanged(bool smiles, bool happy);
+
+	/// Emitted when new shape (ellipse, line, pencil, etc.) appeared or disappeared on the robot`s screen.
+	void shapesSetChanged();
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

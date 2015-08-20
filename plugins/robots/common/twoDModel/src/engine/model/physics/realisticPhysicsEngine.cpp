@@ -14,6 +14,8 @@
 
 #include "realisticPhysicsEngine.h"
 
+#include <QtCore/QtMath>
+
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
@@ -146,7 +148,7 @@ void RealisticPhysicsEngine::countTractionForceAndItsMoment(qreal speed1, qreal 
 
 void RealisticPhysicsEngine::recalculateVelocity(qreal timeInterval, RobotModel &robot)
 {
-	const qreal realAngularVelocityFrictionFactor = fabs(mAngularVelocity[&robot] * angularVelocityFrictionFactor);
+	const qreal realAngularVelocityFrictionFactor = qAbs(mAngularVelocity[&robot] * angularVelocityFrictionFactor);
 
 	mVelocity[&robot] += mTractionForce[&robot] / robot.info().mass() * timeInterval;
 	mAngularVelocity[&robot] += mForceMoment[&robot] / robotInertialMoment * timeInterval;
@@ -216,7 +218,7 @@ void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegi
 		const QLineF currentLine(startPoint, endPoint);
 
 		// Checking that current segment belongs to the wall path, not the robot one
-		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPrecision), false) {
+		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPrecision)) {
 			continue;
 		}
 
@@ -224,7 +226,7 @@ void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegi
 		const QVector2D atomicVector = QVector2D(endPoint - startPoint).normalized() * lengthAtom;
 
 		const qreal length = Geometry::distance(startPoint, endPoint);
-		const int fragmentsCount = ceil(length / lengthAtom);
+		const int fragmentsCount = qCeil(length / lengthAtom);
 
 		// If current line is too long then dividing it into small segments
 		for (int j = 0; j <= fragmentsCount; ++j) {

@@ -47,14 +47,22 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		, const qReal::SystemEvents &systemEvents
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, const qReal::ProjectManagementInterface &projectManager
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
 
-	const auto onActiveTabChanged = [this, &logicalModel, &interpretersInterface](const qReal::TabInfo &info)
+	const auto onActiveTabChanged = [this](const qReal::TabInfo &info)
 	{
-		mView->setEnabled(info.type() == qReal::TabInfo::TabType::editor);
-		const QString xml = logicalModel.logicalRepoApi().metaInformation("worldModel").toString();
+		mView->setEnabled(info.type() != qReal::TabInfo::TabType::other);
+	};
+
+	const auto reloadWorld = [this, &logicalModel, &interpretersInterface, &projectManager]()
+	{
+		QLOG_DEBUG() << "Reloading 2D world model...";
+		const QString xml = projectManager.somethingOpened()
+				? logicalModel.logicalRepoApi().metaInformation("worldModel").toString()
+				: QString();
 		QDomDocument worldModel;
 		QString errorMessage;
 		int errorLine, errorColumn;
@@ -66,9 +74,10 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		mView->loadXml(worldModel);
 
 		loadReadOnlyFlags(logicalModel);
+		QLOG_DEBUG() << "Reloading 2D world done";
 	};
 
-	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
+	const auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
 	{
 		connect(&eventsForKitPlugin, &kitBase::EventsForKitPluginInterface::interpretationStarted
 				, this, &twoDModel::TwoDModelControlInterface::onStartInterpretation
@@ -102,13 +111,15 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, &interpreterControl, &kitBase::InterpreterControlInterface::stopRobot);
 	};
 
-	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
+	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, this, reloadWorld);
+	connect(&projectManager, &qReal::ProjectManagementInterface::closed, this, reloadWorld);
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, onActiveTabChanged);
 
 	connect(mModel.data(), &model::Model::modelChanged, [this, &logicalModel] (const QDomDocument &xml) {
 		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
-	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); delete mDock; });
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, this, [=](){ mView.reset(); delete mDock; });
 
 	connect(&eventsForKitPlugin
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged

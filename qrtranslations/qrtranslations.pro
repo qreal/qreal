@@ -21,6 +21,11 @@ win32 {
 	DESTDIR ~= s,/,\,g
 	system(cmd /C "xcopy *.qm $$DESTDIR\\translations\\ /s /e /y")
 }
-else {
+
+unix:!macx {
 	system(mkdir -p $$DESTDIR/translations/; find ./ -name *.qm -exec cp --parents {} $$DESTDIR/translations \;)
+}
+
+macx {
+	system(mkdir -p $$DESTDIR/translations/; find ./ -name *.qm -exec rsync -R {} $$DESTDIR/translations \;)
 }

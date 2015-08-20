@@ -33,7 +33,7 @@ void ConsoleErrorReporter::addWarning(const QString &message, const Id &position
 void ConsoleErrorReporter::addError(const QString &message, const Id &position)
 {
 	Q_UNUSED(position)
-	qDebug() << QObject::tr("Error:") << qUtf8Printable(message);
+	qDebug() << qUtf8Printable(QObject::tr("Error:")) << qUtf8Printable(message);
 	mWereErrors = true;
 	emit errorAdded(message, position);
 }

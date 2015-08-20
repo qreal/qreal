@@ -62,7 +62,13 @@ signals:
 	void tick();
 	void nextFrame();
 
+	/// Emitted just before timeline will emit its first tick.
 	void started();
+
+	/// Emitted when timeline stop was requested, just before internal timers will stop.
+	void beforeStop();
+
+	/// Emitted just after timeline has stopped its ticking.
 	void stopped();
 
 	/// Emitted when timeline speed factor value changes.

@@ -22,6 +22,7 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <kitBase/devicesConfigurationProvider.h>
 #include <kitBase/eventsForKitPluginInterface.h>
 #include <kitBase/interpreterControlInterface.h>
@@ -48,6 +49,7 @@ public:
 			, const qReal::SystemEvents &systemEvents
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:

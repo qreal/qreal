@@ -17,6 +17,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace interpreterCore;
 
@@ -48,7 +49,7 @@ QString Customizer::aboutText() const
 
 QString Customizer::examplesDirectory() const
 {
-	return QApplication::applicationDirPath() + "/examples";
+	return qReal::PlatformInfo::applicationDirPath() + "/examples";
 }
 
 QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() const

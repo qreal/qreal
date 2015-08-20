@@ -48,13 +48,13 @@ void Model::init(qReal::ErrorReporterInterface &errorReporter
 	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
 		errorReporter.addInformation(tr("The task is accomplished!"));
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
-		// and they need scene to be alive (in checker stopping interpretation means deletting all).
+		// and they need scene to be alive (in checker stopping interpretation means deleting all).
 		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::fail, [&](const QString &message) {
 		errorReporter.addError(message);
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
-		// and they need scene to be alive (in checker stopping interpretation means deletting all).
+		// and they need scene to be alive (in checker stopping interpretation means deleting all).
 		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError, [&errorReporter](const QString &message) {

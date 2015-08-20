@@ -15,6 +15,7 @@
 #include "nxtFlashTool.h"
 
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
@@ -30,8 +31,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 		, mUploadState(done)
 {
 	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
-	environment.insert("QREALDIR", qApp->applicationDirPath());
-	environment.insert("QREALDIRPOSIX", qApp->applicationDirPath().remove(1, 1).prepend("/cygdrive/"));
+	environment.insert("QREALDIR", PlatformInfo::applicationDirPath());
+	environment.insert("QREALDIRPOSIX", PlatformInfo::applicationDirPath().remove(1, 1).prepend("/cygdrive/"));
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);
@@ -61,10 +62,10 @@ void NxtFlashTool::flashRobot()
 
 #ifdef Q_OS_WIN
 	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
-	mFlashProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/nexttool/");
-	mFlashProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/flash.bat");
+	mFlashProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/nexttool/");
+	mFlashProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.bat");
 #else
-	mFlashProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/flash.sh");
+	mFlashProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.sh");
 #endif
 
 	mErrorReporter->addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
@@ -74,8 +75,8 @@ void NxtFlashTool::runProgram(const QFileInfo &fileInfo)
 {
 	mSource = fileInfo;
 	mRunProcess.setEnvironment(QProcess::systemEnvironment());
-	mRunProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	mRunProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath()
+	mRunProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
+	mRunProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
 			+ "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
 			+ QString("%1_OSEK.rxe").arg(mSource.baseName()));
 }
@@ -142,13 +143,13 @@ void NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 	mSource = fileInfo;
 
 #ifdef Q_OS_WIN
-	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath()
+	mUploadProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
+	mUploadProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
 						 + "/nxt-tools/upload.bat " + fileInfo.baseName()
 						 + " " + fileInfo.absolutePath());
 #else
 	Q_UNUSED(fileInfo)
-	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
+	mUploadProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
 
 	mErrorReporter->addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));

@@ -142,11 +142,12 @@ bool ProjectManager::openProject(const QString &fileName)
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
 
+	mSomeProjectOpened = true;
+	QLOG_INFO() << "Opened project" << fileName;
+	QLOG_DEBUG() << "Sending after open signal...";
+
 	emit afterOpen(fileName);
 
-	mSomeProjectOpened = true;
-
-	QLOG_INFO() << "Opened project" << fileName;
 
 	return true;
 }

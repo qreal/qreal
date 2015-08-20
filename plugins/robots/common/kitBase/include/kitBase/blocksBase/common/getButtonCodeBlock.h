@@ -17,6 +17,13 @@
 #include <kitBase/blocksBase/common/waitBlock.h>
 
 namespace kitBase {
+
+namespace robotModel {
+namespace robotParts {
+class Button;
+}
+}
+
 namespace blocksBase {
 namespace common {
 
@@ -37,7 +44,7 @@ private:
 
 	void returnCode(int code);
 
-	QList<QString> mButtons;
+	QList<const robotModel::robotParts::Button *> mButtons;
 };
 
 }

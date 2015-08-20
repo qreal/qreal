@@ -18,6 +18,8 @@
 
 using namespace trik;
 
+#ifdef Q_OS_WIN
+
 const QString createTrikDirectory = "call mkdir -p /home/root/trik";
 const QString removePermissions = "call chmod a-x trik/trik*";
 const QString killTrikGui = "call killall -q trikGui || :";
@@ -25,19 +27,47 @@ const QString moveCommand = "synchronize remote trikRuntime /home/root/trik";
 const QString restorePermissions = "call chmod a+x trik/trik*";
 const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
 
+const QStringList commands = {
+		createTrikDirectory
+		, removePermissions
+		, killTrikGui
+		, moveCommand
+		, restorePermissions
+		, restartTrikGui
+};
+
+#else
+
+const QString preCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
+		"-oUserKnownHostsFile=/dev/null root@%IP% \""
+		"mkdir -p /home/root/trik; "
+		"chmod a-x trik/trik*; "
+		"killall -q trikGui"
+		"\"";
+
+const QString copyCommand = "scp -r -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
+		"-oUserKnownHostsFile=/dev/null %PATH%/trikRuntime/* root@%IP%:/home/root/trik";
+
+const QString postCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
+		"-oUserKnownHostsFile=/dev/null root@%IP% \""
+		"chmod a+x trik/trik*; "
+		"/bin/sh -c '/etc/trik/trikGui.sh &'"
+		"\"";
+
+const QStringList commands = {
+		preCopyCommand
+		, copyCommand
+		, postCopyCommand
+};
+
+#endif
+
 TrikV62RuntimeUploaderPlugin::TrikV62RuntimeUploaderPlugin()
 	: mUploaderTool(
 			tr("Upload Runtime")
 			, ":/trik/images/flashRobot.svg"
 			, "trikV62Kit"
-			, {
-					createTrikDirectory
-					, removePermissions
-					, killTrikGui
-					, moveCommand
-					, restorePermissions
-					, restartTrikGui
-					}
+			, commands
 			, QObject::tr("Attention! Started to download the runtime. This can take a minute or two."
 					" Please do not turn off the robot.")
 			, [](){ return qReal::SettingsManager::value("TrikTcpServer").toString(); }

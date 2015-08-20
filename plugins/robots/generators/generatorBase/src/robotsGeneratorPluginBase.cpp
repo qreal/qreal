@@ -16,6 +16,7 @@
 
 #include <QtCore/QDateTime>
 
+#include <qrkernel/platformInfo.h>
 #include <qrutils/inFile.h>
 #include <qrutils/nameNormalizer.h>
 #include <qrutils/parserErrorReporter.h>
@@ -55,7 +56,7 @@ QString RobotsGeneratorPluginBase::defaultProjectName() const
 
 bool RobotsGeneratorPluginBase::canGenerateTo(const QString &project)
 {
-	const QFileInfo fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
+	const QFileInfo fileInfo(PlatformInfo::applicationDirPath() + "/" + defaultFilePath(project));
 	const int difference = fileInfo.lastModified().toMSecsSinceEpoch() - fileInfo.created().toMSecsSinceEpoch();
 	return !fileInfo.exists() || difference < maxTimestampsDifference;
 }
@@ -99,7 +100,7 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 		++exampleNumber;
 	} while (!canGenerateTo(projectName));
 
-	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
+	QFileInfo fileInfo = QFileInfo(PlatformInfo::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {

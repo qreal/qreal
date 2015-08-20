@@ -50,6 +50,9 @@ public:
 	/// must be called to set pen and brush correctly.
 	virtual void paint(QPainter *painter);
 
+	/// Override must serialize current canvas object state into the instance of JSON object.
+	virtual QJsonObject toJson() const = 0;
+
 private:
 	QPen mPen;
 };

@@ -168,7 +168,7 @@ const RobotModel::Wheel &RobotModel::rightWheel() const
 	return *mMotors[mWheelsToMotorPortsMap[right]];
 }
 
-twoDModel::robotModel::TwoDRobotModel &RobotModel::info()
+twoDModel::robotModel::TwoDRobotModel &RobotModel::info() const
 {
 	return mRobotModel;
 }

@@ -88,7 +88,7 @@ public:
 	const Wheel &rightWheel() const;
 
 	/// Returns a reference to external robot description.
-	robotModel::TwoDRobotModel &info();
+	robotModel::TwoDRobotModel &info() const;
 
 	int readEncoder(const kitBase::robotModel::PortInfo &port) const;
 	void resetEncoder(const kitBase::robotModel::PortInfo &port);
