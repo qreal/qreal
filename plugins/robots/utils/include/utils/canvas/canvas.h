@@ -105,6 +105,9 @@ public:
 	/// call of setPainterWidth.
 	virtual void setPainterWidth(int penWidth);
 
+	/// Serializes shapes into one big JSON array and returns it.
+	QJsonArray toJson() const;
+
 	void paint(QPainter *painter) override;
 
 protected:

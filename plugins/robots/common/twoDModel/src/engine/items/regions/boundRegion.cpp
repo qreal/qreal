@@ -18,14 +18,16 @@
 
 using namespace twoDModel::items;
 
-int defaultStroke = 0;
+const int defaultStroke = 0;
 
-BoundRegion::BoundRegion(QGraphicsItem const &boundItem, const QString &boundId, QGraphicsItem *parent)
+BoundRegion::BoundRegion(const QGraphicsObject &boundItem, const QString &boundId, QGraphicsItem *parent)
 	: RegionItem(parent)
 	, mBoundItem(boundItem)
 	, mBoundId(boundId)
 	, mStroke(defaultStroke)
 {
+	// We should dispose this item if bound item is deleted.
+	connect(&mBoundItem, &QObject::destroyed, this, &QObject::deleteLater);
 }
 
 int BoundRegion::stroke() const

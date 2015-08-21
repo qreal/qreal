@@ -194,7 +194,6 @@ void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)
 {
 	const auto robotModel = dynamic_cast<kitBase::robotModel::RobotModelInterface *>(robotModelObject);
 	mRobotModelManager.setModel(robotModel);
-	onRobotModelChanged(*robotModel);
 }
 
 QString ActionsManager::kitIdOf(kitBase::robotModel::RobotModelInterface &model) const

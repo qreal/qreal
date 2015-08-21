@@ -61,6 +61,10 @@ signals:
 	/// performed by Device class.
 	void configured(bool success);
 
+	/// Emitted when of the value of device`s \a property has changed to \a value.
+	/// The device itself may notify other components about its inner state via this signal.
+	void propertyChanged(const QString &property, const QVariant &value);
+
 protected:
 	/// Perform actual configuration of a device. Shall be implemented for concrete devices with non-trivial
 	/// configuration logic default implementation tells that device is already configured.

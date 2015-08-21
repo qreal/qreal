@@ -36,6 +36,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
@@ -143,8 +144,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	splashScreen.setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
-		resize(SettingsManager::value("size").toSize());
-		move(SettingsManager::value("pos").toPoint());
+		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
 	} else {
 		showMaximized();
 	}
@@ -328,8 +328,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
-	SettingsManager::setValue("size", size());
-	SettingsManager::setValue("pos", pos());
+	SettingsManager::setValue("mainWindowGeometry", saveGeometry());
 
 	QLOG_INFO() << "Closing main window...";
 	emit mFacade.events().closedMainWindow();
@@ -703,7 +702,7 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	const QString url = QString("file:///%1/help/index.html").arg(QApplication::applicationDirPath());
+	const QString url = QString("file:///%1/help/index.html").arg(PlatformInfo::applicationDirPath());
 	QDesktopServices::openUrl(QUrl(url));
 }
 

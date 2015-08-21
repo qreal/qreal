@@ -151,7 +151,7 @@ AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(const Id &id)
 		if (mLogicalApi.editorManagerInterface().isGraphicalElementNode(child)) {
 			result->addPreAction(graphicalDeleteCommand(child));
 		} else {
-			// Edges are deletted first
+			// Edges are deleted first
 			result->insertPreAction(graphicalDeleteCommand(child), 0);
 		}
 	}

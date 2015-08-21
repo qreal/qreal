@@ -18,6 +18,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 #include "qrgui/systemFacade/components/projectManager.h"
 
@@ -83,7 +84,7 @@ QString Autosaver::autosaveFilePath(const QString &currentFilePath) const
 	const QFileInfo currentProject(currentFilePath);
 	const QString autosaveDirectory = currentProject.absoluteDir().exists()
 			? currentProject.absolutePath()
-			: QApplication::applicationDirPath();
+			: PlatformInfo::applicationDirPath();
 	const QString currentFileName = currentProject.fileName();
 	const QString autosaveFile = currentFileName.startsWith("~")
 			? currentFileName : "~" + currentFileName;
@@ -93,7 +94,7 @@ QString Autosaver::autosaveFilePath(const QString &currentFilePath) const
 QString Autosaver::tempFilePath() const
 {
 	return QString("%1/%2.qrs").arg(
-			QApplication::applicationDirPath()
+			PlatformInfo::applicationDirPath()
 			, SettingsManager::value("AutosaveTempFile").toString());
 }
 

@@ -17,9 +17,10 @@
 #include <QtCore/QProcess>
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
-#include <qrkernel/logging.h>
 
 using namespace trik;
 
@@ -31,7 +32,8 @@ UploaderTool::UploaderTool(
 		, const QString &startedMessage
 		, const std::function<QString()> robotIpGetter
 		)
-	: mAction(new QAction(QIcon(icon), actionName, nullptr))
+	: mMainWindowInterface(nullptr)
+	, mAction(new QAction(QIcon(icon), actionName, nullptr))
 	, mCommands(commands)
 	, mStartedMessage(startedMessage)
 	, mRobotIpGetter(robotIpGetter)
@@ -40,9 +42,9 @@ UploaderTool::UploaderTool(
 	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == kit);
 	qReal::SettingsListener::listen("SelectedRobotKit", [this, kit](const QString selectedKit) {
 		mAction->setVisible(selectedKit == kit);
-	});
+	}, this);
 
-	mProcess.setWorkingDirectory(QApplication::applicationDirPath());
+	mProcess.setWorkingDirectory(qReal::PlatformInfo::applicationDirPath());
 	connect(&mProcess, &QProcess::started, this, &UploaderTool::onUploadStarted);
 	connect(&mProcess, static_cast<void(QProcess::*)(QProcess::ProcessError)>(&QProcess::error)
 			, this, &UploaderTool::onUploadError);
@@ -50,6 +52,14 @@ UploaderTool::UploaderTool(
 			, this, &UploaderTool::onUploadFinished);
 	connect(&mProcess, &QProcess::readyReadStandardOutput, this, &UploaderTool::onUploadStdOut);
 	connect(&mProcess, &QProcess::readyReadStandardError, this, &UploaderTool::onUploadStdErr);
+}
+
+UploaderTool::~UploaderTool()
+{
+	mMainWindowInterface = nullptr;
+	disconnect(&mProcess);
+	disconnect(this);
+	mProcess.terminate();
 }
 
 void UploaderTool::init(qReal::gui::MainWindowInterpretersInterface &mainWindowInterface)
@@ -66,15 +76,19 @@ void UploaderTool::uploadRuntime()
 {
 	if (mProcess.state() != QProcess::NotRunning) {
 		QLOG_WARN() << "Attempted to upload during uploading!";
-		mMainWindowInterface->errorReporter()->addInformation("Uploading is already running.");
+		if (mMainWindowInterface) {
+			mMainWindowInterface->errorReporter()->addInformation("Uploading is already running.");
+		}
+
 		return;
 	}
 
+#ifdef Q_OS_WIN
 	const QString openConnection = QString("open scp://root@%1 -hostkey=*").arg(mRobotIpGetter());
 
-	const QString rawWinscpPath = qReal::SettingsManager::value("WinScpPath").toString();
-	const QString winscpPath = rawWinscpPath.startsWith("./")
-			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
+	const QString winscpPath = qReal::SettingsManager::value("WinScpPath").toString();
+	const QString uploaderPath = rawWinscpPath.startsWith("./")
+			? qReal::PlatformInfo::applicationDirPath() + rawWinscpPath.mid(1)
 			: rawWinscpPath;
 
 	QStringList args = {"/command", openConnection};
@@ -83,18 +97,40 @@ void UploaderTool::uploadRuntime()
 
 	args << "exit";
 
-	QLOG_INFO() << "TRIK Runtime uploading is about to start. Path:" << winscpPath << "Args: " << args;
-	mProcess.start(winscpPath, args);
+#else
+	if (!checkUnixToolsExist()) {
+		return;
+	}
+
+	const QString uploaderPath = "bash";
+	QStringList actions;
+	for (QString command /* Not by const reference cause it will be modified next line */ : mCommands) {
+		actions << command
+				.replace("%IP%", mRobotIpGetter())
+				.replace("%PATH%", qReal::PlatformInfo::applicationDirPath())
+				.replace("%SSH_TIMEOUT%", qReal::SettingsManager::value("sshTimeout").toString());
+	}
+#endif
+
+	const QStringList args = { "-x", "-c", actions.join("; ") };
+	QLOG_INFO() << "TRIK Runtime uploading is about to start. Path:" << uploaderPath << "Args: " << args;
+	mProcess.start(uploaderPath, args);
 }
 
 void UploaderTool::onUploadStarted()
 {
-	mMainWindowInterface->errorReporter()->addWarning(mStartedMessage);
 	QLOG_INFO() << "TRIK Runtime uploading process started successfully...";
+	if (mMainWindowInterface) {
+		mMainWindowInterface->errorReporter()->addWarning(mStartedMessage);
+	}
 }
 
 void UploaderTool::onUploadError(QProcess::ProcessError reason)
 {
+	if (!mMainWindowInterface) {
+		return;
+	}
+
 	if (reason == QProcess::FailedToStart) {
 		QLOG_ERROR() << "TRIK Runtime uploading process failed to start! Details:" << mProcess.errorString();
 		mMainWindowInterface->errorReporter()->addError(tr("WinSCP process failed to launch, check path in settings."));
@@ -106,6 +142,10 @@ void UploaderTool::onUploadError(QProcess::ProcessError reason)
 
 void UploaderTool::onUploadFinished(int exitCode)
 {
+	if (!mMainWindowInterface) {
+		return;
+	}
+
 	if (exitCode == 0) {
 		QLOG_INFO() << "TRIK Runtime uploading process successfully finished.";
 		mMainWindowInterface->errorReporter()->addInformation(tr("Uploaded successfully!"));
@@ -123,4 +163,25 @@ void UploaderTool::onUploadStdOut()
 void UploaderTool::onUploadStdErr()
 {
 	QLOG_DEBUG() << mProcess.readAllStandardError();
+}
+
+bool UploaderTool::checkUnixToolsExist()
+{
+	return checkUnixToolExist("ssh", { "-V" }) && checkUnixToolExist("scp", {});
+}
+
+bool UploaderTool::checkUnixToolExist(const QString &name, const QStringList &args)
+{
+	QLOG_DEBUG() << "Starting" << qPrintable(name) << args;
+	QProcess tool;
+	connect(&tool, &QProcess::readyReadStandardOutput, [&tool]() { QLOG_DEBUG() << tool.readAllStandardOutput(); });
+	connect(&tool, &QProcess::readyReadStandardError, [&tool]() { QLOG_DEBUG() << tool.readAllStandardError(); });
+	tool.start(name, args);
+	if (!tool.waitForFinished()) {
+		QLOG_ERROR() << qPrintable(name) << "failed to start; error: " << tool.errorString();
+		mMainWindowInterface->errorReporter()->addError(tr("%1 is not installed. Please install %1 first.").arg(name));
+		return false;
+	}
+
+	return true;
 }

@@ -319,9 +319,10 @@ void WorldModel::deserialize(const QDomElement &element)
 			item = new items::RectangularRegion;
 		} else if (type == "bound") {
 			const QString id = regionNode.attribute("boundItem");
-			QGraphicsItem const *boundItem = findId(id);
+			const QGraphicsObject *boundItem = findId(id);
 			if (boundItem) {
 				item = new items::BoundRegion(*boundItem, id);
+				connect(item, &QObject::destroyed, this, [this, item]() { mRegions.removeAll(item); });
 			} /// @todo: else report error
 		}
 
@@ -333,7 +334,7 @@ void WorldModel::deserialize(const QDomElement &element)
 	}
 }
 
-QGraphicsItem *WorldModel::findId(const QString &id)
+QGraphicsObject *WorldModel::findId(const QString &id) const
 {
 	if (id.isEmpty()) {
 		return nullptr;

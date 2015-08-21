@@ -48,6 +48,7 @@ Runner::Runner(const QString &report, const QString &trajectory)
 
 Runner::~Runner()
 {
+	mReporter.onInterpretationEnd();
 	mReporter.reportMessages();
 }
 
@@ -77,13 +78,27 @@ void Runner::interpret(const QString &saveFile, bool background)
 	for (view::TwoDModelWidget * const  twoDModelWindow : twoDModelWindows) {
 		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
-		for (model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
-			connect(robotModel, &model::RobotModel::positionRecalculated
-					, this, &Runner::onRobotRided, Qt::UniqueConnection);
+		for (const model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
+			connectRobotModel(robotModel);
 		}
 	}
 
+	mReporter.onInterpretationStart();
 	mPluginFacade.actionsManager().runAction().trigger();
+}
+
+void Runner::connectRobotModel(const model::RobotModel *robotModel)
+{
+	connect(robotModel, &model::RobotModel::positionRecalculated
+			, this, &Runner::onRobotRided, Qt::UniqueConnection);
+
+	connect(&robotModel->info().configuration(), &kitBase::robotModel::ConfigurationInterface::deviceConfigured
+			, this, [=](const kitBase::robotModel::robotParts::Device *device) {
+		connect(device, &kitBase::robotModel::robotParts::Device::propertyChanged, this
+				, [=](const QString &property, const QVariant &value) {
+			onDeviceStateChanged(robotModel->info().robotId(), device, property, value);
+		});
+	});
 }
 
 void Runner::onRobotRided(const QPointF &newPosition, const qreal newRotation)
@@ -93,5 +108,19 @@ void Runner::onRobotRided(const QPointF &newPosition, const qreal newRotation)
 			, mPluginFacade.interpreter().timeElapsed()
 			, newPosition
 			, newRotation
-	);
+			);
+}
+
+void Runner::onDeviceStateChanged(const QString &robotId
+		, const kitBase::robotModel::robotParts::Device *device
+		, const QString &property
+		, const QVariant &value)
+{
+	mReporter.newDeviceState(robotId
+			, mPluginFacade.interpreter().timeElapsed()
+			, device->deviceInfo().name()
+			, device->port().name()
+			, property
+			, value
+			);
 }

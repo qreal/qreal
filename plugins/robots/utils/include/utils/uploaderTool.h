@@ -47,6 +47,7 @@ public:
 			, const QString &startedMessage
 			, const std::function<QString()> robotIpGetter
 			);
+	~UploaderTool();
 
 	/// Initializes uploader. Must be called before action is triggered.
 	void init(qReal::gui::MainWindowInterpretersInterface &mainWindowInterface);
@@ -64,6 +65,9 @@ private slots:
 	void onUploadStdErr();
 
 private:
+	bool checkUnixToolsExist();
+	bool checkUnixToolExist(const QString &name, const QStringList &args);
+
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 	QAction *mAction;  // Doesn't have ownership; may be disposed by GUI.
 	QStringList mCommands;

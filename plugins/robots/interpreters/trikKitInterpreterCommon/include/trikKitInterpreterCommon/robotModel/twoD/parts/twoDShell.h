@@ -37,7 +37,7 @@ namespace parts {
 class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Shell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
-	Q_PROPERTY(QString lastPhrase READ lastPhrase WRITE say)
+	Q_PROPERTY(QString lastPhrase READ lastPhrase WRITE say NOTIFY phraseTold)
 
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
@@ -56,6 +56,13 @@ public:
 
 	/// Returns the value passed to say() method last time or empty string if it was not called at the moment.
 	QString lastPhrase() const;
+
+	/// Resets shell instance preparing it to new interpretation time.
+	void reset();
+
+signals:
+	/// Emitted when robot starts speaking some phrase; the told text is passed as argument.
+	void phraseTold(const QString &text);
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

@@ -161,7 +161,7 @@ SensorsConfiguration &RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
-twoDModel::robotModel::TwoDRobotModel &RobotModel::info()
+twoDModel::robotModel::TwoDRobotModel &RobotModel::info() const
 {
 	return mRobotModel;
 }

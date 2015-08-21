@@ -28,6 +28,7 @@ WaitBlock::WaitBlock(RobotModelInterface &robotModel)
 	mActiveWaitingTimer.reset(robotModel.timeline().produceTimer());
 	connect(mActiveWaitingTimer.data(), &utils::AbstractTimer::timeout, this, &WaitBlock::timerTimeout);
 	mActiveWaitingTimer->setInterval(20);
+	mActiveWaitingTimer->setRepeatable(true);
 }
 
 WaitBlock::~WaitBlock()

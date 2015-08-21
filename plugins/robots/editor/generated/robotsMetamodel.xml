@@ -2364,7 +2364,7 @@
 						<image y1="0" name="images/brushColorBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-35" text="Color:" hard="true" prefix="Color:"/>
+						<label x="25" y="-35" hard="true" prefix="Color:" textBinded="Color"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>

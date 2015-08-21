@@ -80,7 +80,6 @@ QString SdfRenderer::render()
 	current_size_y = first_size_y;
 	mStartX = static_cast<int>(bounds.x());
 	mStartY = static_cast<int>(bounds.y());
-	this->painter = painter;
 	QDomElement docElem = doc.documentElement();
 	QDomNode node = docElem.firstChild();
 	while(!node.isNull())
