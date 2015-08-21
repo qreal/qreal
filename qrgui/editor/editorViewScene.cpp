@@ -697,7 +697,9 @@ void EditorViewScene::deleteSelectedItems()
 		}
 	}
 
-	deleteElements(idsToDelete);
+	if (!idsToDelete.isEmpty()) {
+		deleteElements(idsToDelete);
+	}
 }
 
 void EditorViewScene::deleteElements(IdList &idsToDelete)
