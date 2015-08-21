@@ -26,7 +26,6 @@
 #include <qrkernel/ids.h>
 #include <../../../qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <../../../qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
-#include <../../../qrgui/mainwindow/errorReporter.h>
 #include <../qrgui/preferencesDialog/preferencesPages/behaviourPage.h>
 
 #include "databasesPreferencesPage.h"
