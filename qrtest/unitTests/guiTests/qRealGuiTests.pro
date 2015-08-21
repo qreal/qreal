@@ -26,11 +26,10 @@ SOURCES += \
 	$$PWD/startQreal.cpp \
 
 
-# in Existence we checks initial states of suitable elements
-# in Functionung we checks the correct work of suitable elements with preparing some actions
-# in Scripts we checks the correct work of the complicated sequence of actions
+# in Existence checks initial states of required elements
+# in Functioning checks the correct work of required elements after some preparing actions
+# in Scripts checks the correct work of the complicated sequence of actions
 OTHER_FILES += \
-	$$PWD/testScripts/qrealScripts/startElementsStateChecking.js \
 	$$PWD/testScripts/qrealScripts/editActionsExistence.js \
 	$$PWD/testScripts/qrealScripts/editActionsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/fileActionsExistence.js \
@@ -39,16 +38,14 @@ OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/findDialogElementsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/helpActionsExistence.js \
 	$$PWD/testScripts/qrealScripts/helpActionsFunctioning.js \
-	$$PWD/testScripts/qrealScripts/mainPanelsElementsExistence.js \
-	$$PWD/testScripts/qrealScripts/mainPanelsElementsFunctioning.js \
+	$$PWD/testScripts/qrealScripts/dockWidgetsExistence.js \
+	$$PWD/testScripts/qrealScripts/dockWidgetsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/mouseGesturesElementsExistence.js \
-	$$PWD/testScripts/qrealScripts/mouseGesturesElementsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/preferenceDialogElementsExistence.js \
 	$$PWD/testScripts/qrealScripts/preferenceDialogElementsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/settingsActionsExistence.js \
 	$$PWD/testScripts/qrealScripts/settingsActionsFunctioning.js \
-	$$PWD/testScripts/qrealScripts/tabSceneExistence.js \
-	$$PWD/testScripts/qrealScripts/tabSceneFunctioning.js \
+	$$PWD/testScripts/qrealScripts/tabSceneWorkScript.js \
 	$$PWD/testScripts/qrealScripts/toolbarsElementsExistence.js \
 	$$PWD/testScripts/qrealScripts/toolbarsElementsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/toolsActionsExistence.js \

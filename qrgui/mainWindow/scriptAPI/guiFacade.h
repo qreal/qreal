@@ -37,7 +37,7 @@ public:
 	explicit GuiFacade(MainWindow &mainWindow);
 
 	/// Returns main window child widget by its type (class name) and QObject name.
-	/// Doesnt work with QMenu. Use activateMenu
+	/// @note Doesnt work for QMenu. Use activateMenu instead
 	Q_INVOKABLE QWidget *widget(const QString &type, const QString &name = QString()) const;
 
 	/// Returns a widget of some action on the toolbar panel.
@@ -87,7 +87,7 @@ public:
 
 	// НАСКОЛЬКО УМЕСТНО В ЭТОМ КЛАССЕ ПИСАТЬ МЕТОДЫ, КОТОРЫЕ КЛИКАЮТ ЧТО-ЛИБО?
 	Q_INVOKABLE void activateMenu(QMenu *menu);
-	/// Use this method after opening of the assigned menu
+	/// @warning Use this method only after opening of the assigned menu
 	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec);
 
 

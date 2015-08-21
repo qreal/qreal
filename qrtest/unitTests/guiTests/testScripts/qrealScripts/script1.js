@@ -30,7 +30,7 @@ var actionMiniMap = api.ui().getActionInMenu(subMenuPanels, "Mini Map");
 assert(actionMiniMap != null);
 assert(api.ui().isEnabledAndVisible(actionMiniMap));
 assert(api.ui().actionIsCheckable(actionMiniMap));
-assert(api.ui().actionIsChecked(actionMiniMap));
+assert(!api.ui().actionIsChecked(actionMiniMap));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionMiniMap));
 
 var actionPalette = api.ui().getActionInMenu(subMenuPanels, "Palette");
@@ -45,7 +45,7 @@ var actionLogicalExplorer = api.ui().getActionInMenu(subMenuPanels, "Logical Mod
 assert(actionLogicalExplorer != null);
 assert(api.ui().isEnabledAndVisible(actionLogicalExplorer));
 assert(api.ui().actionIsCheckable(actionLogicalExplorer));
-assert(api.ui().actionIsChecked(actionLogicalExplorer));
+assert(!api.ui().actionIsChecked(actionLogicalExplorer));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionLogicalExplorer));
 
 
@@ -61,7 +61,7 @@ var actionGraphicalExplorer = api.ui().getActionInMenu(subMenuPanels, "Graphical
 assert(actionGraphicalExplorer != null);
 assert(api.ui().isEnabledAndVisible(actionGraphicalExplorer));
 assert(api.ui().actionIsCheckable(actionGraphicalExplorer));
-assert(api.ui().actionIsChecked(actionGraphicalExplorer));
+assert(!api.ui().actionIsChecked(actionGraphicalExplorer));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionGraphicalExplorer));
 
 
@@ -69,7 +69,7 @@ var actionProperty = api.ui().getActionInMenu(subMenuPanels, "Property Editor");
 assert(actionProperty != null);
 assert(api.ui().isEnabledAndVisible(actionProperty));
 assert(api.ui().actionIsCheckable(actionProperty));
-assert(api.ui().actionIsChecked(actionProperty));
+assert(!api.ui().actionIsChecked(actionProperty));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionProperty));
 
 
@@ -133,7 +133,7 @@ actionMiniMap = api.ui().getActionInMenu(subMenuPanels, "Mini Map");
 assert(actionMiniMap != null);
 assert(api.ui().isEnabledAndVisible(actionMiniMap));
 assert(api.ui().actionIsCheckable(actionMiniMap));
-assert(!api.ui().actionIsChecked(actionMiniMap));
+assert(api.ui().actionIsChecked(actionMiniMap));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionMiniMap));
 
 actionPalette = api.ui().getActionInMenu(subMenuPanels, "Palette");
@@ -148,7 +148,7 @@ actionLogicalExplorer = api.ui().getActionInMenu(subMenuPanels, "Logical Model E
 assert(actionLogicalExplorer != null);
 assert(api.ui().isEnabledAndVisible(actionLogicalExplorer));
 assert(api.ui().actionIsCheckable(actionLogicalExplorer));
-assert(!api.ui().actionIsChecked(actionLogicalExplorer));
+assert(api.ui().actionIsChecked(actionLogicalExplorer));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionLogicalExplorer));
 
 
@@ -164,7 +164,7 @@ actionGraphicalExplorer = api.ui().getActionInMenu(subMenuPanels, "Graphical Mod
 assert(actionGraphicalExplorer != null);
 assert(api.ui().isEnabledAndVisible(actionGraphicalExplorer));
 assert(api.ui().actionIsCheckable(actionGraphicalExplorer));
-assert(!api.ui().actionIsChecked(actionGraphicalExplorer));
+assert(api.ui().actionIsChecked(actionGraphicalExplorer));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionGraphicalExplorer));
 
 
@@ -172,7 +172,7 @@ actionProperty = api.ui().getActionInMenu(subMenuPanels, "Property Editor");
 assert(actionProperty != null);
 assert(api.ui().isEnabledAndVisible(actionProperty));
 assert(api.ui().actionIsCheckable(actionProperty));
-assert(!api.ui().actionIsChecked(actionProperty));
+assert(api.ui().actionIsChecked(actionProperty));
 assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionProperty));
 
 
@@ -221,6 +221,14 @@ var actionErrors = api.ui().getActionInMenu(subMenuPanels, "Errors");
 api.ui().activateMenuAction(subMenuPanels, actionErrors);
 
 // changes the fullscreen mode and checks the "Error" action
+api.ui().activateMenu(menu_View);
+api.ui().activateMenuAction(menu_View, actionFullscreen);
+api.wait(300);
+
+api.ui().activateMenu(menu_View);
+api.wait(200);
+
+// changes the second time
 api.ui().activateMenu(menu_View);
 api.ui().activateMenuAction(menu_View, actionFullscreen);
 api.wait(300);
