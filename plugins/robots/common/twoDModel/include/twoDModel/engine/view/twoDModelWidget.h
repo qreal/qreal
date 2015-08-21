@@ -225,6 +225,7 @@ private:
 	bool mFirstShow = true;
 
 	bool mSensorsReadOnly = false;
+	bool mRobotPositionReadOnly = false;
 
 	bool mCompactMode = false;
 };

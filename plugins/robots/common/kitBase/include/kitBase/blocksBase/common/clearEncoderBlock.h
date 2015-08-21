@@ -42,7 +42,7 @@ public:
 
 private:
 	/// Splits value of "Ports" property by "," and finds corresponding encoders in a model.
-	QList<robotModel::robotParts::EncoderSensor *> parsePorts() const;
+	QList<robotModel::robotParts::EncoderSensor *> parsePorts();
 
 	robotModel::RobotModelInterface &mRobotModel;
 };

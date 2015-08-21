@@ -1785,7 +1785,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="TrikV6EncoderPort" name="Port">
-							<default>B1</default>
+							<default>B3</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
 						<property displayedName="Sign" type="DistanceSign" name="Sign">
@@ -2777,7 +2777,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="TrikV62EncoderPort" name="Port">
-							<default>E1</default>
+							<default>E3</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
 						<property displayedName="Sign" type="DistanceSign" name="Sign">

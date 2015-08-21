@@ -109,43 +109,51 @@ void Block::finishedRunning()
 	mState = idle;
 }
 
-QVariant Block::property(const QString &propertyName) const
+QVariant Block::property(const QString &propertyName)
 {
 	return property(id(), propertyName);
 }
 
-QString Block::stringProperty(const QString &propertyName) const
+QString Block::stringProperty(const QString &propertyName)
 {
 	return stringProperty(id(), propertyName);
 }
 
-int Block::intProperty(const QString &propertyName) const
+int Block::intProperty(const QString &propertyName)
 {
 	return intProperty(id(), propertyName);
 }
 
-bool Block::boolProperty(const QString &propertyName) const
+bool Block::boolProperty(const QString &propertyName)
 {
 	return boolProperty(id(), propertyName);
 }
 
-QVariant Block::property(const Id &id, const QString &propertyName) const
+QVariant Block::property(const Id &id, const QString &propertyName)
 {
 	const Id logicalId = mGraphicalModelApi->logicalId(id);
+	if (logicalId.isNull()) {
+		// If we get here we definitely have such situation:
+		// graphical id existed when this Block instance was constructed (or we just will not get here),
+		// but now the logical instance has suddenly disppeared.
+		error(tr("Block has disappeared!"));
+		return QVariant();
+	}
+
 	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);
 }
 
-QString Block::stringProperty(const Id &id, const QString &propertyName) const
+QString Block::stringProperty(const Id &id, const QString &propertyName)
 {
 	return property(id, propertyName).toString();
 }
 
-int Block::intProperty(const Id &id, const QString &propertyName) const
+int Block::intProperty(const Id &id, const QString &propertyName)
 {
 	return property(id, propertyName).toInt();
 }
 
-bool Block::boolProperty(const Id &id, const QString &propertyName) const
+bool Block::boolProperty(const Id &id, const QString &propertyName)
 {
 	return property(id, propertyName).toBool();
 }
