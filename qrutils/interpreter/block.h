@@ -68,28 +68,28 @@ protected:
 	Block();
 
 	/// Returns a property of current block with given name as QVariant.
-	QVariant property(const QString &propertyName) const;
+	QVariant property(const QString &propertyName);
 
 	/// Returns a property of current block with given name as QString.
-	QString stringProperty(const QString &propertyName) const;
+	QString stringProperty(const QString &propertyName);
 
 	/// Returns a property of current block with given name as int, or 0 if it can't be converted to int.
-	int intProperty(const QString &propertyName) const;
+	int intProperty(const QString &propertyName);
 
 	/// Returns a property of current block with given name as bool, or "false" if it can't be converted to bool.
-	bool boolProperty(const QString &propertyName) const;
+	bool boolProperty(const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as QVariant.
-	QVariant property(const qReal::Id &id, const QString &propertyName) const;
+	QVariant property(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as QString.
-	QString stringProperty(const qReal::Id &id, const QString &propertyName) const;
+	QString stringProperty(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as int, or 0 if it can't be converted to int.
-	int intProperty(const qReal::Id &id, const QString &propertyName) const;
+	int intProperty(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as bool, or "false" if it can't be converted to bool.
-	bool boolProperty(const qReal::Id &id, const QString &propertyName) const;
+	bool boolProperty(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property of current block with given name as color.
 	QColor propertyToColor(const QString &property) const;

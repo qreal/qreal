@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>QObject</name>
     <message>
@@ -69,7 +69,7 @@
         <translation>Division entière par zéro</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="498"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="502"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
@@ -128,6 +128,11 @@
         <source>Outgoing link is not connected</source>
         <translation>Le lien sortant n&apos;est pas connecté</translation>
     </message>
+    <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="139"/>
+        <source>Block has disappeared!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>qReal::interpretation::Interpreter</name>
@@ -163,6 +168,11 @@
         <location filename="../../qrutils/interpreter/thread.cpp" line="118"/>
         <source>Stack overflow</source>
         <translation>Débordement de pile</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="172"/>
+        <source>Block has disappeared!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

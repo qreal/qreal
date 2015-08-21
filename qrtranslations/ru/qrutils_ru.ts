@@ -88,7 +88,7 @@
         <translation>Целичисленное деление на ноль</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="498"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="502"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -147,6 +147,11 @@
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
+    <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="139"/>
+        <source>Block has disappeared!</source>
+        <translation>Блок исчез!</translation>
+    </message>
 </context>
 <context>
     <name>qReal::interpretation::Interpreter</name>
@@ -186,6 +191,11 @@
         <location filename="../../qrutils/interpreter/thread.cpp" line="118"/>
         <source>Stack overflow</source>
         <translation>Переполнение стека</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="172"/>
+        <source>Block has disappeared!</source>
+        <translation>Блок исчез!</translation>
     </message>
 </context>
 <context>

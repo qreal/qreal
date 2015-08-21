@@ -44,7 +44,7 @@ QMap<PortInfo, DeviceInfo> ClearEncoderBlock::usedDevices()
 	return result;
 }
 
-QList<robotParts::EncoderSensor *> ClearEncoderBlock::parsePorts() const
+QList<robotParts::EncoderSensor *> ClearEncoderBlock::parsePorts()
 {
 	QList<robotParts::EncoderSensor *> result;
 	for (const QString &port : stringProperty("Ports").split(',', QString::SkipEmptyParts)) {

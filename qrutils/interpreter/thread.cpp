@@ -166,6 +166,13 @@ void Thread::turnOn(BlockInterface * const block)
 		return;
 	}
 
+	if (!mGraphicalModelApi->graphicalRepoApi().exist(block->id())) {
+		// If we get non-null block instance, but non-existing id then the block
+		// was removed from diagram during the interpretation.
+		error(tr("Block has disappeared!"));
+		return;
+	}
+
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
 	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock, Qt::UniqueConnection);
 	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread, Qt::UniqueConnection);
