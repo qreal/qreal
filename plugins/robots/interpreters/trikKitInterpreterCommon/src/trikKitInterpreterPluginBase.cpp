@@ -73,6 +73,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, configurer.qRealConfigurator().systemEvents()
 			, configurer.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
+			, configurer.qRealConfigurator().projectManager()
 			, configurer.interpreterControl());
 
 	mRealRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
@@ -153,7 +154,10 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 	quickPreferences->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
 	const auto updateQuickPreferences = [quickPreferences]() {
-		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
+		const QString ip = qReal::SettingsManager::value("TrikTcpServer").toString();
+		if (quickPreferences->text() != ip) {
+			quickPreferences->setText(ip);
+		}
 	};
 
 	updateQuickPreferences();

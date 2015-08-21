@@ -17,3 +17,10 @@ cp -pr $BIN_DIR/librobots-trik-kit*.dylib                                       
 cp -pr $BIN_DIR/librobots-trik-kit-interpreter-common*.dylib                          $PWD/../data/
 
 copy_qt_lib QtNetwork
+
+cd "$(dirname "$0")"/../data
+rm -rf winscp
+mkdir -p trikRuntime
+cd trikRuntime
+tar xfvz ../trik-runtime-builds/trikRuntime.tar.gz
+rm -rf ../trik-runtime-builds

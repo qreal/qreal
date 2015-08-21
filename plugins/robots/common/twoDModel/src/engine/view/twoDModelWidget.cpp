@@ -93,6 +93,11 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::robotPressed, mUi->palette, &Palette::unselect);
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
+	connect(&mModel.timeline(), &Timeline::started, [this]() {
+		if (mRobotPositionReadOnly) {
+			returnToStartMarker();
+		}
+	});
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
 	connect(&mModel.timeline(), &Timeline::tick, this, &TwoDModelWidget::incrementTimelineCounter);
 	connect(&mModel.timeline(), &Timeline::started, this, &TwoDModelWidget::setRunStopButtonsVisibility);
@@ -613,6 +618,7 @@ void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 	mUi->detailsTab->setPhysicsSectionsVisible(!simulationSettingsReadOnly);
 
 	mSensorsReadOnly = sensorsReadOnly;
+	mRobotPositionReadOnly = flags.testFlag(ReadOnly::RobotPosition);
 
 	mScene->setInteractivityFlags(flags);
 }

@@ -26,16 +26,21 @@ Marker::Marker(const kitBase::robotModel::DeviceInfo &info
 	: Device(info, port)
 	, mEngine(engine)
 {
+	connect(this, &Marker::isDownChanged, this, [=](bool isDown) { emit propertyChanged("isDown", isDown); });
+	connect(this, &Marker::colorChanged, this, [=](const QColor &color) { emit propertyChanged("color", color); });
 }
 
 void Marker::down(const QColor &color)
 {
 	mEngine.markerDown(color);
+	emit isDownChanged(true);
+	emit colorChanged(color);
 }
 
 void Marker::up()
 {
 	mEngine.markerUp();
+	emit isDownChanged(false);
 }
 
 bool Marker::isDown() const

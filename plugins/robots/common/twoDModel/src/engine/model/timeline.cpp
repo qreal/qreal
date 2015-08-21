@@ -59,6 +59,7 @@ void Timeline::onTimer()
 	}
 
 	for (int i = 0; i < ticksPerCycle; ++i) {
+		QCoreApplication::processEvents();
 		mTimestamp += timeInterval;
 		emit tick();
 		++mCyclesCount;

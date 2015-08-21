@@ -3,9 +3,8 @@ set -o nounset
 set -o errexit
 
 cd "$(dirname "$0")"
+source $INSTALLER_ROOT/utils/common_utils.sh
 
-
-function checkout_tag_or_warn { { PATTERN=$'\n'$1$'\n'; echo "$'\n'$(git tag)$'\n'" | grep -E $PATTERN; } && git checkout $1 || echo "Warning: NXT Tools doesn't have tag "$1; }
 
 mkdir -p $PWD/../data/
 
@@ -14,6 +13,6 @@ cd $PWD/../data
 rm -rf nxt-tools
 git clone --depth 1 https://github.com/qreal/nxt-tools.git
 cd nxt-tools
-[ -z "${QREAL_BUILD_TAG:-}" ] && : || { checkout_tag_or_warn $QREAL_BUILD_TAG; }
+[ -z "${QREAL_BUILD_TAG:-}" ] && : || { checkout_tag_or_warn $QREAL_BUILD_TAG "NXT Tools"; }
 rm -rf .git
 git config --global core.autocrlf true

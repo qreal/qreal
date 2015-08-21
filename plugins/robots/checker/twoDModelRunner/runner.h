@@ -26,6 +26,10 @@
 
 namespace twoDModel {
 
+namespace model {
+class RobotModel;
+}
+
 /// Creates instances null QReal environment, of robots plugin and runs interpretation on 2D model window.
 class Runner : public QObject
 {
@@ -45,7 +49,10 @@ public:
 	void interpret(const QString &saveFile, bool background);
 
 private:
+	void connectRobotModel(const model::RobotModel *robotModel);
 	void onRobotRided(const QPointF &newPosition, const qreal newRotation);
+	void onDeviceStateChanged(const QString &robotId, const kitBase::robotModel::robotParts::Device *device
+			, const QString &property, const QVariant &value);
 
 	qReal::SystemFacade mQRealFacade;
 	qReal::ConsoleErrorReporter mErrorReporter;
