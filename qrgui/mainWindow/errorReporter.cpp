@@ -174,7 +174,6 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	QLabel *label = new QLabel(message.trimmed());
 	label->setAlignment(Qt::AlignVCenter);
 	label->setOpenExternalLinks(true);
-	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
 	errorListWidget->setItemWidget(item, label);
 	errorListWidget->setCurrentItem(item);
