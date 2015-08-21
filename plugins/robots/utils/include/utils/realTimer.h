@@ -32,6 +32,7 @@ public:
 	void start(int ms) override;
 	void stop() override;
 	void setInterval(int ms) override;
+	void setRepeatable(bool repeatable) override;
 
 private:
 	QTimer mTimer;

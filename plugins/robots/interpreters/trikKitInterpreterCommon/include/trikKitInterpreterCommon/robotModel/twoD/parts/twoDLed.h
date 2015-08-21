@@ -29,7 +29,7 @@ namespace parts {
 class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TwoDLed : public robotModel::parts::TrikLed
 {
 	Q_OBJECT
-	Q_PROPERTY(QColor color READ color WRITE setColor)
+	Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
 
 public:
 	TwoDLed(const kitBase::robotModel::DeviceInfo &info
@@ -45,6 +45,12 @@ public:
 	/// Sets the \a color of led emulator in 2D model.
 	/// If "off" passed then led becomes gray.
 	void setColor(const QString &color) override;
+
+signals:
+	/// Emitted when led color has changed.
+	/// @warning This signal will not be emitted on led color chage right before or right after the interpretation.
+	/// It notifies only about led`s color modification by led block.
+	void colorChanged(const QColor &color);
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

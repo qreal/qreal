@@ -14,6 +14,7 @@
 
 #include "utils/canvas/textObject.h"
 
+#include <QtCore/QJsonObject>
 #include <QtGui/QPainter>
 
 using namespace utils;
@@ -72,4 +73,16 @@ void TextObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);
 	painter->drawText(mX, mY, mText);
+}
+
+QJsonObject TextObject::toJson() const
+{
+	return QJsonObject({
+		{ "type", "text" }
+		, { "x", x() }
+		, { "y", y() }
+		, { "text", text() }
+		, { "color", color().name() }
+		, { "thickness", thickness() }
+	});
 }

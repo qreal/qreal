@@ -28,8 +28,6 @@ class ROBOTS_UTILS_EXPORT TextObject : public CanvasObject
 	Q_PROPERTY(int y READ y WRITE setY)
 	Q_PROPERTY(QPoint pos READ pos)
 	Q_PROPERTY(QString text READ text WRITE setText)
-	Q_PROPERTY(QColor color READ color WRITE setColor)
-	Q_PROPERTY(int thickness READ thickness WRITE setThickness)
 
 public:
 	explicit TextObject(QObject *parent = 0);
@@ -58,6 +56,7 @@ public:
 	void setText(const QString &text);
 
 	void paint(QPainter *painter) override;
+	QJsonObject toJson() const override;
 
 private:
 	int mX;

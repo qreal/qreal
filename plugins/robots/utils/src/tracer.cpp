@@ -16,6 +16,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 
+#include <qrkernel/platformInfo.h>
 #include <utils/tracer.h>
 
 using namespace utils;
@@ -56,7 +57,7 @@ void Tracer::debug(TracerEnum category, const QString &methodName, const QString
 
 Tracer::Tracer()
 	: mTarget(debugOutput)
-	, mLogPath(QString("%1/%2").arg(QCoreApplication::applicationDirPath(), logFileName))
+	, mLogPath(QString("%1/%2").arg(qReal::PlatformInfo::applicationDirPath(), logFileName))
 {
 	mCategories.resize(sensors + 1);
 }

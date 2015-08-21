@@ -19,6 +19,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 #include "nxtOsekCMasterGenerator.h"
 
@@ -60,7 +61,7 @@ QString NxtOsekCGeneratorPlugin::generatorName() const
 
 bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 {
-	const QString cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
+	const QString cFilePath = PlatformInfo::applicationDirPath() + "/" + defaultFilePath(project);
 	const QFileInfo cFile(cFilePath);
 	const QFileInfo makeFile(cFile.absolutePath() + "/makefile");
 	if (!cFile.exists() || !makeFile.exists()) {
@@ -212,7 +213,7 @@ void NxtOsekCGeneratorPlugin::uploadProgram()
 
 void NxtOsekCGeneratorPlugin::checkNxtTools()
 {
-	QDir dir(qApp->applicationDirPath());
+	QDir dir(PlatformInfo::applicationDirPath());
 	if (!QDir().exists(dir.absolutePath() + "/nxt-tools")) {
 		mNxtToolsPresent = false;
 	} else {

@@ -84,7 +84,7 @@ void Label::moveToParentCenter()
 
 Qt::Orientation Label::orientation()
 {
-	if (abs(rotation()) == 90) {
+	if (qAbs(rotation()) == 90) {
 		return Qt::Vertical;
 	}
 

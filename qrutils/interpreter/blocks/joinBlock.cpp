@@ -34,7 +34,8 @@ void JoinBlock::run()
 	}
 
 	if (mThread->id() != survivingId) {
-		disconnect(SIGNAL(done(Id)), mThread);
+		disconnect(SIGNAL(done(qReal::Id)), mThread);
+		mThread->stop();
 	}
 
 	mIncomingTokens++;

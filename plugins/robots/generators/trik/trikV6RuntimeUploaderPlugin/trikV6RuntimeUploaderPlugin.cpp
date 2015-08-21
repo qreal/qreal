@@ -18,6 +18,8 @@
 
 using namespace trik;
 
+#ifdef Q_OS_WIN
+
 const QString createTrikDirectory = "call mkdir -p /home/root/trik";
 const QString removePermissions = "call chmod a-x trik/trik*";
 const QString killTrikGui = "call killall -q trikGui || :";
@@ -30,21 +32,52 @@ const QString replaceModelConfig = "call mv trik/model-config-v6.xml trik/model-
 
 const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
 
+const QStringList commands = {
+		createTrikDirectory
+		, removePermissions
+		, killTrikGui
+		, moveCommand
+		, restorePermissions
+		, replaceSystemConfig
+		, replaceModelConfig
+		, restartTrikGui
+};
+
+#else
+
+const QString preCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
+		"-oUserKnownHostsFile=/dev/null root@%IP% \""
+		"mkdir -p /home/root/trik; "
+		"chmod a-x trik/trik*; "
+		"killall -q trikGui"
+		"\"";
+
+const QString copyCommand = "scp -r -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
+		"-oUserKnownHostsFile=/dev/null %PATH%/trikRuntime/* root@%IP%:/home/root/trik";
+
+const QString postCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
+		"-oUserKnownHostsFile=/dev/null root@%IP% \""
+		"chmod a+x trik/trik*; "
+		// To make trikRuntime work with old case we use old configs supplied with trikRuntime itself.
+		"mv trik/system-config-v6.xml trik/system-config.xml; "
+		"mv trik/model-config-v6.xml trik/model-config.xml; "
+		"/bin/sh -c '/etc/trik/trikGui.sh &'"
+		"\"";
+
+const QStringList commands = {
+		preCopyCommand
+		, copyCommand
+		, postCopyCommand
+};
+
+#endif
+
 TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 	: mUploaderTool(
 			tr("Upload Runtime (old case)")
 			, ":/trik/images/flashRobot.svg"
 			, "trikKit"
-			, {
-					createTrikDirectory
-					, removePermissions
-					, killTrikGui
-					, moveCommand
-					, restorePermissions
-					, replaceSystemConfig
-					, replaceModelConfig
-					, restartTrikGui
-					}
+			, commands
 			, QObject::tr("Attention! Started to download the runtime. This can take a minute or two."
 					" Please do not turn off the robot.")
 			, [](){ return qReal::SettingsManager::value("TrikTcpServer").toString(); }

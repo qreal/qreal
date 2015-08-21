@@ -15,7 +15,6 @@
 #pragma once
 
 #include <QtCore/QByteArray>
-#include <QtCore/QThread>
 
 #include <kitBase/robotModel/portInfo.h>
 #include <utils/robotCommunication/robotCommunicator.h>

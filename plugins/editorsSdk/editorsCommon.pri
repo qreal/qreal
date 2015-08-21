@@ -24,8 +24,14 @@ isEmpty(ROOT) {
 
 win32 {
 	QRXC = $$DESTDIR/qrxc$${CONFIGURATION_SUFFIX}.exe
-} else {
+}
+
+unix:!macx {
 	QRXC = $$DESTDIR/qrxc$$CONFIGURATION_SUFFIX
+}
+
+macx {
+	QRXC = $$DESTDIR/qrxc$${CONFIGURATION_SUFFIX}.app/Contents/MacOS/qrxc$$CONFIGURATION_SUFFIX
 }
 
 QRXC_DIR = $$DESTDIR

@@ -24,6 +24,8 @@
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
 
+#include <qrkernel/platformInfo.h>
+
 using namespace qReal;
 
 SdfRenderer::SdfRenderer()
@@ -804,7 +806,7 @@ void SdfRenderer::ImagesCache::drawImage(
 	} else {
 		// Cache miss - finding best file to load and loading it.
 		const QString actualFileName = fileName.startsWith("./")
-				? QApplication::applicationDirPath() + "/" + fileName
+				? PlatformInfo::applicationDirPath() + "/" + fileName
 				: fileName;
 
 		const QFileInfo actualFile = selectBestImageFile(actualFileName);

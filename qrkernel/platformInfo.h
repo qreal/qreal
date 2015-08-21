@@ -24,6 +24,11 @@ class QRKERNEL_EXPORT PlatformInfo
 public:
 	/// Returns printable information about operating system which runs this application.
 	static QString prettyOsVersion();
+
+	/// Returns QCoreApplication::applicationDirPath on every platform besides Mac OS X
+	/// and path to directory containing application bundle on Mac
+	/// (3 levels up from QCoreApplication::applicationDirPath()) if current executable is bundled.
+	static QString applicationDirPath();
 };
 
 }

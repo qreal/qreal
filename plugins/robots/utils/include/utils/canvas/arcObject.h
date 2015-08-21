@@ -68,6 +68,7 @@ public:
 	QRect boundingRect() const;
 
 	void paint(QPainter *painter) override;
+	QJsonObject toJson() const override;
 
 private:
 	QRect mRect;
