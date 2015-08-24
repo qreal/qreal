@@ -87,9 +87,9 @@ void UploaderTool::uploadRuntime()
 	const QString openConnection = QString("open scp://root@%1 -hostkey=*").arg(mRobotIpGetter());
 
 	const QString winscpPath = qReal::SettingsManager::value("WinScpPath").toString();
-	const QString uploaderPath = rawWinscpPath.startsWith("./")
-			? qReal::PlatformInfo::applicationDirPath() + rawWinscpPath.mid(1)
-			: rawWinscpPath;
+	const QString uploaderPath = winscpPath.startsWith("./")
+			? qReal::PlatformInfo::applicationDirPath() + winscpPath.mid(1)
+			: winscpPath;
 
 	QStringList args = {"/command", openConnection};
 
@@ -110,9 +110,10 @@ void UploaderTool::uploadRuntime()
 				.replace("%PATH%", qReal::PlatformInfo::applicationDirPath())
 				.replace("%SSH_TIMEOUT%", qReal::SettingsManager::value("sshTimeout").toString());
 	}
-#endif
 
 	const QStringList args = { "-x", "-c", actions.join("; ") };
+#endif
+
 	QLOG_INFO() << "TRIK Runtime uploading is about to start. Path:" << uploaderPath << "Args: " << args;
 	mProcess.start(uploaderPath, args);
 }
