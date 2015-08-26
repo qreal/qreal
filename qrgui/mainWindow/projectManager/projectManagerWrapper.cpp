@@ -85,7 +85,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 
 	const QFileInfo fileInfo(dequotedFileName);
 
-	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+	if (fileInfo.suffix() == "qrs" || fileInfo.completeBaseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
