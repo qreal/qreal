@@ -21,9 +21,15 @@ TARGET = testCoverage
 CONFIG += c++11
 
 SOURCES += \
-    $PWD/qrtest/unitTests/testCoverage/main.cpp \
-    $PWD/qrtest/unitTests/testCoverage/dirtree.cpp
+	$$PWD/qrtest/unitTests/testCoverage/main.cpp \
+	$$PWD/qrtest/unitTests/testCoverage/dirtree.cpp
 
 HEADERS += \
-    $PWD/qrtest/unitTests/testCoverage/dirtree.h
+	$$PWD/qrtest/unitTests/testCoverage/dirtree.h
 
+OTHER_FILES += \
+	$$PWD/qrtest/unitTests/testCoverage/~testignore \
+	$$PWD/qrtest/unitTests/testCoverage/testpathes
+
+copyToDestdir($$PWD/qrtest/unitTests/testCoverage/~testignore, now)
+copyToDestdir($$PWD/qrtest/unitTests/testCoverage/testpathes, now)

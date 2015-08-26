@@ -187,34 +187,17 @@ void totalFunctionCount(QString dir, bool dirIsIgnored, DirNode *parent)
 	}
 }
 
-void fillIgnoredFiles()
+void readFromFileToList(const QString &relativeFileName, QStringList &list)
 {
-	QFile file("~testignore");
+	QFile file(relativeFileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		return;
 	}
-
 	QTextStream in(&file);
 	while (!in.atEnd())
 	{
 		QString line = in.readLine();
-		ignoreFiles.append(line);
-	}
-	file.close();
-}
-
-void fillPathesForTest()
-{
-	QFile file("testpathes");
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		return;
-	}
-
-	QTextStream in(&file);
-	while (!in.atEnd())
-	{
-		QString line = in.readLine();
-		testpathes.append(line);
+		list.append(line);
 	}
 	file.close();
 }
@@ -337,8 +320,8 @@ int main(int argc, char *argv[])
 	QTime time;
 	time.start();
 
-	fillIgnoredFiles();
-	fillPathesForTest();
+	readFromFileToList("~testignore", ignoreFiles);
+	readFromFileToList("testpathes", testpathes);
 	for (int j = 0; j < testpathes.length(); ++j)
 	{
 		fillListOfTestDirects(testpathes.at(j) + "qrtest/unitTests/");

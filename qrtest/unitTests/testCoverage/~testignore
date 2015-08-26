@@ -1,2 +1,6 @@
+bin/
+.build/
+debug/
+release/
 thirdparty
 qrtest/
