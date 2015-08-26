@@ -202,6 +202,14 @@ void GuiFacade::activateMenuAction(QMenu *menu, QAction *actionForExec)
 //	QApplication::postEvent(&mMainWindow, mouseEvent);
 }
 
+void GuiFacade::activateContextMenuAction(const QString &actionName)
+{
+	QMenu *contextMenu = dynamic_cast<QMenu *>(QApplication::activePopupWidget());
+	QTest::keyClick(contextMenu, Qt::Key_Down);
+	Q_ASSERT(contextMenu);
+	QAction *action = dynamic_cast<QAction *>(getActionInMenu(contextMenu, actionName));
+	activateMenuAction(contextMenu, action);
+}
 // быть может понадобится, если я буду выносить отдельно кликание
 //QRect GuiFacade::actionRect(QMenu *menu, QAction *action) const
 //{
@@ -218,3 +226,14 @@ bool GuiFacade::actionIsCheckable(QAction *action) const
 	return action->isCheckable();
 }
 
+QWidget *GuiFacade::getStartButton(const QString &buttonText) const
+{
+	const QList<QPushButton *> allButtons = mMainWindow.findChildren<QPushButton *>();
+	for (QPushButton * const button : allButtons) {
+		if (button->isVisible() && button->objectName() == buttonText) {
+			return button;
+		}
+	}
+
+	return nullptr;
+}

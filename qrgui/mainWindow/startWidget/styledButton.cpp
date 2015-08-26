@@ -35,7 +35,7 @@ StyledButton::StyledButton(const QString &text, const QString &icon
 		layout->addWidget(circleWidget);
 		bindHighlightedOnHover(circleWidget);
 	}
-
+	setObjectName(text);
 	QLabel * const textLabel = new QLabel(text);
 	textLabel->setWordWrap(true);
 	textLabel->setAttribute(Qt::WA_Hover);

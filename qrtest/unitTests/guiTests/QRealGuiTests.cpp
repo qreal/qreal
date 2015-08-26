@@ -296,6 +296,23 @@ void QRealGuiTests::runFromFile(const QString &relativeFileName)
 	run(contents);
 }
 
+
+
+
+TEST_F(QRealGuiTests, dockWidgetsExistence)
+{
+	runFromFile("dockWidgetsExistence.js");
+}
+/*
+TEST_F(QRealGuiTests, toolbarsElementsExistence)
+{
+	runFromFile("toolbarsElementsExistence.js");
+}
+
+TEST_F(QRealGuiTests, script1)
+{
+	runFromFile("script1.js");
+}
 // TODO: необходимо сменить ассерты на эксепты в нужных местах
 TEST_F(QRealGuiTests, sanityCheck)
 {
@@ -323,11 +340,6 @@ TEST_F(QRealGuiTests, helpActionsExistence)
 	runFromFile("helpActionsExistence.js");
 }
 
-//TEST_F(QRealGuiTests, mainPanelsElementsExistence)
-//{
-//	runFromFile("mainPanelsElementsExistence.js");
-//}
-
 //TEST_F(QRealGuiTests, mouseGesturesElementsExistence)
 //{
 //	runFromFile("mouseGesturesElementsExistence.js");
@@ -348,10 +360,7 @@ TEST_F(QRealGuiTests, settingsActionsExistence)
 //	runFromFile("tabSceneExistence.js");
 //}
 
-TEST_F(QRealGuiTests, toolbarsElementsExistence)
-{
-	runFromFile("toolbarsElementsExistence.js");
-}
+
 
 TEST_F(QRealGuiTests, toolsActionsExistence)
 {
@@ -428,10 +437,7 @@ TEST_F(QRealGuiTests, fileActionsExistence)
 //	runFromFile("hotKeysExistanceAndFunctioning.js");
 //}
 
-TEST_F(QRealGuiTests, script1)
-{
-	runFromFile("script1.js");
-}
+
 
 //TEST_F(QRealGuiTests, script2)
 //{
@@ -477,3 +483,4 @@ TEST_F(QRealGuiTests, script1)
 //{
 //	runFromFile("script10.js");
 //}
+*/

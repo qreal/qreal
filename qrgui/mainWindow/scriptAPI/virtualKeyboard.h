@@ -37,6 +37,7 @@ public:
 	Q_INVOKABLE void type(const QString &message, int duration);
 
 	/// Emulates keyboard char click with a modifier
+	/// @param c is ASCII code
 	Q_INVOKABLE void clickKey(char c, Qt::KeyboardModifiers modifier = Qt::NoModifier);
 
 private:

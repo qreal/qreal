@@ -43,6 +43,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	mainLayout->addWidget(mainWidget, 10);
 	mainLayout->addStretch(1);
 	setLayout(mainLayout);
+	setParent(mainWindow);
 }
 
 QWidget *StartWidget::createMainWidget()
@@ -114,7 +115,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 	mProjectsManagementLayout->addStretch();
 
 	mOpenProjectButton = new StyledButton(tr("Open existing project")
-			, ":/mainWindow/images/startTab/open.svg");
+			, ":/mainWindow/images/startTab/open.svg", QBoxLayout::LeftToRight, this);
 	connect(mOpenProjectButton, &QPushButton::clicked, this, &StartWidget::openExistingProject);
 	mProjectsManagementLayout->addWidget(mOpenProjectButton);
 
@@ -123,7 +124,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 		const Id editor = mMainWindow->editorManager().editors()[0];
 		const QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
-		mNewProjectButton = new StyledButton(tr("New project"), ":/mainWindow/images/startTab/new.svg");
+		mNewProjectButton = new StyledButton(tr("New project"), ":/mainWindow/images/startTab/new.svg", QBoxLayout::LeftToRight, this);
 		mProjectsManagementLayout->addWidget(mNewProjectButton);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
@@ -140,9 +141,9 @@ QWidget *StartWidget::createProjectsManagementWidget()
 	}
 
 	mOpenInterpreterButton = new StyledButton(tr("Open interpreted diagram")
-			, ":/mainWindow/images/startTab/openInterpreted.svg");
+			, ":/mainWindow/images/startTab/openInterpreted.svg", QBoxLayout::LeftToRight, this);
 	mCreateInterpreterButton = new StyledButton(tr("Create interpreted diagram")
-			, ":/mainWindow/images/startTab/createInterpreted.svg");
+			, ":/mainWindow/images/startTab/createInterpreted.svg", QBoxLayout::LeftToRight, this);
 	connect(mOpenInterpreterButton, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(mCreateInterpreterButton, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
 
@@ -196,7 +197,7 @@ QLayout *StartWidget::createRecentProjectsList(const QString &recentProjects)
 	int i = 0;
 	for (const QString &project : recentProjects.split(";", QString::SkipEmptyParts)) {
 		const QString name = project.split("/").last().split("\\").last();
-		QPushButton * const projectItem = new StyledButton(name);
+		QPushButton * const projectItem = new StyledButton(name, QString(), QBoxLayout::LeftToRight, this);
 		projectItem->setToolTip(project);
 		recentProjectsLayout->addWidget(projectItem);
 
@@ -266,7 +267,7 @@ QWidget *StartWidget::createPluginButton(const Id &editor, const Id &diagram, QW
 		return nullptr;
 	}
 
-	StyledButton * const result = new StyledButton(tr("Create ") + diagramName);
+	StyledButton * const result = new StyledButton(tr("Create ") + diagramName, QString(), QBoxLayout::LeftToRight, this);
 	result->bindHighlightedOnHover(bindedImage);
 	result->setFocusPolicy(Qt::StrongFocus);
 	result->setStyleSheet(BrandManager::styles()->startTabButtonStyle());

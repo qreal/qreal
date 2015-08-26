@@ -52,5 +52,5 @@ void VirtualKeyboard::printValue(const QString &value, int duration)
 
 void VirtualKeyboard::clickKey(char c, Qt::KeyboardModifiers modifier)
 {
-	QTest::keyClick(QApplication::focusWidget(), c, modifier);
+	QTest::keyClick(QApplication::focusWidget(), QTest::asciiToKey(c), modifier);
 }

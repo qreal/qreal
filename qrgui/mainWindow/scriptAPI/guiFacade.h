@@ -37,7 +37,7 @@ public:
 	explicit GuiFacade(MainWindow &mainWindow);
 
 	/// Returns main window child widget by its type (class name) and QObject name.
-	/// @note Doesnt work for QMenu. Use activateMenu instead
+	/// @note Doesnt work for QMenu. Use getMenu() instead. Doesnt work for startWidget. Use getStartButton() instead.
 	Q_INVOKABLE QWidget *widget(const QString &type, const QString &name = QString()) const;
 
 	/// Returns a widget of some action on the toolbar panel.
@@ -86,14 +86,19 @@ public:
 	Q_INVOKABLE QWidget *getMenu(const QString &menuName) const;
 
 	// НАСКОЛЬКО УМЕСТНО В ЭТОМ КЛАССЕ ПИСАТЬ МЕТОДЫ, КОТОРЫЕ КЛИКАЮТ ЧТО-ЛИБО?
+	/// @note This method works with a keyboard (not a mouse)
 	Q_INVOKABLE void activateMenu(QMenu *menu);
 	/// @warning Use this method only after opening of the assigned menu
+	/// @note This method works with a keyboard (not a mouse)
 	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec);
-
+	/// @note This method works with a keyboard (not a mouse)
+	Q_INVOKABLE void activateContextMenuAction(const QString &actionName);
 
 	Q_INVOKABLE bool actionIsChecked(QAction *action) const;
 
 	Q_INVOKABLE bool actionIsCheckable(QAction *action) const;
+
+	Q_INVOKABLE QWidget *getStartButton(const QString &buttonText) const;
 
 private:
 	QTreeWidgetItem *propertyTreeWidgetItem(const QString &name) const;

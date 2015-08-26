@@ -35,6 +35,7 @@ VirtualCursor::VirtualCursor(ScriptAPI &scriptAPI, QWidget *parent)
 	, mRightButtonPressed(false)
 	, mDragStarted(false)
 {
+	setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	setFixedSize(cursorSize, cursorSize);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
 
@@ -102,38 +103,146 @@ void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, 
 	}
 }
 
-void VirtualCursor::leftButtonPress(QWidget *target, int delay)
+// с центром код не нужен походу, не забыть удалить если чо
+void VirtualCursor::leftButtonPress(QWidget *target, int delay, bool center)
 {
-	simulateMouse(target, QEvent::MouseButtonPress, widgetPos(target), Qt::LeftButton);
+	QPoint clickPosition;
+	if (center) {
+		const int xcoord = target->mapTo(parentWidget(), QPoint(target->width() / 2, 0)).x();
+		const int ycoord = target->mapTo(parentWidget(), QPoint(0, target->height() / 2)).y();
+		clickPosition.setX(xcoord);
+		clickPosition.setY(ycoord);
+	} else {
+		 clickPosition = widgetPos(target);
+	}
+	if (QApplication::activePopupWidget()) {
+		if (QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition)))
+		QApplication::activePopupWidget()->close();
+	}
+	qDebug() << "ща кликну сюда " << clickPosition;
+	simulateMouse(target, QEvent::MouseButtonPress, clickPosition, Qt::LeftButton);
+	if (delay >= 0) {
+		mScriptAPI.wait(delay);
+	}
+}
+
+void VirtualCursor::leftButtonRelease(QWidget *target, int delay, bool center)
+{
+	QPoint clickPosition;
+	if (center) {
+		const int xcoord = target->mapTo(parentWidget(), QPoint(target->width() / 2, 0)).x();
+		const int ycoord = target->mapTo(parentWidget(), QPoint(0, target->height() / 2)).y();
+		clickPosition.setX(xcoord);
+		clickPosition.setY(ycoord);
+	} else {
+		 clickPosition = widgetPos(target);
+	}
+	simulateMouse(target, QEvent::MouseButtonRelease, clickPosition, Qt::LeftButton);
 
 	if (delay >= 0) {
 		mScriptAPI.wait(delay);
 	}
 }
 
-void VirtualCursor::leftButtonRelease(QWidget *target, int delay)
+void VirtualCursor::rightButtonPress(QWidget *target, int delay, bool center)
 {
-	simulateMouse(target, QEvent::MouseButtonRelease, widgetPos(target), Qt::LeftButton);
-
-	if (delay >= 0) {
-		mScriptAPI.wait(delay);
+	//target->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+	QPoint clickPosition;
+	if (center) {
+		const int xcoord = target->mapTo(parentWidget(), QPoint(target->width() / 2, 0)).x();
+		const int ycoord = target->mapTo(parentWidget(), QPoint(0, target->height() / 2)).y();
+		clickPosition.setX(xcoord);
+		clickPosition.setY(ycoord);
+	} else {
+		 clickPosition = widgetPos(target);
 	}
-}
-
-void VirtualCursor::rightButtonPress(QWidget *target, int delay)
-{
+	if (QApplication::activePopupWidget()) {
+		if (QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition)))
+		QApplication::activePopupWidget()->close();
+	}
 	mRightButtonPressed = true;
-	simulateMouse(target, QEvent::MouseButtonPress, widgetPos(target), Qt::RightButton);
+	simulateMouse(target, QEvent::MouseButtonPress, clickPosition, Qt::RightButton);
 
 	if (delay >= 0) {
 		mScriptAPI.wait(delay);
 	}
 }
 
-void VirtualCursor::rightButtonRelease(QWidget *target, int delay)
+// TODO: doesnt calls context menu for errorDockWidget (bug)
+void VirtualCursor::rightButtonRelease(QWidget *target, int delay, bool center)
 {
+	QPoint clickPosition;
+	if (center) {
+		const int xcoord = target->mapTo(parentWidget(), QPoint(target->width() / 2, 0)).x();
+		const int ycoord = target->mapTo(parentWidget(), QPoint(0, target->height() / 2)).y();
+		clickPosition.setX(xcoord);
+		clickPosition.setY(ycoord);
+	} else {
+		 clickPosition = widgetPos(target);
+	}
 	mRightButtonPressed = false;
-	simulateMouse(target, QEvent::MouseButtonRelease, widgetPos(target), Qt::RightButton);
+
+	simulateMouse(target, QEvent::MouseButtonRelease, clickPosition, Qt::RightButton);
+	if (!QApplication::activePopupWidget()) {
+		QPoint globalPos = target->mapToGlobal(clickPosition);
+		QEvent *contextMenuEvent = new QContextMenuEvent(QContextMenuEvent::Mouse, clickPosition, globalPos);
+		QApplication::postEvent(target, contextMenuEvent);
+	}
+
+	if (delay >= 0) {
+		mScriptAPI.wait(delay);
+	}
+}
+
+/*
+ *
+void VirtualCursor::rightButtonRelease(QWidget *target, int delay, bool center)
+{
+	QPoint clickPosition;
+	if (center) {
+		const int xcoord = target->mapTo(parentWidget(), QPoint(target->width() / 2, 0)).x();
+		const int ycoord = target->mapTo(parentWidget(), QPoint(0, target->height() / 2)).y();
+		clickPosition.setX(xcoord);
+		clickPosition.setY(ycoord);
+	} else {
+		 clickPosition = widgetPos(target);
+	}
+	mRightButtonPressed = false;
+
+	simulateMouse(target, QEvent::MouseButtonRelease, clickPosition, Qt::RightButton);
+	if (!QApplication::activePopupWidget()) {
+		QPoint globalPos = target->mapToGlobal(QPoint(0, 0));
+		qDebug() << QApplication::widgetAt(globalPos)->windowTitle();
+		QEvent *contextMenuEvent = new QContextMenuEvent(QContextMenuEvent::Mouse, QApplication::widgetAt(globalPos)->geometry().center(), globalPos);
+		qDebug() << globalPos;
+		qDebug() << QApplication::widgetAt(globalPos)->geometry().center();
+		QApplication::widgetAt(globalPos)->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+		QApplication::postEvent(QApplication::widgetAt(globalPos), contextMenuEvent);
+	}
+
+	if (delay >= 0) {
+		mScriptAPI.wait(delay);
+	}
+}
+*
+*/
+
+void VirtualCursor::leftButtonDoubleClick(QWidget *target, int delay, bool center)
+{
+	QPoint clickPosition;
+	if (center) {
+		const int xcoord = target->mapTo(parentWidget(), QPoint(target->width() / 2, 0)).x();
+		const int ycoord = target->mapTo(parentWidget(), QPoint(0, target->height() / 2)).y();
+		clickPosition.setX(xcoord);
+		clickPosition.setY(ycoord);
+	} else {
+		 clickPosition = widgetPos(target);
+	}
+	if (QApplication::activePopupWidget()) {
+		if (QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition)))
+		QApplication::activePopupWidget()->close();
+	}
+	simulateMouse(target, QEvent::MouseButtonDblClick, clickPosition, Qt::LeftButton);
 
 	if (delay >= 0) {
 		mScriptAPI.wait(delay);
@@ -172,6 +281,7 @@ QPoint VirtualCursor::widgetPos(QWidget *target) const
 
 void VirtualCursor::animate(const QPoint &from, int toX, int toY, int duration)
 {
+	qDebug() << "мышка тут: " << QPoint(toX, toY);
 	animate(from, QPoint(toX, toY), duration);
 }
 

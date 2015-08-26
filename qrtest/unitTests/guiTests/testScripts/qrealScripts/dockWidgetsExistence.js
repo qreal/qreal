@@ -3,15 +3,6 @@ assert(mainWindow != null);
 api.changeWindow(mainWindow);
 api.wait(500);
 
-// надо посылать в mainwindow клик, а не в объект текущий
-//var actionNewProject = api.ui().widget("QToolButton", "actionNewProject");
-//assert(actionNewProject != null);
-//assert(api.ui().isEnabledAndVisible(actionNewProject));
-//api.cursor().moveTo(actionNewProject, 50);
-//api.cursor().leftButtonPress(actionNewProject);
-//api.cursor().leftButtonRelease(actionNewProject);
-//api.wait(5000);
-
 //var actionFullscreen = api.ui().widget("QToolButton", "actionFullscreen");
 //assert(actionFullscreen != null);
 //api.cursor().moveTo(actionFullscreen, 50);
@@ -58,10 +49,13 @@ api.wait(500);
 var paletteDock = api.ui().widget("QDockWidget", "paletteDock");
 assert(paletteDock != null);
 api.cursor().moveTo(paletteDock, 150);
-api.cursor().leftButtonPress(paletteDock);
-api.cursor().leftButtonRelease(paletteDock);
-api.cursor().rightButtonPress(paletteDock);
-api.cursor().rightButtonRelease(paletteDock);
+api.cursor().leftButtonPress(paletteDock, 0, true);
+api.cursor().leftButtonRelease(paletteDock, 0, true);
+api.cursor().rightButtonPress(paletteDock, 0, true);
+api.cursor().rightButtonRelease(paletteDock, 0, true);
+// for popup context menu closing
+api.cursor().leftButtonPress(minimapDock);
+api.cursor().leftButtonRelease(minimapDock);
 api.wait(500);
 
 var errorDock = api.ui().widget("QDockWidget", "errorDock");
@@ -102,11 +96,13 @@ assert(api.ui().actionIsChecked(actionErrors));
 api.cursor().moveTo(errorDock, 150);
 api.cursor().leftButtonPress(errorDock);
 api.cursor().leftButtonRelease(errorDock);
-api.cursor().rightButtonPress(errorDock);
-api.cursor().rightButtonRelease(errorDock);
-api.wait(2000);
+api.cursor().rightButtonPress(errorDock,0,true);
+api.cursor().rightButtonRelease(errorDock,0,true);
+api.wait(500);
 api.cursor().leftButtonPress(errorDock);
 api.cursor().leftButtonRelease(errorDock);
 api.wait(500);
 
+// TODO: doesnt calls context menu for the errorDockWidget (bug) (now parent's context menu is calling )
+api.ui().activateContextMenuAction("Errors");
 assert(!api.ui().actionIsChecked(actionErrors));
