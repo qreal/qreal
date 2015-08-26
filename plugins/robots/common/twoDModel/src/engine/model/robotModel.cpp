@@ -340,7 +340,7 @@ QDomElement RobotModel::serialize(QDomDocument &target) const
 	QDomElement robot = target.createElement("robot");
 	robot.setAttribute("id", mRobotModel.robotId());
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
-	robot.setAttribute("direction", mAngle);
+	robot.setAttribute("direction", QString::number(mAngle));
 	mSensorsConfiguration.serialize(robot, target);
 	mStartPositionMarker->serialize(robot, target);
 	serializeWheels(robot);
