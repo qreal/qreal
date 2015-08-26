@@ -2,8 +2,17 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./qRealGuiTests-d"
-  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./qRealRobotsGuiTests-d"
+  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./qRealGuiTests-d"		GUI=true
+  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./qRealRobotsGuiTests-d"		GUI=true
+  - CONFIG=debug   PROJECT=testCoverage          VERA=true 	TESTS="./testCoverage-d"		GUI=false
+
+before_install:
+  - if [ "$PROJECT" = "testCoverage" ]; git clone --depth=50 --branch=master http://github.com/qreal/qreal.wiki.git ./../qreal.wiki/; fi
+  - if [ "$PROJECT" = "testCoverage" ]; openssl aes-256-cbc -K $encrypted_299f80385780_key -iv $encrypted_299f80385780_iv -in loginpass.enc -out ~/.netrc -d; fi
+  - if [ "$PROJECT" = "testCoverage" ]; chmod 600 ~/.netrc; fi
+  - if [ "$PROJECT" = "testCoverage" ]; git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/; fi
+  - if [ "$PROJECT" = "testCoverage" ]; echo './../qrealTest/qreal/' > ./../qrealTest/qreal/qrtest/unitTests/testCoverage/testpathes; fi
+  - if [ "$PROJECT" = "testCoverage" ]; cat ./../qrealTest/qreal/qrtest/unitTests/testCoverage/testpathes; fi
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
@@ -21,9 +30,9 @@ install:
   - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script libgl1-mesa-dev -y
   - sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
   - . /opt/qt55/bin/qt55-env.sh
-  - sudo apt-get install xvfb
-  - Xvfb :0 -ac -screen 0 1366x768x16 &
-  - export DISPLAY=:0
+  - if [ "$GUI" = "true" ]; sudo apt-get install xvfb; fi
+  - if [ "$GUI" = "true" ]; Xvfb :0 -ac -screen 0 1366x768x16 &; fi
+  - if [ "$GUI" = "true" ]; export DISPLAY=:0; fi
 
 script:
   - gcc --version
@@ -34,7 +43,16 @@ script:
   - make -j2
   - cd ./bin/$CONFIG
   - ls -A
-  - sh -c "$TESTS --no-locale"
+  - if [ "$GUI" = "true" ]; then sh -c "$TESTS --no-locale"; fi
+  - if [ "$GUI" = "false" ]; then sh -c "$TESTS"; fi
+  - if [ "$PROJECT" = "testCoverage" ]; cd ./../qreal.wiki; fi
+  - if [ "$PROJECT" = "testCoverage" ]; ls -A; fi
+  - if [ "$PROJECT" = "testCoverage" ]; echo -e 'Test_coverage_and_method_Information_for_QReal_project\nCommit:_' "$TRAVIS_COMMIT" '\nPull_request:_' "$TRAVIS_PULL_REQUEST" '\nBranch:_' "$TRAVIS_BRANCH" '\nTravis_OS:_' "$TRAVIS_OS_NAME" > Home.md; fi
+  - if [ "$PROJECT" = "testCoverage" ]; cat Home.md; fi
+  - if [ "$PROJECT" = "testCoverage" ]; git config --global user.name "Kirill-NiK"; fi
+  - if [ "$PROJECT" = "testCoverage" ]; git config --global user.email nikolskiy.kirill.andreevich@gmail.com; fi
+  - if [ "$PROJECT" = "testCoverage" ]; git commit Home.md -m the_statistic_for_QReal_master_commit:_"$TRAVIS_COMMIT"; fi
+  - if [ "$PROJECT" = "testCoverage" ]; git push; fi
 
 notifications:
   email:
