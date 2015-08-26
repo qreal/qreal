@@ -66,12 +66,12 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("M3", output, {}), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M4", output, {}), { powerMotorInfo() });
 
-	addAllowedConnection(PortInfo("A1", input, {}, "sensorA1"), analogPortConnections);
-	addAllowedConnection(PortInfo("A2", input, {}, "sensorA2"), analogPortConnections);
-	addAllowedConnection(PortInfo("A3", input, {}, "sensorA3"), analogPortConnections);
-	addAllowedConnection(PortInfo("A4", input, {}, "sensorA4"), analogPortConnections);
-	addAllowedConnection(PortInfo("A5", input, {}, "sensorA5"), analogPortConnections);
-	addAllowedConnection(PortInfo("A6", input, {}, "sensorA6"), analogPortConnections);
+	addAllowedConnection(PortInfo("A1", input, { "1" }, "sensorA1"), analogPortConnections);
+	addAllowedConnection(PortInfo("A2", input, { "2" }, "sensorA2"), analogPortConnections);
+	addAllowedConnection(PortInfo("A3", input, { "3" }, "sensorA3"), analogPortConnections);
+	addAllowedConnection(PortInfo("A4", input, { "4" }, "sensorA4"), analogPortConnections);
+	addAllowedConnection(PortInfo("A5", input, { "5" }, "sensorA5"), analogPortConnections);
+	addAllowedConnection(PortInfo("A6", input, { "6" }, "sensorA6"), analogPortConnections);
 
 	addAllowedConnection(PortInfo("D1", input, {}, "sensorD1"), { sonarSensorInfo() });
 	addAllowedConnection(PortInfo("D2", input, {}, "sensorD2"), { sonarSensorInfo() });
