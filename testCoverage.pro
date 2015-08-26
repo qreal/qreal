@@ -16,8 +16,6 @@ include(global.pri)
 
 TEMPLATE = app
 
-TARGET = testCoverage
-
 CONFIG += c++11
 
 SOURCES += \
