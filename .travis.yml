@@ -8,9 +8,10 @@ env:
 
 before_install:
   - if [ "$PROJECT" = "testCoverage" ]; git clone --depth=50 --branch=master http://github.com/qreal/qreal.wiki.git ./../qreal.wiki/; fi
-  - if [ "$PROJECT" = "testCoverage" ]; openssl aes-256-cbc -K $encrypted_299f80385780_key -iv $encrypted_299f80385780_iv -in loginpass.enc -out ~/.netrc -d; fi
+  - if [ "$PROJECT" = "testCoverage" ]; openssl aes-256-cbc -K $encrypted_2c91ba1b7c87_key -iv $encrypted_2c91ba1b7c87_iv -in loginpass.enc -out ~/.netrc -d; fi
   - if [ "$PROJECT" = "testCoverage" ]; chmod 600 ~/.netrc; fi
   - if [ "$PROJECT" = "testCoverage" ]; git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/; fi
+
   - if [ "$PROJECT" = "testCoverage" ]; echo './../qrealTest/qreal/' > ./../qrealTest/qreal/qrtest/unitTests/testCoverage/testpathes; fi
   - if [ "$PROJECT" = "testCoverage" ]; cat ./../qrealTest/qreal/qrtest/unitTests/testCoverage/testpathes; fi
 
@@ -45,13 +46,14 @@ script:
   - ls -A
   - if [ "$GUI" = "true" ]; then sh -c "$TESTS --no-locale"; fi
   - if [ "$GUI" = "false" ]; then sh -c "$TESTS"; fi
+  - if [ "$PROJECT" = "testCoverage" ]; cat testCoverage.html > ./../qreal.wiki/testCoverage.html; fi
   - if [ "$PROJECT" = "testCoverage" ]; cd ./../qreal.wiki; fi
   - if [ "$PROJECT" = "testCoverage" ]; ls -A; fi
-  - if [ "$PROJECT" = "testCoverage" ]; echo -e 'Test_coverage_and_method_Information_for_QReal_project\nCommit:_' "$TRAVIS_COMMIT" '\nPull_request:_' "$TRAVIS_PULL_REQUEST" '\nBranch:_' "$TRAVIS_BRANCH" '\nTravis_OS:_' "$TRAVIS_OS_NAME" > Home.md; fi
-  - if [ "$PROJECT" = "testCoverage" ]; cat Home.md; fi
+  - if [ "$PROJECT" = "testCoverage" ]; echo -e 'Test_coverage_and_method_Information_for_QReal_project\nCommit:_' "$TRAVIS_COMMIT" '\nPull_request:_' "$TRAVIS_PULL_REQUEST" '\nBranch:_' "$TRAVIS_BRANCH" '\nTravis_OS:_' "$TRAVIS_OS_NAME" > Статистика-по-проекту.md; fi
+  - if [ "$PROJECT" = "testCoverage" ]; echo -e '\n[[Test_covering|https://rawgit.com/wiki/qreal/qreal/testCoverage.html]]\n[[Test_covering_(additional_link)|https://cdn.rawgit.com/wiki/qreal/qreal/testCoverage.html]]; fi
   - if [ "$PROJECT" = "testCoverage" ]; git config --global user.name "Kirill-NiK"; fi
   - if [ "$PROJECT" = "testCoverage" ]; git config --global user.email nikolskiy.kirill.andreevich@gmail.com; fi
-  - if [ "$PROJECT" = "testCoverage" ]; git commit Home.md -m the_statistic_for_QReal_master_commit:_"$TRAVIS_COMMIT"; fi
+  - if [ "$PROJECT" = "testCoverage" ]; git commit -a -m the_statistic_for_QReal_master_commit:_"$TRAVIS_COMMIT"; fi
   - if [ "$PROJECT" = "testCoverage" ]; git push; fi
 
 notifications:
