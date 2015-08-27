@@ -1154,6 +1154,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		if (!mMouseMovementManager->wasMoving()) {
 			deleteGesture();
 			if (element && !element->isSelected()) {
+				clearSelection();
 				element->setSelected(true);
 			}
 
