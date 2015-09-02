@@ -55,7 +55,7 @@ clickDialogButtonLater = function(dialogName, type, text, time) {
     clickButtonInExpectedDialog(mainWindow, dialogName, type, text, time);
 }
 
-quitWithoutSave = function() {
+quitWithoutSave = function() { // стоит ли везде это писать?
     var menuFile = api.ui().getMenu("menu_File");
     assert(menuFile != null);
     api.ui().activateMenu(menuFile);
@@ -67,3 +67,4 @@ quitWithoutSave = function() {
     api.ui().activateMenuAction(menuFile, actionQuit);
 }
 
+//togglePanelsAction;

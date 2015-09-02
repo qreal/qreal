@@ -1,5 +1,5 @@
 ﻿var mainWindow = api.ui().mainWindow();
-api.changeWindow(mainWindow);
+api.switchToWindow(mainWindow);
 api.hints().addHint("Добро пожаловать в среду визуального программирования QReal:Robots!", 1300, mainWindow);//api.hints() -> 'ui'
 api.wait(1500);
 api.hints().addHint("Сейчас мы нарисуем одну диаграмму за вас, чтобы показать, как все работает.", 1300, mainWindow);
@@ -74,7 +74,7 @@ api.cursor().moveTo(open2DModel, 3000);
 api.cursor().leftButtonPress(open2DModel);
 api.cursor().leftButtonRelease(open2DModel, 500);
 var widget = api.pluginUi("qRealRobots.RobotsPlugin").d2ModelWidget();
-api.changeWindow(widget);
+api.switchToWindow(widget);
 api.hints().addHint("Осталось нарисовать препятствие для робота...", 3000, widget);
 var wall = api.pluginUi("qRealRobots.RobotsPlugin").widget("QPushButton", "wallButton");
 api.cursor().moveTo(wall, 1000);
