@@ -37,14 +37,17 @@ class VirtualCursor : public QLabel
 public:
 	explicit VirtualCursor(ScriptAPI &scriptAPI, QWidget *parent = 0);
 
-	/// Moves virtual cursor towards the \a target widget for \a duration milliseconds.
-	Q_INVOKABLE void moveTo(const QWidget *target, int duration);
+	/// Moves virtual cursor towards the \a target widget for \a duration milliseconds in the center of the widget.
+	Q_INVOKABLE void moveTo(const QWidget *target, int duration = 100);
 
 	/// Moves virtual cursor towards the given point in parent coordinates for \a duration milliseconds.
-	Q_INVOKABLE void moveToPoint(int x, int y, int duration);
+	Q_INVOKABLE void moveToXY(int x, int y, int duration = 100);
+
+	/// Moves virtual cursor towards the given \a point in parent coordinates for \a duration milliseconds.
+	Q_INVOKABLE void moveToPoint(const QPoint &point, int duration = 100);
 
 	/// Moves virtual cursor to center of \a target rectangle for \a duration milliseconds.
-	Q_INVOKABLE void moveToRect(const QRect &target, int duration);
+	Q_INVOKABLE void moveToRect(const QRect &target, int duration = 100);
 
 	/// Moves virtual cursor towards the given cordinates on scene for \a duration milliseconds.
 	/// @param target The viewport widget of the scene.
@@ -52,23 +55,23 @@ public:
 
 	/// Simulates left mouse button press on widget in the current mouse cursor position.
 	/// @param delay How many milliseconds will be delayed after the press event.
-	Q_INVOKABLE void leftButtonPress(QWidget *target, int delay = -1, bool center = false);
+	Q_INVOKABLE void leftButtonPress(QWidget *target, int delay = -1);
 
 	/// Simulates left mouse button release on widget in the current mouse cursor position.
 	/// @param delay How many milliseconds will be delayed after the release event.
-	Q_INVOKABLE void leftButtonRelease(QWidget *target, int delay = -1, bool center = false);
+	Q_INVOKABLE void leftButtonRelease(QWidget *target, int delay = -1);
 
 	/// Simulates right mouse button press on widget in the current mouse cursor position.
 	/// @param delay How many milliseconds will be delayed after the press event.
-	Q_INVOKABLE void rightButtonPress(QWidget *target, int delay = -1, bool center = false);
+	Q_INVOKABLE void rightButtonPress(QWidget *target, int delay = -1);
 
 	/// Simulates right mouse button release on widget in the current mouse cursor position.
 	/// @param delay How many milliseconds will be delayed after the release event.
-	Q_INVOKABLE void rightButtonRelease(QWidget *target, int delay = -1, bool center = false);
+	Q_INVOKABLE void rightButtonRelease(QWidget *target, int delay = -1);
 
 	/// Simulates left mouse button double click on widget in the current mouse cursor position.
 	/// @param delay How many milliseconds will be delayed after the release event.
-	Q_INVOKABLE void leftButtonDoubleClick(QWidget *target, int delay = -1, bool center = false);
+	Q_INVOKABLE void leftButtonDoubleClick(QWidget *target, int delay = -1);
 
 	/// Posts mouse move event to the \a target widget. That is useful when we either want to generate some
 	/// hover events or to drag something between mouse press and mouse release events.
@@ -84,7 +87,7 @@ protected:
 	void paintEvent(QPaintEvent *event) override;
 
 private:
-	void simulateMouse(QObject *reciever, QEvent::Type event, const QPointF &pos, Qt::MouseButton buttons);
+	void simulateMouse(QObject *receiver, QEvent::Type event, const QPointF &pos, Qt::MouseButton buttons);
 	void edgeFinished();
 
 	QPoint widgetPos(QWidget *target) const;
