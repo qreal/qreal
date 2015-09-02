@@ -30,6 +30,7 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 	, mUserTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, true))
 {
 	initWidgets();
+	setObjectName("paletteTreeWidgets");
 }
 
 PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWindow
@@ -47,6 +48,7 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 	initWidgets();
 	initEditorTree();
 	initUserTree();
+	setObjectName("paletteTreeWidgets");
 }
 
 void PaletteTreeWidgets::initWidgets()

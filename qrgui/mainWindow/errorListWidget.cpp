@@ -22,7 +22,7 @@
 
 ErrorListWidget::ErrorListWidget(QWidget *parent)
 {
-	Q_UNUSED(parent);
+	setParent(parent);
 	connect(this, &ErrorListWidget::itemDoubleClicked, this, &ErrorListWidget::highlightElement);
 	initContextMenu();
 }
