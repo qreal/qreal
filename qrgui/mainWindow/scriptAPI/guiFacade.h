@@ -38,6 +38,7 @@ public:
 
 	/// Returns main window child widget by its type (class name) and QObject name.
 	/// @note Doesnt work for QMenu. Use getMenu() instead. Doesnt work for startWidget. Use getStartButton() instead.
+	/// Dont forget about scrollViewPorts in some cases
 	Q_INVOKABLE QWidget *widget(const QString &type, const QString &name = QString()) const;
 
 	/// Returns a widget of some action on the toolbar panel.
@@ -72,33 +73,43 @@ public:
 
 // ниже идут методы, которые я писал специально для тестов: (потом стоит расположить по порядку в .h и .cpp)
 
-	Q_INVOKABLE bool isEnabledAndVisible(QObject *obj) const;
+	// можно это действие заменить поиском objectname "qt_scrollarea_viewport" в детях какого-то виджета
+	Q_INVOKABLE QWidget *viewPort(const QAbstractScrollArea *widget) const;
 
-	// TODO: надо сделать, чтоб возвращал не QObject , а именно QAction
-	// Может быть лучше "как-то зарегистрировать" полностью QAction, чтоб был доступ из скрипта ко всем методам?
-	Q_INVOKABLE QObject *getActionInMenu(QMenu *menu, const QString &actionName) const;
+	// trash method, поместить в utils()
+	Q_INVOKABLE bool isEnabledAndVisible(const QAction *action) const;
 
-	/// Need repeatedly to call this method (if again opens the menu) coz there the necessary signal is emitting
-	Q_INVOKABLE QObject *getMenuContainedByAction(QAction *action) const;
+	Q_INVOKABLE bool isEnabledAndVisible(const QWidget *widget) const;
 
-	Q_INVOKABLE bool isSubMenuInMenu(QMenu *menu, QAction *action) const;
+	/// @note Looking for by a text or an object name
+	Q_INVOKABLE QAction *getActionInMenu(const QMenu *menu, const QString &actionName) const;
 
-	Q_INVOKABLE QWidget *getMenu(const QString &menuName) const;
+	/// Need repeatedly to call this method (if again opens the menu) because
+	/// in this method the necessary signal is emitting
+	/// it needs because the bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373
+	Q_INVOKABLE QMenu *getMenuContainedByAction(QAction *action) const;
 
-	// НАСКОЛЬКО УМЕСТНО В ЭТОМ КЛАССЕ ПИСАТЬ МЕТОДЫ, КОТОРЫЕ КЛИКАЮТ ЧТО-ЛИБО?
+	Q_INVOKABLE bool isSubMenuInMenu(const QMenu *menu, const QAction *action) const;
+
+	Q_INVOKABLE QMenu *getMenu(const QString &menuName) const;
+
+	// НАСКОЛЬКО УМЕСТНО В ЭТОМ КЛАССЕ ПИСАТЬ МЕТОДЫ, КОТОРЫЕ КЛИКАЮТ ЧТО-ЛИБО? МОЖЕТ быть стоит поместить действия в отдельном классе?
 	/// @note This method works with a keyboard (not a mouse)
-	Q_INVOKABLE void activateMenu(QMenu *menu);
+	Q_INVOKABLE void activateMenu(QMenu *menu);// trash method, поместить в utils()
 	/// @warning Use this method only after opening of the assigned menu
 	/// @note This method works with a keyboard (not a mouse)
-	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec);
-	/// @note This method works with a keyboard (not a mouse)
-	Q_INVOKABLE void activateContextMenuAction(const QString &actionName);
+	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec);// trash method, поместить в utils()
 
-	Q_INVOKABLE bool actionIsChecked(QAction *action) const;
+	Q_INVOKABLE bool actionIsChecked(const QAction *action) const;
 
-	Q_INVOKABLE bool actionIsCheckable(QAction *action) const;
+	Q_INVOKABLE bool actionIsCheckable(const QAction *action) const;
 
 	Q_INVOKABLE QWidget *getStartButton(const QString &buttonText) const;
+
+	Q_INVOKABLE QPoint topLeftWidgetCorner(const QWidget *widget) const;
+
+	// не забыть переименовать
+	Q_INVOKABLE void printInfo() const;
 
 private:
 	QTreeWidgetItem *propertyTreeWidgetItem(const QString &name) const;

@@ -130,50 +130,52 @@ QTreeWidgetItem *GuiFacade::propertyTreeWidgetItem(const QString &name) const
 	return nullptr;
 }
 
-bool GuiFacade::isEnabledAndVisible(QObject *obj) const
-// а если создать два мметода с одинаковыми названиями, но принимающие разные типы аргементов, какая функция вызовется?
+QWidget *GuiFacade::viewPort(const QAbstractScrollArea *widget) const
 {
-	QWidget *widget = dynamic_cast<QWidget *>(obj);
-	if (widget) {
-		return widget->isEnabled() && widget->isVisible();
-	}
-	QAction *action = dynamic_cast<QAction *>(obj);
+	return widget->viewport();
+}
+
+bool GuiFacade::isEnabledAndVisible(const QAction *action) const
+{
 	return action->isEnabled() && action->isVisible();
 }
 
-// тут сравниваются не только object names, но и или text() может так делать всегда?
-QObject *GuiFacade::getActionInMenu(QMenu *menu, const QString &actionName) const
+bool GuiFacade::isEnabledAndVisible(const QWidget *widget) const
+{
+	return widget->isEnabled() && widget->isVisible();
+}
+
+QAction *GuiFacade::getActionInMenu(const QMenu *menu, const QString &actionName) const
 {
 	QList<QAction *> actions = menu->actions();
 	for (QAction * const action: actions) {
 		if (action->objectName() == actionName || action->text() == actionName) {
-			return dynamic_cast<QObject *>(action);
+			return action;
 		}
 	}
 	return nullptr;
 }
 
-bool GuiFacade::isSubMenuInMenu(QMenu *menu, QAction *action) const
+bool GuiFacade::isSubMenuInMenu(const QMenu *menu, const QAction *action) const
 {
 	return menu->children().contains(action->menu());
 }
 
-QObject *GuiFacade::getMenuContainedByAction(QAction *action) const
+QMenu *GuiFacade::getMenuContainedByAction(QAction *action) const
 {
-	// it need because the bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373
 	emit action->menu()->aboutToShow();
-	return dynamic_cast<QObject *>(action->menu());
+	return action->menu();
 }
 
 // Для корректной работы QTest::keyClick в qt 5.5 необходимо вводить char (русские символы не работают)
 // ASSERT: "false" in file qasciikey.cpp, line 222
 // в будущем, если придется через гуи тестить русский С, то придется с этим что-то придумать
 // сейчас в настройках запуска для тестов устанавливается параметр --no-locale
-QWidget *GuiFacade::getMenu(const QString &menuName) const
+QMenu *GuiFacade::getMenu(const QString &menuName) const
 {
 	QMenuBar *menuBar = mMainWindow.findChild<QMenuBar *>();
 	QMenu *menu = menuBar->findChild<QMenu *>(menuName, Qt::FindDirectChildrenOnly);
-	return dynamic_cast<QWidget *>(menu);
+	return menu;
 }
 
 void GuiFacade::activateMenu(QMenu *menu)
@@ -189,7 +191,7 @@ void GuiFacade::activateMenuAction(QMenu *menu, QAction *actionForExec)
 			return;
 		}
 		if (!action->isSeparator()) {
-			QTest::qWait(200);
+			QTest::qWait(50);
 			QTest::keyClick(menu, Qt::Key_Down);
 		}
 	}
@@ -202,26 +204,18 @@ void GuiFacade::activateMenuAction(QMenu *menu, QAction *actionForExec)
 //	QApplication::postEvent(&mMainWindow, mouseEvent);
 }
 
-void GuiFacade::activateContextMenuAction(const QString &actionName)
-{
-	QMenu *contextMenu = dynamic_cast<QMenu *>(QApplication::activePopupWidget());
-	QTest::keyClick(contextMenu, Qt::Key_Down);
-	Q_ASSERT(contextMenu);
-	QAction *action = dynamic_cast<QAction *>(getActionInMenu(contextMenu, actionName));
-	activateMenuAction(contextMenu, action);
-}
 // быть может понадобится, если я буду выносить отдельно кликание
 //QRect GuiFacade::actionRect(QMenu *menu, QAction *action) const
 //{
 //	return menu->setAct
 //}
 
-bool GuiFacade::actionIsChecked(QAction *action) const
+bool GuiFacade::actionIsChecked(const QAction *action) const
 {
 	return action->isChecked();
 }
 
-bool GuiFacade::actionIsCheckable(QAction *action) const
+bool GuiFacade::actionIsCheckable(const QAction *action) const
 {
 	return action->isCheckable();
 }
@@ -234,6 +228,18 @@ QWidget *GuiFacade::getStartButton(const QString &buttonText) const
 			return button;
 		}
 	}
-
 	return nullptr;
+}
+
+QPoint GuiFacade::topLeftWidgetCorner(const QWidget *widget) const
+{
+	return widget->pos();
+}
+
+void GuiFacade::printInfo() const
+{
+	QList<DraggableElement *> const paletteWidgets = mMainWindow.findChildren<DraggableElement *>();
+	for (DraggableElement * const paletteElement : paletteWidgets) {
+		qDebug() << paletteElement->id().toString();
+	}
 }

@@ -101,3 +101,27 @@ QStringList SceneAPI::nodeList(const QString &diagram, const QString &element)
 
 	return result;
 }
+
+QStringList SceneAPI::currentSceneNodeList()
+{
+	if (!mMainWindow.getCurrentTab()) {
+		return {};
+	}
+
+	/// @todo: Rewrite it using models
+	const QList<QGraphicsItem *> items = mMainWindow.getCurrentTab()->editorViewScene().items();
+	QStringList result;
+	for (const QGraphicsItem * const item : items) {
+		const NodeElement * const node = dynamic_cast<NodeElement const *>(item);
+		if (node) {
+			result << node->id().toString();
+		}
+	}
+
+	return result;
+}
+
+bool SceneAPI::noEmpty(const QStringList &list) const
+{
+	return list.isEmpty();
+}
