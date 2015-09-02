@@ -20,6 +20,12 @@ QT += script
 
 HEADERS += \
 	$$PWD/QRealGuiTests.h \
+    expectedSimpleDialogScriptFunctions.h \
+    expectedPreferencesDialogScriptFunctions.h \
+    expectedOpenSaveDialogScriptFunctions.h \
+    expectedProjectDiagramScriptFunctions.h \
+    expectedFindDialogScriptFunctions.h \
+    expectedContextMenuScriptFunctions.h
 
 SOURCES += \
 	$$PWD/QRealGuiTests.cpp \
@@ -28,7 +34,7 @@ SOURCES += \
 
 # in Existence checks initial states of required elements
 # in Functioning checks the correct work of required elements after some preparing actions
-# in Scripts checks the correct work of the complicated sequence of actions
+# in other scripts checks the correct work of the complicated sequence of actions
 OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/editActionsExistence.js \
 	$$PWD/testScripts/qrealScripts/editActionsFunctioning.js \
@@ -44,26 +50,29 @@ OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/preferenceDialogElementsExistence.js \
 	$$PWD/testScripts/qrealScripts/preferenceDialogElementsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/settingsActionsExistence.js \
-	$$PWD/testScripts/qrealScripts/settingsActionsFunctioning.js \
-	$$PWD/testScripts/qrealScripts/tabSceneWorkScript.js \
+	$$PWD/testScripts/qrealScripts/createRootElementOnSceneAndQuit.js \
 	$$PWD/testScripts/qrealScripts/toolbarsElementsExistence.js \
 	$$PWD/testScripts/qrealScripts/toolbarsElementsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/toolsActionsExistence.js \
 	$$PWD/testScripts/qrealScripts/toolsActionsFunctioning.js \
 	$$PWD/testScripts/qrealScripts/viewActionsExistence.js \
 	$$PWD/testScripts/qrealScripts/viewActionsFunctioning.js \
-	$$PWD/testScripts/qrealScripts/script1.js \
-	$$PWD/testScripts/qrealScripts/script2.js \
-	$$PWD/testScripts/qrealScripts/script3.js \
-	$$PWD/testScripts/qrealScripts/script4.js \
-	$$PWD/testScripts/qrealScripts/script5.js \
-	$$PWD/testScripts/qrealScripts/script6.js \
-	$$PWD/testScripts/qrealScripts/script7.js \
-	$$PWD/testScripts/qrealScripts/script8.js \
-	$$PWD/testScripts/qrealScripts/script9.js \
-	$$PWD/testScripts/qrealScripts/script10.js \
+	$$PWD/testScripts/qrealScripts/fullscreenModeScript.js \
+	$$PWD/testScripts/qrealScripts/propertyEditorScript.js \
+	$$PWD/testScripts/qrealScripts/linkNodeCooperationScript.js \
+	$$PWD/testScripts/qrealScripts/logicalGraphicalModelsAndSceneInteraction.js \
+	$$PWD/testScripts/qrealScripts/paletteSearchScript.js \
+	$$PWD/testScripts/qrealScripts/paletteAndEditorPropertiesConcordance.js \
+	$$PWD/testScripts/qrealScripts/miniMapWorkScript.js \
+	$$PWD/testScripts/qrealScripts/rightclickAllScreenScript.js \
+	$$PWD/testScripts/qrealScripts/autoSaveWork.js \
+	$$PWD/testScripts/qrealScripts/saveOpenScript.js \
 	$$PWD/testScripts/qrealScripts/hotKeysExistanceAndFunctioning.js \
+	$$PWD/testScripts/qrealScripts/createDiagramInCurrentModel.js \
+	$$PWD/testScripts/qrealScripts/verySimpleShapeEditorTest.js \
+	$$PWD/testScripts/common.js \
 
 copyToDestdir($$PWD/testScripts/qrealScripts/, now)
+copyToDestdir($$PWD/testScripts/common.js, now)
 
 include(../../../qrgui/mainWindow/mainWindowForTests.pri)
