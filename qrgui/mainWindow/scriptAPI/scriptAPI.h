@@ -80,7 +80,11 @@ public:
 
 	/// Attaches virtual cursor to a new top-level window.
 	/// @todo: move it to VirtualCursor.
-	Q_INVOKABLE void changeWindow(QWidget *parent);
+	Q_INVOKABLE void switchToWindow(QWidget *parent);
+
+	/// Attaches virtual cursor to a mainWindow.
+	/// @todo: move it to VirtualCursor.
+	Q_INVOKABLE void switchToMainWindow();
 
 	/// Picks combo box item. Virtual cursor can pick any item in its sight of view.
 	/// Temporary doesn`t work with scroll bars.

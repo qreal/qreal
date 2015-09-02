@@ -32,9 +32,11 @@
 #include "./qrgui/mainWindow/scriptAPI/hintAPI.h"
 #include "./qrgui/mainWindow/scriptAPI/sceneAPI.h"
 #include "./qrgui/mainWindow/scriptAPI/paletteAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptRegisterMetaTypes.h"
 
 using namespace qReal;
 using namespace gui;
+using namespace scriptUtils;
 using namespace utils;
 
 ScriptAPI::ScriptAPI()
@@ -65,6 +67,8 @@ void ScriptAPI::init(MainWindow &mainWindow)
 	const QScriptValue scriptAPI = mScriptEngine.newQObject(this);
 	// This instance will be available in scripts by writing something like "api.wait(100)"
 	mScriptEngine.globalObject().setProperty("api", scriptAPI);
+
+	registerDeclaredTypes(&mScriptEngine);
 }
 
 void ScriptAPI::evaluate()
@@ -99,7 +103,7 @@ void ScriptAPI::evaluateInFileScript(const QString &fileName)
 	abortEvaluation();
 }
 
-void ScriptAPI::regNewFunct(QScriptEngine::FunctionSignature fun, const QString &QScriptName,int length)
+void ScriptAPI::regNewFunct(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length)
 {
 	Q_UNUSED(length);
 
@@ -197,12 +201,21 @@ void ScriptAPI::breakWaiting()
 	mEventLoop.quit();
 }
 
-void ScriptAPI::changeWindow(QWidget *parent)
+void ScriptAPI::switchToWindow(QWidget *parent)
 {
 	mVirtualCursor->setParent(parent);
 	mVirtualCursor->show();
 	mVirtualCursor->leftButtonPress(parent);
 	mVirtualCursor->leftButtonRelease(parent);
+}
+
+void ScriptAPI::switchToMainWindow()
+{
+	QWidget *mainWindow = mGuiFacade->mainWindow();
+	mVirtualCursor->setParent(mainWindow);
+	mVirtualCursor->show();
+	mVirtualCursor->leftButtonPress(mainWindow);
+	mVirtualCursor->leftButtonRelease(mainWindow);
 }
 
 QScriptValue ScriptAPI::pluginUi(const QString &pluginName)
@@ -212,7 +225,9 @@ QScriptValue ScriptAPI::pluginUi(const QString &pluginName)
 
 void ScriptAPI::abortEvaluation()
 {
+	qDebug() << mScriptEngine.isEvaluating();
 	mScriptEngine.abortEvaluation();
+	qDebug() << mScriptEngine.isEvaluating();
 }
 
 GuiFacade &ScriptAPI::guiFacade()
@@ -235,7 +250,7 @@ void ScriptAPI::scroll(QAbstractScrollArea *area, QWidget *widget, int duration)
 	const int xcoord = area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos()).x();
 	int ycoord = area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos()).y();
 
-	mVirtualCursor->moveToPoint(xcoord, ycoord, duration / 2);
+	mVirtualCursor->moveToXY(xcoord, ycoord, duration / 2);
 
 	const int diff = area->verticalScrollBar()->height() - area->verticalScrollBar()->pageStep()
 			+ widget->pos().y() * area->verticalScrollBar()->maximum() / widget->parentWidget()->height();
@@ -250,7 +265,7 @@ void ScriptAPI::scroll(QAbstractScrollArea *area, QWidget *widget, int duration)
 	connect(anim, &QPropertyAnimation::finished, this, &ScriptAPI::breakWaiting);
 	anim->start(QAbstractAnimation::DeleteWhenStopped);
 
-	mVirtualCursor->moveToPoint(target.x(), target.y(), duration / 2);
+	mVirtualCursor->moveToXY(target.x(), target.y(), duration / 2);
 }
 
 QScriptValue ScriptAPI::ui()
