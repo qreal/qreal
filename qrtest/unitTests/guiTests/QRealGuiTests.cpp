@@ -13,11 +13,15 @@
  * limitations under the License. */
 
 #define CRASHCODE -1 // если exec ничего не возвратить, а такое бывает?
+#define FREEZECODE -2
 
 #include "QRealGuiTests.h"
 #include "startQreal.cpp"
 #include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
 #include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
+#include "qrgui/mainWindow/qrealApplication.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
+#include "./qrgui/mainWindow/mainWindow.h"
 
 #include <qrutils/widgetFinder.h>
 #include <QtScript/QScriptContext>
@@ -36,6 +40,7 @@
 
 using namespace guiTesting;
 using namespace qReal;
+using namespace gui::expected;
 
 QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 {
@@ -51,6 +56,7 @@ QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 						 // TODO! надо проверить, что будет, если просто бросать исключения. как тесты пойдут
 						 // надо регистрировать исключения в engine походу
 				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+		return {};
 	}
 
 	return {};
@@ -69,6 +75,7 @@ QScriptValue scriptAddFailure(QScriptContext *context, QScriptEngine *engine)
 		ADD_FAILURE() << "Assertion failure at\n"
 				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString()
 				<< "with the message:\n" << context->argument(0).toString().toStdString();
+		return {};
 	}
 	// TODO: надо аборт написать и закрыть все окна, выйти из приложения.
 	return {};
@@ -86,144 +93,14 @@ QScriptValue scriptExpect(QScriptContext *context, QScriptEngine *engine)
 	if (!context->argument(0).toBool()) {
 		ADD_FAILURE() << "Expecting failure at\n"
 				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	return {};
-}
-
-// mainwindow, имя диалога, название диаграммы, время
-QScriptValue scriptExpectDialog(QScriptContext *context, QScriptEngine *engine)
-{
-	Q_UNUSED(engine);
-
-	if (context->argumentCount() != 4) {
-		ADD_FAILURE() << "'expectDialog' shall have exactly 4 arguments";
 		return {};
 	}
-
-	if (!(context->argument(0).isValid() && !context->argument(0).isNull())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	if (!(context->argument(1).isValid() && context->argument(1).isString())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	if (!(context->argument(2).isValid() && context->argument(2).isString())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	if (!(context->argument(3).isValid() && context->argument(3).isNumber())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	QString diagramName = context->argument(2).toString();
-	QString dialogTitle = context->argument(1).toString();
-	int mces = context->argument(3).toInt32();
-	MainWindow *mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
-	EXPECT_TRUE(mainWindow != nullptr); // тут должен быть фейл
-	QTimer::singleShot(mces, [=]() { // возможно, фейлы тут работают не так, как должны
-	// TODO: надо переделать for, дописать переменные понятные, добавить проверок (ассертов)
-		EXPECT_GT(mces, 0);
-		ASSERT_TRUE(mainWindow != NULL);
-		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>(); // вообще это работает, но хочется без списка, а найти "первого" встречного, попросить помочь реализовать
-		ASSERT_FALSE(allDialogs.isEmpty());
-		for (int i = 0; i < allDialogs.length(); ++i) {
-			if (allDialogs.at(i)->windowTitle() == dialogTitle) {
-				SuggestToCreateProjectDialog *listDialog = dynamic_cast <SuggestToCreateProjectDialog *>(allDialogs.at(i));
-				ASSERT_TRUE(listDialog != NULL);
-				QList<SuggestToCreateDiagramWidget *> listWidget = listDialog->findChildren<SuggestToCreateDiagramWidget *>();
-				ASSERT_FALSE(listWidget.isEmpty());
-				for (int k = 0; k < listWidget.length(); ++k) {
-					if (listWidget.at(k) != nullptr) {
-						SuggestToCreateDiagramWidget *suggestWidget = listWidget.at(k);
-						for (int m = 0; m < suggestWidget->getQListWidget()->count(); ++m) {
-							if (suggestWidget->getQListWidget()->item(m)->text() == diagramName) {
-								suggestWidget->getQListWidget()->itemDoubleClicked(suggestWidget->getQListWidget()->item(m));
-								break;
-
-								/*QPoint pos = listWidget.at(k)->visualItemRect(listWidget.at(k)->item(m)).topLeft();
-								QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonDblClick,
-															  pos,
-															  Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-								QApplication::postEvent(listWidget.at(k)->getMainWidget()->parent(), mouseEvent);*/
-							}
-							if (m == suggestWidget->getQListWidget()->count() - 1) {
-								FAIL() << "doesnt exist " << diagramName.toStdString() << " diagram";
-								// TODO: в подобных местах надо закрывать диалог, чтоб не зависало. можно в самом начали сделать сингшот на закрытие всех окон приложения.
-							}
-						}
-						break;
-					}
-				}
-				break;
-			}
-			if (i == allDialogs.length() - 1) {
-				FAIL() << "doesnt exist " << dialogTitle.toStdString() << " dialog";
-			}
-		}
-	});
-
-	return {}; // что делает этот код?
-}
-
-
-// mainwindow, имя диалога, время
-QScriptValue scriptCloseExpectedDialog(QScriptContext *context, QScriptEngine *engine)
-{
-	Q_UNUSED(engine);
-
-	if (context->argumentCount() != 3) {
-		ADD_FAILURE() << "'expectDialog' shall have exactly 4 arguments";
-		return {};
-	}
-
-	if (!(context->argument(0).isValid() && !context->argument(0).isNull())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	if (!(context->argument(1).isValid() && context->argument(1).isString())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	if (!(context->argument(2).isValid() && context->argument(2).isNumber())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-	}
-
-	QString dialogTitle = context->argument(1).toString();
-	int mces = context->argument(2).toInt32();
-	MainWindow *mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
-	QTimer::singleShot(mces, [=]() {
-		EXPECT_GT(mces, 0);
-		ASSERT_TRUE(mainWindow != nullptr);
-		// Может сделать более узко: QDialog?
-		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
-		ASSERT_FALSE(allDialogs.isEmpty());
-		for (int i = 0; i < allDialogs.length(); ++i) {
-			if (allDialogs.at(i)->windowTitle() == dialogTitle) {
-				allDialogs.at(i)->close();
-				break;
-			}
-			if (i == allDialogs.length() - 1) {
-				FAIL() << "doesnt exist " << dialogTitle.toStdString() << " dialog";
-			}
-		}
-	});
 
 	return {};
 }
 
 void QRealGuiTests::SetUp()
 {
-	mReturnCode = CRASHCODE;
-
 	SettingsManager::setValue("scriptInterpretation", true);
 
 	MainWindow *window = start();
@@ -238,8 +115,14 @@ void QRealGuiTests::SetUp()
 	mainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
 	mainWindowScriptAPIInterface->registerNewFunction(scriptAddFailure, "failure");
 	mainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect"); // может стоит использовать? Kappa
-	mainWindowScriptAPIInterface->registerNewFunction(scriptCloseExpectedDialog, "closeExpectedDialog"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов TODO: то же самое, что и лля другой
-	mainWindowScriptAPIInterface->registerNewFunction(scriptExpectDialog, "chooseExpectedDialogDiagram"); // это особенная функция, содержащая как дейтсвие, так и проверки для диалогов
+
+	registerFunctionsWithTimer();
+
+	mReturnCode = CRASHCODE;
+	QTimer::singleShot(28000, [=]() {
+		mainWindowScriptAPIInterface->abortEvaluation(); // не работает
+		QApplication::instance()->exit(FREEZECODE);
+	});
 }
 
 void QRealGuiTests::TearDown() // возможно стоит смотреть информацию с логов и что-либо там делать.
@@ -247,45 +130,12 @@ void QRealGuiTests::TearDown() // возможно стоит смотреть �
 	SettingsManager::setValue("scriptInterpretation", mScriptInterpretationDefaultValue);
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
 	if (mReturnCode) {
-		FAIL() << "Failed coz returnCode of app = \n" << std::to_string(mReturnCode);
+		FAIL() << "Failed coz returnCode of the last app = " << std::to_string(mReturnCode);
 	}
 }
 
-void QRealGuiTests::run(const QString &script) // мб добавить функцию максимального ожидания сюда или вообще?
+QString readFile(const QString &fileName)
 {
-	QScriptSyntaxCheckResult checkResult = mainWindowScriptAPIInterface->checkSyntax(script);
-	if (checkResult.state() != QScriptSyntaxCheckResult::Valid) {
-		QApplication::closeAllWindows();
-		FAIL() << "Failed coz code is invalide\n" << checkResult.errorMessage().toStdString();
-	}
-	QTimer::singleShot(8000, [=]() { // возможно, фейлы тут работают не так, как должны
-			mainWindowScriptAPIInterface->evaluateScript(script);
-			if (mainWindowScriptAPIInterface->hasUncaughtException()) {
-				std::string backtrace = mainWindowScriptAPIInterface->uncaughtExceptionBacktrace().join('\n').toStdString();
-				mainWindowScriptAPIInterface->clearExceptions();
-				QApplication::closeAllWindows();
-				FAIL() << "Failed coz uncaughtException of the last evaluating exists\n" << backtrace;
-			}
-
-		QApplication::closeAllWindows();
-	});
-	mReturnCode = QApplication::exec();
-}
-
-void QRealGuiTests::runFromFile(const QString &relativeFileName)
-{
-	QString scriptDirName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/" + scriptFolderName + "/";
-	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
-
-//	QString fileName; // этот код пока что можно оставить, так как вдруг теневая сборка.
-//	QDir scriptDir(scriptDirName);
-//	if (scriptDir.exists()) {
-//		fileName = scriptDirName + relativeFileName;
-//	} else {
-//		fileName = QApplication::applicationDirPath() + "/testScripts/qrealScripts/" + relativeFileName;
-//	}
-
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
 		ADD_FAILURE() << "Cant open file for reading for gui test: " << fileName.toStdString();
@@ -293,16 +143,97 @@ void QRealGuiTests::runFromFile(const QString &relativeFileName)
 	QTextStream stream(&scriptFile);
 	QString contents = stream.readAll();
 	scriptFile.close();
-	run(contents);
+	return contents;
 }
 
-
-
-
-TEST_F(QRealGuiTests, dockWidgetsExistence)
+void QRealGuiTests::run(const QString &relativeFileName)
 {
-	runFromFile("dockWidgetsExistence.js");
+	QString scriptDirName = QApplication::applicationFilePath() +
+			"/../../../qrtest/unitTests/guiTests/testScripts/" + scriptFolderName + "/";
+	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
+	QString script = readFile(fileName);
+
+	checkScriptSyntax(script, relativeFileName);
+
+	QTimer::singleShot(8000, [=]() { // возможно, фейлы тут работают не так, как должны
+		mainWindowScriptAPIInterface->evaluateScript(script);
+		checkLastEvaluating(relativeFileName);
+		if (QApplication::activePopupWidget()) {
+			QApplication::activePopupWidget()->close();
+		}
+		QApplication::closeAllWindows();
+	});
+	mReturnCode = QApplication::exec();
 }
+
+void QRealGuiTests::includeCommonScript(const QString &relativeFileName)
+{
+	QString scriptDirName = QApplication::applicationFilePath() + "/../../../qrtest/unitTests/guiTests/testScripts/";
+	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
+	QString script = readFile(fileName);
+
+	checkScriptSyntax(script, relativeFileName);
+	mainWindowScriptAPIInterface->evaluateScript(script);
+	checkLastEvaluating(relativeFileName);
+}
+
+void QRealGuiTests::checkScriptSyntax(const QString &script, const QString &errorMsg)
+{
+	QScriptSyntaxCheckResult checkResult = mainWindowScriptAPIInterface->checkSyntax(script);
+	if (checkResult.state() != QScriptSyntaxCheckResult::Valid) {
+		QApplication::quit();
+		FAIL() << "Failed coz code is invalide\n" << checkResult.errorMessage().toStdString() << "\n" << errorMsg.toStdString();
+
+	}
+}
+
+void QRealGuiTests::checkLastEvaluating(const QString &errorMsg)
+{
+	if (mainWindowScriptAPIInterface->hasUncaughtException()) {
+		std::string backtrace = mainWindowScriptAPIInterface->uncaughtExceptionBacktrace().join('\n').toStdString();
+		mainWindowScriptAPIInterface->clearExceptions();
+		if (QApplication::activePopupWidget()) {
+			QApplication::activePopupWidget()->close();
+		}
+		QApplication::closeAllWindows();
+		FAIL() << "Failed coz uncaughtException of the last evaluating exists\n" << backtrace << "\n" << errorMsg.toStdString();
+
+	}
+}
+
+void QRealGuiTests::registerFunctionsWithTimer()
+{
+	// может унифицировать документацию к методам, которые что-то делают? а именнго указывать, мышка или клава используется и по чему ищется что-то?
+	mainWindowScriptAPIInterface->registerNewFunction(scriptCloseContextMenu
+													  , "closeContextMenu");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptActivateContextMenuAction
+													  , "activateContextMenuAction");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptClickButtonInExpectedDialog
+													  , "clickButtonInExpectedDialog");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptChooseComboBoxItemInExpectedDialog
+													  , "chooseComboBoxListElementInExpectedDialog");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptFillLineEditInExpectedDialog
+													  , "fillLineEditInExpectedDialog");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptClickButtonInExpectedTopLevelDialog
+													  , "clickButtonInExpectedTopLevelDialog");
+	mainWindowScriptAPIInterface->registerNewFunction(scriptChooseExpectedDialogDiagram
+													  , "chooseExpectedDialogDiagram");
+
+
+	mainWindowScriptAPIInterface->registerNewFunction(closeExpectedDialog
+													  , "closeExpectedDialog");
+}
+
+TEST_F(QRealGuiTests, createRootElementOnSceneAndQuit)
+{
+	includeCommonScript("common.js");
+	run("createRootElementOnSceneAndQuit.js");
+}
+//TEST_F(QRealGuiTests, dockWidgetsExistence)
+//{
+//	includeCommonScript("common.js");
+//	run("dockWidgetsExistence.js");
+//}
 /*
 TEST_F(QRealGuiTests, toolbarsElementsExistence)
 {

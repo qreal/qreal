@@ -29,6 +29,9 @@ public:
 	/// @param the full path to the file
 	virtual void evaluateInFileScript(const QString &fileName) = 0;
 
+	/// Abort evaluation of the script
+	virtual void abortEvaluation() = 0;
+
 	/// Register new function in QtScriptEngine object getting in MainWindow
 	/// @param Creates a QScriptValue that wraps a native (C++) function. 
 	/// fun must be a C++ function with signature QScriptEngine::FunctionSignature.

@@ -186,9 +186,10 @@ public:
 	void setEnabledForAllElementsInPalette(bool enabled) override;
 	void endPaletteModification() override;
 
-	// методы интрефейса MainWindowScriptAPIInterface
+	/// the MainWindowScriptAPIInterface implementation
 	void evaluateScript(const QString &script) override;
 	void evaluateInFileScript(const QString &fileName) override;
+	void abortEvaluation() override;
 	void registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length) override;
 	QScriptSyntaxCheckResult checkSyntax(const QString &script) override;
 	bool hasUncaughtException() override;

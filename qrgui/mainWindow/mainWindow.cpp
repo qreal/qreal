@@ -324,12 +324,11 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	mScriptAPI.abortEvaluation();
-
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
 		return;
 	}
+	mScriptAPI.abortEvaluation();
 	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
@@ -2110,9 +2109,14 @@ void MainWindow::initScriptAPI()
 	scriptAPIthread->start();
 }
 
-void MainWindow::evaluateInFileScript(const QString &fileName) // надо ли помещать в этом случае в отдельный поток?
+void MainWindow::evaluateInFileScript(const QString &fileName)
 {
 	mScriptAPI.evaluateInFileScript(fileName);
+}
+
+void MainWindow::abortEvaluation()
+{
+	mScriptAPI.abortEvaluation();
 }
 
 void MainWindow::evaluateScript(const QString &script)

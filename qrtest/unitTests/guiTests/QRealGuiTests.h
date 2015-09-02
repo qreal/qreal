@@ -21,6 +21,14 @@
 #include "./qrgui/mainWindow/mainWindow.h"
 #include <qrkernel/settingsManager.h>
 
+// все диалоги по windowTitle будут искаться.
+#include "expectedContextMenuScriptFunctions.h"
+#include "expectedOpenSaveDialogScriptFunctions.h"
+#include "expectedPreferencesDialogScriptFunctions.h"
+#include "expectedProjectDiagramScriptFunctions.h"
+#include "expectedSimpleDialogScriptFunctions.h"
+
+
 namespace guiTesting {
 
 /// Test suite for standard qReal GUI
@@ -32,17 +40,23 @@ protected:
 	void TearDown() override;
 
 	void run(const QString &script);
-	void runFromFile(const QString &relativeFileName);
+	// note можно включать несколько
+	void includeCommonScript(const QString &relativeFileName);
 
 	QString scriptFolderName = "qrealScripts"; // или лучше добавить геттеры сеттеры?
 	MainWidnowScriptAPIInterface* mainWindowScriptAPIInterface; //  может стоит поместить в конструктор?
 
 private:
+	void checkScriptSyntax(const QString &script, const QString &errorMsg);
+	void checkLastEvaluating(const QString &errorMsg);
+	void registerFunctionsWithTimer();
+
 	qReal::MainWindow* mWindow;
 	bool mScriptInterpretationDefaultValue = qReal::SettingsManager::value("scriptInterpretation").toBool();
 	// это надо изменить глобально на savedata() и loaddata, мб? например, если мы изменяем путь до чего-то и хотим проверить, сохранились
 	// ли в регистре эти изменения правильно, а потом всё вернуть.
 	int mReturnCode;
+	bool mFAILED; // надо прерывать текущий тест сразу кидать failed после сообщения. и переходить
 };
 
 }
