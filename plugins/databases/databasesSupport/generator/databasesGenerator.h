@@ -113,7 +113,7 @@ private:
 
 	Id getPrimaryKeyOfSet(IdList const &entitySet);
 	QString getPrimaryKeyNameOfSet(IdList const &entitySet);
-	int getParentList(Id const &childEntity, QList<IdList> const &set);
+	int getParentNumber(Id const &childEntity, QList<IdList> const &set);
 	QString getListTableName(IdList const &list);
 	bool checkEntities();
 	bool checkAttributes();

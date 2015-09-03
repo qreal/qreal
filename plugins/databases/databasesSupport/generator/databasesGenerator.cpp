@@ -42,7 +42,7 @@ DatabasesGenerator::~DatabasesGenerator()
 void DatabasesGenerator::clearPhysicalModel()
 {
 	IdList tableNodes = findNodes("DatabasesPhysicalNode");
-	foreach (Id const &id, tableNodes) {
+	for (Id const &id : tableNodes) {
 		mLogicalModelApi.removeElement(id);
 	}
 }
@@ -54,7 +54,7 @@ void DatabasesGenerator::setCodeFileName(QString const &name)
 
 void DatabasesGenerator::setWorkDir(QString const &path)
 {
-	if (path != "") {
+	if (!path.isEmpty()) {
 		mWorkDir = path + "/";
 	}
 }
@@ -63,7 +63,7 @@ IdList DatabasesGenerator::findNodes(QString const &name)
 {
 	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(mCurrentDiagram);
 	IdList filteredChildren;
-	foreach (Id const &child, children) {
+	for (Id const &child : children) {
 		if (child.element() == name) {
 			filteredChildren.append(child);
 		}
@@ -105,7 +105,7 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 	boundedEntities.clear();
 	boundedEntities.append(id);
 
-	foreach (Id const &relationship, relationshipsOut) {
+	for (Id const &relationship : relationshipsOut) {
 		if (mPassedElements.indexOf(relationship) == -1) {
 			QString relationshipName = getProperty(relationship, "name").toByteArray();
 			if (relationshipName == "One-to-one") {
@@ -118,7 +118,7 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 	}
 
 	IdList relationshipsIn = mLogicalModelApi.logicalRepoApi().incomingLinks(id);
-	foreach (Id const &relationship, relationshipsIn) {
+	for (Id const &relationship : relationshipsIn) {
 		if (mPassedElements.indexOf(relationship) == -1) {
 			QString relationshipName = getProperty(relationship, "name").toByteArray();
 			if (relationshipName == "One-to-one") {
@@ -145,12 +145,12 @@ void DatabasesGenerator::error(QString const &error, bool isCritical)
 Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
 {
 	IdList attributesSet = getChildren(entityId);
-	if(attributesSet.isEmpty()) {
+	if (attributesSet.isEmpty()) {
 		return Id::rootId();
 	}
 	Id primaryKey = Id::rootId();
 	int primaryKeyCount = 0;
-	foreach (Id const &attributeId, attributesSet) {
+	for (Id const &attributeId : attributesSet) {
 		bool isPrimaryKey = getProperty(attributeId, "isPrimaryKey").toBool();
 		if (isPrimaryKey) {
 			primaryKey = attributeId;
@@ -179,10 +179,10 @@ QString DatabasesGenerator::getPrimaryKeyNameOfSet(IdList const &entitySet)
 	return("PrimaryKeyOfTable" + getProperty(entitySet.at(0), "Name").toByteArray());
 }
 
-int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> const &set)
+int DatabasesGenerator::getParentNumber(Id const &childEntity, QList<IdList> const &set)
 {
 	int listCounter = 0;
-	foreach (IdList const &list, set) {
+	for (IdList const &list : set) {
 		if (list.indexOf(childEntity) != -1)
 			return listCounter;
 		listCounter++;
@@ -193,12 +193,12 @@ int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> const
 QString DatabasesGenerator::getListTableName(IdList const &list)
 {
 	QString name = "";
-	bool first = true;
-	foreach (Id const &id, list) {
-		if (!first) {
+	bool isFirst = true;
+	for (Id const &id : list) {
+		if (!isFirst) {
 			name += "And";
 		} else {
-			first = false;
+			isFirst = false;
 		}
 		name += getProperty(id, "Name").toByteArray();
 	}
@@ -209,9 +209,9 @@ bool DatabasesGenerator::checkEntities()
 {
 	bool result = true;
 	IdList entities = findNodes("Entity");
-	foreach (Id const &entity, entities) {
+	for (Id const &entity : entities) {
 		QString name = getProperty(entity, "Name").toString();
-		if (name == "") {
+		if (name.isEmpty()) {
 			result = false;
 			error(tr("Entity has no name"), true);
 		}
@@ -227,16 +227,16 @@ bool DatabasesGenerator::checkAttributes()
 {
 	bool result = true;
 	IdList attributes = findNodes("Attribute");
-	foreach (Id const &attribute, attributes) {
+	for (Id const &attribute : attributes) {
 		QString name = getProperty(attribute, "Name").toString();
 		QString datatype = getProperty(attribute, "DataType").toString();
 		Id parent = getParent(attribute);
 		QString parentName = getProperty(parent, "Name").toString();
-		if (name == "") {
+		if (name.isEmpty()) {
 			result = false;
 			error(tr("Attribute has no name in entity '") + parentName + "'", true);
 		}
-		if (datatype == "") {
+		if (datatype.isEmpty()) {
 			result = false;
 			error(tr("Attribute has no datatype in entity '") + parentName + "'", true);
 		}
@@ -250,7 +250,7 @@ bool DatabasesGenerator::checkRelationships()
 	IdList relationships = findNodes("OneToManyRelationship");
 	relationships.append(findNodes("ManyToManyRelationship"));
 	relationships.append(findNodes("OneToOneRelationship"));
-	foreach (Id const &relationship, relationships) {
+	for (Id const &relationship : relationships) {
 		Id out = mLogicalModelApi.logicalRepoApi().to(relationship);
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
 		if (out == Id::rootId() || from == Id::rootId()) {
@@ -312,7 +312,7 @@ qReal::Id DatabasesGenerator::makeTableFromEntity(Id const &entityId, Id const &
 	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
 
 	IdList attributesSet = getChildren(entityId);
-	foreach (Id const &attributeId, attributesSet) {
+	for (Id const &attributeId : attributesSet) {
 		makeColumnFromAttribute(attributeId, logicalTableId);
 	}
 
@@ -327,9 +327,9 @@ qReal::Id DatabasesGenerator::makeTableFromEntitySet(IdList const &set, Id const
 	QString tableName = getListTableName(set);
 	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
 
-	foreach(Id const &entityId, set){
+	for (Id const &entityId : set){
 		IdList attributes = getChildren(entityId);
-		foreach (Id const &attributeId, attributes) {
+		for (Id const &attributeId : attributes) {
 			makeColumnFromAttribute(attributeId, logicalTableId);
 		}
 	}
@@ -379,7 +379,7 @@ QList<IdList> DatabasesGenerator::processEntities(Id const &logicalDiagramId)
 	QList<IdList> oneToOneBoundedEntitiesSets;
 	mPassedElements.clear();
 	IdList entityNodes = findNodes("Entity");
-	foreach (Id const &entityId, entityNodes) {
+	for (Id const &entityId : entityNodes) {
 		IdList relationships = mLogicalModelApi.logicalRepoApi().outgoingLinks(entityId);
 		relationships.append(mLogicalModelApi.logicalRepoApi().incomingLinks(entityId));
 		// If alone entity
@@ -409,11 +409,11 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 		, Id const &logicalDiagramId)
 {
 	IdList oneToManyRelationships = findNodes("OneToManyRelationship");
-	foreach (Id const &relationship, oneToManyRelationships) {
+	for (Id const &relationship : oneToManyRelationships) {
 		Id to = mLogicalModelApi.logicalRepoApi().to(relationship);
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
-		int toSet = getParentList(to, oneToOneBoundedEntitiesSets);
-		int fromSet = getParentList(from, oneToOneBoundedEntitiesSets);
+		int toSet = getParentNumber(to, oneToOneBoundedEntitiesSets);
+		int fromSet = getParentNumber(from, oneToOneBoundedEntitiesSets);
 
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error("Too many relationships from "
@@ -447,11 +447,11 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 		, Id const &logicalDiagramId)
 {
 	IdList manyToManyRelationships = findNodes("ManyToManyRelationship");
-	foreach (Id const &relationship, manyToManyRelationships) {
+	for (Id const &relationship : manyToManyRelationships) {
 		Id to = mLogicalModelApi.logicalRepoApi().to(relationship);
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
-		int toSet = getParentList(to, oneToOneBoundedEntitiesSets);
-		int fromSet = getParentList(from, oneToOneBoundedEntitiesSets);
+		int toSet = getParentNumber(to, oneToOneBoundedEntitiesSets);
+		int fromSet = getParentNumber(from, oneToOneBoundedEntitiesSets);
 
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error(tr("Too many relationships from ")
@@ -515,7 +515,7 @@ void DatabasesGenerator::generatePhysicalModel()
 
 	QList<IdList> oneToOneBoundedEntitiesSets = processEntities(logicalDiagramId);
 	IdList setTables;
-	foreach(IdList const &set, oneToOneBoundedEntitiesSets) {
+	for (IdList const &set : oneToOneBoundedEntitiesSets) {
 		Id logicalTableId = makeTableFromEntitySet(set, logicalDiagramId);
 		setTables.append(logicalTableId);
 	}
@@ -571,14 +571,14 @@ void DatabasesGenerator::generateWithSqlServer2008()
 		return;
 
 	IdList tableNodes = findNodes("Table");
-	foreach (Id const tableId, tableNodes) {
+	for (Id const tableId : tableNodes) {
 			codeFile.write("CREATE TABLE ");
 			codeFile.write("dbo." + getProperty(tableId, "Name").toByteArray());
 			codeFile.write("\r\n(");
 			IdList rowsSet = getChildren(tableId);
 
 			bool first = true;
-			foreach (Id const &rowId, rowsSet) {
+			for (Id const &rowId : rowsSet) {
 				if (!first) {
 					codeFile.write(",");
 				}
@@ -615,7 +615,7 @@ void DatabasesGenerator::generateWithMySql5()
 		return;
 
 	IdList tableNodes = findNodes("Table");
-	foreach (Id const tableId, tableNodes) {
+	for (Id const tableId : tableNodes) {
 			codeFile.write("CREATE ");
 
 			if (getProperty(tableId, "temporary").toBool())
@@ -631,7 +631,7 @@ void DatabasesGenerator::generateWithMySql5()
 			IdList rowsSet = getChildren(tableId);
 
 			bool first = true;
-			foreach (Id const &rowId, rowsSet) {
+			for (Id const &rowId : rowsSet) {
 				if (!first) {
 					codeFile.write(",");
 				}
@@ -653,7 +653,7 @@ void DatabasesGenerator::generateWithMySql5()
 					codeFile.write(" UNIQUE");
 
 				QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
-				if (defaultValue != "")
+				if (!defaultValue.isEmpty())
 					codeFile.write(" DEFAULT '" + defaultValue + "'");
 
 				if (getProperty(rowId, "auto_increment").toBool())
@@ -663,30 +663,30 @@ void DatabasesGenerator::generateWithMySql5()
 			codeFile.write("\r\n);\r\n\r\n");
 
 			QByteArray tableType = getProperty(tableId, "type").toByteArray();
-			if (tableType != "")
+			if (!tableType.isEmpty())
 				codeFile.write(" TYPE " + tableType);
 
 			QByteArray autoIncrementValue = getProperty(tableId, "auto_increment").toByteArray();
-			if (autoIncrementValue != "")
+			if (!autoIncrementValue.isEmpty())
 				codeFile.write(" AUTO_INCREMENT " + autoIncrementValue);
 
 			QByteArray avgColumnLength = getProperty(tableId, "avg_row_length").toByteArray();
-			if (avgColumnLength != "")
+			if (!avgColumnLength.isEmpty())
 				codeFile.write(" AVG_ROW_LENGTH " + avgColumnLength);
 
 			if (getProperty(tableId, "check_sum").toBool())
 				codeFile.write(" CHECKSUM");
 
 			QByteArray comment = getProperty(tableId, "comment").toByteArray();
-			if (comment != "")
+			if (!comment.isEmpty())
 				codeFile.write(" COMMENT " + comment);
 
 			QByteArray maxColumns = getProperty(tableId, "max_rows").toByteArray();
-			if (maxColumns != "")
+			if (!maxColumns.isEmpty())
 				codeFile.write(" MAX_ROWS " + maxColumns);
 
 			QByteArray minColumns = getProperty(tableId, "min_rows").toByteArray();
-			if (minColumns != "")
+			if (!minColumns.isEmpty())
 				codeFile.write(" MIN_ROWS " + minColumns);
 
 			if (getProperty(tableId, "pack_keys").toBool())
@@ -708,7 +708,7 @@ void DatabasesGenerator::generateWithSqlite()
 		return;
 
 	IdList tableNodes = findNodes("Table");
-	foreach (Id const tableId, tableNodes) {
+	for (Id const tableId : tableNodes) {
 			codeFile.write("CREATE ");
 
 			if (getProperty(tableId, "temporary").toBool())
@@ -726,7 +726,7 @@ void DatabasesGenerator::generateWithSqlite()
 			IdList rowsSet = getChildren(tableId);
 
 			bool first = true;
-			foreach (Id const &rowId, rowsSet) {
+			for (Id const &rowId : rowsSet) {
 				if (!first) {
 					codeFile.write(",");
 				}
@@ -748,7 +748,7 @@ void DatabasesGenerator::generateWithSqlite()
 					codeFile.write(" UNIQUE");
 
 				QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
-				if (defaultValue != "")
+				if (!defaultValue.isEmpty())
 					codeFile.write(" DEFAULT '" + defaultValue + "'");
 
 				if (getProperty(rowId, "auto_increment").toBool())
