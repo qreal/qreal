@@ -27,11 +27,14 @@ DatabasesSupportPlugin::DatabasesSupportPlugin()
 DatabasesSupportPlugin::~DatabasesSupportPlugin()
 {
 	delete mPreferencesPage;
+	delete mDatabasesGenerator;
+	delete mDatabasesReverseEngineer;
 }
 
 void DatabasesSupportPlugin::init(PluginConfigurator const &configurator)
 {
 	mDatabasesGenerator = new DatabasesGenerator(configurator, mPreferencesPage);
+	mDatabasesReverseEngineer = new DatabasesReverseEngineer(configurator, mPreferencesPage);
 	initActions();
 }
 
@@ -61,10 +64,14 @@ void DatabasesSupportPlugin::initActions()
 	mGeneratePhysicalModelAction = new QAction(tr("Generate physical model"), NULL);
 	connect(mGeneratePhysicalModelAction, SIGNAL(triggered()), this, SLOT(generatePhysicalModel()));
 
+	mGenerateSchemaAction = new QAction(tr("Generate schema"), NULL);
+	connect(mGenerateSchemaAction, SIGNAL(triggered()), this, SLOT(generateSchema()));
+
 	mDatabasesMenu = new QMenu(tr("Databases"));
 	mDatabasesMenu->addAction(mGenerateCodeAction);
 	mDatabasesMenu->addAction(mCheckCorectnessAction);
 	mDatabasesMenu->addAction(mGeneratePhysicalModelAction);
+	mDatabasesMenu->addAction(mGenerateSchemaAction);
 	ActionInfo databasesMenuInfo(mDatabasesMenu, "tools");
 
 	mActionInfos << databasesMenuInfo;
@@ -83,6 +90,11 @@ void DatabasesSupportPlugin::generateCode()
 void DatabasesSupportPlugin::generatePhysicalModel()
 {
 	mDatabasesGenerator->generatePhysicalModel();
+}
+
+void DatabasesSupportPlugin::generateSchema()
+{
+	mDatabasesReverseEngineer->generateSchema();
 }
 
 }

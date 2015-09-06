@@ -31,6 +31,7 @@
 #include "databasesPreferencesPage.h"
 #include "databasesCustomizer.h"
 #include "generator/databasesGenerator.h"
+#include "generator/databasesReverseEngineer.h"
 
 namespace qReal {
 namespace databasesSupport {
@@ -59,16 +60,20 @@ public slots:
 	void generateCode();
 	/// Checks SQL-code from physical model(redirection to generator)
 	void generatePhysicalModel();
+	///
+	void generateSchema();
 
 private:
 	DatabasesPreferencesPage *mPreferencesPage;
 	DatabasesCustomizer mCustomizer;
 	DatabasesGenerator *mDatabasesGenerator;
+	DatabasesReverseEngineer *mDatabasesReverseEngineer;
 	void initActions();
 
 	QAction *mGenerateCodeAction;
 	QAction *mCheckCorectnessAction;
 	QAction *mGeneratePhysicalModelAction;
+	QAction *mGenerateSchemaAction;
 	QMenu *mDatabasesMenu;
 	QList<qReal::ActionInfo> mActionInfos;
 };
