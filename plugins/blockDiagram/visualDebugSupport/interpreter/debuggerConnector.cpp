@@ -13,7 +13,6 @@
  * limitations under the License. */
 
 #include <QtCore/QFile>
-#include <QDebug>
 
 #include "debuggerConnector.h"
 

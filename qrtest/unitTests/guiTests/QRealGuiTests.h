@@ -14,11 +14,10 @@
 
 #pragma once
 
+#include <QString>
 #include <gtest/gtest.h>
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
-#include "./../../../../qreal/qrgui/mainWindow/mainWindow.h"
-#include "workaroundTestFunctions.h"
-#include "TestAgent.h"
+
+#include "./qrgui/mainWindow/mainWindow.h"
 
 namespace guiTesting {
 

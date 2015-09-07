@@ -40,8 +40,8 @@ public:
 	/// fun must be a C++ function with signature QScriptEngine::FunctionSignature.
 	/// @param length is the number of arguments that fun expects;
 	/// this becomes the length property of the created QScriptValue.
-	virtual void registerNewFunction(QScriptEngine::FunctionSignature fun,
-									 const QString &QScriptName, int length = 0) = 0;
+	virtual void registerNewFunction(QScriptEngine::FunctionSignature fun
+									 , const QString &QScriptName, int length = 0) = 0;
 
 	/// Checks the syntax of the given script.
 	/// @return a QScriptSyntaxCheckResult object that contains the result of the check.

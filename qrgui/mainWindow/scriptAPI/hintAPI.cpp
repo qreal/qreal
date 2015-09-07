@@ -12,15 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "./../../../qrgui/mainWindow/scriptAPI/hintAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/hintAPI.h"
 
 #include <QtCore/QtMath>
 
 #include <qrutils/mathUtils/math.h>
 
-#include "./../../../qrgui/mainWindow/scriptAPI/scriptAPI.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/arrow.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/hintReporter.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/arrow.h"
+#include "./qrgui/mainWindow/scriptAPI/hintReporter.h"
 
 using namespace qReal;
 using namespace gui;

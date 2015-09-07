@@ -14,7 +14,7 @@
 
 // just common function implementations and global declarations for other scripts
 
-var mainWindow; // как лучше писать переменные var init init() как сейчас?
+var mainWindow;
 
 var ui;
 var utils;
@@ -25,8 +25,7 @@ var scene;
 var cursor;
 
 // init should be called initially before any script if u wanna use common.js vars and methods
-// можно бросать исключения, проверять флагом, если некто не увидел про init(). надо ли?
-init = function() {
+function init() {
     ui = api.ui();
     utils = api.utils();
     keyboard = api.keyboard();
@@ -40,46 +39,46 @@ init = function() {
     api.wait(200);
 }
 
-findViewPort = function(parent) {
+function findViewPort(parent) {
     return ui.deepViewPort(parent);
 }
 
-checkAction = function(action, isEnabledAndVisible, isCheckable, isChecked) {
+function checkAction(action, isEnabledAndVisible, isCheckable, isChecked) {
     assert(action != null);
     expect(utils.isEnabledAndVisible(action) == isEnabledAndVisible);
     expect(utils.actionIsCheckable(action) == isCheckable);
     expect(utils.actionIsChecked(action) == isChecked);
 }
 
-leftClick = function(widget) {
+function leftClick(widget) {
     cursor.moveTo(widget);
     cursor.leftButtonPress(widget);
     cursor.leftButtonRelease(widget);
 }
 
-rightClick = function(widget) {
+function rightClick(widget) {
     cursor.moveTo(widget);
     cursor.rightButtonPress(widget);
     cursor.rightButtonRelease(widget);
 }
 
-fillLineEditLater = function(dialogName, lineEditObjectName, text, mces) {
+function fillLineEditLater(dialogName, lineEditObjectName, text, mces) {
     invokeLater(utils, "fillLineEdit", dialogName, lineEditObjectName, text, mces);
 }
 
-clickButtonLater = function(dialogName, type, text, mces) {
+function clickButtonLater(dialogName, type, text, mces) {
     invokeLater(utils, "clickButton", dialogName, type, text, mces);
 }
 
-chooseComboBoxItemLater = function(dialogName, comboBoxObjectName, itemName, mces) {
+function chooseComboBoxItemLater (dialogName, comboBoxObjectName, itemName, mces) {
     invokeLater(utils, "chooseComboBoxItem", dialogName, comboBoxObjectName, itemName, mces);
 }
 
-activateContextMenuActionLater = function(actionName, mces) {
+function activateContextMenuActionLater (actionName, mces) {
     invokeLater(utils, "activateContextMenuAction", actionName, mces);
 }
 
-quitWithoutSave = function() { // стоит ли везде это писать?
+function quitWithoutSave() {
     var menuFile = ui.getMenu("menu_File");
     assert(menuFile != null);
     utils.activateMenu(menuFile);

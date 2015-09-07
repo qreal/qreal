@@ -12,19 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-// For easy writing of scripts
-// ---------------------------
 init();
-var mainWindow;
-var ui;
-var utils;
-var keyboard;
-var palette;
-var hints;
-var scene;
-var cursor;
-// For easy writing of scripts
-// ---------------------------
+// For autocompletion and syntax highlighting
+var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
 var openInterpreted = ui.widget("QPushButton", "Open interpreted diagram");
 assert(openInterpreted != null);

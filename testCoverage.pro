@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,15 +19,15 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += \
-	$$PWD/qrtest/unitTests/testCoverage/main.cpp \
-	$$PWD/qrtest/unitTests/testCoverage/dirtree.cpp
+	$$PWD/buildScripts/testCoverage/main.cpp \
+	$$PWD/buildScripts/testCoverage/dirtree.cpp
 
 HEADERS += \
-	$$PWD/qrtest/unitTests/testCoverage/dirtree.h
+	$$PWD/buildScripts/testCoverage/dirtree.h
 
 OTHER_FILES += \
-	$$PWD/qrtest/unitTests/testCoverage/~testignore \
-	$$PWD/qrtest/unitTests/testCoverage/testpathes
+	$$PWD/buildScripts/testCoverage/~testignore \
+	$$PWD/buildScripts/testCoverage/testpathes
 
-copyToDestdir($$PWD/qrtest/unitTests/testCoverage/~testignore, now)
-copyToDestdir($$PWD/qrtest/unitTests/testCoverage/testpathes, now)
+copyToDestdir($$PWD/buildScripts/testCoverage/~testignore, now)
+copyToDestdir($$PWD/buildScripts/testCoverage/testpathes, now)

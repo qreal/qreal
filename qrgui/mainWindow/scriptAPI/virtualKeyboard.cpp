@@ -12,12 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "./../../../qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
+#include "./qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
 
 #include <QtTest/QTest>
 #include <QtCore/QTimer>
 
-#include "./../../../qrgui/mainWindow/scriptAPI/scriptAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace gui;

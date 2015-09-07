@@ -18,16 +18,11 @@
 #include <QAction>
 #include <functional>
 
-class QComboBox;
-class QAbstractScrollArea;
-
 namespace qReal {
 
 class MainWindow;
 
 namespace gui {
-
-class DraggableElement;
 
 class GuiFacade;
 class VirtualCursor;

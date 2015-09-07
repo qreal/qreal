@@ -32,7 +32,6 @@ RobotsPlugin::RobotsPlugin()
 
 RobotsPlugin::~RobotsPlugin()
 {
-	qDebug() << "~RobotsPlugin()";
 }
 
 void RobotsPlugin::init(const PluginConfigurator &configurator)

@@ -29,7 +29,6 @@ SUBDIRS = \
 	qrtext \
 	thirdparty \
 	qrtranslations \
-	qrtest \
 
 qrkernel.depends = thirdparty
 qrutils.depends = qrkernel qrtext
@@ -56,15 +55,3 @@ plugins.depends = \
 	qrtext \
 
 qrtext.depends = qrkernel
-
-qrtest.depends = \
-	qrmc \
-	qrxc \
-	qrgui \
-	qrrepo \
-	plugins \
-	qrkernel \
-	qrutils \
-	qrtext \
-	thirdparty \
-	qrtranslations \

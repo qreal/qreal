@@ -13,7 +13,6 @@
  * limitations under the License. */
 
 #include <QtCore/QMetaType>
-#include <QDebug>
 
 #include "utils/robotCommunication/robotCommunicator.h"
 

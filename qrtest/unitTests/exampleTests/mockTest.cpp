@@ -15,7 +15,7 @@
 #include "mockedTestClass.h"
 
 #include "gtest/gtest.h"
-// разобраться что это
+
 using ::testing::AtLeast;
 
 TEST(MockTest, testMethodTest) {

@@ -16,7 +16,7 @@ unsigned int totalDocumentedCount = 0;
 QStringList ignoreFiles;
 QString outputStats = "";
 QStringList testpathes;
-DirTree *dirTree = NULL;
+DirTree *dirTree = nullptr;
 QList<QPair<QString, QPair<int, bool> > > listOfTests;
 QString warning = "";
 QString colors[] = {"yellow", "white", "pink", "orange", "00CC66", "CC99CC", "00CCCC"};
@@ -59,6 +59,7 @@ QString removeImplementations(QString str)
 	for (int i = 1; i <= count; ++i) {
 		str.remove(QRegExp("\\{[^\\{\\}]*\\}"));
 	}
+
 	return str;
 }
 
@@ -75,14 +76,14 @@ unsigned int macrosesWithParameters(QString str)
 bool isIgnored(QString fileName)
 {
 	bool isMatch = false;
-	for (int j = 0; j < ignoreFiles.length(); ++j)
-	{
+	for (int j = 0; j < ignoreFiles.length(); ++j) {
 		QRegExp exReg(".*" + ignoreFiles.at(j) + ".*");
 		if (exReg.exactMatch(fileName)) {
 			isMatch = true;
 			break;
 		}
 	}
+
 	return isMatch;
 }
 
@@ -91,7 +92,7 @@ unsigned int localFunctionCount(QString path, QString fileName)
 	QFile file(path + fileName + ".h");
 	// the second condition need for events when .h is interface
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text) || !QFile::exists(path + fileName + ".cpp")
-		|| isIgnored(path + fileName + ".h")) {
+			|| isIgnored(path + fileName + ".h")) {
 		return 0;
 	}
 
@@ -125,6 +126,7 @@ int localTests(QString fileName)
 			break;
 		}
 	}
+
 	return testCount;
 }
 
@@ -147,28 +149,24 @@ void totalFunctionCount(QString dir, bool dirIsIgnored, DirNode *parent)
 	unsigned int oldDocumentedCount = totalDocumentedCount;
 
 	if (!parent || !dirIsIgnored) {
-		for (int i = 0; i < filterFileList.length(); ++i)
-		{
+		for (int i = 0; i < filterFileList.length(); ++i) {
 			QString file = filterFileList.at(i);
 			file.chop(2);
 			localCount += localFunctionCount(dir, file);
 			localTestCount += localTests(file);
 		}
 		totalTestingFunCount += localCount;
-
 		if (!dirTree) {
 			dirTreeInitialization(dir, localCount, totalDocumentedCount - oldDocumentedCount, localTestCount, false, orange);
 			node = dirTree->getRoot();
-
 		} else {
 			node = DirTree::createNode(dir, localCount, totalDocumentedCount - oldDocumentedCount, localTestCount, false, nextColor(parent->color));
 			dirTree->addChild(node, parent);
 		}
-		for (int i = 0; i < dirList.length(); ++i)
-		{
+
+		for (int i = 0; i < dirList.length(); ++i) {
 			bool followDirIsIgnored = false;
-			for (int j = 0; j < ignoreFiles.length(); ++j)
-			{
+			for (int j = 0; j < ignoreFiles.length(); ++j) {
 				QRegExp exReg(".*" + ignoreFiles.at(j) + ".*");
 				if (exReg.exactMatch(dir + dirList.at(i) + "/")) {
 					followDirIsIgnored = true;
@@ -180,8 +178,7 @@ void totalFunctionCount(QString dir, bool dirIsIgnored, DirNode *parent)
 	} else {
 		node = DirTree::createNode(dir, 0, 0, 0, true, nextColor(parent->color));
 		dirTree->addChild(node, parent);
-		for (int i = 0; i < dirList.length(); ++i)
-		{
+		for (int i = 0; i < dirList.length(); ++i) {
 			totalFunctionCount(dir + dirList.at(i) + "/", true, node);
 		}
 	}
@@ -193,12 +190,13 @@ void readFromFileToList(const QString &relativeFileName, QStringList &list)
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		return;
 	}
+
 	QTextStream in(&file);
-	while (!in.atEnd())
-	{
+	while (!in.atEnd()) {
 		QString line = in.readLine();
 		list.append(line);
 	}
+
 	file.close();
 }
 
@@ -208,6 +206,7 @@ void fillOutputStats(DirNode *node)
 	if (node->childNode) {
 		name1.append("<a href=\"#" + node->childNode->name + "\">");
 	}
+
 	name1.append((node->isIgnored ? "<i>~" : "") + node->name + (node->isIgnored ? "</i>" : "") + "</a></td>");
 	QString name2 = "<td> <a name=\"" + node->name + "\"></a>" + QString::number(node->localTesting) + "</td>";
 	QString name3 = "<td>" + QString::number(node->localDocumented)+ "</td>";
@@ -225,17 +224,19 @@ void fillNodeLogHTML(DirNode *node)
 	if (node == dirTree->getRoot()) {
 		fillOutputStats(node);
 	}
+
 	DirNode *tmpNode = node->childNode;
 	if (tmpNode) {
 		if (tmpNode->rightNode) {
 			fillOutputStats(tmpNode);
-			while (tmpNode->rightNode != NULL) {
+			while (tmpNode->rightNode != nullptr) {
 				tmpNode = tmpNode->rightNode;
 				fillOutputStats(tmpNode);
 			}
+
 			tmpNode = node->childNode;
 			fillNodeLogHTML(tmpNode);
-			while (tmpNode->rightNode != NULL) {
+			while (tmpNode->rightNode != nullptr) {
 				tmpNode = tmpNode->rightNode;
 				fillNodeLogHTML(tmpNode);
 			}
@@ -283,14 +284,12 @@ void fillListOfTests(QString dir)
 	QStringList fileList = directory.entryList(QDir::Files);
 	QStringList filterFileList = fileList.filter(QRegExp(fileFilter, Qt::CaseInsensitive, QRegExp::Wildcard));
 
-	for (int i = 0; i < filterFileList.length(); ++i)
-	{
+	for (int i = 0; i < filterFileList.length(); ++i) {
 		QString file = filterFileList.at(i);
 		localCountOfTests(dir + file);
 	}
 
-	for (int i = 0; i < dirList.length(); ++i)
-	{
+	for (int i = 0; i < dirList.length(); ++i) {
 		QString subDir = dirList.at(i);
 		fillListOfTests(dir + subDir + "/");
 	}
@@ -303,8 +302,7 @@ void fillListOfTestDirects(QString dir)
 	QStringList dirList = directory.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
 	QStringList dirFilterList = dirList.filter(QRegExp(pathFilter, Qt::CaseSensitive, QRegExp::Wildcard));
 
-	for (int i = 0; i < dirFilterList.length(); ++i)
-	{
+	for (int i = 0; i < dirFilterList.length(); ++i) {
 		QString subDir = dirFilterList.at(i);
 		if (subDir.compare("exampleTests") != 0) {
 			fillListOfTests(dir + subDir + "/");
@@ -324,8 +322,8 @@ int main(int argc, char *argv[])
 	readFromFileToList("testpathes", testpathes);
 	for (int j = 0; j < testpathes.length(); ++j)
 	{
-		fillListOfTestDirects(testpathes.at(j) + "qrtest/unitTests/");
-		totalFunctionCount(testpathes.at(j), false, NULL);
+		fillListOfTestDirects(testpathes.at(j) + "buildScripts/");
+		totalFunctionCount(testpathes.at(j), false, nullptr);
 		dirTree->calculateTotalData();
 		QString fileName = "testCoverage";
 		QString num = (j) ? QString::number(j) : "";
@@ -341,7 +339,7 @@ int main(int argc, char *argv[])
 		totalVirtualCount = 0;
 		totalDocumentedCount = 0;
 		dirTree->~DirTree();
-		dirTree = NULL;
+		dirTree = nullptr;
 		outputStats.clear();
 		outputFile.close();
 		listOfTests.clear();

@@ -4,3 +4,4 @@ debug/
 release/
 thirdparty
 qrtest/
+buildScripts/

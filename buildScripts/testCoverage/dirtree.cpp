@@ -11,7 +11,7 @@ void DirTree::addChild(DirNode *child, DirNode *parent)
 		parent->childNode = child;
 	} else {
 		DirNode *node = parent->childNode;
-		while (node->rightNode != NULL) {
+		while (node->rightNode != nullptr) {
 			node = node->rightNode;
 		}
 		node->rightNode = child;
@@ -47,9 +47,9 @@ DirNode *DirTree::createNode(QString name, int localTesting, int localDocumented
 	node->name = name;
 	node->localDocumented = localDocumented;
 	node->localTesting = localTesting;
-	node->parentNode = NULL;
-	node->rightNode = NULL;
-	node->childNode = NULL;
+	node->parentNode = nullptr;
+	node->rightNode = nullptr;
+	node->childNode = nullptr;
 	node->totalTesting = 0;
 	node->totalDocumented = 0;
 	node->totalTests = 0;

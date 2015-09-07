@@ -2,9 +2,18 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./qRealGuiTests-d"
-  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./qRealRobotsGuiTests-d"
-  - CONFIG=debug   PROJECT=testCoverage          VERA=true 	TESTS="./testCoverage-d"
+  - CONFIG=debug   PROJECT=qrealGuiTest       VERA=true 	TESTS="./qRealGuiTests-d"
+  - CONFIG=debug   PROJECT=qrealRobotsGuiTest VERA=true 	TESTS="./qRealRobotsGuiTests-d"
+  - CONFIG=debug   PROJECT=testCoverage       VERA=true 	TESTS="./testCoverage-d"
+  - CONFIG=debug   PROJECT=qreal              VERA=true  TESTS=true
+  - CONFIG=release PROJECT=qreal              VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealRobots        VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealRobots        VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealBP            VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealBP            VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealTest          VERA=false TESTS="./exampleTests-d && ./qrgui_unittests-d && ./qrrepo_unittests-d && ./qrutils_unittests-d && ./visualDebugSupport_unittests-d && ./qrtext_unittests-d && ./generationRulesTool_unittests-d"
+  - CONFIG=release PROJECT=qrealTest          VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests && ./qrtext_unittests && ./generationRulesTool_unittests"
+  - CONFIG=debug   PROJECT=qrealRobotsTest    VERA=false TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./run-simulator-tests.sh"
 
 before_install:
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then git clone --depth=50 --branch=master http://github.com/qreal/qreal.wiki.git ./../qreal.wiki/; fi
@@ -12,7 +21,7 @@ before_install:
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then chmod 600 ~/.netrc; fi
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/; fi
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then cd ./../qrealTest/qreal/; fi
-  - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then echo `pwd` > qrtest/unitTests/testCoverage/testpathes; fi
+  - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then echo `pwd` > buildScripts/testCoverage/testpathes; fi
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then cd ./../../qreal/; fi
 
 install:
@@ -58,4 +67,4 @@ script:
 notifications:
   email:
     recipients:
-      - nikolskiy.kirill.andreevich@gmail.com
+      - qreal-build-reports@googlegroups.com

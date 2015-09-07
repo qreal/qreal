@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "./../../../qrgui/mainWindow/scriptAPI/paletteAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/paletteAPI.h"
 
-#include "./../../../qrgui/mainWindow/scriptAPI/guiFacade.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/sceneAPI.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/scriptAPI.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/virtualCursor.h"
-#include "./../../../qrgui/mainWindow/palette/draggableElement.h"
+#include "./qrgui/mainWindow/scriptAPI/guiFacade.h"
+#include "./qrgui/mainWindow/scriptAPI/sceneAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/virtualCursor.h"
+#include "./qrgui/mainWindow/palette/draggableElement.h"
 
 using namespace qReal;
 using namespace gui;

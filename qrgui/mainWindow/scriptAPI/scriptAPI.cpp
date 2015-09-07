@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "./../../../qrgui/mainWindow/scriptAPI/scriptAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
 
 #include <QtCore/QPropertyAnimation>
 #include <QtGui/QWidgetList>
@@ -26,14 +26,14 @@
 
 #include "qrgui/mainWindow/mainWindow.h"
 
-#include "./../../../qrgui/mainWindow/scriptAPI/utils.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/guiFacade.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/virtualCursor.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/hintAPI.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/sceneAPI.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/paletteAPI.h"
-#include "./../../../qrgui/mainWindow/scriptAPI/scriptRegisterMetaTypes.h"
+#include "./qrgui/mainWindow/scriptAPI/Utils.h"
+#include "./qrgui/mainWindow/scriptAPI/guiFacade.h"
+#include "./qrgui/mainWindow/scriptAPI/virtualCursor.h"
+#include "./qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
+#include "./qrgui/mainWindow/scriptAPI/hintAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/sceneAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/paletteAPI.h"
+#include "./qrgui/mainWindow/scriptAPI/scriptRegisterMetaTypes.h"
 
 using namespace qReal;
 using namespace gui;

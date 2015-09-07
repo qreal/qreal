@@ -16,13 +16,15 @@ static const int CRASHCODE = -1;
 static const int FREEZECODE = -2;
 
 #include "QRealGuiTests.h"
+
 #include "startQreal.cpp"
 #include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
 #include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
 #include "qrgui/mainWindow/qrealApplication.h"
-#include <qrkernel/settingsManager.h>
-
+#include "workaroundTestFunctions.h"
+#include "TestAgent.h"
 #include <qrutils/widgetFinder.h>
+
 #include <QtScript/QScriptContext>
 #include <QtScript/QScriptEngine>
 #include <QtScript/QScriptValue>
