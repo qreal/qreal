@@ -49,18 +49,18 @@
 <context>
     <name>nxt::communication::UsbRobotCommunicationThread</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="223"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="222"/>
         <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
         <translation>Le pilote Fanton n&apos;est pas accessible. Connexion USB avec le robot est impossible.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="225"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="224"/>
         <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
         <translation>Vous pouvez télécharger le pilote Fantom sur &lt;a href=&apos;%1&apos;&gt;le site de Lego&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="233"/>
-        <source>Usb connection to robot is impossible. Lego doesn&apos;t have Fantom Driver for 64-bit Mac.You will only be able to connect to NXT via Bluetooth.</source>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="232"/>
+        <source>Usb connection to robot is impossible. Lego doesn&apos;t have Fantom Driver for 64-bit Mac. You will only be able to connect to NXT via Bluetooth.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

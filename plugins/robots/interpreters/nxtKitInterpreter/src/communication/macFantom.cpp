@@ -31,11 +31,11 @@ Fantom::Fantom()
 		mAvailability = Status::available;
 	} else {
 		mAvailability = mFantomLibrary.errorString().contains("no matching architecture in universal wrapper")
-				? Status::x64 : Status::notexist;
+				? Status::x64 : Status::notFound;
 	}
 }
 
-Fantom::Status Fantom::availability()
+Fantom::Status const Fantom::availability()
 {
 	return mAvailability;
 }

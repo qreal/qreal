@@ -217,7 +217,7 @@ void UsbRobotCommunicationThread::checkConsistency()
 		return;
 	}
 
-	if (mFantom.availability() == Fantom::Status::notexist) {
+	if (mFantom.availability() == Fantom::Status::notFound) {
 		const QString fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
 		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
 		if (!fantomDownloadLink.isEmpty()) {
@@ -229,7 +229,8 @@ void UsbRobotCommunicationThread::checkConsistency()
 	}
 
 	if (mFantom.availability() == Fantom::Status::x64) {
-		QString errorMessage = tr("Usb connection to robot is impossible. Lego doesn't have Fantom Driver for 64-bit Mac."
+		const QString errorMessage = tr("Usb connection to robot is impossible. "
+								  "Lego doesn't have Fantom Driver for 64-bit Mac. "
 								  "You will only be able to connect to NXT via Bluetooth.");
 		emit errorOccured(errorMessage);
 	}

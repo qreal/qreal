@@ -23,13 +23,13 @@ namespace communication {
 class Fantom
 {
 public:
-	/// Returns available if fantom driver is available, notexist otherwise. Return x64 if it's 64-bit Mac.
-	enum class Status { available, notexist, x64 };
+	/// Returns available if fantom driver is available, notFound otherwise. Return x64 if it's 64-bit Mac.
+	enum class Status { available, notFound, x64 };
 
 	/// Constructor. Tries to load a dlib.
 	Fantom();
 
-	Status availability();
+	Status const availability();
 
 	// Fantom library methods
 
