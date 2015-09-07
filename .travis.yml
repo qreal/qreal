@@ -2,9 +2,9 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./qRealGuiTests-d"		GUI=true
-  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./qRealRobotsGuiTests-d"		GUI=true
-  - CONFIG=debug   PROJECT=testCoverage          VERA=true 	TESTS="./testCoverage-d"		GUI=false
+  - CONFIG=debug   PROJECT=qrealGuiTest    	 VERA=true 	TESTS="./qRealGuiTests-d"
+  - CONFIG=debug   PROJECT=qrealRobotsGuiTest    VERA=true 	TESTS="./qRealRobotsGuiTests-d"
+  - CONFIG=debug   PROJECT=testCoverage          VERA=true 	TESTS="./testCoverage-d"
 
 before_install:
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then git clone --depth=50 --branch=master http://github.com/qreal/qreal.wiki.git ./../qreal.wiki/; fi
@@ -31,9 +31,9 @@ install:
   - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script libgl1-mesa-dev -y
   - sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
   - . /opt/qt55/bin/qt55-env.sh
-  - if [ "$GUI" = "true" ]; sudo apt-get install xvfb; fi
-  - if [ "$GUI" = "true" ]; Xvfb :0 -ac -screen 0 1366x768x16 &; fi
-  - if [ "$GUI" = "true" ]; export DISPLAY=:0; fi
+  - sudo apt-get install xvfb
+  - Xvfb :0 -ac -screen 0 1366x768x16 &
+  - export DISPLAY=:0
 
 script:
   - gcc --version
@@ -44,8 +44,7 @@ script:
   - make -j2
   - cd ./bin/$CONFIG
   - ls -A
-  - if [ "$GUI" = "true" ]; then sh -c "$TESTS --no-locale"; fi
-  - if [ "$GUI" = "false" ]; then sh -c "$TESTS"; fi
+  - sh -c "$TESTS"
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then cat testCoverage.html > ./../../../qreal.wiki/testCoverage.html; fi
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then cd ./../../../qreal.wiki; fi
   - if [ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]; then ls -A; fi

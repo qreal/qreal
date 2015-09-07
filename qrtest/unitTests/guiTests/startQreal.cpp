@@ -84,7 +84,9 @@ MainWindow* start()
 	}
 
 	qsrand(time(0));
-	setDefaultLocale(app->arguments().contains("--no-locale"));
+	// setDefaultLocale(app->arguments().contains("--no-locale"));
+	// commented out because of the bug. FIXME: a bug with QTest::keyClick for no askii characters
+	setDefaultLocale(true);
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
@@ -118,7 +120,7 @@ MainWindow* start()
 	#endif
 
 	MainWindow *window = new MainWindow(fileToOpen);
-
+	SettingsManager::setValue("guiTest", true);
 	if (!window->isVisible()) {
 		return nullptr;
 	}
