@@ -16,7 +16,7 @@
 
 using namespace utils;
 
-QWidget *WidgetFinder::widget(QWidget *parent, const QString &type, const QString &name)
+QWidget *WidgetFinder::widget(const QWidget *parent, const QString &type, const QString &name)
 {
 	const QList<QWidget *> widgetList = parent->findChildren<QWidget *>(name);
 
