@@ -22,12 +22,12 @@ public:
 	virtual ~MainWidnowScriptAPIInterface() {}
 
 	/// Evaluates script with current ScriptAPI
-	/// @param ready script for evaluating
-	virtual void evaluateScript(const QString &script) = 0;
+	/// @param ready script for evaluating, \a fileName is used for error reporting.
+	virtual void evaluateScript(const QString &script, const QString &fileName) = 0;
 
 	/// Evaluates script located in the file
 	/// @param the full path to the file
-	virtual void evaluateInFileScript(const QString &fileName) = 0;
+	virtual void evaluateFileScript(const QString &fileName) = 0;
 
 	/// Abort evaluation of the script
 	virtual void abortEvaluation() = 0;
@@ -52,4 +52,7 @@ public:
 
 	/// @return a human-readable backtrace of the last uncaught exception.
 	virtual QStringList uncaughtExceptionBacktrace() = 0;
+
+	/// @return QScriptEngine pointer for ScriptAPI engine
+	virtual QScriptEngine* getEngine() = 0;
 };

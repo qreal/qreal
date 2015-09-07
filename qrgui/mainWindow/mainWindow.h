@@ -187,14 +187,15 @@ public:
 	void endPaletteModification() override;
 
 	/// the MainWindowScriptAPIInterface implementation
-	void evaluateScript(const QString &script) override;
-	void evaluateInFileScript(const QString &fileName) override;
+	void evaluateScript(const QString &script, const QString &fileName) override;
+	void evaluateFileScript(const QString &fileName) override;
 	void abortEvaluation() override;
 	void registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length) override;
 	QScriptSyntaxCheckResult checkSyntax(const QString &script) override;
 	bool hasUncaughtException() override;
 	void clearExceptions() override;
 	QStringList uncaughtExceptionBacktrace() override;
+	QScriptEngine* getEngine() override;
 
 	/// Additional actions for interpreter palette.
 	QList<QAction *> optionalMenuActionsForInterpretedPlugins();

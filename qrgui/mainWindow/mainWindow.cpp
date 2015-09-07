@@ -1633,7 +1633,7 @@ void MainWindow::initPluginsAndStartWidget()
 {
 	qDebug() << "initPluginsAndStartWidget";
 	initToolPlugins();
-	if (SettingsManager::value("scriptInterpretation").toBool()) {
+	if (SettingsManager::value("scriptInterpretation").toBool() || SettingsManager::value("guiTest").toBool()) {
 		initActionWidgetsNames();
 		initScriptAPI();
 	}
@@ -2109,19 +2109,19 @@ void MainWindow::initScriptAPI()
 	scriptAPIthread->start();
 }
 
-void MainWindow::evaluateInFileScript(const QString &fileName)
+void MainWindow::evaluateScript(const QString &script, const QString &fileName)
 {
-	mScriptAPI.evaluateInFileScript(fileName);
+	mScriptAPI.evaluateScript(script, fileName);
+}
+
+void MainWindow::evaluateFileScript(const QString &fileName)
+{
+	mScriptAPI.evaluateFileScript(fileName);
 }
 
 void MainWindow::abortEvaluation()
 {
 	mScriptAPI.abortEvaluation();
-}
-
-void MainWindow::evaluateScript(const QString &script)
-{
-	mScriptAPI.evaluateScript(script);
 }
 
 void MainWindow::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length)
@@ -2147,6 +2147,11 @@ void MainWindow::clearExceptions()
 QStringList MainWindow::uncaughtExceptionBacktrace()
 {
 	return mScriptAPI.uncaughtExceptionBacktrace();
+}
+
+QScriptEngine* MainWindow::getEngine()
+{
+	return mScriptAPI.getEngine();
 }
 
 void MainWindow::beginPaletteModification()
