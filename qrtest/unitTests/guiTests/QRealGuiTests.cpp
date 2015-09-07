@@ -20,8 +20,7 @@ static const int FREEZECODE = -2;
 #include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
 #include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
 #include "qrgui/mainWindow/qrealApplication.h"
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
-#include "./qrgui/mainWindow/mainWindow.h"
+#include <qrkernel/settingsManager.h>
 
 #include <qrutils/widgetFinder.h>
 #include <QtScript/QScriptContext>

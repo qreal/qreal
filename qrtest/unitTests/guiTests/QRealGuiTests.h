@@ -15,12 +15,8 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <QProcess>
-#include "qrgui/mainWindow/qrealApplication.h"
 #include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
-#include "./qrgui/mainWindow/mainWindow.h"
-#include <qrkernel/settingsManager.h>
-
+#include "./../../../../qreal/qrgui/mainWindow/mainWindow.h"
 #include "workaroundTestFunctions.h"
 #include "TestAgent.h"
 

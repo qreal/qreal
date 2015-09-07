@@ -29,18 +29,17 @@
 #include <models/commands/createElementCommand.h>
 
 #include "qrgui/mainWindow/mainWindow.h"
-#include "./qrgui/mainWindow/palette/draggableElement.h"
+#include "./../../../qrgui/mainWindow/palette/draggableElement.h"
 
-#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
-#include "./qrgui/mainWindow/scriptAPI/utils.h"
-#include "./qrgui/mainWindow/scriptAPI/guiFacade.h"
-#include "./qrgui/mainWindow/scriptAPI/virtualCursor.h"
-#include "./qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
-#include "./qrgui/mainWindow/scriptAPI/hintAPI.h"
-#include "./qrgui/mainWindow/scriptAPI/sceneAPI.h"
-#include "./qrgui/mainWindow/scriptAPI/paletteAPI.h"
-#include "./qrgui/mainWindow/scriptAPI/scriptRegisterMetaTypes.h"
-
+#include "./../../../qrgui/mainWindow/scriptAPI/scriptAPI.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/utils.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/guiFacade.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/virtualCursor.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/hintAPI.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/sceneAPI.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/paletteAPI.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/scriptRegisterMetaTypes.h"
 
 using namespace qReal;
 using namespace gui;

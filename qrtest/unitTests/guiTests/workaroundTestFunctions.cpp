@@ -17,7 +17,7 @@
 
 #include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
 #include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
-#include "./qrgui/mainWindow/mainWindow.h"
+#include "./../../../qrgui/mainWindow/mainWindow.h"
 
 #include <QtScript/QScriptContext>
 #include <QtScript/QScriptEngine>

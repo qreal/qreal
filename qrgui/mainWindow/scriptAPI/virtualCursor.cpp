@@ -17,9 +17,9 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtWidgets/QApplication>
 
-#include "./qrgui/mainWindow/mainWindow.h"
-#include "./qrgui/mainWindow/palette/draggableElement.h"
-#include "./qrgui/mainWindow/scriptAPI/scriptAPI.h"
+#include "./../../../qrgui/mainWindow/mainWindow.h"
+#include "./../../../qrgui/mainWindow/palette/draggableElement.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/scriptAPI.h"
 #include <QtTest>
 
 using namespace qReal;

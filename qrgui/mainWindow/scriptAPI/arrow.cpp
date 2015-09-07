@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "./qrgui/mainWindow/scriptAPI/arrow.h"
+#include "./../../../qrgui/mainWindow/scriptAPI/arrow.h"
 
 #include <QtCore/QTimer>
 #include <QtCore/QtMath>

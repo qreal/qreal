@@ -22,10 +22,10 @@
 #include <qrkernel/logging.h>
 #include <qrkernel/platformInfo.h>
 
-#include "./qrgui/mainWindow/mainWindow.h"
-#include "./qrgui/thirdparty/windowsmodernstyle.h"
+#include "./../../../qrgui/mainWindow/mainWindow.h"
+#include "./../../../qrgui/thirdparty/windowsmodernstyle.h"
 
-#include "./qrgui/mainWindow/qrealApplication.h"
+#include "./../../../qrgui/mainWindow/qrealApplication.h"
 
 using namespace qReal;
 
