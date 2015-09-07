@@ -31,9 +31,7 @@ DebuggerConnector::DebuggerConnector(QObject *parent)
 		, mWorkDir("")
 		, mHasGccError(false)
 {
-	qDebug() << "here moveTothred will1";
 	moveToThread(mThread);
-	qDebug() << "here moveTothred done1";
 	connect(mDebuggerProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
 	connect(mDebuggerProcess, SIGNAL(readyReadStandardError()), this, SLOT(readErrOutput()));
 	connect(mBuilderProcess, SIGNAL(readyReadStandardError()), this, SLOT(readBuilderErrOutput()));

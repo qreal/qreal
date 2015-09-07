@@ -251,12 +251,8 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
-	qDebug() << "calling connect with menuPanels";
 	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() {
 		mUi->menuPanels->clear();
-		for (const QAction *action : createPopupMenu()->actions()) {
-			qDebug() << action->text() << " " << action->objectName() << endl;
-		}
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
 
@@ -303,7 +299,9 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
-	qDebug() << "~MainWindow()";
+	if (SettingsManager::value("guiTest").toBool()) {
+		qDebug() << "MainWindow::~MainWindow()";
+	}
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -1631,7 +1629,6 @@ Id MainWindow::activeDiagram() const
 
 void MainWindow::initPluginsAndStartWidget()
 {
-	qDebug() << "initPluginsAndStartWidget";
 	initToolPlugins();
 	if (SettingsManager::value("scriptInterpretation").toBool() || SettingsManager::value("guiTest").toBool()) {
 		initActionWidgetsNames();
@@ -2092,7 +2089,6 @@ void MainWindow::openStartTab()
 
 void MainWindow::initScriptAPI()
 {
-	qDebug() << "MainWindow::initScriptAPI()";
 	QThread * const scriptAPIthread = new QThread(this);
 	mScriptAPI.init(*this);
 
@@ -2103,9 +2099,7 @@ void MainWindow::initScriptAPI()
 	addAction(evalAction);
 
 	connect(&mFacade.events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
-	qDebug() << "here moveTothred will4";
 	mScriptAPI.moveToThread(scriptAPIthread);
-	qDebug() << "here moveTothred done4";
 	scriptAPIthread->start();
 }
 

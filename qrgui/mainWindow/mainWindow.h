@@ -76,7 +76,7 @@ class TextManager;
 class MainWindow : public QMainWindow
 		, public qReal::gui::MainWindowInterpretersInterface
 		, public qReal::gui::MainWindowDockInterface
-		, public MainWidnowScriptAPIInterface
+		, public qReal::gui::MainWidnowScriptAPIInterface
 {
 	Q_OBJECT
 

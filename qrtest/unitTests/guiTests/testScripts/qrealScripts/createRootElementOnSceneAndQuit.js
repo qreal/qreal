@@ -65,8 +65,8 @@ api.wait(800);
 
 clickButtonLater("AddNodeDialog", "QCheckBox", "checkBox", 200);
 fillLineEditLater("AddNodeDialog", "nameEdit", "rootNode", 400);
-clickButtonLater("AddNodeDialog", "QPushButton", "OK", 800);
-api.wait(800);
+clickButtonLater("AddNodeDialog", "QPushButton", "OK", 1000);
+api.wait(1000);
 
 var actionNew_Diagram = ui.widget("QToolButton", "actionNew_Diagram");
 assert(actionNew_Diagram != null);

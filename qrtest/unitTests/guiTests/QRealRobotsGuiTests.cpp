@@ -14,8 +14,6 @@
 
 #include "QRealRobotsGuiTests.h"
 
-#include <QDebug>
-
 using namespace guiTesting;
 using namespace qReal;
 

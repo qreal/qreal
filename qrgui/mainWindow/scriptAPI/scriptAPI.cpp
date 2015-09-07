@@ -101,7 +101,6 @@ ScriptAPI::~ScriptAPI()
 
 void ScriptAPI::init(MainWindow &mainWindow)
 {
-	qDebug() << "ScriptAPI::init";
 	mGuiFacade.reset(new GuiFacade(mainWindow));
 	mVirtualCursor.reset(new VirtualCursor(*this, &mainWindow));
 	mVirtualKeyboard.reset(new VirtualKeyboard(*this));

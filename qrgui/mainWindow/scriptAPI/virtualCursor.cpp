@@ -29,7 +29,7 @@ int const cursorSize = 32;
 int const dragIconSize = 32;
 
 VirtualCursor::VirtualCursor(ScriptAPI &scriptAPI, QWidget *parent)
-	: QLabel(parent) // а если меняется mainwindow? надо менять родителя или сделать что то типа currentWindow?
+	: QLabel(parent)
 	, mScriptAPI(scriptAPI)
 	, mCursorMoveAnimation(new QPropertyAnimation(this, "geometry"))
 	, mCursorPixmap(":/mainWindow/images/scriptAPI/virtcursor.png")
@@ -112,11 +112,10 @@ void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, 
 void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 {
 	QPoint clickPosition = widgetPos(target);
-	if (QApplication::activePopupWidget()) {
-		if (QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition)))
+	if (QApplication::activePopupWidget() 
+		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
 		QApplication::activePopupWidget()->close();
 	}
-	QCursor::setPos(target->mapToGlobal(clickPosition));
 	simulateMouse(target, QEvent::MouseButtonPress, clickPosition, Qt::LeftButton);
 	if (delay >= 0) {
 		mScriptAPI.wait(delay);
@@ -137,7 +136,6 @@ void VirtualCursor::rightButtonPress(QWidget *target, int delay)
 {
 	QPoint clickPosition = widgetPos(target);
 	mRightButtonPressed = true;
-	QCursor::setPos(target->mapToGlobal(clickPosition));
 	simulateMouse(target, QEvent::MouseButtonPress,  clickPosition, Qt::RightButton);
 
 	if (delay >= 0) {
@@ -165,8 +163,8 @@ void VirtualCursor::rightButtonRelease(QWidget *target, int delay)
 void VirtualCursor::leftButtonDoubleClick(QWidget *target, int delay)
 {
 	QPoint clickPosition = widgetPos(target);
-	if (QApplication::activePopupWidget()) {
-		if (QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition)))
+	if (QApplication::activePopupWidget() 
+		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
 		QApplication::activePopupWidget()->close();
 	}
 	simulateMouse(target, QEvent::MouseButtonDblClick, clickPosition, Qt::LeftButton);

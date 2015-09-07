@@ -16,6 +16,7 @@
 
 #include <QMenu>
 #include <QAction>
+#include <functional>
 
 class QComboBox;
 class QAbstractScrollArea;
@@ -91,15 +92,16 @@ public:
 	Q_INVOKABLE void printPaletteElementsInfo() const;
 
 private:
-	void writeIn(QWidget *widget, const QString &lineEditObjectName, const QString &text);
-	void clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText);
-	void pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, const QString &itemName);
-	void clickPushButton(QWidget *widget, const QString &buttonText);
-	void clickRadioButton(QWidget *widget, const QString &buttonText);
-	void clickCheckBox(QWidget *widget, const QString &buttonText);
-	void throwScriptException(const QString &msg);
+	void writeIn(QWidget *widget, const QString &lineEditObjectName, const QString &text) const;
+	void clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText) const;
+	void pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, const QString &itemName) const;
+	void clickPushButton(QWidget *widget, const QString &buttonText) const;
+	void clickRadioButton(QWidget *widget, const QString &buttonText) const;
+	void clickCheckBox(QWidget *widget, const QString &buttonText) const;
+	void throwScriptException(const QString &msg) const;
 	void doSmthInWidget(const QString &widgetName, const QString &identifier
-						, const QString &buttonText, void (qReal::gui::Utils::*action)(QWidget*, const QString&, const QString &));
+						, const QString &buttonText
+						, std::function<void(const Utils &, QWidget *, const QString &, const QString &)>doAction) const;
 
 	ScriptAPI &mScriptAPI;
 	MainWindow &mMainWindow;

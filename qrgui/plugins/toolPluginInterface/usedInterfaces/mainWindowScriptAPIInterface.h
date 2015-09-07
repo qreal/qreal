@@ -16,6 +16,9 @@
 
 #include <QtScript/QScriptEngine>
 
+namespace qReal {
+namespace gui {
+
 class MainWidnowScriptAPIInterface
 {
 public:
@@ -56,3 +59,6 @@ public:
 	/// @return QScriptEngine pointer for ScriptAPI engine
 	virtual QScriptEngine* getEngine() = 0;
 };
+
+}
+}

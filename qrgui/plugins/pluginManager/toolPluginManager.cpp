@@ -35,7 +35,6 @@ ToolPluginManager::ToolPluginManager()
 
 ToolPluginManager::~ToolPluginManager()
 {
-	qDebug() << "~ToolPluginManager()";
 }
 
 void ToolPluginManager::init(const PluginConfigurator &configurator)

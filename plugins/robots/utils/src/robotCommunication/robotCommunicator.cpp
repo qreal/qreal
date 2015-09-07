@@ -76,9 +76,7 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 	mRobotCommunicationThread.wait();
 	delete mRobotCommunicationThreadObject;
 	mRobotCommunicationThreadObject = robotCommunication;
-	qDebug() << "here moveTothred will2";
 	mRobotCommunicationThreadObject->moveToThread(&mRobotCommunicationThread);
-	qDebug() << "here moveTothred done2";
 	mRobotCommunicationThreadObject->allowLongJobs();
 	mRobotCommunicationThread.start();
 

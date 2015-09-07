@@ -42,6 +42,7 @@ static const int FREEZECODE = -2;
 using namespace qReal;
 using namespace guiTesting;
 using namespace guiTesting::workarounds;
+using namespace qReal::gui;
 
 QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 {
@@ -153,7 +154,7 @@ void QRealGuiTests::SetUp()
 
 	QScriptEngine *engine = mMainWindowScriptAPIInterface->getEngine();
 	mTestAgent = new TestAgent(engine);
-	engine->setAgent(mTestAgent);
+	// engine->setAgent(mTestAgent); // for writting and debugging. dont remove!
 
 	mReturnCode = CRASHCODE;
 	QTimer *timer = new QTimer(window);

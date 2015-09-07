@@ -24,7 +24,7 @@ namespace qReal {
 /// List in which you can add element together with associated with it the string data.
 /// Selecting an item by either double clicking or by using the supporting buttons.
 /// The selected string data sent through the signal userDataSelected(const QString &userData).
-class QRGUI_DIALOGS_EXPORT ListWidget : public QWidget // может, наследоваться сразу от QListWidget
+class QRGUI_DIALOGS_EXPORT ListWidget : public QWidget
 {
 	Q_OBJECT
 

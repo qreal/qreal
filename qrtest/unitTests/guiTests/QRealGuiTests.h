@@ -79,7 +79,7 @@ private:
 	int mTimeLimit = 67000;
 
 	qReal::MainWindow* mWindow;
-	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
+	qReal::gui::MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
 	int mReturnCode;
 
 	/// for debugging and statistics

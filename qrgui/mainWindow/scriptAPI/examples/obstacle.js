@@ -1,30 +1,16 @@
-﻿var mainWindow = api.ui().mainWindow();
-api.switchToWindow(mainWindow);
+// Скорее всего, этот скипт не работает. Нужно посмотреть примерчики из guiTests.
+// И api.hints() (и так далее) достаточно вызывать один раз.
+var mainWindow = api.ui().mainWindow();
+api.changeWindow(mainWindow);
 api.hints().addHint("Добро пожаловать в среду визуального программирования QReal:Robots!", 1300, mainWindow);//api.hints() -> 'ui'
 api.wait(1500);
 api.hints().addHint("Сейчас мы нарисуем одну диаграмму за вас, чтобы показать, как все работает.", 1300, mainWindow);
 api.wait(1500);
-
-var viewMenu = api.ui().activateMenu("menu_View");
-var panelsSubMenu = api.ui().activateMenuAction(viewMenu, "Panels");
-api.ui().activateMenuAction(panelsSubMenu, "Errors");
-//api.hints().addHint("Сперва создадим новую диаграмму...", 2000, mainWindow);
-// надо создать 2 метода: получить на основном окне actionbuttons и получить в определенном actionbutton определенное действие. 
-// для того, чтоб не только пользоваться виджетами и дейтсвиями, которые видны на toolbare но и остальными.
-// плюс надо разобраться с Юриными исходниками насчет assert
-//api.cursor().moveTo(newMenu, 1000);
-//api.cursor().leftButtonPress(newMenu);
-//api.cursor().leftButtonRelease(newMenu, 400);
-if (newAction != null) { 
-api.hints().addHint("!!!!!!!!!!!!как все работает.", 1300, mainWindow);
-}
-api.cursor().moveTo(newAction, 300);
-//api.cursor().leftButtonPress(newAction);
-//api.cursor().leftButtonRelease(newAction, 400);
-
-api.wait(1500);
-
-
+var newDiagram = api.ui().widget("QToolButton", "actionNew_Diagram");
+api.hints().addHint("Сперва создадим новую диаграмму...", 2000, mainWindow);
+api.cursor().moveTo(newDiagram, 1000);
+api.cursor().leftButtonPress(newDiagram);
+api.cursor().leftButtonRelease(newDiagram, 400);
 var sensors = api.ui().widget("QComboBox", "Port D1 DeviceConfig");
 var s = api.ui().widget("QScrollArea", "");
 api.scroll(s, sensors);
@@ -74,7 +60,7 @@ api.cursor().moveTo(open2DModel, 3000);
 api.cursor().leftButtonPress(open2DModel);
 api.cursor().leftButtonRelease(open2DModel, 500);
 var widget = api.pluginUi("qRealRobots.RobotsPlugin").d2ModelWidget();
-api.switchToWindow(widget);
+api.changeWindow(widget);
 api.hints().addHint("Осталось нарисовать препятствие для робота...", 3000, widget);
 var wall = api.pluginUi("qRealRobots.RobotsPlugin").widget("QPushButton", "wallButton");
 api.cursor().moveTo(wall, 1000);

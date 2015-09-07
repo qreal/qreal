@@ -82,41 +82,17 @@ void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec)
 
 void Utils::fillLineEdit(const QString &widgetName, const QString &lineEditObjectName, const QString &text)
 {
-	doSmthInWidget(widgetName, lineEditObjectName, text, (&writeIn));
-//	QList<QWidget *> allWidgets = mMainWindow.findChildren<QWidget *>();
-//	for (QWidget * widget : allWidgets) {
-//		if (widget->windowTitle() == widgetName || widget->objectName() == widgetName) {
-//			writeIn(widget, lineEditObjectName, text);
-//			return;
-//		}
-//	}
-//	throwScriptException("doesnt exist " + widgetName + " dialog");
+	doSmthInWidget(widgetName, lineEditObjectName, text, &Utils::writeIn);
 }
 
 void Utils::clickButton(const QString &widgetName, const QString &buttonType, const QString &buttonText)
 {
 	doSmthInWidget(widgetName, buttonType, buttonText, &clickNeededButton);
-//	QList<QWidget *> allWidgets = mMainWindow.findChildren<QWidget *>();
-//	for (QWidget * widget : allWidgets) {
-//		if (widget->windowTitle() == widgetName || widget->objectName() == widgetName) {
-//			clickNeededButton(widget, buttonType, buttonText);
-//			return;
-//		}
-//	}
-//	throwScriptException("doesnt exist " + widgetName + " dialog");
 }
 
 void Utils::chooseComboBoxItem(const QString &widgetName, const QString &comboBoxObjectName, const QString &itemName)
 {
 	doSmthInWidget(widgetName, comboBoxObjectName, itemName, &pickNeededItem);
-//	QList<QWidget *> allWidgets = mMainWindow.findChildren<QWidget *>();
-//	for (QWidget * widget : allWidgets) {
-//		if (widget->windowTitle() == widgetName || widget->objectName() == widgetName) {
-//			pickNeededItem(widget, comboBoxObjectName, itemName);
-//			return;
-//		}
-//	}
-//	throwScriptException("doesnt exist " + widgetName + " dialog");
 }
 
 void Utils::activateContextMenuAction(const QString &actionName)
@@ -200,7 +176,7 @@ void Utils::printPaletteElementsInfo() const
 	}
 }
 
-void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QString &text)
+void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QString &text) const
 {
 	const QList<QLineEdit *> lineEditList = widget->findChildren<QLineEdit *>(QString(), Qt::FindChildrenRecursively);
 	for (QLineEdit * lineEdit : lineEditList) {
@@ -217,16 +193,20 @@ void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QS
 	throwScriptException("QLineEdit with " + lineEditObjectName + " objectName was not found");
 }
 
-void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText)
+void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText) const
 {
-	enum {PUSHBUTTON = 1, RADIOBUTTON, CHECKBUTTON};
-	std::map <std::string, int> mapping;
+	enum { PUSHBUTTON = 1, RADIOBUTTON, CHECKBUTTON };
+	QMap<QString, int> map;
 
-	mapping["QPushButton"] = PUSHBUTTON;
-	mapping["QRadioButton"] = RADIOBUTTON;
-	mapping["QCheckBox"] = CHECKBUTTON;
+	map["QPushButton"] = PUSHBUTTON;
+	map["QRadioButton"] = RADIOBUTTON;
+	map["QCheckBox"] = CHECKBUTTON;
 
-	switch (mapping[buttonType.toStdString()])
+	if (!map.contains(buttonType)) {
+		throwScriptException("Utils::clickButton: needed type: '" + buttonType + "' was not found");
+		return;
+	}
+	switch (map.value(buttonType))
 	{
 		case PUSHBUTTON:
 			clickPushButton(widget, buttonText);
@@ -238,22 +218,12 @@ void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const 
 			clickCheckBox(widget, buttonText);
 			break;
 		default:
-			throwScriptException("Utils::clickButton: needed type: '" + buttonType + "' was not found");
+			// check enum, map, switch. we should not be here!
+			qWarning() << "Utils::clickNeededButton: we should not be in default of a switch!";
 	}
-
-//	const QList<QAbstractButton*> buttonList =
-//			widget->findChildren<QAbstractButton *>(QString(), Qt::FindChildrenRecursively);
-//	const char *typeName = buttonType.toLocal8Bit().data();
-//	for (QAbstractButton * button : buttonList) {
-//		if ((button->text() == buttonText || button->objectName() == buttonText)
-//				&& button->inherits(typeName) && button->isVisible() && button->isEnabled()) {
-//			QTest::mouseClick(button, Qt::LeftButton, Qt::NoModifier, QPoint(1, 1));
-//			return;
-//		}
-//	}
 }
 
-void Utils::pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, const QString &itemName)
+void Utils::pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, const QString &itemName) const
 {
 	const QList<QComboBox *> boxList =
 			widget->findChildren<QComboBox *>(QString(), Qt::FindChildrenRecursively);
@@ -281,7 +251,7 @@ void Utils::pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, c
 	throwScriptException("QComboBox with " + comboBoxObjectName + "objectName was not found");
 }
 
-void Utils::clickPushButton(QWidget *widget, const QString &buttonText)
+void Utils::clickPushButton(QWidget *widget, const QString &buttonText) const
 {
 	const QList<QPushButton *> buttonList =
 			widget->findChildren<QPushButton *>(QString(), Qt::FindChildrenRecursively);
@@ -295,7 +265,7 @@ void Utils::clickPushButton(QWidget *widget, const QString &buttonText)
 	throwScriptException("QPushButton (" + buttonText + ") was not found");
 }
 
-void Utils::clickRadioButton(QWidget *widget, const QString &buttonText)
+void Utils::clickRadioButton(QWidget *widget, const QString &buttonText) const
 {
 	const QList<QRadioButton *> buttonList =
 			widget->findChildren<QRadioButton *>(QString(), Qt::FindChildrenRecursively);
@@ -312,7 +282,7 @@ void Utils::clickRadioButton(QWidget *widget, const QString &buttonText)
 	throwScriptException("QRadioButton (" + buttonText + ") was not found");
 }
 
-void Utils::clickCheckBox(QWidget *widget, const QString &buttonText)
+void Utils::clickCheckBox(QWidget *widget, const QString &buttonText) const
 {
 	const QList<QCheckBox *> buttonList =
 			widget->findChildren<QCheckBox *>(QString(), Qt::FindChildrenRecursively);
@@ -330,18 +300,19 @@ void Utils::clickCheckBox(QWidget *widget, const QString &buttonText)
 	throwScriptException("QCheckBox (" + buttonText + ") was not found");
 }
 
-void Utils::throwScriptException(const QString &msg)
+void Utils::throwScriptException(const QString &msg) const
 {
 	mScriptAPI.getEngine()->currentContext()->throwError(msg);
 }
 
 void Utils::doSmthInWidget(const QString &widgetName, const QString &identifier
-					, const QString &associatedAction, void (qReal::gui::Utils::*actionF)(QWidget*, const QString&, const QString &))
+					, const QString &associatedAction
+					, std::function<void(const Utils &, QWidget *, const QString &, const QString &)> doAction) const
 {
 	QList<QWidget *> allWidgets = mMainWindow.findChildren<QWidget *>();
 	for (QWidget * widget : allWidgets) {
 		if (widget->windowTitle() == widgetName || widget->objectName() == widgetName) {
-			(this->*actionF)(widget, identifier, associatedAction);
+			doAction(*this, widget, identifier, associatedAction);
 			return;
 		}
 	}
