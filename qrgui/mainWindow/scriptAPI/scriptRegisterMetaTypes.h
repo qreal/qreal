@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-// нужно ли создавать отдельный класс и помещать его куда-нибудь в utils?
 #pragma once
 
 #include <QScriptEngine>
@@ -32,31 +31,7 @@ void QMenuFromScriptValue(const QScriptValue &object, QMenu* &out);
 QScriptValue QActionToScriptValue(QScriptEngine *engine, QAction* const &in);
 void QActionFromScriptValue(const QScriptValue &object, QAction* &out);
 
-void registerDeclaredTypes(QScriptEngine *engine)
-{
-	qScriptRegisterMetaType(engine, QMenuToScriptValue, QMenuFromScriptValue);
-	qScriptRegisterMetaType(engine, QActionToScriptValue, QActionFromScriptValue);
-}
-
-QScriptValue QMenuToScriptValue(QScriptEngine *engine, QMenu* const &in)
-{
-	return engine->newQObject(in);
-}
-
-void QMenuFromScriptValue(const QScriptValue &object, QMenu* &out)
-{
-	out = qobject_cast<QMenu *>(object.toQObject());
-}
-
-QScriptValue QActionToScriptValue(QScriptEngine *engine, QAction* const &in)
-{
-	return engine->newQObject(in);
-}
-
-void QActionFromScriptValue(const QScriptValue &object, QAction* &out)
-{
-	out = qobject_cast<QAction *>(object.toQObject());
-}
+void registerDeclaredTypes(QScriptEngine *engine);
 
 }
 }

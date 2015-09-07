@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,24 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../commonGui.pri) #because "SOURCES -=" doesnt work. (bug)
-
-SOURCES += $$PWD/mainGuiTest.cpp
+include(../commonGui.pri) #because "SOURCES -=" doesnt work. (bug?)
 
 QT += script
 
 HEADERS += \
 	$$PWD/QRealGuiTests.h \
-    expectedSimpleDialogScriptFunctions.h \
-    expectedPreferencesDialogScriptFunctions.h \
-    expectedOpenSaveDialogScriptFunctions.h \
-    expectedProjectDiagramScriptFunctions.h \
-    expectedFindDialogScriptFunctions.h \
-    expectedContextMenuScriptFunctions.h
+	$$PWD/workaroundTestFunctions.h \
+	$$PWD/TestAgent.h \
 
 SOURCES += \
 	$$PWD/QRealGuiTests.cpp \
 	$$PWD/startQreal.cpp \
+	$$PWD/mainGuiTest.cpp \
+	$$PWD/workaroundTestFunctions.cpp \
+	$$PWD/TestAgent.cpp \
 
 
 # in Existence checks initial states of required elements
@@ -67,7 +64,7 @@ OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/rightclickAllScreenScript.js \
 	$$PWD/testScripts/qrealScripts/autoSaveWork.js \
 	$$PWD/testScripts/qrealScripts/saveOpenScript.js \
-	$$PWD/testScripts/qrealScripts/hotKeysExistanceAndFunctioning.js \
+	$$PWD/testScripts/qrealScripts/hotKeysExistenceAndFunctioning.js \
 	$$PWD/testScripts/qrealScripts/createDiagramInCurrentModel.js \
 	$$PWD/testScripts/qrealScripts/verySimpleShapeEditorTest.js \
 	$$PWD/testScripts/common.js \

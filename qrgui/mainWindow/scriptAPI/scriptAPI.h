@@ -16,6 +16,7 @@
 
 #include <QtScript/QScriptEngine>
 #include <QtCore/QEventLoop>
+#include <QScriptEngineAgent>
 
 class QComboBox;
 class QAbstractScrollArea;
@@ -32,7 +33,11 @@ class VirtualKeyboard;
 class SceneAPI;
 class PaletteAPI;
 class HintAPI;
+class Utils;
 
+/// @warning Should not throw C++ except-s in q_invokable methods, a script engine cann't propagate ones up the stack.
+/// All asserts for such functions, for passed parameters should be done in a script, using script's assert();
+/// This applies to all invokable functions of the scriptAPI module, functions are invokable from ui(), utils(), etc.;
 /// Represents scripting API for interaction with QReal graphical user interface. This class provides access to
 /// controling virtual devices (see VirtualCursor, VirtualKeyboard), API for some elements of graphical
 /// user interface (see PaletteAPI, SceneAPI), GUI facades for system and plugins (see GuiFacade,
@@ -55,10 +60,10 @@ public:
 	void evaluate();
 
 	/// Starts evaluatiion of the script "script" with script engine.
-	void evaluateScript(const QString &script);
+	void evaluateScript(const QString &script, const QString &fileName);
 
 	/// Starts evaluatiion of the script with script engine located in "fileName".
-	void evaluateInFileScript(const QString &fileName);
+	void evaluateFileScript(const QString &fileName);
 
 	/// Registres new function fun in QScriptEngine for using fun in scripts
 	void regNewFunct(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length = 0);
@@ -75,6 +80,9 @@ public:
 	/// Returns a human-readable backtrace of the last uncaught exception.
 	QStringList uncaughtExceptionBacktrace();
 
+	/// Returns ScriptAPI engine pointer
+	QScriptEngine* getEngine();
+
 	/// Freezes execution for duration. Starting event loop breaking when duration time ellapsed.
 	Q_INVOKABLE void wait(int duration);
 
@@ -88,12 +96,14 @@ public:
 
 	/// Picks combo box item. Virtual cursor can pick any item in its sight of view.
 	/// Temporary doesn`t work with scroll bars.
+	/// @todo: move it to Utils as a action.
 	Q_INVOKABLE void pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration);
 
 	/// Changes QAbstractScrollArea viewport to make target widget visible. Can work only with vertical sliders.
+	/// @todo: move it to Utils as a action.
 	Q_INVOKABLE void scroll(QAbstractScrollArea *area, QWidget *widget, int duration);
 
-	/// Povides operations for obtaining different UI parts of some plugin.
+	/// Provides operations for obtaining different UI parts of some plugin.
 	Q_INVOKABLE QScriptValue pluginUi(const QString &pluginName);
 
 	/// Povides operations for obtaining different UI parts.
@@ -113,6 +123,9 @@ public:
 
 	/// Provides extended operations with QReal palette.
 	Q_INVOKABLE QScriptValue palette();
+
+	/// Provides complicated operations with QReal and usefull functions independent of ui.
+	Q_INVOKABLE QScriptValue utils();
 
 	/// Returns GUI facade for obtaining different UI parts.
 	GuiFacade &guiFacade();
@@ -137,6 +150,7 @@ private:
 	QScopedPointer<SceneAPI> mSceneAPI;
 	QScopedPointer<PaletteAPI> mPaletteAPI;
 	QScopedPointer<HintAPI> mHintAPI;
+	QScopedPointer<Utils> mUtilsApi;
 
 	QScriptEngine mScriptEngine;
 	QEventLoop mEventLoop;

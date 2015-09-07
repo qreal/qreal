@@ -26,6 +26,7 @@
 
 #include "qrgui/mainWindow/mainWindow.h"
 
+#include "./qrgui/mainWindow/scriptAPI/utils.h"
 #include "./qrgui/mainWindow/scriptAPI/guiFacade.h"
 #include "./qrgui/mainWindow/scriptAPI/virtualCursor.h"
 #include "./qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
@@ -39,6 +40,49 @@ using namespace gui;
 using namespace scriptUtils;
 using namespace utils;
 
+/// Invokes over time a function passed in parameters with the relative obj
+QScriptValue invokeLater(QScriptContext* context, QScriptEngine* engine)
+{
+	Q_UNUSED(engine);
+	if (context->argumentCount() < 3) {
+		context->throwError("'invokeLater' shall have 3 or more arguments");
+		return {};
+	}
+
+	int lastButOne = context->argumentCount() - 1;
+
+	if (!(context->argument(0).isValid() && !context->argument(0).toString().isEmpty())) {
+		context->throwError("thisObject failure at " + QStringList(context->backtrace().mid(1)).join("\n"));
+		return {};
+	}
+
+	if (!(context->argument(1).isValid() && context->argument(1).isString()
+			&& !context->argument(1).toString().isEmpty())) {
+		context->throwError("propertyName failure at " + QStringList(context->backtrace().mid(1)).join("\n"));
+		return {};
+	}
+
+	if (!(context->argument(lastButOne).isValid() && context->argument(lastButOne).isNumber()
+			&& context->argument(lastButOne).toInt32() > 0)) {
+		context->throwError("waitingTime failure at " + QStringList(context->backtrace().mid(1)).join("\n"));
+		return {};
+	}
+
+	QScriptValue thisObject = context->argument(0);
+	QString propertyName = context->argument(1).toString();
+	int mces = context->argument(lastButOne).toInt32();
+	QScriptValueList args;
+	for (int i = 2; i < lastButOne; ++i) {
+		args << context->argument(i);
+	}
+
+	QTimer::singleShot(mces, [=]() {
+		thisObject.property(propertyName).call(QScriptValue(), args);
+	});
+
+	return {};
+}
+
 ScriptAPI::ScriptAPI()
 	: mGuiFacade(nullptr)
 	, mVirtualCursor(nullptr)
@@ -46,6 +90,7 @@ ScriptAPI::ScriptAPI()
 	, mSceneAPI(nullptr)
 	, mPaletteAPI(nullptr)
 	, mHintAPI(nullptr)
+	, mUtilsApi(nullptr)
 	, mScriptEngine(new QScriptEngine)
 {
 }
@@ -63,12 +108,14 @@ void ScriptAPI::init(MainWindow &mainWindow)
 	mSceneAPI.reset(new SceneAPI(*this, mainWindow));
 	mPaletteAPI.reset(new PaletteAPI(*this, mainWindow));
 	mHintAPI.reset(new HintAPI);
-
+	mUtilsApi.reset(new Utils(*this, mainWindow, *mVirtualCursor.data(), *mHintAPI.data()));
 	const QScriptValue scriptAPI = mScriptEngine.newQObject(this);
 	// This instance will be available in scripts by writing something like "api.wait(100)"
 	mScriptEngine.globalObject().setProperty("api", scriptAPI);
 
 	registerDeclaredTypes(&mScriptEngine);
+
+	regNewFunct(invokeLater, "invokeLater");
 }
 
 void ScriptAPI::evaluate()
@@ -80,27 +127,20 @@ void ScriptAPI::evaluate()
 	mVirtualCursor->raise();
 
 	mScriptEngine.setProcessEventsInterval(20);
-	// вообще fileName используется на error reporting. и как-то странно писать их в fileName
 	mScriptEngine.evaluate(fileContent, fileName);
-
-	abortEvaluation();
 }
 
-void ScriptAPI::evaluateScript(const QString &script)
+void ScriptAPI::evaluateScript(const QString &script, const QString &fileName)
 {
 	mScriptEngine.setProcessEventsInterval(20);
-	mScriptEngine.evaluate(script); // надо ли писать об ошибках в файл?
-
-	abortEvaluation();
+	mScriptEngine.evaluate(script, fileName);
 }
 
-void ScriptAPI::evaluateInFileScript(const QString &fileName)
+void ScriptAPI::evaluateFileScript(const QString &fileName)
 {
 	const QString fileContent = InFile::readAll(fileName);
 	mScriptEngine.setProcessEventsInterval(20);
-	mScriptEngine.evaluate(fileContent); // надо ли писать об ошибках в файл?
-
-	abortEvaluation();
+	mScriptEngine.evaluate(fileContent, fileName);
 }
 
 void ScriptAPI::regNewFunct(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length)
@@ -129,6 +169,11 @@ void ScriptAPI::clearExceptions()
 QStringList ScriptAPI::uncaughtExceptionBacktrace()
 {
 	return mScriptEngine.uncaughtExceptionBacktrace();
+}
+
+QScriptEngine* ScriptAPI::getEngine()
+{
+	return &mScriptEngine;
 }
 
 void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration)
@@ -225,9 +270,7 @@ QScriptValue ScriptAPI::pluginUi(const QString &pluginName)
 
 void ScriptAPI::abortEvaluation()
 {
-	qDebug() << mScriptEngine.isEvaluating();
 	mScriptEngine.abortEvaluation();
-	qDebug() << mScriptEngine.isEvaluating();
 }
 
 GuiFacade &ScriptAPI::guiFacade()
@@ -296,4 +339,9 @@ QScriptValue ScriptAPI::cursor()
 QScriptValue ScriptAPI::keyboard()
 {
 	return mScriptEngine.newQObject(mVirtualKeyboard.data(), QScriptEngine::QtOwnership);
+}
+
+QScriptValue ScriptAPI::utils()
+{
+	return mScriptEngine.newQObject(mUtilsApi.data(), QScriptEngine::QtOwnership);
 }
