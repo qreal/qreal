@@ -37,9 +37,13 @@ public:
 	explicit GuiFacade(MainWindow &mainWindow);
 
 	/// Returns main window child widget by its type (class name) and QObject name.
-	/// @note Doesnt work for QMenu. Use getMenu() instead. Doesnt work for startWidget. Use getStartButton() instead.
+	/// @note Doesnt work for QMenu. Use getMenu() instead.
 	/// Dont forget about scrollViewPorts in some cases
-	Q_INVOKABLE QWidget *widget(const QString &type, const QString &name = QString()) const;
+	Q_INVOKABLE QWidget *widget(const QString &type, const QString &objectName = QString()) const;
+
+	/// Returns main window child widget by its type (class name) and QObject name having \a widget in the parent list
+	/// @see qReal::gui::GuiFacade::widget for more information
+	Q_INVOKABLE QWidget *widgetClarified(const QWidget *parent, const QString &type, const QString &objectName = QString()) const;
 
 	/// Returns a widget of some action on the toolbar panel.
 	Q_INVOKABLE QWidget *pluginActionToolButton(const QString &name) const;
@@ -71,45 +75,35 @@ public:
 	/// @param: pluginName The name of the plugin specified in its metadata in IID section.
 	QObject *pluginGuiFacade(const QString &pluginName) const;
 
-// ниже идут методы, которые я писал специально для тестов: (потом стоит расположить по порядку в .h и .cpp)
+	/// @returns first available viewport widget pointer with "qt_scrollarea_viewport" name,
+	/// or 0 if there is no such object. The search is performed recursively
+	/// If there is more than one child matching the search, the most direct ancestor is returned.
+	/// If there are several direct ancestors, it is undefined which one will be returned.
+	/// \a object must be not 0
+	Q_INVOKABLE QWidget *deepViewPort(const QObject *object) const;
 
-	// можно это действие заменить поиском objectname "qt_scrollarea_viewport" в детях какого-то виджета
+	/// @returns viewport widget pointer of this \a widget
 	Q_INVOKABLE QWidget *viewPort(const QAbstractScrollArea *widget) const;
 
-	// trash method, поместить в utils()
-	Q_INVOKABLE bool isEnabledAndVisible(const QAction *action) const;
+	/// @returns corresponding menu pointer from the main menuBar, nullptr if such main doesnt exist
+	/// @note FindDirectChildrenOnly option
+	Q_INVOKABLE QMenu *getMenu(const QString &menuName) const;
 
-	Q_INVOKABLE bool isEnabledAndVisible(const QWidget *widget) const;
-
+	/// @returns corresponding action pointer from the main menuBar, nullptr if such action doesnt exist
 	/// @note Looking for by a text or an object name
 	Q_INVOKABLE QAction *getActionInMenu(const QMenu *menu, const QString &actionName) const;
 
 	/// Need repeatedly to call this method (if again opens the menu) because
 	/// in this method the necessary signal is emitting
-	/// it needs because the bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373
+	/// @note it needs because the appropriative bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373
 	Q_INVOKABLE QMenu *getMenuContainedByAction(QAction *action) const;
 
+	/// @returns true if \a action is a submenu in \a menu.
 	Q_INVOKABLE bool isSubMenuInMenu(const QMenu *menu, const QAction *action) const;
 
-	Q_INVOKABLE QMenu *getMenu(const QString &menuName) const;
-
-	// НАСКОЛЬКО УМЕСТНО В ЭТОМ КЛАССЕ ПИСАТЬ МЕТОДЫ, КОТОРЫЕ КЛИКАЮТ ЧТО-ЛИБО? МОЖЕТ быть стоит поместить действия в отдельном классе?
-	/// @note This method works with a keyboard (not a mouse)
-	Q_INVOKABLE void activateMenu(QMenu *menu);// trash method, поместить в utils()
-	/// @warning Use this method only after opening of the assigned menu
-	/// @note This method works with a keyboard (not a mouse)
-	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec);// trash method, поместить в utils()
-
-	Q_INVOKABLE bool actionIsChecked(const QAction *action) const;
-
-	Q_INVOKABLE bool actionIsCheckable(const QAction *action) const;
-
+	/// @returns the widget pointer of visible push button corresponding to \a buttonText and startWidget
+	/// otherwise returns nullptr
 	Q_INVOKABLE QWidget *getStartButton(const QString &buttonText) const;
-
-	Q_INVOKABLE QPoint topLeftWidgetCorner(const QWidget *widget) const;
-
-	// не забыть переименовать
-	Q_INVOKABLE void printInfo() const;
 
 private:
 	QTreeWidgetItem *propertyTreeWidgetItem(const QString &name) const;

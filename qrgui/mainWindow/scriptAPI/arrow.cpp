@@ -36,7 +36,11 @@ Arrow::Arrow(const QPoint &sourcePoint, const QPoint &destPoint, int lifeTime, Q
 {
 	setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
-	activateWindow();
+	show();
+
+//	setGeometry(qMin(mSourcePoint.x(), mDestPoint.x()), qMin(mSourcePoint.y(), mDestPoint.y())
+//				, qAbs(mSourcePoint.x() - mDestPoint.x()), qAbs(mSourcePoint.y() - mDestPoint.y()));
+// todo: map to parent coordinates
 
 	QTimer::singleShot(mDuration, this, SLOT(disappear()));
 	QTimer::singleShot(lifeTime, this, SLOT(deleteLater()));

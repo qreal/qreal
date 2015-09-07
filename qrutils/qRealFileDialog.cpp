@@ -26,8 +26,11 @@ QString QRealFileDialog::getOpenFileName(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
+	if (qReal::SettingsManager::value("guiTest").toBool()) {
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
 	const QString lastDir = lastSelectedDirectory(id, dir);
-	const QString result = QFileDialog::getOpenFileName(parent, caption, lastDir, filter, selectedFilter, options | QFileDialog::DontUseNativeDialog);
+	const QString result = QFileDialog::getOpenFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
 	return result;
 }
@@ -40,8 +43,11 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
+	if (qReal::SettingsManager::value("guiTest").toBool()) {
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
 	const QString lastDir = lastSelectedDirectory(id, dir);
-	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options | QFileDialog::DontUseNativeDialog);
+	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
 	return result;
 }
@@ -52,8 +58,11 @@ QString QRealFileDialog::getExistingDirectory(const QString &id
 		, const QString &dir
 		, QFileDialog::Options options)
 {
+	if (qReal::SettingsManager::value("guiTest").toBool()) {
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
 	const QString lastDir = lastSelectedDirectory(id, dir);
-	const QString result = QFileDialog::getExistingDirectory(parent, caption, lastDir, options | QFileDialog::DontUseNativeDialog);
+	const QString result = QFileDialog::getExistingDirectory(parent, caption, lastDir, options);
 	saveState(id, result);
 	return result;
 }
@@ -66,8 +75,11 @@ QStringList QRealFileDialog::getOpenFileNames(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
+	if (qReal::SettingsManager::value("guiTest").toBool()) {
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
 	const QString lastDir = lastSelectedDirectory(id, dir);
-	const QStringList result = QFileDialog::getOpenFileNames(parent, caption, lastDir, filter, selectedFilter, options | QFileDialog::DontUseNativeDialog);
+	const QStringList result = QFileDialog::getOpenFileNames(parent, caption, lastDir, filter, selectedFilter, options);
 
 	if (!result.isEmpty()) {
 		saveState(id, directoryOf(result[0]));

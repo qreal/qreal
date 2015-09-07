@@ -33,9 +33,14 @@ GuiFacade::GuiFacade(MainWindow &mainWindow)
 {
 }
 
-QWidget *GuiFacade::widget(const QString &type, const QString &name) const
+QWidget *GuiFacade::widget(const QString &type, const QString &objectName) const
 {
-	return utils::WidgetFinder::widget(&mMainWindow, type, name);
+	return utils::WidgetFinder::widget(&mMainWindow, type, objectName);
+}
+
+QWidget *GuiFacade::widgetClarified(const QWidget *parent, const QString &type, const QString &objectName) const
+{
+	return utils::WidgetFinder::widget(parent, type, objectName);
 }
 
 DraggableElement *GuiFacade::draggableElement(const QString &widgetId) const
@@ -130,19 +135,21 @@ QTreeWidgetItem *GuiFacade::propertyTreeWidgetItem(const QString &name) const
 	return nullptr;
 }
 
+QWidget *GuiFacade::deepViewPort(const QObject *object) const
+{
+	return object->findChild<QWidget *>("qt_scrollarea_viewport");
+}
+
 QWidget *GuiFacade::viewPort(const QAbstractScrollArea *widget) const
 {
 	return widget->viewport();
 }
 
-bool GuiFacade::isEnabledAndVisible(const QAction *action) const
+QMenu *GuiFacade::getMenu(const QString &menuName) const
 {
-	return action->isEnabled() && action->isVisible();
-}
-
-bool GuiFacade::isEnabledAndVisible(const QWidget *widget) const
-{
-	return widget->isEnabled() && widget->isVisible();
+	QMenuBar *menuBar = mMainWindow.findChild<QMenuBar *>();
+	QMenu *menu = menuBar->findChild<QMenu *>(menuName, Qt::FindDirectChildrenOnly);
+	return menu;
 }
 
 QAction *GuiFacade::getActionInMenu(const QMenu *menu, const QString &actionName) const
@@ -167,59 +174,6 @@ QMenu *GuiFacade::getMenuContainedByAction(QAction *action) const
 	return action->menu();
 }
 
-// Для корректной работы QTest::keyClick в qt 5.5 необходимо вводить char (русские символы не работают)
-// ASSERT: "false" in file qasciikey.cpp, line 222
-// в будущем, если придется через гуи тестить русский С, то придется с этим что-то придумать
-// сейчас в настройках запуска для тестов устанавливается параметр --no-locale
-QMenu *GuiFacade::getMenu(const QString &menuName) const
-{
-	QMenuBar *menuBar = mMainWindow.findChild<QMenuBar *>();
-	QMenu *menu = menuBar->findChild<QMenu *>(menuName, Qt::FindDirectChildrenOnly);
-	return menu;
-}
-
-void GuiFacade::activateMenu(QMenu *menu)
-{
-	QTest::keyClick(&mMainWindow, menu->title().at(1).toLatin1(), Qt::AltModifier);
-}
-
-void GuiFacade::activateMenuAction(QMenu *menu, QAction *actionForExec)
-{
-	for (const QAction *action : menu->actions()) {
-		if (action == actionForExec) {
-			QTest::keyClick(menu, Qt::Key_Enter);
-			return;
-		}
-		if (!action->isSeparator()) {
-			QTest::qWait(50);
-			QTest::keyClick(menu, Qt::Key_Down);
-		}
-	}
-
-// тут наброски кода для нажатия мышкой, а надо это вообще? (может, в отдельный метод)
-//	QRect actionRect = menu->actionGeometry(action);
-//	QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonDblClick
-//											  , menu->mapFrom(menu->parentWidget(), actionRect.topLeft())
-//											  , Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-//	QApplication::postEvent(&mMainWindow, mouseEvent);
-}
-
-// быть может понадобится, если я буду выносить отдельно кликание
-//QRect GuiFacade::actionRect(QMenu *menu, QAction *action) const
-//{
-//	return menu->setAct
-//}
-
-bool GuiFacade::actionIsChecked(const QAction *action) const
-{
-	return action->isChecked();
-}
-
-bool GuiFacade::actionIsCheckable(const QAction *action) const
-{
-	return action->isCheckable();
-}
-
 QWidget *GuiFacade::getStartButton(const QString &buttonText) const
 {
 	const QList<QPushButton *> allButtons = mMainWindow.findChildren<QPushButton *>();
@@ -229,17 +183,4 @@ QWidget *GuiFacade::getStartButton(const QString &buttonText) const
 		}
 	}
 	return nullptr;
-}
-
-QPoint GuiFacade::topLeftWidgetCorner(const QWidget *widget) const
-{
-	return widget->pos();
-}
-
-void GuiFacade::printInfo() const
-{
-	QList<DraggableElement *> const paletteWidgets = mMainWindow.findChildren<DraggableElement *>();
-	for (DraggableElement * const paletteElement : paletteWidgets) {
-		qDebug() << paletteElement->id().toString();
-	}
 }

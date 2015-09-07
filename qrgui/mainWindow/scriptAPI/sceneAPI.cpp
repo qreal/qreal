@@ -120,8 +120,3 @@ QStringList SceneAPI::currentSceneNodeList()
 
 	return result;
 }
-
-bool SceneAPI::noEmpty(const QStringList &list) const
-{
-	return list.isEmpty();
-}

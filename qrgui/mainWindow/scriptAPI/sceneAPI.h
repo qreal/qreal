@@ -51,9 +51,6 @@ public:
 	/// @returns A string list of graphical identifiers of all nodes in scene in current tab.
 	Q_INVOKABLE QStringList currentSceneNodeList();
 
-	// trash method, поместить в utils()
-	Q_INVOKABLE bool noEmpty(const QStringList &list) const;
-
 	/// Creates block with id, like paletteElement in (\a xSceneCoord, \a ySceneCoord) point on scene.
 	QString createBlockOnScene(const DraggableElement *paletteElement, int xSceneCoord, int ySceneCoord);
 

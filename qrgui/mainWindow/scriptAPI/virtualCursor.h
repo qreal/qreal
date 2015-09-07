@@ -38,16 +38,16 @@ public:
 	explicit VirtualCursor(ScriptAPI &scriptAPI, QWidget *parent = 0);
 
 	/// Moves virtual cursor towards the \a target widget for \a duration milliseconds in the center of the widget.
-	Q_INVOKABLE void moveTo(const QWidget *target, int duration = 100);
+	Q_INVOKABLE void moveTo(const QWidget *target, int duration = 50);
 
 	/// Moves virtual cursor towards the given point in parent coordinates for \a duration milliseconds.
-	Q_INVOKABLE void moveToXY(int x, int y, int duration = 100);
+	Q_INVOKABLE void moveToXY(int x, int y, int duration = 50);
 
 	/// Moves virtual cursor towards the given \a point in parent coordinates for \a duration milliseconds.
-	Q_INVOKABLE void moveToPoint(const QPoint &point, int duration = 100);
+	Q_INVOKABLE void moveToPoint(const QPoint &point, int duration = 50);
 
 	/// Moves virtual cursor to center of \a target rectangle for \a duration milliseconds.
-	Q_INVOKABLE void moveToRect(const QRect &target, int duration = 100);
+	Q_INVOKABLE void moveToRect(const QRect &target, int duration = 50);
 
 	/// Moves virtual cursor towards the given cordinates on scene for \a duration milliseconds.
 	/// @param target The viewport widget of the scene.

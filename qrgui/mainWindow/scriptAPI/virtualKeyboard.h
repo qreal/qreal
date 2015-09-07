@@ -22,10 +22,10 @@ namespace gui {
 class ScriptAPI;
 
 /// Implements keyboard typing emulation for GUI scripting.
-// Для корректной работы QTest::keyClick в qt 5.5 необходимо вводить char (русские символы не работают)
-// ASSERT: "false" in file qasciikey.cpp, line 222
-// в будущем, если придется через гуи тестить русский С, то придется с этим что-то придумать
-// сейчас в настройках запуска для тестов устанавливается параметр --no-locale и пишем только латиницей
+/// for correct QTest::keyClick in qt 5.5 u must have char as parameter (without russian symbols)
+/// otherwise: ASSERT: "false" in file qasciikey.cpp, line 222
+/// in the future this problem should be resolved for testing RuCu for example
+/// because of this for guiTest we use adding parameter --no-locale and write only using ascii
 class VirtualKeyboard : public QObject
 {
 	Q_OBJECT
