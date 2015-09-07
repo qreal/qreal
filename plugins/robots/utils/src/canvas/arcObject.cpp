@@ -14,6 +14,7 @@
 
 #include "utils/canvas/arcObject.h"
 
+#include <QtCore/QJsonObject>
 #include <QtGui/QPainter>
 
 using namespace utils;
@@ -82,4 +83,19 @@ void ArcObject::paint(QPainter *painter)
 	CanvasObject::paint(painter);
 	// Multiplying on 16 needed because Qt require argument in 1/16 degree format.
 	painter->drawArc(ellipseRect(), mStartAngle * 16, mSpanAngle * 16);
+}
+
+QJsonObject ArcObject::toJson() const
+{
+	return QJsonObject({
+		{ "type", "arc" }
+		, { "x", mRect.center().x() }
+		, { "y", mRect.center().y() }
+		, { "a", mRect.width() / 2 }
+		, { "b", mRect.height() / 2 }
+		, { "startAngle", mStartAngle }
+		, { "spanAngle", mSpanAngle }
+		, { "color", color().name() }
+		, { "thickness", thickness() }
+	});
 }

@@ -1785,7 +1785,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="TrikV6EncoderPort" name="Port">
-							<default>B1</default>
+							<default>B3</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
 						<property displayedName="Sign" type="DistanceSign" name="Sign">
@@ -2364,7 +2364,7 @@
 						<image y1="0" name="images/brushColorBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-35" text="Color:" hard="true" prefix="Color:"/>
+						<label x="25" y="-35" hard="true" prefix="Color:" textBinded="Color"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2777,7 +2777,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="TrikV62EncoderPort" name="Port">
-							<default>E1</default>
+							<default>E3</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
 						<property displayedName="Sign" type="DistanceSign" name="Sign">

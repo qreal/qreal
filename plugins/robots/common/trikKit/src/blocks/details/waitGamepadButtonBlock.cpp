@@ -43,20 +43,14 @@ void WaitGamepadButtonBlock::run()
 	}
 
 	connect(mButton, &robotModel::parts::TrikGamepadButton::newData, this, &WaitGamepadButtonBlock::responseSlot);
-	if (mButton->port().reservedVariable().isEmpty()) {
-		// Buttons with non-empty reserved variables will be updated in background themselves.
-		mButton->read();
-	}
 
+	mButton->read();
 	mActiveWaitingTimer->start();
 }
 
 void WaitGamepadButtonBlock::timerTimeout()
 {
-	if (mButton->port().reservedVariable().isEmpty()) {
-		// Buttons with non-empty reserved variables will be updated in background themselves.
-		mButton->read();
-	}
+	mButton->read();
 }
 
 void WaitGamepadButtonBlock::responseSlot(int isPressed)

@@ -14,6 +14,7 @@
 
 #include "utils/canvas/pointObject.h"
 
+#include <QtCore/QJsonObject>
 #include <QtGui/QPainter>
 
 using namespace utils;
@@ -61,4 +62,15 @@ void PointObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);
 	painter->drawPoint(mX, mY);
+}
+
+QJsonObject PointObject::toJson() const
+{
+	return QJsonObject({
+		{ "type", "point" }
+		, { "x", mX }
+		, { "y", mY }
+		, { "color", color().name() }
+		, { "thickness", thickness() }
+	});
 }

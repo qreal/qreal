@@ -45,7 +45,7 @@ void loadTranslators(const QString &locale)
 		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
 			QTranslator *translator = new QTranslator(qApp);
 			translator->load(translatorFile.absoluteFilePath());
-			QApplication::installTranslator(translator);
+			QCoreApplication::installTranslator(translator);
 		}
 	}
 }

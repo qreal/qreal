@@ -16,6 +16,8 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QCommandLineParser>
+#include <QtCore/QTranslator>
+#include <QtCore/QDirIterator>
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/logging.h>
@@ -33,6 +35,28 @@ const QString description = QObject::tr(
 		"Example: \n") +
 		"    2D-model -b --platform minimal --report report.json --trajectory trajectory.fifo example.qrs";
 
+void loadTranslators(const QString &locale)
+{
+	QDir translationsDirectory(qReal::PlatformInfo::applicationDirPath() + "/translations/" + locale);
+	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
+	while (directories.hasNext()) {
+		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
+			QTranslator *translator = new QTranslator(qApp);
+			translator->load(translatorFile.absoluteFilePath());
+			QCoreApplication::installTranslator(translator);
+		}
+	}
+}
+
+void setDefaultLocale()
+{
+	const QString locale = QLocale().name().left(2);
+	if (!locale.isEmpty()) {
+		QLocale::setDefault(QLocale(locale));
+		loadTranslators(locale);
+	}
+}
+
 void initLogging()
 {
 	const QDir logsDir(qReal::PlatformInfo::applicationDirPath() + "/logs");
@@ -46,6 +70,7 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	QCoreApplication::setApplicationName("2D-model");
 	QCoreApplication::setApplicationVersion("1.0");
+	setDefaultLocale();
 
 	QCommandLineParser parser;
 	parser.setApplicationDescription(description);

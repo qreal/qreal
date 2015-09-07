@@ -66,6 +66,7 @@ bool ConstraintsChecker::parseConstraints(const QDomElement &constraintsXml)
 {
 	qDeleteAll(mEvents);
 	mEvents.clear();
+	mActiveEvents.clear();
 	mVariables.clear();
 
 	mCurrentXml = constraintsXml;

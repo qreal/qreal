@@ -86,8 +86,8 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, configurator.qRealConfigurator().systemEvents()
 			, configurator.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
+			, configurator.qRealConfigurator().projectManager()
 			, configurator.interpreterControl());
-
 }
 
 QString NxtKitInterpreterPlugin::kitId() const

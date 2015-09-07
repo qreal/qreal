@@ -29,6 +29,8 @@ class ErrorListWidget : public QListWidget
 	Q_OBJECT
 
 public:
+	static const int positionRole = Qt::UserRole + 1;
+
 	explicit ErrorListWidget(QWidget *parent = nullptr);
 	void init(qReal::MainWindow* mainWindow);
 

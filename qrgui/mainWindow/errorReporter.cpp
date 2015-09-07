@@ -152,6 +152,7 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	}
 
 	QListWidgetItem *item = new QListWidgetItem(errorListWidget);
+	item->setData(ErrorListWidget::positionRole, error.position().toString());
 	const QString message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
 			error.timestamp(), severityMessage(error), error.message());
 	switch (error.severity()) {
@@ -174,7 +175,6 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	QLabel *label = new QLabel(message.trimmed());
 	label->setAlignment(Qt::AlignVCenter);
 	label->setOpenExternalLinks(true);
-	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
 	errorListWidget->setItemWidget(item, label);
 	errorListWidget->setCurrentItem(item);

@@ -53,6 +53,7 @@ public:
 			, const qReal::SystemEvents &systemEvents
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) override;
 
 	kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
