@@ -45,12 +45,12 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 
 bool UsbRobotCommunicationThread::isOpen()
 {
-	return mActive && mFantom.isAvailable();
+	return mActive && (mFantom.availability() == Fantom::Status::available);
 }
 
 void UsbRobotCommunicationThread::connect()
 {
-	if (!mFantom.isAvailable()) {
+	if (mFantom.availability() != Fantom::Status::available) {
 		return;
 	}
 
@@ -154,7 +154,7 @@ void UsbRobotCommunicationThread::reconnect()
 
 void UsbRobotCommunicationThread::disconnect()
 {
-	if (!mFantom.isAvailable()) {
+	if (mFantom.availability() != Fantom::Status::available) {
 		return;
 	}
 
@@ -217,14 +217,20 @@ void UsbRobotCommunicationThread::checkConsistency()
 		return;
 	}
 
-	if (!mFantom.isAvailable()) {
+	if (mFantom.availability() == Fantom::Status::notexist) {
 		const QString fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
 		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
 		if (!fantomDownloadLink.isEmpty()) {
 			errorMessage += tr(" You can download Fantom Driver on <a href='%1'>Lego website</a>")
 					.arg(fantomDownloadLink);
 		}
+		emit errorOccured(errorMessage);
 
+	}
+
+	if (mFantom.availability() == Fantom::Status::x64) {
+		QString errorMessage = tr("Usb connection to robot is impossible. Lego doesn't have Fantom Driver for 64-bit Mac."
+								  "You will only be able to connect to NXT via Bluetooth.");
 		emit errorOccured(errorMessage);
 	}
 }

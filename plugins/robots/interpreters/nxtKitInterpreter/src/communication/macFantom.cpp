@@ -12,26 +12,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include <utils/robotCommunication/robotCommunicationException.h>
+#include <qrkernel/logging.h>
 #include "macFantom.h"
-
-#include <QtCore/QObject>
+#include "fantomMethods.h"
 
 using namespace nxt::communication;
 
-bool Fantom::isAvailable()
+unsigned long const fantomDriverUnavailableResult = 100500;
+
+Fantom::Fantom()
 {
-	return false;
+	mFantomLibrary.setFileName("/Library/Frameworks/Fantom.framework/Versions/1/Fantom");
+	if (!mFantomLibrary.load()) {
+		QLOG_INFO() << mFantomLibrary.errorString();
+	}
+	if (mFantomLibrary.isLoaded()) {
+		mAvailability = Status::available;
+	} else {
+		mAvailability = mFantomLibrary.errorString().contains("no matching architecture in universal wrapper")
+				? Status::x64 : Status::notexist;
+	}
+}
+
+Fantom::Status Fantom::availability()
+{
+	return mAvailability;
 }
 
 unsigned long Fantom::nFANTOM100_createNXT(char resString[], int status, unsigned char checkFVersion)
 {
-	Q_UNUSED(resString);
-	Q_UNUSED(status);
-	Q_UNUSED(checkFVersion);
-	return 0;
+	NFANTOM100_createNXT nFANTOM100_createNXTHandle = (NFANTOM100_createNXT)
+			(mFantomLibrary.resolve("nFANTOM100_createNXT"));
+	if (nFANTOM100_createNXTHandle) {
+		return nFANTOM100_createNXTHandle(resString, status, checkFVersion);
+	} else {
+		return onDriverUnavailable();
+	}
 }
 
-void Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
+unsigned Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
 		, bool requireResponse
 		, const char *inputBufferPtr
 		, int inputBufferSize
@@ -39,58 +59,96 @@ void Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
 		, int outputBufferSize
 		, int &status)
 {
-	Q_UNUSED(nxtHandle);
-	Q_UNUSED(requireResponse);
-	Q_UNUSED(inputBufferPtr);
-	Q_UNUSED(inputBufferSize);
-	Q_UNUSED(outputBufferPtr);
-	Q_UNUSED(outputBufferSize);
-	Q_UNUSED(status);
+	NFANTOM100_iNXT_sendDirectCommand nFANTOM100_iNXT_sendDirectCommandHandle
+			= (NFANTOM100_iNXT_sendDirectCommand)(mFantomLibrary.resolve("nFANTOM100_iNXT_sendDirectCommand"));
+	if (nFANTOM100_iNXT_sendDirectCommandHandle) {
+		return nFANTOM100_iNXT_sendDirectCommandHandle(nxtHandle, requireResponse, inputBufferPtr
+				, inputBufferSize, outputBufferPtr, outputBufferSize, status);
+	} else {
+		return onDriverUnavailable();
+	}
 }
 
 unsigned long Fantom::nFANTOM100_createNXTIterator(unsigned char searchBluetooth
 		, unsigned long bluetoothSearchTimeout, int &status)
 {
-	Q_UNUSED(searchBluetooth);
-	Q_UNUSED(bluetoothSearchTimeout);
-	Q_UNUSED(status);
-	return 0;
+	NFANTOM100_createNXTIterator nFANTOM100_createNXTIteratorHandle = (NFANTOM100_createNXTIterator)
+			(mFantomLibrary.resolve("nFANTOM100_createNXTIterator"));
+	if (nFANTOM100_createNXTIteratorHandle) {
+		return nFANTOM100_createNXTIteratorHandle(searchBluetooth, bluetoothSearchTimeout, status);
+	} else {
+		return onDriverUnavailable();
+	}
 }
 
 void Fantom::nFANTOM100_iNXTIterator_getName(unsigned long NXTIterHandle, char resString[], int &status)
 {
-	Q_UNUSED(NXTIterHandle);
-	Q_UNUSED(resString);
-	Q_UNUSED(status);
+	NFANTOM100_iNXTIterator_getName nFANTOM100_iNXTIterator_getNameHandle = (NFANTOM100_iNXTIterator_getName)
+			(mFantomLibrary.resolve("nFANTOM100_iNXTIterator_getName"));
+	if (nFANTOM100_iNXTIterator_getNameHandle) {
+		nFANTOM100_iNXTIterator_getNameHandle(NXTIterHandle, resString, status);
+	} else {
+		onDriverUnavailable();
+	}
 }
 
 unsigned long Fantom::nFANTOM100_iNXTIterator_getNXT(unsigned long nxtIterHandle, int &status)
 {
-	Q_UNUSED(nxtIterHandle);
-	Q_UNUSED(status);
-	return 0;
+	NFANTOM100_iNXTIterator_getNXT nFANTOM100_iNXTIterator_getNXTHandle = (NFANTOM100_iNXTIterator_getNXT)
+			(mFantomLibrary.resolve("nFANTOM100_iNXTIterator_getNXT"));
+	if (nFANTOM100_iNXTIterator_getNXTHandle) {
+		return nFANTOM100_iNXTIterator_getNXTHandle(nxtIterHandle, status);
+	} else {
+		return onDriverUnavailable();
+	}
 }
 
 void Fantom::nFANTOM100_destroyNXTIterator(unsigned long nxtIteratorHandle, int &status)
 {
-	Q_UNUSED(nxtIteratorHandle);
-	Q_UNUSED(status);
+	NFANTOM100_destroyNXTIterator nFANTOM100_destroyNXTIteratorHandle = (NFANTOM100_destroyNXTIterator)
+			(mFantomLibrary.resolve("nFANTOM100_destroyNXTIterator"));
+	if (nFANTOM100_destroyNXTIteratorHandle) {
+		nFANTOM100_destroyNXTIteratorHandle(nxtIteratorHandle, status);
+	} else {
+		onDriverUnavailable();
+	}
 }
 
 void Fantom::nFANTOM100_iNXTIterator_advance(unsigned long NXTIterHandle, int &status)
 {
-	Q_UNUSED(NXTIterHandle);
-	Q_UNUSED(status);
+	NFANTOM100_iNXTIterator_advance nFANTOM100_iNXTIterator_advanceHandle = (NFANTOM100_iNXTIterator_advance)
+			(mFantomLibrary.resolve("nFANTOM100_iNXTIterator_advance"));
+	if (nFANTOM100_iNXTIterator_advanceHandle) {
+		nFANTOM100_iNXTIterator_advanceHandle(NXTIterHandle, status);
+	} else {
+		onDriverUnavailable();
+	}
 }
 
 void Fantom::nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(char resString[], int &status)
 {
-	Q_UNUSED(resString);
-	Q_UNUSED(status);
+	NFANTOM100_iNXT_findDeviceInFirmwareDownloadMode nFANTOM100_iNXT_findDeviceInFirmwareDownloadModeHandle
+			= (NFANTOM100_iNXT_findDeviceInFirmwareDownloadMode)
+					(mFantomLibrary.resolve("nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode"));
+	if (nFANTOM100_iNXT_findDeviceInFirmwareDownloadModeHandle) {
+		nFANTOM100_iNXT_findDeviceInFirmwareDownloadModeHandle(resString, status);
+	} else {
+		onDriverUnavailable();
+	}
 }
 
 void Fantom::nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status)
 {
-	Q_UNUSED(nxtHandle);
-	Q_UNUSED(status);
+	NFANTOM100_destroyNXT nFANTOM100_destroyNXT
+			= (NFANTOM100_destroyNXT)(mFantomLibrary.resolve("nFANTOM100_destroyNXT"));
+	if (nFANTOM100_destroyNXT && nxtHandle) {
+		nFANTOM100_destroyNXT(nxtHandle, status);
+	} else {
+		onDriverUnavailable();
+	}
+}
+
+unsigned long Fantom::onDriverUnavailable()
+{
+	return fantomDriverUnavailableResult;
 }

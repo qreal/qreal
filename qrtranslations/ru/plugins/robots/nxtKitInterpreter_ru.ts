@@ -60,7 +60,7 @@
 <context>
     <name>nxt::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="92"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="100"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
@@ -72,14 +72,19 @@
 <context>
     <name>nxt::communication::UsbRobotCommunicationThread</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="222"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="223"/>
         <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
         <translation>Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="224"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="225"/>
         <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
         <translation>Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/usbRobotCommunicationThread.cpp" line="233"/>
+        <source>Usb connection to robot is impossible. Lego doesn&apos;t have Fantom Driver for 64-bit Mac.You will only be able to connect to NXT via Bluetooth.</source>
+        <translation>Usb-соединение с роботом невозможно. У Lego нет драйвера для 64-битного Mac. Вы можете подключиться к NXT только через Bluetooth.</translation>
     </message>
 </context>
 <context>
