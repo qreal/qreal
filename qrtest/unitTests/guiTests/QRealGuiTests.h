@@ -21,42 +21,81 @@
 #include "./qrgui/mainWindow/mainWindow.h"
 #include <qrkernel/settingsManager.h>
 
-// все диалоги по windowTitle будут искаться.
-#include "expectedContextMenuScriptFunctions.h"
-#include "expectedOpenSaveDialogScriptFunctions.h"
-#include "expectedPreferencesDialogScriptFunctions.h"
-#include "expectedProjectDiagramScriptFunctions.h"
-#include "expectedSimpleDialogScriptFunctions.h"
-
+#include "workaroundTestFunctions.h"
+#include "TestAgent.h"
 
 namespace guiTesting {
 
+class TestAgent;
+
 /// Test suite for standard qReal GUI
+/// @warning Test suite can work incorrectly in hidden mode (e.g. scripts are running during ur work in Qt SDK)
+/// @warning Segmantation fault in a single test crushes all tests
+/// @warning Dont forget write reachedEndOfScript(); before quit() if u wanna quit application by himself
 class QRealGuiTests : public testing::Test
 {
-
 protected:
+	/// SetUp and TearDown are calling before/after every test
 	void SetUp() override;
 	void TearDown() override;
 
+	/// start evaluating \a script
+	/// @note Should be invoked once for every TEST
 	void run(const QString &script);
-	// note можно включать несколько
+
+	/// function for includes of needed files with common script
+	/// @note u can include several needed files
 	void includeCommonScript(const QString &relativeFileName);
 
-	QString scriptFolderName = "qrealScripts"; // или лучше добавить геттеры сеттеры?
-	MainWidnowScriptAPIInterface* mainWindowScriptAPIInterface; //  может стоит поместить в конструктор?
+	/// abort evaluating and close the program with the freeze code
+	void failTest();
+
+	/// @returns folder name with .js scripts for the test suite
+	QString getScriptFolderName() const;
+	/// set up folder name in \a folder. Just the folder name (without the other path)
+	void setScriptFolderName(const QString &folder);
+
+	/// @returns upper time limit for main window exposing, openning
+	int getTimeToExpose() const;
+	/// set up time limit for main window exposing, openning
+	void setTimeToExpose(const int timeToExpose);
+
+	/// @returns upper time limit for every test
+	int getTimeLimit() const;
+	/// set up timeLimit
+	void setTimeLimit(const int timeLimit);
 
 private:
 	void checkScriptSyntax(const QString &script, const QString &errorMsg);
 	void checkLastEvaluating(const QString &errorMsg);
-	void registerFunctionsWithTimer();
+	QString readFile(const QString &relativeFileName);
+	/// @todo solve this problem using QScriptEngineAgent
+	/// this function is a WORKAROUND
+	void prepareScriptForRunning(QString &script);
+	void exterminate(const int returnCode);
+
+	QString mScriptFolderName = "qrealScripts";
+	int mTimeToExpose = 7000;
+	int mTimeLimit = 67000;
 
 	qReal::MainWindow* mWindow;
-	bool mScriptInterpretationDefaultValue = qReal::SettingsManager::value("scriptInterpretation").toBool();
-	// это надо изменить глобально на savedata() и loaddata, мб? например, если мы изменяем путь до чего-то и хотим проверить, сохранились
-	// ли в регистре эти изменения правильно, а потом всё вернуть.
+	MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
 	int mReturnCode;
-	bool mFAILED; // надо прерывать текущий тест сразу кидать failed после сообщения. и переходить
+
+	/// for debugging and statistics
+	QStringList mCurrentIncludedFiles;
+	QString mCurrentTotalProgram;
+	QString mCurrentEvaluatingScript;
+	QString mCurrentEvaluatingScriptFile;
+
+	/// for QTimer connects
+	QString mScript;
+	QString mFileName;
+	QString mRelativeName;
+
+	/// uses for debugging and scripting
+	/// Doesn't have ownership
+	TestAgent *mTestAgent;
 };
 
 }
