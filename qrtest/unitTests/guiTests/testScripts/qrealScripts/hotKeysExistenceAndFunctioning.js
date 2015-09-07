@@ -13,4 +13,17 @@
  * limitations under the License. */
 
 // парочку хотя бы?
+// For easy writing of scripts
+// ---------------------------
 init();
+var mainWindow;
+var ui;
+var utils;
+var keyboard;
+var palette;
+var hints;
+var scene;
+var cursor;
+// For easy writing of scripts
+// ---------------------------
+

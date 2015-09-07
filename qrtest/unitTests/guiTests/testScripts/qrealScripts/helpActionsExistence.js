@@ -1,19 +1,45 @@
-init();
+/* Copyright 2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
 
-var menuHelp = api.ui().getMenu("menuHelp");
+// For easy writing of scripts
+// ---------------------------
+init();
+var mainWindow;
+var ui;
+var utils;
+var keyboard;
+var palette;
+var hints;
+var scene;
+var cursor;
+// For easy writing of scripts
+// ---------------------------
+
+var menuHelp = ui.getMenu("menuHelp");
 assert(menuHelp != null);
 
-api.ui().activateMenu(menuHelp);
+utils.activateMenu(menuHelp);
 api.wait(200);
 
-var actionHelp = api.ui().getActionInMenu(menuHelp, "actionHelp");
+var actionHelp = ui.getActionInMenu(menuHelp, "actionHelp");
 checkAction(actionHelp, true, false, false);
-assert(!api.ui().isSubMenuInMenu(menuHelp, actionHelp));
+expect(!ui.isSubMenuInMenu(menuHelp, actionHelp));
 
-var actionAbout = api.ui().getActionInMenu(menuHelp, "actionAbout");
+var actionAbout = ui.getActionInMenu(menuHelp, "actionAbout");
 checkAction(actionAbout, true, false, false);
-assert(!api.ui().isSubMenuInMenu(menuHelp, actionAbout));
+expect(!ui.isSubMenuInMenu(menuHelp, actionAbout));
 
-var actionAboutQt = api.ui().getActionInMenu(menuHelp, "actionAboutQt");
+var actionAboutQt = ui.getActionInMenu(menuHelp, "actionAboutQt");
 checkAction(actionAboutQt, true, false, false);
-assert(!api.ui().isSubMenuInMenu(menuHelp, actionAboutQt));
+expect(!ui.isSubMenuInMenu(menuHelp, actionAboutQt));

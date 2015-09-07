@@ -14,57 +14,82 @@
 
 // just common function implementations and global declarations for other scripts
 
-var mainWindow;
+var mainWindow; // как лучше писать переменные var init init() как сейчас?
 
+var ui;
+var utils;
+var keyboard;
+var palette;
+var hints;
+var scene;
+var cursor;
+
+// init should be called initially before any script if u wanna use common.js vars and methods
+// можно бросать исключения, проверять флагом, если некто не увидел про init(). надо ли?
 init = function() {
-    mainWindow = api.ui().mainWindow();
+    ui = api.ui();
+    utils = api.utils();
+    keyboard = api.keyboard();
+    palette = api.palette();
+    hints = api.hints();
+    scene = api.scene();
+    cursor = api.cursor();
+    mainWindow = ui.mainWindow();
     assert(mainWindow != null);
     api.switchToWindow(mainWindow);
-    api.wait(500);
+    api.wait(200);
 }
 
-//getWidgetScrollView = function(widget) {
-//   return api.ui().widgetV(widget, "qt_scrollarea_viewport");
-//}
+findViewPort = function(parent) {
+    return ui.deepViewPort(parent);
+}
 
-//checkAction?checkAppropriateActionProperties
 checkAction = function(action, isEnabledAndVisible, isCheckable, isChecked) {
     assert(action != null);
-    assert(api.ui().isEnabledAndVisible(action) == isEnabledAndVisible);
-    assert(api.ui().actionIsCheckable(action) == isCheckable);
-    assert(api.ui().actionIsChecked(action) == isChecked);
+    expect(utils.isEnabledAndVisible(action) == isEnabledAndVisible);
+    expect(utils.actionIsCheckable(action) == isCheckable);
+    expect(utils.actionIsChecked(action) == isChecked);
 }
 
 leftClick = function(widget) {
-    api.cursor().moveTo(widget);
-    api.cursor().leftButtonPress(widget);
-    api.cursor().leftButtonRelease(widget);
+    cursor.moveTo(widget);
+    cursor.leftButtonPress(widget);
+    cursor.leftButtonRelease(widget);
 }
 
 rightClick = function(widget) {
-    api.cursor().moveTo(widget);
-    api.cursor().rightButtonPress(widget);
-    api.cursor().rightButtonRelease(widget);
+    cursor.moveTo(widget);
+    cursor.rightButtonPress(widget);
+    cursor.rightButtonRelease(widget);
 }
 
-clickButtonLater = function(type, text, time) {
-    clickButtonInExpectedTopLevelDialog(mainWindow, type, text, time);
+fillLineEditLater = function(dialogName, lineEditObjectName, text, mces) {
+    invokeLater(utils, "fillLineEdit", dialogName, lineEditObjectName, text, mces);
 }
 
-clickDialogButtonLater = function(dialogName, type, text, time) {
-    clickButtonInExpectedDialog(mainWindow, dialogName, type, text, time);
+clickButtonLater = function(dialogName, type, text, mces) {
+    invokeLater(utils, "clickButton", dialogName, type, text, mces);
+}
+
+chooseComboBoxItemLater = function(dialogName, comboBoxObjectName, itemName, mces) {
+    invokeLater(utils, "chooseComboBoxItem", dialogName, comboBoxObjectName, itemName, mces);
+}
+
+activateContextMenuActionLater = function(actionName, mces) {
+    invokeLater(utils, "activateContextMenuAction", actionName, mces);
 }
 
 quitWithoutSave = function() { // стоит ли везде это писать?
-    var menuFile = api.ui().getMenu("menu_File");
+    var menuFile = ui.getMenu("menu_File");
     assert(menuFile != null);
-    api.ui().activateMenu(menuFile);
+    utils.activateMenu(menuFile);
     api.wait(100);
-    var actionQuit = api.ui().getActionInMenu(menuFile, "actionQuit");
+    var actionQuit = ui.getActionInMenu(menuFile, "actionQuit");
     checkAction(actionQuit, true, false, false);
-    assert(!api.ui().isSubMenuInMenu(menuFile, actionQuit));
-    clickDialogButtonLater("Save", "QPushButton", "Discard", 1500);
-    api.ui().activateMenuAction(menuFile, actionQuit);
+    assert(!ui.isSubMenuInMenu(menuFile, actionQuit));
+    clickButtonLater("Save", "QPushButton", "Discard", 1500);
+    reachedEndOfScript();
+    utils.activateMenuAction(menuFile, actionQuit);
 }
 
 //togglePanelsAction;

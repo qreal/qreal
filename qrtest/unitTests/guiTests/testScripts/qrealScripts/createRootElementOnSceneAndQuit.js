@@ -1,76 +1,104 @@
-init();
+/* Copyright 2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
 
-var openInterpreted = api.ui().widget("QPushButton" ,"Open interpreted diagram");
+// For easy writing of scripts
+// ---------------------------
+init();
+var mainWindow;
+var ui;
+var utils;
+var keyboard;
+var palette;
+var hints;
+var scene;
+var cursor;
+// For easy writing of scripts
+// ---------------------------
+
+var openInterpreted = ui.widget("QPushButton", "Open interpreted diagram");
 assert(openInterpreted != null);
-assert(api.ui().isEnabledAndVisible(openInterpreted));
-clickDialogButtonLater("Select file with metamodel to open", "QPushButton", "Cancel", 1300);
+assert(utils.isEnabledAndVisible(openInterpreted));
+clickButtonLater("Select file with metamodel to open", "QPushButton", "Cancel", 1300);
+// or invokeLater(utils, "clickButton", "Select file with metamodel to open", "QPushButton", "Cancel", 1300);
 leftClick(openInterpreted);
 api.wait(3000);
 
-openInterpreted = api.ui().getStartButton("Open interpreted diagram");
-assert(openInterpreted != null);
-assert(api.ui().isEnabledAndVisible(openInterpreted));
-var createInterpreted = api.ui().getStartButton("Create interpreted diagram");
+openInterpreted = ui.getStartButton("Open interpreted diagram");
+expect(openInterpreted != null);
+expect(utils.isEnabledAndVisible(openInterpreted));
+var createInterpreted = ui.getStartButton("Create interpreted diagram");
 assert(createInterpreted != null);
-assert(api.ui().isEnabledAndVisible(createInterpreted));
-fillLineEditInExpectedDialog(mainWindow, "Enter the diagram name:", "", "qwerty", 500);
-clickButtonLater("QPushButton", "OK", 1000);
+assert(utils.isEnabledAndVisible(createInterpreted));
+
+fillLineEditLater("Enter the diagram name:", "", "qwerty", 500)
+// or invokeLater(utils, "fillLineEdit", "Enter the diagram name:", "", "qwerty", 500);
+clickButtonLater("Enter the diagram name:", "QPushButton", "OK", 1000);
 leftClick(createInterpreted);
 api.wait(1200);
 
-var paletteDock = api.ui().widget("QDockWidget", "paletteDock");
+var paletteDock = ui.widget("QDockWidget", "paletteDock");
 assert(paletteDock != null);
-var paletteTreeWidget = api.ui().widget("qReal::gui::PaletteTreeWidget" , "paletteTreeWidget");
+var paletteTreeWidget = ui.widget("qReal::gui::PaletteTreeWidget" , "paletteTreeWidget");
 assert(paletteTreeWidget != null);
-var paletteViewPort = api.ui().viewPort(paletteTreeWidget);
+var paletteViewPort = ui.viewPort(paletteTreeWidget);
 assert(paletteViewPort != null);
-activateContextMenuAction("Add Element", 200);
+activateContextMenuActionLater("Add Element", 200);
+// or invokeLater(utils, "activateContextMenuAction", "Add Element", 200);
 rightClick(paletteViewPort);
 api.wait(200);
 
-clickButtonInExpectedDialog(mainWindow, "ChooseTypeDialog", "QRadioButton", "edgeRadioButton", 200);
-clickDialogButtonLater("ChooseTypeDialog", "QRadioButton", "nodeRadioButton", 400);
-clickButtonLater("QPushButton", "OK", 600);
+clickButtonLater("ChooseTypeDialog", "QRadioButton", "edgeRadioButton", 200);
+clickButtonLater("ChooseTypeDialog", "QRadioButton", "nodeRadioButton", 400);
+clickButtonLater("ChooseTypeDialog", "QPushButton", "OK", 600);
 api.wait(800);
 
-clickDialogButtonLater("AddNodeDialog", "QCheckBox", "checkBox", 200);
-fillLineEditInExpectedDialog(mainWindow, "AddNodeDialog", "nameEdit", "rootNode", 400);
-clickDialogButtonLater("AddNodeDialog", "QPushButton", "OK", 600);
+clickButtonLater("AddNodeDialog", "QCheckBox", "checkBox", 200);
+fillLineEditLater("AddNodeDialog", "nameEdit", "rootNode", 400);
+clickButtonLater("AddNodeDialog", "QPushButton", "OK", 800);
 api.wait(800);
 
-var actionNew_Diagram = api.ui().widget("QToolButton", "actionNew_Diagram");
+var actionNew_Diagram = ui.widget("QToolButton", "actionNew_Diagram");
 assert(actionNew_Diagram != null);
-assert(api.ui().isEnabledAndVisible(actionNew_Diagram));
+assert(utils.isEnabledAndVisible(actionNew_Diagram));
 leftClick(actionNew_Diagram);
 api.wait(500);
 
-assert(api.scene().noEmpty(api.scene().currentSceneNodeList()));
-
-var rootNode = api.palette().dragPaletteElement("qrm:/qwerty/qwerty/rootNode", 200, 150, 275);
-assert (rootNode != "");
-api.wait(500);
-
-var sceneViewPort = api.ui().sceneViewport();
-assert(sceneViewPort != null);
-assert(!api.scene().noEmpty(api.scene().currentSceneNodeList()));
-
-var menuFile = api.ui().getMenu("menu_File");
-assert(menuFile != null);
-api.ui().activateMenu(menuFile);
+expect(utils.length(scene.currentSceneNodeList()) == 0);
+var rootNode = palette.dragPaletteElement("qrm:/qwerty/qwerty/rootNode", 200, 150, 275);
 api.wait(100);
-var actionQuit = api.ui().getActionInMenu(menuFile, "actionQuit");
-checkAction(actionQuit, true, false, false);
-assert(!api.ui().isSubMenuInMenu(menuFile, actionQuit));
+assert(rootNode != "");
+expect(utils.length(scene.currentSceneNodeList()) == 1);
+var sceneViewPort = ui.sceneViewport();
+assert(sceneViewPort != null);
 
-clickDialogButtonLater("Save", "QPushButton", "Save", 1500);
-clickDialogButtonLater("Select file to save current metamodel to", "QPushButton", "Cancel", 2250);
-api.ui().activateMenuAction(menuFile, actionQuit);
+var menuFile = ui.getMenu("menu_File");
+assert(menuFile != null);
+utils.activateMenu(menuFile);
+api.wait(100);
+var actionQuit = ui.getActionInMenu(menuFile, "actionQuit");
+checkAction(actionQuit, true, false, false);
+assert(!ui.isSubMenuInMenu(menuFile, actionQuit));
+
+clickButtonLater("Save", "QPushButton", "Save", 1500);
+clickButtonLater("Select file to save current metamodel to", "QPushButton", "Cancel", 2250);
+utils.activateMenuAction(menuFile, actionQuit);
 api.wait(200);
 
-api.ui().activateMenu(menuFile);
+utils.activateMenu(menuFile);
 api.wait(100);
-clickDialogButtonLater("Save", "QPushButton", "Cancel", 1500);
-api.ui().activateMenuAction(menuFile, actionQuit);
+clickButtonLater("Save", "QPushButton", "Cancel", 1500);
+utils.activateMenuAction(menuFile, actionQuit);
 api.wait(200);
 
 quitWithoutSave();

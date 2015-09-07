@@ -1,77 +1,103 @@
-init();
+/* Copyright 2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
 
-var menu_View = api.ui().getMenu("menu_View");
+// For easy writing of scripts
+// ---------------------------
+init();
+var mainWindow;
+var ui;
+var utils;
+var keyboard;
+var palette;
+var hints;
+var scene;
+var cursor;
+// For easy writing of scripts
+// ---------------------------
+
+var menu_View = ui.getMenu("menu_View");
 assert(menu_View != null);
 
-api.ui().activateMenu(menu_View);
+utils.activateMenu(menu_View);
 api.wait(200);
 
-var actionFullscreen = api.ui().getActionInMenu(menu_View, "actionFullscreen");
+var actionFullscreen = ui.getActionInMenu(menu_View, "actionFullscreen");
 checkAction(actionFullscreen, true, false, false);
-assert(!api.ui().isSubMenuInMenu(menu_View, actionFullscreen));
+expect(!ui.isSubMenuInMenu(menu_View, actionFullscreen));
 
-var actionZoom_In = api.ui().getActionInMenu(menu_View, "actionZoom_In");
+var actionZoom_In = ui.getActionInMenu(menu_View, "actionZoom_In");
 checkAction(actionZoom_In, false, false, false);
-assert(!api.ui().isSubMenuInMenu(menu_View, actionZoom_In));
+expect(!ui.isSubMenuInMenu(menu_View, actionZoom_In));
 
-var actionZoom_Out = api.ui().getActionInMenu(menu_View, "actionZoom_Out");
+var actionZoom_Out = ui.getActionInMenu(menu_View, "actionZoom_Out");
 checkAction(actionZoom_Out, false, false, false);
-assert(!api.ui().isSubMenuInMenu(menu_View, actionZoom_Out));
+expect(!ui.isSubMenuInMenu(menu_View, actionZoom_Out));
 
-var actionShowSplash = api.ui().getActionInMenu(menu_View, "actionShowSplash");
+var actionShowSplash = ui.getActionInMenu(menu_View, "actionShowSplash");
 checkAction(actionShowSplash, true, true, false);
-assert(!api.ui().isSubMenuInMenu(menu_View, actionShowSplash));
+expect(!ui.isSubMenuInMenu(menu_View, actionShowSplash));
 
-var actionMenuPanels = api.ui().getActionInMenu(menu_View, "Panels");
+var actionMenuPanels = ui.getActionInMenu(menu_View, "Panels");
 checkAction(actionMenuPanels, true, false, false);
-assert(api.ui().isSubMenuInMenu(menu_View, actionMenuPanels));
+expect(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 
-api.ui().activateMenuAction(menu_View, actionMenuPanels);
+utils.activateMenuAction(menu_View, actionMenuPanels);
 api.wait(200);
 
-var subMenuPanels = api.ui().getMenuContainedByAction(actionMenuPanels);
+var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
-var actionMiniMap = api.ui().getActionInMenu(subMenuPanels, "Mini Map");
+var actionMiniMap = ui.getActionInMenu(subMenuPanels, "Mini Map");
 checkAction(actionMiniMap, true, true, false);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionMiniMap));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionMiniMap));
 
-var actionPalette = api.ui().getActionInMenu(subMenuPanels, "Palette");
+var actionPalette = ui.getActionInMenu(subMenuPanels, "Palette");
 checkAction(actionPalette, true, true, true);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionPalette));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionPalette));
 
-var actionLogicalExplorer = api.ui().getActionInMenu(subMenuPanels, "Logical Model Explorer");
+var actionLogicalExplorer = ui.getActionInMenu(subMenuPanels, "Logical Model Explorer");
 checkAction(actionLogicalExplorer, true, true, false);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionLogicalExplorer));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionLogicalExplorer));
 
-var actionErrors = api.ui().getActionInMenu(subMenuPanels, "Errors");
+var actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
 checkAction(actionErrors, true, true, false);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionErrors));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionErrors));
 
-var actionGraphicalExplorer = api.ui().getActionInMenu(subMenuPanels, "Graphical Model Explorer");
+var actionGraphicalExplorer = ui.getActionInMenu(subMenuPanels, "Graphical Model Explorer");
 checkAction(actionGraphicalExplorer, true, true, false);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionGraphicalExplorer));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionGraphicalExplorer));
 
-var actionProperty = api.ui().getActionInMenu(subMenuPanels, "Property Editor");
+var actionProperty = ui.getActionInMenu(subMenuPanels, "Property Editor");
 checkAction(actionProperty, true, true, false);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionProperty));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionProperty));
 
-var actionFileToolbar = api.ui().getActionInMenu(subMenuPanels, "File Toolbar");
+var actionFileToolbar = ui.getActionInMenu(subMenuPanels, "File Toolbar");
 checkAction(actionFileToolbar, true, true, true);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionFileToolbar));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionFileToolbar));
 
-var actionEditToolbar = api.ui().getActionInMenu(subMenuPanels, "Edit Toolbar");
+var actionEditToolbar = ui.getActionInMenu(subMenuPanels, "Edit Toolbar");
 checkAction(actionEditToolbar, true, true, true);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionEditToolbar));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionEditToolbar));
 
-var actionViewToolbar = api.ui().getActionInMenu(subMenuPanels, "View Toolbar");
+var actionViewToolbar = ui.getActionInMenu(subMenuPanels, "View Toolbar");
 checkAction(actionViewToolbar, true, true, true);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionViewToolbar));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionViewToolbar));
 
-var actionInterpreterToolbar = api.ui().getActionInMenu(subMenuPanels, "Interpreter Toolbar");
+var actionInterpreterToolbar = ui.getActionInMenu(subMenuPanels, "Interpreter Toolbar");
 checkAction(actionInterpreterToolbar, true, true, false);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionInterpreterToolbar));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionInterpreterToolbar));
 
-var actionGeneratorsToolbar = api.ui().getActionInMenu(subMenuPanels, "Generators Toolbar");
+var actionGeneratorsToolbar = ui.getActionInMenu(subMenuPanels, "Generators Toolbar");
 checkAction(actionGeneratorsToolbar, true, true, false);
-assert(!api.ui().isSubMenuInMenu(subMenuPanels, actionGeneratorsToolbar));
+expect(!ui.isSubMenuInMenu(subMenuPanels, actionGeneratorsToolbar));

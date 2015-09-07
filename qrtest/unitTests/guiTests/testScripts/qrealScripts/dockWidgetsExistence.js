@@ -1,104 +1,145 @@
-// тут можно проверить все элементы типа paletteDock, paletteTreeWidget и т.д.
+/* Copyright 2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+// For easy writing of scripts
+// ---------------------------
 init();
+var mainWindow;
+var ui;
+var utils;
+var keyboard;
+var palette;
+var hints;
+var scene;
+var cursor;
+// For easy writing of scripts
+// ---------------------------
 
 lrClicks = function (widget) {
     assert(widget != null);
-    assert(api.ui().isEnabledAndVisible(widget));
-    api.cursor().moveToPoint(api.ui().topLeftWidgetCorner(widget));
-    api.cursor().leftButtonPress(widget);
-    api.cursor().leftButtonRelease(widget);
-    api.cursor().rightButtonPress(widget);
-    api.cursor().rightButtonRelease(widget);
-    api.wait(500);
+    expect(utils.isEnabledAndVisible(widget));
+    cursor.moveToPoint(utils.topLeftWidgetCorner(widget));
+    cursor.leftButtonPress(widget);
+    cursor.leftButtonRelease(widget);
+    cursor.rightButtonPress(widget);
+    cursor.rightButtonRelease(widget);
+    api.wait(200);
 }
 
-var logicalModelDock = api.ui().widget("QDockWidget", "logicalModelDock");
+closeContextMenuLater = function(msec){
+    invokeLater(utils, "closeContextMenu", msec);
+}
+
+var logicalModelDock = ui.widget("QDockWidget", "logicalModelDock");
+closeContextMenuLater(500);
 lrClicks(logicalModelDock);
-closeContextMenu(100);
-api.wait(100);
+api.wait(501);
 
-var graphicalModelDock = api.ui().widget("QDockWidget", "graphicalModelDock");
+var graphicalModelDock = ui.widget("QDockWidget", "graphicalModelDock");
+closeContextMenuLater(500);
 lrClicks(graphicalModelDock);
-closeContextMenu(100);
-api.wait(100);
+api.wait(501);
 
-var propertyDock = api.ui().widget("QDockWidget", "propertyDock");
+var propertyDock = ui.widget("QDockWidget", "propertyDock");
+closeContextMenuLater(500);
 lrClicks(propertyDock);
-closeContextMenu(100);
-api.wait(100);
+api.wait(501);
 
-var minimapDock = api.ui().widget("QDockWidget", "minimapDock");
+var minimapDock = ui.widget("QDockWidget", "minimapDock");
+closeContextMenuLater(500);
 lrClicks(minimapDock);
-closeContextMenu(100);
-api.wait(100);
+api.wait(501);
 
-var paletteDock = api.ui().widget("QDockWidget", "paletteDock");
+var paletteDock = ui.widget("QDockWidget", "paletteDock");
+closeContextMenuLater(500);
 lrClicks(paletteDock);
-closeContextMenu(100);
-api.wait(100);
+api.wait(501);
 
-var errorDock = api.ui().widget("QDockWidget", "errorDock");
+var errorDock = ui.widget("QDockWidget", "errorDock");
 assert(errorDock == null);
 
-var menu_View = api.ui().getMenu("menu_View");
+var menu_View = ui.getMenu("menu_View");
 assert(menu_View != null);
 
-api.ui().activateMenu(menu_View);
+utils.activateMenu(menu_View);
 api.wait(200);
 
-var actionMenuPanels = api.ui().getActionInMenu(menu_View, "Panels");
+var actionMenuPanels = ui.getActionInMenu(menu_View, "Panels");
 checkAction(actionMenuPanels, true, false, false);
-assert(api.ui().isSubMenuInMenu(menu_View, actionMenuPanels));
+assert(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 
-var subMenuPanels = api.ui().getMenuContainedByAction(actionMenuPanels);
+var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
-var actionErrors = api.ui().getActionInMenu(subMenuPanels, "Errors");
-api.ui().activateMenuAction(menu_View, actionMenuPanels);
-api.ui().activateMenuAction(subMenuPanels, actionErrors);
+var actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
+utils.activateMenuAction(menu_View, actionMenuPanels);
+utils.activateMenuAction(subMenuPanels, actionErrors);
 api.wait(50);
 
-errorDock = api.ui().widget("QDockWidget", "errorDock");
+errorDock = ui.widget("QDockWidget", "errorDock");
 assert(errorDock != null);
-assert(api.ui().isEnabledAndVisible(errorDock));
-assert(api.ui().actionIsChecked(actionErrors));
+assert(utils.isEnabledAndVisible(errorDock));
+expect(utils.actionIsChecked(actionErrors));
 
+activateContextMenuActionLater("Errors", 500);
 lrClicks(errorDock);
-api.wait(200);
-activateContextMenuAction("Errors", 200);
-api.wait(250);
-assert(!api.ui().actionIsChecked(actionErrors));
+api.wait(501);
 
+api.wait(250);
+assert(!utils.actionIsChecked(actionErrors));
+
+activateContextMenuActionLater("Errors", 500);
 lrClicks(paletteDock);
-api.wait(200);
-activateContextMenuAction("Errors", 200);
-api.wait(250);
-assert(api.ui().actionIsChecked(actionErrors));
+api.wait(501);
 
-errorDock = api.ui().widget("QDockWidget", "errorDock");
+api.wait(250);
+assert(utils.actionIsChecked(actionErrors));
+
+errorDock = ui.widget("QDockWidget", "errorDock");
 assert(errorDock != null);
+var viewPortOfDock = findViewPort(errorDock);
 
-var errorListWidget = api.ui().widget("ErrorListWidget", "errorListWidget");
+var errorListWidget = ui.widget("ErrorListWidget", "errorListWidget");
 assert(errorListWidget != null);
-var errorListWidgetViewPort = api.ui().viewPort(errorListWidget);
+var errorListWidgetViewPort = ui.viewPort(errorListWidget);
 assert(errorListWidgetViewPort != null);
-rightClick(errorListWidgetViewPort);
 
-activateContextMenuAction("Clear", 200);
-api.wait(250);
-errorDock = api.ui().widget("QDockWidget", "errorDock");
+if (errorListWidgetViewPort != viewPortOfDock) {
+    add_failure("ViewPorts should be equal");
+    if (!utils.isEnabledAndVisible(errorListWidgetViewPort)
+            || !utils.isEnabledAndVisible(viewPortOfDock)) {
+        fail("ViewPorts should be equal and enabled and visible!!!!");
+    }
+}
+
+activateContextMenuActionLater("Clear", 400);
+rightClick(errorListWidgetViewPort);
+api.wait(450);
+
+errorDock = ui.widget("QDockWidget", "errorDock");
 assert(errorDock == null);
 
 checkClick = function(objName) {
-    var widget = api.ui().widget("QWidget", objName);
+    var widget = ui.widget("QWidget", objName);
     lrClicks(widget);
     api.wait(10);
 }
 
-actionErrors = api.ui().getActionInMenu(subMenuPanels, "Errors");
-api.ui().activateMenu(menu_View);
-api.ui().activateMenuAction(menu_View, actionMenuPanels);
-api.ui().activateMenuAction(subMenuPanels, actionErrors);
+actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
+utils.activateMenu(menu_View);
+utils.activateMenuAction(menu_View, actionMenuPanels);
+utils.activateMenuAction(subMenuPanels, actionErrors);
 api.wait(50);
 
 var names = ["paletteTree", "paletteTreeWidget", "paletteTreeWidgets",
