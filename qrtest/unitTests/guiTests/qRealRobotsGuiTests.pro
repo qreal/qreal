@@ -19,12 +19,9 @@ SOURCES += $$PWD/mainGuiTest.cpp
 QT += script
 
 HEADERS += \
-	$$PWD/QRealGuiTests.h \
 	$$PWD/QRealRobotsGuiTests.h \
 
 SOURCES += \
-	$$PWD/QRealGuiTests.cpp \
-	$$PWD/startQreal.cpp \
 	$$PWD/QRealRobotsGuiTests.cpp \
 
 OTHER_FILES += \

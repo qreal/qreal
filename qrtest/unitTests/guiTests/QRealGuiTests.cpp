@@ -360,25 +360,25 @@ void QRealGuiTests::exterminate(const int returnCode)
 	QApplication::instance()->exit(returnCode);
 }
 
-TEST_F(QRealGuiTests, dockWidgetsExistence)
-{
-	includeCommonScript("common.js");
-	run("dockWidgetsExistence.js");
-}
+//TEST_F(QRealGuiTests, dockWidgetsExistence)
+//{
+//	includeCommonScript("common.js");
+//	run("dockWidgetsExistence.js");
+//}
 
-TEST_F(QRealGuiTests, createRootElementOnSceneAndQuit)
-{
-	includeCommonScript("common.js");
-	run("createRootElementOnSceneAndQuit.js");
-}
+//TEST_F(QRealGuiTests, createRootElementOnSceneAndQuit)
+//{
+//	includeCommonScript("common.js");
+//	run("createRootElementOnSceneAndQuit.js");
+//}
 
-TEST_F(QRealGuiTests, fileActionsExistence)
-{
-	includeCommonScript("common.js");
-	run("fileActionsExistence.js");
-}
+//TEST_F(QRealGuiTests, fileActionsExistence)
+//{
+//	includeCommonScript("common.js");
+//	run("fileActionsExistence.js");
+//}
 
-/*
+
 // Existence
 TEST_F(QRealGuiTests, dockWidgetsExistence)
 {
@@ -579,4 +579,4 @@ TEST_F(QRealGuiTests, verySimpleShapeEditorTest)
 	includeCommonScript("common.js");
 	run("verySimpleShapeEditorTest.js");
 }
-*/
+

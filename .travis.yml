@@ -17,7 +17,7 @@ env:
 
 before_install:
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master http://github.com/qreal/qreal.wiki.git ./../qreal.wiki/; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then openssl aes-256-cbc -K $encrypted_2c91ba1b7c87_key -iv $encrypted_2c91ba1b7c87_iv -in loginpass.enc -out ~/.netrc -d; fi
+  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then openssl aes-256-cbc -K $encrypted_2c91ba1b7c87_key -iv $encrypted_2c91ba1b7c87_iv -in ./buildScripts/testCoverage/loginpass.enc -out ~/.netrc -d; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then chmod 600 ~/.netrc; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../qrealTest/qreal/; fi
@@ -58,7 +58,7 @@ script:
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../../../qreal.wiki; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then ls -A; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo -e 'Test_coverage_and_method_Information_for_QReal_project\nCommit:' "$TRAVIS_COMMIT" '\nPull_request:' "$TRAVIS_PULL_REQUEST" '\nBranch:' "$TRAVIS_BRANCH" '\nTravis_OS_name:' "$TRAVIS_OS_NAME" '\Commit_range:' "$TRAVIS_COMMIT_RANGE" '\nTravis_repos_slug_(owner_name/repo_name):' "$TRAVIS_REPO_SLUG" > Статистика-по-проекту.md; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo -e '\n[[Test_covering|https://rawgit.com/wiki/qreal/qreal/testCoverage.html]]\n[[Test_covering_(additional_link)|https://cdn.rawgit.com/wiki/qreal/qreal/testCoverage.html]]; fi
+  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo -e "\n[[Test_covering|https://rawgit.com/wiki/qreal/qreal/testCoverage.html]]\n[[Test_covering_(additional_link)|https://cdn.rawgit.com/wiki/qreal/qreal/testCoverage.html]]"; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git config --global user.name "Kirill-NiK"; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git config --global user.email nikolskiy.kirill.andreevich@gmail.com; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git commit -a -m the_statistic_for_QReal_master_commit:_"$TRAVIS_COMMIT"; fi
