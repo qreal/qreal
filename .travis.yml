@@ -21,7 +21,7 @@ before_install:
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then chmod 600 ~/.netrc; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/qreal/; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../qrealTest/qreal/; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo `pwd` > buildScripts/testCoverage/testpathes; fi
+  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo `pwd`/ > buildScripts/testCoverage/testpathes; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../../qreal/; fi
 
 install:
