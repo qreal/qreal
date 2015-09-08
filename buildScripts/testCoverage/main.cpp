@@ -188,12 +188,14 @@ void readFromFileToList(const QString &relativeFileName, QStringList &list)
 {
 	QFile file(relativeFileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "not opened";
 		return;
 	}
 
 	QTextStream in(&file);
 	while (!in.atEnd()) {
 		QString line = in.readLine();
+		qDebug() << line << "readlined";
 		list.append(line);
 	}
 
@@ -330,6 +332,7 @@ int main(int argc, char *argv[])
 		QString extension = ".html";
 		QFile outputFile(fileName + num + extension);
 		if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+			qDebug() << "!!!";
 			return 0;
 		}
 		fillLog(fileName);
@@ -344,6 +347,7 @@ int main(int argc, char *argv[])
 		outputFile.close();
 		listOfTests.clear();
 		warning.clear();
+		qDebug() << "fail zoz";
 	}
 
 	qDebug() << "time of execution: " + QString::number(time.elapsed()) + " ms";
