@@ -175,6 +175,7 @@ void QRealGuiTests::TearDown()
 	mScript.clear();
 	mFileName.clear();
 	mRelativeName.clear();
+	mCommonScripts.clear();
 
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
 	QLOG_INFO() << "with exit code " << QString::number(mReturnCode);
@@ -193,9 +194,6 @@ void QRealGuiTests::run(const QString &relativeFileName)
 			"/../../../qrtest/unitTests/guiTests/testScripts/" + mScriptFolderName + "/";
 	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
 	QString script = readFile(fileName);
-	mCurrentEvaluatingScriptFile = relativeFileName;
-	mCurrentEvaluatingScript = script;
-	mCurrentTotalProgram += script;
 	prepareScriptForRunning(script);
 	if (::testing::Test::HasFailure()) {
 		return;
@@ -215,6 +213,17 @@ void QRealGuiTests::run(const QString &relativeFileName)
 		if (::testing::Test::HasFailure()) {
 			return;
 		}
+		for (QString scriptName : mCommonScripts) {
+			runCommonScript(scriptName);
+			if (::testing::Test::HasFailure()) {
+				return;
+			}
+		}
+
+		mCurrentEvaluatingScriptFile = mRelativeName;
+		mCurrentEvaluatingScript = mScript;
+		mCurrentTotalProgram += mScript;
+
 		mMainWindowScriptAPIInterface->evaluateScript(mScript, mFileName);
 		checkLastEvaluating(mRelativeName);
 		if (::testing::Test::HasFailure()) {
@@ -231,24 +240,12 @@ void QRealGuiTests::run(const QString &relativeFileName)
 
 void QRealGuiTests::includeCommonScript(const QString &relativeFileName)
 {
-	QString scriptDirName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/";
-	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
-	QString script = readFile(fileName);
-	mCurrentEvaluatingScriptFile = relativeFileName;
-	mCurrentIncludedFiles << fileName;
-	mCurrentEvaluatingScript = script;
-	mCurrentTotalProgram += script;
-	prepareScriptForRunning(script);
-	if (::testing::Test::HasFailure()) {
-		return;
-	}
-	checkScriptSyntax(script, relativeFileName);
-	if (::testing::Test::HasFailure()) {
-		return;
-	}
-	mMainWindowScriptAPIInterface->evaluateScript(script, fileName);
-	checkLastEvaluating(relativeFileName);
+	mCommonScripts << relativeFileName;
+}
+
+void QRealGuiTests::includeCommonScript(const QStringList &fileList)
+{
+	mCommonScripts += fileList;
 }
 
 void QRealGuiTests::failTest()
@@ -288,6 +285,28 @@ void QRealGuiTests::setTimeLimit(const int timeLimit)
 	mTimeLimit = timeLimit;
 }
 
+void QRealGuiTests::runCommonScript(const QString &relativeFileName)
+{
+	QString scriptDirName = QApplication::applicationFilePath() +
+			"/../../../qrtest/unitTests/guiTests/testScripts/";
+	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
+	QString script = readFile(fileName);
+	mCurrentEvaluatingScriptFile = relativeFileName;
+	mCurrentIncludedFiles << fileName;
+	mCurrentEvaluatingScript = script;
+	mCurrentTotalProgram += script;
+	prepareScriptForRunning(script);
+	if (::testing::Test::HasFailure()) {
+		return;
+	}
+	checkScriptSyntax(script, relativeFileName);
+	if (::testing::Test::HasFailure()) {
+		return;
+	}
+	mMainWindowScriptAPIInterface->evaluateScript(script, fileName);
+	checkLastEvaluating(relativeFileName);
+}
+
 void QRealGuiTests::checkScriptSyntax(const QString &script, const QString &errorMsg)
 {
 	QScriptSyntaxCheckResult checkResult = mMainWindowScriptAPIInterface->checkSyntax(script);
@@ -307,7 +326,8 @@ void QRealGuiTests::checkLastEvaluating(const QString &errorMsg)
 			QApplication::activePopupWidget()->close();
 		}
 		QApplication::closeAllWindows();
-		FAIL() << "Failed coz uncaughtException of the last evaluating exists\n" << backtrace << "\n" << errorMsg.toStdString();
+		FAIL() << "Failed. Uncaught exception of the last evaluating was thrown\n"
+			   << backtrace << "\n" << errorMsg.toStdString();
 	}
 }
 

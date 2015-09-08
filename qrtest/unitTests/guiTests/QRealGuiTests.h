@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <QString>
+#include <QStringList>
 #include <gtest/gtest.h>
 
 #include "./qrgui/mainWindow/mainWindow.h"
@@ -27,6 +27,8 @@ class TestAgent;
 /// @warning Test suite can work incorrectly in hidden mode (e.g. scripts are running during ur work in Qt SDK)
 /// @warning Segmantation fault in a single test crushes all tests
 /// @warning Dont forget write reachedEndOfScript(); before quit() if u wanna quit application by himself
+/// @note Either use from common.js: quit(), quitWithoutSave(), quitWithSave().
+/// @note Or just leave the app at the quit()-able state
 class QRealGuiTests : public testing::Test
 {
 protected:
@@ -38,9 +40,15 @@ protected:
 	/// @note Should be invoked once for every TEST
 	void run(const QString &script);
 
-	/// function for includes of needed files with common script
+	/// adds common scripts in list of scripts evaluating before main script evaluating
 	/// @note u can include several needed files
+	/// @note all including names should be relative like "common.js"
 	void includeCommonScript(const QString &relativeFileName);
+
+	/// adds common scripts in list of scripts evaluating before main script evaluating
+	/// @note u can include several needed files
+	/// @note all including names should be relative like "common.js"
+	void includeCommonScript(const QStringList &fileList);
 
 	/// abort evaluating and close the program with the freeze code
 	void failTest();
@@ -61,6 +69,9 @@ protected:
 	void setTimeLimit(const int timeLimit);
 
 private:
+	/// function for running common scripts before main script
+	/// @note u can include several needed files
+	void runCommonScript(const QString &relativeFileName);
 	void checkScriptSyntax(const QString &script, const QString &errorMsg);
 	void checkLastEvaluating(const QString &errorMsg);
 	QString readFile(const QString &relativeFileName);
@@ -75,6 +86,9 @@ private:
 
 	qReal::MainWindow* mWindow;
 	qReal::gui::MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
+
+	/// relative names of common scripts evaluating before main script evaluating
+	QStringList mCommonScripts;
 	int mReturnCode;
 
 	/// for debugging and statistics

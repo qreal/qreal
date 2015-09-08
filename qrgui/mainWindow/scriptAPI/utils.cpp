@@ -82,12 +82,12 @@ void Utils::fillLineEdit(const QString &widgetName, const QString &lineEditObjec
 
 void Utils::clickButton(const QString &widgetName, const QString &buttonType, const QString &buttonText)
 {
-	doSmthInWidget(widgetName, buttonType, buttonText, &clickNeededButton);
+	doSmthInWidget(widgetName, buttonType, buttonText, &Utils::clickNeededButton);
 }
 
 void Utils::chooseComboBoxItem(const QString &widgetName, const QString &comboBoxObjectName, const QString &itemName)
 {
-	doSmthInWidget(widgetName, comboBoxObjectName, itemName, &pickNeededItem);
+	doSmthInWidget(widgetName, comboBoxObjectName, itemName, &Utils::pickNeededItem);
 }
 
 void Utils::activateContextMenuAction(const QString &actionName)

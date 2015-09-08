@@ -58,7 +58,8 @@ public:
 	Q_INVOKABLE void clickButton(const QString &widgetName, const QString &buttonType, const QString &buttonText);
 
 	/// @todo: realise visible mouse moves with hints or virtual cursor
-	Q_INVOKABLE void chooseComboBoxItem(const QString &widgetName, const QString &comboBoxObjectName, const QString &itemName);
+	Q_INVOKABLE void chooseComboBoxItem(const QString &widgetName
+										, const QString &comboBoxObjectName, const QString &itemName);
 
 	/// @todo: realise visible mouse moves with hints or virtual cursor
 	Q_INVOKABLE void activateContextMenuAction(const QString &actionName);
@@ -96,7 +97,8 @@ private:
 	void throwScriptException(const QString &msg) const;
 	void doSmthInWidget(const QString &widgetName, const QString &identifier
 						, const QString &buttonText
-						, std::function<void(const Utils &, QWidget *, const QString &, const QString &)>doAction) const;
+						, std::function<void(const Utils &, QWidget *
+											 , const QString &, const QString &)>doAction) const;
 
 	ScriptAPI &mScriptAPI;
 	MainWindow &mMainWindow;

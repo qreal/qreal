@@ -13,17 +13,6 @@
  * limitations under the License. */
 
 // тут можно проверить наличие соответсвующих настроек в preference
-// For easy writing of scripts
-// ---------------------------
-init();
-var mainWindow;
-var ui;
-var utils;
-var keyboard;
-var palette;
-var hints;
-var scene;
-var cursor;
-// For easy writing of scripts
-// ---------------------------
+// For autocompletion and syntax highlighting
+var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 

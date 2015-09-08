@@ -12,19 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-// just common function implementations and global declarations for other scripts
+// here just common function definitions and global declarations for other scripts
 
-var mainWindow;
+var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var ui;
-var utils;
-var keyboard;
-var palette;
-var hints;
-var scene;
-var cursor;
-
-// init should be called initially before any script if u wanna use common.js vars and methods
+// init() called in this file after common vars declarations and function definitions
 function init() {
     ui = api.ui();
     utils = api.utils();
@@ -70,11 +62,11 @@ function clickButtonLater(dialogName, type, text, mces) {
     invokeLater(utils, "clickButton", dialogName, type, text, mces);
 }
 
-function chooseComboBoxItemLater (dialogName, comboBoxObjectName, itemName, mces) {
+function chooseComboBoxItemLater(dialogName, comboBoxObjectName, itemName, mces) {
     invokeLater(utils, "chooseComboBoxItem", dialogName, comboBoxObjectName, itemName, mces);
 }
 
-function activateContextMenuActionLater (actionName, mces) {
+function activateContextMenuActionLater(actionName, mces) {
     invokeLater(utils, "activateContextMenuAction", actionName, mces);
 }
 
@@ -91,4 +83,9 @@ function quitWithoutSave() {
     utils.activateMenuAction(menuFile, actionQuit);
 }
 
-//togglePanelsAction;
+// todo: (before these quit()-s write reachedEndOfScript();)
+// function quit() // just quit action knowing that save window dialog would not called
+// function quitWithSave(fileName)
+// function togglePanelsAction(actionName);
+
+init();
