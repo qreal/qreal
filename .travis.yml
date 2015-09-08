@@ -19,7 +19,7 @@ before_install:
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master http://github.com/qreal/qreal.wiki.git ./../qreal.wiki/; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then openssl aes-256-cbc -K $encrypted_2c91ba1b7c87_key -iv $encrypted_2c91ba1b7c87_iv -in ./buildScripts/testCoverage/loginpass.enc -out ~/.netrc -d; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then chmod 600 ~/.netrc; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/qreal/; fi
+  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../qrealTest/qreal/; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo `pwd` > buildScripts/testCoverage/testpathes; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../../qreal/; fi
