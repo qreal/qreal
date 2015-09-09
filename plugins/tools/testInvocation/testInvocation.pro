@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include(../../../global.pri)
+links(qrutils)
 
 TEMPLATE = lib
 
