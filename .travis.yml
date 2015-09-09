@@ -3,7 +3,6 @@ compiler: gcc
 
 env:
   - CONFIG=debug   PROJECT=qrealGuiTest       VERA=false TESTS="./qRealGuiTests-d"
-  - CONFIG=debug   PROJECT=qrealRobotsGuiTest VERA=false TESTS="./qRealRobotsGuiTests-d"
   - CONFIG=debug   PROJECT=testCoverage       VERA=false TESTS="./testCoverage-d"
   - CONFIG=debug   PROJECT=qreal              VERA=true  TESTS=true
   - CONFIG=release PROJECT=qreal              VERA=false TESTS=true
