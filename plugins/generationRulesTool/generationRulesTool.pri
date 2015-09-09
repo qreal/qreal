@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QT += widgets
+QT += widgets script
 
 links(qrkernel qslog qrtext)
 

@@ -20,6 +20,4 @@ DESTDIR = $$DESTDIR/plugins/interpreted/
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/plugins/generationRulesTool_ru.ts
 
-QT += script
-
 include(generationRulesTool.pri)
