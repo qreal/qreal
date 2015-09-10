@@ -15,14 +15,15 @@
 HEADERS += \
 	$$PWD/bluetoothRobotCommunicationThread.h \
 	$$PWD/usbRobotCommunicationThread.h \
-	$$PWD/fantom.h \
 	$$PWD/fantomMethods.h \
 	$$PWD/i2cCommunicator.h \
+    $$PWD/fantom.h
 
 SOURCES += \
 	$$PWD/bluetoothRobotCommunicationThread.cpp \
 	$$PWD/usbRobotCommunicationThread.cpp \
 	$$PWD/i2cCommunicator.cpp \
+    $$PWD/fantom.cpp
 
 win32 {
 	HEADERS += \
