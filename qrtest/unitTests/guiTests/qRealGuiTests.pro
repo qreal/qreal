@@ -17,16 +17,16 @@ include(../commonGui.pri) #because "SOURCES -=" doesnt work. (bug?)
 QT += script
 
 HEADERS += \
-	$$PWD/QRealGuiTests.h \
+	$$PWD/qRealGuiTests.h \
 	$$PWD/workaroundTestFunctions.h \
-	$$PWD/TestAgent.h \
+	$$PWD/testAgent.h \
 
 SOURCES += \
-	$$PWD/QRealGuiTests.cpp \
+	$$PWD/qRealGuiTests.cpp \
 	$$PWD/startQreal.cpp \
 	$$PWD/mainGuiTest.cpp \
 	$$PWD/workaroundTestFunctions.cpp \
-	$$PWD/TestAgent.cpp \
+	$$PWD/testAgent.cpp \
 
 
 # in Existence checks initial states of required elements

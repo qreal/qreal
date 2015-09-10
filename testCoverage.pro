@@ -19,15 +19,15 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += \
-	$$PWD/buildScripts/testCoverage/main.cpp \
-	$$PWD/buildScripts/testCoverage/dirtree.cpp
+	$$PWD/qrtest/testCoverage/main.cpp \
+	$$PWD/qrtest/testCoverage/dirtree.cpp
 
 HEADERS += \
-	$$PWD/buildScripts/testCoverage/dirtree.h
+	$$PWD/qrtest/testCoverage/dirtree.h
 
 OTHER_FILES += \
-	$$PWD/buildScripts/testCoverage/~testignore \
-	$$PWD/buildScripts/testCoverage/testpathes
+	$$PWD/qrtest/testCoverage/~testignore \
+	$$PWD/qrtest/testCoverage/testpathes
 
-copyToDestdir($$PWD/buildScripts/testCoverage/~testignore, now)
-copyToDestdir($$PWD/buildScripts/testCoverage/testpathes, now)
+copyToDestdir($$PWD/qrtest/testCoverage/~testignore, now)
+copyToDestdir($$PWD/qrtest/testCoverage/testpathes, now)

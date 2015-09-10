@@ -14,10 +14,10 @@
 
 #pragma once
 
-#include <QScriptEngineAgent>
-#include <QScriptValue>
-#include <QScriptEngine>
-#include <QString>
+#include <QtScript/QScriptEngineAgent>
+#include <QtScript/QScriptValue>
+#include <QtScript/QScriptEngine>
+#include <QtCore/QString>
 
 namespace guiTesting {
 

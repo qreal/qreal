@@ -14,10 +14,10 @@
 
 #pragma once
 
-#include <QStringList>
+#include <QtCore/QStringList>
 #include <gtest/gtest.h>
 
-#include "./qrgui/mainWindow/mainWindow.h"
+#include "qrgui/mainWindow/mainWindow.h"
 
 namespace guiTesting {
 

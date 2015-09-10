@@ -16,7 +16,7 @@
 
 #include <QtScript/QScriptEngine>
 #include <QtCore/QEventLoop>
-#include <QScriptEngineAgent>
+#include <QtScript/QScriptEngineAgent>
 
 class QComboBox;
 class QAbstractScrollArea;

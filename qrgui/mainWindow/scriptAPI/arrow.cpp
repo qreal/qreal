@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "./qrgui/mainWindow/scriptAPI/arrow.h"
+#include "qrgui/mainWindow/scriptAPI/arrow.h"
 
 #include <QtCore/QTimer>
 #include <QtCore/QtMath>
@@ -38,9 +38,7 @@ Arrow::Arrow(const QPoint &sourcePoint, const QPoint &destPoint, int lifeTime, Q
 	setWindowFlags(Qt::WindowStaysOnTopHint);
 	show();
 
-//	setGeometry(qMin(mSourcePoint.x(), mDestPoint.x()), qMin(mSourcePoint.y(), mDestPoint.y())
-//				, qAbs(mSourcePoint.x() - mDestPoint.x()), qAbs(mSourcePoint.y() - mDestPoint.y()));
-// todo: map to parent coordinates
+	// TODO: map to parent coordinates
 
 	QTimer::singleShot(mDuration, this, SLOT(disappear()));
 	QTimer::singleShot(lifeTime, this, SLOT(deleteLater()));

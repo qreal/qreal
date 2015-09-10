@@ -15,30 +15,30 @@
 static const int CRASHCODE = -1;
 static const int FREEZECODE = -2;
 
-#include "QRealGuiTests.h"
+#include "qRealGuiTests.h"
 
 #include "startQreal.cpp"
 #include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
 #include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
 #include "qrgui/mainWindow/qrealApplication.h"
 #include "workaroundTestFunctions.h"
-#include "TestAgent.h"
+#include "testAgent.h"
 #include <qrutils/widgetFinder.h>
 
 #include <QtScript/QScriptContext>
 #include <QtScript/QScriptEngine>
 #include <QtScript/QScriptValue>
-#include <QFile>
-#include <QTextStream>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 #include <QtCore/QCoreApplication>
-#include <QEventLoop>
-#include <QTimer>
-#include <QThread>
-#include <QWidget>
-#include <QDebug>
-#include <QToolButton>
-#include <QListWidget>
-#include <QTest>
+#include <QtCore/QEventLoop>
+#include <QtCore/QTimer>
+#include <QtCore/QThread>
+#include <QtWidgets/QWidget>
+#include <QtCore/QDebug>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QListWidget>
+#include <QtTest/QTest>
 
 using namespace qReal;
 using namespace guiTesting;
@@ -359,25 +359,6 @@ void QRealGuiTests::exterminate(const int returnCode)
 	}
 	QApplication::instance()->exit(returnCode);
 }
-
-//TEST_F(QRealGuiTests, dockWidgetsExistence)
-//{
-//	includeCommonScript("common.js");
-//	run("dockWidgetsExistence.js");
-//}
-
-//TEST_F(QRealGuiTests, createRootElementOnSceneAndQuit)
-//{
-//	includeCommonScript("common.js");
-//	run("createRootElementOnSceneAndQuit.js");
-//}
-
-//TEST_F(QRealGuiTests, fileActionsExistence)
-//{
-//	includeCommonScript("common.js");
-//	run("fileActionsExistence.js");
-//}
-
 
 // Existence
 TEST_F(QRealGuiTests, dockWidgetsExistence)

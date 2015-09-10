@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <QMenu>
-#include <QAction>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QAction>
 #include <functional>
 
 namespace qReal {

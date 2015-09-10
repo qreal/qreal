@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
-#include "TestAgent.h"
+#include "testAgent.h"
 
 using namespace guiTesting;
 

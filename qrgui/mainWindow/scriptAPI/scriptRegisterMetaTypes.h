@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <QScriptEngine>
-#include <QAction>
-#include <QMenu>
+#include <QtScript/QScriptEngine>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 
 Q_DECLARE_METATYPE(QMenu*)
 Q_DECLARE_METATYPE(QAction*)

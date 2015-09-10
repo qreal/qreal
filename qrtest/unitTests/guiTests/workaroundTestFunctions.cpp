@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <QTest>
 #include <gtest/gtest.h>
 
 #include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
@@ -22,10 +21,10 @@
 #include <QtScript/QScriptContext>
 #include <QtScript/QScriptEngine>
 #include <QtScript/QScriptValue>
-
-#include <QTimer>
-#include <QDebug>
-#include <QListWidget>
+#include <QtTest/QTest>
+#include <QtCore/QTimer>
+#include <QtCore/QDebug>
+#include <QtWidgets/QListWidget>
 
 #include "workaroundTestFunctions.h"
 
