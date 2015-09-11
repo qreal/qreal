@@ -1,6 +1,23 @@
+/* Copyright 2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "dirtree.h"
 
-DirTree::DirTree(QString name, int localTesting, int localDocumented, int localTests, bool isIgnored, bgcolors color)
+using namespace testCoverage;
+
+DirTree::DirTree(const QString &name, int localTesting
+		, int localDocumented, int localTests, bool isIgnored, Bgcolors color)
 {
 	root = DirTree::createNode(name, localTesting, localDocumented, localTests, isIgnored, color);
 }
@@ -24,7 +41,6 @@ DirNode * DirTree::getRoot() const
 	return root;
 }
 
-
 DirTree::~DirTree()
 {
 	delNode(root);
@@ -41,7 +57,8 @@ void DirTree::delNode(DirNode *node)
 	delete node;
 }
 
-DirNode *DirTree::createNode(QString name, int localTesting, int localDocumented, int localTests, bool isIgnored, bgcolors color)
+DirNode *DirTree::createNode(const QString &name, int localTesting
+		, int localDocumented, int localTests, bool isIgnored, Bgcolors color)
 {
 	DirNode *node = new DirNode;
 	node->name = name;

@@ -1,13 +1,46 @@
-#include <QDir>
-#include <QFile>
-#include <stdio.h>
-#include <QRegExp>
-#include <QtDebug>
-#include <QTime>
-#include <QList>
-#include <QPair>
+/* Copyright 2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QRegExp>
+#include <QtCore/QDebug>
+#include <QtCore/QTime>
+#include <QtCore/QList>
+#include <QtCore/QPair>
+#include <QtCore/QVariant>
 
 #include "dirtree.h"
+
+namespace testCoverage {
+
+static const int SPECTRUM = 7;
+
+enum class Bgcolors {
+	yellow,
+	white,
+	pink,
+	orange,
+	light1,
+	light2,
+	light3
+};
+
+// NOTE: strongly relative to Bgcolors!
+QString colors[SPECTRUM] = {"yellow", "white", "pink", "orange", "00CC66", "CC99CC", "00CCCC"};
+
+namespace dataCount {
 
 unsigned int totalTestingFunCount = 0;
 unsigned int totalVirtualCount = 0;
@@ -17,18 +50,18 @@ QStringList ignoreFiles;
 QString outputStats = "";
 QStringList testpathes;
 DirTree *dirTree = nullptr;
-QList<QPair<QString, QPair<int, bool> > > listOfTests;
-QString warning = "";
-QString colors[] = {"yellow", "white", "pink", "orange", "00CC66", "CC99CC", "00CCCC"};
 
-QString colorToString(bgcolors color)
+// .f.f absolutePath, .f.s.f name, .f.s.s.f testCount, .f.s.s.s wasUsed, .s unallocated
+QList<QPair<QPair<QString, QPair<QString, QPair<int, bool> > > , bool > > listOfTests;
+
+QString colorToString(Bgcolors color)
 {
-	return colors[color];
+	return colors[static_cast<int>(color)];
 }
 
-bgcolors nextColor(bgcolors color)
+Bgcolors nextColor(Bgcolors color)
 {
-	return (bgcolors)(((int)color + 1) % 7);
+	return static_cast<Bgcolors>((static_cast<int>(color) + 1) % SPECTRUM);
 }
 
 QString commentFreeString(QString str)
@@ -47,15 +80,16 @@ QString commentFreeString(QString str)
 
 QString removeImplementations(QString str)
 {
-	int publics = str.count(QString("public:"));
-	int index = str.indexOf(QString("public:"));
+	const int publics = str.count(QString("public:"));
+	const int index = str.indexOf(QString("public:"));
 	str.remove(0, index + 2);
 	if (publics > 1) {
 		QRegExp reg("class.*public:");
 		reg.setMinimal(true);
 		str.remove(reg);
 	}
-	int count = str.count("{");
+
+	const int count = str.count("{");
 	for (int i = 1; i <= count; ++i) {
 		str.remove(QRegExp("\\{[^\\{\\}]*\\}"));
 	}
@@ -63,17 +97,17 @@ QString removeImplementations(QString str)
 	return str;
 }
 
-unsigned int virtualMethodsCount(QString str)
+unsigned int virtualMethodsCount(const QString &str)
 {
 	return str.count(QRegExp("\\bvirtual\\b"));
 }
 
-unsigned int macrosesWithParameters(QString str)
+unsigned int macrosesWithParameters(const QString &str)
 {
 	return str.count(QRegExp("Q_[A-Z]+(\\s)*\\([^\\)]*\\)"));
 }
 
-bool isIgnored(QString fileName)
+bool isIgnored(const QString &fileName)
 {
 	bool isMatch = false;
 	for (int j = 0; j < ignoreFiles.length(); ++j) {
@@ -87,12 +121,13 @@ bool isIgnored(QString fileName)
 	return isMatch;
 }
 
-unsigned int localFunctionCount(QString path, QString fileName)
+unsigned int localFunctionCount(const QString &path, const QString &fileName)
 {
 	QFile file(path + fileName + ".h");
 	// the second condition need for events when .h is interface
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text) || !QFile::exists(path + fileName + ".cpp")
-			|| isIgnored(path + fileName + ".h")) {
+			|| isIgnored(path + fileName + ".h"))
+	{
 		return 0;
 	}
 
@@ -103,40 +138,66 @@ unsigned int localFunctionCount(QString path, QString fileName)
 	QRegExp functions("[^A-Za-z0-9~_]~?[_A-Za-z0-9]+(\\s)*\\([^\\)]*\\)");
 	QRegExp operators("[^A-Za-z0-9~_]operator[>!=<\\+\\*-\\|\\^&/]+(\\s)*\\([^\\)]*\\)");
 	unsigned int virtCount = virtualMethodsCount(header);
-	unsigned int localCount = header.count(functions) + header.count(operators) - virtCount - macrosesWithParameters(header);
-
+	unsigned int localCount = header.count(functions)
+			+ header.count(operators) - virtCount - macrosesWithParameters(header);
 	totalVirtualCount += virtCount;
 	return localCount;
 }
 
-int localTests(QString fileName)
+int localTests(const QString &fileName, const QString &dir)
 {
 	int testCount = 0;
+	QString path;
 	// there are opportunity to binsearch
 	for (int i = 0; i < listOfTests.length(); ++i) {
-		QString nameTestFile = listOfTests.at(i).first;
-		if (nameTestFile.compare("/" + fileName + ".h", Qt::CaseInsensitive) == 0) {
-			if (listOfTests.at(i).second.second) {
-				warning = QString("There are the different classes with the same name in this project (they have unitTests) and (only) test\'s counting is wrong!") +
-						QString(" Solution: the new requests in style guide about the test\'s formalization and refactoring counting code.\n");
+		if (listOfTests.at(i).second) { // if test suit has already been unallocated
+			continue;
+		}
+
+		QString nameTestFile = listOfTests.at(i).first.second.first;
+		QStringList dirFolders = dir.split("/", QString::SkipEmptyParts);
+		// NOTE: used the most easy and dangerous way to search an appropriative list of tests (it can be clarified)
+		path = listOfTests.at(i).first.first;
+		path.chop(path.length() - path.lastIndexOf("/"));
+		if ((nameTestFile.compare("/" + fileName + ".h", Qt::CaseInsensitive) == 0)
+				&& path.contains(dirFolders.last(), Qt::CaseInsensitive)
+				&& path.contains(dirFolders.at(dirFolders.length() - 2), Qt::CaseInsensitive))
+		{
+			testCount = listOfTests.at(i).first.second.second.first;
+			if (listOfTests.at(i).first.second.second.second) {
+				// test suit has already been unallocated
+				listOfTests.removeAt(i);
+				listOfTests.insert(i, qMakePair(qMakePair(path
+						, qMakePair(nameTestFile, qMakePair(testCount, false))), true));
+				return 0;
 			}
-			testCount = listOfTests.at(i).second.first;
+
 			listOfTests.removeAt(i);
-			listOfTests.insert(i, qMakePair(nameTestFile, qMakePair(testCount, true)));
-			break;
+			listOfTests.insert(i, qMakePair(qMakePair(path
+					, qMakePair(nameTestFile, qMakePair(testCount, true))), false));
+			return testCount;
 		}
 	}
 
-	return testCount;
+	return 0;
 }
 
-void dirTreeInitialization(QString name, int localTesting, int localDocumented, int localTests = 0, bool isIgnored = false, bgcolors color = white)
+void dirTreeInitialization(const QString &name, int localTesting
+		, int localDocumented, int localTests = 0, bool isIgnored = false, Bgcolors color = Bgcolors::white)
 {
 	dirTree = new DirTree(name, localTesting, localDocumented, localTests, isIgnored, color);
 }
 
+// WARNING: truncate correctly works if "qreal" is a sole folder with name "qreal" among subfolders
+QString truncate(QString path)
+{
+	const int mainDirPos = path.lastIndexOf("qreal/");
+	QString purePath = path.right(path.length() - mainDirPos);
+	return purePath;
+}
+
 // without interface methods
-void totalFunctionCount(QString dir, bool dirIsIgnored, DirNode *parent)
+void totalFunctionCount(const QString &dir, bool dirIsIgnored, DirNode *parent)
 {
 	DirNode *node;
 	QString filter = "*.h";
@@ -153,14 +214,17 @@ void totalFunctionCount(QString dir, bool dirIsIgnored, DirNode *parent)
 			QString file = filterFileList.at(i);
 			file.chop(2);
 			localCount += localFunctionCount(dir, file);
-			localTestCount += localTests(file);
+			localTestCount += localTests(file, truncate(dir));
 		}
+
 		totalTestingFunCount += localCount;
 		if (!dirTree) {
-			dirTreeInitialization(dir, localCount, totalDocumentedCount - oldDocumentedCount, localTestCount, false, orange);
+			dirTreeInitialization(dir, localCount, totalDocumentedCount - oldDocumentedCount
+					, localTestCount, false, Bgcolors::orange);
 			node = dirTree->getRoot();
 		} else {
-			node = DirTree::createNode(dir, localCount, totalDocumentedCount - oldDocumentedCount, localTestCount, false, nextColor(parent->color));
+			node = DirTree::createNode(dir, localCount, totalDocumentedCount - oldDocumentedCount
+					, localTestCount, false, nextColor(parent->color));
 			dirTree->addChild(node, parent);
 		}
 
@@ -173,6 +237,7 @@ void totalFunctionCount(QString dir, bool dirIsIgnored, DirNode *parent)
 					break;
 				}
 			}
+
 			totalFunctionCount(dir + dirList.at(i) + "/", followDirIsIgnored, node);
 		}
 	} else {
@@ -204,11 +269,13 @@ void fillOutputStats(DirNode *node)
 {
 	QString name1 = "<tr bgcolor =" + colorToString(node->color) + "><td>";
 	if (node->childNode) {
-		name1.append("<a href=\"#" + node->childNode->name + "\">");
+		name1.append("<a href=\"#" + truncate(node->childNode->name) + "\">");
 	}
 
-	name1.append((node->isIgnored ? "<i>~" : "") + node->name + (node->isIgnored ? "</i>" : "") + "</a></td>");
-	QString name2 = "<td> <a name=\"" + node->name + "\"></a>" + QString::number(node->localTesting) + "</td>";
+	name1.append((node->isIgnored ? "<i>~" : "") + truncate(node->name)
+			+ (node->isIgnored ? "</i>" : "") + "</a></td>");
+	QString name2 = "<td> <a name=\"" + truncate(node->name)
+			+ "\"></a>" + QString::number(node->localTesting) + "</td>";
 	QString name3 = "<td>" + QString::number(node->localDocumented)+ "</td>";
 	QString name4 = "<td>" + QString::number(node->localTests) + "</td>";
 	QString name5 = "<td>" + QString::number(node->totalTesting - node->localTesting) + "</td>";
@@ -216,7 +283,6 @@ void fillOutputStats(DirNode *node)
 	QString name7 = "<td>" + QString::number(node->totalTests - node->localTests) + "</td></tr>";
 
 	outputStats.append(name1 + name2 + name3 + name4 + name5 + name6 + name7);
-
 }
 
 void fillNodeLogHTML(DirNode *node)
@@ -247,13 +313,19 @@ void fillNodeLogHTML(DirNode *node)
 	}
 }
 
-void fillLog(QString fileName)
+void fillLog(const QString &fileName)
 {
-	QString frame1 = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">"
+	QString frame1 = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" "
+			+ QString("\"http://www.w3.org/TR/html4/strict.dtd\">")
 			+ QString("<html><head><meta http-equiv=Content-Type content=text/html; charset=utf-8><title>method's ")
-			+ fileName + "</title><caption>" + "Project method's information" + "</caption></head><body><table border=1 "
-			+ "width=100% cellpadding=5 cols=7 bgcolor=white><tr bgcolor = pink><th width=40%>path</th><th width=10%>testing</th><th width=10%>doc</th><th width=10%>tests"
-			+ "</th><th width=10%>testing in subfolders</th><th width=10%>doc in subfolders</th><th width=10%>tests in subfolders</th width=10%></tr>";
+			+ fileName + "</title><caption>" + "<font size=\"5\" face=\"Arial\"><div align=\"center\">"
+			+ "Project method's information</div></font>"
+			+ "<div align=\"right\"><a href=\"#Information\">Information about unallocated tests</a></div>"
+			+ "</caption></head><body><table border=1 "
+			+ "width=100% cellpadding=5 cols=7 bgcolor=white><tr bgcolor = pink><th width=40%>path</th>"
+			+ "<th width=10%>testing</th><th width=10%>doc</th><th width=10%>tests"
+			+ "</th><th width=10%>testing in subfolders</th><th width=10%>doc in subfolders"
+			+ "</th><th width=10%>tests in subfolders</th width=10%></tr>";
 	QString frame2 = "</table></body></html>";
 	outputStats.append(frame1);
 	fillNodeLogHTML(dirTree->getRoot());
@@ -263,9 +335,11 @@ void fillLog(QString fileName)
 void localCountOfTests(QString cppFile)
 {
 	QFile file(cppFile);
+	QString path = cppFile;
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		return;
 	}
+
 	QString impl = file.readAll();
 	int testCount = impl.count(QRegExp("TEST(\\s)?\\("));
 	testCount += impl.count(QRegExp("TEST_F(\\s)?\\("));
@@ -273,12 +347,13 @@ void localCountOfTests(QString cppFile)
 	cppFile.append(".h");
 	int lastSlash = cppFile.lastIndexOf("/");
 	QString hFile = cppFile.right(cppFile.length() - lastSlash);
-	listOfTests.append(qMakePair(hFile, qMakePair(testCount, false)));
+	listOfTests.append(qMakePair(qMakePair(truncate(path), qMakePair(hFile, qMakePair(testCount, false))), false));
 }
 
-void fillListOfTests(QString dir)
+void fillListOfTests(const QString &dir, const QString &subDir)
 {
-	QDir directory(dir);
+	QString absoluteDir = dir + subDir + "/";
+	QDir directory(absoluteDir);
 	QString fileFilter = "*.cpp";
 	QStringList dirList = directory.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
 	QStringList fileList = directory.entryList(QDir::Files);
@@ -286,29 +361,35 @@ void fillListOfTests(QString dir)
 
 	for (int i = 0; i < filterFileList.length(); ++i) {
 		QString file = filterFileList.at(i);
-		localCountOfTests(dir + file);
+		localCountOfTests(absoluteDir + file);
 	}
 
 	for (int i = 0; i < dirList.length(); ++i) {
-		QString subDir = dirList.at(i);
-		fillListOfTests(dir + subDir + "/");
+		QString subDirNew = dirList.at(i);
+		fillListOfTests(absoluteDir, subDirNew);
 	}
 }
 
-void fillListOfTestDirects(QString dir)
+void fillListOfTestDirects(const QString &dir)
 {
 	QDir directory(dir);
-	QString pathFilter = "*Tests";
+	QString pathFilter = "*Tests"; // the assumption about pathFilter
 	QStringList dirList = directory.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
 	QStringList dirFilterList = dirList.filter(QRegExp(pathFilter, Qt::CaseSensitive, QRegExp::Wildcard));
 
 	for (int i = 0; i < dirFilterList.length(); ++i) {
 		QString subDir = dirFilterList.at(i);
-		if (subDir.compare("exampleTests") != 0) {
-			fillListOfTests(dir + subDir + "/");
+		if (subDir.compare("exampleTests") != 0 && subDir.compare("guiTests") != 0) {
+			fillListOfTests(dir, subDir);
 		}
 	}
 }
+
+}
+}
+
+using namespace testCoverage;
+using namespace testCoverage::dataCount;
 
 int main(int argc, char *argv[])
 {
@@ -320,9 +401,9 @@ int main(int argc, char *argv[])
 
 	readFromFileToList("~testignore", ignoreFiles);
 	readFromFileToList("testpathes", testpathes);
-	for (int j = 0; j < testpathes.length(); ++j)
-	{
-		fillListOfTestDirects(testpathes.at(j) + "buildScripts/");
+	for (int j = 0; j < testpathes.length(); ++j) {
+		// the assumption about "tests" folder location
+		fillListOfTestDirects(testpathes.at(j) + "qrtest/unitTests/");
 		totalFunctionCount(testpathes.at(j), false, nullptr);
 		dirTree->calculateTotalData();
 		QString fileName = "testCoverage";
@@ -332,9 +413,18 @@ int main(int argc, char *argv[])
 		if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 			return 0;
 		}
+
 		fillLog(fileName);
 		QTextStream out(&outputFile);
-		out << warning << outputStats;
+		out << outputStats << "<br><font color=\"#CC0000\"><a name=Information>"
+				<< "Information about unallocated tests:</a></font><br>";
+		for (int i = 0; i < listOfTests.length(); ++i) {
+			if (!listOfTests.at(i).first.second.second.second) {
+				out << "<br>unallocated tests: <b>" << listOfTests.at(i).first.second.second.first
+						<< "</b> in <font color=\"#336699\">" << listOfTests.at(i).first.first << "</font>";
+			}
+		}
+
 		totalTestingFunCount = 0;
 		totalVirtualCount = 0;
 		totalDocumentedCount = 0;
@@ -343,7 +433,6 @@ int main(int argc, char *argv[])
 		outputStats.clear();
 		outputFile.close();
 		listOfTests.clear();
-		warning.clear();
 	}
 
 	qDebug() << "time of execution: " + QString::number(time.elapsed()) + " ms";
