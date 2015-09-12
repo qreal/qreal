@@ -23,7 +23,7 @@ static const int FREEZECODE = -2;
 #include "qrgui/mainWindow/qrealApplication.h"
 #include "workaroundTestFunctions.h"
 #include "testAgent.h"
-#include "qrgui/mainwindow/scriptAPIWrapper.h"
+#include "mainwindow/scriptAPIWrapper.h"
 #include <qrutils/widgetFinder.h>
 
 #include <QtScript/QScriptContext>
