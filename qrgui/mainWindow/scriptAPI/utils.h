@@ -96,9 +96,9 @@ private:
 	void clickCheckBox(QWidget *widget, const QString &buttonText) const;
 	void throwScriptException(const QString &msg) const;
 	void doSmthInWidget(const QString &widgetName, const QString &identifier
-						, const QString &buttonText
-						, std::function<void(const Utils &, QWidget *
-											 , const QString &, const QString &)>doAction) const;
+			, const QString &buttonText
+			, std::function<void(const Utils &, QWidget *
+			, const QString &, const QString &)>doAction) const;
 
 	ScriptAPI &mScriptAPI;
 	MainWindow &mMainWindow;

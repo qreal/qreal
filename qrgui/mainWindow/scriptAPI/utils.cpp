@@ -301,8 +301,8 @@ void Utils::throwScriptException(const QString &msg) const
 }
 
 void Utils::doSmthInWidget(const QString &widgetName, const QString &identifier
-					, const QString &associatedAction
-					, std::function<void(const Utils &, QWidget *, const QString &, const QString &)> doAction) const
+		, const QString &associatedAction
+		, std::function<void(const Utils &, QWidget *, const QString &, const QString &)> doAction) const
 {
 	QList<QWidget *> allWidgets = mMainWindow.findChildren<QWidget *>();
 	for (QWidget * widget : allWidgets) {
