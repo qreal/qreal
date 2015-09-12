@@ -190,12 +190,12 @@ void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QS
 
 void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText) const
 {
-	enum { PUSHBUTTON = 1, RADIOBUTTON, CHECKBUTTON };
-	QMap<QString, int> map;
+	enum class Button { PUSHBUTTON = 1, RADIOBUTTON, CHECKBUTTON };
+	QMap<QString, Button> map;
 
-	map["QPushButton"] = PUSHBUTTON;
-	map["QRadioButton"] = RADIOBUTTON;
-	map["QCheckBox"] = CHECKBUTTON;
+	map["QPushButton"] = Button::PUSHBUTTON;
+	map["QRadioButton"] = Button::RADIOBUTTON;
+	map["QCheckBox"] = Button::CHECKBUTTON;
 
 	if (!map.contains(buttonType)) {
 		throwScriptException("Utils::clickButton: needed type: '" + buttonType + "' was not found");
@@ -203,13 +203,13 @@ void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const 
 	}
 	switch (map.value(buttonType))
 	{
-		case PUSHBUTTON:
+		case Button::PUSHBUTTON:
 			clickPushButton(widget, buttonText);
 			break;
-		case RADIOBUTTON:
+		case Button::RADIOBUTTON:
 			clickRadioButton(widget, buttonText);
 			break;
-		case CHECKBUTTON:
+		case Button::CHECKBUTTON:
 			clickCheckBox(widget, buttonText);
 			break;
 		default:

@@ -19,45 +19,53 @@
 namespace qReal {
 namespace gui {
 
-class MainWidnowScriptAPIInterface
+class ScriptAPI;
+
+/// @brief ScriptAPIWrapper provides work with ScriptAPI for different classes
+class ScriptAPIWrapper
 {
 public:
-	virtual ~MainWidnowScriptAPIInterface() {}
+	explicit ScriptAPIWrapper(ScriptAPI *scriptAPI);
+	~ScriptAPIWrapper();
 
 	/// Evaluates script with current ScriptAPI
 	/// @param ready script for evaluating, \a fileName is used for error reporting.
-	virtual void evaluateScript(const QString &script, const QString &fileName) = 0;
+	void evaluateScript(const QString &script, const QString &fileName);
 
 	/// Evaluates script located in the file
 	/// @param the full path to the file
-	virtual void evaluateFileScript(const QString &fileName) = 0;
+	void evaluateFileScript(const QString &fileName);
 
 	/// Abort evaluation of the script
-	virtual void abortEvaluation() = 0;
+	void abortEvaluation();
 
 	/// Register new function in QtScriptEngine object getting in MainWindow
 	/// @param Creates a QScriptValue that wraps a native (C++) function. 
 	/// fun must be a C++ function with signature QScriptEngine::FunctionSignature.
 	/// @param length is the number of arguments that fun expects;
 	/// this becomes the length property of the created QScriptValue.
-	virtual void registerNewFunction(QScriptEngine::FunctionSignature fun
-									 , const QString &QScriptName, int length = 0) = 0;
+	void registerNewFunction(QScriptEngine::FunctionSignature fun
+									 , const QString &scriptName, int length = 0);
 
 	/// Checks the syntax of the given script.
 	/// @return a QScriptSyntaxCheckResult object that contains the result of the check.
-	virtual QScriptSyntaxCheckResult checkSyntax(const QString &script) = 0;
+	QScriptSyntaxCheckResult checkSyntax(const QString &script);
 
 	/// @return true if the last script evaluation resulted in an uncaught exception; otherwise returns false.
-	virtual bool hasUncaughtException() = 0;
+	bool hasUncaughtException();
 
 	/// Clears any uncaught exceptions in corresponding engine.
-	virtual void clearExceptions() = 0;
+	void clearExceptions();
 
 	/// @return a human-readable backtrace of the last uncaught exception.
-	virtual QStringList uncaughtExceptionBacktrace() = 0;
+	QStringList uncaughtExceptionBacktrace();
 
 	/// @return QScriptEngine pointer for ScriptAPI engine
-	virtual QScriptEngine* getEngine() = 0;
+	QScriptEngine* getEngine();
+
+private:
+	// Doesn't have ownership
+	ScriptAPI *mScriptAPI;
 };
 
 }

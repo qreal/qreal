@@ -44,7 +44,7 @@ public:
 	/// Returns main window child widget by its type (class name) and QObject name having \a widget in the parent list
 	/// @see qReal::gui::GuiFacade::widget for more information
 	Q_INVOKABLE QWidget *widgetClarified(const QWidget *parent
-										 , const QString &type, const QString &objectName = QString()) const;
+			, const QString &type, const QString &objectName = QString()) const;
 
 	/// Returns a widget of some action on the toolbar panel.
 	Q_INVOKABLE QWidget *pluginActionToolButton(const QString &name) const;

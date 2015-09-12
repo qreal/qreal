@@ -76,8 +76,6 @@
 #include "splashScreen.h"
 #include "dotRunner.h"
 
-#include "scriptAPI/scriptAPI.h"
-
 using namespace qReal;
 using namespace qReal::commands;
 using namespace gui;
@@ -1709,6 +1707,11 @@ QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
 	return mListOfAdditionalActions;
 }
 
+ScriptAPIWrapper* MainWindow::createScriptAPIWrapper()
+{
+	return new ScriptAPIWrapper(&mScriptAPI);
+}
+
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(models().repoControlApi()
@@ -2101,51 +2104,6 @@ void MainWindow::initScriptAPI()
 	connect(&mFacade.events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
 	mScriptAPI.moveToThread(scriptAPIthread);
 	scriptAPIthread->start();
-}
-
-void MainWindow::evaluateScript(const QString &script, const QString &fileName)
-{
-	mScriptAPI.evaluateScript(script, fileName);
-}
-
-void MainWindow::evaluateFileScript(const QString &fileName)
-{
-	mScriptAPI.evaluateFileScript(fileName);
-}
-
-void MainWindow::abortEvaluation()
-{
-	mScriptAPI.abortEvaluation();
-}
-
-void MainWindow::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length)
-{
-	mScriptAPI.regNewFunct(fun, QScriptName, length);
-}
-
-QScriptSyntaxCheckResult MainWindow::checkSyntax(const QString &script)
-{
-	return mScriptAPI.checkSyntax(script);
-}
-
-bool MainWindow::hasUncaughtException()
-{
-	return mScriptAPI.hasUncaughtException();
-}
-
-void MainWindow::clearExceptions()
-{
-	mScriptAPI.clearExceptions();
-}
-
-QStringList MainWindow::uncaughtExceptionBacktrace()
-{
-	return mScriptAPI.uncaughtExceptionBacktrace();
-}
-
-QScriptEngine* MainWindow::getEngine()
-{
-	return mScriptAPI.getEngine();
 }
 
 void MainWindow::beginPaletteModification()

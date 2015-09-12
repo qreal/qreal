@@ -72,20 +72,28 @@ private:
 	/// function for running common scripts before main script
 	/// @note u can include several needed files
 	void runCommonScript(const QString &relativeFileName);
+
 	void checkScriptSyntax(const QString &script, const QString &errorMsg);
+
 	void checkLastEvaluating(const QString &errorMsg);
+
 	QString readFile(const QString &relativeFileName);
+
 	/// @todo solve this problem using QScriptEngineAgent
 	/// this function is a WORKAROUND
 	void prepareScriptForRunning(QString &script);
+
 	void exterminate(const int returnCode);
 
 	QString mScriptFolderName = "qrealScripts";
 	int mTimeToExpose = 7000;
 	int mTimeLimit = 67000;
 
+	/// Doesn't have ownership
 	qReal::MainWindow* mWindow;
-	qReal::gui::MainWidnowScriptAPIInterface* mMainWindowScriptAPIInterface;
+
+	/// Has ownership
+	qReal::gui::ScriptAPIWrapper* mScriptAPIWrapper;
 
 	/// relative names of common scripts evaluating before main script evaluating
 	QStringList mCommonScripts;
@@ -102,7 +110,7 @@ private:
 	QString mFileName;
 	QString mRelativeName;
 
-	/// uses for debugging and scripting
+	/// for debugging and scripting
 	/// Doesn't have ownership
 	TestAgent *mTestAgent;
 };

@@ -18,9 +18,6 @@
 #include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
 #include "./qrgui/mainWindow/mainWindow.h"
 
-#include <QtScript/QScriptContext>
-#include <QtScript/QScriptEngine>
-#include <QtScript/QScriptValue>
 #include <QtTest/QTest>
 #include <QtCore/QTimer>
 #include <QtCore/QDebug>
@@ -112,9 +109,9 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 				for (int k = 0; k < listWidget.length(); ++k) {
 					if (listWidget.at(k) != nullptr) {
 						SuggestToCreateDiagramWidget *suggestWidget = listWidget.at(k);
-						for (int m = 0; m < suggestWidget->getQListWidget()->count(); ++m) {
-							if (suggestWidget->getQListWidget()->item(m)->text() == diagramName) {
-/*here gui workaround*/			suggestWidget->getQListWidget()->itemDoubleClicked(suggestWidget->getQListWidget()->item(m));
+						for (int m = 0; m < suggestWidget->getMainListWidget()->count(); ++m) {
+							if (suggestWidget->getMainListWidget()->item(m)->text() == diagramName) {
+/*here gui workaround*/			suggestWidget->getMainListWidget()->itemDoubleClicked(suggestWidget->getMainListWidget()->item(m));
 								break;
 
 								/*QPoint pos = listWidget.at(k)->visualItemRect(listWidget.at(k)->item(m)).topLeft();
@@ -123,7 +120,7 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 															  Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 								QApplication::postEvent(listWidget.at(k)->getMainWidget()->parent(), mouseEvent);*/
 							}
-							if (m == suggestWidget->getQListWidget()->count() - 1) {
+							if (m == suggestWidget->getMainListWidget()->count() - 1) {
 								FAIL() << "doesnt exist " << diagramName.toStdString() << " diagram";
 							}
 						}

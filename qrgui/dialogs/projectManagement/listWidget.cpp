@@ -46,7 +46,7 @@ void ListWidget::highlightFirstItem()
 	}
 }
 
-QListWidget *ListWidget::getQListWidget() const
+QListWidget *ListWidget::getMainListWidget() const
 {
 	return mListWidget;
 }

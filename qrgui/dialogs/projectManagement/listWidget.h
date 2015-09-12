@@ -35,9 +35,11 @@ public:
 	/// @param userData Associated with item the string data
 	/// @param toolTip Item tooltip
 	void addItem(const QString &text, const QString &userData, const QString &toolTip = "");
+
 	void highlightFirstItem();
+
 	/// Return general widget who indeed contains all items etc
-	QListWidget *getQListWidget() const;
+	QListWidget *getMainListWidget() const;
 
 signals:
 	void userDataSelected(const QString &userData);

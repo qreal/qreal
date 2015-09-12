@@ -30,7 +30,7 @@
 #include "tabWidget.h"
 #include "startWidget/startWidget.h"
 #include "scriptAPI/scriptAPI.h"
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowScriptAPIInterface.h"
+#include "scriptAPIWrapper.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
@@ -76,7 +76,6 @@ class TextManager;
 class MainWindow : public QMainWindow
 		, public qReal::gui::MainWindowInterpretersInterface
 		, public qReal::gui::MainWindowDockInterface
-		, public qReal::gui::MainWidnowScriptAPIInterface
 {
 	Q_OBJECT
 
@@ -186,19 +185,11 @@ public:
 	void setEnabledForAllElementsInPalette(bool enabled) override;
 	void endPaletteModification() override;
 
-	/// the MainWindowScriptAPIInterface implementation
-	void evaluateScript(const QString &script, const QString &fileName) override;
-	void evaluateFileScript(const QString &fileName) override;
-	void abortEvaluation() override;
-	void registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length) override;
-	QScriptSyntaxCheckResult checkSyntax(const QString &script) override;
-	bool hasUncaughtException() override;
-	void clearExceptions() override;
-	QStringList uncaughtExceptionBacktrace() override;
-	QScriptEngine* getEngine() override;
-
 	/// Additional actions for interpreter palette.
 	QList<QAction *> optionalMenuActionsForInterpretedPlugins();
+
+	/// @returns the pointer to the new ScriptAPIWrapper, mainWindow doesn't have ownership of one
+	qReal::gui::ScriptAPIWrapper* createScriptAPIWrapper();
 
 signals:
 	void rootDiagramChanged();

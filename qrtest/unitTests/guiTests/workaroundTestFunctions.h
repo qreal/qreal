@@ -14,6 +14,10 @@
 
 #pragma once
 
+#include<QtScript/QScriptValue>
+#include<QtScript/QScriptContext>
+#include<QtScript/QScriptEngine>
+
 namespace guiTesting {
 namespace workarounds {
 

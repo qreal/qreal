@@ -28,7 +28,6 @@ SOURCES += \
 	$$PWD/workaroundTestFunctions.cpp \
 	$$PWD/testAgent.cpp \
 
-
 # in Existence checks initial states of required elements
 # in Functioning checks the correct work of required elements after some preparing actions
 # in other scripts checks the correct work of the complicated sequence of actions
@@ -72,4 +71,4 @@ OTHER_FILES += \
 copyToDestdir($$PWD/testScripts/qrealScripts/, now)
 copyToDestdir($$PWD/testScripts/common.js, now)
 
-include(../../../qrgui/mainWindow/mainWindowForTests.pri)
+include(../../../qrgui/mainWindow/mainWindow.pri)

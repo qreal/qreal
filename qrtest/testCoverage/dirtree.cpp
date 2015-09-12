@@ -31,8 +31,10 @@ void DirTree::addChild(DirNode *child, DirNode *parent)
 		while (node->rightNode != nullptr) {
 			node = node->rightNode;
 		}
+
 		node->rightNode = child;
 	}
+
 	child->parentNode = parent;
 }
 
@@ -51,9 +53,11 @@ void DirTree::delNode(DirNode *node)
 	if (node->childNode) {
 		delNode(node->childNode);
 	}
+
 	if (node->rightNode){
 		delNode(node->rightNode);
 	}
+
 	delete node;
 }
 
@@ -86,6 +90,7 @@ void DirTree::calculateTotalDataForNode(DirNode *node)
 	if (node->childNode) {
 		calculateTotalDataForNode(node->childNode);
 	}
+
 	if (node->rightNode) {
 		calculateTotalDataForNode(node->rightNode);
 	}

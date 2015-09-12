@@ -23,6 +23,7 @@ static const int FREEZECODE = -2;
 #include "qrgui/mainWindow/qrealApplication.h"
 #include "workaroundTestFunctions.h"
 #include "testAgent.h"
+#include "qrgui/mainwindow/scriptAPIWrapper.h"
 #include <qrutils/widgetFinder.h>
 
 #include <QtScript/QScriptContext>
@@ -134,31 +135,33 @@ QScriptValue scriptExpect(QScriptContext *context, QScriptEngine *engine)
 
 void QRealGuiTests::SetUp()
 {
-	MainWindow *window = start();
-	mWindow = window;
-	mWindow->setAttribute(Qt::WA_DeleteOnClose);
-
-	mMainWindowScriptAPIInterface = dynamic_cast<MainWidnowScriptAPIInterface *>(window);
-	if (mMainWindowScriptAPIInterface == nullptr) {
+	mWindow = start();
+	if (mWindow == nullptr) {
 		FAIL() << "MainWindow is not found";
 	}
+	mWindow->setAttribute(Qt::WA_DeleteOnClose);
 
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptAssert, "assert");
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptFail, "fail");
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptAddFailure, "add_failure");
-	mMainWindowScriptAPIInterface->registerNewFunction(scriptExpect, "expect");
+	mScriptAPIWrapper = mWindow->createScriptAPIWrapper();
+	if (mScriptAPIWrapper == nullptr) {
+		FAIL() << "mScriptAPIWrapper is nullptr";
+	}
+
+	mScriptAPIWrapper->registerNewFunction(scriptAssert, "assert");
+	mScriptAPIWrapper->registerNewFunction(scriptFail, "fail");
+	mScriptAPIWrapper->registerNewFunction(scriptAddFailure, "add_failure");
+	mScriptAPIWrapper->registerNewFunction(scriptExpect, "expect");
 
 	// ATTENTION: workarounds
-	mMainWindowScriptAPIInterface->registerNewFunction(reachedEndOfScript, "reachedEndOfScript");
-	mMainWindowScriptAPIInterface->registerNewFunction(closeExpectedDialog, "closeExpectedDialog");
-	mMainWindowScriptAPIInterface->registerNewFunction(chooseExpectedDialogDiagram, "chooseExpectedDialogDiagram");
+	mScriptAPIWrapper->registerNewFunction(reachedEndOfScript, "reachedEndOfScript");
+	mScriptAPIWrapper->registerNewFunction(closeExpectedDialog, "closeExpectedDialog");
+	mScriptAPIWrapper->registerNewFunction(chooseExpectedDialogDiagram, "chooseExpectedDialogDiagram");
 
-	QScriptEngine *engine = mMainWindowScriptAPIInterface->getEngine();
+	QScriptEngine *engine = mScriptAPIWrapper->getEngine();
 	mTestAgent = new TestAgent(engine);
 	// engine->setAgent(mTestAgent); // for writting and debugging. dont remove!
 
 	mReturnCode = CRASHCODE;
-	QTimer *timer = new QTimer(window);
+	QTimer *timer = new QTimer(mWindow);
 	timer->setSingleShot(true);
 	QObject::connect(timer, &QTimer::timeout, [this]() { failTest(); });
 	timer->start(mTimeLimit);
@@ -167,7 +170,8 @@ void QRealGuiTests::SetUp()
 // It may be usefull to use the LOG for some information about a failed/passed/running test
 void QRealGuiTests::TearDown()
 {
-	mMainWindowScriptAPIInterface = nullptr;
+	delete mScriptAPIWrapper;
+	mScriptAPIWrapper = nullptr;
 	mCurrentIncludedFiles.clear();
 	mCurrentTotalProgram.clear();
 	mCurrentEvaluatingScript.clear();
@@ -224,7 +228,7 @@ void QRealGuiTests::run(const QString &relativeFileName)
 		mCurrentEvaluatingScript = mScript;
 		mCurrentTotalProgram += mScript;
 
-		mMainWindowScriptAPIInterface->evaluateScript(mScript, mFileName);
+		mScriptAPIWrapper->evaluateScript(mScript, mFileName);
 		checkLastEvaluating(mRelativeName);
 		if (::testing::Test::HasFailure()) {
 			return;
@@ -250,8 +254,8 @@ void QRealGuiTests::includeCommonScript(const QStringList &fileList)
 
 void QRealGuiTests::failTest()
 {
-	mMainWindowScriptAPIInterface->abortEvaluation();
-	mMainWindowScriptAPIInterface->getEngine()->currentContext()->throwError("failTest: freeze");
+	mScriptAPIWrapper->abortEvaluation();
+	mScriptAPIWrapper->getEngine()->currentContext()->throwError("failTest: freeze");
 	exterminate(FREEZECODE);
 }
 
@@ -303,13 +307,13 @@ void QRealGuiTests::runCommonScript(const QString &relativeFileName)
 	if (::testing::Test::HasFailure()) {
 		return;
 	}
-	mMainWindowScriptAPIInterface->evaluateScript(script, fileName);
+	mScriptAPIWrapper->evaluateScript(script, fileName);
 	checkLastEvaluating(relativeFileName);
 }
 
 void QRealGuiTests::checkScriptSyntax(const QString &script, const QString &errorMsg)
 {
-	QScriptSyntaxCheckResult checkResult = mMainWindowScriptAPIInterface->checkSyntax(script);
+	QScriptSyntaxCheckResult checkResult = mScriptAPIWrapper->checkSyntax(script);
 	if (checkResult.state() != QScriptSyntaxCheckResult::Valid) {
 		QApplication::quit();
 		FAIL() << "Failed coz code is invalide\n" << checkResult.errorMessage().toStdString()
@@ -319,9 +323,9 @@ void QRealGuiTests::checkScriptSyntax(const QString &script, const QString &erro
 
 void QRealGuiTests::checkLastEvaluating(const QString &errorMsg)
 {
-	if (mMainWindowScriptAPIInterface->hasUncaughtException()) {
-		std::string backtrace = mMainWindowScriptAPIInterface->uncaughtExceptionBacktrace().join('\n').toStdString();
-		mMainWindowScriptAPIInterface->clearExceptions();
+	if (mScriptAPIWrapper->hasUncaughtException()) {
+		std::string backtrace = mScriptAPIWrapper->uncaughtExceptionBacktrace().join('\n').toStdString();
+		mScriptAPIWrapper->clearExceptions();
 		if (QApplication::activePopupWidget()) {
 			QApplication::activePopupWidget()->close();
 		}
