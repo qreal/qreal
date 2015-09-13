@@ -124,5 +124,6 @@ MainWindow* start()
 	if (!window->isVisible()) {
 		return nullptr;
 	}
+
 	return window;
 }

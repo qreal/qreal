@@ -29,6 +29,7 @@ QString QRealFileDialog::getOpenFileName(const QString &id
 	if (qReal::SettingsManager::value("guiTest").toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir);
 	const QString result = QFileDialog::getOpenFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
@@ -46,6 +47,7 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 	if (qReal::SettingsManager::value("guiTest").toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir);
 	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
@@ -61,6 +63,7 @@ QString QRealFileDialog::getExistingDirectory(const QString &id
 	if (qReal::SettingsManager::value("guiTest").toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir);
 	const QString result = QFileDialog::getExistingDirectory(parent, caption, lastDir, options);
 	saveState(id, result);
@@ -78,6 +81,7 @@ QStringList QRealFileDialog::getOpenFileNames(const QString &id
 	if (qReal::SettingsManager::value("guiTest").toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir);
 	const QStringList result = QFileDialog::getOpenFileNames(parent, caption, lastDir, filter, selectedFilter, options);
 

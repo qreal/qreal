@@ -36,6 +36,7 @@ QScriptValue guiTesting::workarounds::reachedEndOfScript(QScriptContext *context
 		ADD_FAILURE() << "'reachedEndOfScript' shall not have any argument";
 		return {};
 	}
+
 	SettingsManager::setValue("reachedEndOfFile", "true"); // here gui workaround
 	return {};
 }
@@ -119,15 +120,19 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 															  Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 								QApplication::postEvent(listWidget.at(k)->getMainWidget()->parent(), mouseEvent);*/
 							}
+
 							if (m == suggestWidget->getMainListWidget()->count() - 1) {
 								FAIL() << "doesnt exist " << diagramName.toStdString() << " diagram";
 							}
 						}
+
 						break;
 					}
 				}
+
 				break;
 			}
+
 			if (i == allDialogs.length() - 1) {
 				FAIL() << "doesnt exist " << dialogTitle.toStdString() << " dialog";
 			}
