@@ -17,6 +17,8 @@
 #include <QtCore/QTranslator>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QFileDialog>
+#include <qrutils/qRealFileDialog.h>
+#include <qrkernel/settingsManager.h>
 
 #include <qrgui/preferencesDialog/preferencesPage.h>
 #include <../../../qrkernel/settingsManager.h>
@@ -42,6 +44,8 @@ public:
 	virtual void restoreSettings();
 public slots:
 	void dbmsChanging(QString const &dbmsName);
+	void changeReverseEngineerFilePath(QString const &path);
+	void browseFileForReverseEngineer();
 signals:
 	void dbmsChanged(QString const &dbmsName);
 private:

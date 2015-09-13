@@ -60,7 +60,7 @@ public slots:
 	void generateCode();
 	/// Checks SQL-code from physical model(redirection to generator)
 	void generatePhysicalModel();
-	///
+	/// Generate physical model from file
 	void generateSchema();
 
 private:

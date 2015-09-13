@@ -18,7 +18,14 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools
 
+addFiles.sources = db.sqlite
+addFiles.path = .
+DEPLOYMENT += addFiles
+@QT += core sql
+QT -= gui@
+
 QT += widgets
+QT += sql
 
 INCLUDEPATH += \
 	$$PWD/../../.. \
@@ -32,13 +39,15 @@ HEADERS = \
 	$$PWD/generator/databasesGenerator.h \
 	$$PWD/databasesSupportPlugin.h \
 	$$PWD/databasesPreferencesPage.h \
-	$$PWD/databasesCustomizer.h
+	$$PWD/databasesCustomizer.h \
+	$$PWD/generator/databasesReverseEngineer.h \
 
 SOURCES = \
 	$$PWD/databasesSupportPlugin.cpp \
 	$$PWD/databasesPreferencesPage.cpp \
 	$$PWD/databasesCustomizer.cpp \
 	$$PWD/generator/databasesGenerator.cpp \
+	$$PWD/generator/databasesReverseEngineer.cpp \
 
 OTHER_FILES += \
 	$$PWD/databasesSupport.pri \

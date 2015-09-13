@@ -23,6 +23,8 @@ DatabasesPreferencesPage::DatabasesPreferencesPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	connect(mUi->dbmsBox, SIGNAL(currentTextChanged(QString)), this, SLOT(dbmsChanging(QString)));
+	connect(mUi->reverseEngineerFileButton, SIGNAL(clicked()), this, SLOT(browseFileForReverseEngineer()));
+
 }
 
 DatabasesPreferencesPage::~DatabasesPreferencesPage()
@@ -40,12 +42,25 @@ void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 		emit dbmsChanged("mySql5");
 }
 
+void DatabasesPreferencesPage::changeReverseEngineerFilePath(QString const &path)
+{
+	mUi->reverseEngineerFilePath->setText(path);
+}
+
 void DatabasesPreferencesPage::save()
 {
 }
 
+
 void DatabasesPreferencesPage::restoreSettings()
 {
+}
+
+void DatabasesPreferencesPage::browseFileForReverseEngineer()
+{
+	const QString path = utils::QRealFileDialog::getOpenFileName("FileForReverseEngineer"
+			,this, tr("Open Directory")).replace("\\", "/");
+	mUi->reverseEngineerFilePath->setText(path);
 }
 
 }
