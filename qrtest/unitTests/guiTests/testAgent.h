@@ -21,17 +21,39 @@
 
 namespace guiTesting {
 
+/// Helps for debugging and scripting
 class TestAgent : public QScriptEngineAgent
 {
 public:
+	/// @see QScriptEngineAgent
 	explicit TestAgent(QScriptEngine *engine);
 
+	/// @see QScriptEngineAgent
+	/// output relative info with qDebug()
 	void exceptionCatch(qint64 scriptId, const QScriptValue & exception) override;
+
+	/// @see QScriptEngineAgent
+	/// output relative info with qDebug()
 	void exceptionThrow(qint64 scriptId, const QScriptValue & exception, bool hasHandler) override;
+
+	/// @see QScriptEngineAgent
+	/// output relative info with qDebug()
 	void positionChange(qint64 scriptId, int lineNumber, int columnNumber) override;
+
+	/// @see QScriptEngineAgent
+	/// output relative info with qDebug()
 	void scriptLoad(qint64 id, const QString & program, const QString & fileName, int baseLineNumber) override;
+
+	/// @see QScriptEngineAgent
+	/// output relative info with qDebug()
 	void functionEntry(qint64 scriptId) override;
+
+	/// @see QScriptEngineAgent
+	/// output relative info with qDebug()
 	void contextPop() override;
+
+	/// @see QScriptEngineAgent
+	/// output relative info with qDebug()
 	void contextPush() override;
 };
 
