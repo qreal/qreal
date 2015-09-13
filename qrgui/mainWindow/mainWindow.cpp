@@ -300,6 +300,7 @@ MainWindow::~MainWindow()
 	if (SettingsManager::value("guiTest").toBool()) {
 		qDebug() << "MainWindow::~MainWindow()";
 	}
+
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -324,6 +325,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		event->ignore();
 		return;
 	}
+
 	mScriptAPI.abortEvaluation();
 	mProjectManager->close();
 

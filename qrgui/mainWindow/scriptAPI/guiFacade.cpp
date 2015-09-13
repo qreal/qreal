@@ -160,6 +160,7 @@ QAction *GuiFacade::getActionInMenu(const QMenu *menu, const QString &actionName
 			return action;
 		}
 	}
+
 	return nullptr;
 }
 
@@ -182,5 +183,6 @@ QWidget *GuiFacade::getStartButton(const QString &buttonText) const
 			return button;
 		}
 	}
+
 	return nullptr;
 }

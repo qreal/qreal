@@ -115,6 +115,7 @@ void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
 		QApplication::activePopupWidget()->close();
 	}
+
 	simulateMouse(target, QEvent::MouseButtonPress, clickPosition, Qt::LeftButton);
 	if (delay >= 0) {
 		mScriptAPI.wait(delay);
@@ -166,6 +167,7 @@ void VirtualCursor::leftButtonDoubleClick(QWidget *target, int delay)
 		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
 		QApplication::activePopupWidget()->close();
 	}
+
 	simulateMouse(target, QEvent::MouseButtonDblClick, clickPosition, Qt::LeftButton);
 
 	if (delay >= 0) {

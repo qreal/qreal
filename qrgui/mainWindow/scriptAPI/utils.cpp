@@ -53,6 +53,7 @@ void Utils::activateMenu(QMenu *menu)
 	if (menu == nullptr) {
 		throwScriptException("Utils::activateMenu: (menu == nullptr)");
 	}
+
 	QTest::keyClick(&mMainWindow, menu->title().at(1).toLatin1(), Qt::AltModifier);
 }
 
@@ -61,17 +62,20 @@ void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec)
 	if (menu == nullptr) {
 		throwScriptException("Utils::activateMenuAction: (menu == nullptr)");
 	}
+
 	for (const QAction *action : menu->actions()) {
 		if (action == actionForExec) {
 			QTest::keyClick(menu, Qt::Key_Enter);
 			return;
 		}
+
 		if (!action->isSeparator()) {
 			QTest::qWait(25);
 			QTest::keyClick(menu, Qt::Key_Down);
 			QTest::qWait(25);
 		}
 	}
+
 	throwScriptException("doesnt exist " + actionForExec->objectName() + " " + actionForExec->text() + " action");
 }
 
@@ -97,6 +101,7 @@ void Utils::activateContextMenuAction(const QString &actionName)
 	if (contextMenu == nullptr) {
 		throwScriptException("Utils::activateContextMenuAction: contextMenu == nullptr");
 	}
+
 	QList<QAction *> actions = contextMenu->actions();
 	QAction *neededAction = nullptr;
 	for (QAction *action: actions) {
@@ -104,14 +109,17 @@ void Utils::activateContextMenuAction(const QString &actionName)
 			neededAction = action;
 		}
 	}
+
 	if (neededAction == nullptr) {
 		throwScriptException("Utils::activateContextMenuAction: neededAction == nullptr");
 	}
+
 	for (const QAction *action : actions) {
 		if (action == neededAction) {
 			QTest::keyClick(contextMenu, Qt::Key_Enter);
 			return;
 		}
+
 		if (!action->isSeparator()) {
 			QTest::qWait(50);
 			QTest::keyClick(contextMenu, Qt::Key_Down);
@@ -125,6 +133,7 @@ void Utils::closeContextMenu()
 	if (!contextMenu) {
 		throwScriptException("Utils::closeContextMenu: contextMenu == nullptr");
 	}
+
 	QTest::keyClick(contextMenu, Qt::Key_Escape);
 }
 
@@ -182,9 +191,11 @@ void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QS
 			if (text != lineEdit->text()) {
 				throwScriptException("Utils::writeIn: '" + text + "' != '" + lineEdit->text() + "'");
 			}
+
 			return;
 		}
 	}
+
 	throwScriptException("QLineEdit with " + lineEditObjectName + " objectName was not found");
 }
 
@@ -201,6 +212,7 @@ void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const 
 		throwScriptException("Utils::clickButton: needed type: '" + buttonType + "' was not found");
 		return;
 	}
+
 	switch (map.value(buttonType))
 	{
 		case Button::PUSHBUTTON:
@@ -229,20 +241,24 @@ void Utils::pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, c
 			if (currentIndex == -1) {
 				throwScriptException(QString("Utils::pickNeededItem: ") + "box->currentIndex() == -1");
 			}
+
 			int neededIndex = box->findText(itemName, Qt::MatchExactly | Qt::MatchCaseSensitive);
 			if (neededIndex == -1) {
 				throwScriptException(QString("Utils::pickNeededItem: ") + "neededIndex == -1");
 			}
+
 			Qt::Key	key = (currentIndex >= neededIndex) ? Qt::Key_Up : Qt::Key_Down;
 			int direction = (key == Qt::Key_Up) ? 1 : -1;
 			for (int i = currentIndex; i != neededIndex;) {
 				QTest::keyClick(box, key);
 				i -= direction;
 			}
+
 			QTest::keyClick(box, Qt::Key_Enter);
 			return;
 		}
 	}
+
 	throwScriptException("QComboBox with " + comboBoxObjectName + "objectName was not found");
 }
 
@@ -257,6 +273,7 @@ void Utils::clickPushButton(QWidget *widget, const QString &buttonText) const
 			return;
 		}
 	}
+
 	throwScriptException("QPushButton (" + buttonText + ") was not found");
 }
 
@@ -271,9 +288,11 @@ void Utils::clickRadioButton(QWidget *widget, const QString &buttonText) const
 			if (!button->isChecked()) {
 				throwScriptException("Utils::clickRadioButton: !button->isChecked()");
 			}
+
 			return;
 		}
 	}
+
 	throwScriptException("QRadioButton (" + buttonText + ") was not found");
 }
 
@@ -289,9 +308,11 @@ void Utils::clickCheckBox(QWidget *widget, const QString &buttonText) const
 			if (button->isChecked() == isChecked) {
 					throwScriptException("Utils::clickCheckBox: button->isChecked() == isChecked");
 			}
+
 			return;
 		}
 	}
+
 	throwScriptException("QCheckBox (" + buttonText + ") was not found");
 }
 
@@ -311,5 +332,6 @@ void Utils::doSmthInWidget(const QString &widgetName, const QString &identifier
 			return;
 		}
 	}
+
 	throwScriptException("doesnt exist " + widgetName + " dialog");
 }
