@@ -12,28 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "QRealRobotsGuiTests.h"
+#include "qrgui/mainWindow/qrealApplication.h"
+#include <gtest/gtest.h>
 
-using namespace guiTesting;
-using namespace qReal;
-
-QRealRobotsGuiTests::QRealRobotsGuiTests()
+int main(int argc, char *argv[])
 {
-	this->setScriptFolderName("qrealRobotsScripts");
-}
+	::testing::GTEST_FLAG(filter) = "*QRealRobotsGuiTests.*";
+	::testing::InitGoogleTest(&argc, argv);
 
-void QRealRobotsGuiTests::SetUp()
-{
-	QRealGuiTests::SetUp();
-}
+	qReal::QRealApplication app(argc, argv);
+	Q_UNUSED(app);
 
-void QRealRobotsGuiTests::TearDown()
-{
-	QRealGuiTests::TearDown();
-}
-
-TEST_F(QRealRobotsGuiTests, alongTheLineTest)
-{
-	includeCommonScript("common.js");
-	run("alongTheLineTest.js");
+	return RUN_ALL_TESTS();
 }

@@ -12,18 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../commonGui.pri) #because "SOURCES -=" doesnt work. (bug)
-
-SOURCES += $$PWD/mainGuiTest.cpp
+include(../commonGui.pri) #because "SOURCES -=" doesnt work. (bug?)
 
 QT += script
 
 HEADERS += \
-	$$PWD/QRealRobotsGuiTests.h \
-	$$PWD/QRealGuiTests.h \
+	$$PWD/qRealRobotsGuiTests.h \
+	$$PWD/qRealGuiTests.h \
+	$$PWD/testAgent.h \
+	$$PWD/workaroundTestFunctions.h \
 
 SOURCES += \
-	$$PWD/QRealRobotsGuiTests.cpp \
+	$$PWD/qRealRobotsGuiTests.cpp \
+	$$PWD/qRealGuiTests.cpp \
+	$$PWD/startQreal.cpp \
+	$$PWD/testAgent.cpp \
+	$$PWD/workaroundTestFunctions.cpp \
+	$$PWD/mainRobotsGuiTest.cpp
 
 OTHER_FILES += \
 	$$PWD/testScripts/qrealRobotsScripts/alongTheLineTest.js \
