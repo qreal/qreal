@@ -52,7 +52,6 @@ QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *contex
 		for (QDialog * dialog : allDialogs) {
 			if (dialog->windowTitle() == dialogTitle || dialog->objectName() == dialogTitle) {
 				dialog->close(); // here gui workaround
-				qDebug() << "dialog closed";
 				return;
 			}
 		}

@@ -365,11 +365,11 @@ void QRealGuiTests::exterminate(const int returnCode)
 }
 
 // Existence
-TEST_F(QRealGuiTests, dockWidgetsExistence)
-{
-	includeCommonScript("common.js");
-	run("dockWidgetsExistence.js");
-}
+//TEST_F(QRealGuiTests, dockWidgetsExistence)
+//{
+//	includeCommonScript("common.js");
+//	run("dockWidgetsExistence.js");
+//}
 
 TEST_F(QRealGuiTests, editActionsExistence)
 {
@@ -425,11 +425,11 @@ TEST_F(QRealGuiTests, toolsActionsExistence)
 	run("toolsActionsExistence.js");
 }
 
-TEST_F(QRealGuiTests, viewActionsExistence)
-{
-	includeCommonScript("common.js");
-	run("viewActionsExistence.js");
-}
+//TEST_F(QRealGuiTests, viewActionsExistence)
+//{
+//	includeCommonScript("common.js");
+//	run("viewActionsExistence.js");
+//}
 
 // Functioning
 TEST_F(QRealGuiTests, dockWidgetsFunctioning)
@@ -505,11 +505,11 @@ TEST_F(QRealGuiTests, createRootElementOnSceneAndQuit)
 	run("createRootElementOnSceneAndQuit.js");
 }
 
-TEST_F(QRealGuiTests, fullscreenModeScript)
-{
-	includeCommonScript("common.js");
-	run("fullscreenModeScript.js");
-}
+//TEST_F(QRealGuiTests, fullscreenModeScript)
+//{
+//	includeCommonScript("common.js");
+//	run("fullscreenModeScript.js");
+//}
 
 TEST_F(QRealGuiTests, linkNodeCooperationScript)
 {
