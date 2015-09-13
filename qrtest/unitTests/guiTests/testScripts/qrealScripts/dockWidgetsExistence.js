@@ -73,8 +73,12 @@ assert(subMenuPanels != null);
 
 var actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
 utils.activateMenuAction(menu_View, actionMenuPanels);
+
+subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
+actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
+
 utils.activateMenuAction(subMenuPanels, actionErrors);
-api.wait(50);
+api.wait(1000);
 
 errorDock = ui.widget("QDockWidget", "errorDock");
 assert(errorDock != null);

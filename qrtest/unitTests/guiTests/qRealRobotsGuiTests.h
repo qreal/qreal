@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "QRealGuiTests.h"
+#include "qRealGuiTests.h"
 
 namespace guiTesting {
 
