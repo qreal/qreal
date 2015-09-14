@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtCore/QLibrary>
+
 #include "fantom.h"
 
 namespace nxt {
@@ -22,14 +23,11 @@ namespace communication {
 
 /// Proxy for Fantom driver DLL for Windows. Responsible for loading DLL and
 /// dispatching all calls to corresponding driver functions.
-class WindowsFantom
+class WindowsFantom : public Fantom
 {
 public:
 	/// Constructor. Tries to load a DLL.
-	Fantom();
-
-	/// Returns true if fantom driver is available, false otherwise.
-	bool isAvailable();
+	WindowsFantom();
 
 private:
 	unsigned long onDriverUnavailable();

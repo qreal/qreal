@@ -14,15 +14,14 @@
 
 #include <utils/robotCommunication/robotCommunicationException.h>
 #include <qrkernel/logging.h>
+#include <qrkernel/settingsManager.h>
 #include "macFantom.h"
 #include "fantomMethods.h"
 #include "fantom.h"
 
 using namespace nxt::communication;
 
-unsigned long const fantomDriverUnavailableResult = 100500;
-
-MacFantom::Fantom()
+MacFantom::MacFantom()
 {
 	mFantomLibrary.setFileName("/Library/Frameworks/Fantom.framework/Versions/1/Fantom");
 	if (!mFantomLibrary.load()) {
@@ -36,8 +35,27 @@ MacFantom::Fantom()
 	}
 }
 
-MacFantom::Status const Fantom::availability()
+MacFantom::Status MacFantom::availability() const
 {
 	return mAvailability;
 }
 
+bool MacFantom::isAvailable() const
+{
+	return mFantomLibrary.isLoaded();
+}
+
+void MacFantom::checkConsistency()
+{
+	if (availability() == MacFantom::Status::x64) {
+		const QString errorMessage = tr("Usb connection to robot is impossible. "
+				"Lego doesn't have Fantom Driver for 64-bit Mac. "
+				"You will only be able to connect to NXT via Bluetooth.");
+		emit errorOccured(errorMessage);
+		return;
+	}
+
+	if (availability() == MacFantom::Status::notFound) {
+		Fantom::checkConsistency();
+	}
+}

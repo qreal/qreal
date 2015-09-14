@@ -23,10 +23,8 @@ namespace communication {
 class LinuxFantom : public Fantom
 {
 public:
-
-private:
 	/// Returns true if fantom driver is available, false otherwise.
-	bool isAvailable();
+	virtual bool isAvailable() const;
 };
 
 }

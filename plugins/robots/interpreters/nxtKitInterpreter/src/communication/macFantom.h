@@ -14,21 +14,23 @@
 
 #pragma once
 
-#include <QtCore/QLibrary>
 #include "fantom.h"
+
+#include <QtCore/QLibrary>
 
 namespace nxt {
 namespace communication {
 
-/// Fantom driver is not available for Mac OS X, so there is empty implementation.
 class MacFantom : public Fantom
 {
+	Q_OBJECT
 public:
-
-	/// Constructor. Tries to load a dlib.
+	/// Constructor. Tries to load a dylib.
 	MacFantom();
 
-
+	/// Returns true if fantom driver is available, false otherwise.
+	virtual bool isAvailable() const;
+	virtual void checkConsistency();
 
 private:
 	/// Returns available if fantom driver is available, notFound otherwise. Return x64 if it's 64-bit Mac.
@@ -41,6 +43,7 @@ private:
 	QLibrary mFantomLibrary;
 
 	Status mAvailability;
+
 };
 
 }

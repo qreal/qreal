@@ -19,15 +19,8 @@
 
 using namespace nxt::communication;
 
-unsigned long const fantomDriverUnavailableResult = 100500;
-
-WindowsFantom::Fantom()
+WindowsFantom::WindowsFantom()
 {
 	mFantomLibrary.setFileName("fantom");
 	mFantomLibrary.load();
-}
-
-bool WindowsFantom::isAvailable()
-{
-	return mFantomLibrary.isLoaded();
 }

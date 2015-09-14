@@ -13,12 +13,42 @@
  * limitations under the License. */
 
 #include "fantom.h"
+
 #include <utils/robotCommunication/robotCommunicationException.h>
+#include <qrkernel/settingsManager.h>
+
 #include "fantomMethods.h"
+#include "macFantom.h"
+#include "windowsFantom.h"
+#include "linuxFantom.h"
 
 using namespace nxt::communication;
 
 unsigned long const fantomDriverUnavailableResult = 100500;
+
+Fantom::Fantom()
+{
+}
+
+Fantom *Fantom::correctFantom()
+{
+#ifdef Q_OS_WIN
+	return new WindowsFantom;
+#endif
+
+#ifdef Q_OS_LINUX
+	return new LinuxFantom;
+#endif
+
+#ifdef Q_OS_MAC
+	return new MacFantom;
+#endif
+}
+
+bool Fantom::isAvailable() const
+{
+	return mFantomLibrary.isLoaded();
+}
 
 unsigned long Fantom::nFANTOM100_createNXT(char resString[], int status, unsigned char checkFVersion)
 {
@@ -133,3 +163,26 @@ unsigned long Fantom::onDriverUnavailable()
 	return fantomDriverUnavailableResult;
 }
 
+void Fantom::checkConsistency()
+{
+	const QString selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
+	if (selectedKit != "nxtKit") {
+		return;
+	}
+
+	const QString selectedRobotModel = qReal::SettingsManager::value("SelectedModelFor" + selectedKit).toString();
+	if (selectedRobotModel != "NxtUsbRealRobotModel") {
+		return;
+	}
+
+	if (!isAvailable()) {
+		const QString fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
+		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
+		if (!fantomDownloadLink.isEmpty()) {
+			errorMessage += tr(" You can download Fantom Driver on <a href='%1'>Lego website</a>")
+				.arg(fantomDownloadLink);
+		}
+
+		emit errorOccured(errorMessage);
+	}
+}

@@ -19,8 +19,7 @@
 
 using namespace nxt::communication;
 
-bool LinuxFantom::isAvailable()
+bool LinuxFantom::isAvailable() const
 {
 	return false;
 }
-
