@@ -247,6 +247,7 @@ bool TextManager::saveText(bool saveAs)
 				, tr("Save generated code")
 				, QString()
 				, extensionDescriptions
+				, QString()
 				, currentExtensionDescription));
 	} else {
 		fileInfo = path(area);
