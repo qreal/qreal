@@ -115,7 +115,11 @@ QPair<QPointF, QPointF> LineImpl::deserialize(const QDomElement &element) const
 QPointF LineImpl::deserializePoint(const QString &string) const
 {
 	const QStringList splittedStr = string.split(":");
-	const int x = splittedStr[0].toInt();
-	const int y = splittedStr[1].toInt();
-	return QPointF(x, y);
+	if (splittedStr.count() == 2) {
+		const qreal x = splittedStr[0].toDouble();
+		const qreal y = splittedStr[1].toDouble();
+		return QPointF(x, y);
+	}
+
+	return QPointF();
 }

@@ -44,6 +44,7 @@
 #include "scene/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/curveItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 
@@ -191,16 +192,19 @@ void TwoDModelWidget::initPalette()
 {
 	QAction * const wallTool = items::WallItem::wallTool();
 	QAction * const lineTool = items::LineItem::lineTool();
+	QAction * const bezierTool = items::CurveItem::curveTool();
 	QAction * const ellipseTool = items::EllipseItem::ellipseTool();
 	QAction * const stylusTool = items::StylusItem::stylusTool();
 
 	mUi->palette->registerTool(wallTool);
 	mUi->palette->registerTool(lineTool);
+	mUi->palette->registerTool(bezierTool);
 	mUi->palette->registerTool(ellipseTool);
 	mUi->palette->registerTool(stylusTool);
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
+	connect(bezierTool, &QAction::triggered, mScene, &TwoDModelScene::addBezier);
 	connect(ellipseTool, &QAction::triggered, mScene, &TwoDModelScene::addEllipse);
 	connect(stylusTool, &QAction::triggered, mScene, &TwoDModelScene::addStylus);
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);

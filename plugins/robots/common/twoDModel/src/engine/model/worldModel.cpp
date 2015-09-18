@@ -20,6 +20,7 @@
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
+#include "src/engine/items/curveItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/regions/ellipseRegion.h"
@@ -297,6 +298,13 @@ void WorldModel::deserialize(const QDomElement &element)
 			items::LineItem* lineItem = new items::LineItem(QPointF(0, 0), QPointF(0, 0));
 			lineItem->deserialize(lineNode);
 			addColorField(lineItem);
+		}
+
+		for (QDomElement curveNode = colorFieldsNode.firstChildElement("cubicBezier"); !curveNode.isNull();
+				curveNode = curveNode.nextSiblingElement("cubicBezier")) {
+			items::CurveItem *curveItem = new items::CurveItem(QPointF(0, 0), QPointF(0, 0));
+			curveItem->deserialize(curveNode);
+			addColorField(curveItem);
 		}
 
 		for (QDomElement stylusNode = colorFieldsNode.firstChildElement("stylus"); !stylusNode.isNull();

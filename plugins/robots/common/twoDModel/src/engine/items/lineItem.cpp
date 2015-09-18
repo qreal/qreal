@@ -18,7 +18,6 @@
 
 #include <qrkernel/settingsManager.h>
 #include "lineItem.h"
-#include "wallItem.h"
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -76,9 +75,6 @@ void LineItem::drawExtractionForItem(QPainter* painter)
 	setPenBrushDriftRect(painter);
 	mLineImpl.drawExtractionForItem(painter, x1(), y1(), x2(), y2(), drift);
 	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, x1(), y1(), x2(), y2());
-
-	painter->setPen(QPen(Qt::red));
-	painter->setBrush(QBrush(Qt::SolidPattern));
 }
 
 QPainterPath LineItem::shape() const

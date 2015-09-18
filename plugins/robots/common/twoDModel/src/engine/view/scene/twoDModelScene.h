@@ -28,6 +28,7 @@ namespace twoDModel {
 namespace items {
 class WallItem;
 class LineItem;
+class CurveItem;
 class StylusItem;
 class EllipseItem;
 }
@@ -66,6 +67,9 @@ public slots:
 
 	/// Sets a flag that next user mouse actions should draw a colored line on the scene.
 	void addLine();
+
+	/// Sets a flag that next user mouse actions should draw a colored bezier curve on the scene.
+	void addBezier();
 
 	/// Sets a flag that next user mouse actions should draw a stylus line on the scene.
 	void addStylus();
@@ -130,6 +134,7 @@ private:
 		none = 0
 		, wall
 		, line
+		, bezier
 		, stylus
 		, Port
 		, ellipse
@@ -143,9 +148,6 @@ private:
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
 
-	void forPressResize(QGraphicsSceneMouseEvent *event) override;
-	void forMoveResize(QGraphicsSceneMouseEvent *event);
-	void forReleaseResize(QGraphicsSceneMouseEvent *event);
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
 	void deleteItem(QGraphicsItem *item);
@@ -153,6 +155,7 @@ private:
 
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
+	void reshapeCurve(QGraphicsSceneMouseEvent *event);
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
@@ -171,6 +174,7 @@ private:
 	/// Temporary wall that's being created. When it's complete, it's added to world model
 	items::WallItem *mCurrentWall = nullptr;
 	items::LineItem *mCurrentLine = nullptr;
+	items::CurveItem *mCurrentCurve = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
 
