@@ -63,5 +63,10 @@ void DatabasesPreferencesPage::browseFileForReverseEngineer()
 	mUi->reverseEngineerFilePath->setText(path);
 }
 
+const QString DatabasesPreferencesPage::getReverseEngineerFilename() const
+{
+	QString const &str = mUi->reverseEngineerFilePath->toPlainText();
+	return str;
+}
 }
 }
