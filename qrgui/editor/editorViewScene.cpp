@@ -921,8 +921,6 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 				QAction *createAction = createChildMenu->addAction(mEditorManager.friendlyName(type));
 				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
 				createChildMapper->setMapping(createAction, type.toString());
-
-				qDebug() << type.toString();
 			}
 
 			connect(createChildMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
