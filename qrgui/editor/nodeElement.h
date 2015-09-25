@@ -135,7 +135,6 @@ public:
 
 	//void resizeChild(const QRectF &newContents, const QRectF &oldContents);
 
-	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 	void switchAlignment(bool isSwitchedOn);
 	void showAlignment(bool isChecked);
 
@@ -312,8 +311,6 @@ private:
 	bool mSelectionNeeded;
 
 	bool mConnectionInProgress;
-
-	QList<ContextMenuAction *> mBonusContextMenuActions;
 
 	SceneGridHandler *mGrid;
 	PortHandler *mPortHandler;

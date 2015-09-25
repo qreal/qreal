@@ -913,20 +913,6 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
-		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
-
-		if (!elementActions.isEmpty()) {
-			mContextMenu.addSeparator();
-		}
-
-		foreach (ContextMenuAction* action, elementActions) {
-			action->setEventPos(e->mapFromScene(pos));
-			mContextMenu.addAction(action);
-
-			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()), Qt::UniqueConnection);
-			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
-		}
-
 		if (e->createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
@@ -935,8 +921,11 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 				QAction *createAction = createChildMenu->addAction(mEditorManager.friendlyName(type));
 				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
 				createChildMapper->setMapping(createAction, type.toString());
-				connect(createChildMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
+
+				qDebug() << type.toString();
 			}
+
+			connect(createChildMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
 		}
 
 		mContextMenu.addSeparator();
