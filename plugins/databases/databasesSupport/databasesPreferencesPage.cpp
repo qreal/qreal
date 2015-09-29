@@ -40,6 +40,8 @@ void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 		emit dbmsChanged("sqlServer2008");
 	else if (dbmsName == "MySQL 5")
 		emit dbmsChanged("mySql5");
+	else if (dbmsName == "Microsoft Access")
+		emit dbmsChanged("microsoftAccess");
 }
 
 void DatabasesPreferencesPage::changeReverseEngineerFilePath(QString const &path)

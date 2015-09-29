@@ -54,6 +54,7 @@ private:
 	void generateWithSqlServer2008();
 	void generateWithMySql5();
 	void generateWithSqlite();
+	void generateWithMicrosoftAccess();
 
 	/// Creates element of diagram from string
 	qReal::Id createElementFromString(QString const &elemName

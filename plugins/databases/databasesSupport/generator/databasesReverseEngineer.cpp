@@ -10,7 +10,7 @@ DatabasesReverseEngineer::DatabasesReverseEngineer(PluginConfigurator const conf
 		, mGraphicalModelApi(configurator.graphicalModelApi())
 		, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 		, mPreferencesPage(preferencesPage)
-		, mDbms(QString("sqlServer2008"))
+		, mDbms(QString("microsoftAccess"))
 {
 
 }
@@ -33,14 +33,16 @@ qReal::Id DatabasesReverseEngineer::createElementFromString(QString const &elemN
 	return logicalId;
 }
 
-qReal::Id DatabasesReverseEngineer::createTable(QString const &tableName, QPointF const &coord, Id const &parentLogicalId)
+qReal::Id DatabasesReverseEngineer::createTable(QString const &tableName
+		, QPointF const &coord, Id const &parentLogicalId)
 {
 	Id logicalTableId = createElementFromString("Table", coord, parentLogicalId);
 	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
 	return logicalTableId;
 }
 
-qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName, QString const &columnType, Id const &parentId)
+qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName
+		, QString const &columnType, Id const &parentId)
 {
 	Id logicalColumnId = createElementFromString("Column", QPointF(), parentId, true);
 	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, columnName, "Name");
@@ -49,20 +51,25 @@ qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName, QStr
 
 void DatabasesReverseEngineer::generateSchema()
 {
-	QSqlDatabase sdb = QSqlDatabase::addDatabase("QODBC");
+	QString dbmsType = "";
+	QString driverInitializerStr = "";
+	if (mDbms == "Microsoft Access")
+	{
+		dbmsType = "QODBC";
+		driverInitializerStr = "DRIVER={Microsoft Access Driver (*.mdb)};FIL={MSAccess};DBQ=";
+	}
+
+	QSqlDatabase sdb = QSqlDatabase::addDatabase(dbmsType);
 	QString filename = mPreferencesPage->getReverseEngineerFilename();
-	sdb.setDatabaseName(QString("DRIVER={Microsoft Access Driver (*.mdb)};FIL={MSAccess};DBQ=") + filename);
+	sdb.setDatabaseName(QString(driverInitializerStr + filename));
 
 	if (!sdb.open()) {
-		mErrorReporter->addError(QString("File didn`t open"));
+		mErrorReporter->addError(QString(tr("File didn`t open")));
 		return;
 	}
 	else {
-		mErrorReporter->addInformation("File opened successfully");
+		mErrorReporter->addInformation(QString(tr("File opened successfully")));
 	}
-
-	//QString curEditorName = mDbms;
-	//mDbms = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
 
 	QString curEditorName = mDbms;
 	mDbms = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
@@ -86,23 +93,13 @@ void DatabasesReverseEngineer::generateSchema()
 			QVariant type = column.type();
 			Id logicalColumnId = createColumn(column.name(), type.toString(), logicalTableId);
 		}
-	}
 
 	QStringList connections = sdb.connectionNames();
 
-
-
-	//QString first = tables.first();
-	//QString r = first.toUtf8();
-	//QString second = tables.last();
-
-
-	//QSqlDriver dr = ;
-	//QSqlRecord rec1 = sdb.record(first);
-	//QSqlField f1 = rec1.field(1);
 	mDbms = curEditorName;
-}
 
+}
+}
 
 
 }

@@ -26,7 +26,6 @@ DatabasesSupportPlugin::DatabasesSupportPlugin()
 
 DatabasesSupportPlugin::~DatabasesSupportPlugin()
 {
-	delete mPreferencesPage;
 	delete mDatabasesGenerator;
 	delete mDatabasesReverseEngineer;
 }
@@ -96,6 +95,7 @@ void DatabasesSupportPlugin::generateSchema()
 {
 	mDatabasesReverseEngineer->generateSchema();
 }
+
 
 }
 }

@@ -47,92 +47,12 @@
       </item>
       <item>
        <property name="text">
-        <string>Oracle SQL Developer</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
         <string>SQLite</string>
        </property>
       </item>
       <item>
        <property name="text">
         <string>Microsoft Access</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>PostgreSQL</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Informix</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Progress</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>IBM DB2</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Ingres</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Sybase</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Teradata</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>SQL Anywhere</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Firebird</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>InterBase</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>NexusDB</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>MariaDB</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Paradox</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Hitachi HiRDB</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Netezza</string>
        </property>
       </item>
      </widget>

@@ -556,10 +556,12 @@ void DatabasesGenerator::generateSQLCode()
 {
 	if (mDbms == "sqlServer2008")
 		generateWithSqlServer2008();
-	if (mDbms == "mySql5")
+	else if (mDbms == "mySql5")
 		generateWithMySql5();
-	if (mDbms == "sqlite")
+	else if (mDbms == "sqlite")
 		generateWithSqlite();
+	else if (mDbms == "microsoftAccess")
+		generateWithMicrosoftAccess();
 }
 
 void DatabasesGenerator::generateWithSqlServer2008()
@@ -759,6 +761,59 @@ void DatabasesGenerator::generateWithSqlite()
 
 			if (getProperty(tableId, "without_rowid").toBool())
 				codeFile.write(" WITHOUT ROWID");
+		}
+	codeFile.close();
+	mErrorReporter->addInformation(tr("Code was generated successfully"));
+}
+
+void DatabasesGenerator::generateWithMicrosoftAccess()
+{
+	mErrorReporter->clear();
+
+	codeFile.setFileName(mWorkDir + mCodeFileName);
+	if (!codeFile.open(QIODevice::WriteOnly))
+		return;
+
+	IdList tableNodes = findNodes("Table");
+	for (Id const tableId : tableNodes) {
+			codeFile.write("CREATE ");
+
+			if (getProperty(tableId, "temporary").toBool())
+				codeFile.write("TEMPORARY ");
+
+			codeFile.write("TABLE ");
+
+			codeFile.write(getProperty(tableId, "Name").toByteArray());
+			codeFile.write("\r\n(");
+			IdList rowsSet = getChildren(tableId);
+
+			bool first = true;
+			for (Id const &rowId : rowsSet) {
+				if (!first) {
+					codeFile.write(",");
+				}
+				first = false;
+				codeFile.write("\r\n");
+				codeFile.write(getProperty(rowId, "Name").toByteArray());
+				codeFile.write(" ");
+				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+				if (getProperty(rowId, "notNull").toBool())
+					codeFile.write(" NOT NULL");
+
+				if (getProperty(rowId, "isPrimaryKey").toBool())
+					codeFile.write(" PRIMARY KEY");
+
+				if (getProperty(rowId, "unique").toBool())
+					codeFile.write(" UNIQUE");
+
+				if (getProperty(rowId, "with_compression").toBool())
+					codeFile.write(" WITH COMPRESSION");
+				else if (getProperty(rowId, "with_comp").toBool())
+					codeFile.write(" WITH COMP");
+
+			}
+			codeFile.write("\r\n);\r\n\r\n");
 		}
 	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));

@@ -56,5 +56,7 @@ OTHER_FILES += \
 FORMS += \
 	$$PWD/databasesPreferencesPage.ui \
 
+DISTFILES +=
+
 
 
