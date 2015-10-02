@@ -31,7 +31,7 @@ public:
 private:
 	bool initNextBlocks() override;
 
-	QHash<QString, qReal::Id> mThreadStartBlocks;
+	QMap<QString, qReal::Id> mThreadStartBlocks;
 };
 
 }
