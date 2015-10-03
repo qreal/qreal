@@ -214,6 +214,7 @@ private:
 	model::Model &mModel;
 
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
+	engine::TwoDModelDisplayWidget *mNullDisplay = nullptr;
 
 	int mCurrentSpeed;
 

@@ -72,6 +72,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
+	, mNullDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mCurrentSpeed(defaultSpeedFactorIndex)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
@@ -895,7 +896,6 @@ void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 	updateWheelComboBoxes();
 
 	mUi->detailsTab->setDisplay(nullptr);
-	delete mDisplay;
 	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
 	mDisplay->setParent(this);
 	mDisplay->setMinimumSize(displaySize);
@@ -919,8 +919,7 @@ void TwoDModelWidget::unsetSelectedRobotItem()
 	}
 
 	mUi->detailsTab->setDisplay(nullptr);
-	delete mDisplay;
-	mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
+	mDisplay = mNullDisplay;
 	mUi->detailsTab->setDisplay(mDisplay);
 }
 
