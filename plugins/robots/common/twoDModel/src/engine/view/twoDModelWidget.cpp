@@ -44,6 +44,7 @@
 #include "scene/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/curveItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 
@@ -71,6 +72,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
+	, mNullDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mCurrentSpeed(defaultSpeedFactorIndex)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
@@ -191,16 +193,19 @@ void TwoDModelWidget::initPalette()
 {
 	QAction * const wallTool = items::WallItem::wallTool();
 	QAction * const lineTool = items::LineItem::lineTool();
+	QAction * const bezierTool = items::CurveItem::curveTool();
 	QAction * const ellipseTool = items::EllipseItem::ellipseTool();
 	QAction * const stylusTool = items::StylusItem::stylusTool();
 
 	mUi->palette->registerTool(wallTool);
 	mUi->palette->registerTool(lineTool);
+	mUi->palette->registerTool(bezierTool);
 	mUi->palette->registerTool(ellipseTool);
 	mUi->palette->registerTool(stylusTool);
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
+	connect(bezierTool, &QAction::triggered, mScene, &TwoDModelScene::addBezier);
 	connect(ellipseTool, &QAction::triggered, mScene, &TwoDModelScene::addEllipse);
 	connect(stylusTool, &QAction::triggered, mScene, &TwoDModelScene::addStylus);
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
@@ -298,6 +303,7 @@ void TwoDModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 
 void TwoDModelWidget::returnToStartMarker()
 {
+	mModel.worldModel().clearRobotTrace();
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
 	}
@@ -891,7 +897,6 @@ void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 	updateWheelComboBoxes();
 
 	mUi->detailsTab->setDisplay(nullptr);
-	delete mDisplay;
 	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
 	mDisplay->setParent(this);
 	mDisplay->setMinimumSize(displaySize);
@@ -915,8 +920,7 @@ void TwoDModelWidget::unsetSelectedRobotItem()
 	}
 
 	mUi->detailsTab->setDisplay(nullptr);
-	delete mDisplay;
-	mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
+	mDisplay = mNullDisplay;
 	mUi->detailsTab->setDisplay(mDisplay);
 }
 

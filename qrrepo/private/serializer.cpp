@@ -95,11 +95,11 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 
 	saveMetaInfo(metaInfo);
 
-	QFileInfo fileInfo(mWorkingFile);
-	QString fileName = fileInfo.baseName();
+	const QFileInfo fileInfo(mWorkingFile);
+	const QString fileName = fileInfo.completeBaseName();
 
-	QDir compressDir(mWorkingDir);
-	QDir dir = fileInfo.absolutePath();
+	const QDir compressDir(mWorkingDir);
+	const QDir dir = fileInfo.absolutePath();
 
 	QFile previousSave(dir.absolutePath() + "/" + fileName +".qrs");
 	if (previousSave.exists()) {

@@ -18,7 +18,7 @@
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 
 namespace interpreterCore {
@@ -43,11 +43,11 @@ public:
 	/// @param graphicalModelAssistInterface - graphical model, needed to save settings as property of current diagram.
 	/// @param logicalModelAssistInterface - logical model, also needed to save settings as property of current diagram.
 	/// @param mainWindowInterpretersInterface - needed to get current active diagram
-	/// @param systemEvents - provides notification about changing of active editor tab.
+	/// @param projectManager - provides notification about changing of currently opened project.
 	DevicesConfigurationManager(qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 			, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
-			, qReal::SystemEvents &systemEvents
+			, qReal::ProjectManagementInterface &projectManager
 			);
 
 private:
@@ -56,9 +56,8 @@ private:
 			, const kitBase::robotModel::DeviceInfo &sensor
 			, Reason reason) override;
 
-	/// Reacts to selection of a new tab in main window.
-	/// @param info - the information about the new active tab.
-	void onActiveTabChanged(const qReal::TabInfo &info);
+	/// Reacts to opening or closing .qrs project.
+	void onOpenedProjectChanged();
 
 	/// Serializes current sensors configuration into inner string representation.
 	QString save() const;

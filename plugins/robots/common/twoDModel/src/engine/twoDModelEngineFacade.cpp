@@ -119,7 +119,9 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
-	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, this, [=](){ mView.reset(); delete mDock; });
+	// Queued connection cause such actions like stopRobot() must be performed earlier.
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, this, [=](){ mView.reset(); delete mDock; }
+			, Qt::QueuedConnection);
 
 	connect(&eventsForKitPlugin
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged

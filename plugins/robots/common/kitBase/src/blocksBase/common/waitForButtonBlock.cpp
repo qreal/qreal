@@ -38,7 +38,8 @@ void WaitForButtonBlock::run()
 		return;
 	}
 
-	connect(mButton, &robotModel::robotParts::Button::newData, this, &WaitForButtonBlock::responseSlot);
+	connect(mButton, &robotModel::robotParts::Button::newData
+			, this, &WaitForButtonBlock::responseSlot, Qt::UniqueConnection);
 
 	mButton->read();
 	mActiveWaitingTimer->start();
