@@ -352,7 +352,7 @@ void AbstractItem::setXandY(QDomElement& dom, const QRectF &rect)
 QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString &domName) const
 {
 	QDomElement dom = document.createElement(domName);
-	dom.setAttribute("fill", mBrush.color().name());
+	dom.setAttribute("fill", mBrush.color().name(QColor::HexArgb));
 
 	if (mBrush.style() == Qt::NoBrush) {
 		dom.setAttribute("fill-style", "none");
@@ -362,7 +362,7 @@ QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString
 		dom.setAttribute("fill-style", "solid");
 	}
 
-	dom.setAttribute("stroke", mPen.color().name());
+	dom.setAttribute("stroke", mPen.color().name(QColor::HexArgb));
 	dom.setAttribute("stroke-width", mPen.width());
 
 	QString penStyle;
