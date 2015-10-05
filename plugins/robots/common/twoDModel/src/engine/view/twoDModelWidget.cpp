@@ -303,6 +303,7 @@ void TwoDModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 
 void TwoDModelWidget::returnToStartMarker()
 {
+	mModel.worldModel().clearRobotTrace();
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
 	}
