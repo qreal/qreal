@@ -6,8 +6,8 @@ environment:
     MINGW: C:\Qt\Tools\mingw492_32
     QTDIR: C:\Qt\5.5\mingw492_32
   matrix:
-    - PROJECT_FILE: qrealRobots.pro
-    - PROJECT_FILE: qreal.pro
+    - PROJECT_FILE: qrealRobots
+    - PROJECT_FILE: qreal
 #   - PROJECT_FILE: qrealMinimal.pro
 
 configuration:
@@ -17,5 +17,9 @@ configuration:
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;%WINDIR%\system32;%WINDIR%;%WINDIR%\System32\WindowsPowerShell\v1.0\;
 build_script:
-  - qmake %PROJECT_FILE% -r -spec win32-g++ CONFIG+=%CONFIGURATION%
+  - qmake %PROJECT_FILE%.pro -r -spec win32-g++ CONFIG+=%CONFIGURATION%
   - mingw32-make -j2
+  
+artifacts:
+ - path: bin\$(configuration)
+   name: qreal-$(configuration)-$(PROJECT_FILE)
