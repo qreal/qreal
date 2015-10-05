@@ -27,6 +27,7 @@
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/stylusItem.h"
+#include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/regions/regionItem.h"
 #include "src/engine/items/startPosition.h"
@@ -200,6 +201,10 @@ void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				mCurrentStylus = new items::StylusItem(position.x(), position.y());
 				initColorField(mCurrentStylus);
 				break;
+			case rectangle:
+				mCurrentRectangle = new items::RectangleItem(position, position);
+				initColorField(mCurrentRectangle);
+				break;
 			case ellipse:
 				mCurrentEllipse = new items::EllipseItem(position, position);
 				initColorField(mCurrentEllipse);
@@ -232,6 +237,9 @@ void TwoDModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	case stylus:
 		reshapeStylus(mouseEvent);
+		break;
+	case rectangle:
+		reshapeRectangle(mouseEvent);
 		break;
 	case ellipse:
 		reshapeEllipse(mouseEvent);
@@ -285,6 +293,12 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeStylus(mouseEvent);
 		itemToSelect = mCurrentStylus;
 		mCurrentStylus = nullptr;
+		break;
+	}
+	case rectangle: {
+		reshapeRectangle(mouseEvent);
+		itemToSelect = mCurrentRectangle;
+		mCurrentRectangle = nullptr;
 		break;
 	}
 	case ellipse: {
@@ -424,6 +438,11 @@ void TwoDModelScene::addStylus()
 	mDrawingAction = stylus;
 }
 
+void TwoDModelScene::addRectangle()
+{
+	mDrawingAction = rectangle;
+}
+
 void TwoDModelScene::addEllipse()
 {
 	mDrawingAction = ellipse;
@@ -506,6 +525,18 @@ void TwoDModelScene::reshapeStylus(QGraphicsSceneMouseEvent *event)
 	const QPointF pos = event->scenePos();
 	if (mCurrentStylus) {
 		mCurrentStylus->addLine(pos.x(), pos.y());
+	}
+}
+
+void TwoDModelScene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
+{
+	const QPointF pos = event->scenePos();
+	if (mCurrentRectangle) {
+		mCurrentRectangle->setX2(pos.x());
+		mCurrentRectangle->setY2(pos.y());
+		if (event->modifiers() & Qt::ShiftModifier) {
+			mCurrentRectangle->reshapeRectWithShift();
+		}
 	}
 }
 

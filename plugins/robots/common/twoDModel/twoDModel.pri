@@ -93,6 +93,7 @@ HEADERS += \
 	$$PWD/src/engine/items/lineItem.h \
 	$$PWD/src/engine/items/curveItem.h \
 	$$PWD/src/engine/items/colorFieldItem.h \
+	$$PWD/src/engine/items/rectangleItem.h \
 	$$PWD/src/engine/items/ellipseItem.h \
 	$$PWD/src/engine/items/startPosition.h \
 	$$PWD/src/engine/items/regions/regionItem.h \
@@ -138,6 +139,7 @@ SOURCES += \
 	$$PWD/src/engine/items/lineItem.cpp \
 	$$PWD/src/engine/items/curveItem.cpp \
 	$$PWD/src/engine/items/colorFieldItem.cpp \
+	$$PWD/src/engine/items/rectangleItem.cpp \
 	$$PWD/src/engine/items/ellipseItem.cpp \
 	$$PWD/src/engine/items/startPosition.cpp \
 	$$PWD/src/engine/items/regions/regionItem.cpp \

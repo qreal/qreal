@@ -30,6 +30,7 @@ class WallItem;
 class LineItem;
 class CurveItem;
 class StylusItem;
+class RectangleItem;
 class EllipseItem;
 }
 
@@ -73,6 +74,9 @@ public slots:
 
 	/// Sets a flag that next user mouse actions should draw a stylus line on the scene.
 	void addStylus();
+
+	/// Sets a flag that next user mouse actions should draw a rectangle on the scene.
+	void addRectangle();
 
 	/// Sets a flag that next user mouse actions should draw an ellipse on the scene.
 	void addEllipse();
@@ -136,7 +140,7 @@ private:
 		, line
 		, bezier
 		, stylus
-		, Port
+		, rectangle
 		, ellipse
 		, noneWordLoad
 	};
@@ -157,6 +161,7 @@ private:
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
 	void reshapeCurve(QGraphicsSceneMouseEvent *event);
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
+	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
@@ -176,6 +181,7 @@ private:
 	items::LineItem *mCurrentLine = nullptr;
 	items::CurveItem *mCurrentCurve = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;
+	items::RectangleItem *mCurrentRectangle = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
 
 	bool mWorldReadOnly = false;
