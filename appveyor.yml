@@ -1,0 +1,25 @@
+clone_folder: c:\qreal
+test: off
+
+environment:
+  global:
+    MINGW: C:\Qt\Tools\mingw492_32
+    QTDIR: C:\Qt\5.5\mingw492_32
+  matrix:
+    - PROJECT_FILE: qrealRobots
+    - PROJECT_FILE: qreal
+#   - PROJECT_FILE: qrealMinimal.pro
+
+configuration:
+  - debug
+  - release
+
+install:
+  - set PATH=%QTDIR%\bin;%MINGW%\bin;%WINDIR%\system32;%WINDIR%;%WINDIR%\System32\WindowsPowerShell\v1.0\;
+build_script:
+  - qmake %PROJECT_FILE%.pro -r -spec win32-g++ CONFIG+=%CONFIGURATION%
+  - mingw32-make -j2
+  
+artifacts:
+ - path: bin\$(configuration)
+   name: qreal-$(configuration)-$(PROJECT_FILE)
