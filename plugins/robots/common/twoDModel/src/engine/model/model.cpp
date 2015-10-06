@@ -221,6 +221,16 @@ void Model::replaceRobotModel(const twoDModel::robotModel::TwoDRobotModel &oldMo
 	addRobotModel(newModel, pos);
 }
 
+bool Model::hasConstraints() const
+{
+	return mChecker->hasConstraints();
+}
+
+void Model::setConstraintsEnabled(bool enabled)
+{
+	mChecker->setEnabled(enabled);
+}
+
 int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
 {
 	for (int i = 0; i < mRobotModels.count(); i++) {

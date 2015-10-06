@@ -56,6 +56,9 @@ public:
 	ConstraintsChecker(qReal::ErrorReporterInterface &errorReporter, model::Model &model);
 	~ConstraintsChecker();
 
+	/// Returns true if constraints checker is active now (constraints list passed into checker is non-empty).
+	bool hasConstraints() const;
+
 	/// Parses the given program on 2D model constraints language and returns the success of this operation.
 	/// All parser errors will be reported using errorReporter interface passed to constructor.
 	bool parseConstraints(const QDomElement &constraintsXml);
@@ -67,6 +70,9 @@ public:
 	/// If some constraint is violated fail() signal will be emitted. It may also happen that robot has fulfilled
 	/// its task one check, then success() signal will be emitted.
 	void checkConstraints();
+
+	/// Enables or disables checker. Checker will be still disabled if true passed here but constraints list is empty.
+	void setEnabled(bool enabled);
 
 signals:
 	/// Emitted when program execution meets <success/> trigger. That means that robot successfully accomplished its
@@ -119,6 +125,7 @@ private:
 	QList<details::Event *> mActiveEvents;
 
 	QDomElement mCurrentXml;
+	bool mEnabled;
 };
 
 }
