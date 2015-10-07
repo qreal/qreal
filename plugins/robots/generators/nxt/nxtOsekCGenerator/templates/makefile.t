@@ -1,5 +1,5 @@
 # Target specific macros
-TARGET = @@PROJECT_NAME@@_OSEK
+TARGET = @@PROJECT_NAME@@
 TARGET_SOURCES = \
 	@@PROJECT_NAME@@.c
 
