@@ -10,9 +10,8 @@ DatabasesReverseEngineer::DatabasesReverseEngineer(PluginConfigurator const conf
 		, mGraphicalModelApi(configurator.graphicalModelApi())
 		, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 		, mPreferencesPage(preferencesPage)
-		, mDbms(QString("microsoftAccess"))
+		, mDbms(QString("MySql5"))
 {
-
 }
 
 qReal::Id DatabasesReverseEngineer::createElementFromString(QString const &elemName
@@ -49,14 +48,27 @@ qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName
 	return logicalColumnId;
 }
 
+// TODO:
+// QOCI Oracle Call Interface
+// QPSQL  PostgreSQL
 void DatabasesReverseEngineer::generateSchema()
 {
 	QString dbmsType = "";
 	QString driverInitializerStr = "";
-	if (mDbms == "Microsoft Access")
-	{
+	if (mDbms == "SqlServer2008") {
 		dbmsType = "QODBC";
-		driverInitializerStr = "DRIVER={Microsoft Access Driver (*.mdb)};FIL={MSAccess};DBQ=";
+		driverInitializerStr = "";
+	} else if (mDbms == "MySql5") {
+		dbmsType = "QMYSQL";
+		driverInitializerStr = "";
+	}
+	else if (mDbms == "Sqlite") {
+		dbmsType = "QSQLITE";
+		driverInitializerStr = "";
+	}
+	else if (mDbms == "MicrosoftAccess") {
+		dbmsType = "QODBC";
+		driverInitializerStr = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MSAccess};DBQ=";
 	}
 
 	QSqlDatabase sdb = QSqlDatabase::addDatabase(dbmsType);
@@ -71,8 +83,6 @@ void DatabasesReverseEngineer::generateSchema()
 		mErrorReporter->addInformation(QString(tr("File opened successfully")));
 	}
 
-	QString curEditorName = mDbms;
-	mDbms = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
 	mErrorReporter->clear();
 
 	Id logicalDiagramId = createElementFromString("DatabasesPhysicalNode");
@@ -95,9 +105,6 @@ void DatabasesReverseEngineer::generateSchema()
 		}
 
 	QStringList connections = sdb.connectionNames();
-
-	mDbms = curEditorName;
-
 }
 }
 
