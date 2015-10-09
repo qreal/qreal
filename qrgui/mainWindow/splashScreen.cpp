@@ -32,11 +32,11 @@ SplashScreen::SplashScreen(bool isVisible)
 	const QString customScreen = qReal::PlatformInfo::applicationDirPath() + "/splashscreen.png";
 	const QString pixmapFilePath = QFile::exists(customScreen) ? customScreen : defaultImage;
 
-	setPixmap(QPixmap(pixmapFilePath).scaled(640, 480, Qt::KeepAspectRatio));
+	setPixmap(QPixmap(pixmapFilePath).scaled(640, 480, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	setWindowFlags(windowFlags());
 
-	mProgressBar->move(20, 270);
-	mProgressBar->setFixedSize(600, 15);
+	mProgressBar->move(20, this->height() - 30);
+	mProgressBar->setFixedSize(this->width() - 40, 15);
 	mProgressBar->setRange(0, 100);
 
 	setVisible(isVisible);
