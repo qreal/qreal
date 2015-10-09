@@ -33,7 +33,7 @@ QIcon Customizer::applicationIcon() const
 
 QImage Customizer::applicationLogo() const
 {
-	return QImage(":/icons/splashscreen.png");
+	return QImage(":/icons/splashscreen2.png");
 }
 
 QString Customizer::productVersion() const
