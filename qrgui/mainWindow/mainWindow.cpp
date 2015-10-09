@@ -103,6 +103,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	setWindowTitle("QReal");
 	registerMetaTypes();
 	SplashScreen *splashScreen = new SplashScreen(SettingsManager::value("Splashscreen").toBool());
+	splashScreen->activateWindow();
 	splashScreen->setProgress(5);
 
 	initRecentProjectsMenu();
