@@ -4,12 +4,12 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="197"/>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="200"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="202"/>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="207"/>
         <source>Select file:</source>
         <translation>Выберите файл:</translation>
     </message>
@@ -76,12 +76,12 @@
 <context>
     <name>qReal::EdgeElement</name>
     <message>
-        <location filename="../../qrgui/editor/edgeElement.cpp" line="67"/>
+        <location filename="../../qrgui/editor/edgeElement.cpp" line="66"/>
         <source>Reverse</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/edgeElement.cpp" line="68"/>
+        <location filename="../../qrgui/editor/edgeElement.cpp" line="67"/>
         <source>Change shape type</source>
         <translation>Изменить тип линии</translation>
     </message>
@@ -93,43 +93,43 @@
         <translation type="vanished">Отменить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="293"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="295"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="352"/>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="361"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="354"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="363"/>
         <source>Connect with the current item</source>
         <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="930"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="932"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1415"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1413"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1419"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1417"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1423"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1421"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1427"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1425"/>
         <source>Paste only graphical copy</source>
         <translation>Вставить только графическую копию</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1431"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1429"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
@@ -155,7 +155,7 @@
 <context>
     <name>qReal::NodeElement</name>
     <message>
-        <location filename="../../qrgui/editor/nodeElement.cpp" line="55"/>
+        <location filename="../../qrgui/editor/nodeElement.cpp" line="57"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>

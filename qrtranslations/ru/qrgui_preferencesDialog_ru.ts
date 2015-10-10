@@ -67,7 +67,7 @@
         <translation>Режим работы на тач-экране</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="114"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="115"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Системный язык&gt;</translation>
     </message>

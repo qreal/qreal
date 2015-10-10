@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>trik::blocks::details::WaitGamepadButtonBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/src/blocks/details/waitGamepadButtonBlock.cpp" line="40"/>
+        <location filename="../../../../plugins/robots/common/trikKit/src/blocks/details/waitGamepadButtonBlock.cpp" line="41"/>
         <source>Incorrect port for gamepad button %1</source>
         <translation>Port incorrect pour le bouton de manette %1</translation>
     </message>
@@ -12,8 +12,8 @@
 <context>
     <name>trik::robotModel::TrikRobotModelBase</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="104"/>
-        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="147"/>
+        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="89"/>
+        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="132"/>
         <source>Line sensor</source>
         <translation>Capteur de ligne</translation>
     </message>
@@ -125,9 +125,8 @@
 <context>
     <name>trik::robotModel::parts::TrikShell</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikShell.h" line="28"/>
         <source>Shell</source>
-        <translation>Interpréteur de commandes</translation>
+        <translation type="vanished">Interpréteur de commandes</translation>
     </message>
 </context>
 <context>

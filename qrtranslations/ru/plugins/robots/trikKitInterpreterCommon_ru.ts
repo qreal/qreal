@@ -75,7 +75,7 @@
 <context>
     <name>trik::TrikKitInterpreterPluginBase</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="153"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="155"/>
         <source>Enter robot`s IP-address here...</source>
         <translation type="unfinished">Введите IP-адрес робота...</translation>
     </message>
