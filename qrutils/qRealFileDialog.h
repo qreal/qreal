@@ -42,6 +42,7 @@ public:
 			, const QString &caption = QString()
 			, const QString &dir = QString()
 			, const QString &filter = QString()
+			, const QString &defaultFile = QString()
 			, QString *selectedFilter = 0
 			, QFileDialog::Options options = 0);
 

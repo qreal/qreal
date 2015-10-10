@@ -119,9 +119,6 @@ QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(const QString &ki
 void RobotsSettingsPage::save()
 {
 	saveSelectedRobotModel();
-	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
-	SettingsManager::setValue("enableNoiseOfEngines", mUi->enableEnginesNoiseCheckBox->isChecked());
-	SettingsManager::setValue("approximationLevel", mUi->approximationLevelSpinBox->value());
 	SettingsManager::setValue("sensorUpdateInterval", mUi->sensorUpdateSpinBox->value());
 	SettingsManager::setValue("autoscalingInterval", mUi->autoScalingSpinBox->value());
 	SettingsManager::setValue("textUpdateInterval", mUi->textUpdaterSpinBox->value());
@@ -156,10 +153,6 @@ void RobotsSettingsPage::restoreSettings()
 		selectedKitButton->setChecked(true);
 		checkSelectedRobotModelButtonFor(selectedKitButton);
 	}
-
-	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-	mUi->enableEnginesNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfEngines").toBool());
-	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
 
 	const int sensorsUpdateDefault = utils::sensorsGraph::SensorsGraph::readSensorDefaultInterval;
 	const int autoscalingDefault = utils::sensorsGraph::SensorsGraph::autoscalingDefault;

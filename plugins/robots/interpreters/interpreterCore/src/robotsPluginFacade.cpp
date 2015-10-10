@@ -60,7 +60,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, configurer.mainWindowInterpretersInterface()
-			, configurer.systemEvents()
+			, configurer.projectManager()
 			));
 
 	if (!selectKit(configurer)) {

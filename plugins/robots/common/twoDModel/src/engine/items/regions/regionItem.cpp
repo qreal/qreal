@@ -115,15 +115,15 @@ void RegionItem::serialize(QDomElement &element)
 
 	if (!text().isEmpty()) {
 		element.setAttribute("text", text());
-		element.setAttribute("textX", textPosition().x());
-		element.setAttribute("textY", textPosition().y());
+		element.setAttribute("textX", QString::number(textPosition().x()));
+		element.setAttribute("textY", QString::number(textPosition().y()));
 	}
 
 	QSizeF const size = boundingRect().size();
-	element.setAttribute("height", size.height());
-	element.setAttribute("width", size.width());
-	element.setAttribute("x", pos().x());
-	element.setAttribute("y", pos().y());
+	element.setAttribute("height", QString::number(size.height()));
+	element.setAttribute("width", QString::number(size.width()));
+	element.setAttribute("x", QString::number(pos().x()));
+	element.setAttribute("y", QString::number(pos().y()));
 
 	element.setAttribute("visible", isVisible() ? "true" : "false");
 

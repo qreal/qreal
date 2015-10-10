@@ -88,7 +88,7 @@ bool ProjectManager::open(const QString &fileName)
 	const QString dequotedFileName = utils::StringUtils::dequote(fileName);
 	const QFileInfo fileInfo(dequotedFileName);
 
-	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+	if (fileInfo.suffix() == "qrs" || fileInfo.completeBaseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}

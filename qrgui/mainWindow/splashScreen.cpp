@@ -14,17 +14,27 @@
 
 #include "splashScreen.h"
 
+#include <QtCore/QFile>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QProgressBar>
+
+#include <qrkernel/platformInfo.h>
 
 using namespace qReal;
 
-const QString SplashScreen::pixmapFilePath = ":/mainWindow/images/kroki3.PNG";
-const Qt::WindowFlags SplashScreen::windowFlags = Qt::SplashScreen | Qt::WindowStaysOnTopHint;
+const QString defaultImage = ":/mainWindow/images/kroki3.PNG";
+const Qt::WindowFlags windowFlags = Qt::SplashScreen | Qt::WindowStaysOnTopHint;
 
 SplashScreen::SplashScreen(bool isVisible)
-	: QSplashScreen(QPixmap(pixmapFilePath), windowFlags)
+	: QSplashScreen()
 	, mProgressBar(new QProgressBar(this))
 {
+	const QString customScreen = qReal::PlatformInfo::applicationDirPath() + "/splashscreen.png";
+	const QString pixmapFilePath = QFile::exists(customScreen) ? customScreen : defaultImage;
+
+	setPixmap(QPixmap(pixmapFilePath).scaled(640, 480, Qt::KeepAspectRatio));
+	setWindowFlags(windowFlags());
+
 	mProgressBar->move(20, 270);
 	mProgressBar->setFixedSize(600, 15);
 	mProgressBar->setRange(0, 100);

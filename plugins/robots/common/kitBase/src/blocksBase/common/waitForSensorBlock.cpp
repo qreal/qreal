@@ -36,8 +36,10 @@ void WaitForSensorBlock::run()
 	mPort = RobotModelUtils::findPort(mRobotModel, port, input);
 	robotParts::ScalarSensor * const sensor = RobotModelUtils::findDevice<robotParts::ScalarSensor>(mRobotModel, mPort);
 	if (sensor) {
-		connect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
-		connect(sensor, &robotParts::AbstractSensor::failure, this, &WaitForSensorBlock::failureSlot);
+		connect(sensor, &robotParts::ScalarSensor::newData
+				, this, &WaitForSensorBlock::responseSlot, Qt::UniqueConnection);
+		connect(sensor, &robotParts::AbstractSensor::failure
+				, this, &WaitForSensorBlock::failureSlot, Qt::UniqueConnection);
 		mActiveWaitingTimer->start();
 		sensor->read();
 	} else {

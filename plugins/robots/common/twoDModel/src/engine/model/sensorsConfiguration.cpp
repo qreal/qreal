@@ -102,7 +102,7 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 		sensorElem.setAttribute("position"
 				, QString::number(sensor.position.x()) + ":" + QString::number(sensor.position.y()));
 
-		sensorElem.setAttribute("direction", sensor.direction);
+		sensorElem.setAttribute("direction", QString::number(sensor.direction));
 	}
 
 	robot.appendChild(sensorsElem);

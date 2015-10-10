@@ -697,7 +697,9 @@ void EditorViewScene::deleteSelectedItems()
 		}
 	}
 
-	deleteElements(idsToDelete);
+	if (!idsToDelete.isEmpty()) {
+		deleteElements(idsToDelete);
+	}
 }
 
 void EditorViewScene::deleteElements(IdList &idsToDelete)
@@ -1152,6 +1154,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		if (!mMouseMovementManager->wasMoving()) {
 			deleteGesture();
 			if (element && !element->isSelected()) {
+				clearSelection();
 				element->setSelected(true);
 			}
 

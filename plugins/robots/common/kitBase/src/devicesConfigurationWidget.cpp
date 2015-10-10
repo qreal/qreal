@@ -53,6 +53,10 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
+	if (mCurrentModelType == robotModel.name() && mCurrentModelId == robotModel.robotId()) {
+		return;
+	}
+
 	mCurrentModelType = robotModel.name();
 	mCurrentModelId = robotModel.robotId();
 	takeWidget();

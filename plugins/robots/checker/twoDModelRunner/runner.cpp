@@ -75,7 +75,7 @@ void Runner::interpret(const QString &saveFile, bool background)
 		});
 	}
 
-	for (view::TwoDModelWidget * const  twoDModelWindow : twoDModelWindows) {
+	for (view::TwoDModelWidget * const twoDModelWindow : twoDModelWindows) {
 		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
 		for (const model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
