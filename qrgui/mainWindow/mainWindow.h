@@ -20,6 +20,7 @@
 #include <QtWidgets/QSplashScreen>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QTreeView>
 #include <QtSql/QSqlDatabase>
 
 #include <qrkernel/settingsManager.h>

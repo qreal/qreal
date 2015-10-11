@@ -103,11 +103,16 @@ protected:
 	bool mMoving;
 	bool mEnabled;
 	const Id mId;
-	ElementImpl * const mElementImpl;  // Has ownership.
+
+	/// Has ownership.
+	ElementImpl * const mElementImpl;
+
 	QList<Label *> mLabels;
 
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;
+
+	/// Does not have ownership.
 	Controller *mController;
 };
 

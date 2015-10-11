@@ -82,8 +82,6 @@ public:
 
 	NodeElement *src() const;
 	NodeElement *dst() const;
-	bool isSrc(const NodeElement *node) const;
-	bool isDst(const NodeElement *node) const;
 	void setSrc(NodeElement *node);
 	void setDst(NodeElement *node);
 
@@ -133,7 +131,7 @@ public:
 
 	void highlight(const QColor &color = Qt::red);
 
-	EdgeData& data();
+	EdgeData data();
 
 	/// Change link type and redraw it
 	void changeShapeType(const enums::linkShape::LinkShape shapeType);
@@ -236,8 +234,6 @@ private:
 	ContextMenuAction mChangeShapeAction;
 
 	bool mBreakPointPressed;
-
-	EdgeData mData;
 
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 

@@ -822,16 +822,6 @@ NodeElement *EdgeElement::dst() const
 	return mDst;
 }
 
-bool EdgeElement::isSrc(const NodeElement *node) const
-{
-	return (mSrc == node);
-}
-
-bool EdgeElement::isDst(const NodeElement *node) const
-{
-	return (mDst == node);
-}
-
 QPair<qreal, qreal> EdgeElement::portIdOn(const NodeElement *node) const
 {
 	if (mIsLoop && node == mSrc) {
@@ -1007,29 +997,30 @@ void EdgeElement::highlight(const QColor &color)
 	update();
 }
 
-EdgeData& EdgeElement::data()
+EdgeData EdgeElement::data()
 {
-	mData.id = id();
-	mData.logicalId = logicalId();
-	mData.srcId = src() ? src()->id() : Id::rootId();
-	mData.dstId = dst() ? dst()->id() : Id::rootId();
+	EdgeData result;
+	result.id = id();
+	result.logicalId = logicalId();
+	result.srcId = src() ? src()->id() : Id::rootId();
+	result.dstId = dst() ? dst()->id() : Id::rootId();
 
-	mData.portFrom = mPortFrom;
-	mData.portTo = mPortTo;
+	result.portFrom = mPortFrom;
+	result.portTo = mPortTo;
 
-	mData.configuration = mGraphicalAssistApi.configuration(mId);
-	mData.pos = mGraphicalAssistApi.position(mId);
+	result.configuration = mGraphicalAssistApi.configuration(mId);
+	result.pos = mGraphicalAssistApi.position(mId);
 
-	mData.shapeType = mShapeType;
+	result.shapeType = mShapeType;
 
 	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
 	for (const QString &property : properties.keys()) {
 		if (property != "from" && property != "to") {
-			mData.logicalProperties[property] = properties[property];
+			result.logicalProperties[property] = properties[property];
 		}
 	}
 
-	return mData;
+	return result;
 }
 
 QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &value)

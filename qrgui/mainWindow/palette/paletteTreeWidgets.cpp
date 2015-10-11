@@ -14,6 +14,8 @@
 
 #include "paletteTreeWidgets.h"
 
+#include <models/exploser.h>
+
 #include "mainWindow/palette/paletteTree.h"
 #include "mainWindow/palette/draggableElement.h"
 

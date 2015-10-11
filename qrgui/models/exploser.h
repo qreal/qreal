@@ -14,9 +14,6 @@
 
 #pragma once
 
-#include <QtCore/QList>
-#include <QtWidgets/QTreeWidgetItem>
-
 #include <qrkernel/ids.h>
 
 #include "qrgui/models/modelsDeclSpec.h"
@@ -84,7 +81,7 @@ signals:
 	/// Emitted each time when automatically created explosion target was removed
 	void explosionTargetRemoved();
 
-	/// @todo: Emit it exaclty when explosions set changes.
+	/// @todo: Emit it exactly when explosions set changes.
 	/// Emitted when explosions set potentially changes (when elements are added or removed
 	/// or renamed or explosion link was added or edited directly).
 	void explosionsSetCouldChange();
@@ -104,8 +101,6 @@ private:
 	/// Recursively travels through the explosions tree and puts all elements
 	/// ids into @param targetIds
 	void explosionsHierarchyPrivate(const Id &currentId, IdList &targetIds) const;
-
-	void refreshPalette(gui::PaletteTreeWidget * const tree, const Id &diagram);
 
 	void connectCommand(const commands::AbstractCommand *command) const;
 
