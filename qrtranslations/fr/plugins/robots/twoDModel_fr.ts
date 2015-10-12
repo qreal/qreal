@@ -497,7 +497,11 @@
 <context>
     <name>twoDModel::view::TwoDModelWidget</name>
     <message>
+<<<<<<< HEAD
+        <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="227"/>
+=======
         <location filename="../../../../plugins/robots/common/twoDModel/src/engine/view/twoDModelWidget.cpp" line="236"/>
+>>>>>>> 7b27d8ab22bb94f4707f9fe2d571175f63a11e5c
         <source>Warning</source>
         <translation>Attention</translation>
     </message>

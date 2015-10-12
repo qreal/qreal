@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>ErrorListWidget</name>
     <message>
@@ -140,9 +140,13 @@
         <translation>Navigateur de modèle logique</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.ui" line="326"/>
         <source>Output</source>
-        <translation>Sortie</translation>
+        <translation type="vanished">Sortie</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/mainWindow.ui" line="326"/>
+        <source>Errors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="341"/>
@@ -451,6 +455,17 @@
         <source>Ctrl+Shift+T</source>
         <translation>Ctrl+Shift+T</translation>
     </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/mainWindow.ui" line="773"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.ui" line="776"/>
+        <source>Hide bottom docks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/mainWindow.ui" line="779"/>
+        <source>Esc</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -675,135 +690,140 @@
 <context>
     <name>qReal::MainWindow</name>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="684"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="700"/>
         <source>About QReal</source>
         <translation>À propo de QReal</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="705"/>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="720"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="724"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="735"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="705"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="724"/>
         <source>Plugin unloading failed: </source>
         <translation>Le déchargement d&apos;une extention a échoué :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="720"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="735"/>
         <source>Plugin loading failed: </source>
         <translation>Le chargement d&apos;une extention a échoué :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="811"/>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="828"/>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="854"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="826"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="843"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="869"/>
         <source>Shape Editor</source>
         <translation>Editeur de formes</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="846"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="861"/>
         <source>Text Editor</source>
         <translation>Editeur de texte</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1112"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1127"/>
         <source>New diagram</source>
         <translation>Nouveau diagramme</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1117"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1132"/>
         <source>Open project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1118"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1133"/>
         <source>Save project</source>
         <translation>Enregister le projet</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1119"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1134"/>
         <source>Save project as</source>
         <translation>Enregister le projet sous</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1120"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1135"/>
         <source>New project</source>
         <translation>Nouveau projet</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1121"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1136"/>
         <source>Undo</source>
         <translation>Défaire</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1122"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1137"/>
         <source>Redo</source>
         <translation>Refaire</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1123"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1138"/>
         <source>Zoom In</source>
         <translation>Zoom avant</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1124"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1139"/>
         <source>Zoom Out</source>
         <translation>Zoom arrière</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1125"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1140"/>
         <source>Close current tab</source>
         <translation>Fermer l&apos;onglet courant</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1126"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1141"/>
         <source>Close all tabs</source>
         <translation>Fermer tous les onglets</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1127"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1142"/>
         <source>Print</source>
         <translation>Imprimer</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1128"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1143"/>
         <source>Find</source>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1129"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1144"/>
         <source>Show all text</source>
         <translation>Afficher tout le texte</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1339"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1145"/>
+        <source>Toggle errors panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1355"/>
         <source>Gestures Show</source>
         <translation>Afficher les gestes</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1610"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1639"/>
         <source>Shortcuts</source>
         <translation>Raccourcis</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1851"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1898"/>
         <source>Recent projects</source>
         <translation>Projets récents</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1882"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1929"/>
         <source>Save File</source>
         <translation>Enregister le fichier</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1882"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1929"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Images (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2023"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2083"/>
         <source>Getting Started</source>
         <translation>Commencer</translation>
     </message>
@@ -942,68 +962,68 @@
         <translation>Geste souris</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="147"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="165"/>
         <source>Deleting an element: </source>
         <translation>Supression d&apos;un élément :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="148"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="166"/>
         <source>Do you really want to delete this item and all its graphicalrepresentation from the scene and from the palette?</source>
         <translation>Est-ce que vous voulez vraiment supprimer cet élément ainsi que toutes ses représentations graphiques de la scene et de la palette ?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="156"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="196"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="234"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="174"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="214"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="252"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="157"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="197"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="235"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="175"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="215"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="253"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="187"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="220"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="205"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="238"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="188"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="221"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="206"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="239"/>
         <source>The deleted element </source>
         <translation>L&apos;élément supprimé</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="189"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="207"/>
         <source> is the element of root digram. Continue to delete?</source>
         <translation>est l&apos;élément racine du diagramme. Continuer la suppression ?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="223"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="241"/>
         <source> has inheritors:</source>
         <translation>a des héritiers :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="226"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="244"/>
         <source>If you delete it, its properties will be removed fromthe elements-inheritors. Continue to delete?</source>
         <translation>Si vous le supprimer, ses propriétés seront supprimées de la liste des éléments héritiers. Continuer la supprssion ?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="302"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="320"/>
         <source>Change Properties</source>
         <translation>Modifier les propriétés</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="307"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="325"/>
         <source>Change Appearance</source>
         <translation>Modifier l&apos;apparence</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="312"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="330"/>
         <source>Delete Element</source>
         <translation>Supprimer l&apos;élément</translation>
     </message>
@@ -1011,22 +1031,22 @@
 <context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="175"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="187"/>
         <source>INFORMATION:</source>
         <translation>INFORMATION :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="177"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="189"/>
         <source>WARNING:</source>
         <translation>ATTENTION :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="179"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="191"/>
         <source>ERROR:</source>
         <translation>ERREUR :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="181"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="193"/>
         <source>CRITICAL:</source>
         <translation>CRITIQUE :</translation>
     </message>

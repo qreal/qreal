@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="197"/>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="200"/>
         <source>Specify directory:</source>
         <translation>Choisissez le répertoire :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="202"/>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="207"/>
         <source>Select file:</source>
         <translation>Choisissez le fichier :</translation>
     </message>
@@ -76,12 +76,12 @@
 <context>
     <name>qReal::EdgeElement</name>
     <message>
-        <location filename="../../qrgui/editor/edgeElement.cpp" line="68"/>
+        <location filename="../../qrgui/editor/edgeElement.cpp" line="66"/>
         <source>Reverse</source>
         <translation>Retourner</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/edgeElement.cpp" line="69"/>
+        <location filename="../../qrgui/editor/edgeElement.cpp" line="67"/>
         <source>Change shape type</source>
         <translation>Modifier le type de ligne</translation>
     </message>
@@ -151,7 +151,7 @@
 <context>
     <name>qReal::NodeElement</name>
     <message>
-        <location filename="../../qrgui/editor/nodeElement.cpp" line="56"/>
+        <location filename="../../qrgui/editor/nodeElement.cpp" line="57"/>
         <source>Switch on grid</source>
         <translation>Afficher la grille</translation>
     </message>

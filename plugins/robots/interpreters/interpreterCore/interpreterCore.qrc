@@ -59,5 +59,6 @@
         <file>icons/main_tabbar_edit.svg</file>
         <file>icons/main_tabbar_debug.svg</file>
         <file>icons/home.svg</file>
+        <file>icons/TRIKStudioLogo.png</file>
     </qresource>
 </RCC>

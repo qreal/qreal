@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>PreferencesBehaviourPage</name>
     <message>
@@ -59,7 +59,7 @@
         <translation>Mode tactile</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="114"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="115"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Langage système&gt;</translation>
     </message>
