@@ -16,6 +16,7 @@
 
 #include <QtCore/QObject>
 
+#include <qrutils/interpreter/stopReason.h>
 #include "kitBase/kitBaseDeclSpec.h"
 
 namespace kitBase {
@@ -33,14 +34,21 @@ signals:
 	void started();
 
 	/// Emitted when program is finished or stopped by user.
-	void stopped();
+	void stopped(qReal::interpretation::StopReason reason);
 
 public slots:
 	/// Starts interpteration process.
 	virtual void interpret() = 0;
 
-	/// Stops interpteration, reinitialises robot model.
-	virtual void stopRobot() = 0;
+	/// Stops interpretation, reinitialises robot model.
+	/// @param reason The reason why program execution stopped.
+	virtual void stopRobot(qReal::interpretation::StopReason reason) = 0;
+
+	/// An alias for stopRobot(StopReason::userStop) for convenient connection with buttons.
+	void userStopRobot()
+	{
+		stopRobot(qReal::interpretation::StopReason::userStop);
+	}
 };
 
 }

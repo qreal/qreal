@@ -40,14 +40,14 @@ void Timeline::start()
 	}
 }
 
-void Timeline::stop()
+void Timeline::stop(qReal::interpretation::StopReason reason)
 {
 	if (mIsStarted) {
 		mIsStarted = false;
 		QCoreApplication::processEvents();
-		emit beforeStop();
+		emit beforeStop(reason);
 		mTimer.stop();
-		emit stopped();
+		emit stopped(reason);
 	}
 }
 

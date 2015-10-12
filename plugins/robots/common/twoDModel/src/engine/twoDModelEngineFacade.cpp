@@ -92,7 +92,7 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, Qt::UniqueConnection);
 
 		connect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::stopRobot
+				, &interpreterControl, &kitBase::InterpreterControlInterface::userStopRobot
 				, Qt::UniqueConnection);
 	};
 
@@ -108,7 +108,7 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, &interpreterControl, &kitBase::InterpreterControlInterface::interpret);
 
 		disconnect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::stopRobot);
+				, &interpreterControl, &kitBase::InterpreterControlInterface::userStopRobot);
 	};
 
 	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, this, reloadWorld);
@@ -153,9 +153,9 @@ void TwoDModelEngineFacade::onStartInterpretation()
 	mModel->timeline().start();
 }
 
-void TwoDModelEngineFacade::onStopInterpretation()
+void TwoDModelEngineFacade::onStopInterpretation(qReal::interpretation::StopReason reason)
 {
-	mModel->timeline().stop();
+	mModel->timeline().stop(reason);
 }
 
 void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)

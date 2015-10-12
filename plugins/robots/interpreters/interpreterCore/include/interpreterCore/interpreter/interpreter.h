@@ -70,20 +70,17 @@ public:
 public slots:
 	void connectToRobot() override;
 	void interpret() override;
-	void stopRobot() override;
+	void stopRobot(qReal::interpretation::StopReason reason = qReal::interpretation::StopReason::userStop) override;
 	int timeElapsed() const override;
 
 private slots:
-	void threadStopped();
+	void threadStopped(qReal::interpretation::StopReason reason);
 	void newThread(const qReal::Id &startBlockId, const QString &threadId);
 	void killThread(const QString &threadId);
 	void sendMessage(const QString &threadId, const QString &message);
 
 	void connectedSlot(bool success, const QString &errorString);
 	void devicesConfiguredSlot();
-
-	/// Actions when robot disconnect
-	void disconnectSlot();
 
 private:
 	enum InterpreterState {
