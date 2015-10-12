@@ -279,8 +279,7 @@
             <properties>
               <property type="string" name="Name" displayedName="Name"/>
               <property type="AccessType" name="Access" displayedName="Access">
-              <default>public</default>
-            </property>
+                <default>public</default>
               <property type="string" name="Summary" displayedName="Summary"/>  
             </properties>
             <createChildrenFromMenu/>
