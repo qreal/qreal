@@ -48,9 +48,9 @@ public:
 
 private:
 	/// Does not have ownership.
-	QAction * const mAction;
-	const QString mId;
-	const QString mLabel;
+	QAction * mAction;
+	QString mId;
+	QString mLabel;
 };
 
 }

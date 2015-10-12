@@ -62,15 +62,15 @@ public:
 
 private:
 	/// Does not have ownership.
-	QAction * const mAction;
+	QAction * mAction;
 
 	/// Does not have ownership.
-	QMenu * const mMenu;
+	QMenu * mMenu;
 
-	const QString mToolbarName;
-	const QString mMenuName;
+	QString mToolbarName;
+	QString mMenuName;
 
-	const bool mIsAction;
+	bool mIsAction;
 };
 
 }
