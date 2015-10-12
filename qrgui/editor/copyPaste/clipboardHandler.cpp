@@ -74,7 +74,7 @@ QList<NodeElement *> ClipboardHandler::getNodesForCopying()
 
 void ClipboardHandler::addChildren(NodeElement *node, QList<NodeElement *> &nodes)
 {
-	foreach (QGraphicsItem *item, node->childItems()) {
+	for (QGraphicsItem *item : node->childItems()) {
 		NodeElement *child = dynamic_cast<NodeElement *>(item);
 		if (child && !nodes.contains(child)) {
 			nodes << child;

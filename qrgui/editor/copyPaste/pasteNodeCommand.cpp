@@ -44,6 +44,7 @@ Id PasteNodeCommand::pasteNewInstance()
 			addPreAction(mCreateCommand);
 		}
 	}
+
 	return resultId;
 }
 

@@ -45,6 +45,7 @@ Id PasteEdgeCommand::pasteNewInstance()
 			addPreAction(mCreateCommand);
 		}
 	}
+
 	return resultId;
 }
 
