@@ -35,6 +35,7 @@ bool NodeElementCommand::reinitElement()
 	if (!ElementCommand::reinitElement()) {
 		return false;
 	}
+
 	mNode = dynamic_cast<NodeElement *>(mElement);
 	return mNode != nullptr;
 }

@@ -88,6 +88,7 @@ bool InsertIntoEdgeCommand::execute()
 					, mScene.rootItemId(), mParentId, edge->id(), mIsLogical
 					, mGraphicalAssistApi.name(edge->id()), mGraphicalAssistApi.position(edge->id()));
 		}
+
 		mRemoveOldEdge->redo();
 
 		mElementShifting.clear();
@@ -115,9 +116,11 @@ bool InsertIntoEdgeCommand::restoreState()
 		mCreateSecond->undo();
 		mCreateFirst->undo();
 	}
+
 	if (mCreateCommand) {
 		mCreateCommand->undo();
 	}
+
 	return true;
 }
 
