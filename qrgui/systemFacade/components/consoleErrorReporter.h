@@ -37,6 +37,12 @@ public:
 	void clear() override;
 	void clearErrors() override;
 
+	void addUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error
+			, Id const &position = Id::rootId()) override;
+	void delUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error
+			, Id const &position = Id::rootId()) override;
+	void delAllErrorOfElement(Id const &position) override;
+
 signals:
 	/// Emitted when new message with level 'Info' added to error reporter.
 	void informationAdded(const QString &message, const Id &position);

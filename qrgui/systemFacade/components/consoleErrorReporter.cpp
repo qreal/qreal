@@ -66,3 +66,32 @@ void ConsoleErrorReporter::clearErrors()
 {
 	mWereErrors = false;
 }
+
+void ConsoleErrorReporter::addUniqueError(
+		const QString &message
+		, const gui::Error::Severity &severity
+		, const Id &position)
+{
+	// TODO_CONSTRAINTS
+	Q_UNUSED(severity);
+	Q_UNUSED(position);
+
+	qDebug() << qUtf8Printable(message);
+}
+
+void ConsoleErrorReporter::delUniqueError(
+		const QString &message
+		, const gui::Error::Severity &severity
+		, const Id &position)
+{
+	// TODO_CONSTRAINTS
+	Q_UNUSED(message);
+	Q_UNUSED(severity);
+	Q_UNUSED(position);
+}
+
+void ConsoleErrorReporter::delAllErrorOfElement(const Id &position)
+{
+	// TODO_CONSTRAINTS
+	Q_UNUSED(position);
+}

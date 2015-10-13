@@ -36,6 +36,12 @@ public:
 	void clear() override;
 	void clearErrors() override;
 
+	void addUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error
+			, Id const &position = Id::rootId()) override;
+	void delUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error
+			, Id const &position = Id::rootId()) override;
+	void delAllErrorOfElement(Id const &position) override;
+
 private:
 	bool mWereErrors = false;
 };
