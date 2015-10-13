@@ -28,7 +28,9 @@ namespace twoDModel {
 namespace items {
 class WallItem;
 class LineItem;
+class CurveItem;
 class StylusItem;
+class RectangleItem;
 class EllipseItem;
 }
 
@@ -67,8 +69,14 @@ public slots:
 	/// Sets a flag that next user mouse actions should draw a colored line on the scene.
 	void addLine();
 
+	/// Sets a flag that next user mouse actions should draw a colored bezier curve on the scene.
+	void addBezier();
+
 	/// Sets a flag that next user mouse actions should draw a stylus line on the scene.
 	void addStylus();
+
+	/// Sets a flag that next user mouse actions should draw a rectangle on the scene.
+	void addRectangle();
 
 	/// Sets a flag that next user mouse actions should draw an ellipse on the scene.
 	void addEllipse();
@@ -130,8 +138,9 @@ private:
 		none = 0
 		, wall
 		, line
+		, bezier
 		, stylus
-		, Port
+		, rectangle
 		, ellipse
 		, noneWordLoad
 	};
@@ -143,9 +152,6 @@ private:
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
 
-	void forPressResize(QGraphicsSceneMouseEvent *event) override;
-	void forMoveResize(QGraphicsSceneMouseEvent *event);
-	void forReleaseResize(QGraphicsSceneMouseEvent *event);
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
 	void deleteItem(QGraphicsItem *item);
@@ -153,7 +159,9 @@ private:
 
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
+	void reshapeCurve(QGraphicsSceneMouseEvent *event);
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
+	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
@@ -171,7 +179,9 @@ private:
 	/// Temporary wall that's being created. When it's complete, it's added to world model
 	items::WallItem *mCurrentWall = nullptr;
 	items::LineItem *mCurrentLine = nullptr;
+	items::CurveItem *mCurrentCurve = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;
+	items::RectangleItem *mCurrentRectangle = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
 
 	bool mWorldReadOnly = false;

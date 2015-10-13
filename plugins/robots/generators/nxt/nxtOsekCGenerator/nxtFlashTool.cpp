@@ -78,7 +78,7 @@ void NxtFlashTool::runProgram(const QFileInfo &fileInfo)
 	mRunProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
 	mRunProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
 			+ "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
-			+ QString("%1_OSEK.rxe").arg(mSource.baseName()));
+			+ QString("%1_OSEK.rxe").arg(mSource.completeBaseName()));
 }
 
 void NxtFlashTool::runLastProgram()
@@ -145,7 +145,7 @@ void NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 #ifdef Q_OS_WIN
 	mUploadProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
 	mUploadProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
-						 + "/nxt-tools/upload.bat " + fileInfo.baseName()
+						 + "/nxt-tools/upload.bat " + fileInfo.completeBaseName()
 						 + " " + fileInfo.absolutePath());
 #else
 	Q_UNUSED(fileInfo)

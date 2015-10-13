@@ -121,8 +121,6 @@ public:
 
 	virtual void connectToPort();
 
-	virtual QList<ContextMenuAction*> contextMenuActions(const QPointF &pos);
-
 	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);

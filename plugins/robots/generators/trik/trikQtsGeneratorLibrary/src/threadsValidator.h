@@ -48,7 +48,7 @@ private:
 
 	void unknownThread(const QList<LinkInfo> &links);
 	void error(const QString &message, const qReal::Id &id);
-	void checkForConnected(const LinkInfo &link);
+	bool checkForConnected(const LinkInfo &link);
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;

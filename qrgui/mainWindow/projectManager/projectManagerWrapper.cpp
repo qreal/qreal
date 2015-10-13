@@ -85,7 +85,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 
 	const QFileInfo fileInfo(dequotedFileName);
 
-	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+	if (fileInfo.suffix() == "qrs" || fileInfo.completeBaseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
@@ -271,8 +271,9 @@ QString ProjectManagerWrapper::openFileName(const QString &dialogWindowTitle) co
 
 QString ProjectManagerWrapper::saveFileName(const QString &dialogWindowTitle) const
 {
+	const QString oldFileName = QFileInfo(saveFilePath()).fileName();
 	QString fileName = QRealFileDialog::getSaveFileName("SaveQRSProject", mMainWindow, dialogWindowTitle
-			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"), oldFileName);
 
 	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
 		fileName += ".qrs";

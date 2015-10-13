@@ -20,6 +20,8 @@
         <file>icons/2d_multiselection.png</file>
         <file>icons/2d_open.png</file>
         <file>icons/2d_ruler.png</file>
+        <file>icons/2d_rectangle.svg</file>
+        <file>icons/2d_bezier.svg</file>
         <file>icons/2d_save.png</file>
         <file>icons/2d_target.png</file>
         <file>icons/2d_robot_back.png</file>
@@ -56,5 +58,6 @@
         <file>icons/main_tabbar_edit.svg</file>
         <file>icons/main_tabbar_debug.svg</file>
         <file>icons/home.svg</file>
+        <file>icons/TRIKStudioLogo.png</file>
     </qresource>
 </RCC>

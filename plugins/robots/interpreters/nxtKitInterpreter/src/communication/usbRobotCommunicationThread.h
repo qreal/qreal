@@ -19,6 +19,7 @@
 #include <QtCore/QTimer>
 
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
+
 #include "fantom.h"
 
 class QextSerialPort;
@@ -61,7 +62,7 @@ private:
 
 	bool mActive;
 	unsigned long mNXTHandle;
-	Fantom mFantom;
+	Fantom *mFantom;
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;

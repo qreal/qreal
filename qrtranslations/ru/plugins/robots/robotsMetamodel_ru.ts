@@ -1259,7 +1259,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="251"/>
         <source>SpanAngle</source>
-        <translation>Конечный угол</translation>
+        <translation>Размах</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="252"/>

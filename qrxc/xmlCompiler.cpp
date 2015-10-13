@@ -56,7 +56,7 @@ XmlCompiler::~XmlCompiler()
 bool XmlCompiler::compile(const QString &inputXmlFileName, const QString &sourcesRootFolder)
 {
 	const QFileInfo inputXmlFileInfo(inputXmlFileName);
-	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
+	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.completeBaseName());
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
 	mSourcesRootFolder = sourcesRootFolder;
 	const QDir startingDir = inputXmlFileInfo.dir();
