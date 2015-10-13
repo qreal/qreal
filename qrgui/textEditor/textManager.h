@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -23,46 +37,46 @@ public:
 	TextManager(SystemEvents &systemEvents, gui::MainWindowInterpretersInterface &mainWindow);
 
 	/// Reads code source file and create new QScintillaTextEdit associated with this file (rather with filepath)
-	bool openFile(QString const &filePath, QString const &genName, LanguageInfo const &language);
+	bool openFile(const QString &filePath, const QString &genName, const LanguageInfo &language);
 
 	/// Remove all info about filePath (including QScintillaTextEdit associated with it)
-	bool closeFile(QString const &filePath);
+	bool closeFile(const QString &filePath);
 
-	void changeFilePath(QString const &from, QString const &to);
+	void changeFilePath(const QString &from, const QString &to);
 
 	/// Binds diagram with another code source file.
-	bool bindCode(Id const &diagram, QString const &filePath);
+	bool bindCode(const Id &diagram, const QString &filePath);
 
-	bool unbindCode(QString const &filePath);
+	bool unbindCode(const QString &filePath);
 	bool unbindCode(text::QScintillaTextEdit *code);
-	text::QScintillaTextEdit *code(QString const &filePath) const;
-	QList<text::QScintillaTextEdit *> code(Id const &diagram) const;
-	bool contains(QString const &filePath) const;
-	bool removeDiagram(Id const &diagram);
+	text::QScintillaTextEdit *code(const QString &filePath) const;
+	QList<text::QScintillaTextEdit *> code(const Id &diagram) const;
+	bool contains(const QString &filePath) const;
+	bool removeDiagram(const Id &diagram);
 	Id diagram(text::QScintillaTextEdit *code) const;
 	QString path(text::QScintillaTextEdit *code) const;
-	bool isDefaultPath(QString const &path) const;
-	bool isModified(QString const &path) const;
-	bool isModifiedEver(QString const &path) const;
+	bool isDefaultPath(const QString &path) const;
+	bool isModified(const QString &path) const;
+	bool isModifiedEver(const QString &path) const;
 
 	/// Opens new tab with file created by some generator in text editor and shows a text in it
 	/// @param fileInfo A filepath to file with text
 	/// @param genName A name of generator which created this file
-	void showInTextEditor(QFileInfo const &fileInfo, QString const &genName, LanguageInfo const &language);
+	void showInTextEditor(const QFileInfo &fileInfo, const QString &genName, const LanguageInfo &language);
 
 	/// Opens new tab with file
 	/// @param fileInfo A filepath to file with text
-	void showInTextEditor(QFileInfo const &fileInfo, LanguageInfo const &language);
+	void showInTextEditor(const QFileInfo &fileInfo, const LanguageInfo &language);
 
 	/// Saves text from tab to another or same file
 	/// @param saveAs Defines what to do: save to the same file or in another
 	bool saveText(bool saveAs);
 
-	QString generatorName(QString const &filepath) const;
+	QString generatorName(const QString &filepath) const;
 
 private slots:
 	void setModified(text::QScintillaTextEdit *code, bool modified = true);
-	void onTabClosed(QFileInfo const &file);
+	void onTabClosed(const QFileInfo &file);
 
 private:
 	QMap<QString, text::QScintillaTextEdit *> mText;

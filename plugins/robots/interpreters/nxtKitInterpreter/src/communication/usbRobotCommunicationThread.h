@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -9,7 +23,7 @@
 
 class QextSerialPort;
 
-namespace nxtKitInterpreter {
+namespace nxt {
 namespace communication {
 
 class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
@@ -21,7 +35,7 @@ public:
 	~UsbRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
+	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
 	void connect();
 	void reconnect();
 	void disconnect();
@@ -34,15 +48,15 @@ private slots:
 
 	/// Checks that message requires response or not.
 	/// @returns true, if there shall be a response.
-	static bool isResponseNeeded(QByteArray const &buffer);
+	static bool isResponseNeeded(const QByteArray &buffer);
 
 private:
 	static const int kStatusNoError = 0;
 
 	bool isOpen();
-	static void debugPrint(QByteArray const &buffer, bool out);
+	static void debugPrint(const QByteArray &buffer, bool out);
 
-	void send(QByteArray const &buffer, unsigned const responseSize
+	void send(const QByteArray &buffer, const unsigned responseSize
 			, QByteArray &outputBuffer);
 
 	bool mActive;

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrtext/core/types/typeVariable.h"
 
 #include <QtCore/QStringList>
@@ -11,7 +25,7 @@ TypeVariable::TypeVariable()
 	mAllowedTypes << QSharedPointer<TypeExpression>(new Any());
 }
 
-TypeVariable::TypeVariable(QSharedPointer<TypeExpression> const &singleType)
+TypeVariable::TypeVariable(const QSharedPointer<TypeExpression> &singleType)
 {
 	mAllowedTypes << singleType;
 }
@@ -35,14 +49,14 @@ QSharedPointer<TypeExpression> TypeVariable::finalType() const
 	}
 }
 
-void TypeVariable::constrain(QSharedPointer<TypeVariable> const &other
-		, GeneralizationsTableInterface const &generalizationsTable)
+void TypeVariable::constrain(const QSharedPointer<TypeVariable> &other
+		, const GeneralizationsTableInterface &generalizationsTable)
 {
 	constrain(other->mAllowedTypes.toList(), generalizationsTable);
 }
 
-void TypeVariable::constrain(QList<QSharedPointer<TypeExpression>> const &types
-		, GeneralizationsTableInterface const &generalizationsTable)
+void TypeVariable::constrain(const QList<QSharedPointer<TypeExpression>> &types
+		, const GeneralizationsTableInterface &generalizationsTable)
 {
 	QSet<QSharedPointer<TypeExpression>> result;
 
@@ -61,8 +75,8 @@ void TypeVariable::constrain(QList<QSharedPointer<TypeExpression>> const &types
 	mAllowedTypes = result;
 }
 
-void TypeVariable::constrainAssignment(QSharedPointer<TypeVariable> const &other
-		, GeneralizationsTableInterface const &generalizationsTable
+void TypeVariable::constrainAssignment(const QSharedPointer<TypeVariable> &other
+		, const GeneralizationsTableInterface &generalizationsTable
 		, bool *wasCoercion)
 {
 	*wasCoercion = false;
@@ -103,7 +117,7 @@ void TypeVariable::constrainAssignment(QSharedPointer<TypeVariable> const &other
 QString TypeVariable::toString() const
 {
 	QStringList result;
-	for (QSharedPointer<types::TypeExpression> const &type : mAllowedTypes) {
+	for (const QSharedPointer<types::TypeExpression> &type : mAllowedTypes) {
 		result.append(type->toString());
 	}
 

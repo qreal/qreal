@@ -1,38 +1,52 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "version.h"
 
 #include <QtCore/QStringList>
 
 using namespace qReal;
 
-Version Version::fromString(QString const &version)
+Version Version::fromString(const QString &version)
 {
-	QStringList const dashParts = version.split("-", QString::SkipEmptyParts);
-	QStringList const spaceParts = version.split(" ", QString::SkipEmptyParts);
+	const QStringList dashParts = version.split("-", QString::SkipEmptyParts);
+	const QStringList spaceParts = version.split(" ", QString::SkipEmptyParts);
 	if (dashParts.isEmpty() || spaceParts.isEmpty() || dashParts.count() > 2 || spaceParts.count() > 2) {
 		return Version();
 	}
 
-	QStringList const parts = dashParts.count() == 2 ? dashParts : spaceParts;
-	QString const prefix = parts[0];
-	QString const suffix = parts.count() == 1 ? QString() : parts[1];
+	const QStringList parts = dashParts.count() == 2 ? dashParts : spaceParts;
+	const QString prefix = parts[0];
+	const QString suffix = parts.count() == 1 ? QString() : parts[1];
 
 	bool success = true;
 	bool currentIsOk;
 
-	QStringList const numbers = prefix.split(".", QString::SkipEmptyParts);
+	const QStringList numbers = prefix.split(".", QString::SkipEmptyParts);
 	if (numbers.isEmpty() || numbers.count() > 3) {
 		return Version();
 	}
 
-	QString const majorString = numbers[0];
-	QString const minorString = numbers.count() > 1 ? numbers[1] : "0";
-	QString const buildString = numbers.count() > 2 ? numbers[2] : "0";
+	const QString majorString = numbers[0];
+	const QString minorString = numbers.count() > 1 ? numbers[1] : "0";
+	const QString buildString = numbers.count() > 2 ? numbers[2] : "0";
 
-	int const major = majorString.toInt(&currentIsOk);
+	const int major = majorString.toInt(&currentIsOk);
 	success &= currentIsOk;
-	int const minor = minorString.toInt(&currentIsOk);
+	const int minor = minorString.toInt(&currentIsOk);
 	success &= currentIsOk;
-	int const build = buildString.toInt(&currentIsOk);
+	const int build = buildString.toInt(&currentIsOk);
 	success &= currentIsOk;
 
 	if (suffix.isEmpty() && success) {
@@ -43,7 +57,7 @@ Version Version::fromString(QString const &version)
 	QString letterSuffix;
 	QString numberSuffix;
 	bool iteratingFirstPart = true;
-	for (QChar const ch : suffix) {
+	for (const QChar ch : suffix) {
 		if (!ch.isLetter() && iteratingFirstPart) {
 			iteratingFirstPart = false;
 		}
@@ -59,9 +73,9 @@ Version Version::fromString(QString const &version)
 		numberSuffix = "0";
 	}
 
-	Stage const stage = parseStage(letterSuffix, currentIsOk);
+	const Stage stage = parseStage(letterSuffix, currentIsOk);
 	success &= currentIsOk;
-	int const stageNumber = numberSuffix.toInt(&currentIsOk);
+	const int stageNumber = numberSuffix.toInt(&currentIsOk);
 	success &= currentIsOk;
 
 	if (!success) {
@@ -71,7 +85,7 @@ Version Version::fromString(QString const &version)
 	return Version(major, minor, build, stage, stageNumber);
 }
 
-Version::Stage Version::parseStage(QString const &stage, bool &ok)
+Version::Stage Version::parseStage(const QString &stage, bool &ok)
 {
 	Stage result = stable;
 	ok = false;

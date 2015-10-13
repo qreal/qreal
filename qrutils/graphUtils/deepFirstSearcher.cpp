@@ -1,19 +1,33 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "deepFirstSearcher.h"
 
 using namespace qReal;
 using namespace utils;
 
-DeepFirstSearcher::DeepFirstSearcher(qrRepo::LogicalRepoApi const &repo)
+DeepFirstSearcher::DeepFirstSearcher(const qrRepo::LogicalRepoApi &repo)
 	: mRepo(repo)
 {
 }
 
-void DeepFirstSearcher::startSearch(Id const &firstId, VisitorInterface *visitor)
+void DeepFirstSearcher::startSearch(const Id &firstId, VisitorInterface *visitor)
 {
 	startSearch(firstId, QList<VisitorInterface *>() << visitor);
 }
 
-void DeepFirstSearcher::startSearch(Id const &firstId, QList<VisitorInterface *> const &visitors)
+void DeepFirstSearcher::startSearch(const Id &firstId, QList<VisitorInterface *> const &visitors)
 {
 	foreach (VisitorInterface * const visitor, visitors) {
 		visitor->beforeSearch();
@@ -33,15 +47,15 @@ void DeepFirstSearcher::terminateSearch()
 	mSearchTerminated = true;
 }
 
-void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visitors)
+void DeepFirstSearcher::dfs(const Id &id, QList<VisitorInterface *> const &visitors)
 {
 	mVisitedNodes << id;
 
-	IdList const outgoingLinks = mRepo.outgoingLinks(id);
+	const IdList outgoingLinks = mRepo.outgoingLinks(id);
 	QList<LinkInfo> linkInfos;
 
-	for (Id const &link : outgoingLinks) {
-		Id const connectedNode = mRepo.otherEntityFromLink(link, id);
+	for (const Id &link : outgoingLinks) {
+		const Id connectedNode = mRepo.otherEntityFromLink(link, id);
 		LinkInfo info;
 		info.linkId = link;
 		info.target = connectedNode;
@@ -54,7 +68,7 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 		visitor->visit(id, linkInfos);
 	}
 
-	for (LinkInfo const &link : linkInfos) {
+	for (const LinkInfo &link : linkInfos) {
 		if (!link.targetVisited && link.connected && !mSearchTerminated) {
 			dfs(link.target, visitors);
 		}

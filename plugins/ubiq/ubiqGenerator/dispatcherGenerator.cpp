@@ -1,7 +1,21 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QFile>
 
 #include "dispatcherGenerator.h"
-#include "../../../qrutils/nameNormalizer.h"
+#include <qrutils/nameNormalizer.h>
 
 using namespace ubiq::generator;
 using namespace qReal;
@@ -296,7 +310,8 @@ QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart) con
 	return generateOperatorCode(nextNode).text;
 }
 
-DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateFunctionCallCode(qReal::Id const &currentNode) const
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateFunctionCallCode(
+		qReal::Id const &currentNode) const
 {
 	QString operatorCode = mTemplateUtils["@@CaseCode@@"];
 
@@ -358,7 +373,8 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateFun
 	return result;
 }
 
-DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateActionCode(qReal::Id const &currentNode) const
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateActionCode(
+		qReal::Id const &currentNode) const
 {
 	QString operatorCode = mApi.name(currentNode);
 
@@ -378,7 +394,8 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateAct
 	return result;
 }
 
-DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateInitialNodeCode(qReal::Id const &currentNode) const
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateInitialNodeCode(
+		qReal::Id const &currentNode) const
 {
 	IdList const links = mApi.outgoingLinks(currentNode);
 
@@ -392,7 +409,8 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateIni
 	return generateOperatorCode(nextNode);
 }
 
-DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateReturnActionCode(qReal::Id const &currentNode) const
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateReturnActionCode(
+		qReal::Id const &currentNode) const
 {
 	QString const returnValue = mApi.name(currentNode).isEmpty()
 			? ""
@@ -412,11 +430,12 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateRet
 	}
 }
 
-DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateDecisionNodeCode(qReal::Id const &currentNode) const
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateDecisionNodeCode(
+		qReal::Id const &currentNode) const
 {
 	Id thenBranch;
 	Id elseBranch;
-	Id *currentBranch = NULL;
+	Id *currentBranch = nullptr;
 
 	foreach (Id const &link, mApi.outgoingLinks(currentNode)) {
 		if (!mApi.stringProperty(link, "guard").isEmpty()) {
@@ -427,17 +446,23 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateDec
 		if (*currentBranch == Id()) {
 			*currentBranch = link;
 		} else {
-			mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
+			mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard")
+					, currentNode);
+
 			return CodeBranchGenerationResult("", currentNode);
 		}
 	}
 
 	if (thenBranch == Id()) {
-		mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link with guard"), currentNode);
+		mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link with guard")
+				, currentNode);
+
 		return CodeBranchGenerationResult("", currentNode);
 	}
 	if (elseBranch == Id()) {
-		mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
+		mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard")
+				, currentNode);
+
 		return CodeBranchGenerationResult("", currentNode);
 	}
 
@@ -445,8 +470,11 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateDec
 
 	QString ifTemplate = mTemplateUtils["@@If@@"];
 
-	CodeBranchGenerationResult thenBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(thenBranch, currentNode));
-	CodeBranchGenerationResult elseBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(elseBranch, currentNode));
+	CodeBranchGenerationResult thenBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(thenBranch
+			, currentNode));
+
+	CodeBranchGenerationResult elseBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(elseBranch
+			, currentNode));
 
 	if (thenBranchGenerationResult.text.endsWith('\n')) {
 		thenBranchGenerationResult.text.chop(1);
@@ -483,7 +511,9 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateDec
 	if (links.size() == 0) {
 		return CodeBranchGenerationResult(ifTemplate, nextNode);
 	} else if (links.size() > 1) {
-		mErrorReporter.addError(QObject::tr("Branches merge node should have no more than 1 outgoing link"), currentNode);
+		mErrorReporter.addError(QObject::tr("Branches merge node should have no more than 1 outgoing link")
+				, currentNode);
+
 		return CodeBranchGenerationResult("", nextNode);
 	}
 
@@ -494,7 +524,8 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateDec
 	return result;
 }
 
-DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode) const
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOperatorCode(
+		qReal::Id const &currentNode) const
 {
 	if (currentNode.element() == "FunctionCall") {
 		return generateFunctionCallCode(currentNode);

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "sqlHighlighter.h"
 
 using namespace qReal;
@@ -12,7 +26,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document)
 	QStringList signPatterns;
 	signPatterns << "," << ">" << "<" << "-" << "\\*" << "\\+"
 				 << "\\." << "=" << "\\(" << "\\)";
-	foreach (QString const &pattern, signPatterns) {
+	foreach (const QString &pattern, signPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mSignFormat;
 		mHighlightingRules.append(rule);
@@ -24,7 +38,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document)
 	keywordPatterns << "\\bSELECT\\b" << "\\bFROM\\b" << "\\bWHERE\\b" << "\\bORDER BY\\b"
 					<< "\\bCOUNT\\b" << "\\bAS\\b" << "\\bJOIN\\b" << "\\bON\\b"
 					<< "\\bGROUP BY\\b" << "\\bHAVING\\b" << "\\bNATURAL JOIN\\b"  ;
-	foreach (QString const &pattern, keywordPatterns) {
+	foreach (const QString &pattern, keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mKeywordFormat;
 		mHighlightingRules.append(rule);
@@ -56,7 +70,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document)
 	mCommentEndExpression = QRegExp("\\}");
 }
 
-void SQLHighlighter::highlightBlock(QString const &text)
+void SQLHighlighter::highlightBlock(const QString &text)
 {
 	foreach (const HighlightingRule &rule, mHighlightingRules) {
 		QRegExp expression(rule.pattern);

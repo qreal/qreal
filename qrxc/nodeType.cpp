@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nodeType.h"
 
 #include <QtCore/QDebug>
@@ -44,7 +58,7 @@ Type* NodeType::clone() const
 
 bool NodeType::copyPictures(GraphicType *parent)
 {
-	NodeType const * const nodeParent = dynamic_cast<NodeType*>(parent);
+	const NodeType * const nodeParent = dynamic_cast<NodeType*>(parent);
 	if (nodeParent != nullptr) {
 		if (mSdfDomElement.isNull()) {
 			/// @todo Support this.
@@ -128,7 +142,7 @@ bool NodeType::initPorts()
 	return true;
 }
 
-bool NodeType::initPointPorts(QDomElement const &portsElement)
+bool NodeType::initPointPorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 			!portElement.isNull();
@@ -144,7 +158,7 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 	return true;
 }
 
-bool NodeType::initLinePorts(QDomElement const &portsElement)
+bool NodeType::initLinePorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 			!portElement.isNull();
@@ -160,7 +174,7 @@ bool NodeType::initLinePorts(QDomElement const &portsElement)
 	return true;
 }
 
-bool NodeType::initLabel(Label *label, QDomElement const &element, int const &count)
+bool NodeType::initLabel(Label *label, const QDomElement &element, const int &count)
 {
 	return label->init(element, count, true, mWidth, mHeight);
 }
@@ -169,7 +183,7 @@ bool NodeType::initBooleanProperties()
 {
 	mIsResizeable = true;
 
-	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
+	const QDomElement element2 = mGraphics.firstChildElement("nonResizeable");
 	if (!element2.isNull()) {
 		mIsResizeable = false;
 	}
@@ -181,7 +195,7 @@ void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
 
-	QString const className = NameNormalizer::normalize(qualifiedName());
+	const QString className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
 
 	out() << "\tclass " << className << " : public qReal::ElementImpl\n\t{\n"
@@ -198,7 +212,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out () << "\t\tvoid init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}\n\n"
-	<< "\t\tvoid init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports\n"
+	<< "\t\tvoid init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports\n"
 	<< "\t\t\t\t\t\t\t, qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles\n"
 	<< "\t\t\t\t\t\t\t, qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)\n\t\t{\n";
 
@@ -232,7 +246,7 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n";
 
-	out() << "\t\t qReal::ElementImpl *clone() { return NULL; }\n";
+	out() << "\t\t qReal::ElementImpl *clone() { return nullptr; }\n";
 
 	out() << "\t\t~" << className << "() {}\n\n"
 	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
@@ -361,7 +375,7 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 
 	if (!portTypes.empty()) {
 		out() << "\t\tresult ";
-		foreach (QString const &type, portTypes) {
+		foreach (const QString &type, portTypes) {
 			out() << "<< \"" << type << "\"";
 		}
 		out() << ";\n";

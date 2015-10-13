@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QPointF>
@@ -13,7 +27,7 @@ class EditorManager;
 class GroupNode
 {
 public:
-	GroupNode(QString const &type, QString const &id, QPointF const &position, QString const &parent);
+	GroupNode(const QString &type, const QString &id, const QPointF &position, const QString &parent);
 
 	QString type;
 	QString id;
@@ -24,7 +38,7 @@ public:
 class GroupEdge
 {
 public:
-	GroupEdge(QString const &type, QString const &from, QString const &to);
+	GroupEdge(const QString &type, const QString &from, const QString &to);
 
 	QString type;
 	QString from;
@@ -35,32 +49,32 @@ class QRGUI_PLUGINS_MANAGER_EXPORT Pattern
 {
 public:
 	Pattern();
-	Pattern(QString const &editor, QString const &diagram, QString const &name
-			, QString const &inNode, QString const &outNode, QString const &rootNode);
+	Pattern(const QString &editor, const QString &diagram, const QString &name
+			, const QString &inNode, const QString &outNode, const QString &rootNode);
 
-	void setName(QString const &name);
+	void setName(const QString &name);
 	QString name() const;
 
-	void setEditor(QString const &editor);
+	void setEditor(const QString &editor);
 	QString editor() const;
 
-	void setDiagram(QString const &diagram);
+	void setDiagram(const QString &diagram);
 	QString diagram() const;
 
-	void addNode(QString const &type, QString const &id, QPointF const &pos, QString const &parent);
-	void addEdge(QString const &type, QString const &from, QString const &to);
+	void addNode(const QString &type, const QString &id, const QPointF &pos, const QString &parent);
+	void addEdge(const QString &type, const QString &from, const QString &to);
 
 	QList<GroupNode> nodes() const;
 	QList<GroupEdge> edges() const;
 
 	QString inNode() const;
 	QString outNode() const;
-	void setInNode(QString const &id);
-	void setOutNode(QString const &id);
+	void setInNode(const QString &id);
+	void setOutNode(const QString &id);
 
 	QString rootNode() const;
 	QString rootType() const;
-	void setRootNode(QString const &rootId);
+	void setRootNode(const QString &rootId);
 
 	QPointF size() const;
 	void countSize(EditorManager *editorManager);
@@ -77,7 +91,7 @@ private:
 	QPointF mSize;
 };
 
-inline bool operator==(GroupNode const &node1, GroupNode const &node2)
+inline bool operator==(const GroupNode &node1, const GroupNode &node2)
 {
 	return node1.type == node2.type
 			&& node1.id == node2.id

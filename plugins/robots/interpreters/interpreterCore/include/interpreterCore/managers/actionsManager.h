@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QList>
@@ -49,26 +63,51 @@ public:
 	/// Action that shows settings page with "robots" tab selected.
 	QAction &robotSettingsAction();
 
+	/// Action that allows to save current model as an exercise with different limitations, such as inability to
+	/// change world in 2d model or configuration of robot sensors.
+	QAction &exportExerciseAction();
+
+	/// Action that changes current UI mode to debug: hides palette, property editor and so on,
+	/// opens variable values dock and maybe 2D model dock.
+	QAction &debugModeAction();
+
+	/// Action that changes current UI mode to edit: show palette and property editor if we are
+	/// editing diagram or variables list if we are editing the code.
+	/// Closes variable values dock and maybe 2D model dock.
+	QAction &editModeAction();
+
+	/// Action that opens first robot behaviour diagram in current model or start page if no save opened.
+	QAction &homeAction();
+
+	/// Provides a possibility to transfer hotkey configurer to engine.
+	void appendHotKey(const QString &actionId, const QString &label, QAction &action);
+
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
-	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
+	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model);
 
-	/// Reacts to selection of a new tab on scene.
-	/// @param activeTabId - id of a root element of new active tab.
-	void onActiveTabChanged(qReal::Id const &activeTabId);
+	/// Reacts to selection of a new tab in main window.
+	/// @param info - the information about the new active tab.
+	void onActiveTabChanged(const qReal::TabInfo &info);
 
 private slots:
 	void onRobotModelActionChecked(QObject *robotModelObject);
 
 private:
-	QString kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const;
+	QString kitIdOf(kitBase::robotModel::RobotModelInterface &model) const;
 
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
 	void updateEnabledActions();
 
 	/// Loads actions from kit plugins.
 	void initKitPluginActions();
+
+	/// Sets object names to actions.
+	void giveObjectNames();
+
+	/// Creates action with menu that lets switching between robot models.
+	QAction *produceMenuAction(const QString &kitId, const QString &name, const QList<QAction *> &subActions) const;
 
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
 	KitPluginManager &mKitPluginManager;
@@ -77,17 +116,33 @@ private:
 	RobotModelManager &mRobotModelManager;
 
 	/// Action that runs program
-	QAction mRunAction;
+	QAction *mRunAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that stops program and also stops robot motors
-	QAction mStopRobotAction;
+	QAction *mStopRobotAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Checkable action that establishes connection to robot. If successful,
 	/// action will be checked, if connection lost, it will uncheck
-	QAction mConnectToRobotAction;
+	QAction *mConnectToRobotAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that shows robots tab in settings dialog
 	QAction mRobotSettingsAction;
+
+	/// Action that allows to save current model as an exercise with different limitations, such as inability to
+	/// change world in 2d model or configuration of robot sensors.
+	QAction mExportExerciseAction;
+
+	/// Action that changes current UI mode to debug: hides palette, property editor and so on,
+	/// opens variable values dock and maybe 2D model dock.
+	QAction *mDebugModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
+
+	/// Action that changes current UI mode to edit: show palette and property editor if we are
+	/// editing diagram or variables list if we are editing the code.
+	/// Closess variable values dock and maybe 2D model dock.
+	QAction *mEditModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
+
+	/// Action that opens first robot behaviour diagram in current model or start page if no save opened.
+	QAction *mHomeAction;
 
 	QAction mSeparator1;
 	QAction mSeparator2;
@@ -99,12 +154,13 @@ private:
 	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Actions that are placed on the panel for quick switching between robot models.
-	QMap<QString, qReal::ActionInfo> mRobotModelActions;
-
-	QMap<QString, qReal::ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
+	QMultiMap<QString, qReal::ActionInfo> mRobotModelActions;
 
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
+
+	/// List of additional hotkey customizations obtained from external environment.
+	QList<qReal::HotKeyActionInfo> mAdditionalHotKeyInfos;  // Does not have ownership over underlying QActions.
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

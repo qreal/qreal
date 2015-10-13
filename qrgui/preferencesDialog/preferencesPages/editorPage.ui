@@ -534,23 +534,6 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="labelDistanceLabel">
-        <property name="text">
-         <string>Label distance</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="labelDistanceSlider">
-        <property name="maximum">
-         <number>500</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

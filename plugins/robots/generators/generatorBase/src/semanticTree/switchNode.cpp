@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/semanticTree/switchNode.h"
 
 #include <qrutils/stringUtils.h>
@@ -5,14 +19,14 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SwitchNode::SwitchNode(Id const &idBinded, QObject *parent)
+SwitchNode::SwitchNode(const Id &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
 	, mDefaultBranch(nullptr)
 	, mBranchesMerged(false)
 {
 }
 
-void SwitchNode::addBranch(QString const &value, SemanticNode * const node)
+void SwitchNode::addBranch(const QString &value, SemanticNode * const node)
 {
 	ZoneNode * const zone = new ZoneNode(this);
 	zone->setParentNode(this);
@@ -22,7 +36,7 @@ void SwitchNode::addBranch(QString const &value, SemanticNode * const node)
 	}
 }
 
-void SwitchNode::mergeBranch(QString const &value, NonZoneNode * const node)
+void SwitchNode::mergeBranch(const QString &value, NonZoneNode * const node)
 {
 	Q_ASSERT(node);
 	bind(value, node->parentZone());
@@ -38,7 +52,7 @@ void SwitchNode::setBranchesMergedFlag()
 	mBranchesMerged = true;
 }
 
-QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
+QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	QString result;
 	bool isHead = true;
@@ -66,7 +80,7 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QS
 	return result;
 }
 
-void SwitchNode::bind(QString const &value, ZoneNode *zone)
+void SwitchNode::bind(const QString &value, ZoneNode *zone)
 {
 	if (value.isEmpty()) {
 		mDefaultBranch = zone;
@@ -77,7 +91,7 @@ void SwitchNode::bind(QString const &value, ZoneNode *zone)
 
 QString SwitchNode::generatePart(generatorBase::GeneratorCustomizer &customizer
 		, int indent
-		, QString const &indentString
+		, const QString &indentString
 		, ZoneNode * const zone
 		, generatorBase::simple::AbstractSimpleGenerator *generator) const
 {

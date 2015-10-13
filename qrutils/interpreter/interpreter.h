@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -28,12 +42,12 @@ public:
 	/// @param blocksTable - an entity that will produce logic of the block by its id.
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
 	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
-	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+	Interpreter(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, BlocksTableInterface &blocksTable
 			, qrtext::LanguageToolboxInterface &languageToolbox
-			, Id const &initialNodeType);
+			, const Id &initialNodeType);
 
 	~Interpreter();
 
@@ -50,7 +64,9 @@ signals:
 
 private slots:
 	void threadStopped();
-	void newThread(qReal::Id const &startBlockId);
+	void newThread(const qReal::Id &startBlockId, const QString &threadId);
+	void killThread(const QString &threadId);
+	void sendMessage(const QString &threadId, const QString &message);
 
 private:
 	enum InterpreterState {
@@ -58,22 +74,22 @@ private:
 		, idle
 	};
 
-	void addThread(Thread * const thread);
+	void addThread(Thread * const thread, const QString &threadId);
 
-	void reportError(QString const &message);
+	void reportError(const QString &message);
 
-	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
 	InterpreterState mState;
-	QList<Thread *> mThreads;  // Has ownership
+	QHash<QString, Thread *> mThreads;  // Has ownership
 	BlocksTableInterface &mBlocksTable;  // Has ownership
 
 	/// Reference to a parser to be able to clear parser state when starting interpretation.
 	qrtext::LanguageToolboxInterface &mLanguageToolbox;
 
-	Id const mInitialNodeType;
+	const Id mInitialNodeType;
 };
 
 }

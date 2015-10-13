@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "abstractModel.h"
 
 #include <QtCore/QUuid>
-#include <QtCore/QDebug>
+
+#include <qrkernel/definitions.h>
 
 using namespace qReal;
 using namespace models::details::modelsImplementation;
@@ -11,7 +26,7 @@ AbstractModel::AbstractModel(const EditorManagerInterface &editorManagerInterfac
 {
 }
 
-Qt::ItemFlags AbstractModel::flags(QModelIndex const &index) const
+Qt::ItemFlags AbstractModel::flags(const QModelIndex &index) const
 {
 	if (index.isValid()) {
 		return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled
@@ -59,7 +74,7 @@ QPersistentModelIndex AbstractModel::rootIndex() const
 	return index(mRootItem);
 }
 
-AbstractModelItem *AbstractModel::parentAbstractItem(QModelIndex const &parent) const
+AbstractModelItem *AbstractModel::parentAbstractItem(const QModelIndex &parent) const
 {
 	return parent.isValid()
 		? static_cast<AbstractModelItem*>(parent.internalPointer())
@@ -71,7 +86,7 @@ QModelIndex AbstractModel::parent(const QModelIndex &index) const
 	if (index.isValid()) {
 		AbstractModelItem *item = static_cast<AbstractModelItem *>(index.internalPointer());
 		AbstractModelItem *parentItem = item->parent();
-		if (parentItem == mRootItem || parentItem == NULL) {
+		if (parentItem == mRootItem || parentItem == nullptr) {
 			return QModelIndex();
 		} else {
 			return createIndex(parentItem->row(), 0, parentItem);
@@ -81,11 +96,11 @@ QModelIndex AbstractModel::parent(const QModelIndex &index) const
 	}
 }
 
-QModelIndex AbstractModel::index(AbstractModelItem const * const item) const
+QModelIndex AbstractModel::index(const AbstractModelItem * const item) const
 {
 	QList<int> rowCoords;
 
-	for (AbstractModelItem const *curItem = item;
+	for (const AbstractModelItem *curItem = item;
 		curItem != mRootItem; curItem = curItem->parent())
 	{
 		rowCoords.append(const_cast<AbstractModelItem *>(curItem)->row());
@@ -100,7 +115,7 @@ QModelIndex AbstractModel::index(AbstractModelItem const * const item) const
 	return result;
 }
 
-QString AbstractModel::findPropertyName(Id const &id, int const role) const
+QString AbstractModel::findPropertyName(const Id &id, const int role) const
 {
 	// In case of a property described in element itself (in metamodel),
 	// role is simply an index of a property in a list of properties.
@@ -122,12 +137,12 @@ QStringList AbstractModel::mimeTypes() const
 	return types;
 }
 
-EditorManagerInterface const &AbstractModel::editorManagerInterface() const
+const EditorManagerInterface &AbstractModel::editorManagerInterface() const
 {
 	return mEditorManagerInterface;
 }
 
-QModelIndex AbstractModel::indexById(Id const &id) const
+QModelIndex AbstractModel::indexById(const Id &id) const
 {
 	if (mModelItems.keys().contains(id)) {
 		return index(mModelItems.find(id).value());
@@ -136,7 +151,7 @@ QModelIndex AbstractModel::indexById(Id const &id) const
 	return QModelIndex();
 }
 
-Id AbstractModel::idByIndex(QModelIndex const &index) const
+Id AbstractModel::idByIndex(const QModelIndex &index) const
 {
 	AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 	return mModelItems.key(item);
@@ -147,8 +162,8 @@ Id AbstractModel::rootId() const
 	return mRootItem->id();
 }
 
-bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row
-		, int column, QModelIndex const &parent)
+bool AbstractModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row
+		, int column, const QModelIndex &parent)
 {
 	Q_UNUSED(row)
 	Q_UNUSED(column)
@@ -190,7 +205,7 @@ void AbstractModel::reinit()
 	cleanupTree(mRootItem);
 	mModelItems.clear();
 	delete mRootItem;
-	mRootItem = createModelItem(Id::rootId(), NULL);
+	mRootItem = createModelItem(Id::rootId(), nullptr);
 	beginResetModel();
 	endResetModel();
 	init();

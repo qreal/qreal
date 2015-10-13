@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtWidgets/QApplication>
 
 #include "visualDebuggerPlugin.h"
@@ -10,11 +24,11 @@ using namespace utils;
 QString const blockDiagram = "BlockDiagram";
 
 VisualDebuggerPlugin::VisualDebuggerPlugin()
-		: mVisualDebugger(NULL)
-		, mDebuggerConnector(NULL)
-		, mErrorReporter(NULL)
-		, mWatchListWindow(NULL)
-		, mParser(NULL)
+		: mVisualDebugger(nullptr)
+		, mDebuggerConnector(nullptr)
+		, mErrorReporter(nullptr)
+		, mWatchListWindow(nullptr)
+		, mParser(nullptr)
 		, mPreferencesPage(new VisualDebuggerPreferencesPage())
 {
 }
@@ -36,7 +50,8 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 
 	mDebuggerConnector = new DebuggerConnector(this);
 
-	connect(&configurator.systemEvents(), SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(qReal::Id)));
+	connect(&configurator.systemEvents(), &SystemEvents::activeTabChanged
+			, this, &VisualDebuggerPlugin::activeTabChanged);
 }
 
 QPair<QString, gui::PreferencesPage *> VisualDebuggerPlugin::preferencesPage()
@@ -49,17 +64,17 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	mVisualDebugMenu = new QMenu(tr("Visual debug"));
 	ActionInfo visualDebugMenuInfo(mVisualDebugMenu, "tools");
 
-	mDebugAction = new QAction(tr("Interpret (automatic)"), NULL);
+	mDebugAction = new QAction(tr("Interpret (automatic)"), nullptr);
 	mDebugAction->setShortcut(QKeySequence(Qt::Key_F5));
 	connect(mDebugAction, SIGNAL(triggered()), this, SLOT(debug()));
 	mVisualDebugMenu->addAction(mDebugAction);
 
-	mDebugSingleStepAction = new QAction(tr("Interpret (one step)"), NULL);
+	mDebugSingleStepAction = new QAction(tr("Interpret (one step)"), nullptr);
 	mDebugSingleStepAction->setShortcut(QKeySequence(Qt::Key_F6));
 	connect(mDebugSingleStepAction, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
 	mVisualDebugMenu->addAction(mDebugSingleStepAction);
 
-	mWatchListAction = new QAction(tr("Show watch list"), NULL);
+	mWatchListAction = new QAction(tr("Show watch list"), nullptr);
 	mWatchListAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
 	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
 	mVisualDebugMenu->addAction(mWatchListAction);
@@ -67,57 +82,57 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	mVisualDebugWithGdbMenu = new QMenu(tr("Visual debug (with gdb)"));
 	ActionInfo visualDebugWithGdbMenuInfo(mVisualDebugWithGdbMenu, "tools");
 
-	mGenerateAndBuildAction = new QAction(tr("Generate and build"), NULL);
+	mGenerateAndBuildAction = new QAction(tr("Generate and build"), nullptr);
 	mGenerateAndBuildAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
 	connect(mGenerateAndBuildAction, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
 	mVisualDebugWithGdbMenu->addAction(mGenerateAndBuildAction);
 
-	mStartDebuggerAction = new QAction(tr("Start debugger (gdb)"), NULL);
+	mStartDebuggerAction = new QAction(tr("Start debugger (gdb)"), nullptr);
 	mStartDebuggerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
 	connect(mStartDebuggerAction, SIGNAL(triggered()), this, SLOT(startDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mStartDebuggerAction);
 
-	mConfigureAction = new QAction(tr("Configure"), NULL);
+	mConfigureAction = new QAction(tr("Configure"), nullptr);
 	mConfigureAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F6));
 	connect(mConfigureAction, SIGNAL(triggered()), this, SLOT(configureDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mConfigureAction);
 
-	mBreakMainAction = new QAction(tr("Set breakpoint at start"), NULL);
+	mBreakMainAction = new QAction(tr("Set breakpoint at start"), nullptr);
 	mBreakMainAction->setShortcut(QKeySequence(Qt::Key_F9));
 	connect(mBreakMainAction, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
 	mVisualDebugWithGdbMenu->addAction(mBreakMainAction);
 
-	mSetBreakpointsAction = new QAction(tr("Set breakpoints on each element"), NULL);
+	mSetBreakpointsAction = new QAction(tr("Set breakpoints on each element"), nullptr);
 	mSetBreakpointsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F9));
 	connect(mSetBreakpointsAction, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mSetBreakpointsAction);
 
-	mRunAction = new QAction(tr("run"), NULL);
+	mRunAction = new QAction(tr("run"), nullptr);
 	mRunAction->setShortcut(QKeySequence(Qt::Key_F8));
 	connect(mRunAction, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mRunAction);
 
-	mNextAction = new QAction(tr("next"), NULL);
+	mNextAction = new QAction(tr("next"), nullptr);
 	mNextAction->setShortcut(QKeySequence(Qt::Key_F10));
 	connect(mNextAction, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
 	mVisualDebugWithGdbMenu->addAction(mNextAction);
 
-	mContAction = new QAction(tr("cont"), NULL);
+	mContAction = new QAction(tr("cont"), nullptr);
 	mContAction->setShortcut(QKeySequence(Qt::Key_F11));
 	connect(mContAction, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
 	mVisualDebugWithGdbMenu->addAction(mContAction);
 
-	mKillAction = new QAction(tr("kill"), NULL);
+	mKillAction = new QAction(tr("kill"), nullptr);
 	mKillAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_K));
 	connect(mKillAction, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mKillAction);
 
-	mStartDebuggingAction = new QAction(tr("Start debug (automatic)"), NULL);
+	mStartDebuggingAction = new QAction(tr("Start debug (automatic)"), nullptr);
 	mStartDebuggingAction->setShortcut(QKeySequence(Qt::Key_F7));
 	connect(mStartDebuggingAction, SIGNAL(triggered()), this, SLOT(startDebugging()));
 	mVisualDebugWithGdbMenu->addAction(mStartDebuggingAction);
 
-	mCloseAllAction = new QAction(tr("Cancel debug"), NULL);
+	mCloseAllAction = new QAction(tr("Cancel debug"), nullptr);
 	mCloseAllAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F12));
 	connect(mCloseAllAction, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
 	mVisualDebugWithGdbMenu->addAction(mCloseAllAction);
@@ -130,9 +145,9 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	return mActionInfos;
 }
 
-void VisualDebuggerPlugin::activeTabChanged(Id const &rootElementId)
+void VisualDebuggerPlugin::activeTabChanged(TabInfo const &info)
 {
-	bool const enabled = rootElementId.diagram() == blockDiagram;
+	bool const enabled = info.rootDiagramId().diagram() == blockDiagram;
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		if (actionInfo.isAction()) {
 			actionInfo.action()->setEnabled(enabled);

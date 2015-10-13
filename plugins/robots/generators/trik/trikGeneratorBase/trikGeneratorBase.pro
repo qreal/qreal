@@ -1,43 +1,47 @@
-QT += widgets
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-CONFIG += c++11
-
-TEMPLATE = lib
-CONFIG += plugin
-
-DESTDIR = $$PWD/../../../../../bin/
 TARGET = robots-trik-generator-base
 
-MOC_DIR = .moc
-RCC_DIR = .moc
-OBJECTS_DIR = .obj
+include(../../../../../global.pri)
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
-		-lrobots-generator-base -lrobots-interpreter-base \
+QT += widgets
+
+TEMPLATE = lib
+
+includes(plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/trikKit \
+		plugins/robots/utils \
+		qrtext \
+)
+
+links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots-trik-kit)
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
 
-INCLUDEPATH += \
-	$$PWD/include \
-	$$PWD/../../generatorBase/include/ \
-	$$PWD/../../../interpreters/interpreterBase/include \
-	$$PWD/../../../../../ \
-	$$PWD/../../../../../qrgui \
-	$$PWD/../../../../../qrtext/include \
-
-# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-!macx {
-	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../../../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
-}
-
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
+	$$PWD/include/trikGeneratorBase/robotModel/generatorModelExtensionInterface.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikV62GeneratorRobotModel.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikV6GeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
@@ -70,12 +74,16 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.h \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.h \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.h \
+	$$PWD/src/simpleGenerators/fileWriteGenerator.h \
+	$$PWD/src/simpleGenerators/removeFileGenerator.h \
 
 SOURCES += \
 	$$PWD/src/trikGeneratorPluginBase.cpp \
 	$$PWD/src/trikMasterGeneratorBase.cpp \
 	$$PWD/src/trikGeneratorCustomizer.cpp \
 	$$PWD/src/trikGeneratorFactory.cpp \
+	$$PWD/src/robotModel/trikV62GeneratorRobotModel.cpp \
+	$$PWD/src/robotModel/trikV6GeneratorRobotModel.cpp \
 	$$PWD/src/parts/trikDeviceVariables.cpp \
 	$$PWD/src/converters/backgroundColorConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \
@@ -106,3 +114,5 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitPadPressGenerator.cpp \
+	$$PWD/src/simpleGenerators/fileWriteGenerator.cpp \
+	$$PWD/src/simpleGenerators/removeFileGenerator.cpp \

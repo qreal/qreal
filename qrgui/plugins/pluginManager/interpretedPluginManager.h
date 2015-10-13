@@ -1,4 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
+
+#include <QtWidgets/QAction>
 
 #include <qrutils/pluginManagers/pluginManager.h>
 
@@ -17,12 +33,15 @@ public:
 	/// Inits interpreted plugins.
 	/// @param configurator - information about model
 	/// @param metamodelRepoApi - information about metamodel
-	void init(PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
+	void init(const PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi
+			, EditorManagerInterface *editorManagerInterface);
 
 	/// Returns list of actions of all plugins.
 	QList<ActionInfo> actions() const;
 	/// Returns list of all preferences pages.
 	QList<QPair<QString, gui::PreferencesPage *>> preferencesPages() const;
+	/// Returns list of menu actions for elements in palette.
+	QList<QAction *> menuActionsList() const;
 
 	/// Returns a multimap of project conveters to editors whoose diagrams they convert.
 	/// @warning The result is obtained each time from scratch when you call this method so better to memorize it.
@@ -36,7 +55,7 @@ public:
 	/// Notifies plugins about change of currently open tab. If last tab is closed or current
 	/// tab is not diagram at all (text editor, for example), rootElementId is Id()
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
-	void activeTabChanged(Id const & rootElementId);
+	void activeTabChanged(const Id & rootElementId);
 
 private:
 	QList<HotKeyActionInfo> hotKeyActions() const;

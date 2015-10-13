@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "semanticNode.h"
@@ -29,11 +43,11 @@ public:
 	/// Removes last node from children list without deleting the child itself
 	SemanticNode *removeLast();
 
-	/// Removes all the children starting from specified node without deletting
+	/// Removes all the children starting from specified node without deleting
 	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
-	/// Returns parent semantic node. The result is never NULL.
+	/// Returns parent semantic node. The result is never nullptr.
 	SemanticNode *parentNode();
 
 	/// Returns an immediate child folowing after the given node or nullptr if no such node
@@ -42,7 +56,7 @@ public:
 
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
 	QLinkedList<SemanticNode *> mChildren;

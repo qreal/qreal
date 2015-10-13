@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>TRIK Studio</Name>
-    <Version>1.0.0</Version>
+    <Version>3.1.1</Version>
     <Title>TRIK Studio</Title>
-    <Publisher>SPbSU</Publisher>
-    <ProductUrl>http://robots.qreal.com</ProductUrl>
+    <Publisher>CyberTech Labs Ltd.</Publisher>
+    <ProductUrl>http://robots.qreal.ru</ProductUrl>
 
     <InstallerWindowIcon>../images/trik-studio.ico</InstallerWindowIcon>
     <InstallerApplicationIcon>../images/trik-studio.ico</InstallerApplicationIcon>
@@ -12,17 +12,19 @@
     <Watermark>../images/trik-studio-watermark.png</Watermark>
 
     <StartMenuDir>TRIK Studio</StartMenuDir>
-    <UninstallerName>maintenance</UninstallerName>
+    <MaintenanceToolName>maintenance</MaintenanceToolName>
     <RemoveTargetDir>true</RemoveTargetDir>
     <AllowSpaceInPath>false</AllowSpaceInPath>
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
-    <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
     <TargetDir>@HomeDir@/TRIKStudio</TargetDir>
     <AdminTargetDir>@HomeDir@/TRIKStudio</AdminTargetDir>
 
-<!-- TODO: Due to some issues in QtIFW if user modifies initial target dir RunProgram is still substitutes here initial value. Uncomment it when fixed -->
-<!--    <RunProgram>trik-studio</RunProgram> -->
+    <RunProgram>bash</RunProgram>
+    <RunProgramArguments>
+        <Argument>-c</Argument>
+        <Argument>export LD_LIBRARY_PATH=@TargetDir@ &amp;&amp; @TargetDir@/trik-studio</Argument>
+    </RunProgramArguments>
 
     <RemoteRepositories>
         <Repository>

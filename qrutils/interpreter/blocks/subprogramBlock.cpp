@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "subprogramBlock.h"
 
 #include <qrutils/nameNormalizer.h>
@@ -10,18 +24,18 @@ SubprogramBlock::SubprogramBlock()
 
 void SubprogramBlock::run()
 {
-	Id const logicalId = mGraphicalModelApi->logicalId(id());
+	const Id logicalId = mGraphicalModelApi->logicalId(id());
 
-	QString const name = mLogicalModelApi->name(logicalId);
+	const QString name = mLogicalModelApi->name(logicalId);
 
-	QString const validName = utils::NameNormalizer::normalizeStrongly(name, false);
+	const QString validName = utils::NameNormalizer::normalizeStrongly(name, false);
 	if (validName.isEmpty()) {
 		error(tr("Please enter valid c-style name for subprogram \"") + name + "\"");
 		return;
 	}
 
-	Id const logicalDiagram = mLogicalModelApi->logicalRepoApi().outgoingExplosion(logicalId);
-	IdList const diagrams = mGraphicalModelApi->graphicalIdsByLogicalId(logicalDiagram);
+	const Id logicalDiagram = mLogicalModelApi->logicalRepoApi().outgoingExplosion(logicalId);
+	const IdList diagrams = mGraphicalModelApi->graphicalIdsByLogicalId(logicalDiagram);
 	if (!diagrams.isEmpty()) {
 		emit stepInto(diagrams[0]);
 	}

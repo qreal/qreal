@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "shape.h"
 #include "../utils/defs.h"
 #include "../diagram.h"
@@ -12,7 +26,7 @@
 
 using namespace qrmc;
 
-Shape::Shape(QString const &shape) : mNode(NULL)
+Shape::Shape(const QString &shape) : mNode(nullptr)
 {
 	init(shape)	;
 }
@@ -26,7 +40,7 @@ void Shape::setNode(GraphicType *node)
 	mNode = node;
 }
 
-void Shape::init(QString const &shape)
+void Shape::init(const QString &shape)
 {
 	if (shape.isEmpty())
 		return;
@@ -52,7 +66,7 @@ void Shape::init(QString const &shape)
 	initPorts(graphics);
 }
 
-void Shape::initLabels(QDomElement const &graphics)
+void Shape::initLabels(const QDomElement &graphics)
 {
 	int count = 1;
 	for (QDomElement element = graphics.firstChildElement("labels").firstChildElement("label");
@@ -71,7 +85,7 @@ void Shape::initLabels(QDomElement const &graphics)
 
 }
 
-void Shape::initPorts(QDomElement const &graphics)
+void Shape::initPorts(const QDomElement &graphics)
 {
 	QDomElement portsElement = graphics.firstChildElement("ports");
 	if (portsElement.isNull()) {
@@ -83,7 +97,7 @@ void Shape::initPorts(QDomElement const &graphics)
 	return;
 }
 
-void Shape::initPointPorts(QDomElement const &portsElement)
+void Shape::initPointPorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 		!portElement.isNull();
@@ -99,7 +113,7 @@ void Shape::initPointPorts(QDomElement const &portsElement)
 	return;
 }
 
-void Shape::initLinePorts(QDomElement const &portsElement)
+void Shape::initLinePorts(const QDomElement &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 		!portElement.isNull();
@@ -149,9 +163,6 @@ void Shape::generate(QString &classTemplate) const
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
 	}
-	if (!hasLinePorts()) {
-		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
-	}
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
 	}
@@ -161,13 +172,15 @@ void Shape::generate(QString &classTemplate) const
 								: "";
 	QString portRendererLine = (hasLinePorts() || hasPointPorts())
 								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
-								: nodeIndent + "Q_UNUSED(portRenderer)";
+								: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
 	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
 							.replace(nodeWidthTag, QString::number(mWidth))
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
-	foreach(Port *port, mPorts)
+	for (Port *port : mPorts) {
+		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());
 		portsInitLine += port->generateInit(compiler) + endline;
+	}
 
 	QString labelsInitLine;
 	QString labelsUpdateLine;
@@ -192,6 +205,11 @@ void Shape::generate(QString &classTemplate) const
 			.replace(labelDefinitionTag, labelsDefinitionLine);
 }
 
+QList<Port*> Shape::getPorts() const
+{
+	return mPorts;
+}
+
 void Shape::generateSdf() const
 {
 	if (!hasPicture()) {
@@ -201,7 +219,7 @@ void Shape::generateSdf() const
 	QDir dir;
 	changeDir(dir);
 
-	QString const fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
+	const QString fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
@@ -243,7 +261,7 @@ bool Shape::hasPicture() const
 	return !mPicture.isEmpty();
 }
 
-QString Shape::generateResourceLine(QString const &resourceTemplate) const
+QString Shape::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString result;
 

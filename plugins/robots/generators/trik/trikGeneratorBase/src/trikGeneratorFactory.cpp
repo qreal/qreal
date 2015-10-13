@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikGeneratorFactory.h"
 
 #include <generatorBase/converters/regexpMultiConverter.h>
@@ -31,6 +45,8 @@
 #include "simpleGenerators/waitGamepadDisconnectGenerator.h"
 #include "simpleGenerators/waitGamepadWheelGenerator.h"
 #include "simpleGenerators/waitPadPressGenerator.h"
+#include "simpleGenerators/fileWriteGenerator.h"
+#include "simpleGenerators/removeFileGenerator.h"
 #include "parts/trikDeviceVariables.h"
 
 using namespace trik;
@@ -38,13 +54,13 @@ using namespace trik::simple;
 using namespace generatorBase;
 using namespace generatorBase::simple;
 
-TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
+TrikGeneratorFactory::TrikGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, lua::LuaProcessor &luaProcessor
-		, QString const &generatorName)
+		, const QStringList &pathsToTemplates)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
-	, mGeneratorName(generatorName)
+	, mPathsToTemplates(pathsToTemplates)
 {
 }
 
@@ -52,10 +68,10 @@ TrikGeneratorFactory::~TrikGeneratorFactory()
 {
 }
 
-AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &id
+AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &id
 		, GeneratorCustomizer &customizer)
 {
-	QString const elementType = id.element();
+	const QString elementType = id.element();
 	if (elementType.contains("EnginesForward")
 			|| elementType.contains("EnginesBackward")
 			|| elementType.contains("AngularServo"))
@@ -99,18 +115,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new InitCameraGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikDetectorToVariable") {
 		return new DetectorToVariableGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikWaitForEnter") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
-	} else if (elementType == "TrikWaitForLeft") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
-	} else if (elementType == "TrikWaitForRight") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
-	} else if (elementType == "TrikWaitForUp") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForUp.t", this);
-	} else if (elementType == "TrikWaitForDown") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
-	} else if (elementType == "TrikWaitForPower") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
+	} else if (elementType == "TrikWaitForButton") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForMotion") {
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {
@@ -125,14 +131,18 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new WaitGamepadConnectGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitGamepadDisconnect") {
 		return new WaitGamepadDisconnectGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWriteToFile") {
+		return new FileWriteGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikRemoveFile") {
+		return new RemoveFileGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
-QString TrikGeneratorFactory::pathToTemplates() const
+QStringList TrikGeneratorFactory::pathsToTemplates() const
 {
-	return ":/" + mGeneratorName + "/templates";
+	return mPathsToTemplates; //{":/" + mGeneratorName + "/templates"};
 }
 
 generatorBase::parts::DeviceVariables *TrikGeneratorFactory::deviceVariables() const

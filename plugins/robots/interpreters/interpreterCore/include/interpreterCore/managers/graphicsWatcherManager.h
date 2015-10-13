@@ -1,22 +1,36 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
 
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
-#include <interpreterBase/devicesConfigurationProvider.h>
+#include <kitBase/devicesConfigurationProvider.h>
 
 #include <qrtext/debuggerInterface.h>
 
 namespace interpreterCore {
 
 /// Incapsulates inner operations on managing graphics watcher in the dock window.
-class GraphicsWatcherManager : public QObject, public interpreterBase::DevicesConfigurationProvider
+class GraphicsWatcherManager : public QObject, public kitBase::DevicesConfigurationProvider
 {
 public:
 	/// Constructor.
 	/// @param parser - blocks parser, used to show values of variables on graphs.
 	/// @param parent - parent of this widget in Qt widget hierarchy.
-	explicit GraphicsWatcherManager(qrtext::DebuggerInterface const &parser, QObject *parent = 0);
+	explicit GraphicsWatcherManager(const qrtext::DebuggerInterface &parser, QObject *parent = 0);
 
 	/// Returns the graphics watcher widget itself for placing it into dock.
 	/// Note that if this method will not be called, nobody will delete a widget, which will result in memleak.
@@ -30,12 +44,12 @@ public slots:
 	void forceStop();
 
 private:
-	void onDeviceConfigurationChanged(QString const &robotModel
-			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &sensor
+	void onDeviceConfigurationChanged(const QString &robotModel
+			, const kitBase::robotModel::PortInfo &port
+			, const kitBase::robotModel::DeviceInfo &sensor
 			, Reason reason) override;
 
-	void updateSensorsList(QString const &currentRobotModel);
+	void updateSensorsList(const QString &currentRobotModel);
 
 	utils::sensorsGraph::SensorsGraph *mWatcher;  // Doesn`t have ownership
 };

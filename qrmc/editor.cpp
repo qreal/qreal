@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "editor.h"
 #include "metaCompiler.h"
 #include "diagram.h"
@@ -14,6 +28,7 @@ Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qR
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
 	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
+	mNameOfMetamodel = mApi->stringProperty(mId, "name");
 	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
@@ -44,7 +59,7 @@ bool Editor::load()
 		if (metamodelName.isEmpty())
 			continue;
 
-		Editor *includedEditor = NULL;
+		Editor *includedEditor = nullptr;
 		IdList metamodels = mApi->elementsByType(metamodelDiagram);
 		foreach(Id metamodel, metamodels) {
 			if (!mApi->isLogicalElement(metamodel))
@@ -78,7 +93,7 @@ bool Editor::load()
 
 		qDebug() << "\tchildren:" << mApi->children(diagramId).size();
 		QString diagramName = mApi->name(diagramId);
-		Diagram const *existingDiagram = mMetaCompiler->getDiagram(diagramName);
+		const Diagram *existingDiagram = mMetaCompiler->getDiagram(diagramName);
 		if (existingDiagram) {
 			qDebug() << "ERROR: diagram" << diagramName << "has been already loaded";
 			return false;
@@ -109,7 +124,7 @@ MetaCompiler* Editor::metaCompiler()
 	return mMetaCompiler;
 }
 
-Type* Editor::findType(QString const &name)
+Type* Editor::findType(const QString &name)
 {
 	foreach (Diagram *diagram, mDiagrams.values()) {
 		foreach (Type *type, diagram->types()) {
@@ -120,15 +135,15 @@ Type* Editor::findType(QString const &name)
 
 	foreach (Editor *editor, mIncludes) {
 		Type *type = editor->findType(name);
-		if (type != NULL && type->qualifiedName() == name)
+		if (type != nullptr && type->qualifiedName() == name)
 			return type;
 	}
-	return NULL;
+	return nullptr;
 }
 
 QSet<EnumType*> Editor::getAllEnumTypes()
 {
-	EnumType *current = NULL;
+	EnumType *current = nullptr;
 	QSet<EnumType*> result;
 
 	foreach (Diagram *diagram, mDiagrams.values()) {
@@ -146,11 +161,31 @@ QSet<EnumType*> Editor::getAllEnumTypes()
 	return result;
 }
 
-Diagram* Editor::findDiagram(QString const &name)
+Diagram* Editor::findDiagram(const QString &name)
 {
 	if (mDiagrams.contains(name))
 		return mDiagrams[name];
-	return NULL;
+	return nullptr;
+}
+
+QStringList Editor::getAllPortNames() const
+{
+	QStringList result;
+
+	for (const Diagram * const diagram : mDiagrams.values()) {
+		for (const Type * const type : diagram->types()) {
+			if (dynamic_cast<const Port * const>(type)) {
+				result << type->name();
+			}
+		}
+	}
+
+	for (const Editor * const editor : mIncludes) {
+		result += editor->getAllPortNames();
+	}
+
+	result.removeDuplicates();
+	return result;
 }
 
 QMap<QString, Diagram*> Editor::diagrams()
@@ -163,10 +198,10 @@ QString Editor::name()
 	return mName;
 }
 
-void Editor::generate(QString const &headerTemplate, QString const &sourceTemplate,
-					QString const &nodeTemplate, QString const &edgeTemplate,
-					QString const &elementsHeaderTemplate, QString const &resourceTemplate,
-					QString const &projectTemplate, QMap<QString, QString> const &utils)
+void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate,
+					const QString &nodeTemplate, const QString &edgeTemplate,
+					const QString &elementsHeaderTemplate, const QString &resourceTemplate,
+					const QString &projectTemplate, QMap<QString, QString> const &utils)
 {
 	qDebug() << "generating plugin " << mName;
 
@@ -177,13 +212,13 @@ void Editor::generate(QString const &headerTemplate, QString const &sourceTempla
 	mElementsHeaderTemplate = elementsHeaderTemplate;
 
 	generatePluginHeader(headerTemplate);
-	generatePluginSource();
 	generateElementsClasses();
+	generatePluginSource();
 	generateResourceFile(resourceTemplate);
 	generateProjectFile(projectTemplate);
 }
 
-bool Editor::generatePluginHeader(QString const &hdrTemplate)
+bool Editor::generatePluginHeader(const QString &hdrTemplate)
 {
 	QString headerTemplate = hdrTemplate;
 	qDebug() << "generating plugin header for " << mName;
@@ -202,7 +237,7 @@ bool Editor::generatePluginHeader(QString const &hdrTemplate)
 		return false;
 	}
 
-	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)); // header requires just plugin name customization
+	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mNameOfMetamodel));
 	QTextStream out(&pluginHeaderFile);
 	out.setCodec("UTF-8");
 	out << headerTemplate;
@@ -233,12 +268,15 @@ bool Editor::generatePluginSource()
 	generateDiagramNodeNamesMap();
 	generateNamesMap();
 	generatePropertyDisplayedNamesMap();
+	generateElementDescriptionMap();
 	generateMouseGesturesMap();
 	generatePropertiesMap();
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
+	generatePropertyNames();
 	generateReferenceProperties();
+	generatePortTypes();
 	generateConnections();
 	generateUsages();
 	generateIsNodeOrEdge();
@@ -247,7 +285,7 @@ bool Editor::generatePluginSource()
 	generateParentsMap();
 
 	// inserting plugin name all over the template
-	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mName));
+	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mNameOfMetamodel));
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
@@ -295,7 +333,7 @@ bool Editor::generateElementsClasses()
 
 }
 
-bool Editor::generateResourceFile(QString const &resourceTemplate)
+bool Editor::generateResourceFile(const QString &resourceTemplate)
 {
 	qDebug() << "generating resource file for " << mName;
 	QDir dir;
@@ -314,7 +352,7 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 	}
 
 	QString resourceBody = "";
-	QString const line = mUtilsTemplate[sdfFileTag];
+	const QString line = mUtilsTemplate[sdfFileTag];
 	foreach(Diagram *diagram, mDiagrams) {
 		resourceBody += diagram->generateResourceFile(line);
 	}
@@ -331,7 +369,7 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 
 }
 
-bool Editor::generateProjectFile(QString const &proTemplate)
+bool Editor::generateProjectFile(const QString &proTemplate)
 {
 	QString projectTemplate = proTemplate;
 	qDebug() << "generating project file for " << mName;
@@ -342,15 +380,15 @@ bool Editor::generateProjectFile(QString const &proTemplate)
 	if (!dir.exists(mName))
 		dir.mkdir(mName);
 	dir.cd(mName);
-
-	QString fileName = dir.absoluteFilePath(mName + ".pro");
+	QString nameOfMetamodel = mApi->stringProperty(mId, "name");
+	QString fileName = dir.absoluteFilePath(nameOfMetamodel + ".pro");
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << fileName << "\"";
 		return false;
 	}
 
-	projectTemplate.replace(metamodelNameTag, mName); // .pro-file requires just plugin name customization
+	projectTemplate.replace(metamodelNameTag, mNameOfMetamodel);
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	out << projectTemplate;
@@ -363,7 +401,7 @@ void Editor::generateDiagramsMap()
 {
 	// preparing template for diagramNameMap inits
 	QString initNameMapBody = "";
-	QString const line = mUtilsTemplate[initDiagramNameMapLineTag];
+	const QString line = mUtilsTemplate[initDiagramNameMapLineTag];
 	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNameMapBody += newline.replace(diagramDisplayedNameTag, diagram->displayedName())
@@ -377,7 +415,7 @@ void Editor::generateDiagramNodeNamesMap()
 {
 	// preparing template for diagramNodeNameMap inits
 	QString initNodeNameMapBody = "";
-	QString const line = mUtilsTemplate[initDiagramNodeNameMapLineTag];
+	const QString line = mUtilsTemplate[initDiagramNodeNameMapLineTag];
 	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNodeNameMapBody += newline.replace(diagramNodeNameTag, diagram->nodeName())
@@ -390,104 +428,142 @@ void Editor::generateDiagramNodeNamesMap()
 
 class Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const = 0;
+	virtual ~MethodGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const = 0;
 };
 
 class Editor::NamesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	~NamesGenerator() override {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateNamesMap(lineTemplate);
 	}
 };
 
 class Editor::MouseGesturesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	~MouseGesturesGenerator() override {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateMouseGesturesMap(lineTemplate);
 	}
 };
 
 class Editor::PropertiesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~PropertiesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertiesMap(lineTemplate);
 	}
 };
 
 class Editor::PropertyDefaultsGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~PropertyDefaultsGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertyDefaultsMap(lineTemplate);
 	}
 };
 
 class Editor::PropertyDisplayedNamesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~PropertyDisplayedNamesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertyDisplayedNamesMap(lineTemplate);
+	}
+};
+
+class Editor::ElementDescriptionGenerator: public Editor::MethodGenerator {
+public:
+	virtual ~ElementDescriptionGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generateElementDescriptionMap(lineTemplate);
 	}
 };
 
 class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~ParentsMapGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateParentsMap(lineTemplate);
 	}
 };
 
 class Editor::ContainersGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~ContainersGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateContainers(lineTemplate);
 	}
 };
 
 class Editor::ReferencePropertiesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~ReferencePropertiesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateReferenceProperties(lineTemplate);
+	}
+};
+
+class Editor::PortTypesGenerator: public Editor::MethodGenerator {
+public:
+	virtual ~PortTypesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generatePortTypes(lineTemplate);
+	}
+};
+
+class Editor::PropertyNameGenerator: public Editor::MethodGenerator {
+public:
+	virtual ~PropertyNameGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generatePropertyName(lineTemplate);
 	}
 };
 
 class Editor::ConnectionsGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~ConnectionsGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateConnections(lineTemplate);
 	}
 };
 
 class Editor::UsagesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~UsagesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateUsages(lineTemplate);
 	}
 };
 
 class Editor::FactoryGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~FactoryGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateFactory(lineTemplate);
 	}
 };
 
 class Editor::IsNodeOrEdgeGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~IsNodeOrEdgeGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateIsNodeOrEdge(lineTemplate);
 	}
 };
 
 class Editor::PossibleEdgesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual ~PossibleEdgesGenerator() {}
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePossibleEdges(lineTemplate);
 	}
 };
 
-void Editor::generatePluginMethod(QString const &tag, const MethodGenerator &generator)
+void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator)
 {
 	QString body = "";
-	QString const line = mUtilsTemplate[tag].replace("\\n", "\n");
+	const QString line = mUtilsTemplate[tag].replace("\\n", "\n");
 	foreach(Diagram *diagram, mDiagrams) {
 		body += generator.generate(diagram, line);
 	}
@@ -504,6 +580,11 @@ void Editor::generateNamesMap()
 void Editor::generatePropertyDisplayedNamesMap()
 {
 	generatePluginMethod(initPropertyDisplayedNamesTag, PropertyDisplayedNamesGenerator());
+}
+
+void Editor::generateElementDescriptionMap()
+{
+	generatePluginMethod(elementDescriptionMapTag, ElementDescriptionGenerator());
 }
 
 void Editor::generateParentsMap()
@@ -534,6 +615,16 @@ void Editor::generateContainers()
 void Editor::generateReferenceProperties()
 {
 	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
+}
+
+void Editor::generatePortTypes()
+{
+	generatePluginMethod(getPortTypesLineTag, PortTypesGenerator());
+}
+
+void Editor::generatePropertyNames()
+{
+	generatePluginMethod(getPropertyNameTag, PropertyNameGenerator());
 }
 
 void Editor::generateConnections()

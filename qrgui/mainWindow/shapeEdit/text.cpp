@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "text.h"
 
 #include <QtGui/QCursor>
@@ -6,19 +20,19 @@
 #include <QtGui/QTextCursor>
 
 Text::Text(bool isDynamic)
-	: Item(NULL), mIsDynamicText(isDynamic)
+	: Item(nullptr), mIsDynamicText(isDynamic)
 {
 	mDomElementType = labelType;
 }
 
-Text::Text(int x, int y, QString const &text, bool isDynamic)
-	: Item(NULL), mIsDynamicText(isDynamic)
+Text::Text(int x, int y, const QString &text, bool isDynamic)
+	: Item(nullptr), mIsDynamicText(isDynamic)
 {
 	mDomElementType = labelType;
 	init(x, y, text);
 }
 
-void Text::init(int x, int y, QString const &text)
+void Text::init(int x, int y, const QString &text)
 {
 	mNeedScalingRect = false;
 	mText.setPlainText(text);
@@ -30,13 +44,13 @@ void Text::init(int x, int y, QString const &text)
 	mY1 = y;
 }
 
-Text::Text(Text const &other)
+Text::Text(const Text &other)
 	:Item()
 {
 	mIsDynamicText = other.mIsDynamicText;
 	mNeedScalingRect = other.mNeedScalingRect;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = labelType;
 	mX1 = other.mX1;
 	mY1 = other.mY1;
@@ -142,11 +156,11 @@ void Text::changeScalingPointState(qreal x, qreal y)
 	calcForChangeScalingState(QPointF(x, y), QPointF(x1, y1), QPointF(x2, y2), correction);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement text = document.createElement("label");
-	int const x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
-	int const y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
+	const int x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
+	const int y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x", setSingleScaleForDoc(0, x1, y1));
 	text.setAttribute(mIsDynamicText ? "textBinded" : "text", mText.toPlainText());

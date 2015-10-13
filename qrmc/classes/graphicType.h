@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QStringList>
@@ -16,24 +30,28 @@ namespace qrmc {
 	class GraphicType : public Type
 	{
 	public:
-		GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 		virtual ~GraphicType();
-		virtual bool init(QString const &context);
+		virtual bool init(const QString &context);
 		virtual bool resolve();
 
 		virtual bool isGraphicalType() const;
-		virtual QString generateProperties(QString const &lineTemplate) const;
-		virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
-		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const;
-		virtual QString generateReferenceProperties(QString const &lineTemplate) const;
-		virtual QString generateParents(QString const &lineTemplate) const;
-		virtual QString generateContainers(QString const &lineTemplate) const;
-		virtual QString generateConnections(QString const &lineTemplate) const;
-		virtual QString generateUsages(QString const &lineTemplate) const;
-		virtual QString generateEnums(QString const &lineTemplate) const;
-		virtual QString generatePossibleEdges(QString const &lineTemplate) const;
+		virtual QString generateProperties(const QString &lineTemplate) const;
+		virtual QString generatePropertyDefaults(const QString &namesTemplate) const;
+		virtual QString generatePropertyDisplayedNames(const QString &lineTemplate) const;
+		virtual QString generateElementDescription(const QString &lineTemplate) const;
+		virtual QString generateReferenceProperties(const QString &lineTemplate) const;
+		virtual QString generatePortTypes(const QString &lineTemplate) const;
+		virtual QString generatePropertyName(const QString &lineTemplate) const;
+		virtual QString generateParents(const QString &lineTemplate) const;
+		virtual QString generateContainers(const QString &lineTemplate) const;
+		virtual QString generateConnections(const QString &lineTemplate) const;
+		virtual QString generateUsages(const QString &lineTemplate) const;
+		virtual QString generateEnums(const QString &lineTemplate) const;
+		virtual QString generatePossibleEdges(const QString &lineTemplate) const;
 
 		bool isResolving() const;
+		QString generateElementDescriptionLine(const QString &lineTemplate) const;
 
 	protected:
 		typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
@@ -65,7 +83,7 @@ namespace qrmc {
 		Shape mShape;
 
 		void copyFields(GraphicType *type) const;
-		QString resourceName(QString const &resourceType) const;
+		QString resourceName(const QString &resourceType) const;
 
 	private:
 		class ResolvingHelper {
@@ -81,5 +99,6 @@ namespace qrmc {
 		void initShape();
 
 		bool mResolving;
+		QString mDescription;
 	};
 }

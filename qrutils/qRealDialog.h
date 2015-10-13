@@ -1,8 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QDialog>
 
-#include "utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 
@@ -15,7 +29,15 @@ class QRUTILS_EXPORT QRealDialog : public QDialog
 public:
 	/// @param id The name of this dialog. Used for storing dialog`s parameters
 	///in settings so should be unique.
-	explicit QRealDialog(QString const &id, QWidget *parent = 0);
+	explicit QRealDialog(const QString &id, QWidget *parent = 0);
+
+	/// After this method called till the next call of resumeSerialization() this instance will
+	/// not serialize window geometry into settings when closed (default behaviour).
+	void suspendSerialization();
+
+	/// Cancels call of suspendSerialization(). After this method called window geometry will be
+	/// serialized into settings again.
+	void resumeSerialization();
 
 protected:
 	virtual void showEvent(QShowEvent *);
@@ -34,7 +56,8 @@ protected:
 	virtual QString sizeKey() const;
 
 private:
-	QString const mId;
+	const QString mId;
+	bool mSerializationSuspended = false;
 };
 
 }

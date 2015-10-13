@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QPersistentModelIndex>
@@ -19,7 +33,7 @@ class QRGUI_TEXT_EDITOR_EXPORT QScintillaTextEdit : public QsciScintilla
 
 public:
 	QScintillaTextEdit();
-	QScintillaTextEdit(QPersistentModelIndex const &index, int const &role);
+	QScintillaTextEdit(const QPersistentModelIndex &index, const int &role);
 
 	/// Destructor which runs after closing the tab with text editor. Allows to save written text.
 	~QScintillaTextEdit();
@@ -29,11 +43,11 @@ public:
 
 	/// Applies language editor settings to current editor instance.
 	/// Takes ownership on passed language.
-	void setCurrentLanguage(LanguageInfo const &language);
+	void setCurrentLanguage(const LanguageInfo &language);
 
 signals:
 	/// Emitted in destructor to save written text to according model element
-	void textSaved(QString const &text, QPersistentModelIndex const &index, int const &role);
+	void textSaved(const QString &text, const QPersistentModelIndex &index, const int &role);
 
 	void textWasModified(text::QScintillaTextEdit *code);
 
@@ -45,8 +59,8 @@ private:
 	/// Configures some settings such as autoindentation and margin properties, brackets highlighting, etc
 	void setDefaultSettings();
 
-	QPersistentModelIndex const mIndex;
-	int const mRole;
+	const QPersistentModelIndex mIndex;
+	const int mRole;
 	LanguageInfo mLanguage;
 };
 

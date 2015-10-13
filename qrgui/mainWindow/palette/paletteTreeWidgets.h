@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QSplitter>
@@ -38,13 +52,13 @@ public:
 	int maxItemsCountInARow() const;
 
 	/// Saves expanded groups into settings
-	void saveConfiguration(QString const &title) const;
+	void saveConfiguration(const QString &title) const;
 
-	void setElementVisible(Id const &metatype, bool visible);
+	void setElementVisible(const Id &metatype, bool visible);
 
 	void setVisibleForAllElements(bool visible);
 
-	void setElementEnabled(Id const &metatype, bool enabled);
+	void setElementEnabled(const Id &metatype, bool enabled);
 
 	void setEnabledForAllElements(bool enabled);
 
@@ -52,8 +66,11 @@ public:
 	void refreshUserPalette();
 
 	/// Sets user palette header and description.
-	void customizeExplosionTitles(QString const &userGroupTitle
-			, QString const &userGroupDescription);
+	void customizeExplosionTitles(const QString &userGroupTitle
+			, const QString &userGroupDescription);
+
+	/// Filters contents of both trees showing only items whoose names matches the given regular expression.
+	void filter(const QRegExp &regexp);
 
 private:
 	void initWidgets();
@@ -62,7 +79,7 @@ private:
 	void initUserTree();
 
 	/// Saves expanded groups into settings
-	void saveConfiguration(PaletteTreeWidget const *tree, QString const &title) const;
+	void saveConfiguration(const PaletteTreeWidget *tree, const QString &title) const;
 
 	EditorManagerInterface *mEditorManager; // Does not take ownership
 	PaletteTree *mParentPalette; // Does not take ownership

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtGui/QColor>
@@ -97,6 +111,9 @@ public:
 	virtual void closeTab(QWidget *tab) = 0;
 	/// Sets text on the header of the tab containing the given widget or does nothing if such tab was not found.
 	virtual void setTabText(QWidget *tab, const QString &text) = 0;
+
+	/// Shows start tab even if other tabs are opened.
+	virtual void openStartTab() = 0;
 
 	/// Signals that engine must prepare for modifying blocks set.
 	/// After each beginPaletteModification() call there must be endPaletteModification() call.

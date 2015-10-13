@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "qrtext/core/ast/binaryOperator.h"
@@ -18,8 +32,8 @@ public:
 	/// Constructor for general case, takes precedence table, parser for primary expression and parser for binary
 	/// operator.
 	ExpressionParser(QSharedPointer<PrecedenceTable<TokenType>> const &precedenceTable
-			, ParserRef<TokenType> const &primary
-			, ParserRef<TokenType> const &binOp)
+			, const ParserRef<TokenType> &primary
+			, const ParserRef<TokenType> &binOp)
 		: mPrecedenceTable(precedenceTable)
 		, mStartPrecedence(0)
 		, mPrimary(primary)
@@ -64,7 +78,7 @@ private:
 		while (mPrecedenceTable->binaryOperators().contains(tokenStream.next().token())
 				&& mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary) >= currentPrecedence)
 		{
-			int const newPrecedence = mPrecedenceTable->associativity(tokenStream.next().token()) == Associativity::left
+			const int newPrecedence = mPrecedenceTable->associativity(tokenStream.next().token()) == Associativity::left
 					? 1 + mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary)
 					: mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary)
 					;
@@ -98,10 +112,10 @@ private:
 	}
 
 	QSharedPointer<PrecedenceTable<TokenType>> mPrecedenceTable;
-	int const mStartPrecedence;
+	const int mStartPrecedence;
 
-	ParserRef<TokenType> const mPrimary;
-	ParserRef<TokenType> const mBinOp;
+	const ParserRef<TokenType> mPrimary;
+	const ParserRef<TokenType> mBinOp;
 };
 
 }

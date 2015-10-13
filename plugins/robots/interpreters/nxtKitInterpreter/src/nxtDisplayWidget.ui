@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>140</width>
+    <width>188</width>
     <height>193</height>
    </rect>
   </property>
@@ -572,7 +572,7 @@ QPushButton#rightButton:pressed{
       </widget>
      </item>
      <item row="0" column="0" colspan="3">
-      <widget class="graphicsUtils::PaintWidget" name="display" native="true">
+      <widget class="qReal::ui::PaintWidget" name="display" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -666,9 +666,9 @@ QPushButton#rightButton:pressed{
           <colorrole role="Base">
            <brush brushstyle="SolidPattern">
             <color alpha="255">
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
+             <red>132</red>
+             <green>186</green>
+             <blue>125</blue>
             </color>
            </brush>
           </colorrole>
@@ -803,9 +803,9 @@ QPushButton#rightButton:pressed{
           <colorrole role="Base">
            <brush brushstyle="SolidPattern">
             <color alpha="255">
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
+             <red>132</red>
+             <green>186</green>
+             <blue>125</blue>
             </color>
            </brush>
           </colorrole>
@@ -1036,9 +1036,9 @@ QPushButton#rightButton:pressed{
  </widget>
  <customwidgets>
   <customwidget>
-   <class>graphicsUtils::PaintWidget</class>
+   <class>qReal::ui::PaintWidget</class>
    <extends>QWidget</extends>
-   <header>qrutils/graphicsUtils/paintWidget.h</header>
+   <header>qrutils/widgets/paintWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

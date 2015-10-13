@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QTreeWidget>
@@ -15,6 +29,8 @@
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTreeWidgets.h"
 #include "plugins/pluginManager/proxyEditorManager.h"
+
+class QLineEdit;
 
 namespace  qReal {
 namespace gui {
@@ -41,13 +57,19 @@ public:
 	/** Delete chosen editor.
 	  @param id Editor id.
 	*/
-	void deleteEditor(Id const &id);
+	void deleteEditor(const Id &id);
 	QComboBox* comboBox() const;
 	QList<QString> editorsNames() const;
 	Id currentEditor() const;
 
+	/// Deletes all PaletteTree widgets.
+	void deletePaletteTree();
+
+	/// Creates all PaletteTree widgets.
+	void createPaletteTree();
+
 	/// Set item with such id as active in ComboBox.
-	void setComboBox(Id const &id);
+	void setComboBox(const Id &id);
 	void setIconsView(bool iconsView);
 	bool iconsView() const;
 	void setItemsCountInARow(int count);
@@ -71,25 +93,22 @@ public:
 	void initMainWindow(MainWindow *mainWindow);
 	void installEventFilter(QObject *obj);
 
-	void setElementVisible(Id const &metatype, bool visible);
+	void setElementVisible(const Id &metatype, bool visible);
 
 	void setVisibleForAllElements(bool visible);
 
-	void setElementEnabled(Id const &metatype, bool enabled);
+	void setElementEnabled(const Id &metatype, bool enabled);
 
 	void setEnabledForAllElements(bool enabled);
 
 	/// Sets user palettes headers and descriptions.
-	void customizeExplosionTitles(QString const &userGroupTitle
-			, QString const &userGroupDescription);
+	void customizeExplosionTitles(const QString &userGroupTitle
+			, const QString &userGroupDescription);
 
 signals:
 	void paletteParametersChanged();
 
 public slots:
-	/// Change expanded/collapsed state of current tree.
-	void changeExpansionState();
-
 	/// Expand all nodes of current tree.
 	void expand();
 
@@ -97,7 +116,7 @@ public slots:
 	void collapse();
 
 	void setActiveEditor(int index);
-	void setActiveEditor(Id const &id);
+	void setActiveEditor(const Id &id);
 
 	/// Recreate PaletteTree.
 	void recreateTrees();
@@ -109,25 +128,19 @@ public slots:
 	void refreshUserPalettes();
 
 private:
-	/// Change icon and tooltip
-	void setExpansionButtonAppearance();
-
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
+private slots:
+	void onSearchTextChanged(const QRegExp &searchText);
+
 private:
 	/// Forbids to make copies of the object.
-	explicit PaletteTree(PaletteTree const &paletteTree);
+	explicit PaletteTree(const PaletteTree &paletteTree);
 
 	virtual void resizeEvent(QResizeEvent *);
 
 	void initUi();
-
-	/// Creates all PaletteTree widgets.
-	void createPaletteTree();
-
-	/// Deletes all PaletteTree widgets.
-	void deletePaletteTree();
 
 	/// Fills palette tree by editors.
 	/// @param editorManager Editor manager which all editors with elements are taken from.
@@ -142,12 +155,6 @@ private:
 
 	/// Pointer to current tree.
 	PaletteTreeWidgets *mTree;
-
-	/// Button that changes expansion state of current tree
-	QToolButton *mChangeExpansionState;
-
-	/// Button that changes palette representation.
-	QToolButton *mChangeRepresentation;
 
 	/// List with all editor's trees.
 	QList<PaletteTreeWidgets *> mEditorsTrees;
@@ -166,9 +173,6 @@ private:
 
 	/// Representation flag
 	bool mIconsView;
-
-	/// Whether expand/collapse button expands tree
-	bool mNodesStateButtonExpands;
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;

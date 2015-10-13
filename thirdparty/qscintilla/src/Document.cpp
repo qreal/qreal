@@ -69,7 +69,7 @@ void LexInterface::Colourise(int start, int end) {
 
 Document::Document() {
 	refCount = 0;
-	pcf = NULL;
+	pcf = nullptr;
 #ifdef _WIN32
 	eolMode = SC_EOL_CRLF;
 #else
@@ -138,7 +138,7 @@ void Document::Init() {
 bool Document::SetDBCSCodePage(int dbcsCodePage_) {
 	if (dbcsCodePage != dbcsCodePage_) {
 		dbcsCodePage = dbcsCodePage_;
-		SetCaseFolder(NULL);
+		SetCaseFolder(nullptr);
 		return true;
 	} else {
 		return false;
@@ -2073,7 +2073,7 @@ int Document::BraceMatch(int position, int /*maxReStyle*/) {
  */
 class BuiltinRegex : public RegexSearchBase {
 public:
-	BuiltinRegex(CharClassify *charClassTable) : search(charClassTable), substituted(NULL) {}
+	BuiltinRegex(CharClassify *charClassTable) : search(charClassTable), substituted(nullptr) {}
 
 	virtual ~BuiltinRegex() {
 		delete substituted;

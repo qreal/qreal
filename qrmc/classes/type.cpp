@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "type.h"
 #include "property.h"
 #include "../utils/nameNormalizer.h"
@@ -48,12 +62,12 @@ QString Type::nativeContext() const
 	return mNativeContext;
 }
 
-void Type::setContext(QString const &newContext)
+void Type::setContext(const QString &newContext)
 {
 	mContext = newContext;
 }
 
-void Type::setName(QString const &name)
+void Type::setName(const QString &name)
 {
 	mName = name;
 }
@@ -63,7 +77,7 @@ QString Type::displayedName() const
 	return mDisplayedName;
 }
 
-void Type::setDisplayedName(QString const &displayedName)
+void Type::setDisplayedName(const QString &displayedName)
 {
 	mDisplayedName = displayedName;
 }
@@ -96,7 +110,7 @@ void Type::copyFields(Type *type) const
 	type->mDiagram = mDiagram;
 }
 
-bool Type::init(QString const &context)
+bool Type::init(const QString &context)
 {
 	mName = mApi->name(mId);
 	mDisplayedName = mApi->stringProperty(mId, "displayedName");
@@ -114,7 +128,7 @@ bool Type::init(QString const &context)
 	return true;
 }
 
-QString Type::generateNames(QString const &lineTemplate) const
+QString Type::generateNames(const QString &lineTemplate) const
 {
 	if (displayedName().isEmpty() || !isGraphicalType())
 		return "";
@@ -123,7 +137,7 @@ QString Type::generateNames(QString const &lineTemplate) const
 	return result;
 }
 
-QString Type::generateMouseGestures(QString const &lineTemplate) const
+QString Type::generateMouseGestures(const QString &lineTemplate) const
 {
 	if (mPath.isEmpty())
 		return "";
@@ -132,7 +146,7 @@ QString Type::generateMouseGestures(QString const &lineTemplate) const
 	return result;
 }
 
-QString Type::generateFactory(QString const &lineTemplate) const
+QString Type::generateFactory(const QString &lineTemplate) const
 {
 	if (!isGraphicalType())
 		return "";

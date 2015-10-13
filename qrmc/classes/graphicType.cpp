@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "graphicType.h"
 #include "property.h"
 #include "../diagram.h"
 #include "../utils/nameNormalizer.h"
+#include "shape.h"
 
 #include <QDebug>
 
@@ -27,9 +42,10 @@ GraphicType::~GraphicType()
 {
 }
 
-bool GraphicType::init(QString const &context)
+bool GraphicType::init(const QString &context)
 {
 	Type::init(context);
+	mDescription = mApi->stringProperty(mId, "description");
 
 	mIsVisible = false;
 	if (mApi->hasProperty(mId, "shape"))
@@ -38,26 +54,26 @@ bool GraphicType::init(QString const &context)
 	if (mApi->hasProperty(mId, "RequestBody"))
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
-	IdList const outLinks = mApi->outgoingLinks(mId);
-	foreach (Id const outLink, outLinks) {
+	const IdList outLinks = mApi->outgoingLinks(mId);
+	foreach (const Id outLink, outLinks) {
 		if (outLink.element() == "Container") {
-			Id const elementId = mApi->to(outLink);
-			QString const typeName = mApi->name(elementId);
+			const Id elementId = mApi->to(outLink);
+			const QString typeName = mApi->name(elementId);
 			mContains << typeName.split(",", QString::SkipEmptyParts);
 		} else if (outLink.element() == "Inheritance") {
-			Id const elementId = mApi->to(outLink);
-			QString const childName = mApi->name(elementId);
+			const Id elementId = mApi->to(outLink);
+			const QString childName = mApi->name(elementId);
 			if (!mChildren.contains(childName)) {
 				mChildren << childName.split(",", QString::SkipEmptyParts);
 			}
 		}
 	}
 
-	IdList const inLinks = mApi->incomingLinks(mId);
-	foreach (Id const inLink, inLinks) {
+	const IdList inLinks = mApi->incomingLinks(mId);
+	foreach (const Id inLink, inLinks) {
 		if (inLink.element() == "Inheritance") {
-			Id const elementId = mApi->from(inLink);
-			QString const parentName = mApi->name(elementId);
+			const Id elementId = mApi->from(inLink);
+			const QString parentName = mApi->name(elementId);
 			if (!mParents.contains(parentName)) {
 				mParents << parentName.split(",", QString::SkipEmptyParts);
 			}
@@ -162,10 +178,10 @@ bool GraphicType::resolve()
 		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
-		if (parent == NULL) {
+		if (parent == nullptr) {
 			// didn't find in local context, try global
 			parent = mDiagram->findType(parentName);
-			if (parent == NULL) {
+			if (parent == nullptr) {
 				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
 				return false;
 			}
@@ -223,7 +239,7 @@ bool GraphicType::isGraphicalType() const
 	return mIsVisible;
 }
 
-QString GraphicType::generateProperties(QString const &lineTemplate) const
+QString GraphicType::generateProperties(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -244,7 +260,7 @@ QString GraphicType::generateProperties(QString const &lineTemplate) const
 	return propertiesString;
 }
 
-QString GraphicType::generatePropertyDefaults(QString const &lineTemplate) const
+QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -257,7 +273,7 @@ QString GraphicType::generatePropertyDefaults(QString const &lineTemplate) const
 	return defaultsString;
 }
 
-QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
+QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -271,38 +287,115 @@ QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate)
 	return displayedNamesString;
 }
 
-QString GraphicType::generateReferenceProperties(QString const &lineTemplate) const
+QString GraphicType::generateElementDescription(const QString &lineTemplate) const
+{
+	if (mDescription.isEmpty()) {
+		return "";
+	}
+
+	QString displayedNamesString;
+	QString temp = this->generateElementDescriptionLine(lineTemplate);
+	if (!temp.isEmpty()) {
+		displayedNamesString += temp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
+	}
+
+	return displayedNamesString;
+}
+
+QString GraphicType::generateElementDescriptionLine(const QString &lineTemplate) const
+{
+	QString result = lineTemplate;
+	result.replace(descriptionTag, mDescription);
+	return result;
+}
+
+QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
 	QString referencePropertiesString = lineTemplate;
 	QString referencePropertiesList = "";
-	foreach (Property const *const property, mProperties) {
+	foreach (const Property *const property, mProperties) {
 		if (property->isReferenceProperty()) {
 			referencePropertiesList = referencePropertiesList + " << "  + "\"" + property->name() + "\"";
 		}
 	}
 	if (referencePropertiesList.isEmpty()) {
-		return "";
+		referencePropertiesString.replace(referencePropertiesListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
 	} else {
 		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
-		return referencePropertiesString;
 	}
+	return referencePropertiesString;
 }
 
-QString GraphicType::generateParents(QString const &lineTemplate) const
+QString GraphicType::generatePortTypes(const QString &lineTemplate) const
+{
+	QString portTypesString = lineTemplate;
+	QString portTypesList = "";
+
+	const QList<Port*> getPortTypes = this->mShape.getPorts();
+	QSet<QString> portTypes;
+	for (Port *port : getPortTypes) {
+		portTypes.insert(port->type());
+	}
+
+	if (!portTypes.empty()) {
+		for (const QString &type : portTypes) {
+			portTypesList = portTypesList + "\"" + type + "\"";
+		}
+
+		if (portTypesList.isEmpty()) {
+			portTypesString.replace(portTypesListTag, "*/}//").replace(elementNameTag, name());;
+		} else {
+			portTypesString.replace(portTypesListTag, portTypesList).replace(elementNameTag, name());
+		}
+	} else {
+		return "";
+	}
+	return portTypesString;
+}
+
+QString GraphicType::generatePropertyName(const QString &lineTemplate) const
+{
+	if (!mIsVisible) {
+		return "";
+	}
+
+	QString propertyNameString = lineTemplate;
+	QString propertyNameList = "";
+
+	for (Property *property: mProperties) {
+		if (!property->isReferenceProperty()) {
+			if (!propertyNameList.isEmpty()) {
+				propertyNameList = propertyNameList + " << " + + "\"" + property->name() + "\"";
+			} else {
+				propertyNameList = propertyNameList + "\"" + property->name() + "\"";
+			}
+		}
+	}
+
+	if (propertyNameList.isEmpty()) {
+		propertyNameString.replace(propertyNameListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
+	} else {
+		propertyNameString.replace(propertyNameListTag, propertyNameList + ";\n	}//").replace(elementNameTag, name() + "\"){//");
+	}
+
+	return propertyNameString;
+}
+
+QString GraphicType::generateParents(const QString &lineTemplate) const
 {
 	QString parentsMapString;
-	QString const diagramName = mContext + "::";
+	const QString diagramName = mContext + "::";
 	QString parentName = qualifiedName().remove(diagramName);
-	foreach (QString const child, mChildren) {
+	foreach (const QString child, mChildren) {
 		QString tmp = lineTemplate;
 		parentsMapString += tmp.replace(parentNameTag, parentName).replace(childNameTag, child).replace(diagramNameTag, mContext) + endline;
 	}
 	return parentsMapString;
 }
 
-QString GraphicType::generateContainers(QString const &lineTemplate) const
+QString GraphicType::generateContainers(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mContains.isEmpty())
 		return "";
@@ -316,7 +409,7 @@ QString GraphicType::generateContainers(QString const &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateConnections(QString const &lineTemplate) const
+QString GraphicType::generateConnections(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mConnections.isEmpty())
 		return "";
@@ -329,7 +422,7 @@ QString GraphicType::generateConnections(QString const &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateUsages(QString const &lineTemplate) const
+QString GraphicType::generateUsages(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mUsages.isEmpty())
 		return "";
@@ -342,19 +435,19 @@ QString GraphicType::generateUsages(QString const &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateEnums(QString const &lineTemplate) const
+QString GraphicType::generateEnums(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
 }
 
-QString GraphicType::generatePossibleEdges(QString const &lineTemplate) const
+QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
 {
 	if (mPossibleEdges.isEmpty())
 		return "";
 	QString edgesList;
 	QString line = lineTemplate;
-	QString const templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
+	const QString templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
 	QString directed = "false";
 	foreach(PossibleEdge edge, mPossibleEdges) {
 		if (edge.second.first)

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtOsekCMasterGenerator.h"
 
 #include <qrutils/stringUtils.h>
@@ -7,13 +21,13 @@
 
 using namespace nxt::osekC;
 
-NxtOsekCMasterGenerator::NxtOsekCMasterGenerator(qrRepo::RepoApi const &repo
+NxtOsekCMasterGenerator::NxtOsekCMasterGenerator(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const utils::ParserErrorReporter &parserErrorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
 	: NxtMasterGeneratorBase(repo, errorReporter, parserErrorReporter, robotModelManager, textLanguage, diagramId
 			, generatorName)
 {
@@ -41,27 +55,27 @@ void NxtOsekCMasterGenerator::afterGeneration()
 	NxtMasterGeneratorBase::afterGeneration();
 }
 
-void NxtOsekCMasterGenerator::generateOilFile(QString const &projectName
-		, QString const &projectDir)
+void NxtOsekCMasterGenerator::generateOilFile(const QString &projectName
+		, const QString &projectDir)
 {
 	QStringList tasks;
-	for (QString const &task : mCustomizer->factory()->threads().threadNames()) {
+	for (const QString &task : mCustomizer->factory()->threads().threadNames()) {
 		tasks << generateOilTask(task);
 	}
 
-	QString const resultOil = readTemplate("oil.t").replace("@@TASKS@@", tasks.join("\n"));
+	const QString resultOil = readTemplate("oil.t").replace("@@TASKS@@", tasks.join("\n"));
 	outputCode(projectDir + "/" + projectName + ".oil", resultOil);
 }
 
-QString NxtOsekCMasterGenerator::generateOilTask(QString const &taskName)
+QString NxtOsekCMasterGenerator::generateOilTask(const QString &taskName)
 {
 	return utils::StringUtils::addIndent(readTemplate("oilTask.t").replace("@@NAME@@", taskName), 1, "\t");
 }
 
-void NxtOsekCMasterGenerator::generateMakeFile(QString const &projectName
-		, QString const &projectDir)
+void NxtOsekCMasterGenerator::generateMakeFile(const QString &projectName
+		, const QString &projectDir)
 {
-	QString const bmps = static_cast<NxtGeneratorFactory *>(mCustomizer->factory())->images()
+	const QString bmps = static_cast<NxtGeneratorFactory *>(mCustomizer->factory())->images()
 			.generateBmpFilesStringForMake().toUtf8();
 
 	QString makefileTemplate = readTemplate("makefile.t");

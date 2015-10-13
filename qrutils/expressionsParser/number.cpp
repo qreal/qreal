@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "number.h"
 
 #include <qrkernel/exception/exception.h>
@@ -6,7 +20,7 @@
 
 using namespace utils;
 
-Number::Number(QVariant const &value, Type type)
+Number::Number(const QVariant &value, Type type)
 	: mValue(value)
 	, mType(type)
 {
@@ -37,17 +51,17 @@ QVariant Number::value() const
 	return mValue;
 }
 
-void Number::setValue(QVariant const &value)
+void Number::setValue(const QVariant &value)
 {
 	mValue = value;
 }
 
-QString Number::toString() const
+QStringList Number::toStringList() const
 {
-	return value().toString();
+	return value().toStringList();
 }
 
-void Number::operator+=(Number const &add)
+void Number::operator+=(const Number &add)
 {
 	if (mType == intType && add.type() == intType) {
 		mValue = mValue.toInt() + add.value().toInt();
@@ -57,7 +71,7 @@ void Number::operator+=(Number const &add)
 	}
 }
 
-void Number::operator-=(Number const &sub)
+void Number::operator-=(const Number &sub)
 {
 	if (mType == intType && sub.type() == intType) {
 		mValue = mValue.toInt() - sub.value().toInt();
@@ -67,7 +81,7 @@ void Number::operator-=(Number const &sub)
 	}
 }
 
-void Number::operator*=(Number const &mult)
+void Number::operator*=(const Number &mult)
 {
 	if (mType == intType && mult.type() == intType) {
 		mValue = mValue.toInt() * mult.value().toInt();
@@ -77,7 +91,7 @@ void Number::operator*=(Number const &mult)
 	}
 }
 
-void Number::operator/=(Number const &div)
+void Number::operator/=(const Number &div)
 {
 	if (mType == intType && div.type() == intType) {
 		if (div.value().toInt() == 0) {
@@ -105,14 +119,14 @@ Number Number::operator-()
 	return *this;
 }
 
-bool Number::operator<(Number const &arg)
+bool Number::operator<(const Number &arg)
 {
 	return mValue.toDouble() < arg.value().toDouble();
 }
 
-bool Number::operator==(Number const &arg)
+bool Number::operator==(const Number &arg)
 {
-	Number::Type const argType = arg.type();
+	const Number::Type argType = arg.type();
 	if (mType == Number::intType && argType == Number::intType) {
 		return mValue.toInt() == arg.value().toInt();
 	} else if (mType == Number::intType && argType == Number::doubleType) {
@@ -124,22 +138,22 @@ bool Number::operator==(Number const &arg)
 	}
 }
 
-bool Number::operator>(Number const &arg)
+bool Number::operator>(const Number &arg)
 {
 	return !((*this)<arg || (*this)==arg);
 }
 
-bool Number::operator<=(Number const &arg)
+bool Number::operator<=(const Number &arg)
 {
 	return (*this)<arg || (*this)==arg;
 }
 
-bool Number::operator>=(Number const &arg)
+bool Number::operator>=(const Number &arg)
 {
 	return !((*this)<arg);
 }
 
-bool Number::operator!=(Number const &arg)
+bool Number::operator!=(const Number &arg)
 {
 	return !((*this)==arg);
 }

@@ -1,31 +1,42 @@
-TEMPLATE = lib
-CONFIG += plugin
-CONFIG += c++11
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-DESTDIR = ../../../../bin/plugins/tools/
 TARGET = robots-plugin
 
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
-UI_DIR = .ui
+include(../../../../global.pri)
+
+DESTDIR = $$DESTDIR/plugins/tools/
+
+TEMPLATE = lib
+CONFIG += plugin
 
 QT += widgets
 
-INCLUDEPATH += \
-	$$PWD/ \
-	$$PWD/../interpreterCore/include/ \
-	$$PWD/../interpreterBase/include/ \
-	$$PWD/../../generators/generatorBase/include/ \
-	$$PWD/../../utils/include/ \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui/ \
-	$$PWD/../../../../qrtext/include \
+includes(plugins/robots/interpreters/interpreterCore \
+		plugins/robots/common/kitBase \
+		plugins/robots/utils \
+		qrtext \
+)
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrgui-tool-plugin-interface -lrobots-interpreter-core
+links(qrkernel qrgui-tool-plugin-interface robots-interpreter-core)
 
 HEADERS += \
 	$$PWD/robotsPlugin.h \
 
 SOURCES += \
 	$$PWD/robotsPlugin.cpp \
+
+TRANSLATIONS += \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/robotsPlugin_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/robotsPlugin_fr.ts \

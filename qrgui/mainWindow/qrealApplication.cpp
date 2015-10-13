@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrealApplication.h"
 
 #include <QtWidgets/QWidget>
@@ -51,7 +65,7 @@ void QRealApplication::logMouse(QWidget * const target, QMouseEvent * const even
 	}
 
 	QWidget * const window = target->window();
-	QPoint const pos = target->mapTo(window, event->pos());
+	const QPoint pos = target->mapTo(window, event->pos());
 	QLOG_TRACE() << "Mouse"
 			<< (event->type() == QEvent::MouseButtonPress ? "press" : "release")
 			<< "in" << pos << "with" << event->button() << "target"
@@ -65,7 +79,7 @@ void QRealApplication::logWheel(QWidget * const target, QWheelEvent * const even
 	}
 
 	QWidget * const window = target->window();
-	QPoint const pos = target->mapTo(window, event->pos());
+	const QPoint pos = target->mapTo(window, event->pos());
 	QLOG_TRACE() << "Wheel with delta"
 			<< event->angleDelta()
 			<< "in" << pos << "target"
@@ -86,7 +100,7 @@ void QRealApplication::logDrop(QWidget * const target, QDropEvent * const event)
 	}
 
 	QWidget * const window = target->window();
-	QPoint const pos = target->mapTo(window, event->pos());
+	const QPoint pos = target->mapTo(window, event->pos());
 	QLOG_TRACE() << "Drop in"
 			<< "in" << pos << "with target"
 			<< window->windowTitle() << window->size();

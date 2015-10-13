@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QSharedPointer>
@@ -80,7 +94,7 @@ public:
 
 protected:
 	/// Assigns given type to given expression.
-	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);
+	void assign(QSharedPointer<ast::Node> const &expression, const QSharedPointer<types::TypeExpression> &type);
 
 	/// Constrains given expression (passed as "node" parameter) to a given set of types, on behalf of given operation.
 	/// Operation is used for error connection purposes only.
@@ -104,10 +118,10 @@ protected:
 	void addDeclaration(const QString &identifierName, QSharedPointer<ast::Node> const &declaration);
 
 	/// Provides Any type constant to descendants.
-	QSharedPointer<types::TypeExpression> const &any();
+	const QSharedPointer<types::TypeExpression> &any();
 
 	/// Provides generalizations table for descendants.
-	GeneralizationsTableInterface const &generalizationsTable() const;
+	const GeneralizationsTableInterface &generalizationsTable() const;
 
 	/// Provides acces to type variable for given expression to descendants. Note that type() will return resolved type.
 	QSharedPointer<types::TypeVariable> typeVariable(QSharedPointer<ast::Node> const &expression) const;
@@ -126,6 +140,11 @@ private:
 	/// Analyzes given node assuming that all its descendants were analysed and provides type information for it
 	/// using methods like constrain() and unify(). Shall be defined in concrete analyzers.
 	virtual void analyzeNode(QSharedPointer<ast::Node> const &node) = 0;
+
+	/// Called for entire tree to be analyzed, shall be redefined in concrete analyzers if they wish
+	/// to do some context-sensitive checks before main "analyzeNode" pass. Default implementation
+	/// does nothing.
+	virtual void precheck(QSharedPointer<ast::Node> const &node);
 
 	/// Contains mapping from expression to its type. Type is always stored as type variable to make further analysis
 	/// more convenient.

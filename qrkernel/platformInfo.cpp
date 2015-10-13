@@ -1,6 +1,21 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "platformInfo.h"
 
-#include <QtCore/QString>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 
 using namespace qReal;
 
@@ -54,5 +69,22 @@ QString PlatformInfo::prettyOsVersion()
 	return "Linux";
 #elif defined Q_OS_MAC
 	return QString("Mac ") + QSysInfo().macVersion();
+#endif
+}
+
+QString PlatformInfo::applicationDirPath()
+{
+#if defined Q_OS_MAC
+	if (QDir(QCoreApplication::applicationDirPath() + "/plugins").exists()) {
+		return QCoreApplication::applicationDirPath();
+	}
+
+	QDir result(QCoreApplication::applicationDirPath());  // ../bin/debug/qreal-d.app/Contents/MacOS/ or ../bin/debug
+	result.cdUp();                                        // ../bin/debug/qreal-d.app/Contents/
+	result.cdUp();                                        // ../bin/debug/qreal-d.app/
+	result.cdUp();                                        // ../bin/debug/
+	return result.absolutePath();
+#else
+	return QCoreApplication::applicationDirPath();
 #endif
 }

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "label.h"
@@ -14,21 +28,22 @@ namespace qrmc {
 	class Shape
 	{
 	public:
-		Shape(QString const &shape = "");
+		Shape(const QString &shape = "");
 		~Shape();
 
-		void init(QString const &shape);
+		void init(const QString &shape);
 		void setNode(GraphicType *node);
 
 		void generate(QString &classTemplate) const;
 
-		QString generateResourceLine(QString const &resourceTemplate) const;
+		QString generateResourceLine(const QString &resourceTemplate) const;
+		QList<Port*> getPorts() const;
 
 	private:
-		void initLabels(QDomElement const &graphics);
-		void initPorts(QDomElement const &graphics);
-		void initPointPorts(QDomElement const &portsElement);
-		void initLinePorts(QDomElement const &portsElement);
+		void initLabels(const QDomElement &graphics);
+		void initPorts(const QDomElement &graphics);
+		void initPointPorts(const QDomElement &portsElement);
+		void initLinePorts(const QDomElement &portsElement);
 
 		void changeDir(QDir &dir) const;
 

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -10,8 +24,8 @@
 #include <qrutils/interpreter/thread.h>
 #include <qrtext/languageToolboxInterface.h>
 
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
-#include <interpreterBase/devicesConfigurationProvider.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/devicesConfigurationProvider.h>
 
 #include "interpreterCore/interpreter/details/blocksTable.h"
 #include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
@@ -25,7 +39,7 @@ namespace interpreter {
 /// Interprets robot diagram by executing blocks and sending commands to robot model. Manages models, connection,
 /// threads, parser, can automatically configure robot by used blocks on diagram. It is the main class for
 /// all interpretation subsystem.
-class Interpreter : public InterpreterInterface, public interpreterBase::DevicesConfigurationProvider
+class Interpreter : public InterpreterInterface, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -41,12 +55,12 @@ public:
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
 	/// @param connectToRobotAction - reference to action that connects to robot, interpreter manages its state
 	///        depending on success or failure of its own connection attempts.
-	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+	Interpreter(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, qReal::ProjectManagementInterface const &projectManager
+			, const qReal::ProjectManagementInterface &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &languageToolbox
 			, QAction &connectToRobotAction
 			);
@@ -61,7 +75,9 @@ public slots:
 
 private slots:
 	void threadStopped();
-	void newThread(qReal::Id const &startBlockId);
+	void newThread(const qReal::Id &startBlockId, const QString &threadId);
+	void killThread(const QString &threadId);
+	void sendMessage(const QString &threadId, const QString &message);
 
 	void connectedSlot(bool success, const QString &errorString);
 	void devicesConfiguredSlot();
@@ -76,18 +92,18 @@ private:
 		, idle
 	};
 
-	void addThread(qReal::interpretation::Thread * const thread);
+	void addThread(qReal::interpretation::Thread * const thread, const QString &threadId);
 
-	void reportError(QString const &message);
+	void reportError(const QString &message);
 
-	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
 	InterpreterState mState;
 	quint64 mInterpretationStartedTimestamp;
-	QList<qReal::interpretation::Thread *> mThreads;  // Has ownership
-	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	QHash<QString, qReal::interpretation::Thread *> mThreads;  // Has ownership
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 
 	/// Action responsible for the connection to the robot

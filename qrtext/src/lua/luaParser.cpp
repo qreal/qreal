@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrtext/src/lua/luaParser.h"
 
 #include "qrtext/core/parser/parserRef.h"
@@ -277,13 +291,14 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 						const auto result = QSharedPointer<TemporaryList>(new TemporaryList());
 						if (node->is<ast::Expression>()) {
 							result->list() << as<ast::Expression>(node);
+							return as<ast::Node>(result);
+						} else if (node->is<TemporaryDiscardableNode>()) {
+							return as<ast::Node>(result);
 						} else {
 							context().reportInternalError(QObject::tr("In 'args' semantic action node is "
 									"of incorrect type"));
 							return wrap(new TemporaryErrorNode());
 						}
-
-						return as<ast::Node>(result);
 					}
 				}
 			/= "args"

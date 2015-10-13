@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "settingsListener.h"
 
 #include "qrkernel/settingsManager.h"
@@ -21,7 +35,7 @@ SettingsListener &SettingsListener::instance()
 	return instance;
 }
 
-void SettingsListener::onSettingsChanged(QString const &name, QVariant const &oldValue, QVariant const &newValue)
+void SettingsListener::onSettingsChanged(const QString &name, const QVariant &oldValue, const QVariant &newValue)
 {
 	Q_UNUSED(oldValue)
 	for (AbstractListener * const listener : mListeners.values(name)) {
@@ -33,7 +47,7 @@ void SettingsListener::disconnect(QObject *object)
 {
 	for (AbstractListener * const listener : instance().mListeners.values()) {
 		if (listener->object() == object) {
-			for (QString const &key : instance().mListeners.keys(listener)) {
+			for (const QString &key : instance().mListeners.keys(listener)) {
 				instance().mListeners.remove(key, listener);
 			}
 
@@ -42,7 +56,7 @@ void SettingsListener::disconnect(QObject *object)
 	}
 }
 
-void SettingsListener::disconnect(QString const &key, QObject *object)
+void SettingsListener::disconnect(const QString &key, QObject *object)
 {
 	for (AbstractListener * const listener : instance().mListeners.values()) {
 		if (listener->object() == object) {

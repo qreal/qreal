@@ -4,17 +4,17 @@
 <context>
     <name>qReal::InterpreterEditorManager</name>
     <message>
-        <location filename="../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp" line="868"/>
+        <location filename="../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp" line="883"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp" line="874"/>
+        <location filename="../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp" line="889"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
     <message>
-        <location filename="../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp" line="876"/>
+        <location filename="../../qrgui/plugins/pluginManager/interpreterEditorManager.cpp" line="891"/>
         <source>Renamed to </source>
         <translation>Переименовано в </translation>
     </message>

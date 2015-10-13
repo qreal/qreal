@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QList>
@@ -7,6 +21,7 @@
 #include <QtCore/QSet>
 
 #include "../qrrepo/repoApi.h"
+#include "classes/port.h"
 
 namespace qrmc {
 	class MetaCompiler;
@@ -21,31 +36,32 @@ namespace qrmc {
 	class Editor
 	{
 	public:
-		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 		~Editor();
 		MetaCompiler *metaCompiler();
 		qReal::Id id();
 
 		bool isLoaded();
 		bool load();
-		void generate(QString const &headerTemplate, QString const &sourceTemplate,
-					  QString const &nodeTemplate, QString const &edgeTemplate,
-					  QString const &elementsHeaderTemplate, QString const &resourceTemplate,
-					  QString const &projectTemplate, QMap<QString, QString> const &utils);
+		void generate(const QString &headerTemplate, const QString &sourceTemplate,
+					  const QString &nodeTemplate, const QString &edgeTemplate,
+					  const QString &elementsHeaderTemplate, const QString &resourceTemplate,
+					  const QString &projectTemplate, QMap<QString, QString> const &utils);
 
-		Type *findType(QString const &name);
+		Type *findType(const QString &name);
 		QSet<EnumType*> getAllEnumTypes();
-		Diagram *findDiagram(QString const &name);
+		QStringList getAllPortNames() const;
+		Diagram *findDiagram(const QString &name);
 		QMap<QString, Diagram*> diagrams();
 
 		QString name();
 
 	private:
-		bool generatePluginHeader(QString const &headerTemplate);
+		bool generatePluginHeader(const QString &headerTemplate);
 		bool generatePluginSource();
 		bool generateElementsClasses();
-		bool generateResourceFile(QString const &resourceTemplate);
-		bool generateProjectFile(QString const &projectTemplate);
+		bool generateResourceFile(const QString &resourceTemplate);
+		bool generateProjectFile(const QString &projectTemplate);
 
 		void generateDiagramsMap();
 		void generateDiagramNodeNamesMap();
@@ -53,11 +69,14 @@ namespace qrmc {
 		void generateMouseGesturesMap();
 		void generatePropertiesMap();
 		void generatePropertyDisplayedNamesMap();
+		void generateElementDescriptionMap();
 		void generateParentsMap();
 		void generatePropertyDefaultsMap();
 		void generateElementsFactory();
 		void generateContainers();
 		void generateReferenceProperties();
+		void generatePortTypes();
+		void generatePropertyNames();
 		void generateConnections();
 		void generateUsages();
 		void generateIsNodeOrEdge();
@@ -68,6 +87,7 @@ namespace qrmc {
 		qrRepo::LogicalRepoApi *mApi;
 		qReal::Id mId;
 		QString mName;
+		QString mNameOfMetamodel;
 		bool mLoadingComplete;
 		QList<Editor*> mIncludes;
 		QMap<QString, Diagram*> mDiagrams;
@@ -81,6 +101,8 @@ namespace qrmc {
 		class MethodGenerator;
 		class ContainersGenerator;
 		class ReferencePropertiesGenerator;
+		class PortTypesGenerator;
+		class PropertyNameGenerator;
 		class ConnectionsGenerator;
 		class UsagesGenerator;
 		class FactoryGenerator;
@@ -90,9 +112,10 @@ namespace qrmc {
 		class PropertiesGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
+		class ElementDescriptionGenerator;
 		class ParentsMapGenerator;
 		class PossibleEdgesGenerator;
-		void generatePluginMethod(QString const &tag, MethodGenerator const &generator);
+		void generatePluginMethod(const QString &tag, const MethodGenerator &generator);
 	};
 
 }

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -37,6 +51,7 @@ public:
 	MOCK_METHOD2(openTab, void(QWidget *tab, QString const &title));
 	MOCK_METHOD1(closeTab, void(QWidget *tab));
 	MOCK_METHOD2(setTabText, void(QWidget *tab, QString const &text));
+	MOCK_METHOD0(openStartTab, void());
 
 	MOCK_METHOD0(beginPaletteModification, void());
 	MOCK_METHOD2(setElementInPaletteVisible, void(qReal::Id const &metatype, bool visible));

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QPluginLoader>
@@ -5,9 +19,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 
-#include <interpreterBase/kitPluginInterface.h>
-#include <generatorBase/generatorKitPluginInterface.h>
-
+#include <kitBase/kitPluginInterface.h>
 #include <qrutils/pluginManagers/pluginManager.h>
 
 namespace interpreterCore {
@@ -18,7 +30,7 @@ class KitPluginManager
 public:
 	/// Constructor.
 	/// @param pluginDirectory - directory where we need to search for plugins.
-	explicit KitPluginManager(QString const &pluginDirectory);
+	explicit KitPluginManager(const QString &pluginDirectory);
 
 	~KitPluginManager();
 
@@ -27,27 +39,20 @@ public:
 
 	/// Returns a list of kits that have given id. Note that multiple kits can have one id, in that case their
 	/// functionality is merged (needed to support language extensions like support for segway).
-	QList<interpreterBase::KitPluginInterface *> kitsById(QString const &kitId) const;
-
-	/// Returns a list of generators associated with given kit id.
-	QList<generatorBase::GeneratorKitPluginInterface *> generatorsById(QString const &kitId) const;
+	QList<kitBase::KitPluginInterface *> kitsById(const QString &kitId) const;
 
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
-	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;
+	QList<kitBase::robotModel::RobotModelInterface *> allRobotModels() const;
+
+	/// Returns the priority of the kit with the given id. The priority is the maximum of KitPluginInterface::priority.
+	int priority(const QString &kitId) const;
 
 private:
-	void tryToLoadInterpreterPlugins();
-	void tryToLoadGeneratorPlugins();
+	void tryToLoadKitPlugins();
 
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.
-	QMap<QString, interpreterBase::KitPluginInterface *> mPluginInterfaces;  // Has ownership
-
-	/// Maps kit plugin name to corresponding loader.
-	QMap<QString, generatorBase::GeneratorKitPluginInterface *> mGenerators;  // Has ownership
-
-	/// Directory from which plugins shall be loaded.
-	QDir mPluginsDir;
+	QMap<QString, kitBase::KitPluginInterface *> mPluginInterfaces;  // Has ownership
 
 	/// Common part of plugins loading
 	qReal::PluginManager mPluginManager;

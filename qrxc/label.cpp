@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "label.h"
 
 #include <QtCore/QDebug>
@@ -6,7 +20,7 @@
 
 using namespace utils;
 
-bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
+bool Label::init(const QDomElement &element, int index, bool nodeLabel, int width, int height)
 {
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);
@@ -14,6 +28,8 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
+	mPrefix = element.attribute("prefix");
+	mSuffix = element.attribute("suffix");
 	mReadOnly = element.attribute("readOnly", "false");
 	mRotation = element.attribute("rotation", "0").toDouble();
 
@@ -75,17 +91,25 @@ void Label::generateCodeForConstructor(OutFile &out)
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
-	QString const scalingX = mX.isScalable() ? "true" : "false";
-	QString const scalingY = mY.isScalable() ? "true" : "false";
+	const QString scalingX = mX.isScalable() ? "true" : "false";
+	const QString scalingY = mY.isScalable() ? "true" : "false";
 	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
 	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
+
+	if (!mPrefix.isEmpty()) {
+		out() << "			" + titleName() + "->setPrefix(QObject::tr(\"" + mPrefix + "\"));\n";
+	}
+
+	if (!mSuffix.isEmpty()) {
+		out() << "			" + titleName() + "->setSuffix(QObject::tr(\"" + mSuffix + "\"));\n";
+	}
 
 	out()
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
 }
 
-QStringList Label::getListOfStr(QString const &strToParse) const
+QStringList Label::getListOfStr(const QString &strToParse) const
 {
 	return strToParse.split("##");
 }
@@ -109,7 +133,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		}
 	} else {
 		int counter = 1;
-		foreach (QString const &listElement, list) {
+		foreach (const QString &listElement, list) {
 			QString field;
 			if (counter % 2 == 0) {
 				if (listElement == "name") {

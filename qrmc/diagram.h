@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -14,7 +28,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor);
+		Diagram(const qReal::Id &id, qrRepo::LogicalRepoApi *api, Editor *editor);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -25,25 +39,28 @@ namespace qrmc {
 		QString nodeName() const;
 		QString displayedName() const;
 
-		QString generateNamesMap(QString const &lineTemplate) const;
-		QString generateMouseGesturesMap(QString const &lineTemplate) const;
-		QString generatePropertiesMap(QString const &lineTemplate) const;
-		QString generatePropertyDefaultsMap(QString const &lineTemplate) const;
-		QString generatePropertyDisplayedNamesMap(QString const &lineTemplate) const;
-		QString generateParentsMap(QString const &lineTemplate) const;
-		QString generateContainers(QString const &lineTemplate) const;
-		QString generateReferenceProperties(QString const &lineTemplate) const;
-		QString generateConnections(QString const &lineTemplate) const;
-		QString generateUsages(QString const &lineTemplate) const;
-		QString generateFactory(QString const &lineTemplate) const;
-		QString generateIsNodeOrEdge(QString const &lineTemplate) const;
-		QString generateEnums(QString const &lineTemplate) const;
-		QString generatePossibleEdges(QString const &lineTemplate) const;
+		QString generateNamesMap(const QString &lineTemplate) const;
+		QString generateMouseGesturesMap(const QString &lineTemplate) const;
+		QString generatePropertiesMap(const QString &lineTemplate) const;
+		QString generatePropertyDefaultsMap(const QString &lineTemplate) const;
+		QString generatePropertyDisplayedNamesMap(const QString &lineTemplate) const;
+		QString generateElementDescriptionMap(const QString &lineTemplate) const;
+		QString generateParentsMap(const QString &lineTemplate) const;
+		QString generateContainers(const QString &lineTemplate) const;
+		QString generateReferenceProperties(const QString &lineTemplate) const;
+		QString generatePortTypes(const QString &lineTemplate) const;
+		QString generatePropertyName(const QString &lineTemplate) const;
+		QString generateConnections(const QString &lineTemplate) const;
+		QString generateUsages(const QString &lineTemplate) const;
+		QString generateFactory(const QString &lineTemplate) const;
+		QString generateIsNodeOrEdge(const QString &lineTemplate) const;
+		QString generateEnums(const QString &lineTemplate) const;
+		QString generatePossibleEdges(const QString &lineTemplate) const;
 
-		QString generateNodeClasses(QString const &nodeTemplate) const;
-		QString generateEdgeClasses(QString const &edgeTemplate) const;
+		QString generateNodeClasses(const QString &nodeTemplate) const;
+		QString generateEdgeClasses(const QString &edgeTemplate) const;
 
-		QString generateResourceFile(QString const &resourceTemplate) const;
+		QString generateResourceFile(const QString &resourceTemplate) const;
 
 		void print();
 
@@ -67,11 +84,13 @@ namespace qrmc {
 		class ConnectionsGenerator;
 		class ContainersGenerator;
 		class ReferencePropertiesGenerator;
+		class PortTypesGenerator;
+		class PropertyNameGenerator;
 		class FactoryGenerator;
 		class IsNodeOrEdgeGenerator;
 		class EnumsGenerator;
 		class PossibleEdgesGenerator;
-		QString generateListMethod(QString const &lineTemplate, ListMethodGenerator const &generator) const;
+		QString generateListMethod(const QString &lineTemplate, const ListMethodGenerator &generator) const;
 
 		class MapMethodGenerator;
 		class NamesGenerator;
@@ -79,10 +98,11 @@ namespace qrmc {
 		class PropertyNamesGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
+		class ElementDescriptonGenerator;
 		class ParentsMapGenerator;
 		class NodesGenerator;
 		class EdgesGenerator;
 		class ResourceGenerator;
-		QString generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const;
+		QString generateMapMethod(const QString& lineTemplate, const MapMethodGenerator &generator) const;
 	};
 }

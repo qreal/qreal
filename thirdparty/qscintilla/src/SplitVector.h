@@ -50,7 +50,7 @@ protected:
 	}
 
 	void Init() {
-		body = NULL;
+		body = nullptr;
 		growSize = 8;
 		size = 0;
 		lengthBody = 0;

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QAbstractItemView>
@@ -47,21 +61,22 @@ public:
 
 signals:
 	/// Emitted when for some reason root index was removed from the model.
-	void rootElementRemoved(QModelIndex const &graphicsIndex);
+	void rootElementRemoved(const QModelIndex &graphicsIndex);
 
 public slots:
 	void reset();
-	void setRootIndex(QModelIndex const &index);
-	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-			, QModelIndex const &destinationParent, int destinationRow);
-	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
-			, QModelIndex const &destinationParent, int destinationRow);
+	void setRootIndex(const QModelIndex &index);
+	void rowsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+			, const QModelIndex &destinationParent, int destinationRow);
+	void rowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
+			, const QModelIndex &destinationParent, int destinationRow);
 
 private slots:
-	void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
-	void rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end);
-	void rowsInserted(QModelIndex const &parent, int start, int end);
-	void logicalDataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
+	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+			, const QVector<int> &roles = QVector<int>()) override;
+	void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+	void rowsInserted(const QModelIndex &parent, int start, int end);
+	void logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private:
 	typedef QPair<QPersistentModelIndex, Element*> IndexElementPair;
@@ -86,9 +101,9 @@ private:
 
 	QRegion visualRegionForSelection(const QItemSelection &selection ) const;
 
-	Element *item(QPersistentModelIndex const &index) const;
-	void setItem(QPersistentModelIndex const &index, Element *item);
-	void removeItem(QPersistentModelIndex const &index);
+	Element *item(const QPersistentModelIndex &index) const;
+	void setItem(const QPersistentModelIndex &index, Element *item);
+	void removeItem(const QPersistentModelIndex &index);
 
 	void clearItems();
 };

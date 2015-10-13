@@ -1,15 +1,29 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QFile>
 #include <QtCore/QDebug>
 
 #include "abstractGenerator.h"
-#include "../nameNormalizer.h"
+#include "nameNormalizer.h"
 
 using namespace qReal;
 using namespace utils;
 
-AbstractGenerator::AbstractGenerator(QString const &templateDirPath
-		, QString const &outputDirPath
-		, qReal::LogicalModelAssistInterface const &logicalModel
+AbstractGenerator::AbstractGenerator(const QString &templateDirPath
+		, const QString &outputDirPath
+		, const qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		)
 		: mApi(logicalModel.logicalRepoApi())
@@ -24,9 +38,9 @@ AbstractGenerator::~AbstractGenerator()
 {
 }
 
-QDir AbstractGenerator::getDir(QString const &path)
+QDir AbstractGenerator::getDir(const QString &path)
 {
-	QDir const result(path);
+	const QDir result(path);
 	if (!result.exists()) {
 		qDebug() << "cannot find directory " << path;
 		return QDir();
@@ -35,14 +49,14 @@ QDir AbstractGenerator::getDir(QString const &path)
 	return result;
 }
 
-bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate)
+bool AbstractGenerator::loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate)
 {
-	QDir const dir = getDir(mTemplateDirPath);
+	const QDir dir = getDir(mTemplateDirPath);
 	if (dir == QDir()) {
 		return false;
 	}
 
-	QString const fileName = dir.absoluteFilePath(templateFileName);
+	const QString fileName = dir.absoluteFilePath(templateFileName);
 	qDebug() << fileName;
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -58,12 +72,12 @@ bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QS
 
 bool AbstractGenerator::loadUtilsFromFile()
 {
-	QDir const dir = getDir(mTemplateDirPath);
+	const QDir dir = getDir(mTemplateDirPath);
 	if (dir == QDir()) {
 		return false;
 	}
 
-	QString const fileName = dir.absoluteFilePath(utilsFileName);
+	const QString fileName = dir.absoluteFilePath(utilsFileName);
 	QFile utilsFile(fileName);
 	if (!utilsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "cannot load file \"" << fileName << "\"";
@@ -74,7 +88,7 @@ bool AbstractGenerator::loadUtilsFromFile()
 	QString line = in.readLine();
 	do {
 		// first line is name, everything else before the separator is template body
-		QString const name = line;
+		const QString name = line;
 		QString body;
 		line = in.readLine();
 		while (!line.contains(utilsSeparator) && !line.isNull()) {
@@ -92,20 +106,20 @@ bool AbstractGenerator::loadUtilsFromFile()
 
 bool AbstractGenerator::loadUtilsFromDir()
 {
-	QDir const dir = getDir(mTemplateDirPath + "/utils");
+	const QDir dir = getDir(mTemplateDirPath + "/utils");
 	if (dir == QDir()) {
 		return false;
 	}
 
-	QStringList const files = dir.entryList(QStringList());
+	const QStringList files = dir.entryList(QStringList());
 
-	foreach (QString const &fileName, files) {
+	foreach (const QString &fileName, files) {
 		if (fileName == "." || fileName == "..") {
 			continue;
 		}
 
 		// file name is template name, file contents is template body
-		QString const file = dir.absoluteFilePath(fileName);
+		const QString file = dir.absoluteFilePath(fileName);
 		QFile templateFile(file);
 
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -122,7 +136,7 @@ bool AbstractGenerator::loadUtilsFromDir()
 			line = in.readLine();
 		}
 
-		QString const name = "@@" + fileName + "@@";
+		const QString name = "@@" + fileName + "@@";
 		if (!mTemplateUtils.contains(name)) {
 			mTemplateUtils[name] = body;
 		}
@@ -140,7 +154,7 @@ bool AbstractGenerator::loadUtilsTemplates()
 	return loadUtilsFromFile() && loadUtilsFromDir();
 }
 
-void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &content)
+void AbstractGenerator::saveOutputFile(const QString &fileName, const QString &content)
 {
 	QDir dir;
 
@@ -149,7 +163,7 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 	}
 	dir.cd(mOutputDirPath);
 
-	QString const outputFileName = dir.absoluteFilePath(fileName);
+	const QString outputFileName = dir.absoluteFilePath(fileName);
 	QFile file(outputFileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "cannot open \"" << outputFileName << "\"";
@@ -161,7 +175,7 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 	file.close();
 }
 
-QString AbstractGenerator::getDefaultValue(QString const &type)
+QString AbstractGenerator::getDefaultValue(const QString &type)
 {
 	// Here to write all other needed types.
 	if (type == "short" || type == "int") {
@@ -171,17 +185,17 @@ QString AbstractGenerator::getDefaultValue(QString const &type)
 	return "new " + type + "()";
 }
 
-QString AbstractGenerator::generatePropertiesCode(Id const &element)
+QString AbstractGenerator::generatePropertiesCode(const Id &element)
 {
 	QString properties;
-	foreach (Id const &property, mApi.children(element)) {
+	foreach (const Id &property, mApi.children(element)) {
 		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
 		}
 
 		// generate property code
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];
-		QString const name = mApi.name(property);
+		const QString name = mApi.name(property);
 		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
 				.replace("@@Type@@", mApi.stringProperty(property, "Type"));
 

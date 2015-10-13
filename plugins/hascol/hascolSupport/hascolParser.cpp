@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "hascolParser.h"
 
 #include <QtCore/QDebug>
@@ -5,12 +19,12 @@
 #include <QtCore/QProcess>
 #include <QtCore/QVariant>
 #include <QtCore/QPointF>
-#include <QtWidgets/QPolygon>
+#include <QtGui/QPolygon>
 #include <QtXml/QDomDocument>
 
 #include "math.h"
 
-#include "../../../qrutils/xmlUtils.h"
+#include <qrutils/xmlUtils.h>
 
 using namespace qReal;
 using namespace hascol;
@@ -54,7 +68,8 @@ void HascolParser::preprocessFile(QString const &fileName)
 	if (preprocessor.exitStatus() == QProcess::CrashExit) {
 		mErrorReporter.addError(QObject::tr("Hascol preprocessor crashed."));
 	} else if (preprocessor.exitCode() != 0) {
-		mErrorReporter.addError(QString(QObject::tr("Hascol preprocessor finished with error code %1")).arg(preprocessor.exitCode()));
+		mErrorReporter.addError(QString(QObject::tr("Hascol preprocessor finished with error code %1"))
+				.arg(preprocessor.exitCode()));
 	}
 
 	mErrorReporter.addInformation(QString(QObject::tr("Preprocessed file %1")).arg(fileName));
@@ -111,10 +126,10 @@ void HascolParser::parseFile(QString const &fileName)
 	QDomDocument const doc = utils::xmlUtils::loadDocument(fileName);
 
 	QDomNodeList const list = doc.elementsByTagName("md");
-	for (unsigned i = 0; i < list.length(); ++i) {
+	for (int i = 0; i < list.length(); ++i) {
 		QDomElement const md = list.at(i).toElement();
 		QDomNodeList const children = md.childNodes();
-		for (unsigned j = 0; j < children.length(); ++j) {
+		for (int j = 0; j < children.length(); ++j) {
 			QDomElement const child = children.at(j).toElement();
 			if (child.isElement()) {
 				parseProcess(child.toElement());
@@ -155,18 +170,20 @@ void HascolParser::parseProcess(QDomElement const &element)
 	Id const structureElementType = functor ? Id(structureBaseId, "Functor")
 			: Id(structureBaseId, "Process");
 
-	Id const processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType, "a" + name + " : " + name);
+	Id const processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType
+			, "a" + name + " : " + name);
+
 	Id const processOnAStructure = addElement(mImportedStructureDiagramId, structureElementType, name);
 	initClassifierFields(processOnAStructure);
 
 	QDomNodeList const insList = element.elementsByTagName("ins");
-	for (unsigned i = 0; i < insList.length(); ++i) {
+	for (int i = 0; i < insList.length(); ++i) {
 		QDomElement const ins = insList.at(i).toElement();
 		parsePorts(ins.childNodes(), "in", processOnAPortMap, processOnAStructure);
 	}
 
 	QDomNodeList const outsList = element.elementsByTagName("outs");
-	for (unsigned i = 0; i < outsList.length(); ++i) {
+	for (int i = 0; i < outsList.length(); ++i) {
 		QDomElement const outs = outsList.at(i).toElement();
 		parsePorts(outs.childNodes(), "out", processOnAPortMap, processOnAStructure);
 	}
@@ -175,7 +192,7 @@ void HascolParser::parseProcess(QDomElement const &element)
 void HascolParser::parsePorts(QDomNodeList const &ports, QString const &direction
 		, Id const &parentOnAPortMap, Id const &parentOnAStructure)
 {
-	for (unsigned i = 0; i < ports.length(); ++i) {
+	for (int i = 0; i < ports.length(); ++i) {
 		Id const portMappingBaseId = Id("HascolMetamodel", "HascolPortMapping");
 		Id const structureBaseId = Id("HascolMetamodel", "HascolPortMapping");
 

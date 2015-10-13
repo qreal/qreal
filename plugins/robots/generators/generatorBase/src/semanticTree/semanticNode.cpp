@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/semanticTree/semanticNode.h"
 
 #include <qrutils/stringUtils.h>
@@ -5,7 +19,7 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-SemanticNode::SemanticNode(Id const &idBinded, QObject *parent)
+SemanticNode::SemanticNode(const Id &idBinded, QObject *parent)
 	: QObject(parent)
 	, mId(idBinded)
 	, mParentNode(nullptr)
@@ -18,7 +32,7 @@ Id SemanticNode::id() const
 	return mId;
 }
 
-void SemanticNode::bindTo(Id const &id)
+void SemanticNode::bindTo(const Id &id)
 {
 	mId = id;
 }
@@ -33,7 +47,7 @@ void SemanticNode::addLabel()
 	mLabeled = true;
 }
 
-QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
+QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	return (mLabeled
 			? utils::StringUtils::addIndent(customizer.factory()->labelGenerator(mId
@@ -41,7 +55,7 @@ QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent, QStr
 			: QString()) + toStringImpl(customizer, indent, indentString);
 }
 
-SemanticNode *SemanticNode::findNodeFor(Id const &id)
+SemanticNode *SemanticNode::findNodeFor(const Id &id)
 {
 	if (id == mId) {
 		return this;

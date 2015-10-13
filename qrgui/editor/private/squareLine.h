@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "editor/private/lineHandler.h"
@@ -17,10 +31,10 @@ public:
 	virtual void adjust();
 
 	/// @return criteria for sorting square links on a linear port
-	virtual EdgeArrangeCriteria arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+	virtual EdgeArrangeCriteria arrangeCriteria(const NodeElement *node, const QLineF &portLine) const;
 
 	/// @return list of context menu actions available for square link at position pos
-	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
+	virtual QList<ContextMenuAction *> extraActions(const QPointF &pos);
 
 protected:
 	enum LineType {
@@ -32,10 +46,10 @@ protected:
 
 	/// If link reshaping is started on a segment, move that segment to position pos (in link's local coordinates)
 	/// If user is trying to move port, do it. Otherwise do nothing
-	virtual void handleEdgeMove(QPointF const &pos);
+	virtual void handleEdgeMove(const QPointF &pos);
 
 	/// Move segment at point oldPos to newPos, keeping the link square
-	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
+	void moveSegment(const QPointF &oldPos, const QPointF &newPos);
 
 	/// Remove loops, too short segments and coinciding points,
 	/// ensure that link doesn't intersect adjacent nodes and stays square
@@ -45,7 +59,7 @@ protected:
 	void deleteShortSegments();
 
 	/// Helper function for linear ports arranging
-	QPointF portArrangePoint(NodeElement const *node) const;
+	QPointF portArrangePoint(const NodeElement *node) const;
 
 	/// Ensure that both end segments are strict
 	void adjustEndSegments();
@@ -65,7 +79,7 @@ protected:
 	bool isSquareLine() const;
 
 	/// Determine whether given line intersects given node
-	bool intersects(QLineF const &line, NodeElement *node) const;
+	bool intersects(const QLineF &line, NodeElement *node) const;
 
 	/// Make the link square, ensure it doesn't intersect adjacent nodes
 	void squarize();

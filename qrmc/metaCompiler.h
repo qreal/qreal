@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QMap>
@@ -16,14 +30,14 @@ namespace qrmc {
 	class MetaCompiler
 	{
 	public:
-		MetaCompiler(QString const &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
+		MetaCompiler(const QString &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
 		~MetaCompiler();
-		bool compile(QString const &metamodel = "");
-		Editor *loadMetaModel(qReal::Id const &id);
-		Diagram *getDiagram(QString const &diagramName);
-		void addResource(QString const &resourceName);
+		bool compile(const QString &metamodel = "");
+		Editor *loadMetaModel(const qReal::Id &id);
+		Diagram *getDiagram(const QString &diagramName);
+		void addResource(const QString &resourceName);
 
-		QString getTemplateUtils(QString const &tmpl) const;
+		QString getTemplateUtils(const QString &tmpl) const;
 
 	private:
 		qrRepo::LogicalRepoApi *mApi;
@@ -48,8 +62,8 @@ namespace qrmc {
 
 		QString mTargetMetamodel;
 
-		bool changeDir(QString const &path);
-		bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
+		bool changeDir(const QString &path);
+		bool loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate);
 		bool loadPluginHeaderTemplate();
 		bool loadPluginSourceTemplate();
 		bool loadTemplateUtils();

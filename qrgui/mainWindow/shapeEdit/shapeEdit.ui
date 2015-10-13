@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>717</width>
-    <height>693</height>
+    <height>758</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,8 +46,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/ellipse.png</normaloff>:/icons/ellipse.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/ellipse.png</normaloff>:/mainWindow/images/ellipse.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -87,8 +87,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/staticText.png</normaloff>:/icons/staticText.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/staticText.png</normaloff>:/mainWindow/images/staticText.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -128,8 +128,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/dynamicText.png</normaloff>:/icons/dynamicText.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/dynamicText.png</normaloff>:/mainWindow/images/dynamicText.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -179,8 +179,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/curve.png</normaloff>:/icons/curve.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/curve.png</normaloff>:/mainWindow/images/curve.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -237,7 +237,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>135</width>
+        <width>148</width>
         <height>77</height>
        </rect>
       </property>
@@ -334,7 +334,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="graphicsUtils::ColorListEditor" name="textColorComboBox">
+       <widget class="qReal::ui::ColorListEditor" name="textColorComboBox">
         <property name="geometry">
          <rect>
           <x>40</x>
@@ -376,8 +376,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>135</width>
-        <height>77</height>
+        <width>98</width>
+        <height>28</height>
        </rect>
       </property>
       <attribute name="label">
@@ -473,8 +473,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/pencil.png</normaloff>:/icons/pencil.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/pencil.png</normaloff>:/mainWindow/images/pencil.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -514,8 +514,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/linePort.png</normaloff>:/icons/linePort.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/linePort.png</normaloff>:/mainWindow/images/linePort.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -561,8 +561,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/ellipse.png</normaloff>:/icons/ellipse.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/ellipse.png</normaloff>:/mainWindow/images/ellipse.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -602,8 +602,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/textPicture.png</normaloff>:/icons/textPicture.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/textPicture.png</normaloff>:/mainWindow/images/textPicture.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -640,8 +640,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/rect.png</normaloff>:/icons/rect.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/rect.png</normaloff>:/mainWindow/images/rect.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -700,8 +700,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>135</width>
-        <height>76</height>
+        <width>142</width>
+        <height>78</height>
        </rect>
       </property>
       <attribute name="label">
@@ -761,7 +761,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="graphicsUtils::ColorListEditor" name="penColorComboBox">
+       <widget class="qReal::ui::ColorListEditor" name="penColorComboBox">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -848,8 +848,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>135</width>
-        <height>76</height>
+        <width>98</width>
+        <height>28</height>
        </rect>
       </property>
       <attribute name="label">
@@ -906,7 +906,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="graphicsUtils::ColorListEditor" name="brushColorComboBox">
+       <widget class="qReal::ui::ColorListEditor" name="brushColorComboBox">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -979,8 +979,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="qrgui.qrc">
-       <normaloff>:/icons/line.png</normaloff>:/icons/line.png</iconset>
+      <iconset>
+       <normaloff>:/mainWindow/images/line.png</normaloff>:/mainWindow/images/line.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -1088,14 +1088,11 @@
    <header>qrutils/graphicsUtils/abstractItemView.h</header>
   </customwidget>
   <customwidget>
-   <class>graphicsUtils::ColorListEditor</class>
+   <class>qReal::ui::ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>qrutils/graphicsUtils/colorListEditor.h</header>
+   <header>qrutils/widgets/colorListEditor.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="qrgui.qrc"/>
-  <include location="qrgui.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

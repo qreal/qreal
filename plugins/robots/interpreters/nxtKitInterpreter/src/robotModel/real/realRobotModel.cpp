@@ -1,10 +1,21 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "realRobotModel.h"
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
-
-#include "communication/bluetoothRobotCommunicationThread.h"
-#include "communication/usbRobotCommunicationThread.h"
 
 #include "parts/display.h"
 #include "parts/speaker.h"
@@ -22,50 +33,24 @@
 #include "parts/soundSensor.h"
 #include "parts/gyroscopeSensor.h"
 
-using namespace nxtKitInterpreter::robotModel::real;
+using namespace nxt::robotModel::real;
 using namespace utils::robotCommunication;
-using namespace interpreterBase::robotModel;
+using namespace kitBase::robotModel;
 
-RealRobotModel::RealRobotModel(QString const &kitId, QString const &robotId)
+RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId
+		, utils::robotCommunication::RobotCommunicationThreadInterface *communicationThread)
 	: NxtRobotModelBase(kitId, robotId)
 	, mRobotCommunicator(new RobotCommunicator(this))
 {
 	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 	connect(mRobotCommunicator, &RobotCommunicator::errorOccured, this, &RealRobotModel::errorOccured);
-}
-
-QString RealRobotModel::name() const
-{
-	return "NxtRealRobotModel";
-}
-
-QString RealRobotModel::friendlyName() const
-{
-	return tr("Real Robot");
+	mRobotCommunicator->setRobotCommunicationThreadObject(communicationThread);
 }
 
 bool RealRobotModel::needsConnection() const
 {
 	return true;
-}
-
-void RealRobotModel::rereadSettings()
-{
-	QString const valueOfCommunication = qReal::SettingsManager::value("NxtValueOfCommunication").toString();
-	if (valueOfCommunication == mLastCommunicationValue) {
-		return;
-	}
-
-	mLastCommunicationValue = valueOfCommunication;
-	utils::robotCommunication::RobotCommunicationThreadInterface *communicator = nullptr;
-	if (valueOfCommunication == "bluetooth") {
-		communicator = new communication::BluetoothRobotCommunicationThread;
-	} else if (valueOfCommunication == "usb") {
-		communicator = new communication::UsbRobotCommunicationThread;
-	}
-
-	mRobotCommunicator->setRobotCommunicationThreadObject(communicator);
 }
 
 void RealRobotModel::connectToRobot()
@@ -83,7 +68,7 @@ void RealRobotModel::checkConnection()
 	mRobotCommunicator->checkConsistency();
 }
 
-robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port);
@@ -150,5 +135,5 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 	//	return new parts::TouchSensor(accelerometerSensorInfo(), port, *mRobotCommunicator);
 	//}
 
-	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
+	return NxtRobotModelBase::createDevice(port, deviceInfo);
 }

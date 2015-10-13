@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QMap>
@@ -67,11 +81,11 @@ public:
 	Id explosion;
 };
 
-QDataStream &operator<< (QDataStream &out, NodeData const &data);
+QDataStream &operator<< (QDataStream &out, const NodeData &data);
 QDataStream &operator>> (QDataStream &in, NodeData &data);
 
-QDataStream &operator<< (QDataStream &out, EdgeData const &data);
+QDataStream &operator<< (QDataStream &out, const EdgeData &data);
 QDataStream &operator>> (QDataStream &in, EdgeData &data);
 
-bool operator== (NodeData const &first, NodeData const &second);
-bool operator== (EdgeData const &first, EdgeData const &second);
+bool operator== (const NodeData &first, const NodeData &second);
+bool operator== (const EdgeData &first, const EdgeData &second);

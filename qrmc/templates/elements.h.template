@@ -2,11 +2,13 @@
 
 #include <QBrush>
 #include <QPainter>
+                                                                    
+#include "../../../qrgui/plugins/editorPluginInterface/elementImpl.h"
+#include "../../../qrgui/plugins/editorPluginInterface/elementRepoInterface.h"
+#include "../../../qrgui/editor/element.h"
 
-#include "../../../qrgui/editorPluginInterface/elementImpl.h"
-#include "../../../qrgui/editorPluginInterface/elementTitleHelpers.h"
-#include "../../../qrgui/editorPluginInterface/elementRepoInterface.h"
-#include "../../../qrgui/umllib/element.h"
+#include "../../../qrgui/plugins/editorPluginInterface/labelFactoryInterface.h"
+#include "../../../qrgui/plugins/editorPluginInterface/labelInterface.h"
 
 @@NodesList@@
 

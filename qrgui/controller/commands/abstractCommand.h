@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QList>
@@ -40,7 +54,7 @@ public:
 	/// to be executed after this command
 	void insertPostAction(AbstractCommand * const command, int index);
 
-	virtual bool equals(AbstractCommand const &other) const;
+	virtual bool equals(const AbstractCommand &other) const;
 
 	/// Performs command tree filtering with all duplicates to be removed.
 	/// Removes duplicate closer to root, with search only in current subtree.
@@ -53,7 +67,7 @@ public:
 
 	/// Binds this command to the tab associated with the specified root diagram
 	/// @see diagramBinded()
-	void bindToDiagram(Id const &diagramId);
+	void bindToDiagram(const Id &diagramId);
 
 	/// Returns time of this command creation in ms since epoch
 	uint timestamp() const;
@@ -79,7 +93,7 @@ private:
 	bool hierarchyContains(AbstractCommand * const command) const;
 
 	/// The command itself is not considered
-	bool contains(QList<AbstractCommand *> const &list, AbstractCommand const * command) const;
+	bool contains(QList<AbstractCommand *> const &list, const AbstractCommand * command) const;
 
 	void removeDuplicatesOn(QList<AbstractCommand *> &list);
 
@@ -92,7 +106,7 @@ private:
 	uint mTimestamp;
 };
 
-inline bool operator==(AbstractCommand const &c1, AbstractCommand const &c2)
+inline bool operator==(const AbstractCommand &c1, const AbstractCommand &c2)
 {
 	return c1.equals(c2);
 }

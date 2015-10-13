@@ -1,16 +1,30 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "interpreterCore/managers/kitAutoSwitcher.h"
 
 #include <qrkernel/settingsManager.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 using namespace interpreterCore;
-using namespace interpreterBase;
+using namespace kitBase;
 using namespace robotModel;
 
-KitAutoSwitcher::KitAutoSwitcher(qReal::ProjectManagementInterface const &projectManager
-		, qReal::LogicalModelAssistInterface const &logicalModel
-		, BlocksFactoryManagerInterface const &factoryManager
-		, KitPluginManager const &kitPluginManager
+KitAutoSwitcher::KitAutoSwitcher(const qReal::ProjectManagementInterface &projectManager
+		, qReal::LogicalModelAssistInterface &logicalModel
+		, const BlocksFactoryManagerInterface &factoryManager
+		, const KitPluginManager &kitPluginManager
 		, RobotModelManager &robotModelManager
 		, QObject *parent)
 	: QObject(parent)
@@ -20,42 +34,69 @@ KitAutoSwitcher::KitAutoSwitcher(qReal::ProjectManagementInterface const &projec
 	, mRobotModelManager(robotModelManager)
 {
 	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, this, &KitAutoSwitcher::onProjectOpened);
+	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, [this, &robotModelManager]() {
+		mLogicalModel.mutableLogicalRepoApi().setMetaInformation("lastKitId", robotModelManager.model().kitId());
+	});
+	connect(&robotModelManager, &RobotModelManager::robotModelChanged, [this](RobotModelInterface &model) {
+		mLogicalModel.mutableLogicalRepoApi().setMetaInformation("lastKitId", model.kitId());
+	});
 }
 
 void KitAutoSwitcher::onProjectOpened()
 {
-	QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
+	if (tryToRestoreFromMetaInformation()) {
+		return;
+	}
+
+	const QString selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
 	QMap<QString, int> const blocksCount = countKitSpecificBlocks();
 	if (!selectedKit.isEmpty() && blocksCount[selectedKit] > 0) {
 		// If user opens save that contains blocks specific for this kit we do not want
-		// to swith kit even if it contains more blocks specific to other kits.
+		// to switсh kit even if it contains more blocks specific to other kits.
 		return;
 	}
 
 	int majority = 0;
-	QString majorityKit;
+	for (const QString &kit : blocksCount.keys()) {
+		majority = qMax(blocksCount[kit], majority);
+	}
 
-	for (QString const &kit : blocksCount.keys()) {
-		if (blocksCount[kit] > majority)  {
-			majority = blocksCount[kit];
-			majorityKit = kit;
+	if (majority == 0) {
+		return;
+	}
+
+	int bestPriority = -1;
+	QString bestKit;
+	for (const QString &kit : blocksCount.keys()) {
+		if (blocksCount[kit] == majority && mKitPluginManager.priority(kit) > bestPriority) {
+			bestPriority = mKitPluginManager.priority(kit);
+			bestKit = kit;
 		}
 	}
 
-	if (majority > 0 && selectedKit != majorityKit) {
-		switchTo(majorityKit);
+	if (selectedKit != bestKit) {
+		switchTo(bestKit);
 	}
 	// Else save contains only common blocks. Ignoring it.
+}
+
+bool KitAutoSwitcher::tryToRestoreFromMetaInformation()
+{
+	const QString kit = mLogicalModel.logicalRepoApi().metaInformation("lastKitId").toString();
+	if (!kit.isEmpty() && mKitPluginManager.kitIds().contains(kit)) {
+		return switchTo(kit);
+	}
+
+	return false;
 }
 
 QMap<QString, int> KitAutoSwitcher::countKitSpecificBlocks() const
 {
 	QMap<QString, int> result;
-	QMap<qReal::Id, QString> kitBlocks = kitSpecificBlocks();
+	QMultiMap<qReal::Id, QString> kitBlocks = kitSpecificBlocks();
 
-	for (qReal::Id const &block : mLogicalModel.children(qReal::Id::rootId())) {
-		QString const kit = kitBlocks[block.type()];
-		if (!kit.isEmpty()) {
+	for (const qReal::Id &block : mLogicalModel.children(qReal::Id::rootId())) {
+		for (const QString &kit : kitBlocks.values(block.type())) {
 			++result[kit];
 		}
 	}
@@ -63,13 +104,13 @@ QMap<QString, int> KitAutoSwitcher::countKitSpecificBlocks() const
 	return result;
 }
 
-QMap<qReal::Id, QString> KitAutoSwitcher::kitSpecificBlocks() const
+QMultiMap<qReal::Id, QString> KitAutoSwitcher::kitSpecificBlocks() const
 {
 	QMap<QString, QSet<qReal::Id>> kitsToBlocksMap;
-	for (QString const &kitId : mKitPluginManager.kitIds()) {
+	for (const QString &kitId : mKitPluginManager.kitIds()) {
 		QSet<qReal::Id> specificBlocks;
 		for (KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-			for (RobotModelInterface const *robotModel : kit->robotModels()) {
+			for (const RobotModelInterface *robotModel : kit->robotModels()) {
 				specificBlocks += mFactoryManager.enabledBlocks(*robotModel);
 			}
 		}
@@ -77,21 +118,24 @@ QMap<qReal::Id, QString> KitAutoSwitcher::kitSpecificBlocks() const
 		kitsToBlocksMap[kitId] = specificBlocks - mFactoryManager.commonBlocks();
 	}
 
-	QMap<qReal::Id, QString> blocksToKitsMap;
-	for (QString const &kitId : kitsToBlocksMap.keys()) {
-		for (qReal::Id const &id: kitsToBlocksMap[kitId]) {
-			blocksToKitsMap[id] = kitId;
+	QMultiMap<qReal::Id, QString> blocksToKitsMap;
+	for (const QString &kitId : kitsToBlocksMap.keys()) {
+		for (const qReal::Id &id: kitsToBlocksMap[kitId]) {
+			blocksToKitsMap.insertMulti(id, kitId);
 		}
 	}
 
 	return blocksToKitsMap;
 }
 
-void interpreterCore::KitAutoSwitcher::switchTo(QString const &kitId)
+bool interpreterCore::KitAutoSwitcher::switchTo(const QString &kitId)
 {
 	if (RobotModelInterface * const robotModel
 			= RobotModelUtils::selectedRobotModelFor(mKitPluginManager.kitsById(kitId)))
 	{
 		mRobotModelManager.setModel(robotModel);
+		return true;
 	}
+
+	return false;
 }

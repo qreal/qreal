@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "controller/commands/abstractCommand.h"
@@ -12,13 +26,13 @@ class ElementCommand : public AbstractCommand
 	Q_OBJECT
 
 public:
-	ElementCommand(EditorViewScene const *scene, Id const &id);
+	ElementCommand(const EditorViewScene *scene, const Id &id);
 	virtual ~ElementCommand();
 
-	EditorViewScene const *scene() const;
+	const EditorViewScene *scene() const;
 	Id elementId() const;
-	void setScene(EditorViewScene const *scene);
-	void setId(Id const &id);
+	void setScene(const EditorViewScene *scene);
+	void setId(const Id &id);
 
 protected:
 	/// Called when our element instance possibly has changed
@@ -27,10 +41,10 @@ protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
-	Element *elementById(Id const &id);
+	Element *elementById(const Id &id);
 
 	Element *mElement;
-	EditorViewScene const *mScene;
+	const EditorViewScene *mScene;
 	Id mId;
 	bool mSceneWasRemoved;
 

@@ -1,17 +1,30 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "gesturePainter.h"
 
 #include "mouseMovementManager.h"
 
 using namespace qReal::gestures;
 
-int const minBorder = -1000;
-int const thickness = 2;
+const int thickness = 2;
 /// Difference between painter's and pixmap's coordinates.
-qreal const frame = 10;
+const qreal frame = 10;
 
-GesturePainter::GesturePainter(QString const &gesture
-		, QColor const &backgroungColor
-		, QColor const &gestureColor
+GesturePainter::GesturePainter(const QString &gesture
+		, const QColor &backgroungColor
+		, const QColor &gestureColor
 		, qreal size)
 	: mGesture(MouseMovementManager::stringToPath(gesture))
 	, mBackgroundColor(backgroungColor)
@@ -25,7 +38,7 @@ QIconEngine *GesturePainter::clone() const
 	return nullptr;
 }
 
-void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state)
+void GesturePainter::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(rect)
 	Q_UNUSED(mode)
@@ -33,12 +46,12 @@ void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mod
 
 	qreal maxSizeX = 0;
 	qreal maxSizeY = 0;
-	for (PointVector const &path : mGesture) {
+	for (const PointVector &path : mGesture) {
 		if (path.isEmpty()) {
 			return;
 		}
 
-		for (QPointF const &currentPoint : path) {
+		for (const QPointF &currentPoint : path) {
 			maxSizeX = qMax(maxSizeX, currentPoint.x());
 			maxSizeY = qMax(maxSizeY, currentPoint.y());
 		}
@@ -50,8 +63,8 @@ void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mod
 		maxSizeY = mSize;
 	}
 
-	qreal const sizeFactor = mSize ? mSize / (qMax(maxSizeX, maxSizeY) + frame) : 1;
-	QPoint const indent = QPoint((mSize - maxSizeX * sizeFactor) / 2, (mSize - maxSizeY * sizeFactor) / 2);
+	const qreal sizeFactor = mSize ? mSize / (qMax(maxSizeX, maxSizeY) + frame) : 1;
+	const QPoint indent = QPoint((mSize - maxSizeX * sizeFactor) / 2, (mSize - maxSizeY * sizeFactor) / 2);
 
 	painter->save();
 	painter->setBrush(mBackgroundColor);
@@ -61,9 +74,9 @@ void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mod
 	QPen pen(mGestureColor);
 	pen.setWidth(thickness);
 	painter->setPen(pen);
-	for (PointVector const &path : mGesture) {
+	for (const PointVector &path : mGesture) {
 		QPointF previousPoint = path[0];
-		for (QPointF const &currentPoint : path) {
+		for (const QPointF &currentPoint : path) {
 			painter->drawLine(indent + sizeFactor * previousPoint, indent + sizeFactor * currentPoint);
 			previousPoint = currentPoint;
 		}

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QVector>
@@ -30,23 +44,23 @@ public:
 	static void disableAll();
 	static void setTarget(TraceTarget target);
 
-	static void debug(TracerEnum category, QString const &methodName, QString const &message);
+	static void debug(TracerEnum category, const QString &methodName, const QString &message);
 
 private:
 	static Tracer *mInstance;
 	QVector<bool> mCategories;
 	TraceTarget mTarget;
-	QString const mLogPath;
+	const QString mLogPath;
 
 	Tracer();
 	static Tracer *instance();
 
-	void enableCategoryImpl(TracerEnum const &category);
-	void disableCategoryImpl(TracerEnum const &category);
+	void enableCategoryImpl(const TracerEnum &category);
+	void disableCategoryImpl(const TracerEnum &category);
 	void enableAllImpl();
 	void disableAllImpl();
 
-	void debugImpl(TracerEnum const &category, QString const &methodName, QString const &message);
+	void debugImpl(const TracerEnum &category, const QString &methodName, const QString &message);
 };
 
 }

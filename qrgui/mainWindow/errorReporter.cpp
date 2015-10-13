@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "errorReporter.h"
 
 #include <QtWidgets/QMessageBox>
@@ -7,6 +21,7 @@
 #include <qrkernel/exception/exception.h>
 
 #include "mainWindow/errorListWidget.h"
+#include "scriptAPI/hintReporter.h"
 
 using namespace qReal;
 using namespace gui;
@@ -154,6 +169,17 @@ bool ErrorReporter::wereErrors()
 	return false;
 }
 
+void ErrorReporter::sendBubblingMessage(const QString &message, int duration, QWidget *parent)
+{
+	if (!parent) {
+		// A bit hacky, but not criminal way to get main window.
+		parent = mErrorListWidget->topLevelWidget();
+	}
+
+	// The message will show and dispose itself.
+	new HintReporter(parent, message, duration);
+}
+
 void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorListWidget) const
 {
 	if (!errorListWidget) {
@@ -165,7 +191,8 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	}
 
 	QListWidgetItem *item = new QListWidgetItem(errorListWidget);
-	QString const message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
+	item->setData(ErrorListWidget::positionRole, error.position().toString());
+	const QString message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
 			error.timestamp(), severityMessage(error), error.message());
 	switch (error.severity()) {
 	case Error::information:
@@ -187,7 +214,6 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	QLabel *label = new QLabel(message.trimmed());
 	label->setAlignment(Qt::AlignVCenter);
 	label->setOpenExternalLinks(true);
-	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
 	errorListWidget->setItemWidget(item, label);
 	errorListWidget->setCurrentItem(item);

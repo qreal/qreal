@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <trace/>
+        <walls>
+            <wall end="-68:77" begin="-68:-204" id=""/>
+        </walls>
+        <colorFields/>
+	    <regions>
+	    	<region type="rectangle" id="warzone" text="Поле, которое нельзя покидать" x="-280" y="-230" width="210" height="285" color="yellow" visible="false"/>
+	    	<region type="rectangle" id="start_zone" text="Стартовое поле" x="-270" y="-110" width="80" height="80" color="blue" visible="false"/>
+	    </regions>
+    </world>
+    <robots>
+        <robot id="nxtKitRobot" direction="0" position="-256:-103">
+            <sensors>
+                <sensor port="3###input######sensor3" type="" direction="0" position="75:25"/>
+                <sensor port="1###input######sensor1" type="interpreterBase::robotModel::robotParts::TouchSensor" direction="0" position="75:25"/>
+                <sensor port="4###input######sensor4" type="" direction="0" position="75:25"/>
+                <sensor port="2###input######sensor2" type="" direction="0" position="75:25"/>
+            </sensors>
+        </robot>
+    </robots>
+	<!-- Here we check that robot goes forward to the wall, touches it and then back for 3 times -->
+	<constraints>
+		<timelimit value="30000"/>
+
+		<constraint failMessage="На порту 1 должен быть выставлен сенсор касания, стерва!" checkOnce="true">
+			<equals>
+				<typeof objectId="robot1.1"/>
+				<string value="twoDModel::robotModel::parts::TouchSensor"/>
+			</equals>
+		</constraint>
+
+		<constraint failMessage="На порту B должен быть мотор!" checkOnce="true">
+			<equals>
+				<typeof objectId="robot1.B_out"/>
+				<string value="nxtKitInterpreter::robotModel::parts::NxtMotor"/>
+			</equals>
+		</constraint>
+
+		<constraint failMessage="На порту C должен быть мотор!" checkOnce="true">
+			<equals>
+				<typeof objectId="robot1.C_out"/>
+				<string value="nxtKitInterpreter::robotModel::parts::NxtMotor"/>
+			</equals>
+		</constraint>
+
+		<constraint failMessage="Робот покинул допустимую зону!">
+			<inside objectId="robot1" regionId="warzone"/>
+		</constraint>
+
+		<event id="We are alive, first move" settedUpInitially="true">
+			<condition>
+				<greater>
+					<objectState object="robot1.B_out.power"/>
+					<int value="0"/>
+				</greater>
+			</condition>
+			<triggers>
+				<setUp id="Touching wall"/>
+				<setter name="counter" value="0">
+					<int value="0"/>
+				</setter>
+			</triggers>
+		</event>
+
+		<event id="Waiting for going forward too long" settedUpInitially="true">
+			<conditions glue="and">
+				<timer timeout="1000" forceDropOnTimeout="true"/>
+				<settedUp id="We are alive, first move"/>
+			</conditions>
+			<trigger>
+				<fail message="Робот так и не поехал в первую секунду"/>
+			</trigger>
+		</event>
+
+		<event id="Touching wall">
+			<condition>
+				<equals>
+					<objectState object="robot1.1.value"/>
+					<int value="1"/>
+				</equals>
+			</condition>
+			<trigger>
+				<setUp id="Returned back"/>
+			</trigger>
+		</event>
+
+		<event id="Returned back">
+			<condition>
+				<inside objectId="robot1" regionId="start_zone"/>
+			</condition>
+			<triggers>
+				<trigger>
+					<setUp id="Touching wall"/>
+				</trigger>
+				<trigger>
+					<setter name="counter">
+						<sum>
+							<variableValue name="counter"/>
+							<int value="1"/>
+						</sum>
+					</setter>
+				</trigger>
+				<trigger>
+					<setUp id="Done?"/>
+				</trigger>
+			</triggers>
+		</event>
+
+		<event id="Done?">
+			<condition>
+				<notLess>
+					<variableValue name="counter"/>
+					<int value="3"/>
+				</notLess>
+			</condition>
+			<trigger>
+				<success/>
+			</trigger>
+		</event>
+	</constraints>
+</root>

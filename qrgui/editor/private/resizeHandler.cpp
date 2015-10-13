@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "resizeHandler.h"
 
 #include <algorithm>
@@ -63,14 +77,14 @@ void ResizeHandler::sortChildrenIfNeeded() const
 	int forestallingLeft = sizeOfForestalling[0];
 
 	qreal curChildY = forestallingTop;
-	qreal const maxChildWidthValue = maxChildWidth();
+	const qreal maxChildWidthValue = maxChildWidth();
 
 	QList<NodeElement *> children = sortedChildrenList();
 	foreach (QGraphicsItem * const childItem, children) {
 		QGraphicsRectItem * const placeholder = mTargetNode->placeholder();
 
-		if(placeholder != NULL && childItem == placeholder) {
-			QRectF const rect(forestallingLeft, curChildY, maxChildWidthValue, placeholder->rect().height());
+		if(placeholder != nullptr && childItem == placeholder) {
+			const QRectF rect(forestallingLeft, curChildY, maxChildWidthValue, placeholder->rect().height());
 			placeholder->setRect(rect);
 			curChildY += placeholder->rect().height();
 		}
@@ -80,11 +94,11 @@ void ResizeHandler::sortChildrenIfNeeded() const
 			continue;
 		}
 
-		qreal const necessaryWidth =
+		const qreal necessaryWidth =
 				mElementImpl->maximizesChildren()
 				? maxChildWidthValue
 				: curItem->contentsRect().width();
-		QRectF const rect(forestallingLeft, curChildY, necessaryWidth, curItem->contentsRect().height());
+		const QRectF rect(forestallingLeft, curChildY, necessaryWidth, curItem->contentsRect().height());
 
 		curItem->setGeometry(rect);
 		curItem->storeGeometry();
@@ -103,7 +117,7 @@ void ResizeHandler::resizeParent() const
 {
 	NodeElement * const parItem = dynamic_cast<NodeElement* const>(mTargetNode->parentItem());
 	if (parItem) {
-		ResizeHandler const handler(parItem);
+		const ResizeHandler handler(parItem);
 		handler.resize(parItem->contentsRect(), parItem->pos());
 	}
 }
@@ -122,7 +136,7 @@ void ResizeHandler::normalizeSize(QRectF &newContents) const
 void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newPos) const
 {
 	// Vector of minimum negative XY child deflection from top left corner.
-	QPointF const childDeflectionVector = childDeflection();
+	const QPointF childDeflectionVector = childDeflection();
 
 	moveChildren(-childDeflectionVector);
 	newPos += childDeflectionVector;
@@ -161,7 +175,7 @@ void ResizeHandler::printChildPos() const
 	}
 }
 
-void ResizeHandler::moveChildren(QPointF const &shift) const
+void ResizeHandler::moveChildren(const QPointF &shift) const
 {
 	QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 	qreal forestallingTop = sizeOfForestalling[1];
@@ -208,7 +222,7 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 	}
 }
 
-QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, QRectF const &contents) const
+QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, const QRectF &contents) const
 {
 	QRectF boundingRect;
 
@@ -236,7 +250,7 @@ QList<NodeElement *> ResizeHandler::sortedChildrenList() const
 
 	IdList childrenIds = mTargetNode->sortedChildren();
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mTargetNode->scene());
-	foreach (Id const &id, childrenIds) {
+	foreach (const Id &id, childrenIds) {
 		NodeElement *child = evScene->getNodeById(id);
 		if (child) {
 			result << child;

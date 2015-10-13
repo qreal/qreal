@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "ids.h"
 
 #include <QtCore/QVariant>
@@ -5,9 +19,9 @@
 
 using namespace qReal;
 
-Id Id::loadFromString(QString const &string)
+Id Id::loadFromString(const QString &string)
 {
-	QStringList const path = string.split('/');
+	const QStringList path = string.split('/');
 	Q_ASSERT(path.count() > 0 && path.count() <= 5);
 	Q_ASSERT(path[0] == "qrm:");
 
@@ -26,7 +40,7 @@ Id Id::loadFromString(QString const &string)
 	return result;
 }
 
-Id Id::createElementId(QString const &editor, QString const &diagram, QString const &element)
+Id Id::createElementId(const QString &editor, const QString &diagram, const QString &element)
 {
 	return Id(editor, diagram, element, QUuid::createUuid().toString());
 }
@@ -36,7 +50,7 @@ Id Id::rootId()
 	return Id("ROOT_ID", "ROOT_ID", "ROOT_ID", "ROOT_ID");
 }
 
-Id::Id(QString const &editor, QString  const &diagram, QString  const &element, QString  const &id)
+Id::Id(const QString &editor, QString  const &diagram, QString  const &element, QString  const &id)
 		: mEditor(editor)
 		, mDiagram(diagram)
 		, mElement(element)
@@ -45,13 +59,13 @@ Id::Id(QString const &editor, QString  const &diagram, QString  const &element, 
 	Q_ASSERT(checkIntegrity());
 }
 
-Id::Id(Id const &base, QString const &additional)
+Id::Id(const Id &base, const QString &additional)
 		: mEditor(base.mEditor)
 		, mDiagram(base.mDiagram)
 		, mElement(base.mElement)
 		, mId(base.mId)
 {
-	unsigned const baseSize = base.idSize();
+	const unsigned baseSize = base.idSize();
 	switch (baseSize) {
 	case 0:
 		mEditor = additional;
@@ -173,14 +187,14 @@ QVariant Id::toVariant() const
 	return result;
 }
 
-QVariant IdListHelper::toVariant(IdList const &list)
+QVariant IdListHelper::toVariant(const IdList &list)
 {
 	QVariant v;
 	v.setValue(list);
 	return v;
 }
 
-QDataStream& operator<< (QDataStream &out, Id const &id)
+QDataStream& operator<< (QDataStream &out, const Id &id)
 {
 	out << id.toString();
 	return out;

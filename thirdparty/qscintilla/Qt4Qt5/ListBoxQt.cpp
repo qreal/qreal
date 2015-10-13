@@ -273,10 +273,10 @@ void QsciListBoxQt::SetList(const char *list, char separator, char typesep)
 
     Clear();
 
-    if ((words = qstrdup(list)) != NULL)
+    if ((words = qstrdup(list)) != nullptr)
     {
         char *startword = words;
-        char *numword = NULL;
+        char *numword = nullptr;
 
         for (int i = 0; words[i] != '\0'; i++)
         {
@@ -290,7 +290,7 @@ void QsciListBoxQt::SetList(const char *list, char separator, char typesep)
                 Append(startword, numword ? atoi(numword + 1) : -1);
 
                 startword = words + i + 1;
-                numword = NULL;
+                numword = nullptr;
             }
             else if (words[i] == typesep)
             {

@@ -182,7 +182,7 @@ int CallTip::PaintContents(Surface *surfaceWindow, bool draw) {
 
 	while (moreChunks) {
 		char *chunkEnd = strchr(chunkVal, '\n');
-		if (chunkEnd == NULL) {
+		if (chunkEnd == nullptr) {
 			chunkEnd = chunkVal + strlen(chunkVal);
 			moreChunks = false;
 		}
@@ -280,7 +280,7 @@ PRectangle CallTip::CallTipStart(int pos, Point pt, int textHeight, const char *
 	rectDown = PRectangle(0,0,0,0);
 	offsetMain = insetX;            // changed to right edge of any arrows
 	int width = PaintContents(surfaceMeasure, false) + insetX;
-	while ((newline = strchr(look, '\n')) != NULL) {
+	while ((newline = strchr(look, '\n')) != nullptr) {
 		look = newline + 1;
 		numLines++;
 	}

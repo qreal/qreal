@@ -1,18 +1,35 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "thread.h"
 
 #include <QtWidgets/QApplication>
 #include <qrkernel/settingsManager.h>
 
+#include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
+
 using namespace qReal;
 using namespace interpretation;
 
-int const blocksCountTillProcessingEvents = 100;
+const int blocksCountTillProcessingEvents = 100;
 
-Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
+Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, Id const &initialNodeType
+		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
-		, Id const &initialNode)
+		, const Id &initialNode
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -21,15 +38,17 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
 
-Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
+Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, Id const &initialNodeType
-		, Id const &diagramToInterpret
-		, BlocksTableInterface &blocksTable)
+		, const Id &initialNodeType
+		, const Id &diagramToInterpret
+		, BlocksTableInterface &blocksTable
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -39,13 +58,14 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
 
 Thread::~Thread()
 {
-	for (BlockInterface const * const block : mStack) {
+	for (const BlockInterface * const block : mStack) {
 		if (block) {
 			mInterpretersInterface.dehighlight(block->id());
 		}
@@ -55,7 +75,7 @@ Thread::~Thread()
 void Thread::initTimer()
 {
 	mProcessEventsTimer->setSingleShot(true);
-	mProcessEventsTimer->setInterval(true);
+	mProcessEventsTimer->setInterval(0);
 	connect(mProcessEventsTimer, SIGNAL(timeout())
 			, mProcessEventsMapper, SLOT(map()));
 
@@ -72,16 +92,21 @@ void Thread::interpret()
 	}
 }
 
-void Thread::nextBlock(Id const &blockId)
+void Thread::stop()
+{
+	emit stopped();
+}
+
+void Thread::nextBlock(const Id &blockId)
 {
 	turnOff(mCurrentBlock);
 	BlockInterface *const block = blockId == Id() ? nullptr : mBlocksTable.block(blockId);
 	turnOn(block);
 }
 
-void Thread::stepInto(Id const &diagram)
+void Thread::stepInto(const Id &diagram)
 {
-	Id const initialNode = findStartingElement(diagram);
+	const Id initialNode = findStartingElement(diagram);
 	BlockInterface * const block = mBlocksTable.block(initialNode);
 
 	if (initialNode.isNull() || !block) {
@@ -114,17 +139,17 @@ void Thread::failure()
 	emit stopped();
 }
 
-void Thread::error(QString const &message, Id const &source)
+void Thread::error(const QString &message, const Id &source)
 {
 	mInterpretersInterface.errorReporter()->addError(message, source);
 	failure();
 }
 
-Id Thread::findStartingElement(Id const &diagram) const
+Id Thread::findStartingElement(const Id &diagram) const
 {
-	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
+	const IdList children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 
-	for (Id const &child : children) {
+	for (const Id &child : children) {
 		if (child.type() == mInitialNodeType) {
 			return child;
 		}
@@ -137,16 +162,24 @@ void Thread::turnOn(BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
-		/// @todo: report error if we met unknown block type?
 		finishedSteppingInto();
 		return;
 	}
 
+	if (!mGraphicalModelApi->graphicalRepoApi().exist(block->id())) {
+		// If we get non-null block instance, but non-existing id then the block
+		// was removed from diagram during the interpretation.
+		error(tr("Block has disappeared!"));
+		return;
+	}
+
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
-	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock);
-	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread);
-	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure);
-	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto);
+	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::sendMessage, this, &Thread::sendMessage, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
 
 	mStack.push(mCurrentBlock);
 
@@ -167,7 +200,7 @@ void Thread::turnOn(BlockInterface * const block)
 		mProcessEventsMapper->setMapping(mProcessEventsTimer, mCurrentBlock);
 		mProcessEventsTimer->start();
 	} else {
-		mCurrentBlock->interpret();
+		mCurrentBlock->interpret(this);
 	}
 }
 
@@ -175,7 +208,7 @@ void Thread::interpretAfterEventsProcessing(QObject *blockObject)
 {
 	BlockInterface * const block = dynamic_cast<BlockInterface *>(blockObject);
 	if (block) {
-		block->interpret();
+		block->interpret(this);
 	}
 }
 
@@ -193,4 +226,32 @@ void Thread::turnOff(BlockInterface * const block)
 
 	mStack.pop();
 	mInterpretersInterface.dehighlight(block->id());
+}
+
+void Thread::newMessage(const QString &message)
+{
+	if (mMessages.isEmpty()) {
+		blocks::ReceiveThreadMessageBlock *block = dynamic_cast<blocks::ReceiveThreadMessageBlock *>(mCurrentBlock);
+		if (block) {
+			block->receiveMessage(message);
+			return;
+		}
+	}
+
+	mMessages.enqueue(message);
+}
+
+bool Thread::getMessage(QString &message)
+{
+	if (!mMessages.isEmpty()) {
+		message = mMessages.dequeue();
+		return true;
+	}
+
+	return false;
+}
+
+QString Thread::id() const
+{
+	return mId;
 }

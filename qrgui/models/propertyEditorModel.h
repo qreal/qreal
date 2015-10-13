@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QAbstractTableModel>
@@ -15,7 +29,7 @@ class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(qReal::EditorManagerInterface const &editorManagerInterface, QObject *parent = 0);
+	explicit PropertyEditorModel(const qReal::EditorManagerInterface &editorManagerInterface, QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
@@ -27,12 +41,14 @@ public:
 
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-	void setSourceModels(QAbstractItemModel * const logicalSourceModel, QAbstractItemModel * const graphicalSourceModel);
-	void setModelIndexes(QModelIndex const &logicalModelIndex, QModelIndex const &graphicalModelIndex);
+	void setSourceModels(QAbstractItemModel * const logicalSourceModel
+				, QAbstractItemModel * const graphicalSourceModel);
+
+	void setModelIndexes(const QModelIndex &logicalModelIndex, const QModelIndex &graphicalModelIndex);
 	void clearModelIndexes();
 
-	bool enumEditable(QModelIndex const &index) const;
-	QList<QPair<QString, QString>> enumValues(QModelIndex const &index) const;
+	bool enumEditable(const QModelIndex &index) const;
+	QList<QPair<QString, QString>> enumValues(const QModelIndex &index) const;
 
 	// Methods needed by "Reference button" delegate
 	QString typeName(const QModelIndex &index) const;
@@ -40,7 +56,7 @@ public:
 	// Methods for use in delegate, allow to determine where in actual models to put data
 	QModelIndex modelIndex(int row) const;
 	int roleByIndex(int row) const;
-	bool isReference(QModelIndex const &index, QString const &propertyName);
+	bool isReference(const QModelIndex &index, const QString &propertyName);
 
 	const QModelIndex& logicalModelIndex() const;
 	const QModelIndex& graphicalModelIndex() const;
@@ -48,15 +64,15 @@ public:
 	QAbstractItemModel* logicalTargetModel() const;
 	QAbstractItemModel* graphicalTargetModel() const;
 
-	bool isCurrentIndex(QModelIndex const &index) const;
+	bool isCurrentIndex(const QModelIndex &index) const;
 
-	qReal::Id idByIndex(QModelIndex const &index) const;
+	qReal::Id idByIndex(const QModelIndex &index) const;
 
 signals:
 	void propertyChangedFromPropertyEditor(QModelIndex const &index);
 
 private slots:
-	void rereadData(QModelIndex const &, QModelIndex const &);
+	void rereadData(const QModelIndex &, const QModelIndex &);
 
 private:
 	enum AttributeClassEnum {
@@ -91,7 +107,7 @@ private:
 
 	QList<Field> mFields;
 
-	qReal::EditorManagerInterface const &mEditorManagerInterface;
+	const qReal::EditorManagerInterface &mEditorManagerInterface;
 
 	bool isValid() const;
 };

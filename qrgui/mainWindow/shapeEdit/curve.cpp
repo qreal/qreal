@@ -1,34 +1,47 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "curve.h"
 
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
+Curve::Curve(const QPointF &start, const QPointF &end, const QPointF &c1)
 		: Path(QPainterPath(start))
 {
-	mPen.setColor(Qt::gray);
-	mBrush.setStyle(Qt::NoBrush);
+	setPen(QPen(Qt::gray));
+	setBrush(QBrush(QColor(), Qt::NoBrush));
 	mDomElementType = pictureType;
-	mX1 = start.x();
-	mY1 = start.y();
-	mX2 = end.x();
-	mY2 = end.y();
+	setX1(start.x());
+	setY1(start.y());
+	setX2(end.x());
+	setY2(end.y());
 	mC1 = c1;
-	mCurvePath = new QPainterPath(QPointF(mX1, mY1));
-	mCurvePath->quadTo(mC1, QPointF(mX2, mY2));
-	mBoundingRect = boundingRect();
+	mCurvePath = new QPainterPath(QPointF(x1(), y1()));
+	mCurvePath->quadTo(mC1, QPointF(x2(), y2()));
 }
 
-Curve::Curve(Curve const &other)
+Curve::Curve(const Curve &other)
 		: Path(QPainterPath())
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = Item::pictureType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mC1 = other.mC1;
 	mCurvePath = other.mCurvePath;
 	mListScalePoint = other.mListScalePoint;
@@ -47,11 +60,11 @@ QPainterPath Curve::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPath pathCtrl1;
-	pathCtrl1.moveTo(mX1, mY1);
+	pathCtrl1.moveTo(x1(), y1());
 	pathCtrl1.lineTo(mC1.x(), mC1.y());
 
 	QPainterPath pathCtrl2;
-	pathCtrl2.moveTo(mX2, mY2);
+	pathCtrl2.moveTo(x2(), y2());
 	pathCtrl2.lineTo(mC1.x(), mC1.y());
 
 	QPainterPathStroker ps;
@@ -68,10 +81,10 @@ QPainterPath Curve::shape() const
 
 QRectF Curve::searchMaxMinCoord() const
 {
-	qreal minX = qMin(qMin(mX1, mX2), mC1.x());
-	qreal minY = qMin(qMin(mY1, mY2), mC1.y());
-	qreal maxX = qMax(qMax(mX1, mX2), mC1.x());
-	qreal maxY = qMax(qMax(mY1, mY2), mC1.y());
+	qreal minX = qMin(qMin(x1(), x2()), mC1.x());
+	qreal minY = qMin(qMin(y1(), y2()), mC1.y());
+	qreal maxX = qMax(qMax(x1(), x2()), mC1.x());
+	qreal maxY = qMax(qMax(y1(), y2()), mC1.y());
 	return QRectF(minX, minY, maxX - minX, maxY - minY);
 }
 
@@ -84,15 +97,15 @@ void Curve::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
-	mCurvePath = new QPainterPath(QPointF(mX1, mY1));
-	mCurvePath->quadTo(mC1, QPointF(mX2, mY2));
+	mCurvePath = new QPainterPath(QPointF(x1(), y1()));
+	mCurvePath->quadTo(mC1, QPointF(x2(), y2()));
 	painter->drawPath(*mCurvePath);
 }
 
 void Curve::drawExtractionForItem(QPainter* painter)
 {
-	painter->drawPoint(mX1, mY1);
-	painter->drawPoint(mX2, mY2);
+	painter->drawPoint(x1(), y1());
+	painter->drawPoint(x2(), y2());
 	painter->drawPoint(mC1.x(), mC1.y());
 
 	setPenBrushDriftRect(painter);
@@ -102,8 +115,8 @@ void Curve::drawExtractionForItem(QPainter* painter)
 
 void Curve::drawFieldForResizeItem(QPainter* painter)
 {
-	painter->drawEllipse(QPointF(mX1, mY1), resizeDrift, resizeDrift);
-	painter->drawEllipse(QPointF(mX2, mY2), resizeDrift, resizeDrift);
+	painter->drawEllipse(QPointF(x1(), y1()), resizeDrift, resizeDrift);
+	painter->drawEllipse(QPointF(x2(), y2()), resizeDrift, resizeDrift);
 	painter->drawEllipse(mC1, resizeDrift, resizeDrift);
 }
 
@@ -125,7 +138,7 @@ void Curve::changeDragState(qreal x, qreal y)
 	if (QRectF(QPointF(mC1.x() + scenePos().x(), mC1.y() + scenePos().y())
 			, QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
 	{
-		mDragState = Ctrl;
+		setDragState(Ctrl);
 	}
 }
 
@@ -133,27 +146,29 @@ void  Curve::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
 	qreal x = mapFromScene(event->scenePos()).x();
 	qreal y = mapFromScene(event->scenePos()).y();
-	if (mDragState != None)
+	if (dragState() != None)
 		setFlag(QGraphicsItem::ItemIsMovable, false);
-	if (mDragState == TopLeft) {
-		setX1andY1(x, y);
-	} else if (mDragState == BottomRight) {
-		setX2andY2(x, y);
-	} else if (mDragState == Ctrl) {
+	if (dragState() == TopLeft) {
+		setX1(x);
+		setY1(y);
+	} else if (dragState() == BottomRight) {
+		setX2(x);
+		setY2(y);
+	} else if (dragState() == Ctrl) {
 		setCXandCY(x, y);
 	}
 }
 
-QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement curve = setPenBrushToDoc(document, "curve");
 
-	qreal const x1 = scenePos().x() + mX1 - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + mY1- topLeftPicture.y();
-	qreal const x2 = scenePos().x() + mX2 - topLeftPicture.x();
-	qreal const y2 = scenePos().y() + mY2 - topLeftPicture.y();
-	qreal const x3 = scenePos().x() + mC1.x() - topLeftPicture.x();
-	qreal const y3 = scenePos().y() + mC1.y() - topLeftPicture.y();
+	const qreal x1 = scenePos().x() + this->x1() - topLeftPicture.x();
+	const qreal y1 = scenePos().y() + this->y1()- topLeftPicture.y();
+	const qreal x2 = scenePos().x() + this->x2() - topLeftPicture.x();
+	const qreal y2 = scenePos().y() + this->y2() - topLeftPicture.y();
+	const qreal x3 = scenePos().x() + mC1.x() - topLeftPicture.x();
+	const qreal y3 = scenePos().y() + mC1.y() - topLeftPicture.y();
 
 	QDomElement start  = document.createElement("start");
 	curve.appendChild(start);

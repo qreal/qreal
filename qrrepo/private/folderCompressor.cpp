@@ -1,6 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "folderCompressor.h"
 
-bool FolderCompressor::compressFolder(QString const &sourceFolder, QString const &destinationFile)
+#include <QtCore/QDataStream>
+
+bool FolderCompressor::compressFolder(const QString &sourceFolder, const QString &destinationFile)
 {
 	if (!QDir(sourceFolder).exists()) {
 		return false;
@@ -13,13 +29,13 @@ bool FolderCompressor::compressFolder(QString const &sourceFolder, QString const
 
 	QDataStream dataStream(&file);
 
-	bool const result = compress(sourceFolder, "", dataStream);
+	const bool result = compress(sourceFolder, "", dataStream);
 	file.close();
 
 	return result;
 }
 
-bool FolderCompressor::compress(QString const &sourceFolder, QString const &prefix, QDataStream &dataStream)
+bool FolderCompressor::compress(const QString &sourceFolder, const QString &prefix, QDataStream &dataStream)
 {
 	QDir dir(sourceFolder);
 	if (!dir.exists()) {
@@ -31,7 +47,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	QFileInfoList foldersList = dir.entryInfoList();
 
 	// 2 - For each folder in list: call the same function with folders' paths
-	foreach (QFileInfo const &folder, foldersList) {
+	foreach (const QFileInfo &folder, foldersList) {
 		QString folderName = folder.fileName();
 		QString folderPath = dir.absolutePath() + "/" + folderName;
 		QString newPrefix = prefix + "/" + folderName;
@@ -43,7 +59,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	QFileInfoList filesList = dir.entryInfoList();
 
 	// 4- For each mFile in list: add mFile path and compressed binary data
-	foreach (QFileInfo const &fileInfo, filesList) {
+	foreach (const QFileInfo &fileInfo, filesList) {
 		QFile file(dir.absolutePath() + "/" + fileInfo.fileName());
 		if (!file.open(QIODevice::ReadOnly)) { // couldn't open file
 			return false;
@@ -58,7 +74,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	return true;
 }
 
-bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const &destinationFolder)
+bool FolderCompressor::decompressFolder(const QString &sourceFile, const QString &destinationFolder)
 {
 	if (!QFile(sourceFile).exists()) { // mFile not found, to handle later
 		return false;

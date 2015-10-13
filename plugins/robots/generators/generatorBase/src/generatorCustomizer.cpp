@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/generatorCustomizer.h"
 
 using namespace generatorBase;
@@ -10,6 +24,7 @@ GeneratorCustomizer::GeneratorCustomizer()
 	, mDefaultLoopBlockType("RobotsMetamodel", "RobotsDiagram", "Loop")
 	, mDefaultSwitchBlockType("RobotsMetamodel", "RobotsDiagram", "SwitchBlock")
 	, mDefaultForkBlockType("RobotsMetamodel", "RobotsDiagram", "Fork")
+	, mDefaultJoinBlockType("RobotsMetamodel", "RobotsDiagram", "Join")
 	, mDefaultSubprogramCallBlockType("RobotsMetamodel", "RobotsDiagram", "Subprogram")
 {
 }
@@ -19,42 +34,47 @@ void GeneratorCustomizer::initialize()
 	factory()->initialize();
 }
 
-bool GeneratorCustomizer::isInitialNode(qReal::Id const &block) const
+bool GeneratorCustomizer::isInitialNode(const qReal::Id &block) const
 {
 	return block.type() == mDefaultInitialBlockType;
 }
 
-bool GeneratorCustomizer::isFinalNode(Id const &block) const
+bool GeneratorCustomizer::isFinalNode(const Id &block) const
 {
 	return block.type() == mDefaultFinalBlockType;
 }
 
-bool GeneratorCustomizer::isSubprogramCall(Id const &block) const
+bool GeneratorCustomizer::isSubprogramCall(const Id &block) const
 {
 	return block.type() == mDefaultSubprogramCallBlockType;
 }
 
-bool GeneratorCustomizer::isConditional(Id const &block) const
+bool GeneratorCustomizer::isConditional(const Id &block) const
 {
 	return block.type() == mDefaultConditionalBlockType;
 }
 
-bool GeneratorCustomizer::isLoop(Id const &block) const
+bool GeneratorCustomizer::isLoop(const Id &block) const
 {
 	return block.type() == mDefaultLoopBlockType;
 }
 
-bool GeneratorCustomizer::isSwitch(Id const &block) const
+bool GeneratorCustomizer::isSwitch(const Id &block) const
 {
 	return block.type() == mDefaultSwitchBlockType;
 }
 
-bool GeneratorCustomizer::isFork(Id const &block) const
+bool GeneratorCustomizer::isFork(const Id &block) const
 {
 	return block.type() == mDefaultForkBlockType;
 }
 
-enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) const
+bool GeneratorCustomizer::isJoin(const Id &block) const
+{
+	return block.type() == mDefaultJoinBlockType;
+}
+
+enums::semantics::Semantics GeneratorCustomizer::semanticsOf(const Id &block) const
 {
 	if (isConditional(block)) {
 		return enums::semantics::conditionalBlock;
@@ -70,6 +90,10 @@ enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) co
 
 	if (isFork(block)) {
 		return enums::semantics::forkBlock;
+	}
+
+	if (isJoin(block)) {
+		return enums::semantics::joinBlock;
 	}
 
 	if (isFinalNode(block)) {

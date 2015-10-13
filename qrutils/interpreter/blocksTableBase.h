@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QHash>
@@ -25,7 +39,7 @@ public:
 
 	/// Returns the object that may be used by the interpreter to invoke the block with the given id.
 	/// If met for the first time it will be produced from scratch, otherwise existing instance will be returned.
-	BlockInterface *block(qReal::Id const &element) override;
+	BlockInterface *block(const qReal::Id &element) override;
 
 	/// Clears blocks table.
 	void clear() override;
@@ -36,7 +50,7 @@ public:
 
 private:
 	/// Must be overridded to produce the logical instance of the block itself.
-	virtual BlockInterface *produceBlock(qReal::Id const &element) = 0;
+	virtual BlockInterface *produceBlock(const qReal::Id &element) = 0;
 
 	QHash<qReal::Id, BlockInterface *> mBlocks;  // Has ownership
 };

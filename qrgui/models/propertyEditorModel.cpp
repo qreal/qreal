@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "propertyEditorModel.h"
 
 #include <qrkernel/exception/exception.h>
@@ -6,7 +20,7 @@
 using namespace qReal;
 
 PropertyEditorModel::PropertyEditorModel(
-		qReal::EditorManagerInterface const &editorManagerInterface
+		const qReal::EditorManagerInterface &editorManagerInterface
 		, QObject *parent
 		)
 	: QAbstractTableModel(parent)
@@ -26,7 +40,7 @@ int PropertyEditorModel::columnCount(const QModelIndex&) const
 	return 2;
 }
 
-Qt::ItemFlags PropertyEditorModel::flags(QModelIndex const &index) const
+Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
 {
 	// Property names
 	if (index.column() == 0)
@@ -53,7 +67,7 @@ QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientatio
 		return QVariant();
 }
 
-QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
+QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 {
 	if (!isValid()) {
 		return QVariant();
@@ -61,8 +75,8 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 
 	if (role == Qt::ToolTipRole) {
 		if (index.column() == 0) {
-			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-			QString const description = mEditorManagerInterface.propertyDescription(id, mFields[index.row()].fieldName);
+			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+			const QString description = mEditorManagerInterface.propertyDescription(id, mFields[index.row()].fieldName);
 			if (!description.isEmpty()) {
 				return "<body>" + description;
 			} else {
@@ -80,8 +94,8 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	}
 
 	if (index.column() == 0) {
-		Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-		QString const displayedName = mEditorManagerInterface.propertyDisplayedName(id, mFields[index.row()].fieldName);
+		const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		const QString displayedName = mEditorManagerInterface.propertyDisplayedName(id, mFields[index.row()].fieldName);
 		return displayedName.isEmpty() ? mFields[index.row()].fieldName : displayedName;
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
@@ -95,7 +109,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 		case logicalIdPseudoattribute:
 			return mTargetLogicalObject.data(roles::idRole).value<Id>().id();
 		case metatypePseudoattribute: {
-			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
 			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
 		}
 		case namePseudoattribute: {
@@ -109,7 +123,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	}
 }
 
-bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &value, int role)
+bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	bool modelChanged = true;
 
@@ -145,38 +159,38 @@ bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &valu
 	return modelChanged;
 }
 
-bool PropertyEditorModel::enumEditable(QModelIndex const &index) const
+bool PropertyEditorModel::enumEditable(const QModelIndex &index) const
 {
 	if (!index.isValid()) {
 		return false;
 	}
 
-	AttributeClassEnum const attrClass = mFields[index.row()].attributeClass;
+	const AttributeClassEnum attrClass = mFields[index.row()].attributeClass;
 	// metatype, ids and name are definitely not enums
 	if (attrClass != logicalAttribute && attrClass != graphicalAttribute) {
 		return false;
 	}
 
-	Id const id = attrClass == logicalAttribute
+	const Id id = attrClass == logicalAttribute
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
 	return mEditorManagerInterface.isEnumEditable(id, mFields[index.row()].fieldName);
 }
 
-QList<QPair<QString, QString>> PropertyEditorModel::enumValues(QModelIndex const &index) const
+QList<QPair<QString, QString>> PropertyEditorModel::enumValues(const QModelIndex &index) const
 {
 	if (!index.isValid()) {
 		return {};
 	}
 
-	AttributeClassEnum const attrClass = mFields[index.row()].attributeClass;
+	const AttributeClassEnum attrClass = mFields[index.row()].attributeClass;
 	// metatype, ids and name are definitely not enums
 	if (attrClass != logicalAttribute && attrClass != graphicalAttribute) {
 		return {};
 	}
 
-	Id const id = attrClass == logicalAttribute
+	const Id id = attrClass == logicalAttribute
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
@@ -188,7 +202,7 @@ QList<QPair<QString, QString>> PropertyEditorModel::enumValues(QModelIndex const
 			: mEditorManagerInterface.enumValues(id, mFields[index.row()].fieldName);
 }
 
-void PropertyEditorModel::rereadData(QModelIndex const &topLeftIndex, QModelIndex const &bottomRightIndex)
+void PropertyEditorModel::rereadData(const QModelIndex &topLeftIndex, const QModelIndex &bottomRightIndex)
 {
 	emit dataChanged(topLeftIndex, bottomRightIndex);
 }
@@ -204,16 +218,16 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	endResetModel();
 
 	if (mTargetLogicalModel)
-		connect(mTargetLogicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &))
-				, this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
+		connect(mTargetLogicalModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &))
+				, this, SLOT(rereadData(const QModelIndex &, const QModelIndex &)));
 
 	if (mTargetGraphicalModel)
-		connect(mTargetGraphicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &))
-				, this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
+		connect(mTargetGraphicalModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &))
+				, this, SLOT(rereadData(const QModelIndex &, const QModelIndex &)));
 }
 
-void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
-		, QModelIndex const &graphicalModelIndex)
+void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
+		, const QModelIndex &graphicalModelIndex)
 {
 	beginResetModel();
 	mFields.clear();
@@ -226,10 +240,10 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 		return;
 	}
 
-	Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
+	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
 
 	if (logicalModelIndex != QModelIndex()) {
-		QStringList const logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
+		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
 			mFields << Field(property, logicalAttribute, role);
@@ -256,7 +270,7 @@ void PropertyEditorModel::clearModelIndexes()
 	setModelIndexes(QModelIndex(), QModelIndex());
 }
 
-bool PropertyEditorModel::isCurrentIndex(QModelIndex const &index) const
+bool PropertyEditorModel::isCurrentIndex(const QModelIndex &index) const
 {
 	return index == mTargetLogicalObject || index == mTargetGraphicalObject;
 }
@@ -286,7 +300,7 @@ int PropertyEditorModel::roleByIndex(int row) const
 	return mFields[row].role;
 }
 
-QString PropertyEditorModel::typeName(QModelIndex const &index) const
+QString PropertyEditorModel::typeName(const QModelIndex &index) const
 {
 	Id id = idByIndex(index);
 	if (id.isNull()) {
@@ -295,7 +309,7 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 	return mEditorManagerInterface.typeName(id, mFields[index.row()].fieldName);
 }
 
-bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &propertyName)
+bool PropertyEditorModel::isReference(const QModelIndex &index, const QString &propertyName)
 {
 	Id id = idByIndex(index);
 	if (id.isNull()) {
@@ -304,7 +318,7 @@ bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &p
 	return mEditorManagerInterface.referenceProperties(id.type()).contains(propertyName);
 }
 
-Id PropertyEditorModel::idByIndex(QModelIndex const &index) const
+Id PropertyEditorModel::idByIndex(const QModelIndex &index) const
 {
 	switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute:

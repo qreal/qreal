@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "paletteTreeWidget.h"
 
 #include <QtGui/QMouseEvent>
@@ -10,10 +24,10 @@
 using namespace qReal;
 using namespace gui;
 
-EditorManagerInterface const *PaletteTreeWidget::mEditorManager = nullptr;
+const EditorManagerInterface *PaletteTreeWidget::mEditorManager = nullptr;
 
 PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindow
-		, EditorManagerInterface const &editorManagerProxy, bool editable)
+		, const EditorManagerInterface &editorManagerProxy, bool editable)
 	: mMainWindow(mainWindow)
 	, mPaletteTree(palette)
 	, mEditable(editable)
@@ -24,7 +38,7 @@ PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindo
 void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups
 		, QMap<QString, QString> const &descriptions
 		, bool hideIfEmpty
-		, QString const &diagramFriendlyName
+		, const QString &diagramFriendlyName
 		, bool sort)
 {
 	if (groups.isEmpty() && hideIfEmpty) {
@@ -69,7 +83,7 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 	}
 }
 
-void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem *parent)
+void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(mMainWindow, data
@@ -85,7 +99,7 @@ void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem 
 void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWidgetItem *parent)
 {
 	if (mPaletteTree.itemsCountInARow() == 1 || !mPaletteTree.iconsView()) {
-		foreach (PaletteElement const &element, items) {
+		foreach (const PaletteElement &element, items) {
 			addItemType(element, parent);
 		}
 
@@ -192,31 +206,32 @@ void PaletteTreeWidget::collapseChildren(QTreeWidgetItem *item)
 	item->treeWidget()->collapseItem(item);
 }
 
-bool PaletteTreeWidget::idLessThan(Id const &s1, Id const &s2)
+bool PaletteTreeWidget::idLessThan(const Id &s1, const Id &s2)
 {
 	return mEditorManager->friendlyName(s1).toLower() < mEditorManager->friendlyName(s2).toLower();
 }
 
-bool PaletteTreeWidget::paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2)
+bool PaletteTreeWidget::paletteElementLessThan(const PaletteElement &s1, const PaletteElement &s2)
 {
 	return idLessThan(s1.id(), s2.id());
 }
 
-void PaletteTreeWidget::setElementVisible(Id const &metatype, bool visible)
+void PaletteTreeWidget::setElementVisible(const Id &metatype, bool visible)
 {
 	if (mPaletteItems.contains(metatype)) {
+		mItemsVisible[mPaletteItems[metatype]] = visible;
 		mPaletteItems[metatype]->setHidden(!visible);
 	}
 }
 
 void PaletteTreeWidget::setVisibleForAllElements(bool visible)
 {
-	for (Id const &element : mPaletteElements.keys()) {
+	for (const Id &element : mPaletteElements.keys()) {
 		setElementVisible(element, visible);
 	}
 }
 
-void PaletteTreeWidget::setElementEnabled(Id const &metatype, bool enabled)
+void PaletteTreeWidget::setElementEnabled(const Id &metatype, bool enabled)
 {
 	if (mPaletteElements.contains(metatype)) {
 		mPaletteElements[metatype]->setEnabled(enabled);
@@ -227,5 +242,40 @@ void PaletteTreeWidget::setEnabledForAllElements(bool enabled)
 {
 	foreach (QWidget * const element, mPaletteElements.values()) {
 		element->setEnabled(enabled);
+	}
+}
+
+void PaletteTreeWidget::filter(const QRegExp &regexp)
+{
+	QHash<QTreeWidgetItem *, int> visibleCount;
+	traverse([this, &regexp, &visibleCount](QTreeWidgetItem *item) {
+		if (DraggableElement * const element = dynamic_cast<DraggableElement *>(itemWidget(item, 0))) {
+			const QString text = element->text();
+			const bool itemDisabledBySystem = mItemsVisible.contains(item) && !mItemsVisible[item];
+			item->setHidden(itemDisabledBySystem || !text.contains(regexp));
+			if (!item->isHidden()) {
+				++visibleCount[item->parent()];
+			}
+		}
+	});
+
+	for (int i = 0; i < topLevelItemCount(); ++i) {
+		QTreeWidgetItem * const item = topLevelItem(i);
+		item->setHidden(visibleCount[item] == 0);
+	}
+}
+
+void PaletteTreeWidget::traverse(const PaletteTreeWidget::Action &action) const
+{
+	for (int i = 0; i < topLevelItemCount(); ++i) {
+		traverse(topLevelItem(i), action);
+	}
+}
+
+void PaletteTreeWidget::traverse(QTreeWidgetItem * const item, const PaletteTreeWidget::Action &action) const
+{
+	action(item);
+	for (int i = 0; i < item->childCount(); ++i) {
+		traverse(item->child(i), action);
 	}
 }

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <time.h>
 
 #include <QtCore/QtPlugin>
@@ -15,7 +29,7 @@
 
 using namespace qReal;
 
-int const maxLogSize = 10 * 1024 * 1024;  // 10 MB
+const int maxLogSize = 10 * 1024 * 1024;  // 10 MB
 
 void clearConfig()
 {
@@ -23,15 +37,15 @@ void clearConfig()
 	SettingsManager::instance()->saveData();
 }
 
-void loadTranslators(QString const &locale)
+void loadTranslators(const QString &locale)
 {
-	QDir translationsDirectory(QApplication::applicationDirPath() + "/translations/" + locale);
+	QDir translationsDirectory(PlatformInfo::applicationDirPath() + "/translations/" + locale);
 	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
 	while (directories.hasNext()) {
-		for (QFileInfo const &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
+		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
 			QTranslator *translator = new QTranslator(qApp);
 			translator->load(translatorFile.absoluteFilePath());
-			QApplication::installTranslator(translator);
+			QCoreApplication::installTranslator(translator);
 		}
 	}
 }
@@ -43,8 +57,8 @@ void setDefaultLocale(bool localizationDisabled)
 		return;
 	}
 
-	QString const localeInSettings = SettingsManager::value("systemLocale").toString();
-	QString const locale = localeInSettings.isEmpty() ? QLocale().name().left(2) : localeInSettings;
+	const QString localeInSettings = SettingsManager::value("systemLocale").toString();
+	const QString locale = localeInSettings.isEmpty() ? QLocale().name().left(2) : localeInSettings;
 	if (!locale.isEmpty()) {
 		QLocale::setDefault(QLocale(locale));
 		loadTranslators(locale);
@@ -53,7 +67,7 @@ void setDefaultLocale(bool localizationDisabled)
 
 void initLogging()
 {
-	QDir const logsDir(QApplication::applicationDirPath() + "/logs");
+	const QDir logsDir(PlatformInfo::applicationDirPath() + "/logs");
 	if (logsDir.mkpath(logsDir.absolutePath())) {
 		Logger::addLogTarget(logsDir.filePath("qreal.log"), maxLogSize, 2, QsLogging::DebugLevel);
 		Logger::addLogTarget(logsDir.filePath("actions.log"), maxLogSize, 2, QsLogging::TraceLevel);
@@ -79,13 +93,13 @@ int main(int argc, char *argv[])
 			clearConfig();
 			return 0;
 		} else {
-			int const setIndex = app.arguments().indexOf("--config");
+			const int setIndex = app.arguments().indexOf("--config");
 			if (setIndex > -1) {
-				QString const settingsFileName = app.arguments().at(setIndex + 1);
+				const QString settingsFileName = app.arguments().at(setIndex + 1);
 				SettingsManager::instance()->loadSettings(settingsFileName);
 			}
 
-			for (QString const &argument : app.arguments()) {
+			for (const QString &argument : app.arguments()) {
 				if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
 					fileToOpen = argument;
 					break;

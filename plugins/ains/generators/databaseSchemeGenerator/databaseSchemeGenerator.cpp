@@ -1,13 +1,28 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "databaseSchemeGenerator.h"
 
-#include "../../../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
 
 using namespace qReal;
 using namespace utils;
 
-DatabaseEditorSchemeGenerator::DatabaseEditorSchemeGenerator(const LogicalModelAssistInterface &api, ErrorReporterInterface &errorReporter)
-: mApi(api)
-, mErrorReporter(errorReporter)
+DatabaseEditorSchemeGenerator::DatabaseEditorSchemeGenerator(const LogicalModelAssistInterface &api
+		, ErrorReporterInterface &errorReporter)
+	: mApi(api)
+	, mErrorReporter(errorReporter)
 {
 	fillKeyWords();
 }
@@ -16,8 +31,7 @@ void DatabaseEditorSchemeGenerator::fillKeyWords()
 {
 	QFile sqlKeyWords("../plugins/ains/generators/databaseSchemeGenerator/SQLKeyWords.txt");
 	QString word;
-	if (sqlKeyWords.open(QIODevice::ReadOnly))
-	{
+	if (sqlKeyWords.open(QIODevice::ReadOnly)) {
 		QTextStream keyWords(&sqlKeyWords);
 		while (!keyWords.atEnd()) {
 			word = keyWords.readLine();
@@ -35,14 +49,14 @@ bool DatabaseEditorSchemeGenerator::isKeyWord(const QString &name)
 	return mKeyWords.contains(name.toUpper());
 }
 
-QHash<Id, QPair<QString, QString> > DatabaseEditorSchemeGenerator::modelList()
+QHash<Id, QPair<QString, QString>> DatabaseEditorSchemeGenerator::modelList()
 {
 	Id repoId = Id::rootId();
 	IdList models = mApi.children(repoId);
-	QHash<Id, QPair<QString, QString> > currentModelList;
+	QHash<Id, QPair<QString, QString>> currentModelList;
 
 	foreach (Id modelId, models) {
-		QString const elementType = mApi.logicalRepoApi().typeName(modelId);
+		QString const elementType = modelId.element();
 		if (elementType == "DatabaseDiagram" && mApi.isLogicalId(modelId)) {
 			QString directoryName = mApi.logicalRepoApi().stringProperty(modelId, "saveToTheDirectory");
 			QString fileName = mApi.logicalRepoApi().stringProperty(modelId, "filename");
@@ -60,41 +74,39 @@ QHash<Id, QPair<QString, QString> > DatabaseEditorSchemeGenerator::modelList()
 	return currentModelList;
 }
 
-ErrorReporterInterface& DatabaseEditorSchemeGenerator::generateDatabaseScheme(const Id &modelId, const QString &pathToFile)
+ErrorReporterInterface& DatabaseEditorSchemeGenerator::generateDatabaseScheme(const Id &modelId
+		, const QString &pathToFile)
 {
 	IdList tableList = mApi.children(modelId);
-	try {
-		OutFile sqlFile(pathToFile + ".sql");
-		foreach (Id tableId, tableList) {
-			QString const tableType = mApi.logicalRepoApi().typeName(tableId);
-			if (tableType == "Table" && mApi.isLogicalId(tableId)) {
-				QString tableName = mApi.logicalRepoApi().stringProperty(tableId, "name");
-				if (isKeyWord(tableName))
-					mErrorReporter.addError(QObject::tr("using reserved key as name of table"), tableId);
-				sqlFile() << QString("CREATE TABLE %1\n").arg(tableName);
-				processingColumns(tableId, sqlFile);
-				sqlFile() <<"\n\n";
-			}
+	bool fileOpened = false;
+	OutFile sqlFile(pathToFile + ".sql", &fileOpened);
+	foreach (Id tableId, tableList) {
+		QString const tableType = tableId.element();
+		if (tableType == "Table" && mApi.isLogicalId(tableId)) {
+			QString tableName = mApi.logicalRepoApi().stringProperty(tableId, "name");
+			if (isKeyWord(tableName))
+				mErrorReporter.addError(QObject::tr("using reserved key as name of table"), tableId);
+			sqlFile() << QString("CREATE TABLE %1\n").arg(tableName);
+			processingColumns(tableId, sqlFile);
+			sqlFile() <<"\n\n";
 		}
-		return mErrorReporter;
 	}
-	catch (qReal::Exception) {
+
+	if (!fileOpened) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file path"));
-		return mErrorReporter;
 	}
+
+	return mErrorReporter;
 }
 
 void DatabaseEditorSchemeGenerator::processingColumns(const Id &tableId, utils::OutFile &outFile)
 {
 	IdList columns = mApi.children(tableId);
 	outFile() << "(\n";
-	outFile.incIndent();
 	bool start = true;
 	foreach (Id id, columns) {
 		if (!start) {
-			outFile.decIndent();
 			outFile() << ",\n";
-			outFile.incIndent();
 		}
 		start = false;
 		QString name = mApi.logicalRepoApi().stringProperty(id, "name");
@@ -107,9 +119,9 @@ void DatabaseEditorSchemeGenerator::processingColumns(const Id &tableId, utils::
 		QString primaryKey = ((isPrimaryKey == "true") ? "primary key" : "");
 		outFile() << QString("%1 %2 %3").arg(name, type, primaryKey);
 	}
+
 	addForeignKeys(tableId, outFile);
 	outFile() << "\n";
-	outFile.decIndent();
 	outFile() << ");";
 }
 
@@ -119,18 +131,23 @@ void DatabaseEditorSchemeGenerator::addForeignKeys(const Id &tableId, utils::Out
 
 	foreach (Id id, foreignKeys) {
 		outFile() << ",\n";
-		if (mApi.logicalRepoApi().typeName(id) == "Connection") {
+		if (id.element() == "Connection") {
 			QString foreignKeyName = mApi.logicalRepoApi().stringProperty(id, "Foreign Key");
 			if (foreignKeyName == "") {
 				mErrorReporter.addError(QObject::tr("no name of foreign key"), id);
 				return;
 			}
 			Id const connectedId = mApi.logicalRepoApi().to(id);
-			QString const type = mApi.logicalRepoApi().typeName(connectedId);
+			QString const type = connectedId.element();
 			if (isColumn(type)) {
 				Id columnParentId = mApi.logicalRepoApi().parent(connectedId);
-				if (mApi.logicalRepoApi().typeName(columnParentId) == "Table")
-					outFile() << QString("%1 %4 references %2(%3)").arg(foreignKeyName, mApi.logicalRepoApi().name(columnParentId), mApi.logicalRepoApi().name(connectedId), columnType(connectedId));
+				if (columnParentId.element() == "Table")
+					outFile() << QString("%1 %4 references %2(%3)").arg(
+							foreignKeyName
+							, mApi.logicalRepoApi().name(columnParentId)
+							, mApi.logicalRepoApi().name(connectedId)
+							, columnType(connectedId)
+							);
 			}
 		}
 	}
@@ -143,7 +160,7 @@ bool DatabaseEditorSchemeGenerator::isColumn(const QString &type)
 
 const QString DatabaseEditorSchemeGenerator::columnType(const Id &id)
 {
-	QString const columnType = mApi.logicalRepoApi().typeName(id);
+	QString const columnType = id.element();
 	QString specificColumnType;
 	if (mApi.isLogicalId(id)) {
 		if (columnType == "ColumnString") {
@@ -173,5 +190,6 @@ const QString DatabaseEditorSchemeGenerator::columnType(const Id &id)
 			specificColumnType = type;
 		}
 	}
+
 	return specificColumnType;
 }

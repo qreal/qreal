@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <ostream>
@@ -21,7 +35,7 @@ public:
 	/// @param column - column number.
 	/// @param id - id of a block where the code is located.
 	/// @param propertyName - name of a property in a block which uses this code.
-	Connection(int absolutePosition, int line, int column, qReal::Id const &id = qReal::Id()
+	Connection(int absolutePosition, int line, int column, const qReal::Id &id = qReal::Id()
 			, const QString &propertyName = "");
 
 	/// Constructor for invalid connection object.
@@ -37,7 +51,7 @@ public:
 	int column() const;
 
 	/// Returns id of a block where where the code is located, or empty id if connection is not related to a block.
-	qReal::Id const &id() const;
+	const qReal::Id &id() const;
 
 	/// Returns name of a property in a block which uses this code, or empty string, if connection is not related to
 	/// some block.
@@ -51,18 +65,18 @@ private:
 	QString mPropertyName;
 };
 
-inline bool operator ==(Connection const &a, Connection const &b)
+inline bool operator ==(const Connection &a, const Connection &b)
 {
 	return a.absolutePosition() == b.absolutePosition() && a.line() == b.line() && a.column() == b.column();
 }
 
-inline bool operator <(Connection const &a, Connection const &b)
+inline bool operator <(const Connection &a, const Connection &b)
 {
 	return a.absolutePosition() < b.absolutePosition();
 }
 
 /// Output operator for gtest.
-inline ::std::ostream& operator<<(::std::ostream& os, Connection const &connection)
+inline ::std::ostream& operator<<(::std::ostream& os, const Connection &connection)
 {
 	return os << "(" << connection.absolutePosition() <<", " << connection.line() << ", " << connection.column() << ")";
 }

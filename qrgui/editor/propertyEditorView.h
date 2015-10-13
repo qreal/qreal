@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QMap>
@@ -38,15 +52,15 @@ public:
 
 signals:
 	/// Emitted when user wants to edits 'Shape' property.
-	void shapeEditorRequested(QPersistentModelIndex const &index, int role
-		, QString const &propertyValue, bool useTypedPorts);
+	void shapeEditorRequested(const QPersistentModelIndex &index, int role
+		, const QString &propertyValue, bool useTypedPorts);
 
 	/// Emitted when user wants to enter a code into a property.
-	void textEditorRequested(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
+	void textEditorRequested(const QPersistentModelIndex &index, const int role, const QString &propertyValue);
 
 	/// Emitted when user wants to edit some reference property.
-	void referenceListRequested(QPersistentModelIndex const &index, QString const &referenceType
-			, QString const &propertyValue, int role);
+	void referenceListRequested(const QPersistentModelIndex &index, const QString &referenceType
+			, const QString &propertyValue, int role);
 
 public slots:
 
@@ -67,8 +81,8 @@ protected slots:
 
 private:
 	/** @brief returns index of value in list of possible values for index  */
-	int enumPropertyIndexOf(QModelIndex const &, QString const &);
-	void setPropertyValue(QtVariantProperty *property, QVariant const &value);
+	int enumPropertyIndexOf(const QModelIndex &, const QString &);
+	void setPropertyValue(QtVariantProperty *property, const QVariant &value);
 
 	bool mChangingPropertyValue;
 	PropertyEditorModel *mModel;

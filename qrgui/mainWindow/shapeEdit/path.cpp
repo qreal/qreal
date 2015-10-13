@@ -1,25 +1,39 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "path.h"
 
 #include <QtCore/QTextStream>
 
-Path::Path(QPainterPath const &path) : Item(NULL)
+Path::Path(const QPainterPath &path) : Item(nullptr)
 {
 	mNeedScalingRect = false;
 	mPath = path;
 	mDomElementType = Item::pictureType;
 }
 
-Path::Path(Path const &other)
+Path::Path(const Path &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = Item::pictureType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mPath = other.mPath;
 	mListScalePoint = other.mListScalePoint;
 	setPos(other.x(), other.y());
@@ -59,7 +73,7 @@ void Path::drawScalingRects(QPainter* painter)
 	Q_UNUSED(painter);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Path::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Path::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 
 	QDomElement path = setPenBrushToDoc(document, "path");

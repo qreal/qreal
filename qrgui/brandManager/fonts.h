@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtGui/QFontDatabase>
@@ -22,7 +36,7 @@ public:
 	/// Returns font for inline labels on scene
 	QFont sceneLabelsFont() const
 	{
-		return mTitlesFont;
+		return mLabelsFont;
 	}
 
 	/// Returns a path to a font for inline labels on scene if other was not selected by user
@@ -47,16 +61,16 @@ private:
 	void initTitlesFont()
 	{
 		if (SettingsManager::value("CustomFont").toBool()) {
-			mTitlesFont.fromString(SettingsManager::value("CurrentFont").toString());
+			mLabelsFont.fromString(SettingsManager::value("CurrentFont").toString());
 		} else {
-			int const fontId = QFontDatabase::addApplicationFont(defaultSceneLabelsFont());
+			const int fontId = QFontDatabase::addApplicationFont(defaultSceneLabelsFont());
 			if (fontId != -1) {
-				mTitlesFont.fromString(QFontDatabase::applicationFontFamilies(fontId).at(0) + ",11,-1,5,50,0,0,0,0,0");
+				mLabelsFont.fromString(QFontDatabase::applicationFontFamilies(fontId).at(0) + ",11,-1,5,50,0,0,0,0,0");
 			}
 		}
 	}
 
-	QFont mTitlesFont;
+	QFont mLabelsFont;
 
 };
 

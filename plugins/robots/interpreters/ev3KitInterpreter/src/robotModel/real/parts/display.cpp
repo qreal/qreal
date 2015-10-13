@@ -1,12 +1,28 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "display.h"
 
-using namespace ev3KitInterpreter::robotModel::real::parts;
-using namespace interpreterBase;
+#include "src/commandConstants.h"
+
+using namespace ev3::robotModel::real::parts;
+using namespace kitBase;
 using namespace robotModel;
 using namespace utils;
 using namespace robotCommunication;
 
-Display::Display(DeviceInfo const &info, PortInfo const &port, RobotCommunicator &robotCommunicator)
+Display::Display(const DeviceInfo &info, const PortInfo &port, RobotCommunicator &robotCommunicator)
 	: robotModel::parts::Ev3Display(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
@@ -20,8 +36,8 @@ void Display::drawPixel(int x, int y)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -48,8 +64,8 @@ void Display::drawLine(int x1, int y1, int x2, int y2)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -84,8 +100,8 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -119,11 +135,10 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 
 void Display::drawRect(int x, int y, int width, int height)
 {
-	Q_UNUSED(x);
-	Q_UNUSED(y);
-	Q_UNUSED(width);
-	Q_UNUSED(height);
-
+	Q_UNUSED(x)
+	Q_UNUSED(y)
+	Q_UNUSED(width)
+	Q_UNUSED(height)
 }
 
 void Display::drawCircle(int x, int y, int radius, bool filled)
@@ -134,8 +149,8 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -164,9 +179,9 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 }
 
 
-void Display::printText(int x, int y, QString const &text)
+void Display::printText(int x, int y, const QString &text)
 {
-	int const size = 20 + text.length();
+	const int size = 20 + text.length();
 	QByteArray textBytes = text.toLocal8Bit();
 	QByteArray command(size, 0);
 	command[0] = size - 2;
@@ -174,8 +189,8 @@ void Display::printText(int x, int y, QString const &text)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -210,8 +225,8 @@ void Display::clearScreen()
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
+	const int globalVariablesCount = 0;
+	const int localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -219,4 +234,8 @@ void Display::clearScreen()
 	command[9] = opUI_DRAW;
 	command[10] = LC0(UPDATE);
 	mRobotCommunicator.send(this, command, 3);
+}
+
+void Display::redraw()
+{
 }

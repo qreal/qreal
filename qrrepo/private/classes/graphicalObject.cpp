@@ -1,19 +1,34 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "graphicalObject.h"
 
-#include "../../../qrkernel/exception/exception.h"
-#include "../valuesSerializer.h"
+#include <qrkernel/exception/exception.h>
+
+#include "qrrepo/private/valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;
 
-GraphicalObject::GraphicalObject(qReal::Id const &id, Id const &parent, qReal::Id const &logicalId)
+GraphicalObject::GraphicalObject(const qReal::Id &id, const Id &parent, const qReal::Id &logicalId)
 	: Object(id)
 	, mLogicalId(logicalId)
 {
 	mParent = parent;
 }
 
-GraphicalObject::GraphicalObject(QDomElement const &element)
+GraphicalObject::GraphicalObject(const QDomElement &element)
 	: Object(element)
 {
 	mLogicalId = Id::loadFromString(element.attribute("logicalId"));
@@ -21,12 +36,12 @@ GraphicalObject::GraphicalObject(QDomElement const &element)
 		throw Exception("Logical id not found for graphical object");
 	}
 
-	QDomElement const graphicalParts = element.firstChildElement("graphicalParts");
+	const QDomElement graphicalParts = element.firstChildElement("graphicalParts");
 	if (!graphicalParts.isNull()) {
 		for (QDomElement part = graphicalParts.firstChildElement(); !part.isNull(); part = part.nextSiblingElement()) {
 			GraphicalPart * const deserializedPart = new GraphicalPart(part);
 
-			QString const indexString = part.attribute("index");
+			const QString indexString = part.attribute("index");
 			if (indexString.isEmpty()) {
 				throw Exception("No \"index\" attribute in graphical part");
 			}
@@ -53,7 +68,7 @@ QDomElement GraphicalObject::serialize(QDomDocument &document) const
 			i != mGraphicalParts.constEnd();
 			++i)
 	{
-		QDomElement const graphicalPart = i.value()->serialize(i.key(), document);
+		const QDomElement graphicalPart = i.value()->serialize(i.key(), document);
 		graphicalParts.appendChild(graphicalPart);
 	}
 
@@ -75,7 +90,7 @@ QList<int> GraphicalObject::graphicalParts() const
 	return mGraphicalParts.keys();
 }
 
-QVariant GraphicalObject::graphicalPartProperty(int index, QString const &name) const
+QVariant GraphicalObject::graphicalPartProperty(int index, const QString &name) const
 {
 	if (!mGraphicalParts.contains(index)) {
 		throw Exception("Tryng to get property of non-existing graphical part");
@@ -84,7 +99,7 @@ QVariant GraphicalObject::graphicalPartProperty(int index, QString const &name) 
 	return mGraphicalParts[index]->property(name);
 }
 
-void GraphicalObject::setGraphicalPartProperty(int index, QString const &name, QVariant const &value)
+void GraphicalObject::setGraphicalPartProperty(int index, const QString &name, const QVariant &value)
 {
 	if (!mGraphicalParts.contains(index)) {
 		throw Exception("Tryng to set property of non-existing graphical part");

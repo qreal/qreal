@@ -1,6 +1,21 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtFlashTool.h"
 
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
@@ -16,8 +31,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 		, mUploadState(done)
 {
 	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
-	environment.insert("QREALDIR", qApp->applicationDirPath());
-	environment.insert("QREALDIRPOSIX", qApp->applicationDirPath().remove(1, 1).prepend("/cygdrive/"));
+	environment.insert("QREALDIR", PlatformInfo::applicationDirPath());
+	environment.insert("QREALDIRPOSIX", PlatformInfo::applicationDirPath().remove(1, 1).prepend("/cygdrive/"));
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);
@@ -25,11 +40,13 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 
 	connect(&mFlashProcess, SIGNAL(readyRead()), this, SLOT(readNxtFlashData()));
 	connect(&mFlashProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
-	connect(&mFlashProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(nxtFlashingFinished(int, QProcess::ExitStatus)));
+	connect(&mFlashProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this
+			, SLOT(nxtFlashingFinished(int, QProcess::ExitStatus)));
 
 	connect(&mUploadProcess, SIGNAL(readyRead()), this, SLOT(readNxtUploadData()));
 	connect(&mUploadProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
-	connect(&mUploadProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(nxtUploadingFinished(int, QProcess::ExitStatus)));
+	connect(&mUploadProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this
+			, SLOT(nxtUploadingFinished(int, QProcess::ExitStatus)));
 
 	connect(&mRunProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
 }
@@ -45,22 +62,23 @@ void NxtFlashTool::flashRobot()
 
 #ifdef Q_OS_WIN
 	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
-	mFlashProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/nexttool/");
-	mFlashProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/flash.bat");
+	mFlashProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/nexttool/");
+	mFlashProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.bat");
 #else
-	mFlashProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/flash.sh");
+	mFlashProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.sh");
 #endif
 
 	mErrorReporter->addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
 }
 
-void NxtFlashTool::runProgram(QFileInfo const &fileInfo)
+void NxtFlashTool::runProgram(const QFileInfo &fileInfo)
 {
 	mSource = fileInfo;
 	mRunProcess.setEnvironment(QProcess::systemEnvironment());
-	mRunProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	mRunProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
-			+ QString("%1_OSEK.rxe").arg(mSource.baseName()));
+	mRunProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
+	mRunProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
+			+ "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
+			+ QString("%1_OSEK.rxe").arg(mSource.completeBaseName()));
 }
 
 void NxtFlashTool::runLastProgram()
@@ -101,9 +119,9 @@ bool NxtFlashTool::askToRun(QWidget *parent)
 
 void NxtFlashTool::readNxtFlashData()
 {
-	QStringList const output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
+	const QStringList output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
 
-	foreach (QString const &error, output) {
+	foreach (const QString &error, output) {
 		if (error == "NXT not found. Is it properly plugged in via USB?") {
 			mErrorReporter->addError(tr("NXT not found. Check USB connection and make sure the robot is ON"));
 		} else if (error == "NXT found, but not running in reset mode.") {
@@ -114,7 +132,7 @@ void NxtFlashTool::readNxtFlashData()
 	}
 }
 
-void NxtFlashTool::uploadProgram(QFileInfo const &fileInfo)
+void NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 {
 	if (mIsUploading) {
 		mErrorReporter->addInformation(tr("Uploading is already running"));
@@ -125,12 +143,13 @@ void NxtFlashTool::uploadProgram(QFileInfo const &fileInfo)
 	mSource = fileInfo;
 
 #ifdef Q_OS_WIN
-	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat " + fileInfo.baseName()
+	mUploadProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
+	mUploadProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
+						 + "/nxt-tools/upload.bat " + fileInfo.completeBaseName()
 						 + " " + fileInfo.absolutePath());
 #else
 	Q_UNUSED(fileInfo)
-	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
+	mUploadProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
 
 	mErrorReporter->addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));
@@ -153,8 +172,8 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 
 void NxtFlashTool::readNxtUploadData()
 {
-	QStringList const output = QString(mUploadProcess.readAll()).split("\n", QString::SkipEmptyParts);
-	QString const error = mUploadProcess.readAllStandardError();
+	const QStringList output = QString(mUploadProcess.readAll()).split("\n", QString::SkipEmptyParts);
+	const QString error = mUploadProcess.readAllStandardError();
 	QLOG_INFO() << "NXT flash tool:" << output;
 	if (!error.isEmpty()) {
 		QLOG_ERROR() << "NXT flash tool: error:" << error;
@@ -164,7 +183,7 @@ void NxtFlashTool::readNxtUploadData()
 	   to determine in which state we are (to show appropriate error if something goes wrong)
 	*/
 
-	foreach (QString const &error, output) {
+	foreach (const QString &error, output) {
 		if (error.contains("Removing ")) {
 			mUploadState = clean;
 		} else if (error.contains("Compiling ")) {
@@ -184,7 +203,8 @@ void NxtFlashTool::readNxtUploadData()
 				mErrorReporter->addInformation(tr("Uploading completed successfully"));
 				mUploadState = done;
 			} else if (mUploadState == compilationError) {
-				mErrorReporter->addError(tr("Compilation error occured. Please check your function blocks syntax. If you sure in their validness contact developers"));
+				mErrorReporter->addError(tr("Compilation error occured. Please check your function blocks syntax. "
+						"If you sure in their validness contact developers"));
 			}
 		} else if (error.contains("An unhandled exception occurred")) {
 			mErrorReporter->addError(tr("QReal requires superuser privileges to upload programs on NXT robot"));

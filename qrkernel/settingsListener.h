@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "private/listeners.h"
@@ -31,7 +45,7 @@ public:
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in member case. The slot must be parameterless.
 	template <typename Func>
-	static void listen(QString const &key
+	static void listen(const QString &key
 			, typename QtPrivate::QEnableIf<
 					QtPrivate::FunctionPointer<Func>::ArgumentCount <= 0
 					, typename QtPrivate::FunctionPointer<Func>::Object *>::Type sender, Func signal)
@@ -45,7 +59,7 @@ public:
 	/// QObject::connect() function in member case. The slot must accept one parameter of the arbitary type
 	/// to which modified settings value will be casted by qvariant_cast.
 	template <typename Func>
-	static void listen(QString const &key
+	static void listen(const QString &key
 			, typename QtPrivate::QEnableIf<
 					QtPrivate::FunctionPointer<Func>::ArgumentCount == 1
 					, typename QtPrivate::FunctionPointer<Func>::Object *>::Type sender, Func signal)
@@ -58,19 +72,27 @@ public:
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in lambda case. The lambda must be parameterless.
-	static void listen(QString const &key, std::function<void()> const &lambda)
+	/// @param owner The QObject whoose disposal will disconnect this lambda too.
+	static void listen(const QString &key, const std::function<void()> &lambda, QObject *owner = 0)
 	{
-		instance().mListeners.insertMulti(key, new LambdaListener0(lambda));
+		instance().mListeners.insertMulti(key, new LambdaListener0(lambda, owner));
+		if (owner) {
+			connect(owner, SIGNAL(destroyed(QObject*)), &instance(), SLOT(disconnect(QObject*)));
+		}
 	}
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in lambda case. The lambda must accept one parameter of the arbitary type
 	/// to which modified settings value will be casted by qvariant_cast.
+	/// @param owner The QObject whoose disposal will disconnect this lambda too.
 	template <typename Func, typename Type
 			= typename QtPrivate::FunctionPointer<decltype(&Func::operator())>::Arguments::Car>
-	static void listen(QString const &key, Func lambda)
+	static void listen(const QString &key, Func lambda, QObject *owner = 0)
 	{
-		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda));
+		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda, owner));
+		if (owner) {
+			connect(owner, SIGNAL(destroyed(QObject*)), &instance(), SLOT(disconnect(QObject*)));
+		}
 	}
 
 public slots:
@@ -78,10 +100,10 @@ public slots:
 	static void disconnect(QObject *listener);
 
 	/// Stops listening the given key for the given listener.
-	static void disconnect(QString const &key, QObject *listener);
+	static void disconnect(const QString &key, QObject *listener);
 
 private slots:
-	void onSettingsChanged(QString const &name, QVariant const &oldValue, QVariant const &newValue);
+	void onSettingsChanged(const QString &name, const QVariant &oldValue, const QVariant &newValue);
 
 private:
 	SettingsListener();

@@ -1,0 +1,1 @@
+@@VARIABLE@@ = mailbox.receive(@@WAIT@@);

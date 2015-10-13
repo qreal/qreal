@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtGui/QStandardItemModel>
 
 #include "restoreElementDialog.h"
@@ -6,8 +20,8 @@
 using namespace qReal;
 
 RestoreElementDialog::RestoreElementDialog(QWidget *parent
-		, EditorManagerInterface const &interpreterEditorManager
-		, IdList const &elementsWithTheSameNameList)
+		, const EditorManagerInterface &interpreterEditorManager
+		, const IdList &elementsWithTheSameNameList)
 	: QDialog(parent)
 	, mUi(new Ui::RestoreElementDialog)
 	, mInterpreterEditorManager(interpreterEditorManager)
@@ -29,7 +43,7 @@ void RestoreElementDialog::fillSameNameElementsTreeView()
 	QStandardItemModel *standardModel = new QStandardItemModel();
 
 	QStandardItem *item = standardModel->invisibleRootItem();
-	for (auto const &element: mElementsWithTheSameNameList) {
+	for (const auto &element: mElementsWithTheSameNameList) {
 		QString state = tr("Existed");
 		if (mInterpreterEditorManager.getIsHidden(element) == "true") {
 			state = tr("Deleted");
@@ -61,8 +75,8 @@ void RestoreElementDialog::fillSameNameElementsTreeView()
 	mUi->sameNameElementsTreeView->expandAll();
 }
 
-QList<QStandardItem *> RestoreElementDialog::prepareRow(QString const &first, QString const &second
-		, QString const &third)
+QList<QStandardItem *> RestoreElementDialog::prepareRow(const QString &first, const QString &second
+		, const QString &third)
 {
 	 QList<QStandardItem *> rowItems;
 	 rowItems << new QStandardItem(first);
@@ -77,8 +91,8 @@ void RestoreElementDialog::restoreButtonClicked()
 		return;
 	}
 
-	int const selectedRow = mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().first().row();
-	Id const node = mElementsWithTheSameNameList[selectedRow];
+	const int selectedRow = mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().first().row();
+	const Id node = mElementsWithTheSameNameList[selectedRow];
 	if (mInterpreterEditorManager.getIsHidden(node) == "true") {
 		mInterpreterEditorManager.resetIsHidden(node);
 		emit jobDone();

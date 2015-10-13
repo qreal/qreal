@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QList>
@@ -23,10 +37,10 @@ public:
 	virtual ~Node();
 
 	/// Returns start of a node.
-	Connection const &start() const;
+	const Connection &start() const;
 
 	/// Returns end of a node.
-	Connection const &end() const;
+	const Connection &end() const;
 
 	/// Returns list of all ranges associated with a node (ranges of its own lexemes and its sons, excluding comments).
 	QList<Range> const &ranges() const;
@@ -45,7 +59,7 @@ public:
 	template<typename NodeType>
 	bool is() const
 	{
-		return dynamic_cast<NodeType const * const>(this) != nullptr;
+		return dynamic_cast<const NodeType * const>(this) != nullptr;
 	}
 
 	/// Returns all children of a node as a list. Shall be redefined in all descendants who have children, as it is used
@@ -74,7 +88,7 @@ private:
 	QList<Range> mRanges;
 
 	/// Static object denoting absent connection (for example, for generated nodes).
-	static Connection const noConnection;
+	static const Connection noConnection;
 
 	static int mNodesCount;
 };

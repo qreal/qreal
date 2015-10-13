@@ -1,11 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
-#include <interpreterBase/eventsForKitPluginInterface.h>
-#include <interpreterBase/devicesConfigurationWidget.h>
+#include <kitBase/eventsForKitPluginInterface.h>
+#include <kitBase/devicesConfigurationWidget.h>
 
 #include "interpreterCore/customizer.h"
 #include "interpreterCore/managers/kitPluginManager.h"
@@ -18,6 +32,9 @@
 #include "textLanguage/robotsBlockParser.h"
 
 namespace interpreterCore {
+
+class ExerciseExportManager;
+class UiManager;
 
 namespace ui {
 class RobotsSettingsPage;
@@ -34,7 +51,7 @@ public:
 	~RobotsPluginFacade() override;
 
 	/// Inits all sybsytems of robots plugin infrastructure that somehow depend from engine`s parts.
-	void init(qReal::PluginConfigurator const &configurer);
+	void init(const qReal::PluginConfigurator &configurer);
 
 	/// Returns a pointer to settings page for robots plugin.
 	qReal::gui::PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
@@ -46,8 +63,11 @@ public:
 	ActionsManager &actionsManager();
 
 	/// A convenience method that travels around all loaded kit plugins,
-	/// collects all non-empty default settings file pathes and returns them.
+	/// collects all non-empty default settings file paths and returns them.
 	QStringList defaultSettingsFiles() const;
+
+	/// Returns a helper object for convenient 2D model interface scripting.
+	QObject *guiScriptFacade() const;
 
 	/// Returns diagram interpter`s management interface.
 	interpreter::InterpreterInterface &interpreter() const;
@@ -56,15 +76,15 @@ private:
 	void connectInterpreterToActions();
 
 	/// @returns true, if kit selection successful, false when no kit plugins are loaded.
-	bool selectKit(qReal::PluginConfigurator const &configurer);
+	bool selectKit(const qReal::PluginConfigurator &configurer);
 
 	void initSensorWidgets();
 
-	void initKitPlugins(qReal::PluginConfigurator const &configurer);
+	void initKitPlugins(const qReal::PluginConfigurator &configurer);
 
-	void initFactoriesFor(QString const &kitId
-			, interpreterBase::robotModel::RobotModelInterface const *model
-			, qReal::PluginConfigurator const &configurer);
+	void initFactoriesFor(const QString &kitId
+			, const kitBase::robotModel::RobotModelInterface *model
+			, const qReal::PluginConfigurator &configurer);
 
 	void connectEventsForKitPlugin();
 
@@ -88,14 +108,14 @@ private:
 	RobotModelManager mRobotModelManager;
 	ActionsManager mActionsManager;
 	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
+	QScopedPointer<ExerciseExportManager> mSaveAsTaskManager;
+	QScopedPointer<UiManager> mUiManager;
 
-	interpreterBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
+	kitBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
-
 	BlocksFactoryManager mBlocksFactoryManager;
-
-	interpreterBase::EventsForKitPluginInterface mEventsForKitPlugin;
+	kitBase::EventsForKitPluginInterface mEventsForKitPlugin;
 };
 
 }

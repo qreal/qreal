@@ -1,16 +1,30 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 TARGET = robots_interpreterCore_unittests
 
 include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/interpreters/interpreterCore/interpreterCore.pri)
 
-LIBS += -L../../../../../../bin -lqrkernel -lqslog
+links(qrkernel qslog)
 
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/interpreters \
 	$$PWD/../../../../../../plugins/robots/interpreters/interpreterCore \
-	$$PWD/../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
-	$$PWD/../../../../mocks/plugins/robots/interpreters/interpreterBase/include \
+	$$PWD/../../../../../../plugins/robots/common/kitBase/include \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include \
 	$$PWD/../../../../mocks/plugins/robots/interpreters \
 
 # Tests
@@ -42,9 +56,4 @@ SOURCES += \
 	support/dummyBlocksFactory.cpp \
 	support/qrguiFacade.cpp \
 
-win32 {
-	QMAKE_POST_LINK = "cmd /C "xcopy ..\\support\\testData ..\\..\\..\\..\\..\\..\\bin\\unittests /s /e /q /y /i""
-}
-else {
-	QMAKE_POST_LINK = "mkdir -p ../../../../../../bin/unittests && cp -r ../support/testData/* ../../../../../../bin/unittests/"
-}
+copyToDestdir(../support/testData/unittests, NOW)

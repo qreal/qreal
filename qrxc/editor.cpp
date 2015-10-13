@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "editor.h"
 
 #include "xmlCompiler.h"
@@ -25,9 +39,9 @@ bool Editor::isLoaded()
 	return mLoadingComplete;
 }
 
-bool Editor::load(QDir const &currentDir)
+bool Editor::load(const QDir &currentDir)
 {
-	QDomElement const metamodel = mXmlDomDocument.firstChildElement("metamodel");
+	const QDomElement metamodel = mXmlDomDocument.firstChildElement("metamodel");
 	if (metamodel.isNull())
 	{
 		qDebug() << "ERROR: metamodel tag not found";
@@ -70,7 +84,7 @@ bool Editor::load(QDir const &currentDir)
 		QString nodeName = diagramElement.attribute("nodeName", "");
 		QString diagramDisplayedName = diagramElement.attribute("displayedName", diagramName);
 
-		Diagram const *existingDiagram = mXmlCompiler->getDiagram(diagramName);
+		const Diagram *existingDiagram = mXmlCompiler->getDiagram(diagramName);
 		if (existingDiagram)
 		{
 			qDebug() << "ERROR: diagram" << diagramName << "is already loaded";
@@ -107,7 +121,7 @@ QString Editor::version() const
 	return mVersion;
 }
 
-Type* Editor::findType(QString const &name)
+Type* Editor::findType(const QString &name)
 {
 	foreach (Diagram *diagram, mDiagrams.values()) {
 		foreach (Type *type, diagram->types()) {
@@ -118,15 +132,15 @@ Type* Editor::findType(QString const &name)
 
 	foreach (Editor *editor, mIncludes) {
 		Type *type = editor->findType(name);
-		if (type != NULL && type->qualifiedName() == name)
+		if (type != nullptr && type->qualifiedName() == name)
 			return type;
 	}
-	return NULL;
+	return nullptr;
 }
 
 QSet<EnumType*> Editor::getAllEnumTypes()
 {
-	EnumType *current = NULL;
+	EnumType *current = nullptr;
 	QSet<EnumType*> result;
 
 	foreach (Diagram *diagram, mDiagrams.values()) {
@@ -148,15 +162,15 @@ QStringList Editor::getAllPortNames() const
 {
 	QStringList result;
 
-	foreach (Diagram const * const diagram, mDiagrams.values()) {
-		foreach (Type const * const type, diagram->types()) {
-			if (dynamic_cast<PortType const * const>(type)) {
+	foreach (const Diagram * const diagram, mDiagrams.values()) {
+		foreach (const Type * const type, diagram->types()) {
+			if (dynamic_cast<const PortType * const>(type)) {
 				result << type->name();
 			}
 		}
 	}
 
-	foreach (Editor const * const editor, mIncludes) {
+	foreach (const Editor * const editor, mIncludes) {
 		result += editor->getAllPortNames();
 	}
 
@@ -164,11 +178,11 @@ QStringList Editor::getAllPortNames() const
 	return result;
 }
 
-Diagram* Editor::findDiagram(QString const &name)
+Diagram* Editor::findDiagram(const QString &name)
 {
 	if (mDiagrams.contains(name))
 		return mDiagrams[name];
-	return NULL;
+	return nullptr;
 }
 
 QMap<QString, Diagram*> Editor::diagrams()
@@ -185,7 +199,7 @@ void Editor::generateListenerIncludes(utils::OutFile &out) const
 	out() << "\n";
 }
 
-void Editor::generateListenerFactory(utils::OutFile &out, QString const &pluginName) const
+void Editor::generateListenerFactory(utils::OutFile &out, const QString &pluginName) const
 {
 	out() << "QList<qReal::ListenerInterface*> " + pluginName + "Plugin::listeners() const\n"
 		<< "{\n"

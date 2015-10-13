@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "projectManager.h"
 
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
+#include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrgui/models/models.h>
 
@@ -30,6 +45,11 @@ QString ProjectManager::saveFilePath() const
 	return mAutosaver.isTempFile(mSaveFilePath) ? QString() : mSaveFilePath;
 }
 
+bool ProjectManager::somethingOpened() const
+{
+	return mSomeProjectOpened;
+}
+
 void ProjectManager::reinitAutosaver()
 {
 	mAutosaver.reinit();
@@ -50,7 +70,7 @@ bool ProjectManager::suggestToOpenExisting()
 		return false;
 	}
 
-	QString const fileName = openFileName(tr("Open existing project"));
+	const QString fileName = openFileName(tr("Open existing project"));
 	if (fileName.isEmpty()) {
 		return false;
 	}
@@ -65,14 +85,10 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 
 bool ProjectManager::open(const QString &fileName)
 {
-	QString const dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
-			|| (fileName.startsWith("\"") && fileName.endsWith("\""))
-					? fileName.mid(1, fileName.length() - 2)
-					: fileName;
+	const QString dequotedFileName = utils::StringUtils::dequote(fileName);
+	const QFileInfo fileInfo(dequotedFileName);
 
-	QFileInfo const fileInfo(dequotedFileName);
-
-	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+	if (fileInfo.suffix() == "qrs" || fileInfo.completeBaseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
@@ -90,7 +106,7 @@ bool ProjectManager::openProject(const QString &fileName)
 	// file may become incompatible with the application. This will lead to
 	// a fail on the next start.
 	// 2. autosavePauser was first starts a timer of Autosaver
-	Autosaver::Pauser const autosavePauser(mAutosaver);
+	const Autosaver::Pauser autosavePauser(mAutosaver);
 	Q_UNUSED(autosavePauser)
 
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
@@ -100,7 +116,7 @@ bool ProjectManager::openProject(const QString &fileName)
 	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
-	bool const someProjectWasOpened = mSomeProjectOpened;
+	const bool someProjectWasOpened = mSomeProjectOpened;
 	if (mSomeProjectOpened) {
 		close();
 	}
@@ -126,11 +142,12 @@ bool ProjectManager::openProject(const QString &fileName)
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
 
+	mSomeProjectOpened = true;
+	QLOG_INFO() << "Opened project" << fileName;
+	QLOG_DEBUG() << "Sending after open signal...";
+
 	emit afterOpen(fileName);
 
-	mSomeProjectOpened = true;
-
-	QLOG_INFO() << "Opened project" << fileName;
 
 	return true;
 }
@@ -146,7 +163,7 @@ bool ProjectManager::import(const QString &fileName)
 		return false;
 	}
 
-	QString const currentSaveFilePath = saveFilePath();
+	const QString currentSaveFilePath = saveFilePath();
 	if (!open(fileName)) {
 		return open(currentSaveFilePath);
 	}
@@ -190,11 +207,11 @@ QString ProjectManager::missingPluginNames() const
 void ProjectManager::checkNeededPluginsRecursive(const details::ModelsAssistInterface &api
 		, const Id &id, QStringList &result) const
 {
-	EditorManagerInterface const &editorManager = mModels.logicalModelAssistApi().editorManagerInterface();
+	const EditorManagerInterface &editorManager = mModels.logicalModelAssistApi().editorManagerInterface();
 	const IdList loadedEditors = editorManager.editors();
 	const Id currentEditor = Id(id.editor());
 	if (id != Id::rootId() && !loadedEditors.contains(currentEditor)) {
-		QString const missingEditor = id.editor();
+		const QString missingEditor = id.editor();
 		if (!result.contains(missingEditor)) {
 			result.append(missingEditor);
 		}
@@ -217,7 +234,7 @@ bool ProjectManager::checkForUnknownElements()
 	for (const Id &element : allElements) {
 		const bool isElementKnown = mModels.logicalModelAssistApi().editorManagerInterface().hasElement(element.type());
 		if (!isElementKnown) {
-			QString const errorMessage = tr("This project contains unknown element %1 and thus can`t be opened. "\
+			const QString errorMessage = tr("This project contains unknown element %1 and thus can`t be opened. "\
 					"Probably it was created by old or incorrectly working version of QReal.").arg(element.toString());
 			showMessage(tr("Can`t open project file"), errorMessage);
 			return false;
@@ -299,7 +316,7 @@ bool ProjectManager::suggestToSaveAs()
 
 bool ProjectManager::saveAs(const QString &fileName)
 {
-	QString const workingFileName = fileName;
+	const QString workingFileName = fileName;
 	if (workingFileName.isEmpty()) {
 		return false;
 	}

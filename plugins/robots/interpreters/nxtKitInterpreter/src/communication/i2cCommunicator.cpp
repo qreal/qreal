@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "i2cCommunicator.h"
 
 #include <time.h>
@@ -5,9 +19,9 @@
 #include <utils/tracer.h>
 #include "commandConstants.h"
 
-using namespace nxtKitInterpreter::communication;
+using namespace nxt::communication;
 
-unsigned const lsGetStatusResponseSize = 6;
+const unsigned lsGetStatusResponseSize = 6;
 
 I2CCommunicator::I2CCommunicator(utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: mRobotCommunicator(robotCommunicator)
@@ -15,8 +29,8 @@ I2CCommunicator::I2CCommunicator(utils::robotCommunication::RobotCommunicator &r
 }
 
 void I2CCommunicator::sendI2C(QObject *addressee
-		, QByteArray const &buffer, int const responseSize
-		, interpreterBase::robotModel::PortInfo const &port)
+		, const QByteArray &buffer, const int responseSize
+		, const kitBase::robotModel::PortInfo &port)
 {
 	utils::Tracer::debug(utils::Tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
 
@@ -67,11 +81,11 @@ void I2CCommunicator::sendI2C(QObject *addressee
 	}
 }
 
-bool I2CCommunicator::waitForI2CBytes(int bytes, interpreterBase::robotModel::PortInfo const &port)
+bool I2CCommunicator::waitForI2CBytes(int bytes, const kitBase::robotModel::PortInfo &port)
 {
 	time_t const startTime = clock();
 	do {
-		int const bytesReady = i2cBytesReady(port);
+		const int bytesReady = i2cBytesReady(port);
 		QThread::msleep(10);
 		if (clock() - startTime > i2cTimeout) {
 			return false;
@@ -82,7 +96,7 @@ bool I2CCommunicator::waitForI2CBytes(int bytes, interpreterBase::robotModel::Po
 	} while (true);
 }
 
-int I2CCommunicator::i2cBytesReady(interpreterBase::robotModel::PortInfo const &port)
+int I2CCommunicator::i2cBytesReady(const kitBase::robotModel::PortInfo &port)
 {
 	QByteArray command(5, 0);
 	command[0] = 0x03;
@@ -103,7 +117,7 @@ int I2CCommunicator::i2cBytesReady(interpreterBase::robotModel::PortInfo const &
 	}
 }
 
-char I2CCommunicator::toNxtInputPort(interpreterBase::robotModel::PortInfo const &port)
+char I2CCommunicator::toNxtInputPort(const kitBase::robotModel::PortInfo &port)
 {
 	return static_cast<char>(port.name().toInt() - 1);
 }

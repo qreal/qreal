@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "pointPort.h"
 
 const int step = 3;
@@ -6,28 +20,27 @@ PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl(
 {
 	mNeedScalingRect = true;
 	mRadius = 2;
-	mX1 = x - mRadius * 1.6;
-	mY1 = y - mRadius * 1.6;
-	mX2 = x + mRadius * 1.6;
-	mY2 = y + mRadius * 1.6;
+	setX1(x - mRadius * 1.6);
+	setY1(y - mRadius * 1.6);
+	setX2(x + mRadius * 1.6);
+	setY2(y + mRadius * 1.6);
 	mUnrealRadius = mRadius * 1.6;
-	mPen = QPen(Qt::blue);
-	mBrush = QBrush(Qt::SolidPattern);
-	mBrush.setColor(Qt::blue);
+	setPen(QPen(Qt::blue));
+	setBrush(QBrush(Qt::blue, Qt::SolidPattern));
 	mDomElementType = portType;
 }
 
-PointPort::PointPort(PointPort const &other)
+PointPort::PointPort(const PointPort &other)
 	:Item(), mPointImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = portType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mRadius = other.mRadius;
 	mListScalePoint = other.mListScalePoint;
 	mType = other.mType;
@@ -42,16 +55,16 @@ Item* PointPort::clone()
 
 QRectF PointPort::boundingRect() const
 {
-	return mPointImpl.boundingRect(mX1 + mUnrealRadius, mY1 + mUnrealRadius, mRadius, scalingDrift);
+	return mPointImpl.boundingRect(x1() + mUnrealRadius, y1() + mUnrealRadius, mRadius, scalingDrift);
 }
 
 void PointPort::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
-	painter->setPen(mPen);
-	painter->setBrush(mBrush);
-	mPointImpl.drawItem(painter, mX1 + mUnrealRadius, mY1 + mUnrealRadius, mRadius);
+	painter->setPen(pen());
+	painter->setBrush(brush());
+	mPointImpl.drawItem(painter, x1() + mUnrealRadius, y1() + mUnrealRadius, mRadius);
 }
 
 void PointPort::drawExtractionForItem(QPainter* painter)
@@ -107,12 +120,12 @@ void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QRectF itemBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 	QDomElement pointPort = document.createElement("pointPort");
-	int const x = static_cast<int>(scenePos().x() + itemBoundingRect.x() + mRadius - topLeftPicture.x());
-	int const y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius - topLeftPicture.y());
+	const int x = static_cast<int>(scenePos().x() + itemBoundingRect.x() + mRadius - topLeftPicture.x());
+	const int y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius - topLeftPicture.y());
 	pointPort.setAttribute("y", setSingleScaleForDoc(4, x, y));
 	pointPort.setAttribute("x", setSingleScaleForDoc(0, x, y));
 	pointPort.setAttribute("type", mType);
@@ -120,7 +133,7 @@ QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &
 	return QPair<QDomElement, Item::DomElementTypes>(pointPort, mDomElementType);
 }
 
-void PointPort::setType(QString const &type)
+void PointPort::setType(const QString &type)
 {
 	mType = type;
 }

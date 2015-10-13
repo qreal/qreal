@@ -1,9 +1,23 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-#include <interpreterBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/robotModel/robotModelManagerInterface.h>
 
 #include "robotsGeneratorDeclSpec.h"
 
@@ -35,9 +49,9 @@ class GeneratorCustomizer;
 class ROBOTS_GENERATOR_EXPORT GeneratorFactoryBase : public QObject
 {
 public:
-	GeneratorFactoryBase(qrRepo::RepoApi const &repo
+	GeneratorFactoryBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, lua::LuaProcessor &luaProcessor);
 
 	virtual ~GeneratorFactoryBase();
@@ -45,7 +59,7 @@ public:
 	void initialize();
 
 	/// Sets an id of the root diagram for obtaining sensors configuration.
-	void setMainDiagramId(qReal::Id const &diagramId);
+	void setMainDiagramId(const qReal::Id &diagramId);
 
 	// ------------------------------- Parts -----------------------------------
 
@@ -77,90 +91,96 @@ public:
 	// ----------------------------- Generators --------------------------------
 
 	/// Returns a pointer to a code generator for blocks with if semantics
-	virtual simple::AbstractSimpleGenerator *ifGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *ifGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer
 			, bool elseIsEmpty
 			, bool needInverting);
 
 	/// Returns a pointer to a code generator for infinite loops
-	virtual simple::AbstractSimpleGenerator *infiniteLoopGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *infiniteLoopGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'while-do' and 'do-while' loops
-	virtual simple::AbstractSimpleGenerator *whileLoopGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *whileLoopGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer
 			, bool doWhileForm
 			, bool needInverting);
 
 	/// Returns a pointer to a code generator for loops in 'for' form
-	virtual simple::AbstractSimpleGenerator *forLoopGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *forLoopGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for switch first enumeration block.
-	virtual simple::AbstractSimpleGenerator *switchHeadGenerator(qReal::Id const &id
-			, GeneratorCustomizer &customizer, QStringList const &values);
+	virtual simple::AbstractSimpleGenerator *switchHeadGenerator(const qReal::Id &id
+			, GeneratorCustomizer &customizer, const QStringList &values);
 
 	/// Returns a pointer to a code generator for switch enumeration block somewhere in the middle.
-	virtual simple::AbstractSimpleGenerator *switchMiddleGenerator(qReal::Id const &id
-			, GeneratorCustomizer &customizer, QStringList const &values);
+	virtual simple::AbstractSimpleGenerator *switchMiddleGenerator(const qReal::Id &id
+			, GeneratorCustomizer &customizer, const QStringList &values);
 
 	/// Returns a pointer to a code generator for switch enumeration block in the end (default case).
-	virtual simple::AbstractSimpleGenerator *switchDefaultGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *switchDefaultGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a threads instantiation generator
-	virtual simple::AbstractSimpleGenerator *forkCallGenerator(qReal::Id const &id
-			, GeneratorCustomizer &customizer, qReal::IdList const &threads);
+	virtual simple::AbstractSimpleGenerator *forkCallGenerator(const qReal::Id &id
+			, GeneratorCustomizer &customizer, const QMap<qReal::Id, QString> &threads);
+
+	/// Returns a pointer to a generator of thread joins
+	virtual simple::AbstractSimpleGenerator *joinGenerator(const qReal::Id &id
+			, GeneratorCustomizer &customizer, const QStringList &joinedThreads, const QString &mainThreadId);
 
 	/// Returns a pointer to a code generator for blocks with regular semantics
-	virtual simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *simpleGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'break' instruction
-	virtual simple::AbstractSimpleGenerator *breakGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *breakGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'continue' instruction
-	virtual simple::AbstractSimpleGenerator *continueGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *continueGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for goto label declaration
-	virtual simple::AbstractSimpleGenerator *labelGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *labelGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'goto' instruction
-	virtual simple::AbstractSimpleGenerator *gotoSimpleGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *gotoSimpleGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for blocks with final-blocks semantics
-	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(qReal::Id const &id
+	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer, bool fromMainGenerator);
 
-	/// Implementation must return a path to a folder containing templates for
-	/// customizing concrete generator
-	virtual QString pathToTemplates() const = 0;
+	/// Implementation must return a list of paths to folders containing templates for
+	/// customizing concrete generator. List must be sorted by folder priority --- generator looks for template
+	/// in a first folder, then, if there is no template with such name, it looks in a next folder and so on.
+	/// It is needed to be able to redefine only part of templates in different generator plugins.
+	virtual QStringList pathsToTemplates() const = 0;
 
 	// ----------------------------- Converters --------------------------------
 
 	/// Produces converter for expressions which should have int type
 	/// without taking ownership on it
-	virtual simple::Binding::ConverterInterface *intPropertyConverter(qReal::Id const &block
-			, QString const &property) const;
+	virtual simple::Binding::ConverterInterface *intPropertyConverter(const qReal::Id &block
+			, const QString &property) const;
 
 	/// Produces converter for expressions which should have float type
 	/// without taking ownership on it
-	virtual simple::Binding::ConverterInterface *floatPropertyConverter(qReal::Id const &block
-			, QString const &property) const;
+	virtual simple::Binding::ConverterInterface *floatPropertyConverter(const qReal::Id &block
+			, const QString &property) const;
 
 	/// Produces converter for expressions which should have bool type
 	/// without taking ownership on it
-	virtual simple::Binding::ConverterInterface *boolPropertyConverter(qReal::Id const &block
-			, QString const &property, bool needInverting) const;
+	virtual simple::Binding::ConverterInterface *boolPropertyConverter(const qReal::Id &block
+			, const QString &property, bool needInverting) const;
 
 	/// Produces converter for expressions which should have string type
 	/// without taking ownership on it
-	virtual simple::Binding::ConverterInterface *stringPropertyConverter(qReal::Id const &block
-			, QString const &property) const;
+	virtual simple::Binding::ConverterInterface *stringPropertyConverter(const qReal::Id &block
+			, const QString &property) const;
 
 	/// Produces a converter that returns an expression that obtain values of system variables
 	/// getting its name or the given string othrewise. Transfers ownership.
@@ -172,8 +192,8 @@ public:
 
 	/// Produces converter for transformation function block code into
 	/// generator-dependent code without taking ownership on it
-	virtual simple::Binding::ConverterInterface *functionBlockConverter(qReal::Id const &block
-			, QString const &property) const;
+	virtual simple::Binding::ConverterInterface *functionBlockConverter(const qReal::Id &block
+			, const QString &property) const;
 
 	/// Produces converter for transformation repo property of the type 'Sign' to
 	/// generator-dependent infix inequality sign without taking ownership on it
@@ -194,7 +214,7 @@ public:
 
 	/// Returns a pointer to a converter that makes one composite switch enumeration block from a set
 	/// of their values. Accepts an expression that will be compared to @arg values.
-	virtual simple::Binding::ConverterInterface *switchConditionsMerger(QStringList const &values) const;
+	virtual simple::Binding::ConverterInterface *switchConditionsMerger(const QStringList &values) const;
 
 	// ------------------------- Init-terminate code ---------------------------
 
@@ -236,11 +256,11 @@ protected:
 	/// to override in concrete generators?
 
 	/// Returns sensors configuration for the given robot model.
-	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> currentConfiguration() const;
+	QMap<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> currentConfiguration() const;
 
-	qrRepo::RepoApi const &mRepo;
+	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
-	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	lua::LuaProcessor &mLuaTranslator;
 	qReal::Id mDiagram;
 	parts::Variables *mVariables;

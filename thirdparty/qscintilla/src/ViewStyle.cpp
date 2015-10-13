@@ -76,7 +76,7 @@ const char *FontNames::Save(const char *name) {
 }
 
 FontRealised::FontRealised(const FontSpecification &fs) {
-	frNext = NULL;
+	frNext = nullptr;
 	(FontSpecification &)(*this) = fs;
 }
 
@@ -133,7 +133,7 @@ ViewStyle::ViewStyle() {
 }
 
 ViewStyle::ViewStyle(const ViewStyle &source) {
-	frFirst = NULL;
+	frFirst = nullptr;
 	Init(source.stylesSize);
 	for (unsigned int sty=0; sty<source.stylesSize; sty++) {
 		styles[sty] = source.styles[sty];
@@ -214,15 +214,15 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 
 ViewStyle::~ViewStyle() {
 	delete []styles;
-	styles = NULL;
+	styles = nullptr;
 	delete frFirst;
-	frFirst = NULL;
+	frFirst = nullptr;
 }
 
 void ViewStyle::Init(size_t stylesSize_) {
-	frFirst = NULL;
+	frFirst = nullptr;
 	stylesSize = 0;
-	styles = NULL;
+	styles = nullptr;
 	AllocStyles(stylesSize_);
 	fontNames.Clear();
 	ResetDefaultStyle();
@@ -341,7 +341,7 @@ void ViewStyle::CreateFont(const FontSpecification &fs) {
 
 void ViewStyle::Refresh(Surface &surface) {
 	delete frFirst;
-	frFirst = NULL;
+	frFirst = nullptr;
 	selbar = Platform::Chrome();
 	selbarlight = Platform::ChromeHighlight();
 

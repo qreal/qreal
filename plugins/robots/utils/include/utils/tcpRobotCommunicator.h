@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
@@ -17,23 +31,23 @@ class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
 public:
 	/// Constructor.
 	/// @param serverIpSettingsKey - where to find server ip setting in a registry.
-	explicit TcpRobotCommunicator(QString const &serverIpSettingsKey);
-	~TcpRobotCommunicator();
+	explicit TcpRobotCommunicator(const QString &serverIpSettingsKey);
+	~TcpRobotCommunicator() override;
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
-	bool uploadProgram(QString const &programName);
+	bool uploadProgram(const QString &programName);
 
 	/// Sends a command to run previously uploaded file in a robot.
-	bool runProgram(QString const &programName);
+	bool runProgram(const QString &programName);
 
 	/// Sends a script to be executed directly, without a need for a file.
 	/// @param asScript - if true, the state of a robot will be reset before command evalutation.
-	bool runDirectCommand(QString const &directCommand, bool asScript = false);
+	bool runDirectCommand(const QString &directCommand, bool asScript = false);
 
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();
 
-	void requestData(QString const &sensor);
+	void requestData(const QString &sensor);
 
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
 	/// in invalid state.
@@ -42,28 +56,35 @@ public:
 	/// Disconnects from robot.
 	void disconnect();
 
+	/// Starts to use the given \a errorReporter for diplaying errors and messages to user.
 	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 
 signals:
 	/// Emitted when tcp socket with robot was opened or failed to open.
 	/// @param errorString contains fail reason in that case.
-	void connected(bool result, QString const &errorString);
+	void connected(bool result, const QString &errorString);
 
 	/// Emitted each time when connection with robot was aborted.
 	void disconnected();
 
-	void newScalarSensorData(QString const &port, int data);
+	void newScalarSensorData(const QString &port, int data);
 
-	void newVectorSensorData(QString const &port, QVector<int> const &data);
+	void newVectorSensorData(const QString &port, QVector<int> const &data);
+
+	/// Emitted when a robot wants to print something to stdout.
+	void printText(const QString &text);
+
+	/// Emitted when a robot starts program execution.
+	void startedRunning();
 
 private slots:
-	void processControlMessage(QString const &message);
-	void processTelemetryMessage(QString const &message);
+	void processControlMessage(const QString &message);
+	void processTelemetryMessage(const QString &message);
 	void versionTimeOut();
 
 private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
-	void send(QString const &data, QTcpSocket &socket);
+	void send(const QString &data, QTcpSocket &socket);
 
 	/// Sends version request and starts version timer
 	void versionRequest();
@@ -79,7 +100,7 @@ private:
 	TcpConnectionHandler mTelemetryConnection;
 
 	bool mIsConnected;
-	QString const mServerIpSettingsKey;
+	const QString mServerIpSettingsKey;
 
 	/// Timer for version request
 	QTimer mVersionTimer;

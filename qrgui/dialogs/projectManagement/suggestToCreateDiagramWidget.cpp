@@ -1,17 +1,31 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "suggestToCreateDiagramWidget.h"
 
 #include <plugins/pluginManager/editorManagerInterface.h>
 
 using namespace qReal;
 
-SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(EditorManagerInterface const &editorManager
+SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(const EditorManagerInterface &editorManager
 		, QWidget *parent)
 	: ListWidget(parent)
 	, mEditorManager(editorManager)
 {
-	for (Id const &editor : mEditorManager.editors()) {
-		Id const editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
-		for (Id const &diagram : mEditorManager.diagrams(editorTmpId)) {
+	for (const Id &editor : mEditorManager.editors()) {
+		const Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
+		for (const Id &diagram : mEditorManager.diagrams(editorTmpId)) {
 			addItem(editor, diagram);
 		}
 	}
@@ -19,10 +33,10 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(EditorManagerInterfac
 	highlightFirstItem();
 }
 
-void SuggestToCreateDiagramWidget::addItem(Id const &editor, Id const &diagram)
+void SuggestToCreateDiagramWidget::addItem(const Id &editor, const Id &diagram)
 {
-	QString const diagramName = mEditorManager.diagramName(editor.editor(), diagram.diagram());
-	QString const diagramNodeName = mEditorManager.diagramNodeName(editor.editor(), diagram.diagram());
+	const QString diagramName = mEditorManager.diagramName(editor.editor(), diagram.diagram());
+	const QString diagramNodeName = mEditorManager.diagramNodeName(editor.editor(), diagram.diagram());
 
 	if (diagramNodeName.isEmpty()) {
 		return;

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QDir>
@@ -67,6 +81,15 @@ public:
 	virtual bool isDiagram(const Id &id) const = 0;
 	virtual bool isElement(const Id &id) const = 0;
 
+	/// Updates generation rule for given element.
+	/// @param id - element id.
+	/// @param newRule - new generation rule.
+	virtual void updateGenerationRule(const Id &id, const QString &newRule) const = 0;
+
+	/// Returns rule for given element.
+	/// @param id - element id.
+	virtual QString generationRule(const Id &id) const = 0;
+
 	virtual QStringList propertyNames(const Id &id) const = 0;
 	virtual QStringList portTypes(const Id &id) const = 0;
 	virtual QString defaultPropertyValue(const Id &id, QString name) const = 0;
@@ -125,7 +148,7 @@ public:
 	virtual QList<QString> getPatternNames() const = 0;
 	virtual QSize iconSize(const Id &id) const = 0;
 
-	virtual IdList elementsWithTheSameName(const Id &diagram, const QString &name, QString const type) const = 0;
+	virtual IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const = 0;
 	virtual IdList propertiesWithTheSameName(const Id &id, const QString &propCurrentName
 			, const QString &propNewName) const = 0;
 
