@@ -129,6 +129,19 @@ bool NullMainWindow::pluginLoaded(const QString &pluginName)
 	return true;
 }
 
+bool NullMainWindow::loadConstraintsPlugin(const QString &fileName)
+{
+	Q_UNUSED(fileName);
+	return true;
+}
+
+bool NullMainWindow::unloadConstraintsPlugin(const QString &pluginName, const QString &pluginId)
+{
+	Q_UNUSED(pluginName);
+	Q_UNUSED(pluginId);
+	return true;
+}
+
 void NullMainWindow::saveDiagramAsAPictureToFile(const QString &fileName)
 {
 	Q_UNUSED(fileName)

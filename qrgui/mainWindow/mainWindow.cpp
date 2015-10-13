@@ -171,18 +171,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 //	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 //	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 //	connect(&mModels->logicalModelAssistApi(), SIGNAL(addedElementToModel(Id)), this, SLOT(checkConstraints(Id)));
-
-//	mUsabilityTestingToolbar = new QToolBar();
-//	mStartTest = new QAction(tr("Start test"), NULL);
-//	mStartTest->setEnabled(true);
-//	connect(mStartTest, SIGNAL(triggered()), this, SLOT(startUsabilityTest()));
-//	mFinishTest = new QAction(tr("Finish test"), NULL);
-//	mFinishTest->setEnabled(false);
-//	connect(mFinishTest, SIGNAL(triggered()), this, SLOT(finishUsabilityTest()));
-//	mUsabilityTestingToolbar->addAction(mStartTest);
-//	mUsabilityTestingToolbar->addAction(mFinishTest);
-//	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
-//	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
 }
 
 void MainWindow::connectActions()

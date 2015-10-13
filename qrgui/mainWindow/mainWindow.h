@@ -128,8 +128,8 @@ public:
 	virtual bool loadPlugin(const QString &fileName, const QString &pluginName);
 	virtual bool pluginLoaded(const QString &pluginName);
 
-	virtual bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId);
-	virtual bool loadConstraintsPlugin(QString const &fileName);
+	bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId) override;
+	bool loadConstraintsPlugin(QString const &fileName) override;
 
 	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
 	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);

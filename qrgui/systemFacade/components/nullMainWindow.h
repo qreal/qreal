@@ -57,6 +57,9 @@ public:
 
 	bool pluginLoaded(const QString &pluginName) override;
 
+	bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId) override;
+	bool loadConstraintsPlugin(QString const &fileName) override;
+
 	void saveDiagramAsAPictureToFile(const QString &fileName) override;
 
 	void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles) override;
