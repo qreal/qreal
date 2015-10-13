@@ -739,7 +739,9 @@ void EditorManager::setElementEnabled(const Id &type, bool enabled)
 
 EditorManagerInterface::MetaType EditorManager::metaTypeOfElement(Id const& element) const
 {
-	int isNodeOrEdge = mPluginIface[element.editor()]->isNodeOrEdge(element.element()); //(-1) means "edge", (+1) means "node"
+	int isNodeOrEdge = mPluginIface[element.editor()]->isNodeOrEdge(element.element());
+	//(-1) means "edge", (+1) means "node"
+
 	if (isNodeOrEdge == -1) {
 		return EditorManagerInterface::edge;
 	} else if (isNodeOrEdge == 1) {

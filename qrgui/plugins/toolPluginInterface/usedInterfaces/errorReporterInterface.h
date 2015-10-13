@@ -42,8 +42,14 @@ public:
 	/// @returns True, when there are messages with severity "Critical" and "Error" registered
 	virtual bool wereErrors() = 0;
 
-	virtual void addUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error, Id const &position = Id::rootId()) = 0;
-	virtual void delUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error, Id const &position = Id::rootId()) = 0;
+	virtual void addUniqueError(
+			QString const &message
+			, gui::Error::Severity const &severity = gui::Error::error
+			, Id const &position = Id::rootId()) = 0;
+	virtual void delUniqueError(
+			QString const &message
+			, gui::Error::Severity const &severity = gui::Error::error
+			, Id const &position = Id::rootId()) = 0;
 	virtual void delAllErrorOfElement(Id const &position) = 0;
 
 };

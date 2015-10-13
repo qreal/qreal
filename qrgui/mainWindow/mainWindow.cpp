@@ -2204,7 +2204,8 @@ void MainWindow::checkOwnConstraints(Id const &id)
 //			mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 
 //	QList<CheckStatus> checkStatusList =
-//			mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManagerProxy);
+//			mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi()
+//			, mEditorManagerProxy);
 
 //	bool checkStatus = true;
 //	foreach (CheckStatus check, checkStatusList) {

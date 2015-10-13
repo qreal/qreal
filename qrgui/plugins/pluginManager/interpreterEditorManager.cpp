@@ -51,7 +51,9 @@ EditorManagerInterface::MetaType InterpreterEditorManager::metaTypeOfElement(qRe
 {
 	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
 		foreach (Id const &currentElement,  repo->elementsByType(element.element())) {
-			if (currentElement.editor() == element.editor() && currentElement.diagram() == element.diagram() && repo->isLogicalElement(currentElement)) {
+			if (currentElement.editor() == element.editor()
+					&& currentElement.diagram() == element.diagram()
+					&& repo->isLogicalElement(currentElement)) {
 				int isNodeOrEdge = 0; // qwerty_TODO
 				if (isNodeOrEdge == -1) {
 					return EditorManagerInterface::edge;
