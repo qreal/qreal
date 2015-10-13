@@ -32,7 +32,7 @@ SUBDIRS = \
 
 qrkernel.depends = thirdparty
 qrtext.depends = qrkernel
-qrutils.depends = qrkernel
+qrutils.depends = qrkernel qrtext
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 qrmc.depends = qrrepo
