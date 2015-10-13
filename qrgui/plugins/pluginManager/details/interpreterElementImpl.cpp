@@ -619,8 +619,3 @@ void InterpreterElementImpl::updateRendererContent(const QString &shape)
 		mRenderer->load(classDoc);
 	}
 }
-
-QStringList InterpreterElementImpl::bonusContextMenuFields() const
-{
-	return QStringList();
-}

@@ -664,21 +664,6 @@ NodeElement *EdgeElement::innermostChild(const QList<QGraphicsItem *> &items, No
 	return nullptr;
 }
 
-QList<ContextMenuAction*> EdgeElement::contextMenuActions(const QPointF &pos)
-{
-	QList<ContextMenuAction*> result;
-
-	result.push_back(&mChangeShapeAction);
-
-	if (reverseActionIsPossible()) {
-		result.push_back(&mReverseAction);
-	}
-
-	result.append(mHandler->extraActions(pos));
-
-	return result;
-}
-
 bool EdgeElement::reverseActionIsPossible() const
 {
 	if (mIsLoop) {

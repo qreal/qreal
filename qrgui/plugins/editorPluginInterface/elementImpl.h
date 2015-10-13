@@ -89,8 +89,6 @@ public:
 
 	virtual QList<qreal> border() const = 0;
 
-	virtual QStringList bonusContextMenuFields() const = 0;
-
 	/// Update shape of an element. Does nothing in case of generated editors, used by metamodel interpreter.
 	virtual void updateRendererContent(const QString &shape)
 	{

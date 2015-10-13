@@ -96,10 +96,6 @@ NodeElement::NodeElement(ElementImpl *impl
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
-	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
-		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
-	}
-
 	mGrid = new SceneGridHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
@@ -117,7 +113,6 @@ NodeElement::~NodeElement()
 	deleteGuides();
 	qDeleteAll(mLabels);
 	delete mElementImpl;
-	qDeleteAll(mBonusContextMenuActions);
 	delete mGrid;
 	delete mPortHandler;
 }
@@ -264,17 +259,6 @@ void NodeElement::storeGeometry()
 	if (contents != mGraphicalAssistApi.configuration(id())) { // check if it's been changed
 		mGraphicalAssistApi.setConfiguration(id(), contents);
 	}
-}
-
-QList<ContextMenuAction*> NodeElement::contextMenuActions(const QPointF &pos)
-{
-	Q_UNUSED(pos);
-	QList<ContextMenuAction*> result;
-	result.push_back(&mSwitchGridAction);
-	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
-		result.push_back(action);
-	}
-	return result;
 }
 
 void NodeElement::showAlignment(bool isChecked)

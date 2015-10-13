@@ -101,7 +101,6 @@ public:
 
 	QList<qreal> border() const;
 
-	QStringList bonusContextMenuFields() const;
 	void updateRendererContent(const QString &shape);
 
 private:
