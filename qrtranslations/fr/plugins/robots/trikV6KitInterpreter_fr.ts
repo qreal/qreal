@@ -52,7 +52,7 @@
 <context>
     <name>trik::robotModel::real::TrikV6RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/robotModel/real/trikV6RealRobotModel.cpp" line="86"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/robotModel/real/trikV6RealRobotModel.cpp" line="65"/>
         <source>Interpretation (Wi-Fi)</source>
         <translation type="unfinished">Intérprétation (Wi-Fi)</translation>
     </message>

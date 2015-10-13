@@ -70,12 +70,6 @@ void Element::updateData()
 	setToolTip(mGraphicalAssistApi.toolTip(id()));
 }
 
-QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
-{
-	Q_UNUSED(pos)
-	return QList<ContextMenuAction*>();
-}
-
 QString Element::logicalProperty(const QString &roleName) const
 {
 	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();

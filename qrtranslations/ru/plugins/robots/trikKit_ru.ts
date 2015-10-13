@@ -4,7 +4,7 @@
 <context>
     <name>trik::blocks::details::WaitGamepadButtonBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/src/blocks/details/waitGamepadButtonBlock.cpp" line="40"/>
+        <location filename="../../../../plugins/robots/common/trikKit/src/blocks/details/waitGamepadButtonBlock.cpp" line="41"/>
         <source>Incorrect port for gamepad button %1</source>
         <translation>Неверная кнопка Android-пульта %1</translation>
     </message>
@@ -12,8 +12,8 @@
 <context>
     <name>trik::robotModel::TrikRobotModelBase</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="104"/>
-        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="147"/>
+        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="89"/>
+        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="132"/>
         <source>Line sensor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -125,9 +125,8 @@
 <context>
     <name>trik::robotModel::parts::TrikShell</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikShell.h" line="28"/>
         <source>Shell</source>
-        <translation>Командный интерпретатор</translation>
+        <translation type="vanished">Командный интерпретатор</translation>
     </message>
 </context>
 <context>

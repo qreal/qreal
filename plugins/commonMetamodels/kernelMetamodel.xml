@@ -35,8 +35,8 @@
               <association beginName="Property" endName="Property"/>
             </associations>
             <generalizations>
-              <parent parentName="Classifier"/>
-              <parent parentName="Relationship"/>
+              <parent parentName="Classifier" overrides = "all"/>
+              <parent parentName="Relationship" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isDerived">
@@ -57,15 +57,15 @@
               <association beginName="Property" endName="Property"/>
             </associations>
             <generalizations>
-              <parent parentName="Association"/>
+              <parent parentName="Association" overrides = "all"/>
             </generalizations>
           </logic>
         </edge>
         <node name="BehavioralFeature" displayedName="Behavioral Feature">
           <logic>
             <generalizations>
-              <parent parentName="Feature"/>
-              <parent parentName="Namespace"/>
+              <parent parentName="Feature" overrides = "all"/>
+              <parent parentName="Namespace" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Parameter" name="ownedParameter"/>
@@ -102,7 +102,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Classifier"/>
+              <parent parentName="Classifier" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Classifier" name="nestedClassifier"/>
@@ -119,10 +119,6 @@
                 <maximizeChildren/>
               </properties>
             </container>
-            <bonusContextMenuFields>
-              <field name="Add method"/>
-              <field name="Add field"/>
-            </bonusContextMenuFields>
           </logic>
         </node>
         <node path="0, 0 : 150, 0 : 150, 25 : 0, 25 : 0, 0 : " name="MethodsContainer" displayedName="Methods Container">
@@ -136,7 +132,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="KernelDiagram::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement" overrides = "all"/>
             </generalizations>
             <container>
               <contains type="Method"/>
@@ -161,7 +157,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="KernelDiagram::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement" overrides = "all"/>
             </generalizations>
             <bonusContextMenuFields>
               <field name="Add method"/>
@@ -179,7 +175,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="KernelDiagram::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement" overrides = "all"/>
             </generalizations>
             <container>
               <contains type="Field"/>
@@ -204,7 +200,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="KernelDiagram::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement" overrides = "all"/>
             </generalizations>
             <bonusContextMenuFields>
               <field name="Add field"/>
@@ -214,9 +210,9 @@
         <node name="Classifier">
           <logic>
             <generalizations>
-              <parent parentName="Namespace"/>
-              <parent parentName="RedefinableElement"/>
-              <parent parentName="Type"/>
+              <parent parentName="Namespace" overrides = "all"/>
+              <parent parentName="RedefinableElement" overrides = "all"/>
+              <parent parentName="Type" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isAbstract">
@@ -264,7 +260,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="KernelElement"/>
+              <parent parentName="KernelElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="string" name="body"/>
@@ -307,7 +303,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="PackageableElement"/>
+              <parent parentName="PackageableElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="KernelElement" name="constrainedElement"/>
@@ -318,7 +314,7 @@
         <node name="DataType" displayedName="Data Type">
           <logic>
             <generalizations>
-              <parent parentName="Classifier"/>
+              <parent parentName="Classifier" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Property" name="ownedAttribute"/>
@@ -335,7 +331,7 @@
               <association beginName="KernelElement" endName="KernelElement"/>
             </associations>
             <generalizations>
-              <parent parentName="Relationship"/>
+              <parent parentName="Relationship" overrides = "all"/>
             </generalizations>
           </logic>
         </edge>
@@ -355,7 +351,7 @@
               <association beginName="Namespace" endName="Packageable Element"/>
             </associations>
             <generalizations>
-              <parent parentName="DirectedRelationship"/>
+              <parent parentName="DirectedRelationship" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="VisibilityKind" name="visibility">
@@ -368,7 +364,7 @@
         <node name="Enumeration">
           <logic>
             <generalizations>
-              <parent parentName="DataType"/>
+              <parent parentName="DataType" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="EnumerationLiteral" name="ownedLiteral"/>
@@ -378,7 +374,7 @@
         <node name="EnumerationLiteral" displayedName="Enumeration Literal">
           <logic>
             <generalizations>
-              <parent parentName="InstanceSpecification"/>
+              <parent parentName="InstanceSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Enumeration" name="enumeration"/>
@@ -388,7 +384,7 @@
         <node name="Expression">
           <logic>
             <generalizations>
-              <parent parentName="ValueSpecification"/>
+              <parent parentName="ValueSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="string" name="symbol"/>
@@ -399,7 +395,7 @@
         <node name="Feature">
           <logic>
             <generalizations>
-              <parent parentName="RedefinableElement"/>
+              <parent parentName="RedefinableElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isStatic">
@@ -417,7 +413,7 @@
               <association beginName="Classifier" endName="Classifier"/>
             </associations>
             <generalizations>
-              <parent parentName="DirectedRelationship"/>
+              <parent parentName="DirectedRelationship" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isSubstitutable">
@@ -458,7 +454,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="PackageableElement"/>
+              <parent parentName="PackageableElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Classifier" name="classifier"/>
@@ -470,7 +466,7 @@
         <node name="InstanceValue" displayedName="Instance Value">
           <logic>
             <generalizations>
-              <parent parentName="ValueSpecification"/>
+              <parent parentName="ValueSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="InstanceSpecification" name="instance"/>
@@ -480,7 +476,7 @@
         <node name="LiteralBoolean" displayedName="Literal Boolean">
           <logic>
             <generalizations>
-              <parent parentName="LiteralSpecification"/>
+              <parent parentName="LiteralSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="value"/>
@@ -490,7 +486,7 @@
         <node name="LiteralInteger" displayedName="Literal Integer">
           <logic>
             <generalizations>
-              <parent parentName="LiteralSpecification"/>
+              <parent parentName="LiteralSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="int" name="value">
@@ -502,21 +498,21 @@
         <node name="LiteralNull" displayedName="Literal Null">
           <logic>
             <generalizations>
-              <parent parentName="LiteralSpecification"/>
+              <parent parentName="LiteralSpecification" overrides = "all"/>
             </generalizations>
           </logic>
         </node>
         <node name="LiteralSpecification" displayedName="Literal Specification">
           <logic>
             <generalizations>
-              <parent parentName="ValueSpecification"/>
+              <parent parentName="ValueSpecification" overrides = "all"/>
             </generalizations>
           </logic>
         </node>
         <node name="LiteralString" displayedName="Literal String">
           <logic>
             <generalizations>
-              <parent parentName="LiteralSpecification"/>
+              <parent parentName="LiteralSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="string" name="value"/>
@@ -526,7 +522,7 @@
         <node name="LiteralUnlimitedNatural" displayedName="Literal Unlimited Natural">
           <logic>
             <generalizations>
-              <parent parentName="LiteralSpecification"/>
+              <parent parentName="LiteralSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="unlimitedNatural" name="value">
@@ -538,7 +534,7 @@
         <node name="MultiplicityElement" displayedName="Multiplicity Element">
           <logic>
             <generalizations>
-              <parent parentName="KernelElement"/>
+              <parent parentName="KernelElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isOrdered">
@@ -555,7 +551,7 @@
         <node name="NamedElement" displayedName="Named Element">
           <logic>
             <generalizations>
-              <parent parentName="KernelElement"/>
+              <parent parentName="KernelElement" overrides = "all"/>
             </generalizations>
             <properties>
               <!-- ? ????? ??? ???????? ????? ???, ??? ????? ???? ?? ??? ??????????? ? ??????? ??????????.
@@ -572,7 +568,7 @@
         <node name="Namespace">
           <logic>
             <generalizations>
-              <parent parentName="NamedElement"/>
+              <parent parentName="NamedElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="ElementImport" name="elementImport"/>
@@ -584,7 +580,7 @@
         <node name="Opaque Expression">
           <logic>
             <generalizations>
-              <parent parentName="ValueSpecification"/>
+              <parent parentName="ValueSpecification" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="string" name="body"/>
@@ -595,7 +591,7 @@
         <node name="Operation">
           <logic>
             <generalizations>
-              <parent parentName="BehavioralFeature"/>
+              <parent parentName="BehavioralFeature" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isQuery">
@@ -645,8 +641,8 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Namespace"/>
-              <parent parentName="PackageableElement"/>
+              <parent parentName="Namespace" overrides = "all"/>
+              <parent parentName="PackageableElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Package" name="packageMerge"/>
@@ -657,7 +653,7 @@
         <node name="PackageableElement" displayedName="Packageable Element">
           <logic>
             <generalizations>
-              <parent parentName="NamedElement"/>
+              <parent parentName="NamedElement" overrides = "all"/>
             </generalizations>
             <properties/>
           </logic>
@@ -674,7 +670,7 @@
               <association beginName="Namespace" endName="Package"/>
             </associations>
             <generalizations>
-              <parent parentName="DirectedRelationship"/>
+              <parent parentName="DirectedRelationship" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="VisibilityKind" name="visibility">
@@ -695,15 +691,15 @@
               <association beginName="Package" endName="Package"/>
             </associations>
             <generalizations>
-              <parent parentName="DirectedRelationship"/>
+              <parent parentName="DirectedRelationship" overrides = "all"/>
             </generalizations>
           </logic>
         </edge>
         <node name="Parameter">
           <logic>
             <generalizations>
-              <parent parentName="MultiplicityElement"/>
-              <parent parentName="TypedElement"/>
+              <parent parentName="MultiplicityElement" overrides = "all"/>
+              <parent parentName="TypedElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="ParameterDirectionKind" name="direction">
@@ -716,14 +712,14 @@
         <node name="PrimitiveType" displayedName="Primitive Type">
           <logic>
             <generalizations>
-              <parent parentName="DataType"/>
+              <parent parentName="DataType" overrides = "all"/>
             </generalizations>
           </logic>
         </node>
         <node name="Property">
           <logic>
             <generalizations>
-              <parent parentName="StructuralFeature"/>
+              <parent parentName="StructuralFeature" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="AggregationKind" name="aggregation">
@@ -750,7 +746,7 @@
         <node name="RedefinableElement" displayedName="Redefinable Element">
           <logic>
             <generalizations>
-              <parent parentName="NamedElement"/>
+              <parent parentName="NamedElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isLeaf">
@@ -762,14 +758,14 @@
         <edge name="Relationship">
           <logic>
             <generalizations>
-              <parent parentName="KernelElement"/>
+              <parent parentName="KernelElement" overrides = "all"/>
             </generalizations>
           </logic>
         </edge>
         <node name="Slot">
           <logic>
             <generalizations>
-              <parent parentName="KernelElement"/>
+              <parent parentName="KernelElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="StructuralFeature" name="definingFeature"/>
@@ -781,9 +777,9 @@
         <node name="StructuralFeature" displayedName="Structural Feature">
           <logic>
             <generalizations>
-              <parent parentName="Feature"/>
-              <parent parentName="MultiplicityElement"/>
-              <parent parentName="TypedElement"/>
+              <parent parentName="Feature" overrides = "all"/>
+              <parent parentName="MultiplicityElement" overrides = "all"/>
+              <parent parentName="TypedElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isReadOnly">
@@ -795,14 +791,14 @@
         <node name="Type">
           <logic>
             <generalizations>
-              <parent parentName="PackageableElement"/>
+              <parent parentName="PackageableElement" overrides = "all"/>
             </generalizations>
           </logic>
         </node>
         <node name="TypedElement" displayedName="Typed Element">
           <logic>
             <generalizations>
-              <parent parentName="NamedElement"/>
+              <parent parentName="NamedElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Type" name="type"/>
@@ -812,8 +808,8 @@
         <node name="ValueSpecification" displayedName="Value Specification">
           <logic>
             <generalizations>
-              <parent parentName="PackageableElement"/>
-              <parent parentName="TypedElement"/>
+              <parent parentName="PackageableElement" overrides = "all"/>
+              <parent parentName="TypedElement" overrides = "all"/>
             </generalizations>
           </logic>
         </node>
@@ -866,7 +862,7 @@
               <association beginName="Classifier" endName="Classifier"/>
             </associations>
             <generalizations>
-              <parent parentName="Realization"/>
+              <parent parentName="Realization" overrides = "all"/>
             </generalizations>
           </logic>
         </edge>
@@ -881,7 +877,7 @@
               <!-- not sure about begin & end names -->
             </associations>
             <generalizations>
-              <parent parentName="Abstraction"/>
+              <parent parentName="Abstraction" overrides = "all"/>
             </generalizations>
           </logic>
         </edge>
@@ -889,7 +885,7 @@
           <!-- from Dependencies -->
           <logic>
             <generalizations>
-              <parent parentName="Dependency"/>
+              <parent parentName="Dependency" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Expression" name="mapping"/>
@@ -906,8 +902,8 @@
               <association beginName="Named Element" endName="Named Element"/>
             </associations>
             <generalizations>
-              <parent parentName="DirectedRelationship"/>
-              <parent parentName="PackageableElement"/>
+              <parent parentName="DirectedRelationship" overrides = "all"/>
+              <parent parentName="PackageableElement" overrides = "all"/>
             </generalizations>
           </logic>
         </edge>
@@ -915,7 +911,7 @@
           <!-- from PowerTypes -->
           <logic>
             <generalizations>
-              <parent parentName="PackageableElement"/>
+              <parent parentName="PackageableElement" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="bool" name="isCovering">
@@ -962,7 +958,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Classifier"/>
+              <parent parentName="Classifier" overrides = "all"/>
             </generalizations>
             <properties>
               <property type="Property" name="ownedAttribute"/>

@@ -4,19 +4,24 @@
 <context>
     <name>trik::UploaderTool</name>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="100"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="137"/>
         <source>WinSCP process failed to launch, check path in settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="103"/>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="114"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="140"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="155"/>
         <source>Uploading failed, check connection and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="111"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="152"/>
         <source>Uploaded successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="183"/>
+        <source>%1 is not installed. Please install %1 first.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

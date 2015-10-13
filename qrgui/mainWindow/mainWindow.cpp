@@ -103,20 +103,20 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	registerMetaTypes();
-	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
-	splashScreen.setVisible(false);
-	splashScreen.setProgress(5);
+	SplashScreen *splashScreen = new SplashScreen(SettingsManager::value("Splashscreen").toBool());
+	splashScreen->activateWindow();
+	splashScreen->setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
-	splashScreen.setProgress(20);
+	splashScreen->setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
-	splashScreen.setProgress(40);
+	splashScreen->setProgress(40);
 
 	initDocks();
 
@@ -128,28 +128,27 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mPreferencesDialog.init();
 
 
-	splashScreen.setProgress(60);
+	splashScreen->setProgress(60);
 
 	loadPlugins();
 
 
-	splashScreen.setProgress(70);
+	splashScreen->setProgress(70);
 
 	mDocksVisibility.clear();
 
 
-	splashScreen.setProgress(80);
+	splashScreen->setProgress(80);
 
 	initActionsFromSettings();
 
-	splashScreen.setProgress(100);
+	splashScreen->setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
 		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
 	} else {
 		showMaximized();
 	}
-	splashScreen.close();
 
 	mFindReplaceDialog = new FindReplaceDialog(models().logicalRepoApi(), this);
 	mFindHelper = new FindManager(models().repoControlApi()
@@ -163,7 +162,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
-
+	QTimer::singleShot(1500, [=] { splashScreen->close(); });
 	// TODO_CONSTRAINTS: emit signal when command is created
 //	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
 //	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex))

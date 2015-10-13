@@ -66,7 +66,6 @@ public:
 
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node
-	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 
 	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
