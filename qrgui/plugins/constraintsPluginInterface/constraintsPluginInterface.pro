@@ -1,10 +1,12 @@
 TEMPLATE = lib
 
+include($$PWD/../../../global.pri)
+
 DESTDIR = $$PWD/../../../bin
 
 TARGET = qrgui-constraints-plugin-interface
 
-LIBS += -L$$PWD/../../../bin -lqrkernel
+links(qrkernel)
 
 DEFINES += QRGUI_CONSTRAINTS_PLUGIN_INTERFACE_LIBRARY
 
