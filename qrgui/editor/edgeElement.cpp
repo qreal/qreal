@@ -463,36 +463,36 @@ QPointF EdgeElement::boundingRectIndent(const QPointF &point, EdgeElement::NodeS
 
 	switch (direction)
 	{
-		case top:
-		{
-			QPointF topPoint = mapToItem(mSrc, QPointF(point.x(), 0));
-			newPoint = mapFromItem(mSrc, QPointF(topPoint.x(), bounds.top() - bounds.height() / reductFactor));
-			break;
-		}
+	case top:
+	{
+		QPointF topPoint = mapToItem(mSrc, QPointF(point.x(), 0));
+		newPoint = mapFromItem(mSrc, QPointF(topPoint.x(), bounds.top() - bounds.height() / reductFactor));
+		break;
+	}
 
-		case bottom:
-		{
-			QPointF bottomPoint = mapToItem(mSrc, QPointF(point.x(), 0));
-			newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x(), bounds.bottom() + bounds.height() / reductFactor));
-			break;
-		}
+	case bottom:
+	{
+		QPointF bottomPoint = mapToItem(mSrc, QPointF(point.x(), 0));
+		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x(), bounds.bottom() + bounds.height() / reductFactor));
+		break;
+	}
 
-		case left:
-		{
-			QPointF leftPoint = mapToItem(mSrc, QPointF(0, point.y()));
-			newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor, leftPoint.y()));
-			break;
-		}
+	case left:
+	{
+		QPointF leftPoint = mapToItem(mSrc, QPointF(0, point.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor, leftPoint.y()));
+		break;
+	}
 
-		case right:
-		{
-			QPointF rightPoint = mapToItem(mSrc, QPointF(0, point.y()));
-			newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor, rightPoint.y()));
-			break;
-		}
+	case right:
+	{
+		QPointF rightPoint = mapToItem(mSrc, QPointF(0, point.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor, rightPoint.y()));
+		break;
+	}
 
-		default:
-			qDebug() << "incorrect direction";
+	default:
+		qDebug() << "incorrect direction";
 	}
 
 	return newPoint;
