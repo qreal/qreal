@@ -145,8 +145,10 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 					vItem->setValue(idx);
 				}
 			}
+
 			item = vItem;
 		}
+
 		mPropertyEditor->addProperty(item);
 	}
 

@@ -119,7 +119,7 @@ void Element::setSelectionState(const bool selected)
 		select(false);
 	}
 
-	foreach (Label * const label, mLabels) {
+	for (Label * const label : mLabels) {
 		label->setParentSelected(selected);
 	}
 }

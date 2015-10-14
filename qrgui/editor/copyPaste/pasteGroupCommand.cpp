@@ -55,7 +55,7 @@ void PasteGroupCommand::prepareCommands()
 
 	mCopiedIds = preparePasteNodesCommands(nodesData, offset);
 
-	foreach (const EdgeData &data, edgesData) {
+	for (const EdgeData &data : edgesData) {
 		preparePasteEdgeCommand(data, offset);
 	}
 }
