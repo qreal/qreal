@@ -82,6 +82,12 @@ public:
 	void replaceRobotModel(const twoDModel::robotModel::TwoDRobotModel &oldModel
 			, robotModel::TwoDRobotModel &newModel);
 
+	/// Returns true if constraints checker is active (constraints list in the model is non-empty).
+	bool hasConstraints() const;
+
+	/// Activates or deactivates constraints checker.
+	void setConstraintsEnabled(bool enabled);
+
 signals:
 	/// Emitted each time when some user actions lead to world model modifications
 	/// @param xml World model description in xml format

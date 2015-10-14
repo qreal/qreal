@@ -102,9 +102,9 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	mInterpreter = interpreter;
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::closedMainWindow
-			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
+			, mInterpreter, &interpreter::InterpreterInterface::userStopRobot);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
+			, mInterpreter, &interpreter::InterpreterInterface::userStopRobot);
 
 	initKitPlugins(configurer);
 
@@ -233,7 +233,7 @@ void RobotsPluginFacade::connectInterpreterToActions()
 			&mActionsManager.stopRobotAction()
 			, &QAction::triggered
 			, mInterpreter
-			, &interpreter::InterpreterInterface::stopRobot
+			, &interpreter::InterpreterInterface::userStopRobot
 			);
 
 	QObject::connect(

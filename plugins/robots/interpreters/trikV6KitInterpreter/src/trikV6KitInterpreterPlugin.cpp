@@ -39,7 +39,7 @@ QString TrikV6KitInterpreterPlugin::kitId() const
 
 QString TrikV6KitInterpreterPlugin::friendlyKitName() const
 {
-	return tr("TRIK (old case)");
+	return tr("TRIK (model-2014)");
 }
 
 int TrikV6KitInterpreterPlugin::priority() const

@@ -34,6 +34,7 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 	, mParsedSuccessfully(false)
 	, mSuccessTriggered(false)
 	, mFailTriggered(false)
+	, mEnabled(true)
 {
 	connect(&mStatus, &details::StatusReporter::success, [this](bool deferred) {
 		if (deferred) {
@@ -62,6 +63,11 @@ ConstraintsChecker::~ConstraintsChecker()
 	qDeleteAll(mEvents);
 }
 
+bool ConstraintsChecker::hasConstraints() const
+{
+	return !mCurrentXml.isNull() && mParsedSuccessfully;
+}
+
 bool ConstraintsChecker::parseConstraints(const QDomElement &constraintsXml)
 {
 	qDeleteAll(mEvents);
@@ -86,10 +92,19 @@ void ConstraintsChecker::serializeConstraints(QDomElement &parent) const
 
 void ConstraintsChecker::checkConstraints()
 {
+	if (!mEnabled) {
+		return;
+	}
+
 	QListIterator<details::Event *> iterator(mActiveEvents);
 	while (iterator.hasNext()) {
 		iterator.next()->check();
 	}
+}
+
+void ConstraintsChecker::setEnabled(bool enabled)
+{
+	mEnabled = enabled;
 }
 
 void ConstraintsChecker::reportParserError(const QString &message)
@@ -242,6 +257,10 @@ QString ConstraintsChecker::portName(const QString &robotId
 
 void ConstraintsChecker::programStarted()
 {
+	if (!mEnabled) {
+		return;
+	}
+
 	// Actually not all devices were configured during binding to robot, so iterating through them here...
 	for (model::RobotModel * const robot : mModel.robotModels()) {
 		const QStringList robotIds = mObjects.keys(robot);
@@ -264,10 +283,10 @@ void ConstraintsChecker::programStarted()
 	}
 }
 
-void ConstraintsChecker::programFinished()
+void ConstraintsChecker::programFinished(qReal::interpretation::StopReason reason)
 {
-	if (!mSuccessTriggered && !mFailTriggered) {
-		if (mDefferedSuccessTriggered) {
+	if (!mSuccessTriggered && !mFailTriggered && mEnabled) {
+		if (mDefferedSuccessTriggered && reason == qReal::interpretation::StopReason::finised) {
 			emit success();
 		} else {
 			emit fail(tr("Program has finished, but the task is not accomplished."));
