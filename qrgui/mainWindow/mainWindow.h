@@ -39,7 +39,7 @@
 #include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 #include <qrgui/plugins/pluginManager/toolPluginManager.h>
 #include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
-#include "plugins/pluginManager/constraintsManager.h"
+#include <qrgui/plugins/pluginManager/constraintsManager.h>
 
 #include <qrgui/systemFacade/systemFacade.h>
 #include <qrgui/editor/propertyEditorView.h>
@@ -219,9 +219,9 @@ public slots:
 	/// Inits interpreted plugins and adds their actions to the toolbar.
 	void initInterpretedPlugins();
 
-	void checkConstraints(Id const &id);
-	void checkConstraints(QModelIndex const &index);
-	void checkConstraints(IdList const &idList);
+	void checkConstraints(const Id &id);
+	void checkConstraints(const QModelIndex &index);
+	void checkConstraints(const IdList &idList);
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -296,12 +296,11 @@ private slots:
 	void setTextChanged(bool changed);
 
 private:
-
 	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
-	void checkOwnConstraints(Id const &id);
-	void checkParentsConstraints(QModelIndex const &index);
-	void checkChildrensConstraints(Id const &id);
-	void checkLinksConstraints(Id const &id);
+	void checkOwnConstraints(const Id &id);
+	void checkParentsConstraints(const QModelIndex &index);
+	void checkChildrensConstraints(const Id &id);
+	void checkLinksConstraints(const Id &id);
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on

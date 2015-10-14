@@ -1,10 +1,8 @@
-TEMPLATE = lib
+TARGET = qrgui-constraints-plugin-interface
 
 include($$PWD/../../../global.pri)
 
-DESTDIR = $$PWD/../../../bin
-
-TARGET = qrgui-constraints-plugin-interface
+TEMPLATE = lib
 
 links(qrkernel)
 
@@ -22,5 +20,3 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/checkStatus.cpp
-
-
