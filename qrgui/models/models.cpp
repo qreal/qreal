@@ -14,6 +14,8 @@
 
 #include "models.h"
 
+#include "exploser.h"
+
 using namespace qReal;
 using namespace models;
 
@@ -32,7 +34,7 @@ Models::Models(const QString &workingCopy, const EditorManagerInterface &editorM
 			, mGraphicalPartModel, SLOT(rowsAboutToBeRemovedInGraphicalModel(QModelIndex, int, int)));
 
 	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager);
-	mExploser = new Exploser(logicalModelAssistApi());
+	mExploser.reset(new Exploser(logicalModelAssistApi()));
 	mRepoApi = repoApi;
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
@@ -44,7 +46,6 @@ Models::~Models()
 	delete mGraphicalModel;
 	delete mLogicalModel;
 	delete mRepoApi;
-	delete mExploser;
 }
 
 QAbstractItemModel* Models::graphicalModel() const

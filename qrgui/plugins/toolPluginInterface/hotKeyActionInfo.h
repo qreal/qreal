@@ -19,6 +19,8 @@
 
 namespace qReal {
 
+/// Value object, provides info about hotkeys that can be added by tool plugin to a list of
+/// global hotkeys and initiate action from a plugin.
 class HotKeyActionInfo
 {
 public:
@@ -45,7 +47,8 @@ public:
 	}
 
 private:
-	QAction *mAction;
+	/// Does not have ownership.
+	QAction * mAction;
 	QString mId;
 	QString mLabel;
 };

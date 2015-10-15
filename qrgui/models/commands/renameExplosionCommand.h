@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtWidgets/QTreeWidgetItem>
+
 #include "controller/commands/abstractCommand.h"
 #include "controller/commands/trackingEntity.h"
 #include "models/exploser.h"

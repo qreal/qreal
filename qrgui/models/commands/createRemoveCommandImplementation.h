@@ -14,12 +14,14 @@
 
 #pragma once
 
+#include <QtCore/QPointF>
+
 #include "models/exploser.h"
 
 namespace qReal {
 namespace commands {
 
-class QRGUI_MODELS_EXPORT CreateRemoveCommandImplementation
+class CreateRemoveCommandImplementation
 {
 public:
 	CreateRemoveCommandImplementation(

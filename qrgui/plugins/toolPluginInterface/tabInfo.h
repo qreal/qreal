@@ -19,7 +19,7 @@
 namespace qReal {
 
 /// Describes the contents of the tabs opened in main window`s central tab area. Tabs are categorized by their types,
-/// also detailed information can be obtained for each special categoery.
+/// also detailed information can be obtained for each special category.
 class TabInfo
 {
 public:
@@ -30,7 +30,7 @@ public:
 		editor = 0
 		/// Represents code editor, the core of textual programming environment
 		, code
-		/// Other type of tab, such as start widget or mouse gentures
+		/// Other type of tab, such as start widget or mouse gestures
 		, other
 	};
 
@@ -107,7 +107,9 @@ private:
 	const TabType mType;
 	const Id mRootDiagramId;
 	const QString mPathToOpenedTextFile;
-	QWidget *mOpenedWidget;  // Does not take ownership.
+
+	/// Does not take ownership.
+	QWidget * const mOpenedWidget;
 };
 
 }
