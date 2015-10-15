@@ -26,8 +26,7 @@ SUBDIRS += \
 	$$PWD/hascol/hascol.pro \
 	$$PWD/metaEditor/metaEditor.pro \
 #	$$PWD/requirements/requirements.pro \
-# TODO_CONSTRAINTS
-#	$$PWD/constraintsEditor/constraintsEditor.pro \
+	$$PWD/constraintsEditor/constraintsEditor.pro \
 
 # interpreted plugins
 SUBDIRS += \

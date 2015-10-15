@@ -1,6 +1,6 @@
 #include "generator.h"
 #include <QtCore/QDir>
-#include "concreateGenerator.h"
+#include "concreteGenerator.h"
 
 using namespace constraints::generator;
 
@@ -73,7 +73,7 @@ void Generator::generate(qReal::Id const &metamodel)
 	}
 
 	outputDirPath.replace("\\", "/");
-	ConcreateGenerator generator(templateDir, outputDirPath
+	ConcreteGenerator generator(templateDir, outputDirPath
 								 , pathToQReal, *mLogicalModel, *mErrorReporter
 								 , metamodelName, constraintMetamodelName);
 	generator.generate();

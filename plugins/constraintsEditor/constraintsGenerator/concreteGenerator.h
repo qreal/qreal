@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../../qrutils/generator/abstractGenerator.h"
+#include <qrutils/generator/abstractGenerator.h>
 
 namespace constraints {
 namespace generator {
 
-class ConcreateGenerator : public utils::AbstractGenerator
+class ConcreteGenerator : public utils::AbstractGenerator
 {
 public:
 	/** Constructor.
@@ -14,7 +14,7 @@ public:
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */
-	ConcreateGenerator(QString const &templateDirPath
+	ConcreteGenerator(QString const &templateDirPath
 			, QString const &outputDirPath
 			, QString const &pathToQReal
 			, qReal::LogicalModelAssistInterface const &logicalModel
@@ -23,17 +23,17 @@ public:
 			, QString const &constraintsMetamodelName
 			);
 
-	virtual ~ConcreateGenerator();
+	virtual ~ConcreteGenerator();
 
 	/// Starts generation.
 	void generate();
 
-	QString constraintModelFullName();
-	QString constraintModelName();
-	QString constraintConstraintsModelName();//i.e. pluginName
-	QString constraintNormalizerModelName(); //i.e. fileBase
-	QString constraintNormalizerConstraintsModelName();//i.e. normalizerPluginName
-	QString constraintModelId();//i.e. pluginId
+	QString constraintModelFullName() const;
+	QString constraintModelName() const;
+	QString constraintConstraintsModelName() const; //i.e. pluginName
+	QString constraintNormalizerModelName() const; //i.e. fileBase
+	QString constraintNormalizerConstraintsModelName() const; //i.e. normalizerPluginName
+	QString constraintModelId() const; //i.e. pluginId
 
 private :
 
