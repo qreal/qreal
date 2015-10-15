@@ -26,7 +26,7 @@ using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
-	, mPluginManager(PlatformInfo::applicationDirPath(), "plugins/tools")
+	, mPluginManager(PlatformInfo::invariantSettingsPath("pathToToolPlugins"))
 {
 	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 

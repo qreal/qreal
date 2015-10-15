@@ -16,10 +16,8 @@
 
 using namespace qReal;
 
-PluginManager::PluginManager(
-		const QString &applicationDirPath
-		, const QString &additionalPart)
-	: mPluginManagerLoader(applicationDirPath, additionalPart)
+PluginManager::PluginManager(const QString &pluginsDirPath)
+	: mPluginManagerLoader(pluginsDirPath)
 {
 }
 

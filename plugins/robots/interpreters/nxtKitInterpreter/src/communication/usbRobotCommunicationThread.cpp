@@ -19,7 +19,6 @@
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
-#include <utils/tracer.h>
 
 #include "commandConstants.h"
 #include "fantom.h"
@@ -105,8 +104,6 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 void UsbRobotCommunicationThread::send(const QByteArray &buffer
 		, const unsigned responseSize, QByteArray &outputBuffer)
 {
-	utils::Tracer::debug(utils::Tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
-
 	int status = 0;
 	QByteArray newBuffer;
 	for (int i = packetHeaderSize; i < buffer.length(); i++) {
@@ -148,7 +145,6 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer
 			outputBuffer[i + packetHeaderSize] = outputBufferPtr2[i];
 		}
 		delete outputBufferPtr2;
-		debugPrint(outputBuffer, false);
 	}
 }
 
@@ -174,17 +170,6 @@ void UsbRobotCommunicationThread::disconnect()
 void UsbRobotCommunicationThread::allowLongJobs(bool allow)
 {
 	mStopped = !allow;
-}
-
-void UsbRobotCommunicationThread::debugPrint(const QByteArray &buffer, bool out)
-{
-	QString tmp = "";
-	for (int i = 0; i < buffer.length(); i++) {
-		tmp += QString::number(static_cast<unsigned char>(buffer[i]));
-		tmp += " ";
-	}
-	utils::Tracer::debug(utils::Tracer::robotCommunication, "UsbRobotCommunicationThread::debugPrint"
-			, (out ? ">" : "<") + tmp);
 }
 
 void UsbRobotCommunicationThread::checkForConnection()

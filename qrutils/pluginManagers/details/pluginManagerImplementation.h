@@ -29,14 +29,8 @@ namespace details {
 class QRUTILS_EXPORT PluginManagerImplementation
 {
 public:
-	/// @param applicationDirPath - path to qrgui.exe
-	/// @param additionalPart - path to folder with plugins, usually "bin/plugins", for robots can be folder inside
-	///        plugins folder
-	PluginManagerImplementation(
-			const QString &applicationDirPath
-			, const QString &additionalPart = "plugins"
-			);
-
+	/// @param pluginsDirPath - path to directory containing plugins to be loaded.
+	explicit PluginManagerImplementation(const QString &pluginsDirPath);
 	~PluginManagerImplementation();
 
 	/// Returns list of all found plugins if succeed and empty list otherwise.
@@ -63,7 +57,7 @@ public:
 	QList<QString> namesOfPlugins() const;
 
 private:
-	/// Directory to loaded plugins.
+	/// Directory containing plugins to be loaded.
 	QDir mPluginsDir;
 
 	/// List of loaders with names of plugins.
@@ -72,14 +66,6 @@ private:
 	/// Map from fileName to plugin
 	/// Has ownership.
 	QMap<QString, QObject *> mFileNameAndPlugin;
-
-	/// Path to application directory, used to count path to loaded plugins.
-	QString mApplicationDirectoryPath;
-
-	///Additional part of path.
-	/// "plugins" if we're trying to load plugins from "bin/plugins"
-	/// for robots it can be "plugins/kitPlugins", for example
-	QString mAdditionalPart;
 };
 
 }

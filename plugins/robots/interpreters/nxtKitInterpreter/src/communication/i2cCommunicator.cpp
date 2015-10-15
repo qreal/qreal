@@ -16,7 +16,6 @@
 
 #include <time.h>
 
-#include <utils/tracer.h>
 #include "commandConstants.h"
 
 using namespace nxt::communication;
@@ -32,8 +31,6 @@ void I2CCommunicator::sendI2C(QObject *addressee
 		, const QByteArray &buffer, const int responseSize
 		, const kitBase::robotModel::PortInfo &port)
 {
-	utils::Tracer::debug(utils::Tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
-
 	QByteArray command(buffer.length() + 7, 0);
 	command[0] = buffer.length() + 5;
 	command[1] = 0x00;
@@ -50,8 +47,6 @@ void I2CCommunicator::sendI2C(QObject *addressee
 	mRobotCommunicator.send(command, 0, dumpOutput);
 
 	if (!waitForI2CBytes(responseSize, port)) {
-		utils::Tracer::debug(utils::Tracer::robotCommunication
-				, "RobotCommunicationThreadBase::sendI2C", "No response, connection error");
 		/// @todo: Violates incapsuation
 		emit mRobotCommunicator.response(addressee, QByteArray());
 		return;

@@ -36,7 +36,6 @@ public:
 	qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface();
 	qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface();
 	qReal::LogicalModelAssistInterface &logicalModelAssistInterface();
-//	qReal::SceneCustomizationInterface &sceneCustomizationInterface();
 	qReal::ProjectManagementInterface &projectManagementInterface();
 	qReal::SystemEvents &systemEvents();
 

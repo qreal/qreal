@@ -14,8 +14,6 @@
 
 #include "touchSensor.h"
 
-#include <utils/tracer.h>
-
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase;
 using namespace robotModel;
@@ -37,7 +35,6 @@ void TouchSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	mImplementation.setState(NxtInputDevice::idle);
 	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
-	Tracer::debug(Tracer::sensors, "TouchSensor::sensorSpecificProcessResponse", QString::number(sensorValue));
 	if (reading[4] == 0 && sensorValue < 500) {
 		// Sensor is pressed.
 		emit newData(1);

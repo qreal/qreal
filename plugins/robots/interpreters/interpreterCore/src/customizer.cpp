@@ -49,7 +49,7 @@ QString Customizer::aboutText() const
 
 QString Customizer::examplesDirectory() const
 {
-	return qReal::PlatformInfo::applicationDirPath() + "/examples";
+	return qReal::PlatformInfo::invariantSettingsPath("pathToExamples");
 }
 
 QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() const

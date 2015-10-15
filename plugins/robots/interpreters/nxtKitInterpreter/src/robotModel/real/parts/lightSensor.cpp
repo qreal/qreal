@@ -13,7 +13,6 @@
  * limitations under the License. */
 
 #include "lightSensor.h"
-#include <utils/tracer.h>
 
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;
@@ -64,7 +63,5 @@ void LightSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	mImplementation.setState(NxtInputDevice::idle);
 	const int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
-	utils::Tracer::debug(utils::Tracer::sensors
-			, "BluetoothLightSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
 	emit newData(sensorValue * 100 / maxLightValue);
 }

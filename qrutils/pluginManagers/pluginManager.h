@@ -26,7 +26,7 @@ namespace qReal {
 class QRUTILS_EXPORT PluginManager
 {
 public:
-	PluginManager(const QString &applicationDirPath, const QString &additionalPart);
+	explicit PluginManager(const QString &pluginsDirPath);
 
 	/// Returns list of all found plugins if succeed and empty list otherwise.
 	template <class InterfaceType>

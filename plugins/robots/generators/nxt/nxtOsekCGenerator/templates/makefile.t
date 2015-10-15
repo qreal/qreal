@@ -9,4 +9,4 @@ TOPPERS_OSEK_OIL_SOURCE = ./@@PROJECT_NAME@@.oil
 
 # Don't modify below part
 O_PATH ?= build
-include $(QREALDIRPOSIX)/nxt-tools/nxtOSEK/ecrobot/ecrobot.mak
+include $(NXT_TOOLS_DIR_POSIX)/nxtOSEK/ecrobot/ecrobot.mak

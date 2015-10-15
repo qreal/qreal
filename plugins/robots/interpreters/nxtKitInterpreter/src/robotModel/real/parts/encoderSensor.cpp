@@ -15,7 +15,6 @@
 #include "encoderSensor.h"
 
 #include "commandConstants.h"
-#include <utils/tracer.h>
 
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;
@@ -72,18 +71,10 @@ void EncoderSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 	mState = idle;
 
 	if (reading.isEmpty()) {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse"
-				, "Something is wrong, response is empty");
+		/// @todo: log trace error?
 	} else {
 		unsigned int recieved = (0xff & reading[23]) | ((0xff & reading[24]) << 8)
 				| ((0xff & reading[25]) << 16) | ((0xff & reading[26]) << 24);
-
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse"
-				, "Data received "
-				+ QString::number((0xff & reading[23])) + " " + QString::number((0xff & reading[24])) + " "
-				+ QString::number((0xff & reading[25])) + " " + QString::number((0xff & reading[26])) + " "
-			);
-
 		emit newData(recieved);
 	}
 }
