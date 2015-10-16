@@ -38,8 +38,7 @@ SUBDIRS += \
 #	$$PWD/tools/visualInterpreter/visualInterpreter.pro \
 #	$$PWD/tools/refactoring/refactoring.pro \
 #	$$PWD/tools/testInvocation/testInvocation.pro \
-# TODO_CONSTRAINTS
-#	$$PWD/tools/constraintsAllMetamodels/constraintsAllMetamodels.pro \
+	$$PWD/tools/constraintsAllMetamodels/constraintsAllMetamodels.pro \
 	$$PWD/tools/uxInfo/uxInfo.pro \
 
 
