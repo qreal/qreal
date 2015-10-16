@@ -4,7 +4,7 @@ QT += xml widgets
 
 TEMPLATE = lib
 CONFIG += plugin c++11
-
+DESTDIR = $$DESTDIR/plugins/tools
 MOC_DIR = .moc
 RCC_DIR = .moc
 

@@ -15,13 +15,13 @@ class ConstraintsGeneratorPlugin : public QObject, public qReal::ToolPluginInter
 
 public:
 	ConstraintsGeneratorPlugin();
-	virtual ~ConstraintsGeneratorPlugin();
+	~ConstraintsGeneratorPlugin() override;
 
 	/// Initializes generator with ref to logical model.
-	virtual void init(qReal::PluginConfigurator const &configurator);
+	void init(qReal::PluginConfigurator const &configurator) override;
 
 	/// Returns list containing "generate" action, which runs a generator.
-	virtual QList<qReal::ActionInfo> actions();
+	QList<qReal::ActionInfo> actions() override;
 
 private slots:
 	void generate();
