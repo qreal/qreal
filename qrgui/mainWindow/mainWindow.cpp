@@ -1020,8 +1020,8 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()) ,&EditorViewScene::enableMouseGestures);
 		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);
 		mController->diagramOpened(diagramId);
-		mUi->tabs->addTab(view, index.data().toString());
 		initCurrentTab(view, index);
+		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
 
 		// Focusing on scene top left corner
