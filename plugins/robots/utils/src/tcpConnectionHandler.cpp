@@ -25,8 +25,12 @@ using namespace utils;
 TcpConnectionHandler::TcpConnectionHandler(int port)
 	: mPort(port)
 {
-	QObject::connect(&mSocket, &QTcpSocket::readyRead, this, &TcpConnectionHandler::onIncomingData, Qt::DirectConnection);
-	QObject::connect(&mKeepAliveTimer, &QTimer::timeout, this, &TcpConnectionHandler::keepalive, Qt::DirectConnection);
+	QObject::connect(&mSocket, &QTcpSocket::readyRead, this
+		, &TcpConnectionHandler::onIncomingData, Qt::DirectConnection);
+
+	QObject::connect(&mKeepAliveTimer, &QTimer::timeout, this
+		, &TcpConnectionHandler::keepalive, Qt::DirectConnection);
+
 	mKeepAliveTimer.setInterval(keepaliveTime);
 	mKeepAliveTimer.setSingleShot(false);
 }
