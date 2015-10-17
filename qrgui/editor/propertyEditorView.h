@@ -28,6 +28,10 @@
 #include "qrgui/editor/editorDeclSpec.h"
 #include "qrgui/editor/private/pushButtonProperty.h"
 
+namespace qReal {
+namespace gui {
+namespace editor {
+
 /** @brief This widget imitates QtCreator's property editor */
 class QRGUI_EDITOR_EXPORT PropertyEditorView : public QWidget
 {
@@ -47,7 +51,7 @@ public:
 	PropertyEditorModel* model() {
 		return mModel;
 	}
-	
+
 	void installEventFilter(QObject *obj);
 
 signals:
@@ -94,3 +98,6 @@ private:
 	PushButtonFactory *mButtonFactory;
 	qReal::Controller *mController;
 };
+}
+}
+}

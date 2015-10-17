@@ -20,11 +20,13 @@ namespace qReal {
 
 class EditorViewScene;
 
+namespace gui {
+namespace editor {
 namespace commands {
 
 /// Makes same as CreateGroupCommand and automaticly rearranges created items on the scene.
 /// In other words this command adds view part into the CreateGroupCommand.
-class CreateAndUpdateGroupCommand : public CreateGroupCommand
+class CreateAndUpdateGroupCommand : public qReal::commands::CreateGroupCommand
 {
 public:
 	CreateAndUpdateGroupCommand(EditorViewScene &scene
@@ -43,5 +45,7 @@ private:
 	EditorViewScene &mScene;
 };
 
+}
+}
 }
 }

@@ -23,6 +23,8 @@
 #include "models/commands/createElementCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class NodeElement;
 
@@ -72,7 +74,9 @@ private:
 	qReal::Id mEdgeType;
 
 	QPointF mInitialClickPoint;
-	commands::CreateElementCommand *mCreateEdgeCommand;
+	qReal::commands::CreateElementCommand *mCreateEdgeCommand;
 };
 
+}
+}
 }

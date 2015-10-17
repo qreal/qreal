@@ -16,6 +16,10 @@
 
 #include <QtCore/QPair>
 
+namespace qReal {
+namespace gui {
+namespace editor {
+
 class EdgeArrangeCriteria
 {
 public:
@@ -29,3 +33,6 @@ private:
 	qreal mXOffset;
 };
 
+}
+}
+}

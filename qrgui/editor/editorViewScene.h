@@ -29,11 +29,14 @@
 
 namespace qReal {
 
-const int arrowMoveOffset = 5;
-
 namespace commands {
-class CreateElementCommand;
+class qReal::commands::CreateElementCommand;
 }
+
+namespace gui {
+namespace editor {
+
+const int arrowMoveOffset = 5;
 
 class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
 {
@@ -50,19 +53,19 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
-			, bool canBeConnected, commands::CreateElementCommand **elementCommand = 0);
+			, bool canBeConnected, qReal::commands::CreateElementCommand **elementCommand = 0);
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
 	virtual qReal::Id createElement(const QString &
 			, const QPointF &scenePos
 			, bool searchForParents = true
-			, commands::CreateElementCommand **createCommand = 0
+			, qReal::commands::CreateElementCommand **createCommand = 0
 			, bool executeImmediately = true
 			, const QPointF &shiftToParent = QPointF()
 			, const QString &explosionTargetUuid = QString());
 
 	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
 			, bool searchForParents = true
-			, commands::CreateElementCommand **createCommandPointer = 0
+			, qReal::commands::CreateElementCommand **createCommandPointer = 0
 			, bool executeImmediately = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
@@ -76,7 +79,7 @@ public:
 	const models::Models &models() const;
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
-	const SceneCustomizer &customizer() const;
+	const qReal::SceneCustomizer &customizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
 	/// Transfers owneship.
@@ -107,7 +110,7 @@ public:
 			, bool isNode, const QPointF &position
 			, const Id &parentId, bool isFromLogicalModel
 			, const Id &explosionTarget = Id()
-			, commands::CreateElementCommand **createCommandPointer = nullptr
+			, qReal::commands::CreateElementCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 
 	EdgeElement *edgeForInsertion(const QPointF &scenePos);
@@ -244,7 +247,7 @@ private:
 	const Id mRootId;
 
 	Id mLastCreatedFromLinker;
-	commands::CreateElementCommand *mLastCreatedFromLinkerCommand;
+	qReal::commands::CreateElementCommand *mLastCreatedFromLinkerCommand;
 
 	ClipboardHandler mClipboardHandler;
 
@@ -299,4 +302,6 @@ private:
 	QAction mActionPasteReference;
 };
 
+}
+}
 }

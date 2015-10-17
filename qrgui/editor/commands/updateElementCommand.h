@@ -17,6 +17,8 @@
 #include "editor/commands/elementCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace  editor {
 namespace commands {
 
 class UpdateElementCommand : public ElementCommand
@@ -36,5 +38,7 @@ private:
 	bool update();
 };
 
+}
+}
 }
 }

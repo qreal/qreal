@@ -19,7 +19,10 @@
 #include "editor/copyPaste/pasteNodeCommand.h"
 #include "editor/copyPaste/pasteEdgeCommand.h"
 
+using namespace qReal;
 using namespace qReal::commands;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::commands;
 
 PasteGroupCommand::PasteGroupCommand(EditorViewScene *scene
 		, bool isGraphicalCopy)

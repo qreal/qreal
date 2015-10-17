@@ -23,6 +23,8 @@
 #include <QtCore/QList>
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class NodeElement;
 
@@ -83,4 +85,6 @@ private:
 	const qreal mYVert;
 };
 
+}
+}
 }

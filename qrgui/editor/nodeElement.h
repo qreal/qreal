@@ -40,12 +40,14 @@
 #include "editor/serializationData.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 namespace commands {
 class ResizeCommand;
 }
 
-class QRGUI_EDITOR_EXPORT NodeElement : public Element
+class QRGUI_EDITOR_EXPORT NodeElement : public qReal::gui::editor::Element
 {
 	Q_OBJECT
 
@@ -274,8 +276,8 @@ private:
 
 	QRectF diagramRenderingRect() const;
 
-	commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
-
+	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
+//qReal::gui::editor::commands::
 	models::Exploser &mExploser;
 
 	ContextMenuAction mSwitchGridAction;
@@ -287,7 +289,7 @@ private:
 
 	DragState mDragState;
 	QPointF mDragPosition;
-	qReal::commands::ResizeCommand *mResizeCommand;
+	/*qReal::*/commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 
@@ -321,4 +323,6 @@ private:
 	QTimer mRenderTimer;
 };
 
+}
+}
 }

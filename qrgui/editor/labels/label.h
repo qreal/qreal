@@ -22,8 +22,10 @@
 #include "qrgui/editor/labels/labelProperties.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
-class Label : public QGraphicsTextItem, public LabelInterface
+class Label : public QGraphicsTextItem, public qReal::LabelInterface
 {
 	Q_OBJECT
 
@@ -105,4 +107,6 @@ private:
 	LabelProperties mProperties;
 };
 
+}
+}
 }

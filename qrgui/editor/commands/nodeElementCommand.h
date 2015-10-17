@@ -17,10 +17,12 @@
 #include "editor/commands/elementCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 namespace commands {
 
 /// A base for all commands using concrete node element instance on some scene
-class NodeElementCommand : public ElementCommand
+class NodeElementCommand : public qReal::gui::editor::commands::ElementCommand
 {
 public:
 	NodeElementCommand(const EditorViewScene *scene, const Id &id);
@@ -35,5 +37,7 @@ protected:
 	NodeElement *mNode;
 };
 
+}
+}
 }
 }

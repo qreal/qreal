@@ -36,6 +36,10 @@ namespace qReal {
 
 class Label;
 
+namespace gui {
+namespace editor {
+
+
 /// size of a point port
 const int kvadratik = 10;
 
@@ -108,11 +112,13 @@ protected:
 
 	QList<Label *> mLabels;
 
-	models::LogicalModelAssistApi &mLogicalAssistApi;
-	models::GraphicalModelAssistApi &mGraphicalAssistApi;
+	qReal::models::LogicalModelAssistApi &mLogicalAssistApi;
+	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
 
 	/// Does not have ownership.
 	Controller *mController;
 };
 
+}
+}
 }

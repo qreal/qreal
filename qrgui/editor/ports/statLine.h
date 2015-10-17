@@ -16,6 +16,11 @@
 
 #include "plugins/editorPluginInterface/portHelpers.h"
 
+namespace qReal {
+namespace gui {
+namespace editor {
+
+
 /** @brief line port description */
 class StatLine : public PortInterface
 {
@@ -40,3 +45,6 @@ private:
 	int mInitWidth;
 	int mInitHeight;
 };
+}
+}
+}

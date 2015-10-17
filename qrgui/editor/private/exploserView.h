@@ -20,6 +20,13 @@
 
 namespace qReal {
 
+namespace models {
+class Models;
+class LogicalModelAssistApi;
+class GraphicalModelAssistApi;
+class Exploser;
+}
+
 class Element;
 class Explosion;
 class Controller;
@@ -30,12 +37,8 @@ namespace commands {
 class AbstractCommand;
 }
 
-namespace models {
-class Models;
-class LogicalModelAssistApi;
-class GraphicalModelAssistApi;
-class Exploser;
-}
+namespace gui {
+namespace editor {
 
 namespace view {
 namespace details {
@@ -59,7 +62,7 @@ public:
 	void handleDoubleClick(const Id &id);
 
 	/// Adds commands of explosion creation to given element creation command
-	void handleCreationWithExplosion(commands::AbstractCommand *createCommand
+	void handleCreationWithExplosion(qReal::commands::AbstractCommand *createCommand
 			, const Id &source, const Id &target);
 
 signals:
@@ -107,6 +110,8 @@ private:
 	const SceneCustomizer &mCustomizer;
 };
 
+}
+}
 }
 }
 }

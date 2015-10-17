@@ -18,9 +18,12 @@
 #include "editor/commands/resizeCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
+
 namespace commands {
 
-class ExpandCommand : public NodeElementCommand
+class ExpandCommand : public qReal::gui::editor::commands::NodeElementCommand
 {
 public:
 	ExpandCommand(const NodeElement *node);
@@ -37,5 +40,7 @@ private:
 	ResizeCommand *mResizeCommand;
 };
 
+}
+}
 }
 }

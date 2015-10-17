@@ -22,6 +22,8 @@
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 using namespace qReal;
+using namespace qReal::gui;
+using namespace qReal::gui::editor;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
@@ -157,7 +159,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		}
 
 		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
-		Element *elem = elementImpl->isNode()
+		qReal::gui::editor::Element *elem = elementImpl->isNode()
 				? dynamic_cast<Element *>(
 						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
 						)
@@ -356,12 +358,12 @@ EditorViewScene *EditorViewMViface::scene() const
 	return mScene;
 }
 
-models::GraphicalModelAssistApi *EditorViewMViface::graphicalAssistApi() const
+qReal::models::GraphicalModelAssistApi *EditorViewMViface::graphicalAssistApi() const
 {
 	return mGraphicalAssistApi;
 }
 
-models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
+qReal::models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 {
 	return mLogicalAssistApi;
 }
@@ -382,7 +384,7 @@ void EditorViewMViface::clearItems()
 	mItems.clear();
 }
 
-Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
+qReal::gui::editor::Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
 	foreach (const IndexElementPair &pair, mItems) {
 		if (pair.first == index) {

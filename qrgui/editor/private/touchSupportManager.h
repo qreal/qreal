@@ -19,6 +19,9 @@
 #include "thirdparty/qsKineticScroller.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
+
 class EditorView;
 
 namespace view {
@@ -69,6 +72,8 @@ private:
 	QPointF mLastTouchBeginPoint;
 };
 
+}
+}
 }
 }
 }

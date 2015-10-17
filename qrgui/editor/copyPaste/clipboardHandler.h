@@ -21,6 +21,9 @@
 #include "editor/serializationData.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
+
 
 class EditorViewScene;
 
@@ -44,4 +47,6 @@ private:
 	Controller &mController;
 };
 
+}
+}
 }

@@ -23,10 +23,12 @@
 #include "qrgui/editor/labels/label.h"
 
 using namespace qReal;
+using namespace qReal::gui;
+using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;
 
-Element::Element(ElementImpl *elementImpl
+qReal::gui::editor::Element::Element(ElementImpl *elementImpl
 		, const Id &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
@@ -50,7 +52,7 @@ Element::Element(ElementImpl *elementImpl
 	SettingsListener::listen("hideNonHardLabels", this, &Element::setHideNonHardLabels);
 }
 
-Id Element::id() const
+qReal::Id Element::id() const
 {
 	return mId;
 }

@@ -41,8 +41,10 @@
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::commands;
 
-EditorViewScene::EditorViewScene(const models::Models &models
+qReal::gui::editor::EditorViewScene::EditorViewScene(const models::Models &models
 		, Controller &controller
 		, const SceneCustomizer &customizer
 		, const Id &rootId
@@ -134,7 +136,7 @@ void EditorViewScene::itemSelectUpdate()
 	}
 }
 
-Element *EditorViewScene::getElem(const qReal::Id &id) const
+qReal::gui::editor::Element *EditorViewScene::getElem(const qReal::Id &id) const
 {
 	if (id == Id::rootId()) {
 		return nullptr;
@@ -281,7 +283,7 @@ bool EditorViewScene::canBeContainedBy(const qReal::Id &container, const qReal::
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
-		, const QPointF &scenePos, bool canBeConnected, commands::CreateElementCommand **createCommand)
+		, const QPointF &scenePos, bool canBeConnected, qReal::commands::CreateElementCommand **createCommand)
 {
 	edge->setSelected(true);
 
@@ -681,7 +683,7 @@ void EditorViewScene::paste(bool isGraphicalCopy)
 	mClipboardHandler.paste(isGraphicalCopy);
 }
 
-Element *EditorViewScene::lastCreatedFromLinker() const
+qReal::gui::editor::Element *EditorViewScene::lastCreatedFromLinker() const
 {
 	return getElem(mLastCreatedFromLinker);
 }
@@ -1218,7 +1220,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-Element *EditorViewScene::findElemAt(const QPointF &position) const
+qReal::gui::editor::Element *EditorViewScene::findElemAt(const QPointF &position) const
 {
 	for (QGraphicsItem * const item : items(position)) {
 		if (Element * const element = dynamic_cast<Element *>(item)) {
@@ -1260,7 +1262,7 @@ const EditorManagerInterface &EditorViewScene::editorManager() const
 	return mEditorManager;
 }
 
-const SceneCustomizer &EditorViewScene::customizer() const
+const qReal::SceneCustomizer &EditorViewScene::customizer() const
 {
 	return mCustomizer;
 }

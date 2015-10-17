@@ -15,6 +15,7 @@
 #include "elementCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 ElementCommand::ElementCommand(const EditorViewScene *scene, const Id &id)
 	: mElement(nullptr), mScene(scene), mId(id), mSceneWasRemoved(false)
@@ -27,12 +28,12 @@ ElementCommand::~ElementCommand()
 {
 }
 
-const EditorViewScene *ElementCommand::scene() const
+const qReal::gui::editor::EditorViewScene *ElementCommand::scene() const
 {
 	return mScene;
 }
 
-Id ElementCommand::elementId() const
+qReal::Id ElementCommand::elementId() const
 {
 	return mId;
 }
@@ -55,7 +56,7 @@ bool ElementCommand::reinitElement()
 	return mElement != nullptr;
 }
 
-Element *ElementCommand::elementById(const Id &id)
+qReal::gui::editor::Element *ElementCommand::elementById(const Id &id)
 {
 	return mScene ? mScene->getElem(id) : nullptr;
 }

@@ -19,6 +19,10 @@
 #include "editor/commands/reshapeEdgeCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal;
+using namespace qReal::gui;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::commands;
 
 PasteEdgeCommand::PasteEdgeCommand(EditorViewScene *scene
 		, const EdgeData &data

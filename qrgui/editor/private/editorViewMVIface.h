@@ -23,37 +23,40 @@
 
 namespace qReal {
 
-class EditorView;
-class EditorViewScene;
-class Element;
-
 namespace models {
 class Exploser;
 class GraphicalModelAssistApi;
 class LogicalModelAssistApi;
 }
 
+class EditorView;
+class EditorViewScene;
+class Element;
+
+namespace gui {
+namespace editor {
+
 class QRGUI_EDITOR_EXPORT EditorViewMViface : public QAbstractItemView
 {
 	Q_OBJECT
 
 public:
-	EditorViewMViface(qReal::EditorView *view, EditorViewScene *scene);
+	EditorViewMViface(EditorView *view, EditorViewScene *scene);
 	~EditorViewMViface();
 
 	QModelIndex indexAt(const QPoint &point) const;
 	QRect visualRect(const QModelIndex &index) const;
 	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
-	void configure(models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::LogicalModelAssistApi &logicalAssistApi
-			, models::Exploser &exploser);
+	void configure(qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			, qReal::models::Exploser &exploser);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
 	Id rootId() const;
 
 	EditorViewScene *scene() const;
-	models::GraphicalModelAssistApi *graphicalAssistApi() const;
-	models::LogicalModelAssistApi *logicalAssistApi() const;
+	qReal::models::GraphicalModelAssistApi *graphicalAssistApi() const;
+	qReal::models::LogicalModelAssistApi *logicalAssistApi() const;
 
 	/// Clears prerendered images.
 	/// @param zoomFactor - current zoom factor to render images.
@@ -108,4 +111,6 @@ private:
 	void clearItems();
 };
 
+}
+}
 }

@@ -17,6 +17,9 @@
 #include "editor/private/lineHandler.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
+
 
 /// @brief A strategy class for handling custom broken link
 /// User may move points of such link, create new points, delete points and segments
@@ -80,4 +83,6 @@ protected:
 	ContextMenuAction mMinimizeAction;
 };
 
+}
+}
 }

@@ -25,7 +25,10 @@
 #include "editor/commands/expandCommand.h"
 
 using namespace qReal;
-using namespace view::details;
+using namespace qReal::gui;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::view;
+using namespace qReal::gui::editor::view::details;
 
 ExploserView::ExploserView(const models::Models &models
 		, Controller &controller
@@ -161,17 +164,17 @@ void ExploserView::handleDoubleClick(const Id &id)
 		if (!explosions.isEmpty()) {
 			const Id diagramType = mLogicalApi.editorManagerInterface()
 					.findElementByType(explosions[0].target().element());
-			commands::AbstractCommand *createCommand =
+			qReal::commands::AbstractCommand *createCommand =
 					mExploser.createElementWithIncomingExplosionCommand(
 							id, diagramType, mGraphicalApi);
 			mController.executeGlobal(createCommand);
-			outgoingLink = static_cast<commands::CreateElementCommand *>(createCommand)->result();
+			outgoingLink = static_cast<qReal::commands::CreateElementCommand *>(createCommand)->result();
 		}
 	}
 	goTo(outgoingLink);
 }
 
-void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *createCommand
+void ExploserView::handleCreationWithExplosion(qReal::commands::AbstractCommand *createCommand
 		, const Id &source, const Id &target)
 {
 	if (target != Id()) {

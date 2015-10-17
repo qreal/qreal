@@ -36,6 +36,8 @@
 #include "editor/private/lineHandler.h"
 
 using namespace qReal;
+using namespace qReal::gui;
+using namespace qReal::gui::editor;
 using namespace enums;
 
 const qreal epsilon = 0.00000000001;

@@ -14,6 +14,10 @@
 
 #include "pushButtonProperty.h"
 
+using namespace qReal;
+using namespace gui;
+using namespace editor;
+
 PushButtonPropertyManager::PushButtonPropertyManager(QObject *parent)
 	: QtAbstractPropertyManager(parent)
 {

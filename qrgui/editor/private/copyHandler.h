@@ -19,6 +19,9 @@
 #pragma once
 
 namespace qReal {
+namespace gui {
+namespace editor {
+
 
 namespace models {
 class GraphicalModelAssistApi;
@@ -75,4 +78,6 @@ private:
 	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
 };
 
+}
+}
 }

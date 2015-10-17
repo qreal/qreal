@@ -19,10 +19,12 @@
 
 namespace qReal
 {
+namespace gui {
+namespace editor {
 namespace commands
 {
 
-class ReshapeEdgeCommand : public EdgeElementCommand, public TrackingEntity
+class ReshapeEdgeCommand : public qReal::gui::editor::commands::EdgeElementCommand, public qReal::commands::TrackingEntity
 {
 public:
 	ReshapeEdgeCommand(const EdgeElement *edge);
@@ -57,5 +59,7 @@ private:
 	qreal mNewToPort;
 };
 
+}
+}
 }
 }

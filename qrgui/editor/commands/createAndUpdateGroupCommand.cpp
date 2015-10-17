@@ -18,6 +18,7 @@
 #include "editor/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 CreateAndUpdateGroupCommand::CreateAndUpdateGroupCommand(EditorViewScene &scene
 		, models::LogicalModelAssistApi &logicalApi

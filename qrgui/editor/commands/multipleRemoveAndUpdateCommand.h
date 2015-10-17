@@ -17,6 +17,9 @@
 #include "models/commands/multipleRemoveCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
+
 
 class EditorViewScene;
 
@@ -24,16 +27,18 @@ namespace commands {
 
 /// Makes same as MultipleRemoveCommand and automaticly rearranges created items on the scene.
 /// In other words this command adds view part into the MulipleRemoveCommand.
-class MultipleRemoveAndUpdateCommand : public MultipleRemoveCommand
+class MultipleRemoveAndUpdateCommand : public qReal::commands::MultipleRemoveCommand
 {
 public:
 	MultipleRemoveAndUpdateCommand(EditorViewScene &scene, const models::Models &models);
 
 private:
-	AbstractCommand *graphicalDeleteCommand(const Id &id) override;
+	qReal::commands::AbstractCommand *graphicalDeleteCommand(const Id &id) override;
 
 	EditorViewScene &mScene;
 };
 
+}
+}
 }
 }

@@ -20,7 +20,10 @@
 
 #include <qrkernel/ids.h>
 
-using namespace qReal;
+//using namespace qReal;
+namespace qReal {
+namespace gui {
+namespace editor {
 
 /**
 * @brief EdgeElement serialization data for copy/paste
@@ -89,3 +92,6 @@ QDataStream &operator>> (QDataStream &in, EdgeData &data);
 
 bool operator== (const NodeData &first, const NodeData &second);
 bool operator== (const EdgeData &first, const EdgeData &second);
+}
+}
+}

@@ -19,10 +19,13 @@
 
 namespace qReal
 {
+namespace gui {
+namespace editor {
+
 namespace commands
 {
 
-class PasteNodeCommand : public PasteCommand
+class PasteNodeCommand : public qReal::gui::editor::commands::PasteCommand
 {
 public:
 	PasteNodeCommand(EditorViewScene *scene
@@ -49,8 +52,10 @@ private:
 	QPointF vectorFromContainer() const;
 
 	const NodeData mNodeData;
-	CreateElementCommand *mCreateCommand;
+	qReal::commands::CreateElementCommand *mCreateCommand;
 };
 
+}
+}
 }
 }

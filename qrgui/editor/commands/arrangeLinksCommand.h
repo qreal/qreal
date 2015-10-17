@@ -17,10 +17,12 @@
 #include "editor/commands/elementCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 namespace commands {
 
 /// Arranges links of specified node element
-class ArrangeLinksCommand : public ElementCommand
+class ArrangeLinksCommand : public qReal::gui::editor::commands::ElementCommand
 {
 public:
 	ArrangeLinksCommand(const EditorViewScene *scene, const Id &id, bool needAdjusting = false);
@@ -38,5 +40,7 @@ private:
 	bool mNeedAdjusting;
 };
 
+}
+}
 }
 }

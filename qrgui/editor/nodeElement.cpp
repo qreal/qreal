@@ -45,12 +45,13 @@
 
 using namespace qReal;
 using namespace qReal::commands;
+using namespace qReal::gui::editor;
 
 NodeElement::NodeElement(ElementImpl *impl
 		, const Id &id
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		, models::Exploser &exploser
+		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+		, qReal::models::LogicalModelAssistApi &logicalAssistApi
+		, qReal::models::Exploser &exploser
 		)
 	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 	, mExploser(exploser)
@@ -155,7 +156,7 @@ void NodeElement::invalidateImagesZoomCache(qreal zoomFactor)
 
 void NodeElement::setName(const QString &value, bool withUndoRedo)
 {
-	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
+	qReal::commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
 	if (withUndoRedo) {
 		mController->execute(command);
 		// Controller will take ownership

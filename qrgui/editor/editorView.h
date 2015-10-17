@@ -21,6 +21,9 @@
 #include "qrgui/editor/private/editorViewMVIface.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
+
 
 class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView
 {
@@ -84,4 +87,6 @@ private:
 	view::details::TouchSupportManager mTouchManager;
 };
 
+}
+}
 }
