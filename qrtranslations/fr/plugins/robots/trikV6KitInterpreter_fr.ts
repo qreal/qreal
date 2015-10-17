@@ -38,7 +38,7 @@
     <name>trik::TrikV6KitInterpreterPlugin</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6KitInterpreterPlugin.cpp" line="42"/>
-        <source>TRIK (old case)</source>
+        <source>TRIK (model-2014)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

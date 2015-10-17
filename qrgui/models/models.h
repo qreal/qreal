@@ -14,14 +14,17 @@
 
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include "qrgui/models/details/graphicalModel.h"
 #include "qrgui/models/details/logicalModel.h"
 #include "qrgui/models/graphicalModelAssistApi.h"
 #include "qrgui/models/logicalModelAssistApi.h"
-#include "qrgui/models/exploser.h"
 
 namespace qReal {
 namespace models {
+
+class Exploser;
 
 class QRGUI_MODELS_EXPORT Models
 {
@@ -53,7 +56,7 @@ private:
 	models::details::GraphicalPartModel *mGraphicalPartModel;
 	models::details::LogicalModel *mLogicalModel;
 	qrRepo::RepoControlInterface *mRepoApi;
-	Exploser *mExploser;
+	QScopedPointer<Exploser> mExploser;
 };
 
 }

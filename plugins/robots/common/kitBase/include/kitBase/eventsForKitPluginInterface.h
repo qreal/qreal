@@ -16,6 +16,7 @@
 
 #include <QtCore/QObject>
 
+#include <qrutils/interpreter/stopReason.h>
 #include "kitBase/kitBaseDeclSpec.h"
 
 namespace kitBase {
@@ -30,7 +31,8 @@ signals:
 	void interpretationStarted();
 
 	/// Program interpretation finished or stopped by user.
-	void interpretationStopped();
+	/// @param reason The reason why the interpretation stopped.
+	void interpretationStopped(qReal::interpretation::StopReason reason);
 
 	/// Robot model is changed in settings (or selected in a toolbar).
 	void robotModelChanged(const QString &newModelName);

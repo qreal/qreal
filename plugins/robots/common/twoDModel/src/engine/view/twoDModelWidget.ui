@@ -68,7 +68,7 @@
         </layout>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item row="3" column="0" colspan="2">
        <widget class="QPushButton" name="runButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -109,7 +109,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="QPushButton" name="stopButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -150,7 +150,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QPushButton" name="initialStateButton">
         <property name="text">
          <string/>
@@ -158,6 +158,23 @@
         <property name="icon">
          <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_robot_back.png</normaloff>:/icons/2d_robot_back.png</iconset>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="trainingModeButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../interpreters/interpreterCore/interpreterCore.qrc">
+          <normaloff>:/icons/2d_training.svg</normaloff>:/icons/2d_training.svg</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -365,8 +382,8 @@
         <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
         </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+        <property name="orientation" stdset="0">
+         <number>4</number>
         </property>
        </widget>
       </item>
@@ -390,8 +407,8 @@
         <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
         </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+        <property name="orientation" stdset="0">
+         <number>5</number>
         </property>
        </widget>
       </item>
@@ -621,6 +638,7 @@
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
   <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
   <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
  </resources>

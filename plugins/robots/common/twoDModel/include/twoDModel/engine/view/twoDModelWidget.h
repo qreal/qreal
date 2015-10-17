@@ -138,6 +138,8 @@ private slots:
 
 	void returnToStartMarker();
 
+	void trainingModeChanged(bool enabled);
+
 private:
 	enum CursorType
 	{
