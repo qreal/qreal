@@ -167,8 +167,6 @@ void StylusItem::deserialize(const QDomElement &element)
 				mAbstractListLine.append(line);
 				emit segmentAdded(line);
 				recalculateProperties();
-			} else {
-//				Tracer::debug(tracer::enums::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");
 			}
 	}
 }

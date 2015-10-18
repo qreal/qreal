@@ -55,7 +55,6 @@ private:
 	static const int kStatusNoError = 0;
 
 	bool isOpen();
-	static void debugPrint(const QByteArray &buffer, bool out);
 
 	void send(const QByteArray &buffer, const unsigned responseSize
 			, QByteArray &outputBuffer);

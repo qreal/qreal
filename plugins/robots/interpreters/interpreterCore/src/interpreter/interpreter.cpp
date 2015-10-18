@@ -20,7 +20,6 @@
 #include <qrtext/languageToolboxInterface.h>
 
 #include <utils/timelineInterface.h>
-#include <utils/tracer.h>
 #include <kitBase/robotModel/robotModelInterface.h>
 
 using namespace qReal;
@@ -139,8 +138,6 @@ void Interpreter::connectedSlot(bool success, const QString &errorString)
 			mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
-		utils::Tracer::debug(utils::Tracer::initialization, "Interpreter::connectedSlot"
-				, "Robot connection status: " + QString::number(success));
 		if (errorString.isEmpty()) {
 			mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
 		} else {
@@ -153,9 +150,6 @@ void Interpreter::connectedSlot(bool success, const QString &errorString)
 
 void Interpreter::devicesConfiguredSlot()
 {
-	utils::Tracer::debug(utils::Tracer::initialization
-			, "Interpreter::devicesConfiguredSlot", "Sensors are configured");
-
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
 		mState = idle;
@@ -167,9 +161,6 @@ void Interpreter::devicesConfiguredSlot()
 		mInterpretationStartedTimestamp = mRobotModelManager.model().timeline().timestamp();
 
 		mSensorVariablesUpdater.run();
-
-		utils::Tracer::debug(utils::Tracer::initialization
-				, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
 
 		const Id &currentDiagramId = mInterpretersInterface.activeDiagram();
 

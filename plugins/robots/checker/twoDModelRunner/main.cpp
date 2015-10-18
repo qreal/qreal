@@ -37,7 +37,7 @@ const QString description = QObject::tr(
 
 void loadTranslators(const QString &locale)
 {
-	QDir translationsDirectory(qReal::PlatformInfo::applicationDirPath() + "/translations/" + locale);
+	QDir translationsDirectory(qReal::PlatformInfo::invariantSettingsPath("pathToTranslations") + "/" + locale);
 	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
 	while (directories.hasNext()) {
 		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
@@ -59,7 +59,7 @@ void setDefaultLocale()
 
 void initLogging()
 {
-	const QDir logsDir(qReal::PlatformInfo::applicationDirPath() + "/logs");
+	const QDir logsDir(qReal::PlatformInfo::invariantSettingsPath("pathToLogs"));
 	if (logsDir.mkpath(logsDir.absolutePath())) {
 		qReal::Logger::addLogTarget(logsDir.filePath("2d-model.log"), maxLogSize, 2, QsLogging::DebugLevel);
 	}

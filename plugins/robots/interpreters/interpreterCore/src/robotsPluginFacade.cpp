@@ -15,6 +15,7 @@
 #include "interpreterCore/robotsPluginFacade.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/widgets/consoleDock.h>
 #include <kitBase/robotModel/portInfo.h>
 #include <twoDModel/engine/twoDModelEngineInterface.h>
@@ -32,7 +33,7 @@ using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
 	: mInterpreter(nullptr)
-	, mKitPluginManager("plugins/tools/kitPlugins")
+	, mKitPluginManager(qReal::PlatformInfo::invariantSettingsPath("pathToToolPlugins") + "/kitPlugins")
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)

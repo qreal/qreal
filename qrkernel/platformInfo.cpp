@@ -17,6 +17,8 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 
+#include <qrkernel/settingsManager.h>
+
 using namespace qReal;
 
 #if defined Q_OS_WIN32
@@ -87,4 +89,21 @@ QString PlatformInfo::applicationDirPath()
 #else
 	return QCoreApplication::applicationDirPath();
 #endif
+}
+
+QString PlatformInfo::defaultPlatformConfigPath()
+{
+	return QCoreApplication::applicationDirPath() + "/platform.config";
+}
+
+QString PlatformInfo::invariantPath(const QString &path)
+{
+	return path.startsWith("./")
+			? qReal::PlatformInfo::applicationDirPath() + path.mid(1)
+			: path;
+}
+
+QString PlatformInfo::invariantSettingsPath(const QString &settingsKey)
+{
+	return invariantPath(SettingsManager::value(settingsKey).toString());
 }

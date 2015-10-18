@@ -14,8 +14,6 @@
 
 #include "nxtInputDevice.h"
 
-#include <utils/tracer.h>
-
 using namespace nxt::robotModel::real::parts;
 using namespace utils;
 
@@ -48,25 +46,15 @@ void NxtInputDevice::processResponse(const QByteArray &reading)
 	if (reading.isEmpty()) {
 		mState = idle;
 		if (mResetDone) {
-			Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-					, "Response is empty, seems to be a connection failure");
 			// Just ignore connection failures for now
 			// emit failure();
 		}
 	} else if (reading.size() >= 5 && reading[3] == enums::commandCode::RESETINPUTSCALEDVALUE) {
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Response is a reset input scaled value response package");
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		mState = idle;
 		mResetDone = true;
 		emit configured(true);
 	} else if (reading.size() >= 5 && reading[3] == enums::commandCode::SETINPUTMODE) {
 		mState = idle;
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Response is a configuration response package");
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		QByteArray command(5, 0);
 		command[0] = 0x03;
 		command[1] = 0x00;
