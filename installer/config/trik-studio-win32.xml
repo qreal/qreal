@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>TRIK Studio</Name>
-    <Version>3.1.1</Version>
+    <Version>3.1.2</Version>
     <Title>TRIK Studio</Title>
     <Publisher>CyberTech Labs Ltd.</Publisher>
     <ProductUrl>http://robots.qreal.ru</ProductUrl>
@@ -24,7 +24,7 @@
 
     <RemoteRepositories>
         <Repository>
-            <Url>http://195.19.241.150/packages/trik-studio-repo-win32/</Url>
+            <Url>http://195.19.241.150/packages/trik-studio-repo-win32-testing/</Url>
         </Repository>
     </RemoteRepositories>
 </Installer>
