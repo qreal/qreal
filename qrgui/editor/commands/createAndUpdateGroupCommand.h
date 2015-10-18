@@ -17,12 +17,9 @@
 #include "models/commands/createGroupCommand.h"
 
 namespace qReal {
-
 namespace gui {
 namespace editor {
-
 class EditorViewScene;
-
 namespace commands {
 
 /// Makes same as CreateGroupCommand and automaticly rearranges created items on the scene.

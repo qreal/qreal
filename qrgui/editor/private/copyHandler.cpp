@@ -53,7 +53,7 @@ NodeElement *CopyHandler::clone(bool toCursorPos, bool searchForParents)
 
 void CopyHandler::copyChildren(const NodeElement &destination, const NodeElement &source) const
 {
-	foreach (QGraphicsItem * const child, source.childItems()) {
+	for (QGraphicsItem * const child : source.childItems()) {
 		NodeElement * const element = dynamic_cast<NodeElement *>(child);
 		if (!element) {
 			continue;

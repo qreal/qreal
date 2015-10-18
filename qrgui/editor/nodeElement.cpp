@@ -81,7 +81,7 @@ NodeElement::NodeElement(ElementImpl *impl
 	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, &mRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
-	foreach (LabelInterface * const labelInterface, titles) {
+	for (LabelInterface * const labelInterface : titles) {
 		Label * const label = dynamic_cast<Label *>(labelInterface);
 		if (!label) {
 			continue;
@@ -120,7 +120,7 @@ NodeElement::~NodeElement()
 
 void NodeElement::initPortsVisibility()
 {
-	foreach (const QString &portType, mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())) {
+	for (const QString &portType : mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())) {
 		mPortsVisibility.insert(portType, false);
 	}
 }
@@ -200,11 +200,11 @@ void NodeElement::setPos(qreal x, qreal y)
 
 void NodeElement::adjustLinks()
 {
-	foreach (EdgeElement *edge, mEdgeList) {
+	for (EdgeElement *edge : mEdgeList) {
 		edge->adjustLink();
 	}
 
-	foreach (QGraphicsItem *child, childItems()) {
+	for (QGraphicsItem *child : childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
 			element->adjustLinks();
@@ -221,7 +221,7 @@ void NodeElement::arrangeLinearPorts()
 void NodeElement::arrangeLinks()
 {
 	//Episode I: Home Jumps
-	foreach (EdgeElement* edge, mEdgeList) {
+	for (EdgeElement* edge : mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		edge->reconnectToNearestPorts(this == src, this == dst);
@@ -231,7 +231,7 @@ void NodeElement::arrangeLinks()
 	arrangeLinearPorts();
 
 	//Episode III: Remote Jumps
-	foreach (EdgeElement* edge, mEdgeList) {
+	for (EdgeElement* edge : mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		NodeElement* other = edge->otherSide(this);
@@ -240,7 +240,7 @@ void NodeElement::arrangeLinks()
 
 	//Episode IV: Remote Arrangigng
 	QSet<NodeElement*> arranged;
-	foreach (EdgeElement* edge, mEdgeList) {
+	for (EdgeElement* edge : mEdgeList) {
 		NodeElement* other = edge->otherSide(this);
 		if (other && !arranged.contains(other)) {
 			other->arrangeLinearPorts();
@@ -567,7 +567,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 
-	foreach (EdgeElement* edge, mEdgeList) {
+	for (EdgeElement* edge : mEdgeList) {
 		edge->layOut();
 		if (SettingsManager::value("ActivateGrid").toBool()) {
 			edge->alignToGrid();
@@ -645,13 +645,13 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (const QString &elementName, mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
+	for (const QString &elementName : mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
 			, id().diagram())) {
 		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
 					.possibleEdges(id().editor(), elementName);
-			foreach (const StringPossibleEdge &pEdge, list) {
+			for (const StringPossibleEdge &pEdge : list) {
 				const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 				if (portTypes.contains(pEdge.first.first)
 						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
@@ -662,7 +662,7 @@ bool NodeElement::initPossibleEdges()
 						continue;
 					}
 
-					foreach (const ElementPair &elementPair, elementPairs) {
+					for (const ElementPair &elementPair : elementPairs) {
 						mPossibleEdges.insert(qMakePair(elementPair, edge));
 					}
 
@@ -681,10 +681,11 @@ void NodeElement::initEmbeddedLinkers()
 		return;
 	}
 	QSet<qReal::Id> usedEdges;
-	foreach (const PossibleEdgeType &type, mPossibleEdgeTypes) {
+	for (const PossibleEdgeType &type : mPossibleEdgeTypes) {
 		if (usedEdges.contains(type.second)) {
 			continue;
 		}
+
 		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
 		scene()->addItem(embeddedLinker);
 		embeddedLinker->setEdgeType(type.second);
@@ -696,7 +697,7 @@ void NodeElement::initEmbeddedLinkers()
 	setVisibleEmbeddedLinkers(true);
 
 	// TODO: make it customizable
-	// foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
+	// for (EmbeddedLinker* embeddedLinker : mEmbeddedLinkers) {
 	// embeddedLinker->initTitle();
 	// }
 }
@@ -707,14 +708,14 @@ void NodeElement::setVisibleEmbeddedLinkers(const bool show)
 		setZValue(250);
 		int index = 0;
 		int maxIndex = mEmbeddedLinkers.size();
-		foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
+		for (EmbeddedLinker* embeddedLinker : mEmbeddedLinkers) {
 			embeddedLinker->takePosition(index,maxIndex);
 			embeddedLinker->show();
 			index++;
 		}
 	} else {
 		setZValue(0);
-		foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
+		for (EmbeddedLinker* embeddedLinker : mEmbeddedLinkers) {
 			embeddedLinker->hide();
 		}
 	}
@@ -825,7 +826,7 @@ void NodeElement::setPortsVisible(const QStringList &types)
 {
 	prepareGeometryChange();
 
-	foreach (const QString &portType, mPortsVisibility.keys()) {
+	for (const QString &portType : mPortsVisibility.keys()) {
 		mPortsVisibility[portType] = types.contains(portType);
 	}
 }
@@ -939,7 +940,7 @@ void NodeElement::changeFoldState()
 {
 	mIsFolded = !mIsFolded;
 
-	foreach (QGraphicsItem* childItem, childItems()) {
+	for (QGraphicsItem* childItem : childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			curItem->setVisible(!mIsFolded);
@@ -967,18 +968,18 @@ void NodeElement::changeFoldState()
 
 void NodeElement::updateLabels()
 {
-	foreach (Label *title, mLabels) {
+	for (Label *title : mLabels) {
 		title->setParentContents(mContents);
 	}
 }
 
 void NodeElement::setLinksVisible(bool isVisible)
 {
-	foreach (EdgeElement *curEdge, mEdgeList) {
+	for (EdgeElement *curEdge : mEdgeList) {
 		curEdge->setVisible(isVisible);
 	}
 
-	foreach (QGraphicsItem* childItem, childItems()) {
+	for (QGraphicsItem* childItem : childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			curItem->setLinksVisible(isVisible);
@@ -997,7 +998,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 	// binary search? No because we need to know summary height of prev elements
 	NodeElement *nextItem = nullptr;
 
-	foreach (QGraphicsItem* childItem, childItems()) {
+	for (QGraphicsItem* childItem : childItems()) {
 		NodeElement *curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			if (curItem->scenePos().y() > pos.y()) {
@@ -1024,15 +1025,17 @@ Element* NodeElement::getPlaceholderNextElement()
 	}
 	bool found = false;
 	// loking for child following the placeholder
-	foreach(QGraphicsItem *childItem, childItems()) {
+	for (QGraphicsItem *childItem : childItems()) {
 		Element *element = dynamic_cast<Element*>(childItem);
-		if(found && element != nullptr) {
+		if (found && element != nullptr) {
 			return element;
 		}
-		if(childItem == mPlaceholder) {
+
+		if (childItem == mPlaceholder) {
 			found = true;
 		}
 	}
+
 	return nullptr;
 }
 
@@ -1084,7 +1087,7 @@ void NodeElement::updateChildrenOrder()
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	if (evScene) {
-		foreach (const QString &id, ids) {
+		for (const QString &id : ids) {
 			if (!evScene->getNodeById(Id::loadFromString(id))) {
 				ids.removeAll(id);
 			}
@@ -1092,11 +1095,12 @@ void NodeElement::updateChildrenOrder()
 	}
 
 	QList<NodeElement *> children = childNodes();
-	foreach (NodeElement *child, children) {
+	for (NodeElement *child : children) {
 		if (!ids.contains(child->id().toString())) {
 			ids << child->id().toString();
 		}
 	}
+
 	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "childrenOrder", ids);
 
 }
@@ -1112,12 +1116,13 @@ QSet<ElementPair> NodeElement::elementsForPossibleEdge(const StringPossibleEdge 
 	QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 
 	QSet<ElementPair> result;
-	foreach (const QString &element, elements) {
+	for (const QString &element : elements) {
 		QStringList otherPortTypes
 				= mGraphicalAssistApi.editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
 		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
 			result.insert(qMakePair(id().type(), Id(id().editor(), id().diagram(), element)));
 		}
+
 		if (otherPortTypes.contains(edge.first.first) && portTypes.contains(edge.first.second)) {
 			result.insert(qMakePair(Id(id().editor(), id().diagram(), element), id().type()));
 		}
@@ -1246,19 +1251,20 @@ QList<EdgeElement *> const NodeElement::edgeList() const
 QList<NodeElement *> const NodeElement::childNodes() const
 {
 	QList<NodeElement *> result;
-	foreach (QGraphicsItem *item, childItems()) {
+	for (QGraphicsItem *item : childItems()) {
 		NodeElement *child = dynamic_cast<NodeElement *>(item);
 		if (child) {
 			result << child;
 		}
 	}
+
 	return result;
 }
 
 void NodeElement::updateNodeEdges()
 {
 	arrangeLinks();
-	foreach (EdgeElement* edge, mEdgeList) {
+	for (EdgeElement* edge : mEdgeList) {
 		edge->adjustLink();
 	}
 }
@@ -1271,6 +1277,7 @@ AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPo
 	if (oldParent == newParent) {
 		return nullptr;
 	}
+
 	const QPointF oldPos = mResizeCommand ? mResizeCommand->geometryBeforeDrag().topLeft() : mPos;
 	const QPointF oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	// Without pre-translating into new position parent gets wrong child coords
@@ -1302,11 +1309,12 @@ IdList NodeElement::sortedChildren() const
 {
 	IdList result;
 	if (mGraphicalAssistApi.properties(mId).contains("childrenOrder")) {
-		foreach (const QString &id, mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder")
+		for (const QString &id : mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder")
 				.toStringList()) {
 			result << Id::loadFromString(id);
 		}
 	}
+
 	return result;
 }
 

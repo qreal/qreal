@@ -251,7 +251,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		}
 	}
 
-	foreach (QGraphicsItem *item, mScene->items()) {
+	for (QGraphicsItem *item : mScene->items()) {
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
 			node->adjustLinks();
@@ -371,13 +371,13 @@ qReal::models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() cons
 void EditorViewMViface::clearItems()
 {
 	QList<QGraphicsItem *> toRemove;
-	foreach (const IndexElementPair &pair, mItems) {
+	for (const IndexElementPair &pair : mItems) {
 		if (!pair.second->parentItem()) {
 			toRemove.append(pair.second);
 		}
 	}
 
-	foreach (QGraphicsItem * const item, toRemove) {
+	for (QGraphicsItem * const item : toRemove) {
 		delete item;
 	}
 
@@ -386,11 +386,12 @@ void EditorViewMViface::clearItems()
 
 qReal::Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
-	foreach (const IndexElementPair &pair, mItems) {
+	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {
 			return pair.second;
 		}
 	}
+
 	return nullptr;
 }
 
@@ -404,7 +405,7 @@ void EditorViewMViface::setItem(const QPersistentModelIndex &index, Element *ite
 
 void EditorViewMViface::removeItem(const QPersistentModelIndex &index)
 {
-	foreach (const IndexElementPair &pair, mItems) {
+	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {
 			mItems.remove(pair);
 		}
@@ -433,7 +434,7 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 		const QModelIndex curr = topLeft.sibling(row, 0);
 		const Id logicalId = curr.data(roles::idRole).value<Id>();
 		const IdList graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
-		foreach (const Id &graphicalId, graphicalIds) {
+		for (const Id &graphicalId : graphicalIds) {
 			const QModelIndex graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
 			Element *graphicalItem = item(graphicalIndex);
 			if (graphicalItem) {
