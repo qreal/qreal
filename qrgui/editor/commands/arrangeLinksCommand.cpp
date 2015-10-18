@@ -14,7 +14,6 @@
 
 #include "arrangeLinksCommand.h"
 
-using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;
 
 ArrangeLinksCommand::ArrangeLinksCommand(const EditorViewScene *scene

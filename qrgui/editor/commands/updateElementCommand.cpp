@@ -15,6 +15,7 @@
 #include "updateElementCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 UpdateElementCommand::UpdateElementCommand(const EditorViewScene *scene, const Id &id)
 	: ElementCommand(scene, id)

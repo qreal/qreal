@@ -56,7 +56,7 @@ bool ElementCommand::reinitElement()
 	return mElement != nullptr;
 }
 
-qReal::gui::editor::Element *ElementCommand::elementById(const Id &id)
+qReal::Element *ElementCommand::elementById(const Id &id)
 {
 	return mScene ? mScene->getElem(id) : nullptr;
 }

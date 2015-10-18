@@ -15,6 +15,7 @@
 #include "insertIntoEdgeCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene
 		, models::LogicalModelAssistApi &logicalAssistApi

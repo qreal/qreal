@@ -15,9 +15,10 @@
 #include "editor/private/squareLine.h"
 
 const qreal epsilon = 0.0001;
-const qreal offset = 2 * kvadratik;
+const qreal offset = 2 * qReal::kvadratik;
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 SquareLine::SquareLine(EdgeElement *edge)
 		: LineHandler(edge)

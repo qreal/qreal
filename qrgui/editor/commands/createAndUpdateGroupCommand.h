@@ -18,10 +18,11 @@
 
 namespace qReal {
 
-class EditorViewScene;
-
 namespace gui {
 namespace editor {
+
+class EditorViewScene;
+
 namespace commands {
 
 /// Makes same as CreateGroupCommand and automaticly rearranges created items on the scene.

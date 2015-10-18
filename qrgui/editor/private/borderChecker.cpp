@@ -15,6 +15,7 @@
 #include "borderChecker.h"
 
 #include "editor/nodeElement.h"
+using namespace qReal::gui::editor;
 
 BorderChecker::BorderChecker(const NodeElement* const node)
 	: mNode(node), mBorderValues(node->borderValues())

@@ -58,15 +58,18 @@ class MainWindowUi;
 namespace qReal {
 
 class EditorView;
-class SceneCustomizer;
-
-namespace models {
-class Models;
-}
-
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+
+namespace editor {
+class SceneCustomizer;
+}
+}
+
+
+namespace models {
+class Models;
 }
 
 namespace text {

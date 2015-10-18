@@ -34,10 +34,11 @@
 
 namespace qReal {
 
-class Label;
-
 namespace gui {
 namespace editor {
+class Label;
+}
+}
 
 
 /// size of a point port
@@ -110,7 +111,7 @@ protected:
 	/// Has ownership.
 	ElementImpl * const mElementImpl;
 
-	QList<Label *> mLabels;
+	QList<qReal::gui::editor::Label *> mLabels;
 
 	qReal::models::LogicalModelAssistApi &mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
@@ -119,6 +120,4 @@ protected:
 	Controller *mController;
 };
 
-}
-}
 }

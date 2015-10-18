@@ -46,6 +46,7 @@
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::commands;
 
 NodeElement::NodeElement(ElementImpl *impl
 		, const Id &id
@@ -609,7 +610,7 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::startResize()
 {
-	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
+	mResizeCommand = new ResizeCommand(dynamic_cast<qReal::gui::editor::EditorViewScene *>(scene()), id());
 	mResizeCommand->startTracking();
 }
 
@@ -1282,7 +1283,7 @@ AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPo
 	ChangeParentCommand *changeParentToSceneCommand =
 			new ChangeParentCommand(mLogicalAssistApi, mGraphicalAssistApi, false
 					, id(), oldParent, evScene->rootItemId(), oldPos, oldScenePos);
-	AbstractCommand *translateCommand = ResizeCommand::create(this, mContents
+	AbstractCommand *translateCommand = qReal::gui::editor::commands::ResizeCommand::create(this, mContents
 			, position, mContents, oldScenePos);
 	ChangeParentCommand *result = new ChangeParentCommand(
 			mLogicalAssistApi, mGraphicalAssistApi, false

@@ -159,7 +159,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		}
 
 		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
-		qReal::gui::editor::Element *elem = elementImpl->isNode()
+		qReal::Element *elem = elementImpl->isNode()
 				? dynamic_cast<Element *>(
 						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
 						)
@@ -272,7 +272,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 			return;
 		}
 
-		if (Element *element = item(curr)) {
+		if (qReal::Element *element = item(curr)) {
 			mScene->onElementDeleted(element);
 			mScene->removeItem(element);
 			delete element;
@@ -384,7 +384,7 @@ void EditorViewMViface::clearItems()
 	mItems.clear();
 }
 
-qReal::gui::editor::Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
+qReal::Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
 	foreach (const IndexElementPair &pair, mItems) {
 		if (pair.first == index) {

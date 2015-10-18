@@ -30,9 +30,9 @@ class InsertIntoEdgeCommand : public qReal::commands::AbstractCommand
 {
 public:
 	InsertIntoEdgeCommand(EditorViewScene &scene
-			, models::LogicalModelAssistApi &logicalAssistApi
-			, models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::Exploser &exploser
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::Exploser &exploser
 			, const Id &firstElem
 			, const Id &lastElem
 			, const Id &parent

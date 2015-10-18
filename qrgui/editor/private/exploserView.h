@@ -30,7 +30,6 @@ class Exploser;
 class Element;
 class Explosion;
 class Controller;
-class SceneCustomizer;
 class EditorManagerInterface;
 
 namespace commands {
@@ -39,6 +38,7 @@ class AbstractCommand;
 
 namespace gui {
 namespace editor {
+class SceneCustomizer;
 
 namespace view {
 namespace details {
@@ -103,11 +103,11 @@ private:
 	void createExpandAction(const Element * const element
 			, QMenu &contextMenu, const qReal::Id &alreadyConnectedElement) const;
 
-	models::LogicalModelAssistApi &mLogicalApi;
-	models::GraphicalModelAssistApi &mGraphicalApi;
-	models::Exploser &mExploser;
+	qReal::models::LogicalModelAssistApi &mLogicalApi;
+	qReal::models::GraphicalModelAssistApi &mGraphicalApi;
+	qReal::models::Exploser &mExploser;
 	Controller &mController;
-	const SceneCustomizer &mCustomizer;
+	const qReal::gui::editor::SceneCustomizer &mCustomizer;
 };
 
 }

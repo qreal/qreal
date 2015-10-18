@@ -47,7 +47,7 @@ namespace commands {
 class ResizeCommand;
 }
 
-class QRGUI_EDITOR_EXPORT NodeElement : public qReal::gui::editor::Element
+class QRGUI_EDITOR_EXPORT NodeElement : public qReal::Element
 {
 	Q_OBJECT
 
@@ -277,8 +277,7 @@ private:
 	QRectF diagramRenderingRect() const;
 
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
-//qReal::gui::editor::commands::
-	models::Exploser &mExploser;
+	qReal::models::Exploser &mExploser;
 
 	ContextMenuAction mSwitchGridAction;
 
@@ -289,7 +288,7 @@ private:
 
 	DragState mDragState;
 	QPointF mDragPosition;
-	/*qReal::*/commands::ResizeCommand *mResizeCommand;
+	qReal::gui::editor::commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 

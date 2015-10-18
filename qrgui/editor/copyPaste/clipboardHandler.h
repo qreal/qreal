@@ -24,7 +24,6 @@ namespace qReal {
 namespace gui {
 namespace editor {
 
-
 class EditorViewScene;
 
 class ClipboardHandler

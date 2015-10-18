@@ -18,6 +18,8 @@
 
 #include "editor/editorViewScene.h"
 
+using namespace qReal::gui::editor;
+
 ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 		: mTargetNode(resizingNode)
 		, mElementImpl(resizingNode->elementImpl())

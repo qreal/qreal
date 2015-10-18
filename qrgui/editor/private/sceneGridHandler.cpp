@@ -18,6 +18,7 @@
 #include "editor/editorViewScene.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 namespace {
 // TODO: find a way to remove it

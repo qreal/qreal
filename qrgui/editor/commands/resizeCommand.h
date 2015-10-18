@@ -30,17 +30,17 @@ class ResizeCommand : public qReal::gui::editor::commands::NodeElementCommand, p
 {
 public:
 	/// Creating new instance of command in tracking-based style
-	ResizeCommand(const EditorViewScene *scene, const Id &id);
+	ResizeCommand(const qReal::gui::editor::EditorViewScene *scene, const Id &id);
 
 	/// Creating new instance of command in tracking-based style
 	ResizeCommand(const EditorView *view, const Id &id);
 
 	/// Creating new instance of command in usial style
-	ResizeCommand(const EditorViewScene *scene, const Id &id
+	ResizeCommand(const qReal::gui::editor::EditorViewScene *scene, const Id &id
 			, const QRectF &oldGeometry, const QRectF &newGeometry);
 	virtual ~ResizeCommand() {}
 
-	static ResizeCommand *create(const NodeElement * const element, const QRectF &newContents
+	static ResizeCommand *create(const qReal::gui::editor::NodeElement * const element, const QRectF &newContents
 			, const QPointF &newPos, const QRectF &oldContents, const QPointF &oldPos);
 
 	virtual void startTracking();

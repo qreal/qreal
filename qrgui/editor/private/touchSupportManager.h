@@ -19,10 +19,9 @@
 #include "thirdparty/qsKineticScroller.h"
 
 namespace qReal {
+class EditorView;
 namespace gui {
 namespace editor {
-
-class EditorView;
 
 namespace view {
 namespace details {

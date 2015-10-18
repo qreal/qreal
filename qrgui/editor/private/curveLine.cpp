@@ -15,6 +15,7 @@
 #include "editor/private/curveLine.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 CurveLine::CurveLine(EdgeElement *edge)
 		: LineHandler(edge)

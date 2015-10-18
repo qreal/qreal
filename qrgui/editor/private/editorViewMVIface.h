@@ -30,11 +30,12 @@ class LogicalModelAssistApi;
 }
 
 class EditorView;
-class EditorViewScene;
 class Element;
 
 namespace gui {
 namespace editor {
+class EditorViewScene;
+
 
 class QRGUI_EDITOR_EXPORT EditorViewMViface : public QAbstractItemView
 {
@@ -84,11 +85,11 @@ private slots:
 private:
 	typedef QPair<QPersistentModelIndex, Element*> IndexElementPair;
 
-	EditorViewScene *mScene;
+	qReal::gui::editor::EditorViewScene *mScene;
 	qReal::EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
-	models::LogicalModelAssistApi *mLogicalAssistApi;
-	models::Exploser *mExploser;
+	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
+	qReal::models::Exploser *mExploser;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;
@@ -104,10 +105,9 @@ private:
 
 	QRegion visualRegionForSelection(const QItemSelection &selection ) const;
 
-	Element *item(const QPersistentModelIndex &index) const;
-	void setItem(const QPersistentModelIndex &index, Element *item);
+	qReal::Element *item(const QPersistentModelIndex &index) const;
+	void setItem(const QPersistentModelIndex &index, qReal::Element *item);
 	void removeItem(const QPersistentModelIndex &index);
-
 	void clearItems();
 };
 

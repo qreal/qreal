@@ -21,9 +21,6 @@
 #include "qrgui/editor/private/editorViewMVIface.h"
 
 namespace qReal {
-namespace gui {
-namespace editor {
-
 
 class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView
 {
@@ -32,18 +29,18 @@ class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView
 public:
 	EditorView(const models::Models &models
 			, Controller &controller
-			, const SceneCustomizer &customizer
+			, const qReal::gui::editor::SceneCustomizer &customizer
 			, const Id &rootId
 			, QWidget *parent = 0);
 
-	const EditorViewMViface &mvIface() const;
-	EditorViewMViface &mutableMvIface();
-	const EditorViewScene &editorViewScene() const;
-	EditorViewScene &mutableScene();
+	const qReal::gui::editor::EditorViewMViface &mvIface() const;
+	qReal::gui::editor::EditorViewMViface &mutableMvIface();
+	const qReal::gui::editor::EditorViewScene &editorViewScene() const;
+	qReal::gui::editor::EditorViewScene &mutableScene();
 
 	void setDrawSceneGrid(bool show);
-	void ensureElementVisible(const Element * const element);
-	void ensureElementVisible(const Element * const element, int xMargin, int yMargin);
+	void ensureElementVisible(const qReal::Element * const element);
+	void ensureElementVisible(const qReal::Element * const element, int xMargin, int yMargin);
 
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
@@ -80,13 +77,11 @@ private:
 
 	void startAnimation(char const *slot);
 
-	EditorViewScene mScene;
-	EditorViewMViface mMVIface;
+	qReal::gui::editor::EditorViewScene mScene;
+	qReal::gui::editor::EditorViewMViface mMVIface;
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
-	view::details::TouchSupportManager mTouchManager;
+	qReal::gui::editor::view::details::TouchSupportManager mTouchManager;
 };
 
-}
-}
 }

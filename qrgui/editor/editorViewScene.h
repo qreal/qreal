@@ -30,7 +30,7 @@
 namespace qReal {
 
 namespace commands {
-class qReal::commands::CreateElementCommand;
+class CreateElementCommand;
 }
 
 namespace gui {
@@ -43,7 +43,7 @@ class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	EditorViewScene(const models::Models &models
+	EditorViewScene(const qReal::models::Models &models
 			, Controller &controller
 			/// @todo: move scene customizer properties to metamodel
 			, const SceneCustomizer &customizer
@@ -76,10 +76,10 @@ public:
 
 	virtual qReal::Id rootItemId() const;
 	/// @todo: remove theese getters
-	const models::Models &models() const;
+	const qReal::models::Models &models() const;
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
-	const qReal::SceneCustomizer &customizer() const;
+	const qReal::gui::editor::SceneCustomizer &customizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
 	/// Transfers owneship.
@@ -240,9 +240,9 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
-	const models::Models &mModels;
+	const qReal::models::Models &mModels;
 	const EditorManagerInterface &mEditorManager;
-	Controller &mController;
+	qReal::Controller &mController;
 	const SceneCustomizer &mCustomizer;
 	const Id mRootId;
 

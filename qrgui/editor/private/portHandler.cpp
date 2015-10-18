@@ -19,6 +19,8 @@
 #include "editor/editorViewScene.h"
 #include "editor/nodeElement.h"
 
+using namespace qReal::gui::editor;
+
 const qreal PortHandler::mMaximumFractionPartValue = 0.9999;
 
 /// Value for determing ID of nonexistent port.

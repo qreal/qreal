@@ -19,6 +19,7 @@
 
 using namespace qReal;
 using namespace models;
+using namespace qReal::gui::editor;
 
 CopyHandler::CopyHandler(NodeElement &copyingElement, GraphicalModelAssistApi &graphicalAssistApi)
 	: mNode(copyingElement), mGraphicalAssistApi(graphicalAssistApi)

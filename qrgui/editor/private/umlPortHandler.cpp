@@ -17,6 +17,8 @@
 #include "editor/nodeElement.h"
 #include "editor/private/borderChecker.h"
 
+using namespace qReal::gui::editor;
+
 UmlPortHandler::UmlPortHandler(NodeElement * const node)
 		: mNode(node), mBelongsToHorizontalBorders(true)
 {

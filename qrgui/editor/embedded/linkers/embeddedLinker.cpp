@@ -26,6 +26,7 @@
 #include "editor/commands/reshapeEdgeCommand.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 EmbeddedLinker::EmbeddedLinker()
 		: mEdge(nullptr)
@@ -277,7 +278,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->show();
 		int result = 0;
 
-		commands::CreateElementCommand *createElementFromMenuCommand = nullptr;
+		qReal::commands::CreateElementCommand *createElementFromMenuCommand = nullptr;
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {

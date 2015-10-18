@@ -19,13 +19,11 @@
 #pragma once
 
 namespace qReal {
-namespace gui {
-namespace editor {
-
-
 namespace models {
 class GraphicalModelAssistApi;
 }
+namespace gui {
+namespace editor {
 
 class NodeElement;
 // class qReal::models::GraphicalModelAssistApi; because warning
@@ -38,7 +36,7 @@ public:
 	 * @param copyringNode Node that is actually dealt with.
 	 * @param graphicalAssistApi GraphicalModelAssistApi that used by node.
 	 */
-	CopyHandler(NodeElement &copyingElement, qReal::models::GraphicalModelAssistApi &graphicalAssistApi);
+	CopyHandler(NodeElement &copyingElement, models::GraphicalModelAssistApi &graphicalAssistApi);
 
 	/**
 	 * Makes copy of NodeElement that was used in constructor of CopyHandler.
@@ -75,7 +73,7 @@ private:
 	NodeElement &mNode;
 
 	/// GraphicalModelAssistApi that is used for creating new NodeElement.
-	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
+	models::GraphicalModelAssistApi &mGraphicalAssistApi;
 };
 
 }

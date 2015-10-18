@@ -20,7 +20,6 @@ namespace qReal {
 namespace gui {
 namespace editor {
 
-
 class EditorViewScene;
 
 namespace commands {
