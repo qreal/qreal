@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,14 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "linuxFantom.h"
-#include "fantom.h"
+#pragma once
 
-#include <QtCore/QObject>
+namespace qReal {
+namespace interpretation {
 
-using namespace nxt::communication;
-
-bool LinuxFantom::isAvailable() const
+/// A set of reasons why program execution stopped.
+enum class StopReason
 {
-	return false;
+	/// Program finished correctly
+	finised = 0
+	/// Program finished incorrectly, error occured
+	, error
+	/// User stopped program execution (explicitly or implicitly)
+	, userStop
+};
+
+}
 }

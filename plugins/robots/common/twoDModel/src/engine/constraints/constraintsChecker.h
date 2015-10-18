@@ -17,6 +17,8 @@
 #include <QtCore/QSet>
 #include <QtXml/QDomElement>
 
+#include <qrutils/interpreter/stopReason.h>
+
 #include "details/defines.h"
 
 namespace qReal {
@@ -107,7 +109,7 @@ private:
 			, const kitBase::robotModel::PortInfo &port) const;
 
 	void programStarted();
-	void programFinished();
+	void programFinished(qReal::interpretation::StopReason reason);
 
 	qReal::ErrorReporterInterface &mErrorReporter;
 	model::Model &mModel;

@@ -5,7 +5,7 @@
     <name>trik::TrikV62KitInterpreterPlugin</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="42"/>
-        <source>TRIK (model-2015)</source>
+        <source>TRIK (new case)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

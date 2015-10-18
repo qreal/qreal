@@ -68,7 +68,7 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 			, &Interpreter::connectedSlot
 			);
 
-	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
+	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::userStopRobot);
 
 	connectDevicesConfigurationProvider(&mAutoconfigurer);
 }
@@ -114,7 +114,7 @@ void Interpreter::interpret()
 	mRobotModelManager.model().applyConfiguration();
 }
 
-void Interpreter::stopRobot()
+void Interpreter::stopRobot(qReal::interpretation::StopReason reason)
 {
 	mSensorVariablesUpdater.suspend();
 	mRobotModelManager.model().stopRobot();
@@ -122,7 +122,7 @@ void Interpreter::stopRobot()
 	qDeleteAll(mThreads);
 	mThreads.clear();
 	mBlocksTable->setFailure();
-	emit stopped();
+	emit stopped(reason);
 }
 
 int Interpreter::timeElapsed() const
@@ -182,7 +182,7 @@ void Interpreter::devicesConfiguredSlot()
 	}
 }
 
-void Interpreter::threadStopped()
+void Interpreter::threadStopped(qReal::interpretation::StopReason reason)
 {
 	qReal::interpretation::Thread * const thread = static_cast<qReal::interpretation::Thread *>(sender());
 
@@ -190,7 +190,7 @@ void Interpreter::threadStopped()
 	delete thread;
 
 	if (mThreads.isEmpty()) {
-		stopRobot();
+		stopRobot(reason);
 	}
 }
 
@@ -198,7 +198,7 @@ void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 {
 	if (mThreads.contains(threadId)) {
 		reportError(tr("Cannot create new thread with already occupied id %1").arg(threadId));
-		stopRobot();
+		stopRobot(qReal::interpretation::StopReason::error);
 		return;
 	}
 
@@ -212,11 +212,11 @@ void Interpreter::addThread(qReal::interpretation::Thread * const thread, const 
 {
 	if (mThreads.count() >= maxThreadsCount) {
 		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
-		stopRobot();
+		stopRobot(qReal::interpretation::StopReason::error);
 	}
 
 	mThreads[threadId] = thread;
-	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
+	connect(thread, &interpretation::Thread::stopped, this, &Interpreter::threadStopped);
 
 	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
 	connect(thread, &qReal::interpretation::Thread::killThread, this, &Interpreter::killThread);
@@ -259,12 +259,6 @@ void Interpreter::connectToRobot()
 
 	mActionConnectToRobot.setChecked(
 			mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState);
-}
-
-void Interpreter::disconnectSlot()
-{
-	mActionConnectToRobot.setChecked(false);
-	stopRobot();
 }
 
 void Interpreter::reportError(const QString &message)
