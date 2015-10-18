@@ -50,6 +50,7 @@
 #include <qrgui/dialogs/findReplaceDialog.h>
 
 class QGraphicsView;
+using namespace qReal::gui::editor;
 
 namespace Ui {
 class MainWindowUi;
@@ -58,13 +59,15 @@ class MainWindowUi;
 namespace qReal {
 class SplashScreen;
 class EditorView;
+
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
 
 namespace editor {
 class SceneCustomizer;
-
+}
+}
 
 namespace models {
 class Models;
@@ -89,7 +92,7 @@ public:
 	bool isCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
-	PropertyEditorView *propertyEditor() const;
+	qReal::gui::editor::PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
 	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
@@ -413,7 +416,7 @@ private:
 	ProjectManagerWrapper *mProjectManager;
 	StartWidget *mStartWidget;
 
-	SceneCustomizer *mSceneCustomizer;
+	qReal::gui::editor::SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
 
