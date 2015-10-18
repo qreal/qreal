@@ -13,6 +13,7 @@
  * limitations under the License. */
 
 #include "statPoint.h"
+
 using namespace qReal::gui::editor;
 
 StatPoint::StatPoint(const QPointF &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)

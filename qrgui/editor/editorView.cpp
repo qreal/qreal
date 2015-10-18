@@ -22,8 +22,7 @@
 #include <qrgui/models/models.h>
 
 using namespace qReal;
-using namespace gui;
-using namespace editor;
+using namespace qReal::gui::editor;
 
 const int zoomAnimationInterval = 20;
 const int zoomAnimationTimes = 4;

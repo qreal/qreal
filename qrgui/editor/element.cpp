@@ -23,7 +23,6 @@
 #include "qrgui/editor/labels/label.h"
 
 using namespace qReal;
-using namespace qReal::gui;
 using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;

@@ -16,10 +16,9 @@
 
 #include <qrgui/models/models.h>
 
-using namespace qReal::commands;
 using namespace qReal;
-using namespace gui;
-using namespace editor;
+using namespace qReal::commands;
+using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::commands;
 
 PasteNodeCommand::PasteNodeCommand(EditorViewScene *scene
