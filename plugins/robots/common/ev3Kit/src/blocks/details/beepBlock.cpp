@@ -14,7 +14,6 @@
 
 #include "beepBlock.h"
 
-#include <utils/tracer.h>
 #include <utils/abstractTimer.h>
 
 using namespace ev3::blocks::details;

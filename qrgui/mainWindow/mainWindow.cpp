@@ -84,6 +84,7 @@ using namespace gui;
 
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
+	, mSplashScreen(new SplashScreen(SettingsManager::value("Splashscreen").toBool()))
 	, mController(new Controller)
 	, mPropertyModel(mFacade.editorManager())
 	, mTextManager(new text::TextManager(mFacade.events(), *this))
@@ -102,20 +103,19 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	registerMetaTypes();
-	SplashScreen *splashScreen = new SplashScreen(SettingsManager::value("Splashscreen").toBool());
-	splashScreen->activateWindow();
-	splashScreen->setProgress(5);
+	mSplashScreen->activateWindow();
+	mSplashScreen->setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
-	splashScreen->setProgress(20);
+	mSplashScreen->setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
-	splashScreen->setProgress(40);
+	mSplashScreen->setProgress(40);
 
 	initDocks();
 
@@ -127,21 +127,21 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mPreferencesDialog.init();
 
 
-	splashScreen->setProgress(60);
+	mSplashScreen->setProgress(60);
 
 	loadPlugins();
 
 
-	splashScreen->setProgress(70);
+	mSplashScreen->setProgress(70);
 
 	mDocksVisibility.clear();
 
 
-	splashScreen->setProgress(80);
+	mSplashScreen->setProgress(80);
 
 	initActionsFromSettings();
 
-	splashScreen->setProgress(100);
+	mSplashScreen->setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
 		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
@@ -161,7 +161,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
-	QTimer::singleShot(1500, [=] { splashScreen->close(); });
 }
 
 void MainWindow::connectActions()
@@ -702,7 +701,8 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	const QString url = QString("file:///%1/help/index.html").arg(PlatformInfo::applicationDirPath());
+	const QString pathToHelp = PlatformInfo::invariantSettingsPath("pathToHelp");
+	const QString url = QString("file:///%1/index.html").arg(pathToHelp);
 	QDesktopServices::openUrl(QUrl(url));
 }
 
@@ -1643,6 +1643,8 @@ void MainWindow::initPluginsAndStartWidget()
 	{
 		openStartTab();
 	}
+
+	mSplashScreen->close();
 }
 
 void MainWindow::initActionWidgetsNames()

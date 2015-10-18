@@ -47,7 +47,6 @@ class RobotsPluginFacade : public QObject
 
 public:
 	RobotsPluginFacade();
-
 	~RobotsPluginFacade() override;
 
 	/// Inits all sybsytems of robots plugin infrastructure that somehow depend from engine`s parts.

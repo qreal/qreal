@@ -39,7 +39,7 @@ void clearConfig()
 
 void loadTranslators(const QString &locale)
 {
-	QDir translationsDirectory(PlatformInfo::applicationDirPath() + "/translations/" + locale);
+	QDir translationsDirectory(PlatformInfo::invariantSettingsPath("pathToTranslations") + "/" + locale);
 	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
 	while (directories.hasNext()) {
 		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
@@ -67,7 +67,7 @@ void setDefaultLocale(bool localizationDisabled)
 
 void initLogging()
 {
-	const QDir logsDir(PlatformInfo::applicationDirPath() + "/logs");
+	const QDir logsDir(PlatformInfo::invariantSettingsPath("pathToLogs"));
 	if (logsDir.mkpath(logsDir.absolutePath())) {
 		Logger::addLogTarget(logsDir.filePath("qreal.log"), maxLogSize, 2, QsLogging::DebugLevel);
 		Logger::addLogTarget(logsDir.filePath("actions.log"), maxLogSize, 2, QsLogging::TraceLevel);
@@ -86,6 +86,11 @@ int main(int argc, char *argv[])
 	QLOG_INFO() << "Running on" << PlatformInfo::prettyOsVersion();
 	QLOG_INFO() << "Arguments:" << app.arguments();
 	QLOG_INFO() << "Setting default locale to" << QLocale().name();
+
+	if (QFile(PlatformInfo::defaultPlatformConfigPath()).exists()) {
+		// Loading default settings for concrete platform if such exist.
+		SettingsManager::instance()->loadSettings(PlatformInfo::defaultPlatformConfigPath());
+	}
 
 	QString fileToOpen;
 	if (app.arguments().count() > 1) {

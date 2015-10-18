@@ -56,7 +56,7 @@ class MainWindowUi;
 }
 
 namespace qReal {
-
+class SplashScreen;
 class EditorView;
 namespace gui {
 class ErrorReporter;
@@ -64,8 +64,6 @@ class PaletteTree;
 
 namespace editor {
 class SceneCustomizer;
-}
-}
 
 
 namespace models {
@@ -376,6 +374,8 @@ private:
 
 	Ui::MainWindowUi *mUi;
 	SystemFacade mFacade;
+
+	QScopedPointer<SplashScreen> mSplashScreen;
 
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;

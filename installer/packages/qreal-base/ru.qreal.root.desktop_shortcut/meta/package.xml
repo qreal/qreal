@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>Desktop shortcut</DisplayName>
     <DisplayName xml:lang="ru_ru">Ярлык на рабочем столе</DisplayName>
-    <Version>1.1.0</Version>
-    <ReleaseDate>2014-08-16</ReleaseDate>
+    <Version>3.1.2-4</Version>
+    <ReleaseDate>2014-10-06</ReleaseDate>
     <Script>installscript.qs</Script>
     <SortingPriority>7</SortingPriority>
     <Default>true</Default>

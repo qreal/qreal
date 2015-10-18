@@ -14,7 +14,6 @@
 
 #include "speakerBlock.h"
 
-#include <utils/tracer.h>
 #include <utils/timelineInterface.h>
 #include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotModelUtils.h>
@@ -46,6 +45,5 @@ void SpeakerBlock::run()
 
 void SpeakerBlock::timeout()
 {
-	utils::Tracer::debug(utils::Tracer::blocks, "TimerBlock::timeout", "emit done(mNextBlock)");
 	emit done(mNextBlockId);
 }

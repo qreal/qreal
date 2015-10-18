@@ -14,8 +14,6 @@
 
 #include "ev3InputDevice.h"
 
-#include <utils/tracer.h>
-
 using namespace ev3::robotModel::real::parts;
 using namespace kitBase::robotModel;
 using namespace utils;

@@ -31,8 +31,9 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	, mUploadState(done)
 {
 	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
-	environment.insert("QREALDIR", PlatformInfo::applicationDirPath());
-	environment.insert("QREALDIRPOSIX", PlatformInfo::applicationDirPath().remove(1, 1).prepend("/cygdrive/"));
+	QString path = this->path();
+	environment.insert("NXT_TOOLS_DIR", path);
+	environment.insert("NXT_TOOLS_DIR_POSIX", path.remove(1, 1).prepend("/cygdrive/"));
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);
@@ -62,10 +63,10 @@ void NxtFlashTool::flashRobot()
 
 #ifdef Q_OS_WIN
 	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
-	mFlashProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/nexttool/");
-	mFlashProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.bat");
+	mFlashProcess.setWorkingDirectory(path("nexttool"));
+	mFlashProcess.start("cmd", { "/c", path("flash.bat") });
 #else
-	mFlashProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.sh");
+	mFlashProcess.start("sh", { path("flash.sh") });
 #endif
 
 	mErrorReporter->addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
@@ -75,11 +76,10 @@ void NxtFlashTool::runProgram(const QFileInfo &fileInfo)
 {
 	mSource = fileInfo;
 	mRunProcess.setEnvironment(QProcess::systemEnvironment());
-	mRunProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
-	mRunProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
-			+ "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
+	mRunProcess.setWorkingDirectory(path());
+	mRunProcess.start("cmd", { "/c", path("nexttool/NexTTool.exe") + " /COM=usb -run="
 			// NXT crops file name to 15 letters, so doing same here...
-			+ QString("%1.rxe").arg(mSource.completeBaseName().mid(0, 15)));
+			+ QString("%1.rxe").arg(mSource.completeBaseName().mid(0, 15)) });
 }
 
 void NxtFlashTool::runLastProgram()
@@ -144,13 +144,13 @@ void NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 	mSource = fileInfo;
 
 #ifdef Q_OS_WIN
-	mUploadProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
-	mUploadProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
-						 + "/nxt-tools/upload.bat " + fileInfo.completeBaseName()
-						 + " " + fileInfo.absolutePath());
+	mUploadProcess.setWorkingDirectory(path());
+	mUploadProcess.start("cmd", { "/c", path("upload.bat")
+						+ " " + fileInfo.completeBaseName()
+						+ " " + fileInfo.absolutePath() });
 #else
 	Q_UNUSED(fileInfo)
-	mUploadProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/upload.sh");
+	mUploadProcess.start("sh", { path("upload.sh") });
 #endif
 
 	mErrorReporter->addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));
@@ -212,4 +212,9 @@ void NxtFlashTool::readNxtUploadData()
 			break;
 		}
 	}
+}
+
+const QString NxtFlashTool::path(const QString &file) const
+{
+	return PlatformInfo::invariantSettingsPath("pathToNxtTools") + "/" + file;
 }
