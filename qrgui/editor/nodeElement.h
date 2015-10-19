@@ -195,6 +195,8 @@ public:
 	 */
 	IdList sortedChildren() const;
 
+	void updateShape();
+
 public slots:
 	virtual void select(const bool singleSelected);
 	virtual void setSelectionState(const bool selected);
@@ -273,6 +275,8 @@ private:
 	void initEmbeddedLinkers();
 
 	QRectF diagramRenderingRect() const;
+
+	void saveShape();
 
 	commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 

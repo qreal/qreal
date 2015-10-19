@@ -335,6 +335,9 @@ void ShapeEdit::save()
 	generateDom();
 	if (mIndex.isValid()) {
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
+	} else if (mId.element() == "Subprogram") {
+		mMainWindow->models().mutableLogicalRepoApi().setProperty(mId, "shape", mDocument.toString(4));
+		mEditorView->editorViewScene().getNodeById(mId)->updateShape();
 	} else {
 		mEditorManager->updateShape(mId, mDocument.toString(4));
 		foreach (const Id graphicalElement, mGraphicalElements) {

@@ -75,7 +75,6 @@ bool SdfRenderer::load(const QDomDocument &document)
 	const QDomElement docElem = doc.firstChildElement("picture");
 	first_size_x = docElem.attribute("sizex").toInt();
 	first_size_y = docElem.attribute("sizey").toInt();
-
 	return true;
 }
 

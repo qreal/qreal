@@ -134,6 +134,10 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 			connect(addElementToPaletteAction, SIGNAL(triggered()), SLOT(addElementToPaletteActionTriggered()));
 			addElementToPaletteAction->setData(element->id().toVariant());
 		}
+	} else if (element->id().element() == "Subprogram") {
+		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
+		connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
+		changeAppearancePaletteAction->setData(element->id().toVariant());
 	}
 
 	QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());
@@ -239,6 +243,12 @@ void ExploserView::changeAppearanceActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
+
+	if (id.element() == "Subprogram") {
+		emit openShapeEditor(id, mGraphicalApi.graphicalRepoApi().stringProperty(id, "shape"), &mLogicalApi.editorManagerInterface(), false);
+		return;
+	}
+
 	const QString propertyValue = mLogicalApi.editorManagerInterface().shape(id);
 	emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
 }
