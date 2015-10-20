@@ -336,8 +336,19 @@ void ShapeEdit::save()
 	if (mIndex.isValid()) {
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 	} else if (mId.element() == "Subprogram") {
-		mMainWindow->models().mutableLogicalRepoApi().setProperty(mId, "shape", mDocument.toString(4));
-		mEditorView->editorViewScene().getNodeById(mId)->updateShape();
+		Id logicalId = mMainWindow->models().graphicalModelAssistApi().logicalId(mId);
+		Id target = mMainWindow->models().mutableLogicalRepoApi().outgoingExplosion(logicalId);
+
+		for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
+			NodeElement * const element = dynamic_cast<NodeElement *>(item);
+			if (element) {
+				logicalId = mMainWindow->models().graphicalModelAssistApi().logicalId(element->id());
+				if (mMainWindow->models().mutableLogicalRepoApi().outgoingExplosion(logicalId) == target) {
+					mMainWindow->models().mutableLogicalRepoApi().setProperty(element->id(), "shape", mDocument.toString(4));
+					element->updateShape();
+				}
+			}
+		}
 	} else {
 		mEditorManager->updateShape(mId, mDocument.toString(4));
 		foreach (const Id graphicalElement, mGraphicalElements) {
