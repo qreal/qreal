@@ -821,10 +821,10 @@ void DatabasesGenerator::generateWithMicrosoftAccess()
 
 void DatabasesGenerator::changeEditor(QString const &dbmsName)
 {
-	QString editorName = dbmsName;
-	editorName = QString(dbmsName.at(0).toUpper()) + editorName.remove(0,1);
-	QString curEditorName = mDbms;
-	curEditorName = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
+//	QString editorName = dbmsName;
+//	editorName = QString(dbmsName.at(0).toUpper()) + editorName.remove(0,1);
+//	QString curEditorName = mDbms;
+//	curEditorName = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
 	mDbms = dbmsName;
 }
 
