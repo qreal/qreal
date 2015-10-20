@@ -1,10 +1,12 @@
+include(@@pathToQReal@@/global.pri)
+
 TEMPLATE = lib
 CONFIG += plugin c++11
-DESTDIR = @@pathToQReal@@/bin/plugins/tools
+DESTDIR = $$DESTDIR/plugins/tools
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L@@pathToQReal@@/bin -lqrkernel -lqrutils -lqrrepo -lqrgui-constraints-plugin-interface
+links(qrkernel qrutils qrrepo qrgui-constraints-plugin-interface)
 
 INCLUDEPATH += \
 	@@pathToQReal@@ \

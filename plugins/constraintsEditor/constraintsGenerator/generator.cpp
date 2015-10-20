@@ -4,7 +4,7 @@
 
 using namespace constraints::generator;
 
-QString templateDir = "./templates";
+QString templateDir = "../templates"; // TODO_CONSTRAINTS: check all paths
 
 const QString keywordForAllMetamodels = "AllMetamodels"; //qwerty_asd_copypast
 
@@ -25,9 +25,9 @@ void Generator::init(qReal::LogicalModelAssistInterface const &logicalModel
 
 bool Generator::isCorrectedName(QString const &name)
 {
-	QRegExp patten;
-	patten.setPattern("[A-Za-z]+([A-Za-z_0-9]*)");
-	if (patten.exactMatch(name)) {
+	QRegExp pattern;
+	pattern.setPattern("[A-Za-z]+([A-Za-z_0-9]*)");
+	if (pattern.exactMatch(name)) {
 		return true;
 	} else {
 		return false;
@@ -74,8 +74,8 @@ void Generator::generate(qReal::Id const &metamodel)
 
 	outputDirPath.replace("\\", "/");
 	ConcreteGenerator generator(templateDir, outputDirPath
-								 , pathToQReal, *mLogicalModel, *mErrorReporter
-								 , metamodelName, constraintMetamodelName);
+			, pathToQReal, *mLogicalModel, *mErrorReporter
+			, metamodelName, constraintMetamodelName);
 	generator.generate();
 	mConstraintModelFullName = generator.constraintModelFullName();
 	mConstraintConstraintsModelName = generator.constraintConstraintsModelName();
