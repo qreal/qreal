@@ -17,19 +17,24 @@
 using namespace trik;
 
 #include <trikKit/blocks/trikV62BlocksFactory.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 #include "robotModel/real/trikV62RealRobotModel.h"
 #include "robotModel/twoD/trikV62TwoDRobotModel.h"
 
+#include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h"
+
 const QString kitIdString = "trikV62Kit";
 
 TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
-	: TrikKitInterpreterPluginBase()
+	: TrikKitInterpreterPluginBase(), mAction(tr("TEST"), nullptr)
 {
 	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikV62KitRobot");
 	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
 	const auto blocksFactory = new blocks::TrikV62BlocksFactory();
+
 	initKitInterpreterPluginBase(realRobotModel, twoDRobotModel, blocksFactory);
+	connect(&mAction, &QAction::triggered, this, &testSmile);
 }
 
 QString TrikV62KitInterpreterPlugin::kitId() const
@@ -40,4 +45,18 @@ QString TrikV62KitInterpreterPlugin::kitId() const
 QString TrikV62KitInterpreterPlugin::friendlyKitName() const
 {
 	return tr("TRIK (model-2015)");
+}
+
+QList<qReal::ActionInfo> TrikV62KitInterpreterPlugin::customActions()
+{
+	return { qReal::ActionInfo(&mAction, "file", "tools") };
+}
+
+void TrikV62KitInterpreterPlugin::testSmile()
+{
+	auto model = defaultRobotModel();
+	robotModel::parts::TrikDisplay * const display =
+			kitBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*model, "DisplayPort");
+	if (display) display->drawSmile(false);
+	qDebug(defaultRobotModel()->name().toStdString().c_str());
 }
