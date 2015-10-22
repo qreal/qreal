@@ -50,7 +50,7 @@ void RobotsBlockParser::setReservedVariables()
 {
 	qrtext::lua::LuaToolbox::clear();
 
-	setVariableValue("pi", 3.14159265);
+	setVariableValue("pi", M_PI);
 	markAsSpecialConstant("pi");
 
 	for (const kitBase::robotModel::PortInfo &port : mRobotModelManager.model().availablePorts()) {
