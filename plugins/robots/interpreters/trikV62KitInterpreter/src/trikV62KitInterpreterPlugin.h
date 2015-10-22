@@ -29,6 +29,14 @@ public:
 
 	QString kitId() const override;
 	QString friendlyKitName() const override;
+	QList<qReal::ActionInfo> customActions() override;
+
+private slots:
+	void testSmile();
+
+private:
+	QAction mAction;
+
 };
 
 }
