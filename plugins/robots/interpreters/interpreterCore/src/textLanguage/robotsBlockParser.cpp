@@ -50,7 +50,7 @@ void RobotsBlockParser::setReservedVariables()
 {
 	qrtext::lua::LuaToolbox::clear();
 
-	setVariableValue("pi", 3.14159265);
+	setVariableValue("pi", M_PI);
 	markAsSpecialConstant("pi");
 
 	for (const kitBase::robotModel::PortInfo &port : mRobotModelManager.model().availablePorts()) {
@@ -195,4 +195,6 @@ void RobotsBlockParser::addIntrinsicFuctions()
 			, [](const QVariant &a, const QVariant &b) { return qMin(a.toReal(), b.toReal()); });
 	add2aryFunction("max", new types::Float(), new types::Float(), new types::Float()
 			, [](const QVariant &a, const QVariant &b) { return qMax(a.toReal(), b.toReal()); });
+	add2aryFunction("atan2", new types::Float(), new types::Float(), new types::Float()
+			, [](const QVariant &y, const QVariant &x) { return qAtan2(y.toReal(), x.toReal()); });
 }

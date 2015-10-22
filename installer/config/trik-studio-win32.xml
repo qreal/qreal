@@ -24,7 +24,7 @@
 
     <RemoteRepositories>
         <Repository>
-            <Url>http://195.19.241.150/packages/trik-studio-repo-win32-testing/</Url>
+            <Url>http://195.19.241.150/packages/trik-studio-repo-win32/</Url>
         </Repository>
     </RemoteRepositories>
 </Installer>

@@ -1,1 +1,1 @@
-(function (x) { (x>0) - (x<0) } (@@ARGUMENT@@))
+(function (x) { return (x>0) - (x<0) } (@@ARGUMENT@@))
