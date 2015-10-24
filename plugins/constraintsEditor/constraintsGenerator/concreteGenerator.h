@@ -56,7 +56,7 @@ private :
 				, privateFieldsPluginH(curPrivateFieldsPluginH), ifForMainCheckPluginCPP(curIfForMainCheckPluginCPP) {}
 	};
 
-	struct NeededStringsForConcreateGenerate {
+	struct NeededStringsForConcreteGenerate {
 		QString optionalChecksForElemetsH;
 		QString mainChecksForElemetsH;
 		QString countOptionalCheckStatusesForElemetsCPP;
@@ -65,7 +65,7 @@ private :
 		QString returnCheckStatusesOfElementsInCheckCPP;
 		QString addElementsInElementsNamesCPP;
 
-		NeededStringsForConcreateGenerate(QString curOptionalChecksForElemetsH, QString curMainChecksForElemetsH
+		NeededStringsForConcreteGenerate(QString curOptionalChecksForElemetsH, QString curMainChecksForElemetsH
 				, QString curCountOptionalCheckStatusesForElemetsCPP, QString curCountMainCheckStatusesForElemetsCPP
 				, QString curPrefixForReturnCheckStatusesOfElementsInCheckCPP, QString curReturnCheckStatusesOfElementsInCheckCPP, QString curAddElementsInElementsNamesCPP)
 				: optionalChecksForElemetsH(curOptionalChecksForElemetsH), mainChecksForElemetsH(curMainChecksForElemetsH)
@@ -76,9 +76,9 @@ private :
 				, addElementsInElementsNamesCPP(curAddElementsInElementsNamesCPP) {}
 	};
 
-	NeededStringsForConcreateGenerate generateCommonNeededPartsForElements(QString elementName);
+	NeededStringsForConcreteGenerate generateCommonNeededPartsForElements(QString elementName);
 	QString generateMainCheckStatusesForElemetsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP);
-	NeededStringsForConcreateGenerate generateNeededPartsForDiagramFiles(qReal::Id const &diagram);
+	NeededStringsForConcreteGenerate generateNeededPartsForDiagramFiles(qReal::Id const &diagram);
 	void generateDiagramFiles(qReal::Id const &diagram, QString diagramNameTemplate);
 	NeededStringsForCommonGenerate generateNeededPartsForAllConstraintsDiagram();
 	QString replaceLanguageName(QString string, qReal::Id const &diagram, int count);

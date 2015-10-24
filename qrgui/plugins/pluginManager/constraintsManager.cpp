@@ -73,6 +73,7 @@ bool ConstraintsManager::loadPlugin(const QString &pluginName)
 			return true;
 		}
 	}
+
 	QMessageBox::warning(0, "QReal Plugin", loader->errorString());
 	loader->unload();
 	delete loader;

@@ -119,10 +119,16 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
 		builder.start(commandSecond);
+
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mMainWindowInterface->loadConstraintsPlugin(prefix + pluginName + "." + extension)) {
+			QString buildConfigurationString = "";
+			if (buildConfiguration == "debug") {
+				buildConfigurationString += "-d";
+			}
+
+			if (mMainWindowInterface->loadConstraintsPlugin(prefix + pluginName + buildConfigurationString + "." + extension)) {
 				progress->setValue(100);
 			}
 		}

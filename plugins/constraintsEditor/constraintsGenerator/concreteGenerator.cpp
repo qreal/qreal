@@ -66,7 +66,7 @@ QString ConcreteGenerator::constraintModelId() const //i.e. pliginId
 	return mConstraintsName;
 }
 
-ConcreteGenerator::NeededStringsForConcreateGenerate ConcreteGenerator::generateCommonNeededPartsForElements(QString elementName)
+ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateCommonNeededPartsForElements(QString elementName)
 {
 	QString mainChecksForElemetsH;
 	QString returnCheckStatusesOfElementsInCheckCPP;
@@ -98,7 +98,7 @@ ConcreteGenerator::NeededStringsForConcreateGenerate ConcreteGenerator::generate
 		returnCheckStatusesOfElementsInCheckCPP += returnCheckStatusOfElement;
 	}
 
-	return NeededStringsForConcreateGenerate("", mainChecksForElemetsH, "", "", "", returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
+	return NeededStringsForConcreteGenerate("", mainChecksForElemetsH, "", "", "", returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
 }
 
 QString ConcreteGenerator::generateMainCheckStatusesForElemetsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP)
@@ -115,7 +115,7 @@ QString ConcreteGenerator::generateMainCheckStatusesForElemetsCPP(QMap<QString, 
 	return countMainCheckStatusesForElemetsCPP;
 }
 
-ConcreteGenerator::NeededStringsForConcreateGenerate ConcreteGenerator::generateNeededPartsForDiagramFiles(Id const &diagram)
+ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateNeededPartsForDiagramFiles(Id const &diagram)
 {
 	QString optionalChecksForElemetsH;
 	QString mainChecksForElemetsH;
@@ -160,7 +160,7 @@ ConcreteGenerator::NeededStringsForConcreateGenerate ConcreteGenerator::generate
 
 		int id = elementCount.value(elementName);
 		if (id == 1) {
-			NeededStringsForConcreateGenerate neededString = generateCommonNeededPartsForElements(elementName);
+			NeededStringsForConcreteGenerate neededString = generateCommonNeededPartsForElements(elementName);
 			mainChecksForElemetsH += neededString.mainChecksForElemetsH;
 			returnCheckStatusesOfElementsInCheckCPP += neededString.returnCheckStatusesOfElementsInCheckCPP;
 			addElementsInElementsNamesCPP += neededString.addElementsInElementsNamesCPP;
@@ -197,7 +197,7 @@ ConcreteGenerator::NeededStringsForConcreateGenerate ConcreteGenerator::generate
 
 	countMainCheckStatusesForElemetsCPP += generateMainCheckStatusesForElemetsCPP(appendOptionalCheckStatusInMainCheckCPP);
 
-	return NeededStringsForConcreateGenerate(optionalChecksForElemetsH, mainChecksForElemetsH, countOptionalCheckStatusesForElemetsCPP, countMainCheckStatusesForElemetsCPP
+	return NeededStringsForConcreteGenerate(optionalChecksForElemetsH, mainChecksForElemetsH, countOptionalCheckStatusesForElemetsCPP, countMainCheckStatusesForElemetsCPP
 											, prefixForReturnCheckStatusesOfElementsInCheckCPP, returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
 }
 
@@ -208,7 +208,7 @@ void ConcreteGenerator::generateDiagramFiles(Id const &diagram, QString diagramN
 	loadTemplateFromFile(fileNameDiagramH, resultDiagramH);
 	loadTemplateFromFile(fileNameDiagramCPP, resultDiagramCPP);
 
-	NeededStringsForConcreateGenerate needeStrings = generateNeededPartsForDiagramFiles(diagram);
+	NeededStringsForConcreteGenerate needeStrings = generateNeededPartsForDiagramFiles(diagram);
 
 	resultDiagramH.replace("@@optionalChecksForElemets@@", needeStrings.optionalChecksForElemetsH);
 	resultDiagramH.replace("@@mainChecksForElemets@@", needeStrings.mainChecksForElemetsH);
