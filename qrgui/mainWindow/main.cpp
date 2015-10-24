@@ -78,14 +78,13 @@ int main(int argc, char *argv[])
 {
 	QRealApplication app(argc, argv);
 
+	if (app.arguments().contains("--clear-conf")) {
+		clearConfig();
+		return 0;
+	}
+
 	qsrand(time(0));
 	setDefaultLocale(app.arguments().contains("--no-locale"));
-
-	initLogging();
-	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
-	QLOG_INFO() << "Running on" << PlatformInfo::prettyOsVersion();
-	QLOG_INFO() << "Arguments:" << app.arguments();
-	QLOG_INFO() << "Setting default locale to" << QLocale().name();
 
 	if (QFile(PlatformInfo::defaultPlatformConfigPath()).exists()) {
 		// Loading default settings for concrete platform if such exist.
@@ -94,24 +93,25 @@ int main(int argc, char *argv[])
 
 	QString fileToOpen;
 	if (app.arguments().count() > 1) {
-		if (app.arguments().contains("--clear-conf")) {
-			clearConfig();
-			return 0;
-		} else {
-			const int setIndex = app.arguments().indexOf("--config");
-			if (setIndex > -1) {
-				const QString settingsFileName = app.arguments().at(setIndex + 1);
-				SettingsManager::instance()->loadSettings(settingsFileName);
-			}
+		const int setIndex = app.arguments().indexOf("--config");
+		if (setIndex > -1) {
+			const QString settingsFileName = app.arguments().at(setIndex + 1);
+			SettingsManager::instance()->loadSettings(settingsFileName);
+		}
 
-			for (const QString &argument : app.arguments()) {
-				if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
-					fileToOpen = argument;
-					break;
-				}
+		for (const QString &argument : app.arguments()) {
+			if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
+				fileToOpen = argument;
+				break;
 			}
 		}
 	}
+
+	initLogging();
+	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
+	QLOG_INFO() << "Running on" << PlatformInfo::prettyOsVersion();
+	QLOG_INFO() << "Arguments:" << app.arguments();
+	QLOG_INFO() << "Setting default locale to" << QLocale().name();
 
 #ifndef NO_STYLE_WINDOWSMODERN
 	app.setStyle(new WindowsModernStyle());
