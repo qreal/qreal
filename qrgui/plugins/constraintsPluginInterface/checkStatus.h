@@ -28,14 +28,17 @@ public:
 		verification
 	};
 
-	CheckStatus(bool const &checkStatus, QString const &message, ErrorType const &errorType);
+	CheckStatus(const bool &checkStatus
+			, const QString &message
+			, const ErrorType &errorType);
+
 	bool checkStatus() const;
 	ErrorType errorType() const;
 	QString message() const;
 
 	bool operator==(CheckStatus const &element);
 
-	static QList<CheckStatus> resultCheckStatusList(QList<CheckStatus> const& listCheckStatus);
+	static QList<CheckStatus> resultCheckStatusList(const QList<CheckStatus> &listCheckStatus);
 	static QList<CheckStatus> defaultCheckStatusAsList();
 
 private:
