@@ -17,6 +17,8 @@
 #include "editor/commands/edgeElementCommand.h"
 #include "controller/commands/trackingEntity.h"
 
+using namespace qReal::commands;
+
 namespace qReal
 {
 namespace gui {
@@ -24,7 +26,7 @@ namespace editor {
 namespace commands
 {
 
-class ReshapeEdgeCommand : public qReal::gui::editor::commands::EdgeElementCommand, public qReal::commands::TrackingEntity
+class ReshapeEdgeCommand : public qReal::gui::editor::commands::EdgeElementCommand, public TrackingEntity
 {
 public:
 	ReshapeEdgeCommand(const EdgeElement *edge);
