@@ -22,8 +22,7 @@
 
     <RunProgram>bash</RunProgram>
     <RunProgramArguments>
-        <Argument>-c</Argument>
-        <Argument>export LD_LIBRARY_PATH=@TargetDir@ &amp;&amp; @TargetDir@/trik-studio</Argument>
+        <Argument>@TargetDir@/trik-studio</Argument>
     </RunProgramArguments>
 
     <RemoteRepositories>

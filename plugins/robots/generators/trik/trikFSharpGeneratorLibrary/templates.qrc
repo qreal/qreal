@@ -109,6 +109,7 @@
         <file>templates/functions/time.t</file>
         <file>templates/functions/min.t</file>
         <file>templates/functions/max.t</file>
+        <file>templates/functions/atan2.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>

@@ -4,4 +4,8 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v6-f-sharp-generator.so               $PWD/../data/plugins/tools/kitPlugins/
+mkdir -p $PWD/../data/lib/plugins/tools/kitPlugins
+cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v6-f-sharp-generator.so               $PWD/../data/lib/plugins/tools/kitPlugins/
+
+# Cleaning up prebuild-common.sh results...
+rm -rf $PWD/../data/plugins/
