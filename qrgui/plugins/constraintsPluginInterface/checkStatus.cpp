@@ -20,7 +20,9 @@ using namespace qReal;
 CheckStatus::CheckStatus(const bool &checkStatus
 		, const QString &message
 		, const ErrorType &errorType)
-	: mCheckStatus(checkStatus), mMessage(message), mErrorType(errorType)
+	: mCheckStatus(checkStatus)
+	, mMessage(message)
+	, mErrorType(errorType)
 {
 }
 

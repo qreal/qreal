@@ -12,11 +12,11 @@ class ConstraintsPlugin : public QObject, public qReal::ConstraintsPluginInterfa
 
 public:
 	ConstraintsPlugin();
-	virtual ~ConstraintsPlugin();
+	~ConstraintsPlugin() override;
 
-	virtual QList<qReal::CheckStatus> check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager);
-	virtual QString metamodelName() const;
-	virtual QString id() const;
+	QList<qReal::CheckStatus> check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager) override;
+	QString metamodelName() const override;
+	QString id() const override;
 
 private:
 @@privateFieldsOfConstraintsDigrams@@

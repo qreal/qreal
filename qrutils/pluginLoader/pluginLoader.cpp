@@ -31,12 +31,13 @@ void PluginLoader::loadNewEditor(const QString &directoryName
 	}
 
 	const QString realPluginName = fullPluginName(pluginName, buildConfiguration, extension, prefix);
-	const QProgressBar *progress = progressBar();
+	QProgressBar *progress = progressBar();
 
+	// TODO_CONSTRAINTS
 	if (!mMainWindowInterpretersInterface.unloadConstraintsPlugin(realPluginName, pluginId)) {
 		QMessageBox::warning(mMainWindowInterpretersInterface.windowWidget()
 				, tr("error"), tr("cannot unload plugin"));
-		deleteGeneratedFiles(directoryName, normalizerPluginName);
+		//deleteGeneratedFiles(directoryName, normalizerPluginName);
 		progress->close();
 		delete progress;
 
@@ -57,6 +58,7 @@ void PluginLoader::loadNewEditor(const QString &directoryName
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
+			// TODO_CONSTRAINTS
 			if (mMainWindowInterpretersInterface.loadConstraintsPlugin(realPluginName)) {
 				progress->setValue(100);
 			}
@@ -66,7 +68,7 @@ void PluginLoader::loadNewEditor(const QString &directoryName
 	if (progress->value() != 100) {
 		QMessageBox::warning(mMainWindowInterpretersInterface.windowWidget(), tr("error")
 				, tr("cannot load new constraints plugin"));
-		deleteGeneratedFiles(directoryName, normalizerPluginName);
+		//deleteGeneratedFiles(directoryName, normalizerPluginName);
 	}
 
 	progress->setValue(100);
@@ -92,7 +94,7 @@ QProgressBar *PluginLoader::progressBar() const
 	const int progressBarWidth = 240;
 	const int progressBarHeight = 20;
 
-	const QProgressBar *progress = new QProgressBar(mMainWindowInterpretersInterface.windowWidget());
+	QProgressBar *progress = new QProgressBar(mMainWindowInterpretersInterface.windowWidget());
 	progress->show();
 
 	QApplication::processEvents();

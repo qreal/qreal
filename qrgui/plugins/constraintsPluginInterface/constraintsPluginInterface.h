@@ -30,16 +30,13 @@ public:
 			const Id &element
 			, const qrRepo::LogicalRepoApi &logicalApi
 			, const EditorManagerInterface &editorManager) = 0;
+
 	virtual QString metamodelName() const = 0;
 	virtual QString id() const = 0;
 
-	bool isCorrectMetamodelName(Id const &element) const
+	bool isCorrectMetamodelName(const Id &element) const
 	{
-		QString myMetamodelName = metamodelName();
-		if (myMetamodelName == element.editor() || myMetamodelName == keywordForAllMetamodels) {
-			return true;
-		}
-		return false;
+		return ((metamodelName() == element.editor() || metamodelName() == keywordForAllMetamodels));
 	}
 };
 

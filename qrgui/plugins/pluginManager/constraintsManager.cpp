@@ -17,110 +17,98 @@
 #include <QtCore/QDir>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QPluginLoader>
+#include <QtCore/QPair>
+
 #include <QtWidgets/QMessageBox>
+
+#include <qrkernel/platformInfo.h>
 
 using namespace qReal;
 
 ConstraintsManager::ConstraintsManager()
+	: mPluginManager(PlatformInfo::applicationDirPath(), "plugins/tools")
 {
-	mPluginsDir = QDir(qApp->applicationDirPath());
+	const QList<ConstraintsPluginInterface *> loadedPlugins = mPluginManager.loadAllPlugins<ConstraintsPluginInterface>();
 
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
-
-	mPluginsDir.cd("plugins");
-	mPluginsDir.cd("tools");
-
-	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
-		// TODO: Free memory
-		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader->instance();
-
-		if (plugin) {
-			ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
-			if (constraintsPlugin) {
-				mPluginsLoaded += constraintsPlugin->id();
-				mPluginFileName.insert(constraintsPlugin->id(), fileName);
-				mLoaders.insert(fileName, loader);
-				mPluginIface[constraintsPlugin->id()] = constraintsPlugin;
-			}
-			else {
-				loader->unload();
-				delete loader;
-			}
-		} else {
-			qDebug() << "Plugin loading failed: " << loader->errorString();
-			loader->unload();
-			delete loader;
+	for (ConstraintsPluginInterface *constraintPlugin : loadedPlugins) {
+		if (constraintPlugin) {
+			const QString pluginName = mPluginManager.fileName(constraintPlugin);
+			const QString pluginId = constraintPlugin->id();
+			insertNewPluginIntoList(constraintPlugin, pluginName, pluginId);
 		}
 	}
 }
 
 bool ConstraintsManager::loadPlugin(const QString &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
-	loader->load();
-	QObject *plugin = loader->instance();
+	const QPair<ConstraintsPluginInterface *, QString> pluginAndErrorMessage =
+			mPluginManager.pluginLoadedByName<ConstraintsPluginInterface>(pluginName);
 
-	if (plugin) {
-		ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
-		if (constraintsPlugin) {
-			mPluginsLoaded += constraintsPlugin->id();
-			mPluginFileName.insert(constraintsPlugin->id(), pluginName);
-			mLoaders.insert(pluginName, loader);
-			mPluginIface[constraintsPlugin->id()] = constraintsPlugin;
-			return true;
-		}
+	ConstraintsPluginInterface *constraintPlugin =  pluginAndErrorMessage.first;
+	const QString error = pluginAndErrorMessage.second;
+
+	if (constraintPlugin) {
+		const QString pluginId = constraintPlugin->id();
+		insertNewPluginIntoList(constraintPlugin, pluginName, pluginId);
+	} else {
+		QMessageBox::warning(0, "QReal Plugin", error);
 	}
 
-	QMessageBox::warning(0, "QReal Plugin", loader->errorString());
-	loader->unload();
-	delete loader;
-	return false;
+	return (error.isEmpty());
 }
 
 bool ConstraintsManager::unloadPlugin(const QString &pluginId)
 {
-	QString pluginName = mPluginFileName[pluginId];
-	QPluginLoader *loader = mLoaders[pluginName];
-	if (loader != nullptr) {
-		if (!(loader->unload())) {
-			delete loader;
-			return false;
-		}
-		mPluginsLoaded.removeAll(pluginId);
-		mPluginFileName.remove(pluginId);
-		delete loader;
-		return true;
+	QString errorMessage = "";
+	const QString pluginName = mPluginIdAndFileName[pluginId];
+
+	if (!pluginName.isEmpty()) {
+		errorMessage = mPluginManager.unloadPlugin(pluginName);
+
+		mPluginIdAndLoadedPlugins.remove(pluginId);
+		mListOfPluginIds.removeAll(pluginId);
+		mPluginIdAndFileName.remove(pluginId);
 	}
-	return false;
+
+	return (errorMessage.isEmpty());
 }
 
 IdList ConstraintsManager::pluginsIds() const
 {
 	IdList plugins;
-	foreach (QString pluginId, mPluginsLoaded) {
+
+	for (const QString &pluginId : mListOfPluginIds) {
 		plugins.append(Id(pluginId));
 	}
+
 	return plugins;
 }
 
 QList<QString> ConstraintsManager::pluginsNames() const
 {
-	return mPluginFileName.values();
+	return mPluginManager.namesOfPlugins();
 }
 
-QList<CheckStatus> ConstraintsManager::check(
-		const Id &element
+QList<CheckStatus> ConstraintsManager::check(const Id &element
 		, const qrRepo::LogicalRepoApi &logicalApi
 		, const EditorManagerInterface &editorManager)
 {
 	QList<qReal::CheckStatus> checkings;
-	foreach (ConstraintsPluginInterface *constraintsInterface, mPluginIface.values()) {
+
+	for (ConstraintsPluginInterface *constraintsInterface : mPluginIdAndLoadedPlugins.values()) {
 		if (constraintsInterface->isCorrectMetamodelName(element)) {
 			checkings.append(constraintsInterface->check(element, logicalApi, editorManager));
 		}
 	}
+
 	return checkings;
+}
+
+void ConstraintsManager::insertNewPluginIntoList(ConstraintsPluginInterface *pluginInterface
+		, const QString &pluginName
+		, const QString &pluginId)
+{
+	mListOfPluginIds.append(pluginId);
+	mPluginIdAndFileName.insert(pluginId, pluginName);
+	mPluginIdAndLoadedPlugins.insert(pluginId, pluginInterface);
 }

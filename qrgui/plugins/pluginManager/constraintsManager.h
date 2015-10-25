@@ -25,22 +25,33 @@ class QRGUI_PLUGINS_MANAGER_EXPORT ConstraintsManager
 {
 public:
 	ConstraintsManager();
-	QList<CheckStatus> check(
-			const Id &element
+
+	QList<CheckStatus> check(const Id &element
 			, const qrRepo::LogicalRepoApi &logicalApi
 			, const EditorManagerInterface &editorManager);
+
 	bool loadPlugin(QString const &pluginName);
 	bool unloadPlugin(QString const &pluginId);
+
 	IdList pluginsIds() const;
 	QList<QString> pluginsNames() const;
 
 private:
-	QStringList mPluginsLoaded;
-	QMap<QString, QString> mPluginFileName;
-	QMap<QString, QPluginLoader *> mLoaders;
-	QDir mPluginsDir;
+	void insertNewPluginIntoList(ConstraintsPluginInterface *pluginInterface
+			, const QString &pluginName
+			, const QString &pluginId);
 
-	QMap<QString, ConstraintsPluginInterface *> mPluginIface;
+	/// List of plugin ids.
+	QStringList mListOfPluginIds;
+
+	/// List of pairs (plugin id and plugin name).
+	QMap<QString, QString> mPluginIdAndFileName;
+
+	/// List of pairs (plugin id and loaded plugin interfaces).
+	QMap<QString, ConstraintsPluginInterface *> mPluginIdAndLoadedPlugins;
+
+	/// Common part of all plugin managers.
+	PluginManager mPluginManager;
 };
 
 }

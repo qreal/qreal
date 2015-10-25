@@ -28,17 +28,32 @@ public:
 		verification
 	};
 
+	/// Constructor for class CheckStatus.
+	/// @param checkStatus - check status.
+	/// @param message - error message.
+	/// @param errorType - type of error.
 	CheckStatus(const bool &checkStatus
 			, const QString &message
 			, const ErrorType &errorType);
 
+	/// Returns check status.
 	bool checkStatus() const;
+
+	/// Returns check status error type.
 	ErrorType errorType() const;
+
+	/// Returns check status message.
 	QString message() const;
 
+	/// Returns true if given check status is equal to element.
+	/// @param element - other check status.
 	bool operator==(CheckStatus const &element);
 
+	/// Returns list of check statuses without duplication.
+	/// @param listCheckStatus - check status list.
 	static QList<CheckStatus> resultCheckStatusList(const QList<CheckStatus> &listCheckStatus);
+
+	/// Returns empty check status list.
 	static QList<CheckStatus> defaultCheckStatusAsList();
 
 private:

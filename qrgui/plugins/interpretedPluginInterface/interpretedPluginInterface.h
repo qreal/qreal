@@ -15,7 +15,8 @@
 #pragma once
 
 #include <plugins/toolPluginInterface/pluginInterface.h>
-#include <qrgui/plugins/toolPluginInterface/actionInfo.h>
+#include <plugins/toolPluginInterface/actionInfo.h>
+#include <plugins/toolPluginInterface/pluginConfigurator.h>
 
 namespace qReal {
 
