@@ -24,6 +24,9 @@
 #include <interpreterCore/robotsPluginFacade.h>
 #include "reporter.h"
 
+using namespace qReal;
+using namespace qReal::gui::editor;
+
 namespace twoDModel {
 
 namespace model {
@@ -54,13 +57,13 @@ private:
 	void onDeviceStateChanged(const QString &robotId, const kitBase::robotModel::robotParts::Device *device
 			, const QString &property, const QVariant &value);
 
-	qReal::SystemFacade mQRealFacade;
-	qReal::ConsoleErrorReporter mErrorReporter;
-	qReal::ProjectManager mProjectManager;
-	qReal::NullMainWindow mMainWindow;
-	qReal::NullTextManager mTextManager;
-	qReal::SceneCustomizer mSceneCustomizer;
-	qReal::PluginConfigurator mConfigurator;
+	SystemFacade mQRealFacade;
+	ConsoleErrorReporter mErrorReporter;
+	ProjectManager mProjectManager;
+	NullMainWindow mMainWindow;
+	NullTextManager mTextManager;
+	SceneCustomizer mSceneCustomizer;
+	PluginConfigurator mConfigurator;
 	interpreterCore::RobotsPluginFacade mPluginFacade;
 	Reporter mReporter;
 };

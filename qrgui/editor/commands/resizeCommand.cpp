@@ -14,10 +14,9 @@
 
 #include "editor/commands/resizeCommand.h"
 
-using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;
 
-ResizeCommand::ResizeCommand(const qReal::gui::editor::EditorViewScene *scene, const Id &id)
+ResizeCommand::ResizeCommand(const EditorViewScene *scene, const Id &id)
 	: NodeElementCommand(scene, id)
 {
 }
@@ -27,7 +26,7 @@ ResizeCommand::ResizeCommand(const EditorView *view, const Id &id)
 {
 }
 
-ResizeCommand::ResizeCommand(const qReal::gui::editor::EditorViewScene *scene, const Id &id
+ResizeCommand::ResizeCommand(const EditorViewScene *scene, const Id &id
 		, const QRectF &oldGeometry, const QRectF &newGeometry)
 	: NodeElementCommand(scene, id)
 {
@@ -38,7 +37,7 @@ ResizeCommand::ResizeCommand(const qReal::gui::editor::EditorViewScene *scene, c
 	TrackingEntity::stopTracking();
 }
 
-ResizeCommand *ResizeCommand::create(const qReal::gui::editor::NodeElement * const element
+ResizeCommand *ResizeCommand::create(const NodeElement * const element
 		, const QRectF &newContents, const QPointF &newPos
 		, const QRectF &oldContents, const QPointF &oldPos)
 {

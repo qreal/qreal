@@ -17,13 +17,15 @@
 #include "controller/commands/abstractCommand.h"
 #include "editor/editorView.h"
 
+using namespace qReal::commands;
+
 namespace qReal {
 namespace gui {
 namespace editor {
 namespace commands {
 
 /// A base for all commands using concrete element instance on some scene
-class ElementCommand : public qReal::commands::AbstractCommand
+class ElementCommand : public AbstractCommand
 {
 	Q_OBJECT
 

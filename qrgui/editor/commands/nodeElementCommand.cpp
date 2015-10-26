@@ -14,7 +14,7 @@
 
 #include "nodeElementCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::commands;
 
 NodeElementCommand::NodeElementCommand(const EditorViewScene *scene, const Id &id)
@@ -41,7 +41,7 @@ bool NodeElementCommand::reinitElement()
 	return mNode != nullptr;
 }
 
-qReal::gui::editor::NodeElement *NodeElementCommand::nodeById(const Id &id)
+NodeElement *NodeElementCommand::nodeById(const Id &id)
 {
 	return dynamic_cast<NodeElement *>(elementById(id));
 }

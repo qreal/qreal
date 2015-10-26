@@ -26,7 +26,7 @@ namespace editor {
 namespace commands
 {
 
-class ReshapeEdgeCommand : public qReal::gui::editor::commands::EdgeElementCommand, public TrackingEntity
+class ReshapeEdgeCommand : public EdgeElementCommand, public TrackingEntity
 {
 public:
 	ReshapeEdgeCommand(const EdgeElement *edge);

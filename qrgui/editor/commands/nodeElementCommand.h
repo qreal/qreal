@@ -22,7 +22,7 @@ namespace editor {
 namespace commands {
 
 /// A base for all commands using concrete node element instance on some scene
-class NodeElementCommand : public qReal::gui::editor::commands::ElementCommand
+class NodeElementCommand : public ElementCommand
 {
 public:
 	NodeElementCommand(const EditorViewScene *scene, const Id &id);

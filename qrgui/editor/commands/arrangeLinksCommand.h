@@ -22,7 +22,7 @@ namespace editor {
 namespace commands {
 
 /// Arranges links of specified node element
-class ArrangeLinksCommand : public qReal::gui::editor::commands::ElementCommand
+class ArrangeLinksCommand : public ElementCommand
 {
 public:
 	ArrangeLinksCommand(const EditorViewScene *scene, const Id &id, bool needAdjusting = false);

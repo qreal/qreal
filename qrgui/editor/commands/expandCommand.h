@@ -20,10 +20,9 @@
 namespace qReal {
 namespace gui {
 namespace editor {
-
 namespace commands {
 
-class ExpandCommand : public qReal::gui::editor::commands::NodeElementCommand
+class ExpandCommand : public NodeElementCommand
 {
 public:
 	ExpandCommand(const NodeElement *node);

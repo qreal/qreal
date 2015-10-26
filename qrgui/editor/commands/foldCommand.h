@@ -21,7 +21,7 @@ namespace gui {
 namespace editor {
 namespace commands {
 
-class FoldCommand : public qReal::gui::editor::commands::NodeElementCommand
+class FoldCommand : public NodeElementCommand
 {
 public:
 	FoldCommand(const NodeElement *element);
