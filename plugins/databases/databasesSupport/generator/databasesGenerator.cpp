@@ -554,24 +554,36 @@ void DatabasesGenerator::generatePhysicalModel()
 
 void DatabasesGenerator::generateSQLCode()
 {
-	if (mDbms == "sqlServer2008")
-		generateWithSqlServer2008();
-	else if (mDbms == "mySql5")
-		generateWithMySql5();
-	else if (mDbms == "sqlite")
-		generateWithSqlite();
-	else if (mDbms == "microsoftAccess")
-		generateWithMicrosoftAccess();
-}
+	bool success = true;
 
-void DatabasesGenerator::generateWithSqlServer2008()
-{
 	mErrorReporter->clear();
 
 	codeFile.setFileName(mWorkDir + mCodeFileName);
 	if (!codeFile.open(QIODevice::WriteOnly))
-		return;
+		success = false;
 
+	if (mDbms == "sqlServer2008")
+		success = generateWithSqlServer2008();
+	else if (mDbms == "mySql5")
+		success = generateWithMySql5();
+	else if (mDbms == "sqlite")
+		success = generateWithSqlite();
+	else if (mDbms == "microsoftAccess")
+		success = generateWithMicrosoftAccess();
+
+	codeFile.close();
+	mErrorReporter->addInformation(tr("Code was generated successfully"));
+
+	if (success && mPreferencesPage->needToOpenFileAfterGeneration()) {
+		// Windows
+		QProcess *proc = new QProcess();
+		proc->start("explorer C:\\Coursework\\qreal\\bin\\debug\\code.txt");
+	}
+
+}
+
+void DatabasesGenerator::generateWithSqlServer2008()
+{
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 			codeFile.write("CREATE TABLE ");
@@ -604,18 +616,10 @@ void DatabasesGenerator::generateWithSqlServer2008()
 			}
 			codeFile.write("\r\n);\r\n\r\n");
 		}
-	codeFile.close();
-	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }
 
 void DatabasesGenerator::generateWithMySql5()
 {
-	mErrorReporter->clear();
-
-	codeFile.setFileName(mWorkDir + mCodeFileName);
-	if (!codeFile.open(QIODevice::WriteOnly))
-		return;
-
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 			codeFile.write("CREATE ");
@@ -697,18 +701,10 @@ void DatabasesGenerator::generateWithMySql5()
 			if (getProperty(tableId, "delay_key_write").toBool())
 				codeFile.write(" DELAY_KEY_WRITE");
 		}
-	codeFile.close();
-	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }
 
 void DatabasesGenerator::generateWithSqlite()
 {
-	mErrorReporter->clear();
-
-	codeFile.setFileName(mWorkDir + mCodeFileName);
-	if (!codeFile.open(QIODevice::WriteOnly))
-		return;
-
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 			codeFile.write("CREATE ");
@@ -762,18 +758,10 @@ void DatabasesGenerator::generateWithSqlite()
 			if (getProperty(tableId, "without_rowid").toBool())
 				codeFile.write(" WITHOUT ROWID");
 		}
-	codeFile.close();
-	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }
 
 void DatabasesGenerator::generateWithMicrosoftAccess()
 {
-	mErrorReporter->clear();
-
-	codeFile.setFileName(mWorkDir + mCodeFileName);
-	if (!codeFile.open(QIODevice::WriteOnly))
-		return;
-
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 			codeFile.write("CREATE ");
@@ -815,16 +803,10 @@ void DatabasesGenerator::generateWithMicrosoftAccess()
 			}
 			codeFile.write("\r\n);\r\n\r\n");
 		}
-	codeFile.close();
-	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }
 
 void DatabasesGenerator::changeEditor(QString const &dbmsName)
 {
-//	QString editorName = dbmsName;
-//	editorName = QString(dbmsName.at(0).toUpper()) + editorName.remove(0,1);
-//	QString curEditorName = mDbms;
-//	curEditorName = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
 	mDbms = dbmsName;
 }
 

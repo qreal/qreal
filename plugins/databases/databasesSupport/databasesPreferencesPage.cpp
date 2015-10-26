@@ -23,7 +23,6 @@ DatabasesPreferencesPage::DatabasesPreferencesPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	connect(mUi->dbmsBox, SIGNAL(currentTextChanged(QString)), this, SLOT(dbmsChanging(QString)));
-	connect(mUi->reverseEngineerFileButton, SIGNAL(clicked()), this, SLOT(browseFileForReverseEngineer()));
 
 }
 
@@ -46,7 +45,7 @@ void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 
 void DatabasesPreferencesPage::changeReverseEngineerFilePath(QString const &path)
 {
-	mUi->reverseEngineerFilePath->setText(path);
+	//mUi->reverseEngineerFilePath->setText(path);
 }
 
 void DatabasesPreferencesPage::save()
@@ -60,15 +59,21 @@ void DatabasesPreferencesPage::restoreSettings()
 
 void DatabasesPreferencesPage::browseFileForReverseEngineer()
 {
-	const QString path = utils::QRealFileDialog::getOpenFileName("FileForReverseEngineer"
-			,this, tr("Open Directory")).replace("\\", "/");
-	mUi->reverseEngineerFilePath->setText(path);
+	//const QString path = utils::QRealFileDialog::getOpenFileName("FileForReverseEngineer"
+			//,this, tr("Open Directory")).replace("\\", "/");
+	//mUi->reverseEngineerFilePath->setText(path);
 }
 
 const QString DatabasesPreferencesPage::getReverseEngineerFilename() const
 {
-	QString const &str = mUi->reverseEngineerFilePath->toPlainText();
-	return str;
+	return QString();
+//	QString const &str = mUi->reverseEngineerFilePath->toPlainText();
+//	return str;
+}
+
+bool DatabasesPreferencesPage::needToOpenFileAfterGeneration() const
+{
+	return mUi->codeGenerationCheckBox->isChecked();
 }
 }
 }

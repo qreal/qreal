@@ -10,7 +10,7 @@ DatabasesReverseEngineer::DatabasesReverseEngineer(PluginConfigurator const conf
 		, mGraphicalModelApi(configurator.graphicalModelApi())
 		, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 		, mPreferencesPage(preferencesPage)
-		, mDbms(QString("MySql5"))
+		, mDbms(QString("QMYSQL"))
 {
 }
 
@@ -51,8 +51,10 @@ qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName
 // TODO:
 // QOCI Oracle Call Interface
 // QPSQL  PostgreSQL
-void DatabasesReverseEngineer::generateSchema()
+void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const &filePath)
 {
+	mDbms = dbms;
+
 	QString dbmsType = "";
 	QString driverInitializerStr = "";
 	if (mDbms == "SqlServer2008") {
@@ -60,7 +62,7 @@ void DatabasesReverseEngineer::generateSchema()
 		driverInitializerStr = "";
 	} else if (mDbms == "MySql5") {
 		dbmsType = "QMYSQL";
-		driverInitializerStr = "";
+		driverInitializerStr = "DRIVER={MYSQL ODBC 3.51 Driver};FIL={MYSQL};DBQ=";
 	}
 	else if (mDbms == "Sqlite") {
 		dbmsType = "QSQLITE";
@@ -72,8 +74,7 @@ void DatabasesReverseEngineer::generateSchema()
 	}
 
 	QSqlDatabase sdb = QSqlDatabase::addDatabase(dbmsType);
-	QString filename = mPreferencesPage->getReverseEngineerFilename();
-	sdb.setDatabaseName(QString(driverInitializerStr + filename));
+	sdb.setDatabaseName(QString(driverInitializerStr + filePath));
 
 	if (!sdb.open()) {
 		mErrorReporter->addError(QString(tr("File didn`t open")));
@@ -104,8 +105,8 @@ void DatabasesReverseEngineer::generateSchema()
 			Id logicalColumnId = createColumn(column.name(), type.toString(), logicalTableId);
 		}
 
-	QStringList connections = sdb.connectionNames();
-}
+	}
+	mErrorReporter->addInformation(QString("Schema generated succesfully"));
 }
 
 

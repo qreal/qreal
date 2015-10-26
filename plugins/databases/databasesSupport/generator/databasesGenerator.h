@@ -16,6 +16,7 @@
 
 #include <QtCore/QTranslator>
 #include <QtWidgets/QApplication>
+#include <QProcess>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>

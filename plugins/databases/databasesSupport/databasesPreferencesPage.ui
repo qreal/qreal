@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
-    <height>300</height>
+    <width>583</width>
+    <height>291</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>30</y>
+     <x>10</x>
+     <y>20</y>
      <width>361</width>
-     <height>51</height>
+     <height>41</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -62,8 +62,8 @@
   <widget class="QWidget" name="verticalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>100</y>
+     <x>10</x>
+     <y>70</y>
      <width>361</width>
      <height>51</height>
     </rect>
@@ -93,17 +93,17 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>170</y>
+     <x>10</x>
+     <y>180</y>
      <width>471</width>
-     <height>92</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="0">
      <widget class="QLabel" name="oneToOneRepresentationLabel_2">
       <property name="text">
-       <string>Choose file for reverse engineer:</string>
+       <string>File for code generation:</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -111,7 +111,7 @@
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QTextEdit" name="reverseEngineerFilePath">
+     <widget class="QTextEdit" name="codeGenerationFilePath">
       <property name="enabled">
        <bool>true</bool>
       </property>
@@ -121,7 +121,7 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QToolButton" name="reverseEngineerFileButton">
+     <widget class="QToolButton" name="codeGenerationFileButton">
       <property name="text">
        <string>Browse file</string>
       </property>
@@ -129,6 +129,46 @@
     </item>
    </layout>
   </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>140</y>
+     <width>371</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="dialectLabel_2">
+      <property name="text">
+       <string>Open file after code generation:</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="codeGenerationCheckBox">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>open</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <zorder>verticalLayoutWidget</zorder>
+  <zorder>verticalLayoutWidget_2</zorder>
+  <zorder>gridLayoutWidget</zorder>
+  <zorder>horizontalLayoutWidget</zorder>
+  <zorder>dialectLabel_2</zorder>
  </widget>
  <resources/>
  <connections/>

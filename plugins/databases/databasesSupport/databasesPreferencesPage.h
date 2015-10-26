@@ -43,6 +43,7 @@ public:
 	void save();
 	virtual void restoreSettings();
 	const QString getReverseEngineerFilename() const;
+	bool needToOpenFileAfterGeneration() const;
 public slots:
 	void dbmsChanging(QString const &dbmsName);
 	void changeReverseEngineerFilePath(QString const &path);

@@ -32,6 +32,7 @@
 #include "databasesCustomizer.h"
 #include "generator/databasesGenerator.h"
 #include "generator/databasesReverseEngineer.h"
+#include "generateSchemaWidget.h"
 
 namespace qReal {
 namespace databasesSupport {
@@ -75,6 +76,9 @@ private:
 	QAction *mGeneratePhysicalModelAction;
 	QAction *mGenerateSchemaAction;
 	QMenu *mDatabasesMenu;
+
+	GenerateSchemaWidget *mGenerateSchemaWidget;
+
 	QList<qReal::ActionInfo> mActionInfos;
 };
 

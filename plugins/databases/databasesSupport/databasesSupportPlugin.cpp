@@ -21,13 +21,16 @@ DatabasesSupportPlugin::DatabasesSupportPlugin()
 	: mPreferencesPage(new DatabasesPreferencesPage())
 	, mGenerateCodeAction(NULL)
 	, mCheckCorectnessAction(NULL)
+	, mGenerateSchemaWidget(new GenerateSchemaWidget())
 {
+	connect(mGenerateSchemaWidget, SIGNAL(accepted()), this, SLOT(generateSchema()));
 }
 
 DatabasesSupportPlugin::~DatabasesSupportPlugin()
 {
 	delete mDatabasesGenerator;
 	delete mDatabasesReverseEngineer;
+	delete mGenerateSchemaWidget;
 }
 
 void DatabasesSupportPlugin::init(PluginConfigurator const &configurator)
@@ -54,26 +57,21 @@ QList<qReal::ActionInfo> DatabasesSupportPlugin::actions()
 
 void DatabasesSupportPlugin::initActions()
 {
-	mCheckCorectnessAction = new QAction(tr("Check correctness"), NULL);
+	mCheckCorectnessAction = new QAction(tr("Check correctness of the logical schema"), NULL);
 	connect(mCheckCorectnessAction, SIGNAL(triggered()), this, SLOT(checkCorrectness()));
-
-	mGenerateCodeAction = new QAction(tr("Generate SQL"), NULL);
-	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	mActionInfos << ActionInfo(mCheckCorectnessAction, "generators", "tools");
 
 	mGeneratePhysicalModelAction = new QAction(tr("Generate physical model"), NULL);
 	connect(mGeneratePhysicalModelAction, SIGNAL(triggered()), this, SLOT(generatePhysicalModel()));
+	mActionInfos << ActionInfo(mGeneratePhysicalModelAction, "generators", "tools");
 
-	mGenerateSchemaAction = new QAction(tr("Generate schema"), NULL);
-	connect(mGenerateSchemaAction, SIGNAL(triggered()), this, SLOT(generateSchema()));
+	mGenerateCodeAction = new QAction(tr("Generate SQL code"), NULL);
+	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	mActionInfos << ActionInfo(mGenerateCodeAction, "generators", "tools");
 
-	mDatabasesMenu = new QMenu(tr("Databases"));
-	mDatabasesMenu->addAction(mGenerateCodeAction);
-	mDatabasesMenu->addAction(mCheckCorectnessAction);
-	mDatabasesMenu->addAction(mGeneratePhysicalModelAction);
-	mDatabasesMenu->addAction(mGenerateSchemaAction);
-	ActionInfo databasesMenuInfo(mDatabasesMenu, "tools");
-
-	mActionInfos << databasesMenuInfo;
+	mGenerateSchemaAction = new QAction(tr("Generate Schema from file"), NULL);
+	connect(mGenerateSchemaAction, SIGNAL(triggered()), mGenerateSchemaWidget, SLOT(open()));
+	mActionInfos << ActionInfo(mGenerateSchemaAction, "generators", "tools");
 }
 
 void DatabasesSupportPlugin::checkCorrectness()
@@ -93,9 +91,8 @@ void DatabasesSupportPlugin::generatePhysicalModel()
 
 void DatabasesSupportPlugin::generateSchema()
 {
-	mDatabasesReverseEngineer->generateSchema();
+	mDatabasesReverseEngineer->generateSchema(mGenerateSchemaWidget->getDbms(), mGenerateSchemaWidget->getFilePath());
 }
-
 
 }
 }

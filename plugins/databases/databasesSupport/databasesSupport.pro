@@ -41,6 +41,7 @@ HEADERS = \
 	$$PWD/databasesPreferencesPage.h \
 	$$PWD/databasesCustomizer.h \
 	$$PWD/generator/databasesReverseEngineer.h \
+    generateSchemaWidget.h
 
 SOURCES = \
 	$$PWD/databasesSupportPlugin.cpp \
@@ -48,6 +49,7 @@ SOURCES = \
 	$$PWD/databasesCustomizer.cpp \
 	$$PWD/generator/databasesGenerator.cpp \
 	$$PWD/generator/databasesReverseEngineer.cpp \
+    generateSchemaWidget.cpp
 
 OTHER_FILES += \
 	$$PWD/databasesSupport.pri \
@@ -55,6 +57,7 @@ OTHER_FILES += \
 
 FORMS += \
 	$$PWD/databasesPreferencesPage.ui \
+    generateSchemaWidget.ui
 
 DISTFILES +=
 

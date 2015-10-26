@@ -21,7 +21,7 @@ public:
 signals:
 
 public slots:
-	void generateSchema();
+	void generateSchema(QString const &dbms, QString const &filePath);
 private:
 	/// Creates element of diagram from string
 	qReal::Id createElementFromString(QString const &elemName
