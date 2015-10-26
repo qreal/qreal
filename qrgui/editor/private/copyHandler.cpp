@@ -30,8 +30,8 @@ NodeElement *CopyHandler::clone(bool toCursorPos, bool searchForParents)
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene *>(mNode.scene());
 
-	qReal::Id typeId = mNode.id().type();
-	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF(), searchForParents);
+	Id typeId = mNode.id().type();
+	Id resultId = evscene->createElement(typeId.toString(), QPointF(), searchForParents);
 
 	NodeElement *result = dynamic_cast<NodeElement *>(evscene->getElem(resultId));
 

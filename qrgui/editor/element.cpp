@@ -27,7 +27,7 @@ using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;
 
-qReal::Element::Element(ElementImpl *elementImpl
+Element::Element(ElementImpl *elementImpl
 		, const Id &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi

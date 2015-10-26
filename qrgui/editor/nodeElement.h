@@ -47,7 +47,7 @@ namespace commands {
 class ResizeCommand;
 }
 
-class QRGUI_EDITOR_EXPORT NodeElement : public qReal::Element
+class QRGUI_EDITOR_EXPORT NodeElement : public Element
 {
 	Q_OBJECT
 

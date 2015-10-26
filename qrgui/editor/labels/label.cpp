@@ -23,7 +23,7 @@
 using namespace qReal;
 using namespace qReal::gui::editor;
 
-qReal::gui::editor::Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 		, const Id &elementId
 		, const LabelProperties &properties)
 	: mIsStretched(false)
@@ -41,11 +41,11 @@ qReal::gui::editor::Label::Label(models::GraphicalModelAssistApi &graphicalAssis
 	init();
 }
 
-qReal::gui::editor::Label::~Label()
+Label::~Label()
 {
 }
 
-void qReal::gui::editor::Label::init()
+void Label::init()
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable);
 	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
@@ -61,7 +61,7 @@ void qReal::gui::editor::Label::init()
 	}
 }
 
-void qReal::gui::editor::Label::moveToParentCenter()
+void Label::moveToParentCenter()
 {
 	if (mWasMoved) {
 		// now it has user defined position, don't center automatically
@@ -83,7 +83,7 @@ void qReal::gui::editor::Label::moveToParentCenter()
 	}
 }
 
-Qt::Orientation qReal::gui::editor::Label::orientation()
+Qt::Orientation Label::orientation()
 {
 	if (qAbs(rotation()) == 90) {
 		return Qt::Vertical;
@@ -92,12 +92,12 @@ Qt::Orientation qReal::gui::editor::Label::orientation()
 	return Qt::Horizontal;
 }
 
-void qReal::gui::editor::Label::setText(const QString &text)
+void Label::setText(const QString &text)
 {
 	setPlainText(text);
 }
 
-void qReal::gui::editor::Label::setTextFromRepo(const QString &text)
+void Label::setTextFromRepo(const QString &text)
 {
 	const QString friendlyText = mEnumValues.isEmpty()
 			? text
@@ -109,23 +109,23 @@ void qReal::gui::editor::Label::setTextFromRepo(const QString &text)
 	}
 }
 
-void qReal::gui::editor::Label::setParentSelected(bool isSelected)
+void Label::setParentSelected(bool isSelected)
 {
 	mParentIsSelected = isSelected;
 }
 
-void qReal::gui::editor::Label::setParentContents(const QRectF &contents)
+void Label::setParentContents(const QRectF &contents)
 {
 	mParentContents = contents;
 	scaleCoordinates(contents);
 }
 
-void qReal::gui::editor::Label::setShouldCenter(bool shouldCenter)
+void Label::setShouldCenter(bool shouldCenter)
 {
 	mWasMoved = !shouldCenter;
 }
 
-void qReal::gui::editor::Label::scaleCoordinates(const QRectF &contents)
+void Label::scaleCoordinates(const QRectF &contents)
 {
 	if (mWasMoved) {
 		return;
@@ -137,37 +137,37 @@ void qReal::gui::editor::Label::scaleCoordinates(const QRectF &contents)
 	setPos(x, y);
 }
 
-void qReal::gui::editor::Label::setFlags(GraphicsItemFlags flags)
+void Label::setFlags(GraphicsItemFlags flags)
 {
 	QGraphicsTextItem::setFlags(flags);
 }
 
-void qReal::gui::editor::Label::setTextInteractionFlags(Qt::TextInteractionFlags flags)
+void Label::setTextInteractionFlags(Qt::TextInteractionFlags flags)
 {
 	QGraphicsTextItem::setTextInteractionFlags(flags);
 }
 
-void qReal::gui::editor::Label::setHtml(const QString &html)
+void Label::setHtml(const QString &html)
 {
 	QGraphicsTextItem::setHtml(html);
 }
 
-void qReal::gui::editor::Label::setPlainText(const QString &text)
+void Label::setPlainText(const QString &text)
 {
 	QGraphicsTextItem::setPlainText(text);
 }
 
-void qReal::gui::editor::Label::setPrefix(const QString &text)
+void Label::setPrefix(const QString &text)
 {
 	mProperties.setPrefix(text);
 }
 
-void qReal::gui::editor::Label::setSuffix(const QString &text)
+void Label::setSuffix(const QString &text)
 {
 	mProperties.setSuffix(text);
 }
 
-void qReal::gui::editor::Label::updateData(bool withUndoRedo)
+void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
 	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
@@ -186,12 +186,12 @@ void qReal::gui::editor::Label::updateData(bool withUndoRedo)
 	mGraphicalModelAssistApi.setLabelSize(mId, mProperties.index(), boundingRect().size());
 }
 
-void qReal::gui::editor::Label::reinitFont()
+void Label::reinitFont()
 {
 	setFont(BrandManager::fonts()->sceneLabelsFont());
 }
 
-void qReal::gui::editor::Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (dynamic_cast<EdgeElement *>(parentItem())) {
 		// Passing event to edge because users usially want to edit its property when clicking on it.
@@ -206,7 +206,7 @@ void qReal::gui::editor::Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	event->accept();
 }
 
-void qReal::gui::editor::Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (!mShouldMove) {
 		setSelected(false);
@@ -231,7 +231,7 @@ void qReal::gui::editor::Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	event->accept();
 }
 
-void qReal::gui::editor::Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mShouldMove = true;
 
@@ -241,7 +241,7 @@ void qReal::gui::editor::Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *even
 	setSelected(true);
 }
 
-void qReal::gui::editor::Label::init(const QRectF &contents)
+void Label::init(const QRectF &contents)
 {
 	mContents = contents;
 	mParentContents = contents;
@@ -259,33 +259,33 @@ void qReal::gui::editor::Label::init(const QRectF &contents)
 	}
 }
 
-void qReal::gui::editor::Label::setScaling(bool scalingX, bool scalingY)
+void Label::setScaling(bool scalingX, bool scalingY)
 {
 	mProperties.setScalingX(scalingX);
 	mProperties.setScalingY(scalingY);
 }
 
-void qReal::gui::editor::Label::setBackground(const QColor &background)
+void Label::setBackground(const QColor &background)
 {
 	mProperties.setBackground(background);
 }
 
-bool qReal::gui::editor::Label::isHard() const
+bool Label::isHard() const
 {
 	return mProperties.isHard();
 }
 
-void qReal::gui::editor::Label::setHard(bool hard)
+void Label::setHard(bool hard)
 {
 	mProperties.setHard(hard);
 }
 
-bool qReal::gui::editor::Label::isReadOnly() const
+bool Label::isReadOnly() const
 {
 	return mProperties.isReadOnly();
 }
 
-void qReal::gui::editor::Label::focusOutEvent(QFocusEvent *event)
+void Label::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
 	setTextInteractionFlags(Qt::NoTextInteraction);
@@ -306,7 +306,7 @@ void qReal::gui::editor::Label::focusOutEvent(QFocusEvent *event)
 	}
 }
 
-void qReal::gui::editor::Label::keyPressEvent(QKeyEvent *event)
+void Label::keyPressEvent(QKeyEvent *event)
 {
 	const int keyEvent = event->key();
 	if (keyEvent == Qt::Key_Escape) {
@@ -338,7 +338,7 @@ void qReal::gui::editor::Label::keyPressEvent(QKeyEvent *event)
 	QGraphicsTextItem::keyPressEvent(event);
 }
 
-void qReal::gui::editor::Label::startTextInteraction()
+void Label::startTextInteraction()
 {
 	// Already interacting?
 	if (hasFocus()) {
@@ -357,7 +357,7 @@ void qReal::gui::editor::Label::startTextInteraction()
 	setCursor(Qt::IBeamCursor);
 }
 
-void qReal::gui::editor::Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected() && dynamic_cast<EdgeElement *>(parentItem())) {
 		return;
@@ -386,12 +386,12 @@ void qReal::gui::editor::Label::paint(QPainter *painter, const QStyleOptionGraph
 	QGraphicsTextItem::paint(painter, option, widget);
 }
 
-void qReal::gui::editor::Label::drawText(QPainter *painter, const QRectF &rect, const QString &text)
+void Label::drawText(QPainter *painter, const QRectF &rect, const QString &text)
 {
 	painter->drawText(rect, Qt::AlignCenter, text);
 }
 
-QRectF qReal::gui::editor::Label::prefixRect() const
+QRectF Label::prefixRect() const
 {
 	const QRectF thisRect = QGraphicsTextItem::boundingRect();
 	QRectF textRect = this->textRect(mProperties.prefix());
@@ -401,7 +401,7 @@ QRectF qReal::gui::editor::Label::prefixRect() const
 	return textRect;
 }
 
-QRectF qReal::gui::editor::Label::suffixRect() const
+QRectF Label::suffixRect() const
 {
 	const QRectF thisRect = QGraphicsTextItem::boundingRect();
 	QRectF textRect = this->textRect(mProperties.siffix());
@@ -411,35 +411,35 @@ QRectF qReal::gui::editor::Label::suffixRect() const
 	return textRect;
 }
 
-QRectF qReal::gui::editor::Label::textRect(const QString &text) const
+QRectF Label::textRect(const QString &text) const
 {
 	return QFontMetrics(font()).boundingRect(text).adjusted(-3, 0, 3, 0);
 }
 
-QRectF qReal::gui::editor::Label::boundingRect() const
+QRectF Label::boundingRect() const
 {
 	return QGraphicsTextItem::boundingRect().united(prefixRect()).united(suffixRect());
 }
 
-void qReal::gui::editor::Label::updateRect(QPointF newBottomRightPoint)
+void Label::updateRect(QPointF newBottomRightPoint)
 {
 	mContents.setBottomRight(newBottomRightPoint);
 	setTextWidth(mContents.width());
 }
 
-void qReal::gui::editor::Label::clearMoveFlag()
+void Label::clearMoveFlag()
 {
 	mShouldMove = false;
 }
 
-QRectF qReal::gui::editor::Label::labelMovingRect() const
+QRectF Label::labelMovingRect() const
 {
 	const int distance = SettingsManager::value("LabelsDistance").toInt();
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
 }
 
-QString qReal::gui::editor::Label::enumText(const QString &enumValue) const
+QString Label::enumText(const QString &enumValue) const
 {
 	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mProperties.binding())
 			? enumValue

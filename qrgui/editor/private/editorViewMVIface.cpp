@@ -22,7 +22,6 @@
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 using namespace qReal;
-using namespace qReal::gui;
 using namespace qReal::gui::editor;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
@@ -159,7 +158,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		}
 
 		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
-		qReal::Element *elem = elementImpl->isNode()
+		Element *elem = elementImpl->isNode()
 				? dynamic_cast<Element *>(
 						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
 						)
@@ -272,7 +271,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 			return;
 		}
 
-		if (qReal::Element *element = item(curr)) {
+		if (Element *element = item(curr)) {
 			mScene->onElementDeleted(element);
 			mScene->removeItem(element);
 			delete element;
@@ -358,12 +357,12 @@ EditorViewScene *EditorViewMViface::scene() const
 	return mScene;
 }
 
-qReal::models::GraphicalModelAssistApi *EditorViewMViface::graphicalAssistApi() const
+models::GraphicalModelAssistApi *EditorViewMViface::graphicalAssistApi() const
 {
 	return mGraphicalAssistApi;
 }
 
-qReal::models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
+models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 {
 	return mLogicalAssistApi;
 }
@@ -384,7 +383,7 @@ void EditorViewMViface::clearItems()
 	mItems.clear();
 }
 
-qReal::Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
+Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
 	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {

@@ -25,7 +25,7 @@ namespace editor {
 namespace commands
 {
 
-class PasteNodeCommand : public qReal::gui::editor::commands::PasteCommand
+class PasteNodeCommand : public PasteCommand
 {
 public:
 	PasteNodeCommand(EditorViewScene *scene

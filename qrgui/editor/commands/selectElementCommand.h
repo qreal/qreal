@@ -18,7 +18,7 @@
 
 namespace qReal {
 namespace gui {
-namespace  editor {
+namespace editor {
 namespace commands {
 
 /// This command selects or deselects element on the scene

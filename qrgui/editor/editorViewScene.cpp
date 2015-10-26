@@ -43,7 +43,7 @@ using namespace qReal::commands;
 using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::commands;
 
-EditorViewScene::EditorViewScene(const qReal::models::Models &models
+EditorViewScene::EditorViewScene(const models::Models &models
 		, Controller &controller
 		, const SceneCustomizer &customizer
 		, const Id &rootId
@@ -96,12 +96,12 @@ EditorViewScene::EditorViewScene(const qReal::models::Models &models
 	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
 	connect(&mExploser, &view::details::ExploserView::expandElement, [=](const Id &element) {
 		if (NodeElement * const node = getNodeById(element)) {
-			mController.execute(new qReal::gui::editor::commands::ExpandCommand(node));
+			mController.execute(new ExpandCommand(node));
 		}
 	});
 }
 
-qreal qReal::gui::editor::EditorViewScene::realIndexGrid()
+qreal EditorViewScene::realIndexGrid()
 {
 	return mRealIndexGrid;
 }
@@ -135,7 +135,7 @@ void EditorViewScene::itemSelectUpdate()
 	}
 }
 
-qReal::Element *EditorViewScene::getElem(const qReal::Id &id) const
+Element *EditorViewScene::getElem(const Id &id) const
 {
 	if (id == Id::rootId()) {
 		return nullptr;
@@ -271,10 +271,10 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	}
 }
 
-bool EditorViewScene::canBeContainedBy(const qReal::Id &container, const qReal::Id &candidate) const
+bool EditorViewScene::canBeContainedBy(const Id &container, const Id &candidate) const
 {
 	bool allowed = false;
-	for (const qReal::Id &type : mEditorManager.containedTypes(container.type())) {
+	for (const Id &type : mEditorManager.containedTypes(container.type())) {
 		allowed = allowed || mEditorManager.isParentOf(candidate, type);
 	}
 
@@ -282,7 +282,7 @@ bool EditorViewScene::canBeContainedBy(const qReal::Id &container, const qReal::
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
-		, const QPointF &scenePos, bool canBeConnected, qReal::commands::CreateElementCommand **createCommand)
+		, const QPointF &scenePos, bool canBeConnected, CreateElementCommand **createCommand)
 {
 	edge->setSelected(true);
 
@@ -374,14 +374,14 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	return result;
 }
 
-qReal::Id EditorViewScene::createElement(const QString &str)
+Id EditorViewScene::createElement(const QString &str)
 {
 	mLastCreatedFromLinker = createElement(str, mCreatePoint, true, &mLastCreatedFromLinkerCommand);
 	mShouldReparentItems = false;
 	return mLastCreatedFromLinker;
 }
 
-qReal::Id EditorViewScene::createElement(const QString &str
+Id EditorViewScene::createElement(const QString &str
 		, const QPointF &scenePos
 		, bool searchForParents
 		, CreateElementCommand **createCommand
@@ -560,7 +560,7 @@ EdgeElement * EditorViewScene::edgeForInsertion(const QPointF &scenePos)
 }
 
 void EditorViewScene::resolveOverlaps(NodeElement *node, const QPointF &scenePos
-		, const QPointF &shift, QMap<qReal::Id, QPointF> &shifting) const
+		, const QPointF &shift, QMap<Id, QPointF> &shifting) const
 {
 	QList<NodeElement*> closeNodes = getCloseNodes(node);
 	for (NodeElement *closeNode : closeNodes) {
@@ -602,7 +602,7 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, const QPointF &scenePos
 
 void EditorViewScene::returnElementsToOldPositions(const QMap<Id, QPointF> &shifting) const
 {
-	for (const qReal::Id &id : shifting.keys()) {
+	for (const Id &id : shifting.keys()) {
 		NodeElement *node = getNodeById(id);
 		node->setPos(node->pos() - shifting[id]);
 		mModels.graphicalModelAssistApi().setPosition(node->id(), node->pos());
@@ -631,7 +631,7 @@ void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
 	node->adjustLinks();
 }
 
-NodeElement* EditorViewScene::getNodeById(const qReal::Id &itemId) const
+NodeElement* EditorViewScene::getNodeById(const Id &itemId) const
 {
 	for (QGraphicsItem *item : items()) {
 		NodeElement *node = dynamic_cast<NodeElement*>(item);
@@ -643,7 +643,7 @@ NodeElement* EditorViewScene::getNodeById(const qReal::Id &itemId) const
 	return nullptr;
 }
 
-EdgeElement* EditorViewScene::getEdgeById(const qReal::Id &itemId) const
+EdgeElement* EditorViewScene::getEdgeById(const Id &itemId) const
 {
 	for (QGraphicsItem *item : items()) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
@@ -688,7 +688,7 @@ void EditorViewScene::paste(bool isGraphicalCopy)
 	mClipboardHandler.paste(isGraphicalCopy);
 }
 
-qReal::Element *EditorViewScene::lastCreatedFromLinker() const
+Element *EditorViewScene::lastCreatedFromLinker() const
 {
 	return getElem(mLastCreatedFromLinker);
 }
@@ -1231,7 +1231,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-qReal::Element *EditorViewScene::findElemAt(const QPointF &position) const
+Element *EditorViewScene::findElemAt(const QPointF &position) const
 {
 	for (QGraphicsItem * const item : items(position)) {
 		if (Element * const element = dynamic_cast<Element *>(item)) {
@@ -1253,7 +1253,7 @@ NodeElement *EditorViewScene::findNodeAt(const QPointF &position) const
 	return nullptr;
 }
 
-qReal::Id EditorViewScene::rootItemId() const
+Id EditorViewScene::rootItemId() const
 {
 	return mRootId;
 }

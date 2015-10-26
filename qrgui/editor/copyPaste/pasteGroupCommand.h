@@ -17,13 +17,14 @@
 #include "controller/commands/abstractCommand.h"
 #include "editor/editorViewScene.h"
 
+using namespace qReal::commands;
+
 namespace qReal {
 namespace gui {
 namespace editor {
-
 namespace commands {
 
-class PasteGroupCommand : public qReal::commands::AbstractCommand
+class PasteGroupCommand : public AbstractCommand
 {
 public:
 	PasteGroupCommand(EditorViewScene *scene, bool isGraphicalCopy);

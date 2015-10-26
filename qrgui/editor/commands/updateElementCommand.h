@@ -18,7 +18,7 @@
 
 namespace qReal {
 namespace gui {
-namespace  editor {
+namespace editor {
 namespace commands {
 
 class UpdateElementCommand : public ElementCommand

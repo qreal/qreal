@@ -21,7 +21,6 @@ namespace qReal {
 namespace gui {
 namespace editor {
 
-
 /// A container for scene label properties (view and behavioural).
 /// Defines properties via Qt reflection so they can be used in property editor for dynamic Label
 /// properties modification. Also this is a useful trait for easy definition of concrete GraphicalPartModels.

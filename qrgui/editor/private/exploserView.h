@@ -27,7 +27,6 @@ class GraphicalModelAssistApi;
 class Exploser;
 }
 
-class Element;
 class Explosion;
 class Controller;
 class EditorManagerInterface;
@@ -39,6 +38,7 @@ class AbstractCommand;
 namespace gui {
 namespace editor {
 class SceneCustomizer;
+class Element;
 
 namespace view {
 namespace details {
@@ -107,7 +107,7 @@ private:
 	qReal::models::GraphicalModelAssistApi &mGraphicalApi;
 	qReal::models::Exploser &mExploser;
 	Controller &mController;
-	const qReal::gui::editor::SceneCustomizer &mCustomizer;
+	const SceneCustomizer &mCustomizer;
 };
 
 }

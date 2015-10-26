@@ -20,8 +20,7 @@
 
 namespace qReal {
 namespace gui {
-namespace  editor {
-
+namespace editor {
 
 class LabelFactory : public LabelFactoryInterface
 {

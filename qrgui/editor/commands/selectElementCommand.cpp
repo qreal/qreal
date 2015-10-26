@@ -14,7 +14,6 @@
 
 #include "selectElementCommand.h"
 
-using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;
 
 SelectElementCommand::SelectElementCommand(const EditorViewScene *scene

@@ -253,7 +253,7 @@ bool EditorView::viewportEvent(QEvent *event)
 	return QGraphicsView::viewportEvent(event);
 }
 
-void EditorView::ensureElementVisible(const qReal::Element * const element)
+void EditorView::ensureElementVisible(const Element * const element)
 {
 	if (element) {
 		const qreal widgetWidth = size().width();
@@ -264,7 +264,7 @@ void EditorView::ensureElementVisible(const qReal::Element * const element)
 	}
 }
 
-void EditorView::ensureElementVisible(const qReal::Element * const element
+void EditorView::ensureElementVisible(const Element * const element
 		, int xMargin, int yMargin)
 {
 	if (element) {

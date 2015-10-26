@@ -38,7 +38,7 @@ void SceneAPI::drawLink(const QString &fromElementId, const QString &toElementId
 	}
 
 	const EditorViewScene * const scene = &mMainWindow.getCurrentTab()->editorViewScene();
-	const EditorView * const sceneView = mMainWindow.getCurrentTab();
+	const qReal::gui::editor::EditorView * const sceneView = mMainWindow.getCurrentTab();
 
 	const NodeElement * const toNode = scene->getNodeById(Id::loadFromString(toElementId));
 	const NodeElement * const fromNode = scene->getNodeById(Id::loadFromString(fromElementId));
@@ -63,7 +63,7 @@ void SceneAPI::drawLink(const QString &fromElementId, const QString &toElementId
 QString SceneAPI::createBlockOnScene(const DraggableElement * const paletteElement
 		, int xSceneCoord, int ySceneCoord)
 {
-	if (EditorView * const currentTab = mMainWindow.getCurrentTab()) {
+	if (qReal::gui::editor::EditorView * const currentTab = mMainWindow.getCurrentTab()) {
 		const Id elementId(paletteElement->id(), QUuid::createUuid().toString());
 		const QMimeData * const mimeData = paletteElement->mimeData(elementId);
 		currentTab->mutableScene().createElement(
