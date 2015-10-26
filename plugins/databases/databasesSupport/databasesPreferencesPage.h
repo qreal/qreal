@@ -42,12 +42,12 @@ public:
 
 	void save();
 	virtual void restoreSettings();
-	const QString getReverseEngineerFilename() const;
+	QString const &getCodeGenerationFilename() const;
 	bool needToOpenFileAfterGeneration() const;
 public slots:
 	void dbmsChanging(QString const &dbmsName);
 	void changeReverseEngineerFilePath(QString const &path);
-	void browseFileForReverseEngineer();
+	void browseCodeGenerationFilename();
 signals:
 	void dbmsChanged(QString const &dbmsName);
 private:

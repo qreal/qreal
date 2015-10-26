@@ -554,27 +554,25 @@ void DatabasesGenerator::generatePhysicalModel()
 
 void DatabasesGenerator::generateSQLCode()
 {
-	bool success = true;
-
 	mErrorReporter->clear();
 
 	codeFile.setFileName(mWorkDir + mCodeFileName);
 	if (!codeFile.open(QIODevice::WriteOnly))
-		success = false;
+		return;
 
 	if (mDbms == "sqlServer2008")
-		success = generateWithSqlServer2008();
+		generateWithSqlServer2008();
 	else if (mDbms == "mySql5")
-		success = generateWithMySql5();
+		generateWithMySql5();
 	else if (mDbms == "sqlite")
-		success = generateWithSqlite();
+		generateWithSqlite();
 	else if (mDbms == "microsoftAccess")
-		success = generateWithMicrosoftAccess();
+		generateWithMicrosoftAccess();
 
 	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
 
-	if (success && mPreferencesPage->needToOpenFileAfterGeneration()) {
+	if (mPreferencesPage->needToOpenFileAfterGeneration()) {
 		// Windows
 		QProcess *proc = new QProcess();
 		proc->start("explorer C:\\Coursework\\qreal\\bin\\debug\\code.txt");
