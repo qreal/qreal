@@ -27,7 +27,7 @@ const int defaultTraceWidth = 6;
 
 RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robotModel)
 	: RotateItem()
-	, mImage(QImage(robotImageFileName))
+	, mImage(robotImageFileName)
 	, mBeepItem(new BeepItem)
 	, mRectangleImpl()
 	, mRobotModel(robotModel)
@@ -80,6 +80,8 @@ void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* opti
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
+	painter->setRenderHint(QPainter::Antialiasing);
+	painter->setRenderHint(QPainter::SmoothPixmapTransform);
 	mRectangleImpl.drawImageItem(painter, x1(), y1(), x2(), y2(), mImage);
 }
 

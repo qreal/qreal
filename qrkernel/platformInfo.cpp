@@ -15,7 +15,9 @@
 #include "platformInfo.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QDir>
+#include <QtCore/QProcessEnvironment>
 
 #include <qrkernel/settingsManager.h>
 
@@ -98,9 +100,16 @@ QString PlatformInfo::defaultPlatformConfigPath()
 
 QString PlatformInfo::invariantPath(const QString &path)
 {
-	return path.startsWith("./")
-			? qReal::PlatformInfo::applicationDirPath() + path.mid(1)
-			: path;
+	QRegExp windowsVariablesRegexp("^%([A-Za-z0-9_]+)%.*");
+	if (path.startsWith("./")) {
+		return qReal::PlatformInfo::applicationDirPath() + path.mid(1);
+	} else if (windowsVariablesRegexp.exactMatch(path)) {
+		const QString variable = windowsVariablesRegexp.cap(1);
+		const QString value = QProcessEnvironment::systemEnvironment().value(variable);
+		return QString(path).replace("%" + variable + "%", value);
+	}
+
+	return path;
 }
 
 QString PlatformInfo::invariantSettingsPath(const QString &settingsKey)
