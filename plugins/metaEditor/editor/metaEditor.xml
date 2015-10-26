@@ -297,10 +297,7 @@
 						<property type="linkShapeType" name="shape">
 							<default>broken</default>
 						</property>
-
-
-
-						<property type="associationTypes" name="beginType">
+      						<property type="associationTypes" name="beginType">
 							<default>no_arrow</default>
 						</property>
 						<property type="associationTypes" name="endType">
@@ -309,12 +306,9 @@
                                                         
 						<property type="string" name="beginName"/>
 						<property type="string" name="endName"/>
-				
-                                                                      
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
-							
 						<contains type="MetaEditor::Inheritance"/>
 						<contains type="MetaEditor::Importation"/>
 						<properties>
@@ -530,22 +524,6 @@
 					<containers/>
 				</logic>
 			</node>
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			<node name="MetaEntityUsage" displayedName="Usage" description="Не поддерживается">
 				<graphics>
 					<picture sizex="120" sizey="40">
