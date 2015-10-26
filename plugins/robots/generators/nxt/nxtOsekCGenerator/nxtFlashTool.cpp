@@ -216,5 +216,5 @@ void NxtFlashTool::readNxtUploadData()
 
 const QString NxtFlashTool::path(const QString &file) const
 {
-	return PlatformInfo::invariantSettingsPath("pathToNxtTools") + "/" + file;
+	return QDir::toNativeSeparators(PlatformInfo::invariantSettingsPath("pathToNxtTools") + "/" + file);
 }
