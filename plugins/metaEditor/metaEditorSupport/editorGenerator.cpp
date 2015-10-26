@@ -535,7 +535,7 @@ void EditorGenerator::setGroupNodes(QDomElement &parent, const Id &id)
 
 
 void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
-{
+{/*
 	IdList const childElems = mApi.children(id);
 
 	foreach (Id const idChild, childElems) {
@@ -551,7 +551,24 @@ void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
 			ensureCorrectness(idChild, association, "endName", mApi.stringProperty(idChild, "endName"));
 			associationTag.appendChild(association);
 		}
-	}
+	}*/
+	//ensureCorrectness(id, lineType, "type", mApi.stringProperty(id, "lineType"));
+
+//	QDomElement associations = mDocument.createElement("associations");
+//	parent.appendChild(associations);
+//	associations.setAttribute("beginType", mApi.stringProperty(id, "beginType"));
+//	associations.setAttribute("endType", mApi.stringProperty(id, "endType"));
+
+	QDomElement associationTag = mDocument.createElement("associations");
+	ensureCorrectness(id, associationTag, "beginType", mApi.stringProperty(id, "beginType"));
+	ensureCorrectness(id, associationTag, "endType", mApi.stringProperty(id, "endType"));
+	parent.appendChild(associationTag);
+
+	QDomElement association = mDocument.createElement("association");
+	ensureCorrectness(id, association, "beginName", mApi.stringProperty(id, "beginName"));
+	ensureCorrectness(id, association, "endName", mApi.stringProperty(id, "endName"));
+	associationTag.appendChild(association);
+
 }
 
 void EditorGenerator::setUsages(QDomElement &parent, const Id &id)
