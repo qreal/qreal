@@ -9,18 +9,18 @@ class ConcreteGenerator : public utils::AbstractGenerator
 {
 public:
 	/** Constructor.
-	  @param templateDirPath Path to a directory with generation template.
-	  @param outputDirPath Path to a directory.
-	  @param logicalModel Logical model reference.
-	  @param errorReporter Object to return errors to.
+	  @param templateDirPath - Path to a directory with generation template.
+	  @param outputDirPath - Path to a directory.
+	  @param logicalModel - Logical model reference.
+	  @param errorReporter - Object to return errors to.
 	  */
-	ConcreteGenerator(QString const &templateDirPath
-			, QString const &outputDirPath
-			, QString const &pathToQReal
-			, qReal::LogicalModelAssistInterface const &logicalModel
+	ConcreteGenerator(const QString &templateDirPath
+			, const QString &outputDirPath
+			, const QString &pathToQReal
+			, const qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
-			, QString const &metamodelLanguageName
-			, QString const &constraintsMetamodelName
+			, const QString &metamodelLanguageName
+			, const QString &constraintsMetamodelName
 			);
 
 	virtual ~ConcreteGenerator();

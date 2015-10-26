@@ -18,13 +18,13 @@ QString const keywordForAllEdges = "AllEdges";
 QString const keywordForAllNodes = "AllNodes";
 QString const keywordForAllLanguages = "AllLanguages";
 
-ConcreteGenerator::ConcreteGenerator(QString const &templateDirPath
-		, QString const &outputDirPath
-		, QString const &pathToQReal
-		, qReal::LogicalModelAssistInterface const &logicalModel
+ConcreteGenerator::ConcreteGenerator(const QString &templateDirPath
+		, const QString &outputDirPath
+		, const QString &pathToQReal
+		, const qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
-		, QString const &metamodelLanguageName
-		, QString const &constraintsMetamodelName
+		, const QString &metamodelLanguageName
+		, const QString &constraintsMetamodelName
 		)
 	: AbstractGenerator(templateDirPath, outputDirPath + QString("/constraints" + constraintsMetamodelName + "/"), logicalModel, errorReporter)
 	, mPathToQReal(pathToQReal), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)

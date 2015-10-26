@@ -28,7 +28,8 @@ using namespace qReal;
 ConstraintsManager::ConstraintsManager()
 	: mPluginManager(PlatformInfo::applicationDirPath(), "plugins/tools")
 {
-	const QList<ConstraintsPluginInterface *> loadedPlugins = mPluginManager.loadAllPlugins<ConstraintsPluginInterface>();
+	const QList<ConstraintsPluginInterface *> loadedPlugins =
+			mPluginManager.loadAllPlugins<ConstraintsPluginInterface>();
 
 	for (ConstraintsPluginInterface *constraintPlugin : loadedPlugins) {
 		if (constraintPlugin) {
