@@ -79,8 +79,9 @@
 #include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
+using namespace qReal::gui;
 using namespace qReal::commands;
-using namespace gui;
+using namespace qReal::gui::editor;
 
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
