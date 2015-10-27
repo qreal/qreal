@@ -11,5 +11,5 @@ cp -pr $BIN_DIR/librobots-ev3-kit.so*                                   $PWD/../
 cp -pr $BIN_DIR/libqextserialport.so*                                   $PWD/../data/lib
 
 # Cleaning up prebuild-common.sh results...
-rm -rf $PWD/../data/plugins/ $PWD/../data/lib
+rm -rf $PWD/../data/plugins/
 mv $PWD/../data/examples $PWD/../data/resources

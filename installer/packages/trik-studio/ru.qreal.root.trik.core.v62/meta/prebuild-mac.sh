@@ -6,10 +6,14 @@ cd "$(dirname "$0")"
 source $INSTALLER_ROOT/utils/mac_utils.sh
 
 
-fix_dependencies $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-interpreter.dylib     $QT_DIR/lib @executable_path/../../..
-fix_dependencies $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-qts-generator.dylib   $QT_DIR/lib @executable_path/../../..
-fix_dependencies $BIN_DIR/plugins/tools/librobots-trik-v62-runtime-uploader-plugin.dylib    $QT_DIR/lib @executable_path/../../..
+mkdir -p "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins"
+cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-interpreter.dylib              "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins/"
+cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-qts-generator.dylib            "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins/"
+cp     $BIN_DIR/plugins/tools/librobots-trik-v62-runtime-uploader-plugin.dylib             "$BUNDLE_CONTENTS/Lib/plugins/tools/"
 
-cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-interpreter.dylib               $PWD/../data/plugins/tools/kitPlugins/
-cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-qts-generator.dylib             $PWD/../data/plugins/tools/kitPlugins/
-cp     $BIN_DIR/plugins/tools/librobots-trik-v62-runtime-uploader-plugin.dylib              $PWD/../data/plugins/tools/
+fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins/librobots-trik-v62-interpreter.dylib"
+fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins/librobots-trik-v62-qts-generator.dylib"
+fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/librobots-trik-v62-runtime-uploader-plugin.dylib"
+
+# Cleaning up prebuild-common.sh results...
+rm -rf $PWD/../data/plugins/

@@ -79,7 +79,7 @@ QString PlatformInfo::prettyOsVersion()
 QString PlatformInfo::applicationDirPath()
 {
 #if defined Q_OS_MAC
-	if (QDir(QCoreApplication::applicationDirPath() + "/plugins").exists()) {
+	if (QFile(QCoreApplication::applicationDirPath() + "/platform.config").exists()) {
 		return QCoreApplication::applicationDirPath();
 	}
 
@@ -103,6 +103,10 @@ QString PlatformInfo::invariantPath(const QString &path)
 	QRegExp windowsVariablesRegexp("^%([A-Za-z0-9_]+)%.*");
 	if (path.startsWith("./")) {
 		return qReal::PlatformInfo::applicationDirPath() + path.mid(1);
+	} else if (path.startsWith("@DocumentsPath@")) {
+		const QStringList documentsPaths = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+		const QString documentsPath = documentsPaths.isEmpty() ? applicationDirPath() : documentsPaths.first();
+		return QString(path).replace("@DocumentsPath@", documentsPath);
 	} else if (windowsVariablesRegexp.exactMatch(path)) {
 		const QString variable = windowsVariablesRegexp.cap(1);
 		const QString value = QProcessEnvironment::systemEnvironment().value(variable);
