@@ -75,7 +75,7 @@ const QStringList commands = {
 
 TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 	: mUploaderTool(
-			tr("Upload Runtime (old case)")
+			tr("Upload Runtime for TRIK 2014")
 			, ":/trik/images/flashRobot.svg"
 			, "trikKit"
 			, commands
