@@ -133,22 +133,23 @@
         <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="61"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
         <source>Too many outgoing links</source>
         <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="71"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="73"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="78"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="139"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="144"/>
         <source>Block has disappeared!</source>
         <translation>Блок исчез!</translation>
     </message>

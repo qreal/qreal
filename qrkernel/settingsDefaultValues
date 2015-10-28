@@ -57,6 +57,7 @@ pathToLogs=./logs
 pathToEditorPlugins=./plugins/editors
 pathToToolPlugins=./plugins/tools
 pathToInterpretedPlugins=./plugins/interpreted
+pathToDefaultSaves=@DocumentsPath@/
 toolbarSize=30
 AutosaveTempFile=~tempFile
 pythonPath=python
