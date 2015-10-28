@@ -168,13 +168,14 @@ void RepoApi::setParent(const Id &id, const Id &parent)
 
 IdList RepoApi::links(const Id &id, const QString &direction) const
 {
-	IdList links = mRepository->property(id, "links").value<IdList>();
+	const IdList links = mRepository->property(id, "links").value<IdList>();
 	IdList result;
 	for (const Id &link : links) {
 		if (mRepository->exist(link) && mRepository->property(link, direction).value<Id>() == id) {
 			result.append(link);
 		}
 	}
+
 	return result;
 }
 
