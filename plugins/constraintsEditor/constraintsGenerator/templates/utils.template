@@ -25,10 +25,10 @@ SUBDIRS = \
 		checkings.append(mConstraints@@diagramName@@.check(element, logicalApi, editorManager));
 	}
 ==========
-@@optionalCheckElemet@@
+@@optionalCheckElement@@
 	qReal::CheckStatus check@@elementNameWithId@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
 ==========
-@@mainCheckElemet@@
+@@mainCheckElement@@
 	QList<qReal::CheckStatus> check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
 ==========
 @@addElementInElementsNames@@
@@ -47,7 +47,7 @@ SUBDIRS = \
 		checkings.append(check@@elementName@@(element, logicalApi));
 	}
 ==========
-@@countOptionalCheckStatusOfElemet@@
+@@countOptionalCheckStatusOfElement@@
 qReal::CheckStatus Constraints@@diagramName@@::check@@elementNameWithId@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {
 	bool res = true;
@@ -55,7 +55,7 @@ qReal::CheckStatus Constraints@@diagramName@@::check@@elementNameWithId@@(qReal:
 	return qReal::CheckStatus(res, "@@errorText@@", qReal::CheckStatus::@@checkStatus@@);
 }
 ==========
-@@countMainCheckStatusOfElemet@@
+@@countMainCheckStatusOfElement@@
 QList<qReal::CheckStatus> Constraints@@diagramName@@::check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {
 	QList<qReal::CheckStatus> checkings;

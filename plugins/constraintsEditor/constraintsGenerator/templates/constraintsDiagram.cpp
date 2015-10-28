@@ -11,9 +11,9 @@ Constraints@@diagramName@@::~Constraints@@diagramName@@()
 {
 }
 
-@@countOptionalCheckStatusesForElemets@@
+@@countOptionalCheckStatusesForElements@@
 
-@@countMainCheckStatusesForElemets@@
+@@countMainCheckStatusesForElements@@
 QList<qReal::CheckStatus> Constraints@@diagramName@@::check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager)
 {
 	QList<qReal::CheckStatus> checkings;

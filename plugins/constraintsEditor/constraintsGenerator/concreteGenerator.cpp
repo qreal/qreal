@@ -68,13 +68,13 @@ QString ConcreteGenerator::constraintModelId() const //i.e. pliginId
 
 ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateCommonNeededPartsForElements(QString elementName)
 {
-	QString mainChecksForElemetsH;
+	QString mainChecksForElementsH;
 	QString returnCheckStatusesOfElementsInCheckCPP;
 	QString addElementsInElementsNamesCPP;
 
-	QString mainCheckOfElemetH = mTemplateUtils["@@mainCheckElemet@@"];
-	mainCheckOfElemetH.replace("@@elementName@@", elementName);
-	mainChecksForElemetsH += mainCheckOfElemetH;
+	QString mainCheckOfElementH = mTemplateUtils["@@mainCheckElement@@"];
+	mainCheckOfElementH.replace("@@elementName@@", elementName);
+	mainChecksForElementsH += mainCheckOfElementH;
 
 	QString addElementInElementNames = mTemplateUtils["@@addElementInElementsNames@@"];
 	addElementInElementNames.replace("@@elementName@@", elementName);
@@ -98,29 +98,29 @@ ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateC
 		returnCheckStatusesOfElementsInCheckCPP += returnCheckStatusOfElement;
 	}
 
-	return NeededStringsForConcreteGenerate("", mainChecksForElemetsH, "", "", "", returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
+	return NeededStringsForConcreteGenerate("", mainChecksForElementsH, "", "", "", returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
 }
 
-QString ConcreteGenerator::generateMainCheckStatusesForElemetsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP)
+QString ConcreteGenerator::generateMainCheckStatusesForElementsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP)
 {
-	QString countMainCheckStatusesForElemetsCPP;
+	QString countMainCheckStatusesForElementsCPP;
 	foreach (QString curElementName, appendOptionalCheckStatusInMainCheckCPP.keys()) {
 		QString appendOptionalCheckStatusOfElement = appendOptionalCheckStatusInMainCheckCPP[curElementName];
-		QString countMainCheckStatusOfElemetCPP = mTemplateUtils["@@countMainCheckStatusOfElemet@@"];
-		countMainCheckStatusOfElemetCPP.replace("@@elementName@@", curElementName);
-		countMainCheckStatusOfElemetCPP.replace("@@appendOptionalCheckStatusesOfElement@@", appendOptionalCheckStatusOfElement);
+		QString countMainCheckStatusOfElementCPP = mTemplateUtils["@@countMainCheckStatusOfElement@@"];
+		countMainCheckStatusOfElementCPP.replace("@@elementName@@", curElementName);
+		countMainCheckStatusOfElementCPP.replace("@@appendOptionalCheckStatusesOfElement@@", appendOptionalCheckStatusOfElement);
 
-		countMainCheckStatusesForElemetsCPP += countMainCheckStatusOfElemetCPP;
+		countMainCheckStatusesForElementsCPP += countMainCheckStatusOfElementCPP;
 	}
-	return countMainCheckStatusesForElemetsCPP;
+	return countMainCheckStatusesForElementsCPP;
 }
 
 ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateNeededPartsForDiagramFiles(Id const &diagram)
 {
-	QString optionalChecksForElemetsH;
-	QString mainChecksForElemetsH;
-	QString countOptionalCheckStatusesForElemetsCPP;
-	QString countMainCheckStatusesForElemetsCPP;
+	QString optionalChecksForElementsH;
+	QString mainChecksForElementsH;
+	QString countOptionalCheckStatusesForElementsCPP;
+	QString countMainCheckStatusesForElementsCPP;
 	QString returnCheckStatusesOfElementsInCheckCPP;
 	QString addElementsInElementsNamesCPP;
 
@@ -161,7 +161,7 @@ ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateN
 		int id = elementCount.value(elementName);
 		if (id == 1) {
 			NeededStringsForConcreteGenerate neededString = generateCommonNeededPartsForElements(elementName);
-			mainChecksForElemetsH += neededString.mainChecksForElemetsH;
+			mainChecksForElementsH += neededString.mainChecksForElementsH;
 			returnCheckStatusesOfElementsInCheckCPP += neededString.returnCheckStatusesOfElementsInCheckCPP;
 			addElementsInElementsNamesCPP += neededString.addElementsInElementsNamesCPP;
 		}
@@ -170,16 +170,16 @@ ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateN
 		elementNameWithId.replace("@@elementName@@", elementName).replace("@@id@@", QString::number(id));
 		elementNameWithId.truncate(elementNameWithId.size() - 1);
 
-		QString optionalCheckOfElemetH = mTemplateUtils["@@optionalCheckElemet@@"];
-		optionalCheckOfElemetH.replace("@@elementNameWithId@@", elementNameWithId);
-		optionalChecksForElemetsH += optionalCheckOfElemetH;
+		QString optionalCheckOfElementH = mTemplateUtils["@@optionalCheckElement@@"];
+		optionalCheckOfElementH.replace("@@elementNameWithId@@", elementNameWithId);
+		optionalChecksForElementsH += optionalCheckOfElementH;
 
-		QString countOptionalCheckStatusOfElemet = mTemplateUtils["@@countOptionalCheckStatusOfElemet@@"];
-		countOptionalCheckStatusOfElemet.replace("@@elementNameWithId@@", elementNameWithId);
-		countOptionalCheckStatusOfElemet.replace("@@countRealCheckStatusOfElement@@", countRealConstraintOfDiagramElement(element));
-		countOptionalCheckStatusOfElemet.replace("@@errorText@@", mApi.property(element, "errorText").toString());
-		countOptionalCheckStatusOfElemet.replace("@@checkStatus@@", mApi.property(element, "errorType").toString());
-		countOptionalCheckStatusesForElemetsCPP += countOptionalCheckStatusOfElemet;
+		QString countOptionalCheckStatusOfElement = mTemplateUtils["@@countOptionalCheckStatusOfElement@@"];
+		countOptionalCheckStatusOfElement.replace("@@elementNameWithId@@", elementNameWithId);
+		countOptionalCheckStatusOfElement.replace("@@countRealCheckStatusOfElement@@", countRealConstraintOfDiagramElement(element));
+		countOptionalCheckStatusOfElement.replace("@@errorText@@", mApi.property(element, "errorText").toString());
+		countOptionalCheckStatusOfElement.replace("@@checkStatus@@", mApi.property(element, "errorType").toString());
+		countOptionalCheckStatusesForElementsCPP += countOptionalCheckStatusOfElement;
 
 		QString appendOptionalCheckStatusOfElement = mTemplateUtils["@@appendOptionalCheckStatusOfElement@@"];
 		appendOptionalCheckStatusOfElement.replace("@@elementNameWithId@@", elementNameWithId);
@@ -195,9 +195,9 @@ ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateN
 		prefixForReturnCheckStatusesOfElementsInCheckCPP = mTemplateUtils["@@prefixForReturnCheckStatusOfElementByMetaTypeInCheck@@"];
 	}
 
-	countMainCheckStatusesForElemetsCPP += generateMainCheckStatusesForElemetsCPP(appendOptionalCheckStatusInMainCheckCPP);
+	countMainCheckStatusesForElementsCPP += generateMainCheckStatusesForElementsCPP(appendOptionalCheckStatusInMainCheckCPP);
 
-	return NeededStringsForConcreteGenerate(optionalChecksForElemetsH, mainChecksForElemetsH, countOptionalCheckStatusesForElemetsCPP, countMainCheckStatusesForElemetsCPP
+	return NeededStringsForConcreteGenerate(optionalChecksForElementsH, mainChecksForElementsH, countOptionalCheckStatusesForElementsCPP, countMainCheckStatusesForElementsCPP
 											, prefixForReturnCheckStatusesOfElementsInCheckCPP, returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
 }
 
@@ -210,13 +210,13 @@ void ConcreteGenerator::generateDiagramFiles(Id const &diagram, QString diagramN
 
 	NeededStringsForConcreteGenerate needeStrings = generateNeededPartsForDiagramFiles(diagram);
 
-	resultDiagramH.replace("@@optionalChecksForElemets@@", needeStrings.optionalChecksForElemetsH);
-	resultDiagramH.replace("@@mainChecksForElemets@@", needeStrings.mainChecksForElemetsH);
+	resultDiagramH.replace("@@optionalChecksForElements@@", needeStrings.optionalChecksForElementsH);
+	resultDiagramH.replace("@@mainChecksForElements@@", needeStrings.mainChecksForElementsH);
 	resultDiagramH.replace("@@diagramName@@", diagramNameTemplate);
 	resultDiagramH.replace("@@pathToQReal@@", mPathToQReal);
 
-	resultDiagramCPP.replace("@@countOptionalCheckStatusesForElemets@@", needeStrings.countOptionalCheckStatusesForElemetsCPP);
-	resultDiagramCPP.replace("@@countMainCheckStatusesForElemets@@", needeStrings.countMainCheckStatusesForElemetsCPP);
+	resultDiagramCPP.replace("@@countOptionalCheckStatusesForElements@@", needeStrings.countOptionalCheckStatusesForElementsCPP);
+	resultDiagramCPP.replace("@@countMainCheckStatusesForElements@@", needeStrings.countMainCheckStatusesForElementsCPP);
 	resultDiagramCPP.replace("@@prefixForReturnCheckStatusesOfElementsInCheck@@", needeStrings.prefixForReturnCheckStatusesOfElementsInCheckCPP);
 	resultDiagramCPP.replace("@@returnCheckStatusesOfElementsInCheck@@", needeStrings.returnCheckStatusesOfElementsInCheckCPP);
 	resultDiagramCPP.replace("@@addElementsInElementsNames@@", needeStrings.addElementsInElementsNamesCPP);
@@ -290,15 +290,15 @@ void ConcreteGenerator::generate()
 
 	resultPRO.replace("@@pathToQReal@@", mPathToQReal);
 	resultPRO.replace("@@metamodelName@@", mMetamodelName);
-	resultPRO.replace("@@constraintsDiagramHFiles@@", neededStrings.hFiles);
-	resultPRO.replace("@@constraintsDiagramCppFiles@@", neededStrings.cppFiles);
+	resultPRO.replace("@@constraintsDiagramHFiles@@", neededStrings.mHFiles);
+	resultPRO.replace("@@constraintsDiagramCppFiles@@", neededStrings.mCppFiles);
 
-	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", neededStrings.includeFilesPluginH);
-	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", neededStrings.privateFieldsPluginH);
+	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", neededStrings.mIncludeFilesPluginH);
+	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", neededStrings.mPrivateFieldsPluginH);
 	resultPluginH.replace("@@pathToQReal@@", mPathToQReal);
 
 	resultPluginCPP.replace("@@metamodelName@@", mMetamodelName);
-	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
+	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.mIfForMainCheckPluginCPP);
 	resultPluginCPP.replace("@@constraintsPluginId@@", mConstraintsName);
 
 	QString fileBaseName = constraintNormalizerModelName();

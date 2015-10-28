@@ -10,8 +10,8 @@ public:
 	Constraints@@diagramName@@();
 	virtual ~Constraints@@diagramName@@();
 
-@@optionalChecksForElemets@@
-@@mainChecksForElemets@@
+@@optionalChecksForElements@@
+@@mainChecksForElements@@
 	QList<qReal::CheckStatus> check(qReal::Id const &element
 		, qrRepo::LogicalRepoApi const &logicalApi
 		, qReal::EditorManagerInterface const &editorManager);

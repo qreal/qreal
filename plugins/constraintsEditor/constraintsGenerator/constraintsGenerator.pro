@@ -20,11 +20,13 @@ HEADERS = \
 	constraintsGeneratorPlugin.h \
 	generator.h \
 	concreteGenerator.h \
+	generatorUtils/commonGeneratorInfo.h \
 
 SOURCES = \
 	constraintsGeneratorPlugin.cpp \
 	generator.cpp \
 	concreteGenerator.cpp \
+	generatorUtils/commonGeneratorInfo.cpp \
 
 win32 {
 	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "

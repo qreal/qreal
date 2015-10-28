@@ -23,10 +23,9 @@ public:
 			, const QString &constraintsMetamodelName
 			);
 
-	virtual ~ConcreteGenerator();
+	~ConcreteGenerator() override;
 
-	/// Starts generation.
-	void generate();
+	void generate() override;
 
 	QString constraintModelFullName() const;
 	QString constraintModelName() const;
@@ -44,40 +43,54 @@ private :
 	};
 
 	struct NeededStringsForCommonGenerate {
-		QString hFiles;
-		QString cppFiles;
-		QString includeFilesPluginH;
-		QString privateFieldsPluginH;
-		QString ifForMainCheckPluginCPP;
+		NeededStringsForCommonGenerate(const QString &curHFiles
+				, const QString &curCppFiles
+				, const QString &curIncludeFilesPluginH
+				, const QString &curPrivateFieldsPluginH
+				, const QString &curIfForMainCheckPluginCPP)
+			: mHFiles(curHFiles)
+			, mCppFiles(curCppFiles)
+			, mIncludeFilesPluginH(curIncludeFilesPluginH)
+			, mPrivateFieldsPluginH(curPrivateFieldsPluginH)
+			, mIfForMainCheckPluginCPP(curIfForMainCheckPluginCPP)
+		{}
 
-		NeededStringsForCommonGenerate(QString curHFiles, QString curCppFiles, QString curIncludeFilesPluginH
-				, QString curPrivateFieldsPluginH, QString curIfForMainCheckPluginCPP)
-				: hFiles(curHFiles), cppFiles(curCppFiles), includeFilesPluginH(curIncludeFilesPluginH)
-				, privateFieldsPluginH(curPrivateFieldsPluginH), ifForMainCheckPluginCPP(curIfForMainCheckPluginCPP) {}
+		QString mHFiles;
+		QString mCppFiles;
+		QString mIncludeFilesPluginH;
+		QString mPrivateFieldsPluginH;
+		QString mIfForMainCheckPluginCPP;
 	};
 
 	struct NeededStringsForConcreteGenerate {
-		QString optionalChecksForElemetsH;
-		QString mainChecksForElemetsH;
-		QString countOptionalCheckStatusesForElemetsCPP;
-		QString countMainCheckStatusesForElemetsCPP;
+		QString optionalChecksForElementsH;
+		QString mainChecksForElementsH;
+		QString countOptionalCheckStatusesForElementsCPP;
+		QString countMainCheckStatusesForElementsCPP;
 		QString prefixForReturnCheckStatusesOfElementsInCheckCPP;
 		QString returnCheckStatusesOfElementsInCheckCPP;
 		QString addElementsInElementsNamesCPP;
 
-		NeededStringsForConcreteGenerate(QString curOptionalChecksForElemetsH, QString curMainChecksForElemetsH
-				, QString curCountOptionalCheckStatusesForElemetsCPP, QString curCountMainCheckStatusesForElemetsCPP
-				, QString curPrefixForReturnCheckStatusesOfElementsInCheckCPP, QString curReturnCheckStatusesOfElementsInCheckCPP, QString curAddElementsInElementsNamesCPP)
-				: optionalChecksForElemetsH(curOptionalChecksForElemetsH), mainChecksForElemetsH(curMainChecksForElemetsH)
-				, countOptionalCheckStatusesForElemetsCPP(curCountOptionalCheckStatusesForElemetsCPP)
-				, countMainCheckStatusesForElemetsCPP(curCountMainCheckStatusesForElemetsCPP)
-				, prefixForReturnCheckStatusesOfElementsInCheckCPP(curPrefixForReturnCheckStatusesOfElementsInCheckCPP)
-				, returnCheckStatusesOfElementsInCheckCPP(curReturnCheckStatusesOfElementsInCheckCPP)
-				, addElementsInElementsNamesCPP(curAddElementsInElementsNamesCPP) {}
+		NeededStringsForConcreteGenerate(
+				QString curOptionalChecksForElementsH
+				, QString curMainChecksForElementsH
+				, QString curCountOptionalCheckStatusesForElementsCPP
+				, QString curCountMainCheckStatusesForElementsCPP
+				, QString curPrefixForReturnCheckStatusesOfElementsInCheckCPP
+				, QString curReturnCheckStatusesOfElementsInCheckCPP
+				, QString curAddElementsInElementsNamesCPP)
+			: optionalChecksForElementsH(curOptionalChecksForElementsH)
+			, mainChecksForElementsH(curMainChecksForElementsH)
+			, countOptionalCheckStatusesForElementsCPP(curCountOptionalCheckStatusesForElementsCPP)
+			, countMainCheckStatusesForElementsCPP(curCountMainCheckStatusesForElementsCPP)
+			, prefixForReturnCheckStatusesOfElementsInCheckCPP(curPrefixForReturnCheckStatusesOfElementsInCheckCPP)
+			, returnCheckStatusesOfElementsInCheckCPP(curReturnCheckStatusesOfElementsInCheckCPP)
+			, addElementsInElementsNamesCPP(curAddElementsInElementsNamesCPP)
+		{}
 	};
 
 	NeededStringsForConcreteGenerate generateCommonNeededPartsForElements(QString elementName);
-	QString generateMainCheckStatusesForElemetsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP);
+	QString generateMainCheckStatusesForElementsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP);
 	NeededStringsForConcreteGenerate generateNeededPartsForDiagramFiles(qReal::Id const &diagram);
 	void generateDiagramFiles(qReal::Id const &diagram, QString diagramNameTemplate);
 	NeededStringsForCommonGenerate generateNeededPartsForAllConstraintsDiagram();
