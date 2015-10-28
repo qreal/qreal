@@ -55,6 +55,11 @@ bool Block::initNextBlocks()
 		return false;
 	}
 
+	if (!mGraphicalModelApi->graphicalRepoApi().exist(id())) {
+		error(tr("Block has disappeared!"));
+		return false;
+	}
+
 	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	if (links.count() > 1) {
