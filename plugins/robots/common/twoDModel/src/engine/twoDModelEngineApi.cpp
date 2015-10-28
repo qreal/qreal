@@ -181,7 +181,12 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	const QPoint offset = QPointF(width, width).toPoint();
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
 	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
-	return rotated.copy(realImage);
+	QImage result(realImage.size(), QImage::Format_RGB32);
+	result.fill(Qt::white);
+	QPainter painter(&result);
+	painter.drawImage(QRect(QPoint(), result.size()), rotated, realImage);
+	painter.end();
+	return result;
 }
 
 int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
@@ -266,11 +271,12 @@ int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 		const int g = (color >> 8) & 0xFF;
 		const int r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
-		const int brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+		const uint brightness = static_cast<uint>(0.2126 * r + 0.7152 * g + 0.0722 * b);
 
 		sum += 4 * brightness; // 4 = max sensor value / max brightness value
 	}
-	const qreal rawValue = sum / n; // Average by whole region
+
+	const qreal rawValue = sum * 1.0 / n; // Average by whole region
 	return rawValue * 100 / maxLightSensorValue; // Normalizing to percents
 }
 
