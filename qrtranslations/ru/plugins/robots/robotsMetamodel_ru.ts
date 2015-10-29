@@ -1726,7 +1726,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1014"/>
         <source>Sets the color of the led on the robot`s front panel.</source>
-        <translation>Установить цвет светодиода на передней панели роота.</translation>
+        <translation>Установить цвет светодиода на передней панели робота.</translation>
     </message>
     <message>
         <source>Stores  current videocamera line detector`s value into a given variable.</source>
