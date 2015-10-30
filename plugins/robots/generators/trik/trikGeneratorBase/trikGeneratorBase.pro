@@ -51,6 +51,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/initCameraGenerator.h \
 	$$PWD/src/simpleGenerators/ledGenerator.h \
 	$$PWD/src/simpleGenerators/detectorToVariableGenerator.h \
+	$$PWD/src/simpleGenerators/initVideoStreamingGenerator.h \
 	$$PWD/src/simpleGenerators/playToneGenerator.h \
 	$$PWD/src/simpleGenerators/sadSmileGenerator.h \
 	$$PWD/src/simpleGenerators/sayGenerator.h \
@@ -91,6 +92,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/initCameraGenerator.cpp \
 	$$PWD/src/simpleGenerators/ledGenerator.cpp \
 	$$PWD/src/simpleGenerators/detectorToVariableGenerator.cpp \
+	$$PWD/src/simpleGenerators/initVideoStreamingGenerator.cpp \
 	$$PWD/src/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/src/simpleGenerators/sadSmileGenerator.cpp \
 	$$PWD/src/simpleGenerators/sayGenerator.cpp \

@@ -1146,6 +1146,22 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Enable Video Streaming" name="TrikInitVideoStreaming" description="Enables video stream on robot. Video then can be watched on TRIK gamepad or in browser using URL http://ROBOT.IP.ADDRESS:8080/?action=stream">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/initVideoStreamingBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-25" y="60" text="Enable Video Streaming" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2834,6 +2850,7 @@
 				<element name="TrikInitCamera" />
 				<element name="TrikDetect" />
 				<element name="TrikDetectorToVariable" />
+				<element name="TrikInitVideoStreaming" />
 				<element name="TrikSendMessage" />
 				<element name="SendMessageThreads"/>
 				<element name="TrikWriteToFile"/>

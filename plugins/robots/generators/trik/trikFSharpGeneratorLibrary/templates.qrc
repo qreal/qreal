@@ -92,6 +92,7 @@
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
+        <file>templates/videosensors/initVideoStreaming.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
