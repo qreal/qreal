@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,23 @@
 
 #pragma once
 
+#include <kitBase/blocksBase/common/deviceBlock.h>
 #include <trikKit/robotModel/parts/trikShell.h>
 
 namespace trik {
-namespace qts {
+namespace blocks {
+namespace details {
 
-class EmptyShell : public robotModel::parts::TrikShell
+/// Interpreter implementation for "Enable Video Streaming" block.
+class InitVideoStreamingBlock : public kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikShell>
 {
-	Q_OBJECT
-
 public:
-	EmptyShell(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port);
+	InitVideoStreamingBlock(kitBase::robotModel::RobotModelInterface &robotModel);
 
-public slots:
-	void print(const QString &text) override;
-	void runCommand(const QString &command) override;
-	void runCode(const QString &code) override;
-	void say(const QString &text) override;
-	void writeToFile(const QString &filePath, const QString &text) override;
-	void removeFile(const QString &filePath) override;
-	void initVideoStreaming() override;
+protected:
+	virtual void doJob(robotModel::parts::TrikShell &shell);
 };
 
+}
 }
 }

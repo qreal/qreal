@@ -39,6 +39,7 @@ public:
 	void writeToFile(const QString &filePath, const QString &text) override;
 	void removeFile(const QString &filePath) override;
 	void print(const QString &text) override;
+	void initVideoStreaming() override;
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;
