@@ -45,6 +45,9 @@ public:
 
 	/// Removes a given file
 	virtual void removeFile(const QString &filePath) = 0;
+
+	/// Enables video streaming on the robot.
+	virtual void initVideoStreaming() = 0;
 };
 
 }
