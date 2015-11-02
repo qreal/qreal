@@ -28,6 +28,7 @@ Runner::Runner(const QString &report, const QString &trajectory)
 	, mConfigurator(mQRealFacade.models().repoControlApi()
 			, mQRealFacade.models().graphicalModelAssistApi()
 			, mQRealFacade.models().logicalModelAssistApi()
+			, mController
 			, mMainWindow
 			, mMainWindow
 			, mProjectManager

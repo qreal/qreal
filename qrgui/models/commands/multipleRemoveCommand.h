@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <qrkernel/ids.h>
+
 #include "controller/commands/doNothingCommand.h"
 #include "models/modelsDeclSpec.h"
 
