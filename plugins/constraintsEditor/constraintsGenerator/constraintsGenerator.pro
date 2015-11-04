@@ -21,6 +21,7 @@ HEADERS = \
 	generator.h \
 	concreteGenerator.h \
 	generatorUtils/commonGeneratorInfo.h \
+	generatorUtils/defs.h \
 
 SOURCES = \
 	constraintsGeneratorPlugin.cpp \

@@ -1,22 +1,14 @@
 #include "concreteGenerator.h"
-#include "../../../qrutils/nameNormalizer.h"
+#include "generatorUtils/defs.h"
+
+#include <qrutils/nameNormalizer.h>
+
 #include <QtCore/QFile>
 #include <QtCore/QDebug>
 
 using namespace constraints::generator;
 using namespace qReal;
 using namespace utils;
-
-/// Generation target file
-QString const fileNamePRO = "constraintsMetamodel.pro";
-QString const fileNamePluginH = "constraintsPlugin.h";
-QString const fileNamePluginCPP = "constraintsPlugin.cpp";
-QString const fileNameDiagramH = "constraintsDiagram.h";
-QString const fileNameDiagramCPP = "constraintsDiagram.cpp";
-
-QString const keywordForAllEdges = "AllEdges";
-QString const keywordForAllNodes = "AllNodes";
-QString const keywordForAllLanguages = "AllLanguages";
 
 ConcreteGenerator::ConcreteGenerator(const QString &templateDirPath
 		, const QString &outputDirPath
@@ -27,7 +19,9 @@ ConcreteGenerator::ConcreteGenerator(const QString &templateDirPath
 		, const QString &constraintsMetamodelName
 		)
 	: AbstractGenerator(templateDirPath, outputDirPath + QString("/constraints" + constraintsMetamodelName + "/"), logicalModel, errorReporter)
-	, mPathToQReal(pathToQReal), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
+	, mPathToQReal(pathToQReal)
+	, mMetamodelName(metamodelLanguageName)
+	, mConstraintsName(constraintsMetamodelName)
 {
 	mPathToQReal.replace("\\", "/");
 }
@@ -153,7 +147,7 @@ ConcreteGenerator::NeededStringsForConcreteGenerate ConcreteGenerator::generateN
 		}
 
 		if (elementCount.contains(elementName)) {
-			elementCount[elementName] ++;
+			elementCount[elementName]++;
 		} else {
 			elementCount.insert(elementName, 1);
 		}
