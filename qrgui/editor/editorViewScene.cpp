@@ -74,6 +74,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mActionCopyOnDiagram(nullptr)
 	, mActionPasteOnDiagram(nullptr)
 	, mActionPasteReference(nullptr)
+	, mTableMenuWidget(new TableMenuWidget)
 
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
@@ -919,10 +920,17 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			mContextMenu.addSeparator();
 		}
 
+		QString str = e->name();
+		if (e->name() == "Table") {
+			QAction *actionEntity = new QAction(this);
+			actionEntity->setText("Entity menu");
+			connect(actionEntity, SIGNAL(triggered()), mTableMenuWidget, SLOT(open()), Qt::UniqueConnection);
+			mContextMenu.addAction(actionEntity);
+		}
+
 		foreach (ContextMenuAction* action, elementActions) {
 			action->setEventPos(e->mapFromScene(pos));
 			mContextMenu.addAction(action);
-
 			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()), Qt::UniqueConnection);
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 		}

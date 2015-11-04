@@ -26,6 +26,7 @@
 #include "qrgui/editor/editorDeclSpec.h"
 #include "qrgui/editor/copyPaste/clipboardHandler.h"
 #include "qrgui/editor/private/exploserView.h"
+#include "qrgui/editor/databases/tableMenuWidget.h"
 
 namespace qReal {
 
@@ -297,6 +298,9 @@ private:
 	QAction mActionCopyOnDiagram;
 	QAction mActionPasteOnDiagram;
 	QAction mActionPasteReference;
+
+	/** @brief QReal:Databases menu gui */
+	TableMenuWidget *mTableMenuWidget;
 };
 
 }
