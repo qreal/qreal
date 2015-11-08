@@ -59,6 +59,7 @@ QPoint Scene::centerEmpty()
 	return QPoint(sizeEmptyRectX / 2, sizeEmptyRectY / 2);
 }
 
+//зачееем
 QPointF Scene::setCXandCY(QGraphicsSceneMouseEvent *event)
 {
 	qreal x = event->scenePos().x();
@@ -136,7 +137,7 @@ void Scene::setZValueSelectedItems()
 		mZValue++;
 	}
 }
-
+//чтооо и зачееем
 void Scene::setNullZValueItems()
 {
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
@@ -503,6 +504,7 @@ QList<Item *> Scene::selectedSceneItems()
 		if (item != nullptr)
 			resList.push_back(item);
 	}
+    //зачем
 	qSort(resList.begin(), resList.end(), compareItems);
 	return resList;
 }

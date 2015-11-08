@@ -17,7 +17,8 @@
 #include <QtXml/QDomDocument>
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/item/item.h"
+#include "mainWindow/shapeEdit/visibilityCondition.h"
 
 const int distanceFigure = 50;
 
@@ -41,10 +42,12 @@ private:
 	void initListScalePoint();
 	void readDocument();
 	void readGraphics(const QDomElement &graphic);
+
 	void readPicture(const QDomElement &picture);
 	void readLabels(const QDomElement &label);
 	void readPorts(const QDomElement &port);
 	void readImage(const QDomElement &image);
+
 	void changeScaleColor(int i);
 	void checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2
 			, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
@@ -55,6 +58,7 @@ private:
 	QPair<QPointF, QPointF> readLinePortOfXandY(const QDomElement &start, const QDomElement &end);
 	QRectF readRectOfXandY(const QDomElement &docItem);
 	QPointF readXandY(const QDomElement &docItem);
+
 	void readLine(const QDomElement &line);
 	void readEllipse(const QDomElement &ellipse);
 	void readArch(const QDomElement &arch);
@@ -67,7 +71,7 @@ private:
 	void readLinePort(const QDomElement &linePort);
 	void readPointPort(const QDomElement &pointPort);
 
-	Item::VisibilityCondition readVisibility(const QDomElement &item);
+    VisibilityCondition readVisibility(const QDomElement &item);
 
 	bool isNotLCMZ(QString str, int i);
 };

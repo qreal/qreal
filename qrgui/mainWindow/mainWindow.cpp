@@ -84,7 +84,6 @@ using namespace gui;
 
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
-	, mSplashScreen(new SplashScreen(SettingsManager::value("Splashscreen").toBool()))
 	, mController(new Controller)
 	, mPropertyModel(mFacade.editorManager())
 	, mTextManager(new text::TextManager(mFacade.events(), *this))
@@ -103,19 +102,20 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	registerMetaTypes();
-	mSplashScreen->activateWindow();
-	mSplashScreen->setProgress(5);
+	SplashScreen *splashScreen = new SplashScreen(SettingsManager::value("Splashscreen").toBool());
+	splashScreen->activateWindow();
+	splashScreen->setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
-	mSplashScreen->setProgress(20);
+	splashScreen->setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
-	mSplashScreen->setProgress(40);
+	splashScreen->setProgress(40);
 
 	initDocks();
 
@@ -127,21 +127,21 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mPreferencesDialog.init();
 
 
-	mSplashScreen->setProgress(60);
+	splashScreen->setProgress(60);
 
 	loadPlugins();
 
 
-	mSplashScreen->setProgress(70);
+	splashScreen->setProgress(70);
 
 	mDocksVisibility.clear();
 
 
-	mSplashScreen->setProgress(80);
+	splashScreen->setProgress(80);
 
 	initActionsFromSettings();
 
-	mSplashScreen->setProgress(100);
+	splashScreen->setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
 		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
@@ -161,6 +161,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
+	QTimer::singleShot(1500, [=] { splashScreen->close(); });
 }
 
 void MainWindow::connectActions()
@@ -701,8 +702,7 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	const QString pathToHelp = PlatformInfo::invariantSettingsPath("pathToHelp");
-	const QString url = QString("file:///%1/index.html").arg(pathToHelp);
+	const QString url = QString("file:///%1/help/index.html").arg(PlatformInfo::applicationDirPath());
 	QDesktopServices::openUrl(QUrl(url));
 }
 
@@ -756,7 +756,7 @@ EditorView * MainWindow::getCurrentTab() const
 
 bool MainWindow::isCurrentTabShapeEdit() const
 {
-	return dynamic_cast<ShapeEdit *>(mUi->tabs->currentWidget()) != nullptr;
+    return dynamic_cast<IShapeEdit *>(mUi->tabs->currentWidget()) != nullptr;
 }
 
 void MainWindow::closeCurrentTab()
@@ -803,25 +803,22 @@ void MainWindow::openSettingsDialog(const QString &tab)
 	showPreferencesDialog();
 }
 
-// TODO: Unify overloads.
-void MainWindow::openShapeEditor(
-		const QPersistentModelIndex &index
+/// @todo Unify overloads.
+void MainWindow::openShapeEditor(const QPersistentModelIndex &index
 		, int role
 		, const QString &propertyValue
-		, bool useTypedPorts
-		)
+        , bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(models().logicalModel())
-			, index, role, useTypedPorts);
-	if (!propertyValue.isEmpty()) {
-		shapeEdit->load(propertyValue);
-	}
+    IShapeEdit *shapeEdit = new ShapeEdit(propertyValue
+         , dynamic_cast<models::LogicalModelAssistApi &>(models().logicalModelAssistApi())
+         , index, role, useTypedPorts);
 
 	// Here we are going to actually modify model to set a value of a shape.
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, const QPersistentModelIndex &, const int &))
 			, this, SLOT(setData(QString, const QPersistentModelIndex &, const int &)));
+    connect(shapeEdit, SIGNAL(needUpdate()), this, SLOT(loadPlugins()));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -834,11 +831,8 @@ void MainWindow::openShapeEditor(const Id &id
 		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(id, *editorManagerProxy, models().graphicalRepoApi(), this, getCurrentTab()
-		, useTypedPorts);
-	if (!propertyValue.isEmpty()) {
-		shapeEdit->load(propertyValue);
-	}
+    IShapeEdit *shapeEdit = new ShapeEdit(propertyValue, id, *editorManagerProxy, models().graphicalRepoApi(), getCurrentTab());
+    connect(shapeEdit, SIGNAL(needUpdate()), this, SLOT(loadPlugins()));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -865,7 +859,8 @@ void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, co
 
 void MainWindow::openShapeEditor()
 {
-	ShapeEdit * const shapeEdit = new ShapeEdit;
+    IShapeEdit * const shapeEdit = new ShapeEdit;
+
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
@@ -898,7 +893,7 @@ void MainWindow::disconnectActionZoomTo(QWidget* widget)
 	if (view != nullptr) {
 		disconnectZoom(view);
 	} else {
-		ShapeEdit *const shapeWidget = dynamic_cast<ShapeEdit *>(widget);
+        IShapeEdit *const shapeWidget = dynamic_cast<IShapeEdit *>(widget);
 		if (shapeWidget != nullptr) {
 			disconnectZoom(shapeWidget->getView());
 		}
@@ -911,7 +906,7 @@ void MainWindow::connectActionZoomTo(QWidget* widget)
 	if (view != nullptr) {
 		connectZoom(view);
 	} else {
-		ShapeEdit * const shapeWidget = (dynamic_cast<ShapeEdit *>(widget));
+        IShapeEdit * const shapeWidget = (dynamic_cast<IShapeEdit *>(widget));
 		if (shapeWidget != nullptr) {
 			connectZoom(shapeWidget->getView());
 		}
@@ -1643,8 +1638,6 @@ void MainWindow::initPluginsAndStartWidget()
 	{
 		openStartTab();
 	}
-
-	mSplashScreen->close();
 }
 
 void MainWindow::initActionWidgetsNames()

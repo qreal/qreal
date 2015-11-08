@@ -59,7 +59,6 @@ namespace qReal {
 
 class EditorView;
 class SceneCustomizer;
-class SplashScreen;
 
 namespace models {
 class Models;
@@ -149,9 +148,6 @@ public:
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
 	ProxyEditorManager &editorManagerProxy();
 
-	/// Loads (or reloads) available editor plugins and reinits palette.
-	void loadPlugins();
-
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
 
@@ -216,6 +212,9 @@ public slots:
 
 	/// Inits interpreted plugins and adds their actions to the toolbar.
 	void initInterpretedPlugins();
+
+    /// Loads (or reloads) available editor plugins and reinits palette.
+    void loadPlugins();
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -374,8 +373,6 @@ private:
 
 	Ui::MainWindowUi *mUi;
 	SystemFacade mFacade;
-
-	QScopedPointer<SplashScreen> mSplashScreen;
 
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;

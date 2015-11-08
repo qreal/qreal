@@ -14,22 +14,23 @@
 
 #pragma once
 
-#include <QtWidgets/QComboBox>
+#include <QtGui/QPainter>
 
-class QColor;
-class QWidget;
+#include <qrutils/graphicsUtils/rectangleImpl.h>
 
-class ColorListEditor : public QComboBox
+#include "mainWindow/shapeEdit/item/item.h"
+
+class QRealRectangle : public Item
 {
-	Q_OBJECT
 public:
-	ColorListEditor(QWidget *widget = 0);
+	QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
+	QRealRectangle(const QRealRectangle &other);
+	virtual Item* clone();
+	virtual QRectF boundingRect() const;
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 
-public:
-	QColor color() const;
-	void setColor(QColor c);
-
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 private:
-	QColor mColor;
-	void populateList();
+	graphicsUtils::RectangleImpl mRectangleImpl;
 };

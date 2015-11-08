@@ -14,22 +14,25 @@
 
 #pragma once
 
-#include <QtWidgets/QComboBox>
+#include <QtCore/QPair>
 
-class QColor;
-class QWidget;
+#include "mainWindow/shapeEdit/item/item.h"
 
-class ColorListEditor : public QComboBox
+class Path : public Item
 {
-	Q_OBJECT
 public:
-	ColorListEditor(QWidget *widget = 0);
+	Path(const QPainterPath &path);
+	Path(const Path &other);
+	virtual Item* clone();
+	virtual QRectF boundingRect() const;
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) ;
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
-public:
-	QColor color() const;
-	void setColor(QColor c);
+	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void drawFieldForResizeItem(QPainter* painter);
+	virtual void drawScalingRects(QPainter* painter);
 
 private:
-	QColor mColor;
-	void populateList();
+	QPainterPath mPath;
 };

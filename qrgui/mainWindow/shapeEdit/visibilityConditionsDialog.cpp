@@ -46,14 +46,14 @@ void VisibilityConditionsDialog::changeProperty(const QString &propertyName)
 	changeOperators(propertyInfo.type);
 }
 
-void VisibilityConditionsDialog::changeOperators(Type type)
+void VisibilityConditionsDialog::changeOperators(PropertyInfo::Type type)
 {
 	QStringList operators;
 	operators << "=" << "!=";
 
-	if (type == Int) {
+    if (type == PropertyInfo::Int) {
 		operators << ">" << "<" << ">=" << "<=";
-	} else if (type == String) {
+    } else if (type == PropertyInfo::String) {
 		operators << "=~";
 	}
 
@@ -69,10 +69,11 @@ void VisibilityConditionsDialog::okClicked()
 	}
 }
 
+//если у всех выделенных элементов совпадают PropertyInfo, то устанавливаем значения виджета
 void VisibilityConditionsDialog::setWidgetValues()
 {
-	if (areValuesEqual()) {
-		Item::VisibilityCondition condition = mItems.first()->visibilityCondition();
+    if (areValuesEqual()) {
+        VisibilityCondition condition = mItems.first()->visibilityCondition();
 
 		ui->propertyComboBox->setCurrentIndex(ui->propertyComboBox->findText(condition.property));
 		changeProperty(ui->propertyComboBox->currentText());
@@ -83,7 +84,7 @@ void VisibilityConditionsDialog::setWidgetValues()
 
 bool VisibilityConditionsDialog::areValuesEqual() const
 {
-	Item::VisibilityCondition value = mItems.first()->visibilityCondition();
+    VisibilityCondition value = mItems.first()->visibilityCondition();
 	foreach (Item *item, mItems) {
 		if (item->visibilityCondition() != value) {
 			return false;
@@ -92,6 +93,6 @@ bool VisibilityConditionsDialog::areValuesEqual() const
 	return true;
 }
 
-VisibilityConditionsDialog::PropertyInfo::PropertyInfo(VisibilityConditionsDialog::Type t, const QStringList &v)
-		: type(t), values(v)
-{}
+//VisibilityConditionsDialog::PropertyInfo::PropertyInfo(VisibilityConditionsDialog::Type t, const QStringList &v)
+//		: type(t), values(v)
+//{}

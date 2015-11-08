@@ -23,20 +23,19 @@
 #include <qrutils/graphicsUtils/abstractScene.h>
 #include <qrkernel/settingsManager.h>
 
-#include "mainWindow/shapeEdit/view.h"
-#include "mainWindow/shapeEdit/item.h"
-#include "mainWindow/shapeEdit/arch.h"
-#include "mainWindow/shapeEdit/line.h"
-#include "mainWindow/shapeEdit/ellipse.h"
-#include "mainWindow/shapeEdit/rectangle.h"
-#include "mainWindow/shapeEdit/text.h"
-#include "mainWindow/shapeEdit/textPicture.h"
-#include "mainWindow/shapeEdit/pointPort.h"
-#include "mainWindow/shapeEdit/linePort.h"
-#include "mainWindow/shapeEdit/stylus.h"
-#include "mainWindow/shapeEdit/path.h"
-#include "mainWindow/shapeEdit/curve.h"
-#include "mainWindow/shapeEdit/image.h"
+#include "mainWindow/shapeEdit/item/item.h"
+#include "mainWindow/shapeEdit/item/arch.h"
+#include "mainWindow/shapeEdit/item/line.h"
+#include "mainWindow/shapeEdit/item/ellipse.h"
+#include "mainWindow/shapeEdit/item/rectangle.h"
+#include "mainWindow/shapeEdit/item/text.h"
+#include "mainWindow/shapeEdit/item/textPicture.h"
+#include "mainWindow/shapeEdit/item/pointPort.h"
+#include "mainWindow/shapeEdit/item/linePort.h"
+#include "mainWindow/shapeEdit/item/stylus.h"
+#include "mainWindow/shapeEdit/item/path.h"
+#include "mainWindow/shapeEdit/item/curve.h"
+#include "mainWindow/shapeEdit/item/image.h"
 
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;
@@ -83,7 +82,9 @@ private slots:
 	void changePortsType(const QString &type);
 
 	void changePalette();
+    //никому не нужен
 	void changeFontPalette();
+    //никому не нужен
 	void changePortsComboBox();
 
 	void changeFontFamily(const QFont& font);

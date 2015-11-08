@@ -33,59 +33,63 @@
 using namespace qReal;
 using namespace utils;
 
-ShapeEdit::ShapeEdit(QWidget *parent)
-		: QWidget(parent), mUi(new Ui::ShapeEdit), mRole(0)
+ShapeEdit::ShapeEdit()
+        : mUi(new Ui::ShapeEdit)
 {
-	init();
-	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
+    mUi->setupUi(this);
+    mScene = new Scene(mUi->graphicsView, this);
+
+    mSaveLoadLogic = new SaveLoadLogic(this, mScene);
+
+    init();
+    connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
+}
+
+ShapeEdit::ShapeEdit(const QString &propertyValue
+        , models::LogicalModelAssistApi &modelApi
+        , const QPersistentModelIndex &index
+        , const int &role
+        , bool isUsingTypedPorts)
+        : mUi(new Ui::ShapeEdit)
+{
+    mUi->setupUi(this);
+    mScene = new Scene(mUi->graphicsView, this);
+
+    mSaveLoadLogic = new SaveLoadLogicUsingModel(this, mScene, modelApi, index, role, isUsingTypedPorts);
+
+    init();
+    mUi->saveButton->setEnabled(true);
+    connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+    if (!propertyValue.isEmpty()) {
+        mSaveLoadLogic->loadFromText(propertyValue);
+    }
 }
 
 ShapeEdit::ShapeEdit(
-	qReal::models::details::LogicalModel *model
-	, const QPersistentModelIndex &index
-	, const int &role
-	, bool useTypedPorts
-	)
-	: QWidget(nullptr)
-	, mUi(new Ui::ShapeEdit)
-	, mModel(model)
-	, mIndex(index)
-	, mRole(role)
-	, mUseTypedPorts(useTypedPorts)
+        const QString &propertyValue
+        , const Id &id
+        , const EditorManagerInterface &editorManager
+        , const qrRepo::GraphicalRepoApi &graphicalRepoApi
+        , EditorView *editorView
+        )
+        : mUi(new Ui::ShapeEdit)
 {
-	init();
-	mUi->saveButton->setEnabled(true);
-	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
-}
+    mUi->setupUi(this);
+    mScene = new Scene(mUi->graphicsView, this);
 
-ShapeEdit::ShapeEdit(
-	const Id &id
-	, const EditorManagerInterface &editorManager
-	, const qrRepo::GraphicalRepoApi &graphicalRepoApi
-	, MainWindow *mainWindow
-	, EditorView *editorView
-	, bool useTypedPorts
-	)
-	: QWidget(nullptr)
-	, mUi(new Ui::ShapeEdit)
-	, mRole(0)
-	, mId(id)
-	, mEditorManager(&editorManager)
-	, mMainWindow(mainWindow)
-	, mEditorView(editorView)
-	, mUseTypedPorts(useTypedPorts)
-{
-	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
-	init();
-	mUi->saveButton->setEnabled(true);
-	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+    IdList graphicalElements = graphicalRepoApi.graphicalElements(Id(id.editor(), id.diagram(), id.element()));
+    mSaveLoadLogic = new SaveLoadLogicForInterpreter(this, mScene, id, editorManager, graphicalElements, editorView);
+
+    init();
+    mUi->saveButton->setEnabled(true);
+    connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+    if (!propertyValue.isEmpty()) {
+        mSaveLoadLogic->loadFromText(propertyValue);
+    }
 }
 
 void ShapeEdit::init()
 {
-	mUi->setupUi(this);
-
-	mScene = new Scene(mUi->graphicsView, this);
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	mUi->graphicsView->setMouseTracking(true);
@@ -101,7 +105,7 @@ void ShapeEdit::init()
 	mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
-	mUi->portsComboBox->addItems(getPortTypes());
+    mUi->portsComboBox->addItems(mSaveLoadLogic->loadPortTypes());
 
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
@@ -142,7 +146,7 @@ void ShapeEdit::init()
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
-	connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(savePicture()));
+    connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(saveAsPicture()));
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(this, SIGNAL(saveToXmlSignal()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
@@ -255,147 +259,30 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-QList<QDomElement> ShapeEdit::generateGraphics()
+
+void ShapeEdit::save()
 {
-	QDomElement picture = mDocument.createElement("picture");
-	QDomElement label = mDocument.createElement("labels");
-	QDomElement ports = mDocument.createElement("ports");
-
-	QRect sceneBoundingRect = mScene->realItemsBoundingRect();
-	mTopLeftPicture = sceneBoundingRect.topLeft();
-
-	QList<QGraphicsItem *> list = mScene->items();
-	foreach (QGraphicsItem *graphicsItem, list) {
-
-		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != nullptr) {
-			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateDom(mDocument, mTopLeftPicture);
-			QDomElement domItem = genItem.first;
-			Item::DomElementTypes domType = genItem.second;
-			switch (domType) {
-			case Item::pictureType:
-				picture.appendChild(domItem);
-				break;
-			case Item::labelType:
-				label.appendChild(domItem);
-				break;
-			case Item::portType:
-				ports.appendChild(domItem);
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width() + 1));
-	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height() + 1));
-
-	QList<QDomElement> domList;
-	domList.push_back(picture);
-	domList.push_back(label);
-	domList.push_back(ports);
-
-	return domList;
-}
-
-void ShapeEdit::generateDom()
-{
-	QDomElement graphics = mDocument.createElement("graphics");
-	mDocument.appendChild(graphics);
-
-	QList<QDomElement> list = generateGraphics();
-	foreach (QDomElement domItem, list) {
-		graphics.appendChild(domItem);
-	}
-}
-
-void ShapeEdit::exportToXml(const QString &fileName)
-{
-	OutFile file(fileName);
-	generateDom();
-	file() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	file() << mDocument.toString(4);
-	file() << "\n";
+    mSaveLoadLogic->save();
 }
 
 void ShapeEdit::saveToXml()
 {
-	mDocument.clear();
-	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorXml", this);
-	if (fileName.isEmpty()) {
-		return;
-	}
-
-	exportToXml(fileName);
+    QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorXml", this);
+    mSaveLoadLogic->saveToXml(fileName);
 }
 
-void ShapeEdit::save()
-{
-	generateDom();
-	if (mIndex.isValid()) {
-		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
-	} else {
-		mEditorManager->updateShape(mId, mDocument.toString(4));
-		foreach (const Id graphicalElement, mGraphicalElements) {
-			mEditorManager->updateShape(graphicalElement, mDocument.toString(4));
-			for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
-				NodeElement * const element = dynamic_cast<NodeElement *>(item);
-				if (element && element->id().type() == mId.type()) {
-					element->updateShape(mDocument.toString(4));
-				}
-			}
-		}
-
-		mMainWindow->loadPlugins();
-	}
-
-	QMessageBox::information(this, tr("Saving"), "Saved successfully");
-	mDocument.clear();
-}
-
-void ShapeEdit::savePicture()
+void ShapeEdit::saveAsPicture()
 {
 	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorPicture", this);
-	if (fileName.isEmpty()) {
-		return;
-	}
-
-	QRectF sceneRect = mScene->itemsBoundingRect();
-	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
-	QPainter painter(&image);
-
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::black));
-	painter.drawRect(sceneRect);
-
-	mScene->render(&painter);
-	image.save(fileName);
+    mSaveLoadLogic->saveAsPicture(fileName);
 }
 
 void ShapeEdit::open()
 {
-	mDocument.clear();
 	QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorXml", this);
-	if (fileName.isEmpty()) {
-		return;
-	}
-
-	XmlLoader loader(mScene);
-	loader.readFile(fileName);
+    mSaveLoadLogic->loadFromFile(fileName);
 }
 
-void ShapeEdit::load(const QString &text)
-{
-	if (text.isEmpty()) {
-		return;
-	}
-
-	XmlLoader loader(mScene);
-	loader.readString(text);
-}
 
 void ShapeEdit::addImage(bool checked)
 {
@@ -616,73 +503,13 @@ void ShapeEdit::addStylus(bool checked)
 	}
 }
 
+
 void ShapeEdit::visibilityButtonClicked()
 {
 	QList<Item *> selectedItems = mScene->selectedSceneItems();
 	if (selectedItems.isEmpty()) {
 		return;
 	}
-	VisibilityConditionsDialog vcDialog(getProperties(), selectedItems);
+    VisibilityConditionsDialog vcDialog(mSaveLoadLogic->loadProperties(), selectedItems);
 	vcDialog.exec();
-}
-
-QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties() const
-{
-	typedef VisibilityConditionsDialog::PropertyInfo PropertyInfo;
-
-	QMap<QString, PropertyInfo> result;
-
-	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
-	qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
-
-	foreach (const qReal::Id &child, repoApi->children(mModel->idByIndex(mIndex))) {
-		if (child.element() != "MetaEntity_Attribute") {
-			continue;
-		}
-
-		QString type = repoApi->stringProperty(child, "attributeType");
-		if (type == "int") {
-			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Int, QStringList()));
-		} else if (type == "bool") {
-			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Bool
-					, QStringList() << "true" << "false"));
-		} else if (type == "string") {
-			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::String, QStringList()));
-		} else {
-			foreach (const qReal::Id &enumElement, enums) {
-				if (!repoApi->isLogicalElement(enumElement)) {
-					continue;
-				}
-
-				if (repoApi->name(enumElement) == type) {
-					QStringList enumValues;
-					foreach (const qReal::Id &value, repoApi->children(enumElement)) {
-						enumValues << repoApi->stringProperty(value, "valueName");
-					}
-
-					result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Enum, enumValues));
-				}
-			}
-		}
-	}
-	return result;
-}
-
-QStringList ShapeEdit::getPortTypes() const
-{
-	QStringList result;
-	result << "NonTyped";
-
-	if (mUseTypedPorts) {
-		qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
-		if (repoApi) {
-			foreach (const qReal::Id &port, repoApi->elementsByType("MetaEntityPort")) {
-				if (repoApi->isLogicalElement(port)) {
-					result << repoApi->name(port);
-				}
-			}
-		}
-	}
-
-	return result;
 }

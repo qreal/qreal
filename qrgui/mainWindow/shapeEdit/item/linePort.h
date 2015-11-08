@@ -12,29 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "colorListEditor.h"
+#pragma once
 
-ColorListEditor::ColorListEditor(QWidget *widget) : QComboBox(widget)
-{
-	populateList();
-}
+#include "mainWindow/shapeEdit/item/item.h"
+#include "mainWindow/shapeEdit/item/line.h"
 
-QColor ColorListEditor::color() const
+class LinePort : public Line
 {
-	return itemData(currentIndex(), Qt::DecorationRole).value<QColor>();
-}
+public:
+	LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent = 0);
+	LinePort(const LinePort &other);
+	virtual Item* clone();
 
-void ColorListEditor::setColor(QColor color)
-{
-	setCurrentIndex(findData(color, int(Qt::DecorationRole)));
-}
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
-void ColorListEditor::populateList()
-{
-	QStringList colorNames = QColor::colorNames();
-	for (int i = 0; i < colorNames.size(); ++i) {
-		QColor color(colorNames[i]);
-		insertItem(i, colorNames[i]);
-		setItemData(i, color, Qt::DecorationRole);
-	}
-}
+	void setType(const QString &type);
+	QString getType() const;
+
+private:
+	QString mType;
+};

@@ -20,6 +20,8 @@
 
 #include <qrutils/xmlUtils.h>
 
+#include "mainWindow/shapeEdit/item/item.h"
+
 using namespace qReal;
 
 XmlLoader::XmlLoader(Scene *scene)
@@ -640,14 +642,14 @@ void XmlLoader::readPointPort(const QDomElement &pointPort)
 	mScene->setZValue(item);
 }
 
-Item::VisibilityCondition XmlLoader::readVisibility(const QDomElement &item)
+VisibilityCondition XmlLoader::readVisibility(const QDomElement &item)
 {
 	QDomElement visibility = item.elementsByTagName("showIf").item(0).toElement();
 	if (visibility.isNull()) {
-		return Item::VisibilityCondition();
+        return VisibilityCondition();
 	}
 
-	Item::VisibilityCondition result;
+    VisibilityCondition result;
 	result.property = visibility.attribute("property");
 	result.sign = visibility.attribute("sign");
 	result.value = visibility.attribute("value");
