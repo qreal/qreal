@@ -114,22 +114,23 @@
         <translation>Une pause de flux de contrôle détecté, arrêt en cours</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="61"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
         <source>Too many outgoing links</source>
         <translation>Trop de liens sortants</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="71"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Aucun lien sortant, s&apos;il vous plait connectez ce bloc à un autre ou bien utilisez un nœud final pour terminer le programme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="73"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="78"/>
         <source>Outgoing link is not connected</source>
         <translation>Le lien sortant n&apos;est pas connecté</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="139"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="144"/>
         <source>Block has disappeared!</source>
         <translation type="unfinished"></translation>
     </message>

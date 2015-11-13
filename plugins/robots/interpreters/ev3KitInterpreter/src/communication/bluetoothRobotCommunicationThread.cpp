@@ -21,7 +21,6 @@
 
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
-#include <utils/tracer.h>
 
 #include "src/commandConstants.h"
 
@@ -75,9 +74,6 @@ void BluetoothRobotCommunicationThread::connect()
 	mPort->setTimeout(3000);
 
 	mPort->open(QIODevice::ReadWrite | QIODevice::Unbuffered);
-
-	//utils::Tracer::debug(utils::Tracer::initialization, "BluetoothRobotCommunicationThread::connect"
-	//		, "Port " + mPort->portName() + " is open: " + QString("%1").arg(mPort->isOpen()));
 
 	// Sending "Keep alive" command to check connection.
 	keepAlive();

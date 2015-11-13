@@ -263,6 +263,9 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->initialStateButton, &QAbstractButton::clicked, this, &TwoDModelWidget::returnToStartMarker);
 	connect(mUi->toggleDetailsButton, &QAbstractButton::clicked, this, &TwoDModelWidget::toggleDetailsVisibility);
 
+	connect(mUi->trainingModeButton, &QAbstractButton::toggled, this, &TwoDModelWidget::trainingModeChanged);
+	mUi->trainingModeButton->setChecked(false);
+
 	initRunStopButtons();
 }
 
@@ -311,6 +314,14 @@ void TwoDModelWidget::returnToStartMarker()
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
 	}
+}
+
+void TwoDModelWidget::trainingModeChanged(bool enabled)
+{
+	mUi->trainingModeButton->setToolTip(enabled
+			? tr("Training mode: solution will not be checked")
+			: tr("Checking mode: solution will be checked, errors will be reported"));
+	mModel.setConstraintsEnabled(!enabled);
 }
 
 void TwoDModelWidget::keyPressEvent(QKeyEvent *event)
@@ -581,6 +592,7 @@ void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 	updateWheelComboBoxes();
+	mUi->trainingModeButton->setVisible(mModel.hasConstraints());
 }
 
 Model &TwoDModelWidget::model() const

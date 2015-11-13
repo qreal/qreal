@@ -14,9 +14,10 @@ export QT_DIR=$1/../
 export QTIFW_DIR=$2
 export PRODUCT=$3 
 export OS=$OSTYPE
+
+grep -q "darwin" <<< $OSTYPE && export OS="mac" || :
 # All windows platforms can be enumerated below
 [ $OSTYPE == "msys" ] && export OS="win32" || :
-[[ $OSTYPE =~ "darwin" ]] && export OS="mac" || :
 [ $OSTYPE == "linux-gnu" ] && OS_EXT=$OS`getconf LONG_BIT` || OS_EXT=$OS
 
 [ $OS == "win32" ] && SSH_DIR=/.ssh || SSH_DIR=~/.ssh

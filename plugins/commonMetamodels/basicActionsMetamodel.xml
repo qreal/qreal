@@ -8,7 +8,7 @@
 			<node name="AcceptEventAction" displayedName="Accept Event Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Action"/>
+						<parent parentName="Action" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="bool" name="isUnmarshall" />
@@ -20,7 +20,7 @@
 			<node name="Action" displayedName="Action">
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::NamedElement"/>
+						<parent parentName="KernelDiagram::NamedElement" overrides = "all"/>
 					</generalizations>
 					<properties>
 					  <property type="InputPin" name="input"/>
@@ -32,7 +32,7 @@
 				<!-- "from Communications" -->
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::NamedElement"/>
+						<parent parentName="KernelDiagram::NamedElement" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Event" name="event" />
@@ -43,7 +43,7 @@
 			<node name="OutputPin" displayedName="Output Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="Pin"/>
+						<parent parentName="Pin" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="AcceptEventAction" name="result" />
@@ -54,7 +54,7 @@
 			<node name="InputPin" displayedName="Input Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="Pin"/>
+						<parent parentName="Pin" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Action" name="input" />
@@ -65,7 +65,7 @@
 				<!-- "from Communications" -->
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::PackageableElement"/>
+						<parent parentName="KernelDiagram::PackageableElement" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Trigger" name="event" />
@@ -75,15 +75,15 @@
 			<node name="Pin" displayedName="Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::TypedElement"/>
-						<parent parentName="KernelDiagram::MultiplicityElement"/>
+						<parent parentName="KernelDiagram::TypedElement" overrides = "all"/>
+						<parent parentName="KernelDiagram::MultiplicityElement" overrides = "all"/>
 					</generalizations>
 				</logic>
 			</node>
 			<node name="ActionInputPin" displayedName="Action Input Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="InputPin"/>
+						<parent parentName="InputPin" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Action" name="fromAction" />
@@ -93,7 +93,7 @@
 			<node name="ValueSpecificationAction" displayedName="Value Specification Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Action"/>
+						<parent parentName="Action" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="ValueSpecification" name="value" />
@@ -104,7 +104,7 @@
 			<node name="AddVariableValueAction" displayedName="Add Variable Value Action">
 				<logic>
 					<generalizations>
-						<parent parentName="WriteVariableAction"/>
+						<parent parentName="WriteVariableAction" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="bool" name="isReplaceAll">
@@ -117,7 +117,7 @@
 			<node name="WriteVariableAction" displayedName="Write Variable Action">
 				<logic>
 					<generalizations>
-						<parent parentName="VariableAction"/>
+						<parent parentName="VariableAction" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="InputPin" name="value" />
@@ -127,7 +127,7 @@
 			<node name="VariableAction" displayedName="Variable Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Action"/>
+						<parent parentName="Action" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Variable" name="variable" />
@@ -137,15 +137,15 @@
 			<node name="Variable" displayedName="Variable">
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::MultiplicityElement"/>
-						<parent parentName="KernelDiagram::TypedElement"/>
+						<parent parentName="KernelDiagram::MultiplicityElement" overrides = "all"/>
+						<parent parentName="KernelDiagram::TypedElement" overrides = "all"/>
 					</generalizations>
 				</logic>
 			</node>
 			<node name="CallAction" displayedName="Call Action">
 				<logic>
 					<generalizations>
-						<parent parentName="InvocationAction"/>
+						<parent parentName="InvocationAction" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="bool" name="isSynchronous">
@@ -158,7 +158,7 @@
 			<node name="CallBehaviorAction" displayedName="Call Behavior Action">
 				<logic>
 					<generalizations>
-						<parent parentName="CallAction"/>
+						<parent parentName="CallAction" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Behavior" name="behavior"/>
@@ -168,7 +168,7 @@
 			<node name="CallOperationAction" displayedName="Call Operation Action">
 				<logic>
 					<generalizations>
-						<parent parentName="CallAction" />
+						<parent parentName="CallAction" overrides = "all"/>
 					</generalizations>
 						<properties>
 							<property type="InputPin" name="target"/>
@@ -179,7 +179,7 @@
 			<node name="SendObjectAction" displayedName="Send Object Action">
 				<logic>
 					<generalizations>
-						<parent parentName="InvocationAction"/>
+						<parent parentName="InvocationAction" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="InputPin" name="request"/>
@@ -190,7 +190,7 @@
 			<node name="InvocationAction" displayedName="Invocation Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Action"/>
+						<parent parentName="Action" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="InputPin" name="argument"/>
@@ -200,7 +200,7 @@
 			<node name="SendSignalAction" displayedName="Send Signal Action">
 				<logic>
 					<generalizations>
-						<parent parentName="InvocationAction"/>
+						<parent parentName="InvocationAction" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Signal" name="signal"/>
@@ -212,7 +212,7 @@
 				<!-- "from Communication" -->
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::Classifier"/>
+						<parent parentName="KernelDiagram::Classifier" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="Property" name="ownedAttribute"/>
@@ -222,7 +222,7 @@
 			<node name="UnmarshallAction" displayedName="Unmarshall Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Action"/>
+						<parent parentName="Action" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="InputPin" name="object"/>
@@ -234,7 +234,7 @@
 			<node name="ValuePin" displayedName="Value Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="InputPin"/>
+						<parent parentName="InputPin" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="ValueSpecification" name="value"/>

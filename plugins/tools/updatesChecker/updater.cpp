@@ -47,9 +47,10 @@ void Updater::executeUpdater(const QString &mode)
 	connect(mUpdaterProcess, SIGNAL(finished(int)), this, SLOT(readAnswer()));
 
 	if (mode == "--updater") {
-		mUpdaterProcess->startDetached(qReal::PlatformInfo::applicationDirPath() + "/maintenance", {mode});
+		// Executing updater in detached mode (to close application just after).
+		mUpdaterProcess->startDetached(qReal::PlatformInfo::invariantSettingsPath("pathToUpdater"), {mode});
 	} else {
-		mUpdaterProcess->start(qReal::PlatformInfo::applicationDirPath() + "/maintenance", {mode});
+		mUpdaterProcess->start(qReal::PlatformInfo::invariantSettingsPath("pathToUpdater"), {mode});
 	}
 }
 

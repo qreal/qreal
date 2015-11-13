@@ -90,6 +90,7 @@
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
+        <file>templates/videosensors/initVideoStreaming.t</file>
         <file>templates/gamepad/gamepadButton.t</file>
         <file>templates/gamepad/gamepadConnectionIndicator.t</file>
         <file>templates/gamepad/gamepadPad.t</file>
@@ -122,6 +123,7 @@
         <file>templates/functions/min.t</file>
         <file>templates/functions/max.t</file>
         <file>templates/functions/print.t</file>
+        <file>templates/functions/atan2.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/gamepadButton.t</file>
         <file>templates/wait/gamepadConnect.t</file>

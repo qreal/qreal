@@ -71,9 +71,13 @@
 <context>
     <name>trik::TrikV6KitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6KitInterpreterPlugin.cpp" line="42"/>
         <source>TRIK (old case)</source>
-        <translation>ТРИК (старый корпус)</translation>
+        <translation type="vanished">ТРИК (старый корпус)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikV6KitInterpreter/src/trikV6KitInterpreterPlugin.cpp" line="42"/>
+        <source>TRIK (model-2014)</source>
+        <translation>TRIK (модель 2014)</translation>
     </message>
 </context>
 <context>

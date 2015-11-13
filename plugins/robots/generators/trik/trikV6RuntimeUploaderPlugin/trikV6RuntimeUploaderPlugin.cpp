@@ -15,6 +15,7 @@
 #include "trikV6RuntimeUploaderPlugin.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace trik;
 
@@ -23,7 +24,7 @@ using namespace trik;
 const QString createTrikDirectory = "call mkdir -p /home/root/trik";
 const QString removePermissions = "call chmod a-x trik/trik*";
 const QString killTrikGui = "call killall -q trikGui || :";
-const QString moveCommand = "synchronize remote trikRuntime /home/root/trik";
+const QString moveCommand = "synchronize remote . /home/root/trik";
 const QString restorePermissions = "call chmod a+x trik/trik*";
 
 // To make trikRuntime work with old case we use old configs supplied with trikRuntime itself.
@@ -53,7 +54,7 @@ const QString preCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictH
 		"\"";
 
 const QString copyCommand = "scp -r -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
-		"-oUserKnownHostsFile=/dev/null %PATH%/trikRuntime/* root@%IP%:/home/root/trik";
+		"-oUserKnownHostsFile=/dev/null %PATH%/* root@%IP%:/home/root/trik";
 
 const QString postCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
 		"-oUserKnownHostsFile=/dev/null root@%IP% \""
@@ -74,7 +75,7 @@ const QStringList commands = {
 
 TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 	: mUploaderTool(
-			tr("Upload Runtime (old case)")
+			tr("Upload Runtime for TRIK 2014")
 			, ":/trik/images/flashRobot.svg"
 			, "trikKit"
 			, commands
@@ -87,7 +88,8 @@ TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 
 void TrikV6RuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurator)
 {
-	mUploaderTool.init(configurator.mainWindowInterpretersInterface());
+	mUploaderTool.init(configurator.mainWindowInterpretersInterface()
+			, qReal::PlatformInfo::invariantSettingsPath("pathToTrikRuntime"));
 }
 
 QList<qReal::ActionInfo> TrikV6RuntimeUploaderPlugin::actions()

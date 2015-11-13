@@ -41,6 +41,7 @@
 #include "details/initCameraBlock.h"
 #include "details/detectLineBlock.h"
 #include "details/lineDetectorToVariable.h"
+#include "details/initVideoStreamingBlock.h"
 #include "details/waitForMotionBlock.h"
 #include "details/speakerBlock.h"
 #include "details/ledBlock.h"
@@ -85,6 +86,8 @@ qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::I
 		return new DetectLineBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDetectorToVariable")) {
 		return new LineDetectorToVariableBlock();
+	} else if (elementMetatypeIs(element, "TrikInitVideoStreaming")) {
+		return new InitVideoStreamingBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSendMessage")) {
 		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitForMessage")) {
@@ -173,6 +176,7 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 			<< id("TrikInitCamera")
 			<< id("TrikDetect")
 			<< id("TrikDetectorToVariable")
+			<< id("TrikInitVideoStreaming")
 			<< id("TrikSendMessage")
 			<< id("TrikWaitForMessage")
 			;
@@ -236,6 +240,7 @@ qReal::IdList TrikBlocksFactoryBase::blocksToDisable() const
 				<< id("TrikWaitGamepadWheel")
 				<< id("TrikWaitGamepadDisconnect")
 				<< id("TrikWaitGamepadConnect")
+				<< id("TrikInitVideoStreaming")
 				;
 	}
 

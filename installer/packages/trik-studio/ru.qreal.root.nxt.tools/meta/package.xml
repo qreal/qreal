@@ -4,8 +4,8 @@
     <DisplayName xml:lang="ru_ru">Инструменты NXT</DisplayName>
     <Description>Install it for uploading programs to Lego NXT device</Description>
     <Description xml:lang="ru_ru">Установите это для возможности загрузки программ на робота Lego NXT</Description>
-    <Version>3.1.0-4</Version>
-    <ReleaseDate>2015-07-08</ReleaseDate>
+    <Version>3.1.2-4</Version>
+    <ReleaseDate>2015-10-06</ReleaseDate>
     <Licenses>
         <!-- TODO -->
     </Licenses>

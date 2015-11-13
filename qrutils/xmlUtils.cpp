@@ -23,13 +23,12 @@ QDomDocument xmlUtils::loadDocument(const QString &fileName, QString *errorMessa
 {
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly)) {
-		qDebug() << "cannot open file " << fileName;
+		qWarning() << "Cannot open" << fileName << "for reading";
 		return QDomDocument();
 	}
 
 	QDomDocument doc;
-	if (!doc.setContent(&file, false, errorMessage, errorLine, errorColumn))
-	{
+	if (!doc.setContent(&file, false, errorMessage, errorLine, errorColumn)) {
 		file.close();
 		return QDomDocument();
 	}

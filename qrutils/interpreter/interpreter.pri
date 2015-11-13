@@ -14,6 +14,7 @@
 
 HEADERS += \
 	$$PWD/interpreter.h \
+	$$PWD/stopReason.h \
 	$$PWD/thread.h \
 	$$PWD/blockInterface.h \
 	$$PWD/block.h \

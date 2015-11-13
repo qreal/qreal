@@ -32,7 +32,7 @@ QString ReservedFunctionsConverter::convert(const QString &name, const QStringLi
 				, args.count() ? args[0] : QString());
 	}
 
-	const QStringList twoArgumentsFloatFunctions = { "min", "max" };
+	const QStringList twoArgumentsFloatFunctions = { "min", "max", "atan2" };
 	if (twoArgumentsFloatFunctions.contains(name)) {
 		return readTemplate(QString("functions/%1.t").arg(name))
 				.replace("@@ARGUMENT1@@", args.count() ? args[0] : QString())

@@ -20,6 +20,7 @@
 #include <QtWidgets/QSplashScreen>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QTreeView>
 #include <QtSql/QSqlDatabase>
 
 #include <qrkernel/settingsManager.h>
@@ -58,6 +59,7 @@ namespace qReal {
 
 class EditorView;
 class SceneCustomizer;
+class SplashScreen;
 
 namespace models {
 class Models;
@@ -372,6 +374,8 @@ private:
 
 	Ui::MainWindowUi *mUi;
 	SystemFacade mFacade;
+
+	QScopedPointer<SplashScreen> mSplashScreen;
 
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;

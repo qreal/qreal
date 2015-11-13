@@ -39,6 +39,7 @@ bool PasteCommand::execute()
 	} else {
 		mResult = pasteNewInstance();
 	}
+
 	restoreElement();
 	return true;
 }

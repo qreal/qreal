@@ -39,7 +39,7 @@ void clearConfig()
 
 void loadTranslators(const QString &locale)
 {
-	QDir translationsDirectory(PlatformInfo::applicationDirPath() + "/translations/" + locale);
+	QDir translationsDirectory(PlatformInfo::invariantSettingsPath("pathToTranslations") + "/" + locale);
 	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
 	while (directories.hasNext()) {
 		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
@@ -67,7 +67,7 @@ void setDefaultLocale(bool localizationDisabled)
 
 void initLogging()
 {
-	const QDir logsDir(PlatformInfo::applicationDirPath() + "/logs");
+	const QDir logsDir(PlatformInfo::invariantSettingsPath("pathToLogs"));
 	if (logsDir.mkpath(logsDir.absolutePath())) {
 		Logger::addLogTarget(logsDir.filePath("qreal.log"), maxLogSize, 2, QsLogging::DebugLevel);
 		Logger::addLogTarget(logsDir.filePath("actions.log"), maxLogSize, 2, QsLogging::TraceLevel);
@@ -78,35 +78,40 @@ int main(int argc, char *argv[])
 {
 	QRealApplication app(argc, argv);
 
+	if (app.arguments().contains("--clear-conf")) {
+		clearConfig();
+		return 0;
+	}
+
 	qsrand(time(0));
 	setDefaultLocale(app.arguments().contains("--no-locale"));
+
+	if (QFile(PlatformInfo::defaultPlatformConfigPath()).exists()) {
+		// Loading default settings for concrete platform if such exist.
+		SettingsManager::instance()->loadSettings(PlatformInfo::defaultPlatformConfigPath());
+	}
+
+	QString fileToOpen;
+	if (app.arguments().count() > 1) {
+		const int setIndex = app.arguments().indexOf("--config");
+		if (setIndex > -1) {
+			const QString settingsFileName = app.arguments().at(setIndex + 1);
+			SettingsManager::instance()->loadSettings(settingsFileName);
+		}
+
+		for (const QString &argument : app.arguments()) {
+			if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
+				fileToOpen = argument;
+				break;
+			}
+		}
+	}
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
 	QLOG_INFO() << "Running on" << PlatformInfo::prettyOsVersion();
 	QLOG_INFO() << "Arguments:" << app.arguments();
 	QLOG_INFO() << "Setting default locale to" << QLocale().name();
-
-	QString fileToOpen;
-	if (app.arguments().count() > 1) {
-		if (app.arguments().contains("--clear-conf")) {
-			clearConfig();
-			return 0;
-		} else {
-			const int setIndex = app.arguments().indexOf("--config");
-			if (setIndex > -1) {
-				const QString settingsFileName = app.arguments().at(setIndex + 1);
-				SettingsManager::instance()->loadSettings(settingsFileName);
-			}
-
-			for (const QString &argument : app.arguments()) {
-				if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
-					fileToOpen = argument;
-					break;
-				}
-			}
-		}
-	}
 
 #ifndef NO_STYLE_WINDOWSMODERN
 	app.setStyle(new WindowsModernStyle());

@@ -35,6 +35,7 @@ bool EdgeElementCommand::reinitElement()
 	if (!ElementCommand::reinitElement()) {
 		return false;
 	}
+
 	mEdge = dynamic_cast<EdgeElement *>(mElement);
 	return mEdge != nullptr;
 }

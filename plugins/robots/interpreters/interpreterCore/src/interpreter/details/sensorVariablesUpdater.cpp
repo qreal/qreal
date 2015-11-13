@@ -14,7 +14,6 @@
 
 #include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
 
-#include <utils/tracer.h>
 #include <utils/timelineInterface.h>
 #include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotParts/scalarSensor.h>
@@ -161,7 +160,6 @@ int SensorVariablesUpdater::updateInterval() const
 
 void SensorVariablesUpdater::onFailure()
 {
-	utils::Tracer::debug(utils::Tracer::autoupdatedSensorValues, "Interpreter::slotFailure", "");
 }
 
 void SensorVariablesUpdater::updateScalarSensorVariables(const PortInfo &sensorPortInfo, int reading)
@@ -171,12 +169,6 @@ void SensorVariablesUpdater::updateScalarSensorVariables(const PortInfo &sensorP
 
 void SensorVariablesUpdater::updateScalarSensorVariable(const QString &variable, int reading)
 {
-	utils::Tracer::debug(
-			utils::Tracer::autoupdatedSensorValues
-			, "SensorVariablesUpdater::updateScalarSensorVariable"
-			, variable + QString::number(reading)
-			);
-
 	mParser.setVariableValue(variable, reading);
 }
 

@@ -87,6 +87,10 @@ protected:
 	/// Default implemetation enables all customActions() if current tab is editor or text one and disables all else.
 	virtual void onCurrentDiagramChanged(const qReal::TabInfo &info);
 
+	/// Returns path to file where generated code must be put.
+	/// Simply preppend path to generator root to default file path for \a project.
+	QFileInfo generationTarget(const QString &project) const;
+
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 

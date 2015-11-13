@@ -25,14 +25,15 @@ using namespace nxt;
 using namespace qReal;
 
 NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
-		: mErrorReporter(errorReporter)
-		, mIsFlashing(false)
-		, mIsUploading(false)
-		, mUploadState(done)
+	: mErrorReporter(errorReporter)
+	, mIsFlashing(false)
+	, mIsUploading(false)
+	, mUploadState(done)
 {
 	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
-	environment.insert("QREALDIR", PlatformInfo::applicationDirPath());
-	environment.insert("QREALDIRPOSIX", PlatformInfo::applicationDirPath().remove(1, 1).prepend("/cygdrive/"));
+	QString path = this->path();
+	environment.insert("NXT_TOOLS_DIR", path);
+	environment.insert("NXT_TOOLS_DIR_POSIX", path.remove(1, 1).prepend("/cygdrive/"));
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);
@@ -62,10 +63,10 @@ void NxtFlashTool::flashRobot()
 
 #ifdef Q_OS_WIN
 	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
-	mFlashProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/nexttool/");
-	mFlashProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.bat");
+	mFlashProcess.setWorkingDirectory(path("nexttool"));
+	mFlashProcess.start("cmd", { "/c", path("flash.bat") });
 #else
-	mFlashProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/flash.sh");
+	mFlashProcess.start("sh", { path("flash.sh") });
 #endif
 
 	mErrorReporter->addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
@@ -75,10 +76,10 @@ void NxtFlashTool::runProgram(const QFileInfo &fileInfo)
 {
 	mSource = fileInfo;
 	mRunProcess.setEnvironment(QProcess::systemEnvironment());
-	mRunProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
-	mRunProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
-			+ "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
-			+ QString("%1_OSEK.rxe").arg(mSource.completeBaseName()));
+	mRunProcess.setWorkingDirectory(path());
+	mRunProcess.start("cmd", { "/c", path("nexttool/NexTTool.exe") + " /COM=usb -run="
+			// NXT crops file name to 15 letters, so doing same here...
+			+ QString("%1.rxe").arg(mSource.completeBaseName().mid(0, 15)) });
 }
 
 void NxtFlashTool::runLastProgram()
@@ -121,7 +122,7 @@ void NxtFlashTool::readNxtFlashData()
 {
 	const QStringList output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
 
-	foreach (const QString &error, output) {
+	for (const QString &error : output) {
 		if (error == "NXT not found. Is it properly plugged in via USB?") {
 			mErrorReporter->addError(tr("NXT not found. Check USB connection and make sure the robot is ON"));
 		} else if (error == "NXT found, but not running in reset mode.") {
@@ -143,13 +144,13 @@ void NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 	mSource = fileInfo;
 
 #ifdef Q_OS_WIN
-	mUploadProcess.setWorkingDirectory(PlatformInfo::applicationDirPath() + "/nxt-tools/");
-	mUploadProcess.start("cmd", QStringList() << "/c" << PlatformInfo::applicationDirPath()
-						 + "/nxt-tools/upload.bat " + fileInfo.completeBaseName()
-						 + " " + fileInfo.absolutePath());
+	mUploadProcess.setWorkingDirectory(path());
+	mUploadProcess.start("cmd", { "/c", path("upload.bat")
+						+ " " + fileInfo.completeBaseName()
+						+ " " + fileInfo.absolutePath() });
 #else
 	Q_UNUSED(fileInfo)
-	mUploadProcess.start("sh", QStringList() << PlatformInfo::applicationDirPath() + "/nxt-tools/upload.sh");
+	mUploadProcess.start("sh", { path("upload.sh") });
 #endif
 
 	mErrorReporter->addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));
@@ -183,7 +184,7 @@ void NxtFlashTool::readNxtUploadData()
 	   to determine in which state we are (to show appropriate error if something goes wrong)
 	*/
 
-	foreach (const QString &error, output) {
+	for (const QString &error : output) {
 		if (error.contains("Removing ")) {
 			mUploadState = clean;
 		} else if (error.contains("Compiling ")) {
@@ -194,7 +195,7 @@ void NxtFlashTool::readNxtUploadData()
 			mUploadState = link;
 		} else if (error.contains("Executing NeXTTool to upload") && mUploadState != compilationError) {
 			mUploadState = uploadStart;
-		} else if (error.contains("_OSEK.rxe=") && mUploadState != compilationError) {
+		} else if (QRegExp(".*\\.rxe=\\d+.*").exactMatch(error) && mUploadState != compilationError) {
 			mUploadState = flash;
 		} else if (error.contains("NeXTTool is terminated")) {
 			if (mUploadState == uploadStart) {
@@ -213,3 +214,7 @@ void NxtFlashTool::readNxtUploadData()
 	}
 }
 
+const QString NxtFlashTool::path(const QString &file) const
+{
+	return QDir::toNativeSeparators(PlatformInfo::invariantSettingsPath("pathToNxtTools") + "/" + file);
+}

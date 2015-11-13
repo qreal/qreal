@@ -40,12 +40,12 @@ private:
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
-	bool mIsLogical;
-	Id mId;
-	Id mOldParent;
-	Id mNewParent;
-	QPointF mOldPosition;
-	QPointF mNewPosition;
+	const bool mIsLogical;
+	const Id mId;
+	const Id mOldParent;
+	const Id mNewParent;
+	const QPointF mOldPosition;
+	const QPointF mNewPosition;
 };
 
 }

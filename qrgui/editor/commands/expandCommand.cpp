@@ -42,6 +42,7 @@ bool ExpandCommand::execute()
 		newContents.setWidth(newContents.width() / 2);
 		newContents.setHeight(newContents.height() / 2);
 	}
+
 	newContents.moveTo(mNode->pos());
 	mNode->setGeometry(newContents);
 	changeExpanded();

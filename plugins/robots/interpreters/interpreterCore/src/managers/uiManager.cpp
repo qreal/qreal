@@ -205,6 +205,10 @@ void UiManager::switchToMode(UiManager::Mode mode)
 
 void UiManager::toggleModeButtons()
 {
+	// First hiding status bar to prevent its expanding over the screen...
+	mMainWindow.statusBar()->setVisible(false);
+
+	// And just then setting actual visibility...
 	mEditModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
 	mDebugModeAction.setVisible(mCurrentTab != qReal::TabInfo::TabType::other);
 	mEditModeAction.setChecked(mCurrentMode == Mode::Editing);
@@ -220,6 +224,8 @@ void UiManager::toggleModeButtons()
 	palette.setColor(QPalette::Background, color);
 	palette.setColor(QPalette::Base, color);
 	mMainWindow.statusBar()->setPalette(palette);
+	// And then showing status bar again
+	mMainWindow.statusBar()->setVisible(true);
 }
 
 QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content) const
@@ -248,6 +254,7 @@ void UiManager::produceModeButton(UiManager::Mode mode, QAction &action, QStatus
 		return;
 	}
 
+	result->setVisible(false);
 	statusBar->addWidget(result, 10);
 	connect(this, &QObject::destroyed, [result]() { result->setParent(nullptr); });
 }

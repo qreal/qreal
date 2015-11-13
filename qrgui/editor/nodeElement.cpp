@@ -60,7 +60,6 @@ NodeElement::NodeElement(ElementImpl *impl
 	, mIsExpanded(false)
 	, mIsFolded(false)
 	, mLeftPressed(false)
-	, mParentNodeElement(nullptr)
 	, mPos(QPointF(0,0))
 	, mSelectionNeeded(false)
 	, mConnectionInProgress(false)
@@ -96,10 +95,6 @@ NodeElement::NodeElement(ElementImpl *impl
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
-	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
-		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
-	}
-
 	mGrid = new SceneGridHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
@@ -119,7 +114,6 @@ NodeElement::~NodeElement()
 	deleteGuides();
 	qDeleteAll(mLabels);
 	delete mElementImpl;
-	qDeleteAll(mBonusContextMenuActions);
 	delete mGrid;
 	delete mPortHandler;
 }
@@ -282,17 +276,6 @@ void NodeElement::storeGeometry()
 	if (contents != mGraphicalAssistApi.configuration(id())) { // check if it's been changed
 		mGraphicalAssistApi.setConfiguration(id(), contents);
 	}
-}
-
-QList<ContextMenuAction*> NodeElement::contextMenuActions(const QPointF &pos)
-{
-	Q_UNUSED(pos);
-	QList<ContextMenuAction*> result;
-	result.push_back(&mSwitchGridAction);
-	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
-		result.push_back(action);
-	}
-	return result;
 }
 
 void NodeElement::showAlignment(bool isChecked)
@@ -1187,26 +1170,27 @@ void NodeElement::setSelectionState(const bool selected)
 	Element::setSelectionState(selected);
 }
 
-NodeData& NodeElement::data()
+NodeData NodeElement::data()
 {
-	mData.id = id();
-	mData.logicalId = logicalId();
-	mData.logicalProperties = logicalProperties();
-	mData.graphicalProperties = graphicalProperties();
+	NodeData result;
+	result.id = id();
+	result.logicalId = logicalId();
+	result.logicalProperties = logicalProperties();
+	result.graphicalProperties = graphicalProperties();
 	// new element should not have references to links connected to original source element
-	mData.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
-	mData.pos = mPos;
-	mData.contents = mContents;
-	mData.explosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	result.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
+	result.pos = mPos;
+	result.contents = mContents;
+	result.explosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 
 	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {
-		mData.parentId = parent->id();
+		result.parentId = parent->id();
 	} else {
-		mData.parentId = Id::rootId();
+		result.parentId = Id::rootId();
 	}
 
-	return mData;
+	return result;
 }
 
 void NodeElement::resize()

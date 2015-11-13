@@ -58,11 +58,6 @@ qReal::LogicalModelAssistInterface &QrguiFacade::logicalModelAssistInterface()
 	return mModels.logicalModelAssistApi();
 }
 
-//qReal::SceneCustomizationInterface &QrguiFacade::sceneCustomizationInterface() const
-//{
-
-//}
-
 qReal::ProjectManagementInterface &QrguiFacade::projectManagementInterface()
 {
 	return mProjectManagementInterfaceMock;
