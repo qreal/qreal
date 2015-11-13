@@ -535,6 +535,14 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 					, Id(), Id(), parentId, position, QPointF(size.width(), size.height())
 					, isFromLogicalModel, createCommand);
 			mController.execute(insertCommand);
+			if (explosionTarget != Id()) {
+				QString shape = mModels.logicalRepoApi().property(explosionTarget, "shape").toString();
+				if (shape != QString()) {
+					NodeElement * const element = getNodeById(id);
+					element->saveShape(shape);
+					element->updateShape();
+				}
+			}
 		} else {
 			mController.execute(createCommand);
 		}

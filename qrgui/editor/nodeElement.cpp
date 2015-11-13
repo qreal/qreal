@@ -159,6 +159,7 @@ void NodeElement::updateShape()
 
 	Id target = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(target, "shape", picture.toString(4));
+	mExploser.explosionsSetCouldChange();
 }
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const
@@ -1406,26 +1407,31 @@ QRectF NodeElement::diagramRenderingRect() const
 	return result;
 }
 
-void NodeElement::saveShape()
+void NodeElement::saveShape(QString shape)
 {
-	QDomDocument shape;
-	QDomElement graphics = shape.createElement("graphics");
-
-	QString filePath = ":/generated/shapes/" + mId.element() + "Class.sdf";
+	QDomDocument shapeDoc;
+	QDomElement graphics = shapeDoc.createElement("graphics");
 	QDomDocument picture;
-	QFile file(filePath);
 
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		return;
-	}
+	if (shape == QString()) {
+		QString filePath = ":/generated/shapes/" + mId.element() + "Class.sdf";
+		QFile file(filePath);
 
-	if (!picture.setContent(&file)) {
+		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			return;
+		}
+
+		if (!picture.setContent(&file)) {
+			file.close();
+			return;
+		}
+
 		file.close();
-		return;
+	} else {
+		picture.setContent(shape);
 	}
 
-	file.close();
 	graphics.appendChild(picture);
-	shape.appendChild(graphics);
-	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "shape", shape.toString(4));
+	shapeDoc.appendChild(graphics);
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "shape", shapeDoc.toString(4));
 }
