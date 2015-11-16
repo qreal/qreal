@@ -65,6 +65,9 @@ private:
 	/// Parses given sensors configuration serialized by save() method and broadcasts it to all connected providers.
 	void load(const QString &configuration);
 
+	/// Returns the logical id of the robot`s behaviour diagram if it is the only one in save file or Id() otherwise.
+	qReal::Id mainDiagramId() const;
+
 	qReal::GraphicalModelAssistInterface &mGraphicalModelAssistInterface;
 	qReal::LogicalModelAssistInterface &mLogicalModelAssistInterface;
 	qReal::gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
