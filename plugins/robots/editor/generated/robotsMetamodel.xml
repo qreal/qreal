@@ -461,7 +461,9 @@
 				<logic>
 					<container/>
 					<properties>
-						<property name="Thread" displayedName="Thread" type="string"/>
+						<property name="Thread" displayedName="Thread" type="string">
+							<default>main</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
