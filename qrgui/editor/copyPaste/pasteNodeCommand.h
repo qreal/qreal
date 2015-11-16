@@ -17,13 +17,10 @@
 #include "editor/copyPaste/pasteCommand.h"
 #include "models/commands/createElementCommand.h"
 
-namespace qReal
-{
+namespace qReal {
 namespace gui {
 namespace editor {
-
-namespace commands
-{
+namespace commands {
 
 class PasteNodeCommand : public PasteCommand
 {

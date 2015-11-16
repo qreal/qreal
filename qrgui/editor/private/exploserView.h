@@ -95,17 +95,17 @@ private slots:
 private:
 	void createAddExplosionMenu(const Element * const element
 			, QMenu &contextMenu, QList<Explosion> const &explosions
-			, const qReal::Id &alreadyConnectedElement) const;
+			, const Id &alreadyConnectedElement) const;
 
 	void createRemoveExplosionMenu(const Element * const element
-			, QMenu &contextMenu, const qReal::Id &outgoingConnection) const;
+			, QMenu &contextMenu, const Id &outgoingConnection) const;
 
 	void createExpandAction(const Element * const element
-			, QMenu &contextMenu, const qReal::Id &alreadyConnectedElement) const;
+			, QMenu &contextMenu, const Id &alreadyConnectedElement) const;
 
-	qReal::models::LogicalModelAssistApi &mLogicalApi;
-	qReal::models::GraphicalModelAssistApi &mGraphicalApi;
-	qReal::models::Exploser &mExploser;
+	models::LogicalModelAssistApi &mLogicalApi;
+	models::GraphicalModelAssistApi &mGraphicalApi;
+	models::Exploser &mExploser;
 	Controller &mController;
 	const SceneCustomizer &mCustomizer;
 };

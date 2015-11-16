@@ -50,9 +50,9 @@ using namespace qReal::gui::editor::commands;
 
 NodeElement::NodeElement(ElementImpl *impl
 		, const Id &id
-		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-		, qReal::models::LogicalModelAssistApi &logicalAssistApi
-		, qReal::models::Exploser &exploser
+		, models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi
+		, models::Exploser &exploser
 		)
 	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 	, mExploser(exploser)
@@ -157,7 +157,7 @@ void NodeElement::invalidateImagesZoomCache(qreal zoomFactor)
 
 void NodeElement::setName(const QString &value, bool withUndoRedo)
 {
-	qReal::commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
+	AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
 	if (withUndoRedo) {
 		mController->execute(command);
 		// Controller will take ownership
@@ -610,7 +610,7 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::startResize()
 {
-	mResizeCommand = new ResizeCommand(dynamic_cast<qReal::gui::editor::EditorViewScene *>(scene()), id());
+	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
 	mResizeCommand->startTracking();
 }
 
@@ -680,7 +680,7 @@ void NodeElement::initEmbeddedLinkers()
 	if (!mEmbeddedLinkers.isEmpty()) {
 		return;
 	}
-	QSet<qReal::Id> usedEdges;
+	QSet<Id> usedEdges;
 	for (const PossibleEdgeType &type : mPossibleEdgeTypes) {
 		if (usedEdges.contains(type.second)) {
 			continue;
@@ -885,7 +885,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 		drawPorts(painter, option->state & QStyle::State_MouseOver);
 
-		if (mIsExpanded && mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != qReal::Id()) {
+		if (mIsExpanded && mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != Id()) {
 			QRectF rect = diagramRenderingRect();
 			painter->drawImage(rect, mRenderedDiagram.scaled(rect.size().toSize()
 					, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -1290,7 +1290,7 @@ AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPo
 	ChangeParentCommand *changeParentToSceneCommand =
 			new ChangeParentCommand(mLogicalAssistApi, mGraphicalAssistApi, false
 					, id(), oldParent, evScene->rootItemId(), oldPos, oldScenePos);
-	AbstractCommand *translateCommand = qReal::gui::editor::commands::ResizeCommand::create(this, mContents
+	AbstractCommand *translateCommand = ResizeCommand::create(this, mContents
 			, position, mContents, oldScenePos);
 	ChangeParentCommand *result = new ChangeParentCommand(
 			mLogicalAssistApi, mGraphicalAssistApi, false
@@ -1320,7 +1320,7 @@ IdList NodeElement::sortedChildren() const
 
 void NodeElement::initRenderedDiagram()
 {
-	if (!mIsExpanded || mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) == qReal::Id()) {
+	if (!mIsExpanded || mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) == Id()) {
 		return;
 	}
 

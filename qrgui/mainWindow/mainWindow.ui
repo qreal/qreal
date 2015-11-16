@@ -4,10 +4,10 @@
  <widget class="QMainWindow" name="MainWindowUi">
   <property name="geometry">
    <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>843</width>
-    <height>559</height>
+	<x>0</x>
+	<y>0</y>
+	<width>843</width>
+	<height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,104 +15,104 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout">
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="qReal::gui::TabWidget" name="tabs" native="true"/>
-    </item>
+	<property name="leftMargin">
+	 <number>0</number>
+	</property>
+	<property name="topMargin">
+	 <number>0</number>
+	</property>
+	<property name="rightMargin">
+	 <number>0</number>
+	</property>
+	<property name="bottomMargin">
+	 <number>0</number>
+	</property>
+	<property name="spacing">
+	 <number>0</number>
+	</property>
+	<item row="0" column="0">
+	 <widget class="qReal::gui::TabWidget" name="tabs" native="true"/>
+	</item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>843</width>
-     <height>25</height>
-    </rect>
+	<rect>
+	 <x>0</x>
+	 <y>0</y>
+	 <width>843</width>
+	 <height>25</height>
+	</rect>
    </property>
    <widget class="QMenu" name="menu_File">
-    <property name="title">
-     <string>&amp;File</string>
-    </property>
-    <addaction name="actionNewProject"/>
-    <addaction name="actionNew_Diagram"/>
-    <addaction name="actionOpen"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSave_as"/>
-    <addaction name="separator"/>
-    <addaction name="actionSave_diagram_as_a_picture"/>
-    <addaction name="actionPrint"/>
-    <addaction name="separator"/>
-    <addaction name="actionQuit"/>
+	<property name="title">
+	 <string>&amp;File</string>
+	</property>
+	<addaction name="actionNewProject"/>
+	<addaction name="actionNew_Diagram"/>
+	<addaction name="actionOpen"/>
+	<addaction name="actionSave"/>
+	<addaction name="actionSave_as"/>
+	<addaction name="separator"/>
+	<addaction name="actionSave_diagram_as_a_picture"/>
+	<addaction name="actionPrint"/>
+	<addaction name="separator"/>
+	<addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menu_View">
-    <property name="title">
-     <string>&amp;View</string>
-    </property>
-    <widget class="QMenu" name="menuPanels">
-     <property name="title">
-      <string>Panels</string>
-     </property>
-    </widget>
-    <addaction name="actionFullscreen"/>
-    <addaction name="separator"/>
-    <addaction name="actionZoom_In"/>
-    <addaction name="actionZoom_Out"/>
-    <addaction name="separator"/>
-    <addaction name="actionShowSplash"/>
-    <addaction name="separator"/>
-    <addaction name="menuPanels"/>
+	<property name="title">
+	 <string>&amp;View</string>
+	</property>
+	<widget class="QMenu" name="menuPanels">
+	 <property name="title">
+	  <string>Panels</string>
+	 </property>
+	</widget>
+	<addaction name="actionFullscreen"/>
+	<addaction name="separator"/>
+	<addaction name="actionZoom_In"/>
+	<addaction name="actionZoom_Out"/>
+	<addaction name="separator"/>
+	<addaction name="actionShowSplash"/>
+	<addaction name="separator"/>
+	<addaction name="menuPanels"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="actionHelp"/>
-    <addaction name="separator"/>
-    <addaction name="actionAbout"/>
-    <addaction name="actionAboutQt"/>
+	<property name="title">
+	 <string>&amp;Help</string>
+	</property>
+	<addaction name="actionHelp"/>
+	<addaction name="separator"/>
+	<addaction name="actionAbout"/>
+	<addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
-    <property name="title">
-     <string>&amp;Settings</string>
-    </property>
-    <addaction name="actionPreferences"/>
-    <addaction name="separator"/>
-    <addaction name="actionShow_grid"/>
-    <addaction name="actionShow_alignment"/>
-    <addaction name="actionSwitch_on_grid"/>
-    <addaction name="actionSwitch_on_alignment"/>
-    <addaction name="separator"/>
-    <addaction name="actionShow_all_text"/>
+	<property name="title">
+	 <string>&amp;Settings</string>
+	</property>
+	<addaction name="actionPreferences"/>
+	<addaction name="separator"/>
+	<addaction name="actionShow_grid"/>
+	<addaction name="actionShow_alignment"/>
+	<addaction name="actionSwitch_on_grid"/>
+	<addaction name="actionSwitch_on_alignment"/>
+	<addaction name="separator"/>
+	<addaction name="actionShow_all_text"/>
    </widget>
    <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>&amp;Tools</string>
-    </property>
-    <addaction name="actionGesturesShow"/>
+	<property name="title">
+	 <string>&amp;Tools</string>
+	</property>
+	<addaction name="actionGesturesShow"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>&amp;Edit</string>
-    </property>
-    <addaction name="actionUndo"/>
-    <addaction name="actionRedo"/>
-    <addaction name="separator"/>
-    <addaction name="actionFind"/>
+	<property name="title">
+	 <string>&amp;Edit</string>
+	</property>
+	<addaction name="actionUndo"/>
+	<addaction name="actionRedo"/>
+	<addaction name="separator"/>
+	<addaction name="actionFind"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menuEdit"/>
@@ -124,16 +124,16 @@
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="fileToolbar">
    <property name="windowTitle">
-    <string>File Toolbar</string>
+	<string>File Toolbar</string>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+	<enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+	<enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+	<bool>false</bool>
    </attribute>
    <addaction name="actionNewProject"/>
    <addaction name="actionNew_Diagram"/>
@@ -142,124 +142,124 @@
   </widget>
   <widget class="QDockWidget" name="minimapDock">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
+	<sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+	 <horstretch>0</horstretch>
+	 <verstretch>0</verstretch>
+	</sizepolicy>
    </property>
    <property name="minimumSize">
-    <size>
-     <width>89</width>
-     <height>217</height>
-    </size>
+	<size>
+	 <width>89</width>
+	 <height>217</height>
+	</size>
    </property>
    <property name="windowTitle">
-    <string>Mini Map</string>
+	<string>Mini Map</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>2</number>
+	<number>2</number>
    </attribute>
    <widget class="QWidget" name="minimapDockWidgetContents">
-    <layout class="QVBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="MiniMap" name="minimapView">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
+	<layout class="QVBoxLayout">
+	 <property name="spacing">
+	  <number>6</number>
+	 </property>
+	 <property name="leftMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="topMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="rightMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="bottomMargin">
+	  <number>0</number>
+	 </property>
+	 <item>
+	  <widget class="MiniMap" name="minimapView">
+	   <property name="sizePolicy">
+		<sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+		 <horstretch>0</horstretch>
+		 <verstretch>0</verstretch>
+		</sizepolicy>
+	   </property>
+	  </widget>
+	 </item>
+	</layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="paletteDock">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-     <horstretch>0</horstretch>
-     <verstretch>20</verstretch>
-    </sizepolicy>
+	<sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+	 <horstretch>0</horstretch>
+	 <verstretch>20</verstretch>
+	</sizepolicy>
    </property>
    <property name="minimumSize">
-    <size>
-     <width>80</width>
-     <height>41</height>
-    </size>
+	<size>
+	 <width>80</width>
+	 <height>41</height>
+	</size>
    </property>
    <property name="windowTitle">
-    <string>Palette</string>
+	<string>Palette</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>2</number>
+	<number>2</number>
    </attribute>
    <widget class="QWidget" name="paletteDockWidgetContents">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="qReal::gui::PaletteTree" name="paletteTree">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>20</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
+	<layout class="QHBoxLayout">
+	 <property name="spacing">
+	  <number>6</number>
+	 </property>
+	 <property name="leftMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="topMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="rightMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="bottomMargin">
+	  <number>0</number>
+	 </property>
+	 <item>
+	  <widget class="qReal::gui::PaletteTree" name="paletteTree">
+	   <property name="sizePolicy">
+		<sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+		 <horstretch>0</horstretch>
+		 <verstretch>20</verstretch>
+		</sizepolicy>
+	   </property>
+	  </widget>
+	 </item>
+	</layout>
    </widget>
   </widget>
   <widget class="QToolBar" name="editToolbar">
    <property name="windowTitle">
-    <string>Edit Toolbar</string>
+	<string>Edit Toolbar</string>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+	<enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+	<bool>false</bool>
    </attribute>
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
   </widget>
   <widget class="QToolBar" name="viewToolbar">
    <property name="windowTitle">
-    <string>View Toolbar</string>
+	<string>View Toolbar</string>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+	<enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+	<bool>false</bool>
    </attribute>
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
@@ -268,515 +268,515 @@
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
+	<set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Logical Model Explorer</string>
+	<string>Logical Model Explorer</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>1</number>
+	<number>1</number>
    </attribute>
    <widget class="QWidget" name="logicalModelDockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="qReal::gui::ModelExplorer" name="logicalModelExplorer" native="true">
-       <property name="contextMenuPolicy">
-        <enum>Qt::ActionsContextMenu</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-       <property name="dragEnabled" stdset="0">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropOverwriteMode" stdset="0">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+	<layout class="QVBoxLayout" name="verticalLayout">
+	 <item>
+	  <widget class="qReal::gui::ModelExplorer" name="logicalModelExplorer" native="true">
+	   <property name="contextMenuPolicy">
+		<enum>Qt::ActionsContextMenu</enum>
+	   </property>
+	   <property name="acceptDrops">
+		<bool>true</bool>
+	   </property>
+	   <property name="dragEnabled" stdset="0">
+		<bool>false</bool>
+	   </property>
+	   <property name="dragDropOverwriteMode" stdset="0">
+		<bool>false</bool>
+	   </property>
+	  </widget>
+	 </item>
+	</layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="errorDock">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
+	<sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+	 <horstretch>0</horstretch>
+	 <verstretch>0</verstretch>
+	</sizepolicy>
    </property>
    <property name="minimumSize">
-    <size>
-     <width>107</width>
-     <height>132</height>
-    </size>
+	<size>
+	 <width>107</width>
+	 <height>132</height>
+	</size>
    </property>
    <property name="maximumSize">
-    <size>
-     <width>524287</width>
-     <height>524287</height>
-    </size>
+	<size>
+	 <width>524287</width>
+	 <height>524287</height>
+	</size>
    </property>
    <property name="acceptDrops">
-    <bool>false</bool>
+	<bool>false</bool>
    </property>
    <property name="autoFillBackground">
-    <bool>false</bool>
+	<bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>Errors</string>
+	<string>Errors</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>8</number>
+	<number>8</number>
    </attribute>
    <widget class="QWidget" name="errorDockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="ErrorListWidget" name="errorListWidget"/>
-     </item>
-    </layout>
+	<layout class="QVBoxLayout" name="verticalLayout_2">
+	 <item>
+	  <widget class="ErrorListWidget" name="errorListWidget"/>
+	 </item>
+	</layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="graphicalModelDock">
    <property name="windowTitle">
-    <string>Graphical Model Explorer</string>
+	<string>Graphical Model Explorer</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>1</number>
+	<number>1</number>
    </attribute>
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="qReal::gui::ModelExplorer" name="graphicalModelExplorer" native="true">
-       <property name="contextMenuPolicy">
-        <enum>Qt::ActionsContextMenu</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+	<layout class="QHBoxLayout" name="horizontalLayout">
+	 <item>
+	  <widget class="qReal::gui::ModelExplorer" name="graphicalModelExplorer" native="true">
+	   <property name="contextMenuPolicy">
+		<enum>Qt::ActionsContextMenu</enum>
+	   </property>
+	   <property name="acceptDrops">
+		<bool>true</bool>
+	   </property>
+	  </widget>
+	 </item>
+	</layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="propertyDock">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
+	<sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+	 <horstretch>0</horstretch>
+	 <verstretch>0</verstretch>
+	</sizepolicy>
    </property>
    <property name="minimumSize">
-    <size>
-     <width>80</width>
-     <height>100</height>
-    </size>
+	<size>
+	 <width>80</width>
+	 <height>100</height>
+	</size>
    </property>
    <property name="windowTitle">
-    <string>Property Editor</string>
+	<string>Property Editor</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>1</number>
+	<number>1</number>
    </attribute>
    <widget class="QWidget" name="propertyEditorDockWidgetContents">
-    <layout class="QVBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="PropertyEditorView" name="propertyEditor" native="true">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
+	<layout class="QVBoxLayout">
+	 <property name="spacing">
+	  <number>6</number>
+	 </property>
+	 <property name="leftMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="topMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="rightMargin">
+	  <number>0</number>
+	 </property>
+	 <property name="bottomMargin">
+	  <number>0</number>
+	 </property>
+	 <item>
+	  <widget class="qReal::gui::editor::PropertyEditorView" name="propertyEditor" native="true">
+	   <property name="sizePolicy">
+		<sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+		 <horstretch>0</horstretch>
+		 <verstretch>0</verstretch>
+		</sizepolicy>
+	   </property>
+	  </widget>
+	 </item>
+	</layout>
    </widget>
   </widget>
   <widget class="QToolBar" name="interpretersToolbar">
    <property name="windowTitle">
-    <string>Interpreter Toolbar</string>
+	<string>Interpreter Toolbar</string>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+	<enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+	<bool>false</bool>
    </attribute>
   </widget>
   <widget class="QToolBar" name="generatorsToolbar">
    <property name="windowTitle">
-    <string>Generators Toolbar</string>
+	<string>Generators Toolbar</string>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+	<enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+	<bool>false</bool>
    </attribute>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
-    <bool>false</bool>
+	<bool>false</bool>
    </property>
    <property name="text">
-    <string>&amp;Quit</string>
+	<string>&amp;Quit</string>
    </property>
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/zoomin.png</normaloff>:/mainWindow/images/zoomin.png</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/zoomin.png</normaloff>:/mainWindow/images/zoomin.png</iconset>
    </property>
    <property name="text">
-    <string>Zoom In</string>
+	<string>Zoom In</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl++</string>
+	<string>Ctrl++</string>
    </property>
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/zoomout.png</normaloff>:/mainWindow/images/zoomout.png</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/zoomout.png</normaloff>:/mainWindow/images/zoomout.png</iconset>
    </property>
    <property name="text">
-    <string>Zoom Out</string>
+	<string>Zoom Out</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+-</string>
+	<string>Ctrl+-</string>
    </property>
   </action>
   <action name="actionAntialiasing">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>Antialiasing</string>
+	<string>Antialiasing</string>
    </property>
   </action>
   <action name="actionOpenGL_Renderer">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>OpenGL Renderer</string>
+	<string>OpenGL Renderer</string>
    </property>
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/print.png</normaloff>:/mainWindow/images/print.png</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/print.png</normaloff>:/mainWindow/images/print.png</iconset>
    </property>
    <property name="text">
-    <string>Print</string>
+	<string>Print</string>
    </property>
   </action>
   <action name="actionMakeSvg">
    <property name="text">
-    <string>Export to SVG</string>
+	<string>Export to SVG</string>
    </property>
   </action>
   <action name="openNewTab">
    <property name="text">
-    <string>Open in new tab</string>
+	<string>Open in new tab</string>
    </property>
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>Small Help</string>
+	<string>Small Help</string>
    </property>
    <property name="shortcut">
-    <string>F1</string>
+	<string>F1</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About...</string>
+	<string>About...</string>
    </property>
   </action>
   <action name="actionAboutQt">
    <property name="text">
-    <string>About Qt...</string>
+	<string>About Qt...</string>
    </property>
   </action>
   <action name="actionShowSplash">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>Show splashscreen</string>
+	<string>Show splashscreen</string>
    </property>
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/save.svg</normaloff>:/mainWindow/images/save.svg</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/save.svg</normaloff>:/mainWindow/images/save.svg</iconset>
    </property>
    <property name="text">
-    <string>Save</string>
+	<string>Save</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+	<string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionSave_as">
    <property name="text">
-    <string>Save as...</string>
+	<string>Save as...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+	<string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/open.svg</normaloff>:/mainWindow/images/open.svg</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/open.svg</normaloff>:/mainWindow/images/open.svg</iconset>
    </property>
    <property name="text">
-    <string>Open...</string>
+	<string>Open...</string>
    </property>
    <property name="toolTip">
-    <string>Open</string>
+	<string>Open</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+O</string>
+	<string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionShow_grid">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>Show grid</string>
+	<string>Show grid</string>
    </property>
   </action>
   <action name="actionSwitch_on_grid">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>Switch on grid</string>
+	<string>Switch on grid</string>
    </property>
   </action>
   <action name="actionGesturesShow">
    <property name="text">
-    <string>Mouse gestures</string>
+	<string>Mouse gestures</string>
    </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences...</string>
+	<string>Preferences...</string>
    </property>
   </action>
   <action name="actionSwitch_on_alignment">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>Switch on alignment</string>
+	<string>Switch on alignment</string>
    </property>
   </action>
   <action name="actionShow_alignment">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>Show alignment</string>
+	<string>Show alignment</string>
    </property>
   </action>
   <action name="actionDebug">
    <property name="text">
-    <string>Debug</string>
+	<string>Debug</string>
    </property>
    <property name="shortcut">
-    <string>F9</string>
+	<string>F9</string>
    </property>
   </action>
   <action name="actionGenerate_and_build">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/build.png</normaloff>:/mainWindow/images/build.png</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/build.png</normaloff>:/mainWindow/images/build.png</iconset>
    </property>
    <property name="text">
-    <string>Generate and build</string>
+	<string>Generate and build</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F9</string>
+	<string>Ctrl+F9</string>
    </property>
   </action>
   <action name="actionSet_Breakpoints">
    <property name="text">
-    <string>Set breakpoints</string>
+	<string>Set breakpoints</string>
    </property>
    <property name="iconText">
-    <string>Set breakpoints</string>
+	<string>Set breakpoints</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F3</string>
+	<string>Ctrl+F3</string>
    </property>
   </action>
   <action name="actionCont">
    <property name="text">
-    <string>Cont</string>
+	<string>Cont</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F6</string>
+	<string>Ctrl+F6</string>
    </property>
   </action>
   <action name="actionConfigure">
    <property name="text">
-    <string>Configure</string>
+	<string>Configure</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F2</string>
+	<string>Ctrl+F2</string>
    </property>
   </action>
   <action name="actionNew_Diagram">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/newDiagram.svg</normaloff>:/mainWindow/images/newDiagram.svg</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/newDiagram.svg</normaloff>:/mainWindow/images/newDiagram.svg</iconset>
    </property>
    <property name="text">
-    <string>New Diagram</string>
+	<string>New Diagram</string>
    </property>
    <property name="toolTip">
-    <string>Create new diagram in a current model</string>
+	<string>Create new diagram in a current model</string>
    </property>
   </action>
   <action name="actionFullscreen">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/fullScreen.svg</normaloff>:/mainWindow/images/fullScreen.svg</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/fullScreen.svg</normaloff>:/mainWindow/images/fullScreen.svg</iconset>
    </property>
    <property name="text">
-    <string>Fullscreen Mode</string>
+	<string>Fullscreen Mode</string>
    </property>
    <property name="toolTip">
-    <string>Fullscreen Mode</string>
+	<string>Fullscreen Mode</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+F</string>
+	<string>Ctrl+Shift+F</string>
    </property>
   </action>
   <action name="actionNewProject">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/newProject.svg</normaloff>:/mainWindow/images/newProject.svg</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/newProject.svg</normaloff>:/mainWindow/images/newProject.svg</iconset>
    </property>
    <property name="text">
-    <string>New Project</string>
+	<string>New Project</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+N</string>
+	<string>Ctrl+Shift+N</string>
    </property>
   </action>
   <action name="actionImport">
    <property name="text">
-    <string>Import...</string>
+	<string>Import...</string>
    </property>
    <property name="toolTip">
-    <string>Import QReal project into current.</string>
+	<string>Import QReal project into current.</string>
    </property>
   </action>
   <action name="actionSave_diagram_as_a_picture">
    <property name="text">
-    <string>Save diagram as a picture...</string>
+	<string>Save diagram as a picture...</string>
    </property>
   </action>
   <action name="actionCloseProject">
    <property name="text">
-    <string>Close project</string>
+	<string>Close project</string>
    </property>
   </action>
   <action name="actionFind">
    <property name="text">
-    <string>Find...</string>
+	<string>Find...</string>
    </property>
   </action>
   <action name="actionFind_and_replace">
    <property name="text">
-    <string>Find and replace</string>
+	<string>Find and replace</string>
    </property>
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/undo.png</normaloff>:/mainWindow/images/undo.png</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/undo.png</normaloff>:/mainWindow/images/undo.png</iconset>
    </property>
    <property name="text">
-    <string>Undo</string>
+	<string>Undo</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Z</string>
+	<string>Ctrl+Z</string>
    </property>
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="mainWindow.qrc">
-     <normaloff>:/mainWindow/images/redo.png</normaloff>:/mainWindow/images/redo.png</iconset>
+	<iconset resource="mainWindow.qrc">
+	 <normaloff>:/mainWindow/images/redo.png</normaloff>:/mainWindow/images/redo.png</iconset>
    </property>
    <property name="text">
-    <string>Redo</string>
+	<string>Redo</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+Z</string>
+	<string>Ctrl+Shift+Z</string>
    </property>
   </action>
   <action name="actionExportToXml">
    <property name="text">
-    <string>Export to XML</string>
+	<string>Export to XML</string>
    </property>
   </action>
   <action name="actionShow_all_text">
    <property name="checkable">
-    <bool>true</bool>
+	<bool>true</bool>
    </property>
    <property name="text">
-    <string>Show all text</string>
+	<string>Show all text</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+T</string>
+	<string>Ctrl+Shift+T</string>
    </property>
   </action>
   <action name="actionHideBottomDocks">
    <property name="text">
-    <string>Hide bottom docks</string>
+	<string>Hide bottom docks</string>
    </property>
    <property name="toolTip">
-    <string>Hide bottom docks</string>
+	<string>Hide bottom docks</string>
    </property>
    <property name="shortcut">
-    <string>Esc</string>
+	<string>Esc</string>
    </property>
   </action>
  </widget>

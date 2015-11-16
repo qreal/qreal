@@ -14,6 +14,7 @@
 
 #include "insertIntoEdgeCommand.h"
 
+using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;
 

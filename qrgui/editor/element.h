@@ -80,8 +80,8 @@ public:
 	virtual void setColorRect(bool bl) = 0;
 
 	// TODO: Move this to constructor.
-	void setController(qReal::Controller *controller);
-	qReal::Controller *controller() const;
+	void setController(Controller *controller);
+	Controller *controller() const;
 
 	ElementImpl* elementImpl() const;
 	bool createChildrenFromMenu() const;
@@ -110,8 +110,8 @@ protected:
 
 	QList<Label *> mLabels;
 
-	qReal::models::LogicalModelAssistApi &mLogicalAssistApi;
-	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
+	models::LogicalModelAssistApi &mLogicalAssistApi;
+	models::GraphicalModelAssistApi &mGraphicalAssistApi;
 
 	/// Does not have ownership.
 	Controller *mController;

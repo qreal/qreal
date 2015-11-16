@@ -48,15 +48,15 @@ public:
 	QRect visualRect(const QModelIndex &index) const;
 	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
-	void configure(qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			, qReal::models::Exploser &exploser);
+	void configure(models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi
+			, models::Exploser &exploser);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
 	Id rootId() const;
 
 	EditorViewScene *scene() const;
-	qReal::models::GraphicalModelAssistApi *graphicalAssistApi() const;
-	qReal::models::LogicalModelAssistApi *logicalAssistApi() const;
+	models::GraphicalModelAssistApi *graphicalAssistApi() const;
+	models::LogicalModelAssistApi *logicalAssistApi() const;
 
 	/// Clears prerendered images.
 	/// @param zoomFactor - current zoom factor to render images.
@@ -87,8 +87,8 @@ private:
 	EditorViewScene *mScene;
 	EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
-	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
-	qReal::models::Exploser *mExploser;
+	models::LogicalModelAssistApi *mLogicalAssistApi;
+	models::Exploser *mExploser;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;

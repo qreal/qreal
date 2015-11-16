@@ -43,7 +43,7 @@ class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	EditorViewScene(const qReal::models::Models &models
+	EditorViewScene(const models::Models &models
 			, Controller &controller
 			/// @todo: move scene customizer properties to metamodel
 			, const SceneCustomizer &customizer
@@ -55,7 +55,7 @@ public:
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
 			, bool canBeConnected, qReal::commands::CreateElementCommand **elementCommand = 0);
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
-	virtual qReal::Id createElement(const QString &
+	virtual Id createElement(const QString &
 			, const QPointF &scenePos
 			, bool searchForParents = true
 			, qReal::commands::CreateElementCommand **createCommand = 0
@@ -70,13 +70,13 @@ public:
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual Element *getElem(const qReal::Id &id) const;
+	virtual Element *getElem(const Id &id) const;
 	Element *findElemAt(const QPointF &position) const;
 	NodeElement *findNodeAt(const QPointF &position) const;
 
-	virtual qReal::Id rootItemId() const;
+	virtual Id rootItemId() const;
 	/// @todo: remove theese getters
-	const qReal::models::Models &models() const;
+	const models::Models &models() const;
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
 	const qReal::gui::editor::SceneCustomizer &customizer() const;
@@ -91,15 +91,15 @@ public:
 	qreal realIndexGrid();
 	void setRealIndexGrid(qreal newIndexGrid);
 
-	bool canBeContainedBy(const qReal::Id &container, const qReal::Id &candidate) const;
+	bool canBeContainedBy(const Id &container, const Id &candidate) const;
 
 	Element *lastCreatedFromLinker() const;
 
 	/// Removes items selected by user with undo possibility.
 	void deleteSelectedItems();
 
-	void highlight(const qReal::Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
-	void dehighlight(const qReal::Id &graphicalId);
+	void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
+	void dehighlight(const Id &graphicalId);
 	void dehighlight();
 
 	QPointF getMousePos() const;
@@ -115,7 +115,7 @@ public:
 
 	EdgeElement *edgeForInsertion(const QPointF &scenePos);
 	void resolveOverlaps(NodeElement* node, const QPointF &scenePos, const QPointF &shift
-			, QMap<qReal::Id, QPointF> &shifting) const;
+			, QMap<Id, QPointF> &shifting) const;
 	void returnElementsToOldPositions(QMap<Id, QPointF> const &shifting) const;
 
 	QList<NodeElement*> getCloseNodes(NodeElement* node) const;
@@ -123,8 +123,8 @@ public:
 	void reConnectLink(EdgeElement * edgeElem);
 	void arrangeNodeLinks(NodeElement* node) const;
 
-	NodeElement* getNodeById(const qReal::Id &itemId) const;
-	EdgeElement* getEdgeById(const qReal::Id &itemId) const;
+	NodeElement* getNodeById(const Id &itemId) const;
+	EdgeElement* getEdgeById(const Id &itemId) const;
 
 	void itemSelectUpdate();
 
@@ -148,7 +148,7 @@ public:
 	void enableMouseGestures(bool enabled);
 
 public slots:
-	qReal::Id createElement(const QString &type);
+	Id createElement(const QString &type);
 
 	void cut();
 	void copy();
@@ -240,9 +240,9 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
-	const qReal::models::Models &mModels;
+	const models::Models &mModels;
 	const EditorManagerInterface &mEditorManager;
-	qReal::Controller &mController;
+	Controller &mController;
 	const SceneCustomizer &mCustomizer;
 	const Id mRootId;
 

@@ -25,7 +25,7 @@ namespace qReal {
 namespace gui {
 namespace editor {
 
-class Label : public QGraphicsTextItem, public qReal::LabelInterface
+class Label : public QGraphicsTextItem, public LabelInterface
 {
 	Q_OBJECT
 

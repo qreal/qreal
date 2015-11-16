@@ -20,8 +20,6 @@
 #include "qrgui/editor/private/touchSupportManager.h"
 #include "qrgui/editor/private/editorViewMVIface.h"
 
-using namespace qReal::gui::editor;
-
 namespace qReal {
 namespace gui {
 namespace editor {

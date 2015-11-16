@@ -42,12 +42,12 @@ public:
 	void generateColor();
 
 	bool isDirected() const;
-	qReal::Id edgeType() const;
+	Id edgeType() const;
 	NodeElement* master() const;
 
 	void setDirected(const bool directed);
 	void setMaster(NodeElement* const master);
-	void setEdgeType(const qReal::Id & edgeType);
+	void setEdgeType(const Id & edgeType);
 
 	void takePosition(int index, int maxIndex);
 
@@ -71,7 +71,7 @@ private:
 
 	bool mDirected;
 	bool mPressed;
-	qReal::Id mEdgeType;
+	Id mEdgeType;
 
 	QPointF mInitialClickPoint;
 	qReal::commands::CreateElementCommand *mCreateEdgeCommand;

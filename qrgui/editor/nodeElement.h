@@ -54,9 +54,9 @@ class QRGUI_EDITOR_EXPORT NodeElement : public Element
 public:
 	explicit NodeElement(ElementImpl *impl
 			, const Id &id
-			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			, qReal::models::Exploser &exploser
+			, models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi
+			, models::Exploser &exploser
 			);
 
 	virtual ~NodeElement();
@@ -277,7 +277,7 @@ private:
 	QRectF diagramRenderingRect() const;
 
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
-	qReal::models::Exploser &mExploser;
+	models::Exploser &mExploser;
 
 	ContextMenuAction mSwitchGridAction;
 
@@ -288,7 +288,7 @@ private:
 
 	DragState mDragState;
 	QPointF mDragPosition;
-	qReal::gui::editor::commands::ResizeCommand *mResizeCommand;
+	commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 

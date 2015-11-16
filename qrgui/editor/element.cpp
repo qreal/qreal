@@ -29,8 +29,8 @@ const qreal disabledEffectStrength = 0.9;
 
 Element::Element(ElementImpl *elementImpl
 		, const Id &id
-		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-		, qReal::models::LogicalModelAssistApi &logicalAssistApi
+		, models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi
 		)
 	: mMoving(false)
 	, mEnabled(true)
@@ -51,12 +51,12 @@ Element::Element(ElementImpl *elementImpl
 	SettingsListener::listen("hideNonHardLabels", this, &Element::setHideNonHardLabels);
 }
 
-qReal::Id Element::id() const
+Id Element::id() const
 {
 	return mId;
 }
 
-qReal::Id Element::logicalId() const
+Id Element::logicalId() const
 {
 	return mGraphicalAssistApi.logicalId(mId);
 }
@@ -93,7 +93,7 @@ void Element::setController(Controller *controller)
 	mController = controller;
 }
 
-qReal::Controller * Element::controller() const
+Controller * Element::controller() const
 {
 	return mController;
 }

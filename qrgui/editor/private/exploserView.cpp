@@ -26,7 +26,6 @@
 
 using namespace qReal;
 using namespace qReal::commands;
-using namespace qReal::gui;
 using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::view::details;
 
