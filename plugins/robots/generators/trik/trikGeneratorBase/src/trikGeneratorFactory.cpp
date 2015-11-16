@@ -26,6 +26,7 @@
 #include "simpleGenerators/drawEllipseGenerator.h"
 #include "simpleGenerators/drawArcGenerator.h"
 #include "simpleGenerators/initCameraGenerator.h"
+#include "simpleGenerators/initVideoStreamingGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/waitForMessageGenerator.h"
@@ -115,6 +116,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 		return new InitCameraGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikDetectorToVariable") {
 		return new DetectorToVariableGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikInitVideoStreaming") {
+		return new InitVideoStreamingGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForButton") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForMotion") {

@@ -16,8 +16,7 @@
 
 #include <QtWidgets/QMessageBox>
 
-#include <qrkernel/logging.h>
-#include <qrutils/outFile.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
 
 #include "mainWindow/mainWindow.h"
@@ -272,8 +271,11 @@ QString ProjectManagerWrapper::openFileName(const QString &dialogWindowTitle) co
 QString ProjectManagerWrapper::saveFileName(const QString &dialogWindowTitle) const
 {
 	const QString oldFileName = QFileInfo(saveFilePath()).fileName();
+	const QString defaultSaveFilePath = mAutosaver.isTempFile(mSaveFilePath)
+			? PlatformInfo::invariantSettingsPath("pathToDefaultSaves")
+			: QFileInfo(mSaveFilePath).absoluteDir().absolutePath();
 	QString fileName = QRealFileDialog::getSaveFileName("SaveQRSProject", mMainWindow, dialogWindowTitle
-			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"), oldFileName);
+			, defaultSaveFilePath, tr("QReal Save File(*.qrs)"), oldFileName);
 
 	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
 		fileName += ".qrs";

@@ -161,6 +161,7 @@ void TwoDModelWidget::initWidget()
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, Qt::NoBrush);
 	});
+	connect(mColorFieldItemPopup, &ColorItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
 		mCurrentSpeed = defaultSpeedFactorIndex;

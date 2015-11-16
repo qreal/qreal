@@ -68,6 +68,10 @@ protected slots:
 	/// Default implementation clears items memorized last time.
 	virtual void detach();
 
+signals:
+	/// Emitted when user modifies some property or a group of properties via this popup window.
+	void somethingChanged();
+
 private slots:
 	void onMousePressedScene();
 	void onMouseReleasedScene();

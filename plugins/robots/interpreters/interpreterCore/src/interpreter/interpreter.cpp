@@ -97,6 +97,7 @@ void Interpreter::interpret()
 	mState = waitingForDevicesConfiguredToLaunch;
 
 	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().robotId())) {
+		mState = idle;
 		return;
 	}
 

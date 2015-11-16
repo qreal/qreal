@@ -103,6 +103,8 @@ void ItemPopup::setPropertyMassively(const QString &property, const QVariant &va
 			object->setProperty(property.toLocal8Bit(), value);
 		}
 	}
+
+	emit somethingChanged();
 }
 
 void ItemPopup::onMousePressedScene()

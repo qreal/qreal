@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,20 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <qrkernel/logging.h>
-#include <utils/robotCommunication/robotCommunicationException.h>
+#include "initVideoStreamingGenerator.h"
 
-#include "windowsFantom.h"
-#include "fantomMethods.h"
-#include "fantom.h"
+#include <generatorBase/generatorCustomizer.h>
 
-using namespace nxt::communication;
+using namespace trik::simple;
 
-WindowsFantom::WindowsFantom()
+InitVideoStreamingGenerator::InitVideoStreamingGenerator(const qrRepo::RepoApi &repo
+		, generatorBase::GeneratorCustomizer &customizer
+		, const qReal::Id &id
+		, QObject *parent)
+	: BindingGenerator(repo, customizer, id
+			, "videosensors/initVideoStreaming.t"
+			, {}
+			, parent)
 {
-	mFantomLibrary.setFileName("fantom");
-	mFantomLibrary.load();
-	if (!mFantomLibrary.errorString().isEmpty()) {
-		QLOG_ERROR() << "Fantom resolving error:" << mFantomLibrary.errorString().toLocal8Bit();
-	}
 }

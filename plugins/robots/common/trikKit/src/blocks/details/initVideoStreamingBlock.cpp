@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,20 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <qrkernel/logging.h>
-#include <utils/robotCommunication/robotCommunicationException.h>
+#include "initVideoStreamingBlock.h"
 
-#include "windowsFantom.h"
-#include "fantomMethods.h"
-#include "fantom.h"
+using namespace trik::blocks::details;
 
-using namespace nxt::communication;
-
-WindowsFantom::WindowsFantom()
+InitVideoStreamingBlock::InitVideoStreamingBlock(kitBase::robotModel::RobotModelInterface &robotModel)
+	: kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikShell>(robotModel)
 {
-	mFantomLibrary.setFileName("fantom");
-	mFantomLibrary.load();
-	if (!mFantomLibrary.errorString().isEmpty()) {
-		QLOG_ERROR() << "Fantom resolving error:" << mFantomLibrary.errorString().toLocal8Bit();
-	}
+}
+
+void InitVideoStreamingBlock::doJob(trik::robotModel::parts::TrikShell &shell)
+{
+	shell.initVideoStreaming();
+	emit done(mNextBlockId);
 }
