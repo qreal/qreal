@@ -536,22 +536,15 @@ void EditorGenerator::setGroupNodes(QDomElement &parent, const Id &id)
 
 void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
 {
-	IdList const childElems = mApi.children(id);
+	QDomElement associationTag = mDocument.createElement("associations");
+	ensureCorrectness(id, associationTag, "beginType", mApi.stringProperty(id, "beginType"));
+	ensureCorrectness(id, associationTag, "endType", mApi.stringProperty(id, "endType"));
+	parent.appendChild(associationTag);
 
-	foreach (Id const idChild, childElems) {
-		QString const objectType = idChild.element();
-		if (objectType == "MetaEntityAssociation") {
-			QDomElement associationTag = mDocument.createElement("associations");
-			ensureCorrectness(idChild, associationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
-			ensureCorrectness(idChild, associationTag, "endType", mApi.stringProperty(idChild, "endType"));
-			parent.appendChild(associationTag);
-
-			QDomElement association = mDocument.createElement("association");
-			ensureCorrectness(idChild, association, "beginName", mApi.stringProperty(idChild, "beginName"));
-			ensureCorrectness(idChild, association, "endName", mApi.stringProperty(idChild, "endName"));
-			associationTag.appendChild(association);
-		}
-	}
+	QDomElement association = mDocument.createElement("association");
+	ensureCorrectness(id, association, "beginName", mApi.stringProperty(id, "beginName"));
+	ensureCorrectness(id, association, "endName", mApi.stringProperty(id, "endName"));
+	associationTag.appendChild(association);
 }
 
 void EditorGenerator::setUsages(QDomElement &parent, const Id &id)
