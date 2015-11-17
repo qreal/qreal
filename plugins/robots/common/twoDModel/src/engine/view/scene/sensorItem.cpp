@@ -147,7 +147,7 @@ QRectF SensorItem::imageRect() const
 		return QRectF(-6, -6, 12, 12);
 	}
 	if (sensor.isA<robotParts::RangeSensor>()) {
-		return QRectF(-20, -10, 40, 20);;
+		return QRectF(-20, -10, 40, 20);
 	} else {
 		Q_ASSERT(!"Unknown sensor type");
 		return QRectF();

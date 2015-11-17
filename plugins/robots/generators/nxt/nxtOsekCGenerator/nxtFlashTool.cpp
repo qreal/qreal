@@ -32,8 +32,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 {
 	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
 	QString path = this->path();
-	environment.insert("NXT_TOOLS_DIR", path);
-	environment.insert("NXT_TOOLS_DIR_POSIX", path.remove(1, 1).prepend("/cygdrive/"));
+	environment.insert("NXT_TOOLS_DIR", QString(path).replace("\\", "/"));
+	environment.insert("NXT_TOOLS_DIR_POSIX", path.remove(1, 1).prepend("/cygdrive/").replace("\\", "/"));
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);

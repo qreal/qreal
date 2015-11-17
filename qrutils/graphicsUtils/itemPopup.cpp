@@ -103,6 +103,8 @@ void ItemPopup::setPropertyMassively(const QString &property, const QVariant &va
 			object->setProperty(property.toLocal8Bit(), value);
 		}
 	}
+
+	emit somethingChanged();
 }
 
 void ItemPopup::onMousePressedScene()
@@ -153,6 +155,12 @@ void ItemPopup::checkSelection()
 	const QPoint moveAbove = view->viewport()->mapToGlobal(view->mapFromScene(scenePos));
 	const QPoint globalPoint{moveAbove.x() - size().width() / 2, moveAbove.y() - size().height() - 10};
 	move(parentWidget()->mapFromGlobal(globalPoint));
+}
+
+void ItemPopup::mousePressEvent(QMouseEvent *event)
+{
+	Q_UNUSED(event)
+	hide();
 }
 
 bool ItemPopup::hasProperty(const QString &property) const

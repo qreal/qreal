@@ -1552,7 +1552,7 @@
 					<labels>
 						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
 						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
-						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1793,7 +1793,7 @@
 					<labels>
 						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
 						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
-						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2785,7 +2785,7 @@
 					<labels>
 						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
 						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
-						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>

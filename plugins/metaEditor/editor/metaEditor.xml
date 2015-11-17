@@ -297,10 +297,18 @@
 						<property type="linkShapeType" name="shape">
 							<default>broken</default>
 						</property>
+      						<property type="associationTypes" name="beginType">
+							<default>no_arrow</default>
+						</property>
+						<property type="associationTypes" name="endType">
+							<default>no_arrow</default>
+						</property>
+                                                        
+						<property type="string" name="beginName"/>
+						<property type="string" name="endName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
-						<contains type="MetaEditor::MetaEntityAssociation"/>
 						<contains type="MetaEditor::Inheritance"/>
 						<contains type="MetaEditor::Importation"/>
 						<properties>
@@ -512,35 +520,6 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="type"/>
-					</properties>
-					<containers/>
-				</logic>
-			</node>
-			<node name="MetaEntityAssociation" displayedName="Assotiation" description="Элемент для указания типов и имен начала и конца связи (см. Edge). Вкладывается в соответствующий элемент Edge">
-				<graphics>
-					<picture sizex="120" sizey="40">
-						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="120" y2="10" stroke-width="1" x2="100" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="120" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="10" stroke-width="1" x2="20" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="30" stroke-width="1" x2="20" fill-style="solid"/>
-					</picture>
-					<labels>
-						<label x="10" y="5" textBinded="name" center="true"/>
-					</labels>
-					<ports/>
-				</graphics>
-				<logic>
-					<generalizations/>
-					<properties>
-						<property type="associationTypes" name="beginType">
-							<default>no_arrow</default>
-						</property>
-						<property type="associationTypes" name="endType">
-							<default>no_arrow</default>
-						</property>
-						<property type="string" name="beginName"/>
-						<property type="string" name="endName"/>
 					</properties>
 					<containers/>
 				</logic>
