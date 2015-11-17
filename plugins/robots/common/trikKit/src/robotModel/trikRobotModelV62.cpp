@@ -29,8 +29,8 @@ TrikRobotModelV62::TrikRobotModelV62(const QString &kitId, const QString &robotI
 	addAllowedConnection(PortInfo("S5", output, {}), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("S6", output, {}), { servoMotorInfo() });
 
-	addAllowedConnection(PortInfo("E1", input, {"M1"}, "encoder1"), { encoderInfo() });
-	addAllowedConnection(PortInfo("E2", input, {"M2"}, "encoder2"), { encoderInfo() });
-	addAllowedConnection(PortInfo("E3", input, {"M3"}, "encoder3"), { encoderInfo() });
-	addAllowedConnection(PortInfo("E4", input, {"M4"}, "encoder4"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E1", input, { "M1", "Е1" }, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E2", input, { "M2", "Е2" }, "encoder2"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E3", input, { "M3", "Е3" }, "encoder3"), { encoderInfo() });
+	addAllowedConnection(PortInfo("E4", input, { "M4", "Е4" }, "encoder4"), { encoderInfo() });
 }

@@ -79,6 +79,8 @@ private slots:
 	void checkSelection();
 
 protected:
+	void mousePressEvent(QMouseEvent *event) override;
+
 	/// Searches for the given property value that is met most oftenly among items memorized in last attachTo() call.
 	/// Items that are not QObjects are ignored. Obtaining property values is performed with Qt reflection.
 	QVariant dominantPropertyValue(const QString &property) const;
