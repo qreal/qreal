@@ -4,14 +4,17 @@
 
 #include "saveLoadLogic.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class SaveLoadLogicUsingModel : public SaveLoadLogic
 {
 public:
     SaveLoadLogicUsingModel(IShapeEdit *parent
                             , Scene *scene
                             , qReal::models::LogicalModelAssistApi &modelApi
-                            , const QPersistentModelIndex &parentIndex
-                            , const int parentRole
+                            , const QPersistentModelIndex &index
+                            , const int role
                             , const bool isUsingTypedPorts);
 
 private:
@@ -21,7 +24,10 @@ private:
     void doLoadProperties(QMap<QString, PropertyInfo> &result);
 
     qReal::models::LogicalModelAssistApi &mModelApi;
-    const QPersistentModelIndex &mParentIndex;
-    const int mParentRole;
+    const QPersistentModelIndex &mIndex;
+    const int mRole;
     const bool mIsUsingTypedPorts;
 };
+
+}
+}

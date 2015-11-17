@@ -19,6 +19,9 @@
 
 #include "mainWindow/shapeEdit/visibilityConditionsDialog.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class VisibilityValueWidget : public QWidget
 {
 	Q_OBJECT
@@ -39,3 +42,6 @@ private:
 
 	QWidget *mWidget;
 };
+
+}
+}

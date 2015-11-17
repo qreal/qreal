@@ -18,6 +18,9 @@
 
 #include "mainWindow/shapeEdit/item/item.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class Image : public Item
 {
 public:
@@ -36,3 +39,6 @@ private:
 	QString mFileName;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 };
+
+}
+}

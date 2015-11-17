@@ -77,7 +77,10 @@ HEADERS += \
     shapeEdit/saveLoadLogic.h \
     shapeEdit/saveLoadLogicForInterpreter.h \
     shapeEdit/saveLoadLogicUsingModel.h \
-    shapeEdit/visibilityCondition.h
+    shapeEdit/visibilityCondition.h \
+    shapeEdit/item/createItemPushButton.h \
+    shapeEdit/commands/addItemCommand.h \
+    shapeEdit/commands/resizeItemCommand.h
 
 SOURCES += \
 	$$PWD/main.cpp \
@@ -118,7 +121,10 @@ SOURCES += \
     shapeEdit/item/textPicture.cpp \
     shapeEdit/saveLoadLogic.cpp \
     shapeEdit/saveLoadLogicForInterpreter.cpp \
-    shapeEdit/saveLoadLogicUsingModel.cpp
+    shapeEdit/saveLoadLogicUsingModel.cpp \
+    shapeEdit/item/createItemPushButton.cpp \
+    shapeEdit/commands/addItemCommand.cpp \
+    shapeEdit/commands/resizeItemCommand.cpp
 
 win32 {
 	HEADERS += \

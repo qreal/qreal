@@ -14,6 +14,8 @@
 
 #include "textPicture.h"
 
+using namespace qReal::shapeEdit;
+
 TextPicture::TextPicture()
 	: Text(false)
 {

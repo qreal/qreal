@@ -16,6 +16,9 @@
 
 #include "mainWindow/shapeEdit/item/text.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class TextPicture : public Text
 {
 public:
@@ -46,3 +49,6 @@ public:
 private:
 	QFont mFont;
 };
+
+}
+}

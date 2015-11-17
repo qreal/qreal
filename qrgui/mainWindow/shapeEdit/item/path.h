@@ -18,6 +18,9 @@
 
 #include "mainWindow/shapeEdit/item/item.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class Path : public Item
 {
 public:
@@ -36,3 +39,6 @@ public:
 private:
 	QPainterPath mPath;
 };
+
+}
+}

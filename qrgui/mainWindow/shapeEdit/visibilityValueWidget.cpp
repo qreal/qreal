@@ -17,6 +17,8 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QLineEdit>
 
+using namespace qReal::shapeEdit;
+
 VisibilityValueWidget::VisibilityValueWidget(QWidget *parent)
 	: QWidget(parent), mWidget(0)
 {}

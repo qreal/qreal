@@ -24,6 +24,9 @@ namespace Ui {
 class VisibilityConditionsDialog;
 }
 
+namespace qReal {
+namespace shapeEdit {
+
 class VisibilityConditionsDialog : public QDialog
 {
 	Q_OBJECT
@@ -57,3 +60,6 @@ private:
 	QMap<QString, PropertyInfo> mProperties;
 	QList<Item *> mItems;
 };
+
+}
+}

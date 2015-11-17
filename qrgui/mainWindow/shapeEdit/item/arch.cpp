@@ -17,6 +17,8 @@
 #include <math.h>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
+using namespace qReal::shapeEdit;
+
 Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	:Item(parent)
 {

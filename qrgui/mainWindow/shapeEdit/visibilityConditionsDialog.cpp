@@ -17,6 +17,8 @@
 
 #include <QtWidgets/QPushButton>
 
+using namespace qReal::shapeEdit;
+
 VisibilityConditionsDialog::VisibilityConditionsDialog(QMap<QString, PropertyInfo> const &properties
 		, QList<Item *> const &items, QWidget *parent)
 	: QDialog(parent)

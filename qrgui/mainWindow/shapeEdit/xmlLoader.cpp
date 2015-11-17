@@ -23,6 +23,7 @@
 #include "mainWindow/shapeEdit/item/item.h"
 
 using namespace qReal;
+using namespace qReal::shapeEdit;
 
 XmlLoader::XmlLoader(Scene *scene)
 {

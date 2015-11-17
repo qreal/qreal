@@ -11,7 +11,9 @@
 #include "mainWindow/shapeEdit/scene.h"
 #include "mainWindow/shapeEdit/xmlLoader.h"
 #include "mainWindow/shapeEdit/propertyInfo.h"
-#include "mainWindow/shapeEdit/item/item.h"
+
+namespace qReal {
+namespace shapeEdit {
 
 class SaveLoadLogic : public QObject
 {
@@ -46,3 +48,6 @@ protected:
 
     QString const mXmlTitle = "<?xml version='1.0' encoding='utf-8'?>\n";
 };
+
+}
+}

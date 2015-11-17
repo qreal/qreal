@@ -1,23 +1,26 @@
 #include "saveLoadLogicUsingModel.h"
 
+using namespace qReal;
+using namespace qReal::shapeEdit;
+
 SaveLoadLogicUsingModel::SaveLoadLogicUsingModel(IShapeEdit *parent
         , Scene *scene
         , qReal::models::LogicalModelAssistApi &modelApi
-        , const QPersistentModelIndex &parentIndex
-        , const int parentRole
+        , const QPersistentModelIndex &index
+        , const int role
         , const bool isUsingTypedPorts)
     : SaveLoadLogic(parent, scene)
     , mModelApi(modelApi)
-    , mParentIndex(parentIndex)
-    , mParentRole(parentRole)
+    , mIndex(index)
+    , mRole(role)
     , mIsUsingTypedPorts(isUsingTypedPorts)
 {}
 
 void SaveLoadLogicUsingModel::doSave()
 {
     QDomDocument doc = generateDom();
-    if (mParentIndex.isValid()) {
-        emit mParent->shapeSaved(doc.toString(4), mParentIndex, mParentRole);
+    if (mIndex.isValid()) {
+        emit mParent->shapeSaved(doc.toString(4), mIndex, mRole);
     }
 }
 
@@ -40,7 +43,7 @@ void SaveLoadLogicUsingModel::doLoadProperties(QMap<QString, PropertyInfo> &resu
     qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModelApi.mutableLogicalRepoApi());
     qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
 
-    foreach (const qReal::Id &child, repoApi->children(mModelApi.idByIndex(mParentIndex))) {
+    foreach (const qReal::Id &child, repoApi->children(mModelApi.idByIndex(mIndex))) {
         if (child.element() != "MetaEntity_Attribute") {
             continue;
         }

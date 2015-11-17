@@ -19,6 +19,8 @@
 #include <QtGui/QPainter>
 #include <QtGui/QTextCursor>
 
+using namespace qReal::shapeEdit;
+
 Text::Text(bool isDynamic)
 	: Item(nullptr), mIsDynamicText(isDynamic)
 {

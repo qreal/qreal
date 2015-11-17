@@ -17,6 +17,8 @@
 #include <QtGui/QBitmap>
 #include <QtGui/QImageWriter>
 
+using namespace qReal::shapeEdit;
+
 Image::Image(QString fileName, qreal x, qreal y, Item* parent)
 	: Item(parent)
 	, mImage(fileName)

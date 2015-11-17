@@ -17,6 +17,9 @@
 #include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/line.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class LinePort : public Line
 {
 public:
@@ -33,3 +36,6 @@ public:
 private:
 	QString mType;
 };
+
+}
+}

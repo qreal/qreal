@@ -80,6 +80,7 @@
 
 using namespace qReal;
 using namespace qReal::commands;
+using namespace qReal::shapeEdit;
 using namespace gui;
 
 MainWindow::MainWindow(const QString &fileToOpen)
@@ -754,9 +755,9 @@ EditorView * MainWindow::getCurrentTab() const
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
-bool MainWindow::isCurrentTabShapeEdit() const
+IShapeEdit *MainWindow::getCurrentTabShapeEdit() const
 {
-    return dynamic_cast<IShapeEdit *>(mUi->tabs->currentWidget()) != nullptr;
+    return dynamic_cast<IShapeEdit *>(mUi->tabs->currentWidget());
 }
 
 void MainWindow::closeCurrentTab()
@@ -771,6 +772,7 @@ void MainWindow::closeTab(int index)
 	QWidget * const widget = mUi->tabs->widget(index);
 	EditorView * const diagram = dynamic_cast<EditorView *>(widget);
 	text::QScintillaTextEdit * const possibleCodeTab = dynamic_cast<text::QScintillaTextEdit *>(widget);
+    IShapeEdit * const possibleShapeEdit = dynamic_cast<IShapeEdit *>(widget);
 
 	const QString path = mTextManager->path(possibleCodeTab);
 
@@ -778,7 +780,9 @@ void MainWindow::closeTab(int index)
 		const Id diagramId = diagram->editorViewScene().rootItemId();
 		mController->diagramClosed(diagramId);
 		emit mFacade.events().diagramClosed(diagramId);
-	} else if (mTextManager->unbindCode(possibleCodeTab)) {
+    } else if (possibleShapeEdit) {
+        mController->diagramClosed(possibleShapeEdit->getId());
+    } else if (mTextManager->unbindCode(possibleCodeTab)) {
 		emit mFacade.events().codeTabClosed(QFileInfo(path));
 	} else {
 		// TODO: process other tabs (for example, start tab)
@@ -809,20 +813,17 @@ void MainWindow::openShapeEditor(const QPersistentModelIndex &index
 		, const QString &propertyValue
         , bool useTypedPorts)
 {
-    IShapeEdit *shapeEdit = new ShapeEdit(propertyValue
-         , dynamic_cast<models::LogicalModelAssistApi &>(models().logicalModelAssistApi())
-         , index, role, useTypedPorts);
+    IShapeEdit * const shapeEdit = new ShapeEdit(propertyValue
+        , dynamic_cast<models::LogicalModelAssistApi &>(models().logicalModelAssistApi())
+        , index, role, mController, useTypedPorts);
 
 	// Here we are going to actually modify model to set a value of a shape.
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, const QPersistentModelIndex &, const int &))
 			, this, SLOT(setData(QString, const QPersistentModelIndex &, const int &)));
-    connect(shapeEdit, SIGNAL(needUpdate()), this, SLOT(loadPlugins()));
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+    openShapeEditorTab(shapeEdit);
 }
 
 // This method is for Interpreter.
@@ -831,12 +832,27 @@ void MainWindow::openShapeEditor(const Id &id
 		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts)
 {
-    IShapeEdit *shapeEdit = new ShapeEdit(propertyValue, id, *editorManagerProxy, models().graphicalRepoApi(), getCurrentTab());
+    IShapeEdit * const shapeEdit = new ShapeEdit(propertyValue, id, *editorManagerProxy
+        , models().graphicalRepoApi(), getCurrentTab(), mController, useTypedPorts);
+
+    openShapeEditorTab(shapeEdit);
+}
+
+void MainWindow::openShapeEditor()
+{
+    IShapeEdit * const shapeEdit = new ShapeEdit(mController);
+    openShapeEditorTab(shapeEdit);
+}
+
+void MainWindow::openShapeEditorTab(IShapeEdit * const shapeEdit)
+{
     connect(shapeEdit, SIGNAL(needUpdate()), this, SLOT(loadPlugins()));
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+    mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+    mUi->tabs->setCurrentWidget(shapeEdit);
+    setConnectActionZoomTo(shapeEdit);
+
+    //controller must be automatically connected
 }
 
 void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, const int role
@@ -855,15 +871,6 @@ void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, co
 	mUi->tabs->addTab(textEdit, tr("Text Editor"));
 	mUi->tabs->setCurrentWidget(textEdit);
 	setConnectActionZoomTo(textEdit);
-}
-
-void MainWindow::openShapeEditor()
-{
-    IShapeEdit * const shapeEdit = new ShapeEdit;
-
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openReferenceList(const QPersistentModelIndex &index
@@ -1147,7 +1154,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	const bool isEditorTab = getCurrentTab();
-	const bool isShape = isCurrentTabShapeEdit();
+    const bool isShape = getCurrentTabShapeEdit();
 	const bool isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
 	const bool isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
 	const bool isDecorativeTab = isStartTab || isGesturesTab;
@@ -1157,8 +1164,8 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	mUi->actionPrint->setEnabled(!isDecorativeTab);
 
-	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
-	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
+    mUi->actionRedo->setEnabled(mController->canRedo() && !isDecorativeTab);
+    mUi->actionUndo->setEnabled(mController->canUndo() && !isDecorativeTab);
 	mUi->actionFind->setEnabled(!isDecorativeTab);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
@@ -1185,6 +1192,7 @@ void MainWindow::switchToTab(int index)
 	if (index != -1) {
 		mUi->tabs->setEnabled(true);
 		EditorView *editorView = getCurrentTab();
+        IShapeEdit *shapeEdit = getCurrentTabShapeEdit();
 		setConnectActionZoomTo(mUi->tabs->currentWidget());
 
 		if (editorView) {
@@ -1193,7 +1201,9 @@ void MainWindow::switchToTab(int index)
 			mRootIndex = editorView->mvIface().rootIndex();
 			const Id diagramId = models().graphicalModelAssistApi().idByIndex(mRootIndex);
 			mController->setActiveDiagram(diagramId);
-		}
+        } else if (shapeEdit) {
+            mController->setActiveDiagram(shapeEdit->getId());
+        }
 	} else {
 		mUi->tabs->setEnabled(false);
 		mController->setActiveDiagram(Id());

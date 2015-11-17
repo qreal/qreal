@@ -19,6 +19,9 @@
 #include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/ellipse.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class Arch : public Item
 {
 public:
@@ -45,3 +48,6 @@ private:
 	int mSpanAngle;
 	QRectF mRect;
 };
+
+}
+}

@@ -21,6 +21,9 @@
 
 #include "mainWindow/shapeEdit/item/item.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class Text : public Item
 {
 public:
@@ -53,3 +56,6 @@ protected:
 	QRectF mRect;
 	void drawForDynamicText(QPainter* painter);
 };
+
+}
+}

@@ -14,6 +14,8 @@
 
 #include "pointPort.h"
 
+using namespace qReal::shapeEdit;
+
 const int step = 3;
 
 PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl(), mType("NonTyped")

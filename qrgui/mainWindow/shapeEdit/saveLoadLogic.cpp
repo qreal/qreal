@@ -1,5 +1,8 @@
 #include "saveLoadLogic.h"
 
+using namespace qReal;
+using namespace qReal::shapeEdit;
+
 SaveLoadLogic::SaveLoadLogic(IShapeEdit *parent, Scene *scene) :
     mParent(parent)
   , mScene(scene)
@@ -80,8 +83,8 @@ QMap<QString, PropertyInfo> SaveLoadLogic::loadProperties()
 }
 
 void SaveLoadLogic::doSave() {}
-void SaveLoadLogic::doLoadPortTypes(QStringList &result) {}
-void SaveLoadLogic::doLoadProperties(QMap<QString, PropertyInfo> &result) {}
+void SaveLoadLogic::doLoadPortTypes(QStringList &result) {Q_UNUSED(result)}
+void SaveLoadLogic::doLoadProperties(QMap<QString, PropertyInfo> &result) {Q_UNUSED(result)}
 
 QDomDocument SaveLoadLogic::generateDom()
 {

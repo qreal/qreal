@@ -21,6 +21,9 @@
 #include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/line.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class Stylus : public Item
 {
 public:
@@ -51,3 +54,6 @@ private:
 	QList<AbstractItem *> mAbstractListLine;
 	graphicsUtils::StylusImpl mStylusImpl;
 };
+
+}
+}

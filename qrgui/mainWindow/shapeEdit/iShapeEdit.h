@@ -7,16 +7,18 @@
 #include "editor/editorView.h"
 
 namespace qReal {
+namespace shapeEdit {
 
 class IShapeEdit : public QWidget
 {
-
     Q_OBJECT
 
 public:
-    virtual graphicsUtils::AbstractView* getView() = 0;
+    virtual graphicsUtils::AbstractView* getView() const = 0;
 
-    //virtual ~newShapeEdit(); //нужен ли?
+    virtual Id getId() const = 0;
+
+    virtual ~IShapeEdit() {}
 
 signals:
     void shapeSaved(const QString &shape, const QPersistentModelIndex &index, const int &role);
@@ -25,9 +27,8 @@ signals:
     void needUpdate();
 
 protected:
-    /// Protected constructor because this is an abstract class.
-    /// Need to construct QWidget.
-    //explicit IShapeEdit(QWidget *parent = nullptr);
-
+    const Id mId;
 };
+
+}
 }

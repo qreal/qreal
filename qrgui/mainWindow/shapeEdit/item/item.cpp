@@ -20,6 +20,14 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtCore/QList>
 
+
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
+#include "mainWindow/shapeEdit/scene.h"
+
+using namespace qReal;
+using namespace qReal::shapeEdit;
+
+
 Item::Item(graphicsUtils::AbstractItem* parent)
 	: AbstractItem(parent), mDomElementType(noneType)
 	, mScalingState(noneScale)
@@ -110,8 +118,31 @@ void Item::drawScalingRects(QPainter* painter)
 	}
 }
 
+CreateItemPushButton *Item::createButton()
+{
+    CreateItemPushButton *button = new CreateItemPushButton(this);
+
+    //  lines to implement in children:
+    button->setObjectName(QString(mItemName + "Button"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/" + mItemName + ".png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+
+    button->setMaximumSize(QSize(65, 16777215));
+    button->setCheckable(true);
+    button->setChecked(false);
+    button->setAutoExclusive(false);
+    button->setAutoDefault(false);
+    button->setDefault(false);
+
+    return button;
+}
+
 void Item::swap(qreal &x, qreal &y)
 {
+    //std::swap(x, y);
+
 	qreal tmp = x;
 	x = y;
 	y = tmp;

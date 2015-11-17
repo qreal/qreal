@@ -18,6 +18,9 @@
 
 #include "mainWindow/shapeEdit/item/item.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class Line : public Item
 {
 	Q_INTERFACES(AbstractItem)
@@ -25,6 +28,11 @@ public:
 	Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
 	Line(const Line &other);
 	virtual Item* clone();
+
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+
 	QLineF line() const;
 	QPainterPath shape() const;
 	virtual QRectF boundingRect() const;
@@ -41,6 +49,12 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
 
+protected:
+    const QString mItemName = "line";
+
 private:
 	graphicsUtils::LineImpl mLineImpl;
 };
+
+}
+}

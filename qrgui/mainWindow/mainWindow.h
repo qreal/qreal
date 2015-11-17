@@ -49,6 +49,8 @@
 #include <qrgui/preferencesDialog/preferencesDialog.h>
 #include <qrgui/dialogs/findReplaceDialog.h>
 
+#include "mainWindow/shapeEdit/iShapeEdit.h"
+
 class QGraphicsView;
 
 namespace Ui {
@@ -85,7 +87,7 @@ public:
 
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
-	bool isCurrentTabShapeEdit() const;
+    shapeEdit::IShapeEdit *getCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
 	PropertyEditorView *propertyEditor() const;
@@ -270,7 +272,9 @@ private slots:
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
-	void openNewTab(const QModelIndex &index);
+    void openNewTab(const QModelIndex &index);
+
+    void openShapeEditorTab(shapeEdit::IShapeEdit * const shapeEdit);
 
 	/// Called after current tab was changed somehow --- opened, closed, switched to other
 	/// @param newIndex Index of a new active tab, -1 if there is none

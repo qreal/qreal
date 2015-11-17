@@ -20,6 +20,9 @@
 #include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/visibilityCondition.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 const int distanceFigure = 50;
 
 class XmlLoader
@@ -75,3 +78,6 @@ private:
 
 	bool isNotLCMZ(QString str, int i);
 };
+
+}
+}

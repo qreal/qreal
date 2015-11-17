@@ -14,6 +14,8 @@
 
 #include "rectangle.h"
 
+using namespace qReal::shapeEdit;
+
 QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	:Item(parent), mRectangleImpl()
 {

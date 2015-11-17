@@ -22,8 +22,10 @@
 
 #include <qrutils/graphicsUtils/abstractScene.h>
 #include <qrkernel/settingsManager.h>
+#include <qrgui/controller/controller.h>
 
 #include "mainWindow/shapeEdit/item/item.h"
+
 #include "mainWindow/shapeEdit/item/arch.h"
 #include "mainWindow/shapeEdit/item/line.h"
 #include "mainWindow/shapeEdit/item/ellipse.h"
@@ -37,6 +39,9 @@
 #include "mainWindow/shapeEdit/item/curve.h"
 #include "mainWindow/shapeEdit/item/image.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;
 
@@ -44,12 +49,16 @@ class Scene : public graphicsUtils::AbstractScene
 {
 	Q_OBJECT
 public:
-	Scene(graphicsUtils::AbstractView *view, QObject *parent = 0);
+    Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject *parent = 0);
 	QPoint centerEmpty();
 	void changeTextName(const QString &name);
 	void setZValue(Item* item);
-	void addImage(const QString &fileName);
 
+
+    void addShapeEditItem(bool checked, Item* item);
+
+
+	void addImage(const QString &fileName);
 	void drawLine(bool checked);
 	void drawEllipse(bool checked);
 	void drawCurve(bool checked);
@@ -96,6 +105,7 @@ private slots:
 
 	void deleteItem();
 	void clearScene();
+    void resetItemCreating();
 
 private:
 	enum ItemTypes {
@@ -119,20 +129,27 @@ private:
 		, cut
 	};
 
+    Controller *mController;
+
 	int mZValue;
-	ItemTypes mItemType;
+    Item *mNewItem;
+        ItemTypes mItemType;
 	bool mWaitMove;
-	int mCount;
-	Line *mLine;
-	QRealEllipse *mEllipse;
-	QRealRectangle *mRectangle;
-	Text *mText;
-	TextPicture *mTextPicture;
-	PointPort *mPointPort;
-	LinePort *mLinePort;
-	Stylus *mStylus;
-	Curve* mCurve;
-	Image* mImage;
+    bool mIsAddingFinished;
+    QGraphicsSceneMouseEvent *mPressEvent;
+        int mCount;
+
+        Line *mLine;
+        QRealEllipse *mEllipse;
+        QRealRectangle *mRectangle;
+        Text *mText;
+        TextPicture *mTextPicture;
+        PointPort *mPointPort;
+        LinePort *mLinePort;
+        Stylus *mStylus;
+        Curve* mCurve;
+        Image* mImage;
+
 	QString mFileName;
 	QPointF mC1;
 	CopyPasteType mCopyPaste;
@@ -147,13 +164,14 @@ private:
 	QRectF selectedItemsBoundingRect() const;
 	QList<TextPicture *> selectedTextPictureItems();
 	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
-	void reshapeLine(QGraphicsSceneMouseEvent *event);
-	void reshapeLinePort(QGraphicsSceneMouseEvent *event);
-	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
-	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
-	void reshapeStylus(QGraphicsSceneMouseEvent *event);
-	void reshapeCurveFirst(QGraphicsSceneMouseEvent *event);
-	void reshapeCurveSecond(QGraphicsSceneMouseEvent *event);
+
+        void reshapeLine(QGraphicsSceneMouseEvent *event);
+        void reshapeLinePort(QGraphicsSceneMouseEvent *event);
+        void reshapeEllipse(QGraphicsSceneMouseEvent *event);
+        void reshapeRectangle(QGraphicsSceneMouseEvent *event);
+        void reshapeStylus(QGraphicsSceneMouseEvent *event);
+        void reshapeCurveFirst(QGraphicsSceneMouseEvent *event);
+        void reshapeCurveSecond(QGraphicsSceneMouseEvent *event);
 
 	void setZValueSelectedItems();
 	void setNullZValueItems();
@@ -165,3 +183,6 @@ private:
 
 	virtual void keyPressEvent(QKeyEvent *keyEvent);
 };
+
+}
+}

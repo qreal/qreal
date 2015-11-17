@@ -27,17 +27,22 @@
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/widgets/colorListEditor.h>
 
-#include "mainWindow/shapeEdit/xmlLoader.h"
-#include "mainWindow/mainWindow.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
+#include "mainWindow/shapeEdit/saveLoadLogicUsingModel.h"
+#include "mainWindow/shapeEdit/saveLoadLogicForInterpreter.h"
 
 using namespace qReal;
+using namespace qReal::shapeEdit;
 using namespace utils;
 
-ShapeEdit::ShapeEdit()
+ShapeEdit::ShapeEdit(Controller *controller)
         : mUi(new Ui::ShapeEdit)
 {
     mUi->setupUi(this);
-    mScene = new Scene(mUi->graphicsView, this);
+    mScene = new Scene(mUi->graphicsView, controller, this);
+
+    mId = Id.createElementId("", mDiagramId, "");
+    Q_ASSERT(Id.isNull());
 
     mSaveLoadLogic = new SaveLoadLogic(this, mScene);
 
@@ -49,11 +54,15 @@ ShapeEdit::ShapeEdit(const QString &propertyValue
         , models::LogicalModelAssistApi &modelApi
         , const QPersistentModelIndex &index
         , const int &role
+        , Controller *controller
         , bool isUsingTypedPorts)
         : mUi(new Ui::ShapeEdit)
 {
     mUi->setupUi(this);
-    mScene = new Scene(mUi->graphicsView, this);
+    mScene = new Scene(mUi->graphicsView, controller, this);
+
+    Id tmpId = modelApi.idByIndex(index);
+    mId = Id.createElementId(tmpId.editor(), mDiagramId, tmpId.element());
 
     mSaveLoadLogic = new SaveLoadLogicUsingModel(this, mScene, modelApi, index, role, isUsingTypedPorts);
 
@@ -65,17 +74,21 @@ ShapeEdit::ShapeEdit(const QString &propertyValue
     }
 }
 
-ShapeEdit::ShapeEdit(
-        const QString &propertyValue
+ShapeEdit::ShapeEdit(const QString &propertyValue
         , const Id &id
         , const EditorManagerInterface &editorManager
         , const qrRepo::GraphicalRepoApi &graphicalRepoApi
         , EditorView *editorView
-        )
+        , Controller *controller
+        , bool isUsingTypedPorts)
         : mUi(new Ui::ShapeEdit)
 {
+    Q_UNUSED(isUsingTypedPorts)
+
     mUi->setupUi(this);
-    mScene = new Scene(mUi->graphicsView, this);
+    mScene = new Scene(mUi->graphicsView, controller, this);
+
+    mId = Id.createElementId(id.editor(), mDiagramId, id.element());
 
     IdList graphicalElements = graphicalRepoApi.graphicalElements(Id(id.editor(), id.diagram(), id.element()));
     mSaveLoadLogic = new SaveLoadLogicForInterpreter(this, mScene, id, editorManager, graphicalElements, editorView);
@@ -110,18 +123,8 @@ void ShapeEdit::init()
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
 
-	initButtonGroup();
-	connect(mUi->drawLineButton, SIGNAL(clicked(bool)), this, SLOT(drawLine(bool)));
-	connect(mUi->drawEllipseButton, SIGNAL(clicked(bool)), this, SLOT(drawEllipse(bool)));
-	connect(mUi->drawCurveButton, SIGNAL(clicked(bool)), this, SLOT(drawCurve(bool)));
-	connect(mUi->drawRectButton, SIGNAL(clicked(bool)), this, SLOT(drawRectangle(bool)));
-	connect(mUi->addTextButton, SIGNAL(clicked(bool)), this, SLOT(addText(bool)));
-	connect(mUi->addDynamicTextButton, SIGNAL(clicked(bool)), this, SLOT(addDynamicText(bool)));
-	connect(mUi->addTextPictureButton, SIGNAL(clicked(bool)), this, SLOT(addTextPicture(bool)));
-	connect(mUi->addPointPortButton, SIGNAL(clicked(bool)), this, SLOT(addPointPort(bool)));
-	connect(mUi->addLinePortButton, SIGNAL(clicked(bool)), this, SLOT(addLinePort(bool)));
-	connect(mUi->stylusButton, SIGNAL(clicked(bool)), this, SLOT(addStylus(bool)));
-	connect(mUi->addImageButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
+    initAvailableItems();
+    initItemButtons();
 
 	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
@@ -181,19 +184,44 @@ void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
 	}
 }
 
-void ShapeEdit::initButtonGroup()
+void ShapeEdit::initItemButtons()
 {
-	mButtonGroup.append(mUi->drawLineButton);
-	mButtonGroup.append(mUi->drawEllipseButton);
-	mButtonGroup.append(mUi->drawCurveButton);
-	mButtonGroup.append(mUi->drawRectButton);
-	mButtonGroup.append(mUi->addTextButton);
-	mButtonGroup.append(mUi->addDynamicTextButton);
-	mButtonGroup.append(mUi->addTextPictureButton);
-	mButtonGroup.append(mUi->addPointPortButton);
-	mButtonGroup.append(mUi->addLinePortButton);
-	mButtonGroup.append(mUi->stylusButton);
-	mButtonGroup.append(mUi->addImageButton);
+    const int numButtons = mAvailableItems.size();
+    const int numRows = 6;
+    const int numColumns = numButtons / numRows + 1;
+
+    int i = 0;
+    for (int iColumn = 0; iColumn < numColumns; ++iColumn) {
+        for (int iRow = 0; iRow < numRows; ++iRow) {
+            if (i > numButtons) {
+                return;
+            }
+
+            Item *item = mAvailableItems.at(i);
+            ++i;
+            CreateItemPushButton *itemButton = item->createButton();
+            mUi->itemButtonsGridLayout->addWidget(itemButton, iRow, iColumn, 1, 1);
+            connect(itemButton, SIGNAL(clickedItemButton(bool,Item*)), this, SLOT(addShapeEditItem(bool,Item*)));
+
+            mButtonGroup.append(itemButton);
+        }
+    }
+}
+
+void ShapeEdit::initAvailableItems()
+{
+//    mAvailableItems.append(new Arch(new QRectF(), 0, 0, nullptr));
+//    mAvailableItems.append(new Curve(0, 0, 0));
+//    //mAvailableItems.append(new /*ellipse*/);
+    mAvailableItems.append(new Line(0, 0, 0, 0));
+//    mAvailableItems.append(new LinePort(0, 0, 0, 0));
+//    mAvailableItems.append(new Path(new QPainterPath()));
+//    mAvailableItems.append(new PointPort(0, 0));
+//    //mAvailableItems.append(new QRealRectangle(0, 0, 0, 0));
+//    mAvailableItems.append(new Stylus(0, 0, nulltr));
+//    mAvailableItems.append(new Text());
+//    mAvailableItems.append(new TextPicture());
+//    mAvailableItems.append(new Image('', 0, 0));
 }
 
 void ShapeEdit::initPalette()
@@ -226,9 +254,14 @@ ShapeEdit::~ShapeEdit()
 	delete mUi;
 }
 
-graphicsUtils::AbstractView* ShapeEdit::getView()
+graphicsUtils::AbstractView* ShapeEdit::getView() const
 {
 	return mUi->graphicsView;
+}
+
+Id ShapeEdit::getId() const
+{
+    return mId;
 }
 
 void ShapeEdit::changeEvent(QEvent *e)
@@ -259,6 +292,32 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 	}
 }
 
+void ShapeEdit::addShapeEditItem(bool checked, Item* newItem)
+{
+    mScene->addShapeEditItem(checked, newItem);
+    if (checked) {
+        CreateItemPushButton *buttonSender = dynamic_cast<CreateItemPushButton *>(sender());
+
+        Q_ASSERT(buttonSender != nullptr);
+
+        if (buttonSender) {
+            setHighlightOneButton(buttonSender);
+        }
+    }
+}
+
+//void ShapeEdit::addImage(bool checked)
+//{
+//	if (checked) {
+//		setHighlightOneButton(mUi->addImageButton);
+//		QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorImage", this);
+//		if (fileName.isEmpty()) {
+//			return;
+//		}
+
+//		mScene->addImage(fileName);
+//	}
+//}
 
 void ShapeEdit::save()
 {
@@ -281,20 +340,6 @@ void ShapeEdit::open()
 {
 	QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorXml", this);
     mSaveLoadLogic->loadFromFile(fileName);
-}
-
-
-void ShapeEdit::addImage(bool checked)
-{
-	if (checked) {
-		setHighlightOneButton(mUi->addImageButton);
-		QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorImage", this);
-		if (fileName.isEmpty()) {
-			return;
-		}
-
-		mScene->addImage(fileName);
-	}
 }
 
 void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
@@ -421,88 +466,6 @@ void ShapeEdit::changeTextName()
 	QString newName = mUi->textEditField->toPlainText();
 	mScene->changeTextName(newName);
 }
-
-
-void ShapeEdit::drawLine(bool checked)
-{
-	mScene->drawLine(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawLineButton);
-	}
-}
-
-void ShapeEdit::drawEllipse(bool checked)
-{
-	mScene->drawEllipse(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawEllipseButton);
-	}
-}
-
-void ShapeEdit::drawCurve(bool checked)
-{
-	mScene->drawCurve(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawCurveButton);
-	}
-}
-
-void ShapeEdit::drawRectangle(bool checked)
-{
-	mScene->drawRectangle(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawRectButton);
-	}
-}
-
-void ShapeEdit::addText(bool checked)
-{
-	mScene->addText(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addTextButton);
-	}
-}
-
-void ShapeEdit::addDynamicText(bool checked)
-{
-	mScene->addDynamicText(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addDynamicTextButton);
-	}
-}
-
-void ShapeEdit::addTextPicture(bool checked)
-{
-	mScene->addTextPicture(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addTextPictureButton);
-	}
-}
-
-void ShapeEdit::addPointPort(bool checked)
-{
-	mScene->addPointPort(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addPointPortButton);
-	}
-}
-
-void ShapeEdit::addLinePort(bool checked)
-{
-	mScene->addLinePort(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addLinePortButton);
-	}
-}
-
-void ShapeEdit::addStylus(bool checked)
-{
-	mScene->addStylus(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->stylusButton);
-	}
-}
-
 
 void ShapeEdit::visibilityButtonClicked()
 {

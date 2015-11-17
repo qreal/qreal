@@ -21,6 +21,7 @@
 
 #include <qrutils/graphicsUtils/abstractItemView.h>
 #include <qrkernel/ids.h>
+#include <qrgui/controller/controller.h>
 
 #include "editor/editorView.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
@@ -31,8 +32,6 @@
 #include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/iShapeEdit.h"
 #include "mainWindow/shapeEdit/saveLoadLogic.h"
-#include "mainWindow/shapeEdit/saveLoadLogicUsingModel.h"
-#include "mainWindow/shapeEdit/saveLoadLogicForInterpreter.h"
 
 
 namespace Ui {
@@ -40,19 +39,19 @@ class ShapeEdit;
 }
 
 namespace qReal {
-
-class MainWindow;
+namespace shapeEdit {
 
 class ShapeEdit : public IShapeEdit
 {
 	Q_OBJECT
 
 public:
-    explicit ShapeEdit();
+    explicit ShapeEdit(Controller *controller);
     ShapeEdit(const QString &propertyValue
               , qReal::models::LogicalModelAssistApi &model
               , const QPersistentModelIndex &index
               , const int &role
+              , Controller *controller
               , bool isUsingTypedPorts
               );
     ShapeEdit(const QString &propertyValue
@@ -60,10 +59,13 @@ public:
               , const EditorManagerInterface &editorManagerProxy
               , const qrRepo::GraphicalRepoApi &graphicalRepoApi
               , EditorView *editorView
+              , Controller *controller
+              , bool isUsingTypedPorts
               );
     ~ShapeEdit();
 
-	graphicsUtils::AbstractView* getView();
+    graphicsUtils::AbstractView* getView() const;
+    Id getId() const;
 
 signals:
     //см. keyPressEvent() - они только там
@@ -76,16 +78,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 private slots:
-    void drawLine(bool checked);
-    void drawEllipse(bool checked);
-    void drawCurve(bool checked);
-    void drawRectangle(bool checked);
-    void addText(bool checked);
-    void addDynamicText(bool checked);
-    void addTextPicture(bool checked);
-    void addPointPort(bool checked);
-    void addLinePort(bool checked);
-    void addStylus(bool checked);
+    void addShapeEditItem(bool checked, Item *newItem);
 
 	void visibilityButtonClicked();
 
@@ -94,8 +87,6 @@ private slots:
     void saveToXml();
     void saveAsPicture();
 
-
-    void addImage(bool checked);
     void setNoPalette();
     void setItemPalette(const QPen &penItem, const QBrush &brushItem);
     void setNoFontPalette();
@@ -109,14 +100,20 @@ private:
     SaveLoadLogic *mSaveLoadLogic; // Has ownership
     Ui::ShapeEdit *mUi;  // Has ownership.
 
+    const QString mDiagramId = "shapeEdit";
+
+    QList<Item *> mAvailableItems;
+    void initItemButtons();
+    void initAvailableItems();
+
+
 	Scene *mScene;  // Has ownership.
 	QGraphicsItemGroup mItemGroup;
 	QList<QAbstractButton *> mButtonGroup;  // Doesn't have direct ownership (owned by mUi).
 
-	void initButtonGroup();
-	void initFontPalette();
+    void init();
 	void initPalette();
-	void init();
+    void initFontPalette();
 
     void setHighlightOneButton(QAbstractButton *oneButton);
 
@@ -135,4 +132,6 @@ private:
     void setValueTextNameLineEdit(const QString &name);
 
 };
+
+}
 }

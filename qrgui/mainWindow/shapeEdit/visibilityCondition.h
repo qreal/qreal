@@ -2,6 +2,9 @@
 
 #include <QtCore/QString>
 
+namespace qReal {
+namespace shapeEdit {
+
 struct VisibilityCondition
 {
     QString property;
@@ -19,3 +22,6 @@ struct VisibilityCondition
         return !(*this == other);
     }
 };
+
+}
+}

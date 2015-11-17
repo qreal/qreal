@@ -15,8 +15,9 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPen>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QPushButton>
+#include <QtGui/QPen>
 #include <QtGui/QPainter>
 #include <QtXml/QDomDocument>
 #include <QtCore/QPair>
@@ -24,7 +25,18 @@
 
 #include <qrutils/graphicsUtils/abstractItem.h>
 
-#include "shapeEdit/visibilityCondition.h"
+#include <qrgui/controller/commands/abstractCommand.h>
+
+#include "mainWindow/shapeEdit/visibilityCondition.h"
+
+//using qReal::commands::AbstractCommand;
+
+namespace qReal {
+
+namespace shapeEdit {
+
+class CreateItemPushButton;
+class Scene;
 
 class Item : public graphicsUtils::AbstractItem
 {
@@ -50,8 +62,14 @@ public:
 
 	Item(graphicsUtils::AbstractItem* parent = 0);
 	virtual Item* clone() = 0;
-	virtual void setItemZValue(int zValue);
+    virtual void setItemZValue(int zValue);
 	int itemZValue();
+
+    /// @returns nullptr if there is no really new command,
+    ///
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
+    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
+    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
 
 	static int sign(int x);
 	static qreal length(const QPointF &point1, const QPointF &point2);
@@ -63,12 +81,15 @@ public:
 	virtual void drawScalingRects(QPainter* painter);
 
 
+    virtual CreateItemPushButton *createButton();
+
+
 	void setNoneDragState();
 
 	void setListScalePoint(QList<QPair<ScalingPointState, QColor> > list);
 
 	void initListScalePoint();
-	void calcForChangeScalingState(const QPointF&pos, const QPointF& point1, const QPointF& point2, int correction);
+    void calcForChangeScalingState(const QPointF& pos, const QPointF& point1, const QPointF& point2, int correction);
 	virtual void changeScalingPointState(qreal x, qreal y);
 	ScalingPointState getScalingPointState() const;
 	QColor changeScaleColor(QPair<Item::ScalingPointState, QColor> point);
@@ -94,4 +115,13 @@ protected:
 	ScalingPointState mScalingState;
 	int mZValue;
 	VisibilityCondition mVisibilityCondition;
+
+    const QString mItemName;
+
+    virtual commands::AbstractCommand *doMousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
+    virtual commands::AbstractCommand *doMouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
+    virtual commands::AbstractCommand *doMouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
 };
+
+}
+}

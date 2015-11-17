@@ -16,6 +16,8 @@
 
 #include <QtCore/QTextStream>
 
+using namespace qReal::shapeEdit;
+
 Path::Path(const QPainterPath &path) : Item(nullptr)
 {
 	mNeedScalingRect = false;

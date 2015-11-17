@@ -2,6 +2,9 @@
 
 #include <QtCore/QStringList>
 
+namespace qReal {
+namespace shapeEdit {
+
 struct PropertyInfo
 {
     enum Type { Enum, Int, Bool, String };
@@ -15,3 +18,6 @@ struct PropertyInfo
     {}
 
 };
+
+}
+}

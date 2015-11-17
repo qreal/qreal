@@ -4,13 +4,16 @@
 
 #include "saveLoadLogic.h"
 
+namespace qReal {
+namespace shapeEdit {
+
 class SaveLoadLogicForInterpreter : public SaveLoadLogic
 {
 public:
 
     SaveLoadLogicForInterpreter(IShapeEdit *parent
                                 , Scene *scene
-                                , const Id &parentId
+                                , const Id &id
                                 , const EditorManagerInterface &editorManagerProxy
                                 , const IdList &graphicalElements
                                 , EditorView *editorView);
@@ -20,8 +23,11 @@ public:
 private:
     void doSave();
 
-    const Id &mParentId;
+    const Id &mId;
     const EditorManagerInterface &mEditorManager;
     const IdList &mGraphicalElements;
     EditorView *mEditorView;
 };
+
+}
+}
