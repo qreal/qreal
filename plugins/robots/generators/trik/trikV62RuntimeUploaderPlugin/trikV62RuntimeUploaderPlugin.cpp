@@ -26,7 +26,7 @@ const QString removePermissions = "call chmod a-x trik/trik*";
 const QString killTrikGui = "call killall -q trikGui || :";
 const QString moveCommand = "synchronize remote . /home/root/trik";
 const QString restorePermissions = "call chmod a+x trik/trik*";
-const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
+const QString restartTrikGui = "call reboot";
 
 const QStringList commands = {
 		createTrikDirectory
@@ -52,7 +52,7 @@ const QString copyCommand = "scp -r -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictH
 const QString postCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrictHostKeyChecking=no "
 		"-oUserKnownHostsFile=/dev/null root@%IP% \""
 		"chmod a+x trik/trik*; "
-		"/bin/sh -c '/etc/trik/trikGui.sh &'"
+		"reboot"
 		"\"";
 
 const QStringList commands = {
