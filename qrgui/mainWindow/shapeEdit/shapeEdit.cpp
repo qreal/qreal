@@ -335,16 +335,16 @@ void ShapeEdit::save()
 	generateDom();
 	if (mIndex.isValid()) {
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
-	} else if (mId.element() == "Subprogram") {
-		Id logicalId = mMainWindow->models().graphicalModelAssistApi().logicalId(mId);
-		Id target = mMainWindow->models().mutableLogicalRepoApi().outgoingExplosion(logicalId);
+	} else if (mId.element() == "SubprogramDiagram") {
+		mDocument.clear();
+		//generateGraphics().at(0) == <picture>, here we don't need "all" <graphics>
+		mDocument.appendChild(generateGraphics().at(0));
+		mMainWindow->models().mutableLogicalRepoApi().setProperty(mId, "shape", mDocument.toString(4));
 
 		for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
 			NodeElement * const element = dynamic_cast<NodeElement *>(item);
 			if (element) {
-				logicalId = mMainWindow->models().graphicalModelAssistApi().logicalId(element->id());
-				if (mMainWindow->models().mutableLogicalRepoApi().outgoingExplosion(logicalId) == target) {
-					mMainWindow->models().mutableLogicalRepoApi().setProperty(element->id(), "shape", mDocument.toString(4));
+				if (mMainWindow->models().mutableLogicalRepoApi().outgoingExplosion(element->logicalId()) == mId) {
 					element->updateShape();
 				}
 			}
@@ -408,6 +408,18 @@ void ShapeEdit::load(const QString &text)
 	}
 
 	XmlLoader loader(mScene);
+
+	if (mId.element().contains("Subprogram")) {
+		QDomDocument shapeDoc;
+		QDomElement graphics = shapeDoc.createElement("graphics");
+		QDomDocument picture;
+		picture.setContent(text);
+		graphics.appendChild(picture);
+		shapeDoc.appendChild(graphics);
+		loader.readString(shapeDoc.toString(4));
+		return;
+	}
+
 	loader.readString(text);
 }
 

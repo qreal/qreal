@@ -42,6 +42,7 @@ protected:
 
 private:
 	bool processExplosion(bool add);
+	void saveTargetShape();
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	const models::GraphicalModelAssistApi * const mGraphicalApi;  // Doesn't take ownership.

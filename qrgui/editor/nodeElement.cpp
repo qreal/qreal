@@ -101,8 +101,6 @@ NodeElement::NodeElement(ElementImpl *impl
 	initPortsVisibility();
 
 	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
-
-	saveShape();
 }
 
 NodeElement::~NodeElement()
@@ -142,17 +140,11 @@ NodeElement* NodeElement::copyAndPlaceOnDiagram(const QPointF &offset)
 
 void NodeElement::updateShape()
 {
-	QString shape = mGraphicalAssistApi.mutableGraphicalRepoApi().stringProperty(mId, "shape");
-
-	QDomDocument graphics;
-	graphics.setContent(shape);
-	QDomElement sdfElement = graphics.firstChildElement("graphics").firstChildElement("picture");
-	QDomDocument picture;
-	picture.appendChild(picture.importNode(sdfElement, true));
-	mRenderer.load(picture);
-
 	Id target = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
-	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(target, "shape", picture.toString(4));
+	QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
+	QDomDocument picture;
+	picture.setContent(shape);
+	mRenderer.load(picture);
 	mExploser.explosionsSetCouldChange();
 }
 
@@ -1340,7 +1332,7 @@ void NodeElement::initRenderedDiagram()
 	const Id diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	const Id graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
+	EditorView view(evScene->models(), evScene->controller(), evScene->sceneCustomizer(), evScene->customizer(), graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
 	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
@@ -1389,33 +1381,4 @@ QRectF NodeElement::diagramRenderingRect() const
 	result.setSize(mRenderedDiagram.size().scaled(result.size().toSize(), Qt::KeepAspectRatio));
 	result.moveCenter(oldCenter);
 	return result;
-}
-
-void NodeElement::saveShape(QString shape)
-{
-	QDomDocument shapeDoc;
-	QDomElement graphics = shapeDoc.createElement("graphics");
-	QDomDocument picture;
-
-	if (shape == QString()) {
-		QString filePath = ":/generated/shapes/" + mId.element() + "Class.sdf";
-		QFile file(filePath);
-
-		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			return;
-		}
-
-		if (!picture.setContent(&file)) {
-			file.close();
-			return;
-		}
-
-		file.close();
-	} else {
-		picture.setContent(shape);
-	}
-
-	graphics.appendChild(picture);
-	shapeDoc.appendChild(graphics);
-	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "shape", shapeDoc.toString(4));
 }

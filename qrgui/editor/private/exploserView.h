@@ -18,6 +18,8 @@
 
 #include <qrkernel/ids.h>
 
+#include "qrgui/plugins/toolPluginInterface/customizer.h"
+
 namespace qReal {
 
 class Element;
@@ -49,7 +51,8 @@ class ExploserView : public QObject
 public:
 	explicit ExploserView(const models::Models &models
 			, Controller &controller
-			, const SceneCustomizer &customizer
+			, const SceneCustomizer &sceneCustomizer
+			, const Customizer &customizer
 			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
@@ -104,7 +107,8 @@ private:
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
 	Controller &mController;
-	const SceneCustomizer &mCustomizer;
+	const SceneCustomizer &mSceneCustomizer;
+	const Customizer &mCustomizer;
 };
 
 }

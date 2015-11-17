@@ -153,7 +153,12 @@ void DraggableElement::changeAppearancePaletteActionTriggered()
 {
 	const QAction * const action = static_cast<QAction *>(sender());
 	const Id id = action->data().value<Id>();
-	const QString propertyValue = mEditorManagerProxy.shape(id);
+	QString propertyValue;
+	if (id.element().contains("Subprogram")) {
+		propertyValue = mMainWindow.models().mutableLogicalRepoApi().stringProperty(id, "shape");
+	} else {
+		propertyValue = mEditorManagerProxy.shape(id);
+	}
 	mMainWindow.openShapeEditor(id, propertyValue, &mEditorManagerProxy, false);
 }
 
@@ -341,6 +346,15 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 					action->setData(elementId.toVariant());
 				}
 			}
+
+			menu->exec(QCursor::pos());
+		} else if (elementId.element() == "Subprogram" && explosionTarget().idSize() == 4 &&
+				   mMainWindow.toolManager().customizer()->allowSubprogramShapeChanging()) {
+			QMenu *menu = new QMenu();
+			QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
+			connect(changeAppearancePaletteAction, &QAction::triggered
+					, this,  &DraggableElement::changeAppearancePaletteActionTriggered);
+			changeAppearancePaletteAction->setData(explosionTarget().toVariant());
 
 			menu->exec(QCursor::pos());
 		}

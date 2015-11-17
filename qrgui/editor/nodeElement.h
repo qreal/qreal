@@ -196,7 +196,6 @@ public:
 	IdList sortedChildren() const;
 
 	void updateShape();
-	void saveShape(QString shape = QString());
 
 public slots:
 	virtual void select(const bool singleSelected);

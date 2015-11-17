@@ -1001,7 +1001,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		const Id diagramId = models().graphicalModelAssistApi().idByIndex(index);
-		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, diagramId, this);
+		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, *toolManager().customizer(), diagramId, this);
 		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gesturesEnabled").toBool());
 		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()) ,&EditorViewScene::enableMouseGestures);
 		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);

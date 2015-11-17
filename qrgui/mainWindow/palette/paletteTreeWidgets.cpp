@@ -245,15 +245,10 @@ void PaletteTreeWidgets::refreshUserPalette()
 	for (const Id &source : types.uniqueKeys()) {
 		for (const Id &target : types.values(source)) {
 			QString shape = mMainWindow->models().logicalRepoApi().stringProperty(target, "shape");
-			QIcon icon;
-			if (shape == QString()) {
-				icon = mEditorManager->icon(source);
-			} else {
-				QDomDocument doc;
-				doc.setContent(shape);
-				SdfIconEngineV2 * const engine = new SdfIconEngineV2(doc);
-				icon = QIcon(engine);
-			}
+			QDomDocument doc;
+			doc.setContent(shape);
+			SdfIconEngineV2 * const engine = new SdfIconEngineV2(doc);
+			QIcon icon(engine);
 
 			groupElements << gui::PaletteElement(source
 					, mMainWindow->models().logicalRepoApi().name(target)
