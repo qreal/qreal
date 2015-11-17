@@ -34,7 +34,7 @@ const QString replaceModelConfig = "call mv trik/model-config-v6.xml trik/model-
 const QString replaceTrikGuiSh = "call mv trik/trikGui.sh /etc/trik/trikGui.sh";
 const QString restoreTrikGuiShPermissions = "call chmod a+x /etc/trik/trikGui.sh";
 
-const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
+const QString restartTrikGui = "call reboot";
 
 const QStringList commands = {
 		createTrikDirectory
@@ -69,7 +69,7 @@ const QString postCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrict
 		"mv trik/model-config-v6.xml trik/model-config.xml; "
 		"mv trik/trikGui.sh /etc/trik/trikGui.sh; "
 		"mv chmod a+x /etc/trik/trikGui.sh; "
-		"/bin/sh -c '/etc/trik/trikGui.sh &'"
+		"reboot"
 		"\"";
 
 const QStringList commands = {

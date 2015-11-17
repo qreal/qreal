@@ -30,7 +30,7 @@ const QString replaceTrikGuiSh = "call mv trik/trikGui.sh /etc/trik/trikGui.sh";
 const QString restoreTrikGuiShPermissions = "call chmod a+x /etc/trik/trikGui.sh";
 
 const QString restorePermissions = "call chmod a+x trik/trik*";
-const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
+const QString restartTrikGui = "call reboot";
 
 const QStringList commands = {
 		createTrikDirectory
@@ -60,7 +60,7 @@ const QString postCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrict
 		"mv trik/trikGui.sh /etc/trik/trikGui.sh; "
 		"mv chmod a+x /etc/trik/trikGui.sh; "
 		"chmod a+x trik/trik*; "
-		"/bin/sh -c '/etc/trik/trikGui.sh &'"
+		"reboot"
 		"\"";
 
 const QStringList commands = {
