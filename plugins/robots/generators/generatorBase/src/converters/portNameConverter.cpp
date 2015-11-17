@@ -42,7 +42,7 @@ QString PortNameConverter::convert(const QString &portNameOrAlias) const
 	}
 
 	if (portName.isEmpty()) {
-		mErrorReporter.addWarning(QObject::tr("Port %1 is unknown. It will be generated as-is.").arg(portNameOrAlias));
+		// Considering this situation normal, not showing warnings.
 		return portNameOrAlias;
 	}
 
