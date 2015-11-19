@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTabWidget" name="tabWidget">
+  <widget class="QTabWidget" name="Tab">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -27,9 +27,9 @@
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string>Tab 1</string>
+     <string>General</string>
     </attribute>
-    <widget class="QTableWidget" name="tableWidget">
+    <widget class="QTableWidget" name="columnDataTable">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -38,26 +38,41 @@
        <height>192</height>
       </rect>
      </property>
-     <row>
-      <property name="text">
-       <string>1</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>2</string>
-      </property>
-     </row>
      <column>
       <property name="text">
-       <string>Column Name</string>
+       <string>name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>type</string>
       </property>
      </column>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Indexes</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="widget">
+    <attribute name="title">
+     <string>Key groups</string>
+    </attribute>
+   </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
-     <string>Tab 2</string>
+     <string>Comments</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>Constraint</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tab_5">
+    <attribute name="title">
+     <string>SQL-query</string>
     </attribute>
    </widget>
   </widget>

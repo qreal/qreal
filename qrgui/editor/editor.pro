@@ -148,4 +148,4 @@ RESOURCES += \
 	$$PWD/contextIcons.qrc \
 
 FORMS += \
-    databases/tableMenuWidget.ui
+	$$PWD/databases/tableMenuWidget.ui

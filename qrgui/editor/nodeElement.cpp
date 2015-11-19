@@ -1324,6 +1324,15 @@ IdList NodeElement::sortedChildren() const
 	return result;
 }
 
+QVariant NodeElement::getProperty(const QString &propertyName)
+{
+	if (mLogicalAssistApi.isLogicalId(mId)) {
+		return mLogicalAssistApi.logicalRepoApi().property(mId, propertyName);
+	}
+
+	return mLogicalAssistApi.logicalRepoApi().property(mGraphicalAssistApi.logicalId(mId), propertyName);
+}
+
 void NodeElement::initRenderedDiagram()
 {
 	if (!mIsExpanded || mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) == qReal::Id()) {

@@ -298,9 +298,6 @@ private:
 	QAction mActionCopyOnDiagram;
 	QAction mActionPasteOnDiagram;
 	QAction mActionPasteReference;
-
-	/** @brief QReal:Databases menu gui */
-	TableMenuWidget *mTableMenuWidget;
 };
 
 }
