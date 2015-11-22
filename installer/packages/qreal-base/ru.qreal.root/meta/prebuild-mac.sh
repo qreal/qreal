@@ -77,9 +77,9 @@ cp     $QT_DIR/plugins/platforms/libqcocoa.dylib                          "$BUND
 cp     $QT_DIR/plugins/imageformats/libqsvg.dylib                         "$BUNDLE_CONTENTS/MacOS/imageformats"
 cp     $QT_DIR/plugins/iconengines/libqsvgicon.dylib                      "$BUNDLE_CONTENTS/MacOS/iconengines"
 
-fix_dependencies "$BUNDLE_CONTENTS/MacOS/platforms/libqcocoa.dylib"       $QT_DIR/lib $LIB_PATH
-fix_dependencies "$BUNDLE_CONTENTS/MacOS/imageformats/libqsvg.dylib"      $QT_DIR/lib $LIB_PATH
-fix_dependencies "$BUNDLE_CONTENTS/MacOS/iconengines/libqsvgicon.dylib"   $QT_DIR/lib $LIB_PATH
+fix_qreal_dependencies "$BUNDLE_CONTENTS/MacOS/platforms/libqcocoa.dylib"       $QT_DIR/lib $LIB_PATH
+fix_qreal_dependencies "$BUNDLE_CONTENTS/MacOS/imageformats/libqsvg.dylib"      $QT_DIR/lib $LIB_PATH
+fix_qreal_dependencies "$BUNDLE_CONTENTS/MacOS/iconengines/libqsvgicon.dylib"   $QT_DIR/lib $LIB_PATH
 
 # Cleaning up prebuild-common.sh results…
 rm -rf $PWD/../data/platforms/
