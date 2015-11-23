@@ -15,6 +15,7 @@
 #include "enginesGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
+#include <generatorBase/parts/engines.h>
 #include "src/ev3GeneratorCustomizer.h"
 
 using namespace ev3::simple;
@@ -30,12 +31,12 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 					? "engines/backward.t"
 					: "engines/forward.t"
 			, {
-			Binding::createConverting("@@Port@@", "Ports"
+			Binding::createConverting("@@PORT@@", "Ports"
 					, static_cast<Ev3GeneratorFactory *>(customizer.factory())->outputPortNameConverter())
-			, Binding::createConverting("@@Power@@", "Power"
+			, Binding::createConverting("@@POWER@@", "Power"
 					, customizer.factory()->intPropertyConverter(id, "Power"))
 			}
 			, parent)
 {
-	//mCustomizer.factory()->engines()->registerUsageOnPorts(repo.property(id, "Ports").toString());
+	mCustomizer.factory()->engines()->registerUsageOnPorts(repo.property(id, "Ports").toString());
 }

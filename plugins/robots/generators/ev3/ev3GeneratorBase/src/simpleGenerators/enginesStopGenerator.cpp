@@ -25,7 +25,8 @@ EnginesStopGenerator::EnginesStopGenerator(qrRepo::RepoApi const &repo
 		, qReal::Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "engines/stop.t", QList<Binding *>()
-			<< Binding::createConverting("@@Port@@", "Ports", static_cast<Ev3GeneratorFactory *>(customizer.factory())->outputPortNameConverter())
+			<< Binding::createConverting("@@PORT@@", "Ports"
+					, static_cast<Ev3GeneratorFactory *>(customizer.factory())->outputPortNameConverter())
 			, parent)
 {
 }

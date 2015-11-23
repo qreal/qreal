@@ -23,26 +23,14 @@ OutputPortNameConverter::OutputPortNameConverter(const QStringList &pathsToTempl
 
 QString OutputPortNameConverter::convert(const QString &portNameOrAlias) const
 {
-	QString portName = portNameOrAlias;
-	QStringList myStringList = portName.toUpper().split(QRegExp("\\W+"), QString::SkipEmptyParts);
-	QSet<QString> stringSet = QSet<QString>::fromList(myStringList);
-	portName = "";
-
-	foreach (const QString &value, stringSet) {
-		portName += value;
-	}
-
-	if (portName.isEmpty()) {
-		return QString();
-	}
-
-	for (int i = 0; i < portName.length(); i++) {
-		if (portName.at(i) != 'A' && portName.at(i) != 'B'
-				&& portName.at(i) != 'C' && portName.at(i) != 'D') {
-			return QString();
+	QString result;
+	const QStringList ports = {"A", "B", "C", "D"};
+	for (const QString &port : ports) {
+		if (portNameOrAlias.contains(port)) {
+			result += port;
 		}
 	}
 
-	QString const portTemplate = QString("ports/%1.t").arg(portName);
-	return readTemplateIfExists(portTemplate, portName);
+	const QString portTemplate = QString("ports/%1.t").arg(result);
+	return readTemplateIfExists(portTemplate, result);
 }

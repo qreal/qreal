@@ -34,7 +34,7 @@ QString PortNameConverter::convert(const QString &portNameOrAlias) const
 	for (const kitBase::robotModel::PortInfo &port : mPorts) {
 		if (port.name() == portNameOrAlias || port.nameAliases().contains(portNameOrAlias)) {
 			portName = port.name();
-			if (port.name() == portNameOrAlias) {
+			if (portName == portNameOrAlias) {
 				// Port name is first-priority cause, for example, M1 in TRIK may be an alias for B1.
 				break;
 			}
