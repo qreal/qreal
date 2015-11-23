@@ -120,11 +120,16 @@ void EditorViewScene::setEnabled(bool enabled)
 
 void EditorViewScene::clearScene()
 {
+	QList<QGraphicsItem*> itemsForRemoving;
 	for (QGraphicsItem *item : items()) {
 		// looks really insane, but some elements were alreadt deleted together with their parent
 		if (items().contains(item) && !(item == mTopLeftCorner || item == mBottomRightCorner)) {
-			removeItem(item);
+			itemsForRemoving.append(item);
 		}
+	}
+
+	for (QGraphicsItem *item : itemsForRemoving) {
+		removeItem(item);
 	}
 }
 
@@ -1314,7 +1319,12 @@ void EditorViewScene::drawGesture()
 void EditorViewScene::deleteGesture()
 {
 	mRightButtonPressed = false;
+	QList<QGraphicsItem*> itemsForRemoving;
 	for (QGraphicsItem *item : mGesture) {
+		itemsForRemoving.append(item);
+	}
+
+	for(QGraphicsItem *item : itemsForRemoving) {
 		removeItem(item);
 	}
 

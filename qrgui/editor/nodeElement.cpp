@@ -1087,10 +1087,15 @@ void NodeElement::updateChildrenOrder()
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	if (evScene) {
+		QStringList idsForRemoving;
 		for (const QString &id : ids) {
 			if (!evScene->getNodeById(Id::loadFromString(id))) {
-				ids.removeAll(id);
+				idsForRemoving.append(id);
 			}
+		}
+
+		for (const QString &id : idsForRemoving) {
+			ids.removeAll(id);
 		}
 	}
 
