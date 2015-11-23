@@ -404,10 +404,15 @@ void EditorViewMViface::setItem(const QPersistentModelIndex &index, Element *ite
 
 void EditorViewMViface::removeItem(const QPersistentModelIndex &index)
 {
+	QList<IndexElementPair> itemsForRemoving;
 	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {
-			mItems.remove(pair);
+			itemsForRemoving.append(pair);
 		}
+	}
+
+	for (const auto &element : itemsForRemoving) {
+		mItems.remove(element);
 	}
 }
 
