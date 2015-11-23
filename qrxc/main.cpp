@@ -23,18 +23,21 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 	Q_UNUSED(context)
 	const char *msg = message.toLatin1().data();
 	switch (type) {
-		case QtDebugMsg:
-			fprintf(stdout, "Debug: %s\n", msg);
-			break;
-		case QtWarningMsg:
-			fprintf(stderr, "Warning: %s\n", msg);
-			break;
-		case QtCriticalMsg:
-			fprintf(stderr, "Critical: %s\n", msg);
-			break;
-		case QtFatalMsg:
-			fprintf(stderr, "Fatal: %s\n", msg);
-			abort();
+	case QtDebugMsg:
+		fprintf(stdout, "Debug: %s\n", msg);
+		break;
+	case QtWarningMsg:
+		fprintf(stderr, "Warning: %s\n", msg);
+		break;
+	case QtCriticalMsg:
+		fprintf(stderr, "Critical: %s\n", msg);
+		break;
+	case QtFatalMsg:
+		fprintf(stderr, "Fatal: %s\n", msg);
+		abort();
+	default:
+		fprintf(stderr, "Info: %s\n", msg);
+		break;
 	}
 }
 

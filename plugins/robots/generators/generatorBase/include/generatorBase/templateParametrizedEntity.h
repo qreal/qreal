@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 
 #include "robotsGeneratorDeclSpec.h"
 
@@ -27,12 +28,12 @@ public:
 	TemplateParametrizedEntity();
 
 	/// @param pathToTemplates A path to a folder containing all concrete generator templates
-	explicit TemplateParametrizedEntity(const QString &pathToTemplates);
+	explicit TemplateParametrizedEntity(const QStringList &pathsToTemplates);
 
 	virtual ~TemplateParametrizedEntity();
 
 	/// Resets a path to a folder containing all concrete generator templates
-	void setPathToTemplates(const QString &pathTemplates);
+	void setPathsToTemplates(const QStringList &pathsTemplates);
 
 protected:
 	/// Reads the given file contents. A path to file must be relative to templates folder root.
@@ -46,10 +47,10 @@ protected:
 	QString readTemplateIfExists(const QString &pathFromRoot, const QString &fallback = QString()) const;
 
 	/// Returns a given in constructor path to tempates root.
-	QString pathToRoot() const;
+	QStringList pathsToRoot() const;
 
 private:
-	QString mPathToRoot;
+	QStringList mPathsToRoot;
 };
 
 }

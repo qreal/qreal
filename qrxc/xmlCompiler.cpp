@@ -56,7 +56,7 @@ XmlCompiler::~XmlCompiler()
 bool XmlCompiler::compile(const QString &inputXmlFileName, const QString &sourcesRootFolder)
 {
 	const QFileInfo inputXmlFileInfo(inputXmlFileName);
-	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
+	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.completeBaseName());
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
 	mSourcesRootFolder = sourcesRootFolder;
 	const QDir startingDir = inputXmlFileInfo.dir();
@@ -88,7 +88,16 @@ Editor* XmlCompiler::loadXmlFile(const QDir &currentDir, const QString &inputXml
 			return nullptr;
 		}
 	} else {
-		QDomDocument inputXmlDomDocument = xmlUtils::loadDocument(fullFileName);
+		QString errorMessage;
+		int errorLine = 0;
+		int errorColumn = 0;
+		QDomDocument inputXmlDomDocument = xmlUtils::loadDocument(fullFileName
+			, &errorMessage, &errorLine, &errorColumn);
+		if (!errorMessage.isEmpty()) {
+			qCritical() << QString("(%1, %2):").arg(errorLine).arg(errorColumn)
+					<< "Could not parse XML. Error:" << errorMessage;
+		}
+
 		Editor *editor = new Editor(inputXmlDomDocument, this);
 		if (!editor->load(currentDir)) {
 			qDebug() << "ERROR: Failed to load file";

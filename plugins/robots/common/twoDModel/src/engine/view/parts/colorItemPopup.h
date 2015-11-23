@@ -17,6 +17,7 @@
 #include <qrutils/graphicsUtils/itemPopup.h>
 
 class QSpinBox;
+class QCheckBox;
 
 namespace qReal {
 namespace ui {
@@ -47,19 +48,28 @@ signals:
 	/// Emitted when pen configured by user changed.
 	void userPenChanged(const QPen &pen);
 
+	/// Emitted when brush configured by user changed.
+	void isFilledChanged(bool isFilled);
+
+private slots:
+	void setBrushPickerColor(const QColor &color);
+
 private:
 	bool suits(QGraphicsItem *item) override;
 	bool attachTo(const QList<QGraphicsItem *> &items) override;
 
 	void initWidget();
 	QWidget *initColorPicker();
+	QWidget *initBrushPicker();
 	QWidget *initSpinBox();
 
 	QPen pen() const;
 
 	qReal::ui::ColorListEditor *mColorPicker;  // Takes ownership
+	QCheckBox *mBrushPicker;  // Takes ownership
 	QSpinBox *mSpinBox;  // Takes ownership
 	QColor mLastColor;
+	bool mLastFilled;
 	int mLastThickness;
 };
 

@@ -123,5 +123,5 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 		return new parts::ColorSensorFull(colorFullSensorInfo(), port, *mRobotCommunicator);
 	}
 
-	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
+	return Ev3RobotModelBase::createDevice(port, deviceInfo);
 }

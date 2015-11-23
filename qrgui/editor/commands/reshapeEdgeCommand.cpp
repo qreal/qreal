@@ -31,9 +31,11 @@ bool ReshapeEdgeCommand::execute()
 	if (!mTrackStopped) {
 		return true;
 	}
+
 	if (!EdgeElementCommand::execute()) {
 		return false;
 	}
+
 	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos, mNewFromPort, mNewToPort);
 	return true;
 }
@@ -43,9 +45,11 @@ bool ReshapeEdgeCommand::restoreState()
 	if (!mTrackStopped) {
 		return true;
 	}
+
 	if (!EdgeElementCommand::restoreState()) {
 		return false;
 	}
+
 	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos, mOldFromPort, mOldToPort);
 	return true;
 }
@@ -93,6 +97,7 @@ void ReshapeEdgeCommand::applyConfiguration(const QPolygonF &configuration
 	if (!mEdge) {
 		return;
 	}
+
 	NodeElement *srcElem = dynamic_cast<NodeElement *>(elementById(src));
 	NodeElement *dstElem = dynamic_cast<NodeElement *>(elementById(dst));
 	mEdge->setSrc(srcElem);

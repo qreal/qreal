@@ -83,11 +83,10 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 
 void Display::drawRect(int x, int y, int width, int height)
 {
-	Q_UNUSED(x);
-	Q_UNUSED(y);
-	Q_UNUSED(width);
-	Q_UNUSED(height);
-
+	Q_UNUSED(x)
+	Q_UNUSED(y)
+	Q_UNUSED(width)
+	Q_UNUSED(height)
 }
 
 void Display::drawCircle(int x, int y, int radius, bool filled)
@@ -134,4 +133,8 @@ void Display::clearScreen()
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);
 
 	mRobotCommunicator.send(this, command, 3);
+}
+
+void Display::redraw()
+{
 }

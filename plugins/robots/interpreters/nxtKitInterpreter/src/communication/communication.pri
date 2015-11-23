@@ -23,6 +23,7 @@ SOURCES += \
 	$$PWD/bluetoothRobotCommunicationThread.cpp \
 	$$PWD/usbRobotCommunicationThread.cpp \
 	$$PWD/i2cCommunicator.cpp \
+	$$PWD/fantom.cpp \
 
 win32 {
 	HEADERS += \
@@ -33,7 +34,7 @@ win32 {
 
 }
 
-unix {
+unix:!macx {
 	HEADERS += \
 		$$PWD/linuxFantom.h \
 

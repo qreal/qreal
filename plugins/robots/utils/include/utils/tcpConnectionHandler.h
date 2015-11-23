@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
+#include <QtCore/QTimer>
 
 #include "utilsDeclSpec.h"
 
@@ -35,17 +36,21 @@ public:
 
 	void send(const QString &data);
 
-public slots:
-	void onIncomingData();
-
 signals:
 	void messageReceived(const QString &message);
+
+private slots:
+	void onIncomingData();
+	void keepalive();
 
 private:
 	QTcpSocket mSocket;
 	QByteArray mBuffer;
 	int mExpectedBytes = 0;
 	int mPort;
+
+	/// Timer used to send "keepalive" packets for other side to be able to detect connection failure.
+	QTimer mKeepAliveTimer;
 };
 
 }

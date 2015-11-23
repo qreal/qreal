@@ -75,6 +75,7 @@ public:
 	void openTab(QWidget *tab, const QString &title) override;
 	void closeTab(QWidget *tab) override;
 	void setTabText(QWidget *tab, const QString &text) override;
+	void openStartTab() override;
 
 	void beginPaletteModification() override;
 
@@ -100,6 +101,7 @@ public:
 
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
+	void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) override;
 
 	QByteArray saveState(int version = 0) const override;
 	bool restoreState(const QByteArray &state, int version = 0) override;

@@ -14,10 +14,10 @@
 
 #include "twoDModelEngineApi.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/qmath.h>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/logging.h>
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 /// @todo: Get rid of it!
@@ -28,10 +28,11 @@
 #include <kitBase/robotModel/robotParts/colorSensorGreen.h>
 #include <kitBase/robotModel/robotParts/colorSensorBlue.h>
 
+#include "twoDModel/engine/twoDModelGuiFacade.h"
 #include "twoDModel/engine/model/model.h"
 #include "twoDModel/engine/model/constants.h"
-
 #include "twoDModel/engine/view/twoDModelWidget.h"
+
 #include "view/scene/twoDModelScene.h"
 #include "view/scene/robotItem.h"
 #include "view/scene/fakeScene.h"
@@ -51,6 +52,7 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidge
 	: mModel(model)
 	, mView(view)
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
+	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
 {
 }
 
@@ -133,7 +135,7 @@ int TwoDModelEngineApi::readColorSensor(const PortInfo &port) const
 		return readSingleColorSensor(blue, countsColor, n);
 	}
 
-	qDebug() << "Incorrect 2d model sensor configuration";
+	QLOG_ERROR() << "Incorrect 2d model sensor configuration";
 	return 0;
 }
 
@@ -163,22 +165,28 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 		}
 	}
 
-	QGraphicsItem * const sensorItem = mView.sensorItem(port);
 	const QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	const QPointF position = neededPosDir.first;
 	const qreal direction = neededPosDir.second;
 	const QRect imageRect = mModel.robotModels()[0]->info().sensorImageRect(device);
 	const qreal width = imageRect.width() * widthFactor / 2.0;
-	const qreal rotationFactor = sensorItem->mapToScene(imageRect).boundingRect().width() / imageRect.width();
+
+	const QRectF sensorRectangle = QTransform().rotate(direction).map(QPolygonF(QRectF(imageRect))).boundingRect();
+	const qreal rotationFactor = sensorRectangle.width() / imageRect.width();
+
 	const qreal realWidth = width * rotationFactor;
 	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
 			, 2 * realWidth, 2 * realWidth);
-
 	const QImage image(mFakeScene->render(scanningRect));
 	const QPoint offset = QPointF(width, width).toPoint();
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
 	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
-	return rotated.copy(realImage);
+	QImage result(realImage.size(), QImage::Format_RGB32);
+	result.fill(Qt::white);
+	QPainter painter(&result);
+	painter.drawImage(QRect(QPoint(), result.size()), rotated, realImage);
+	painter.end();
+	return result;
 }
 
 int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
@@ -263,17 +271,23 @@ int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 		const int g = (color >> 8) & 0xFF;
 		const int r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
-		const int brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+		const uint brightness = static_cast<uint>(0.2126 * r + 0.7152 * g + 0.0722 * b);
 
 		sum += 4 * brightness; // 4 = max sensor value / max brightness value
 	}
-	const qreal rawValue = sum / n; // Average by whole region
-	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
+
+	const qreal rawValue = sum * 1.0 / n; // Average by whole region
+	return rawValue * 100 / maxLightSensorValue; // Normalizing to percents
 }
 
 void TwoDModelEngineApi::playSound(int timeInMs)
 {
 	mModel.robotModels()[0]->playSound(timeInMs);
+}
+
+bool TwoDModelEngineApi::isMarkerDown() const
+{
+	return mModel.robotModels()[0]->markerColor() != Qt::transparent;
 }
 
 void TwoDModelEngineApi::markerDown(const QColor &color)
@@ -294,6 +308,11 @@ utils::TimelineInterface &TwoDModelEngineApi::modelTimeline()
 engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
 {
 	return mView.display();
+}
+
+engine::TwoDModelGuiFacade &TwoDModelEngineApi::guiFacade() const
+{
+	return *mGuiFacade;
 }
 
 uint TwoDModelEngineApi::spoilLight(const uint color) const

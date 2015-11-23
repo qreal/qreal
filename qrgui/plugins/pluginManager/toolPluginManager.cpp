@@ -18,6 +18,7 @@
 
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 #include "hotKeyManager/hotKeyManager.h"
 
@@ -25,7 +26,7 @@ using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
-	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/tools"))
+	, mPluginManager(PlatformInfo::invariantSettingsPath("pathToToolPlugins"))
 {
 	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 
@@ -118,4 +119,9 @@ void ToolPluginManager::updateSettings()
 void ToolPluginManager::activeTabChanged(const TabInfo &info)
 {
 	emit mSystemEvents->activeTabChanged(info);
+}
+
+QObject *ToolPluginManager::pluginGuiFacade(const QString &pluginName) const
+{
+	return (mPluginManager.plugin<ToolPluginInterface>(pluginName))->guiScriptFacade();
 }

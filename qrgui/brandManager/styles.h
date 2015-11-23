@@ -146,7 +146,7 @@ protected:
 		// Scenario two: use it for debugging
 		// QString choppedString = resourceUrl;
 		// choppedString.remove(0, 1);
-		// return QApplication::applicationDirPath() + "/../qrgui/brandManager" + choppedString;
+		// return PlatformInfo::applicationDirPath() + "/../../qrgui/brandManager" + choppedString;
 	}
 
 	const Fonts &mFonts;

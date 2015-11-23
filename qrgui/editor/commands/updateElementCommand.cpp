@@ -52,6 +52,7 @@ bool UpdateElementCommand::update()
 		mElement->checkConnectionsToPort();
 		return true;
 	}
+
 	return false;
 }
 
@@ -61,5 +62,6 @@ bool UpdateElementCommand::equals(const AbstractCommand &other) const
 	if (updateCommand) {
 		return scene() == updateCommand->scene() && elementId() == updateCommand->elementId();
 	}
+
 	return false;
 }

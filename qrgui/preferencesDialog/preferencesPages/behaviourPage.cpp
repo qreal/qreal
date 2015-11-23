@@ -18,6 +18,7 @@
 #include <QtCore/QDir>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace qReal;
 
@@ -113,7 +114,7 @@ void PreferencesBehaviourPage::initLanguages()
 {
 	mUi->languageComboBox->addItem(tr("<System Language>"));
 	mUi->languageComboBox->addItem("English", "en");
-	QDir translationsDir(QApplication::applicationDirPath() + "/translations");
+	QDir translationsDir(PlatformInfo::invariantSettingsPath("pathToTranslations"));
 	for (const QString &locale: translationsDir.entryList(QDir::Dirs)) {
 		const QString language = QLocale(locale).nativeLanguageName();
 		if (!language.isEmpty()) {

@@ -26,10 +26,8 @@ FakeScene::FakeScene(const WorldModel &world)
 {
 	connect(&world, &WorldModel::wallAdded, [=](items::WallItem *wall) { addClone(wall, wall->clone()); });
 	connect(&world, &WorldModel::colorItemAdded, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
-	connect(&world, &WorldModel::otherItemAdded, [=](QGraphicsItem *item) {
-		if (QGraphicsLineItem * const trace = dynamic_cast<QGraphicsLineItem *>(item)) {
-			addClone(item, new QGraphicsLineItem(trace->line()));
-		}
+	connect(&world, &WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) {
+		addClone(item, new QGraphicsLineItem(item->line()));
 	});
 	connect(&world, &WorldModel::itemRemoved, this, &FakeScene::deleteItem);
 }
@@ -38,6 +36,22 @@ void FakeScene::addClone(QGraphicsItem * const original, QGraphicsItem * const c
 {
 	mClonedItems[original] = cloned;
 	addItem(cloned);
+
+	// Interesting things happen here. Fake scene behaviours really strangely without this hack.
+	// Lines, ellipses and stylus is drawn correctly, but PARTIALLY until it moves the first time
+	// (or other things like dragging out some item over the fake scene bounds).
+	// That means that if user draws color field until he drags newly drawn item (what happens rarely)
+	// light sensor or camera will see only some parts of the item. How? I don`t know, bu I think
+	// that the nature of this phenomenon is somewhere deeply in Qt (or we just do something wrong, but
+	// then some very unobvious thing is wrong). One way to fix that is simply to move item when we
+	// change its corners.
+	if (graphicsUtils::AbstractItem *orit = dynamic_cast<graphicsUtils::AbstractItem *>(original)) {
+		const auto hack = [=]() { cloned->moveBy(1, 1); cloned->moveBy(-1, -1); };
+		connect(orit, &graphicsUtils::AbstractItem::x1Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y1Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::x2Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y2Changed, hack);
+	}
 }
 
 void FakeScene::deleteItem(QGraphicsItem * const original)
@@ -51,15 +65,8 @@ void FakeScene::deleteItem(QGraphicsItem * const original)
 QImage view::FakeScene::render(const QRectF &piece)
 {
 	QImage result(piece.size().toSize(), QImage::Format_RGB32);
+	result.fill(Qt::white);
 	QPainter painter(&result);
-
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::white));
-	painter.drawRect(piece.translated(-piece.topLeft()));
-
 	QGraphicsScene::render(&painter, QRectF(), piece);
-
 	return result;
 }

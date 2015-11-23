@@ -1,1 +1,0 @@
-Math.min(@@ARGUMENT1@@, @@ARGUMENT2@@)

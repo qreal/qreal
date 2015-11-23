@@ -25,12 +25,13 @@ ColorListEditor::ColorListEditor(QWidget *widget, bool minimalistic)
 	, mMinimalistic(minimalistic)
 {
 	if (minimalistic) {
+		setMinimumWidth(30);
 		connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=]() {
 			setStyleSheet(customStyle.arg(color().name()));
 		});
 	}
 
-	connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=]() {
+	connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [=]() {
 		emit colorChanged(color());
 	});
 }

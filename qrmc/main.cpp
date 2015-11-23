@@ -16,15 +16,16 @@
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
 
+#include <qrkernel/platformInfo.h>
+
 #include "metaCompiler.h"
 
 using namespace qrmc;
 
-void myMessageOutput(QtMsgType type, QMessageLogContext const &context, QString const &msg)
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
 	Q_UNUSED(context)
-
-	QByteArray localMsg = msg.toLocal8Bit();
+	QByteArray localMsg = message.toLocal8Bit();
 	switch (type) {
 		case QtDebugMsg:
 			fprintf(stdout, "Debug: %s\n", localMsg.constData());
@@ -38,6 +39,9 @@ void myMessageOutput(QtMsgType type, QMessageLogContext const &context, QString 
 		case QtFatalMsg:
 			fprintf(stderr, "Fatal: %s\n", localMsg.constData());
 			abort();
+		default:
+			fprintf(stderr, "Info: %s\n", localMsg.constData());
+			break;
 	}
 }
 
@@ -56,8 +60,8 @@ int main(int argc, char *argv[])
 	QString workingCopyDir = argv[1];
 //	QString workingCopyDir = "../qrgui/save";
 
-	qrRepo::RepoApi *mRepoApi = new qrRepo::RepoApi(workingCopyDir);
-	MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc/", mRepoApi);
+	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopyDir);
+	MetaCompiler metaCompiler(qReal::PlatformInfo::applicationDirPath() + "/../../qrmc/", repoApi);
 	if (!metaCompiler.compile()) {
 		qDebug() << "compilation failed";
 		return 1;

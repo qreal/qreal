@@ -132,14 +132,15 @@ void StylusItem::setBrushColor(const QString& text)
 	mStylusImpl.setBrushColor(mAbstractListLine, text);
 }
 
-QDomElement StylusItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
+QDomElement StylusItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
 {
 	QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
 	AbstractItem::serialize(stylusNode);
 	for (AbstractItem * const abstractItem : mAbstractListLine) {
 			LineItem * const line = static_cast<LineItem *>(abstractItem);
 			line->setSerializeName("stylusLine");
-			QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
+			QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x())
+					, static_cast<int>(scenePos().y())));
 			stylusNode.appendChild(item);
 	}
 
@@ -166,8 +167,6 @@ void StylusItem::deserialize(const QDomElement &element)
 				mAbstractListLine.append(line);
 				emit segmentAdded(line);
 				recalculateProperties();
-			} else {
-//				Tracer::debug(tracer::enums::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");
 			}
 	}
 }

@@ -18,8 +18,8 @@
 
 using namespace nxt::parts;
 
-Images::Images(const QString &pathToTemplates)
-	: generatorBase::TemplateParametrizedEntity(pathToTemplates)
+Images::Images(const QStringList &pathsToTemplates)
+	: generatorBase::TemplateParametrizedEntity(pathsToTemplates)
 {
 	reinit();
 }
@@ -42,7 +42,7 @@ void Images::registerBmpFile(const QString &name, const QImage &image)
 QString Images::generate() const
 {
 	QStringList result;
-	foreach (const QString &file, mBmpFiles.keys()) {
+	for (const QString &file : mBmpFiles.keys()) {
 		result << readTemplate("drawing/bmpDeclaration.t").replace("@@FILE@@", file);
 	}
 
@@ -53,7 +53,7 @@ QString Images::generate() const
 QString Images::generateBmpFilesStringForMake() const
 {
 	QString result = "BMP_SOURCES :=";
-	foreach (const QString &file, mBmpFiles.keys()) {
+	for (const QString &file : mBmpFiles.keys()) {
 		result += QString("\\\n%1.bmp").arg(file);
 	}
 

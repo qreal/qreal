@@ -15,6 +15,8 @@
 #include "kitBase/blocksBase/common/waitBlock.h"
 
 #include "kitBase/robotModel/robotModelUtils.h"
+#include "utils/timelineInterface.h"
+#include "utils/abstractTimer.h"
 
 using namespace kitBase;
 using namespace blocksBase::common;
@@ -23,8 +25,10 @@ using namespace robotModel;
 WaitBlock::WaitBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
 {
-	mActiveWaitingTimer.setInterval(20);
-	connect(&mActiveWaitingTimer, &QTimer::timeout, this, &WaitBlock::timerTimeout);
+	mActiveWaitingTimer.reset(robotModel.timeline().produceTimer());
+	connect(mActiveWaitingTimer.data(), &utils::AbstractTimer::timeout, this, &WaitBlock::timerTimeout);
+	mActiveWaitingTimer->setInterval(20);
+	mActiveWaitingTimer->setRepeatable(true);
 }
 
 WaitBlock::~WaitBlock()
@@ -55,19 +59,21 @@ void WaitBlock::processResponce(int reading, int targetValue)
 
 void WaitBlock::stop()
 {
-	mActiveWaitingTimer.stop();
-	emit done(mNextBlockId);
+	mActiveWaitingTimer->stop();
+	// Emitting done() immediately will switch current block right during SensorVariablesUpdater
+	// doing his job. This may cause bad side effects.
+	QTimer::singleShot(0, [this]() { emit done(mNextBlockId); });
 }
 
 void WaitBlock::failureSlot()
 {
-	mActiveWaitingTimer.stop();
+	mActiveWaitingTimer->stop();
 	emit failure();
 }
 
 void WaitBlock::stopActiveTimerInBlock()
 {
-	mActiveWaitingTimer.stop();
+	mActiveWaitingTimer->stop();
 }
 
 QMap<PortInfo, DeviceInfo> WaitBlock::usedDevices()

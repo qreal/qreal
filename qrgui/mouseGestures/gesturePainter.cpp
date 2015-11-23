@@ -18,7 +18,6 @@
 
 using namespace qReal::gestures;
 
-const int minBorder = -1000;
 const int thickness = 2;
 /// Difference between painter's and pixmap's coordinates.
 const qreal frame = 10;

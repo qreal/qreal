@@ -24,7 +24,7 @@ namespace parts {
 class InitTerminateCodeGenerator : public TemplateParametrizedEntity
 {
 public:
-	explicit InitTerminateCodeGenerator(const QString &pathToTemplates);
+	explicit InitTerminateCodeGenerator(const QStringList &pathsToTemplates);
 	virtual ~InitTerminateCodeGenerator();
 
 	/// Called each time before new generation process.

@@ -20,6 +20,10 @@
         <translation type="vanished">Файл с исходным кодом на Python</translation>
     </message>
     <message>
+        <source>Java Script Language Source File</source>
+        <translation type="vanished">Файл с исходным кодом на Java Script</translation>
+    </message>
+    <message>
         <source>QtScript Language Source File</source>
         <translation type="vanished">Файл с исходным кодом на QtScript</translation>
     </message>
@@ -38,12 +42,12 @@
 <context>
     <name>qReal::text::TextManager</name>
     <message>
-        <location filename="../../qrgui/textEditor/textManager.cpp" line="237"/>
+        <location filename="../../qrgui/textEditor/textManager.cpp" line="241"/>
         <source>All files (*)</source>
         <translation>Все файлы (*)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/textEditor/textManager.cpp" line="243"/>
+        <location filename="../../qrgui/textEditor/textManager.cpp" line="247"/>
         <source>Save generated code</source>
         <translation>Сохранение кода</translation>
     </message>

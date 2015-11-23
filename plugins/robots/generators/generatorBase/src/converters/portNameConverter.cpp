@@ -19,10 +19,10 @@
 using namespace generatorBase::converters;
 using namespace qReal;
 
-PortNameConverter::PortNameConverter(const QString &pathToTemplates
+PortNameConverter::PortNameConverter(const QStringList &pathsToTemplates
 		, QList<kitBase::robotModel::PortInfo> const &ports
 		, qReal::ErrorReporterInterface &errorReporter)
-	: TemplateParametrizedConverter(pathToTemplates)
+	: TemplateParametrizedConverter(pathsToTemplates)
 	, mPorts(ports)
 	, mErrorReporter(errorReporter)
 {
@@ -42,7 +42,7 @@ QString PortNameConverter::convert(const QString &portNameOrAlias) const
 	}
 
 	if (portName.isEmpty()) {
-		mErrorReporter.addWarning(QObject::tr("Port %1 is unknown. It will be generated as-is.").arg(portNameOrAlias));
+		// Considering this situation normal, not showing warnings.
 		return portNameOrAlias;
 	}
 

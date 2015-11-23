@@ -14,7 +14,6 @@
 
 #include "playToneBlock.h"
 
-#include <utils/tracer.h>
 #include <utils/abstractTimer.h>
 
 using namespace nxt::blocks::details;

@@ -32,12 +32,14 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mConnectToRobotAction(new QAction(QIcon(":/icons/robots_connect.svg"), QObject::tr("Connect to robot"), nullptr))
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
 	, mExportExerciseAction(QIcon(), QObject::tr("Save as task..."), nullptr)
-	, mDebugModeAction(QObject::tr("Switch to debug mode"), nullptr)
-	, mEditModeAction(QObject::tr("Switch to edit mode"), nullptr)
+	, mDebugModeAction(new QAction(QIcon(":/icons/main_tabbar_debug.svg"), QObject::tr("Debug"), nullptr))
+	, mEditModeAction(new QAction(QIcon(":/icons/main_tabbar_edit.svg"), QObject::tr("Edit"), nullptr))
+	, mHomeAction(new QAction(QIcon(":/icons/home.svg"), tr("To main page"), nullptr))
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
 	initKitPluginActions();
+	giveObjectNames();
 
 	mConnectToRobotAction->setCheckable(true);
 
@@ -52,11 +54,21 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 			<< &mExportExerciseAction
 			;
 
-	mEditModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
-	mDebugModeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mEditModeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
+	mEditModeAction->setCheckable(true);
+	mDebugModeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mDebugModeAction->setCheckable(true);
 
 	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
+}
+
+void ActionsManager::giveObjectNames()
+{
+	mRunAction->setObjectName("runRobot");
+	mStopRobotAction->setObjectName("stopRobot");
+	mConnectToRobotAction->setObjectName("connectToRobot");
+	mRobotSettingsAction.setObjectName("robotSettings");
 }
 
 QList<qReal::ActionInfo> ActionsManager::actions()
@@ -66,6 +78,7 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 	result << mPluginActionInfos;
 
 	result
+			<< qReal::ActionInfo(mHomeAction, QString(), "view")
 			<< qReal::ActionInfo(mConnectToRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(mRunAction, "interpreters", "tools")
 			<< qReal::ActionInfo(mStopRobotAction, "interpreters", "tools")
@@ -89,8 +102,8 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	result += mAdditionalHotKeyInfos;
 
 	result
-			<< qReal::HotKeyActionInfo("Editor.EditMode", mEditModeAction.text(), &mEditModeAction)
-			<< qReal::HotKeyActionInfo("Editor.DebugMode", mDebugModeAction.text(), &mDebugModeAction)
+			<< qReal::HotKeyActionInfo("Editor.EditMode", QObject::tr("Switch to edit mode"), mEditModeAction)
+			<< qReal::HotKeyActionInfo("Editor.DebugMode", QObject::tr("Switch to debug mode"), mDebugModeAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), mRunAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), mStopRobotAction)
 			;
@@ -132,12 +145,17 @@ QAction &ActionsManager::exportExerciseAction()
 
 QAction &ActionsManager::debugModeAction()
 {
-	return mDebugModeAction;
+	return *mDebugModeAction;
 }
 
 QAction &ActionsManager::editModeAction()
 {
-	return mEditModeAction;
+	return *mEditModeAction;
+}
+
+QAction &ActionsManager::homeAction()
+{
+	return *mHomeAction;
 }
 
 void ActionsManager::appendHotKey(const QString &actionId, const QString &label, QAction &action)
@@ -176,7 +194,6 @@ void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)
 {
 	const auto robotModel = dynamic_cast<kitBase::robotModel::RobotModelInterface *>(robotModelObject);
 	mRobotModelManager.setModel(robotModel);
-	onRobotModelChanged(*robotModel);
 }
 
 QString ActionsManager::kitIdOf(kitBase::robotModel::RobotModelInterface &model) const

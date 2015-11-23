@@ -25,8 +25,11 @@
 
 #include "twoDModel/engine/model/model.h"
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/curveItem.h"
 #include "src/engine/items/stylusItem.h"
+#include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/regions/regionItem.h"
 #include "src/engine/items/startPosition.h"
 
 using namespace twoDModel;
@@ -50,7 +53,8 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
-	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &TwoDModelScene::onOtherItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
+	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &TwoDModelScene::onItemRemoved);
 
 	connect(&mModel, &model::Model::robotAdded, this, &TwoDModelScene::onRobotAdd);
@@ -144,11 +148,6 @@ void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 	item->setEditable(!mWorldReadOnly);
 }
 
-void TwoDModelScene::onOtherItemAdded(QGraphicsItem *item)
-{
-	addItem(item);
-}
-
 void TwoDModelScene::onItemRemoved(QGraphicsItem *item)
 {
 	mGraphicsItem = nullptr;
@@ -194,9 +193,17 @@ void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				mCurrentLine = new items::LineItem(position, position);
 				initColorField(mCurrentLine);
 				break;
+			case bezier:
+				mCurrentCurve = new items::CurveItem(position, position);
+				initColorField(mCurrentCurve);
+				break;
 			case stylus:
 				mCurrentStylus = new items::StylusItem(position.x(), position.y());
 				initColorField(mCurrentStylus);
+				break;
+			case rectangle:
+				mCurrentRectangle = new items::RectangleItem(position, position);
+				initColorField(mCurrentRectangle);
 				break;
 			case ellipse:
 				mCurrentEllipse = new items::EllipseItem(position, position);
@@ -218,15 +225,21 @@ void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void TwoDModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	bool needUpdate = true;
-	switch (mDrawingAction){
+	switch (mDrawingAction) {
 	case wall:
 		reshapeWall(mouseEvent);
 		break;
 	case line:
 		reshapeLine(mouseEvent);
 		break;
+	case bezier:
+		reshapeCurve(mouseEvent);
+		break;
 	case stylus:
 		reshapeStylus(mouseEvent);
+		break;
+	case rectangle:
+		reshapeRectangle(mouseEvent);
 		break;
 	case ellipse:
 		reshapeEllipse(mouseEvent);
@@ -270,10 +283,22 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentLine = nullptr;
 		break;
 	}
+	case bezier: {
+		reshapeCurve(mouseEvent);
+		itemToSelect = mCurrentCurve;
+		mCurrentCurve = nullptr;
+		break;
+	}
 	case stylus: {
 		reshapeStylus(mouseEvent);
 		itemToSelect = mCurrentStylus;
 		mCurrentStylus = nullptr;
+		break;
+	}
+	case rectangle: {
+		reshapeRectangle(mouseEvent);
+		itemToSelect = mCurrentRectangle;
+		mCurrentRectangle = nullptr;
 		break;
 	}
 	case ellipse: {
@@ -301,20 +326,6 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	update();
 	AbstractScene::mouseReleaseEvent(mouseEvent);
-}
-
-void TwoDModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
-{
-	setX1andY1(event);
-	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
-	if (mGraphicsItem && mGraphicsItem->editable()) {
-		mGraphicsItem->changeDragState(mX1, mY1);
-		if (mGraphicsItem->dragState() != AbstractItem::None) {
-			mView->setDragMode(QGraphicsView::NoDrag);
-		}
-	}
-
-	update();
 }
 
 void TwoDModelScene::deleteItem(QGraphicsItem *item)
@@ -349,19 +360,6 @@ void TwoDModelScene::deleteSelectedItems()
 	}
 }
 
-void TwoDModelScene::forMoveResize(QGraphicsSceneMouseEvent *event)
-{
-	reshapeItem(event);
-	update();
-}
-
-void TwoDModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event)
-{
-	reshapeItem(event);
-	mGraphicsItem = nullptr;
-	update();
-}
-
 void TwoDModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
@@ -380,7 +378,7 @@ void TwoDModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 			shape.addRect(robotItem->realBoundingRect());
 		}
 
-		if (mGraphicsItem->realShape().intersects(shape) && dynamic_cast<items::WallItem *>(mGraphicsItem)) {
+		if (dynamic_cast<items::WallItem *>(mGraphicsItem) && mGraphicsItem->realShape().intersects(shape)) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}
@@ -390,14 +388,15 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
 		for (QGraphicsItem * const item : selectedItems()) {
-			auto worldItem = dynamic_cast<items::ColorFieldItem *>(item);
-			auto robotItem = dynamic_cast<RobotItem *>(item);
-			auto sensorItem = dynamic_cast<SensorItem *>(item);
-			if (worldItem && mWorldReadOnly) {
+			const bool isWorldItem = dynamic_cast<items::ColorFieldItem *>(item)
+					|| dynamic_cast<items::WallItem *>(item);
+			const bool isRobotItem = dynamic_cast<RobotItem *>(item) != nullptr;
+			const bool isSensorItem = dynamic_cast<SensorItem *>(item) != nullptr;
+			if (isWorldItem && mWorldReadOnly) {
 				return;
-			} else if (robotItem && mRobotReadOnly) {
+			} else if (isRobotItem && mRobotReadOnly) {
 				return;
-			} else if (sensorItem && mSensorsReadOnly) {
+			} else if (isSensorItem && mSensorsReadOnly) {
 				return;
 			}
 
@@ -429,9 +428,19 @@ void TwoDModelScene::addLine()
 	mDrawingAction = line;
 }
 
+void TwoDModelScene::addBezier()
+{
+	mDrawingAction = bezier;
+}
+
 void TwoDModelScene::addStylus()
 {
 	mDrawingAction = stylus;
+}
+
+void TwoDModelScene::addRectangle()
+{
+	mDrawingAction = rectangle;
 }
 
 void TwoDModelScene::addEllipse()
@@ -499,11 +508,35 @@ void TwoDModelScene::reshapeLine(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void TwoDModelScene::reshapeCurve(QGraphicsSceneMouseEvent *event)
+{
+	const QPointF pos = event->scenePos();
+	if (mCurrentCurve) {
+		mCurrentCurve->setX2(pos.x());
+		mCurrentCurve->setY2(pos.y());
+		if (event->modifiers() & Qt::ShiftModifier) {
+			mCurrentCurve->reshapeRectWithShift();
+		}
+	}
+}
+
 void TwoDModelScene::reshapeStylus(QGraphicsSceneMouseEvent *event)
 {
 	const QPointF pos = event->scenePos();
 	if (mCurrentStylus) {
 		mCurrentStylus->addLine(pos.x(), pos.y());
+	}
+}
+
+void TwoDModelScene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
+{
+	const QPointF pos = event->scenePos();
+	if (mCurrentRectangle) {
+		mCurrentRectangle->setX2(pos.x());
+		mCurrentRectangle->setY2(pos.y());
+		if (event->modifiers() & Qt::ShiftModifier) {
+			mCurrentRectangle->reshapeRectWithShift();
+		}
 	}
 }
 

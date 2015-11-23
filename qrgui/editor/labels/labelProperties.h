@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <QtCore/QObject>
 #include <QtGui/QColor>
 
 namespace qReal {

@@ -66,7 +66,6 @@ public:
 
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node
-	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 
 	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
@@ -103,11 +102,16 @@ protected:
 	bool mMoving;
 	bool mEnabled;
 	const Id mId;
-	ElementImpl * const mElementImpl;  // Has ownership.
+
+	/// Has ownership.
+	ElementImpl * const mElementImpl;
+
 	QList<Label *> mLabels;
 
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;
+
+	/// Does not have ownership.
 	Controller *mController;
 };
 

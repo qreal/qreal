@@ -23,6 +23,7 @@ namespace twoDModel {
 namespace engine {
 
 class TwoDModelDisplayInterface;
+class TwoDModelGuiFacade;
 
 /// An interface for using 2D model in extensibility components.
 /// Provides some basic engine methods like scanning the field or playing the sound or working with display.
@@ -63,8 +64,11 @@ public:
 	/// Draws sound waves during the given amount of time thus showing that the robot plays some sound.
 	virtual void playSound(int timeInMs) = 0;
 
+	/// Return true if robot currently draws the trace on the floor behind it.
+	virtual bool isMarkerDown() const = 0;
+
 	/// Moves the marker of the 2D model robot down to the floor.
-	/// The robot will draw its trace on the floor after that.
+	/// The robot will draw the trace on the floor behind it.
 	/// If the marker of another color is already drawing at the moment it will be replaced.
 	virtual void markerDown(const QColor &color) = 0;
 
@@ -77,6 +81,9 @@ public:
 
 	/// Returns a pointer to 2D model display emulator.
 	virtual TwoDModelDisplayInterface *display() = 0;
+
+	/// Returns an object for convenient searching and managing widgets of 2D model GUI.
+	virtual engine::TwoDModelGuiFacade &guiFacade() const = 0;
 
 };
 

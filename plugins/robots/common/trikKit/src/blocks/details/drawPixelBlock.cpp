@@ -28,8 +28,14 @@ void DrawPixelBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
 	const int x = eval<int>("XCoordinatePix");
 	const int y = eval<int>("YCoordinatePix");
+	const bool redraw = boolProperty("Redraw");
+
 	if (!errorsOccured()) {
 		trikDisplay->drawPixel(x, y);
+		if (redraw) {
+			trikDisplay->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

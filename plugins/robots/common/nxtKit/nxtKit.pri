@@ -57,4 +57,6 @@ SOURCES += \
 	$$PWD/src/blocks/details/nxtEnginesBackwardBlock.cpp \
 	$$PWD/src/blocks/details/nxtEnginesForwardBlock.cpp \
 
-TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/nxtKit_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/nxtKit_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/nxtKit_fr.ts \

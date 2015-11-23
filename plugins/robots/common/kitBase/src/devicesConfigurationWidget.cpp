@@ -53,6 +53,10 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
+	if (mCurrentModelType == robotModel.name() && mCurrentModelId == robotModel.robotId()) {
+		return;
+	}
+
 	mCurrentModelType = robotModel.name();
 	mCurrentModelId = robotModel.robotId();
 	takeWidget();
@@ -100,6 +104,7 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 	QPalette palette = comboBox->palette();
 	palette.setColor(QPalette::Base, Qt::white);
 	comboBox->setPalette(Qt::white);
+	comboBox->setObjectName("Port " + port.name() + " DeviceConfig");
 	comboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 	comboBox->setProperty("robotModel", robotModel);
 	comboBox->setProperty("port", QVariant::fromValue(port));

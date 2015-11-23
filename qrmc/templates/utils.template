@@ -5,27 +5,26 @@
 @@InitPropertyNamesMapLine@@=	propertiesDisplayedNamesMap["@@DiagramName@@"]["@@ElementName@@"]["@@PropertyName@@"] = QString::fromUtf8("@@PropertyDisplayedName@@");
 @@InitPropertyTypesMapLine@@=	propertyTypes["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyType@@";
 @@InitPropertyDefaultMapLine@@=	propertyDefault["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyDefaultValue@@";
-@@InitParentsMapLine@@=	parentsMap["@@DiagramName@@"]["@@ChildElementName@@"] << qMakePair(QString("@@DiagramName@@"), QString("@@ParentElementName@@")); 	
+@@InitParentsMapLine@@=	parentsMap["@@DiagramName@@"]["@@ChildElementName@@"] << qMakePair(QString("@@DiagramName@@"), QString("@@ParentElementName@@"));
 @@GetGraphicalObjectLine@@=	if (element == "@@ElementName@@")\n		return new @@ElementName@@();
 @@GetPropertyNamesLine@@=	if (element == "@@ElementName@@")\n		result  << @@PropertiesList@@;
 @@GetContainedByLine@@=	if (element == "@@ElementName@@")\n		result @@ContainedByList@@;
 @@GetConnectedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@ConnectedToList@@;
 @@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@UsedTypesList@@ ;
+@@GetPortTypesLine@@=	if (element == "@@ElementName@@") {\n 		result << @@PortTypesList@@;\n	}
 @@GetReferencePropertiesLine@@=	if (element == "@@ElementName@@")\n 		result @@ReferencePropertiesList@@;
 @@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
-@@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result @@EnumValuesList@@;
+
 @@GetPossibleEdgesLine@@=	if (element == "@@ElementName@@")\n		result @@PossibleEdgesList@@;
-@@EdgeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@);\n			title_@@Count@@->setBackground(Qt::white);\n			title_@@Count@@->setScaling(@@XCoordIsScalable@@, @@YCoordIsScalable@@);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
+@@EdgeInit@@=			title_@@Count@@ = factory.createLabel(@@Count@@, @@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@, @@Rotation@@);\n			title_@@Count@@->setBackground(Qt::white);\n			title_@@Count@@->setScaling(@@XCoordIsScalable@@, @@YCoordIsScalable@@);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
 @@UpdateData@@=			title_@@Count@@->setHtml(QString("<b>%1</b>").arg(@@UpdateRole@@));
 @@NameRole@@=repo->name()
 @@CustomRole@@=repo->logicalProperty("@@LabelName@@")
-@@LabelDefinition@@=		ElementTitleInterface *title_@@Count@@;
+@@LabelDefinition@@=		qReal::LabelInterface *title_@@Count@@;
 @@NodeLoadShapeRenderer@@=			mRenderer->load(QString(":/generated/shapes/@@ElementName@@Class.sdf"));
-@@NodeLoadPortsRenderer@@=			portRenderer->load(QString(":/generated/shapes/@@ElementName@@Ports.sdf"));
-@@NodeSetContents@@=			contents.setWidth(@@NodeWidth@@);\n			contents.setHeight(@@NodeHeight@@);\n			StatPoint pt;
-@@NodeInitPointPort@@=			pt.point = QPointF(@@PointX@@, @@PointY@@); \n			pointPorts << pt;
+@@NodeSetContents@@=			contents.setWidth(@@NodeWidth@@);\n			contents.setHeight(@@NodeHeight@@);\n		/*	StatPoint pt;   */
 @@NodeInitLinePort@@=		{\n			StatLine ln;\n			ln.line = QLineF(@@StartX@@, @@StartY@@, @@EndX@@, @@EndY@@);\n			ln.prop_x1 = @@NodeLinePortStartXScalable@@;\n			ln.prop_y1 = @@NodeLinePortStartYScalable@@;\n			ln.prop_x2 = @@NodeLinePortEndXScalable@@;\n			ln.prop_y2 = @@NodeLinePortEndYScalable@@;\n			linePorts << ln;\n		};
-@@NodeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@);\n			title_@@Count@@->setBackground(Qt::transparent);\n			title_@@Count@@->setScaling(@@XCoordIsScalable@@, @@YCoordIsScalable@@);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
+@@NodeInit@@=			title_@@Count@@ = factory.createLabel(@@Count@@, @@LabelX@@, @@LabelY@@, @@LabelName@@, @@Rotation@@);\n			title_@@Count@@->setBackground(Qt::transparent);\n			title_@@Count@@->setScaling(@@XCoordIsScalable@@, @@YCoordIsScalable@@);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
 @@NodeValidBorder@@=			list << 30 << 15 << 15 << 25;
 @@NodeInvalidBorder@@=			list << 0 << 0 << 0 << 0;
 @@PortsSdf@@=<picture sizex="@@NodeWidth@@" sizey="@@NodeHeight@@" >\n@@Ports@@\n</picture>
@@ -42,3 +41,5 @@
 @@ComplexArrow@@=			static const QPointF points[] = {\n				QPointF(-15,30),\n				QPointF(-10,10),\n				QPointF(0,0),\n				QPointF(10,10),\n				QPointF(15,30),\n				QPointF(0,23),\n				QPointF(-15,30)\n			};\n			painter->drawPolyline(points, 7);
 @@FilledArrowColor@@=			brush.setColor(Qt::black);
 @@EmptyArrowColor@@=			brush.setColor(Qt::white);
+@@ElementDescriptionMapLine@@=	elementsDescriptionMap["@@DiagramName@@"]["@@ElementName@@"] = tr("@@Description@@");
+@@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		return { @@qMakeLine@@ };

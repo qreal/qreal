@@ -72,19 +72,27 @@ public:
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in lambda case. The lambda must be parameterless.
-	static void listen(const QString &key, std::function<void()> const &lambda)
+	/// @param owner The QObject whoose disposal will disconnect this lambda too.
+	static void listen(const QString &key, const std::function<void()> &lambda, QObject *owner = 0)
 	{
-		instance().mListeners.insertMulti(key, new LambdaListener0(lambda));
+		instance().mListeners.insertMulti(key, new LambdaListener0(lambda, owner));
+		if (owner) {
+			connect(owner, SIGNAL(destroyed(QObject*)), &instance(), SLOT(disconnect(QObject*)));
+		}
 	}
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in lambda case. The lambda must accept one parameter of the arbitary type
 	/// to which modified settings value will be casted by qvariant_cast.
+	/// @param owner The QObject whoose disposal will disconnect this lambda too.
 	template <typename Func, typename Type
 			= typename QtPrivate::FunctionPointer<decltype(&Func::operator())>::Arguments::Car>
-	static void listen(const QString &key, Func lambda)
+	static void listen(const QString &key, Func lambda, QObject *owner = 0)
 	{
-		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda));
+		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda, owner));
+		if (owner) {
+			connect(owner, SIGNAL(destroyed(QObject*)), &instance(), SLOT(disconnect(QObject*)));
+		}
 	}
 
 public slots:

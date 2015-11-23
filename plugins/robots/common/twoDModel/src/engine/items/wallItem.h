@@ -14,26 +14,32 @@
 
 #pragma once
 
-#include "lineItem.h"
+#include <qrutils/graphicsUtils/lineImpl.h>
+
+#include "solidItem.h"
 
 namespace twoDModel {
 namespace items {
 
-class WallItem : public LineItem
+class WallItem : public SolidItem
 {
 	Q_OBJECT
 
 public:
 	WallItem(const QPointF &begin, const QPointF &end);
 
-	AbstractItem *clone() const override;
+	/// Creates a copy of this wall item. Transfers ownership to the caller.
+	WallItem *clone() const;
 
 	/// Creates and returns wall item for 2D model palette.
 	/// Transfers ownership.
 	static QAction *wallTool();
 
-	QPointF begin();
-	QPointF end();
+	QPainterPath shape() const override;
+	QRectF boundingRect() const override;
+
+	QPointF begin() const;
+	QPointF end() const;
 	bool isDragged() const;
 	qreal width() const;
 
@@ -41,17 +47,26 @@ public:
 	void drawExtractionForItem(QPainter *painter) override;
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
+	void resizeItem(QGraphicsSceneMouseEvent *event) override;
+
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
+	void serialize(QDomElement &element) const override;
 	void deserialize(const QDomElement &element) override;
-	QDomElement serialize(QDomDocument &document, const QPoint &topLeftPicture) override;
-	void deserializePenBrush(const QDomElement &element);
 
 	void onOverlappedWithRobot(bool overlapped = true);
 
 	QPainterPath path() const;
+
+	void resizeWithGrid(QGraphicsSceneMouseEvent *event, int indexGrid);
+
+	void resizeBeginWithGrid(int indexGrid);
+	void reshapeEndWithGrid(int indexGrid);
+	void reshapeBeginWithGrid(int indexGrid);
+	void setDraggedEnd(qreal x, qreal y);
+	void alignTheWall(int indexGrid);
 
 signals:
 	void wallDragged(WallItem *item, const QPainterPath &shape, const QRectF &oldPos);
@@ -62,12 +77,23 @@ protected:
 private:
 	void recalculateBorders();
 
+	qreal alignedCoordinate(qreal coord, int coef, const int indexGrid) const;
+	void setBeginCoordinatesWithGrid(int indexGrid);
+	void setEndCoordinatesWithGrid(int indexGrid);
+	void countCellNumbCoordinates(int indexGrid);
+
+	graphicsUtils::LineImpl mLineImpl;
+
 	bool mDragged;
 	bool mOverlappedWithRobot;
 	const QImage mImage;
 
 	int mOldX1;
 	int mOldY1;
+	int mCellNumbX1;
+	int mCellNumbY1;
+	int mCellNumbX2;
+	int mCellNumbY2;
 
 	QPainterPath mPath;
 };

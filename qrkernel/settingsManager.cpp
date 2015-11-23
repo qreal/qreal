@@ -130,7 +130,9 @@ void SettingsManager::mergeSettings(const QString &fileNameForImport, QHash<QStr
 		const QVariant oldValue = target[name];
 		if (newValue != oldValue) {
 			target[name] = settings.value(name);
-			emit settingsChanged(name, oldValue, newValue);
+			if (target == mData || !mData.contains(name)) {
+				emit settingsChanged(name, oldValue, newValue);
+			}
 		}
 	}
 }

@@ -28,53 +28,57 @@ class ConditionsFactory
 public:
 	ConditionsFactory(Events &events, const Variables &variables, const Objects &objects, StatusReporter &status);
 
-	/// Produces new condition instance that always returnes @arg value.
+	/// Produces new condition instance that always returnes \a value.
 	Condition constant(bool value) const;
 
-	/// Produces new composite condition instance. @arg conditions will be concatenated using && or ||.
+	/// Produces new composite condition instance. \a conditions will be concatenated using && or ||.
 	Condition combined(const QList<Condition> &conditions, Glue glue) const;
 
-	/// Produces new condition instance that always returns negated @arg condition result.
+	/// Produces new condition instance that always returns negated \a condition result.
 	Condition negation(const Condition &condition) const;
 
-	/// Produces new condition instance that returnes true if @arg leftValue() == @arg rightValue().
+	/// Produces new condition instance that returnes true if \a leftValue() == \a rightValue().
 	Condition equals(const Value &leftValue, const Value &rightValue) const;
 
-	/// Produces new condition instance that returnes true if @arg leftValue() != @arg rightValue().
+	/// Produces new condition instance that returnes true if \a leftValue() != \a rightValue().
 	Condition notEqual(const Value &leftValue, const Value &rightValue) const;
 
-	/// Produces new condition instance that returnes true if @arg leftValue() > @arg rightValue().
+	/// Produces new condition instance that returnes true if \a leftValue() > \a rightValue().
 	Condition greater(const Value &leftValue, const Value &rightValue) const;
 
-	/// Produces new condition instance that returnes true if @arg leftValue() < @arg rightValue().
+	/// Produces new condition instance that returnes true if \a leftValue() < \a rightValue().
 	Condition less(const Value &leftValue, const Value &rightValue) const;
 
-	/// Produces new condition instance that returnes true if @arg leftValue() <= @arg rightValue().
+	/// Produces new condition instance that returnes true if \a leftValue() <= \a rightValue().
 	Condition notGreater(const Value &leftValue, const Value &rightValue) const;
 
-	/// Produces new condition instance that returnes true if @arg leftValue() >= @arg rightValue().
+	/// Produces new condition instance that returnes true if \a leftValue() >= \a rightValue().
 	Condition notLess(const Value &leftValue, const Value &rightValue) const;
 
-	/// Produces new condition instance that returnes true if item with id @arg objectId lays inside of
-	/// the region with id @arg regionId at the call moment.
+	/// Produces new condition instance that returnes true if item with id \a objectId lays inside of
+	/// the region with id \a regionId at the call moment.
 	Condition inside(const QString &objectId, const QString &regionId) const;
 
-	/// Produces new condition instance that returnes true if the event with id @arg eventId
+	/// Produces new condition instance that returnes true if the event with id \a eventId
 	/// is alive at the call moment and false otherwise.
 	Condition settedUp(const QString &eventId) const;
 
-	/// Produces new condition instance that returnes true if the event with id @arg eventId
+	/// Produces new condition instance that returnes true if the event with id \a eventId
 	/// is not alive at the call moment and false otherwise.
 	Condition dropped(const QString &eventId) const;
 
-	/// Produces new condition instance that returnes true if @arg timeout has elapsed since the last time when
-	/// @arg event was setted up. If event is still alive after that it will again return true.
-	/// @param forceDrop If true then @arg event will be dropped on the first timeout even if resulting condition
+	/// Produces new condition instance that returnes true if \a timeout has elapsed since the last time when
+	/// \a event was setted up. If event is still alive after that it will again return true.
+	/// @param forceDrop If true then \a event will be dropped on the first timeout even if resulting condition
 	/// is a part of combined condition and it is not satisfied at the call moment.
 	Condition timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event) const;
 
+	/// Produces new condition that invokes the given trigger and then returns the \a returns condition result.
+	/// May be useful for setting some temporal variables before taking the decision.
+	Condition usingCondition(const Condition &returns, const Trigger &trigger) const;
+
 private:
-	void reportError(const QString &message);
+	void reportError(const QString &message) const;
 
 	Events &mEvents;
 	const Variables &mVariables;

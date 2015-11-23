@@ -32,15 +32,14 @@ class QRUTILS_EXPORT PaintWidget : public QWidget
 public:
 	explicit PaintWidget(QWidget *parent = 0);
 
-	/// Appeds the given painter to the collection of @arg painters of this widget.
-	/// The paint() method of @arg painter will be called each time when this widget is redrawn by the system.
-	void appendPainter(PainterInterface *painter);
+	/// Sets painter which will be used to draw.
+	void setPainter(PainterInterface *painter);
 
 protected:
 	void paintEvent(QPaintEvent *event);
 
 private:
-	QList<PainterInterface*> mPainters;
+	PainterInterface* mPainter;  // doesn't have ownership
 };
 
 }

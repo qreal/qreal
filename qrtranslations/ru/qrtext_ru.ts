@@ -44,7 +44,7 @@
         <translation type="vanished">Не удалось вывести тип</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="66"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="68"/>
         <source>Type mismatch</source>
         <translation>Несоответствие типов</translation>
     </message>
@@ -53,17 +53,17 @@
         <translation type="vanished">Не могу вывести тип, это выражение может быть любого типа</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="71"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="73"/>
         <source>Can not deduce type, expression can be of following types: %1</source>
         <translation>Не могу вывести тип, это выражение может быть следующих типов: %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="164"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="176"/>
         <source>Type mismatch.</source>
         <translation>Несоответствие типов.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="403"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="405"/>
         <source>Explicit table indexes of non-integer type are not supported</source>
         <translation>Явное указание индексов нечисловых типов в таблицах не поддержано</translation>
     </message>
@@ -72,32 +72,32 @@
         <translation type="vanished">Эта переменная только для чтения</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="105"/>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="317"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="107"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="373"/>
         <source>Variable %1 is read-only</source>
         <translation>Переменная %1 только для чтения</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="117"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="149"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="119"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="151"/>
         <source>This construction is not supported by interpreter</source>
         <translation>Конструкция не поддерживается интерпретатором</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="346"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="348"/>
         <source>Currently interpreter allows only tables denoted by identifier and by integer expression index, as in &apos;a[1 + 2][3]&apos;</source>
         <translation>Сейчас интерпретатор поддерживает именованные таблицы с целочисленным выражением в качестве индекса, например, &apos;a[1 + 2][3]&apos;</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="377"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="379"/>
         <source>Tables denoted by something other than identifier (like f(x)[0]) are not allowed</source>
         <translation>Разрешены только таблицы, определяемые идентификатором (например, f(x)[0] писать нельзя)</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="438"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="455"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="509"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="523"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="440"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="457"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="511"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="525"/>
         <source>Negative index for a table</source>
         <translation>Отрицательный индекс при обращении к таблице</translation>
     </message>
@@ -106,9 +106,9 @@
         <translation type="vanished">Сейчас интерпретатор поддерживает именованные таблицы с целочисленным выражением в качестве индекса, например, &apos;a[1 + 2] = 3&apos;</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="249"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="259"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="272"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="251"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="261"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="274"/>
         <source>Division by zero</source>
         <translation>Деление на 0</translation>
     </message>
@@ -143,43 +143,48 @@
         <translation>Узел в семантическом действии &apos;field&apos; неправильного типа</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="158"/>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="155"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="170"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="188"/>
         <source>This construction is not supported by semantic analysis</source>
         <translation>Конструкция не поддерживается семантическим анализатором</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="237"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="108"/>
+        <source>Intrinsic function used as an identifier</source>
+        <translation>Встроенная функция не может использоваться как идентификатор</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="275"/>
         <source>Incorrect assignment, only variables and tables can be assigned to.</source>
         <translation>Неправильное присваивание, присваивать можно только переменным и таблицам.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="251"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="289"/>
         <source>Left and right operand have mismatched types.</source>
         <translation>Левый и правый операнд имеют несовпадающие типы.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="264"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="320"/>
         <source>Indirect function calls are not supported</source>
         <translation>Непрямые вызовы функций не поддержаны</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="272"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="328"/>
         <source>Unknown function</source>
         <translation>Неизвестная функция</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="284"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="340"/>
         <source>Too many parameters, %1 expected</source>
         <translation>Слишком много параметров, ожидается %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="287"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="343"/>
         <source>Not enough parameters, %1 expected</source>
         <translation>Недостаточно параметров, ожидалось %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="307"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="363"/>
         <source>Undeclared identifier: %1</source>
         <translation>Неизвестная переменная: %1</translation>
     </message>

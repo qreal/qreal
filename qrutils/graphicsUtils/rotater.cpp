@@ -14,8 +14,9 @@
 
 #include "rotater.h"
 
+#include <QtCore/qmath.h>
 #include <QtGui/QCursor>
-#include <qmath.h>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/graphicsUtils/rotateItem.h>

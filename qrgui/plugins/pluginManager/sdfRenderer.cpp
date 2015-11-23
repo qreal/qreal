@@ -24,6 +24,8 @@
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
 
+#include <qrkernel/platformInfo.h>
+
 using namespace qReal;
 
 SdfRenderer::SdfRenderer()
@@ -803,13 +805,9 @@ void SdfRenderer::ImagesCache::drawImage(
 		painter.drawPixmap(rect, mPrerenderedSvgs.value(fileName));
 	} else {
 		// Cache miss - finding best file to load and loading it.
-		const QString actualFileName = fileName.startsWith("./")
-				? QApplication::applicationDirPath() + "/" + fileName
-				: fileName;
-
-		const QFileInfo actualFile = selectBestImageFile(actualFileName);
-
+		const QFileInfo actualFile = selectBestImageFile(PlatformInfo::invariantPath(fileName));
 		const QByteArray rawImage = loadPixmap(actualFile);
+
 		if (actualFile.suffix() == "svg") {
 			QSharedPointer<QSvgRenderer> renderer(new QSvgRenderer(rawImage));
 			mFileNameSvgRendererMap.insert(fileName, renderer);

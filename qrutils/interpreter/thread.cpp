@@ -75,7 +75,7 @@ Thread::~Thread()
 void Thread::initTimer()
 {
 	mProcessEventsTimer->setSingleShot(true);
-	mProcessEventsTimer->setInterval(true);
+	mProcessEventsTimer->setInterval(0);
 	connect(mProcessEventsTimer, SIGNAL(timeout())
 			, mProcessEventsMapper, SLOT(map()));
 
@@ -92,9 +92,9 @@ void Thread::interpret()
 	}
 }
 
-void Thread::stop()
+void Thread::stop(qReal::interpretation::StopReason reason)
 {
-	emit stopped();
+	emit stopped(reason);
 }
 
 void Thread::nextBlock(const Id &blockId)
@@ -125,7 +125,7 @@ void Thread::stepInto(const Id &diagram)
 void Thread::finishedSteppingInto()
 {
 	if (mStack.isEmpty()) {
-		emit stopped();
+		emit stopped(qReal::interpretation::StopReason::finised);
 		return;
 	}
 
@@ -136,7 +136,7 @@ void Thread::finishedSteppingInto()
 
 void Thread::failure()
 {
-	emit stopped();
+	emit stopped(qReal::interpretation::StopReason::error);
 }
 
 void Thread::error(const QString &message, const Id &source)
@@ -162,18 +162,24 @@ void Thread::turnOn(BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
-		/// @todo: report error if we met unknown block type?
 		finishedSteppingInto();
 		return;
 	}
 
+	if (!mGraphicalModelApi->graphicalRepoApi().exist(block->id())) {
+		// If we get non-null block instance, but non-existing id then the block
+		// was removed from diagram during the interpretation.
+		error(tr("Block has disappeared!"));
+		return;
+	}
+
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
-	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock);
-	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread);
-	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread);
-	connect(mCurrentBlock, &BlockInterface::sendMessage, this, &Thread::sendMessage);
-	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure);
-	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto);
+	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::sendMessage, this, &Thread::sendMessage, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure, Qt::UniqueConnection);
+	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
 
 	mStack.push(mCurrentBlock);
 

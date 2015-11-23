@@ -101,15 +101,18 @@ public:
 
 	QList<qreal> border() const;
 
-	QStringList bonusContextMenuFields() const;
 	void updateRendererContent(const QString &shape);
 
 private:
 	void initPointPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
 			, const int &width, const int &height);
+
 	void initLinePorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
 			, const int &width, const int &height);
-	void initLabels(const int &width, const int &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
+
+	void initLabels(const int &width, const int &height, LabelFactoryInterface &factory
+			, QList<LabelInterface*> &titles);
+
 	QVector<int> getSizeOfContainerProperty(const QString &property) const;
 	QStringList getListOfStr(const QString &labelText) const;
 	QString getResultStr(const QStringList &list, ElementRepoInterface *repo) const;

@@ -19,35 +19,35 @@
 namespace simpleParser {
 namespace ast {
 
-/// Class that represents identifier which contains of two parts
-/// separated by dot.
+/// Class that represents identifier which consists of two parts separated by dot.
 class ComplexIdentifier : public Node
 {
 public:
 	/// Constructor for ComplexIdentifier.
-	/// @param firstPart - part before dot.
-	/// @param secondPart - part after dot.
-	explicit ComplexIdentifier(const QSharedPointer<Node> &firstPart, const QSharedPointer<Node> &secondPart)
-		: mFirstPart(firstPart)
-		, mSecondPart(secondPart)
+	/// @param identifierPart - part before dot.
+	/// @param propertyPart - part after dot (is optional).
+	ComplexIdentifier(const QSharedPointer<Node> &identifierPart
+			, const QSharedPointer<Node> &propertyPart)
+		: mIdentifierPart(identifierPart)
+		, mPropertyPart(propertyPart)
 	{
 	}
 
 	/// Returns first part of complex identifier.
-	QSharedPointer<Node> firstPartOfComplexIdentifier() const
+	const QSharedPointer<Node> &identifierPart() const
 	{
-		return mFirstPart;
+		return mIdentifierPart;
 	}
 
 	/// Returns second part of complex identifier.
-	QSharedPointer<Node> secondPartOfComplexIdentifier() const
+	const QSharedPointer<Node> &propertyPart() const
 	{
-		return mSecondPart;
+		return mPropertyPart;
 	}
 
 private:
-	QSharedPointer<Node> mFirstPart;
-	QSharedPointer<Node> mSecondPart;
+	QSharedPointer<Node> mIdentifierPart;
+	QSharedPointer<Node> mPropertyPart;
 };
 }
 }

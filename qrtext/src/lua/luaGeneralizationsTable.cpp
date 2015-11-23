@@ -39,19 +39,22 @@ bool LuaGeneralizationsTable::isStructurallyEquivalent(const QSharedPointer<Type
 {
 	if (type1->is<Any>() && type2->is<Any>()) {
 		return true;
-	} if (type1->is<Boolean>() && type2->is<Boolean>()) {
+	} else if (type1->is<Boolean>() && type2->is<Boolean>()) {
 		return true;
-	} if (type1->is<Float>() && type2->is<Float>()) {
+	} else if (type1->is<Float>() && type2->is<Float>()) {
 		return true;
-	} if (type1->is<Integer>() && type2->is<Integer>()) {
+	} else if (type1->is<Integer>() && type2->is<Integer>()) {
 		return true;
-	} if (type1->is<Nil>() && type2->is<Nil>()) {
+	} else if (type1->is<Nil>() && type2->is<Nil>()) {
 		return true;
-	} if (type1->is<String>() && type2->is<String>()) {
+	} else if (type1->is<String>() && type2->is<String>()) {
 		return true;
-	} if (type1->is<Table>() && type2->is<Table>()) {
+	} else if (type1->is<Table>() && type2->is<Table>()) {
 		return isStructurallyEquivalent(type1.dynamicCast<Table>()->elementType()
-				, type1.dynamicCast<Table>()->elementType());
+				, type2.dynamicCast<Table>()->elementType());
+	} else if (type1->is<Function>() && type2->is<Function>()) {
+		/// @todo: Actually compare function types.
+		return true;
 	}
 
 	return false;

@@ -19,8 +19,7 @@
 
 #include "qrutils/utilsDeclSpec.h"
 
-namespace graphicsUtils
-{
+namespace graphicsUtils {
 
 class QRUTILS_EXPORT AbstractView : public QGraphicsView
 {
@@ -33,10 +32,19 @@ public slots:
 	void zoomOut();
 
 signals:
+	/// Emitted when user pressed delete button when this view was in focus.
 	void deleteItem();
 
+	/// Emitted when scene zoom changes.
+	void zoomChanged();
+
+	/// Emitted when current visible scene rectangle changes.
+	void contentsRectChanged();
+
 protected:
-	virtual void keyPressEvent(QKeyEvent *event);
-	virtual void wheelEvent(QWheelEvent *event);
+	void keyPressEvent(QKeyEvent *event) override;
+	void wheelEvent(QWheelEvent *event) override;
+	void scrollContentsBy(int dx, int dy) override;
 };
+
 }

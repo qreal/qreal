@@ -14,6 +14,7 @@
 
 #include <kitBase/blocksBase/common/waitForButtonBlock.h>
 
+#include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotModelInterface.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 
@@ -32,15 +33,16 @@ void WaitForButtonBlock::run()
 	mButton = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, port);
 
 	if (!mButton) {
-		mActiveWaitingTimer.stop();
+		mActiveWaitingTimer->stop();
 		error(tr("Incorrect button port %1").arg(port));
 		return;
 	}
 
-	connect(mButton, &robotModel::robotParts::Button::newData, this, &WaitForButtonBlock::responseSlot);
+	connect(mButton, &robotModel::robotParts::Button::newData
+			, this, &WaitForButtonBlock::responseSlot, Qt::UniqueConnection);
 
 	mButton->read();
-	mActiveWaitingTimer.start();
+	mActiveWaitingTimer->start();
 }
 
 void WaitForButtonBlock::timerTimeout()

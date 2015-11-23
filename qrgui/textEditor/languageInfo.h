@@ -46,7 +46,8 @@ struct LanguageInfo
 	int tabSize;
 
 	/// A pointer to text edit colorer object; nullptr can be passed to disable coloring.
-	QSharedPointer<QsciLexer> lexer;
+	/// Transfers ownership to editor.
+	QsciLexer *lexer;
 
 	/// A list of tokens that will be proposed to user in autocompletion window.
 	QStringList additionalAutocompletionTokens;
@@ -82,7 +83,7 @@ public:
 				, QObject::tr("Text File")                                   /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(nullptr)                         /* lexer */
+				, nullptr                                                    /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -94,7 +95,7 @@ public:
 				, QObject::tr("C Language Source File")                      /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -107,7 +108,7 @@ public:
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				/// @todo: write own lexer
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -119,7 +120,19 @@ public:
 				, QObject::tr("Python Source File")                          /* extension description */
 				, false                                                      /* tabs indentation */
 				, 2                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(new QsciLexerPython())           /* lexer */
+				, new QsciLexerPython()                                      /* lexer */
+				, additionalTokens                                           /* additional autocompletion tokens */
+		};
+	}
+
+	/// The information about the java script language.
+	static LanguageInfo javaScript(const QStringList &additionalTokens = QStringList())
+	{
+		return LanguageInfo{"js"                                             /* extension */
+				, QObject::tr("Java Script Language Source File")            /* extension description */
+				, true                                                       /* tabs indentation */
+				, 8                                                          /* tab size */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -131,7 +144,7 @@ public:
 				, QObject::tr("QtScript Language Source File")               /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -143,8 +156,8 @@ public:
 				, QObject::tr("F# Language Source File")                     /* extension description */
 				, false                                                      /* tabs indentation */
 				, 4                                                          /* tab size */
-				/// @todo: write own lexer
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				/// @todo: write own lexer?
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}

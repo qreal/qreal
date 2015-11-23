@@ -14,28 +14,19 @@
 
 #include "trikGeneratorBase/trikGeneratorPluginBase.h"
 
-#include <trikKit/blocks/trikBlocksFactory.h>
-
-#include "trikGeneratorBase/robotModel/trikGeneratorRobotModel.h"
+#include <qrutils/inFile.h>
 
 using namespace trik;
 
-TrikGeneratorPluginBase::TrikGeneratorPluginBase(const QString &robotName
-		, const QString &robotFriendlyName
-		, int priority)
-	: mRobotModel(new robotModel::TrikGeneratorRobotModel(kitId()
-			, "trikGeneratorRobotOf" + robotName, robotName, robotFriendlyName, priority))
-	, mBlocksFactory(new blocks::TrikBlocksFactory)
+TrikGeneratorPluginBase::TrikGeneratorPluginBase(kitBase::robotModel::RobotModelInterface * const robotModel
+		, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory)
+	: mRobotModel(robotModel)
+	, mBlocksFactory(blocksFactory)
 {
 }
 
 TrikGeneratorPluginBase::~TrikGeneratorPluginBase()
 {
-}
-
-QString TrikGeneratorPluginBase::kitId() const
-{
-	return "trikKit";
 }
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikGeneratorPluginBase::robotModels()

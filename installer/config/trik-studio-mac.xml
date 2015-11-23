@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>TRIK Studio</Name>
+    <Version>3.1.2</Version>
+    <Title>TRIK Studio</Title>
+    <Publisher>CyberTech Labs Ltd.</Publisher>
+    <ProductUrl>http://robots.qreal.ru</ProductUrl>
+
+    <InstallerWindowIcon>../images/trik-studio.ico</InstallerWindowIcon>
+    <InstallerApplicationIcon>../images/trik-studio.ico</InstallerApplicationIcon>
+    <Logo>../images/trik-studio-logo.png</Logo>
+    <Watermark>../images/trik-studio-watermark.png</Watermark>
+
+    <StartMenuDir>TRIK Studio</StartMenuDir>
+    <MaintenanceToolName>maintenance</MaintenanceToolName>
+    <RemoveTargetDir>true</RemoveTargetDir>
+    <AllowSpaceInPath>false</AllowSpaceInPath>
+    <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
+
+    <TargetDir>@HomeDir@/TRIKStudio</TargetDir>
+    <AdminTargetDir>@HomeDir@/TRIKStudio</AdminTargetDir>
+
+    <RunProgram>open</RunProgram>
+    <RunProgramArguments>
+        <Argument>@TargetDir@/TRIK Studio.app</Argument>
+    </RunProgramArguments>
+
+    <RemoteRepositories>
+        <Repository>
+            <Url>http://195.19.241.150/packages/trik-studio-repo-mac/</Url>
+        </Repository>
+    </RemoteRepositories>
+</Installer>

@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
 #include "trikGeneratorBase/trikGeneratorBaseDeclSpec.h"
@@ -25,7 +27,7 @@ class TrikGeneratorRobotModel;
 }
 
 namespace blocks {
-class TrikBlocksFactory;
+class TrikV62BlocksFactory;
 }
 
 /// A base class for every generator from the TRIK kit.
@@ -34,12 +36,14 @@ class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikGeneratorPluginBase : public generat
 	Q_OBJECT
 
 public:
-	TrikGeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName, int priority);
-	~TrikGeneratorPluginBase();
+	TrikGeneratorPluginBase(kitBase::robotModel::RobotModelInterface * const robotModel
+			, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory
+			);
 
-	QString kitId() const override;
+	~TrikGeneratorPluginBase() override;
 
 	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
+
 	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
 			const kitBase::robotModel::RobotModelInterface *model) override;
 
@@ -48,10 +52,11 @@ public:
 protected:
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 
-	QScopedPointer<robotModel::TrikGeneratorRobotModel> mRobotModel;
+	QScopedPointer<kitBase::robotModel::RobotModelInterface> mRobotModel;
 
 private:
-	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
+	/// Does not have ownership.
+	kitBase::blocksBase::BlocksFactoryInterface *mBlocksFactory;
 };
 
 }

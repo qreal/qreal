@@ -45,6 +45,11 @@ QString ProjectManager::saveFilePath() const
 	return mAutosaver.isTempFile(mSaveFilePath) ? QString() : mSaveFilePath;
 }
 
+bool ProjectManager::somethingOpened() const
+{
+	return mSomeProjectOpened;
+}
+
 void ProjectManager::reinitAutosaver()
 {
 	mAutosaver.reinit();
@@ -83,7 +88,7 @@ bool ProjectManager::open(const QString &fileName)
 	const QString dequotedFileName = utils::StringUtils::dequote(fileName);
 	const QFileInfo fileInfo(dequotedFileName);
 
-	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+	if (fileInfo.suffix() == "qrs" || fileInfo.completeBaseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
@@ -137,11 +142,12 @@ bool ProjectManager::openProject(const QString &fileName)
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
 
+	mSomeProjectOpened = true;
+	QLOG_INFO() << "Opened project" << fileName;
+	QLOG_DEBUG() << "Sending after open signal...";
+
 	emit afterOpen(fileName);
 
-	mSomeProjectOpened = true;
-
-	QLOG_INFO() << "Opened project" << fileName;
 
 	return true;
 }

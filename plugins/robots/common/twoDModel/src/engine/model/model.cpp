@@ -42,13 +42,13 @@ void Model::init(qReal::ErrorReporterInterface &errorReporter
 	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
 		errorReporter.addInformation(tr("The task is accomplished!"));
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
-		// and they need scene to be alive (in checker stopping interpretation means deletting all).
+		// and they need scene to be alive (in checker stopping interpretation means deleting all).
 		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::fail, [&](const QString &message) {
 		errorReporter.addError(message);
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
-		// and they need scene to be alive (in checker stopping interpretation means deletting all).
+		// and they need scene to be alive (in checker stopping interpretation means deleting all).
 		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError, [&errorReporter](const QString &message) {
@@ -86,7 +86,7 @@ QDomDocument Model::serialize() const
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
 	save.appendChild(root);
-	root.appendChild(mWorldModel.serialize(save, QPoint(0, 0)));
+	root.appendChild(mWorldModel.serialize(save));
 
 	QDomElement robots = save.createElement("robots");
 	for (RobotModel *robotModel : mRobotModels) {
@@ -106,8 +106,12 @@ void Model::deserialize(const QDomDocument &xml)
 	const QDomNodeList robotsList = xml.elementsByTagName("robots");
 	const QDomElement constraints = xml.documentElement().firstChildElement("constraints");
 
+	if (mChecker) {
+		/// @todo: should we handle if it returned false?
+		mChecker->parseConstraints(constraints);
+	}
+
 	if (worldList.count() != 1) {
-		/// @todo Report error
 		return;
 	}
 
@@ -167,11 +171,6 @@ void Model::deserialize(const QDomDocument &xml)
 			mRobotModels.last()->deserialize(element);
 		}
 	}
-
-	if (mChecker) {
-		/// @todo: should we handle if it returned false?
-		mChecker->parseConstraints(constraints);
-	}
 }
 
 void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF &pos)
@@ -220,6 +219,16 @@ void Model::replaceRobotModel(const twoDModel::robotModel::TwoDRobotModel &oldMo
 	const QPointF pos = mRobotModels.at(index)->position();
 	removeRobotModel(oldModel);
 	addRobotModel(newModel, pos);
+}
+
+bool Model::hasConstraints() const
+{
+	return mChecker->hasConstraints();
+}
+
+void Model::setConstraintsEnabled(bool enabled)
+{
+	mChecker->setEnabled(enabled);
 }
 
 int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)

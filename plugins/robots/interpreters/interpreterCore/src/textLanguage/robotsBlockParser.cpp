@@ -14,6 +14,8 @@
 
 #include "interpreterCore/textLanguage/robotsBlockParser.h"
 
+#include <QtCore/QtMath>
+
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/shell.h>
 
@@ -48,7 +50,7 @@ void RobotsBlockParser::setReservedVariables()
 {
 	qrtext::lua::LuaToolbox::clear();
 
-	setVariableValue("pi", 3.14159265);
+	setVariableValue("pi", M_PI);
 	markAsSpecialConstant("pi");
 
 	for (const kitBase::robotModel::PortInfo &port : mRobotModelManager.model().availablePorts()) {
@@ -175,22 +177,24 @@ void RobotsBlockParser::addIntrinsicFuctions()
 		return text;
 	});
 
-	addFloatFunction("sin", [](qreal x) {return sin(x); });
-	addFloatFunction("cos", [](qreal x) {return cos(x); });
-	addFloatFunction("ln", [](qreal x) {return log(x); });
-	addFloatFunction("exp", [](qreal x) {return exp(x); });
-	addFloatFunction("asin", [](qreal x) {return asin(x); });
-	addFloatFunction("acos", [](qreal x) {return acos(x); });
-	addFloatFunction("atan", [](qreal x) {return atan(x); });
+	addFloatFunction("sin", [](qreal x) {return qSin(x); });
+	addFloatFunction("cos", [](qreal x) {return qCos(x); });
+	addFloatFunction("ln", [](qreal x) {return qLn(x); });
+	addFloatFunction("exp", [](qreal x) {return qExp(x); });
+	addFloatFunction("asin", [](qreal x) {return qAsin(x); });
+	addFloatFunction("acos", [](qreal x) {return qAcos(x); });
+	addFloatFunction("atan", [](qreal x) {return qAtan(x); });
 	addFloatToIntegerFunction("sgn", [](qreal x) {return (0 < x) - (x < 0); });
-	addFloatFunction("sqrt", [](qreal x) {return sqrt(x); });
+	addFloatFunction("sqrt", [](qreal x) {return qSqrt(x); });
 	addFloatFunction("abs", [](qreal x) {return qAbs(x); });
-	addFloatToIntegerFunction("ceil", [](qreal x) {return static_cast<int>(ceil(x)); });
-	addFloatToIntegerFunction("floor", [](qreal x) {return static_cast<int>(floor(x)); });
+	addFloatToIntegerFunction("ceil", [](qreal x) {return static_cast<int>(qCeil(x)); });
+	addFloatToIntegerFunction("floor", [](qreal x) {return static_cast<int>(qFloor(x)); });
 	addIntegerFunction("random", [](int x) {return rand() % x; });
 
 	add2aryFunction("min", new types::Float(), new types::Float(), new types::Float()
 			, [](const QVariant &a, const QVariant &b) { return qMin(a.toReal(), b.toReal()); });
 	add2aryFunction("max", new types::Float(), new types::Float(), new types::Float()
 			, [](const QVariant &a, const QVariant &b) { return qMax(a.toReal(), b.toReal()); });
+	add2aryFunction("atan2", new types::Float(), new types::Float(), new types::Float()
+			, [](const QVariant &y, const QVariant &x) { return qAtan2(y.toReal(), x.toReal()); });
 }

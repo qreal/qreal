@@ -27,7 +27,9 @@ links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor
 
 includes(qrgui)
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_mainWindow_fr.ts \
 
 !macx {
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,."
@@ -99,14 +101,6 @@ unix {
 		$$PWD/linuxExternBrowser.cpp \
 }
 
-macx {
-	HEADERS += \
-		$$PWD/macExternBrowser.h \
-
-	SOURCES += \
-		$$PWD/macExternBrowser.cpp \
-}
-
 FORMS += \
 	$$PWD/mainWindow.ui \
 	$$PWD/referenceList.ui \
@@ -161,4 +155,14 @@ FORMS += \
 	$$PWD/shapeEdit/visibilityConditionsDialog.ui \
 
 RESOURCES = $$PWD/mainWindow.qrc
-RC_FILE = $$PWD/mainWindow.rc
+
+win32 {
+	RC_FILE = $$PWD/mainWindow.rc
+}
+
+macx {
+	ICON = icon.icns
+}
+
+include(scriptAPI/scriptAPI.pri)
+

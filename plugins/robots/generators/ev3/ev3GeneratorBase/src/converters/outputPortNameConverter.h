@@ -28,9 +28,9 @@ namespace converters {
 class OutputPortNameConverter : public generatorBase::converters::TemplateParametrizedConverter
 {
 public:
-	OutputPortNameConverter(QString const &pathToTemplates);
+	explicit OutputPortNameConverter(const QStringList &pathsToTemplates);
 
-	QString convert(QString const &portNameOrAlias) const override;
+	QString convert(const QString &portNameOrAlias) const override;
 };
 
 }

@@ -33,7 +33,7 @@ public:
 	}
 
 	/// Returns function to call.
-	QSharedPointer<Expression>  const &function() const {
+	QSharedPointer<Expression> const &function() const {
 		return mFunction;
 	}
 

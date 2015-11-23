@@ -303,3 +303,10 @@ TEST_F(LuaSemanticAnalyzerTest, subarrayAssignment)
 	EXPECT_EQ(0, mErrors.size());
 }
 
+TEST_F(LuaSemanticAnalyzerTest, incorrectTableElementType)
+{
+	auto tree = parse("a = {1}; a[0] = 1.1");
+	mAnalyzer->analyze(tree);
+
+	EXPECT_FALSE(mErrors.isEmpty());
+}

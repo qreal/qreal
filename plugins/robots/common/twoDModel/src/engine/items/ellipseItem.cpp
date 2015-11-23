@@ -29,7 +29,6 @@ EllipseItem::EllipseItem(const QPointF &begin, const QPointF &end)
 	setY1(begin.y());
 	setX2(end.x());
 	setY2(end.y());
-	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
 }
 
@@ -53,7 +52,6 @@ void EllipseItem::setPrivateData()
 	pen.setColor(Qt::blue);
 	pen.setStyle(Qt::SolidLine);
 	setPen(pen);
-	setBrush(QBrush(Qt::white, Qt::NoBrush));
 }
 
 QRectF EllipseItem::calcNecessaryBoundingRect() const
@@ -73,7 +71,7 @@ void EllipseItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	mEllipseImpl.drawEllipseItem(painter, x1(), y1(), x2(), y2());
 }
 
-QDomElement EllipseItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
+QDomElement EllipseItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
 {
 	QDomElement ellipseNode = setPenBrushToDoc(document, "ellipse");
 	AbstractItem::serialize(ellipseNode);
@@ -111,4 +109,15 @@ QPainterPath EllipseItem::shape() const
 	QPainterPath result;
 	result.addEllipse(boundingRect());
 	return result;
+}
+
+bool EllipseItem::filled() const
+{
+	return brush().style() != Qt::NoBrush;
+}
+
+void EllipseItem::setFilled(bool filled)
+{
+	setBrushStyle(filled ? "Solid" : "None");
+	update();
 }

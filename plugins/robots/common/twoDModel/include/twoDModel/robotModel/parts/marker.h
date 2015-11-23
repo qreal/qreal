@@ -35,6 +35,7 @@ class TWO_D_MODEL_EXPORT Marker : public kitBase::robotModel::robotParts::Device
 	Q_CLASSINFO("direction", "output")
 	Q_CLASSINFO("name", "marker")
 	Q_CLASSINFO("friendlyName", tr("Marker"))
+	Q_PROPERTY(bool isDown READ isDown WRITE setDown NOTIFY isDownChanged)
 
 public:
 	Marker(const kitBase::robotModel::DeviceInfo &info
@@ -49,6 +50,19 @@ public:
 	/// Lifts the marker of the 2D model robot up.
 	/// The robot stops drawing its trace on the floor after that.
 	void up();
+
+	/// Returns true if marker is currently active or false if not.
+	bool isDown() const;
+
+	/// Calls down() with black color if \a isDown is true or up() otherwise.
+	void setDown(bool isDown);
+
+signals:
+	/// Emitted with 'true' parameter when marker activated and 'false' when it was lifted.
+	void isDownChanged(bool isDown);
+
+	/// Emitted when marker color has changed.
+	void colorChanged(const QColor &color);
 
 private:
 	engine::TwoDModelEngineInterface &mEngine;

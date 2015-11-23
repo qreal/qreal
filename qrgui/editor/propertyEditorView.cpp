@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
 
 #include "models/commands/changePropertyCommand.h"
@@ -144,8 +145,10 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 					vItem->setValue(idx);
 				}
 			}
+
 			item = vItem;
 		}
+
 		mPropertyEditor->addProperty(item);
 	}
 
@@ -192,12 +195,16 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 		if (typeName == "code") {
 			emit textEditorRequested(actualIndex, role, propertyValue);
 		} else if (typeName == "directorypath") {
-			const QString startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
+			const QString startPath = propertyValue.isEmpty()
+					? QDir::homePath()
+					: propertyValue;
 			const QString location = utils::QRealFileDialog::getExistingDirectory("OpenDirectoryForPropertyEditor"
 					, this, tr("Specify directory:"), startPath);
 			mModel->setData(index, location);
 		} else if (typeName == "filepath") {
-			const QString startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
+			const QString startPath = propertyValue.isEmpty()
+					? QDir::homePath()
+					: propertyValue;
 			const QString location = utils::QRealFileDialog::getOpenFileName("OpenFileForPropertyEditor"
 					, this, tr("Select file:"), startPath);
 			mModel->setData(index, location);

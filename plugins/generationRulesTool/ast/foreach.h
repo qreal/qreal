@@ -23,35 +23,55 @@ namespace ast {
 class Foreach : public Node
 {
 public:
-	/// Constructor for Foreach.
-	/// @param identifier - foreach identifier.
+	/// Constructor.
+	/// @param identifier - iterator identifier.
+	/// @param list - list to iterate.
 	/// @param program - subprogram.
-	explicit Foreach(const QSharedPointer<Node> &identifier, const QSharedPointer<Node> &program)
+	Foreach(const QSharedPointer<Node> &identifier
+			, const QSharedPointer<Node> &list
+			, const QSharedPointer<Node> &program
+			, const QSharedPointer<Node> &excludedText = QSharedPointer<Node>())
 		: mIdentifier(identifier)
+		, mList(list)
 		, mProgram(program)
+		, mExcludedText(excludedText)
 	{
 	}
 
 	/// Returns identifier node.
-	QSharedPointer<Node> identifier() const
+	const QSharedPointer<Node> &identifier() const
 	{
 		return mIdentifier;
 	}
 
+	/// Returns list node.
+	const QSharedPointer<Node> &listPart() const
+	{
+		return mList;
+	}
+
 	/// Returns program node.
-	QSharedPointer<Node> program() const
+	const QSharedPointer<Node> &program() const
 	{
 		return mProgram;
 	}
 
+	/// Returns excluded text.
+	const QSharedPointer<Node> &excludedText() const
+	{
+		return mExcludedText;
+	}
+
 	QList<QSharedPointer<Node>> children() const override
 	{
-		return {mIdentifier, mProgram};
+		return {mIdentifier, mList, mProgram};
 	}
 
 private:
 	QSharedPointer<Node> mIdentifier;
+	QSharedPointer<Node> mList;
 	QSharedPointer<Node> mProgram;
+	QSharedPointer<Node> mExcludedText;
 };
 }
 }

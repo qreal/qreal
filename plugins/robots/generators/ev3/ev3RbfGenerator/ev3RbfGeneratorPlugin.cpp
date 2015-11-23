@@ -42,7 +42,7 @@ Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
 			, tr("EV3 Source Code language")
 			, true
 			, 4
-			, QSharedPointer<QsciLexer>(nullptr)
+			, nullptr
 			, {}
 	});
 }

@@ -12,21 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+TARGET = ains-generators
+
+include(../../../global.pri)
+
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../bin/plugins/
 
-CONFIG += c++11
+QT += widgets
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
+links(qrkernel qrutils)
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/ains_ru.ts
-
 
 HEADERS = \
 	generators.h \
 	databaseSchemeGenerator/databaseSchemeGenerator.h \
-        
+
 SOURCES = \
 	generators.cpp \
 	databaseSchemeGenerator/databaseSchemeGenerator.cpp \

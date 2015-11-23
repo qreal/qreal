@@ -31,9 +31,9 @@
 using namespace generatorBase::parts;
 using namespace qReal;
 
-Sensors::Sensors(const QString &pathToTemplates
+Sensors::Sensors(const QStringList &pathsToTemplates
 		, const simple::Binding::ConverterInterface *inputPortConverter)
-	: InitTerminateCodeGenerator(pathToTemplates)
+	: InitTerminateCodeGenerator(pathsToTemplates)
 	, mInputPortConverter(inputPortConverter)
 {
 }
@@ -52,8 +52,8 @@ QString Sensors::code(const QString &directory
 	return readTemplateIfExists(templatePath).replace("@@PORT@@", portString);
 }
 
-void Sensors::reinit(QMap<kitBase::robotModel::PortInfo
-		, kitBase::robotModel::DeviceInfo> const &devices)
+void Sensors::reinit(const QMap<kitBase::robotModel::PortInfo
+		, kitBase::robotModel::DeviceInfo> &devices)
 {
 	mInitCode.clear();
 	mTerminateCode.clear();

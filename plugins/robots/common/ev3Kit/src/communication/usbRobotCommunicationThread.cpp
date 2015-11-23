@@ -46,8 +46,7 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 	disconnect();
 }
 
-void UsbRobotCommunicationThread::send(QObject *addressee
-		, QByteArray const &buffer, unsigned const responseSize)
+void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, unsigned responseSize)
 {
 	if (!mHandle) {
 		emit response(addressee, QByteArray());
@@ -56,7 +55,7 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 
 	send(buffer);
 	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
-		QByteArray const result = receive(responseSize);
+		const QByteArray result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
 		emit response(addressee, QByteArray());
@@ -145,7 +144,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 
 }
 
-void UsbRobotCommunicationThread::send(const QByteArray &buffer, const unsigned responseSize, QByteArray &outputBuffer)
+void UsbRobotCommunicationThread::send(const QByteArray &buffer, unsigned responseSize, QByteArray &outputBuffer)
 {
 	send(buffer);
 	outputBuffer = receive(responseSize);

@@ -27,7 +27,7 @@ class Ev3KitInterpreterPlugin : public QObject, public kitBase::KitPluginInterfa
 {
 	Q_OBJECT
 	Q_INTERFACES(kitBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "Ev3KitInterpreter.Ev3KitInterpreterPlugin")
+	Q_PLUGIN_METADATA(IID "ev3.Ev3KitInterpreterPlugin")
 
 public:
 	Ev3KitInterpreterPlugin();

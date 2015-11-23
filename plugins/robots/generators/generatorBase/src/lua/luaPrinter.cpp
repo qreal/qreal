@@ -66,21 +66,31 @@
 
 using namespace generatorBase::lua;
 
-LuaPrinter::LuaPrinter(const QString &pathToTemplates
+LuaPrinter::LuaPrinter(const QStringList &pathsToTemplates
 		, const qrtext::LanguageToolboxInterface &textLanguage
 		, PrecedenceConverterInterface &precedeceTable
 		, const simple::Binding::ConverterInterface *reservedVariablesConverter)
-	: TemplateParametrizedEntity(pathToTemplates + "/luaPrinting")
+	: TemplateParametrizedEntity(addSuffix(pathsToTemplates))
 	, mTextLanguage(textLanguage)
 	, mPrecedenceTable(precedeceTable)
 	, mReservedVariablesConverter(reservedVariablesConverter)
-	, mReservedFunctionsConverter(pathToTemplates)
+	, mReservedFunctionsConverter(pathsToTemplates)
 {
 }
 
 LuaPrinter::~LuaPrinter()
 {
 	delete mReservedVariablesConverter;
+}
+
+QStringList LuaPrinter::addSuffix(const QStringList &list)
+{
+	QStringList result;
+	for (const QString &path: list) {
+		result << path + "/luaPrinting";
+	}
+
+	return result;
 }
 
 QString LuaPrinter::print(const QSharedPointer<qrtext::lua::ast::Node> &node)

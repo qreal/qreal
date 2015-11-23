@@ -19,10 +19,8 @@ include(../../../../../global.pri)
 QT += widgets
 
 TEMPLATE = lib
-CONFIG += plugin
 
-includes(plugins/robots/generators/trik/trikGeneratorBase \
-		plugins/robots/generators/generatorBase \
+includes(plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
@@ -33,13 +31,17 @@ links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots
 
 DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
-	$$PWD/include/trikGeneratorBase/robotModel/trikGeneratorRobotModel.h \
+	$$PWD/include/trikGeneratorBase/robotModel/generatorModelExtensionInterface.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikV62GeneratorRobotModel.h \
+	$$PWD/include/trikGeneratorBase/robotModel/trikV6GeneratorRobotModel.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
@@ -49,6 +51,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/initCameraGenerator.h \
 	$$PWD/src/simpleGenerators/ledGenerator.h \
 	$$PWD/src/simpleGenerators/detectorToVariableGenerator.h \
+	$$PWD/src/simpleGenerators/initVideoStreamingGenerator.h \
 	$$PWD/src/simpleGenerators/playToneGenerator.h \
 	$$PWD/src/simpleGenerators/sadSmileGenerator.h \
 	$$PWD/src/simpleGenerators/sayGenerator.h \
@@ -80,7 +83,8 @@ SOURCES += \
 	$$PWD/src/trikMasterGeneratorBase.cpp \
 	$$PWD/src/trikGeneratorCustomizer.cpp \
 	$$PWD/src/trikGeneratorFactory.cpp \
-	$$PWD/src/robotModel/trikGeneratorRobotModel.cpp \
+	$$PWD/src/robotModel/trikV62GeneratorRobotModel.cpp \
+	$$PWD/src/robotModel/trikV6GeneratorRobotModel.cpp \
 	$$PWD/src/parts/trikDeviceVariables.cpp \
 	$$PWD/src/converters/backgroundColorConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \
@@ -88,6 +92,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/initCameraGenerator.cpp \
 	$$PWD/src/simpleGenerators/ledGenerator.cpp \
 	$$PWD/src/simpleGenerators/detectorToVariableGenerator.cpp \
+	$$PWD/src/simpleGenerators/initVideoStreamingGenerator.cpp \
 	$$PWD/src/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/src/simpleGenerators/sadSmileGenerator.cpp \
 	$$PWD/src/simpleGenerators/sayGenerator.cpp \

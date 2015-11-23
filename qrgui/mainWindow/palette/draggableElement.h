@@ -63,6 +63,9 @@ public:
 
 	QSize iconsPreferredSize() const;
 
+	/// Returns a mime data instance binded with object during drag-and-drop.
+	QMimeData *mimeData(const Id &elementId) const;
+
 private slots:
 	void changePropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();
@@ -76,7 +79,7 @@ protected:
 
 private:
 #ifdef Q_OS_WIN
-	/// This class performs win8 drag manager hack for workarround of
+	/// This class performs win8 drag manager hack for workaround of
 	/// https://github.com/qreal/qreal/issues/1014
 	class HackTouchDragThread : public QThread
 	{

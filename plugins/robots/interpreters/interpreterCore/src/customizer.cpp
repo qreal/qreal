@@ -17,6 +17,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace interpreterCore;
 
@@ -32,13 +33,13 @@ QIcon Customizer::applicationIcon() const
 
 QImage Customizer::applicationLogo() const
 {
-	return QImage(":/icons/splashscreen.png");
+	return QImage(":/icons/TRIKStudioLogo.png");
 }
 
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.1.0-rc1";
+	return "3.1.2";
 }
 
 QString Customizer::aboutText() const
@@ -48,7 +49,7 @@ QString Customizer::aboutText() const
 
 QString Customizer::examplesDirectory() const
 {
-	return QApplication::applicationDirPath() + "/examples";
+	return qReal::PlatformInfo::invariantSettingsPath("pathToExamples");
 }
 
 QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() const

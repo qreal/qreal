@@ -21,8 +21,10 @@ SUBDIRS = \
 	interpreters \
 	generators \
 	utils \
+	checker \
 	thirdparty \
 
 common.depends = thirdparty utils
 interpreters.depends = common thirdparty utils
-generators.depends = common
+generators.depends = common utils
+checker.depends = interpreters

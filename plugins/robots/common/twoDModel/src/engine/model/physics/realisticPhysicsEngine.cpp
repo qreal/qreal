@@ -14,6 +14,8 @@
 
 #include "realisticPhysicsEngine.h"
 
+#include <QtCore/QtMath>
+
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
@@ -108,7 +110,7 @@ void RealisticPhysicsEngine::countTractionForceAndItsMoment(qreal speed1, qreal 
 
 void RealisticPhysicsEngine::recalculateVelocity(qreal timeInterval)
 {
-	const qreal realAngularVelocityFrictionFactor = fabs(mAngularVelocity * angularVelocityFrictionFactor);
+	const qreal realAngularVelocityFrictionFactor = qAbs(mAngularVelocity * angularVelocityFrictionFactor);
 
 	mVelocity += mTractionForce / robotMass * timeInterval;
 	mAngularVelocity += mForceMoment / robotInertialMoment * timeInterval;
@@ -177,7 +179,7 @@ void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegi
 		const QLineF currentLine(startPoint, endPoint);
 
 		// Checking that current segment belongs to the wall path, not the robot one
-		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPrecision), false) {
+		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPrecision)) {
 			continue;
 		}
 
@@ -185,7 +187,7 @@ void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegi
 		const QVector2D atomicVector = QVector2D(endPoint - startPoint).normalized() * lengthAtom;
 
 		const qreal length = Geometry::distance(startPoint, endPoint);
-		const int fragmentsCount = ceil(length / lengthAtom);
+		const int fragmentsCount = qCeil(length / lengthAtom);
 
 		// If current line is too long then dividing it into small segments
 		for (int j = 0; j <= fragmentsCount; ++j) {
@@ -204,9 +206,11 @@ void RealisticPhysicsEngine::findCollision(const QPainterPath &robotBoundingRegi
 			const QLineF normalLine = Geometry::veryLongLine(currentSegmentationPoint, orthogonalDirectionVector);
 
 			// For each point on that segments calculating reaction force vector acting from that point
-			const QList<QPointF> intersectionsWithRobot = Geometry::intersection(normalLine, robotBoundingRegion, lowPrecision);
+			const QList<QPointF> intersectionsWithRobot = Geometry::intersection(normalLine, robotBoundingRegion
+					, lowPrecision);
+
 			QList<QPointF> intersectionsWithRobotAndWall;
-			foreach (const QPointF &point, intersectionsWithRobot) {
+			for (const QPointF &point : intersectionsWithRobot) {
 				if (Geometry::belongs(point, intersectionRegion, lowPrecision)) {
 					intersectionsWithRobotAndWall << point;
 				}

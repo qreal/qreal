@@ -18,7 +18,6 @@
 
 #include <kitBase/blocksBase/robotsBlock.h>
 #include <kitBase/robotModel/robotModelInterface.h>
-#include <utils/tracer.h>
 
 using namespace interpreterCore::interpreter::details;
 using namespace qReal;

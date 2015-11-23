@@ -144,6 +144,8 @@ void TcpRobotCommunicator::processControlMessage(const QString &message)
 		mErrorReporter->addInformation(fromRobotString + message.mid(infoMarker.length()));
 	} else if (message.startsWith(printMarker)) {
 		emit printText(message.mid(printMarker.length()));
+	} else if (message == "keepalive") {
+		// Just ignoring it
 	} else {
 		QLOG_INFO() << "Incoming message of unknown type: " << message;
 	}

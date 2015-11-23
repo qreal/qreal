@@ -21,6 +21,7 @@
 #include <qrkernel/exception/exception.h>
 
 #include "mainWindow/errorListWidget.h"
+#include "scriptAPI/hintReporter.h"
 
 using namespace qReal;
 using namespace gui;
@@ -129,6 +130,17 @@ bool ErrorReporter::wereErrors()
 	return false;
 }
 
+void ErrorReporter::sendBubblingMessage(const QString &message, int duration, QWidget *parent)
+{
+	if (!parent) {
+		// A bit hacky, but not criminal way to get main window.
+		parent = mErrorListWidget->topLevelWidget();
+	}
+
+	// The message will show and dispose itself.
+	new HintReporter(parent, message, duration);
+}
+
 void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorListWidget) const
 {
 	if (!errorListWidget) {
@@ -140,6 +152,7 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	}
 
 	QListWidgetItem *item = new QListWidgetItem(errorListWidget);
+	item->setData(ErrorListWidget::positionRole, error.position().toString());
 	const QString message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
 			error.timestamp(), severityMessage(error), error.message());
 	switch (error.severity()) {
@@ -162,7 +175,6 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	QLabel *label = new QLabel(message.trimmed());
 	label->setAlignment(Qt::AlignVCenter);
 	label->setOpenExternalLinks(true);
-	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
 	errorListWidget->setItemWidget(item, label);
 	errorListWidget->setCurrentItem(item);

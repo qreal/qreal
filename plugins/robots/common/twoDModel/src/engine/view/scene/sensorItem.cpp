@@ -147,7 +147,7 @@ QRectF SensorItem::imageRect() const
 		return QRectF(-6, -6, 12, 12);
 	}
 	if (sensor.isA<robotParts::RangeSensor>()) {
-		return QRectF(-20, -10, 40, 20);;
+		return QRectF(-20, -10, 40, 20);
 	} else {
 		Q_ASSERT(!"Unknown sensor type");
 		return QRectF();
@@ -173,11 +173,11 @@ void SensorItem::resizeItem(QGraphicsSceneMouseEvent *event)
 QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionHasChanged) {
-		mConfiguration.setPosition(mPort, pos().toPoint());
+		mConfiguration.setPosition(mPort, value.toPointF());
 	}
 
 	if (change == ItemRotationHasChanged) {
-		mConfiguration.setDirection(mPort, rotation());
+		mConfiguration.setDirection(mPort, value.toReal());
 	}
 
 	return RotateItem::itemChange(change, value);

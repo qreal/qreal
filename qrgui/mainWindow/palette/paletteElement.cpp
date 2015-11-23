@@ -33,12 +33,13 @@ PaletteElement::PaletteElement(const Id &id
 }
 
 PaletteElement::PaletteElement(const EditorManagerInterface &manager, const Id &element)
-	: mId(element)
-	, mName(manager.friendlyName(element))
-	, mDescription(manager.description(element))
-	, mIcon(manager.icon(element))
-	, mPreferredSize(manager.iconSize(element))
-	, mExplosionTarget()
+	: PaletteElement(
+		element
+		, manager.friendlyName(element)
+		, manager.description(element)
+		, manager.icon(element)
+		, manager.iconSize(element)
+		, Id())
 {
 }
 

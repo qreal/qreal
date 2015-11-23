@@ -20,7 +20,7 @@ using namespace qReal::interpretation::blocks;
 
 void ForkBlock::run()
 {
-	foreach (const QString &threadId, mThreadStartBlocks.keys()) {
+	for (const QString &threadId : mThreadStartBlocks.keys()) {
 		emit newThread(mThreadStartBlocks[threadId], threadId);
 	}
 
@@ -47,8 +47,8 @@ bool ForkBlock::initNextBlocks()
 		QString threadId = mLogicalModelApi->propertyByRoleName(mGraphicalModelApi->logicalId(linkId), "Guard")
 				.toString();
 		if (threadId.isEmpty()) {
-				threadId = QUuid::createUuid().toString();
-				createdIds << threadId;
+			threadId = QUuid::createUuid().toString();
+			createdIds << threadId;
 		}
 
 		if (mThreadStartBlocks.contains(threadId)) {

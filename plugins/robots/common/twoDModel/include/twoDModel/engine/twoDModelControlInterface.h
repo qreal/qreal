@@ -22,6 +22,7 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <kitBase/devicesConfigurationProvider.h>
 #include <kitBase/eventsForKitPluginInterface.h>
 #include <kitBase/interpreterControlInterface.h>
@@ -48,6 +49,7 @@ public:
 			, const qReal::SystemEvents &systemEvents
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:
@@ -55,7 +57,8 @@ public slots:
 	virtual void onStartInterpretation() = 0;
 
 	/// Stops interpretation process in 2D model if started.
-	virtual void onStopInterpretation() = 0;
+	/// @param reason The reason why the interpretation stopped.
+	virtual void onStopInterpretation(qReal::interpretation::StopReason reason) = 0;
 
 signals:
 	/// Emitted each time when user requests interpretation start from 2D model window.

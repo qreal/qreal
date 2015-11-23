@@ -40,6 +40,7 @@ Type* EdgeType::clone() const
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
+	result->mFromPorts = mFromPorts;
 	return result;
 }
 
@@ -94,10 +95,13 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 		lineType = "solidLine";
 	lineType = "Qt::" + NameNormalizer::normalize(lineType);
 
+	const QString portsForFromPortTypes = generatePorts(mFromPorts);
+
 	edgeClass.replace(edgeInitTag, labelsInitLine)
 			.replace(updateDataTag, labelsUpdateLine)
 			.replace(labelDefinitionTag, labelsDefinitionLine)
 			.replace(lineTypeTag, lineType)
+			.replace(portsForFromPortTypesTag, portsForFromPortTypes)
 			.replace(elementNameTag, name())
 			.replace("\\n", "\n");
 	return edgeClass + endline;
@@ -232,4 +236,18 @@ QString EdgeType::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString line = resourceTemplate;
 	return line.replace(fileNameTag, name() + "Class.sdf") + endline;
+}
+
+QString EdgeType::generatePorts(const QStringList &portTypes) const
+{
+	QString typeForReturning = "";
+	for (const QString &type : portTypes) {
+		typeForReturning += type;
+	}
+
+	if (typeForReturning.isEmpty()) {
+		typeForReturning = "NonTyped";
+	}
+
+	return typeForReturning;
 }

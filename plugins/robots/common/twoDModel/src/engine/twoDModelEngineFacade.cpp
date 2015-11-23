@@ -27,8 +27,8 @@ using namespace twoDModel::engine;
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
-	, mView(new view::TwoDModelWidget(*mModel.data()))
-	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
+	, mView(new view::TwoDModelWidget(*mModel))
+	, mApi(new TwoDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
 	mModel.data()->addRobotModel(robotModel);
@@ -47,14 +47,22 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		, const qReal::SystemEvents &systemEvents
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, const qReal::ProjectManagementInterface &projectManager
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
 
-	const auto onActiveTabChanged = [this, &logicalModel, &interpretersInterface](const qReal::TabInfo &info)
+	const auto onActiveTabChanged = [this](const qReal::TabInfo &info)
 	{
-		mView->setEnabled(info.type() == qReal::TabInfo::TabType::editor);
-		const QString xml = logicalModel.logicalRepoApi().metaInformation("worldModel").toString();
+		mView->setEnabled(info.type() != qReal::TabInfo::TabType::other);
+	};
+
+	const auto reloadWorld = [this, &logicalModel, &interpretersInterface, &projectManager]()
+	{
+		QLOG_DEBUG() << "Reloading 2D world model...";
+		const QString xml = projectManager.somethingOpened()
+				? logicalModel.logicalRepoApi().metaInformation("worldModel").toString()
+				: QString();
 		QDomDocument worldModel;
 		QString errorMessage;
 		int errorLine, errorColumn;
@@ -66,9 +74,10 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		mView->loadXml(worldModel);
 
 		loadReadOnlyFlags(logicalModel);
+		QLOG_DEBUG() << "Reloading 2D world done";
 	};
 
-	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
+	const auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
 	{
 		connect(&eventsForKitPlugin, &kitBase::EventsForKitPluginInterface::interpretationStarted
 				, this, &twoDModel::TwoDModelControlInterface::onStartInterpretation
@@ -83,7 +92,7 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, Qt::UniqueConnection);
 
 		connect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::stopRobot
+				, &interpreterControl, &kitBase::InterpreterControlInterface::userStopRobot
 				, Qt::UniqueConnection);
 	};
 
@@ -99,16 +108,20 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, &interpreterControl, &kitBase::InterpreterControlInterface::interpret);
 
 		disconnect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::stopRobot);
+				, &interpreterControl, &kitBase::InterpreterControlInterface::userStopRobot);
 	};
 
-	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
+	connect(&projectManager, &qReal::ProjectManagementInterface::afterOpen, this, reloadWorld);
+	connect(&projectManager, &qReal::ProjectManagementInterface::closed, this, reloadWorld);
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, onActiveTabChanged);
 
 	connect(mModel.data(), &model::Model::modelChanged, [this, &logicalModel] (const QDomDocument &xml) {
 		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
 	});
 
-	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); delete mDock; });
+	// Queued connection cause such actions like stopRobot() must be performed earlier.
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, this, [=](){ mView.reset(); delete mDock; }
+			, Qt::QueuedConnection);
 
 	connect(&eventsForKitPlugin
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
@@ -127,12 +140,12 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 
 kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()
 {
-	return *mView.data();
+	return *mView;
 }
 
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
-	return *mApi.data();
+	return *mApi;
 }
 
 void TwoDModelEngineFacade::onStartInterpretation()
@@ -140,9 +153,9 @@ void TwoDModelEngineFacade::onStartInterpretation()
 	mModel->timeline().start();
 }
 
-void TwoDModelEngineFacade::onStopInterpretation()
+void TwoDModelEngineFacade::onStopInterpretation(qReal::interpretation::StopReason reason)
 {
-	mModel->timeline().stop();
+	mModel->timeline().stop(reason);
 }
 
 void TwoDModelEngineFacade::loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel)

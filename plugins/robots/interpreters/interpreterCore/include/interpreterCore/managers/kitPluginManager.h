@@ -29,8 +29,8 @@ class KitPluginManager
 {
 public:
 	/// Constructor.
-	/// @param pluginDirectory - directory where we need to search for plugins.
-	explicit KitPluginManager(const QString &pluginDirectory);
+	/// @param pluginsDirectory - directory where we need to search for plugins.
+	explicit KitPluginManager(const QString &pluginsDirectory);
 
 	~KitPluginManager();
 
@@ -44,15 +44,15 @@ public:
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
 	QList<kitBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
+	/// Returns the priority of the kit with the given id. The priority is the maximum of KitPluginInterface::priority.
+	int priority(const QString &kitId) const;
+
 private:
 	void tryToLoadKitPlugins();
 
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.
 	QMap<QString, kitBase::KitPluginInterface *> mPluginInterfaces;  // Has ownership
-
-	/// Directory from which plugins shall be loaded.
-	QDir mPluginsDir;
 
 	/// Common part of plugins loading
 	qReal::PluginManager mPluginManager;

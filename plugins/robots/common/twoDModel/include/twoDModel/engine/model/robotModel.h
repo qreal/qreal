@@ -71,7 +71,7 @@ public:
 	SensorsConfiguration &configuration();
 
 	/// Returns a reference to external robot description.
-	robotModel::TwoDRobotModel &info();
+	robotModel::TwoDRobotModel &info() const;
 
 	int readEncoder(const kitBase::robotModel::PortInfo &port) const;
 	void resetEncoder(const kitBase::robotModel::PortInfo &port);
@@ -110,6 +110,7 @@ public:
 
 	/// Returns a position of the center of the robot in scene coordinates.
 	QPointF rotationCenter() const;
+
 	/// Returns the item whose scene position will determine robot`s start position.
 	/// Transfers ownership.
 	QGraphicsItem *startPositionMarker() const;
@@ -132,6 +133,9 @@ signals:
 
 	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.
 	void playingSoundChanged(bool playing);
+
+	/// Emitted when left or right wheel was reconnected to another port.
+	void wheelOnPortChanged(WheelEnum wheel, const kitBase::robotModel::PortInfo &port);
 
 private:
 	struct Motor
@@ -161,6 +165,9 @@ private:
 	void nextStep();
 
 	int varySpeed(const int speed) const;
+
+	void serializeWheels(QDomElement &robotElement) const;
+	void deserializeWheels(const QDomElement &robotElement);
 
 	/// Simulated robot motors.
 	/// Has ownership.

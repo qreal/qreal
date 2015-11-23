@@ -204,7 +204,7 @@ void TextManager::showInTextEditor(const QFileInfo &fileInfo
 
 void TextManager::showInTextEditor(const QFileInfo &fileInfo, const text::LanguageInfo &language)
 {
-	Q_ASSERT(!fileInfo.baseName().isEmpty());
+	Q_ASSERT(!fileInfo.completeBaseName().isEmpty());
 
 	const QString filePath = fileInfo.absoluteFilePath();
 
@@ -214,6 +214,10 @@ void TextManager::showInTextEditor(const QFileInfo &fileInfo, const text::Langua
 
 	openFile(filePath, QString(), language);
 	QScintillaTextEdit *area = code(filePath);
+	if (!area) {
+		return;
+	}
+
 	area->show();
 
 	mMainWindow.openTab(area,  fileInfo.fileName());
@@ -243,6 +247,7 @@ bool TextManager::saveText(bool saveAs)
 				, tr("Save generated code")
 				, QString()
 				, extensionDescriptions
+				, QString()
 				, currentExtensionDescription));
 	} else {
 		fileInfo = path(area);

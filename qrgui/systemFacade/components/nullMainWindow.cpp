@@ -57,7 +57,6 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 NullMainWindow::~NullMainWindow()
 {
 	delete mWindowWidget;
-	SettingsManager::instance()->saveData();
 }
 
 
@@ -188,6 +187,10 @@ void NullMainWindow::setTabText(QWidget *tab, const QString &text)
 	Q_UNUSED(text)
 }
 
+void NullMainWindow::openStartTab()
+{
+}
+
 void NullMainWindow::beginPaletteModification()
 {
 }
@@ -232,8 +235,9 @@ void NullMainWindow::openFirstDiagram()
 	const Id rootId = mGraphicalModel->rootId();
 	Id graphicalDiagramId;
 	for (const Id diagram : mGraphicalModel->children(rootId)) {
-		if (mGraphicalModel->isGraphicalId(diagram)) {
+		if (mGraphicalModel->graphicalRepoApi().isGraphicalElement(diagram)) {
 			graphicalDiagramId = diagram;
+			break;
 		}
 	}
 
@@ -293,6 +297,12 @@ void NullMainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWid
 {
 	Q_UNUSED(area)
 	Q_UNUSED(dockWidget)
+}
+
+void NullMainWindow::addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar)
+{
+	Q_UNUSED(area)
+	Q_UNUSED(toolbar)
 }
 
 QByteArray NullMainWindow::saveState(int version) const

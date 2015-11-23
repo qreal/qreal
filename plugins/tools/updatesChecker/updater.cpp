@@ -20,6 +20,7 @@
 #include <QtXml/QDomDocument>
 
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace updatesChecker;
 
@@ -42,13 +43,14 @@ void Updater::start()
 void Updater::executeUpdater(const QString &mode)
 {
 	mUpdaterProcess = new QProcess(this);
-	mUpdaterProcess->setWorkingDirectory(QCoreApplication::applicationDirPath());
+	mUpdaterProcess->setWorkingDirectory(qReal::PlatformInfo::applicationDirPath());
 	connect(mUpdaterProcess, SIGNAL(finished(int)), this, SLOT(readAnswer()));
 
 	if (mode == "--updater") {
-		mUpdaterProcess->startDetached(QCoreApplication::applicationDirPath() + "/maintenance", {mode});
+		// Executing updater in detached mode (to close application just after).
+		mUpdaterProcess->startDetached(qReal::PlatformInfo::invariantSettingsPath("pathToUpdater"), {mode});
 	} else {
-		mUpdaterProcess->start(QCoreApplication::applicationDirPath() + "/maintenance", {mode});
+		mUpdaterProcess->start(qReal::PlatformInfo::invariantSettingsPath("pathToUpdater"), {mode});
 	}
 }
 

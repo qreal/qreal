@@ -20,6 +20,8 @@
 
 namespace qReal {
 
+/// Value object that describes action (button on a toolbar or menu item). It allows plugin
+/// to add its own items that do anything plugin wishes.
 class ActionInfo
 {
 public:
@@ -59,8 +61,11 @@ public:
 	}
 
 private:
-	QAction *mAction;
-	QMenu *mMenu;
+	/// Does not have ownership.
+	QAction * mAction;
+
+	/// Does not have ownership.
+	QMenu * mMenu;
 
 	QString mToolbarName;
 	QString mMenuName;

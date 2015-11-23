@@ -16,12 +16,12 @@
 
 using namespace ev3::converters;
 
-OutputPortNameConverter::OutputPortNameConverter(QString const &pathToTemplates)
-	: TemplateParametrizedConverter(pathToTemplates)
+OutputPortNameConverter::OutputPortNameConverter(const QStringList &pathsToTemplates)
+	: TemplateParametrizedConverter(pathsToTemplates)
 {
 }
 
-QString OutputPortNameConverter::convert(QString const &portNameOrAlias) const
+QString OutputPortNameConverter::convert(const QString &portNameOrAlias) const
 {
 	QString portName = portNameOrAlias;
 	QStringList myStringList = portName.toUpper().split(QRegExp("\\W+"), QString::SkipEmptyParts);

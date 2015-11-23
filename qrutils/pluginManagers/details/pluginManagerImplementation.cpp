@@ -20,55 +20,52 @@
 
 using namespace qReal::details;
 
-PluginManagerImplementation::PluginManagerImplementation(const QString &applicationDirPath
-		, const QString &additionalPart)
-	: mPluginsDir(QDir(applicationDirPath))
-	, mApplicationDirectoryPath(applicationDirPath)
-	, mAdditionalPart(additionalPart)
+PluginManagerImplementation::PluginManagerImplementation(const QString &pluginsDirPath)
+	: mPluginsDir(pluginsDirPath)
 {
 }
 
 PluginManagerImplementation::~PluginManagerImplementation()
 {
-	qDeleteAll(mLoaders);
+	for (auto &pair : mLoaders) {
+		pair.second->unload();
+		delete pair.second;
+	}
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 {
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
-
-	QList<QString> splittedDir = mAdditionalPart.split('/');
-	for (const QString &partOfDirectory : splittedDir) {
-		mPluginsDir.cd(partOfDirectory);
+	if (!mPluginsDir.exists()) {
+		QLOG_INFO() << "Plugins directory" << mPluginsDir.path()
+				<< "does not exist, maybe we are in 'metamodeling on fly' mode";
+		return {};
 	}
 
 	QList<QObject *> listOfPlugins;
 
 	for (const QString &fileName : mPluginsDir.entryList(QDir::Files)) {
-		QPair<QObject *, QString> const pluginAndError =  pluginLoadedByName(fileName);
+		QPair<QObject *, QString> const pluginAndError =  loadPluginByName(fileName);
 		QObject * const pluginByName = pluginAndError.first;
 		if (pluginByName) {
 			listOfPlugins.append(pluginByName);
 			mFileNameAndPlugin.insert(fileName, pluginByName);
 		} else {
 			QLOG_ERROR() << "Plugin loading failed:" << pluginAndError.second;
-			qDebug() << "Plugin loading failed:" << pluginAndError.second;
 		}
 	}
 
 	return listOfPlugins;
 }
 
-QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const QString &pluginName)
+QPair<QObject *, QString> PluginManagerImplementation::loadPluginByName(const QString &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
+	QPluginLoader * const loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
 	loader->load();
-	QObject *plugin = loader->instance();
+	QObject * const plugin = loader->instance();
 
 	if (plugin) {
-		mFileNameAndPlugin.insert(pluginName, plugin);
+		mLoaders.append(qMakePair(pluginName, loader));
+		mFileNameAndPlugin.insert(loader->metaData()["IID"].toString(), plugin);
 		return qMakePair(plugin, QString());
 	}
 
@@ -100,25 +97,40 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(const 
 
 QString PluginManagerImplementation::unloadPlugin(const QString &pluginName)
 {
-	QPluginLoader *loader = mLoaders[pluginName];
+	int count = 0;
+	bool stateUnload = true;
 
-	if (loader) {
-		mLoaders.remove(pluginName);
-
-		if (!loader->unload()) {
-			const QString error = loader->errorString();
-			delete loader;
-			return error;
+	for (const QPair<QString, QPluginLoader *> &currentPair : mLoaders) {
+		if (currentPair.first == pluginName) {
+			stateUnload = currentPair.second->unload();
 		}
 
-		delete loader;
+		++count;
+	}
+
+	if (stateUnload) {
 		return QString();
 	}
 
 	return QString("Plugin was not found");
 }
 
+QList<QString> PluginManagerImplementation::namesOfPlugins() const
+{
+	QList<QString> listOfNames;
+	for (const QPair<QString, QPluginLoader *> &currentPair : mLoaders) {
+		listOfNames.append(currentPair.first);
+	}
+
+	return listOfNames;
+}
+
 QString PluginManagerImplementation::fileName(QObject *plugin) const
 {
 	return mFileNameAndPlugin.key(plugin);
+}
+
+QObject *PluginManagerImplementation::pluginByName(const QString &pluginName) const
+{
+	return mFileNameAndPlugin[pluginName];
 }

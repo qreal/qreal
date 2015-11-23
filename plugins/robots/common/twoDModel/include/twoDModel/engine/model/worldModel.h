@@ -56,9 +56,13 @@ public:
 	bool checkCollision(const QPainterPath &path) const;
 
 	/// Returns a list of walls in the world model.
-	QList<items::WallItem *> const &walls() const;
+	const QList<items::WallItem *> &walls() const;
 
-	QList<items::ColorFieldItem *> const &colorFields() const;
+	/// Returns a list of color field items in the world model.
+	const QList<items::ColorFieldItem *> &colorFields() const;
+
+	/// Returns a list of trace items on the floor.
+	const QList<QGraphicsLineItem *> &trace() const;
 
 	int wallsCount() const;
 	items::WallItem *wallAt(int index) const;
@@ -77,11 +81,11 @@ public:
 	void clearRobotTrace();
 
 	/// Saves world to XML.
-	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const;
+	QDomElement serialize(QDomDocument &document) const;
 	void deserialize(const QDomElement &element);
 
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
-	QGraphicsItem *findId(const QString &id);
+	QGraphicsObject *findId(const QString &id) const;
 
 signals:
 	/// Emitted each time when model is appended with some new wall.
@@ -91,7 +95,10 @@ signals:
 	void colorItemAdded(items::ColorFieldItem *item);
 
 	/// Emitted each time when model is appended with some new item.
-	void otherItemAdded(QGraphicsItem *item);
+	void regionItemAdded(items::RegionItem *item);
+
+	/// Emitted each time when model is appended with some new item.
+	void traceItemAdded(QGraphicsLineItem *item);
 
 	/// Emitted each time when some item was removed from the 2D model world.
 	void itemRemoved(QGraphicsItem *item);
@@ -113,3 +120,5 @@ private:
 
 }
 }
+
+Q_DECLARE_METATYPE(QGraphicsLineItem *)

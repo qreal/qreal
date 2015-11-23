@@ -49,7 +49,7 @@ MasterGeneratorBase::MasterGeneratorBase(const qrRepo::RepoApi &repo
 
 void MasterGeneratorBase::setProjectDir(const QFileInfo &fileInfo)
 {
-	mProjectName = fileInfo.baseName();
+	mProjectName = fileInfo.completeBaseName();
 	mProjectDir = fileInfo.absolutePath();
 }
 
@@ -57,7 +57,7 @@ void MasterGeneratorBase::initialize()
 {
 	mCustomizer = createCustomizer();
 	mCustomizer->factory()->initialize();
-	setPathToTemplates(mCustomizer->factory()->pathToTemplates());
+	setPathsToTemplates(mCustomizer->factory()->pathsToTemplates());
 
 	mValidator = createValidator();
 

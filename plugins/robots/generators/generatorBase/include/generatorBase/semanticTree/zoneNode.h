@@ -43,7 +43,7 @@ public:
 	/// Removes last node from children list without deleting the child itself
 	SemanticNode *removeLast();
 
-	/// Removes all the children starting from specified node without deletting
+	/// Removes all the children starting from specified node without deleting
 	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 

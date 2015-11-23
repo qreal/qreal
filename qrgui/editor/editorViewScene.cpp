@@ -697,7 +697,9 @@ void EditorViewScene::deleteSelectedItems()
 		}
 	}
 
-	deleteElements(idsToDelete);
+	if (!idsToDelete.isEmpty()) {
+		deleteElements(idsToDelete);
+	}
 }
 
 void EditorViewScene::deleteElements(IdList &idsToDelete)
@@ -913,20 +915,6 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
-		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
-
-		if (!elementActions.isEmpty()) {
-			mContextMenu.addSeparator();
-		}
-
-		foreach (ContextMenuAction* action, elementActions) {
-			action->setEventPos(e->mapFromScene(pos));
-			mContextMenu.addAction(action);
-
-			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()), Qt::UniqueConnection);
-			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
-		}
-
 		if (e->createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
@@ -935,8 +923,9 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 				QAction *createAction = createChildMenu->addAction(mEditorManager.friendlyName(type));
 				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
 				createChildMapper->setMapping(createAction, type.toString());
-				connect(createChildMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
 			}
+
+			connect(createChildMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
 		}
 
 		mContextMenu.addSeparator();
@@ -985,7 +974,7 @@ void EditorViewScene::getObjectByGesture()
 		break;
 	}
 	case gestures::MouseMovementManager::deleteGesture:
-		// Deletting element under the gesture center
+		// Deleting element under the gesture center
 		const QPointF gestureCenter = mMouseMovementManager->pos();
 		for (QGraphicsItem * const item : items(gestureCenter)) {
 			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
@@ -1152,6 +1141,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		if (!mMouseMovementManager->wasMoving()) {
 			deleteGesture();
 			if (element && !element->isSelected()) {
+				clearSelection();
 				element->setSelected(true);
 			}
 

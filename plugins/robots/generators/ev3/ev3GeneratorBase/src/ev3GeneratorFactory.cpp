@@ -96,7 +96,7 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 
 Binding::ConverterInterface *Ev3GeneratorFactory::outputPortNameConverter() const
 {
-	return new OutputPortNameConverter(pathToTemplates());
+	return new OutputPortNameConverter(pathsToTemplates());
 }
 
 Binding::ConverterInterface *Ev3GeneratorFactory::goToBlockNumberConverter() const
@@ -104,7 +104,7 @@ Binding::ConverterInterface *Ev3GeneratorFactory::goToBlockNumberConverter() con
 	return new GoToBlockNumberConverter(QString::number(mGoToBlockNumber));
 }
 
-QString Ev3GeneratorFactory::pathToTemplates() const
+QStringList Ev3GeneratorFactory::pathsToTemplates() const
 {
-	return ":/" + mGeneratorName + "/templates";
+	return { ":/" + mGeneratorName + "/templates" };
 }

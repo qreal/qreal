@@ -100,6 +100,9 @@ public:
 	/// Sets text on the header of the tab containing the given widget or does nothing if such tab was not found.
 	virtual void setTabText(QWidget *tab, const QString &text) = 0;
 
+	/// Shows start tab even if other tabs are opened.
+	virtual void openStartTab() = 0;
+
 	/// Signals that engine must prepare for modifying blocks set.
 	/// After each beginPaletteModification() call there must be endPaletteModification() call.
 	virtual void beginPaletteModification() = 0;

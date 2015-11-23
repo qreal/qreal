@@ -26,7 +26,7 @@ namespace qReal {
 class QRUTILS_EXPORT PluginManager
 {
 public:
-	PluginManager(const QString &applicationDirPath, const QString &additionalPart);
+	explicit PluginManager(const QString &pluginsDirPath);
 
 	/// Returns list of all found plugins if succeed and empty list otherwise.
 	template <class InterfaceType>
@@ -43,7 +43,7 @@ public:
 	template <class InterfaceType>
 	QPair<InterfaceType *, QString> pluginLoadedByName(const QString &pluginName)
 	{
-		QPair<QObject *, QString> resultOfLoading = mPluginManagerLoader.pluginLoadedByName(pluginName);
+		QPair<QObject *, QString> resultOfLoading = mPluginManagerLoader.loadPluginByName(pluginName);
 
 		const QObject *loadedPlugin = resultOfLoading.first;
 		const QString errorMessage = resultOfLoading.second;
@@ -56,11 +56,22 @@ public:
 	/// @returns error message if there was error and empty string otherwise
 	QString unloadPlugin(const QString &pluginName);
 
+	/// Returns names of all plugins.
+	QList<QString> namesOfPlugins() const;
+
 	/// Returns fileName by given object.
 	template <class InterfaceType>
 	QString fileName(InterfaceType *plugin) const
 	{
 		return mPluginManagerLoader.fileName(reinterpret_cast<QObject *>(plugin));
+	}
+
+	/// Returns plugin object instance by the name specified plugin metainformation.
+	/// The plugin must be loaded and initialized, otherwise nullptr will be returned.
+	template <class InterfaceType>
+	InterfaceType *plugin(const QString &pluginName) const
+	{
+		return dynamic_cast<InterfaceType *>(mPluginManagerLoader.pluginByName(pluginName));
 	}
 
 private:

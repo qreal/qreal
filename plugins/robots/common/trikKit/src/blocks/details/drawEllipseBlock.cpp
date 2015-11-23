@@ -30,8 +30,14 @@ void DrawEllipseBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int y = eval<int>("YCoordinateEllipse");
 	const int width = eval<int>("WidthEllipse");
 	const int height = eval<int>("HeightEllipse");
+	const int redraw = boolProperty("Redraw");
+
 	if (!errorsOccured()) {
 		trikDisplay->drawEllipse(x, y, width, height);
+		if (redraw) {
+			trikDisplay->redraw();
+		}
+
 		emit done(mNextBlockId);
 	}
 }

@@ -17,14 +17,14 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QCoreApplication>
 
+#include <qrkernel/platformInfo.h>
 #include <qrkernel/exception/exception.h>
 
 using namespace interpreterCore;
 using namespace qReal;
 
-KitPluginManager::KitPluginManager(const QString &pluginDirectory)
-	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
-	, mPluginManager(PluginManager(QCoreApplication::applicationDirPath(), pluginDirectory))
+KitPluginManager::KitPluginManager(const QString &pluginsDirectory)
+	: mPluginManager(pluginsDirectory)
 {
 	tryToLoadKitPlugins();
 }
@@ -52,6 +52,16 @@ QList<kitBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotMode
 	QList<kitBase::robotModel::RobotModelInterface *> result;
 	for (kitBase::KitPluginInterface * const kit : mPluginInterfaces) {
 		result += kit->robotModels();
+	}
+
+	return result;
+}
+
+int KitPluginManager::priority(const QString &kitId) const
+{
+	int result = 0;
+	for (kitBase::KitPluginInterface * const kit : kitsById(kitId)) {
+		result = qMax(result, kit->priority());
 	}
 
 	return result;

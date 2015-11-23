@@ -53,6 +53,7 @@ public:
 			, const qReal::SystemEvents &systemEvents
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) override;
 
 	kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
@@ -61,7 +62,7 @@ public:
 
 public slots:
 	void onStartInterpretation() override;
-	void onStopInterpretation() override;
+	void onStopInterpretation(qReal::interpretation::StopReason reason) override;
 
 private:
 	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);

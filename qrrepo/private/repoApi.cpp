@@ -168,13 +168,14 @@ void RepoApi::setParent(const Id &id, const Id &parent)
 
 IdList RepoApi::links(const Id &id, const QString &direction) const
 {
-	IdList links = mRepository->property(id, "links").value<IdList>();
+	const IdList links = mRepository->property(id, "links").value<IdList>();
 	IdList result;
 	for (const Id &link : links) {
 		if (mRepository->exist(link) && mRepository->property(link, direction).value<Id>() == id) {
 			result.append(link);
 		}
 	}
+
 	return result;
 }
 
@@ -258,7 +259,8 @@ QVariant RepoApi::property(const Id &id, const QString &propertyName) const
 
 QString RepoApi::stringProperty(const Id &id, const QString &propertyName) const
 {
-	Q_ASSERT(mRepository->property(id, propertyName).canConvert<QString>());
+	// TODO: restore q_assert
+	//Q_ASSERT(mRepository.property(id, propertyName).canConvert<QString>());
 	return mRepository->property(id, propertyName).toString();
 }
 

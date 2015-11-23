@@ -16,7 +16,8 @@
 
 #include <QtCore/QTimer>
 
-#include "utils/timelineInterface.h"
+#include <qrutils/interpreter/stopReason.h>
+#include <utils/timelineInterface.h>
 
 #include "twoDModel/twoDModelDeclSpec.h"
 
@@ -53,7 +54,7 @@ public:
 
 public slots:
 	void start();
-	void stop();
+	void stop(qReal::interpretation::StopReason reason);
 
 	// Speed factor is also cycles per frame count
 	void setSpeedFactor(int factor);
@@ -62,8 +63,16 @@ signals:
 	void tick();
 	void nextFrame();
 
+	/// Emitted just before timeline will emit its first tick.
+	/// @param reason The reason why the interpretation stopped.
 	void started();
-	void stopped();
+
+	/// Emitted when timeline stop was requested, just before internal timers will stop.
+	/// @param reason The reason why the interpretation stopped.
+	void beforeStop(qReal::interpretation::StopReason reason);
+
+	/// Emitted just after timeline has stopped its ticking.
+	void stopped(qReal::interpretation::StopReason reason);
 
 	/// Emitted when timeline speed factor value changes.
 	void speedFactorChanged(int value);

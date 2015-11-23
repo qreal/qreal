@@ -16,6 +16,7 @@
 *	@brief class for an edge on a diagram
 **/
 
+#include <QtCore/QtMath>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
@@ -37,13 +38,10 @@
 using namespace qReal;
 using namespace enums;
 
-const qreal pi = 3.14159265358979;
-
 const qreal epsilon = 0.00000000001;
 
 const int rightRotation = 1;// the difference between the elements of NodeSide
 const int maxReductCoeff = 16;
-const int standartReductCoeff = 3;
 
 /** @brief indicator of edges' movement */
 
@@ -88,11 +86,12 @@ EdgeElement::EdgeElement(
 	QList<LabelInterface*> titles;
 
 	mElementImpl->init(factory, titles);
-	foreach (LabelInterface *titleIface, titles) {
+	for (LabelInterface *titleIface : titles) {
 		Label *title = dynamic_cast<Label*>(titleIface);
 		if (!title) {
 			continue;
 		}
+
 		title->init(boundingRect());
 		title->setParentItem(this);
 		title->setShouldCenter(false);
@@ -106,10 +105,13 @@ EdgeElement::EdgeElement(
 
 EdgeElement::~EdgeElement()
 {
-	if (mSrc)
+	if (mSrc) {
 		mSrc->delEdge(this);
-	if (mDst)
+	}
+
+	if (mDst) {
 		mDst->delEdge(this);
+	}
 
 	delete mElementImpl;
 	delete mLineFactory;
@@ -271,7 +273,7 @@ QPainterPath EdgeElement::shape() const
 
 	path = ps.createStroke(path);
 
-	foreach (const QPointF &point, mLine) {
+	for (const QPointF &point : mLine) {
 		path.addRect(QRectF(point - QPointF(stripeWidth / 2, stripeWidth / 2)
 				, QSizeF(stripeWidth, stripeWidth)).adjusted(1, 1, -1, -1));
 	}
@@ -290,6 +292,7 @@ void EdgeElement::updateLongestPart()
 			maxIdx = i;
 		}
 	}
+
 	mLongPart = maxIdx;
 
 	if (mLabels.count() == 1) {
@@ -431,6 +434,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 		} else {
 			thirdPoint = QPointF(penultPoint.x(), secondPoint.y());
 		}
+
 		newLine << mLine.first() << secondPoint
 				<< thirdPoint << thirdPoint
 				<< penultPoint << mLine.last(); // Third point added twice for easy change of line mode (to curve lines)
@@ -457,27 +461,36 @@ QPointF EdgeElement::boundingRectIndent(const QPointF &point, EdgeElement::NodeS
 	QRectF bounds = mSrc->boundingRect();
 	int reductFactor = indentReductCoeff();
 
-	switch (direction) {
-	case top: {
+	switch (direction)
+	{
+	case top:
+	{
 		QPointF topPoint = mapToItem(mSrc, QPointF(point.x(), 0));
 		newPoint = mapFromItem(mSrc, QPointF(topPoint.x(), bounds.top() - bounds.height() / reductFactor));
 		break;
 	}
-	case bottom: {
+
+	case bottom:
+	{
 		QPointF bottomPoint = mapToItem(mSrc, QPointF(point.x(), 0));
 		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x(), bounds.bottom() + bounds.height() / reductFactor));
 		break;
 	}
-	case left: {
+
+	case left:
+	{
 		QPointF leftPoint = mapToItem(mSrc, QPointF(0, point.y()));
 		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor, leftPoint.y()));
 		break;
 	}
-	case right: {
+
+	case right:
+	{
 		QPointF rightPoint = mapToItem(mSrc, QPointF(0, point.y()));
 		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor, rightPoint.y()));
 		break;
 	}
+
 	default:
 		qDebug() << "incorrect direction";
 	}
@@ -485,11 +498,13 @@ QPointF EdgeElement::boundingRectIndent(const QPointF &point, EdgeElement::NodeS
 	return newPoint;
 }
 
-int EdgeElement::indentReductCoeff() {
+int EdgeElement::indentReductCoeff()
+{
 	return (maxReductCoeff - SettingsManager::value("LoopEdgeBoundsIndent").toInt());
 }
 
-void EdgeElement::searchNextPort() {
+void EdgeElement::searchNextPort()
+{
 	mPortTo += 1;
 	if (mPortTo > mSrc->numberOfPorts()) {
 		mPortTo -= mSrc->numberOfPorts();
@@ -519,24 +534,25 @@ bool EdgeElement::initPossibleEdges()
 
 	QList<StringPossibleEdge> stringPossibleEdges
 			= mGraphicalAssistApi.editorManagerInterface().possibleEdges(editor, id().element());
-	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
+	for (StringPossibleEdge pEdge : stringPossibleEdges) {
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 
 		QStringList fromElements;
 		QStringList toElements;
-		foreach (const QString &element, elements) {
+		for (const QString &element : elements) {
 			if (mGraphicalAssistApi.editorManagerInterface().portTypes(Id(editor, diagram, element))
 					.contains(pEdge.first.first)) {
 				fromElements << element;
 			}
+
 			if (mGraphicalAssistApi.editorManagerInterface().portTypes(Id(editor, diagram, element))
 					.contains(pEdge.first.second)) {
 				toElements << element;
 			}
 		}
 
-		foreach (const QString &fromElement, fromElements) {
-			foreach (const QString &toElement, toElements) {
+		for (const QString &fromElement : fromElements) {
+			for (const QString &toElement : toElements) {
 				QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, fromElement),	Id(editor, diagram, toElement));
 				PossibleEdge possibleEdge(nodes, edge);
 				mPossibleEdges.push_back(possibleEdge);
@@ -560,6 +576,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		if (event->buttons() & Qt::LeftButton) {
 			mHandler->rejectMovingEdge();
 		}
+
 		return;
 	}
 
@@ -650,7 +667,7 @@ NodeElement *EdgeElement::getNodeAt(const QPointF &position, bool isStart)
 
 NodeElement *EdgeElement::innermostChild(const QList<QGraphicsItem *> &items, NodeElement * const element) const
 {
-	foreach (NodeElement *child, element->childNodes()) {
+	for (NodeElement *child : element->childNodes()) {
 		if (items.contains(child)) {
 			NodeElement *innerChild = innermostChild(items, child);
 			if (innerChild) {
@@ -664,21 +681,6 @@ NodeElement *EdgeElement::innermostChild(const QList<QGraphicsItem *> &items, No
 	}
 
 	return nullptr;
-}
-
-QList<ContextMenuAction*> EdgeElement::contextMenuActions(const QPointF &pos)
-{
-	QList<ContextMenuAction*> result;
-
-	result.push_back(&mChangeShapeAction);
-
-	if (reverseActionIsPossible()) {
-		result.push_back(&mReverseAction);
-	}
-
-	result.append(mHandler->extraActions(pos));
-
-	return result;
 }
 
 bool EdgeElement::reverseActionIsPossible() const
@@ -802,6 +804,7 @@ EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart) const
 			return right;
 		}
 	}
+
 	if (isLeft) {
 		return left;
 	} else {
@@ -824,27 +827,20 @@ NodeElement *EdgeElement::dst() const
 	return mDst;
 }
 
-bool EdgeElement::isSrc(const NodeElement *node) const
-{
-	return (mSrc == node);
-}
-
-bool EdgeElement::isDst(const NodeElement *node) const
-{
-	return (mDst == node);
-}
-
 QPair<qreal, qreal> EdgeElement::portIdOn(const NodeElement *node) const
 {
 	if (mIsLoop && node == mSrc) {
 		return qMakePair(mPortFrom, mPortTo);
 	}
+
 	if (node == mSrc) {
 		return qMakePair(mPortFrom, -1.0);
 	}
+
 	if (node == mDst) {
 		return qMakePair(-1.0, mPortTo);
 	}
+
 	return qMakePair(-1.0, -1.0);
 }
 
@@ -858,9 +854,11 @@ NodeElement * EdgeElement::otherSide(const NodeElement *node) const
 	if (node == mSrc) {
 		return mDst;
 	}
+
 	if (node == mDst) {
 		return mSrc;
 	}
+
 	return 0;
 }
 
@@ -898,6 +896,7 @@ void EdgeElement::updateData()
 	if (mSrc) {
 		mSrc->delEdge(this);
 	}
+
 	if (mDst && (mDst != mSrc)) {
 		mDst->delEdge(this);
 	}
@@ -908,6 +907,7 @@ void EdgeElement::updateData()
 	if (mSrc) {
 		mSrc->addEdge(this);
 	}
+
 	if (mDst && (mDst != mSrc)) {
 		mDst->addEdge(this);
 	}
@@ -970,6 +970,7 @@ void EdgeElement::moveConnection(NodeElement *node, const qreal portId) {
 	if ((!mIsLoop || ((int) mPortFrom == (int) portId)) && (node == mSrc)) {
 		setFromPort(portId);
 	}
+
 	if ((!mIsLoop || ((int) mPortTo == (int) portId)) && (node == mDst)) {
 		setToPort(portId);
 	}
@@ -1009,53 +1010,56 @@ void EdgeElement::highlight(const QColor &color)
 	update();
 }
 
-EdgeData& EdgeElement::data()
+EdgeData EdgeElement::data()
 {
-	mData.id = id();
-	mData.logicalId = logicalId();
-	mData.srcId = src() ? src()->id() : Id::rootId();
-	mData.dstId = dst() ? dst()->id() : Id::rootId();
+	EdgeData result;
+	result.id = id();
+	result.logicalId = logicalId();
+	result.srcId = src() ? src()->id() : Id::rootId();
+	result.dstId = dst() ? dst()->id() : Id::rootId();
 
-	mData.portFrom = mPortFrom;
-	mData.portTo = mPortTo;
+	result.portFrom = mPortFrom;
+	result.portTo = mPortTo;
 
-	mData.configuration = mGraphicalAssistApi.configuration(mId);
-	mData.pos = mGraphicalAssistApi.position(mId);
+	result.configuration = mGraphicalAssistApi.configuration(mId);
+	result.pos = mGraphicalAssistApi.position(mId);
 
-	mData.shapeType = mShapeType;
+	result.shapeType = mShapeType;
 
 	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
 	for (const QString &property : properties.keys()) {
 		if (property != "from" && property != "to") {
-			mData.logicalProperties[property] = properties[property];
+			result.logicalProperties[property] = properties[property];
 		}
 	}
 
-	return mData;
+	return result;
 }
 
 QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-	switch (change) {
-	case ItemPositionHasChanged:
-		if (mIsLoop) {
-			return value;
-		}
-		if (isSelected() && (mSrc || mDst) && !mMoving) {
-			if (mSrc && !mSrc->isSelected()) {
-				prepareGeometryChange();
-				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+	switch (change)
+	{
+		case ItemPositionHasChanged:
+			if (mIsLoop) {
+				return value;
 			}
-			if (mDst && !mDst->isSelected()) {
-				prepareGeometryChange();
-				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
-			}
-		}
 
-		updateLongestPart();
-		return value;
-	default:
-		return QGraphicsItem::itemChange(change, value);
+			if (isSelected() && (mSrc || mDst) && !mMoving) {
+				if (mSrc && !mSrc->isSelected()) {
+					prepareGeometryChange();
+					mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+				}
+				if (mDst && !mDst->isSelected()) {
+					prepareGeometryChange();
+					mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+				}
+			}
+
+			updateLongestPart();
+			return value;
+		default:
+			return QGraphicsItem::itemChange(change, value);
 	}
 }
 
@@ -1064,6 +1068,7 @@ void EdgeElement::setSrc(NodeElement *node)
 	if (mSrc) {
 		mSrc->delEdge(this);
 	}
+
 	mSrc = node;
 	mGraphicalAssistApi.setFrom(id(), mSrc ? mSrc->id() : Id::rootId());
 	mLogicalAssistApi.setFrom(logicalId(), mSrc ? mSrc->logicalId() : Id::rootId());
@@ -1077,6 +1082,7 @@ void EdgeElement::setDst(NodeElement *node)
 	if (mDst) {
 		mDst->delEdge(this);
 	}
+
 	mDst = node;
 	mGraphicalAssistApi.setTo(id(), mDst ? mDst->id() : Id::rootId());
 	mLogicalAssistApi.setTo(logicalId(), mDst ? mDst->logicalId() : Id::rootId());
@@ -1122,7 +1128,7 @@ void EdgeElement::setPos(qreal x, qreal y)
 
 void EdgeElement::setPos(const QPointF &pos)
 {
-	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
+	if (qIsNaN(pos.x()) || qIsNaN(pos.y())) {
 		Element::setPos(QPointF());
 		QLOG_WARN() << "NaN passed to EdgeElement::setPos(). That means that something went wrong."\
 				"Learn to reproduce this message. The position has been set to (0,0).";

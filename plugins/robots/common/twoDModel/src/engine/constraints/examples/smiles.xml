@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls/>
+        <colorFields/>
+        <regions/>
+    </world>
+    <robots>
+        <robot id="trikKitRobot" position="0:0" direction="0">
+            <sensors/>
+            <startPosition x="25" y="25" direction="0"/>
+            <wheels right="M4###output######" left="M3###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+        <timelimit value="20000"/>
+        <event settedUpInitially="true">
+            <condition>
+                <equals>
+                    <objectState object="robot1.display.smiles"/>
+                    <bool value="true"/>
+                </equals>
+            </condition>
+            <trigger>
+                <success/>
+            </trigger>
+        </event>
+        <event settedUpInitially="true">
+            <condition>
+                <equals>
+                    <objectState object="robot1.display.sadSmiles"/>
+                    <bool value="true"/>
+                </equals>
+            </condition>
+            <trigger>
+                <fail message="Life is pain, but this is not a the reason to cry, baby!"/>
+            </trigger>
+        </event>
+    </constraints>
+</root>

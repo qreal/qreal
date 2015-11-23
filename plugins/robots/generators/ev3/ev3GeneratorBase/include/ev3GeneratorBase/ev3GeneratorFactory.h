@@ -42,7 +42,7 @@ public:
 
 	generatorBase::simple::Binding::ConverterInterface *goToBlockNumberConverter() const;
 
-	QString pathToTemplates() const override;
+	QStringList pathsToTemplates() const override;
 
 private:
 	QString const mGeneratorName;

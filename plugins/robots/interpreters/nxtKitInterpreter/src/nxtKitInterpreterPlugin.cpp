@@ -59,7 +59,8 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](const QString &modelName) {
+			, [this](const QString &modelName)
+	{
 		mCurrentlySelectedModelName = modelName;
 		if (modelName == mUsbRealRobotModel.name()) {
 			mUsbRealRobotModel.checkConnection();
@@ -85,8 +86,8 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, configurator.qRealConfigurator().systemEvents()
 			, configurator.qRealConfigurator().logicalModelApi()
 			, interpretersInterface
+			, configurator.qRealConfigurator().projectManager()
 			, configurator.interpreterControl());
-
 }
 
 QString NxtKitInterpreterPlugin::kitId() const

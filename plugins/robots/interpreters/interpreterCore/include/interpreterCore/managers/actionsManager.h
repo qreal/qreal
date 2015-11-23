@@ -76,6 +76,9 @@ public:
 	/// Closes variable values dock and maybe 2D model dock.
 	QAction &editModeAction();
 
+	/// Action that opens first robot behaviour diagram in current model or start page if no save opened.
+	QAction &homeAction();
+
 	/// Provides a possibility to transfer hotkey configurer to engine.
 	void appendHotKey(const QString &actionId, const QString &label, QAction &action);
 
@@ -99,6 +102,9 @@ private:
 
 	/// Loads actions from kit plugins.
 	void initKitPluginActions();
+
+	/// Sets object names to actions.
+	void giveObjectNames();
 
 	/// Creates action with menu that lets switching between robot models.
 	QAction *produceMenuAction(const QString &kitId, const QString &name, const QList<QAction *> &subActions) const;
@@ -128,12 +134,15 @@ private:
 
 	/// Action that changes current UI mode to debug: hides palette, property editor and so on,
 	/// opens variable values dock and maybe 2D model dock.
-	QAction mDebugModeAction;
+	QAction *mDebugModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
 
 	/// Action that changes current UI mode to edit: show palette and property editor if we are
 	/// editing diagram or variables list if we are editing the code.
 	/// Closess variable values dock and maybe 2D model dock.
-	QAction mEditModeAction;
+	QAction *mEditModeAction;  // Takes ownership, need to be stored by value after svg actions fix.
+
+	/// Action that opens first robot behaviour diagram in current model or start page if no save opened.
+	QAction *mHomeAction;
 
 	QAction mSeparator1;
 	QAction mSeparator2;

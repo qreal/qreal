@@ -26,6 +26,7 @@
 #include "simpleGenerators/drawEllipseGenerator.h"
 #include "simpleGenerators/drawArcGenerator.h"
 #include "simpleGenerators/initCameraGenerator.h"
+#include "simpleGenerators/initVideoStreamingGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/waitForMessageGenerator.h"
@@ -58,9 +59,9 @@ TrikGeneratorFactory::TrikGeneratorFactory(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, lua::LuaProcessor &luaProcessor
-		, const QString &generatorName)
+		, const QStringList &pathsToTemplates)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
-	, mGeneratorName(generatorName)
+	, mPathsToTemplates(pathsToTemplates)
 {
 }
 
@@ -115,6 +116,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 		return new InitCameraGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikDetectorToVariable") {
 		return new DetectorToVariableGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikInitVideoStreaming") {
+		return new InitVideoStreamingGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForButton") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForMotion") {
@@ -140,9 +143,9 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
-QString TrikGeneratorFactory::pathToTemplates() const
+QStringList TrikGeneratorFactory::pathsToTemplates() const
 {
-	return ":/" + mGeneratorName + "/templates";
+	return mPathsToTemplates; //{":/" + mGeneratorName + "/templates"};
 }
 
 generatorBase::parts::DeviceVariables *TrikGeneratorFactory::deviceVariables() const
