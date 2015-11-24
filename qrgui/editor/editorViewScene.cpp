@@ -1324,7 +1324,7 @@ void EditorViewScene::deleteGesture()
 		itemsForRemoving.append(item);
 	}
 
-	for(QGraphicsItem *item : itemsForRemoving) {
+	for (QGraphicsItem *item : itemsForRemoving) {
 		removeItem(item);
 	}
 
