@@ -16,6 +16,8 @@
 
 #include <QtWidgets/QApplication>
 
+#include <twoDModel/engine/twoDModelEngineFacade.h>
+
 using namespace ev3;
 using namespace qReal;
 
@@ -23,13 +25,24 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
-	: mRealRobotModel(kitId(), "ev3robot") // todo: somewhere generate robotId for each robot
+	: mUsbRealRobotModel(kitId(), "ev3KitUsbRobot") // todo: somewhere generate robotId for each robot
+	, mBluetoothRealRobotModel(kitId(), "ev3KitBluetoothRobot")
+	, mTwoDRobotModel(mUsbRealRobotModel)
 	, mBlocksFactory(new blocks::Ev3BlocksFactory)
 {
-	mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
+	mAdditionalPreferences = new Ev3AdditionalPreferences(mBluetoothRealRobotModel.name());
+
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
+
+	mTwoDRobotModel.setEngine(modelEngine->engine());
+	mTwoDModel.reset(modelEngine);
 
 	connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
-			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+			, &mUsbRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+	connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
+			, &mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+	connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
+			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
 Ev3KitInterpreterPlugin::~Ev3KitInterpreterPlugin()
@@ -41,6 +54,40 @@ Ev3KitInterpreterPlugin::~Ev3KitInterpreterPlugin()
 	if (mOwnsBlocksFactory) {
 		delete mBlocksFactory;
 	}
+}
+
+void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
+{
+	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
+			, [this](const QString &modelName)
+	{
+		mCurrentlySelectedModelName = modelName;
+		if (modelName == mUsbRealRobotModel.name()) {
+			mUsbRealRobotModel.checkConnection();
+		}
+
+		if (modelName == mBluetoothRealRobotModel.name()) {
+			mBluetoothRealRobotModel.checkConnection();
+		}
+	});
+
+	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
+	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addError(message);
+	});
+	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addError(message);
+	});
+
+	mTwoDModel->init(configurator.eventsForKitPlugin()
+			, configurator.qRealConfigurator().systemEvents()
+			, configurator.qRealConfigurator().logicalModelApi()
+			, interpretersInterface
+			, configurator.qRealConfigurator().projectManager()
+			, configurator.interpreterControl());
 }
 
 QString Ev3KitInterpreterPlugin::kitId() const
@@ -55,7 +102,7 @@ QString Ev3KitInterpreterPlugin::friendlyKitName() const
 
 QList<kitBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robotModels()
 {
-	return {&mRealRobotModel};
+	return {&mUsbRealRobotModel, &mBluetoothRealRobotModel, &mTwoDRobotModel};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
@@ -64,6 +111,11 @@ kitBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFact
 	Q_UNUSED(model)
 	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
+}
+
+kitBase::robotModel::RobotModelInterface *Ev3KitInterpreterPlugin::defaultRobotModel()
+{
+	return &mTwoDRobotModel;
 }
 
 QList<kitBase::AdditionalPreferences *> Ev3KitInterpreterPlugin::settingsWidgets()
@@ -84,6 +136,14 @@ QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
 
 QIcon Ev3KitInterpreterPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
-	Q_UNUSED(robotModel)
-	return QIcon(":/ev3/interpreter/images/switch-to-ev3.svg");
+	return &robotModel == &mUsbRealRobotModel
+			? QIcon(":/ev3/interpreter/images/switch-real-ev3-usb.svg")
+			: &robotModel == &mBluetoothRealRobotModel
+					? QIcon(":/ev3/interpreter/images/switch-real-ev3-bluetooth.svg")
+					: QIcon(":/ev3/interpreter/images/switch-2d.svg");
+}
+
+kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigurationProvider()
+{
+	return &mTwoDModel->devicesConfigurationProvider();
 }

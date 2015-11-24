@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/ev3/interpreter">
-        <file>images/switch-to-ev3.svg</file>
+        <file>images/switch-real-ev3-usb.svg</file>
+        <file>images/switch-real-ev3-bluetooth.svg</file>
+        <file>images/switch-2d.svg</file>
     </qresource>
 </RCC>

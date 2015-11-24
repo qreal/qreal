@@ -26,17 +26,18 @@
 #include <kitBase/robotModel/robotParts/colorSensorPassive.h>
 #include <kitBase/robotModel/robotParts/colorSensorRed.h>
 
-#include "nxtDisplayWidget.h"
-#include "robotModel/twoD/parts/twoDDisplay.h"
-#include "robotModel/twoD/parts/twoDSpeaker.h"
-#include "robotModel/twoD/parts/twoDMotor.h"
+#include "src/ev3DisplayWidget.h"
+#include "src/robotModel/twoD/parts/twoDDisplay.h"
+#include "src/robotModel/twoD/parts/twoDSpeaker.h"
+#include "src/robotModel/twoD/parts/twoDMotor.h"
 
-using namespace nxtKitInterpreter::robotModel;
-using namespace nxtKitInterpreter::robotModel::twoD;
+using namespace ev3::robotModel;
+using namespace ev3::robotModel::twoD;
 using namespace kitBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
+	, mDisplayWidget(new Ev3DisplayWidget())
 {
 }
 
@@ -59,7 +60,7 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 QString TwoDRobotModel::robotImage() const
 {
-	return ":/icons/robot.png";
+	return ":/icons/ev3_robot.png";
 }
 
 PortInfo TwoDRobotModel::defaultLeftWheelPort() const
@@ -72,9 +73,9 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo("C", output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget * parent) const
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 {
-	return new NxtDisplayWidget(parent);
+	return mDisplayWidget;
 }
 
 QRect TwoDRobotModel::sensorImageRect(kitBase::robotModel::DeviceInfo const &deviceType) const

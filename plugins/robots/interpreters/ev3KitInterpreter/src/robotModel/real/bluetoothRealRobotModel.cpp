@@ -12,29 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDMotor.h"
+#include "bluetoothRealRobotModel.h"
 
-using namespace ev3::robotModel::twoD::parts;
+#include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
 
-TwoDMotor::TwoDMotor(kitBase::robotModel::DeviceInfo const &info
-		, kitBase::robotModel::PortInfo const &port
-		, twoDModel::engine::TwoDModelEngineInterface &engine)
-	: Ev3Motor(info, port)
-	, mEngine(engine)
+using namespace ev3::robotModel::real;
+
+BluetoothRealRobotModel::BluetoothRealRobotModel(const QString &kitId, const QString &robotId)
+	: RealRobotModel(kitId, robotId, new communication::BluetoothRobotCommunicationThread)
 {
 }
 
-void TwoDMotor::on(int speed)
+QString BluetoothRealRobotModel::name() const
 {
-	mEngine.setNewMotor(speed, 0, port(), true);
+	return "Ev3BluetoothRealRobotModel";
 }
 
-void TwoDMotor::stop()
+QString BluetoothRealRobotModel::friendlyName() const
 {
-	on(0);
+	return tr("Interpretation (Bluetooth)");
 }
 
-void TwoDMotor::off()
+int BluetoothRealRobotModel::priority() const
 {
-	on(0);
+	return 7;  // Right after UsbRealRobotModel
 }

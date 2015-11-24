@@ -1,0 +1,17 @@
+<svg width="31" height="31" xmlns="http://www.w3.org/2000/svg" clip-rule="evenodd" fill-rule="evenodd">
+ <defs>
+  <linearGradient id="imagebot_7" x1="0.5" y1="1" x2="0.5" y2="0">
+   <stop offset="0" stop-color="#69A7D6"/>
+   <stop offset="1" stop-color="#2B699C"/>
+  </linearGradient>
+ </defs>
+ <g id="imagebot_1">
+  <metadata id="imagebot_9"/>
+  <title/>
+  <g transform="translate(1.18112 -1.07374) matrix(0.927136 0 0 0.927136 0 2.25486)" id="imagebot_10">
+   <circle cx="15.36" cy="15.36" r="15.36" stroke="rgb(78, 141, 191)" stroke-width="1.28px" fill="none" id="imagebot_8"/>
+   <circle cx="15.36" cy="15.36" r="14.208" stroke="rgb(54, 111, 158)" stroke-width="1.28px" fill="url(#imagebot_7)" id="imagebot_3"/>
+   <text fill="#ffffff" stroke="null" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" stroke-opacity="null" x="6.53426" y="12.54721" id="imagebot_2" font-size="24" font-family="serif" text-anchor="middle" xml:space="preserve" transform="translate(-0.322123 0) matrix(0.485807 0 0 0.485807 12.4739 13.2255)" font-weight="bold">EV3</text>
+  </g>
+ </g>
+</svg>

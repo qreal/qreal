@@ -30,6 +30,7 @@ public:
 	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
+	int priority() const override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;

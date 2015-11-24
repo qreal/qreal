@@ -24,7 +24,7 @@ includes(plugins/robots/common/kitBase \
 )
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-kit-base robots-ev3-kit qextserialport \
+		robots-utils robots-kit-base robots-ev3-kit robots-2d-model qextserialport qslog \
 )
 
 win32 {
@@ -38,7 +38,10 @@ unix {
 HEADERS += \
 	$$PWD/ev3AdditionalPreferences.h \
 	$$PWD/ev3KitInterpreterPlugin.h \
+	$$PWD/ev3DisplayWidget.h \
 	$$PWD/robotModel/real/realRobotModel.h \
+	$$PWD/robotModel/real/usbRealRobotModel.h \
+	$$PWD/robotModel/real/bluetoothRealRobotModel.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
 	$$PWD/robotModel/real/parts/motor.h \
@@ -49,11 +52,18 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/rangeSensor.h \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
+	$$PWD/robotModel/twoD/twoDRobotModel.h \
+	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
+	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
+	$$PWD/robotModel/twoD/parts/twoDMotor.h \
 
 SOURCES += \
 	$$PWD/ev3AdditionalPreferences.cpp \
 	$$PWD/ev3KitInterpreterPlugin.cpp \
+	$$PWD/ev3DisplayWidget.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
+	$$PWD/robotModel/real/usbRealRobotModel.cpp \
+	$$PWD/robotModel/real/bluetoothRealRobotModel.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \
 	$$PWD/robotModel/real/parts/motor.cpp \
@@ -64,9 +74,14 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
+	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
+	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
+	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
+	$$PWD/robotModel/twoD/parts/twoDMotor.cpp \
 
 FORMS += \
 	$$PWD/ev3AdditionalPreferences.ui \
+	$$PWD/ev3DisplayWidget.ui \
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3KitInterpreter_ru.ts \

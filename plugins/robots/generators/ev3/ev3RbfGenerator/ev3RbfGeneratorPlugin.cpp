@@ -72,6 +72,11 @@ QIcon Ev3RbfGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::Robo
 	return QIcon(":/ev3/images/switch-to-ev3-rbf.svg");
 }
 
+int Ev3RbfGeneratorPlugin::priority() const
+{
+	return 9;
+}
+
 QString Ev3RbfGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
 	return QString("ev3-rbf/%1/%1.lms").arg(projectName);

@@ -149,7 +149,7 @@ QIcon NxtKitInterpreterPlugin::iconForFastSelector(
 					: QIcon(":/icons/switch-2d.svg");
 }
 
-kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
+kitBase::DevicesConfigurationProvider *NxtKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
 }

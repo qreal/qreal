@@ -109,18 +109,18 @@ void Canvas::drawLine(int x1, int y1, int x2, int y2)
 	mLines << object;
 }
 
-void Canvas::drawRect(int x, int y, int width, int height)
+void Canvas::drawRect(int x, int y, int width, int height, bool filled)
 {
 	RectangleObject * const object = new RectangleObject(QRect(x, y, width, height)
-			, mCurrentPenColor, mCurrentPenWidth);
+			, mCurrentPenColor, mCurrentPenWidth, filled);
 	mObjects << object;
 	mRectangles << object;
 }
 
-void Canvas::drawEllipse(int centerX, int centerY, int semiDiameterX, int semiDiameterY)
+void Canvas::drawEllipse(int centerX, int centerY, int semiDiameterX, int semiDiameterY, bool filled)
 {
 	EllipseObject * const object = new EllipseObject(QPoint(centerX, centerY)
-			, semiDiameterX, semiDiameterY, mCurrentPenColor, mCurrentPenWidth);
+			, semiDiameterX, semiDiameterY, mCurrentPenColor, mCurrentPenWidth, filled);
 	mObjects << object;
 	mEllipses << object;
 }

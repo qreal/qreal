@@ -15,11 +15,13 @@
 #pragma once
 
 #include <kitBase/kitPluginInterface.h>
+#include <twoDModel/engine/twoDModelControlInterface.h>
 #include <ev3Kit/blocks/ev3BlocksFactory.h>
 
 #include "ev3AdditionalPreferences.h"
-#include "robotModel/real/realRobotModel.h"
-
+#include "robotModel/real/usbRealRobotModel.h"
+#include "robotModel/real/bluetoothRealRobotModel.h"
+#include "robotModel/twoD/twoDRobotModel.h"
 
 namespace ev3 {
 
@@ -33,26 +35,37 @@ public:
 	Ev3KitInterpreterPlugin();
 	~Ev3KitInterpreterPlugin() override;
 
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
+
 	QString kitId() const override;
 	QString friendlyKitName() const override;
+
 	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
+	kitBase::robotModel::RobotModelInterface *defaultRobotModel() override;
+
 	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
 			const kitBase::robotModel::RobotModelInterface *model) override;
-	// Transfers ownership.
-	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
-	QList<qReal::ActionInfo> customActions() override;
+
+	QList<qReal::ActionInfo> customActions() override;  // Transfers ownership of embedded QActions
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+
+	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
+	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 private:
-	robotModel::real::RealRobotModel mRealRobotModel;
-
-	Ev3AdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
-	bool mOwnsAdditionalPreferences = true;
+	robotModel::real::UsbRealRobotModel mUsbRealRobotModel;
+	robotModel::real::BluetoothRealRobotModel mBluetoothRealRobotModel;
+	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 
 	blocks::Ev3BlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
 	bool mOwnsBlocksFactory = true;
 
+	Ev3AdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	bool mOwnsAdditionalPreferences = true;
+
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+	QString mCurrentlySelectedModelName;
 };
 
 }

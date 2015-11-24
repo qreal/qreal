@@ -22,13 +22,11 @@ using namespace ev3;
 using namespace qReal;
 
 Ev3AdditionalPreferences::Ev3AdditionalPreferences(const QString &realRobotName, QWidget *parent)
-		: AdditionalPreferences(parent)
-		, mUi(new Ui::Ev3AdditionalPreferences)
-		, mRealRobotName(realRobotName)
+	: AdditionalPreferences(parent)
+	, mUi(new Ui::Ev3AdditionalPreferences)
+	, mRealRobotName(realRobotName)
 {
 	mUi->setupUi(this);
-	connect(mUi->bluetoothRadioButton, &QRadioButton::toggled
-			, mUi->bluetoothSettingsGroupBox, &QWidget::setVisible);
 	connect(mUi->manualComPortCheckbox, &QCheckBox::toggled
 			, this, &Ev3AdditionalPreferences::manualComPortCheckboxChecked);
 }
@@ -41,14 +39,13 @@ Ev3AdditionalPreferences::~Ev3AdditionalPreferences()
 void Ev3AdditionalPreferences::save()
 {
 	SettingsManager::setValue("Ev3BluetoothPortName", selectedPortName());
-	SettingsManager::setValue("Ev3ValueOfCommunication", selectedCommunication());
 	SettingsManager::setValue("Ev3ManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
 	emit settingsChanged();
 }
 
 void Ev3AdditionalPreferences::restoreSettings()
 {
-	QList<QextPortInfo> const ports = QextSerialEnumerator::getPorts();
+	const QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 	const QString defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
 	mUi->comPortComboBox->clear();
 
@@ -83,23 +80,11 @@ void Ev3AdditionalPreferences::restoreSettings()
 		mUi->manualComPortCheckbox->setChecked(false);
 		mUi->manualComPortCheckbox->setChecked(SettingsManager::value("Ev3ManualComPortCheckboxChecked").toBool());
 	}
-
-	const QString typeOfCommunication = SettingsManager::value("Ev3ValueOfCommunication").toString();
-	if (typeOfCommunication == "bluetooth") {
-		mUi->bluetoothRadioButton->setChecked(true);
-	} else if (typeOfCommunication == "usb") {
-		mUi->usbRadioButton->setChecked(true);
-	} else {
-		mUi->bluetoothRadioButton->setChecked(false);
-		mUi->usbRadioButton->setChecked(false);
-	}
 }
 
 void Ev3AdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
-	const bool isReal = robotModel->name() == mRealRobotName;
-	mUi->communicationTypeGroupBox->setVisible(isReal);
-	mUi->bluetoothSettingsGroupBox->setVisible(mUi->bluetoothRadioButton->isChecked() && isReal);
+	mUi->bluetoothSettingsGroupBox->setVisible(robotModel->name() == mRealRobotName);
 }
 
 void Ev3AdditionalPreferences::manualComPortCheckboxChecked(bool state)
@@ -119,12 +104,6 @@ void Ev3AdditionalPreferences::manualComPortCheckboxChecked(bool state)
 		mUi->directInputComPortLineEdit->hide();
 		mUi->noComPortsFoundLabel->hide();
 	}
-}
-
-QString Ev3AdditionalPreferences::selectedCommunication() const
-{
-	return mUi->bluetoothRadioButton->isChecked() ? "bluetooth"
-			: mUi->usbRadioButton->isChecked() ? "usb" : "";
 }
 
 QString Ev3AdditionalPreferences::selectedPortName() const

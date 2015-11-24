@@ -14,31 +14,41 @@
 
 #pragma once
 
-#include <ev3Kit/robotModel/parts/ev3Motor.h>
+#include <QtWidgets/QWidget>
 
-#include <twoDModel/engine/twoDModelEngineInterface.h>
+#include <qrutils/widgets/paintWidget.h>
+
+#include "twoDModel/engine/twoDModelDisplayWidget.h"
+
+namespace Ui
+{
+class Ev3DisplayWidget;
+}
 
 namespace ev3 {
-namespace robotModel {
-namespace twoD {
-namespace parts {
 
-class TwoDMotor : public robotModel::parts::Ev3Motor
+class Ev3DisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 {
-public:
-	TwoDMotor(kitBase::robotModel::DeviceInfo const &info
-			, kitBase::robotModel::PortInfo const &port
-			, twoDModel::engine::TwoDModelEngineInterface &engine);
+	Q_OBJECT
 
-	void on(int speed) override;
-	void stop() override;
-	void off() override;
+public:
+	explicit Ev3DisplayWidget(QWidget *parent = 0);
+	~Ev3DisplayWidget();
+
+	void setPainter(qReal::ui::PainterInterface *painter) override;
+
+	bool buttonIsDown(const QString &buttonId) const override;
+
+	void repaintDisplay();
+	int displayWidth() const;
+	int displayHeight() const;
+
+protected:
+	void paintEvent(QPaintEvent *);
 
 private:
-	twoDModel::engine::TwoDModelEngineInterface &mEngine;
+	Ui::Ev3DisplayWidget *mUi;
+	QImage mBackground;
 };
 
-}
-}
-}
 }

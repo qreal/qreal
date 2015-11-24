@@ -12,29 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDMotor.h"
+#include "usbRealRobotModel.h"
 
-using namespace ev3::robotModel::twoD::parts;
+#include <ev3Kit/communication/usbRobotCommunicationThread.h>
 
-TwoDMotor::TwoDMotor(kitBase::robotModel::DeviceInfo const &info
-		, kitBase::robotModel::PortInfo const &port
-		, twoDModel::engine::TwoDModelEngineInterface &engine)
-	: Ev3Motor(info, port)
-	, mEngine(engine)
+using namespace ev3::robotModel::real;
+
+UsbRealRobotModel::UsbRealRobotModel(const QString &kitId, const QString &robotId)
+	: RealRobotModel(kitId, robotId, new communication::UsbRobotCommunicationThread)
 {
 }
 
-void TwoDMotor::on(int speed)
+QString UsbRealRobotModel::name() const
 {
-	mEngine.setNewMotor(speed, 0, port(), true);
+	return "Ev3UsbRealRobotModel";
 }
 
-void TwoDMotor::stop()
+QString UsbRealRobotModel::friendlyName() const
 {
-	on(0);
+	return tr("Interpretation (USB)");
 }
 
-void TwoDMotor::off()
+int UsbRealRobotModel::priority() const
 {
-	on(0);
+	return 8;  // Right after generation mode
 }

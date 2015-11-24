@@ -12,29 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDMotor.h"
+#pragma once
 
-using namespace ev3::robotModel::twoD::parts;
+#include "realRobotModel.h"
 
-TwoDMotor::TwoDMotor(kitBase::robotModel::DeviceInfo const &info
-		, kitBase::robotModel::PortInfo const &port
-		, twoDModel::engine::TwoDModelEngineInterface &engine)
-	: Ev3Motor(info, port)
-	, mEngine(engine)
+namespace ev3 {
+namespace robotModel {
+namespace real {
+
+class UsbRealRobotModel : public RealRobotModel
 {
+	Q_OBJECT
+
+public:
+	UsbRealRobotModel(const QString &kitId, const QString &robotId);
+
+	QString name() const override;
+	QString friendlyName() const override;
+	int priority() const override;
+};
+
 }
-
-void TwoDMotor::on(int speed)
-{
-	mEngine.setNewMotor(speed, 0, port(), true);
 }
-
-void TwoDMotor::stop()
-{
-	on(0);
-}
-
-void TwoDMotor::off()
-{
-	on(0);
 }

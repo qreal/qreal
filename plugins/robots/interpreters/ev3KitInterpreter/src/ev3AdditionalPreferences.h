@@ -42,7 +42,6 @@ private slots:
 
 private:
 
-	QString selectedCommunication() const;
 	QString selectedPortName() const;
 
 	Ui::Ev3AdditionalPreferences *mUi;

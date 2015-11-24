@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <QtCore/QScopedPointer>
-
 #include <kitBase/kitPluginInterface.h>
 #include <twoDModel/engine/twoDModelControlInterface.h>
 #include <nxtKit/blocks/nxtBlocksFactory.h>
@@ -31,7 +29,7 @@ class NxtKitInterpreterPlugin : public QObject, public kitBase::KitPluginInterfa
 {
 	Q_OBJECT
 	Q_INTERFACES(kitBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "nxtKitInterpreter.NxtKitInterpreterPlugin")
+	Q_PLUGIN_METADATA(IID "nxt.NxtKitInterpreterPlugin")
 
 public:
 	NxtKitInterpreterPlugin();
@@ -69,7 +67,6 @@ private:
 	bool mOwnsAdditionalPreferences = true;
 
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
-	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 };
 
