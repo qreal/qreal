@@ -22,7 +22,9 @@ DrawCircleGenerator::DrawCircleGenerator(qrRepo::RepoApi const &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, qReal::Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, (repo.stringProperty(id, "Filled") == "true") ? "drawing/drawFilledCircle.t" : "drawing/drawCircle.t"
+	: BindingGenerator(repo, customizer, id, (repo.stringProperty(id, "Filled") == "true")
+					? "drawing/drawFilledCircle.t"
+					: "drawing/drawCircle.t"
 			, {
 			Binding::createConverting("@@XCoordinateCircle@@", "XCoordinateCircle"
 					, customizer.factory()->intPropertyConverter(id, "XCoordinateCircle"))

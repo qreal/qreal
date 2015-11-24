@@ -60,7 +60,7 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 QString TwoDRobotModel::robotImage() const
 {
-	return ":/icons/ev3_robot.png";
+	return ":/ev3/interpreter/images/ev3-robot.png";
 }
 
 PortInfo TwoDRobotModel::defaultLeftWheelPort() const

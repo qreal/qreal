@@ -22,7 +22,9 @@ DrawRectGenerator::DrawRectGenerator(qrRepo::RepoApi const &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, qReal::Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, (repo.stringProperty(id, "Filled") == "true") ? "drawing/drawFilledRect.t" : "drawing/drawRect.t"
+	: BindingGenerator(repo, customizer, id, (repo.stringProperty(id, "Filled") == "true")
+					? "drawing/drawFilledRect.t"
+					: "drawing/drawRect.t"
 			, {
 			Binding::createConverting("@@XCoordinateRect@@", "XCoordinateRect"
 					, customizer.factory()->intPropertyConverter(id, "XCoordinateRect"))

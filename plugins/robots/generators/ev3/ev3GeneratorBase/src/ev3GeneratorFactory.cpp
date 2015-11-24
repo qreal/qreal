@@ -47,13 +47,15 @@ Ev3GeneratorFactory::~Ev3GeneratorFactory()
 {
 }
 
-AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting)
+AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id
+		, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting)
 {
 	mGoToBlockNumber++;
 	return new IfElementGenerator(mRepo, customizer, id, elseIsEmpty, needInverting, this);
 }
 
-generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGenerator(const qReal::Id &id, generatorBase::GeneratorCustomizer &customizer)
+generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGenerator(const qReal::Id &id
+		, generatorBase::GeneratorCustomizer &customizer)
 {
 	QString const elementType = id.element();
 	if (elementType == "Ev3DrawLine") {

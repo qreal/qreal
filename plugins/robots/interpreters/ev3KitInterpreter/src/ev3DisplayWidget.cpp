@@ -24,7 +24,7 @@ using namespace ev3;
 Ev3DisplayWidget::Ev3DisplayWidget(QWidget *parent)
 	: twoDModel::engine::TwoDModelDisplayWidget(parent)
 	, mUi(new Ui::Ev3DisplayWidget)
-	, mBackground(":/icons/background.png", "PNG")
+	, mBackground(":/ev3/interpreter/images/ev3-brick.png", "PNG")
 {
 	mUi->setupUi(this);
 }
@@ -40,10 +40,14 @@ bool Ev3DisplayWidget::buttonIsDown(const QString &buttonPort) const
 		return mUi->leftButton->isDown();
 	} else if (buttonPort == "Right") {
 		return mUi->rightButton->isDown();
+	} else if (buttonPort == "Up") {
+		return mUi->upButton->isDown();
+	} else if (buttonPort == "Down") {
+		return mUi->downButton->isDown();
 	} else if (buttonPort == "Enter") {
-		return mUi->centralButton->isDown();
-	} else if (buttonPort == "Escape") {
-		return mUi->bottomButton->isDown();
+		return mUi->enterButton->isDown();
+	} else if (buttonPort == "Back") {
+		return mUi->escapeButton->isDown();
 	}
 
 	QLOG_WARN() << "Button on port" << buttonPort << "is not supported by 2d model";
