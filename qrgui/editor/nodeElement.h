@@ -196,6 +196,7 @@ public:
 	IdList sortedChildren() const;
 
 	QVariant getProperty(const QString &propertyName);
+	void setProperty(const QString &propertyName, const QVariant &propertyValue);
 
 public slots:
 	virtual void select(const bool singleSelected);

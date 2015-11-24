@@ -1,5 +1,7 @@
 #pragma once
 #include <QWidget>
+#include <QTableWidgetItem>
+#include <QDialog>
 
 #include "qrgui/editor/private/exploserView.h"
 
@@ -11,7 +13,7 @@ namespace qReal {
 
 class EditorViewScene;
 
-class TableMenuWidget : public QWidget
+class TableMenuWidget : public QDialog
 {
 	Q_OBJECT
 
@@ -22,6 +24,7 @@ public:
 public slots:
 	void open();
 	void close();
+	void updateColumn(QTableWidgetItem *item);
 
 private:
 	void fillGeneralTab();

@@ -7,14 +7,17 @@ namespace qReal {
 class EditorViewScene;
 
 TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene, QWidget *parent)
-	: QWidget(parent)
+	: QDialog(parent)
 	, mUi(new Ui::TableMenuWidget)
 	, mId(id)
 	, mEditorViewScene(editorViewScene)
 {
 	mUi->setupUi(this);
-	this->setVisible(false);
+	this->setModal(true);
 	fillGeneralTab();
+	mUi->columnDataTable->hideColumn(2);
+
+	connect(mUi->columnDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateColumn(QTableWidgetItem*)));
 }
 
 TableMenuWidget::~TableMenuWidget()
@@ -33,6 +36,25 @@ void TableMenuWidget::close()
 
 }
 
+void TableMenuWidget::updateColumn(QTableWidgetItem *item)
+{
+	int rowNum = item->row();
+	int columnNum = item->column();
+
+	Id columnId = Id::loadFromString(mUi->columnDataTable->item(rowNum, 2)->text());
+	NodeElement *column = mEditorViewScene->getNodeById(columnId);
+	switch (columnNum) {
+	case 0: {
+		column->setProperty("Name", item->text());
+		break;
+	}
+	case 1: {
+		column->setProperty("DataType", item->text());
+		break;
+	}
+	}
+}
+
 void TableMenuWidget::fillGeneralTab()
 {
 	NodeElement *table = mEditorViewScene->getNodeById(mId);
@@ -47,8 +69,8 @@ void TableMenuWidget::fillGeneralTab()
 		mUi->columnDataTable->insertRow(rowCount);
 		mUi->columnDataTable->setItem(rowCount, 0, new QTableWidgetItem(columnName.toString()));
 		mUi->columnDataTable->setItem(rowCount, 1, new QTableWidgetItem(columnType.toString()));
+		mUi->columnDataTable->setItem(rowCount, 2, new QTableWidgetItem(column->id().toString()));
 	}
-	int u = 9;
 }
 
 }

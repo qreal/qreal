@@ -48,6 +48,11 @@
        <string>type</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>id</string>
+      </property>
+     </column>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_3">

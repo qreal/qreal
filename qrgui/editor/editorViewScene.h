@@ -213,6 +213,9 @@ private slots:
 	void onSelectionChanged();
 	void deselectLabels();
 
+	/// Creates an object of a modal class TableMenuWidget (databases plugin)
+	void createTableMenuWidget();
+
 private:
 	void deleteElements(IdList &idsToDelete);
 
@@ -298,6 +301,9 @@ private:
 	QAction mActionCopyOnDiagram;
 	QAction mActionPasteOnDiagram;
 	QAction mActionPasteReference;
+
+	/** @brief last table id that have been selected (databases plugin)*/
+	Id mSelectedTableId;
 };
 
 }

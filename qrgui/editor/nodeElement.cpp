@@ -1333,6 +1333,15 @@ QVariant NodeElement::getProperty(const QString &propertyName)
 	return mLogicalAssistApi.logicalRepoApi().property(mGraphicalAssistApi.logicalId(mId), propertyName);
 }
 
+void NodeElement::setProperty(const QString &propertyName, const QVariant &propertyValue)
+{
+	if (mLogicalAssistApi.isLogicalId(mId)) {
+		mLogicalAssistApi.mutableLogicalRepoApi().setProperty(mId, propertyName, propertyValue);
+	}
+
+	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(mGraphicalAssistApi.logicalId(mId), propertyName, propertyValue);
+}
+
 void NodeElement::initRenderedDiagram()
 {
 	if (!mIsExpanded || mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) == qReal::Id()) {
