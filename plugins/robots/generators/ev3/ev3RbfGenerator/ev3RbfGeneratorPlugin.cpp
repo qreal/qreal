@@ -18,25 +18,35 @@
 #include <QtCore/QDirIterator>
 #include <QtCore/QProcess>
 
-#include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
-
 #include "ev3RbfMasterGenerator.h"
 
 using namespace ev3::rbf;
 using namespace qReal;
 
 Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
-	: Ev3GeneratorPluginBase("Ev3RbfGeneratorRobotModel", tr("Generation (EV3 RBF)"), 7) ///priority????
+	: Ev3GeneratorPluginBase("Ev3RbfGeneratorRobotModel", tr("Generation (EV3 RBF)"), 7)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
+	, mRunProgramAction(new QAction(nullptr))
+	, mStopRobotAction(new QAction(nullptr))
 {
 	mGenerateCodeAction->setText(tr("Generate to Ev3 Robot Byte Code File"));
-	mGenerateCodeAction->setIcon(QIcon(":/ev3/images/generateRbfCode.svg"));
+	mGenerateCodeAction->setIcon(QIcon(":/ev3/rbf/images/generateRbfCode.svg"));
 	connect(mGenerateCodeAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::generateCode);
 
 	mUploadProgramAction->setText(tr("Upload program"));
-	mUploadProgramAction->setIcon(QIcon(":/ev3/images/uploadProgram.svg"));
+	mUploadProgramAction->setIcon(QIcon(":/ev3/rbf/images/uploadProgram.svg"));
 	connect(mUploadProgramAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::uploadProgram);
+
+	mRunProgramAction->setObjectName("runEv3RbfProgram");
+	mRunProgramAction->setText(tr("Run program"));
+	mRunProgramAction->setIcon(QIcon(":/ev3/rbf/images/run.png"));
+	connect(mRunProgramAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::runProgram, Qt::UniqueConnection);
+
+	mStopRobotAction->setObjectName("stopEv3RbfRobot");
+	mStopRobotAction->setText(tr("Stop robot"));
+	mStopRobotAction->setIcon(QIcon(":/ev3/rbf/images/stop.png"));
+	connect(mStopRobotAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::stopRobot, Qt::UniqueConnection);
 
 	text::Languages::registerLanguage(text::LanguageInfo{ "rbf"
 			, tr("EV3 Source Code language")
@@ -50,26 +60,32 @@ Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
 QList<ActionInfo> Ev3RbfGeneratorPlugin::customActions()
 {
 	const ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
-	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "interpreters", "tools");
-	return {generateCodeActionInfo, uploadProgramActionInfo};
+	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
+	const ActionInfo runProgramActionInfo(mRunProgramAction, "interpreters", "tools");
+	const ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
+	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
 QList<HotKeyActionInfo> Ev3RbfGeneratorPlugin::hotKeyActions()
 {
 	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
 	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	mRunProgramAction->setShortcut(QKeySequence(Qt::Key_F5));
+	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 
 	HotKeyActionInfo generateActionInfo("Generator.GenerateEv3Rbf"
 			, tr("Generate Ev3 Robot Byte Code File"), mGenerateCodeAction);
 	HotKeyActionInfo uploadProgramInfo("Generator.UploadEv3", tr("Upload EV3 Program"), mUploadProgramAction);
+	HotKeyActionInfo runProgramInfo("Generator.RunEv3", tr("Run EV3 Program"), mRunProgramAction);
+	HotKeyActionInfo stopRobotInfo("Generator.StopEv3", tr("Stop EV3 Program"), mStopRobotAction);
 
-	return { generateActionInfo, uploadProgramInfo };
+	return { generateActionInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo };
 }
 
 QIcon Ev3RbfGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
-	return QIcon(":/ev3/images/switch-to-ev3-rbf.svg");
+	return QIcon(":/ev3/rbf/images/switch-to-ev3-rbf.svg");
 }
 
 int Ev3RbfGeneratorPlugin::priority() const
@@ -92,33 +108,50 @@ QString Ev3RbfGeneratorPlugin::generatorName() const
 	return "ev3Rbf";
 }
 
-bool Ev3RbfGeneratorPlugin::uploadProgram()
+QString Ev3RbfGeneratorPlugin::uploadProgram()
 {
 	if (!javaInstalled()) {
 		mMainWindowInterface->errorReporter()->addError(tr("<a href=\"https://java.com/ru/download/\">Java</a> is "\
 				"not installed. Please download and install it."));
-		return false;
+		return QString();
 	}
 
 	QFileInfo const fileInfo = generateCodeForProcessing();
 	if (!fileInfo.exists()) {
-		return false;
+		return QString();
 	}
 
 	if (!copySystemFiles(fileInfo.absolutePath())) {
 		mMainWindowInterface->errorReporter()->addError(tr("Can't write source code files to disk!"));
+		return QString();
 	}
 
 	if (!compile(fileInfo)) {
 		mMainWindowInterface->errorReporter()->addError(tr("Compilation error occured."));
+		return QString();
 	}
 
-	if (!upload(fileInfo)) {
+	const QString fileOnRobot = upload(fileInfo);
+	if (fileOnRobot.isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(tr("Could not upload file to robot. "\
 				"Connect to a robot via Bluetooth."));
+		return QString();
 	}
 
-	return true;
+	return fileOnRobot;
+}
+
+void Ev3RbfGeneratorPlugin::runProgram()
+{
+	const QString fileOnRobot = uploadProgram();
+	if (!fileOnRobot.isEmpty()) {
+		mCommunicator.runProgram(fileOnRobot);
+	}
+}
+
+void Ev3RbfGeneratorPlugin::stopRobot()
+{
+	mCommunicator.stopProgram();
 }
 
 bool Ev3RbfGeneratorPlugin::javaInstalled()
@@ -155,20 +188,20 @@ bool Ev3RbfGeneratorPlugin::compile(const QFileInfo &lmsFile)
 	return true;
 }
 
-bool Ev3RbfGeneratorPlugin::upload(const QFileInfo &lmsFile)
+QString Ev3RbfGeneratorPlugin::upload(const QFileInfo &lmsFile)
 {
 	const QString targetPath = "../prjs/" + lmsFile.baseName();
 	const QString rbfPath = lmsFile.absolutePath() + "/" + lmsFile.baseName() + ".rbf";
 	bool connected = false;
-	communication::BluetoothRobotCommunicationThread communicator;
-	connect(&communicator, &communication::BluetoothRobotCommunicationThread::connected
-			, [&connected](bool success, const QString &) { connected = success; });
-	communicator.connect();
+	auto connection = connect(&mCommunicator, &communication::BluetoothRobotCommunicationThread::connected
+			, this, [&connected](bool success, const QString &) { connected = success; });
+	mCommunicator.connect();
+	disconnect(connection);
 	if (connected) {
-		return communicator.uploadFile(rbfPath, targetPath);
+		return mCommunicator.uploadFile(rbfPath, targetPath);
 	}
 
-	return false;
+	return QString();
 }
 
 generatorBase::MasterGeneratorBase *Ev3RbfGeneratorPlugin::masterGenerator()

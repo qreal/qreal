@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
 #include <ev3GeneratorBase/ev3GeneratorPluginBase.h>
 
 namespace ev3 {
@@ -39,10 +40,15 @@ protected:
 	QString generatorName() const override;
 
 private slots:
+	/// Generates and uploads script to a EV3 robot.
+	/// @return Empty string if operation was unsuccessfull or path to uploaded file on the EV3 robot otherwise.
+	QString uploadProgram();
 
-	/// Generates and uploads script to a robot.
-	/// @returns True, if successful.
-	bool uploadProgram();
+	/// Generates, uploads and starts script on the EV3 robot.
+	void runProgram();
+
+	/// Stops curretly executing program on the EV3 robot;
+	void stopRobot();
 
 private:
 	/// Function that checks installed JRE or not
@@ -50,13 +56,22 @@ private:
 
 	bool copySystemFiles(const QString &destination);
 	bool compile(const QFileInfo &lmsFile);
-	bool upload(const QFileInfo &lmsFile);
+	/// @returns path to uploaded file on EV3 brick if it was uploaded successfully or empty string otherwise.
+	QString upload(const QFileInfo &lmsFile);
+
+	communication::BluetoothRobotCommunicationThread mCommunicator;
 
 	/// Action that launches code generator
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	/// Action that generates and uploads program on a robot
 	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
+
+	/// Action that generates, uploads and starts program on a robot
+	QAction *mRunProgramAction;  // Doesn't have ownership; may be disposed by GUI.
+
+	/// Action that stops current program on a robot
+	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
 }

@@ -71,9 +71,9 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 
 void BluetoothRobotCommunicationThread::connect()
 {
-	if (mPort) {
-		disconnect();
-		QThread::msleep(1000);  // Give port some time to close
+	if (mPort && mPort->isOpen()) {
+		emit connected(true, QString());
+		return;
 	}
 
 	const QString portName = qReal::SettingsManager::value("Ev3BluetoothPortName").toString();
@@ -129,12 +129,16 @@ void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
 
 void BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
 {
-	mPort->write(buffer);
+	if (mPort) {
+		mPort->write(buffer);
+	}
 }
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 {
-	return mPort->read(size);
+	if (mPort) {
+		return mPort->read(size);
+	}
 }
 
 void BluetoothRobotCommunicationThread::checkForConnection()
@@ -166,7 +170,7 @@ void BluetoothRobotCommunicationThread::checkConsistency()
 {
 }
 
-bool BluetoothRobotCommunicationThread::uploadFile(const QString &sourceFile, const QString &targetDir)
+QString BluetoothRobotCommunicationThread::uploadFile(const QString &sourceFile, const QString &targetDir)
 {
 	const QFileInfo fileInfo(sourceFile);
 	// A path to file on the remote device.
@@ -174,7 +178,7 @@ bool BluetoothRobotCommunicationThread::uploadFile(const QString &sourceFile, co
 	QFile file(sourceFile);
 	/// @todo: Implement more detailed error reporting
 	if (!file.open(QIODevice::ReadOnly)) {
-		return false;
+		return QString();
 	}
 
 	QByteArray data = file.readAll();
@@ -194,7 +198,7 @@ bool BluetoothRobotCommunicationThread::uploadFile(const QString &sourceFile, co
 	commandBegin[8] = (data.size() >> 16) & 0xFF;
 	commandBegin[9] = (data.size() >> 24) & 0xFF;
 	int index = 10;
-	for (int i = 0; i < devicePath.size(); i++) {
+	for (int i = 0; i < devicePath.size(); ++i) {
 		commandBegin[index++] = devicePath.at(i).toLatin1();
 	}
 
@@ -203,12 +207,12 @@ bool BluetoothRobotCommunicationThread::uploadFile(const QString &sourceFile, co
 	send(commandBegin);
 	QByteArray commandBeginResponse = receive(BEGIN_DOWNLOAD_RESPONSE_SIZE);
 	if (commandBeginResponse.at(4) != SYSTEM_REPLY) {
-		return false;
+		return QString();
 	}
 
 	char handle = commandBeginResponse.at(7);
 	int sizeSent = 0;
-	while(sizeSent < data.size()) {
+	while (sizeSent < data.size()) {
 		const int sizeToSend = qMin(chunkSize, data.size() - sizeSent);
 		const int cmdContinueSize = 7 + sizeToSend;
 		QByteArray commandContinue(cmdContinueSize, 0);
@@ -219,7 +223,7 @@ bool BluetoothRobotCommunicationThread::uploadFile(const QString &sourceFile, co
 		commandContinue[4] = SYSTEM_COMMAND_REPLY;
 		commandContinue[5] = CONTINUE_DOWNLOAD;
 		commandContinue[6] = handle;
-		for (int i = 0; i < sizeToSend; i++) {
+		for (int i = 0; i < sizeToSend; ++i) {
 			commandContinue[7 + i] = data.at(sizeSent++);
 		}
 
@@ -227,9 +231,47 @@ bool BluetoothRobotCommunicationThread::uploadFile(const QString &sourceFile, co
 		QByteArray commandContinueResponse = receive(CONTINUE_DOWNLOAD_RESPONSE_SIZE);
 		if (commandContinueResponse.at(7) != SUCCESS &&
 				(commandContinueResponse.at(7) != END_OF_FILE && sizeSent == data.size())) {
-			return false;
+			return QString();
 		}
 	}
 
+	return devicePath;
+}
+
+bool BluetoothRobotCommunicationThread::runProgram(const QString &pathOnRobot)
+{
+	QByteArray command = Ev3DirectCommand::formCommand(21 + pathOnRobot.size(), 0, 0x08, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
+	command[index++] = 0xC0;  // opFILE            Opcode file related
+	command[index++] = 0x08;
+	command[index++] = 0x82;  // LC0(LOAD_IMAGE)   Command encoded as single byte constant
+	command[index++] = 0x01;  // LC2(USER_SLOT)    User slot (1 = program slot) encoded as single constant byte
+	command[index++] = 0x00;
+	command[index++] = 0x84;  // LCS               Encoding: String to follow (zero terminated)
+
+	for (int i = 0; i < pathOnRobot.size(); ++i) {
+		command[index++] = pathOnRobot.at(i).toLatin1();
+	}
+
+	command[index++] = 0x00;  // Zero termination of string above
+	command[index++] = 0x60;  // GV0(0), Return Image Size at Global Var offset 0. Offset encoded as single byte
+	command[index++] = 0x64;  // GV0(4), Return Address of image at Global Var offset 4. Offset encoded as single byte
+	command[index++] = 0x03;  // opPROGRAM_START Opcode
+	command[index++] = 0x01;
+	command[index++] = 0x60;  // GV0(0), Size of image at Global Var offset 0.
+	command[index++] = 0x64;  // GV0(4), Address of image at Global Var offset 4
+	command[index++] = 0x00;  // LC0(0), Debug mode (0 = normal) encoded as single byte constant
+	send(command);
+
 	return true;
+}
+
+void BluetoothRobotCommunicationThread::stopProgram()
+{
+	QByteArray command = Ev3DirectCommand::formCommand(9, 0, 0, 0
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	command[7] = 0x02;  // opPROGRAM_STOP Opcode
+	command[8] = 0x01;  // LC0(USER_SLOT), User slot = 1 (program slot)
+	send(command);
 }

@@ -38,9 +38,10 @@ QByteArray Ev3DirectCommand::formCommand(int size, int messageCounter, ushort gl
 
 void Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum opcode, QByteArray &command, int &index)
 {
-	if(opcode > enums::opcode::OpcodeEnum::TST) {
+	if (opcode > enums::opcode::OpcodeEnum::TST) {
 		command[index++] = (opcode >> 8) & 0xFF;
 	}
+
 	command[index++] = opcode & 0xFF;
 }
 
@@ -64,6 +65,7 @@ void Ev3DirectCommand::addStringParameter(QString const &parameter, QByteArray &
 	for (int i = 0; i < parameter.length(); i++) {
 		command[index++] = parameterBytes[i];
 	}
+
 	command[index++] = 0x00;
 }
 

@@ -40,7 +40,14 @@ public slots:
 	void checkConsistency();
 
 	/// Uploads file on the local machine to a remote device via Bluetooth.
-	bool uploadFile(const QString &sourceFile, const QString &targetDir);
+	/// @returns path to uploaded file on EV3 brick if it was uploaded successfully or empty string otherwise.
+	QString uploadFile(const QString &sourceFile, const QString &targetDir);
+
+	/// Starts program execution on EV3 brick. Does not upload the program itself.
+	bool runProgram(const QString &pathOnRobot);
+
+	/// Stops currently executing program in EV3 brick.
+	void stopProgram();
 
 private slots:
 	/// Checks if robot is connected
