@@ -105,8 +105,10 @@ void UsbRobotCommunicationThread::disconnect()
 		libusb_attach_kernel_driver(mHandle, EV3_INTERFACE_NUMBER);
 		libusb_close(mHandle);
 		libusb_exit(nullptr);
+		mHandle = nullptr;
 	}
 
+	mKeepAliveTimer->stop();
 	emit disconnected();
 }
 
@@ -141,7 +143,6 @@ void UsbRobotCommunicationThread::checkForConnection()
 		emit disconnected();
 		mKeepAliveTimer->stop();
 	}
-
 }
 
 void UsbRobotCommunicationThread::send(const QByteArray &buffer, unsigned responseSize, QByteArray &outputBuffer)
