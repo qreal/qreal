@@ -86,7 +86,7 @@ cp -fP $qtDir/5.5/gcc_64/lib/libQt5Widgets.so* .
 cp -fP $qtDir/5.5/gcc_64/lib/libQt5Xml.so* .
 cp -fP $qtDir/5.5/gcc_64/lib/libQt5DBus.so* .
 
-# Copying QReal librariesbuild-checker-installer
+# Copying QReal libraries
 cp -fP $qRealDir/bin/release/changelog.txt .
 cp -fP $qRealDir/bin/release/libqrgui-brand-manager.so* .
 cp -fP $qRealDir/bin/release/libqrgui-controller.so* .
@@ -172,5 +172,5 @@ cp -r $tasksDir ./tasks
 # Packing
 cd ..
 
-tar cvfz checker.tar.gz trikStudio-checker
+tar cvfz trik_checker.tar.gz trikStudio-checker
 rm -rf trikStudio-checker

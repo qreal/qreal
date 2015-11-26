@@ -15,7 +15,7 @@
 
 function show_help {
 	echo "Usage: check-solution.sh path/to/save/file"
-	echo "It will launch checker for all fields found in 'fields/<save file base name>' folder, return 0 if on all fields"
+        echo "It will launch checker for all fields found in '<trikStudio-checker>/fields/<save file base name>' folder, return 0 if on all fields"
 	echo "a program in a save is working correctly or return 1 if it fails on at least one field."
 	echo "Detailed report can be found in 'reports/<save file base name>/<field base name> file."
 	echo "Robot trajectory can be found in 'trajectories/<save file base name>/<field base name> file."
@@ -26,7 +26,9 @@ function show_help {
 
 savedPwd=$(pwd)
 
-cd "$(dirname "$0")"
+binFolder="$(dirname "$0")"
+fieldsFolder=$binFolder/../fields
+# cd "$(dirname "$0")"
 
 logFile=$savedPwd/checker-log.txt
 
@@ -56,18 +58,18 @@ if ! [ -f "$fileWithPath" ]; then
 	exit 2
 fi
 
-if [ -f ./2D-model ]; then
-	twoDModel=./2D-model
-	patcher=./patcher
+if [ -f $binFolder/2D-model ]; then
+        twoDModel=$binFolder/2D-model
+        patcher=$binFolder/patcher
 else
-	twoDModel=./2D-model-d
-	patcher=./patcher-d
+        twoDModel=$binFolder/2D-model-d
+        patcher=$binFolder/patcher-d
 fi
 
-chmod +x "$twoDModel"
-chmod +x "$patcher"
+#chmod +x "$twoDModel"
+#chmod +x "$patcher"
 
-export LD_LIBRARY_PATH=.
+export LD_LIBRARY_PATH=$binFolder
 
 rm -rf "$savedPwd/reports/$fileNameWithoutExtension"
 rm -rf "$savedPwd/trajectories/$fileNameWithoutExtension"
@@ -79,7 +81,7 @@ rm -f "$failedFieldFile"
 mkdir -p "$savedPwd/reports/$fileNameWithoutExtension"
 mkdir -p "$savedPwd/trajectories/$fileNameWithoutExtension"
 
-if [ ! -f "$savedPwd/fields/$fileNameWithoutExtension/no-check-self" ]; then
+if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
@@ -99,21 +101,21 @@ if [ ! -f "$savedPwd/fields/$fileNameWithoutExtension/no-check-self" ]; then
 	fi
 fi
 
-log "Looking for prepared testing fields..."
+log "Looking for prepared testing fields in $fieldsFolder..."
 
-if [ -d "$savedPwd/fields/$fileNameWithoutExtension" ]; then
-	log "Found $savedPwd/fields/$fileNameWithoutExtension folder"
+if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
+        log "Found $fieldsFolder/$fileNameWithoutExtension folder"
 
 	solutionCopy=$fileNameWithoutExtension-copy.qrs
 	cp -f $fileWithPath ./$solutionCopy
 
-	for i in $( ls "$savedPwd/fields/$fileNameWithoutExtension" ); do
+        for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
 		if [ "$i" == "no-check-self" ]; then
 			continue
 		fi
 
-		log "Field: $i, running $patcher $solutionCopy $savedPwd/fields/$fileNameWithoutExtension/$i..."
-		$patcher "$solutionCopy" "$savedPwd/fields/$fileNameWithoutExtension/$i"
+                log "Field: $i, running $patcher $solutionCopy $fieldsFolder/$fileNameWithoutExtension/$i..."
+                $patcher "$solutionCopy" "$fieldsFolder/$fileNameWithoutExtension/$i"
 		if [ $? -ne 0 ]; then
 			echo $internalErrorMessage
 			log "Patching failed, aborting"
