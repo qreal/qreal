@@ -35,5 +35,5 @@ QString BluetoothRealRobotModel::friendlyName() const
 
 int BluetoothRealRobotModel::priority() const
 {
-	return 7;  // Right after UsbRealRobotModel
+	return 6;  // Right after UsbRealRobotModel
 }

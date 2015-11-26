@@ -28,13 +28,18 @@ namespace blocks {
 class Ev3BlocksFactory;
 }
 
+namespace communication {
+class Ev3RobotCommunicationThread;
+}
+
 /// A base class for every generator from the EV3 kit.
 class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3GeneratorPluginBase : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
 
 public:
-	Ev3GeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName, int priority);
+	Ev3GeneratorPluginBase(const QString &usbRobotName, const QString &usbRobotFriendlyName, int usbPriority
+			, const QString &bluetoothRobotName, const QString &bluetoothRobotFriendlyName, int bluetoothPriority);
 	~Ev3GeneratorPluginBase();
 
 	QString kitId() const override;
@@ -46,10 +51,13 @@ public:
 	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 
 protected:
+	void onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model) override;
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
+	communication::Ev3RobotCommunicationThread *currentCommunicator();
 
 private:
-	QScopedPointer<robotModel::Ev3GeneratorRobotModel> mRobotModel;
+	QScopedPointer<robotModel::Ev3GeneratorRobotModel> mUsbRobotModel;
+	QScopedPointer<robotModel::Ev3GeneratorRobotModel> mBluetoothRobotModel;
 	blocks::Ev3BlocksFactory *mBlocksFactory;  // Transfers ownership
 };
 

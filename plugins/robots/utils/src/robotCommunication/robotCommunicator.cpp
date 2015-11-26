@@ -59,6 +59,11 @@ void RobotCommunicator::disconnect()
 	QMetaObject::invokeMethod(mRobotCommunicationThreadObject, "disconnect");
 }
 
+RobotCommunicationThreadInterface *RobotCommunicator::currentCommunicator() const
+{
+	return mRobotCommunicationThreadObject;
+}
+
 void RobotCommunicator::checkConsistency()
 {
 	if (mRobotCommunicationThreadObject) {

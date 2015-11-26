@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
+#include <utils/robotCommunication/robotCommunicator.h>
 #include <ev3GeneratorBase/ev3GeneratorPluginBase.h>
 
 namespace ev3 {
@@ -58,8 +58,6 @@ private:
 	bool compile(const QFileInfo &lmsFile);
 	/// @returns path to uploaded file on EV3 brick if it was uploaded successfully or empty string otherwise.
 	QString upload(const QFileInfo &lmsFile);
-
-	communication::BluetoothRobotCommunicationThread mCommunicator;
 
 	/// Action that launches code generator
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.

@@ -35,5 +35,5 @@ QString UsbRealRobotModel::friendlyName() const
 
 int UsbRealRobotModel::priority() const
 {
-	return 8;  // Right after generation mode
+	return 7;  // Right after generation mode
 }

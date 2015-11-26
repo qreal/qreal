@@ -65,25 +65,29 @@ void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buf
 void UsbRobotCommunicationThread::connect()
 {
 	if (mHandle) {
-		disconnect();
+		emit connected(true, QString());
+		return;
 	}
 
 	libusb_init(nullptr);
-	libusb_set_debug(nullptr, MAX_DEBUG_LEVEL);
+	// Uncomment it to debug usb communication: libusb_set_debug(nullptr, MAX_DEBUG_LEVEL);
 	mHandle = libusb_open_device_with_vid_pid(nullptr, EV3_VID, EV3_PID);
 	if (!mHandle) {
-		emit connected(false, "Cannot open usb device");
+		emit connected(false, tr("Cannot find EV3 device. Check robot connected and turned on and try again."));
 		return;
 	}
+
 	if (libusb_kernel_driver_active(mHandle,EV3_INTERFACE_NUMBER)) {
 		libusb_detach_kernel_driver(mHandle, EV3_INTERFACE_NUMBER);
 	}
+
 	if (libusb_set_configuration(mHandle, EV3_CONFIGURATION_NB) < 0) {
-		emit connected(false, "USB Device configuration problem");
+		emit connected(false, tr("USB Device configuration problem. Please contact developers."));
 		return;
 	}
+
 	if (libusb_claim_interface(mHandle, EV3_INTERFACE_NUMBER) < 0) {
-		emit connected(false, "USB Device interface problem");
+		emit connected(false, tr("USB Device interface problem. Please contact developers."));
 		return;
 	}
 
@@ -129,7 +133,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 	command[1] = 0;
 	command[2] = 0;
 	command[3] = 0;
-	command[4] = enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY;
+	command[4] = enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY;
 	command[5] = 0;
 	command[6] = 0;
 	command[7] = enums::opcode::OpcodeEnum::KEEP_ALIVE;
@@ -160,12 +164,12 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer) const
 
 QByteArray UsbRobotCommunicationThread::receive(int size) const
 {
-	//It's strange, but regardless of kind of response, it must have size = 1024 (EV3_PACKET_SIZE)
-	//If we set another size(For example, response[10]), program will throw error.
+	// It's strange, but regardless of kind of response, it must have size = 1024 (EV3_PACKET_SIZE)
+	// If we set another size(For example, response[10]), program will throw error.
 	unsigned char response[EV3_PACKET_SIZE];
 	int actualLength = 0;
 	libusb_bulk_transfer(mHandle, EV3_EP_IN, response, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT);
-	return QByteArray::fromRawData(reinterpret_cast<char*>(response), size);
+	return QByteArray::fromRawData(reinterpret_cast<char *>(response), size);
 }
 
 void UsbRobotCommunicationThread::checkConsistency()

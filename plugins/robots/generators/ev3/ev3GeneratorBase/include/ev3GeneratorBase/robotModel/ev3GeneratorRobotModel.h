@@ -15,17 +15,27 @@
 #pragma once
 
 #include <ev3Kit/robotModel/ev3RobotModelBase.h>
+#include "ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h"
 
 namespace ev3 {
+
+namespace communication {
+class Ev3RobotCommunicationThread;
+}
+
 namespace robotModel {
 
-class Ev3GeneratorRobotModel : public Ev3RobotModelBase
+class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3GeneratorRobotModel : public Ev3RobotModelBase
 {
 	Q_OBJECT
 
 public:
+	/// Takes ownership over \a communicator.
+	/// @param priority A priority of this model over other among their kit.
 	Ev3GeneratorRobotModel(const QString &kitId, const QString &robotId
-			, const QString &name, const QString &friendlyName, int priority);
+			, const QString &name, const QString &friendlyName, int priority
+			, communication::Ev3RobotCommunicationThread * const communicator);
+	~Ev3GeneratorRobotModel();
 
 	QString name() const override;
 	QString friendlyName() const override;
@@ -35,10 +45,14 @@ public:
 
 	int priority() const override;
 
+	/// Returns a pointer to communication thread object of this robot.
+	communication::Ev3RobotCommunicationThread *communicator();
+
 private:
 	const QString mName;
 	const QString mFriendlyName;
 	const int mPriority;
+	QScopedPointer<communication::Ev3RobotCommunicationThread> mCommunicator;
 };
 
 }

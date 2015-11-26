@@ -42,6 +42,7 @@ HEADERS += \
 	$$PWD/include/ev3Kit/blocks/ev3BlocksFactory.h \
 	$$PWD/include/ev3Kit/communication/commandConstants.h \
 	$$PWD/include/ev3Kit/communication/ev3DirectCommand.h \
+	$$PWD/include/ev3Kit/communication/ev3RobotCommunicationThread.h \
 	$$PWD/include/ev3Kit/communication/bluetoothRobotCommunicationThread.h \
 	$$PWD/include/ev3Kit/communication/usbRobotCommunicationThread.h \
 	$$PWD/src/blocks/details/speakerBlock.h \
@@ -70,6 +71,7 @@ SOURCES += \
 	$$PWD/src/blocks/details/ev3EnginesBackwardBlock.cpp \
 	$$PWD/src/blocks/details/ev3EnginesForwardBlock.cpp \
 	$$PWD/src/communication/ev3DirectCommand.cpp \
+	$$PWD/src/communication/ev3RobotCommunicationThread.cpp \
 	$$PWD/src/communication/bluetoothRobotCommunicationThread.cpp \
 	$$PWD/src/communication/usbRobotCommunicationThread.cpp \
 

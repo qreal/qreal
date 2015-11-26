@@ -35,79 +35,41 @@ DEFINES += ROBOTS_EV3_GENERATOR_BASE_LIBRARY
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3GeneratorBase_ru.ts
 
-#QT += widgets
-
-#CONFIG += c++11
-
-#include(../../../../../global.pri)
-
-#TEMPLATE = lib
-#CONFIG += plugin
-
-#DESTDIR = $$PWD/../../../../../bin/
-#TARGET = robots-ev3-generator-base
-
-#MOC_DIR = .moc
-#RCC_DIR = .moc
-#OBJECTS_DIR = .obj
-
-#LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
-#		-lrobots-generator-base -lrobots-interpreter-base \
-
-#DEFINES += ROBOTS_EV3_GENERATOR_BASE_LIBRARY
-
-#INCLUDEPATH += \
-#	$$PWD/include \
-#	$$PWD/../../generatorBase/include/ \
-#	$$PWD/../../../interpreters/interpreterBase/include \
-#	$$PWD/../../../../../ \
-#	$$PWD/../../../../../qrgui \
-#	$$PWD/../../../../../qrtext/include \
-
-## workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-## when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-#!macx {
-#	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../../../bin/
-#	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
-#}
-
-#TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3GeneratorBase_ru.ts
-
 HEADERS += \
-	include/ev3GeneratorBase/ev3GeneratorPluginBase.h \
-	include/ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h \
-	include/ev3GeneratorBase/ev3MasterGeneratorBase.h \
-	src/ev3GeneratorCustomizer.h \
-	src/simpleGenerators/drawLineGenerator.h \
-	src/simpleGenerators/drawPixelGenerator.h \
-	src/simpleGenerators/drawRectGenerator.h \
-	src/simpleGenerators/drawCircleGenerator.h \
-	src/simpleGenerators/enginesGenerator.h \
-	src/simpleGenerators/enginesStopGenerator.h \
-	src/simpleGenerators/waitForButtonGenerator.h \
-	src/converters/goToBlockNumberConverter.h \
-	src/simpleGenerators/waitForTouchSensorGenerator.h \
-	src/converters/outputPortNameConverter.h \
-	src/simpleGenerators/ifElementGenerator.h \
-    include/ev3GeneratorBase/ev3GeneratorFactory.h \
-    src/robotModel/ev3GeneratorRobotModel.h
+	$$PWD/include/ev3GeneratorBase/ev3GeneratorPluginBase.h \
+	$$PWD/include/ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h \
+	$$PWD/include/ev3GeneratorBase/ev3MasterGeneratorBase.h \
+	$$PWD/include/ev3GeneratorBase/ev3GeneratorFactory.h \
+	$$PWD/include/ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h \
+	$$PWD/src/ev3GeneratorCustomizer.h \
+	$$PWD/src/simpleGenerators/drawLineGenerator.h \
+	$$PWD/src/simpleGenerators/drawPixelGenerator.h \
+	$$PWD/src/simpleGenerators/drawRectGenerator.h \
+	$$PWD/src/simpleGenerators/drawCircleGenerator.h \
+	$$PWD/src/simpleGenerators/enginesGenerator.h \
+	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
+	$$PWD/src/simpleGenerators/waitForButtonGenerator.h \
+	$$PWD/src/converters/goToBlockNumberConverter.h \
+	$$PWD/src/simpleGenerators/waitForTouchSensorGenerator.h \
+	$$PWD/src/converters/outputPortNameConverter.h \
+	$$PWD/src/simpleGenerators/ifElementGenerator.h \
 
 SOURCES += \
-	src/ev3GeneratorPluginBase.cpp \
-	src/ev3MasterGeneratorBase.cpp \
-	src/ev3GeneratorCustomizer.cpp \
-	src/simpleGenerators/drawLineGenerator.cpp \
-	src/simpleGenerators/drawPixelGenerator.cpp \
-	src/simpleGenerators/drawRectGenerator.cpp \
-	src/simpleGenerators/drawCircleGenerator.cpp \
-	src/simpleGenerators/enginesGenerator.cpp \
-	src/simpleGenerators/enginesStopGenerator.cpp \
-	src/simpleGenerators/waitForButtonGenerator.cpp \
-	src/converters/goToBlockNumberConverter.cpp \
-	src/simpleGenerators/waitForTouchSensorGenerator.cpp \
-	src/converters/outputPortNameConverter.cpp \
-	src/simpleGenerators/ifElementGenerator.cpp \
-    src/ev3GeneratorFactory.cpp \
-    src/robotModel/ev3GeneratorRobotModel.cpp
+	$$PWD/src/ev3GeneratorPluginBase.cpp \
+	$$PWD/src/ev3MasterGeneratorBase.cpp \
+	$$PWD/src/ev3GeneratorCustomizer.cpp \
+	$$PWD/src/ev3GeneratorFactory.cpp \
+	$$PWD/src/robotModel/ev3GeneratorRobotModel.cpp \
+	$$PWD/src/simpleGenerators/drawLineGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawPixelGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawRectGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawCircleGenerator.cpp \
+	$$PWD/src/simpleGenerators/enginesGenerator.cpp \
+	$$PWD/src/simpleGenerators/enginesStopGenerator.cpp \
+	$$PWD/src/simpleGenerators/waitForButtonGenerator.cpp \
+	$$PWD/src/simpleGenerators/waitForTouchSensorGenerator.cpp \
+	$$PWD/src/simpleGenerators/ifElementGenerator.cpp \
+	$$PWD/src/converters/goToBlockNumberConverter.cpp \
+	$$PWD/src/converters/outputPortNameConverter.cpp \
 
 OTHER_FILES +=

@@ -12,7 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "ev3GeneratorRobotModel.h"
+#include "ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h"
+
+#include <ev3Kit/communication/ev3RobotCommunicationThread.h>
 
 using namespace ev3::robotModel;
 
@@ -20,11 +22,17 @@ Ev3GeneratorRobotModel::Ev3GeneratorRobotModel(const QString &kitId
 		, const QString &robotId
 		, const QString &name
 		, const QString &friendlyName
-		, int priority)
+		, int priority
+		, communication::Ev3RobotCommunicationThread * const communicator)
 	: Ev3RobotModelBase(kitId, robotId)
 	, mName(name)
 	, mFriendlyName(friendlyName)
 	, mPriority(priority)
+	, mCommunicator(communicator)
+{
+}
+
+Ev3GeneratorRobotModel::~Ev3GeneratorRobotModel()
 {
 }
 
@@ -53,3 +61,7 @@ int Ev3GeneratorRobotModel::priority() const
 	return mPriority;
 }
 
+ev3::communication::Ev3RobotCommunicationThread *Ev3GeneratorRobotModel::communicator()
+{
+	return mCommunicator.data();
+}

@@ -14,15 +14,22 @@
 
 #include "ev3GeneratorBase/ev3GeneratorPluginBase.h"
 
+#include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
+#include <ev3Kit/communication/usbRobotCommunicationThread.h>
 #include <ev3Kit/blocks/ev3BlocksFactory.h>
 
-#include "src/robotModel/ev3GeneratorRobotModel.h"
+#include "ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h"
 
 using namespace ev3;
 
-Ev3GeneratorPluginBase::Ev3GeneratorPluginBase(const QString &robotName, const QString &robotFriendlyName, int priority)
-	: mRobotModel(new robotModel::Ev3GeneratorRobotModel(kitId()
-			, "ev3GeneratorRobot", robotName, robotFriendlyName, priority))
+Ev3GeneratorPluginBase::Ev3GeneratorPluginBase(const QString &usbRobotName, const QString &usbRobotFriendlyName
+		, int usbPriority, const QString &bluetoothRobotName
+		, const QString &bluetoothRobotFriendlyName, int bluetoothPriority)
+	: mUsbRobotModel(new robotModel::Ev3GeneratorRobotModel(kitId(), "ev3UsbGeneratorRobot", usbRobotName
+			, usbRobotFriendlyName, usbPriority, new communication::UsbRobotCommunicationThread))
+	, mBluetoothRobotModel(new robotModel::Ev3GeneratorRobotModel(kitId(), "ev3BluetoothGeneratorRobot"
+			, bluetoothRobotName, bluetoothRobotFriendlyName
+			, bluetoothPriority, new communication::BluetoothRobotCommunicationThread))
 	, mBlocksFactory(new blocks::Ev3BlocksFactory)
 {
 }
@@ -38,7 +45,7 @@ QString Ev3GeneratorPluginBase::kitId() const
 
 QList<kitBase::robotModel::RobotModelInterface *> Ev3GeneratorPluginBase::robotModels()
 {
-	return { mRobotModel.data() };
+	return { mUsbRobotModel.data(), mBluetoothRobotModel.data() };
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *Ev3GeneratorPluginBase::blocksFactoryFor(
@@ -53,7 +60,27 @@ QList<kitBase::AdditionalPreferences *> Ev3GeneratorPluginBase::settingsWidgets(
 	return {};
 }
 
+void Ev3GeneratorPluginBase::onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	for (const qReal::ActionInfo &action : customActions()) {
+		if (action.isAction()) {
+			action.action()->setVisible(mUsbRobotModel.data() == &model || mBluetoothRobotModel.data() == &model);
+		} else {
+			action.menu()->setVisible(mUsbRobotModel.data() == &model || mBluetoothRobotModel.data() == &model);
+		}
+	}
+}
+
 void Ev3GeneratorPluginBase::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	Q_UNUSED(newFileInfo)
+}
+
+communication::Ev3RobotCommunicationThread *Ev3GeneratorPluginBase::currentCommunicator()
+{
+	if (auto robotModel = dynamic_cast<robotModel::Ev3GeneratorRobotModel *>(&mRobotModelManager->model())) {
+		return robotModel->communicator();
+	}
+
+	return nullptr;
 }

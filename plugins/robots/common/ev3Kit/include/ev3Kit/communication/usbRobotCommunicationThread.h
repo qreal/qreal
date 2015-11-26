@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <utils/robotCommunication/robotCommunicationThreadInterface.h>
+#include "ev3RobotCommunicationThread.h"
 
 class QTimer;
 class libusb_device_handle;
@@ -22,7 +22,7 @@ class libusb_device_handle;
 namespace ev3 {
 namespace communication {
 
-class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
+class UsbRobotCommunicationThread : public Ev3RobotCommunicationThread
 {
 	Q_OBJECT
 
@@ -44,10 +44,10 @@ private slots:
 	void checkForConnection();
 
 private:
-	void send(const QByteArray &buffer, unsigned responseSize, QByteArray &outputBuffer);
-	void send(const QByteArray &buffer) const;
+	void send(const QByteArray &buffer, unsigned responseSize, QByteArray &outputBuffer) override;
+	void send(const QByteArray &buffer) const override;
 
-	QByteArray receive(int size) const;
+	QByteArray receive(int size) const override;
 
 	libusb_device_handle *mHandle;
 

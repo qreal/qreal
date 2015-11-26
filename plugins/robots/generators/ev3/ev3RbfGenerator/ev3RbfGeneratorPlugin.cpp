@@ -18,13 +18,16 @@
 #include <QtCore/QDirIterator>
 #include <QtCore/QProcess>
 
+#include <ev3Kit/communication/ev3RobotCommunicationThread.h>
+#include <ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h>
 #include "ev3RbfMasterGenerator.h"
 
 using namespace ev3::rbf;
 using namespace qReal;
 
 Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
-	: Ev3GeneratorPluginBase("Ev3RbfGeneratorRobotModel", tr("Generation (EV3 RBF)"), 7)
+	: Ev3GeneratorPluginBase("Ev3RbfUsbGeneratorRobotModel", tr("Autonomous mode (USB)"), 9
+			, "Ev3RbfBluetoothGeneratorRobotModel", tr("Autonomous mode (Bluetooth)"), 8)
 	, mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
@@ -133,8 +136,9 @@ QString Ev3RbfGeneratorPlugin::uploadProgram()
 
 	const QString fileOnRobot = upload(fileInfo);
 	if (fileOnRobot.isEmpty()) {
+		const bool isUsb = mRobotModelManager->model().name().contains("usb", Qt::CaseInsensitive);
 		mMainWindowInterface->errorReporter()->addError(tr("Could not upload file to robot. "\
-				"Connect to a robot via Bluetooth."));
+				"Connect to a robot via %1.").arg(isUsb ? tr("USB") : tr("Bluetooth")));
 		return QString();
 	}
 
@@ -144,14 +148,17 @@ QString Ev3RbfGeneratorPlugin::uploadProgram()
 void Ev3RbfGeneratorPlugin::runProgram()
 {
 	const QString fileOnRobot = uploadProgram();
-	if (!fileOnRobot.isEmpty()) {
-		mCommunicator.runProgram(fileOnRobot);
+	communication::Ev3RobotCommunicationThread * const communicator = currentCommunicator();
+	if (!fileOnRobot.isEmpty() && communicator) {
+		communicator->runProgram(fileOnRobot);
 	}
 }
 
 void Ev3RbfGeneratorPlugin::stopRobot()
 {
-	mCommunicator.stopProgram();
+	if (communication::Ev3RobotCommunicationThread * const communicator = currentCommunicator()) {
+		communicator->stopProgram();
+	}
 }
 
 bool Ev3RbfGeneratorPlugin::javaInstalled()
@@ -193,12 +200,17 @@ QString Ev3RbfGeneratorPlugin::upload(const QFileInfo &lmsFile)
 	const QString targetPath = "../prjs/" + lmsFile.baseName();
 	const QString rbfPath = lmsFile.absolutePath() + "/" + lmsFile.baseName() + ".rbf";
 	bool connected = false;
-	auto connection = connect(&mCommunicator, &communication::BluetoothRobotCommunicationThread::connected
+	communication::Ev3RobotCommunicationThread *communicator = currentCommunicator();
+	if (!communicator) {
+		return QString();
+	}
+
+	auto connection = connect(communicator, &communication::Ev3RobotCommunicationThread::connected
 			, this, [&connected](bool success, const QString &) { connected = success; });
-	mCommunicator.connect();
+	communicator->connect();
 	disconnect(connection);
 	if (connected) {
-		return mCommunicator.uploadFile(rbfPath, targetPath);
+		return communicator->uploadFile(rbfPath, targetPath);
 	}
 
 	return QString();

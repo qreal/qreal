@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <utils/robotCommunication/robotCommunicationThreadInterface.h>
+#include "ev3RobotCommunicationThread.h"
 
 class QextSerialPort;
 class QTimer;
@@ -22,7 +22,7 @@ class QTimer;
 namespace ev3 {
 namespace communication {
 
-class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
+class BluetoothRobotCommunicationThread : public Ev3RobotCommunicationThread
 {
 	Q_OBJECT
 
@@ -39,27 +39,16 @@ public slots:
 	void allowLongJobs(bool allow = true);
 	void checkConsistency();
 
-	/// Uploads file on the local machine to a remote device via Bluetooth.
-	/// @returns path to uploaded file on EV3 brick if it was uploaded successfully or empty string otherwise.
-	QString uploadFile(const QString &sourceFile, const QString &targetDir);
-
-	/// Starts program execution on EV3 brick. Does not upload the program itself.
-	bool runProgram(const QString &pathOnRobot);
-
-	/// Stops currently executing program in EV3 brick.
-	void stopProgram();
-
 private slots:
 	/// Checks if robot is connected
 	void checkForConnection();
 
 private:
-	void send(const QByteArray &buffer, const unsigned responseSize
-			, QByteArray &outputBuffer);
-	void send(const QByteArray &buffer) const;
+	void send(const QByteArray &buffer, const unsigned responseSize, QByteArray &outputBuffer) override;
+	void send(const QByteArray &buffer) const override;
 	void keepAlive();
 
-	QByteArray receive(int size) const;
+	QByteArray receive(int size) const override;
 
 	QextSerialPort *mPort;
 
