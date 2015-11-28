@@ -70,12 +70,14 @@ public:
 	}
 
 	/// Calls visit() method of the given visitor for all children and self.
-	void acceptRecursively(AstVisitorInterface &visitor) const;
+	/// @param Shared pointer for 'this' instance.
+	void acceptRecursively(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer);
 
 	/// Calls visit() method of the given visitor for self.
 	/// The descendants should override this method to call corresponding visit() method overload.
 	/// See 'visitor' design pattern (http://www.oodesign.com/visitor-pattern.html).
-	virtual void accept(AstVisitorInterface &visitor) const;
+	/// @param Shared pointer for 'this' instance.
+	virtual void accept(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer);
 
 	static int nodesCount() {
 		return mNodesCount;

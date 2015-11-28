@@ -95,7 +95,7 @@ QStringList LuaPrinter::addSuffix(const QStringList &list)
 
 QString LuaPrinter::print(const QSharedPointer<qrtext::lua::ast::Node> &node)
 {
-	return printWithoutPop(node) ? popResult(*node) : QString();
+	return printWithoutPop(node) ? popResult(node) : QString();
 }
 
 QString LuaPrinter::castToString(const QSharedPointer<qrtext::lua::ast::Node> &node)
@@ -103,14 +103,14 @@ QString LuaPrinter::castToString(const QSharedPointer<qrtext::lua::ast::Node> &n
 	return printWithoutPop(node) ? toString(node) : QString();
 }
 
-void LuaPrinter::pushResult(const qrtext::lua::ast::Node &node, const QString &generatedCode)
+void LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &node, const QString &generatedCode)
 {
-	mGeneratedCode[&node] = generatedCode;
+	mGeneratedCode[node.data()] = generatedCode;
 }
 
-QString LuaPrinter::popResult(const qrtext::lua::ast::Node &node, bool wrapIntoBrackets)
+QString LuaPrinter::popResult(const QSharedPointer<qrtext::lua::ast::Node> &node, bool wrapIntoBrackets)
 {
-	const QString code = mGeneratedCode.take(&node);
+	const QString code = mGeneratedCode.take(node.data());
 	return wrapIntoBrackets ? "(" + code + ")" : code;
 }
 
@@ -118,7 +118,7 @@ QStringList LuaPrinter::popResults(const QList<QSharedPointer<qrtext::lua::ast::
 {
 	QStringList result;
 	for (const QSharedPointer<qrtext::lua::ast::Node> &node : nodes) {
-		result << popResult(*node);
+		result << popResult(node);
 	}
 
 	return result;
@@ -130,7 +130,7 @@ bool LuaPrinter::printWithoutPop(const QSharedPointer<qrtext::lua::ast::Node> &n
 		return false;
 	}
 
-	node->acceptRecursively(*this);
+	node->acceptRecursively(*this, node);
 	if (mGeneratedCode.keys().count() != 1 || mGeneratedCode.keys().first() != node.data()) {
 		QLOG_WARN() << "Lua printer got into the inconsistent state during printing."
 				<< mGeneratedCode.keys().count() << "pieces of code:";
@@ -145,35 +145,37 @@ bool LuaPrinter::printWithoutPop(const QSharedPointer<qrtext::lua::ast::Node> &n
 	return true;
 }
 
-void LuaPrinter::processTemplate(const qrtext::lua::ast::Node &node
+void LuaPrinter::processTemplate(const QSharedPointer<qrtext::lua::ast::Node> &node
 		, const QString &templateFileName
 		, QMap<QString, QSharedPointer<qrtext::lua::ast::Node>> const &bindings)
 {
 	QString result = readTemplate(templateFileName);
 	for (const QString &toReplace : bindings.keys()) {
-		result.replace(toReplace, popResult(*bindings[toReplace]));
+		result.replace(toReplace, popResult(bindings[toReplace]));
 	}
 
 	pushResult(node, result);
 }
 
-void LuaPrinter::processUnary(const qrtext::core::ast::UnaryOperator &node, const QString &templateFileName)
+void LuaPrinter::processUnary(const QSharedPointer<qrtext::core::ast::UnaryOperator> &node
+		, const QString &templateFileName)
 {
 	pushResult(node, readTemplate(templateFileName)
-			.replace("@@OPERAND@@", popResult(*node.operand(), needBrackets(node, *node.operand()))));
+			.replace("@@OPERAND@@", popResult(node->operand(), needBrackets(node, node->operand()))));
 }
 
-void LuaPrinter::processBinary(const qrtext::core::ast::BinaryOperator &node, const QString &templateFileName)
+void LuaPrinter::processBinary(const QSharedPointer<qrtext::core::ast::BinaryOperator> &node
+		, const QString &templateFileName)
 {
 	pushResult(node, readTemplate(templateFileName)
-			.replace("@@LEFT@@", popResult(*node.leftOperand(), needBrackets(node
-					, *node.leftOperand(), qrtext::core::Associativity::left)))
-			.replace("@@RIGHT@@", popResult(*node.rightOperand(), needBrackets(node
-					, *node.rightOperand(), qrtext::core::Associativity::right))));
+			.replace("@@LEFT@@", popResult(node->leftOperand(), needBrackets(node
+					, node->leftOperand(), qrtext::core::Associativity::left)))
+			.replace("@@RIGHT@@", popResult(node->rightOperand(), needBrackets(node
+					, node->rightOperand(), qrtext::core::Associativity::right))));
 }
 
-bool LuaPrinter::needBrackets(const qrtext::lua::ast::Node &parent
-		, const qrtext::lua::ast::Node &child
+bool LuaPrinter::needBrackets(const QSharedPointer<qrtext::lua::ast::Node> &parent
+		, const QSharedPointer<qrtext::lua::ast::Node> &child
 		, qrtext::core::Associativity childAssociativity) const
 {
 	const int parentPrecedence = mPrecedenceTable.precedence(parent);
@@ -182,196 +184,196 @@ bool LuaPrinter::needBrackets(const qrtext::lua::ast::Node &parent
 			&& mPrecedenceTable.associativity(parent) != childAssociativity);
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Number &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Number> &node)
 {
-	pushResult(node, node.stringRepresentation());
+	pushResult(node, node->stringRepresentation());
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::UnaryMinus &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::UnaryMinus> &node)
 {
 	processUnary(node, "unaryMinus.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Not &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Not> &node)
 {
 	processUnary(node, "not.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::BitwiseNegation &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::BitwiseNegation> &node)
 {
 	processUnary(node, "bitwiseNegation.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Length &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Length> &node)
 {
 	processUnary(node, "length.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::LogicalAnd &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::LogicalAnd> &node)
 {
 	processBinary(node, "logicalAnd.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::LogicalOr &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::LogicalOr> &node)
 {
 	processBinary(node, "logicalOr.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Addition &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Addition> &node)
 {
 	processBinary(node, "addition.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Subtraction &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Subtraction> &node)
 {
 	processBinary(node, "subtraction.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Multiplication &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Multiplication> &node)
 {
 	processBinary(node, "multiplication.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Division &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Division> &node)
 {
 	processBinary(node, "division.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::IntegerDivision &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::IntegerDivision> &node)
 {
 	processBinary(node, "integerDivision.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Modulo &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Modulo> &node)
 {
 	processBinary(node, "modulo.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Exponentiation &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Exponentiation> &node)
 {
 	processBinary(node, "exponentiation.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::BitwiseAnd &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::BitwiseAnd> &node)
 {
 	processBinary(node, "bitwiseAnd.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::BitwiseOr &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::BitwiseOr> &node)
 {
 	processBinary(node, "bitwiseOr.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::BitwiseXor &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::BitwiseXor> &node)
 {
 	processBinary(node, "bitwiseXor.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::BitwiseLeftShift &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::BitwiseLeftShift> &node)
 {
 	processBinary(node, "bitwiseLeftShift.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::BitwiseRightShift &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::BitwiseRightShift> &node)
 {
 	processBinary(node, "bitwiseRightShift.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Concatenation &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Concatenation> &node)
 {
 	pushResult(node, readTemplate("concatenation.t")
-			.replace("@@LEFT@@", toString(node.leftOperand()))
-			.replace("@@RIGHT@@", toString(node.rightOperand())));
+			.replace("@@LEFT@@", toString(node->leftOperand()))
+			.replace("@@RIGHT@@", toString(node->rightOperand())));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Equality &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Equality> &node)
 {
 	processBinary(node, "equality.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::LessThan &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::LessThan> &node)
 {
 	processBinary(node, "lessThan.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::LessOrEqual &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::LessOrEqual> &node)
 {
 	processBinary(node, "lessOrEqual.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Inequality &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Inequality> &node)
 {
 	processBinary(node, "inequality.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::GreaterThan &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::GreaterThan> &node)
 {
 	processBinary(node, "greaterThan.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::GreaterOrEqual &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::GreaterOrEqual> &node)
 {
 	processBinary(node, "greaterOrEqual.t");
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::IntegerNumber &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::IntegerNumber> &node)
 {
-	pushResult(node, node.stringRepresentation());
+	pushResult(node, node->stringRepresentation());
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::FloatNumber &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FloatNumber> &node)
 {
-	pushResult(node, node.stringRepresentation());
+	pushResult(node, node->stringRepresentation());
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::FieldInitialization &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FieldInitialization> &node)
 {
-	const QString templatePath = node.key().data()
+	const QString templatePath = node->key().data()
 			? "explicitKeyFieldInitialization.t"
 			: "implicitKeyFieldInitialization.t";
-	processTemplate(node, templatePath, { {"@@KEY@@", node.key()}, {"@@VALUE@@", node.value()} });
+	processTemplate(node, templatePath, { {"@@KEY@@", node->key()}, {"@@VALUE@@", node->value()} });
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::TableConstructor &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::TableConstructor> &node)
 {
-	const QStringList initializers = popResults(qrtext::as<qrtext::lua::ast::Node>(node.initializers()));
+	const QStringList initializers = popResults(qrtext::as<qrtext::lua::ast::Node>(node->initializers()));
 	pushResult(node, readTemplate("tableConstructor.t")
 			.replace("@@COUNT@@", QString::number(initializers.count()))
 			.replace("@@INITIALIZERS@@", initializers.join(readTemplate("fieldInitializersSeparator.t"))));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::String &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::String> &node)
 {
-	pushResult(node, readTemplate("string.t").replace("@@VALUE@@", node.string()));
+	pushResult(node, readTemplate("string.t").replace("@@VALUE@@", node->string()));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::True &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::True> &node)
 {
 	pushResult(node, readTemplate("true.t"));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::False &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::False> &node)
 {
 	pushResult(node, readTemplate("false.t"));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Nil &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Nil> &node)
 {
 	pushResult(node, readTemplate("nil.t"));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Identifier &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Identifier> &node)
 {
 	/// @todo: if some function or method will have same id as some reserved variable it will be replaced too...
-	pushResult(node, mReservedVariablesConverter->convert(node.name()));
+	pushResult(node, mReservedVariablesConverter->convert(node->name()));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::FunctionCall &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FunctionCall> &node)
 {
-	const QString expression = popResult(*node.function());
-	const QStringList arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node.arguments()));
+	const QString expression = popResult(node->function());
+	const QStringList arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node->arguments()));
 
-	const qrtext::lua::ast::Identifier *idNode = dynamic_cast<qrtext::lua::ast::Identifier *>(node.function().data());
+	const qrtext::lua::ast::Identifier *idNode = dynamic_cast<qrtext::lua::ast::Identifier *>(node->function().data());
 	const QString reservedFunctionCall = idNode
 			? mReservedFunctionsConverter.convert(idNode->name(), arguments)
 			: QString();
@@ -385,37 +387,37 @@ void LuaPrinter::visit(const qrtext::lua::ast::FunctionCall &node)
 	}
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::MethodCall &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::MethodCall> &node)
 {
-	const QString object = popResult(*node.object());
-	const QString method = popResult(*node.methodName());
-	const QStringList arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node.arguments()));
+	const QString object = popResult(node->object());
+	const QString method = popResult(node->methodName());
+	const QStringList arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node->arguments()));
 	pushResult(node, readTemplate("methodCall.t")
 			.replace("@@OBJECT@@", object)
 			.replace("@@METHOD@@", method)
 			.replace("@@ARGUMENTS@@", arguments.join(readTemplate("argumentsSeparator.t"))));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Assignment &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Assignment> &node)
 {
-	processTemplate(node, "assignment.t", { {"@@VARIABLE@@", node.variable()}, {"@@VALUE@@", node.value()} });
+	processTemplate(node, "assignment.t", { {"@@VARIABLE@@", node->variable()}, {"@@VALUE@@", node->value()} });
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::Block &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Block> &node)
 {
-	const QStringList expressions = popResults(node.children());
+	const QStringList expressions = popResults(node->children());
 	pushResult(node, expressions.join(readTemplate("statementsSeparator.t")));
 }
 
-void LuaPrinter::visit(const qrtext::lua::ast::IndexingExpression &node)
+void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::IndexingExpression> &node)
 {
-	processTemplate(node, "indexingExpression.t", { {"@@TABLE@@", node.table()}, {"@@INDEXER@@", node.indexer()} });
+	processTemplate(node, "indexingExpression.t", { {"@@TABLE@@", node->table()}, {"@@INDEXER@@", node->indexer()} });
 }
 
 QString LuaPrinter::toString(const QSharedPointer<qrtext::lua::ast::Node> &node)
 {
 	const QSharedPointer<qrtext::core::types::TypeExpression> type = mTextLanguage.type(node);
-	const QString value = popResult(*node);
+	const QString value = popResult(node);
 	if (type->is<qrtext::lua::types::String>()) {
 		return value;
 	}

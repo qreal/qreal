@@ -1,1 +1,1 @@
-CP_EQF(@@LEFT@@,@@RIGHT@@,condition)
+CP_EQ@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)

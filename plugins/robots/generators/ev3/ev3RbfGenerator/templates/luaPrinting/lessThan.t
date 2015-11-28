@@ -1,1 +1,1 @@
-CP_LTF(@@LEFT@@,@@RIGHT@@,condition)
+CP_LTF@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)

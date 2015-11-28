@@ -49,10 +49,13 @@ void SemanticNode::addLabel()
 
 QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
-	return (mLabeled
-			? utils::StringUtils::addIndent(customizer.factory()->labelGenerator(mId
-					, customizer)->generate(), indent, indentString) + "\n"
-			: QString()) + toStringImpl(customizer, indent, indentString);
+	const QString code = toStringImpl(customizer, indent, indentString);
+	/// @todo: Probably some more generalized entity? Prepended and appended code generators in general?
+	auto prependedCodeGenerator = customizer.factory()->labelGenerator(mId, customizer);
+	const QString prependedCode = mLabeled
+			? utils::StringUtils::addIndent(prependedCodeGenerator->generate(), indent, indentString)
+			: QString();
+	return prependedCode + code;
 }
 
 SemanticNode *SemanticNode::findNodeFor(const Id &id)

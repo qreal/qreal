@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtCore/QtGlobal>
+#include <QtCore/QSharedPointer>
 
 namespace qrtext {
 namespace core {
@@ -33,10 +34,10 @@ class AstVisitorInterface
 public:
 	virtual ~AstVisitorInterface() {}
 
-	virtual void visit(const ast::Node &node)           { Q_UNUSED(node); }
-	virtual void visit(const ast::Expression &node)     { Q_UNUSED(node); }
-	virtual void visit(const ast::BinaryOperator &node) { Q_UNUSED(node); }
-	virtual void visit(const ast::UnaryOperator &node)  { Q_UNUSED(node); }
+	virtual void visit(const QSharedPointer<ast::Node> &)           {}
+	virtual void visit(const QSharedPointer<ast::Expression> &)     {}
+	virtual void visit(const QSharedPointer<ast::BinaryOperator> &) {}
+	virtual void visit(const QSharedPointer<ast::UnaryOperator> &)  {}
 };
 
 }

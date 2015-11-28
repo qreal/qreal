@@ -49,10 +49,10 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/enginesGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
 	$$PWD/src/simpleGenerators/waitForButtonGenerator.h \
-	$$PWD/src/converters/goToBlockNumberConverter.h \
 	$$PWD/src/simpleGenerators/waitForTouchSensorGenerator.h \
-	$$PWD/src/converters/outputPortNameConverter.h \
 	$$PWD/src/simpleGenerators/ifElementGenerator.h \
+	$$PWD/src/converters/goToBlockNumberConverter.h \
+	$$PWD/src/converters/outputPortNameConverter.h \
 
 SOURCES += \
 	$$PWD/src/ev3GeneratorPluginBase.cpp \

@@ -35,8 +35,7 @@ public:
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 
-private:
-	QString const mGeneratorName;
+	const QString mGeneratorName;
 };
 
 }

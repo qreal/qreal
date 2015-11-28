@@ -1,0 +1,1 @@
+MOVE32_32(0, @@RESULT@@) /* Warning: Length computation is not supported by EV3 bytecode! */

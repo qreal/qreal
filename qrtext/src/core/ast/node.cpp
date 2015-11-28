@@ -66,18 +66,18 @@ void Node::connect(QList<Range> const &ranges)
 	qSort(mRanges.begin(), mRanges.end(), [](Range a, Range b) { return a.start() < b.start(); });
 }
 
-void Node::acceptRecursively(AstVisitorInterface &visitor) const
+void Node::acceptRecursively(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer)
 {
 	for (const auto &node : children()) {
 		if (node.data()) {
-			node->acceptRecursively(visitor);
+			node->acceptRecursively(visitor, node);
 		}
 	}
 
-	accept(visitor);
+	accept(visitor, pointer);
 }
 
-void Node::accept(AstVisitorInterface &visitor) const
+void Node::accept(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer)
 {
-	visitor.visit(*this);
+	visitor.visit(qSharedPointerCast<ast::Node>(pointer));
 }

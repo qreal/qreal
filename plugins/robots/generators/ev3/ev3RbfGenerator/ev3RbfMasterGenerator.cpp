@@ -14,15 +14,18 @@
 
 #include "ev3RbfMasterGenerator.h"
 
-#include <qrtext/languageToolboxInterface.h>
-#include <qrutils/stringUtils.h>
 #include <QtCore/QDir>
 
+#include <qrtext/languageToolboxInterface.h>
+#include <qrutils/stringUtils.h>
 #include <generatorBase/parts/initTerminateCodeGenerator.h>
 #include <generatorBase/gotoControlFlowGenerator.h>
 #include <generatorBase/parts/subprograms.h>
 #include <generatorBase/parts/threads.h>
 #include <generatorBase/parts/variables.h>
+
+#include "ev3RbfGeneratorCustomizer.h"
+#include "lua/ev3LuaProcessor.h"
 
 using namespace ev3::rbf;
 using namespace generatorBase;
@@ -38,7 +41,17 @@ Ev3RbfMasterGenerator::Ev3RbfMasterGenerator(qrRepo::RepoApi const &repo
 		, QString const &generatorName)
 	: Ev3MasterGeneratorBase(repo, errorReporter, parserErrorReporter
 			, robotModelManager, textLanguage, diagramId, generatorName)
+	, mLuaProcessorInstance(nullptr)
 {
+}
+
+void Ev3RbfMasterGenerator::initialize()
+{
+	Ev3MasterGeneratorBase::initialize();
+	if (mLuaProcessorInstance) {
+		mLuaProcessorInstance->configure(mCustomizer->factory()->variables()
+				, dynamic_cast<Ev3RbfGeneratorFactory *>(mCustomizer->factory()));
+	}
 }
 
 QString Ev3RbfMasterGenerator::generate(const QString &indentString)
@@ -89,7 +102,8 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 			mCustomizer->factory()->terminateCode(), 1, indentString));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1, indentString));
-	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
+	resultCode.replace("@@VARIABLES@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->variables()->generateVariableString(), 1, "\t"));
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
@@ -111,4 +125,17 @@ QString Ev3RbfMasterGenerator::targetPath()
 bool Ev3RbfMasterGenerator::supportsGotoGeneration() const
 {
 	return true;
+}
+
+generatorBase::lua::LuaProcessor *Ev3RbfMasterGenerator::createLuaProcessor()
+{
+	mLuaProcessorInstance = new lua::Ev3LuaProcessor(mErrorReporter, mTextLanguage
+			, mParserErrorReporter, this);
+	return mLuaProcessorInstance;
+}
+
+GeneratorCustomizer *Ev3RbfMasterGenerator::createCustomizer()
+{
+	return new Ev3RbfGeneratorCustomizer(mRepo, mErrorReporter
+			, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
 }

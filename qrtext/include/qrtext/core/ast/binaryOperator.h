@@ -57,9 +57,9 @@ public:
 	}
 
 private:
-	void accept(AstVisitorInterface &visitor) const override
+	void accept(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer) override
 	{
-		visitor.visit(*this);
+		visitor.visit(qSharedPointerCast<BinaryOperator>(pointer));
 	}
 
 	QSharedPointer<Node> mLeftOperand;

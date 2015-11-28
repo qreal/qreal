@@ -39,10 +39,22 @@ TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3RbfGener
 HEADERS += \
 	ev3RbfGeneratorPlugin.h \
 	ev3RbfMasterGenerator.h \
+	ev3RbfGeneratorCustomizer.h \
+	ev3RbfGeneratorFactory.h \
+	lua/ev3LuaProcessor.h \
+	lua/ev3LuaPrinter.h \
+	lua/ev3ReservedFunctionsConverter.h \
+	simpleGenerators/prependedCodeGenerator.h \
 
 SOURCES += \
 	ev3RbfGeneratorPlugin.cpp \
 	ev3RbfMasterGenerator.cpp \
+	ev3RbfGeneratorCustomizer.cpp \
+	ev3RbfGeneratorFactory.cpp \
+	lua/ev3LuaProcessor.cpp \
+	lua/ev3LuaPrinter.cpp \
+	lua/ev3ReservedFunctionsConverter.cpp \
+	simpleGenerators/prependedCodeGenerator.cpp \
 
 RESOURCES += \
 	ev3RbfGenerator.qrc \

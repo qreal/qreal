@@ -19,6 +19,10 @@
 namespace ev3 {
 namespace rbf {
 
+namespace lua {
+class Ev3LuaProcessor;
+}
+
 class Ev3RbfMasterGenerator : public Ev3MasterGeneratorBase
 {
 public:
@@ -30,13 +34,17 @@ public:
 			, qReal::Id const &diagramId
 			, QString const &generatorName);
 
-	/// Starts code generation process. Returns path to file with generated code
-	/// if it was successfull and an empty string otherwise.
+	void initialize() override;
 	QString generate(const QString &indentString) override;
+	generatorBase::lua::LuaProcessor *createLuaProcessor() override;
 
 protected:
+	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
+
+private:
+	lua::Ev3LuaProcessor *mLuaProcessorInstance;
 };
 
 }

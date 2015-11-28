@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/ev3Rbf">
+    <qresource prefix="/ev3/rbf">
         <file>thirdparty/assembler.jar</file>
         <file>thirdparty/assembler.logo</file>
         <file>thirdparty/bytecodes.c</file>

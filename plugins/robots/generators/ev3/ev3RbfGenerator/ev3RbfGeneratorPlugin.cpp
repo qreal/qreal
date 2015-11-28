@@ -108,7 +108,7 @@ text::LanguageInfo Ev3RbfGeneratorPlugin::language() const
 
 QString Ev3RbfGeneratorPlugin::generatorName() const
 {
-	return "ev3Rbf";
+	return "ev3/rbf";
 }
 
 QString Ev3RbfGeneratorPlugin::uploadProgram()
@@ -173,7 +173,7 @@ bool Ev3RbfGeneratorPlugin::javaInstalled()
 
 bool Ev3RbfGeneratorPlugin::copySystemFiles(const QString &destination)
 {
-	QDirIterator iterator(":/ev3Rbf/thirdparty");
+	QDirIterator iterator(":/ev3/rbf/thirdparty");
 	while (iterator.hasNext()) {
 		const QFileInfo fileInfo(iterator.next());
 		const QString destFile = destination + "/" + fileInfo.fileName();

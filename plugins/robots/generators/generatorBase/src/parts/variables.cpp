@@ -42,8 +42,12 @@ QString Variables::generateVariableString() const
 	const QStringList reservedNames = mLuaToolbox.specialIdentifiers();
 
 	for (const QString &constantName : mLuaToolbox.specialConstants()) {
+		const QString value = mLuaToolbox.variableTypes()[constantName]->is<qrtext::lua::types::Float>()
+				? readTemplateIfExists("floatFormat.t", "@@VALUE@@")
+						.replace("@@VALUE@@", mLuaToolbox.value<QString>(constantName))
+				: mLuaToolbox.value<QString>(constantName);
 		result += QString(constantDeclaration(variables[constantName])).replace("@@NAME@@", constantName)
-				.replace("@@VALUE@@", mLuaToolbox.value<QString>(constantName));
+				.replace("@@VALUE@@", value);
 	}
 
 	for (const QString &curVariable : variables.keys()) {

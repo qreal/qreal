@@ -1,1 +1,1 @@
-CP_GTF(@@LEFT@@,@@RIGHT@@,condition)
+CP_GTF@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)
