@@ -19,6 +19,7 @@
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrgui/models/models.h>
+#include <qrrepo/exceptions/qrrepoException.h>
 
 using namespace qReal;
 
@@ -96,7 +97,7 @@ bool ProjectManager::open(const QString &fileName)
 		return openProject(dequotedFileName);
 	}
 
-	return true;
+	return false;
 }
 
 bool ProjectManager::openProject(const QString &fileName)
@@ -127,7 +128,12 @@ bool ProjectManager::openProject(const QString &fileName)
 		return true;
 	}
 
-	mModels.repoControlApi().open(fileName);
+	try {
+		mModels.repoControlApi().open(fileName);
+	} catch (qrRepo::QrRepoException) {
+		return false;
+	}
+
 	mModels.reinit();
 
 	if (!pluginsEnough() || !checkVersions() || !checkForUnknownElements()) {
@@ -147,7 +153,6 @@ bool ProjectManager::openProject(const QString &fileName)
 	QLOG_DEBUG() << "Sending after open signal...";
 
 	emit afterOpen(fileName);
-
 
 	return true;
 }

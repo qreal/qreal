@@ -40,6 +40,7 @@ trajectoryFile=$(pwd)/trajectory
 failedFieldFile=$(pwd)/failed-field
 
 internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
+incorrectSaveFileMessage="[ { \"level\": \"error\", \"message\": \"Некорректный или испорченный файл с сохранением\" } ]"
 solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
 solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение неправильно работает на одном из тестовых полей\" } ]"
 
@@ -83,6 +84,12 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
 
 	exitCode=$?
+
+	if [ $exitCode -eq 2 ]; then
+		log "Incorrect or corrupt save file $fileWithPath"
+		echo $incorrectSaveFileMessage
+		exit 1
+	fi
 
 	if [ $exitCode -gt 100 ]; then
 		log "Checker internal error, exit code: $exitCode"

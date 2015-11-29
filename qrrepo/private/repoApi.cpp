@@ -20,7 +20,7 @@ using namespace qrRepo::details;
 using namespace qReal;
 
 RepoApi::RepoApi(const QString &workingFile, bool ignoreAutosave)
-    : mRepository(new Repository(workingFile))
+	: mRepository(new Repository(workingFile))
 	, mIgnoreAutosave(ignoreAutosave)
 {
 }

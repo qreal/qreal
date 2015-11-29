@@ -112,7 +112,9 @@ int main(int argc, char *argv[])
 	const QString report = parser.isSet(reportOption) ? parser.value(reportOption) : QString();
 	const QString trajectory = parser.isSet(trajectoryOption) ? parser.value(trajectoryOption) : QString();
 	twoDModel::Runner runner(report, trajectory);
-	runner.interpret(qrsFile, backgroundMode);
+	if (!runner.interpret(qrsFile, backgroundMode)) {
+		return 2;
+	}
 
 	const int exitCode = app.exec();
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";

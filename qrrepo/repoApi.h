@@ -29,7 +29,7 @@ class Repository;
 class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 {
 public:
-    explicit RepoApi(const QString &workingFile, bool ignoreAutosave = false);
+	explicit RepoApi(const QString &workingFile, bool ignoreAutosave = false);
 	~RepoApi();
 
 	/// Replacing property values that contains input value with new value.

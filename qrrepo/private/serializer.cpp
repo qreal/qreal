@@ -38,12 +38,12 @@ using namespace qReal;
 
 const QString unsavedDir = "%1/unsaved/%2";
 
-Serializer::Serializer(const QString &saveDirName)
+Serializer::Serializer(const QString &workingFile)
 	// Syncroniously running instances of QReal can clear temp dirs of each other.
 	// So generating new UUID as temp dir name.
 	: mWorkingDir(unsavedDir.arg(PlatformInfo::invariantSettingsPath("pathToTempFolder")
 			, QUuid::createUuid().toString()))
-	, mWorkingFile(saveDirName)
+	, mWorkingFile(workingFile)
 {
 	clearWorkingDir();
 	QDir dir(PlatformInfo::applicationDirPath());
