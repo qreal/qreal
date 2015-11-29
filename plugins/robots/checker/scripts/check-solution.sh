@@ -103,6 +103,7 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	if [ $exitCode -ne 0 ]; then
 		log "Solution failed on its own field, aborting"
 		echo $solutionFailedOnOwnFieldMessage
+		sync
 		cat "$reportFile"
 		exit 1
 	fi
@@ -154,6 +155,7 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 			cat "$(pwd)/reports/$fileNameWithoutExtension/$currentField" > "$reportFile"
 			cat "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" > "$trajectoryFile"
 			echo "$(pwd)/fields/$fileNameWithoutExtension/$i" > "$failedFieldFile"
+			sync
 			cat "$reportFile"
 			rm -f "$solutionCopy"
 			exit 1
@@ -167,5 +169,6 @@ else
 	log "No testing fields found"
 fi
 
+sync
 cat "$reportFile"
 exit 0
