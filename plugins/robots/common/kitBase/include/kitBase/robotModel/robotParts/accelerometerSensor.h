@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "scalarSensor.h"
+#include "VectorSensor.h"
 #include "kitBase/kitBaseDeclSpec.h"
 
 namespace kitBase {
@@ -23,7 +23,7 @@ namespace robotParts {
 
 /// Abstract accelerometer sensor.
 /// @todo: Make it vector
-class ROBOTS_KIT_BASE_EXPORT AccelerometerSensor : public ScalarSensor
+class ROBOTS_KIT_BASE_EXPORT AccelerometerSensor : public VectorSensor
 {
 	Q_OBJECT
 	Q_CLASSINFO("name", "accelerometer")

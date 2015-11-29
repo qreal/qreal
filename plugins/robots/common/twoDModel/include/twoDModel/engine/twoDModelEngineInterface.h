@@ -50,6 +50,9 @@ public:
 	/// @returns The distance in cm till the closest object in the scan field of 255 if no such.
 	virtual int readSonarSensor(const kitBase::robotModel::PortInfo &port) const = 0;
 
+    /// Accelerometer
+    virtual QVector<int> readAccelerometerSensor() const = 0;
+
 	/// Returns the configured color sensor`s value on the given port.
 	/// It  may be the percent of some color under the sensor or the dominating color enum value.
 	virtual int readColorSensor(const kitBase::robotModel::PortInfo &port) const = 0;

@@ -184,7 +184,15 @@ void RobotModel::countBeep()
 		mBeepTime -= Timeline::timeInterval;
 	} else {
 		emit playingSoundChanged(false);
-	}
+    }
+}
+
+void RobotModel::countSpeedAndAcceleration()
+{
+    mAcceleration.setX(mPhysicsEngine->shift().toPointF().x() - mSpeed.x());
+    mAcceleration.setY(mPhysicsEngine->shift().toPointF().y() - mSpeed.y());
+    mSpeed.setX(mPhysicsEngine->shift().toPointF().x());
+    mSpeed.setY(mPhysicsEngine->shift().toPointF().y());
 }
 
 QPointF RobotModel::rotationCenter() const
@@ -245,10 +253,17 @@ void RobotModel::markerUp()
 	mMarker = Qt::transparent;
 }
 
+QVector<int> RobotModel::accelerometerReading()
+{
+//    QVector<int> result;
+//    result <<
+    return {mAcceleration.x() * 100, mAcceleration.y() * 100, 0};
+}
+
 void RobotModel::nextStep()
 {
 	// Changing position quietly, they must not be caught by UI here.
-	mPos += mPhysicsEngine->shift().toPointF();
+    mPos += mPhysicsEngine->shift().toPointF();
 	mAngle += mPhysicsEngine->rotation();
 	emit positionRecalculated(mPos, mAngle);
 }
@@ -291,6 +306,7 @@ void RobotModel::recalculateParams()
 			, rotationCenter(), mAngle, robotBoundingPath());
 
 	nextStep();
+    countSpeedAndAcceleration();
 	countMotorTurnover();
 	countBeep();
 }

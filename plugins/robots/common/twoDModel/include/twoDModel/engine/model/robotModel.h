@@ -115,6 +115,9 @@ public:
 	/// Transfers ownership.
 	QGraphicsItem *startPositionMarker() const;
 
+    /// Returns accelerometer sesnsor data.
+    QVector<int> accelerometerReading();
+
 public slots:
 	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
 
@@ -157,6 +160,7 @@ private:
 
 	void countNewForces();
 	void countBeep();
+    void countSpeedAndAcceleration();
 
 	void countMotorTurnover();
 
@@ -187,6 +191,8 @@ private:
 	int mBeepTime;
 	bool mIsOnTheGround;
 	QColor mMarker;
+    QPointF mSpeed;
+    QPointF mAcceleration;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
 
