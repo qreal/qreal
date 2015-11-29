@@ -255,8 +255,6 @@ void RobotModel::markerUp()
 
 QVector<int> RobotModel::accelerometerReading()
 {
-//    QVector<int> result;
-//    result <<
     return {mAcceleration.x() * 100, mAcceleration.y() * 100, 0};
 }
 
