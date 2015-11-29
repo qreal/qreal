@@ -577,6 +577,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		endResize();
 	}
 
+	updateBySelection();
 	mDragState = None;
 }
 
@@ -740,6 +741,11 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 	case ItemParentHasChanged:
 		updateByNewParent();
 		return value;
+
+	case ItemSelectedHasChanged: {
+		updateBySelection();
+		return QGraphicsItem::itemChange(change, value);
+	}
 
 	default:
 		return QGraphicsItem::itemChange(change, value);
@@ -1073,6 +1079,21 @@ void NodeElement::updateByNewParent()
 	}
 }
 
+void NodeElement::updateBySelection()
+{
+	initEmbeddedLinkers();
+	bool singleSelected = isSelected();
+	for (const QGraphicsItem *item : scene()->selectedItems()) {
+		if (dynamic_cast<const Element *>(item) && item != this) {
+			singleSelected = false;
+			break;
+		}
+	}
+
+	setVisibleEmbeddedLinkers(singleSelected);
+	setHideNonHardLabels(!singleSelected && SettingsManager::value("hideNonHardLabels").toBool());
+}
+
 void NodeElement::updateChildrenOrder()
 {
 	QStringList ids;
@@ -1137,19 +1158,6 @@ void NodeElement::setColorRect(bool value)
 void NodeElement::checkConnectionsToPort() // it is strange method
 {
 	mPortHandler->checkConnectionsToPort();
-}
-
-void NodeElement::select(const bool singleSelected)
-{
-	initEmbeddedLinkers();
-	setVisibleEmbeddedLinkers(singleSelected);
-	setHideNonHardLabels(!singleSelected && SettingsManager::value("hideNonHardLabels").toBool());
-	Element::select(singleSelected);
-}
-
-void NodeElement::setSelectionState(const bool selected)
-{
-	Element::setSelectionState(selected);
 }
 
 NodeData NodeElement::data()

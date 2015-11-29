@@ -97,7 +97,6 @@ private:
 	QRectF mParentContents;
 	QString mOldText;
 	bool mIsStretched;
-	bool mParentIsSelected;
 	bool mWasMoved;
 	bool mShouldMove;
 	const Id mId;
