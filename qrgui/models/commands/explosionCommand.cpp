@@ -63,12 +63,12 @@ bool ExplosionCommand::processExplosion(bool add)
 
 void ExplosionCommand::saveTargetShape()
 {
-	if (mLogicalApi.mutableLogicalRepoApi().stringProperty(mTarget, "shape") != QString()) {
+	if (!mLogicalApi.mutableLogicalRepoApi().stringProperty(mTarget, "shape").isEmpty()) {
 		return;
 	}
-	QDomDocument shape;
 
-	QString filePath = ":/generated/shapes/" + mSource.element() + "Class.sdf";
+	QDomDocument shape;
+	const QString filePath = ":/generated/shapes/" + mSource.element() + "Class.sdf";
 	QFile file(filePath);
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {

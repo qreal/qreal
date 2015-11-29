@@ -538,8 +538,7 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 					, isFromLogicalModel, createCommand);
 			mController.execute(insertCommand);
 			if (explosionTarget != Id()) {
-					NodeElement * const element = getNodeById(id);
-					element->updateShape();
+				getNodeById(id)->updateShape();
 			}
 		} else {
 			mController.execute(createCommand);

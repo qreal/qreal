@@ -140,8 +140,8 @@ NodeElement* NodeElement::copyAndPlaceOnDiagram(const QPointF &offset)
 
 void NodeElement::updateShape()
 {
-	Id target = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
-	QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
+	const Id target = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
 	QDomDocument picture;
 	picture.setContent(shape);
 	mRenderer.load(picture);

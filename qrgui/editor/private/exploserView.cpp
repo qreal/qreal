@@ -139,7 +139,7 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 	} else if (element->id().element() == "Subprogram" && mCustomizer.allowSubprogramShapeChanging()) {
 		const Id target = mLogicalApi.logicalRepoApi().outgoingExplosion(element->logicalId());
 		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
-		connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
+		connect(changeAppearancePaletteAction, &QAction::triggered, this, &ExploserView::changeAppearanceActionTriggered);
 		changeAppearancePaletteAction->setData(target.toVariant());
 	}
 

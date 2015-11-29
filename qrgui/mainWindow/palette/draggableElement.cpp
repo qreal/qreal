@@ -159,6 +159,7 @@ void DraggableElement::changeAppearancePaletteActionTriggered()
 	} else {
 		propertyValue = mEditorManagerProxy.shape(id);
 	}
+
 	mMainWindow.openShapeEditor(id, propertyValue, &mEditorManagerProxy, false);
 }
 
@@ -349,8 +350,9 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 
 			menu->exec(QCursor::pos());
 		} else if (elementId.element() == "Subprogram" && explosionTarget().idSize() == 4 &&
-				   mMainWindow.toolManager().customizer()->allowSubprogramShapeChanging()) {
-			QMenu *menu = new QMenu();
+				   mMainWindow.toolManager().customizer()->allowSubprogramShapeChanging())
+		{
+			QMenu * const menu = new QMenu();
 			QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
 			connect(changeAppearancePaletteAction, &QAction::triggered
 					, this,  &DraggableElement::changeAppearancePaletteActionTriggered);

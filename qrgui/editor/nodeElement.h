@@ -195,6 +195,7 @@ public:
 	 */
 	IdList sortedChildren() const;
 
+	/// Updates subprogram shape, shape is stored in the target property "shape"
 	void updateShape();
 
 public slots:
