@@ -26,4 +26,4 @@ function show_help {
 
 [ "$#" -lt 1 ] && show_help || :
 
-bin/check-solution.sh "$1"
+$(dirname "$0")/bin/check-solution.sh "$1"

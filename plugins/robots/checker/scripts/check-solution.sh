@@ -46,7 +46,7 @@ solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Ре
 
 [ "$#" -lt 1 ] && show_help || :
 
-fileWithPath=$(pwd)/$1
+fileWithPath=$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
 
