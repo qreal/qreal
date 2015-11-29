@@ -53,8 +53,9 @@ void GraphicalModelView::rowsInserted(const QModelIndex &parent, int start, int 
 		// and graphical model hierarchy. It is not always easy since
 		// some elements have no correspondences in another model, and tree
 		// structures may be very different by themselves.
-		LogicalModel * const mLogicalModel = static_cast<LogicalModel *>(mModel);
-		mLogicalModel->addElementToModel(parentLogicalId, logicalId, logicalId, name, QPoint(0, 0));
+		LogicalModel * const logicalModel = static_cast<LogicalModel *>(mModel);
+		ElementInfo elementInfo(logicalId, logicalId, parentLogicalId, name, QPointF());
+		logicalModel->addElementToModel(elementInfo);
 	}
 }
 

@@ -54,14 +54,12 @@ public:
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
 	virtual qReal::Id createElement(const QString &
 			, const QPointF &scenePos
-			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
 			, bool executeImmediately = true
 			, const QPointF &shiftToParent = QPointF()
 			, const QString &explosionTargetUuid = QString());
 
 	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
-			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommandPointer = 0
 			, bool executeImmediately = true);
 

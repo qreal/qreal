@@ -55,7 +55,8 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &type)
 
 	const Id newElementId(type, QUuid::createUuid().toString());
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), elementFriendlyName, QPointF(0, 0));
+	ElementInfo newElement(newElementId, Id(), parent, elementFriendlyName, QPointF());
+	mLogicalModel.addElementToModel(newElement);
 	return newElementId;
 }
 

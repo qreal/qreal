@@ -59,14 +59,6 @@ public:
 
 	virtual ~NodeElement();
 
-	/**
-	 * Makes copy of current NodeElement.
-	 * @param toCursorPos Indicates if need to place new element at cursor position.
-	 * @param searchForParents Parameter of createElement method in EditorViewScene.
-	 * @return Copy of current NodeElement.
-	 */
-	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
-
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
@@ -197,7 +189,6 @@ public:
 
 public slots:
 	void switchGrid(bool isChecked);
-	NodeElement *copyAndPlaceOnDiagram(const QPointF &offset);
 
 private slots:
 	void updateNodeEdges();

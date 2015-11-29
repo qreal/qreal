@@ -38,7 +38,7 @@ Id PasteEdgeCommand::pasteNewInstance()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		const Id typeId = mEdgeData.id.type();
-		resultId = mScene->createElement(typeId.toString(), mEdgeData.pos + mOffset, true, &mCreateCommand, false);
+		resultId = mScene->createElement(typeId.toString(), mEdgeData.pos + mOffset, &mCreateCommand, false);
 		if (mCreateCommand) {
 			mCreateCommand->redo();
 			mCopiedIds->insert(mEdgeData.id, resultId);

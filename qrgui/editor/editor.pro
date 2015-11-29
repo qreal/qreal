@@ -65,7 +65,6 @@ HEADERS += \
 	$$PWD/private/umlPortHandler.h \
 	$$PWD/private/borderChecker.h \
 	$$PWD/private/portHandler.h \
-	$$PWD/private/copyHandler.h \
 	$$PWD/ports/portFactory.h \
 	$$PWD/ports/statLine.h \
 	$$PWD/ports/statPoint.h \
@@ -118,7 +117,6 @@ SOURCES += \
 	$$PWD/private/umlPortHandler.cpp \
 	$$PWD/private/borderChecker.cpp \
 	$$PWD/private/portHandler.cpp \
-	$$PWD/private/copyHandler.cpp \
 	$$PWD/ports/portFactory.cpp \
 	$$PWD/ports/statLine.cpp \
 	$$PWD/ports/statPoint.cpp \

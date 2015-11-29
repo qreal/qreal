@@ -37,7 +37,6 @@
 #include "editor/ports/portFactory.h"
 
 #include "editor/private/resizeHandler.h"
-#include "editor/private/copyHandler.h"
 
 #include "editor/commands/resizeCommand.h"
 #include "editor/commands/foldCommand.h"
@@ -121,21 +120,6 @@ void NodeElement::initPortsVisibility()
 	foreach (const QString &portType, mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())) {
 		mPortsVisibility.insert(portType, false);
 	}
-}
-
-NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
-{
-	CopyHandler copyHandler(*this, mGraphicalAssistApi);
-	return copyHandler.clone(toCursorPos, searchForParents);
-}
-
-NodeElement* NodeElement::copyAndPlaceOnDiagram(const QPointF &offset)
-{
-	NodeElement* copy = clone(false, false);
-	QPointF pos = copy->scenePos();
-	copy->setPos(pos.x() + offset.x(), pos.y() + offset.y());
-
-	return copy;
 }
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const

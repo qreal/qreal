@@ -46,8 +46,8 @@ public:
 
 	void connectToLogicalModel(LogicalModel * const logicalModel);
 	void updateElements(const Id &logicalId, const QString &name);
-	void addElementToModel(const Id &parent, const Id &id,const Id &logicalId, const QString &name
-			, const QPointF &position);
+	void addElementToModel(const ElementInfo &elementInfo) override;
+	void addElementsToModel(const QList<ElementInfo> &elementsInfo) override;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
@@ -75,8 +75,14 @@ private:
 	void setNewName(const Id &id, const QString newValue);
 	virtual modelsImplementation::AbstractModelItem *createModelItem(const Id &id
 			, modelsImplementation::AbstractModelItem *parentItem) const;
-	void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
-			, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
+	/// Adds entries to row model without inserting rows and notifying about that connected views.
+	/// \a parentItem and \a item are output parameters.
+	void createElementWithoutCommit(ElementInfo &elementInfo
+			, modelsImplementation::AbstractModelItem *&parentItem
+			, modelsImplementation::AbstractModelItem *&result);
+	void initializeElement(const ElementInfo &elementInfo
+			, modelsImplementation::AbstractModelItem *parentItem
+			, modelsImplementation::AbstractModelItem *item);
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
 			, details::modelsImplementation::AbstractModelItem *child);
 };

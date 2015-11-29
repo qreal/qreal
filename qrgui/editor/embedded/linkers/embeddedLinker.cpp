@@ -247,7 +247,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (scene->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			mInitialClickPoint = event->scenePos();
-			const Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
+			const Id edgeId = scene->createElement(type, event->scenePos(), &mCreateEdgeCommand, false);
 			mCreateEdgeCommand->redo();
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}

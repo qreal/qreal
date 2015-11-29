@@ -42,7 +42,7 @@ Id ModelsAssistApi::createElement(const Id &parent, const Id &id, const Id &logi
 		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 	}
 
-	mModel.addElementToModel(parent, newId, realLogicalId, name, position);
+	mModel.addElementToModel(ElementInfo(newId, realLogicalId, parent, name, position));
 	return newId;
 }
 

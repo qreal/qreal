@@ -102,7 +102,7 @@ void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)
 AbstractModelItem *GraphicalModel::createModelItem(const Id &id, AbstractModelItem *parentItem) const
 {
 	return new GraphicalModelItem(id, Id(id.type(), QUuid::createUuid().toString())
-								  , static_cast<GraphicalModelItem *>(parentItem));
+			, static_cast<GraphicalModelItem *>(parentItem));
 }
 
 void GraphicalModel::updateElements(const Id &logicalId, const QString &name)
@@ -116,46 +116,81 @@ void GraphicalModel::updateElements(const Id &logicalId, const QString &name)
 	}
 }
 
-void GraphicalModel::addElementToModel(const Id &parent, const Id &id
-		, const Id &logicalId, const QString &name, const QPointF &position)
+void GraphicalModel::addElementToModel(const ElementInfo &elementInfo)
 {
-	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
-	AbstractModelItem *parentItem = mModelItems[parent];
+	AbstractModelItem *parentItem = nullptr;
+	AbstractModelItem *newGraphicalModelItem = nullptr;
+	ElementInfo copy(elementInfo);
+	createElementWithoutCommit(copy, parentItem, newGraphicalModelItem);
 
-	GraphicalModelItem *newGraphicalModelItem = nullptr;
-	Id actualLogicalId = logicalId;
-	if (logicalId == Id::rootId() || logicalId.isNull()) {
-		AbstractModelItem *newItem = createModelItem(id, parentItem);
-		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
-		actualLogicalId = newGraphicalModelItem->logicalId();
-	} else {
-		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
-		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
-	}
+	const int newRow = parentItem->children().size();
+	beginInsertRows(index(parentItem), newRow, newRow);
+	initializeElement(copy, parentItem, newGraphicalModelItem);
 
-	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
-	emit elementAdded(id);
+	endInsertRows();
+	emit elementAdded(elementInfo.id());
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId
-		, modelsImplementation::AbstractModelItem *parentItem, modelsImplementation::AbstractModelItem *item
-		, const QString &name, const QPointF &position)
+void GraphicalModel::addElementsToModel(const QList<ElementInfo> &elementsInfo)
 {
-	const int newRow = parentItem->children().size();
+	QMultiMap<AbstractModelItem *, QPair<AbstractModelItem *, ElementInfo>> parentsToChildrenMap;
+	for (const ElementInfo &elementInfo : elementsInfo) {
+		AbstractModelItem *parentItem = nullptr;
+		AbstractModelItem *newGraphicalModelItem = nullptr;
+		ElementInfo copy(elementInfo);
+		createElementWithoutCommit(copy, parentItem, newGraphicalModelItem);
+		parentsToChildrenMap.insertMulti(parentItem, qMakePair(newGraphicalModelItem, copy));
+	}
 
-	beginInsertRows(index(parentItem), newRow, newRow);
+	for (AbstractModelItem * const parentItem : parentsToChildrenMap.keys()) {
+		const QList<QPair<AbstractModelItem *, ElementInfo>> children = parentsToChildrenMap.values();
+		const int newRow = parentItem->children().size();
+		beginInsertRows(index(parentItem), newRow, newRow + children.size() - 1);
+		for (const QPair<AbstractModelItem *, ElementInfo> &child : children) {
+			initializeElement(child.second, parentItem, child.first);
+		}
+
+		endInsertRows();
+
+		for (const QPair<AbstractModelItem *, ElementInfo> &child : children) {
+			emit elementAdded(child.second.id());
+		}
+	}
+}
+
+void GraphicalModel::createElementWithoutCommit(ElementInfo &elementInfo
+		, AbstractModelItem *&parentItem
+		, AbstractModelItem *&result)
+{
+	Q_ASSERT_X(mModelItems.contains(elementInfo.parent()), Q_FUNC_INFO, "Adding element to non-existing parent");
+	parentItem = mModelItems[elementInfo.parent()];
+
+	Id actualLogicalId = elementInfo.logicalId();
+	if (elementInfo.logicalId() == Id::rootId() || elementInfo.logicalId().isNull()) {
+		result = createModelItem(elementInfo.id(), parentItem);
+		actualLogicalId = static_cast<GraphicalModelItem *>(result)->logicalId();
+		elementInfo.withLogicalId(actualLogicalId);
+	} else {
+		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
+		result = new GraphicalModelItem(elementInfo.id(), elementInfo.logicalId(), graphicalParentItem);
+	}
+}
+
+void GraphicalModel::initializeElement(const ElementInfo &elementInfo
+		, AbstractModelItem *parentItem
+		, AbstractModelItem *item)
+{
 	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), id, logicalId);
-	mApi.setName(id, name);
-	mApi.setFromPort(id, 0.0);
-	mApi.setToPort(id, 0.0);
-	mApi.setFrom(id, Id::rootId());
-	mApi.setTo(id, Id::rootId());
-	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-	mApi.setPosition(id, position);
-	mApi.setConfiguration(id, QVariant(QPolygon()));
-	mModelItems.insert(id, item);
-	endInsertRows();
+	mApi.addChild(parentItem->id(), elementInfo.id(), elementInfo.logicalId());
+	mApi.setName(elementInfo.id(), elementInfo.name());
+	mApi.setFromPort(elementInfo.id(), 0.0);
+	mApi.setToPort(elementInfo.id(), 0.0);
+	mApi.setFrom(elementInfo.id(), Id::rootId());
+	mApi.setTo(elementInfo.id(), Id::rootId());
+	mApi.setProperty(elementInfo.id(), "links", IdListHelper::toVariant(IdList()));
+	mApi.setPosition(elementInfo.id(), elementInfo.position());
+	mApi.setConfiguration(elementInfo.id(), QVariant(QPolygon()));
+	mModelItems.insert(elementInfo.id(), item);
 }
 
 QVariant GraphicalModel::data(const QModelIndex &index, int role) const

@@ -36,7 +36,7 @@ Id PasteNodeCommand::pasteNewInstance()
 	Id resultId = mResult;
 	if (!mCreateCommand && explosionTargetExists()) {
 		const Id typeId = mNodeData.id.type();
-		resultId = mScene->createElement(typeId.toString(), newPos(), true, &mCreateCommand, false
+		resultId = mScene->createElement(typeId.toString(), newPos(), &mCreateCommand, false
 				, vectorFromContainer(), mNodeData.explosion.toString());
 		if (mCreateCommand) {
 			mCreateCommand->redo();

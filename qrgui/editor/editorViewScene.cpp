@@ -20,7 +20,6 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsDropShadowEffect>
 #include <QtWidgets/QMenu>
-#include <QtWidgets/QMessageBox>
 #include <math.h>
 #include <qmath.h>
 
@@ -365,21 +364,24 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	return result;
 }
 
+// Цель: оставить 1-2 метода createElement, а лучше вообще избавиться от них, все делая через модели!
+
 qReal::Id EditorViewScene::createElement(const QString &str)
 {
-	mLastCreatedFromLinker = createElement(str, mCreatePoint, true, &mLastCreatedFromLinkerCommand);
+	// Этот метод надо удалить, вынести содержимое в лямбду
+	mLastCreatedFromLinker = createElement(str, mCreatePoint, &mLastCreatedFromLinkerCommand);
 	mShouldReparentItems = false;
 	return mLastCreatedFromLinker;
 }
 
 qReal::Id EditorViewScene::createElement(const QString &str
 		, const QPointF &scenePos
-		, bool searchForParents
 		, CreateElementCommand **createCommand
 		, bool executeImmediately
 		, const QPointF &shiftToParent
 		, const QString &explosionTargetUuid)
 {
+	// Что тут за стыдобища? Зачем упаковывать, а потом распаковывать? изжить!
 	Id typeId = Id::loadFromString(str);
 	Id objectId(typeId.editor(), typeId.diagram(), typeId.element(), QUuid::createUuid().toString());
 
@@ -399,13 +401,13 @@ qReal::Id EditorViewScene::createElement(const QString &str
 	stream << explosionTargetUuid;
 
 	mimeData->setData(mimeType, data);
-	createElement(mimeData, scenePos, searchForParents, createCommand, executeImmediately);
+	createElement(mimeData, scenePos, createCommand, executeImmediately);
 	delete mimeData;
 
 	return objectId;
 }
 
-void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &scenePos , bool searchForParents
+void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &scenePos
 		, CreateElementCommand **createCommandPointer, bool executeImmediately)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
@@ -425,18 +427,23 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 	inStream >> explosionTargetUuid;
 
 	const Id id = Id::loadFromString(uuid);
+	// Все посюда надо куда-то в общее место засунуть
 
+	// Это условие вполне перелезет в команду
 	if (!mEditorManager.hasElement(id.type())) {
 		return;
 	}
 
+	// На это пофиг
 	QLOG_TRACE() << "Created element, id = " << id << ", position = " << scenePos;
 
+	// Этот хлам надо в первую пачку
 	const Id explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);
 
 	if (mEditorManager.getPatternNames().contains(id.element())) {
+		// Код с паттерном 100% идет в команду, уже даже там. При этом нажо зарефакторить модели для создания сразу пачки.
 		CreateAndUpdateGroupCommand *createGroupCommand = new CreateAndUpdateGroupCommand(
 				*this, mModels.logicalModelAssistApi(), mModels.graphicalModelAssistApi(), mModels.exploser()
 				, mRootId, mRootId, id, isFromLogicalModel, scenePos);
@@ -444,41 +451,27 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 			mController.execute(createGroupCommand);
 		}
 	} else {
+		// В этой ветке вся суть происходит в createSingleElement, остальной код отвечает за поиск родителя в позиции
+		// под курсором, и далее после вставки элемент стекается над родителем.
 		Element *newParent = nullptr;
 
+		// Это вообще стыд какой-то, надо изжить
 		const ElementImpl * const impl = mEditorManager.elementImpl(id);
 		const bool isNode = impl->isNode();
 		delete impl;
 
-		if (searchForParents) {
-			// if element is node then we should look for parent for him
-			if (isNode) {
-				foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
-					NodeElement *el = dynamic_cast<NodeElement*>(item);
-					if (el && canBeContainedBy(el->id(), id)) {
-						newParent = el;
-						break;
-					}
-				}
-			}
-
-			if (newParent && dynamic_cast<NodeElement*>(newParent)) {
-				if (!canBeContainedBy(newParent->id(), id)) {
-					QString text;
-					text += "Element of type \"" + id.element() + "\" can not be a child of \""
-							+ newParent->id().element() + "\"";
-
-					QMessageBox::critical(0, "Error!", text);
-					return;
-				}
-
-				//temporary solution for chaotic changes of coordinates of created elements with edge menu
-				if (dynamic_cast<EdgeElement*>(newParent)) {
-					newParent = nullptr;
+		// if element is node then we should look for parent for him
+		if (isNode) {
+			foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
+				NodeElement *el = dynamic_cast<NodeElement*>(item);
+				if (el && canBeContainedBy(el->id(), id)) {
+					newParent = el;
+					break;
 				}
 			}
 		}
 
+		// лол, !newParent. scenePos -- точно ли удачное название? не может ли он уже быть в родителе?
 		const QPointF position = !newParent
 				? scenePos
 				: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
@@ -488,7 +481,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 		createSingleElement(id, name, isNode, position, parentId, isFromLogicalModel
 				, explosionTarget, createCommandPointer, executeImmediately);
 
-		NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+		// stackBefore должно умереть
+		NodeElement *parentNode = dynamic_cast<NodeElement *>(newParent);
 		if (parentNode) {
 			Element *nextNode = parentNode->getPlaceholderNextElement();
 			if (nextNode) {
@@ -503,6 +497,8 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 		, const Id &explosionTarget, CreateElementCommand **createCommandPointer
 		, bool executeImmediately)
 {
+	// Создание идет через команды все равно! Не должен ли этот код (вычищенный и не отвратный) лежать там?
+	// Параметры надо как-то упаковать в структурку, эксплозер изжить нахрен, если получится, если нет, то модели с ним тоже в одно место.
 	CreateElementCommand *createCommand = new CreateElementCommand(
 				mModels.logicalModelAssistApi()
 				, mModels.graphicalModelAssistApi()
@@ -521,6 +517,7 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 	mExploser.handleCreationWithExplosion(createCommand, id, explosionTarget);
 	if (executeImmediately) {
 		if (isNode) {
+			// Почему все ноды всегда якобы вставляются? Надо это убрать.
 			const QSize size = mEditorManager.iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
 					*this, mModels.logicalModelAssistApi(), mModels.graphicalModelAssistApi(), mModels.exploser()
@@ -1003,7 +1000,7 @@ void EditorViewScene::createEdge(const QString &idStr)
 	const QPointF start = mMouseMovementManager->firstPoint();
 	const QPointF end = mMouseMovementManager->lastPoint();
 	CreateElementCommand *createCommand;
-	const Id id = createElement(idStr, start, true, &createCommand);
+	const Id id = createElement(idStr, start, &createCommand);
 	Element *edgeElement = getElem(id);
 	EdgeElement *edge = dynamic_cast <EdgeElement *>(edgeElement);
 	edge->setSrc(nullptr);
