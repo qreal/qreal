@@ -15,11 +15,9 @@
 #include "serializer.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QDebug>
-#include <QtCore/QPointF>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QUuid>
-#include <QtGui/QPolygon>
+#include <QtCore/QFileInfo>
 
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/exception/exception.h>
@@ -121,7 +119,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)
 {
 	clearWorkingDir();
-	if (!mWorkingFile.isEmpty()) {
+	if (QFileInfo::exists(mWorkingFile)) {
 		decompressFile(mWorkingFile);
 	}
 

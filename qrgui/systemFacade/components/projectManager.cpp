@@ -317,7 +317,8 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
-	return saveAs(saveFileName(tr("Select file to save current model to")));}
+	return saveAs(saveFileName(tr("Select file to save current model to")));
+}
 
 bool ProjectManager::saveAs(const QString &fileName)
 {
@@ -325,6 +326,7 @@ bool ProjectManager::saveAs(const QString &fileName)
 	if (workingFileName.isEmpty()) {
 		return false;
 	}
+
 	mAutosaver.removeAutoSave();
 	mModels.repoControlApi().saveTo(workingFileName);
 	setSaveFilePath(workingFileName);
