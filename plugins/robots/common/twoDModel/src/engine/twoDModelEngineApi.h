@@ -44,6 +44,7 @@ public:
 	int readTouchSensor(const kitBase::robotModel::PortInfo &port) const override;
 	int readSonarSensor(const kitBase::robotModel::PortInfo &port) const override;
     QVector<int> readAccelerometerSensor() const override;
+    QVector<int> readGyroscopeSensor() const override;
 	int readColorSensor(const kitBase::robotModel::PortInfo &port) const override;
 	int readLightSensor(const kitBase::robotModel::PortInfo &port) const override;
 

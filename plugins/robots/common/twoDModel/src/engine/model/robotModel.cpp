@@ -193,6 +193,7 @@ void RobotModel::countSpeedAndAcceleration()
     mAcceleration.setY(mPhysicsEngine->shift().toPointF().y() - mSpeed.y());
     mSpeed.setX(mPhysicsEngine->shift().toPointF().x());
     mSpeed.setY(mPhysicsEngine->shift().toPointF().y());
+    mAngularSpeed = mPhysicsEngine->rotation();
 }
 
 QPointF RobotModel::rotationCenter() const
@@ -255,7 +256,12 @@ void RobotModel::markerUp()
 
 QVector<int> RobotModel::accelerometerReading()
 {
-    return {mAcceleration.x() * 100, mAcceleration.y() * 100, 0};
+    return {static_cast<int>(mAcceleration.x() * 100), static_cast<int>(mAcceleration.y() * accelerometerConstant), 0};
+}
+
+QVector<int> RobotModel::gyroscopeReading()
+{
+    return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
 }
 
 void RobotModel::nextStep()

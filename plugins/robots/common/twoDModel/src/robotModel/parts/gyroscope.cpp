@@ -29,6 +29,5 @@ Gyroscope::Gyroscope(const DeviceInfo &info
 
 void Gyroscope::read()
 {
-	/// @todo: Emulate gyroscope in 2D model
-	emit newData(0);
+    emit newData(mEngine.readGyroscopeSensor());
 }

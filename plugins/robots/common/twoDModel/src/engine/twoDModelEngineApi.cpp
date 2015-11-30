@@ -110,6 +110,11 @@ QVector<int> TwoDModelEngineApi::readAccelerometerSensor() const
     return mModel.robotModels()[0]->accelerometerReading();
 }
 
+QVector<int> TwoDModelEngineApi::readGyroscopeSensor() const
+{
+    return mModel.robotModels()[0]->gyroscopeReading();
+}
+
 int TwoDModelEngineApi::spoilSonarReading(const int distance) const
 {
 	const qreal ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);

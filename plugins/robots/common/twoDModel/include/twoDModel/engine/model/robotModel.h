@@ -118,6 +118,9 @@ public:
     /// Returns accelerometer sesnsor data.
     QVector<int> accelerometerReading();
 
+    /// Returns gyroscope sensor data.
+    QVector<int> gyroscopeReading();
+
 public slots:
 	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
 
@@ -188,6 +191,7 @@ private:
 
 	QPointF mPos;
 	qreal mAngle;
+    qreal mAngularSpeed;
 	int mBeepTime;
 	bool mIsOnTheGround;
 	QColor mMarker;

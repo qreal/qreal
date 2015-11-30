@@ -26,6 +26,8 @@ const qreal robotHeight = 50;
 const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 const QSize displaySize(200, 300);
 const qreal beepWavesSize = 120;
+const qreal gyroscopeConstant = 100;
+const qreal accelerometerConstant = 100;
 
 const qreal robotWheelDiameterInPx = 16;
 const qreal robotWheelDiameterInCm = 5.6;

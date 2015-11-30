@@ -53,6 +53,9 @@ public:
     /// Returns 3 integer values that represents acceleration on three coordinate axes
     virtual QVector<int> readAccelerometerSensor() const = 0;
 
+    /// Returns 3 integer values that represents angular velocity on three coordinate axes
+    virtual QVector<int> readGyroscopeSensor() const = 0;
+
 	/// Returns the configured color sensor`s value on the given port.
 	/// It  may be the percent of some color under the sensor or the dominating color enum value.
 	virtual int readColorSensor(const kitBase::robotModel::PortInfo &port) const = 0;
