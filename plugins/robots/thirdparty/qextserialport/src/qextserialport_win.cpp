@@ -298,6 +298,7 @@ void QextSerialPortPrivate::_q_onWinEvent(HANDLE h)
             */
             qint64 totalBytesWritten = 0;
             QList<OVERLAPPED *> overlapsToDelete;
+            QWriteLocker writelocker(bytesToWriteLock);
             foreach (OVERLAPPED *o, pendingWrites) {
                 DWORD numBytes = 0;
                 if (GetOverlappedResult(handle, o, &numBytes, false)) {
@@ -309,10 +310,8 @@ void QextSerialPortPrivate::_q_onWinEvent(HANDLE h)
                 }
             }
 
-            if (q->sender() != q && totalBytesWritten > 0) {
-                QWriteLocker writelocker(bytesToWriteLock);
+            if (q->sender() != q && totalBytesWritten > 0)
                 Q_EMIT q->bytesWritten(totalBytesWritten);
-            }
 
             foreach (OVERLAPPED *o, overlapsToDelete) {
                 OVERLAPPED *toDelete = pendingWrites.takeAt(pendingWrites.indexOf(o));
