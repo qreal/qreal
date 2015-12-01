@@ -267,7 +267,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	hide();
-	mMaster->setSelectionState(false);
+	mMaster->setSelected(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
 
 	if (!mPressed && scene && mEdge) {

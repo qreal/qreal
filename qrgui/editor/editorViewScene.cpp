@@ -66,7 +66,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mShouldReparentItems(false)
 	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
-	, mIsSelectEvent(false)
 	, mMouseGesturesEnabled(false)
 	, mExploser(models, controller, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
@@ -88,7 +87,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
-	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::onSelectionChanged);
 	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::deselectLabels);
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
@@ -124,13 +122,6 @@ void EditorViewScene::clearScene()
 		if (items().contains(item) && !(item == mTopLeftCorner || item == mBottomRightCorner)) {
 			removeItem(item);
 		}
-	}
-}
-
-void EditorViewScene::itemSelectUpdate()
-{
-	for (QGraphicsItem * const item : mSelectList) {
-		item->setSelected(true);
 	}
 }
 
@@ -200,7 +191,8 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 	}
 }
 
-NodeElement *EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeElement *node) {
+NodeElement *EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeElement *node)
+{
 	QList<QGraphicsItem *> selected = selectedItems();
 	const Id &id = node->id();
 
@@ -831,48 +823,12 @@ void EditorViewScene::moveEdges()
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	QGraphicsScene::mousePressEvent(event);
+
 	mCurrentMousePos = event->scenePos();
-	if (mLeftButtonPressed && !mIsSelectEvent && selectedItems().size() == 1) {
-		if (event->button() == Qt::RightButton) {
-			QGraphicsItem *item = mouseGrabberItem();
-			EdgeElement *edge = dynamic_cast <EdgeElement *> (item);
-			if (edge) {
-				sendEvent(edge, event);
-			}
-		}
-		return;
-	}
-
-	// Let scene update selection and perform other operations
 	QGraphicsItem * item = itemAt(mCurrentMousePos, QTransform());
-	if (event->modifiers() & Qt::ControlModifier) {
-		if (item) {
-			QGraphicsScene::mousePressEvent(event);
-		}
-	} else {
-		QGraphicsScene::mousePressEvent(event);
-	}
 
-	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton)
-			&& !(event->buttons() & Qt::RightButton))
-	{
-		mIsSelectEvent = true;
-		mSelectList.append(selectedItems());
-		foreach (QGraphicsItem * const item, items()) {
-			item->setAcceptedMouseButtons(0);
-		}
-
-		itemSelectUpdate();
-
-		if (item) {
-			item->setSelected(!mSelectList.contains(item));
-			if (item->isSelected()) {
-				mSelectList.append(item);
-			} else {
-				mSelectList.removeAll(item);
-			}
-		}
-	} else if (event->button() == Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
 		mLeftButtonPressed = true;
 
 		Label * const label = dynamic_cast<Label *>(item);
@@ -881,9 +837,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		if (item) {
-			item->setSelected(true);
-			mSelectList.clear();
-			mSelectList.append(item);
 			event->accept();
 		}
 	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton) && mMouseGesturesEnabled) {
@@ -1084,46 +1037,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mLeftButtonPressed = false;
 	}
 
-	if (mIsSelectEvent && (event->button() == Qt::LeftButton)) {
-		for (QGraphicsItem * const item : items()) {
-			item->setAcceptedMouseButtons(Qt::MouseButtons(Qt::RightButton | Qt::LeftButton));
-		}
-
-		mIsSelectEvent = false;
-		itemSelectUpdate();
-		mSelectList.clear();
-		return;
-	}
-
-	if (mLeftButtonPressed && !mIsSelectEvent) {
-		return;
-	}
-
-	if (!(mLeftButtonPressed && event->button() == Qt::RightButton)) {
-		QGraphicsScene::mouseReleaseEvent(event);
-		QGraphicsItem * const item = itemAt(event->scenePos(), QTransform());
-		Label * const label = dynamic_cast<Label *>(item);
-		if (label) {
-			sendEvent(label, event);
-		}
-	}
-
+	QGraphicsScene::mouseReleaseEvent(event);
 	Element *element = findElemAt(event->scenePos());
-
-	if (mShouldReparentItems) {
-		const QList<QGraphicsItem *> list = selectedItems();
-		foreach(QGraphicsItem * const item, list) {
-			NodeElement * const nodeItem = dynamic_cast<NodeElement *>(item);
-			if (nodeItem) {
-				Element * const e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
-				if ((e && (nodeItem->id() != e->id())) || !e) {
-					sendEvent(item, event);
-				}
-			}
-		}
-		// in case there'll be 2 consecutive release events
-		mShouldReparentItems = false;
-	}
 
 	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
 		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
@@ -1485,7 +1400,6 @@ void EditorViewScene::setActionsEnabled(bool enabled)
 void EditorViewScene::onElementDeleted(Element *element)
 {
 	/// @todo: Make it more automated, conceptually this method is not needed.
-	mSelectList.removeAll(element);
 	mHighlightedElements.remove(element);
 }
 
@@ -1497,35 +1411,6 @@ void EditorViewScene::enableMouseGestures(bool enabled)
 	} else {
 		mMouseMovementManager.reset(new gestures::DummyMouseMovementManager(mRootId, mEditorManager));
 	}
-}
-
-void EditorViewScene::onSelectionChanged()
-{
-	QList<Element *> selected;
-	for (QGraphicsItem * const item : items()) {
-		Label * const label = dynamic_cast<Label *>(item);
-		Element * const element = dynamic_cast<Element *>(label ? label->parentItem() : item);
-		if (element && !selected.contains(element)) {
-			if (element->isSelected() || (label && label->isSelected())) {
-				selected.append(element);
-				element->setSelectionState(true);
-			} else {
-				element->setSelectionState(false);
-				element->select(false);
-			}
-		}
-	}
-
-	if (selected.length() > 1) {
-		for (Element * const notSingleSelected : selected) {
-			notSingleSelected->select(false);
-		}
-	} else if (selected.length() == 1) {
-		Element * const singleSelected = selected.at(0);
-		singleSelected->select(true);
-	}
-
-	emit sceneSelectionChanged(selected);
 }
 
 void EditorViewScene::deselectLabels()

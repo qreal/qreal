@@ -123,8 +123,6 @@ public:
 	NodeElement* getNodeById(const qReal::Id &itemId) const;
 	EdgeElement* getEdgeById(const qReal::Id &itemId) const;
 
-	void itemSelectUpdate();
-
 	/// update (for a beauty) all edges when tab is opening
 	void initNodes();
 
@@ -179,9 +177,6 @@ signals:
 		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts);
 
-	/// Emitted a set of selected editor elements has changed.
-	void sceneSelectionChanged(const QList<Element *> &elements);
-
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
@@ -209,7 +204,6 @@ private slots:
 	/// Updates repository after the move. Controled by the timer.
 	void updateMovedElements();
 
-	void onSelectionChanged();
 	void deselectLabels();
 
 private:
@@ -283,10 +277,6 @@ private:
 	QGraphicsRectItem *mTopLeftCorner;
 	QGraphicsRectItem *mBottomRightCorner;
 
-	/** @brief list of selected items for additional selection */
-	QList<QGraphicsItem* > mSelectList;
-
-	bool mIsSelectEvent;
 	bool mMouseGesturesEnabled;
 
 	QMenu mContextMenu;
