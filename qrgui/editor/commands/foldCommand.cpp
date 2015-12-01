@@ -15,6 +15,7 @@
 #include "foldCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 FoldCommand::FoldCommand(const NodeElement *element)
 	: NodeElementCommand(dynamic_cast<EditorViewScene *>(element->scene()), element->id())

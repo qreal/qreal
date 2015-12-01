@@ -21,7 +21,7 @@
 
 #include "editor/editorView.h"
 
-using namespace qReal::view::details;
+using namespace qReal::gui::editor::view::details;
 
 TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	: mEditorView(editorView)

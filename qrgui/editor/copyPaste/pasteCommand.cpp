@@ -14,7 +14,9 @@
 
 #include "pasteCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::commands;
 
 PasteCommand::PasteCommand(EditorViewScene *scene
 		, const QPointF &offset

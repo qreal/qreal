@@ -14,6 +14,8 @@
 
 #include "contextMenuAction.h"
 
+using namespace qReal::gui::editor;
+
 ContextMenuAction::ContextMenuAction(const QString &text, QObject *parent)
 	: QAction(text, parent)
 {

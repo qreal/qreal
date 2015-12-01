@@ -19,6 +19,7 @@
 #include "editor/commands/updateElementCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 MultipleRemoveAndUpdateCommand::MultipleRemoveAndUpdateCommand(EditorViewScene &scene
 		, const models::Models &models)

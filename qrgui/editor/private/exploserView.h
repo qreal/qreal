@@ -22,22 +22,26 @@
 
 namespace qReal {
 
-class Element;
-class Explosion;
-class Controller;
-class SceneCustomizer;
-class EditorManagerInterface;
-
-namespace commands {
-class AbstractCommand;
-}
-
 namespace models {
 class Models;
 class LogicalModelAssistApi;
 class GraphicalModelAssistApi;
 class Exploser;
 }
+
+class Explosion;
+class Controller;
+class EditorManagerInterface;
+
+namespace commands {
+class AbstractCommand;
+}
+
+namespace gui {
+namespace editor {
+
+class SceneCustomizer;
+class Element;
 
 namespace view {
 namespace details {
@@ -62,7 +66,7 @@ public:
 	void handleDoubleClick(const Id &id);
 
 	/// Adds commands of explosion creation to given element creation command
-	void handleCreationWithExplosion(commands::AbstractCommand *createCommand
+	void handleCreationWithExplosion(qReal::commands::AbstractCommand *createCommand
 			, const Id &source, const Id &target);
 
 signals:
@@ -95,13 +99,13 @@ private slots:
 private:
 	void createAddExplosionMenu(const Element * const element
 			, QMenu &contextMenu, QList<Explosion> const &explosions
-			, const qReal::Id &alreadyConnectedElement) const;
+			, const Id &alreadyConnectedElement) const;
 
 	void createRemoveExplosionMenu(const Element * const element
-			, QMenu &contextMenu, const qReal::Id &outgoingConnection) const;
+			, QMenu &contextMenu, const Id &outgoingConnection) const;
 
 	void createExpandAction(const Element * const element
-			, QMenu &contextMenu, const qReal::Id &alreadyConnectedElement) const;
+			, QMenu &contextMenu, const Id &alreadyConnectedElement) const;
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
@@ -111,6 +115,8 @@ private:
 	const Customizer &mCustomizer;
 };
 
+}
+}
 }
 }
 }

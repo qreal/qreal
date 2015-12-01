@@ -23,22 +23,26 @@
 
 namespace qReal {
 
-class EditorView;
-class EditorViewScene;
-class Element;
-
 namespace models {
 class Exploser;
 class GraphicalModelAssistApi;
 class LogicalModelAssistApi;
 }
 
+
+namespace gui {
+namespace editor {
+
+class EditorView;
+class EditorViewScene;
+class Element;
+
 class QRGUI_EDITOR_EXPORT EditorViewMViface : public QAbstractItemView
 {
 	Q_OBJECT
 
 public:
-	EditorViewMViface(qReal::EditorView *view, EditorViewScene *scene);
+	EditorViewMViface(EditorView *view, EditorViewScene *scene);
 	~EditorViewMViface();
 
 	QModelIndex indexAt(const QPoint &point) const;
@@ -82,7 +86,7 @@ private:
 	typedef QPair<QPersistentModelIndex, Element*> IndexElementPair;
 
 	EditorViewScene *mScene;
-	qReal::EditorView *mView;
+	EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	models::LogicalModelAssistApi *mLogicalAssistApi;
 	models::Exploser *mExploser;
@@ -104,8 +108,9 @@ private:
 	Element *item(const QPersistentModelIndex &index) const;
 	void setItem(const QPersistentModelIndex &index, Element *item);
 	void removeItem(const QPersistentModelIndex &index);
-
 	void clearItems();
 };
 
+}
+}
 }

@@ -18,6 +18,7 @@
 #include "controller/controller.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 LineHandler::LineHandler(EdgeElement *edge)
 		: mEdge(edge)

@@ -40,7 +40,8 @@
 
 using namespace qReal;
 using namespace qReal::commands;
-using namespace qReal::gui;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::commands;
 
 EditorViewScene::EditorViewScene(const models::Models &models
 		, Controller &controller
@@ -68,7 +69,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mShouldReparentItems(false)
 	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
-	, mIsSelectEvent(false)
 	, mMouseGesturesEnabled(false)
 	, mExploser(models, controller, sceneCustomizer, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
@@ -90,14 +90,13 @@ EditorViewScene::EditorViewScene(const models::Models &models
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
-	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::onSelectionChanged);
 	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::deselectLabels);
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
 	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
 	connect(&mExploser, &view::details::ExploserView::expandElement, [=](const Id &element) {
 		if (NodeElement * const node = getNodeById(element)) {
-			mController.execute(new qReal::commands::ExpandCommand(node));
+			mController.execute(new ExpandCommand(node));
 		}
 	});
 }
@@ -114,29 +113,27 @@ void EditorViewScene::setRealIndexGrid(qreal newIndexGrid)
 
 void EditorViewScene::setEnabled(bool enabled)
 {
-	foreach (QGraphicsView *view, views()) {
+	for (QGraphicsView *view : views()) {
 		view->setEnabled(enabled);
 	}
 }
 
 void EditorViewScene::clearScene()
 {
-	foreach (QGraphicsItem *item, items()) {
+	QList<QGraphicsItem*> itemsForRemoving;
+	for (QGraphicsItem *item : items()) {
 		// looks really insane, but some elements were alreadt deleted together with their parent
 		if (items().contains(item) && !(item == mTopLeftCorner || item == mBottomRightCorner)) {
-			removeItem(item);
+			itemsForRemoving.append(item);
 		}
 	}
-}
 
-void EditorViewScene::itemSelectUpdate()
-{
-	for (QGraphicsItem * const item : mSelectList) {
-		item->setSelected(true);
+	for (QGraphicsItem *item : itemsForRemoving) {
+		removeItem(item);
 	}
 }
 
-Element *EditorViewScene::getElem(const qReal::Id &id) const
+Element *EditorViewScene::getElem(const Id &id) const
 {
 	if (id == Id::rootId()) {
 		return nullptr;
@@ -176,7 +173,7 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 	QList<QGraphicsItem*> elements = items(event->scenePos());
 
 	NodeElement *node = nullptr;
-	foreach (QGraphicsItem *item, elements) {
+	for (QGraphicsItem *item : elements) {
 		NodeElement *el = dynamic_cast<NodeElement*>(item);
 		if (el) {
 			if (canBeContainedBy(el->id(), id)) {
@@ -202,7 +199,8 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 	}
 }
 
-NodeElement *EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeElement *node) {
+NodeElement *EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeElement *node)
+{
 	QList<QGraphicsItem *> selected = selectedItems();
 	const Id &id = node->id();
 
@@ -219,7 +217,7 @@ NodeElement *EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeEle
 
 		// delete from parents list ones that are selected right now
 		// we get the first valid NodeElement
-		foreach (QGraphicsItem *item, items(newParentInnerPoint)) {
+		for (QGraphicsItem *item : items(newParentInnerPoint)) {
 			NodeElement *e = dynamic_cast<NodeElement *>(item);
 			if (e && e != node && !selected.contains(item)) {
 				// check if we can add element into found parent
@@ -272,10 +270,10 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	}
 }
 
-bool EditorViewScene::canBeContainedBy(const qReal::Id &container, const qReal::Id &candidate) const
+bool EditorViewScene::canBeContainedBy(const Id &container, const Id &candidate) const
 {
 	bool allowed = false;
-	foreach (const qReal::Id &type, mEditorManager.containedTypes(container.type())) {
+	for (const Id &type : mEditorManager.containedTypes(container.type())) {
 		allowed = allowed || mEditorManager.isParentOf(candidate, type);
 	}
 
@@ -283,7 +281,7 @@ bool EditorViewScene::canBeContainedBy(const qReal::Id &container, const qReal::
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
-		, const QPointF &scenePos, bool canBeConnected, commands::CreateElementCommand **createCommand)
+		, const QPointF &scenePos, bool canBeConnected, CreateElementCommand **createCommand)
 {
 	edge->setSelected(true);
 
@@ -303,7 +301,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QStringList targets;
 	const QStringList groups = mEditorManager.paletteGroups(node->id(), node->id());
 
-	foreach (const PossibleEdge &pEdge, edge->getPossibleEdges()) {
+	for (const PossibleEdge &pEdge : edge->getPossibleEdges()) {
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
 		if (mEditorManager.isParentOf(node->id(), pEdge.first.first)) {
@@ -318,10 +316,10 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QSet<QString> const targetsSet = targets.toSet();
 	QMap<QString, QString> targetsInGroups;
 	QStringList targetGroups;
-	foreach (const QString &group, groups) {
+	for (const QString &group : groups) {
 		const QStringList groupsContents = mEditorManager.paletteGroupList(
 				node->id(), node->id(), group);
-		foreach (const QString &elementInGroup, groupsContents) {
+		for (const QString &elementInGroup : groupsContents) {
 			if (targetsSet.contains(elementInGroup)) {
 				targetsInGroups.insertMulti(group, elementInGroup);
 				if (!targetGroups.contains(group)) {
@@ -336,7 +334,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 			createElemMenu->addSeparator();
 		}
 		const QStringList targetsInGroup = targetsInGroups.values(targetGroups[i]);
-		foreach (const QString &target, targetsInGroup) {
+		for (const QString &target : targetsInGroup) {
 			const Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
 			const QString friendlyName = mEditorManager.friendlyName(id);
 			QAction *element = new QAction(friendlyName, createElemMenu);
@@ -375,14 +373,14 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	return result;
 }
 
-qReal::Id EditorViewScene::createElement(const QString &str)
+Id EditorViewScene::createElement(const QString &str)
 {
 	mLastCreatedFromLinker = createElement(str, mCreatePoint, true, &mLastCreatedFromLinkerCommand);
 	mShouldReparentItems = false;
 	return mLastCreatedFromLinker;
 }
 
-qReal::Id EditorViewScene::createElement(const QString &str
+Id EditorViewScene::createElement(const QString &str
 		, const QPointF &scenePos
 		, bool searchForParents
 		, CreateElementCommand **createCommand
@@ -463,7 +461,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 		if (searchForParents) {
 			// if element is node then we should look for parent for him
 			if (isNode) {
-				foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
+				for (QGraphicsItem *item : items(scenePos - shiftToParent)) {
 					NodeElement *el = dynamic_cast<NodeElement*>(item);
 					if (el && canBeContainedBy(el->id(), id)) {
 						newParent = el;
@@ -548,7 +546,7 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 
 EdgeElement * EditorViewScene::edgeForInsertion(const QPointF &scenePos)
 {
-	foreach (QGraphicsItem *item, items(scenePos)) {
+	for (QGraphicsItem *item : items(scenePos)) {
 		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
 		if (edge && edge->isDividable()) {
 			QSizeF portSize(kvadratik, kvadratik);
@@ -559,14 +557,15 @@ EdgeElement * EditorViewScene::edgeForInsertion(const QPointF &scenePos)
 			}
 		}
 	}
+
 	return nullptr;
 }
 
 void EditorViewScene::resolveOverlaps(NodeElement *node, const QPointF &scenePos
-		, const QPointF &shift, QMap<qReal::Id, QPointF> &shifting) const
+		, const QPointF &shift, QMap<Id, QPointF> &shifting) const
 {
 	QList<NodeElement*> closeNodes = getCloseNodes(node);
-	foreach (NodeElement *closeNode, closeNodes) {
+	for (NodeElement *closeNode : closeNodes) {
 		if (shifting.contains(closeNode->id())) {
 			continue;
 		}
@@ -578,6 +577,7 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, const QPointF &scenePos
 		if (qAbs(offset.y2() - offset.y1()) * coeff > node->boundingRect().height() / 2) {
 			coeff = (node->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
 		}
+
 		QLineF nodeLine(offset);
 		nodeLine.setP2(nodeLine.p1() + QPointF((nodeLine.p2().x() - nodeLine.p1().x()) * coeff
 				, (nodeLine.p2().y() - nodeLine.p1().y()) * coeff));
@@ -587,6 +587,7 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, const QPointF &scenePos
 		if (qAbs(offset.y2() - offset.y1()) * coeff > closeNode->boundingRect().height() / 2) {
 			coeff = (closeNode->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
 		}
+
 		QLineF closeNodeLine(offset);
 		closeNodeLine.setP2(closeNodeLine.p1() + QPointF((closeNodeLine.p2().x() - closeNodeLine.p1().x()) * coeff
 				, (closeNodeLine.p2().y() - closeNodeLine.p1().y()) * coeff));
@@ -603,7 +604,7 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, const QPointF &scenePos
 
 void EditorViewScene::returnElementsToOldPositions(const QMap<Id, QPointF> &shifting) const
 {
-	foreach (const qReal::Id &id, shifting.keys()) {
+	for (const Id &id : shifting.keys()) {
 		NodeElement *node = getNodeById(id);
 		node->setPos(node->pos() - shifting[id]);
 		mModels.graphicalModelAssistApi().setPosition(node->id(), node->pos());
@@ -622,34 +623,37 @@ void EditorViewScene::reConnectLink(EdgeElement * edgeElem)
 void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
 {
 	node->arrangeLinks();
-	foreach (EdgeElement* nodeEdge, node->edgeList()) {
+	for (EdgeElement* nodeEdge : node->edgeList()) {
 		nodeEdge->adjustLink();
 		nodeEdge->setGraphicApiPos();
 		nodeEdge->saveConfiguration();
 	}
+
 	node->arrangeLinks();
 	node->adjustLinks();
 }
 
-NodeElement* EditorViewScene::getNodeById(const qReal::Id &itemId) const
+NodeElement* EditorViewScene::getNodeById(const Id &itemId) const
 {
-	foreach (QGraphicsItem *item, items()) {
+	for (QGraphicsItem *item : items()) {
 		NodeElement *node = dynamic_cast<NodeElement*>(item);
 		if (node && node->id() == itemId) {
 			return node;
 		}
 	}
+
 	return nullptr;
 }
 
-EdgeElement* EditorViewScene::getEdgeById(const qReal::Id &itemId) const
+EdgeElement* EditorViewScene::getEdgeById(const Id &itemId) const
 {
-	foreach (QGraphicsItem *item, items()) {
+	for (QGraphicsItem *item : items()) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
 		if (edge && edge->id() == itemId) {
 			return edge;
 		}
 	}
+
 	return nullptr;
 }
 
@@ -660,7 +664,7 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 	if (node) {
 		const QPolygonF bounds = node->mapToScene(node->boundingRect());
 		QList<QGraphicsItem *> overlapping = items(bounds);
-		foreach (QGraphicsItem * const item, overlapping) {
+		for (QGraphicsItem * const item : overlapping) {
 			NodeElement * const closeNode = dynamic_cast<NodeElement *>(item);
 			if (closeNode && (closeNode != node) && !closeNode->isAncestorOf(node) && !node->isAncestorOf(closeNode)) {
 				list.append(closeNode);
@@ -763,6 +767,7 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 	if (SettingsManager::value("ActivateGrid").toBool()) {
 		offset = SettingsManager::value("IndexGrid").toInt();
 	}
+
 	switch (direction) {
 		case Qt::Key_Left:
 			return QPointF(-offset, 0);
@@ -783,7 +788,7 @@ bool EditorViewScene::moveNodes()
 	bool movedNodesPresent = false;
 	ResizeCommand *resizeCommand = nullptr;
 
-	foreach (QGraphicsItem * const item, selectedItems()) {
+	for (QGraphicsItem * const item : selectedItems()) {
 		NodeElement * const node = dynamic_cast<NodeElement *>(item);
 		if (!node) {
 			continue;
@@ -813,7 +818,7 @@ bool EditorViewScene::moveNodes()
 
 void EditorViewScene::moveEdges()
 {
-	foreach (QGraphicsItem * const item, selectedItems()) {
+	for (QGraphicsItem * const item : selectedItems()) {
 		EdgeElement * const edge = dynamic_cast<EdgeElement *>(item);
 		if (edge) {
 			ReshapeEdgeCommand * const edgeCommand = new ReshapeEdgeCommand(this, edge->id());
@@ -836,48 +841,12 @@ void EditorViewScene::moveEdges()
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	QGraphicsScene::mousePressEvent(event);
+
 	mCurrentMousePos = event->scenePos();
-	if (mLeftButtonPressed && !mIsSelectEvent && selectedItems().size() == 1) {
-		if (event->button() == Qt::RightButton) {
-			QGraphicsItem *item = mouseGrabberItem();
-			EdgeElement *edge = dynamic_cast <EdgeElement *> (item);
-			if (edge) {
-				sendEvent(edge, event);
-			}
-		}
-		return;
-	}
-
-	// Let scene update selection and perform other operations
 	QGraphicsItem * item = itemAt(mCurrentMousePos, QTransform());
-	if (event->modifiers() & Qt::ControlModifier) {
-		if (item) {
-			QGraphicsScene::mousePressEvent(event);
-		}
-	} else {
-		QGraphicsScene::mousePressEvent(event);
-	}
 
-	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton)
-			&& !(event->buttons() & Qt::RightButton))
-	{
-		mIsSelectEvent = true;
-		mSelectList.append(selectedItems());
-		foreach (QGraphicsItem * const item, items()) {
-			item->setAcceptedMouseButtons(0);
-		}
-
-		itemSelectUpdate();
-
-		if (item) {
-			item->setSelected(!mSelectList.contains(item));
-			if (item->isSelected()) {
-				mSelectList.append(item);
-			} else {
-				mSelectList.removeAll(item);
-			}
-		}
-	} else if (event->button() == Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
 		mLeftButtonPressed = true;
 
 		Label * const label = dynamic_cast<Label *>(item);
@@ -886,9 +855,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		if (item) {
-			item->setSelected(true);
-			mSelectList.clear();
-			mSelectList.append(item);
 			event->accept();
 		}
 	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton) && mMouseGesturesEnabled) {
@@ -924,7 +890,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
-			foreach (const Id &type, mEditorManager.containedTypes(e->id().type())) {
+			for (const Id &type : mEditorManager.containedTypes(e->id().type())) {
 				QAction *createAction = createChildMenu->addAction(mEditorManager.friendlyName(type));
 				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
 				createChildMapper->setMapping(createAction, type.toString());
@@ -987,6 +953,7 @@ void EditorViewScene::getObjectByGesture()
 				break;
 			}
 		}
+
 		break;
 	}
 
@@ -1001,7 +968,7 @@ void EditorViewScene::updateMovedElements()
 		return;
 	}
 
-	foreach (QGraphicsItem* item, selectedItems()) {
+	for (QGraphicsItem* item : selectedItems()) {
 		QPointF newPos = item->pos();
 
 		Element* element = dynamic_cast<Element*>(item);
@@ -1015,7 +982,7 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 {
 	QList<PossibleEdge> edges = parent->getPossibleEdges();
 	QList<QString> allLinks;
-	foreach (const PossibleEdge &possibleEdge, edges) {
+	for (const PossibleEdge &possibleEdge : edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
 				&& possibleEdge.first.second.diagram() == child.id().diagram()
 				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
@@ -1026,6 +993,7 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}
 	}
+
 	if (!allLinks.empty()) {
 		if (allLinks.count() == 1) {
 			createEdge(allLinks.at(0));
@@ -1039,7 +1007,7 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 {
 	QMenu *edgeMenu = new QMenu();
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
-	foreach (QString id, ids) {
+	for (QString id : ids) {
 		QAction *element = new QAction(mEditorManager.friendlyName(Id::loadFromString(id)), edgeMenu);
 		edgeMenu->addAction(element);
 		QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
@@ -1067,11 +1035,12 @@ void EditorViewScene::createEdge(const QString &idStr)
 	edge->connectToPort();
 	if (edge->dst()) {
 		edge->dst()->arrangeLinks();
-		foreach (EdgeElement* nodeEdge, edge->dst()->edgeList()) {
+		for (EdgeElement* nodeEdge : edge->dst()->edgeList()) {
 			nodeEdge->adjustLink();
 			nodeEdge->setGraphicApiPos();
 			nodeEdge->saveConfiguration();
 		}
+
 		edge->dst()->arrangeLinks();
 		edge->dst()->adjustLinks();
 	}
@@ -1089,46 +1058,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mLeftButtonPressed = false;
 	}
 
-	if (mIsSelectEvent && (event->button() == Qt::LeftButton)) {
-		for (QGraphicsItem * const item : items()) {
-			item->setAcceptedMouseButtons(Qt::MouseButtons(Qt::RightButton | Qt::LeftButton));
-		}
-
-		mIsSelectEvent = false;
-		itemSelectUpdate();
-		mSelectList.clear();
-		return;
-	}
-
-	if (mLeftButtonPressed && !mIsSelectEvent) {
-		return;
-	}
-
-	if (!(mLeftButtonPressed && event->button() == Qt::RightButton)) {
-		QGraphicsScene::mouseReleaseEvent(event);
-		QGraphicsItem * const item = itemAt(event->scenePos(), QTransform());
-		Label * const label = dynamic_cast<Label *>(item);
-		if (label) {
-			sendEvent(label, event);
-		}
-	}
-
+	QGraphicsScene::mouseReleaseEvent(event);
 	Element *element = findElemAt(event->scenePos());
-
-	if (mShouldReparentItems) {
-		const QList<QGraphicsItem *> list = selectedItems();
-		foreach(QGraphicsItem * const item, list) {
-			NodeElement * const nodeItem = dynamic_cast<NodeElement *>(item);
-			if (nodeItem) {
-				Element * const e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
-				if ((e && (nodeItem->id() != e->id())) || !e) {
-					sendEvent(item, event);
-				}
-			}
-		}
-		// in case there'll be 2 consecutive release events
-		mShouldReparentItems = false;
-	}
 
 	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
 		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
@@ -1143,6 +1074,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				return;
 			}
 		}
+
 		if (!mMouseMovementManager->wasMoving()) {
 			deleteGesture();
 			if (element && !element->isSelected()) {
@@ -1245,7 +1177,7 @@ NodeElement *EditorViewScene::findNodeAt(const QPointF &position) const
 	return nullptr;
 }
 
-qReal::Id EditorViewScene::rootItemId() const
+Id EditorViewScene::rootItemId() const
 {
 	return mRootId;
 }
@@ -1311,9 +1243,15 @@ void EditorViewScene::drawGesture()
 void EditorViewScene::deleteGesture()
 {
 	mRightButtonPressed = false;
-	foreach (QGraphicsItem *item, mGesture) {
+	QList<QGraphicsItem*> itemsForRemoving;
+	for (QGraphicsItem *item : mGesture) {
+		itemsForRemoving.append(item);
+	}
+
+	for (QGraphicsItem *item : itemsForRemoving) {
 		removeItem(item);
 	}
+
 	mGesture.clear();
 	mMouseMovementManager->clear();
 }
@@ -1338,7 +1276,7 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 void EditorViewScene::highlight(const Id &graphicalId, bool exclusive, const QColor &color)
 {
 	if (exclusive) {
-		foreach (Element *element, mHighlightedElements) {
+		for (Element *element : mHighlightedElements) {
 			element->setGraphicsEffect(nullptr);
 		}
 	}
@@ -1370,7 +1308,7 @@ void EditorViewScene::dehighlight(const Id &graphicalId)
 
 void EditorViewScene::dehighlight()
 {
-	foreach (Element *element, mHighlightedElements) {
+	for (Element *element : mHighlightedElements) {
 		if (items().contains(element))
 			element->setGraphicsEffect(nullptr);
 	}
@@ -1381,7 +1319,7 @@ void EditorViewScene::dehighlight()
 void EditorViewScene::selectAll()
 {
 	if (!mLeftButtonPressed) {
-		foreach (QGraphicsItem *element, items()) {
+		for (QGraphicsItem *element : items()) {
 			element->setSelected(true);
 		}
 	}
@@ -1437,7 +1375,7 @@ void EditorViewScene::initializeActions()
 
 void EditorViewScene::updateEdgeElements()
 {
-	foreach (QGraphicsItem *item, items()) {
+	for (QGraphicsItem *item : items()) {
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			const enums::linkShape::LinkShape shape
@@ -1454,7 +1392,7 @@ void EditorViewScene::updateEdgeElements()
 
 void EditorViewScene::initNodes()
 {
-	foreach (QGraphicsItem *item, items()) {
+	for (QGraphicsItem *item : items()) {
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
 			node->adjustLinks();
@@ -1463,12 +1401,12 @@ void EditorViewScene::initNodes()
 							node->id(), "expanded").toString() == "true") {
 				node->changeExpanded();
 			}
+
 			if (mModels.graphicalModelAssistApi().properties(node->id()).contains("folded")
 					&& mModels.graphicalRepoApi().property(
 							node->id(), "folded").toString() == "true") {
 				node->changeFoldState();
 			}
-
 		}
 	}
 }
@@ -1495,7 +1433,6 @@ void EditorViewScene::setActionsEnabled(bool enabled)
 void EditorViewScene::onElementDeleted(Element *element)
 {
 	/// @todo: Make it more automated, conceptually this method is not needed.
-	mSelectList.removeAll(element);
 	mHighlightedElements.remove(element);
 }
 
@@ -1507,35 +1444,6 @@ void EditorViewScene::enableMouseGestures(bool enabled)
 	} else {
 		mMouseMovementManager.reset(new gestures::DummyMouseMovementManager(mRootId, mEditorManager));
 	}
-}
-
-void EditorViewScene::onSelectionChanged()
-{
-	QList<Element *> selected;
-	for (QGraphicsItem * const item : items()) {
-		Label * const label = dynamic_cast<Label *>(item);
-		Element * const element = dynamic_cast<Element *>(label ? label->parentItem() : item);
-		if (element && !selected.contains(element)) {
-			if (element->isSelected() || (label && label->isSelected())) {
-				selected.append(element);
-				element->setSelectionState(true);
-			} else {
-				element->setSelectionState(false);
-				element->select(false);
-			}
-		}
-	}
-
-	if (selected.length() > 1) {
-		for (Element * const notSingleSelected : selected) {
-			notSingleSelected->select(false);
-		}
-	} else if (selected.length() == 1) {
-		Element * const singleSelected = selected.at(0);
-		singleSelected->select(true);
-	}
-
-	emit sceneSelectionChanged(selected);
 }
 
 void EditorViewScene::deselectLabels()

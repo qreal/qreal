@@ -23,6 +23,7 @@ function fix_dependencies {
 
 function fix_qreal_dependencies {
 	fix_dependencies "$1" "$QT_DIR" "$LIB_PATH"
+	fix_dependencies "$1" "@rpath/.*\.framework/Versions/5/" "$LIB_PATH"
 	fix_dependencies "$1" "@executable_path/../../.." "$LIB_PATH"
 }
 

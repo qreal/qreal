@@ -17,10 +17,10 @@
 #include "editor/copyPaste/pasteCommand.h"
 #include "models/commands/createElementCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace gui {
+namespace editor {
+namespace commands {
 
 class PasteNodeCommand : public PasteCommand
 {
@@ -49,8 +49,10 @@ private:
 	QPointF vectorFromContainer() const;
 
 	const NodeData mNodeData;
-	CreateElementCommand *mCreateCommand;
+	qReal::commands::CreateElementCommand *mCreateCommand;
 };
 
+}
+}
 }
 }

@@ -34,7 +34,11 @@
 
 namespace qReal {
 
+namespace gui {
+namespace editor {
 class Element;
+}
+}
 
 /// Proxy for changing between generative and interpretive approach.
 class QRGUI_PLUGINS_MANAGER_EXPORT ProxyEditorManager : public EditorManagerInterface

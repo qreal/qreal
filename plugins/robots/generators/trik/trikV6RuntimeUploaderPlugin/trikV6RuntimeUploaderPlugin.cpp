@@ -31,10 +31,10 @@ const QString restorePermissions = "call chmod a+x trik/trik*";
 const QString replaceSystemConfig = "call mv trik/system-config-v6.xml trik/system-config.xml";
 const QString replaceModelConfig = "call mv trik/model-config-v6.xml trik/model-config.xml";
 
-const QString replaceTrikGuiSh = "call mv trik/trikGui.sh /etc/trik/trikGui.sh";
+const QString replaceTrikGuiSh = "call mv /home/root/trik/trikGui.sh /etc/trik/trikGui.sh";
 const QString restoreTrikGuiShPermissions = "call chmod a+x /etc/trik/trikGui.sh";
 
-const QString restartTrikGui = "call /bin/sh -c '/etc/trik/trikGui.sh &'";
+const QString restartTrikGui = "call /sbin/reboot";
 
 const QStringList commands = {
 		createTrikDirectory
@@ -67,9 +67,9 @@ const QString postCopyCommand = "ssh -v -oConnectTimeout=%SSH_TIMEOUT%s -oStrict
 		// To make trikRuntime work with old case we use old configs supplied with trikRuntime itself.
 		"mv trik/system-config-v6.xml trik/system-config.xml; "
 		"mv trik/model-config-v6.xml trik/model-config.xml; "
-		"mv trik/trikGui.sh /etc/trik/trikGui.sh; "
+		"mv /home/root/trik/trikGui.sh /etc/trik/trikGui.sh; "
 		"mv chmod a+x /etc/trik/trikGui.sh; "
-		"/bin/sh -c '/etc/trik/trikGui.sh &'"
+		"/sbin/reboot"
 		"\"";
 
 const QStringList commands = {
