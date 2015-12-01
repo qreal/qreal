@@ -538,7 +538,13 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 					, isFromLogicalModel, createCommand);
 			mController.execute(insertCommand);
 			if (explosionTarget != Id()) {
-				getNodeById(id)->updateShape();
+				NodeElement * const element = getNodeById(id);
+				element->updateShape();
+				element->updateDynamicLabels(explosionTarget);
+			}
+			if (mModels.logicalRepoApi().outgoingExplosion(mModels.graphicalModelAssistApi().logicalId(id)) != Id())
+			{
+				getNodeById(id)->initExplosionConnections();
 			}
 		} else {
 			mController.execute(createCommand);

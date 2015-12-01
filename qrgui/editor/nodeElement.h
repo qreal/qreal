@@ -197,12 +197,14 @@ public:
 
 	/// Updates subprogram shape, shape is stored in the target property "shape"
 	void updateShape();
+	void initExplosionConnections();
 
 public slots:
 	virtual void select(const bool singleSelected);
 	virtual void setSelectionState(const bool selected);
 	void switchGrid(bool isChecked);
 	NodeElement *copyAndPlaceOnDiagram(const QPointF &offset);
+	void updateDynamicLabels(const Id &target);
 
 private slots:
 	void updateNodeEdges();
@@ -322,6 +324,10 @@ private:
 
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
+
+	///It is used in NodeElement::updateDynamicLabels(const Id &target),
+	/// when we deleting old dynamic labels
+	int mStartingLabelsCount;
 };
 
 }

@@ -19,6 +19,7 @@
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/createElementCommand.h>
 #include <qrgui/dialogs/metamodelingOnFly/propertiesDialog.h>
+#include <qrgui/dialogs/subprogram/labelPropertiesDialog.h>
 
 #include "editor/editorViewScene.h"
 #include "editor/sceneCustomizer.h"
@@ -136,11 +137,16 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 			connect(addElementToPaletteAction, SIGNAL(triggered()), SLOT(addElementToPaletteActionTriggered()));
 			addElementToPaletteAction->setData(element->id().toVariant());
 		}
-	} else if (element->id().element() == "Subprogram" && mCustomizer.allowSubprogramShapeChanging()) {
+	} else if (element->id().element() == "Subprogram") {
 		const Id target = mLogicalApi.logicalRepoApi().outgoingExplosion(element->logicalId());
-		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
-		connect(changeAppearancePaletteAction, &QAction::triggered, this, &ExploserView::changeAppearanceActionTriggered);
-		changeAppearancePaletteAction->setData(target.toVariant());
+		if (mCustomizer.allowSubprogramShapeChanging()) {
+			QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
+			connect(changeAppearancePaletteAction, &QAction::triggered, this, &ExploserView::changeAppearanceActionTriggered);
+			changeAppearancePaletteAction->setData(target.toVariant());
+		}
+		QAction * const changeLabelsAction = contextMenu.addAction(tr("Change Labels"));
+		connect(changeLabelsAction, &QAction::triggered, this, &ExploserView::changeLabelsActionTriggered);
+		changeLabelsAction->setData(target.toVariant());
 	}
 
 	QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());
@@ -240,6 +246,19 @@ void ExploserView::changePropertiesActionTriggered()
 			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
 	propertiesDialog->setModal(true);
 	propertiesDialog->show();
+}
+
+void ExploserView::changeLabelsActionTriggered()
+{
+	const QAction * const action = static_cast<const QAction *>(sender());
+	const Id id = action->data().value<Id>();
+	qReal::gui::LabelPropertiesDialog * const labelPropertiesDialog = new qReal::gui::LabelPropertiesDialog(
+			id
+			, mLogicalApi.mutableLogicalRepoApi()
+			, mExploser
+			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
+	labelPropertiesDialog->setModal(true);
+	labelPropertiesDialog->show();
 }
 
 void ExploserView::changeAppearanceActionTriggered()

@@ -29,6 +29,7 @@
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "dialogs/subprogram/labelPropertiesDialog.h"
 #include "mouseGestures/gesturePainter.h"
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
@@ -147,6 +148,16 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 			, mMainWindow.models().mutableLogicalRepoApi(), id, &mMainWindow);
 	propDialog->setModal(true);
 	propDialog->show();
+}
+
+void DraggableElement::changeLabelsPaletteActionTriggered()
+{
+	const QAction * const action = static_cast<const QAction *>(sender());
+	const Id id = action->data().value<Id>();
+	LabelPropertiesDialog * const labelPropertiesDialog = new LabelPropertiesDialog(id
+			, mMainWindow.models().mutableLogicalRepoApi(), mMainWindow.models().exploser(), &mMainWindow);
+	labelPropertiesDialog->setModal(true);
+	labelPropertiesDialog->show();
 }
 
 void DraggableElement::changeAppearancePaletteActionTriggered()
@@ -349,14 +360,18 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			}
 
 			menu->exec(QCursor::pos());
-		} else if (elementId.element() == "Subprogram" && explosionTarget().idSize() == 4 &&
-				   mMainWindow.toolManager().customizer()->allowSubprogramShapeChanging())
-		{
+		} else if (elementId.element() == "Subprogram" && explosionTarget().idSize() == 4) {
 			QMenu * const menu = new QMenu();
-			QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
-			connect(changeAppearancePaletteAction, &QAction::triggered
-					, this,  &DraggableElement::changeAppearancePaletteActionTriggered);
-			changeAppearancePaletteAction->setData(explosionTarget().toVariant());
+			if (mMainWindow.toolManager().customizer()->allowSubprogramShapeChanging()) {
+				QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
+				connect(changeAppearancePaletteAction, &QAction::triggered
+						, this,  &DraggableElement::changeAppearancePaletteActionTriggered);
+				changeAppearancePaletteAction->setData(explosionTarget().toVariant());
+			}
+
+			QAction * const changeLabelsAction = menu->addAction(tr("Change Labels"));
+			connect(changeLabelsAction, &QAction::triggered, this, &DraggableElement::changeLabelsPaletteActionTriggered);
+			changeLabelsAction->setData(explosionTarget().toVariant());
 
 			menu->exec(QCursor::pos());
 		}

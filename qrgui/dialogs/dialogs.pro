@@ -46,6 +46,7 @@ HEADERS += \
 	$$PWD/projectManagement/suggestToCreateDiagramDialog.h \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.h \
 	$$PWD/findReplaceDialog.h \
+	$$PWD/subprogram/labelPropertiesDialog.h \
 
 SOURCES += \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
@@ -63,6 +64,7 @@ SOURCES += \
 	$$PWD/projectManagement/suggestToCreateDiagramDialog.cpp \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.cpp \
 	$$PWD/findReplaceDialog.cpp \
+	$$PWD/subprogram/labelPropertiesDialog.cpp \
 
 FORMS += \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \
@@ -73,3 +75,4 @@ FORMS += \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.ui \
 	$$PWD/metamodelingOnFly/restoreElementDialog.ui \
 	$$PWD/findReplaceDialog.ui \
+	$$PWD/subprogram/labelPropertiesDialog.ui \
