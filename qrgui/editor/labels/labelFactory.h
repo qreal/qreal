@@ -19,6 +19,8 @@
 #include "models/graphicalModelAssistApi.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class LabelFactory : public LabelFactoryInterface
 {
@@ -32,4 +34,6 @@ private:
 	const Id mId;
 };
 
+}
+}
 }

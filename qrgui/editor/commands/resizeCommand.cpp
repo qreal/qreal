@@ -14,7 +14,7 @@
 
 #include "editor/commands/resizeCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 ResizeCommand::ResizeCommand(const EditorViewScene *scene, const Id &id)
 	: NodeElementCommand(scene, id)

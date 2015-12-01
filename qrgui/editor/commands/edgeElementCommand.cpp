@@ -15,6 +15,7 @@
 #include "edgeElementCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 EdgeElementCommand::EdgeElementCommand(const EditorViewScene *scene, const Id &id)
 	: ElementCommand(scene, id)

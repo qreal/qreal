@@ -34,6 +34,8 @@
 
 namespace qReal {
 
+namespace gui {
+namespace editor {
 class Label;
 
 /// size of a point port
@@ -78,21 +80,14 @@ public:
 	virtual void setColorRect(bool bl) = 0;
 
 	// TODO: Move this to constructor.
-	void setController(qReal::Controller *controller);
-	qReal::Controller *controller() const;
+	void setController(Controller *controller);
+	Controller *controller() const;
 
 	ElementImpl* elementImpl() const;
 	bool createChildrenFromMenu() const;
 
 	/// Checks if this element is disabled from palette and if it is grayscales it.
 	void updateEnabledState();
-
-public slots:
-	virtual void select(const bool singleSelected);
-	virtual void setSelectionState(const bool selected);
-
-signals:
-	void switchFolding(bool);
 
 protected:
 	void setHideNonHardLabels(bool visible);
@@ -115,4 +110,6 @@ protected:
 	Controller *mController;
 };
 
+}
+}
 }

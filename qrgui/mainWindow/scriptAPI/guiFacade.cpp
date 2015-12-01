@@ -103,7 +103,7 @@ QWidget *GuiFacade::mainWindow() const
 
 QWidget *GuiFacade::propertyEditor() const
 {
-	const PropertyEditorView * const propertyEditor = mMainWindow.propertyEditor();
+	const qReal::gui::editor::PropertyEditorView * const propertyEditor = mMainWindow.propertyEditor();
 	return propertyEditor->
 			findChild<QtTreePropertyBrowser *>()->
 			findChild<QTreeWidget *>()->viewport();

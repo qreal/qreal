@@ -40,6 +40,8 @@
 #include "editor/serializationData.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 namespace commands {
 class ResizeCommand;
@@ -52,9 +54,9 @@ class QRGUI_EDITOR_EXPORT NodeElement : public Element
 public:
 	explicit NodeElement(ElementImpl *impl
 			, const Id &id
-			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			, qReal::models::Exploser &exploser
+			, models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi
+			, models::Exploser &exploser
 			);
 
 	virtual ~NodeElement();
@@ -196,8 +198,6 @@ public:
 	IdList sortedChildren() const;
 
 public slots:
-	virtual void select(const bool singleSelected);
-	virtual void setSelectionState(const bool selected);
 	void switchGrid(bool isChecked);
 	NodeElement *copyAndPlaceOnDiagram(const QPointF &offset);
 
@@ -244,14 +244,14 @@ private:
 
 	void initPortsVisibility();
 
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) override;
 
-	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+	void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 	void paint(QPainter *p, const QStyleOptionGraphicsItem *opt);
 	void drawPorts(QPainter *painter, bool mouseOver);
@@ -261,12 +261,13 @@ private:
 	 * @param mouseScenePos Current mouse scene position.
 	 */
 	void recalculateHighlightedNode(const QPointF &mouseScenePos);
-	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 	void setLinksVisible(bool);
 
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
+	void updateBySelection();
 
 	void updateChildrenOrder();
 
@@ -274,8 +275,7 @@ private:
 
 	QRectF diagramRenderingRect() const;
 
-	commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
-
+	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 	models::Exploser &mExploser;
 
 	ContextMenuAction mSwitchGridAction;
@@ -287,7 +287,7 @@ private:
 
 	DragState mDragState;
 	QPointF mDragPosition;
-	qReal::commands::ResizeCommand *mResizeCommand;
+	commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 
@@ -321,4 +321,6 @@ private:
 	QTimer mRenderTimer;
 };
 
+}
+}
 }

@@ -18,6 +18,7 @@
 #include "editor/editorViewScene.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 namespace {
 // TODO: find a way to remove it
@@ -262,7 +263,7 @@ void SceneGridHandler::drawGuides()
 	qreal myX2 = myX1 + contentsRect.width();
 	qreal myY2 = myY1 + contentsRect.height();
 
-	foreach (QGraphicsItem *graphicsItem, list) {
+	for (QGraphicsItem *graphicsItem : list) {
 		NodeElement *item = dynamic_cast<NodeElement *>(graphicsItem);
 		if (item == nullptr || item->parentItem() != nullptr || item == mNode) {
 			continue;

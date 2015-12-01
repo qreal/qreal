@@ -25,7 +25,9 @@
 #include "editor/commands/expandCommand.h"
 
 using namespace qReal;
-using namespace view::details;
+using namespace qReal::commands;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::view::details;
 
 ExploserView::ExploserView(const models::Models &models
 		, Controller &controller
@@ -161,17 +163,17 @@ void ExploserView::handleDoubleClick(const Id &id)
 		if (!explosions.isEmpty()) {
 			const Id diagramType = mLogicalApi.editorManagerInterface()
 					.findElementByType(explosions[0].target().element());
-			commands::AbstractCommand *createCommand =
+			AbstractCommand *createCommand =
 					mExploser.createElementWithIncomingExplosionCommand(
 							id, diagramType, mGraphicalApi);
 			mController.executeGlobal(createCommand);
-			outgoingLink = static_cast<commands::CreateElementCommand *>(createCommand)->result();
+			outgoingLink = static_cast<CreateElementCommand *>(createCommand)->result();
 		}
 	}
 	goTo(outgoingLink);
 }
 
-void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *createCommand
+void ExploserView::handleCreationWithExplosion(AbstractCommand *createCommand
 		, const Id &source, const Id &target)
 {
 	if (target != Id()) {
@@ -226,7 +228,7 @@ void ExploserView::changePropertiesActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
-	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
+	PropertiesDialog * const propertiesDialog = new PropertiesDialog(
 			mLogicalApi.editorManagerInterface()
 			, mLogicalApi.mutableLogicalRepoApi()
 			, id
