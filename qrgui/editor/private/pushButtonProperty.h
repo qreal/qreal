@@ -68,6 +68,7 @@ private:
 	class {} *d_ptr;
 	Q_DISABLE_COPY(PushButtonFactory)
 };
+
 }
 }
 }

@@ -41,6 +41,7 @@ signals:
 private:
 	QPointF mEventPos;
 };
+
 }
 }
 }

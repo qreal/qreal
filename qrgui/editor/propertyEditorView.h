@@ -98,6 +98,7 @@ private:
 	PushButtonFactory *mButtonFactory;
 	qReal::Controller *mController;
 };
+
 }
 }
 }

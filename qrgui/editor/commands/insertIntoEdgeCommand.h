@@ -20,7 +20,6 @@
 #include "models/commands/createElementCommand.h"
 #include "models/commands/removeElementCommand.h"
 
-
 namespace qReal {
 namespace gui {
 namespace editor {

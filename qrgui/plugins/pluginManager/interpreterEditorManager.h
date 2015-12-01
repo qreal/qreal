@@ -34,6 +34,7 @@
 #include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
+
 namespace gui {
 namespace editor {
 class Element;

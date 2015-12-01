@@ -107,7 +107,7 @@ private:
 };
 
 /// A wrapper arround the QVariantList for getting its properties and elements via Qt reflection.
-class VariantSet : public ObjectsSetBase
+class ROBOTS_UTILS_EXPORT VariantSet : public ObjectsSetBase
 {
 public:
 	explicit VariantSet(QObject *parent = 0);

@@ -44,6 +44,7 @@ private:
 	int mInitWidth;
 	int mInitHeight;
 };
+
 }
 }
 }

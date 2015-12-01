@@ -32,6 +32,7 @@ class LogicalModelAssistApi;
 
 namespace gui {
 namespace editor {
+
 class EditorView;
 class EditorViewScene;
 class Element;

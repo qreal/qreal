@@ -37,6 +37,7 @@ class AbstractCommand;
 
 namespace gui {
 namespace editor {
+
 class SceneCustomizer;
 class Element;
 
