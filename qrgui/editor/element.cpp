@@ -101,29 +101,6 @@ void Element::initTitles()
 {
 }
 
-void Element::select(const bool singleSelected)
-{
-	if (singleSelected) {
-		setSelectionState(true);
-	}
-
-	emit switchFolding(!singleSelected);
-}
-
-void Element::setSelectionState(const bool selected)
-{
-	if (isSelected() != selected) {
-		setSelected(selected);
-	}
-	if (!selected) {
-		select(false);
-	}
-
-	for (Label * const label : mLabels) {
-		label->setParentSelected(selected);
-	}
-}
-
 ElementImpl* Element::elementImpl() const
 {
 	return mElementImpl;
@@ -154,12 +131,6 @@ void Element::updateEnabledState()
 
 void Element::setHideNonHardLabels(bool hide)
 {
-	for (const Label * const label : mLabels) {
-		if (label->isSelected()) {
-			return;
-		}
-	}
-
 	for (Label * const label : mLabels) {
 		label->setVisible(label->isHard() || !hide);
 	}

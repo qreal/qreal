@@ -87,13 +87,6 @@ public:
 	/// Checks if this element is disabled from palette and if it is grayscales it.
 	void updateEnabledState();
 
-public slots:
-	virtual void select(const bool singleSelected);
-	virtual void setSelectionState(const bool selected);
-
-signals:
-	void switchFolding(bool);
-
 protected:
 	void setHideNonHardLabels(bool visible);
 

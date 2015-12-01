@@ -209,20 +209,12 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			}
 
 			if (!isEdgeFromEmbeddedLinker) {
-				for (QGraphicsItem *item : scene()->items()) {
-					Element* element = dynamic_cast<Element*>(item);
-					if (element) {
-						element->setSelectionState(false);
-						element->select(false);
-					}
-				}
-
-				elem->select(true);
+				mView->scene()->clearSelection();
+				elem->setSelected(true);
 			}
 
-			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);
-			if (nodeElem && currentId.element() == "Class" &&
-				mGraphicalAssistApi->children(currentId).empty())
+			if (dynamic_cast<NodeElement *>(elem) && currentId.element() == "Class" &&
+					mGraphicalAssistApi->children(currentId).empty())
 			{
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
