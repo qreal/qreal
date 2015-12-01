@@ -195,7 +195,7 @@ void ProjectManagerWrapper::close()
 	mMainWindow->logicalModelExplorer()->setModel(nullptr);
 
 	if (mMainWindow->getCurrentTab()) {
-		static_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
+		static_cast<qReal::gui::editor::EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
 	}
 	mMainWindow->closeAllTabs();
 	mMainWindow->setWindowTitle(mMainWindow->toolManager().customizer()->windowTitle());

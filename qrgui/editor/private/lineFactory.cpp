@@ -19,6 +19,7 @@
 #include "editor/private/curveLine.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 LineFactory::LineFactory(EdgeElement *edge)
 		: mEdge(edge)

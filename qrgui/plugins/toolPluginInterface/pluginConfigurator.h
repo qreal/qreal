@@ -38,7 +38,7 @@ public:
 		, gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 		, gui::MainWindowDockInterface &mainWindowDockInterface
 		, ProjectManagementInterface &projectManager
-		, SceneCustomizationInterface &sceneCustomizer
+		, gui::editor::SceneCustomizationInterface &sceneCustomizer
 		, SystemEvents &systemEvents
 		, TextManagerInterface &textManager
 	)
@@ -83,7 +83,7 @@ public:
 		return mProjectManager;
 	}
 
-	SceneCustomizationInterface &sceneCustomizer() const
+	gui::editor::SceneCustomizationInterface &sceneCustomizer() const
 	{
 		return mSceneCustomizer;
 	}
@@ -105,7 +105,7 @@ private:
 	gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
 	gui::MainWindowDockInterface &mMainWindowDockInterface;
 	ProjectManagementInterface &mProjectManager;
-	SceneCustomizationInterface &mSceneCustomizer;
+	gui::editor::SceneCustomizationInterface &mSceneCustomizer;
 	SystemEvents &mSystemEvents;
 	TextManagerInterface &mTextManager;
 };

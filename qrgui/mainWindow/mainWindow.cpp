@@ -79,8 +79,9 @@
 #include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
+using namespace qReal::gui;
 using namespace qReal::commands;
-using namespace gui;
+using namespace qReal::gui::editor;
 
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
@@ -232,7 +233,7 @@ void MainWindow::connectActions()
 	SettingsListener::listen("PaletteIconsInARowCount", this, &MainWindow::changePaletteRepresentation);
 	SettingsListener::listen("toolbarSize", this, &MainWindow::resetToolbarSize);
 	SettingsListener::listen("pathToImages", this, &MainWindow::updatePaletteIcons);
-	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::applySettings);
+	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &qReal::MainWindow::applySettings);
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));

@@ -20,6 +20,7 @@
 #include "editor/editorViewScene.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 ClipboardHandler::ClipboardHandler(EditorViewScene &scene, Controller &controller)
 	: mScene(scene)

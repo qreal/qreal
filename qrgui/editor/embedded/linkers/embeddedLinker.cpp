@@ -26,6 +26,8 @@
 #include "editor/commands/reshapeEdgeCommand.h"
 
 using namespace qReal;
+using namespace qReal::commands;
+using namespace qReal::gui::editor;
 
 EmbeddedLinker::EmbeddedLinker()
 		: mEdge(nullptr)
@@ -139,13 +141,13 @@ void EmbeddedLinker::initTitle()
 //	mTitle->setParentItem(this);
 }
 
-void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
+void EmbeddedLinker::setEdgeType(const Id &edgeType)
 {
 	this->mEdgeType = edgeType;
 	generateColor();
 }
 
-qReal::Id EmbeddedLinker::edgeType() const
+Id EmbeddedLinker::edgeType() const
 {
 	return mEdgeType;
 }
@@ -277,7 +279,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->show();
 		int result = 0;
 
-		commands::CreateElementCommand *createElementFromMenuCommand = nullptr;
+		CreateElementCommand *createElementFromMenuCommand = nullptr;
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {

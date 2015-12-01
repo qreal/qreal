@@ -59,7 +59,7 @@ private:
 	qReal::ProjectManager mProjectManager;
 	qReal::NullMainWindow mMainWindow;
 	qReal::NullTextManager mTextManager;
-	qReal::SceneCustomizer mSceneCustomizer;
+	qReal::gui::editor::SceneCustomizer mSceneCustomizer;
 	qReal::PluginConfigurator mConfigurator;
 	interpreterCore::RobotsPluginFacade mPluginFacade;
 	Reporter mReporter;

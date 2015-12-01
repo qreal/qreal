@@ -19,6 +19,10 @@
 #include "thirdparty/qtpropertybrowser/src/qtvariantproperty.h"
 #include "thirdparty/qtpropertybrowser/src/qteditorfactory.h"
 
+namespace qReal {
+namespace gui {
+namespace editor {
+
 /** @brief This manager allows to use push buttons in property editor to do some stuff by click */
 class PushButtonPropertyManager : public QtAbstractPropertyManager
 {
@@ -64,3 +68,6 @@ private:
 	class {} *d_ptr;
 	Q_DISABLE_COPY(PushButtonFactory)
 };
+}
+}
+}

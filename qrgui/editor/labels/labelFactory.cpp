@@ -18,6 +18,7 @@
 #include "labelProperties.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 LabelFactory::LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, const Id &elementId)
 	: mGraphicalModelAssistApi(graphicalModelAssistApi)

@@ -19,6 +19,10 @@
 // saves cursor's position within the scene
 // could be useful to call Element's event handlers from the scene
 
+namespace qReal {
+namespace gui {
+namespace editor {
+
 class ContextMenuAction: public QAction
 {
 	Q_OBJECT
@@ -37,3 +41,6 @@ signals:
 private:
 	QPointF mEventPos;
 };
+}
+}
+}

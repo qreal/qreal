@@ -34,8 +34,11 @@
 #include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
-
+namespace gui {
+namespace editor {
 class Element;
+}
+}
 
 class QRGUI_PLUGINS_MANAGER_EXPORT InterpreterEditorManager : public QObject, public EditorManagerInterface
 {
