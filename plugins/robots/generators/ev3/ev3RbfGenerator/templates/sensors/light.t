@@ -1,1 +1,2 @@
-(100 - ecrobot_get_light_sensor(@@PORT@@) * 100 / 1023)
+INPUT_READ(0, @@PORT@@, 2, 0, _temp_sensor_value)
+MOVE8_32(_temp_sensor_value, @@RESULT@@)

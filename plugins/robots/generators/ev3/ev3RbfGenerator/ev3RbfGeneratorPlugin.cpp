@@ -18,6 +18,7 @@
 #include <QtCore/QDirIterator>
 #include <QtCore/QProcess>
 
+#include <qrkernel/logging.h>
 #include <ev3Kit/communication/ev3RobotCommunicationThread.h>
 #include <ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h>
 #include "ev3RbfMasterGenerator.h"
@@ -130,6 +131,7 @@ QString Ev3RbfGeneratorPlugin::uploadProgram()
 	}
 
 	if (!compile(fileInfo)) {
+		QLOG_ERROR() << "EV3 bytecode compillation process failed!";
 		mMainWindowInterface->errorReporter()->addError(tr("Compilation error occured."));
 		return QString();
 	}
@@ -191,6 +193,7 @@ bool Ev3RbfGeneratorPlugin::compile(const QFileInfo &lmsFile)
 	java.setEnvironment(QProcess::systemEnvironment());
 	java.setWorkingDirectory(lmsFile.absolutePath());
 	java.start("cmd /c java -jar assembler.jar " + lmsFile.absolutePath() + "/" + lmsFile.baseName());
+	connect(&java, &QProcess::readyRead, this, [&java]() { QLOG_INFO() << java.readAll(); });
 	java.waitForFinished();
 	return true;
 }

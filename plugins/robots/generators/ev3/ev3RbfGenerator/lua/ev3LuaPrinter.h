@@ -53,14 +53,15 @@ public:
 	~Ev3LuaPrinter() override;
 
 	/// Prints the given AST to the code using a set of templates placed in the given in the constructor directory.
-	QString print(const QSharedPointer<qrtext::lua::ast::Node> &node);
+	QString print(const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id);
 
-	/// Prints the given AST to the code on the target language and casts it to string.
-	QString castToString(const QSharedPointer<qrtext::lua::ast::Node> &node);
+	/// Prints the given AST to the code on the target language and casts it to the given type.
+	QString castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+			, const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id);
 
 	/// Returns code that must be prepended to generated code correspondning to current block.
 	/// Must be called after print() call or any cast function call.
-	QStringList additionalCode() const;
+	QStringList additionalCode(const qReal::Id &id) const;
 
 private:
 	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node) override;
@@ -133,8 +134,9 @@ private:
 	const qrtext::LanguageToolboxInterface &mTextLanguage;
 	generatorBase::parts::Variables &mVariables;
 	QMap<qrtext::lua::ast::Node *, QString> mGeneratedCode;
-	QStringList mAdditionalCode;
-	QMap<Ev3RbfType, int> mRegistersCount;
+	qReal::Id mId;
+	QMap<qReal::Id, QStringList> mAdditionalCode;
+	QMap<qReal::Id, QMap<Ev3RbfType, int>> mRegistersCount;
 	const generatorBase::simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership
 	Ev3ReservedFunctionsConverter mReservedFunctionsConverter;
 };

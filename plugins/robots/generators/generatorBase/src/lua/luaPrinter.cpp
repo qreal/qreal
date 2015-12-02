@@ -98,9 +98,10 @@ QString LuaPrinter::print(const QSharedPointer<qrtext::lua::ast::Node> &node)
 	return printWithoutPop(node) ? popResult(node) : QString();
 }
 
-QString LuaPrinter::castToString(const QSharedPointer<qrtext::lua::ast::Node> &node)
+QString LuaPrinter::castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+		, const QSharedPointer<qrtext::lua::ast::Node> &node)
 {
-	return printWithoutPop(node) ? toString(node) : QString();
+	return printWithoutPop(node) ? to(type, node) : QString();
 }
 
 void LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &node, const QString &generatedCode)
@@ -412,6 +413,36 @@ void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Block> &node)
 void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::IndexingExpression> &node)
 {
 	processTemplate(node, "indexingExpression.t", { {"@@TABLE@@", node->table()}, {"@@INDEXER@@", node->indexer()} });
+}
+
+QString LuaPrinter::to(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+		, const QSharedPointer<qrtext::lua::ast::Node> &node)
+{
+	if (mTextLanguage.isGeneralization(mTextLanguage.type(node), type)) {
+		return popResult(node);
+	}
+
+	if (type->is<qrtext::lua::types::String>()) {
+		// Casting to string is always an especial case that usually does not look in programming languages as just cast
+		return toString(node);
+	}
+
+	const QString value = popResult(node);
+	QString templateName;
+	if (type->is<qrtext::lua::types::Boolean>()) {
+		templateName = "bool";
+	} else if (type->is<qrtext::lua::types::Integer>()) {
+		templateName = "int";
+	} else if (type->is<qrtext::lua::types::Float>()) {
+		templateName = "float";
+	} else {
+		// Here we just can hope that our language has dynamic type-checking
+		return value;
+	}
+
+	QString castTemplate = readTemplate("types/cast.t");
+	const QString typeName = readTemplate(QString("types/%1.t").arg(templateName));
+	return castTemplate.replace("@@TYPE@@", typeName).replace("@@EXPRESSION@@", value);
 }
 
 QString LuaPrinter::toString(const QSharedPointer<qrtext::lua::ast::Node> &node)

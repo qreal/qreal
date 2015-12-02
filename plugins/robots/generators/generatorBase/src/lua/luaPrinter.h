@@ -17,6 +17,7 @@
 #include <QtCore/QMap>
 
 #include <qrtext/lua/ast/node.h>
+#include <qrtext/core/types/typeExpression.h>
 
 #include "reservedFunctionsConverter.h"
 #include "generatorBase/lua/precedenceConverterInterface.h"
@@ -45,8 +46,9 @@ public:
 	/// Prints the given AST to the code using a set of templates placed in the given in the constructor directory.
 	virtual QString print(const QSharedPointer<qrtext::lua::ast::Node> &node);
 
-	/// Prints the given AST to the code on the target language and casts it to string.
-	virtual QString castToString(const QSharedPointer<qrtext::lua::ast::Node> &node);
+	/// Prints the given AST to the code on the target language and casts it to the given types.
+	virtual QString castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+			, const QSharedPointer<qrtext::lua::ast::Node> &node);
 
 private:
 	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node) override;
@@ -108,6 +110,8 @@ private:
 	QStringList popResults(const QList<QSharedPointer<qrtext::lua::ast::Node>> &nodes);
 
 	bool printWithoutPop(const QSharedPointer<qrtext::lua::ast::Node> &node);
+	QString to(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+			, const QSharedPointer<qrtext::lua::ast::Node> &node);
 	QString toString(const QSharedPointer<qrtext::lua::ast::Node> &node);
 
 	QStringList addSuffix(const QStringList &list);

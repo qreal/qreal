@@ -145,26 +145,27 @@ QString Ev3LuaPrinter::newRegister(Ev3RbfType type)
 		return QString();
 	}
 
-	const QString result = registerNames[type] + QString::number(++mRegistersCount[type]);
+	const QString result = registerNames[type] + QString::number(++mRegistersCount[mId][type]);
 	mVariables.appendManualDeclaration(QString("DATA%1 %2").arg(typeNames[type], result));
 	return result;
 }
 
-QString Ev3LuaPrinter::print(const QSharedPointer<qrtext::lua::ast::Node> &node)
+QString Ev3LuaPrinter::print(const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id)
 {
-	mRegistersCount.clear();
-	mAdditionalCode.clear();
+	mId = id;
 	return printWithoutPop(node) ? popResult(node) : QString();
 }
 
-QString Ev3LuaPrinter::castToString(const QSharedPointer<qrtext::lua::ast::Node> &node)
+QString Ev3LuaPrinter::castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+		, const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id)
 {
-	return printWithoutPop(node) ? toString(node) : QString();
+	mId = id;
+	return printWithoutPop(node) ? castTo(toEv3Type(type), node) : QString();
 }
 
-QStringList Ev3LuaPrinter::additionalCode() const
+QStringList Ev3LuaPrinter::additionalCode(const qReal::Id &id) const
 {
-	return mAdditionalCode;
+	return mAdditionalCode[id];
 }
 
 void Ev3LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &node
@@ -172,7 +173,7 @@ void Ev3LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &nod
 {
 	mGeneratedCode[node.data()] = generatedCode;
 	if (!additionalCode.isEmpty()) {
-		mAdditionalCode << additionalCode;
+		mAdditionalCode[mId] << additionalCode;
 	}
 }
 
@@ -454,8 +455,15 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Nil> &node)
 
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Identifier> &node)
 {
-	/// @todo: if some function or method will have same id as some reserved variable it will be replaced too...
-	pushResult(node, mReservedVariablesConverter->convert(node->name()), QString());
+	QString additionalCode;
+	QString result = mReservedVariablesConverter->convert(node->name());
+	if (result != node->name()) {
+		const QString registerName = newRegister(node);
+		additionalCode = result.replace("@@RESULT@@", registerName);
+		result = registerName;
+	}
+
+	pushResult(node, result, additionalCode);
 }
 
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FunctionCall> &node)
@@ -550,7 +558,8 @@ QString Ev3LuaPrinter::castTo(Ev3RbfType targetType, const QSharedPointer<qrtext
 	}
 
 	const QString result = newRegister(targetType);
-	mAdditionalCode << QString("MOVE%1_%2(%3, %4)").arg(typeNames[actualType], typeNames[targetType], value, result);
+	mAdditionalCode[mId] << QString("MOVE%1_%2(%3, %4)")
+			.arg(typeNames[actualType], typeNames[targetType], value, result);
 	return result;
 }
 

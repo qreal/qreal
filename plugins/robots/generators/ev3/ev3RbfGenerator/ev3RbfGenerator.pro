@@ -31,7 +31,7 @@ includes(plugins/robots/generators/ev3/ev3GeneratorBase \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 qrgui-text-editor \
+links(qrkernel qslog qrutils qrrepo qscintilla2 qrgui-text-editor qrtext \
 		robots-generator-base robots-ev3-generator-base robots-ev3-kit robots-utils)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3RbfGenerator_ru.ts

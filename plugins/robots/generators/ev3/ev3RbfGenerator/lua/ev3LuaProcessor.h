@@ -54,7 +54,8 @@ public:
 	/// Converts the given Lua code into the EV3 bytecode, substitues all
 	/// reserved variables and functions code and casts the result to string.
 	/// Takes ownership on @arg reservedVariablesConverter.
-	QString castToString(const QString &luaCode
+	QString castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+			, const QString &luaCode
 			, const qReal::Id &id
 			, const QString &propertyName
 			, const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter) override;

@@ -15,6 +15,7 @@
 #pragma once
 
 #include <qrutils/parserErrorReporter.h>
+#include <qrtext/core/types/typeExpression.h>
 
 #include "precedenceConverter.h"
 #include "generatorBase/templateParametrizedEntity.h"
@@ -53,9 +54,10 @@ public:
 			, const simple::Binding::ConverterInterface *reservedVariablesConverter);
 
 	/// Converts the given Lua code into the target language, substitues all
-	/// reserved variables and functions code and casts the result to string.
+	/// reserved variables and functions code and casts the result to the given types.
 	/// Takes ownership on @arg reservedVariablesConverter.
-	virtual QString castToString(const QString &luaCode
+	virtual QString castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+			, const QString &luaCode
 			, const qReal::Id &id
 			, const QString &propertyName
 			, const simple::Binding::ConverterInterface *reservedVariablesConverter);

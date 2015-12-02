@@ -14,6 +14,10 @@
 
 #include "boolPropertyConverter.h"
 
+#include <qrtext/lua/types/boolean.h>
+
+#include "generatorBase/lua/luaProcessor.h"
+
 using namespace generatorBase::converters;
 using namespace qReal;
 
@@ -29,15 +33,9 @@ BoolPropertyConverter::BoolPropertyConverter(const QStringList &pathsToTemplates
 {
 }
 
-QString BoolPropertyConverter::convert(const QString &data) const
+QString BoolPropertyConverter::convert(const QString &luaCode) const
 {
-	const QString preparedCode = CodeConverterBase::convert(data);
-	return mNeedInverting ? invert(preparedCode) : preparedCode;
-}
-
-QString BoolPropertyConverter::invert(const QString &expression) const
-{
-	QString invertTemplate = readTemplate("conditional/negation.t");
-	invertTemplate.replace("@@CONDITION@@", expression);
-	return invertTemplate;
+	const QString actualCode = mNeedInverting ? luaCode : QString("not(%1)").arg(luaCode);
+	return mLuaTranslator.castTo(qrtext::core::wrap(new qrtext::lua::types::Boolean)
+			, actualCode, mId, mPropertyName, mReservedVariablesConverter);
 }

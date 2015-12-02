@@ -53,13 +53,14 @@ QString Ev3LuaProcessor::translate(const QString &data
 
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
 	lua::Ev3LuaPrinter printer(pathsToRoot(), mTextLanguage, *mVariables, reservedVariablesConverter);
-	const QString result = printer.print(tree);
-	mFactory->addAdditionalCode(id, printer.additionalCode());
+	const QString result = printer.print(tree, id);
+	mFactory->addAdditionalCode(id, printer.additionalCode(id));
 	return result;
 }
 
 
-QString Ev3LuaProcessor::castToString(const QString &data
+QString Ev3LuaProcessor::castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+		, const QString &data
 		, const Id &id
 		, const QString &propertyName
 		, const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter)
@@ -72,7 +73,7 @@ QString Ev3LuaProcessor::castToString(const QString &data
 
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
 	lua::Ev3LuaPrinter printer(pathsToRoot(), mTextLanguage, *mVariables, reservedVariablesConverter);
-	const QString result = printer.castToString(tree);
-	mFactory->addAdditionalCode(id, printer.additionalCode());
+	const QString result = printer.castTo(type, tree, id);
+	mFactory->addAdditionalCode(id, printer.additionalCode(id));
 	return result;
 }

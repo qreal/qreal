@@ -351,7 +351,7 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(const qReal::I
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(const Id &id, const QString &property) const
 {
 	return new converters::IntPropertyConverter(pathsToTemplates(), mLuaTranslator, id
-			, property, reservedVariableNameConverter(), typeConverter());
+			, property, reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter(const Id &id, const QString &property) const
