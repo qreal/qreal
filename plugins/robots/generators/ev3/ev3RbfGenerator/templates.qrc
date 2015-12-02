@@ -120,12 +120,15 @@
         <file>templates/threads/forwardDeclaration.t</file>
         <file>templates/threads/implementation.t</file>
         <file>templates/threads/implementationsSectionHeader.t</file>
-<!--        <file>templates/drawing/printText.t</file>
-        <file>templates/drawing/bmpDeclaration.t</file>
-        <file>templates/drawing/clearUnusedScreen.t</file>
-        <file>templates/drawing/clearUsedScreen.t</file>
-        <file>templates/drawing/drawBitmap.t</file>
-        <file>templates/drawing/variablesDeclaration.t</file> -->
+        <file>templates/drawing/clearScreen.t</file>
+        <file>templates/drawing/drawCircle.t</file>
+        <file>templates/drawing/drawFilledCircle.t</file>
+        <file>templates/drawing/drawRect.t</file>
+        <file>templates/drawing/drawFilledRect.t</file>
+        <file>templates/drawing/drawLine.t</file>
+        <file>templates/drawing/drawPixel.t</file>
+        <file>templates/drawing/printText.t</file>
+        <file>templates/drawing/redraw.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
         <file>templates/variables/randomInitialization.t</file>

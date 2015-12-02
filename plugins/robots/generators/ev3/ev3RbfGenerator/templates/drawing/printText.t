@@ -1,2 +1,2 @@
-UI_DRAW(TEXT,FG_COLOR,@@X@@,@@Y@@,@@TEXT@@)
-UI_DRAW(UPDATE)
+UI_DRAW(TEXT, FG_COLOR, @@X@@, @@Y@@, @@TEXT@@)
+@@REDRAW@@

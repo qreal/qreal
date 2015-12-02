@@ -37,4 +37,6 @@ DrawRectGenerator::DrawRectGenerator(qrRepo::RepoApi const &repo
 			}
 			, parent)
 {
+	addBinding(Binding::createStatic("@@REDRAW@@", repo.property(id, "Redraw").toBool()
+			? readTemplate("drawing/redraw.t") : QString()));
 }
