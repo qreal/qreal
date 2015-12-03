@@ -31,7 +31,7 @@ TouchSensor::TouchSensor(const kitBase::robotModel::DeviceInfo &info
 
 void TouchSensor::read()
 {
-	QByteArray command = mImplementation.readySiCommand(mImplementation.lowLevelPort(), 0);
+	const QByteArray command = mImplementation.readySiCommand(mImplementation.lowLevelPort(), 0);
 	QByteArray outputBuf;
 	mRobotCommunicator.send(command, touchSensorResponseSize, outputBuf);
 	if (outputBuf.data()[8] == pressed) {
@@ -40,4 +40,3 @@ void TouchSensor::read()
 		emit newData(0);
 	}
 }
-

@@ -35,4 +35,3 @@ void RangeSensor::read()
 	mRobotCommunicator.send(command, rangeSensorResponseSize, outputBuf);
 	emit newData(static_cast<int>(outputBuf.data()[5]));
 }
-

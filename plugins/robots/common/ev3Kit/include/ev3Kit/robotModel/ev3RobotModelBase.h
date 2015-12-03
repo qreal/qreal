@@ -37,6 +37,10 @@ protected:
 	virtual kitBase::robotModel::DeviceInfo lightSensorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo rangeSensorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo colorFullSensorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo colorRedSensorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo colorGreenSensorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo colorBlueSensorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo colorPassiveSensorInfo() const;
 };
 
 }

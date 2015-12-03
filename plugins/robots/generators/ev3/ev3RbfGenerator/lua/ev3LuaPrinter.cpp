@@ -82,12 +82,11 @@ const QMap<Ev3RbfType, QString> typeNames = {
 
 Ev3LuaPrinter::Ev3LuaPrinter(const QStringList &pathsToTemplates
 		, const qrtext::LanguageToolboxInterface &textLanguage
-		, generatorBase::parts::Variables &variables
-		, const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter)
+		, generatorBase::parts::Variables &variables)
 	: generatorBase::TemplateParametrizedEntity(addSuffix(pathsToTemplates))
 	, mTextLanguage(textLanguage)
 	, mVariables(variables)
-	, mReservedVariablesConverter(reservedVariablesConverter)
+	, mReservedVariablesConverter(nullptr)
 	, mReservedFunctionsConverter(pathsToTemplates)
 {
 }
@@ -95,6 +94,12 @@ Ev3LuaPrinter::Ev3LuaPrinter(const QStringList &pathsToTemplates
 Ev3LuaPrinter::~Ev3LuaPrinter()
 {
 	delete mReservedVariablesConverter;
+}
+
+void Ev3LuaPrinter::configure(const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter)
+{
+	delete mReservedVariablesConverter;
+	mReservedVariablesConverter = reservedVariablesConverter;
 }
 
 QStringList Ev3LuaPrinter::addSuffix(const QStringList &list)
@@ -125,7 +130,7 @@ Ev3RbfType Ev3LuaPrinter::toEv3Type(const QSharedPointer<qrtext::core::types::Ty
 		return Ev3RbfType::dataS;
 	}
 
-	qWarning() << "Ev3LuaPrinter::typeOf: Unsupported type" << type->toString();
+	qWarning() << "Ev3LuaPrinter::typeOf: Unsupported type" << qUtf8Printable(type->toString());
 	return Ev3RbfType::other;
 }
 
@@ -146,13 +151,15 @@ QString Ev3LuaPrinter::newRegister(Ev3RbfType type)
 	}
 
 	const QString result = registerNames[type] + QString::number(++mRegistersCount[mId][type]);
-	mVariables.appendManualDeclaration(QString("DATA%1 %2").arg(typeNames[type], result));
+	const QString declarationTemplate = (type == Ev3RbfType::dataS) ? "DATA%1 %2 255" : "DATA%1 %2";
+	mVariables.appendManualDeclaration(declarationTemplate.arg(typeNames[type], result));
 	return result;
 }
 
 QString Ev3LuaPrinter::print(const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id)
 {
 	mId = id;
+	mAdditionalCode.clear();
 	return printWithoutPop(node) ? popResult(node) : QString();
 }
 
@@ -160,12 +167,13 @@ QString Ev3LuaPrinter::castTo(const QSharedPointer<qrtext::core::types::TypeExpr
 		, const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id)
 {
 	mId = id;
+	mAdditionalCode.clear();
 	return printWithoutPop(node) ? castTo(toEv3Type(type), node) : QString();
 }
 
-QStringList Ev3LuaPrinter::additionalCode(const qReal::Id &id) const
+QStringList Ev3LuaPrinter::additionalCode() const
 {
-	return mAdditionalCode[id];
+	return mAdditionalCode;
 }
 
 void Ev3LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &node
@@ -173,7 +181,7 @@ void Ev3LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &nod
 {
 	mGeneratedCode[node.data()] = generatedCode;
 	if (!additionalCode.isEmpty()) {
-		mAdditionalCode[mId] << additionalCode;
+		mAdditionalCode << additionalCode;
 	}
 }
 
@@ -498,8 +506,11 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::MethodCall> &no
 
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Assignment> &node)
 {
-	processTemplate(node, "assignment.t", { {"@@VARIABLE@@", node->variable()}, {"@@VALUE@@", node->value()} }
-			, { {"@@TYPE1@@", typeNames[typeOf(node->variable())]} , {"@@TYPE2@@", typeNames[typeOf(node->value())]} }
+	const bool isString = typeOf(node->variable()) == Ev3RbfType::dataS;
+	processTemplate(node, isString ? "assignmentStrings.t" : "assignment.t"
+			, { {"@@VARIABLE@@", node->variable()}, {"@@VALUE@@", node->value()} }
+			, { {"@@TYPE1@@", typeNames[typeOf(node->variable())]}
+			, {"@@TYPE2@@", typeNames[typeOf(node->value())]} }
 	);
 }
 
@@ -522,19 +533,20 @@ QString Ev3LuaPrinter::toString(const QSharedPointer<qrtext::lua::ast::Node> &no
 		return value;
 	}
 
+	QString code;
 	if (type->is<qrtext::lua::types::Integer>()) {
-		return readTemplate("intToString.t").replace("@@VALUE@@", value);
+		code = readTemplate("intToString.t").replace("@@VALUE@@", value);
+	} else if (type->is<qrtext::lua::types::Float>()) {
+		code = readTemplate("floatToString.t").replace("@@VALUE@@", value);
+	} else if (type->is<qrtext::lua::types::Integer>()) {
+		code = readTemplate("boolToString.t").replace("@@VALUE@@", value);
+	} else {
+		code = readTemplate("otherToString.t").replace("@@VALUE@@", value);
 	}
 
-	if (type->is<qrtext::lua::types::Float>()) {
-		return readTemplate("floatToString.t").replace("@@VALUE@@", value);
-	}
-
-	if (type->is<qrtext::lua::types::Integer>()) {
-		return readTemplate("boolToString.t").replace("@@VALUE@@", value);
-	}
-
-	return readTemplate("otherToString.t").replace("@@VALUE@@", value);
+	const QString result = newRegister(Ev3RbfType::dataS);
+	mAdditionalCode << code.replace("@@RESULT@@", result);
+	return result;
 }
 
 QString Ev3LuaPrinter::castTo(Ev3RbfType targetType, const QSharedPointer<qrtext::lua::ast::Node> &node)
@@ -558,7 +570,7 @@ QString Ev3LuaPrinter::castTo(Ev3RbfType targetType, const QSharedPointer<qrtext
 	}
 
 	const QString result = newRegister(targetType);
-	mAdditionalCode[mId] << QString("MOVE%1_%2(%3, %4)")
+	mAdditionalCode << QString("MOVE%1_%2(%3, %4)")
 			.arg(typeNames[actualType], typeNames[targetType], value, result);
 	return result;
 }

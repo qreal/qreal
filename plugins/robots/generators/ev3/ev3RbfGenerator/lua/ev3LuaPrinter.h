@@ -32,25 +32,34 @@ namespace ev3 {
 namespace rbf {
 namespace lua {
 
+/// Represents type of variables available in EV3 bytecode.
 enum class Ev3RbfType {
+	/// 8-bit integer
 	data8 = 0
+	/// 16-bit integer
 	, data16
+	/// 32-bit integer
 	, data32
+	/// Float data
 	, dataF
+	/// String
 	, dataS
+	/// Something unknown
 	, other
 };
 
 class Ev3LuaPrinter : public qrtext::lua::LuaAstVisitorInterface, public generatorBase::TemplateParametrizedEntity
 {
 public:
-	/// Takes ownership on converters.
 	Ev3LuaPrinter(const QStringList &pathsToTemplates
 			, const qrtext::LanguageToolboxInterface &textLanguage
-			, generatorBase::parts::Variables &variables
-			, const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter);
+			, generatorBase::parts::Variables &variables);
 
 	~Ev3LuaPrinter() override;
+
+	/// Cofigures current printer instance to use the given reserved variables converter.
+	/// Takes ownership over \a reservedVariablesConverter.
+	void configure(const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter);
 
 	/// Prints the given AST to the code using a set of templates placed in the given in the constructor directory.
 	QString print(const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id);
@@ -60,8 +69,8 @@ public:
 			, const QSharedPointer<qrtext::lua::ast::Node> &node, const qReal::Id &id);
 
 	/// Returns code that must be prepended to generated code correspondning to current block.
-	/// Must be called after print() call or any cast function call.
-	QStringList additionalCode(const qReal::Id &id) const;
+	/// Must be called after print() call or castTo() function call.
+	QStringList additionalCode() const;
 
 private:
 	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node) override;
@@ -135,7 +144,7 @@ private:
 	generatorBase::parts::Variables &mVariables;
 	QMap<qrtext::lua::ast::Node *, QString> mGeneratedCode;
 	qReal::Id mId;
-	QMap<qReal::Id, QStringList> mAdditionalCode;
+	QStringList mAdditionalCode;
 	QMap<qReal::Id, QMap<Ev3RbfType, int>> mRegistersCount;
 	const generatorBase::simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership
 	Ev3ReservedFunctionsConverter mReservedFunctionsConverter;

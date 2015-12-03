@@ -189,6 +189,11 @@ bool Ev3RbfGeneratorPlugin::copySystemFiles(const QString &destination)
 
 bool Ev3RbfGeneratorPlugin::compile(const QFileInfo &lmsFile)
 {
+	QFile rbfFile(lmsFile.absolutePath() + "/" + lmsFile.baseName() + ".rbf");
+	if (rbfFile.exists()) {
+		rbfFile.remove();
+	}
+
 	QProcess java;
 	java.setEnvironment(QProcess::systemEnvironment());
 	java.setWorkingDirectory(lmsFile.absolutePath());

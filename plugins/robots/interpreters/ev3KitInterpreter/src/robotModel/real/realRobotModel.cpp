@@ -24,6 +24,10 @@
 #include "parts/lightSensor.h"
 #include "parts/rangeSensor.h"
 #include "parts/colorSensorFull.h"
+#include "parts/colorSensorRed.h"
+#include "parts/colorSensorGreen.h"
+#include "parts/colorSensorBlue.h"
+#include "parts/colorSensorPassive.h"
 
 using namespace ev3::robotModel::real;
 using namespace utils::robotCommunication;
@@ -92,6 +96,22 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA(colorFullSensorInfo())) {
 		return new parts::ColorSensorFull(colorFullSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorRedSensorInfo())) {
+		return new parts::ColorSensorRed(colorRedSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorGreenSensorInfo())) {
+		return new parts::ColorSensorGreen(colorGreenSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorBlueSensorInfo())) {
+		return new parts::ColorSensorBlue(colorBlueSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorPassiveSensorInfo())) {
+		return new parts::ColorSensorPassive(colorPassiveSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	return Ev3RobotModelBase::createDevice(port, deviceInfo);

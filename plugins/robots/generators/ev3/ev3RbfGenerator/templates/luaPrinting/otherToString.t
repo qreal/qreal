@@ -1,1 +1,1 @@
-other_to_string(@@VALUE@@)
+'Warning: unknown type!'

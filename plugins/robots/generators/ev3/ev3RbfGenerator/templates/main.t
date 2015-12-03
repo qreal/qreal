@@ -21,7 +21,8 @@ vmthread MAIN
 	DATA32 timer
 	DATA8 buttonClicked
 	DATA8 condition
-	DATA8 _temp_sensor_value
+	DATA8 _temp_sensor_value_8
+	DATAF _temp_sensor_value_f
 @@VARIABLES@@
 
 @@MAIN_CODE@@

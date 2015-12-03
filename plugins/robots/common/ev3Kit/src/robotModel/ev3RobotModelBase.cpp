@@ -25,6 +25,10 @@
 #include <kitBase/robotModel/robotParts/lightSensor.h>
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
 #include <kitBase/robotModel/robotParts/colorSensorFull.h>
+#include <kitBase/robotModel/robotParts/colorSensorRed.h>
+#include <kitBase/robotModel/robotParts/colorSensorGreen.h>
+#include <kitBase/robotModel/robotParts/colorSensorBlue.h>
+#include <kitBase/robotModel/robotParts/colorSensorPassive.h>
 
 using namespace ev3::robotModel;
 using namespace kitBase::robotModel;
@@ -37,6 +41,10 @@ Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotI
 			, lightSensorInfo()
 			, rangeSensorInfo()
 			, colorFullSensorInfo()
+			, colorRedSensorInfo()
+			, colorGreenSensorInfo()
+			, colorBlueSensorInfo()
+			, colorPassiveSensorInfo()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
@@ -66,6 +74,10 @@ QList<DeviceInfo> Ev3RobotModelBase::convertibleBases() const
 			, DeviceInfo::create<robotParts::LightSensor>()
 			, DeviceInfo::create<robotParts::RangeSensor>()
 			, DeviceInfo::create<robotParts::ColorSensorFull>()
+			, DeviceInfo::create<robotParts::ColorSensorRed>()
+			, DeviceInfo::create<robotParts::ColorSensorBlue>()
+			, DeviceInfo::create<robotParts::ColorSensorGreen>()
+			, DeviceInfo::create<robotParts::ColorSensorPassive>()
 	};
 }
 
@@ -107,4 +119,24 @@ DeviceInfo Ev3RobotModelBase::rangeSensorInfo() const
 DeviceInfo Ev3RobotModelBase::colorFullSensorInfo() const
 {
 	return DeviceInfo::create<robotParts::ColorSensorFull>();
+}
+
+DeviceInfo Ev3RobotModelBase::colorRedSensorInfo() const
+{
+	return DeviceInfo::create<robotParts::ColorSensorRed>();
+}
+
+DeviceInfo Ev3RobotModelBase::colorGreenSensorInfo() const
+{
+	return DeviceInfo::create<robotParts::ColorSensorGreen>();
+}
+
+DeviceInfo Ev3RobotModelBase::colorBlueSensorInfo() const
+{
+	return DeviceInfo::create<robotParts::ColorSensorBlue>();
+}
+
+DeviceInfo Ev3RobotModelBase::colorPassiveSensorInfo() const
+{
+	return DeviceInfo::create<robotParts::ColorSensorPassive>();
 }

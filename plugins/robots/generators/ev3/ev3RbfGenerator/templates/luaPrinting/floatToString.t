@@ -1,1 +1,1 @@
-float_to_string(@@VALUE@@)
+STRINGS(VALUE_FORMATTED, @@VALUE@@, '%0.5f', 15, @@RESULT@@)

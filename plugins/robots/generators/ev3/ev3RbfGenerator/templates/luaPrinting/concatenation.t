@@ -1,1 +1,1 @@
-concat(@@LEFT@@, @@RIGHT@@)
+STRINGS(ADD, @@LEFT@@, @@RIGHT@@, @@RESULT@@)

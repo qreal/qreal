@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/colorSensorFull.h>
+#include <kitBase/robotModel/robotParts/colorSensorGreen.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
 #include "ev3InputDevice.h"
@@ -24,12 +24,12 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-class ColorSensorFull : public kitBase::robotModel::robotParts::ColorSensorFull
+class ColorSensorGreen : public kitBase::robotModel::robotParts::ColorSensorGreen
 {
 	Q_OBJECT
 
 public:
-	ColorSensorFull(const kitBase::robotModel::DeviceInfo &info
+	ColorSensorGreen(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 

@@ -51,7 +51,10 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/lightSensor.h \
 	$$PWD/robotModel/real/parts/rangeSensor.h \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
-	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
+	$$PWD/robotModel/real/parts/colorSensorPassive.h \
+	$$PWD/robotModel/real/parts/colorSensorRed.h \
+	$$PWD/robotModel/real/parts/colorSensorGreen.h \
+	$$PWD/robotModel/real/parts/colorSensorBlue.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
@@ -73,7 +76,10 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/lightSensor.cpp \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
-	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
+	$$PWD/robotModel/real/parts/colorSensorPassive.cpp \
+	$$PWD/robotModel/real/parts/colorSensorRed.cpp \
+	$$PWD/robotModel/real/parts/colorSensorGreen.cpp \
+	$$PWD/robotModel/real/parts/colorSensorBlue.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \

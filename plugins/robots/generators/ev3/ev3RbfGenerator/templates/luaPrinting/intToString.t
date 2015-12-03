@@ -1,1 +1,1 @@
-int_to_string(@@VALUE@@)
+STRINGS(NUMBER_FORMATTED, @@VALUE@@, '%d', 10, @@RESULT@@)

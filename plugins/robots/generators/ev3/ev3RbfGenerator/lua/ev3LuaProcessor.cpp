@@ -31,6 +31,11 @@ Ev3LuaProcessor::Ev3LuaProcessor(qReal::ErrorReporterInterface &errorReporter
 	: generatorBase::lua::LuaProcessor(errorReporter, textLanguage, parserErrorReporter, parent)
 	, mVariables(nullptr)
 	, mFactory(nullptr)
+	, mPrinter(nullptr)
+{
+}
+
+Ev3LuaProcessor::~Ev3LuaProcessor()
 {
 }
 
@@ -38,6 +43,7 @@ void Ev3LuaProcessor::configure(generatorBase::parts::Variables *variables, Ev3R
 {
 	mVariables = variables;
 	mFactory = factory;
+	mPrinter.reset(new Ev3LuaPrinter(pathsToRoot(), mTextLanguage, *mVariables));
 }
 
 QString Ev3LuaProcessor::translate(const QString &data
@@ -52,9 +58,9 @@ QString Ev3LuaProcessor::translate(const QString &data
 	}
 
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
-	lua::Ev3LuaPrinter printer(pathsToRoot(), mTextLanguage, *mVariables, reservedVariablesConverter);
-	const QString result = printer.print(tree, id);
-	mFactory->addAdditionalCode(id, printer.additionalCode(id));
+	mPrinter->configure(reservedVariablesConverter);
+	const QString result = mPrinter->print(tree, id);
+	mFactory->addAdditionalCode(id, mPrinter->additionalCode());
 	return result;
 }
 
@@ -72,8 +78,8 @@ QString Ev3LuaProcessor::castTo(const QSharedPointer<qrtext::core::types::TypeEx
 	}
 
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
-	lua::Ev3LuaPrinter printer(pathsToRoot(), mTextLanguage, *mVariables, reservedVariablesConverter);
-	const QString result = printer.castTo(type, tree, id);
-	mFactory->addAdditionalCode(id, printer.additionalCode(id));
+	mPrinter->configure(reservedVariablesConverter);
+	const QString result = mPrinter->castTo(type, tree, id);
+	mFactory->addAdditionalCode(id, mPrinter->additionalCode());
 	return result;
 }

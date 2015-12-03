@@ -14,6 +14,8 @@
 
 #include "generatorBase/parts/variables.h"
 
+#include <QtCore/QFileInfo>
+
 #include <qrtext/lua/luaToolbox.h>
 #include <qrtext/core/ast/node.h>
 #include <qrtext/lua/types/integer.h>
@@ -65,21 +67,32 @@ QString Variables::generateVariableString() const
 
 QString Variables::typeExpression(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const
 {
-	if (type->is<qrtext::lua::types::Integer>()) {
-		return readTemplate("types/int.t");
-	} else if (type->is<qrtext::lua::types::Float>()) {
-		return readTemplate("types/float.t");
-	} else if (type->is<qrtext::lua::types::Boolean>()) {
-		return readTemplate("types/bool.t");
-	} else if (type->is<qrtext::lua::types::String>()) {
-		return readTemplate("types/string.t");
-	} else if (type->is<qrtext::lua::types::Table>()) {
+	const QString typeName = this->typeName(type);
+	QString typeTemplate = readTemplate(QString("types/%1.t").arg(typeName));
+	if (type->is<qrtext::lua::types::Table>()) {
 		const auto elementType = qrtext::as<qrtext::lua::types::Table>(type)->elementType();
-		return readTemplate("types/array.t").replace("@@ELEMENT_TYPE@@", typeExpression(elementType));
+		return typeTemplate.replace("@@ELEMENT_TYPE@@", typeExpression(elementType));
+	}
+
+	return typeTemplate;
+}
+
+QString Variables::typeName(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const
+{
+	if (type->is<qrtext::lua::types::Integer>()) {
+		return "int";
+	} else if (type->is<qrtext::lua::types::Float>()) {
+		return "float";
+	} else if (type->is<qrtext::lua::types::Boolean>()) {
+		return "bool";
+	} else if (type->is<qrtext::lua::types::String>()) {
+		return "string";
+	} else if (type->is<qrtext::lua::types::Table>()) {
+		return "array";
 	}
 
 	/// @todo: Add error reporting?
-	return readTemplate("types/int.t");
+	return "int";
 }
 
 QString Variables::constantDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const
@@ -89,7 +102,10 @@ QString Variables::constantDeclaration(const QSharedPointer<qrtext::core::types:
 
 QString Variables::variableDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const
 {
-	return readTemplate("variables/variableDeclaration.t").replace("@@TYPE@@", typeExpression(type));
+	const QString universalTemplate = readTemplate("variables/variableDeclaration.t");
+	QString concreteTemplate = readTemplateIfExists(QString("variables/%1VariableDeclaration.t")
+			.arg(typeName(type)), universalTemplate);
+	return concreteTemplate.replace("@@TYPE@@", typeExpression(type));
 }
 
 QSharedPointer<qrtext::core::types::TypeExpression> Variables::expressionType(const QString &expression) const

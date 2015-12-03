@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,35 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "colorSensorImpl.h"
+#include "colorSensorBlue.h"
+
+#include <ev3Kit/communication/ev3DirectCommand.h>
 
 const unsigned colorSensorResponseSize = 9;
 
 using namespace ev3::robotModel::real::parts;
+using namespace ev3::communication;
 using namespace kitBase::robotModel;
 
-ColorSensorImpl::ColorSensorImpl(const PortInfo &port
-		, utils::robotCommunication::RobotCommunicator &robotCommunicator
-		, enums::sensorType::SensorTypeEnum lowLevelType)
-	: mImplementation(robotCommunicator, port)
+ColorSensorBlue::ColorSensorBlue(const kitBase::robotModel::DeviceInfo &info
+		, const kitBase::robotModel::PortInfo &port
+		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
+	: kitBase::robotModel::robotParts::ColorSensorBlue(info, port)
+	, mImplementation(robotCommunicator, port)
 	, mRobotCommunicator(robotCommunicator)
-	, mLowLevelType(lowLevelType)
 {
 }
 
-void ColorSensorImpl::read()
+void ColorSensorBlue::read()
 {
-	QByteArray command = mImplementation.readyRawCommand(mImplementation.lowLevelPort(), 0);
+	const QByteArray command = mImplementation.readyPercentCommand(mImplementation.lowLevelPort(), 4);
 	QByteArray outputBuf;
 	mRobotCommunicator.send(command, colorSensorResponseSize, outputBuf);
-
-	/// @todo Debug this.
-	if (mLowLevelType == enums::sensorType::SensorTypeEnum::COLOR_FULL)
-		emit newData(1);
-		//emit newData(int(outputBuf.data()[5]));
-	else if (static_cast<int>(outputBuf.data()[6]) < 20) {
-		emit newData(1);
-	} else {
-		emit newData(1);
-	}
+	emit newData(static_cast<int>(outputBuf[5]));
 }

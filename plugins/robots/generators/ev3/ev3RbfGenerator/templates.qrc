@@ -131,10 +131,12 @@
         <file>templates/drawing/redraw.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
+        <file>templates/variables/stringVariableDeclaration.t</file>
         <file>templates/variables/randomInitialization.t</file>
         <file>templates/luaPrinting/addition.t</file>
         <file>templates/luaPrinting/argumentsSeparator.t</file>
         <file>templates/luaPrinting/assignment.t</file>
+        <file>templates/luaPrinting/assignmentStrings.t</file>
         <file>templates/luaPrinting/bitwiseAnd.t</file>
         <file>templates/luaPrinting/bitwiseLeftShift.t</file>
         <file>templates/luaPrinting/bitwiseNegation.t</file>

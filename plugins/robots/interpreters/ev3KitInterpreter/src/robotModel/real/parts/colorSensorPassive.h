@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,30 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/colorSensor.h>
-#include <ev3Kit/communication/commandConstants.h>
+#include <kitBase/robotModel/robotParts/colorSensorPassive.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
-#include "src/robotModel/real/parts/ev3InputDevice.h"
+#include "ev3InputDevice.h"
 
 namespace ev3 {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class ColorSensorImpl : public QObject
+class ColorSensorPassive : public kitBase::robotModel::robotParts::ColorSensorPassive
 {
 	Q_OBJECT
 
 public:
-	ColorSensorImpl(const kitBase::robotModel::PortInfo &port
-			, utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, enums::sensorType::SensorTypeEnum lowLevelType);
+	ColorSensorPassive(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port
+			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-	void read();
-
-signals:
-	void newData(int reading);
+	void read() override;
 
 private:
 	Ev3InputDevice mImplementation;
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
-	enums::sensorType::SensorTypeEnum mLowLevelType;
 };
 
 }

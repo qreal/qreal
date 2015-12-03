@@ -26,6 +26,7 @@ namespace ev3 {
 namespace rbf {
 class Ev3RbfGeneratorFactory;
 namespace lua {
+class Ev3LuaPrinter;
 
 /// A toolbox for reengineering lua code. Prints lua code into the EV3 bytecode.
 class Ev3LuaProcessor : public generatorBase::lua::LuaProcessor
@@ -37,6 +38,7 @@ public:
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const utils::ParserErrorReporter &parserErrorReporter
 			, QObject *parent = 0);
+	~Ev3LuaProcessor() override;
 
 	/// Configures this processor with variables instance. Variables cannot be passed to constructor because it will
 	/// cause cyclic dependencies between Ev3LuaProcessor and ev3GenratorBase::Ev3GeneratorCustomizer dueing the
@@ -61,8 +63,11 @@ public:
 			, const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter) override;
 
 private:
+	void preparePrinter();
+
 	generatorBase::parts::Variables *mVariables;
 	Ev3RbfGeneratorFactory *mFactory;
+	QScopedPointer<Ev3LuaPrinter> mPrinter;
 };
 
 }
