@@ -48,6 +48,8 @@ public:
 	void afterSearch() override;
 
 private:
+	void performGeneration() override;
+
 	semantics::SemanticNode *produceGotoNode(const qReal::Id &id);
 	void produceNextNodeIfNeeded(const LinkInfo &info, semantics::NonZoneNode * const parent);
 };

@@ -1,1 +1,1 @@
-ActivateTask(TASK_@@NAME@@);
+OBJECT_START(_@@NAME@@)

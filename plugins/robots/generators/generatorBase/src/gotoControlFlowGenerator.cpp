@@ -104,6 +104,17 @@ void GotoControlFlowGenerator::afterSearch()
 {
 }
 
+void GotoControlFlowGenerator::performGeneration()
+{
+	const Id initialBlock = mSemanticTree->initialBlock();
+	if (initialBlock.element() != "InitialNode") {
+		// Labels for the first nodes are ignored correctly unless we are dealing with threads.
+		mSemanticTree->findNodeFor(initialBlock)->addLabel();
+	}
+
+	ControlFlowGeneratorBase::performGeneration();
+}
+
 SemanticNode *GotoControlFlowGenerator::produceGotoNode(const qReal::Id &id)
 {
 	// Using other id to eliminate collisions with original node

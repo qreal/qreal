@@ -1,1 +1,0 @@
-DeclareTask(TASK_@@NAME@@);
