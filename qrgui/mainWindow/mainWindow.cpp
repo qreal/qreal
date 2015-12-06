@@ -848,11 +848,11 @@ void MainWindow::openShapeEditorTab(IShapeEdit * const shapeEdit)
 {
     connect(shapeEdit, SIGNAL(needUpdate()), this, SLOT(loadPlugins()));
 
+    mController->diagramOpened(shapeEdit->getId());
+
     mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
     mUi->tabs->setCurrentWidget(shapeEdit);
     setConnectActionZoomTo(shapeEdit);
-
-    //controller must be automatically connected
 }
 
 void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, const int role

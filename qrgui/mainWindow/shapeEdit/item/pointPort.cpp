@@ -14,26 +14,29 @@
 
 #include "pointPort.h"
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 const int step = 3;
 
-PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl(), mType("NonTyped")
+PointPort::PointPort(qreal x, qreal y, Item *parent)
+    : Item(parent)
+    , mPointImpl()
 {
 	mNeedScalingRect = true;
-	mRadius = 2;
-	setX1(x - mRadius * 1.6);
-	setY1(y - mRadius * 1.6);
-	setX2(x + mRadius * 1.6);
-	setY2(y + mRadius * 1.6);
-	mUnrealRadius = mRadius * 1.6;
+    init(x, y);
 	setPen(QPen(Qt::blue));
 	setBrush(QBrush(Qt::blue, Qt::SolidPattern));
 	mDomElementType = portType;
 }
 
 PointPort::PointPort(const PointPort &other)
-	:Item(), mPointImpl()
+    : Item()
+    , mPointImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	setPen(other.pen());
@@ -49,10 +52,48 @@ PointPort::PointPort(const PointPort &other)
 	setPos(other.x(), other.y());
 }
 
+void PointPort::init(qreal x, qreal y)
+{
+    mRadius = 2;
+    mUnrealRadius = mRadius * 1.6;
+    setX1(x - mUnrealRadius);
+    setY1(y - mUnrealRadius);
+    setX2(x + mUnrealRadius);
+    setY2(y + mUnrealRadius);
+}
+
 Item* PointPort::clone()
 {
 	PointPort* item = new PointPort(*this);
 	return item;
+}
+
+AbstractCommand *PointPort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    init(event->scenePos().x(), event->scenePos().y());
+    setType(scene->getPortType());
+    scene->setZValue(this);
+    return new AddItemCommand(scene, this);
+}
+
+AbstractCommand *PointPort::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    Q_UNUSED(event);
+    Q_UNUSED(scene);
+    return nullptr;
+}
+
+QString PointPort::getItemName() const
+{
+    return QString("pointPort");
+}
+
+void PointPort::customizeButton(CreateItemPushButton *button)
+{
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/ellipse.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(4, 6));
 }
 
 QRectF PointPort::boundingRect() const
@@ -133,14 +174,4 @@ QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &
 	pointPort.setAttribute("type", mType);
 
 	return QPair<QDomElement, Item::DomElementTypes>(pointPort, mDomElementType);
-}
-
-void PointPort::setType(const QString &type)
-{
-	mType = type;
-}
-
-QString PointPort::getType() const
-{
-	return mType;
 }

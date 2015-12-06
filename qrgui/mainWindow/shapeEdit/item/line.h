@@ -28,12 +28,10 @@ public:
 	Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
 	Line(const Line &other);
 	virtual Item* clone();
+    QLineF line() const;
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
-    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
-    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
-	QLineF line() const;
 	QPainterPath shape() const;
 	virtual QRectF boundingRect() const;
 	virtual QRectF realBoundingRect() const;
@@ -50,7 +48,8 @@ public:
 			, const QPoint &topLeftPicture);
 
 protected:
-    const QString mItemName = "line";
+    virtual void reshape(QGraphicsSceneMouseEvent *event) override;
+    virtual QString getItemName() const;
 
 private:
 	graphicsUtils::LineImpl mLineImpl;

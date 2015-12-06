@@ -21,19 +21,27 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QApplication>
 
+#include <qrgui/controller/commands/doNothingCommand.h>
+
+#include "mainWindow/shapeEdit/commands/simpleTemplateCommand.h"
 #include "mainWindow/shapeEdit/commands/resizeItemCommand.h"
+#include "mainWindow/shapeEdit/commands/moveItemCommand.h"
 #include "mainWindow/shapeEdit/commands/addItemCommand.h"
+#include "mainWindow/shapeEdit/commands/removeItemCommand.h"
+#include "mainWindow/shapeEdit/item/typedEntity.h"
 
 using namespace qReal;
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
 
-Scene::Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject * parent)
-	:  AbstractScene(view, parent)
+Scene::Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject *parent)
+    : AbstractScene(view, parent)
     , mController(controller)
-	, mItemType(none)
+    , mNewItem(nullptr)
 	, mWaitMove(false)
-	, mCount(0)
+    , mIsAddingFinished(false)
+    , mResizeCommand(nullptr)
+    , mMoveCommand(nullptr)
 	, mSelectedTextPicture(nullptr)
 {
 	mSizeEmptyRectX = sizeEmptyRectX;
@@ -65,85 +73,60 @@ QPoint Scene::centerEmpty()
 	return QPoint(sizeEmptyRectX / 2, sizeEmptyRectY / 2);
 }
 
-//зачееем
-QPointF Scene::setCXandCY(QGraphicsSceneMouseEvent *event)
-{
-	qreal x = event->scenePos().x();
-	qreal y = event->scenePos().y();
-	return QPointF(x, y);
-}
-
-void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
-{
-	setX2andY2(event);
-	mLine->setX2(mX2);
-	mLine->setY2(mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
-		mLine->reshapeRectWithShift();
-}
-
-void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
-{
-	setX2andY2(event);
-	mLinePort->setX2(mX2);
-	mLinePort->setY2(mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
-		mLinePort->reshapeRectWithShift();
-}
-
-void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
-{
-	setX2andY2(event);
-	mEllipse->setX2(mX2);
-	mEllipse->setY2(mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
-		mEllipse->reshapeRectWithShift();
-}
-
-void Scene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
-{
-	setX2andY2(event);
-	mRectangle->setX2(mX2);
-	mRectangle->setY2(mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
-		mRectangle->reshapeRectWithShift();
-}
-
-void Scene::reshapeStylus(QGraphicsSceneMouseEvent *event)
-{
-	setX2andY2(event);
-	mStylus->addLine(mX2, mY2);
-}
-
-void Scene::reshapeCurveFirst(QGraphicsSceneMouseEvent *event)
-{
-	setX2andY2(event);
-	mCurve->setX2(mX2);
-	mCurve->setY2(mY2);
-}
-
-void Scene::reshapeCurveSecond(QGraphicsSceneMouseEvent *event)
-{
-	mC1 = setCXandCY(event);
-	mCurve->setCXandCY(mC1.x(), mC1.y());
-}
-
 void Scene::setZValue(Item* item)
 {
 	item->setItemZValue(mZValue);
 	mZValue++;
 }
 
+
+void Scene::setPenBrushForItem(Item *item)
+{
+    item->setPenBrush(mPenStyleItems, mPenWidthItems
+                      , mPenColorItems, mBrushStyleItems, mBrushColorItems);
+}
+
+void Scene::removeMoveFlagForItem(QGraphicsSceneMouseEvent *event, Item *item)
+{
+    removeMoveFlag(event, item);
+}
+
+void Scene::setIsAddingFinished(bool isFinished)
+{
+    mIsAddingFinished = isFinished;
+}
+
+void Scene::setWaitMove(bool isWait)
+{
+    mWaitMove = isWait;
+}
+
+bool Scene::getWaitMove()
+{
+    return mWaitMove;
+}
+
+QString Scene::getPortType()
+{
+    return mPortType;
+}
+
+QString Scene::getFileName()
+{
+    return mFileName;
+}
+
+
 void Scene::setZValueSelectedItems()
 {
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Item* item = dynamic_cast<Item*>(graphicsItem);
+        Item *item = dynamic_cast<Item *>(graphicsItem);
 		item->setZValue(mZValue);
 		mZValue++;
 	}
 }
-//чтооо и зачееем
+
 void Scene::setNullZValueItems()
 {
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
@@ -167,138 +150,43 @@ QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 	return QPair<bool, Item *>(false, nullptr);
 }
 
+
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
 
     if (mNewItem) {
         setDragMode(QGraphicsView::NoDrag);
-        AbstractCommand command = mNewItem->mousePressEvent(event, this);
+        AbstractCommand *command = mNewItem->mousePressEvent(event, this);
         if (command) {
-            //mController->execute(command);
+            mController->execute(command);
         }
     } else {
         setDragMode(QGraphicsView::RubberBandDrag);
 
         forPressResize(event);
-        Item *graphicsItem = dynamic_cast<Item *>(mGraphicsItem);
-        if (graphicsItem) {
-            graphicsItem->changeScalingPointState(mX1, mY1);
-            if (graphicsItem->getScalingPointState() != Item::noneScale) {
-                graphicsItem->setScalingPointColor();
+        mChangingItem = dynamic_cast<Item *>(mGraphicsItem);
+
+        if (mChangingItem) {
+            mChangingItem->changeScalingPointState(mX1, mY1);
+            if (mChangingItem->getScalingPointState() != Item::noneScale) {
+                //changing scalePointState
+                mChangingItem->setScalingPointColor();
                 update();
             }
-        }
 
+            if (mGraphicsItem->dragState() != graphicsUtils::AbstractItem::None) {
+                //resizing
+                mResizeCommand = new ResizeItemCommand(this, mChangingItem);
+                mResizeCommand->startTracking();
+            } else {
+                //moving
+                mMoveCommand = new MoveItemCommand(this, selectedItems());
+                mMoveCommand->startTracking();
+            }
+        }
         setZValueSelectedItems();
     }
-
-//        QGraphicsScene::mousePressEvent(event);
-//        setDragMode(mItemType);
-//        switch (mItemType) {
-//        case curve:
-//            if (mCount == 1)
-//                setX1andY1(event);
-//            else if (mCount == 2)
-//                reshapeCurveFirst(event);
-//            else if (mCount == 3)
-//                reshapeCurveSecond(event);
-//            removeMoveFlag(event, nullptr);
-//            mCount++;
-//            break;
-//        case stylus :
-//            setX1andY1(event);
-//            mStylus = new Stylus(mX1, mY1, nullptr);
-//            mStylus->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-//            addItem(mStylus);
-//            setZValue(mStylus);
-//            removeMoveFlag(event, mStylus);
-//            mWaitMove = true;
-//            break;
-//        case line :
-//            setX1andY1(event);
-//            mLine = new Line(mX1, mY1, mX1, mY1, nullptr);
-//            mLine->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-//            addItem(mLine);
-//            setZValue(mLine);
-//            removeMoveFlag(event, mLine);
-//            mWaitMove = true;
-//            break;
-//        case ellipse :
-//            setX1andY1(event);
-//            mEllipse = new QRealEllipse(mX1, mY1, mX1, mY1, nullptr);
-//            mEllipse->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-//            addItem(mEllipse);
-//            setZValue(mEllipse);
-//            removeMoveFlag(event, mEllipse);
-//            mWaitMove = true;
-//            break;
-//        case rectangle :
-//            setX1andY1(event);
-//            mRectangle = new QRealRectangle(mX1, mY1, mX1, mY1, nullptr);
-//            mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-//            addItem(mRectangle);
-//            setZValue(mRectangle);
-//            removeMoveFlag(event, mRectangle);
-//            mWaitMove = true;
-//            break;
-//        case text:
-//            setX1andY1(event);
-//            mText = new Text(mX1, mY1, "text", false);
-//            addItem(mText);
-//            setZValue(mText);
-//            break;
-//        case dynamicText :
-//            setX1andY1(event);
-//            mText = new Text(mX1, mY1, "name", true);
-//            addItem(mText);
-//            setZValue(mText);
-//            break;
-//        case textPicture:
-//            setX1andY1(event);
-//            mTextPicture = new TextPicture(mX1, mY1, "text");
-//            addItem(mTextPicture);
-//            setZValue(mTextPicture);
-//            break;
-//        case pointPort :
-//            setX1andY1(event);
-//            mPointPort = new PointPort(mX1, mY1, nullptr);
-//            mPointPort->setType(mPortType);
-//            addItem(mPointPort);
-//            setZValue(mPointPort);
-//            break;
-//        case linePort :
-//            setX1andY1(event);
-//            mLinePort = new LinePort(mX1, mY1, mX1, mY1, nullptr);
-//            mLinePort->setType(mPortType);
-//            addItem(mLinePort);
-//            setZValue(mLinePort);
-//            removeMoveFlag(event, mLinePort);
-//            mWaitMove = true;
-//            break;
-//        case image :
-//            setX1andY1(event);
-//            mImage = new Image(mFileName, mX1, mY1, nullptr);
-//            addItem(mImage);
-//            setZValue(mImage);
-//            break;
-
-//        default:  // if we wait some resize
-//            setX1andY1(event);
-//            mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos(), QTransform()));
-//            if (mGraphicsItem != nullptr) {
-//                mGraphicsItem->changeDragState(mX1, mY1);
-//                Item *graphicsItem = dynamic_cast<Item *>(mGraphicsItem);
-//                graphicsItem->changeScalingPointState(mX1, mY1);
-//                forPressResize(event);
-//                if (graphicsItem->getScalingPointState() != Item::noneScale) {
-//                    graphicsItem->setScalingPointColor();
-//                    update();
-//                }
-//            }
-//            setZValueSelectedItems();
-//            break;
-//        }
 }
 
 void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -307,54 +195,15 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     if (mNewItem) {
         setDragMode(QGraphicsView::NoDrag);
-        AbstractCommand command = mNewItem->mouseMoveEvent(event, this);
+        AbstractCommand *command = mNewItem->mouseMoveEvent(event, this);
         if (command) {
-            //mController->execute(command);
+            mController->execute(command);
         }
         update();
     } else {
         setDragMode(QGraphicsView::RubberBandDrag);
-        // if we are waiting some resize
         forMoveResize(event);
     }
-
-//        QGraphicsScene::mouseMoveEvent(event);
-//        setDragMode(mItemType);
-
-//        switch (mItemType) {
-//        case stylus :
-//            if (mWaitMove)
-//                reshapeStylus(event);
-//            break;
-//        case line :
-//            if (mWaitMove)
-//                reshapeLine(event);
-//            break;
-//        case ellipse :
-//            if (mWaitMove)
-//                reshapeEllipse(event);
-//            break;
-//        case rectangle :
-//            if (mWaitMove)
-//                reshapeRectangle(event);
-//            break;
-//        case curve:
-//            if (mCount == 2) {
-//                if (mCurve != nullptr)
-//                    reshapeCurveFirst(event);
-//            } else if (mCount == 3)
-//                reshapeCurveSecond(event);
-//            break;
-//        case linePort :
-//            if (mWaitMove)
-//                reshapeLinePort(event);
-//            break;
-
-//        default:  // if we wait some resize
-//            forMoveResize(event);
-//            break;
-//        }
-//        update();
 }
 
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -365,68 +214,32 @@ void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (mNewItem) {
         setDragMode(QGraphicsView::NoDrag);
         command = mNewItem->mouseReleaseEvent(event, this);
+        if (command) {
+            mController->execute(command);
+        }
     } else {
         setDragMode(QGraphicsView::RubberBandDrag);
-        if (mGraphicsItem) {
-            command = new ResizeItemCommand(this, mPressEvent, event);
-        }
         forReleaseResize(event);
+
+        if (mMoveCommand) {
+            mMoveCommand->stopTracking();
+            if (mMoveCommand->isMoved()) {
+                mController->execute(mMoveCommand);
+            } else {
+                delete mMoveCommand;
+            }
+            mMoveCommand = nullptr; // Controller takes ownership
+        } else if (mResizeCommand) {
+            mResizeCommand->stopTracking();
+            mController->execute(mResizeCommand);
+            mResizeCommand = nullptr;
+        }
     }
 
-    if (command) {
-        //mController->execute(command);
-    }
-
-    mPressEvent = nullptr;
     mWaitMove = false;
     setMoveFlag(event);
     setNullZValueItems();
     resetItemCreating();
-
-//        QGraphicsScene::mouseReleaseEvent(event);
-//        setDragMode(mItemType);
-
-//        switch (mItemType) {
-//        case curve:
-//            if (mCount == 2) {
-//                setX2andY2(event);
-//                mCurve = new Curve(QPointF(mX1, mY1), QPointF(mX2, mY2), QPointF(mX1, mY1));
-//                mCurve->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-//                addItem(mCurve);
-//                setZValue(mCurve);
-//            } else if (mCount == 3)
-//                reshapeCurveSecond(event);
-//            break;
-//        case stylus :
-//            reshapeStylus(event);
-//            break;
-//        case line :
-//            reshapeLine(event);
-//            break;
-//        case ellipse :
-//            reshapeEllipse(event);
-//            break;
-//        case rectangle :
-//            reshapeRectangle(event);
-//            break;
-//        case linePort :
-//            reshapeLinePort(event);
-//            break;
-//
-//        default:  // if we wait some resize
-//            forReleaseResize(event);
-//            break;
-//        }
-//        mWaitMove = false;
-//        setMoveFlag(event);
-//        setNullZValueItems();
-
-//        if (mItemType != curve || mCount > 3) {
-//            emit resetHighlightAllButtons();
-//            mItemType = none;
-//            mCount = 0;
-//            mCurve = nullptr;
-//        }
 }
 
 void Scene::resetItemCreating()
@@ -439,50 +252,53 @@ void Scene::resetItemCreating()
 }
 
 
-
-
-void Scene::initListSelectedItemsForPaste()
+void Scene::initPasteItemsBuffer()
 {
-	mListSelectedItemsForPaste.clear();
-	mListSelectedItemsForPaste = selectedSceneItems();
+    for (auto item : mListSelectedItemsForPaste) {
+        delete item;
+    }
+    mListSelectedItemsForPaste.clear();
+
+    for (auto item : selectedSceneItems()) {
+        mListSelectedItemsForPaste.push_back(item->clone());
+    }
 }
 
 void Scene::keyPressEvent(QKeyEvent *keyEvent)
 {
-	QGraphicsScene::keyPressEvent(keyEvent);
-	if (keyEvent->matches(QKeySequence::Cut)) {
-		initListSelectedItemsForPaste();
-		mCopyPaste = cut;
-	} else if (keyEvent->matches(QKeySequence::Copy)) {
-		initListSelectedItemsForPaste();
-		mCopyPaste = copy;
-	}
-	else if (keyEvent->matches(QKeySequence::Paste)) {
-		QPointF posCursor(mView->mapFromGlobal(QCursor::pos()));
-		posCursor = mView->mapToScene(posCursor.toPoint());
-		QPointF topLeftSelection(selectedItemsBoundingRect().topLeft());
-		switch (mCopyPaste) {
-		case copy:
-			foreach(Item *item, mListSelectedItemsForPaste) {
-				Item* newItem = item->clone();
-				newItem->setPos(posCursor - topLeftSelection + item->scenePos());
-				addItem(newItem);
-				setZValue(newItem);
-			}
-			break;
-		case cut:
-			foreach(Item *item, mListSelectedItemsForPaste) {
-				item->setPos(posCursor - topLeftSelection + item->scenePos());
-				setZValue(item);
-				mListSelectedItemsForPaste.clear();
-			}
-			break;
-		default:
-			break;
-		}
-	}
-}
+    QGraphicsScene::keyPressEvent(keyEvent);
 
+    if (keyEvent->matches(QKeySequence::Cut)) {
+        initPasteItemsBuffer();
+        mCopyPaste = cut;
+
+        auto metaRemove = new DoNothingCommand();
+        foreach(auto item, selectedItems()) {
+            metaRemove->addPostAction(new RemoveItemCommand(this, item));
+        }
+        mController->execute(metaRemove);
+
+    } else if (keyEvent->matches(QKeySequence::Copy)) {
+        initPasteItemsBuffer();
+        mCopyPaste = copy;
+
+    } else if (keyEvent->matches(QKeySequence::Paste)) {
+        QPointF posCursor(mView->mapFromGlobal(QCursor::pos()));
+        posCursor = mView->mapToScene(posCursor.toPoint());
+        QPointF topLeftSelection(selectedItemsBoundingRect().topLeft());
+        clearSelection();
+
+        auto metaAdd = new DoNothingCommand();
+        foreach(Item *item, mListSelectedItemsForPaste) {
+            auto newItem = item->clone();
+            newItem->setSelected(true);
+            newItem->setPos(posCursor - topLeftSelection + newItem->scenePos());
+            setZValue(newItem);
+            metaAdd->addPostAction(new AddItemCommand(this, newItem));
+        }
+        mController->execute(metaAdd);
+    }
+}
 
 void Scene::addShapeEditItem(bool checked, Item *item)
 {
@@ -491,81 +307,13 @@ void Scene::addShapeEditItem(bool checked, Item *item)
     }
 }
 
-
-void Scene::drawLine(bool checked)
-{
-	if (checked)
-		mItemType = line;
-}
-
-void Scene::drawEllipse(bool checked)
-{
-	if (checked)
-		mItemType = ellipse;
-}
-
-void Scene::drawCurve(bool checked)
-{
-	if (checked) {
-		mItemType = curve;
-		mCount = 1;
-		mCurve = nullptr;
-	}
-}
-
-void Scene::drawRectangle(bool checked)
-{
-	if (checked)
-		mItemType = rectangle;
-}
-
-void Scene::addText(bool checked)
-{
-	if (checked)
-		mItemType = text;
-}
-
-void Scene::addDynamicText(bool checked)
-{
-	if (checked)
-		mItemType = dynamicText;
-}
-
-void Scene::addTextPicture(bool checked)
-{
-	if (checked)
-		mItemType = textPicture;
-}
-
-void Scene::addPointPort(bool checked)
-{
-	if (checked)
-		mItemType = pointPort;
-}
-
-void Scene::addLinePort(bool checked)
-{
-	if (checked)
-		mItemType = linePort;
-}
-
-void Scene::addStylus(bool checked)
-{
-	if (checked)
-		mItemType = stylus;
-}
-
 void Scene::addNone(bool checked)
 {
-	if (checked) {
-		mItemType = none;
-		mCount = 0;
-	}
+    addShapeEditItem(checked, nullptr);
 }
 
 void Scene::addImage(const QString &fileName)
 {
-	mItemType = image;
 	mFileName = fileName;
 
 	QString workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
@@ -577,18 +325,21 @@ void Scene::addImage(const QString &fileName)
 
 void Scene::deleteItem()
 {
-	QList<QGraphicsItem *> list = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, list) {
-		removeItem(graphicsItem);
-		delete graphicsItem;
-	}
+    auto metaRemove = new DoNothingCommand();
+    foreach(auto item, selectedItems()) {
+        metaRemove->addPostAction(new RemoveItemCommand(this, item));
+    }
+    mController->execute(metaRemove);
 }
 
 void Scene::clearScene()
 {
-	clear();
+    auto removeAll = new DoNothingCommand();
+    foreach(auto item, items()) {
+        removeAll->addPostAction(new RemoveItemCommand(this, item));
+    }
+    mController->execute(removeAll);
 	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
-	mZValue = 0;
 }
 
 QList<Item *> Scene::selectedSceneItems()
@@ -596,11 +347,10 @@ QList<Item *> Scene::selectedSceneItems()
 	QList<Item *> resList;
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Item* item = dynamic_cast<Item*>(graphicsItem);
+        Item *item = dynamic_cast<Item *>(graphicsItem);
 		if (item != nullptr)
 			resList.push_back(item);
 	}
-    //зачем
 	qSort(resList.begin(), resList.end(), compareItems);
 	return resList;
 }
@@ -619,74 +369,218 @@ QList<TextPicture *> Scene::selectedTextPictureItems()
 
 void Scene::changePenStyle(const QString &text)
 {
-	mPenStyleItems = text;
-	foreach (Item *item, selectedSceneItems())
-		item->setPenStyle(text);
-	update();
+    auto action = [&] (const QString &text, QList<Item *> targets) {
+        clearSelection();
+
+        mPenStyleItems = text;
+        foreach (Item *item, targets) {
+            item->setPenStyle(text);
+            item->setSelected(true);
+        }
+
+        if (!targets.isEmpty()) {
+            changePalette();
+        }
+        update();
+    };
+
+    auto targets = selectedSceneItems();
+    if (!targets.isEmpty()) {
+        foreach (auto item, targets) {
+            auto old = item->pen().style();
+            item->setPenStyle(text);
+
+            if (item->pen().style() != old) {
+                mController->execute(new SimpleTemplateCommand<QString, QList<Item *>>(
+                                         action, targets, mPenStyleItems, text));
+                break;
+            }
+        }
+    } else {
+        mPenStyleItems = text;
+    }
 }
 
 void Scene::changePenWidth(int width)
 {
-	mPenWidthItems = width;
-	foreach (Item *item, selectedSceneItems())
-		item->setPenWidth(width);
-	update();
+    auto action = [&] (int width, QList<Item *> targets) {
+        clearSelection();
+
+        mPenWidthItems = width;
+        foreach (Item *item, targets) {
+            item->setPenWidth(width);
+            item->setSelected(true);
+        }
+
+        if (!targets.isEmpty()) {
+            changePalette();
+        }
+        update();
+    };
+
+    auto targets = selectedSceneItems();
+    if (!targets.isEmpty()) {
+        foreach (auto item, targets) {
+            if (item->pen().width() != width) {
+                mController->execute(new SimpleTemplateCommand<int, QList<Item *>>(
+                                         action, targets, mPenWidthItems, width));
+                break;
+            }
+        }
+    } else {
+        mPenWidthItems = width;
+    }
 }
 
 void Scene::changePenColor(const QString &text)
 {
-	mPenColorItems = text;
-	foreach (Item *item, selectedSceneItems())
-		item->setPenColor(text);
-	update();
+    auto action = [&] (const QString &text, QList<Item *> targets) {
+        clearSelection();
+
+        mPenColorItems = text;
+        foreach (Item *item, targets) {
+            item->setPenColor(text);
+            item->setSelected(true);
+        }
+
+        if (!targets.isEmpty()) {
+            changePalette();
+        }
+        update();
+    };
+
+    auto targets = selectedSceneItems();
+    if (!targets.isEmpty()) {
+        foreach (auto item, targets) {
+            auto old = item->pen().color();
+            item->setPenColor(text);
+
+            if (item->pen().color() != old) {
+                mController->execute(new SimpleTemplateCommand<QString, QList<Item *>>(
+                                         action, targets, mPenColorItems, text));
+                break;
+            }
+        }
+    } else {
+        mPenColorItems = text;
+    }
 }
 
 void Scene::changeBrushStyle(const QString &text)
 {
-	mBrushStyleItems = text;
-	foreach (Item *item, selectedSceneItems())
-		item->setBrushStyle(text);
-	update();
+    auto action = [&] (const QString &text, QList<Item *> targets) {
+        clearSelection();
+
+        mBrushStyleItems = text;
+        foreach (Item *item, targets) {
+            item->setBrushStyle(text);
+            item->setSelected(true);
+        }
+
+        if (!targets.isEmpty()) {
+            changePalette();
+        }
+        update();
+    };
+
+    auto targets = selectedSceneItems();
+    if (!targets.isEmpty()) {
+        foreach (auto item, targets) {
+            auto old = item->brush().style();
+            item->setBrushStyle(text);
+
+            if (item->brush().style() != old) {
+                mController->execute(new SimpleTemplateCommand<QString, QList<Item *>>(
+                                         action, targets, mBrushStyleItems, text));
+                break;
+            }
+        }
+    } else {
+        mBrushStyleItems = text;
+    }
 }
 
 void Scene::changeBrushColor(const QString &text)
 {
-	mBrushColorItems = text;
-	foreach (Item *item, selectedSceneItems())
-		item->setBrushColor(text);
-	update();
+    auto action = [&] (const QString &text, QList<Item *> targets) {
+        clearSelection();
+
+        mBrushColorItems = text;
+        foreach (Item *item, targets) {
+            item->setBrushColor(text);
+            item->setSelected(true);
+        }
+
+        if (!targets.isEmpty()) {
+            changePalette();
+        }
+        update();
+    };
+
+    auto targets = selectedSceneItems();
+    if (!targets.isEmpty()) {
+        foreach (auto item, targets) {
+            auto old = item->brush().color();
+            item->setBrushColor(text);
+
+            if (item->brush().color() != old) {
+                mController->execute(new SimpleTemplateCommand<QString, QList<Item *>>(
+                                         action, targets, mBrushColorItems, text));
+                break;
+            }
+        }
+    } else {
+        mBrushColorItems = text;
+    }
 }
 
 void Scene::changePortsType(const QString &type)
 {
-	mPortType = type;
+    auto action = [&] (const QString &type, QList<QGraphicsItem *> targets) {
+        clearSelection();
 
-	foreach (QGraphicsItem *item, selectedItems()) {
-		PointPort *point = dynamic_cast<PointPort *>(item);
-		if (point) {
-			point->setType(type);
-		} else {
-			LinePort *line = dynamic_cast<LinePort *>(item);
-			if (line) {
-				line->setType(type);
-			}
-		}
-	}
+        mPortType = type;
+        foreach (auto item, targets) {
+            TypedEntity *typedItem = dynamic_cast<TypedEntity *>(item);
+            if (typedItem) {
+                typedItem->setType(type);
+                item->setSelected(true);
+            }
+        }
 
-	update();
+        if (!targets.isEmpty()) {
+            changePortsComboBox();
+        }
+        update();
+    };
+
+    auto targets = selectedItems();
+    if (!targets.isEmpty()) {
+        foreach (auto item, targets) {
+            TypedEntity *typedItem = dynamic_cast<TypedEntity *>(item);
+            if (typedItem) {
+                if (typedItem->getType() != type) {
+                    mController->execute(new SimpleTemplateCommand<QString, QList<QGraphicsItem *>>(
+                                             action, targets, mPortType, type));
+                    break;
+                }
+            }
+        }
+    } else {
+        mPortType = type;
+    }
 }
 
 void Scene::changePalette()
 {
-	if(mItemType == none) {
+    if(!mNewItem) {
 		mListSelectedItems = selectedItems();
 		if (mListSelectedItems.isEmpty()) {
 			emit noSelectedItems();
 			setEmptyPenBrushItems();
-		}
-		else {
-			Item* item = dynamic_cast<Item*>(mListSelectedItems.back());
-			if (item != nullptr) {
+        } else {
+            Item *item = dynamic_cast<Item *>(mListSelectedItems.back());
+            if (item) {
 				QPen penItem = item->pen();
 				QBrush brushItem = item->brush();
 				emit existSelectedItems(penItem, brushItem);
@@ -698,11 +592,11 @@ void Scene::changePalette()
 
 void Scene::changeFontPalette()
 {
-	mListSelectedTextPictureItems = selectedTextPictureItems();
-	if (mListSelectedTextPictureItems.isEmpty())
+    QList<TextPicture *> textPictureItems = selectedTextPictureItems();
+    if (textPictureItems.isEmpty())
 		emit noSelectedTextPictureItems();
 	else {
-		TextPicture* item = dynamic_cast<TextPicture*>(mListSelectedTextPictureItems.back());
+        TextPicture* item = dynamic_cast<TextPicture*>(textPictureItems.back());
 		if (item != nullptr) {
 			QPen penItem = item->pen();
 			QFont fontItem = item->font();
@@ -713,18 +607,13 @@ void Scene::changeFontPalette()
 
 void Scene::changePortsComboBox()
 {
-	foreach (QGraphicsItem *item, selectedItems()) {
-		PointPort *point = dynamic_cast<PointPort *>(item);
-		if (point) {
-			emit existSelectedPortItems(point->getType());
-			return;
-		}
-		LinePort *line = dynamic_cast<LinePort *>(item);
-		if (line) {
-			emit existSelectedPortItems(line->getType());
-			return;
-		}
-	}
+    foreach (QGraphicsItem *item, selectedItems()) {
+        TypedEntity *typedItem = dynamic_cast<TypedEntity *>(item);
+        if (typedItem) {
+            emit existSelectedPortItems(typedItem->getType());
+            return;
+        }
+    }
 	emit noSelectedPortItems();
 }
 
@@ -772,7 +661,7 @@ void Scene::changeFontUnderline(bool isChecked)
 
 void Scene::changeTextName(const QString &name)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
-		item->setTextName(name);
-	update();
+    foreach (TextPicture *item, selectedTextPictureItems())
+        item->setTextName(name);
+    update();
 }

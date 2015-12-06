@@ -18,16 +18,21 @@
 
 #include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/ellipse.h"
+#include "mainWindow/shapeEdit/item/typedEntity.h"
 
 namespace qReal {
 namespace shapeEdit {
 
-class PointPort : public Item
+class PointPort : public Item, public TypedEntity
 {
 public:
 	PointPort(qreal x, qreal y, Item *parent = 0);
 	PointPort(const PointPort &other);
 	virtual Item* clone();
+
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
@@ -40,14 +45,15 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
 
-	void setType(const QString &type);
-	QString getType() const;
+protected:
+    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button);
+    void init(qreal x, qreal y);
 
 private:
 	qreal mRadius;
 	qreal mUnrealRadius;
 	graphicsUtils::PointImpl mPointImpl;
-	QString mType;
 };
 
 }

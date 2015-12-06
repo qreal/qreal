@@ -16,7 +16,8 @@ public:
                                 , const Id &id
                                 , const EditorManagerInterface &editorManagerProxy
                                 , const IdList &graphicalElements
-                                , EditorView *editorView);
+                                , EditorView *editorView
+                                , const bool isUsingTypedPorts);
 
     ~SaveLoadLogicForInterpreter();
 

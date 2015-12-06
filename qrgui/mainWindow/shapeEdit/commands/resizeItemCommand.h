@@ -1,35 +1,35 @@
 #pragma once
 
-#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsScene>
 
+#include <qrutils/graphicsUtils/abstractItem.h>
 #include <qrgui/controller/commands/abstractCommand.h>
 #include <qrgui/controller/commands/trackingEntity.h>
-
-#include "qrgui/mainWindow/shapeEdit/scene.h"
-#include "qrgui/mainWindow/shapeEdit/item/item.h"
 
 namespace qReal {
 namespace shapeEdit {
 
-class ResizeItemCommand : public commands::AbstractCommand
+class ResizeItemCommand : public commands::AbstractCommand, public commands::TrackingEntity
 {
 public:
-    ResizeItemCommand(Scene *scene, QGraphicsSceneMouseEvent *pressEvent, QGraphicsSceneMouseEvent *releaseEvent
-                      , bool isExecuted = true);
+    ResizeItemCommand(QGraphicsScene *scene, graphicsUtils::AbstractItem *item, bool isExecuted = true);
 
-    ~ResizeItemCommand();
+    void startTracking();
+    void stopTracking();
 
 protected:
     bool execute();
     bool restoreState();
 
 private:
-    Scene *mScene;
-    QGraphicsSceneMouseEvent *mPressEvent;
-    QGraphicsSceneMouseEvent *mReleaseEvent;
+    QGraphicsScene *mScene;
+    graphicsUtils::AbstractItem *mItem;
     bool mIsExecuted;
-
-    void executeEvents(QGraphicsSceneMouseEvent *firstEvent, QGraphicsSceneMouseEvent *secondEvent);
+    graphicsUtils::AbstractItem::DragState mDragState;
+    QPointF mInitGeometryP1;
+    QPointF mInitGeometryP2;
+    QPointF mNewGeometryP1;
+    QPointF mNewGeometryP2;
 };
 
 }

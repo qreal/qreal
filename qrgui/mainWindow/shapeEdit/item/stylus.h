@@ -34,6 +34,8 @@ public:
 	void addLine(qreal x2, qreal y2);
 	void addLineInList(Line *line);
 
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
 	virtual QRectF boundingRect() const;
 	virtual QPainterPath shape() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
@@ -45,8 +47,13 @@ public:
 	virtual void setPenColor(const QString &text);
 	virtual void setBrushStyle(const QString &text);
 	virtual void setBrushColor(const QString &text);
+
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
+
+protected:
+    virtual void reshape(QGraphicsSceneMouseEvent *event) override;
+    virtual QString getItemName() const;
 
 private:
 	qreal mTmpX1;

@@ -19,7 +19,11 @@
 #include <QtGui/QPainter>
 #include <QtGui/QTextCursor>
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 Text::Text(bool isDynamic)
 	: Item(nullptr), mIsDynamicText(isDynamic)
@@ -72,6 +76,22 @@ Item* Text::clone()
 	return item;
 }
 
+
+AbstractCommand *Text::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    init(event->scenePos().x(), event->scenePos().y(), "text");
+    scene->setPenBrushForItem(this);
+    scene->setZValue(this);
+    return new AddItemCommand(scene, this);
+}
+
+AbstractCommand *Text::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    Q_UNUSED(event);
+    Q_UNUSED(scene);
+    return nullptr;
+}
+
 void Text::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
@@ -117,6 +137,14 @@ void Text::drawScalingRects(QPainter* painter)
 	brush.setColor(mListScalePoint.at(0).second);
 	painter->setBrush(brush);
 	painter->drawRect(x1, y1 - scalingRect, scalingRect, scalingRect);
+}
+
+QString Text::getItemName() const
+{
+    if (mIsDynamicText) {
+        return QString("dynamicText");
+    }
+    return QString("staticText");
 }
 
 QRectF Text::boundingRect() const

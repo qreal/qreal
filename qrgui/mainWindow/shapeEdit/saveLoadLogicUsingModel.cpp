@@ -9,11 +9,10 @@ SaveLoadLogicUsingModel::SaveLoadLogicUsingModel(IShapeEdit *parent
         , const QPersistentModelIndex &index
         , const int role
         , const bool isUsingTypedPorts)
-    : SaveLoadLogic(parent, scene)
+    : SaveLoadLogic(parent, scene, isUsingTypedPorts)
     , mModelApi(modelApi)
     , mIndex(index)
     , mRole(role)
-    , mIsUsingTypedPorts(isUsingTypedPorts)
 {}
 
 void SaveLoadLogicUsingModel::doSave()

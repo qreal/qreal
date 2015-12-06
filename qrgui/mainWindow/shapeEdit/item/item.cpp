@@ -20,13 +20,12 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtCore/QList>
 
-
 #include "mainWindow/shapeEdit/item/createItemPushButton.h"
 #include "mainWindow/shapeEdit/scene.h"
 
 using namespace qReal;
 using namespace qReal::shapeEdit;
-
+using namespace qReal::commands;
 
 Item::Item(graphicsUtils::AbstractItem* parent)
 	: AbstractItem(parent), mDomElementType(noneType)
@@ -53,6 +52,33 @@ int Item::itemZValue()
 	return mZValue;
 }
 
+AbstractCommand *Item::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    Q_UNUSED(event)
+    Q_UNUSED(scene)
+    return nullptr;
+}
+
+AbstractCommand *Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    if (scene->getWaitMove()) {
+        reshape(event);
+    }
+    return nullptr;
+}
+
+AbstractCommand *Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    reshape(event);
+    scene->setIsAddingFinished(true);
+    return nullptr;
+}
+
+void Item::reshape(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+}
+
 void Item::initListScalePoint()
 {
 	mListScalePoint.push_back(QPair<ScalingPointState, QColor>(topLeftX, QColor(Qt::black)));
@@ -64,16 +90,6 @@ void Item::initListScalePoint()
 	mListScalePoint.push_back(QPair<ScalingPointState, QColor>(topRightY, QColor(Qt::black)));
 	mListScalePoint.push_back(QPair<ScalingPointState, QColor>(bottomLeftY, QColor(Qt::black)));
 	mListScalePoint.push_back(QPair<ScalingPointState, QColor>(bottomRightY, QColor(Qt::black)));
-}
-
-int Item::sign(int x)
-{
-	return x > 0 ? 1 : -1;
-}
-
-qreal Item::length(const QPointF &point1, const QPointF &point2)
-{
-	return sqrt(pow((point1.x() - point2.x()), 2) + pow((point1.y() - point2.y()), 2));
 }
 
 QRectF Item::calcNecessaryBoundingRect() const
@@ -121,31 +137,28 @@ void Item::drawScalingRects(QPainter* painter)
 CreateItemPushButton *Item::createButton()
 {
     CreateItemPushButton *button = new CreateItemPushButton(this);
-
-    //  lines to implement in children:
-    button->setObjectName(QString(mItemName + "Button"));
-    QIcon icon;
-    icon.addFile(QString(":/mainWindow/images/" + mItemName + ".png"), QSize(), QIcon::Normal, QIcon::Off);
-    button->setIcon(icon);
-    button->setIconSize(QSize(45, 16));
-
+    button->setObjectName(QString(getItemName() + "Button"));
+    customizeButton(button);
     button->setMaximumSize(QSize(65, 16777215));
     button->setCheckable(true);
     button->setChecked(false);
     button->setAutoExclusive(false);
     button->setAutoDefault(false);
     button->setDefault(false);
-
     return button;
 }
 
-void Item::swap(qreal &x, qreal &y)
+void Item::customizeButton(CreateItemPushButton *button)
 {
-    //std::swap(x, y);
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/" + getItemName() + ".png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+}
 
-	qreal tmp = x;
-	x = y;
-	y = tmp;
+QString Item::getItemName() const
+{
+    return QString();
 }
 
 void Item::setNoneDragState()

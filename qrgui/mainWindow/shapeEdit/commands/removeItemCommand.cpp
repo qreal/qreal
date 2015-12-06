@@ -1,37 +1,37 @@
-#include "addItemCommand.h"
+#include "removeItemCommand.h"
 
 using namespace qReal::commands;
 using namespace qReal::shapeEdit;
 
-AddItemCommand::AddItemCommand(QGraphicsScene *scene, QGraphicsItem *item)
+RemoveItemCommand::RemoveItemCommand(QGraphicsScene *scene, QGraphicsItem *item)
     : mScene(scene)
     , mItem(item)
     , mIsExecuted(false)
 {}
 
-AddItemCommand::~AddItemCommand()
+RemoveItemCommand::~RemoveItemCommand()
 {
-    if (!mIsExecuted && !mItem->parentObject()) {
+    if (mIsExecuted && !mItem->parentObject()) {
         // Item must be deleted because
         // in that case no owner of that item exist.
         delete mItem;
     }
 }
 
-bool AddItemCommand::execute()
+bool RemoveItemCommand::execute()
 {
     if (mItem && !mIsExecuted) {
-        mScene->addItem(mItem);
+        mScene->removeItem(mItem);
         mIsExecuted = true;
         return true;
     }
     return false;
 }
 
-bool AddItemCommand::restoreState()
+bool RemoveItemCommand::restoreState()
 {
     if (mItem && mIsExecuted) {
-        mScene->removeItem(mItem);
+        mScene->addItem(mItem);
         mIsExecuted = false;
         return true;
     }

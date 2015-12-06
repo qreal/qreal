@@ -20,7 +20,7 @@ class SaveLoadLogic : public QObject
     Q_OBJECT
 
 public:
-    SaveLoadLogic(IShapeEdit *parent, Scene *scene);
+    SaveLoadLogic(IShapeEdit *parent, Scene *scene, const bool isUsingTypedPorts = false);
     virtual ~SaveLoadLogic();
 
 public slots:
@@ -44,6 +44,7 @@ protected:
 
     IShapeEdit *mParent; // No ownersip
     Scene *mScene; // No ownersip
+    const bool mIsUsingTypedPorts;
     XmlLoader mParser;
 
     QString const mXmlTitle = "<?xml version='1.0' encoding='utf-8'?>\n";

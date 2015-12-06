@@ -16,25 +16,26 @@
 
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 Curve::Curve(const QPointF &start, const QPointF &end, const QPointF &c1)
 		: Path(QPainterPath(start))
+        , mCountClicks(0)
 {
 	setPen(QPen(Qt::gray));
 	setBrush(QBrush(QColor(), Qt::NoBrush));
 	mDomElementType = pictureType;
-	setX1(start.x());
-	setY1(start.y());
-	setX2(end.x());
-	setY2(end.y());
-	mC1 = c1;
-	mCurvePath = new QPainterPath(QPointF(x1(), y1()));
-	mCurvePath->quadTo(mC1, QPointF(x2(), y2()));
+    init(start, end);
+    mCurvePath->quadTo(c1, end);
 }
 
 Curve::Curve(const Curve &other)
 		: Path(QPainterPath())
+        , mCountClicks(0)
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	setPen(other.pen());
@@ -50,10 +51,71 @@ Curve::Curve(const Curve &other)
 	setPos(other.x(), other.y());
 }
 
+void Curve::init(const QPointF &start, const QPointF &end)
+{
+    setX1(start.x());
+    setY1(start.y());
+    setX2(end.x());
+    setY2(end.y());
+    mCurvePath = new QPainterPath(start);
+}
+
 Item* Curve::clone()
 {
 	Curve* item = new Curve(*this);
 	return item;
+}
+
+AbstractCommand *Curve::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    if (mCountClicks == 0) {
+        mP1 = event->scenePos();
+        mC1 = mP1;
+        init(mP1, mP1);
+        scene->setPenBrushForItem(this);
+        scene->setZValue(this);
+        return new AddItemCommand(scene, this);
+    } else if (mCountClicks == 1) {
+        mP2 = event->scenePos();
+        init(mP1, mP2);
+    } else if (mCountClicks == 2) {
+        reshape(event);
+        scene->setIsAddingFinished(true);
+    }
+    scene->removeMoveFlagForItem(event, nullptr);
+    return nullptr;
+}
+
+AbstractCommand *Curve::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    Q_UNUSED(scene)
+    if (mCountClicks == 1) {
+        setX2(event->scenePos().x());
+        setY2(event->scenePos().y());
+        reshape(event);
+    } else if (mCountClicks == 2) {
+        reshape(event);
+    }
+    return nullptr;
+}
+
+AbstractCommand *Curve::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    Q_UNUSED(event)
+    Q_UNUSED(scene)
+    ++mCountClicks;
+    return nullptr;
+}
+
+void Curve::reshape(QGraphicsSceneMouseEvent *event)
+{
+    mC1 = event->scenePos();
+    update();
+}
+
+QString Curve::getItemName() const
+{
+    return QString("curve");
 }
 
 QPainterPath Curve::shape() const

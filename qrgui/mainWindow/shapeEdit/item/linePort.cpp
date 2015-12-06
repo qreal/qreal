@@ -14,10 +14,14 @@
 
 #include "linePort.h"
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
-	:Line(x1, y1, x2, y2, parent), mType("NonTyped")
+    : Line(x1, y1, x2, y2, parent)
 {
 	mNeedScalingRect = true;
 	setPen(QPen(Qt::blue));
@@ -29,7 +33,7 @@ LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
 }
 
 LinePort::LinePort(const LinePort &other)
-	:Line(other)
+    : Line(other)
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	setPen(other.pen());
@@ -48,6 +52,26 @@ Item* LinePort::clone()
 {
 	LinePort* item = new LinePort(*this);
 	return item;
+}
+
+AbstractCommand *LinePort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    qreal mX1 = event->scenePos().x();
+    qreal mY1 = event->scenePos().y();
+    setX1(mX1);
+    setY1(mY1);
+    setX2(mX1);
+    setY2(mY1);
+    setType(scene->getPortType());
+    scene->setZValue(this);
+    scene->removeMoveFlagForItem(event, this);
+    scene->setWaitMove(true);
+    return new AddItemCommand(scene, this);
+}
+
+QString LinePort::getItemName() const
+{
+    return QString("linePort");
 }
 
 QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
@@ -74,14 +98,4 @@ QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &d
 	linePort.setAttribute("type", mType);
 
 	return QPair<QDomElement, Item::DomElementTypes>(linePort, mDomElementType);
-}
-
-void LinePort::setType(const QString &type)
-{
-	mType = type;
-}
-
-QString LinePort::getType() const
-{
-	return mType;
 }

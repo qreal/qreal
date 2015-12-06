@@ -26,7 +26,6 @@ private:
     qReal::models::LogicalModelAssistApi &mModelApi;
     const QPersistentModelIndex &mIndex;
     const int mRole;
-    const bool mIsUsingTypedPorts;
 };
 
 }

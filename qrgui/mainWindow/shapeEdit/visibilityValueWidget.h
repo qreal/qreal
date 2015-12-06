@@ -19,6 +19,10 @@
 
 #include "mainWindow/shapeEdit/visibilityConditionsDialog.h"
 
+namespace Ui {
+class VisibilityValueWidget;
+}
+
 namespace qReal {
 namespace shapeEdit {
 

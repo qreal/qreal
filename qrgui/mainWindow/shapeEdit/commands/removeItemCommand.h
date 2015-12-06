@@ -8,14 +8,12 @@
 namespace qReal {
 namespace shapeEdit {
 
-/// The only purpose and ability:
-/// adding (removing) @param item to (from) the @param scene.
-class AddItemCommand : public commands::AbstractCommand
+class RemoveItemCommand : public commands::AbstractCommand
 {
 
 public:
-    AddItemCommand(QGraphicsScene *scene, QGraphicsItem *item);
-    ~AddItemCommand();
+    RemoveItemCommand(QGraphicsScene *scene, QGraphicsItem *item);
+    ~RemoveItemCommand();
 
 protected:
     bool execute();

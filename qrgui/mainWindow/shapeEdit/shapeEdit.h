@@ -79,6 +79,7 @@ protected:
 
 private slots:
     void addShapeEditItem(bool checked, Item *newItem);
+    void addImage(bool checked);
 
 	void visibilityButtonClicked();
 

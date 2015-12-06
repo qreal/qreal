@@ -26,6 +26,9 @@ public:
 	TextPicture(int x, int y, const QString &text = "text");
 	TextPicture(const TextPicture &other);
 	virtual Item* clone();
+
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
 	void setTextName(const QString &name);
 	void setFontFamily(const QFont& font);
 	void setFontPixelSize(int size);
@@ -45,6 +48,9 @@ public:
 			, const QPoint &topLeftPicture);
 
 	void readFont(const QDomElement &docItem);
+
+protected:
+    virtual QString getItemName() const;
 
 private:
 	QFont mFont;

@@ -16,25 +16,25 @@
 
 #include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/line.h"
+#include "mainWindow/shapeEdit/item/typedEntity.h"
 
 namespace qReal {
 namespace shapeEdit {
 
-class LinePort : public Line
+class LinePort : public Line, public TypedEntity
 {
 public:
 	LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent = 0);
 	LinePort(const LinePort &other);
 	virtual Item* clone();
 
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
 
-	void setType(const QString &type);
-	QString getType() const;
-
-private:
-	QString mType;
+protected:
+    virtual QString getItemName() const;
 };
 
 }

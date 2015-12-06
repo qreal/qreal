@@ -1,46 +1,59 @@
 #include "resizeItemCommand.h"
 
-using namespace qReal::commands;
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
+using namespace graphicsUtils;
 
-ResizeItemCommand::ResizeItemCommand(Scene *scene, QGraphicsSceneMouseEvent *pressEvent, QGraphicsSceneMouseEvent *releaseEvent, bool isExecuted)
+ResizeItemCommand::ResizeItemCommand(QGraphicsScene *scene, AbstractItem *item, bool isExecuted)
     : mScene(scene)
+    , mItem(item)
     , mIsExecuted(isExecuted)
-    , mPressEvent(pressEvent)
-    , mReleaseEvent(releaseEvent)
 {}
 
-ResizeItemCommand::~ResizeItemCommand()
+void ResizeItemCommand::startTracking()
 {
-    delete mPressEvent;
-    delete mReleaseEvent;
+    TrackingEntity::startTracking();
+
+    mInitGeometryP1 = QPointF(mItem->x1(), mItem->y1());
+    mInitGeometryP2 = QPointF(mItem->x2(), mItem->y2());
+}
+
+void ResizeItemCommand::stopTracking()
+{
+    mNewGeometryP1 = QPointF(mItem->x1(), mItem->y1());
+    mNewGeometryP2 = QPointF(mItem->x2(), mItem->y2());
+    mDragState = mItem->dragState();
+
+    mIsExecuted = true;
+    TrackingEntity::stopTracking();
 }
 
 bool ResizeItemCommand::execute()
 {
-    if (!mIsExecuted) {
-        executeEvents(mPressEvent, mReleaseEvent);
-        mIsExecuted = true;
+    if (!mTrackStopped) {
+        return false;
     }
-    return true;
+
+    if (!mTrackStarted && !mIsExecuted) {
+        mItem->setDragState(mDragState);
+        mItem->reverseOldResizingItem(mNewGeometryP1, mNewGeometryP2);
+        mIsExecuted = true;
+        mScene->update();
+    }
+    return mIsExecuted;
 }
 
 bool ResizeItemCommand::restoreState()
 {
-    executeEvents(mReleaseEvent, mPressEvent);
-    mIsExecuted = false;
-    return true;
-}
-
-void ResizeItemCommand::executeEvents(QGraphicsSceneMouseEvent *firstEvent, QGraphicsSceneMouseEvent *secondEvent)
-{
-    mScene->forPressResize(firstEvent);
-    Item *graphicsItem = dynamic_cast<Item *>(mScene->mGraphicsItem);
-    if (graphicsItem) {
-        graphicsItem->changeScalingPointState(mScene->mX1, mScene->mY1);
-        if (graphicsItem->getScalingPointState() != Item::noneScale) {
-            graphicsItem->setScalingPointColor();
-        }
+    if (!mTrackStopped) {
+        return false;
     }
-    mScene->forReleaseResize(secondEvent);
+
+    if (!mTrackStarted && mIsExecuted) {
+        mItem->setDragState(mDragState);
+        mItem->reverseOldResizingItem(mInitGeometryP1, mInitGeometryP2);
+        mIsExecuted = false;
+        mScene->update();
+    }
+    return !mIsExecuted;
 }

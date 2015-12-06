@@ -14,7 +14,11 @@
 
 #include "rectangle.h"
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	:Item(parent), mRectangleImpl()
@@ -48,6 +52,34 @@ Item* QRealRectangle::clone()
 {
 	QRealRectangle* item = new QRealRectangle(*this);
 	return item;
+}
+
+AbstractCommand *QRealRectangle::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    qreal mX1 = event->scenePos().x();
+    qreal mY1 = event->scenePos().y();
+    setX1(mX1);
+    setY1(mY1);
+    setX2(mX1);
+    setY2(mY1);
+    scene->setPenBrushForItem(this);
+    scene->setZValue(this);
+    scene->removeMoveFlagForItem(event, this);
+    scene->setWaitMove(true);
+    return new AddItemCommand(scene, this);
+}
+
+QString QRealRectangle::getItemName() const
+{
+    return QString("rect");
+}
+
+void QRealRectangle::reshape(QGraphicsSceneMouseEvent *event)
+{
+    setX2(event->scenePos().x());
+    setY2(event->scenePos().y());
+    if (event->modifiers() & Qt::ShiftModifier)
+        reshapeRectWithShift();
 }
 
 QRectF QRealRectangle::boundingRect() const

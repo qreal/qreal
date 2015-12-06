@@ -19,6 +19,7 @@ include(../../global.pri)
 TEMPLATE = app
 
 QT += widgets printsupport xml svg
+CONFIG += c++11
 
 links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor qrgui-controller qrgui-dialogs qrgui-preferences-dialog \
 		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager  \
@@ -80,7 +81,11 @@ HEADERS += \
     shapeEdit/visibilityCondition.h \
     shapeEdit/item/createItemPushButton.h \
     shapeEdit/commands/addItemCommand.h \
-    shapeEdit/commands/resizeItemCommand.h
+    shapeEdit/commands/resizeItemCommand.h \
+    shapeEdit/item/typedEntity.h \
+    shapeEdit/commands/simpleTemplateCommand.h \
+    shapeEdit/commands/moveItemCommand.h \
+    shapeEdit/commands/removeItemCommand.h
 
 SOURCES += \
 	$$PWD/main.cpp \
@@ -124,7 +129,10 @@ SOURCES += \
     shapeEdit/saveLoadLogicUsingModel.cpp \
     shapeEdit/item/createItemPushButton.cpp \
     shapeEdit/commands/addItemCommand.cpp \
-    shapeEdit/commands/resizeItemCommand.cpp
+    shapeEdit/commands/resizeItemCommand.cpp \
+    shapeEdit/item/typedEntity.cpp \
+    shapeEdit/commands/moveItemCommand.cpp \
+    shapeEdit/commands/removeItemCommand.cpp
 
 win32 {
 	HEADERS += \

@@ -29,11 +29,17 @@ public:
 	QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
 	QRealEllipse(const QRealEllipse &other);
 	virtual Item* clone();
-	virtual QRectF boundingRect() const;
+
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
+    virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
+protected:
+    virtual void reshape(QGraphicsSceneMouseEvent *event) override;
+    virtual QString getItemName() const;
 
 private:
 	graphicsUtils::RectangleImpl mRectangleImpl;

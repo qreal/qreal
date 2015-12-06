@@ -14,7 +14,11 @@
 
 #include "ellipse.h"
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 QRealEllipse::QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 		: Item(parent), mRectangleImpl()
@@ -48,6 +52,36 @@ Item* QRealEllipse::clone()
 {
 	QRealEllipse* item = new QRealEllipse(*this);
 	return item;
+}
+
+AbstractCommand *QRealEllipse::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    qreal x1 = event->scenePos().x();
+    qreal y1 = event->scenePos().y();
+    setX1(x1);
+    setY1(y1);
+    setX2(x1);
+    setY2(y1);
+    scene->setPenBrushForItem(this);
+    scene->setZValue(this);
+    scene->removeMoveFlagForItem(event, this);
+    scene->setWaitMove(true);
+    return new AddItemCommand(scene, this);
+}
+
+void QRealEllipse::reshape(QGraphicsSceneMouseEvent *event)
+{
+    qreal x2 = event->scenePos().x();
+    qreal y2 = event->scenePos().y();
+    setX2(x2);
+    setY2(y2);
+    if (event->modifiers() & Qt::ShiftModifier)
+        reshapeRectWithShift();
+}
+
+QString QRealEllipse::getItemName() const
+{
+    return QString("ellipse");
 }
 
 QRectF QRealEllipse::boundingRect() const

@@ -65,24 +65,21 @@ public:
     virtual void setItemZValue(int zValue);
 	int itemZValue();
 
-    /// @returns nullptr if there is no really new command,
-    ///
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
-    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
-    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
+    /// @returns nullptr if there is no really new command
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
 
-	static int sign(int x);
-	static qreal length(const QPointF &point1, const QPointF &point2);
-    static void swap(qreal &x, qreal &y);
+    virtual CreateItemPushButton *createButton();
+
+    //static int sign(int x);
+    //static qreal length(const QPointF &point1, const QPointF &point2);
+    //static void swap(qreal &x, qreal &y);
 
     virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
-
-
-    virtual CreateItemPushButton *createButton();
-
 
 	void setNoneDragState();
 
@@ -116,11 +113,9 @@ protected:
 	int mZValue;
 	VisibilityCondition mVisibilityCondition;
 
-    const QString mItemName;
-
-    virtual commands::AbstractCommand *doMousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
-    virtual commands::AbstractCommand *doMouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
-    virtual commands::AbstractCommand *doMouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene) = 0;
+    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button);
+    virtual void reshape(QGraphicsSceneMouseEvent *event);
 };
 
 }

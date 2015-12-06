@@ -3,9 +3,10 @@
 using namespace qReal;
 using namespace qReal::shapeEdit;
 
-SaveLoadLogic::SaveLoadLogic(IShapeEdit *parent, Scene *scene) :
+SaveLoadLogic::SaveLoadLogic(IShapeEdit *parent, Scene *scene, const bool isUsingTypedPorts) :
     mParent(parent)
   , mScene(scene)
+  , mIsUsingTypedPorts(isUsingTypedPorts)
   , mParser(XmlLoader(scene))
 {}
 

@@ -30,6 +30,11 @@ public:
 	virtual Item* clone();
 	void  setCXandCY(qreal x, qreal y);
 	QRectF searchMaxMinCoord() const;
+
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
 	virtual QRectF boundingRect() const;
 	QPainterPath shape() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
@@ -42,11 +47,20 @@ public:
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
+protected:
+    virtual void reshape(QGraphicsSceneMouseEvent *event) override;
+    void init(const QPointF &start, const QPointF &end);
+
+    virtual QString getItemName() const;
 
 private:
+    QPointF mP1;
+    QPointF mP2;
 	QPointF mC1;
 	QPointF mC2;
 	QPainterPath* mCurvePath;
+
+    int mCountClicks;
 };
 
 }

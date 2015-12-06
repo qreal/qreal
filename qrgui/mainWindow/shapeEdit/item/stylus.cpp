@@ -14,7 +14,11 @@
 
 #include "stylus.h"
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 Stylus::Stylus(qreal x1, qreal y1, Item* parent) : Item(parent), mStylusImpl()
 {
@@ -70,6 +74,32 @@ void Stylus::addLineInList(Line *line)
 {
 	mListLine.push_back(line);
 	mAbstractListLine.push_back(dynamic_cast<AbstractItem *>(line));
+}
+
+AbstractCommand *Stylus::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    auto x1 = event->scenePos().x();
+    auto y1 = event->scenePos().y();
+    setX1(x1);
+    setY1(y1);
+    mTmpX1 = x1;
+    mTmpY1 = y1;
+    scene->setPenBrushForItem(this);
+    scene->setZValue(this);
+    scene->removeMoveFlagForItem(event, this);
+    scene->setWaitMove(true);
+
+    return new AddItemCommand(scene, this);
+}
+
+QString Stylus::getItemName() const
+{
+    return QString("pencil");
+}
+
+void Stylus::reshape(QGraphicsSceneMouseEvent *event)
+{
+    addLine(event->scenePos().x(), event->scenePos().y());
 }
 
 QPainterPath Stylus::shape() const

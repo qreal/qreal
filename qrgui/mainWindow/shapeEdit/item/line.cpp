@@ -18,8 +18,8 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include <mainWindow/shapeEdit/scene.h>
-#include <mainWindow/shapeEdit/commands/addItemCommand.h>
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 
 using namespace qReal::shapeEdit;
 using namespace graphicsUtils;
@@ -164,48 +164,28 @@ void Line::drawScalingRects(QPainter* painter)
 
 AbstractCommand *Line::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
-    scene->setX1andY1(event);
-    setX1(scene->mX1);
-    setY1(scene->mY1);
-    setX2(scene->mX1);
-    setY2(scene->mY1);
-    setPenBrush(scene->mPenStyleItems, scene->mPenWidthItems
-                , scene->mPenColorItems, scene->mBrushStyleItems, scene->mBrushColorItems);
-
+    qreal mX1 = event->scenePos().x();
+    qreal mY1 = event->scenePos().y();
+    setX1(mX1);
+    setY1(mY1);
+    setX2(mX1);
+    setY2(mY1);
+    scene->setPenBrushForItem(this);
     scene->setZValue(this);
-    scene->removeMoveFlag(event, this);
-    scene->mWaitMove = true;
+    scene->removeMoveFlagForItem(event, this);
+    scene->setWaitMove(true);
 
     return new AddItemCommand(scene, this);
 }
 
-AbstractCommand *Line::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Line::reshape(QGraphicsSceneMouseEvent *event)
 {
-    if (scene->mWaitMove) {
-        reshape(event, scene);
-    }
-    return nullptr;
-}
-
-AbstractCommand *Line::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
-{
-    reshape(event, scene);
-    scene->mIsAddingFinished = true;
-    return nullptr;
-}
-
-void Line::reshape(QGraphicsSceneMouseEvent *event, Scene *scene)
-{
-    scene->setX2andY2(event);
-    setX2(scene->mX2);
-    setY2(scene->mY2);
+    setX2(event->scenePos().x());
+    setY2(event->scenePos().y());
     if (event->modifiers() & Qt::ShiftModifier) {
         reshapeRectWithShift();
     }
 }
-
-
-
 
 QLineF Line::line() const
 {
@@ -230,6 +210,11 @@ void Line::changeScalingPointState(qreal x, qreal y)
 	{
 		setDragState(None);
 	}
+}
+
+QString Line::getItemName() const
+{
+    return QString("line");
 }
 
 void Line::resizeItem(QGraphicsSceneMouseEvent *event)

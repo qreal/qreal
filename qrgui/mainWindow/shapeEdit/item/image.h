@@ -27,12 +27,21 @@ public:
 	Image(QString fileName, qreal x, qreal y, Item* parent = 0);
 	Image(const Image &other);
 	virtual Item* clone();
+
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void setItemZValue(int zValue);
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
+protected:
+    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button);
+    void init(QString fileName, qreal x, qreal y);
+
 private:
 	QGraphicsPixmapItem* mPixmapItem;
 	QImage mImage;

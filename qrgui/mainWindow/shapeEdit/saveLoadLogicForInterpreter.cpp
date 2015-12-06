@@ -8,12 +8,13 @@ SaveLoadLogicForInterpreter::SaveLoadLogicForInterpreter(IShapeEdit *parent
         , const Id &id
         , const EditorManagerInterface &editorManagerProxy
         , const IdList &graphicalElements
-        , EditorView *editorView) :
-    SaveLoadLogic(parent, scene),
-    mId(id),
-    mEditorManager(editorManagerProxy),
-    mGraphicalElements(graphicalElements),
-    mEditorView(editorView)
+        , EditorView *editorView
+        , const bool isUsingTypedPorts)
+    : SaveLoadLogic(parent, scene, isUsingTypedPorts)
+    , mId(id)
+    , mEditorManager(editorManagerProxy)
+    , mGraphicalElements(graphicalElements)
+    , mEditorView(editorView)
 {}
 
 SaveLoadLogicForInterpreter::~SaveLoadLogicForInterpreter()

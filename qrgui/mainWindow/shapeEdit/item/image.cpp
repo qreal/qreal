@@ -17,22 +17,20 @@
 #include <QtGui/QBitmap>
 #include <QtGui/QImageWriter>
 
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/commands/addItemCommand.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
+
 using namespace qReal::shapeEdit;
+using namespace qReal::commands;
 
 Image::Image(QString fileName, qreal x, qreal y, Item* parent)
 	: Item(parent)
-	, mImage(fileName)
 	, mRectangleImpl()
 {
-	mFileName = fileName;
-	QPixmap* pixmap = new QPixmap(fileName);
-	mPixmapItem = new QGraphicsPixmapItem(*pixmap);
+    init(fileName, x, y);
 	mNeedScalingRect = true;
 	mDomElementType = pictureType;
-	setX1(x);
-	setY1(y);
-	setX2(x + pixmap->width());
-	setY2(y + pixmap->height());
 }
 
 Image::Image(const Image &other)
@@ -53,15 +51,52 @@ Image::Image(const Image &other)
 	setPos(other.x(), other.y());
 }
 
+void Image::init(QString fileName, qreal x, qreal y)
+{
+    mFileName = fileName;
+    mImage = QImage(fileName);
+    QPixmap* pixmap = new QPixmap(fileName);
+    mPixmapItem = new QGraphicsPixmapItem(*pixmap);
+    setX1(x);
+    setY1(y);
+    setX2(x + pixmap->width());
+    setY2(y + pixmap->height());
+}
+
 Item* Image::clone()
 {
 	Image* item = new Image(*this);
 	return item;
 }
 
+AbstractCommand *Image::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    init(scene->getFileName(), event->scenePos().x(), event->scenePos().y());
+    scene->setZValue(this);
+    return new AddItemCommand(scene, this);
+}
+
+AbstractCommand *Image::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+{
+    Q_UNUSED(event);
+    Q_UNUSED(scene);
+    return nullptr;
+}
+
 QRectF Image::boundingRect() const
 {
 	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), scalingDrift);
+}
+
+QString Image::getItemName() const
+{
+    return QString("image");
+}
+
+void Image::customizeButton(CreateItemPushButton *button)
+{
+    //button->setText(QApplication::translate("ShapeEdit", "Image", 0));
+    button->setText(tr("Image"));
 }
 
 void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

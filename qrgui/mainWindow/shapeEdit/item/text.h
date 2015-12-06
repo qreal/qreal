@@ -34,6 +34,10 @@ public:
 	void init(int x, int y, const QString &text);
 	bool isDynamicText();
 	virtual void setIsDynamicText(bool isDynamic);
+
+    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+
 	virtual QRectF boundingRect() const;
 	virtual QRectF realBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
@@ -48,6 +52,8 @@ public:
 			, const QPoint &topLeftPicture);
 
 protected:
+    virtual QString getItemName() const;
+
 	int mX1;
 	int mY1;
 	QRectF mBoundingRect;

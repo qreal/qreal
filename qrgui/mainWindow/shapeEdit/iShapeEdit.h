@@ -27,7 +27,7 @@ signals:
     void needUpdate();
 
 protected:
-    const Id mId;
+    Id mId;
 };
 
 }
