@@ -168,12 +168,40 @@ void Label::setSuffix(const QString &text)
 
 void Label::updateData(bool withUndoRedo)
 {
-	const QString value = toPlainText();
+	QString value = toPlainText();
 	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
 	if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
-		parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
+		const QString properties = mGraphicalModelAssistApi.mutableGraphicalRepoApi().property(mId, "dynamicProperties").toString();
+		if (!properties.isEmpty()) {
+			QDomDocument dynamicProperties;
+			dynamicProperties.setContent(properties);
+
+			for (QDomElement element
+					= dynamicProperties.firstChildElement("properties").firstChildElement("property");
+					!element.isNull();
+					element = element.nextSiblingElement("property"))
+			{
+				if (element.attribute("textBinded") == mProperties.binding()) {
+					if (element.attribute("type") == "bool") {
+						value = (value == "true") ? "true" : "false";
+					} else if (element.attribute("type") == "int") {
+						bool ok;
+						value.toInt(&ok);
+						value = ok ? value : "";
+					}
+
+					this->setPlainText(value);
+					element.setAttribute("value", value);
+					break;
+				}
+			}
+
+			mGraphicalModelAssistApi.mutableGraphicalRepoApi().setProperty(mId, "dynamicProperties", dynamicProperties.toString(4));
+		} else {
+			parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
+		}
 	} else {
 		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)

@@ -37,6 +37,12 @@ public:
 	virtual ~Customizer() {}
 
 	/// Tells if we can change subprogram picture
+	virtual bool allowSubprogramLabelsChanging() const
+	{
+		return false;
+	}
+
+	/// Tells if we can change subprogram picture
 	virtual bool allowSubprogramShapeChanging() const
 	{
 		return false;

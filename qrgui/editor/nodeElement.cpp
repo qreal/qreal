@@ -163,6 +163,8 @@ void NodeElement::updateDynamicLabels(const Id &target)
 	}
 
 	const QString labels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
+	QDomDocument dynamicProperties;
+	QDomElement properties = dynamicProperties.createElement("properties");
 	QDomDocument dynamicLabels;
 	dynamicLabels.setContent(labels);
 
@@ -180,35 +182,54 @@ void NodeElement::updateDynamicLabels(const Id &target)
 			!element.isNull();
 			element = element.nextSiblingElement("label"))
 	{
-		const utils::ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), mContents.width());
-		const utils::ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), mContents.height());
-		const QString text = element.attribute("text");
+		utils::ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), mContents.width());
+		utils::ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), mContents.height());
 		const QString textBinded = element.attribute("textBinded");
-		Label *title;
-		if (text.isEmpty()) {
-			// It is a binded label, text for it will be taken from repository.
-			title = dynamic_cast<Label *>(labelFactory.createLabel(index, x.value(), y.value(), textBinded, false, 0));
-			title->setBackground(Qt::white);
-			const QString value = element.attribute("value");
-			mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), textBinded, value);
-		} else {
-			// This is a statical label, it does not need repository.
-			title = dynamic_cast<Label *>(labelFactory.createLabel(index, x.value(), y.value(), text, 0));
-			title->setBackground(Qt::transparent);
-		}
+		const QString value = element.attribute("value");
+		const QString type = element.attribute("type");
 
-		title->setScaling(false, false);
-		title->setHard(true);
-		title->setTextInteractionFlags(Qt::NoTextInteraction);
-		title->init(mContents);
-		title->setParentItem(this);
-		mLabels.append(title);
+		// It is a binded label, text for it will be taken from repository.
+		Label *title1;
+		title1 = dynamic_cast<Label *>(labelFactory.createLabel(index, x.value(), y.value(), textBinded, false, 0));
+		title1->setBackground(Qt::white);
+		title1->setScaling(false, false);
+		title1->setHard(true);
+		title1->setTextInteractionFlags(Qt::NoTextInteraction);
+		title1->init(mContents);
+		title1->setParentItem(this);
+		mLabels.append(title1);
+		title1->setTextFromRepo(value);
 
-		if (text.isEmpty()) {
-			title->setTextFromRepo(mLogicalAssistApi.logicalRepoApi().property(logicalId(), textBinded).toString());
-		}
-		++index;
+		element = element.nextSiblingElement("label");
+		x = utils::ScalableItem::initCoordinate(element.attribute("x"), mContents.width());
+		y = utils::ScalableItem::initCoordinate(element.attribute("y"), mContents.height());
+		const QString text = QString("%1:").arg(element.attribute("text"));
+
+		// This is a statical label, it does not need repository.
+		Label *title2;
+		title2 = dynamic_cast<Label *>(labelFactory.createLabel(index + 1, x.value(), y.value(), text, 0));
+		title2->setBackground(Qt::transparent);
+		title2->setScaling(false, false);
+		title2->setHard(true);
+		title2->setTextInteractionFlags(Qt::NoTextInteraction);
+		title2->init(mContents);
+		title2->setParentItem(this);
+		mLabels.append(title2);
+
+		index += 2;
+
+		//Saving dynamicProperty
+		QDomElement property = dynamicProperties.createElement("property");
+		property.setAttribute("textBinded", textBinded);
+		property.setAttribute("text", element.attribute("text"));
+		property.setAttribute("type", type);
+		property.setAttribute("value", value);
+		properties.appendChild(property);
 	}
+
+	//Saving dynamic properties in source.
+	dynamicProperties.appendChild(properties);
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "dynamicProperties", dynamicProperties.toString(4));
 }
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const

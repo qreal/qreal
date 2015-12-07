@@ -65,6 +65,11 @@ bool Customizer::showInterpeterButton() const
 	return false;
 }
 
+bool Customizer::allowSubprogramLabelsChanging() const
+{
+	return false;
+}
+
 bool Customizer::allowSubprogramShapeChanging() const
 {
 	return false;

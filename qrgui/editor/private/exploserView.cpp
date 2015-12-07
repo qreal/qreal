@@ -144,9 +144,11 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 			connect(changeAppearancePaletteAction, &QAction::triggered, this, &ExploserView::changeAppearanceActionTriggered);
 			changeAppearancePaletteAction->setData(target.toVariant());
 		}
-		QAction * const changeLabelsAction = contextMenu.addAction(tr("Change Labels"));
-		connect(changeLabelsAction, &QAction::triggered, this, &ExploserView::changeLabelsActionTriggered);
-		changeLabelsAction->setData(target.toVariant());
+		if (mCustomizer.allowSubprogramLabelsChanging()) {
+			QAction * const changeLabelsAction = contextMenu.addAction(tr("Change Labels"));
+			connect(changeLabelsAction, &QAction::triggered, this, &ExploserView::changeLabelsActionTriggered);
+			changeLabelsAction->setData(target.toVariant());
+		}
 	}
 
 	QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());

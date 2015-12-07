@@ -1,6 +1,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
+#include <QtCore/QUuid>
 
 #include "labelPropertiesDialog.h"
 #include "ui_labelPropertiesDialog.h"
@@ -74,7 +75,7 @@ void LabelPropertiesDialog::saveButtonClicked()
 		QDomElement label1 = dynamicLabels.createElement("label");
 		label1.setAttribute("x", x);
 		label1.setAttribute("y", y);
-		label1.setAttribute("textBinded", name);
+		label1.setAttribute("textBinded", QUuid::createUuid().toString());
 		label1.setAttribute("type", type);
 		label1.setAttribute("value", value);
 		labels.appendChild(label1);
@@ -82,7 +83,7 @@ void LabelPropertiesDialog::saveButtonClicked()
 		QDomElement label2 = dynamicLabels.createElement("label");
 		label2.setAttribute("x", x - 70); /// (x - 70) ????????
 		label2.setAttribute("y", y);
-		label2.setAttribute("text", QString("%1:").arg(name));
+		label2.setAttribute("text", name);
 		labels.appendChild(label2);
 
 		y += 30; ///????????
@@ -136,14 +137,11 @@ void LabelPropertiesDialog::init()
 			!element.isNull();
 			element = element.nextSiblingElement("label"))
 	{
-		const QString textBinded = element.attribute("textBinded");
-		if (textBinded.isEmpty()) {
-			continue;
-		}
-
 		const QString type = element.attribute("type");
 		const QString value = element.attribute("value");
-		addLabel(textBinded, type, value);
+		element = element.nextSiblingElement("label");
+		const QString text = element.attribute("text");
+		addLabel(text, type, value);
 	}
 }
 
