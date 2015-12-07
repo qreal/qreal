@@ -21,6 +21,7 @@
 #include "twoDModel/engine/view/twoDModelWidget.h"
 #include "twoDModel/engine/model/model.h"
 #include "twoDModelEngineApi.h"
+#include "threeDModelEngineApi.h"
 
 using namespace twoDModel::engine;
 
