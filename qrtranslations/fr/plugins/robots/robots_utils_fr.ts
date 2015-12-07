@@ -4,23 +4,23 @@
 <context>
     <name>trik::UploaderTool</name>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="137"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="130"/>
         <source>WinSCP process failed to launch, check path in settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="140"/>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="155"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="133"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="148"/>
         <source>Uploading failed, check connection and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="152"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="145"/>
         <source>Uploaded successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="183"/>
+        <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="176"/>
         <source>%1 is not installed. Please install %1 first.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -38,7 +38,7 @@
         <translation>La version du runtime TRIK est trop ancienne, s&apos;il vous plaît mettez-la à jour en appuyant sur le bouton &apos;Téléverser le runtime&apos; sur la barre d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="181"/>
+        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="183"/>
         <source>Current TRIK runtime version can not be received</source>
         <translation>Échec de récupération de la version courante du runtime TRIK</translation>
     </message>
