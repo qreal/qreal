@@ -22,6 +22,8 @@
 #include <QtCore/QPointF>
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class NodeElement;
 
@@ -52,4 +54,6 @@ private:
 	bool mBelongsToHorizontalBorders;
 };
 
+}
+}
 }

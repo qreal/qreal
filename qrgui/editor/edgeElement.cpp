@@ -36,6 +36,7 @@
 #include "editor/private/lineHandler.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 using namespace enums;
 
 const qreal epsilon = 0.00000000001;
@@ -48,8 +49,8 @@ const int maxReductCoeff = 16;
 EdgeElement::EdgeElement(
 		ElementImpl *impl
 		, const Id &id
-		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-		, qReal::models::LogicalModelAssistApi &logicalAssistApi
+		, models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi
 		)
 		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 		, mPenStyle(Qt::SolidLine)
@@ -535,7 +536,7 @@ bool EdgeElement::initPossibleEdges()
 	QList<StringPossibleEdge> stringPossibleEdges
 			= mGraphicalAssistApi.editorManagerInterface().possibleEdges(editor, id().element());
 	for (StringPossibleEdge pEdge : stringPossibleEdges) {
-		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
+		QPair<bool, Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 
 		QStringList fromElements;
 		QStringList toElements;
@@ -553,7 +554,7 @@ bool EdgeElement::initPossibleEdges()
 
 		for (const QString &fromElement : fromElements) {
 			for (const QString &toElement : toElements) {
-				QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, fromElement),	Id(editor, diagram, toElement));
+				QPair<Id, Id> nodes(Id(editor, diagram, fromElement),	Id(editor, diagram, toElement));
 				PossibleEdge possibleEdge(nodes, edge);
 				mPossibleEdges.push_back(possibleEdge);
 
@@ -890,8 +891,8 @@ void EdgeElement::updateData()
 		mLine = newLine;
 	}
 
-	qReal::Id idFrom = mGraphicalAssistApi.from(id());
-	qReal::Id idTo = mGraphicalAssistApi.to(id());
+	Id idFrom = mGraphicalAssistApi.from(id());
+	Id idTo = mGraphicalAssistApi.to(id());
 
 	if (mSrc) {
 		mSrc->delEdge(this);

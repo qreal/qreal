@@ -17,6 +17,8 @@
 #include "editor/commands/nodeElementCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 namespace commands {
 
 class FoldCommand : public NodeElementCommand
@@ -33,5 +35,7 @@ private:
 	void changeFoldState();
 };
 
+}
+}
 }
 }

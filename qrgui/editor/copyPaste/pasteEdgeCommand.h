@@ -19,6 +19,9 @@
 
 namespace qReal
 {
+namespace gui {
+namespace editor {
+
 namespace commands
 {
 
@@ -39,8 +42,10 @@ protected:
 
 private:
 	const EdgeData mEdgeData;
-	CreateElementCommand *mCreateCommand;
+	qReal::commands::CreateElementCommand *mCreateCommand;
 };
 
+}
+}
 }
 }

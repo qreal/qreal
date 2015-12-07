@@ -19,6 +19,8 @@
 #include <QtGui/QPen>
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class NodeElement;
 
@@ -97,4 +99,6 @@ private:
 	static const int indistinguishabilitySpace = 10;
 };
 
+}
+}
 }

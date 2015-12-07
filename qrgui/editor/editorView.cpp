@@ -22,13 +22,14 @@
 #include <qrgui/models/models.h>
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 const int zoomAnimationInterval = 20;
 const int zoomAnimationTimes = 4;
 
 EditorView::EditorView(const models::Models &models
 		, Controller &controller
-		, const SceneCustomizer &sceneCustomizer
+		, const qReal::gui::editor::SceneCustomizer &sceneCustomizer
 		, const Customizer &customizer
 		, const Id &rootId
 		, QWidget *parent)
@@ -165,11 +166,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	} else {
 		if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
 			setDragMode(RubberBandDrag);
-			mScene.itemSelectUpdate();
-		/*} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
-			setDragMode(ScrollHandDrag); //  (see #615)
-			mScene->itemSelectUpdate();*/
-		} else if (event->buttons() & Qt::LeftButton ) {
+		} else if (event->buttons() & Qt::LeftButton) {
 			EdgeElement *newEdgeEl = dynamic_cast<EdgeElement *>(itemAt(event->pos()));
 			if (newEdgeEl && newEdgeEl->isBreakPointPressed()) {
 				newEdgeEl->breakPointUnpressed();
@@ -205,10 +202,6 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning()
 				&& !itemAt(event->pos())) {
 			setDragMode(RubberBandDrag);
-		}
-
-		if (event->modifiers() & Qt::ControlModifier) {
-			mScene.itemSelectUpdate();
 		}
 	}
 }
