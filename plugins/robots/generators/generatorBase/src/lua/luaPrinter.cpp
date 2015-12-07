@@ -62,8 +62,6 @@
 #include <qrtext/lua/types/boolean.h>
 #include <qrtext/lua/types/string.h>
 
-#include "reservedFunctionsConverter.h"
-
 using namespace generatorBase::lua;
 
 LuaPrinter::LuaPrinter(const QStringList &pathsToTemplates

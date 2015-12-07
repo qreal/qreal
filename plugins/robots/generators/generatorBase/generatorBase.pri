@@ -62,6 +62,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/lua/luaProcessor.h \
 	$$PWD/include/generatorBase/lua/precedenceConverterInterface.h \
 	$$PWD/include/generatorBase/lua/precedenceConverter.h \
+	$$PWD/include/generatorBase/lua/reservedFunctionsConverter.h \
 	$$PWD/include/generatorBase/gotoControlFlowGenerator.h \
 
 HEADERS += \
@@ -204,7 +205,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/killThreadGenerator.h \
 	$$PWD/src/simpleGenerators/getButtonCodeGenerator.h \
 	$$PWD/src/lua/luaPrinter.h \
-	$$PWD/src/lua/reservedFunctionsConverter.h \
 
 SOURCES += \
 	$$PWD/src/converters/templateParametrizedConverter.cpp \

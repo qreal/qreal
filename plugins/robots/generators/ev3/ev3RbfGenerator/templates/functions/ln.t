@@ -1,1 +1,1 @@
-Math.log(@@ARGUMENT@@)
+MATH(LOG, @@ARGUMENT@@, @@RESULT@@)

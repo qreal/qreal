@@ -1,1 +1,1 @@
-NXT_COLOR_RED
+5

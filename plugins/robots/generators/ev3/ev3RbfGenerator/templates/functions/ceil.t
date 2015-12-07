@@ -1,1 +1,1 @@
-Math.ceil(@@ARGUMENT@@)
+MATH(CEIL, @@ARGUMENT@@, @@RESULT@@)

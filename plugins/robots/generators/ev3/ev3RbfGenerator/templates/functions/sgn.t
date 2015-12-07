@@ -1,1 +1,4 @@
-(function (x) { return (x>0) - (x<0) } (@@ARGUMENT@@))
+MOVE32_32(1, @@RESULT@@)
+JR_GTEQF(@@ARGUMENT@@, 0, @@RANDOM_ID@@)
+MOVE32_32(-1, @@RESULT@@)
+@@RANDOM_ID@@:

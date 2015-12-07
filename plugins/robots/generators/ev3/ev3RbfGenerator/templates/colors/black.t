@@ -1,1 +1,1 @@
-NXT_COLOR_BLACK
+1

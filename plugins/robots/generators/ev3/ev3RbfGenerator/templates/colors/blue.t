@@ -1,1 +1,1 @@
-NXT_COLOR_BLUE
+2

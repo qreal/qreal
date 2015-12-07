@@ -1,1 +1,1 @@
-(Date.now() - __interpretation_started_timestamp__)
+TIMER_READ(@@RESULT@@)

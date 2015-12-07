@@ -1,4 +1,4 @@
-/* Copyright 2015 CyberTech Labs Ltd.
+/* Copyright 2007-2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,19 @@
 
 #pragma once
 
-#include <generatorBase/templateParametrizedEntity.h>
+#include "generatorBase/templateParametrizedEntity.h"
 
-namespace ev3 {
-namespace rbf {
+namespace generatorBase {
 namespace lua {
 
 /// Converts the given Lua reserved function call to the target language one.
-class Ev3ReservedFunctionsConverter : public generatorBase::TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT ReservedFunctionsConverter : public TemplateParametrizedEntity
 {
 public:
-	explicit Ev3ReservedFunctionsConverter(const QStringList &pathsToTemplates);
+	explicit ReservedFunctionsConverter(const QStringList &pathsToTemplates);
 
 	QString convert(const QString &name, const QStringList &args) const;
 };
 
-}
 }
 }

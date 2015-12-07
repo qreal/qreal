@@ -249,11 +249,9 @@ void Ev3LuaPrinter::processUnary(const QSharedPointer<qrtext::core::ast::UnaryOp
 		, const QString &templateFileName)
 {
 	const Ev3RbfType type = typeOf(node);
-	const QString result = newRegister(type);
-	pushResult(node, result, readTemplate(templateFileName)
+	pushResult(node, readTemplate(templateFileName)
 			.replace("@@TYPE@@", typeNames[type])
-			.replace("@@RESULT@@", result)
-			.replace("@@OPERAND@@", popResult(node->operand())));
+			.replace("@@OPERAND@@", popResult(node->operand())), QString());
 }
 
 void Ev3LuaPrinter::processBinary(const QSharedPointer<qrtext::core::ast::BinaryOperator> &node
@@ -477,19 +475,47 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Identifier> &no
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FunctionCall> &node)
 {
 	const QString expression = popResult(node->function());
-	const QStringList arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node->arguments()));
 
-	const qrtext::lua::ast::Identifier *idNode = dynamic_cast<qrtext::lua::ast::Identifier *>(node->function().data());
-	const QString reservedFunctionCall = idNode
-			? mReservedFunctionsConverter.convert(idNode->name(), arguments)
-			: QString();
+	const QStringList unused = {"print"};
+	const QStringList int32Functions = {"time", "sgn"};
+	const QStringList shouldCastToIntAfterFunctions = {"ceil", "floor"};
+	bool shouldCastToIntAfter = false;
+
+	QStringList arguments;
+	QString reservedFunctionCall;
+	Ev3RbfType type = Ev3RbfType::dataF;
+
+	if (auto idNode = dynamic_cast<qrtext::lua::ast::Identifier *>(node->function().data())) {
+		if (unused.contains(idNode->name())) {
+			arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node->arguments()));
+		} else {
+			shouldCastToIntAfter = shouldCastToIntAfterFunctions.contains(idNode->name());
+			if (int32Functions.contains(idNode->name())) {
+				type = Ev3RbfType::data32;
+			}
+
+			// All arguments are considered float here due to bytecode spec.
+			for (auto &argument : node->arguments()) {
+				arguments << castTo(Ev3RbfType::dataF, qrtext::as<qrtext::lua::ast::Node>(argument));
+			}
+
+			reservedFunctionCall = addRandomIds(mReservedFunctionsConverter.convert(idNode->name(), arguments));
+		}
+	}
+
+	const QString functionResult = newRegister(type);
+	QString result = shouldCastToIntAfter ? newRegister(Ev3RbfType::data32) : functionResult;
 
 	if (reservedFunctionCall.isEmpty()) {
-		pushResult(node, readTemplate("functionCall.t")
+		pushResult(node, result, readTemplate("functionCall.t")
 				.replace("@@FUNCTION@@", expression)
-				.replace("@@ARGUMENTS@@", arguments.join(readTemplate("argumentsSeparator.t"))), QString());
+				.replace("@@ARGUMENTS@@", arguments.join(readTemplate("argumentsSeparator.t")))
+				.replace("@@RESULT@@", functionResult));
 	} else {
-		pushResult(node, reservedFunctionCall, QString());
+		pushResult(node, result, reservedFunctionCall.replace("@@RESULT@@", functionResult));
+		if (shouldCastToIntAfter) {
+			mAdditionalCode << QString("MOVEF_32(%1, %2)").arg(functionResult, result);
+		}
 	}
 }
 

@@ -1,1 +1,1 @@
-NXT_COLOR_WHITE
+6

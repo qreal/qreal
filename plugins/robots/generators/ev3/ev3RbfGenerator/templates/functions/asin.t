@@ -1,1 +1,1 @@
-Math.asin(@@ARGUMENT@@)
+MATH(ASIN, @@ARGUMENT@@, @@RESULT@@)

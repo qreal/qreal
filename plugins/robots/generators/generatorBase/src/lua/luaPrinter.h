@@ -19,7 +19,7 @@
 #include <qrtext/lua/ast/node.h>
 #include <qrtext/core/types/typeExpression.h>
 
-#include "reservedFunctionsConverter.h"
+#include "generatorBase/lua/reservedFunctionsConverter.h"
 #include "generatorBase/lua/precedenceConverterInterface.h"
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/simpleGenerators/binding.h"

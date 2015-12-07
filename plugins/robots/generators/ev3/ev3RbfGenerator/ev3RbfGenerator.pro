@@ -37,26 +37,24 @@ links(qrkernel qslog qrutils qrrepo qscintilla2 qrgui-text-editor qrtext \
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3RbfGenerator_ru.ts
 
 HEADERS += \
-	ev3RbfGeneratorPlugin.h \
-	ev3RbfMasterGenerator.h \
-	ev3RbfGeneratorCustomizer.h \
-	ev3RbfGeneratorFactory.h \
-	lua/ev3LuaProcessor.h \
-	lua/ev3LuaPrinter.h \
-	lua/ev3ReservedFunctionsConverter.h \
-	simpleGenerators/prependedCodeGenerator.h \
+	$$PWD/ev3RbfGeneratorPlugin.h \
+	$$PWD/ev3RbfMasterGenerator.h \
+	$$PWD/ev3RbfGeneratorCustomizer.h \
+	$$PWD/ev3RbfGeneratorFactory.h \
+	$$PWD/lua/ev3LuaProcessor.h \
+	$$PWD/lua/ev3LuaPrinter.h \
+	$$PWD/simpleGenerators/prependedCodeGenerator.h \
 
 SOURCES += \
-	ev3RbfGeneratorPlugin.cpp \
-	ev3RbfMasterGenerator.cpp \
-	ev3RbfGeneratorCustomizer.cpp \
-	ev3RbfGeneratorFactory.cpp \
-	lua/ev3LuaProcessor.cpp \
-	lua/ev3LuaPrinter.cpp \
-	lua/ev3ReservedFunctionsConverter.cpp \
-	simpleGenerators/prependedCodeGenerator.cpp \
+	$$PWD/ev3RbfGeneratorPlugin.cpp \
+	$$PWD/ev3RbfMasterGenerator.cpp \
+	$$PWD/ev3RbfGeneratorCustomizer.cpp \
+	$$PWD/ev3RbfGeneratorFactory.cpp \
+	$$PWD/lua/ev3LuaProcessor.cpp \
+	$$PWD/lua/ev3LuaPrinter.cpp \
+	$$PWD/simpleGenerators/prependedCodeGenerator.cpp \
 
 RESOURCES += \
-	ev3RbfGenerator.qrc \
-	templates.qrc \
-	thirdparty.qrc \
+	$$PWD/ev3RbfGenerator.qrc \
+	$$PWD/templates.qrc \
+	$$PWD/thirdparty.qrc \

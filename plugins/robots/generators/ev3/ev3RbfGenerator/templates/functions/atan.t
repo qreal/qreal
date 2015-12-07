@@ -1,1 +1,1 @@
-Math.atan(@@ARGUMENT@@)
+MATH(ATAN, @@ARGUMENT@@, @@RESULT@@)

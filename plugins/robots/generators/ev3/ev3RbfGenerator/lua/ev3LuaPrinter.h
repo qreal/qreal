@@ -17,12 +17,10 @@
 #include <QtCore/QMap>
 
 #include <qrtext/lua/ast/node.h>
-#include <generatorBase/lua/precedenceConverterInterface.h>
+#include <generatorBase/lua/reservedFunctionsConverter.h>
 #include <generatorBase/templateParametrizedEntity.h>
 #include <generatorBase/simpleGenerators/binding.h>
 #include <generatorBase/parts/variables.h>
-
-#include "ev3ReservedFunctionsConverter.h"
 
 namespace qrtext {
 class LanguageToolboxInterface;
@@ -33,7 +31,8 @@ namespace rbf {
 namespace lua {
 
 /// Represents type of variables available in EV3 bytecode.
-enum class Ev3RbfType {
+enum class Ev3RbfType
+{
 	/// 8-bit integer
 	data8 = 0
 	/// 16-bit integer
@@ -147,7 +146,7 @@ private:
 	QStringList mAdditionalCode;
 	QMap<qReal::Id, QMap<Ev3RbfType, int>> mRegistersCount;
 	const generatorBase::simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership
-	Ev3ReservedFunctionsConverter mReservedFunctionsConverter;
+	generatorBase::lua::ReservedFunctionsConverter mReservedFunctionsConverter;
 };
 
 }

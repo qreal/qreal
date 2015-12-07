@@ -15,8 +15,10 @@
 #include "generatorBase/templateParametrizedEntity.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QUuid>
 
 #include <qrutils/inFile.h>
+#include <qrutils/nameNormalizer.h>
 #include <qrkernel/logging.h>
 
 using namespace generatorBase;
@@ -78,6 +80,12 @@ QString TemplateParametrizedEntity::readTemplateIfExists(const QString &pathFrom
 QStringList TemplateParametrizedEntity::pathsToRoot() const
 {
 	return mPathsToRoot;
+}
+
+QString TemplateParametrizedEntity::addRandomIds(QString templateString) const
+{
+	const QString randomId = utils::NameNormalizer::normalizeStrongly(QUuid::createUuid().toString(), false);
+	return templateString.replace("@@RANDOM_ID@@", randomId);
 }
 
 void TemplateParametrizedEntity::setPathsToTemplates(const QStringList &pathsTemplates)
