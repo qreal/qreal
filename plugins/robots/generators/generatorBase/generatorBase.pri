@@ -149,6 +149,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/simpleGenerators/binding.h \
 	$$PWD/include/generatorBase/simpleGenerators/bindingGenerator.h \
 	$$PWD/include/generatorBase/simpleGenerators/waitForButtonGenerator.h \
+	$$PWD/include/generatorBase/simpleGenerators/randomIdGenerator.h \
 
 HEADERS += \
 	$$PWD/src/converters/reservedVariablesConverter.h \
@@ -269,6 +270,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/killThreadGenerator.cpp \
 	$$PWD/src/simpleGenerators/getButtonCodeGenerator.cpp \
+	$$PWD/src/simpleGenerators/randomIdGenerator.cpp \
 	$$PWD/src/lua/luaProcessor.cpp \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \

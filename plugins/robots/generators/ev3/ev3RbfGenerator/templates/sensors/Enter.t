@@ -1,1 +1,1 @@
-ecrobot_is_ENTER_button_pressed()
+UI_BUTTON(PRESSED, ENTER_BUTTON, @@RESULT@@)

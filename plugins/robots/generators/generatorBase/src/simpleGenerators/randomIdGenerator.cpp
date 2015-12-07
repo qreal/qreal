@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,23 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "generatorBase/simpleGenerators/randomIdGenerator.h"
 
-#include <generatorBase/simpleGenerators/bindingGenerator.h>
+using namespace generatorBase::simple;
+using namespace qReal;
 
-namespace ev3 {
-namespace simple {
-
-/// Generator for 'WaitForButton' block
-class WaitForButtonGenerator : public generatorBase::simple::BindingGenerator
+RandomIdGenerator::RandomIdGenerator(AbstractSimpleGenerator *other)
+	: AbstractSimpleGenerator(other->repo(), other->customizer(), other->id(), other)
+	, mOtherGenerator(*other)
 {
-public:
-	WaitForButtonGenerator(qrRepo::RepoApi const &repo
-			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
-			, QString const &buttonTemplate
-			, QObject *parent);
-};
-
 }
+
+QString RandomIdGenerator::generate()
+{
+	return addRandomIds(mOtherGenerator.generate());
 }

@@ -60,7 +60,7 @@ qReal::interpretation::Block *Ev3BlocksFactory::produceBlock(const qReal::Id &el
 
 	} else if (elementMetatypeIs(element, "Ev3WaitForTouchSensor")) {
 		return new WaitForTouchSensorBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "Ev3WaitForRangeSensor")) {
+	} else if (elementMetatypeIs(element, "Ev3WaitForSonarDistance")) {
 		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
 				, kitBase::robotModel::DeviceInfo::create<
 						kitBase::robotModel::robotParts::RangeSensor>());
@@ -101,7 +101,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3ClearEncoder")
 
 		, id("Ev3WaitForTouchSensor")
-		, id("Ev3WaitForRangeSensor")
+		, id("Ev3WaitForSonarDistance")
 		, id("Ev3WaitForColor")
 		, id("Ev3WaitForColorIntensity")
 		, id("Ev3WaitForEncoder")

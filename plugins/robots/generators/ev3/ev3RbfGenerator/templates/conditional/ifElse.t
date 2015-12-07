@@ -1,5 +1,5 @@
 @@CONDITION@@
-JR_FALSE(condition, @@Block@@)
+JR_FALSE(condition, @@RANDOM_ID@@)
 @@THEN_BODY@@
-@@Block@@:
+@@RANDOM_ID@@:
 @@ELSE_BODY@@

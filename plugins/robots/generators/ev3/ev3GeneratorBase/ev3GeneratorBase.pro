@@ -48,10 +48,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/drawCircleGenerator.h \
 	$$PWD/src/simpleGenerators/enginesGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
-	$$PWD/src/simpleGenerators/waitForButtonGenerator.h \
-	$$PWD/src/simpleGenerators/waitForTouchSensorGenerator.h \
-	$$PWD/src/simpleGenerators/ifElementGenerator.h \
-	$$PWD/src/converters/goToBlockNumberConverter.h \
 	$$PWD/src/converters/outputPortNameConverter.h \
 
 SOURCES += \
@@ -66,10 +62,6 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/drawCircleGenerator.cpp \
 	$$PWD/src/simpleGenerators/enginesGenerator.cpp \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.cpp \
-	$$PWD/src/simpleGenerators/waitForButtonGenerator.cpp \
-	$$PWD/src/simpleGenerators/waitForTouchSensorGenerator.cpp \
-	$$PWD/src/simpleGenerators/ifElementGenerator.cpp \
-	$$PWD/src/converters/goToBlockNumberConverter.cpp \
 	$$PWD/src/converters/outputPortNameConverter.cpp \
 
 OTHER_FILES +=

@@ -1,3 +1,5 @@
-while (!ecrobot_is_@@BUTTON@@_button_pressed()) {
-	systick_wait_ms(20);
-}
+@@RANDOM_ID@@:
+TIMER_WAIT(10, timer)
+TIMER_READY(timer)
+UI_BUTTON(PRESSED, @@BUTTON@@, _temp_sensor_value_8)
+JR_FALSE(_temp_sensor_value_8, @@RANDOM_ID@@)

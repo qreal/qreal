@@ -40,13 +40,10 @@ public:
 
 	generatorBase::simple::Binding::ConverterInterface *outputPortNameConverter() const;
 
-	generatorBase::simple::Binding::ConverterInterface *goToBlockNumberConverter() const;
-
 	QStringList pathsToTemplates() const override;
 
 private:
 	QString const mGeneratorName;
-	int mGoToBlockNumber;
 };
 
 }

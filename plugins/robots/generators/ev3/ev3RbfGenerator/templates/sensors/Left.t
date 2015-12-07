@@ -1,1 +1,1 @@
-ecrobot_is_RUN_button_pressed()
+UI_BUTTON(PRESSED, LEFT_BUTTON, @@RESULT@@)
