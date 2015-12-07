@@ -1,2 +1,2 @@
-﻿OUTPUT_POWER(0, @@PORT@@, -(@@POWER@@))
+﻿OUTPUT_POWER(0, @@PORT@@, -@@POWER@@)
 OUTPUT_START(0, @@PORT@@)
