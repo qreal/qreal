@@ -85,8 +85,6 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	}
 
 	if (mainCode.isEmpty()) {
-		mErrorReporter.addError(tr("This diagram cannot be even generated into the code with 'goto'"\
-								"statements. Please contact the developers (WTF did you do?)"));
 		return QString();
 	}
 
