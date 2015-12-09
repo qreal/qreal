@@ -294,7 +294,12 @@ void Scene::keyPressEvent(QKeyEvent *keyEvent)
 {
     QGraphicsScene::keyPressEvent(keyEvent);
 
-    if (keyEvent->matches(QKeySequence::Cut)) {
+    if (keyEvent->matches(QKeySequence::SelectAll)) {
+        foreach (auto item, items()) {
+            item->setSelected(true);
+        }
+
+    } else if (keyEvent->matches(QKeySequence::Cut)) {
         initPasteItemsBuffer();
         mCopyPaste = cut;
 
