@@ -31,6 +31,18 @@
 #include "mainWindow/shapeEdit/saveLoadLogicUsingModel.h"
 #include "mainWindow/shapeEdit/saveLoadLogicForInterpreter.h"
 
+#include "mainWindow/shapeEdit/item/item.h"
+#include "mainWindow/shapeEdit/item/curve.h"
+#include "mainWindow/shapeEdit/item/ellipse.h"
+#include "mainWindow/shapeEdit/item/image.h"
+#include "mainWindow/shapeEdit/item/line.h"
+#include "mainWindow/shapeEdit/item/linePort.h"
+#include "mainWindow/shapeEdit/item/pointPort.h"
+#include "mainWindow/shapeEdit/item/rectangle.h"
+#include "mainWindow/shapeEdit/item/stylus.h"
+#include "mainWindow/shapeEdit/item/text.h"
+#include "mainWindow/shapeEdit/item/textPicture.h"
+
 using namespace qReal;
 using namespace qReal::shapeEdit;
 using namespace utils;
@@ -147,8 +159,8 @@ void ShapeEdit::init()
 	connect(mUi->portsComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePortsType(const QString &)));
 
 	connect(mUi->visibilityConditionsButton, SIGNAL(clicked()), this, SLOT(visibilityButtonClicked()));
-	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
-	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
+    connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItems()));
+    connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItems()));
     connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
     connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(saveAsPicture()));
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));

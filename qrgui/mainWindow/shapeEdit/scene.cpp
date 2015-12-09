@@ -20,6 +20,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QMenu>
+#include <QAction>
 
 #include <qrgui/controller/commands/doNothingCommand.h>
 
@@ -37,29 +39,28 @@ using namespace qReal::commands;
 Scene::Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject *parent)
     : AbstractScene(view, parent)
     , mController(controller)
+    , mNeedDrawGrid(SettingsManager::value("ShowGrid").toBool())
+    , mGridDrawer()
+    , mZValue(0)
     , mNewItem(nullptr)
     , mChangingItem(nullptr)
 	, mWaitMove(false)
     , mIsAddingFinished(false)
     , mResizeCommand(nullptr)
     , mMoveCommand(nullptr)
+    , mPortType("NonTyped")
+    , mCopyPaste(nonePaste)
 {
-    mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
-
 	mSizeEmptyRectX = sizeEmptyRectX;
-	mSizeEmptyRectY = sizeEmptyRectY;
+    mSizeEmptyRectY = sizeEmptyRectY;
 	setItemIndexMethod(NoIndex);
     // Why is that? there is a white rect at the scene because of it.
     //setEmptyRect(0, 0, mSizeEmptyRectX, mSizeEmptyRectY);
 	setEmptyPenBrushItems();
-	mCopyPaste = nonePaste;
-	mPortType = "NonTyped";
-
+    initContextMenuActions();
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changeFontPalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePortsComboBox()));
-
-	mZValue = 0;
 }
 
 void Scene::setNeedDrawGrid(bool show)
@@ -200,7 +201,6 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mNewItem->mouseMoveEvent(event, this);
         mNewItem->alignToGrid();
     } else {
-        setDragMode(QGraphicsView::RubberBandDrag);
         forMoveResize(event);
 
         if (mMoveCommand) {
@@ -267,6 +267,36 @@ void Scene::resetItemCreating()
     }
 }
 
+void Scene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+//    auto item = this->itemAt(event->scenePos(), QTransform());
+//    if (item) {
+//        if (!item->isSelected()) {
+//            clearSelection();
+//            item->setSelected(true);
+//        }
+
+//        QMenu menu;
+//        menu.addActions(mActions);
+//        if (!menu.isEmpty()) {
+//            menu.exec(event->screenPos());
+//        }
+//    } else {
+//        clearSelection();
+//    }
+}
+
+void Scene::initContextMenuActions()
+{
+    auto action = new QAction(tr("Remove"), this);
+    connect(action, SIGNAL(triggered(bool)), this, SLOT(deleteItems()));
+    mActions << action;
+
+//    auto action = new QAction(tr("Layer Down"), this);
+//    auto action = new QAction(tr("Layer Up"), this);
+//    auto action = new QAction(tr("To bottom layer"), this);
+//    auto action = new QAction(tr("To top layer"), this);
+}
 
 void Scene::initPasteItemsBuffer()
 {
@@ -344,7 +374,7 @@ void Scene::addImage(const QString &fileName)
 	QFile::copy(fileName, mFileName);
 }
 
-void Scene::deleteItem()
+void Scene::deleteItems()
 {
     auto metaRemove = new DoNothingCommand();
     foreach(auto item, selectedItems()) {

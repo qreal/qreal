@@ -21,6 +21,18 @@
 #include <qrutils/xmlUtils.h>
 
 #include "mainWindow/shapeEdit/item/item.h"
+#include "mainWindow/shapeEdit/item/arch.h"
+#include "mainWindow/shapeEdit/item/curve.h"
+#include "mainWindow/shapeEdit/item/ellipse.h"
+#include "mainWindow/shapeEdit/item/image.h"
+#include "mainWindow/shapeEdit/item/line.h"
+#include "mainWindow/shapeEdit/item/linePort.h"
+#include "mainWindow/shapeEdit/item/path.h"
+#include "mainWindow/shapeEdit/item/pointPort.h"
+#include "mainWindow/shapeEdit/item/rectangle.h"
+#include "mainWindow/shapeEdit/item/stylus.h"
+#include "mainWindow/shapeEdit/item/text.h"
+#include "mainWindow/shapeEdit/item/textPicture.h"
 
 using namespace qReal;
 using namespace qReal::shapeEdit;

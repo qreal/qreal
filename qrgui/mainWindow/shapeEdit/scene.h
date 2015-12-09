@@ -14,8 +14,6 @@
 
 #pragma once
 
-    //#include <tr1/functional>
-
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
@@ -27,21 +25,12 @@
 #include <qrkernel/settingsManager.h>
 #include <qrgui/controller/controller.h>
 
-    //#include "mainWindow/shapeEdit/commands/simpleTemplateCommand.h"
-
 #include "mainWindow/shapeEdit/item/item.h"
 
-#include "mainWindow/shapeEdit/item/arch.h"
-#include "mainWindow/shapeEdit/item/line.h"
-#include "mainWindow/shapeEdit/item/ellipse.h"
-#include "mainWindow/shapeEdit/item/rectangle.h"
 #include "mainWindow/shapeEdit/item/text.h"
 #include "mainWindow/shapeEdit/item/textPicture.h"
 #include "mainWindow/shapeEdit/item/pointPort.h"
 #include "mainWindow/shapeEdit/item/linePort.h"
-#include "mainWindow/shapeEdit/item/stylus.h"
-#include "mainWindow/shapeEdit/item/path.h"
-#include "mainWindow/shapeEdit/item/curve.h"
 #include "mainWindow/shapeEdit/item/image.h"
 
 namespace qReal {
@@ -112,7 +101,7 @@ private slots:
 	void changeFontBold(bool isChecked);
 	void changeFontUnderline(bool isChecked);
 
-	void deleteItem();
+    void deleteItems();
     void clearScene();
     void resetItemCreating();
 
@@ -126,8 +115,6 @@ private:
     Controller *mController;
 
     bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
-    qreal mWidthOfGrid;
-    qreal mRealIndexGrid;
     graphicsUtils::GridDrawer mGridDrawer;
 
 	int mZValue;
@@ -143,19 +130,22 @@ private:
 	CopyPasteType mCopyPaste;
 	QList<Item *> mListSelectedItemsForPaste;
 
+    void initContextMenuActions();
+
 	void initPasteItemsBuffer();
 	QRectF selectedItemsBoundingRect() const;
-        QList<TextPicture *> selectedTextPictureItems();
+    QList<TextPicture *> selectedTextPictureItems();
 
 	void setZValueSelectedItems();
 	void setNullZValueItems();
 	QPair<bool, Item *> checkOnResize(qreal x, qreal y);
 
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 	virtual void keyPressEvent(QKeyEvent *keyEvent);
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 };
 
 }
