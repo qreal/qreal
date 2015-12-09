@@ -14,6 +14,8 @@ class IShapeEdit : public QWidget
     Q_OBJECT
 
 public:
+    virtual void setDrawSceneGrid(bool show) = 0;
+
     virtual graphicsUtils::AbstractView* getView() const = 0;
 
     virtual Id getId() const = 0;

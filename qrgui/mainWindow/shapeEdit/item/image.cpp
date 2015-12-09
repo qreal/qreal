@@ -93,7 +93,7 @@ QString Image::getItemName() const
     return QString("image");
 }
 
-void Image::customizeButton(CreateItemPushButton *button)
+void Image::customizeButton(CreateItemPushButton *button) const
 {
     //button->setText(QApplication::translate("ShapeEdit", "Image", 0));
     button->setText(tr("Image"));

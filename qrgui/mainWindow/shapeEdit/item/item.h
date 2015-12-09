@@ -29,10 +29,7 @@
 
 #include "mainWindow/shapeEdit/visibilityCondition.h"
 
-//using qReal::commands::AbstractCommand;
-
 namespace qReal {
-
 namespace shapeEdit {
 
 class CreateItemPushButton;
@@ -61,9 +58,9 @@ public:
 	};
 
 	Item(graphicsUtils::AbstractItem* parent = 0);
-	virtual Item* clone() = 0;
+    virtual Item* clone() = 0;
     virtual void setItemZValue(int zValue);
-	int itemZValue();
+    int itemZValue() const;
 
     /// @returns nullptr if there is no really new command
     virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
@@ -72,16 +69,12 @@ public:
 
     virtual CreateItemPushButton *createButton();
 
-    //static int sign(int x);
-    //static qreal length(const QPointF &point1, const QPointF &point2);
-    //static void swap(qreal &x, qreal &y);
-
     virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
 
-	void setNoneDragState();
+    void alignToGrid();
 
 	void setListScalePoint(QList<QPair<ScalingPointState, QColor> > list);
 
@@ -114,8 +107,11 @@ protected:
 	VisibilityCondition mVisibilityCondition;
 
     virtual QString getItemName() const;
-    virtual void customizeButton(CreateItemPushButton *button);
+    virtual void customizeButton(CreateItemPushButton *button) const;
     virtual void reshape(QGraphicsSceneMouseEvent *event);
+
+    qreal alignedCoordToGrid(qreal sceneCoord);
+    qreal alignedCoordinate(qreal coord, int coef, int indexGrid);
 };
 
 }

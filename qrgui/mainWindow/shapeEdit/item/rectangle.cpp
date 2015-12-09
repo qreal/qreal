@@ -62,6 +62,7 @@ AbstractCommand *QRealRectangle::mousePressEvent(QGraphicsSceneMouseEvent *event
     setY1(mY1);
     setX2(mX1);
     setY2(mY1);
+
     scene->setPenBrushForItem(this);
     scene->setZValue(this);
     scene->removeMoveFlagForItem(event, this);

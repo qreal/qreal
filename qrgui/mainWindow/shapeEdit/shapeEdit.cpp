@@ -105,6 +105,9 @@ void ShapeEdit::init()
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	mUi->graphicsView->setMouseTracking(true);
 
+    SettingsListener::listen("IndexGrid", mScene, &Scene::redraw);
+    SettingsListener::listen("GridWidth", mScene, &Scene::redraw);
+
 	QStringList penStyleList = Item::getPenStyleList();
 	mUi->penStyleComboBox->addItems(penStyleList);
 	mUi->penWidthSpinBox->setRange(0, 13);
@@ -170,7 +173,7 @@ void ShapeEdit::resetHighlightAllButtons()
 	foreach (QAbstractButton *button, mButtonGroup) {
 		button->setChecked(false);
 	}
-	mScene->addNone(true);
+    mScene->addNone();
 }
 
 void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
@@ -254,6 +257,12 @@ ShapeEdit::~ShapeEdit()
 {
 	delete mScene;
 	delete mUi;
+}
+
+void ShapeEdit::setDrawSceneGrid(bool show)
+{
+    mScene->setNeedDrawGrid(show);
+    mScene->invalidate();
 }
 
 graphicsUtils::AbstractView* ShapeEdit::getView() const
@@ -467,7 +476,7 @@ void ShapeEdit::changeTextName()
 
 void ShapeEdit::visibilityButtonClicked()
 {
-	QList<Item *> selectedItems = mScene->selectedSceneItems();
+	QList<Item *> selectedItems = mScene->selectedShapeEditItems();
 	if (selectedItems.isEmpty()) {
 		return;
 	}

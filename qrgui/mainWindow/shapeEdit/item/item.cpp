@@ -20,6 +20,8 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtCore/QList>
 
+#include <qrkernel/settingsManager.h>
+
 #include "mainWindow/shapeEdit/item/createItemPushButton.h"
 #include "mainWindow/shapeEdit/scene.h"
 
@@ -47,7 +49,7 @@ void Item::setItemZValue(int zValue)
 	setZValue(zValue);
 }
 
-int Item::itemZValue()
+int Item::itemZValue() const
 {
 	return mZValue;
 }
@@ -134,6 +136,39 @@ void Item::drawScalingRects(QPainter* painter)
 	}
 }
 
+void Item::alignToGrid()
+{
+    setX(alignedCoordToGrid(pos().x()));
+    setY(alignedCoordToGrid(pos().y()));
+
+    setX1(alignedCoordToGrid(x1()));
+    setY1(alignedCoordToGrid(y1()));
+    setX2(alignedCoordToGrid(x2()));
+    setY2(alignedCoordToGrid(y2()));
+}
+
+qreal Item::alignedCoordToGrid(qreal sceneCoord)
+{
+    if (SettingsManager::value("ActivateGrid").toBool()) {
+        const int indexGrid = SettingsManager::value("IndexGrid").toInt();
+        int coef = static_cast<int>(sceneCoord) / indexGrid;
+        return alignedCoordinate(sceneCoord, coef, indexGrid);
+    }
+    return sceneCoord;
+}
+
+qreal Item::alignedCoordinate(qreal coord, int coef, int indexGrid)
+{
+    const int coefSign = coef != 0 ? coef / qAbs(coef) : 0;
+
+    if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
+        return coef * indexGrid;
+    } else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) <= indexGrid / 2) {
+        return (coef + coefSign) * indexGrid;
+    }
+    return coord;
+}
+
 CreateItemPushButton *Item::createButton()
 {
     CreateItemPushButton *button = new CreateItemPushButton(this);
@@ -148,7 +183,7 @@ CreateItemPushButton *Item::createButton()
     return button;
 }
 
-void Item::customizeButton(CreateItemPushButton *button)
+void Item::customizeButton(CreateItemPushButton *button) const
 {
     QIcon icon;
     icon.addFile(QString(":/mainWindow/images/" + getItemName() + ".png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -159,11 +194,6 @@ void Item::customizeButton(CreateItemPushButton *button)
 QString Item::getItemName() const
 {
     return QString();
-}
-
-void Item::setNoneDragState()
-{
-	setDragState(None);
 }
 
 void Item::calcForChangeScalingState(const QPointF&pos, const QPointF& point1, const QPointF& point2
@@ -214,7 +244,7 @@ void Item::calcForChangeScalingState(const QPointF&pos, const QPointF& point1, c
 	if (mScalingState == topLeftX || mScalingState == topLeftY || mScalingState == bottomRightX
 			|| mScalingState == bottomRightY)
 	{
-		setNoneDragState();
+        setDragState(None);
 	}
 }
 

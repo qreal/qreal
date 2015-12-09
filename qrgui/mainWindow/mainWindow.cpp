@@ -1299,6 +1299,11 @@ void MainWindow::setShowGrid(bool isChecked)
 		if (tab != nullptr) {
 			tab->setDrawSceneGrid(isChecked);
 		}
+        // IShapeEditor case
+        auto shapeEditor = dynamic_cast<IShapeEdit *>(mUi->tabs->widget((i)));
+        if (shapeEditor) {
+            shapeEditor->setDrawSceneGrid(isChecked);
+        }
 	}
 }
 
@@ -1329,6 +1334,11 @@ void MainWindow::setSwitchGrid(bool isChecked)
 				if (nodeItem != nullptr) {
 					nodeItem->switchGrid(isChecked);
 				}
+                // IShapeEditor case
+                auto shapeEditItem = dynamic_cast<Item *>(item);
+                if (shapeEditItem && isChecked) {
+                    shapeEditItem->alignToGrid();
+                }
 			}
 		}
 	}

@@ -88,7 +88,7 @@ QString PointPort::getItemName() const
     return QString("pointPort");
 }
 
-void PointPort::customizeButton(CreateItemPushButton *button)
+void PointPort::customizeButton(CreateItemPushButton *button) const
 {
     QIcon icon;
     icon.addFile(QString(":/mainWindow/images/ellipse.png"), QSize(), QIcon::Normal, QIcon::Off);

@@ -47,7 +47,7 @@ public:
 
 protected:
     virtual QString getItemName() const;
-    virtual void customizeButton(CreateItemPushButton *button);
+    virtual void customizeButton(CreateItemPushButton *button) const;
     void init(qreal x, qreal y);
 
 private:

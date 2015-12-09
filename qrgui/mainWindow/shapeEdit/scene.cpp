@@ -38,16 +38,19 @@ Scene::Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject 
     : AbstractScene(view, parent)
     , mController(controller)
     , mNewItem(nullptr)
+    , mChangingItem(nullptr)
 	, mWaitMove(false)
     , mIsAddingFinished(false)
     , mResizeCommand(nullptr)
     , mMoveCommand(nullptr)
-	, mSelectedTextPicture(nullptr)
 {
+    mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
+
 	mSizeEmptyRectX = sizeEmptyRectX;
 	mSizeEmptyRectY = sizeEmptyRectY;
 	setItemIndexMethod(NoIndex);
-	setEmptyRect(0, 0, mSizeEmptyRectX, mSizeEmptyRectY);
+    // Why is that? there is a white rect at the scene because of it.
+    //setEmptyRect(0, 0, mSizeEmptyRectX, mSizeEmptyRectY);
 	setEmptyPenBrushItems();
 	mCopyPaste = nonePaste;
 	mPortType = "NonTyped";
@@ -57,6 +60,11 @@ Scene::Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject 
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePortsComboBox()));
 
 	mZValue = 0;
+}
+
+void Scene::setNeedDrawGrid(bool show)
+{
+    mNeedDrawGrid = show;
 }
 
 QRectF Scene::selectedItemsBoundingRect() const
@@ -119,9 +127,7 @@ QString Scene::getFileName()
 
 void Scene::setZValueSelectedItems()
 {
-	mListSelectedItems = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-        Item *item = dynamic_cast<Item *>(graphicsItem);
+    foreach (auto item, selectedShapeEditItems()) {
 		item->setZValue(mZValue);
 		mZValue++;
 	}
@@ -129,16 +135,14 @@ void Scene::setZValueSelectedItems()
 
 void Scene::setNullZValueItems()
 {
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Item* item = dynamic_cast<Item*>(graphicsItem);
+    foreach (auto item, selectedShapeEditItems()) {
 		item->setZValue(item->itemZValue());
 	}
-	mListSelectedItems.clear();
 }
 
 QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 {
-	QList<Item *> list = selectedSceneItems();
+    QList<Item *> list = selectedShapeEditItems();
 	foreach (Item *item, list) {
 		item->changeDragState(x, y);
 		item->changeScalingPointState(x, y);
@@ -156,6 +160,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mousePressEvent(event);
 
     if (mNewItem) {
+        clearSelection();
         setDragMode(QGraphicsView::NoDrag);
         AbstractCommand *command = mNewItem->mousePressEvent(event, this);
         if (command) {
@@ -173,9 +178,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 //changing scalePointState
                 mChangingItem->setScalingPointColor();
                 update();
-            }
-
-            if (mGraphicsItem->dragState() != graphicsUtils::AbstractItem::None) {
+            } else if (mGraphicsItem->dragState() != graphicsUtils::AbstractItem::None) {
                 //resizing
                 mResizeCommand = new ResizeItemCommand(this, mChangingItem);
                 mResizeCommand->startTracking();
@@ -196,6 +199,8 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (mNewItem) {
         setDragMode(QGraphicsView::NoDrag);
         AbstractCommand *command = mNewItem->mouseMoveEvent(event, this);
+        mNewItem->alignToGrid();
+
         if (command) {
             mController->execute(command);
         }
@@ -203,6 +208,17 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     } else {
         setDragMode(QGraphicsView::RubberBandDrag);
         forMoveResize(event);
+
+        if (mMoveCommand) {
+            foreach (auto movingItem, selectedShapeEditItems()) {
+                movingItem->alignToGrid();
+            }
+        }
+
+        if (mChangingItem) {
+            mChangingItem->alignToGrid();
+        }
+        update();
     }
 }
 
@@ -217,11 +233,17 @@ void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         if (command) {
             mController->execute(command);
         }
+        mNewItem->alignToGrid();
+        update();
     } else {
         setDragMode(QGraphicsView::RubberBandDrag);
         forReleaseResize(event);
 
         if (mMoveCommand) {
+            foreach (auto movingItem, selectedShapeEditItems()) {
+                movingItem->alignToGrid();
+            }
+
             mMoveCommand->stopTracking();
             if (mMoveCommand->isMoved()) {
                 mController->execute(mMoveCommand);
@@ -230,12 +252,15 @@ void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             }
             mMoveCommand = nullptr; // Controller takes ownership
         } else if (mResizeCommand) {
+            mChangingItem->alignToGrid();
+
             mResizeCommand->stopTracking();
             mController->execute(mResizeCommand);
             mResizeCommand = nullptr;
         }
     }
 
+    mChangingItem = nullptr;
     mWaitMove = false;
     setMoveFlag(event);
     setNullZValueItems();
@@ -245,8 +270,9 @@ void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void Scene::resetItemCreating()
 {
     if (mIsAddingFinished) {
-        emit resetHighlightAllButtons();
+        mNewItem->setSelected(true);
         mNewItem = nullptr;
+        emit resetHighlightAllButtons();
         mIsAddingFinished = false;
     }
 }
@@ -259,7 +285,7 @@ void Scene::initPasteItemsBuffer()
     }
     mListSelectedItemsForPaste.clear();
 
-    for (auto item : selectedSceneItems()) {
+    for (auto item : selectedShapeEditItems()) {
         mListSelectedItemsForPaste.push_back(item->clone());
     }
 }
@@ -307,9 +333,9 @@ void Scene::addShapeEditItem(bool checked, Item *item)
     }
 }
 
-void Scene::addNone(bool checked)
+void Scene::addNone()
 {
-    addShapeEditItem(checked, nullptr);
+    addShapeEditItem(true, nullptr);
 }
 
 void Scene::addImage(const QString &fileName)
@@ -339,14 +365,12 @@ void Scene::clearScene()
         removeAll->addPostAction(new RemoveItemCommand(this, item));
     }
     mController->execute(removeAll);
-	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
 }
 
-QList<Item *> Scene::selectedSceneItems()
+QList<Item *> Scene::selectedShapeEditItems()
 {
 	QList<Item *> resList;
-	mListSelectedItems = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+    foreach (QGraphicsItem *graphicsItem, selectedItems()) {
         Item *item = dynamic_cast<Item *>(graphicsItem);
 		if (item != nullptr)
 			resList.push_back(item);
@@ -355,16 +379,34 @@ QList<Item *> Scene::selectedSceneItems()
 	return resList;
 }
 
+void Scene::redraw()
+{
+    update();
+}
+
 QList<TextPicture *> Scene::selectedTextPictureItems()
 {
 	QList<TextPicture *> resList;
-	mListSelectedItems = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		TextPicture* item = dynamic_cast<TextPicture*>(graphicsItem);
+    foreach (auto graphicsItem, selectedItems()) {
+        TextPicture* item = dynamic_cast<TextPicture *>(graphicsItem);
 		if (item != nullptr)
 			resList.push_back(item);
 	}
 	return resList;
+}
+
+void Scene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    if (mNeedDrawGrid) {
+        auto gridWidth = SettingsManager::value("GridWidth").toDouble() / 100;
+        auto indexGrid = SettingsManager::value("IndexGrid").toInt();
+
+        QPen pen(Qt::black, gridWidth);
+        pen.setStyle(Qt::DotLine);
+        painter->setPen(pen);
+
+        mGridDrawer.drawGrid(painter, rect, indexGrid);
+    }
 }
 
 void Scene::changePenStyle(const QString &text)
@@ -384,7 +426,7 @@ void Scene::changePenStyle(const QString &text)
         update();
     };
 
-    auto targets = selectedSceneItems();
+    auto targets = selectedShapeEditItems();
     if (!targets.isEmpty()) {
         foreach (auto item, targets) {
             auto old = item->pen().style();
@@ -418,7 +460,7 @@ void Scene::changePenWidth(int width)
         update();
     };
 
-    auto targets = selectedSceneItems();
+    auto targets = selectedShapeEditItems();
     if (!targets.isEmpty()) {
         foreach (auto item, targets) {
             if (item->pen().width() != width) {
@@ -449,7 +491,7 @@ void Scene::changePenColor(const QString &text)
         update();
     };
 
-    auto targets = selectedSceneItems();
+    auto targets = selectedShapeEditItems();
     if (!targets.isEmpty()) {
         foreach (auto item, targets) {
             auto old = item->pen().color();
@@ -483,7 +525,7 @@ void Scene::changeBrushStyle(const QString &text)
         update();
     };
 
-    auto targets = selectedSceneItems();
+    auto targets = selectedShapeEditItems();
     if (!targets.isEmpty()) {
         foreach (auto item, targets) {
             auto old = item->brush().style();
@@ -517,7 +559,7 @@ void Scene::changeBrushColor(const QString &text)
         update();
     };
 
-    auto targets = selectedSceneItems();
+    auto targets = selectedShapeEditItems();
     if (!targets.isEmpty()) {
         foreach (auto item, targets) {
             auto old = item->brush().color();
@@ -574,12 +616,12 @@ void Scene::changePortsType(const QString &type)
 void Scene::changePalette()
 {
     if(!mNewItem) {
-		mListSelectedItems = selectedItems();
-		if (mListSelectedItems.isEmpty()) {
+        auto selected = selectedItems();
+        if (selected.isEmpty()) {
 			emit noSelectedItems();
 			setEmptyPenBrushItems();
         } else {
-            Item *item = dynamic_cast<Item *>(mListSelectedItems.back());
+            auto item = dynamic_cast<Item *>(selected.back());
             if (item) {
 				QPen penItem = item->pen();
 				QBrush brushItem = item->brush();

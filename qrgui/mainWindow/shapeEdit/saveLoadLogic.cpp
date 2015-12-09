@@ -116,8 +116,6 @@ QList<QDomElement> SaveLoadLogic::generateGraphics(QDomDocument &doc)
         Item* item = dynamic_cast<Item*>(graphicsItem);
         if (item != nullptr) {
 
-            //todo
-            //посмотреть, нормально ли по такому интерфейсу взаимодействовать с item
             QPair<QDomElement, Item::DomElementTypes> genItem = item->generateDom(doc, mTopLeftPicture);
 
             QDomElement domItem = genItem.first;

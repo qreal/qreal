@@ -5,9 +5,9 @@ using namespace qReal::shapeEdit;
 
 SaveLoadLogicForInterpreter::SaveLoadLogicForInterpreter(IShapeEdit *parent
         , Scene *scene
-        , const Id &id
+        , const Id id
         , const EditorManagerInterface &editorManagerProxy
-        , const IdList &graphicalElements
+        , const IdList graphicalElements
         , EditorView *editorView
         , const bool isUsingTypedPorts)
     : SaveLoadLogic(parent, scene, isUsingTypedPorts)

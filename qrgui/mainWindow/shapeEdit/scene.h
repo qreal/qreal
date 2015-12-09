@@ -14,7 +14,7 @@
 
 #pragma once
 
-    #include <tr1/functional>
+    //#include <tr1/functional>
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsItem>
@@ -23,10 +23,11 @@
 #include <QtCore/QList>
 
 #include <qrutils/graphicsUtils/abstractScene.h>
+#include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrkernel/settingsManager.h>
 #include <qrgui/controller/controller.h>
 
-    #include "mainWindow/shapeEdit/commands/simpleTemplateCommand.h"
+    //#include "mainWindow/shapeEdit/commands/simpleTemplateCommand.h"
 
 #include "mainWindow/shapeEdit/item/item.h"
 
@@ -62,10 +63,6 @@ public:
 	void changeTextName(const QString &name);
 	void setZValue(Item* item);
 
-    void addShapeEditItem(bool checked, Item* item);
-    void addImage(const QString &fileName);
-    void addNone(bool checked);
-
     // methods for Item
     void setPenBrushForItem(Item *item);
     void removeMoveFlagForItem(QGraphicsSceneMouseEvent *event, Item *item);
@@ -75,7 +72,14 @@ public:
     QString getPortType();
     QString getFileName();
 
-	QList<Item *> selectedSceneItems();
+    QList<Item *> selectedShapeEditItems();
+
+public slots:
+    void redraw();
+    void setNeedDrawGrid(bool show);
+    void addShapeEditItem(bool checked, Item* item);
+    void addImage(const QString &fileName);
+    void addNone();
 
 signals:
 	void noSelectedItems();
@@ -85,6 +89,9 @@ signals:
     void noSelectedPortItems();
     void existSelectedPortItems(const QString &type);
 	void resetHighlightAllButtons();
+
+protected:
+    virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
 private slots:
 	void changePenStyle(const QString &text);
@@ -118,6 +125,11 @@ private:
 
     Controller *mController;
 
+    bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
+    qreal mWidthOfGrid;
+    qreal mRealIndexGrid;
+    graphicsUtils::GridDrawer mGridDrawer;
+
 	int mZValue;
     Item *mNewItem;
     Item *mChangingItem;
@@ -130,10 +142,6 @@ private:
     QString mFileName;
 	CopyPasteType mCopyPaste;
 	QList<Item *> mListSelectedItemsForPaste;
-	QList<QGraphicsItem *> mListSelectedItems;
-        QList<TextPicture *> mListSelectedTextPictureItems;
-        TextPicture *mSelectedTextPicture;
-	QPair<bool, Item *> mNeedResize;
 
 	void initPasteItemsBuffer();
 	QRectF selectedItemsBoundingRect() const;

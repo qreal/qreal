@@ -6,7 +6,7 @@ using namespace qReal::shapeEdit;
 SaveLoadLogicUsingModel::SaveLoadLogicUsingModel(IShapeEdit *parent
         , Scene *scene
         , qReal::models::LogicalModelAssistApi &modelApi
-        , const QPersistentModelIndex &index
+        , const QPersistentModelIndex index
         , const int role
         , const bool isUsingTypedPorts)
     : SaveLoadLogic(parent, scene, isUsingTypedPorts)

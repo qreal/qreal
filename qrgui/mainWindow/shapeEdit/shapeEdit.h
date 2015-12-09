@@ -22,6 +22,7 @@
 #include <qrutils/graphicsUtils/abstractItemView.h>
 #include <qrkernel/ids.h>
 #include <qrgui/controller/controller.h>
+#include <qrkernel/settingsListener.h>
 
 #include "editor/editorView.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
@@ -64,6 +65,7 @@ public:
               );
     ~ShapeEdit();
 
+    void setDrawSceneGrid(bool show);
     graphicsUtils::AbstractView* getView() const;
     Id getId() const;
 
