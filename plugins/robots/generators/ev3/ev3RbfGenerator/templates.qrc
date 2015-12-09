@@ -131,12 +131,14 @@
         <file>templates/drawing/redraw.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
+        <file>templates/variables/arrayVariableDeclaration.t</file>
         <file>templates/variables/stringVariableDeclaration.t</file>
         <file>templates/variables/randomInitialization.t</file>
         <file>templates/luaPrinting/addition.t</file>
         <file>templates/luaPrinting/argumentsSeparator.t</file>
         <file>templates/luaPrinting/assignment.t</file>
         <file>templates/luaPrinting/assignmentStrings.t</file>
+        <file>templates/luaPrinting/assignmentArrays.t</file>
         <file>templates/luaPrinting/bitwiseAnd.t</file>
         <file>templates/luaPrinting/bitwiseLeftShift.t</file>
         <file>templates/luaPrinting/bitwiseNegation.t</file>
@@ -146,15 +148,13 @@
         <file>templates/luaPrinting/concatenation.t</file>
         <file>templates/luaPrinting/division.t</file>
         <file>templates/luaPrinting/equality.t</file>
-        <file>templates/luaPrinting/explicitKeyFieldInitialization.t</file>
         <file>templates/luaPrinting/exponentiation.t</file>
         <file>templates/luaPrinting/false.t</file>
-        <file>templates/luaPrinting/fieldInitializersSeparator.t</file>
         <file>templates/luaPrinting/functionCall.t</file>
         <file>templates/luaPrinting/greaterOrEqual.t</file>
         <file>templates/luaPrinting/greaterThan.t</file>
-        <file>templates/luaPrinting/implicitKeyFieldInitialization.t</file>
-        <file>templates/luaPrinting/indexingExpression.t</file>
+        <file>templates/luaPrinting/readIndexer.t</file>
+        <file>templates/luaPrinting/writeIndexer.t</file>
         <file>templates/luaPrinting/inequality.t</file>
         <file>templates/luaPrinting/integerDivision.t</file>
         <file>templates/luaPrinting/length.t</file>
@@ -170,7 +170,6 @@
         <file>templates/luaPrinting/statementsSeparator.t</file>
         <file>templates/luaPrinting/string.t</file>
         <file>templates/luaPrinting/subtraction.t</file>
-        <file>templates/luaPrinting/tableConstructor.t</file>
         <file>templates/luaPrinting/true.t</file>
         <file>templates/luaPrinting/unaryMinus.t</file>
         <file>templates/luaPrinting/intToString.t</file>

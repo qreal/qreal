@@ -65,9 +65,11 @@ public:
 	}
 
 private:
-	void accept(core::AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer) override
+	void accept(core::AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent) override
 	{
-		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(qSharedPointerCast<FieldInitialization>(pointer));
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(
+				qSharedPointerCast<FieldInitialization>(pointer), parent);
 	}
 
 	QSharedPointer<Expression> mKey;

@@ -34,10 +34,12 @@ class AstVisitorInterface
 public:
 	virtual ~AstVisitorInterface() {}
 
-	virtual void visit(const QSharedPointer<ast::Node> &)           {}
-	virtual void visit(const QSharedPointer<ast::Expression> &)     {}
-	virtual void visit(const QSharedPointer<ast::BinaryOperator> &) {}
-	virtual void visit(const QSharedPointer<ast::UnaryOperator> &)  {}
+	// Second argument is a parent everywhere.
+
+	virtual void visit(const QSharedPointer<ast::Node> &          , const QSharedPointer<ast::Node> &) {}
+	virtual void visit(const QSharedPointer<ast::Expression> &    , const QSharedPointer<ast::Node> &) {}
+	virtual void visit(const QSharedPointer<ast::BinaryOperator> &, const QSharedPointer<ast::Node> &) {}
+	virtual void visit(const QSharedPointer<ast::UnaryOperator> & , const QSharedPointer<ast::Node> &) {}
 };
 
 }

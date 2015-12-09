@@ -41,9 +41,10 @@ public:
 	}
 
 private:
-	void accept(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer) override
+	void accept(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent) override
 	{
-		visitor.visit(qSharedPointerCast<UnaryOperator>(pointer));
+		visitor.visit(qSharedPointerCast<UnaryOperator>(pointer), parent);
 	}
 
 	QSharedPointer<Node> mOperand;

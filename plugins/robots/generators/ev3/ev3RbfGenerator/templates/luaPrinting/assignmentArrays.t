@@ -1,0 +1,1 @@
+ARRAY(COPY, @@VALUE@@, @@VARIABLE@@)
