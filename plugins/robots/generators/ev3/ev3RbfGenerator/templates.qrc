@@ -155,6 +155,7 @@
         <file>templates/luaPrinting/greaterThan.t</file>
         <file>templates/luaPrinting/readIndexer.t</file>
         <file>templates/luaPrinting/writeIndexer.t</file>
+        <file>templates/luaPrinting/tableConstructor.t</file>
         <file>templates/luaPrinting/inequality.t</file>
         <file>templates/luaPrinting/integerDivision.t</file>
         <file>templates/luaPrinting/length.t</file>

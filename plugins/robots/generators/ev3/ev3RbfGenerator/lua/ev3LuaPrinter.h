@@ -77,7 +77,7 @@ public:
 
 	/// Returns code that must be prepended to generated code correspondning to current block.
 	/// Must be called after print() call or castTo() function call.
-	QStringList additionalCode() const;
+	QStringList additionalCode(const QSharedPointer<qrtext::core::ast::Node> &node) const;
 
 private:
 	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node
@@ -175,6 +175,7 @@ private:
 			, const QString &generatedCode, const QString &additionalCode);
 	QString popResult(const QSharedPointer<qrtext::lua::ast::Node> &node);
 	QStringList popResults(const QList<QSharedPointer<qrtext::lua::ast::Node>> &nodes);
+	void pushChildrensAdditionalCode(const QSharedPointer<qrtext::lua::ast::Node> &node);
 
 	bool printWithoutPop(const QSharedPointer<qrtext::lua::ast::Node> &node);
 	QString toString(const QSharedPointer<qrtext::lua::ast::Node> &node);
@@ -192,8 +193,8 @@ private:
 	const qrtext::LanguageToolboxInterface &mTextLanguage;
 	generatorBase::parts::Variables &mVariables;
 	QMap<qrtext::lua::ast::Node *, QString> mGeneratedCode;
+	QMap<qrtext::lua::ast::Node *, QStringList> mAdditionalCode;
 	qReal::Id mId;
-	QStringList mAdditionalCode;
 	int mTableInitializersCount = -1;
 	QMap<qReal::Id, QMap<Ev3RbfType, int>> mRegistersCount;
 	const generatorBase::simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership

@@ -60,7 +60,7 @@ QString Ev3LuaProcessor::translate(const QString &data
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
 	mPrinter->configure(reservedVariablesConverter);
 	const QString result = mPrinter->print(tree, id);
-	mFactory->addAdditionalCode(id, mPrinter->additionalCode());
+	mFactory->addAdditionalCode(id, mPrinter->additionalCode(tree));
 	return result;
 }
 
@@ -80,6 +80,6 @@ QString Ev3LuaProcessor::castTo(const QSharedPointer<qrtext::core::types::TypeEx
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
 	mPrinter->configure(reservedVariablesConverter);
 	const QString result = mPrinter->castTo(type, tree, id);
-	mFactory->addAdditionalCode(id, mPrinter->additionalCode());
+	mFactory->addAdditionalCode(id, mPrinter->additionalCode(tree));
 	return result;
 }
