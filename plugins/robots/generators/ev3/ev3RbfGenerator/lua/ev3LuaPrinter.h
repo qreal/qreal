@@ -79,6 +79,9 @@ public:
 	/// Must be called after print() call or castTo() function call.
 	QStringList additionalCode(const QSharedPointer<qrtext::core::ast::Node> &node) const;
 
+	/// Returns code that initializes all known constants.
+	QString constantsEvaluation();
+
 private:
 	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node
 			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;

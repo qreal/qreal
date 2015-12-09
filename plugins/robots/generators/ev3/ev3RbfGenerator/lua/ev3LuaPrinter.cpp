@@ -224,6 +224,24 @@ QStringList Ev3LuaPrinter::additionalCode(const QSharedPointer<qrtext::core::ast
 	return mAdditionalCode[node.data()];
 }
 
+QString Ev3LuaPrinter::constantsEvaluation()
+{
+	QStringList code;
+	for (const QString &constantName : mTextLanguage.specialConstants()) {
+		const QString value = mTextLanguage.value<QString>(constantName);
+		/// @todo: Rewrite this sh..t
+		const Ev3RbfType type = value.contains(".") ? Ev3RbfType::dataF : Ev3RbfType::data32;
+		const QString typeName = typeNames[type];
+		code << readTemplate("assignment.t")
+				.replace("@@TYPE1@@", typeName)
+				.replace("@@TYPE2@@", typeName)
+				.replace("@@VARIABLE@@", constantName)
+				.replace("@@VALUE@@", type == Ev3RbfType::dataF ? value + "F" : value);
+	}
+
+	return code.join("\n");
+}
+
 void Ev3LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &node
 		, const QString &generatedCode, const QString &additionalCode)
 {

@@ -83,3 +83,8 @@ QString Ev3LuaProcessor::castTo(const QSharedPointer<qrtext::core::types::TypeEx
 	mFactory->addAdditionalCode(id, mPrinter->additionalCode(tree));
 	return result;
 }
+
+QString Ev3LuaProcessor::constantsValuation() const
+{
+	return mPrinter->constantsEvaluation();
+}
