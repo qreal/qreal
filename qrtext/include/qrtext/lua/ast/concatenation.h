@@ -24,9 +24,10 @@ namespace ast {
 class QRTEXT_EXPORT Concatenation : public BinaryOperator
 {
 private:
-	void accept(core::AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer) override
+	void accept(core::AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent) override
 	{
-		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(qSharedPointerCast<Concatenation>(pointer));
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(qSharedPointerCast<Concatenation>(pointer), parent);
 	}
 };
 

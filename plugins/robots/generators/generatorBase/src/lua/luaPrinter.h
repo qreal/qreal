@@ -51,46 +51,86 @@ public:
 			, const QSharedPointer<qrtext::lua::ast::Node> &node);
 
 private:
-	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::UnaryMinus> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Not> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseNegation> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Length> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::LogicalAnd> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::LogicalOr> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Addition> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Subtraction> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Multiplication> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Division> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::IntegerDivision> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Modulo> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Exponentiation> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseAnd> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseOr> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseXor> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseLeftShift> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseRightShift> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Concatenation> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Equality> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::LessThan> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::LessOrEqual> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Inequality> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::GreaterThan> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::GreaterOrEqual> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::IntegerNumber> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::FloatNumber> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::FieldInitialization> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::TableConstructor> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::String> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::True> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::False> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Nil> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Identifier> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::FunctionCall> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::MethodCall> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Assignment> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::Block> &node) override;
-	void visit(const QSharedPointer<qrtext::lua::ast::IndexingExpression> &node) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::UnaryMinus> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Not> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseNegation> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Length> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::LogicalAnd> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::LogicalOr> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Addition> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Subtraction> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Multiplication> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Division> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::IntegerDivision> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Modulo> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Exponentiation> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseAnd> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseOr> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseXor> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseLeftShift> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::BitwiseRightShift> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Concatenation> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Equality> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::LessThan> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::LessOrEqual> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Inequality> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::GreaterThan> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::GreaterOrEqual> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::IntegerNumber> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::FloatNumber> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::FieldInitialization> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::TableConstructor> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::String> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::True> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::False> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Nil> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Identifier> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::FunctionCall> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::MethodCall> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Assignment> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::Block> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
+	void visit(const QSharedPointer<qrtext::lua::ast::IndexingExpression> &node
+			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;
 
 	/// Returns true if child expression must be wrapped into the brackets.
 	/// The default implementation returns true if the parent operation has greater precedence or

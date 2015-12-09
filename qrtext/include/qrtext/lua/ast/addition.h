@@ -24,9 +24,10 @@ namespace ast {
 class Addition : public BinaryOperator
 {
 private:
-	void accept(core::AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer) override
+	void accept(core::AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent) override
 	{
-		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(qSharedPointerCast<Addition>(pointer));
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(qSharedPointerCast<Addition>(pointer), parent);
 	}
 };
 

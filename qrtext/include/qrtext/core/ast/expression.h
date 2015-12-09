@@ -24,9 +24,10 @@ namespace ast {
 class Expression : public Node
 {
 private:
-	void accept(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer) override
+	void accept(AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent) override
 	{
-		visitor.visit(qSharedPointerCast<Expression>(pointer));
+		visitor.visit(qSharedPointerCast<Expression>(pointer), parent);
 	}
 };
 
