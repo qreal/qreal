@@ -34,7 +34,7 @@ public:
 	void addLine(qreal x2, qreal y2);
 	void addLineInList(Line *line);
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
 	virtual QRectF boundingRect() const;
 	virtual QPainterPath shape() const;

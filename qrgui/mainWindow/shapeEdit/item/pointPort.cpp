@@ -15,7 +15,6 @@
 #include "pointPort.h"
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 #include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
@@ -68,19 +67,18 @@ Item* PointPort::clone()
 	return item;
 }
 
-AbstractCommand *PointPort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void PointPort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     init(event->scenePos().x(), event->scenePos().y());
     setType(scene->getPortType());
     scene->setZValue(this);
-    return new AddItemCommand(scene, this);
+    scene->addItem(this);
 }
 
-AbstractCommand *PointPort::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void PointPort::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     Q_UNUSED(event);
     Q_UNUSED(scene);
-    return nullptr;
 }
 
 QString PointPort::getItemName() const

@@ -31,9 +31,9 @@ public:
 	void  setCXandCY(qreal x, qreal y);
 	QRectF searchMaxMinCoord() const;
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
-    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
-    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
 	virtual QRectF boundingRect() const;
 	QPainterPath shape() const;

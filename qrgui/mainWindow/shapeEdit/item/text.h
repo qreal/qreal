@@ -35,8 +35,8 @@ public:
 	bool isDynamicText();
 	virtual void setIsDynamicText(bool isDynamic);
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
-    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
 	virtual QRectF boundingRect() const;
 	virtual QRectF realBoundingRect() const;

@@ -27,7 +27,7 @@ public:
 	TextPicture(const TextPicture &other);
 	virtual Item* clone();
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
 	void setTextName(const QString &name);
 	void setFontFamily(const QFont& font);

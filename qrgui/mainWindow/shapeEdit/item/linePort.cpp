@@ -15,7 +15,6 @@
 #include "linePort.h"
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -54,7 +53,7 @@ Item* LinePort::clone()
 	return item;
 }
 
-AbstractCommand *LinePort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void LinePort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     qreal mX1 = event->scenePos().x();
     qreal mY1 = event->scenePos().y();
@@ -66,7 +65,7 @@ AbstractCommand *LinePort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scen
     scene->setZValue(this);
     scene->removeMoveFlagForItem(event, this);
     scene->setWaitMove(true);
-    return new AddItemCommand(scene, this);
+    scene->addItem(this);
 }
 
 QString LinePort::getItemName() const

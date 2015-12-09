@@ -162,10 +162,9 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (mNewItem) {
         clearSelection();
         setDragMode(QGraphicsView::NoDrag);
-        AbstractCommand *command = mNewItem->mousePressEvent(event, this);
-        if (command) {
-            mController->execute(command);
-        }
+        mNewItem->mousePressEvent(event, this);
+        mController->execute(new AddItemCommand(this, mNewItem, true));
+
     } else {
         setDragMode(QGraphicsView::RubberBandDrag);
 
@@ -198,13 +197,8 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     if (mNewItem) {
         setDragMode(QGraphicsView::NoDrag);
-        AbstractCommand *command = mNewItem->mouseMoveEvent(event, this);
+        mNewItem->mouseMoveEvent(event, this);
         mNewItem->alignToGrid();
-
-        if (command) {
-            mController->execute(command);
-        }
-        update();
     } else {
         setDragMode(QGraphicsView::RubberBandDrag);
         forMoveResize(event);
@@ -218,21 +212,17 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if (mChangingItem) {
             mChangingItem->alignToGrid();
         }
-        update();
     }
+    update();
 }
 
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseReleaseEvent(event);
-    AbstractCommand *command = nullptr;
 
     if (mNewItem) {
         setDragMode(QGraphicsView::NoDrag);
-        command = mNewItem->mouseReleaseEvent(event, this);
-        if (command) {
-            mController->execute(command);
-        }
+        mNewItem->mouseReleaseEvent(event, this);
         mNewItem->alignToGrid();
         update();
     } else {

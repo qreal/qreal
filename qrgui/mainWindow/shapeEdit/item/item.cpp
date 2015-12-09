@@ -54,26 +54,23 @@ int Item::itemZValue() const
 	return mZValue;
 }
 
-AbstractCommand *Item::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Item::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     Q_UNUSED(event)
     Q_UNUSED(scene)
-    return nullptr;
 }
 
-AbstractCommand *Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     if (scene->getWaitMove()) {
         reshape(event);
     }
-    return nullptr;
 }
 
-AbstractCommand *Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     reshape(event);
     scene->setIsAddingFinished(true);
-    return nullptr;
 }
 
 void Item::reshape(QGraphicsSceneMouseEvent *event)

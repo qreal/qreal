@@ -15,7 +15,6 @@
 #include "textPicture.h"
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -65,13 +64,13 @@ Item* TextPicture::clone()
 	return item;
 }
 
-AbstractCommand *TextPicture::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void TextPicture::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     init(event->scenePos().x(), event->scenePos().y(), "text");
     mIsDynamicText = false;
     scene->setPenBrushForItem(this);
     scene->setZValue(this);
-    return new AddItemCommand(scene, this);
+    scene->addItem(this);
 }
 
 void TextPicture::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

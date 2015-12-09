@@ -30,7 +30,7 @@ public:
 	virtual Item* clone();
     QLineF line() const;
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
 	QPainterPath shape() const;
 	virtual QRectF boundingRect() const;

@@ -18,7 +18,6 @@
 #include <QtGui/QImageWriter>
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 #include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
@@ -69,18 +68,17 @@ Item* Image::clone()
 	return item;
 }
 
-AbstractCommand *Image::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Image::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     init(scene->getFileName(), event->scenePos().x(), event->scenePos().y());
     scene->setZValue(this);
-    return new AddItemCommand(scene, this);
+    scene->addItem(this);
 }
 
-AbstractCommand *Image::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Image::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     Q_UNUSED(event);
     Q_UNUSED(scene);
-    return nullptr;
 }
 
 QRectF Image::boundingRect() const

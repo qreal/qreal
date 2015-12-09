@@ -28,8 +28,8 @@ public:
 	Image(const Image &other);
 	virtual Item* clone();
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
-    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);

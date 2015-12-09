@@ -14,7 +14,7 @@ class AddItemCommand : public commands::AbstractCommand
 {
 
 public:
-    AddItemCommand(QGraphicsScene *scene, QGraphicsItem *item);
+    AddItemCommand(QGraphicsScene *scene, QGraphicsItem *item, bool isExecuted = false);
     ~AddItemCommand();
 
 protected:

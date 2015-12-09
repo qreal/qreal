@@ -12,7 +12,7 @@ class RemoveItemCommand : public commands::AbstractCommand
 {
 
 public:
-    RemoveItemCommand(QGraphicsScene *scene, QGraphicsItem *item);
+    RemoveItemCommand(QGraphicsScene *scene, QGraphicsItem *item, bool isExecuted = false);
     ~RemoveItemCommand();
 
 protected:

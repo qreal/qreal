@@ -15,7 +15,6 @@
 #include "stylus.h"
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -76,7 +75,7 @@ void Stylus::addLineInList(Line *line)
 	mAbstractListLine.push_back(dynamic_cast<AbstractItem *>(line));
 }
 
-AbstractCommand *Stylus::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Stylus::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     auto x1 = event->scenePos().x();
     auto y1 = event->scenePos().y();
@@ -88,8 +87,7 @@ AbstractCommand *Stylus::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene 
     scene->setZValue(this);
     scene->removeMoveFlagForItem(event, this);
     scene->setWaitMove(true);
-
-    return new AddItemCommand(scene, this);
+    scene->addItem(this);
 }
 
 QString Stylus::getItemName() const

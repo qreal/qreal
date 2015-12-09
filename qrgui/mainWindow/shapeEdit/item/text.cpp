@@ -20,7 +20,6 @@
 #include <QtGui/QTextCursor>
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -76,20 +75,18 @@ Item* Text::clone()
 	return item;
 }
 
-
-AbstractCommand *Text::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Text::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     init(event->scenePos().x(), event->scenePos().y(), "text");
     scene->setPenBrushForItem(this);
     scene->setZValue(this);
-    return new AddItemCommand(scene, this);
+    scene->addItem(this);
 }
 
-AbstractCommand *Text::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Text::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     Q_UNUSED(event);
     Q_UNUSED(scene);
-    return nullptr;
 }
 
 void Text::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

@@ -3,10 +3,10 @@
 using namespace qReal::commands;
 using namespace qReal::shapeEdit;
 
-RemoveItemCommand::RemoveItemCommand(QGraphicsScene *scene, QGraphicsItem *item)
+RemoveItemCommand::RemoveItemCommand(QGraphicsScene *scene, QGraphicsItem *item, bool isExecuted)
     : mScene(scene)
     , mItem(item)
-    , mIsExecuted(false)
+    , mIsExecuted(isExecuted)
 {}
 
 RemoveItemCommand::~RemoveItemCommand()

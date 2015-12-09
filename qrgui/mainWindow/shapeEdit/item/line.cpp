@@ -19,7 +19,6 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 
 using namespace qReal::shapeEdit;
 using namespace graphicsUtils;
@@ -162,7 +161,7 @@ void Line::drawScalingRects(QPainter* painter)
 	}
 }
 
-AbstractCommand *Line::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Line::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     qreal mX1 = event->scenePos().x();
     qreal mY1 = event->scenePos().y();
@@ -174,8 +173,7 @@ AbstractCommand *Line::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *s
     scene->setZValue(this);
     scene->removeMoveFlagForItem(event, this);
     scene->setWaitMove(true);
-
-    return new AddItemCommand(scene, this);
+    scene->addItem(this);
 }
 
 void Line::reshape(QGraphicsSceneMouseEvent *event)

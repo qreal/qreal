@@ -30,7 +30,7 @@ public:
 	QRealRectangle(const QRealRectangle &other);
 	virtual Item* clone();
 
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
 
     virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);

@@ -3,10 +3,10 @@
 using namespace qReal::commands;
 using namespace qReal::shapeEdit;
 
-AddItemCommand::AddItemCommand(QGraphicsScene *scene, QGraphicsItem *item)
+AddItemCommand::AddItemCommand(QGraphicsScene *scene, QGraphicsItem *item, bool isExecuted)
     : mScene(scene)
     , mItem(item)
-    , mIsExecuted(false)
+    , mIsExecuted(isExecuted)
 {}
 
 AddItemCommand::~AddItemCommand()
@@ -23,9 +23,8 @@ bool AddItemCommand::execute()
     if (mItem && !mIsExecuted) {
         mScene->addItem(mItem);
         mIsExecuted = true;
-        return true;
     }
-    return false;
+    return mIsExecuted;
 }
 
 bool AddItemCommand::restoreState()
@@ -33,7 +32,6 @@ bool AddItemCommand::restoreState()
     if (mItem && mIsExecuted) {
         mScene->removeItem(mItem);
         mIsExecuted = false;
-        return true;
     }
-    return false;
+    return !mIsExecuted;
 }

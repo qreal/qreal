@@ -25,8 +25,6 @@
 
 #include <qrutils/graphicsUtils/abstractItem.h>
 
-#include <qrgui/controller/commands/abstractCommand.h>
-
 #include "mainWindow/shapeEdit/visibilityCondition.h"
 
 namespace qReal {
@@ -63,9 +61,9 @@ public:
     int itemZValue() const;
 
     /// @returns nullptr if there is no really new command
-    virtual commands::AbstractCommand *mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
-    virtual commands::AbstractCommand *mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
-    virtual commands::AbstractCommand *mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene);
 
     virtual CreateItemPushButton *createButton();
 

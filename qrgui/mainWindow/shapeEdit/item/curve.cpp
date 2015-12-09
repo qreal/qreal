@@ -17,7 +17,6 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "mainWindow/shapeEdit/scene.h"
-#include "mainWindow/shapeEdit/commands/addItemCommand.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -66,7 +65,7 @@ Item* Curve::clone()
 	return item;
 }
 
-AbstractCommand *Curve::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Curve::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     if (mCountClicks == 0) {
         mP1 = event->scenePos();
@@ -74,7 +73,7 @@ AbstractCommand *Curve::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *
         init(mP1, mP1);
         scene->setPenBrushForItem(this);
         scene->setZValue(this);
-        return new AddItemCommand(scene, this);
+        scene->addItem(this);
     } else if (mCountClicks == 1) {
         mP2 = event->scenePos();
         init(mP1, mP2);
@@ -83,10 +82,9 @@ AbstractCommand *Curve::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *
         scene->setIsAddingFinished(true);
     }
     scene->removeMoveFlagForItem(event, nullptr);
-    return nullptr;
 }
 
-AbstractCommand *Curve::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Curve::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     Q_UNUSED(scene)
     if (mCountClicks == 1) {
@@ -96,15 +94,13 @@ AbstractCommand *Curve::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *s
     } else if (mCountClicks == 2) {
         reshape(event);
     }
-    return nullptr;
 }
 
-AbstractCommand *Curve::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void Curve::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     Q_UNUSED(event)
     Q_UNUSED(scene)
     ++mCountClicks;
-    return nullptr;
 }
 
 void Curve::reshape(QGraphicsSceneMouseEvent *event)
