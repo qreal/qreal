@@ -323,9 +323,14 @@ void Ev3LuaPrinter::processUnary(const QSharedPointer<qrtext::core::ast::UnaryOp
 		, const QString &templateFileName)
 {
 	const Ev3RbfType type = typeOf(node);
-	pushResult(node, readTemplate(templateFileName)
+	QString templateCode = readTemplate(templateFileName);
+	const bool hasAdditionalCode = templateCode.contains("@@RESULT@@");
+	const QString result = hasAdditionalCode ? newRegister(type) : QString();
+	const QString code = templateCode
 			.replace("@@TYPE@@", typeNames[type])
-			.replace("@@OPERAND@@", popResult(node->operand())), QString());
+			.replace("@@OPERAND@@", popResult(node->operand()))
+			.replace("@@RESULT@@", result);
+	pushResult(node, hasAdditionalCode ? result : code, hasAdditionalCode ? code : QString());
 }
 
 void Ev3LuaPrinter::processBinary(const QSharedPointer<qrtext::core::ast::BinaryOperator> &node

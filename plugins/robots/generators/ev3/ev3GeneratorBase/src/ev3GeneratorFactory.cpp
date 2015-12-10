@@ -50,6 +50,12 @@ AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id
 	return randomIdGenerator(GeneratorFactoryBase::ifGenerator(id, customizer, elseIsEmpty, needInverting));
 }
 
+AbstractSimpleGenerator *Ev3GeneratorFactory::forLoopGenerator(const qReal::Id &id
+		, generatorBase::GeneratorCustomizer &customizer)
+{
+	return randomIdGenerator(GeneratorFactoryBase::forLoopGenerator(id, customizer));
+}
+
 generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGenerator(const qReal::Id &id
 		, generatorBase::GeneratorCustomizer &customizer)
 {

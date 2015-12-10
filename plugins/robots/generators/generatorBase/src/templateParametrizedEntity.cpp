@@ -84,8 +84,20 @@ QStringList TemplateParametrizedEntity::pathsToRoot() const
 
 QString TemplateParametrizedEntity::addRandomIds(QString templateString) const
 {
-	const QString randomId = utils::NameNormalizer::normalizeStrongly(QUuid::createUuid().toString(), false);
-	return templateString.replace("@@RANDOM_ID@@", randomId);
+	int index = 0;
+	QString randomId = utils::NameNormalizer::normalizeStrongly(QUuid::createUuid().toString(), false);
+	templateString.replace("@@RANDOM_ID@@", randomId);
+	while (true) {
+		const QString pattern = QString("@@RANDOM_ID_%1@@").arg(++index);
+		if (!templateString.contains(pattern)) {
+			break;
+		}
+
+		randomId = utils::NameNormalizer::normalizeStrongly(QUuid::createUuid().toString(), false);
+		templateString.replace(pattern, randomId);
+	}
+
+	return templateString;
 }
 
 void TemplateParametrizedEntity::setPathsToTemplates(const QStringList &pathsTemplates)

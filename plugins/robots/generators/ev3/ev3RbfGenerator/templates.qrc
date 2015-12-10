@@ -66,6 +66,7 @@
         <file>templates/engines/breakMode/break.t</file>
         <file>templates/engines/breakMode/float.t</file>
         <file>templates/conditional/for.t</file>
+        <file>templates/conditional/if.t</file>
         <file>templates/conditional/ifElse.t</file>
         <file>templates/types/int.t</file>
         <file>templates/types/float.t</file>
