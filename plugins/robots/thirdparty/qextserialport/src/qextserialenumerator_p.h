@@ -45,15 +45,20 @@
 
 #include "qextserialenumerator.h"
 
-#ifdef Q_OS_WIN
+#ifdef  Q_CC_MINGW
 // needed for mingw to pull in appropriate dbt business...
 // probably a better way to do this
 // http://mingw-users.1079350.n2.nabble.com/DEV-BROADCAST-DEVICEINTERFACE-was-not-declared-in-this-scope-td3552762.html
-#  ifdef  __MINGW32__
-#    define _WIN32_WINNT 0x0500
-#    define _WIN32_WINDOWS 0x0500
-#    define WINVER 0x0500
+// http://msdn.microsoft.com/en-us/library/6sehtctf.aspx
+#  ifndef WINVER
+#    define WINVER 0x0501
 #  endif
+#  ifndef _WIN32_WINNT
+#    define _WIN32_WINNT WINVER
+#  endif
+#endif
+
+#ifdef Q_OS_WIN
 #  include <QtCore/qt_windows.h>
 #endif /*Q_OS_WIN*/
 
@@ -75,18 +80,16 @@ class QextSerialEnumeratorPrivate
 public:
     QextSerialEnumeratorPrivate(QextSerialEnumerator *enumrator);
     ~QextSerialEnumeratorPrivate();
-    void platformSpecificInit();
-    void platformSpecificDestruct();
+    void init_sys();
+    void destroy_sys();
 
     static QList<QextPortInfo> getPorts_sys();
     bool setUpNotifications_sys(bool setup);
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && defined(QT_GUI_LIB)
     LRESULT onDeviceChanged(WPARAM wParam, LPARAM lParam);
     bool matchAndDispatchChangedDevice(const QString &deviceID, const GUID &guid, WPARAM wParam);
-#  ifdef QT_GUI_LIB
     QextSerialRegistrationWidget *notificationWidget;
-#  endif
 #endif /*Q_OS_WIN*/
 
 #ifdef Q_OS_MAC

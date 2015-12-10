@@ -16,7 +16,7 @@ public:
                                 , const Id id
                                 , const EditorManagerInterface &editorManagerProxy
                                 , const IdList graphicalElements
-                                , EditorView *editorView
+                                , qReal::gui::editor::EditorView *editorView
                                 , const bool isUsingTypedPorts);
 
     ~SaveLoadLogicForInterpreter();
@@ -27,7 +27,7 @@ private:
     const Id mId;
     const EditorManagerInterface &mEditorManager;
     const IdList mGraphicalElements;
-    EditorView *mEditorView;
+    qReal::gui::editor::EditorView *mEditorView;
 };
 
 }

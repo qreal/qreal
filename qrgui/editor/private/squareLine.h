@@ -17,6 +17,8 @@
 #include "editor/private/lineHandler.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 /// @brief A strategy class for handling square link (consisting of strict vertical or horizontal lines)
 /// User may move non-end segments of the link. Link is laid out in a way that is doesn't intersect
@@ -131,4 +133,6 @@ protected:
 	ContextMenuAction mLayOutAction;
 };
 
+}
+}
 }

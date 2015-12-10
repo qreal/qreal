@@ -8,7 +8,7 @@ SaveLoadLogicForInterpreter::SaveLoadLogicForInterpreter(IShapeEdit *parent
         , const Id id
         , const EditorManagerInterface &editorManagerProxy
         , const IdList graphicalElements
-        , EditorView *editorView
+        , qReal::gui::editor::EditorView *editorView
         , const bool isUsingTypedPorts)
     : SaveLoadLogic(parent, scene, isUsingTypedPorts)
     , mId(id)
@@ -31,7 +31,7 @@ void SaveLoadLogicForInterpreter::doSave()
         mEditorManager.updateShape(graphicalElement, doc.toString(4));
 
         for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
-            NodeElement * const element = dynamic_cast<NodeElement *>(item);
+            qReal::gui::editor::NodeElement * const element = dynamic_cast<qReal::gui::editor::NodeElement *>(item);
             if (element && element->id().type() == mId.type()) {
                 element->updateShape(doc.toString(4));
             }

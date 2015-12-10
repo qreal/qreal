@@ -46,7 +46,7 @@ public:
 	void deserialize(const QDomElement &element) override;
 
 private:
-	class Marker : public QGraphicsItem
+	class Marker : public QGraphicsObject
 	{
 	public:
 		explicit Marker(QGraphicsItem *parent = 0);

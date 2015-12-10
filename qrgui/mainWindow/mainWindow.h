@@ -58,17 +58,20 @@ class MainWindowUi;
 }
 
 namespace qReal {
-
-class EditorView;
-class SceneCustomizer;
-
-namespace models {
-class Models;
-}
+class SplashScreen;
 
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+
+namespace editor {
+class SceneCustomizer;
+class EditorView;
+}
+}
+
+namespace models {
+class Models;
 }
 
 namespace text {
@@ -86,11 +89,11 @@ public:
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
-	EditorView *getCurrentTab() const;
+	qReal::gui::editor::EditorView *getCurrentTab() const;
     shapeEdit::IShapeEdit *getCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
-	PropertyEditorView *propertyEditor() const;
+	qReal::gui::editor::PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
 	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
@@ -250,7 +253,7 @@ private slots:
 	void makeSvg();
 	void showGrid(bool isChecked);
 
-	void sceneSelectionChanged(const QList<Element *> &elements);
+	void sceneSelectionChanged();
 
 	void applySettings();
 	void resetToolbarSize(int size);
@@ -297,11 +300,11 @@ private:
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized
 	/// @param rootIndex Index of a graphical model element that will be root of a diagram shown in this tab
-	void initCurrentTab(EditorView * const tab, const QModelIndex &rootIndex);
+	void initCurrentTab(qReal::gui::editor::EditorView * const tab, const QModelIndex &rootIndex);
 
 	/// Sets shortcuts for a given tab which don`t have own buttons anywhere
 	/// @param tab Tab to be initialized with shortcuts
-	void setShortcuts(EditorView * const tab);
+	void setShortcuts(qReal::gui::editor::EditorView * const tab);
 
 	void setDefaultShortcuts();
 
@@ -378,6 +381,8 @@ private:
 	Ui::MainWindowUi *mUi;
 	SystemFacade mFacade;
 
+	QScopedPointer<SplashScreen> mSplashScreen;
+
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;
 
@@ -404,7 +409,7 @@ private:
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mTempDir;
-	gui::PreferencesDialog mPreferencesDialog;
+	qReal::gui::PreferencesDialog mPreferencesDialog;
 
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
@@ -414,7 +419,7 @@ private:
 	ProjectManagerWrapper *mProjectManager;
 	StartWidget *mStartWidget;
 
-	SceneCustomizer *mSceneCustomizer;
+	qReal::gui::editor::SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
 

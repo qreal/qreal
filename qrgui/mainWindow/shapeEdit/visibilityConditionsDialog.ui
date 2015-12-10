@@ -39,7 +39,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="VisibilityValueWidget" name="valueWidget" native="true">
+  <widget class="qReal::shapeEdit::VisibilityValueWidget" name="valueWidget" native="true">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -62,7 +62,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VisibilityValueWidget</class>
+   <class>qReal::shapeEdit::VisibilityValueWidget</class>
    <extends>QWidget</extends>
    <header>mainWindow/shapeEdit/visibilityValueWidget.h</header>
    <container>1</container>

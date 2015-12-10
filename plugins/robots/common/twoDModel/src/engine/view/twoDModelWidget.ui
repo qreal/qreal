@@ -383,7 +383,7 @@
          <enum>QFrame::Sunken</enum>
         </property>
         <property name="orientation" stdset="0">
-         <number>4</number>
+         <number>1</number>
         </property>
        </widget>
       </item>
@@ -408,7 +408,7 @@
          <enum>QFrame::Sunken</enum>
         </property>
         <property name="orientation" stdset="0">
-         <number>5</number>
+         <number>2</number>
         </property>
        </widget>
       </item>

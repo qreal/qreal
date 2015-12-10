@@ -90,7 +90,7 @@ ShapeEdit::ShapeEdit(const QString &propertyValue
         , const Id &id
         , const EditorManagerInterface &editorManager
         , const qrRepo::GraphicalRepoApi &graphicalRepoApi
-        , EditorView *editorView
+        , qReal::gui::editor::EditorView *editorView
         , Controller *controller
         , bool isUsingTypedPorts)
         : mUi(new Ui::ShapeEdit)

@@ -15,6 +15,7 @@
 #include "editor/private/brokenLine.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 BrokenLine::BrokenLine(EdgeElement *edge)
 		: LineHandler(edge)

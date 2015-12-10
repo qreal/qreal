@@ -24,6 +24,8 @@
 #include "qrgui/editor/private/edgeArrangeCriteria.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class NodeElement;
 
@@ -238,4 +240,6 @@ private:
 	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
 };
 
+}
+}
 }

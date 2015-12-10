@@ -24,6 +24,7 @@
 
 using namespace qReal;
 using namespace gui;
+using namespace qReal::gui::editor;
 
 SceneAPI::SceneAPI(ScriptAPI &scriptAPI, MainWindow &mainWindow)
 	: mScriptAPI(scriptAPI)

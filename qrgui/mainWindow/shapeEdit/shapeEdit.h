@@ -59,7 +59,7 @@ public:
               , const Id &id
               , const EditorManagerInterface &editorManagerProxy
               , const qrRepo::GraphicalRepoApi &graphicalRepoApi
-              , EditorView *editorView
+              , qReal::gui::editor::EditorView *editorView
               , Controller *controller
               , bool isUsingTypedPorts
               );

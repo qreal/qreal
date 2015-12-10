@@ -79,12 +79,14 @@
 #include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
+using namespace qReal::gui;
 using namespace qReal::commands;
+using namespace qReal::gui::editor;
 using namespace qReal::shapeEdit;
-using namespace gui;
 
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
+	, mSplashScreen(new SplashScreen(SettingsManager::value("Splashscreen").toBool()))
 	, mController(new Controller)
 	, mPropertyModel(mFacade.editorManager())
 	, mTextManager(new text::TextManager(mFacade.events(), *this))
@@ -103,20 +105,19 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	registerMetaTypes();
-	SplashScreen *splashScreen = new SplashScreen(SettingsManager::value("Splashscreen").toBool());
-	splashScreen->activateWindow();
-	splashScreen->setProgress(5);
+	mSplashScreen->activateWindow();
+	mSplashScreen->setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
-	splashScreen->setProgress(20);
+	mSplashScreen->setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
-	splashScreen->setProgress(40);
+	mSplashScreen->setProgress(40);
 
 	initDocks();
 
@@ -128,21 +129,21 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mPreferencesDialog.init();
 
 
-	splashScreen->setProgress(60);
+	mSplashScreen->setProgress(60);
 
 	loadPlugins();
 
 
-	splashScreen->setProgress(70);
+	mSplashScreen->setProgress(70);
 
 	mDocksVisibility.clear();
 
 
-	splashScreen->setProgress(80);
+	mSplashScreen->setProgress(80);
 
 	initActionsFromSettings();
 
-	splashScreen->setProgress(100);
+	mSplashScreen->setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
 		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
@@ -162,7 +163,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
-	QTimer::singleShot(1500, [=] { splashScreen->close(); });
 }
 
 void MainWindow::connectActions()
@@ -234,7 +234,7 @@ void MainWindow::connectActions()
 	SettingsListener::listen("PaletteIconsInARowCount", this, &MainWindow::changePaletteRepresentation);
 	SettingsListener::listen("toolbarSize", this, &MainWindow::resetToolbarSize);
 	SettingsListener::listen("pathToImages", this, &MainWindow::updatePaletteIcons);
-	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::applySettings);
+	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &qReal::MainWindow::applySettings);
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
@@ -451,20 +451,27 @@ void MainWindow::activateItemOrDiagram(const Id &id, bool setSelected)
 	}
 }
 
-void MainWindow::sceneSelectionChanged(const QList<Element *> &elements)
+void MainWindow::sceneSelectionChanged()
 {
 	if (!getCurrentTab()) {
 		return;
 	}
 
-	if (elements.isEmpty()) {
+	IdList selectedIds;
+	for (const QGraphicsItem *item : static_cast<QGraphicsScene *>(sender())->selectedItems()) {
+		if (const Element *element = dynamic_cast<const Element *>(item)) {
+			selectedIds << element->id();
+		}
+	}
+
+	if (selectedIds.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.clearModelIndexes();
-	} else if (elements.length() == 1) {
-		Element * const singleSelected = elements.at(0);
-		setIndexesOfPropertyEditor(singleSelected->id());
+	} else if (selectedIds.length() == 1) {
+		const Id singleSelected = selectedIds.first();
+		setIndexesOfPropertyEditor(singleSelected);
 
-		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected->id());
+		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected);
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
 		}
@@ -703,7 +710,8 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	const QString url = QString("file:///%1/help/index.html").arg(PlatformInfo::applicationDirPath());
+	const QString pathToHelp = PlatformInfo::invariantSettingsPath("pathToHelp");
+	const QString url = QString("file:///%1/index.html").arg(pathToHelp);
 	QDesktopServices::openUrl(QUrl(url));
 }
 
@@ -808,10 +816,12 @@ void MainWindow::openSettingsDialog(const QString &tab)
 }
 
 /// @todo Unify overloads.
-void MainWindow::openShapeEditor(const QPersistentModelIndex &index
+void MainWindow::openShapeEditor(
+		const QPersistentModelIndex &index
 		, int role
 		, const QString &propertyValue
-        , bool useTypedPorts)
+		, bool useTypedPorts
+		)
 {
     IShapeEdit * const shapeEdit = new ShapeEdit(propertyValue
         , dynamic_cast<models::LogicalModelAssistApi &>(models().logicalModelAssistApi())
@@ -1068,7 +1078,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->mutableMvIface().setRootIndex(index);
 
 	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
-	connect(&tab->editorViewScene(), &EditorViewScene::sceneSelectionChanged, this, &MainWindow::sceneSelectionChanged);
+	connect(&tab->editorViewScene(), &EditorViewScene::selectionChanged, this, &MainWindow::sceneSelectionChanged);
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
 	connect(models().graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, &tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
@@ -1154,7 +1164,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	const bool isEditorTab = getCurrentTab();
-    const bool isShape = getCurrentTabShapeEdit();
+    const bool isShape = static_cast<bool>(getCurrentTabShapeEdit());
 	const bool isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
 	const bool isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
 	const bool isDecorativeTab = isStartTab || isGesturesTab;
@@ -1658,6 +1668,8 @@ void MainWindow::initPluginsAndStartWidget()
 	{
 		openStartTab();
 	}
+
+	mSplashScreen->close();
 }
 
 void MainWindow::initActionWidgetsNames()

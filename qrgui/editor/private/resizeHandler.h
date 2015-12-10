@@ -20,6 +20,10 @@
 
 #include "editor/nodeElement.h"
 
+namespace qReal {
+namespace gui {
+namespace editor {
+
 class ResizeHandler
 {
 public:
@@ -123,3 +127,6 @@ private:
 	ElementImpl * const mElementImpl;
 };
 
+}
+}
+}

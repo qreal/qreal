@@ -18,6 +18,8 @@
 #include "editor/commands/reshapeEdgeCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 /// Base class for classes representing different link types (Strategy pattern).
 /// Performs mouse events handling, link rendering and everything connected to laying the link out, reconnecting
@@ -147,4 +149,6 @@ protected:
 	bool mReshapeStarted;
 };
 
+}
+}
 }

@@ -68,7 +68,7 @@ private:
 
 	qReal::MainWindow *mWindow;
 
-	EditorView *mEditorView;
+	qReal::gui::editor::EditorView *mEditorView;
 	/// in the scene coordinates
 	QRectF mEditorViewRect;
 
