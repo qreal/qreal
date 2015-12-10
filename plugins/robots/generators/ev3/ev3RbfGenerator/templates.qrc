@@ -19,6 +19,17 @@
         <file>templates/colors/red.t</file>
         <file>templates/colors/white.t</file>
         <file>templates/colors/yellow.t</file>
+        <file>templates/led/led.t</file>
+        <file>templates/led/off.t</file>
+        <file>templates/led/green.t</file>
+        <file>templates/led/green_flash.t</file>
+        <file>templates/led/green_pulse.t</file>
+        <file>templates/led/orange.t</file>
+        <file>templates/led/orange_flash.t</file>
+        <file>templates/led/orange_pulse.t</file>
+        <file>templates/led/red.t</file>
+        <file>templates/led/red_flash.t</file>
+        <file>templates/led/red_pulse.t</file>
         <file>templates/ports/1.t</file>
         <file>templates/ports/2.t</file>
         <file>templates/ports/3.t</file>

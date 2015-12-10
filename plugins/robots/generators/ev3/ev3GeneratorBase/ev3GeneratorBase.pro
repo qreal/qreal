@@ -48,7 +48,9 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/drawCircleGenerator.h \
 	$$PWD/src/simpleGenerators/enginesGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
+	$$PWD/src/simpleGenerators/ledGenerator.h \
 	$$PWD/src/converters/outputPortNameConverter.h \
+	$$PWD/src/converters/ledColorConverter.h \
 
 SOURCES += \
 	$$PWD/src/ev3GeneratorPluginBase.cpp \
@@ -62,6 +64,8 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/drawCircleGenerator.cpp \
 	$$PWD/src/simpleGenerators/enginesGenerator.cpp \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.cpp \
+	$$PWD/src/simpleGenerators/ledGenerator.cpp \
 	$$PWD/src/converters/outputPortNameConverter.cpp \
+	$$PWD/src/converters/ledColorConverter.cpp \
 
 OTHER_FILES +=

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,20 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/button.h>
-#include <utils/robotCommunication/robotCommunicator.h>
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
 namespace ev3 {
-namespace robotModel {
-namespace real {
-namespace parts {
+namespace simple {
 
-class Button : public kitBase::robotModel::robotParts::Button
+/// Generator for LED control block.
+class LedGenerator : public generatorBase::simple::BindingGenerator
 {
-	Q_OBJECT
-
 public:
-	Button(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port
-			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
-
-	void read() override;
-
-private:
-	char parsePort(const QString &portName);
-
-	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
+	LedGenerator(const qrRepo::RepoApi &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent);
 };
 
-}
-}
 }
 }

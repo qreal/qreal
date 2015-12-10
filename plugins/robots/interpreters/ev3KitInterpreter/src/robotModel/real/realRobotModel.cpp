@@ -20,6 +20,7 @@
 #include "parts/speaker.h"
 #include "parts/button.h"
 #include "parts/motor.h"
+#include "parts/led.h"
 #include "parts/touchSensor.h"
 #include "parts/lightSensor.h"
 #include "parts/rangeSensor.h"
@@ -80,6 +81,10 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA(motorInfo())) {
 		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(ledInfo())) {
+		return new parts::Led(ledInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(touchSensorInfo())) {

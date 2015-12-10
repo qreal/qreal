@@ -65,7 +65,19 @@
 				<value name="break" displayedName="break"/>
 				<value name="float" displayedName="float"/>
 			</enum>
-			<enum name="LedColor">
+			<enum name="Ev3LedColor">
+				<value name="off" displayedName="off"/>
+				<value name="green" displayedName="green"/>
+				<value name="red" displayedName="red"/>
+				<value name="orange" displayedName="orange"/>
+				<value name="green_flash" displayedName="green flash"/>
+				<value name="red_flash" displayedName="red flash"/>
+				<value name="orange_flash" displayedName="orange flash"/>
+				<value name="green_pulse" displayedName="green pulse"/>
+				<value name="red_pulse" displayedName="red pulse"/>
+				<value name="orange_pulse" displayedName="orange pulse"/>
+			</enum>
+			<enum name="TrikLedColor">
 				<value name="green" displayedName="green"/>
 				<value name="red" displayedName="red"/>
 				<value name="off" displayedName="off"/>
@@ -1234,7 +1246,9 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Led" name="TrikLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the led on the robot`s front panel.">
+
+
+			<node displayedName="Led" name="Ev3Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
@@ -1246,7 +1260,29 @@
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Color" type="LedColor" name="Color">
+						<property displayedName="Color" type="Ev3LedColor" name="Color">
+							<default>red</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Led" name="TrikLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-35" textBinded="Color" hard="true" background="white" prefix="Color:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Color" type="TrikLedColor" name="Color">
 							<default>red</default>
 						</property>
 					</properties>
@@ -2842,6 +2878,7 @@
 				<element name="Ev3EnginesForward"/>
 				<element name="Ev3EnginesBackward"/>
 				<element name="Ev3EnginesStop"/>
+				<element name="Ev3Led"/>
 				<element name="TrikPlayTone"/>
 				<element name="TrikV6EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>

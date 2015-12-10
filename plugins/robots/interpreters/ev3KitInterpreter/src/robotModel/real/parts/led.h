@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/button.h>
+#include <ev3Kit/robotModel/parts/ev3Led.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 
 namespace ev3 {
@@ -22,19 +22,21 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-class Button : public kitBase::robotModel::robotParts::Button
+/// An implementation of the real EV3 LED device.
+class Led : public robotModel::parts::Ev3Led
 {
 	Q_OBJECT
 
 public:
-	Button(const kitBase::robotModel::DeviceInfo &info
+	Led(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-	void read() override;
+
+	void setColor(ev3::robotModel::parts::Ev3LedColor color) override;
 
 private:
-	char parsePort(const QString &portName);
+	qint8 colorByte(ev3::robotModel::parts::Ev3LedColor color) const;
 
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };

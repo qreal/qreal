@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,17 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/button.h>
-#include <utils/robotCommunication/robotCommunicator.h>
+#include <generatorBase/converters/dynamicPathConverter.h>
 
 namespace ev3 {
-namespace robotModel {
-namespace real {
-namespace parts {
+namespace converters {
 
-class Button : public kitBase::robotModel::robotParts::Button
+/// Converts LED color enum values to method names of Led class in EV3 runtime.
+class LedColorConverter : public generatorBase::converters::DynamicPathConverter
 {
-	Q_OBJECT
-
 public:
-	Button(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port
-			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
-
-	void read() override;
-
-private:
-	char parsePort(const QString &portName);
-
-	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
+	explicit LedColorConverter(const QStringList &pathsToTemplates);
 };
 
-}
-}
 }
 }

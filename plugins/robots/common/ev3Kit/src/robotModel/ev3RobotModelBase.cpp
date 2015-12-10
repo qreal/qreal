@@ -17,6 +17,7 @@
 #include "ev3Kit/robotModel/parts/ev3Motor.h"
 #include "ev3Kit/robotModel/parts/ev3Speaker.h"
 #include "ev3Kit/robotModel/parts/ev3Display.h"
+#include "ev3Kit/robotModel/parts/ev3Led.h"
 
 #include <kitBase/robotModel/robotParts/display.h>
 #include <kitBase/robotModel/robotParts/speaker.h>
@@ -49,6 +50,7 @@ Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotI
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
+	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 
 	addAllowedConnection(PortInfo("Up", input, {}, "buttonUp"), { buttonInfo() });
 	addAllowedConnection(PortInfo("Enter", input, {}, "buttonEnter"), { buttonInfo() });
@@ -89,6 +91,11 @@ DeviceInfo Ev3RobotModelBase::motorInfo() const
 DeviceInfo Ev3RobotModelBase::displayInfo() const
 {
 	return DeviceInfo::create<ev3::robotModel::parts::Ev3Display>();
+}
+
+DeviceInfo Ev3RobotModelBase::ledInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3Led>();
 }
 
 DeviceInfo Ev3RobotModelBase::speakerInfo() const

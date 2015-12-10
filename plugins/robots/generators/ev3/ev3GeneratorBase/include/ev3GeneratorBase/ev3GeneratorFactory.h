@@ -38,7 +38,11 @@ public:
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
+	/// Converts an output port with given id into generator-dependent port representation.
 	generatorBase::simple::Binding::ConverterInterface *outputPortNameConverter() const;
+
+	/// Converts TRIK Studio LED color enum values to corresponding names in EV3 runtime.
+	generatorBase::simple::Binding::ConverterInterface *ledColorConverter() const;
 
 	QStringList pathsToTemplates() const override;
 
