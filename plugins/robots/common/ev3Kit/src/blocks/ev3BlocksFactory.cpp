@@ -106,6 +106,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 
 		, id("Ev3WaitForTouchSensor")
 		, id("Ev3WaitForSonarDistance")
+		, id("Ev3WaitForLight")
 		, id("Ev3WaitForColor")
 		, id("Ev3WaitForColorIntensity")
 		, id("Ev3WaitForEncoder")
