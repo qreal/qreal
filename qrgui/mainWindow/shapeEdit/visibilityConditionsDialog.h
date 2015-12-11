@@ -32,17 +32,6 @@ class VisibilityConditionsDialog : public QDialog
 	Q_OBJECT
 
 public:
-//	enum Type { Enum, Int, Bool, String };
-
-//	struct PropertyInfo
-//	{
-//		Type type;
-//		QStringList values;
-
-//		PropertyInfo() {}
-//		PropertyInfo(Type t, const QStringList &v);
-//	};
-
 	explicit VisibilityConditionsDialog(QMap<QString, PropertyInfo> const &enumValues
 			, QList<Item *> const &items, QWidget *parent = 0);
 	~VisibilityConditionsDialog();

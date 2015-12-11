@@ -20,6 +20,8 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtCore/QList>
 
+#include <tr1/functional>
+
 #include <qrutils/graphicsUtils/abstractScene.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrkernel/settingsManager.h>
@@ -144,8 +146,8 @@ private:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-	virtual void keyPressEvent(QKeyEvent *keyEvent);
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+    virtual void keyPressEvent(QKeyEvent *keyEvent);
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 };
 
 }

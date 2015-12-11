@@ -109,7 +109,6 @@ private:
     void initItemButtons();
     void initAvailableItems();
 
-
 	Scene *mScene;  // Has ownership.
 	QGraphicsItemGroup mItemGroup;
 	QList<QAbstractButton *> mButtonGroup;  // Doesn't have direct ownership (owned by mUi).

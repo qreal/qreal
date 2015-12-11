@@ -28,8 +28,8 @@ PointPort::PointPort(qreal x, qreal y, Item *parent)
 {
 	mNeedScalingRect = true;
     init(x, y);
-	setPen(QPen(Qt::blue));
-	setBrush(QBrush(Qt::blue, Qt::SolidPattern));
+    Item::setPen(QPen(Qt::blue));
+    Item::setBrush(QBrush(Qt::blue, Qt::SolidPattern));
 	mDomElementType = portType;
 }
 
@@ -38,8 +38,8 @@ PointPort::PointPort(const PointPort &other)
     , mPointImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	setPen(other.pen());
-	setBrush(other.brush());
+    Item::setPen(other.pen());
+    Item::setBrush(other.brush());
 	mDomElementType = portType;
 	setX1(other.x1());
 	setX2(other.x2());
@@ -159,6 +159,47 @@ void PointPort::changeScalingPointState(qreal x, qreal y)
 void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event);
+}
+
+void PointPort::setPenStyle(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void PointPort::setPenWidth(int width)
+{
+    Q_UNUSED(width)
+}
+void PointPort::setPenColor(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void PointPort::setBrushStyle(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void PointPort::setBrushColor(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void PointPort::setPen(const QString &penStyle, int width, const QString &penColor)
+{
+    Q_UNUSED(penStyle)
+    Q_UNUSED(width)
+    Q_UNUSED(penColor)
+}
+void PointPort::setBrush(const QString &brushStyle, const QString &brushColor)
+{
+    Q_UNUSED(brushStyle)
+    Q_UNUSED(brushColor)
+}
+void PointPort::setPenBrush(const QString &penStyle, int width, const QString &penColor
+        , const QString &brushStyle, const QString &brushColor)
+{
+    Q_UNUSED(penStyle)
+    Q_UNUSED(width)
+    Q_UNUSED(penColor)
+    Q_UNUSED(brushStyle)
+    Q_UNUSED(brushColor)
 }
 
 QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, const QPoint &topLeftPicture)

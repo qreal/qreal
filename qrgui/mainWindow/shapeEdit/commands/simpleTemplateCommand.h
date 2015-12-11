@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
-#include <functional>
+//#include <functional>
 #include <tr1/functional>
 
 #include <qrgui/controller/commands/abstractCommand.h>

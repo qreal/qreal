@@ -23,7 +23,8 @@ VisibilityConditionsDialog::VisibilityConditionsDialog(QMap<QString, PropertyInf
 		, QList<Item *> const &items, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::VisibilityConditionsDialog)
-	, mProperties(properties), mItems(items)
+    , mProperties(properties)
+    , mItems(items)
 {
 	ui->setupUi(this);
 

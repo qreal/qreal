@@ -23,7 +23,9 @@ LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
     : Line(x1, y1, x2, y2, parent)
 {
 	mNeedScalingRect = true;
-	setPen(QPen(Qt::blue));
+    QPen pen = QPen(Qt::blue);
+    pen.setWidth(2);
+    Item::setPen(pen);
 	mDomElementType = portType;
 	setX1(x1);
 	setY1(y1);
@@ -35,8 +37,8 @@ LinePort::LinePort(const LinePort &other)
     : Line(other)
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	setPen(other.pen());
-	setBrush(other.brush());
+    Item::setPen(other.pen());
+    Item::setBrush(other.brush());
 	mDomElementType = portType;
 	setX1(other.x1());
 	setX2(other.x2());
@@ -66,6 +68,47 @@ void LinePort::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
     scene->removeMoveFlagForItem(event, this);
     scene->setWaitMove(true);
     scene->addItem(this);
+}
+
+void LinePort::setPenStyle(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void LinePort::setPenWidth(int width)
+{
+    Q_UNUSED(width)
+}
+void LinePort::setPenColor(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void LinePort::setBrushStyle(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void LinePort::setBrushColor(const QString &text)
+{
+    Q_UNUSED(text)
+}
+void LinePort::setPen(const QString &penStyle, int width, const QString &penColor)
+{
+    Q_UNUSED(penStyle)
+    Q_UNUSED(width)
+    Q_UNUSED(penColor)
+}
+void LinePort::setBrush(const QString &brushStyle, const QString &brushColor)
+{
+    Q_UNUSED(brushStyle)
+    Q_UNUSED(brushColor)
+}
+void LinePort::setPenBrush(const QString &penStyle, int width, const QString &penColor
+        , const QString &brushStyle, const QString &brushColor)
+{
+    Q_UNUSED(penStyle)
+    Q_UNUSED(width)
+    Q_UNUSED(penColor)
+    Q_UNUSED(brushStyle)
+    Q_UNUSED(brushColor)
 }
 
 QString LinePort::getItemName() const

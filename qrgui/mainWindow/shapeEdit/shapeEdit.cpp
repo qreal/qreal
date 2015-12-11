@@ -488,10 +488,11 @@ void ShapeEdit::changeTextName()
 
 void ShapeEdit::visibilityButtonClicked()
 {
-	QList<Item *> selectedItems = mScene->selectedShapeEditItems();
-	if (selectedItems.isEmpty()) {
+    auto selectedItems = mScene->selectedShapeEditItems();
+    auto properties = mSaveLoadLogic->loadProperties();
+    if (selectedItems.isEmpty() || properties.isEmpty()) {
 		return;
 	}
-    VisibilityConditionsDialog vcDialog(mSaveLoadLogic->loadProperties(), selectedItems);
+    VisibilityConditionsDialog vcDialog(properties, selectedItems);
 	vcDialog.exec();
 }

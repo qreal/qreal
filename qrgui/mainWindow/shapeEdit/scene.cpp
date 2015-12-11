@@ -54,13 +54,12 @@ Scene::Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject 
 	mSizeEmptyRectX = sizeEmptyRectX;
     mSizeEmptyRectY = sizeEmptyRectY;
 	setItemIndexMethod(NoIndex);
-    // Why is that? there is a white rect at the scene because of it.
-    //setEmptyRect(0, 0, mSizeEmptyRectX, mSizeEmptyRectY);
 	setEmptyPenBrushItems();
     initContextMenuActions();
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changeFontPalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePortsComboBox()));
+    redraw();
 }
 
 void Scene::setNeedDrawGrid(bool show)
@@ -269,6 +268,7 @@ void Scene::resetItemCreating()
 
 void Scene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
+    Q_UNUSED(event)
 //    auto item = this->itemAt(event->scenePos(), QTransform());
 //    if (item) {
 //        if (!item->isSelected()) {
@@ -353,6 +353,7 @@ void Scene::keyPressEvent(QKeyEvent *keyEvent)
 
 void Scene::addShapeEditItem(bool checked, Item *item)
 {
+    clearSelection();
     if (checked) {
         mNewItem = item;
     }
@@ -392,6 +393,17 @@ void Scene::clearScene()
     mController->execute(removeAll);
 }
 
+void Scene::redraw()
+{
+    for (auto item : items()) {
+        auto shapeEditItem = dynamic_cast<Item *>(item);
+        if (shapeEditItem) {
+            shapeEditItem->alignToGrid();
+        }
+    }
+    update();
+}
+
 QList<Item *> Scene::selectedShapeEditItems()
 {
 	QList<Item *> resList;
@@ -402,11 +414,6 @@ QList<Item *> Scene::selectedShapeEditItems()
 	}
 	qSort(resList.begin(), resList.end(), compareItems);
 	return resList;
-}
-
-void Scene::redraw()
-{
-    update();
 }
 
 QList<TextPicture *> Scene::selectedTextPictureItems()
@@ -647,7 +654,8 @@ void Scene::changePalette()
 			setEmptyPenBrushItems();
         } else {
             auto item = dynamic_cast<Item *>(selected.back());
-            if (item) {
+            auto isTypedEntity = dynamic_cast<TypedEntity *>(item);
+            if (item && !isTypedEntity) {
 				QPen penItem = item->pen();
 				QBrush brushItem = item->brush();
 				emit existSelectedItems(penItem, brushItem);
