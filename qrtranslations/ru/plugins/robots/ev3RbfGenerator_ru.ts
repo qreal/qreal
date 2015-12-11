@@ -9,12 +9,21 @@
         <translation>Сначала откройте диаграмму</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="591"/>
         <source>/* Warning: cast from string to int is not supported */ 0</source>
-        <translation>/* Внимание: преобразование типа из строки в целое число пока не поддерживается. Пожалуйста, обратитесь к разработчикам с запросом. */ 0</translation>
+        <translation type="vanished">/* Внимание: преобразование типа из строки в целое число пока не поддерживается. Пожалуйста, обратитесь к разработчикам с запросом. */ 0</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="595"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="736"/>
+        <source>/* Warning: cast from string to numeric type is not supported */ 0</source>
+        <translation>/* Внимание: преобразование типа из строки в числовой тип пока не поддерживается. Пожалуйста, обратитесь к разработчикам с запросом. */ 0</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="740"/>
+        <source>/* Warning: autocast from array to other type is not supported */ 0</source>
+        <translation>/* Внимание: автоматическое преобразование типа из массива в другой тип не поддерживается. */ 0</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="744"/>
         <source>/* Warning: autocast is supported only for numeric types */ 0</source>
         <translation>/* Внимание: автоматическое преобразование типов поддерживается только для числовых типов */ 0</translation>
     </message>
@@ -118,9 +127,8 @@
 <context>
     <name>ev3::rbf::Ev3RbfMasterGenerator</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfMasterGenerator.cpp" line="88"/>
         <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
-        <translation>Данная диаграмма не может быть сгенерирована в код. Обратитесь к разработчикам</translation>
+        <translation type="vanished">Данная диаграмма не может быть сгенерирована в код. Обратитесь к разработчикам</translation>
     </message>
 </context>
 </TS>

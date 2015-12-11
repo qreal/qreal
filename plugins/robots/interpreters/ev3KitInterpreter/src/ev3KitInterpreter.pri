@@ -48,6 +48,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/button.h \
 	$$PWD/robotModel/real/parts/led.h \
 	$$PWD/robotModel/real/parts/ev3InputDevice.h \
+	$$PWD/robotModel/real/parts/encoderSensor.h \
 	$$PWD/robotModel/real/parts/touchSensor.h \
 	$$PWD/robotModel/real/parts/lightSensor.h \
 	$$PWD/robotModel/real/parts/rangeSensor.h \
@@ -75,6 +76,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/button.cpp \
 	$$PWD/robotModel/real/parts/led.cpp \
 	$$PWD/robotModel/real/parts/ev3InputDevice.cpp \
+	$$PWD/robotModel/real/parts/encoderSensor.cpp \
 	$$PWD/robotModel/real/parts/touchSensor.cpp \
 	$$PWD/robotModel/real/parts/lightSensor.cpp \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \

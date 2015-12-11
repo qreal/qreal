@@ -30,6 +30,7 @@ public:
 
 protected:
 	virtual kitBase::robotModel::DeviceInfo motorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo encoderInfo() const;
 	virtual kitBase::robotModel::DeviceInfo speakerInfo() const;
 	virtual kitBase::robotModel::DeviceInfo buttonInfo() const;
 	virtual kitBase::robotModel::DeviceInfo displayInfo() const;

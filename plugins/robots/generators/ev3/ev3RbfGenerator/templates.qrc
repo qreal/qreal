@@ -49,6 +49,10 @@
         <file>templates/ports/CD.t</file>
         <file>templates/ports/C.t</file>
         <file>templates/ports/D.t</file>
+        <file>templates/ports/A_in.t</file>
+        <file>templates/ports/B_in.t</file>
+        <file>templates/ports/C_in.t</file>
+        <file>templates/ports/D_in.t</file>
         <file>templates/ports/Left.t</file>
         <file>templates/ports/Right.t</file>
         <file>templates/ports/Up.t</file>

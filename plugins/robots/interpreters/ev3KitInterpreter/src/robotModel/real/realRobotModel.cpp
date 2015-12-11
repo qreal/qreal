@@ -21,6 +21,7 @@
 #include "parts/button.h"
 #include "parts/motor.h"
 #include "parts/led.h"
+#include "parts/encoderSensor.h"
 #include "parts/touchSensor.h"
 #include "parts/lightSensor.h"
 #include "parts/rangeSensor.h"
@@ -85,6 +86,10 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA(ledInfo())) {
 		return new parts::Led(ledInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(encoderInfo())) {
+		return new parts::EncoderSensor(encoderInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(touchSensorInfo())) {

@@ -49,6 +49,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/enginesGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
 	$$PWD/src/simpleGenerators/ledGenerator.h \
+	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.h \
 	$$PWD/src/converters/outputPortNameConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
 
@@ -65,6 +66,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/enginesGenerator.cpp \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.cpp \
 	$$PWD/src/simpleGenerators/ledGenerator.cpp \
+	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.cpp \
 	$$PWD/src/converters/outputPortNameConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \
 

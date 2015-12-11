@@ -1068,6 +1068,28 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Clear Encoder" name="Ev3ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>A, B, C, D</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Clear Encoder" name="TrikV6ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2878,6 +2900,7 @@
 				<element name="Ev3EnginesForward"/>
 				<element name="Ev3EnginesBackward"/>
 				<element name="Ev3EnginesStop"/>
+				<element name="Ev3ClearEncoder"/>
 				<element name="Ev3Led"/>
 				<element name="TrikPlayTone"/>
 				<element name="TrikV6EnginesForward"/>
