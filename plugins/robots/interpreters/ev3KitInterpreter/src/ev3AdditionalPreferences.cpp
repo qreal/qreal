@@ -16,15 +16,14 @@
 #include "ui_ev3AdditionalPreferences.h"
 
 #include <qrkernel/settingsManager.h>
-#include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
+#include <utils/widgets/comPortPicker.h>
 
 using namespace ev3;
 using namespace qReal;
 
-Ev3AdditionalPreferences::Ev3AdditionalPreferences(const QString &realRobotName, QWidget *parent)
+Ev3AdditionalPreferences::Ev3AdditionalPreferences(QWidget *parent)
 	: AdditionalPreferences(parent)
 	, mUi(new Ui::Ev3AdditionalPreferences)
-	, mRealRobotName(realRobotName)
 {
 	mUi->setupUi(this);
 	connect(mUi->manualComPortCheckbox, &QCheckBox::toggled
@@ -45,22 +44,7 @@ void Ev3AdditionalPreferences::save()
 
 void Ev3AdditionalPreferences::restoreSettings()
 {
-	const QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
-	const QString defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
-	mUi->comPortComboBox->clear();
-
-	for (const QextPortInfo &info : ports) {
-		const QRegExp portNameRegexp("COM\\d+", Qt::CaseInsensitive);
-		if (portNameRegexp.indexIn(info.portName) != -1) {
-			const QString portName = portNameRegexp.cap();
-			mUi->comPortComboBox->addItem(portName);
-		}
-	}
-
-	const int defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
-	if (defaultIndex != -1) {
-		mUi->comPortComboBox->setCurrentIndex(defaultIndex);
-	}
+	ui::ComPortPicker::populate(*mUi->comPortComboBox, "Ev3BluetoothPortName");
 
 	if (mUi->comPortComboBox->count() == 0) {
 		mUi->comPortComboBox->hide();
@@ -69,7 +53,7 @@ void Ev3AdditionalPreferences::restoreSettings()
 		mUi->noComPortsFoundLabel->show();
 		mUi->directInputComPortLabel->show();
 		mUi->directInputComPortLineEdit->show();
-		mUi->directInputComPortLineEdit->setText(defaultPortName);
+		mUi->directInputComPortLineEdit->setText(SettingsManager::value("Ev3BluetoothPortName").toString());
 	} else {
 		mUi->comPortComboBox->show();
 		mUi->comPortLabel->show();
@@ -84,7 +68,7 @@ void Ev3AdditionalPreferences::restoreSettings()
 
 void Ev3AdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
-	mUi->bluetoothSettingsGroupBox->setVisible(robotModel->name() == mRealRobotName);
+	mUi->bluetoothSettingsGroupBox->setVisible(robotModel->name().toLower().contains("bluetooth"));
 }
 
 void Ev3AdditionalPreferences::manualComPortCheckboxChecked(bool state)

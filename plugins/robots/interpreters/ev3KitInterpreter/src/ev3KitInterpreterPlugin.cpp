@@ -17,6 +17,7 @@
 #include <QtWidgets/QApplication>
 
 #include <twoDModel/engine/twoDModelEngineFacade.h>
+#include <utils/widgets/comPortPicker.h>
 
 using namespace ev3;
 using namespace qReal;
@@ -30,7 +31,7 @@ Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
 	, mTwoDRobotModel(mUsbRealRobotModel)
 	, mBlocksFactory(new blocks::Ev3BlocksFactory)
 {
-	mAdditionalPreferences = new Ev3AdditionalPreferences(mBluetoothRealRobotModel.name());
+	mAdditionalPreferences = new Ev3AdditionalPreferences;
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
@@ -124,6 +125,13 @@ QList<kitBase::AdditionalPreferences *> Ev3KitInterpreterPlugin::settingsWidgets
 	return { mAdditionalPreferences };
 }
 
+QWidget *Ev3KitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
+{
+	return model.name().toLower().contains("bluetooth")
+			? produceBluetoothPortConfigurer()
+			: nullptr;
+}
+
 QList<qReal::ActionInfo> Ev3KitInterpreterPlugin::customActions()
 {
 	return {};
@@ -146,4 +154,9 @@ QIcon Ev3KitInterpreterPlugin::iconForFastSelector(const kitBase::robotModel::Ro
 kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
+}
+
+QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()
+{
+	return new ui::ComPortPicker("Ev3BluetoothPortName");
 }

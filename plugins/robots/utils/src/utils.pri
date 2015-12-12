@@ -39,6 +39,7 @@ HEADERS += \
 	$$PWD/../include/utils/canvas/ellipseObject.h \
 	$$PWD/../include/utils/canvas/arcObject.h \
 	$$PWD/../include/utils/canvas/textObject.h \
+	$$PWD/../include/utils/widgets/comPortPicker.h \
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
@@ -58,6 +59,7 @@ SOURCES += \
 	$$PWD/canvas/ellipseObject.cpp \
 	$$PWD/canvas/arcObject.cpp \
 	$$PWD/canvas/textObject.cpp \
+	$$PWD/widgets/comPortPicker.cpp \
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \

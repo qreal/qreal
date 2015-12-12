@@ -50,10 +50,13 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
+	QWidget *quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model) override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 private:
+	QWidget *produceBluetoothPortConfigurer();  // Transfers ownership
+
 	robotModel::real::UsbRealRobotModel mUsbRealRobotModel;
 	robotModel::real::BluetoothRealRobotModel mBluetoothRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
