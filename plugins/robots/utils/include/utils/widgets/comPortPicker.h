@@ -16,7 +16,7 @@
 
 #include <QtWidgets/QComboBox>
 
-#include <qrutils/utilsDeclSpec.h>
+#include "utils/utilsDeclSpec.h"
 
 namespace qReal {
 namespace ui {
@@ -24,13 +24,13 @@ namespace ui {
 /// Provides a minimalistic COM port picker providing a list of COM-ports automaticly found in system.
 /// User though can enter COM port name manually. Entered value will be automaticly stored in settings using the
 /// given in constructor key.
-class QRUTILS_EXPORT ComPortPicker : public QComboBox
+class ROBOTS_UTILS_EXPORT ComPortPicker : public QComboBox
 {
 	Q_OBJECT
 
 public:
 	/// @param key The key that will be used to store entered COM port value in SettingsManager.
-	explicit ComPortPicker(const QString &key, QWidget *parent = 0);
+	explicit ComPortPicker(const QString &key, QObject *parent = 0);
 
 	/// Populates the given combo box items list with the list of known COM ports.
 	/// @param settingsKey The name of the key in settings that used to store last selected COM port value. That value

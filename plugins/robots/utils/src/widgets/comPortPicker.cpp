@@ -20,14 +20,14 @@
 
 using namespace qReal::ui;
 
-ComPortPicker::ComPortPicker(const QString &key, QWidget *widget)
-	: QComboBox(widget)
+ComPortPicker::ComPortPicker(const QString &key, QObject *parent)
+	: QComboBox(nullptr)
 	, mSettingsKey(key)
 {
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	setEditable(true);
 	populate(*this, mSettingsKey);
-	SettingsListener::listen(mSettingsKey, [=](QString port) { setCurrentText(port); });
+	SettingsListener::listen(mSettingsKey, [=](QString port) { setCurrentText(port); }, parent);
 	connect(this, &QComboBox::currentTextChanged, this, &ComPortPicker::onPortNameChanged);
 }
 

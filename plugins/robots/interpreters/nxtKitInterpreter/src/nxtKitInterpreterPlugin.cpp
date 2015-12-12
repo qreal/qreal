@@ -164,5 +164,5 @@ kitBase::DevicesConfigurationProvider *NxtKitInterpreterPlugin::devicesConfigura
 
 QWidget *NxtKitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
-	return new ui::ComPortPicker("NxtBluetoothPortName");
+	return new ui::ComPortPicker("NxtBluetoothPortName", this);
 }

@@ -158,5 +158,5 @@ kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigura
 
 QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
-	return new ui::ComPortPicker("Ev3BluetoothPortName");
+	return new ui::ComPortPicker("Ev3BluetoothPortName", this);
 }
