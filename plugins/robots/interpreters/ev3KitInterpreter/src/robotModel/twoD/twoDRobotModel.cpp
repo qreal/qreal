@@ -83,6 +83,18 @@ twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 	return mDisplayWidget;
 }
 
+QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
+{
+	if (deviceType.isA<kitBase::robotModel::robotParts::TouchSensor>()) {
+		return ":/ev3/interpreter/images/ev3-touch.png";
+	} else if (deviceType.isA<kitBase::robotModel::robotParts::RangeSensor>()) {
+		return ":/ev3/interpreter/images/ev3-sonar.png";
+	} else {
+		return QString();
+	}
+}
+
+
 QRect TwoDRobotModel::sensorImageRect(kitBase::robotModel::DeviceInfo const &deviceType) const
 {
 	if (deviceType.isA<robotParts::TouchSensor>()) {

@@ -31,6 +31,8 @@ public:
 	kitBase::robotModel::PortInfo defaultLeftWheelPort() const override;
 	kitBase::robotModel::PortInfo defaultRightWheelPort() const override;
 	twoDModel::engine::TwoDModelDisplayWidget *displayWidget() const override;
+
+	QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const override;
 	QRect sensorImageRect(kitBase::robotModel::DeviceInfo const &deviceType) const;
 
 protected:

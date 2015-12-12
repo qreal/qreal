@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/ev3/interpreter">
         <file>images/ev3-robot.png</file>
+        <file>images/ev3-touch.png</file>
+        <file>images/ev3-sonar.png</file>
         <file>images/ev3-brick.png</file>
         <file>images/ev3-up-button.png</file>
         <file>images/ev3-up-button-pressed.png</file>
