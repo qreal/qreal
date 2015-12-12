@@ -29,6 +29,8 @@
 #include "src/managers/exerciseExportManager.h"
 #include "src/managers/uiManager.h"
 
+#include "interpreterCore/interpreter/qtsinterpreter.h"
+
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
@@ -89,7 +91,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mEventsForKitPlugin
 			, mRobotModelManager));
 
-	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
+	/*interpreter::InterpreterInterface*/
+	interpreter::QtsInterpreter *interpreter = new interpreter::QtsInterpreter/*BlockInterpreter*/(
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, configurer.mainWindowInterpretersInterface()

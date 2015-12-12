@@ -19,10 +19,15 @@ includes(plugins/robots/interpreters/interpreterCore \
 		plugins/robots/common/twoDModel \
 		plugins/robots/utils \
 		qrtext \
+		plugins/robots/thirdparty/trikRuntime/trikControl \
+		plugins/robots/thirdparty/trikRuntime/trikNetwork \
 )
+
+#LIBS += ../../thirdparty/trikRuntime/trikControl/
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
 		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model qslog \
+		trikControl trikScriptRunner\
 )
 
 HEADERS += \
@@ -39,7 +44,7 @@ HEADERS += \
 	$$PWD/include/interpreterCore/managers/kitAutoSwitcher.h \
 	$$PWD/include/interpreterCore/customizer.h \
 	$$PWD/include/interpreterCore/defaultRobotModel.h \
-	$$PWD/include/interpreterCore/interpreter/interpreter.h \
+	$$PWD/include/interpreterCore/interpreter/blockInterpreter.h \
 	$$PWD/include/interpreterCore/interpreter/proxyInterpreter.h \
 	$$PWD/include/interpreterCore/interpreter/details/autoconfigurer.h \
 	$$PWD/include/interpreterCore/interpreter/details/blocksTable.h \
@@ -54,6 +59,8 @@ HEADERS += \
 	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 	$$PWD/src/ui/modeStripe.h \
+    $$PWD/include/interpreterCore/interpreter/qtsinterpreter.h \
+    $$PWD/include/interpreterCore/interpreter/trikbrick.h
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -63,8 +70,12 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
 	$$PWD/src/coreBlocks/details/printTextBlock.cpp \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.cpp \
+<<<<<<< 5424777f1508a8645e3e3a26c5b4ae3a05da46da
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/proxyInterpreter.cpp \
+=======
+	$$PWD/src/interpreter/blockInterpreter.cpp \
+>>>>>>> Some ugly stuff (groundwork)
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
@@ -83,6 +94,7 @@ SOURCES += \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
 	$$PWD/src/ui/modeStripe.cpp \
+	$$PWD/src/interpreter/qtsinterpreter.cpp
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

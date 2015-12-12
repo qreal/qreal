@@ -1,0 +1,3 @@
+[submodule "plugins/robots/thirdparty/trikRuntime"]
+	path = plugins/robots/thirdparty/trikRuntime
+	url = https://github.com/trikset/trikRuntime.git
