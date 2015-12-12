@@ -15,6 +15,8 @@
 #pragma once
 
 #include <QtCore/QStringList>
+#include <QtCore/QMap>
+#include <QtCore/QString>
 
 /// Templates (for highlighter and list of templates in dialog).
 namespace generationRules {
@@ -24,6 +26,21 @@ const QStringList generalTemplates = {"this", "CallGeneratorFor", "Generator", "
 		, "if", "else", "foreach_excludeLast", "exclude", "in"};
 const QStringList textTemplates = {"newline", "tab"};
 const QStringList linksTemplates = {"incomingLinks", "outcomingLinks", "links", "transitionEnd", "transitionStart"};
+
+const QMap<QString, QString> templatesAndTooltips = {
+	{"this", "this construction allows to apply to current element"}
+	, {"CallGeneratorFor", "this construction allows to call some other generator; \n "
+		"example: CallGeneratorFor(elementName, generatorName)"}
+	, {"Generator", "this construction allows to define generator for given element; \n "
+		"example: Generator newGenerator {}" }
+	, {"foreach", ""}
+	, {"generateToFile", ""}
+	, {"if", ""}
+	, {"else", ""}
+	, {"foreach_excludeLast", ""}
+	, {"exclude", ""}
+	, {"in", ""}
+};
 
 }
 }
