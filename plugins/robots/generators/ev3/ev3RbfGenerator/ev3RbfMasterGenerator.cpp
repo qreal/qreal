@@ -85,8 +85,6 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	}
 
 	if (mainCode.isEmpty()) {
-		mErrorReporter.addError(tr("This diagram cannot be even generated into the code with 'goto'"\
-								"statements. Please contact the developers (WTF did you do?)"));
 		return QString();
 	}
 
@@ -96,6 +94,8 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
 	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations(indentString));
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
+	resultCode.replace("@@CONSTANTS_INITIALIZATION@@", utils::StringUtils::addIndent(
+			mLuaProcessorInstance->constantsValuation(), 1, indentString));
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1, indentString));
 	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(

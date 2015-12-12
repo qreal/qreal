@@ -46,7 +46,9 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/speaker.h \
 	$$PWD/robotModel/real/parts/motor.h \
 	$$PWD/robotModel/real/parts/button.h \
+	$$PWD/robotModel/real/parts/led.h \
 	$$PWD/robotModel/real/parts/ev3InputDevice.h \
+	$$PWD/robotModel/real/parts/encoderSensor.h \
 	$$PWD/robotModel/real/parts/touchSensor.h \
 	$$PWD/robotModel/real/parts/lightSensor.h \
 	$$PWD/robotModel/real/parts/rangeSensor.h \
@@ -59,6 +61,7 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDMotor.h \
+	$$PWD/robotModel/twoD/parts/twoDLed.h \
 
 SOURCES += \
 	$$PWD/ev3AdditionalPreferences.cpp \
@@ -71,7 +74,9 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/speaker.cpp \
 	$$PWD/robotModel/real/parts/motor.cpp \
 	$$PWD/robotModel/real/parts/button.cpp \
+	$$PWD/robotModel/real/parts/led.cpp \
 	$$PWD/robotModel/real/parts/ev3InputDevice.cpp \
+	$$PWD/robotModel/real/parts/encoderSensor.cpp \
 	$$PWD/robotModel/real/parts/touchSensor.cpp \
 	$$PWD/robotModel/real/parts/lightSensor.cpp \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \
@@ -84,6 +89,7 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDMotor.cpp \
+	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
 
 FORMS += \
 	$$PWD/ev3AdditionalPreferences.ui \

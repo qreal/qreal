@@ -62,6 +62,9 @@ public:
 			, const QString &propertyName
 			, const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter) override;
 
+	/// Returns code that initializes all known constants.
+	QString constantsValuation() const;
+
 private:
 	void preparePrinter();
 

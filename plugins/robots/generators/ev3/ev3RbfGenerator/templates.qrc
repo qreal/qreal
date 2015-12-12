@@ -19,6 +19,17 @@
         <file>templates/colors/red.t</file>
         <file>templates/colors/white.t</file>
         <file>templates/colors/yellow.t</file>
+        <file>templates/led/led.t</file>
+        <file>templates/led/off.t</file>
+        <file>templates/led/green.t</file>
+        <file>templates/led/green_flash.t</file>
+        <file>templates/led/green_pulse.t</file>
+        <file>templates/led/orange.t</file>
+        <file>templates/led/orange_flash.t</file>
+        <file>templates/led/orange_pulse.t</file>
+        <file>templates/led/red.t</file>
+        <file>templates/led/red_flash.t</file>
+        <file>templates/led/red_pulse.t</file>
         <file>templates/ports/1.t</file>
         <file>templates/ports/2.t</file>
         <file>templates/ports/3.t</file>
@@ -38,6 +49,10 @@
         <file>templates/ports/CD.t</file>
         <file>templates/ports/C.t</file>
         <file>templates/ports/D.t</file>
+        <file>templates/ports/A_in.t</file>
+        <file>templates/ports/B_in.t</file>
+        <file>templates/ports/C_in.t</file>
+        <file>templates/ports/D_in.t</file>
         <file>templates/ports/Left.t</file>
         <file>templates/ports/Right.t</file>
         <file>templates/ports/Up.t</file>
@@ -55,6 +70,7 @@
         <file>templates/engines/breakMode/break.t</file>
         <file>templates/engines/breakMode/float.t</file>
         <file>templates/conditional/for.t</file>
+        <file>templates/conditional/if.t</file>
         <file>templates/conditional/ifElse.t</file>
         <file>templates/types/int.t</file>
         <file>templates/types/float.t</file>
@@ -155,6 +171,7 @@
         <file>templates/luaPrinting/greaterThan.t</file>
         <file>templates/luaPrinting/readIndexer.t</file>
         <file>templates/luaPrinting/writeIndexer.t</file>
+        <file>templates/luaPrinting/tableConstructor.t</file>
         <file>templates/luaPrinting/inequality.t</file>
         <file>templates/luaPrinting/integerDivision.t</file>
         <file>templates/luaPrinting/length.t</file>

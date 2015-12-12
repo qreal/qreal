@@ -32,6 +32,7 @@ public:
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;
+
 private:
 	char parsePort(const QString &portName);
 

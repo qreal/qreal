@@ -35,7 +35,7 @@ BoolPropertyConverter::BoolPropertyConverter(const QStringList &pathsToTemplates
 
 QString BoolPropertyConverter::convert(const QString &luaCode) const
 {
-	const QString actualCode = mNeedInverting ? luaCode : QString("not(%1)").arg(luaCode);
+	const QString actualCode = mNeedInverting ? QString("not(%1)").arg(luaCode) : luaCode;
 	return mLuaTranslator.castTo(qrtext::core::wrap(new qrtext::lua::types::Boolean)
 			, actualCode, mId, mPropertyName, mReservedVariablesConverter);
 }

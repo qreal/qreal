@@ -199,7 +199,7 @@ QString Ev3LuaPrinter::newRegister(Ev3RbfType type)
 	const QString result = registerNames[type] + QString::number(++mRegistersCount[mId][type]);
 	const QString declarationTemplate = (type == Ev3RbfType::dataS)
 			? "DATA%1 %2 255"
-			: (isArray(type) ? QString("ARRAY%1 %2 255").arg(typeNames[elementType(type)]) : "DATA%1 %2");
+			: (isArray(type) ? QString("ARRAY%1 %2 255").arg(typeNames[elementType(type)], result) : "DATA%1 %2");
 	mVariables.appendManualDeclaration(declarationTemplate.arg(typeNames[type], result));
 	return result;
 }
@@ -219,17 +219,36 @@ QString Ev3LuaPrinter::castTo(const QSharedPointer<qrtext::core::types::TypeExpr
 	return printWithoutPop(node) ? castTo(toEv3Type(type), node) : QString();
 }
 
-QStringList Ev3LuaPrinter::additionalCode() const
+QStringList Ev3LuaPrinter::additionalCode(const QSharedPointer<qrtext::core::ast::Node> &node) const
 {
-	return mAdditionalCode;
+	return mAdditionalCode[node.data()];
+}
+
+QString Ev3LuaPrinter::constantsEvaluation()
+{
+	QStringList code;
+	for (const QString &constantName : mTextLanguage.specialConstants()) {
+		const QString value = mTextLanguage.value<QString>(constantName);
+		/// @todo: Rewrite this sh..t
+		const Ev3RbfType type = value.contains(".") ? Ev3RbfType::dataF : Ev3RbfType::data32;
+		const QString typeName = typeNames[type];
+		code << readTemplate("assignment.t")
+				.replace("@@TYPE1@@", typeName)
+				.replace("@@TYPE2@@", typeName)
+				.replace("@@VARIABLE@@", constantName)
+				.replace("@@VALUE@@", type == Ev3RbfType::dataF ? value + "F" : value);
+	}
+
+	return code.join("\n");
 }
 
 void Ev3LuaPrinter::pushResult(const QSharedPointer<qrtext::lua::ast::Node> &node
 		, const QString &generatedCode, const QString &additionalCode)
 {
 	mGeneratedCode[node.data()] = generatedCode;
+	pushChildrensAdditionalCode(node);
 	if (!additionalCode.isEmpty()) {
-		mAdditionalCode << additionalCode;
+		mAdditionalCode[node.data()] << additionalCode;
 	}
 }
 
@@ -246,6 +265,13 @@ QStringList Ev3LuaPrinter::popResults(const QList<QSharedPointer<qrtext::lua::as
 	}
 
 	return result;
+}
+
+void Ev3LuaPrinter::pushChildrensAdditionalCode(const QSharedPointer<qrtext::lua::ast::Node> &node)
+{
+	for (const auto &child : node->children()) {
+		mAdditionalCode[node.data()] += mAdditionalCode.take(child.data());
+	}
 }
 
 bool Ev3LuaPrinter::printWithoutPop(const QSharedPointer<qrtext::lua::ast::Node> &node)
@@ -290,16 +316,21 @@ void Ev3LuaPrinter::processTemplate(const QSharedPointer<qrtext::lua::ast::Node>
 		computation.replace(toReplace, staticBindings[toReplace]);
 	}
 
-	pushResult(node, typedComputation ? result : computation, typedComputation ? computation : QString());
+	pushResult(node, result, computation);
 }
 
 void Ev3LuaPrinter::processUnary(const QSharedPointer<qrtext::core::ast::UnaryOperator> &node
 		, const QString &templateFileName)
 {
 	const Ev3RbfType type = typeOf(node);
-	pushResult(node, readTemplate(templateFileName)
+	QString templateCode = readTemplate(templateFileName);
+	const bool hasAdditionalCode = templateCode.contains("@@RESULT@@");
+	const QString result = hasAdditionalCode ? newRegister(type) : QString();
+	const QString code = templateCode
 			.replace("@@TYPE@@", typeNames[type])
-			.replace("@@OPERAND@@", popResult(node->operand())), QString());
+			.replace("@@OPERAND@@", popResult(node->operand()))
+			.replace("@@RESULT@@", result);
+	pushResult(node, hasAdditionalCode ? result : code, hasAdditionalCode ? code : QString());
 }
 
 void Ev3LuaPrinter::processBinary(const QSharedPointer<qrtext::core::ast::BinaryOperator> &node
@@ -511,6 +542,9 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FieldInitializa
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::TableConstructor> &node
 		, const QSharedPointer<qrtext::core::ast::Node> &)
 {
+	const auto &type = mTextLanguage.type(qrtext::as<qrtext::core::ast::Node>(node));
+	const auto &elementType = static_cast<qrtext::lua::types::Table *>(type.data())->elementType();
+	const QString elementTypeName = typeNames[toEv3Type(elementType)];
 	mTableInitializersCount = -1;
 	QStringList initializers = popResults(qrtext::as<qrtext::lua::ast::Node>(node->initializers()));
 	const QString result = newRegister(node);
@@ -518,7 +552,9 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::TableConstructo
 		initializers[i].replace("@@TABLE@@", result);
 	}
 
-	pushResult(node, result, initializers.join("\n"));
+	pushResult(node, result, readTemplate("tableConstructor.t")
+			.replace("@@TYPE@@", elementTypeName)
+			.replace("@@RESULT@@", result) + initializers.join("\n"));
 }
 
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::String> &node
@@ -602,7 +638,7 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FunctionCall> &
 	} else {
 		pushResult(node, result, reservedFunctionCall.replace("@@RESULT@@", functionResult));
 		if (shouldCastToIntAfter) {
-			mAdditionalCode << QString("MOVEF_32(%1, %2)").arg(functionResult, result);
+			mAdditionalCode[node.data()] << QString("MOVEF_32(%1, %2)").arg(functionResult, result);
 		}
 	}
 }
@@ -679,7 +715,8 @@ QString Ev3LuaPrinter::toString(const QSharedPointer<qrtext::lua::ast::Node> &no
 	}
 
 	const QString result = newRegister(Ev3RbfType::dataS);
-	mAdditionalCode << code.replace("@@RESULT@@", result);
+	pushChildrensAdditionalCode(node);
+	mAdditionalCode[node.data()] << code.replace("@@RESULT@@", result);
 	return result;
 }
 
@@ -708,7 +745,8 @@ QString Ev3LuaPrinter::castTo(Ev3RbfType targetType, const QSharedPointer<qrtext
 	}
 
 	const QString result = newRegister(targetType);
-	mAdditionalCode << QString("MOVE%1_%2(%3, %4)")
+	pushChildrensAdditionalCode(node);
+	mAdditionalCode[node.data()] << QString("MOVE%1_%2(%3, %4)")
 			.arg(typeNames[actualType], typeNames[targetType], value, result);
 	return result;
 }

@@ -20,8 +20,11 @@
 #include "simpleGenerators/drawCircleGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
+#include "simpleGenerators/ledGenerator.h"
+#include "simpleGenerators/nullificationEncoderGenerator.h"
 
 #include "converters/outputPortNameConverter.h"
+#include "converters/ledColorConverter.h"
 
 using namespace ev3;
 using namespace ev3::simple;
@@ -48,6 +51,12 @@ AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id
 	return randomIdGenerator(GeneratorFactoryBase::ifGenerator(id, customizer, elseIsEmpty, needInverting));
 }
 
+AbstractSimpleGenerator *Ev3GeneratorFactory::forLoopGenerator(const qReal::Id &id
+		, generatorBase::GeneratorCustomizer &customizer)
+{
+	return randomIdGenerator(GeneratorFactoryBase::forLoopGenerator(id, customizer));
+}
+
 generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGenerator(const qReal::Id &id
 		, generatorBase::GeneratorCustomizer &customizer)
 {
@@ -64,6 +73,10 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType == "Ev3EnginesStop") {
 		return new EnginesStopGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3Led" ) {
+		return new LedGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3ClearEncoder" ) {
+		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
 	}
 
 	return randomIdGenerator(GeneratorFactoryBase::simpleGenerator(id, customizer));
@@ -72,6 +85,11 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 Binding::ConverterInterface *Ev3GeneratorFactory::outputPortNameConverter() const
 {
 	return new OutputPortNameConverter(pathsToTemplates());
+}
+
+Binding::ConverterInterface *Ev3GeneratorFactory::ledColorConverter() const
+{
+	return new LedColorConverter(pathsToTemplates());
 }
 
 QStringList Ev3GeneratorFactory::pathsToTemplates() const

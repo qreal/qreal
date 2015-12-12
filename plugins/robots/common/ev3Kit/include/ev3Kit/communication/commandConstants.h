@@ -115,6 +115,7 @@ enum OpcodeEnum {
 	, INPUT_READ = 0x9a
 	, INPUT_READ_EXT = 0x9e
 	, INPUT_READ_SI = 0x9d
+	, INPUT_WRITE = 0x9f
 
 	, OUTPUT_STOP = 0xa3
 	, OUTPUT_POWER = 0xa4
@@ -127,6 +128,7 @@ enum OpcodeEnum {
 	, OUTPUT_TIME_SPEED = 0xaf
 	, OUTPUT_STEP_SYNC = 0xb0
 	, OUTPUT_TIME_SYNC = 0xb1
+	, OUTPUT_CLR_COUNT = 0xb2
 
 	, TST = 0xff
 };

@@ -14,8 +14,7 @@
 
 #include "twoDDisplay.h"
 
-const int textPixelHeight = 8;
-const int textPixelWidth = 16;
+const int textSize = 20;
 const int ev3DisplayHeight = 128;
 const int ev3DisplayWidth = 178;
 
@@ -63,7 +62,7 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 
 void Display::printText(int x, int y, const QString &text)
 {
-	Canvas::printText(x * textPixelWidth, y * textPixelHeight, text);
+	Canvas::printText(x, y, text);
 }
 
 void Display::clearScreen()
@@ -79,7 +78,7 @@ void Display::paint(QPainter *painter)
 
 	QPen pen;
 	QFont font;
-	font.setPixelSize(textPixelHeight);
+	font.setPixelSize(textSize);
 
 	painter->setPen(pen);
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));

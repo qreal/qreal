@@ -1,1 +1,1 @@
-nxt_motor_set_count(@@PORT@@, 0);
+OUTPUT_CLR_COUNT(0, @@PORT@@);

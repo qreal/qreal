@@ -31,14 +31,20 @@ public:
 
 	~Ev3GeneratorFactory() override;
 
-	/// Returns a pointer to a code generator for blocks with if semantics
 	generatorBase::simple::AbstractSimpleGenerator *ifGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting) override;
+
+	generatorBase::simple::AbstractSimpleGenerator *forLoopGenerator(const qReal::Id &id
+			, generatorBase::GeneratorCustomizer &customizer) override;
 
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
+	/// Converts an output port with given id into generator-dependent port representation.
 	generatorBase::simple::Binding::ConverterInterface *outputPortNameConverter() const;
+
+	/// Converts TRIK Studio LED color enum values to corresponding names in EV3 runtime.
+	generatorBase::simple::Binding::ConverterInterface *ledColorConverter() const;
 
 	QStringList pathsToTemplates() const override;
 

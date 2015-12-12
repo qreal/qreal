@@ -30,22 +30,24 @@ PortNameConverter::PortNameConverter(const QStringList &pathsToTemplates
 
 QString PortNameConverter::convert(const QString &portNameOrAlias) const
 {
-	QString portName;
+	kitBase::robotModel::PortInfo portInfo;
 	for (const kitBase::robotModel::PortInfo &port : mPorts) {
 		if (port.name() == portNameOrAlias || port.nameAliases().contains(portNameOrAlias)) {
-			portName = port.name();
-			if (portName == portNameOrAlias) {
+			portInfo = port;
+			if (port.name() == portNameOrAlias) {
 				// Port name is first-priority cause, for example, M1 in TRIK may be an alias for B1.
 				break;
 			}
 		}
 	}
 
-	if (portName.isEmpty()) {
+	if (!portInfo.isValid()) {
 		// Considering this situation normal, not showing warnings.
 		return portNameOrAlias;
 	}
 
-	const QString portTemplate = QString("ports/%1.t").arg(portName);
-	return readTemplateIfExists(portTemplate, portName);
+	const QString portTemplate = QString("ports/%1.t").arg(portInfo.name());
+	const QString portTemplateExt = QString("ports/%1_%2.t").arg(portInfo.name()
+			, portInfo.direction() == kitBase::robotModel::input ? "in" : "out");
+	return readTemplateIfExists(portTemplateExt, readTemplateIfExists(portTemplate, portInfo.name()));
 }

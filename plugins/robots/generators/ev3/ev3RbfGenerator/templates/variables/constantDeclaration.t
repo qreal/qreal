@@ -1,2 +1,1 @@
 DATA@@TYPE@@ @@NAME@@
-MOVE@@TYPE@@_@@TYPE@@(@@NAME@@, @@VALUE@@)
