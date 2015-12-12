@@ -1,4 +1,4 @@
-/* Copyright 2012-2016 CyberTech Labs Ltd.
+/* Copyright 2007-2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,12 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrutils/interpreter/thread.h>
+#include <qrutils/watchListWindow.h>
 #include <qrtext/languageToolboxInterface.h>
 
-#include <kitBase/interpreterInterface.h>
+// Not needed but includes some vital headers. TODO: rework
+#include <qrutils/interpreter/thread.h>
+
 #include <kitBase/robotModel/robotModelManagerInterface.h>
 #include <kitBase/devicesConfigurationProvider.h>
 
@@ -31,6 +33,9 @@
 #include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
 #include "interpreterCore/interpreter/details/autoconfigurer.h"
 
+#include "interpreterCore/interpreter/interpreterInterface.h"
+#include "plugins/robots/thirdparty/trikRuntime/trikScriptRunner/src/scriptEngineWorker.h"
+#include "trikbrick.h"
 
 namespace interpreterCore {
 namespace interpreter {
@@ -38,7 +43,7 @@ namespace interpreter {
 /// Interprets robot diagram by executing blocks and sending commands to robot model. Manages models, connection,
 /// threads, parser, can automatically configure robot by used blocks on diagram. It is the main class for
 /// all interpretation subsystem.
-class Interpreter : public kitBase::InterpreterInterface, public kitBase::DevicesConfigurationProvider
+class QtsInterpreter : public InterpreterInterface, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -54,30 +59,25 @@ public:
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
 	/// @param connectToRobotAction - reference to action that connects to robot, interpreter manages its state
 	///        depending on success or failure of its own connection attempts.
-	Interpreter(const qReal::GraphicalModelAssistInterface &graphicalModelApi
+	QtsInterpreter(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const qReal::ProjectManagementInterface &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &languageToolbox
+			, QAction &connectToRobotAction
 			);
 
-	~Interpreter() override;
+	~QtsInterpreter() override;
 
 public slots:
 	void connectToRobot() override;
 	void interpret() override;
 	void stopRobot(qReal::interpretation::StopReason reason = qReal::interpretation::StopReason::userStop) override;
 	int timeElapsed() const override;
-	qReal::IdList supportedDiagrams() const override;
 
 private slots:
-	void threadStopped(qReal::interpretation::StopReason reason);
-	void newThread(const qReal::Id &startBlockId, const QString &threadId);
-	void killThread(const QString &threadId);
-	void sendMessage(const QString &threadId, const QString &message);
-
 	void connectedSlot(bool success, const QString &errorString);
 	void devicesConfiguredSlot();
 
@@ -88,9 +88,11 @@ private:
 		, idle
 	};
 
-	void addThread(qReal::interpretation::Thread * const thread, const QString &threadId);
-
 	void reportError(const QString &message);
+
+	TrikBrick mBrick;
+	trikScriptRunner::ScriptExecutionControl mScriptExecControl;
+	trikScriptRunner::ScriptEngineWorker mScriptEngine;
 
 	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
@@ -98,9 +100,11 @@ private:
 
 	InterpreterState mState;
 	quint64 mInterpretationStartedTimestamp;
-	QHash<QString, qReal::interpretation::Thread *> mThreads;  // Has ownership
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
+
+	/// Action responsible for the connection to the robot
+	QAction &mActionConnectToRobot;
 
 	details::SensorVariablesUpdater mSensorVariablesUpdater;
 	details::Autoconfigurer mAutoconfigurer;
