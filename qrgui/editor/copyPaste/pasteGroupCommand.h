@@ -18,9 +18,11 @@
 #include "editor/editorViewScene.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 namespace commands {
 
-class PasteGroupCommand : public AbstractCommand
+class PasteGroupCommand : public qReal::commands::AbstractCommand
 {
 public:
 	PasteGroupCommand(EditorViewScene *scene, bool isGraphicalCopy);
@@ -45,5 +47,7 @@ private:
 	bool mIsEmpty;
 };
 
+}
+}
 }
 }

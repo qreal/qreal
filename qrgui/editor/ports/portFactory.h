@@ -15,6 +15,9 @@
 #pragma once
 
 #include "plugins/editorPluginInterface/portHelpers.h"
+namespace qReal {
+namespace gui {
+namespace editor {
 
 /** @brief A factory creating concrete port types (StatLine and StatPoint) */
 class PortFactory : public PortFactoryInterface
@@ -25,3 +28,7 @@ public:
 	virtual PortInterface *createPort(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2
 			, int initWidth, int initHeight, PortImpl *impl) const;
 };
+
+}
+}
+}

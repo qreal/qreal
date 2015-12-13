@@ -15,6 +15,7 @@
 #include "reshapeEdgeCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 ReshapeEdgeCommand::ReshapeEdgeCommand(const EdgeElement *edge)
 	: EdgeElementCommand(dynamic_cast<EditorViewScene *>(edge->scene()), edge->id())

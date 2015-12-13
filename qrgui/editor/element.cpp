@@ -23,13 +23,14 @@
 #include "qrgui/editor/labels/label.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;
 
 Element::Element(ElementImpl *elementImpl
 		, const Id &id
-		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-		, qReal::models::LogicalModelAssistApi &logicalAssistApi
+		, models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi
 		)
 	: mMoving(false)
 	, mEnabled(true)
@@ -55,7 +56,7 @@ Id Element::id() const
 	return mId;
 }
 
-qReal::Id Element::logicalId() const
+Id Element::logicalId() const
 {
 	return mGraphicalAssistApi.logicalId(mId);
 }
@@ -92,36 +93,13 @@ void Element::setController(Controller *controller)
 	mController = controller;
 }
 
-qReal::Controller * Element::controller() const
+Controller * Element::controller() const
 {
 	return mController;
 }
 
 void Element::initTitles()
 {
-}
-
-void Element::select(const bool singleSelected)
-{
-	if (singleSelected) {
-		setSelectionState(true);
-	}
-
-	emit switchFolding(!singleSelected);
-}
-
-void Element::setSelectionState(const bool selected)
-{
-	if (isSelected() != selected) {
-		setSelected(selected);
-	}
-	if (!selected) {
-		select(false);
-	}
-
-	for (Label * const label : mLabels) {
-		label->setParentSelected(selected);
-	}
 }
 
 ElementImpl* Element::elementImpl() const
@@ -154,12 +132,6 @@ void Element::updateEnabledState()
 
 void Element::setHideNonHardLabels(bool hide)
 {
-	for (const Label * const label : mLabels) {
-		if (label->isSelected()) {
-			return;
-		}
-	}
-
 	for (Label * const label : mLabels) {
 		label->setVisible(label->isHard() || !hide);
 	}
