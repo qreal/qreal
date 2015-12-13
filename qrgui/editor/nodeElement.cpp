@@ -1355,7 +1355,8 @@ void NodeElement::initRenderedDiagram()
 	const Id diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	const Id graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(evScene->models(), evScene->controller(), evScene->sceneCustomizer(), evScene->customizer(), graphicalDiagram);
+	EditorView view(evScene->models(), evScene->controller(), evScene->sceneCustomizer(), evScene->customizer()
+					, graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
 	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
