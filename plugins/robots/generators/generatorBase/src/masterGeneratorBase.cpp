@@ -17,6 +17,7 @@
 #include <QtCore/QDir>
 
 #include <qrutils/outFile.h>
+#include <qrutils/fileSystemUtils.h>
 #include <qrutils/stringUtils.h>
 #include <qrtext/languageToolboxInterface.h>
 
@@ -179,8 +180,12 @@ void MasterGeneratorBase::afterGeneration()
 
 void MasterGeneratorBase::outputCode(const QString &path, const QString &code)
 {
-	// File must be removed to leave created and modified timestamps equal.
 	QFile::remove(path);
+
+	// File creation and modified timestamps should be equal after all.
+	// But straitforward removal will not work due to the tunel file system effect:
+	// http://stackoverflow.com/questions/661977/why-windows-sets-new-created-files-created-time-property-to-old-time
 	utils::OutFile out(path);
+	utils::FileSystemUtils::setCreationDateToNow(path);
 	out() << code;
 }
