@@ -980,10 +980,8 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-30" text="Volume (%):" hard="true"/>
-						<label x="-60" y="60" text="Wait for Completion:"/>
-						<label x="60" y="-30" textBinded="Volume" hard="true" background="white"/>
-						<label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
+					<label x="60" y="-35" textBinded="Volume" hard="true" background="white" prefix="Volume:" siffix="%"/>
+					<label x="70" y="60" textBinded="WaitForCompletion" background="white" prefix="Wait for Completion:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
