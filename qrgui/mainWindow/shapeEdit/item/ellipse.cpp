@@ -15,11 +15,12 @@
 #include "ellipse.h"
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
 
-QRealEllipse::QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
+ShapeEditEllipse::ShapeEditEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 		: Item(parent), mRectangleImpl()
 {
 	mNeedScalingRect = true;
@@ -32,7 +33,7 @@ QRealEllipse::QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	setY2(y2);
 }
 
-QRealEllipse::QRealEllipse(const QRealEllipse &other)
+ShapeEditEllipse::ShapeEditEllipse(const ShapeEditEllipse &other)
 	 : Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -47,13 +48,13 @@ QRealEllipse::QRealEllipse(const QRealEllipse &other)
 	setPos(other.x(), other.y());
 }
 
-Item* QRealEllipse::clone()
+Item* ShapeEditEllipse::clone()
 {
-	QRealEllipse* item = new QRealEllipse(*this);
+	ShapeEditEllipse* item = new ShapeEditEllipse(*this);
 	return item;
 }
 
-void QRealEllipse::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void ShapeEditEllipse::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     qreal x1 = event->scenePos().x();
     qreal y1 = event->scenePos().y();
@@ -68,7 +69,7 @@ void QRealEllipse::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene
     scene->addItem(this);
 }
 
-void QRealEllipse::reshape(QGraphicsSceneMouseEvent *event)
+void ShapeEditEllipse::reshape(QGraphicsSceneMouseEvent *event)
 {
     qreal x2 = event->scenePos().x();
     qreal y2 = event->scenePos().y();
@@ -78,24 +79,29 @@ void QRealEllipse::reshape(QGraphicsSceneMouseEvent *event)
         reshapeRectWithShift();
 }
 
-QString QRealEllipse::getItemName() const
+void ShapeEditEllipse::customizeButton(CreateItemPushButton *button) const
 {
-    return QString("ellipse");
+    button->setObjectName(QString("ellipsePushButton"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/ellipse.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+    button->setToolTip(tr("Add an ellipse"));
 }
 
-QRectF QRealEllipse::boundingRect() const
+QRectF ShapeEditEllipse::boundingRect() const
 {
 	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), scalingDrift);
 }
 
-void QRealEllipse::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void ShapeEditEllipse::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	mRectangleImpl.drawEllipseItem(painter, x1(), y1(), x2(), y2());
 }
 
-QPair<QDomElement, Item::DomElementTypes> QRealEllipse::generateItem(QDomDocument &document
+QPair<QDomElement, Item::DomElementTypes> ShapeEditEllipse::generateItem(QDomDocument &document
 		, const QPoint &topLeftPicture)
 {
 	QDomElement ellipse = setPenBrushToDoc(document, "ellipse");

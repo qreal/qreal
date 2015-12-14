@@ -19,6 +19,7 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace graphicsUtils;
@@ -185,6 +186,16 @@ void Line::reshape(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void Line::customizeButton(CreateItemPushButton *button) const
+{
+    button->setObjectName(QString("linePushButton"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/line.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+    button->setToolTip(tr("Add a line"));
+}
+
 QLineF Line::line() const
 {
 	return mLineImpl.line(x1(), y1(), x2(), y2());
@@ -208,11 +219,6 @@ void Line::changeScalingPointState(qreal x, qreal y)
 	{
 		setDragState(None);
 	}
-}
-
-QString Line::getItemName() const
-{
-    return QString("line");
 }
 
 void Line::resizeItem(QGraphicsSceneMouseEvent *event)

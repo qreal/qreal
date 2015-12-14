@@ -86,15 +86,12 @@ QRectF Image::boundingRect() const
 	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), scalingDrift);
 }
 
-QString Image::getItemName() const
-{
-    return QString("image");
-}
-
 void Image::customizeButton(CreateItemPushButton *button) const
 {
+    button->setObjectName(QString("imagePushButton"));
     //button->setText(QApplication::translate("ShapeEdit", "Image", 0));
     button->setText(tr("Image"));
+    button->setToolTip(tr("Add an image"));
 }
 
 void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

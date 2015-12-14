@@ -81,17 +81,14 @@ void PointPort::mouseMoveEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
     Q_UNUSED(scene);
 }
 
-QString PointPort::getItemName() const
-{
-    return QString("pointPort");
-}
-
 void PointPort::customizeButton(CreateItemPushButton *button) const
 {
+    button->setObjectName(QString("pointPortPushButton"));
     QIcon icon;
     icon.addFile(QString(":/mainWindow/images/ellipse.png"), QSize(), QIcon::Normal, QIcon::Off);
     button->setIcon(icon);
     button->setIconSize(QSize(4, 6));
+    button->setToolTip(tr("Add a point port"));
 }
 
 QRectF PointPort::boundingRect() const

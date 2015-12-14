@@ -17,6 +17,7 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -109,9 +110,14 @@ void Curve::reshape(QGraphicsSceneMouseEvent *event)
     update();
 }
 
-QString Curve::getItemName() const
+void Curve::customizeButton(CreateItemPushButton *button) const
 {
-    return QString("curve");
+    button->setObjectName(QString("curvePushButton"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/curve.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+    button->setToolTip(tr("Add a curve"));
 }
 
 QPainterPath Curve::shape() const

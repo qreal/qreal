@@ -16,8 +16,8 @@
 
 #include <QtGui/QPainter>
 
-#include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/path.h"
+#include "mainWindow/shapeEdit/item/item.h"
 
 namespace qReal {
 namespace shapeEdit {
@@ -48,10 +48,9 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
 protected:
-    virtual void reshape(QGraphicsSceneMouseEvent *event) override;
+    virtual void reshape(QGraphicsSceneMouseEvent *event);
     void init(const QPointF &start, const QPointF &end);
-
-    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button) const;
 
 private:
     QPointF mP1;

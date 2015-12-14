@@ -70,7 +70,6 @@ public:
     Id getId() const;
 
 signals:
-    //см. keyPressEvent() - они только там
     void saveSignal();
 	void saveToXmlSignal();
 	void openSignal();
@@ -132,7 +131,6 @@ private:
     void setValueBoldCheckBox(bool check);
     void setValueUnderlineCheckBox(bool check);
     void setValueTextNameLineEdit(const QString &name);
-
 };
 
 }

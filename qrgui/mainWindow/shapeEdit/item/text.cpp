@@ -20,6 +20,7 @@
 #include <QtGui/QTextCursor>
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -136,12 +137,26 @@ void Text::drawScalingRects(QPainter* painter)
 	painter->drawRect(x1, y1 - scalingRect, scalingRect, scalingRect);
 }
 
-QString Text::getItemName() const
+void Text::customizeButton(CreateItemPushButton *button) const
 {
+    button->setObjectName(QString("textPushButton"));
+    QIcon icon;
+    QString specificName;
+    QString specificToolTip;
     if (mIsDynamicText) {
-        return QString("dynamicText");
+        specificName = "dynamicText";
+        specificToolTip = tr("dynamic text");
+    } else {
+        specificName = "staticText";
+        specificToolTip = tr("static text");
     }
-    return QString("staticText");
+
+    icon.addFile(QString(":/mainWindow/images/" + specificName + ".png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+
+    QString tooltip = tr("Add a ");
+    button->setToolTip(tooltip + specificToolTip);
 }
 
 QRectF Text::boundingRect() const

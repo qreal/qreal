@@ -38,7 +38,6 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);
 protected:
-    virtual QString getItemName() const;
     virtual void customizeButton(CreateItemPushButton *button) const;
     void init(QString fileName, qreal x, qreal y);
 

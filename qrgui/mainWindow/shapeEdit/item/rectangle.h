@@ -23,11 +23,11 @@
 namespace qReal {
 namespace shapeEdit {
 
-class QRealRectangle : public Item
+class ShapeEditRectangle : public Item
 {
 public:
-	QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
-	QRealRectangle(const QRealRectangle &other);
+    ShapeEditRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
+    ShapeEditRectangle(const ShapeEditRectangle &other);
 	virtual Item* clone();
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene) override;
@@ -39,8 +39,8 @@ public:
 			, const QPoint &topLeftPicture);
 
 protected:
-    virtual void reshape(QGraphicsSceneMouseEvent *event) override;
-    virtual QString getItemName() const;
+    virtual void reshape(QGraphicsSceneMouseEvent *event);
+    virtual void customizeButton(CreateItemPushButton *button) const;
 
 private:
 	graphicsUtils::RectangleImpl mRectangleImpl;

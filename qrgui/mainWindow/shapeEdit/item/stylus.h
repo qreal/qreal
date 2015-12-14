@@ -18,8 +18,8 @@
 
 #include <qrutils/graphicsUtils/stylusImpl.h>
 
-#include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/line.h"
+#include "mainWindow/shapeEdit/item/item.h"
 
 namespace qReal {
 namespace shapeEdit {
@@ -53,7 +53,7 @@ public:
 
 protected:
     virtual void reshape(QGraphicsSceneMouseEvent *event) override;
-    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button) const;
 
 private:
 	qreal mTmpX1;

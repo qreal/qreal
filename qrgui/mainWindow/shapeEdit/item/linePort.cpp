@@ -15,6 +15,7 @@
 #include "linePort.h"
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -111,9 +112,14 @@ void LinePort::setPenBrush(const QString &penStyle, int width, const QString &pe
     Q_UNUSED(brushColor)
 }
 
-QString LinePort::getItemName() const
+void LinePort::customizeButton(CreateItemPushButton *button) const
 {
-    return QString("linePort");
+    button->setObjectName(QString("linePortPushButton"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/linePort.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+    button->setToolTip(tr("Add a line port"));
 }
 
 QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, const QPoint &topLeftPicture)

@@ -169,7 +169,6 @@ qreal Item::alignedCoordinate(qreal coord, int coef, int indexGrid)
 CreateItemPushButton *Item::createButton()
 {
     CreateItemPushButton *button = new CreateItemPushButton(this);
-    button->setObjectName(QString(getItemName() + "Button"));
     customizeButton(button);
     button->setMaximumSize(QSize(65, 16777215));
     button->setCheckable(true);
@@ -182,15 +181,7 @@ CreateItemPushButton *Item::createButton()
 
 void Item::customizeButton(CreateItemPushButton *button) const
 {
-    QIcon icon;
-    icon.addFile(QString(":/mainWindow/images/" + getItemName() + ".png"), QSize(), QIcon::Normal, QIcon::Off);
-    button->setIcon(icon);
-    button->setIconSize(QSize(45, 16));
-}
-
-QString Item::getItemName() const
-{
-    return QString();
+    button->setObjectName("itemPushButton");
 }
 
 void Item::calcForChangeScalingState(const QPointF&pos, const QPointF& point1, const QPointF& point2

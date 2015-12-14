@@ -335,7 +335,7 @@ void XmlLoader::readLine(const QDomElement &line)
 void XmlLoader::readEllipse(const QDomElement &ellipse)
 {
 	QRectF rect = readRectOfXandY(ellipse);
-	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
+	ShapeEditEllipse* item = new ShapeEditEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(ellipse));
@@ -357,7 +357,7 @@ void XmlLoader::readArch(const QDomElement &arch)
 void XmlLoader::readRectangle(const QDomElement &rectangle)
 {
 	QRectF rect = readRectOfXandY(rectangle);
-	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
+	ShapeEditRectangle* item = new ShapeEditRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(rectangle));

@@ -17,7 +17,6 @@
 #include <QtGui/QPainter>
 
 #include "mainWindow/shapeEdit/item/item.h"
-#include "mainWindow/shapeEdit/item/ellipse.h"
 
 namespace qReal {
 namespace shapeEdit {

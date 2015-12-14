@@ -48,8 +48,8 @@ public:
 			, const QPoint &topLeftPicture);
 
 protected:
-    virtual void reshape(QGraphicsSceneMouseEvent *event) override;
-    virtual QString getItemName() const;
+    virtual void reshape(QGraphicsSceneMouseEvent *event);
+    virtual void customizeButton(CreateItemPushButton *button) const;
 
 private:
 	graphicsUtils::LineImpl mLineImpl;

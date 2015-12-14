@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/text.h"
 
 namespace qReal {
@@ -50,7 +51,7 @@ public:
 	void readFont(const QDomElement &docItem);
 
 protected:
-    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button) const;
 
 private:
 	QFont mFont;

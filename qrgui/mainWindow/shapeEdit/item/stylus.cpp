@@ -15,6 +15,7 @@
 #include "stylus.h"
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -90,9 +91,14 @@ void Stylus::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
     scene->addItem(this);
 }
 
-QString Stylus::getItemName() const
+void Stylus::customizeButton(CreateItemPushButton *button) const
 {
-    return QString("pencil");
+    button->setObjectName(QString("stylusPushButton"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+    button->setToolTip(tr("Pen"));
 }
 
 void Stylus::reshape(QGraphicsSceneMouseEvent *event)

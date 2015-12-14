@@ -52,7 +52,7 @@ public:
 			, const QPoint &topLeftPicture);
 
 protected:
-    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button) const;
 
 	int mX1;
 	int mY1;

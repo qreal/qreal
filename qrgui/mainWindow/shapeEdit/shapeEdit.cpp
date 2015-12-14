@@ -227,8 +227,8 @@ void ShapeEdit::initItemButtons()
 
 void ShapeEdit::initAvailableItems()
 {
-    mAvailableItems.append(new QRealEllipse(0, 0, 0, 0));
-    mAvailableItems.append(new QRealRectangle(0, 0, 0, 0));
+    mAvailableItems.append(new ShapeEditEllipse(0, 0, 0, 0));
+    mAvailableItems.append(new ShapeEditRectangle(0, 0, 0, 0));
     mAvailableItems.append(new Line(0, 0, 0, 0));
     QPointF p;
     mAvailableItems.append(new Curve(p, p, p));

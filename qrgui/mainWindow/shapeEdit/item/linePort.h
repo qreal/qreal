@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include "mainWindow/shapeEdit/item/item.h"
 #include "mainWindow/shapeEdit/item/line.h"
 #include "mainWindow/shapeEdit/item/typedEntity.h"
+#include "mainWindow/shapeEdit/item/item.h"
 
 namespace qReal {
 namespace shapeEdit {
@@ -45,7 +45,7 @@ public:
 			, const QPoint &topLeftPicture);
 
 protected:
-    virtual QString getItemName() const;
+    virtual void customizeButton(CreateItemPushButton *button) const;
 };
 
 }

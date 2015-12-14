@@ -15,11 +15,12 @@
 #include "rectangle.h"
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
 
-QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
+ShapeEditRectangle::ShapeEditRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	:Item(parent), mRectangleImpl()
 {
 	mNeedScalingRect = true;
@@ -32,7 +33,7 @@ QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* par
 	setY2(y2);
 }
 
-QRealRectangle::QRealRectangle(const QRealRectangle &other)
+ShapeEditRectangle::ShapeEditRectangle(const ShapeEditRectangle &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -47,13 +48,13 @@ QRealRectangle::QRealRectangle(const QRealRectangle &other)
 	setPos(other.x(), other.y());
 }
 
-Item* QRealRectangle::clone()
+Item* ShapeEditRectangle::clone()
 {
-	QRealRectangle* item = new QRealRectangle(*this);
+    ShapeEditRectangle* item = new ShapeEditRectangle(*this);
 	return item;
 }
 
-void QRealRectangle::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
+void ShapeEditRectangle::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *scene)
 {
     qreal mX1 = event->scenePos().x();
     qreal mY1 = event->scenePos().y();
@@ -69,12 +70,7 @@ void QRealRectangle::mousePressEvent(QGraphicsSceneMouseEvent *event, Scene *sce
     scene->addItem(this);
 }
 
-QString QRealRectangle::getItemName() const
-{
-    return QString("rect");
-}
-
-void QRealRectangle::reshape(QGraphicsSceneMouseEvent *event)
+void ShapeEditRectangle::reshape(QGraphicsSceneMouseEvent *event)
 {
     setX2(event->scenePos().x());
     setY2(event->scenePos().y());
@@ -82,19 +78,29 @@ void QRealRectangle::reshape(QGraphicsSceneMouseEvent *event)
         reshapeRectWithShift();
 }
 
-QRectF QRealRectangle::boundingRect() const
+void ShapeEditRectangle::customizeButton(CreateItemPushButton *button) const
+{
+    button->setObjectName(QString("rectanglePushButton"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/rect.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+    button->setToolTip(tr("Add a rectangle"));
+}
+
+QRectF ShapeEditRectangle::boundingRect() const
 {
 	return mRectangleImpl.boundingRect(x1(), y1(), x2(), y2(), scalingDrift);
 }
 
-void QRealRectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void ShapeEditRectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	mRectangleImpl.drawRectItem(painter, x1(), y1(), x2(), y2());
 }
 
-QPair<QDomElement, Item::DomElementTypes> QRealRectangle::generateItem(QDomDocument &document
+QPair<QDomElement, Item::DomElementTypes> ShapeEditRectangle::generateItem(QDomDocument &document
 		, const QPoint &topLeftPicture)
 {
 	QDomElement rectangle = setPenBrushToDoc(document, "rectangle");

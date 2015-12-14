@@ -104,7 +104,6 @@ protected:
 	int mZValue;
 	VisibilityCondition mVisibilityCondition;
 
-    virtual QString getItemName() const;
     virtual void customizeButton(CreateItemPushButton *button) const;
     virtual void reshape(QGraphicsSceneMouseEvent *event);
 

@@ -15,6 +15,7 @@
 #include "textPicture.h"
 
 #include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
 
 using namespace qReal::shapeEdit;
 using namespace qReal::commands;
@@ -115,9 +116,14 @@ void TextPicture::setIsDynamicText(bool isDynamic)
 	mIsDynamicText = false;
 }
 
-QString TextPicture::getItemName() const
+void TextPicture::customizeButton(CreateItemPushButton *button) const
 {
-    return QString("textPicture");
+    button->setObjectName(QString("textPicturePushButton"));
+    QIcon icon;
+    icon.addFile(QString(":/mainWindow/images/textPicture.png"), QSize(), QIcon::Normal, QIcon::Off);
+    button->setIcon(icon);
+    button->setIconSize(QSize(45, 16));
+    button->setToolTip(tr("Add a text as a picture"));
 }
 
 QFont TextPicture::font() const
