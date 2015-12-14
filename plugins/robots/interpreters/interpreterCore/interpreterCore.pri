@@ -23,11 +23,12 @@ includes(plugins/robots/interpreters/interpreterCore \
 		plugins/robots/thirdparty/trikRuntime/trikNetwork \
 )
 
-#LIBS += ../../thirdparty/trikRuntime/trikControl/
+LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/bin/x86-$$CONFIGURATION
+# TODO:
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
 		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model qslog \
-		trikControl trikScriptRunner\
+		trikControl-x86 trikScriptRunner-x86\
 )
 
 HEADERS += \
@@ -59,8 +60,8 @@ HEADERS += \
 	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 	$$PWD/src/ui/modeStripe.h \
-    $$PWD/include/interpreterCore/interpreter/qtsinterpreter.h \
-    $$PWD/include/interpreterCore/interpreter/trikbrick.h
+	$$PWD/include/interpreterCore/interpreter/qtsinterpreter.h \
+	$$PWD/include/interpreterCore/interpreter/trikbrick.h
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
