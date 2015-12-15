@@ -24,10 +24,15 @@ grep -q "darwin" <<< $OSTYPE && export OS="mac" || :
 
 # $2 will be passed to all prebuild.sh scripts
 echo "Executing prebuild actions..."
-find $PWD -name prebuild-common.sh -print0 | xargs -0 chmod +x
-find $PWD -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
-find $PWD -name prebuild-common.sh | bash
-find $PWD -name prebuild-$OS.sh | bash
+find $PWD/packages/qreal-base -name prebuild-common.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/qreal-base -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/qreal-base -name prebuild-common.sh | bash
+find $PWD/packages/qreal-base -name prebuild-$OS.sh | bash
+
+find $PWD/packages/$PRODUCT -name prebuild-common.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/$PRODUCT -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/$PRODUCT -name prebuild-common.sh | bash
+find $PWD/packages/$PRODUCT -name prebuild-$OS.sh | bash
 
 echo "Building online installer..."
 $QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS_EXT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-online-$OS_EXT-installer

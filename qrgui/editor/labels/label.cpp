@@ -21,6 +21,7 @@
 #include "brandManager/brandManager.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 		, const Id &elementId

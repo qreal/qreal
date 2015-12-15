@@ -21,9 +21,11 @@
 #include "models/commands/removeElementCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 namespace commands {
 
-class InsertIntoEdgeCommand : public AbstractCommand
+class InsertIntoEdgeCommand : public qReal::commands::AbstractCommand
 {
 public:
 	InsertIntoEdgeCommand(EditorViewScene &scene
@@ -36,7 +38,7 @@ public:
 			, const QPointF &scenePos
 			, const QPointF &shift
 			, bool isFromLogicalModel
-			, CreateElementCommand *createCommand = 0);
+			, qReal::commands::CreateElementCommand *createCommand = 0);
 
 	~InsertIntoEdgeCommand();
 
@@ -45,8 +47,8 @@ protected:
 	virtual bool restoreState();
 
 private:
-	void initCommand(CreateElementCommand *&command, const Id &type);
-	void makeLink(CreateElementCommand *command, NodeElement *src, NodeElement *dst);
+	void initCommand(qReal::commands::CreateElementCommand *&command, const Id &type);
+	void makeLink(qReal::commands::CreateElementCommand *command, NodeElement *src, NodeElement *dst);
 
 	EditorViewScene &mScene;
 	models::LogicalModelAssistApi &mLogicalAssistApi;
@@ -67,12 +69,14 @@ private:
 
 	QMap<Id, QPointF> mElementShifting;
 
-	CreateElementCommand *mCreateFirst;
-	CreateElementCommand *mCreateSecond;
-	RemoveElementCommand *mRemoveOldEdge;
+	qReal::commands::CreateElementCommand *mCreateFirst;
+	qReal::commands::CreateElementCommand *mCreateSecond;
+	qReal::commands::RemoveElementCommand *mRemoveOldEdge;
 
-	CreateElementCommand *mCreateCommand;
+	qReal::commands::CreateElementCommand *mCreateCommand;
 };
 
+}
+}
 }
 }

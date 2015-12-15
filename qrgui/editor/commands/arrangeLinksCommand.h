@@ -17,6 +17,8 @@
 #include "editor/commands/elementCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 namespace commands {
 
 /// Arranges links of specified node element
@@ -38,5 +40,7 @@ private:
 	bool mNeedAdjusting;
 };
 
+}
+}
 }
 }

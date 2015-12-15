@@ -34,6 +34,8 @@
 
 namespace qReal {
 
+namespace gui {
+namespace editor {
 class Label;
 
 /// size of a point port
@@ -78,8 +80,8 @@ public:
 	virtual void setColorRect(bool bl) = 0;
 
 	// TODO: Move this to constructor.
-	void setController(qReal::Controller *controller);
-	qReal::Controller *controller() const;
+	void setController(Controller *controller);
+	Controller *controller() const;
 
 	ElementImpl* elementImpl() const;
 	bool createChildrenFromMenu() const;
@@ -108,4 +110,6 @@ protected:
 	Controller *mController;
 };
 
+}
+}
 }

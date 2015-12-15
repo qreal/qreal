@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>UX Info</DisplayName>
+    <DisplayName xml:lang="ru_ru">Средство анализа юзабилити</DisplayName>
+    <Description>User Experience statistics collecting tool (optional, actually does not do anything for user, but allows to gain data for QReal developers to improve system).</Description>
+    <Description xml:lang="ru_ru">Сборщик статистики по действиям пользователя. Не обязателен, кроме того, не делает ничего полезного для пользователя, но собирает статистику, которая может помочь разработчикам QReal улучшить среду.</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2015-12-12</ReleaseDate>
+    <Licenses/>
+    <SortingPriority>20</SortingPriority>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

@@ -7,7 +7,7 @@ environment:
     QTDIR: C:\Qt\5.5\mingw492_32
   matrix:
     - PROJECT_FILE: qrealRobots
-#   - PROJECT_FILE: qreal
+    - PROJECT_FILE: qreal
 #   - PROJECT_FILE: qrealMinimal.pro
 
 configuration:

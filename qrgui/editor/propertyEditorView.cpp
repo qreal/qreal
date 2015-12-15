@@ -21,6 +21,9 @@
 
 #include "models/commands/changePropertyCommand.h"
 
+using namespace qReal;
+using namespace qReal::gui::editor;
+
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent)
 		, mChangingPropertyValue(false)

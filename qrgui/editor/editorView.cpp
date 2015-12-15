@@ -22,13 +22,14 @@
 #include <qrgui/models/models.h>
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 const int zoomAnimationInterval = 20;
 const int zoomAnimationTimes = 4;
 
 EditorView::EditorView(const models::Models &models
 		, Controller &controller
-		, const SceneCustomizer &customizer
+		, const qReal::gui::editor::SceneCustomizer &customizer
 		, const Id &rootId
 		, QWidget *parent)
 	: QGraphicsView(parent)
