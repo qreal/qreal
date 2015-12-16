@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,19 @@
 
 #pragma once
 
-#include "qrrepo/private/folderCompressor.h"
+#include <qrkernel/exception/exception.h>
 
-#include "gtest/gtest.h"
+#include "qrrepo/private/qrRepoGlobal.h"
 
-namespace qrTest {
+namespace qrRepo {
 
-class FolderCompressorTest : public testing::Test {
-
-protected:
-	virtual void SetUp();
-
-	virtual void TearDown();
-
-	void removeDirectory(QString const &dirName);
+/// Base class for all qrRepo exceptions.
+class QRREPO_EXPORT QrRepoException : public qReal::Exception
+{
+public:
+	explicit QrRepoException(const QString &message)
+		: qReal::Exception(message)
+	{}
 };
 
 }

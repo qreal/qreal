@@ -18,13 +18,14 @@
 #include "folderCompressorTest.h"
 
 using namespace qrTest;
+using namespace qrRepo::details;
 
 void FolderCompressorTest::removeDirectory(QString const &dirName)
 {
-	QDir const dir(dirName);
+	const QDir dir(dirName);
 
-	foreach (QFileInfo info, dir.entryInfoList(QDir::Hidden
-			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
+	for (QFileInfo info : dir.entryInfoList(
+			 QDir::Hidden | QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {
 			removeDirectory(info.absoluteFilePath());
@@ -75,9 +76,9 @@ TEST_F(FolderCompressorTest, decompressTest) {
 	file2.open(QIODevice::ReadWrite);
 	file3.open(QIODevice::ReadWrite);
 
-	QString line1(file1.readLine());
-	QString line2(file2.readLine());
-	QString line3(file3.readLine());
+	const QString line1(file1.readLine());
+	const QString line2(file2.readLine());
+	const QString line3(file3.readLine());
 
 	EXPECT_EQ(line1, "text1");
 	EXPECT_EQ(line2, "text2");

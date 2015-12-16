@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,19 @@
 
 #pragma once
 
-#include "qrrepo/private/folderCompressor.h"
+#include "exceptions/qrrepoException.h"
+#include "private/qrRepoGlobal.h"
 
-#include "gtest/gtest.h"
+namespace qrRepo {
 
-namespace qrTest {
-
-class FolderCompressorTest : public testing::Test {
-
-protected:
-	virtual void SetUp();
-
-	virtual void TearDown();
-
-	void removeDirectory(QString const &dirName);
+/// Thrown when given source file name can not be opened for reading. It probably means that something is wrong with
+/// access rights.
+class QRREPO_EXPORT SaveFileNotReadableException : public QrRepoException
+{
+public:
+	explicit SaveFileNotReadableException(const QString &fileName)
+		: QrRepoException("Save file not readable: " + fileName)
+	{}
 };
 
 }
