@@ -23,9 +23,8 @@
 namespace generationRules {
 namespace keywords {
 
-/// @TODO: support exclude
 const QStringList generalTemplates = {"this", "CallGeneratorFor", "Generator", "foreach", "generateToFile"
-		, "if", "else", /*"foreach_excludeLast", "exclude",*/ "in"};
+		, "if", "else", "foreach_excludeLast", "exclude", "in"};
 const QStringList textTemplates = {"newline", "tab"};
 const QStringList linksTemplates = {"incomingLinks", "outcomingLinks", "links", "transitionEnd", "transitionStart"};
 
@@ -44,9 +43,9 @@ const QString ifTooltip = QObject::tr("This keyword allows to check some conditi
 		"example: if (condition) {program1} else {program2}");
 const QString elseTooltip = QObject::tr("This keyword is a part of if-expression");
 const QString excludeLastTooltip = QObject::tr("This keyword allows to traverse some collection "
-		"excluding last element, NOT SUPPORTED YET; \n"
+		"excluding last element; \n"
 		"example: foreach_excludeLast (identifier in list) {}");
-const QString excludeTooltip = QObject::tr("This keyword allows to exclude element from traversed collection");
+const QString excludeTooltip = QObject::tr("This keyword allows to exclude some text from the output");
 const QString inTooltip = QObject::tr("This keyword is a part of foreach-expression");
 
 const QString newlineTooltip = QObject::tr("This keyword inserts newline symbol into generated code");
