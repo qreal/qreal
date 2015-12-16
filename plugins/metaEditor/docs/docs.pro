@@ -14,7 +14,9 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = \
-	editor/metaEditor.pro \
-	metaEditorSupport \
-	docs \
+include(../../../global.pri)
+
+copyToDestdir(help/ changelog.txt splashscreen.png, now)
+
+OTHER_FILES += \
+	changelog.txt \
