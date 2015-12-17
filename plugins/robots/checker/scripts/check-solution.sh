@@ -15,7 +15,8 @@
 
 function show_help {
 	echo "Usage: check-solution.sh path/to/save/file"
-	echo "It will launch checker for all fields found in '<trikStudio-checker>/fields/<save file base name>' folder,"
+	echo "It will launch checker for all fields found in 'fields/<save file base name>' folder located in the same folder as the save file."
+	echo "If a custom fields folder doesn't exist the default fields are taken from '<trikStudio-checker>/fields/<save file base name>' folder,"
 	echo "return 0 if on all fields a program in a save is working correctly or return 1 if it fails on at least one"
 	echo "field. Detailed report can be found in 'reports/<save file base name>/<field base name> file."
 	echo "Robot trajectory can be found in 'trajectories/<save file base name>/<field base name> file."
@@ -25,7 +26,9 @@ function show_help {
 }
 
 binFolder="$(dirname "$0")"
-fieldsFolder=$binFolder/../fields
+fileFolder=$(dirname "$1")
+fieldsFolder="$fileFolder/fields"
+[ ! -d "$fieldsFolder" ] && fieldsFolder=$binFolder/../fields
 
 logFile=$(pwd)/checker-log.txt
 
