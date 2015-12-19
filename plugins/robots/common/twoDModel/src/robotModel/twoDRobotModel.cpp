@@ -33,6 +33,7 @@
 #include "twoDModel/robotModel/parts/marker.h"
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
+//#include "twoDModel/engine/threeDModelEngineInterface.h"
 
 using namespace twoDModel::robotModel;
 using namespace kitBase::robotModel;
@@ -100,11 +101,13 @@ int TwoDRobotModel::priority() const
 }
 
 twoDModel::engine::TwoDModelEngineInterface *TwoDRobotModel::engine()
+//twoDModel::engine::ThreeDModelEngineInterface *TwoDRobotModel::engine()
 {
 	return mEngine;
 }
 
 void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
+//void TwoDRobotModel::setEngine(engine::ThreeDModelEngineInterface &engine)
 {
 	mEngine = &engine;
 }

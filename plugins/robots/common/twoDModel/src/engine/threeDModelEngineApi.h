@@ -1,8 +1,18 @@
 #pragma once
 
-#include "twoDModel/engine/threeDModelEngineInterface.h"
+//#include "twoDModel/engine/threeDModelEngineInterface.h"
+#include "twoDModel/engine/twoDModelEngineInterface.h"
 
 #include <QtCore/QScopedPointer>
+
+#include "remoteApi/include/socketInConnection.h"
+#include "remoteApi/include/v_repConst.h"
+//#define pi 3.141593f
+
+extern "C" {
+	#include "remoteApi/extApi.h"
+//	#include "remoteApi/extApiCustom.h"
+}
 
 namespace twoDModel {
 
@@ -14,7 +24,8 @@ class TwoDModelWidget;
 class FakeScene;
 }
 
-class ThreeDModelEngineApi : public engine::ThreeDModelEngineInterface
+//class ThreeDModelEngineApi : public engine::ThreeDModelEngineInterface
+class ThreeDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
 	ThreeDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
@@ -61,6 +72,10 @@ private:
 	view::TwoDModelWidget &mView;
 	QScopedPointer<view::FakeScene> mFakeScene;
 	QScopedPointer<engine::TwoDModelGuiFacade> mGuiFacade;
+
+	int portNb = 19997;
+
+	int clientID = 0;
 };
 
 }

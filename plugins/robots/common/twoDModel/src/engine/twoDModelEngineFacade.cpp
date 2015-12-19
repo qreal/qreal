@@ -29,7 +29,8 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
 	, mView(new view::TwoDModelWidget(*mModel))
-	, mApi(new TwoDModelEngineApi(*mModel, *mView))
+	//, mApi(new TwoDModelEngineApi(*mModel, *mView))
+	, mApi(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
 	mModel.data()->addRobotModel(robotModel);
