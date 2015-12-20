@@ -107,6 +107,9 @@ QString PlatformInfo::invariantPath(const QString &path)
 		const QStringList documentsPaths = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 		const QString documentsPath = documentsPaths.isEmpty() ? applicationDirPath() : documentsPaths.first();
 		return QString(path).replace("@DocumentsPath@", documentsPath);
+	} else if (path.startsWith("@TempLocation@")) {
+		const QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+		return QString(path).replace("@TempLocation@", tempPath);
 	} else if (windowsVariablesRegexp.exactMatch(path)) {
 		const QString variable = windowsVariablesRegexp.cap(1);
 		const QString value = QProcessEnvironment::systemEnvironment().value(variable);

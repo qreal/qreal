@@ -29,8 +29,8 @@ class Repository;
 class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 {
 public:
-	explicit RepoApi(const QString &workingDirectory, bool ignoreAutosave = false);
-	~RepoApi();
+	explicit RepoApi(const QString &workingFile, bool ignoreAutosave = false);
+	~RepoApi() override;
 
 	/// Replacing property values that contains input value with new value.
 	/// @param toReplace Id list that contains ids of elements that properties should be replaced.

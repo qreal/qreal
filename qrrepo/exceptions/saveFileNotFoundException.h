@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,18 @@
 
 #pragma once
 
-#include "qrrepo/private/folderCompressor.h"
+#include "exceptions/qrrepoException.h"
+#include "private/qrRepoGlobal.h"
 
-#include "gtest/gtest.h"
+namespace qrRepo {
 
-namespace qrTest {
-
-class FolderCompressorTest : public testing::Test {
-
-protected:
-	virtual void SetUp();
-
-	virtual void TearDown();
-
-	void removeDirectory(QString const &dirName);
+/// Thrown when given source file name is not found by decompressor. It probably means that save file name is wrong.
+class QRREPO_EXPORT SaveFileNotFoundException : public QrRepoException
+{
+public:
+	explicit SaveFileNotFoundException(const QString &fileName)
+		: QrRepoException("Save file not found: " + fileName)
+	{}
 };
 
 }

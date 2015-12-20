@@ -21,6 +21,7 @@ using namespace qReal;
 Exception::Exception(const QString &message)
 		: mMessage(message)
 {
+	qDebug() << "QReal exception: " << message;
 	QLOG_FATAL() << "QReal exception: " << message;
 }
 

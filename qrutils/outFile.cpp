@@ -28,6 +28,7 @@ OutFile::OutFile(const QString &fileName, bool *success)
 		if (success) {
 			*success = false;
 		}
+
 		return;
 	}
 
@@ -36,6 +37,7 @@ OutFile::OutFile(const QString &fileName, bool *success)
 		if (success) {
 			*success = false;
 		}
+
 		return;
 	}
 

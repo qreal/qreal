@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,19 @@
 
 #pragma once
 
-#include "qrrepo/private/folderCompressor.h"
+#include "exceptions/qrrepoException.h"
+#include "private/qrRepoGlobal.h"
 
-#include "gtest/gtest.h"
+namespace qrRepo {
 
-namespace qrTest {
-
-class FolderCompressorTest : public testing::Test {
-
-protected:
-	virtual void SetUp();
-
-	virtual void TearDown();
-
-	void removeDirectory(QString const &dirName);
+/// Thrown when folder with uncompressed save is not even found. Seems like internal error or something with rights
+/// of 'temp' folder where uncompressed save shall be.
+class QRREPO_EXPORT SourceFolderNotFoundException : public QrRepoException
+{
+public:
+	explicit SourceFolderNotFoundException(const QString &folderName)
+		: QrRepoException("Uncompressed save folder not found: " + folderName)
+	{}
 };
 
 }
