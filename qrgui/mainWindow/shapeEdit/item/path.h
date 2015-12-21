@@ -14,37 +14,30 @@
 
 #pragma once
 
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QComboBox>
+#include <QtCore/QPair>
 
-#include "mainWindow/shapeEdit/visibilityConditionsDialog.h"
-
-namespace Ui {
-class VisibilityValueWidget;
-}
+#include "mainWindow/shapeEdit/item/item.h"
 
 namespace qReal {
 namespace shapeEdit {
 
-class VisibilityValueWidget : public QWidget
+class Path : public Item
 {
-	Q_OBJECT
 public:
-	explicit VisibilityValueWidget(QWidget *parent = 0);
-	~VisibilityValueWidget();
+	Path(const QPainterPath &path);
+	Path(const Path &other);
+	virtual Item* clone();
+	virtual QRectF boundingRect() const;
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) ;
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, const QPoint &topLeftPicture);
 
-    void setPropertyInfo(const PropertyInfo &info);
-	void setValue(const QString &value);
-	QString value() const;
-signals:
-
-public slots:
+	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void drawFieldForResizeItem(QPainter* painter);
+	virtual void drawScalingRects(QPainter* painter);
 
 private:
-    void makeWidget(PropertyInfo::Type type);
-	void addValues(const QStringList &values);
-
-	QWidget *mWidget;
+	QPainterPath mPath;
 };
 
 }

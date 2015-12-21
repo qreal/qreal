@@ -19,6 +19,7 @@ include(../../global.pri)
 TEMPLATE = app
 
 QT += widgets printsupport xml svg
+CONFIG += c++11
 
 links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor qrgui-controller qrgui-dialogs qrgui-preferences-dialog \
 		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager  \
@@ -59,6 +60,32 @@ HEADERS += \
 	$$PWD/startWidget/startWidget.h \
 	$$PWD/startWidget/circleWidget.h \
 	$$PWD/startWidget/styledButton.h \
+    shapeEdit/item/arch.h \
+    shapeEdit/item/curve.h \
+    shapeEdit/item/ellipse.h \
+    shapeEdit/item/image.h \
+    shapeEdit/item/item.h \
+    shapeEdit/item/line.h \
+    shapeEdit/item/linePort.h \
+    shapeEdit/item/path.h \
+    shapeEdit/item/pointPort.h \
+    shapeEdit/item/rectangle.h \
+    shapeEdit/item/stylus.h \
+    shapeEdit/item/text.h \
+    shapeEdit/item/textPicture.h \
+    shapeEdit/iShapeEdit.h \
+    shapeEdit/propertyInfo.h \
+    shapeEdit/saveLoadLogic.h \
+    shapeEdit/saveLoadLogicForInterpreter.h \
+    shapeEdit/saveLoadLogicUsingModel.h \
+    shapeEdit/visibilityCondition.h \
+    shapeEdit/item/createItemPushButton.h \
+    shapeEdit/commands/addItemCommand.h \
+    shapeEdit/commands/resizeItemCommand.h \
+    shapeEdit/item/typedEntity.h \
+    shapeEdit/commands/simpleTemplateCommand.h \
+    shapeEdit/commands/moveItemCommand.h \
+    shapeEdit/commands/removeItemCommand.h
 
 SOURCES += \
 	$$PWD/main.cpp \
@@ -84,6 +111,28 @@ SOURCES += \
 	$$PWD/startWidget/startWidget.cpp \
 	$$PWD/startWidget/circleWidget.cpp \
 	$$PWD/startWidget/styledButton.cpp \
+    shapeEdit/item/arch.cpp \
+    shapeEdit/item/curve.cpp \
+    shapeEdit/item/ellipse.cpp \
+    shapeEdit/item/image.cpp \
+    shapeEdit/item/item.cpp \
+    shapeEdit/item/line.cpp \
+    shapeEdit/item/linePort.cpp \
+    shapeEdit/item/path.cpp \
+    shapeEdit/item/pointPort.cpp \
+    shapeEdit/item/rectangle.cpp \
+    shapeEdit/item/stylus.cpp \
+    shapeEdit/item/text.cpp \
+    shapeEdit/item/textPicture.cpp \
+    shapeEdit/saveLoadLogic.cpp \
+    shapeEdit/saveLoadLogicForInterpreter.cpp \
+    shapeEdit/saveLoadLogicUsingModel.cpp \
+    shapeEdit/item/createItemPushButton.cpp \
+    shapeEdit/commands/addItemCommand.cpp \
+    shapeEdit/commands/resizeItemCommand.cpp \
+    shapeEdit/item/typedEntity.cpp \
+    shapeEdit/commands/moveItemCommand.cpp \
+    shapeEdit/commands/removeItemCommand.cpp
 
 win32 {
 	HEADERS += \
@@ -103,50 +152,22 @@ unix {
 
 FORMS += \
 	$$PWD/mainWindow.ui \
-	$$PWD/referenceList.ui \
+        $$PWD/referenceList.ui
 
 # Shape editor
 HEADERS += \
 	$$PWD/shapeEdit/shapeEdit.h \
-	$$PWD/shapeEdit/scene.h \
-	$$PWD/shapeEdit/arch.h \
-	$$PWD/shapeEdit/line.h \
-	$$PWD/shapeEdit/item.h \
-	$$PWD/shapeEdit/ellipse.h \
-	$$PWD/shapeEdit/rectangle.h \
-	$$PWD/shapeEdit/text.h \
-	$$PWD/shapeEdit/pointPort.h \
-	$$PWD/shapeEdit/linePort.h \
-	$$PWD/shapeEdit/xmlLoader.h \
-	$$PWD/shapeEdit/stylus.h \
-	$$PWD/shapeEdit/colorListEditor.h \
-	$$PWD/shapeEdit/curve.h \
-	$$PWD/shapeEdit/view.h \
-	$$PWD/shapeEdit/textPicture.h \
-	$$PWD/shapeEdit/path.h \
-	$$PWD/shapeEdit/image.h \
+        $$PWD/shapeEdit/scene.h \
+        $$PWD/shapeEdit/xmlLoader.h \
+        $$PWD/shapeEdit/colorListEditor.h \
 	$$PWD/shapeEdit/visibilityConditionsDialog.h \
 	$$PWD/shapeEdit/visibilityValueWidget.h \
 
 SOURCES += \
 	$$PWD/shapeEdit/shapeEdit.cpp \
-	$$PWD/shapeEdit/scene.cpp \
-	$$PWD/shapeEdit/arch.cpp \
-	$$PWD/shapeEdit/line.cpp \
-	$$PWD/shapeEdit/item.cpp \
-	$$PWD/shapeEdit/ellipse.cpp \
-	$$PWD/shapeEdit/rectangle.cpp \
-	$$PWD/shapeEdit/text.cpp \
-	$$PWD/shapeEdit/pointPort.cpp \
-	$$PWD/shapeEdit/linePort.cpp \
-	$$PWD/shapeEdit/xmlLoader.cpp \
-	$$PWD/shapeEdit/stylus.cpp \
-	$$PWD/shapeEdit/colorListEditor.cpp \
-	$$PWD/shapeEdit/path.cpp \
-	$$PWD/shapeEdit/curve.cpp \
-	$$PWD/shapeEdit/view.cpp \
-	$$PWD/shapeEdit/textPicture.cpp \
-	$$PWD/shapeEdit/image.cpp \
+        $$PWD/shapeEdit/scene.cpp \
+        $$PWD/shapeEdit/xmlLoader.cpp \
+        $$PWD/shapeEdit/colorListEditor.cpp \
 	$$PWD/shapeEdit/visibilityConditionsDialog.cpp \
 	$$PWD/shapeEdit/visibilityValueWidget.cpp \
 

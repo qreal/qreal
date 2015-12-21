@@ -49,6 +49,8 @@
 #include <qrgui/preferencesDialog/preferencesDialog.h>
 #include <qrgui/dialogs/findReplaceDialog.h>
 
+#include "mainWindow/shapeEdit/iShapeEdit.h"
+
 class QGraphicsView;
 
 namespace Ui {
@@ -88,7 +90,7 @@ public:
 
 	EditorManagerInterface &editorManager();
 	qReal::gui::editor::EditorView *getCurrentTab() const;
-	bool isCurrentTabShapeEdit() const;
+    shapeEdit::IShapeEdit *getCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
 	qReal::gui::editor::PropertyEditorView *propertyEditor() const;
@@ -150,9 +152,6 @@ public:
 
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
 	ProxyEditorManager &editorManagerProxy();
-
-	/// Loads (or reloads) available editor plugins and reinits palette.
-	void loadPlugins();
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
@@ -219,6 +218,9 @@ public slots:
 	/// Inits interpreted plugins and adds their actions to the toolbar.
 	void initInterpretedPlugins();
 
+    /// Loads (or reloads) available editor plugins and reinits palette.
+    void loadPlugins();
+
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -273,7 +275,9 @@ private slots:
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
-	void openNewTab(const QModelIndex &index);
+    void openNewTab(const QModelIndex &index);
+
+    void openShapeEditorTab(shapeEdit::IShapeEdit * const shapeEdit);
 
 	/// Called after current tab was changed somehow --- opened, closed, switched to other
 	/// @param newIndex Index of a new active tab, -1 if there is none

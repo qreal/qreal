@@ -20,23 +20,26 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtCore/QList>
 
-#include <qrutils/graphicsUtils/abstractScene.h>
-#include <qrkernel/settingsManager.h>
+#include <tr1/functional>
 
-#include "mainWindow/shapeEdit/view.h"
-#include "mainWindow/shapeEdit/item.h"
-#include "mainWindow/shapeEdit/arch.h"
-#include "mainWindow/shapeEdit/line.h"
-#include "mainWindow/shapeEdit/ellipse.h"
-#include "mainWindow/shapeEdit/rectangle.h"
-#include "mainWindow/shapeEdit/text.h"
-#include "mainWindow/shapeEdit/textPicture.h"
-#include "mainWindow/shapeEdit/pointPort.h"
-#include "mainWindow/shapeEdit/linePort.h"
-#include "mainWindow/shapeEdit/stylus.h"
-#include "mainWindow/shapeEdit/path.h"
-#include "mainWindow/shapeEdit/curve.h"
-#include "mainWindow/shapeEdit/image.h"
+#include <qrutils/graphicsUtils/abstractScene.h>
+#include <qrutils/graphicsUtils/gridDrawer.h>
+#include <qrkernel/settingsManager.h>
+#include <qrgui/controller/controller.h>
+
+#include "mainWindow/shapeEdit/item/item.h"
+
+#include "mainWindow/shapeEdit/item/text.h"
+#include "mainWindow/shapeEdit/item/textPicture.h"
+#include "mainWindow/shapeEdit/item/pointPort.h"
+#include "mainWindow/shapeEdit/item/linePort.h"
+#include "mainWindow/shapeEdit/item/image.h"
+
+namespace qReal {
+namespace shapeEdit {
+
+class ResizeItemCommand;
+class MoveItemCommand;
 
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;
@@ -44,35 +47,42 @@ const int sizeEmptyRectY = 580;
 class Scene : public graphicsUtils::AbstractScene
 {
 	Q_OBJECT
+
 public:
-	Scene(graphicsUtils::AbstractView *view, QObject *parent = 0);
+    Scene(graphicsUtils::AbstractView *view, Controller *controller, QObject *parent = 0);
 	QPoint centerEmpty();
 	void changeTextName(const QString &name);
 	void setZValue(Item* item);
-	void addImage(const QString &fileName);
 
-	void drawLine(bool checked);
-	void drawEllipse(bool checked);
-	void drawCurve(bool checked);
-	void drawRectangle(bool checked);
-	void addText(bool checked);
-	void addDynamicText(bool checked);
-	void addTextPicture(bool checked);
-	void addPointPort(bool checked);
-	void addLinePort(bool checked);
-	void addStylus(bool checked);
-	void addNone(bool checked);
+    // methods for Item
+    void setPenBrushForItem(Item *item);
+    void removeMoveFlagForItem(QGraphicsSceneMouseEvent *event, Item *item);
+    void setIsAddingFinished(bool isFinished);
+    void setWaitMove(bool isWait);
+    bool getWaitMove();
+    QString getPortType();
+    QString getFileName();
 
-	QList<Item *> selectedSceneItems();
+    QList<Item *> selectedShapeEditItems();
+
+public slots:
+    void redraw();
+    void setNeedDrawGrid(bool show);
+    void addShapeEditItem(bool checked, Item* item);
+    void addImage(const QString &fileName);
+    void addNone();
 
 signals:
 	void noSelectedItems();
 	void existSelectedItems(const QPen &penItem, const QBrush &brushItem);
-	void noSelectedTextPictureItems();
-	void existSelectedTextPictureItems(const QPen &penItem, const QFont &fontItem, const QString &name);
-	void noSelectedPortItems();
-	void existSelectedPortItems(const QString &type);
+    void noSelectedTextPictureItems();
+    void existSelectedTextPictureItems(const QPen &penItem, const QFont &fontItem, const QString &name);
+    void noSelectedPortItems();
+    void existSelectedPortItems(const QString &type);
 	void resetHighlightAllButtons();
+
+protected:
+    virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
 private slots:
 	void changePenStyle(const QString &text);
@@ -80,11 +90,11 @@ private slots:
 	void changePenColor(const QString &text);
 	void changeBrushStyle(const QString &text);
 	void changeBrushColor(const QString &text);
-	void changePortsType(const QString &type);
+    void changePortsType(const QString &type);
 
 	void changePalette();
 	void changeFontPalette();
-	void changePortsComboBox();
+    void changePortsComboBox();
 
 	void changeFontFamily(const QFont& font);
 	void changeFontPixelSize(int size);
@@ -93,74 +103,52 @@ private slots:
 	void changeFontBold(bool isChecked);
 	void changeFontUnderline(bool isChecked);
 
-	void deleteItem();
-	void clearScene();
+    void deleteItems();
+    void clearScene();
+    void resetItemCreating();
 
 private:
-	enum ItemTypes {
-		none
-		, line
-		, ellipse
-		, rectangle
-		, text
-		, dynamicText
-		, textPicture
-		, pointPort
-		, linePort
-		, stylus
-		, curve
-		, image
-	};
-
 	enum CopyPasteType {
 		nonePaste
 		, copy
 		, cut
 	};
 
+    Controller *mController;
+
+    bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
+    graphicsUtils::GridDrawer mGridDrawer;
+
 	int mZValue;
-	ItemTypes mItemType;
+    Item *mNewItem;
+    Item *mChangingItem;
 	bool mWaitMove;
-	int mCount;
-	Line *mLine;
-	QRealEllipse *mEllipse;
-	QRealRectangle *mRectangle;
-	Text *mText;
-	TextPicture *mTextPicture;
-	PointPort *mPointPort;
-	LinePort *mLinePort;
-	Stylus *mStylus;
-	Curve* mCurve;
-	Image* mImage;
-	QString mFileName;
-	QPointF mC1;
+    bool mIsAddingFinished;
+    ResizeItemCommand *mResizeCommand;
+    MoveItemCommand *mMoveCommand;
+
+    QString mPortType;
+    QString mFileName;
 	CopyPasteType mCopyPaste;
 	QList<Item *> mListSelectedItemsForPaste;
-	QList<QGraphicsItem *> mListSelectedItems;
-	QList<TextPicture *> mListSelectedTextPictureItems;
-	TextPicture *mSelectedTextPicture;
-	QPair<bool, Item *> mNeedResize;
-	QString mPortType;
 
-	void initListSelectedItemsForPaste();
+    void initContextMenuActions();
+
+	void initPasteItemsBuffer();
 	QRectF selectedItemsBoundingRect() const;
-	QList<TextPicture *> selectedTextPictureItems();
-	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
-	void reshapeLine(QGraphicsSceneMouseEvent *event);
-	void reshapeLinePort(QGraphicsSceneMouseEvent *event);
-	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
-	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
-	void reshapeStylus(QGraphicsSceneMouseEvent *event);
-	void reshapeCurveFirst(QGraphicsSceneMouseEvent *event);
-	void reshapeCurveSecond(QGraphicsSceneMouseEvent *event);
+    QList<TextPicture *> selectedTextPictureItems();
 
 	void setZValueSelectedItems();
 	void setNullZValueItems();
 	QPair<bool, Item *> checkOnResize(qreal x, qreal y);
 
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-	virtual void keyPressEvent(QKeyEvent *keyEvent);
+    virtual void keyPressEvent(QKeyEvent *keyEvent);
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 };
+
+}
+}

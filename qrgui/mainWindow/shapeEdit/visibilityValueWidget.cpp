@@ -17,6 +17,8 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QLineEdit>
 
+using namespace qReal::shapeEdit;
+
 VisibilityValueWidget::VisibilityValueWidget(QWidget *parent)
 	: QWidget(parent), mWidget(0)
 {}
@@ -26,7 +28,7 @@ VisibilityValueWidget::~VisibilityValueWidget()
 	delete mWidget;
 }
 
-void VisibilityValueWidget::setPropertyInfo(const VisibilityConditionsDialog::PropertyInfo &info)
+void VisibilityValueWidget::setPropertyInfo(const PropertyInfo &info)
 {
 	delete mWidget;
 	makeWidget(info.type);
@@ -58,11 +60,11 @@ QString VisibilityValueWidget::value() const
 	return QString();
 }
 
-void VisibilityValueWidget::makeWidget(VisibilityConditionsDialog::Type type)
+void VisibilityValueWidget::makeWidget(PropertyInfo::Type type)
 {
 	switch (type)
 	{
-		case VisibilityConditionsDialog::Int:
+        case PropertyInfo::Int:
 				{
 					QSpinBox *spinBox = new QSpinBox(this);
 					spinBox->setMinimum(INT_MIN);
@@ -70,7 +72,7 @@ void VisibilityValueWidget::makeWidget(VisibilityConditionsDialog::Type type)
 					mWidget = spinBox;
 				}
 				break;
-		case VisibilityConditionsDialog::String:
+        case PropertyInfo::String:
 				mWidget = new QLineEdit(this);
 				break;
 		default:

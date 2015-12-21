@@ -82,6 +82,7 @@ using namespace qReal;
 using namespace qReal::gui;
 using namespace qReal::commands;
 using namespace qReal::gui::editor;
+using namespace qReal::shapeEdit;
 
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
@@ -762,9 +763,9 @@ EditorView * MainWindow::getCurrentTab() const
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
-bool MainWindow::isCurrentTabShapeEdit() const
+IShapeEdit *MainWindow::getCurrentTabShapeEdit() const
 {
-	return dynamic_cast<ShapeEdit *>(mUi->tabs->currentWidget()) != nullptr;
+    return dynamic_cast<IShapeEdit *>(mUi->tabs->currentWidget());
 }
 
 void MainWindow::closeCurrentTab()
@@ -779,6 +780,7 @@ void MainWindow::closeTab(int index)
 	QWidget * const widget = mUi->tabs->widget(index);
 	EditorView * const diagram = dynamic_cast<EditorView *>(widget);
 	text::QScintillaTextEdit * const possibleCodeTab = dynamic_cast<text::QScintillaTextEdit *>(widget);
+    IShapeEdit * const possibleShapeEdit = dynamic_cast<IShapeEdit *>(widget);
 
 	const QString path = mTextManager->path(possibleCodeTab);
 
@@ -786,7 +788,9 @@ void MainWindow::closeTab(int index)
 		const Id diagramId = diagram->editorViewScene().rootItemId();
 		mController->diagramClosed(diagramId);
 		emit mFacade.events().diagramClosed(diagramId);
-	} else if (mTextManager->unbindCode(possibleCodeTab)) {
+    } else if (possibleShapeEdit) {
+        mController->diagramClosed(possibleShapeEdit->getId());
+    } else if (mTextManager->unbindCode(possibleCodeTab)) {
 		emit mFacade.events().codeTabClosed(QFileInfo(path));
 	} else {
 		// TODO: process other tabs (for example, start tab)
@@ -811,7 +815,7 @@ void MainWindow::openSettingsDialog(const QString &tab)
 	showPreferencesDialog();
 }
 
-// TODO: Unify overloads.
+/// @todo Unify overloads.
 void MainWindow::openShapeEditor(
 		const QPersistentModelIndex &index
 		, int role
@@ -819,11 +823,9 @@ void MainWindow::openShapeEditor(
 		, bool useTypedPorts
 		)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(models().logicalModel())
-			, index, role, useTypedPorts);
-	if (!propertyValue.isEmpty()) {
-		shapeEdit->load(propertyValue);
-	}
+    IShapeEdit * const shapeEdit = new ShapeEdit(propertyValue
+        , dynamic_cast<models::LogicalModelAssistApi &>(models().logicalModelAssistApi())
+        , index, role, mController, useTypedPorts);
 
 	// Here we are going to actually modify model to set a value of a shape.
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
@@ -831,9 +833,7 @@ void MainWindow::openShapeEditor(
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, const QPersistentModelIndex &, const int &))
 			, this, SLOT(setData(QString, const QPersistentModelIndex &, const int &)));
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+    openShapeEditorTab(shapeEdit);
 }
 
 // This method is for Interpreter.
@@ -842,15 +842,27 @@ void MainWindow::openShapeEditor(const Id &id
 		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(id, *editorManagerProxy, models().graphicalRepoApi(), this, getCurrentTab()
-		, useTypedPorts);
-	if (!propertyValue.isEmpty()) {
-		shapeEdit->load(propertyValue);
-	}
+    IShapeEdit * const shapeEdit = new ShapeEdit(propertyValue, id, *editorManagerProxy
+        , models().graphicalRepoApi(), getCurrentTab(), mController, useTypedPorts);
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+    openShapeEditorTab(shapeEdit);
+}
+
+void MainWindow::openShapeEditor()
+{
+    IShapeEdit * const shapeEdit = new ShapeEdit(mController);
+    openShapeEditorTab(shapeEdit);
+}
+
+void MainWindow::openShapeEditorTab(IShapeEdit * const shapeEdit)
+{
+    connect(shapeEdit, SIGNAL(needUpdate()), this, SLOT(loadPlugins()));
+
+    mController->diagramOpened(shapeEdit->getId());
+
+    mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+    mUi->tabs->setCurrentWidget(shapeEdit);
+    setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, const int role
@@ -869,14 +881,6 @@ void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, co
 	mUi->tabs->addTab(textEdit, tr("Text Editor"));
 	mUi->tabs->setCurrentWidget(textEdit);
 	setConnectActionZoomTo(textEdit);
-}
-
-void MainWindow::openShapeEditor()
-{
-	ShapeEdit * const shapeEdit = new ShapeEdit;
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openReferenceList(const QPersistentModelIndex &index
@@ -906,7 +910,7 @@ void MainWindow::disconnectActionZoomTo(QWidget* widget)
 	if (view != nullptr) {
 		disconnectZoom(view);
 	} else {
-		ShapeEdit *const shapeWidget = dynamic_cast<ShapeEdit *>(widget);
+        IShapeEdit *const shapeWidget = dynamic_cast<IShapeEdit *>(widget);
 		if (shapeWidget != nullptr) {
 			disconnectZoom(shapeWidget->getView());
 		}
@@ -919,7 +923,7 @@ void MainWindow::connectActionZoomTo(QWidget* widget)
 	if (view != nullptr) {
 		connectZoom(view);
 	} else {
-		ShapeEdit * const shapeWidget = (dynamic_cast<ShapeEdit *>(widget));
+        IShapeEdit * const shapeWidget = (dynamic_cast<IShapeEdit *>(widget));
 		if (shapeWidget != nullptr) {
 			connectZoom(shapeWidget->getView());
 		}
@@ -1160,7 +1164,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	const bool isEditorTab = getCurrentTab();
-	const bool isShape = isCurrentTabShapeEdit();
+    const bool isShape = static_cast<bool>(getCurrentTabShapeEdit());
 	const bool isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
 	const bool isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
 	const bool isDecorativeTab = isStartTab || isGesturesTab;
@@ -1170,8 +1174,8 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	mUi->actionPrint->setEnabled(!isDecorativeTab);
 
-	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
-	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
+    mUi->actionRedo->setEnabled(mController->canRedo() && !isDecorativeTab);
+    mUi->actionUndo->setEnabled(mController->canUndo() && !isDecorativeTab);
 	mUi->actionFind->setEnabled(!isDecorativeTab);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
@@ -1198,6 +1202,7 @@ void MainWindow::switchToTab(int index)
 	if (index != -1) {
 		mUi->tabs->setEnabled(true);
 		EditorView *editorView = getCurrentTab();
+        IShapeEdit *shapeEdit = getCurrentTabShapeEdit();
 		setConnectActionZoomTo(mUi->tabs->currentWidget());
 
 		if (editorView) {
@@ -1206,7 +1211,9 @@ void MainWindow::switchToTab(int index)
 			mRootIndex = editorView->mvIface().rootIndex();
 			const Id diagramId = models().graphicalModelAssistApi().idByIndex(mRootIndex);
 			mController->setActiveDiagram(diagramId);
-		}
+        } else if (shapeEdit) {
+            mController->setActiveDiagram(shapeEdit->getId());
+        }
 	} else {
 		mUi->tabs->setEnabled(false);
 		mController->setActiveDiagram(Id());
@@ -1302,6 +1309,11 @@ void MainWindow::setShowGrid(bool isChecked)
 		if (tab != nullptr) {
 			tab->setDrawSceneGrid(isChecked);
 		}
+        // IShapeEditor case
+        auto shapeEditor = dynamic_cast<IShapeEdit *>(mUi->tabs->widget((i)));
+        if (shapeEditor) {
+            shapeEditor->setDrawSceneGrid(isChecked);
+        }
 	}
 }
 
@@ -1332,6 +1344,11 @@ void MainWindow::setSwitchGrid(bool isChecked)
 				if (nodeItem != nullptr) {
 					nodeItem->switchGrid(isChecked);
 				}
+                // IShapeEditor case
+                auto shapeEditItem = dynamic_cast<Item *>(item);
+                if (shapeEditItem && isChecked) {
+                    shapeEditItem->alignToGrid();
+                }
 			}
 		}
 	}

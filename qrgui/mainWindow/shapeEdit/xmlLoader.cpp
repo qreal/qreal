@@ -20,7 +20,22 @@
 
 #include <qrutils/xmlUtils.h>
 
+#include "mainWindow/shapeEdit/item/item.h"
+#include "mainWindow/shapeEdit/item/arch.h"
+#include "mainWindow/shapeEdit/item/curve.h"
+#include "mainWindow/shapeEdit/item/ellipse.h"
+#include "mainWindow/shapeEdit/item/image.h"
+#include "mainWindow/shapeEdit/item/line.h"
+#include "mainWindow/shapeEdit/item/linePort.h"
+#include "mainWindow/shapeEdit/item/path.h"
+#include "mainWindow/shapeEdit/item/pointPort.h"
+#include "mainWindow/shapeEdit/item/rectangle.h"
+#include "mainWindow/shapeEdit/item/stylus.h"
+#include "mainWindow/shapeEdit/item/text.h"
+#include "mainWindow/shapeEdit/item/textPicture.h"
+
 using namespace qReal;
+using namespace qReal::shapeEdit;
 
 XmlLoader::XmlLoader(Scene *scene)
 {
@@ -320,7 +335,7 @@ void XmlLoader::readLine(const QDomElement &line)
 void XmlLoader::readEllipse(const QDomElement &ellipse)
 {
 	QRectF rect = readRectOfXandY(ellipse);
-	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
+	ShapeEditEllipse* item = new ShapeEditEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(ellipse));
@@ -342,7 +357,7 @@ void XmlLoader::readArch(const QDomElement &arch)
 void XmlLoader::readRectangle(const QDomElement &rectangle)
 {
 	QRectF rect = readRectOfXandY(rectangle);
-	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
+	ShapeEditRectangle* item = new ShapeEditRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), nullptr);
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(rectangle));
@@ -640,14 +655,14 @@ void XmlLoader::readPointPort(const QDomElement &pointPort)
 	mScene->setZValue(item);
 }
 
-Item::VisibilityCondition XmlLoader::readVisibility(const QDomElement &item)
+VisibilityCondition XmlLoader::readVisibility(const QDomElement &item)
 {
 	QDomElement visibility = item.elementsByTagName("showIf").item(0).toElement();
 	if (visibility.isNull()) {
-		return Item::VisibilityCondition();
+        return VisibilityCondition();
 	}
 
-	Item::VisibilityCondition result;
+    VisibilityCondition result;
 	result.property = visibility.attribute("property");
 	result.sign = visibility.attribute("sign");
 	result.value = visibility.attribute("value");

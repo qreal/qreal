@@ -27,68 +27,98 @@
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/widgets/colorListEditor.h>
 
-#include "mainWindow/shapeEdit/xmlLoader.h"
-#include "mainWindow/mainWindow.h"
+#include "mainWindow/shapeEdit/item/createItemPushButton.h"
+#include "mainWindow/shapeEdit/saveLoadLogicUsingModel.h"
+#include "mainWindow/shapeEdit/saveLoadLogicForInterpreter.h"
+
+#include "mainWindow/shapeEdit/item/item.h"
+#include "mainWindow/shapeEdit/item/curve.h"
+#include "mainWindow/shapeEdit/item/ellipse.h"
+#include "mainWindow/shapeEdit/item/image.h"
+#include "mainWindow/shapeEdit/item/line.h"
+#include "mainWindow/shapeEdit/item/linePort.h"
+#include "mainWindow/shapeEdit/item/pointPort.h"
+#include "mainWindow/shapeEdit/item/rectangle.h"
+#include "mainWindow/shapeEdit/item/stylus.h"
+#include "mainWindow/shapeEdit/item/text.h"
+#include "mainWindow/shapeEdit/item/textPicture.h"
 
 using namespace qReal;
+using namespace qReal::shapeEdit;
 using namespace utils;
 
-ShapeEdit::ShapeEdit(QWidget *parent)
-		: QWidget(parent), mUi(new Ui::ShapeEdit), mRole(0)
+ShapeEdit::ShapeEdit(Controller *controller)
+        : mUi(new Ui::ShapeEdit)
 {
-	init();
-	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
+    mUi->setupUi(this);
+    mScene = new Scene(mUi->graphicsView, controller, this);
+
+    mId = Id::createElementId("", mDiagramId, "");
+    Q_ASSERT(mId.isNull());
+
+    mSaveLoadLogic = new SaveLoadLogic(this, mScene);
+
+    init();
+    connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
 
-ShapeEdit::ShapeEdit(
-	qReal::models::details::LogicalModel *model
-	, const QPersistentModelIndex &index
-	, const int &role
-	, bool useTypedPorts
-	)
-	: QWidget(nullptr)
-	, mUi(new Ui::ShapeEdit)
-	, mModel(model)
-	, mIndex(index)
-	, mRole(role)
-	, mUseTypedPorts(useTypedPorts)
+ShapeEdit::ShapeEdit(const QString &propertyValue
+        , models::LogicalModelAssistApi &modelApi
+        , const QPersistentModelIndex &index
+        , const int &role
+        , Controller *controller
+        , bool isUsingTypedPorts)
+        : mUi(new Ui::ShapeEdit)
 {
-	init();
-	mUi->saveButton->setEnabled(true);
-	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+    mUi->setupUi(this);
+    mScene = new Scene(mUi->graphicsView, controller, this);
+
+    Id tmpId = modelApi.idByIndex(index);
+    mId = Id::createElementId(tmpId.editor(), mDiagramId, tmpId.element());
+
+    mSaveLoadLogic = new SaveLoadLogicUsingModel(this, mScene, modelApi, index, role, isUsingTypedPorts);
+
+    init();
+    mUi->saveButton->setEnabled(true);
+    connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+    if (!propertyValue.isEmpty()) {
+        mSaveLoadLogic->loadFromText(propertyValue);
+    }
 }
 
-ShapeEdit::ShapeEdit(
-	const Id &id
-	, const EditorManagerInterface &editorManager
-	, const qrRepo::GraphicalRepoApi &graphicalRepoApi
-	, MainWindow *mainWindow
-	, qReal::gui::editor::EditorView *editorView
-	, bool useTypedPorts
-	)
-	: QWidget(nullptr)
-	, mUi(new Ui::ShapeEdit)
-	, mRole(0)
-	, mId(id)
-	, mEditorManager(&editorManager)
-	, mMainWindow(mainWindow)
-	, mEditorView(editorView)
-	, mUseTypedPorts(useTypedPorts)
+ShapeEdit::ShapeEdit(const QString &propertyValue
+        , const Id &id
+        , const EditorManagerInterface &editorManager
+        , const qrRepo::GraphicalRepoApi &graphicalRepoApi
+        , qReal::gui::editor::EditorView *editorView
+        , Controller *controller
+        , bool isUsingTypedPorts)
+        : mUi(new Ui::ShapeEdit)
 {
-	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
-	init();
-	mUi->saveButton->setEnabled(true);
-	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+    mUi->setupUi(this);
+    mScene = new Scene(mUi->graphicsView, controller, this);
+
+    mId = Id::createElementId(id.editor(), mDiagramId, id.element());
+
+    IdList graphicalElements = graphicalRepoApi.graphicalElements(Id(id.editor(), id.diagram(), id.element()));
+    mSaveLoadLogic = new SaveLoadLogicForInterpreter(this, mScene, id, editorManager, graphicalElements, editorView, isUsingTypedPorts);
+
+    init();
+    mUi->saveButton->setEnabled(true);
+    connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+    if (!propertyValue.isEmpty()) {
+        mSaveLoadLogic->loadFromText(propertyValue);
+    }
 }
 
 void ShapeEdit::init()
 {
-	mUi->setupUi(this);
-
-	mScene = new Scene(mUi->graphicsView, this);
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	mUi->graphicsView->setMouseTracking(true);
+
+    SettingsListener::listen("IndexGrid", mScene, &Scene::redraw);
+    SettingsListener::listen("GridWidth", mScene, &Scene::redraw);
 
 	QStringList penStyleList = Item::getPenStyleList();
 	mUi->penStyleComboBox->addItems(penStyleList);
@@ -101,23 +131,13 @@ void ShapeEdit::init()
 	mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
-	mUi->portsComboBox->addItems(getPortTypes());
+    mUi->portsComboBox->addItems(mSaveLoadLogic->loadPortTypes());
 
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
 
-	initButtonGroup();
-	connect(mUi->drawLineButton, SIGNAL(clicked(bool)), this, SLOT(drawLine(bool)));
-	connect(mUi->drawEllipseButton, SIGNAL(clicked(bool)), this, SLOT(drawEllipse(bool)));
-	connect(mUi->drawCurveButton, SIGNAL(clicked(bool)), this, SLOT(drawCurve(bool)));
-	connect(mUi->drawRectButton, SIGNAL(clicked(bool)), this, SLOT(drawRectangle(bool)));
-	connect(mUi->addTextButton, SIGNAL(clicked(bool)), this, SLOT(addText(bool)));
-	connect(mUi->addDynamicTextButton, SIGNAL(clicked(bool)), this, SLOT(addDynamicText(bool)));
-	connect(mUi->addTextPictureButton, SIGNAL(clicked(bool)), this, SLOT(addTextPicture(bool)));
-	connect(mUi->addPointPortButton, SIGNAL(clicked(bool)), this, SLOT(addPointPort(bool)));
-	connect(mUi->addLinePortButton, SIGNAL(clicked(bool)), this, SLOT(addLinePort(bool)));
-	connect(mUi->stylusButton, SIGNAL(clicked(bool)), this, SLOT(addStylus(bool)));
-	connect(mUi->addImageButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
+    initAvailableItems();
+    initItemButtons();
 
 	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
@@ -139,10 +159,10 @@ void ShapeEdit::init()
 	connect(mUi->portsComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePortsType(const QString &)));
 
 	connect(mUi->visibilityConditionsButton, SIGNAL(clicked()), this, SLOT(visibilityButtonClicked()));
-	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
-	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
-	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
-	connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(savePicture()));
+    connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItems()));
+    connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItems()));
+    connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
+    connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(saveAsPicture()));
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(this, SIGNAL(saveToXmlSignal()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
@@ -165,7 +185,7 @@ void ShapeEdit::resetHighlightAllButtons()
 	foreach (QAbstractButton *button, mButtonGroup) {
 		button->setChecked(false);
 	}
-	mScene->addNone(true);
+    mScene->addNone();
 }
 
 void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
@@ -177,19 +197,48 @@ void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
 	}
 }
 
-void ShapeEdit::initButtonGroup()
+void ShapeEdit::initItemButtons()
 {
-	mButtonGroup.append(mUi->drawLineButton);
-	mButtonGroup.append(mUi->drawEllipseButton);
-	mButtonGroup.append(mUi->drawCurveButton);
-	mButtonGroup.append(mUi->drawRectButton);
-	mButtonGroup.append(mUi->addTextButton);
-	mButtonGroup.append(mUi->addDynamicTextButton);
-	mButtonGroup.append(mUi->addTextPictureButton);
-	mButtonGroup.append(mUi->addPointPortButton);
-	mButtonGroup.append(mUi->addLinePortButton);
-	mButtonGroup.append(mUi->stylusButton);
-	mButtonGroup.append(mUi->addImageButton);
+    const int numButtons = mAvailableItems.size();
+    const int numRows = 6;
+    const int numColumns = numButtons / numRows + 1;
+
+    int i = 0;
+    for (int iRow = 0; iRow < numRows; ++iRow) {
+        for (int iColumn = 0; iColumn < numColumns; ++iColumn) {
+            if (i >= numButtons) {
+                return;
+            }
+
+            Item *item = mAvailableItems.at(i);
+            ++i;
+            CreateItemPushButton *itemButton = item->createButton();
+            mUi->itemButtonsGridLayout->addWidget(itemButton, iRow, iColumn, 1, 1);
+            connect(itemButton, SIGNAL(clickedItemButton(bool, Item *)), this, SLOT(addShapeEditItem(bool, Item *)));
+
+            if (dynamic_cast<Image *>(item)) {
+                connect(itemButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
+            }
+
+            mButtonGroup.append(itemButton);
+        }
+    }
+}
+
+void ShapeEdit::initAvailableItems()
+{
+    mAvailableItems.append(new ShapeEditEllipse(0, 0, 0, 0));
+    mAvailableItems.append(new ShapeEditRectangle(0, 0, 0, 0));
+    mAvailableItems.append(new Line(0, 0, 0, 0));
+    QPointF p;
+    mAvailableItems.append(new Curve(p, p, p));
+    mAvailableItems.append(new Stylus(0, 0, nullptr));
+    mAvailableItems.append(new LinePort(0, 0, 0, 0));
+    mAvailableItems.append(new PointPort(0, 0));
+    mAvailableItems.append(new Text());
+    mAvailableItems.append(new Text(true));
+    mAvailableItems.append(new TextPicture());
+    mAvailableItems.append(new Image("", 0, 0));
 }
 
 void ShapeEdit::initPalette()
@@ -222,9 +271,20 @@ ShapeEdit::~ShapeEdit()
 	delete mUi;
 }
 
-graphicsUtils::AbstractView* ShapeEdit::getView()
+void ShapeEdit::setDrawSceneGrid(bool show)
+{
+    mScene->setNeedDrawGrid(show);
+    mScene->invalidate();
+}
+
+graphicsUtils::AbstractView* ShapeEdit::getView() const
 {
 	return mUi->graphicsView;
+}
+
+Id ShapeEdit::getId() const
+{
+    return mId;
 }
 
 void ShapeEdit::changeEvent(QEvent *e)
@@ -255,159 +315,50 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-QList<QDomElement> ShapeEdit::generateGraphics()
+void ShapeEdit::addShapeEditItem(bool checked, Item* newItem)
 {
-	QDomElement picture = mDocument.createElement("picture");
-	QDomElement label = mDocument.createElement("labels");
-	QDomElement ports = mDocument.createElement("ports");
-
-	QRect sceneBoundingRect = mScene->realItemsBoundingRect();
-	mTopLeftPicture = sceneBoundingRect.topLeft();
-
-	QList<QGraphicsItem *> list = mScene->items();
-	foreach (QGraphicsItem *graphicsItem, list) {
-
-		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != nullptr) {
-			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateDom(mDocument, mTopLeftPicture);
-			QDomElement domItem = genItem.first;
-			Item::DomElementTypes domType = genItem.second;
-			switch (domType) {
-			case Item::pictureType:
-				picture.appendChild(domItem);
-				break;
-			case Item::labelType:
-				label.appendChild(domItem);
-				break;
-			case Item::portType:
-				ports.appendChild(domItem);
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width() + 1));
-	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height() + 1));
-
-	QList<QDomElement> domList;
-	domList.push_back(picture);
-	domList.push_back(label);
-	domList.push_back(ports);
-
-	return domList;
-}
-
-void ShapeEdit::generateDom()
-{
-	QDomElement graphics = mDocument.createElement("graphics");
-	mDocument.appendChild(graphics);
-
-	QList<QDomElement> list = generateGraphics();
-	foreach (QDomElement domItem, list) {
-		graphics.appendChild(domItem);
-	}
-}
-
-void ShapeEdit::exportToXml(const QString &fileName)
-{
-	OutFile file(fileName);
-	generateDom();
-	file() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	file() << mDocument.toString(4);
-	file() << "\n";
-}
-
-void ShapeEdit::saveToXml()
-{
-	mDocument.clear();
-	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorXml", this);
-	if (fileName.isEmpty()) {
-		return;
-	}
-
-	exportToXml(fileName);
-}
-
-void ShapeEdit::save()
-{
-	generateDom();
-	if (mIndex.isValid()) {
-		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
-	} else {
-		mEditorManager->updateShape(mId, mDocument.toString(4));
-		foreach (const Id graphicalElement, mGraphicalElements) {
-			mEditorManager->updateShape(graphicalElement, mDocument.toString(4));
-			for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
-				qReal::gui::editor::NodeElement * const element = dynamic_cast<qReal::gui::editor::NodeElement *>(item);
-				if (element && element->id().type() == mId.type()) {
-					element->updateShape(mDocument.toString(4));
-				}
-			}
-		}
-
-		mMainWindow->loadPlugins();
-	}
-
-	QMessageBox::information(this, tr("Saving"), "Saved successfully");
-	mDocument.clear();
-}
-
-void ShapeEdit::savePicture()
-{
-	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorPicture", this);
-	if (fileName.isEmpty()) {
-		return;
-	}
-
-	QRectF sceneRect = mScene->itemsBoundingRect();
-	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
-	QPainter painter(&image);
-
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::black));
-	painter.drawRect(sceneRect);
-
-	mScene->render(&painter);
-	image.save(fileName);
-}
-
-void ShapeEdit::open()
-{
-	mDocument.clear();
-	QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorXml", this);
-	if (fileName.isEmpty()) {
-		return;
-	}
-
-	XmlLoader loader(mScene);
-	loader.readFile(fileName);
-}
-
-void ShapeEdit::load(const QString &text)
-{
-	if (text.isEmpty()) {
-		return;
-	}
-
-	XmlLoader loader(mScene);
-	loader.readString(text);
+    mScene->addShapeEditItem(checked, newItem);
+    if (checked) {
+        CreateItemPushButton *buttonSender = dynamic_cast<CreateItemPushButton *>(sender());
+        if (buttonSender) {
+            setHighlightOneButton(buttonSender);
+        }
+    }
 }
 
 void ShapeEdit::addImage(bool checked)
 {
-	if (checked) {
-		setHighlightOneButton(mUi->addImageButton);
-		QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorImage", this);
-		if (fileName.isEmpty()) {
-			return;
-		}
+    if (checked) {
+        QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorImage", this);
+        if (fileName.isEmpty()) {
+            return;
+        }
 
-		mScene->addImage(fileName);
-	}
+        mScene->addImage(fileName);
+    }
+}
+
+void ShapeEdit::save()
+{
+    mSaveLoadLogic->save();
+}
+
+void ShapeEdit::saveToXml()
+{
+    QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorXml", this);
+    mSaveLoadLogic->saveToXml(fileName);
+}
+
+void ShapeEdit::saveAsPicture()
+{
+	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorPicture", this);
+    mSaveLoadLogic->saveAsPicture(fileName);
+}
+
+void ShapeEdit::open()
+{
+	QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorXml", this);
+    mSaveLoadLogic->loadFromFile(fileName);
 }
 
 void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
@@ -535,154 +486,13 @@ void ShapeEdit::changeTextName()
 	mScene->changeTextName(newName);
 }
 
-
-void ShapeEdit::drawLine(bool checked)
-{
-	mScene->drawLine(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawLineButton);
-	}
-}
-
-void ShapeEdit::drawEllipse(bool checked)
-{
-	mScene->drawEllipse(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawEllipseButton);
-	}
-}
-
-void ShapeEdit::drawCurve(bool checked)
-{
-	mScene->drawCurve(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawCurveButton);
-	}
-}
-
-void ShapeEdit::drawRectangle(bool checked)
-{
-	mScene->drawRectangle(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->drawRectButton);
-	}
-}
-
-void ShapeEdit::addText(bool checked)
-{
-	mScene->addText(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addTextButton);
-	}
-}
-
-void ShapeEdit::addDynamicText(bool checked)
-{
-	mScene->addDynamicText(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addDynamicTextButton);
-	}
-}
-
-void ShapeEdit::addTextPicture(bool checked)
-{
-	mScene->addTextPicture(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addTextPictureButton);
-	}
-}
-
-void ShapeEdit::addPointPort(bool checked)
-{
-	mScene->addPointPort(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addPointPortButton);
-	}
-}
-
-void ShapeEdit::addLinePort(bool checked)
-{
-	mScene->addLinePort(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->addLinePortButton);
-	}
-}
-
-void ShapeEdit::addStylus(bool checked)
-{
-	mScene->addStylus(checked);
-	if (checked) {
-		setHighlightOneButton(mUi->stylusButton);
-	}
-}
-
 void ShapeEdit::visibilityButtonClicked()
 {
-	QList<Item *> selectedItems = mScene->selectedSceneItems();
-	if (selectedItems.isEmpty()) {
+    auto selectedItems = mScene->selectedShapeEditItems();
+    auto properties = mSaveLoadLogic->loadProperties();
+    if (selectedItems.isEmpty() || properties.isEmpty()) {
 		return;
 	}
-	VisibilityConditionsDialog vcDialog(getProperties(), selectedItems);
+    VisibilityConditionsDialog vcDialog(properties, selectedItems);
 	vcDialog.exec();
-}
-
-QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties() const
-{
-	typedef VisibilityConditionsDialog::PropertyInfo PropertyInfo;
-
-	QMap<QString, PropertyInfo> result;
-
-	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
-	qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
-
-	foreach (const qReal::Id &child, repoApi->children(mModel->idByIndex(mIndex))) {
-		if (child.element() != "MetaEntity_Attribute") {
-			continue;
-		}
-
-		QString type = repoApi->stringProperty(child, "attributeType");
-		if (type == "int") {
-			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Int, QStringList()));
-		} else if (type == "bool") {
-			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Bool
-					, QStringList() << "true" << "false"));
-		} else if (type == "string") {
-			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::String, QStringList()));
-		} else {
-			foreach (const qReal::Id &enumElement, enums) {
-				if (!repoApi->isLogicalElement(enumElement)) {
-					continue;
-				}
-
-				if (repoApi->name(enumElement) == type) {
-					QStringList enumValues;
-					foreach (const qReal::Id &value, repoApi->children(enumElement)) {
-						enumValues << repoApi->stringProperty(value, "valueName");
-					}
-
-					result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Enum, enumValues));
-				}
-			}
-		}
-	}
-	return result;
-}
-
-QStringList ShapeEdit::getPortTypes() const
-{
-	QStringList result;
-	result << "NonTyped";
-
-	if (mUseTypedPorts) {
-		qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
-		if (repoApi) {
-			foreach (const qReal::Id &port, repoApi->elementsByType("MetaEntityPort")) {
-				if (repoApi->isLogicalElement(port)) {
-					result << repoApi->name(port);
-				}
-			}
-		}
-	}
-
-	return result;
 }
