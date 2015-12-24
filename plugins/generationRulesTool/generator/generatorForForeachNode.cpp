@@ -47,25 +47,30 @@ QString GeneratorForForeachNode::generatedResult(const QSharedPointer<Foreach> &
 			, scopeInfo.variablesTable(), scopeInfo.currentScope());
 
 	QString result;
-	scopeInfo.variablesTable().addNewVariable(identifierName, identifierType, listOfElements);
 
-	const auto actionNode = foreachNode->program();
+	if (!listOfElements.isEmpty()) {
+		scopeInfo.variablesTable().addNewVariable(identifierName, identifierType, listOfElements);
 
-	while (scopeInfo.variablesTable().nextIdExists(identifierName)) {
-		result += resultForOneIteration(actionNode, generatorConfigurer, scopeInfo);
+		const auto actionNode = foreachNode->program();
+
+		while (scopeInfo.variablesTable().nextIdExists(identifierName)) {
+			result += resultForOneIteration(actionNode, generatorConfigurer, scopeInfo);
+			scopeInfo.variablesTable().movePointer(identifierName);
+		}
+
+		const auto excludedText = qrtext::as<Text>(foreachNode->excludedText());
+		if (excludedText) {
+			scopeInfo.setExcludedText(excludedText->text());
+		}
+
 		scopeInfo.variablesTable().movePointer(identifierName);
+		result += resultForOneIteration(actionNode, generatorConfigurer, scopeInfo);
+		scopeInfo.setExcludedText(QString());
+
+		scopeInfo.variablesTable().removeVariable(identifierName);
+	} else {
+		generatorConfigurer.errorsInformation().addError(QObject::tr("Iterated list is empty."));
 	}
-
-	const auto excludedText = qrtext::as<Text>(foreachNode->excludedText());
-	if (excludedText) {
-		scopeInfo.setExcludedText(excludedText->text());
-	}
-
-	scopeInfo.variablesTable().movePointer(identifierName);
-	result += resultForOneIteration(actionNode, generatorConfigurer, scopeInfo);
-	scopeInfo.setExcludedText(QString());
-
-	scopeInfo.variablesTable().removeVariable(identifierName);
 
 	return result;
 }

@@ -44,6 +44,7 @@ using namespace generationRules;
 GenerationRulesPlugin::GenerationRulesPlugin()
 	: mRepo(nullptr)
 	, mAction(tr("Generate code for current diagram"), nullptr)
+	, mErrorReporter(nullptr)
 {
 	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::openWindowForPathsSpecifying);
 }
@@ -74,6 +75,8 @@ void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalModelAssistInterface = &configurator.logicalModelApi();
 
+	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
+
 	mMetamodelRepoApi = &metamodelRepoApi;
 
 	mEditorManagerInterface = editorManagerInterface;
@@ -81,6 +84,9 @@ void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
 
 void GenerationRulesPlugin::generateCodeForAllElements()
 {
+	mErrorReporter->clearErrors();
+	mErrorReporter->clear();
+
 	mPathToGeneratedCode = mSpecifyPathsDialog->currentPathToFolder();
 	mMainFileName = mSpecifyPathsDialog->currentFileName();
 
@@ -108,28 +114,39 @@ void GenerationRulesPlugin::generateCode(
 
 	generationRules::generator::VariablesTable table;
 	generationRules::generator::CurrentScope scope;
+	generationRules::generator::ErrorsInfo errorsInfo;
 
 	generationRules::generator::GeneratorConfigurer generatorConfigurer(mLogicalModelAssistInterface
-			, mEditorManagerInterface, editorId, diagramId, mPathToGeneratedCode);
+			, mEditorManagerInterface, errorsInfo, editorId, diagramId, mPathToGeneratedCode);
 	generationRules::generator::ScopeInfo scopeInfo(table, scope);
 
 	const auto resultOfGenerationForRoot = generator::CommonGenerator::generatedResult(programForRoot
 			, generatorConfigurer, scopeInfo);
 
-	if (!resultOfGenerationForRoot.isEmpty()) {
-		qDebug() << mPathToGeneratedCode << mMainFileName;
-		QFile outputFile(mPathToGeneratedCode + "/" + mMainFileName);
+	const QStringList listOfErrors = generatorConfigurer.errorsInformation().errorsList();
 
-		if (outputFile.open(QIODevice::WriteOnly)) {
-			QTextStream stream(&outputFile);
-			stream << resultOfGenerationForRoot;
+	if (listOfErrors.isEmpty()) {
+		if (!resultOfGenerationForRoot.isEmpty()) {
+			qDebug() << mPathToGeneratedCode << mMainFileName;
+			QFile outputFile(mPathToGeneratedCode + "/" + mMainFileName);
 
-			outputFile.close();
+			if (outputFile.open(QIODevice::WriteOnly)) {
+				QTextStream stream(&outputFile);
+				stream << resultOfGenerationForRoot;
+
+				outputFile.close();
+			}
+
+			QMessageBox::information(nullptr, tr("Files generated"), tr("All files have been generated to ")
+					+ mPathToGeneratedCode + ("."));
 		}
-	}
+	} else {
+		for (const auto error : listOfErrors) {
+			mErrorReporter->addWarning(error);
+		}
 
-	QMessageBox::information(nullptr, tr("Files generated"), tr("All files have been generated to ")
-			+ mPathToGeneratedCode + ("."));
+		QMessageBox::information(nullptr, tr("Errors occured"), tr("Some errors occured during generation."));
+	}
 
 	table.clear();
 }

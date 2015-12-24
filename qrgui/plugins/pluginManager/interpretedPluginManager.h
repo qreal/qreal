@@ -33,7 +33,8 @@ public:
 	/// Inits interpreted plugins.
 	/// @param configurator - information about model
 	/// @param metamodelRepoApi - information about metamodel
-	void init(const PluginConfigurator &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi
+	void init(const PluginConfigurator &configurator
+			, qrRepo::LogicalRepoApi &metamodelRepoApi
 			, EditorManagerInterface *editorManagerInterface);
 
 	/// Returns list of actions of all plugins.

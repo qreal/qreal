@@ -80,6 +80,7 @@ HEADERS += \
 	$$PWD/appearance/ruleHighlighter.h \
 	$$PWD/appearance/keywords.h \
 	$$PWD/generator/commonInfo/scopeInfo.h \
+	$$PWD/generator/commonInfo/errorsInfo.h \
 
 SOURCES += \
 	$$PWD/generationRulesPlugin.cpp \

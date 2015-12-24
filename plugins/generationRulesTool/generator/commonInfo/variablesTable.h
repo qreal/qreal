@@ -47,7 +47,9 @@ public:
 			, mListOfIds(listOfIds)
 			, mIdListIterator(mListOfIds)
 		{
-			mCurrentId = mIdListIterator.next();
+			if (mIdListIterator.hasNext()) {
+				mCurrentId = mIdListIterator.next();
+			}
 		}
 
 		/// Returns current id in list.

@@ -22,6 +22,7 @@
 #include "ast/node.h"
 #include "variablesTable.h"
 #include "currentScope.h"
+#include "errorsInfo.h"
 
 namespace generationRules {
 namespace generator {
@@ -38,11 +39,13 @@ public:
 	/// @param pathToGeneratedCode - path to folder with generated code.
 	GeneratorConfigurer(qReal::LogicalModelAssistInterface *logicalModelInterface
 			, qReal::EditorManagerInterface *editorManagerInterface
+			, ErrorsInfo &errorsInfo
 			, const qReal::Id &editorId
 			, const qReal::Id &diagramId
 			, const QString &pathToGeneratedCode)
 		: mLogicalModelAssistInterface(logicalModelInterface)
 		, mEditorManagerInterface(editorManagerInterface)
+		, mErrorsInfo(errorsInfo)
 		, mEditorId(editorId)
 		, mDiagramId(diagramId)
 		, mPathToGeneratedCode(pathToGeneratedCode)
@@ -78,9 +81,15 @@ public:
 		return mPathToGeneratedCode;
 	}
 
+	ErrorsInfo &errorsInformation() const
+	{
+		return mErrorsInfo;
+	}
+
 private:
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // doesn't have ownership
 	qReal::EditorManagerInterface *mEditorManagerInterface;  // doesn't have ownership
+	ErrorsInfo &mErrorsInfo;
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
 	const QString &mPathToGeneratedCode;

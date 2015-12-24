@@ -31,8 +31,7 @@ InterpretedPluginManager::~InterpretedPluginManager()
 {
 }
 
-void InterpretedPluginManager::init(
-		const PluginConfigurator &configurator
+void InterpretedPluginManager::init(const PluginConfigurator &configurator
 		, qrRepo::LogicalRepoApi &metamodelRepoApi
 		, EditorManagerInterface *editorManagerInterface)
 {

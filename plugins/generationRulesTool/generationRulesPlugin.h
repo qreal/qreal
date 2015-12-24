@@ -17,6 +17,8 @@
 #include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
+#include <qrgui/mainWindow/errorReporter.h>
+
 #include "ast/node.h"
 
 #include "dialogs/specifyGenerationRulesDialog.h"
@@ -41,7 +43,8 @@ public:
 
 	void init(const qReal::PluginConfigurator &configurator
 			, qrRepo::LogicalRepoApi &metamodelRepoApi
-			, qReal::EditorManagerInterface *editorManagerInterface) override;
+			, qReal::EditorManagerInterface *editorManagerInterface
+			) override;
 
 private slots:
 	void openWindowForPathsSpecifying();
@@ -71,6 +74,8 @@ private:
 	qReal::Id mRootId;
 
 	qReal::gui::SpecifyPathToGeneratedCodeDialog *mSpecifyPathsDialog;  // Doesn't have ownership.
+
+	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn't have ownership.
 
 	QString mPathToGeneratedCode;
 	QString mMainFileName;

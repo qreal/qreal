@@ -21,8 +21,7 @@ InterpretedPluginsLoader::InterpretedPluginsLoader()
 {
 }
 
-void InterpretedPluginsLoader::init(
-		EditorManagerInterface *editorManager
+void InterpretedPluginsLoader::init(EditorManagerInterface *editorManager
 		, const PluginConfigurator &configurator)
 {
 	mInterpreterEditorManager = static_cast<InterpreterEditorManager *>(editorManager);

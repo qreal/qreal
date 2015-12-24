@@ -33,5 +33,6 @@ QVariant GeneratorForComplexIdentifierNode::generatedResult(
 	const auto propertyPart = qrtext::as<Identifier>(complexIdentifierNode->propertyPart());
 
 	const auto logicalModelInterface = generatorConfigurer.logicalModelInterface();
+
 	return logicalModelInterface->propertyByRoleName(elementId, propertyPart->name());
 }
