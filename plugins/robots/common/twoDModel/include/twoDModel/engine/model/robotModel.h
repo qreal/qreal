@@ -176,6 +176,9 @@ private:
 	void serializeWheels(QDomElement &robotElement) const;
 	void deserializeWheels(const QDomElement &robotElement);
 
+    QPointF averageAcceleration();
+    qreal averageAngularSpeed();
+
 	/// Simulated robot motors.
 	/// Has ownership.
 	QHash<kitBase::robotModel::PortInfo, Motor *> mMotors;
@@ -197,6 +200,8 @@ private:
 	QColor mMarker;
     QPointF mSpeed;
     QPointF mAcceleration;
+    QVector<QPointF> mPosStamps;
+    QVector<qreal> mAngleStamps;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
 
