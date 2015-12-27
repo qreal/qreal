@@ -22,7 +22,7 @@ Accelerometer::Accelerometer(const DeviceInfo &info, const PortInfo &port
 	: kitBase::robotModel::robotParts::AccelerometerSensor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
-    connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newVectorSensorData
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newVectorSensorData
 			, this, &Accelerometer::onIncomingData);
 }
 

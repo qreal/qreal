@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "VectorSensor.h"
+#include "vectorSensor.h"
 #include "kitBase/kitBaseDeclSpec.h"
 
 namespace kitBase {

@@ -29,5 +29,5 @@ Accelerometer::Accelerometer(const DeviceInfo &info
 
 void Accelerometer::read()
 {
-    emit newData(mEngine.readAccelerometerSensor());
+	emit newData(mEngine.readAccelerometerSensor());
 }

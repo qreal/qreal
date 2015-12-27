@@ -113,7 +113,7 @@ public:
 
 	/// Returns the item whose scene position will determine robot`s start position.
 	/// Transfers ownership.
-	QGraphicsItem *startPositionMarker() const;
+    QGraphicsItem *startPositionMarker() const;
 
     /// Returns accelerometer sensor data.
     QVector<int> accelerometerReading();

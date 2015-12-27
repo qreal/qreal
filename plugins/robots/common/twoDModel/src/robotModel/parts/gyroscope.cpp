@@ -29,5 +29,5 @@ Gyroscope::Gyroscope(const DeviceInfo &info
 
 void Gyroscope::read()
 {
-    emit newData(mEngine.readGyroscopeSensor());
+	emit newData(mEngine.readGyroscopeSensor());
 }

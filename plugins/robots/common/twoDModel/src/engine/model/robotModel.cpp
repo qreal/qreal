@@ -45,13 +45,13 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mSensorsConfiguration(robotModel.robotId())
 	, mPos(QPointF(0,0))
 	, mAngle(0)
-    , mAngularSpeed(0)
-    , mBeepTime(0)
+	, mAngularSpeed(0)
+	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
-    , mAcceleration(QPointF(0,0))
-    , mPosStamps(QVector<QPointF>(50))
-    , mAngleStamps(QVector<qreal>(50))
+	, mAcceleration(QPointF(0,0))
+	, mPosStamps(QVector<QPointF>(50))
+	, mAngleStamps(QVector<qreal>(50))
 	, mPhysicsEngine(nullptr)
 	, mStartPositionMarker(new items::StartPosition)
 {
@@ -188,28 +188,28 @@ void RobotModel::countBeep()
 		mBeepTime -= Timeline::timeInterval;
 	} else {
 		emit playingSoundChanged(false);
-    }
+	}
 }
 
 void RobotModel::countSpeedAndAcceleration()
 {
-    mAngleStamps.pop_front();
-    mAngleStamps.append(mAngle);
-    mAngularSpeed = averageAngularSpeed();
+	mAngleStamps.pop_front();
+	mAngleStamps.append(mAngle);
+	mAngularSpeed = averageAngularSpeed();
 
-    mPosStamps.pop_front();
-    mPosStamps.append(mPos);
-    mAcceleration = averageAcceleration();
+	mPosStamps.pop_front();
+	mPosStamps.append(mPos);
+	mAcceleration = averageAcceleration();
 }
 
 QPointF RobotModel::averageAcceleration()
 {
-    return (mPosStamps[49] - mPosStamps[48] - mPosStamps[1] + mPosStamps[0]) / mPosStamps.size();
+	return (mPosStamps[49] - mPosStamps[48] - mPosStamps[1] + mPosStamps[0]) / mPosStamps.size();
 }
 
 qreal RobotModel::averageAngularSpeed()
 {
-    return (mAngleStamps[49] - mAngleStamps[0]) / 50;
+	return (mAngleStamps[49] - mAngleStamps[0]) / 50;
 }
 
 QPointF RobotModel::rotationCenter() const
@@ -272,18 +272,20 @@ void RobotModel::markerUp()
 
 QVector<int> RobotModel::accelerometerReading()
 {
-    return {static_cast<int>(mAcceleration.x() * accelerometerConstant), static_cast<int>(mAcceleration.y() * accelerometerConstant), g};
+	return {static_cast<int>(mAcceleration.x() * accelerometerConstant)
+				, static_cast<int>(mAcceleration.y() * accelerometerConstant)
+				, g};
 }
 
 QVector<int> RobotModel::gyroscopeReading()
 {
-    return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
+	return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
 }
 
 void RobotModel::nextStep()
 {
 	// Changing position quietly, they must not be caught by UI here.
-    mPos += mPhysicsEngine->shift().toPointF();
+	mPos += mPhysicsEngine->shift().toPointF();
 	mAngle += mPhysicsEngine->rotation();
 	emit positionRecalculated(mPos, mAngle);
 }

@@ -102,17 +102,17 @@ int TwoDModelEngineApi::readSonarSensor(const PortInfo &port) const
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
-    return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
+	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
 }
 
 QVector<int> TwoDModelEngineApi::readAccelerometerSensor() const
 {
-    return mModel.robotModels()[0]->accelerometerReading();
+	return mModel.robotModels()[0]->accelerometerReading();
 }
 
 QVector<int> TwoDModelEngineApi::readGyroscopeSensor() const
 {
-    return mModel.robotModels()[0]->gyroscopeReading();
+	return mModel.robotModels()[0]->gyroscopeReading();
 }
 
 int TwoDModelEngineApi::spoilSonarReading(const int distance) const

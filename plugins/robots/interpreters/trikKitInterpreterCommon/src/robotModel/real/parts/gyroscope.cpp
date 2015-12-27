@@ -21,7 +21,7 @@ Gyroscope::Gyroscope(const DeviceInfo &info, const PortInfo &port, utils::TcpRob
 	: kitBase::robotModel::robotParts::GyroscopeSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-    connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newVectorSensorData
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newVectorSensorData
 			, this, &Gyroscope::onIncomingData);
 }
 
