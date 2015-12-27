@@ -115,7 +115,7 @@ public:
 	/// Transfers ownership.
 	QGraphicsItem *startPositionMarker() const;
 
-    /// Returns accelerometer sesnsor data.
+    /// Returns accelerometer sensor data.
     QVector<int> accelerometerReading();
 
     /// Returns gyroscope sensor data.
@@ -198,7 +198,6 @@ private:
 	int mBeepTime;
 	bool mIsOnTheGround;
 	QColor mMarker;
-    QPointF mSpeed;
     QPointF mAcceleration;
     QVector<QPointF> mPosStamps;
     QVector<qreal> mAngleStamps;

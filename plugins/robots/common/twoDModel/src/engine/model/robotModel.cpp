@@ -49,7 +49,6 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
     , mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
-    , mSpeed(QPointF(0,0))
     , mAcceleration(QPointF(0,0))
     , mPosStamps(QVector<QPointF>(50))
     , mAngleStamps(QVector<qreal>(50))
