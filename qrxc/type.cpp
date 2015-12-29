@@ -24,9 +24,7 @@ Type::Type(bool isResolved, Diagram *diagram)
 
 Type::~Type()
 {
-	foreach (Property *property, mProperties.values())
-		if (property)
-			delete property;
+	qDeleteAll(mProperties);
 }
 
 bool Type::init(const QDomElement &element, const QString &context)

@@ -24,6 +24,8 @@ namespace modelsImplementation {
 class AbstractModelItem
 {
 public:
+	virtual ~AbstractModelItem();
+
 	typedef QList<AbstractModelItem*> PointerList;
 
 	AbstractModelItem(const Id &id, AbstractModelItem *parent);
