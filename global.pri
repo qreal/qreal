@@ -61,7 +61,7 @@ unix {
 		CONFIG += sanitizer sanitize_undefined
 	}
 
-	CONFIG(sanitize_undefined) {
+	linux-g++:CONFIG(sanitize_undefined):system( g++ --version | grep -e "\<5.[0-9]" ) {
 		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
 		# That must be disabled. Variables for confguring ubsan are taken from here:
 		# https://codereview.qt-project.org/#/c/43420/17/mkspecs/common/sanitize.conf
