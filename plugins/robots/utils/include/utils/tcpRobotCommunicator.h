@@ -69,7 +69,7 @@ signals:
 
 	void newScalarSensorData(const QString &port, int data);
 
-	void newVectorSensorData(const QString &port, QVector<int> const &data);
+	void newVectorSensorData(const QString &port, const QVector<int> &data);
 
 	/// Emitted when a robot wants to print something to stdout.
 	void printText(const QString &text);

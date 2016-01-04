@@ -60,7 +60,8 @@ void GyroscopeSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 		/// @todo: log trace error?
 	} else {
 		QVector<int> sensorValue(3);
-		sensorValue.append((0xff & reading[13]) << 8 | (0xff & reading[14]));
+		// HiTechnic NXT Gyro sensor has only one axis. Let it be X axis.
+		sensorValue[0] = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mImplementation.setState(NxtInputDevice::idle);
 		emit newData(sensorValue);
 	}

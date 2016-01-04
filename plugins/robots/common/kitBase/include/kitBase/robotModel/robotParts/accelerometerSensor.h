@@ -22,7 +22,6 @@ namespace robotModel {
 namespace robotParts {
 
 /// Abstract accelerometer sensor.
-/// @todo: Make it vector (done)
 class ROBOTS_KIT_BASE_EXPORT AccelerometerSensor : public VectorSensor
 {
 	Q_OBJECT

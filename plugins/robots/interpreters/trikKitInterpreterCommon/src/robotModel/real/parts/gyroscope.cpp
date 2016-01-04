@@ -30,7 +30,7 @@ void Gyroscope::read()
 	mRobotCommunicator.requestData(port().name());
 }
 
-void Gyroscope::onIncomingData(const QString &portName, QVector<int> value)
+void Gyroscope::onIncomingData(const QString &portName, const QVector<int> &value)
 {
 	if (portName == port().name()) {
 		emit newData(value);

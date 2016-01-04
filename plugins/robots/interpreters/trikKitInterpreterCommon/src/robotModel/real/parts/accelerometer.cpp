@@ -31,7 +31,7 @@ void Accelerometer::read()
 	mRobotCommunicator.requestData(port().name());
 }
 
-void Accelerometer::onIncomingData(const QString &portName, QVector<int> value)
+void Accelerometer::onIncomingData(const QString &portName, const QVector<int> &value)
 {
 	if (portName == port().name()) {
 		emit newData(value);

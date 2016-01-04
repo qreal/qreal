@@ -18,6 +18,6 @@ using namespace kitBase::robotModel;
 using namespace robotParts;
 
 AccelerometerSensor::AccelerometerSensor(const DeviceInfo &info, const PortInfo &port)
-    : VectorSensor(info, port)
+	: VectorSensor(info, port)
 {
 }

@@ -113,13 +113,13 @@ public:
 
 	/// Returns the item whose scene position will determine robot`s start position.
 	/// Transfers ownership.
-    QGraphicsItem *startPositionMarker() const;
+	QGraphicsItem *startPositionMarker() const;
 
-    /// Returns accelerometer sensor data.
-    QVector<int> accelerometerReading();
+	/// Returns accelerometer sensor data.
+	QVector<int> accelerometerReading() const;
 
-    /// Returns gyroscope sensor data.
-    QVector<int> gyroscopeReading();
+	/// Returns gyroscope sensor data.
+	QVector<int> gyroscopeReading() const;
 
 public slots:
 	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
@@ -163,7 +163,7 @@ private:
 
 	void countNewForces();
 	void countBeep();
-    void countSpeedAndAcceleration();
+	void countSpeedAndAcceleration();
 
 	void countMotorTurnover();
 
@@ -176,8 +176,8 @@ private:
 	void serializeWheels(QDomElement &robotElement) const;
 	void deserializeWheels(const QDomElement &robotElement);
 
-    QPointF averageAcceleration();
-    qreal averageAngularSpeed();
+	QPointF averageAcceleration() const;
+	qreal averageAngularSpeed() const;
 
 	/// Simulated robot motors.
 	/// Has ownership.
@@ -194,13 +194,13 @@ private:
 
 	QPointF mPos;
 	qreal mAngle;
-    qreal mAngularSpeed;
+	qreal mAngularSpeed;
 	int mBeepTime;
 	bool mIsOnTheGround;
 	QColor mMarker;
-    QPointF mAcceleration;
-    QVector<QPointF> mPosStamps;
-    QVector<qreal> mAngleStamps;
+	QPointF mAcceleration;
+	QVector<QPointF> mPosStamps;
+	QVector<qreal> mAngleStamps;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
 

@@ -43,13 +43,13 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mSettings(settings)
 	, mRobotModel(robotModel)
 	, mSensorsConfiguration(robotModel.robotId())
-	, mPos(QPointF(0,0))
+	, mPos(QPointF(0, 0))
 	, mAngle(0)
 	, mAngularSpeed(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
-	, mAcceleration(QPointF(0,0))
+	, mAcceleration(QPointF(0, 0))
 	, mPosStamps(QVector<QPointF>(50))
 	, mAngleStamps(QVector<qreal>(50))
 	, mPhysicsEngine(nullptr)
@@ -202,14 +202,17 @@ void RobotModel::countSpeedAndAcceleration()
 	mAcceleration = averageAcceleration();
 }
 
-QPointF RobotModel::averageAcceleration()
+QPointF RobotModel::averageAcceleration() const
 {
+	/// Some arcane formula that produces natural-looking results for some reason (with correct accelerometerConstant,
+	/// since mPosStamps.size() as a divisor is obviously wrong here).
+	/// Maybe it will be better to actually count average.
 	return (mPosStamps[49] - mPosStamps[48] - mPosStamps[1] + mPosStamps[0]) / mPosStamps.size();
 }
 
-qreal RobotModel::averageAngularSpeed()
+qreal RobotModel::averageAngularSpeed() const
 {
-	return (mAngleStamps[49] - mAngleStamps[0]) / 50;
+	return (mAngleStamps[49] - mAngleStamps[0]) / mAngleStamps.size();
 }
 
 QPointF RobotModel::rotationCenter() const
@@ -270,14 +273,14 @@ void RobotModel::markerUp()
 	mMarker = Qt::transparent;
 }
 
-QVector<int> RobotModel::accelerometerReading()
+QVector<int> RobotModel::accelerometerReading() const
 {
 	return {static_cast<int>(mAcceleration.x() * accelerometerConstant)
 				, static_cast<int>(mAcceleration.y() * accelerometerConstant)
 				, g};
 }
 
-QVector<int> RobotModel::gyroscopeReading()
+QVector<int> RobotModel::gyroscopeReading() const
 {
 	return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
 }
@@ -302,7 +305,7 @@ void RobotModel::recalculateParams()
 		bool breakMode;
 	};
 
-    auto calculateMotorOutput = [&](WheelEnum wheel) {
+	auto calculateMotorOutput = [&](WheelEnum wheel) {
 		const PortInfo &port = mWheelsToMotorPortsMap.value(wheel, PortInfo());
 		if (!port.isValid() || port.name() == "None") {
 			return EngineOutput{0, true};
@@ -328,7 +331,7 @@ void RobotModel::recalculateParams()
 			, rotationCenter(), mAngle, robotBoundingPath());
 
 	nextStep();
-    countSpeedAndAcceleration();
+	countSpeedAndAcceleration();
 	countMotorTurnover();
 	countBeep();
 }
