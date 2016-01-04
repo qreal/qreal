@@ -45,9 +45,13 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mSensorsConfiguration(robotModel.robotId())
 	, mPos(QPointF(0,0))
 	, mAngle(0)
+	, mAngularSpeed(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
+	, mAcceleration(QPointF(0,0))
+	, mPosStamps(QVector<QPointF>(50))
+	, mAngleStamps(QVector<qreal>(50))
 	, mPhysicsEngine(nullptr)
 	, mStartPositionMarker(new items::StartPosition)
 {
@@ -187,6 +191,27 @@ void RobotModel::countBeep()
 	}
 }
 
+void RobotModel::countSpeedAndAcceleration()
+{
+	mAngleStamps.pop_front();
+	mAngleStamps.append(mAngle);
+	mAngularSpeed = averageAngularSpeed();
+
+	mPosStamps.pop_front();
+	mPosStamps.append(mPos);
+	mAcceleration = averageAcceleration();
+}
+
+QPointF RobotModel::averageAcceleration()
+{
+	return (mPosStamps[49] - mPosStamps[48] - mPosStamps[1] + mPosStamps[0]) / mPosStamps.size();
+}
+
+qreal RobotModel::averageAngularSpeed()
+{
+	return (mAngleStamps[49] - mAngleStamps[0]) / 50;
+}
+
 QPointF RobotModel::rotationCenter() const
 {
 	return QPointF(mPos.x() + robotWidth / 2, mPos.y() + robotHeight / 2);
@@ -245,6 +270,18 @@ void RobotModel::markerUp()
 	mMarker = Qt::transparent;
 }
 
+QVector<int> RobotModel::accelerometerReading()
+{
+	return {static_cast<int>(mAcceleration.x() * accelerometerConstant)
+				, static_cast<int>(mAcceleration.y() * accelerometerConstant)
+				, g};
+}
+
+QVector<int> RobotModel::gyroscopeReading()
+{
+	return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
+}
+
 void RobotModel::nextStep()
 {
 	// Changing position quietly, they must not be caught by UI here.
@@ -265,7 +302,7 @@ void RobotModel::recalculateParams()
 		bool breakMode;
 	};
 
-	auto calculateMotorOutput = [&](WheelEnum wheel) {
+    auto calculateMotorOutput = [&](WheelEnum wheel) {
 		const PortInfo &port = mWheelsToMotorPortsMap.value(wheel, PortInfo());
 		if (!port.isValid() || port.name() == "None") {
 			return EngineOutput{0, true};
@@ -291,6 +328,7 @@ void RobotModel::recalculateParams()
 			, rotationCenter(), mAngle, robotBoundingPath());
 
 	nextStep();
+    countSpeedAndAcceleration();
 	countMotorTurnover();
 	countBeep();
 }

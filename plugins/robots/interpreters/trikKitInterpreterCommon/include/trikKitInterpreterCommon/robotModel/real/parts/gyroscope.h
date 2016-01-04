@@ -36,7 +36,7 @@ public:
 	void read() override;
 
 public slots:
-	void onIncomingData(const QString &portName, int value);
+	void onIncomingData(const QString &portName, QVector<int> value);
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;

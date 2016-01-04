@@ -59,7 +59,8 @@ void GyroscopeSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 	if (reading.isEmpty()) {
 		/// @todo: log trace error?
 	} else {
-		const int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
+		QVector<int> sensorValue(3);
+		sensorValue.append((0xff & reading[13]) << 8 | (0xff & reading[14]));
 		mImplementation.setState(NxtInputDevice::idle);
 		emit newData(sensorValue);
 	}

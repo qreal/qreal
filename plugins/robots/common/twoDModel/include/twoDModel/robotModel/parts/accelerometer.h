@@ -27,7 +27,6 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
-/// A mock up of the accelerometer sensor for the 2D model window. Retuns empty answers.
 /// Configuration is perfomed immediately, the answer is ready immediately too.
 class TWO_D_MODEL_EXPORT Accelerometer : public kitBase::robotModel::robotParts::AccelerometerSensor
 {
