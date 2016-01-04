@@ -370,15 +370,19 @@ bool GraphicType::addProperty(Property *property)
 {
 	const QString propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
+		// This will automaticly dispose property in this branch.
+		QScopedPointer<Property> propertyDisposer(property);
+		Q_UNUSED(propertyDisposer)
 		/// @todo Good for overriding parent properties, but bad in multiple inheritance case
 		/// --- we can allow invalid rhomb inheritance.
 		if (mProperties[propertyName] != property && *mProperties[propertyName] != *property) {
-			qDebug() << "WARNING: property" << propertyName << "duplicated with different attributes";
-			delete property;
+			qWarning() << "Property" << propertyName << "duplicated with different attributes";
+			return false;
 		}
 	} else {
 		mProperties[propertyName] = property;
 	}
+
 	return true;
 }
 
