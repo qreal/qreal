@@ -27,11 +27,7 @@ bool Generator::isCorrectedName(QString const &name)
 {
 	QRegExp pattern;
 	pattern.setPattern("[A-Za-z]+([A-Za-z_0-9]*)");
-	if (pattern.exactMatch(name)) {
-		return true;
-	} else {
-		return false;
-	}
+	return (pattern.exactMatch(name));
 }
 
 void Generator::generate(qReal::Id const &metamodel)
@@ -79,7 +75,7 @@ void Generator::generate(qReal::Id const &metamodel)
 	generator.generate();
 	mConstraintModelFullName = generator.constraintModelFullName();
 	mConstraintConstraintsModelName = generator.constraintConstraintsModelName();
-	mConstraintNormalizerConstraintsModelName = generator.constraintNormalizerConstraintsModelName();
+	mConstraintNormalizerConstraintsModelName = generator.normalizedConstraintConstraintsModelName();
 	mConstraintModelId = generator.constraintModelId();
 }
 

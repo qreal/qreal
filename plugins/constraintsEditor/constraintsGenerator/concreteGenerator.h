@@ -1,5 +1,7 @@
 #pragma once
 
+#include "generatorUtils/defs.h"
+
 #include <qrutils/generator/abstractGenerator.h>
 
 namespace constraints {
@@ -30,38 +32,11 @@ public:
 	QString constraintModelFullName() const;
 	QString constraintModelName() const;
 	QString constraintConstraintsModelName() const; //i.e. pluginName
-	QString constraintNormalizerModelName() const; //i.e. fileBase
-	QString constraintNormalizerConstraintsModelName() const; //i.e. normalizerPluginName
+	QString normalizedConstraintModelName() const; //i.e. fileBase
+	QString normalizedConstraintConstraintsModelName() const; //i.e. normalizerPluginName
 	QString constraintModelId() const; //i.e. pluginId
 
 private :
-
-	enum metaType {
-		node,
-		edge,
-		empty
-	};
-
-	struct NeededStringsForCommonGenerate {
-		NeededStringsForCommonGenerate(const QString &curHFiles
-				, const QString &curCppFiles
-				, const QString &curIncludeFilesPluginH
-				, const QString &curPrivateFieldsPluginH
-				, const QString &curIfForMainCheckPluginCPP)
-			: mHFiles(curHFiles)
-			, mCppFiles(curCppFiles)
-			, mIncludeFilesPluginH(curIncludeFilesPluginH)
-			, mPrivateFieldsPluginH(curPrivateFieldsPluginH)
-			, mIfForMainCheckPluginCPP(curIfForMainCheckPluginCPP)
-		{}
-
-		QString mHFiles;
-		QString mCppFiles;
-		QString mIncludeFilesPluginH;
-		QString mPrivateFieldsPluginH;
-		QString mIfForMainCheckPluginCPP;
-	};
-
 	struct NeededStringsForConcreteGenerate {
 		QString optionalChecksForElementsH;
 		QString mainChecksForElementsH;
@@ -89,11 +64,20 @@ private :
 		{}
 	};
 
+	void generateCodeForProFile();
+	void generateCodeForConstraintsPluginHFile();
+	void generateCodeForConstraintsPluginCppFile();
+
+	QString templateWithReplacedDiagramName(const QString &templateName
+			, const QString &diagramName) const;
+
+	QString generatedPartOfTemplateForAllDiagrams(const QString &templateName
+			, const bool isIfForMainCheck = false);
+
 	NeededStringsForConcreteGenerate generateCommonNeededPartsForElements(QString elementName);
 	QString generateMainCheckStatusesForElementsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP);
 	NeededStringsForConcreteGenerate generateNeededPartsForDiagramFiles(qReal::Id const &diagram);
 	void generateDiagramFiles(qReal::Id const &diagram, QString diagramNameTemplate);
-	NeededStringsForCommonGenerate generateNeededPartsForAllConstraintsDiagram();
 	QString replaceLanguageName(QString string, qReal::Id const &diagram, int count);
 	QString correctedLanguageName(qReal::Id const &diagram);
 
@@ -107,16 +91,10 @@ private :
 	QPair<bool, QString> handleConstraintsSelection(qReal::Id const &constraintElement);
 	QString additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr);
 
-	QString pushResBoolInResStringByAnd(QList<QString> resBool);
-	QString pushResBoolInResStringByOr(QList<QString> resBool);
-	qReal::IdList neighborNodesByType(qReal::Id const &element, QString const &type);
-	bool linksContainsByType(qReal::Id const &element, QString const &type);
-
 	QPair<QString, QList<QString> > countConstraintForBeginNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForEndNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 
 	QPair<QString, QList<QString> > countConstraintForListOfElements(qReal::Id const &constraint, QString elementName, QString resElementName, QString functionName, QString resType, int depth, QString addStr);
-	QString generateExistsProperty(QString const &resElementName, QString const &elementName, qReal::Id const &constraint, int depth, QString addStr);
 
 	QPair<QString, QList<QString> > countConstraintForParent(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForChildrens(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
@@ -129,7 +107,7 @@ private :
 	QPair<QString, QList<QString> > countConstraintForMultiOrNode(qReal::Id const &constraint, qReal::IdList &usedElements, metaType const &type, QString elementName, int depth, QString addStr);
 
 	QString mPathToQReal;
-	QString const &mMetamodelName;//имя метамодели языков, для которых напсана эта модель ограничений, по которой генерируется код
+	QString const &mMetamodelName; //имя метамодели языков, для которых напсана эта модель ограничений, по которой генерируется код
 	QString const &mConstraintsName;//настоящее имя модели огранчений, по которой генерируется код
 
 	bool mUsedMetaTypeInCheck; // для генерации ограничений множества элементов в Check;

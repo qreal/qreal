@@ -15,5 +15,11 @@ const QString keywordForAllEdges = "AllEdges";
 const QString keywordForAllNodes = "AllNodes";
 const QString keywordForAllLanguages = "AllLanguages";
 
+enum metaType {
+	node,
+	edge,
+	empty
+};
+
 }
 }
