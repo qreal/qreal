@@ -12,17 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <utils/robotCommunication/tcpConnectionHandler.h>
+#include "tcpConnectionHandler.h"
 
 #include <QtNetwork/QHostAddress>
 
 #include <qrkernel/logging.h>
 
-#include <QtCore/QDebug>
-
 const int keepaliveTime = 3000;
 
-using namespace utils;
+using namespace utils::robotCommunication;
 
 TcpConnectionHandler::TcpConnectionHandler(int port)
 	: mPort(port)
@@ -79,7 +77,6 @@ void TcpConnectionHandler::send(const QString &data)
 {
 	if (!isConnected()) {
 		QLOG_ERROR() << "Attempting to send through unconnected socket";
-		qDebug() << "Attempting to send through unconnected socket";
 		return;
 	}
 

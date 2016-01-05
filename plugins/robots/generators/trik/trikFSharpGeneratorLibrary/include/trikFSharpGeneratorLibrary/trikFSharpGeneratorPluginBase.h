@@ -19,12 +19,12 @@
 #include "declSpec.h"
 
 namespace utils {
-class TcpRobotCommunicator;
-
 namespace robotCommunication {
-class StopRobotProtocol;
-}
 
+class TcpRobotCommunicator;
+class StopRobotProtocol;
+
+}
 }
 
 namespace trik {
@@ -91,7 +91,7 @@ private:
 	const QStringList mPathsToTemplates;
 
 	/// Communicator object used to send commands to robot.
-	QScopedPointer<utils::TcpRobotCommunicator> mCommunicator;
+	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mCommunicator;
 
 	QScopedPointer<utils::robotCommunication::StopRobotProtocol> mStopRobotProtocol;
 };

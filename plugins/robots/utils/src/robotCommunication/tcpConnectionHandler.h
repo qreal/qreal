@@ -17,11 +17,10 @@
 #include <QtNetwork/QTcpSocket>
 #include <QtCore/QTimer>
 
-#include "utils/utilsDeclSpec.h"
-
 namespace utils {
+namespace robotCommunication {
 
-class ROBOTS_UTILS_EXPORT TcpConnectionHandler : public QObject
+class TcpConnectionHandler : public QObject
 {
 	Q_OBJECT
 
@@ -54,4 +53,5 @@ private:
 	QTimer mKeepAliveTimer;
 };
 
+}
 }

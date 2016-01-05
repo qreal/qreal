@@ -21,7 +21,7 @@
 
 #include "src/robotCommunication/tcpRobotCommunicatorWorker.h"
 
-using namespace utils;
+using namespace utils::robotCommunication;
 
 TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 {

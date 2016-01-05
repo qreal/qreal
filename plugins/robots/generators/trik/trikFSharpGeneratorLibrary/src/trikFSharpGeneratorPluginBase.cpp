@@ -71,7 +71,7 @@ void TrikFSharpGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &c
 {
 	const auto errorReporter = configurer.qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
 	RobotsGeneratorPluginBase::init(configurer);
-	mCommunicator.reset(new utils::TcpRobotCommunicator("TrikTcpServer"));
+	mCommunicator.reset(new utils::robotCommunication::TcpRobotCommunicator("TrikTcpServer"));
 	mCommunicator->setErrorReporter(errorReporter);
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 

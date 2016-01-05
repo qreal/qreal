@@ -21,7 +21,7 @@
 
 #include "utils/requiredVersion.h"
 
-using namespace utils;
+using namespace utils::robotCommunication;
 
 static const uint controlPort = 8888;
 static const uint telemetryPort = 9000;

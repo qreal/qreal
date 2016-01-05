@@ -29,7 +29,6 @@ HEADERS += \
 	$$PWD/../include/utils/robotCommunication/runProgramProtocol.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
 	$$PWD/../include/utils/robotCommunication/stopRobotProtocol.h \
-	$$PWD/../include/utils/robotCommunication/tcpConnectionHandler.h \
 	$$PWD/../include/utils/robotCommunication/tcpRobotCommunicator.h \
 	$$PWD/../include/utils/robotCommunication/uploadProgramProtocol.h \
 	$$PWD/../include/utils/requiredVersion.h \
@@ -42,6 +41,9 @@ HEADERS += \
 	$$PWD/../include/utils/canvas/ellipseObject.h \
 	$$PWD/../include/utils/canvas/arcObject.h \
 	$$PWD/../include/utils/canvas/textObject.h \
+
+HEADERS += \
+	$$PWD/robotCommunication/tcpConnectionHandler.h \
 	$$PWD/robotCommunication/tcpRobotCommunicatorWorker.h \
 
 SOURCES += \

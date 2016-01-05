@@ -50,7 +50,7 @@ protected:
 			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;
 
 private:
-	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;
+	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mRobotCommunicator;
 };
 
 }

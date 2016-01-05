@@ -38,14 +38,14 @@ StopRobotProtocol::StopRobotProtocol(TcpRobotCommunicator &communicator)
 
 	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &StopRobotProtocol::onTimeout);
 
-	mWaitingForStopRobotCommandSent->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::stopRobotDone
+	mWaitingForStopRobotCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::stopRobotDone
 			, mWaitingForDeinitializeCommandSent);
-	mWaitingForStopRobotCommandSent->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::connectionError
+	mWaitingForStopRobotCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
 			, errored);
 
-	mWaitingForDeinitializeCommandSent->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::runDirectCommandDone
+	mWaitingForDeinitializeCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::runDirectCommandDone
 			, done);
-	mWaitingForDeinitializeCommandSent->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::connectionError
+	mWaitingForDeinitializeCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
 			, errored);
 
 	connect(done, &QState::entered, [this]() {

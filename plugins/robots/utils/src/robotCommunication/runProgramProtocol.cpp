@@ -41,15 +41,15 @@ RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicator &communicator)
 
 	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &RunProgramProtocol::onTimeout);
 
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::uploadProgramDone
+	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramDone
 			, mWaitingForRunComplete);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::connectionError
+	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
 			, errored);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::uploadProgramError
+	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramError
 			, errored);
 
-	mWaitingForRunComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::startedRunning, done);
-	mWaitingForRunComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::connectionError, errored);
+	mWaitingForRunComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::startedRunning, done);
+	mWaitingForRunComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError, errored);
 
 	connect(done, &QState::entered, [this]() {
 		qDebug() << "Entered done state";

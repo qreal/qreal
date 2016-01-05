@@ -20,14 +20,14 @@
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
 
 namespace utils {
-class TcpRobotCommunicator;
-
 namespace robotCommunication {
+
+class TcpRobotCommunicator;
 class RunProgramProtocol;
 class StopRobotProtocol;
 class UploadProgramProtocol;
-}
 
+}
 }
 
 namespace trik {
@@ -92,7 +92,7 @@ private:
 	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	/// Communicator object used to send commands to robot.
-	QScopedPointer<utils::TcpRobotCommunicator> mCommunicator;
+	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mCommunicator;
 
 	QStringList mPathsToTemplates;
 

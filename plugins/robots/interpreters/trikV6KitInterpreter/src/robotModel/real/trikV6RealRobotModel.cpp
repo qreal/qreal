@@ -47,11 +47,11 @@ using namespace kitBase::robotModel;
 
 TrikV6RealRobotModel::TrikV6RealRobotModel(const QString &kitId, const QString &robotId)
 	: TrikRobotModelV6(kitId, robotId)
-	, mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
+	, mRobotCommunicator(new utils::robotCommunication::TcpRobotCommunicator("TrikTcpServer"))
 {
-	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::connected
+	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::connected
 			, this, &TrikV6RealRobotModel::connected);
-	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::disconnected
+	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::disconnected
 			, this, &TrikV6RealRobotModel::disconnected);
 }
 

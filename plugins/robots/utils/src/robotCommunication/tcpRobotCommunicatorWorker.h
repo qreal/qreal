@@ -17,9 +17,10 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QTimer>
 
-#include "utils/robotCommunication/tcpConnectionHandler.h"
+#include "tcpConnectionHandler.h"
 
 namespace utils {
+namespace robotCommunication {
 
 /// Enum that codes kind of a message from robot --- text from stdout, information or error.
 enum class MessageKind
@@ -139,4 +140,5 @@ private:
 	QScopedPointer<QTimer> mVersionTimer;
 };
 
+}
 }

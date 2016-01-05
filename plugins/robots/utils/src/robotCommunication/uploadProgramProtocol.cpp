@@ -40,11 +40,11 @@ UploadProgramProtocol::UploadProgramProtocol(TcpRobotCommunicator &communicator)
 
 	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &UploadProgramProtocol::onTimeout);
 
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::uploadProgramDone
+	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramDone
 			, done);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::connectionError
+	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
 			, errored);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &utils::TcpRobotCommunicator::uploadProgramError
+	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramError
 			, errored);
 
 	connect(done, &QState::entered, [this]() {

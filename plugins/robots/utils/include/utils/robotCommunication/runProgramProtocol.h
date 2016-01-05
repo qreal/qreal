@@ -25,10 +25,9 @@ class QTimer;
 class QFileInfo;
 
 namespace utils {
+namespace robotCommunication {
 
 class TcpRobotCommunicator;
-
-namespace robotCommunication {
 
 class ROBOTS_UTILS_EXPORT RunProgramProtocol : public QObject
 {

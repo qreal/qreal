@@ -31,7 +31,7 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Shell : public robotModel::parts
 public:
 	Shell(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void runCommand(const QString &command) override;
 	void runCode(const QString &code) override;
@@ -42,7 +42,7 @@ public:
 	void initVideoStreaming() override;
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

@@ -57,7 +57,7 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 {
 	const auto errorReporter = configurer.qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
 	RobotsGeneratorPluginBase::init(configurer);
-	mCommunicator.reset(new utils::TcpRobotCommunicator("TrikTcpServer"));
+	mCommunicator.reset(new TcpRobotCommunicator("TrikTcpServer"));
 	mCommunicator->setErrorReporter(errorReporter);
 	mUploadProgramProtocol.reset(new UploadProgramProtocol(*mCommunicator));
 	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator));
@@ -168,7 +168,7 @@ void TrikQtsGeneratorPluginBase::addShellDevice(robotModel::GeneratorModelExtens
 {
 	const PortInfo shellPort("ShellPort", output);
 	EmptyShell * const shell = new EmptyShell(DeviceInfo::create<trik::robotModel::parts::TrikShell>(), shellPort);
-	connect(mCommunicator.data(), &utils::TcpRobotCommunicator::printText, shell, &EmptyShell::print);
+	connect(mCommunicator.data(), &TcpRobotCommunicator::printText, shell, &EmptyShell::print);
 	robotModel.addDevice(shellPort, shell);
 }
 

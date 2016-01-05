@@ -18,10 +18,10 @@
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include "utils/robotCommunication/tcpConnectionHandler.h"
 #include "utils/utilsDeclSpec.h"
 
 namespace utils {
+namespace robotCommunication {
 
 class TcpRobotCommunicatorWorker;
 enum class MessageKind;
@@ -115,4 +115,5 @@ private:
 	qReal::ErrorReporterInterface *mErrorReporter = nullptr;  // Does not have ownership.
 };
 
+}
 }

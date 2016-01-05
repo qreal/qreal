@@ -31,7 +31,7 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Display : public robotModel::par
 public:
 	Display(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void drawSmile(bool sad) override;
 	/// @todo: color enum here?
@@ -49,7 +49,7 @@ public:
 	void redraw();
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }
