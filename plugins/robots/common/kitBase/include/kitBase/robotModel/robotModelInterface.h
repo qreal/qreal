@@ -178,6 +178,8 @@ public slots:
 signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted
 	/// immediately after connectToRobot() call.
+	/// @param success - true, if connected successfully.
+	/// @param errorString - if connection failed, contains string to show to user.
 	void connected(bool success, const QString &errorString);
 
 	/// Emitted when robot is disconnected. Not emitted when connection attempt fails.
