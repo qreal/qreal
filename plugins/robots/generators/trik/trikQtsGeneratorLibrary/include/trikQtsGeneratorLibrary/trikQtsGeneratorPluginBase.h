@@ -25,6 +25,7 @@ class TcpRobotCommunicator;
 namespace robotCommunication {
 class RunProgramProtocol;
 class StopRobotProtocol;
+class UploadProgramProtocol;
 }
 
 }
@@ -71,7 +72,13 @@ private slots:
 	/// Tries to remotely abort script execution and stop robot.
 	void stopRobot();
 
+	/// Reenables buttons when program uploading or robot stopping is complete (sucessfully or with error).
+	void onProtocolFinished();
+
 private:
+	/// Disables "run", "upload" and "stop" buttons when there is pending command to a robot.
+	void disableButtons();
+
 	/// Action that launches code generator
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
@@ -89,6 +96,7 @@ private:
 
 	QStringList mPathsToTemplates;
 
+	QScopedPointer<utils::robotCommunication::UploadProgramProtocol> mUploadProgramProtocol;
 	QScopedPointer<utils::robotCommunication::RunProgramProtocol> mRunProgramProtocol;
 	QScopedPointer<utils::robotCommunication::StopRobotProtocol> mStopRobotProtocol;
 };

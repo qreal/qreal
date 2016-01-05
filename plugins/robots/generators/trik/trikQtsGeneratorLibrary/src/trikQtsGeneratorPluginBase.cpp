@@ -26,6 +26,7 @@
 #include <utils/robotCommunication/tcpRobotCommunicator.h>
 #include <utils/robotCommunication/runProgramProtocol.h>
 #include <utils/robotCommunication/stopRobotProtocol.h>
+#include <utils/robotCommunication/uploadProgramProtocol.h>
 
 #include "trikQtsMasterGenerator.h"
 #include "emptyShell.h"
@@ -58,16 +59,32 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 	RobotsGeneratorPluginBase::init(configurer);
 	mCommunicator.reset(new utils::TcpRobotCommunicator("TrikTcpServer"));
 	mCommunicator->setErrorReporter(errorReporter);
+	mUploadProgramProtocol.reset(new UploadProgramProtocol(*mCommunicator));
 	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator));
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 
-	connect(mRunProgramProtocol.data(), &RunProgramProtocol::timeout, [errorReporter]() {
+	const auto timeout = [this, errorReporter]() {
 		errorReporter->addError(tr("Run program operation timed out"));
-	});
+		onProtocolFinished();
+	};
 
-	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, [errorReporter]() {
-		errorReporter->addError(tr("Stop robot operation timed out"));
-	});
+	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::timeout, timeout);
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::timeout, timeout);
+	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, timeout);
+
+	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::error
+			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::error
+			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
+	connect(mStopRobotProtocol.data(), &StopRobotProtocol::error
+			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
+
+	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::success
+			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::success
+			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
+	connect(mStopRobotProtocol.data(), &StopRobotProtocol::success
+			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
 }
 
 QList<ActionInfo> TrikQtsGeneratorPluginBase::customActions()
@@ -160,7 +177,8 @@ void TrikQtsGeneratorPluginBase::uploadProgram()
 	const QFileInfo fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-		mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
+		disableButtons();
+		mUploadProgramProtocol->run(fileInfo);
 	} else {
 		QLOG_ERROR() << "Code generation failed, aborting";
 	}
@@ -171,6 +189,7 @@ void TrikQtsGeneratorPluginBase::runProgram()
 	const QFileInfo fileInfo = generateCodeForProcessing();
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
 		if (mRunProgramProtocol) {
+			disableButtons();
 			mRunProgramProtocol->run(fileInfo);
 		} else {
 			QLOG_ERROR() << "Run program protocol is not initialized";
@@ -183,6 +202,7 @@ void TrikQtsGeneratorPluginBase::runProgram()
 void TrikQtsGeneratorPluginBase::stopRobot()
 {
 	if (mStopRobotProtocol) {
+		disableButtons();
 		mStopRobotProtocol->run(
 				"script.system(\"killall aplay\"); \n"
 				"script.system(\"killall vlc\");"
@@ -190,4 +210,18 @@ void TrikQtsGeneratorPluginBase::stopRobot()
 	} else {
 		QLOG_ERROR() << "Stop robot protocol is not initialized";
 	}
+}
+
+void TrikQtsGeneratorPluginBase::onProtocolFinished()
+{
+	mUploadProgramAction->setEnabled(true);
+	mRunProgramAction->setEnabled(true);
+	mStopRobotAction->setEnabled(true);
+}
+
+void TrikQtsGeneratorPluginBase::disableButtons()
+{
+	mUploadProgramAction->setEnabled(false);
+	mRunProgramAction->setEnabled(false);
+	mStopRobotAction->setEnabled(false);
 }
