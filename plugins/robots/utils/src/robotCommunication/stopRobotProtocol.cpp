@@ -14,56 +14,25 @@
 
 #include "utils/robotCommunication/stopRobotProtocol.h"
 
-#include <QtCore/QStateMachine>
 #include <QtCore/QState>
-#include <QtCore/QFinalState>
-#include <QtCore/QTimer>
 
 #include "utils/robotCommunication/tcpRobotCommunicator.h"
+#include "protocol.h"
 
 using namespace utils::robotCommunication;
 
 StopRobotProtocol::StopRobotProtocol(TcpRobotCommunicator &communicator)
-	: mCommunicator(communicator)
-	, mStateMachine(new QStateMachine())
+	: mProtocol(new Protocol(communicator))
 	, mWaitingForStopRobotCommandSent(new QState())
 	, mWaitingForDeinitializeCommandSent(new QState())
 {
-	const auto done = new QFinalState();
-	const auto errored = new QFinalState();
-
-	mTimeoutTimer.reset(new QTimer());
-	mTimeoutTimer->setInterval(4000);
-	mTimeoutTimer->setSingleShot(true);
-
-	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &StopRobotProtocol::onTimeout);
-
-	mWaitingForStopRobotCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::stopRobotDone
+	mProtocol->addTransition(mWaitingForStopRobotCommandSent, &TcpRobotCommunicator::stopRobotDone
 			, mWaitingForDeinitializeCommandSent);
-	mWaitingForStopRobotCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
-			, errored);
+	mProtocol->addSuccessTransition(mWaitingForDeinitializeCommandSent, &TcpRobotCommunicator::runDirectCommandDone);
 
-	mWaitingForDeinitializeCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::runDirectCommandDone
-			, done);
-	mWaitingForDeinitializeCommandSent->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
-			, errored);
-
-	connect(done, &QState::entered, [this]() {
-		emit success();
-		mTimeoutTimer->stop();
-	});
-
-	connect(errored, &QState::entered, [this]() {
-		emit error();
-		mTimeoutTimer->stop();
-	});
-
-	mStateMachine->addState(mWaitingForStopRobotCommandSent);
-	mStateMachine->addState(mWaitingForDeinitializeCommandSent);
-	mStateMachine->addState(done);
-	mStateMachine->addState(errored);
-
-	mStateMachine->setInitialState(mWaitingForStopRobotCommandSent);
+	connect(mProtocol.data(), &Protocol::success, this, &StopRobotProtocol::success);
+	connect(mProtocol.data(), &Protocol::error, this, &StopRobotProtocol::error);
+	connect(mProtocol.data(), &Protocol::timeout, this, &StopRobotProtocol::timeout);
 }
 
 StopRobotProtocol::~StopRobotProtocol()
@@ -72,27 +41,13 @@ StopRobotProtocol::~StopRobotProtocol()
 
 void StopRobotProtocol::run(const QString &command)
 {
-	if (mStateMachine->isRunning()) {
-		return;
-	}
-
-	mWaitingForStopRobotCommandSent->disconnect();
-	mWaitingForDeinitializeCommandSent->disconnect();
-
-	connect(mWaitingForStopRobotCommandSent, &QState::entered, [this]() {
-		mCommunicator.stopRobot();
+	mProtocol->setAction(mWaitingForStopRobotCommandSent, [this](auto &communicator) {
+		communicator.stopRobot();
 	});
 
-	connect(mWaitingForDeinitializeCommandSent, &QState::entered, [this, command]() {
-		mCommunicator.runDirectCommand(command, true);
+	mProtocol->setAction(mWaitingForDeinitializeCommandSent, [this, command](auto &communicator) {
+		communicator.runDirectCommand(command, true);
 	});
 
-	mStateMachine->start();
-	mTimeoutTimer->start();
-}
-
-void StopRobotProtocol::onTimeout()
-{
-	mStateMachine->stop();
-	emit timeout();
+	mProtocol->run();
 }

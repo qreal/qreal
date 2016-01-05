@@ -19,15 +19,14 @@
 
 #include "utils/utilsDeclSpec.h"
 
-class QStateMachine;
 class QState;
-class QTimer;
 class QFileInfo;
 
 namespace utils {
 namespace robotCommunication {
 
 class TcpRobotCommunicator;
+class Protocol;
 
 class ROBOTS_UTILS_EXPORT RunProgramProtocol : public QObject
 {
@@ -44,20 +43,14 @@ signals:
 	void error();
 	void timeout();
 
-private slots:
-	void onTimeout();
-
 private:
-	TcpRobotCommunicator &mCommunicator;
-	QScopedPointer<QStateMachine> mStateMachine;
+	QScopedPointer<Protocol> mProtocol;
 
-	/// Does not have direct ownership (will be disposed by mStateMachine).
+	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForUploadingComplete = nullptr;
 
-	/// Does not have direct ownership (will be disposed by mStateMachine).
+	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForRunComplete = nullptr;
-
-	QScopedPointer<QTimer> mTimeoutTimer;
 };
 
 }

@@ -43,6 +43,7 @@ HEADERS += \
 	$$PWD/../include/utils/canvas/textObject.h \
 
 HEADERS += \
+	$$PWD/robotCommunication/protocol.h \
 	$$PWD/robotCommunication/tcpConnectionHandler.h \
 	$$PWD/robotCommunication/tcpRobotCommunicatorWorker.h \
 
@@ -60,6 +61,7 @@ SOURCES += \
 	$$PWD/canvas/ellipseObject.cpp \
 	$$PWD/canvas/arcObject.cpp \
 	$$PWD/canvas/textObject.cpp \
+	$$PWD/robotCommunication/protocol.cpp \
 	$$PWD/robotCommunication/robotCommunicator.cpp \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
 	$$PWD/robotCommunication/runProgramProtocol.cpp \

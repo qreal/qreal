@@ -14,54 +14,24 @@
 
 #include "utils/robotCommunication/uploadProgramProtocol.h"
 
-#include <QtCore/QStateMachine>
 #include <QtCore/QState>
-#include <QtCore/QFinalState>
-#include <QtCore/QTimer>
 #include <QtCore/QFileInfo>
 
 #include "utils/robotCommunication/tcpRobotCommunicator.h"
-
-#include <QtCore/QDebug>
+#include "protocol.h"
 
 using namespace utils::robotCommunication;
 
 UploadProgramProtocol::UploadProgramProtocol(TcpRobotCommunicator &communicator)
-	: mCommunicator(communicator)
-	, mStateMachine(new QStateMachine())
+	: mProtocol(new Protocol(communicator))
 	, mWaitingForUploadingComplete(new QState())
 {
-	const auto done = new QFinalState();
-	const auto errored = new QFinalState();
+	mProtocol->addSuccessTransition(mWaitingForUploadingComplete, &TcpRobotCommunicator::uploadProgramDone);
+	mProtocol->addErrorTransition(mWaitingForUploadingComplete, &TcpRobotCommunicator::uploadProgramError);
 
-	mTimeoutTimer.reset(new QTimer());
-	mTimeoutTimer->setInterval(4000);
-	mTimeoutTimer->setSingleShot(true);
-
-	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &UploadProgramProtocol::onTimeout);
-
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramDone
-			, done);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
-			, errored);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramError
-			, errored);
-
-	connect(done, &QState::entered, [this]() {
-		emit success();
-		mTimeoutTimer->stop();
-	});
-
-	connect(errored, &QState::entered, [this]() {
-		emit error();
-		mTimeoutTimer->stop();
-	});
-
-	mStateMachine->addState(mWaitingForUploadingComplete);
-	mStateMachine->addState(done);
-	mStateMachine->addState(errored);
-
-	mStateMachine->setInitialState(mWaitingForUploadingComplete);
+	connect(mProtocol.data(), &Protocol::success, this, &UploadProgramProtocol::success);
+	connect(mProtocol.data(), &Protocol::error, this, &UploadProgramProtocol::error);
+	connect(mProtocol.data(), &Protocol::timeout, this, &UploadProgramProtocol::timeout);
 }
 
 UploadProgramProtocol::~UploadProgramProtocol()
@@ -70,22 +40,9 @@ UploadProgramProtocol::~UploadProgramProtocol()
 
 void UploadProgramProtocol::run(const QFileInfo &fileToRun)
 {
-	if (mStateMachine->isRunning()) {
-		return;
-	}
-
-	mWaitingForUploadingComplete->disconnect();
-
-	connect(mWaitingForUploadingComplete, &QState::entered, [this, fileToRun]() {
-		mCommunicator.uploadProgram(fileToRun.canonicalFilePath());
+	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](auto &communicator) {
+		communicator.uploadProgram(fileToRun.canonicalFilePath());
 	});
 
-	mStateMachine->start();
-	mTimeoutTimer->start();
-}
-
-void UploadProgramProtocol::onTimeout()
-{
-	mStateMachine->stop();
-	emit timeout();
+	mProtocol->run();
 }

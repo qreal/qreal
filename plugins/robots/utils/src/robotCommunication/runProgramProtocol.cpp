@@ -14,61 +14,27 @@
 
 #include "utils/robotCommunication/runProgramProtocol.h"
 
-#include <QtCore/QStateMachine>
 #include <QtCore/QState>
-#include <QtCore/QFinalState>
-#include <QtCore/QTimer>
 #include <QtCore/QFileInfo>
 
 #include "utils/robotCommunication/tcpRobotCommunicator.h"
-
-#include <QtCore/QDebug>
+#include "src/robotCommunication/protocol.h"
 
 using namespace utils::robotCommunication;
 
 RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicator &communicator)
-	: mCommunicator(communicator)
-	, mStateMachine(new QStateMachine())
+	: mProtocol(new Protocol(communicator))
 	, mWaitingForUploadingComplete(new QState())
 	, mWaitingForRunComplete(new QState())
 {
-	const auto done = new QFinalState();
-	const auto errored = new QFinalState();
+	mProtocol->addTransition(mWaitingForUploadingComplete
+			, &TcpRobotCommunicator::uploadProgramDone, mWaitingForRunComplete);
+	mProtocol->addErrorTransition(mWaitingForUploadingComplete, &TcpRobotCommunicator::uploadProgramError);
+	mProtocol->addSuccessTransition(mWaitingForRunComplete, &TcpRobotCommunicator::startedRunning);
 
-	mTimeoutTimer.reset(new QTimer());
-	mTimeoutTimer->setInterval(4000);
-	mTimeoutTimer->setSingleShot(true);
-
-	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &RunProgramProtocol::onTimeout);
-
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramDone
-			, mWaitingForRunComplete);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError
-			, errored);
-	mWaitingForUploadingComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::uploadProgramError
-			, errored);
-
-	mWaitingForRunComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::startedRunning, done);
-	mWaitingForRunComplete->addTransition(&mCommunicator, &TcpRobotCommunicator::connectionError, errored);
-
-	connect(done, &QState::entered, [this]() {
-		qDebug() << "Entered done state";
-		emit success();
-		mTimeoutTimer->stop();
-	});
-
-	connect(errored, &QState::entered, [this]() {
-		qDebug() << "Entered error state";
-		emit error();
-		mTimeoutTimer->stop();
-	});
-
-	mStateMachine->addState(mWaitingForUploadingComplete);
-	mStateMachine->addState(mWaitingForRunComplete);
-	mStateMachine->addState(done);
-	mStateMachine->addState(errored);
-
-	mStateMachine->setInitialState(mWaitingForUploadingComplete);
+	connect(mProtocol.data(), &Protocol::success, this, &RunProgramProtocol::success);
+	connect(mProtocol.data(), &Protocol::error, this, &RunProgramProtocol::error);
+	connect(mProtocol.data(), &Protocol::timeout, this, &RunProgramProtocol::timeout);
 }
 
 RunProgramProtocol::~RunProgramProtocol()
@@ -77,30 +43,13 @@ RunProgramProtocol::~RunProgramProtocol()
 
 void RunProgramProtocol::run(const QFileInfo &fileToRun)
 {
-	if (mStateMachine->isRunning()) {
-		return;
-	}
-
-	mWaitingForUploadingComplete->disconnect();
-	mWaitingForRunComplete->disconnect();
-
-	connect(mWaitingForUploadingComplete, &QState::entered, [this, fileToRun]() {
-		qDebug() << "Entered WaitingForUploadingComplete state";
-		mCommunicator.uploadProgram(fileToRun.canonicalFilePath());
+	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](auto &communicator) {
+		communicator.uploadProgram(fileToRun.canonicalFilePath());
 	});
 
-	connect(mWaitingForRunComplete, &QState::entered, [this, fileToRun]() {
-		qDebug() << "Entered WaitingForRunComplete state";
-		mCommunicator.runProgram(fileToRun.fileName());
+	mProtocol->setAction(mWaitingForRunComplete, [this, fileToRun](auto &communicator) {
+		communicator.runProgram(fileToRun.fileName());
 	});
 
-	mStateMachine->start();
-	mTimeoutTimer->start();
-}
-
-void RunProgramProtocol::onTimeout()
-{
-	qDebug() << "Timeout";
-	mStateMachine->stop();
-	emit timeout();
+	mProtocol->run();
 }
