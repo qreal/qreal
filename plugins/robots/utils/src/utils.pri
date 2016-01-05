@@ -26,10 +26,12 @@ HEADERS += \
 	$$PWD/../include/utils/objectsSet.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
+	$$PWD/../include/utils/robotCommunication/runProgramProtocol.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
+	$$PWD/../include/utils/robotCommunication/stopRobotProtocol.h \
+	$$PWD/../include/utils/robotCommunication/tcpConnectionHandler.h \
+	$$PWD/../include/utils/robotCommunication/tcpRobotCommunicator.h \
 	$$PWD/../include/utils/requiredVersion.h \
-	$$PWD/../include/utils/tcpRobotCommunicator.h \
-	$$PWD/../include/utils/tcpConnectionHandler.h \
 	$$PWD/../include/utils/uploaderTool.h \
 	$$PWD/../include/utils/canvas/canvas.h \
 	$$PWD/../include/utils/canvas/canvasObject.h \
@@ -39,16 +41,13 @@ HEADERS += \
 	$$PWD/../include/utils/canvas/ellipseObject.h \
 	$$PWD/../include/utils/canvas/arcObject.h \
 	$$PWD/../include/utils/canvas/textObject.h \
+	$$PWD/robotCommunication/tcpRobotCommunicatorWorker.h \
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
 	$$PWD/realTimeline.cpp \
 	$$PWD/realTimer.cpp \
 	$$PWD/objectsSet.cpp \
-	$$PWD/robotCommunication/robotCommunicator.cpp \
-	$$PWD/robotCommunication/robotCommunicationException.cpp \
-	$$PWD/tcpRobotCommunicator.cpp \
-	$$PWD/tcpConnectionHandler.cpp \
 	$$PWD/uploaderTool.cpp \
 	$$PWD/canvas/canvas.cpp \
 	$$PWD/canvas/canvasObject.cpp \
@@ -58,6 +57,13 @@ SOURCES += \
 	$$PWD/canvas/ellipseObject.cpp \
 	$$PWD/canvas/arcObject.cpp \
 	$$PWD/canvas/textObject.cpp \
+	$$PWD/robotCommunication/robotCommunicator.cpp \
+	$$PWD/robotCommunication/robotCommunicationException.cpp \
+	$$PWD/robotCommunication/runProgramProtocol.cpp \
+	$$PWD/robotCommunication/stopRobotProtocol.cpp \
+	$$PWD/robotCommunication/tcpRobotCommunicator.cpp \
+	$$PWD/robotCommunication/tcpConnectionHandler.cpp \
+	$$PWD/robotCommunication/tcpRobotCommunicatorWorker.cpp \
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \

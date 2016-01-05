@@ -14,7 +14,7 @@
 
 #include "trikKitInterpreterCommon/robotModel/real/parts/motionSensor.h"
 
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 #include <qrutils/inFile.h>
 
 using namespace trik::robotModel::real::parts;

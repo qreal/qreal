@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <utils/tcpConnectionHandler.h>
+#include <utils/robotCommunication/tcpConnectionHandler.h>
 
 #include <QtNetwork/QHostAddress>
 
 #include <qrkernel/logging.h>
+
+#include <QtCore/QDebug>
 
 const int keepaliveTime = 3000;
 
@@ -28,6 +30,9 @@ TcpConnectionHandler::TcpConnectionHandler(int port)
 	QObject::connect(&mSocket, &QTcpSocket::readyRead, this
 		, &TcpConnectionHandler::onIncomingData, Qt::DirectConnection);
 
+	QObject::connect(&mSocket, &QTcpSocket::disconnected, this
+		, &TcpConnectionHandler::onDisconnected, Qt::DirectConnection);
+
 	QObject::connect(&mKeepAliveTimer, &QTimer::timeout, this
 		, &TcpConnectionHandler::keepalive, Qt::DirectConnection);
 
@@ -37,7 +42,7 @@ TcpConnectionHandler::TcpConnectionHandler(int port)
 
 bool TcpConnectionHandler::connect(const QHostAddress &serverAddress)
 {
-	if (mSocket.state() == QTcpSocket::ConnectedState || mSocket.state() == QTcpSocket::ConnectingState) {
+	if (isConnected() || mSocket.state() == QTcpSocket::ConnectingState) {
 		return true;
 	}
 
@@ -62,14 +67,22 @@ bool TcpConnectionHandler::isConnected()
 
 void TcpConnectionHandler::disconnect()
 {
-	if (mSocket.state() == QTcpSocket::ConnectedState) {
+	if (isConnected()) {
 		mSocket.disconnectFromHost();
-		mSocket.waitForDisconnected(3000);
+		if (mSocket.state() != QAbstractSocket::UnconnectedState) {
+			mSocket.waitForDisconnected(3000);
+		}
 	}
 }
 
 void TcpConnectionHandler::send(const QString &data)
 {
+	if (!isConnected()) {
+		QLOG_ERROR() << "Attempting to send through unconnected socket";
+		qDebug() << "Attempting to send through unconnected socket";
+		return;
+	}
+
 	QByteArray dataByteArray = data.toUtf8();
 	dataByteArray = QByteArray::number(dataByteArray.size()) + ':' + dataByteArray;
 	mSocket.write(dataByteArray);
@@ -125,4 +138,9 @@ void TcpConnectionHandler::onIncomingData()
 void TcpConnectionHandler::keepalive()
 {
 	send("keepalive");
+}
+
+void TcpConnectionHandler::onDisconnected()
+{
+	mKeepAliveTimer.stop();
 }

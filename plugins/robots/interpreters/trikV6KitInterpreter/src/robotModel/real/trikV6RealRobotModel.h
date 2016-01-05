@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/trikRobotModelV6.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {

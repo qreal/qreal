@@ -16,11 +16,16 @@
 
 #include <QtWidgets/QApplication>
 #include <QtCore/QFileInfo>
-#include <QtCore/QDebug>
+#include <QtCore/QStateMachine>
+#include <QtCore/QState>
+#include <QtCore/QFinalState>
 
+#include <qrkernel/logging.h>
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/runProgramProtocol.h>
+#include <utils/robotCommunication/stopRobotProtocol.h>
 
 #include "trikQtsMasterGenerator.h"
 #include "emptyShell.h"
@@ -28,6 +33,7 @@
 using namespace trik::qts;
 using namespace kitBase::robotModel;
 using namespace qReal;
+using namespace utils::robotCommunication;
 
 TrikQtsGeneratorPluginBase::TrikQtsGeneratorPluginBase(
 		kitBase::robotModel::RobotModelInterface * const robotModel
@@ -38,21 +44,30 @@ TrikQtsGeneratorPluginBase::TrikQtsGeneratorPluginBase(
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
-	, mCommunicator(nullptr)
 	, mPathsToTemplates(pathsToTemplates)
 {
 }
 
 TrikQtsGeneratorPluginBase::~TrikQtsGeneratorPluginBase()
 {
-	delete mCommunicator;
 }
 
 void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &configurer)
 {
+	const auto errorReporter = configurer.qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
 	RobotsGeneratorPluginBase::init(configurer);
-	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
-	mCommunicator->setErrorReporter(configurer.qRealConfigurator().mainWindowInterpretersInterface().errorReporter());
+	mCommunicator.reset(new utils::TcpRobotCommunicator("TrikTcpServer"));
+	mCommunicator->setErrorReporter(errorReporter);
+	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator));
+	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
+
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::timeout, [errorReporter]() {
+		errorReporter->addError(tr("Run program operation timed out"));
+	});
+
+	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, [errorReporter]() {
+		errorReporter->addError(tr("Stop robot operation timed out"));
+	});
 }
 
 QList<ActionInfo> TrikQtsGeneratorPluginBase::customActions()
@@ -136,46 +151,43 @@ void TrikQtsGeneratorPluginBase::addShellDevice(robotModel::GeneratorModelExtens
 {
 	const PortInfo shellPort("ShellPort", output);
 	EmptyShell * const shell = new EmptyShell(DeviceInfo::create<trik::robotModel::parts::TrikShell>(), shellPort);
-	connect(mCommunicator, &utils::TcpRobotCommunicator::printText, shell, &EmptyShell::print);
+	connect(mCommunicator.data(), &utils::TcpRobotCommunicator::printText, shell, &EmptyShell::print);
 	robotModel.addDevice(shellPort, shell);
 }
 
-bool TrikQtsGeneratorPluginBase::uploadProgram()
+void TrikQtsGeneratorPluginBase::uploadProgram()
 {
 	const QFileInfo fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-		const bool result = mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
-		if (!result) {
-			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
-		}
-
-		return result;
+		mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
 	} else {
-		qDebug() << "Code generation failed, aborting";
-		return false;
+		QLOG_ERROR() << "Code generation failed, aborting";
 	}
 }
 
 void TrikQtsGeneratorPluginBase::runProgram()
 {
-	if (uploadProgram()) {
-		const QFileInfo fileInfo = generateCodeForProcessing();
-		mCommunicator->runProgram(fileInfo.fileName());
+	const QFileInfo fileInfo = generateCodeForProcessing();
+	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
+		if (mRunProgramProtocol) {
+			mRunProgramProtocol->run(fileInfo);
+		} else {
+			QLOG_ERROR() << "Run program protocol is not initialized";
+		}
 	} else {
-		qDebug() << "Program upload failed, aborting";
+		QLOG_ERROR() << "Code generation failed, aborting";
 	}
 }
 
 void TrikQtsGeneratorPluginBase::stopRobot()
 {
-	if (!mCommunicator->stopRobot()) {
-		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
+	if (mStopRobotProtocol) {
+		mStopRobotProtocol->run(
+				"script.system(\"killall aplay\"); \n"
+				"script.system(\"killall vlc\");"
+				);
+	} else {
+		QLOG_ERROR() << "Stop robot protocol is not initialized";
 	}
-
-	mCommunicator->runDirectCommand(
-			"script.system(\"killall aplay\"); \n"
-			"script.system(\"killall vlc\");"
-			, true
-			);
 }

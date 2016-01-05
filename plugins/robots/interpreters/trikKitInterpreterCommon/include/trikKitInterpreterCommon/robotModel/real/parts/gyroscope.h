@@ -15,7 +15,7 @@
 #pragma once
 
 #include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikKitInterpreterCommon/declSpec.h"
 

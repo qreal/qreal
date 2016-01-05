@@ -18,6 +18,15 @@
 
 #include "declSpec.h"
 
+namespace utils {
+class TcpRobotCommunicator;
+
+namespace robotCommunication {
+class StopRobotProtocol;
+}
+
+}
+
 namespace trik {
 namespace fSharp {
 
@@ -35,6 +44,8 @@ public:
 				, const QStringList &pathsToTemplates);
 
 	~TrikFSharpGeneratorPluginBase() override;
+
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
@@ -78,6 +89,11 @@ private:
 	bool mOwnsAdditionalPreferences = true;
 
 	const QStringList mPathsToTemplates;
+
+	/// Communicator object used to send commands to robot.
+	QScopedPointer<utils::TcpRobotCommunicator> mCommunicator;
+
+	QScopedPointer<utils::robotCommunication::StopRobotProtocol> mStopRobotProtocol;
 };
 
 }

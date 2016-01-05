@@ -14,11 +14,19 @@
 
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
 
 namespace utils {
 class TcpRobotCommunicator;
+
+namespace robotCommunication {
+class RunProgramProtocol;
+class StopRobotProtocol;
+}
+
 }
 
 namespace trik {
@@ -55,8 +63,7 @@ private slots:
 	/// Generates and uploads script to a robot. Program then can be launched manually or remotely
 	/// by runCommand. Program is stored on robot as a file next to scriptRunner and named
 	/// as <qReal save name>.qts.
-	/// @returns True, if successful.
-	bool uploadProgram();
+	void uploadProgram();
 
 	/// Runs currently opened program on a robot. Uploads it first.
 	void runProgram();
@@ -77,9 +84,13 @@ private:
 	/// Action that stops script execution and turns off motors.
 	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
 
-	utils::TcpRobotCommunicator *mCommunicator;
+	/// Communicator object used to send commands to robot.
+	QScopedPointer<utils::TcpRobotCommunicator> mCommunicator;
 
 	QStringList mPathsToTemplates;
+
+	QScopedPointer<utils::robotCommunication::RunProgramProtocol> mRunProgramProtocol;
+	QScopedPointer<utils::robotCommunication::StopRobotProtocol> mStopRobotProtocol;
 };
 
 }

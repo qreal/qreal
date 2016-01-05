@@ -19,13 +19,15 @@
 #include <QtCore/QProcess>
 
 #include <qrkernel/settingsManager.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/stopRobotProtocol.h>
 
 #include "trikFSharpMasterGenerator.h"
 #include "trikFSharpAdditionalPreferences.h"
 
 using namespace trik::fSharp;
 using namespace qReal;
+using namespace utils::robotCommunication;
 
 const QString robotModelName = "TrikFSharpGeneratorRobotModel";
 
@@ -63,6 +65,19 @@ TrikFSharpGeneratorPluginBase::~TrikFSharpGeneratorPluginBase()
 	if (mOwnsAdditionalPreferences) {
 		delete mAdditionalPreferences;
 	}
+}
+
+void TrikFSharpGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &configurer)
+{
+	const auto errorReporter = configurer.qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
+	RobotsGeneratorPluginBase::init(configurer);
+	mCommunicator.reset(new utils::TcpRobotCommunicator("TrikTcpServer"));
+	mCommunicator->setErrorReporter(errorReporter);
+	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
+
+	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, [errorReporter]() {
+		errorReporter->addError(tr("Stop robot operation timed out"));
+	});
 }
 
 QList<ActionInfo> TrikFSharpGeneratorPluginBase::customActions()
@@ -191,24 +206,16 @@ void TrikFSharpGeneratorPluginBase::runProgram()
 		tr("Attention, the robot starts about a half-minute")
 	);
 
-	utils::TcpRobotCommunicator communicator("TrikTcpServer");
-
-	communicator.runDirectCommand(
+	mCommunicator->runDirectCommand(
 			"script.system(\"mono FSharp/Environment/example0.exe\"); "
 	);
 }
 
 void TrikFSharpGeneratorPluginBase::stopRobot()
 {
-	utils::TcpRobotCommunicator communicator("TrikTcpServer");
-
-	if (!communicator.stopRobot()) {
-		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
-	}
-
-	communicator.runDirectCommand(
+	mStopRobotProtocol->run(
 			"script.system(\"killall mono\"); "
 			"script.system(\"killall aplay\"); \n"
 			"script.system(\"killall vlc\");"
-	);
+		);
 }
