@@ -81,6 +81,9 @@ void RunProgramProtocol::run(const QFileInfo &fileToRun)
 		return;
 	}
 
+	mWaitingForUploadingComplete->disconnect();
+	mWaitingForRunComplete->disconnect();
+
 	connect(mWaitingForUploadingComplete, &QState::entered, [this, fileToRun]() {
 		qDebug() << "Entered WaitingForUploadingComplete state";
 		mCommunicator.uploadProgram(fileToRun.canonicalFilePath());

@@ -74,6 +74,8 @@ void UploadProgramProtocol::run(const QFileInfo &fileToRun)
 		return;
 	}
 
+	mWaitingForUploadingComplete->disconnect();
+
 	connect(mWaitingForUploadingComplete, &QState::entered, [this, fileToRun]() {
 		mCommunicator.uploadProgram(fileToRun.canonicalFilePath());
 	});

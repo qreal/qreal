@@ -76,6 +76,9 @@ void StopRobotProtocol::run(const QString &command)
 		return;
 	}
 
+	mWaitingForStopRobotCommandSent->disconnect();
+	mWaitingForDeinitializeCommandSent->disconnect();
+
 	connect(mWaitingForStopRobotCommandSent, &QState::entered, [this]() {
 		mCommunicator.stopRobot();
 	});
